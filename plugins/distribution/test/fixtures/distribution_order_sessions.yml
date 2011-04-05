@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  node_id: 1
+  start: 2011-04-03 22:20:28
+  finish: 2011-04-03 22:20:28
+
+two:
+  node_id: 1
+  start: 2011-04-03 22:20:28
+  finish: 2011-04-03 22:20:28

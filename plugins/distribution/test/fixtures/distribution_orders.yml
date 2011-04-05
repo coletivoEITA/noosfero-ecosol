@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  order_session_id: 1
+  delivery_method: 1
+  buyer: 1
+
+two:
+  order_session_id: 1
+  delivery_method: 1
+  buyer: 1
