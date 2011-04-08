@@ -21,6 +21,7 @@ class DistributionNodeTest < Test::Unit::TestCase
     d2 = DistributionNode.create! :profile => p2
     d1.add_consumer(d2)
     assert d1.consumers.include?(d2)
+    #FIXME
     #assert d2.suppliers.include?(d1)
 
     d1.remove_consumer(d2)
