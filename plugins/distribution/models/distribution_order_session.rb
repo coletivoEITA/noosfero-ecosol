@@ -1,5 +1,5 @@
 class DistributionOrderSession < ActiveRecord::Base
-  belongs_to :distribution_node
-  has_many :distribution_orders
-  has_many :distribution_delivery_methods
+  belongs_to :node, :class_name => 'DistributionNode'
+  has_many :orders, :class_name => 'DistributionOrder'
+  has_many :products, :class_name => 'DistributionProduct'
 end

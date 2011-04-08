@@ -1,4 +1,4 @@
 class DistributionDeliveryMethod < ActiveRecord::Base
-	belongs_to :distribution_node
-	has_many :distribution_order
+  belongs_to :node, :class_name => 'DistributionNode'
+  has_many :orders, :class_name => 'DistributionOrder'
 end
