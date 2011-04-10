@@ -2,7 +2,8 @@ class DistributionNode < ActiveRecord::Base
   belongs_to :profile, :dependent => :destroy
   has_many :products, :class_name => 'DistributionProduct'
   has_many :orders, :class_name => 'DistributionOrder'
-  validates_presence_of :profile
+  validates_presence_of   :profile
+  validates_inclusion_of  :type, :in => ['supplier','collective', 'consumer']
 
   module Roles
     def self.consumer(env_id)
