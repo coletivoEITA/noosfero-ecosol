@@ -10,7 +10,6 @@ class CreateDistributionDeliveryMethods < ActiveRecord::Migration
       t.string  :postal_code
       t.string  :state
       t.string  :country
-      t.integer :type
 
       t.timestamps
     end
