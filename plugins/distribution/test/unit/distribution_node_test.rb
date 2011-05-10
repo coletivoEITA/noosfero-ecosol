@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../../../../test/test_helper'
 
 class DistributionNodeTest < Test::Unit::TestCase
-  fixtures :profiles, :distribution_nodes
 
   should 'have a profile' do
     d = DistributionNode.create

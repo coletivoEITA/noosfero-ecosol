@@ -1,7 +1,16 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
+Joaozin:
   profile_id: 1
+  type: 'consumer'
+  features:
 
-two:
-  profile_id: 1
+Mariazin:
+  profile_id: 2
+  type: 'supplier'
+  features:
+
+Brocas:
+  profile_id: 5
+  type: 'collective'
+  features:

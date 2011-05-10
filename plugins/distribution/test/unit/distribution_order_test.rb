@@ -1,16 +1,15 @@
 require File.dirname(__FILE__) + '/../../../../test/test_helper'
 
 class DistributionOrderTest < ActiveSupport::TestCase
-  fixtures :profiles
+  fixtures :profiles, :distribution_order_session, :distribution_node, :distribution_order, :distribution_delivery_method
 
   should 'have an order' do
-    os = DistributionOrderSession.create
+    os = distribution_order_session()
+    p os.to_yaml
     p = build(Profile)
-    d = DistributionNode.create! :profile => p
-    dm = DistributionDeliveryMethod.create
-    d = DistributionOrder.create! :node => d, \
-      :order_session => os, \
-      :delivery_method => dm
+    d = build(DistributionNode)
+    dm = build(DistributionDeliveryMethod)
+    d = build(DistributionOrder)
     assert d.valid?
   end
 end

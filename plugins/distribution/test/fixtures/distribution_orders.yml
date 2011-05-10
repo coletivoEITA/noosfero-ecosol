@@ -2,10 +2,30 @@
 
 one:
   order_session_id: 1
-  delivery_method: 1
-  buyer: 1
+  supplier_delivery_id: 1
+  consumer_id: 1
 
 two:
   order_session_id: 1
-  delivery_method: 1
-  buyer: 1
+  supplier_delivery_id: 2
+  consumer_id: 1
+
+three:
+  order_session_id: 2
+  supplier_delivery_id: 2
+  consumer_id: 2
+
+four:
+  order_session_id: 2
+  supplier_delivery_id: 2
+  consumer_id: 2
+
+five:
+  order_session_id: 2
+  supplier_delivery_id: 1
+  consumer_id: 1
+
+six:
+  order_session_id: 2
+  supplier_delivery_id: 1
+  consumer_id: 3

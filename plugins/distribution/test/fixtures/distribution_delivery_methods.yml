@@ -1,9 +1,4 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
+da_mariazin:
   node_id: 1
-  address_id: 1
-
-two:
-  node_id: 1
-  address_id: 1
