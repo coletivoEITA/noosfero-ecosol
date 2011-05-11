@@ -2,15 +2,15 @@
 
 Joaozin:
   profile_id: 1
-  type: 'consumer'
+  role: 'consumer'
   features:
 
 Mariazin:
   profile_id: 2
-  type: 'supplier'
+  role: 'supplier'
   features:
 
 Brocas:
   profile_id: 5
-  type: 'collective'
+  role: 'collective'
   features:

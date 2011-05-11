@@ -3,14 +3,12 @@ class DistributionDeliveryMethod < ActiveRecord::Base
   has_many :orders, :class_name => 'DistributionOrder'
 
   validates_presence_of :node
-  validates_inclusion_of :type, :in => ['pickup', 'delivery']
+  validates_inclusion_of :delivery_type, :in => ['pickup', 'delivery']
+  validates_presence_of :address_line1, :if => :is_pickup?
+  validates_presence_of :state, :if => :is_pickup?
+  validates_presence_of :country, :if => :is_pickup?
 
-  validate :validates_address_on_type
-  def validates_address_on_type
-    if type == 'pickup'
-      validates_presence_of :address_line1
-      validates_presence_of :state
-      validates_presence_of :country
-    end
+  def is_pickup?
+    delivery_type == 'pickup'
   end
 end
