@@ -9,4 +9,5 @@ class DistributionOrder < ActiveRecord::Base
 
   def is_delivery?
     consumer_delivery.delivery_type == 'delivery'
+  end
 end

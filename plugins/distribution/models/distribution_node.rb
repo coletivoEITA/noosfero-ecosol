@@ -1,7 +1,7 @@
 class DistributionNode < ActiveRecord::Base
   belongs_to :profile, :dependent => :destroy
-  has_many :products, :class_name => 'DistributionProduct'
-  has_many :orders, :class_name => 'DistributionOrder'
+  has_many :products, :class_name => 'DistributionProduct', :foreign_key => :node_id
+  has_many :orders, :class_name => 'DistributionOrder', :foreign_key => :node_id
   validates_presence_of   :profile
   validates_inclusion_of  :role, :in => ['supplier','collective', 'consumer']
 

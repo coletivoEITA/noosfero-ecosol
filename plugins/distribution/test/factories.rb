@@ -15,5 +15,9 @@ module DistributionFactory
   def defaults_for_distribution_node
     {:profile_id => 1, :role => 'supplier'}
   end
+
+  def defaults_for_distribution_product
+    {:node_id => 1, :product_id => 1}
+  end
 end
 
