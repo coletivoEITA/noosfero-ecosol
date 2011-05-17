@@ -18,8 +18,8 @@ class DistributionNode < ActiveRecord::Base
 
   acts_as_accessor
   acts_as_accessible
-  named_scope :consumers_of, lambda { |supplier| { :select => 'DISTINCT distribution_nodes.*', :joins => :role_assignments, :conditions => ['role_assignments.accessor_type = ? AND role_assignments.accessor_id = ?', supplier.class.base_class.name, supplier.id ] } }
-  named_scope :suppliers_of, lambda { |consumer| { :select => 'DISTINCT distribution_nodes.*', :joins => :role_assignments, :conditions => ['role_assignments.resource_type = ? AND role_assignments.resource_id = ?', consumer.class.base_class.name, consumer.id ] } }
+  named_scope :consumers_of, lambda { |supplier| { :select => 'DISTINCT distribution_nodes.*', :joins => 'LEFT JOIN role_assignments ON role_assignments.resource_id = distribution_nodes.id', :conditions => ['role_assignments.accessor_type = ? AND role_assignments.accessor_id = ?', supplier.class.base_class.name, supplier.id ] } }
+  named_scope :suppliers_of, lambda { |consumer| { :select => 'DISTINCT distribution_nodes.*', :joins => 'LEFT JOIN role_assignments ON role_assignments.accessor_id = distribution_nodes.id', :conditions => ['role_assignments.resource_type = ? AND role_assignments.resource_id = ?', consumer.class.base_class.name, consumer.id ] } }
   def consumers
     DistributionNode.consumers_of(self)
   end
