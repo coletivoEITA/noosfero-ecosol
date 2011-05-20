@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../../../../test/test_helper'
 
 class DistributionSessionProductTest < ActiveSupport::TestCase
   # Replace this with your real tests.

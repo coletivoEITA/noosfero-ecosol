@@ -4,6 +4,7 @@ class CreateDistributionProducts < ActiveRecord::Migration
       t.integer :product_id
       t.integer :node_id
       t.boolean :active
+      t.boolean :deleted
       t.decimal :price
       t.integer :unit_id
       t.decimal :quantity
