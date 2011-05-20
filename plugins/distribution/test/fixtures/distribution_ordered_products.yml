@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  session_product_id: 1
+  order_id: 1
+  quantity_asked: 9.99
+  quantity_allocated: 9.99
+  quantity_payed: 9.99
+
+two:
+  session_product_id: 1
+  order_id: 1
+  quantity_asked: 9.99
+  quantity_allocated: 9.99
+  quantity_payed: 9.99
