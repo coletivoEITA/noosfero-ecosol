@@ -31,4 +31,13 @@ class DistributionNodeTest < Test::Unit::TestCase
     assert pr.node_id == d.id
   end
 
+  should 'have a valid role' do
+     roles = ['supplier', 'consumer', 'colective'] 
+  end
+
+  should '' do 
+  end
+
+  should '' do 
+  end
 end

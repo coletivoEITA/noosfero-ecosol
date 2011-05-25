@@ -1,6 +1,7 @@
 class DistributionDeliveryMethod < ActiveRecord::Base
   belongs_to :node, :class_name => 'DistributionNode'
   has_many :orders, :class_name => 'DistributionOrder'
+  belongs_to :delivery_option, :class_name => 'DistributionDeliveryOption'
 
   validates_presence_of :node
   validates_inclusion_of :delivery_type, :in => ['pickup', 'delivery']
