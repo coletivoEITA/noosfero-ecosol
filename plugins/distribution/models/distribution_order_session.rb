@@ -6,10 +6,7 @@ class DistributionOrderSession < ActiveRecord::Base
   #has_many :delivery_methods, :through => :distribution_delivery_options
 
   def open?
-    puts self.start
-    puts self.finish
     now = DateTime.now
-    puts now
     now >= self.start and now <= self.finish
   end
 end
