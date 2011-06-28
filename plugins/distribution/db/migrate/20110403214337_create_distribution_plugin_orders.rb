@@ -1,7 +1,7 @@
-class CreateDistributionOrders < ActiveRecord::Migration
+class CreateDistributionPluginOrders < ActiveRecord::Migration
   def self.up
-    create_table :distribution_orders do |t|
-      t.integer :order_session_id
+    create_table :distribution_plugin_orders do |t|
+      t.integer :session_id
       t.integer :consumer_id
       t.integer :supplier_delivery_id
       t.integer :consumer_delivery_id
@@ -14,6 +14,6 @@ class CreateDistributionOrders < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :distribution_orders
+    drop_table :distribution_plugin_orders
   end
 end

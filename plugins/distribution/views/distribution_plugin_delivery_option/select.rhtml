@@ -1,0 +1,17 @@
+<%= _('Choose an delivery method') %>
+<br />
+<% @delivery_methods.each do |dm| %>
+  <div class="distribution-plugin-delivery-method-as-option">
+    <%= dm.name %> <%= link_to_function(_("Add this option"), '', :class => "distribution-plugin-delivery-method-use-option") %>
+  </div>
+<% end %>
+<br />
+<%= _('or ') + link_to_function(_('Create New'), 'jQuery("#distribution-plugin-delivery-method-new-as-option").toggle();') %>
+<div id="distribution-plugin-delivery-method-new-as-option">
+  <% @delivery_method = DistributionPluginDeliveryMethod.new(:node => @node) %>
+  <%= render :partial => 'distribution_plugin_delivery_method/new' %>
+</div>
+
+<br />
+<br />
+<%= lightbox_close_button _('Close') %>

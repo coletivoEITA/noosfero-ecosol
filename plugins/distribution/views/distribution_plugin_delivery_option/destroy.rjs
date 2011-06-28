@@ -1,0 +1,1 @@
+page.remove 'distribution-plugin-delivery-option-'+@delivery_option_id.to_s

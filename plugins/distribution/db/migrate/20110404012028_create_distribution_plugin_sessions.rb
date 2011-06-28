@@ -1,6 +1,6 @@
-class CreateDistributionOrderSessions < ActiveRecord::Migration
+class CreateDistributionPluginSessions < ActiveRecord::Migration
   def self.up
-    create_table  :distribution_order_sessions do |t|
+    create_table  :distribution_plugin_sessions do |t|
       t.integer   :node_id
       t.string    :name
       t.text      :description 
@@ -16,6 +16,6 @@ class CreateDistributionOrderSessions < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :distribution_order_sessions
+    drop_table :distribution_plugin_sessions
   end
 end
