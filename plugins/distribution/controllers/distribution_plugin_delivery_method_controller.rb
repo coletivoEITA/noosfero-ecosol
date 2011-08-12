@@ -5,7 +5,18 @@ class DistributionPluginDeliveryMethodController < ApplicationController
   end
 
   def new
-    @delivery_method = DistributionPluginDeliveryMethod.create!(:product_id => params[:id])
+    if request.post?
+      if params[:session_id]
+        @for_session = true
+        @session = DistributionPluginSession.find(params[:session_id])
+        @delivery_method = DistributionPluginDeliveryMethod.create!(params[:delivery_method].merge({:node_id => @session.node_id}))
+        @delivery_option = DistributionPluginDeliveryOption.create!(:session => @session, :delivery_method => @delivery_method)
+      else
+        @delivery_method = DistributionPluginDeliveryMethod.create!(params[:delivery_method])
+      end
+    else
+      @delivery_method = DistributionPluginDeliveryMethod.new(:node => params[:node_id])
+    end
   end
 
   def edit

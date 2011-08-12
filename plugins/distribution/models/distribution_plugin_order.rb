@@ -1,20 +1,26 @@
 class DistributionPluginOrder < ActiveRecord::Base
-  has_one :supplier, :through => :distribution_order_sessions, :source => :node_id
+  belongs_to :session, :class_name => 'DistributionPluginSession'
   belongs_to :consumer, :class_name => 'DistributionPluginNode'
+  #has_one :supplier, :through => :session, :source => :node
   has_one :supplier_delivery, :class_name => 'DistributionPluginDeliveryMethod'
   has_one :consumer_delivery, :class_name => 'DistributionPluginDeliveryMethod'
-  belongs_to :order_session, :class_name => 'DistributionPluginOrderSession'
-  has_many :ordered_products, :class_name => 'DistributionPluginOrderedProduct'
+  has_many :ordered_products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'order_id'
+
+  named_scope :draft, :conditions => {:status => 'draft'}
+  named_scope :planned, :conditions => {:status => 'planned'}
+  named_scope :confirmed, :conditions => {:status => 'confirmed'}
+
+  validates_presence_of :session
+  validates_presence_of :consumer
+  validates_inclusion_of :status, :in => ['draft', 'planned', 'confirmed']
+  validate :open_session?, :if => :session
+  validate :delivery_method?
   before_validation :default_values
 
   def default_values
     self.status ||= 'draft'
   end
 
-  validates_presence_of :order_session
-  validates_inclusion_of :status, :in => ['draft', 'planned', 'confirmed']
-  validate :open_session?
-  validate :delivery_method?
 
   def delivery_method?
     # TODO: create an unit test for this
@@ -31,7 +37,7 @@ class DistributionPluginOrder < ActiveRecord::Base
   end
 
   def open_session?
-    if !order_session.open?
+    if !session.open?
       errors.add_to_base('associated session is closed')
     end
   end

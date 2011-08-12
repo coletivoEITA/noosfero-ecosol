@@ -1,19 +1,11 @@
-class DistributionPluginSessionProductController < ApplicationController
+class DistributionPluginProductController < ApplicationController
   append_view_path File.join(File.dirname(__FILE__) + '/../views')
-
-  def new
-    @ss_product = DistributionPluginSessionProduct.create!(:product_id => params[:id])
-  end
+  no_design_blocks
+  layout false
 
   def edit
-    p = DistributionPluginSessionProduct.find_by_id(params[:id])
-    p.attributes = params #hum?
-  end
-
-  def destroy
-    p = DistributionPluginSessionProduct.find_by_id(params[:id])
-    @product_id = p.id
-    p.destroy if p
-    flash[:notice] = _('Product removed from session')
+    @d_product = DistributionPluginProduct.find_by_id(params[:id])
+    @n_product = @d_product.product
+    @node = @d_product.node
   end
 end

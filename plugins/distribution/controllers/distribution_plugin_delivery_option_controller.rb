@@ -1,21 +1,36 @@
-class DistributionPluginDeliveryMethodController < ApplicationController
+class DistributionPluginDeliveryOptionController < ApplicationController
   append_view_path File.join(File.dirname(__FILE__) + '/../views')
 
+  def select
+    @session = DistributionPluginSession.find_by_id(params[:session_id])
+    @node = @session.node
+    @delivery_methods = @node.delivery_methods - @session.delivery_methods
+    render :layout => false
+  end
+
   def index
+    @session = DistributionPluginSession.find_by_id(params[:session_id])
+    @node = @session.node
+  end
+
+  def show
+    @delivery_option = DistributionPluginSession.find_by_id(params[:id])
   end
 
   def new
-    @delivery_method = DistributionPluginDeliveryMethod.create!(:product_id => params[:id])
-  end
-
-  def edit
-    @delivery_method = DistributionPluginDeliveryMethod.find_by_id(params[:id])
+    @session = DistributionPluginSession.find_by_id(params[:session_id])
+    if params[:new_method].nil?
+      @delivery_method = DistributionPluginDeliveryMethod.find_by_id(params[:delivery_method_id])
+    else
+      @delivery_method = DistributionPluginDeliveryMethod.create!(params[:delivery_method].merge({:node => @session.node}))
+    end
+    @delivery_option = DistributionPluginDeliveryOption.create!(:session => @session, :delivery_method => @delivery_method)
   end
 
   def destroy
-    dm = DistributionPluginDeliveryMethod.find_by_id(params[:id])
-    @delivery_method_id = dm.id
+    dm = DistributionPluginDeliveryOption.find_by_id(params[:id])
+    @delivery_option_id = dm.id
     dm.destroy if dm
-    flash[:notice] = _('Delivery method removed from session')
+    flash[:notice] = _('Delivery option removed from session')
   end
 end

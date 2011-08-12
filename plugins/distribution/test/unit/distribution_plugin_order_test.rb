@@ -11,14 +11,14 @@ class DistributionOrderTest < ActiveSupport::TestCase
     p = build(Profile)
     ds = build(DistributionNode, :profile => p, :role => 'collective')
     dm = build(DistributionDeliveryMethod, :node => ds)
-    os = build(DistributionOrderSession, :node => ds, :start => DateTime.now + 1.days, :finish => DateTime.now + 2.days)
+    os = build(DistributionPluginSession, :node => ds, :start => DateTime.now + 1.days, :finish => DateTime.now + 2.days)
     doption = create(DistributionDeliveryOption, :delivery_method => dm)
     os.delivery_methods = [doption]
-    o1 = build(DistributionOrder, :order_session => os, :consumer => dc, :supplier_delivery => dm)
+    o1 = build(DistributionOrder, :session => os, :consumer => dc, :supplier_delivery => dm)
     # This test has a closed session and woudn't pass
     assert !o1.valid?
-    os = build(DistributionOrderSession, :node => ds, :delivery_methods => [doption], :start => DateTime.now.ago(5.days), :finish => DateTime.now + 2.days)
-    o2 = build(DistributionOrder, :order_session => os, :consumer => dc, :supplier_delivery => dm)
+    os = build(DistributionPluginSession, :node => ds, :delivery_methods => [doption], :start => DateTime.now.ago(5.days), :finish => DateTime.now + 2.days)
+    o2 = build(DistributionOrder, :session => os, :consumer => dc, :supplier_delivery => dm)
     assert o2.valid?
   end
 

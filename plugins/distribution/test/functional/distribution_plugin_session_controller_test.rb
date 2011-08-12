@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + '/../../../../test/test_helper'
 
-class DistributionOrderSessionControllerTest < Test::Unit::TestCase
+class DistributionPluginSessionControllerTest < Test::Unit::TestCase
 
   def setup
-    @controller = DistributionOrderSessionController.new
+    @controller = DistributionPluginSessionController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end
@@ -16,7 +16,7 @@ class DistributionOrderSessionControllerTest < Test::Unit::TestCase
   end
 
   should 'edit session' do
-    ss = create(DistributionOrderSession)
+    ss = create(DistributionPluginSession)
     get :edit, :id => ss.id
     assert_equal ss, assigns(:session)
   end

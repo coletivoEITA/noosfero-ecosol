@@ -9,7 +9,7 @@ class DistributionOrderControllerTest < Test::Unit::TestCase
   end
 
   should 'create a new order' do
-    ss = create(DistributionOrderSession)
+    ss = create(DistributionPluginSession)
     get :new, :session_id => ss.id
     assert_equal ss, assigns(:session)
 
@@ -19,8 +19,8 @@ class DistributionOrderControllerTest < Test::Unit::TestCase
   end
 
   should 'edit order' do
-    ss = create(DistributionOrderSession)
-    o = create(DistributionOrder, :order_session => ss)
+    ss = create(DistributionPluginSession)
+    o = create(DistributionOrder, :session => ss)
     get :edit, :id => o.id
     assert_equal ss, assigns(:session)
   end

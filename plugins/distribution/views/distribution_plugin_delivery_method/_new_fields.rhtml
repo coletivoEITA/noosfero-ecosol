@@ -1,5 +1,4 @@
 <div class="distribution-plugin-new-delivery-method">
-  <% form_remote_for :delivery_method, @delivery_method, :url => {:controller => 'distribution_plugin_delivery_method', :action => 'new', :session_id => @session.id} do |f| %>
     <%= f.label :name, _("Name") %>
     <%= f.text_field :name %> 
     <%= f.label :description, _("Description") %>
@@ -24,7 +23,5 @@
       <%= f.text_field :country %> 
     </div>
 
-    <%= submit_tag(_('Add option')) %>
-  <% end %>
   <br style="clear: both">
 </div>

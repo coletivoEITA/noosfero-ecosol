@@ -1,15 +1,24 @@
-<%= _('Choose an delivery method') %>
-<br />
-<% @delivery_methods.each do |dm| %>
-  <div class="distribution-plugin-delivery-method-as-option">
-    <%= dm.name %> <%= link_to_function(_("Add this option"), '', :class => "distribution-plugin-delivery-method-use-option") %>
-  </div>
+<% if !@delivery_methods.empty? %>
+<%= _('Choose a delivery method') %>
+  <br /><br />
+  <% @delivery_methods.each do |dm| %>
+    <div id="distribution-plugin-delivery-method-as-option-<%=dm.id%>" class="distribution-plugin-delivery-method-as-option">
+      <%= dm.name %> <%= link_to_remote(_('Add this option'), 
+                                        :url => { :controller => :distribution_plugin_delivery_option, :action => "new", :session_id => @session.id, :delivery_method_id => dm.id },
+                                        :class => "distribution-plugin-delivery-method-use-option") %>
+    </div>
+  <% end %>
+  <br style="clear: both"/><br />
+  <%= _('or ') %>
 <% end %>
-<br />
-<%= _('or ') + link_to_function(_('Create New'), 'jQuery("#distribution-plugin-delivery-method-new-as-option").toggle();') %>
-<div id="distribution-plugin-delivery-method-new-as-option">
-  <% @delivery_method = DistributionPluginDeliveryMethod.new(:node => @node) %>
-  <%= render :partial => 'distribution_plugin_delivery_method/new' %>
+
+<%= link_to_function(@delivery_methods.empty? ? _('Create new delivery method') : _('Create new'),
+                     'jQuery("#distribution-plugin-delivery-method-new-as-option").toggle();') %>
+<div id="distribution-plugin-delivery-option-new-method" style="<%= "display: block;" if @delivery_methods.empty? %>">
+  <% form_remote_for :delivery_method, :url => {:action => 'new', :session_id => @session.id, :new_method => true} do |f| %>
+    <%= render :partial => 'distribution_plugin_delivery_method/new_fields', :locals => {:f => f} %>
+    <%= f.submit(_('Add option')) %>
+  <% end %>
 </div>
 
 <br />

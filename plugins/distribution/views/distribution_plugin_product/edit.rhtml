@@ -1,0 +1,14 @@
+<div class="distribution-plugin-product-left-column">
+  <h2><%= _('Distributed by ') + link_to_profile(@node.profile.name, @node.profile.identifier) %></h2>
+  <%= @d_product.price %>
+  <%= @d_product.unit.singular if @d_product.unit %>
+</div>
+<div class="distribution-plugin-product-right-column">
+  <h2><%= _('From supplier ') + link_to_profile(@n_product.enterprise.name, @n_product.enterprise.identifier) %></h2>
+  <%= link_to @n_product.name, product_path(@n_product) %>
+  <%= @n_product.price %>
+  <%= @n_product.unit.singular if @n_product.unit %>
+</div>
+<br />
+<br />
+<%= lightbox_close_button _('Close') %>
