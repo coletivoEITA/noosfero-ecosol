@@ -4,4 +4,6 @@ class DistributionPluginSessionProduct < ActiveRecord::Base
   belongs_to :session, :class_name => 'DistributionPluginSession'
 
   validates_presence_of :product
+  validates_numericality_of :quantity_available, :allow_nil => true
+  validates_numericality_of :price, :allow_nil => true
 end

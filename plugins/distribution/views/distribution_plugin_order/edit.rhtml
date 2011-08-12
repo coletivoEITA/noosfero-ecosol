@@ -1,0 +1,97 @@
+<%= render :partial => "distribution_plugin_collective/menu" %>
+<div id="order_content">
+  <div class="order_menu">
+    <h2><%=_("Open orders: session '") + @session.name + "'"%></h2>
+    <div class="order"><strong><%= _("Active during the period: ") %></strong><%= _(@session.start.strftime('%A').downcase) + ", #{@session.start.strftime('%d/%m %H:%M')} - "+
+    _(@session.finish.strftime('%A').downcase) + ", #{@session.finish.strftime('%d/%m %H:%M')}" %></div>
+  <div class="order"><strong><%=_("Delivery: ") %></strong><%= _(@session.delivery_start.strftime('%A').downcase) + ", #{@session.delivery_start.strftime('%d/%m %H:%M')} - " + _(@session.delivery_finish.strftime('%A').downcase) + ", #{@session.delivery_finish.strftime('%d/%m %H:%M')}" %></div>
+  <p><small><%= @session.description %></small></p>
+</div>
+<hr class="order"/>
+<div id="session_column">
+  <div class="alignment">
+    <h3><%=_("The products")%></h3>
+    <div>
+      <%= _("Choose from the list below the products you want to include to your order. Click them to choose the quantity.")%>
+    </div>
+  </div>
+
+  <!--
+  <h3><%=_("Filter the products")%></h3>
+  <div class="search_fields">  <%= text_field_tag('query', '') %> </div>
+  -->
+  <div class="cleaner"></div>
+  <div class="alignment">
+    <div class="strong"><%=_("Categories")%></div>
+    <div class="categories">
+      <%= render :partial => 'product_category', :collection => @product_categories %>
+    </div>
+  </div>
+  <div class="cleaner"></div>
+
+  <div>
+    <% 
+      product_groups = @session_products.group_by {|sp| sp.product.product.product_category.name}
+    %>
+    <% product_groups.each do |category_name, session_products| %>
+      <div class="cleaner"></div>
+      <div class="category_box">
+        <%= category_name%>
+      </div>
+        <%# session products %>
+        <div class="box_fields box_index"><div class="supplier"><%=_('Supplier')%></div></div>
+        <div class="box_fields box_index"><div class="product"><%=_('Product')%></div></div>
+        <div class="box_fields box_index"><div class="price"><%=_('Price')%></div></div>
+        <div class="box_fields box_index"><div class="quantity"><%=_('order qtt')%></div></div>
+        <div class="cleaner"></div>
+
+        <% 
+          session_products.each do |product| 
+            # is it the last product?
+            last = product == session_products.last
+          %>
+          <%= render :partial => "session_product", :locals => {
+            :product => product, :last => last} %>
+          <% end %>
+        <div class="block_closer"></div>
+    <% end %>
+  </div>
+</div>
+
+
+<div class="outside_box_order_products">
+  <div class="alignment">
+    <h3><%=_("Your order")%></h3>
+  </div>
+  <% total = 0 %>
+  <div id="inside_box_order_products" >
+    <% @order_products.each do |product| %>
+      <% if !product.session_product.nil? %>
+        <%= render :partial => "distribution_plugin_ordered_product/ordered_product", :locals => {
+          :product => product, :last => product == @order_products.last} %>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="in_order">
+      <div id="total_box">
+        <%= render :partial => 'total', :object => @order %>
+      </div>
+      <div class="cleaner"></div>
+      <div id="delivery_box">
+        <h3><%= _("delivery method") %></h3>
+        <h4><%= @session.delivery_methods.first.name %></h4>
+        <p><%= @session.delivery_methods.first.description %></p>
+        <strong><%= _('Choose another method:') %></strong>
+        <span><%= select_tag :delivery_method_options, options_from_collection_for_select(@session.delivery_methods, "id", "name") %></span>
+      </div>
+      <div class="box_fields"><div id="close_order">
+          <%= link_to _('Confirm order'), urlhash_for({:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => 'close', :id => @order}) %>
+      </div></div>
+      <div class="box_fields"><div id="desist_order">
+          <%= link_to _('desist'), urlhash_for({:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => 'remove', :id => @order}), :confirm => _("Are you sure? It would delete all the order.") %>
+      </div></div>
+      <div class="cleaner"></div>
+    </div>
+  </div>
+  <div class="cleaner"></div>
+</div>

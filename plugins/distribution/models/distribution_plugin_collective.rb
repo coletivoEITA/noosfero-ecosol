@@ -1,0 +1,3 @@
+class DistributionPluginCollective < DistributionPluginMyProfile
+
+end

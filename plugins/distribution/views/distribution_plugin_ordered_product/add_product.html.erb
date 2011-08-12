@@ -1,0 +1,24 @@
+<h1>Product view</h1>
+<div class="product_view">
+Name: <%=@session_product.product.product.name%>
+</div>
+<div class="product_view">
+Price: <%= @session_product.product.product.price%>
+</div>
+<div class="product_view">
+Category: <%= @session_product.product.product.product_category.name%>
+</div>
+<div class="product_view">
+Supplier: <%= @session_product.product.node.profile.name%>
+</div>
+<div class="product_view">
+  <div id="add_or_added_product">
+  <%= link_to_remote(_('Add to order'),
+                     :url => {:controller => 'distribution_plugin_ordered_product',
+                       :action => "new",
+                       :order_id => @order,
+                       :session_product_id => @session_product
+  }) %>
+</div>
+<br />
+<%= lightbox_close_button _('Close') %>

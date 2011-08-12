@@ -1,0 +1,41 @@
+        <div class="in_order value_row">
+          <% selected = 0; @block_id_name = "ordered_product" + product.id.to_s %>
+          <div id=<%= @block_id_name %>>
+            <%
+              dProduct = product.session_product.product
+              if dProduct.product.unit.nil?
+                unit = 'UN'
+              else
+                unit = dProduct.product.unit.singular
+              end 
+            %>
+            <div class="box_fields"><div class="supplier">
+                <%= dProduct.node.profile.name %> 
+            </div></div>
+            <div class="box_fields"><div class="product">
+                <%= dProduct.product.name %>
+            </div></div>
+            <div class="box_fields">
+              <% block_id_name = "product_quantity" + product.id.to_s %>
+              <div id=<%= block_id_name %>>
+                <%= render :partial => "distribution_plugin_order/quantity", :locals => {:product => product} %>
+                <span class="lower"><%= unit %></span>
+            </div></div>
+            <div class="box_fields"><div class="price_total">
+                <%= product.session_product.price * product.quantity_asked %> 
+            </div></div>
+            <% if product.id == selected %>
+              <div class="box_fields">
+                <%= link_to_remote(_('remove'), :update => @block_id_name,
+                                   :url => {:controller => 'distribution_plugin_ordered_product',
+                                     :action => "destroy",
+                                     :id => product
+                }) %>
+              </div> 
+            <% end %>
+          </div>
+        </div>
+        <div class="cleaner"></div>
+        <% if not last -%>
+          <div class="spacer"></div>
+        <% end %>

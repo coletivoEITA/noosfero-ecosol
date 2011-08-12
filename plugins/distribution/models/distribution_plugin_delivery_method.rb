@@ -1,6 +1,6 @@
 class DistributionPluginDeliveryMethod < ActiveRecord::Base
   belongs_to :node, :class_name => 'DistributionPluginNode'
-  has_many :orders, :class_name => 'DistributionPluginOrder'
+  belongs_to :order, :class_name => 'DistributionPluginOrder'
 
   validates_presence_of :node
   validates_presence_of :name

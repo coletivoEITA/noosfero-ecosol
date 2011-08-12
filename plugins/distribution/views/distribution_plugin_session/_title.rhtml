@@ -1,0 +1,6 @@
+<h2>
+  <a href="<%= urlhash_for({:action => 'edit', :profile => profile.identifier, :id => session.id }) %>" class="distribution-plugin-session-edit-link">
+    <%= _('Order Session:') + ' ' + session.start.to_s + ' / ' + session.name %>
+  </a>
+</h2>
+<%= render :partial => 'timeline', :locals => {:session => session} %>

@@ -1,0 +1,4 @@
+                <%= lightbox_link_to('+', url_for({
+                  :controller => :distribution_plugin_ordered_product,
+                  :action => "add_product", :id => product.id,
+                  :order_id => @order})) %>

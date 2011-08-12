@@ -1,15 +1,16 @@
-class DistributionPluginSessionController < ApplicationController
+class DistributionPluginSessionController < DistributionPluginMyprofileController
   append_view_path File.join(File.dirname(__FILE__) + '/../views')
   no_design_blocks
   layout false
 
+  helper DistributionPlugin::SessionHelper
+
   def index
-    @node = DistributionPluginNode.find(params[:node_id])
     @sessions = @node.sessions
   end
 
   def new
-    @session = DistributionPluginSession.create!(:node_id => params[:node_id])
+    @session = DistributionPluginSession.create!(:node_id => @node.id)
     render :action => :edit, :id => @session.id
   end
 

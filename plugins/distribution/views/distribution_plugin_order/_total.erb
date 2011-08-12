@@ -1,0 +1,2 @@
+<div class="box_fields"><div class="total_title"><%= _("Total") %></div></div>
+<div class="box_fields"><div class="total_value"><%= " R$ " + @order.ordered_products.map{|op| op.quantity_asked.to_f}.sum.to_s %></div></div>

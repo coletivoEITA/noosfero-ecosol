@@ -1,0 +1,7 @@
+  <%= text_field_tag('quantity_asked', product.quantity_asked, :size =>3, :onblur => 
+  remote_function(
+  :url => {:controller => 'distribution_plugin_ordered_product',
+           :action => "update_quantity",
+           :id => product},
+  :with => 'Form.Element.serialize(this)')
+  ) %>

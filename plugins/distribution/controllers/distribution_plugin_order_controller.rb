@@ -1,26 +1,20 @@
-class DistributionPluginOrderController < ApplicationController
+class DistributionPluginOrderController < DistributionPluginMyprofileController
   append_view_path File.join(File.dirname(__FILE__) + '/../views')
   no_design_blocks
-  layout false
 
   def index_received
-    @node = DistributionPluginNode.find(params[:node_id])
     @orders = @node.orders_received
   end
 
   def index_sent
-    if params[:node_id].nil?
-      @node = DistributionPluginNode.find_by_profile_id(current_user.person.id)
-    else
-      @node = DistributionPluginNode.find(params[:node_id])
-    end
     @orders = @node.orders_sent
   end
 
   def new
-    order = DistributionPluginOrder.create!(:session_id => params[:id])
+    consumer_node = DistributionPluginNode.find_by_profile_id current_user.person.id
+    order = DistributionPluginOrder.create!(:session_id => params[:id], :consumer => consumer_node)
     respond_to do |format|
-      format.html ( redirect_to :action => :edit, :id => order.id )
+      format.html ( redirect_to :action => :edit, :id => order.id, :profile => profile)
       format.js
     end
   end

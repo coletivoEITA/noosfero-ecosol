@@ -1,0 +1,53 @@
+<h1><%=_('Our commercialized products')%></h1>
+<div class="subtitle_ourproducts">
+<%= _("Here are listed all the products with which your collective works.
+ Here, it's possible to add and remove products, besides desactivating 
+temporarily your commercialization in the Order Sections.") %>
+</div>
+
+<h4><%= _("Default margin of visualization") %></h4>
+<div class="subtitle_ourproducts">
+  <%= _("This margin is automatically applied in all the products, but
+ it is possible to stabilish specific margins for certain products.") %>
+</div>
+
+<span class='percentage'>18% </span><a href=''>mudar</a>
+<h3><%= _('The products')%></h3>
+
+<div><%= link_to_remote(_('Add commercialized product'), 
+                        :url => {:controller => 'distribution_plugin_product',
+                          :action => "add",
+                          :id => @node,}
+                       ) 
+                     %>
+</div>
+
+<%= @params.to_yaml %>
+<%= form_remote_tag :url => {:profile => params['profile']}, :update => "our_products_box" -%>
+<div class="filter_fields"><%= ('show products from') %>
+  <%= select_tag :supplier, options_for_select(@suppliers.map { 
+    |s| [s.profile.name, s.id] }.insert(0,[_("all the suppliers"),""])),
+    {:onchange => "this.form.submit()"} %>
+    <%= _(' with  the category ') %>
+    <%= select_tag :product_category, options_for_select(@product_categories.map{
+      |pc| [pc.name, pc.id]}.insert(0,[_("all the categories"),""])),
+      {:onchange => "this.form.submit()"} %>
+    <%= _(' and being ') %>
+    <%= select_tag :active , options_for_select([[_("Any state"), ""],[ _('active'), 'true'],[ _('inactive'), 'false']]),
+      {:onchange => "this.form.submit()"} %>
+    <%# _(' with the qualifiers ') %>
+    <%# select_tag :qualifiers , options_for_select([_('todos'), _('quais?')]) %>
+    <div class="cleaner"></div>
+</div>
+
+
+<div id="our_products_box">
+    <%=
+        if @products.empty?
+        _("We don't have products to show..")
+        else
+        render :partial => "our_products_box", :object => @products
+        end
+    %>
+</div>
+

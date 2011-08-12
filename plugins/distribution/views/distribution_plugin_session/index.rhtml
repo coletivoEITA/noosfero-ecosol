@@ -1,10 +1,5 @@
 <% @sessions.each do |s| %>
   <div class="distribution-plugin-session-list-item">
-    <a href="<%= urlhash_for({:action => 'edit', :id => s.id }) %>" class="distribution-plugin-session-edit-link">
-      <%= !s.name.blank? ? s.name : _("Without name") %>
-      <%= _('|') %>
-      <%= s.start ? s.start : _("Without start") %>
-    </a>
-
+    <%= render :partial => 'title', :locals => {:session => s} %>
   </div>
 <% end %>

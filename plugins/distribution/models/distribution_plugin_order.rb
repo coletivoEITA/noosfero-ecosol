@@ -1,7 +1,11 @@
 class DistributionPluginOrder < ActiveRecord::Base
   belongs_to :session, :class_name => 'DistributionPluginSession'
   belongs_to :consumer, :class_name => 'DistributionPluginNode'
-  #has_one :supplier, :through => :session, :source => :node
+  has_one :supplier, :through => :session, :source => :node
+  def supplier
+    self.session.node
+  end
+  
   has_one :supplier_delivery, :class_name => 'DistributionPluginDeliveryMethod'
   has_one :consumer_delivery, :class_name => 'DistributionPluginDeliveryMethod'
   has_many :ordered_products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'order_id'
@@ -42,6 +46,4 @@ class DistributionPluginOrder < ActiveRecord::Base
     end
   end
 
-  def close
-  end
 end

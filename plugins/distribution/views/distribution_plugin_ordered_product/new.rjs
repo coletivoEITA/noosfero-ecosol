@@ -1,0 +1,3 @@
+page.insert_html :bottom, :inside_box_order_products, :partial => 'ordered_product', :locals => {:product => @o_product}
+page.replace_html "session_order_quantity" + @o_product.session_product_id.to_s, :partial => 'distribution_plugin_order/quantity', :locals => {:product => @o_product}
+page.replace_html 'add_or_added_product', :partial => 'added_product'

@@ -1,5 +1,5 @@
 <div id="distribution-plugin-supplier-menu" class="distribution-plugin-menu">
-  <%= link_to _("Create session"), urlhash_for({:controller => 'distribution_plugin_session', :action => 'new', :node_id => @node.id}),
+  <%= link_to _("Create session"), urlhash_for({:controller => 'distribution_plugin_session', :action => 'new', :profile => profile.identifier}),
     :class => "distribution-plugin-menu-button" %>
   <%= link_to _("Sessions"), '', :class => "distribution-plugin-menu-entry" %>
   <%= link_to _("Orders sent"), '', :class => "distribution-plugin-menu-entry" %>

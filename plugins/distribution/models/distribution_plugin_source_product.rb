@@ -1,4 +1,8 @@
 class DistributionPluginSourceProduct < ActiveRecord::Base
-  belongs_to :from_product, :class_name => 'DistributionPluginProduct', :foreign_key => 'from_product_id'
-  belongs_to :to_product, :class_name => 'DistributionPluginProduct', :foreign_key => 'to_product_id'
+  belongs_to :from_product, :class_name => "DistributionPluginProduct"
+  belongs_to :to_product, :class_name => "DistributionPluginProduct"
+
+  validates_presence_of :from_product
+  validates_presence_of :to_product
+  validates_numericality_of :quantity, :allow_nil => true
 end

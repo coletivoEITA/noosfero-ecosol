@@ -5,13 +5,16 @@ jQuery(function($){
     
     $('<div class=".loading"/>');
 
-    $('.distribution-plugin-page').load(url, function() {
+    $('.distribution-plugin-page').load(url, function(response, status, xhr) {
         $('.loading').hide();
 
         if (url && (match = $( 'a[href="#' + url + '"]' )).length > 0) {
           $('.distribution-plugin-menu-entry').removeClass('distribution-plugin-menu-selected');
           match.addClass('distribution-plugin-menu-selected');
         }
+
+        if (status == "error")
+          $('.distribution-plugin-page').html($(response));
       });
   })
 

@@ -13,7 +13,7 @@
 <% end %>
 
 <%= link_to_function(@delivery_methods.empty? ? _('Create new delivery method') : _('Create new'),
-                     'jQuery("#distribution-plugin-delivery-method-new-as-option").toggle();') %>
+                     'jQuery("#distribution-plugin-delivery-option-new-method").toggle();') %>
 <div id="distribution-plugin-delivery-option-new-method" style="<%= "display: block;" if @delivery_methods.empty? %>">
   <% form_remote_for :delivery_method, :url => {:action => 'new', :session_id => @session.id, :new_method => true} do |f| %>
     <%= render :partial => 'distribution_plugin_delivery_method/new_fields', :locals => {:f => f} %>

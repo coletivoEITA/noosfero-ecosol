@@ -1,3 +1,24 @@
+.distribution-plugin-page input[type=text] {
+  border: 1px solid #ccc;
+  height: 23px;
+}
+.distribution-plugin-page input[type=submit] {
+  height: 27px;
+  padding: 0px 10px;
+}
+#distribution-plugin-session-open-session {
+  float: right;
+}
+
+.distribution-plugin-session-ordered-by-supplier {
+  float: left;
+  margin-right: 10px;
+}
+.distribution-plugin-session-ordered-product {
+  float: left;
+  padding-left: 10px;
+}
+
 .distribution-plugin-product-left-column {
   width: 55%;
   float: left;
@@ -25,10 +46,6 @@
   width: 89%;
   float: right;
   padding-left: 1%;
-}
-.distribution-plugin-button {
-  height: 25px;
-  padding: 0px 10px;
 }
 .distribution-plugin-menu-button,
 .distribution-plugin-menu-entry {
@@ -98,49 +115,77 @@
   border-radius: 4px;
 }
 
+.distribution-plugin-session-product-quantity-available input {
+  width: 60px;
+}
+
+.distribution-plugin-session-product input {
+  width: 60px;
+}
+
+.distribution-plugin-session-product-supplier {
+  color: #aaa;
+  width: 100px;
+}
+.distribution-plugin-session-product-name {
+  width: 120px;
+}
+
+.distribution-plugin-session-timeline {
+  border: 1px solid #CCC;
+  margin: 0 0 20px 0;
+}
+.distribution-plugin-session-timeline-item {
+  float: left;
+  border-right: 1px solid #CCC;
+  padding: 10px 14px;
+}
+.distribution-plugin-session-timeline-citem {
+  display: none;
+}
+.distribution-plugin-session-timeline-selected-item {
+  color: black;
+  text-decoration: none;
+}
+.distribution-plugin-session-timeline-passed-item {
+  background: #ccc;
+}
+.distribution-plugin-session-timeline-current-item {
+  background: #eee;
+}
+
 .distribution-plugin-date-select, .distribution-plugin-time-select {
-  border: 1px solid;
-  border-color: #CCC;
   width: 97px;
-  height: 23px;
 }
 
 .box_session_products  {
-  margin-top: 15px;
-  border: 2px solid black;
   float: left;
 }
 
-.outside_box_order_products  {
-  border: 2px solid black;
+.outside_box_order_products {
   float: left;
-  margin-left: 20px;
-}
-
-#inside_box_order_products {
-  border: 2px solid black;
-  margin-left: 5px;
+  margin-left: 68px;
+  width: 400px;
 }
 
 .box_title {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .box_index {
-  background-color: #bababa;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 1px solid black;
 }
 
 .box_fields {
-  border:1px solid black;
-  font-weight: bold;
   float: left;
-  padding-right: 5px;
-  height: 30px;
-  text-align: center;
+  padding: 10px;
 }
 
 .box_fields .product {
-  width: 60px;
+  width: 140px;
+  font-weight: bold;
 }
 
 .box_fields .status {
@@ -152,36 +197,57 @@
 }
 
 .box_fields .supplier {
-  width: 100px;
+  width: 60px;
 }
 
+.spacer {
+  border-bottom: 1px dotted black;
+  width: auto;
+}
+.block_closer {
+  border-bottom: 1px solid black;
+  width: auto;
+  margin-bottom: 40px;
+}
+
+.value_row {
+  height: 48px;
+}
+.value_row .supplier {
+  font-size: 10px;
+}
 .box_fields .stock {
-  width: 50px;
-}
-
-.box_fields .unit {
-  width: 45px;
+  width: 60px;
 }
 
 .box_fields .price {
-  width: 45px;
+  width: 80px;
 }
 
+.box_fields .price_total {
+  width: 60px;
+  text-align: right;
+}
+
+.value_row .price {
+  color: #0094c9;
+}
 .box_fields .factor {
   width: 45px;
 }
 
 .box_fields .quantity {
-  width: 70px;
+  width: 100px;
 }
 
 .box_fields input {
-  height: 15px;
-  border: none;
+  height: 20px;
+  border: 1px solid black;
+  width: 40px;
 }
 
-.out_products_box {
-  width: 800px;
+#our_products_box {
+  width: 535px;
   padding-top: 15px;
 }
 .cleaner {
@@ -203,15 +269,49 @@
 }
 
 #total_box {
-  margin-left: 200px;
+  text-align: right;
+  text-transform: uppercase;
 }
 
-#close_order {
-  width: 200px;
+.in_order #total_box {
+  border-top: 1px solid black;
+}
+
+.in_order #delivery_box {
+  border-top: 3px solid black;
+  width: auto;
+  padding: 10px;
+}
+
+#delivery_box select {
+  background-color: #fff;
   border: 1px solid black;
-  margin: 20px auto 20px auto;
-  text-align: center;
+}
+.total_title {
+  width: 300px;
+}
+
+.total_value {
+  width: 60px;
   font-weight: bold;
+}
+
+#close_order, #desist_order {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+#close_order a {
+  width: 160px;
+  background-color: #000;
+  color: #fff;
+  padding: 10px 40px 10px 10px;
+  border-radius: 5px 5px 5px 5px;
+  text-decoration: none;
+}
+#close_order a:hover {
+  background-color: #fff;
+  color: #000;
 }
 
 .product_view {
@@ -236,13 +336,124 @@
 }
 
 .filter_fields {
-  width: 440px;
+  width: 500px;
   margin-bottom:20px;
 }
 
-.box_fields0 div {
-  background-color: #cacefa;
+.order_menu {
+  margin-left: 250px;
+  margin-bottom: 20px;
 }
-.box_fields1 div {
-  background-color: #cefaca;
+.order_menu h2 {
+  color: #036475;
+}
+.order strong {
+  font-weight: bold;
+}
+
+#session_column {
+  width: 460px;
+  float: left;
+  margin-bottom: 80px;
+}
+
+#order_content h3 {
+  text-transform: uppercase;
+}
+
+#order_content h4 {
+  font-weight: bold;
+}
+
+.category_box {
+  width: auto;
+  background-color: #B1DFEF;
+  font-weight: bold;
+  padding: 20px 10px 10px 10px;
+  margin-top: 20px;
+}
+
+.strong {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+#order_content {
+  margin: 0 -20px;
+}
+
+.alignment {
+  padding-left: 10px;
+}
+
+#order_content hr {
+  margin: 0;
+}
+
+.in_order {
+  background-color: #fff2a3;
+}
+.selected {
+  background-color: #ffe546;
+}
+
+.lower {
+  text-transform: lowercase;
+}
+
+#distribution_menu {
+  margin: 0 -20px;
+  width: 938px;
+}
+.menu_header {
+  background-color: #d9d2e4;
+  width: auto;
+  padding: 10px 0 10px 250px;
+  text-transform: uppercase;
+}
+.distribution_menu_logo {
+  background: url('/plugins/distribution/images/menu_logo.jpg') no-repeat;
+  width: 688px;
+  height: 112px;
+  padding: 1px 0 0 250px;
+  text-transform: capitalize;
+}
+
+.distribution_menu_button_container {
+  position: relative;
+  bottom: -10px;
+}
+div.menu_selected a:hover,
+.distribution_menu_button a {
+  float: left;
+  padding: 8px 10px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #fff;
+  text-transform: uppercase;
+  margin: 0 2px;
+  text-decoration: none;
+  color: #000;
+}
+
+.distribution_menu_button a:hover,
+div.menu_selected a {
+  color: #fff;
+  background-color: #646158;
+}
+
+/* overring cirandas menu */
+#content .page-title {
+  display: none !important;
+}
+#content {
+  border-top: 0px;
+}
+
+#content #distribution_menu h1 {
+  border-bottom: 0px;
+  color: #000;
+  font-variant: none;
 }

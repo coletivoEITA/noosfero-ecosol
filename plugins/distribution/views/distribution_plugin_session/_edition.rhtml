@@ -1,0 +1,99 @@
+<div id="distribution-plugin-session-toolbar">
+  <% if !@session.passed_by?('open') %>
+    <%= button_to _('Open session for orders'), urlhash_for( :action => :edit, :profile => profile.identifier, :id => @session.id, :session => {:status => 'open'} ),
+      :id => 'distribution-plugin-session-open-session' %>
+  <% end %>
+
+</div>
+
+<div id="distribution-plugin-session-fields">
+  <% form_remote_for :session, @session, :url => {:action => :edit, :profile => profile.identifier, :id => @session.id },
+  :complete => "jQuery('#distribution-plugin-session-save').attr('disabled', true)" do |f| %>
+    <%= f.label(:name, _('Name:')) %>
+    <%= f.text_field(:name) %>
+    <br />
+    <%= f.label(:description, _('Description:')) %>
+    <%= f.text_field(:description) %>
+    <br /><br />
+
+    <div class='distribution-plugin-session-orders-period'>
+      <%= f.label(:order_period, _('Orders period:')) %>
+      <%= f.text_field(:start_date, :class => 'distribution-plugin-date-select') %>
+      <%= f.text_field(:start_time, :class => 'distribution-plugin-time-select') %>
+      <span class="distribution-plugin-date-to"><%= ('to') %></span>
+      <%= f.text_field(:finish_date, :class => 'distribution-plugin-date-select') %>
+      <%= f.text_field(:finish_time, :class => 'distribution-plugin-time-select') %>
+    <div><br />
+    <div class='distribution-plugin-session-delivery-period'>
+      <%= f.label(:delivery_period, _('Delivery period:')) %>
+      <%= f.text_field(:delivery_start_date, :class => 'distribution-plugin-date-select') %> 
+      <%= f.text_field(:delivery_start_time, :class => 'distribution-plugin-time-select') %> 
+      <span class="distribution-plugin-date-to"><%= ('to') %></span>
+      <%= f.text_field(:delivery_finish_date, :class => 'distribution-plugin-date-select') %>
+      <%= f.text_field(:delivery_finish_time, :class => 'distribution-plugin-time-select') %>
+    </div><br />
+
+    <%= f.submit _('Save'), :id => 'distribution-plugin-session-save' %>
+  <% end %>
+</div>
+
+<br /><br />
+
+<div id='distribution-plugin-session-delivery'>
+  <%= label_tag(:delivery_methods, _('Available delivery methods:')) %>
+  <div id='distribution-plugin-session-delivery-options'>
+    <%= render :partial => 'distribution_plugin_delivery_option/index' %>
+  </div>
+  <%= lightbox_link_to(_('Add'), url_for({ :controller => :distribution_plugin_delivery_option, :action => "select", :session_id => @session.id }),
+                       :class => 'distribution-plugin-session-add-delivery-option') %>
+  <br style="clear: both"/>
+</div>
+
+<br /><br />
+
+
+<div id='distribution-plugin-session-products'>
+  <div><%= _('The following list of products are available in this session.') %></div>
+  <div><%= _('It was automatically created from the active products. See the list below and check for needed changes.') %></div>
+
+  <br /><br />
+  <div class='distribution-plugin-session-product-list'>
+    <% @session.products.find(:all, :order => 'id asc').each do |p| %>
+      <div id="distribution-plugin-session-product-<%=p.id%>" class='distribution-plugin-session-product-list-entry'>
+        <span class='distribution-plugin-session-product-list-column distribution-plugin-session-product-supplier'><%= p.product.node.profile.name %></span>
+        <span class='distribution-plugin-session-product-list-column distribution-plugin-session-product-name'><%= p.product.product.name %></span>
+  
+        <div class="distribution-plugin-session-product-list-column distribution-plugin-session-product-quantity-available">
+          <%= label_tag('product[quantity_available]', _('quantity available')) %>
+          <%= text_field_tag('product[quantity_available]', p.quantity_available,
+                             :onblur => "jQuery.post('#{url_for({:controller => 'distribution_plugin_session_product', :action => :edit, :id => p.id})}',
+                                      {'product[quantity_available]': jQuery(this).val()} );") %>
+        </div>
+  
+        <div class="distribution-plugin-session-product-list-column distribution-plugin-session-product">
+          <%= label_tag('product[price]', _('price')) %>
+          <%= text_field_tag('product[price]', p.price.to_s,
+                             :onblur => "jQuery.post('#{url_for({:controller => 'distribution_plugin_session_product', :action => :edit, :id => p.id})}',
+                                      {'product[price]': jQuery(this).val()} );") %>
+        </div>
+  
+        <%= link_to_remote(_('Remove from list'), {
+                           :update => 'distribution-plugin-session-product-'+p.id.to_s,
+                           :url => { :controller => :distribution_plugin_session_product, :action => "destroy", :id => p.id }},
+                           :class => 'distribution-plugin-session-product-list-column') %>
+        <%= lightbox_link_to(_('Edit product'),
+                             url_for({ :controller => :distribution_plugin_product, :action => "edit", :id => p.product.id }),
+                             :class => 'distribution-plugin-session-product-list-column') %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% javascript_tag do %>
+  jQuery('.distribution-plugin-date-select').datepicker({'dateFormat': 'yy-mm-dd'});
+  jQuery('#distribution-plugin-session-fields input').change(function() {
+    jQuery('#distribution-plugin-session-save').attr('disabled', false)
+  });
+<% end %>
+
+

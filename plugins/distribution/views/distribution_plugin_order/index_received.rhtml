@@ -2,7 +2,7 @@
   <h3><%= _('Orders confirmed') %></h3>
   <% @orders.confirmed.each do |o| %>
     <div class="distribution-plugin-order-item">
-      <%= link_to _('By ') + o.consumer.profile.name, urlhash_for({:controller => 'distribution_plugin_order', :action => :edit, :id => o.id}) %>
+      <%= link_to _('By ') + o.consumer.profile.name, urlhash_for({:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => :edit, :id => o.id}) %>
     </div>
   <% end %>
 </div>
@@ -10,7 +10,7 @@
   <h3><%= _('Orders being edited') %></h3>
   <% @orders.draft.each do |o| %>
     <div class="distribution-plugin-order-item">
-      <%= link_to _('By ') + o.consumer.profile.name, urlhash_for({:controller => 'distribution_plugin_order', :action => :edit, :id => o.id}) %>
+      <%= link_to _('By ') + o.consumer.profile.name, urlhash_for({:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => :edit, :id => o.id}) %>
     </div>
   <% end %>
 </div>
