@@ -1,0 +1,72 @@
+  <div class="box_fields box_index"><div class='status'><%=_('Status')%></div></div>
+  <div class="box_fields box_index"><div class='category'><%=_('Category')%></div></div>
+  <div class="box_fields box_index"><div class='supplier'><%=_('Supplier')%></div></div>
+  <div class="box_fields box_index"><div class='product'><%=_('Product')%></div></div>
+  <div class="box_fields box_index"><div class='stock'><%=_('Quantity in stock')%></div></div>
+  <div class="box_fields box_index"><div class='stock'><%=_('Minimum stock')%></div></div>
+  <div class="box_fields box_index"><div class='unit'><%=_('Unit')%></div></div>
+  <div class="box_fields box_index"><div class='price'><%=_('Selling price')%></div></div>
+  <!-- <div class="box_fields box_index"><div class='margin'><%=_('Margem')%></div></div> -->
+  <div class="cleaner"></div>
+
+  <% i = 1 %>
+  <% @products.each do |product| %>
+    <% i = (i + 1) % 2 %>
+    <div class="box_fields<%=i%>">
+      <div class="box_fields">
+        <div class="status">
+          <%= product.active%>
+        </div>
+      </div>
+      <div class="box_fields">
+        <div class="category">
+          <%= product.product.product_category.name %> 
+        </div>
+      </div>
+      <div class="box_fields">
+        <div class="supplier">
+          <%# TODO: think about supplier relationship inside product distribution chain %>
+          <%=
+            if product.from_products.empty? 
+              product.node.profile.name
+            else
+              product.from_products[0].node.profile.name
+            end
+            %>
+        </div>
+      </div>
+      <div class="box_fields">
+        <div class="product">
+          <%= product.product.name %> 
+        </div>
+      </div>
+      <div class="box_fields">
+        <div class="stock">
+          <%= product.stored %> 
+        </div>
+      </div>
+      <div class="box_fields">
+        <div class="stock">
+          <%= product.stored %> 
+        </div>
+      </div>
+      <div class="box_fields">
+        <div class="unit">
+          <%= product.product.unit.singular %> 
+        </div>
+      </div>
+      <div class="box_fields">
+        <div class="price">
+          <%= product.price.to_s %> 
+        </div>
+      </div>
+<!--      <div class="box_fields">
+        <div class="factor">
+          <%= product.selleable_factor.to_s %> 
+        </div>
+    </div> -->
+      <div class="cleaner"></div>
+    </div>
+  <% end %>
+
+

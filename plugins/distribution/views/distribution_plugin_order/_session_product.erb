@@ -1,0 +1,46 @@
+          <%
+            if product.product.product.unit.nil?
+              unit = 'UN'
+            else
+              unit = product.product.product.unit.singular
+            end
+
+            order_quantity = '+'
+            in_order = ""
+            @order_products.each do | o_product |
+            if o_product.session_product_id == product.id
+              order_quantity = o_product.quantity_asked 
+              @o_product = o_product
+              in_order="in_order"
+              break
+            end
+            end
+          %>
+          <div class="value_row<%= " #{in_order}"%>">
+            <div class="box_fields"><div class="supplier">
+                <%= product.product.node.profile.name %> 
+            </div></div>
+            <div class="box_fields"><div class="product">
+                <%= product.product.product.name%>
+            </div></div>
+            <div class="box_fields">
+              <div class="price">
+                  <%= "#{product.price}/#{unit}"%>
+              </div>
+            </div>
+            <div class="box_fields">
+              <% block_id_name="session_order_quantity"+product.id.to_s%>
+              <div id=<%=block_id_name%> class="quantity">
+                <% if order_quantity == '+' %>
+                  <%= render :partial => "distribution_plugin_ordered_product/add_quantity", :locals => {:order => @order, :product => product} %>
+                <% else %>
+                  <%= render :partial => "quantity_link", :locals => {:product => @o_product} %>
+                <% end %>
+              </div>
+            </div>
+            <div class="cleaner"></div>
+          </div>
+            <% if not last -%>
+              <div class="spacer"></div>
+            <% end %>
+
