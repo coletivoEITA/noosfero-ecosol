@@ -1,5 +1,5 @@
-class DistributionPluginSupplierController < MyProfileController
-  append_view_path File.join(File.dirname(__FILE__) + '/../views')
+class DistributionPluginSupplierController < DistributionPluginMyprofileController
+  no_design_blocks
 
   def index
     @node = DistributionPluginNode.find_by_profile_id(profile.id)

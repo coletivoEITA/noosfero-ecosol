@@ -12,13 +12,17 @@ class DistributionPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['jquery.ba-bbq.min.js', 'url']
+    ['distribution', 'jquery.ba-bbq.min.js', 'url']
   end
 
   def control_panel_buttons
     profile = context.profile
     node = DistributionPluginNode.find_or_create(profile)
     { :title => _('Distribution'), :icon => nil, :url => {:controller => node.myprofile_controller, :profile => profile.identifier, :action => 'index'} }
+  end
+
+  def custom_contents
+    [:header]
   end
 
 end

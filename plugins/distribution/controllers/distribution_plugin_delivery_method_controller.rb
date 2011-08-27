@@ -1,5 +1,5 @@
-class DistributionPluginDeliveryMethodController < ApplicationController
-  append_view_path File.join(File.dirname(__FILE__) + '/../views')
+class DistributionPluginDeliveryMethodController < DistributionPluginMyprofileController
+  no_design_blocks
 
   def index
   end
@@ -15,7 +15,7 @@ class DistributionPluginDeliveryMethodController < ApplicationController
         @delivery_method = DistributionPluginDeliveryMethod.create!(params[:delivery_method])
       end
     else
-      @delivery_method = DistributionPluginDeliveryMethod.new(:node => params[:node_id])
+      @delivery_method = DistributionPluginDeliveryMethod.new(:node_id => params[:node_id])
     end
   end
 

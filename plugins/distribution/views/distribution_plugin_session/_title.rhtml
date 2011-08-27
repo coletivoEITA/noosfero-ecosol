@@ -1,6 +1,10 @@
 <h2>
-  <a href="<%= urlhash_for({:action => 'edit', :profile => profile.identifier, :id => session.id }) %>" class="distribution-plugin-session-edit-link">
-    <%= _('Order Session:') + ' ' + session.start.to_s + ' / ' + session.name %>
-  </a>
+  <% if session.status == 'new' %>
+    <div class="session-edit-link"><%= _('New session') %></div>
+  <% else %>
+    <%= link_to _('Order Session:') + ' ' + session.start.to_s + ' / ' + session.name,
+      {:action => 'edit', :profile => profile.identifier, :id => session.id },
+      :class => "session-edit-link" %>
+  <% end %>
 </h2>
-<%= render :partial => 'timeline', :locals => {:session => session} %>
+<%= render :partial => 'timeline', :locals => {:session => session} if session.status != 'new' %>

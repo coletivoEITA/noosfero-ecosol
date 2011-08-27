@@ -5,10 +5,10 @@ class DistributionPluginOrder < ActiveRecord::Base
   def supplier
     self.session.node
   end
+  has_many :ordered_products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'order_id', :dependent => :destroy
   
   has_one :supplier_delivery, :class_name => 'DistributionPluginDeliveryMethod'
   has_one :consumer_delivery, :class_name => 'DistributionPluginDeliveryMethod'
-  has_many :ordered_products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'order_id'
 
   named_scope :draft, :conditions => {:status => 'draft'}
   named_scope :planned, :conditions => {:status => 'planned'}

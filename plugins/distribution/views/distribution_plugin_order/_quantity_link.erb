@@ -1,4 +1,8 @@
-                <%= lightbox_link_to(@o_product.quantity_asked, url_for({
-                  :controller => :distribution_plugin_ordered_product,
-                  :action => "add_product", :id => @o_product.session_product_id,
-                  :order_id => @o_product.order})) %>
+<% 
+
+  unit = product.product.product.unit
+  unit ||= Unit.first
+%>
+<span class="lower"><%="#{@o_product.quantity_asked} #{unit.singular}"%></span>
+                    <%= link_to_remote(_('change'),
+                                       :url => "") %>

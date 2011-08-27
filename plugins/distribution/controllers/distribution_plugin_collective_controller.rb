@@ -1,7 +1,7 @@
 class DistributionPluginCollectiveController < DistributionPluginMyprofileController
-  append_view_path File.join(File.dirname(__FILE__) + '/../views')
-
   no_design_blocks
+
+  before_filter :set_admin_action, :only => [:our_products]
 
   def index
     @node = DistributionPluginNode.find_by_profile_id(profile.id)
@@ -23,12 +23,25 @@ class DistributionPluginCollectiveController < DistributionPluginMyprofileContro
     @params = params
 
     respond_to do |format|
-        format.html {render :layout => false}
+        format.html 
         format.js {render :partial => "our_products_box", :object => @products }
     end
+  end
+
+  def suppliers
+  end
+
+  def members
   end
 
   def about
     redirect_to :action => "index", :profile => params[:profile]
   end
+
+  protected
+
+  def custom_contents
+    [:header, :admin_sidebar]
+  end
+
 end

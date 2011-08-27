@@ -1,13 +1,12 @@
-class DistributionPluginOrderedProductController < ApplicationController
-  append_view_path File.join(File.dirname(__FILE__) + '/../views')
+class DistributionPluginOrderedProductController < DistributionPluginMyprofileController
   no_design_blocks
-  layout false
 
   def new
     @o_product = DistributionPluginOrderedProduct.create!(:order_id => params[:order_id],
                                                           :session_product_id => params[:session_product_id],
                                                           :quantity_asked => 0)
     @order = @o_product.order
+    @first = @order.ordered_products.count == 1
   end
 
   #'add_product' this method shows the product view. Actually, from there you add a product.

@@ -1,19 +1,18 @@
 <div class="distribution-plugin-session-timeline">
-  <% selected = params[:view] || session.status %>
-  <%= link_to _('Edition'), urlhash_for(params.merge(:action => :edit, :id => session.id, :view => 'edition')),
-    :class => "distribution-plugin-session-timeline-item #{timeline_class(session, 'edition', selected)}" %>
-  <%= link_to _('Call'), urlhash_for(params.merge(:action => :edit, :id => session.id, :view => 'call')),
-    :class => "distribution-plugin-session-timeline-citem #{timeline_class(session, 'call', selected)}" %>
-  <%= link_to _('Open Session'), urlhash_for(params.merge(:action => :edit, :id => session.id, :view => 'open')),
-    :class => "distribution-plugin-session-timeline-item #{timeline_class(session, 'open', selected)}" %>
-  <%= link_to _('Parcels'), urlhash_for(params.merge(:action => :edit, :id => session.id, :view => 'parcels')),
-    :class => "distribution-plugin-session-timeline-item #{timeline_class(session, 'parcels', selected)}" %>
-  <%= link_to _('Redistribution'), urlhash_for(params.merge(:action => :edit, :id => session.id, :view => 'redistribution')),
-    :class => "distribution-plugin-session-timeline-citem #{timeline_class(session, 'redistribution', selected)}" %>
-  <%= link_to _('Delivery'), urlhash_for(params.merge(:action => :edit, :id => session.id, :view => 'delivery')),
-    :class => "distribution-plugin-session-timeline-citem #{timeline_class(session, 'delivery', selected)}" %>
-  <%= link_to _('Close'), urlhash_for(params.merge(:action => :edit, :id => session.id, :view => 'close')),
-    :class => "distribution-plugin-session-timeline-citem #{timeline_class(session, 'close', selected)}" %>
+  <% urls = [
+      [_('Edition'), 'edition'],
+      #[_('Call'), 'call'],
+      [_('Orders'), 'orders'],
+      #[_('Parcels'), 'parcels'],
+      #[_('Redistribution'), 'redistribution'],
+      #[_('Delivery'), 'delivery'],
+      #[_('Close'), 'close'],
+    ]
+  %>
+  <% urls.each do |name, status| %>
+    <%= link_to name, params.merge(:action => :edit, :id => session.id, :view => status),
+      :class => "distribution-plugin-session-timeline-item #{timeline_class(session, status, params[:view] || session.status)}" %>
+  <% end %>
 
   <div style="clear: both"></div>
 </div>

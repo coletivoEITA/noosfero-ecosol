@@ -1,12 +1,9 @@
 <% quantity_id_name = "add_product_quantity" + @session_product.id.to_s %>
 
 <div id="<%= quantity_id_name %>">
-  <%= text_field_tag('quantity_asked', 0, :size =>3, :onblur => 
-                     remote_function(:update => quantity_id_name,
-                                     :url => {:controller => 'distribution_plugin_ordered_product',
+  <span><%= @session_product.quantity_asked %></span>
+  <%= link_to('mudar', :url => {:controller => 'distribution_plugin_ordered_product',
                                        :action => "update_quantity",
                                        :order_id => @order,
-                                       :session_product_id => @session_product},
-                                     :with => 'Form.Element.serialize(this)')
-  ) %>
+                                       :session_product_id => @session_product}) %>
 </div>

@@ -67,6 +67,13 @@ class DistributionPluginNode < ActiveRecord::Base
     end
   end
 
+  def add_node_products(node)
+      node.products.each do |p|
+          self.products.find_by_product_id p.product_id or 
+              DistributionPluginProduct.create!(:product => p.product, :price => p.price, :node_id => self.id)
+      end 
+  end 
+
   protected
   def add_own_products
     add_profile_products(profile) if profile.respond_to? :products

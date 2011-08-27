@@ -1,5 +1,8 @@
-<% @sessions.each do |s| %>
-  <div class="distribution-plugin-session-list-item">
-    <%= render :partial => 'title', :locals => {:session => s} %>
-  </div>
-<% end %>
+<div class='admin-page'>
+  <%= link_to _('New session'), {:action => :new}, :class => 'session-new' %>
+  <% @sessions.each do |s| %>
+    <div class="distribution-plugin-session-list-item">
+      <%= render :partial => 'title', :locals => {:session => s} %>
+    </div>
+  <% end %>
+</div>

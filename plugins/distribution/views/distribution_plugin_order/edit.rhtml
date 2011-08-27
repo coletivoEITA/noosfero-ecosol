@@ -1,4 +1,3 @@
-<%= render :partial => "distribution_plugin_collective/menu" %>
 <div id="order_content">
   <div class="order_menu">
     <h2><%=_("Open orders: session '") + @session.name + "'"%></h2>
@@ -47,12 +46,15 @@
 
         <% 
           session_products.each do |product| 
-            # is it the last product?
-            last = product == session_products.last
+            # is it the first product?
+            first = product == session_products.first
           %>
           <%= render :partial => "session_product", :locals => {
-            :product => product, :last => last} %>
-          <% end %>
+            :product => product, :first => first, :order => @order} %>
+        <% end %>
+        <% javascript_tag do %>
+          jQuery('.value_row').click(distributionRowSetSelected);
+        <% end %>
         <div class="block_closer"></div>
     <% end %>
   </div>
@@ -68,9 +70,13 @@
     <% @order_products.each do |product| %>
       <% if !product.session_product.nil? %>
         <%= render :partial => "distribution_plugin_ordered_product/ordered_product", :locals => {
-          :product => product, :last => product == @order_products.last} %>
-        <% end %>
+          :product => product, :first => product == @order_products.first}
+        %>
       <% end %>
+    <% end %>
+    <% javascript_tag do %>
+      jQuery('.value_row').click(distributionRowSetSelected);
+    <% end %>
     </div>
     <div class="in_order">
       <div id="total_box">
@@ -84,11 +90,11 @@
         <strong><%= _('Choose another method:') %></strong>
         <span><%= select_tag :delivery_method_options, options_from_collection_for_select(@session.delivery_methods, "id", "name") %></span>
       </div>
-      <div class="box_fields"><div id="close_order">
-          <%= link_to _('Confirm order'), urlhash_for({:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => 'close', :id => @order}) %>
+      <div class="box_fields"><div id="close_order" class="distribution_button">
+          <%= link_to _('Confirm order'), {:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => 'close', :id => @order} %>
       </div></div>
       <div class="box_fields"><div id="desist_order">
-          <%= link_to _('desist'), urlhash_for({:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => 'remove', :id => @order}), :confirm => _("Are you sure? It would delete all the order.") %>
+          <%= link_to _('give up'), {:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => 'remove', :id => @order}, :confirm => _("Are you sure? It would delete all the order.") %>
       </div></div>
       <div class="cleaner"></div>
     </div>

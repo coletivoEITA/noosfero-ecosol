@@ -17,7 +17,7 @@
 <div id="distribution-plugin-delivery-option-new-method" style="<%= "display: block;" if @delivery_methods.empty? %>">
   <% form_remote_for :delivery_method, :url => {:action => 'new', :session_id => @session.id, :new_method => true} do |f| %>
     <%= render :partial => 'distribution_plugin_delivery_method/new_fields', :locals => {:f => f} %>
-    <%= f.submit(_('Add option')) %>
+    <%= f.submit(_('Add option'), :class => 'distribution-plugin-button') %>
   <% end %>
 </div>
 

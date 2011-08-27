@@ -1,5 +1,4 @@
 class DistributionPluginOrderController < DistributionPluginMyprofileController
-  append_view_path File.join(File.dirname(__FILE__) + '/../views')
   no_design_blocks
 
   def index_received
@@ -14,7 +13,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     consumer_node = DistributionPluginNode.find_by_profile_id current_user.person.id
     order = DistributionPluginOrder.create!(:session_id => params[:id], :consumer => consumer_node)
     respond_to do |format|
-      format.html ( redirect_to :action => :edit, :id => order.id, :profile => profile)
+      format.html( redirect_to :action => :edit, :id => order.id, :profile => profile)
       format.js
     end
   end
@@ -32,7 +31,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
   end
 
   def close
-    DistributionPluginOrder.update (params[:id], {:status => 'closed'})
+    DistributionPluginOrder.update(params[:id], {:status => 'closed'})
     redirect_to :action => :index_sent
   end
 end

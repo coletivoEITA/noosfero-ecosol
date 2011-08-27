@@ -1,17 +1,22 @@
 class DistributionPluginSessionController < DistributionPluginMyprofileController
-  append_view_path File.join(File.dirname(__FILE__) + '/../views')
   no_design_blocks
-  layout false
 
   helper DistributionPlugin::SessionHelper
+
+  before_filter :set_admin_action, :only => [:index, :new, :edit]
 
   def index
     @sessions = @node.sessions
   end
 
   def new
-    @session = DistributionPluginSession.create!(:node_id => @node.id)
-    render :action => :edit, :id => @session.id
+    @session = DistributionPluginSession.new(:node => @node)
+    @session.status = 'new'
+    if request.post?
+      @session.update_attributes(params[:session])
+      @session.save!
+      redirect_to :action => :edit, :id => @session.id
+    end
   end
 
   def edit

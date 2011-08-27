@@ -1,0 +1,23 @@
+<%
+  urls = [
+    ['start', {:controller => 'distribution_plugin_collective', :profile => profile.identifier}],
+    ['blog', {:controller => 'distribution_plugin_collective', :profile => profile.identifier}],
+    ['orders', {:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => 'index'}],
+    ['about', {:controller => 'distribution_plugin_collective', :profile => profile.identifier, :action => 'about'}],
+    ['history', {:controller => 'distribution_plugin_collective', :profile => profile.identifier, :action => 'history'}],
+    ['community', {:controller => 'distribution_plugin_collective', :profile => profile.identifier, :action => 'community'}],
+    ['enterprise', {:controller => 'distribution_plugin_collective', :profile => profile.identifier, :action => 'enterprise'}],
+    ['administration', {:controller => 'distribution_plugin_session', :profile => profile.identifier, :action => 'index'}],
+  ]
+%>
+<div class="menu_header"><%= _("collective consumption network") %></div>
+<div class="distribution_menu_logo">
+  <h1><%= @profile.name %></h1>
+  <div class="distribution_menu_button_container">
+    <% urls.each do |key, url| %>
+      <% selected = "menu_selected" if (key == 'administration' and @admin_action) or params[:controller] == url[:controller] %>
+      <div class="distribution_menu_button <%=selected if selected%>"><%= link_to _(key), url %></div>
+    <% end %>
+  </div>
+</div>
+<div class="cleaner"></div>

@@ -13,4 +13,8 @@ class DistributionPluginProduct < ActiveRecord::Base
   validates_presence_of :product
   validates_presence_of :node
 
+  def supplier
+    from_products.length == 0 or from_products.length > 1 ? node : from_products.first.node
+  end
+
 end

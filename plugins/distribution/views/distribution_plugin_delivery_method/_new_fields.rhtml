@@ -4,7 +4,7 @@
     <%= f.label :description, _("Description") %>
     <%= f.text_field :description %> 
 
-    <%= f.label :delivery_type_pickup, _('Pickup address')%> 
+    <%= f.label :delivery_type_pickup, _('Pick up address')%> 
     <%= f.radio_button :delivery_type, 'pickup', :checked => true, :onchange => 'jQuery(".distribution-plugin-new-delivery-method-pickup-address").show()' %>
     <span style="float:left; margin: 0px 5px"><%= _('or') %></span>
     <%= f.label :delivery_type_delivery, _('Deliver to consumer\'s address'), :style => 'clear: none; width: auto' %> 

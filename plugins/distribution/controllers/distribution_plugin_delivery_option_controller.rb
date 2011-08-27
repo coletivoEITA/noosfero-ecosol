@@ -1,5 +1,5 @@
-class DistributionPluginDeliveryOptionController < ApplicationController
-  append_view_path File.join(File.dirname(__FILE__) + '/../views')
+class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileController
+  no_design_blocks
 
   def select
     @session = DistributionPluginSession.find_by_id(params[:session_id])
