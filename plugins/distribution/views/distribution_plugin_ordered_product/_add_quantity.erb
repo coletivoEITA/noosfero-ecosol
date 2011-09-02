@@ -2,7 +2,7 @@
   unit = product.product.product.unit
   unit ||= Unit.first
 %>
-<span class="lower"><%="0 #{unit.singular}"%></span>
+<span class="lower gray"><%="0 #{unit.singular}"%></span>
 <span>
   <%= link_to_remote(_('include'),
                      :url => {:controller => 'distribution_plugin_ordered_product',

@@ -347,6 +347,10 @@
   width: 220px;
 }
 
+.plugin-distribution .box_fields .unit {
+  width: 50px;
+}
+
 .plugin-distribution .box_details {
   width: 270px;
 }
@@ -536,8 +540,19 @@
   background-color: #ffe546;
 }
 
+.plugin-distribution .quantity_entry {
+  display: none;
+}
+
+.plugin-distribution .quantity_entry input{
+  width: 76px;
+}
+
 .plugin-distribution .lower {
   text-transform: lowercase;
+}
+.plugin-distribution .gray {
+  color: #aaa;
 }
 .plugin-distribution #session-delivery {
   margin: 20px 0;

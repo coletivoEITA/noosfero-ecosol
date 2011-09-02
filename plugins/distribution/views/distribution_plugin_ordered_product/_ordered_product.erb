@@ -1,5 +1,5 @@
-        <% selected = 0; @block_id_name = "ordered_product" + product.id.to_s %>
-        <div id=<%= @block_id_name %>>
+        <% selected = 0; big_block_id_name = "ordered_product" + product.id.to_s %>
+        <div id=<%= big_block_id_name %>>
         <% if not first -%>
           <div class="spacer"></div>
         <% end %>
@@ -18,7 +18,7 @@
             <div class="box_fields">
               <% block_id_name = "product_quantity" + product.id.to_s %>
               <div id=<%= block_id_name %>>
-                <%= render :partial => "distribution_plugin_order/quantity", :locals => {:product => product} %>
+                <%= render :partial => "distribution_plugin_order/quantity_update_entry", :locals => {:product => product} %>
             </div></div>
             <div class="box_fields"><div class="price_total">
                 <% block_id_name = "product_price_total" + product.id.to_s %>
@@ -29,9 +29,9 @@
             <div class="cleaner"></div>
             <div class="ordered_product_more_actions">
               <div class="box_fields box_details">
-                <%= link_to _('see product details'), {:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => 'details', :id => @order} %>
+                <%= link_to _('see product details'), "#session_product_#{product.session_product_id}", :onclick=>"jQuery('#session_product_#{product.session_product_id}').click(distributionSessionRowSetSelected);" %>
                 &nbsp;&nbsp;
-                <%= link_to_remote(_('remove'), :update => @block_id_name,
+                <%= link_to_remote(_('remove'), :update => block_id_name,
                                    :url => {:controller => 'distribution_plugin_ordered_product',
                                      :action => "destroy",
                                      :id => product
@@ -44,4 +44,7 @@
           <div class="cleaner"></div>
           </div>
         </div>
+    <% javascript_tag do %>
+      jQuery('#<%=big_block_id_name%>').hover(distributionOrderedRowSetSelected);
+    <% end %>
         <div class="cleaner"></div>

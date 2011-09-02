@@ -29,16 +29,16 @@
         <div class="product"><%= product.product.name %></div>
       </div>
       <div class="box_fields">
-        <div class="stock"><%= product.stored %></div>
+        <div class="stock"><%= product.stored or 0%></div>
       </div>
       <div class="box_fields">
-        <div class="stock"><%= product.stored %></div>
+        <div class="stock"><%= product.stored or 0%></div>
       </div>
       <div class="box_fields">
         <div class="unit"><%= product.product.unit.nil? ? _('un.') : product.product.unit.singular %></div>
       </div>
       <div class="box_fields">
-        <div class="price"><%= product.price.to_s %></div>
+        <div class="price"><%= product.price or 0%></div>
       </div>
       <div class="box_fields">
         <div class="factor"><%= product.selleable_factor.to_s %></div>

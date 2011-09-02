@@ -1,4 +1,4 @@
-page.replace_html 'product_quantity' + @ordered_product.id.to_s, :partial => 'distribution_plugin_order/quantity', :locals => {:product => @ordered_product}
+page.replace_html 'product_quantity' + @ordered_product.id.to_s, :partial => 'distribution_plugin_order/quantity_update_entry', :locals => {:product => @ordered_product}
 page.replace_html 'product_price_total' + @ordered_product.id.to_s, :partial => 'distribution_plugin_order/price_total', :locals => {:product => @ordered_product}
 page.replace_html :total_box, :partial => 'distribution_plugin_order/total', :object => @order
 page.replace_html "session_order_quantity"+@ordered_product.session_product_id.to_s, :partial => 'distribution_plugin_order/quantity', :locals => {:product => @ordered_product}

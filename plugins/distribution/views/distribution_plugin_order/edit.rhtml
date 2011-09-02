@@ -52,9 +52,6 @@
           <%= render :partial => "session_product", :locals => {
             :product => product, :first => first, :order => @order} %>
         <% end %>
-        <% javascript_tag do %>
-          jQuery('.value_row').click(distributionRowSetSelected);
-        <% end %>
         <div class="block_closer"></div>
     <% end %>
   </div>
@@ -73,9 +70,6 @@
           :product => product, :first => product == @order_products.first}
         %>
       <% end %>
-    <% end %>
-    <% javascript_tag do %>
-      jQuery('.value_row').click(distributionRowSetSelected);
     <% end %>
     </div>
     <div class="in_order">

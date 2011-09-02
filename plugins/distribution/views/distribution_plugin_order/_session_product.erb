@@ -31,11 +31,17 @@
               <div class="box_fields">
                 <% block_id_name="session_order_quantity"+product.id.to_s%>
                 <div id=<%=block_id_name%> class="quantity">
-                  <% if order_quantity == '+' %>
-                    <%= render :partial => "distribution_plugin_ordered_product/add_quantity", :locals => {:order => @order, :product => product} %>
-                  <% else %>
-                    <%= render :partial => "quantity_link", :locals => {:product => @o_product} %>
-                  <% end %>
+                  <div class="quantity_number">
+                    <% if order_quantity == '+' %>
+                      <%= render :partial => "distribution_plugin_ordered_product/add_quantity", :locals => {:order => @order, :product => product} %>
+                    <% else %>
+                      <%= render :partial => "quantity_link", :locals => {:product => @o_product} %>
+                    <% end %>
+                  </div>
+                  <div class="quantity_entry">
+                    <span> <%= text_field_tag('quantity_asked', @o_product.quantity_asked)%></span>
+                    <span class="lower"><%= unit.singular %></span>
+                  </div>
                 </div>
               </div>
               <div class="cleaner"></div>
@@ -63,4 +69,6 @@
               <div class="cleaner"></div>
             </div>
           </div>
-
+        <% javascript_tag do %>
+          jQuery("#session_product_<%=product.id%>").click(distributionSessionRowSetSelected);
+        <% end %>
