@@ -12,12 +12,10 @@ class DistributionPluginCollectiveController < DistributionPluginMyprofileContro
     conditions = {}
     if !params[:active].nil?
         conditions[:active] = params["active"] unless params["active"] == ""
-        conditions[:node_id] = params[:supplier] unless params[:supplier] == ""
-        conditions["product.product_category_id = ?"] = params[:product_category] unless params[:product_category] == ""
-    else
-        conditions = []
     end
     @products = DistributionPluginProduct.find_all_by_node_id(node.id, :conditions => conditions, :joins => :product)
+    @products = @products.find_all {|p| p.supplier.id == params[:supplier].to_i} if !params[:supplier].nil? && params[:supplier] != ""
+    @products = @products.find_all {|p| p.product.product_category_id == params[:product_category].to_i} if !params[:supplier].nil? && params[:product_category] != ""
     @suppliers = node.suppliers
     @product_categories = ProductCategory.find(:all)
     @params = params

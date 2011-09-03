@@ -22,19 +22,18 @@
                          ) 
                        %>
   </div>
-  
   <%= form_remote_tag :url => {:profile => params['profile']}, :update => "our_products_box" -%>
   <div class="filter_fields"><%= ('show products from') %>
     <%= select_tag :supplier, options_for_select(@suppliers.map { 
       |s| [s.profile.name, s.id] }.insert(0,[_("all the suppliers"),""])),
-      {:onchange => "this.form.submit()"} %>
+      {:onchange => "this.form.onsubmit()"} %>
       <%= _(' with  the category ') %>
       <%= select_tag :product_category, options_for_select(@product_categories.map{
         |pc| [pc.name, pc.id]}.insert(0,[_("all the categories"),""])),
-        {:onchange => "this.form.submit()"} %>
+        {:onchange => "this.form.onsubmit()"} %>
       <%= _(' and being ') %>
       <%= select_tag :active , options_for_select([[_("Any state"), ""],[ _('active'), 'true'],[ _('inactive'), 'false']]),
-        {:onchange => "this.form.submit()"} %>
+        {:onchange => "this.form.onsubmit()"} %>
       <%# _(' with the qualifiers ') %>
       <%# select_tag :qualifiers , options_for_select([_('todos'), _('quais?')]) %>
       <div class="cleaner"></div>
