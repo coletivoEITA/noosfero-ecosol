@@ -1,50 +1,17 @@
-<div class="box_index">
-  <div class="cleaner"></div>
-  <div class="box_fields"><div class='status'><%=_('Status')%></div></div>
-  <div class="box_fields"><div class='category'><%=_('Category')%></div></div>
-  <div class="box_fields"><div class='supplier'><%=_('Supplier')%></div></div>
-  <div class="box_fields"><div class='product'><%=_('Product')%></div></div>
-  <div class="box_fields"><div class='stock'><%=_('stock qtt')%></div></div>
-  <div class="box_fields"><div class='stock'><%=_('Minimum stock')%></div></div>
-  <div class="box_fields"><div class='unit'><%=_('Unit')%></div></div>
-  <div class="box_fields"><div class='price'><%=_('Selling price')%></div></div>
-  <!-- <div class="box_fields box_index"><div class='margin'><%=_('Margin')%></div></div> -->
-  <div class="cleaner"></div>
-</div>
-
-  <% i = 1 %>
-  <% @products.each do |product| %>
-    <% i = (i + 1) % 2 %>
-    <div class="box_fields<%=i%>">
-      <div class="box_fields">
-        <div class="status"><%= product.active%></div>
-      </div>
-      <div class="box_fields">
-        <div class="category"><%= product.product.product_category.name %></div>
-      </div>
-      <div class="box_fields">
-        <div class="supplier"><%= product.supplier.profile.name %></div>
-      </div>
-      <div class="box_fields">
-        <div class="product"><%= product.product.name %></div>
-      </div>
-      <div class="box_fields">
-        <div class="stock"><%= product.stored or 0%></div>
-      </div>
-      <div class="box_fields">
-        <div class="stock"><%= product.stored or 0%></div>
-      </div>
-      <div class="box_fields">
-        <div class="unit"><%= product.product.unit.nil? ? _('un.') : product.product.unit.singular %></div>
-      </div>
-      <div class="box_fields">
-        <div class="price"><%= product.price or 0%></div>
-      </div>
-      <div class="box_fields">
-        <div class="factor"><%= product.selleable_factor.to_s %></div>
-      </div>
+  <% if @products.empty? %>
+    <%=  _("We don't have products to show..") %>
+     <% else %>
+    <div class="box_index product_box">
+      <div class="cleaner"></div>
+      <div class="box_fields"><div class='status'><%=_('Status')%></div></div>
+      <div class="box_fields"><div class='category'><%=_('Category')%></div></div>
+      <div class="box_fields"><div class='supplier'><%=_('Supplier')%></div></div>
+      <div class="box_fields"><div class='product'><%=_('Product')%></div></div>
+      <div class="box_fields"><div class='price'><%=_('price')%></div></div>
+      <div class="box_fields"><div class='stock'><%=_('avai. qtt')%></div></div>
       <div class="cleaner"></div>
     </div>
-  <% end %>
 
+    <%= render :partial => "our_product", :collection => @products %>
+  <% end %>
 

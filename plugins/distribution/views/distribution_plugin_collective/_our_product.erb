@@ -1,0 +1,23 @@
+    <div class="value_row">
+      <div class="box_fields">
+        <div class="status"><%= our_product.active%></div>
+      </div>
+      <div class="box_fields">
+        <div class="category"><%= our_product.product.product_category.name %></div>
+      </div>
+      <div class="box_fields">
+        <div class="supplier"><%= our_product.supplier.profile.name %></div>
+      </div>
+      <div class="box_fields">
+        <div class="product"><%= our_product.product.name %></div>
+      </div>
+      <div class="box_fields">
+        <div class="price"><span><%= our_product.price or 0%></span><span class="lower">/<%= our_product.product.unit.nil? ? _('un.') : our_product.product.unit.singular %></span></div>
+      </div>
+      <div class="box_fields">
+        <div class="stock"><%= our_product.stored or 0%></div>
+      </div>
+      <div class="cleaner"></div>
+    </div>
+
+

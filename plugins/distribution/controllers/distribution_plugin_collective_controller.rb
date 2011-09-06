@@ -13,6 +13,7 @@ class DistributionPluginCollectiveController < DistributionPluginMyprofileContro
     if !params[:active].nil?
         conditions[:active] = params["active"] unless params["active"] == ""
     end
+    @all_products_counting = DistributionPluginProduct.count :conditions => {:node_id => node}
     @products = DistributionPluginProduct.find_all_by_node_id(node.id, :conditions => conditions, :joins => :product)
     @products = @products.find_all {|p| p.supplier.id == params[:supplier].to_i} if !params[:supplier].nil? && params[:supplier] != ""
     @products = @products.find_all {|p| p.product.product_category_id == params[:product_category].to_i} if !params[:supplier].nil? && params[:product_category] != ""
@@ -22,7 +23,7 @@ class DistributionPluginCollectiveController < DistributionPluginMyprofileContro
 
     respond_to do |format|
         format.html 
-        format.js {render :partial => "our_products_box", :object => @products }
+        format.js {render :partial => "our_products"}
     end
   end
 

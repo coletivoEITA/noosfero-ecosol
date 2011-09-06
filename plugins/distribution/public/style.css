@@ -284,6 +284,10 @@
   border-bottom: 1px solid black;
 }
 
+.plugin-distribution #our_products_box .box_index {
+  border: none;
+}
+
 .plugin-distribution .box_fields {
   float: left;
   padding: 0 10px;
@@ -295,16 +299,48 @@
 }
 
 .plugin-distribution .box_fields .status {
-  width: 40px;
+  width: 50px;
 }
 
 .plugin-distribution .box_fields .category {
-  width: 60px;
+  width: 70px;
 }
 
 .plugin-distribution .box_fields .supplier {
   width: 60px;
 }
+
+.plugin-distribution #our_products_box .box_fields .supplier {
+  width: 70px;
+}
+
+.plugin-distribution #our_products_box .box_fields .product {
+  width: 140px;
+}
+
+/* -----  filter fields  ----- */
+
+.plugin-distribution .filter_fields {
+  background-color: #e9f9d5;
+  width: 680px;
+  padding: 1px 8px 8px  8px;
+}
+
+.plugin-distribution .filter_fields select,
+.plugin-distribution .filter_fields .box_fields input,
+.plugin-distribution .filter_fields .category,
+.plugin-distribution .filter_fields .qualifier,
+.plugin-distribution .filter_fields .name,
+.plugin-distribution .filter_fields .status,
+.plugin-distribution .filter_fields .supplier {
+  width: 205px;
+}
+
+.plugin-distribution .filter_fields .quantity {
+  width: 280px;
+}
+
+/* ----- ends filter fields  ----- */
 
 .plugin-distribution .spacer {
   border-bottom: 1px dotted black;
@@ -319,11 +355,15 @@
 .plugin-distribution .value_row {
   padding: 8px 0;
 }
+
+.plugin-distribution .value_row .status,
+.plugin-distribution .value_row .category,
 .plugin-distribution .value_row .supplier {
-  font-size: 10px;
+  font-size:10px;
 }
-.plugin-distribution .box_fields .stock {
-  width: 60px;
+
+.plugin-distribution .category .stock {
+  width: 70px;
 }
 
 .plugin-distribution .box_fields .product_image,
@@ -351,18 +391,6 @@
   width: 50px;
 }
 
-.plugin-distribution .box_details {
-  width: 270px;
-}
-
-.plugin-distribution .ordered_product_more_actions .price {
-  text-align: right;
-}
-
-.plugin-distribution .ordered_product_more_actions {
-  display: none;
-}
-
 .plugin-distribution .value_row .price {
   color: #0094c9;
 }
@@ -378,9 +406,20 @@
   width: 40px;
 }
 
+.plugin-distribution .box_details {
+  width: 270px;
+}
+
+.plugin-distribution .ordered_product_more_actions .price {
+  text-align: right;
+}
+
+.plugin-distribution .ordered_product_more_actions {
+  display: none;
+}
+
 .plugin-distribution #our_products_box {
-  width: 735px;
-  padding-top: 15px;
+  width: 690px;
 }
 .plugin-distribution .cleaner {
   clear: both;
@@ -416,7 +455,7 @@
   padding: 8px;
 }
 
-.plugin-distribution #delivery_box select {
+.plugin-distribution select {
   background-color: #fff;
   border: 1px solid black;
 }
@@ -464,6 +503,7 @@
 }
 .plugin-distribution .categories {
   width: 250px;
+  margin-bottom: 20px;
 }
 
 .plugin-distribution .subtitle_ourproducts {
@@ -474,9 +514,9 @@
   font-size: 20px;
 }
 
-.plugin-distribution .filter_fields {
-  width: 500px;
-  margin-bottom:20px;
+#content .plugin-distribution h3{
+  margin-bottom: 0;
+  margin-top: 0;
 }
 
 .plugin-distribution .order_menu {
@@ -508,12 +548,16 @@
   font-weight: bold;
 }
 
+.plugin-distribution .product_box,
 .plugin-distribution .category_box {
   width: auto;
   background-color: #B1DFEF;
   font-weight: bold;
-  padding: 20px 10px 10px 10px;
-  margin-top: 20px;
+  padding: 10px 10px 10px 0;
+}
+
+.plugin-distribution #total_products {
+  padding: 8px;
 }
 
 .plugin-distribution .strong {

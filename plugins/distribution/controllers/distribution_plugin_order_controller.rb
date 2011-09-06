@@ -34,4 +34,9 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     DistributionPluginOrder.update(params[:id], {:status => 'closed'})
     redirect_to :action => :index_sent
   end
+
+  def remove
+    DistributionPluginOrder.destroy params[:id]
+    redirect_to :action => :index_sent
+  end
 end

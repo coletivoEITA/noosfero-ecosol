@@ -24,6 +24,7 @@
     <div class="strong"><%=_("Categories")%></div>
     <div class="categories">
       <%= render :partial => 'product_category', :collection => @product_categories %>
+      <div class="cleaner"></div>
     </div>
   </div>
   <div class="cleaner"></div>
@@ -35,7 +36,7 @@
     <% product_groups.each do |category_name, session_products| %>
       <div class="cleaner"></div>
       <div class="category_box">
-        <%= category_name%>
+        <div class="alignment"><%= category_name%></div>
       </div>
         <%# session products %>
         <div class="box_fields box_index"><div class="supplier"><%=_('Supplier')%></div></div>
