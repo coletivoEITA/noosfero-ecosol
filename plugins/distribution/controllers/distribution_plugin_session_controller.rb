@@ -14,8 +14,9 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     @session.status = 'new'
     if request.post?
       @session.update_attributes(params[:session])
-      @session.save!
-      redirect_to :action => :edit, :id => @session.id
+      if @session.save
+        redirect_to :action => :edit, :id => @session.id
+      end
     end
   end
 
@@ -23,13 +24,12 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     @session = DistributionPluginSession.find_by_id(params[:id])
     if request.post?
       @session.update_attributes(params[:session])
-      @session.save!
+      @session.save
+      respond_to do |format| 
+        format.html
+        format.js { render :partial => 'edit_fields', :layout => false }
+      end
     end
-  end
-
-  def close
-    @session = DistributionPluginSession.find_by_id(params[:id])
-    @session.close
   end
 
 end

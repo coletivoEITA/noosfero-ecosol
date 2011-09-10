@@ -1,0 +1,38 @@
+<div class="value-row <%= 'in-order' if ordered_product %>">
+  <div class="box-field supplier"><%= product.supplier.profile.name %></div>
+  <div class="box-field product"><%= product.product.name%></div>
+  <div class="box-field price"><%= price_span(product.price) +"/<span class='lower'>#{product.unit.singular}</span>" %></div>
+  
+  <div class="box-field quantity">
+    <div class="quantity-label">
+      <% if ordered_product %>
+        <%= ordered_product.quantity_asked %>
+        <span class="lower"><%= product.unit.singular %></span>
+        <%= link_to_function(_('change'), "") %>
+      <% else %>
+        <%= link_to_function _('add'), "" %>
+      <% end %>
+    </div>
+    <div class="quantity-entry">
+      <span> <%= text_field_tag 'quantity_asked', ordered_product ? ordered_product.quantity_asked : '1' %></span>
+      <span class="lower"><%= product.unit.singular %></span>
+    </div>
+  </div>
+  <div class="cleaner"></div>
+  
+  <div class="session-product-more-info">
+    <div class="box-field product-desc">
+        <p><%= product.product.description %></p>
+        <p><%= "#{product.supplier.profile.city}/#{product.supplier.profile.state}"%></p>
+    </div>
+    <div class="box-field">
+      <div class="price"><%= product.product.price %></div>
+      <div class="product-image"><%= _('Product Image'); %></div>
+    </div>
+    <div class="box-field quantity distribution-button">
+      <%= link_to_function (ordered_product ? _('change') : _('add')), "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}',
+        {order_id: #{order.id}, session_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-session-product').find('.quantity-entry input').val() });" %>
+    </div>
+  </div>
+  <div class="cleaner"></div>
+</div>

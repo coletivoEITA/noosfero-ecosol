@@ -15,7 +15,9 @@
   <% end %>
 </div>
 
-<%= render :partial => 'edit_fields' %>
+<div id="session-fields">
+  <%= render :partial => 'edit_fields' %>
+</div>
 
 <div id='session-products'>
   <div><%= _('The following list of products are available in this session.') %></div>
@@ -23,18 +25,19 @@
 
   <div class='session-product-list'>
     
-    <div class='session-product-list-header'>
+    <div class='table-header'>
       <span class='session-product-list-column session-product-category'><%= _('Category') %></span>
       <span class='session-product-list-column session-product-supplier'><%= _('Supplier') %></span>
       <span class='session-product-list-column session-product-name'><%= _('Product') %></span>
       <div class="session-product-list-column session-product-price"><%= _('Price') %></div>
       <div class="session-product-list-column session-product-quantity-available"><%= _('Qty. avail.') %></div>
       <div class="session-product-list-column session-product-actions"><%= _('Actions') %></div>
+      <div class="cleaner"></div>
     </div>
 
     <% @session.products.find(:all, :order => 'id asc').each do |p| %>
-      <div id="session-product-<%=p.id%>" class='session-product-list-entry'>
-        <%= render :partial => 'session_product', :locals => {:p => p} %>
+      <div id="session-product-<%=p.id%>" class='subtitle value-row session-product-list-entry'>
+        <%= render :partial => 'distribution_plugin_product/session_edit', :locals => {:p => p} %>
       </div>
 
     <% end %>

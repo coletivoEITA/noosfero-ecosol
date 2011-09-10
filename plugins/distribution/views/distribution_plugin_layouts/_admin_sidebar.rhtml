@@ -1,7 +1,7 @@
 <%
   urls = [
     [_("Sessions"), {:controller => 'distribution_plugin_session', :action => 'index', :profile => profile.identifier}, false],
-    [_("Parcels"), {:controller => 'distribution_plugin_order', :action => 'index_sent', :profile => profile.identifier}, false],
+    [_("Parcels"), {:controller => 'distribution_plugin_parcel', :action => 'index', :profile => profile.identifier}, false],
     [_("Our products"), {:controller => 'distribution_plugin_collective', :action => 'our_products', :profile => profile.identifier}, true],
     [_("Suppliers"), {:controller => 'distribution_plugin_collective', :action => 'suppliers', :profile => profile.identifier}, true],
     [_("Members"), {:controller => 'distribution_plugin_collective', :action => 'members', :profile => profile.identifier}, true],

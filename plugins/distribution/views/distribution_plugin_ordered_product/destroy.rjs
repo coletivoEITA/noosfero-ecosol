@@ -1,3 +1,4 @@
-page.remove 'ordered_product' + @o_product.id.to_s
-page.replace_html 'session_order_quantity' + @o_product.session_product_id.to_s, :partial => "distribution_plugin_ordered_product/add_quantity", :locals => {:product => @o_product.session_product, :order => @o_product.order}
-page.replace_html :total_box, :partial => 'distribution_plugin_order/total', :object => @order
+page.remove 'ordered-product-' + @ordered_product.id.to_s
+page.replace_html 'total-box', :partial => 'distribution_plugin_order/total', :object => @order
+page.replace_html "session-product-#{@ordered_product.session_product_id.to_s}",
+  :partial => "distribution_plugin_product/order_edit", :locals => {:product => @ordered_product.session_product, :order => @order, :ordered_product => nil}

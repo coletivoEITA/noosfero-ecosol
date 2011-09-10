@@ -1,24 +1,24 @@
 <div class="session-product-details">
-  <span class='session-product-list-column session-product-category'><%= p.product.product.product_category.name %></span>
-  <span class='session-product-list-column session-product-supplier'><%= p.product.supplier.profile.name %></span>
-  <span class='session-product-list-column session-product-name'><%= p.product.product.name %></span>
+  <span class='session-product-list-column session-product-category'><%= p.product.product_category.name %></span>
+  <span class='session-product-list-column session-product-supplier'><%= p.supplier.profile.name %></span>
+  <span class='session-product-list-column session-product-name'><%= p.name %></span>
 
   <div class="session-product-list-column session-product-price"><%= price_span(p.price) %></div>
-  <div class="session-product-list-column session-product-quantity-available"><%= p.quantity_available || '∞' %></div>
+  <div class="session-product-list-column session-product-quantity-available"><%= p.quantity || '∞' %></div>
 
   <%= link_to_function(_('edit'), "distribution_plugin_session_product_edit('#session-product-#{p.id}')",
                        :class => 'session-product-list-column session-product-actions') %>
 </div>
 
 <div class='session-product-edit' style="display: none">
-  <% form_remote_for :product, p, :url => {:controller => :distribution_plugin_session_product, :action => :edit, :profile => profile.identifier, :id => p.id },
+  <% form_remote_for :product, p, :url => {:controller => :distribution_plugin_product, :action => :session_edit, :profile => profile.identifier, :id => p.id },
   :update => "session-product-#{p.id}", :complete => "distribution_plugin_session_product_edit('#session-product-#{p.id}')" do |f| %>
     <%= labelled_field f, :price, _('Sell price'), f.text_field(:price) %>
-    <%= labelled_field f, :price, _('Qty. offered'), f.text_field(:quantity_available) %>
+    <%= labelled_field f, :price, _('Qty. offered'), f.text_field(:quantity) %>
     <%= f.submit _('Save'), :id => 'session-product-edit-save-button', :class => 'distribution-plugin-button' %>
     <%= link_to_function _('cancel updates'), "distribution_plugin_session_product_edit('#session-product-#{p.id}')" %>
     <%= link_to_remote _('remove from session'), { :update => 'session-product-'+p.id.to_s,
-      :url => {:controller => :distribution_plugin_session_product, :action => "destroy", :id => p.id }} %>
+      :url => {:controller => :distribution_plugin_product, :action => :session_destroy, :id => p.id }} %>
     <%= lightbox_link_to(_('edit product'),
                          url_for({ :controller => :distribution_plugin_product, :action => "edit", :id => p.product.id })) %>
   <% end %>

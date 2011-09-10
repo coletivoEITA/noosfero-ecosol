@@ -1,0 +1,74 @@
+<div class="value-row">
+  <div class="our-product-view">
+    <div class="box-field status"><%= product.active %></div>
+    <div class="box-field category"><%= product.product.product_category.name %></div>
+    <div class="box-field supplier"><%= product.supplier.profile.name %></div>
+    <div class="box-field product"><%= product.name %></div>
+    <div class="box-field price"><%= price_span(product.price) %><span class="lower"><%= _('/') + product.unit.singular %></span></div>
+    <div class="box-field stock"><%= product.stored || '∞' %></div>
+    <%= link_to_function content_tag('div', '', :class => 'actions-arrow'), 'distribution_our_product_toggle_edit(this);', :class => "box-field actions-circle" %>
+
+    <div class="cleaner"></div>
+  </div>
+  <div class="our-product-edit alignment">
+    <div class="title"><%= _("Editing distributed product") %></div>
+    <div class="our-product-distributed-column">
+      <div class="column-title"><%= _("How we distribute the product") %></div>
+      <% form_remote_for :product, product, :url => {:controller => :distribution_plugin_product, :action => :edit, :id => product.id},
+      :success => "distribution_our_product_toggle_edit(this);" do |f| %>
+        <div class="properties-block">
+          <%= labelled_field f, :name, _('Name'), f.text_field(:name) %>
+          <%= labelled_field f, :description, _('Description'), f.text_area(:description) %>
+
+          <div class="cleaner"></div>
+        </div>
+        <div class="properties-block">
+          <div class="margin-line">
+            <%= labelled_field f, :margin_percentage, _('Margin'), f.text_field(:margin_percentage, :class => 'small-input') %>
+            <div class="default-margin alignment">
+              <%= check_box_tag :default_margin, 1, product.margin_percentage.nil?,
+                :onchange => "distribution_our_product_enabled_refered(this, '#product_margin_percentage', {clean: true})" %>
+              <%= label_tag :default_margin, _('Use default margin') %>
+            </div>
+
+            <div class="cleaner"></div>
+          </div>
+
+          <div class="cleaner"></div>
+        </div>
+
+        <%= f.check_box :active %>
+        <%= f.label :active, _('Commercialization active') %>
+        <br>
+        <%= f.submit _('Save') %> 
+        <%= link_to_function _('cancel'), 'distribution_our_product_toggle_edit(this);' %>
+      <% end %>
+    </div>
+    <div class="our-product-use-original-column">
+    </div>
+    <div class="our-product-supplied-column alignment2x ">
+      <div class="column-title"><%= _("How we order the product") %></div>
+      <% if product.dummy? %>
+        <div class="properties-block subtitle">
+          <%= _('The register of this supplier is managed by the own collective of consumption.
+                Because of this, there is no possible differences between the "Name" and the "Description"') %>
+        </div>
+      <% else %>
+        <div class="properties-block disabled-fields">
+          <% form_remote_for :product, product.from_products.first, :url => {} do |f| %>
+            <%= labelled_field f, :name, _('Name'), f.text_field(:name, :disabled => 'disabled') %>
+            <%= labelled_field f, :description, _('Description'), f.text_area(:description, :disabled => 'disabled') %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="cleaner"></div>
+  </div>
+
+  <div class="cleaner"></div>
+</div>
+
+<% javascript_tag do %>
+  jQuery('#our-product-<%=product.id%>').find('input[onchange]').each(function() { this.onchange(); });
+<% end %>

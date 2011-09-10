@@ -1,0 +1,21 @@
+<div class="admin-page">
+  <h2><%= _('Our suppliers') %></h2>
+  <div><%= _('Here is the list of supplier we work with') %></div>
+  <br>
+  <%= lightbox_link_to _('Add supplier'), {:controller => :distribution_plugin_manage_supplier, :action => :new, :profile => profile.identifier}, :class => 'supplier-add' %>
+  <br>
+  <% @suppliers.each do |supplier| %>
+    <div class='supplier'>
+      <%= link_to supplier.profile.name, {}, :class => 'supplier-name' %>
+      <div class='supplier-sep'><%= _(", ") %></div>
+      <div class='supplier-products-count'><%= _("#{supplier.products.count} products") %></div>
+      <div class='supplier-sep'><%= _(", ") %></div>
+      <%= link_to _("#{@node.from_products.count(:all, :conditions => {:node_id => supplier.id})} products commercialized"), {}, :class => 'supplier-distributed-products-count' %>
+      <div class='supplier-context-sep'><%= _(" | ") %></div>
+      <%= link_to_remote _("remove"), :url => {:controller => :distribution_plugin_manage_supplier, :action => :destroy, :id => supplier.id, :profile => profile.identifier},
+        :confirm => _("By removing this supplier all its products won't be available for future sessions. Please confirm you choice"), :class => 'supplier-remove' %>
+      <div class='supplier-context-sep'><%= _(" | ") if supplier.dummy? %></div>
+      <%= link_to _("add and remove products"), {:controller => :manage_products, :action => :index, :profile => supplier.profile.identifier}, :target => "_blank", :class => 'supplier-distributed-products-count' if supplier.dummy? %>
+    </div>
+  <% end %>
+</div>

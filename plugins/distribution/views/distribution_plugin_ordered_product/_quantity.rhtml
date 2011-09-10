@@ -1,0 +1,4 @@
+<%= text_field_tag 'quantity_asked', product.quantity_asked, :size => 3, :onblur => 
+                   "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :edit, :id => product)}',
+                           { 'ordered_product[quantity_asked]': jQuery(this).val() });" %>
+<span class="lower"><%= product.product.unit.singular %></span>

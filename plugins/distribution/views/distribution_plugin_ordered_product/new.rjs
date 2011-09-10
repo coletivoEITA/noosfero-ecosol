@@ -1,3 +1,4 @@
-page.insert_html :bottom, :inside_box_order_products, :partial => 'ordered_product', :locals => {:product => @o_product, :first => @first}
-page.replace_html "session_order_quantity" + @o_product.session_product_id.to_s, :partial => 'distribution_plugin_order/quantity', :locals => {:product => @o_product}
-page << "jQuery('.value_row').removeClass('selected');"
+page.insert_html :bottom, :inside_box_order_products, :partial => 'edit',
+  :locals => {:product => @ordered_product.session_product, :order => @order, :ordered_product => @ordered_product}
+page.replace_html "session-product-#{@ordered_product.session_product_id.to_s}",
+  :partial => "distribution_plugin_product/order_edit", :locals => {:product => @ordered_product.session_product, :order => @order, :ordered_product => @ordered_product}

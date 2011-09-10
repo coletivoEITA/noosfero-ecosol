@@ -1,12 +1,8 @@
 class DistributionPluginOrderController < DistributionPluginMyprofileController
   no_design_blocks
 
-  def index_received
-    @orders = @node.orders_received
-  end
-
-  def index_sent
-    @orders = @node.orders_sent
+  def index
+    @orders = @node.orders
   end
 
   def new
@@ -21,8 +17,8 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
   def edit
     @order = DistributionPluginOrder.find_by_id(params[:id])
     @session = @order.session
-    @session_products = @session.products 
-    @order_products = @order.ordered_products
+    @session_products = @session.products.all(:conditions => ['price > 0']).group_by {|sp| sp.product.product_category.name}
+    @ordered_products = @order.products.all(:order => 'id asc')
     @product_categories = ProductCategory.find :all, :limit => 10
   end
 
@@ -30,13 +26,16 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     @products = @session.products.find_by_contents(params[:query])
   end
 
-  def close
-    DistributionPluginOrder.update(params[:id], {:status => 'closed'})
-    redirect_to :action => :index_sent
+  def confirm
+    @order = DistributionPluginOrder.find params[:id]
+    @order.status = 'confirmed'
+    redirect_to :action => :index
   end
 
   def remove
-    DistributionPluginOrder.destroy params[:id]
-    redirect_to :action => :index_sent
+    @order = DistributionPluginOrder.find params[:id]
+    @order.destroy
+    redirect_to :action => :index
   end
+
 end

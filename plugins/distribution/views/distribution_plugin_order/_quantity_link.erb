@@ -1,8 +1,0 @@
-<% 
-
-  unit = product.product.product.unit
-  unit ||= Unit.first
-%>
-<span class="lower"><%="#{@o_product.quantity_asked} #{unit.singular}"%></span>
-                    <%= link_to_remote(_('change'),
-                                       :url => "") %>

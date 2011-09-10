@@ -1,15 +1,28 @@
 class DistributionPluginNode < ActiveRecord::Base
   belongs_to :profile
-  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => 'node_id', :dependent => :destroy
-  has_many :sessions, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy
-  has_many :orders_received, :through => :sessions, :source => :orders, :dependent => :destroy
-  has_many :orders_sent, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy
+
   has_many :delivery_methods, :class_name => 'DistributionPluginDeliveryMethod', :foreign_key => 'node_id', :dependent => :destroy
+  has_many :sessions, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy
+  has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy
+  has_many :parcels, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy
+
+  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => 'node_id', :dependent => :destroy
+  has_many :order_products, :through => :orders, :source => :products
+  has_many :parcel_products, :through => :parcels, :source => :products
+
+  has_many :from_products, :through => :products
+  has_many :to_products, :through => :products
+  has_many :from_suppliers, :through => :products
+  has_many :to_suppliers, :through => :products
 
   validates_presence_of   :profile
   validates_inclusion_of  :role, :in => ['supplier', 'collective', 'consumer']
+  validates_numericality_of :margin_percentage, :allow_nil => true
+  validates_numericality_of :margin_fixed, :allow_nil => true
 
-  after_create :add_own_products
+  def dummy?
+    !profile.visible
+  end
 
   module Roles
     def self.consumer(env_id)
@@ -55,28 +68,42 @@ class DistributionPluginNode < ActiveRecord::Base
   end
 
   def add_consumer(consumer)
-    consumer.affiliate(self, DistributionPluginNode::Roles.consumer(self.profile.environment))
+    consumer.affiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
+  end
+  def add_supplier(supplier)
+    supplier.add_consumer self
   end
   def remove_consumer(consumer)
-    consumer.disaffiliate(self, DistributionPluginNode::Roles.consumer(self.profile.environment))
+    consumer.disaffiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
+    #consumer.products.update_all {:deleted => true}, {
   end
-
-  def add_profile_products(profile)
-    self.products = profile.products.map do |p|
-       DistributionPluginProduct.create!(:product => p, :price => p.price, :unit => p.unit)
-    end
+  def remove_supplier(supplier)
+    supplier.remove_consumer self
   end
 
   def add_node_products(node)
-      node.products.each do |p|
-          self.products.find_by_product_id p.product_id or 
-              DistributionPluginProduct.create!(:product => p.product, :price => p.price, :node_id => self.id)
-      end 
+    raise "Can't add product from a non supplier node" unless suppliers.include?(node)
+    node.products.map do |np|
+       p = np.clone
+       p.node = self
+       p.supplier = node
+       p.margin_percentage = nil
+       p.margin_fixed = nil
+       p.apply_distribution
+       p.save!
+       DistributionPluginSourceProduct.create :from_product => np, :to_product => p
+       p
+    end
   end 
 
   protected
+  after_create :add_own_products
   def add_own_products
-    add_profile_products(profile) if profile.respond_to? :products
+    if profile.respond_to? :products
+      profile.products.map do |p|
+        DistributionPluginProduct.create!(:node => self, :supplier => self, :product => p, :name => p.name, :description => p.description, :price => p.price, :unit => p.unit)
+      end
+    end
   end
 
   #for access_control

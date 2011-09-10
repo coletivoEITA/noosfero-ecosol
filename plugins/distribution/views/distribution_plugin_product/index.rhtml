@@ -1,0 +1,74 @@
+<div id="our-products" class="admin-page">
+  <h3><%=_('Products')%></h3>
+  <div class="subtitle">
+    <%= _("Here are listed all the products with which your collective works.
+           Here it's possible to add and remove products, besides desactivating 
+           temporarily your commercialization in the Order Sections.") %>
+  </div>
+  
+  <h4><%= _("Default margin of visualization") %></h4>
+  <div class="subtitle">
+     <%= _("This margin is automatically applied in all the products, but
+            it is possible to stabilish specific margins for certain products.") %>
+  </div>
+  <span id="node-margin-percentage" class="view <%= @node.margin_percentage.nil? ? 'empty' : 'non-empty' %>">
+    <% form_remote_for :node, @node, :url => {:controller => :distribution_plugin_node, :action => :edit, :id => @node},
+    :success => "distribution_node_margin_toggle_edit(this)" do |f| %>
+      <%= f.text_field :margin_percentage, :disabled => 'disabled' %>
+      <span class="margin-unit-label" ><%= _('%') %></span>
+      <span class="margin-empty-label"><%= _('no margin set') %></span>
+      <%= f.submit _('Save'), :class => 'toggle-button', :style => "display:none" %>
+      <%= link_to_function _('change'), "distribution_node_margin_toggle_edit(this)", :class => 'toggle-button'%>
+    <% end %>
+  </span>
+
+  <h4><%= _('The products')%></h4>
+  <div><%= link_to_remote(_('Add product'), :url => {:controller => 'distribution_plugin_product', :action => "add", :id => @node,}) %></div>
+
+  <div id="filter-fields">
+    <h4><%= _("Filter") %></h4>
+    <div class="cleaner"></div>
+
+    <% form_remote_tag :update => 'search-results', :url => {:action => :index}, :html => {:id => 'filter-form'} do %>
+      <div class="box-field supplier">
+        <div><%=_('show products from') %></div>
+        <div>
+          <%= select_tag :supplier, options_for_select(@suppliers.map { |s| [s.profile.name, s.id] }.insert(0, [_("all the suppliers"), ""])),
+            {:onchange => "this.form.onsubmit()"} %>
+        </div>
+      </div>
+
+      <div class="box-field category">
+        <div><%# _('with the category') %></div>
+        <div>
+          <%# select_tag :product_category_id, options_for_select(@product_categories.map{ |pc| [pc.name, pc.id]}.insert(0,[_("all the categories"), ""])),
+            {:onchange => "this.form.onsubmit()"} %>
+        </div>
+      </div>
+
+      <div class="box-field qualifier">
+          <div><%# _('with the qualifiers') %></div>
+          <div><%# select_tag :qualifiers , options_for_select([_('anyone'), '']) %></div>
+      </div>
+
+      <div class="box-field name">
+        <div><%= _('whose name contains') %></div>
+        <div><%= text_field_tag :name, "", :onkeydown => "var field = this; function name_form_submit() {field.form.onsubmit();}; setTimeout(name_form_submit, 300);" %></div>
+      </div>
+
+      <div class="box-field state">
+        <div><%= _(' and being ') %></div>
+        <div>
+          <%= select_tag :active , options_for_select([[_("In any state"), ""], [ _('active'), 'true'], [ _('inactive'), 'false']]),
+            {:onchange => "this.form.onsubmit()"} %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="cleaner"></div>
+  </div>
+  
+  <div id="search-results">
+    <%= render :partial => 'search' %>
+  </div>
+</div>

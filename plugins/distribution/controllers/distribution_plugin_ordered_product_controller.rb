@@ -2,34 +2,29 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
   no_design_blocks
 
   def new
-    @o_product = DistributionPluginOrderedProduct.create!(:order_id => params[:order_id],
-                                                          :session_product_id => params[:session_product_id],
-                                                          :quantity_asked => 0)
-    @order = @o_product.order
-    @first = @order.ordered_products.count == 1
-  end
-
-  #'add_product' this method shows the product view. Actually, from there you add a product.
-  def add_product
-    @session_product = DistributionPluginSessionProduct.find params[:id]
     @order = DistributionPluginOrder.find params[:order_id]
+    @session_product = DistributionPluginProduct.find params[:session_product_id]
+    @quantity_asked = params[:quantity_asked] || 1
+
+    @ordered_product = DistributionPluginOrderedProduct.find_by_order_id_and_session_product_id(@order.id, @session_product.id)
+    if @ordered_product.nil?
+      @ordered_product = DistributionPluginOrderedProduct.create!(:order_id => @order.id, :session_product_id => @session_product.id, :quantity_asked => @quantity_asked)
+    else
+      redirect_to :action => :edit, :id => @ordered_product.id, :ordered_product => {:quantity_asked => @quantity_asked}
+    end
   end
 
   def edit
-    @ordered_product = DistributionPluginOrderedProduct.find(params[:id])
+    @ordered_product = DistributionPluginOrderedProduct.find params[:id]
+    @order = @ordered_product.order
+    @ordered_product.update_attributes params[:ordered_product]
   end
 
   def destroy
-    p = DistributionPluginOrderedProduct.find(params[:id])
-    @o_product = p
-    p.destroy if p
+    p = DistributionPluginOrderedProduct.find params[:id]
+    @ordered_product = p
     @order = p.order
+    p.destroy if p
   end
 
-  def update_quantity
-    @ordered_product = DistributionPluginOrderedProduct.find(params[:id])
-    @ordered_product.quantity_asked = params[:quantity_asked]
-    @ordered_product.save!
-    @order = @ordered_product.order
-  end
 end

@@ -1,3 +1,0 @@
-page.replace_html "our_products_box", :partial => "our_products_box"
-page.replace_html "total_products", :partial => "total_products"
-
