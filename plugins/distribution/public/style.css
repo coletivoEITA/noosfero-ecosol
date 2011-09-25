@@ -30,6 +30,16 @@
 }
 .plugin-distribution input[type=checkbox] {
   margin: 15px 0;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+  -o-appearance:none;
+  background: white;
+  border: 1px solid black;
+  width: 11px;
+  height: 11px;
+}
+.plugin-distribution input[type=checkbox][checked] {
+  background: url(images/checked_box.png) white;
 }
 .plugin-distribution textarea {
   height: 64px;
@@ -40,6 +50,7 @@
 .plugin-distribution .distribution-button a {
   background-color: #000;
   color: #fff;
+  font-weight: bold;
   padding: 8px 40px 8px 8px;
   border: none;
   text-decoration: none;
@@ -430,6 +441,11 @@
   background-color: #e9f9d5;
   width: 680px;
   padding: 1px 8px 8px  8px;
+  margin-top: 13px;
+}
+.plugin-distribution #filter-fields .box-field {
+  padding-left: 0;
+  padding-right: 20px;
 }
 
 .plugin-distribution #filter-fields select,
@@ -462,6 +478,14 @@
 .plugin-distribution .our-product-edit .properties-block {
   margin-top: 16px;
 }
+.plugin-distribution .our-product-supplied-column .price-block {
+  padding-top: 74px;
+}
+.plugin-distribution .our-product-edit .price-block .field {
+  float: left;
+  clear: none;
+  margin-right: 12px;
+}
 .plugin-distribution #content .our-product-edit .title {
   font-weight: bold;
   clear: both;
@@ -470,8 +494,8 @@
 .plugin-distribution .our-product-edit .column-title {
   font-style: italic;
 }
-.plugin-distribution .our-product-edit #product_name {
-  height: 24px;
+.plugin-distribution .our-product-edit #product_name,
+.plugin-distribution .our-product-edit #product_supplier_product_name {
   width: 279px;
 }
 .plugin-distribution .our-product-edit .margin-line .field,
@@ -482,7 +506,7 @@
   width: 100px;
   margin-top: 27px;
 }
-.plugin-distribution .our-product-edit .default-margin #default_margin {
+.plugin-distribution .our-product-edit .default-margin #product_default_margin_percentage {
   margin: 3px 8px 8px 0;
   float: left;
 }
@@ -491,29 +515,71 @@
   display: block;
   line-height: 16px;
 }
+.plugin-distribution .our-product-edit .line-label {
+  margin: 10px 9px;
+  display: inline-block;
+  font-weight: bold;
+}
 .plugin-distribution .our-product-edit .small-input {
   width: 115px;
+}
+.plugin-distribution .our-product-edit select.small-input {
+  width: 122px;
 }
 .plugin-distribution .our-product-distributed-column {
   width: 300px;
   float: left;
 }
 .plugin-distribution .our-product-use-original-column {
-  width: 50px;
+  width: 60px;
   height: 200px;
   float: left;
+  position: relative;
+}
+.plugin-distribution .our-product-use-original-column .column-title {
+  margin-top: 23px;
+  font-weight: bold;
+  font-style: normal;
+}
+.plugin-distribution .our-product-use-original-column .guideline {
+  position: absolute;
+  left: 5px;
+  border-left: 1px dotted black;
+  height: 366px;
+  margin-top: 4px;
+}
+.plugin-distribution .our-product-use-original-column .default-checkbox {
+  margin: 0 !important;
+  position: absolute;
+  left: -6px;
+}
+.plugin-distribution .our-product-use-original-column #product_default_name {
+  top: 0px;
+}
+.plugin-distribution .our-product-use-original-column #product_default_description {
+  top: 57px;
+}
+.plugin-distribution .our-product-use-original-column #product_default_price {
+  top: 247px;
 }
 .plugin-distribution .our-product-supplied-column {
   width: 269px;
-  height: 200px;
   float: left;
   border-left: 1px solid black;
 }
 .plugin-distribution .our-product-supplied-column .subtitle {
   margin-top: 20px;
 }
-.plugin-distribution .our-product-supplied-column .disabled-fields *[disabled] {
+.plugin-distribution .our-product-distributed-column *[disabled] {
+  font-style: italic;
+  background-color: #F1F6F2;
+  border-color: #B9BEC2;
+}
+.plugin-distribution .our-product-supplied-column *[disabled] {
   background-color: transparent;
+}
+.plugin-distribution .our-product-supplied-column input[type=checkbox][disabled] {
+  background: url(images/checked_box.png) transparent;
 }
 
 .plugin-distribution .block_closer {

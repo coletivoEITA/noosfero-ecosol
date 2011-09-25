@@ -39,8 +39,7 @@ def __split_set_date(datetime, value)
 end
 
 module SplitDatetime
-
-  module SplitMethods
+  module ClassMethods
     def split_datetime(attr)
       class_eval do
         define_method (attr.to_s+'_time') do
@@ -64,5 +63,5 @@ module SplitDatetime
   end
 end
 
-Class.extend SplitDatetime::SplitMethods
-ActiveRecord::Base.extend SplitDatetime::SplitMethods
+Class.extend SplitDatetime::ClassMethods
+ActiveRecord::Base.extend SplitDatetime::ClassMethods

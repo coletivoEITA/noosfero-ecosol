@@ -6,6 +6,7 @@ class DistributionPluginCollectiveController < DistributionPluginMyprofileContro
   helper DistributionPlugin::DistributionDisplayHelper
 
   def index
+    redirect_to :controller => :distribution_plugin_session, :action => "index", :profile => params[:profile]
   end
 
   def parcels

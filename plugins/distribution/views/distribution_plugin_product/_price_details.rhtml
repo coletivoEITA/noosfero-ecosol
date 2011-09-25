@@ -1,0 +1,9 @@
+<div class="properties-block price-block <%= "disabled-fields" if not product.dummy? %>">
+  <% options = {:class => "small-input"}.merge((product.dummy? or not supplier_product) ? {} : {:disabled => 'disabled'}) %>
+  <%= labelled_field f, :price, _('Price'), f.text_field(:price, options.merge(:oldvalue => product.own_price)) %>
+  <%= labelled_field f, :unit_id, _('Unit'), f.select(:unit_id, Unit.all.map{ |u| [u.singular, u.id] }, {}, options.merge(:oldvalue => product.own_unit_id)) %>
+  <%= labelled_field f, :minimum_selleable, _('Minimum order'), f.text_field(:minimum_selleable, options.merge(:oldvalue => product.own_minimum_selleable)) %>
+  <%= labelled_field f, :selleable_factor, _('Unit specification'), f.text_field(:selleable_factor, options.merge(:oldvalue => product.own_selleable_factor)) %>
+
+  <div class="cleaner"></div>
+</div>

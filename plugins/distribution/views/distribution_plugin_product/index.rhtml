@@ -23,15 +23,14 @@
   </span>
 
   <h4><%= _('The products')%></h4>
-  <div><%= link_to_remote(_('Add product'), :url => {:controller => 'distribution_plugin_product', :action => "add", :id => @node,}) %></div>
+  <%= link_to_function _('Add product'), :url => {:controller => 'distribution_plugin_product', :action => "new", :id => @node}, :class => 'subtitle' %>
 
   <div id="filter-fields">
-    <h4><%= _("Filter") %></h4>
-    <div class="cleaner"></div>
+    <b><%= _("Filter") %></b>
 
-    <% form_remote_tag :update => 'search-results', :url => {:action => :index}, :html => {:id => 'filter-form'} do %>
+    <% form_remote_tag :update => 'search-results', :url => {:action => :index}, :html => {:id => 'filter-form'}, :method => "get" do %>
       <div class="box-field supplier">
-        <div><%=_('show products from') %></div>
+        <div><%=_('Show products from') %></div>
         <div>
           <%= select_tag :supplier, options_for_select(@suppliers.map { |s| [s.profile.name, s.id] }.insert(0, [_("all the suppliers"), ""])),
             {:onchange => "this.form.onsubmit()"} %>

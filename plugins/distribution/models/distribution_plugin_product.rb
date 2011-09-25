@@ -4,7 +4,7 @@ class DistributionPluginProduct < ActiveRecord::Base
 
   belongs_to :node, :class_name => 'DistributionPluginNode', :foreign_key => 'node_id'
 
-  #optional
+  #optional fields
   belongs_to :session, :class_name => 'DistributionPluginSession'
   belongs_to :product
   belongs_to :unit
@@ -29,17 +29,38 @@ class DistributionPluginProduct < ActiveRecord::Base
   has_many :sources_to_products, :class_name => 'DistributionPluginSourceProduct', :foreign_key => 'from_product_id', :dependent => :destroy
 
   has_many :to_products, :through => :sources_to_products
-  has_many :to_suppliers, :through => :to_products, :source => :node
+  has_many :to_nodes, :through => :to_products, :source => :node
   has_many :from_products, :through => :sources_from_products
-  has_many :from_suppliers, :through => :from_products, :source => :node
+  has_many :from_nodes, :through => :from_products, :source => :node
 
   validates_presence_of :node
   validates_presence_of :name
+  validates_numericality_of :price, :allow_nil => true
+  validates_numericality_of :minimum_selleable, :allow_nil => true
+  validates_numericality_of :selleable_factor, :allow_nil => true
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
 
+  extend ActsAsHavingSettings::DefaultItem::ClassMethods
+  acts_as_having_settings :field => :settings
+  settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :supplier_product
+  settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :supplier_product
+  settings_default_item :margin_percentage, :type => :boolean, :default => true, :delegate_to => :supplier_product
+  settings_default_item :price, :type => :boolean, :default => true, :delegate_to => :supplier_product
+  default_item :unit_id, :if => :default_price, :delegate_to => :supplier_product
+  default_item :minimum_selleable, :if => :default_price, :delegate_to => :supplier_product
+  default_item :selleable_factor, :if => :default_price, :delegate_to => :supplier_product
+
   def dummy?
     supplier.dummy?
+  end
+
+  def supplier_product
+    @supplier_product ||= from_products.all(:conditions => {:node_id => self.supplier_id}).first
+  end
+  def supplier_product=(value)
+    raise 'Cannot set product details of a non dummy supplier' unless supplier.dummy?
+    supplier_product.update_attributes! value
   end
 
   def apply_distribution

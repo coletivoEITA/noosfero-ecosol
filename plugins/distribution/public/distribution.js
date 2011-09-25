@@ -34,12 +34,20 @@ function distribution_ordered_product_hover() {
   jQuery(this).find('.ordered-product-more-actions').toggle();
 }
 
-function distribution_our_product_enabled_refered(context, refered, options) {
-  refered = jQuery(context).parents('.our-product-distributed-column').find(refered);
-  refered.get(0).disabled = context.checked;
-  if (options.clean && context.checked)
-    refered.val('');
-  return refered;
+function distribution_our_product_toggle_referred(context, referred, options) {
+  p = jQuery(context).parents('.our-product-edit');
+  referred = p.find(jQuery(context).attr('for'));
+
+  jQuery.each(referred, function(i, value) {
+    value.disabled = context.checked;
+    if (value.disabled) {
+      jQuery(value).attr('oldvalue', jQuery(value).val());
+      jQuery(value).val(value.hasAttribute('defaultvalue')
+        ? jQuery(value).attr('defaultvalue') : p.find('#'+value.id.replace('product', 'product_supplier_product')).val());
+    } else {
+      jQuery(value).val(jQuery(value).attr('oldvalue'));
+    }
+  });
 }
 
 function distribution_our_product_toggle_edit(context) {
@@ -80,4 +88,9 @@ function distribution_plugin_session_product_edit(id) {
     });
   };
 })(jQuery);
+
+jQuery('.plugin-distribution input[type=checkbox]').live('change', function () {
+  jQuery(this).attr('checked', this.checked ? 'checked' : null);
+  return false;
+});
 

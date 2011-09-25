@@ -27,7 +27,7 @@ class DistributionPluginSession < ActiveRecord::Base
   validates_numericality_of :margin_fixed, :allow_nil => true
   before_validation :default_values
 
-  extend SplitDatetime::SplitMethods
+  extend SplitDatetime::ClassMethods
   split_datetime :start
   split_datetime :finish
   split_datetime :delivery_start
