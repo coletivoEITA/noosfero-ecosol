@@ -1,21 +1,35 @@
 <div class="admin-page">
-  <h2><%= _('Our suppliers') %></h2>
-  <div><%= _('Here is the list of supplier we work with') %></div>
+  <h2><%= _('Suppliers') %></h2>
+  <div><%= _('This is the list of suppliers associated to this consumption collective. It is possible to associate with existent suppliers or register one.') %></div>
   <br>
   <%= lightbox_link_to _('Add supplier'), {:controller => :distribution_plugin_manage_supplier, :action => :new, :profile => profile.identifier}, :class => 'supplier-add' %>
   <br>
   <% @suppliers.each do |supplier| %>
-    <div class='supplier'>
-      <%= link_to supplier.profile.name, {}, :class => 'supplier-name' %>
-      <div class='supplier-sep'><%= _(", ") %></div>
-      <div class='supplier-products-count'><%= _("#{supplier.products.count} products") %></div>
-      <div class='supplier-sep'><%= _(", ") %></div>
-      <%= link_to _("#{@node.from_products.count(:all, :conditions => {:node_id => supplier.id})} products commercialized"), {}, :class => 'supplier-distributed-products-count' %>
+    <div class='supplier-logo'>oi</div>
+    <div class='supplier-body'>
+      <% if supplier.profile.type == "Community" %>
+        <div><%= _("Supplier with registry managed by the collective") %></div>
+      <% else %>
+        <div><%= _("Registered supplier in the network") %></div>
+      <% end %>
+      <div><strong><%= _("Abreviated Name  ") %></strong><%= link_to supplier.profile.name, {}, :class => 'supplier-name' %></div>
+      <p><%= supplier.description %></p>
+      <div><strong><%= _("This supplier has") %></strong></div>
+      <div class='supplier-products-count'><%= link_to_remote _("#{supplier.products.count} registered products"), :url => {:controller => :distribution_plugin_manage_supplier, :action => :our_products, :id => supplier.id, :profile => profile.identifier}, %></div>
+      <div><%= _(", from them ") %><%= link_to _("#{@node.from_products.count(:all, :conditions => {:node_id => supplier.id})} products commercialized"), {}, :class => 'supplier-distributed-products-count' %>
       <div class='supplier-context-sep'><%= _(" | ") %></div>
-      <%= link_to_remote _("remove"), :url => {:controller => :distribution_plugin_manage_supplier, :action => :destroy, :id => supplier.id, :profile => profile.identifier},
-        :confirm => _("By removing this supplier all its products won't be available for future sessions. Please confirm you choice"), :class => 'supplier-remove' %>
-      <div class='supplier-context-sep'><%= _(" | ") if supplier.dummy? %></div>
-      <%= link_to _("add and remove products"), {:controller => :manage_products, :action => :index, :profile => supplier.profile.identifier}, :target => "_blank", :class => 'supplier-distributed-products-count' if supplier.dummy? %>
     </div>
-  <% end %>
-</div>
+    <div class='supplier-actions'>
+      <div><strong><%= _("Actions") %></strong></div>
+      <div><%= link_to_remote _("edit"), :url => {:controller => :distribution_plugin_manage_supplier, :action => :edit, :id => supplier.id, :profile => profile.identifier}, %></div>
+      <div><%= link_to_remote _("desactivate"), :url => {:controller => :distribution_plugin_manage_supplier, :action => :desactivate, :id => supplier.id, :profile => profile.identifier}, %></div>
+      <div><%= link_to_remote _("remove"), :url => {:controller => :distribution_plugin_manage_supplier, :action => :destroy, :id => supplier.id, :profile => profile.identifier},
+        :confirm => _("By removing this supplier all its products won't be available for future sessions. Please confirm you choice"), :class => 'supplier-remove' %></div>
+      <div><%= link_to_remote _("products"), :url => {:controller => :distribution_plugin_product, :action => :index, :id => supplier.id,}, %></div>
+      <div><%= link_to_remote _("add products"), :url => {:controller => :distribution_plugin_product, :action => :new, :id => supplier.id}, %></div>
+        <div class='supplier-context-sep'><%= _(" | ") if supplier.dummy? %></div>
+        <%= link_to _("add and remove products"), {:controller => :manage_products, :action => :index, :profile => supplier.profile.identifier}, :target => "_blank", :class => 'supplier-distributed-products-count' if supplier.dummy? %>
+      </div>
+    </div>
+    <% end %>
+  </div>

@@ -189,6 +189,15 @@
   background: #eee;
 }
 
+.plugin-distribution .supplier-logo {
+  width: 100px;
+}
+
+.plugin-distribution .supplier-logo {
+  text-align: right;
+  width: 140px;
+}
+
 .plugin-distribution .supplier div {
   display: inline-block;
 }
