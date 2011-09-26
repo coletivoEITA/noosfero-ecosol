@@ -189,18 +189,30 @@
   background: #eee;
 }
 
-.plugin-distribution .supplier-logo {
-  width: 100px;
+.plugin-distribution .supplier {
+  border-top: 1px solid black;
+  padding: 20px 0;
+}
+
+.plugin-distribution .supplier-body {
+  width: 400px;
+  float: left;
 }
 
 .plugin-distribution .supplier-logo {
+  float: left;
+  width: 80px;
+  min-height: 80px;
+  background-color: yellow;
+  margin: 10px;
+}
+
+.plugin-distribution .supplier-actions {
+  float: left;
   text-align: right;
   width: 140px;
 }
 
-.plugin-distribution .supplier div {
-  display: inline-block;
-}
 .plugin-distribution .supplier-add {
   display: block;
 }
