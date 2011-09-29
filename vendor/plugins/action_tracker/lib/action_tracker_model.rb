@@ -72,7 +72,7 @@ module ActionTracker
     def description
       text = ActionTrackerConfig.get_verb(self.verb)[:description] || ""
       if text.is_a?(Proc)
-        self.instance_eval(&text)
+        self.instance_exec(&text)
       else
         text
       end
