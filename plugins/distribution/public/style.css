@@ -115,6 +115,13 @@
   border-bottom: 1px dotted black;
   padding: 8px 0;
 }
+.plugin-distribution .value-row.edit {
+  background-color: #FDF2A3;
+}
+.plugin-distribution .value-row.clicked,
+.plugin-distribution .value-row.selected {
+  background-color: #ffe546;
+}
 
 .plugin-distribution .box-index {
   font-weight: bold;
@@ -189,17 +196,19 @@
   background: #eee;
 }
 
-.plugin-distribution .supplier {
+/* ----- suppleirs stuff  ----- */
+
+.plugin-distribution #suppliers-page .supplier {
   border-top: 1px solid black;
   padding: 20px 0;
 }
 
-.plugin-distribution .supplier-body {
+.plugin-distribution #suppliers-page .supplier-body {
   width: 400px;
   float: left;
 }
 
-.plugin-distribution .supplier-logo {
+.plugin-distribution #suppliers-page .supplier-logo {
   float: left;
   width: 80px;
   min-height: 80px;
@@ -207,15 +216,17 @@
   margin: 10px;
 }
 
-.plugin-distribution .supplier-actions {
+.plugin-distribution #suppliers-page .supplier-actions {
   float: left;
   text-align: right;
   width: 140px;
 }
 
-.plugin-distribution .supplier-add {
+.plugin-distribution #suppliers-page .supplier-add {
   display: block;
 }
+
+/* ----- ends suppleirs stuff  ----- */
 
 .plugin-distribution .distribution-plugin-session-ordered-by-supplier {
   float: left;
@@ -486,9 +497,6 @@
 
 /* ----- ends filter fields  ----- */
 
-.plugin-distribution .value-row.edit {
-  background-color: #FDF2A3;
-}
 .plugin-distribution .our-product-edit {
   display: none;
   background-color: #FDF2A3;
@@ -496,6 +504,10 @@
   float: left;
   width: 97%;
 }
+
+.plugin-distribution .our-product-edit #our-product-add {
+}
+
 .plugin-distribution .our-product-edit .properties-block {
   margin-top: 16px;
 }
@@ -766,10 +778,6 @@
 
 .plugin-distribution .in-order {
   background-color: #fff2a3;
-}
-.plugin-distribution .value-row.clicked,
-.plugin-distribution .value-row.selected {
-  background-color: #ffe546;
 }
 
 .plugin-distribution #total-box {

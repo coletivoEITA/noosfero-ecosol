@@ -23,7 +23,7 @@
   </span>
 
   <h4><%= _('The products')%></h4>
-  <%= link_to_function _('Add product'), :url => {:controller => 'distribution_plugin_product', :action => "new", :id => @node}, :class => 'subtitle' %>
+  <%= link_to _('Add product'), '#our-product-add', :onclick => 'distribution_our_product_add();', :class => 'subtitle' %>
 
   <div id="filter-fields">
     <b><%= _("Filter") %></b>

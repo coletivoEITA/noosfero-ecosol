@@ -17,7 +17,7 @@ class DistributionPluginCollectiveController < DistributionPluginMyprofileContro
   end
 
   def suppliers
-    @suppliers = @node.suppliers
+    redirect_to :controller => :distribution_plugin_manage_supplier, :action => :index, :profile => profile.identifier
   end
 
   def members

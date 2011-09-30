@@ -1,13 +1,13 @@
 <%
   urls = [
-    [_("Sessions"), {:controller => 'distribution_plugin_session', :action => 'index', :profile => profile.identifier}, false],
-    [_("Parcels"), {:controller => 'distribution_plugin_parcel', :action => 'index', :profile => profile.identifier}, false],
-    [_("Products"), {:controller => 'distribution_plugin_product', :action => 'index', :profile => profile.identifier}, false],
-    [_("Suppliers"), {:controller => 'distribution_plugin_collective', :action => 'suppliers', :profile => profile.identifier}, true],
-    [_("Members"), {:controller => 'distribution_plugin_collective', :action => 'members', :profile => profile.identifier}, true],
+    [_("Sessions"), {:controller => :distribution_plugin_session, :action => :index, :profile => profile.identifier}, false],
+    [_("Parcels"), {:controller => :distribution_plugin_parcel, :action => :index, :profile => profile.identifier}, false],
+    [_("Products"), {:controller => :distribution_plugin_product, :action => :index, :profile => profile.identifier}, false],
+    [_("Suppliers"), {:controller => :distribution_plugin_manage_supplier, :action => :index, :profile => profile.identifier}, false],
+    [_("Members"), {:controller => :distribution_plugin_collective, :action => :members, :profile => profile.identifier}, true],
   ]
 %>
 <% urls.each do |name, url, exact| %>
   <%= link_to name, url, :class => 'menu-entry' +
-    ((params[:controller] == url[:controller] and (!exact or params[:action] == url[:action])) ? ' menu-selected' : '') %>
+    ((params[:controller] == url[:controller].to_s and (!exact or params[:action] == url[:action].to_s)) ? ' menu-selected' : '') %>
 <% end %>

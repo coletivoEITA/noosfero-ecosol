@@ -8,7 +8,8 @@ class DistributionPluginSession < ActiveRecord::Base
   has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :dependent => :destroy
 
   has_many :from_products, :through => :products
-  has_many :from_suppliers, :through => :products, :source => :node
+  has_many :from_nodes, :through => :products
+  has_many :to_nodes, :through => :products
 
   has_many :ordered_products, :through => :orders, :source => :products
   has_many :ordered_suppliers, :through => :orders, :source => :suppliers

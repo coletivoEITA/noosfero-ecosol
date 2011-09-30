@@ -13,12 +13,29 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     conditions.add_condition(['LOWER(name) LIKE ?', '%'+params["name"]+'%']) unless params["name"].blank?
     @products = @node.products.distributed.all :conditions => conditions, :order => 'id asc'
     @all_products_count = @node.products.distributed.count
-    @suppliers = @node.suppliers
+    @suppliers = @node.supplier_nodes
     @product_categories = ProductCategory.find(:all)
 
     respond_to do |format|
       format.html
       format.js { render :partial => 'search' }
+    end
+  end
+
+  def new
+    if params[:product][:supplier_id].blank?
+      render :nothing => true
+      return
+    end
+
+    @supplier = DistributionPluginNode.find params[:product][:supplier_id]
+    @from_product = DistributionPluginProduct.find params[:from_product_id] if params[:from_product_id]
+    if @supplier.dummy? or @from_product
+      @product = DistributionPluginProduct.new :node => @node, :supplier => @supplier, :from_product => @from_product
+      respond_to { |format| format.js { render :partial => 'edit', :locals => {:product => @product, :from_product => @from_product} } }
+    else
+      @not_distributed_products = @node.not_distributed_products @supplier
+      respond_to { |format| format.js { render :partial => 'select_missing' } }
     end
   end
 

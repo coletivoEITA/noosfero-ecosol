@@ -16,9 +16,20 @@
       <div class="cleaner"></div>
     </div>
 
+    <div id="our-product-add" class="our-product-edit">
+      <span class="title"><%= _('Add product to the list of distributed products') %></span>
+      <% form_remote_for :product, @new_product, :update => 'our-product-add-content', :url => {:controller => :distribution_plugin_product, :action => :new} do |f| %>
+        <%= labelled_field f, :supplier_id, _('Product from which supplier?'),
+          f.select(:supplier_id, @suppliers.map { |s| [s.profile.name, s.id] }.insert(0, ["", ""]),
+                   {}, {:onchange => "this.form.onsubmit()"}) %>
+      <% end %>
+      <div id="our-product-add-content">
+      </div>
+    </div>
+
     <% @products.each do |product| %>
-      <div id="our-product-<%=product.id%>">
-        <%= render :partial => "edit", :locals => {:product => product} %>
+      <div id="our-product-<%=product.id%>" class="our-product">
+        <%= render :partial => "edit_line", :locals => {:product => product} %>
       </div>
     <% end %>
   <% end %>

@@ -50,6 +50,10 @@ function distribution_our_product_toggle_referred(context, referred, options) {
   });
 }
 
+function distribution_our_product_add() {
+  jQuery('#our-product-add').show();
+}
+
 function distribution_our_product_toggle_edit(context) {
   row = jQuery(context).parents('.value-row');
   row.find('.our-product-view').toggle();

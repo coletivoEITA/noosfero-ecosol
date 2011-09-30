@@ -1,4 +1,4 @@
-<div class="admin-page">
+<div id="suppliers-page" class="admin-page">
   <h2><%= _('Suppliers') %></h2>
   <div><%= _('This is the list of suppliers associated to this consumption collective. It is possible to associate with existent suppliers or register one.') %></div>
   <br>
@@ -8,7 +8,7 @@
     <div class="supplier">
       <div class='supplier-logo'></div>
       <div class='supplier-body'>
-        <% if supplier.profile.type == "Community" %>
+        <% if supplier.dummy? %>
           <div><%= _("Supplier with registry managed by the collective") %></div>
         <% else %>
           <div><%= _("Registered supplier in the network") %></div>
@@ -16,8 +16,9 @@
         <div><strong><%= _("Abreviated Name  ") %></strong><%= link_to supplier.profile.name, {}, :class => 'supplier-name' %></div>
         <p><%= "supplier.description" %></p>
         <div><strong><%= _("This supplier has") %></strong></div>
-        <div class='supplier-products-count'><%= link_to_remote _("#{supplier.products.count} registered products"), :url => {:controller => :distribution_plugin_manage_supplier, :action => :our_products, :id => supplier.id, :profile => profile.identifier} %>
-        <%= _(", among them, ") %><%= link_to _("#{@node.from_products.count(:all, :conditions => {:node_id => supplier.id})} products commercialized"), {}, :class => 'supplier-distributed-products-count' %>
+        <div class='supplier-products-count'>
+          <%= link_to_remote _("#{supplier.products.count} registered products"), :url => {:controller => :distribution_plugin_manage_supplier, :action => :our_products, :id => supplier.id, :profile => profile.identifier} %>
+          <%= _(", among them, ") %><%= link_to _("#{@node.from_products.count(:all, :conditions => {:node_id => supplier.id})} products commercialized"), {}, :class => 'supplier-distributed-products-count' %>
         </div>
       </div>
       <div class='supplier-actions'>

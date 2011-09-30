@@ -3,6 +3,12 @@ class DistributionPluginManageSupplierController < DistributionPluginMyprofileCo
 
   helper ApplicationHelper
 
+  before_filter :set_admin_action, :only => [:index]
+
+  def index
+    @suppliers = @node.supplier_nodes
+  end
+
   def new
     @supplier = DistributionPluginNode.new :role => 'supplier'
     @profile = Enterprise.new :visible => false, :environment => profile.environment

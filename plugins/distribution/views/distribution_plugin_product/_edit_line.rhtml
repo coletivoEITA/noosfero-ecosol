@@ -1,0 +1,19 @@
+<div class="value-row">
+  <div class="our-product-view">
+    <div class="box-field status"><%= product.active %></div>
+    <div class="box-field category"><%= product.product.product_category.name %></div>
+    <div class="box-field supplier"><%= product.supplier.profile.name %></div>
+    <div class="box-field product"><%= product.name %></div>
+    <div class="box-field price"><%= price_span(product.price) %><span class="lower"><%= _('/') + product.unit.singular %></span></div>
+    <div class="box-field stock"><%= product.stored || '∞' %></div>
+    <%= link_to content_tag('div', '', :class => 'actions-arrow'), "#our-product-#{product.id}",
+      :onclick => 'distribution_our_product_toggle_edit(this);', :class => "box-field actions-circle" %>
+
+    <div class="cleaner"></div>
+  </div>
+  <div class="our-product-edit alignment">
+    <%= render :partial => 'edit', :locals => {:product => product} %>
+  </div>
+
+  <div class="cleaner"></div>
+</div>

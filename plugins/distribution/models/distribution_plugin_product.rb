@@ -2,7 +2,9 @@ class DistributionPluginProduct < ActiveRecord::Base
 
   default_scope :conditions => {:archived => false}
 
-  belongs_to :node, :class_name => 'DistributionPluginNode', :foreign_key => 'node_id'
+  belongs_to :node, :class_name => 'DistributionPluginNode'
+  named_scope :by_node, lambda { |n| { :conditions => {:node_id => n.id} } }
+  named_scope :by_node_id, lambda { |id| { :conditions => {:node_id => id} } }
 
   #optional fields
   belongs_to :session, :class_name => 'DistributionPluginSession'
@@ -15,6 +17,7 @@ class DistributionPluginProduct < ActiveRecord::Base
   named_scope :distributed, :conditions => ['distribution_plugin_products.session_id is null']
   named_scope :in_session, :conditions => ['distribution_plugin_products.session_id is not null']
   named_scope :for_session, lambda { |session| { :conditions => {:session_id => session.id} } }
+  named_scope :from_supplier, lambda { |supplier| { :conditions => {:supplier_id => supplier.id} } }
 
   named_scope :owned, :conditions => ['distribution_plugin_products.supplier_id is null']
   named_scope :with_supplier, :conditions => ['distribution_plugin_products.supplier_id is not null']
@@ -29,8 +32,8 @@ class DistributionPluginProduct < ActiveRecord::Base
   has_many :sources_to_products, :class_name => 'DistributionPluginSourceProduct', :foreign_key => 'from_product_id', :dependent => :destroy
 
   has_many :to_products, :through => :sources_to_products
-  has_many :to_nodes, :through => :to_products, :source => :node
   has_many :from_products, :through => :sources_from_products
+  has_many :to_nodes, :through => :to_products, :source => :node
   has_many :from_nodes, :through => :from_products, :source => :node
 
   validates_presence_of :node
@@ -40,6 +43,7 @@ class DistributionPluginProduct < ActiveRecord::Base
   validates_numericality_of :selleable_factor, :allow_nil => true
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
+  validate :self_supply
 
   extend ActsAsHavingSettings::DefaultItem::ClassMethods
   acts_as_having_settings :field => :settings
@@ -56,11 +60,17 @@ class DistributionPluginProduct < ActiveRecord::Base
   end
 
   def supplier_product
-    @supplier_product ||= from_products.all(:conditions => {:node_id => self.supplier_id}).first
+    @supplier_product ||= from_products.by_node_id(supplier_id).first
   end
   def supplier_product=(value)
     raise 'Cannot set product details of a non dummy supplier' unless supplier.dummy?
     supplier_product.update_attributes! value
+  end
+
+  #used for a new_record? from a supplier product
+  def from_product=(product)
+    from_products << product
+    @supplier_product = product
   end
 
   def apply_distribution
@@ -87,8 +97,19 @@ class DistributionPluginProduct < ActiveRecord::Base
     @total_quantity_asked = value
   end
 
+  def archive
+    self.update_attributes! :archived => true
+  end
+
+  alias_method :destroy!, :destroy
   def destroy
     raise "Products shouldn't be destroyed!"
+  end
+
+  protected
+
+  def self_supply
+    errors.add :supplier_id, "can't have a product supplied by yourself (supplier_id can't be equal to node_id)" if supplier_id == node_id
   end
 
 end

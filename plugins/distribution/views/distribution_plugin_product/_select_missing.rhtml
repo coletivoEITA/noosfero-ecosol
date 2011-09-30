@@ -1,0 +1,6 @@
+<div class="supplier-products-column-view">
+  <% @not_distributed_products.each do |product| %>
+    <%= link_to_remote product.name, :url => {:action => :new, :product => {:supplier_id => @supplier.id}, :from_product_id => product.id}, :update => 'our-product-add-content' %>
+  <% end %>
+  <%= link_to_function _('cancel'), '' %>
+</div>
