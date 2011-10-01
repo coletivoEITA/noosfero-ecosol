@@ -64,4 +64,6 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     flash[:notice] = _('Product removed from session')
   end
 
+  def new
+  end
 end

@@ -5,16 +5,20 @@
   <%= lightbox_link_to _('Add supplier'), {:controller => :distribution_plugin_manage_supplier, :action => :new, :profile => profile.identifier}, :class => 'supplier-add' %>
   <br>
   <% @suppliers.each do |supplier| %>
-    <div class="supplier">
-      <div class='supplier-logo'></div>
+    <div class="supplier-listing">
+      <div class='supplier-logo'>
+        <%= profile_image(profile, :minor) %>
+      </div>
       <div class='supplier-body'>
         <% if supplier.dummy? %>
           <div><%= _("Supplier with registry managed by the collective") %></div>
         <% else %>
           <div><%= _("Registered supplier in the network") %></div>
         <% end %>
-        <div><strong><%= _("Abreviated Name  ") %></strong><%= link_to supplier.profile.name, {}, :class => 'supplier-name' %></div>
-        <p><%= "supplier.description" %></p>
+        <div><%= link_to supplier.profile.name, {}, :class => 'supplier-name' %></div>
+
+        <div><strong><%= _("Abreviated Name  ") %></strong><%= supplier.profile.name %></div>
+        <p><%= supplier.profile.description %></p>
         <div><strong><%= _("This supplier has") %></strong></div>
         <div class='supplier-products-count'>
           <%= link_to_remote _("#{supplier.products.count} registered products"), :url => {:controller => :distribution_plugin_manage_supplier, :action => :our_products, :id => supplier.id, :profile => profile.identifier} %>
