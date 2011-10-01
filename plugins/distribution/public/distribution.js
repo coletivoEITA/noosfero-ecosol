@@ -34,7 +34,7 @@ function distribution_ordered_product_hover() {
   jQuery(this).find('.ordered-product-more-actions').toggle();
 }
 
-function distribution_our_product_toggle_referred(context, referred, options) {
+function distribution_our_product_toggle_referred(context) {
   p = jQuery(context).parents('.our-product-edit');
   referred = p.find(jQuery(context).attr('for'));
 
@@ -49,19 +49,37 @@ function distribution_our_product_toggle_referred(context, referred, options) {
     }
   });
 }
-
-function distribution_our_product_add() {
-  jQuery('#our-product-add').show();
+function distribution_our_product_sync_referred(context) {
+  p = jQuery(context).parents('.our-product-edit');
+  referred = p.find('#'+context.id.replace('product_supplier_product', 'product')).get(0);
+  if (referred && referred.disabled)
+    jQuery(referred).val(jQuery(context).val());
 }
+jQuery(document).ready(function() {
+  if (window.location.hash == '#our-product-add')
+    distribution_our_product_toggle_edit();
+});
 
 function distribution_our_product_toggle_edit(context) {
-  row = jQuery(context).parents('.value-row');
+  row = jQuery(context).hasClass('our-product') ? jQuery(context) : jQuery(context).parents('.our-product');
+  if (!row.length)
+    row = jQuery('#our-product-add');
   row.find('.our-product-view').toggle();
   row.find('.our-product-edit').toggle();
   row.toggleClass('edit');
 }
+function distribution_our_product_add_change_supplier(context, url) {
+  jQuery('#our-product-add').load(url, jQuery(context).serialize(), function() {
+    distribution_our_product_toggle_edit();
+  });
+}
+function distribution_our_product_add_from_product(context, url, data) {
+  jQuery('#our-product-add').load(url, data, function() {
+    distribution_our_product_toggle_edit();
+  });
+}
 
-function distribution_node_margin_toggle_edit(content) {
+function distribution_node_margin_toggle_edit(context) {
   c = jQuery('#node-margin-percentage');
   i = c.find('input[type=text]');
   c.toggleClass('edit view');
@@ -69,6 +87,23 @@ function distribution_node_margin_toggle_edit(content) {
   i.toggleDisabled();
   c.toggleClass('empty', i.val().empty());
   c.toggleClass('non-empty', !i.val().empty());
+}
+
+function distribution_supplier_toggle_edit(context) {
+  p = jQuery(context).parents('.supplier');
+  if (p.length == 0) {
+    p = jQuery('#supplier-add');
+    p.show();
+  } else {
+    p.find('.supplier-view').toggle();
+  }
+  p.find('.supplier-edit').toggle();
+}
+
+function distribution_plugin_session_order_toggle_edit(context) {
+  p = jQuery(context).parents('.in-session-order');
+  p.find('.in-session-order-edit').toggle();
+  p.toggleClass('edit');
 }
 
 var distribution_session_product_editing = jQuery();
@@ -98,3 +133,9 @@ jQuery('.plugin-distribution input[type=checkbox]').live('change', function () {
   return false;
 });
 
+
+_.templateSettings = {
+  evaluate: /\{\{([\s\S]+?)\}\}/g,
+  interpolate: /\{\{=([\s\S]+?)\}\}/g,
+  escape: /\{\{-([\s\S]+?)\}\}/g
+};

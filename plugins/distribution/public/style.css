@@ -82,6 +82,11 @@
   padding-left: 20px;
 }
 
+.plugin-distribution #content .title {
+  font-weight: bold;
+  clear: both;
+  margin-bottom: 8px;
+}
 .plugin-distribution .subtitle {
   font-size: 10px;
 }
@@ -103,7 +108,6 @@
 
 .plugin-distribution .table-header {
   width: 100%;
-  border-bottom: 1px solid black;
   padding: 8px 0;
   background-color: #B1DFEF;
   color: #000;
@@ -115,6 +119,13 @@
   border-bottom: 1px dotted black;
   padding: 8px 0;
 }
+.plugin-distribution .value-row.edit {
+  background-color: #FDF2A3;
+}
+.plugin-distribution .value-row.clicked,
+.plugin-distribution .value-row.selected {
+  background-color: #ffe546;
+}
 
 .plugin-distribution .box-index {
   font-weight: bold;
@@ -123,6 +134,7 @@
 .plugin-distribution .box-field {
   float: left;
   padding: 0 10px;
+  min-height: 1px;
 }
 
 
@@ -189,42 +201,164 @@
   background: #eee;
 }
 
-.plugin-distribution .supplier-listing {
+/* ----- suppliers stuff  ----- */
+
+.plugin-distribution #suppliers-page .supplier {
   border-top: 1px solid black;
+}
+.plugin-distribution #suppliers-page .supplier-type {
+  font-style: italic;
+}
+.plugin-distribution #suppliers-page .supplier-view {
   padding: 8px 0;
 }
+.plugin-distribution #suppliers-page #supplier-add,
+.plugin-distribution #suppliers-page .supplier-edit {
+  display: none;
+}
+.plugin-distribution #suppliers-page .supplier-edit {
+  background-color: #FDF2A3;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
 
-.plugin-distribution .supplier-listing .supplier-body {
+.plugin-distribution #suppliers-page .supplier-body {
   width: 400px;
   float: left;
   margin: 8px;
 }
 
-.plugin-distribution .supplier-listing .supplier-logo {
+.plugin-distribution #suppliers-page .supplier-logo {
   float: left;
   width: 60px;
   min-height: 60px;
   margin: 10px;
 }
 
-.plugin-distribution .supplier-listing .supplier-actions {
+.plugin-distribution #suppliers-page .supplier-actions {
   float: left;
   text-align: right;
   width: 140px;
+  margin: 8px;
 }
 
-.plugin-distribution .supplier-add {
-  display: block;
+.plugin-distribution #suppliers-page .supplier-add-link {
+  margin: 20px 0;
 }
 
-.plugin-distribution .distribution-plugin-session-ordered-by-supplier {
+/* ----- ends suppliers stuff  ----- */
+
+/* ----- session orders  ----- */
+
+.plugin-distribution .session-ordered-by-supplier {
   float: left;
   margin-right: 10px;
 }
-.plugin-distribution .distribution-plugin-session-ordered-product {
+.plugin-distribution .session-ordered-product {
   float: left;
   padding-left: 10px;
 }
+.plugin-distribution .session-orders {
+  margin: 20px 0;
+}
+.plugin-distribution .in-session-order {
+  clear: both;
+}
+.plugin-distribution .in-session-order.edit {
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+}
+.plugin-distribution .in-session-order.edit,
+.plugin-distribution .in-session-order-edit {
+  background-color: #fff2a3;
+}
+.plugin-distribution .in-session-order-edit {
+  padding: 8px;
+}
+.plugin-distribution .in-session-order-view {
+  clear: both;
+}
+.plugin-distribution .in-session-order.edit .in-session-order-view.value-row {
+  border-color: transparent;
+}
+
+.plugin-distribution .in-session-order-code,
+.plugin-distribution .in-session-order-member,
+.plugin-distribution .in-session-order-created-at,
+.plugin-distribution .in-session-order-modified-at,
+.plugin-distribution .in-session-order-products-count,
+.plugin-distribution .in-session-order-value,
+.plugin-distribution .in-session-order-actions {
+  float: left;
+  min-height: 1px;
+}
+.plugin-distribution .in-session-order-code {
+  width: 80px;
+}
+.plugin-distribution .in-session-order-member {
+  width: 180px;
+}
+.plugin-distribution .in-session-order-created-at,
+.plugin-distribution .in-session-order-modified-at {
+  width: 110px;
+}
+.plugin-distribution .in-session-order-products-count {
+  width: 90px;
+}
+.plugin-distribution .in-session-order-value {
+  width: 60px;
+}
+
+/* ----- end session orders  ----- */
+
+/* ----- ordered product  ----- */
+
+.plugin-distribution .session-orders .order-products {
+  background-color: #FFEA6B; 
+  float: right;
+  border: 1px solid black;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+.plugin-distribution .order-products {
+  width: 400px;
+}
+.plugin-distribution .order-products .line-keeper {
+  position: relative;
+  height: 41px;
+}
+.plugin-distribution .ordered-product {
+}
+.plugin-distribution .ordered-product {
+  transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+}
+.plugin-distribution .ordered-product.selected {
+  position: absolute;
+  z-index: 10;
+  top: -12px;
+  left: 3px;
+  border: 1px solid black;
+
+  transform: scale(1.03);
+  -webkit-transform: scale(1.03); 
+  -moz-transform: scale(1.03);
+
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  -webkit-border-radius: 4px;
+
+  box-shadow: 0 0 3px rgba(0,0,0,.5);
+  -moz-box-shadow: 0 0 3px rgba(0,0,0,.5);
+  -webkit-box-shadow: 0 0 3px rgba(0,0,0,.5);
+}
+
+/* ----- end ordered product  ----- */
+
 
 .plugin-distribution .distribution-plugin-product-left-column {
   width: 55%;
@@ -471,11 +605,14 @@
 
 .plugin-distribution #filter-fields select,
 .plugin-distribution #filter-fields input.box-field,
-.plugin-distribution #filter-fields .category,
-.plugin-distribution #filter-fields .qualifier,
 .plugin-distribution #filter-fields .status,
 .plugin-distribution #filter-fields .supplier {
   width: 205px;
+}
+.plugin-distribution #filter-fields .category,
+.plugin-distribution #filter-fields .qualifier,
+.plugin-distribution #filter-fields .stock {
+  display: none;
 }
 .plugin-distribution #filter-fields .name input {
   width: 198px;
@@ -486,31 +623,64 @@
 
 /* ----- ends filter fields  ----- */
 
-.plugin-distribution .value-row.edit {
-  background-color: #FDF2A3;
-}
 .plugin-distribution .our-product-edit {
+  float: left;
   display: none;
   background-color: #FDF2A3;
   font-size: 12px;
-  float: left;
-  width: 97%;
+  width: 680px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
+.plugin-distribution #our-product-add .our-product-edit {
+  float: none;
+}
+.plugin-distribution .our-product.edit .value-row {
+  padding: 0;
+}
+
+.plugin-distribution #our-product-add {
+}
+.plugin-distribution #our-product-add .supplier-missing-products-column-view {
+  margin-bottom: 30px;
+}
+.plugin-distribution #our-product-add .supplier-missing-products-column {
+  float: left;
+  margin-right: 20px;
+}
+.plugin-distribution #our-product-add .supplier-missing-products-item {
+  display: block;
+}
+.plugin-distribution .supplier-missing-products-column-view .missing-explanation {
+  width: 420px;
+  margin-bottom: 20px;
+}
+
+.plugin-distribution .our-product .product-supplier {
+  margin-bottom: 10px;
+}
+.plugin-distribution .our-product .product-supplier select {
+  width: 286px;
+}
+.plugin-distribution .our-product .product-supplier label {
+  font-weight: normal;
+}
+
 .plugin-distribution .our-product-edit .properties-block {
   margin-top: 16px;
 }
+
 .plugin-distribution .our-product-supplied-column .price-block {
   padding-top: 74px;
+}
+.plugin-distribution .our-product-supplied-column.dummy-product .price-block {
+  padding-top: 126px;
+  padding-bottom: 41px;
 }
 .plugin-distribution .our-product-edit .price-block .field {
   float: left;
   clear: none;
   margin-right: 12px;
-}
-.plugin-distribution #content .our-product-edit .title {
-  font-weight: bold;
-  clear: both;
-  margin-bottom: 8px;
 }
 .plugin-distribution .our-product-edit .column-title {
   font-style: italic;
@@ -589,7 +759,8 @@
   border-left: 1px solid black;
 }
 .plugin-distribution .our-product-supplied-column .subtitle {
-  margin-top: 20px;
+  margin-top: 41px;
+  width: auto !important;
 }
 .plugin-distribution .our-product-distributed-column *[disabled] {
   font-style: italic;
@@ -626,7 +797,7 @@
   text-align: center;
 }
 .plugin-distribution .box-field.price-total {
-  width: 50px;
+  width: 40px;
   text-align: right;
 }
 .plugin-distribution .box-field.product-desc {
@@ -766,10 +937,6 @@
 
 .plugin-distribution .in-order {
   background-color: #fff2a3;
-}
-.plugin-distribution .value-row.clicked,
-.plugin-distribution .value-row.selected {
-  background-color: #ffe546;
 }
 
 .plugin-distribution #total-box {

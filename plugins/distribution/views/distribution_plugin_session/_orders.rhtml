@@ -1,27 +1,27 @@
-<div id='distribution-plugin-session-data'>
-  <h2><%= _('Session data') %></h2>
-  <div id='distribution-plugin-session-orders-confirmed'>
-    <span class="distribution-plugin-label"><%= _('Orders confirmed') %></span>
-    <%= link_to @session.orders.find(:all, :conditions => {:status => 'confirmed'}).count, :class => "distribution-plugin-label-value" %>
+<div id='session-orders'>
+  <h2><%= _('The orders') %></h2>
+  <div id='session-orders-confirmed' class="session-orders">
+    <span class=session-order-label"><%= _('Closed Orders') %></span>
+    <%= render :partial => 'orders_view', :locals => {:orders => @session.orders.confirmed} %>
   </div>
-  <div id='distribution-plugin-session-orders-draft'>
-    <span class="distribution-plugin-label"><%= _('Orders in draft') %></span>
-    <%= link_to @session.orders.find(:all, :conditions => {:status => 'draft'}).count, :class => "distribution-plugin-label-value" %>
+  <div id='session-orders-draft' class="session-orders">
+    <span class="session-order-label"><%= _('Open Orders') %></span>
+    <%= render :partial => 'orders_view', :locals => {:orders => @session.orders.draft} %>
   </div>
 </div>
 
 <br />
-<div id='distribution-plugin-session-products-sums'>
+<div id='session-products-sums'>
   <h2><%= _("Products' totals") %></h2>
   <% @session.ordered_products_by_suppliers.each do |supplier, products| %>
-    <div class="distribution-plugin-session-ordered-by-supplier">
-      <%= link_to supplier.profile.name, :class => 'distribution-plugin-session-ordered-supplier-name' %>
+    <div class="session-ordered-by-supplier">
+      <%= link_to supplier.name, :class => 'session-ordered-supplier-name' %>
       <% products.each do |p| %>
         <% if p.total_quantity_asked > 0 %>
           <br>
-          <div class="distribution-plugin-session-ordered-product">
-            <span class="distribution-plugin-session-ordered-quantity"><%= p.total_quantity_asked.to_s + ' ' + p.unit.singular %> </span>
-            <%= link_to p.product.name, :class => "distribution-plugin-session-ordered-name" %>
+          <div class="session-ordered-product">
+            <span class="session-ordered-quantity"><%= p.total_quantity_asked.to_s + ' ' + p.unit.singular %> </span>
+            <%= link_to p.product.name, :class => "session-ordered-name" %>
           </div>
         <% end %>
       <% end %>

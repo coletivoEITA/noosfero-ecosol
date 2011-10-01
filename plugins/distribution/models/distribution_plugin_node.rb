@@ -6,12 +6,10 @@ class DistributionPluginNode < ActiveRecord::Base
   has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy
   has_many :parcels, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy
 
-  has_many :suppliers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'consumer_id'
-  has_many :consumers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'node_id'
-  has_many :supplier_nodes, :through => :suppliers, :source => :node
-  has_many :consumer_nodes, :through => :consumers, :source => :consumer
+  has_many :suppliers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'consumer_id', :order => 'id asc', :dependent => :destroy
+  has_many :consumers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'node_id', :order => 'id asc'
 
-  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => 'node_id', :dependent => :destroy
+  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => 'node_id', :dependent => :destroy, :order => 'distribution_plugin_products.id asc'
   has_many :order_products, :through => :orders, :source => :products
   has_many :parcel_products, :through => :parcels, :source => :products
   has_many :supplier_products, :through => :suppliers, :source => :products
@@ -22,19 +20,11 @@ class DistributionPluginNode < ActiveRecord::Base
   has_many :from_nodes, :through => :products
   has_many :to_nodes, :through => :products
 
-  validates_presence_of   :profile
-  validates_inclusion_of  :role, :in => ['supplier', 'collective', 'consumer']
+  validates_presence_of :profile
+  validates_associated :profile
+  validates_inclusion_of :role, :in => ['supplier', 'collective', 'consumer']
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
-
-  def not_distributed_products(supplier)
-    raise "#{supplier.profile.name} is not a supplier of #{self.profile.name}" unless has_supplier?(supplier)
-    supplier.products.distributed - self.from_products.distributed.by_node(supplier)
-  end
-
-  def dummy?
-    !profile.visible
-  end
 
   def self.find_or_create(profile)
     role = profile.person? ? 'consumer' : (profile.community? ? 'collective' : 'supplier')
@@ -45,11 +35,23 @@ class DistributionPluginNode < ActiveRecord::Base
     'distribution_plugin_' + role
   end
 
+  def not_distributed_products(supplier)
+    raise "#{supplier.name} is not a supplier of #{self.profile.name}" unless has_supplier?(supplier)
+    supplier.node.products.own.distributed - self.from_products.distributed.by_node(supplier.node)
+  end
+
+  def dummy?
+    !profile.visible
+  end
+
+  def self_supplier
+    suppliers.from_node(self).first || DistributionPluginSupplier.create!(:node => self, :consumer => self)
+  end
   def has_supplier?(supplier)
-    supplier_nodes.include? supplier
+    suppliers.include? supplier
   end
   def has_consumer?(consumer)
-    consumer_nodes.include? consumer
+    consumers.include? consumer
   end
   def add_supplier(supplier)
     supplier.add_consumer self
@@ -59,34 +61,49 @@ class DistributionPluginNode < ActiveRecord::Base
   end
   def add_consumer(consumer)
     consumer.affiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
-    consumers.create! :consumer => consumer
+    consumers.create! :consumer => consumer unless has_consumer?(consumer)
+
+    #without asking the user?
+    consumer.add_supplier_products self
   end
   def remove_consumer(consumer)
     consumer.disaffiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
-    consumers.find_by_consumer_id(consumer.id).destroy
+    consumers.find_by_consumer_id(consumer.id).destroy!
 
     #also archive from sessions?
     consumer.products.distributed.from_supplier(self).update_all ['archived = true']
   end
 
-  def add_node_products(node)
-    raise "Can't add product from a non supplier node" unless has_supplier?(node)
-    node.products.map do |np|
-       p = np.clone
-       p.attributes = {:node => self, :supplier => node, :margin_percentage => nil, :margin_fixed => nil}
-       p.save!
-       p.from_products << np
-       p
+  def add_supplier_products(supplier)
+    raise "Can't add product from a non supplier node" unless has_supplier?(supplier)
+
+    already_supplied = self.products.distributed.from_supplier(supplier)
+    supplier.products.map do |np|
+      p = already_supplied.find{ |f| f.supplier_product == np }
+      unless p
+        p = DistributionPluginProduct.new :node => self
+        p.distribute_from np
+        p.save!
+      end
+      p
     end
   end 
 
   protected
+
+  after_create :add_self_supplier
+  def add_self_supplier
+    self_supplier
+  end
+
   after_create :add_own_products
   def add_own_products
-    if profile.respond_to? :products
-      profile.products.map do |p|
-        DistributionPluginProduct.create!(:node => self, :supplier => self, :product => p, :name => p.name, :description => p.description, :price => p.price, :unit => p.unit)
-      end
+    return unless profile.respond_to? :products
+
+    already_supplied = self.products.distributed.from_supplier(self)
+    profile.products.map do |p|
+      already_supplied.find{ |f| f.product == p } ||
+        DistributionPluginProduct.create!(:node => self, :supplier => self_supplier, :product => p, :name => p.name, :description => p.description, :price => p.price, :unit => p.unit)
     end
   end
 

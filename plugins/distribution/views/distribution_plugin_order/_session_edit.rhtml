@@ -1,0 +1,22 @@
+<div class="in-session-order-view value-row">
+  <span class='in-session-order-code'><%= order.id %></span>
+  <span class='in-session-order-member'><%= order.consumer.name %></span>
+  <span class='in-session-order-created-at'><%= order.created_at %></span>
+  <span class='in-session-order-modified-at'><%= order.updated_at %></span>
+  <span class='in-session-order-products-count'><%= order.products.count %></span>
+  <span class='in-session-order-value'><%= price_span(order.total_asked) %></span>
+
+  <%= link_to_function(_('edit'), "distribution_plugin_session_order_toggle_edit(this)", :class => 'in-session-order-actions') %>
+
+  <div class="cleaner"></div>
+</div>
+
+<div class="in-session-order-edit alignment" style="display: none">
+  <% if order.products.count == 0 %>
+    <div class="subtitle"><%= _("Empty order") %></div>
+  <% else %>
+    <%= render :partial => 'distribution_plugin_ordered_product/index', :locals => {:order => order} %>
+  <% end %>
+
+  <div class="cleaner"></div>
+</div>

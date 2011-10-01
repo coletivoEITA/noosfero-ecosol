@@ -1,0 +1,23 @@
+<% if orders.count == 0 %>
+  <div class="subtitle"><%= _('No orders to show') %></div>
+<% else %>
+  <div class='table-header alignment'>
+    <span class='in-session-order-code'><%= _('Code') %></span>
+    <span class='in-session-order-member'><%= _('Member') %></span>
+    <span class='in-session-order-created-at'><%= _('Created at') %></span>
+    <span class='in-session-order-modified-at'><%= _('Modified at') %></span>
+    <span class='in-session-order-products-count'><%= _('Products Qty.') %></span>
+    <span class='in-session-order-value'><%= _('Value') %></span>
+
+    <div class="cleaner"></div>
+  </div>
+
+  <% orders.each do |order| %>
+    <div id="in-session-order-<%=order.id%>" class="in-session-order">
+      <%= render :partial => 'distribution_plugin_order/session_edit', :locals => {:order => order} %>
+    </div>
+
+    <div class="cleaner"></div>
+  <% end %>
+<% end %>
+

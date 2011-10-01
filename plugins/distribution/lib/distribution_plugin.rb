@@ -12,7 +12,8 @@ class DistributionPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['distribution', 'jquery.ba-bbq.min.js', 'url']
+    ['underscore-min', 'backbone-min',
+     'distribution']
   end
 
   def control_panel_buttons

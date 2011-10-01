@@ -1,4 +1,4 @@
 page.remove 'ordered-product-' + @ordered_product.id.to_s
-page.replace_html 'total-box', :partial => 'distribution_plugin_order/total', :object => @order
+page.replace_html 'total-box', :partial => 'distribution_plugin_order/total', :locals => {:order => @order}
 page.replace_html "session-product-#{@ordered_product.session_product_id.to_s}",
   :partial => "distribution_plugin_product/order_edit", :locals => {:product => @ordered_product.session_product, :order => @order, :ordered_product => nil}

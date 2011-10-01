@@ -1,4 +1,7 @@
-<div class='admin-page'>
+<div id="sessions-page" class='admin-page'>
   <%= render :partial => 'title', :locals => {:session => @session} %>
-  <%= render :partial => params[:view] ? params[:view] : @session.status.gsub(' ', '_') %>
+  <% view = params[:view] ? params[:view] : @session.status.gsub(' ', '_') %>
+  <div id="session-view-<%=view%>">
+    <%= render :partial => view %>
+  </div>
 </div>

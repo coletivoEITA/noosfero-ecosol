@@ -3,18 +3,22 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
 
   before_filter :set_admin_action, :only => [:index]
 
-  helper DistributionPlugin::SessionHelper
-  helper DistributionPlugin::DistributionDisplayHelper
+  helper DistributionPlugin::DistributionProductHelper
 
   def index
+    @supplier = DistributionPluginSupplier.find_by_id params[:supplier_id].to_i
+    not_distributed_products
+
     conditions = []
-    conditions.add_condition(['active = ?', params["active"]]) unless params["active"].blank?
-    conditions.add_condition(['supplier_id = ?', params["supplier"]]) unless params["supplier"].blank?
-    conditions.add_condition(['LOWER(name) LIKE ?', '%'+params["name"]+'%']) unless params["name"].blank?
-    @products = @node.products.distributed.all :conditions => conditions, :order => 'id asc'
+    conditions += ['active = ?', params["active"]] unless params["active"].blank?
+    conditions += ['supplier_id = ?', params["supplier_id"]] unless params["supplier_id"].blank?
+    conditions += ['LOWER(name) LIKE ?', '%'+params["name"]+'%'] unless params["name"].blank?
+    conditions = DistributionPluginProduct.send :merge_conditions, conditions
+
+    @products = @node.products.distributed.all :conditions => conditions, :group => (['supplier_id', 'id']+DistributionPluginProduct.new.attributes.keys).join(',')
     @all_products_count = @node.products.distributed.count
-    @suppliers = @node.supplier_nodes
     @product_categories = ProductCategory.find(:all)
+    @new_product = DistributionPluginProduct.new :node => @node, :supplier_id => params[:supplier_id]
 
     respond_to do |format|
       format.html
@@ -23,32 +27,28 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
   end
 
   def new
-    if params[:product][:supplier_id].blank?
-      render :nothing => true
-      return
-    end
-
-    @supplier = DistributionPluginNode.find params[:product][:supplier_id]
-    @from_product = DistributionPluginProduct.find params[:from_product_id] if params[:from_product_id]
-    if @supplier.dummy? or @from_product
-      @product = DistributionPluginProduct.new :node => @node, :supplier => @supplier, :from_product => @from_product
-      respond_to { |format| format.js { render :partial => 'edit', :locals => {:product => @product, :from_product => @from_product} } }
+    @supplier = DistributionPluginSupplier.find_by_id params[:product][:supplier_id].to_i
+    if params[:commit]
+      #:supplier_product_id must be set first. it will when params follow the form order with ruby 1.9 ordered hashes
+      @product = DistributionPluginProduct.new :node => @node, :supplier_product_id => params[:product].delete(:supplier_product_id)
+      @product.update_attributes! params[:product]
     else
-      @not_distributed_products = @node.not_distributed_products @supplier
-      respond_to { |format| format.js { render :partial => 'select_missing' } }
+      @product = DistributionPluginProduct.new :node => @node, :supplier => @supplier, :supplier_product_id => params[:product][:supplier_product_id]
+      not_distributed_products(params[:product][:supplier_product_id])
+      render :partial => 'edit', :locals => {:product => @product}, :layout => false
     end
   end
 
   def edit
     @product = DistributionPluginProduct.find params[:id]
-    @product.update_attributes params[:product]
+    @product.update_attributes! params[:product]
     render :layout => false
   end
 
   def session_edit
     @product = DistributionPluginProduct.find params[:id]
     if request.post?
-      @product.update_attributes(params[:product])
+      @product.update_attributes! params[:product]
       @product.save!
     end
     if request.xhr?
@@ -64,6 +64,10 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     flash[:notice] = _('Product removed from session')
   end
 
-  def new
+  protected
+
+  def not_distributed_products(supplier_product_id = nil)
+    @not_distributed_products = @node.not_distributed_products @supplier unless !@supplier or @supplier.dummy? or supplier_product_id
   end
+
 end

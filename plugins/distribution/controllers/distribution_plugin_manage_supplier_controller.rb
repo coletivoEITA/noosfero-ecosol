@@ -2,53 +2,38 @@ class DistributionPluginManageSupplierController < DistributionPluginMyprofileCo
   no_design_blocks
 
   helper ApplicationHelper
+  helper DistributionPlugin::DistributionDisplayHelper
 
   before_filter :set_admin_action, :only => [:index]
+  before_filter :load_new, :only => [:index, :new]
 
   def index
-    @suppliers = @node.supplier_nodes
+    @suppliers = @node.suppliers
   end
 
   def new
-    @supplier = DistributionPluginNode.new :role => 'supplier'
-    @profile = Enterprise.new :visible => false, :environment => profile.environment
-    if params[:name]
-      DistributionPluginNode.transaction do
-        Profile.transaction do
-          begin
-            @profile.identifier = Digest::MD5.hexdigest(rand.to_s)
-          end while not Profile.find_by_identifier(@profile.identifier).blank?
-          @profile.name = params[:name]
-          @profile.save!
-          profile.admins.each { |a| @profile.add_admin(a) }
-
-          @supplier.profile = @profile
-          @supplier.save!
-          @supplier.add_consumer @node
-
-          render :update do |page|
-            page << "window.location.reload()"
-          end
-        end
-      end
-    else
-      render :layout => false
-    end
+    begin
+      @new_profile.identifier = Digest::MD5.hexdigest(rand.to_s)
+    end while Profile.find_by_identifier(@profile.identifier).blank?
+    @new_supplier.update_attributes! params[:supplier] #beautiful transactional save
   end
 
-  def add
+  def edit
+    @supplier = DistributionPluginSupplier.find params[:id]
+    @supplier.update_attributes! params[:supplier]
   end
 
   def destroy
-    @supplier = DistributionPluginNode.find params[:id]
-    @supplier.remove_consumer @node
-    if @supplier.dummy?
-      @supplier.profile.destroy
-      @supplier.destroy
-    end
-
-    render :update do |page|
-      page << "window.location.reload()"
-    end
+    @supplier = DistributionPluginSupplier.find params[:id]
+    @supplier.destroy
   end
+
+  protected
+
+  def load_new
+    @new_profile = Enterprise.new :visible => false, :environment => profile.environment
+    @new_supplier_node = DistributionPluginNode.new :role => 'supplier', :profile => @new_profile
+    @new_supplier = DistributionPluginSupplier.new :node => @new_supplier_node, :consumer => @node
+  end
+
 end

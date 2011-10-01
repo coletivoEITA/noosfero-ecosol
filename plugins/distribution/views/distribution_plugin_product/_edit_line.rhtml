@@ -1,8 +1,8 @@
 <div class="value-row">
   <div class="our-product-view">
     <div class="box-field status"><%= product.active %></div>
-    <div class="box-field category"><%= product.product.product_category.name %></div>
-    <div class="box-field supplier"><%= product.supplier.profile.name %></div>
+    <div class="box-field category"><%= product.product.product_category.name if product.product %></div>
+    <div class="box-field supplier"><%= product.supplier.abbreviation_or_name %></div>
     <div class="box-field product"><%= product.name %></div>
     <div class="box-field price"><%= price_span(product.price) %><span class="lower"><%= _('/') + product.unit.singular %></span></div>
     <div class="box-field stock"><%= product.stored || '∞' %></div>
@@ -11,9 +11,8 @@
 
     <div class="cleaner"></div>
   </div>
-  <div class="our-product-edit alignment">
-    <%= render :partial => 'edit', :locals => {:product => product} %>
-  </div>
+
+  <%= render :partial => 'edit', :locals => {:product => product} %>
 
   <div class="cleaner"></div>
 </div>

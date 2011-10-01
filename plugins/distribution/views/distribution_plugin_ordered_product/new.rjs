@@ -1,4 +1,4 @@
-page.insert_html :bottom, :inside_box_order_products, :partial => 'edit',
+page.insert_html :bottom, "order-products", :partial => 'edit',
   :locals => {:product => @ordered_product.session_product, :order => @order, :ordered_product => @ordered_product}
 page.replace_html "session-product-#{@ordered_product.session_product_id.to_s}",
   :partial => "distribution_plugin_product/order_edit", :locals => {:product => @ordered_product.session_product, :order => @order, :ordered_product => @ordered_product}

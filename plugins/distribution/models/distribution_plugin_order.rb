@@ -2,7 +2,7 @@ class DistributionPluginOrder < ActiveRecord::Base
   belongs_to :session, :class_name => 'DistributionPluginSession'
   belongs_to :consumer, :class_name => 'DistributionPluginNode'
 
-  has_many :products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'order_id', :dependent => :destroy
+  has_many :products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'order_id', :dependent => :destroy, :order => 'id asc'
   has_many :suppliers, :through => :products #FIXME: not working
   has_many :supplied_products, :through => :products, :source => :product
   
@@ -23,7 +23,7 @@ class DistributionPluginOrder < ActiveRecord::Base
   validates_presence_of :consumer_delivery, :if => :is_delivery?
 
   def supplier_delivery
-    self['supplier_delivery'] ||= session.delivery_methods.first
+    self['supplier_delivery'] || session.delivery_methods.first
   end
 
   def is_delivery?
@@ -38,6 +38,10 @@ class DistributionPluginOrder < ActiveRecord::Base
 
   def confirmed?
     status == 'confirmed'
+  end
+
+  def total_asked
+    products.sum(:price_asked)
   end
 
   protected 

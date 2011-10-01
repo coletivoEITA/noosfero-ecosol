@@ -32,10 +32,7 @@
 
     <div>
       <% @session_products.each do |category_name, session_products| %>
-        <div class="cleaner"></div>
-        <div class="category-box">
-          <div class="alignment"><%= category_name%></div>
-        </div>
+        <div class="category-box alignment"><%= category_name%></div>
 
         <div class="table-header">
           <div class="box-field box-index supplier"><%=_('Supplier')%></div>
@@ -71,19 +68,13 @@
   </div>
 
   <div class="in-order">
-    <div id="inside_box_order_products">
-      <% @ordered_products.each do |ordered_product| %>
-        <%= render :partial => "distribution_plugin_ordered_product/edit", :locals => {:ordered_product => ordered_product, :product => ordered_product.product} %>
-      <% end %>
-      <% javascript_tag do %>
-        jQuery('.ordered-product').live({mouseover: distribution_ordered_product_hover, mouseout: distribution_ordered_product_hover});
-      <% end %>
-    </div>
+    <%= render :partial => "distribution_plugin_ordered_product/index", :locals => {:order => @order} %>
 
     <div id="total-box">
-      <%= render :partial => 'total', :object => @order %>
+      <%= render :partial => 'total', :locals => {:order => @order} %>
     </div>
     <div class="cleaner"></div>
+
     <div id="delivery-box">
       <h3><%= _("delivery method") %></h3>
       <h4><%= @order.supplier_delivery.name %></h4>
