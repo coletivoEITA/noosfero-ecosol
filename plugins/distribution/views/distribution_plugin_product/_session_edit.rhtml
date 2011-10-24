@@ -1,5 +1,5 @@
 <div class="session-product-details">
-  <span class='session-product-list-column session-product-category'><%= p.product.product_category.name %></span>
+  <span class='session-product-list-column session-product-category'><%= p.product.product_category.name if p.product %></span>
   <span class='session-product-list-column session-product-supplier'><%= p.supplier.name %></span>
   <span class='session-product-list-column session-product-name'><%= p.name %></span>
 

@@ -9,9 +9,7 @@ class DistributionPluginOrder < ActiveRecord::Base
   has_one :supplier_delivery, :class_name => 'DistributionPluginDeliveryMethod'
   has_one :consumer_delivery, :class_name => 'DistributionPluginDeliveryMethod'
 
-  named_scope :draft, :conditions => {:status => 'draft'}
-  named_scope :planned, :conditions => {:status => 'planned'}
-  named_scope :confirmed, :conditions => {:status => 'confirmed'}
+  named_scope :by_consumer, lambda { |consumer| { :conditions => {:consumer_id => consumer.id} } }
 
   validates_inclusion_of :status, :in => ['draft', 'planned', 'confirmed']
   validates_presence_of :session
@@ -21,6 +19,19 @@ class DistributionPluginOrder < ActiveRecord::Base
 
   validates_presence_of :supplier_delivery
   validates_presence_of :consumer_delivery, :if => :is_delivery?
+
+  named_scope :draft, :conditions => {:status => 'draft'}
+  named_scope :planned, :conditions => {:status => 'planned'}
+  named_scope :confirmed, :conditions => {:status => 'confirmed'}
+  def draft?
+    status == 'draft'
+  end
+  def planned
+    status == 'planned'
+  end
+  def confimerd
+    status == 'confirmed'
+  end
 
   def supplier_delivery
     self['supplier_delivery'] || session.delivery_methods.first

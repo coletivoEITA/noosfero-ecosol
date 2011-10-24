@@ -5,6 +5,8 @@ class DistributionPluginSupplier < ActiveRecord::Base
   named_scope :from_node, lambda { |n| { :conditions => {:node_id => n.id} } }
   named_scope :from_node_id, lambda { |id| { :conditions => {:node_id => id} } }
 
+  has_many :supplied_products, :foreign_key => 'supplier_id', :class_name => 'DistributionPluginProduct', :dependent => :destroy
+
   validates_presence_of :node
   validates_presence_of :consumer
   validates_presence_of :name
@@ -45,6 +47,8 @@ class DistributionPluginSupplier < ActiveRecord::Base
       node.profile.destroy
       node.destroy
     end
+    supplied_products.update_all ['archived = true']
+    
     super
   end
 
@@ -52,10 +56,13 @@ class DistributionPluginSupplier < ActiveRecord::Base
 
   after_create :complete
   def complete
-    return if self?
-    consumer.profile.admins.each{ |a| node.profile.add_admin(a) } if node.dummy?
-    node.add_consumer consumer
+    if dummy?
+      consumer.profile.admins.each{ |a| node.profile.add_admin(a) } if node.dummy?
+      node.add_consumer consumer
+    end
   end
+
+  after_destroy
 
   #delegate to node
   def method_missing(method, *args, &block)

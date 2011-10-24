@@ -8,6 +8,8 @@ class DistributionPluginNode < ActiveRecord::Base
 
   has_many :suppliers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'consumer_id', :order => 'id asc', :dependent => :destroy
   has_many :consumers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'node_id', :order => 'id asc'
+  has_many :suppliers_nodes, :through => :suppliers, :source => :node
+  has_many :consumers_nodes, :through => :consumers, :source => :consumer
 
   has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => 'node_id', :dependent => :destroy, :order => 'distribution_plugin_products.id asc'
   has_many :order_products, :through => :orders, :source => :products
@@ -25,6 +27,22 @@ class DistributionPluginNode < ActiveRecord::Base
   validates_inclusion_of :role, :in => ['supplier', 'collective', 'consumer']
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
+
+  def name
+    profile.name
+  end
+
+  def consumer?
+    role == 'consumer'
+  end
+
+  def supplier?
+    role == 'supplier'
+  end
+
+  def collective?
+    role == 'collective'
+  end
 
   def self.find_or_create(profile)
     role = profile.person? ? 'consumer' : (profile.community? ? 'collective' : 'supplier')
@@ -48,10 +66,10 @@ class DistributionPluginNode < ActiveRecord::Base
     suppliers.from_node(self).first || DistributionPluginSupplier.create!(:node => self, :consumer => self)
   end
   def has_supplier?(supplier)
-    suppliers.include? supplier
+    suppliers_nodes.include? supplier
   end
   def has_consumer?(consumer)
-    consumers.include? consumer
+    consumers_nodes.include? consumer
   end
   def add_supplier(supplier)
     supplier.add_consumer self
@@ -64,7 +82,7 @@ class DistributionPluginNode < ActiveRecord::Base
     consumers.create! :consumer => consumer unless has_consumer?(consumer)
 
     #without asking the user?
-    consumer.add_supplier_products self
+    consumer.add_supplier_products self unless consumer.consumer?
   end
   def remove_consumer(consumer)
     consumer.disaffiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
@@ -89,11 +107,26 @@ class DistributionPluginNode < ActiveRecord::Base
     end
   end 
 
+  alias_method :destroy!, :destroy
+  def destroy
+    #TODO soft delete products
+    destroy!
+  end
+
   protected
 
   after_create :add_self_supplier
   def add_self_supplier
     self_supplier
+  end
+
+  after_create :add_own_members
+  def add_own_members
+    profile.members.map do |member| 
+      consumer = DistributionPluginNode.find_or_create member
+      add_consumer consumer
+      consumer
+    end
   end
 
   after_create :add_own_products

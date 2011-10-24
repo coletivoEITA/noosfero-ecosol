@@ -1,4 +1,5 @@
 class DistributionPlugin < Noosfero::Plugin
+
   def self.plugin_name
     "Distribution"
   end
@@ -7,13 +8,20 @@ class DistributionPlugin < Noosfero::Plugin
     _("A solidary distribution plugin.")
   end
 
+  def self.view_path
+    RAILS_ROOT +  "/plugins/distribution/views"
+  end
+
   def stylesheet?
     true
   end
 
+  def profile_blocks(profile)
+    DistributionPlugin::OrderBlock if DistributionPlugin::OrderBlock.available_for(profile)
+  end
+
   def js_files
-    ['underscore-min', 'backbone-min',
-     'distribution']
+    ['distribution']
   end
 
   def control_panel_buttons

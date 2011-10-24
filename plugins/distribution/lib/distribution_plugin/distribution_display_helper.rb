@@ -15,4 +15,8 @@ module DistributionPlugin::DistributionDisplayHelper
                    form.text_field(end_field.to_s+'_time', :class => 'distribution-plugin-time-select'))
   end
 
+  def datetime_period(start, finish)
+    start.to_time.strftime(_("%d/%m/%y at %H:%M")) + ' ' + _('to') + ' ' + finish.to_time.strftime(_("%d/%m/%y at %H:%M"))
+  end
+
 end

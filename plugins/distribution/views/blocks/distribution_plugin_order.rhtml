@@ -1,0 +1,46 @@
+<%= block_title(block.title) %>
+
+<div class="distribution-plugin-order-block">
+
+  <% if node.has_consumer?(consumer) %>
+    <% node.sessions.open.each do |s| %>
+      <div id="session-<%=s.id%>" class="session">
+        <div class="session-title">
+          <% if node.profile.admins.include?(current_user.person) %>
+            <%= link_to s.name, {:controller => :distribution_plugin_session, :action => :edit, :id => s.id, :profile => profile.identifier} %>
+          <% else %>
+            <span><%= s.name %></span>
+          <% end %>
+        </div>
+
+        <div class="session-period"><%= datetime_period s.start, s.finish %></div>
+
+        <div class="session-my-orders">
+          <% orders = s.orders.draft.by_consumer(consumer) %>
+          <% unless orders.blank? %>
+            <div><%= _('Open Orders') %></div>
+            <ul>
+              <% orders.each_with_index do |o, i| %>
+                <li>
+                <%= link_to _('Order #%{n} with %{products} products') % {:n => i+1, :products => o.products.count},
+                {:controller => :distribution_plugin_order, :action => :edit, :id => o.id} %>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+        </div>
+
+        <div>
+          <%= link_to _('+ Order for this session'), {:controller => :distribution_plugin_order, :action => :new, :session_id => s.id} %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <% if profile.community? %>
+      <%= _('Join this community to buy from this collective.') %>
+    <% else %>
+      <%= _('Ask an administrator to became a member of this enterprise.') %>
+    <% end %>
+  <% end %>
+
+</div>

@@ -140,6 +140,20 @@
 
 /* ----- ends common stuff  ----- */
 
+/* ----- order block stuff  ----- */
+
+.distribution-plugin-order-block .session .session-period {
+  font-size: 8px;
+  color: #777;
+}
+
+.distribution-plugin-order-block .session {
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+}
+
+/* ----- end order block stuff  ----- */
+
 /* ----- session stuff  ----- */
 
 .plugin-distribution .session-fields-title {

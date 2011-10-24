@@ -38,9 +38,14 @@ class DistributionPluginSession < ActiveRecord::Base
     STATUS_SEQUENCE.index(self.status) > STATUS_SEQUENCE.index(status)
   end
 
+  named_scope :open, lambda {
+    {:conditions => ["status = 'orders' AND ( (start <= :date AND finish IS NULL) OR (start <= :date AND finish >= :date) )",
+      {:date => DateTime.now}]}
+  }
+
   def open?
     now = DateTime.now
-    status == 'orders' && now >= self.start && now <= self.finish
+    status == 'orders' && ( (self.start <= now && self.finish.nil?) || (self.start <= now && self.finish >= now) )
   end
 
   def in_delivery?
