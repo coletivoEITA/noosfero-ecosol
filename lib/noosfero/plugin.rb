@@ -72,4 +72,10 @@ class Noosfero::Plugin
     nil
   end
 
+  # -> Adds new block types in profile
+  # returs = class implements Block
+  def profile_blocks(profile)
+    nil
+  end
+
 end

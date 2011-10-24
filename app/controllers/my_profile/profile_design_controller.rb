@@ -3,7 +3,7 @@ class ProfileDesignController < BoxOrganizerController
   needs_profile
 
   protect 'edit_profile_design', :profile
-  
+
   def available_blocks
     blocks = [ ArticleBlock, TagsBlock, RecentDocumentsBlock, ProfileInfoBlock, LinkListBlock, MyNetworkBlock, FeedReaderBlock, ProfileImageBlock, LocationBlock, SlideshowBlock, ProfileSearchBlock ]
 
@@ -36,6 +36,8 @@ class ProfileDesignController < BoxOrganizerController
     if profile.has_blog?
       blocks << BlogArchivesBlock
     end
+
+    blocks += @plugins.map(:profile_blocks, profile)
 
     blocks
   end
