@@ -4,7 +4,7 @@ class DistributionPluginSession < ActiveRecord::Base
   has_many :delivery_options, :class_name => 'DistributionPluginDeliveryOption', :foreign_key => :session_id, :dependent => :destroy
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 
-  has_many :orders, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy
+  has_many :orders, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc'
   has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :dependent => :destroy
 
   has_many :from_products, :through => :products
@@ -13,7 +13,7 @@ class DistributionPluginSession < ActiveRecord::Base
 
   has_many :ordered_products, :through => :orders, :source => :products
   has_many :ordered_suppliers, :through => :orders, :source => :suppliers
-  has_many :ordered_supplied_products, :through => :orders, :source => :supplied_products, :uniq => true
+  has_many :ordered_supplied_products, :through => :orders, :source => :used_products, :uniq => true
 
   STATUS_SEQUENCE = [
     'new', 'edition', 'call', 'orders', 'parcels', 'redistribution', 'delivery', 'close', 'closed'
@@ -54,10 +54,7 @@ class DistributionPluginSession < ActiveRecord::Base
   end
 
   def ordered_products_by_suppliers
-    self.ordered_supplied_products.group_by do |p|
-      p.total_quantity_asked = p.ordered_products.sum(:quantity_asked)
-      p.supplier
-    end
+    self.ordered_supplied_products.group_by { |p| p.supplier }
   end
 
   protected
@@ -73,7 +70,7 @@ class DistributionPluginSession < ActiveRecord::Base
 
   after_create :add_distributed_products
   def add_distributed_products
-    self.products = node.products.map do |dp|
+    self.products += node.products.distributed.map do |dp|
        p = dp.clone
        p.session = self
        p.save!

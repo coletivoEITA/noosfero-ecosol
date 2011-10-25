@@ -68,7 +68,9 @@
   </div>
 
   <div class="in-order">
-    <%= render :partial => "distribution_plugin_ordered_product/index", :locals => {:order => @order} %>
+    <% form_remote_for :order, @order, :url => {:action => :edit, :id => @order.id} do |f| %>
+      <%= render :partial => "distribution_plugin_ordered_product/index", :locals => {:order => @order, :f => f} %>
+    <% end %>
 
     <div id="total-box">
       <%= render :partial => 'total', :locals => {:order => @order} %>

@@ -1,8 +1,8 @@
 <div id="order-products" class="order-products">
-  <% order.products.each do |product| %>
-    <div class="line-keeper">
-      <%= render :partial => "distribution_plugin_ordered_product/edit", :locals => {:ordered_product => product, :product => product.product} %>
-    </div>
+  <% f.fields_for :products, order.products do |f| %>
+    <% order.products.each do |product| %>
+      <%= render :partial => "distribution_plugin_ordered_product/edit", :locals => {:ordered_product => product, :product => product.product, :f => f} %>
+    <% end %>
   <% end %>
 </div>
 

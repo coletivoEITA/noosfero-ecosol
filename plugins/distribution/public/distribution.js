@@ -1,5 +1,16 @@
+var editing = jQuery();
+
 function sessionProductSetFocus(id) {
   jQuery(id).find('input').focus();
+}
+
+function distribution_edit_arrow_toggle(arrow, toggle) {
+  arrow = jQuery(arrow);
+  if (!arrow.hasClass('actions-circle'))
+    arrow = arrow.find('.actions-circle');
+
+  arrow.toggleClass('edit', toggle);
+  return arrow.hasClass('edit');
 }
 
 function distribution_order_session_product_toggle(el, selected) {
@@ -101,22 +112,30 @@ function distribution_supplier_toggle_edit(context) {
 }
 
 function distribution_plugin_session_order_toggle_edit(context) {
-  p = jQuery(context).parents('.in-session-order');
-  p.find('.in-session-order-edit').toggle();
-  p.toggleClass('edit');
+  newEditing = jQuery(context).parents('.in-session-order');
+
+  newEditing.find('.in-session-order-edit').toggle(true);
+  newEditing.toggleClass('edit', true);
+  distribution_edit_arrow_toggle(editing, true);
+
+  editing.find('.in-session-order-edit').toggle(false);
+  editing.toggleClass('edit', false);
+  distribution_edit_arrow_toggle(editing, false);
+
+  editing = newEditing.get(0) === editing.get(0) ? jQuery() : newEditing;
+  
 }
 
-var distribution_session_product_editing = jQuery();
 function distribution_plugin_session_product_edit(id) {
   editing = jQuery(id);
-  stop_editing = editing.index(distribution_session_product_editing) ? false : true;
+  stop_editing = editing.index(editing) ? false : true;
 
-  distribution_session_product_editing.removeClass('session-product-editing');
-  distribution_session_product_editing.find('.session-product-edit').hide();
+  editing.removeClass('session-product-editing');
+  editing.find('.session-product-edit').hide();
   if (!stop_editing) {
     editing.addClass('session-product-editing');
     editing.find('.session-product-edit').show();
-    distribution_session_product_editing = editing;
+    editing = editing;
   }
 }
 
@@ -133,9 +152,3 @@ jQuery('.plugin-distribution input[type=checkbox]').live('change', function () {
   return false;
 });
 
-
-_.templateSettings = {
-  evaluate: /\{\{([\s\S]+?)\}\}/g,
-  interpolate: /\{\{=([\s\S]+?)\}\}/g,
-  escape: /\{\{-([\s\S]+?)\}\}/g
-};

@@ -1,10 +1,34 @@
-/* ----- remove some noosfero's css  ----- */
+/* ----- override some noosfero's css  ----- */
 
 .plugin-distribution #product_name {
   width: auto;
 }
 
-/* ----- ends remove some noosfero's css  ----- */
+.plugin-distribution .page-title {
+  display: none !important;
+}
+.plugin-distribution #content {
+  border-top: 0px;
+}
+.plugin-distribution #content #distribution-plugin-header h1 {
+  border-bottom: 0px;
+  color: #000;
+  text-align: left;
+}
+.plugin-distribution #content .no-boxes h1 {
+  font-variant: normal
+}
+body.plugin-distribution {
+  line-height: 20px
+}
+.plugin-distribution #content {
+  margin-top: 100px;
+}
+.plugin-distribution #profile-header {
+  display: none;
+}
+
+/* ----- ends override some noosfero's css  ----- */
 
 /* ----- common stuff  ----- */
 
@@ -23,13 +47,21 @@
   height: 24px;
   padding: 0 0 0 5px;
 }
+.plugin-distribution input[type=text],
+.plugin-distribution textarea {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
 .plugin-distribution input[type=text] {
   border: 1px solid black;
   height: 20px;
   padding-left: 5px;
+  margin: 0;
 }
 .plugin-distribution input[type=checkbox] {
-  margin: 15px 0;
+  margin: 15px 0 2px;
   -moz-appearance:none;
   -webkit-appearance:none;
   -o-appearance:none;
@@ -54,6 +86,7 @@
   padding: 8px 40px 8px 8px;
   border: none;
   text-decoration: none;
+  margin: 15px 0;
   border-radius: 5px 5px 5px 5px;
   -mox-border-radius: 5px 5px 5px 5px;
   -webkit-border-radius: 5px 5px 5px 5px;
@@ -64,9 +97,10 @@
   background-color: #666;
 }
 
-.plugin-distribution #session-column .distribution-button a {
-  position: relative;
-  top: 70px;
+.plugin-distribution .line-label {
+  margin: 10px 9px 2px;
+  display: inline-block;
+  font-weight: bold;
 }
 
 .plugin-distribution .distribution-plugin-date-select,
@@ -104,11 +138,12 @@
 .plugin-distribution .field .field-box {
   clear: both;
   float: left;
+  width: 100%;
 }
 
 .plugin-distribution .table-header {
   width: 100%;
-  padding: 8px 0;
+  padding: 8px 10px;
   background-color: #B1DFEF;
   color: #000;
   text-decoration: underline;
@@ -118,6 +153,13 @@
   font-size: 10px;
   border-bottom: 1px dotted black;
   padding: 8px 0;
+}
+.plugin-distribution .table-header,
+.plugin-distribution .value-row {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
 }
 .plugin-distribution .value-row.edit {
   background-color: #FDF2A3;
@@ -133,10 +175,50 @@
 }
 .plugin-distribution .box-field {
   float: left;
-  padding: 0 10px;
+  padding-right: 10px;
   min-height: 1px;
+  overflow: hidden;
 }
 
+.plugin-distribution .actions-circle {
+  height: 15px;
+  width: 15px;
+  background-color: #FDF2A3;
+  padding: 0;
+  margin-top: 3px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+.plugin-distribution .actions-circle .actions-arrow {
+  border-top: 4px solid #726D47;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  margin: 6px 2px 0px 2px;
+  display: block;
+}
+.plugin-distribution .actions-circle.edit .actions-arrow {
+  border-bottom: 4px solid #726D47;
+  border-top: 4px solid transparent;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  margin: 2px 2px 0px 2px;
+  display: block;
+}
+
+.plugin-distribution .actions-bar {
+  background-color: #FEC64D;
+  padding: 8px 8px;
+  clear: both;
+}
+.plugin-distribution .actions-bar a {
+  float: left;
+  margin-right: 10px;
+}
+.plugin-distribution .actions-bar strong {
+  float: right;
+}
 
 /* ----- ends common stuff  ----- */
 
@@ -154,7 +236,41 @@
 
 /* ----- end order block stuff  ----- */
 
+/* ----- session timeline  ----- */
+
+.plugin-distribution .session-timeline {
+  border: 1px solid #FEC64D;
+  margin: 0 0 20px 0;
+}
+.plugin-distribution .session-timeline-item {
+  float: left;
+  padding: 10px 14px;
+}
+.plugin-distribution .session-timeline-citem {
+  display: none;
+}
+.plugin-distribution .session-timeline-selected-item {
+  color: black;
+  text-decoration: none;
+}
+.plugin-distribution .session-timeline-passed-item {
+  background: #ccc;
+}
+.plugin-distribution .session-timeline-current-item {
+  background: #eee;
+}
+.plugin-distribution .session-timeline .action-bar a {
+  font-weight: bold;
+}
+
+/* ----- end session timeline  ----- */
+
 /* ----- session stuff  ----- */
+
+.plugin-distribution #session-column .distribution-button a {
+  position: relative;
+  top: 70px;
+}
 
 .plugin-distribution .session-fields-title {
   text-transform: uppercase;
@@ -192,28 +308,7 @@
   display: block;
 }
 
-.plugin-distribution .distribution-plugin-session-timeline {
-  border: 1px solid #CCC;
-  margin: 0 0 20px 0;
-}
-.plugin-distribution .distribution-plugin-session-timeline-item {
-  float: left;
-  border-right: 1px solid #CCC;
-  padding: 10px 14px;
-}
-.plugin-distribution .distribution-plugin-session-timeline-citem {
-  display: none;
-}
-.plugin-distribution .distribution-plugin-session-timeline-selected-item {
-  color: black;
-  text-decoration: none;
-}
-.plugin-distribution .distribution-plugin-session-timeline-passed-item {
-  background: #ccc;
-}
-.plugin-distribution .distribution-plugin-session-timeline-current-item {
-  background: #eee;
-}
+/* ----- end session stuff  ----- */
 
 /* ----- suppliers stuff  ----- */
 
@@ -264,17 +359,81 @@
 
 /* ----- session orders  ----- */
 
-.plugin-distribution .session-ordered-by-supplier {
+.plugin-distribution .order-products-by-supplier {
   float: left;
-  margin-right: 10px;
+  background-color: #E1F5C4;
+  width: 100%;
+  margin-bottom: 20px;
+  border: 1px solid #116C7C;
+  border-radius: 1px;
+  -moz-border-radius: 1px;
+  -webkit-border-radius: 1px;
+  -o-border-radius: 1px;
 }
-.plugin-distribution .session-ordered-product {
+.plugin-distribution .order-products-by-supplier .inner-box {
+  padding: 10px;
   float: left;
-  padding-left: 10px;
 }
-.plugin-distribution .session-orders {
+.plugin-distribution .order-products-by-supplier .supplier-name {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.plugin-distribution .order-products-by-supplier .products-header {
+  padding-bottom: 10px;
+  border-bottom: 1px dotted black;
+  font-weight: bold;
+}
+.plugin-distribution .order-products-by-supplier .session-ordered-product {
+  float: left;
+  clear: both;
+}
+.plugin-distribution .order-products-by-supplier .box-field.product {
+  width: 110px;
+}
+.plugin-distribution .order-products-by-supplier .box-field.total-asked {
+  width: 60px;
+}
+.plugin-distribution .order-products-by-supplier .box-field.unit {
+  width: 110px;
+}
+.plugin-distribution .order-products-by-supplier .box-field.sell-value {
+  width: 70px;
+}
+.plugin-distribution .order-products-by-supplier .box-field.forecast-parcel {
+  width: 60px;
+}
+.plugin-distribution .order-products-by-supplier .box-field.forecast-parcel-value {
+  width: 70px;
+}
+.plugin-distribution .order-products-by-supplier .session-ordered-product .product {
+  font-size: 12px;
+}
+.plugin-distribution .order-products-by-supplier .session-ordered-product .total-asked,
+.plugin-distribution .order-products-by-supplier .session-ordered-product .forecast-parcel {
+  font-weight: bold;
+}
+
+.plugin-distribution #session-view-orders h2 {
+  text-transform: uppercase;
+  padding-left: 8px;
+  font-size: 13px;
+}
+
+.plugin-distribution #session-orders {
   margin: 20px 0;
 }
+
+.plugin-distribution .session-orders {
+  margin-bottom: 20px;
+}
+.plugin-distribution .session-orders .orders-label {
+  background-color: #B1DFEF;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 13px;
+  border-bottom: 2px solid white;
+}
+
 .plugin-distribution .in-session-order {
   clear: both;
 }
@@ -286,35 +445,45 @@
 .plugin-distribution .in-session-order-edit {
   background-color: #fff2a3;
 }
-.plugin-distribution .in-session-order-edit {
-  padding: 8px;
-}
 .plugin-distribution .in-session-order-view {
   clear: both;
 }
+
+.plugin-distribution .in-session-order-edit {
+  padding: 8px 0 0 0;
+}
+.plugin-distribution .in-session-order-edit .empty-order {
+  text-align: center;
+  margin-bottom: 8px;
+}
+.plugin-distribution .in-session-order-edit form {
+  padding: 0 16px 0 240px;
+}
+.plugin-distribution .in-session-order-edit,
 .plugin-distribution .in-session-order.edit .in-session-order-view.value-row {
   border-color: transparent;
 }
+.plugin-distribution .in-session-order-edit input[type=checkbox] {
+  float: left;
+}
 
-.plugin-distribution .in-session-order-code,
-.plugin-distribution .in-session-order-member,
-.plugin-distribution .in-session-order-created-at,
-.plugin-distribution .in-session-order-modified-at,
-.plugin-distribution .in-session-order-products-count,
-.plugin-distribution .in-session-order-value,
+.plugin-distribution .in-session-order .value-row {
+  padding: 8px 10px;
+  width: 100%;
+}
 .plugin-distribution .in-session-order-actions {
   float: left;
   min-height: 1px;
 }
 .plugin-distribution .in-session-order-code {
-  width: 80px;
+  width: 50px;
 }
 .plugin-distribution .in-session-order-member {
   width: 180px;
 }
 .plugin-distribution .in-session-order-created-at,
 .plugin-distribution .in-session-order-modified-at {
-  width: 110px;
+  width: 90px;
 }
 .plugin-distribution .in-session-order-products-count {
   width: 90px;
@@ -322,20 +491,19 @@
 .plugin-distribution .in-session-order-value {
   width: 60px;
 }
-
-/* ----- end session orders  ----- */
-
-/* ----- ordered product  ----- */
-
 .plugin-distribution .session-orders .order-products {
   background-color: #FFEA6B; 
-  float: right;
   border: 1px solid black;
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   -o-border-radius: 4px;
 }
+
+/* ----- end session orders  ----- */
+
+/* ----- ordered product  ----- */
+
 .plugin-distribution .order-products {
   width: 400px;
 }
@@ -344,6 +512,10 @@
   height: 41px;
 }
 .plugin-distribution .ordered-product {
+}
+.plugin-distribution .ordered-product .box-field {
+  height: 24px;
+  white-space: nowrap;
 }
 .plugin-distribution .ordered-product {
   transition: all 0.2s ease-in-out;
@@ -372,7 +544,6 @@
 }
 
 /* ----- end ordered product  ----- */
-
 
 .plugin-distribution .distribution-plugin-product-left-column {
   width: 55%;
@@ -542,49 +713,32 @@
 
 /* ----- ends delivery stuff  ----- */
 
+/* ----- order stuff  ----- */
 
-.plugin-distribution .box-field.product {
+.plugin-distribution .order-session-product .box-field.product {
   width: 140px;
   font-weight: bold;
 }
-.plugin-distribution .box-field.status {
+.plugin-distribution .order-session-product .box-field.status {
   width: 50px;
 }
-.plugin-distribution .box-field.category {
+.plugin-distribution .order-session-product .box-field.category {
   width: 70px;
 }
-.plugin-distribution .box-field.supplier {
+.plugin-distribution .order-session-product .box-field.supplier {
   width: 60px;
 }
-.plugin-distribution .box-field.price {
+.plugin-distribution .order-session-product .box-field.price {
   color: #0094c9;
   width: 75px;
 }
-.plugin-distribution .box-field.stock {
+.plugin-distribution .order-session-product .box-field.stock {
   width: 80px;
 }
-.plugin-distribution .box-field.actions-circle {
-  height: 15px;
-  width: 15px;
-  background-color: #FDF2A3;
-  padding: 0;
-  margin-top: 3px;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -o-border-radius: 5px;
+.plugin-distribution .order-session-product .box-index .box-field {
+  text-decoration: un.order-session-product derline;
 }
-.plugin-distribution .box-field.actions-circle .actions-arrow {
-  border-top: 4px solid #726D47;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  margin: 6px 2px 0px 2px;
-  display: block;
-}
-.plugin-distribution .box-index .box-field {
-  text-decoration: underline;
-}
-.plugin-distribution .box-index .box-field.price {
+.plugin-distribution .order-session-product .box-index .box-field.price {
   color: inherit;
 }
 
@@ -604,7 +758,9 @@
   padding: 8px;
 }
 
-/* -----  filter fields  ----- */
+/* ----- ends order stuff  ----- */
+
+/* ----- filter fields  ----- */
 
 .plugin-distribution #filter-fields {
   background-color: #e9f9d5;
@@ -719,11 +875,6 @@
   font-weight: bold;
   display: block;
   line-height: 16px;
-}
-.plugin-distribution .our-product-edit .line-label {
-  margin: 10px 9px;
-  display: inline-block;
-  font-weight: bold;
 }
 .plugin-distribution .our-product-edit .small-input {
   width: 115px;
@@ -1046,28 +1197,26 @@
   background-color: #646158;
 }
 
-/* overring profile header */
-.plugin-distribution #profile-header {
-  display: none;
+/* ----- message stuff  ----- */
+
+.distribution-plugin-message {
+  margin: -1em -1em 0 -1em;
 }
-/* overring page title */
-.plugin-distribution .page-title {
-  display: none !important;
+.distribution-plugin-message h1 {
+  margin: 0;
+  padding: 15px 30px;
+  background-color: #B1DFEF;
+  font-size: 13px;
+  font-weight: normal;
+  text-transform: uppercase;
 }
-.plugin-distribution #content {
-  border-top: 0px;
+.distribution-plugin-message > * {
+  padding: 0 30px;
 }
-.plugin-distribution #content #distribution-plugin-header h1 {
-  border-bottom: 0px;
-  color: #000;
-  text-align: left;
+.distribution-plugin-message input[type=text],
+.distribution-plugin-message textarea {
+  width: 100%;
 }
-.plugin-distribution #content .no-boxes h1 {
-  font-variant: normal
-}
-body.plugin-distribution {
-  line-height: 20px
-}
-.plugin-distribution #content {
-  margin-top: 100px;
-}
+
+/* ----- end message stuff  ----- */
+

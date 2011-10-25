@@ -8,7 +8,7 @@ class DistributionPluginSourceProduct < ActiveRecord::Base
 
   alias_method :destroy!, :destroy
   def destroy
-    to_product.destroy!
+    to_product.destroy! if to_product
     destroy!
   end
 

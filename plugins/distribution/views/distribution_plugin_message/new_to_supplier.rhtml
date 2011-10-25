@@ -1,0 +1,10 @@
+<div id="" class="distribution-plugin-message">
+  <h1 class="message-title"><%= _('Message to supplier "%{supplier}"') % {:supplier => @supplier.name} %></h1>
+
+  <% form_tag params do %>
+    <%= render :partial => 'fields' %>
+
+     <%= submit_tag _('Send') %>
+  <%= link_to_function 'cancel', 'lightbox.prototype.deactivate()' %>
+  <% end %>
+</div>

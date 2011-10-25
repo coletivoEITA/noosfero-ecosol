@@ -2,9 +2,13 @@ class DistributionPluginOrder < ActiveRecord::Base
   belongs_to :session, :class_name => 'DistributionPluginSession'
   belongs_to :consumer, :class_name => 'DistributionPluginNode'
 
+  has_many :suppliers, :through => :products, :uniq => true
   has_many :products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'order_id', :dependent => :destroy, :order => 'id asc'
-  has_many :suppliers, :through => :products #FIXME: not working
-  has_many :supplied_products, :through => :products, :source => :product
+
+  has_many :used_products, :through => :products, :source => :product
+
+  has_many :from_products, :through => :products
+  has_many :to_products, :through => :products
   
   has_one :supplier_delivery, :class_name => 'DistributionPluginDeliveryMethod'
   has_one :consumer_delivery, :class_name => 'DistributionPluginDeliveryMethod'

@@ -19,4 +19,17 @@ module DistributionPlugin::DistributionDisplayHelper
     start.to_time.strftime(_("%d/%m/%y at %H:%M")) + ' ' + _('to') + ' ' + finish.to_time.strftime(_("%d/%m/%y at %H:%M"))
   end
 
+  def month_with_time(time)
+    time.strftime(_('%m/%y - %Hh%M'))
+  end
+
+  def edit_arrow(anchor, toggle = true, options = {})
+    options[:class] ||= ''
+    options[:onclick] ||= ''
+    options[:class] += ' actions-circle'
+    options[:onclick] = "r = distribution_edit_arrow_toggle(this); #{options[:onclick]}; return r;" if toggle
+
+    link_to content_tag('div', '', :class => 'actions-arrow'), anchor, options
+  end
+
 end

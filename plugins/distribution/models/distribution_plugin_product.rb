@@ -29,8 +29,6 @@ class DistributionPluginProduct < ActiveRecord::Base
   named_scope :archived, :conditions => {:archived => true}
   named_scope :unarchived, :conditions => {:archived => false}
 
-  has_many :ordered_products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'session_product_id', :dependent => :destroy
-
   has_many :sources_from_products, :class_name => 'DistributionPluginSourceProduct', :foreign_key => 'to_product_id'
   has_many :sources_to_products, :class_name => 'DistributionPluginSourceProduct', :foreign_key => 'from_product_id', :dependent => :destroy
 
@@ -38,6 +36,15 @@ class DistributionPluginProduct < ActiveRecord::Base
   has_many :from_products, :through => :sources_from_products
   has_many :to_nodes, :through => :to_products, :source => :node
   has_many :from_nodes, :through => :from_products, :source => :node
+
+  # for products in session, these are the products of the suppliers
+  # p in session -> p distributed -> p from supplier
+  has_many :from_2x_products, :through => :from_products, :source => :from_products
+
+  has_many :ordered_products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'session_product_id', :dependent => :destroy
+
+  has_many :in_sessions, :through => :to_products, :source => :session
+  has_many :in_orders, :through => :ordered_products, :source => :order
 
   validates_presence_of :node
   validates_presence_of :name, :if => Proc.new { |p| !p.dummy? }
@@ -129,24 +136,31 @@ class DistributionPluginProduct < ActiveRecord::Base
   end
 
   def unit
-    self['unit'] || Unit.first
+    self['unit'] || Unit.new(:singular => _('unit'), :plural => _('units'))
   end
 
   def total_quantity_asked
-    @total_quantity_asked
+    self.ordered_products.sum(:quantity_asked)
   end
-  def total_quantity_asked=(value)
-    @total_quantity_asked = value
+  def total_price_asked
+    self.ordered_products.sum(:price_asked)
+  end
+  def total_parcel_quantity
+    #FIXME: convert units
+    total_quantity_asked
+  end
+  def total_parcel_price
+    from_2x_products.sum(:price) * total_parcel_quantity
   end
 
   def archive
-    self.sources_to_products.each { |s| s.destroy }
+    #self.sources_to_products.each { |s| s.destroy }
     self.update_attributes! :archived => true
   end
 
   alias_method :destroy!, :destroy
   def destroy
-    raise "Products shouldn't be destroyed!"
+    raise "Products shouldn't be destroyed for the sake of the history!"
   end
 
   protected

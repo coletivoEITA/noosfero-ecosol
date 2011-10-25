@@ -1,6 +1,6 @@
 <div class="value-row <%= 'in-order' if ordered_product %>">
   <div class="box-field supplier"><%= product.supplier.name %></div>
-  <div class="box-field product"><%= product.product.name %></div>
+  <div class="box-field product"><%= product.name %></div>
   <div class="box-field price"><%= price_span(product.price) +"/<span class='lower'>#{product.unit.singular}</span>" %></div>
   
   <div class="box-field quantity">

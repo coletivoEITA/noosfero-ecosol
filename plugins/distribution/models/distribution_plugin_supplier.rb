@@ -67,7 +67,7 @@ class DistributionPluginSupplier < ActiveRecord::Base
   #delegate to node
   def method_missing(method, *args, &block)
     if self.respond_to? method
-      send(method, *args, &block)
+      super
     else
       node.send(method, *args, &block)
     end

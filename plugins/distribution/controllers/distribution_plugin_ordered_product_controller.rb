@@ -20,9 +20,8 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
     @ordered_product.update_attributes params[:ordered_product]
   end
 
-  def report_produts
-    @ordered_produts = DistributionPluginOrderedProduct.find_all_by_session_id(params[:id])
-
+  def report_products
+    @ordered_products = DistributionPluginOrderedProduct.find(:all, :conditions => ["distribution_plugin_products.session_id = ?" ,params[:id]], :include => :product)
   end
 
   def destroy

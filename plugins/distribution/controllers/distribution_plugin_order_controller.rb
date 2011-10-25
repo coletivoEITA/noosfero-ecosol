@@ -19,6 +19,35 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     @product_categories = ProductCategory.find :all, :limit => 10
   end
 
+  def session_edit
+    @order = DistributionPluginOrder.find params[:id]
+    a = {}; @order.products.map{ |p| a[p.id] = p }
+    b = {}; params[:order][:products].map do |key, attrs|
+      p = DistributionPluginOrderedProduct.new attrs
+      p.id = attrs[:id]
+      b[p.id] = p
+    end
+
+    removed = a.values.map do |p|
+      p if b[p.id].nil?
+    end.compact
+    changed = b.values.map do |p|
+      pa = a[p.id]
+      if pa and p.quantity_asked != pa.quantity_asked
+        pa.quantity_asked = p.quantity_asked
+        pa
+      end
+    end.compact
+
+    if params[:warn_consumer]
+      message = (params[:include_message] and !params[:message].blank?) ? params[:message] : nil
+      DistributionPlugin::Mailer.deliver_order_change_notification @node, @order, changed, removed, message
+    end
+
+    changed.each{ |p| p.save! }
+    removed.each{ |p| p.destroy }
+  end
+
   def filter_products
     @products = @session.products.find_by_contents params[:query]
   end

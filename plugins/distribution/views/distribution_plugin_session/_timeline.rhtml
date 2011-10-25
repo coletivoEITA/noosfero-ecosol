@@ -1,4 +1,4 @@
-<div class="distribution-plugin-session-timeline">
+<div class="session-timeline">
   <% urls = [
       [_('Edition'), 'edition'],
       #[_('Call'), 'call'],
@@ -9,10 +9,22 @@
       #[_('Close'), 'close'],
     ]
   %>
-  <% urls.each do |name, status| %>
-    <%= link_to name, params.merge(:action => :edit, :id => session.id, :view => status),
-      :class => "distribution-plugin-session-timeline-item #{timeline_class(session, status, params[:view] || session.status)}" %>
-  <% end %>
 
-  <div style="clear: both"></div>
+  <div>
+    <% urls.each do |name, status| %>
+      <%= link_to name, params.merge(:action => :edit, :id => session.id, :view => status),
+        :class => "session-timeline-item #{timeline_class(session, status, params[:view] || session.status)}" %>
+    <% end %>
+  </div>
+
+  <div class="actions-bar">
+    <%= link_to_function _('Block orders period'), '' %>
+    <%= link_to_function _('Spreadsheet with the orders'), '' %>
+    <%= link_to_function _('Spreadsheet with product listing'), '' %>
+    <strong><%= _('Actions') %></strong>
+
+    <div class="cleaner"></div>
+  </div>
+
+  <div class="cleaner"></div>
 </div>
