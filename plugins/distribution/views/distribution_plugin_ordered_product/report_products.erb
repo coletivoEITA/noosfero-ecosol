@@ -1,6 +1,18 @@
-<% if defined? ODF::Spreadsheet %>
-  <%= "tem" %>
-<% else%>
-  <%= "<h1>nao tem!!</h1>"%>
-  <%= debug @ordered_products %>
+<% if not @ordered_products.blank? %>
+  <% @ordered_products.each do |supplier, ordered_products| %>
+    <%# blue %>
+    "Produtor", "Valor total vendido", "Valor total encomenda"
+    <%= supplier %><%= "Valor vendido formula"%><%= "Valor encomenda formula"%>
+    <%= "break merged line" %>
+    <%# green %>
+    <%= _("product cod.") %><%= _("product name") %><%= _("qtt ordered") %><%= _("min. qtt") %><%= _("qtt to be encomendada") %><%= _("projected stock") %><%= _("un.") %><%= _("preço/un") %><%= _("valor vendido") %><%= _("valor encomenda") %>
+    <% ordered_products.each do |ordered_product| %>
+      <%= ordered_product.product.product.id %><%= ordered_product.product.product.name %><%= ordered_product.quantity_asked %><%= ordered_product.product.minimum_selleable %><%= "formula" %><%= "formula" %><%= ordered_product.product.product.uni.singular  %><%= ordered_product.product.price %><%= "formula" %><%= "formula" %>
+    <% end %>
+    <%= "break merged line" %>
+  <% end %>
+  <%= _("selled total") %>
+  <%= "formula" %>
+  <%= _("total encomendas") %>
+  <%= "formula" %>
 <% end %>
