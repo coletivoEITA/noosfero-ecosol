@@ -1,8 +1,8 @@
 <h2>
   <% if session.status == 'new' %>
-    <div class="session-edit-link"><%= _('New session') %></div>
+    <div class="session-edit-link"><%= _('New cycle') %></div>
   <% else %>
-    <%= link_to _('Order Session:') + ' ' + session.start.to_s + ' / ' + session.name,
+    <%= link_to _('Order Cycle: ') + session.name,
       {:action => 'edit', :profile => profile.identifier, :id => session.id },
       :class => "session-edit-link" %>
   <% end %>

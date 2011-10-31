@@ -13,7 +13,9 @@
   </div>
 
   <% orders.each do |order| %>
-    <%= render :partial => 'distribution_plugin_order/session_edit', :locals => {:order => order} %>
+    <div id="in-session-order-<%=order.id%>" class="in-session-order">
+      <%= render :partial => 'distribution_plugin_order/session_edit', :locals => {:order => order} %>
+    </div>
   <% end %>
 <% end %>
 

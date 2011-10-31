@@ -1,8 +1,6 @@
 var editing = jQuery();
+var clicked = jQuery();
 
-function sessionProductSetFocus(id) {
-  jQuery(id).find('input').focus();
-}
 
 function distribution_edit_arrow_toggle(arrow, toggle) {
   arrow = jQuery(arrow);
@@ -13,13 +11,13 @@ function distribution_edit_arrow_toggle(arrow, toggle) {
   return arrow.hasClass('edit');
 }
 
+
 function distribution_order_session_product_toggle(el, selected) {
   el.find('.value-row').toggleClass('clicked', selected);
-  el.find('.session-product-more-info').toggle(selected);
+  el.find('.more-info').toggle(selected);
   el.find('.quantity-label').toggle(!selected);
   el.find('.quantity-entry').toggle(selected);
 }
-var clicked = jQuery();
 function distribution_order_session_product_click() {
   it = jQuery(this);
   if (clicked == it)
@@ -30,20 +28,20 @@ function distribution_order_session_product_click() {
 
   return false;
 }
+
 jQuery(document).click(function(event) {
-  if (jQuery(event.target).parents('.ordered-product-more-actions').length > 0) //came from anchor click!
+  if (jQuery(event.target).parents('.more-actions').length > 0) //came from anchor click!
     return;
   distribution_order_session_product_toggle(clicked, false);
 });
-
 function distribution_order_session_product_hover() {
   jQuery(this).find('.value-row').toggleClass('selected');
 }
-
 function distribution_ordered_product_hover() {
   jQuery(this).toggleClass('selected');
-  jQuery(this).find('.ordered-product-more-actions').toggle();
+  jQuery(this).find('.more-actions').toggle();
 }
+
 
 function distribution_our_product_toggle_referred(context) {
   p = jQuery(context).parents('.our-product-edit');
@@ -60,6 +58,7 @@ function distribution_our_product_toggle_referred(context) {
     }
   });
 }
+
 function distribution_our_product_sync_referred(context) {
   p = jQuery(context).parents('.our-product-edit');
   referred = p.find('#'+context.id.replace('product_supplier_product', 'product')).get(0);
@@ -90,15 +89,6 @@ function distribution_our_product_add_from_product(context, url, data) {
   });
 }
 
-function distribution_node_margin_toggle_edit(context) {
-  c = jQuery('#node-margin-percentage');
-  i = c.find('input[type=text]');
-  c.toggleClass('edit view');
-  c.find('.toggle-button').toggle();
-  i.toggleDisabled();
-  c.toggleClass('empty', i.val().empty());
-  c.toggleClass('non-empty', !i.val().empty());
-}
 
 function distribution_supplier_toggle_edit(context) {
   p = jQuery(context).parents('.supplier');
@@ -111,12 +101,16 @@ function distribution_supplier_toggle_edit(context) {
   p.find('.supplier-edit').toggle();
 }
 
-function distribution_plugin_session_order_toggle_edit(context) {
-  newEditing = jQuery(context).parents('.in-session-order');
 
-  newEditing.find('.in-session-order-edit').toggle(true);
-  newEditing.toggleClass('edit', true);
-  distribution_edit_arrow_toggle(editing, true);
+function distribution_plugin_session_order_toggle_edit(context) {
+  if (context != null) {
+    newEditing = jQuery(context).parents('.in-session-order');
+
+    newEditing.find('.in-session-order-edit').toggle(true);
+    newEditing.toggleClass('edit', true);
+    distribution_edit_arrow_toggle(editing, true);
+  } else
+    newEditing = jQuery();
 
   editing.find('.in-session-order-edit').toggle(false);
   editing.toggleClass('edit', false);
@@ -126,18 +120,15 @@ function distribution_plugin_session_order_toggle_edit(context) {
   
 }
 
-function distribution_plugin_session_product_edit(id) {
-  editing = jQuery(id);
-  stop_editing = editing.index(editing) ? false : true;
+function distribution_plugin_session_product_edit(context) {
+  editing = jQuery(context).hasClass('session-product') ? jQuery(context) : jQuery(context).parents('.session-product');
 
-  editing.removeClass('session-product-editing');
-  editing.find('.session-product-edit').hide();
-  if (!stop_editing) {
-    editing.addClass('session-product-editing');
-    editing.find('.session-product-edit').show();
-    editing = editing;
-  }
+  toggle = !editing.hasClass('edit');
+
+  editing.toggleClass('edit', toggle);
+  editing.find('.session-product-edit').toggle(toggle);
 }
+
 
 (function($) {
   $.fn.toggleDisabled = function() {

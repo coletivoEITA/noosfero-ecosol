@@ -1,0 +1,15 @@
+<div id="" class="distribution-plugin-popin distribution-plugin-message">
+  <h1><%= _('Message to member "%{consumer}"') %message {:consumer => @consumer.name} %></h1>
+
+  <% form_remote_tag :url => params do %>
+    <%= render :partial => 'fields' %>
+
+    <div>
+      <%= check_box_tag :include_order, 1, true, :style => 'float: left'  %>
+      <%= label_tag :include_order, _('Include reference to the order made'), :class => 'line-label' %>
+    </div>
+
+     <%= submit_tag _('Send') %>
+     <%= link_to_function 'cancel', 'lightbox.prototype.deactivate()' %>
+  <% end %>
+</div>

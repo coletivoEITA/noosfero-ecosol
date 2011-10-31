@@ -21,7 +21,18 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
   end
 
   def report_products
-    @ordered_products = DistributionPluginOrderedProduct.find(:all, :conditions => ["distribution_plugin_products.session_id = ?" ,params[:id]], :include => :product)
+    extend DistributionPlugin::Report::ClassMethods
+    session = DistributionPluginSession.find_by_id(params[:id])
+    @ordered_products_by_suppliers = session.ordered_products_by_suppliers
+    tmp_dir, report_file = report_products_by_supplier @ordered_products_by_suppliers
+    if report_file.nil?
+      return false
+    end
+    send_file report_file, :type => 'application/ods',
+      :disposition => 'attachment',
+      :filename => _("Products Report.ods")
+    require 'fileutils'
+    #FileUtils.rm_rf tmp_dir
   end
 
   def destroy

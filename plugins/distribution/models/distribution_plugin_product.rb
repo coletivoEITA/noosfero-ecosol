@@ -10,7 +10,6 @@ class DistributionPluginProduct < ActiveRecord::Base
   named_scope :from_supplier, lambda { |supplier| supplier.nil? ? {} : { :conditions => {:supplier_id => supplier.id} } }
 
   #optional fields
-  belongs_to :session, :class_name => 'DistributionPluginSession'
   belongs_to :product
   belongs_to :unit
 
@@ -32,19 +31,15 @@ class DistributionPluginProduct < ActiveRecord::Base
   has_many :sources_from_products, :class_name => 'DistributionPluginSourceProduct', :foreign_key => 'to_product_id'
   has_many :sources_to_products, :class_name => 'DistributionPluginSourceProduct', :foreign_key => 'from_product_id', :dependent => :destroy
 
-  has_many :to_products, :through => :sources_to_products
-  has_many :from_products, :through => :sources_from_products
+  has_many :to_products, :through => :sources_to_products, :order => 'id asc'
+  has_many :from_products, :through => :sources_from_products, :order => 'id asc'
   has_many :to_nodes, :through => :to_products, :source => :node
   has_many :from_nodes, :through => :from_products, :source => :node
 
-  # for products in session, these are the products of the suppliers
-  # p in session -> p distributed -> p from supplier
-  has_many :from_2x_products, :through => :from_products, :source => :from_products
-
-  has_many :ordered_products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'session_product_id', :dependent => :destroy
-
-  has_many :in_sessions, :through => :to_products, :source => :session
-  has_many :in_orders, :through => :ordered_products, :source => :order
+  #must be overriden on subclasses
+  def supplier_products
+    []
+  end
 
   validates_presence_of :node
   validates_presence_of :name, :if => Proc.new { |p| !p.dummy? }
@@ -60,22 +55,19 @@ class DistributionPluginProduct < ActiveRecord::Base
 
   extend ActsAsHavingSettings::DefaultItem::ClassMethods
   acts_as_having_settings :field => :settings
-  settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :supplier_product
-  settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :supplier_product
-  settings_default_item :margin_percentage, :type => :boolean, :default => true, :delegate_to => :supplier_product
-  settings_default_item :price, :type => :boolean, :default => true, :delegate_to => :supplier_product
-  default_item :unit_id, :if => :default_price, :delegate_to => :supplier_product
-  default_item :minimum_selleable, :if => :default_price, :delegate_to => :supplier_product
-  default_item :selleable_factor, :if => :default_price, :delegate_to => :supplier_product
 
-  alias_method :default_name_setting, :default_name
-  def default_name
-    dummy? ? nil : default_name_setting
-  end
-  alias_method :default_description_setting, :default_description
-  def default_description
-    dummy? ? nil : default_description_setting
-  end
+  DEFAULT_ATTRIBUTES = [:name, :description, :margin_percentage, :margin_fixed,
+    :price, :stored, :unit_id, :minimum_selleable, :selleable_factor]
+
+  settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :from_product
+  settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :from_product
+  settings_default_item :margin_percentage, :type => :boolean, :default => true, :delegate_to => :node
+  settings_default_item :margin_fixed, :type => :boolean, :default => true, :delegate_to => :node
+  settings_default_item :price, :type => :boolean, :default => true, :delegate_to => :from_product
+  settings_default_item :stored, :type => :boolean, :default => true, :delegate_to => :from_product
+  default_item :unit_id, :if => :default_price, :delegate_to => :from_product
+  default_item :minimum_selleable, :if => :default_price, :delegate_to => :from_product
+  default_item :selleable_factor, :if => :default_price, :delegate_to => :from_product
 
   def dummy?
     supplier ? supplier.dummy? : false
@@ -85,12 +77,16 @@ class DistributionPluginProduct < ActiveRecord::Base
     supplier ? supplier.node == node : false
   end
 
+  def from_product
+    from_products.first
+  end
+
   def supplier_product
     return nil if own? 
-    @supplier_product ||= from_products.by_node_id(supplier.node.id).first
+    @supplier_product ||= supplier_products.by_node_id(supplier.node.id).first
 
     #automatically create a product for this dummy supplier
-    if dummy? and not @supplier_product
+    if dummy? and not @supplier_product and not session
       @supplier_product = DistributionPluginProduct.new(:node => supplier.node, :supplier => supplier)
       from_products << @supplier_product
     end
@@ -116,41 +112,27 @@ class DistributionPluginProduct < ActiveRecord::Base
     s = node.suppliers.from_node(product.node).first
     raise "Supplier not found" if s.blank?
 
-    self.attributes = product.attributes.merge(:supplier_id => s.id, :margin_percentage => nil, :margin_fixed => nil)
+    self.attributes = product.attributes.merge(:supplier_id => s.id)
     self.supplier = s
     from_products << product unless from_products.include? product
     @supplier_product = product
   end
 
-  def apply_distribution
-    if margin_percentage
-      price += (margin_percentage/100)*price
-    elsif node.margin_percentage
-      price += (node.margin_percentage/100)*price
-    end
-    if margin_fixed
-      price += margin_fixed
-    elsif node.margin_fixed
-      price += node.margin_fixed
-    end
+  def price_without_margins
+    self['price']
+  end
+  def price
+    price_with_margins = price_without_margins
+    return price_with_margins if price_with_margins.blank?
+
+    price_with_margins += (margin_percentage/100)*price_with_margins if margin_percentage
+    price_with_margins += margin_fixed if margin_fixed
+
+    price_with_margins
   end
 
   def unit
     self['unit'] || Unit.new(:singular => _('unit'), :plural => _('units'))
-  end
-
-  def total_quantity_asked
-    self.ordered_products.sum(:quantity_asked)
-  end
-  def total_price_asked
-    self.ordered_products.sum(:price_asked)
-  end
-  def total_parcel_quantity
-    #FIXME: convert units
-    total_quantity_asked
-  end
-  def total_parcel_price
-    from_2x_products.sum(:price) * total_parcel_quantity
   end
 
   def archive

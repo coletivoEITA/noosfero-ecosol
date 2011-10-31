@@ -39,7 +39,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
       end
     end.compact
 
-    if params[:warn_consumer]
+    if params[:warn_consumer] and !changed.blank? and !removed.blank?
       message = (params[:include_message] and !params[:message].blank?) ? params[:message] : nil
       DistributionPlugin::Mailer.deliver_order_change_notification @node, @order, changed, removed, message
     end

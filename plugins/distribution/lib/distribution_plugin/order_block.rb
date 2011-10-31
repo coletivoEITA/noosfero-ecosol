@@ -22,7 +22,7 @@ class DistributionPlugin::OrderBlock < Block
  end
 
  def help
-   _('Offer sessions to you customers to make offers')
+   _('Offer cycles for you customers to make offers')
  end
 
  def content

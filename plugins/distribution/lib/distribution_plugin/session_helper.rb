@@ -4,9 +4,9 @@ module DistributionPlugin::SessionHelper
 
   def timeline_class(session, status, selected)
     klass = ""
-    klass += " timeline-passed-item" if session.passed_by?(status)
-    klass += " timeline-current-item" if session.status == status
-    klass += " timeline-selected-item" if selected == status
+    klass += " session-timeline-passed-item" if session.passed_by?(status)
+    klass += " session-timeline-current-item" if session.status == status
+    klass += " session-timeline-selected-item" if selected == status
     klass
   end
 

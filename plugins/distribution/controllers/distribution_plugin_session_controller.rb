@@ -3,7 +3,7 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
 
   helper DistributionPlugin::SessionHelper
 
-  before_filter :set_admin_action, :only => [:index, :new, :edit]
+  before_filter :set_admin_action
 
   def index
     @sessions = @node.sessions
@@ -20,8 +20,15 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     end
   end
 
+  def step
+    @session = DistributionPluginSession.find params[:id]
+    @session.step
+    @session.save!
+    redirect_to :action => 'edit', :id => @session.id
+  end
+
   def edit
-    @session = DistributionPluginSession.find_by_id(params[:id])
+    @session = DistributionPluginSession.find params[:id]
     if request.post?
       @session.update_attributes(params[:session])
       @session.save

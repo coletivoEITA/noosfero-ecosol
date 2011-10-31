@@ -1,4 +1,4 @@
-<div class="session-timeline">
+<div class="session-timeline box-align">
   <% urls = [
       [_('Edition'), 'edition'],
       #[_('Call'), 'call'],
@@ -9,22 +9,40 @@
       #[_('Close'), 'close'],
     ]
   %>
+  <% view = params[:view] || session.status %>
 
   <div>
     <% urls.each do |name, status| %>
       <%= link_to name, params.merge(:action => :edit, :id => session.id, :view => status),
-        :class => "session-timeline-item #{timeline_class(session, status, params[:view] || session.status)}" %>
+        :class => "session-timeline-item #{timeline_class(session, status, view)}" %>
     <% end %>
   </div>
 
-  <div class="actions-bar">
-    <%= link_to_function _('Block orders period'), '' %>
-    <%= link_to_function _('Spreadsheet with the orders'), '' %>
-    <%= link_to_function _('Spreadsheet with product listing'), '' %>
-    <strong><%= _('Actions') %></strong>
+  <%
+    actions = {
+      :edition => [
+      ],
+      :orders => [
+        [ _('Spreadsheet with the orders'), '' ],
+        [ _('Spreadsheet with product listing'), '' ],
+      ],
+    }
+    actions[:edition].unshift [ _('Finish session editing'), {:action => :step, :id => session.id, :method => :post},
+      { :id => 'session-open-session' } ] unless session.passed_by?('edition')
+    actions[:orders].unshift [ session.open? ? _('Block orders period') : _('Close orders period'),
+      {:action => :step, :id => session.id, :method => :post}, { :id => 'session-open-session' } ] unless session.passed_by?('orders')
+  %>
 
-    <div class="cleaner"></div>
-  </div>
+  <% unless actions[view.to_sym].blank? %>
+    <div class="actions-bar">
+      <% actions[view.to_sym].each do |args| %>
+        <%= link_to *args %>
+      <% end %>
+      <strong><%= _('Actions') %></strong>
+
+      <div class="cleaner"></div>
+    </div>
+  <% end %>
 
   <div class="cleaner"></div>
 </div>

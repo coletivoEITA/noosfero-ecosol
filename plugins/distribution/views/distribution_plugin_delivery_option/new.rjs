@@ -1,10 +1,10 @@
 if params[:new_method]
-  page << "jQuery('.distribution-plugin-new-delivery-method form input').val('')"
-  page << "jQuery('.distribution-plugin-new-delivery-method').hide()"
+  page << "jQuery('.new-delivery-method form input').val('')"
+  page << "jQuery('.new-delivery-method').hide()"
 else
-  page.remove 'distribution-plugin-delivery-method-as-option-'+@delivery_method.id.to_s
+  page.remove 'delivery-method-as-option-'+@delivery_method.id.to_s
 end
 
-page.insert_html :bottom, 'distribution-plugin-session-delivery-options', :partial => 'show'
+page.insert_html :bottom, 'session-delivery-options', :partial => 'show'
 page << 'lightbox.prototype.deactivate()'
 

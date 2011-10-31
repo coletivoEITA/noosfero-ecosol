@@ -13,12 +13,12 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     conditions += ['active = ?', params["active"]] unless params["active"].blank?
     conditions += ['supplier_id = ?', params["supplier_id"]] unless params["supplier_id"].blank?
     conditions += ['LOWER(name) LIKE ?', '%'+params["name"]+'%'] unless params["name"].blank?
-    conditions = DistributionPluginProduct.send :merge_conditions, conditions
+    conditions = DistributionPluginDistributedProduct.send :merge_conditions, conditions
 
     @products = @node.products.distributed.all :conditions => conditions, :group => (['supplier_id', 'id']+DistributionPluginProduct.new.attributes.keys).join(',')
     @all_products_count = @node.products.distributed.count
     @product_categories = ProductCategory.find(:all)
-    @new_product = DistributionPluginProduct.new :node => @node, :supplier_id => params[:supplier_id]
+    @new_product = DistributionPluginDistributedProduct.new :node => @node, :supplier_id => params[:supplier_id]
 
     respond_to do |format|
       format.html
@@ -30,38 +30,51 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     @supplier = DistributionPluginSupplier.find_by_id params[:product][:supplier_id].to_i
     if params[:commit]
       #:supplier_product_id must be set first. it will when params follow the form order with ruby 1.9 ordered hashes
-      @product = DistributionPluginProduct.new :node => @node, :supplier_product_id => params[:product].delete(:supplier_product_id)
+      @product = DistributionPluginDistributedProduct.new :node => @node, :supplier_product_id => params[:product].delete(:supplier_product_id)
       @product.update_attributes! params[:product]
     else
-      @product = DistributionPluginProduct.new :node => @node, :supplier => @supplier, :supplier_product_id => params[:product][:supplier_product_id]
+      @product = DistributionPluginDistributedProduct.new :node => @node, :supplier => @supplier, :supplier_product_id => params[:product][:supplier_product_id]
       not_distributed_products(params[:product][:supplier_product_id])
       render :partial => 'edit', :locals => {:product => @product}, :layout => false
     end
   end
 
   def edit
-    @product = DistributionPluginProduct.find params[:id]
+    @product = DistributionPluginDistributedProduct.find params[:id]
     @product.update_attributes! params[:product]
     render :layout => false
   end
 
-  def session_edit
-    @product = DistributionPluginProduct.find params[:id]
-    if request.post?
-      @product.update_attributes! params[:product]
-      @product.save!
+  def session_add
+    @session = DistributionPluginSession.find params[:session_id]
+    @missing_products = @node.products.distributed - @session.from_products
+    if params[:products_id]
+      params[:products_id].each do |id|
+        product = DistributionPluginDistributedProduct.find id
+        DistributionPluginSessionProduct.create_from_distributed @session, product
+      end
+      render :partial => 'distribution_plugin_shared/pagereload'
+    else
+      render :layout => false
     end
+  end
+
+  def session_edit
+    @product = DistributionPluginSessionProduct.find params[:id]
     if request.xhr?
-      render :partial => 'session_edit', :locals => {:p => @product}, :layout => false
+      @product.update_attributes! params[:product]
+      respond_to do |format|
+        format.js
+      end
     end
   end
 
   def session_destroy
-    @product = DistributionPluginProduct.find params[:id]
+    @product = DistributionPluginSessionProduct.find params[:id]
     raise 'Product not found' if @product
     @product_id = @product.id
     @product.destroy
-    flash[:notice] = _('Product removed from session')
+    flash[:notice] = _('Product removed from cycle')
   end
 
   protected

@@ -1,6 +1,6 @@
-<div id="distribution-plugin-session-delivery-option-<%=@delivery_option.id%>" class="distribution-plugin-session-delivery-option">
+<div id="session-delivery-option-<%=@delivery_option.id%>" class="session-delivery-option">
   <span><%= @delivery_option.delivery_method.name %></span>
-  <%= link_to_remote(_('X'), {:update => 'distribution-plugin-delivery-session-option-'+@delivery_option.id.to_s,
+  <%= link_to_remote(_('X'), {:update => 'delivery-session-option-'+@delivery_option.id.to_s,
                      :url => { :controller => :distribution_plugin_delivery_option, :action => "destroy", :id => @delivery_option.id }},
-                     :class => 'distribution-plugin-session-delete-delivery-option') %>
+                     :class => 'session-delete-delivery-option') %>
 </div>

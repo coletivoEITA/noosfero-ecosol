@@ -1,12 +1,13 @@
 <div id="suppliers-page" class="admin-page">
   <h2><%= _('Suppliers') %></h2>
-  <div class="subtitle">
+
+  <div class="subtitle text-wrap">
     <%= _('This is the list of suppliers associated to this consumption collective. It is possible to associate with existent suppliers or register one.') %>
   </div>
 
   <div class="subtitle supplier-add-link"><%= link_to _('Add supplier'), '#supplier-add', :onclick => 'distribution_supplier_toggle_edit(this);' %></div>
 
-  <div class="suppleir-listing">
+  <div class="supplier-listing box-align">
     <div id="supplier-add" class="supplier">
       <%= render :partial => 'supplier', :object => @new_supplier %>
     </div>

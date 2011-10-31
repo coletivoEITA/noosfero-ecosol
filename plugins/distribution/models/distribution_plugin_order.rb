@@ -3,9 +3,10 @@ class DistributionPluginOrder < ActiveRecord::Base
   belongs_to :consumer, :class_name => 'DistributionPluginNode'
 
   has_many :suppliers, :through => :products, :uniq => true
-  has_many :products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'order_id', :dependent => :destroy, :order => 'id asc'
+  has_many :products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'order_id', :dependent => :destroy,
+    :order => 'id asc', :include => :product
 
-  has_many :used_products, :through => :products, :source => :product
+  has_many :session_products, :through => :products, :source => :product
 
   has_many :from_products, :through => :products
   has_many :to_products, :through => :products
@@ -45,14 +46,8 @@ class DistributionPluginOrder < ActiveRecord::Base
     supplier_delivery and supplier_delivery.delivery_type == 'delivery'
   end
 
-  def open_session?
-    if !session.open?
-      errors.add_to_base('associated session is closed')
-    end
-  end
-
-  def confirmed?
-    status == 'confirmed'
+  def open?
+    !confirmed? && session.open?
   end
 
   def total_asked
@@ -65,6 +60,14 @@ class DistributionPluginOrder < ActiveRecord::Base
   def default_values
     self.status ||= 'draft'
     self.supplier_delivery
+  end
+
+  def confirmed?
+    status == 'confirmed'
+  end
+
+  def open_session?
+    errors.add_to_base('order confirmed or cycle is closed for orders') unless open?
   end
 
 end

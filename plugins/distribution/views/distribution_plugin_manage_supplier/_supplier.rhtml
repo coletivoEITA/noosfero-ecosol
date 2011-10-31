@@ -29,7 +29,7 @@
       <div><%= link_to_function _("edit"), 'distribution_supplier_toggle_edit(this)' %></div>
       <div><%= link_to _("desactivate"), :url => {:controller => :distribution_plugin_manage_supplier, :action => :desactivate, :id => supplier.id} %></div>
       <div><%= link_to _("remove"), :url => {:controller => :distribution_plugin_manage_supplier, :action => :destroy, :id => supplier.id},
-        :confirm => _("By removing this supplier all its products won't be available for future sessions. Please confirm you choice"), :class => 'supplier-remove' %></div>
+        :confirm => _("By removing this supplier all its products won't be available for future cycles. Please confirm you choice"), :class => 'supplier-remove' %></div>
       <div><%= link_to _("products"), {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id} %></div>
       <div><%= link_to _("add products"), {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id, :anchor => 'our-product-add'} %></div>
     </div>

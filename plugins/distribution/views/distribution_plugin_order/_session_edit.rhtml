@@ -1,42 +1,44 @@
-<div id="in-session-order-<%=order.id%>" class="in-session-order">
-  <div class="in-session-order-view value-row">
-    <span class='box-field in-session-order-code'><%= order.id %></span>
-    <span class='box-field in-session-order-member'><%= order.consumer.name %></span>
-    <span class='box-field in-session-order-created-at'><%= month_with_time(order.created_at) %></span>
-    <span class='box-field in-session-order-modified-at'><%= month_with_time(order.updated_at) %></span>
-    <span class='box-field in-session-order-products-count'><%= order.products.count %></span>
-    <span class='box-field in-session-order-value'><%= price_span(order.total_asked) %></span>
-  
-    <%= edit_arrow "#in-session-order-#{order.id}", true, :onclick => "distribution_plugin_session_order_toggle_edit(this)", :class => 'in-session-order-actions' %>
-  
-    <div class="cleaner"></div>
-  </div>
-  
-  <div class="in-session-order-edit alignment" style="display: none">
-    <% if order.products.count == 0 %>
-      <div class="empty-order">
-        <span class="subtitle"><%= _("Empty order") %></span>
-        <%= link_to_function _('cancel'), 'distribution_plugin_session_order_toggle_edit(this)' %>
-      </div>
-    <% else %>
-      <% form_remote_for :order, order, :url => {:controller => :distribution_plugin_order, :action => :session_edit, :id => order.id} do |f| %>
-        <%= render :partial => 'distribution_plugin_ordered_product/index', :locals => {:order => order, :f => f} %>
-        <div class="cleaner"></div>
-  
+<div class="in-session-order-view value-row">
+  <span class='box-field in-session-order-code'><%= order.id %></span>
+  <span class='box-field in-session-order-member'><%= order.consumer.name %></span>
+  <span class='box-field in-session-order-created-at'><%= month_with_time(order.created_at) %></span>
+  <span class='box-field in-session-order-modified-at'><%= month_with_time(order.updated_at) %></span>
+  <span class='box-field in-session-order-products-count'><%= order.products.count %></span>
+  <span class='box-field in-session-order-value'><%= price_span(order.total_asked) %></span>
+
+  <%= edit_arrow "#in-session-order-#{order.id}", true, :onclick => "distribution_plugin_session_order_toggle_edit(this)", :class => 'in-session-order-actions' %>
+
+  <div class="cleaner"></div>
+</div>
+
+<div class="in-session-order-edit alignment" style="display: none">
+  <% if order.products.count == 0 %>
+    <div class="empty-order">
+      <span class="subtitle"><%= _("Empty order") %></span>
+      <%= link_to_function _('cancel'), 'distribution_plugin_session_order_toggle_edit(this)' %>
+    </div>
+  <% else %>
+    <% form_remote_for :order, order, :url => {:controller => :distribution_plugin_order, :action => :session_edit, :id => order.id} do |f| %>
+
+      <%= render :partial => 'distribution_plugin_ordered_product/index', :locals => {:order => order, :f => f} %>
+      <div class="cleaner"></div>
+
+      <% if order.session.open? %>
+
         <div>
           <%= check_box_tag 'warn_consumer', 1, false, :onchange => "jQuery(this).parent().next().toggle(this.checked); jQuery(this).siblings('.subtitle').toggle(this.checked);" %>
           <%= label_tag 'warn_consumer', _('Warn member of the changes in his/her order'), :class => 'line-label' %>
           <div class="cleaner"></div>
           <div class="subtitle"><%= _('The collective member will receive an email that discriminates all changes made in his/her order') %></div>
         </div>
-  
+
         <div>
           <%= check_box_tag 'include_message', 1, false, :onchange => "jQuery(this).parent().find('textarea').toggle(this.checked)" %>
           <%= label_tag 'include_message', _('Include message'), :class => 'line-label' %>
           <div class="cleaner"></div>
           <div><%= text_area_tag 'message' %></div>
         </div>
-  
+
         <div>
           <%= f.submit _('Save') %>
           <%= link_to_function _('cancel'), 'distribution_plugin_session_order_toggle_edit(this)' %>
@@ -48,19 +50,21 @@
 
       <% end %>
     <% end %>
+  <% end %>
 
-    <div class="actions-bar">
-      <%= link_to_function _('remove order'), '' %>
-      <%= link_to_function _('add product'), '' %>
-      <%= link_to_function _('edit on the order page'), '' %>
-      <%= lightbox_link_to _('message to the member'), {:controller => :distribution_plugin_message, :action => :new_to_consumer_for_order} %>
-      <strong><%= _('Actions') %></strong>
+  <div class="actions-bar">
+    <%# link_to_function _('remove order'), '' if order.session.open? %>
+    <%# link_to_function _('add product'), '' if order.session.open? %>
+    <%# link_to_function _('see redistribution'), '' unless order.session.open? %>
+    <%# link_to_function _('see delivery'), '' unless order.session.open? %>
+    <%= link_to _('edit on the order page'), {:controller => :distribution_plugin_order, :action => :edit, :id => order.id}, :target => '_blank' %>
+    <%= lightbox_link_to _('message to member'), {:controller => :distribution_plugin_message, :action => :new_to_consumer_for_order, :order_id => order.id} %>
+    <strong><%= _('Actions') %></strong>
 
-      <div class="cleaner"></div>
-    </div>
-  
     <div class="cleaner"></div>
   </div>
 
   <div class="cleaner"></div>
 </div>
+
+<div class="cleaner"></div>

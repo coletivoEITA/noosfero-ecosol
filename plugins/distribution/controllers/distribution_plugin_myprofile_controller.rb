@@ -5,6 +5,9 @@ class DistributionPluginMyprofileController < MyProfileController
   #no_design_blocks
   
   before_filter :load_node
+  
+  helper ApplicationHelper
+  helper DistributionPlugin::DistributionDisplayHelper
 
   protected
 

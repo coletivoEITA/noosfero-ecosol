@@ -53,6 +53,7 @@ class DistributionPluginOrderedProduct < ActiveRecord::Base
   end
 
   after_save :touch_order
+  before_destroy :touch_order
   def touch_order
     order.touch
   end

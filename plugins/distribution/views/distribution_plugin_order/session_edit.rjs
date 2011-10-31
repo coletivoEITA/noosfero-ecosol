@@ -1,0 +1,2 @@
+page.replace_html "in-session-order-#{@order.id}", :partial => 'session_edit', :locals => {:order => @order}
+page << "distribution_plugin_session_order_toggle_edit(jQuery('#in-session-order-#{@order.id}').get(0));"

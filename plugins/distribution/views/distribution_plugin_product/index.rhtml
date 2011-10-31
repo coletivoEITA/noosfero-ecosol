@@ -1,29 +1,30 @@
 <div id="our-products" class="admin-page">
-  <h3><%=_('Products')%></h3>
-  <div class="subtitle">
-    <%= _("Here are listed all the products with which your collective works.
-           Here it's possible to add and remove products, besides desactivating 
-           temporarily your commercialization in the Order Sections.") %>
-  </div>
-  
-  <h4><%= _("Default margin of visualization") %></h4>
-  <div class="subtitle">
-     <%= _("This margin is automatically applied in all the products, but
-            it is possible to stabilish specific margins for certain products.") %>
-  </div>
-  <span id="node-margin-percentage" class="view <%= @node.margin_percentage.nil? ? 'empty' : 'non-empty' %>">
-    <% form_remote_for :node, @node, :url => {:controller => :distribution_plugin_node, :action => :edit, :id => @node},
-    :success => "distribution_node_margin_toggle_edit(this)" do |f| %>
-      <%= f.text_field :margin_percentage, :disabled => 'disabled' %>
-      <span class="margin-unit-label" ><%= _('%') %></span>
-      <span class="margin-empty-label"><%= _('no margin set') %></span>
-      <%= f.submit _('Save'), :class => 'toggle-button', :style => "display:none" %>
-      <%= link_to_function _('change'), "distribution_node_margin_toggle_edit(this)", :class => 'toggle-button' %>
-    <% end %>
-  </span>
+  <h2><%=_('Products')%></h2>
 
-  <h4><%= _('The products')%></h4>
-  <div class="subtitle"><%= link_to _('Add product'), '#our-product-add', :onclick => "distribution_our_product_toggle_edit();" %></div>
+  <div>
+
+    <div class="subtitle">
+      <%= _("Here are listed all the products with which your collective works.
+             Here it's possible to add and remove products, besides desactivating 
+             temporarily your commercialization in the Order Sections.") %>
+    </div>
+    
+    <h3><%= _("Default margin of visualization") %></h3>
+    <div class="subtitle">
+       <%= _("This margin is automatically applied in all the products, but
+              it is possible to stabilish specific margins for certain products.") %>
+    </div>
+    <span id="node-margin-percentage">
+      <span class="<%= @node.margin_percentage.blank? ? 'none' : 'set' %>">
+        <%= @node.margin_percentage ? ( _('%{margin} %') % {:margin => @node.margin_percentage} ) : _('no margin set') %>
+      </span>
+      <%= lightbox_link_to _('change'), {:controller => :distribution_plugin_node, :action => :margins_change} %>
+    </span>
+  
+    <h3><%= _('The products')%></h3>
+    <div class="subtitle"><%= link_to _('Add product'), '#our-product-add', :onclick => "distribution_our_product_toggle_edit();" %></div>
+  
+  </div>
 
   <div id="filter-fields">
     <b><%= _("Filter") %></b>
@@ -75,4 +76,5 @@
   <div id="search-results">
     <%= render :partial => 'search' %>
   </div>
+
 </div>

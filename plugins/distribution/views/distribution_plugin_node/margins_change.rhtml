@@ -1,0 +1,24 @@
+<div id="distribution-node-margin-change" class="distribution-plugin-popin">
+  <h1><%= _('Change default margin of commercialization') %></h1>
+
+  <% form_remote_for :node, @node, :url => {:controller => :distribution_plugin_node, :action => :margins_change, :id => @node} do |f| %>
+
+    <div>
+      <%= _("By changing the default margin of commercialization, the products " +
+            "that are \"use the default margin\" marked will automatically have their " +
+            "margin updated. The open sessions won't be affected.") %>
+    </div>
+
+    <%= labelled_field f, :margin_percentage, _('New margin'), f.text_field(:margin_percentage) + ' ' + _('%') %>
+
+    <div>
+      <%= check_box_tag :apply_to_all, 1, false, :style => 'float: left'  %>
+      <%= label_tag :apply_to_all, _('Force apply to ALL products'), :class => 'line-label' %>
+    </div>
+
+    <%= submit_tag _('Confirm') %>
+    <%= link_to_function 'cancel', 'lightbox.prototype.deactivate()' %>
+
+  <% end %>
+</div>
+

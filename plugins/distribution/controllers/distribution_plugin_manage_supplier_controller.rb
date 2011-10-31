@@ -1,9 +1,6 @@
 class DistributionPluginManageSupplierController < DistributionPluginMyprofileController
   no_design_blocks
 
-  helper ApplicationHelper
-  helper DistributionPlugin::DistributionDisplayHelper
-
   before_filter :set_admin_action, :only => [:index]
   before_filter :load_new, :only => [:index, :new]
 

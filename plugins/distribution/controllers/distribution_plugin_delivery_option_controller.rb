@@ -31,6 +31,6 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
     dm = DistributionPluginDeliveryOption.find_by_id(params[:id])
     @delivery_option_id = dm.id
     dm.destroy if dm
-    flash[:notice] = _('Delivery option removed from session')
+    flash[:notice] = _('Delivery option removed from cycle')
   end
 end

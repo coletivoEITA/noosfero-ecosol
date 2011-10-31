@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <p>
+      <%= _('Hello %{name}!') % {:name => @consumer.name} %>
+    </p>
+
+    <p><%= _('The collective %{node} sent a messsage to you regarding your %{order}') %
+    { :node => @node.name, :order => link_to(_('order'), {:controller => :distribution_plugin_order, :action => :edit, :id => @order.id, :profile => @node.profile.identifier}) } %></p>
+    <p><i><%= @message %></i></p>
+
+    <p><%= _('The products in the order') %></p>
+    <ul>
+      <% @order.products.each do |p| %>
+        <li><%= _('%{quantity} %{unit} of %{product}') % {:quantity => p.quantity_asked, :unit => p.product.unit.plural, :product => p.product.name} %></li>
+      <% end %>
+    </ul>
+
+    <p>
+      --<br/>
+    </p>
+
+    <small style="color: #888"><%= _('A service of %s.') % @environment.name %></small>
+  </body>
+</html>
+

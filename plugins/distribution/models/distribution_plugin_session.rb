@@ -5,15 +5,24 @@ class DistributionPluginSession < ActiveRecord::Base
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 
   has_many :orders, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc'
-  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :dependent => :destroy
+  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc'
 
-  has_many :from_products, :through => :products
+  has_many :from_products, :through => :products, :order => 'id asc'
   has_many :from_nodes, :through => :products
   has_many :to_nodes, :through => :products
 
   has_many :ordered_products, :through => :orders, :source => :products
   has_many :ordered_suppliers, :through => :orders, :source => :suppliers
-  has_many :ordered_supplied_products, :through => :orders, :source => :used_products, :uniq => true
+  has_many :ordered_session_products, :through => :orders, :source => :session_products, :uniq => true
+
+  named_scope :open, lambda {
+    {:conditions => ["status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) )",
+      {:now => DateTime.now}]}
+  }
+  named_scope :not_open, lambda {
+    {:conditions => ["NOT ( ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) AND status = 'orders' )",
+      {:now => DateTime.now}]}
+  }
 
   STATUS_SEQUENCE = [
     'new', 'edition', 'call', 'orders', 'parcels', 'redistribution', 'delivery', 'close', 'closed'
@@ -23,7 +32,6 @@ class DistributionPluginSession < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :start
   validates_inclusion_of :status, :in => STATUS_SEQUENCE
-  validates_presence_of :delivery_methods
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
   before_validation :default_values
@@ -38,10 +46,9 @@ class DistributionPluginSession < ActiveRecord::Base
     STATUS_SEQUENCE.index(self.status) > STATUS_SEQUENCE.index(status)
   end
 
-  named_scope :open, lambda {
-    {:conditions => ["status = 'orders' AND ( (start <= :date AND finish IS NULL) OR (start <= :date AND finish >= :date) )",
-      {:date => DateTime.now}]}
-  }
+  def step
+    self.status = STATUS_SEQUENCE[STATUS_SEQUENCE.index(self.status)+1]
+  end
 
   def open?
     now = DateTime.now
@@ -54,7 +61,7 @@ class DistributionPluginSession < ActiveRecord::Base
   end
 
   def ordered_products_by_suppliers
-    self.ordered_supplied_products.group_by { |p| p.supplier }
+    self.ordered_session_products.group_by { |p| p.supplier }
   end
 
   protected
@@ -70,12 +77,8 @@ class DistributionPluginSession < ActiveRecord::Base
 
   after_create :add_distributed_products
   def add_distributed_products
-    self.products += node.products.distributed.map do |dp|
-       p = dp.clone
-       p.session = self
-       p.save!
-       DistributionPluginSourceProduct.create :from_product => dp, :to_product => p
-       p
+    self.products += node.products.distributed.map do |product|
+      DistributionPluginSessionProduct.create_from_distributed(self, product)
     end
   end
 

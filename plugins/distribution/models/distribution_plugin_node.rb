@@ -1,21 +1,21 @@
 class DistributionPluginNode < ActiveRecord::Base
   belongs_to :profile
 
-  has_many :delivery_methods, :class_name => 'DistributionPluginDeliveryMethod', :foreign_key => 'node_id', :dependent => :destroy
-  has_many :sessions, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy
-  has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy
-  has_many :parcels, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy
+  has_many :delivery_methods, :class_name => 'DistributionPluginDeliveryMethod', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id asc'
+  has_many :sessions, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id asc'
+  has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy, :order => 'id asc'
+  has_many :parcels, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy, :order => 'id asc'
 
   has_many :suppliers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'consumer_id', :order => 'id asc', :dependent => :destroy
   has_many :consumers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'node_id', :order => 'id asc'
-  has_many :suppliers_nodes, :through => :suppliers, :source => :node
-  has_many :consumers_nodes, :through => :consumers, :source => :consumer
+  has_many :suppliers_nodes, :through => :suppliers, :source => :node, :order => 'id asc'
+  has_many :consumers_nodes, :through => :consumers, :source => :consumer, :order => 'id asc'
 
   has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => 'node_id', :dependent => :destroy, :order => 'distribution_plugin_products.id asc'
-  has_many :order_products, :through => :orders, :source => :products
-  has_many :parcel_products, :through => :parcels, :source => :products
-  has_many :supplier_products, :through => :suppliers, :source => :products
-  has_many :consumer_products, :through => :consumers, :source => :consumer_products
+  has_many :order_products, :through => :orders, :source => :products, :order => 'id asc'
+  has_many :parcel_products, :through => :parcels, :source => :products, :order => 'id asc'
+  has_many :supplier_products, :through => :suppliers, :source => :products, :order => 'id asc'
+  has_many :consumer_products, :through => :consumers, :source => :consumer_products, :order => 'id asc'
 
   has_many :from_products, :through => :products
   has_many :to_products, :through => :products
@@ -28,6 +28,11 @@ class DistributionPluginNode < ActiveRecord::Base
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
 
+  def self.find_or_create(profile)
+    role = profile.person? ? 'consumer' : (profile.community? ? 'collective' : 'supplier')
+    find_by_profile_id(profile.id) || create!(:profile => profile, :role => role)
+  end
+
   def name
     profile.name
   end
@@ -35,31 +40,34 @@ class DistributionPluginNode < ActiveRecord::Base
   def consumer?
     role == 'consumer'
   end
-
   def supplier?
     role == 'supplier'
   end
-
   def collective?
     role == 'collective'
   end
-
-  def self.find_or_create(profile)
-    role = profile.person? ? 'consumer' : (profile.community? ? 'collective' : 'supplier')
-    find_by_profile_id(profile.id) || create!(:profile => profile, :role => role)
+  def dummy?
+    !profile.visible
   end
 
-  def myprofile_controller
-    'distribution_plugin_' + role
+  def default_products_margins
+    products.distributed.each do |product|
+      product.default_margin_percentage = true
+      product.default_margin_fixed = true
+      product.save!
+    end
+    sessions.not_open.each do |session|
+      session.products.each do |product|
+        product.margin_percentage = margin_percentage
+        product.margin_fixed = margin_fixed
+        product.save!
+      end
+    end
   end
 
   def not_distributed_products(supplier)
     raise "#{supplier.name} is not a supplier of #{self.profile.name}" unless has_supplier?(supplier)
     supplier.node.products.own.distributed - self.from_products.distributed.by_node(supplier.node)
-  end
-
-  def dummy?
-    !profile.visible
   end
 
   def self_supplier

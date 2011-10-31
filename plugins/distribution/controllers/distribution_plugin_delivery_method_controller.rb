@@ -27,6 +27,6 @@ class DistributionPluginDeliveryMethodController < DistributionPluginMyprofileCo
     dm = DistributionPluginDeliveryMethod.find_by_id(params[:id])
     @delivery_method_id = dm.id
     dm.destroy if dm
-    flash[:notice] = _('Delivery method removed from session')
+    flash[:notice] = _('Delivery method removed from cycle')
   end
 end

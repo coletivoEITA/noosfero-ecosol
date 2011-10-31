@@ -1,47 +1,45 @@
-<div id="session-header">
-  <% if !@session.passed_by?('edition') %>
-    <%= link_to _('Finish session editing'), {:action => :edit, :profile => profile.identifier, :id => @session.id, :session => {:status => 'orders'}},
-      :id => 'distribution-plugin-session-open-session' %>
-  <% else %>
-    <div id="session-header-warning">
-      <div id="session-header-warning-wrap">
-        <%= _('The edition time is gone, and the session is already public. ' +
-              'Actually, the session in at supplies call fase.<br><br>' +
-              'It is still possible to edit some parameters through this page, however, ' +
-              'beware of the risk. Some operations have differents implications when you are' +
-              'are warned of the consequences of the changes made') %>
-      </div>
-    </div>
-  <% end %>
-</div>
+<% if !@session.passed_by?('edition')  %>
+  <%= render :partial => 'header', :object =>
+    _('The edition time is gone and the cycle is already public. ' +
+         'Actually, the cycle is in a supply call period.') + '<br /><br />' +
+    _('It is still possible to edit some Cycle parameters through this page, however, ' +
+      'beware of the risk. Some operations have different implications depending' +
+      ' on the fase you are. When needed, you will be notified by a notification window ' +
+      'of the consequences of the changes made.') %>
+<% end %>
 
 <div id="session-fields">
   <%= render :partial => 'edit_fields' %>
 </div>
 
 <div id='session-products'>
-  <div><%= _('The following list of products are available in this session.') %></div>
-  <div><%= _('It was automatically created from the active products. See the list below and check for needed changes.') %></div>
+  <div id="session-products-header">
+    <h3><%= _("The products") %></h3>
 
-  <div class='session-product-list'>
-    
+    <div class="subtitle"><%= _('The following list of products are available in this cycle.') %></div>
+    <div class="subtitle"><%= _('It was automatically created from the active products. See the list below and check for needed changes.') %></div>
+    <%= lightbox_link_to _('Add product'), {:controller => :distribution_plugin_product, :action => :session_add, :session_id => @session.id}, :class => 'subtitle' %>
+  </div> 
+
+  <div class="box-align">
     <div class='table-header'>
-      <span class='session-product-list-column session-product-category'><%= _('Category') %></span>
-      <span class='session-product-list-column session-product-supplier'><%= _('Supplier') %></span>
-      <span class='session-product-list-column session-product-name'><%= _('Product') %></span>
-      <div class="session-product-list-column session-product-price"><%= _('Price') %></div>
-      <div class="session-product-list-column session-product-quantity-available"><%= _('Qty. avail.') %></div>
-      <div class="session-product-list-column session-product-actions"><%= _('Actions') %></div>
+      <span class='box-field session-product-category'><%= _('Category') %></span>
+      <span class='box-field session-product-supplier'><%= _('Supplier') %></span>
+      <span class='box-field session-product-name'><%= _('Product') %></span>
+      <span class="box-field session-product-price"><%= _('Price') %></span>
+      <span class="box-field session-product-quantity-available"><%= _('Qty. avail.') %></span>
+      <span class="box-field session-product-actions"></span>
 
       <div class="cleaner"></div>
     </div>
 
-    <% @session.products.find(:all, :order => 'id asc').each do |p| %>
-      <div id="session-product-<%=p.id%>" class='subtitle value-row session-product-list-entry'>
-        <%= render :partial => 'distribution_plugin_product/session_edit', :locals => {:p => p} %>
-      </div>
-
-    <% end %>
+    <div class='session-product-list'>
+      <% @session.products.each do |p| %>
+        <div id="session-product-<%=p.id%>" class='session-product'>
+          <%= render :partial => 'distribution_plugin_product/session_edit', :locals => {:p => p} %>
+        </div>
+      <% end %>
+    </div>
   </div>
 
 </div>
