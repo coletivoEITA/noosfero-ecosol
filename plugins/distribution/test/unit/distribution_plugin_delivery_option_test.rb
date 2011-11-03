@@ -11,7 +11,7 @@ class DistributionDeliveryOptionTest < ActiveSupport::TestCase
     @node.products = @profile.products.map { |p| DistributionPluginProduct.create!(:product => p) }
     @session = DistributionPluginSession.create!(:node => @node)
 
-    @dm = DistributionPluginDeliveryMethod.create!(:node => @node, :name => 'metodo de envio', :delivery_type => 'delivery')
+    @dm = DistributionPluginDeliveryMethod.create!(:node => @node, :name => 'metodo de envio', :delivery_type => 'deliver')
   end
 
   should 'add an option to an session' do

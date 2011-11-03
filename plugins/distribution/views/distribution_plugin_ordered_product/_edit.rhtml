@@ -1,5 +1,5 @@
 <div class="line-keeper">
-  <div id="ordered-product-<%=ordered_product.id%>" class="value-row ordered-product">
+  <div id="ordered-product-<%=ordered_product.id%>" class="value-row ordered-product" toggleedit="distribution_ordered_product_edit();">
     <% f.fields_for "ordered_product-#{ordered_product.id}", ordered_product do |f| %>
 
       <%= f.hidden_field :id %>
@@ -42,10 +42,6 @@
       </div> 
     
       <div class="cleaner"></div>
-    
-      <% javascript_tag do %>
-        jQuery("#ordered-product-<%=ordered_product.id%>").hover(distribution_ordered_product_hover, distribution_ordered_product_hover);
-      <% end %>
 
     <% end %>
   </div>

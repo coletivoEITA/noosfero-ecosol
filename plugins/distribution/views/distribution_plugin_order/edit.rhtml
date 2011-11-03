@@ -1,4 +1,4 @@
-<div id="order-content" class="page">
+<div id="order-page" class="page">
 
   <div id="order-menu">
     <h2><%=_("Open orders: cycle '%{cycle}'") % {:cycle => @session.name} %></h2>
@@ -39,31 +39,25 @@
     <div class="cleaner"></div>
 
     <div>
-      <% @session_products.each do |category_name, session_products| %>
-        <div class="category-box alignment"><%= category_name%></div>
+      <% @session_products.each do |supplier, session_products| %>
+        <div class="alignment"><%= supplier.name %></div>
 
         <div class="table-header">
-          <div class="box-field supplier"><%=_('Supplier')%></div>
           <div class="box-field product"><%=_('Product')%></div>
-          <div class="box-field price"><%=_('Price')%></div>
+          <div class="box-field price-with-unit"><%=_('Price')%></div>
           <div class="box-field quantity"><%=_('order qtt')%></div>
+
           <div class="cleaner"></div>
         </div>
 
         <div class="table-content">
           <% session_products.each do |product| %>
-            <div id="session-product-<%=product.id%>" class="order-session-product">
+            <div id="session-product-<%=product.id%>" class="order-session-product value-row">
               <%= render :partial => "distribution_plugin_product/order_edit", :locals => {
                 :product => product, :order => @order, :ordered_product => @order.products.find_by_session_product_id(product.id) } %>
             </div>
           <% end %>
         </div>
-      <% end %>
-
-      <% javascript_tag do %>
-        jQuery("#session-column .order-session-product")
-        .click(distribution_order_session_product_click)
-        .hover(distribution_order_session_product_hover, distribution_order_session_product_hover);
       <% end %>
     </div>
   </div>
@@ -84,11 +78,15 @@
       <div class="cleaner"></div>
 
       <div id="delivery-box">
-        <h3><%= _("delivery method") %></h3>
-        <strong><%= @order.supplier_delivery.name %></strong>
-        <p><%= @order.supplier_delivery.description %></p>
-        <strong><%= _('Choose another method:') %></strong>
-        <span><%= select_tag :delivery_method_options, options_from_collection_for_select(@session.delivery_methods, "id", "name") %></span>
+        <div>
+          <h3><%= _("delivery method") %></h3>
+          <strong><%= @order.supplier_delivery.name %></strong>
+          <div><%= @order.supplier_delivery.description %></div>
+        </div>
+
+        <%= labelled_field nil, :delivery_method_options, _('Choose another:'),
+          select_tag(:delivery_method_options, options_from_collection_for_select(@session.delivery_methods, "id", "name")),
+          :class => 'subtitle' %>
       </div>
 
       <div id="close-order" class="box-field">

@@ -1,5 +1,5 @@
 <div id="" class="distribution-plugin-popin distribution-plugin-message">
-  <h1><%= _('Message to member "%{consumer}"') %message {:consumer => @consumer.name} %></h1>
+  <h1><%= _('Message to member "%{consumer}"') % {:consumer => @consumer.name} %></h1>
 
   <% form_remote_tag :url => params do %>
     <%= render :partial => 'fields' %>

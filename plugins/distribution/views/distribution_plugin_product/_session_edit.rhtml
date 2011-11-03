@@ -1,20 +1,20 @@
-<div class="session-product-view value-row">
-  <span class='box-field session-product-category'><%= p.product.product_category.name if p.product %></span>
-  <span class='box-field session-product-supplier'><%= p.supplier.name %></span>
-  <span class='box-field session-product-name'><%= p.name %></span>
-  <span class="box-field session-product-price"><%= price_span(p.price) %></span>
-  <span class="box-field session-product-quantity-available"><%= p.quantity || '∞' %></span>
+<div class="box-view">
+  <span class='box-field category'><%= p.product.product_category.name if p.product %></span>
+  <span class='box-field supplier'><%= p.supplier.name %></span>
+  <span class='box-field name box-edit-link'><%= p.name %></span>
+  <span class="box-field price"><%= price_span(p.price) %></span>
+  <span class="box-field quantity-available"><%= p.quantity || '∞' %></span>
 
-  <%= edit_arrow "", false, :onclick => 'distribution_plugin_session_product_edit(this); return false;', :class => "box-field session-product-actions" %>
+  <%= edit_arrow "", false, :onclick => 'return false;', :class => "box-field session-product-actions" %>
 </div>
 
-<div class='session-product-edit alignment' style="display: none">
+<div class='box-edit' style="display: none">
   <% form_remote_for :product, p, :url => {:controller => :distribution_plugin_product, :action => :session_edit, :id => p.id } do |f| %>
 
     <div class="session-product-line">
-      <%= labelled_field f, :price, _('Sell price'), f.text_field(:price, :value => p.price_without_margins) %>
-      <%= labelled_field f, :margin_percentage, _('Margin'), f.text_field(:margin_percentage) %>
-      <%= labelled_field f, :quantity, _('Qty. offered'), f.text_field(:quantity) %>
+      <%= labelled_field f, :price, _('Sell price'), f.text_field(:price, :onkeyup => 'distribution_session_product_pmsync(this, false);') %>
+      <%= labelled_field f, :margin_percentage, _('Margin'), f.text_field(:margin_percentage, :onkeyup => "distribution_session_product_pmsync(this, true);") %>
+      <%# labelled_field f, :quantity, _('Qty. offered'), f.text_field(:quantity) %>
 
       <div class="cleaner"></div>
     </div>
@@ -22,7 +22,7 @@
     <div class="session-product-line">
       <%= labelled_field f, :original_price, _('Default sell price'), f.text_field(:original_price, :disabled => 'disabled') %>
       <%= labelled_field f, :original_margin, _('Default margin'), f.text_field(:original_margin_percentage, :disabled => 'disabled') %>
-      <%= labelled_field f, :original_stored, _('Qty. in stock'), f.text_field(:original_stored, :disabled => 'disabled') %>
+      <%# labelled_field f, :original_stored, _('Qty. in stock'), f.text_field(:original_stored, :disabled => 'disabled') %>
 
       <div class="cleaner"></div>
     </div>
@@ -35,8 +35,8 @@
       <div class="cleaner"></div>
     </div>
 
-    <%= f.submit _('Save'), :id => 'session-product-edit-save-button', :class => 'distribution-plugin-button' %>
-    <%= link_to_function _('cancel updates'), "distribution_plugin_session_product_edit(this)" %>
+    <%= f.submit _('Save') %>
+    <%= link_to_function _('cancel updates'), "distribution_value_row_toggle_edit()" %>
     <%= link_to_remote _('remove from cycle'), { :update => 'session-product-'+p.id.to_s,
       :url => {:controller => :distribution_plugin_product, :action => :session_destroy, :id => p.id }} %>
     <%= link_to_function _('edit product'), '' %>

@@ -5,7 +5,7 @@ module DistributionFactory
   end
 
   def defaults_for_distribution_delivery_method
-    { :name => 'My delivery ' + factory_num_seq.to_s , :delivery_type => 'delivery'}
+    { :name => 'My delivery ' + factory_num_seq.to_s , :delivery_type => 'deliver'}
   end
 
   def defaults_for_distribution_order

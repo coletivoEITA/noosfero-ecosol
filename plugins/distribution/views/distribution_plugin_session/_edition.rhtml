@@ -23,19 +23,19 @@
 
   <div class="box-align">
     <div class='table-header'>
-      <span class='box-field session-product-category'><%= _('Category') %></span>
-      <span class='box-field session-product-supplier'><%= _('Supplier') %></span>
-      <span class='box-field session-product-name'><%= _('Product') %></span>
-      <span class="box-field session-product-price"><%= _('Price') %></span>
-      <span class="box-field session-product-quantity-available"><%= _('Qty. avail.') %></span>
-      <span class="box-field session-product-actions"></span>
+      <span class='box-field category'><%= _('Category') %></span>
+      <span class='box-field supplier'><%= _('Supplier') %></span>
+      <span class='box-field name'><%= _('Product') %></span>
+      <span class="box-field price"><%= _('Price') %></span>
+      <span class="box-field quantity-available"><%= _('Qty. avail.') %></span>
+      <span class="box-field actions"></span>
 
       <div class="cleaner"></div>
     </div>
 
-    <div class='session-product-list'>
+    <div class='table-content'>
       <% @session.products.each do |p| %>
-        <div id="session-product-<%=p.id%>" class='session-product'>
+        <div id="session-product-<%=p.id%>" class='session-product value-row' toggleedit="distribution_session_product_edit();">
           <%= render :partial => 'distribution_plugin_product/session_edit', :locals => {:p => p} %>
         </div>
       <% end %>

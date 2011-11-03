@@ -15,7 +15,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
   def edit
     @order = DistributionPluginOrder.find params[:id]
     @session = @order.session
-    @session_products = @session.products.all(:conditions => ['price > 0']).group_by{ |sp| sp.product.product_category.name }
+    @session_products = @session.products.all(:conditions => ['price > 0']).group_by{ |sp| sp.supplier }
     @product_categories = ProductCategory.find :all, :limit => 10
   end
 

@@ -180,6 +180,7 @@ body.plugin-distribution {
   width: 100%;
   padding: 8px 10px;
   background-color: #B1DFEF;
+  font-size: 11px;
   color: #000;
   text-decoration: underline;
   text-transform: uppercase;
@@ -191,10 +192,11 @@ body.plugin-distribution {
   margin-bottom: 40px;
   margin-top: -1px;
 }
+
 .plugin-distribution .value-row {
   border-bottom: 1px dotted black;
+  width: 100%;
   padding: 10px 10px;
-  font-size: 10px;
 }
 .plugin-distribution .table-header,
 .plugin-distribution .value-row {
@@ -203,12 +205,26 @@ body.plugin-distribution {
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
 }
-.plugin-distribution .value-row.edit {
+.plugin-distribution .value-row.edit,
+.plugin-distribution .value-row.hover {
   background-color: #FDF2A3;
 }
-.plugin-distribution .value-row.clicked,
-.plugin-distribution .value-row.selected {
-  background-color: #ffe546;
+.plugin-distribution .value-row.edit {
+  border-top: 2px solid #333;
+  border-bottom: 2px solid #333;
+  margin-top: -1px;
+}
+
+.plugin-distribution .value-row.edit .box-view {
+  padding-bottom: 10px;
+}
+.plugin-distribution .box-view,
+.plugin-distribution .box-edit {
+  float: left;
+  width: 100%;
+}
+.plugin-distribution .box-edit {
+  clear: both;
 }
 
 .plugin-distribution .box-field {
@@ -217,33 +233,50 @@ body.plugin-distribution {
   min-height: 1px;
   overflow: hidden;
 }
+.plugin-distribution .box-field.box-edit-link {
+  font-size: 12px !important;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #38727E;
+  cursor: pointer;
+}
+.plugin-distribution .box-view .box-field.price,
+.plugin-distribution .box-view .box-field.price-with-unit {
+  font-size: 12px;
+  color: #0095B5;
+  font-weight: bold;
+}
+.plugin-distribution .box-view .box-field.price-with-unit .price-unit {
+  font-size: 10px;
+  font-weight: normal;
+}
 
 .plugin-distribution .actions-circle {
-  height: 15px;
-  width: 15px;
+  height: 20px;
+  width: 20px;
   background-color: #FDF2A3;
   float: right;
   margin-right: 0;
   padding: 0;
   margin-top: 3px;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -o-border-radius: 5px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -o-border-radius: 10px;
 }
 .plugin-distribution .actions-circle .actions-arrow {
-  border-top: 4px solid #726D47;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  margin: 6px 2px 0px 2px;
+  border-top: 6px solid black;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  margin: 8px 6px 0 5px;
   display: block;
 }
 .plugin-distribution .actions-circle.edit .actions-arrow {
-  border-bottom: 4px solid #726D47;
-  border-top: 4px solid transparent;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  margin: 2px 2px 0px 2px;
+  border-bottom: 6px solid #726D47;
+  border-top: 5px solid transparent;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  margin: 2px 6px 0px 5px;
   display: block;
 }
 
@@ -421,10 +454,10 @@ body.plugin-distribution {
   background-color: #E1F5C4;
   margin-bottom: 20px;
   border: 1px solid #116C7C;
-  border-radius: 1px;
-  -moz-border-radius: 1px;
-  -webkit-border-radius: 1px;
-  -o-border-radius: 1px;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -o-border-radius: 3px;
 }
 .plugin-distribution .order-products-by-supplier .inner-box {
   padding: 10px;
@@ -461,12 +494,15 @@ body.plugin-distribution {
 .plugin-distribution .order-products-by-supplier .box-field.forecast-parcel-value {
   width: 70px;
 }
+.plugin-distribution .order-products-by-supplier .session-ordered-product .total-asked,
+.plugin-distribution .order-products-by-supplier .session-ordered-product .forecast-parcel,
 .plugin-distribution .order-products-by-supplier .session-ordered-product .product {
   font-size: 12px;
 }
 .plugin-distribution .order-products-by-supplier .session-ordered-product .total-asked,
 .plugin-distribution .order-products-by-supplier .session-ordered-product .forecast-parcel {
   font-weight: bold;
+
 }
 
 .plugin-distribution #session-orders {
@@ -509,60 +545,61 @@ body.plugin-distribution {
 .plugin-distribution .in-session-order {
   clear: both;
 }
+.plugin-distribution .in-session-order .actions-bar {
+  width: 100%;
+  margin-left: -10px;
+  margin-bottom: -10px;
+}
 .plugin-distribution .in-session-order.edit {
   border-top: 2px solid black;
   border-bottom: 2px solid black;
   margin-top: -1px;
 }
 .plugin-distribution .in-session-order.edit,
-.plugin-distribution .in-session-order-edit {
+.plugin-distribution .in-session-order .box-edit {
   background-color: #fff2a3;
 }
-.plugin-distribution .in-session-order-view {
-  clear: both;
-}
 
-.plugin-distribution .in-session-order-edit {
-  padding: 8px 0 0 0;
+.plugin-distribution .in-session-order .box-edit {
+  padding-top: 8px;
 }
-.plugin-distribution .in-session-order-edit .empty-order {
+.plugin-distribution .in-session-order .box-edit .empty-order {
   text-align: center;
   margin-bottom: 8px;
 }
-.plugin-distribution .in-session-order-edit form {
+.plugin-distribution .in-session-order .box-edit form {
   padding: 0 16px 0 240px;
 }
-.plugin-distribution .in-session-order-edit,
-.plugin-distribution .in-session-order.edit .in-session-order-view.value-row {
-  border-color: transparent;
-}
-.plugin-distribution .in-session-order-edit input[type=checkbox] {
+.plugin-distribution .in-session-order .box-edit input[type=checkbox] {
   float: left;
 }
 
 .plugin-distribution .in-session-order .value-row {
   padding: 8px 10px;
 }
-.plugin-distribution .in-session-order-actions {
+.plugin-distribution .session-orders .actions {
   min-height: 1px;
 }
-.plugin-distribution .in-session-order-code {
+.plugin-distribution .session-orders .box-view .code {
+  font-size: 10px;
+}
+.plugin-distribution .session-orders .code {
   width: 50px;
 }
-.plugin-distribution .in-session-order-member {
+.plugin-distribution .session-orders .member {
   width: 180px;
 }
-.plugin-distribution .in-session-order-created-at {
+.plugin-distribution .session-orders .created {
   width: 90px;
 }
-.plugin-distribution .in-session-order-modified-at {
+.plugin-distribution .session-orders .modified {
   width: 95px;
 }
-.plugin-distribution .in-session-order-products-count {
+.plugin-distribution .session-orders .products-count {
   width: 90px;
 }
-.plugin-distribution .in-session-order-value {
-  width: 60px;
+.plugin-distribution .session-orders .price {
+  width: 80px;
 }
 .plugin-distribution .session-orders .order-products {
   background-color: #FFEA6B; 
@@ -577,12 +614,17 @@ body.plugin-distribution {
 
 /* ----- ordered product  ----- */
 
+.plugin-distribution .ordered-product.value-row.hover,
+.plugin-distribution .ordered-product.value-row.edit {
+  background-color: #ffe546;
+}
+
 .plugin-distribution .order-products {
   width: 400px;
 }
 .plugin-distribution .order-products .line-keeper {
   position: relative;
-  height: 41px;
+  height: 45px;
 }
 .plugin-distribution .ordered-product {
 }
@@ -605,10 +647,6 @@ body.plugin-distribution {
 .plugin-distribution .ordered-product .box-field.price-total {
   width: 40px;
 }
-.plugin-distribution .ordered-product .more-actions .box-field.price {
-  font-size: 12px;
-  color: #0095B5;
-}
 .plugin-distribution .ordered-product .box-field.price-total,
 .plugin-distribution .ordered-product .more-actions .box-field.price {
   float: right;
@@ -620,7 +658,7 @@ body.plugin-distribution {
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
 }
-.plugin-distribution .ordered-product.selected {
+.plugin-distribution .ordered-product.edit {
   position: absolute;
   z-index: 10;
   top: -12px;
@@ -657,69 +695,49 @@ body.plugin-distribution {
   width: 70%;
 }
 
-.plugin-distribution .session-product-list-header .session-product-supplier {
-  color: #000;
-}
-.plugin-distribution .session-product-list {
-}
-.plugin-distribution .session-product-list .value-row {
-  clear: both;
-}
-.plugin-distribution .session-product-list .session-product.edit {
-  border-top: 2px solid #333;
-  border-bottom: 2px solid #333;
-  background-color: #FFF2A3;
-  margin-top: -1px;
-}
-.plugin-distribution .session-product-list .session-product.edit .session-product-view { 
+.plugin-distribution #session-products .value-row.edit .box-view { 
   border-bottom: 1px solid #333;
+  margin-left: -10px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
-.plugin-distribution .session-product-list .session-product.edit .session-product-price,
-.plugin-distribution .session-product-list .session-product.edit .session-product-quantity-available,
-.plugin-distribution .session-product-list .session-product.edit .session-product-actions {
+.plugin-distribution #session-products .value-row.edit .price,
+.plugin-distribution #session-products .value-row.edit .quantity-available,
+.plugin-distribution #session-products .value-row.edit .actions {
   visibility: hidden;
 }
-.plugin-distribution .session-product-view {
-  float: left;
-}
-.plugin-distribution .session-product-edit {
-  clear: both;
-  float: left;
-}
 
-.plugin-distribution .session-product-edit .session-product-line .field label {
+.plugin-distribution #session-products .box-edit .field label {
   white-space: nowrap;
 }
-.plugin-distribution .session-product-edit .session-product-line .field {
+.plugin-distribution #session-products .box-edit .field {
   float: left;
   clear: none;
   margin-right: 40px;
 }
 
-.plugin-distribution .session-product-list .box-field.session-product-price {
-  font-size: 120%;
-  font-weight: bold;
-  color: #33A6D1;
+.plugin-distribution #session-products .box-view .box-field {
+  font-size: 10px;
 }
-.plugin-distribution .box-field.session-product-category {
+.plugin-distribution #session-products .box-field.category {
   width: 75px;
 }
-.plugin-distribution .box-field.session-product-supplier {
+.plugin-distribution #session-products .box-field.supplier {
   width: 100px;
 }
-.plugin-distribution .box-field.session-product-name {
+.plugin-distribution #session-products .box-field.name {
   width: 150px;
 }
-.plugin-distribution .box-field.session-product-price {
+.plugin-distribution #session-products .box-field.price {
   width: 83px;
 }
-.plugin-distribution .box-field.session-product-quantity-available {
+.plugin-distribution #session-products .box-field.quantity-available {
   width: 90px;
 }
-.plugin-distribution .session-product-quantity-available input {
+.plugin-distribution #session-products .quantity-available input {
   width: 60px;
 }
-.plugin-distribution .session-product-edit input[type=text] {
+.plugin-distribution #session-products .box-edit input[type=text] {
   width: 120px;
 }
 
@@ -812,7 +830,8 @@ body.plugin-distribution {
 .plugin-distribution #search-results #result-count {
   padding: 10px;
 }
-.plugin-distribution #search-results {
+.plugin-distribution #search-results .box-view {
+  font-size: 10px;
 }
 .plugin-distribution #search-results .box-index {
   border: none;
@@ -829,13 +848,8 @@ body.plugin-distribution {
 .plugin-distribution #search-results .box-field.product {
   width: 130px;
 }
-.plugin-distribution #search-results .box-field.price {
+.plugin-distribution #search-results .box-field.price-with-unit {
   width: 90px;
-}
-.plugin-distribution #search-results .our-product-view .box-field.price {
-  font-size: 12px;
-  color: #0095B5;
-  font-weight: bold;
 }
 .plugin-distribution #search-results .box-field.stock {
   width: 90px;
@@ -881,18 +895,16 @@ body.plugin-distribution {
   width: 280px;
 }
 
-.plugin-distribution .our-product-edit {
+.plugin-distribution .our-product .box-edit {
   float: left;
-  display: none;
   background-color: #FDF2A3;
   font-size: 12px;
-  padding: 8px;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
 }
-.plugin-distribution #our-product-add .our-product-edit {
+.plugin-distribution #our-product-add .our-product .box-edit {
   float: none;
 }
 .plugin-distribution .our-product.edit .value-row {
@@ -923,7 +935,7 @@ body.plugin-distribution {
   font-weight: normal;
 }
 
-.plugin-distribution .our-product-edit .properties-block {
+.plugin-distribution .our-product .box-edit .properties-block {
   margin-top: 16px;
 }
 
@@ -934,37 +946,37 @@ body.plugin-distribution {
   padding-top: 126px;
   padding-bottom: 41px;
 }
-.plugin-distribution .our-product-edit .price-block .field {
+.plugin-distribution .our-product .box-edit .price-block .field {
   float: left;
   clear: none;
 }
-.plugin-distribution .our-product-edit .price-block .field.left-column {
+.plugin-distribution .our-product .box-edit .price-block .field.left-column {
   margin-right: 40px;
 }
-.plugin-distribution .our-product-edit .column-title {
+.plugin-distribution .our-product .box-edit .column-title {
   font-style: italic;
 }
 
-.plugin-distribution .our-product-edit .small-input {
+.plugin-distribution .our-product .box-edit .small-input {
   width: 120px;
 }
 
-.plugin-distribution .our-product-edit .margin-line .field {
+.plugin-distribution .our-product .box-edit .margin-line .field {
   width: 160px;
 }
-.plugin-distribution .our-product-edit .margin-line .field,
-.plugin-distribution .our-product-edit .margin-line .default-margin {
+.plugin-distribution .our-product .box-edit .margin-line .field,
+.plugin-distribution .our-product .box-edit .margin-line .default-margin {
   float: left;
 }
-.plugin-distribution .our-product-edit .margin-line .default-margin {
+.plugin-distribution .our-product .box-edit .margin-line .default-margin {
   width: 100px;
   margin-top: 27px;
 }
-.plugin-distribution .our-product-edit .margin-line .default-margin #product_default_margin_percentage {
+.plugin-distribution .our-product .box-edit .margin-line .default-margin #product_default_margin_percentage {
   margin: 3px 8px 8px 0;
   float: left;
 }
-.plugin-distribution .our-product-edit .margin-line .default-margin label {
+.plugin-distribution .our-product .box-edit .margin-line .default-margin label {
   font-weight: bold;
   display: block;
   line-height: 16px;
@@ -1022,13 +1034,7 @@ body.plugin-distribution {
 
 /* ----- order stuff  ----- */
 
-.plugin-distribution #order-content h4 {
-  font-weight: bold;
-}
-.plugin-distribution #order-content {
-  margin: 0 -20px;
-}
-.plugin-distribution #order-content hr {
+.plugin-distribution #order-page hr {
   margin: 0;
 }
 
@@ -1063,19 +1069,16 @@ body.plugin-distribution {
   margin-bottom: 20px;
 }
 
-.plugin-distribution #session-column .box-field.supplier {
-  width: 70px;
-}
 .plugin-distribution #session-column .box-field.product {
   width: 150px;
 }
-.plugin-distribution #session-column .more-info .box-field.product-info {
+.plugin-distribution #session-column .box-edit .box-field.product-info {
   width: 230px;
 }
-.plugin-distribution #session-column .box-field.price {
+.plugin-distribution #session-column .box-field.price-with-unit {
   width: 100px;
 }
-.plugin-distribution #session-column .more-info .box-field.product-image {
+.plugin-distribution #session-column .box-edit .box-field.product-image {
   width: 100px;
 }
 .plugin-distribution #session-column .box-field.quantity {
@@ -1085,36 +1088,28 @@ body.plugin-distribution {
 .plugin-distribution #session-column .box-field.stock {
   width: 80px;
 }
-.plugin-distribution #session-column .table-content .box-field.product,
-.plugin-distribution #session-column .table-content .box-field.price {
-  font-size: 12px;
-  font-weight: bold;
-}
-.plugin-distribution #session-column .table-content .box-field.price {
-  color: #0094c9;
-}
 
-.plugin-distribution #session-column .more-info .box-field.product-info .product-desc {
+.plugin-distribution #session-column .box-edit .box-field.product-info .product-desc {
   max-height: 60px;
 }
-.plugin-distribution #session-column .more-info .box-field.product-info .product-city {
+.plugin-distribution #session-column .box-edit .box-field.product-info .product-city {
 }
 
 .plugin-distribution #session-column .box-field.quantity input {
   width: 100%;
 }
-.plugin-distribution #session-column .clicked .box-field.quantity-label span {
+.plugin-distribution #session-column .edit .box-field.quantity-label span {
   color: #B6B6B6;
 }
-.plugin-distribution #session-column .clicked .box-field.quantity-entry .unit {
+.plugin-distribution #session-column .edit .box-field.quantity-entry .unit {
   float: right;
 }
 
-.plugin-distribution #session-column .more-info  {
+.plugin-distribution #session-column .box-edit  {
   margin-top: 20px;
   height: 120px;
 }
-.plugin-distribution #session-column .more-info .box-field.product-image {
+.plugin-distribution #session-column .box-edit .box-field.product-image {
   height: 80px;
   line-height: 38px;
   background-color: #12AF60;
@@ -1122,10 +1117,10 @@ body.plugin-distribution {
   text-align: center;
 }
 
-.plugin-distribution #session-column .more-info .box-field.quantity {
+.plugin-distribution #session-column .box-edit .box-field.quantity {
   height: 100%;
 }
-.plugin-distribution #session-column .more-info .box-field.quantity .unit {
+.plugin-distribution #session-column .box-edit .box-field.quantity .unit {
   float: right;
 }
 
@@ -1159,6 +1154,9 @@ body.plugin-distribution {
   border-top: 3px solid black;
   width: auto;
   padding: 8px;
+}
+.plugin-distribution #order-column .in-order #delivery-box div {
+  margin-bottom: 10px;
 }
 .plugin-distribution #order-column .in-order .quantity-entry input {
   width: 76px;

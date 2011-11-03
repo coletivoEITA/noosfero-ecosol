@@ -1,21 +1,21 @@
-<div class="in-session-order-view value-row">
-  <span class='box-field in-session-order-code'><%= order.id %></span>
-  <span class='box-field in-session-order-member'><%= order.consumer.name %></span>
-  <span class='box-field in-session-order-created-at'><%= month_with_time(order.created_at) %></span>
-  <span class='box-field in-session-order-modified-at'><%= month_with_time(order.updated_at) %></span>
-  <span class='box-field in-session-order-products-count'><%= order.products.count %></span>
-  <span class='box-field in-session-order-value'><%= price_span(order.total_asked) %></span>
+<div class="box-view">
+  <span class='box-field code'><%= order.id %></span>
+  <span class='box-field member box-edit-link'><%= order.consumer.name %></span>
+  <span class='box-field created'><%= month_with_time order.created_at  %></span>
+  <span class='box-field modified'><%= month_with_time order.updated_at  %></span>
+  <span class='box-field products-count'><%= order.products.count %></span>
+  <span class='box-field price'><%= price_span order.total_asked  %></span>
 
-  <%= edit_arrow "#in-session-order-#{order.id}", true, :onclick => "distribution_plugin_session_order_toggle_edit(this)", :class => 'in-session-order-actions' %>
+  <%= edit_arrow "#in-session-order-#{order.id}", true, :onclick => "distribution_value_row_toggle_edit()", :class => 'actions' %>
 
   <div class="cleaner"></div>
 </div>
 
-<div class="in-session-order-edit alignment" style="display: none">
+<div class="box-edit" style="display: none">
   <% if order.products.count == 0 %>
     <div class="empty-order">
       <span class="subtitle"><%= _("Empty order") %></span>
-      <%= link_to_function _('cancel'), 'distribution_plugin_session_order_toggle_edit(this)' %>
+      <%= link_to_function _('cancel'), 'distribution_value_row_toggle_edit()' %>
     </div>
   <% else %>
     <% form_remote_for :order, order, :url => {:controller => :distribution_plugin_order, :action => :session_edit, :id => order.id} do |f| %>
@@ -41,7 +41,7 @@
 
         <div>
           <%= f.submit _('Save') %>
-          <%= link_to_function _('cancel'), 'distribution_plugin_session_order_toggle_edit(this)' %>
+          <%= link_to_function _('cancel'), 'distribution_value_row_toggle_edit(this)' %>
         </div>
 
         <% javascript_tag do %>

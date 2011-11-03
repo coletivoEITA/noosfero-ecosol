@@ -44,7 +44,7 @@ module DistributionPlugin::DistributionDisplayHelper
   end
 
   def price_with_unit_span(price, unit)
-    _("%{price}/%{unit}") % {:price => price_span(price), :unit => content_tag('span', unit.singular, :class => 'price-unit')}
+    _("%{price}%{unit}") % {:price => price_span(price), :unit => content_tag('span', _('/') + unit.singular, :class => 'price-unit')}
   end
 
   # come on, you can't replace a rails api method!

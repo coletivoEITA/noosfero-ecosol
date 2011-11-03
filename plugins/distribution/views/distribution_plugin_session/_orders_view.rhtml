@@ -1,21 +1,23 @@
 <% if orders.count == 0 %>
   <div class="subtitle"><%= _('No orders to show') %></div>
 <% else %>
-  <div class='table-header alignment'>
-    <span class='box-field in-session-order-code'><%= _('Code') %></span>
-    <span class='box-field in-session-order-member'><%= _('Member') %></span>
-    <span class='box-field in-session-order-created-at'><%= _('Created at') %></span>
-    <span class='box-field in-session-order-modified-at'><%= _('Modified at') %></span>
-    <span class='box-field in-session-order-products-count'><%= _('Prod. Qty.') %></span>
-    <span class='box-field in-session-order-value'><%= _('Value') %></span>
+  <div class='table-header'>
+    <span class='box-field code'><%= _('Code') %></span>
+    <span class='box-field member'><%= _('Member') %></span>
+    <span class='box-field created'><%= _('Created') %></span>
+    <span class='box-field modified'><%= _('Modified') %></span>
+    <span class='box-field products-count'><%= _('Prod. Qty.') %></span>
+    <span class='box-field price'><%= _('Value') %></span>
 
     <div class="cleaner"></div>
   </div>
 
-  <% orders.each do |order| %>
-    <div id="in-session-order-<%=order.id%>" class="in-session-order">
-      <%= render :partial => 'distribution_plugin_order/session_edit', :locals => {:order => order} %>
-    </div>
-  <% end %>
+  <div class='table-content'>
+    <% orders.each do |order| %>
+      <div id="in-session-order-<%=order.id%>" class="in-session-order value-row" toggleedit="distribution_in_session_order_toggle_edit();">
+        <%= render :partial => 'distribution_plugin_order/session_edit', :locals => {:order => order} %>
+      </div>
+    <% end %>
+  </div>
 <% end %>
 

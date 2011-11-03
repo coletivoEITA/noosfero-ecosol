@@ -121,15 +121,6 @@ class DistributionPluginProduct < ActiveRecord::Base
   def price_without_margins
     self['price']
   end
-  def price
-    price_with_margins = price_without_margins
-    return price_with_margins if price_with_margins.blank?
-
-    price_with_margins += (margin_percentage/100)*price_with_margins if margin_percentage
-    price_with_margins += margin_fixed if margin_fixed
-
-    price_with_margins
-  end
 
   def unit
     self['unit'] || Unit.new(:singular => _('unit'), :plural => _('units'))

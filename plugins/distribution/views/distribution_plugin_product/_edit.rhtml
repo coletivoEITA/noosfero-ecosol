@@ -1,4 +1,4 @@
-<div class="our-product-edit">
+<div class="box-edit" style="display: none">
   <% new_record = !product || product.new_record? %>
   
   <div class="title">
@@ -94,7 +94,7 @@
   
       <div class="cleaner">
         <%= f.submit _('Save') %> 
-        <%= link_to_function _('cancel'), 'distribution_our_product_toggle_edit(this);' %>
+        <%= link_to_function _('cancel'), 'distribution_value_row_toggle_edit();' %>
       </div>
   
       <% javascript_tag do %>

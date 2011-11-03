@@ -13,7 +13,7 @@ class DistributionDeliveryMethodTest < ActiveSupport::TestCase
     p = build(Profile)
     node = build(DistributionNode, :role => 'supplier', :profile => p)
     node.save!
-    dm = build(DistributionDeliveryMethod, :name => 'Delivery Deluxe', :description => 'Oi', :delivery_type => 'delivery', :node_id => node.id)
+    dm = build(DistributionDeliveryMethod, :name => 'Delivery Deluxe', :description => 'Oi', :delivery_type => 'deliver', :node_id => node.id)
     assert dm.valid?
   end
 

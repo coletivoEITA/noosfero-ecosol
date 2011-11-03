@@ -8,7 +8,7 @@
     <%= f.radio_button :delivery_type, 'pickup', :checked => true, :onchange => 'jQuery(".new-delivery-method-pickup-address").show()' %>
     <span style="float:left; margin: 0px 5px"><%= _('or') %></span>
     <%= f.label :delivery_type_delivery, _('Deliver to consumer\'s address'), :style => 'clear: none; width: auto' %> 
-    <%= f.radio_button :delivery_type, 'delivery', :onchange => 'jQuery(".new-delivery-method-pickup-address").hide()' %>
+    <%= f.radio_button :delivery_type, 'deliver', :onchange => 'jQuery(".new-delivery-method-pickup-address").hide()' %>
 
     <div class="new-delivery-method-pickup-address">
       <%= f.label :address_line1, _('Address') %> 

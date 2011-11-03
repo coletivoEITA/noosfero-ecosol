@@ -39,9 +39,6 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
     supplier_products.sum(:price) * total_parcel_quantity
   end
 
-  def original_price
-    from_product.price_without_margins
-  end
   def buy_price
     supplier_product.price
   end
@@ -60,14 +57,12 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
     end
   end
 
-  # price is copied as is, that is, without margins
-  FROOZEN_DEFAULT_ATTRIBUTES = DEFAULT_ATTRIBUTES - [:price]
+  FROOZEN_DEFAULT_ATTRIBUTES = DEFAULT_ATTRIBUTES
 
   def freeze_default_attributes(from_product)
     FROOZEN_DEFAULT_ATTRIBUTES.each do |a|
       self[a.to_s] = from_product.send a
     end
-    self.price = from_product.price_without_margins
   end
 
   protected

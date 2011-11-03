@@ -43,7 +43,7 @@ class DistributionPluginOrder < ActiveRecord::Base
   end
 
   def is_delivery?
-    supplier_delivery and supplier_delivery.delivery_type == 'delivery'
+    supplier_delivery and supplier_delivery.deliver?
   end
 
   def open?
