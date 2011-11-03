@@ -241,8 +241,8 @@ body.plugin-distribution {
   cursor: pointer;
 }
 .plugin-distribution .box-view .box-field.price,
-.plugin-distribution .box-view .box-field.price-with-unit {
-  font-size: 12px;
+.plugin-distribution .value-row .box-field.price-with-unit {
+  font-size: 12px !important;
   color: #0095B5;
   font-weight: bold;
 }
@@ -626,12 +626,17 @@ body.plugin-distribution {
   position: relative;
   height: 45px;
 }
-.plugin-distribution .ordered-product {
-}
 .plugin-distribution .ordered-product .box-field {
   height: 24px;
   white-space: nowrap;
   overflow: hidden;
+}
+.plugin-distribution .ordered-product .box-field,
+.plugin-distribution .ordered-product .box-field.product-quantity input {
+  font-size: 10px;
+}
+.plugin-distribution .ordered-product .box-field.product-quantity input {
+  width: 40px;
 }
 .plugin-distribution .ordered-product .box-field.supplier {
   width: 80px;
@@ -647,8 +652,17 @@ body.plugin-distribution {
 .plugin-distribution .ordered-product .box-field.price-total {
   width: 40px;
 }
+.plugin-distribution .ordered-product .more-actions {
+  margin-top: 4px;
+}
+.plugin-distribution .ordered-product .more-actions .box-field {
+  height: auto;
+}
+.plugin-distribution .ordered-product .more-actions .box-details a {
+  color: black;
+}
 .plugin-distribution .ordered-product .box-field.price-total,
-.plugin-distribution .ordered-product .more-actions .box-field.price {
+.plugin-distribution .ordered-product .more-actions .box-field.price-with-unit {
   float: right;
   margin-right: 0;
   text-align: right;
@@ -662,7 +676,7 @@ body.plugin-distribution {
   position: absolute;
   z-index: 10;
   top: -12px;
-  left: 3px;
+  left: 0;
   border: 1px solid black;
 
   transform: scale(1.03);
@@ -1034,14 +1048,11 @@ body.plugin-distribution {
 
 /* ----- order stuff  ----- */
 
-.plugin-distribution #order-page hr {
-  margin: 0;
-}
-
 .plugin-distribution #session-column {
   width: 460px;
   float: left;
   margin-bottom: 80px;
+  padding-left: 0;
 }
 .plugin-distribution #order-column {
   float: left;
@@ -1049,11 +1060,20 @@ body.plugin-distribution {
   width: 400px;
 }
 
-.plugin-distribution #order-menu {
-  margin-left: 250px;
-  margin-bottom: 20px;
+.plugin-distribution #others-cycles {
+  border-bottom: 2px dotted #aaa;
 }
-.plugin-distribution #order-menu .subtitle {
+.plugin-distribution #others-cycles,
+.plugin-distribution #order-header {
+  padding-left: 212px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  margin-left: -20px;
+}
+.plugin-distribution #order-header {
+  border-bottom: 2px solid #ddd;
+}
+.plugin-distribution #order-header .subtitle {
   display: block;
   margin-top: 30px;
   width: 400px;

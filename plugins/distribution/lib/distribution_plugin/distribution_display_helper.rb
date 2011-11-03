@@ -22,11 +22,16 @@ module DistributionPlugin::DistributionDisplayHelper
   end
 
   def datetime_period_with_day(start, finish)
-    _("%{start_day}, %{start_datetime} - %{finish_day}, %{finish_datetime}") % {
-      :start_day => @session.start.strftime(_('%A')),
-      :start_datetime => @session.start.strftime(_('%m/%d %Hh%M')),
-      :finish_day => @session.finish.strftime(_('%A')),
-      :finish_datetime => @session.finish.strftime(_('%m/%d %Hh%M')),
+    (start.to_date == finish.to_date ?
+    _("%{start_day}, from %{start_time} to %{finish_time}") :
+    _("%{start_day}, %{start_datetime} - %{finish_day}, %{finish_datetime}")
+    ) % {
+      :start_day => start.strftime(_('%A')),
+      :start_datetime => start.strftime(_('%m/%d %Hh%M')),
+      :start_time => start.strftime(_('%Hh%M')),
+      :finish_day => finish.strftime(_('%A')),
+      :finish_datetime => finish.strftime(_('%m/%d %Hh%M')),
+      :finish_time => finish.strftime(_('%Hh%M')),
     }
   end
 

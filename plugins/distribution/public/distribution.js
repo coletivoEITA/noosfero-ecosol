@@ -114,8 +114,8 @@ function distribution_session_product_edit() {
   editing.find('.box-edit').toggle(isEditing);
 }
 function distribution_order_session_product_toggle() {
-  editing.find('.more-info').toggle(isEditing);
-  editing.find('.quantity-label').toggle(isEditing);
+  editing.find('.box-edit').toggle(isEditing);
+  editing.find('.quantity-label').toggle(!isEditing);
   editing.find('.quantity-entry').toggle(isEditing);
 }
 function distribution_ordered_product_edit() {

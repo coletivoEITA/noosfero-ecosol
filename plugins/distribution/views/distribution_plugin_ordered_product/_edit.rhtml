@@ -36,13 +36,12 @@
           <% end %>
         </div>
     
-        <div class="box-field price">
-          <%= price_with_unit_span product.price, product.unit %>
-        </div>
+        <div class="box-field price-with-unit"><%= price_with_unit_span product.price, product.unit %></div>
+
+        <div class="cleaner"></div>
       </div> 
     
       <div class="cleaner"></div>
-
     <% end %>
   </div>
 </div>
