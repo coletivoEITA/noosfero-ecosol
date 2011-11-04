@@ -1,8 +1,7 @@
 class DistributionPluginNodeController < DistributionPluginMyprofileController
 
-  no_design_blocks
-
   def index
+    redirect_to :controller => :distribution_plugin_session, :action => :index
   end
 
   def edit
@@ -20,6 +19,18 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
     else
       render :layout => false
     end
+  end
+
+  def settings
+
+  end
+
+  protected
+
+  def custom_layout
+  end
+  def custom_layout?
+    false
   end
 
 end

@@ -1,10 +1,8 @@
 class DistributionPluginMyprofileController < MyProfileController
   append_view_path File.join(File.dirname(__FILE__) + '/../views')
-  layout 'distribution_plugin_layouts/default'
-  # FIXME: why is this necessary on the subclasses?
-  #no_design_blocks
-  
+
   before_filter :load_node
+  before_filter :custom_layout
   
   helper ApplicationHelper
   helper DistributionPlugin::DistributionDisplayHelper
@@ -21,9 +19,17 @@ class DistributionPluginMyprofileController < MyProfileController
   end
 
   def layout_contents
+    return unless custom_layout?
     l = [:header]
     l << :admin_sidebar if @admin_action
     l
+  end
+
+  def custom_layout
+    self.class.layout 'distribution_plugin_layouts/default'
+  end
+  def custom_layout?
+    true
   end
 
 end

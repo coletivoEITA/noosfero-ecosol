@@ -64,6 +64,44 @@ function distribution_our_product_add_from_product(context, url, data) {
 
 /* ----- ends our products stuff  ----- */
 
+/* ----- order stuff  ----- */
+
+function distribution_order_products_toggle(fields, toggle) {
+  jQuery.each(fields, function(index, field) {
+    p = jQuery(field).parents('.order-session-product');
+    p.toggle(toggle);
+    //v = p.is(':visible');
+    //toggle ? (!v ? p.fadeIn() : 0) : (v ? p.fadeOut() : 0);
+  });
+}
+
+function distribution_order_filter_products(text) {
+  text = text.toLowerCase();
+  fields = jQuery('#session-column .box-view .box-field.product');
+  results = jQuery.grep(fields, function(field, index) {
+    fieldText = jQuery(field).text().toLowerCase();
+    supplierText = jQuery(field).parents('.supplier-table').find('.supplier').text().toLowerCase();
+
+    matchField = fieldText.indexOf(text) > -1;
+    matchSupplier = supplierText.indexOf(text) > -1;
+    return matchField || matchSupplier;
+  });
+  jQuery('#session-column .supplier-table').show();
+  distribution_order_products_toggle(jQuery(fields), false);
+  distribution_order_products_toggle(jQuery(results), true);
+
+  jQuery('#session-column .supplier-table').each(function(index, supplier) {
+    jQuery(supplier).toggle(jQuery(supplier).find('.order-session-product:visible').length > 0 ? true : false);
+  });
+}
+
+function distribution_order_filter() {
+  distribution_order_filter_products(jQuery(this).text());
+  jQuery(this).parents('#order-filter').find('input').val(jQuery(this).text());
+}
+
+/* ----- ends order stuff  ----- */
+
 /* ----- supplier stuff  ----- */
 
 function distribution_supplier_toggle_edit(context) {
@@ -134,20 +172,12 @@ function distribution_value_row_toggle_edit() {
 function distribution_locate_value_row(context) {
   return jQuery(context).hasClass('value-row') ? jQuery(context) : jQuery(context).parents('.value-row');
 }
-function distribution_value_row_click(context) {
-  new_editing = distribution_locate_value_row(context);
-
-  if (isEditing)
-    distribution_value_row_toggle_edit();
-  editing = new_editing;
-  if (!isEditing)
-    distribution_value_row_toggle_edit();
-}
 
 jQuery(document).click(function(event) {
   if (jQuery(event.target).parents('.more-actions').length > 0) //came from anchor click!
     return false;
-  if (!distribution_locate_value_row(event.target).length && isEditing) {
+  var value_row = distribution_locate_value_row(event.target);
+  if (!value_row.length && isEditing) {
     distribution_value_row_toggle_edit();
     editing = jQuery();
     return false;
@@ -158,8 +188,26 @@ jQuery(document).ready(function() {
   if (window.location.hash == '#our-product-add')
     distribution_our_product_add();
 });
-jQuery('.plugin-distribution .value-row').live('click', function () {
-  return distribution_value_row_click(this);
+jQuery('.plugin-distribution .value-row').live('click', function (event) {
+  var value_row = distribution_locate_value_row(event.target);
+  var isToggle = (jQuery(event.target).hasClass('box-edit-link') && !isEditing) || 
+    jQuery(event.target).hasClass('toggle-edit') ||
+    jQuery(event.target).parents().hasClass('toggle-edit');
+
+  if (isToggle) {
+    if (value_row.get(0) != editing.get(0)) 
+      distribution_value_row_toggle_edit();
+    editing = value_row;
+    distribution_value_row_toggle_edit();
+  } else {
+    if (isEditing)
+      distribution_value_row_toggle_edit();
+    editing = value_row;
+    if (!isEditing)
+      distribution_value_row_toggle_edit();
+  }
+
+  return false;
 });
 jQuery('.plugin-distribution .value-row').live('hover', function () {
   jQuery(this).toggleClass('hover');
@@ -182,4 +230,18 @@ jQuery('.plugin-distribution input[type=checkbox]').live('change', function () {
   jQuery(this).attr('checked', this.checked ? 'checked' : null);
   return false;
 });
+
+Array.prototype.diff = function(a) {
+  return this.filter(function(i) {return !(a.indexOf(i) > -1);});
+};
+Array.prototype.sum = function(){
+  for(var i=0,sum=0;i<this.length;sum+=this[i++]);
+    return sum;
+}
+Array.prototype.max = function(){
+  return Math.max.apply({},this)
+}
+Array.prototype.min = function(){
+  return Math.min.apply({},this)
+}
 

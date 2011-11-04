@@ -1,0 +1,7 @@
+<% if order.products.count > 0 %>
+  <% form_remote_for :order, order, :url => {:action => :edit, :id => order.id} do |f| %>
+    <%= render :partial => "distribution_plugin_ordered_product/index", :locals => {:order => order, :f => f} %>
+  <% end %>
+<% else %>
+  <%= _('Any products') %>
+<% end %>

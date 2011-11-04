@@ -11,14 +11,15 @@
   <div id="order-header">
     <h2><%=_("Orders cycle: `%{cycle}'") % {:cycle => @session.name} %></h2>
 
-    <div>
-      <strong><%= _("Active during the period: ") %></strong>
-      <%= datetime_period_with_day @session.start, @session.finish %>
+    <div class="orders-date <%= "active" if @order.open? %>">
+      <span><%= _("Happening") if @order.open? %></span>
+      <strong><%= _("Orders: ") %></strong>
+      &emsp;<%= datetime_period_with_day @session.start, @session.finish %>
     </div>
 
-    <div>
+    <div class="delivery-date">
       <strong><%=_("Delivery: ") %></strong>
-      <%= datetime_period_with_day @session.delivery_start, @session.delivery_finish %>
+      &emsp;<%= datetime_period_with_day @session.delivery_start, @session.delivery_finish %>
     </div>
 
     <div class="subtitle"><%= @session.description %></div>
@@ -30,38 +31,51 @@
       <div><%= _("Choose from the list below the products you want to include to your order. Click them to choose the quantity.")%></div>
     </div>
 
-    <h3><%#_("Filter the products")%></h3>
-    <%# text_field_tag('query', '') %>
-    <div class="cleaner"></div>
+    <div id="order-filter" class="alignment">
+      <strong><%=_("Filter")%></strong>
+      <div class="box-align"><%= text_field_tag 'query', '', :onkeyup => "distribution_order_filter_products(jQuery(this).val())" %></div>
 
-    <div id="category-filter" class="alignment subtitle">
-      <div><%# _("Categories") %></div>
-      <div class="categories">
-        <%# render :partial => 'product_category', :collection => @product_categories %>
-        <div class="cleaner"></div>
-      </div>
-    </div>
-    <div class="cleaner"></div>
-
-    <div>
-      <% @session_products.each do |supplier, session_products| %>
-        <div class="alignment"><%= supplier.name %></div>
-
-        <div class="table-header">
-          <div class="box-field product"><%=_('Product')%></div>
-          <div class="box-field price-with-unit"><%=_('Price')%></div>
-          <div class="box-field quantity"><%=_('order qtt')%></div>
+      <div class="subtitle">
+        <div id="order-filter-suppliers" class="order-filter">
+          <strong><%= _("Producers") %></strong>
+          <div>
+            <% @suppliers.each do |supplier| %>
+              <%= link_to_function supplier.name, '' %>&emsp;
+            <% end %>
+          </div>
 
           <div class="cleaner"></div>
         </div>
 
-        <div class="table-content">
-          <% session_products.each do |product| %>
-            <div id="session-product-<%=product.id%>" class="order-session-product value-row" toggleedit="distribution_order_session_product_toggle();">
-              <%= render :partial => "distribution_plugin_product/order_edit", :locals => {
-                :product => product, :order => @order, :ordered_product => @order.products.find_by_session_product_id(product.id) } %>
-            </div>
-          <% end %>
+        <% javascript_tag do %>
+          jQuery('.order-filter a').click(distribution_order_filter);
+        <% end %>
+      </div>
+
+      <div class="cleaner"></div>
+    </div>
+
+    <div>
+      <% @session_products.each do |supplier, session_products| %>
+        <div class="supplier-table">
+          <div class="supplier"><%= supplier.name %></div>
+
+          <div class="table-header">
+            <div class="box-field product"><%=_('Product')%></div>
+            <div class="box-field price-with-unit"><%=_('Price')%></div>
+            <div class="box-field quantity"><%=_('order qtt')%></div>
+
+            <div class="cleaner"></div>
+          </div>
+
+          <div class="table-content">
+            <% session_products.each do |product| %>
+              <div id="session-product-<%=product.id%>" class="order-session-product value-row" toggleedit="distribution_order_session_product_toggle();">
+                <%= render :partial => "distribution_plugin_product/order_edit", :locals => {
+                  :product => product, :order => @order, :ordered_product => @order.products.find_by_session_product_id(product.id) } %>
+              </div>
+            <% end %>
+          </div>
         </div>
       <% end %>
     </div>
@@ -73,9 +87,9 @@
     </div>
 
     <div class="in-order">
-      <% form_remote_for :order, @order, :url => {:action => :edit, :id => @order.id} do |f| %>
-        <%= render :partial => "distribution_plugin_ordered_product/index", :locals => {:order => @order, :f => f} %>
-      <% end %>
+      <div id="order-products">
+        <%= render :partial => 'products', :locals => {:order => @order} %>
+      </div>
 
       <div id="total-box">
         <%= render :partial => 'total', :locals => {:order => @order} %>
@@ -83,25 +97,7 @@
       <div class="cleaner"></div>
 
       <div id="delivery-box">
-        <div>
-          <h3><%= _("delivery method") %></h3>
-          <strong><%= @order.supplier_delivery.name %></strong>
-          <div><%= @order.supplier_delivery.description %></div>
-        </div>
-
-        <% if @session.delivery_methods.count > 1 %>
-          <%= labelled_field nil, :delivery_method_options, _('Choose another:'),
-            select_tag(:delivery_method_options, options_from_collection_for_select(@session.delivery_methods, "id", "name")),
-            :class => 'subtitle' %>
-        <% end %>
-      </div>
-
-      <div id="close-order" class="box-field">
-        <%= button_to _('Confirm order'), {:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => 'confirm', :id => @order} %>
-      </div>
-      <div id="desist-order" class="box-field">
-        <%= link_to _('give up'), {:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => 'remove', :id => @order},
-          :confirm => _("Are you sure? The order can't be recovered") %>
+        <%= render :partial => 'delivery', :locals => {:order => @order, :method => @order.supplier_delivery} %>
       </div>
 
       <div class="cleaner"></div>

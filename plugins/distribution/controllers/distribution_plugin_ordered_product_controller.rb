@@ -9,8 +9,6 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
     @ordered_product = DistributionPluginOrderedProduct.find_by_order_id_and_session_product_id(@order.id, @session_product.id)
     if @ordered_product.nil?
       @ordered_product = DistributionPluginOrderedProduct.create!(:order_id => @order.id, :session_product_id => @session_product.id, :quantity_asked => @quantity_asked)
-    else
-      redirect_to :action => :edit, :id => @ordered_product.id, :ordered_product => {:quantity_asked => @quantity_asked}
     end
   end
 

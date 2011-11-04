@@ -7,9 +7,9 @@
       <% if ordered_product %>
         <span class="label"><%= ordered_product.quantity_asked %></span>
         <span class="unit"><%= product.unit.singular %></span>
-        <%= link_to_function(_('change'), "") %>
+        <%= link_to_function _('change'), "" %>
       <% else %>
-        <%= link_to_function _('add'), "" %>
+        <%= link_to_function _('include'), "" %>
       <% end %>
     </div>
     <div class="quantity-entry" style="display: none">
@@ -20,19 +20,40 @@
   <div class="cleaner"></div>
 </div>
 
-<div class="box-edit" style="display: none">
+<div class="box-edit subtitle" style="display: none">
   <div class="box-field product-info">
-    <span class="product-desc"><%= product.product.description %></span>
-    <span class="product-city"><%= _('%{city}/%{state}') % {:city => product.supplier.profile.city, :state => product.supplier.profile.state} %></span>
-  </div>
+    <div>
+      <div class="box-field product product-desc">
+        <%= excerpt_ending product.description, 250 %>
+      </div>
 
-  <div class="box-field product-image">
-    <%= _('Product Image'); %>
+      <div class="box-field price-with-unit">
+        <div><%= _("price's descriptive") %></div>
+        <div class="price-descriptive">
+          <%= _("%{price} + %{percent}% = %{price_with_margin}") % {
+            :price => product.buy_price,
+            :percent => product.margin_percentage,
+            :price_with_margin => product.price, } %>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="product-city">
+        <span class="field-title"><%= _('City') %></span>
+        <span><%= _('%{city}/%{state}') % {:city => product.supplier.profile.city, :state => product.supplier.profile.state} %>
+      </div>
+    </div>
   </div>
 
   <div class="box-field quantity">
     <span class="unit"><%= product.unit.singular %></span>
-    <%= submit_to_function (ordered_product ? _('change') : _('add')), "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}',
+
+    <div class="box-field product-image">
+      <%= _('Product Image'); %>
+    </div>
+
+    <%= submit_to_function (ordered_product ? _('Change') : _('Add')), "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}',
       {order_id: #{order.id}, session_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-session-product').find('.quantity-entry input').val() });" %>
     <%= link_to_function _('cancel'), '' %>
   </div>

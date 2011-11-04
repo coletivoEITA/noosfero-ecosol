@@ -36,6 +36,9 @@ class DistributionPluginNode < ActiveRecord::Base
   def name
     profile.name
   end
+  def abbreviation_or_name
+    self['name_abbreviation'] || name
+  end
 
   def consumer?
     role == 'consumer'

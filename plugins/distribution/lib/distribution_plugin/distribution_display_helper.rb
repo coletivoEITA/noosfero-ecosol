@@ -3,10 +3,20 @@ module DistributionPlugin::DistributionDisplayHelper
   include ActionView::Helpers::JavaScriptHelper #we want the original button_to_function!
 
   def labelled_field(form, field, label, field_html, options = {})
+    help = options.delete(:help)
     content_tag('div', (form ? form.label(field, label) : label_tag(field, label)) +
+                content_tag('div', help, :class => 'field-help') +
                 content_tag('div', field_html, :class => 'field-box') +
                 content_tag('div', '', :style => 'clear: both'),
                 options.merge(:class => options[:class].to_s + ' field'))
+  end
+
+  def labelled_radio(form, field, label, value, options = {})
+    content_tag('div', 
+                form.radio_button(:role, value) +
+                form.label("#{field}_#{value}", label) +
+                content_tag('div', '', :class => 'cleaner'),
+                options.merge(:class => options[:class].to_s + ' field-radio'))
   end
 
   def labelled_period_field(form, start_field, end_field, label, options = {})
@@ -42,7 +52,7 @@ module DistributionPlugin::DistributionDisplayHelper
   def edit_arrow(anchor, toggle = true, options = {})
     options[:class] ||= ''
     options[:onclick] ||= ''
-    options[:class] += ' actions-circle'
+    options[:class] += ' actions-circle toggle-edit'
     options[:onclick] = "r = distribution_edit_arrow_toggle(this); #{options[:onclick]}; return r;" if toggle
 
     link_to content_tag('div', '', :class => 'actions-arrow'), anchor, options
@@ -52,7 +62,12 @@ module DistributionPlugin::DistributionDisplayHelper
     _("%{price}%{unit}") % {:price => price_span(price), :unit => content_tag('span', _('/') + unit.singular, :class => 'price-unit')}
   end
 
-  # come on, you can't replace a rails api method!
+  def excerpt_ending(text, length)
+    return nil if text.blank?
+    excerpt text, text.first(3), length
+  end
+
+  # come on, you can't replace a rails api method (button_to_function was)!
   def submit_to_function(name, function, html_options={})
     content_tag 'input', '', html_options.merge(:onclick => function, :type => 'submit', :value => name)
   end

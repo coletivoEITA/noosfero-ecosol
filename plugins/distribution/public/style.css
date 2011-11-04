@@ -1,37 +1,41 @@
 /* ----- override some noosfero's css  ----- */
 
-.plugin-distribution .page-title {
-  display: none !important;
+body #plugin-distribution-layout {
+  line-height: 20px;
 }
-.plugin-distribution #content {
+#plugin-distribution-layout .main-block {
+  text-align: left;
+}
+#plugin-distribution-layout #content {
   border-top: 0px;
+  margin-top: 100px;
 }
-.plugin-distribution #content #distribution-plugin-header h1 {
+#plugin-distribution-layout #content #distribution-plugin-header h1 {
   border-bottom: 0px;
   color: #000;
   text-align: left;
 }
-.plugin-distribution #content .no-boxes h1 {
-  font-variant: normal
+#plugin-distribution-layout #content .no-boxes h1 {
+  font-variant: normal;
 }
-body.plugin-distribution {
-  line-height: 20px
-}
-.plugin-distribution #content {
-  margin-top: 100px;
-}
-.plugin-distribution #profile-header {
+#plugin-distribution-layout #profile-header {
   display: none;
+}
+#plugin-distribution-layout .page-title {
+  display: none !important;
 }
 
 /* ----- ends override some noosfero's css  ----- */
 
 /* ----- common stuff  ----- */
 
+.controller-profile_editor a.control-panel-distribution-solidary-network {
+  background-image: url(images/distribution-solidary-network.png);
+}
+
 .plugin-distribution .cleaner {
   clear: both;
 }
-
 
 .plugin-distribution .page,
 .plugin-distribution .admin-page {
@@ -60,15 +64,15 @@ body.plugin-distribution {
 }
 
 
-.plugin-distribution h2 a {
+#plugin-distribution-layout h2 a {
   text-decoration: none;
 }
-.plugin-distribution #content h2 {
+#plugin-distribution-layout #content h2 {
   color: #036475;
   margin-bottom: 7px;
   height: 44px;
 }
-.plugin-distribution #content h3 {
+#plugin-distribution-layout #content h3 {
   text-transform: uppercase;
   font-size: 14px;
 }
@@ -118,6 +122,8 @@ body.plugin-distribution {
   color: #fff;
   font-weight: bold;
   font-size: 13px;
+  text-align: left;
+  min-width: 80px;
   padding: 8px 12px;
   margin: 15px 0;
   margin-right: 8px;
@@ -159,6 +165,10 @@ body.plugin-distribution {
 .plugin-distribution .subtitle {
   font-size: 10px;
 }
+.plugin-distribution .field-title {
+  text-transform: uppercase;
+  font-weight: bold;
+}
 .plugin-distribution .field {
   clear: both;
 }
@@ -175,6 +185,27 @@ body.plugin-distribution {
   float: left;
   width: 100%;
 }
+.plugin-distribution .field .field-help {
+  font-size: 10px;
+  clear: both;
+  width: 280px;
+  margin-bottom: 7px;
+}
+
+.plugin-distribution .field-radio {
+  clear: both;
+  margin-bottom: 3px;
+}
+.plugin-distribution .field-radio input {
+  float: left;
+  margin-left: 0;
+}
+.plugin-distribution .field-radio label {
+  font-weight: normal;
+  line-height: 10px;
+  text-transform: lowercase;
+  margin-left: 4px;
+}
 
 .plugin-distribution .table-header {
   width: 100%;
@@ -190,7 +221,6 @@ body.plugin-distribution {
   border-bottom: 1px solid black;
   width: auto;
   margin-bottom: 40px;
-  margin-top: -1px;
 }
 
 .plugin-distribution .value-row {
@@ -233,6 +263,7 @@ body.plugin-distribution {
   min-height: 1px;
   overflow: hidden;
 }
+
 .plugin-distribution .box-field.box-edit-link {
   font-size: 12px !important;
   font-weight: bold;
@@ -240,6 +271,12 @@ body.plugin-distribution {
   color: #38727E;
   cursor: pointer;
 }
+.plugin-distribution .value-row.edit .box-field.box-edit-link {
+  cursor: inherit;
+  color: black;
+  text-decoration: none;
+}
+
 .plugin-distribution .box-view .box-field.price,
 .plugin-distribution .value-row .box-field.price-with-unit {
   font-size: 12px !important;
@@ -345,11 +382,6 @@ body.plugin-distribution {
 /* ----- end session timeline  ----- */
 
 /* ----- session edition stuff  ----- */
-
-.plugin-distribution #session-column input[type=submit] {
-  position: relative;
-  top: 70px;
-}
 
 .plugin-distribution #session-fields input {
   margin-right: 7px;
@@ -1065,13 +1097,24 @@ body.plugin-distribution {
 }
 .plugin-distribution #others-cycles,
 .plugin-distribution #order-header {
-  padding-left: 212px;
+  padding-left: 242px;
   padding-bottom: 10px;
   margin-bottom: 10px;
   margin-left: -20px;
 }
 .plugin-distribution #order-header {
   border-bottom: 2px solid #ddd;
+}
+.plugin-distribution #order-header .orders-date.active {
+  margin-left: -170px;
+  display: inline-block;
+  padding: 0 10px;
+  background-color: #ffe546;
+}
+.plugin-distribution #order-header .orders-date.active span {
+  text-transform: uppercase;
+  width: 156px;
+  display: inline-block;
 }
 .plugin-distribution #order-header .subtitle {
   display: block;
@@ -1089,35 +1132,101 @@ body.plugin-distribution {
   margin-bottom: 20px;
 }
 
-.plugin-distribution #session-column .box-field.product {
-  width: 150px;
+.plugin-distribution #order-filter {
+  margin: 10px 0;
 }
-.plugin-distribution #session-column .box-edit .box-field.product-info {
-  width: 230px;
+.plugin-distribution #order-filter input {
+  width: 100%;
+}
+.plugin-distribution #order-filter .order-filter {
+  float: left;
+  max-width: 30%;
+  margin-bottom: 30px;
+}
+.plugin-distribution #order-filter strong {
+  margin-top: 10px;
+  display: block;
+  font-weight: bold;
+}
+
+.plugin-distribution #session-column .value-row.edit { 
+  background-color: #ffe546; 
+  height: 260px;
+  border: 1px solid black;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+.plugin-distribution #session-column .supplier {
+  background-color: #B1DFEF;
+  padding: 10px 10px 5px;
+  font-weight: bold;
+}
+.plugin-distribution #session-column .table-header {
+  background: none;
+  border-bottom: 1px solid black;
+  text-decoration: none;
+}
+
+.plugin-distribution #session-column .box-field.product {
+  width: 180px;
 }
 .plugin-distribution #session-column .box-field.price-with-unit {
-  width: 100px;
+  width: 140px;
+}
+.plugin-distribution #session-column .box-field.product-info {
+  width: 330px;
 }
 .plugin-distribution #session-column .box-edit .box-field.product-image {
   width: 100px;
 }
 .plugin-distribution #session-column .box-field.quantity {
-  width: 90px;
+  width: 96px;
   margin-right: 0;
 }
 .plugin-distribution #session-column .box-field.stock {
   width: 80px;
 }
 
-.plugin-distribution #session-column .box-edit .box-field.product-info .product-desc {
-  max-height: 60px;
+.plugin-distribution #session-column .box-field.product-info .product,
+.plugin-distribution #session-column .box-field.product-info .price-with-unit {
 }
-.plugin-distribution #session-column .box-edit .box-field.product-info .product-city {
+.plugin-distribution #session-column .box-field.product-info .price-with-unit {
+  font-size: 10px !important;
+  margin-right: 0;
+}
+.plugin-distribution #session-column .box-field.product-info .price-with-unit .unit {
+  font-weight: normal !important;
+}
+.plugin-distribution #session-column .box-field.product-info > div {
+  max-height: 100px;
+  clear: both;
+  float: left;
+  margin-bottom: 10px;
 }
 
+.plugin-distribution #session-column .box-view .box-field.quantity a {
+  font-size: 10px;
+}
+.plugin-distribution #session-column .box-edit .box-field.quantity a {
+  margin-left: 10px;
+  font-size: 12px;
+}
 .plugin-distribution #session-column .box-field.quantity input {
   width: 100%;
 }
+.plugin-distribution #session-column .box-edit .box-field.quantity input[type=submit] {
+  margin-bottom: 0;
+}
+
+
+.plugin-distribution #session-column .box-edit .box-field.product .product-desc {
+  max-height: 60px;
+}
+.plugin-distribution #session-column .box-edit .box-field.product .product-city {
+}
+
 .plugin-distribution #session-column .edit .box-field.quantity-label span {
   color: #B6B6B6;
 }
@@ -1126,22 +1235,21 @@ body.plugin-distribution {
 }
 
 .plugin-distribution #session-column .box-edit  {
-  margin-top: 20px;
   height: 120px;
 }
 .plugin-distribution #session-column .box-edit .box-field.product-image {
-  height: 80px;
-  line-height: 38px;
+  height: 100px;
+  margin-bottom: 23px;
   background-color: #12AF60;
   color: #FFF;
   text-align: center;
 }
 
 .plugin-distribution #session-column .box-edit .box-field.quantity {
-  height: 100%;
+  margin-top: -10px;
 }
 .plugin-distribution #session-column .box-edit .box-field.quantity .unit {
-  float: right;
+  line-height: 25px;
 }
 
 .plugin-distribution #order-column #close-order,
@@ -1155,6 +1263,7 @@ body.plugin-distribution {
 }
 
 .plugin-distribution #order-column #total-box {
+  width: 100%;
   text-align: right;
   text-transform: uppercase;
   padding: 5px 0 8px 0;
@@ -1164,16 +1273,22 @@ body.plugin-distribution {
   width: 295px;
 }
 .plugin-distribution #order-column .total-value {
-  width: 65px;
+  max-width: 65px;
   font-weight: bold;
+  float: right;
 }
 .plugin-distribution #order-column .in-order #total-box {
   border-top: 1px solid black;
+  float: right;
 }
+
 .plugin-distribution #order-column .in-order #delivery-box {
   border-top: 3px solid black;
   width: auto;
-  padding: 8px;
+  padding: 10px;
+}
+.plugin-distribution #order-column .in-order #delivery-box select {
+  text-size: 10px;
 }
 .plugin-distribution #order-column .in-order #delivery-box div {
   margin-bottom: 10px;
@@ -1186,25 +1301,22 @@ body.plugin-distribution {
 
 /* ----- header stuff  ----- */
 
-.plugin-distribution #distribution-plugin-header {
-}
-
-.plugin-distribution .menu_header {
+.plugin-distribution .menu-header {
   background-color: #d9d2e4;
-  padding: 10px 0 10px 250px;
+  padding: 10px 0 10px 242px;
   text-transform: uppercase;
 }
-.plugin-distribution .distribution_menu_logo {
-  background: url('/plugins/distribution/images/menu_logo.jpg') no-repeat;
+.plugin-distribution .menu-logo {
+  background: url('images/menu_logo.jpg') no-repeat;
   height: 112px;
   padding: 1px 0 0 240px;
   text-transform: capitalize;
 }
-.plugin-distribution .distribution_menu_button_container {
+.plugin-distribution .menu-button-container {
   position: relative;
   bottom: -10px;
 }
-.plugin-distribution .distribution_menu_button a {
+.plugin-distribution .menu-button a {
   float: left;
   padding: 8px 10px;
   background-color: #fff;
@@ -1218,8 +1330,8 @@ body.plugin-distribution {
   -o-border-radius: 5px;
 }
 
-.plugin-distribution .distribution_menu_button a:hover,
-.plugin-distribution div.menu_selected a {
+.plugin-distribution .menu-button a:hover,
+.plugin-distribution div.menu-selected a {
   color: #fff;
   background-color: #646158;
 }

@@ -36,7 +36,7 @@
     </div>
 
     <%= f.submit _('Save') %>
-    <%= link_to_function _('cancel updates'), "distribution_value_row_toggle_edit()" %>
+    <%= link_to_function _('cancel updates'), :class => 'toggle-edit' %>
     <%= link_to_remote _('remove from cycle'), { :update => 'session-product-'+p.id.to_s,
       :url => {:controller => :distribution_plugin_product, :action => :session_destroy, :id => p.id }} %>
     <%= link_to_function _('edit product'), '' %>

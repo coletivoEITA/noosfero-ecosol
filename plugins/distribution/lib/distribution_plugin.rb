@@ -26,8 +26,9 @@ class DistributionPlugin < Noosfero::Plugin
 
   def control_panel_buttons
     profile = context.profile
+    return nil unless profile.community?
     node = DistributionPluginNode.find_or_create(profile)
-    { :title => _('Distribution'), :icon => nil, :url => {:plugin_name => 'distribution', :controller => :distribution_plugin_node, :profile => profile.identifier, :action => 'index'} }
+    { :title => _('Settings Solidary Distribution Network'), :icon => 'distribution-solidary-network', :url => {:controller => :distribution_plugin_node, :profile => profile.identifier, :action => :settings} }
   end
 
 end

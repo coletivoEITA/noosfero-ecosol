@@ -16,7 +16,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     @order = DistributionPluginOrder.find params[:id]
     @session = @order.session
     @session_products = @session.products.all(:conditions => ['price > 0']).group_by{ |sp| sp.supplier }
-    @product_categories = ProductCategory.find :all, :limit => 10
+    @suppliers = @node.suppliers
   end
 
   def session_edit
@@ -62,6 +62,12 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     @order = DistributionPluginOrder.find params[:id]
     @order.destroy
     redirect_to :action => :index
+  end
+
+  def render_delivery
+    @order = DistributionPluginOrder.find params[:id]
+    @delivery_method = DistributionPluginDeliveryMethod.find params[:delivery_method_id]
+    render :partial => 'delivery', :layout => false, :locals => {:order => @order, :method => @delivery_method}
   end
 
 end
