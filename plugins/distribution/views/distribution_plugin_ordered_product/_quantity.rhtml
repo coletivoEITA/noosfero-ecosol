@@ -1,6 +1,7 @@
 <% if @admin_action %>
-  <%= f.text_field :quantity_asked, :size => 3, :onblur =>
-    "jQuery('#product-price-total-#{product.id}').text(distribution_decimal(#{product.product.price}*jQuery(this).val()));" %>
+  <%= f.text_field :quantity_asked, :size => 3, :onblur => 
+    "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :admin_edit, :id => product)}',
+                 { 'ordered_product[quantity_asked]': jQuery(this).val() });" %>
 <% else %>
   <%= f.text_field :quantity_asked, :size => 3, :onblur => 
     "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :edit, :id => product)}',

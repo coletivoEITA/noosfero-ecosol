@@ -1,2 +1,2 @@
 page.replace_html "in-session-order-#{@order.id}", :partial => 'session_edit', :locals => {:order => @order}
-page << "distribution_value_row_toggle_edit();"
+page << "distribution_value_row_reload();"

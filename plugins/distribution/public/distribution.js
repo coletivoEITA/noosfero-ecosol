@@ -1,5 +1,17 @@
-var editing = jQuery();
-var isEditing = false;
+var _editing = jQuery();
+var _inner_editing = jQuery();
+var _isInner = false;
+
+function setEditing(value) {
+  window['_editing'] = value;
+}
+function editing() {
+  return jQuery(_editing[0]);
+  //return _isInner ? (_inner_editing.length > 0 ? _inner_editing : _editing) : _editing;
+}
+function isEditing() {
+  return editing().hasClass('edit');
+}
 
 function distribution_edit_arrow_toggle(arrow, toggle) {
   arrow = jQuery(arrow);
@@ -135,8 +147,8 @@ function distribution_session_product_pmsync(context, to_price) {
 /* ----- toggle edit stuff  ----- */
 
 function distribution_in_session_order_toggle_edit() {
-  editing.find('.box-edit').toggle(isEditing);
-  distribution_edit_arrow_toggle(editing, isEditing);
+  editing().find('.box-edit').toggle(isEditing());
+  distribution_edit_arrow_toggle(editing, isEditing());
 }
 function distribution_our_product_add() {
   editing = jQuery();
@@ -145,29 +157,33 @@ function distribution_our_product_add() {
   distribution_value_row_toggle_edit();
 }
 function distribution_our_product_toggle_edit() {
-  editing.find('.box-view').toggle(!isEditing);
-  editing.find('.box-edit').toggle(isEditing);
+  editing().find('.box-view').toggle(!isEditing());
+  editing().find('.box-edit').toggle(isEditing());
 }
 function distribution_session_product_edit() {
-  editing.find('.box-edit').toggle(isEditing);
+  editing().find('.box-edit').toggle(isEditing());
 }
 function distribution_order_session_product_toggle() {
-  editing.find('.box-edit').toggle(isEditing);
-  editing.find('.quantity-label').toggle(!isEditing);
-  editing.find('.quantity-entry').toggle(isEditing);
+  editing().find('.box-edit').toggle(isEditing());
+  editing().find('.quantity-label').toggle(!isEditing());
+  editing().find('.quantity-entry').toggle(isEditing());
 }
 function distribution_ordered_product_edit() {
-  editing.find('.more-actions').toggle(isEditing);
-  if (isEditing)
-    editing.find('.product-quantity input').focus();
+  editing().find('.more-actions').toggle(isEditing());
+  if (isEditing())
+    editing().find('.product-quantity input').focus();
 }
 
 /* ----- ends toggle edit stuff  ----- */
 
 function distribution_value_row_toggle_edit() {
-  editing.toggleClass('edit');
-  isEditing = editing.hasClass('edit');
-  eval(editing.attr('toggleedit'));
+  editing().toggleClass('edit');
+  eval(editing().attr('toggleedit'));
+}
+function distribution_value_row_reload() {
+  editing.removeClass('edit hover');
+  isEditing = false;
+  editing = jQuery();
 }
 function distribution_locate_value_row(context) {
   return jQuery(context).hasClass('value-row') ? jQuery(context) : jQuery(context).parents('.value-row');
@@ -177,9 +193,9 @@ jQuery(document).click(function(event) {
   if (jQuery(event.target).parents('.more-actions').length > 0) //came from anchor click!
     return false;
   var value_row = distribution_locate_value_row(event.target);
-  if (!value_row.length && isEditing) {
+  if (!value_row.length && isEditing()) {
     distribution_value_row_toggle_edit();
-    editing = jQuery();
+    setEditing(jQuery());
     return false;
   }
   return true;
@@ -190,27 +206,39 @@ jQuery(document).ready(function() {
 });
 jQuery('.plugin-distribution .value-row').live('click', function (event) {
   var value_row = distribution_locate_value_row(event.target);
+  var now_isInner = value_row.parents('.value-row').length > 0;
+
   var isToggle = (jQuery(event.target).hasClass('box-edit-link') && !isEditing) || 
-    jQuery(event.target).hasClass('toggle-edit') ||
-    jQuery(event.target).parents().hasClass('toggle-edit');
+    jQuery(event.target).hasClass('toggle-edit') || jQuery(event.target).parents().hasClass('toggle-edit');
+  var isAnother = value_row.get(0) != editing().get(0) || (now_isInner && !_isInner);
+  if (now_isInner && !_isInner)
+    setEditing(value_row);
+  _isInner = now_isInner;
 
   if (isToggle) {
-    if (value_row.get(0) != editing.get(0)) 
+    if (isAnother) 
       distribution_value_row_toggle_edit();
-    editing = value_row;
+    setEditing(value_row);
     distribution_value_row_toggle_edit();
-  } else {
-    if (isEditing)
+
+    return false;
+  } else if (isAnother || !isEditing()) {
+    if (isEditing())
       distribution_value_row_toggle_edit();
-    editing = value_row;
-    if (!isEditing)
+    setEditing(value_row);
+    if (!isEditing())
       distribution_value_row_toggle_edit();
+
+    return false;
   }
 
-  return false;
+  return true;
 });
-jQuery('.plugin-distribution .value-row').live('hover', function () {
-  jQuery(this).toggleClass('hover');
+jQuery('.plugin-distribution .value-row').live('mouseenter', function () {
+  jQuery(this).addClass('hover');
+});
+jQuery('.plugin-distribution .value-row').live('mouseleave', function () {
+  jQuery(this).removeClass('hover');
 });
 
 

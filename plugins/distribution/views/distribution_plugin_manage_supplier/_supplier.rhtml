@@ -9,25 +9,35 @@
         <%= supplier.dummy? ? _("Supplier with registry managed by the collective") : _("Registered supplier in the network") %>
       </div>
 
-      <div><%= link_to_profile supplier.name, supplier.profile.identifier, :class => 'supplier-name' %></div>
+      <div class="supplier-name">
+        <% if supplier.dummy? %>
+          <%= supplier.name %>
+        <% else %>
+          <%= link_to_profile supplier.name, supplier.profile.identifier, :class => 'supplier-name' %>
+        <% end %>
+      </div>
       <div class="subtitle"><strong><%= _("Abreviated Name") + '  ' %></strong><%= supplier.name_abbreviation %></div>
       <p class="subtitle"><%= supplier.description %></p>
 
       <div class="subtitle"><strong><%= _("This supplier has") %></strong></div>
       <div class='supplier-products-count subtitle'>
-        <%= link_to _("#{supplier.node.products.own.distributed.count} registered products"),
-          {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id} %><%= _(", among them") %>
+        <% if supplier.node.products.own.distributed.count > 0 %>
+          <%= link_to _("#{supplier.node.products.own.distributed.count} registered products"),
+            {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id} %><%= _(", among them") %>
 
-        <% msg = supplier.dummy? ? _("#{@node.products.distributed.active.from_supplier(supplier).count} products active") :
-          _("#{@node.products.distributed.from_supplier(supplier).count} products commercialized") %>
-        <%= link_to msg, {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id}, :class => 'supplier-distributed-products-count' %>
+          <% msg = supplier.dummy? ? _("#{@node.products.distributed.active.from_supplier(supplier).count} products active") :
+            _("#{@node.products.distributed.from_supplier(supplier).count} products commercialized") %>
+          <%= link_to msg, {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id}, :class => 'supplier-distributed-products-count' %>
+        <% else %>
+          <%= _('any registered product') %>
+        <% end %>
       </div>
     </div>
     
     <div class='supplier-actions subtitle'>
       <div><strong><%= _("Actions") %></strong></div>
       <div><%= link_to_function _("edit"), 'distribution_supplier_toggle_edit(this)' %></div>
-      <div><%= link_to _("desactivate"), :url => {:controller => :distribution_plugin_manage_supplier, :action => :desactivate, :id => supplier.id} %></div>
+      <div><%# link_to _("desactivate"), :url => {:controller => :distribution_plugin_manage_supplier, :action => :desactivate, :id => supplier.id} %></div>
       <div><%= link_to _("remove"), :url => {:controller => :distribution_plugin_manage_supplier, :action => :destroy, :id => supplier.id},
         :confirm => _("By removing this supplier all its products won't be available for future cycles. Please confirm you choice"), :class => 'supplier-remove' %></div>
       <div><%= link_to _("products"), {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id} %></div>

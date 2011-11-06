@@ -1,25 +1,30 @@
 <%
-  urls = [
-    #[_('start'), {:controller => 'distribution_plugin_node', :profile => profile.identifier}],
-    #[_('blog'), {:controller => 'distribution_plugin_node', :profile => profile.identifier}],
-    [_('orders'), {:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => 'index'}],
-    #[_('about'), {:controller => 'distribution_plugin_node', :profile => profile.identifier, :action => 'about'}],
-    #[_('history'), {:controller => 'distribution_plugin_node', :profile => profile.identifier, :action => 'history'}],
-    [_('community'), profile.url],
-    #[_('enterprise'), {:controller => 'distribution_plugin_node', :profile => profile.identifier, :action => 'enterprise'}],
-    [_('administration'), {:controller => 'distribution_plugin_session', :profile => profile.identifier, :action => 'index'}]
+  buttons = [
+    #[:start, _('start'), {:controller => 'distribution_plugin_node'}],
+    #[:blog, _('blog'), {:controller => 'distribution_plugin_node'}],
+    [:orders, _('orders'), {:controller => 'distribution_plugin_order', :action => 'index'}],
+    #[:about, _('about'), {:controller => 'distribution_plugin_node', :action => 'about'}],
+    #[:history, _('history'), {:controller => 'distribution_plugin_node', :action => 'history'}],
+    [:community, _('community'), profile.url],
+    #[:enterprise, _('enterprise'), {:controller => 'distribution_plugin_node', :action => 'enterprise'}],
   ]
 %>
 <div class="menu-header"><%= _("Collective consumption network") %></div>
 <div class="menu-logo">
   <h1><%= @profile.name %></h1>
+  <%# why twice? %>
   <h1><%= @profile.name %></h1>
   <div class="menu-button-container">
-    <% urls.each do |key, url, matches| %>
-      <% selected = "menu-selected" if (key == 'administration' and @admin_action) %>
-      <% selected = "menu-selected" if key != 'administration' and params[:controller] == url[:controller] and params[:action] == url[:action] %>
-      <div class="menu-button <%=selected if selected%>"><%= link_to _(key), url %></div>
+    <% buttons.each do |key, label, url| %>
+      <% selected = true if not @admin_action and params[:controller] == url[:controller] and params[:action] == url[:action]  %>
+      <div class="menu-button <%= "menu-selected" if selected %>">
+        <%= link_to label, url %>
+      </div>
     <% end %>
+
+    <div class="menu-button <%= "menu-selected" if @admin_action %>">
+      <%= link_to _('administration'), {:controller => 'distribution_plugin_node', :action => 'index'} %>
+    </div>
   </div>
 </div>
 <div class="cleaner"></div>

@@ -224,9 +224,12 @@ body #plugin-distribution-layout {
 }
 
 .plugin-distribution .value-row {
-  border-bottom: 1px dotted black;
+  border-bottom: 1px dotted #ccc;
   width: 100%;
   padding: 10px 10px;
+}
+.plugin-distribution .value-row:last-child {
+  border-bottom: 1px dotted transparent;
 }
 .plugin-distribution .table-header,
 .plugin-distribution .value-row {
@@ -283,7 +286,7 @@ body #plugin-distribution-layout {
   color: #0095B5;
   font-weight: bold;
 }
-.plugin-distribution .box-view .box-field.price-with-unit .price-unit {
+.plugin-distribution .value-row .box-field.price-with-unit .price-unit {
   font-size: 10px;
   font-weight: normal;
 }
@@ -459,6 +462,10 @@ body #plugin-distribution-layout {
   margin: 8px;
 }
 
+.plugin-distribution #suppliers-page .supplier-name {
+  text-transform: uppercase;
+}
+
 .plugin-distribution #suppliers-page .supplier-logo {
   float: left;
   width: 60px;
@@ -467,7 +474,7 @@ body #plugin-distribution-layout {
 }
 
 .plugin-distribution #suppliers-page .supplier-actions {
-  float: left;
+  float: right;
   text-align: right;
   width: 140px;
   margin: 8px;
@@ -654,9 +661,16 @@ body #plugin-distribution-layout {
 .plugin-distribution .order-products {
   width: 400px;
 }
-.plugin-distribution .order-products .line-keeper {
-  position: relative;
-  height: 45px;
+.plugin-distribution #order-products form {
+  margin: 0;
+}
+
+.plugin-distribution .ordered-product {
+  /*
+  transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  */
 }
 .plugin-distribution .ordered-product .box-field {
   height: 24px;
@@ -682,7 +696,7 @@ body #plugin-distribution-layout {
   width: 80px;
 }
 .plugin-distribution .ordered-product .box-field.price-total {
-  width: 40px;
+  width: 60px;
 }
 .plugin-distribution .ordered-product .more-actions {
   margin-top: 4px;
@@ -699,21 +713,15 @@ body #plugin-distribution-layout {
   margin-right: 0;
   text-align: right;
 }
-.plugin-distribution .ordered-product {
-  transition: all 0.2s ease-in-out;
-  -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
-}
 .plugin-distribution .ordered-product.edit {
-  position: absolute;
-  z-index: 10;
-  top: -12px;
-  left: 0;
   border: 1px solid black;
+  padding-bottom: 4px;
 
-  transform: scale(1.03);
+  margin-left: -5px;
+  width: 410px;
+  /*transform: scale(1.03);
   -webkit-transform: scale(1.03); 
-  -moz-transform: scale(1.03);
+  -moz-transform: scale(1.03);*/
 
   border-radius: 4px;
   -moz-border-radius: 4px;
@@ -996,15 +1004,17 @@ body #plugin-distribution-layout {
   float: left;
   clear: none;
 }
-.plugin-distribution .our-product .box-edit .price-block .field.left-column {
-  margin-right: 40px;
-}
 .plugin-distribution .our-product .box-edit .column-title {
   font-style: italic;
 }
 
+.plugin-distribution .our-product .box-edit .price-block .field,
+.plugin-distribution .our-product .box-edit .margin-line .default-margin,
 .plugin-distribution .our-product .box-edit .small-input {
   width: 120px;
+}
+.plugin-distribution .our-product .box-edit .price-block .field.left-column {
+  margin-right: 40px;
 }
 
 .plugin-distribution .our-product .box-edit .margin-line .field {
@@ -1015,8 +1025,7 @@ body #plugin-distribution-layout {
   float: left;
 }
 .plugin-distribution .our-product .box-edit .margin-line .default-margin {
-  width: 100px;
-  margin-top: 27px;
+  margin-top: 28px;
 }
 .plugin-distribution .our-product .box-edit .margin-line .default-margin #product_default_margin_percentage {
   margin: 3px 8px 8px 0;
@@ -1267,7 +1276,6 @@ body #plugin-distribution-layout {
   text-align: right;
   text-transform: uppercase;
   padding: 5px 0 8px 0;
-  margin-top: -1px;
 }
 .plugin-distribution #order-column .total-title {
   width: 295px;

@@ -39,4 +39,19 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     end
   end
 
+  def report_products
+    extend DistributionPlugin::Report::ClassMethods
+    session = DistributionPluginSession.find params[:id]
+    @ordered_products_by_suppliers = session.ordered_products_by_suppliers
+    tmp_dir, report_file = report_products_by_supplier @ordered_products_by_suppliers
+    if report_file.nil?
+      return false
+    end
+    send_file report_file, :type => 'application/ods',
+      :disposition => 'attachment',
+      :filename => _("Products Report.ods")
+    require 'fileutils'
+    #FileUtils.rm_rf tmp_dir
+  end
+
 end
