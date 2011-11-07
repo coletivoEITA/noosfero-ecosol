@@ -1,6 +1,10 @@
 <div class="properties-block price-block <%= "disabled-fields" if not product.dummy? %>">
   <% options = {:class => "small-input"}.merge((product.dummy? or not supplier_product) ? {} : {:disabled => 'disabled'}) %>
-  <% options = options.merge(:onkeyup => 'distribution_our_product_sync_referred(this)') if supplier_product %>
+  <% if supplier_product %>
+    <% options = options.merge(:onkeyup => 'distribution_our_product_sync_referred(this);') %>
+  <% else %>
+    <% options = options.merge(:onkeyup => 'distribution_our_product_pmsync(this, false);') %>
+  <% end %>
  
   <%= labelled_field f, :price, _('Price'),
     f.text_field(:price, options.merge(:oldvalue => product.own_price)), :class => 'left-column' %>

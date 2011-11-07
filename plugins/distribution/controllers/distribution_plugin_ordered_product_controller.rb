@@ -21,7 +21,6 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
   def admin_edit
     @ordered_product = DistributionPluginOrderedProduct.find params[:id]
     @order = @ordered_product.order
-    @ordered_product.update_attributes params[:ordered_product]
   end
 
   def destroy

@@ -7,7 +7,6 @@ function setEditing(value) {
 }
 function editing() {
   return jQuery(_editing[0]);
-  //return _isInner ? (_inner_editing.length > 0 ? _inner_editing : _editing) : _editing;
 }
 function isEditing() {
   return editing().hasClass('edit');
@@ -48,6 +47,7 @@ function distribution_our_product_toggle_referred(context) {
 
   jQuery.each(referred, function(i, value) {
     value.disabled = context.checked;
+
     if (value.disabled) {
       jQuery(value).attr('oldvalue', jQuery(value).val());
       jQuery(value).val(value.hasAttribute('defaultvalue')
@@ -55,6 +55,9 @@ function distribution_our_product_toggle_referred(context) {
     } else {
       jQuery(value).val(jQuery(value).attr('oldvalue'));
     }
+
+    if (value.onkeyup)
+      value.onkeyup();
   });
 }
 function distribution_our_product_sync_referred(context) {
@@ -72,6 +75,24 @@ function distribution_our_product_add_from_product(context, url, data) {
   jQuery('#our-product-add').load(url, data, function() {
     distribution_our_product_add();
   });
+}
+
+function distribution_our_product_pmsync(context, to_price) {
+  var p = jQuery(context).parents('.our-product');
+  var margin_input = p.find('#product_margin_percentage');
+  var price_input = p.find('#product_price');
+  var buy_price_input = p.find('#product_supplier_product_price');
+  if (to_price || price_input.get(0).disabled)
+    distribution_calculate_price(price_input, margin_input, buy_price_input);
+  else {
+    var oldvalue = parseFloat(margin_input.val());
+    distribution_calculate_margin(margin_input, price_input, buy_price_input);
+    var newvalue = parseFloat(margin_input.val());
+    if (newvalue != oldvalue) {
+      p.find('#product_default_margin_percentage').attr('checked', null);
+      p.find('#product_margin_percentage').get(0).disabled = false;
+    }
+  }
 }
 
 /* ----- ends our products stuff  ----- */
@@ -181,9 +202,9 @@ function distribution_value_row_toggle_edit() {
   eval(editing().attr('toggleedit'));
 }
 function distribution_value_row_reload() {
-  editing.removeClass('edit hover');
-  isEditing = false;
-  editing = jQuery();
+  _editing.removeClass('edit hover');
+  _isEditing = false;
+  _editing = jQuery();
 }
 function distribution_locate_value_row(context) {
   return jQuery(context).hasClass('value-row') ? jQuery(context) : jQuery(context).parents('.value-row');
@@ -192,10 +213,13 @@ function distribution_locate_value_row(context) {
 jQuery(document).click(function(event) {
   if (jQuery(event.target).parents('.more-actions').length > 0) //came from anchor click!
     return false;
-  var value_row = distribution_locate_value_row(event.target);
-  if (!value_row.length && isEditing()) {
+  var out = distribution_locate_value_row(event.target).length == 0;
+  if (out && isEditing()) {
     distribution_value_row_toggle_edit();
-    setEditing(jQuery());
+    if (_editing.length > 1)
+      setEditing(jQuery(_editing[1]));
+    else
+      setEditing(jQuery());
     return false;
   }
   return true;
@@ -206,7 +230,7 @@ jQuery(document).ready(function() {
 });
 jQuery('.plugin-distribution .value-row').live('click', function (event) {
   var value_row = distribution_locate_value_row(event.target);
-  var now_isInner = value_row.parents('.value-row').length > 0;
+  var now_isInner = value_row.length > 1;
 
   var isToggle = (jQuery(event.target).hasClass('box-edit-link') && !isEditing) || 
     jQuery(event.target).hasClass('toggle-edit') || jQuery(event.target).parents().hasClass('toggle-edit');

@@ -32,7 +32,8 @@
           <div class="margin-line">
             <%= labelled_field f, :margin_percentage, _('Margin'),
               f.text_field(:margin_percentage, :class => 'small-input',
-                           :value => product.own_margin_percentage, :oldvalue => product.own_margin_percentage, :defaultvalue => product.node.margin_percentage) + ' ' + _('%') %>
+                           :value => product.own_margin_percentage, :oldvalue => product.own_margin_percentage, :defaultvalue => product.node.margin_percentage,
+                           :onkeyup => 'distribution_our_product_pmsync(this, true);') + ' ' + _('%') %>
             <div class="default-margin">
               <%= f.check_box :default_margin_percentage, :onchange => "distribution_our_product_toggle_referred(this)", :for => '#product_margin_percentage' %>
               <%= f.label :default_margin_percentage, _('Use default margin') %>

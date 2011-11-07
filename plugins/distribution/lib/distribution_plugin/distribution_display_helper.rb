@@ -58,6 +58,13 @@ module DistributionPlugin::DistributionDisplayHelper
     link_to content_tag('div', '', :class => 'actions-arrow'), anchor, options
   end
 
+  def price_span(price, options = {})
+    content_tag 'span',
+      content_tag('span', environment.currency_unit, :class => 'price-currency-unit') +
+      content_tag('span', number_to_currency(price, :unit => '', :delimiter => environment.currency_delimiter, :separator => environment.currency_separator), :class => 'price-value'),
+      options
+  end
+
   def price_with_unit_span(price, unit)
     _("%{price}%{unit}") % {:price => price_span(price), :unit => content_tag('span', _('/') + unit.singular, :class => 'price-unit')}
   end

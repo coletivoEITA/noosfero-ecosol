@@ -83,7 +83,6 @@ body #plugin-distribution-layout {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
-  width: 280px;
 }
 .plugin-distribution select,
 .plugin-distribution input[type=text] {
@@ -138,6 +137,8 @@ body #plugin-distribution-layout {
   background-color: #666;
 }
 
+.plugin-distribution .our-product .product-supplier *[disabled],
+.plugin-distribution .our-product-distributed-column *[readOnly],
 .plugin-distribution .our-product-distributed-column *[disabled] {
   font-style: italic;
   background-color: #F1F6F2;
@@ -188,7 +189,6 @@ body #plugin-distribution-layout {
 .plugin-distribution .field .field-help {
   font-size: 10px;
   clear: both;
-  width: 280px;
   margin-bottom: 7px;
 }
 
@@ -524,14 +524,16 @@ body #plugin-distribution-layout {
 .plugin-distribution .order-products-by-supplier .box-field.unit {
   width: 110px;
 }
-.plugin-distribution .order-products-by-supplier .box-field.sell-value {
-  width: 70px;
-}
 .plugin-distribution .order-products-by-supplier .box-field.forecast-parcel {
   width: 60px;
 }
+.plugin-distribution .order-products-by-supplier .box-field.sell-value,
 .plugin-distribution .order-products-by-supplier .box-field.forecast-parcel-value {
   width: 70px;
+}
+.plugin-distribution .order-products-by-supplier .box-field.sell-value .price-value,
+.plugin-distribution .order-products-by-supplier .box-field.forecast-parcel-value .price-value {
+  float: right;
 }
 .plugin-distribution .order-products-by-supplier .session-ordered-product .total-asked,
 .plugin-distribution .order-products-by-supplier .session-ordered-product .forecast-parcel,
@@ -949,6 +951,14 @@ body #plugin-distribution-layout {
   width: 280px;
 }
 
+.plugin-distribution .our-product {
+  
+}
+.plugin-distribution .our-product input[type=text],
+.plugin-distribution .our-product textarea,
+.plugin-distribution .our-product select {
+  width: 280px;
+}
 .plugin-distribution .our-product .box-edit {
   float: left;
   background-color: #FDF2A3;
@@ -1044,14 +1054,19 @@ body #plugin-distribution-layout {
 }
 .plugin-distribution .our-product-use-original-column {
   width: 62px;
-  height: 200px;
   float: left;
   position: relative;
+  overflow: hidden;
 }
 .plugin-distribution .our-product-supplied-column {
   width: 300px;
   float: left;
   border-left: 1px solid black;
+}
+.plugin-distribution .our-product-distributed-column,
+.plugin-distribution .our-product-use-original-column,
+.plugin-distribution .our-product-supplied-column {
+  height: 420px;
 }
 
 .plugin-distribution .our-product-use-original-column .column-title {
@@ -1063,7 +1078,7 @@ body #plugin-distribution-layout {
   position: absolute;
   left: 5px;
   border-left: 1px dotted black;
-  height: 366px;
+  height: 500px;
   margin-top: 4px;
 }
 .plugin-distribution .our-product-use-original-column .default-checkbox {
