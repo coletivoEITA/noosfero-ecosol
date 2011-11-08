@@ -18,7 +18,7 @@
 
     <div class="subtitle"><%= _('The following list of products are available in this cycle.') %></div>
     <div class="subtitle"><%= _('It was automatically created from the active products. See the list below and check for needed changes.') %></div>
-    <%= lightbox_link_to _('Add product'), {:controller => :distribution_plugin_product, :action => :session_add, :session_id => @session.id}, :class => 'subtitle' %>
+    <%= lightbox_link_to _('Add product'), {:controller => :distribution_plugin_session, :action => :add_products, :id => @session.id}, :class => 'subtitle' %>
   </div> 
 
   <div class="box-align">

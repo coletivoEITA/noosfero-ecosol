@@ -46,18 +46,10 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     render :layout => false
   end
 
-  def session_add
-    @session = DistributionPluginSession.find params[:session_id]
-    @missing_products = @node.products.unarchived.distributed - @session.from_products.unarchived
-    if params[:products_id]
-      params[:products_id].each do |id|
-        product = DistributionPluginDistributedProduct.find id
-        DistributionPluginSessionProduct.create_from_distributed @session, product
-      end
-      render :partial => 'distribution_plugin_shared/pagereload'
-    else
-      render :layout => false
-    end
+  def add_missing_products
+    @supplier = DistributionPluginSupplier.find params[:product][:supplier_id]
+    @node.add_supplier_products @supplier
+    render :partial => 'distribution_plugin_shared/pagereload'
   end
 
   def session_edit
@@ -70,16 +62,9 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     end
   end
 
-  def add_missing_products
-    @supplier = DistributionPluginSupplier.find params[:product][:supplier_id]
-    @node.add_supplier_products @supplier
-    render :partial => 'distribution_plugin_shared/pagereload'
-  end
-
   def session_destroy
     @product = DistributionPluginSessionProduct.find params[:id]
-    @product_id = @product.id
-    @product.archive
+    @product.destroy!
     flash[:notice] = _('Product removed from cycle')
   end
 

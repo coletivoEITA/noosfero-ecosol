@@ -39,6 +39,26 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     end
   end
 
+  def add_products
+    @session = DistributionPluginSession.find params[:id]
+    @missing_products = @node.products.unarchived.distributed - @session.from_products.unarchived
+    if params[:products_id]
+      params[:products_id].each do |id|
+        product = DistributionPluginDistributedProduct.find id
+        DistributionPluginSessionProduct.create_from_distributed @session, product
+      end
+      render :partial => 'distribution_plugin_shared/pagereload'
+    else
+      render :layout => false
+    end
+  end
+
+  def add_missing_products
+    @session = DistributionPluginSession.find params[:id]
+    @session.add_distributed_products
+    render :partial => 'distribution_plugin_shared/pagereload'
+  end
+
   def report_products
     extend DistributionPlugin::Report::ClassMethods
     session = DistributionPluginSession.find params[:id]

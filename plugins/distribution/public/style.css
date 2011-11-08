@@ -1361,6 +1361,7 @@ body #plugin-distribution-layout {
 
 .distribution-plugin-popin {
   margin: -1em -1em 0 -1em;
+  line-height: 27px;
 }
 .distribution-plugin-popin h1 {
   margin: 0 -1px;

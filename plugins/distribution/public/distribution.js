@@ -3,13 +3,13 @@ var _inner_editing = jQuery();
 var _isInner = false;
 
 function setEditing(value) {
-  _editing = value;
+  _editing = jQuery(value);
 }
 function editing() {
-  return jQuery(_editing[0]);
+  return _editing.first();
 }
 function isEditing() {
-  return editing().hasClass('edit');
+  return editing().first().hasClass('edit');
 }
 
 function distribution_edit_arrow_toggle(arrow, toggle) {
@@ -105,6 +105,17 @@ function distribution_our_product_pmsync(context, to_price) {
   }
 }
 
+function distribution_our_product_css_align() {
+  var supplied = editing().find('.our-product-supplied-column');
+  var distributed = editing().find('.our-product-distributed-column');
+  if (supplied.length > 0)
+    supplied.find('.price-block').css('top', distributed.find('.price-block').position().top);
+  //var use_original = editing().find('.our-product-use-original-column');
+  //use_original.find('input[type=checkbox]').each(function(index, checkbox) {
+    //jQuery(checkbox).css('top', distributed.position().top - jQuery(jQuery(checkbox).attr('for')).first().position().top);
+  //});
+}
+
 /* ----- ends our products stuff  ----- */
 
 /* ----- order stuff  ----- */
@@ -193,11 +204,7 @@ function distribution_our_product_toggle_edit() {
   editing().find('.box-view').toggle(!isEditing());
   editing().find('.box-edit').toggle(isEditing());
 
-  //css alignment
-  supplied = editing().find('.our-product-supplied-column .price-block');
-  distributed = editing().find('.our-product-distributed-column .price-block');
-  if (supplied.length > 0)
-    supplied.css('top', distributed.position().top);
+  distribution_our_product_css_align();
 }
 function distribution_session_product_edit() {
   editing().find('.box-edit').toggle(isEditing());
@@ -249,8 +256,10 @@ jQuery(document).click(function(event) {
 });
 jQuery(document).ready(function() {
   el = jQuery(window.location.hash);
-  if (el.length > 0 && el.get(0).onclick)
-    el.get(0).onclick();
+  if (el.hasClass('value-row')) {
+    setEditing(el);
+    distribution_value_row_toggle_edit();
+  }
 });
 jQuery('.plugin-distribution .value-row').live('click', function (event) {
   var value_row = distribution_locate_value_row(event.target);

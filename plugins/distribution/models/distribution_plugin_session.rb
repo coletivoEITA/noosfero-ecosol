@@ -64,6 +64,18 @@ class DistributionPluginSession < ActiveRecord::Base
     self.ordered_session_products.unarchived.group_by { |p| p.supplier }
   end
 
+  after_create :add_distributed_products
+  def add_distributed_products
+    already_in = self.products.unarchived.all
+    node.products.unarchived.distributed.map do |product|
+      p = already_in.find{ |f| f.from_product == product }
+      unless p
+        p = DistributionPluginSessionProduct.create_from_distributed(self, product)
+      end
+      p
+    end
+  end
+
   protected
 
   def default_values
@@ -73,13 +85,6 @@ class DistributionPluginSession < ActiveRecord::Base
   before_update :change_status
   def change_status
     self.status = 'edition' if self.status == 'new'
-  end
-
-  after_create :add_distributed_products
-  def add_distributed_products
-    self.products += node.products.distributed.map do |product|
-      DistributionPluginSessionProduct.create_from_distributed(self, product)
-    end
   end
 
 end
