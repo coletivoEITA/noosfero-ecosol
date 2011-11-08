@@ -158,17 +158,6 @@ function distribution_order_filter() {
 
 /* ----- supplier stuff  ----- */
 
-function distribution_supplier_toggle_edit(context) {
-  p = jQuery(context).parents('.supplier');
-  if (p.length == 0) {
-    p = jQuery('#supplier-add');
-    p.show();
-  } else {
-    p.find('.supplier-view').toggle();
-  }
-  p.find('.supplier-edit').toggle();
-}
-
 /* ----- ends supplier stuff  ----- */
 
 /* ----- session editions stuff  ----- */
@@ -188,6 +177,18 @@ function distribution_session_product_pmsync(context, to_price) {
 
 /* ----- toggle edit stuff  ----- */
 
+function distribution_supplier_add_link() {
+  if (isEditing())
+    distribution_value_row_toggle_edit();
+  setEditing(jQuery('#supplier-add'));
+  distribution_value_row_toggle_edit();
+}
+function distribution_supplier_toggle_edit() {
+  if (editing().is('#supplier-add'))
+    editing().toggle(isEditing());
+  editing().find('.box-view').toggle(!isEditing());
+  editing().find('.box-edit').toggle(isEditing());
+}
 function distribution_in_session_order_toggle_edit() {
   editing().find('.box-edit').toggle(isEditing());
   distribution_edit_arrow_toggle(editing, isEditing());
@@ -199,7 +200,7 @@ function distribution_our_product_add_link() {
   distribution_value_row_toggle_edit();
 }
 function distribution_our_product_toggle_edit() {
-  if (editing().get(0).id == 'our-product-add')
+  if (editing().is('#our-product-add'))
     editing().toggle(isEditing());
   editing().find('.box-view').toggle(!isEditing());
   editing().find('.box-edit').toggle(isEditing());
@@ -271,6 +272,9 @@ jQuery('.plugin-distribution .value-row').live('click', function (event) {
     setEditing(value_row);
   _isInner = now_isInner;
 
+  if (!isToggle && value_row.attr('without-click-edit') != undefined)
+    return;
+
   if (isToggle) {
     if (isAnother) 
       distribution_value_row_toggle_edit();
@@ -291,9 +295,13 @@ jQuery('.plugin-distribution .value-row').live('click', function (event) {
   return true;
 });
 jQuery('.plugin-distribution .value-row').live('mouseenter', function () {
+  if (jQuery(this).attr('without-hover') != undefined)
+    return;
   jQuery(this).addClass('hover');
 });
 jQuery('.plugin-distribution .value-row').live('mouseleave', function () {
+  if (jQuery(this).attr('without-hover') != undefined)
+    return;
   jQuery(this).removeClass('hover');
 });
 

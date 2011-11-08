@@ -439,27 +439,22 @@ body #plugin-distribution-layout {
 
 .plugin-distribution #suppliers-page .supplier {
   border-top: 1px solid black;
+  border-bottom: none;
 }
 .plugin-distribution #suppliers-page .supplier-type {
   font-style: italic;
 }
-.plugin-distribution #suppliers-page .supplier-view {
-  padding: 8px 0;
-}
 .plugin-distribution #suppliers-page #supplier-add,
-.plugin-distribution #suppliers-page .supplier-edit {
+.plugin-distribution #suppliers-page .box-edit {
   display: none;
 }
-.plugin-distribution #suppliers-page .supplier-edit {
+.plugin-distribution #suppliers-page .box-edit {
   background-color: #FDF2A3;
-  padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .plugin-distribution #suppliers-page .supplier-body {
   width: 400px;
   float: left;
-  margin: 8px;
 }
 
 .plugin-distribution #suppliers-page .supplier-name {
@@ -470,14 +465,12 @@ body #plugin-distribution-layout {
   float: left;
   width: 60px;
   min-height: 60px;
-  margin: 10px;
 }
 
 .plugin-distribution #suppliers-page .supplier-actions {
   float: right;
   text-align: right;
   width: 140px;
-  margin: 8px;
 }
 
 .plugin-distribution #suppliers-page .supplier-add-link {

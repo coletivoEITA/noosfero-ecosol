@@ -1,7 +1,10 @@
 class DistributionPluginNodeController < DistributionPluginMyprofileController
 
+  before_filter :set_admin_action, :only => [:index]
+
   def index
-    redirect_to :controller => :distribution_plugin_session, :action => :index
+    self.class.no_design_blocks
+    @suppliers = @node.suppliers - [@node.self_supplier]
   end
 
   def edit
@@ -28,8 +31,10 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
   protected
 
   def custom_layout
+    return super if params[:action] != 'settings'
   end
   def custom_layout?
+    return super if params[:action] != 'settings'
     false
   end
 
