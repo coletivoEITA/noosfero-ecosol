@@ -1,0 +1,18 @@
+<div id="session-page" class="page session-view">
+
+  <%= render :partial => 'distribution_plugin_session/view_header', :locals => {:session => @session} %>
+
+  <%= render :partial => 'distribution_plugin_session/view_products', :locals => {:session => @session} %>
+
+  <div id="order-column">
+    <h3><%=_("Your orders")%></h3>
+
+    <% orders = @session.orders.by_consumer(@user_node) %>
+    <% orders.each do |order| %>
+      <%= link_to _('%{n} products, made at %{created_at}') % {:n => order.products.count, :created_at => month_with_time(order.created_at)},
+        {:controller => :distribution_plugin_order, :action => :edit, :id => order.id} %>
+
+      <%= button_to _('New order'), {:controller => :distribution_plugin_order, :action => :new} %>
+    <% end %>
+  </div>
+</div>

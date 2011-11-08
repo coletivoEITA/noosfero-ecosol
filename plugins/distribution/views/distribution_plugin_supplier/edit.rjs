@@ -1,0 +1,1 @@
+page.replace_html "supplier-#{@supplier.id}", :partial => 'supplier', :object => @supplier

@@ -1091,78 +1091,73 @@ body #plugin-distribution-layout {
 
 /* ----- ends our products stuff  ----- */
 
-/* ----- order stuff  ----- */
+/* ----- session view stuff  ----- */
 
-.plugin-distribution #session-column {
+.plugin-distribution .session-view #session-products-for-order {
   width: 460px;
   float: left;
   margin-bottom: 80px;
   padding-left: 0;
 }
-.plugin-distribution #order-column {
-  float: left;
-  margin-left: 68px;
-  width: 400px;
-}
 
-.plugin-distribution #others-cycles {
+.plugin-distribution .session-view #session-others {
   border-bottom: 2px dotted #aaa;
 }
-.plugin-distribution #others-cycles,
-.plugin-distribution #order-header {
+.plugin-distribution .session-view #session-others,
+.plugin-distribution .session-view #session-header {
   padding-left: 242px;
   padding-bottom: 10px;
   margin-bottom: 10px;
   margin-left: -20px;
 }
-.plugin-distribution #order-header {
+.plugin-distribution .session-view #session-header {
   border-bottom: 2px solid #ddd;
 }
-.plugin-distribution #order-header .orders-date.active {
+.plugin-distribution .session-view #session-header .orders-date.active {
   margin-left: -170px;
   display: inline-block;
   padding: 0 10px;
   background-color: #ffe546;
 }
-.plugin-distribution #order-header .orders-date.active span {
+.plugin-distribution .session-view #session-header .orders-date.active span {
   text-transform: uppercase;
   width: 156px;
   display: inline-block;
 }
-.plugin-distribution #order-header .subtitle {
+.plugin-distribution .session-view #session-header .subtitle {
   display: block;
   margin-top: 30px;
   width: 400px;
   font-style: italic;
 }
 
-.plugin-distribution #category-filter .category {
+.plugin-distribution .session-view #category-filter .category {
   float: left;
   width: 80px;
 }
-.plugin-distribution #category-filter .categories {
+.plugin-distribution .session-view #category-filter .categories {
   width: 250px;
   margin-bottom: 20px;
 }
 
-.plugin-distribution #order-filter {
+.plugin-distribution .session-view #order-filter {
   margin: 10px 0;
 }
-.plugin-distribution #order-filter input {
+.plugin-distribution .session-view #order-filter input {
   width: 100%;
 }
-.plugin-distribution #order-filter .order-filter {
+.plugin-distribution .session-view #order-filter .order-filter {
   float: left;
   max-width: 30%;
   margin-bottom: 30px;
 }
-.plugin-distribution #order-filter strong {
+.plugin-distribution .session-view #order-filter strong {
   margin-top: 10px;
   display: block;
   font-weight: bold;
 }
 
-.plugin-distribution #session-column .value-row.edit { 
+.plugin-distribution .session-view #session-products-for-order .value-row.edit { 
   background-color: #ffe546; 
   height: 260px;
   border: 1px solid black;
@@ -1171,86 +1166,86 @@ body #plugin-distribution-layout {
   -webkit-border-radius: 5px;
   -o-border-radius: 5px;
 }
-.plugin-distribution #session-column .supplier {
+.plugin-distribution .session-view #session-products-for-order .supplier {
   background-color: #B1DFEF;
   padding: 10px 10px 5px;
   font-weight: bold;
 }
-.plugin-distribution #session-column .table-header {
+.plugin-distribution .session-view #session-products-for-order .table-header {
   background: none;
   border-bottom: 1px solid black;
   text-decoration: none;
 }
 
-.plugin-distribution #session-column .box-field.product {
+.plugin-distribution .session-view #session-products-for-order .box-field.product {
   width: 180px;
 }
-.plugin-distribution #session-column .box-field.price-with-unit {
+.plugin-distribution .session-view #session-products-for-order .box-field.price-with-unit {
   width: 140px;
 }
-.plugin-distribution #session-column .box-field.product-info {
+.plugin-distribution .session-view #session-products-for-order .box-field.product-info {
   width: 330px;
 }
-.plugin-distribution #session-column .box-edit .box-field.product-image {
+.plugin-distribution .session-view #session-products-for-order .box-edit .box-field.product-image {
   width: 100px;
 }
-.plugin-distribution #session-column .box-field.quantity {
+.plugin-distribution .session-view #session-products-for-order .box-field.quantity {
   width: 96px;
   margin-right: 0;
 }
-.plugin-distribution #session-column .box-field.stock {
+.plugin-distribution .session-view #session-products-for-order .box-field.stock {
   width: 80px;
 }
 
-.plugin-distribution #session-column .box-field.product-info .product,
-.plugin-distribution #session-column .box-field.product-info .price-with-unit {
+.plugin-distribution .session-view #session-products-for-order .box-field.product-info .product,
+.plugin-distribution .session-view #session-products-for-order .box-field.product-info .price-with-unit {
 }
-.plugin-distribution #session-column .box-field.product-info .price-with-unit {
+.plugin-distribution .session-view #session-products-for-order .box-field.product-info .price-with-unit {
   font-size: 10px !important;
   margin-right: 0;
 }
-.plugin-distribution #session-column .box-field.product-info .price-with-unit .unit {
+.plugin-distribution .session-view #session-products-for-order .box-field.product-info .price-with-unit .unit {
   font-weight: normal !important;
 }
-.plugin-distribution #session-column .box-field.product-info > div {
+.plugin-distribution .session-view #session-products-for-order .box-field.product-info > div {
   max-height: 100px;
   clear: both;
   float: left;
   margin-bottom: 10px;
 }
 
-.plugin-distribution #session-column .box-view .box-field.quantity a {
+.plugin-distribution .session-view #session-products-for-order .box-view .box-field.quantity a {
   font-size: 10px;
 }
-.plugin-distribution #session-column .box-edit .box-field.quantity a {
+.plugin-distribution .session-view #session-products-for-order .box-edit .box-field.quantity a {
   margin-left: 10px;
   font-size: 12px;
 }
-.plugin-distribution #session-column .box-field.quantity input {
+.plugin-distribution .session-view #session-products-for-order .box-field.quantity input {
   width: 100%;
 }
-.plugin-distribution #session-column .box-edit .box-field.quantity input[type=submit] {
+.plugin-distribution .session-view #session-products-for-order .box-edit .box-field.quantity input[type=submit] {
   margin-bottom: 0;
 }
 
 
-.plugin-distribution #session-column .box-edit .box-field.product .product-desc {
+.plugin-distribution .session-view #session-products-for-order .box-edit .box-field.product .product-desc {
   max-height: 60px;
 }
-.plugin-distribution #session-column .box-edit .box-field.product .product-city {
+.plugin-distribution .session-view #session-products-for-order .box-edit .box-field.product .product-city {
 }
 
-.plugin-distribution #session-column .edit .box-field.quantity-label span {
+.plugin-distribution .session-view #session-products-for-order .edit .box-field.quantity-label span {
   color: #B6B6B6;
 }
-.plugin-distribution #session-column .edit .box-field.quantity-entry .unit {
+.plugin-distribution .session-view #session-products-for-order .edit .box-field.quantity-entry .unit {
   float: right;
 }
 
-.plugin-distribution #session-column .box-edit  {
+.plugin-distribution .session-view #session-products-for-order .box-edit  {
   height: 120px;
 }
-.plugin-distribution #session-column .box-edit .box-field.product-image {
+.plugin-distribution .session-view #session-products-for-order .box-edit .box-field.product-image {
   height: 100px;
   margin-bottom: 23px;
   background-color: #12AF60;
@@ -1258,11 +1253,21 @@ body #plugin-distribution-layout {
   text-align: center;
 }
 
-.plugin-distribution #session-column .box-edit .box-field.quantity {
+.plugin-distribution .session-view #session-products-for-order .box-edit .box-field.quantity {
   margin-top: -10px;
 }
-.plugin-distribution #session-column .box-edit .box-field.quantity .unit {
+.plugin-distribution .session-view #session-products-for-order .box-edit .box-field.quantity .unit {
   line-height: 25px;
+}
+
+/* ----- ends session view stuff  ----- */
+
+/* ----- order stuff  ----- */
+
+.plugin-distribution #order-column {
+  float: left;
+  margin-left: 68px;
+  width: 400px;
 }
 
 .plugin-distribution #order-column #close-order,

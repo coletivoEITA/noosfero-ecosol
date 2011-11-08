@@ -3,18 +3,20 @@
   <div class="box-field price-with-unit"><%= price_with_unit_span product.price, product.unit %></div>
   
   <div class="box-field quantity">
-    <div class="quantity-label">
-      <% if ordered_product %>
-        <span class="label"><%= ordered_product.quantity_asked %></span>
-        <span class="unit"><%= product.unit.singular %></span>
-        <%= link_to_function _('change'), "" %>
-      <% else %>
-        <%= link_to_function _('include'), "" %>
-      <% end %>
-    </div>
-    <div class="quantity-entry" style="display: none">
-      <%= text_field_tag 'quantity_asked', ordered_product ? ordered_product.quantity_asked : '1' %>
-    </div>
+    <% if order %>
+      <div class="quantity-label">
+        <% if ordered_product %>
+          <span class="label"><%= ordered_product.quantity_asked %></span>
+          <span class="unit"><%= product.unit.singular %></span>
+          <%= link_to_function _('change'), "" %>
+        <% else %>
+          <%= link_to_function _('include'), "" %>
+        <% end %>
+      </div>
+      <div class="quantity-entry" style="display: none">
+        <%= text_field_tag 'quantity_asked', ordered_product ? ordered_product.quantity_asked : '1' %>
+      </div>
+    <% end %>
   </div>
 
   <div class="cleaner"></div>
@@ -53,9 +55,11 @@
       <%= _('Product Image'); %>
     </div>
 
-    <%= submit_to_function (ordered_product ? _('Change') : _('Add')), "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}',
-      {order_id: #{order.id}, session_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-session-product').find('.quantity-entry input').val() });" %>
-    <%= link_to_function _('cancel'), '' %>
+    <% if order %>
+      <%= submit_to_function (ordered_product ? _('Change') : _('Add')), "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}',
+        {order_id: #{order.id}, session_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-session-product').find('.quantity-entry input').val() });" %>
+      <%= link_to_function _('cancel'), '' %>
+    <% end %>
   </div>
 
   <div class="cleaner"></div>

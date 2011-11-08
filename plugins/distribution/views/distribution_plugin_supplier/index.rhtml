@@ -1,0 +1,21 @@
+<div id="suppliers-page" class="admin-page">
+  <h2><%= _('Suppliers') %></h2>
+
+  <div class="subtitle text-wrap">
+    <%= _('This is the list of suppliers associated to this consumption collective. It is possible to associate with existent suppliers or register one.') %>
+  </div>
+
+  <div class="subtitle supplier-add-link"><%= link_to _('Add supplier'), '#supplier-add', :onclick => 'distribution_supplier_add_link();', :class => 'toggle-edit' %></div>
+
+  <div class="supplier-listing box-align">
+    <div id="supplier-add" class="supplier value-row" toggleedit='distribution_supplier_toggle_edit();' >
+      <%= render :partial => 'supplier', :object => @new_supplier %>
+    </div>
+
+    <% @suppliers.each do |supplier| %>
+      <div id="supplier-<%=supplier.id%>" class="supplier value-row" without-hover without-click-edit toggleedit='distribution_supplier_toggle_edit();'>
+        <%= render :partial => 'supplier', :object => supplier %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,12 +1,13 @@
 <%
   buttons = [
-    #[:start, _('start'), {:controller => 'distribution_plugin_node'}],
-    #[:blog, _('blog'), {:controller => 'distribution_plugin_node'}],
-    [:orders, _('orders'), {:controller => 'distribution_plugin_order', :action => 'index'}],
-    #[:about, _('about'), {:controller => 'distribution_plugin_node', :action => 'about'}],
-    #[:history, _('history'), {:controller => 'distribution_plugin_node', :action => 'history'}],
-    [:community, _('community'), profile.url],
-    #[:enterprise, _('enterprise'), {:controller => 'distribution_plugin_node', :action => 'enterprise'}],
+    #[:start, _('Start'), {:controller => :distribution_plugin_node}],
+    #[:blog, _('Blog'), {:controller => :distribution_plugin_node}],
+    [:orders, _('Orders'), {:controller => :distribution_plugin_order, :action => :index}],
+    [:cycles, _('Cycles'), {:controller => :distribution_plugin_session, :action => :view_index}],
+    #[:about, _('About'), {:controller => :distribution_plugin_node, :action => :about}],
+    #[:history, _('History'), {:controller => :distribution_plugin_node, :action => :history}],
+    [:community, _('Community'), profile.url],
+    #[:enterprise, _('Enterprise'), {:controller => :distribution_plugin_node, :action => :enterprise}],
   ]
 %>
 <div class="menu-header"><%= _("Collective consumption network") %></div>
@@ -14,16 +15,17 @@
   <h1><%= @profile.name %></h1>
   <%# why twice? %>
   <h1><%= @profile.name %></h1>
+
   <div class="menu-button-container">
     <% buttons.each do |key, label, url| %>
-      <% selected = true if not @admin_action and params[:controller] == url[:controller] and params[:action] == url[:action]  %>
+      <% selected = true if not @admin_action and params[:controller].to_s == url[:controller].to_s %>
       <div class="menu-button <%= "menu-selected" if selected %>">
         <%= link_to label, url %>
       </div>
     <% end %>
 
     <div class="menu-button <%= "menu-selected" if @admin_action %>">
-      <%= link_to _('administration'), {:controller => 'distribution_plugin_node', :action => 'index'} %>
+      <%= link_to _('Administration'), {:controller => 'distribution_plugin_node', :action => 'index'} %>
     </div>
   </div>
 </div>

@@ -5,7 +5,7 @@ class DistributionPluginNode < ActiveRecord::Base
   has_many :sessions, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id asc'
   has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy, :order => 'id asc'
   has_many :parcels, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy, :order => 'id asc'
-
+  
   has_many :suppliers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'consumer_id', :order => 'id asc', :dependent => :destroy
   has_many :consumers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'node_id', :order => 'id asc'
   has_many :suppliers_nodes, :through => :suppliers, :source => :node, :order => 'id asc'

@@ -3,9 +3,13 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
 
   helper DistributionPlugin::SessionHelper
 
-  before_filter :set_admin_action
+  before_filter :set_admin_action, :except => [:view, :view_index]
 
   def index
+    @sessions = @node.sessions
+  end
+
+  def view_index
     @sessions = @node.sessions
   end
 
@@ -25,6 +29,10 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     @session.step
     @session.save!
     redirect_to :action => 'edit', :id => @session.id
+  end
+
+  def view
+    @session = DistributionPluginSession.find params[:id]
   end
 
   def edit

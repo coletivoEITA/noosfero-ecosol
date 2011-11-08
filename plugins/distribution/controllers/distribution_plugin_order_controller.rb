@@ -2,7 +2,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
   no_design_blocks
 
   def index
-    @orders = @node.orders
+    @orders = @user_node.parcels
   end
 
   def new
@@ -15,8 +15,6 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
   def edit
     @order = DistributionPluginOrder.find params[:id]
     @session = @order.session
-    @session_products = @session.products.unarchived.all(:conditions => ['price > 0']).group_by{ |sp| sp.supplier }
-    @suppliers = @node.suppliers
   end
 
   def session_edit
@@ -57,7 +55,8 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
   def remove
     @order = DistributionPluginOrder.find params[:id]
     @order.destroy
-    redirect_to :action => :index
+    session[:notice] = _('Order removed')
+    redirect_to :controller => :distribution_plugin_session, :action => :view, :id => @order.session.id
   end
 
   def render_delivery

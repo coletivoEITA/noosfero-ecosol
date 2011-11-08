@@ -1,16 +1,22 @@
-<div class="distribution-plugin-orders-confirmed">
-  <h3><%= _('Orders confirmed') %></h3>
-  <% @orders.confirmed.each do |o| %>
-    <div class="distribution-plugin-order-item">
-      <%= link_to _('By ') + o.consumer.name, {:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => :edit, :id => o.id} %>
-    </div>
-  <% end %>
-</div>
-<div class="distribution-plugin-orders-draft">
-  <h3><%= _('Orders being edited') %></h3>
-  <% @orders.draft.each do |o| %>
-    <div class="distribution-plugin-order-item">
-      <%= link_to _('By ') + o.consumer.name, {:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => :edit, :id => o.id} %>
-    </div>
-  <% end %>
+<div class="page">
+  <h2><%= _('My Orders') %></h2>
+  
+  <div>
+    <h3><%= _('Orders confirmed') %></h3>
+    <% @orders.confirmed.each do |o| %>
+      <div class="distribution-plugin-order-item">
+        <%= link_to _('By ') + o.consumer.name, {:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => :edit, :id => o.id} %>
+      </div>
+    <% end %>
+  </div>
+  
+  <div>
+    <h3><%= _('Orders being edited') %></h3>
+    <% @orders.draft.each do |o| %>
+      <div class="distribution-plugin-order-item">
+        <%= link_to _('By ') + o.consumer.name, {:controller => 'distribution_plugin_order', :profile => profile.identifier, :action => :edit, :id => o.id} %>
+      </div>
+    <% end %>
+  </div>
+
 </div>

@@ -41,6 +41,10 @@ class DistributionPluginSession < ActiveRecord::Base
   split_datetime :finish
   split_datetime :delivery_start
   split_datetime :delivery_finish
+
+  def products_for_order_by_supplier
+    self.products.unarchived.all(:conditions => ['price > 0']).group_by{ |sp| sp.supplier }
+  end
   
   def passed_by?(status)
     STATUS_SEQUENCE.index(self.status) > STATUS_SEQUENCE.index(status)
