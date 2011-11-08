@@ -1004,11 +1004,7 @@ body #plugin-distribution-layout {
 }
 
 .plugin-distribution .our-product-supplied-column .price-block {
-  padding-top: 74px;
-}
-.plugin-distribution .our-product-supplied-column.dummy-product .price-block {
-  padding-top: 126px;
-  padding-bottom: 41px;
+  position: absolute;
 }
 .plugin-distribution .our-product .box-edit .price-block .field {
   float: left;
@@ -1055,7 +1051,6 @@ body #plugin-distribution-layout {
 .plugin-distribution .our-product-use-original-column {
   width: 62px;
   float: left;
-  position: relative;
   overflow: hidden;
 }
 .plugin-distribution .our-product-supplied-column {
@@ -1067,6 +1062,7 @@ body #plugin-distribution-layout {
 .plugin-distribution .our-product-use-original-column,
 .plugin-distribution .our-product-supplied-column {
   height: 420px;
+  position: relative;
 }
 
 .plugin-distribution .our-product-use-original-column .column-title {

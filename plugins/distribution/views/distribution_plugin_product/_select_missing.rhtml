@@ -23,4 +23,7 @@
   </div>
 <% end %>
 
-<%= link_to_function _('cancel'), :class => 'toggle-edit' %>
+<% unless @not_distributed_products.blank? %>
+  <%= link_to_function _('add all missing products from this supplier'), "distribution_our_product_add_missing_products(this, '#{url_for(:controller => :distribution_plugin_product, :action => :add_missing_products)}');" %>&emsp;
+<% end %>
+<%= link_to_function _('cancel'), '', :class => 'toggle-edit' %>

@@ -1,7 +1,5 @@
 class DistributionPluginProduct < ActiveRecord::Base
 
-  default_scope :conditions => {:archived => false}
-
   belongs_to :node, :class_name => 'DistributionPluginNode'
   belongs_to :supplier, :class_name => 'DistributionPluginSupplier'
 
@@ -41,6 +39,7 @@ class DistributionPluginProduct < ActiveRecord::Base
     []
   end
 
+  validates_presence_of :type
   validates_presence_of :node
   validates_presence_of :name, :if => Proc.new { |p| !p.dummy? }
   validates_associated :from_products
@@ -82,12 +81,12 @@ class DistributionPluginProduct < ActiveRecord::Base
   end
 
   def supplier_product
-    return nil if own? 
+    return from_product if own? 
     @supplier_product ||= supplier_products.by_node_id(supplier.node.id).first
 
     #automatically create a product for this dummy supplier
-    if dummy? and not @supplier_product and not session
-      @supplier_product = DistributionPluginProduct.new(:node => supplier.node, :supplier => supplier)
+    if dummy? and not @supplier_product and not self.is_a?(DistributionPluginSessionProduct)
+      @supplier_product = DistributionPluginDistributedProduct.new(:node => supplier.node, :supplier => supplier)
       from_products << @supplier_product
     end
 
@@ -100,7 +99,7 @@ class DistributionPluginProduct < ActiveRecord::Base
   end
   #used for a new_record? from a supplier product
   def supplier_product_id
-    return nil if own? 
+    return from_product.id if own? 
     supplier_product.id if supplier_product
   end
   def supplier_product_id=(id)
@@ -118,17 +117,15 @@ class DistributionPluginProduct < ActiveRecord::Base
     @supplier_product = product
   end
 
-  def price_without_margins
-    self['price']
-  end
-
   def unit
     self['unit'] || Unit.new(:singular => _('unit'), :plural => _('units'))
   end
 
   def archive
-    #self.sources_to_products.each { |s| s.destroy }
     self.update_attributes! :archived => true
+  end
+  def unarchive
+    self.update_attributes! :archived => false
   end
 
   alias_method :destroy!, :destroy

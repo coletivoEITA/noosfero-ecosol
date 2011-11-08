@@ -15,7 +15,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
   def edit
     @order = DistributionPluginOrder.find params[:id]
     @session = @order.session
-    @session_products = @session.products.all(:conditions => ['price > 0']).group_by{ |sp| sp.supplier }
+    @session_products = @session.products.unarchived.all(:conditions => ['price > 0']).group_by{ |sp| sp.supplier }
     @suppliers = @node.suppliers
   end
 
@@ -46,10 +46,6 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
 
     changed.each{ |p| p.save! }
     removed.each{ |p| p.destroy }
-  end
-
-  def filter_products
-    @products = @session.products.find_by_contents params[:query]
   end
 
   def confirm

@@ -21,12 +21,12 @@
 
       <div class="subtitle"><strong><%= _("This supplier has") %></strong></div>
       <div class='supplier-products-count subtitle'>
-        <% if supplier.node.products.own.distributed.count > 0 %>
-          <%= link_to _("#{supplier.node.products.own.distributed.count} registered products"),
+        <% if supplier.node.products.unarchived.own.distributed.count > 0 %>
+          <%= link_to _("#{supplier.node.products.unarchived.own.distributed.count} registered products"),
             {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id} %><%= _(", among them") %>
 
-          <% msg = supplier.dummy? ? _("#{@node.products.distributed.active.from_supplier(supplier).count} products active") :
-            _("#{@node.products.distributed.from_supplier(supplier).count} products commercialized") %>
+          <% msg = supplier.dummy? ? _("#{@node.products.unarchived.distributed.active.from_supplier(supplier).count} products active") :
+            _("#{@node.products.unarchived.distributed.from_supplier(supplier).count} products commercialized") %>
           <%= link_to msg, {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id}, :class => 'supplier-distributed-products-count' %>
         <% else %>
           <%= _('any registered product') %>

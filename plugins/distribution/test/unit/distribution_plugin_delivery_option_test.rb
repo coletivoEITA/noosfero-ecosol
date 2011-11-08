@@ -8,7 +8,7 @@ class DistributionDeliveryOptionTest < ActiveSupport::TestCase
       Product.new(:name => 'mandioca', :product_category => @pc), Product.new(:name => 'alface', :product_category => @pc)]
 
     @node = DistributionPluginNode.create!(:profile => @profile, :role => 'collective')
-    @node.products = @profile.products.map { |p| DistributionPluginProduct.create!(:product => p) }
+    @node.products = @profile.products.map { |p| DistributionPluginDistributedProduct.create!(:product => p) }
     @session = DistributionPluginSession.create!(:node => @node)
 
     @dm = DistributionPluginDeliveryMethod.create!(:node => @node, :name => 'metodo de envio', :delivery_type => 'deliver')

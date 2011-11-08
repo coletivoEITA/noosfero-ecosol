@@ -34,7 +34,7 @@
     </div>
 
     <div class='table-content'>
-      <% @session.products.each do |p| %>
+      <% @session.products.unarchived.each do |p| %>
         <div id="session-product-<%=p.id%>" class='session-product value-row' toggleedit="distribution_session_product_edit();">
           <%= render :partial => 'distribution_plugin_product/session_edit', :locals => {:p => p} %>
         </div>

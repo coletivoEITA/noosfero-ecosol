@@ -1,5 +1,6 @@
 class DistributionPluginOrderedProduct < ActiveRecord::Base
   belongs_to :order, :class_name => 'DistributionPluginOrder'
+
   belongs_to :session_product, :class_name => 'DistributionPluginProduct'
   belongs_to :product, :class_name => 'DistributionPluginProduct', :foreign_key => :session_product_id #same as above
 

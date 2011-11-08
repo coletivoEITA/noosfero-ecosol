@@ -15,6 +15,7 @@
       <%= check_box_tag :apply_to_all, 1, false, :style => 'float: left'  %>
       <%= label_tag :apply_to_all, _('Force apply to ALL products'), :class => 'line-label' %>
     </div>
+    <div class="cleaner"></div>
 
     <%= submit_tag _('Confirm') %>
     <%= link_to_function 'cancel', 'lightbox.prototype.deactivate()' %>

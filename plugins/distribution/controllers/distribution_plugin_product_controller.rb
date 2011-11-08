@@ -15,8 +15,8 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     conditions += ['LOWER(name) LIKE ?', '%'+params["name"]+'%'] unless params["name"].blank?
     conditions = DistributionPluginDistributedProduct.send :merge_conditions, conditions
 
-    @products = @node.products.distributed.all :conditions => conditions, :group => (['supplier_id', 'id']+DistributionPluginProduct.new.attributes.keys).join(',')
-    @all_products_count = @node.products.distributed.count
+    @products = @node.products.unarchived.distributed.all :conditions => conditions, :group => (['supplier_id', 'id']+DistributionPluginProduct.new.attributes.keys).join(',')
+    @all_products_count = @node.products.unarchived.distributed.count
     @product_categories = ProductCategory.find(:all)
     @new_product = DistributionPluginDistributedProduct.new :node => @node, :supplier_id => params[:supplier_id]
 
@@ -33,9 +33,10 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
       @product = DistributionPluginDistributedProduct.new :node => @node, :supplier_product_id => params[:product].delete(:supplier_product_id)
       @product.update_attributes! params[:product]
     else
-      @product = DistributionPluginDistributedProduct.new :node => @node, :supplier => @supplier, :supplier_product_id => params[:product][:supplier_product_id]
+      @product = DistributionPluginDistributedProduct.new :node => @node, :supplier => @supplier
+      @product.supplier_product_id = params[:product][:supplier_product_id] if @supplier.node != @node
       not_distributed_products(params[:product][:supplier_product_id])
-      render :partial => 'edit', :locals => {:product => @product}, :layout => false
+      render :partial => 'edit', :locals => {:product => @product}
     end
   end
 
@@ -47,7 +48,7 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
 
   def session_add
     @session = DistributionPluginSession.find params[:session_id]
-    @missing_products = @node.products.distributed - @session.from_products
+    @missing_products = @node.products.unarchived.distributed - @session.from_products.unarchived
     if params[:products_id]
       params[:products_id].each do |id|
         product = DistributionPluginDistributedProduct.find id
@@ -69,11 +70,16 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     end
   end
 
+  def add_missing_products
+    @supplier = DistributionPluginSupplier.find params[:product][:supplier_id]
+    @node.add_supplier_products @supplier
+    render :partial => 'distribution_plugin_shared/pagereload'
+  end
+
   def session_destroy
     @product = DistributionPluginSessionProduct.find params[:id]
-    raise 'Product not found' if @product
     @product_id = @product.id
-    @product.destroy
+    @product.archive
     flash[:notice] = _('Product removed from cycle')
   end
 

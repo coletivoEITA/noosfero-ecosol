@@ -13,22 +13,22 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
     dummy? ? nil : default_description_setting
   end
 
-  def price_with_margins
-    ret = price_without_margins
-    return ret if ret.blank?
+  def price
+    price_with_margins = supplier_product ? supplier_product.price : self['price']
+    return price_with_margins if price_with_margins.blank?
 
     if margin_percentage
-      ret += (margin_percentage/100)*ret
+      price_with_margins += (margin_percentage/100)*price_with_margins
     elsif node.margin_percentage
-      ret += (node.margin_percentage/100)*ret
+      price_with_margins += (node.margin_percentage/100)*price_with_margins
     end
     if margin_fixed
-      ret += margin_fixed
+      price_with_margins += margin_fixed
     elsif node.margin_fixed
-      ret += node.margin_fixed
+      price_with_margins += node.margin_fixed
     end
 
-    ret
+    price_with_margins
   end
 
 end

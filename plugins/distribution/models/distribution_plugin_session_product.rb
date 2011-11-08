@@ -16,8 +16,8 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
     sp = self.new product.attributes
     sp.freeze_default_attributes product
     sp.session = session
+    sp.from_products << product
     sp.save!
-    DistributionPluginSourceProduct.create :from_product => product, :to_product => sp
     sp
   end
 
@@ -36,13 +36,19 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
     total_quantity_asked
   end
   def total_parcel_price
-    supplier_products.sum(:price) * total_parcel_quantity
+    buy_price * total_parcel_quantity
+  end
+
+  # always recalculate in case something has changed
+  def margin_percentage
+    ((price / buy_price) - 1) * 100 if buy_price
   end
 
   def buy_price
-    supplier_product.price
+    supplier_products.sum(:price)
   end
   def buy_unit
+    #FIXME: handle multiple products
     supplier_product.unit
   end
   def sell_unit

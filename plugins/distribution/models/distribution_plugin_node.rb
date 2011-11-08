@@ -54,7 +54,7 @@ class DistributionPluginNode < ActiveRecord::Base
   end
 
   def default_products_margins
-    products.distributed.each do |product|
+    products.unarchived.distributed.each do |product|
       product.default_margin_percentage = true
       product.default_margin_fixed = true
       product.save!
@@ -70,17 +70,17 @@ class DistributionPluginNode < ActiveRecord::Base
 
   def not_distributed_products(supplier)
     raise "#{supplier.name} is not a supplier of #{self.profile.name}" unless has_supplier?(supplier)
-    supplier.node.products.own.distributed - self.from_products.distributed.by_node(supplier.node)
+    supplier.node.products.unarchived.own.distributed - self.from_products.unarchived.distributed.by_node(supplier.node)
   end
 
   def self_supplier
     suppliers.from_node(self).first || DistributionPluginSupplier.create!(:node => self, :consumer => self)
   end
   def has_supplier?(supplier)
-    suppliers_nodes.include? supplier
+    suppliers.include? supplier
   end
   def has_consumer?(consumer)
-    consumers_nodes.include? consumer
+    consumers.include? consumer
   end
   def add_supplier(supplier)
     supplier.add_consumer self
@@ -99,18 +99,17 @@ class DistributionPluginNode < ActiveRecord::Base
     consumer.disaffiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
     consumers.find_by_consumer_id(consumer.id).destroy!
 
-    #also archive from sessions?
     consumer.products.distributed.from_supplier(self).update_all ['archived = true']
   end
 
   def add_supplier_products(supplier)
     raise "Can't add product from a non supplier node" unless has_supplier?(supplier)
 
-    already_supplied = self.products.distributed.from_supplier(supplier)
-    supplier.products.map do |np|
+    already_supplied = self.products.unarchived.distributed.from_supplier(supplier).all
+    supplier.products.unarchived.map do |np|
       p = already_supplied.find{ |f| f.supplier_product == np }
       unless p
-        p = DistributionPluginProduct.new :node => self
+        p = DistributionPluginDistributedProduct.new :node => self
         p.distribute_from np
         p.save!
       end
@@ -144,10 +143,10 @@ class DistributionPluginNode < ActiveRecord::Base
   def add_own_products
     return unless profile.respond_to? :products
 
-    already_supplied = self.products.distributed.from_supplier(self)
+    already_supplied = self.products.unarchived.distributed.from_supplier(self).all
     profile.products.map do |p|
       already_supplied.find{ |f| f.product == p } ||
-        DistributionPluginProduct.create!(:node => self, :supplier => self_supplier, :product => p, :name => p.name, :description => p.description, :price => p.price, :unit => p.unit)
+        DistributionPluginDistributedProduct.create!(:node => self, :supplier => self_supplier, :product => p, :name => p.name, :description => p.description, :price => p.price, :unit => p.unit)
     end
   end
 

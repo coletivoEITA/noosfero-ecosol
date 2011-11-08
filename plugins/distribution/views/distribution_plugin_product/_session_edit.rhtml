@@ -36,10 +36,11 @@
     </div>
 
     <%= f.submit _('Save') %>
-    <%= link_to_function _('cancel updates'), :class => 'toggle-edit' %>
+    <%= link_to_function _('cancel updates'), :class => 'toggle-edit' %>&emsp;
     <%= link_to_remote _('remove from cycle'), { :update => 'session-product-'+p.id.to_s,
-      :url => {:controller => :distribution_plugin_product, :action => :session_destroy, :id => p.id }} %>
-    <%= link_to_function _('edit product'), '' %>
+      :confirm => _('All ordered products from this products will also be removed; you should first warn members that ordered this products'),
+      :url => {:controller => :distribution_plugin_product, :action => :session_destroy, :id => p.id }} %>&emsp;
+    <%= link_to_function _('edit product'), '' %>&emsp;
   <% end %>
   <div style="clear: both"></div>
 </div>

@@ -61,7 +61,7 @@ class DistributionPluginSession < ActiveRecord::Base
   end
 
   def ordered_products_by_suppliers
-    self.ordered_session_products.group_by { |p| p.supplier }
+    self.ordered_session_products.unarchived.group_by { |p| p.supplier }
   end
 
   protected

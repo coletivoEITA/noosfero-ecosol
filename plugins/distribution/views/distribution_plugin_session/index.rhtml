@@ -1,5 +1,5 @@
 <div class='admin-page'>
-  <%= link_to _('New session'), {:action => :new}, :class => 'session-new' %>
+  <%= link_to _('New cycle'), {:action => :new}, :class => 'session-new' %>
   <% @sessions.each do |s| %>
     <div class="session-list-item">
       <%= render :partial => 'title', :locals => {:session => s} %>

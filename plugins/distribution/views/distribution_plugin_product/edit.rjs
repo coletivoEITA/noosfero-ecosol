@@ -1,2 +1,2 @@
 page.replace_html "our-product-#{@product.id}", :partial => 'edit_line', :locals => {:product => @product}
-page << "distribution_value_row_reload();"
+page << "distribution_value_row_reload();" unless new_record?

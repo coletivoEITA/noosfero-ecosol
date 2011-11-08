@@ -15,5 +15,13 @@
   <%= labelled_field f, :selleable_factor, _('Unit specification'),
     f.text_field(:selleable_factor, options.merge(:oldvalue => product.own_selleable_factor)) %>
 
+  <%# put here due to css align, see distribution.js %>
+  <% if supplier_product and not product.dummy? %>
+    <div class="cleaner">
+      <%= check_box_tag :product_supplier_product_active, 1, false, :style => 'float: left', :disabled => 'disabled' %>
+      <%= f.label :active, _('Commercialization active'), :class => 'line-label' %>
+    </div>
+  <% end %>
+  
   <div class="cleaner"></div>
 </div>
