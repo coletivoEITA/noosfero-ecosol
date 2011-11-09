@@ -13,7 +13,7 @@
       <% f.fields_for :image_builder, @node.image do |f| %>
         <%= labelled_field f, :uploaded_data, _("Header's image"), f.file_field(:uploaded_data, { :size => 10 }),
           {:help => _("This image will be used on the Collective's page, must be 960x110px, " +
-                      "it will be automatically cropped to this size. Abose this image, will be disposed " +
+                      "it will be automatically cropped to this size. Above this image, will be disposed " +
                       "the title and menu of the Collective's page")} %>
       <% end %>
   

@@ -27,8 +27,8 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
   def settings
     if params[:commit]
       @node.update_attributes! params[:node]
+      session[:notice] = _('Distribution settings saved.')
     end
-
   end
 
   protected

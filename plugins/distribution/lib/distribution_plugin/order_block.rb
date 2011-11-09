@@ -1,11 +1,11 @@
 class DistributionPlugin::OrderBlock < Block
 
  def self.short_description
-   _('Orders for consumers')
+   _("Orders' cycles")
  end
 
  def self.description
-   _('Distribution orders for consumers')
+   _("Distribution orders' cycles for members")
  end
 
  def self.available_for(profile)
@@ -18,11 +18,11 @@ class DistributionPlugin::OrderBlock < Block
  end
 
  def default_title
-   _('Orders')
+   self.class.short_description
  end
 
  def help
-   _('Offer cycles for you customers to make offers')
+   _('Offer cycles for you members to make offers')
  end
 
  def content

@@ -1,4 +1,5 @@
 class DistributionPluginNode < ActiveRecord::Base
+
   belongs_to :profile
 
   has_many :delivery_methods, :class_name => 'DistributionPluginDeliveryMethod', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id asc'
@@ -84,6 +85,12 @@ class DistributionPluginNode < ActiveRecord::Base
   end
   def has_consumer?(consumer)
     consumers.include? consumer
+  end
+  def has_supplier_node?(supplier)
+    suppliers_nodes.include? supplier
+  end
+  def has_consumer_node?(consumer)
+    consumers_nodes.include? consumer
   end
   def add_supplier(supplier)
     supplier.add_consumer self
