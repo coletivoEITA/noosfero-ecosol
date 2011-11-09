@@ -1,4 +1,5 @@
 class DistributionPluginSessionController < DistributionPluginMyprofileController
+
   no_design_blocks
 
   helper DistributionPlugin::SessionHelper
@@ -82,4 +83,18 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     #FileUtils.rm_rf tmp_dir
   end
 
+  def report_orders
+    extend DistributionPlugin::Report::ClassMethods
+    @session = DistributionPluginSession.find params[:id]
+    tmp_dir, report_file = report_orders_by_consumer @session
+    if report_file.nil?
+      render :nothing => true, :status => :ok
+      return
+    end
+    send_file report_file, :type => 'application/ods',
+      :disposition => 'attachment',
+      :filename => _("Cycle Orders Report.ods")
+    require 'fileutils'
+    #FileUtils.rm_rf tmp_dir
+  end
 end
