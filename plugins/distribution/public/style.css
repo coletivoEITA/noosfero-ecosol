@@ -1,9 +1,9 @@
 /* ----- override some noosfero's css  ----- */
 
-body #plugin-distribution-layout {
+body.plugin-distribution {
   line-height: 20px;
 }
-#plugin-distribution-layout .main-block {
+.plugin-distribution .main-block {
   text-align: left;
 }
 #plugin-distribution-layout #content {
@@ -1324,16 +1324,24 @@ body #plugin-distribution-layout {
 
 /* ----- header stuff  ----- */
 
+#distribution-plugin-header {
+  width: 960px;
+}
+
 .plugin-distribution .menu-header {
   background-color: #d9d2e4;
   padding: 10px 0 10px 242px;
   text-transform: uppercase;
 }
 .plugin-distribution .menu-logo {
-  background: url('images/menu_logo.jpg') no-repeat;
-  height: 112px;
+  width: 100%;
+  height: 110px;
   padding: 1px 0 0 240px;
   text-transform: capitalize;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
 }
 .plugin-distribution .menu-button-container {
   position: relative;
@@ -1390,4 +1398,15 @@ body #plugin-distribution-layout {
 }
 
 /* ----- end message stuff  ----- */
+
+/* ----- settings stuff  ----- */
+
+#distribution-plugin-settings .field {
+  width: 360px;
+}
+#distribution-plugin-settings input[type=text] {
+  width: 100%;
+}
+
+/* ----- end settings stuff  ----- */
 

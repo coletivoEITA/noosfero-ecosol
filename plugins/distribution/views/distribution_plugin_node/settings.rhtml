@@ -1,17 +1,23 @@
 <h1><%= h profile.name %></h1>
 <h2><%=  _('Settings of Solidary Distribution Network') %></h2>
 
-<% form_for :node, @node, {:controller => :distribution_plugin_node, :action => :settings} do |f| %>
-  <%= labelled_field f, :activated, _('Collective Consumption Mode'),
-    labelled_radio(f, :role, _('Disabled'), nil) +
-    labelled_radio(f, :role, _('Activated'), 'collective') %>
-
-    <%= labelled_field f, :name_abbreviation, _('Abbreviated name of the Collective'), f.text_field(:name_abbreviation),
-      {:help => _("This name will be used to avoid always use the full name of the Collective. How the Collective is generally called by the people?")} %>
-
-    <%# labelled_field f, :image_id, _('Abbreviated name of the Collective'), f.text_field(:name_abbreviation),
-      {:help => _("This name will be used to avoid always use the full name of the Collective. How the Collective is generally called by the people?") %>
-
-    <%= f.submit _('Save') %>
-    <%= link_to_function _('cancel') %>
-<% end %>
+<div id="distribution-plugin-settings">
+  <% form_for :node, @node, :url => {:controller => :distribution_plugin_node, :action => :settings}, :html => {:multipart => true} do |f| %>
+    <%= labelled_field f, :activated, _('Collective Consumption Mode'),
+      labelled_radio(f, :role, _('Disabled'), nil) +
+      labelled_radio(f, :role, _('Activated'), 'collective') %>
+  
+      <%= labelled_field f, :name_abbreviation, _("Abbreviated name of the Collective"), f.text_field(:name_abbreviation),
+        {:help => _("This name will be used to avoid always use the full name of the Collective. How the Collective is generally called by the people?")} %>
+  
+      <% f.fields_for :image_builder, @node.image do |f| %>
+        <%= labelled_field f, :uploaded_data, _("Header's image"), f.file_field(:uploaded_data, { :size => 10 }),
+          {:help => _("This image will be used on the Collective's page, must be 960x110px, " +
+                      "it will be automatically cropped to this size. Abose this image, will be disposed " +
+                      "the title and menu of the Collective's page")} %>
+      <% end %>
+  
+      <%= f.submit _('Save') %>
+      <%= link_to_function _('cancel') %>
+  <% end %>
+</div>

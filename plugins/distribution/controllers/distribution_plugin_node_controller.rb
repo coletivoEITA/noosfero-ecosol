@@ -25,6 +25,9 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
   end
 
   def settings
+    if params[:commit]
+      @node.update_attributes! params[:node]
+    end
 
   end
 

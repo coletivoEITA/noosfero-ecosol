@@ -28,6 +28,9 @@ class DistributionPluginNode < ActiveRecord::Base
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
 
+  acts_as_having_image
+  belongs_to :image, :class_name => 'DistributionPluginHeaderImage'
+
   def self.find_or_create(profile)
     role = profile.person? ? 'consumer' : (profile.community? ? 'collective' : 'supplier')
     find_by_profile_id(profile.id) || create!(:profile => profile, :role => role)
@@ -148,6 +151,11 @@ class DistributionPluginNode < ActiveRecord::Base
       already_supplied.find{ |f| f.product == p } ||
         DistributionPluginDistributedProduct.create!(:node => self, :supplier => self_supplier, :product => p, :name => p.name, :description => p.description, :price => p.price, :unit => p.unit)
     end
+  end
+
+  after_update :save_image
+  def save_image
+    image.save if image
   end
 
   module Roles

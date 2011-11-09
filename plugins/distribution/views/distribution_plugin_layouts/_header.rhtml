@@ -11,7 +11,7 @@
   ]
 %>
 <div class="menu-header"><%= _("Collective consumption network") %></div>
-<div class="menu-logo">
+<div class="menu-logo" style="background: url('<%= @node.image.public_filename %>') no-repeat;">
   <h1><%= @profile.name %></h1>
   <%# why twice? %>
   <h1><%= @profile.name %></h1>
