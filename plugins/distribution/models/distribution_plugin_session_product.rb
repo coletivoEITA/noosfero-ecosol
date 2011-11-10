@@ -26,10 +26,10 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
   end
 
   def total_quantity_asked
-    self.ordered_products.sum(:quantity_asked)
+    @total_quantity_asked ||= self.ordered_products.sum(:quantity_asked)
   end
   def total_price_asked
-    self.ordered_products.sum(:price_asked)
+    @total_price_asked ||= self.ordered_products.sum(:price_asked)
   end
   def total_parcel_quantity
     #FIXME: convert units and consider stock and availability
@@ -75,6 +75,15 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
 
   def session_change
     errors.add :session_id, "session can't change" if session_id_changed? and not new_record?
+  end
+
+  after_update :sync_ordered
+  def sync_ordered
+    return unless product.price_changed?
+    ordered_products.each do |op|
+      op.send :calculate_prices
+      op.save!
+    end
   end
 
 end

@@ -16,7 +16,7 @@
         </div>
         <div id="order-message-text">
           <% if @order.confirmed? %>
-            <%= _("Your order is confirmed is registered. Please follow the guidelines of the delivery method below, so that it happens without problems.") %>
+            <%= _("Your order is confirmed and registered. Please follow the guidelines of the delivery method below, so that it happens without problems.") %>
           <% else %>
             <%= _("Your order wasn't confirmed and the cycle orders period already ended.") %>
           <% end %>
@@ -49,6 +49,15 @@
       <div class="cleaner"></div>
     </div>
   </div>
+
+  <%= javascript_include_tag '/plugins/distribution/waypoints.min.js' %>
+  <% javascript_tag do %>
+    jQuery(document).ready(function() {
+      jQuery('#order-column').waypoint(function(event, direction) {
+        jQuery(this).css('left', jQuery(this).offset().left).toggleClass('sticky');
+      }, {});
+    });
+  <% end %>
 
   <div class="cleaner"></div>
 </div>

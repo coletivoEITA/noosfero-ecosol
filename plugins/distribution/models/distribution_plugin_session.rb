@@ -15,6 +15,7 @@ class DistributionPluginSession < ActiveRecord::Base
   has_many :ordered_products, :through => :orders, :source => :products
   has_many :ordered_session_products, :through => :orders, :source => :session_products, :uniq => true
   has_many :ordered_distributed_products, :through => :orders, :source => :distributed_products, :uniq => true
+  has_many :ordered_supplier_products, :through => :orders, :source => :supplier_products, :uniq => true
 
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.node.sessions }
@@ -88,19 +89,22 @@ class DistributionPluginSession < ActiveRecord::Base
   end
 
   def ordered_products_by_suppliers
-    op_by_s_w_total = []
-    op_by_s = self.ordered_session_products.unarchived.group_by { |p| p.supplier }
-    op_by_s.each do |supplier, ordered_products|
-      total = total_price_asked_by_supplier supplier
-    op_by_s_w_total.push supplier, ordered_products, total
+    self.ordered_session_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
+      total_price_asked = total_parcel_price = 0
+      products.each do |product|
+        total_price_asked += product.total_price_asked 
+        total_parcel_price += product.total_parcel_price 
+      end
+
+      [supplier, products, total_price_asked, total_parcel_price]
     end
   end
-  def total_price_asked_by_supplier(supplier)
-    total = 0
-    self.ordered_session_products.unarchived.from_supplier(supplier).each do |p|
-      total += p.total_price_asked
-    end
-    total
+
+  def total_price_asked
+    self.ordered_products.sum(:price_asked)
+  end
+  def total_parcel_price
+    self.ordered_supplier_products.sum(:price)
   end
 
   after_create :add_distributed_products

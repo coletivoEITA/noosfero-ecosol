@@ -1,6 +1,8 @@
 module DistributionPlugin::Report
   module ClassMethods
-    def report_products_by_supplier(ordered_products_by_supplier)
+    def report_products_by_supplier(session)
+      ordered_products_by_supplier = session.ordered_products_by_suppliers
+
       if ordered_products_by_supplier.blank? or not defined? ::ODF::Spreadsheet 
         return [nil, nil]
       end 
@@ -23,11 +25,11 @@ module DistributionPlugin::Report
         end
         # create sheet and populates
         spreadsheet.table 'Products sheet' do |table|
-          ordered_products_by_supplier.each do |supplier, ordered_products, total_price_asked|
+          ordered_products_by_supplier.each do |supplier, ordered_products, total_price_asked, total_parcel_asked|
             table.row do |row|
               row.cell _("Supplier"), :style => 'blue-cell'
               row.cell _("Total selled value"), :style => 'blue-cell'
-              #row.cell _("Total parcel value"), :style => 'blue-cell'
+              row.cell _("Total parcel value"), :style => 'blue-cell'
             end
             table.row do |row|
               row.cell supplier.name
@@ -49,19 +51,20 @@ module DistributionPlugin::Report
               row.cell  _("un."), :style => 'green-cell'
               row.cell _("price/un"), :style => 'green-cell'
               row.cell _("selled value"), :style => 'green-cell'
-              #row.cell _("Parcel value") , :style => 'green-cell'
+              row.cell _("parcel value") , :style => 'green-cell'
             end
             ordered_products.each do |ordered_product| 
               table.row do |row|
-                row.cell ordered_product.product.id
-                row.cell ordered_product.product.name
+                row.cell ordered_product.id
+                row.cell ordered_product.name
                 row.cell ordered_product.total_quantity_asked
                 row.cell ordered_product.minimum_selleable
                 #row.cell "formula"
                 #row.cell "formula"
                 row.cell ordered_product.unit.singular
-                row.cell ordered_product.price_asked
+                row.cell ordered_product.price
                 row.cell ordered_product.total_price_asked
+                row.cell ordered_product.total_parcel_price
                 #row.cell "formula"
               end 
             end # closes ordered_products.each
@@ -75,14 +78,14 @@ module DistributionPlugin::Report
             row.cell _("selled total"), :style => 'red-cell'
           end
           table.row do |row|
-            row.cell _("formula")
+            row.cell session.total_price_asked
           end
-          #table.row do |row|
-          #  row.cell _("parcel totals"), :style => 'red-cell'
-          #end
-          #table.row do |row|
-          #  row.cell _("formula")
-          #end
+          table.row do |row|
+            row.cell _("parcel totals"), :style => 'red-cell'
+          end
+          table.row do |row|
+            row.cell session.total_parcel_price
+          end
         end # closes spreadsheet table
       end # closes spreadsheet
       [tmp_dir, report_file]

@@ -1,4 +1,4 @@
-<div class="box-view <%= 'in-order' if ordered_product %>">
+<div class="box-view">
   <% editable = order && order.open? %>
 
   <div class="box-field product box-edit-link"><%= product.name %></div>
@@ -15,7 +15,11 @@
       <% end %>
     </div>
     <div class="quantity-entry" style="display: none">
-      <%= text_field_tag 'quantity_asked', ordered_product ? ordered_product.quantity_asked : '1', :disabled => editable ? nil : 'readonly' %>
+      <% if editable %>
+        <%= text_field_tag 'quantity_asked', ordered_product ? ordered_product.quantity_asked : '1' %>
+      <% elsif ordered_product %>
+        <%= ordered_product.quantity_asked %>
+      <% end %>
     </div>
   </div>
 
@@ -41,10 +45,16 @@
     </div>
 
     <div>
-      <div class="product-city">
-        <span class="field-title"><%= _('City') %></span>
-        <span><%= _('%{city}/%{state}') % {:city => product.supplier.profile.city, :state => product.supplier.profile.state} %>
-      </div>
+      <% if product.supplier.profile.city %>
+        <div class="product-city">
+          <span class="field-title"><%= _('City') %></span>
+          <span><%= _('%{city}/%{state}') % {:city => product.supplier.profile.city, :state => product.supplier.profile.state} %></span>
+        </div>
+      <% end %>
+
+      <% unless product.supplier.dummy? %>
+        <%= link_to _("More about the producer \"%{supplier}\"") % {:supplier => product.supplier.name}, product.supplier.profile.url, :target => '_blank' %>
+      <% end %>
     </div>
   </div>
 
@@ -64,6 +74,10 @@
 
   <div class="cleaner"></div>
 </div>
+
+<% javascript_tag do %>
+  jQuery("#session-product-<%=product.id%>").toggleClass('in-order', <%= !ordered_product.blank? %>);
+<% end %>
 
 <div class="cleaner"></div>
 

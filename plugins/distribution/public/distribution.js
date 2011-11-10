@@ -131,7 +131,7 @@ function distribution_order_products_toggle(fields, toggle) {
 
 function distribution_order_filter_products(text) {
   text = text.toLowerCase();
-  fields = jQuery('#session-column .box-view .box-field.product');
+  fields = jQuery('#session-products-for-order .box-view .box-field.product');
   results = jQuery.grep(fields, function(field, index) {
     fieldText = jQuery(field).text().toLowerCase();
     supplierText = jQuery(field).parents('.supplier-table').find('.supplier').text().toLowerCase();
@@ -140,11 +140,11 @@ function distribution_order_filter_products(text) {
     matchSupplier = supplierText.indexOf(text) > -1;
     return matchField || matchSupplier;
   });
-  jQuery('#session-column .supplier-table').show();
+  jQuery('#session-products-for-order .supplier-table').show();
   distribution_order_products_toggle(jQuery(fields), false);
   distribution_order_products_toggle(jQuery(results), true);
 
-  jQuery('#session-column .supplier-table').each(function(index, supplier) {
+  jQuery('#session-products-for-order .supplier-table').each(function(index, supplier) {
     jQuery(supplier).toggle(jQuery(supplier).find('.order-session-product:visible').length > 0 ? true : false);
   });
 }

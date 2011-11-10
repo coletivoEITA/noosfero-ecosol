@@ -8,6 +8,7 @@ class DistributionPluginOrder < ActiveRecord::Base
 
   has_many :session_products, :through => :products, :source => :product
   has_many :distributed_products, :through => :session_products, :source => :from_products
+  has_many :supplier_products, :through => :distributed_products, :source => :from_products
 
   has_many :from_products, :through => :products
   has_many :to_products, :through => :products

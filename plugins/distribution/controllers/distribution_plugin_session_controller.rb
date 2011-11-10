@@ -78,9 +78,8 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
 
   def report_products
     extend DistributionPlugin::Report::ClassMethods
-    session = DistributionPluginSession.find params[:id]
-    @ordered_products_by_suppliers = session.ordered_products_by_suppliers
-    tmp_dir, report_file = report_products_by_supplier @ordered_products_by_suppliers
+    @session = DistributionPluginSession.find params[:id]
+    tmp_dir, report_file = report_products_by_supplier @session
     if report_file.nil?
       return false
     end

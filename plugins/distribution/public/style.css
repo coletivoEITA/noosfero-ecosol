@@ -509,9 +509,23 @@ body.plugin-distribution {
   font-weight: bold;
   margin-bottom: 10px;
 }
+
 .plugin-distribution .order-products-by-supplier .products-header {
-  padding-bottom: 10px;
-  border-bottom: 1px dotted black;
+  padding-bottom: 5px;
+  font-weight: bold;
+}
+.plugin-distribution .order-products-by-supplier .supplier-products {
+  border-top: 1px dotted #999;
+  border-bottom: 1px dotted #999;
+  padding: 5px 0;
+  margin-bottom: 5px;
+}
+
+.plugin-distribution .order-products-by-supplier .supplier-total {
+  font-size: 10px;
+}
+.plugin-distribution .order-products-by-supplier .supplier-total .product {
+  text-transform: uppercase;
   font-weight: bold;
 }
 .plugin-distribution .order-products-by-supplier .session-ordered-product {
@@ -666,9 +680,6 @@ body.plugin-distribution {
 .plugin-distribution .order-products {
   width: 400px;
 }
-.plugin-distribution #order-products form {
-  margin: 0;
-}
 
 .plugin-distribution .ordered-product {
   /*
@@ -719,7 +730,7 @@ body.plugin-distribution {
   text-align: right;
 }
 .plugin-distribution .ordered-product.edit {
-  border: 1px solid black;
+  border: 1px solid black !important;
   padding-bottom: 4px;
 
   margin-left: -5px;
@@ -1325,10 +1336,19 @@ body.plugin-distribution {
   background-color: #fff2a3;
 }
 
+.plugin-distribution #order-products form {
+  margin: 0;
+}
+
 .plugin-distribution #order-column {
   float: left;
   margin-left: 68px;
   width: 400px;
+}
+.plugin-distribution #order-column.sticky {
+  position: fixed;
+  top: 0;
+  margin: 0;
 }
 
 .plugin-distribution #order-column #order-message {
@@ -1381,7 +1401,7 @@ body.plugin-distribution {
   padding: 5px 0 8px 0;
 }
 .plugin-distribution #order-column .total-title {
-  width: 295px;
+  width: 278px;
 }
 .plugin-distribution #order-column .total-value {
   max-width: 65px;
