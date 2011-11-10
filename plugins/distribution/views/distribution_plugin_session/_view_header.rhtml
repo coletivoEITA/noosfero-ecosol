@@ -8,7 +8,7 @@
 </div>
 
 <div id="session-header">
-  <h2><%=_("Orders cycle: `%{cycle}'") % {:cycle => session.name} %></h2>
+  <h2><%=_("Orders cycle: %{cycle}") % {:cycle => content_tag(:strong, session.name_with_code)} %></h2>
 
   <div class="orders-date <%= "active" if session.open? %>">
     <span><%= _("Happening") if session.open? %></span>

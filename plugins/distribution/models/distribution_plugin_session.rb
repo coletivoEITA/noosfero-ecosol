@@ -15,6 +15,9 @@ class DistributionPluginSession < ActiveRecord::Base
   has_many :ordered_suppliers, :through => :orders, :source => :suppliers
   has_many :ordered_session_products, :through => :orders, :source => :session_products, :uniq => true
 
+  extend CodeNumbering::ClassMethods
+  code_numbering :code, :scope => Proc.new { self.node.sessions }
+
   named_scope :open, lambda {
     {:conditions => ["status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) )",
       {:now => DateTime.now}]}
@@ -41,6 +44,12 @@ class DistributionPluginSession < ActiveRecord::Base
   split_datetime :finish
   split_datetime :delivery_start
   split_datetime :delivery_finish
+
+  def name_with_code
+    _("%{code}. %{name}") % {
+      :code => code, :name => name
+    }
+  end
 
   def products_for_order_by_supplier
     self.products.unarchived.all(:conditions => ['price > 0']).group_by{ |sp| sp.supplier }

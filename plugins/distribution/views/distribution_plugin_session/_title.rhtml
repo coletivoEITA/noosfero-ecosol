@@ -2,7 +2,7 @@
   <% if session.status == 'new' %>
     <div class="session-edit-link"><%= _('New cycle') %></div>
   <% else %>
-    <%= link_to _('Order Cycle: ') + session.name,
+    <%= link_to _('Order Cycle: ') + session.name_with_code,
       {:action => 'edit', :profile => profile.identifier, :id => session.id },
       :class => "session-edit-link" %>
   <% end %>

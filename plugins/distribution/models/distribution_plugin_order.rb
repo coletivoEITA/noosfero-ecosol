@@ -16,9 +16,11 @@ class DistributionPluginOrder < ActiveRecord::Base
 
   named_scope :by_consumer, lambda { |consumer| { :conditions => {:consumer_id => consumer.id} } }
 
+  extend CodeNumbering::ClassMethods
+  code_numbering :code, :scope => Proc.new { self.session.orders }
+
   validates_inclusion_of :status, :in => ['draft', 'planned', 'confirmed']
   validates_presence_of :session
-  validate :open_session?, :if => :session
 
   validates_presence_of :consumer
 
@@ -54,6 +56,12 @@ class DistributionPluginOrder < ActiveRecord::Base
     products.sum(:price_asked)
   end
 
+  def code
+    _("%{sessioncode}.%{ordercode}") % {
+      :sessioncode => session.code, :ordercode => self['code']
+    }
+  end
+
   protected 
 
   before_validation :default_values
@@ -64,10 +72,6 @@ class DistributionPluginOrder < ActiveRecord::Base
 
   def confirmed?
     status == 'confirmed'
-  end
-
-  def open_session?
-    errors.add_to_base('order confirmed or cycle is closed for orders') unless open?
   end
 
 end

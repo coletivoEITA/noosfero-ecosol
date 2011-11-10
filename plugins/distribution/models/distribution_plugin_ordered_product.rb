@@ -4,9 +4,6 @@ class DistributionPluginOrderedProduct < ActiveRecord::Base
   belongs_to :session_product, :class_name => 'DistributionPluginProduct'
   belongs_to :product, :class_name => 'DistributionPluginProduct', :foreign_key => :session_product_id #same as above
 
-  validates_presence_of :order
-  validates_presence_of :session_product
-
   has_many :from_products, :through => :product
   has_many :to_products, :through => :product
 
@@ -18,6 +15,9 @@ class DistributionPluginOrderedProduct < ActiveRecord::Base
     }
   }
 
+  validates_presence_of :order
+  validates_presence_of :session_product
+  validate :open_order?
   validates_numericality_of :quantity_asked
   validates_numericality_of :quantity_allocated
   validates_numericality_of :quantity_payed
@@ -57,6 +57,11 @@ class DistributionPluginOrderedProduct < ActiveRecord::Base
   before_destroy :touch_order
   def touch_order
     order.touch
+  end
+
+  def open_order?
+    #need to validate user: member or administrator
+    #errors.add_to_base('order confirmed or cycle is closed for orders') unless order.open?
   end
 
 end
