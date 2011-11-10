@@ -5,10 +5,10 @@
   </head>
   <body>
     <p>
-      <%= _('Hello managers of %{name}!') % {:name => @node.name} %>
+      <%= _("Hello managers of %{name}!") % {:name => @node.name} %>
     </p>
 
-    <p><%= _('The member %{member} sent a messsage to you') % {:node => @member.name} %></p>
+    <p><%= _("The member %{member} sent a messsage to you") % {:member => @member.name} %></p>
     <p><i><%= @message %></i></p>
 
     <p>

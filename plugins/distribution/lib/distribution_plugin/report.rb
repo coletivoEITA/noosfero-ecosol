@@ -23,7 +23,7 @@ module DistributionPlugin::Report
         end
         # create sheet and populates
         spreadsheet.table 'Products sheet' do |table|
-          ordered_products_by_supplier.each do |supplier, ordered_products|
+          ordered_products_by_supplier.each do |supplier, ordered_products, total_price_asked|
             table.row do |row|
               row.cell _("Supplier"), :style => 'blue-cell'
               row.cell _("Total selled value"), :style => 'blue-cell'
@@ -31,7 +31,7 @@ module DistributionPlugin::Report
             end
             table.row do |row|
               row.cell supplier.name
-              row.cell total_price_asked_by_supplier supplier.name
+              row.cell total_price_asked
               #row.cell _("formula")
             end
             table.row do |row| # empty line

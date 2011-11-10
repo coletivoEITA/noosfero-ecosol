@@ -88,7 +88,12 @@ class DistributionPluginSession < ActiveRecord::Base
   end
 
   def ordered_products_by_suppliers
-    self.ordered_session_products.unarchived.group_by { |p| p.supplier }
+    op_by_s_w_total = []
+    op_by_s = self.ordered_session_products.unarchived.group_by { |p| p.supplier }
+    op_by_s.each do |supplier, ordered_products|
+      total = total_price_asked_by_supplier supplier
+    op_by_s_w_total.push supplier, ordered_products, total
+    end
   end
   def total_price_asked_by_supplier(supplier)
     total = 0
