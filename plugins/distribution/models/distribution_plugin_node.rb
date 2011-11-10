@@ -57,6 +57,13 @@ class DistributionPluginNode < ActiveRecord::Base
     !profile.visible
   end
 
+  def dummy
+    dummy?
+  end
+  def dummy=(value)
+    profile.update_attributes! :visible => !value
+  end
+
   def default_products_margins
     products.unarchived.distributed.each do |product|
       product.default_margin_percentage = true
@@ -98,16 +105,19 @@ class DistributionPluginNode < ActiveRecord::Base
   def remove_supplier(supplier)
     supplier.remove_consumer self
   end
-  def add_consumer(consumer)
-    consumer.affiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
-    consumers.create! :consumer => consumer unless has_consumer?(consumer)
+  def add_consumer(consumer_node)
+    consumer_node.affiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
+    supplier = consumers.create! :consumer => consumer_node || suppliers.from_node(consumer_node)
 
     #without asking the user?
-    consumer.add_supplier_products self unless consumer.consumer?
+    consumer_node.add_supplier_products supplier
+
+    supplier
   end
   def remove_consumer(consumer)
     consumer.disaffiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
-    consumers.find_by_consumer_id(consumer.id).destroy!
+    supplier = consumers.find_by_consumer_id(consumer.id)
+    supplier.destroy! if supplier
 
     consumer.products.distributed.from_supplier(self).update_all ['archived = true']
   end

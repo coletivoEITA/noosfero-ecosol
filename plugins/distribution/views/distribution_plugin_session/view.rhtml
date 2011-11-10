@@ -2,7 +2,7 @@
 
   <%= render :partial => 'distribution_plugin_session/view_header', :locals => {:session => @session} %>
 
-  <%= render :partial => 'distribution_plugin_session/view_products', :locals => {:session => @session} %>
+  <%= render :partial => 'distribution_plugin_session/view_products', :locals => {:session => @session, :order => nil} %>
 
   <div id="order-column">
     <h3><%=_("Your orders")%></h3>

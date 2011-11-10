@@ -1,55 +1,72 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
-class DistributionNodeTest < Test::Unit::TestCase
+class DistributionPluginNodeTest < ActiveRecord::TestCase
 
-  def setup
+  before :each do
     @p = create(Profile)
+    @p2 = create(Profile)
+  end
+  after :each do
+    @p.destroy
+    @p2.destroy
   end
 
-  should 'create necessary roles before instance creation' do
-    d = create(DistributionNode, :profile => @p)
+  it 'should create necessary roles before instance creation' do
+    d = create(DistributionPluginNode, :profile => @p)
     d.save!
-    assert_not_nil DistributionNode::Roles.consumer(d.profile.environment)
+    assert_not_nil DistributionPluginNode::Roles.consumer(d.profile.environment)
   end
 
-  should 'add and remove a consumer' do
-    p2 = create(Profile)
-    d1 = create(DistributionNode, :profile => @p)
-    d2 = create(DistributionNode, :profile => p2)
-    d1.add_consumer(d2)
-    assert d1.consumers.include?(d2)
-    assert d2.suppliers.include?(d1)
+  describe "Roles" do 
+    it "should have a valid role" do
+      d = DistributionPluginNode.create :profile => @p, :role => 'bla'
+      assert d.errors.invalid?('role')
 
-    d1.remove_consumer(d2)
-    assert !d1.consumers.include?(d2)
+      ['supplier', 'consumer', 'collective'] .each do |i|
+        d = DistributionPluginNode.create :profile => @p, :role => i
+        assert !d.errors.invalid?('role')
+      end
+    end
+
+    it "should define a consumer role" do
+    end
+
+    it "should assign consumer role to suppliers and consumer" do
+    end
   end
 
-  should 'have a product' do
-    d = create(DistributionNode, :profile => @p)
-    pr = create(DistributionProduct, :node_id => d.id)
-    assert d.products.include? pr
-    assert pr.node_id == d.id
-  end
+  describe "Suppliers" do 
+    before :each do
+      @node = create(DistributionPluginNode, :profile => @p)
+      @supplier_node = create(DistributionPluginNode, :profile => @p2)
+      @supplier = @node.add_consumer(@supplier_node)
+    end
+    after :each do
+      @supplier.destroy
+      @node.destroy
+    end
 
-  should 'have a valid role' do
-    roles = ['supplier', 'consumer', 'colective'] 
-    #d = create(DistributionNode, :profile => @p, :role => :bla)
-    puts "now it would hang"
-    #assert !d.valid?
-    puts "first role"
-    #assert d.errors.invalid?(:node)
-    puts "after invalid"
-    roles.each do |aRole|
-      d = create(DistributionNode, :profile => @p, :role => aRole)
-      puts "each #{aRole}"
-      assert !d.errors.invalid?(:node)
+    it 'should add and remove a consumer' do
+      assert @node.consumers_nodes.include?(@supplier_node)
+      assert @supplier_node.suppliers_nodes.include?(@node)
+
+      @node.remove_consumer(@supplier_node)
+      assert !@node.consumers_nodes.include?(@supplier_node)
+    end
+
+    describe "Products" do 
+      before :each do
+        @product = create(DistributionPluginDistributedProduct, :node => @node, :supplier => @supplier)
+      end
+      after :each do
+        @product.destroy!
+      end
+
+      it 'should have a product' do
+        assert @node.products.include? @product
+      end
     end
 
   end
 
-  should '' do 
-  end
-
-  should 's' do 
-  end
 end
