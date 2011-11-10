@@ -3,6 +3,8 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
 
   def new
     @order = DistributionPluginOrder.find params[:order_id]
+    raise 'Order confirmed or cycle is closed for orders' unless @order.open?
+
     @session_product = DistributionPluginProduct.find params[:session_product_id]
     @quantity_asked = params[:quantity_asked] || 1
 
@@ -14,6 +16,8 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
 
   def edit
     @ordered_product = DistributionPluginOrderedProduct.find params[:id]
+    raise 'Order confirmed or cycle is closed for orders' unless @order.open?
+
     @order = @ordered_product.order
     @ordered_product.update_attributes params[:ordered_product]
   end

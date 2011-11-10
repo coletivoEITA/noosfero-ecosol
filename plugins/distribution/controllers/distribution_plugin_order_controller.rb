@@ -17,6 +17,39 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     @session = @order.session
   end
 
+  def reopen
+    @order = DistributionPluginOrder.find params[:id]
+    raise "Cycle's orders period already ended" unless @order.session.open?
+    @order.update_attributes! :status => 'draft'
+
+    redirect_to :action => :edit, :id => @order.id
+  end
+
+  def confirm
+    params[:order] ||= {}
+
+    @order = DistributionPluginOrder.find params[:id]
+    raise "Cycle's orders period already ended" unless @order.session.open?
+    @order.update_attributes! params[:order].merge(:status => 'confirmed')
+
+    session[:notice] = _('Order confirmed')
+    redirect_to :action => :edit, :id => @order.id
+  end
+
+  def remove
+    @order = DistributionPluginOrder.find params[:id]
+    @order.destroy
+
+    session[:notice] = _('Order removed')
+    redirect_to :controller => :distribution_plugin_session, :action => :view, :id => @order.session.id
+  end
+
+  def render_delivery
+    @order = DistributionPluginOrder.find params[:id]
+    @delivery_method = DistributionPluginDeliveryMethod.find params[:delivery_method_id]
+    render :partial => 'delivery', :layout => false, :locals => {:order => @order, :method => @delivery_method}
+  end
+
   def session_edit
     @order = DistributionPluginOrder.find params[:id]
     a = {}; @order.products.map{ |p| a[p.id] = p }
@@ -46,23 +79,6 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     removed.each{ |p| p.destroy }
   end
 
-  def confirm
-    @order = DistributionPluginOrder.find params[:id]
-    @order.status = 'confirmed'
-    redirect_to :action => :index
-  end
-
-  def remove
-    @order = DistributionPluginOrder.find params[:id]
-    @order.destroy
-    session[:notice] = _('Order removed')
-    redirect_to :controller => :distribution_plugin_session, :action => :view, :id => @order.session.id
-  end
-
-  def render_delivery
-    @order = DistributionPluginOrder.find params[:id]
-    @delivery_method = DistributionPluginDeliveryMethod.find params[:delivery_method_id]
-    render :partial => 'delivery', :layout => false, :locals => {:order => @order, :method => @delivery_method}
-  end
+  protected
 
 end

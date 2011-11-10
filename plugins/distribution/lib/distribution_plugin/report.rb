@@ -27,12 +27,12 @@ module DistributionPlugin::Report
             table.row do |row|
               row.cell _("Supplier"), :style => 'blue-cell'
               row.cell _("Total selled value"), :style => 'blue-cell'
-              row.cell _("Total parcel value"), :style => 'blue-cell'
+              #row.cell _("Total parcel value"), :style => 'blue-cell'
             end
             table.row do |row|
               row.cell supplier.name
-              row.cell order.total_price_asked
-              row.cell _("formula")
+              row.cell total_price_asked_by_supplier supplier.name
+              #row.cell _("formula")
             end
             table.row do |row| # empty line
               row.cell ""
@@ -44,12 +44,12 @@ module DistributionPlugin::Report
               row.cell _("product name"), :style => 'green-cell'
               row.cell _("qtt ordered"), :style => 'green-cell'
               row.cell _("min. qtt"), :style => 'green-cell'
-              row.cell _("qtt to be parcelled"), :style => 'green-cell'
-              row.cell _("projected stock"), :style => 'green-cell'
+              #row.cell _("qtt to be parcelled"), :style => 'green-cell'
+              #row.cell _("projected stock"), :style => 'green-cell'
               row.cell  _("un."), :style => 'green-cell'
               row.cell _("price/un"), :style => 'green-cell'
               row.cell _("selled value"), :style => 'green-cell'
-              row.cell _("Parcel value") , :style => 'green-cell'
+              #row.cell _("Parcel value") , :style => 'green-cell'
             end
             ordered_products.each do |ordered_product| 
               table.row do |row|
@@ -57,12 +57,12 @@ module DistributionPlugin::Report
                 row.cell ordered_product.product.name
                 row.cell ordered_product.total_quantity_asked
                 row.cell ordered_product.minimum_selleable
-                row.cell "formula"
-                row.cell "formula"
+                #row.cell "formula"
+                #row.cell "formula"
                 row.cell ordered_product.unit.singular
+                row.cell ordered_product.price_asked
                 row.cell ordered_product.total_price_asked
-                row.cell "formula"
-                row.cell "formula"
+                #row.cell "formula"
               end 
             end # closes ordered_products.each
             table.row do |row|
@@ -77,12 +77,12 @@ module DistributionPlugin::Report
           table.row do |row|
             row.cell _("formula")
           end
-          table.row do |row|
-            row.cell _("parcel totals"), :style => 'red-cell'
-          end
-          table.row do |row|
-            row.cell _("formula")
-          end
+          #table.row do |row|
+          #  row.cell _("parcel totals"), :style => 'red-cell'
+          #end
+          #table.row do |row|
+          #  row.cell _("formula")
+          #end
         end # closes spreadsheet table
       end # closes spreadsheet
       [tmp_dir, report_file]

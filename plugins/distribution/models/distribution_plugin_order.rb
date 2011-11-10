@@ -22,9 +22,7 @@ class DistributionPluginOrder < ActiveRecord::Base
 
   validates_inclusion_of :status, :in => ['draft', 'planned', 'confirmed']
   validates_presence_of :session
-
   validates_presence_of :consumer
-
   validates_presence_of :supplier_delivery
   validates_presence_of :consumer_delivery, :if => :is_delivery?
 
@@ -34,23 +32,24 @@ class DistributionPluginOrder < ActiveRecord::Base
   def draft?
     status == 'draft'
   end
-  def planned
+  def planned?
     status == 'planned'
   end
-  def confimerd
+  def confirmed?
     status == 'confirmed'
+  end
+  def open?
+    !confirmed? && session.open?
+  end
+  def forgotten?
+    !confirmed? && !session.open?
   end
 
   def supplier_delivery
     self['supplier_delivery'] || session.delivery_methods.first
   end
-
   def is_delivery?
     supplier_delivery and supplier_delivery.deliver?
-  end
-
-  def open?
-    !confirmed? && session.open?
   end
 
   def total_quantity_asked
@@ -80,10 +79,6 @@ class DistributionPluginOrder < ActiveRecord::Base
   def default_values
     self.status ||= 'draft'
     self.supplier_delivery
-  end
-
-  def confirmed?
-    status == 'confirmed'
   end
 
 end

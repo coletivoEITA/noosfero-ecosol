@@ -1199,7 +1199,7 @@ body.plugin-distribution {
 }
 .plugin-distribution .session-view #order-filter .order-filter {
   float: left;
-  max-width: 30%;
+  width: 100%;
   margin-bottom: 30px;
 }
 .plugin-distribution .session-view #order-filter strong {
@@ -1321,20 +1321,57 @@ body.plugin-distribution {
 
 /* ----- order stuff  ----- */
 
+.plugin-distribution #order-page .in-order {
+  background-color: #fff2a3;
+}
+
 .plugin-distribution #order-column {
   float: left;
   margin-left: 68px;
   width: 400px;
 }
 
+.plugin-distribution #order-column #order-message {
+  padding: 10px;
+}
+.plugin-distribution #order-column #order-message.forgotten {
+  background-color: #FECBCA;
+}
+.plugin-distribution #order-column #order-message.confirmed {
+  background-color: #E1F5C4;
+}
+
+.plugin-distribution #order-column #order-message-title {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  line-height: 26px;
+}
+.plugin-distribution #order-column #order-message.confirmed #order-message-title {
+  background: url(images/order-statuses.png) top left no-repeat;
+  padding-left: 24px;
+}
+.plugin-distribution #order-column #order-message.forgotten #order-message-title {
+}
+
+.plugin-distribution #order-column #order-message-text {
+  font-size: 10px;
+  font-style: italic;
+}
+.plugin-distribution #order-column #order-message-actions {
+  margin-top: 10px;
+  font-size: 10px;
+}
+
+.plugin-distribution #order-column #order-products .value-row {
+  border-top: 1px dotted black;
+  border-bottom: none;
+}
+
 .plugin-distribution #order-column #close-order,
 .plugin-distribution #order-column #desist-order {
   margin-top: 30px;
   margin-bottom: 8px;
-}
-
-.plugin-distribution #order-column .in-order {
-  background-color: #fff2a3;
 }
 
 .plugin-distribution #order-column #total-box {

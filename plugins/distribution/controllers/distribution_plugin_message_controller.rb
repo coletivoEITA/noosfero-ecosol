@@ -36,6 +36,16 @@ class DistributionPluginMessageController < DistributionPluginMyprofileControlle
     end
   end
 
+  def new_to_admins
+    @member = @user_node
+    if params[:commit]
+      DistributionPlugin::Mailer.deliver_message_to_admins @node, @member, params[:email][:subject], params[:email][:message]
+      page_reload
+    else
+      render :layout => false
+    end
+  end
+
   protected
 
   def page_reload

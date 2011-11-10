@@ -9,6 +9,29 @@
       <h3><%=_("Your order")%></h3>
     </div>
 
+    <% if @order.confirmed? or @order.forgotten? %>
+      <div id="order-message" class="<%= @order.confirmed? ? "confirmed" : "forgotten" %>">
+        <div id="order-message-title">
+          <%= @order.confirmed? ? _("Order confirmed") : _("Order lost") %>
+        </div>
+        <div id="order-message-text">
+          <% if @order.confirmed? %>
+            <%= _("Your order is confirmed is registered. Please follow the guidelines of the delivery method below, so that it happens without problems.") %>
+          <% else %>
+            <%= _("Your order wasn't confirmed and the cycle orders period already ended.") %>
+          <% end %>
+        </div>
+        <div id="order-message-actions">
+          <div><%= _('You still can:') %></div>
+          <% if @order.session.open? %>
+            <%= link_to _('change order'), {:controller => :distribution_plugin_order, :action => :reopen, :id => @order.id}  %>
+            <%= _('(before the closing)') %>&emsp;
+          <% end %>
+          <%= lightbox_link_to _('send message to the managers'), {:controller => :distribution_plugin_message, :action => :new_to_admins} %>
+        </div>
+      </div>
+    <% end %>
+
     <div class="in-order">
       <div id="order-products">
         <%= render :partial => 'products', :locals => {:order => @order} %>

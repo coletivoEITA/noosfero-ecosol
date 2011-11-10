@@ -32,7 +32,7 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
     self.ordered_products.sum(:price_asked)
   end
   def total_parcel_quantity
-    #FIXME: convert units
+    #FIXME: convert units and consider stock and availability
     total_quantity_asked
   end
   def total_parcel_price

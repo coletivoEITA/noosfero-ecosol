@@ -90,6 +90,13 @@ class DistributionPluginSession < ActiveRecord::Base
   def ordered_products_by_suppliers
     self.ordered_session_products.unarchived.group_by { |p| p.supplier }
   end
+  def total_price_asked_by_supplier(supplier)
+    total = 0
+    self.ordered_session_products.unarchived.from_supplier(supplier).each do |p|
+      total += p.total_price_asked
+    end
+    total
+  end
 
   after_create :add_distributed_products
   def add_distributed_products
