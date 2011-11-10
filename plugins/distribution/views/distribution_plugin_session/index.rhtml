@@ -6,10 +6,15 @@
   <div id="session-open-listing">
     <h3><%= _('Open Cycles') %></h3>
 
-    <% @sessions.open.each do |session| %>
-      <div id="session-list-item-<%= session.id %>" class="session-list-item box-align">
-        <%= render :partial => 'brief', :locals => {:session => session, :timeline => true} %>
-      </div>
+    <% sessions = @sessions.open %>
+    <% if sessions.blank? %>
+      <div class="subtitle"><%= _('No cycles to show') %></div>
+    <% else %>
+      <% sessions.each do |session| %>
+        <div id="session-list-item-<%= session.id %>" class="session-list-item box-align">
+          <%= render :partial => 'brief', :locals => {:session => session, :timeline => true} %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 

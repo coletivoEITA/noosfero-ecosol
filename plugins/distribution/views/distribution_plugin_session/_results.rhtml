@@ -1,5 +1,11 @@
-<% @sessions.not_open.by_month(@month_date).each do |session| %>
-  <div id="session-list-item-<%= session.id %>" class="session-list-item box-align">
-    <%= render :partial => 'brief', :locals => {:session => session, :timeline => false} %>
-  </div>
+<% sessions = @sessions.not_open.by_month(@month_date) %>
+
+<% if sessions.blank? %>
+  <div class="subtitle"><%= _('No cycles to show') %></div>
+<% else %>
+  <% sessions.each do |session| %>
+    <div id="session-list-item-<%= session.id %>" class="session-list-item box-align">
+      <%= render :partial => 'brief', :locals => {:session => session, :timeline => false} %>
+    </div>
+  <% end %>
 <% end %>

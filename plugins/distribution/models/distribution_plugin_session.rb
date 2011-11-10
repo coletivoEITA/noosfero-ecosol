@@ -39,7 +39,8 @@ class DistributionPluginSession < ActiveRecord::Base
   }
 
   STATUS_SEQUENCE = [
-    'new', 'edition', 'call', 'orders', 'parcels', 'redistribution', 'delivery', 'close', 'closed'
+    #'new', 'edition', 'call', 'orders', 'parcels', 'redistribution', 'delivery', 'close', 'closed'
+    'new', 'edition', 'orders', 'closed'
   ]
   
   validates_presence_of :node
@@ -114,11 +115,11 @@ class DistributionPluginSession < ActiveRecord::Base
   end
 
   def validate_orders_dates
-    errors.add_to_base(_("Invalid orders' date range")) if delivery_start < delivery_finish
+    errors.add_to_base(_("Invalid orders' date range")) unless delivery_start <= delivery_finish
   end
 
   def validate_delivery_dates
-    errors.add_to_base(_("Invalid delivery' date range")) if start < finish
+    errors.add_to_base(_("Invalid delivery' date range")) unless start <= finish
   end
 
 end
