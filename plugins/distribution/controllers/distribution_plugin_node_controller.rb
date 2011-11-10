@@ -3,8 +3,9 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
   before_filter :set_admin_action, :only => [:index]
 
   def index
-    self.class.no_design_blocks
-    @suppliers = @node.suppliers - [@node.self_supplier]
+    redirect_to :controller => :distribution_plugin_session, :action => :index
+    #self.class.no_design_blocks
+    #@suppliers = @node.suppliers - [@node.self_supplier]
   end
 
   def edit

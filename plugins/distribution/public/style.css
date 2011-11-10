@@ -740,6 +740,47 @@ body.plugin-distribution {
 
 /* ----- end ordered product  ----- */
 
+/* ----- session listing stuff  ----- */
+
+.plugin-distribution #session-listing .session-list-item {
+  border-top: 1px dotted #ccc;
+  padding: 10px;
+}
+.plugin-distribution #session-listing .session-list-item:last-child {
+  border-bottom: 1px dotted #ccc;
+}
+.plugin-distribution #session-listing .session-name-and-code {
+  font-weight: bold;
+}
+.plugin-distribution #session-listing .session-timeline {
+  border: none;
+  font-size: 10px;
+  margin-left: 0;
+  margin-bottom: 0;
+}
+.plugin-distribution #session-listing .session-timeline .actions-bar {
+  display: none;
+}
+.plugin-distribution #session-listing .session-timeline-item {
+  padding: 1px 10px;
+}
+.plugin-distribution #session-listing .session-timeline-citem {
+  display: none;
+}
+.plugin-distribution #session-listing .session-timeline-selected-item {
+  text-decoration: underline;
+}
+.plugin-distribution #session-listing .session-dates {
+}
+.plugin-distribution #session-listing .session-date {
+  float: left;
+  width: 270px;
+  font-size: 10px;
+  line-height: 23px;
+}
+
+/* ----- ends session listing stuff  ----- */
+
 /* ----- session stuff  ----- */
 
 .plugin-distribution #session-header-warning {
@@ -880,6 +921,30 @@ body.plugin-distribution {
 
 /* ----- ends delivery stuff  ----- */
 
+/* ----- filter box stuff  ----- */
+
+.plugin-distribution .filter-box {
+  background-color: #e9f9d5;
+  padding: 10px;
+  margin-top: 13px;
+  margin-bottom: 13px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+.plugin-distribution .filter-box .box-field {
+  padding-left: 0;
+  padding-right: 17px;
+}
+.plugin-distribution .filter-box .box-field,
+.plugin-distribution .filter-box .box-field select,
+.plugin-distribution .filter-box .box-field input {
+  width: 205px;
+}
+
+/* ----- ends filter box stuff  ----- */
+
 /* ----- our products stuff  ----- */
 
 .plugin-distribution #our-products .subtitle {
@@ -922,36 +987,12 @@ body.plugin-distribution {
 }
 
 .plugin-distribution #filter-fields {
-  background-color: #e9f9d5;
-  padding: 10px;
-  margin-top: 13px;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-}
-.plugin-distribution #filter-fields .box-field {
-  padding-left: 0;
-  padding-right: 17px;
-  margin-bottom: 20px;
 }
 
-.plugin-distribution #filter-fields select,
-.plugin-distribution #filter-fields input.box-field,
-.plugin-distribution #filter-fields .status,
-.plugin-distribution #filter-fields .supplier {
-  width: 205px;
-}
 .plugin-distribution #filter-fields .category,
 .plugin-distribution #filter-fields .qualifier,
 .plugin-distribution #filter-fields .stock {
   display: none;
-}
-.plugin-distribution #filter-fields .name input {
-  width: 198px;
-}
-.plugin-distribution #filter-fields .quantity {
-  width: 280px;
 }
 
 .plugin-distribution .our-product {

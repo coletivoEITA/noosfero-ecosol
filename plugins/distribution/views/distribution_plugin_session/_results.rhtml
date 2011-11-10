@@ -1,0 +1,5 @@
+<% @sessions.not_open.by_month(@month_date).each do |session| %>
+  <div id="session-list-item-<%= session.id %>" class="session-list-item box-align">
+    <%= render :partial => 'brief', :locals => {:session => session, :timeline => false} %>
+  </div>
+<% end %>

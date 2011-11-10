@@ -8,6 +8,14 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
 
   def index
     @sessions = @node.sessions
+    params[:date] ||= {}
+    year = params[:date][:year]
+    month = params[:date][:month]
+    @year_date = year ? Time.mktime(year).to_date : Date.today
+    @month_date = month ? Time.mktime(year, month).to_date : Date.today
+    if request.xhr?
+      render :partial => 'results'
+    end
   end
 
   def view_index

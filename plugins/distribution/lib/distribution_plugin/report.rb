@@ -31,7 +31,7 @@ module DistributionPlugin::Report
             end
             table.row do |row|
               row.cell supplier.name
-              row.cell _("formula")
+              row.cell order.total_price_asked
               row.cell _("formula")
             end
             table.row do |row| # empty line
@@ -128,7 +128,7 @@ module DistributionPlugin::Report
               row.cell _("modified"), :style => 'blue-cell'
             end
             table.row do |row| # empty line
-              row.cell order.total_asked
+              row.cell order.total_price_asked
               row.cell order.created_at
               row.cell order.created_at
             end

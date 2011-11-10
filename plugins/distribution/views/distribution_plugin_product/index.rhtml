@@ -26,10 +26,10 @@
   
   </div>
 
-  <div id="filter-fields">
-    <b><%= _("Filter") %></b>
+  <div id="filter-fields" class="filter-box">
+    <strong><%= _("Filter") %></strong>
 
-    <% form_remote_tag :update => 'search-results', :url => {:action => :index}, :html => {:id => 'filter-form'}, :method => "get" do %>
+    <% form_remote_tag :update => 'search-results', :url => {:action => :index}, :html => {}, :method => :get do %>
       <div class="box-field supplier">
         <div><%=_('Show products from') %></div>
         <div>

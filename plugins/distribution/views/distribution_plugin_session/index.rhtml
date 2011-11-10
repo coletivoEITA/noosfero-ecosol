@@ -1,8 +1,47 @@
-<div class='admin-page'>
+<div id="session-listing" class='admin-page'>
+  <h2><%= _("Orders' Cycles") %></h2>
+
   <%= link_to _('New cycle'), {:action => :new}, :class => 'session-new' %>
-  <% @sessions.each do |s| %>
-    <div class="session-list-item">
-      <%= render :partial => 'title', :locals => {:session => s} %>
+
+  <div id="session-open-listing">
+    <h3><%= _('Open Cycles') %></h3>
+
+    <% @sessions.open.each do |session| %>
+      <div id="session-list-item-<%= session.id %>" class="session-list-item box-align">
+        <%= render :partial => 'brief', :locals => {:session => session, :timeline => true} %>
+      </div>
+    <% end %>
+  </div>
+
+  <div id="session-closed-listing">
+    <h3><%= _('Closed Cycles') %></h3>
+
+    <div class="filter-box box-align">
+      <strong><%= _("Filter") %></strong>
+
+      <% form_remote_tag :update => 'cycles-results', :url => {:action => :index}, :html => {}, :method => :get do %>
+        <div class="box-field year">
+          <div><%=_('Show cycles from year') %></div>
+          <div>
+            <% range = @node.closed_sessions_date_range %>
+            <%= select_year @year_date, {:start_year => range.first.year, :end_year => range.last.year}, :onchange => "this.form.onsubmit()" %>
+          </div>
+        </div>
+
+        <div class="box-field month">
+          <div><%=_('and are from the month of') %></div>
+          <div>
+            <%= select_month @month_date, {}, :onchange => "this.form.onsubmit()" %>
+          </div>
+        </div>
+
+        <div class="cleaner"></div>
+      <% end %>
     </div>
-  <% end %>
+
+    <div id="cycles-results">
+      <%= render :partial => 'results' %>
+    </div>
+  </div>
+
 </div>

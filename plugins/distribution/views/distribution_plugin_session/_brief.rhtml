@@ -1,0 +1,20 @@
+<div class="session-name-and-code">
+  <strong><%= _('%{code}.') % {:code => session.code} %></strong>
+  <%= link_to session.name, {:action => 'edit', :id => session.id } %>
+</div>
+
+<div class="session-dates">
+  <div class="session-date">
+    <span class="field-title"><%= _('Orders') %></span>&emsp;
+    <span><%= datetime_period_short(session.start, session.finish) %></span>
+  </div>
+  <div class="session-date">
+    <span class="field-title"><%= _('Delivery') %></span>&emsp;
+    <span><%= datetime_period_short(session.delivery_start, session.delivery_finish) %></span>
+  </div>
+
+  <div class="cleaner"></div>
+</div>
+
+<%= render :partial => 'timeline', :locals => {:session => session} if session.status != 'new' if timeline %>
+

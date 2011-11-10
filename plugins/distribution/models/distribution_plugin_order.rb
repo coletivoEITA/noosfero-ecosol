@@ -7,6 +7,7 @@ class DistributionPluginOrder < ActiveRecord::Base
     :order => 'id asc', :include => :product
 
   has_many :session_products, :through => :products, :source => :product
+  has_many :distributed_products, :through => :session_products, :source => :from_products
 
   has_many :from_products, :through => :products
   has_many :to_products, :through => :products
@@ -52,8 +53,19 @@ class DistributionPluginOrder < ActiveRecord::Base
     !confirmed? && session.open?
   end
 
-  def total_asked
+  def total_quantity_asked
+    products.sum(:quantity_asked)
+  end
+  def total_price_asked
     products.sum(:price_asked)
+  end
+  def parcel_quantity_total
+    #TODO
+    total_quantity_asked
+  end
+  def parcel_price_total
+    #TODO
+    total_price_asked
   end
 
   def code

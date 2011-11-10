@@ -64,6 +64,11 @@ class DistributionPluginNode < ActiveRecord::Base
     profile.update_attributes! :visible => !value
   end
 
+  def closed_sessions_date_range
+    list = sessions.not_open.all :order => 'start asc'
+    list.first.start.to_date .. list.last.finish.to_date
+  end
+
   def default_products_margins
     products.unarchived.distributed.each do |product|
       product.default_margin_percentage = true

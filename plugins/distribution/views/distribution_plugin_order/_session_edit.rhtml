@@ -4,7 +4,7 @@
   <span class='box-field created'><%= month_with_time order.created_at  %></span>
   <span class='box-field modified'><%= month_with_time order.updated_at  %></span>
   <span class='box-field products-count'><%= order.products.count %></span>
-  <span class='box-field price'><%= price_span order.total_asked  %></span>
+  <span class='box-field price'><%= price_span order.total_price_asked  %></span>
 
   <%= edit_arrow "#in-session-order-#{order.id}", true, :class => 'actions' %>
 

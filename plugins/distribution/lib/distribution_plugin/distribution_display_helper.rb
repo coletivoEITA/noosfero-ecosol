@@ -55,6 +55,13 @@ module DistributionPlugin::DistributionDisplayHelper
     }
   end
 
+  def datetime_period_short(start, finish)
+    _("%{start} - %{finish}") % {
+      :start => start.strftime(_('%m/%d %Hh%M')),
+      :finish => finish.strftime(_('%m/%d %Hh%M')),
+    }
+  end
+
   def month_with_time(time)
     time.strftime(_('%m/%y - %Hh%M'))
   end

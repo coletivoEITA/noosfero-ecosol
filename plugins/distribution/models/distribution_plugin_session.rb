@@ -11,9 +11,10 @@ class DistributionPluginSession < ActiveRecord::Base
   has_many :from_nodes, :through => :products
   has_many :to_nodes, :through => :products
 
-  has_many :ordered_products, :through => :orders, :source => :products
   has_many :ordered_suppliers, :through => :orders, :source => :suppliers
+  has_many :ordered_products, :through => :orders, :source => :products
   has_many :ordered_session_products, :through => :orders, :source => :session_products, :uniq => true
+  has_many :ordered_distributed_products, :through => :orders, :source => :distributed_products, :uniq => true
 
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.node.sessions }
@@ -25,6 +26,16 @@ class DistributionPluginSession < ActiveRecord::Base
   named_scope :not_open, lambda {
     {:conditions => ["NOT ( ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) AND status = 'orders' )",
       {:now => DateTime.now}]}
+  }
+  named_scope :by_month, lambda { |date| {
+    :conditions => [ ':start BETWEEN start AND finish OR :finish BETWEEN start AND finish',
+      { :start => date.to_time, :finish => date.to_time.change(:month => date.month+1)-1 }
+    ]}
+  }
+  named_scope :by_range, lambda { |range| {
+    :conditions => [ 'start BETWEEN :start AND :finish OR finish BETWEEN :start AND :finish',
+      { :start => range.first, :finish => range.last }
+    ]}
   }
 
   STATUS_SEQUENCE = [
@@ -38,6 +49,8 @@ class DistributionPluginSession < ActiveRecord::Base
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
   before_validation :default_values
+  validate :validate_orders_dates
+  validate :validate_delivery_dates
 
   extend SplitDatetime::ClassMethods
   split_datetime :start
@@ -98,6 +111,14 @@ class DistributionPluginSession < ActiveRecord::Base
   before_update :change_status
   def change_status
     self.status = 'edition' if self.status == 'new'
+  end
+
+  def validate_orders_dates
+    errors.add_to_base(_("Invalid orders' date range")) if delivery_start < delivery_finish
+  end
+
+  def validate_delivery_dates
+    errors.add_to_base(_("Invalid delivery' date range")) if start < finish
   end
 
 end
