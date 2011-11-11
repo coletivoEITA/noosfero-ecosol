@@ -33,8 +33,7 @@ class DistributionPluginNode < ActiveRecord::Base
   belongs_to :image, :class_name => 'DistributionPluginHeaderImage'
 
   def self.find_or_create(profile)
-    role = profile.person? ? 'consumer' : (profile.community? ? 'collective' : 'supplier')
-    find_by_profile_id(profile.id) || create!(:profile => profile, :role => role)
+    find_by_profile_id(profile.id) || create!(:profile => profile, :role => 'consumer')
   end
 
   def name

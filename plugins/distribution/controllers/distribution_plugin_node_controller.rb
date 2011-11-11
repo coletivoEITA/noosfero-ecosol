@@ -29,6 +29,14 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
     if params[:commit]
       @node.update_attributes! params[:node]
       session[:notice] = _('Distribution settings saved.')
+
+      unless @node.profile.blocks.collect{ |b| b.class.name }.include?("DistributionPlugin::OrderBlock")
+        boxes = @node.profile.boxes.select{ |box| !box.blocks.collect{ |b| b.class.name }.include?("MainBlock") }
+        box = boxes.count > 1 ? boxes.max{ |a,b| a.position <=> b.position } : Box.create(:owner => @node.profile, :position => 3)
+
+        block = DistributionPlugin::OrderBlock.create! :box => box
+        block.move_to_top
+      end
     end
   end
 
