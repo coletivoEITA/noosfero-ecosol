@@ -1,36 +1,33 @@
 class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileController
+
   no_design_blocks
 
   def select
-    @session = DistributionPluginSession.find_by_id(params[:session_id])
-    @node = @session.node
+    @session = params[:session_id] ? DistributionPluginSession.find(params[:session_id]) : DistributionPluginSession.new(:node => @node)
     @delivery_methods = @node.delivery_methods - @session.delivery_methods
     render :layout => false
   end
 
   def index
-    @session = DistributionPluginSession.find_by_id(params[:session_id])
-    @node = @session.node
+    @session = DistributionPluginSession.find params[:session_id]
   end
 
   def show
-    @delivery_option = DistributionPluginSession.find_by_id(params[:id])
+    @delivery_option = DistributionPluginSession.find params[:id]
   end
 
   def new
-    @session = DistributionPluginSession.find_by_id(params[:session_id])
-    if params[:new_method].nil?
-      @delivery_method = DistributionPluginDeliveryMethod.find_by_id(params[:delivery_method_id])
-    else
-      @delivery_method = DistributionPluginDeliveryMethod.create!(params[:delivery_method].merge({:node => @session.node}))
-    end
-    @delivery_option = DistributionPluginDeliveryOption.create!(:session => @session, :delivery_method => @delivery_method)
+    @session = params[:session_id] ? DistributionPluginSession.find(params[:session_id]) : DistributionPluginSession.new(:node => @node)
+    @delivery_method = params[:new_method].blank? ?
+      DistributionPluginDeliveryMethod.find(params[:delivery_method_id]) :
+      DistributionPluginDeliveryMethod.create!(params[:delivery_method].merge(:node => @session.node))
+    @delivery_option = DistributionPluginDeliveryOption.new :session => @session, :delivery_method => @delivery_method
+    @delivery_option.save! unless @session.new_record?
   end
 
   def destroy
-    dm = DistributionPluginDeliveryOption.find_by_id(params[:id])
-    @delivery_option_id = dm.id
-    dm.destroy if dm
-    flash[:notice] = _('Delivery option removed from cycle')
+    @delivery_method = DistributionPluginDeliveryOption.find params[:id]
+    @delivery_method.destroy
   end
+
 end

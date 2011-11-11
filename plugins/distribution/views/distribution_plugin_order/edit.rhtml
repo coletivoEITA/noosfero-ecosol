@@ -23,7 +23,7 @@
         </div>
         <div id="order-message-actions">
           <div><%= _('You still can:') %></div>
-          <% if @order.session.open? %>
+          <% if @order.session.orders? %>
             <%= link_to _('change order'), {:controller => :distribution_plugin_order, :action => :reopen, :id => @order.id}  %>
             <%= _('(before the closing)') %>&emsp;
           <% end %>

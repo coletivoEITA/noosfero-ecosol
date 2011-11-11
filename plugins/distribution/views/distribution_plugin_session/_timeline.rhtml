@@ -29,7 +29,7 @@
     }
     actions[:edition].unshift [ _('Finish session editing'), {:action => :step, :id => session.id, :method => :post},
       { :id => 'session-open-session' } ] unless session.passed_by?('edition')
-    actions[:orders].unshift [ session.open? ? _('Block orders period') : _('Close orders period'),
+    actions[:orders].unshift [ session.orders? ? _('Block orders period') : _('Close orders period'),
       {:action => :step, :id => session.id, :method => :post}, { :id => 'session-open-session' } ] unless session.passed_by?('orders')
   %>
 

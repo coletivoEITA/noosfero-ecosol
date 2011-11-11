@@ -39,6 +39,17 @@ function distribution_calculate_margin(margin_input, price_input, base_price_inp
   jQuery(margin_input).val( isFinite(value) ? value : '' );
 }
 
+/* ----- session stuff  ----- */
+
+function distribution_in_session_order_toggle(context) {
+  container = jQuery(context).hasClass('session-orders') ? jQuery(context) : jQuery(context).parents('.session-orders');
+  container.toggleClass('show');
+  container.find('.order-content').toggle();
+  distribution_edit_arrow_toggle(container);
+}
+
+/* ----- ends session stuff  ----- */
+
 /* ----- our products stuff  ----- */
 
 function distribution_our_product_toggle_referred(context) {
@@ -131,7 +142,7 @@ function distribution_order_products_toggle(fields, toggle) {
 
 function distribution_order_filter_products(text) {
   text = text.toLowerCase();
-  fields = jQuery('#session-products-for-order .box-view .box-field.product');
+  fields = jQuery('#session-products-for-order .box-field');
   results = jQuery.grep(fields, function(field, index) {
     fieldText = jQuery(field).text().toLowerCase();
     supplierText = jQuery(field).parents('.supplier-table').find('.supplier').text().toLowerCase();

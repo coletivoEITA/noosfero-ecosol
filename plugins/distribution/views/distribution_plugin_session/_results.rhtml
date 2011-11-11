@@ -1,4 +1,4 @@
-<% sessions = @sessions.not_open.by_month(@month_date) %>
+<% sessions = @sessions.status_closed.by_month(@month_date) %>
 
 <% if sessions.blank? %>
   <div class="subtitle"><%= _('No cycles to show') %></div>

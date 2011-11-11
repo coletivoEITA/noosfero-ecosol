@@ -6,7 +6,7 @@
   <div id="session-open-listing">
     <h3><%= _('Open Cycles') %></h3>
 
-    <% sessions = @sessions.open %>
+    <% sessions = @sessions.status_open %>
     <% if sessions.blank? %>
       <div class="subtitle"><%= _('No cycles to show') %></div>
     <% else %>

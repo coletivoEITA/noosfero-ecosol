@@ -2,9 +2,9 @@ if params[:new_method]
   page << "jQuery('.new-delivery-method form input').val('')"
   page << "jQuery('.new-delivery-method').hide()"
 else
-  page.remove 'delivery-method-as-option-'+@delivery_method.id.to_s
+  page.remove "delivery-method-as-option-#{@delivery_method.id}"
 end
 
-page.insert_html :bottom, 'session-delivery-options', :partial => 'show'
+page.insert_html :bottom, 'session-delivery-options', :partial => 'show', :locals => {:session => @session, :option => @delivery_option}
 page << 'lightbox.prototype.deactivate()'
 

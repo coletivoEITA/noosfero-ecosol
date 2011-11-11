@@ -1,5 +1,5 @@
-<% if @session.open? or @session.passed_by?('orders') %>
-  <% if @session.open? %>
+<% if @session.orders? or @session.passed_by?('orders') %>
+  <% if @session.orders? %>
     <% header = _("The orders period is still on, take care to edit the orders already open, it may confuse the users") %>
   <% elsif @session.passed_by?('orders') %>
     <% header = _("The orders period was already closed, It's not possible to edit the originals orders. " +
@@ -14,19 +14,27 @@
   <div id='session-orders-draft' class="session-orders box-align">
     <div class="order-header">
       <span class="order-label"><%= _('Open Orders (%{count})') % {:count => @session.orders.draft.count} %></span>
-      <%= edit_arrow "", false, :onclick => 'distribution_in_session_order_toggle(this); return false;', :class => "box-field" %>
+      <%= edit_arrow "#", false, :onclick => 'distribution_in_session_order_toggle(this); return false;', :class => "box-field" %>
       <div class="line"></div>
     </div>
-    <%= render :partial => 'orders_view', :locals => {:orders => @session.orders.draft} %>
+    <div class="order-content" style="display: none">
+      <%= render :partial => 'orders_view', :locals => {:orders => @session.orders.draft} %>
+    </div>
+
+    <div class="cleaner"></div>
   </div>
 
-  <div id='session-orders-confirmed' class="session-orders box-align">
+  <div id='session-orders-confirmed' class="session-orders box-align show">
     <div class="order-header">
       <span class="order-label"><%= _('Closed Orders (%{count})') % {:count => @session.orders.confirmed.count} %></span>
-      <%= edit_arrow "", false, :onclick => 'distribution_in_session_order_toggle(this); return false;', :class => "box-field" %>
+      <%= edit_arrow "#", false, :onclick => 'distribution_in_session_order_toggle(this); return false;', :class => "box-field edit" %>
       <div class="line"></div>
     </div>
-    <%= render :partial => 'orders_view', :locals => {:orders => @session.orders.confirmed} %>
+    <div class="order-content">
+      <%= render :partial => 'orders_view', :locals => {:orders => @session.orders.confirmed} %>
+    </div>
+
+    <div class="cleaner"></div>
   </div>
 
   <div class="cleaner"></div>

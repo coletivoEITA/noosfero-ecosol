@@ -1,4 +1,3 @@
 <% @session.delivery_options.each do |o| %>
-  <% @delivery_option = o %>
-  <%= render :partial => 'distribution_plugin_delivery_option/show' %>
+  <%= render :partial => 'distribution_plugin_delivery_option/show', :locals => {:session => @session, :option => o} %>
 <% end %>

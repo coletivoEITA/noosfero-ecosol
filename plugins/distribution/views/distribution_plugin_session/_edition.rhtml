@@ -1,4 +1,4 @@
-<% if !@session.passed_by?('edition')  %>
+<% if @session.passed_by?('edition') %>
   <%= render :partial => 'header', :object =>
     _('The edition time is gone and the cycle is already public. ' +
          'Actually, the cycle is in a supply call period.') + '<br /><br />' +

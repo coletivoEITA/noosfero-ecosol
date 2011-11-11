@@ -19,7 +19,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
 
   def reopen
     @order = DistributionPluginOrder.find params[:id]
-    raise "Cycle's orders period already ended" unless @order.session.open?
+    raise "Cycle's orders period already ended" unless @order.session.orders?
     @order.update_attributes! :status => 'draft'
 
     redirect_to :action => :edit, :id => @order.id
@@ -29,7 +29,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     params[:order] ||= {}
 
     @order = DistributionPluginOrder.find params[:id]
-    raise "Cycle's orders period already ended" unless @order.session.open?
+    raise "Cycle's orders period already ended" unless @order.session.orders?
     @order.update_attributes! params[:order].merge(:status => 'confirmed')
 
     session[:notice] = _('Order confirmed')

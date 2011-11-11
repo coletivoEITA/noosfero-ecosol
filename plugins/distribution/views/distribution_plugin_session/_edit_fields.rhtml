@@ -1,41 +1,28 @@
 <h3><%= _("General settings") %></h3>
 
-<% if @session.status != 'new' %>
-  <% form_remote_for :session, @session, :url => {:action => :edit, :profile => profile.identifier, :id => @session.id },
+<% form_remote_for :session, @session, :url => {:action => @session.new_record? ? :new : :edit, :id => @session.id },
   :update => 'session-fields' do |f| %>
-    <div id="session-fields-errors"><%= error_messages_for _('cycle'), :object => @session %></div>
-    <%= labelled_field(f, :name, _('Name'), f.text_field(:name), :class => 'session-field-name') %>
-    <%= labelled_field(f, :description, _('Description'), f.text_area(:description), :class => 'session-field-description') %>
 
-    <%= labelled_period_field(f, :start, :finish, _('Orders period'), :class => 'session-orders-period') %>
-    <%= labelled_period_field(f, :delivery_start, :delivery_finish, _('Delivery period'), :class => 'session-orders-period') %>
+  <div id="session-fields-errors"><%= error_messages_for _('cycle'), :object => @session %></div>
+  <%= labelled_field(f, :name, _('Name'), f.text_field(:name), :class => 'session-field-name') %>
+  <%= labelled_field(f, :description, _('Description'), f.text_area(:description), :class => 'session-field-description') %>
 
-    <div id='session-delivery'>
-      <%= label_tag(:delivery_methods, _('Available delivery methods')) %>
-      <div id='session-delivery-options' class="subtitle">
-        <%= render :partial => 'distribution_plugin_delivery_option/index' %>
-      </div>
-      <%= lightbox_link_to(_('Add method'), url_for({ :controller => :distribution_plugin_delivery_option, :action => "select", :session_id => @session.id }),
-                           :class => 'session-add-delivery-option subtitle') %>
+  <%= labelled_period_field(f, :start, :finish, _('Orders period'), :class => 'session-orders-period') %>
+  <%= labelled_period_field(f, :delivery_start, :delivery_finish, _('Delivery period'), :class => 'session-orders-period') %>
 
-      <div style="clear: both"></div>
+  <div id='session-delivery'>
+    <%= f.label(:delivery_methods, _('Available delivery methods')) %>
+    <div id='session-delivery-options' class="subtitle">
+      <%= render :partial => 'distribution_plugin_delivery_option/index', :locals => {:session => session} %>
     </div>
+    <%= lightbox_link_to _('Add method'), { :controller => :distribution_plugin_delivery_option, :action => "select", :session_id => @session.id },
+                         :class => 'session-add-delivery-option subtitle'  %>
 
-    <%= f.submit _('Save'), :id => 'session-fields-save-button' %>
-    <%= link_to _('cancel changes'), params %>
-  <% end %>
-<% else %>
-  <% form_for :session, @session, :url => {:action => :new, :profile => profile.identifier} do |f| %>
-    <div id="session-fields-errors"><%= error_messages_for _('cycle'), :object => @session %></div>
-    <%= labelled_field(f, :name, _('Name'), f.text_field(:name), :class => 'session-field-name') %>
-    <%= labelled_field(f, :description, _('Description'), f.text_area(:description), :class => 'session-field-description') %>
+    <div style="clear: both"></div>
+  </div>
 
-    <%= labelled_period_field(f, :start, :finish, _('Orders period'), :class => 'session-orders-period') %>
-    <%= labelled_period_field(f, :delivery_start, :delivery_finish, _('Delivery period'), :class => 'session-orders-period') %>
-
-    <%= f.submit _('Create new cycle'), :id => 'session-save-button' %>
-    <%= link_to _('cancel changes'), params.merge(:action => :index) %>
-  <% end %>
+  <%= f.submit @session.new_record? ? _('Create new cycle') : _('Save'), :id => 'session-fields-save-button' %>
+  <%= link_to _('cancel changes'), @session.new_record? ? {:action => :index} : params %>
 <% end %>
 
 <% javascript_tag do %>

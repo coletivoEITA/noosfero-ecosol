@@ -40,10 +40,10 @@ class DistributionPluginOrder < ActiveRecord::Base
     status == 'confirmed'
   end
   def open?
-    !confirmed? && session.open?
+    !confirmed? && session.orders?
   end
   def forgotten?
-    !confirmed? && !session.open?
+    !confirmed? && !session.orders?
   end
 
   def supplier_delivery

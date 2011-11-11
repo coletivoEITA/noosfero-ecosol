@@ -312,7 +312,7 @@ body.plugin-distribution {
   display: block;
 }
 .plugin-distribution .actions-circle.edit .actions-arrow {
-  border-bottom: 6px solid #726D47;
+  border-bottom: 6px solid black;
   border-top: 5px solid transparent;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
@@ -591,9 +591,20 @@ body.plugin-distribution {
   float: right;
   background-color: transparent;
 }
-.plugin-distribution .session-orders .order-header .actions-arrow {
+.plugin-distribution .session-orders .order-header .actions-circle .actions-arrow {
+  border-top: 7px solid black;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  margin: 8px 6px 0 5px;
 }
-.plugin-distribution .session-orders .order-header .line {
+.plugin-distribution .session-orders .order-header .actions-circle.edit .actions-arrow {
+  border-bottom: 7px solid black;
+  border-top: 6px solid transparent;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  margin: 2px 6px 0px 5px;
+}
+.plugin-distribution .session-orders.show .order-header .line {
   border-bottom: 2px solid white;
   clear: both;
   width: 100%;
@@ -888,9 +899,25 @@ body.plugin-distribution {
 
 /* ----- delivery stuff  ----- */
 
-.plugin-distribution .delivery-method-as-option {
-  clear: both;
+.plugin-distribution .session-delivery-option {
   float: left;
+  display: inline-block;
+  padding: 2px 5px;
+  margin-right: 10px;
+  margin-top: 8px;
+  background-color: #E5E0EC;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+.plugin-distribution .session-add-delivery-option {
+  float: left;
+  margin: 4px 0;
+  padding: 5px 0;
+}
+
+.plugin-distribution .delivery-method-as-option {
 }
 .plugin-distribution .session-delete-delivery-option {
   font-weight: bold;
@@ -900,34 +927,13 @@ body.plugin-distribution {
   display: none;
 }
 .plugin-distribution .new-delivery-method label {
-  clear: both;
-  float: left;
   width: 100px;
   text-align: right;
 }
 .plugin-distribution .new-delivery-method input {
-  float: left;
   text-align: left;
 }
 .plugin-distribution .new-delivery-method input[type=submit] {
-  clear: both;
-}
-.plugin-distribution .session-add-delivery-option {
-  float: left;
-  margin: 4px 10px;
-  padding: 5px;
-}
-.plugin-distribution .session-delivery-option {
-  display: inline-block;
-  float: left;
-  padding: 2px 5px;
-  margin-right: 5px;
-  margin-top: 8px;
-  background-color: #E5E0EC;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -o-border-radius: 4px;
 }
 
 /* ----- ends delivery stuff  ----- */

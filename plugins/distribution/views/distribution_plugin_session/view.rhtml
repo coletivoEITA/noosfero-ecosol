@@ -12,7 +12,7 @@
       <%= link_to _('%{n} products, made at %{created_at}') % {:n => order.products.count, :created_at => month_with_time(order.created_at)},
         {:controller => :distribution_plugin_order, :action => :edit, :id => order.id} %>
     <% end %>
-    <% if @session.open? %>
+    <% if @session.orders? %>
       <%= button_to _('New order'), {:controller => :distribution_plugin_order, :action => :new, :session_id => @session.id} %>
     <% end %>
   </div>

@@ -23,13 +23,11 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
   end
 
   def new
-    @session = DistributionPluginSession.new(:node => @node)
-    @session.status = 'new'
+    @session = DistributionPluginSession.new :node => @node
     if request.post?
-      @session.update_attributes(params[:session])
-      if @session.save
-        redirect_to :action => :edit, :id => @session.id
-      end
+      @session.delivery_options_values = params[:delivery_method_id]
+      @session.update_attributes! params[:session]
+      redirect_to :action => :edit, :id => @session.id
     end
   end
 
@@ -104,4 +102,5 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     require 'fileutils'
     #FileUtils.rm_rf tmp_dir
   end
+
 end

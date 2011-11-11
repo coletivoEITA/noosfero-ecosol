@@ -23,7 +23,7 @@
       <%= render :partial => 'distribution_plugin_ordered_product/index', :locals => {:order => order, :f => f} %>
       <div class="cleaner"></div>
 
-      <% if order.session.open? %>
+      <% if order.session.orders? %>
 
         <div>
           <%= check_box_tag 'warn_consumer', 1, false, :onchange => "jQuery(this).parent().next().toggle(this.checked); jQuery(this).siblings('.subtitle').toggle(this.checked);" %>
@@ -53,10 +53,10 @@
   <% end %>
 
   <div class="actions-bar">
-    <%# link_to_function _('remove order'), '' if order.session.open? %>
-    <%# link_to_function _('add product'), '' if order.session.open? %>
-    <%# link_to_function _('see redistribution'), '' unless order.session.open? %>
-    <%# link_to_function _('see delivery'), '' unless order.session.open? %>
+    <%# link_to_function _('remove order'), '' if order.session.orders? %>
+    <%# link_to_function _('add product'), '' if order.session.orders? %>
+    <%# link_to_function _('see redistribution'), '' unless order.session.orders? %>
+    <%# link_to_function _('see delivery'), '' unless order.session.orders? %>
     <%= link_to _('edit on the order page'), {:controller => :distribution_plugin_order, :action => :edit, :id => order.id}, :target => '_blank' %>
     <%= lightbox_link_to _('message to member'), {:controller => :distribution_plugin_message, :action => :new_to_consumer_for_order, :order_id => order.id} %>
     <strong><%= _('Actions') %></strong>

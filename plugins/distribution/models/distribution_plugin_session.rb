@@ -39,14 +39,18 @@ class DistributionPluginSession < ActiveRecord::Base
     ]}
   }
 
+  named_scope :status_open, :conditions => ["status <> 'closed'"]
+  named_scope :status_closed, :conditions => ["status = 'closed'"]
+
   STATUS_SEQUENCE = [
-    #'new', 'edition', 'call', 'orders', 'parcels', 'redistribution', 'delivery', 'close', 'closed'
-    'new', 'edition', 'orders', 'closed'
+    #'edition', 'call', 'orders', 'parcels', 'redistribution', 'delivery', 'close', 'closed'
+    'edition', 'orders', 'closed'
   ]
   
   validates_presence_of :node
   validates_presence_of :name
   validates_presence_of :start
+  validates_associated :delivery_options
   validates_inclusion_of :status, :in => STATUS_SEQUENCE
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
@@ -65,29 +69,39 @@ class DistributionPluginSession < ActiveRecord::Base
       :code => code, :name => name
     }
   end
-
-  def products_for_order_by_supplier
-    self.products.unarchived.all(:conditions => ['price > 0']).group_by{ |sp| sp.supplier }
+  def total_price_asked
+    self.ordered_products.sum(:price_asked)
   end
-  
-  def passed_by?(status)
-    STATUS_SEQUENCE.index(self.status) > STATUS_SEQUENCE.index(status)
+  def total_parcel_price
+    #FIXME: wrong!
+    self.ordered_supplier_products.sum(:price)
   end
 
   def step
     self.status = STATUS_SEQUENCE[STATUS_SEQUENCE.index(self.status)+1]
   end
-
+  def passed_by?(status)
+    STATUS_SEQUENCE.index(self.status) > STATUS_SEQUENCE.index(status)
+  end
   def open?
+    status != 'closed'
+  end
+  def closed?
+    status == 'closed'
+  end
+  def orders?
     now = DateTime.now
     status == 'orders' && ( (self.start <= now && self.finish.nil?) || (self.start <= now && self.finish >= now) )
   end
-
   def in_delivery?
     now = DateTime.now
-    now >= self.delivery_start and now <= self.delivery_finish
+    passed_by('orders') && ( (self.delivery_start <= now && self.delivery_finish.nil?) || (self.delivery_start <= now && self.delivery_finish >= now) )
   end
 
+  def products_for_order_by_supplier
+    self.products.unarchived.all(:conditions => ['price > 0']).group_by{ |sp| sp.supplier }
+  end
+  
   def ordered_products_by_suppliers
     self.ordered_session_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
       total_price_asked = total_parcel_price = 0
@@ -100,11 +114,11 @@ class DistributionPluginSession < ActiveRecord::Base
     end
   end
 
-  def total_price_asked
-    self.ordered_products.sum(:price_asked)
-  end
-  def total_parcel_price
-    self.ordered_supplier_products.sum(:price)
+  def delivery_options_values=(values)
+    return unless new_record?
+    values.map do |value|
+      delivery_options.build :delivery_method_id => value, :session => self
+    end
   end
 
   after_create :add_distributed_products
@@ -122,7 +136,7 @@ class DistributionPluginSession < ActiveRecord::Base
   protected
 
   def default_values
-    self.status ||= 'new'
+    self.status ||= 'edition'
   end
 
   before_update :change_status
