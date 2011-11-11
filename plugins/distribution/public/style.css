@@ -1249,7 +1249,9 @@ body.plugin-distribution {
   width: 140px;
 }
 .plugin-distribution .session-view #session-products-for-order .box-field.product-info {
+  height: 218px;
   width: 330px;
+  position: relative;
 }
 .plugin-distribution .session-view #session-products-for-order .box-edit .box-field.product-image {
   width: 100px;
@@ -1294,6 +1296,10 @@ body.plugin-distribution {
 }
 .plugin-distribution .session-view #session-products-for-order .box-edit .box-field.quantity input[type=submit] {
   margin-bottom: 0;
+}
+.plugin-distribution .session-view #session-products-for-order .product-supplier-link {
+  position: absolute;
+  bottom: 0;
 }
 
 

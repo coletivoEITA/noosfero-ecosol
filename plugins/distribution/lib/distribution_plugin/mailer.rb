@@ -59,9 +59,9 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
 
   def message_to_admins(node, member, subject, message)
     domain = node.profile.hostname || node.profile.environment.default_hostname
-    recipients    profile_recipients(member.profile)
+    recipients    profile_recipients(node.profile)
     from          'no-reply@' + domain
-    reply_to      profile_recipients(node.profile)
+    reply_to      profile_recipients(member.profile)
     subject       _("[%{node}] %{subject}") % {:node => node.name, :subject => subject}
     content_type  'text/html'
     body :node => node,

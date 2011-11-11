@@ -18,6 +18,6 @@
       <% end %>
   
       <%= f.submit _('Save') %>
-      <%= link_to_function _('cancel') %>
+      <%= link_to _('cancel'), {:controller => :profile_editor, :profile => profile.identifier} %>
   <% end %>
 </div>

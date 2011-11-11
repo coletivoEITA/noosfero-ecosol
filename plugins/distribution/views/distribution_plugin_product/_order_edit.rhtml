@@ -30,7 +30,7 @@
   <div class="box-field product-info">
     <div>
       <div class="box-field product product-desc">
-        <%= excerpt_ending product.description, 250 %>
+        <%= product.description.blank? ? _('No description') : excerpt_ending(product.description, 250) %>
       </div>
 
       <div class="box-field price-with-unit">
@@ -52,6 +52,9 @@
         </div>
       <% end %>
 
+    </div>
+
+    <div class="product-supplier-link">
       <% unless product.supplier.dummy? %>
         <%= link_to _("More about the producer \"%{supplier}\"") % {:supplier => product.supplier.name}, product.supplier.profile.url, :target => '_blank' %>
       <% end %>
