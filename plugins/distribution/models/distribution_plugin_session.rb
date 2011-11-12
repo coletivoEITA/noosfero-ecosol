@@ -5,7 +5,7 @@ class DistributionPluginSession < ActiveRecord::Base
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 
   has_many :orders, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc'
-  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc'
+  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :order => 'id asc'
 
   has_many :from_products, :through => :products, :order => 'id asc'
   has_many :from_nodes, :through => :products
@@ -20,6 +20,7 @@ class DistributionPluginSession < ActiveRecord::Base
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.node.sessions }
 
+  named_scope :not_new, :conditions => ["status <> 'new'"]
   named_scope :open, lambda {
     {:conditions => ["status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) )",
       {:now => DateTime.now}]}
@@ -44,19 +45,18 @@ class DistributionPluginSession < ActiveRecord::Base
 
   STATUS_SEQUENCE = [
     #'edition', 'call', 'orders', 'parcels', 'redistribution', 'delivery', 'close', 'closed'
-    'edition', 'orders', 'closed'
+    'new', 'edition', 'orders', 'closed'
   ]
   
-  validates_presence_of :node
-  validates_presence_of :name
-  validates_presence_of :start
-  validates_associated :delivery_options
-  validates_inclusion_of :status, :in => STATUS_SEQUENCE
-  validates_numericality_of :margin_percentage, :allow_nil => true
-  validates_numericality_of :margin_fixed, :allow_nil => true
-  before_validation :default_values
-  validate :validate_orders_dates
-  validate :validate_delivery_dates
+  validates_presence_of :node, :if => :not_new?
+  validates_presence_of :name, :if => :not_new?
+  validates_presence_of :start, :if => :not_new?
+  validates_associated :delivery_options, :if => :not_new?
+  validates_inclusion_of :status, :in => STATUS_SEQUENCE, :if => :not_new?
+  validates_numericality_of :margin_percentage, :allow_nil => true, :if => :not_new?
+  validates_numericality_of :margin_fixed, :allow_nil => true, :if => :not_new?
+  validate :validate_orders_dates, :if => :not_new?
+  validate :validate_delivery_dates, :if => :not_new?
 
   extend SplitDatetime::ClassMethods
   split_datetime :start
@@ -82,6 +82,9 @@ class DistributionPluginSession < ActiveRecord::Base
   end
   def passed_by?(status)
     STATUS_SEQUENCE.index(self.status) > STATUS_SEQUENCE.index(status)
+  end
+  def new?
+    status == 'new'
   end
   def open?
     status != 'closed'
@@ -114,13 +117,6 @@ class DistributionPluginSession < ActiveRecord::Base
     end
   end
 
-  def delivery_options_values=(values)
-    return unless new_record?
-    values.map do |value|
-      delivery_options.build :delivery_method_id => value, :session => self
-    end
-  end
-
   after_create :add_distributed_products
   def add_distributed_products
     already_in = self.products.unarchived.all
@@ -133,22 +129,35 @@ class DistributionPluginSession < ActiveRecord::Base
     end
   end
 
+  def destroy
+    products.each{ |p| p.destroy! }
+    super
+  end
+
   protected
 
+  before_validation :default_values
   def default_values
     self.status ||= 'edition'
   end
 
-  before_update :change_status
-  def change_status
-    self.status = 'edition' if self.status == 'new'
+  before_update :step_new
+  def step_new
+    return if new_record?
+    self.step if self.new?
+  end
+
+  def not_new?
+    status != 'new'
   end
 
   def validate_orders_dates
+    return if self.new?
     errors.add_to_base(_("Invalid orders' date range")) unless delivery_start <= delivery_finish
   end
 
   def validate_delivery_dates
+    return if self.new?
     errors.add_to_base(_("Invalid delivery' date range")) unless start <= finish
   end
 

@@ -43,18 +43,19 @@ body.plugin-distribution {
 }
 .plugin-distribution .page > *,
 .plugin-distribution .admin-page > * {
-  padding-left: 10px;
+  padding-left: 8px;
 }
 .plugin-distribution .admin-page {
   float: right;
   /*width: 666px;for noosfero's base theme*/
   width: 718px;
+  margin-bottom: 100px;
 }
 .plugin-distribution .box-align {
   margin-left: -10px;
 }
 .plugin-distribution .alignment {
-  padding-left: 10px;
+  padding-left: 8px;
 }
 .plugin-distribution .alignment2x {
   padding-left: 20px;
@@ -209,7 +210,7 @@ body.plugin-distribution {
 
 .plugin-distribution .table-header {
   width: 100%;
-  padding: 8px 10px;
+  padding: 8px 8px;
   background-color: #B1DFEF;
   font-size: 11px;
   color: #000;
@@ -226,7 +227,7 @@ body.plugin-distribution {
 .plugin-distribution .value-row {
   border-bottom: 1px dotted #ccc;
   width: 100%;
-  padding: 10px 10px;
+  padding: 10px 8px;
 }
 .plugin-distribution .value-row:last-child {
   border-bottom: 1px dotted transparent;
@@ -418,8 +419,8 @@ body.plugin-distribution {
   height: 100px;
 }
 
-.plugin-distribution #session-delivery {
-  margin: 20px 0;
+.plugin-distribution #session-delivery-options {
+  clear: both;
 }
 .plugin-distribution #session-delivery label {
   font-weight: bold;
@@ -670,14 +671,6 @@ body.plugin-distribution {
 .plugin-distribution .session-orders .price {
   width: 80px;
 }
-.plugin-distribution .session-orders .order-products {
-  background-color: #FFEA6B; 
-  border: 1px solid black;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -o-border-radius: 4px;
-}
 
 /* ----- end session orders  ----- */
 
@@ -688,9 +681,37 @@ body.plugin-distribution {
   background-color: #ffe546;
 }
 
-.plugin-distribution .order-products {
+.plugin-distribution .session-orders .order-products-container {
+  background-color: #FFEA6B; 
+  border: 1px solid black;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+.plugin-distribution .order-products-container {
   width: 400px;
 }
+.plugin-distribution .order-products {
+  width: 100%;
+}
+.plugin-distribution .order-products-container #total-box {
+  width: 100%;
+  text-align: right;
+  text-transform: uppercase;
+  padding: 5px 0 8px 0;
+  border-top: 1px solid black;
+  float: right;
+}
+.plugin-distribution .order-products-container .total-title {
+  width: 278px;
+}
+.plugin-distribution .order-products-container .total-value {
+  max-width: 65px;
+  font-weight: bold;
+  float: right;
+}
+
 
 .plugin-distribution .ordered-product {
   /*
@@ -720,7 +741,7 @@ body.plugin-distribution {
   font-size: 12px;
 }
 .plugin-distribution .ordered-product .box-field.product-quantity {
-  width: 80px;
+  width: 78px;
 }
 .plugin-distribution .ordered-product .box-field.price-total {
   width: 60px;
@@ -904,7 +925,6 @@ body.plugin-distribution {
   display: inline-block;
   padding: 2px 5px;
   margin-right: 10px;
-  margin-top: 8px;
   background-color: #E5E0EC;
   border-radius: 4px;
   -moz-border-radius: 4px;
@@ -913,8 +933,7 @@ body.plugin-distribution {
 }
 .plugin-distribution .session-add-delivery-option {
   float: left;
-  margin: 4px 0;
-  padding: 5px 0;
+  padding: 2px 0;
 }
 
 .plugin-distribution .delivery-method-as-option {
@@ -1239,7 +1258,7 @@ body.plugin-distribution {
 }
 .plugin-distribution .session-view #session-products-for-order .supplier {
   background-color: #B1DFEF;
-  padding: 10px 10px 5px;
+  padding: 10px 8px 5px;
   font-weight: bold;
 }
 .plugin-distribution .session-view #session-products-for-order .table-header {
@@ -1348,10 +1367,6 @@ body.plugin-distribution {
   background-color: #fff2a3;
 }
 
-.plugin-distribution #order-products form {
-  margin: 0;
-}
-
 .plugin-distribution #order-column {
   float: left;
   margin-left: 68px;
@@ -1404,25 +1419,6 @@ body.plugin-distribution {
 .plugin-distribution #order-column #desist-order {
   margin-top: 30px;
   margin-bottom: 8px;
-}
-
-.plugin-distribution #order-column #total-box {
-  width: 100%;
-  text-align: right;
-  text-transform: uppercase;
-  padding: 5px 0 8px 0;
-}
-.plugin-distribution #order-column .total-title {
-  width: 278px;
-}
-.plugin-distribution #order-column .total-value {
-  max-width: 65px;
-  font-weight: bold;
-  float: right;
-}
-.plugin-distribution #order-column .in-order #total-box {
-  border-top: 1px solid black;
-  float: right;
 }
 
 .plugin-distribution #order-column .in-order #delivery-box {
@@ -1529,4 +1525,78 @@ body.plugin-distribution {
 }
 
 /* ----- end settings stuff  ----- */
+
+/* ----- calendrial stuff  ----- */
+
+.calendricalDatePopup {
+  background: white;
+  border: solid 1px #999999;
+  padding: 2px;
+  text-align: center;
+  width: 160px; }
+  .calendricalDatePopup table {
+    border-collapse: collapse;
+    width: 160px; }
+    .calendricalDatePopup table .monthCell {
+      padding: 2px 0; }
+      .calendricalDatePopup table .monthCell a {
+        display: block;
+        float: left;
+        line-height: 20px; }
+      .calendricalDatePopup table .monthCell .prevMonth, .calendricalDatePopup table .monthCell .nextMonth {
+        width: 24px; }
+      .calendricalDatePopup table .monthCell .monthName {
+        width: 110px; }
+    .calendricalDatePopup table a {
+      text-decoration: none; }
+    .calendricalDatePopup table th {
+      text-align: center; }
+    .calendricalDatePopup table td {
+      text-align: center;
+      font-size: 12px;
+      padding: 0; }
+      .calendricalDatePopup table td a {
+        display: block;
+        color: black;
+        padding: 2px 3px; }
+        .calendricalDatePopup table td a:hover {
+          background: #ccccff;
+          border: none;
+          padding: 2px 3px; }
+      .calendricalDatePopup table td.today a {
+        background: #eeeebb; }
+      .calendricalDatePopup table td.selected a {
+        background: #ccccff; }
+      .calendricalDatePopup table td.today_selected a {
+        background: #eeeebb;
+        border: solid 1px #dddd66;
+        padding: 1px 2px; }
+      .calendricalDatePopup table td.nonMonth a {
+        color: #999999; }
+
+.calendricalTimePopup {
+  background: white;
+  border: solid 1px #999999;
+  width: 110px;
+  height: 130px;
+  overflow: auto; }
+  .calendricalTimePopup ul {
+    margin: 0;
+    padding: 0; }
+    .calendricalTimePopup ul li {
+      list-style: none;
+      margin: 0; }
+      .calendricalTimePopup ul li a, .calendricalTimePopup ul li a:visited {
+        text-indent: 10px;
+        padding: 4px;
+        display: block;
+        color: black;
+        text-decoration: none; }
+      .calendricalTimePopup ul li a:hover, .calendricalTimePopup ul li.selected a {
+        background: #ccccff; }
+
+.calendricalEndTimePopup {
+  width: 160px; }
+
+/* ----- end calendrial stuff  ----- */
 

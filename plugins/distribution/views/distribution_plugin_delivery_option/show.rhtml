@@ -1,12 +1,6 @@
 <div id="session-delivery-option-<%=option.id%>" class="session-delivery-option">
   <span><%= option.delivery_method.name %></span>
-  <% if option.new_record? %>
-    <%= hidden_field_tag 'delivery_method_id[]', option.delivery_method.id %>
-    <%= link_to_function _('X'), "jQuery(this).parents('.session-delivery-option').remove()",
-                         :class => 'session-delete-delivery-option' %>
-  <% else %>
-    <%= link_to_remote(_('X'), {:update => 'delivery-session-option-'+option.id.to_s,
-                       :url => { :controller => :distribution_plugin_delivery_option, :action => "destroy", :id => option.id }},
-                       :class => 'session-delete-delivery-option') %>
-   <% end %>
+  <%= link_to_remote(_('X'), {:update => 'delivery-session-option-'+option.id.to_s,
+                     :url => { :controller => :distribution_plugin_delivery_option, :action => "destroy", :id => option.id }},
+                     :class => 'session-delete-delivery-option') %>
 </div>

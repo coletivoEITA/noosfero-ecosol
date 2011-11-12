@@ -3,7 +3,7 @@ class DistributionPluginNode < ActiveRecord::Base
   belongs_to :profile
 
   has_many :delivery_methods, :class_name => 'DistributionPluginDeliveryMethod', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id asc'
-  has_many :sessions, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id asc'
+  has_many :sessions, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id asc', :conditions => ["status <> 'new'"]
   has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy, :order => 'id asc'
   has_many :parcels, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy, :order => 'id asc'
   

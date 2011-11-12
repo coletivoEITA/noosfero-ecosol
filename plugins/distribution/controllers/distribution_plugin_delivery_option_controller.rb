@@ -3,7 +3,7 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
   no_design_blocks
 
   def select
-    @session = params[:session_id] ? DistributionPluginSession.find(params[:session_id]) : DistributionPluginSession.new(:node => @node)
+    @session = DistributionPluginSession.find params[:session_id]
     @delivery_methods = @node.delivery_methods - @session.delivery_methods
     render :layout => false
   end
@@ -17,7 +17,7 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
   end
 
   def new
-    @session = params[:session_id] ? DistributionPluginSession.find(params[:session_id]) : DistributionPluginSession.new(:node => @node)
+    @session = DistributionPluginSession.find params[:session_id]
     @delivery_method = params[:new_method].blank? ?
       DistributionPluginDeliveryMethod.find(params[:delivery_method_id]) :
       DistributionPluginDeliveryMethod.create!(params[:delivery_method].merge(:node => @session.node))

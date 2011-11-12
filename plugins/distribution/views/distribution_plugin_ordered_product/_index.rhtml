@@ -1,8 +1,16 @@
-<div class="order-products">
-  <% f.fields_for :products, order.products do |f| %>
-    <% order.products.each do |product| %>
-      <%= render :partial => "distribution_plugin_ordered_product/edit", :locals => {:ordered_product => product, :product => product.product, :f => f} %>
+<div class="order-products-container">
+  <div class="order-products">
+    <% f.fields_for :products, order.products do |f| %>
+      <% order.products.each do |product| %>
+        <%= render :partial => "distribution_plugin_ordered_product/edit", :locals => {:ordered_product => product, :product => product.product, :f => f} %>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
+
+  <div id="total-box">
+    <%= render :partial => 'distribution_plugin_order/total', :locals => {:order => order} %>
+  </div>
+
+  <div class="cleaner"></div>
 </div>
 

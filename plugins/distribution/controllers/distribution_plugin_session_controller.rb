@@ -22,13 +22,33 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     @sessions = @node.sessions
   end
 
+  def view
+    @session = DistributionPluginSession.find params[:id]
+  end
+
   def new
-    @session = DistributionPluginSession.new :node => @node
     if request.post?
-      @session.delivery_options_values = params[:delivery_method_id]
+      @session = DistributionPluginSession.find params[:id]
       @session.update_attributes! params[:session]
-      redirect_to :action => :edit, :id => @session.id
+      session[:notice] = _('Session created')
+      render :partial => 'new'
+    else 
+      @session = DistributionPluginSession.create! :node => @node, :status => 'new'
     end
+  end
+
+  def edit
+    @session = DistributionPluginSession.find params[:id]
+    if request.post?
+      @success = @session.update_attributes! params[:session]
+      render :nothing => 'true'
+    end
+  end
+
+  def destroy
+    @session = DistributionPluginSession.find params[:id]
+    @session.destroy
+    render :nothing => true
   end
 
   def step
@@ -38,21 +58,6 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     redirect_to :action => 'edit', :id => @session.id
   end
 
-  def view
-    @session = DistributionPluginSession.find params[:id]
-  end
-
-  def edit
-    @session = DistributionPluginSession.find params[:id]
-    if request.post?
-      @session.update_attributes(params[:session])
-      @session.save
-      respond_to do |format| 
-        format.html
-        format.js { render :partial => 'edit_fields', :layout => false }
-      end
-    end
-  end
 
   def add_products
     @session = DistributionPluginSession.find params[:id]

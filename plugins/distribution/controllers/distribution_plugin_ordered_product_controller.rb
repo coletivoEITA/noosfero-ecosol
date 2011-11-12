@@ -28,10 +28,13 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
   end
 
   def destroy
-    p = DistributionPluginOrderedProduct.find params[:id]
-    @ordered_product = p
+    @ordered_product = DistributionPluginOrderedProduct.find params[:id]
     @order = p.order
-    p.destroy if p
+  end
+
+  def session_destroy
+    @ordered_product = DistributionPluginOrderedProduct.find params[:id]
+    @order = p.order
   end
 
 end

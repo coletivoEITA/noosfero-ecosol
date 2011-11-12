@@ -11,7 +11,7 @@ def __split_to_time(datetime)
 end
 def __split_to_date(datetime)
   datetime = __split_nil_date if datetime.blank?
-  datetime.to_date.to_formatted_s(:db)
+  datetime.to_date.strftime('%d/%m/%Y')
 end
 def __split_set_time(datetime, value)
   value = if value.blank?
@@ -29,7 +29,7 @@ def __split_set_date(datetime, value)
   value = if value.blank?
     __split_nil_date
   elsif value.kind_of?(String)
-    Time.parse(value) 
+    DateTime.strptime(value, '%d/%m/%Y')
   else
     value.to_time
   end

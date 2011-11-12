@@ -37,11 +37,6 @@
         <%= render :partial => 'products', :locals => {:order => @order} %>
       </div>
 
-      <div id="total-box">
-        <%= render :partial => 'total', :locals => {:order => @order} %>
-      </div>
-      <div class="cleaner"></div>
-
       <div id="delivery-box">
         <%= render :partial => 'delivery', :locals => {:order => @order, :method => @order.supplier_delivery} %>
       </div>
