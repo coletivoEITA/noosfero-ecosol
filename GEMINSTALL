@@ -22,7 +22,7 @@ $ gem install bundler
 $ sudo apt-get install po4a iso-codes tango-icon-theme
 
 3.2. Compilation deps
-$ sudo apt-get install libmagickcore-dev libpq-dev
+$ sudo apt-get install libmagickcore-dev libpq-dev libreadline-dev
 
 4. Let bundler do the rest
 $ bundle install
