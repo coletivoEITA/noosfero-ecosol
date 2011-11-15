@@ -1,14 +1,14 @@
 
-1. Install RVM (command from http://beginrescueend.com/rvm/install/)
-$ bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
+1. Install packages dependencies
 
-2. Install packages dependencies
-
-2.1. System deps
+1.1. System deps
 $ sudo apt-get install po4a iso-codes tango-icon-theme
 
-2.2. Compilation deps
-$ sudo apt-get install libmagickcore-dev libpq-dev libreadline-dev
+1.2. Compilation deps
+$ sudo apt-get install libmagickcore-dev libpq-dev libreadline-dev libsqlite3-dev
+
+2. Install RVM (command from http://beginrescueend.com/rvm/install/)
+$ bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
 
 3. Open a new terminal (so that RVM path is loaded) and compile ruby
 $ rvm install 1.8.7
@@ -17,9 +17,9 @@ $ rvm gemset create dev
 $ rvm 1.8.7@dev
 $ gem update --system 1.4.1
 
-You might want to change dev to something else or
-create other gemsets.
-Documentation on gemsets at http://beginrescueend.com/gemsets/basics/
+If you get command not found on rvm, try opening another terminal (thus reloading the environment).
+You might want to change dev to something else or create other gemsets. Documentation on gemsets at http://beginrescueend.com/gemsets/basics/
+***Running rvm 1.8.7@dev is required each time you open a new shell!***
 
 4. Install bundler let bundler do the rest
 $ gem install bundler
