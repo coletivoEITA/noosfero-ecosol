@@ -52,13 +52,13 @@ body.plugin-distribution {
   margin-bottom: 100px;
 }
 .plugin-distribution .box-align {
-  margin-left: -10px;
+  margin-left: -8px;
 }
 .plugin-distribution .alignment {
   padding-left: 8px;
 }
 .plugin-distribution .alignment2x {
-  padding-left: 20px;
+  padding-left: 16px;
 }
 .plugin-distribution .text-wrap {
   width: 400px;
@@ -124,9 +124,8 @@ body.plugin-distribution {
   font-size: 13px;
   text-align: left;
   min-width: 80px;
-  padding: 8px 12px;
+  padding: 8px 8px;
   margin: 15px 0;
-  margin-right: 8px;
   border: none;
   text-decoration: none;
   border-radius: 5px 5px 5px 5px;
@@ -323,7 +322,7 @@ body.plugin-distribution {
 
 .plugin-distribution .actions-bar {
   background-color: #FEC64D;
-  padding: 10px;
+  padding: 6px 8px;
   clear: both;
 }
 .plugin-distribution .actions-bar a {
@@ -654,22 +653,22 @@ body.plugin-distribution {
   font-size: 10px;
 }
 .plugin-distribution .session-orders .code {
-  width: 50px;
+  width: 70px;
 }
 .plugin-distribution .session-orders .member {
-  width: 180px;
+  width: 200px;
 }
 .plugin-distribution .session-orders .created {
-  width: 90px;
+  width: 100px;
 }
 .plugin-distribution .session-orders .modified {
-  width: 95px;
+  width: 100px;
 }
 .plugin-distribution .session-orders .products-count {
-  width: 90px;
+  width: 80px;
 }
 .plugin-distribution .session-orders .price {
-  width: 80px;
+  width: 70px;
 }
 
 /* ----- end session orders  ----- */
@@ -840,9 +839,9 @@ body.plugin-distribution {
 
 .plugin-distribution #session-products .value-row.edit .box-view { 
   border-bottom: 1px solid #333;
-  margin-left: -10px;
-  padding-right: 10px;
-  padding-left: 10px;
+  margin-left: -8px;
+  padding-right: 8px;
+  padding-left: 8px;
 }
 .plugin-distribution #session-products .value-row.edit .price,
 .plugin-distribution #session-products .value-row.edit .quantity-available,
@@ -863,19 +862,19 @@ body.plugin-distribution {
   font-size: 10px;
 }
 .plugin-distribution #session-products .box-field.category {
-  width: 75px;
+  width: 80px;
 }
 .plugin-distribution #session-products .box-field.supplier {
-  width: 100px;
+  width: 110px;
 }
 .plugin-distribution #session-products .box-field.name {
-  width: 150px;
+  width: 190px;
 }
 .plugin-distribution #session-products .box-field.price {
-  width: 83px;
+  width: 150px;
 }
 .plugin-distribution #session-products .box-field.quantity-available {
-  width: 90px;
+  width: 80px;
 }
 .plugin-distribution #session-products .quantity-available input {
   width: 60px;
@@ -1006,13 +1005,13 @@ body.plugin-distribution {
   width: 100px;
 }
 .plugin-distribution #search-results .box-field.product {
-  width: 130px;
+  width: 170px;
 }
 .plugin-distribution #search-results .box-field.price-with-unit {
   width: 90px;
 }
 .plugin-distribution #search-results .box-field.stock {
-  width: 90px;
+  width: 80px;
 }
 
 .plugin-distribution #node-margin-percentage span {
@@ -1195,15 +1194,15 @@ body.plugin-distribution {
   padding-left: 242px;
   padding-bottom: 10px;
   margin-bottom: 10px;
-  margin-left: -20px;
+  margin-left: -2px;
 }
 .plugin-distribution .session-view #session-header {
   border-bottom: 2px solid #ddd;
 }
 .plugin-distribution .session-view #session-header .orders-date.active {
-  margin-left: -170px;
+  margin-left: -168px;
   display: inline-block;
-  padding: 0 10px;
+  padding: 0 8px;
   background-color: #ffe546;
 }
 .plugin-distribution .session-view #session-header .orders-date.active span {
@@ -1282,7 +1281,7 @@ body.plugin-distribution {
   width: 100px;
 }
 .plugin-distribution .session-view #session-products-for-order .box-field.quantity {
-  width: 96px;
+  width: 102px;
   margin-right: 0;
 }
 .plugin-distribution .session-view #session-products-for-order .box-field.stock {
@@ -1349,7 +1348,8 @@ body.plugin-distribution {
   margin-bottom: 23px;
   background-color: #12AF60;
   color: #FFF;
-  text-align: center;
+  text-align: left;
+  padding-left: 8px;
 }
 
 .plugin-distribution .session-view #session-products-for-order .box-edit .box-field.quantity {
@@ -1363,13 +1363,17 @@ body.plugin-distribution {
 
 /* ----- order stuff  ----- */
 
+.plugin-distribution #order-page {
+  margin-left: -20px;
+}
+
 .plugin-distribution #order-page .in-order {
   background-color: #fff2a3;
 }
 
 .plugin-distribution #order-column {
   float: left;
-  margin-left: 68px;
+  margin-left: 88px; /*removed 8px of padding-left */
   width: 400px;
 }
 .plugin-distribution #order-column.sticky {
@@ -1462,10 +1466,11 @@ body.plugin-distribution {
 .plugin-distribution .menu-button-container {
   position: relative;
   bottom: -10px;
+  margin-left: -8px;
 }
 .plugin-distribution .menu-button a {
   float: left;
-  padding: 8px 10px;
+  padding: 8px 8px;
   background-color: #fff;
   text-transform: uppercase;
   margin: 0 2px;

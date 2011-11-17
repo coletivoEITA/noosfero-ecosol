@@ -12,10 +12,8 @@ function isEditing() {
   return editing().first().hasClass('edit');
 }
 
-function distribution_edit_arrow_toggle(arrow, toggle) {
-  arrow = jQuery(arrow);
-  if (!arrow.hasClass('actions-circle'))
-    arrow = arrow.find('.actions-circle');
+function distribution_edit_arrow_toggle(context, toggle) {
+  arrow = jQuery(context).hasClass('actions-circle') ? jQuery(context) : jQuery(context).find('.actions-circle');
 
   arrow.toggleClass('edit', toggle);
   return arrow.hasClass('edit');
@@ -202,7 +200,7 @@ function distribution_supplier_toggle_edit() {
 }
 function distribution_in_session_order_toggle_edit() {
   editing().find('.box-edit').toggle(isEditing());
-  distribution_edit_arrow_toggle(editing, isEditing());
+  distribution_edit_arrow_toggle(editing(), isEditing());
 }
 function distribution_our_product_add_link() {
   if (isEditing())

@@ -49,7 +49,8 @@
   <% javascript_tag do %>
     jQuery(document).ready(function() {
       jQuery('#order-column').waypoint(function(event, direction) {
-        jQuery(this).css('left', jQuery(this).offset().left).toggleClass('sticky');
+        jQuery(this).css('left', jQuery(this).offset().left).toggleClass('sticky', direction == 'down');
+        jQuery(this).parents('.page').css('margin-bottom', jQuery(this).height());
       }, {});
     });
   <% end %>
