@@ -5,7 +5,7 @@
     <% node.sessions.open.each do |s| %>
       <div id="session-<%=s.id%>" class="session">
         <div class="session-title">
-          <%= link_to s.name, {:controller => :distribution_plugin_session, :action => :view, :id => s.id} %>
+          <%= link_to s.name, {:controller => :distribution_plugin_order, :action => :edit, :session_id => s.id} %>
         </div>
 
         <div class="session-period">
@@ -20,7 +20,7 @@
       </div>
 
       <div class="links">
-        <%= link_to _('see all cycles'), {:controller => :distribution_plugin_session, :action => :view_index} %>
+        <%= link_to _('see all cycles'), {:controller => :distribution_plugin_order, :action => :index} %>
         <%# link_to _('meet the producers'), {} %>
         <%# link_to _('meet the products'), {} %>
       </div>

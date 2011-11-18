@@ -16,8 +16,8 @@
 
   <div>
     <% if order.open? %>
-      <%= f.submit _('Confirm order') %>
-      <%= link_to _('give up'), {:controller => :distribution_plugin_order, :action => :remove, :id => order.id},
+      <%= f.submit _('Confirm order') %>&emsp;
+      <%= link_to _('give up'), {:controller => :distribution_plugin_order, :action => :cancel, :id => order.id},
         :confirm => _("Are you sure? The order can't be recovered") %>
     <% end %>
   </div>

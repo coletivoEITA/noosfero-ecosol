@@ -1,0 +1,5 @@
+<div class="order-message-title status-<%= order.current_status %>">
+  <div>
+    <%= _("%{code} %{status_message}") % { :code => order.code, :status_message => order.status_message } %>
+  </div>
+</div>

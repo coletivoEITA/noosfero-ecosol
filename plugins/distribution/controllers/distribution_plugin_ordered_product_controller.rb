@@ -16,9 +16,9 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
 
   def edit
     @ordered_product = DistributionPluginOrderedProduct.find params[:id]
+    @order = @ordered_product.order
     raise 'Order confirmed or cycle is closed for orders' unless @order.open?
 
-    @order = @ordered_product.order
     @ordered_product.update_attributes params[:ordered_product]
   end
 

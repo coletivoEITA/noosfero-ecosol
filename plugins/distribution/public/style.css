@@ -24,6 +24,11 @@ body.plugin-distribution {
 #plugin-distribution-layout .page-title {
   display: none !important;
 }
+.plugin-distribution .page,
+.plugin-distribution .admin-page {
+  margin-left: -20px;
+  margin-right: -20px;
+}
 
 /* ----- ends override some noosfero's css  ----- */
 
@@ -35,12 +40,9 @@ body.plugin-distribution {
 
 .plugin-distribution .cleaner {
   clear: both;
+  float: none !important;
 }
 
-.plugin-distribution .page,
-.plugin-distribution .admin-page {
-  margin-right: -20px;
-}
 .plugin-distribution .page > *,
 .plugin-distribution .admin-page > * {
   padding-left: 8px;
@@ -75,7 +77,7 @@ body.plugin-distribution {
 }
 #plugin-distribution-layout #content h3 {
   text-transform: uppercase;
-  font-size: 14px;
+  font-size: 13px;
 }
 .plugin-distribution select,
 .plugin-distribution input[type=text],
@@ -135,21 +137,6 @@ body.plugin-distribution {
 }
 .plugin-distribution input[type=submit]:hover {
   background-color: #666;
-}
-
-.plugin-distribution .our-product .product-supplier *[disabled],
-.plugin-distribution .our-product-distributed-column *[readOnly],
-.plugin-distribution .our-product-distributed-column *[disabled] {
-  font-style: italic;
-  background-color: #F1F6F2;
-  border-color: #B9BEC2;
-}
-.plugin-distribution .our-product-supplied-column *[disabled],
-.plugin-distribution .session-product-line *[disabled] {
-  background-color: transparent;
-}
-.plugin-distribution .our-product-supplied-column input[type=checkbox][disabled] {
-  background: url(images/checked_box.png) transparent;
 }
 
 .plugin-distribution .line-label {
@@ -335,6 +322,25 @@ body.plugin-distribution {
 
 /* ----- ends common stuff  ----- */
 
+/* ----- not so common stuff  ----- */
+
+.plugin-distribution .our-product .product-supplier *[disabled],
+.plugin-distribution .our-product-distributed-column *[readOnly],
+.plugin-distribution .our-product-distributed-column *[disabled] {
+  font-style: italic;
+  background-color: #F1F6F2;
+  border-color: #B9BEC2;
+}
+.plugin-distribution .our-product-supplied-column *[disabled],
+.plugin-distribution .session-product-line *[disabled] {
+  background-color: transparent;
+}
+.plugin-distribution .our-product-supplied-column input[type=checkbox][disabled] {
+  background: url(images/checked_box.png) transparent;
+}
+
+/* ----- ends not so common stuff  ----- */
+
 /* ----- order block stuff  ----- */
 
 .distribution-plugin-order-block {
@@ -382,7 +388,7 @@ body.plugin-distribution {
 }
 .plugin-distribution .session-timeline-passed-item,
 .plugin-distribution .session-timeline-current-item {
-  background: url(progressbar.png) top left no-repeat;
+  background: url(progressbar.png) left top no-repeat;
 }
 .plugin-distribution .session-timeline-current-item {
   font-weight: bold;
@@ -1186,29 +1192,16 @@ body.plugin-distribution {
   padding-left: 0;
 }
 
-.plugin-distribution .session-view #session-others {
-  border-bottom: 2px dotted #aaa;
-}
 .plugin-distribution .session-view #session-others,
 .plugin-distribution .session-view #session-header {
-  padding-left: 242px;
   padding-bottom: 10px;
   margin-bottom: 10px;
   margin-left: -2px;
+  padding-right: 2px;
 }
 .plugin-distribution .session-view #session-header {
   border-bottom: 2px solid #ddd;
-}
-.plugin-distribution .session-view #session-header .orders-date.active {
-  margin-left: -168px;
-  display: inline-block;
-  padding: 0 8px;
-  background-color: #ffe546;
-}
-.plugin-distribution .session-view #session-header .orders-date.active span {
-  text-transform: uppercase;
-  width: 156px;
-  display: inline-block;
+  margin-bottom: 0;
 }
 .plugin-distribution .session-view #session-header .subtitle {
   display: block;
@@ -1361,7 +1354,80 @@ body.plugin-distribution {
 
 /* ----- ends session view stuff  ----- */
 
-/* ----- order stuff  ----- */
+/* ----- orders stuff  ----- */
+
+.plugin-distribution .orders .orders-date.active {
+  margin-left: -168px;
+  display: inline-block;
+  padding: 0 8px;
+  background-color: #ffe546;
+}
+.plugin-distribution .orders .orders-date.active span {
+  text-transform: uppercase;
+  width: 156px;
+  display: inline-block;
+}
+
+.plugin-distribution .orders #session-others,
+.plugin-distribution .orders #session-header,
+.plugin-distribution #orders-view > * {
+  padding-left: 241px;
+}
+.plugin-distribution #orders-view h2 {
+  margin-top: 20px;
+}
+
+.plugin-distribution .orders #session-others,
+.plugin-distribution #orders-view .session-with-consumer-orders:last-child {
+  border-bottom: 2px dotted #aaa;
+}
+.plugin-distribution #orders-view .session-with-consumer-orders {
+  padding-bottom: 10px;
+  border-top: 2px dotted #aaa;
+}
+
+.plugin-distribution #orders-view .consumer-orders a {
+  float: left;
+  padding-right: 8px;
+}
+.plugin-distribution #orders-view .consumer-orders a div {
+  font-size: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.plugin-distribution #orders-view .order-message-title {
+  padding: 2px 8px;
+}
+
+.plugin-distribution .orders .order-message-title {
+  font-size: 13px;
+  font-weight: bold;
+  padding: 8px;
+}
+.plugin-distribution .orders .status-forgotten {
+  background-color: #FECBCA;
+}
+.plugin-distribution .orders .status-open {
+  background-color: #FFF2A3;
+}
+.plugin-distribution .orders .status-confirmed {
+  background-color: #E1F5C4;
+}
+.plugin-distribution .orders .status-confirmed.order-message-title div {
+  background: url(images/order-statuses.png) left top no-repeat;
+  padding-left: 24px;
+}
+.plugin-distribution .orders .status-open.order-message-title div {
+  background: url(images/order-statuses.png) 0px -19px no-repeat;
+  padding-left: 24px;
+  margin-bottom: 0;
+}
+
+
+/* ----- ends orders stuff  ----- */
+
+/* ----- order edit stuff  ----- */
 
 .plugin-distribution #order-page {
   margin-left: -20px;
@@ -1381,35 +1447,28 @@ body.plugin-distribution {
   top: 0;
   margin: 0;
 }
-
-.plugin-distribution #order-column #order-message {
-  padding: 10px;
+.plugin-distribution #order-column h3 a {
+  text-transform: lowercase;
+  float: right;
 }
-.plugin-distribution #order-column #order-message.forgotten {
+
+.plugin-distribution #order-column #order-admin-warning {
   background-color: #FECBCA;
 }
-.plugin-distribution #order-column #order-message.confirmed {
-  background-color: #E1F5C4;
+
+.plugin-distribution #order-column #order-admin-warning {
+  margin-bottom: 10px;
 }
 
-.plugin-distribution #order-column #order-message-title {
-  font-size: 13px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  line-height: 26px;
-}
-.plugin-distribution #order-column #order-message.confirmed #order-message-title {
-  background: url(images/order-statuses.png) top left no-repeat;
-  padding-left: 24px;
-}
-.plugin-distribution #order-column #order-message.forgotten #order-message-title {
+.plugin-distribution #order-column .order-message {
+  padding: 8px;
 }
 
-.plugin-distribution #order-column #order-message-text {
+.plugin-distribution #order-column .order-message-text {
   font-size: 10px;
   font-style: italic;
 }
-.plugin-distribution #order-column #order-message-actions {
+.plugin-distribution #order-column .order-message-actions {
   margin-top: 10px;
   font-size: 10px;
 }
@@ -1440,7 +1499,7 @@ body.plugin-distribution {
   width: 76px;
 }
 
-/* ----- ends order stuff  ----- */
+/* ----- ends order edit stuff  ----- */
 
 /* ----- header stuff  ----- */
 

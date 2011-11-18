@@ -2,7 +2,7 @@
   buttons = [
     #[:start, _('Start'), {:controller => :distribution_plugin_node}],
     #[:blog, _('Blog'), {:controller => :distribution_plugin_node}],
-    [:orders, _('Orders'), {:controller => :distribution_plugin_session, :action => :view_index}, {:controller => [:distribution_plugin_order]}],
+    [:orders, _('Orders'), {:controller => :distribution_plugin_order, :action => :index}],
     #[:about, _('About'), {:controller => :distribution_plugin_node, :action => :about}],
     #[:history, _('History'), {:controller => :distribution_plugin_node, :action => :history}],
     [:community, _('Community'), profile.url],

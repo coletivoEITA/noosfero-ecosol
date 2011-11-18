@@ -2,7 +2,8 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
   no_design_blocks
 
   def index
-    @orders = @user_node.parcels
+    @sessions = @node.sessions
+    @consumer = @user_node
   end
 
   def new
@@ -13,8 +14,14 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
   end
 
   def edit
-    @order = DistributionPluginOrder.find params[:id]
-    @session = @order.session
+    if params[:session_id]
+      @session = DistributionPluginSession.find params[:session_id]
+    else
+      @order = DistributionPluginOrder.find_by_id params[:id]
+      @session = @order.session
+      @consumer = @order.consumer
+      @admin_edit = @user_node != @consumer
+    end
   end
 
   def reopen
@@ -36,12 +43,20 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     redirect_to :action => :edit, :id => @order.id
   end
 
+  def cancel
+    @order = DistributionPluginOrder.find params[:id]
+    @order.update_attributes! :status => 'cancelled'
+
+    session[:notice] = _('Order cancelled')
+    redirect_to :action => :edit, :session_id => @order.session.id
+  end
+
   def remove
     @order = DistributionPluginOrder.find params[:id]
     @order.destroy
 
     session[:notice] = _('Order removed')
-    redirect_to :controller => :distribution_plugin_session, :action => :view, :id => @order.session.id
+    redirect_to :action => :edit, :session_id => @order.session.id
   end
 
   def render_delivery

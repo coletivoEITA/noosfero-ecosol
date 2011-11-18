@@ -4,7 +4,7 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
 
   helper DistributionPlugin::SessionHelper
 
-  before_filter :set_admin_action, :except => [:view, :view_index]
+  before_filter :set_admin_action
 
   def index
     @sessions = @node.sessions
@@ -16,14 +16,6 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     if request.xhr?
       render :partial => 'results'
     end
-  end
-
-  def view_index
-    @sessions = @node.sessions
-  end
-
-  def view
-    @session = DistributionPluginSession.find params[:id]
   end
 
   def new
@@ -57,7 +49,6 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     @session.save!
     redirect_to :action => 'edit', :id => @session.id
   end
-
 
   def add_products
     @session = DistributionPluginSession.find params[:id]

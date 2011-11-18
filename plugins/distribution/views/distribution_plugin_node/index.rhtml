@@ -1,34 +1,4 @@
 <div class='admin-page'>
   <h2><%= _('Dashboard') %></h2>
   
-  <div>
-    <% if @suppliers.count > 0 %>
-      <%= _('Your collective has %{suppliers}') %
-      {:suppliers => link_to(N_('%{n} suppliers') % {:n => @suppliers.count}, {:controller => :distribution_plugin_supplier, :action => :index})} %>
-    <% else %>
-      <%= _("You don't have any supplier, start your collective by %{create}!") %
-      {:create => link_to(_('creating a new one'), {:controller => :distribution_plugin_supplier, :action => :index, :anchor => 'supplier-add'})}  %>
-    <% end %>
-  </div>
-
-  <div>
-    <% if @node.products.unarchived.distributed.count > 0 %>
-      <%= _('Your collective has %{products}') %
-      {:products => link_to(N_('%{n} products') % {:n => @node.products.unarchived.distributed.count}, {:controller => :distribution_plugin_product, :action => :index})} %>
-    <% else %>
-      <%= _("You don't have any product, %{create}!") %
-      {:create => link_to(_('add distributed products'), {:controller => :distribution_plugin_product, :action => :index, :anchor => 'our-product-add'})}  %>
-    <% end %>
-  </div>
-
-  <div>
-    <% if @node.sessions.count > 0 %>
-      <%= _('Your collective has %{cycles}') %
-      {:cycles => link_to(N_('%{n} cycles') % {:n => @node.sessions.count}, {:controller => :distribution_plugin_session, :action => :index})} %>
-    <% else %>
-      <%= _("You don't have any cycle, %{open}!") %
-      {:open => link_to(_('open for orders'), {:controller => :distribution_plugin_session, :action => :new})}  %>
-    <% end %>
-  </div>
-
 </div>

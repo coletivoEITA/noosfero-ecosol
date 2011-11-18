@@ -1,48 +1,72 @@
-<div id="order-page" class="page session-view">
+<div id="order-page" class="orders page session-view">
 
   <%= render :partial => 'distribution_plugin_session/view_header', :locals => {:session => @order.session} %>
 
   <%= render :partial => 'distribution_plugin_session/view_products', :locals => {:session => @order.session, :order => @order} %>
 
   <div id="order-column">
-    <div class="alignment">
-      <h3><%=_("Your order")%></h3>
-    </div>
+    <h3>
+      <% if @admin_edit %>
+        <%= _("Orders from \"%{consumer}\" on this cycle") % {:consumer => @consumer.name} %>
+      <% else %>
+        <%= _("Your orders on this cycle") %>
+        <%= link_to _('new order'), {:controller => :distribution_plugin_order, :action => :new} %>
+      <% end %>
+    </h3>
 
-    <% if @order.confirmed? or @order.forgotten? %>
-      <div id="order-message" class="<%= @order.confirmed? ? "confirmed" : "forgotten" %>">
-        <div id="order-message-title">
-          <%= @order.confirmed? ? _("Order confirmed") : _("Order lost") %>
+    <% if @admin_edit %>
+      <div id="order-admin-warning" class="order-message">
+        <div class="order-message-text">
+          <%= _("<strong>Caution</strong>, you are editing the orders of \"%{consumer}\". It is preferable
+                to make small editions through the cycle's administration, this way the person will be properly
+                warned of the updates. We recommend using this page only if you're doing the order for the person") % {
+            :consumer => @consumer.name } %>
         </div>
-        <div id="order-message-text">
-          <% if @order.confirmed? %>
-            <%= _("Your order is confirmed and registered. Please follow the guidelines of the delivery method below, so that it happens without problems.") %>
-          <% else %>
-            <%= _("Your order wasn't confirmed and the cycle orders period already ended.") %>
-          <% end %>
-        </div>
-        <div id="order-message-actions">
-          <div><%= _('You still can:') %></div>
-          <% if @order.session.orders? %>
-            <%= link_to _('change order'), {:controller => :distribution_plugin_order, :action => :reopen, :id => @order.id}  %>
-            <%= _('(before the closing)') %>&emsp;
-          <% end %>
-          <%= lightbox_link_to _('send message to the managers'), {:controller => :distribution_plugin_message, :action => :new_to_admins} %>
+        <div class="order-message-actions">
+          <%= link_to _('Edit your orders'), {:controller => :distribution_plugin_order, :action => :edit, :id => @user_node.id} %>&emsp;
+          <%# link_to _('Orders from another member'), {:controller => :distribution_plugin_order, :action => :reopen, :id => @order.id} %>
+          <%= link_to _('Administration of this cycle'), {:controller => :distribution_plugin_session, :action => :edit, :id => @session.id} %>&emsp;
         </div>
       </div>
     <% end %>
 
-    <div class="in-order">
-      <div id="order-products">
-        <%= render :partial => 'products', :locals => {:order => @order} %>
-      </div>
+    <% @session.orders.for_consumer(@consumer).each do |order| %>
 
-      <div id="delivery-box">
-        <%= render :partial => 'delivery', :locals => {:order => @order, :method => @order.supplier_delivery} %>
-      </div>
+      <%= render :partial => 'order_status', :locals => {:order => @order} %>
+      <% next unless @order == order %>
 
-      <div class="cleaner"></div>
-    </div>
+      <% unless @order.open? %>
+        <div id="order-status-message" class="order-message status-<%= @order.current_status %>">
+          <div class="order-message-text">
+            <% if @order.confirmed? %>
+              <%= _("Your order is confirmed and registered. Please follow the guidelines of the delivery method below, so that it happens without problems.") %>
+            <% else %>
+              <%= _("Your order wasn't confirmed and the cycle orders period already ended.") %>
+            <% end %>
+          </div>
+          <div class="order-message-actions">
+            <div><%= _('You still can:') %></div>
+            <% if @order.session.orders? %>
+              <%= link_to _('change order'), {:controller => :distribution_plugin_order, :action => :reopen, :id => @order.id}  %>
+              <%= _('(before the closing)') %>&emsp;
+            <% end %>
+            <%= lightbox_link_to _('send message to the managers'), {:controller => :distribution_plugin_message, :action => :new_to_admins} %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="in-order">
+        <div id="order-products">
+          <%= render :partial => 'products', :locals => {:order => @order} %>
+        </div>
+
+        <div id="delivery-box">
+          <%= render :partial => 'delivery', :locals => {:order => @order, :method => @order.supplier_delivery} %>
+        </div>
+
+        <div class="cleaner"></div>
+      </div>
+    <% end %>
   </div>
 
   <%= javascript_include_tag '/plugins/distribution/waypoints.min.js' %>

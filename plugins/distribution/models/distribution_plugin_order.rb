@@ -16,20 +16,29 @@ class DistributionPluginOrder < ActiveRecord::Base
   has_one :supplier_delivery, :class_name => 'DistributionPluginDeliveryMethod'
   has_one :consumer_delivery, :class_name => 'DistributionPluginDeliveryMethod'
 
-  named_scope :by_consumer, lambda { |consumer| { :conditions => {:consumer_id => consumer.id} } }
+  named_scope :for_consumer, lambda { |consumer| { :conditions => {:consumer_id => consumer.id} } }
+  named_scope :for_session, lambda { |session| { :conditions => {:session_id => session.id} } }
+  named_scope :for_node, lambda { |node| {
+      :conditions => ['distribution_plugin_nodes.id = ?', node.id],
+      :joins => 'INNER JOIN distribution_plugin_sessions ON distribution_plugin_orders.session_id = distribution_plugin_sessions.id
+        INNER JOIN distribution_plugin_nodes ON distribution_plugin_sessions.node_id = distribution_plugin_nodes.id'
+    }
+  }
 
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.session.orders }
 
-  validates_inclusion_of :status, :in => ['draft', 'planned', 'confirmed']
+  STATUSES = ['draft', 'planned', 'confirmed', 'cancelled']
   validates_presence_of :session
   validates_presence_of :consumer
   validates_presence_of :supplier_delivery
   validates_presence_of :consumer_delivery, :if => :is_delivery?
+  validates_inclusion_of :status, :in => STATUSES
 
   named_scope :draft, :conditions => {:status => 'draft'}
   named_scope :planned, :conditions => {:status => 'planned'}
   named_scope :confirmed, :conditions => {:status => 'confirmed'}
+  named_scope :cancelled, :conditions => {:status => 'cancelled'}
   def draft?
     status == 'draft'
   end
@@ -39,11 +48,30 @@ class DistributionPluginOrder < ActiveRecord::Base
   def confirmed?
     status == 'confirmed'
   end
-  def open?
-    !confirmed? && session.orders?
+  def cancelled?
+    status == 'cancelled'
   end
   def forgotten?
     !confirmed? && !session.orders?
+  end
+  def open?
+    !confirmed? && session.orders?
+  end
+  def current_status
+    return 'forgotten' if forgotten?
+    return 'open' if open?
+    self['status']
+  end
+
+  STATUS_MESSAGE = {
+   'open' => _('Order in progress'),
+   'forgotten' => _('Order not confirmed'),
+   'planned' => _('Order planned'),
+   'confirmed' => _('Order confirmed'),
+   'cancelled' => _('Order cancelled'),
+  }
+  def status_message
+    _(STATUS_MESSAGE[current_status])
   end
 
   def supplier_delivery
