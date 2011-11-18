@@ -26,10 +26,10 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
   end
 
   def total_quantity_asked
-    @total_quantity_asked ||= self.ordered_products.sum(:quantity_asked)
+    @total_quantity_asked ||= self.ordered_products.confirmed.sum(:quantity_asked)
   end
   def total_price_asked
-    @total_price_asked ||= self.ordered_products.sum(:price_asked)
+    @total_price_asked ||= self.ordered_products.confirmed.sum(:price_asked)
   end
   def total_parcel_quantity
     #FIXME: convert units and consider stock and availability

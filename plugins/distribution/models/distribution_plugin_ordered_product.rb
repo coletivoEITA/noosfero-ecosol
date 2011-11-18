@@ -13,6 +13,8 @@ class DistributionPluginOrderedProduct < ActiveRecord::Base
         INNER JOIN distribution_plugin_sessions ON distribution_plugin_orders.session_id = distribution_plugin_sessions.id'
     }
   }
+  named_scope :confirmed, :conditions => ['distribution_plugin_orders.status = ?', 'confirmed'],
+    :joins => 'INNER JOIN distribution_plugin_orders ON distribution_plugin_orders.id = distribution_plugin_ordered_products.order_id'
 
   validates_presence_of :order
   validates_presence_of :session_product

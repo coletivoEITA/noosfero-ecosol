@@ -50,7 +50,7 @@ body.plugin-distribution {
 .plugin-distribution .admin-page {
   float: right;
   /*width: 666px;for noosfero's base theme*/
-  width: 718px;
+  width: 726px;
   margin-bottom: 100px;
 }
 .plugin-distribution .box-align {
@@ -511,7 +511,7 @@ body.plugin-distribution {
   -o-border-radius: 3px;
 }
 .plugin-distribution .order-products-by-supplier .inner-box {
-  padding: 10px;
+  padding: 8px;
   float: left;
 }
 .plugin-distribution .order-products-by-supplier .supplier-name {
@@ -584,7 +584,7 @@ body.plugin-distribution {
   clear: both;
   float: left;
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -799,7 +799,7 @@ body.plugin-distribution {
 
 .plugin-distribution #session-listing .session-list-item {
   border-top: 1px dotted #ccc;
-  padding: 10px;
+  padding: 8px;
 }
 .plugin-distribution #session-listing .session-list-item:last-child {
   border-bottom: 1px dotted #ccc;
@@ -840,7 +840,7 @@ body.plugin-distribution {
 
 .plugin-distribution #session-header-warning {
   background-color: #FECBCA;
-  padding: 10px;
+  padding: 8px;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -973,7 +973,7 @@ body.plugin-distribution {
 
 .plugin-distribution .filter-box {
   background-color: #e9f9d5;
-  padding: 10px;
+  padding: 8px;
   margin-top: 13px;
   margin-bottom: 13px;
   box-sizing: border-box;
@@ -1000,7 +1000,7 @@ body.plugin-distribution {
 }
 
 .plugin-distribution #search-results #result-count {
-  padding: 10px;
+  padding: 8px;
 }
 .plugin-distribution #search-results .box-view {
   font-size: 10px;
@@ -1562,7 +1562,7 @@ body.plugin-distribution {
 .plugin-distribution #order-column #delivery-box {
   border-top: 2px solid black;
   width: auto;
-  padding: 10px;
+  padding: 8px;
 }
 .plugin-distribution #order-column #delivery-box h3 {
   margin-top: 0;
@@ -1591,7 +1591,7 @@ body.plugin-distribution {
 
 .plugin-distribution .menu-header {
   background-color: #d9d2e4;
-  padding: 10px 0 10px 242px;
+  padding: 8px 0 8px 242px;
   text-transform: uppercase;
 }
 .plugin-distribution .menu-logo {

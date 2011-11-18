@@ -5,17 +5,19 @@ class DistributionPluginSession < ActiveRecord::Base
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 
   has_many :orders, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc'
+  has_many :orders_confirmed, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc',
+    :conditions => ['status = ?', 'confirmed']
   has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :order => 'id asc'
 
   has_many :from_products, :through => :products, :order => 'id asc'
   has_many :from_nodes, :through => :products
   has_many :to_nodes, :through => :products
 
-  has_many :ordered_suppliers, :through => :orders, :source => :suppliers
-  has_many :ordered_products, :through => :orders, :source => :products
-  has_many :ordered_session_products, :through => :orders, :source => :session_products, :uniq => true
-  has_many :ordered_distributed_products, :through => :orders, :source => :distributed_products, :uniq => true
-  has_many :ordered_supplier_products, :through => :orders, :source => :supplier_products, :uniq => true
+  has_many :ordered_suppliers, :through => :orders_confirmed, :source => :suppliers
+  has_many :ordered_products, :through => :orders_confirmed, :source => :products
+  has_many :ordered_session_products, :through => :orders_confirmed, :source => :session_products, :uniq => true
+  has_many :ordered_distributed_products, :through => :orders_confirmed, :source => :distributed_products, :uniq => true
+  has_many :ordered_supplier_products, :through => :orders_confirmed, :source => :supplier_products, :uniq => true
 
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.node.sessions }
