@@ -79,6 +79,9 @@ body.plugin-distribution {
   text-transform: uppercase;
   font-size: 13px;
 }
+.plugin-distribution form {
+  margin: 0; /* come on browsers!? */
+}
 .plugin-distribution select,
 .plugin-distribution input[type=text],
 .plugin-distribution textarea {
@@ -696,6 +699,10 @@ body.plugin-distribution {
 }
 .plugin-distribution .order-products-container {
   width: 400px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
 }
 .plugin-distribution .order-products {
   width: 100%;
@@ -1389,10 +1396,10 @@ body.plugin-distribution {
 .plugin-distribution #orders-view .consumer-orders a {
   float: left;
   padding-right: 8px;
+  text-decoration: none;
 }
 .plugin-distribution #orders-view .consumer-orders a div {
   font-size: 10px;
-  text-decoration: none;
   color: black;
 }
 
@@ -1419,9 +1426,20 @@ body.plugin-distribution {
   padding-left: 24px;
 }
 .plugin-distribution .orders .status-open.order-message-title div {
-  background: url(images/order-statuses.png) 0px -19px no-repeat;
+  background: url(images/order-statuses.png) 0px -25px no-repeat;
   padding-left: 24px;
   margin-bottom: 0;
+}
+.plugin-distribution #orders-view .order-message-title div {
+  background-size: 11px 30px;
+}
+.plugin-distribution #orders-view .status-confirmed.order-message-title div {
+  padding-left: 20px;
+  background-position: 0 4px;
+}
+.plugin-distribution #orders-view .status-open.order-message-title div {
+  padding-left: 20px;
+  background-position: 0 -14px;
 }
 
 
@@ -1431,10 +1449,6 @@ body.plugin-distribution {
 
 .plugin-distribution #order-page {
   margin-left: -20px;
-}
-
-.plugin-distribution #order-page .in-order {
-  background-color: #fff2a3;
 }
 
 .plugin-distribution #order-column {
@@ -1450,6 +1464,14 @@ body.plugin-distribution {
 .plugin-distribution #order-column h3 a {
   text-transform: lowercase;
   float: right;
+}
+
+.plugin-distribution #order-column .consumer-order,
+.plugin-distribution #order-page .in-order {
+  background-color: #fff2a3;
+}
+.plugin-distribution #order-column .consumer-order {
+  margin-bottom: 10px;
 }
 
 .plugin-distribution #order-column #order-admin-warning {
@@ -1477,6 +1499,12 @@ body.plugin-distribution {
   border-top: 1px dotted black;
   border-bottom: none;
 }
+.plugin-distribution #order-column .order-products-container.empty {
+  border-top: 1px dotted black;
+  text-align: center;
+  padding: 8px;
+  font-size: 10px;
+}
 
 .plugin-distribution #order-column #close-order,
 .plugin-distribution #order-column #desist-order {
@@ -1484,18 +1512,21 @@ body.plugin-distribution {
   margin-bottom: 8px;
 }
 
-.plugin-distribution #order-column .in-order #delivery-box {
-  border-top: 3px solid black;
+.plugin-distribution #order-column #delivery-box {
+  border-top: 2px solid black;
   width: auto;
   padding: 10px;
 }
-.plugin-distribution #order-column .in-order #delivery-box select {
+.plugin-distribution #order-column #delivery-box h3 {
+  margin-top: 0;
+}
+.plugin-distribution #order-column #delivery-box select {
   text-size: 10px;
 }
-.plugin-distribution #order-column .in-order #delivery-box div {
+.plugin-distribution #order-column #delivery-box div {
   margin-bottom: 10px;
 }
-.plugin-distribution #order-column .in-order .quantity-entry input {
+.plugin-distribution #order-column .quantity-entry input {
   width: 76px;
 }
 

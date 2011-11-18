@@ -1,8 +1,8 @@
 <div id="order-page" class="orders page session-view">
 
-  <%= render :partial => 'distribution_plugin_session/view_header', :locals => {:session => @order.session} %>
+  <%= render :partial => 'distribution_plugin_session/view_header', :locals => {:session => @session} %>
 
-  <%= render :partial => 'distribution_plugin_session/view_products', :locals => {:session => @order.session, :order => @order} %>
+  <%= render :partial => 'distribution_plugin_session/view_products', :locals => {:session => @session, :order => @order} %>
 
   <div id="order-column">
     <h3>
@@ -10,7 +10,7 @@
         <%= _("Orders from \"%{consumer}\" on this cycle") % {:consumer => @consumer.name} %>
       <% else %>
         <%= _("Your orders on this cycle") %>
-        <%= link_to _('new order'), {:controller => :distribution_plugin_order, :action => :new} %>
+        <%= link_to _('new order'), {:controller => :distribution_plugin_order, :action => :new, :session_id => @session.id} if @session.orders? %>
       <% end %>
     </h3>
 
@@ -23,7 +23,7 @@
             :consumer => @consumer.name } %>
         </div>
         <div class="order-message-actions">
-          <%= link_to _('Edit your orders'), {:controller => :distribution_plugin_order, :action => :edit, :id => @user_node.id} %>&emsp;
+          <%= link_to _('Edit your orders'), {:controller => :distribution_plugin_order, :action => :edit, :session_id => @session.id} %>&emsp;
           <%# link_to _('Orders from another member'), {:controller => :distribution_plugin_order, :action => :reopen, :id => @order.id} %>
           <%= link_to _('Administration of this cycle'), {:controller => :distribution_plugin_session, :action => :edit, :id => @session.id} %>&emsp;
         </div>
@@ -31,40 +31,41 @@
     <% end %>
 
     <% @session.orders.for_consumer(@consumer).each do |order| %>
+      <div id="consumer-order-<%= order.id %>" class="consumer-order <%= "edit" if @order == order %>">
 
-      <%= render :partial => 'order_status', :locals => {:order => @order} %>
-      <% next unless @order == order %>
+        <%= render :partial => 'status', :locals => {:order => order} %>
 
-      <% unless @order.open? %>
-        <div id="order-status-message" class="order-message status-<%= @order.current_status %>">
-          <div class="order-message-text">
-            <% if @order.confirmed? %>
-              <%= _("Your order is confirmed and registered. Please follow the guidelines of the delivery method below, so that it happens without problems.") %>
-            <% else %>
-              <%= _("Your order wasn't confirmed and the cycle orders period already ended.") %>
-            <% end %>
+        <% if @order == order %>
+          <% unless order.open? %>
+            <div id="order-status-message" class="order-message status-<%= order.current_status %>">
+              <div class="order-message-text">
+                <% if order.confirmed? %>
+                  <%= _("Your order is confirmed and registered. Please follow the guidelines of the delivery method below, so that it happens without problems.") %>
+                <% else %>
+                  <%= _("Your order wasn't confirmed and the cycle orders period already ended.") %>
+                <% end %>
+              </div>
+              <div class="order-message-actions">
+                <div><%= _('You still can:') %></div>
+                <% if @session.orders? %>
+                  <%= link_to _('change order'), {:controller => :distribution_plugin_order, :action => :reopen, :id => order.id}  %>
+                  <%= _('(before the closing)') %>&emsp;
+                <% end %>
+                <%= lightbox_link_to _('send message to the managers'), {:controller => :distribution_plugin_message, :action => :new_to_admins} %>
+              </div>
+            </div>
+          <% end %>
+
+          <div id="order-products">
+            <%= render :partial => 'products', :locals => {:order => order} %>
           </div>
-          <div class="order-message-actions">
-            <div><%= _('You still can:') %></div>
-            <% if @order.session.orders? %>
-              <%= link_to _('change order'), {:controller => :distribution_plugin_order, :action => :reopen, :id => @order.id}  %>
-              <%= _('(before the closing)') %>&emsp;
-            <% end %>
-            <%= lightbox_link_to _('send message to the managers'), {:controller => :distribution_plugin_message, :action => :new_to_admins} %>
+
+          <div id="delivery-box">
+            <%= render :partial => 'delivery', :locals => {:order => order, :method => order.supplier_delivery} %>
           </div>
-        </div>
-      <% end %>
 
-      <div class="in-order">
-        <div id="order-products">
-          <%= render :partial => 'products', :locals => {:order => @order} %>
-        </div>
-
-        <div id="delivery-box">
-          <%= render :partial => 'delivery', :locals => {:order => @order, :method => @order.supplier_delivery} %>
-        </div>
-
-        <div class="cleaner"></div>
+          <div class="cleaner"></div>
+        <% end %>
       </div>
     <% end %>
   </div>
@@ -73,6 +74,10 @@
   <% javascript_tag do %>
     jQuery(document).ready(function() {
       jQuery('#order-column').waypoint(function(event, direction) {
+        if (jQuery(window).height() <= jQuery(this).height()) {
+          jQuery(this).removeClass('sticky');
+          return;
+        }
         jQuery(this).css('left', jQuery(this).offset().left).toggleClass('sticky', direction == 'down');
         jQuery(this).parents('.page').css('margin-bottom', jQuery(this).height());
       }, {});

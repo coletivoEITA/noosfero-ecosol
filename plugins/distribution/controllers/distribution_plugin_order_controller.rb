@@ -16,6 +16,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
   def edit
     if params[:session_id]
       @session = DistributionPluginSession.find params[:session_id]
+      @consumer = @user_node
     else
       @order = DistributionPluginOrder.find_by_id params[:id]
       @session = @order.session

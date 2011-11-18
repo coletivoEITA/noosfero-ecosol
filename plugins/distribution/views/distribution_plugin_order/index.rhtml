@@ -20,7 +20,7 @@
           <div class="consumer-orders">
             <% orders.each do |order| %>
               <a href="<%= url_for :action => :edit, :id => order.id %>">
-                <%= render :partial => 'order_status', :locals => {:order => order} %>
+                <%= render :partial => 'status', :locals => {:order => order} %>
               </a>
             <% end %>
 

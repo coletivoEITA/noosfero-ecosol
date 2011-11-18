@@ -2,4 +2,7 @@
   <div>
     <%= _("%{code} %{status_message}") % { :code => order.code, :status_message => order.status_message } %>
   </div>
+
+  <% if @order != order %>
+  <% end %>
 </div>
