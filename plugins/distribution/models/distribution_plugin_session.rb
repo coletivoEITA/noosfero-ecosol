@@ -20,6 +20,8 @@ class DistributionPluginSession < ActiveRecord::Base
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.node.sessions }
 
+  named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year desc'
+
   named_scope :not_new, :conditions => ["status <> 'new'"]
   named_scope :open, lambda {
     {:conditions => ["status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) )",
@@ -32,6 +34,11 @@ class DistributionPluginSession < ActiveRecord::Base
   named_scope :by_month, lambda { |date| {
     :conditions => [ ':start BETWEEN start AND finish OR :finish BETWEEN start AND finish',
       { :start => date.to_time, :finish => date.to_time.change(:month => date.month+1)-1 }
+    ]}
+  }
+  named_scope :by_year, lambda { |year| {
+    :conditions => [ 'start BETWEEN :start AND :finish',
+      { :start => Time.mktime(year), :finish => Time.mktime(year.to_i+1) }
     ]}
   }
   named_scope :by_range, lambda { |range| {

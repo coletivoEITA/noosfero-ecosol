@@ -52,10 +52,10 @@ class DistributionPluginOrder < ActiveRecord::Base
     status == 'cancelled'
   end
   def forgotten?
-    !confirmed? && !session.orders?
+    draft? && !session.orders?
   end
   def open?
-    !confirmed? && session.orders?
+    draft? && session.orders?
   end
   def current_status
     return 'forgotten' if forgotten?

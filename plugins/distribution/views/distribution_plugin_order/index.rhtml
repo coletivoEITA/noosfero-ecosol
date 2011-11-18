@@ -1,7 +1,10 @@
 <div id="orders-view" class="orders page">
   <h2><%= _("Orders' cycles") %></h2>
 
-  <div>
+  <div id="years-filter">
+    <% @node.sessions_custom_order.years.each do |session| %>
+      <%= link_to session.year, {:action => :index, :year => session.year}, :class => (@year == session.year ? "current" : nil) %>
+    <% end %>
   </div>
 
   <% @sessions.each do |session| %>
@@ -14,7 +17,7 @@
       <%= render :partial => 'distribution_plugin_session/view_dates', :locals => {:session => session} %>
 
       <% orders = session.orders.for_consumer(@consumer) %>
-      <% if orders.count %>
+      <% if orders.count > 0 %>
         <div>
           <strong><%= _('Your orders:') %></strong>
           <div class="consumer-orders">
@@ -23,10 +26,11 @@
                 <%= render :partial => 'status', :locals => {:order => order} %>
               </a>
             <% end %>
-
             <div class="cleaner"></div>
           </div>
         </div>
+      <% else %>
+        <%= link_to _('Place an order'), {:controller => :distribution_plugin_order, :action => :new, :session_id => session.id}, :id => 'consumer-new-order' if session.orders? %>
       <% end %>
 
     </div>

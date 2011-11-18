@@ -4,7 +4,7 @@
 <div id="distribution-plugin-settings">
   <% form_for :node, @node, :url => {:controller => :distribution_plugin_node, :action => :settings}, :html => {:multipart => true} do |f| %>
     <%= labelled_field f, :activated, _('Collective Consumption Mode'),
-      labelled_radio(f, :role, _('Disabled'), nil) +
+      labelled_radio(f, :role, _('Disabled'), 'consumer') +
       labelled_radio(f, :role, _('Activated'), 'collective') %>
   
       <%= labelled_field f, :name_abbreviation, _("Abbreviated name of the Collective"), f.text_field(:name_abbreviation),

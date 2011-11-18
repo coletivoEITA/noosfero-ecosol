@@ -2,12 +2,20 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
   no_design_blocks
 
   def index
-    @sessions = @node.sessions
+    @year = (params[:year] || DateTime.now.year).to_s
+    @sessions = @node.sessions.by_year @year
     @consumer = @user_node
   end
 
   def new
-    @consumer = DistributionPluginNode.find_by_profile_id current_user.person.id
+    @consumer = @user_node
+    @session = DistributionPluginSession.find params[:session_id]
+    @order = DistributionPluginOrder.create! :session => @session, :consumer => @consumer
+    redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
+  end
+
+  def admin_new
+    @consumer = DistributionPluginNode.find params[:consumer_id]
     @session = DistributionPluginSession.find params[:session_id]
     @order = DistributionPluginOrder.create! :session => @session, :consumer => @consumer
     redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
@@ -23,6 +31,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
       @consumer = @order.consumer
       @admin_edit = @user_node != @consumer
     end
+    @consumer_orders = @session.orders.for_consumer(@consumer)
   end
 
   def reopen

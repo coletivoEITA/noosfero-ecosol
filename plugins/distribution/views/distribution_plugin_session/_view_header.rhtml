@@ -6,7 +6,7 @@
 </div>
 
 <div id="session-header">
-  <h2><%=_("Orders cycle: %{cycle}") % {:cycle => content_tag(:strong, session.name_with_code)} %></h2>
+  <h2><%=_("Orders' cycle: %{cycle}") % {:cycle => content_tag(:strong, session.name_with_code)} %></h2>
 
   <%= render :partial => 'distribution_plugin_session/view_dates', :locals => {:session => session} %>
 

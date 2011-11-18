@@ -23,6 +23,8 @@ class DistributionPluginNode < ActiveRecord::Base
   has_many :from_nodes, :through => :products
   has_many :to_nodes, :through => :products
 
+  has_many :sessions_custom_order, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy, :conditions => ["status <> 'new'"]
+
   validates_presence_of :profile
   validates_associated :profile
   validates_inclusion_of :role, :in => ['supplier', 'collective', 'consumer']

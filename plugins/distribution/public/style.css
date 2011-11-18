@@ -1363,6 +1363,35 @@ body.plugin-distribution {
 
 /* ----- orders stuff  ----- */
 
+.plugin-distribution .orders #consumer-new-order {
+  font-weight: bold;
+}
+
+.plugin-distribution .orders #order-place-new {
+  font-size: 10px;
+  border: 1px solid #FFF0AD;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+.plugin-distribution .orders #order-place-new.admin {
+  font-size: 12px;
+  border: none;
+  float: right;
+  padding: 8px 0;
+  text-transform: lower;
+}
+
+.plugin-distribution .orders #years-filter {
+  margin-bottom: 30px;
+}
+.plugin-distribution .orders #years-filter a.current {
+  text-decoration: none;
+  color: black;
+}
+.plugin-distribution .orders #years-filter a {
+  font-weight: bold;
+}
+
 .plugin-distribution .orders .orders-date.active {
   margin-left: -168px;
   display: inline-block;
@@ -1393,9 +1422,10 @@ body.plugin-distribution {
   border-top: 2px dotted #aaa;
 }
 
-.plugin-distribution #orders-view .consumer-orders a {
+.plugin-distribution #orders-view .consumer-orders > a {
   float: left;
-  padding-right: 8px;
+}
+.plugin-distribution #orders-view .consumer-orders a {
   text-decoration: none;
 }
 .plugin-distribution #orders-view .consumer-orders a div {
@@ -1406,12 +1436,19 @@ body.plugin-distribution {
 .plugin-distribution #orders-view .order-message-title {
   padding: 2px 8px;
 }
-
+.plugin-distribution .orders .order-message-title div {
+  float: left;
+}
+.plugin-distribution .orders .order-message-title a.open {
+  float: right;
+  font-weight: normal;
+}
 .plugin-distribution .orders .order-message-title {
   font-size: 13px;
   font-weight: bold;
   padding: 8px;
 }
+.plugin-distribution .orders .status-cancelled,
 .plugin-distribution .orders .status-forgotten {
   background-color: #FECBCA;
 }
@@ -1430,8 +1467,15 @@ body.plugin-distribution {
   padding-left: 24px;
   margin-bottom: 0;
 }
+.plugin-distribution #orders-view .order-message-title {
+  float: left;
+  margin-right: 10px;
+}
 .plugin-distribution #orders-view .order-message-title div {
   background-size: 11px 30px;
+}
+.plugin-distribution #orders-view .order-message-title a.open {
+  display: none;
 }
 .plugin-distribution #orders-view .status-confirmed.order-message-title div {
   padding-left: 20px;
@@ -1461,14 +1505,17 @@ body.plugin-distribution {
   top: 0;
   margin: 0;
 }
-.plugin-distribution #order-column h3 a {
+.plugin-distribution #order-column > h3 {
+  padding: 0 8px;
+}
+.plugin-distribution #order-column > h3 a {
   text-transform: lowercase;
   float: right;
 }
 
 .plugin-distribution #order-column .consumer-order,
 .plugin-distribution #order-page .in-order {
-  background-color: #fff2a3;
+  background-color: #FFF2A3;
 }
 .plugin-distribution #order-column .consumer-order {
   margin-bottom: 10px;
@@ -1526,6 +1573,10 @@ body.plugin-distribution {
 .plugin-distribution #order-column #delivery-box div {
   margin-bottom: 10px;
 }
+.plugin-distribution #order-column #delivery-box input[type=submit] {
+  min-width: 160px;
+}
+
 .plugin-distribution #order-column .quantity-entry input {
   width: 76px;
 }
