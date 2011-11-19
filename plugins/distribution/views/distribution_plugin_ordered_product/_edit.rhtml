@@ -3,22 +3,25 @@
 
     <%= f.hidden_field :id %>
 
-    <div class="box-field supplier"><%= product.supplier.name %></div>
-    <div class="box-field product"><%= product.name %></div>
+    <%# keep this div for first-child to work %>
+    <div>
+      <div class="box-field supplier"><%= product.supplier.name %></div>
+      <div class="box-field product"><%= product.name %></div>
   
-    <% if ordered_product.order.open? %>
-      <div id=<%="product-quantity-#{ordered_product.id.to_s}"%> class="box-field product-quantity">
-        <%= render :partial => "distribution_plugin_ordered_product/quantity", :locals => {:product => ordered_product, :f => f} %>
+      <% if ordered_product.order.open? %>
+        <div id=<%="product-quantity-#{ordered_product.id.to_s}"%> class="box-field product-quantity">
+          <%= render :partial => "distribution_plugin_ordered_product/quantity", :locals => {:product => ordered_product, :f => f} %>
+        </div>
+      <% else %>
+        <div class="box-field product-quantity">
+          <span><%= ordered_product.quantity_asked %></span>
+          <span class="lower"><%= product.unit.singular %></span>
+        </div>
+      <% end %>
+    
+      <div id=<%="product-price-total-#{ordered_product.id.to_s}"%> class="box-field price-total">
+        <%= render :partial => "distribution_plugin_ordered_product/price_total", :locals => {:product => ordered_product} %>
       </div>
-    <% else %>
-      <div class="box-field product-quantity">
-        <span><%= ordered_product.quantity_asked %></span>
-        <span class="lower"><%= product.unit.singular %></span>
-      </div>
-    <% end %>
-  
-    <div id=<%="product-price-total-#{ordered_product.id.to_s}"%> class="box-field price-total">
-      <%= render :partial => "distribution_plugin_ordered_product/price_total", :locals => {:product => ordered_product} %>
     </div>
   
     <div class="more-actions" style="display: none">

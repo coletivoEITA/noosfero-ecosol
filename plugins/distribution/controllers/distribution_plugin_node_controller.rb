@@ -3,9 +3,11 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
   before_filter :set_admin_action, :only => [:index]
 
   def index
-    redirect_to :controller => :distribution_plugin_session, :action => :index
-    #self.class.no_design_blocks
-    #@suppliers = @node.suppliers - [@node.self_supplier]
+    if @node.profile.admins.include? @user_node.profile
+      redirect_to :controller => :distribution_plugin_session, :action => :index
+    else
+      redirect_to :controller => :distribution_plugin_order, :action => :index
+    end
   end
 
   def edit
@@ -36,6 +38,13 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
 
         block = DistributionPlugin::OrderBlock.create! :box => box
         block.move_to_top
+      end
+
+      link = url_for :controller => :distribution_plugin_node, :action => :index, :profile => @node.profile.identifier, :only_path => true
+      link_list = @node.profile.blocks.select{ |b| b.class.name == 'LinkListBlock' }.first
+      if link_list and not link_list.links.map{ |l| l[:address] }.include?(link)
+        link_list.links = [{:name => _("Consumers' Collective"), :address => link, :icon => 'nil'}] + link_list.links
+        link_list.save!
       end
     end
   end

@@ -252,9 +252,12 @@ body.plugin-distribution {
 
 .plugin-distribution .box-field {
   float: left;
-  margin-right: 10px;
   min-height: 1px;
   overflow: hidden;
+  margin-left: 10px;
+}
+.plugin-distribution .box-field:first-child {
+  margin-left: 0;
 }
 
 .plugin-distribution .box-field.box-edit-link {
@@ -770,7 +773,6 @@ body.plugin-distribution {
 .plugin-distribution .ordered-product .box-field.price-total,
 .plugin-distribution .ordered-product .more-actions .box-field.price-with-unit {
   float: right;
-  margin-right: 0;
   text-align: right;
 }
 .plugin-distribution .ordered-product.edit {
@@ -1277,12 +1279,11 @@ body.plugin-distribution {
   width: 330px;
   position: relative;
 }
-.plugin-distribution .session-view #session-products-for-order .box-edit .box-field.product-image {
+.plugin-distribution .session-view #session-products-for-order .box-edit .product-image {
   width: 100px;
 }
 .plugin-distribution .session-view #session-products-for-order .box-field.quantity {
   width: 102px;
-  margin-right: 0;
 }
 .plugin-distribution .session-view #session-products-for-order .box-field.stock {
   width: 80px;
@@ -1312,7 +1313,7 @@ body.plugin-distribution {
   font-size: 10px;
 }
 .plugin-distribution .session-view #session-products-for-order .box-edit .box-field.quantity a {
-  margin-left: 10px;
+  margin-left: 8px;
   font-size: 12px;
 }
 .plugin-distribution .session-view #session-products-for-order .box-field.quantity input {
@@ -1343,13 +1344,13 @@ body.plugin-distribution {
 .plugin-distribution .session-view #session-products-for-order .box-edit  {
   height: 120px;
 }
-.plugin-distribution .session-view #session-products-for-order .box-edit .box-field.product-image {
+.plugin-distribution .session-view #session-products-for-order .box-edit .product-image {
   height: 100px;
-  margin-bottom: 23px;
+  margin-bottom: 26px;
   background-color: #12AF60;
   color: #FFF;
   text-align: left;
-  padding-left: 8px;
+  padding: 0 8px;
 }
 
 .plugin-distribution .session-view #session-products-for-order .box-edit .box-field.quantity {
