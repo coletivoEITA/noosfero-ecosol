@@ -5,7 +5,7 @@ class DistributionPluginSupplier < ActiveRecord::Base
   named_scope :from_node, lambda { |n| { :conditions => {:node_id => n.id} } }
   named_scope :from_node_id, lambda { |id| { :conditions => {:node_id => id} } }
 
-  has_many :supplied_products, :foreign_key => 'supplier_id', :class_name => 'DistributionPluginProduct', :dependent => :destroy
+  has_many :supplied_products, :foreign_key => 'supplier_id', :class_name => 'DistributionPluginProduct'
 
   validates_presence_of :node
   validates_presence_of :consumer

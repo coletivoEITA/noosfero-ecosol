@@ -1,3 +1,6 @@
+require_dependency 'ext/profile'
+require_dependency 'ext/community'
+
 class DistributionPlugin < Noosfero::Plugin
 
   def self.plugin_name
