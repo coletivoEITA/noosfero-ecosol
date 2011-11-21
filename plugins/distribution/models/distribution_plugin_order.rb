@@ -81,11 +81,19 @@ class DistributionPluginOrder < ActiveRecord::Base
     supplier_delivery and supplier_delivery.deliver?
   end
 
-  def total_quantity_asked
-    products.sum(:quantity_asked)
+  def total_quantity_asked(dirty = false)
+    if dirty
+      products.collect(&:quantity_asked).inject{ |sum,q| sum+q }
+    else
+      products.sum(:quantity_asked)
+    end
   end
-  def total_price_asked
-    products.sum(:price_asked)
+  def total_price_asked(dirty = false)
+    if dirty
+      products.collect(&:price_asked).inject{ |sum,q| sum+q }
+    else
+      products.sum(:price_asked)
+    end
   end
   def parcel_quantity_total
     #TODO

@@ -13,7 +13,10 @@
 
   <div id='session-orders-draft' class="session-orders box-align">
     <div class="order-header">
-      <span class="order-label"><%= _('Open Orders (%{count})') % {:count => @session.orders.draft.count} %></span>
+      <span class="order-label">
+        <%= (@session.orders? ? _('Open Orders (%{count})') : _('Cancelled Orders (%{count})')) % {:count => @session.orders.draft.count} %>
+      </span>
+
       <%= edit_arrow "#", false, :onclick => 'distribution_in_session_order_toggle(this); return false;', :class => "box-field" %>
       <div class="line"></div>
     </div>
@@ -27,6 +30,7 @@
   <div id='session-orders-confirmed' class="session-orders box-align show">
     <div class="order-header">
       <span class="order-label"><%= _('Closed Orders (%{count})') % {:count => @session.orders.confirmed.count} %></span>
+
       <%= edit_arrow "#", false, :onclick => 'distribution_in_session_order_toggle(this); return false;', :class => "box-field edit" %>
       <div class="line"></div>
     </div>
@@ -41,67 +45,5 @@
 </div>
 
 <div id='session-products-sums'>
-  <h3><%= _("Products' totals") %></h3>
-
-  <% sums = @session.ordered_products_by_suppliers %>
-  <% if sums.count == 0 %>
-    <span class="subtitle box-align"><%= _('No product ordered') %></span>
-  <% else %>
-    <% sums.each do |supplier, products, total_price_asked, total_parcel_price| %>
-      <div class="order-products-by-supplier box-align">
-        <div class="inner-box">
-          <div class="supplier-name"><%= supplier.name %></div>
-
-          <div class="products-header subtitle">
-            <span class="box-field product"><%= _('Product') %></span>
-            <span class="box-field total-asked"><%= _('Total asked') %></span>
-            <span class="box-field unit"><%= _('Unit') %></span>
-            <span class="box-field sell-value"><%= _('Sell value') %></span>
-            <span class="box-field forecast-parcel"><%= _('Forecast parcel') %></span>
-            <span class="box-field forecast-parcel-value"><%= _('Forecast value') %></span>
-
-            <div class="cleaner"></div>
-          </div>
-
-          <div class="supplier-products">
-            <% products.each do |p| %>
-              <% next unless p.total_quantity_asked > 0 %>
-              <div class="session-ordered-product subtitle">
-                <span class="box-field product"><%= p.name %></span>
-                <span class="box-field total-asked"><%= p.total_quantity_asked %></span>
-                <span class="box-field unit"><%= p.unit.singular %></span>
-                <span class="box-field sell-value"><%= price_span p.total_price_asked %></span>
-                <span class="box-field forecast-parcel"><%= p.total_parcel_quantity %></span>
-                <span class="box-field forecast-parcel-value"><%= price_span p.total_parcel_price %></span>
-
-                <div class="cleaner"></div>
-              </div>
-            <% end %>
-
-            <div class="cleaner"></div>
-          </div>
-
-          <div class="supplier-total">
-            <span class="box-field product"><%= _('Totals') %></span>
-            <span class="box-field total-asked"></span>
-            <span class="box-field unit"></span>
-            <span class="box-field sell-value"><%= price_span total_price_asked %></span>
-            <span class="box-field forecast-parcel"></span>
-            <span class="box-field forecast-parcel-value"><%= price_span total_parcel_price %></span>
-          </div>
-        </div>
-
-        <div class="actions-bar">
-          <%# link_to_function _('do prelimary parcel'), '' %>
-          <%= lightbox_link_to _('message to the supplier'), {:controller => :distribution_plugin_message, :action => :new_to_supplier, :supplier_id => supplier.id} %>
-
-          <strong><%= _('Actions') %></strong>
-
-          <div class="cleaner"></div>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
-
-  <div style="clear: both"></div>
+  <%= render :partial => 'orders_suppliers', :locals => {:session => @session} %>
 </div>

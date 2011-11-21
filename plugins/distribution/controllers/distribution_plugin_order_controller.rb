@@ -1,6 +1,8 @@
 class DistributionPluginOrderController < DistributionPluginMyprofileController
   no_design_blocks
 
+  before_filter :set_admin_action, :only => [:session_edit]
+
   def index
     @year = (params[:year] || DateTime.now.year).to_s
     @sessions = @node.sessions.by_year @year
@@ -78,31 +80,35 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
 
   def session_edit
     @order = DistributionPluginOrder.find params[:id]
-    a = {}; @order.products.map{ |p| a[p.id] = p }
-    b = {}; params[:order][:products].map do |key, attrs|
-      p = DistributionPluginOrderedProduct.new attrs
-      p.id = attrs[:id]
-      b[p.id] = p
+
+    if @order.session.orders?
+      a = {}; @order.products.map{ |p| a[p.id] = p }
+      b = {}; params[:order][:products].map do |key, attrs|
+        p = DistributionPluginOrderedProduct.new attrs
+        p.id = attrs[:id]
+        b[p.id] = p
+      end
+
+      removed = a.values.map do |p|
+        p if b[p.id].nil?
+      end.compact
+      changed = b.values.map do |p|
+        pa = a[p.id]
+        if pa and p.quantity_asked != pa.quantity_asked
+          pa.quantity_asked = p.quantity_asked
+          pa
+        end
+      end.compact
+
+      changed.each{ |p| p.save! }
+      removed.each{ |p| p.destroy }
     end
 
-    removed = a.values.map do |p|
-      p if b[p.id].nil?
-    end.compact
-    changed = b.values.map do |p|
-      pa = a[p.id]
-      if pa and p.quantity_asked != pa.quantity_asked
-        pa.quantity_asked = p.quantity_asked
-        pa
-      end
-    end.compact
-
-    if params[:warn_consumer] and !changed.blank? and !removed.blank?
+    if params[:warn_consumer]
       message = (params[:include_message] and !params[:message].blank?) ? params[:message] : nil
       DistributionPlugin::Mailer.deliver_order_change_notification @node, @order, changed, removed, message
     end
 
-    changed.each{ |p| p.save! }
-    removed.each{ |p| p.destroy }
   end
 
   protected

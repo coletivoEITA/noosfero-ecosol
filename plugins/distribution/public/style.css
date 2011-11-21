@@ -202,7 +202,7 @@ body.plugin-distribution {
 
 .plugin-distribution .table-header {
   width: 100%;
-  padding: 8px 0;
+  padding: 8px;
   background-color: #B1DFEF;
   font-size: 11px;
   color: #000;
@@ -219,7 +219,7 @@ body.plugin-distribution {
 .plugin-distribution .value-row {
   border-bottom: 1px dotted #ccc;
   width: 100%;
-  padding: 10px 8px;
+  padding: 8px;
 }
 .plugin-distribution .value-row:last-child {
   border-bottom: 1px dotted transparent;
@@ -653,6 +653,10 @@ body.plugin-distribution {
 }
 .plugin-distribution .in-session-order .box-edit form {
   padding: 0 16px 0 240px;
+  width: 400px;
+}
+.plugin-distribution .in-session-order .box-edit textarea {
+  width: 100%;
 }
 .plugin-distribution .in-session-order .box-edit input[type=checkbox] {
   float: left;
@@ -713,13 +717,17 @@ body.plugin-distribution {
 .plugin-distribution .order-products {
   width: 100%;
 }
-.plugin-distribution .order-products-container #total-box {
+.plugin-distribution .order-products-container .order-total {
   width: 100%;
   text-align: right;
   text-transform: uppercase;
-  padding: 5px 0 8px 0;
+  padding: 5px 8px;
   border-top: 1px solid black;
   float: right;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
 }
 .plugin-distribution .order-products-container .total-title {
   width: 278px;

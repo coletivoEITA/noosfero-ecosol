@@ -25,6 +25,9 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
   def admin_edit
     @ordered_product = DistributionPluginOrderedProduct.find params[:id]
     @order = @ordered_product.order
+    #update on association for total
+    @order.products.each{ |p| p.attributes = params[:ordered_product] if p.id == @ordered_product.id }
+    @ordered_product.attributes = params[:ordered_product]
   end
 
   def destroy

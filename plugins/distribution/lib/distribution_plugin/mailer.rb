@@ -20,9 +20,10 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
   def order_confirmation(order)
     node = order.session.node
     domain = node.profile.hostname || node.profile.environment.default_hostname
+    recipients    profile_recipients(order.consumer.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       _("[%{node}]Your order was confirmed") % {:node => node.name}
+    subject       _("[%{node}] Your order was confirmed") % {:node => node.name}
     content_type  'text/html'
     body :node => node,
          :order => order,

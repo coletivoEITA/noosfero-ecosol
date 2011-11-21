@@ -29,7 +29,7 @@
             <%= labelled_field f, :description, _('Description'), f.text_area(:description, :oldvalue => product.own_description) %>
 
             <div class="category-edit">
-              <%= labelled_field f, :category_id, _('Category'), f.text_field(:category_id) %>
+              <%= labelled_field f, :category, _('Category'), f.text_field(:category_id) %>
 
               <div class="category-hierarchy">
                 <script class="category-hierarchy" type="text/html">
@@ -46,7 +46,7 @@
 
               <div class="category-selected" style="display: none">
                 <small><%= _('This product is already categorized. In case you want to change its category,
-                             click above or %{search}') % {:search => link_to_function(_('search for another category'), 'distribution_category_select_another(this);')} %></small>
+                             click above or %{search}.') % {:search => link_to_function(_('search for another category'), 'distribution_category_select_another(this);')} %></small>
               </div>
 
               <div class="category-type-select">

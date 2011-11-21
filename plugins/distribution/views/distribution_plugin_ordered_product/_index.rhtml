@@ -8,7 +8,7 @@
       <% end %>
     </div>
 
-    <div id="total-box">
+    <div id="order-total-<%=order.id%>" class="order-total">
       <%= render :partial => 'distribution_plugin_order/total', :locals => {:order => order} %>
     </div>
   <% else %>

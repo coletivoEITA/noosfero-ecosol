@@ -1,3 +1,5 @@
+<% dirty = false unless defined? dirty %>
+
 <div class="box-field total-title"><%= _("Total") %></div>
-<div class="box-field total-value"><%= price_span order.products.sum(:price_asked) %></div>
+<div class="box-field total-value"><%= price_span order.total_price_asked(dirty) %></div>
 <div class="cleaner"></div>
