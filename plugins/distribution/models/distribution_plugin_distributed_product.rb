@@ -34,7 +34,8 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
   def self.json_for_category(c)
     {
       :id => c.id.to_s, :name => c.full_name(_(' > ')), :own_name => c.name,
-      :hierarchy => c.hierarchy.map{ |c| {:id => c.id.to_s, :name => c.name} },
+      :hierarchy => c.hierarchy.map{ |c| {:id => c.id.to_s, :name => c.name, :own_name => c.name,
+        :subcats => c.children.map{ |hc| {:id => hc.id.to_s, :name => hc.name} }} },
       :subcats => c.children.map{ |c| {:id => c.id.to_s, :name => c.name} },
     }
   end

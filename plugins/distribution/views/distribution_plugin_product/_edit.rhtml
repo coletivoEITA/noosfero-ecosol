@@ -34,8 +34,10 @@
               <div class="category-hierarchy">
                 <script class="category-hierarchy" type="text/html">
                   {{ _.each(cat.hierarchy, function(cat) { }}
-                    <a href=" " onclick="distribution_category_select({{=JSON.stringify(cat)}}); return false;">{{=cat.name}}</a>
-                    <%= _(' > ') %>
+                    <span class="category">
+                      <a href=" " onclick='distribution_category_reselect(this, {{=JSON.stringify(cat)}}); return false;'>{{=cat.name}}</a>
+                      <%= _(' > ') %>
+                    </span>
                   {{ }); }}
                   <a href=" " class="type" onclick="distribution_category_reselect_sub(); return false;"></a>
                 </script>
@@ -68,7 +70,9 @@
                 {searchDelay: 300, tokenLimit: 1, theme: 'distribution', preventDuplicates: true, <%= jquery_token_input_messages_json('') %>,
                 onAdd: distribution_category_select });
 
-                console.log('blah');
+                // token input cleans the preexistent value :(
+                jQuery("#our-product-<%=product.id%> #product_category_id").val("<%=product.category_id%>");
+
                 <% if product.category %>
                   edit = jQuery("#our-product-<%=product.id%> .category-edit");
                   category = <%= product.json_for_category.to_json %>;

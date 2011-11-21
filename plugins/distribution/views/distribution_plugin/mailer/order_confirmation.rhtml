@@ -33,8 +33,10 @@
     <pre>------------------------------------------------------------------
     <%= _('Products list') %>
     ------------------------------------------------------------------
+    </pre>
     <% @order.products.group_by{|op| op.supplier}.each do |supplier, products| %>
       <%= supplier.name + ':\n' %>
+      <table>
       <% products.each do |p| %>
         <%
           name_spaces = 23 - p.product.name.size
@@ -43,12 +45,18 @@
           quantity_spaces = 0 if quantity_spaces < 0
           price_spaces = 14 - p.product.price.to_s.size + 1 + p.product.unit.plural.size
           price_spaces = 0 if price_spaces < 0
-        %>
-        <%= "%{name}%{name_spaces}%{quantity} %{unit}%{quantity_spaces}R$ %{price}/%{unit}%{price_spaces}%{price_asked}\n" %
-        {:name => p.product.name, :name_spaces => ' '*name_spaces, :quantity => p.quantity_asked,
-          :quantity_spaces => ' '*quantity_spaces, :price => p.product.price,
-          :price_spaces => ' '*price_spaces, :price_asked => p.price_asked} %>
+          %>
+        <tr><td><pre>
+          <%= "%{name}" % {:name => p.product.name} %>
+        </pre</td><td><pre>
+          <%="%{quantity} %{unit}" % {:quantity => p.quantity_asked}%>
+        </pre</td><td><pre>
+          <%= "R$ %{price}/%{unit}" % {:price => p.product.price} %>
+        </pre</td><td><pre>
+          <%= "%{price_asked}\n" % {:price_asked => p.price_asked} %>
+        </pre</td><td><pre>
       <% end %>
+      </table>
     <% end %>
     ------------------------------------------------------------------
     <%

@@ -49,8 +49,8 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     raise "Cycle's orders period already ended" unless @order.session.orders?
     @order.update_attributes! params[:order].merge(:status => 'confirmed')
 
-    session[:notice] = _('Order confirmed')
     DistributionPlugin::Mailer.deliver_order_confirmation @order
+    session[:notice] = _('Order confirmed')
     redirect_to :action => :edit, :id => @order.id
   end
 

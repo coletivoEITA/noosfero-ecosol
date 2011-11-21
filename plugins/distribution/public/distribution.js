@@ -80,6 +80,16 @@ function distribution_category_select_another(context) {
   distribution_category_toggle_view(edit, 0);
 }
 
+function distribution_category_reselect(context, item) {
+  jQuery(context).parents('.category').nextAll('.category').remove();
+  jQuery(context).parents('.category').siblings('.type').text('');
+  edit = jQuery(context).parents('.category-edit');
+  edit.find('#product_category_id').val(item.id);
+  category = item;
+  distribution_category_template_type_select(edit);
+  distribution_category_toggle_view(edit, 2);
+}
+
 function distribution_category_template_hierarchy(edit) {
   edit.find('.category-hierarchy div').html(_.template(edit.find('.category-hierarchy script').html(), {cat: category}));
 }
