@@ -1,5 +1,5 @@
 <div class="box-view">
-  <span class='box-field category'><%= p.product.product_category.name if p.product %></span>
+  <span class='box-field category'><%= p.category.name if p.category %></span>
   <span class='box-field supplier'><%= p.supplier.name %></span>
   <span class='box-field name box-edit-link'><%= p.name %></span>
   <span class="box-field price"><%= price_span(p.price) %></span>

@@ -1,6 +1,6 @@
 <div class="box-view">
   <div class="box-field status"><%= product.active ? _('Active') : _('Inactive') %></div>
-  <div class="box-field category"><%= product.product.product_category.name if product.product %></div>
+  <div class="box-field category"><%= product.category.name if product.category %></div>
   <div class="box-field supplier"><%= product.supplier.abbreviation_or_name %></div>
   <div class="box-field product box-edit-link"><%= product.name %></div>
   <div class="box-field price-with-unit"><%=  price_with_unit_span product.price, product.unit %></div>

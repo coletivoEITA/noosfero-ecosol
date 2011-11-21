@@ -41,7 +41,7 @@
       <div class="box-field category">
         <div><%# _('with the category') %></div>
         <div>
-          <%# select_tag :product_category_id, options_for_select(@product_categories.map{ |pc| [pc.name, pc.id]}.insert(0,[_("all the categories"), ""])),
+          <%# select_tag :category_id, options_for_select(@product_categories.map{ |pc| [pc.name, pc.id]}.insert(0,[_("all the categories"), ""])),
             {:onchange => "this.form.onsubmit()"} %>
         </div>
       </div>

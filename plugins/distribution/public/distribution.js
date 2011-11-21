@@ -48,6 +48,57 @@ function distribution_in_session_order_toggle(context) {
 
 /* ----- ends session stuff  ----- */
 
+/* ----- category select stuff  ----- */
+
+var category = null;
+
+function distribution_category_toggle_view(edit, view) {
+  edit.find('.category-selected').toggle(view == 1);
+  edit.find('.category-hierarchy').toggle(view != 0);
+  edit.find('.category-type-select').toggle(view == 2);
+  edit.find('.field-box').toggle(view == 0);
+  distribution_our_product_css_align();
+}
+
+function distribution_subcategory_select(context) {
+  edit = jQuery(context).parents('.category-edit');
+  option = context.options[context.selectedIndex];
+  edit.find('.category-hierarchy .type').text(jQuery(option).text());
+
+  distribution_category_toggle_view(edit, 1);
+}
+
+function distribution_category_reselect_sub() {
+  edit.find('.category-hierarchy .type').text('');
+  distribution_category_toggle_view(edit, 2);
+}
+
+function distribution_category_select_another(context) {
+  edit = jQuery(context).parents('.category-edit');
+  edit.find('#product_category_id').tokenInput('clear');
+
+  distribution_category_toggle_view(edit, 0);
+}
+
+function distribution_category_template_hierarchy(edit) {
+  edit.find('.category-hierarchy div').html(_.template(edit.find('.category-hierarchy script').html(), {cat: category}));
+}
+function distribution_category_template_type_select(edit, selected) {
+  edit.find('.category-type-select div').html(_.template(edit.find('.category-type-select script').html(), {cat: category, selected: selected}));
+  if (selected)
+    edit.find('select').get(0).onchange();
+}
+function distribution_category_select(item) {
+  category = item;
+  edit = jQuery(this).parents('.category-edit');
+  distribution_category_template_hierarchy(edit);
+  distribution_category_template_type_select(edit);
+
+  distribution_category_toggle_view(edit, 2);
+}
+
+/* ----- end category select stuff  ----- */
+
 /* ----- our products stuff  ----- */
 
 function distribution_our_product_toggle_referred(context) {
@@ -115,14 +166,20 @@ function distribution_our_product_pmsync(context, to_price) {
 }
 
 function distribution_our_product_css_align() {
-  var supplied = editing().find('.our-product-supplied-column');
   var distributed = editing().find('.our-product-distributed-column');
+  var use_original = editing().find('.our-product-use-original-column');
+  var supplied = editing().find('.our-product-supplied-column');
+
+  use_original.height(distributed.height());
+  supplied.height(distributed.height());
+
   if (supplied.length > 0)
     supplied.find('.price-block').css('top', distributed.find('.price-block').position().top);
-  //var use_original = editing().find('.our-product-use-original-column');
-  //use_original.find('input[type=checkbox]').each(function(index, checkbox) {
-    //jQuery(checkbox).css('top', distributed.position().top - jQuery(jQuery(checkbox).attr('for')).first().position().top);
-  //});
+
+  use_original.find('input[type=checkbox]').each(function(index, checkbox) {
+    checkbox = jQuery(checkbox);
+    checkbox.css('top', distributed.find(checkbox.attr('for')).first().position().top - use_original.find('.guideline').position().top);
+  });
 }
 
 /* ----- ends our products stuff  ----- */
@@ -346,3 +403,8 @@ Array.prototype.min = function(){
   return Math.min.apply({},this)
 }
 
+_.templateSettings = {
+  evaluate: /\{\{([\s\S]+?)\}\}/g,
+  interpolate: /\{\{=([\s\S]+?)\}\}/g,
+  escape: /\{\{-([\s\S]+?)\}\}/g
+}

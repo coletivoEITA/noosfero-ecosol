@@ -1,5 +1,7 @@
 require_dependency 'ext/profile'
 require_dependency 'ext/community'
+require_dependency 'ext/category'
+require_dependency 'ext/product'
 
 class DistributionPlugin < Noosfero::Plugin
 
@@ -24,7 +26,7 @@ class DistributionPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['distribution']
+    ['underscore-min.js', 'distribution']
   end
 
   def control_panel_buttons

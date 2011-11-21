@@ -79,6 +79,9 @@ body.plugin-distribution {
   text-transform: uppercase;
   font-size: 13px;
 }
+.plugin-distribution small {
+  font-size: 10px;
+}
 .plugin-distribution form {
   margin: 0; /* come on browsers!? */
 }
@@ -199,7 +202,7 @@ body.plugin-distribution {
 
 .plugin-distribution .table-header {
   width: 100%;
-  padding: 8px 8px;
+  padding: 8px 0;
   background-color: #B1DFEF;
   font-size: 11px;
   color: #000;
@@ -1152,10 +1155,11 @@ body.plugin-distribution {
   float: left;
   border-left: 1px solid black;
 }
-.plugin-distribution .our-product-distributed-column,
-.plugin-distribution .our-product-use-original-column,
-.plugin-distribution .our-product-supplied-column {
-  height: 420px;
+.plugin-distribution .our-product-columns {
+  min-height: 475px;
+  overflow: hidden;
+}
+.plugin-distribution .our-product-columns > div {
   position: relative;
 }
 
@@ -1163,13 +1167,13 @@ body.plugin-distribution {
   margin-top: 23px;
   font-weight: bold;
   font-style: normal;
+  margin-bottom: 4px;
 }
 .plugin-distribution .our-product-use-original-column .guideline {
   position: absolute;
-  left: 5px;
+  margin-left: 5px;
   border-left: 1px dotted black;
-  height: 500px;
-  margin-top: 4px;
+  height: 1000px;
 }
 .plugin-distribution .our-product-use-original-column .default-checkbox {
   margin: 0 !important;
@@ -1747,3 +1751,131 @@ body.plugin-distribution {
 
 /* ----- end calendrial stuff  ----- */
 
+/* ----- token input theme stuff  ----- */
+
+ul.token-input-list-distribution,
+div.token-input-dropdown-distribution {
+  width: 280px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+/* Example tokeninput style #1: Token vertical list*/
+ul.token-input-list-distribution {
+    overflow: hidden; 
+    height: auto !important; 
+    height: 1%;
+    border: 1px solid #999;
+    cursor: text;
+    font-size: 10px;
+    z-index: 1000;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    list-style-type: none;
+    clear: left;
+}
+
+ul.token-input-list-distribution li {
+    list-style-type: none;
+}
+
+ul.token-input-list-distribution li input {
+    border: 0;
+    width: 350px;
+    padding: 3px 8px;
+    background-color: white;
+    -webkit-appearance: caret;
+}
+
+li.token-input-token-distribution {
+    overflow: hidden; 
+    height: auto !important; 
+    height: 1%;
+    margin: 3px;
+    padding: 3px 5px;
+    background-color: #d0efa0;
+    color: #000;
+    font-weight: bold;
+    cursor: default;
+    display: block;
+}
+
+li.token-input-token-distribution p {
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+li.token-input-token-distribution span {
+    float: right;
+    color: #777;
+    cursor: pointer;
+}
+
+li.token-input-selected-token-distribution {
+    background-color: #08844e;
+    color: #fff;
+}
+
+li.token-input-selected-token-distribution span {
+    color: #bbb;
+}
+
+div.token-input-dropdown-distribution {
+    position: relative;
+    height: 250px;
+    max-height: 350px;
+    line-height: 15px;
+    background-color: #E5F4FB;
+    overflow: hidden;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    cursor: default;
+    font-size: 10px;
+    z-index: 1000;
+}
+
+div.token-input-dropdown-distribution p {
+    margin: 0;
+    padding: 5px;
+    font-weight: bold;
+    color: #777;
+}
+
+div.token-input-dropdown-distribution ul {
+    margin: 0;
+    padding: 0;
+}
+
+div.token-input-dropdown-distribution ul li {
+    background-color: #E5F4FB;
+    padding: 3px;
+    list-style-type: none;
+}
+
+div.token-input-dropdown-distribution ul li.token-input-dropdown-item-distribution {
+    background-color: #E5F4FB;
+}
+
+div.token-input-dropdown-distribution ul li.token-input-dropdown-item2-distribution {
+    background-color: #E5F4FB;
+}
+
+div.token-input-dropdown-distribution ul li em {
+    font-weight: bold;
+    font-style: normal;
+}
+
+div.token-input-dropdown-distribution ul li.token-input-selected-dropdown-item-distribution {
+    background-color: #d0efa0;
+}
+
+.token-input-blur-text-distribution {
+  font-style: italic;
+  color: #AAA;
+}
+
+/* ----- end token input theme stuff  ----- */

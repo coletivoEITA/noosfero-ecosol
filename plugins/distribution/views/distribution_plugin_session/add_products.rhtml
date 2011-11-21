@@ -17,9 +17,8 @@
         <%= text_field_tag 'products_id' %>
         <% javascript_tag do %>
           jQuery.TokenList(jQuery("#products_id"), <%= @missing_products.map { |p| {:id => p.id, :name => p.name} }.to_json %>,
-          {searchDelay: 0, showAllResults: true, preventDuplicates: true, <%= jquery_token_input_messages_json(_('Type in a name')) %> });
+          {searchDelay: 0, showAllResults: true, theme: 'distribution', preventDuplicates: true, <%= jquery_token_input_messages_json(_('Type in a name')) %> });
         <% end %>
-        <%= content_tag :style, 'div.token-input-dropdown, ul.token-input-list { width: 280px; z-index: 1000 }', :type=>'text/css' %>
       </div>
       <div>
         <%= _('or') + ' ' + link_to_remote(_('add all missing products from the collective'),

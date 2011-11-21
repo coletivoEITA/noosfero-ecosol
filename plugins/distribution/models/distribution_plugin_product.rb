@@ -7,11 +7,15 @@ class DistributionPluginProduct < ActiveRecord::Base
   named_scope :by_node_id, lambda { |id| { :conditions => {:node_id => id} } }
   named_scope :from_supplier, lambda { |supplier| supplier.nil? ? {} : { :conditions => {:supplier_id => supplier.id} } }
 
-  #optional fields
+  # optional fields
   belongs_to :product
   belongs_to :unit
 
   has_one :product_category, :through => :product
+
+  # one for organization and the other for typing
+  belongs_to :category, :class_name => 'ProductCategory'
+  belongs_to :type_category, :class_name => 'ProductCategory'
 
   named_scope :distributed, :conditions => ['distribution_plugin_products.session_id is null']
   named_scope :in_session, :conditions => ['distribution_plugin_products.session_id is not null']
@@ -34,7 +38,7 @@ class DistributionPluginProduct < ActiveRecord::Base
   has_many :to_nodes, :through => :to_products, :source => :node
   has_many :from_nodes, :through => :from_products, :source => :node
 
-  #must be overriden on subclasses
+  # must be overriden on subclasses
   def supplier_products
     []
   end
@@ -97,7 +101,7 @@ class DistributionPluginProduct < ActiveRecord::Base
     raise 'Cannot set product details of a non dummy supplier' unless supplier.dummy?
     supplier_product.update_attributes! value
   end
-  #used for a new_record? from a supplier product
+  # used for a new_record? from a supplier product
   def supplier_product_id
     return from_product.id if own? 
     supplier_product.id if supplier_product

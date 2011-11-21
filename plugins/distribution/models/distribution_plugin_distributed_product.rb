@@ -31,4 +31,16 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
     price_with_margins
   end
 
+  def self.json_for_category(c)
+    {
+      :id => c.id.to_s, :name => c.full_name(_(' > ')), :own_name => c.name,
+      :hierarchy => c.hierarchy.map{ |c| {:id => c.id.to_s, :name => c.name} },
+      :subcats => c.children.map{ |c| {:id => c.id.to_s, :name => c.name} },
+    }
+  end
+
+  def json_for_category
+    self.class.json_for_category(category) if category
+  end
+
 end

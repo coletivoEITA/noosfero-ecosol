@@ -52,6 +52,15 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     render :partial => 'distribution_plugin_shared/pagereload'
   end
 
+  def search_category
+    @categories = ProductCategory.name_like(params[:q]).all :limit => 5
+    respond_to do |format|
+      format.js do
+        render :json => @categories.map { |c| DistributionPluginDistributedProduct.json_for_category(c) }
+      end
+    end
+  end
+
   def session_edit
     @product = DistributionPluginSessionProduct.find params[:id]
     if request.xhr?

@@ -15,6 +15,7 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
   def self.create_from_distributed(session, product)
     sp = self.new product.attributes
     sp.freeze_default_attributes product
+    sp.type = name
     sp.session = session
     sp.from_products << product
     sp.save!
@@ -79,7 +80,7 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
 
   after_update :sync_ordered
   def sync_ordered
-    return unless product.price_changed?
+    return unless self.price_changed?
     ordered_products.each do |op|
       op.send :calculate_prices
       op.save!

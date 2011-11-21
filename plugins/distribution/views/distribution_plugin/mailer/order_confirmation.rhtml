@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <p>
+      <%= _('Dear %{name},') % {:name => @consumer.name} %>
+    </p>
+
+    <p><%= _('Your order made on collective %{node} %{date} is confirmed.') %
+    { :node => @node.name, :date => @order.updated_at.strftime(_('in %B %d, at %Hh%M'))} %>
+    </p>
+    <br />
+    <p>
+    <%= 
+        _('Atention to the delivery instructions, that will occur %{date}.') %
+    {:date => @order.session.delivery_start.strftime(_('in %B %d, from %Hh%M to ')) +
+      @order.session.delivery_finish.strftime('%Hh%M')} %> 
+    </p>
+    <br />
+
+    <p>
+    <b><%= @order.supplier_delivery.name %></b><br />
+    <b><%= @order.supplier_delivery.description %></b><br />
+    </p>
+    <p>
+    <%= _('Order data confirmed:') %>
+    </p>
+    <pre>
+       <%= _('Order Nº: %{order}') % {:order => @order.id}%>
+    </pre>
+    <pre>------------------------------------------------------------------
+    <%= _('Products list') %>
+    ------------------------------------------------------------------
+    <% @order.products.group_by{|op| op.supplier}.each do |supplier, products| %>
+      <%= supplier.name + ':\n' %>
+      <% products.each do |p| %>
+        <%
+          name_spaces = 23 - p.product.name.size
+          name_spaces = 0 if name_spaces < 0
+          quantity_spaces = 17 - p.quantity_asked.to_s.size + 1 + p.product.unit.plural.size
+          quantity_spaces = 0 if quantity_spaces < 0
+          price_spaces = 14 - p.product.price.to_s.size + 1 + p.product.unit.plural.size
+          price_spaces = 0 if price_spaces < 0
+        %>
+        <%= "%{name}%{name_spaces}%{quantity} %{unit}%{quantity_spaces}R$ %{price}/%{unit}%{price_spaces}%{price_asked}\n" %
+        {:name => p.product.name, :name_spaces => ' '*name_spaces, :quantity => p.quantity_asked,
+          :quantity_spaces => ' '*quantity_spaces, :price => p.product.price,
+          :price_spaces => ' '*price_spaces, :price_asked => p.price_asked} %>
+      <% end %>
+    <% end %>
+    ------------------------------------------------------------------
+    <%
+      total= _('TOTAL:')
+    %>
+    <%= '%{total}%{total_spaces}\n' % {:total => total, :total_spaces => ' '*total.size} %>
+    </pre>
+    <p>
+    <%= _('Your order can be checked in the following link:') %>
+    </p>
+    <p>
+    <%= link_to(_('Order %{id} of %{node}') % {:id => @order.id, :node => @node.name },
+                {:controller => :distribution_plugin_order, :action => :edit, 
+                  :id => @order.id, :profile => @node.profile.identifier})
+      %> 
+    </p>
+    <p>
+    --<br/>
+    <%= _(%{node_greetings}) % {:node_greetings => @node.greetings} if defined? @node.greetings %>
+    </p>
+  </body>
+</html>
+

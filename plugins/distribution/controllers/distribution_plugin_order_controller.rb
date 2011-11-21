@@ -50,6 +50,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     @order.update_attributes! params[:order].merge(:status => 'confirmed')
 
     session[:notice] = _('Order confirmed')
+    DistributionPlugin::Mailer.deliver_order_confirmation @order
     redirect_to :action => :edit, :id => @order.id
   end
 

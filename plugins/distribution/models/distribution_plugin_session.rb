@@ -53,7 +53,6 @@ class DistributionPluginSession < ActiveRecord::Base
   named_scope :status_closed, :conditions => ["status = 'closed'"]
 
   STATUS_SEQUENCE = [
-    #'edition', 'call', 'orders', 'parcels', 'redistribution', 'delivery', 'close', 'closed'
     'new', 'edition', 'orders', 'closed'
   ]
   
@@ -96,10 +95,13 @@ class DistributionPluginSession < ActiveRecord::Base
     status == 'new'
   end
   def open?
-    status != 'closed'
+    !closed?
   end
   def closed?
     status == 'closed'
+  end
+  def edition?
+    status == 'edition'
   end
   def orders?
     now = DateTime.now

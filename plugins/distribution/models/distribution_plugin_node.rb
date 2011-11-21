@@ -115,8 +115,7 @@ class DistributionPluginNode < ActiveRecord::Base
     consumer_node.affiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
     supplier = consumers.create! :consumer => consumer_node || suppliers.from_node(consumer_node)
 
-    #without asking the user?
-    consumer_node.add_supplier_products supplier
+    consumer_node.add_supplier_products supplier unless consumer_node.consumer?
 
     supplier
   end

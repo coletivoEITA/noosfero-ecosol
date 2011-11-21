@@ -1,6 +1,6 @@
 require_dependency 'community'
 
-class Community < Organization
+class Community
 
   def add_member(person)
     super(person)
