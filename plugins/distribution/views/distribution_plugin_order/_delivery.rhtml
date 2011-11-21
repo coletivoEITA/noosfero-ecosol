@@ -2,14 +2,14 @@
   <% if order.session.delivery_methods.count > 0 %>
     <div>
       <h3><%= _("Delivery Method") %></h3>
-      <strong><%= method.name %></strong>
-      <div class="subtitle"><%= method.description %></div>
+      <strong><%= order.supplier_delivery.name %></strong>
+      <div class="subtitle"><%= order.supplier_delivery.description %></div>
     </div>
 
     <% if order.open? and order.session.delivery_methods.count > 1 %>
-      <%= labelled_field f, :delivery_method_id, _('Choose another:'),
-        select_tag(:delivery_method_id, options_from_collection_for_select(order.session.delivery_methods, "id", "name", method.id),
-                   :onchange => "jQuery('#delivery-box').load('#{url_for(:action => :render_delivery, :id => order.id)}', {delivery_method_id: jQuery(this).val()});"),
+      <%= labelled_field f, :supplier_delivery_id, _('Choose another:'),
+        f.select(:supplier_delivery_id, order.session.delivery_methods.collect{ |d| [d.name, d.id] }, {},
+                 :onchange => "jQuery('#delivery-box').load('#{url_for(:action => :render_delivery, :id => order.id)}', jQuery(this).parents('form').serialize());"),
         :class => 'subtitle' %>
     <% end %>
   <% end %>

@@ -13,8 +13,8 @@ class DistributionPluginOrder < ActiveRecord::Base
   has_many :from_products, :through => :products
   has_many :to_products, :through => :products
   
-  has_one :supplier_delivery, :class_name => 'DistributionPluginDeliveryMethod'
-  has_one :consumer_delivery, :class_name => 'DistributionPluginDeliveryMethod'
+  belongs_to :supplier_delivery, :class_name => 'DistributionPluginDeliveryMethod'
+  belongs_to :consumer_delivery, :class_name => 'DistributionPluginDeliveryMethod'
 
   named_scope :for_consumer, lambda { |consumer| { :conditions => {:consumer_id => consumer.id} } }
   named_scope :for_session, lambda { |session| { :conditions => {:session_id => session.id} } }
@@ -32,7 +32,8 @@ class DistributionPluginOrder < ActiveRecord::Base
   validates_presence_of :session
   validates_presence_of :consumer
   validates_presence_of :supplier_delivery
-  validates_presence_of :consumer_delivery, :if => :is_delivery?
+  #not yet implemented on interface
+  #validates_presence_of :consumer_delivery, :if => :is_delivery?
   validates_inclusion_of :status, :in => STATUSES
 
   named_scope :draft, :conditions => {:status => 'draft'}
@@ -63,6 +64,13 @@ class DistributionPluginOrder < ActiveRecord::Base
     self['status']
   end
 
+  def delivery?
+    session.delivery?
+  end
+  def is_delivery?
+    supplier_delivery and supplier_delivery.deliver?
+  end
+
   STATUS_MESSAGE = {
    'open' => _('Order in progress'),
    'forgotten' => _('Order not confirmed'),
@@ -74,11 +82,12 @@ class DistributionPluginOrder < ActiveRecord::Base
     _(STATUS_MESSAGE[current_status])
   end
 
+  alias_method :supplier_delivery!, :supplier_delivery
   def supplier_delivery
-    self['supplier_delivery'] || session.delivery_methods.first
+    supplier_delivery! || session.delivery_methods.first
   end
-  def is_delivery?
-    supplier_delivery and supplier_delivery.deliver?
+  def supplier_delivery_id
+    self['supplier_delivery_id'] || session.delivery_methods.first.id
   end
 
   def total_quantity_asked(dirty = false)

@@ -107,9 +107,9 @@ class DistributionPluginSession < ActiveRecord::Base
     now = DateTime.now
     status == 'orders' && ( (self.start <= now && self.finish.nil?) || (self.start <= now && self.finish >= now) )
   end
-  def in_delivery?
+  def delivery?
     now = DateTime.now
-    passed_by('orders') && ( (self.delivery_start <= now && self.delivery_finish.nil?) || (self.delivery_start <= now && self.delivery_finish >= now) )
+    status == 'orders' && ( (self.delivery_start <= now && self.delivery_finish.nil?) || (self.delivery_start <= now && self.delivery_finish >= now) )
   end
 
   def products_for_order_by_supplier

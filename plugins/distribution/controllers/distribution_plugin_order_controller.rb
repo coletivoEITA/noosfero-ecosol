@@ -74,8 +74,8 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
 
   def render_delivery
     @order = DistributionPluginOrder.find params[:id]
-    @delivery_method = DistributionPluginDeliveryMethod.find params[:delivery_method_id]
-    render :partial => 'delivery', :layout => false, :locals => {:order => @order, :method => @delivery_method}
+    @order.attributes = params[:order]
+    render :partial => 'delivery', :layout => false, :locals => {:order => @order}
   end
 
   def session_edit
