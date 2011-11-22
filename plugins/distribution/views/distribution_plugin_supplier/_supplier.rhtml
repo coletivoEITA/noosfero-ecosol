@@ -16,7 +16,9 @@
           <%= link_to_profile supplier.name, supplier.profile.identifier, :class => 'supplier-name' %>
         <% end %>
       </div>
-      <div class="subtitle"><strong><%= _("Abreviated Name") + '  ' %></strong><%= supplier.name_abbreviation %></div>
+      <% if supplier.name_abbreviation %>
+        <div class="subtitle"><strong><%= _("Abreviated Name") + '  ' %></strong><%= supplier.name_abbreviation %></div>
+      <% end %>
       <p class="subtitle"><%= supplier.description %></p>
 
       <div class="subtitle"><strong><%= _("This supplier has") %></strong></div>

@@ -33,7 +33,6 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     @session = DistributionPluginSession.find params[:id]
     if request.post?
       @success = @session.update_attributes! params[:session]
-      render :nothing => 'true'
     end
   end
 

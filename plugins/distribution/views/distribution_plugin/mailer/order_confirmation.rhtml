@@ -28,12 +28,10 @@
     <pre><%= _('Order Nº: %{code}') % {:code => @order.code} %>
 ----------------------------------------------------------------------------------
 <%= _('Products list') %>
-----------------------------------------------------------------------------------
-    </pre>
-    
+----------------------------------------------------------------------------------</pre>
     <% @order.products.group_by{|op| op.supplier}.each do |supplier, products| %>
       <pre><%= supplier.name + ':' %></pre>
-      <table style="text-align: right">
+      <table>
         <col style="width: 170px;" />
         <col style="width: 130px;" />
         <col style="width: 120px;" />
@@ -60,7 +58,7 @@
     <p>
       <%= _('Your order can be checked in the following link:') %><br />
       <%= link_to _('Order %{code} of %{node}') % {:code => @order.code, :node => @node.name },
-        {:controller => :distribution_plugin_order, :action => :edit, :id => @order.id, :profile => @node.profile.identifier} %> 
+        {:controller => :distribution_plugin_order, :action => :edit, :id => @order.code, :profile => @node.profile.identifier} %> 
     </p>
 
     <p>
