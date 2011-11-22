@@ -120,8 +120,8 @@ class DistributionPluginSession < ActiveRecord::Base
     self.ordered_session_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
       total_price_asked = total_parcel_price = 0
       products.each do |product|
-        total_price_asked += product.total_price_asked 
-        total_parcel_price += product.total_parcel_price 
+        total_price_asked += product.total_price_asked if product.total_price_asked
+        total_parcel_price += product.total_parcel_price if product.total_parcel_price
       end
 
       [supplier, products, total_price_asked, total_parcel_price]
