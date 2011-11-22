@@ -134,6 +134,7 @@ body.plugin-distribution {
   min-width: 80px;
   padding: 8px 8px;
   margin: 15px 0;
+  margin-right: 4px;
   border: none;
   text-decoration: none;
   border-radius: 5px 5px 5px 5px;
@@ -961,6 +962,24 @@ body.plugin-distribution {
   padding: 2px 0;
 }
 
+#distribution-plugin-add-delivery select {
+  height: 130px;
+  padding: 0;
+  width: 280px;
+}
+#distribution-plugin-add-delivery .field {
+  float: left;
+}
+#distribution-plugin-add-delivery #delivery-menu {
+  float: left;
+  line-height: 20px;
+  margin-left: 10px;
+  margin-top: 26px;
+}
+#distribution-plugin-add-delivery #delivery-menu a {
+  display: block;
+}
+
 .plugin-distribution .delivery-method-as-option {
 }
 .plugin-distribution .session-delete-delivery-option {
@@ -1010,6 +1029,9 @@ body.plugin-distribution {
 
 .plugin-distribution #our-products .subtitle {
   width: 450px;
+}
+.plugin-distribution #our-products h3 {
+  margin-top: 30px;
 }
 
 .plugin-distribution #search-results #result-count {
@@ -1197,7 +1219,7 @@ body.plugin-distribution {
 .plugin-distribution .our-product-use-original-column #product_default_price {
   top: 241px;
 }
-.plugin-distribution .our-product-supplied-column .subtitle {
+.plugin-distribution .our-product-supplied-column .properties-block.subtitle {
   margin-top: 41px;
   width: auto !important;
 }
@@ -1648,7 +1670,7 @@ body.plugin-distribution {
 
 .distribution-plugin-popin {
   margin: -1em -1em 0 -1em;
-  line-height: 27px;
+  line-height: 20px;
 }
 .distribution-plugin-popin h1 {
   margin: 0 -1px;

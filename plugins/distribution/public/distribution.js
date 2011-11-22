@@ -48,6 +48,14 @@ function distribution_in_session_order_toggle(context) {
 
 /* ----- ends session stuff  ----- */
 
+/* ----- delivery stuff  ----- */
+
+function distribution_delivery_view_toggle() {
+  jQuery('#delivery-method-choose, #delivery-method-new').toggle();
+}
+
+/* ----- ends delivery stuff  ----- */
+
 /* ----- category select stuff  ----- */
 
 var category = null;

@@ -1,12 +1,7 @@
-<div id="" class="distribution-plugin-popin">
+<div id="distribution-plugin-add-delivery" class="distribution-plugin-popin">
   <h1><%= _("Add a delivery method to the Orders' Cycle") %></h1>
 
-  <% form_remote_for :session, @session, :url => {:controller => :distribution_plugin_delivery_option, :action => :new, :session_id => @session.id} do |f| %>
-    <%= labelled_field f, :add_delivery_options, _('Choose a delivery method from the list'),
-      f.select(:add_delivery_options, :multiple => '') %>
-
-   <%= f.submit _('Adicionar') %>
-
-   <%= link_to_function _('close'), 'lightbox.prototype.deactivate()' %>
-  <% end %>
+  <div id="select-content">
+    <%= render :partial => 'select_content' %>
+  </div>
 </div>

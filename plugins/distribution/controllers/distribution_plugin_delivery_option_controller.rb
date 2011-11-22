@@ -2,9 +2,11 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
 
   no_design_blocks
 
+  before_filter :load_new
+
   def select
     @session = DistributionPluginSession.find params[:session_id]
-    @delivery_methods = @node.delivery_methods - @session.delivery_methods
+    @delivery_methods = @node.delivery_methods
     render :layout => false
   end
 
@@ -18,16 +20,33 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
 
   def new
     @session = DistributionPluginSession.find params[:session_id]
-    @delivery_method = params[:new_method].blank? ?
-      DistributionPluginDeliveryMethod.find(params[:delivery_method_id]) :
-      DistributionPluginDeliveryMethod.create!(params[:delivery_method].merge(:node => @session.node))
-    @delivery_option = DistributionPluginDeliveryOption.new :session => @session, :delivery_method => @delivery_method
-    @delivery_option.save! unless @session.new_record?
+    @session.update_attributes params[:session]
   end
 
   def destroy
-    @delivery_method = DistributionPluginDeliveryOption.find params[:id]
+    @delivery_option = @session.delivery_options.find_by_id params[:id]
+    @session = @delivery_option.session
+    @delivery_option.destroy
+  end
+
+  def method_destroy
+    @session = DistributionPluginSession.find params[:session_id]
+    @delivery_method = @node.delivery_methods.find_by_id params[:id]
     @delivery_method.destroy
+  end
+
+  def method_edit
+    @session = DistributionPluginSession.find params[:session_id]
+    @delivery_method = @node.delivery_methods.find_by_id(params[:id]) || @new_delivery_method
+    if request.post?
+      @delivery_method.update_attributes! params[:delivery_method].merge(:node => @node, :delivery_type => 'pickup')
+    end
+  end
+
+  protected
+
+  def load_new
+    @new_delivery_method = DistributionPluginDeliveryMethod.new
   end
 
 end

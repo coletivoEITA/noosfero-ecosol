@@ -145,6 +145,15 @@ class DistributionPluginSession < ActiveRecord::Base
     super
   end
 
+  def add_delivery_options
+  end
+  def add_delivery_options=(ids)
+    dms = node.delivery_methods.find ids 
+    (dms - delivery_methods).each do |dm|
+      delivery_options.create :session => self, :delivery_method => dm
+    end
+  end
+
   protected
 
   before_validation :default_values
