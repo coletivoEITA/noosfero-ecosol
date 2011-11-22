@@ -15,7 +15,9 @@ class DistributionPluginSupplier < ActiveRecord::Base
     new_profile = Enterprise.new :visible => false, :environment => consumer.profile.environment
     new_profile.identifier = Digest::MD5.hexdigest(rand.to_s)
     new_node = DistributionPluginNode.new :role => 'supplier', :profile => new_profile
-    new options.merge(:node => new_node, :consumer => consumer)
+    s = new :node => new_node, :consumer => consumer
+    s.attributes = options
+    s
   end
 
   def self?
