@@ -22,7 +22,7 @@
     <div class="cleaner"></div>
   </div>
 
-  <%= f.submit @session.new? ? _('Create new cycle') : _('Save'), :onclick => 'saveClick = true' %>
+  <%= f.submit @session.new? ? _('Create new cycle') : _('Save'), :onclick => 'saveClick = true; loadLightbox(this);' %>
   <%= link_to _('cancel changes'), @session.new? ? {:action => :index} : params %>
 <% end %>
 

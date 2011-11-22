@@ -31,8 +31,9 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
 
   def edit
     @session = DistributionPluginSession.find params[:id]
-    if request.post?
-      @success = @session.update_attributes! params[:session]
+    if request.xhr?
+      @success = @session.update_attributes params[:session]
+      render :partial => 'edit'
     end
   end
 

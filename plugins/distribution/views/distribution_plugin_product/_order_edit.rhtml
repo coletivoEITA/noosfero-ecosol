@@ -71,7 +71,7 @@
     <% if editable %>
       <%= submit_to_function (ordered_product ? _('Change') : _('Add')), "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}',
         {order_id: #{order.id}, session_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-session-product').find('.quantity-entry input').val() });" %>
-      <%= link_to_function _('cancel'), '' %>
+      <%= link_to_function _('cancel'), 'distribution_value_row_toggle_edit();' %>
     <% end %>
   </div>
 

@@ -169,7 +169,7 @@ class DistributionPluginSession < ActiveRecord::Base
 
   def validate_delivery_dates
     return if self.new?
-    #errors.add_to_base(_("Delivery' date before orders' date")) unless finish >= delivery_start
+    errors.add_to_base(_("Delivery' date before orders' date")) unless finish < delivery_start
     errors.add_to_base(_("Invalid delivery' date range")) unless delivery_start <= delivery_finish
   end
 
