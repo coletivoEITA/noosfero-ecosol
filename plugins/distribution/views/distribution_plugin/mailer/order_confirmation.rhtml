@@ -58,7 +58,7 @@
     <p>
       <%= _('Your order can be checked in the following link:') %><br />
       <%= link_to _('Order %{code} of %{node}') % {:code => @order.code, :node => @node.name },
-        {:controller => :distribution_plugin_order, :action => :edit, :id => @order.code, :profile => @node.profile.identifier} %> 
+        {:controller => :distribution_plugin_order, :action => :edit, :id => @order.id, :profile => @node.profile.identifier} %> 
     </p>
 
     <p>

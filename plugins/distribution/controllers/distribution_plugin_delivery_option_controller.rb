@@ -2,11 +2,11 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
 
   no_design_blocks
 
-  before_filter :load_new
+  before_filter :load
 
   def select
     @session = DistributionPluginSession.find params[:session_id]
-    @delivery_methods = @node.delivery_methods
+    @new_delivery_method = DistributionPluginDeliveryMethod.new
     render :layout => false
   end
 
@@ -35,9 +35,14 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
     @delivery_method.destroy
   end
 
+  def method_new
+    @session = DistributionPluginSession.find params[:session_id]
+    @delivery_method = DistributionPluginDeliveryMethod.create! params[:delivery_method].merge(:node => @node, :delivery_type => 'pickup')
+  end
+
   def method_edit
     @session = DistributionPluginSession.find params[:session_id]
-    @delivery_method = @node.delivery_methods.find_by_id(params[:id]) || @new_delivery_method
+    @delivery_method = @node.delivery_methods.find_by_id params[:id]
     if request.post?
       @delivery_method.update_attributes! params[:delivery_method].merge(:node => @node, :delivery_type => 'pickup')
     end
@@ -45,8 +50,8 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
 
   protected
 
-  def load_new
-    @new_delivery_method = DistributionPluginDeliveryMethod.new
+  def load
+    @delivery_methods = @node.delivery_methods
   end
 
 end

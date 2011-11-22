@@ -37,7 +37,7 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
     total_quantity_asked
   end
   def total_parcel_price
-    buy_price * total_parcel_quantity
+    buy_price * total_parcel_quantity if buy_price and total_parcel_quantity
   end
 
   # always recalculate in case something has changed
