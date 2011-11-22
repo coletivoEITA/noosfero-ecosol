@@ -29,7 +29,7 @@
         <% if @admin_action %>
           <%= link_to_function _('remove from order'), "jQuery(this).parents('.value-row').remove();" if ordered_product.order.session.orders? %>
         <% else %>
-          <%= link_to _('see product details'), "#session-product-#{product.id}", :onclick=>"jQuery('#session-product-#{product.id}').click();" %>
+          <%= link_to _('see product details'), "#session-product-#{product.id}", :class => 'toggle-ignore-event' %>
           &nbsp;&nbsp;
           <%= link_to_remote _('remove from order'), :update => "ordered-product-#{ordered_product.id}",
                              :url => {:controller => 'distribution_plugin_ordered_product', :action => :destroy, :id => ordered_product.id} if ordered_product.order.open? %>

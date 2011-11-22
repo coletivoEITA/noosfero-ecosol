@@ -321,8 +321,6 @@ function target_isToggle(target) {
     jQuery(target).hasClass('toggle-edit') || jQuery(target).parents().hasClass('toggle-edit');
 }
 jQuery(document).click(function(event) {
-  if (jQuery(event.target).parents('.more-actions').length > 0) //came from anchor click!
-    return false;
   var isToggle = target_isToggle(event.target);
   var out = distribution_locate_value_row(event.target).length == 0;
   if (!isToggle && out && isEditing()) {
@@ -331,16 +329,24 @@ jQuery(document).click(function(event) {
   }
   return true;
 });
-jQuery(document).ready(function() {
+
+function openAnchor() {
   el = jQuery(window.location.hash);
+  distribution_value_row_reload();
   if (el.hasClass('value-row')) {
     setEditing(el);
     distribution_value_row_toggle_edit();
   }
-});
+}
+jQuery(document).ready(openAnchor);
+jQuery(window).bind('hashchange', openAnchor);
+
 jQuery('.plugin-distribution .value-row').live('click', function (event) {
   var value_row = distribution_locate_value_row(event.target);
   var now_isInner = value_row.length > 1;
+
+  if (jQuery(event.target).hasClass('toggle-ignore-event'))
+    return true;
 
   var isToggle = target_isToggle(event.target);
   var isAnother = value_row.get(0) != editing().get(0) || (now_isInner && !_isInner);

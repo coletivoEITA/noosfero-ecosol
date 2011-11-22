@@ -1,0 +1,2 @@
+page.replace_html 'lightbox', :partial => 'edit_popin', :locals => {:session => @session}
+page << "jQuery('#lightbox').removeClass('loading');"

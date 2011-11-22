@@ -11,6 +11,13 @@ class DistributionPluginSupplier < ActiveRecord::Base
   validates_presence_of :consumer
   validates_presence_of :name
 
+  def self.new_from_consumer(consumer, options = {})
+    new_profile = Enterprise.new :visible => false, :environment => consumer.profile.environment
+    new_profile.identifier = Digest::MD5.hexdigest(rand.to_s)
+    new_node = DistributionPluginNode.new :role => 'supplier', :profile => new_profile
+    new options.merge(:node => new_node, :consumer => consumer)
+  end
+
   def self?
     node == consumer
   end
@@ -58,7 +65,6 @@ class DistributionPluginSupplier < ActiveRecord::Base
   def complete
     if dummy?
       consumer.profile.admins.each{ |a| node.profile.add_admin(a) } if node.dummy?
-      node.add_consumer consumer
     end
   end
 

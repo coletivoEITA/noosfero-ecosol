@@ -25,10 +25,9 @@ class DistributionPluginSupplierController < DistributionPluginMyprofileControll
   protected
 
   def load_new
-    @new_profile = Enterprise.new :visible => false, :environment => profile.environment
-    @new_profile.identifier = Digest::MD5.hexdigest(rand.to_s)
-    @new_supplier_node = DistributionPluginNode.new :role => 'supplier', :profile => @new_profile
-    @new_supplier = DistributionPluginSupplier.new :node => @new_supplier_node, :consumer => @node
+    @new_supplier = DistributionPluginSupplier.new_from_consumer @node
+    @new_supplier_node = @new_supplier.node
+    @new_profile = @new_supplier_node.profile
   end
 
 end

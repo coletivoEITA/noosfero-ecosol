@@ -1,28 +1,12 @@
-<div>
-  <% if !@delivery_methods.blank? %>
-    <%= _('Choose a delivery method') %>
-    <% @delivery_methods.each do |dm| %>
-      <div id="delivery-method-as-option-<%= dm.id %>" class="delivery-method-as-option">
-        <%= dm.name %> <%= link_to_remote(_('Add this option'), 
-                                          :url => {:controller => :distribution_plugin_delivery_option, :action => "new", :session_id => @session.id, :delivery_method_id => dm.id },
-                                          :class => "delivery-method-use-option") %>
-      </div>
-    <% end %>
+<div id="" class="distribution-plugin-popin">
+  <h1><%= _("Add a delivery method to the Orders' Cycle") %></h1>
+
+  <% form_remote_for :session, @session, :url => {:controller => :distribution_plugin_delivery_option, :action => :new, :session_id => @session.id} do |f| %>
+    <%= labelled_field f, :add_delivery_options, _('Choose a delivery method from the list'),
+      f.select(:add_delivery_options, :multiple => '') %>
+
+   <%= f.submit _('Adicionar') %>
+
+   <%= link_to_function _('close'), 'lightbox.prototype.deactivate()' %>
   <% end %>
-</div>
-
-<div>
-  <%= _('or') %>
-  <%= link_to_function @delivery_methods.empty? ? _('Create new delivery method') : _('Create new'),
-                       'jQuery("#delivery-option-new-method").toggle();'  %>
-  <div id="delivery-option-new-method" style="<%= "display: block;" if @delivery_methods.empty? %>">
-    <% form_remote_for :delivery_method, :url => {:action => 'new', :session_id => @session.id, :new_method => true} do |f| %>
-      <%= render :partial => 'distribution_plugin_delivery_method/new_fields', :locals => {:f => f} %>
-      <%= f.submit _('Add option')  %>
-    <% end %>
-  </div>
-</div>
-
-<div>
-  <%= lightbox_close_button _('Close') %>
 </div>

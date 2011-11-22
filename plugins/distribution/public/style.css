@@ -1886,4 +1886,23 @@ div.token-input-dropdown-distribution ul li.token-input-selected-dropdown-item-d
   color: #AAA;
 }
 
+li.token-input-token-distribution {
+  background-color: #00A5D3 !important;
+}
+li.token-input-dropdown-item2-distribution {
+	
+}
+li.token-input-selected-dropdown-item-distribution {
+  background-color: #00a5d3 !important;
+  color: #fff;
+}
+li.token-input-selected-dropdown-item-distribution a,
+#distributions-menu .distribution-menu-options.distribution-menu-more-options .token-input-selected-dropdown-item-distribution a {
+  color: #fff;
+}
+li.token-input-selected-dropdown-item-distribution .distribution-result-count,
+li.token-input-selected-dropdown-item-distribution .distribution-result-extra-label {
+  color: #e7e7e7;
+}
+
 /* ----- end token input theme stuff  ----- */
