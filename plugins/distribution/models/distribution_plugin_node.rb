@@ -67,7 +67,8 @@ class DistributionPluginNode < ActiveRecord::Base
 
   def closed_sessions_date_range
     list = sessions.not_open.all :order => 'start asc'
-    list.first.start.to_date .. list.last.finish.to_date
+    return DateTime.now..DateTime.now if list.blank?
+    list.first.start.to_date..list.last.finish.to_date
   end
 
   def default_products_margins
