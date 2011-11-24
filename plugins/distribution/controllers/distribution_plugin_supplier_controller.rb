@@ -19,13 +19,13 @@ class DistributionPluginSupplierController < DistributionPluginMyprofileControll
 
   def destroy
     @supplier = DistributionPluginSupplier.find params[:id]
-    @supplier.destroy
+    @supplier.destroy!
   end
 
   protected
 
   def load_new
-    @new_supplier = DistributionPluginSupplier.new_from_consumer @node
+    @new_supplier = DistributionPluginSupplier.new :consumer => @node
     @new_supplier_node = @new_supplier.node
     @new_profile = @new_supplier_node.profile
   end

@@ -11,12 +11,15 @@ class DistributionPluginSupplier < ActiveRecord::Base
   validates_presence_of :consumer
   validates_presence_of :name
 
-  def self.new_from_consumer(consumer, options = {})
-    new_profile = Enterprise.new :visible => false, :environment => consumer.profile.environment
+  def self.new(attributes)
+    new_profile = Enterprise.new :visible => false, :environment => attributes[:consumer].profile.environment
     new_profile.identifier = Digest::MD5.hexdigest(rand.to_s)
     new_node = DistributionPluginNode.new :role => 'supplier', :profile => new_profile
-    s = new :node => new_node, :consumer => consumer
-    s.attributes = options
+    super attributes.merge(:node => new_node)
+  end
+  def self.create(attributes)
+    s = new(attributes)
+    s.save!
     s
   end
 
