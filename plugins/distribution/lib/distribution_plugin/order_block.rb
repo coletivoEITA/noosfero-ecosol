@@ -37,5 +37,9 @@ class DistributionPlugin::OrderBlock < Block
    end
  end
 
+  def cacheable?
+    false
+  end
+
 end
 
