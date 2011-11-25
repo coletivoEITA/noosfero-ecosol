@@ -1,7 +1,7 @@
 <div class="distribution-plugin-order-block">
   <%= block_title block.title %>
 
-  <% if node.has_consumer_node?(consumer) %>
+  <% if consumer and node.has_consumer_node?(consumer) %>
     <% open_sessions = node.sessions.open %>
     <% if open_sessions.count > 0 %>
       <% open_sessions.each do |s| %>

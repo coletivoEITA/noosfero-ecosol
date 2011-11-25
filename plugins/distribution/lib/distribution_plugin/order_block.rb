@@ -30,7 +30,7 @@ class DistributionPlugin::OrderBlock < Block
    block = self
 
    lambda do
-     consumer = DistributionPluginNode.find_by_profile_id current_user.person.id
+     consumer = current_user ? DistributionPluginNode.find_by_profile_id current_user.person.id : nil
      @controller.append_view_path DistributionPlugin.view_path
      extend DistributionPlugin::DistributionDisplayHelper
      render :file => 'blocks/distribution_plugin_order', :locals => { :block => block, :node => n, :consumer => consumer }
