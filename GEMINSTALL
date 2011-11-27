@@ -1,3 +1,5 @@
+See more http://noosfero.org/Development/InstallSteps and 
+http://noosfero.org/Development/RVMGemBasedInstallation
 
 1. Install packages dependencies
 
@@ -5,7 +7,7 @@
 $ sudo apt-get install po4a iso-codes tango-icon-theme
 
 1.2. Compilation deps
-$ sudo apt-get install libmagickcore-dev libpq-dev libreadline-dev libsqlite3-dev
+$ sudo apt-get install libmagick9-dev libpq-dev libreadline-dev libsqlite3-dev
 
 2. Install RVM (command from http://beginrescueend.com/rvm/install/)
 $ bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
@@ -25,21 +27,3 @@ You might want to change dev to something else or create other gemsets. Document
 $ gem install bundler
 $ bundle install
 
-Gems and Packages versions comparison
-| Dependency      | Gem version      | Package version          | Link |
-| ruby            | 1.8.7p352        | 1.8.7p72                 | http://packages.debian.org/lenny/ruby1.8 |
-| rake            | 0.8.1            | 0.8.1                    | http://packages.debian.org/lenny/rake |
-| rails           | 2.1.0            | 2.1.0                    | http://packages.debian.org/lenny/rails |
-| RedCloth        | 4.0.0            | 3.0.99.0.svn.20060519-1  | http://packages.debian.org/lenny/libredcloth-ruby |
-| sqlite3-ruby    | 1.2.2            | 1.2.2                    | http://packages.debian.org/lenny/libsqlite3-ruby |
-| ferret          | 0.11.6           | 0.11.6                   | http://packages.debian.org/lenny/libferret-ruby |
-| gettext         | 1.91.0           | 1.91.0-1.2               | http://packages.debian.org/lenny/libgettext-ruby1.8 |
-| rcov            | 0.8.1.2.0        | 0.8.1.2                  | http://packages.debian.org/lenny/rcov |
-| rmagick         | 2.5.2            | 2.5.2                    | http://packages.debian.org/lenny/librmagick-ruby |
-| will_paginate   | 2.3.11           | 2.3.2                    | http://packages.debian.org/lenny/libwill-paginate-ruby |
-| ruby-feedparser | 0.7              | 0.6                      | http://packages.debian.org/lenny/libfeedparser-ruby |
-| daemons         | 1.0.10           | 1.0.10                   | http://packages.debian.org/lenny/libdaemons-ruby |
-| mongrel         | 1.1.5            | 1.1.5                    | http://packages.debian.org/lenny/mongrel |
-| mongrel_cluster | 1.0.5            | 1.0.5                    | http://packages.debian.org/lenny/mongrel-cluster |
-| hpricot         | 0.6              | 0.6                      | http://packages.debian.org/lenny/libhpricot-ruby |
-| pg              | 0.7.9.2008.03.18 | 0.7.9.2008.03.18         | http://packages.debian.org/lenny/libpgsql-ruby |
