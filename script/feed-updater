@@ -6,6 +6,7 @@
 # The role of this script is to just start/stop the daemon, write a PID file,
 # etc. The actual feed update logic is in FeedUpdater.
 
+require 'rubygems'
 require 'daemons'
 require 'optparse'
 
