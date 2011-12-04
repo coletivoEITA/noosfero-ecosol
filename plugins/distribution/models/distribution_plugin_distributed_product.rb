@@ -1,9 +1,5 @@
 class DistributionPluginDistributedProduct < DistributionPluginProduct
 
-  def supplier_products
-    from_products
-  end
-
   alias_method :default_name_setting, :default_name
   def default_name
     dummy? ? nil : default_name_setting
@@ -15,8 +11,10 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
 
   def price
     return self['price'] if own?
-    price_with_margins = supplier_product ? supplier_product.price : self['price']
-    return price_with_margins if price_with_margins.blank?
+    supplier_price = supplier_product ? supplier_product.price : nil
+    return self['price'] if supplier_price.blank?
+
+    price_with_margins = supplier_price
 
     if margin_percentage
       price_with_margins += (margin_percentage/100)*price_with_margins
@@ -32,6 +30,10 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
     price_with_margins
   end
 
+
+  def supplier_products
+    from_products
+  end
 
   def supplier_product
     return from_product if own? 
@@ -81,6 +83,7 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
 
   after_create :create_dummy_supplier_product
   def create_dummy_supplier_product
+    # FIXME: use autosave on rails 2.3.x
     if @supplier_product
       @supplier_product.save!
       self.from_products << @supplier_product

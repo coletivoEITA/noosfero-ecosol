@@ -20,17 +20,17 @@
     </div>
 
     <div class="session-product-line">
-      <%= labelled_field f, :original_price, _('Default sell price'), f.text_field(:original_price, :readonly => '') %>
-      <%= labelled_field f, :original_margin, _('Default margin'), f.text_field(:original_margin_percentage, :readonly => '') %>
-      <%# labelled_field f, :original_stored, _('Qty. in stock'), f.text_field(:original_stored, :readonly => '') %>
+      <%= labelled_field f, :original_price, _('Default sell price'), f.text_field(:original_price, :disabled => '') %>
+      <%= labelled_field f, :original_margin, _('Default margin'), f.text_field(:original_margin_percentage, :disabled => '') %>
+      <%# labelled_field f, :original_stored, _('Qty. in stock'), f.text_field(:original_stored, :disabled => '') %>
 
       <div class="cleaner"></div>
     </div>
 
     <div class="session-product-line">
-      <%= labelled_field f, :buy_price, _('Buy price'), f.text_field(:buy_price, :readonly => '') %>
-      <%= labelled_field f, :buy_unit, _('Buy unit'), text_field_tag(:buy_unit, p.buy_unit.singular, :readonly => '') %>
-      <%= labelled_field f, :sell_unit, _('Sell unit'), text_field_tag(:sell_unit, p.sell_unit.singular, :readonly => '') %>
+      <%= labelled_field f, :buy_price, _('Buy price'), f.text_field(:buy_price, :disabled => '') %>
+      <%= labelled_field f, :buy_unit, _('Buy unit'), text_field_tag(:buy_unit, p.buy_unit.singular, :disabled => '') %>
+      <%= labelled_field f, :sell_unit, _('Sell unit'), text_field_tag(:sell_unit, p.sell_unit.singular, :disabled => '') %>
 
       <div class="cleaner"></div>
     </div>
