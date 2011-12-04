@@ -40,7 +40,7 @@
       <div><strong><%= _("Actions") %></strong></div>
       <div><%= link_to_function _("edit"), '', :class => 'toggle-edit' %></div>
       <div><%# link_to _("desactivate"), :url => {:controller => :distribution_plugin_supplier, :action => :desactivate, :id => supplier.id} %></div>
-      <div><%= link_to _("remove"), :url => {:controller => :distribution_plugin_supplier, :action => :destroy, :id => supplier.id},
+      <div><%= link_to_remote _("remove"), :url => {:controller => :distribution_plugin_supplier, :action => :destroy, :id => supplier.id},
         :confirm => _("By removing this supplier all its products won't be available for future cycles. Please confirm you choice"), :class => 'supplier-remove' %></div>
       <div><%= link_to _("products"), {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id} %></div>
       <div><%= link_to _("add products"), {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id, :anchor => 'our-product-add'} %></div>

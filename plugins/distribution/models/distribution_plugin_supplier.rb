@@ -2,22 +2,26 @@ class DistributionPluginSupplier < ActiveRecord::Base
   belongs_to :node,  :class_name => 'DistributionPluginNode'
   belongs_to :consumer,  :class_name => 'DistributionPluginNode'
 
+  has_many :supplied_products, :foreign_key => 'supplier_id', :class_name => 'DistributionPluginProduct'
+
+  has_one :profile, :through => :node
+  def profile
+    node.profile
+  end
+
   named_scope :from_node, lambda { |n| { :conditions => {:node_id => n.id} } }
   named_scope :from_node_id, lambda { |id| { :conditions => {:node_id => id} } }
 
-  has_many :supplied_products, :foreign_key => 'supplier_id', :class_name => 'DistributionPluginProduct'
-
   validates_presence_of :node
   validates_presence_of :consumer
-  validates_presence_of :name
 
-  def self.new(attributes)
+  def self.new_dummy(attributes)
     new_profile = Enterprise.new :visible => false, :environment => attributes[:consumer].profile.environment
     new_profile.identifier = Digest::MD5.hexdigest(rand.to_s)
     new_node = DistributionPluginNode.new :role => 'supplier', :profile => new_profile
-    super attributes.merge(:node => new_node)
+    new attributes.merge(:node => new_node)
   end
-  def self.create(attributes)
+  def self.create_dummy(attributes)
     s = new(attributes)
     s.save!
     s
@@ -25,11 +29,6 @@ class DistributionPluginSupplier < ActiveRecord::Base
 
   def self?
     node == consumer
-  end
-
-  has_one :profile, :through => :node
-  def profile
-    node.profile
   end
 
   def dummy?

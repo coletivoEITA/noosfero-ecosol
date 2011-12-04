@@ -17,4 +17,5 @@ class Community
     consumer_node = DistributionPluginNode.find_or_create person
     self.node.remove_consumer consumer_node
   end
+
 end

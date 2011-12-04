@@ -114,18 +114,18 @@ class DistributionPluginNode < ActiveRecord::Base
   end
   def add_consumer(consumer_node)
     consumer_node.affiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
-    supplier = consumers.create! :consumer => consumer_node || suppliers.from_node(consumer_node)
+    supplier = DistributionPluginSupplier.create!(:node => self, :consumer => consumer_node) || suppliers.from_node(consumer_node)
 
     consumer_node.add_supplier_products supplier unless consumer_node.consumer?
-
     supplier
   end
-  def remove_consumer(consumer)
-    consumer.disaffiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
-    supplier = consumers.find_by_consumer_id(consumer.id)
+  def remove_consumer(consumer_node)
+    consumer_node.disaffiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
+    supplier = consumers.find_by_consumer_id(consumer_node.id)
     supplier.destroy! if supplier
 
-    consumer.products.distributed.from_supplier(self).update_all ['archived = true']
+    consumer_node.products.distributed.from_supplier(self).update_all ['archived = true']
+    supplier
   end
 
   def add_supplier_products(supplier)
@@ -158,7 +158,7 @@ class DistributionPluginNode < ActiveRecord::Base
 
   after_create :add_own_members
   def add_own_members
-    profile.members.map do |member| 
+    profile.members.map do |member|
       consumer = DistributionPluginNode.find_or_create member
       add_consumer consumer
       consumer

@@ -10,6 +10,7 @@ class DistributionPluginSupplierController < DistributionPluginMyprofileControll
 
   def new
     @new_supplier.update_attributes! params[:supplier] #beautiful transactional save
+    session[:notice] = _('Supplier created')
   end
 
   def edit
@@ -25,7 +26,7 @@ class DistributionPluginSupplierController < DistributionPluginMyprofileControll
   protected
 
   def load_new
-    @new_supplier = DistributionPluginSupplier.new :consumer => @node
+    @new_supplier = DistributionPluginSupplier.new_dummy :consumer => @node
     @new_supplier_node = @new_supplier.node
     @new_profile = @new_supplier_node.profile
   end

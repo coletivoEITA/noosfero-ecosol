@@ -35,7 +35,7 @@ class DistributionPluginSession < ActiveRecord::Base
   }
   named_scope :by_month, lambda { |date| {
     :conditions => [ ':start BETWEEN start AND finish OR :finish BETWEEN start AND finish',
-      { :start => date.to_time, :finish => date.to_time.change(:month => date.month+1)-1 }
+      { :start => date.to_time, :finish => date.to_time + 1.month - 1 }
     ]}
   }
   named_scope :by_year, lambda { |year| {

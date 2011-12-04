@@ -11,8 +11,8 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     params[:date] ||= {}
     year = params[:date][:year]
     month = params[:date][:month]
-    @year_date = year ? Time.mktime(year).to_date : Date.today
-    @month_date = month ? Time.mktime(year, month).to_date : Date.today
+    @year_date = year.blank? ? Date.today : Time.mktime(year).to_date
+    @month_date = month.blank? ? Date.today : Time.mktime(year, month).to_date
     if request.xhr?
       render :partial => 'results'
     end

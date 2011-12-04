@@ -467,6 +467,9 @@ body.plugin-distribution {
   border-top: 1px solid black;
   border-bottom: none;
 }
+.plugin-distribution #suppliers-page .supplier:last-child {
+  border-bottom: 1px solid black;
+}
 .plugin-distribution #suppliers-page .supplier-type {
   font-style: italic;
 }
