@@ -42,6 +42,9 @@ class DistributionPluginProduct < ActiveRecord::Base
   def supplier_products
     []
   end
+  def supplier_product
+    supplier_products.by_node_id(supplier.node.id).first
+  end
 
   validates_presence_of :type
   validates_presence_of :node
@@ -84,43 +87,6 @@ class DistributionPluginProduct < ActiveRecord::Base
     from_products.first
   end
 
-  def supplier_product
-    return from_product if own? 
-    @supplier_product ||= supplier_products.by_node_id(supplier.node.id).first
-
-    #automatically create a product for this dummy supplier
-    if dummy? and not @supplier_product and not self.is_a?(DistributionPluginSessionProduct)
-      @supplier_product = DistributionPluginDistributedProduct.new(:node => supplier.node, :supplier => supplier)
-      from_products << @supplier_product
-    end
-
-    @supplier_product
-  end
-  def supplier_product=(value)
-    raise "Cannot set supplier product for own product" if own? 
-    raise 'Cannot set product details of a non dummy supplier' unless supplier.dummy?
-    supplier_product.update_attributes! value
-  end
-  # used for a new_record? from a supplier product
-  def supplier_product_id
-    return from_product.id if own? 
-    supplier_product.id if supplier_product
-  end
-  def supplier_product_id=(id)
-    raise "Cannot set supplier product for own product" if own? 
-    distribute_from DistributionPluginProduct.find(id) unless id.blank?
-  end
-
-  def distribute_from(product)
-    s = node.suppliers.from_node(product.node).first
-    raise "Supplier not found" if s.blank?
-
-    self.attributes = product.attributes.merge(:supplier_id => s.id)
-    self.supplier = s
-    from_products << product unless from_products.include? product
-    @supplier_product = product
-  end
-
   def unit
     self['unit'] || Unit.new(:singular => _('unit'), :plural => _('units'))
   end
@@ -140,7 +106,7 @@ class DistributionPluginProduct < ActiveRecord::Base
   protected
 
   def supplier_change
-    errors.add :supplier_id, "supplier can't change" if supplier_id_changed? and not new_record?
+    errors.add :supplier_id, "Supplier can't change" if supplier_id_changed? and not new_record?
   end
 
 end

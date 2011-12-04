@@ -14,6 +14,7 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
   end
 
   def price
+    return self['price'] if own?
     price_with_margins = supplier_product ? supplier_product.price : self['price']
     return price_with_margins if price_with_margins.blank?
 
@@ -31,6 +32,38 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
     price_with_margins
   end
 
+
+  def supplier_product
+    return from_product if own? 
+    # automatically create a product for this dummy supplier
+    @supplier_product ||= super || (self.dummy? ? DistributionPluginDistributedProduct.new(:node => supplier.node, :supplier => supplier.node.self_supplier) : nil)
+  end
+  def supplier_product=(value)
+    raise "Cannot set supplier's product for own product" if own? 
+    raise "Cannot set supplier's product details of a non dummy supplier" unless supplier.dummy?
+    supplier_product.update_attributes! value
+  end
+  def supplier_product_id
+    return nil if own? 
+    supplier_product.id if supplier_product
+  end
+  def supplier_product_id=(id)
+    raise "Cannot set supplier product for own product" if own? 
+    distribute_from DistributionPluginProduct.find(id) unless id.blank?
+  end
+
+
+  def distribute_from(product)
+    s = node.suppliers.from_node(product.node).first
+    raise "Supplier not found" if s.blank?
+
+    self.attributes = product.attributes.merge(:supplier_id => s.id)
+    self.supplier = s
+    from_products << product unless from_products.include? product
+    @supplier_product = product
+  end
+
+
   def self.json_for_category(c)
     {
       :id => c.id.to_s, :name => c.full_name(_(' > ')), :own_name => c.name,
@@ -42,6 +75,16 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
 
   def json_for_category
     self.class.json_for_category(category) if category
+  end
+
+  protected
+
+  after_create :create_dummy_supplier_product
+  def create_dummy_supplier_product
+    if @supplier_product
+      @supplier_product.save!
+      self.from_products << @supplier_product
+    end
   end
 
 end

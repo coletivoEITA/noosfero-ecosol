@@ -119,6 +119,19 @@ function distribution_category_select(item) {
 
 /* ----- our products stuff  ----- */
 
+function distribution_our_product_enable_if_disabled(event) {
+  target = jQuery(event.target);
+  if (target.is('input[type=text][disabled], select[disabled]')) {
+    product = jQuery(target).parents('.our-product');
+    default_checkbox = jQuery(jQuery.grep(product.find('input[type=checkbox][for]'), function(element, index) {
+        return jQuery(element).attr('for').indexOf(target.attr('id')) >= 0; 
+    }));
+    default_checkbox.attr('checked', null);
+    distribution_our_product_toggle_referred(default_checkbox);
+    target.focus();
+  }
+}
+
 function distribution_our_product_toggle_referred(context) {
   var p = jQuery(context).parents('.box-edit');
   var referred = p.find(jQuery(context).attr('for'));
@@ -137,6 +150,7 @@ function distribution_our_product_toggle_referred(context) {
     if (value.onkeyup)
       value.onkeyup();
   });
+  referred.first().focus();
 }
 function distribution_our_product_sync_referred(context) {
   var p = jQuery(context).parents('.box-edit');
@@ -169,6 +183,11 @@ function distribution_our_product_pmsync(context, to_price) {
   var margin_input = p.find('#product_margin_percentage');
   var price_input = p.find('#product_price');
   var buy_price_input = p.find('#product_supplier_product_price');
+  var default_margin_input = p.find('#product_default_margin_percentage');
+
+  if (!margin_input.get(0)) //own product don't have a margin
+    return;
+
   if (to_price || price_input.get(0).disabled)
     distribution_calculate_price(price_input, margin_input, buy_price_input);
   else {
@@ -177,8 +196,8 @@ function distribution_our_product_pmsync(context, to_price) {
     var newvalue = parseFloat(margin_input.val());
     if (newvalue != oldvalue) {
       var checked = newvalue == parseFloat(margin_input.attr('defaultvalue'));
-      p.find('#product_default_margin_percentage').attr('checked', checked ? 'checked' : null);
-      p.find('#product_margin_percentage').get(0).disabled = checked;
+      default_margin_input.attr('checked', checked ? 'checked' : null);
+      margin_input.get(0).disabled = checked;
     }
   }
 }

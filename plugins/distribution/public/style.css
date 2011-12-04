@@ -1189,7 +1189,6 @@ body.plugin-distribution {
   border-left: 1px solid black;
 }
 .plugin-distribution .our-product-columns {
-  min-height: 475px;
   overflow: hidden;
 }
 .plugin-distribution .our-product-columns > div {

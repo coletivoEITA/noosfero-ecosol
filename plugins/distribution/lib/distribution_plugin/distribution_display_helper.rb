@@ -43,8 +43,8 @@ module DistributionPlugin::DistributionDisplayHelper
 
   def datetime_period_with_day(start, finish)
     (start.to_date == finish.to_date ?
-    _("%{start_day}, from %{start_time} to %{finish_time}") :
-    _("%{start_day}, %{start_datetime} - %{finish_day}, %{finish_datetime}")
+      _("%{start_day}, from %{start_time} to %{finish_time}") :
+      _("%{start_day}, %{start_datetime} - %{finish_day}, %{finish_datetime}")
     ) % {
       :start_day => start.strftime(_('%A')),
       :start_datetime => start.strftime(_('%m/%d %Hh%M')),

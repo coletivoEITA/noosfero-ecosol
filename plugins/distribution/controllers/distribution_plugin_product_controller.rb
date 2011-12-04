@@ -18,7 +18,7 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     @products = @node.products.unarchived.distributed.all :conditions => conditions, :group => (['supplier_id', 'id']+DistributionPluginProduct.new.attributes.keys).join(',')
     @all_products_count = @node.products.unarchived.distributed.count
     @product_categories = ProductCategory.find(:all)
-    @new_product = DistributionPluginDistributedProduct.new :node => @node, :supplier_id => params[:supplier_id]
+    @new_product = DistributionPluginDistributedProduct.new :node => @node, :supplier => @supplier
 
     respond_to do |format|
       format.html
@@ -33,9 +33,11 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
       @product = DistributionPluginDistributedProduct.new :node => @node, :supplier_product_id => params[:product].delete(:supplier_product_id)
       @product.update_attributes! params[:product]
     else
-      @product = DistributionPluginDistributedProduct.new :node => @node, :supplier => @supplier
-      @product.supplier_product_id = params[:product][:supplier_product_id] if @supplier.node != @node
-      not_distributed_products(params[:product][:supplier_product_id])
+      if @supplier
+        @product = DistributionPluginDistributedProduct.new :node => @node, :supplier => @supplier
+        @product.supplier_product_id = params[:product][:supplier_product_id] if @supplier.node != @node
+        not_distributed_products(params[:product][:supplier_product_id])
+      end
       render :partial => 'edit', :locals => {:product => @product}
     end
   end

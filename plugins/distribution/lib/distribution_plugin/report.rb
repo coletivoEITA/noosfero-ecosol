@@ -42,9 +42,9 @@ module DistributionPlugin::Report
             table.row do |row|
               row.cell _("product cod."), :style => 'green-cell'
               row.cell _("product name"), :style => 'green-cell'
-              row.cell _("qtt ordered"), :style => 'green-cell'
-              row.cell _("min. qtt"), :style => 'green-cell'
-              #row.cell _("qtt to be parcelled"), :style => 'green-cell'
+              row.cell _("qty ordered"), :style => 'green-cell'
+              row.cell _("min. qty"), :style => 'green-cell'
+              #row.cell _("qty to be parcelled"), :style => 'green-cell'
               #row.cell _("projected stock"), :style => 'green-cell'
               row.cell  _("un."), :style => 'green-cell'
               row.cell _("price/un"), :style => 'green-cell'
@@ -137,9 +137,9 @@ module DistributionPlugin::Report
               row.cell _("product cod."), :style => 'green-cell'
               row.cell _("supplier"), :style => 'green-cell'
               row.cell _("product name"), :style => 'green-cell'
-              row.cell _("qtt ordered"), :style => 'green-cell'
-              row.cell  _("un."), :style => 'green-cell'
-              row.cell _("price/un"), :style => 'green-cell'
+              row.cell _("qty ordered"), :style => 'green-cell'
+              row.cell _("un."), :style => 'green-cell'
+              row.cell _("price/un."), :style => 'green-cell'
               row.cell _("value"), :style => 'green-cell'
             end
             order.products.each do |ordered_product| 
