@@ -30,7 +30,7 @@ class DistributionPlugin::OrderBlock < Block
    block = self
 
    lambda do
-     consumer = current_user ? DistributionPluginNode.find_or_create(current_user.person) : nil
+     consumer = current_user.is_a?(User) ? DistributionPluginNode.find_or_create(current_user.person) : nil
      @controller.append_view_path DistributionPlugin.view_path
      extend DistributionPlugin::DistributionDisplayHelper
      render :file => 'blocks/distribution_plugin_order', :locals => { :block => block, :node => n, :consumer => consumer }
