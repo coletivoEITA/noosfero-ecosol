@@ -56,9 +56,10 @@ class DistributionPluginSession < ActiveRecord::Base
     'new', 'edition', 'orders', 'closed'
   ]
   
-  validates_presence_of :node, :if => :not_new?
+  validates_presence_of :node
   validates_presence_of :name, :if => :not_new?
   validates_presence_of :start, :if => :not_new?
+  validates_presence_of :delivery_options, :if => :not_new?
   validates_associated :delivery_options, :if => :not_new?
   validates_inclusion_of :status, :in => STATUS_SEQUENCE, :if => :not_new?
   validates_numericality_of :margin_percentage, :allow_nil => true, :if => :not_new?
@@ -148,20 +149,15 @@ class DistributionPluginSession < ActiveRecord::Base
   def add_delivery_options
   end
   def add_delivery_options=(ids)
-    dms = node.delivery_methods.find ids 
-    (dms - delivery_methods).each do |dm|
-      delivery_options.create :session => self, :delivery_method => dm
+    dms = node.delivery_methods.find ids.to_s.split(',')
+    (dms - self.delivery_methods).each do |dm|
+      delivery_options.create! :session => self, :delivery_method => dm
     end
   end
 
   protected
 
-  before_validation :default_values
-  def default_values
-    self.status ||= 'edition'
-  end
-
-  before_update :step_new
+  before_validation :step_new
   def step_new
     return if new_record?
     self.step if self.new?
@@ -173,13 +169,13 @@ class DistributionPluginSession < ActiveRecord::Base
 
   def validate_orders_dates
     return if self.new?
-    errors.add_to_base(_("Invalid orders' date range")) unless start <= finish
+    errors.add_to_base(_("Invalid orders' date range")) unless start < finish
   end
 
   def validate_delivery_dates
     return if self.new?
+    errors.add_to_base(_("Invalid delivery' date range")) unless delivery_start < delivery_finish
     errors.add_to_base(_("Delivery' date before orders' date")) unless finish < delivery_start
-    errors.add_to_base(_("Invalid delivery' date range")) unless delivery_start <= delivery_finish
   end
 
 end

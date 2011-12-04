@@ -6,7 +6,6 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
 
   def select
     @session = DistributionPluginSession.find params[:session_id]
-    @new_delivery_method = DistributionPluginDeliveryMethod.new
     render :layout => false
   end
 
@@ -20,11 +19,12 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
 
   def new
     @session = DistributionPluginSession.find params[:session_id]
-    @session.update_attributes params[:session]
+    @session.add_delivery_options = params[:session][:add_delivery_options]
+    @session.save(false) # skip validations as needed for a new session
   end
 
   def destroy
-    @delivery_option = @session.delivery_options.find_by_id params[:id]
+    @delivery_option = @node.delivery_options.find params[:id]
     @session = @delivery_option.session
     @delivery_option.destroy
   end
@@ -45,6 +45,7 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
     @delivery_method = @node.delivery_methods.find_by_id params[:id]
     if request.post?
       @delivery_method.update_attributes! params[:delivery_method].merge(:node => @node, :delivery_type => 'pickup')
+      @delivery_method = DistributionPluginDeliveryMethod.new # reset form for a new method
     end
   end
 
@@ -52,6 +53,7 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
 
   def load
     @delivery_methods = @node.delivery_methods
+    @delivery_method = DistributionPluginDeliveryMethod.new
   end
 
 end

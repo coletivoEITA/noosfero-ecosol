@@ -51,7 +51,7 @@ function distribution_in_session_order_toggle(context) {
 /* ----- delivery stuff  ----- */
 
 function distribution_delivery_view_toggle() {
-  jQuery('#delivery-method-choose, #delivery-method-new').toggle();
+  jQuery('#delivery-method-choose, #delivery-method-edit').toggle();
 }
 
 /* ----- ends delivery stuff  ----- */

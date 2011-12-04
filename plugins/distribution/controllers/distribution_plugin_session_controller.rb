@@ -21,9 +21,13 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
   def new
     if request.post?
       @session = DistributionPluginSession.find params[:id]
-      @session.update_attributes! params[:session]
-      session[:notice] = _('Session created')
-      render :partial => 'new'
+      @success = @session.update_attributes params[:session]
+      if @success
+        session[:notice] = _('Session created')
+        render :partial => 'new'
+      else
+        render :partial => 'edit'
+      end
     else 
       @session = DistributionPluginSession.create! :node => @node, :status => 'new'
     end
