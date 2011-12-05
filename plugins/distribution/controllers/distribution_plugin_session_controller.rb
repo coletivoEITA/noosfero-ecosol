@@ -23,7 +23,7 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
       @session = DistributionPluginSession.find params[:id]
       @success = @session.update_attributes params[:session]
       if @success
-        session[:notice] = _('Session created')
+        session[:notice] = _('Cycle created')
         render :partial => 'new'
       else
         render :partial => 'edit'

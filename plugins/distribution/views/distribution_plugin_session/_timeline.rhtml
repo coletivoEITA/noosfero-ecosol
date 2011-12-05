@@ -27,7 +27,7 @@
         [ _('Spreadsheet with product listing'), {:action => :report_products, :id => session.id} ],
       ],
     }
-    actions[:edition].unshift [ _('Finish session editing'), {:action => :step, :id => session.id, :method => :post},
+    actions[:edition].unshift [ _('Finish cycle editing'), {:action => :step, :id => session.id, :method => :post},
       { :id => 'session-open-session' } ] unless session.passed_by?('edition')
     actions[:orders].unshift [ session.orders? ? _('Block orders period') : _('Close orders period'),
       {:action => :step, :id => session.id, :method => :post}, { :id => 'session-open-session' } ] unless session.passed_by?('orders')

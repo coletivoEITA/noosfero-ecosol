@@ -5,7 +5,7 @@
   </head>
   <body>
     <p>
-      <%= _('Hi %{name}!') % {:name => @order.consumer.name} %>
+      <%= _('Hi %{name},') % {:name => @order.consumer.name} %>
       <%= _("Your order #%{id} was changed by an %{supplier}'s administrator.") % {:id => @order.id, :supplier => link_to(@node.name, @node.profile.url)} %>
     </p>
 

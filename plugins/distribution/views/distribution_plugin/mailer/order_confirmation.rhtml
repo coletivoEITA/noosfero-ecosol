@@ -8,14 +8,16 @@
       <%= _('Dear %{name},') % {:name => @consumer.name} %>
     </p>
 
-    <p><%= _('Your order made on collective %{node} %{date} is confirmed.') % {
-      :node => @node.name, :date => @order.updated_at.strftime(_('in %B %d, at %Hh%M'))} %>
+    <p>
+      <%= _('Your order made on collective %{node} in %{date} is confirmed.') % {
+        :node => @node.name, :date => day_time(@order.updated_at))
+      } %>
     </p>
 
     <p>
-    <%= _('Atention to the delivery instructions, that will occur %{date}.') % {
-        :date => @order.session.delivery_start.strftime(_('in %B %d, from %Hh%M to ')) +
-          @order.session.delivery_finish.strftime(_('%Hh%M'))} %> 
+      <%= _('Atention to the delivery instructions, that will occur in %{date}.') % {
+        :date => day_time_period(@order.session.delivery_start, @order.session.delivery_finish)
+      } %> 
     </p>
 
     <p>
@@ -63,7 +65,7 @@
 
     <p>
       --<br/>
-      <%= _(%{node_greetings}) % {:node_greetings => @node.greetings} if defined? @node.greetings %>
+      <%= _("Greetings") %>
     </p>
   </body>
 </html>

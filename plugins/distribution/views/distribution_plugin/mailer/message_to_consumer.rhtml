@@ -5,7 +5,7 @@
   </head>
   <body>
     <p>
-      <%= _('Hello %{name}!') % {:name => @consumer.name} %>
+      <%= _('Hello %{name},') % {:name => @consumer.name} %>
     </p>
 
     <p><%= _('The collective %{node} sent a messsage to you') % {:node => @node.name} %></p>

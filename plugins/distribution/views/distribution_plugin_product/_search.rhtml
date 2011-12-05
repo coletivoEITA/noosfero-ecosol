@@ -19,7 +19,7 @@
     </div>
 
     <% if @products.empty? %>
-      <%=  _("We don't have products to show..") %>
+      <%=  _("We don't have products to show.") %>
     <% else %>
       <% @products.each do |product| %>
         <div id="our-product-<%=product.id%>" class="our-product value-row" toggleedit="distribution_our_product_toggle_edit();">

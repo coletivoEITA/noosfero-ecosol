@@ -5,7 +5,7 @@
   </head>
   <body>
     <p>
-      <%= _('Hello administrators of %{name}!') % {:name => @supplier.name} %>
+      <%= _('Hello administrators of %{name},') % {:name => @supplier.name} %>
     </p>
 
     <p><%= _('The collective %{node} sent a messsage to you') % {:node => @node.name} %></p>

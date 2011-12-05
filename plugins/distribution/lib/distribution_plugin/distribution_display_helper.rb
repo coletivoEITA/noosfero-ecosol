@@ -1,6 +1,6 @@
 module DistributionPlugin::DistributionDisplayHelper
 
-  include ActionView::Helpers::JavaScriptHelper #we want the original button_to_function!
+  include ActionView::Helpers::JavaScriptHelper # we want the original button_to_function!
 
   def labelled_field(form, field, label, field_html, options = {})
     help = options.delete(:help)
@@ -39,6 +39,16 @@ module DistributionPlugin::DistributionDisplayHelper
      :start => start.to_time.strftime(_("%m/%d")),
      :finish => finish.to_time.strftime(_("%m/%d")),
     }
+  end
+
+  def day_time(time)
+    time.strftime _('%B %d, at %Hh%M')
+  end
+
+  def day_time_period(start, finish)
+    start.strftime(_('%B %d, from %{time_start} to %{time_finish}') % {
+      :time_start => start.strftime(_('%Hh%M')), :time_finish => finish.strftime(_('%Hh%M'))
+    })
   end
 
   def datetime_period_with_day(start, finish)
