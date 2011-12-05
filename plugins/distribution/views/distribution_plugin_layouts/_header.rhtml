@@ -23,9 +23,11 @@
       </div>
     <% end %>
 
-    <div class="menu-button <%= "menu-selected" if @admin_action %>">
-      <%= link_to _('Administration'), {:controller => 'distribution_plugin_node', :action => 'index'} %>
-    </div>
+    <% if @node.profile.admins.include? @user_node.profile %>
+      <div class="menu-button <%= "menu-selected" if @admin_action %>">
+        <%= link_to _('Administration'), {:controller => 'distribution_plugin_node', :action => 'index'} %>
+      </div>
+    <% end %>
   </div>
 </div>
 <div class="cleaner"></div>

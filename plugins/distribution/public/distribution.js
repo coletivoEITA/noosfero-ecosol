@@ -278,6 +278,23 @@ function distribution_session_product_pmsync(context, to_price) {
 
 /* ----- ends session editions stuff  ----- */
 
+/* ----- table sorting stuff  ----- */
+
+jQuery('.table-header .box-field').live('click', function () {
+  this.ascending = !this.ascending;
+  header = jQuery(this).parents('.table-header');
+  content = header.siblings('.table-content');
+  jQuerySort(content.children('.value-row'), {find: '.'+this.classList[1], ascending: this.ascending});
+
+  arrow = header.find('.sort-arrow').length > 0 ? header.find('.sort-arrow') : jQuery('<div class="sort-arrow"/>').appendTo(header);
+  arrow.toggleClass('desc', !this.ascending).css({
+    top: jQuery(this).position().top + jQuery(this).height() - 1,
+    left: jQuery(this).position().left + parseInt(jQuery(this).css('margin-left')) + parseInt(jQuery(this).css('padding-left'))
+  });
+});
+
+/* ----- ends table sorting stuff  ----- */
+
 /* ----- toggle edit stuff  ----- */
 
 function distribution_supplier_add_link() {
@@ -323,8 +340,6 @@ function distribution_ordered_product_edit() {
   if (isEditing())
     editing().find('.product-quantity input').focus();
 }
-
-/* ----- ends toggle edit stuff  ----- */
 
 function distribution_value_row_toggle_edit() {
   editing().toggleClass('edit');
@@ -414,6 +429,9 @@ jQuery('.plugin-distribution .value-row').live('mouseleave', function () {
   jQuery(this).removeClass('hover');
 });
 
+/* ----- ends toggle edit stuff  ----- */
+
+/* ----- infrastructure stuff  ----- */
 
 function distribution_currency(value) {
   return parseFloat(value).toFixed(2);
@@ -440,10 +458,23 @@ Array.prototype.sum = function(){
     return sum;
 }
 Array.prototype.max = function(){
-  return Math.max.apply({},this)
+  return Math.max.apply({}, this);
 }
 Array.prototype.min = function(){
-  return Math.min.apply({},this)
+  return Math.min.apply({}, this);
+}
+
+function jQuerySort(elements, options) {
+  if (typeof options === 'undefined') options = {};
+  options.ascending = typeof options.ascending === 'undefined' ? 1 : (options.ascending ? 1 : -1);
+  var list = elements.get();
+  list.sort(function(a, b) {
+    var compA = (options.find ? jQuery(a).find(options.find) : jQuery(a)).text().toUpperCase();
+    var compB = (options.find ? jQuery(b).find(options.find) : jQuery(b)).text().toUpperCase();
+    return options.ascending * ((compA < compB) ? -1 : (compA > compB) ? 1 : 0);
+  });
+  parent = elements.first().parent();
+  jQuery.each(list, function(index, element) { parent.append(element); });
 }
 
 _.templateSettings = {
@@ -451,3 +482,5 @@ _.templateSettings = {
   interpolate: /\{\{=([\s\S]+?)\}\}/g,
   escape: /\{\{-([\s\S]+?)\}\}/g
 }
+
+/* ----- ends infrastructure stuff  ----- */

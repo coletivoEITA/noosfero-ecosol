@@ -205,16 +205,26 @@ body.plugin-distribution {
   width: 100%;
   padding: 8px;
   background-color: #B1DFEF;
-  font-size: 11px;
   color: #000;
-  /*text-decoration: underline;*/
-  text-transform: uppercase;
-  font-weight: bold;
 }
 .plugin-distribution .table-content {
   border-bottom: 1px solid black;
   width: auto;
   margin-bottom: 40px;
+}
+
+.plugin-distribution .sort-arrow {
+  border-top: 6px solid black;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  position: absolute;
+}
+.plugin-distribution .sort-arrow.desc {
+  border-bottom: 6px solid black;
+  border-top: 6px solid transparent;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  margin-top: -6px;
 }
 
 .plugin-distribution .value-row {
@@ -254,6 +264,13 @@ body.plugin-distribution {
   clear: both;
 }
 
+.plugin-distribution .table-header .box-field {
+  text-decoration: underline;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 10px;
+}
 .plugin-distribution .box-field {
   float: left;
   min-height: 1px;

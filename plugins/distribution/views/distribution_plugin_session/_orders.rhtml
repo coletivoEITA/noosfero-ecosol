@@ -20,6 +20,7 @@
       <%= edit_arrow "#", false, :onclick => 'distribution_in_session_order_toggle(this); return false;', :class => "box-field" %>
       <div class="line"></div>
     </div>
+
     <div class="order-content" style="display: none">
       <%= render :partial => 'orders_view', :locals => {:orders => @session.orders.draft} %>
     </div>
