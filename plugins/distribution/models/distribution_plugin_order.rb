@@ -32,8 +32,8 @@ class DistributionPluginOrder < ActiveRecord::Base
   validates_presence_of :session
   validates_presence_of :consumer
   validates_presence_of :supplier_delivery
-  #not yet implemented on interface
-  #validates_presence_of :consumer_delivery, :if => :is_delivery?
+  # not yet implemented on user interface
+  # validates_presence_of :consumer_delivery, :if => :is_delivery?
   validates_inclusion_of :status, :in => STATUSES
 
   named_scope :draft, :conditions => {:status => 'draft'}
@@ -124,7 +124,7 @@ class DistributionPluginOrder < ActiveRecord::Base
   before_validation :default_values
   def default_values
     self.status ||= 'draft'
-    self.supplier_delivery
+    self.supplier_delivery ||= session.delivery_methods.first
   end
 
 end
