@@ -4,10 +4,10 @@ http://noosfero.org/Development/RVMGemBasedInstallation
 1. Install packages dependencies
 
 1.1. System deps
-$ sudo apt-get install po4a iso-codes tango-icon-theme
+$ sudo apt-get install po4a iso-codes tango-icon-theme curl
 
 1.2. Compilation deps
-$ sudo apt-get install libmagick9-dev libpq-dev libreadline-dev libsqlite3-dev
+$ sudo apt-get install libmagick9-dev libpq-dev libreadline-dev libsqlite3-dev libxslt1-dev
 
 2. Install RVM (command from http://beginrescueend.com/rvm/install/)
 $ bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
