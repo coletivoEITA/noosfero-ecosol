@@ -6,7 +6,7 @@ class DistributionPluginSession < ActiveRecord::Base
 
   has_many :orders, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc'
   has_many :orders_confirmed, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc',
-    :conditions => ['status = ?', 'confirmed']
+    :conditions => ['distribution_plugin_orders.status = ?', 'confirmed']
   has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :order => 'id asc'
 
   has_many :from_products, :through => :products, :order => 'id asc'

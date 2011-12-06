@@ -5,7 +5,8 @@ class DistributionPluginNode < ActiveRecord::Base
   has_many :delivery_methods, :class_name => 'DistributionPluginDeliveryMethod', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id asc'
   has_many :delivery_options, :through => :delivery_methods
 
-  has_many :sessions, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id asc', :conditions => ["status <> 'new'"]
+  has_many :sessions, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id asc',
+    :conditions => ["distribution_plugin_sessions.status <> 'new'"]
   has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy, :order => 'id asc'
   has_many :parcels, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy, :order => 'id asc'
   
@@ -25,7 +26,8 @@ class DistributionPluginNode < ActiveRecord::Base
   has_many :from_nodes, :through => :products
   has_many :to_nodes, :through => :products
 
-  has_many :sessions_custom_order, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy, :conditions => ["status <> 'new'"]
+  has_many :sessions_custom_order, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy,
+    :conditions => ["distribution_plugin_sessions.status <> 'new'"]
 
   validates_presence_of :profile
   validates_associated :profile
@@ -147,7 +149,7 @@ class DistributionPluginNode < ActiveRecord::Base
 
   alias_method :destroy!, :destroy
   def destroy
-    #TODO soft delete products
+    self.products.distributed.update_all ['archived = true']
     destroy!
   end
 
