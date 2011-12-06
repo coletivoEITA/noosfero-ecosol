@@ -51,6 +51,10 @@ module DistributionPlugin::DistributionDisplayHelper
     })
   end
 
+  def day_time_short(time)
+    time.strftime time.min > 0 ? _('%-m/%-d %Hh%M') : _('%-m/%-d %Hh')
+  end
+
   def datetime_period_with_day(start, finish)
     (start.to_date == finish.to_date ?
       _("%{start_day}, from %{start_time} to %{finish_time}") :
@@ -67,8 +71,8 @@ module DistributionPlugin::DistributionDisplayHelper
 
   def datetime_period_short(start, finish)
     _("%{start} - %{finish}") % {
-      :start => start.strftime(_('%m/%d %Hh%M')),
-      :finish => finish.strftime(_('%m/%d %Hh%M')),
+      :start => day_time_short(start),
+      :finish => day_time_short(finish)
     }
   end
 
