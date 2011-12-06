@@ -14,15 +14,18 @@ class DistributionPluginSupplier < ActiveRecord::Base
 
   validates_presence_of :node
   validates_presence_of :consumer
+  validates_associated :node
 
   def self.new_dummy(attributes)
     new_profile = Enterprise.new :visible => false, :environment => attributes[:consumer].profile.environment
     new_profile.identifier = Digest::MD5.hexdigest(rand.to_s)
     new_node = DistributionPluginNode.new :role => 'supplier', :profile => new_profile
-    new attributes.merge(:node => new_node)
+    supplier = new :node => new_node
+    supplier.attributes = attributes
+    supplier
   end
   def self.create_dummy(attributes)
-    s = new(attributes)
+    s = new_dummy attributes
     s.save!
     s
   end
