@@ -169,10 +169,8 @@ body.plugin-distribution {
 }
 .plugin-distribution .field label {
   font-weight: bold;
-  line-height: 27px;
+  line-height: 20px;
   margin-top: 4px;
-}
-.plugin-distribution .field label {
   float: left;
 }
 .plugin-distribution .field .field-box {
@@ -469,6 +467,9 @@ body.plugin-distribution {
 }
 .plugin-distribution #session-products-header a {
   line-height: 30px;
+}
+.plugin-distribution #session-product-line .field {
+  width: 120px;
 }
 
 .plugin-distribution .session-new {
@@ -896,9 +897,6 @@ body.plugin-distribution {
   visibility: hidden;
 }
 
-.plugin-distribution #session-products .box-edit .field label {
-  white-space: nowrap;
-}
 .plugin-distribution #session-products .box-edit .field {
   float: left;
   clear: none;

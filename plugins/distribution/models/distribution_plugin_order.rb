@@ -4,7 +4,7 @@ class DistributionPluginOrder < ActiveRecord::Base
 
   has_many :suppliers, :through => :products, :uniq => true
   has_many :products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'order_id', :dependent => :destroy,
-    :order => 'id asc', :include => :product
+    :order => 'id asc'
 
   has_many :session_products, :through => :products, :source => :product
   has_many :distributed_products, :through => :session_products, :source => :from_products

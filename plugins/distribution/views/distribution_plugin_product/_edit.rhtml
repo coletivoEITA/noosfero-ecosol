@@ -122,7 +122,7 @@
                 :onchange => "distribution_our_product_toggle_referred(this)" unless product.default_name.nil? %>
               <%= f.check_box :default_description, :class => 'default-checkbox', :for => '#product_description',
                 :onchange => "distribution_our_product_toggle_referred(this)" unless product.default_description.nil? %>
-              <%= f.check_box :default_price, :class => 'default-checkbox', :for => '#product_price, #product_unit_id, #product_minimum_selleable, #product_selleable_factor',
+              <%= f.check_box :default_price, :class => 'default-checkbox', :for => '#product_price, #product_unit_id, #product_minimum_selleable, #product_unit_detail',
                 :onchange => "distribution_our_product_toggle_referred(this)" unless product.default_price.nil? %>
             </div>
           </div>

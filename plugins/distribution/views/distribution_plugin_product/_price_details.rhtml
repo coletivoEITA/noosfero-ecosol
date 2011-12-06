@@ -12,8 +12,8 @@
     f.select(:unit_id, Unit.all.map{ |u| [u.singular, u.id] }, {}, options.merge(:oldvalue => product.own_unit_id)) %>
   <%= labelled_field f, :minimum_selleable, _('Minimum order'),
     f.text_field(:minimum_selleable, options.merge(:oldvalue => product.own_minimum_selleable)), :class => 'left-column' %>
-  <%= labelled_field f, :selleable_factor, _('Unit specification'),
-    f.text_field(:selleable_factor, options.merge(:oldvalue => product.own_selleable_factor)) %>
+  <%= labelled_field f, :unit_detail, _('Unit specification'),
+    f.text_field(:unit_detail, options.merge(:oldvalue => product.own_unit_detail)) %>
 
   <%# put here due to css align, see distribution.js %>
   <% if supplier_product and not product.dummy? %>

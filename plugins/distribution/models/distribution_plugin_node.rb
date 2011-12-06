@@ -95,9 +95,15 @@ class DistributionPluginNode < ActiveRecord::Base
     supplier.node.products.unarchived.own.distributed - self.from_products.unarchived.distributed.by_node(supplier.node)
   end
 
-  def self_supplier
-    suppliers.from_node(self).first || DistributionPluginSupplier.create!(:node => self, :consumer => self)
+  alias_method :suppliers!, :suppliers
+  def suppliers
+    self_supplier # guarantee that the self_supplier is created
+    suppliers!
   end
+  def self_supplier
+    suppliers!.from_node(self).first || DistributionPluginSupplier.create!(:node => self, :consumer => self)
+  end
+
   def has_supplier?(supplier)
     suppliers.include? supplier
   end

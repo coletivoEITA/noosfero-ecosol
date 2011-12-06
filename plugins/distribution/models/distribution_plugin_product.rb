@@ -52,7 +52,6 @@ class DistributionPluginProduct < ActiveRecord::Base
   validates_associated :from_products
   validates_numericality_of :price, :allow_nil => true
   validates_numericality_of :minimum_selleable, :allow_nil => true
-  validates_numericality_of :selleable_factor, :allow_nil => true
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
   validates_numericality_of :stored, :allow_nil => true
@@ -63,7 +62,7 @@ class DistributionPluginProduct < ActiveRecord::Base
   acts_as_having_settings :field => :settings
 
   DEFAULT_ATTRIBUTES = [:name, :description, :margin_percentage, :margin_fixed,
-    :price, :stored, :unit_id, :minimum_selleable, :selleable_factor]
+    :price, :stored, :unit_id, :minimum_selleable, :unit_detail]
 
   settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :from_product
@@ -73,7 +72,7 @@ class DistributionPluginProduct < ActiveRecord::Base
   settings_default_item :stored, :type => :boolean, :default => true, :delegate_to => :from_product
   default_item :unit_id, :if => :default_price, :delegate_to => :from_product
   default_item :minimum_selleable, :if => :default_price, :delegate_to => :from_product
-  default_item :selleable_factor, :if => :default_price, :delegate_to => :from_product
+  default_item :unit_detail, :if => :default_price, :delegate_to => :from_product
 
   def dummy?
     supplier ? supplier.dummy? : false
