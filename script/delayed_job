@@ -7,6 +7,7 @@
 # etc. The actual feed update logic is DelayedJob plugin.
 
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
+require 'rubygems'
 require 'daemons'
 require 'delayed/command'
 require 'app/models/profile'
