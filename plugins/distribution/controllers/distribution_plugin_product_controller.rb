@@ -9,11 +9,22 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     @supplier = DistributionPluginSupplier.find_by_id params[:supplier_id].to_i
     not_distributed_products
 
-    conditions = []
-    conditions += ['active = ?', params["active"]] unless params["active"].blank?
-    conditions += ['supplier_id = ?', params["supplier_id"]] unless params["supplier_id"].blank?
-    conditions += ['LOWER(name) LIKE ?', '%'+params["name"]+'%'] unless params["name"].blank?
-    conditions = DistributionPluginDistributedProduct.send :merge_conditions, conditions
+    conditions = ['', []]
+     if not params["active"].blank?
+       conditions = ['active = ?', [params["active"]]]
+     end
+     if not params["supplier_id"].blank?
+       conditions[0] += ' AND ' unless conditions[0].blank?
+       conditions[0] += 'supplier_id = ?'
+       conditions[1] += [params["supplier_id"]]
+     end
+     if not params['name'].blank?
+       conditions[0] += ' AND ' unless conditions[0].blank?
+       conditions[0] += 'LOWER(name) LIKE ?'
+       conditions[1] += ['%'+params["name"]+'%']
+     end
+    conditions = DistributionPluginDistributedProduct.send :merge_conditions, conditions.flatten
+
 
     @products = @node.products.unarchived.distributed.all :conditions => conditions, :group => (['supplier_id', 'id']+DistributionPluginProduct.new.attributes.keys).join(',')
     @all_products_count = @node.products.unarchived.distributed.count
