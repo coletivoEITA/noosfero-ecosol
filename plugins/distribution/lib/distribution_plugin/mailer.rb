@@ -17,7 +17,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
          :environment => node.profile.environment
   end
 
-  def order_confirmation(order)
+  def order_confirmation(order,host_with_port)
     node = order.session.node
     domain = node.profile.hostname || node.profile.environment.default_hostname
     recipients    profile_recipients(order.consumer.profile)
@@ -28,7 +28,8 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
     body :node => node,
          :order => order,
          :consumer => order.consumer,
-         :environment => node.profile.environment
+         :environment => node.profile.environment,
+         :host_with_port => host_with_port
   end
 
   def message_to_consumer_for_order(node, order, subject, message = nil)

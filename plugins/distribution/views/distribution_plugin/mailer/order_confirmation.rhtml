@@ -63,7 +63,8 @@
     <p>
       <%= _('Your order can be checked in the following link:') %><br />
       <%= link_to _('Order %{code} of %{node}') % {:code => @order.code, :node => @node.name },
-        {:controller => :distribution_plugin_order, :action => :edit, :id => @order.id, :profile => @node.profile.identifier} %> 
+        "http://" + @host_with_port + url_for(:controller => :distribution_plugin_order,
+                                              :action => :edit,:profile => @node.profile.identifier, :id => @order.id) %> 
     </p>
 
     <p>

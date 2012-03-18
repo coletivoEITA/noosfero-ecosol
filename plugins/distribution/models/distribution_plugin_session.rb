@@ -113,8 +113,9 @@ class DistributionPluginSession < ActiveRecord::Base
     status == 'orders' && ( (self.delivery_start <= now && self.delivery_finish.nil?) || (self.delivery_start <= now && self.delivery_finish >= now) )
   end
 
-  def products_for_order_by_supplier
-    self.products.unarchived.all(:conditions => ['price > 0']).group_by{ |sp| sp.supplier }
+  def products_for_order_by_supplier(conditions='')
+    conditions = conditions == '' ? 'price > 0':'price > 0 AND ' + conditions
+    self.products.unarchived.all(:conditions => conditions).group_by{ |sp| sp.supplier }
   end
   
   def ordered_products_by_suppliers

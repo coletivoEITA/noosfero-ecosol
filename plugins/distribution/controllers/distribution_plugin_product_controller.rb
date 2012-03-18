@@ -37,6 +37,37 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     end
   end
 
+  def filter_products
+    conditions = ['', []]
+    if not params["active"].blank?
+      conditions = ['active = ?', [params["active"]]]
+    end
+    if not params["supplier_id"].blank?
+      conditions[0] += ' AND ' unless conditions[0].blank?
+      conditions[0] += 'supplier_id = ?'
+      conditions[1] += [params["supplier_id"]]
+    end
+    if not params['name'].blank?
+      conditions[0] += ' AND ' unless conditions[0].blank?
+      conditions[0] += 'LOWER(name) LIKE ?'
+      conditions[1] += ['%'+params["name"].downcase+'%']
+    end
+    if not params["session_id"].blank?
+      conditions[0] += ' AND ' unless conditions[0].blank?
+      conditions[0] += 'session_id = ?'
+      conditions[1] += [params["session_id"]]
+    end
+    conditions = DistributionPluginSessionProduct.send :merge_conditions, conditions.flatten
+    logger.debug conditions
+    session = DistributionPluginSession.find params['session_id']
+    @products = session.products_for_order_by_supplier conditions
+    @order = DistributionPluginOrder.find_by_id params[:order_id]
+    #@product_categories = ProductCategory.find(:all)
+
+    render :partial => 'order_search', :locals => {
+      :products_for_order_by_supplier => @products, :order => @order}
+  end
+
   def new
     @supplier = DistributionPluginSupplier.find_by_id params[:product][:supplier_id].to_i
     if params[:commit]

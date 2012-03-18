@@ -1,0 +1,52 @@
+<div id="filter-fields" class="filter-box">
+  <strong><%= _("Filter") %></strong>
+
+  <% form_remote_tag :update => 'order-filter', :url => {:controller => 'distribution_plugin_product', :action => :filter_products}, :html => {:id => 'filter-form'}, :method => :get do %>
+    <%= hidden_field_tag(:session_id, @session.id)  %>
+    <%= hidden_field_tag(:order_id, @order.id)  %>
+    <div class="box-field name">
+      <div><%= _('Name') %></div>
+      <div><%= text_field_tag :name, params[:name], :onkeydown => "var field = this; function name_form_submit() {field.form.onsubmit();}; setTimeout(name_form_submit, 700);" %></div>
+    </div>
+
+    <div class="box-field supplier">
+      <div>
+      <div><%= _('Supplier') %></div>
+        <%= select_tag :supplier_id, options_for_select([[_("all the suppliers"), ""]] + supplier_choices(@node), params[:supplier_id].to_i),
+          :onchange => "this.form.onsubmit()" %>
+        </div>
+      </div>
+
+      <div class="box-field category">
+        <div>
+          <%# select_tag :category_id, options_for_select(@product_categories.map{ |pc| [pc.name, pc.id]}.insert(0,[_("all the categories"), ""])),
+            {:onchange => "this.form.onsubmit()"} %>
+          </div>
+        </div>
+
+        <div class="box-field qualifier">
+          <div><%# select_tag :qualifier_id, options_for_select([_('anyone'), '']) %></div>
+        </div>
+
+        <div class="box-field stock">
+          <div><%# _('whose qty. available is') %></div>
+          <div><%# select_tag :stock, options_for_select([_('bigger than the stock'), '']) %></div>
+        </div>
+
+        <% if false -%>
+          <div class="box-field state">
+            <div><%= _('and being') %></div>
+            <div>
+              <%= select_tag :active, options_for_select([[_("In any state"), ""], [ _('active'), 'true'], [ _('inactive'), 'false']], params[:active]),
+                :onchange => "this.form.onsubmit()" %>
+             </div>
+           </div>
+         <% end %>
+       <% end %>
+
+        <div class="cleaner"></div>
+      </div>
+
+
+
+

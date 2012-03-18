@@ -1033,7 +1033,7 @@ body.plugin-distribution {
 }
 .plugin-distribution .filter-box .box-field {
   padding-left: 0;
-  padding-right: 17px;
+  padding-right: 24px;
 }
 .plugin-distribution .filter-box .box-field,
 .plugin-distribution .filter-box .box-field select,
@@ -1279,23 +1279,6 @@ body.plugin-distribution {
   margin-bottom: 20px;
 }
 
-.plugin-distribution .session-view #order-filter {
-  margin: 10px 0;
-}
-.plugin-distribution .session-view #order-filter input {
-  width: 100%;
-}
-.plugin-distribution .session-view #order-filter .order-filter {
-  float: left;
-  width: 100%;
-  margin-bottom: 30px;
-}
-.plugin-distribution .session-view #order-filter strong {
-  margin-top: 10px;
-  display: block;
-  font-weight: bold;
-}
-
 .plugin-distribution .session-view #session-products-for-order .value-row { 
   border-left: 1px solid transparent;
 }
@@ -1307,6 +1290,16 @@ body.plugin-distribution {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   -o-border-radius: 5px;
+}
+.plugin-distribution .session-view #session-products-for-order #filter-fields .supplier,
+.plugin-distribution .session-view #session-products-for-order #filter-fields .qualifier { 
+  padding: 0;
+  padding-left: 5px;
+  background: none;
+}
+.plugin-distribution .session-view #session-products-for-order #filter-fields .box-field {
+  font-weight: bold;
+  margin: 0;
 }
 .plugin-distribution .session-view #session-products-for-order .supplier {
   background-color: #B1DFEF;

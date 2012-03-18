@@ -3,6 +3,8 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
 
   before_filter :set_admin_action, :only => [:session_edit]
 
+  helper DistributionPlugin::DistributionProductHelper
+
   def index
     @year = (params[:year] || DateTime.now.year).to_s
     @sessions = @node.sessions.by_year @year
@@ -51,7 +53,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     raise "Cycle's orders period already ended" unless @order.session.orders?
     @order.update_attributes! params[:order].merge(:status => 'confirmed')
 
-    DistributionPlugin::Mailer.deliver_order_confirmation @order
+    DistributionPlugin::Mailer.deliver_order_confirmation @order, request.host_with_port
     session[:notice] = _('Order confirmed')
     redirect_to :action => :edit, :id => @order.id
   end
