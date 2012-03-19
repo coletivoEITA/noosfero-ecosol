@@ -29,7 +29,8 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
         render :partial => 'edit'
       end
     else 
-      @session = DistributionPluginSession.create! :node => @node, :status => 'new'
+      count = DistributionPluginSession.count :conditions => {:node_id => @node}
+      @session = DistributionPluginSession.create! :node => @node, :status => 'new', :name => _("Cycle n.#{count+1}")
     end
   end
 

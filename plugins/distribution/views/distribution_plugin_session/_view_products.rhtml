@@ -4,7 +4,7 @@
     <div><%= _("Choose from the list below the products you want to include to your order. Click them to choose the quantity.")%></div>
   </div>
 
-  <%= render :partial => "distribution_plugin_order/filter_products" %>
+  <%= render :partial => "distribution_plugin_order/filter_products", :locals => {:session => session, :order => order}%>
 
   <div id="order-filter">
     <%= render :partial => "distribution_plugin_product/order_search", :locals => {

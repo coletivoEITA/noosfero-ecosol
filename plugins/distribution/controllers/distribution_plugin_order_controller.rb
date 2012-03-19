@@ -62,8 +62,9 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     @order = DistributionPluginOrder.find params[:id]
     @order.update_attributes! :status => 'cancelled'
 
+    DistributionPlugin::Mailer.deliver_order_cancellation @order
     session[:notice] = _('Order cancelled')
-    redirect_to :action => :edit, :session_id => @order.session.id
+    redirect_to :action => :index, :session_id => @order.session.id
   end
 
   def remove
@@ -71,7 +72,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
     @order.destroy
 
     session[:notice] = _('Order removed')
-    redirect_to :action => :edit, :session_id => @order.session.id
+    redirect_to :action => :index, :session_id => @order.session.id
   end
 
   def render_delivery

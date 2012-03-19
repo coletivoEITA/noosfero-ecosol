@@ -11,6 +11,7 @@ class DistributionPluginSupplier < ActiveRecord::Base
 
   named_scope :from_node, lambda { |n| { :conditions => {:node_id => n.id} } }
   named_scope :from_node_id, lambda { |id| { :conditions => {:node_id => id} } }
+  named_scope :with_name, lambda { |name| { :conditions => ["LOWER(name) LIKE ?",'%'+name.downcase+'%']  } }
 
   validates_presence_of :node
   validates_presence_of :consumer

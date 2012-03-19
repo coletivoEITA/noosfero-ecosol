@@ -1035,6 +1035,11 @@ body.plugin-distribution {
   padding-left: 0;
   padding-right: 24px;
 }
+.plugin-distribution #suppliers-page .filter-box .box-field,
+.plugin-distribution #suppliers-page .filter-box .box-field input {
+  width: 100%;
+  margin-left: 0;
+}
 .plugin-distribution .filter-box .box-field,
 .plugin-distribution .filter-box .box-field select,
 .plugin-distribution .filter-box .box-field input {
@@ -1301,6 +1306,7 @@ body.plugin-distribution {
   font-weight: bold;
   margin: 0;
 }
+
 .plugin-distribution .session-view #session-products-for-order .supplier {
   background-color: #B1DFEF;
   padding: 10px 8px 5px;

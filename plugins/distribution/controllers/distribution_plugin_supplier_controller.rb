@@ -5,7 +5,13 @@ class DistributionPluginSupplierController < DistributionPluginMyprofileControll
   before_filter :load_new, :only => [:index, :new]
 
   def index
-    @suppliers = @node.suppliers - [@node.self_supplier]
+    params['name'] = "" if params['name'].blank?
+    @suppliers = @node.suppliers.with_name(params['name']).paginate(:per_page => 2, :page => params["page"])
+
+    respond_to do |format|
+      format.html
+      format.js { render :partial => 'suppliers_list', :locals => {:suppliers => @suppliers}}
+    end
   end
 
   def new
