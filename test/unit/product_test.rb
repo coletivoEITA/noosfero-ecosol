@@ -109,7 +109,7 @@ class ProductTest < ActiveSupport::TestCase
     prod = ent.products.create!(:name => 'test product', :product_category => @product_category)
 
     ent.lat = 45.0; ent.lng = 45.0; ent.save!
-
+    process_delayed_job_queue
     prod.reload
    
     assert_in_delta 45.0, prod.lat, 0.0001
@@ -508,6 +508,28 @@ class ProductTest < ActiveSupport::TestCase
     second = fast_create(Input, :product_id => product.id, :product_category_id => fast_create(ProductCategory).id, :price_per_unit => 10.0, :amount_used => 1)
 
     assert_equal "50.00", product.formatted_value(:inputs_cost)
+  end
+
+  should 'return 0 on price_description_percentage by default' do
+    assert_equal 0, Product.new.price_description_percentage
+  end
+
+  should 'return 0 on price_description_percentage if price is 0' do
+    product = fast_create(Product, :price => 0)
+
+    assert_equal 0, product.price_description_percentage
+  end
+
+  should 'return 0 on price_description_percentage if price is not defined' do
+    product = fast_create(Product)
+
+    assert_equal 0, product.price_description_percentage
+  end
+
+  should 'return 0 on price_description_percentage if total_production_cost is 0' do
+    product = fast_create(Product, :price => 50)
+
+    assert_equal 0, product.price_description_percentage
   end
 
 end

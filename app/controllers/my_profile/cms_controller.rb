@@ -50,7 +50,7 @@ class CmsController < MyProfileController
   end
 
   def special_article_types
-    [Folder, Blog, UploadedFile, Forum, Gallery, RssFeed]
+    [Folder, Blog, UploadedFile, Forum, Gallery, RssFeed] + @plugins.dispatch(:content_types)
   end
 
   def view
@@ -197,6 +197,7 @@ class CmsController < MyProfileController
     @article = profile.articles.find(params[:id])
     if request.post?
       @article.destroy
+      session[:notice] = _("\"#{@article.name}\" was removed.")
       redirect_to :action => (@article.parent ? 'view' : 'index'), :id => @article.parent
     end
   end
@@ -352,7 +353,7 @@ class CmsController < MyProfileController
       }
     end.to_json
   end
-  
+
   def content_editor?
     true
   end
