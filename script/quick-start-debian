@@ -20,7 +20,7 @@ run() {
 run "sudo apt-get -y install tango-icon-theme || (wget http://ftp.br.debian.org/debian/pool/non-free/t/tango-icon-theme/tango-icon-theme_0.8.1-4_all.deb && sudo dpkg -i tango-icon-theme_0.8.1-4_all.deb)"
 
 # needed to run noosfero
-run sudo apt-get -y install rails ruby rake libgettext-ruby1.8 libsqlite3-ruby rcov librmagick-ruby libredcloth-ruby libwill-paginate-ruby iso-codes libfeedparser-ruby libferret-ruby libdaemons-ruby mongrel mongrel-cluster
+run sudo apt-get -y install rails ruby rake libzip-ruby1.8 libgettext-ruby1.8 libsqlite3-ruby rcov librmagick-ruby libredcloth-ruby libwill-paginate-ruby iso-codes libfeedparser-ruby libferret-ruby libdaemons-ruby mongrel mongrel-cluster
 
 # needed for development
 run sudo apt-get -y install libtidy-ruby libhpricot-ruby libmocha-ruby imagemagick po4a xvfb
