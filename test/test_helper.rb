@@ -1,25 +1,29 @@
 ENV["RAILS_ENV"] = "test"
 
+# ensure we are on the root dir
+require 'fileutils'
+while !File.exists?('Rakefile')
+  FileUtils.cd '..'
+end
+
 # Start/stop Solr
 if not $test_helper_loaded
-	abort unless system 'rake -s solr:start'
+  abort unless system 'rake -s solr:start'
   at_exit { system 'rake -s solr:stop' }
   $test_helper_loaded = true
 end
 
-require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
+require 'config/environment'
 require 'test_help'
 require 'mocha'
 require 'tidy'
 require 'hpricot'
 
 require 'noosfero/test'
-require File.dirname(__FILE__) + '/factories'
-require File.dirname(__FILE__) + '/noosfero_doc_test'
-require File.dirname(__FILE__) + '/action_tracker_test_helper'
-require File.expand_path(File.dirname(__FILE__) + "/test_solr_helper.rb")
-
-FileUtils.rm_rf(File.join(RAILS_ROOT, 'index', 'test'))
+require 'test/factories'
+require 'test/noosfero_doc_test'
+require 'test/action_tracker_test_helper'
+require 'test/test_solr_helper.rb'
 
 Image.attachment_options[:path_prefix] = 'test/tmp/public/images'
 Thumbnail.attachment_options[:path_prefix] = 'test/tmp/public/thumbnails'
@@ -79,7 +83,7 @@ class ActiveSupport::TestCase
 
     destname = 'test_should_' + name.gsub(/[^a-zA-z0-9]+/, '_')
     if @shoulds.include?(destname)
-      raise "there is already a test named \"#{destname}\"" 
+      raise "there is already a test named \"#{destname}\""
     end
 
     @shoulds << destname
@@ -121,7 +125,7 @@ class ActiveSupport::TestCase
     object.valid?
     assert !object.errors.invalid?(attribute)
   end
-  
+
   def assert_subclass(parent, child)
     assert_equal parent, child.superclass, "Class #{child} expected to be a subclass of #{parent}"
   end
@@ -150,7 +154,7 @@ class ActiveSupport::TestCase
       get action, params
     end
     doc = Hpricot @response.body
-    
+
     # Test style references:
     (doc/'style').each do |s|
       s = s.to_s().gsub( /\/\*.*\*\//, '' ).
