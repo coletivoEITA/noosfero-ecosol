@@ -3,19 +3,10 @@ Dir.glob(File.join(Rails.root, 'config', 'plugins', '*', 'controllers')) do |dir
 
   Dir.glob(File.join(dir, '*')) do |controller|
     controller_name = File.basename(controller).sub(/_controller\.rb$/, '')
-    controller_class = "#{controller_name.camelize}Controller".constantize.new
     controller_name_unprefixed = "#{controller_name.sub(/^#{plugin_name}_plugin_/, '')}"
 
-    if controller_class.is_a?(ProfileController)
-      map.connect "profile/:profile/plugin/:plugin_name/#{controller_name_unprefixed}/:action/:id", :controller => controller_name
-      map.connect "profile/:profile/plugin/#{plugin_name}/#{controller_name_unprefixed}/:action/:id", :controller => controller_name
-    elsif controller_class.is_a?(MyProfileController)
-      map.connect "myprofile/:profile/plugin/:plugin_name/#{controller_name_unprefixed}/:action/:id", :controller => controller_name
-      map.connect "myprofile/:profile/plugin/#{plugin_name}/#{controller_name_unprefixed}/:action/:id", :controller => controller_name
-    else
-      map.connect "plugin/:plugin_name/#{controller_name_unprefixed}/:action/:id", :controller => controller_name
-      map.connect "plugin/#{plugin_name}/#{controller_name_unprefixed}/:action/:id", :controller => controller_name
-    end
+    map.connect "plugin/:plugin_name/#{controller_name_unprefixed}/:action/:id", :controller => controller_name
+    map.connect "plugin/#{plugin_name}/#{controller_name_unprefixed}/:action/:id", :controller => controller_name
   end
 
   map.connect "plugin/:plugin_name/:action/:id", :controller => plugin_name + '_plugin'

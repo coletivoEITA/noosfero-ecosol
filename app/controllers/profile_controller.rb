@@ -1,1 +1,0 @@
-public/profile_controller.rb
