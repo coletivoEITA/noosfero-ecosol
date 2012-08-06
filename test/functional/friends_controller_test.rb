@@ -3,14 +3,13 @@ require 'friends_controller'
 
 class FriendsController; def rescue_action(e) raise e end; end
 
-class FriendsControllerTest < Test::Unit::TestCase
+class FriendsControllerTest < ActionController::TestCase
 
   noosfero_test :profile => 'testuser'
 
   def setup
     @controller = FriendsController.new
     @request    = ActionController::TestRequest.new
-    @request.stubs(:ssl?).returns(true)
     @response   = ActionController::TestResponse.new
 
     self.profile = create_user('testuser').person
@@ -56,6 +55,26 @@ class FriendsControllerTest < Test::Unit::TestCase
   should 'display find people button' do
     get :index, :profile => 'testuser'
     assert_tag :tag => 'a', :content => 'Find people', :attributes => { :href => '/assets/people' }
+  end
+
+  should 'not display invite friends button if any plugin tells not to' do
+    class Plugin1 < Noosfero::Plugin
+      def remove_invite_friends_button
+        true
+      end
+    end
+    class Plugin2 < Noosfero::Plugin
+      def remove_invite_friends_button
+        false
+      end
+    end
+
+    e = profile.environment
+    e.enable_plugin(Plugin1.name)
+    e.enable_plugin(Plugin2.name)
+
+    get :index, :profile => 'testuser'
+    assert_no_tag :tag => 'a', :attributes => { :href => "/profile/testuser/invite/friends" }
   end
 
 end

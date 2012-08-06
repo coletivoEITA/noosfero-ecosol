@@ -20,15 +20,14 @@ module TagsHelper
   #
   # <tt>options</tt> can include one or more of the following:
   #
-  # * <tt>:max_size</tt>: font size for the tag with largest count 
-  # * <tt>:min_size</tt>: font size for the tag with smallest count 
+  # * <tt>:max_size</tt>: font size for the tag with largest count
+  # * <tt>:min_size</tt>: font size for the tag with smallest count
   # * <tt>:show_count</tt>: whether to show the count of contents for each tag.   Defauls to <tt>false</tt>.
-  # 
+  #
   # The algorithm for generating the different sizes and positions is a
-  # courtesy of Aurelio: http://www.colivre.coop.br/Aurium/Nuvem 
+  # courtesy of Aurelio: http://www.colivre.coop.br/Aurium/Nuvem
   # (pt_BR only).
   def tag_cloud(tags, tagname_option, url, options = {})
-  
 
     return content_tag('em', _('No tags yet.')) +
            ' <a href="' + _('http://en.wikipedia.org/wiki/Tag_%28metadata%29') +
@@ -42,7 +41,15 @@ module TagsHelper
     max = tags.values.max.to_f
     min = tags.values.min.to_f
 
-    tags.map do |tag,count|
+    # Uses iconv to translate utf8 strings to ascii.
+    # If can't translate a character, ignore it.
+    require 'iconv'
+    utf8_to_ascii = Iconv.new("ASCII//TRANSLIT//IGNORE","UTF8")
+    # Sorts first based on translated strings and then, if they are equal, based on the original form.
+    # This way variant characters falls on the same level as their base characters and don't end up
+    # at the end of the tag list.
+    # Example: AA ÁA AB Z instead of AA AB Z ÁA
+    tags.collect{ |k,v| [utf8_to_ascii.iconv(k).downcase, [k,v]] }.sort.collect { |ascii, t| t }.map do |tag,count|
       if ( max == min )
         v = 0.5
       else
@@ -51,7 +58,7 @@ module TagsHelper
       style = ""+
         "font-size: #{ (v * delta).round + min_size }px;"+
         "top: #{ -(delta/2) - (v * (delta/2)).round }px;"
-      destination = url.kind_of?(Hash) ? url_for(url.merge(tagname_option => tag)) : (url.to_s + tag)
+      destination = url.merge(tagname_option => tag)
 
       if options[:show_count]
         display_count = options[:show_count] ? "<small><sup>(#{count})</sup></small>" : ""

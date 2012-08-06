@@ -20,6 +20,12 @@ module ActionTracker
 
     alias_method :subject, :user
 
+    # In days
+    RECENT_DELAY = 30
+
+    named_scope :recent, :conditions => ['created_at >= ?', RECENT_DELAY.days.ago]
+    named_scope :visible, :conditions => { :visible => true }
+
     def self.current_user_from_model
       u = new
       u.valid?

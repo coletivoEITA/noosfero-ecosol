@@ -1,3 +1,224 @@
+noosfero (0.38.0) unstable; urgency=low
+
+  * Features version release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Tue, 31 Jul 2012 19:51:43 -0300
+
+noosfero (0.37.0) unstable; urgency=low
+
+  * Features version release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Tue, 05 Jun 2012 11:49:52 -0300
+
+noosfero (0.36.6) unstable; urgency=low
+
+  * Bugfixes release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Mon, 14 May 2012 22:05:26 -0300
+
+noosfero (0.36.5) unstable; urgency=low
+
+  * Bugfixes release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Thu, 26 Apr 2012 00:49:32 -0300
+
+noosfero (0.36.4) unstable; urgency=low
+
+  * Bugfix release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Sat, 21 Apr 2012 10:59:32 -0300
+
+noosfero (0.36.3) unstable; urgency=low
+
+  * Bugfixes release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Thu, 19 Apr 2012 22:33:13 -0300
+
+noosfero (0.36.2) unstable; urgency=low
+
+  * Bugfixes release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Thu, 05 Apr 2012 15:11:04 -0300
+
+noosfero (0.36.1) unstable; urgency=low
+
+  * Bug fix release
+
+ -- Antonio Terceiro <terceiro@colivre.coop.br>  Wed, 14 Mar 2012 17:30:26 -0300
+
+noosfero (0.36.0) unstable; urgency=low
+
+  * Features version release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Tue, 13 Mar 2012 12:11:24 -0300
+
+noosfero (0.36.0~3) unstable; urgency=low
+
+  * Features version release.
+  * From this release until we say otherwise, this package is designed for
+    Debian 6 (Squeeze). Attempts to upgrade from 0.35.0 on Debian 5 (Lenny)
+    without also upgrading the system to Debian 6 (Squeeze), as well as
+    attemps to install this version on Debian 5 (Lenny), will probably fail
+    miserably (YMMV, though).
+
+ -- Antonio Terceiro <terceiro@colivre.coop.br>  Sun, 27 Nov 2011 14:11:33 -0200
+
+noosfero (0.35.3) unstable; urgency=low
+
+  * Bugfix release.
+
+ -- Antonio Terceiro <terceiro@colivre.coop.br>  Wed, 07 Mar 2012 11:35:06 -0300
+
+noosfero (0.35.2) unstable; urgency=low
+
+  * Bugfixes version release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Fri, 02 Mar 2012 13:36:02 -0300
+
+noosfero (0.35.2~1) unstable; urgency=low
+
+  * Bugfixes version release
+  * Added missing Build dependencies to build in a clean chroot: rake, rails,
+    libferret-ruby, libwill-paginate-ruby, tango-icon-theme, rcov
+  * Noosfero needs a functioning MTA: added dependency on exim4 |
+    mail-transport-agent.
+  * /usr/share/dbconfig-common/scripts/noosfero/install/pgsql: run db:migrate
+    just after db:schema:load.
+  * etc/init.d/noosfero: forward fix for the Lenny → Squeeze upgrade. In
+    Squeeze, `rails` is an empty package that depends on rails-ruby1.8, but
+    rails-ruby1.8 is only unpacked *after* noosfero prerm runs. This way, the
+    initscript must be able to stop the services without any of the Rails
+    libraries available.
+
+ -- Antonio Terceiro <terceiro@colivre.coop.br>  Thu, 01 Mar 2012 14:37:15 -0300
+
+noosfero (0.35.1) unstable; urgency=low
+
+  * Bugfixes version release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Wed, 15 Feb 2012 17:17:48 -0200
+
+noosfero (0.35.0) unstable; urgency=low
+
+  * Features version release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Fri, 27 Jan 2012 02:43:42 -0200
+
+noosfero (0.34.3) unstable; urgency=low
+
+  * Bugfixes version release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Thu, 26 Jan 2012 14:11:22 -0200
+
+noosfero (0.34.2) unstable; urgency=low
+
+  * Bugfixes version release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Tue, 10 Jan 2012 20:48:42 -0200
+
+noosfero (0.34.1) unstable; urgency=low
+
+  * Bugfixes version release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Wed, 07 Dec 2011 00:52:59 -0200
+
+noosfero (0.34.0) unstable; urgency=low
+
+  * Features version release.
+
+ -- Joenio Costa <joenio@colivre.coop.br>  Thu, 24 Nov 2011 13:07:12 -0200
+
+noosfero (0.33.1) unstable; urgency=low
+
+  * Bugfixes version release.
+
+ -- Joenio Costa <joenio@perl.org.br>  Sun, 16 Oct 2011 15:34:25 -0300
+
+noosfero (0.33.0) unstable; urgency=low
+
+  * Features version release
+
+ -- Joenio Costa <joenio@perl.org.br>  Mon, 10 Oct 2011 09:30:36 -0300
+
+noosfero (0.32.1) unstable; urgency=low
+
+  * Bugfix version release.
+
+ -- Joenio Costa <joenio@perl.org.br>  Tue, 27 Sep 2011 11:24:07 -0300
+
+noosfero (0.32.0) unstable; urgency=low
+
+  * Features version release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Mon, 22 Aug 2011 19:17:40 -0300
+
+noosfero (0.31.5) unstable; urgency=low
+
+  * Bugfix version release
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Mon, 15 Aug 2011 18:20:13 -0300
+
+noosfero (0.31.4) unstable; urgency=low
+
+  * Bugfix Version release
+
+ -- Rodrigo Souto <rodrigo@colivre.coop.br>  Fri, 15 Jul 2011 16:40:05 -0300
+
+
+noosfero (0.31.3) unstable; urgency=low
+
+  * Bugfix Version release.
+
+ -- Rodrigo <rodrigo@colivre.coop.br>  Thu, 16 Jun 2011 11:13:42 -0300
+
+noosfero (0.31.2) unstable; urgency=low
+
+  * Bugfix Version release.
+
+ -- Rodrigo Souto <rodrigo@colivre.coop.br>  Fri, 03 Jun 2011 13:35:36 -0300
+
+noosfero (0.31.1) unstable; urgency=low
+
+  * Bugfix Version release.
+
+ -- Rodrigo Souto <rodrigo@colivre.coop.br>  Fri, 27 May 2011 13:12:19 -0300
+
+noosfero (0.31.0) unstable; urgency=low
+
+  * Features Version release.
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Thu, 12 May 2011 01:06:39 -0300
+
+noosfero (0.30.2) unstable; urgency=low
+
+  * Bugfix Version release.
+
+ -- Joenio Costa <joenio@colivre.coop.br>  Wed, 11 May 2011 21:48:31 -0300
+
+noosfero (0.30.1) unstable; urgency=low
+
+  * Bugfix Version release.
+
+ -- Joenio Costa <joenio@colivre.coop.br>  Thu, 14 Apr 2011 12:51:12 -0300
+
+noosfero (0.30.0) unstable; urgency=low
+
+  * Features Version release.
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Tue, 12 Apr 2011 09:40:10 -0300
+
+noosfero (0.29.5) unstable; urgency=low
+
+  * Bugfix Version release. (Closes: AI#1961)
+
+ -- Daniela Soares Feitosa <daniela@colivre.coop.br>  Fri, 25 Mar 2011 16:45:27 -0300
+
+noosfero (0.29.4) unstable; urgency=low
+
+  * Bugfixes Version release. (Closes: AI#1938 AI#1943 AI#1928 AI#1929 AI#1932 AI#1946 AI#1909 AI#1947 AI#1935 AI#1930 AI#1936 AI#1926 AI#1922)
+
+ -- Joenio Costa <joenio@colivre.coop.br>  Thu, 24 Mar 2011 10:31:35 -0300
+
 noosfero (0.29.3) unstable; urgency=low
 
   * Bugfixes Version release. (Closes: AI#1760 AI#1907 AI#1899 AI#1891 AI#1904 AI#1888 AI#1869 AI#1900 AI#1914)

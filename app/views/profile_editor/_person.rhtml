@@ -2,6 +2,10 @@
 
   <%= required_fields_message %>
 
-  <%= required f.text_field(:email)%>
+  <%= required f.text_field(:name) %>
+
+  <%= required f.text_field(:email) %>
+
+  <%= @plugins.dispatch(:profile_info_extra_contents).collect { |content| instance_eval(&content) }.join("") %>
 
   <%= render :partial => 'person_form', :locals => {:f => f} %>

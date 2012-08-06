@@ -8,16 +8,16 @@ class Domain < ActiveRecord::Base
   # validations
   #############
 
-  # <tt>name</tt> must be a sequence of word characters (a to z, plus 0 to 9,
-  # plus '_'). Letters must be lowercase
-  validates_format_of :name, :with => /^([a-z0-9_]+\.)+[a-z0-9_]+$/, :message => N_('%{fn} must be composed only of lowercase latters (a to z), numbers (0 to 9) and "_"')
+  # <tt>name</tt> must be sequences of alphanumeric characters (a to z,
+  # 0 to 9), plus '_' or '-', separated by dots. Letters must be lowercase.
+  validates_format_of :name, :with => /^([a-z0-9_-]+\.)+[a-z0-9_-]+$/, :message => N_('%{fn} must be composed of sequences of lowercase letters (a to z), numbers (0 to 9), "_" and "-", separated by dots.').fix_i18n
 
   # checks validations that could not be expressed using Rails' predefined
   # validations. In particular:
   # * <tt>name</tt> must not start with 'www.'
   def validate
     if self.name =~ /^www\./
-      self.errors.add(:name, _('%{fn} must not start with www.'))
+      self.errors.add(:name, _('%{fn} must not start with www.').fix_i18n)
     end
   end
 
@@ -73,6 +73,7 @@ class Domain < ActiveRecord::Base
   # requires restarting the application.
   def self.hosting_profile_at(domainname)
     return false unless domainname
+    Noosfero::MultiTenancy.setup!(domainname)
     @hosting[domainname] ||=
       begin
         domain = Domain.find_by_name(domainname)

@@ -3,21 +3,20 @@ require 'profile_design_controller'
 
 class ProfileDesignController; def rescue_action(e) raise e end; end
 
-class ProfileDesignControllerTest < Test::Unit::TestCase
+class ProfileDesignControllerTest < ActionController::TestCase
   
   COMMOM_BLOCKS = [ ArticleBlock, TagsBlock, RecentDocumentsBlock, ProfileInfoBlock, LinkListBlock, MyNetworkBlock, FeedReaderBlock, ProfileImageBlock, LocationBlock, SlideshowBlock, ProfileSearchBlock ]
   PERSON_BLOCKS = COMMOM_BLOCKS + [FriendsBlock, FavoriteEnterprisesBlock, CommunitiesBlock, EnterprisesBlock ]
   PERSON_BLOCKS_WITH_MEMBERS = PERSON_BLOCKS + [MembersBlock]
   PERSON_BLOCKS_WITH_BLOG = PERSON_BLOCKS + [BlogArchivesBlock]
 
-  ENTERPRISE_BLOCKS = COMMOM_BLOCKS + [DisabledEnterpriseMessageBlock, HighlightsBlock, FeaturedProductsBlock]
+  ENTERPRISE_BLOCKS = COMMOM_BLOCKS + [DisabledEnterpriseMessageBlock, HighlightsBlock, FeaturedProductsBlock, FansBlock]
   ENTERPRISE_BLOCKS_WITH_PRODUCTS_ENABLE = ENTERPRISE_BLOCKS + [ProductsBlock]
 
   attr_reader :holder
   def setup
     @controller = ProfileDesignController.new
     @request    = ActionController::TestRequest.new
-    @request.stubs(:ssl?).returns(true)
     @response   = ActionController::TestResponse.new
 
     @profile = @holder = create_user('designtestuser').person
@@ -168,6 +167,13 @@ class ProfileDesignControllerTest < Test::Unit::TestCase
       post :remove, :profile => 'designtestuser', :id => @b2.id
       assert_response :redirect
       assert_redirected_to :action => 'index'
+    end
+  end
+
+  should 'have options to display blocks' do
+    get :edit, :profile => 'designtestuser', :id => @b1.id
+    %w[always home_page_only except_home_page never].each do |option|
+      assert_tag :input, :attributes => { :type => 'radio', :value => option}
     end
   end
 
@@ -342,10 +348,12 @@ class ProfileDesignControllerTest < Test::Unit::TestCase
     profile.stubs(:person?).returns(true)
     profile.stubs(:enterprise?).returns(false)
     profile.stubs(:has_blog?).returns(false)
+    profile.stubs(:is_admin?).with(anything).returns(false)
     environment = mock
     profile.stubs(:environment).returns(environment)
     environment.stubs(:enabled?).returns(false)
     @controller.stubs(:profile).returns(profile)
+    @controller.stubs(:user).returns(profile)
     assert_equal PERSON_BLOCKS, @controller.available_blocks
   end
 
@@ -355,10 +363,12 @@ class ProfileDesignControllerTest < Test::Unit::TestCase
     profile.stubs(:person?).returns(true)
     profile.stubs(:enterprise?).returns(false)
     profile.stubs(:has_blog?).returns(false)
+    profile.stubs(:is_admin?).with(anything).returns(false)
     environment = mock
     profile.stubs(:environment).returns(environment)
     environment.stubs(:enabled?).returns(false)
     @controller.stubs(:profile).returns(profile)
+    @controller.stubs(:user).returns(profile)
     assert_equal [], @controller.available_blocks - PERSON_BLOCKS_WITH_MEMBERS
   end
 
@@ -368,10 +378,12 @@ class ProfileDesignControllerTest < Test::Unit::TestCase
     profile.stubs(:person?).returns(true)
     profile.stubs(:enterprise?).returns(false)
     profile.stubs(:has_blog?).returns(true)
+    profile.stubs(:is_admin?).with(anything).returns(false)
     environment = mock
     profile.stubs(:environment).returns(environment)
     environment.stubs(:enabled?).returns(false)
     @controller.stubs(:profile).returns(profile)
+    @controller.stubs(:user).returns(profile)
     assert_equal [], @controller.available_blocks - PERSON_BLOCKS_WITH_BLOG
   end
 
@@ -381,10 +393,12 @@ class ProfileDesignControllerTest < Test::Unit::TestCase
     profile.stubs(:person?).returns(false)
     profile.stubs(:enterprise?).returns(true)
     profile.stubs(:has_blog?).returns(false)
+    profile.stubs(:is_admin?).with(anything).returns(false)
     environment = mock
     profile.stubs(:environment).returns(environment)
     environment.stubs(:enabled?).returns(true)
     @controller.stubs(:profile).returns(profile)
+    @controller.stubs(:user).returns(profile)
     assert_equal [], @controller.available_blocks - ENTERPRISE_BLOCKS
   end
 
@@ -394,11 +408,34 @@ class ProfileDesignControllerTest < Test::Unit::TestCase
     profile.stubs(:person?).returns(false)
     profile.stubs(:enterprise?).returns(true)
     profile.stubs(:has_blog?).returns(false)
+    profile.stubs(:is_admin?).with(anything).returns(false)
     environment = mock
     profile.stubs(:environment).returns(environment)
     environment.stubs(:enabled?).returns(false)
     @controller.stubs(:profile).returns(profile)
+    @controller.stubs(:user).returns(profile)
     assert_equal [], @controller.available_blocks - ENTERPRISE_BLOCKS_WITH_PRODUCTS_ENABLE
+  end
+
+  should 'allow admins to add RawHTMLBlock' do
+    profile.stubs(:is_admin?).with(profile.environment).returns(true)
+    @controller.stubs(:user).returns(profile)
+    get :add_block, :profile => 'designtestuser'
+    assert_tag :tag => 'input', :attributes => { :id => 'type_rawhtmlblock', :value => 'RawHTMLBlock' }
+  end
+
+  should 'not allow normal users to add RawHTMLBlock' do
+    profile.stubs(:is_admin?).with(profile.environment).returns(false)
+    @controller.stubs(:user).returns(profile)
+    get :add_block, :profile => 'designtestuser'
+    assert_no_tag :tag => 'input', :attributes => { :id => 'type_rawhtmlblock', :value => 'RawHTMLBlock' }
+  end
+
+  should 'editing article block displays right selected article' do
+    selected_article = fast_create(Article, :profile_id => profile.id)
+    ArticleBlock.any_instance.stubs(:article).returns(selected_article)
+    get :edit, :profile => 'designtestuser', :id => @b1.id
+    assert_tag :tag => 'option', :attributes => {:value => selected_article.id, :selected => 'selected'}
   end
 
 end

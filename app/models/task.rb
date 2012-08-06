@@ -4,7 +4,7 @@
 #
 # The specific types of tasks <em>must</em> override the #perform method, so
 # the actual action associated to the type of task can be performed. See the
-# documentation of the #perform method for details. 
+# documentation of the #perform method for details.
 #
 # This class has a +data+ field of type <tt>text</tt>, where you can store any
 # type of data (as serialized Ruby objects) you need for your subclass (which
@@ -20,11 +20,14 @@ class Task < ActiveRecord::Base
     # the status of a task that was cancelled.
     CANCELLED = 2
 
-    # the status os a task that was successfully finished
+    # the status of a task that was successfully finished
     FINISHED = 3
 
+    # the status of a task that was created but is not displayed yet
+    HIDDEN = 4
+
     def self.names
-      [nil, N_('Active'), N_('Cancelled'), N_('Finished')]
+      [nil, N_('Active'), N_('Cancelled'), N_('Finished'), N_('Hidden')]
     end
   end
 
@@ -38,7 +41,7 @@ class Task < ActiveRecord::Base
 
   def initialize(*args)
     super
-    self.status ||= Task::Status::ACTIVE
+    self.status = (args.first ? args.first[:status] : nil) || Task::Status::ACTIVE
   end
 
   attr_accessor :code_length
@@ -52,18 +55,26 @@ class Task < ActiveRecord::Base
   end
 
   after_create do |task|
-    begin
-      task.send(:send_notification, :created)
-    rescue NotImplementedError => ex
-      RAILS_DEFAULT_LOGGER.info ex.to_s
+    unless task.status == Task::Status::HIDDEN
+      begin
+        task.send(:send_notification, :created)
+      rescue NotImplementedError => ex
+        RAILS_DEFAULT_LOGGER.info ex.to_s
+      end
+
+      begin
+        target_msg = task.target_notification_message
+        if target_msg && task.target && !task.target.notification_emails.empty?
+          TaskMailer.deliver_target_notification(task, target_msg)
+        end
+      rescue NotImplementedError => ex
+        RAILS_DEFAULT_LOGGER.info ex.to_s
+      end
     end
-    
-    begin
-      target_msg = task.target_notification_message
-      TaskMailer.deliver_target_notification(task, target_msg) if target_msg
-    rescue NotImplementedError => ex
-      RAILS_DEFAULT_LOGGER.info ex.to_s
-    end
+  end
+
+  def self.all_types
+    %w[Invitation EnterpriseActivation AddMember Ticket SuggestArticle  AddFriend CreateCommunity AbuseComplaint ApproveArticle CreateEnterprise ChangePassword EmailActivation InviteFriend InviteMember]
   end
 
   # this method finished the task. It calls #perform, which must be overriden
@@ -175,9 +186,15 @@ class Task < ActiveRecord::Base
     raise NotImplementedError, "#{self} does not implement #task_cancelled_message"
   end
 
+  # The message that will be sent to the requestor of the task when its
+  # activated.
+  def task_activated_message
+    raise NotImplementedError, "#{self} does not implement #task_cancelled_message"
+  end
+
   # The message that will be sent to the *target* of the task when it is
   # created. The indent of this message is to notify the target about the
-  # request that was just created for him/her. 
+  # request that was just created for him/her.
   #
   # The implementation in this class returns +nil+, what makes the notification
   # not to be sent. If you want to send a notification to the target upon task
@@ -197,6 +214,25 @@ class Task < ActiveRecord::Base
 
   def environment
     self.target.environment unless self.target.nil?
+  end
+
+  def activate
+    self.status = Task::Status::ACTIVE
+    save!
+    begin
+      self.send(:send_notification, :activated)
+    rescue NotImplementedError => ex
+      RAILS_DEFAULT_LOGGER.info ex.to_s
+    end
+
+    begin
+      target_msg = target_notification_message
+       if target_msg && self.target && !self.target.notification_emails.empty?
+         TaskMailer.deliver_target_notification(self, target_msg)
+       end
+    rescue NotImplementedError => ex
+      RAILS_DEFAULT_LOGGER.info ex.to_s
+    end
   end
 
   protected
@@ -221,7 +257,7 @@ class Task < ActiveRecord::Base
 
   # sends notification e-mail about a task, if the task has a requestor.
   #
-  # If 
+  # If
   def send_notification(action)
     if sends_email?
       if self.requestor
@@ -232,6 +268,23 @@ class Task < ActiveRecord::Base
 
   named_scope :pending, :conditions => { :status =>  Task::Status::ACTIVE }
   named_scope :finished, :conditions => { :status =>  [Task::Status::CANCELLED, Task::Status::FINISHED] }
+  named_scope :opened, :conditions => { :status =>  [Task::Status::ACTIVE, Task::Status::HIDDEN] }
+  named_scope :of, lambda { |type| conditions = type ? "type LIKE '#{type}'" : "1=1"; {:conditions =>  [conditions]} }
+  named_scope :order_by, lambda { |attribute, ord| {:order => "#{attribute} #{ord}"} }
+
+  named_scope :to, lambda { |profile|
+    environment_condition = nil
+    if profile.person?
+      envs_ids = Environment.find(:all).select{ |env| profile.is_admin?(env) }.map { |env| "target_id = #{env.id}"}.join(' OR ')
+      environment_condition = envs_ids.blank? ? nil : "(target_type = 'Environment' AND (#{envs_ids}))"
+    end
+    profile_condition = "(target_type = 'Profile' AND target_id = #{profile.id})"
+    { :conditions => [environment_condition, profile_condition].compact.join(' OR ') }
+  }
+
+  def opened?
+    status == Task::Status::ACTIVE || status == Task::Status::HIDDEN
+  end
 
   class << self
 
@@ -252,6 +305,10 @@ class Task < ActiveRecord::Base
     # Can be used in subclasses to find only their instances.
     def find_by_code(code)
       self.find(:first, :conditions => { :code => code, :status => Task::Status::ACTIVE })
+    end
+
+    def per_page
+      15
     end
 
   end

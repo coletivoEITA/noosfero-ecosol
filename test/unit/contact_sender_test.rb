@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ContactSenderTest < Test::Unit::TestCase
+class ContactSenderTest < ActiveSupport::TestCase
   FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures'
   CHARSET = "utf-8"
 
@@ -16,8 +16,8 @@ class ContactSenderTest < Test::Unit::TestCase
     ent.contact_email = 'contact@invalid.com'
     c = build(Contact, :dest => ent)
     response = Contact::Sender.deliver_mail(c)
-    assert_equal c.email, response.from
-    assert_equal c.subject, response.subject
+    assert_equal Environment.default.contact_email, response.from.to_s
+    assert_equal "[#{ent.name}] #{c.subject}", response.subject
   end
 
   should 'deliver mail to contact_email' do

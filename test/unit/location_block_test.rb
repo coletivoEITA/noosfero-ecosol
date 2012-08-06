@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class LocationBlockTest < Test::Unit::TestCase
+class LocationBlockTest < ActiveSupport::TestCase
 
   def setup
     @profile = create_user('lele').person
@@ -18,19 +18,18 @@ class LocationBlockTest < Test::Unit::TestCase
     assert_tag_in_string block.content, :tag => 'i'
   end
 
-  should 'display localization map' do
-    profile.lat = 0
-    profile.lng = 0
-    profile.save!
-    assert_tag_in_string block.content, :tag => 'img'
-  end
-
   should 'be editable' do
     assert LocationBlock.new.editable?
   end
-  
+
   should 'default title be blank by default' do
     assert_equal '', LocationBlock.new.title
+  end
+
+  should 'use google maps api v3' do
+    @block.owner.lat = '-12.34'; @block.owner.save!
+    assert_match 'http://maps.google.com/maps/api/staticmap', @block.content
+    assert_no_match /key=/, @block.content
   end
 
 end

@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class UploadedFileTest < Test::Unit::TestCase
+class UploadedFileTest < ActiveSupport::TestCase
 
   def setup
     @profile = create_user('testinguser').person
@@ -231,10 +231,10 @@ class UploadedFileTest < Test::Unit::TestCase
   should 'return a thumbnail for images' do
     f = UploadedFile.new
     f.expects(:image?).returns(true)
-    f.expects(:full_filename).with(:thumb).returns(File.join(RAILS_ROOT, 'public', 'images', '0000', '0005', 'x.png'))
+    f.expects(:full_filename).with(:display).returns(File.join(RAILS_ROOT, 'public', 'images', '0000', '0005', 'x.png'))
     assert_equal '/images/0000/0005/x.png', f.thumbnail_path
     f = UploadedFile.new
-    f.stubs(:full_filename).with(:thumb).returns(File.join(RAILS_ROOT, 'public', 'images', '0000', '0005', 'x.png'))
+    f.stubs(:full_filename).with(:display).returns(File.join(RAILS_ROOT, 'public', 'images', '0000', '0005', 'x.png'))
     f.expects(:image?).returns(false)
     assert_nil f.thumbnail_path
   end
@@ -291,6 +291,50 @@ class UploadedFileTest < Test::Unit::TestCase
     f = UploadedFile.new
     f.expects(:mime_type).returns(nil)
     assert_equal 'upload-file', UploadedFile.icon_name(f)
+  end
+
+  should 'upload to a folder with same name as the schema if database is postgresql' do
+    uses_postgresql 'image_schema_one'
+    file1 = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :profile => @profile)
+    process_delayed_job_queue
+    assert_match(/image_schema_one\/\d{4}\/\d{4}\/rails.png/, UploadedFile.find(file1.id).public_filename)
+    uses_postgresql 'image_schema_two'
+    file2 = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/test.txt', 'text/plain'), :profile => @profile)
+    assert_match(/image_schema_two\/\d{4}\/\d{4}\/test.txt/, UploadedFile.find(file2.id).public_filename)
+    file1.destroy
+    file2.destroy
+    uses_sqlite
+  end
+
+  should 'upload to path prefix folder if database is not postgresql' do
+    uses_sqlite
+    file = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/test.txt', 'text/plain'), :profile => @profile)
+    assert_match(/\/\d{4}\/\d{4}\/test.txt/, UploadedFile.find(file.id).public_filename)
+    assert_no_match(/test_schema\/\d{4}\/\d{4}\/test.txt/, UploadedFile.find(file.id).public_filename)
+    file.destroy
+  end
+
+  should 'upload thumbnails to a folder with same name as the schema if database is postgresql' do
+    uses_postgresql
+    file = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :profile => @profile)
+    process_delayed_job_queue
+    UploadedFile.attachment_options[:thumbnails].each do |suffix, size|
+      assert_match(/test_schema\/\d{4}\/\d{4}\/rails_#{suffix}.png/, UploadedFile.find(file.id).public_filename(suffix))
+    end
+    file.destroy
+    uses_sqlite
+  end
+
+  should 'not allow script files to be uploaded without append .txt in the end' do
+    file = UploadedFile.create!(:uploaded_data => fixture_file_upload('files/hello_world.php', 'application/x-php'), :profile => @profile)
+    assert_equal 'hello_world.php.txt', file.filename
+  end
+
+  should 'use itself as target for action tracker' do
+    p = fast_create(Gallery, :profile_id => @profile.id)
+    f = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :parent => p, :profile => @profile)
+    ta = f.activity
+    assert_equal f, ta.target
   end
 
 end

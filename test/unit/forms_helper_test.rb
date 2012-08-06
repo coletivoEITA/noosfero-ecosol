@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class FormsHelperTest < Test::Unit::TestCase
+class FormsHelperTest < ActiveSupport::TestCase
 
   include FormsHelper
   include ActionView::Helpers::TagHelper
@@ -27,9 +27,6 @@ class FormsHelperTest < Test::Unit::TestCase
   end
 
   protected
-
-  def _(text)
-    text
-  end
+  include NoosferoTestHelper
 
 end

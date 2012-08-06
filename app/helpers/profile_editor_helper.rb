@@ -18,7 +18,7 @@ module ProfileEditorHelper
     N_('Science Politics'),
     N_('Accounting and Actuarial Science'),
     N_('Morphologic Sciences'),
-    N_('Computation'),
+    N_('Computer Science'),
     N_('Rural Development'),
     N_('Law'),
     N_('Ecology'),
@@ -104,8 +104,8 @@ module ProfileEditorHelper
     @country_helper ||= CountriesHelper.instance
   end
 
-  def select_country(title, object, method, options)
-    labelled_form_field(title, select(object, method, [[_('[Select ...]'), nil]] + country_helper.countries, {}, options))
+  def select_country(title, object, method, html_options = {}, options = {})
+    labelled_form_field(title, select(object, method, [[_('[Select ...]'), nil]] + country_helper.countries, options, html_options))
   end
 
   def select_schooling(object, method, options)
@@ -137,8 +137,8 @@ module ProfileEditorHelper
       content_tag(
         'div',
         capture(&block) + '<br style="clear:left;"/>&nbsp;',
-        :class => 'control-panel'),
-      block.binding)
+        :class => 'control-panel')
+    )
   end
 
   def control_panel_button(title, icon, url)

@@ -22,14 +22,15 @@ module LightboxHelper
   def lightbox_options(options, lightbox_type = 'lbOn')
     the_class = lightbox_type
     the_class << " #{options[:class]}" if options.has_key?(:class)
-    options.merge(
-      :class => the_class,
-      :onclick => 'alert("%s"); return false' % _('Please, try again when the page loading completes.')
-    )
+    options.merge(:class => the_class)
   end
 
   def lightbox?
     request.xhr?
+  end
+
+  def lightbox_remote_button(type, label, url, options = {})
+    button(type, label, url, lightbox_options(options, 'remote-lbOn'))
   end
 
 end

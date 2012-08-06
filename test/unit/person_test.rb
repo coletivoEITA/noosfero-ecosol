@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class PersonTest < Test::Unit::TestCase
+class PersonTest < ActiveSupport::TestCase
   fixtures :profiles, :users, :environments
 
   def test_person_must_come_form_the_cration_of_an_user
@@ -64,7 +64,7 @@ class PersonTest < Test::Unit::TestCase
 
   should "have person info fields" do
     p = Person.new(:environment => Environment.default)
-    [ :name, :photo, :contact_information, :birth_date, :sex, :address, :city, :state, :country, :zip_code ].each do |i|
+    [ :name, :photo, :contact_information, :birth_date, :sex, :address, :city, :state, :country, :zip_code, :image ].each do |i|
       assert_respond_to p, i
     end
   end
@@ -133,6 +133,7 @@ class PersonTest < Test::Unit::TestCase
     other.email = 'user@domain.com'
     other.valid?
     assert other.errors.invalid?(:email)
+    assert_no_match /\{fn\}/, other.errors.on(:email)
   end
 
   should 'be able to use an e-mail already used in other environment' do
@@ -587,8 +588,9 @@ class PersonTest < Test::Unit::TestCase
     end
   end
 
-  should 'not rename' do
-    assert_valid p = create_user('test_user').person
+  should 'not be renamed' do
+    p = create_user('test_user').person
+    assert p.valid?
     assert_raise ArgumentError do
       p.identifier = 'other_person_name'
     end
@@ -625,20 +627,20 @@ class PersonTest < Test::Unit::TestCase
 
   should 'find more popular people' do
     Person.delete_all
-    env = fast_create(Environment)
     p1 = fast_create(Person)
     p2 = fast_create(Person)
     p3 = fast_create(Person)
 
     p1.add_friend(p2)
-    assert_equal [p1], Person.more_popular
-
     p2.add_friend(p1)
     p2.add_friend(p3)
-    assert_equal [p2,p1] , Person.more_popular
+    assert_equal p2, Person.more_popular[0]
+    assert_equal p1, Person.more_popular[1]
+  end
 
-    p2.remove_friend(p3)
-    assert_equal [p1,p2] , Person.more_popular
+  should 'list people that have no friends in more popular list' do
+    person = fast_create(Person)
+    assert_includes Person.more_popular, person
   end
 
   should 'persons has reference to user' do
@@ -1011,65 +1013,14 @@ class PersonTest < Test::Unit::TestCase
     assert has_add_member_notification
   end
 
-  should 'track only one action when a person leaves a community' do
+  should 'not track when a person leaves a community' do
     p = create_user('test_user').person
     c = fast_create(Community, :name => "Foo")
     c.add_member(p)
     c.add_moderator(p)
     ActionTracker::Record.delete_all
     c.remove_member(p)
-    assert_equal ["Foo"], ActionTracker::Record.last(:conditions => {:verb => 'leave_community'}).get_resource_name
-  end
-
-  should 'the tracker target be Community when a person leaves a community' do
-    ActionTracker::Record.delete_all
-    p = create_user('test_user').person
-    c = fast_create(Community, :name => "Foo")
-    c.add_member(p)
-    c.add_moderator(p)
-    ActionTracker::Record.delete_all
-    c.remove_member(p)
-    assert_kind_of Community, ActionTracker::Record.last(:conditions => {:verb => 'leave_community'}).target
-  end
-
-  should 'the community be notified specifically when a person leaves a community' do
-    ActionTracker::Record.delete_all
-    p = create_user('test_user').person
-    c = fast_create(Community, :name => "Foo")
-    c.add_member(p)
-    c.add_moderator(p)
-    ActionTracker::Record.delete_all
-    c.remove_member(p)
-    assert_not_nil ActionTracker::Record.last(:conditions => {:verb => 'remove_member_in_community'})
-  end
-
-  should 'the community specific notification created when a member leaves community could not be propagated to members' do
-    ActionTracker::Record.delete_all
-    p1 = Person.first
-    p2 = create_user('test_user').person
-    p3 = create_user('test_user').person
-    c = fast_create(Community, :name => "Foo")
-    process_delayed_job_queue
-    Delayed::Job.delete_all
-    c.add_member(p1)
-    c.add_member(p3)
-    c.add_moderator(p1)
-    c.add_moderator(p3)
-    ActionTracker::Record.delete_all
-    c.remove_member(p1)
-    process_delayed_job_queue
-    c.remove_member(p3)
-    process_delayed_job_queue
-    assert_equal 4, ActionTracker::Record.count
-    assert_equal 5, ActionTrackerNotification.count
-    has_remove_member_notification = false
-    ActionTrackerNotification.all.map do |notification|
-      if notification.action_tracker.verb == 'remove_member_in_community'
-        has_remove_member_notification = true
-        assert_equal c, notification.profile
-      end
-    end
-    assert has_remove_member_notification
+    assert_equal [], ActionTracker::Record.all
   end
 
   should 'get all friends online' do
@@ -1145,4 +1096,128 @@ class PersonTest < Test::Unit::TestCase
     assert_equal [person], Person.members_of(community)
   end
 
+  should 'find more active people' do
+    Person.destroy_all
+    p1 = fast_create(Person)
+    p2 = fast_create(Person)
+    p3 = fast_create(Person)
+
+    ActionTracker::Record.destroy_all
+    fast_create(ActionTracker::Record, :user_type => 'Profile', :user_id => p1, :created_at => Time.now)
+    fast_create(ActionTracker::Record, :user_type => 'Profile', :user_id => p2, :created_at => Time.now)
+    fast_create(ActionTracker::Record, :user_type => 'Profile', :user_id => p2, :created_at => Time.now)
+    fast_create(ActionTracker::Record, :user_type => 'Profile', :user_id => p3, :created_at => Time.now)
+    fast_create(ActionTracker::Record, :user_type => 'Profile', :user_id => p3, :created_at => Time.now)
+    fast_create(ActionTracker::Record, :user_type => 'Profile', :user_id => p3, :created_at => Time.now)
+
+    assert_equal [p3,p2,p1] , Person.more_active
+  end
+
+  should 'more active profile take in consideration only actions created only in the recent delay interval' do
+    Person.delete_all
+    ActionTracker::Record.destroy_all
+    recent_delay = ActionTracker::Record::RECENT_DELAY.days.ago
+
+    p1 = fast_create(Person)
+    p2 = fast_create(Person)
+
+    fast_create(ActionTracker::Record, :user_type => 'Profile', :user_id => p1, :created_at => recent_delay)
+    fast_create(ActionTracker::Record, :user_type => 'Profile', :user_id => p1, :created_at => recent_delay)
+    fast_create(ActionTracker::Record, :user_type => 'Profile', :user_id => p2, :created_at => recent_delay)
+    fast_create(ActionTracker::Record, :user_type => 'Profile', :user_id => p2, :created_at => recent_delay - 1.day)
+
+    assert_equal [p1,p2], Person.more_active
+  end
+
+  should 'list profiles that have no actions in more active list' do
+    profile = fast_create(Person)
+    assert_includes Person.more_active, profile
+  end
+
+  should 'handle multiparameter attribute exception on birth date field' do
+    assert_nothing_raised ActiveRecord::MultiparameterAssignmentErrors do
+      p = Person.new(
+        :name => 'birthday', :identifier => 'birthday', :user_id => 999,
+        'birth_date(1i)' => '', 'birth_date(2i)' => '6', 'birth_date(3i)' => '16'
+      )
+    end
+  end
+
+  should 'not accept an empty year on birth date' do
+    p = Person.new({"birth_date(2i)"=>"11", "birth_date(3i)"=>"15", "birth_date(1i)"=>""})
+    p.valid?
+    assert p.errors.invalid?(:birth_date)
+  end
+
+  should 'associate report with the correct complaint' do
+    p1 = create_user('user1').person
+    p2 = create_user('user2').person
+    profile = fast_create(Profile)
+
+    abuse_report1 = AbuseReport.new(:reason => 'some reason')
+    assert_difference AbuseComplaint, :count, 1 do
+      p1.register_report(abuse_report1, profile)
+    end
+
+    abuse_report2 = AbuseReport.new(:reason => 'some reason')
+    assert_no_difference AbuseComplaint, :count do
+      p2.register_report(abuse_report2, profile)
+    end
+
+    abuse_report1.reload
+    abuse_report2.reload
+
+    assert_equal abuse_report1.abuse_complaint, abuse_report2.abuse_complaint
+    assert_equal abuse_report1.reporter, p1
+    assert_equal abuse_report2.reporter, p2
+  end
+
+  should 'check if person already reported profile' do
+    person = create_user('some-user').person
+    profile = fast_create(Profile)
+    assert !person.already_reported?(profile)
+
+    person.register_report(AbuseReport.new(:reason => 'some reason'), profile)
+    person.reload
+    assert person.already_reported?(profile)
+  end
+
+  should 'disable person' do
+    person = create_user('some-user').person
+    password = person.user.password
+    assert person.visible
+
+    person.disable
+
+    assert !person.visible
+    assert_not_equal password, person.user.password
+  end
+
+  should 'return tracked_actions and scraps as activities' do
+    person = fast_create(Person)
+    another_person = fast_create(Person)
+
+    scrap = Scrap.create!(defaults_for_scrap(:sender => another_person, :receiver => person, :content => 'A scrap'))
+    UserStampSweeper.any_instance.expects(:current_user).returns(person).at_least_once
+    article = TinyMceArticle.create!(:profile => person, :name => 'An article about free software')
+
+    assert_equivalent [scrap,article.activity], person.activities.map { |a| a.klass.constantize.find(a.id) }
+  end
+
+  should 'not return tracked_actions and scraps from others as activities' do
+    person = fast_create(Person)
+    another_person = fast_create(Person)
+
+    person_scrap = Scrap.create!(defaults_for_scrap(:sender => person, :receiver => person, :content => 'A scrap from person'))
+    another_person_scrap = Scrap.create!(defaults_for_scrap(:sender => another_person, :receiver => another_person, :content => 'A scrap from another person'))
+
+    TinyMceArticle.create!(:profile => another_person, :name => 'An article about free software from another person')
+    another_person_activity = ActionTracker::Record.last
+
+    UserStampSweeper.any_instance.stubs(:current_user).returns(person)
+    TinyMceArticle.create!(:profile => person, :name => 'An article about free software')
+    person_activity = ActionTracker::Record.last
+
+    assert_equivalent [person_scrap,person_activity], person.activities.map { |a| a.klass.constantize.find(a.id) }
+  end
 end

@@ -9,6 +9,10 @@ class Blog < Folder
   end
   alias_method_chain :posts, :no_folders
 
+  def self.type_name
+    _('Blog')
+  end
+
   def self.short_description
     _('Blog')
   end
@@ -68,8 +72,12 @@ class Blog < Folder
   settings_items :visualization_format, :type => :string, :default => 'full'
   validates_inclusion_of :visualization_format, :in => [ 'full', 'short' ], :if => :visualization_format
 
-  settings_items :display_posts_in_current_language, :type => :boolean, :default => true
+  settings_items :display_posts_in_current_language, :type => :boolean, :default => false
 
   alias :display_posts_in_current_language? :display_posts_in_current_language
+
+  def empty?
+    posts.empty?
+  end
 
 end

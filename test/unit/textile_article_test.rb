@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class TextileArticleTest < Test::Unit::TestCase
+class TextileArticleTest < ActiveSupport::TestCase
   
   def setup
     @profile = create_user('testing').person
@@ -38,80 +38,72 @@ class TextileArticleTest < Test::Unit::TestCase
     assert_equal 1, ActionTracker::Record.count
   end
 
-  should 'notify with different trackers activity create with different targets' do
+  should 'not group trackers activity of article\'s creation' do
     ActionTracker::Record.delete_all
     profile = fast_create(Profile)
     TextileArticle.create! :name => 'bar', :profile_id => profile.id, :published => true
     TextileArticle.create! :name => 'another bar', :profile_id => profile.id, :published => true
-    assert_equal 1, ActionTracker::Record.count
     TextileArticle.create! :name => 'another bar', :profile_id => fast_create(Profile).id, :published => true
-    assert_equal 2, ActionTracker::Record.count
+    assert_equal 3, ActionTracker::Record.count
   end
 
-  should 'notify activity on update' do
+  should 'not update activity on update of an article' do
+    ActionTracker::Record.delete_all
+    profile = fast_create(Profile)
+    article = create(TextileArticle, :profile_id => profile.id)
+    time = article.activity.updated_at
+    Time.stubs(:now).returns(time + 1.day)
+    assert_no_difference ActionTracker::Record, :count do
+      article.name = 'foo'
+      article.save!
+    end
+    assert_equal time, article.activity.updated_at
+  end
+
+  should 'not create trackers activity when updating articles' do
+    ActionTracker::Record.delete_all
+    a1 = TextileArticle.create! :name => 'bar', :profile_id => fast_create(Profile).id, :published => true
+    a2 = TextileArticle.create! :name => 'another bar', :profile_id => fast_create(Profile).id, :published => true
+    assert_no_difference ActionTracker::Record, :count do
+      a1.name = 'foo';a1.save!
+      a2.name = 'another foo';a2.save!
+    end
+  end
+
+  should 'not notify activity on destroy' do
     ActionTracker::Record.delete_all
     a = TextileArticle.create! :name => 'bar', :profile_id => fast_create(Profile).id, :published => true
-    assert_equal 1, ActionTracker::Record.count
-    a.name = 'foo'
-    a.save!
-    assert_equal 2, ActionTracker::Record.count
+    assert_no_difference ActionTracker::Record, :count do
+      a.destroy
+    end
   end
 
-  should 'notify with different trackers activity update with different targets' do
+  should 'not notify when an article is destroyed' do
     ActionTracker::Record.delete_all
     a1 = TextileArticle.create! :name => 'bar', :profile_id => fast_create(Profile).id, :published => true
     a2 = TextileArticle.create! :name => 'another bar', :profile_id => fast_create(Profile).id, :published => true
     assert_equal 2, ActionTracker::Record.count
-    a1.name = 'foo'
-    a1.save!
-    assert_equal 3, ActionTracker::Record.count
-    a2.name = 'another foo'
-    a2.save!
-    assert_equal 4, ActionTracker::Record.count
+    assert_no_difference ActionTracker::Record, :count do
+      a1.destroy
+      a2.destroy
+    end
   end
 
-  should 'notify activity on destroy' do
-    ActionTracker::Record.delete_all
-    a = TextileArticle.create! :name => 'bar', :profile_id => fast_create(Profile).id, :published => true
-    assert_equal 1, ActionTracker::Record.count
-    a.destroy
-    assert_equal 2, ActionTracker::Record.count
-  end
-
-  should 'notify different activities when destroy articles with diferrents targets' do
-    ActionTracker::Record.delete_all
-    a1 = TextileArticle.create! :name => 'bar', :profile_id => fast_create(Profile).id, :published => true
-    a2 = TextileArticle.create! :name => 'another bar', :profile_id => fast_create(Profile).id, :published => true
-    assert_equal 2, ActionTracker::Record.count
-    a1.destroy
-    assert_equal 3, ActionTracker::Record.count
-    a2.destroy
-    assert_equal 4, ActionTracker::Record.count
-  end
-
-  should "the tracker action target be defined as Community by custom_target method on articles'creation in communities" do
+  should "the tracker action target be defined as the article on articles'creation in communities" do
     ActionTracker::Record.delete_all
     community = fast_create(Community)
     p1 = Person.first
     community.add_member(p1)
     assert p1.is_member_of?(community)
     article = TextileArticle.create! :name => 'test', :profile_id => community.id
-    assert_equal true, article.published?
-    assert_equal true, article.notifiable?
-    assert_equal false, article.image?
-    assert_equal Community, article.profile.class
-    assert_equal Community, ActionTracker::Record.last.target.class
+    assert_equal article, ActionTracker::Record.last.target
   end
 
-  should "the tracker action target be defined as person by custom_target method on articles'creation in profile" do
+  should "the tracker action target be defined as the article on articles'creation in profile" do
     ActionTracker::Record.delete_all
     person = Person.first
     article = TextileArticle.create! :name => 'test', :profile_id => person.id
-    assert_equal true, article.published?
-    assert_equal true, article.notifiable?
-    assert_equal false, article.image?
-    assert_equal Person, article.profile.class
-    assert_equal person, ActionTracker::Record.last.target
+    assert_equal article, ActionTracker::Record.last.target
   end
 
   should 'not notify activity if the article is not advertise' do
@@ -129,7 +121,7 @@ class TextileArticleTest < Test::Unit::TestCase
   end
 
   should "the common trackable conditions return the correct value" do
-    a =  TextileArticle.new
+    a =  TextileArticle.new(:profile => profile)
     a.published = a.advertise = true
     assert_equal true, a.published?
     assert_equal true, a.notifiable?
@@ -145,4 +137,54 @@ class TextileArticleTest < Test::Unit::TestCase
     assert_equal false, a.advertise?
     assert_equal false, a.is_trackable?
   end
+
+  should 'generate proper HTML for links' do
+    assert_tag_in_string build_article('"Noosfero":http://noosfero.org/').to_html, :tag => 'a', :attributes => { :href => 'http://noosfero.org/' }
+  end
+
+  should 'not mess up with textile markup' do
+    assert_equal '  sqlite> stuff', build_article('  sqlite> stuff').body
+    noosfero_cool = '"Noosfero":http://noosfero.org/ is a very cool project'
+    assert_equal noosfero_cool, build_article(noosfero_cool).body
+  end
+
+  should 'not allow arbitrary HTML' do
+    assert_not_equal '<script>alert(1)</script>', build_article('<script>alert(1)</script>').to_html
+  end
+
+  should 'not allow Javascript on links' do
+    assert_no_tag_in_string build_article('<a href="javascript: alert(\'BOOM\')" onclick="javascript: alert(\'BOOM\')"></a>').to_html, :tag => 'a', :attributes => { :href => /./, :onclick => /./ }
+  end
+
+  should 'allow harmless HTML' do
+    code = "<pre><code>  code example\n</code></pre>"
+    assert_equal code, build_article(code).body
+    assert_equal code, build_article(code).to_html
+  end
+
+  should 'use Textile markup for lead as well' do
+    assert_tag_in_string build_article(nil, :abstract => '"Noosfero":http://noosfero.org/').lead, :tag => 'a', :attributes => { :href => 'http://noosfero.org/' }
+  end
+
+  should 'not allow arbitrary HTML in the lead' do
+    assert_not_equal '<script>alert(1)</script>', build_article(nil, :abstract => '<script>alert(1)</script>').lead
+  end
+
+  should 'not add hard breaks for single line breaks' do
+    assert_equal "<p>one\nparagraph</p>", build_article("one\nparagraph").to_html
+  end
+
+  protected
+
+  def build_article(input = nil, options = {})
+    article = TextileArticle.new({:body => input}.merge(options))
+    article.valid? # trigger the xss terminate thingy
+    article
+  end
+
+  should 'define type facet' do
+	  a = TextileArticle.new
+		assert_equal TextArticle.type_name, TextileArticle.send(:f_type_proc, a.send(:f_type))
+  end
+
 end

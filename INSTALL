@@ -13,7 +13,7 @@ You need to install some packages Noosfero depends on.  On Debian GNU/Linux or
 Debian-based systems, all of these packages are available through the Debian
 archive. You can install them with the following command:
 
- # apt-get install ruby rake po4a libzip-ruby1.8 libgettext-ruby-util libgettext-ruby-data libgettext-ruby1.8 libsqlite3-ruby rcov librmagick-ruby libredcloth-ruby libwill-paginate-ruby iso-codes libfeedparser-ruby libferret-ruby libdaemons-ruby mongrel mongrel-cluster tango-icon-theme libhpricot-ruby
+ # apt-get install ruby rake po4a libzip-ruby1.8 libgettext-ruby-util libgettext-ruby1.8 libsqlite3-ruby rcov librmagick-ruby libredcloth-ruby libwill-paginate-ruby iso-codes libfeedparser-ruby openjdk-6-jre libdaemons-ruby thin tango-icon-theme libhpricot-ruby
 
 On other systems, they may or may not be available through your regular package
 management system. Below are the links to their homepages.
@@ -21,27 +21,18 @@ management system. Below are the links to their homepages.
 * Ruby: http://www.ruby-lang.org/
 * Rake: http://rake.rubyforge.org/
 * po4a: http://po4a.alioth.debian.org/
-* Ruby-GetText: http://www.yotabanana.com/hiki/ruby-gettext.html?ruby-gettext (at least version 1.9.0)
 * Ruby-sqlite3: http://rubyforge.org/projects/sqlite-ruby
 * rcov: http://eigenclass.org/hiki/rcov
-* Ferret: http://ferret.davebalmain.com/trac
+* Solr: http://lucene.apache.org/solr
 * RMagick: http://rmagick.rubyforge.org/
 * RedCloth: http://redcloth.org/
 * will_paginate: http://github.com/mislav/will_paginate/wikis
 * iso-codes: http://pkg-isocodes.alioth.debian.org/
 * feedparser: http://packages.debian.org/sid/libfeedparser-ruby
 * Daemons - http://daemons.rubyforge.org/
-* Mongrel: http://mongrel.rubyforge.org/
+* Thin: http://code.macournoyer.com/thin/
 * tango-icon-theme: http://tango.freedesktop.org/Tango_Icon_Library
 * Hpricot: http://hpricot.com/
-
-Note: the tango-icon-theme package is not available in Debian Lenny's main
-repository, because back then it was not DFSG-free (Debian Squeeze will have it
-in main). You can either add the non-free repository to your sources.list file,
-or download the .deb directly and install it manually with `dpkg -i`. In this
-case will need do install hicolor-icon-theme as well bacause tango-icon-theme
-depends on it.  After that you can try the command line above again, but
-without "tango-icon-theme".
 
 If you manage to install Noosfero successfully on other systems than Debian,
 please feel free to contact the Noosfero development mailing with the
@@ -98,40 +89,40 @@ downloading from git
 Here we are cloning the noosfero repository from git. Note: you will need to
 install git before.
 
-$ git clone git://git.colivre.coop.br/noosfero.git current
+$ git clone git://gitorious.org/noosfero/noosfero.git current
 $ cd current
 $ git checkout -b stable origin/stable
 
 downloading tarball
 -------------------
 
-Note: replace 0.27.1 below from the latest stable version.
+Note: replace 0.35.0 below from the latest stable version.
 
-$ wget http://noosfero.org/pub/Development/NoosferoVersion00x27x01/noosfero-0.27.1.tar.gz
-$ tar -zxvf noosfero-0.27.1.tar.gz
-$ ln -s noosfero-0.27.1 current
+$ wget http://noosfero.org/pub/Development/NoosferoVersion00x35x00/noosfero-0.35.0.tar.gz
+$ tar -zxvf noosfero-0.35.0.tar.gz
+$ ln -s noosfero-0.35.0 current
 $ cd current
 
-Copy config/ferret_server.yml.dist to config/ferret_server.yml. You will
+Copy config/solr.yml.dist to config/solr.yml. You will
 probably not need to customize this configuration, but have a look at it.
 
-Create the mongrel configuration file:
+Create the thin configuration file:
 
-$ mongrel_rails cluster::configure
+$ thin -C config/thin.yml config
 
-Edit config/mongrel_cluster.yml to suit your needs. Make sure your apache
-configuration matches the mongrel cluster configuration, specially in respect
-to the ports and numbers of mongrel instances.
+Edit config/thin.yml to suit your needs. Make sure your apache
+configuration matches the thin cluster configuration, specially in respect
+to the ports and numbers of thin instances.
 
-Note: currently Noosfero only supports Rails 2.1.0, which is the version in
-Debian Lenny. If you have a Rails version newer than that, Noosfero will
-probably not work. You can install Rails 2.1.0 into your Noosfero installation
+Note: currently Noosfero only supports Rails 2.3.5, which is the version in
+Debian Squeeze. If you have a Rails version newer than that, Noosfero will
+probably not work. You can install Rails 2.3.5 into your Noosfero installation
 with the following procedure:
 
 $ cd /var/lib/noosfero/current/vendor
-$ wget http://ftp.de.debian.org/debian/pool/main/r/rails/rails_2.1.0.orig.tar.gz
-$ tar xzf rails_2.1.0.orig.tar.gz
-$ ln -s rails-2.1.0 rails
+$ wget http://ftp.de.debian.org/debian/pool/main/r/rails/rails_2.3.5.orig.tar.gz
+$ tar xzf rails_2.3.5.orig.tar.gz
+$ ln -s rails-2.3.5 rails
 
 As root user
 ============
@@ -147,13 +138,12 @@ so if you are planning to use a different database this steps won't apply.
 # apt-get install postgresql libpgsql-ruby
 # su postgres -c 'createuser noosfero -S -d -R'
 
-By default Rails will try to connect on postgresql through 5432 port, but
-Debian start postgresql on port 5433, then is needed to change postgresql to
-start on port 5432 in /etc/postgresql/8.3/main/postgresql.conf file.
+By default Rails will try to connect on postgresql through 5432 port,
+you can check it on /etc/postgresql/8.4/main/postgresql.conf file.
 
 Restart postgresql:
 
-# invoke-rc.d postgresql-8.3 restart
+# invoke-rc.d postgresql restart
 
 Noosfero needs a functional e-mail setup to work: the local mail system should
 be able to deliver e-mail to the internet, either directly or through an
@@ -230,9 +220,30 @@ $ ./script/dbconsole production
 If it connects to your database, then everything is fine. If you got an error
 message, then you have to check your database configuration.
 
+Installing gem rack
+===================
+
+This gem is required if you want to run Mezuro plugin.
+
+Install RubyGem Rack 1.0.1.
+Others versions may not be compatible with Noosfero:
+
+# gem install rack -v 1.0.1
+
+As noosfero user
+================
+
 Create the database structure:
 
 $ RAILS_ENV=production rake db:schema:load
+
+Compile the translations:
+
+$ RAILS_ENV=production rake noosfero:translations:compile
+
+Run Solr:
+
+$ rake solr:start
 
 Now we have to create some initial data. To create your default environment
 (the first one), run the command below:
@@ -254,10 +265,6 @@ $ RAILS_ENV=production ./script/runner "User.create(:login => 'adminuser', :emai
 
 (replace "adminuser", "admin@example.com", "admin" with the login, email
 and password of your environment admin)
-
-Compile the translations:
-
-$ RAILS_ENV=production rake noosfero:translations:compile
 
 To start the Noosfero application servers:
 
@@ -313,7 +320,7 @@ In other systems the way by which you enable apache modules may be different.
 Now with the Apache configuration. You can use the template below, replacing
 /var/lib/noosfero/current with the directory in which your noosfero
 installation is, your.domain.com with the domain name of your noosfero site.
-We are assuming that you are running two mongrel instances on ports 3000 and
+We are assuming that you are running two thin instances on ports 3000 and
 3001. If your setup is different you'll need to adjust <Proxy> section. If you
 don't understand something in the configuration, please refer to the apache
 documentation.

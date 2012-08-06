@@ -22,7 +22,7 @@ module Noosfero::Factory
       end
     end
     if options[:search]
-      obj.ferret_create
+      obj.solr_save
     end
     obj
   end
@@ -44,7 +44,9 @@ module Noosfero::Factory
   end
 
   def defaults_for(name)
-    send('defaults_for_' + name.to_s.underscore) || {}
+    send('defaults_for_' + name.to_s.underscore)
+  rescue
+    {}
   end
 
   def self.num_seq
@@ -71,7 +73,8 @@ module Noosfero::Factory
   # testing that passes through the actual user creation process.
   #
   # Be aware that this is slow, though.
-  def create_user_full(name, options = {}, person_options = {})
+  def create_user_full(name = nil, options = {}, person_options = {})
+    name ||= 'user' + factory_num_seq.to_s
     data = {
       :login => name,
       :email => name + '@noosfero.org',
@@ -79,8 +82,8 @@ module Noosfero::Factory
       :password_confirmation => name.underscore
     }.merge(options)
     user = User.new(data)
+    user.person = Person.new(person_options)
     user.save!
-    user.person.update_attributes!(person_data.merge(person_options))
     user
   end
 
@@ -90,7 +93,8 @@ module Noosfero::Factory
 
   # This method knows way too much about the model. But since creating an
   # actual user is really expensive, for tests we need a fast alternative.
-  def create_user(name, options = {}, person_options = {})
+  def create_user(name = nil, options = {}, person_options = {})
+    name ||= 'user' + factory_num_seq.to_s
     environment_id = options.delete(:environment_id) || (options.delete(:environment) || Environment.default).id
 
     password = options.delete(:password)
@@ -249,7 +253,7 @@ module Noosfero::Factory
   ###############################################
   def defaults_for_blog
     name = 'My blog ' + factory_num_seq.to_s
-    { :name => name, :slug => name.to_slug }
+    { :name => name, :slug => name.to_slug, :path => name.to_slug }
   end
 
   def create_blog
@@ -311,6 +315,7 @@ module Noosfero::Factory
   end
 
   alias :defaults_for_blog_archives_block :defaults_for_block
+  alias :defaults_for_profile_list_block :defaults_for_block
 
   ###############################################
   # Task
@@ -369,7 +374,7 @@ module Noosfero::Factory
   ###############################################
 
   def defaults_for_scrap(params = {})
-    { :content => 'soment content ', :sender_id => 1, :receiver_id => 1, :created_at => DateTime.now }.merge(params)
+    { :content => 'some content ', :sender_id => 1, :receiver_id => 1, :created_at => DateTime.now }.merge(params)
   end
 
   ###############################################
@@ -437,7 +442,7 @@ module Noosfero::Factory
 
   def defaults_for_comment(params = {})
     name = "comment_#{rand(1000)}"
-    { :title => name, :body => "my own comment", :article_id => 1 }.merge(params)
+    { :title => name, :body => "my own comment", :source_id => 1 }.merge(params)
   end
 
   ###############################################
@@ -446,6 +451,22 @@ module Noosfero::Factory
 
   def defaults_for_unit
     { :singular => 'Litre', :plural => 'Litres', :environment_id => 1 }
+  end
+
+  ###############################################
+  # Production Cost
+  ###############################################
+
+  def defaults_for_production_cost
+    { :name => 'Production cost ' + factory_num_seq.to_s }
+  end
+
+  ###############################################
+  # National Region
+  ###############################################
+
+  def defaults_for_national_region
+    { :name => 'National region ' + factory_num_seq.to_s }
   end
 
 end

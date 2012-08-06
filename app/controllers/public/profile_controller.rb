@@ -2,18 +2,16 @@ class ProfileController < PublicController
 
   needs_profile
   before_filter :check_access_to_profile, :except => [:join, :join_not_logged, :index, :add]
-  before_filter :store_before_join, :only => [:join, :join_not_logged]
-  before_filter :login_required, :only => [:add, :join, :join_not_logged, :leave, :unblock, :leave_scrap, :remove_scrap, :remove_activity, :view_more_scraps, :view_more_activities, :view_more_network_activities]
+  before_filter :store_location, :only => [:join, :join_not_logged, :report_abuse]
+  before_filter :login_required, :only => [:add, :join, :join_not_logged, :leave, :unblock, :leave_scrap, :remove_scrap, :remove_activity, :view_more_activities, :view_more_network_activities, :report_abuse, :register_report, :leave_comment_on_activity]
 
   helper TagsHelper
 
   def index
-    @activities = @profile.tracked_actions.paginate(:per_page => 30, :page => params[:page])
-    @wall_items = []
-    @network_activities = !@profile.is_a?(Person) ? @profile.tracked_notifications.paginate(:per_page => 30, :page => params[:page]) : []
+    @network_activities = !@profile.is_a?(Person) ? @profile.tracked_notifications.visible.paginate(:per_page => 15, :page => params[:page]) : []
     if logged_in? && current_person.follows?(@profile)
-      @network_activities = @profile.tracked_notifications.paginate(:per_page => 30, :page => params[:page]) if @network_activities.empty?
-      @wall_items = @profile.scraps_received.not_replies.paginate(:per_page => 30, :page => params[:page])
+      @network_activities = @profile.tracked_notifications.visible.paginate(:per_page => 15, :page => params[:page]) if @network_activities.empty?
+      @activities = @profile.activities.paginate(:per_page => 15, :page => params[:page])
     end
     @tags = profile.article_tags
     unless profile.display_info_to?(user)
@@ -23,7 +21,7 @@ class ProfileController < PublicController
 
   def tags
     @tags_cache_key = "tags_profile_#{profile.id.to_s}"
-    if is_cache_expired?(@tags_cache_key, true)
+    if is_cache_expired?(@tags_cache_key)
       @tags = profile.article_tags
     end
   end
@@ -31,7 +29,7 @@ class ProfileController < PublicController
   def content_tagged
     @tag = params[:id]
     @tag_cache_key = "tag_#{CGI.escape(@tag.to_s)}_#{profile.id.to_s}_page_#{params[:npage]}"
-    if is_cache_expired?(@tag_cache_key, true)
+    if is_cache_expired?(@tag_cache_key)
       @tagged = profile.find_tagged_with(@tag).paginate(:per_page => 20, :page => params[:npage])
     end
   end
@@ -44,7 +42,7 @@ class ProfileController < PublicController
       tagged,
       :title => _("%s's contents tagged with \"%s\"") % [profile.name, @tag],
       :description => _("%s's contents tagged with \"%s\"") % [profile.name, @tag],
-      :link => url_for(:action => 'tags')
+      :link => url_for(profile.url)
     )
     render :text => data, :content_type => "text/xml"
   end
@@ -69,6 +67,10 @@ class ProfileController < PublicController
     if is_cache_expired?(profile.members_cache_key(params))
       @members = profile.members.paginate(:per_page => members_per_page, :page => params[:npage])
     end
+  end
+
+  def fans
+    @fans = profile.fans
   end
 
   def favorite_enterprises
@@ -96,7 +98,7 @@ class ProfileController < PublicController
     if request.post?
       profile.add_member(user)
       session[:notice] = _('%s administrator still needs to accept you as member.') % profile.name if profile.closed?
-      redirect_to_before_join
+      redirect_to_previous_location
     else
       if user.memberships.include?(profile)
         session[:notice] = _('You are already a member of %s.') % profile.name
@@ -176,22 +178,33 @@ class ProfileController < PublicController
     @scrap.receiver= receiver
     @tab_action = params[:tab_action]
     @message = @scrap.save ? _("Message successfully sent.") : _("You can't leave an empty message.")
-    @scraps = @profile.scraps_received.not_replies.paginate(:per_page => 30, :page => params[:page]) if params[:not_load_scraps].nil?
-    render :partial => 'leave_scrap'
+    activities = @profile.activities.paginate(:per_page => 15, :page => params[:page]) if params[:not_load_scraps].nil?
+    render :partial => 'profile_activities_list', :locals => {:activities => activities}
   end
 
-  def view_more_scraps
-    @scraps = @profile.scraps_received.not_replies.paginate(:per_page => 30, :page => params[:page])
-    render :partial => 'profile_scraps', :locals => {:scraps => @scraps}
+  def leave_comment_on_activity
+    @comment = Comment.new(params[:comment])
+    @comment.author = user
+    @activity = ActionTracker::Record.find(params[:source_id])
+    @comment.source_type, @comment.source_id = (@activity.target_type == 'Article' ? ['Article', @activity.target_id] : [@activity.class.to_s, @activity.id])
+    @tab_action = params[:tab_action]
+    @message = @comment.save ? _("Comment successfully added.") : _("You can't leave an empty comment.")
+    if @tab_action == 'wall'
+      activities = @profile.activities.paginate(:per_page => 15, :page => params[:page]) if params[:not_load_scraps].nil?
+      render :partial => 'profile_activities_list', :locals => {:activities => activities}
+    else
+      network_activities = @profile.tracked_notifications.visible.paginate(:per_page => 15, :page => params[:page])
+      render :partial => 'profile_network_activities', :locals => {:network_activities => network_activities}
+    end
   end
 
   def view_more_activities
-    @activities = @profile.tracked_actions.paginate(:per_page => 30, :page => params[:page])
-    render :partial => 'profile_activities', :locals => {:activities => @activities}
+    @activities = @profile.activities.paginate(:per_page => 10, :page => params[:page])
+    render :partial => 'profile_activities_list', :locals => {:activities => @activities}
   end
 
   def view_more_network_activities
-    @activities = @profile.tracked_notifications.paginate(:per_page => 30, :page => params[:page]) 
+    @activities = @profile.tracked_notifications.paginate(:per_page => 10, :page => params[:page]) 
     render :partial => 'profile_network_activities', :locals => {:network_activities => @activities}
   end
 
@@ -207,12 +220,92 @@ class ProfileController < PublicController
 
   def remove_activity
     begin
-      activity = current_person.tracked_actions.find(params[:activity_id])
-      activity.destroy
+      raise if !can_edit_profile
+      activity = ActionTracker::Record.find(params[:activity_id])
+      if params[:only_hide]
+        activity.update_attribute(:visible, false)
+      else
+        activity.destroy
+      end
       render :text => _('Activity successfully removed.')
     rescue
       render :text => _('You could not remove this activity')
     end
+  end
+
+  def remove_notification
+    begin
+      raise if !can_edit_profile
+      notification = ActionTrackerNotification.find(:first, :conditions => {:profile_id => profile.id, :action_tracker_id => params[:activity_id]})
+      notification.destroy
+      render :text => _('Notification successfully removed.')
+    rescue
+      render :text => _('You could not remove this notification.')
+    end
+  end
+
+  def profile_info
+    begin
+      @block = profile.blocks.find(params[:block_id])
+    rescue
+      render :text => _('Profile information could not be loaded')
+    end
+  end
+
+  def report_abuse
+    @abuse_report = AbuseReport.new
+    render :layout => false
+  end
+
+  def register_report
+    if !verify_recaptcha
+      render :text => {
+        :ok => false,
+        :error => {
+          :code => 1,
+          :message => _('You could not answer the captcha.')
+        }
+      }.to_json
+    else
+      begin
+        abuse_report = AbuseReport.new(params[:abuse_report])
+        if !params[:content_type].blank?
+          article = params[:content_type].constantize.find(params[:content_id])
+          abuse_report.content = instance_eval(&article.reported_version)
+        end
+
+        user.register_report(abuse_report, profile)
+
+        if !params[:content_type].blank?
+          abuse_report = AbuseReport.find_by_reporter_id_and_abuse_complaint_id(user.id, profile.opened_abuse_complaint.id)
+          Delayed::Job.enqueue DownloadReportedImagesJob.new(abuse_report, article)
+        end
+
+        render :text => {
+          :ok => true,
+          :message => _('Your abuse report was registered. The administrators are reviewing your report.'),
+        }.to_json
+      rescue Exception => exception
+        logger.error(exception.to_s)
+        render :text => {
+          :ok => false,
+          :error => {
+            :code => 2,
+            :message => _('Your report couldn\'t be saved due to some problem. Please contact the administrator.')
+          }
+        }.to_json
+      end
+    end
+  end
+
+  def remove_comment
+    #FIXME Check whether these permissions are enough
+    @comment = Comment.find(params[:comment_id])
+    if (user == @comment.author || user == profile || user.has_permission?(:moderate_comments, profile))
+      @comment.destroy
+      session[:notice] = _('Comment successfully deleted')
+    end
+    redirect_to :action => :index
   end
 
   protected
@@ -223,16 +316,16 @@ class ProfileController < PublicController
     end
   end
 
-  def store_before_join
-    if session[:before_join].nil?
-      session[:before_join] = request.referer
+  def store_location
+    if session[:previous_location].nil?
+      session[:previous_location] = request.referer
     end
   end
 
-  def redirect_to_before_join
-    back = session[:before_join]
+  def redirect_to_previous_location
+    back = session[:previous_location]
     if back
-      session[:before_join] = nil
+      session[:previous_location] = nil
       redirect_to back
     else
       redirect_to profile.url
@@ -251,7 +344,7 @@ class ProfileController < PublicController
   end
 
   def invisible_profile
-    render_access_denied(_("Sorry, this profile was defined as private by its owner. You'll not be able to view content here unless the profile owner adds adds you."), _("Oops ... you cannot go ahead here"))
+    render_access_denied(_("This profile is inaccessible. You don't have the permission to view the content here."), _("Oops ... you cannot go ahead here"))
   end
 
   def per_page
@@ -262,4 +355,8 @@ class ProfileController < PublicController
     20
   end
 
+  def can_edit_profile
+    @can_edit_profile ||= user && user.has_permission?('edit_profile', profile)
+  end
+  helper_method :can_edit_profile
 end

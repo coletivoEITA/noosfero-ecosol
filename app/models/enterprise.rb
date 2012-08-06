@@ -2,16 +2,30 @@
 # only enterprises can offer products and services.
 class Enterprise < Organization
 
+  def self.type_name
+    _('Enterprise')
+  end
+
   N_('Enterprise')
 
   has_many :products, :dependent => :destroy, :order => 'name ASC'
   has_many :inputs, :through => :products
+  has_many :production_costs, :as => :owner
 
+  has_and_belongs_to_many :fans, :class_name => 'Person', :join_table => 'favorite_enteprises_people'
+
+  after_save_reindex [:products], :with => :delayed_job
   extra_data_for_index :product_categories
+  def product_categories
+    products.map{|p| p.category_full_name}.compact
+  end
 
   N_('Organization website'); N_('Historic and current context'); N_('Activities short description'); N_('City'); N_('State'); N_('Country'); N_('ZIP code')
 
   settings_items :organization_website, :historic_and_current_context, :activities_short_description, :zip_code, :city, :state, :country
+
+  extend SetProfileRegionFromCityState::ClassMethods
+  set_profile_region_from_city_state
 
   before_save do |enterprise|
     enterprise.organization_website = enterprise.maybe_add_http(enterprise.organization_website)
@@ -43,7 +57,7 @@ class Enterprise < Organization
     super
     self.required_fields.each do |field|
       if self.send(field).blank?
-        self.errors.add(field, _("%{fn} can't be blank"))
+        self.errors.add_on_blank(field)
       end
     end
   end
@@ -62,18 +76,6 @@ class Enterprise < Organization
 
   def signup_fields
     environment ? environment.signup_enterprise_fields : []
-  end
-
-  def product_categories
-    products.map{|p| p.category_full_name}.compact
-  end
-
-  def product_updated
-    ferret_update
-  end
-
-  after_save do |e|
-    e.products.each{ |p| p.enterprise_updated(e) }
   end
 
   def closed?
@@ -145,6 +147,7 @@ class Enterprise < Organization
   end
 
   before_create do |enterprise|
+    enterprise.validated = enterprise.environment.enabled?('enterprises_are_validated_when_created')
     if enterprise.environment.enabled?('enterprises_are_disabled_when_created')
       enterprise.enabled = false
     end
@@ -159,10 +162,26 @@ class Enterprise < Organization
     end
   end
 
+  def control_panel_settings_button
+    {:title => __('Enterprise Info and settings'), :icon => 'edit-profile-enterprise'}
+  end
+
   settings_items :enable_contact_us, :type => :boolean, :default => true
 
   def enable_contact?
     enable_contact_us
+  end
+
+  def control_panel_settings_button
+    {:title => __('Enterprise Info and settings'), :icon => 'edit-profile-enterprise'}
+  end
+
+  def create_product?
+    true
+  end
+
+  def activities
+    Scrap.find_by_sql("SELECT id, updated_at, 'Scrap' AS klass FROM scraps WHERE scraps.receiver_id = #{self.id} AND scraps.scrap_id IS NULL UNION SELECT id, updated_at, 'ActionTracker::Record' AS klass FROM action_tracker WHERE action_tracker.target_id = #{self.id} UNION SELECT action_tracker.id, action_tracker.updated_at, 'ActionTracker::Record' AS klass FROM action_tracker INNER JOIN articles ON action_tracker.target_id = articles.id WHERE articles.profile_id = #{self.id} AND action_tracker.target_type = 'Article' ORDER BY action_tracker.updated_at DESC")
   end
 
 end

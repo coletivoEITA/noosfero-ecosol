@@ -1,29 +1,46 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class DomainTest < Test::Unit::TestCase
+class DomainTest < ActiveSupport::TestCase
   fixtures :domains, :environments, :profiles, :users
 
   def setup
     Domain.clear_cache
   end
 
-  # Replace this with your real tests.
-  def test_domain_name_format
-    c = Domain.new
-    assert !c.valid?
-    assert c.errors.invalid?(:name)
+  should 'not allow domains without name' do
+    domain = Domain.new
+    domain.valid?
+    assert domain.errors.invalid?(:name)
+  end
 
-    c.name = 'bliblibli'
-    assert !c.valid?
-    assert c.errors.invalid?(:name)
+  should 'not allow domain without dot' do
+    domain = Domain.new(:name => 'test')
+    domain.valid?
+    assert domain.errors.invalid?(:name)
+  end
 
-    c.name = 'EXAMPLE.NET'
-    assert !c.valid?
-    assert c.errors.invalid?(:name)
+  should 'allow domains with dot' do
+    domain = Domain.new(:name => 'test.org')
+    domain.valid?
+    assert !domain.errors.invalid?(:name)
+  end
 
-    c.name = 'test.net'
-    c.valid?
-    assert !c.errors.invalid?(:name)
+  should 'not allow domains with upper cased letters' do
+    domain = Domain.new(:name => 'tEst.org')
+    domain.valid?
+    assert domain.errors.invalid?(:name)
+  end
+
+  should 'allow domains with hyphen' do
+    domain = Domain.new(:name => 'test-domain.org')
+    domain.valid?
+    assert !domain.errors.invalid?(:name)
+  end
+
+  should 'allow domains with underscore' do
+    domain = Domain.new(:name => 'test_domain.org')
+    domain.valid?
+    assert !domain.errors.invalid?(:name)
   end
 
   def test_owner

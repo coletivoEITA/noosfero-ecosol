@@ -4,13 +4,12 @@ require 'profile_editor_controller'
 # Re-raise errors caught by the controller.
 class ProfileEditorController; def rescue_action(e) raise e end; end
 
-class ProfileEditorControllerTest < Test::Unit::TestCase
+class ProfileEditorControllerTest < ActionController::TestCase
   all_fixtures
   
   def setup
     @controller = ProfileEditorController.new
     @request    = ActionController::TestRequest.new
-    @request.stubs(:ssl?).returns(true)
     @response   = ActionController::TestResponse.new
     @profile = create_user('default_user').person
     Environment.default.affiliate(@profile, [Environment::Roles.admin(Environment.default.id)] + Profile::Roles.all_roles(Environment.default.id))
@@ -36,13 +35,11 @@ class ProfileEditorControllerTest < Test::Unit::TestCase
   def test_should_present_pending_tasks_in_index
     ze = Profile['ze'] # a fixture >:-(
     @controller.expects(:profile).returns(ze).at_least_once
-    tasks = mock
-    pending = []
-    pending.expects(:select).returns(pending)
-    pending.expects(:empty?).returns(false) # force the display of the pending tasks list
-    ze.expects(:all_pending_tasks).returns(pending)
+    t1 = ze.tasks.build; t1.save!
+    t2 = ze.tasks.build; t2.save!
     get :index, :profile => ze.identifier
-    assert_same pending, assigns(:pending_tasks)
+    assert_includes assigns(:pending_tasks), t1
+    assert_includes assigns(:pending_tasks), t2
     assert_tag :tag => 'div', :attributes => { :class => 'pending-tasks' }, :descendant => { :tag => 'a', :attributes =>  { :href => '/myprofile/ze/tasks' } }
   end
 
@@ -55,7 +52,7 @@ class ProfileEditorControllerTest < Test::Unit::TestCase
   should 'saving profile info' do
     person = profile 
     post :edit, :profile => profile.identifier, :profile_data => { 'name' => 'new person', 'contact_information' => 'new contact information', 'address' => 'new address', 'sex' => 'female' }
-    assert_redirected_to :action => 'index'
+    assert_redirected_to :controller => 'profile_editor', :action => 'index'
     person = Person.find(person.id)
     assert_equal 'new person', person.name
     assert_equal 'new contact information', person.contact_information
@@ -85,7 +82,7 @@ class ProfileEditorControllerTest < Test::Unit::TestCase
     person = profile
     post :edit, :profile => profile.identifier, :profile_data => {:category_ids => [cat2.id]}
     assert_response :redirect
-    assert_redirected_to :action => 'index'
+    assert_redirected_to :controller => 'profile_editor', :action => 'index'
     assert_includes person.categories, cat2
   end
 
@@ -604,15 +601,6 @@ class ProfileEditorControllerTest < Test::Unit::TestCase
     assert_tag :tag => 'a', :attributes => { :href => '/myprofile/default_user/cms' }
   end
 
-  should 'not display link to CMS if disabled' do
-    env = Environment.default
-    env.enable('disable_cms')
-    env.save!
-    get :index, :profile => profile.identifier
-
-    assert_no_tag :tag => 'a', :attributes => { :href => '/myprofile/default_user/cms' }
-  end
-
   should 'offer to create blog in control panel' do
     get :index, :profile => profile.identifier
     assert_tag :tag => 'a', :attributes => { :href => "/myprofile/default_user/cms/new?type=Blog" }
@@ -754,7 +742,6 @@ class ProfileEditorControllerTest < Test::Unit::TestCase
     assert_nothing_raised do
       post :edit, :profile => c.identifier, :profile_data => c.attributes.merge('identifier' => '')
     end
-    assert_response :success
   end
 
   should 'show active fields when edit community' do
@@ -821,7 +808,7 @@ class ProfileEditorControllerTest < Test::Unit::TestCase
   should 'be able to destroy communities' do
     community = fast_create(Community)
 
-    person = fast_create(Person)
+    person = create_user('foo').person
     community.add_admin(person)
 
     assert_difference Community, :count, -1 do
@@ -831,11 +818,12 @@ class ProfileEditorControllerTest < Test::Unit::TestCase
 
   should 'not be able to destroy communities if is a regular member' do
     community = fast_create(Community)
+    community.add_admin(fast_create(Person)) # first member is admin by default
 
-    person = fast_create(Person)
-    community.add_admin(person)
+    person = create_user('foo').person
+    community.add_member(person)
 
-    login_as(person.identifier)
+    login_as 'foo'
     assert_difference Community, :count, 0 do
       post :destroy_profile, :profile => community.identifier
     end
@@ -844,7 +832,7 @@ class ProfileEditorControllerTest < Test::Unit::TestCase
   should 'be able to destroy enterprise' do
     enterprise = fast_create(Enterprise)
 
-    person = fast_create(Person)
+    person = create_user('foo').person
     enterprise.add_admin(person)
 
     assert_difference Enterprise, :count, -1 do
@@ -854,28 +842,111 @@ class ProfileEditorControllerTest < Test::Unit::TestCase
 
   should 'not be able to destroy enterprise if is a regular member' do
     enterprise = fast_create(Enterprise)
+    enterprise.add_member(fast_create(Person)) # first member is admin by default
 
-    person = fast_create(Person)
-    enterprise.add_admin(person)
+    person = create_user('foo').person
+    enterprise.add_member(person)
 
-    login_as(person.identifier)
+    login_as('foo')
     assert_difference Enterprise, :count, 0 do
       post :destroy_profile, :profile => enterprise.identifier
     end
   end
 
   should 'display plugins buttons on the control panel' do
-    plugin1_button = {:title => "Plugin1 button", :icon => 'plugin1_icon', :url => 'plugin1_url'}
-    plugin2_button = {:title => "Plugin2 button", :icon => 'plugin2_icon', :url => 'plugin2_url'}
-    buttons = [plugin1_button, plugin2_button]
-    plugins = mock()
-    plugins.stubs(:map).with(:control_panel_buttons).returns(buttons)
-    Noosfero::Plugin::Manager.stubs(:new).returns(plugins)
+
+    class TestControlPanelButtons1 < Noosfero::Plugin
+      def control_panel_buttons
+        {:title => "Plugin1 button", :icon => 'plugin1_icon', :url => 'plugin1_url'}
+      end
+    end
+    class TestControlPanelButtons2 < Noosfero::Plugin
+      def control_panel_buttons
+        {:title => "Plugin2 button", :icon => 'plugin2_icon', :url => 'plugin2_url'}
+      end
+    end
+
+    Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([TestControlPanelButtons1.new, TestControlPanelButtons2.new])
 
     get :index, :profile => profile.identifier
 
-    assert_tag :tag => 'a', :content => plugin1_button[:title], :attributes => {:class => /#{plugin1_button[:icon]}/, :href => /#{plugin1_button[:url]}/}
-    assert_tag :tag => 'a', :content => plugin2_button[:title], :attributes => {:class => /#{plugin2_button[:icon]}/, :href => /#{plugin2_button[:url]}/}
+    assert_tag :tag => 'a', :content => 'Plugin1 button', :attributes => {:class => /plugin1_icon/, :href => /plugin1_url/}
+    assert_tag :tag => 'a', :content => 'Plugin2 button', :attributes => {:class => /plugin2_icon/, :href => /plugin2_url/}
+  end
+
+  should 'add extra content provided by plugins on edit' do
+    class TestProfileEditPlugin < Noosfero::Plugin
+      def profile_editor_extras
+        "<input id='field_added_by_plugin' value='value_of_field_added_by_plugin'/>"
+      end
+    end
+
+    Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([TestProfileEditPlugin.new])
+
+    get :edit, :profile => profile.identifier
+
+    assert_tag :tag => 'input', :attributes => {:id => 'field_added_by_plugin', :value => 'value_of_field_added_by_plugin'}
+  end
+
+  should 'show image upload field from environment person fields' do
+    env = Environment.default
+    env.custom_person_fields = { 'image' => {'active' => 'true', 'required' => 'true'} }
+    env.save!
+    get :edit, :profile => profile.identifier
+    assert_tag :tag => 'input', :attributes => { :name => 'profile_data[image_builder][uploaded_data]' }
+    assert_no_tag :tag => 'div', :attributes => { :id => 'profile_change_picture' }
+  end
+
+  should 'show image upload field from profile editor' do
+    env = Environment.default
+    env.custom_person_fields = { }
+    env.save!
+    get :edit, :profile => profile.identifier
+    assert_tag :tag => 'input', :attributes => { :name => 'profile_data[image_builder][uploaded_data]' }
+    assert_tag :tag => 'div', :attributes => { :id => 'profile_change_picture' }
+  end
+
+  should 'add extra content on person info from plugins' do
+    class Plugin1 < Noosfero::Plugin
+      def profile_info_extra_contents
+        lambda {"<strong>Plugin1 text</strong>"}
+      end
+    end
+    class Plugin2 < Noosfero::Plugin
+      def profile_info_extra_contents
+        lambda {"<strong>Plugin2 text</strong>"}
+      end
+    end
+
+    Environment.default.enable_plugin(Plugin1)
+    Environment.default.enable_plugin(Plugin2)
+
+    get :edit, :profile => profile.identifier
+
+    assert_tag :tag => 'strong', :content => 'Plugin1 text'
+    assert_tag :tag => 'strong', :content => 'Plugin2 text'
+  end
+
+  should 'add extra content on organization info from plugins' do
+    class Plugin1 < Noosfero::Plugin
+      def profile_info_extra_contents
+        lambda {"<strong>Plugin1 text</strong>"}
+      end
+    end
+    class Plugin2 < Noosfero::Plugin
+      def profile_info_extra_contents
+        lambda {"<strong>Plugin2 text</strong>"}
+      end
+    end
+
+    Environment.default.enable_plugin(Plugin1)
+    Environment.default.enable_plugin(Plugin2)
+    organization = fast_create(Community)
+
+    get :edit, :profile => organization.identifier
+
+    assert_tag :tag => 'strong', :content => 'Plugin1 text'
+    assert_tag :tag => 'strong', :content => 'Plugin2 text'
   end
 
 end

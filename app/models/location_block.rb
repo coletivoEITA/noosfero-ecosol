@@ -11,16 +11,16 @@ class LocationBlock < Block
     _('Shows where the profile is on the material world.')
   end
 
-  def content
+  def content(args={})
     profile = self.owner
     title = self.title
     if profile.lat
       block_title(title) +
       content_tag('div',
-      '<img src="http://maps.google.com/staticmap?center=' + profile.lat.to_s() +
+      '<img src="http://maps.google.com/maps/api/staticmap?center=' + profile.lat.to_s() +
       ',' + profile.lng.to_s() + '&zoom=' + zoom.to_s() +
       '&size=190x250&maptype=' + map_type + '&markers=' + profile.lat.to_s() + ',' +
-      profile.lng.to_s() + ',green&key=' + GoogleMaps::key(profile.default_hostname) + '&sensor=false"/>',
+      profile.lng.to_s() + ',green' + '&sensor=false"/>',
       :class => 'the-localization-map' )
     else
       content_tag('i', _('This profile has no geographical position registered.'))

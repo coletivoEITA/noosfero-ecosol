@@ -179,10 +179,10 @@ class BlogTest < ActiveSupport::TestCase
     assert Blog.new.has_posts?
   end
 
-  should 'display posts in current language by default' do
+  should 'not display posts in current language by default' do
     blog = Blog.new
-    assert blog.display_posts_in_current_language
-    assert blog.display_posts_in_current_language?
+    assert !blog.display_posts_in_current_language
+    assert !blog.display_posts_in_current_language?
   end
 
   should 'update display posts in current language setting' do
@@ -204,6 +204,18 @@ class BlogTest < ActiveSupport::TestCase
 
     assert_not_includes blog.posts, folder
     assert_includes blog.posts, article
+  end
+
+  should 'not accept uploads' do
+    folder = fast_create(Blog)
+    assert !folder.accept_uploads?
+  end
+
+  should 'know when blog has or when has no posts' do
+    blog = fast_create(Blog)
+    assert blog.empty?
+    fast_create(TextileArticle, :parent_id => blog.id)
+    assert ! blog.empty?
   end
 
 end

@@ -40,13 +40,11 @@ class PeopleBlockTest < ActiveSupport::TestCase
     block.stubs(:owner).returns(Environment.default)
 
     expects(:_).with('View all').returns('View all people')
-    expects(:link_to).with('View all people', :controller => 'browse', :action => 'people')
+    expects(:link_to).with('View all people', :controller => 'search', :action => 'people')
     instance_eval(&block.footer)
   end
 
   protected
+  include NoosferoTestHelper
 
-  def content_tag(tag, text, options = {})
-    text
-  end
 end

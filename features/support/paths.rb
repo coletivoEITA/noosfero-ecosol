@@ -7,17 +7,23 @@ module NavigationHelpers
   #
   def path_to(page_name)
     case page_name
-    
+
     when /the homepage/
       '/'
 
     when /^\//
       page_name
 
+    when /article "([^"]+)"\s*$/
+      url_for(Article.find_by_name($1).url.merge({:only_path => true}))
+
+    when /category "([^"]+)"/
+      '/cat/%s' % Category.find_by_name($1).slug
+
     when /edit "(.+)" by (.+)/
       article_id = Person[$2].articles.find_by_slug($1.to_slug).id
       "/myprofile/#{$2}/cms/edit/#{article_id}"
-    
+
     when /edit (.*Block) of (.+)/
       owner = Profile[$2]
       klass = $1.constantize
@@ -36,7 +42,7 @@ module NavigationHelpers
     when /^(.*)'s sitemap/
       '/profile/%s/sitemap' % Profile.find_by_name($1).identifier
 
-    when /^(.*)'s profile/
+    when /^(.*)'s profile$/
       '/profile/%s' % Profile.find_by_name($1).identifier
 
     when /^the profile$/
@@ -47,6 +53,9 @@ module NavigationHelpers
 
     when /^(.*)'s leave page/
       '/profile/%s/leave' % Profile.find_by_name($1).identifier
+
+    when /^(.*)'s profile editor$/
+      "myprofile/manuel/profile_editor/edit"
 
     when /^login page$/
       '/account/login'
@@ -66,6 +75,9 @@ module NavigationHelpers
     when /^the search page$/
       '/search'
 
+    when /^the search (.+) page$/
+      '/search/%s' % $1
+
     when /^(.+)'s cms/
       '/myprofile/%s/cms' % Profile.find_by_name($1).identifier
 
@@ -80,8 +92,8 @@ module NavigationHelpers
       '/myprofile/%s/manage_products/new' % Profile.find_by_name($1).identifier
 
     when /^(.+)'s page of product (.*)$/
-       enterprise = Profile.find_by_name($1)
-       product = enterprise.products.find_by_name($2)
+      enterprise = Profile.find_by_name($1)
+      product = enterprise.products.find_by_name($2)
       '/myprofile/%s/manage_products/show/%s' % [enterprise.identifier, product.id]
 
     when /^(.*)'s products page$/
@@ -89,6 +101,12 @@ module NavigationHelpers
 
     when /^chat$/
       '/chat'
+
+    when /^(.+)'s tag page/
+      '/tag/%s' % $1
+
+    when /the user data path/
+      '/account/user_data'
 
     # Add more mappings here.
     # Here is a more fancy example:

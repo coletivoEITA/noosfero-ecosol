@@ -4,17 +4,18 @@ require 'users_controller'
 # Re-raise errors caught by the controller.
 class UsersController; def rescue_action(e) raise e end; end
 
-class UsersControllerTest < Test::Unit::TestCase
+class UsersControllerTest < ActionController::TestCase
 
   all_fixtures
   def setup
     @controller = UsersController.new
     @request    = ActionController::TestRequest.new
-    @request.stubs(:ssl?).returns(true)
     @response   = ActionController::TestResponse.new
   end
 
   should 'not access without right permission' do
+    create_user('guest')
+    login_as 'guest'
     get :index
     assert_response 403 # forbidden
   end

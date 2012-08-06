@@ -10,9 +10,9 @@
 
 <% control_panel do %>
 
-  <%= control_panel_button(_('Profile Info and settings'), 'edit-profile', :controller => 'profile_editor', :action => 'edit') if profile.person? %>
-  <%= control_panel_button(__('Community Info and settings'), 'edit-profile-group', :controller => 'profile_editor', :action => 'edit') if profile.community? %>
-  <%= control_panel_button(__('Enterprise Info and settings'), 'edit-profile-enterprise', :controller => 'profile_editor', :action => 'edit') if profile.enterprise? %>
+  <%= control_panel_button(profile.control_panel_settings_button[:title],
+                           profile.control_panel_settings_button[:icon],
+                           :controller => 'profile_editor', :action => 'edit') %>
 
   <%= control_panel_button(_('Location'), 'edit-location', :controller => 'maps', :action => 'edit_location') %>
 
@@ -26,7 +26,7 @@
   
   <%= control_panel_button(_('Edit Header and Footer'), 'header-and-footer', :controller => 'profile_editor', :action => 'header_footer') unless profile.enterprise? && environment.enabled?('disable_header_and_footer') && !user.is_admin?(environment) %>
 
-  <%= control_panel_button(_('Manage Content'), 'cms', :controller => 'cms') if !environment.enabled?('disable_cms') || profile.community? %>
+  <%= control_panel_button(_('Manage Content'), 'cms', :controller => 'cms') %>
 
   <% unless profile.enterprise? %>
     <%= case profile.blogs.count
@@ -58,15 +58,15 @@
 
   <% if profile.enterprise? %>
     <% if profile.enabled? %>
-      <%= control_panel_button(__('Disable Enterprise'), 'disable', :action => 'disable') %>
+      <%= control_panel_button(__('Disable'), 'disable', :action => 'disable') %>
     <% else %>
-      <%= control_panel_button(__('Enable Enterprise'), 'enable', :action => 'enable') %>
+      <%= control_panel_button(__('Enable'), 'enable', :action => 'enable') %>
     <% end %>
   <% end %>
 
   <%= control_panel_button(_('Manage my groups'), 'groups', :controller => 'memberships') if profile.person? %>
 
-  <% @plugins.map(:control_panel_buttons).each do |button| %>
+  <% @plugins.dispatch(:control_panel_buttons).each do |button| %>
     <%= control_panel_button(button[:title], button[:icon], button[:url]) %>
   <% end %>
 

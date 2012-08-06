@@ -3,6 +3,12 @@
 # which by default is the one returned by Environment:default.
 class Profile < ActiveRecord::Base
 
+  # use for internationalizable human type names in search facets
+  # reimplement on subclasses
+  def self.type_name
+    _('Profile')
+  end
+
   module Roles
     def self.admin(env_id)
       find_role('admin', env_id)
@@ -20,12 +26,16 @@ class Profile < ActiveRecord::Base
       find_role('editor', env_id)
     end
     def self.organization_member_roles(env_id)
-      [admin(env_id), moderator(env_id), member(env_id)]
+      all_roles(env_id).select{ |r| r.key.match(/^profile_/) unless r.key.blank? }
     end
     def self.all_roles(env_id)
-      [admin(env_id), member(env_id), moderator(env_id), owner(env_id), editor(env_id)]
+      Role.all :conditions => { :environment_id => env_id }
     end
-
+    def self.method_missing(m, *args, &block)
+      role = find_role(m, args[0])
+      return role unless role.nil?
+      super
+    end
     private
     def self.find_role(name, env_id)
       ::Role.find_by_key_and_environment_id("profile_#{name}", env_id)
@@ -52,8 +62,9 @@ class Profile < ActiveRecord::Base
   acts_as_accessible
 
   named_scope :memberships_of, lambda { |person| { :select => 'DISTINCT profiles.*', :joins => :role_assignments, :conditions => ['role_assignments.accessor_type = ? AND role_assignments.accessor_id = ?', person.class.base_class.name, person.id ] } }
-  named_scope :enterprises, :conditions => "profiles.type = 'Enterprise'"
-  named_scope :communities, :conditions => "profiles.type = 'Community'"
+  #FIXME: these will work only if the subclass is already loaded
+  named_scope :enterprises, lambda { {:conditions => (Enterprise.send(:subclasses).map(&:name) << 'Enterprise').map { |klass| "profiles.type = '#{klass}'"}.join(" OR ")} }
+  named_scope :communities, lambda { {:conditions => (Community.send(:subclasses).map(&:name) << 'Community').map { |klass| "profiles.type = '#{klass}'"}.join(" OR ")} }
 
   def members
     Person.members_of(self)
@@ -69,8 +80,6 @@ class Profile < ActiveRecord::Base
 
   acts_as_having_boxes
 
-  acts_as_searchable :additional_fields => [ :extra_data_for_index ]
-
   acts_as_taggable
 
   def self.qualified_column_names
@@ -78,18 +87,11 @@ class Profile < ActiveRecord::Base
   end
 
   named_scope :visible, :conditions => { :visible => true }
+  # Subclasses must override these methods
+  named_scope :more_popular
+  named_scope :more_active
+
   named_scope :more_recent, :order => "created_at DESC"
-  named_scope :more_popular,
-       :select => "#{Profile.qualified_column_names}, count(resource_id) as total",
-       :group => Profile.qualified_column_names,
-       :joins => :role_assignments,
-       :order => "total DESC"
-  named_scope :more_active,
-       :select => "#{Profile.qualified_column_names}, count(articles.id) as total, sum(articles.comments_count) as total_comments",
-       :joins => :articles,
-       :group => Profile.qualified_column_names,
-       :order => "total DESC, total_comments DESC",
-       :conditions => ["articles.created_at BETWEEN ? AND ?", 7.days.ago, DateTime.now]
 
   acts_as_trackable :dependent => :destroy
 
@@ -121,12 +123,11 @@ class Profile < ActiveRecord::Base
 
   acts_as_having_settings :field => :data
 
+  settings_items :redirect_l10n, :type => :boolean, :default => false
   settings_items :public_content, :type => :boolean, :default => true
   settings_items :description
 
   validates_length_of :description, :maximum => 550, :allow_nil => true
-
-  acts_as_mappable :default_units => :kms
 
   # Valid identifiers must match this format.
   IDENTIFIER_FORMAT = /^#{Noosfero.identifier_format}$/
@@ -152,6 +153,8 @@ class Profile < ActiveRecord::Base
   assets
   doc
   chat
+  plugin
+  site
   ]
 
   belongs_to :user
@@ -163,39 +166,38 @@ class Profile < ActiveRecord::Base
   has_many :articles, :dependent => :destroy
   belongs_to :home_page, :class_name => Article.name, :foreign_key => 'home_page_id'
 
+  has_many :files, :class_name => 'UploadedFile'
+
   acts_as_having_image
 
   has_many :tasks, :dependent => :destroy, :as => 'target'
 
   has_many :events, :source => 'articles', :class_name => 'Event', :order => 'name'
 
-  %w[ pending finished ].each do |status|
-    class_eval <<-CODE
-      def all_#{status}_tasks
-        env_tasks = []
-        if self.person?
-          env_tasks = Environment.find(:all).select{ |env| self.is_admin?(env) }.map{ |env| env.tasks.#{status} }.flatten
-        end
-        tasks.#{status} + env_tasks
-      end
-    CODE
-  end
-
   def find_in_all_tasks(task_id)
-    if tasks.exists?(task_id)
-      return tasks.find(task_id)
-    else
-      if self.person?
-        environments_admin = Environment.find(:all).select{ |env| self.is_admin?(env) }
-        task = environments_admin.select{ |env| env.tasks.exists?(task_id) }.map{ |i| i.tasks.find(task_id) }
-        return task.first unless task.empty?
-      end
+    begin
+      Task.to(self).find(task_id)
+    rescue
+      nil
     end
-    return nil
   end
 
   has_many :profile_categorizations, :conditions => [ 'categories_profiles.virtual = ?', false ]
   has_many :categories, :through => :profile_categorizations
+
+  has_many :profile_categorizations_including_virtual, :class_name => 'ProfileCategorization'
+  has_many :categories_including_virtual, :through => :profile_categorizations_including_virtual, :source => :category
+
+  has_many :abuse_complaints, :foreign_key => 'requestor_id'
+
+  def top_level_categorization
+    ret = {}
+    self.profile_categorizations.each do |c|
+      p = c.category.top_ancestor
+      ret[p] = (ret[p] || []) + [c.category]
+    end
+    ret
+  end
 
   def interests
     categories.select {|item| !item.is_a?(Region)}
@@ -231,12 +233,15 @@ class Profile < ActiveRecord::Base
     @pending_categorizations ||= []
   end
 
-  def add_category(c)
-    if self.id
-      ProfileCategorization.add_category_to_profile(c, self)
-    else
+  def add_category(c, reload=false)
+    if new_record?
       pending_categorizations << c
+    else
+      ProfileCategorization.add_category_to_profile(c, self)
+      self.categories(true)
+      self.solr_save
     end
+	 self.categories(reload)
   end
 
   def category_ids=(ids)
@@ -541,6 +546,7 @@ private :generate_url, :url_options
     other.top_level_articles.each do |a|
       copy_article_tree a
     end
+    self.articles.reload
   end
 
   def copy_article_tree(article, parent=nil)
@@ -570,9 +576,7 @@ private :generate_url, :url_options
       if self.closed? && members_count > 0
         AddMember.create!(:person => person, :organization => self) unless self.already_request_membership?(person)
       else
-        if members_count == 0
-          self.affiliate(person, Profile::Roles.admin(environment.id))
-        end
+        self.affiliate(person, Profile::Roles.admin(environment.id)) if members_count == 0
         self.affiliate(person, Profile::Roles.member(environment.id))
       end
     else
@@ -631,7 +635,7 @@ private :generate_url, :url_options
   include ActionView::Helpers::TextHelper
   def short_name(chars = 40)
     if self[:nickname].blank?
-      truncate self.name, chars, '...'
+      truncate self.name, :length => chars, :omission => '...'
     else
       self[:nickname]
     end
@@ -778,18 +782,27 @@ private :generate_url, :url_options
     _("Since: ")
   end
 
+  def recent_actions
+    tracked_actions.recent
+  end
+
+  def recent_notifications
+    tracked_notifications.recent
+  end
+
   def more_active_label
-    amount = self.articles.count
+    amount = recent_actions.count
+    amount += recent_notifications.count if organization?
     {
-      0 => _('none'),
-      1 => _('one article')
-    }[amount] || _("%s articles") % amount
+      0 => _('no activity'),
+      1 => _('one activity')
+    }[amount] || _("%s activities") % amount
   end
 
   def more_popular_label
     amount = self.members_count
     {
-      0 => _('none'),
+      0 => _('no members'),
       1 => _('one member')
     }[amount] || _("%s members") % amount
   end
@@ -806,18 +819,128 @@ private :generate_url, :url_options
     "#{jid(options)}/#{short_name}"
   end
 
-  protected
-
-    def followed_by?(person)
-      person.is_member_of?(self)
+  def is_on_homepage?(url, page=nil)
+    if page
+      page == self.home_page
+    else
+      url == '/' + self.identifier
     end
+  end
 
-    def display_private_info_to?(user)
-      if user.nil?
-        false
-      else
-        (user == self) || (user.is_admin?(self.environment)) || user.is_admin?(self) || user.memberships.include?(self)
-      end
+  def opened_abuse_complaint
+    abuse_complaints.opened.first
+  end
+
+  def disable
+  end
+
+  def control_panel_settings_button
+    {:title => _('Edit Profile'), :icon => 'edit-profile'}
+  end
+
+  def self.identification
+    name
+  end
+
+  # Override in your subclasses
+  def activities
+    []
+  end
+
+  private
+  def self.f_categories_label_proc(environment)
+    ids = environment.top_level_category_as_facet_ids
+    r = Category.find(ids)
+    map = {}
+    ids.map{ |id| map[id.to_s] = r.detect{|c| c.id == id}.name }
+    map
+  end
+  def self.f_categories_proc(facet, id)
+    id = id.to_i
+    return if id.zero?
+    c = Category.find(id)
+    c.name if c.top_ancestor.id == facet[:label_id].to_i or facet[:label_id] == 0
+  end
+  def f_categories
+    category_ids - [region_id]
+  end
+
+  def f_region
+    self.region_id
+  end
+  def self.f_region_proc(id)
+    c = Region.find(id)
+    s = c.parent
+    if c and c.kind_of?(City) and s and s.kind_of?(State) and s.acronym
+      [c.name, ', ' + s.acronym]
+    else
+      c.name
     end
+  end
+
+  def self.f_enabled_proc(enabled)
+    enabled = enabled == "true" ? true : false
+    enabled ? _('Enabled') : _('Not enabled')
+  end
+  def f_enabled
+    self.enabled
+  end
+
+  def name_sortable # give a different name for solr
+    name
+  end
+  def public
+    self.public?
+  end
+  def category_filter
+    categories_including_virtual_ids
+  end
+  public
+
+  acts_as_faceted :fields => {
+      :f_enabled => {:label => _('Situation'), :type_if => proc { |klass| klass.kind_of?(Enterprise) },
+        :proc => proc { |id| f_enabled_proc(id) }},
+      :f_region => {:label => _('City'), :proc => proc { |id| f_region_proc(id) }},
+      :f_categories => {:multi => true, :proc => proc {|facet, id| f_categories_proc(facet, id)},
+        :label => proc { |env| f_categories_label_proc(env) }, :label_abbrev => proc{ |env| f_categories_label_abbrev_proc(env) }},
+    }, :category_query => proc { |c| "category_filter:#{c.id}" },
+    :order => [:f_region, :f_categories, :f_enabled]
+
+  acts_as_searchable :fields => facets_fields_for_solr + [:extra_data_for_index,
+      # searched fields
+      {:name => {:type => :text, :boost => 2.0}},
+      {:identifier => :text}, {:address => :text}, {:nickname => :text},
+      # filtered fields
+      {:public => :boolean}, {:environment_id => :integer},
+      {:category_filter => :integer},
+      # ordered/query-boosted fields
+      {:name_sortable => :string}, {:user_id => :integer},
+      :enabled, :active, :validated, :public_profile,
+      {:lat => :float}, {:lng => :float},
+      :updated_at, :created_at,
+    ],
+    :include => [
+      {:region => {:fields => [:name, :path, :slug, :lat, :lng]}},
+      {:categories => {:fields => [:name, :path, :slug, :lat, :lng, :acronym, :abbreviation]}},
+    ], :facets => facets_option_for_solr,
+    :boost => proc{ |p| 10 if p.enabled }
+  after_save_reindex [:articles], :with => :delayed_job
+  handle_asynchronously :solr_save
+
+  def control_panel_settings_button
+    {:title => _('Profile Info and settings'), :icon => 'edit-profile'}
+  end 
+
+  def followed_by?(person)
+    person.is_member_of?(self)
+  end
+
+  def display_private_info_to?(user)
+    if user.nil?
+      false
+    else
+      (user == self) || (user.is_admin?(self.environment)) || user.is_admin?(self) || user.memberships.include?(self)
+    end
+  end
 
 end

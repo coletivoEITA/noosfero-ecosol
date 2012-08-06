@@ -255,7 +255,7 @@ function toggleSubmenu(trigger, title, link_list) {
       if (!hide) {
         var direction = 'down';
         if (submenu.hasClass('up')) direction = 'up';
-        submenu.show('slide', { 'direction' : direction }, 'slow');
+        jQuery(submenu).fadeIn();
       }
     }
     return false;
@@ -283,24 +283,24 @@ function toggleSubmenu(trigger, title, link_list) {
   content.append(list);
   submenu.append(header).append(content).append(footer);
   jQuery(trigger).before(submenu);
-  submenu.show('slide', { 'direction' : direction }, 'slow');
+  jQuery(submenu).fadeIn();
 }
 
 function toggleMenu(trigger) {
   hideAllSubmenus();
-  jQuery(trigger).siblings('.simplemenu-submenu').toggle('slide', {direction: 'up'}, 'slow').toggleClass('opened');
+  jQuery(trigger).siblings('.simplemenu-submenu').toggle().toggleClass('opened');
 }
 
 function hideAllSubmenus() {
-  jQuery('.menu-submenu.up:visible').hide('slide', { 'direction' : 'up' }, 'slow');
-  jQuery('.simplemenu-submenu:visible').hide('slide', { 'direction' : 'up' }, 'slow').toggleClass('opened');
-  jQuery('.menu-submenu.down:visible').hide('slide', { 'direction' : 'down' }, 'slow');
+  jQuery('.menu-submenu.up:visible').fadeOut('slow');
+  jQuery('.simplemenu-submenu:visible').hide().toggleClass('opened');
+  jQuery('.menu-submenu.down:visible').fadeOut('slow');
   jQuery('#chat-online-users-content').hide();
 }
 
 // Hide visible ballons when clicked outside them
 jQuery(document).ready(function() {
-  jQuery('body').click(function() { hideAllSubmenus(); });
+  jQuery('body').live('click', function() { hideAllSubmenus(); });
   jQuery('.menu-submenu-trigger').click(function(e) { e.stopPropagation(); });
   jQuery('.simplemenu-trigger').click(function(e) { e.stopPropagation(); });
   jQuery('#chat-online-users').click(function(e) { e.stopPropagation(); });
@@ -454,9 +454,9 @@ function loading_for_button(selector) {
   jQuery(selector).css('cursor', 'progress');
 }
 
-function new_qualifier_row(selector, select_qualifiers) {
+function new_qualifier_row(selector, select_qualifiers, delete_button) {
   index = jQuery(selector + ' tr').size() - 1;
-  jQuery(selector).append("<tr><td>" + select_qualifiers + "</td><td id='certifier-area-" + index + "'><select></select></td></tr>");
+  jQuery(selector).append("<tr><td>" + select_qualifiers + "</td><td id='certifier-area-" + index + "'><select></select>" + delete_button + "</td></tr>");
 }
 
 // controls the display of the login/logout stuff
@@ -475,6 +475,8 @@ jQuery(function($) {
     if (data.notice) {
       display_notice(data.notice);
     }
+    // Bind this event to do more actions with the user data (for example, inside plugins)
+    $(window).trigger("userDataLoaded", data);
   });
 
   function loggedInDataCallBack(data) {
@@ -649,6 +651,10 @@ jQuery(function($) {
       document.location.href = this.href;
     })
   }
+  $('#manage-enterprises-link').live('click', function() {
+    toggleMenu(this);
+    return false;
+  });
 });
 
 function add_comment_reply_form(button, comment_id) {
@@ -673,3 +679,205 @@ function original_image_dimensions(src) {
   img.src = src;
   return { 'width' : img.width, 'height' : img.height };
 }
+
+function gravatarCommentFailback(img) {
+  var link = img.parentNode;
+  link.href = "http://www.gravatar.com";
+  img.src = img.getAttribute("data-gravatar");
+}
+
+jQuery(function() {
+  jQuery("#ajax-form").before("<div id='ajax-form-loading-area' style='display:block;width:16px;height:16px;'></div>");
+  jQuery("#ajax-form").before("<div id='ajax-form-message-area'></div>");
+  jQuery("#ajax-form").ajaxForm({
+    beforeSubmit: function(a,f,o) {
+      jQuery('#ajax-form-message-area').html('');
+      o.loading = small_loading('ajax-form-loading-area');
+    },
+    success: function() {
+      loading_done('ajax-form-loading-area');
+    },
+    target: "#ajax-form-message-area"
+  })
+});
+
+// from http://jsfiddle.net/naveen/HkxJg/
+// Function to get the Max value in Array
+Array.max = function(array) {
+  return Math.max.apply(Math, array);
+};
+// Function to get the Min value in Array
+Array.min = function(array) {
+  return Math.min.apply(Math, array);
+};
+
+jQuery(function($){
+  $('.submit-with-keypress').live('keydown', function(e) {
+     field = this;
+     if (e.keyCode == 13) {
+       e.preventDefault();
+       var form = $(field).closest("form");
+       $.ajax({
+           url: form.attr("action"),
+           data: form.serialize(),
+           beforeSend: function() {
+             loading_for_button($(field));
+           },
+           success: function(data) {
+             var update = form.attr('data-update');
+             $('#'+update).html(data);
+             $(field).val($(field).attr('title'));
+           }
+       });
+       return false;
+     }
+   });
+
+  $('.view-all-comments').live('click', function(e) {
+     var link = this;
+     $(link).parent().find('.profile-wall-activities-comments').show();
+     $(link).hide();
+     return false;
+  });
+  $('.focus-on-comment').live('click', function(e) {
+     var link = this;
+     $(link).parents('.profile-activity-item').find('textarea').focus();
+     return false;
+  });
+});
+
+/**
+* @author Remy Sharp
+* @url http://remysharp.com/2007/01/25/jquery-tutorial-text-box-hints/
+*/
+
+(function ($) {
+
+$.fn.hint = function (blurClass) {
+  if (!blurClass) {
+    blurClass = 'blur';
+  }
+
+  return this.each(function () {
+    // get jQuery version of 'this'
+    var $input = $(this),
+
+    // capture the rest of the variable to allow for reuse
+      title = $input.attr('title'),
+      $form = $(this.form),
+      $win = $(window);
+
+    function remove() {
+      if ($input.val() === title && $input.hasClass(blurClass)) {
+        $input.val('').removeClass(blurClass);
+      }
+    }
+
+    // only apply logic if the element has the attribute
+    if (title) {
+      // on blur, set value to title attr if text is blank
+      $input.blur(function () {
+        if (this.value === '') {
+          $input.val(title).addClass(blurClass);
+        }
+      }).focus(remove).blur(); // now change all inputs to title
+
+      // clear the pre-defined text when form is submitted
+      $form.submit(remove);
+      $win.unload(remove); // handles Firefox's autocomplete
+    }
+  });
+};
+
+})(jQuery);
+
+/*
+ * altBeautify: put a styled tooltip on elements with
+ * HTML on title and alt attributes.
+ */
+
+var altBeautify = jQuery('<div id="alt-beautify" style="display:none; position: absolute"/>')
+  .append('<div class="alt-beautify-content"/>')
+  .append('<div class="alt-beautify-arrow-border alt-beautify-arrow"/>')
+  .append('<div class="alt-beautify-arrow-inner alt-beautify-arrow"/>');
+var altTarget;
+jQuery(document).ready(function () {
+  jQuery('body').append(altBeautify);
+});
+
+function altTimeout() {
+  if (!altTarget)
+    return;
+  altBeautify.css('top', jQuery(altTarget).offset().top + jQuery(altTarget).height());
+  altBeautify.css('left', jQuery(altTarget).offset().left);
+  altBeautify.find('.alt-beautify-content').html(jQuery(altTarget).attr('alt-beautify'));
+  altBeautify.show();
+}
+
+function altHide() {
+  altTarget = null;
+  altBeautify.hide();
+}
+
+function altShow(e) {
+  alt = jQuery(this).attr('title');
+  if (alt != '') {
+    jQuery(this).attr('alt-beautify', alt);
+    jQuery(this).attr('title', '');
+  }
+
+  altTarget = this;
+  setTimeout("altTimeout()", 500);
+}
+
+(function($) {
+
+  jQuery.fn.altBeautify = function() {
+    return this.each(function() {
+      jQuery(this).bind('mouseover', altShow);
+      jQuery(this).bind('mouseout', altHide);
+      jQuery(this).bind('click', altHide);
+    });
+  }
+
+})(jQuery);
+
+// enable it generally
+// jQuery('*[title]').live('mouseover', altShow);
+// jQuery('*[title]').live('mouseout', altHide);
+// jQuery('*[title]').live('click', altHide);
+// jQuery('image[alt]').live('mouseover', altShow);
+// jQuery('image[alt]').live('mouseout', altHide);
+// jQuery('image[alt]').live('click', altHide);
+
+
+function facet_options_toggle(id, url) {
+  jQuery('#facet-menu-'+id+' .facet-menu-options').toggle('fast' , function () {
+    more = jQuery('#facet-menu-'+id+' .facet-menu-more-options');
+    console.log(more);
+    if (more.is(':visible') && more.children().length == 0) {
+      more.addClass('small-loading');
+      more.load(url, function () {
+        more.removeClass('small-loading');
+      });
+    }
+  });
+}
+
+jQuery(function($) {
+  $('.colorbox').live('click', function() {
+    $.fn.colorbox({
+      href:$(this).attr('href'),
+      maxWidth: '500',
+      maxHeight: '550',
+      open:true
+    });
+    return false;
+  });
+
+  $('.colorbox-close').live('click', function() {
+    $.colorbox.close();
+    return false;
+  });
+
+});

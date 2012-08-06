@@ -1,5 +1,5 @@
 .box-1 {
-  margin: 0 210px 0 30px;
+  margin: 0 200px 0 0;
 }
 
 .box-1 .blocks {
@@ -8,14 +8,9 @@
 }
 
 .box-2 {
-  float: right;
-  width: 200px;
-}
-
-.block {
   position: relative;
-  padding: 10px 0;
-  float: none;
+  float: right;
+  width: 190px;
 }
 
 #leave_scrap_content_limit,
@@ -27,4 +22,44 @@
 #profile-network ul,
 #profile-wall ul {
   width: 620px;
+}
+
+.profile-activity-lead {
+  width: 534px;
+}
+
+#profile-wall textarea {
+  width: 534px;
+}
+
+#profile-wall #leave_scrap textarea {
+  width: 640px;
+}
+
+#profile-wall li textarea {
+  width: 548px;
+}
+
+.profile-activity-article-forum .profile-activity-lead {
+  background: url(/images/forum-activity-bg-onecol.png);
+  width: 489px;
+}
+
+#profile-wall li.profile-activity-item.upload_image span,
+#profile-wall li.profile-activity-item.upload_image span img,
+#profile-wall li.profile-activity-item.upload_image span a,
+#profile-network li.profile-activity-item.upload_image span,
+#profile-network li.profile-activity-item.upload_image span img,
+#profile-network li.profile-activity-item.upload_image span a {
+  width: 178px;
+  height: 144px;
+}
+
+#profile-wall li.profile-activity-item.upload_image .activity-gallery-images-count-1 span,
+#profile-wall li.profile-activity-item.upload_image .activity-gallery-images-count-1 span a img,
+#profile-wall li.profile-activity-item.upload_image .activity-gallery-images-count-1 span a,
+#profile-network li.profile-activity-item.upload_image .activity-gallery-images-count-1 span,
+#profile-network li.profile-activity-item.upload_image .activity-gallery-images-count-1 span a img,
+#profile-network li.profile-activity-item.upload_image .activity-gallery-images-count-1 span a {
+  max-width: 540px;
 }

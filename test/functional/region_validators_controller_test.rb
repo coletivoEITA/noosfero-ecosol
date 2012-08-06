@@ -4,12 +4,11 @@ require 'region_validators_controller'
 # Re-raise errors caught by the controller.
 class RegionValidatorsController; def rescue_action(e) raise e end; end
 
-class RegionValidatorsControllerTest < Test::Unit::TestCase
+class RegionValidatorsControllerTest < ActionController::TestCase
   all_fixtures
   def setup
     @controller = RegionValidatorsController.new
     @request    = ActionController::TestRequest.new
-    @request.stubs(:ssl?).returns(true)
     @response   = ActionController::TestResponse.new
     login_as('ze')
   end
@@ -47,6 +46,7 @@ class RegionValidatorsControllerTest < Test::Unit::TestCase
   end
 
   should 'search possible validators by name' do
+    TestSolr.enable
     environment = fast_create(Environment, :name => "my environment")
     give_permission('ze', 'manage_environment_validators', environment)    
     region = Region.new(:name => 'my region')

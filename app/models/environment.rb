@@ -9,6 +9,13 @@ class Environment < ActiveRecord::Base
 
   has_many :tasks, :dependent => :destroy, :as => 'target'
 
+  IDENTIFY_SCRIPTS = /(php[0-9s]?|[sp]htm[l]?|pl|py|cgi|rb)/
+
+  def self.verify_filename(filename)
+    filename += '.txt' if File.extname(filename) =~ IDENTIFY_SCRIPTS
+    filename
+  end
+
   PERMISSIONS['Environment'] = {
     'view_environment_admin_panel' => N_('View environment admin panel'),
     'edit_environment_features' => N_('Edit environment features'),
@@ -67,6 +74,10 @@ class Environment < ActiveRecord::Base
     self.affiliate(user, Environment::Roles.admin(self.id))
   end
 
+  def remove_admin(user)
+    self.disaffiliate(user, Environment::Roles.admin(self.id))
+  end
+
   def admins
     Person.members_of(self).all(:conditions => ['role_assignments.role_id = ?', Environment::Roles.admin(self).id])
   end
@@ -83,7 +94,6 @@ class Environment < ActiveRecord::Base
       'disable_asset_events' => _('Disable search for events'),
       'disable_products_for_enterprises' => __('Disable products for enterprises'),
       'disable_categories' => _('Disable categories'),
-      'disable_cms' => _('Disable CMS'),
       'disable_header_and_footer' => _('Disable header/footer editing by users'),
       'disable_gender_icon' => _('Disable gender icon'),
       'disable_categories_menu' => _('Disable the categories menu'),
@@ -93,7 +103,6 @@ class Environment < ActiveRecord::Base
       'enterprise_registration' => __('Enterprise registration'),
 
       'enterprise_activation' => __('Enable activation of enterprises'),
-      'wysiwyg_editor_for_environment_home' => _('Use WYSIWYG editor to edit environment home page'),
       'media_panel' => _('Media panel in WYSIWYG editor'),
       'select_preferred_domain' => _('Select preferred domains per profile'),
       'use_portal_community' => _('Use the portal as news source for front page'),
@@ -107,9 +116,12 @@ class Environment < ActiveRecord::Base
       'enable_organization_url_change' => _("Allow organizations to change their URL"),
       'admin_must_approve_new_communities' => _("Admin must approve creation of communities"),
       'enterprises_are_disabled_when_created' => __('Enterprises are disabled when created'),
+      'enterprises_are_validated_when_created' => __('Enterprises are validated when created'),
       'show_balloon_with_profile_links_when_clicked' => _('Show a balloon with profile links when a profile image is clicked'),
       'xmpp_chat' => _('XMPP/Jabber based chat'),
-      'show_zoom_button_on_article_images' => _('Show a zoom link on all article images')
+      'show_zoom_button_on_article_images' => _('Show a zoom link on all article images'),
+      'captcha_for_logged_users' => _('Ask captcha when a logged user comments too'),
+      'skip_new_user_email_confirmation' => _('Skip e-mail confirmation for new users')
     }
   end
 
@@ -163,6 +175,7 @@ class Environment < ActiveRecord::Base
   acts_as_accessible
 
   has_many :units, :order => 'position'
+  has_many :production_costs, :as => :owner
 
   def superior_intances
     [self, nil]
@@ -210,7 +223,6 @@ class Environment < ActiveRecord::Base
   settings_items :layout_template, :type => String, :default => 'default'
   settings_items :homepage, :type => String
   settings_items :description, :type => String, :default => '<div style="text-align: center"><a href="http://noosfero.org/"><img src="/images/noosfero-network.png" alt="Noosfero"/></a></div>'
-  settings_items :enable_ssl
   settings_items :local_docs, :type => Array, :default => []
   settings_items :news_amount_by_folder, :type => Integer, :default => 4
   settings_items :help_message_to_add_enterprise, :type => String, :default => ''
@@ -220,9 +232,25 @@ class Environment < ActiveRecord::Base
   settings_items :currency_separator, :type => String, :default => '.'
   settings_items :currency_delimiter, :type => String, :default => ','
 
-  settings_items :trusted_sites_for_iframe, :type => Array, :default => ['itheora.org', 'tv.softwarelivre.org', 'stream.softwarelivre.org']
+  settings_items :trusted_sites_for_iframe, :type => Array, :default => %w[
+    developer.myspace.com
+    itheora.org
+    maps.google.com
+    platform.twitter.com
+    player.vimeo.com
+    stream.softwarelivre.org
+    tv.softwarelivre.org
+    www.facebook.com
+    www.flickr.com
+    www.gmodules.com
+    www.youtube.com
+  ] + ('a' .. 'z').map{|i| "#{i}.yimg.com"}
 
   settings_items :enabled_plugins, :type => Array, :default => []
+
+  settings_items :search_hints, :type => Hash, :default => {}
+
+  settings_items :top_level_category_as_facet_ids, :type => Array, :default => []
 
   def news_amount_by_folder=(amount)
     settings[:news_amount_by_folder] = amount.to_i
@@ -230,17 +258,35 @@ class Environment < ActiveRecord::Base
 
   # Enables a feature identified by its name
   def enable(feature)
-    self.settings["#{feature}_enabled"] = true
+    self.settings["#{feature}_enabled".to_sym] = true
+  end
+
+  def enable_plugin(plugin)
+    self.enabled_plugins += [plugin.to_s]
+    self.enabled_plugins.uniq!
+    self.save!
   end
 
   # Disables a feature identified by its name
   def disable(feature)
-    self.settings["#{feature}_enabled"] = false
+    self.settings["#{feature}_enabled".to_sym] = false
+  end
+
+  def disable_plugin(plugin)
+    self.enabled_plugins.delete(plugin.to_s)
+    self.save!
   end
 
   # Tells if a feature, identified by its name, is enabled
   def enabled?(feature)
-    self.settings["#{feature}_enabled"] == true
+    self.settings["#{feature}_enabled".to_sym] == true
+  end
+  def disabled?(feature)
+    !self.enabled?(feature)
+  end
+
+  def plugin_enabled?(plugin)
+    enabled_plugins.include?(plugin.to_s)
   end
 
   # enables the features identified by <tt>features</tt>, which is expected to
@@ -274,7 +320,6 @@ class Environment < ActiveRecord::Base
       organizations_are_moderated_by_default
       show_balloon_with_profile_links_when_clicked
       use_portal_community
-      wysiwyg_editor_for_environment_home
     ).each do |feature|
       enable(feature)
     end
@@ -497,6 +542,7 @@ class Environment < ActiveRecord::Base
   xss_terminate :only => [ :message_for_disabled_enterprise ], :with => 'white_list', :on => 'validation'
 
   validates_presence_of :theme
+  validates_numericality_of :reports_lower_bound, :allow_nil => false, :only_integer => true, :greater_than_or_equal_to => 0
 
   include WhiteListFilter
   filter_iframes :message_for_disabled_enterprise, :whitelist => lambda { trusted_sites_for_iframe }
@@ -520,16 +566,16 @@ class Environment < ActiveRecord::Base
   # If #force_www is true, adds 'www.' at the beginning of the hostname. If the
   # environment has not associated domains, returns 'localhost'.
   def default_hostname(email_hostname = false)
-    if self.domains(true).empty?
-      'localhost'
-    else
+    domain = 'localhost'
+    unless self.domains(true).empty?
       domain = (self.domains.find_by_is_default(true) || self.domains.find(:first, :order => 'id')).name
-      email_hostname ? domain : (force_www ? ('www.' + domain) : domain)
+      domain = email_hostname ? domain : (force_www ? ('www.' + domain) : domain)
     end
+    domain
   end
 
-  def top_url(ssl = false)
-    protocol = (ssl ? 'https' : 'http')
+  def top_url
+    protocol = 'http'
     result = "#{protocol}://#{default_hostname}"
     if Noosfero.url_options.has_key?(:port)
       result << ':' << Noosfero.url_options[:port].to_s
@@ -661,8 +707,8 @@ class Environment < ActiveRecord::Base
     settings[:portal_folders] = folders ? folders.map(&:id) : nil
   end
 
-  def portal_news_cache_key
-    "home-page-news/#{cache_key}"
+  def portal_news_cache_key(language='en')
+    "home-page-news/#{cache_key}-#{language}"
   end
 
   def notification_emails
@@ -674,13 +720,14 @@ class Environment < ActiveRecord::Base
   def create_templates
     pre = self.name.to_slug + '_'
     ent_id = Enterprise.create!(:name => 'Enterprise template', :identifier => pre + 'enterprise_template', :environment => self, :visible => false).id
+    inactive_enterprise_tmpl = Enterprise.create!(:name => 'Inactive Enterprise template', :identifier => pre + 'inactive_enterprise_template', :environment => self, :visible => false)
     com_id = Community.create!(:name => 'Community template', :identifier => pre + 'community_template', :environment => self, :visible => false).id
     pass = Digest::MD5.hexdigest rand.to_s
     user = User.create!(:login => (pre + 'person_template'), :email => (pre + 'template@template.noo'), :password => pass, :password_confirmation => pass, :environment => self).person
-    user.visible = false
-    user.save!
+    user.update_attributes(:visible => false, :name => "Person template")
     usr_id = user.id
     self.settings[:enterprise_template_id] = ent_id
+    self.inactive_enterprise_template = inactive_enterprise_tmpl
     self.settings[:community_template_id] = com_id
     self.settings[:person_template_id] = usr_id
     self.save!
@@ -688,7 +735,7 @@ class Environment < ActiveRecord::Base
 
   after_destroy :destroy_templates
   def destroy_templates
-    [enterprise_template, community_template, person_template].compact.each do |template|
+    [enterprise_template, inactive_enterprise_template, community_template, person_template].compact.each do |template|
       template.destroy
     end
   end
@@ -704,6 +751,4 @@ class Environment < ActiveRecord::Base
   def image_galleries
     portal_community ? portal_community.image_galleries : []
   end
-
 end
-

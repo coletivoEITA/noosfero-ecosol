@@ -16,6 +16,7 @@ config/environment.rb             usr/share/noosfero/config
 config/environments               usr/share/noosfero/config
 config/initializers               usr/share/noosfero/config
 config/routes.rb                  usr/share/noosfero/config
+config/locales                    usr/share/noosfero/config
 
 plugins                           usr/share/noosfero
 
@@ -27,9 +28,12 @@ public                            usr/share/noosfero
 
 debian/default/noosfero           etc/default
 etc/init.d/noosfero               etc/init.d
-debian/mongrel_cluster.yml        etc/noosfero
-debian/ferret_server.yml          etc/noosfero
+debian/solr.yml                   etc/noosfero
+debian/thin.yml                   etc/noosfero
 etc/logrotate.d/noosfero          etc/logrotate.d
+debian/noosfero.yml               etc/noosfero
 
 locale                            usr/share/noosfero
 doc/noosfero                      usr/share/noosfero/doc
+
+debian/noosfero-console           usr/sbin

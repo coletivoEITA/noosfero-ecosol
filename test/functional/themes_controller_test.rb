@@ -3,12 +3,11 @@ require 'themes_controller'
 
 class ThemesController; def rescue_action(e) raise e end; end
 
-class ThemesControllerTest < Test::Unit::TestCase
+class ThemesControllerTest < ActionController::TestCase
 
   def setup
     @controller = ThemesController.new
     @request    = ActionController::TestRequest.new
-    @request.stubs(:ssl?).returns(true)
     @response   = ActionController::TestResponse.new
 
     Theme.stubs(:user_themes_dir).returns(TMP_THEMES_DIR)
@@ -145,7 +144,7 @@ class ThemesControllerTest < Test::Unit::TestCase
 
   should 'display dialog for creating new CSS' do
     theme = Theme.create('mytheme', :owner => profile)
-    @request.expects(:xhr?).returns(true)
+    @request.stubs(:xhr?).returns(true)
     get :add_css, :profile => 'testinguser', :id => 'mytheme'
 
     assert_tag :tag => 'form', :attributes => { :action => '/myprofile/testinguser/themes/add_css/mytheme', :method => /post/i}
@@ -204,7 +203,7 @@ class ThemesControllerTest < Test::Unit::TestCase
 
   should 'display the "add image" dialog' do
     theme = Theme.create('mytheme', :owner => profile)
-    @request.expects(:xhr?).returns(true)
+    @request.stubs(:xhr?).returns(true)
 
     get :add_image, :profile => 'testinguser', :id => 'mytheme'
     assert_tag :tag => 'form', :attributes => { :action => '/myprofile/testinguser/themes/add_image/mytheme', :method => /post/i, :enctype => 'multipart/form-data' }, :descendant => { :tag => 'input', :attributes => { :name => 'image', :type => 'file' } }
@@ -212,7 +211,7 @@ class ThemesControllerTest < Test::Unit::TestCase
 
   should 'be able to add new image to theme' do
     theme = Theme.create('mytheme', :owner => profile)
-    @request.expects(:xhr?).returns(false)
+    @request.stubs(:xhr?).returns(false)
 
     post :add_image, :profile => 'testinguser', :id => 'mytheme', :image => fixture_file_upload('/files/rails.png', 'image/png', :binary)
     assert_redirected_to :action => "edit", :id => 'mytheme'
@@ -235,7 +234,7 @@ class ThemesControllerTest < Test::Unit::TestCase
     post :start_test, :profile => 'testinguser', :id => 'theme-under-test'
 
     assert_equal 'theme-under-test', session[:theme]
-    assert_redirected_to :controller => 'content_viewer', :profile => 'testinguser'
+    assert_redirected_to :controller => 'content_viewer', :profile => 'testinguser', :action => 'view_page'
   end
 
   should 'stop testing theme' do
