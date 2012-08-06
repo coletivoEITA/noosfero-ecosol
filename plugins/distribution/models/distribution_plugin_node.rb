@@ -9,7 +9,7 @@ class DistributionPluginNode < ActiveRecord::Base
     :conditions => ["distribution_plugin_sessions.status <> 'new'"]
   has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy, :order => 'id asc'
   has_many :parcels, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy, :order => 'id asc'
-  
+
   has_many :suppliers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'consumer_id', :order => 'id asc', :dependent => :destroy
   has_many :consumers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'node_id', :order => 'id asc'
   has_many :suppliers_nodes, :through => :suppliers, :source => :node, :order => 'id asc'
@@ -29,8 +29,8 @@ class DistributionPluginNode < ActiveRecord::Base
   has_many :sessions_custom_order, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy,
     :conditions => ["distribution_plugin_sessions.status <> 'new'"]
 
-  validates_presence_of :profile
   validates_associated :profile
+  validates_presence_of :profile
   validates_inclusion_of :role, :in => ['supplier', 'collective', 'consumer']
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
@@ -151,7 +151,7 @@ class DistributionPluginNode < ActiveRecord::Base
       end
       p
     end
-  end 
+  end
 
   alias_method :destroy!, :destroy
   def destroy

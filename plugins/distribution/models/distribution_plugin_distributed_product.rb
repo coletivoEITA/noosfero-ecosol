@@ -43,7 +43,7 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
   def supplier_product=(value)
     raise "Cannot set supplier's product for own product" if own? 
     raise "Cannot set supplier's product details of a non dummy supplier" unless supplier.dummy?
-    supplier_product.update_attributes! value
+    supplier_product.update_attributes value
   end
   def supplier_product_id
     return nil if own? 

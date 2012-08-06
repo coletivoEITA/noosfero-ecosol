@@ -70,9 +70,14 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
   def new
     @supplier = DistributionPluginSupplier.find_by_id params[:product][:supplier_id].to_i
     if params[:commit]
-      #:supplier_product_id must be set first. it will when params follow the form order with ruby 1.9 ordered hashes
-      @product = DistributionPluginDistributedProduct.new :node => @node, :supplier_product_id => params[:product].delete(:supplier_product_id)
-      @product.update_attributes! params[:product]
+      begin
+        #:supplier_product_id must be set first. it will when params follow the form order with ruby 1.9 ordered hashes
+        @product = DistributionPluginDistributedProduct.new :node => @node, :supplier_product_id => params[:product].delete(:supplier_product_id)
+        @success = @product.update_attributes params[:product]
+        if not @success
+          render :partial => 'missing_field'
+        end
+      end
     else
       if @supplier
         @product = DistributionPluginDistributedProduct.new :node => @node, :supplier => @supplier
@@ -85,7 +90,10 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
 
   def edit
     @product = DistributionPluginDistributedProduct.find params[:id]
-    @product.update_attributes! params[:product]
+    @success = @product.update_attributes params[:product]
+    if not @success
+      render :partial => 'missing_field'
+    end
     render :layout => false
   end
 

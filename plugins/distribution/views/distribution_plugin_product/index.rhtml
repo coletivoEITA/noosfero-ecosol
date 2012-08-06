@@ -5,10 +5,10 @@
 
     <div class="subtitle">
       <%= _("Here are listed all the products with which your collective works.
-             Here it's possible to add and remove products, besides desactivating 
+             Here it's possible to add and remove products, besides desactivating
              temporarily your commercialization in the Cycles' orders.") %>
     </div>
-    
+
     <h3><%= _("Default margin of commercialization") %></h3>
     <div class="subtitle">
        <%= _("This margin is automatically applied in all the products, but
@@ -20,10 +20,10 @@
       </span>
       <%= lightbox_link_to _('change'), {:controller => :distribution_plugin_node, :action => :margins_change} %>
     </span>
-  
+
     <h3><%= _('The products')%></h3>
     <div class="subtitle"><%= link_to _('Add product'), '#our-product-add', :class => 'toggle-edit', :onclick => "distribution_our_product_add_link();" %></div>
-  
+
   </div>
 
   <div id="filter-fields" class="filter-box">
@@ -72,7 +72,7 @@
 
     <div class="cleaner"></div>
   </div>
-  
+
   <div id="search-results">
     <%= render :partial => 'search' %>
   </div>
