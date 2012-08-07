@@ -20,10 +20,12 @@ require 'tidy'
 require 'hpricot'
 
 require 'noosfero/test'
-require 'test/factories'
 require 'test/noosfero_doc_test'
 require 'test/action_tracker_test_helper'
 require 'test/test_solr_helper.rb'
+require 'test/factories'
+plugins_factories = Dir.glob(File.join(Rails.root, 'config', 'plugins', '*','test', 'factories.rb'))
+plugins_factories.each { |f| require f.sub(/\.rb$/, '') }
 
 Image.attachment_options[:path_prefix] = 'test/tmp/public/images'
 Thumbnail.attachment_options[:path_prefix] = 'test/tmp/public/thumbnails'

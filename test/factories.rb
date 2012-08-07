@@ -1,5 +1,15 @@
 module Noosfero::Factory
 
+  # Register factory extensions, including module methods for tests
+  def self.register_extension(mod)
+    @extensions ||= []
+    @extensions << mod
+  end
+
+  def self.included(base)
+    @extensions.each{ |m| base.send(:include, m) }
+  end
+
   def fast_create(name, attrs = {}, options = {})
     data = defaults_for(name.to_s.gsub('::','')).merge(attrs)
     klass = name.to_s.camelize.constantize
