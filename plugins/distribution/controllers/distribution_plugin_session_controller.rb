@@ -28,7 +28,7 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
       else
         render :partial => 'edit'
       end
-    else 
+    else
       count = DistributionPluginSession.count :conditions => {:node_id => @node}
       @session = DistributionPluginSession.create! :node => @node, :status => 'new', :name => _("Cycle n.#{count+1}")
     end
@@ -57,7 +57,7 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
 
   def add_products
     @session = DistributionPluginSession.find params[:id]
-    @missing_products = @node.products.unarchived.distributed - @session.from_products.unarchived
+    @missing_products = @node.products.unarchived.distributed.active - @session.from_products.unarchived
     if params[:products_id]
       params[:products_id].each do |id|
         product = DistributionPluginDistributedProduct.find id

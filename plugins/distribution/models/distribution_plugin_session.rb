@@ -133,7 +133,7 @@ class DistributionPluginSession < ActiveRecord::Base
   after_create :add_distributed_products
   def add_distributed_products
     already_in = self.products.unarchived.all
-    node.products.unarchived.distributed.map do |product|
+    node.products.unarchived.distributed.active.map do |product|
       p = already_in.find{ |f| f.from_product == product }
       unless p
         p = DistributionPluginSessionProduct.create_from_distributed(self, product)
