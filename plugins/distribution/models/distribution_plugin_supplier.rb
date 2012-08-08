@@ -1,4 +1,5 @@
 class DistributionPluginSupplier < ActiveRecord::Base
+
   belongs_to :node,  :class_name => 'DistributionPluginNode'
   belongs_to :consumer,  :class_name => 'DistributionPluginNode'
 
@@ -18,8 +19,8 @@ class DistributionPluginSupplier < ActiveRecord::Base
   validates_associated :node
 
   def self.new_dummy(attributes)
-    new_profile = Enterprise.new :visible => false, :environment => attributes[:consumer].profile.environment
-    new_profile.identifier = Digest::MD5.hexdigest(rand.to_s)
+    new_profile = Enterprise.new :visible => false, :identifier => Digest::MD5.hexdigest(rand.to_s),
+      :environment => attributes[:consumer].profile.environment
     new_node = DistributionPluginNode.new :role => 'supplier', :profile => new_profile
     supplier = new :node => new_node
     supplier.attributes = attributes
@@ -63,7 +64,7 @@ class DistributionPluginSupplier < ActiveRecord::Base
       node.destroy
     end
     supplied_products.update_all ['archived = true']
-    
+
     super
   end
 

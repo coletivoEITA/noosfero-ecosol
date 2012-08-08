@@ -1,4 +1,5 @@
 class DistributionPluginDeliveryMethod < ActiveRecord::Base
+
   belongs_to :node, :class_name => 'DistributionPluginNode'
   belongs_to :order, :class_name => 'DistributionPluginOrder'
 

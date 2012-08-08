@@ -38,7 +38,6 @@ class DistributionPluginProduct < ActiveRecord::Base
   has_many :to_nodes, :through => :to_products, :source => :node
   has_many :from_nodes, :through => :from_products, :source => :node
 
-
   before_validation :sub_commas_to_dots
   def sub_commas_to_dots
     self.price  = @attributes["price"].to_s.gsub(/,/, '.').to_f unless @attributes["price"].nil?

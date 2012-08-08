@@ -30,30 +30,27 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
     price_with_margins
   end
 
-
   def supplier_products
     from_products
   end
-
   def supplier_product
-    return from_product if own? 
+    return from_product if own?
     # automatically create a product for this dummy supplier
     @supplier_product ||= super || (self.dummy? ? DistributionPluginDistributedProduct.new(:node => supplier.node, :supplier => supplier.node.self_supplier) : nil)
   end
   def supplier_product=(value)
-    raise "Cannot set supplier's product for own product" if own? 
+    raise "Cannot set supplier's product for own product" if own?
     raise "Cannot set supplier's product details of a non dummy supplier" unless supplier.dummy?
     supplier_product.update_attributes value
   end
   def supplier_product_id
-    return nil if own? 
+    return nil if own?
     supplier_product.id if supplier_product
   end
   def supplier_product_id=(id)
-    raise "Cannot set supplier product for own product" if own? 
+    raise "Cannot set supplier product for own product" if own?
     distribute_from DistributionPluginProduct.find(id) unless id.blank?
   end
-
 
   def distribute_from(product)
     s = node.suppliers.from_node(product.node).first

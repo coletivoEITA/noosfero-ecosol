@@ -55,7 +55,7 @@ class DistributionPluginSession < ActiveRecord::Base
   STATUS_SEQUENCE = [
     'new', 'edition', 'orders', 'closed'
   ]
-  
+
   validates_presence_of :node
   validates_presence_of :name, :if => :not_new?
   validates_presence_of :start, :if => :not_new?
@@ -117,7 +117,7 @@ class DistributionPluginSession < ActiveRecord::Base
     conditions = conditions == '' ? 'price > 0':'price > 0 AND ' + conditions
     self.products.unarchived.all(:conditions => conditions).group_by{ |sp| sp.supplier }
   end
-  
+
   def ordered_products_by_suppliers
     self.ordered_session_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
       total_price_asked = total_parcel_price = 0
@@ -169,12 +169,12 @@ class DistributionPluginSession < ActiveRecord::Base
   end
 
   def validate_orders_dates
-    return if self.new?
-    errors.add_to_base(_("Invalid orders' period")) unless start < finish
+    return if self.new? or self.finish.nil?
+    errors.add_to_base(_("Invalid orders' period")) unless self.start < self.finish
   end
 
   def validate_delivery_dates
-    return if self.new?
+    return if self.new? or delivery_start.nil? or delivery_finish.nil?
     errors.add_to_base(_("Invalid delivery' period")) unless delivery_start < delivery_finish
     errors.add_to_base(_("Delivery' period before orders' period")) unless finish < delivery_start
   end
