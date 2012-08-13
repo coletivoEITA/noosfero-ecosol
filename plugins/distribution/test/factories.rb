@@ -1,20 +1,24 @@
 module DistributionPluginFactory
 
   def defaults_for_distribution_plugin_node
-    {:profile_id => 1, :role => 'supplier'}
+    {:profile => build(Profile), :role => 'supplier'}
   end
 
   def defaults_for_distribution_plugin_supplier
-    {:node_id => 1, :consumer_id => 1}
+    {:node => build(DistributionPluginNode),
+     :consumer => build(DistributionPluginNode)}
   end
 
   def defaults_for_distribution_plugin_session
-    {:node_id => 1, :name => 'weekly', :start => Time.now, :finish => Time.now+1.days}
+    {:node => build(DistributionPluginNode),
+     :name => 'weekly', :start => Time.now, :finish => Time.now+1.days}
   end
 
   def defaults_for_distribution_plugin_product
-    n = factory_num_seq
-    {:node_id => 1, :product_id => 1, :supplier_id => 1, :name => "product-#{n}"}
+    node = build(DistributionPluginNode)
+    {:node => node, :name => "product-#{factory_num_seq}",
+     :product => build(Product),
+     :supplier => build(DistributionPluginSupplier)}
   end
 
   def defaults_for_distribution_plugin_session_product
@@ -26,15 +30,19 @@ module DistributionPluginFactory
   end
 
   def defaults_for_distribution_plugin_delivery_method
-    { :name => 'My delivery ' + factory_num_seq.to_s , :delivery_type => 'deliver'}
+    {:name => "My delivery #{factory_num_seq.to_s}", :delivery_type => 'deliver'}
   end
 
   def defaults_for_distribution_plugin_delivery_option
-    {:session_id => 1, :delivery_method => 1}
+    {:session => build(DistributionPluginSession),
+     :delivery_method => build(DistributionPluginDeliveryMethod)}
   end
 
   def defaults_for_distribution_plugin_order
-    {:session_id => 1, :consumer_id => 1, :supplier_delivery_id => 1, :consumer_delivery_id => 2}
+    {:session => build(DistributionPluginSession),
+     :consumer => build(DistributionPluginNode),
+     :supplier_delivery => build(DistributionPluginDeliveryMethod),
+     :consumer_delivery => build(DistributionPluginDeliveryMethod)}
   end
 
 end

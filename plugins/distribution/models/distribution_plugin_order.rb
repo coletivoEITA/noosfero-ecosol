@@ -1,4 +1,5 @@
 class DistributionPluginOrder < ActiveRecord::Base
+
   belongs_to :session, :class_name => 'DistributionPluginSession'
   belongs_to :consumer, :class_name => 'DistributionPluginNode'
 
@@ -12,7 +13,7 @@ class DistributionPluginOrder < ActiveRecord::Base
 
   has_many :from_products, :through => :products
   has_many :to_products, :through => :products
-  
+
   belongs_to :supplier_delivery, :class_name => 'DistributionPluginDeliveryMethod'
   belongs_to :consumer_delivery, :class_name => 'DistributionPluginDeliveryMethod'
 
@@ -119,7 +120,7 @@ class DistributionPluginOrder < ActiveRecord::Base
     }
   end
 
-  protected 
+  protected
 
   before_validation :default_values
   def default_values

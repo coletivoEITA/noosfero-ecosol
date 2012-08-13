@@ -23,7 +23,7 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
   end
 
   def supplier_products
-    from_2x_products
+    self.supplier.nil? ? self.from_2x_products : self.from_2x_products.select{ |fp| fp.node == self.supplier.node }
   end
 
   def total_quantity_asked
@@ -56,8 +56,7 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
     unit
   end
 
-  # session products freezes properties and don't use
-  # the original
+  # session products freezes properties and don't use the original
   DEFAULT_ATTRIBUTES.each do |a|
     define_method "default_#{a}" do
       nil
@@ -65,7 +64,6 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
   end
 
   FROOZEN_DEFAULT_ATTRIBUTES = DEFAULT_ATTRIBUTES
-
   def freeze_default_attributes(from_product)
     FROOZEN_DEFAULT_ATTRIBUTES.each do |a|
       self[a.to_s] = from_product.send a

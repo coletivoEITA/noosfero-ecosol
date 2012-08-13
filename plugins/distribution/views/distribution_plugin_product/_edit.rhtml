@@ -1,6 +1,6 @@
 <% new_record = !product || product.new_record? %>
 <div class="box-edit" style="<%= "display: none" unless new_record %>">
-  
+
   <div class="title">
     <% if new_record %>
       <%= _('Add product to the list of distributed products') %>
@@ -8,22 +8,22 @@
       <%= _("Editing distributed product") %>
     <% end %>
   </div>
-  
+
   <% form_remote_for :product, product, :url => {:controller => :distribution_plugin_product, :action => new_record ? :new : :edit, :id => product ? product.id : nil} do |f| %>
     <%= supplier_select f, @node, @supplier, new_record %>
-  
+
     <% if product.blank? or (!product.own? and (product.supplier.blank? or @not_distributed_products)) %>
       <%= render :partial => 'select_missing' %>
     <% else %>
       <%= f.hidden_field :supplier_product_id if new_record %>
-  
+
       <div class="our-product-columns">
 
         <div class="our-product-distributed-column">
           <div class="column-title">
             <%= product.own? ? _("Own product") : _("How we distribute the product") %>
           </div>
-    
+
           <div class="properties-block">
             <%= labelled_field f, :name, _('Name'), f.text_field(:name, :oldvalue => product.own_name) %>
             <%= labelled_field f, :description, _('Description'), f.text_area(:description, :oldvalue => product.own_description) %>
@@ -82,7 +82,7 @@
                 <% end %>
               <% end %>
             </div>
-    
+
             <div class="cleaner"></div>
           </div>
 
@@ -97,23 +97,23 @@
                   <%= f.check_box :default_margin_percentage, :onchange => "distribution_our_product_toggle_referred(this)", :for => '#product_margin_percentage' %>
                   <%= f.label :default_margin_percentage, _('Use default margin') %>
                 </div>
-      
+
                 <div class="cleaner"></div>
               </div>
-      
+
               <div class="cleaner"></div>
             </div>
           <% end %>
-    
+
           <%= render :partial => 'price_details', :locals => {:f => f, :product => product, :supplier_product => nil} %>
-    
+
           <%= f.check_box :active, :style => 'float: left' %>
           <%= f.label :active, _('Commercialization active'), :class => 'line-label' %>
-    
+
           <%# f.check_box :use_stock %>
           <%# f.label :use_stock, _('Commercialization active'), :class => 'line-label' %>
         </div>
-    
+
         <% unless product.own? %>
           <div class="our-product-use-original-column">
             <div class="column-title"><%= _("use original") %></div>
@@ -126,7 +126,7 @@
                 :onchange => "distribution_our_product_toggle_referred(this)" unless product.default_price.nil? %>
             </div>
           </div>
-    
+
           <div class="our-product-supplied-column alignment2x <%= "dummy-product" if product.dummy? %>">
             <div class="column-title"><%= _("How we order the product") %></div>
             <% f.fields_for :supplier_product, product.supplier_product do |f| %>
@@ -141,7 +141,7 @@
                   <%= labelled_field f, :description, _('Description'), f.text_area(:description, :disabled => 'disabled', :onkeyup => 'distribution_our_product_sync_referred(this)') %>
                 </div>
               <% end %>
-    
+
               <%= render :partial => 'price_details', :locals => {:f => f, :product => product, :supplier_product => product.supplier_product} %>
             <% end %>
           </div>
@@ -153,9 +153,9 @@
           el.find('.properties-block').click(distribution_our_product_enable_if_disabled);
         <% end %>
       </div>
-    
+
       <div class="cleaner">
-        <%= f.submit _('Save') %> 
+        <%= f.submit _('Save') %>
         <%= link_to_function _('cancel'), '', :class => 'toggle-edit' %>
       </div>
     <% end %>

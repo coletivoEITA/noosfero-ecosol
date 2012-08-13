@@ -13,7 +13,6 @@ class DistributionPluginProduct < ActiveRecord::Base
 
   has_one :product_category, :through => :product
 
-  # one for organization and the other for typing
   belongs_to :category, :class_name => 'ProductCategory'
   belongs_to :type_category, :class_name => 'ProductCategory'
 
@@ -38,18 +37,17 @@ class DistributionPluginProduct < ActiveRecord::Base
   has_many :to_nodes, :through => :to_products, :source => :node
   has_many :from_nodes, :through => :from_products, :source => :node
 
-  before_validation :sub_commas_to_dots
-  def sub_commas_to_dots
-    self.price  = @attributes["price"].to_s.gsub(/,/, '.').to_f unless @attributes["price"].nil?
-    self.minimum_selleable.to_s.gsub!(/,/, '.').to_f unless self.minimum_selleable.nil?
+  def from_product
+    self.from_products.first
   end
-
-  # must be overriden on subclasses
+  def from_product=(value)
+    self.from_products = [value]
+  end
   def supplier_products
-    []
+    self.supplier.nil? ? self.from_products : self.from_products.select{ |fp| fp.node == self.supplier.node }
   end
   def supplier_product
-    supplier_products.by_node_id(supplier.node.id).first
+    self.supplier_products.first
   end
 
   validates_presence_of :type
@@ -62,7 +60,12 @@ class DistributionPluginProduct < ActiveRecord::Base
   validates_numericality_of :margin_fixed, :allow_nil => true
   validates_numericality_of :stored, :allow_nil => true
   validates_numericality_of :quantity, :allow_nil => true
-  validate :supplier_change
+
+  before_validation :sub_commas_to_dots
+  def sub_commas_to_dots
+    self.price = self["price"].to_s.gsub(/,/, '.').to_f unless self["price"].nil?
+    self.minimum_selleable.to_s.gsub!(/,/, '.').to_f unless self.minimum_selleable.nil?
+  end
 
   extend ActsAsHavingSettings::DefaultItem::ClassMethods
   acts_as_having_settings :field => :settings
@@ -88,10 +91,6 @@ class DistributionPluginProduct < ActiveRecord::Base
     supplier ? supplier.node == node : false
   end
 
-  def from_product
-    from_products.first
-  end
-
   def unit
     self['unit'] || Unit.new(:singular => _('unit'), :plural => _('units'))
   end
@@ -106,12 +105,6 @@ class DistributionPluginProduct < ActiveRecord::Base
   alias_method :destroy!, :destroy
   def destroy
     raise "Products shouldn't be destroyed for the sake of the history!"
-  end
-
-  protected
-
-  def supplier_change
-    errors.add :supplier_id, "Supplier can't change" if supplier_id_changed? and not new_record?
   end
 
 end

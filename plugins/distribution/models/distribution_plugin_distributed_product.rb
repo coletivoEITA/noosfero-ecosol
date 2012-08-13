@@ -1,12 +1,12 @@
 class DistributionPluginDistributedProduct < DistributionPluginProduct
 
-  alias_method :default_name_setting, :default_name
+  alias_method :super_default_name, :default_name
   def default_name
-    dummy? ? nil : default_name_setting
+    dummy? ? nil : super_default_name
   end
-  alias_method :default_description_setting, :default_description
+  alias_method :super_default_description, :default_description
   def default_description
-    dummy? ? nil : default_description_setting
+    dummy? ? nil : super_default_description
   end
 
   def price
@@ -30,38 +30,43 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
     price_with_margins
   end
 
-  def supplier_products
-    from_products
-  end
   def supplier_product
-    return from_product if own?
-    # automatically create a product for this dummy supplier
-    @supplier_product ||= super || (self.dummy? ? DistributionPluginDistributedProduct.new(:node => supplier.node, :supplier => supplier.node.self_supplier) : nil)
+    return @supplier_product if @supplier_product
+
+    @supplier_product = super
+    # automatically create a product if supplier is dummy
+    if dummy?
+      @supplier_product ||= DistributionPluginDistributedProduct.new(:node => supplier.node, :supplier => supplier.node.self_supplier)
+    end
+
+    @supplier_product
   end
   def supplier_product=(value)
-    raise "Cannot set supplier's product for own product" if own?
-    raise "Cannot set supplier's product details of a non dummy supplier" unless supplier.dummy?
-    supplier_product.update_attributes value
+    if value.is_a?(Hash)
+      supplier_product.attributes = value
+    else
+      @supplier_product = value
+    end
   end
+
   def supplier_product_id
-    return nil if own?
     supplier_product.id if supplier_product
   end
   def supplier_product_id=(id)
-    raise "Cannot set supplier product for own product" if own?
     distribute_from DistributionPluginProduct.find(id) unless id.blank?
   end
 
+  # Set _product_ and its supplier as the origin of this product
   def distribute_from(product)
     s = node.suppliers.from_node(product.node).first
     raise "Supplier not found" if s.blank?
 
-    self.attributes = product.attributes.merge(:supplier_id => s.id)
+    self.name ||= product.name
     self.supplier = s
-    from_products << product unless from_products.include? product
+    self.save!
+    self.from_products << product unless self.from_products.include? product
     @supplier_product = product
   end
-
 
   def self.json_for_category(c)
     {
@@ -71,20 +76,8 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
       :subcats => c.children.map{ |c| {:id => c.id.to_s, :name => c.name} },
     }
   end
-
   def json_for_category
-    self.class.json_for_category(category) if category
-  end
-
-  protected
-
-  after_create :create_dummy_supplier_product
-  def create_dummy_supplier_product
-    # FIXME: use autosave on rails 2.3.x
-    if @supplier_product
-      @supplier_product.save!
-      self.from_products << @supplier_product
-    end
+    self.class.json_for_category(self.category) if self.category
   end
 
 end

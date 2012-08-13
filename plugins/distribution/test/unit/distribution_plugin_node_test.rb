@@ -1,23 +1,25 @@
 require File.dirname(__FILE__) + '/../test_helper'
+require 'rubygems'
+require 'spec/test/unit'
 
 class DistributionPluginNodeTest < ActiveRecord::TestCase
 
-  before :each do
-    @p = create(Profile)
-    @p2 = create(Profile)
-  end
-  after :each do
-    @p.destroy
-    @p2.destroy
+  def setup
+    @profile = create_user('testuser').person
+    @profile2 = create_user('testuser2').person
   end
 
-  it 'should create necessary roles before instance creation' do
-    d = create(DistributionPluginNode, :profile => @p)
-    d.save!
+  should 'create necessary roles before instance creation' do
+    assert_nil DistributionPluginNode::Roles.consumer(Environment.find(1))
+    node = create(DistributionPluginNode, :profile => @p)
     assert_not_nil DistributionPluginNode::Roles.consumer(d.profile.environment)
   end
 
-  describe "Roles" do 
+  ###
+  # Roles
+  ###
+
+  describe "Roles" do
     it "should have a valid role" do
       d = DistributionPluginNode.create :profile => @p, :role => 'bla'
       assert d.errors.invalid?('role')
@@ -35,7 +37,7 @@ class DistributionPluginNodeTest < ActiveRecord::TestCase
     end
   end
 
-  describe "Suppliers" do 
+  describe "Suppliers" do
     before :each do
       @node = create(DistributionPluginNode, :profile => @p)
       @supplier_node = create(DistributionPluginNode, :profile => @p2)
@@ -54,7 +56,7 @@ class DistributionPluginNodeTest < ActiveRecord::TestCase
       assert !@node.consumers_nodes.include?(@supplier_node)
     end
 
-    describe "Products" do 
+    describe "Products" do
       before :each do
         @product = create(DistributionPluginDistributedProduct, :node => @node, :supplier => @supplier)
       end
