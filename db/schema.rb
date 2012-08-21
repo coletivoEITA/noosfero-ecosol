@@ -1,4 +1,4 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file, 
+# This file is auto-generated from the current state of the database. Instead of editing this file,
 # please use the migrations feature of Active Record to incrementally modify your database, and
 # then regenerate this schema definition.
 #
@@ -187,6 +187,7 @@ ActiveRecord::Schema.define(:version => 20130711213046) do
     t.integer "image_id"
     t.string  "acronym"
     t.string  "abbreviation"
+    t.text    "ancestry"
   end
 
   create_table "categories_profiles", :id => false, :force => true do |t|
