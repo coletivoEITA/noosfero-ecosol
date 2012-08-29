@@ -91,6 +91,25 @@ class DistributionPluginProduct < ActiveRecord::Base
     supplier ? supplier.node == node : false
   end
 
+  def price_with_margins(base_price = nil, margin_source = nil)
+    base_price ||= price
+    margin_source ||= self
+    ret = base_price
+
+    if margin_source.margin_percentage
+      ret += (margin_source.margin_percentage / 100) * ret
+    elsif node.margin_percentage
+      ret += (node.margin_percentage / 100) * ret
+    end
+    if margin_source.margin_fixed
+      ret += margin_source.margin_fixed
+    elsif node.margin_fixed
+      ret += node.margin_fixed
+    end
+
+    ret
+  end
+
   def unit
     self['unit'] || Unit.new(:singular => _('unit'), :plural => _('units'))
   end

@@ -14,20 +14,7 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
     supplier_price = supplier_product ? supplier_product.price : nil
     return self['price'] if supplier_price.blank?
 
-    price_with_margins = supplier_price
-
-    if margin_percentage
-      price_with_margins += (margin_percentage/100)*price_with_margins
-    elsif node.margin_percentage
-      price_with_margins += (node.margin_percentage/100)*price_with_margins
-    end
-    if margin_fixed
-      price_with_margins += margin_fixed
-    elsif node.margin_fixed
-      price_with_margins += node.margin_fixed
-    end
-
-    price_with_margins
+    price_with_margins supplier_price
   end
 
   def supplier_product

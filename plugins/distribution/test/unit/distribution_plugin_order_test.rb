@@ -1,27 +1,22 @@
 require File.dirname(__FILE__) + '/../../../../test/test_helper'
 
-class DistributionOrderTest < ActiveSupport::TestCase
+class DistributionPluginOrderTest < ActiveSupport::TestCase
 
   def setup
     @p = build(Profile)
+    @profile = build(Profile)
+    @invisible_profile = build(Enterprise, :visible => false)
+    @other_profile = build(Enterprise)
+    @node = build(DistributionPluginNode, :profile => @profile)
+    @dummy_node = build(DistributionPluginNode, :profile => @invisible_profile)
+    @other_node = build(DistributionPluginNode, :profile => @other_profile)
+    @self_supplier = build(DistributionPluginSupplier, :consumer => @node, :node => @node)
+    @dummy_supplier = build(DistributionPluginSupplier, :consumer => @node, :node => @dummy_node)
+    @other_supplier = build(DistributionPluginSupplier, :consumer => @node, :node => @other_node)
   end
 
-  should 'only create an order for an open session' do
-    dc = build(DistributionNode, :profile => @p, :role => 'consumer')
-    p = build(Profile)
-    ds = build(DistributionNode, :profile => p, :role => 'collective')
-    dm = build(DistributionDeliveryMethod, :node => ds)
-    os = build(DistributionPluginSession, :node => ds, :start => DateTime.now + 1.days, :finish => DateTime.now + 2.days)
-    doption = create(DistributionDeliveryOption, :delivery_method => dm)
-    os.delivery_methods = [doption]
-    o1 = build(DistributionOrder, :session => os, :consumer => dc, :supplier_delivery => dm)
-    # This test has a closed session and woudn't pass
-    assert !o1.valid?
-    os = build(DistributionPluginSession, :node => ds, :delivery_methods => [doption], :start => DateTime.now.ago(5.days), :finish => DateTime.now + 2.days)
-    o2 = build(DistributionOrder, :session => os, :consumer => dc, :supplier_delivery => dm)
-    assert o2.valid?
-  end
+  attr_accessor :profile, :invisible_profile, :other_profile,
+    :node, :dummy_node, :other_node, :self_supplier, :dummy_supplier, :other_supplier
 
-  should '' do
-  end
+
 end

@@ -1,4 +1,5 @@
 class DistributionPluginSession < ActiveRecord::Base
+
   belongs_to :node, :class_name => 'DistributionPluginNode', :foreign_key => :node_id
 
   has_many :delivery_options, :class_name => 'DistributionPluginDeliveryOption', :foreign_key => :session_id, :dependent => :destroy
@@ -59,8 +60,6 @@ class DistributionPluginSession < ActiveRecord::Base
   validates_presence_of :node
   validates_presence_of :name, :if => :not_new?
   validates_presence_of :start, :if => :not_new?
-  validates_presence_of :delivery_options, :if => :not_new?
-  validates_associated :delivery_options, :if => :not_new?
   validates_inclusion_of :status, :in => STATUS_SEQUENCE, :if => :not_new?
   validates_numericality_of :margin_percentage, :allow_nil => true, :if => :not_new?
   validates_numericality_of :margin_fixed, :allow_nil => true, :if => :not_new?

@@ -9,15 +9,10 @@ module DistributionPluginFactory
      :consumer => build(DistributionPluginNode)}
   end
 
-  def defaults_for_distribution_plugin_session
-    {:node => build(DistributionPluginNode),
-     :name => 'weekly', :start => Time.now, :finish => Time.now+1.days}
-  end
-
   def defaults_for_distribution_plugin_product
     node = build(DistributionPluginNode)
     {:node => node, :name => "product-#{factory_num_seq}",
-     :product => build(Product),
+     :product => build(Product), :price => 2.0,
      :supplier => build(DistributionPluginSupplier)}
   end
 
@@ -36,6 +31,11 @@ module DistributionPluginFactory
   def defaults_for_distribution_plugin_delivery_option
     {:session => build(DistributionPluginSession),
      :delivery_method => build(DistributionPluginDeliveryMethod)}
+  end
+
+  def defaults_for_distribution_plugin_session
+    {:node => build(DistributionPluginNode), :status => 'orders',
+     :name => 'weekly', :start => Time.now, :finish => Time.now+1.days}
   end
 
   def defaults_for_distribution_plugin_order

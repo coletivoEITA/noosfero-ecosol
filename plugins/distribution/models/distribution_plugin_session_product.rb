@@ -13,17 +13,19 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
   has_many :from_2x_products, :through => :from_products, :source => :from_products
 
   def self.create_from_distributed(session, product)
-    sp = self.new product.attributes
-    sp.freeze_default_attributes product
+    sp = self.new :node => product.node
+    sp.attributes = product.attributes
     sp.type = name
     sp.session = session
+    sp.freeze_default_attributes product
+    sp.price = sp.price_with_margins(product.price, product)
     sp.from_products << product
     sp.save!
     sp
   end
 
   def supplier_products
-    self.supplier.nil? ? self.from_2x_products : self.from_2x_products.select{ |fp| fp.node == self.supplier.node }
+    self.supplier.nil? ? self.from_2x_products : self.from_2x_products.from_supplier(self.supplier)
   end
 
   def total_quantity_asked
@@ -42,7 +44,14 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
 
   # always recalculate in case something has changed
   def margin_percentage
-    ((price / buy_price) - 1) * 100 if buy_price
+    #FIXME this breaks fixed margin calculation
+    return self['margin_percentage'] if price.nil? or buy_price.nil? or price.zero? or buy_price.zero?
+    ((price / buy_price) - 1) * 100
+  end
+
+  def margin_percentage=(value)
+    self['margin_percentage'] = value
+    self.price = price_with_margins buy_price
   end
 
   def buy_price

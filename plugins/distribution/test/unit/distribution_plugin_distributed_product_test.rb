@@ -15,7 +15,7 @@ class DistributionPluginDistributedProductTest < ActiveSupport::TestCase
   end
 
   attr_accessor :profile, :invisible_profile, :other_profile,
-    :node, :dummy_node, :other_node, :self_supplier, :dummy_supplier, :other_node
+    :node, :dummy_node, :other_node, :self_supplier, :dummy_supplier, :other_supplier
 
   should 'return default settings considering dummy supplier' do
     product = build(DistributionPluginDistributedProduct, :node => @node, :supplier => @dummy_supplier)

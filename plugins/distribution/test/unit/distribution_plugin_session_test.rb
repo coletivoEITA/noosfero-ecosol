@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/../../../../test/test_helper'
 
 class DistributionPluginSessionTest < ActiveSupport::TestCase
+
   def setup
     @profile = Enterprise.create!(:name => "trocas verdes", :identifier => "trocas-verdes")
     @pc = ProductCategory.create!(:name => 'frutas', :environment_id => 1)
@@ -15,4 +16,5 @@ class DistributionPluginSessionTest < ActiveSupport::TestCase
   should 'add products from node after create' do
     assert_equal @session.products.collect(&:product_id), @node.products.collect(&:id)
   end
+
 end

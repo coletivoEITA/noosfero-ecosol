@@ -1,23 +1,20 @@
 require File.dirname(__FILE__) + '/../../../../test/test_helper'
 
 class ModelWithDate
+
   def initialize
     @delivery = DateTime.now
   end
 
+  attr_accessor :delivery
+
   extend SplitDatetime::SplitMethods
   split_datetime :delivery
-
-  def delivery
-    @delivery
-  end
-  def delivery=(value)
-    @delivery = value
-  end
 
 end
 
 class SplitDatetimeTest < ActiveSupport::TestCase
+
   def setup
     @m = ModelWithDate.new
     @m.delivery = (Time.mktime(2011) + 2.hours + 2.minutes + 2.seconds).to_datetime
@@ -51,5 +48,6 @@ class SplitDatetimeTest < ActiveSupport::TestCase
     assert_equal @m.delivery_date, '2011-01-01'
     assert_equal @m.delivery_time, '15:43'
   end
+
 end
 

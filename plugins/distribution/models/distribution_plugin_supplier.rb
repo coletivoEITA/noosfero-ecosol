@@ -17,6 +17,7 @@ class DistributionPluginSupplier < ActiveRecord::Base
   validates_presence_of :node
   validates_presence_of :consumer
   validates_associated :node
+  validates_uniqueness_of :consumer_id, :scope => :node_id
 
   def self.new_dummy(attributes)
     new_profile = Enterprise.new :visible => false, :identifier => Digest::MD5.hexdigest(rand.to_s),
@@ -57,13 +58,13 @@ class DistributionPluginSupplier < ActiveRecord::Base
   end
 
   alias_method :destroy!, :destroy
+  # FIXME: inactivate instead of deleting
   def destroy
-    node.remove_consumer consumer
     if node.dummy?
       node.profile.destroy
       node.destroy
     end
-    supplied_products.update_all ['archived = true']
+    supplied_products.distributed.update_all({:archived => true})
 
     super
   end

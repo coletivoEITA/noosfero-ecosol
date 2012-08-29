@@ -2,24 +2,24 @@ class DistributionPluginNode < ActiveRecord::Base
 
   belongs_to :profile
 
-  has_many :delivery_methods, :class_name => 'DistributionPluginDeliveryMethod', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id asc'
+  has_many :delivery_methods, :class_name => 'DistributionPluginDeliveryMethod', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id ASC'
   has_many :delivery_options, :through => :delivery_methods
 
-  has_many :sessions, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id asc',
+  has_many :sessions, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id ASC',
     :conditions => ["distribution_plugin_sessions.status <> 'new'"]
-  has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy, :order => 'id asc'
-  has_many :parcels, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy, :order => 'id asc'
+  has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy, :order => 'id ASC'
+  has_many :parcels, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy, :order => 'id ASC'
 
-  has_many :suppliers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'consumer_id', :order => 'id asc', :dependent => :destroy
-  has_many :consumers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'node_id', :order => 'id asc'
-  has_many :suppliers_nodes, :through => :suppliers, :source => :node, :order => 'id asc'
-  has_many :consumers_nodes, :through => :consumers, :source => :consumer, :order => 'id asc'
+  has_many :suppliers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'consumer_id', :order => 'id ASC', :dependent => :destroy
+  has_many :consumers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'node_id', :order => 'id ASC'
+  has_many :suppliers_nodes, :through => :suppliers, :source => :node, :order => 'distribution_plugin_nodes.id ASC'
+  has_many :consumers_nodes, :through => :consumers, :source => :consumer, :order => 'distribution_plugin_nodes.id ASC'
 
-  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => 'node_id', :dependent => :destroy, :order => 'distribution_plugin_products.id asc'
-  has_many :order_products, :through => :orders, :source => :products, :order => 'id asc'
-  has_many :parcel_products, :through => :parcels, :source => :products, :order => 'id asc'
-  has_many :supplier_products, :through => :suppliers, :source => :products, :order => 'id asc'
-  has_many :consumer_products, :through => :consumers, :source => :consumer_products, :order => 'id asc'
+  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => 'node_id', :dependent => :destroy, :order => 'distribution_plugin_products.id ASC'
+  has_many :order_products, :through => :orders, :source => :products, :order => 'id ASC'
+  has_many :parcel_products, :through => :parcels, :source => :products, :order => 'id ASC'
+  has_many :supplier_products, :through => :suppliers, :source => :products, :order => 'id ASC'
+  has_many :consumer_products, :through => :consumers, :source => :consumer_products, :order => 'id ASC'
 
   has_many :from_products, :through => :products
   has_many :to_products, :through => :products
@@ -58,19 +58,17 @@ class DistributionPluginNode < ActiveRecord::Base
   def collective?
     role == 'collective'
   end
+
   def dummy?
     !profile.visible
   end
-
-  def dummy
-    dummy?
-  end
+  alias_method :dummy, :dummy?
   def dummy=(value)
     profile.update_attributes! :visible => !value
   end
 
   def closed_sessions_date_range
-    list = sessions.not_open.all :order => 'start asc'
+    list = sessions.not_open.all :order => 'start ASC'
     return DateTime.now..DateTime.now if list.blank?
     list.first.start.to_date..list.last.finish.to_date
   end
@@ -81,7 +79,7 @@ class DistributionPluginNode < ActiveRecord::Base
       product.default_margin_fixed = true
       product.save!
     end
-    sessions.not_open.each do |session|
+    sessions.open.each do |session|
       session.products.each do |product|
         product.margin_percentage = margin_percentage
         product.margin_fixed = margin_fixed
@@ -90,18 +88,13 @@ class DistributionPluginNode < ActiveRecord::Base
     end
   end
 
-  def not_distributed_products(supplier)
-    raise "#{supplier.name} is not a supplier of #{self.profile.name}" unless has_supplier?(supplier)
-    supplier.node.products.unarchived.own.distributed - self.from_products.unarchived.distributed.by_node(supplier.node)
-  end
-
-  alias_method :suppliers!, :suppliers
+  alias_method :orig_suppliers, :suppliers
   def suppliers
     self_supplier # guarantee that the self_supplier is created
-    suppliers!
+    orig_suppliers
   end
   def self_supplier
-    suppliers!.from_node(self).first || DistributionPluginSupplier.create!(:node => self, :consumer => self)
+    orig_suppliers.from_node(self).first || self.orig_suppliers.create!(:node => self)
   end
 
   def has_supplier?(supplier)
@@ -132,25 +125,27 @@ class DistributionPluginNode < ActiveRecord::Base
   def remove_consumer(consumer_node)
     consumer_node.disaffiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
     supplier = consumers.find_by_consumer_id(consumer_node.id)
-    supplier.destroy! if supplier
 
-    consumer_node.products.distributed.from_supplier(self).update_all ['archived = true']
+    supplier.destroy if supplier
     supplier
   end
 
   def add_supplier_products(supplier)
-    raise "Can't add product from a non supplier node" unless has_supplier?(supplier)
+    raise "'#{supplier.name}' is not a supplier of #{self.profile.name}" unless has_supplier?(supplier)
 
     already_supplied = self.products.unarchived.distributed.from_supplier(supplier).all
-    supplier.products.unarchived.map do |np|
-      p = already_supplied.find{ |f| f.supplier_product == np }
-      unless p
-        p = DistributionPluginDistributedProduct.new :node => self
-        p.distribute_from np
-        p.save!
-      end
-      p
+    supplier.products.unarchived.each do |np|
+      next if already_supplied.find{ |f| f.supplier_product == np }
+
+      p = DistributionPluginDistributedProduct.new :node => self
+      p.distribute_from np
     end
+  end
+
+  def not_distributed_products(supplier)
+    raise "'#{supplier.name}' is not a supplier of #{self.profile.name}" unless has_supplier?(supplier)
+
+    supplier.node.products.unarchived.own.distributed - self.from_products.unarchived.distributed.by_node(supplier.node)
   end
 
   alias_method :destroy!, :destroy
@@ -216,7 +211,6 @@ class DistributionPluginNode < ActiveRecord::Base
       ]
     ) if profile and not DistributionPluginNode::Roles.consumer(profile.environment)
   end
-
 
   #for access_control
   def blocks_to_expire_cache
