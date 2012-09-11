@@ -54,9 +54,12 @@ module Noosfero::Factory
   end
 
   def defaults_for(name)
-    send('defaults_for_' + name.to_s.underscore)
-  rescue
-    {}
+    method = 'defaults_for_' + name.to_s.underscore
+    if respond_to?(method)
+      send('defaults_for_' + name.to_s.underscore)
+    else
+      {}
+    end
   end
 
   def self.num_seq
