@@ -8,7 +8,7 @@ class DistributionPluginSession < ActiveRecord::Base
   has_many :orders, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc'
   has_many :orders_confirmed, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc',
     :conditions => ['distribution_plugin_orders.status = ?', 'confirmed']
-  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :order => 'id asc'
+  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :order => 'id ASC'
 
   has_many :from_products, :through => :products, :order => 'id asc'
   has_many :from_nodes, :through => :products
@@ -132,7 +132,7 @@ class DistributionPluginSession < ActiveRecord::Base
   after_create :add_distributed_products
   def add_distributed_products
     already_in = self.products.unarchived.all
-    node.products.unarchived.distributed.active.map do |product|
+    node.products.unarchived.distributed.active.each do |product|
       p = already_in.find{ |f| f.from_product == product }
       unless p
         p = DistributionPluginSessionProduct.create_from_distributed(self, product)

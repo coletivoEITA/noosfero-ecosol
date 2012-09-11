@@ -1,6 +1,8 @@
 class DistributionPluginOrder < ActiveRecord::Base
 
   belongs_to :session, :class_name => 'DistributionPluginSession'
+  has_one :node, :through => :session
+
   belongs_to :consumer, :class_name => 'DistributionPluginNode'
 
   has_many :suppliers, :through => :products, :uniq => true
@@ -29,12 +31,10 @@ class DistributionPluginOrder < ActiveRecord::Base
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.session.orders }
 
-  STATUSES = ['draft', 'planned', 'confirmed', 'cancelled']
   validates_presence_of :session
   validates_presence_of :consumer
   validates_presence_of :supplier_delivery
-  # not yet implemented on user interface
-  # validates_presence_of :consumer_delivery, :if => :is_delivery?
+  STATUSES = ['draft', 'planned', 'confirmed', 'cancelled']
   validates_inclusion_of :status, :in => STATUSES
 
   named_scope :draft, :conditions => {:status => 'draft'}
@@ -65,13 +65,6 @@ class DistributionPluginOrder < ActiveRecord::Base
     self['status']
   end
 
-  def delivery?
-    session.delivery?
-  end
-  def is_delivery?
-    supplier_delivery and supplier_delivery.deliver?
-  end
-
   STATUS_MESSAGE = {
    'open' => _('Order in progress'),
    'forgotten' => _('Order not confirmed'),
@@ -81,6 +74,10 @@ class DistributionPluginOrder < ActiveRecord::Base
   }
   def status_message
     _(STATUS_MESSAGE[current_status])
+  end
+
+  def delivery?
+    session.delivery?
   end
 
   alias_method :supplier_delivery!, :supplier_delivery
@@ -93,14 +90,14 @@ class DistributionPluginOrder < ActiveRecord::Base
 
   def total_quantity_asked(dirty = false)
     if dirty
-      products.collect(&:quantity_asked).inject{ |sum,q| sum+q }
+      products.collect(&:quantity_asked).inject(0){ |sum,q| sum+q }
     else
       products.sum(:quantity_asked)
     end
   end
   def total_price_asked(dirty = false)
     if dirty
-      products.collect(&:price_asked).inject{ |sum,q| sum+q }
+      products.collect(&:price_asked).inject(0){ |sum,q| sum+q }
     else
       products.sum(:price_asked)
     end

@@ -1,7 +1,6 @@
 class DistributionPluginDeliveryMethod < ActiveRecord::Base
 
   belongs_to :node, :class_name => 'DistributionPluginNode'
-  belongs_to :order, :class_name => 'DistributionPluginOrder'
 
   has_many :delivery_options, :class_name => 'DistributionPluginDeliveryOption', :foreign_key => 'delivery_method_id', :dependent => :destroy
 

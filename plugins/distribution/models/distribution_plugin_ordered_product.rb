@@ -1,8 +1,12 @@
 class DistributionPluginOrderedProduct < ActiveRecord::Base
+
   belongs_to :order, :class_name => 'DistributionPluginOrder'
+  has_one :session, :through => :order
+  has_one :node, :through => :order
 
   belongs_to :session_product, :class_name => 'DistributionPluginProduct'
-  belongs_to :product, :class_name => 'DistributionPluginProduct', :foreign_key => :session_product_id #same as above
+  # same as above
+  belongs_to :product, :class_name => 'DistributionPluginProduct', :foreign_key => :session_product_id
 
   has_many :from_products, :through => :product
   has_many :to_products, :through => :product

@@ -1,7 +1,7 @@
 module DistributionPluginFactory
 
   def defaults_for_distribution_plugin_node
-    {:profile => build(Profile), :role => 'supplier'}
+    {:profile => build(Enterprise), :role => 'supplier'}
   end
 
   def defaults_for_distribution_plugin_supplier
@@ -11,9 +11,9 @@ module DistributionPluginFactory
 
   def defaults_for_distribution_plugin_product
     node = build(DistributionPluginNode)
-    {:node => node, :name => "product-#{factory_num_seq}",
-     :product => build(Product), :price => 2.0,
-     :supplier => build(DistributionPluginSupplier)}
+    {:node => node, :name => "product-#{factory_num_seq}", :price => 2.0,
+     :product => build(Product, :enterprise => node.profile, :price => 2.0),
+     :supplier => build(DistributionPluginSupplier, :node => node, :consumer => node)}
   end
 
   def defaults_for_distribution_plugin_session_product
@@ -25,7 +25,9 @@ module DistributionPluginFactory
   end
 
   def defaults_for_distribution_plugin_delivery_method
-    {:name => "My delivery #{factory_num_seq.to_s}", :delivery_type => 'deliver'}
+    {:node => build(DistributionPluginNode),
+     :name => "My delivery #{factory_num_seq.to_s}",
+     :delivery_type => 'deliver'}
   end
 
   def defaults_for_distribution_plugin_delivery_option
@@ -39,10 +41,12 @@ module DistributionPluginFactory
   end
 
   def defaults_for_distribution_plugin_order
-    {:session => build(DistributionPluginSession),
+    node = build(DistributionPluginNode)
+    {:status => 'confirmed',
+     :session => build(DistributionPluginSession, :node => node),
      :consumer => build(DistributionPluginNode),
-     :supplier_delivery => build(DistributionPluginDeliveryMethod),
-     :consumer_delivery => build(DistributionPluginDeliveryMethod)}
+     :supplier_delivery => build(DistributionPluginDeliveryMethod, :node => node),
+     :consumer_delivery => build(DistributionPluginDeliveryMethod, :node => node)}
   end
 
 end

@@ -52,7 +52,7 @@ class DistributionPluginNodeTest < ActiveRecord::TestCase
   should "default products's margins when asked" do
     node.update_attributes! :margin_percentage => 10, :margin_fixed => 1
     product = create(DistributionPluginDistributedProduct, :node => node, :supplier => node.self_supplier,
-                    :price => 10, :default_margin_percentage => false, :default_margin_fixed => true)
+                     :price => 10, :default_margin_percentage => false, :default_margin_fixed => true)
     session = create(DistributionPluginSession, :node => node)
     sproduct = session.products.first
     sproduct.update_attributes! :margin_percentage => 5, :margin_fixed => 2
