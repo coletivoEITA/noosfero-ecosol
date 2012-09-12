@@ -11,7 +11,7 @@ module Noosfero::Factory
   end
 
   def fast_create(name, attrs = {}, options = {})
-    data = defaults_for(name.to_s.gsub('::','')).merge(attrs)
+    data = defaults_for(name.to_s.gsub('::',''), attrs).merge(attrs)
     klass = name.to_s.camelize.constantize
     if klass.superclass != ActiveRecord::Base
       data[:type] = klass.to_s
@@ -49,14 +49,19 @@ module Noosfero::Factory
   end
 
   def build(name, attrs = {})
-    data = defaults_for(name).merge(attrs)
+    data = defaults_for(name, attrs).merge(attrs)
     name.to_s.camelize.constantize.new(data)
   end
 
-  def defaults_for(name)
-    method = 'defaults_for_' + name.to_s.underscore
-    if respond_to?(method)
-      send('defaults_for_' + name.to_s.underscore)
+  def defaults_for(name, attrs = {})
+    method_name = "defaults_for_#{name.to_s.underscore}"
+    if respond_to?(method_name)
+      m = method(method_name)
+      if m.arity == -1
+        m.call(attrs)
+      else
+        m.call
+      end
     else
       {}
     end
