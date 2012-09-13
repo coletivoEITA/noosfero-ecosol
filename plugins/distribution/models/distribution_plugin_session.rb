@@ -5,12 +5,12 @@ class DistributionPluginSession < ActiveRecord::Base
   has_many :delivery_options, :class_name => 'DistributionPluginDeliveryOption', :foreign_key => :session_id, :dependent => :destroy
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 
-  has_many :orders, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc'
-  has_many :orders_confirmed, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc',
+  has_many :orders, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC'
+  has_many :orders_confirmed, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC',
     :conditions => ['distribution_plugin_orders.status = ?', 'confirmed']
   has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :order => 'id ASC'
 
-  has_many :from_products, :through => :products, :order => 'id asc'
+  has_many :from_products, :through => :products, :order => 'id ASC'
   has_many :from_nodes, :through => :products
   has_many :to_nodes, :through => :products
 
@@ -66,7 +66,7 @@ class DistributionPluginSession < ActiveRecord::Base
   validate :validate_orders_dates, :if => :not_new?
   validate :validate_delivery_dates, :if => :not_new?
 
-  extend SplitDatetime::ClassMethods
+  extend SplitDatetime::SplitMethods
   split_datetime :start
   split_datetime :finish
   split_datetime :delivery_start

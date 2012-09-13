@@ -122,7 +122,6 @@ class DistributionPluginOrder < ActiveRecord::Base
   before_validation :default_values
   def default_values
     self.status ||= 'draft'
-    self.supplier_delivery ||= session.delivery_methods.first
   end
 
 end

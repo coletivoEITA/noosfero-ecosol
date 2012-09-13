@@ -94,6 +94,7 @@ class DistributionPluginNode < ActiveRecord::Base
     orig_suppliers
   end
   def self_supplier
+    return self.orig_suppliers.build(:node => self) if new_record?
     orig_suppliers.from_node(self).first || self.orig_suppliers.create!(:node => self)
   end
 

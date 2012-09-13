@@ -61,18 +61,12 @@ class DistributionPluginProduct < ActiveRecord::Base
   validates_numericality_of :stored, :allow_nil => true
   validates_numericality_of :quantity, :allow_nil => true
 
-  before_validation :sub_commas_to_dots
-  def sub_commas_to_dots
-    self.price = self["price"].to_s.gsub(/,/, '.').to_f unless self["price"].nil?
-    self.minimum_selleable.to_s.gsub!(/,/, '.').to_f unless self.minimum_selleable.nil?
-  end
-
-  extend ActsAsHavingSettings::DefaultItem::ClassMethods
   acts_as_having_settings :field => :settings
 
   DEFAULT_ATTRIBUTES = [:name, :description, :margin_percentage, :margin_fixed,
     :price, :stored, :unit_id, :minimum_selleable, :unit_detail]
 
+  extend ActsAsHavingSettings::DefaultItem::ClassMethods
   settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :margin_percentage, :type => :boolean, :default => true, :delegate_to => :node
@@ -86,7 +80,6 @@ class DistributionPluginProduct < ActiveRecord::Base
   def dummy?
     supplier ? supplier.dummy? : false
   end
-
   def own?
     supplier ? supplier.node == node : false
   end
@@ -110,6 +103,14 @@ class DistributionPluginProduct < ActiveRecord::Base
     ret
   end
 
+  # FIXME: use i18n to deal with number formats
+  def price=(value)
+    self['price'] = value.to_s.gsub(/,/, '.')
+  end
+  def minimum_selleable=(value)
+    self['minimum_selleable'] = value.to_s.gsub(/,/, '.')
+  end
+
   def unit
     self['unit'] || Unit.new(:singular => _('unit'), :plural => _('units'))
   end
@@ -125,5 +126,7 @@ class DistributionPluginProduct < ActiveRecord::Base
   def destroy
     raise "Products shouldn't be destroyed for the sake of the history!"
   end
+
+  protected
 
 end

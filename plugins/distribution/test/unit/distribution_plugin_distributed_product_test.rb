@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../../../../test/test_helper'
 class DistributionPluginDistributedProductTest < ActiveSupport::TestCase
 
   def setup
-    @profile = build(Profile)
+    @profile = build(Enterprise)
     @invisible_profile = build(Enterprise, :visible => false)
     @other_profile = build(Enterprise)
     @node = build(DistributionPluginNode, :profile => @profile)
@@ -74,7 +74,7 @@ class DistributionPluginDistributedProductTest < ActiveSupport::TestCase
   end
 
   should 'respond to distribute_from' do
-    product = create(DistributionPluginDistributedProduct, :node => @node)
+    product = create(DistributionPluginDistributedProduct, :node => @node, :supplier => @node.self_supplier)
 
     assert_raise RuntimeError do
       supplier_product = build(DistributionPluginDistributedProduct, :node => @other_node)

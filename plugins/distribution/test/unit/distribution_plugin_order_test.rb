@@ -4,7 +4,6 @@ class DistributionPluginOrderTest < ActiveSupport::TestCase
 
   def setup
     @order = build(DistributionPluginOrder)
-    @consumer = build(DistributionPluginNode, :profile => build(Profile))
   end
 
   should 'format code with session code' do
@@ -79,6 +78,10 @@ class DistributionPluginOrderTest < ActiveSupport::TestCase
     assert_equal default, @order.supplier_delivery
     assert_equal default.id, @order.supplier_delivery_id
   end
+
+  ###
+  # Totals
+  ###
 
   should 'give total price and quantity asked' do
     @order.session.node.save!

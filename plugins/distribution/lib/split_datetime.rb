@@ -1,5 +1,5 @@
 def __split_nil_time
-  Time.parse("#{Time.now.hour}:0:0") 
+  Time.parse("#{Time.now.hour}:0:0")
 end
 def __split_nil_date
   Date.today
@@ -17,7 +17,7 @@ def __split_set_time(datetime, value)
   value = if value.blank?
     __split_nil_time
   elsif value.kind_of?(String)
-    Time.parse(value) 
+    Time.parse(value)
   else
     value.to_time
   end
@@ -39,7 +39,9 @@ def __split_set_date(datetime, value)
 end
 
 module SplitDatetime
-  module ClassMethods
+
+  module SplitMethods
+
     def split_datetime(attr)
       class_eval do
         define_method (attr.to_s+'_time') do
@@ -60,8 +62,10 @@ module SplitDatetime
         end
       end
     end
+
   end
+
 end
 
-Class.extend SplitDatetime::ClassMethods
-ActiveRecord::Base.extend SplitDatetime::ClassMethods
+Class.extend SplitDatetime::SplitMethods
+ActiveRecord::Base.extend SplitDatetime::SplitMethods

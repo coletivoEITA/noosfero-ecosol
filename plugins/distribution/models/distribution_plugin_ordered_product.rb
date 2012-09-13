@@ -1,12 +1,15 @@
 class DistributionPluginOrderedProduct < ActiveRecord::Base
 
-  belongs_to :order, :class_name => 'DistributionPluginOrder'
+  belongs_to :order, :class_name => 'DistributionPluginOrder', :touch => true
   has_one :session, :through => :order
   has_one :node, :through => :order
 
   belongs_to :session_product, :class_name => 'DistributionPluginProduct'
   # same as above
   belongs_to :product, :class_name => 'DistributionPluginProduct', :foreign_key => :session_product_id
+
+  has_one :supplier, :through => :product
+  has_one :consumer, :through => :order
 
   has_many :from_products, :through => :product
   has_many :to_products, :through => :product
@@ -29,15 +32,6 @@ class DistributionPluginOrderedProduct < ActiveRecord::Base
   validates_numericality_of :price_allocated
   validates_numericality_of :price_payed
 
-  has_many :supplier, :through => :product #has_one :through is a bad guy!
-  def supplier
-    self.product.supplier
-  end
-  has_many :consumer, :through => :order #has_one :through is a bad guy!
-  def consumer
-    self.order.consumer
-  end
-
   def price_asked
     product.price * quantity_asked
   end
@@ -55,12 +49,6 @@ class DistributionPluginOrderedProduct < ActiveRecord::Base
     self.price_asked = price_asked
     self.price_allocated = price_allocated
     self.price_payed = price_payed
-  end
-
-  after_save :touch_order
-  before_destroy :touch_order
-  def touch_order
-    order.touch
   end
 
 end
