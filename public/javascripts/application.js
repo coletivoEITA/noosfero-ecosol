@@ -622,7 +622,7 @@ function hide_and_show(hide_elements, show_elements) {
 
 function limited_text_area(textid, limit) {
   var text = jQuery('#' + textid).val();
-  jQuery('#' + textid).css('height', jQuery('#' + textid).attr('scrollHeight') + 'px');
+  grow_text_area(textid);
   var textlength = text.length;
   jQuery('#' + textid + '_left span').html(limit - textlength);
   if (textlength > limit) {
@@ -635,6 +635,15 @@ function limited_text_area(textid, limit) {
     jQuery('#' + textid + '_limit').hide();
     return true;
   }
+}
+
+function grow_text_area(textid) {
+  var height = jQuery('#' + textid).attr('scrollHeight');
+  if (jQuery.browser.webkit) {
+    height -= parseInt(jQuery('#' + textid).css('padding-top')) +
+              parseInt(jQuery('#' + textid).css('padding-bottom'));
+  }
+  jQuery('#' + textid).css('height', height + 'px');
 }
 
 jQuery(function($) {
@@ -672,6 +681,51 @@ function add_comment_reply_form(button, comment_id) {
     container.find('.comment_form input[type=text]:visible:first').focus();
   }
   return f;
+}
+
+function remove_comment(button, url, msg) {
+  var $ = jQuery;
+  var $button = $(button);
+  if (msg && !confirm(msg)) {
+    $button.removeClass('comment-button-loading');
+    return;
+  }
+  $button.addClass('comment-button-loading');
+  $.post(url, function(data) {
+    if (data.ok) {
+      var $comment = $button.closest('.article-comment');
+      var $replies = $comment.find('.comment-replies .article-comment');
+      $comment.slideUp();
+      var comments_removed = 1;
+      if ($button.hasClass('remove-children')) {
+        comments_removed = 1 + $replies.size();
+      } else {
+        $replies.appendTo('.article-comments-list');
+      }
+      $('.comment-count').each(function() {
+        var count = parseInt($(this).html());
+        $(this).html(count - comments_removed);
+      });
+    }
+  });
+}
+
+function remove_item_wall(button, item, url, msg) {
+  var $ = jQuery;
+  var $wall_item = $(button).closest(item);
+  $wall_item.addClass('remove-item-loading');
+  if (msg && !confirm(msg)) {
+    $wall_item.removeClass('remove-item-loading');
+    return;
+  }
+  $.post(url, function(data) {
+    if (data.ok) {
+      $wall_item.slideUp();
+    } else {
+      $wall_item.removeClass('remove-item-loading');
+      window.location.replace(data.redirect);
+    }
+  });
 }
 
 function original_image_dimensions(src) {
@@ -868,7 +922,7 @@ jQuery(function($) {
   $('.colorbox').live('click', function() {
     $.fn.colorbox({
       href:$(this).attr('href'),
-      maxWidth: '500',
+      maxWidth: '600',
       maxHeight: '550',
       open:true
     });

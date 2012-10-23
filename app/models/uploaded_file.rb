@@ -8,7 +8,7 @@ class UploadedFile < Article
     _('File')
   end
 
-  track_actions :upload_image, :after_create, :keep_params => ["view_url", "thumbnail_path", "parent.url", "parent.name"], :if => Proc.new { |a| a.published? && a.image? && !a.parent.nil? && a.parent.gallery? }, :custom_target => :action_tracker_target
+  track_actions :upload_image, :after_create, :keep_params => ["view_url", "thumbnail_path", "parent.url", "parent.name"], :if => Proc.new { |a| a.published? && a.image? && !a.parent.nil? && a.parent.gallery? }, :custom_target => :parent
 
   include ShortFilename
 
@@ -67,7 +67,7 @@ class UploadedFile < Article
       'upload-file'
     end
   end
-  
+
   def mime_type
     content_type
   end
@@ -129,6 +129,12 @@ class UploadedFile < Article
     end
   end
 
+  def extension
+    dotindex = self.filename.rindex('.')
+    return nil unless dotindex
+    self.filename[(dotindex+1)..-1].downcase
+  end
+
   def allow_children?
     false
   end
@@ -143,10 +149,6 @@ class UploadedFile < Article
 
   def uploaded_file?
     true
-  end
-
-  def action_tracker_target
-    self
   end
 
 end

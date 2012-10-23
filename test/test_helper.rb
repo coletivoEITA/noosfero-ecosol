@@ -199,6 +199,12 @@ class ActiveSupport::TestCase
     assert !tag, "expected no tag #{options.inspect}, but tag found in #{text.inspect}"
   end
 
+  # For models that render views (blocks, articles, ...)
+  def render(*args)
+    view_paths = @explicit_view_paths || ActionController::Base.view_paths
+    ActionView::Base.new(view_paths, {}).render(*args)
+  end
+
   private
 
   def uses_host(name)

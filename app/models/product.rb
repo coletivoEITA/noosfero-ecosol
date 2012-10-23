@@ -1,4 +1,5 @@
 class Product < ActiveRecord::Base
+
   belongs_to :enterprise
   has_one :region, :through => :enterprise
   validates_presence_of :enterprise
@@ -158,12 +159,12 @@ class Product < ActiveRecord::Base
 
   def inputs_cost
     return 0 if inputs.empty?
-    inputs.map(&:cost).inject { |sum,price| sum + price }
+    inputs.relevant_to_price.map(&:cost).inject { |sum,price| sum + price }
   end
 
   def total_production_cost
     return inputs_cost if price_details.empty?
-    inputs_cost + price_details.map(&:price).inject { |sum,price| sum + price }
+    inputs_cost + price_details.map(&:price).inject(0){ |sum,price| sum + price }
   end
 
   def price_described?
@@ -201,6 +202,7 @@ class Product < ActiveRecord::Base
     self.inputs(true).each{ |i| t_i += 1; se_i += 1 if i.is_from_solidarity_economy }
     t_i = 1 if t_i == 0 # avoid division by 0
     p = case (se_i.to_f/t_i)*100
+        when 0 then [0, '']
         when 0..24.999 then [0, _("0%")];
         when 25..49.999 then [25, _("25%")];
         when 50..74.999 then [50, _("50%")];

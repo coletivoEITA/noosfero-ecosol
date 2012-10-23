@@ -8,12 +8,16 @@ class PluginManagerTest < ActiveSupport::TestCase
     @controller.stubs(:profile).returns()
     @controller.stubs(:request).returns()
     @controller.stubs(:response).returns()
-    @controller.stubs(:environment).returns(@environment)
     @controller.stubs(:params).returns()
-    @manager = Noosfero::Plugin::Manager.new(@controller)
+    @manager = Noosfero::Plugin::Manager.new(@environment, @controller)
   end
   attr_reader :environment
   attr_reader :manager
+
+  should 'give access to environment and context' do
+    assert_same @environment, @manager.environment
+    assert_same @controller, @manager.context
+  end
 
   should 'return the intersection between environment\'s enabled plugins and system available plugins' do
     class Plugin1 < Noosfero::Plugin; end;
