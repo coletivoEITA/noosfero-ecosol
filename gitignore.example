@@ -4,6 +4,7 @@ vendor/rails
 doc/api
 doc/noosfero/plugins
 tmp
+Gemfile.lock
 config/database.yml
 config/session.secret
 config/noosfero.yml
@@ -11,6 +12,7 @@ config/mongrel_cluster.yml
 config/solr.yml
 config/plugins
 config/thin.yml
+config/local.rb
 index
 locale
 log

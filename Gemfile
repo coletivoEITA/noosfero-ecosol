@@ -32,6 +32,7 @@ end
 group :production do
   gem 'thin', '1.2.4'
   gem 'exception_notification', '1.0.20090728'
+  gem 'system_timer'
 end
 
 group :databases do
