@@ -2,7 +2,7 @@
 <h2><%=  _('Settings of Solidary Distribution Network') %></h2>
 
 <div id="distribution-plugin-settings">
-  <% form_for :node, @node, :url => {:controller => :distribution_plugin_node, :action => :settings}, :html => {:multipart => true} do |f| %>
+  <% form_for :node, @node, :url => {:controller => :distribution_plugin_node, :action => :settings, :profile => profile.identifier}, :html => {:multipart => true} do |f| %>
     <%= labelled_field f, :activated, _('Collective Consumption Mode'),
       labelled_radio(f, :role, _('Disabled'), 'consumer') +
       labelled_radio(f, :role, _('Activated'), 'collective') %>
