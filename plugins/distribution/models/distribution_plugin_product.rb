@@ -85,6 +85,7 @@ class DistributionPluginProduct < ActiveRecord::Base
   end
 
   def price_with_margins(base_price = nil, margin_source = nil)
+    price = 0 unless price
     base_price ||= price
     margin_source ||= self
     ret = base_price
