@@ -224,9 +224,9 @@ class Profile < ActiveRecord::Base
 
   def top_level_categorization
     ret = {}
-    self.profile_categorizations.each do |c|
-      p = c.category.top_ancestor
-      ret[p] = (ret[p] || []) + [c.category]
+    self.categories.each do |c|
+      p = c.top_ancestor
+      ret[p] = (ret[p] || []) + [c]
     end
     ret
   end
