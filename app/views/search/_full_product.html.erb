@@ -45,7 +45,7 @@
   </div>
   <div class="search-product-item-second-column">
     <div class="search-product-supplier">
-      <span class="search-field-label"><%= _('Supplier') %>  </span><%= link_to_homepage(product.enterprise.name, product.enterprise.identifier) %>
+      <span class="search-field-label"><%= _('Supplier') %>  </span><%= link_to_homepage product.enterprise.name, product.enterprise %>
     </div>
     <div class="search-product-description">
       <% if product.description %>
