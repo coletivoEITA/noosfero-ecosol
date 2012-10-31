@@ -8,9 +8,9 @@ class DistributionPluginSession < ActiveRecord::Base
   has_many :orders, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC'
   has_many :orders_confirmed, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC',
     :conditions => ['distribution_plugin_orders.status = ?', 'confirmed']
-  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :order => 'id ASC'
+  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :order => 'name ASC'
 
-  has_many :from_products, :through => :products, :order => 'id ASC'
+  has_many :from_products, :through => :products, :order => 'name ASC'
   has_many :from_nodes, :through => :products
   has_many :to_nodes, :through => :products
 
