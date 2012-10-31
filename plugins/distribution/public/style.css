@@ -6,22 +6,22 @@ body.plugin-distribution {
 .plugin-distribution .main-block {
   text-align: left;
 }
-#plugin-distribution-layout #content {
+#content.plugin-distribution-layout {
   border-top: 0px;
   margin-top: 100px;
 }
-#plugin-distribution-layout #content #distribution-plugin-header h1 {
+#content.plugin-distribution-layout #distribution-plugin-header h1 {
   border-bottom: 0px;
   color: #000;
   text-align: left;
 }
-#plugin-distribution-layout #content .no-boxes h1 {
+#content.plugin-distribution-layout .no-boxes h1 {
   font-variant: normal;
 }
-#plugin-distribution-layout #profile-header {
+.plugin-distribution-layout #profile-header {
   display: none;
 }
-#plugin-distribution-layout .page-title {
+.plugin-distribution-layout .page-title {
   display: none !important;
 }
 .plugin-distribution .page,
@@ -67,15 +67,15 @@ body.plugin-distribution {
 }
 
 
-#plugin-distribution-layout h2 a {
+.plugin-distribution-layout h2 a {
   text-decoration: none;
 }
-#plugin-distribution-layout #content h2 {
+#content.plugin-distribution-layout h2 {
   color: #036475;
   margin-bottom: 7px;
   height: 44px;
 }
-#plugin-distribution-layout #content h3 {
+#content.plugin-distribution-layout h3 {
   text-transform: uppercase;
   font-size: 13px;
 }
