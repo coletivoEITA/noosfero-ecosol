@@ -51,12 +51,14 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
 
   protected
 
-  def custom_layout
-    return super if params[:action] != 'settings'
+  def content_classes
+    return "plugin-distribution" if params[:action] == 'settings'
+    super
   end
+
   def custom_layout?
-    return super if params[:action] != 'settings'
-    false
+    return false if params[:action] == 'settings'
+    super
   end
 
 end

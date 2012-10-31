@@ -2,8 +2,7 @@ class DistributionPluginMyprofileController < MyProfileController
   append_view_path File.join(File.dirname(__FILE__) + '/../views')
 
   before_filter :load_node
-  before_filter :custom_layout
-  
+
   helper ApplicationHelper
   helper DistributionPlugin::DistributionDisplayHelper
 
@@ -18,16 +17,15 @@ class DistributionPluginMyprofileController < MyProfileController
     @admin_action = true
   end
 
-  def layout_contents
+  def before_contents
     return unless custom_layout?
-    l = [:header]
-    l << :admin_sidebar if @admin_action
-    l
+    render :file => 'distribution_plugin_layouts/default'
   end
 
-  def custom_layout
-    self.class.layout 'distribution_plugin_layouts/default'
+  def content_classes
+    "plugin-distribution plugin-distribution-layout"
   end
+
   def custom_layout?
     true
   end
