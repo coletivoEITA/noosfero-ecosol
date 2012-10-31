@@ -1,3 +1,4 @@
+  <%= pagination_links @products %>
 <div id="result-count" class="box-align">
   <small><%= _("Showing %{pcount} products of %{allpcount}") % {:pcount => @products.length, :allpcount => @all_products_count} %></small>
 </div>
