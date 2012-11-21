@@ -84,7 +84,8 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     end
     send_file report_file, :type => 'application/ods',
       :disposition => 'attachment',
-      :filename => _("Products Report.ods")
+      :filename => _("Products Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.ods") % {
+        :date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @session.code, :cycle_name => @session.name}
     require 'fileutils'
     #FileUtils.rm_rf tmp_dir
   end
@@ -99,7 +100,7 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     end
     send_file report_file, :type => 'application/ods',
       :disposition => 'attachment',
-      :filename => _("Cycle Orders Report.ods")
+      :filename => _("Cycle Orders Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.ods") % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @session.code, :cycle_name => @session.name}
     require 'fileutils'
     #FileUtils.rm_rf tmp_dir
   end
