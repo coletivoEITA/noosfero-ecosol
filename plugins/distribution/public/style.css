@@ -410,13 +410,13 @@ body.plugin-distribution {
 .plugin-distribution .session-timeline-selected-item {
   color: black;
   text-decoration: none;
+  font-weight: bold;
 }
 .plugin-distribution .session-timeline-passed-item,
 .plugin-distribution .session-timeline-current-item {
   background: url(progressbar.png) left top no-repeat;
 }
 .plugin-distribution .session-timeline-current-item {
-  font-weight: bold;
   background-position: 103% 0;
 }
 .plugin-distribution .session-timeline .actions-bar a {
