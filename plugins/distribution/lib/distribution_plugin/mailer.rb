@@ -1,7 +1,5 @@
 class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
 
-  prepend_view_path DistributionPlugin.view_path
-
   def order_change_notification(node, order, changed, removed, message = nil)
     domain = node.profile.hostname || node.profile.environment.default_hostname
     recipients    profile_recipients(order.consumer.profile)
