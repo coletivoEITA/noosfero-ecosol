@@ -36,6 +36,8 @@
         <div id="order-place-new">
           <% if @session.orders? %>
             <%= _("You haven't placed any order on this cycle yet.") %>
+          <% elsif @session.edition? %>
+            <%= _("This cycle is not open yet.") %>
           <% else %>
             <%= _("This cycle is already closed.") %>
           <% end %>
