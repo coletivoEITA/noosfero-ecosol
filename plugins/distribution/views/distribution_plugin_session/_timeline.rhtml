@@ -13,8 +13,12 @@
 
   <div>
     <% urls.each do |name, status| %>
-      <%= link_to name, params.merge(:action => :edit, :id => session.id, :view => status),
-        :class => "session-timeline-item #{timeline_class(session, status, view)}" %>
+      <% klass = "session-timeline-item #{timeline_class(session, status, view)}" %>
+      <% if session.passed_by?(status) or session.status == status %>
+        <%= link_to name, params.merge(:action => :edit, :id => session.id, :view => status), :class => klass %>
+      <% else %>
+        <span class="<%=klass%>"><%= name %></span>
+      <% end %>
     <% end %>
   </div>
 
