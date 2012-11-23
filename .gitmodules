@@ -1,0 +1,3 @@
+[submodule "public/designs/themes/cirandas-themes"]
+	path = public/designs/themes/cirandas-themes
+	url = git://github.com/CIRANDAS/themes.git
