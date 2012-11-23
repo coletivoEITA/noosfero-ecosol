@@ -1,6 +1,0 @@
-[submodule "public/designs/themes/cirandas"]
-	path = public/designs/themes/cirandas
-	url = git://github.com/CIRANDAS/cirandas-theme.git
-[submodule "public/designs/themes/cirandas-green"]
-	path = public/designs/themes/cirandas-green
-	url = git://github.com/CIRANDAS/cirandas-green-theme.git
