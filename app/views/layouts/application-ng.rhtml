@@ -86,12 +86,6 @@
           <div id="navigation-end"></div>
         </div><!-- end id="navigation" -->
         <div id="content">
-          <% if controller.respond_to? 'custom_contents' %>
-            <% Array(controller.custom_contents).each do |content| %>
-              <%= yield content %>
-            <% end %>
-          <% end %>
-
           <div id="content-inner">
             <%= insert_boxes(yield) %>
             <br style='clear: both'/>
