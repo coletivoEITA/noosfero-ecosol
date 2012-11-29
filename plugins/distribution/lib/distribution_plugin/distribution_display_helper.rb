@@ -2,6 +2,9 @@ module DistributionPlugin::DistributionDisplayHelper
 
   include ActionView::Helpers::JavaScriptHelper # we want the original button_to_function!
 
+  def load_header
+  end
+
   def labelled_field(form, field, label, field_html, options = {})
     help = options.delete(:help)
     content_tag('div', (form ? form.label(field, label) : label_tag(field, label)) +
@@ -12,7 +15,7 @@ module DistributionPlugin::DistributionDisplayHelper
   end
 
   def labelled_radio(form, field, label, value, options = {})
-    content_tag('div', 
+    content_tag('div',
                 form.radio_button(:role, value) +
                 form.label("#{field}_#{value}", label) +
                 content_tag('div', '', :class => 'cleaner'),

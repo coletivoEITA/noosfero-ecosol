@@ -9,8 +9,8 @@ class DistributionPluginMyprofileController < MyProfileController
   protected
 
   def load_node
-    @node = DistributionPluginNode.find_or_create(profile)
-    @user_node = DistributionPluginNode.find_or_create(current_user.person)
+    @node = DistributionPluginNode.find_or_create profile
+    @user_node = DistributionPluginNode.find_or_create current_user.person
   end
 
   def set_admin_action
@@ -19,7 +19,6 @@ class DistributionPluginMyprofileController < MyProfileController
 
   def before_contents
     return unless custom_layout?
-    render :file => 'distribution_plugin_layouts/default'
   end
 
   def content_classes

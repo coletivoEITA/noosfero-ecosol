@@ -6,14 +6,9 @@ body.plugin-distribution {
 .plugin-distribution .main-block {
   text-align: left;
 }
-#content.plugin-distribution-layout {
-  border-top: 0px;
-  margin-top: 100px;
-}
-#content.plugin-distribution-layout #distribution-plugin-header h1 {
-  border-bottom: 0px;
-  color: #000;
-  text-align: left;
+
+#content.plugin-distribution-layout .page-title {
+  display: none;
 }
 #content.plugin-distribution-layout .no-boxes h1 {
   font-variant: normal;
@@ -21,9 +16,7 @@ body.plugin-distribution {
 .plugin-distribution-layout #profile-header {
   display: none;
 }
-.plugin-distribution-layout .page-title {
-  display: none !important;
-}
+
 .plugin-distribution .page,
 .plugin-distribution .admin-page {
   margin-left: -20px;
@@ -31,6 +24,64 @@ body.plugin-distribution {
 }
 
 /* ----- ends override some noosfero's css  ----- */
+
+/* ----- header stuff  ----- */
+
+#distribution-plugin-header {
+  margin: 10px 0 30px -39px;
+  width: 1040px;
+}
+#distribution-plugin-header h1 {
+  border-bottom: 0px;
+  color: black;
+  text-align: left;
+  margin: 0;
+  padding-top: 55px;
+}
+
+#distribution-plugin-header .menu-header {
+  background-color: #d9d2e4;
+  padding: 8px 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+#distribution-plugin-header .menu-logo {
+  height: 90px;
+  padding-left: 39px;
+  text-transform: capitalize;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+#distribution-plugin-header .menu-button-container {
+  background: #646158;
+  padding: 4px 0 4px 39px;
+}
+#distribution-plugin-header .menu-button {
+  display: inline-block;
+  padding: 7px 6px;
+  margin-right: 4px;
+  color: black;
+  background-color: white;
+  border: 1px solid white;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+#distribution-plugin-header .menu-button:hover,
+#distribution-plugin-header .menu-selected {
+  color: white;
+  border: 1px solid white;
+  background-color: transparent;
+}
+
+/* ----- ends header stuff  ----- */
+
 
 /* ----- common stuff  ----- */
 
@@ -1633,54 +1684,6 @@ body.plugin-distribution {
 }
 
 /* ----- ends order edit stuff  ----- */
-
-/* ----- header stuff  ----- */
-
-#distribution-plugin-header {
-  width: 960px;
-}
-
-.plugin-distribution .menu-header {
-  background-color: #d9d2e4;
-  padding: 8px 0 8px 242px;
-  text-transform: uppercase;
-}
-.plugin-distribution .menu-logo {
-  width: 100%;
-  height: 110px;
-  padding: 1px 0 0 240px;
-  text-transform: capitalize;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-}
-.plugin-distribution .menu-button-container {
-  position: relative;
-  bottom: -10px;
-  margin-left: -8px;
-}
-.plugin-distribution .menu-button a {
-  float: left;
-  padding: 8px 8px;
-  background-color: #fff;
-  text-transform: uppercase;
-  margin: 0 2px;
-  text-decoration: none;
-  color: #000;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -o-border-radius: 5px;
-}
-
-.plugin-distribution .menu-button a:hover,
-.plugin-distribution div.menu-selected a {
-  color: #fff;
-  background-color: #646158;
-}
-
-/* ----- ends header stuff  ----- */
 
 /* ----- popin stuff  ----- */
 
