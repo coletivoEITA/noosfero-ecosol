@@ -7,16 +7,6 @@ body.plugin-distribution {
   text-align: left;
 }
 
-#content.plugin-distribution-layout .page-title {
-  display: none;
-}
-#content.plugin-distribution-layout .no-boxes h1 {
-  font-variant: normal;
-}
-.plugin-distribution-layout #profile-header {
-  display: none;
-}
-
 .plugin-distribution .page,
 .plugin-distribution .admin-page {
   margin-left: -20px;
@@ -25,18 +15,45 @@ body.plugin-distribution {
 
 /* ----- ends override some noosfero's css  ----- */
 
+/* ----- layout stuff  ----- */
+
+.plugin-distribution-layout .page-title {
+  display: none !important;
+}
+.plugin-distribution-layout .no-boxes h1 {
+  font-variant: normal !important;
+}
+.plugin-distribution-layout #profile-header {
+  display: none !important;
+}
+.plugin-distribution-layout h2 {
+  color: #036475 !important;
+  margin-bottom: 7px !important;
+  height: 44px !important;
+}
+.plugin-distribution-layout h2 a {
+  text-decoration: none !important;
+}
+.plugin-distribution-layout h3 {
+  text-transform: uppercase !important;
+  font-size: 13px !important;
+}
+
+/* ----- ends layout stuff  ----- */
+
 /* ----- header stuff  ----- */
 
 #distribution-plugin-header {
   margin: 10px 0 30px -39px;
   width: 1040px;
 }
-#distribution-plugin-header h1 {
-  border-bottom: 0px;
+#distribution-plugin-header #menu-title {
   color: black;
   text-align: left;
   margin: 0;
   padding-top: 55px;
+  font-size: 24px;
+  font-weight: lighter;
 }
 
 #distribution-plugin-header .menu-header {
@@ -118,18 +135,6 @@ body.plugin-distribution {
 }
 
 
-.plugin-distribution-layout h2 a {
-  text-decoration: none;
-}
-#content.plugin-distribution-layout h2 {
-  color: #036475;
-  margin-bottom: 7px;
-  height: 44px;
-}
-#content.plugin-distribution-layout h3 {
-  text-transform: uppercase;
-  font-size: 13px;
-}
 .plugin-distribution small {
   font-size: 10px;
 }
@@ -197,13 +202,17 @@ body.plugin-distribution {
   background-color: #666;
 }
 
+.plugin-distribution .happening {
+  background-color: #ffe546;
+}
+
 .plugin-distribution .line-label {
   margin: 10px 9px 2px;
   display: inline-block;
   font-weight: bold;
 }
 
-.plugin-distribution #content .title {
+.plugin-distribution .title {
   font-weight: bold;
   clear: both;
   margin-bottom: 8px;
@@ -1494,13 +1503,12 @@ body.plugin-distribution {
   font-weight: bold;
 }
 
-.plugin-distribution .orders .orders-date.active {
+.plugin-distribution .orders .orders-date.happening {
   margin-left: -168px;
   display: inline-block;
   padding: 0 8px;
-  background-color: #ffe546;
 }
-.plugin-distribution .orders .orders-date.active span {
+.plugin-distribution .orders .orders-date.happening span {
   text-transform: uppercase;
   width: 156px;
   display: inline-block;

@@ -2,8 +2,8 @@ class DistributionPluginOrderController < DistributionPluginProfileController
 
   no_design_blocks
 
-  before_filter :set_admin_action, :only => [:session_edit]
   before_filter :login_required, :except => [:index, :edit]
+  before_filter :set_admin_action, :only => [:session_edit]
 
   helper DistributionPlugin::DistributionProductHelper
 

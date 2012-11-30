@@ -1,5 +1,5 @@
-<div class="orders-date <%= "active" if session.orders? %>">
-  <span><%= _("Happening") if session.orders? %></span>
+<div class="orders-date <%= "happening" if session.orders? %>">
+  <span class='happening'><%= _("Happening") if session.orders? %></span>
   <strong><%= _("Orders: ") %></strong>
   &emsp;<%= datetime_period_with_day session.start, session.finish %>
 </div>

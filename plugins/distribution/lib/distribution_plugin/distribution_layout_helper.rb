@@ -7,7 +7,16 @@ module DistributionPlugin::DistributionLayoutHelper
 
   def render_header
     return unless @node and @node.collective?
-    render :file => 'distribution_plugin_layouts/default'
+    output = render :file => 'distribution_plugin_layouts/default'
+    output += render :file => 'distribution_plugin_gadgets/sessions' if on_homepage?
+    output
+  end
+
+  protected
+
+  # FIXME: workaround to fix Profile#is_on_homepage?
+  def on_homepage?
+    @node.profile.is_on_homepage?(request.path, @page) or request.path == "/profile/#{@node.profile.identifier}"
   end
 
 end

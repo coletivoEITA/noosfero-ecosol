@@ -2,9 +2,6 @@ module DistributionPlugin::DistributionDisplayHelper
 
   include ActionView::Helpers::JavaScriptHelper # we want the original button_to_function!
 
-  def load_header
-  end
-
   def labelled_field(form, field, label, field_html, options = {})
     help = options.delete(:help)
     content_tag('div', (form ? form.label(field, label) : label_tag(field, label)) +
