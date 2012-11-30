@@ -8,7 +8,7 @@ class DistributionPluginProfileController < ProfileController
   protected
 
   def load_node
-    @node = DistributionPluginNode.find_or_create profile
+    @node = DistributionPluginNode.find_by_profile_id profile.id
     @user_node = DistributionPluginNode.find_or_create current_user.person if current_user
   end
 

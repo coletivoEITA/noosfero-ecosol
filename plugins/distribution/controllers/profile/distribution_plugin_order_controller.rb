@@ -1,13 +1,16 @@
-class DistributionPluginOrderController < DistributionPluginMyprofileController
+class DistributionPluginOrderController < DistributionPluginProfileController
 
   no_design_blocks
 
   before_filter :set_admin_action, :only => [:session_edit]
+  before_filter :login_required, :except => [:index, :edit]
 
   helper DistributionPlugin::DistributionProductHelper
 
   def index
-    redirect_to :controller => :distribution_plugin_order_public
+    @year = (params[:year] || DateTime.now.year).to_s
+    @sessions = @node.sessions.by_year @year
+    @consumer = @user_node
   end
 
   def new
@@ -25,16 +28,18 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
   end
 
   def edit
-    if params[:session_id]
-      @session = DistributionPluginSession.find params[:session_id]
+    if session_id = params[:session_id]
+      @session = DistributionPluginSession.find_by_id session_id
+      return render_not_found unless @session
       @consumer = @user_node
     else
       @order = DistributionPluginOrder.find_by_id params[:id]
+      return render_not_found unless @order
       @session = @order.session
       @consumer = @order.consumer
-      @admin_edit = @user_node != @consumer
+      @admin_edit = @user_node && @user_node != @consumer
     end
-    @consumer_orders = @session.orders.for_consumer(@consumer)
+    @consumer_orders = @session.orders.for_consumer @consumer
   end
 
   def reopen
