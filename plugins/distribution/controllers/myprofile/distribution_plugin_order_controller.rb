@@ -1,4 +1,5 @@
 class DistributionPluginOrderController < DistributionPluginMyprofileController
+
   no_design_blocks
 
   before_filter :set_admin_action, :only => [:session_edit]
@@ -6,9 +7,7 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
   helper DistributionPlugin::DistributionProductHelper
 
   def index
-    @year = (params[:year] || DateTime.now.year).to_s
-    @sessions = @node.sessions.by_year @year
-    @consumer = @user_node
+    redirect_to :controller => :distribution_plugin_order_public
   end
 
   def new

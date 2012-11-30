@@ -16,7 +16,7 @@
 
       <%= render :partial => 'distribution_plugin_session/view_dates', :locals => {:session => session} %>
 
-      <% orders = session.orders.for_consumer(@consumer) %>
+      <% orders = session.orders.for_consumer @consumer %>
       <% if orders.count > 0 %>
         <div>
           <strong><%= _('Your orders:') %></strong>

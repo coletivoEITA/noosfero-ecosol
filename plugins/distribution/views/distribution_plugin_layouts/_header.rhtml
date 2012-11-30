@@ -1,11 +1,10 @@
 <%
   buttons = [
-    #[:start, _('Start'), {:controller => :distribution_plugin_node}],
+    [:start, _('Start'), @node.profile.url],
     #[:blog, _('Blog'), {:controller => :distribution_plugin_node}],
     [:orders, _('Orders'), {:controller => :distribution_plugin_order, :action => :index}],
     #[:about, _('About'), {:controller => :distribution_plugin_node, :action => :about}],
     #[:history, _('History'), {:controller => :distribution_plugin_node, :action => :history}],
-    [:community, _('Community'), profile.url],
     #[:enterprise, _('Enterprise'), {:controller => :distribution_plugin_node, :action => :enterprise}],
   ]
 %>
@@ -23,7 +22,7 @@
       :class => "menu-button #{"menu-selected" if @admin_action}" %>
   <% end %>
 
-  <% if @node.profile.admins.include? @user_node.profile %>
+  <% if @user_node and @node.profile.admins.include? @user_node.profile %>
     <%= link_to _('Administration'), {:controller => 'distribution_plugin_node', :action => 'index'},
       :class => "menu-button #{"menu-selected" if @admin_action}" %>
   <% end %>
