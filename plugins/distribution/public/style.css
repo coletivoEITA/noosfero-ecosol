@@ -980,6 +980,10 @@ body.plugin-distribution {
   padding: 2px 0;
 }
 
+.action-distribution_plugin_session-new #lightbox, .action-distribution_plugin_session-edit #lightbox {
+  top: 80%;
+}
+
 #distribution-plugin-add-delivery select {
   height: 130px;
   padding: 0;
