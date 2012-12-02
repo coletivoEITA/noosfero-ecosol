@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: noosfero 0.39.0~1\n"
-"POT-Creation-Date: 2012-12-01 14:39-0200\n"
+"POT-Creation-Date: 2012-12-01 21:22-0200\n"
 "PO-Revision-Date: 2007-08-30 18:47-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1187,8 +1187,7 @@ msgstr ""
 #: plugins/shopping_cart/lib/shopping_cart_plugin/cart_helper.rb:37
 #: plugins/distribution/models/distribution_plugin_product.rb:-
 #: plugins/distribution/views/distribution_plugin_session/_edition.rhtml:29
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:38
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:5
 #: plugins/distribution/views/distribution_plugin_product/_price_details.rhtml:9
 #: plugins/distribution/views/distribution_plugin_product/_search.rhtml:12
 #: plugins/distribution/views/distribution_plugin_product/_order_search.rhtml:11
@@ -9628,12 +9627,16 @@ msgstr ""
 msgid "Order confirmed"
 msgstr ""
 
-#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:66
+#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:59
+msgid "Can not confirm. Your order list is empty"
+msgstr ""
+
+#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:76
 #: plugins/distribution/models/distribution_plugin_order.rb:73
 msgid "Order cancelled"
 msgstr ""
 
-#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:74
+#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:84
 msgid "Order removed"
 msgstr ""
 
@@ -9641,13 +9644,13 @@ msgstr ""
 msgid "Cycle created"
 msgstr ""
 
-#: plugins/distribution/controllers/myprofile/distribution_plugin_session_controller.rb:92
+#: plugins/distribution/controllers/myprofile/distribution_plugin_session_controller.rb:87
 msgid ""
 "Products Report - %{date} - %{profile_identifier} - %{cycle_number} - "
 "%{cycle_name}.ods"
 msgstr ""
 
-#: plugins/distribution/controllers/myprofile/distribution_plugin_session_controller.rb:108
+#: plugins/distribution/controllers/myprofile/distribution_plugin_session_controller.rb:103
 msgid ""
 "Cycle Orders Report - %{date} - %{profile_identifier} - %{cycle_number} - "
 "%{cycle_name}.ods"
@@ -10703,76 +10706,6 @@ msgstr ""
 msgid "Order Cycle: "
 msgstr ""
 
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:12
-#: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:11
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:11
-msgid "Dear %{name},"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:16
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:15
-msgid "Your order made on collective %{node} in %{date} is confirmed."
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:22
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:21
-msgid "Atention to the delivery instructions, that will occur in %{date}."
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:32
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:31
-msgid "Order data confirmed:"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:34
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:33
-msgid "Order Nº: %{code}"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:36
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:35
-#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/reports.html.erb:18
-msgid "Products list"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:38
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
-msgid "Product/Suplier"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:38
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
-msgid "QTT."
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:38
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
-msgid "Price/un"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:43
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:44
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:61
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:62
-msgid "TOTAL:"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:49
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:67
-msgid "Your order can be checked in the following link:"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:50
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:68
-msgid "Order %{code} of %{node}"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:57
-#: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:22
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:75
-msgid "Greetings"
-msgstr ""
-
 #: plugins/distribution/views/distribution_plugin_session/_orders.rhtml:3
 msgid ""
 "The orders period is still on, take care to edit the orders already open, it "
@@ -11004,9 +10937,19 @@ msgstr ""
 msgid "The collective %{node} sent a messsage to you"
 msgstr ""
 
+#: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:11
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:11
+msgid "Dear %{name},"
+msgstr ""
+
 #: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:15
 msgid ""
 "Your order made on collective %{node} in %{date} was successfully cancelled."
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:22
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:44
+msgid "Greetings"
 msgstr ""
 
 #: plugins/distribution/views/distribution_plugin/mailer/message_to_supplier.rhtml:8
@@ -11041,14 +10984,60 @@ msgstr ""
 msgid "The member %{member} sent a messsage to you"
 msgstr ""
 
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:47
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:49
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:15
+msgid "Your order made on collective %{node} in %{date} is confirmed."
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:21
+msgid "Atention to the delivery instructions, that will occur in %{date}."
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:31
+msgid "Order data confirmed:"
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:36
+msgid "Your order can be checked in the following link:"
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
+msgid "Order %{code} of %{node}"
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:1
+msgid "Order Nº: %{code}"
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:3
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/reports.html.erb:18
+msgid "Products list"
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:5
+msgid "Supplier/Product"
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:5
+msgid "QTT."
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:5
+msgid "Price/un"
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:13
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:14
 msgid "%{quantity} %{unit}"
 msgstr ""
 
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:51
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:53
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:16
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:17
 msgid "R$ %{price}/%{unit}"
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:23
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:25
+msgid "TOTAL:"
 msgstr ""
 
 #: plugins/distribution/views/distribution_plugin_order/_session_edit.rhtml:30

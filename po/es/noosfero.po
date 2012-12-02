@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: noosfero 0.39.0~1\n"
-"POT-Creation-Date: 2012-12-01 14:39-0200\n"
+"POT-Creation-Date: 2012-12-01 21:22-0200\n"
 "PO-Revision-Date: 2010-04-30 20:14-0300\n"
 "Last-Translator: Martín Olivera <molivera@solar.org.ar>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1292,8 +1292,7 @@ msgstr "Categoría de producto"
 #: plugins/shopping_cart/lib/shopping_cart_plugin/cart_helper.rb:37
 #: plugins/distribution/models/distribution_plugin_product.rb:-
 #: plugins/distribution/views/distribution_plugin_session/_edition.rhtml:29
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:38
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:5
 #: plugins/distribution/views/distribution_plugin_product/_price_details.rhtml:9
 #: plugins/distribution/views/distribution_plugin_product/_search.rhtml:12
 #: plugins/distribution/views/distribution_plugin_product/_order_search.rhtml:11
@@ -10330,13 +10329,17 @@ msgstr ""
 msgid "Order confirmed"
 msgstr "Nuevo amigo(a)"
 
-#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:66
+#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:59
+msgid "Can not confirm. Your order list is empty"
+msgstr ""
+
+#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:76
 #: plugins/distribution/models/distribution_plugin_order.rb:73
 #, fuzzy
 msgid "Order cancelled"
 msgstr "Cancelado"
 
-#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:74
+#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:84
 #, fuzzy
 msgid "Order removed"
 msgstr "El producto se ha eliminado correctamente"
@@ -10346,13 +10349,13 @@ msgstr "El producto se ha eliminado correctamente"
 msgid "Cycle created"
 msgstr "Información de contacto"
 
-#: plugins/distribution/controllers/myprofile/distribution_plugin_session_controller.rb:92
+#: plugins/distribution/controllers/myprofile/distribution_plugin_session_controller.rb:87
 msgid ""
 "Products Report - %{date} - %{profile_identifier} - %{cycle_number} - "
 "%{cycle_name}.ods"
 msgstr ""
 
-#: plugins/distribution/controllers/myprofile/distribution_plugin_session_controller.rb:108
+#: plugins/distribution/controllers/myprofile/distribution_plugin_session_controller.rb:103
 msgid ""
 "Cycle Orders Report - %{date} - %{profile_identifier} - %{cycle_number} - "
 "%{cycle_name}.ods"
@@ -11518,80 +11521,6 @@ msgstr ""
 msgid "Order Cycle: "
 msgstr ""
 
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:12
-#: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:11
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:11
-msgid "Dear %{name},"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:16
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:15
-msgid "Your order made on collective %{node} in %{date} is confirmed."
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:22
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:21
-msgid "Atention to the delivery instructions, that will occur in %{date}."
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:32
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:31
-msgid "Order data confirmed:"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:34
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:33
-msgid "Order Nº: %{code}"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:36
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:35
-#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/reports.html.erb:18
-#, fuzzy
-msgid "Products list"
-msgstr "Productos"
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:38
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
-#, fuzzy
-msgid "Product/Suplier"
-msgstr "Productos/Servicios"
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:38
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
-msgid "QTT."
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:38
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
-#, fuzzy
-msgid "Price/un"
-msgstr "Precio"
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:43
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:44
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:61
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:62
-msgid "TOTAL:"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:49
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:67
-msgid "Your order can be checked in the following link:"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:50
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:68
-msgid "Order %{code} of %{node}"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:57
-#: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:22
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:75
-#, fuzzy
-msgid "Greetings"
-msgstr "Verde"
-
 #: plugins/distribution/views/distribution_plugin_session/_orders.rhtml:3
 msgid ""
 "The orders period is still on, take care to edit the orders already open, it "
@@ -11844,10 +11773,21 @@ msgstr "Nombre de archivo"
 msgid "The collective %{node} sent a messsage to you"
 msgstr ""
 
+#: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:11
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:11
+msgid "Dear %{name},"
+msgstr ""
+
 #: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:15
 msgid ""
 "Your order made on collective %{node} in %{date} was successfully cancelled."
 msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:22
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:44
+#, fuzzy
+msgid "Greetings"
+msgstr "Verde"
 
 #: plugins/distribution/views/distribution_plugin/mailer/message_to_supplier.rhtml:8
 msgid "Hello administrators of %{name},"
@@ -11882,14 +11822,63 @@ msgstr ""
 msgid "The member %{member} sent a messsage to you"
 msgstr ""
 
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:47
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:49
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:15
+msgid "Your order made on collective %{node} in %{date} is confirmed."
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:21
+msgid "Atention to the delivery instructions, that will occur in %{date}."
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:31
+msgid "Order data confirmed:"
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:36
+msgid "Your order can be checked in the following link:"
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
+msgid "Order %{code} of %{node}"
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:1
+msgid "Order Nº: %{code}"
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:3
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/reports.html.erb:18
+#, fuzzy
+msgid "Products list"
+msgstr "Productos"
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:5
+#, fuzzy
+msgid "Supplier/Product"
+msgstr "Precio: %s"
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:5
+msgid "QTT."
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:5
+#, fuzzy
+msgid "Price/un"
+msgstr "Precio"
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:13
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:14
 msgid "%{quantity} %{unit}"
 msgstr ""
 
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:51
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:53
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:16
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:17
 msgid "R$ %{price}/%{unit}"
+msgstr ""
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:23
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:25
+msgid "TOTAL:"
 msgstr ""
 
 #: plugins/distribution/views/distribution_plugin_order/_session_edit.rhtml:30
@@ -12784,6 +12773,10 @@ msgid ""
 "%s and licensed under the <a href=\"http://www.gnu.org/licenses/agpl.html"
 "\">GNU Affero General Public License</a> version 3 or any later version."
 msgstr ""
+
+#, fuzzy
+#~ msgid "Product/Suplier"
+#~ msgstr "Productos/Servicios"
 
 #, fuzzy
 #~ msgid "Scrap successfully removed."

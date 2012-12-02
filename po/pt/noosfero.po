@@ -13,8 +13,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: noosfero 0.39.0~1\n"
-"POT-Creation-Date: 2012-12-01 14:39-0200\n"
-"PO-Revision-Date: 2012-12-01 17:32-0200\n"
+"POT-Creation-Date: 2012-12-01 21:22-0200\n"
+"PO-Revision-Date: 2012-12-01 22:43-0200\n"
 "Last-Translator: Joenio Costa <joenio@colivre.coop.br>\n"
 "Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
 "Language: \n"
@@ -811,8 +811,7 @@ msgstr "Ambiente"
 #: plugins/distribution/models/distribution_plugin_product.rb:-
 #: plugins/distribution/views/distribution_plugin_product/_edit_line.rhtml:2
 msgid "Active"
-msgstr ""
-"Ativar\n"
+msgstr "Ativar\n"
 
 #: app/models/domain.rb:- app/models/external_feed.rb:-
 #: app/models/create_enterprise.rb:5
@@ -915,18 +914,15 @@ msgstr "Cnpj"
 
 #: app/models/domain.rb:-
 msgid "Shopping cart"
-msgstr ""
-"Cesto de compras\n"
+msgstr "Cesto de compras\n"
 
 #: app/models/domain.rb:-
 msgid "Shopping cart delivery"
-msgstr ""
-"Entrega do cesto de compras\n"
+msgstr "Entrega do cesto de compras\n"
 
 #: app/models/domain.rb:-
 msgid "Shopping cart delivery price"
-msgstr ""
-"Preço de entrega do cesto de compras\n"
+msgstr "Preço de entrega do cesto de compras\n"
 
 #: app/models/domain.rb:- app/models/task.rb:-
 #: plugins/bsc/lib/bsc_plugin.rb:101
@@ -935,8 +931,7 @@ msgstr "Bsc"
 
 #: app/models/domain.rb:-
 msgid "Company name"
-msgstr ""
-"Nome de exibição\n"
+msgstr "Nome de exibição\n"
 
 #: app/models/domain.rb:- app/models/national_region.rb:-
 msgid "National region code"
@@ -1155,8 +1150,7 @@ msgstr "galeria"
 
 #: app/models/domain.rb:-
 msgid "blog"
-msgstr ""
-"blog\n"
+msgstr "blog\n"
 
 #: app/models/domain.rb:-
 msgid "forum"
@@ -1218,8 +1212,7 @@ msgstr "Categoria do Produto"
 #: plugins/shopping_cart/lib/shopping_cart_plugin/cart_helper.rb:37
 #: plugins/distribution/models/distribution_plugin_product.rb:-
 #: plugins/distribution/views/distribution_plugin_session/_edition.rhtml:29
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:38
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:5
 #: plugins/distribution/views/distribution_plugin_product/_price_details.rhtml:9
 #: plugins/distribution/views/distribution_plugin_product/_search.rhtml:12
 #: plugins/distribution/views/distribution_plugin_product/_order_search.rhtml:11
@@ -3554,8 +3547,7 @@ msgstr "Reports lower bound"
 
 #: app/models/environment.rb:-
 msgid "Send email plugin allow to"
-msgstr ""
-"Plugin de envio de email permite"
+msgstr "Plugin de envio de email permite"
 
 #: app/models/environment.rb:20
 msgid "View environment admin panel"
@@ -3793,8 +3785,7 @@ msgstr "Leia mais"
 
 #: app/helpers/forum_helper.rb:4
 msgid "New discussion topic"
-msgstr ""
-"Novo tópico de discussão\n"
+msgstr "Novo tópico de discussão\n"
 
 #: app/helpers/forum_helper.rb:8
 msgid "Configure forum"
@@ -4780,8 +4771,7 @@ msgstr "Denunciar este perfil por comportamento abusivo"
 
 #: app/helpers/application_helper.rb:1327
 msgid "Type in an keyword"
-msgstr ""
-"Digite um termo de pesquisa\n"
+msgstr "Digite um termo de pesquisa\n"
 
 #: app/helpers/application_helper.rb:1327
 #: app/helpers/application_helper.rb:1372
@@ -4854,8 +4844,7 @@ msgstr ""
 
 #: app/helpers/events_helper.rb:4
 msgid "Select a day on the left to display it's events here"
-msgstr ""
-"Selecione um dia na esquerda para mostrar seus eventos aqui\n"
+msgstr "Selecione um dia na esquerda para mostrar seus eventos aqui\n"
 
 #: app/helpers/events_helper.rb:5
 msgid "Events for %s"
@@ -5137,13 +5126,11 @@ msgstr "Desde %{month}/%{year}"
 #: app/views/blocks/profile_info_actions/community.rhtml:23
 #: app/views/profile/_private_profile.rhtml:10
 msgid "Join community"
-msgstr ""
-"Entrar na comunidade\n"
+msgstr "Entrar na comunidade\n"
 
 #: app/views/blocks/profile_info_actions/community.rhtml:46
 msgid "Join this community"
-msgstr ""
-"Entrar nesta comunidade\n"
+msgstr "Entrar nesta comunidade\n"
 
 #: app/views/blocks/profile_info_actions/enterprise.rhtml:4
 msgid "Add as favorite"
@@ -7634,8 +7621,7 @@ msgstr ""
 
 #: app/views/cms/publish_on_portal_community.rhtml:2
 msgid "Publish your article on portal community"
-msgstr ""
-"Publicar seu artigo na comunidade portal\n"
+msgstr "Publicar seu artigo na comunidade portal\n"
 
 #: app/views/cms/publish_on_portal_community.rhtml:14
 msgid "There is no portal community in this environment."
@@ -9041,8 +9027,7 @@ msgstr "<span class='login'>%s</span>"
 
 #: app/views/layouts/application-ng.rhtml:68
 msgid "<span class='or'>or</span> <span class='signup'>%s</span>"
-msgstr ""
-"<span class='or'>ou</span> <span class='signup'>%s</span>"
+msgstr "<span class='or'>ou</span> <span class='signup'>%s</span>"
 
 #: app/views/layouts/application-ng.rhtml:68
 msgid "Sign up"
@@ -9066,8 +9051,7 @@ msgstr "Este perfil não tem posição geográfica registrada."
 
 #: app/views/profile_members/_manage_roles.html.erb:21
 msgid "Type in a search term for users"
-msgstr ""
-"Digite um termo de pesquisa para os usuários\n"
+msgstr "Digite um termo de pesquisa para os usuários\n"
 
 #: app/views/profile_editor/_moderation.html.erb:1
 msgid "Moderation options"
@@ -9963,12 +9947,16 @@ msgstr "Um plugin de teste para testar a loucura do caregamento."
 msgid "Order confirmed"
 msgstr "Pedido confirmado"
 
-#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:66
+#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:59
+msgid "Can not confirm. Your order list is empty"
+msgstr ""
+
+#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:76
 #: plugins/distribution/models/distribution_plugin_order.rb:73
 msgid "Order cancelled"
 msgstr "Pedido cancelado"
 
-#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:74
+#: plugins/distribution/controllers/myprofile/distribution_plugin_order_controller.rb:84
 msgid "Order removed"
 msgstr "Pedido removido"
 
@@ -9976,13 +9964,13 @@ msgstr "Pedido removido"
 msgid "Cycle created"
 msgstr "Ciclo criado"
 
-#: plugins/distribution/controllers/myprofile/distribution_plugin_session_controller.rb:92
+#: plugins/distribution/controllers/myprofile/distribution_plugin_session_controller.rb:87
 msgid ""
 "Products Report - %{date} - %{profile_identifier} - %{cycle_number} - "
 "%{cycle_name}.ods"
 msgstr ""
 
-#: plugins/distribution/controllers/myprofile/distribution_plugin_session_controller.rb:108
+#: plugins/distribution/controllers/myprofile/distribution_plugin_session_controller.rb:103
 msgid ""
 "Cycle Orders Report - %{date} - %{profile_identifier} - %{cycle_number} - "
 "%{cycle_name}.ods"
@@ -11080,76 +11068,6 @@ msgstr ""
 msgid "Order Cycle: "
 msgstr "Ciclo de pedidos: "
 
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:12
-#: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:11
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:11
-msgid "Dear %{name},"
-msgstr "Olá %{name}!,"
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:16
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:15
-msgid "Your order made on collective %{node} in %{date} is confirmed."
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:22
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:21
-msgid "Atention to the delivery instructions, that will occur in %{date}."
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:32
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:31
-msgid "Order data confirmed:"
-msgstr "Pedido confirmado"
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:34
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:33
-msgid "Order Nº: %{code}"
-msgstr "Código do Pedido: %{code}"
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:36
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:35
-#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/reports.html.erb:18
-msgid "Products list"
-msgstr "Lista de produtos"
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:38
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
-msgid "Product/Suplier"
-msgstr "Produtos/Fornecedor"
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:38
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
-msgid "QTT."
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:38
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
-msgid "Price/un"
-msgstr "preço/un"
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:43
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:44
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:61
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:62
-msgid "TOTAL:"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:49
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:67
-msgid "Your order can be checked in the following link:"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:50
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:68
-msgid "Order %{code} of %{node}"
-msgstr ""
-
-#: plugins/distribution/views/distribution_plugin_session/bla.rhtml:57
-#: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:22
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:75
-msgid "Greetings"
-msgstr "Saudações,"
-
 #: plugins/distribution/views/distribution_plugin_session/_orders.rhtml:3
 msgid ""
 "The orders period is still on, take care to edit the orders already open, it "
@@ -11390,10 +11308,21 @@ msgstr "Olá %{name}!,"
 msgid "The collective %{node} sent a messsage to you"
 msgstr "O coletivo %{node} mandou uma mensagem para você"
 
+#: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:11
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:11
+msgid "Dear %{name},"
+msgstr "Olá %{name},"
+
 #: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:15
 msgid ""
 "Your order made on collective %{node} in %{date} was successfully cancelled."
 msgstr ""
+"Seu pedido feito no coletivo %{node} em %{date} foi cancelado com sucesso."
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_cancellation.rhtml:22
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:44
+msgid "Greetings"
+msgstr "Saudações,"
 
 #: plugins/distribution/views/distribution_plugin/mailer/message_to_supplier.rhtml:8
 msgid "Hello administrators of %{name},"
@@ -11428,19 +11357,65 @@ msgstr "Olá gestores de %{name}!"
 msgid "The member %{member} sent a messsage to you"
 msgstr "O membro %{member} mandou uma mensagem para você"
 
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:47
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:49
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:15
+msgid "Your order made on collective %{node} in %{date} is confirmed."
+msgstr "Seu pedido feito no coletivo %{node} em %{date} foi confirmado."
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:21
+msgid "Atention to the delivery instructions, that will occur in %{date}."
+msgstr "Atenção às instruções de entrega, que ocorrerá em %{date}."
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:31
+msgid "Order data confirmed:"
+msgstr "Pedido confirmado"
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:36
+msgid "Your order can be checked in the following link:"
+msgstr "Seu pedido pode ser checado no seguinte link:"
+
+#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:37
+msgid "Order %{code} of %{node}"
+msgstr "Pedido %{code} de %{node}"
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:1
+msgid "Order Nº: %{code}"
+msgstr "Código do Pedido: %{code}"
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:3
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/reports.html.erb:18
+msgid "Products list"
+msgstr "Lista de produtos"
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:5
+msgid "Supplier/Product"
+msgstr "Fornecedor/Produto"
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:5
+msgid "QTT."
+msgstr "QTD"
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:5
+msgid "Price/un"
+msgstr "preço/un"
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:13
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:14
 msgid "%{quantity} %{unit}"
 msgstr "%{quantity} %{unit}"
 
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:51
-#: plugins/distribution/views/distribution_plugin/mailer/order_confirmation.rhtml:53
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:16
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:17
 msgid "R$ %{price}/%{unit}"
-msgstr ""
+msgstr "R$ %{price}/%{unit}"
+
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:23
+#: plugins/distribution/views/distribution_plugin/mailer/_complete_order.rhtml:25
+msgid "TOTAL:"
+msgstr "TOTAL:"
 
 #: plugins/distribution/views/distribution_plugin_order/_session_edit.rhtml:30
 msgid "Warn member of the changes in his/her order"
-msgstr "Avise membro das mudanças em seu pedido"
+msgstr "Avise o membro das mudanças em seu pedido"
 
 #: plugins/distribution/views/distribution_plugin_order/_session_edit.rhtml:32
 msgid ""
@@ -12048,8 +12023,7 @@ msgstr "Clonar Configuração"
 #: plugins/bsc/views/bsc_plugin_myprofile/_contract_form.html.erb:27
 #: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:38
 msgid "Total"
-msgstr ""
-"Total"
+msgstr "Total"
 
 #: plugins/bsc/views/bsc_plugin/mailer/admin_notification.html.erb:1
 msgid "The management of %{bsc} was transferred to you."
@@ -12061,14 +12035,12 @@ msgstr "Registro de BSC"
 
 #: plugins/bsc/views/bsc_plugin_admin/validate_enterprises.html.erb:1
 msgid "Validate enterprises"
-msgstr ""
-"Validar empreendimentos\n"
+msgstr "Validar empreendimentos\n"
 
 #: plugins/bsc/views/bsc_plugin_admin/validate_enterprises.html.erb:5
 #: plugins/bsc/views/bsc_plugin_myprofile/manage_associated_enterprises.html.erb:16
 msgid "Type in a search term for enterprise"
-msgstr ""
-"Digite um termo de pesquisa para empreendimentos\n"
+msgstr "Digite um termo de pesquisa para empreendimentos\n"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/_contract_form.html.erb:6
 #: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:7
@@ -12108,8 +12080,7 @@ msgstr "Digite um termo de pesquisa para produto"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/manage_associated_enterprises.html.erb:4
 msgid "Associations awaiting approval:"
-msgstr ""
-"Associações aguardando aprovação:\n"
+msgstr "Associações aguardando aprovação:\n"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/manage_associated_enterprises.html.erb:19
 msgid "Add new enterprise"
@@ -12162,8 +12133,7 @@ msgstr "Anotações"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/transfer_ownership.html.erb:1
 msgid "Transfer Ownership"
-msgstr ""
-"Transferir administração\n"
+msgstr "Transferir administração\n"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/transfer_ownership.html.erb:4
 msgid ""
@@ -12177,13 +12147,11 @@ msgstr ""
 
 #: plugins/bsc/views/bsc_plugin_myprofile/transfer_ownership.html.erb:8
 msgid "Current administrators:"
-msgstr ""
-"Administradores atuais:\n"
+msgstr "Administradores atuais:\n"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/transfer_ownership.html.erb:19
 msgid "Administrator:"
-msgstr ""
-"Administradores:\n"
+msgstr "Administradores:\n"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/transfer_ownership.html.erb:22
 msgid "Type in a search term for the new administrator"
@@ -12191,8 +12159,7 @@ msgstr "Digite um termo de pesquisa para o novo adiministrador"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/_similar_enterprises.html.erb:2
 msgid "Existing enterprises:"
-msgstr ""
-"Empreendimento existentes\n"
+msgstr "Empreendimento existentes\n"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/_similar_enterprises.html.erb:3
 msgid ""
@@ -12302,6 +12269,9 @@ msgstr ""
 "Este site usa <a href=\"http://noosfero.org/\">Noosfero</a>, desenvolvido "
 "pela %s e licenciado sob a <a href=\"http://www.gnu.org/licenses/agpl.html"
 "\">GNU Affero General Public License</a> versão 3 ou superior."
+
+#~ msgid "Product/Suplier"
+#~ msgstr "Produtos/Fornecedor"
 
 #~ msgid "Scrap successfully removed."
 #~ msgstr "Recado removido com sucesso"
