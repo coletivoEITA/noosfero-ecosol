@@ -20,7 +20,7 @@
     <p>
       <%= _('Atention to the delivery instructions, that will occur in %{date}.') % {
         :date => day_time_period(@order.session.delivery_start, @order.session.delivery_finish)
-      } %> 
+      } %>
     </p>
 
     <p>
@@ -30,41 +30,13 @@
 
     <p><%= _('Order data confirmed:') %></p>
 
-    <pre><%= _('Order Nº: %{code}') % {:code => @order.code} %>
-----------------------------------------------------------------------------------
-<%= _('Products list') %>
-----------------------------------------------------------------------------------</pre>
-    <% @order.products.group_by{|op| op.supplier}.each do |supplier, products| %>
-      <pre><%= supplier.name + ':' %></pre>
-      <table>
-        <col style="width: 170px;" />
-        <col style="width: 130px;" />
-        <col style="width: 120px;" />
-        <% products.each do |p| %>
-          <tr>
-            <td><pre><%= p.product.name %></pre</td>
-            <td><pre><%= _("%{quantity} %{unit}") % {:quantity => p.quantity_asked, :unit => p.product.unit.singular}%></pre</td>
-            <td><pre><%= _("R$ %{price}/%{unit}") % {:price => p.product.price, :unit => p.product.unit.singular} %></pre</td>
-            <td><pre><%= p.price_asked %></pre</td>
-          </tr>
-        <% end %>
-      </table>
-    <% end %>
-
-    <pre>----------------------------------------------------------------------------------</pre>
-    <table>
-      <col style="width: 430px;" />
-      <tr>
-        <td><pre><%= _('TOTAL:') %></pre></td>
-        <td><pre><%= @order.total_price_asked %></pre></td>
-      </tr>
-    </table>
+    <%= render :partial => 'distribution_plugin/mailer/complete_order' %>
 
     <p>
       <%= _('Your order can be checked in the following link:') %><br />
-      <%= link_to _('Order %{code} of %{node}') % {:code => @order.code, :node => @node.name },
+     <%= link_to _('Order %{code} of %{node}') % {:code => @order.code, :node => @node.name },
         "http://" + @host_with_port + url_for(:controller => :distribution_plugin_order,
-                                              :action => :edit,:profile => @node.profile.identifier, :id => @order.id) %> 
+                                              :action => :edit,:profile => @node.profile.identifier, :id => @order.id) %>
     </p>
 
     <p>
@@ -73,4 +45,3 @@
     </p>
   </body>
 </html>
-
