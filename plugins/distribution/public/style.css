@@ -90,6 +90,9 @@ body.plugin-distribution {
   -o-border-radius: 5px;
 }
 
+#distribution-plugin-header .menu-selected {
+  font-weight: bold;
+}
 #distribution-plugin-header .menu-button:hover,
 #distribution-plugin-header .menu-selected {
   color: white;
@@ -99,6 +102,37 @@ body.plugin-distribution {
 
 /* ----- ends header stuff  ----- */
 
+/* ----- menus  ----- */
+
+#distribution-plugin-admin-sidebar {
+  width: 176px;
+  float: left;
+  margin-top: 50px;
+}
+#distribution-plugin-admin-sidebar .menu-entry {
+  float: left;
+  clear: both;
+  display: block;
+  width: 170px;
+  margin: 1px 0px;
+  padding: 3px 0px 3px 8px;
+  color: black;
+  text-decoration: none;
+  background-color: #E5E0EC;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+#distribution-plugin-admin-sidebar .menu-entry:hover {
+  background-color: #D9D2E4;
+}
+#distribution-plugin-admin-sidebar .menu-selected {
+  background-color: #D9D2E4;
+  font-weight: bold;
+}
+
+/* ----- ends menus  ----- */
 
 /* ----- common stuff  ----- */
 
@@ -990,38 +1024,6 @@ body.plugin-distribution {
 
 /* ----- ends session stuff  ----- */
 
-/* ----- menus  ----- */
-
-.plugin-distribution #distribution-plugin-admin-sidebar {
-  width: 176px;
-  float: left;
-  margin-top: 50px;
-}
-.plugin-distribution .menu-entry {
-  float: left;
-  clear: both;
-  display: block;
-  width: 170px;
-  margin: 1px 0px;
-  padding: 3px 0px 3px 8px;
-  color: black;
-  text-decoration: none;
-  background-color: #E5E0EC;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -o-border-radius: 4px;
-}
-.plugin-distribution .menu-entry:hover {
-  background-color: #D9D2E4;
-}
-.plugin-distribution .menu-selected {
-  background-color: #D9D2E4;
-  font-weight: bold;
-}
-
-/* ----- ends menus  ----- */
-
 /* ----- delivery stuff  ----- */
 
 .plugin-distribution .session-delivery-option {
@@ -1573,7 +1575,7 @@ body.plugin-distribution {
   background-color: #E1F5C4;
 }
 .plugin-distribution .orders .status-confirmed.order-message-title div {
-  background: url(images/order-statuses.png) left top no-repeat;
+  background: url(images/order-statuses.png) left -2px no-repeat;
   padding-left: 24px;
 }
 .plugin-distribution .orders .status-open.order-message-title div {
