@@ -1,7 +1,7 @@
 <div id="filter-fields" class="filter-box">
   <strong><%= _("Filter") %></strong>
 
-  <% form_remote_tag :update => 'order-filter', :url => {:controller => 'distribution_plugin_product', :action => :filter_products}, :html => {:id => 'filter-form'}, :method => :get do %>
+  <% form_remote_tag :update => 'order-filter', :url => {:controller => :distribution_plugin_product, :action => :filter_products}, :html => {:id => 'filter-form'}, :method => :get do %>
     <%= hidden_field_tag(:session_id, session.id)  %>
     <%= hidden_field_tag(:order_id, order.id) unless order.nil?  %>
     <div class="box-field name">

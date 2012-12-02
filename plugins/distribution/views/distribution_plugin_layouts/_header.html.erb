@@ -1,0 +1,29 @@
+<%
+  buttons = [
+    [:start, _('Start'), @node.profile.url],
+    #[:blog, _('Blog'), {:controller => :distribution_plugin_node}],
+    [:orders, _('Orders'), {:controller => :distribution_plugin_order, :action => :index}],
+    #[:about, _('About'), {:controller => :distribution_plugin_node, :action => :about}],
+    #[:history, _('History'), {:controller => :distribution_plugin_node, :action => :history}],
+    #[:enterprise, _('Enterprise'), {:controller => :distribution_plugin_node, :action => :enterprise}],
+  ]
+%>
+
+<div class="menu-header"><%= _("Collective consumption network") %></div>
+
+<div class="menu-logo" style="background: url('<%= @node.image.public_filename if @node.image %>') no-repeat;">
+  <div id="menu-title"><%= @profile.name %></div>
+</div>
+
+<div class="menu-button-container">
+  <% buttons.each do |key, label, url, extra| %>
+    <% selected = true if not @admin_action and (params[:controller].to_s == url[:controller].to_s or (extra and extra[:controller].include?(params[:controller].to_sym))) %>
+    <%= link_to label, url,
+      :class => "menu-button #{"menu-selected" if selected}" %>
+  <% end %>
+
+  <% if @user_node and @node.profile.admins.include? @user_node.profile %>
+    <%= link_to _('Administration'), {:controller => 'distribution_plugin_node', :action => 'index'},
+      :class => "menu-button #{"menu-selected" if @admin_action}" %>
+  <% end %>
+</div>

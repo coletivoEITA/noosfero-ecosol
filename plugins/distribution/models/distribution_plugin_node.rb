@@ -49,6 +49,9 @@ class DistributionPluginNode < ActiveRecord::Base
     self['name_abbreviation'] || name
   end
 
+  def enabled?
+    !consumer?
+  end
   def consumer?
     role == 'consumer'
   end

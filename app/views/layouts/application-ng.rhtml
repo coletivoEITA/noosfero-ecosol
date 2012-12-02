@@ -85,9 +85,7 @@
           </ul>
           <div id="navigation-end"></div>
         </div><!-- end id="navigation" -->
-        <div id="content" class="<%= controller.send(:content_classes) rescue '' %>">
-          <%= controller.send(:before_contents) rescue '' %>
-
+        <div id="content">
           <div id="content-inner">
             <%= insert_boxes(yield) %>
             <br style='clear: both'/>

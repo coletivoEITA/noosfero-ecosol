@@ -56,9 +56,4 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
     super
   end
 
-  def custom_layout?
-    return false if params[:action] == 'settings'
-    super
-  end
-
 end

@@ -57,7 +57,7 @@
     <%# link_to_function _('add product'), '' if order.session.orders? %>
     <%# link_to_function _('see redistribution'), '' unless order.session.orders? %>
     <%# link_to_function _('see delivery'), '' unless order.session.orders? %>
-    <%= link_to _('edit on the order page'), {:controller => :distribution_plugin_order, :action => :edit, :id => order.id}, :target => '_blank' %>
+    <%= link_to _('edit on the order page'), {:controller => :distribution_plugin, :action => :edit, :id => order.id}, :target => '_blank' %>
     <%= lightbox_link_to _('message to member'), {:controller => :distribution_plugin_message, :action => :new_to_consumer_for_order, :order_id => order.id} %>
     <strong><%= _('Actions') %></strong>
 

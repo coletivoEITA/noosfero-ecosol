@@ -12,7 +12,7 @@ module DistributionPlugin::DistributionDisplayHelper
   end
 
   def labelled_radio(form, field, label, value, options = {})
-    content_tag('div', 
+    content_tag('div',
                 form.radio_button(:role, value) +
                 form.label("#{field}_#{value}", label) +
                 content_tag('div', '', :class => 'cleaner'),

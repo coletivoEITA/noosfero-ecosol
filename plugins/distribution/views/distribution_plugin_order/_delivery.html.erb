@@ -9,7 +9,7 @@
     <% if order.open? and order.session.delivery_methods.count > 1 %>
       <%= labelled_field f, :supplier_delivery_id, _('Choose another:'),
         f.select(:supplier_delivery_id, order.session.delivery_methods.collect{ |d| [d.name, d.id] }, {},
-                 :onchange => "jQuery('#delivery-box').load('#{url_for(:action => :render_delivery, :id => order.id)}', jQuery(this).parents('form').serialize());"),
+                 :onchange => "jQuery('#delivery-box').load('#{url_for(:controller => :distribution_plugin_order, :action => :render_delivery, :id => order.id)}', jQuery(this).parents('form').serialize());"),
         :class => 'subtitle' %>
     <% end %>
   <% end %>

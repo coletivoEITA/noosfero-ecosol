@@ -1,4 +1,4 @@
-class DistributionPluginMyprofileController < MyProfileController
+class DistributionPluginProfileController < ProfileController
 
   before_filter :load_node
 
@@ -8,16 +8,11 @@ class DistributionPluginMyprofileController < MyProfileController
   protected
 
   def load_node
-    @node = DistributionPluginNode.find_or_create profile
-    @user_node = DistributionPluginNode.find_or_create current_user.person
-  end
-
-  def set_admin_action
-    @admin_action = true
+    @node = DistributionPluginNode.find_by_profile_id profile.id
+    @user_node = DistributionPluginNode.find_or_create current_user.person if current_user
   end
 
   def before_contents
-    return unless custom_layout?
   end
 
   def content_classes

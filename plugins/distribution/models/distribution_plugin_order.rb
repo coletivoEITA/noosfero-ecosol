@@ -19,7 +19,9 @@ class DistributionPluginOrder < ActiveRecord::Base
   belongs_to :supplier_delivery, :class_name => 'DistributionPluginDeliveryMethod'
   belongs_to :consumer_delivery, :class_name => 'DistributionPluginDeliveryMethod'
 
-  named_scope :for_consumer, lambda { |consumer| { :conditions => {:consumer_id => consumer.id} } }
+  named_scope :for_consumer, lambda { |consumer| {
+    :conditions => {:consumer_id => consumer ? consumer.id : nil} }
+  }
   named_scope :for_session, lambda { |session| { :conditions => {:session_id => session.id} } }
   named_scope :for_node, lambda { |node| {
       :conditions => ['distribution_plugin_nodes.id = ?', node.id],
