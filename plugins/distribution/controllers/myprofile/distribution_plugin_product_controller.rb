@@ -26,7 +26,7 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     conditions = DistributionPluginDistributedProduct.send :merge_conditions, conditions.flatten
 
     @products = (@node.products.unarchived.distributed.all :conditions => conditions, \
-                 :group => (['supplier_id', 'id']+DistributionPluginProduct.new.attributes.keys).join(',')).paginate(:per_page => 5, :page => params["page"])
+                 :group => (['supplier_id', 'id']+DistributionPluginProduct.new.attributes.keys).join(',')).paginate(:per_page => 10, :page => params["page"])
     @all_products_count = @node.products.unarchived.distributed.count
     @product_categories = ProductCategory.find(:all)
     @new_product = DistributionPluginDistributedProduct.new :node => @node, :supplier => @supplier
