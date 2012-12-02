@@ -60,6 +60,7 @@ class DistributionPluginSession < ActiveRecord::Base
   validates_presence_of :node
   validates_presence_of :name, :if => :not_new?
   validates_presence_of :start, :if => :not_new?
+  validates_presence_of :delivery_options, :unless => :new_or_edition?
   validates_inclusion_of :status, :in => STATUS_SEQUENCE, :if => :not_new?
   validates_numericality_of :margin_percentage, :allow_nil => true, :if => :not_new?
   validates_numericality_of :margin_fixed, :allow_nil => true, :if => :not_new?
@@ -102,6 +103,9 @@ class DistributionPluginSession < ActiveRecord::Base
   end
   def edition?
     status == 'edition'
+  end
+  def new_or_edition?
+    status == 'new' or status == 'edition'
   end
   def orders?
     now = DateTime.now
