@@ -1,8 +1,9 @@
 <div class="session">
   <div class='happening'><%= _('Happening') %></div>
   <div>
-    <h1>
-    </h1>
+    <h2>
+      <%= _('Orders open: %{session}') % {:session => session.name_with_code} %>
+    </h2>
 
   </div>
 </div>
