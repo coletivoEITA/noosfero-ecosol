@@ -51,10 +51,13 @@ class DistributionPluginOrderController < DistributionPluginMyprofileController
 
     @order = DistributionPluginOrder.find params[:id]
     raise "Cycle's orders period already ended" unless @order.session.orders?
-    @order.update_attributes! params[:order].merge(:status => 'confirmed')
-
-    DistributionPlugin::Mailer.deliver_order_confirmation @order, request.host_with_port
-    session[:notice] = _('Order confirmed')
+    if @order.products.count > 0
+      @order.update_attributes! params[:order].merge(:status => 'confirmed')
+      DistributionPlugin::Mailer.deliver_order_confirmation @order, request.host_with_port
+      session[:notice] = _('Order confirmed')
+    else
+      session[:notice] = _('Can not confirm. Your order list is empty')
+    end
     redirect_to :action => :edit, :id => @order.id
   end
 
