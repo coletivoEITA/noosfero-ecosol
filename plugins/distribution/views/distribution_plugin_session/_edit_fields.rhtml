@@ -26,7 +26,7 @@
   <%= link_to _('cancel changes'), @session.new? ? {:action => :index} : params %>
 <% end %>
 
-<%= javascript_include_tag '/plugins/distribution/jquery.calendrical.js' %>
+<%= javascript_include_tag '/plugins/distribution/public/jquery.calendrical.js' %>
 <% javascript_tag do %>
   options = {isoTime: true}
   jQuery('#session_start_date, #session_start_time, #session_finish_date, #session_finish_time').calendricalDateTimeRange(options);
