@@ -214,8 +214,14 @@ body.plugin-distribution {
   height: 64px;
   padding-left: 5px;
 }
+.plugin-distribution a.button.colorbox-close:hover,
+.plugin-distribution input[type=submit]:hover {
+  background-color: #666;
+}
+.plugin-distribution a.button.colorbox-close,
 .plugin-distribution input[type=submit] {
   display: inline-block;
+  background: none;
   background-color: #000;
   color: #fff;
   font-weight: bold;
@@ -231,9 +237,6 @@ body.plugin-distribution {
   -mox-border-radius: 5px 5px 5px 5px;
   -webkit-border-radius: 5px 5px 5px 5px;
   -o-border-radius: 5px 5px 5px 5px;
-}
-.plugin-distribution input[type=submit]:hover {
-  background-color: #666;
 }
 
 .plugin-distribution .happening {
@@ -1042,7 +1045,7 @@ body.plugin-distribution {
   padding: 2px 0;
 }
 
-.action-distribution_plugin_session-new #lightbox, .action-distribution_plugin_session-edit #lightbox {
+.action-distribution_plugin_session-new #colorbox, .action-distribution_plugin_session-edit #colorbox {
   top: 80%;
 }
 
@@ -1701,12 +1704,32 @@ body.plugin-distribution {
 
 /* ----- popin stuff  ----- */
 
+.plugin-distribution #cboxTopLeft,
+.plugin-distribution #cboxTopCenter,
+.plugin-distribution #cboxTopRight,
+.plugin-distribution #cboxMiddleLeft,
+.plugin-distribution #cboxMiddleRight,
+.plugin-distribution #cboxBottomLeft,
+.plugin-distribution #cboxBottomCenter,
+.plugin-distribution #cboxBottomRight {
+  display: none;
+}
+.plugin-distribution #cboxOverlay {
+  background: black;
+  filter: alpha(opacity=45);
+}
+.plugin-distribution #cboxContent {
+  margin: 10px;
+  box-shadow: 0 0 10px black;
+  -webkit-box-shadow: 0 0 10px black;
+  -moz-box-shadow: 0 0 10px black;
+}
+
 .distribution-plugin-popin {
-  margin: -1em -1em 0 -1em;
   line-height: 20px;
 }
 .distribution-plugin-popin h1 {
-  margin: 0 -1px;
+  margin: 0;
   margin-bottom: 20px;
   padding: 15px 30px;
   background-color: #B1DFEF;
