@@ -17,7 +17,7 @@
         <%= (@session.orders? ? _('Open Orders (%{count})') : _('Cancelled Orders (%{count})')) % {:count => @session.orders.draft.count} %>
       </span>
 
-      <%= edit_arrow "#", false, :onclick => 'distribution_in_session_order_toggle(this); return false;', :class => "box-field" %>
+      <%= edit_arrow "#", false, :onclick => 'distribution.in_session_order_toggle(this); return false;', :class => "box-field" %>
       <div class="line"></div>
     </div>
 
@@ -32,7 +32,7 @@
     <div class="order-header">
       <span class="order-label"><%= _('Closed Orders (%{count})') % {:count => @session.orders.confirmed.count} %></span>
 
-      <%= edit_arrow "#", false, :onclick => 'distribution_in_session_order_toggle(this); return false;', :class => "box-field edit" %>
+      <%= edit_arrow "#", false, :onclick => 'distribution.in_session_order_toggle(this); return false;', :class => "box-field edit" %>
       <div class="line"></div>
     </div>
     <div class="order-content">

@@ -35,31 +35,31 @@
                 <script class="category-hierarchy" type="text/html">
                   {{ _.each(cat.hierarchy, function(cat) { }}
                     <span class="category">
-                      <a href=" " onclick='distribution_category_reselect(this, {{=JSON.stringify(cat)}}); return false;'>{{=cat.name}}</a>
+                      <a href=" " onclick='distribution.category_reselect(this, {{=JSON.stringify(cat)}}); return false;'>{{=cat.name}}</a>
                       <%= _(' > ') %>
                     </span>
                   {{ }); }}
-                  <a href=" " class="type" onclick="distribution_category_reselect_sub(); return false;"></a>
+                  <a href=" " class="type" onclick="distribution.category_reselect_sub(); return false;"></a>
                 </script>
                 <div> </div>
               </div>
 
               <div class="category-selected" style="display: none">
                 <small><%= _('This product is already categorized. In case you want to change its category,
-                             click above or %{search}.') % {:search => link_to_function(_('search another category'), 'distribution_category_select_another(this);')} %></small>
+                             click above or %{search}.') % {:search => link_to_function(_('search another category'), 'distribution.category_select_another(this);')} %></small>
               </div>
 
               <div class="category-type-select">
                 <script class="category-type-select-template" type="text/html">
                   <small><%= _('To end the categorization choose one the subcategories of the category "{{=cat.own_name}}":') %></small>
-                  <select id="product_type_category_id" name="product[type_category_id]", onchange='distribution_subcategory_select(this);'>
+                  <select id="product_type_category_id" name="product[type_category_id]", onchange='distribution.subcategory_select(this);'>
                     <option value=""></option>
                     {{ _.each(cat.subcats, function(subcat) { }}
                       <option value="{{=subcat.id}}" {{= subcat.id == selected ? "selected" : ""  }}>{{=subcat.name}}</option>
                     {{ }); }}
                   </select>
                   <small><%= _('or then %{link}.') % {:link => "
-                    <a href=' ' onclick=\"distribution_category_select_another(this); return false;\">#{_('search for another category')}</a>" } %>
+                    <a href=' ' onclick=\"distribution.category_select_another(this); return false;\">#{_('search for another category')}</a>" } %>
                   </small>
                 </script>
                 <div> </div>
@@ -76,9 +76,9 @@
                 <% if product.category %>
                   edit = jQuery("#our-product-<%=product.id%> .category-edit");
                   category = <%= product.json_for_category.to_json %>;
-                  distribution_category_template_hierarchy(edit);
-                  distribution_category_template_type_select(edit, "<%=product.type_category_id%>");
-                  distribution_category_toggle_view(edit, <%= product.type_category ? 1 : 2 %>);
+                  distribution.category_template_hierarchy(edit);
+                  distribution.category_template_type_select(edit, "<%=product.type_category_id%>");
+                  distribution.category_toggle_view(edit, <%= product.type_category ? 1 : 2 %>);
                 <% end %>
               <% end %>
             </div>
@@ -92,9 +92,9 @@
                 <%= labelled_field f, :margin_percentage, _('Margin'),
                   f.text_field(:margin_percentage, :class => 'small-input',
                                :value => product.own_margin_percentage, :oldvalue => product.own_margin_percentage, :defaultvalue => product.node.margin_percentage,
-                               :onkeyup => 'distribution_our_product_pmsync(this, true);') + ' ' + _('%') %>
+                               :onkeyup => 'distribution.our_product_pmsync(this, true);') + ' ' + _('%') %>
                 <div class="default-margin">
-                  <%= f.check_box :default_margin_percentage, :onchange => "distribution_our_product_toggle_referred(this)", :for => '#product_margin_percentage' %>
+                  <%= f.check_box :default_margin_percentage, :onchange => "distribution.our_product_toggle_referred(this)", :for => '#product_margin_percentage' %>
                   <%= f.label :default_margin_percentage, _('Use default margin') %>
                 </div>
 
@@ -119,11 +119,11 @@
             <div class="column-title"><%= _("use original") %></div>
             <div class="guideline">
               <%= f.check_box :default_name, :class => 'default-checkbox', :for => '#product_name',
-                :onchange => "distribution_our_product_toggle_referred(this)" unless product.default_name.nil? %>
+                :onchange => "distribution.our_product_toggle_referred(this)" unless product.default_name.nil? %>
               <%= f.check_box :default_description, :class => 'default-checkbox', :for => '#product_description',
-                :onchange => "distribution_our_product_toggle_referred(this)" unless product.default_description.nil? %>
+                :onchange => "distribution.our_product_toggle_referred(this)" unless product.default_description.nil? %>
               <%= f.check_box :default_price, :class => 'default-checkbox', :for => '#product_price, #product_unit_id, #product_minimum_selleable, #product_unit_detail',
-                :onchange => "distribution_our_product_toggle_referred(this)" unless product.default_price.nil? %>
+                :onchange => "distribution.our_product_toggle_referred(this)" unless product.default_price.nil? %>
             </div>
           </div>
 
@@ -137,8 +137,8 @@
                 </div>
               <% else %>
                 <div class="properties-block disabled-fields">
-                  <%= labelled_field f, :name, _('Name'), f.text_field(:name, :disabled => 'disabled', :onkeyup => 'distribution_our_product_sync_referred(this)') %>
-                  <%= labelled_field f, :description, _('Description'), f.text_area(:description, :disabled => 'disabled', :onkeyup => 'distribution_our_product_sync_referred(this)') %>
+                  <%= labelled_field f, :name, _('Name'), f.text_field(:name, :disabled => 'disabled', :onkeyup => 'distribution.our_product_sync_referred(this)') %>
+                  <%= labelled_field f, :description, _('Description'), f.text_area(:description, :disabled => 'disabled', :onkeyup => 'distribution.our_product_sync_referred(this)') %>
                 </div>
               <% end %>
 

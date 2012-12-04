@@ -12,7 +12,7 @@
         <div class="supplier-missing-products-column">
           <% slice.each do |product| %>
             <% data = {:product => {:supplier_id => @supplier.id, :supplier_product_id => product.id}}.to_json %>
-            <%= link_to_function product.name, "distribution_our_product_add_from_product(this, '#{url_for(:controller => :distribution_plugin_product, :action => :new)}', #{data});",
+            <%= link_to_function product.name, "distribution.our_product_add_from_product(this, '#{url_for(:controller => :distribution_plugin_product, :action => :new)}', #{data});",
             :class => 'supplier-missing-products-item' %>
           <% end %>
         </div>
@@ -24,6 +24,6 @@
 <% end %>
 
 <% unless @not_distributed_products.blank? %>
-  <%= link_to_function _('add all missing products from this supplier'), "distribution_our_product_add_missing_products(this, '#{url_for(:controller => :distribution_plugin_product, :action => :add_missing_products)}');" %>&emsp;
+  <%= link_to_function _('add all missing products from this supplier'), "distribution.our_product_add_missing_products(this, '#{url_for(:controller => :distribution_plugin_product, :action => :add_missing_products)}');" %>&emsp;
 <% end %>
 <%= link_to_function _('cancel'), '', :class => 'toggle-edit' %>

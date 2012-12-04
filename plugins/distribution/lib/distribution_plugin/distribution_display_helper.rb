@@ -84,7 +84,7 @@ module DistributionPlugin::DistributionDisplayHelper
     options[:class] ||= ''
     options[:onclick] ||= ''
     options[:class] += ' actions-circle toggle-edit'
-    options[:onclick] = "r = distribution_edit_arrow_toggle(this); #{options[:onclick]}; return r;" if toggle
+    options[:onclick] = "r = distribution.edit_arrow_toggle(this); #{options[:onclick]}; return r;" if toggle
 
     link_to content_tag('div', '', :class => 'actions-arrow'), anchor, options
   end

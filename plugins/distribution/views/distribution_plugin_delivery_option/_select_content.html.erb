@@ -4,11 +4,11 @@
       f.select(:add_delivery_options, @node.delivery_methods.collect{ |m| [m.name, m.id] }, {}, :multiple => '') %>
 
     <div id="delivery-menu">
-      <%= link_to_function _('add new'), "distribution_delivery_view_toggle()" %>
+      <%= link_to_function _('add new'), "distribution.delivery_view_toggle()" %>
       <%= link_to_function _('edit this'),
         "jQuery.get('#{url_for :controller => :distribution_plugin_delivery_option, :action => :method_edit, :session_id => @session.id}',
            { id: jQuery('#delivery-method-choose select').val() });" %>
-      <%= link_to_function _('remove method'), 
+      <%= link_to_function _('remove method'),
         "jQuery.post('#{url_for :controller => :distribution_plugin_delivery_option, :action => :method_destroy, :session_id => @session.id}',
            { id: jQuery('#delivery-method-choose select').val() });", :confirm => _('Are you sure you want to delete this method?') %>
     </div>

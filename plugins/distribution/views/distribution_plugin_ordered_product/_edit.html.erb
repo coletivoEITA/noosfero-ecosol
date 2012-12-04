@@ -1,4 +1,4 @@
-<div id="ordered-product-<%=ordered_product.id%>" class="value-row ordered-product" toggleedit="distribution_ordered_product_edit();">
+<div id="ordered-product-<%=ordered_product.id%>" class="value-row ordered-product" toggleedit="distribution.ordered_product_edit();">
   <% f.fields_for "ordered_product-#{ordered_product.id}", ordered_product do |f| %>
 
     <%= f.hidden_field :id %>
@@ -7,7 +7,7 @@
     <div>
       <div class="box-field supplier"><%= product.supplier.name %></div>
       <div class="box-field product"><%= product.name %></div>
-  
+
       <% if ordered_product.order.open? or (@admin_action and ordered_product.order.session.orders?) %>
         <div id=<%="product-quantity-#{ordered_product.id.to_s}"%> class="box-field product-quantity">
           <%= render :partial => "distribution_plugin_ordered_product/quantity", :locals => {:product => ordered_product, :f => f} %>
@@ -18,12 +18,12 @@
           <span class="lower"><%= product.unit.singular %></span>
         </div>
       <% end %>
-    
+
       <div id=<%="product-price-total-#{ordered_product.id.to_s}"%> class="box-field price-total">
         <%= render :partial => "distribution_plugin_ordered_product/price_total", :locals => {:product => ordered_product} %>
       </div>
     </div>
-  
+
     <div class="more-actions" style="display: none">
       <div class="box-field box-details">
         <% if @admin_action %>
@@ -35,12 +35,12 @@
                              :url => {:controller => 'distribution_plugin_ordered_product', :action => :destroy, :id => ordered_product.id} if ordered_product.order.open? %>
         <% end %>
       </div>
-  
+
       <div class="box-field price-with-unit"><%= price_with_unit_span product.price, product.unit %></div>
 
       <div class="cleaner"></div>
-    </div> 
-  
+    </div>
+
     <div class="cleaner"></div>
   <% end %>
 </div>

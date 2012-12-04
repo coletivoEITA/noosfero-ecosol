@@ -14,7 +14,7 @@
 
   <div class='table-content'>
     <% orders.each do |order| %>
-      <div id="in-session-order-<%=order.id%>" class="in-session-order value-row" toggleedit="distribution_in_session_order_toggle_edit();">
+      <div id="in-session-order-<%=order.id%>" class="in-session-order value-row" toggleedit="distribution.in_session_order_toggle_edit();">
         <%= render :partial => 'distribution_plugin_order/session_edit', :locals => {:order => order} %>
       </div>
     <% end %>

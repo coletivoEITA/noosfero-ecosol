@@ -19,7 +19,7 @@
     <div class="subtitle"><%= _('The following list of products are available in this cycle.') %></div>
     <div class="subtitle"><%= _('It was automatically created from the active products. See the list below and check for needed changes.') %></div>
     <%= lightbox_link_to _('Add product'), {:controller => :distribution_plugin_session, :action => :add_products, :id => @session.id}, :class => 'subtitle' %>
-  </div> 
+  </div>
 
   <div class="box-align">
     <div class='table-header'>
@@ -36,7 +36,7 @@
     <div class='table-content'>
       <% @session.products.unarchived.each do |p| %>
         <%if not p.supplier_product.nil? %>
-          <div id="session-product-<%=p.id%>" class='session-product value-row' toggleedit="distribution_session_product_edit();">
+          <div id="session-product-<%=p.id%>" class='session-product value-row' toggleedit="distribution.session_product_edit();">
             <%= render :partial => 'distribution_plugin_product/session_edit', :locals => {:p => p} %>
           </div>
         <% end %>

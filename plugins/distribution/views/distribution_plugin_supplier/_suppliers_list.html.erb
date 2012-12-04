@@ -3,7 +3,7 @@
   <strong><%=__("Esta busca não retornou nenhum produtor.") %></strong>
 <% else %>
   <% @suppliers.each do |supplier| %>
-    <div id="supplier-<%=supplier.id%>" class="supplier value-row" without-hover without-click-edit toggleedit='distribution_supplier_toggle_edit();'>
+    <div id="supplier-<%=supplier.id%>" class="supplier value-row" without-hover without-click-edit toggleedit='distribution.supplier_toggle_edit();'>
       <%= render :partial => 'supplier', :object => supplier %>
     </div>
   <% end %>
