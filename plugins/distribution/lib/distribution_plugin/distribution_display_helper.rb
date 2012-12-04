@@ -112,4 +112,15 @@ module DistributionPlugin::DistributionDisplayHelper
     content_tag 'input', '', html_options.merge(:onclick => function, :type => 'submit', :value => name)
   end
 
+  include ColorboxHelper
+
+  def colorbox_link_to label, url, options = {}
+    link_to label, url, colorbox_options(options)
+  end
+
+  def colorbox_close_link text, options = {}
+    link_to text, '#', colorbox_options(options, :close)
+  end
+
+
 end

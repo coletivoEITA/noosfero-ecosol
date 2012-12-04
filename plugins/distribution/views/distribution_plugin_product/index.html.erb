@@ -18,7 +18,7 @@
       <span class="<%= @node.margin_percentage.blank? ? 'none' : 'set' %>">
         <%= @node.margin_percentage ? ( _('%{margin} %') % {:margin => @node.margin_percentage} ) : _('no margin set') %>
       </span>
-      <%= lightbox_link_to _('change'), {:controller => :distribution_plugin_node, :action => :margins_change} %>
+      <%= colorbox_link_to _('change'), {:controller => :distribution_plugin_node, :action => :margins_change} %>
     </span>
 
     <h3><%= _('The products')%></h3>

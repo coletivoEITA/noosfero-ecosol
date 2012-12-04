@@ -1,3 +1,3 @@
 page.replace_html 'session-delivery-options', :partial => 'index', :locals => {:session => @session}
-page << 'lightbox.prototype.deactivate()'
+page << 'jQuery.colorbox.close()'
 

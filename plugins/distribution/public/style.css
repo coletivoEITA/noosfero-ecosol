@@ -1716,6 +1716,7 @@ body.plugin-distribution {
 }
 .plugin-distribution #cboxOverlay {
   background: black;
+  opacity: 0.45 !important;
   filter: alpha(opacity=45);
 }
 .plugin-distribution #cboxContent {

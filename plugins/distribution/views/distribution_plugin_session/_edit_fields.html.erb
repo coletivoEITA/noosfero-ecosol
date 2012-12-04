@@ -15,7 +15,7 @@
       <div id='session-delivery-options' class="subtitle">
         <%= render :partial => 'distribution_plugin_delivery_option/index' %>
       </div>
-      <%= lightbox_link_to _('Add method'), { :controller => :distribution_plugin_delivery_option, :action => "select", :session_id => @session.id }, :class => 'session-add-delivery-option subtitle'  %>
+      <%= colorbox_link_to _('Add method'), { :controller => :distribution_plugin_delivery_option, :action => "select", :session_id => @session.id }, :class => 'session-add-delivery-option subtitle'  %>
     </div>
 
     <div class="cleaner"></div>

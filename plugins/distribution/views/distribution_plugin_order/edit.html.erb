@@ -70,7 +70,7 @@
                   <%= link_to _('change order'), {:controller => :distribution_plugin_order, :action => :reopen, :id => order.id}  %>
                   <%= _('(before the closing)') %>&emsp;
                 <% end %>
-                <%= lightbox_link_to _('send message to the managers'), {:controller => :distribution_plugin_message, :action => :new_to_admins} %>
+                <%= colorbox_link_to _('send message to the managers'), {:controller => :distribution_plugin_message, :action => :new_to_admins} %>
               </div>
             </div>
           <% end %>

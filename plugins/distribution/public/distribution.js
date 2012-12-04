@@ -442,7 +442,6 @@ distribution = {
 
   colorbox: function (options) {
     options.innerWidth = 500;
-    options.opacity = 0.45
     jQuery.colorbox(options);
   },
 

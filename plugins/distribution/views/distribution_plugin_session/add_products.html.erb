@@ -8,7 +8,7 @@
         <%= _("You already have all your distributed products added") %>
       </div>
 
-      <%= link_to_function 'close', 'lightbox.prototype.deactivate()' %>
+      <%= colorbox_close_link _('close') %>
     <% else %>
       <div>
         <%= label_tag :products_id, _('Search for a product in our products') %>
@@ -26,7 +26,7 @@
       </div>
 
       <%= submit_tag _('Send') %>
-      <%= link_to_function _('cancel'), 'lightbox.prototype.deactivate()' %>
+      <%= colorbox_close_link _('cancel') %>
     <% end %>
 
   <% end %>
