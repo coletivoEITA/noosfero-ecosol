@@ -16,10 +16,6 @@ class DistributionPluginMyprofileController < MyProfileController
     @admin_action = true
   end
 
-  def before_contents
-    return unless custom_layout?
-  end
-
   def content_classes
     "plugin-distribution plugin-distribution-layout"
   end

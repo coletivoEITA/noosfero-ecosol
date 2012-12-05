@@ -445,10 +445,6 @@ distribution = {
     jQuery.colorbox(options);
   },
 
-  add_plugin_class: function () {
-    if (jQuery('body').attr('class').indexOf('distribution') > 0)
-      jQuery('body').addClass('plugin-distribution');
-  },
 }
 
 /* ----- events  ----- */
@@ -461,7 +457,6 @@ jQuery('.plugin-distribution .table-header .box-field').live('click', distributi
 
 jQuery(document).click(distribution.document_click);
 jQuery(document).ready(distribution.open_anchor);
-jQuery(document).ready(distribution.add_plugin_class);
 jQuery(window).bind('hashchange', distribution.open_anchor);
 
 /* ----- ends events  ----- */

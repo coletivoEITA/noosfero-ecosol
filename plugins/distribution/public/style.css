@@ -12,12 +12,25 @@ body.plugin-distribution {
   margin-left: -20px;
   margin-right: -20px;
 }
+.plugin-distribution th,td {
+  border: none;
+  padding: 0;
+  height: auto;
+  font-size: inherit;
+  border-collapse: initial;
+  font-weight: initial;
+  text-align: left;
+}
+.plugin-distribution tr:hover td {
+  background-color: initial;
+}
 
 /* ----- ends override some noosfero's css  ----- */
 
 /* ----- layout stuff  ----- */
 
-.plugin-distribution-layout .page-title {
+.plugin-distribution-layout .page-title,
+.distribution-enabled .page-title {
   display: none !important;
 }
 .plugin-distribution-layout .no-boxes h1 {
@@ -26,17 +39,17 @@ body.plugin-distribution {
 .plugin-distribution-layout #profile-header {
   display: none !important;
 }
-.plugin-distribution-layout h2 {
-  color: #036475 !important;
-  margin-bottom: 7px !important;
-  height: 44px !important;
+.plugin-distribution-layout #content h2 {
+  color: #036475;
+  margin-bottom: 7px;
+  height: 44px;
 }
-.plugin-distribution-layout h2 a {
-  text-decoration: none !important;
+.plugin-distribution-layout #content h2 a {
+  text-decoration: none;
 }
-.plugin-distribution-layout h3 {
-  text-transform: uppercase !important;
-  font-size: 13px !important;
+.plugin-distribution-layout #content h3 {
+  text-transform: uppercase;
+  font-size: 13px;
 }
 
 /* ----- ends layout stuff  ----- */
@@ -486,6 +499,52 @@ body.plugin-distribution {
 }
 
 /* ----- end order block stuff  ----- */
+
+/* ----- common stuff  ----- */
+
+#distribution-plugin-sessions-gadget {
+  margin-bottom: 30px;
+}
+#distribution-plugin-sessions-gadget #all-sessions {
+  float: right;
+}
+#distribution-plugin-sessions-gadget h2 {
+  color: #036475;
+}
+
+#distribution-plugin-sessions-gadget td {
+  padding-right: 8px;
+  vertical-align: top;
+}
+#distribution-plugin-sessions-gadget td.first-column {
+  width: 300px;
+}
+#distribution-plugin-sessions-gadget td.second-column {
+  width: 400px;
+}
+#distribution-plugin-sessions-gadget td.third-column {
+  vertical-align: bottom;
+}
+#distribution-plugin-sessions-gadget td.third-column form {
+  float: right;
+  clear: both;
+}
+#distribution-plugin-sessions-gadget td.third-column form input {
+  margin: 0;
+  margin-bottom: 8px;
+  width: 140px;
+}
+
+#distribution-plugin-sessions-gadget .session .happening {
+  line-height: 20px;
+  text-transform: uppercase;
+}
+#distribution-plugin-sessions-gadget .session .info {
+  background: #DDF2C5;
+  padding-top: 8px;
+}
+
+/* ----- ends common stuff  ----- */
 
 /* ----- session timeline  ----- */
 
@@ -1481,6 +1540,26 @@ body.plugin-distribution {
 
 /* ----- ends session view stuff  ----- */
 
+/* ----- session date stuff  ----- */
+
+.plugin-distribution #session-dates th {
+  width: 80px;
+  vertical-align: top;
+}
+
+.plugin-distribution .orders-date.happening {
+  margin-left: -168px;
+  display: inline-block;
+  padding: 0 8px;
+}
+.plugin-distribution .orders-date.happening span {
+  text-transform: uppercase;
+  width: 156px;
+  display: inline-block;
+}
+
+/* ----- ends session date stuff  ----- */
+
 /* ----- orders stuff  ----- */
 
 .plugin-distribution .orders #consumer-new-order {
@@ -1510,17 +1589,6 @@ body.plugin-distribution {
 }
 .plugin-distribution .orders #years-filter a {
   font-weight: bold;
-}
-
-.plugin-distribution .orders .orders-date.happening {
-  margin-left: -168px;
-  display: inline-block;
-  padding: 0 8px;
-}
-.plugin-distribution .orders .orders-date.happening span {
-  text-transform: uppercase;
-  width: 156px;
-  display: inline-block;
 }
 
 .plugin-distribution .orders #session-others,

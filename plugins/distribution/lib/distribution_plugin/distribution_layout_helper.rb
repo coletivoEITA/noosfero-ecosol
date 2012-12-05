@@ -32,7 +32,10 @@ module DistributionPlugin::DistributionLayoutHelper
   def render_header
     return unless @node and @node.collective?
     output = render :file => 'distribution_plugin_layouts/default'
-    output += render :file => 'distribution_plugin_gadgets/sessions' if on_homepage?
+    if on_homepage?
+      extend DistributionPlugin::DistributionProductHelper
+      output += render :file => 'distribution_plugin_gadgets/sessions'
+    end
     output
   end
 

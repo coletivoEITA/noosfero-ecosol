@@ -12,9 +12,6 @@ class DistributionPluginProfileController < ProfileController
     @user_node = DistributionPluginNode.find_or_create current_user.person if current_user
   end
 
-  def before_contents
-  end
-
   def content_classes
     "plugin-distribution plugin-distribution-layout"
   end
