@@ -1,5 +1,7 @@
 class DistributionPluginDistributedProduct < DistributionPluginProduct
 
+  after_save :save_supplier_product
+
   alias_method :super_default_name, :default_name
   def default_name
     dummy? ? nil : super_default_name
@@ -22,7 +24,7 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
 
     @supplier_product = super
     # automatically create a product if supplier is dummy
-    if dummy?
+    if !own? and dummy?
       @supplier_product ||= DistributionPluginDistributedProduct.new(:node => supplier.node, :supplier => supplier.node.self_supplier)
     end
 
@@ -30,7 +32,7 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
   end
   def supplier_product=(value)
     if value.is_a?(Hash)
-      supplier_product.attributes = value
+      supplier_product.attributes = value if supplier_product
     else
       @supplier_product = value
     end
@@ -48,11 +50,10 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
     s = node.suppliers.from_node(product.node).first
     raise "Supplier not found" if s.blank?
 
+    @supplier_product = product
     self.name ||= product.name
     self.supplier = s
     self.save!
-    self.from_products << product unless self.from_products.include? product
-    @supplier_product = product
   end
 
   def self.json_for_category(c)
@@ -65,6 +66,13 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
   end
   def json_for_category
     self.class.json_for_category(self.category) if self.category
+  end
+
+  protected
+
+  def save_supplier_product
+    return unless supplier_product
+    self.from_products << supplier_product unless self.from_products.include? supplier_product
   end
 
 end
