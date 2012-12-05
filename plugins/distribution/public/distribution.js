@@ -22,17 +22,17 @@ distribution = {
 
 
   calculate_price: function (price_input, margin_input, base_price_input) {
-    var price = parseFloat(jQuery(price_input).val());
-    var base_price = parseFloat(jQuery(base_price_input).val());
-    var margin = parseFloat(jQuery(margin_input).val());
+    var price = parseFloat(jQuery(price_input).val().replace(',','.'));
+    var base_price = parseFloat(jQuery(base_price_input).val().replace(',','.'));
+    var margin = parseFloat(jQuery(margin_input).val().replace(',','.'));
 
     var value = distribution.currency( base_price + (margin / 100) * base_price );
-    jQuery(price_input).val( isNaN(value) ? base_price_input.val() : value );
+    jQuery(price_input).val( isNaN(value) ? base_price_input.val().replace(',','.') : value );
   },
   calculate_margin: function (margin_input, price_input, base_price_input) {
-    var price = parseFloat(jQuery(price_input).val());
-    var base_price = parseFloat(jQuery(base_price_input).val());
-    var margin = parseFloat(jQuery(margin_input).val());
+    var price = parseFloat(jQuery(price_input).val().replace(',','.'));
+    var base_price = parseFloat(jQuery(base_price_input).val().replace(',','.'));
+    var margin = parseFloat(jQuery(margin_input).val().replace(',','.'));
 
     var value = distribution.currency( ((price - base_price) / base_price ) * 100 );
     jQuery(margin_input).val( isFinite(value) ? value : '' );
@@ -192,11 +192,11 @@ distribution = {
     if (to_price || price_input.get(0).disabled)
       distribution.calculate_price(price_input, margin_input, buy_price_input);
     else {
-      var oldvalue = parseFloat(margin_input.val());
+      var oldvalue = parseFloat(margin_input.val().replace(',','.'));
       distribution.calculate_margin(margin_input, price_input, buy_price_input);
-      var newvalue = parseFloat(margin_input.val());
+      var newvalue = parseFloat(margin_input.val().replace(',','.'));
       if (newvalue != oldvalue) {
-        var checked = newvalue == parseFloat(margin_input.attr('defaultvalue'));
+        var checked = newvalue == parseFloat(margin_input.attr('defaultvalue').toString().replace(',','.'));
         default_margin_input.attr('checked', checked ? 'checked' : null);
         margin_input.get(0).disabled = checked;
       }
@@ -367,7 +367,7 @@ distribution = {
   },
 
   currency: function (value) {
-    return parseFloat(value).toFixed(2);
+    return parseFloat(value.toString().replace(',','.')).toFixed(2);
   },
 
   value_row: {
