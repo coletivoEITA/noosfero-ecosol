@@ -68,7 +68,7 @@
               <% javascript_tag do %>
                 jQuery("#our-product-<%=product.id%> #product_category_id").tokenInput('<%= url_for :controller => :distribution_plugin_product, :action => :search_category %>',
                 {searchDelay: 300, tokenLimit: 1, theme: 'distribution', preventDuplicates: true, <%= jquery_token_input_messages_json('') %>,
-                onAdd: distribution_category_select });
+                onAdd: distribution.category_select });
 
                 // token input cleans the preexistent value :(
                 jQuery("#our-product-<%=product.id%> #product_category_id").val("<%=product.category_id%>");
@@ -150,7 +150,7 @@
         <% javascript_tag do %>
           el = jQuery('#our-product-<%=product.new_record? ? 'add' : product.id%>');
           el.find('input[onchange]').each(function() { this.onchange(); });
-          el.find('.properties-block').click(distribution_our_product_enable_if_disabled);
+          el.find('.properties-block').click(distribution.our_product_enable_if_disabled);
         <% end %>
       </div>
 
