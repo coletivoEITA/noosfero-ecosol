@@ -16,11 +16,19 @@ class ProductsBlock < Block
     _('This block presents a list of your products.')
   end
 
-  def content
+  def content(args={})
     block_title(title) +
     content_tag(
       'ul',
-      products.map {|product| content_tag('li', link_to(product.name, product.url, :style => 'background-image:url(%s)' % ( product.image ? product.image.public_filename(:minor) : product.default_image('minor'))), :class => 'product' )}
+      products.map {|product|
+        content_tag('li',
+          link_to( product.name,
+                   product.url,
+                   :style => 'background-image:url(%s)' % product.default_image('minor')
+                 ),
+          :class => 'product'
+        )
+      }
     )
   end
 

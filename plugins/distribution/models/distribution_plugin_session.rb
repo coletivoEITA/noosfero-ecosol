@@ -1,15 +1,16 @@
 class DistributionPluginSession < ActiveRecord::Base
+
   belongs_to :node, :class_name => 'DistributionPluginNode', :foreign_key => :node_id
 
   has_many :delivery_options, :class_name => 'DistributionPluginDeliveryOption', :foreign_key => :session_id, :dependent => :destroy
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 
-  has_many :orders, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc'
-  has_many :orders_confirmed, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id asc',
-    :conditions => ['status = ?', 'confirmed']
-  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :order => 'id asc'
+  has_many :orders, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC'
+  has_many :orders_confirmed, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC',
+    :conditions => ['distribution_plugin_orders.status = ?', 'confirmed']
+  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :order => 'name ASC'
 
-  has_many :from_products, :through => :products, :order => 'id asc'
+  has_many :from_products, :through => :products, :order => 'name ASC'
   has_many :from_nodes, :through => :products
   has_many :to_nodes, :through => :products
 
@@ -55,19 +56,18 @@ class DistributionPluginSession < ActiveRecord::Base
   STATUS_SEQUENCE = [
     'new', 'edition', 'orders', 'closed'
   ]
-  
+
   validates_presence_of :node
   validates_presence_of :name, :if => :not_new?
   validates_presence_of :start, :if => :not_new?
-  validates_presence_of :delivery_options, :if => :not_new?
-  validates_associated :delivery_options, :if => :not_new?
+  validates_presence_of :delivery_options, :unless => :new_or_edition?
   validates_inclusion_of :status, :in => STATUS_SEQUENCE, :if => :not_new?
   validates_numericality_of :margin_percentage, :allow_nil => true, :if => :not_new?
   validates_numericality_of :margin_fixed, :allow_nil => true, :if => :not_new?
   validate :validate_orders_dates, :if => :not_new?
   validate :validate_delivery_dates, :if => :not_new?
 
-  extend SplitDatetime::ClassMethods
+  extend SplitDatetime::SplitMethods
   split_datetime :start
   split_datetime :finish
   split_datetime :delivery_start
@@ -104,6 +104,9 @@ class DistributionPluginSession < ActiveRecord::Base
   def edition?
     status == 'edition'
   end
+  def new_or_edition?
+    status == 'new' or status == 'edition'
+  end
   def orders?
     now = DateTime.now
     status == 'orders' && ( (self.start <= now && self.finish.nil?) || (self.start <= now && self.finish >= now) )
@@ -113,10 +116,11 @@ class DistributionPluginSession < ActiveRecord::Base
     status == 'orders' && ( (self.delivery_start <= now && self.delivery_finish.nil?) || (self.delivery_start <= now && self.delivery_finish >= now) )
   end
 
-  def products_for_order_by_supplier
-    self.products.unarchived.all(:conditions => ['price > 0']).group_by{ |sp| sp.supplier }
+  def products_for_order_by_supplier(conditions='')
+    conditions = conditions == '' ? 'price > 0':'price > 0 AND ' + conditions
+    self.products.unarchived.all(:conditions => conditions).group_by{ |sp| sp.supplier }
   end
-  
+
   def ordered_products_by_suppliers
     self.ordered_session_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
       total_price_asked = total_parcel_price = 0
@@ -132,7 +136,7 @@ class DistributionPluginSession < ActiveRecord::Base
   after_create :add_distributed_products
   def add_distributed_products
     already_in = self.products.unarchived.all
-    node.products.unarchived.distributed.map do |product|
+    node.products.unarchived.distributed.active.each do |product|
       p = already_in.find{ |f| f.from_product == product }
       unless p
         p = DistributionPluginSessionProduct.create_from_distributed(self, product)
@@ -168,12 +172,12 @@ class DistributionPluginSession < ActiveRecord::Base
   end
 
   def validate_orders_dates
-    return if self.new?
-    errors.add_to_base(_("Invalid orders' period")) unless start < finish
+    return if self.new? or self.finish.nil?
+    errors.add_to_base(_("Invalid orders' period")) unless self.start < self.finish
   end
 
   def validate_delivery_dates
-    return if self.new?
+    return if self.new? or delivery_start.nil? or delivery_finish.nil?
     errors.add_to_base(_("Invalid delivery' period")) unless delivery_start < delivery_finish
     errors.add_to_base(_("Delivery' period before orders' period")) unless finish < delivery_start
   end

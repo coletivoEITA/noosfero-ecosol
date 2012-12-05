@@ -1,0 +1,9 @@
+<div class="menu-header"><%= _("Collective consumption network") %></div>
+
+<div class="menu-logo" style="background: url('<%= @node.image.public_filename if @node.image %>') no-repeat;">
+  <div id="menu-title"><%= @profile.name %></div>
+</div>
+
+<div class="menu-button-container">
+  <%= display_header_buttons %>
+</div>

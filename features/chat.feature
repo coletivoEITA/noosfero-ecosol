@@ -23,7 +23,7 @@ Feature: chat
   Scenario: provide the chat online users content
     Given feature "xmpp_chat" is enabled on environment
     And I am logged in as "tame"
-    Then I should see "Online friends "
+    Then I should see "Friends in chat "
 
   @selenium
   Scenario: provide the chat online users list
@@ -43,9 +43,10 @@ Feature: chat
     Given I am on Tame's homepage
     Then I should not see "Open chat" link
 
+  @selenium
   Scenario: not provide the chat online users list when environment not support that
     Given I am logged in as "tame"
-    Then I should not see "Online friends "
+    Then I should not see "Friends in chat "
 
   Scenario: block access to chat when environment not support that
     Given I am logged in as "tame"
@@ -98,6 +99,7 @@ Feature: chat
     And the "#chat-busy" should be visible
     And the "#chat-disconnect" should be visible
 
+  @selenium
   Scenario: link to open chatroom of a community
     Given the following communities
       | identifier | name |
@@ -108,6 +110,7 @@ Feature: chat
     When I go to Autoramas's profile
     Then I should see "Enter chat room" link
 
+  @selenium
   Scenario: not see link to open chatroom of a community if not a member
     Given the following communities
       | identifier | name |
@@ -117,6 +120,7 @@ Feature: chat
     When I go to Autoramas's profile
     Then I should not see "Enter chat room" link
 
+  @selenium
   Scenario: not see link to open chatroom of a community if xmpp_chat disabled
     Given the following communities
       | identifier | name |

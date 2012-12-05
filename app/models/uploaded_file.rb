@@ -4,7 +4,11 @@
 # of the file itself is kept. (FIXME?)
 class UploadedFile < Article
 
-  track_actions :upload_image, :after_create, :keep_params => ["view_url", "thumbnail_path", "parent.url", "parent.name"], :if => Proc.new { |a| a.published? && a.image? && !a.parent.nil? && a.parent.gallery? }
+  def self.type_name
+    _('File')
+  end
+
+  track_actions :upload_image, :after_create, :keep_params => ["view_url", "thumbnail_path", "parent.url", "parent.name"], :if => Proc.new { |a| a.published? && a.image? && !a.parent.nil? && a.parent.gallery? }, :custom_target => :parent
 
   include ShortFilename
 
@@ -18,12 +22,14 @@ class UploadedFile < Article
 
   validates_size_of :title, :maximum => 60, :if => (lambda { |file| !file.title.blank? })
 
+  sanitize_filename
+
   before_create do |uploaded_file|
     uploaded_file.is_image = true if uploaded_file.image?
   end
 
   def thumbnail_path
-    self.image? ? self.full_filename(:thumb).gsub(File.join(RAILS_ROOT, 'public'), '') : nil
+    self.image? ? self.full_filename(:display).gsub(File.join(RAILS_ROOT, 'public'), '') : nil
   end
 
   def display_title
@@ -48,9 +54,11 @@ class UploadedFile < Article
     :thumbnail_class => Thumbnail,
     :max_size => 5.megabytes # remember to update validate message below
 
-  validates_attachment :size => N_("%{fn} of uploaded file was larger than the maximum size of 5.0 MB")
+  validates_attachment :size => N_("%{fn} of uploaded file was larger than the maximum size of 5.0 MB").fix_i18n
 
   delay_attachment_fu_thumbnails
+
+  postgresql_attachment_fu
 
   def self.icon_name(article = nil)
     if article
@@ -59,7 +67,7 @@ class UploadedFile < Article
       'upload-file'
     end
   end
-  
+
   def mime_type
     content_type
   end
@@ -121,6 +129,12 @@ class UploadedFile < Article
     end
   end
 
+  def extension
+    dotindex = self.filename.rindex('.')
+    return nil unless dotindex
+    self.filename[(dotindex+1)..-1].downcase
+  end
+
   def allow_children?
     false
   end
@@ -132,4 +146,9 @@ class UploadedFile < Article
   def gallery?
     self.parent && self.parent.folder? && self.parent.gallery?
   end
+
+  def uploaded_file?
+    true
+  end
+
 end

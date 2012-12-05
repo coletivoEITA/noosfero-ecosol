@@ -1,0 +1,5 @@
+<div id=distribution-plugin-sessions-gadget" class="plugin-distribution plugin-distribution-layout">
+  <% @node.sessions.open.all(:limit => 2).each do |session| %>
+    <%= render :partial => 'distribution_plugin_gadgets/session', :locals => {:session => session} %>
+  <% end %>
+</div>

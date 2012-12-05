@@ -212,14 +212,6 @@ class RoutingTest < ActionController::IntegrationTest
     assert_routing('/doc', :controller => 'doc', :action => 'index')
   end
 
-  # browse controller
-  def test_browse_routing
-    assert_routing('/browse/people', :controller => 'browse', :action => 'people')
-    assert_routing('/browse/people/more_popular', :controller => 'browse', :action => 'people', :filter => 'more_popular')
-    assert_routing('/browse/communities', :controller => 'browse', :action => 'communities')
-    assert_routing('/browse/communities/more_active', :controller => 'browse', :action => 'communities', :filter => 'more_active')
-  end
-
   def test_invite_routing
     assert_routing('/profile/colivre/invite/friends', :controller => 'invite', :action => 'select_address_book', :profile => 'colivre')
   end
@@ -227,6 +219,13 @@ class RoutingTest < ActionController::IntegrationTest
   def test_chat_routing
     assert_routing('/chat', :controller => 'chat', :action => 'index')
     assert_routing('/chat/avatar/chemical-brothers', :controller => 'chat', :action => 'avatar', :id => 'chemical-brothers')
+  end
+
+  def test_plugins_generic_routes
+    assert_routing('/plugin/foo/public_bar/play/1', {:controller => 'foo_plugin_public_bar', :action => 'play', :id => '1'})
+    assert_routing('/profile/test/plugin/foo/profile_bar/play/1', {:controller => 'foo_plugin_profile_bar', :action => 'play', :id => '1', :profile => 'test'})
+    assert_routing('/myprofile/test/plugin/foo/myprofile_bar/play/1', {:controller => 'foo_plugin_myprofile_bar', :action => 'play', :id => '1', :profile => 'test'})
+    assert_routing('/admin/plugin/foo/admin_bar/play/1', {:controller => 'foo_plugin_admin_bar', :action => 'play', :id => '1'})
   end
 
 end

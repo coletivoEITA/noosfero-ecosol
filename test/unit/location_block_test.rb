@@ -1,6 +1,9 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class LocationBlockTest < Test::Unit::TestCase
+class LocationBlockTest < ActiveSupport::TestCase
+
+  ActionView::Base.send :include, BlockHelper
+  include BoxesHelper
 
   def setup
     @profile = create_user('lele').person
@@ -15,22 +18,23 @@ class LocationBlockTest < Test::Unit::TestCase
   end
 
   should 'display no localization map without lat' do
-    assert_tag_in_string block.content, :tag => 'i'
-  end
-
-  should 'display localization map' do
-    profile.lat = 0
-    profile.lng = 0
-    profile.save!
-    assert_tag_in_string block.content, :tag => 'img'
+    assert_tag_in_string extract_block_content(block.content), :tag => 'i'
   end
 
   should 'be editable' do
     assert LocationBlock.new.editable?
   end
-  
+
   should 'default title be blank by default' do
     assert_equal '', LocationBlock.new.title
+  end
+
+  should 'use google maps api v3' do
+    @block.owner.lat = '-12.34'; @block.owner.save!
+    content = extract_block_content(@block.content)
+
+    assert_match 'http://maps.google.com/maps/api/staticmap', content
+    assert_no_match /key=/, content
   end
 
 end

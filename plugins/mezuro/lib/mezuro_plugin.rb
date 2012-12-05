@@ -1,3 +1,9 @@
+require 'yaml'
+
+Savon.configure do |config|
+  config.log = HTTPI.log = (RAILS_ENV == 'development')
+end
+
 class MezuroPlugin < Noosfero::Plugin
 
   def self.plugin_name
@@ -8,20 +14,12 @@ class MezuroPlugin < Noosfero::Plugin
     _("A metric analizer plugin.")
   end
 
-  def control_panel_buttons
-    if context.profile.community?
-      { :title => 'Mezuro projects', :icon => 'mezuro', :url => {:controller => 'mezuro_plugin_myprofile', :action => 'index'} }
-    end
+  def content_types
+    [MezuroPlugin::ConfigurationContent, MezuroPlugin::ProjectContent]
   end
 
-  def profile_tabs
-    if context.profile.community? && !MezuroPlugin::Project.by_profile(context.profile).blank?
-      MezuroPlugin::Project.by_profile(context.profile).with_tab.map do |project|
-       { :title => 'Mezuro ' + project.name,
-         :id => 'mezuro-project-'+project.identifier,
-         :content => expanded_template(__FILE__,"views/show.html.erb",{:current_project => project}) }
-      end
-    end
+  def stylesheet?
+    true
   end
 
 end

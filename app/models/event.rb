@@ -1,5 +1,9 @@
 class Event < Article
 
+  def self.type_name
+    _('Event')
+  end
+
   settings_items :address, :type => :string
 
   def link=(value)
@@ -22,7 +26,7 @@ class Event < Article
 
   validates_each :start_date do |event,field,value|
     if event.end_date && event.start_date && event.start_date > event.end_date
-      event.errors.add(:start_date, _('%{fn} cannot come before end date.'))
+      event.errors.add(:start_date, _('%{fn} cannot come before end date.').fix_i18n)
     end
   end
 
@@ -117,6 +121,10 @@ class Event < Article
   end
 
   def tiny_mce?
+    true
+  end
+
+  def notifiable?
     true
   end
 

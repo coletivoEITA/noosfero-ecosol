@@ -6,24 +6,7 @@ body.plugin-distribution {
 .plugin-distribution .main-block {
   text-align: left;
 }
-#plugin-distribution-layout #content {
-  border-top: 0px;
-  margin-top: 100px;
-}
-#plugin-distribution-layout #content #distribution-plugin-header h1 {
-  border-bottom: 0px;
-  color: #000;
-  text-align: left;
-}
-#plugin-distribution-layout #content .no-boxes h1 {
-  font-variant: normal;
-}
-#plugin-distribution-layout #profile-header {
-  display: none;
-}
-#plugin-distribution-layout .page-title {
-  display: none !important;
-}
+
 .plugin-distribution .page,
 .plugin-distribution .admin-page {
   margin-left: -20px;
@@ -31,6 +14,125 @@ body.plugin-distribution {
 }
 
 /* ----- ends override some noosfero's css  ----- */
+
+/* ----- layout stuff  ----- */
+
+.plugin-distribution-layout .page-title {
+  display: none !important;
+}
+.plugin-distribution-layout .no-boxes h1 {
+  font-variant: normal !important;
+}
+.plugin-distribution-layout #profile-header {
+  display: none !important;
+}
+.plugin-distribution-layout h2 {
+  color: #036475 !important;
+  margin-bottom: 7px !important;
+  height: 44px !important;
+}
+.plugin-distribution-layout h2 a {
+  text-decoration: none !important;
+}
+.plugin-distribution-layout h3 {
+  text-transform: uppercase !important;
+  font-size: 13px !important;
+}
+
+/* ----- ends layout stuff  ----- */
+
+/* ----- header stuff  ----- */
+
+#distribution-plugin-header {
+  margin: 10px 0 30px -39px;
+  width: 1040px;
+}
+#distribution-plugin-header #menu-title {
+  color: black;
+  text-align: left;
+  margin: 0;
+  padding-top: 55px;
+  font-size: 24px;
+  font-weight: lighter;
+}
+
+#distribution-plugin-header .menu-header {
+  background-color: #d9d2e4;
+  padding: 8px 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+#distribution-plugin-header .menu-logo {
+  height: 90px;
+  padding-left: 39px;
+  text-transform: capitalize;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+#distribution-plugin-header .menu-button-container {
+  background: #646158;
+  padding: 4px 0 4px 39px;
+}
+#distribution-plugin-header .menu-button {
+  display: inline-block;
+  padding: 7px 6px;
+  margin-right: 4px;
+  color: black;
+  background-color: white;
+  border: 1px solid white;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+#distribution-plugin-header .menu-selected {
+  font-weight: bold;
+}
+#distribution-plugin-header .menu-button:hover,
+#distribution-plugin-header .menu-selected {
+  color: white;
+  border: 1px solid white;
+  background-color: transparent;
+}
+
+/* ----- ends header stuff  ----- */
+
+/* ----- menus  ----- */
+
+#distribution-plugin-admin-sidebar {
+  width: 176px;
+  float: left;
+  margin-top: 50px;
+}
+#distribution-plugin-admin-sidebar .menu-entry {
+  float: left;
+  clear: both;
+  display: block;
+  width: 170px;
+  margin: 1px 0px;
+  padding: 3px 0px 3px 8px;
+  color: black;
+  text-decoration: none;
+  background-color: #E5E0EC;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+#distribution-plugin-admin-sidebar .menu-entry:hover {
+  background-color: #D9D2E4;
+}
+#distribution-plugin-admin-sidebar .menu-selected {
+  background-color: #D9D2E4;
+  font-weight: bold;
+}
+
+/* ----- ends menus  ----- */
 
 /* ----- common stuff  ----- */
 
@@ -67,18 +169,6 @@ body.plugin-distribution {
 }
 
 
-#plugin-distribution-layout h2 a {
-  text-decoration: none;
-}
-#plugin-distribution-layout #content h2 {
-  color: #036475;
-  margin-bottom: 7px;
-  height: 44px;
-}
-#plugin-distribution-layout #content h3 {
-  text-transform: uppercase;
-  font-size: 13px;
-}
 .plugin-distribution small {
   font-size: 10px;
 }
@@ -124,8 +214,14 @@ body.plugin-distribution {
   height: 64px;
   padding-left: 5px;
 }
+.plugin-distribution a.button.colorbox-close:hover,
+.plugin-distribution input[type=submit]:hover {
+  background-color: #666;
+}
+.plugin-distribution a.button.colorbox-close,
 .plugin-distribution input[type=submit] {
   display: inline-block;
+  background: none;
   background-color: #000;
   color: #fff;
   font-weight: bold;
@@ -142,8 +238,9 @@ body.plugin-distribution {
   -webkit-border-radius: 5px 5px 5px 5px;
   -o-border-radius: 5px 5px 5px 5px;
 }
-.plugin-distribution input[type=submit]:hover {
-  background-color: #666;
+
+.plugin-distribution .happening {
+  background-color: #ffe546;
 }
 
 .plugin-distribution .line-label {
@@ -152,7 +249,7 @@ body.plugin-distribution {
   font-weight: bold;
 }
 
-.plugin-distribution #content .title {
+.plugin-distribution .title {
   font-weight: bold;
   clear: both;
   margin-bottom: 8px;
@@ -169,10 +266,8 @@ body.plugin-distribution {
 }
 .plugin-distribution .field label {
   font-weight: bold;
-  line-height: 27px;
+  line-height: 20px;
   margin-top: 4px;
-}
-.plugin-distribution .field label {
   float: left;
 }
 .plugin-distribution .field .field-box {
@@ -412,13 +507,13 @@ body.plugin-distribution {
 .plugin-distribution .session-timeline-selected-item {
   color: black;
   text-decoration: none;
+  font-weight: bold;
 }
 .plugin-distribution .session-timeline-passed-item,
 .plugin-distribution .session-timeline-current-item {
   background: url(progressbar.png) left top no-repeat;
 }
 .plugin-distribution .session-timeline-current-item {
-  font-weight: bold;
   background-position: 103% 0;
 }
 .plugin-distribution .session-timeline .actions-bar a {
@@ -469,6 +564,9 @@ body.plugin-distribution {
 }
 .plugin-distribution #session-products-header a {
   line-height: 30px;
+}
+.plugin-distribution #session-product-line .field {
+  width: 120px;
 }
 
 .plugin-distribution .session-new {
@@ -896,9 +994,6 @@ body.plugin-distribution {
   visibility: hidden;
 }
 
-.plugin-distribution #session-products .box-edit .field label {
-  white-space: nowrap;
-}
 .plugin-distribution #session-products .box-edit .field {
   float: left;
   clear: none;
@@ -932,38 +1027,6 @@ body.plugin-distribution {
 
 /* ----- ends session stuff  ----- */
 
-/* ----- menus  ----- */
-
-.plugin-distribution #distribution-plugin-admin-sidebar {
-  width: 176px;
-  float: left;
-  margin-top: 50px;
-}
-.plugin-distribution .menu-entry {
-  float: left;
-  clear: both;
-  display: block;
-  width: 170px;
-  margin: 1px 0px;
-  padding: 3px 0px 3px 8px;
-  color: black;
-  text-decoration: none;
-  background-color: #E5E0EC;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -o-border-radius: 4px;
-}
-.plugin-distribution .menu-entry:hover {
-  background-color: #D9D2E4;
-}
-.plugin-distribution .menu-selected {
-  background-color: #D9D2E4;
-  font-weight: bold;
-}
-
-/* ----- ends menus  ----- */
-
 /* ----- delivery stuff  ----- */
 
 .plugin-distribution .session-delivery-option {
@@ -980,6 +1043,10 @@ body.plugin-distribution {
 .plugin-distribution .session-add-delivery-option {
   float: left;
   padding: 2px 0;
+}
+
+.action-distribution_plugin_session-new #colorbox, .action-distribution_plugin_session-edit #colorbox {
+  top: 80%;
 }
 
 #distribution-plugin-add-delivery select {
@@ -1035,7 +1102,12 @@ body.plugin-distribution {
 }
 .plugin-distribution .filter-box .box-field {
   padding-left: 0;
-  padding-right: 17px;
+  padding-right: 24px;
+}
+.plugin-distribution #suppliers-page .filter-box .box-field,
+.plugin-distribution #suppliers-page .filter-box .box-field input {
+  width: 100%;
+  margin-left: 0;
 }
 .plugin-distribution .filter-box .box-field,
 .plugin-distribution .filter-box .box-field select,
@@ -1281,23 +1353,6 @@ body.plugin-distribution {
   margin-bottom: 20px;
 }
 
-.plugin-distribution .session-view #order-filter {
-  margin: 10px 0;
-}
-.plugin-distribution .session-view #order-filter input {
-  width: 100%;
-}
-.plugin-distribution .session-view #order-filter .order-filter {
-  float: left;
-  width: 100%;
-  margin-bottom: 30px;
-}
-.plugin-distribution .session-view #order-filter strong {
-  margin-top: 10px;
-  display: block;
-  font-weight: bold;
-}
-
 .plugin-distribution .session-view #session-products-for-order .value-row { 
   border-left: 1px solid transparent;
 }
@@ -1310,6 +1365,17 @@ body.plugin-distribution {
   -webkit-border-radius: 5px;
   -o-border-radius: 5px;
 }
+.plugin-distribution .session-view #session-products-for-order #filter-fields .supplier,
+.plugin-distribution .session-view #session-products-for-order #filter-fields .qualifier { 
+  padding: 0;
+  padding-left: 5px;
+  background: none;
+}
+.plugin-distribution .session-view #session-products-for-order #filter-fields .box-field {
+  font-weight: bold;
+  margin: 0;
+}
+
 .plugin-distribution .session-view #session-products-for-order .supplier {
   background-color: #B1DFEF;
   padding: 10px 8px 5px;
@@ -1446,13 +1512,12 @@ body.plugin-distribution {
   font-weight: bold;
 }
 
-.plugin-distribution .orders .orders-date.active {
+.plugin-distribution .orders .orders-date.happening {
   margin-left: -168px;
   display: inline-block;
   padding: 0 8px;
-  background-color: #ffe546;
 }
-.plugin-distribution .orders .orders-date.active span {
+.plugin-distribution .orders .orders-date.happening span {
   text-transform: uppercase;
   width: 156px;
   display: inline-block;
@@ -1513,7 +1578,7 @@ body.plugin-distribution {
   background-color: #E1F5C4;
 }
 .plugin-distribution .orders .status-confirmed.order-message-title div {
-  background: url(images/order-statuses.png) left top no-repeat;
+  background: url(images/order-statuses.png) left -2px no-repeat;
   padding-left: 24px;
 }
 .plugin-distribution .orders .status-open.order-message-title div {
@@ -1533,7 +1598,7 @@ body.plugin-distribution {
 }
 .plugin-distribution #orders-view .status-confirmed.order-message-title div {
   padding-left: 20px;
-  background-position: 0 4px;
+  background-position: 0px 0px;
 }
 .plugin-distribution #orders-view .status-open.order-message-title div {
   padding-left: 20px;
@@ -1637,62 +1702,35 @@ body.plugin-distribution {
 
 /* ----- ends order edit stuff  ----- */
 
-/* ----- header stuff  ----- */
-
-#distribution-plugin-header {
-  width: 960px;
-}
-
-.plugin-distribution .menu-header {
-  background-color: #d9d2e4;
-  padding: 8px 0 8px 242px;
-  text-transform: uppercase;
-}
-.plugin-distribution .menu-logo {
-  width: 100%;
-  height: 110px;
-  padding: 1px 0 0 240px;
-  text-transform: capitalize;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-}
-.plugin-distribution .menu-button-container {
-  position: relative;
-  bottom: -10px;
-  margin-left: -8px;
-}
-.plugin-distribution .menu-button a {
-  float: left;
-  padding: 8px 8px;
-  background-color: #fff;
-  text-transform: uppercase;
-  margin: 0 2px;
-  text-decoration: none;
-  color: #000;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -o-border-radius: 5px;
-}
-
-.plugin-distribution .menu-button a:hover,
-.plugin-distribution div.menu-selected a {
-  color: #fff;
-  background-color: #646158;
-}
-
-/* ----- ends header stuff  ----- */
-
 /* ----- popin stuff  ----- */
 
+.plugin-distribution #cboxTopLeft,
+.plugin-distribution #cboxTopCenter,
+.plugin-distribution #cboxTopRight,
+.plugin-distribution #cboxMiddleLeft,
+.plugin-distribution #cboxMiddleRight,
+.plugin-distribution #cboxBottomLeft,
+.plugin-distribution #cboxBottomCenter,
+.plugin-distribution #cboxBottomRight {
+  display: none;
+}
+.plugin-distribution #cboxOverlay {
+  background: black;
+  opacity: 0.45 !important;
+  filter: alpha(opacity=45);
+}
+.plugin-distribution #cboxContent {
+  margin: 10px;
+  box-shadow: 0 0 10px black;
+  -webkit-box-shadow: 0 0 10px black;
+  -moz-box-shadow: 0 0 10px black;
+}
+
 .distribution-plugin-popin {
-  margin: -1em -1em 0 -1em;
   line-height: 20px;
 }
 .distribution-plugin-popin h1 {
-  margin: 0 -1px;
+  margin: 0;
   margin-bottom: 20px;
   padding: 15px 30px;
   background-color: #B1DFEF;
@@ -1733,70 +1771,70 @@ body.plugin-distribution {
   border: solid 1px #999999;
   padding: 2px;
   text-align: center;
-  width: 160px; }
-  .calendricalDatePopup table {
-    border-collapse: collapse;
-    width: 160px; }
-    .calendricalDatePopup table .monthCell {
-      padding: 2px 0; }
-      .calendricalDatePopup table .monthCell a {
-        display: block;
-        float: left;
-        line-height: 20px; }
-      .calendricalDatePopup table .monthCell .prevMonth, .calendricalDatePopup table .monthCell .nextMonth {
-        width: 24px; }
-      .calendricalDatePopup table .monthCell .monthName {
-        width: 110px; }
-    .calendricalDatePopup table a {
-      text-decoration: none; }
-    .calendricalDatePopup table th {
-      text-align: center; }
-    .calendricalDatePopup table td {
-      text-align: center;
-      font-size: 12px;
-      padding: 0; }
-      .calendricalDatePopup table td a {
-        display: block;
-        color: black;
-        padding: 2px 3px; }
-        .calendricalDatePopup table td a:hover {
-          background: #ccccff;
-          border: none;
-          padding: 2px 3px; }
-      .calendricalDatePopup table td.today a {
-        background: #eeeebb; }
-      .calendricalDatePopup table td.selected a {
-        background: #ccccff; }
-      .calendricalDatePopup table td.today_selected a {
-        background: #eeeebb;
-        border: solid 1px #dddd66;
-        padding: 1px 2px; }
-      .calendricalDatePopup table td.nonMonth a {
-        color: #999999; }
+width: 160px; }
+.calendricalDatePopup table {
+  border-collapse: collapse;
+width: 160px; }
+.calendricalDatePopup table .monthCell {
+padding: 2px 0; }
+.calendricalDatePopup table .monthCell a {
+  display: block;
+  float: left;
+line-height: 20px; }
+.calendricalDatePopup table .monthCell .prevMonth, .calendricalDatePopup table .monthCell .nextMonth {
+width: 24px; }
+.calendricalDatePopup table .monthCell .monthName {
+width: 110px; }
+.calendricalDatePopup table a {
+text-decoration: none; }
+.calendricalDatePopup table th {
+text-align: center; }
+.calendricalDatePopup table td {
+  text-align: center;
+  font-size: 12px;
+padding: 0; }
+.calendricalDatePopup table td a {
+  display: block;
+  color: black;
+padding: 2px 3px; }
+.calendricalDatePopup table td a:hover {
+  background: #ccccff;
+  border: none;
+padding: 2px 3px; }
+.calendricalDatePopup table td.today a {
+background: #eeeebb; }
+.calendricalDatePopup table td.selected a {
+background: #ccccff; }
+.calendricalDatePopup table td.today_selected a {
+  background: #eeeebb;
+  border: solid 1px #dddd66;
+padding: 1px 2px; }
+.calendricalDatePopup table td.nonMonth a {
+color: #999999; }
 
 .calendricalTimePopup {
   background: white;
   border: solid 1px #999999;
   width: 110px;
   height: 130px;
-  overflow: auto; }
-  .calendricalTimePopup ul {
-    margin: 0;
-    padding: 0; }
-    .calendricalTimePopup ul li {
-      list-style: none;
-      margin: 0; }
-      .calendricalTimePopup ul li a, .calendricalTimePopup ul li a:visited {
-        text-indent: 10px;
-        padding: 4px;
-        display: block;
-        color: black;
-        text-decoration: none; }
-      .calendricalTimePopup ul li a:hover, .calendricalTimePopup ul li.selected a {
-        background: #ccccff; }
+overflow: auto; }
+.calendricalTimePopup ul {
+  margin: 0;
+padding: 0; }
+.calendricalTimePopup ul li {
+  list-style: none;
+margin: 0; }
+.calendricalTimePopup ul li a, .calendricalTimePopup ul li a:visited {
+  text-indent: 10px;
+  padding: 4px;
+  display: block;
+  color: black;
+text-decoration: none; }
+.calendricalTimePopup ul li a:hover, .calendricalTimePopup ul li.selected a {
+background: #ccccff; }
 
 .calendricalEndTimePopup {
-  width: 160px; }
+width: 160px; }
 
 /* ----- end calendrial stuff  ----- */
 

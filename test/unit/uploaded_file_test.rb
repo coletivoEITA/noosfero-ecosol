@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class UploadedFileTest < Test::Unit::TestCase
+class UploadedFileTest < ActiveSupport::TestCase
 
   def setup
     @profile = create_user('testinguser').person
@@ -22,7 +22,7 @@ class UploadedFileTest < Test::Unit::TestCase
     f = UploadedFile.new
     f.expects(:content_type).returns('application/pdf')
     assert_equal 'application/pdf', f.mime_type
-  end 
+  end
 
   should 'provide proper description' do
     assert_kind_of String, UploadedFile.description
@@ -231,10 +231,10 @@ class UploadedFileTest < Test::Unit::TestCase
   should 'return a thumbnail for images' do
     f = UploadedFile.new
     f.expects(:image?).returns(true)
-    f.expects(:full_filename).with(:thumb).returns(File.join(RAILS_ROOT, 'public', 'images', '0000', '0005', 'x.png'))
+    f.expects(:full_filename).with(:display).returns(File.join(RAILS_ROOT, 'public', 'images', '0000', '0005', 'x.png'))
     assert_equal '/images/0000/0005/x.png', f.thumbnail_path
     f = UploadedFile.new
-    f.stubs(:full_filename).with(:thumb).returns(File.join(RAILS_ROOT, 'public', 'images', '0000', '0005', 'x.png'))
+    f.stubs(:full_filename).with(:display).returns(File.join(RAILS_ROOT, 'public', 'images', '0000', '0005', 'x.png'))
     f.expects(:image?).returns(false)
     assert_nil f.thumbnail_path
   end
@@ -291,6 +291,65 @@ class UploadedFileTest < Test::Unit::TestCase
     f = UploadedFile.new
     f.expects(:mime_type).returns(nil)
     assert_equal 'upload-file', UploadedFile.icon_name(f)
+  end
+
+  should 'upload to a folder with same name as the schema if database is postgresql' do
+    uses_postgresql 'image_schema_one'
+    file1 = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :profile => @profile)
+    process_delayed_job_queue
+    assert_match(/image_schema_one\/\d{4}\/\d{4}\/rails.png/, UploadedFile.find(file1.id).public_filename)
+    uses_postgresql 'image_schema_two'
+    file2 = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/test.txt', 'text/plain'), :profile => @profile)
+    assert_match(/image_schema_two\/\d{4}\/\d{4}\/test.txt/, UploadedFile.find(file2.id).public_filename)
+    file1.destroy
+    file2.destroy
+    uses_sqlite
+  end
+
+  should 'return extension' do
+    file = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :profile => @profile)
+    assert_equal 'png', file.extension
+  end
+
+  should 'upload to path prefix folder if database is not postgresql' do
+    uses_sqlite
+    file = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/test.txt', 'text/plain'), :profile => @profile)
+    assert_match(/\/\d{4}\/\d{4}\/test.txt/, UploadedFile.find(file.id).public_filename)
+    assert_no_match(/test_schema\/\d{4}\/\d{4}\/test.txt/, UploadedFile.find(file.id).public_filename)
+    file.destroy
+  end
+
+  should 'upload thumbnails to a folder with same name as the schema if database is postgresql' do
+    uses_postgresql
+    file = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :profile => @profile)
+    process_delayed_job_queue
+    UploadedFile.attachment_options[:thumbnails].each do |suffix, size|
+      assert_match(/test_schema\/\d{4}\/\d{4}\/rails_#{suffix}.png/, UploadedFile.find(file.id).public_filename(suffix))
+    end
+    file.destroy
+    uses_sqlite
+  end
+
+  should 'not allow script files to be uploaded without append .txt in the end' do
+    file = UploadedFile.create!(:uploaded_data => fixture_file_upload('files/hello_world.php', 'application/x-php'), :profile => @profile)
+    assert_equal 'hello_world.php.txt', file.filename
+  end
+
+  should 'use gallery as target for action tracker' do
+    gallery = fast_create(Gallery, :profile_id => profile.id)
+    image = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :parent => gallery, :profile => profile)
+    activity = ActionTracker::Record.find_last_by_verb 'upload_image'
+    assert_equal gallery, activity.target
+  end
+
+  should 'group trackers activity of image\'s upload' do
+    gallery = fast_create(Gallery, :profile_id => profile.id)
+
+    image1 = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :parent => gallery, :profile => profile)
+    assert_equal 1, ActionTracker::Record.find_all_by_verb('upload_image').count
+
+    image2 = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/other-pic.jpg', 'image/jpg'), :parent => gallery, :profile => profile)
+    assert_equal 1, ActionTracker::Record.find_all_by_verb('upload_image').count
   end
 
 end

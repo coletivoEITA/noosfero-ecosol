@@ -1,4 +1,5 @@
 class DistributionPluginSupplier < ActiveRecord::Base
+
   belongs_to :node,  :class_name => 'DistributionPluginNode'
   belongs_to :consumer,  :class_name => 'DistributionPluginNode'
 
@@ -11,18 +12,23 @@ class DistributionPluginSupplier < ActiveRecord::Base
 
   named_scope :from_node, lambda { |n| { :conditions => {:node_id => n.id} } }
   named_scope :from_node_id, lambda { |id| { :conditions => {:node_id => id} } }
+  named_scope :with_name, lambda { |name| { :conditions => ["LOWER(name) LIKE ?",'%'+name.downcase+'%']  } }
 
   validates_presence_of :node
   validates_presence_of :consumer
+  validates_associated :node
+  validates_uniqueness_of :consumer_id, :scope => :node_id
 
   def self.new_dummy(attributes)
-    new_profile = Enterprise.new :visible => false, :environment => attributes[:consumer].profile.environment
-    new_profile.identifier = Digest::MD5.hexdigest(rand.to_s)
+    new_profile = Enterprise.new :visible => false, :identifier => Digest::MD5.hexdigest(rand.to_s),
+      :environment => attributes[:consumer].profile.environment
     new_node = DistributionPluginNode.new :role => 'supplier', :profile => new_profile
-    new attributes.merge(:node => new_node)
+    supplier = new :node => new_node
+    supplier.attributes = attributes
+    supplier
   end
   def self.create_dummy(attributes)
-    s = new(attributes)
+    s = new_dummy attributes
     s.save!
     s
   end
@@ -52,14 +58,14 @@ class DistributionPluginSupplier < ActiveRecord::Base
   end
 
   alias_method :destroy!, :destroy
+  # FIXME: inactivate instead of deleting
   def destroy
-    node.remove_consumer consumer
     if node.dummy?
       node.profile.destroy
       node.destroy
     end
-    supplied_products.update_all ['archived = true']
-    
+    supplied_products.distributed.update_all({:archived => true})
+
     super
   end
 

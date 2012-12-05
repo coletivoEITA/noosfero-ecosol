@@ -19,7 +19,9 @@ ActionController::Routing::Routes.draw do |map|
  
   # -- just remember to delete public/index.html.
   # You can have the root of your site routed by hooking up ''
+  map.root :controller => "home", :conditions => { :if => lambda { |env| !Domain.hosting_profile_at(env[:host]) } }
   map.connect '', :controller => "home", :conditions => { :if => lambda { |env| !Domain.hosting_profile_at(env[:host]) } }
+  map.home 'site/:action', :controller => 'home'
 
   map.connect 'images/*stuff', :controller => 'not_found', :action => 'index'
   map.connect 'stylesheets/*stuff', :controller => 'not_found', :action => 'index'
@@ -51,10 +53,6 @@ ActionController::Routing::Routes.draw do |map|
   # search
   map.connect 'search/:action/*category_path', :controller => 'search'
  
-  # Browse
-  map.connect 'browse/:action/:filter', :controller => 'browse'
-  map.connect 'browse/:action', :controller => 'browse'
-
   # events
   map.events 'profile/:profile/events_by_day', :controller => 'events', :action => 'events_by_day', :profile => /#{Noosfero.identifier_format}/
   map.events 'profile/:profile/events/:year/:month/:day', :controller => 'events', :action => 'events', :year => /\d*/, :month => /\d*/, :day => /\d*/, :profile => /#{Noosfero.identifier_format}/
@@ -79,10 +77,13 @@ ActionController::Routing::Routes.draw do |map|
   map.profile_search 'profile/:profile/search', :controller => 'profile_search', :action => 'index', :profile => /#{Noosfero.identifier_format}/
 
   # public profile information
-  map.profile 'profile/:profile/:action/:id', :controller => 'profile', :action => 'index', :id => /.*/, :profile => /#{Noosfero.identifier_format}/
+  map.profile 'profile/:profile/:action/:id', :controller => 'profile', :action => 'index', :id => /[^\/]*/, :profile => /#{Noosfero.identifier_format}/
 
   # contact
   map.contact 'contact/:profile/:action/:id', :controller => 'contact', :action => 'index', :id => /.*/, :profile => /#{Noosfero.identifier_format}/
+
+  # map balloon
+  map.contact 'map_balloon/:action/:id', :controller => 'map_balloon', :id => /.*/
 
   # chat
   map.chat 'chat/:action/:id', :controller => 'chat'
@@ -101,7 +102,7 @@ ActionController::Routing::Routes.draw do |map|
   ######################################################
   # administrative tasks for a environment
   map.admin 'admin', :controller => 'admin_panel'
-  map.admin 'admin/:controller.:format/:action/:id', :controller => Noosfero.pattern_for_controllers_in_directory('admin')
+  map.admin 'admin/:controller/:action.:format/:id', :controller => Noosfero.pattern_for_controllers_in_directory('admin')
   map.admin 'admin/:controller/:action/:id', :controller => Noosfero.pattern_for_controllers_in_directory('admin')
 
 
@@ -115,14 +116,17 @@ ActionController::Routing::Routes.draw do |map|
   ######################################################
   # plugin routes
   ######################################################
-  plugins_routes = File.join(Rails.root + '/lib/noosfero/plugin/routes.rb')
+  plugins_routes = File.join(File.dirname(__FILE__) + '/../lib/noosfero/plugin/routes.rb')
   eval(IO.read(plugins_routes), binding, plugins_routes)
 
   # cache stuff - hack
   map.cache 'public/:action/:id', :controller => 'public'
 
+  map.connect ':profile/edit_comment/:id/*page', :controller => 'content_viewer', :action => 'edit_comment', :profile => /#{Noosfero.identifier_format}/
+
   # match requests for profiles that don't have a custom domain
   map.homepage ':profile/*page', :controller => 'content_viewer', :action => 'view_page', :profile => /#{Noosfero.identifier_format}/, :conditions => { :if => lambda { |env| !Domain.hosting_profile_at(env[:host]) } }
+
 
   # match requests for content in domains hosted for profiles
   map.connect '*page', :controller => 'content_viewer', :action => 'view_page'

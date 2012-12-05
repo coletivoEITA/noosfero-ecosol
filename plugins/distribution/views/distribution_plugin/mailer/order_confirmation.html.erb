@@ -1,0 +1,47 @@
+<% extend DistributionPlugin::DistributionDisplayHelper %>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  </head>
+
+  <body>
+    <p>
+      <%= _('Dear %{name},') % {:name => @consumer.name} %>
+    </p>
+
+    <p>
+      <%= _('Your order made on collective %{node} in %{date} is confirmed.') % {
+        :node => @node.name, :date => day_time(@order.updated_at)
+      } %>
+    </p>
+
+    <p>
+      <%= _('Atention to the delivery instructions, that will occur in %{date}.') % {
+        :date => day_time_period(@order.session.delivery_start, @order.session.delivery_finish)
+      } %>
+    </p>
+
+    <p>
+      <b><%= @order.supplier_delivery.name %></b><br />
+      <%= @order.supplier_delivery.description %><br />
+    </p>
+
+    <p><%= _('Order data confirmed:') %></p>
+
+    <%= render :partial => 'distribution_plugin/mailer/complete_order' %>
+
+    <p>
+      <%= _('Your order can be checked in the following link:') %><br />
+     <%= link_to _('Order %{code} of %{node}') % {:code => @order.code, :node => @node.name },
+        "http://" + @host_with_port + url_for(:controller => :distribution_plugin_order,
+                                              :action => :edit,:profile => @node.profile.identifier, :id => @order.id) %>
+    </p>
+
+    <p>
+      --<br/>
+      <%= _("Greetings") %>
+    </p>
+  </body>
+</html>

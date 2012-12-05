@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class CommunitiesBlockTest < Test::Unit::TestCase
+class CommunitiesBlockTest < ActiveSupport::TestCase
 
   should 'inherit from ProfileListBlock' do
     assert_kind_of ProfileListBlock, CommunitiesBlock.new
@@ -43,7 +43,7 @@ class CommunitiesBlockTest < Test::Unit::TestCase
     block = CommunitiesBlock.new
     block.expects(:owner).returns(env)
 
-    expects(:link_to).with('View all', :controller => "browse", :action => 'communities')
+    expects(:link_to).with('View all', :controller => "search", :action => 'communities')
 
     instance_eval(&block.footer)
   end

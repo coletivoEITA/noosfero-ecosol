@@ -13,7 +13,6 @@ class DistributionPluginProduct < ActiveRecord::Base
 
   has_one :product_category, :through => :product
 
-  # one for organization and the other for typing
   belongs_to :category, :class_name => 'ProductCategory'
   belongs_to :type_category, :class_name => 'ProductCategory'
 
@@ -38,12 +37,17 @@ class DistributionPluginProduct < ActiveRecord::Base
   has_many :to_nodes, :through => :to_products, :source => :node
   has_many :from_nodes, :through => :from_products, :source => :node
 
-  # must be overriden on subclasses
+  def from_product
+    self.from_products.first
+  end
+  def from_product=(value)
+    self.from_products = [value]
+  end
   def supplier_products
-    []
+    self.supplier.nil? ? self.from_products : self.from_products.select{ |fp| fp.node == self.supplier.node }
   end
   def supplier_product
-    supplier_products.by_node_id(supplier.node.id).first
+    self.supplier_products.first
   end
 
   validates_presence_of :type
@@ -52,19 +56,17 @@ class DistributionPluginProduct < ActiveRecord::Base
   validates_associated :from_products
   validates_numericality_of :price, :allow_nil => true
   validates_numericality_of :minimum_selleable, :allow_nil => true
-  validates_numericality_of :selleable_factor, :allow_nil => true
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
   validates_numericality_of :stored, :allow_nil => true
   validates_numericality_of :quantity, :allow_nil => true
-  validate :supplier_change
 
-  extend ActsAsHavingSettings::DefaultItem::ClassMethods
   acts_as_having_settings :field => :settings
 
   DEFAULT_ATTRIBUTES = [:name, :description, :margin_percentage, :margin_fixed,
-    :price, :stored, :unit_id, :minimum_selleable, :selleable_factor]
+    :price, :stored, :unit_id, :minimum_selleable, :unit_detail]
 
+  extend ActsAsHavingSettings::DefaultItem::ClassMethods
   settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :margin_percentage, :type => :boolean, :default => true, :delegate_to => :node
@@ -73,18 +75,41 @@ class DistributionPluginProduct < ActiveRecord::Base
   settings_default_item :stored, :type => :boolean, :default => true, :delegate_to => :from_product
   default_item :unit_id, :if => :default_price, :delegate_to => :from_product
   default_item :minimum_selleable, :if => :default_price, :delegate_to => :from_product
-  default_item :selleable_factor, :if => :default_price, :delegate_to => :from_product
+  default_item :unit_detail, :if => :default_price, :delegate_to => :from_product
 
   def dummy?
     supplier ? supplier.dummy? : false
   end
-
   def own?
     supplier ? supplier.node == node : false
   end
 
-  def from_product
-    from_products.first
+  def price_with_margins(base_price = nil, margin_source = nil)
+    price = 0 unless price
+    base_price ||= price
+    margin_source ||= self
+    ret = base_price
+
+    if margin_source.margin_percentage
+      ret += (margin_source.margin_percentage / 100) * ret
+    elsif node.margin_percentage
+      ret += (node.margin_percentage / 100) * ret
+    end
+    if margin_source.margin_fixed
+      ret += margin_source.margin_fixed
+    elsif node.margin_fixed
+      ret += node.margin_fixed
+    end
+
+    ret
+  end
+
+  # FIXME: use i18n to deal with number formats
+  def price=(value)
+    self['price'] = value.to_s.gsub(/,/, '.')
+  end
+  def minimum_selleable=(value)
+    self['minimum_selleable'] = value.to_s.gsub(/,/, '.')
   end
 
   def unit
@@ -104,9 +129,5 @@ class DistributionPluginProduct < ActiveRecord::Base
   end
 
   protected
-
-  def supplier_change
-    errors.add :supplier_id, "Supplier can't change" if supplier_id_changed? and not new_record?
-  end
 
 end

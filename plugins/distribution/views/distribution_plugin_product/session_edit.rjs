@@ -1,2 +1,2 @@
 page.replace_html "session-product-#{@product.id}", :partial => 'session_edit', :locals => {:p => @product}
-page << "distribution_value_row_click();"
+page << "distribution.value_row.click();"

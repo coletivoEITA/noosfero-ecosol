@@ -4,14 +4,15 @@ require 'enterprise_registration_controller'
 # Re-raise errors caught by the controller.
 class EnterpriseRegistrationController; def rescue_action(e) raise e end; end
 
-class EnterpriseRegistrationControllerTest < Test::Unit::TestCase
+class EnterpriseRegistrationControllerTest < ActionController::TestCase
 
-#  all_fixtures:users
-all_fixtures
+  # all_fixtures:users
+  all_fixtures
+
   def setup
+    super
     @controller = EnterpriseRegistrationController.new
     @request    = ActionController::TestRequest.new
-    @request.stubs(:ssl?).returns(true)
     @response   = ActionController::TestResponse.new
     login_as 'ze'
   end
@@ -40,7 +41,7 @@ all_fixtures
     env = Environment.default
     env.organization_approval_method = :admin
     env.save
-    region = fast_create(Region)
+    region = fast_create(Region, {}, :search => true)
 
     data = { :name => 'My new enterprise', :identifier => 'mynew', :region => region }
     create_enterprise = CreateEnterprise.new(data)
@@ -53,7 +54,7 @@ all_fixtures
     env = Environment.default
     env.organization_approval_method = :none
     env.save
-    region = fast_create(Region)
+    region = fast_create(Region, {}, :search => true)
 
     data = { :name => 'My new enterprise', :identifier => 'mynew', :region => region }
     create_enterprise = CreateEnterprise.new(data)
@@ -180,4 +181,26 @@ all_fixtures
     assert_equal assigns(:create_enterprise).target, environment
   end
 
+  should 'include hidden fields supplied by plugins on enterprise registration' do
+    class Plugin1 < Noosfero::Plugin
+      def enterprise_registration_hidden_fields
+        {'plugin1' => 'Plugin 1'}
+      end
+    end
+
+    class Plugin2 < Noosfero::Plugin
+      def enterprise_registration_hidden_fields
+        {'plugin2' => 'Plugin 2'}
+      end
+    end
+
+    environment = Environment.default
+    environment.enable_plugin(Plugin1.name)
+    environment.enable_plugin(Plugin2.name)
+
+    get :index
+
+    assert_tag :tag => 'input', :attributes => {:id => 'create_enterprise_plugin1', :type => 'hidden', :value => 'Plugin 1'}
+    assert_tag :tag => 'input', :attributes => {:id => 'create_enterprise_plugin2', :type => 'hidden', :value => 'Plugin 2'}
+  end
 end

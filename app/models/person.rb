@@ -1,10 +1,41 @@
 # A person is the profile of an user holding all relationships with the rest of the system
 class Person < Profile
 
+  def self.type_name
+    _('Person')
+  end
+
   acts_as_trackable :after_add => Proc.new {|p,t| notify_activity(t)}
   acts_as_accessor
 
-  named_scope :members_of, lambda { |resource| { :select => 'DISTINCT profiles.*', :joins => :role_assignments, :conditions => ['role_assignments.resource_type = ? AND role_assignments.resource_id = ?', resource.class.base_class.name, resource.id ] } }
+  @@human_names = {}
+
+  def self.human_names
+    @@human_names
+  end
+
+  # FIXME ugly workaround
+  def self.human_attribute_name(attrib)
+    human_names.each do |key, human_text|
+      return human_text if attrib.to_sym == key.to_sym
+    end
+    super
+  end
+
+  named_scope :members_of, lambda { |resources|
+    resources = [resources] if !resources.kind_of?(Array)
+    conditions = resources.map {|resource| "role_assignments.resource_type = '#{resource.class.base_class.name}' AND role_assignments.resource_id = #{resource.id || -1}"}.join(' OR ')
+    { :select => 'DISTINCT profiles.*', :joins => :role_assignments, :conditions => [conditions] }
+  }
+
+  def has_permission_with_plugins?(permission, profile)
+    permissions = [has_permission_without_plugins?(permission, profile)]
+    permissions += plugins.map do |plugin|
+      plugin.has_permission?(self, permission, profile)
+    end
+    permissions.include?(true)
+  end
+  alias_method_chain :has_permission?, :plugins
 
   def memberships
     Profile.memberships_of(self)
@@ -17,24 +48,30 @@ class Person < Profile
 
   has_many :requested_tasks, :class_name => 'Task', :foreign_key => :requestor_id, :dependent => :destroy
 
+  has_many :abuse_reports, :foreign_key => 'reporter_id', :dependent => :destroy
+
   has_many :mailings
 
   has_many :scraps_sent, :class_name => 'Scrap', :foreign_key => :sender_id, :dependent => :destroy
 
   named_scope :more_popular,
-       :select => "#{Profile.qualified_column_names}, count(friend_id) as total",
-       :group => Profile.qualified_column_names,
-       :joins => :friendships,
-       :order => "total DESC"
+      :select => "#{Profile.qualified_column_names}, count(friend_id) as total",
+      :group => Profile.qualified_column_names,
+      :joins => "LEFT OUTER JOIN friendships on profiles.id = friendships.person_id",
+      :order => "total DESC"
+
+  named_scope :more_active,
+    :select => "#{Profile.qualified_column_names}, count(action_tracker.id) as total",
+    :joins => "LEFT OUTER JOIN action_tracker ON profiles.id = action_tracker.user_id",
+    :group => Profile.qualified_column_names,
+    :order => 'total DESC',
+    :conditions => ['action_tracker.created_at >= ? OR action_tracker.id IS NULL', ActionTracker::Record::RECENT_DELAY.days.ago]
 
   after_destroy do |person|
     Friendship.find(:all, :conditions => { :friend_id => person.id}).each { |friendship| friendship.destroy }
   end
 
-  after_destroy :destroy_user
-  def destroy_user
-    self.user.destroy if self.user
-  end
+  belongs_to :user, :dependent => :delete
 
   def can_control_scrap?(scrap)
     begin
@@ -107,7 +144,16 @@ class Person < Profile
   contact_phone
   contact_information
   description
+  image
   ]
+
+  validates_multiparameter_assignments
+
+  validates_each :birth_date do |record,attr,value|
+    if value && value.year == 1
+      record.errors.add(attr)
+    end
+  end
 
   def self.fields
     FIELDS
@@ -118,7 +164,7 @@ class Person < Profile
     self.required_fields.each do |field|
       if self.send(field).blank?
         unless (field == 'custom_area_of_study' && self.area_of_study != 'Others') || (field == 'custom_formation' && self.formation != 'Others')
-          self.errors.add(field, _('%{fn} is mandatory'))
+          self.errors.add_on_blank(field)
         end
       end
     end
@@ -149,11 +195,14 @@ class Person < Profile
   N_('Schooling status')
   settings_items :schooling_status
 
-  N_('Formation'); N_('Custom formation'); N_('Custom area of study');
+  N_('Education'); N_('Custom education'); N_('Custom area of study');
   settings_items :formation, :custom_formation, :custom_area_of_study
 
   N_('Contact information'); N_('City'); N_('State'); N_('Country'); N_('Sex'); N_('Zip code')
   settings_items :photo, :contact_information, :sex, :city, :state, :country, :zip_code
+
+  extend SetProfileRegionFromCityState::ClassMethods
+  set_profile_region_from_city_state
 
   def self.conditions_for_profiles(conditions, person)
     new_conditions = sanitize_sql(['role_assignments.accessor_id = ?', person])
@@ -180,7 +229,7 @@ class Person < Profile
 
   validates_each :email, :on => :update do |record,attr,value|
     if User.find(:first, :conditions => ['email = ? and id != ? and environment_id = ?', value, record.user.id, record.environment.id])
-      record.errors.add(attr, _('%{fn} is already used by other user'))
+      record.errors.add(attr, _('%{fn} is already used by other user').fix_i18n)
     end
   end
 
@@ -246,7 +295,7 @@ class Person < Profile
     end
   end
 
-  def template
+  def default_template
     environment.person_template
   end
 
@@ -378,6 +427,33 @@ class Person < Profile
     end
     profile.remove_member(self)
     leave_hash.to_json
+  end
+
+  def already_reported?(profile)
+    abuse_reports.any? { |report| report.abuse_complaint.reported == profile && report.abuse_complaint.opened? }
+  end
+
+  def register_report(abuse_report, profile)
+    AbuseComplaint.create!(:reported => profile, :target => profile.environment) if !profile.opened_abuse_complaint
+    abuse_report.abuse_complaint = profile.opened_abuse_complaint
+    abuse_report.reporter = self
+    abuse_report.save!
+  end
+
+  def control_panel_settings_button
+    {:title => _('Edit Profile'), :icon => 'edit-profile'}
+  end
+
+  def disable
+    self.visible = false
+    user.password = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{identifier}--")
+    user.password_confirmation = user.password
+    save!
+    user.save!
+  end
+
+  def activities
+    Scrap.find_by_sql("SELECT id, updated_at, '#{Scrap.to_s}' AS klass FROM #{Scrap.table_name} WHERE scraps.receiver_id = #{self.id} AND scraps.scrap_id IS NULL UNION SELECT id, updated_at, '#{ActionTracker::Record.to_s}' AS klass FROM #{ActionTracker::Record.table_name} WHERE action_tracker.user_id = #{self.id} and action_tracker.verb != 'leave_scrap_to_self' and action_tracker.verb != 'add_member_in_community' ORDER BY updated_at DESC")
   end
 
   protected

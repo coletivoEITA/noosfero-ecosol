@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class TextArticleTest < Test::Unit::TestCase
+class TextArticleTest < ActiveSupport::TestCase
   
   # mostly dummy test. Can be removed when (if) there are real tests for this
   # this class. 
@@ -15,28 +15,19 @@ class TextArticleTest < Test::Unit::TestCase
   end
   
   should 'found TextileArticle by TextArticle indexes' do
+    TestSolr.enable
     person = create_user('testuser').person
     article = TextileArticle.create!(:name => 'found article test', :profile => person)
-    assert_equal TextileArticle.find_by_contents('found'), TextArticle.find_by_contents('found')
+    assert_equal TextileArticle.find_by_contents('found')[:results].docs, TextArticle.find_by_contents('found')[:results].docs
   end
 
-  should 'remove comments from TextArticle body' do
-    person = create_user('testuser').person
-    article = TextArticle.create!(:profile => person, :name => 'article', :body => "the <!-- comment --> article ...")
-    assert_equal "the  article ...", article.body
-  end
-
-  should 'escape malformed html tags' do
+  should 'remove HTML from name' do
     person = create_user('testuser').person
     article = TextArticle.new(:profile => person)
     article.name = "<h1 Malformed >> html >>></a>< tag"
-    article.abstract = "<h1 Malformed <<h1>>< html >< tag"
-    article.body = "<h1><</h2< Malformed >> html >< tag"
     article.valid?
 
     assert_no_match /[<>]/, article.name
-    assert_no_match /[<>]/, article.abstract
-    assert_no_match /[<>]/, article.body
   end
 
   should 'be translatable' do

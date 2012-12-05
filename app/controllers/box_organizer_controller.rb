@@ -68,7 +68,8 @@ class BoxOrganizerController < ApplicationController
         raise ArgumentError.new("Type %s is not allowed. Go away." % type)
       end
     else
-      @block_types = available_blocks
+      @center_block_types = Box.acceptable_center_blocks & available_blocks
+      @side_block_types = Box.acceptable_side_blocks & available_blocks
       @boxes = boxes_holder.boxes
       render :action => 'add_block', :layout => false
     end
@@ -82,7 +83,6 @@ class BoxOrganizerController < ApplicationController
   def save
     @block = boxes_holder.blocks.find(params[:id])
     @block.update_attributes(params[:block])
-    expire_timeout_fragment(@block.cache_keys)
     redirect_to :action => 'index'
   end
 
@@ -93,7 +93,6 @@ class BoxOrganizerController < ApplicationController
   def remove
     @block = Block.find(params[:id])
     if @block.destroy
-      expire_timeout_fragment(@block.cache_keys)
       redirect_to :action => 'index'
     else
       session[:notice] = _('Failed to remove block')

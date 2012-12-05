@@ -1,9 +1,5 @@
 class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
 
-  prepend_view_path DistributionPlugin.view_path
-
-  extend DistributionPlugin::DistributionDisplayHelper
-
   def order_change_notification(node, order, changed, removed, message = nil)
     domain = node.profile.hostname || node.profile.environment.default_hostname
     recipients    profile_recipients(order.consumer.profile)
@@ -19,13 +15,28 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
          :environment => node.profile.environment
   end
 
-  def order_confirmation(order)
+  def order_confirmation(order,host_with_port)
     node = order.session.node
     domain = node.profile.hostname || node.profile.environment.default_hostname
     recipients    profile_recipients(order.consumer.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
     subject       _("[%{node}] Your order was confirmed") % {:node => node.name}
+    content_type  'text/html'
+    body :node => node,
+         :order => order,
+         :consumer => order.consumer,
+         :environment => node.profile.environment,
+         :host_with_port => host_with_port
+  end
+
+  def order_cancellation(order)
+    node = order.session.node
+    domain = node.profile.hostname || node.profile.environment.default_hostname
+    recipients    profile_recipients(order.consumer.profile)
+    from          'no-reply@' + domain
+    reply_to      profile_recipients(node.profile)
+    subject       _("[%{node}] Your order was cancelled") % {:node => node.name}
     content_type  'text/html'
     body :node => node,
          :order => order,

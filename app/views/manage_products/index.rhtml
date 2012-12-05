@@ -16,15 +16,15 @@
       <td><strong><%= link_to product.name, :action => 'show', :id => product %></strong></td>
       <td><%= product.price %></td>
       <td>
-        <%= button :delete, _('Destroy'), :action => 'destroy', :id => product %>
+        <%= button :delete, _('Remove'), {:action => 'destroy', :id => product}, :confirm => _('Are you sure you want to remove this product?') %>
       </td>
     </tr>
   <% end %>
 </table>
 
-<%= will_paginate @products %>
+<%= pagination_links @products %>
 
 <% button_bar do %>
-  <%= button :add, _('New product or service'), :action => 'new' %>
+  <%= button :add, _('New product or service'), :action => 'new' if @profile.create_product? %>
   <%= button :back,  _('Back'), { :controller => 'profile_editor', :profile => @profile.identifier, :action => 'index' } %>
 <% end %>

@@ -1,29 +1,44 @@
 require File.dirname(__FILE__) + '/../../../../test/test_helper'
 
-class DistributionDeliveryMethodTest < ActiveSupport::TestCase
-  should 'have a name' do
-    dm = build(DistributionDeliveryMethod, :name => 'Delivery Deluxe')
-    assert !dm.errors.invalid?(:name)
-    dm = DistributionDeliveryMethod.create
+class DistributionPluginDeliveryMethodTest < ActiveSupport::TestCase
+
+  def setup
+    @profile = build(Profile)
+    @node = build(DistributionPluginNode, :role => 'supplier', :profile => @profile)
+  end
+
+  attr_accessor :profile
+  attr_accessor :node
+
+  should 'have a name and a delivery type' do
+    dm = DistributionPluginDeliveryMethod.new :name => 'Delivery Deluxe', :delivery_type => 'deliver', :node => node
+    assert dm.valid?
+    dm = DistributionPluginDeliveryMethod.new :node => node
     assert !dm.valid?
   end
 
-  # required fields
-  should 'have a name, a description and a delivery_type and belong to a node' do
-    p = build(Profile)
-    node = build(DistributionNode, :role => 'supplier', :profile => p)
-    node.save!
-    dm = build(DistributionDeliveryMethod, :name => 'Delivery Deluxe', :description => 'Oi', :delivery_type => 'deliver', :node_id => node.id)
+  should 'accept only pickup and deliver as delivery types' do
+    dm = build(DistributionPluginDeliveryMethod, :name => 'Delivery Deluxe', :delivery_type => 'unkown', :node => node)
+    assert !dm.valid?
+    dm = build(DistributionPluginDeliveryMethod, :name => 'Delivery Deluxe', :delivery_type => 'pickup', :node => node)
+    assert dm.valid?
+    dm = build(DistributionPluginDeliveryMethod, :name => 'Delivery Deluxe', :delivery_type => 'deliver', :node => node)
     assert dm.valid?
   end
 
-  should 'have an address if delivery_type is pickup' do
-    node = build(DistributionNode)
-    dm = build(DistributionDeliveryMethod, :name => 'Delivery Deluxe', :description => 'Oi', :delivery_type => 'pickup', :node => node)
-    assert !dm.valid?
-    dm = build(DistributionDeliveryMethod, :name => 'Delivery Deluxe', :address_line1 => 'Rua dos bobos', :state => 'SP',
-	      				   :country => 'Brasil', :description => 'Oi', :delivery_type => 'pickup', :node => node)
-    assert dm.valid?
+  should 'filter by delivery types' do
+    dm_deliver = create(DistributionPluginDeliveryMethod, :name => 'Delivery Deluxe', :delivery_type => 'deliver', :node => node)
+    dm_pickup = create(DistributionPluginDeliveryMethod, :name => 'Delivery Deluxe', :delivery_type => 'pickup', :node => node)
+    assert_equal [dm_deliver], DistributionPluginDeliveryMethod.delivery
+    assert_equal [dm_pickup], DistributionPluginDeliveryMethod.pickup
+  end
+
+  should 'have many delivery options' do
+    dm = create(DistributionPluginDeliveryMethod, :name => 'Delivery Deluxe', :delivery_type => 'deliver', :node => node)
+    session = build(DistributionPluginSession, :name => 'session name', :node => node)
+    option = create(DistributionPluginDeliveryOption, :session => session, :delivery_method => dm)
+
+    assert_equal [option], dm.reload.delivery_options
   end
 
 end

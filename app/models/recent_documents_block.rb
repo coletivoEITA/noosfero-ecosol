@@ -15,7 +15,7 @@ class RecentDocumentsBlock < Block
   settings_items :limit, :type => :integer, :default => 5
 
   include ActionController::UrlWriter
-  def content
+  def content(args={})
     docs = self.limit.nil? ? owner.recent_documents : owner.recent_documents(self.limit)
 
     block_title(title) +
@@ -30,10 +30,6 @@ class RecentDocumentsBlock < Block
     lambda do
       link_to _('All content'), :profile => profile.identifier, :controller => 'profile', :action => 'sitemap'
     end
-  end
-
-  def timeout
-    2.months
   end
 
 end

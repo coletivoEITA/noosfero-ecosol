@@ -82,6 +82,7 @@ class ApproveArticleTest < ActiveSupport::TestCase
   should 'notify target if group is moderated' do
     community.moderated_articles = true
     community.save
+    community.stubs(:notification_emails).returns(['adm@example.com'])
 
     a = ApproveArticle.create!(:name => '', :article => article, :target => community, :requestor => profile)
     assert !ActionMailer::Base.deliveries.empty?
@@ -250,7 +251,7 @@ class ApproveArticleTest < ActiveSupport::TestCase
     assert_equal 1, ActionTracker::Record.count
   end
 
-  should 'notify with different trackers activity create with different targets' do
+  should 'not group trackers activity of article\'s creation' do
     ActionTracker::Record.delete_all
 
     article = fast_create(TextileArticle)
@@ -260,28 +261,15 @@ class ApproveArticleTest < ActiveSupport::TestCase
     article = fast_create(TextileArticle)
     a = ApproveArticle.create!(:name => 'another bar', :article => article, :target => community, :requestor => profile)
     a.finish
-    assert_equal 1, ActionTracker::Record.count
 
     article = fast_create(TextileArticle)
     other_community = fast_create(Community)
     a = ApproveArticle.create!(:name => 'another bar', :article => article, :target => other_community, :requestor => profile)
     a.finish
-    assert_equal 2, ActionTracker::Record.count
+    assert_equal 3, ActionTracker::Record.count
   end
 
-  should 'notify activity on update' do
-    ActionTracker::Record.delete_all
-    a = ApproveArticle.create!(:name => 'bar', :article => article, :target => community, :requestor => profile)
-    a.finish
-    assert_equal 1, ActionTracker::Record.count
-
-    published = article.class.last
-    published.name = 'foo'
-    published.save!
-    assert_equal 2, ActionTracker::Record.count
-  end
-
-  should 'notify with different trackers activity update with different targets' do
+  should 'not create trackers activity when updating articles' do
     ActionTracker::Record.delete_all
     article1 = fast_create(TextileArticle)
     a = ApproveArticle.create!(:name => 'bar', :article => article1, :target => community, :requestor => profile)
@@ -293,16 +281,16 @@ class ApproveArticleTest < ActiveSupport::TestCase
     a.finish
     assert_equal 2, ActionTracker::Record.count
 
-    published = article1.class.last
-    published.name = 'foo';published.save!
-    assert_equal 3, ActionTracker::Record.count
-
-    published = article2.class.last
-    published.name = 'another foo';published.save!
-    assert_equal 4, ActionTracker::Record.count
+    assert_no_difference ActionTracker::Record, :count do
+      published = article1.class.last
+      published.name = 'foo';published.save!
+  
+      published = article2.class.last
+      published.name = 'another foo';published.save!
+    end
   end
 
-  should "the tracker action target be defined as Community by custom_target method on articles'creation in communities" do
+  should "the tracker action target be defined as the article on articles'creation in communities" do
     ActionTracker::Record.delete_all
     person = fast_create(Person)
     community.add_member(person)
@@ -310,17 +298,21 @@ class ApproveArticleTest < ActiveSupport::TestCase
     a = ApproveArticle.create!(:article => article, :target => community, :requestor => profile)
     a.finish
 
-    assert_equal Community, ActionTracker::Record.last.target.class
+    approved_article = community.articles.find_by_name(article.name)
+
+    assert_equal approved_article, ActionTracker::Record.last.target
   end
 
-  should "the tracker action target be defined as person by custom_target method on articles'creation in profile" do
+  should "the tracker action target be defined as the article on articles'creation in profile" do
     ActionTracker::Record.delete_all
     person = fast_create(Person)
 
     a = ApproveArticle.create!(:article => article, :target => person, :requestor => profile)
     a.finish
 
-    assert_equal Person, ActionTracker::Record.last.target.class
+    approved_article = person.articles.find_by_name(article.name)
+
+    assert_equal approved_article, ActionTracker::Record.last.target
   end
 
   should "have the same is_trackable method as original article" do
@@ -370,12 +362,57 @@ class ApproveArticleTest < ActiveSupport::TestCase
     assert_match(/#{task.requestor.name} wants to publish the article: #{article.name}/, email.subject)
   end
 
+  should 'deliver target finished message about article deleted' do
+    task = ApproveArticle.new(:article => article, :target => community, :requestor => profile)
+    article.destroy
+
+    email = TaskMailer.deliver_task_finished(task)
+
+    assert_match(/#{task.requestor.name} wanted to publish an article but it was removed/, email.subject)
+  end
+
   should 'approve an event' do
     event = fast_create(Event, :profile_id => profile.id, :name => 'Event test', :slug => 'event-test', :abstract => 'Lead of article', :body => 'This is my event')
     task = ApproveArticle.create!(:name => 'Event test', :article => event, :target => community, :requestor => profile)
     assert_difference event.class, :count do
       task.finish
     end
+  end
+
+  should 'approve same article twice changing its name' do
+    task1 = ApproveArticle.create!(:article => article, :target => community, :requestor => profile)
+    assert_difference article.class, :count do
+      task1.finish
+    end
+    task2 = ApproveArticle.create!(:name => article.name + ' v2', :article => article, :target => community, :requestor => profile)
+    assert_difference article.class, :count do
+      assert_nothing_raised ActiveRecord::RecordInvalid do
+         task2.finish
+      end
+    end
+  end
+
+  should 'not approve same article twice if not changing its name' do
+    task1 = ApproveArticle.create!(:article => article, :target => community, :requestor => profile)
+    assert_difference article.class, :count do
+      task1.finish
+    end
+    task2 = ApproveArticle.create!(:article => article, :target => community, :requestor => profile)
+    assert_no_difference article.class, :count do
+      assert_raises ActiveRecord::RecordInvalid do
+         task2.finish
+      end
+    end
+  end
+
+  should 'return reject message even without reject explanation' do
+    task = ApproveArticle.new(:name => 'My Article')
+    assert_not_nil task.task_cancelled_message
+  end
+
+  should 'show the name of the article in the reject message' do
+    task = ApproveArticle.new(:name => 'My Article')
+    assert_match /My Article/, task.task_cancelled_message
   end
 
 end

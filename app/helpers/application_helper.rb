@@ -1,12 +1,16 @@
+require 'redcloth'
+
 # Methods added to this helper will be available to all templates in the
 # application.
 module ApplicationHelper
 
-  include PermissionName
+  include PermissionNameHelper
 
   include LightboxHelper
 
   include ThickboxHelper
+
+  include ColorboxHelper
 
   include BoxesHelper
 
@@ -95,7 +99,7 @@ module ApplicationHelper
     text = content_tag('div', button + content_tag('div', content_tag('div', content) + close_button, :class => 'help_message', :id => help_id, :style => 'display: none;'), :class => 'help_box')
 
     unless block.nil?
-      concat(text, block.binding)
+      concat(text)
     end
 
     text
@@ -207,7 +211,11 @@ module ApplicationHelper
       the_class << ' ' << html_options[:class]
     end
     the_title = html_options[:title] || label
-    link_to('&nbsp;'+content_tag('span', label), url, html_options.merge(:class => the_class, :title => the_title))
+    if html_options[:disabled]
+      content_tag('a', '&nbsp;'+content_tag('span', label), html_options.merge(:class => the_class, :title => the_title))
+    else
+      link_to('&nbsp;'+content_tag('span', label), url, html_options.merge(:class => the_class, :title => the_title))
+    end
   end
 
   def button_to_function(type, label, js_code, html_options = {}, &block)
@@ -252,33 +260,62 @@ module ApplicationHelper
   end
 
   def button_bar(options = {}, &block)
-    concat(content_tag('div', capture(&block) + tag('br', :style => 'clear: left;'), { :class => 'button-bar' }.merge(options)), block.binding)
+    concat(content_tag('div', capture(&block) + tag('br', :style => 'clear: left;'), { :class => 'button-bar' }.merge(options)))
+  end
+
+  VIEW_EXTENSIONS = %w[.rhtml .html.erb]
+
+  def partial_for_class_in_view_path(klass, view_path)
+    return nil if klass.nil?
+    name = klass.name.underscore
+
+    search_name = String.new(name)
+    if search_name.include?("/")
+      search_name.gsub!(/(\/)([^\/]*)$/,'\1_\2')
+      name = File.join(params[:controller], name) if defined?(params) && params[:controller]
+    else
+      search_name = "_" + search_name
+    end
+
+    VIEW_EXTENSIONS.each do |ext|
+      path = defined?(params) && params[:controller] ? File.join(view_path, params[:controller], search_name+ext) : File.join(view_path, search_name+ext)
+      return name if File.exists?(File.join(path))
+    end
+
+    partial_for_class_in_view_path(klass.superclass, view_path)
   end
 
   def partial_for_class(klass)
-    if klass.nil?
-      raise ArgumentError, 'No partial for object. Is there a partial for any class in the inheritance hierarchy?'
+    raise ArgumentError, 'No partial for object. Is there a partial for any class in the inheritance hierarchy?' if klass.nil?
+    name = klass.name.underscore
+    @controller.view_paths.each do |view_path|
+      partial = partial_for_class_in_view_path(klass, view_path)
+      return partial if partial
     end
 
-    name = klass.name.underscore
-    if File.exists?(File.join(RAILS_ROOT, 'app', 'views', params[:controller], "_#{name}.rhtml"))
-      name
-    else
-      partial_for_class(klass.superclass)
-    end
+    raise ArgumentError, 'No partial for object. Is there a partial for any class in the inheritance hierarchy?'
   end
 
   def partial_for_task_class(klass, action)
-    if klass.nil?
-      raise ArgumentError, 'No partial for object. Is there a partial for any class in the inheritance hierarchy?'
-    end
+    raise ArgumentError, 'No partial for object. Is there a partial for any class in the inheritance hierarchy?' if klass.nil?
 
     name = "#{klass.name.underscore}_#{action.to_s}"
-    if File.exists?(File.join(RAILS_ROOT, 'app', 'views', params[:controller], "_#{name}.rhtml"))
-      name
-    else
-      partial_for_task_class(klass.superclass, action)
+    VIEW_EXTENSIONS.each do |ext|
+      return name if File.exists?(File.join(RAILS_ROOT, 'app', 'views', params[:controller], '_'+name+ext))
     end
+
+    partial_for_task_class(klass.superclass, action)
+  end
+
+  def view_for_profile_actions(klass)
+    raise ArgumentError, 'No profile actions view for this class.' if klass.nil?
+
+    name = klass.name.underscore
+    VIEW_EXTENSIONS.each do |ext|
+      return "blocks/profile_info_actions/"+name+ext if File.exists?(File.join(RAILS_ROOT, 'app', 'views', 'blocks', 'profile_info_actions', name+ext))
+    end
+
+    view_for_profile_actions(klass.superclass)
   end
 
   def user
@@ -505,7 +542,7 @@ module ApplicationHelper
           {_('Members') => {:href => url_for(:controller => :profile, :action => :members, :profile => profile.identifier)}},
           {_('Agenda') => {:href => url_for(:controller => :profile, :action => :events, :profile => profile.identifier)}},
           {_('Join') => {:href => url_for(profile.join_url), :class => 'join-community', :style => 'display: none'}},
-          {_('Leave') => {:href => url_for(profile.leave_url), :class => 'leave-community', :style => 'display:  none'}},
+          {_('Leave community') => {:href => url_for(profile.leave_url), :class => 'leave-community', :style => 'display:  none'}},
           {_('Send an e-mail') => {:href => url_for(:profile => profile.identifier, :controller => 'contact', :action => 'new'), :class => 'send-an-email', :style => 'display: none'}}
         ]
       elsif profile.kind_of?(Enterprise)
@@ -539,7 +576,7 @@ module ApplicationHelper
     end
     extra_info = extra_info.nil? ? '' : content_tag( 'span', extra_info, :class => 'extra_info' )
     links = links_for_balloon(profile)
-    content_tag tag,
+    content_tag('div', content_tag(tag,
         (environment.enabled?(:show_balloon_with_profile_links_when_clicked) ? link_to( content_tag( 'span', _('Profile links')), '#', :onclick => "toggleSubmenu(this, '#{profile.short_name}', #{links.to_json}); return false", :class => "menu-submenu-trigger #{trigger_class}", :url => url) : "") +
         link_to(
             content_tag( 'span', profile_image( profile, size ), :class => 'profile-image' ) +
@@ -549,24 +586,25 @@ module ApplicationHelper
             :class => 'profile_link url',
             :help => _('Click on this icon to go to the <b>%s</b>\'s home page') % profile.name,
             :title => profile.name ),
-        :class => 'vcard'
+        :class => 'vcard'), :class => 'common-profile-list-block')
   end
 
   def gravatar_url_for(email, options = {})
     # Ta dando erro de roteamento
-    url_for( { :gravatar_id => Digest::MD5.hexdigest(email),
+    default = theme_option['gravatar'] || NOOSFERO_CONF['gravatar'] || nil
+    url_for( { :gravatar_id => Digest::MD5.hexdigest(email.to_s),
                :host => 'www.gravatar.com',
                :protocol => 'http://',
                :only_path => false,
                :controller => 'avatar.php',
-               :d => NOOSFERO_CONF['gravatar'] ? NOOSFERO_CONF['gravatar'] : nil
+               :d => default
              }.merge(options) )
   end
 
   def str_gravatar_url_for(email, options = {})
-    default = NOOSFERO_CONF['gravatar'] ? NOOSFERO_CONF['gravatar'] : nil
+    default = theme_option['gravatar'] || NOOSFERO_CONF['gravatar'] || nil
     url = 'http://www.gravatar.com/avatar.php?gravatar_id=' +
-           Digest::MD5.hexdigest(email)
+           Digest::MD5.hexdigest(email.to_s)
     {
       :only_path => false,
       :d => default
@@ -574,6 +612,10 @@ module ApplicationHelper
       url += ( '&%s=%s' % [ k,v ] )
     }
     url
+  end
+
+  def gravatar_profile_url(email)
+    'http://www.gravatar.com/'+ Digest::MD5.hexdigest(email.to_s)
   end
 
   attr_reader :environment
@@ -720,7 +762,7 @@ module ApplicationHelper
 
   # Should be on the forms_helper file but when its there the translation of labels doesn't work
   class NoosferoFormBuilder < ActionView::Helpers::FormBuilder
-  extend ActionView::Helpers::TagHelper
+    extend ActionView::Helpers::TagHelper
 
     def self.output_field(text, field_html, field_id = nil)
       # try to guess an id if none given
@@ -742,7 +784,7 @@ module ApplicationHelper
     (field_helpers - %w(hidden_field)).each do |selector|
       src = <<-END_SRC
         def #{selector}(field, *args, &proc)
-          text = object.class.human_attribute_name(field.to_s)
+          text = object.class.respond_to?(:human_attribute_name) && object.class.human_attribute_name(field.to_s) || field.to_s.humanize
           NoosferoFormBuilder::output_field(text, super)
         end
       END_SRC
@@ -844,31 +886,15 @@ module ApplicationHelper
     end
 
     if block
-      concat(result, block.binding)
+      concat(result)
     end
 
     result
   end
 
-  def search_page_title(title, options={})
-    title = "<h1>" + title + "</h1>"
-    title += "<h2 class='query'>" + _("Searched for '%s'") % options[:query] + "</h2>" if !options[:query].blank?
-    title += "<h2 class='query'>" + _("In category %s") % options[:category] + "</h2>" if !options[:category].blank?
-    title += "<h2 class='query'>" + _("within %d km from %s") % [options[:distance], options[:region]] + "</h2>" if !options[:distance].blank? && !options[:region].blank?
-    title += "<h2 class='query'>" + _("%d results found") % options[:total_results] + "</h2>" if !options[:total_results].blank?
-    title
-  end
-
-  def search_page_link_to_all(options={})
-    if options[:category]
-      title = "<div align='center'>" + _('In all categories') + "</div>"
-      link_to title, :action => 'assets', :asset => options[:asset], :category_path => []
-    end
-  end
-
   def template_stylesheet_path
     if profile.nil?
-      '/designs/templates/default/stylesheets/style.css'
+      "/designs/templates/#{environment.layout_template}/stylesheets/style.css"
     else
       "/designs/templates/#{profile.layout_template}/stylesheets/style.css"
     end
@@ -876,18 +902,11 @@ module ApplicationHelper
 
   def login_url
     options = Noosfero.url_options.merge({ :controller => 'account', :action => 'login' })
-    if environment.enable_ssl && (ENV['RAILS_ENV'] != 'development')
-      options.merge!(:protocol => 'https://', :host => ssl_hostname)
-    end
     url_for(options)
   end
 
-  def ssl_hostname
-    environment.default_hostname
-  end
-
   def base_url
-    environment.top_url(request.ssl?)
+    environment.top_url
   end
 
   def helper_for_article(article)
@@ -949,11 +968,14 @@ module ApplicationHelper
   def noosfero_stylesheets
     [
       'application',
+      'search',
       'thickbox',
       'lightbox',
       'colorpicker',
+      'colorbox',
       pngfix_stylesheet_path,
-    ]
+    ] +
+    tokeninput_stylesheets
   end
 
   # DEPRECATED. Do not use this·
@@ -963,6 +985,10 @@ module ApplicationHelper
 
   def pngfix_stylesheet_path
     'iepngfix/iepngfix.css'
+  end
+
+  def tokeninput_stylesheets
+    ['token-input', 'token-input-facebook', 'token-input-mac', 'token-input-facet']
   end
 
   def noosfero_layout_features
@@ -980,7 +1006,10 @@ module ApplicationHelper
   def article_to_html(article, options = {})
     options.merge!(:page => params[:npage])
     content = article.to_html(options)
-    return self.instance_eval(&content) if content.kind_of?(Proc)
+    content = content.kind_of?(Proc) ? self.instance_eval(&content) : content
+    @plugins && @plugins.each do |plugin|
+      content = plugin.parse_content(content)
+    end
     content
   end
 
@@ -1058,45 +1087,62 @@ module ApplicationHelper
     ") : '')
   end
 
-  def browse_people_menu
+  def search_contents_menu
+    links = [
+      {s_('contents|More recent') => {:href => url_for({:controller => 'search', :action => 'contents', :filter => 'more_recent'})}},
+      {s_('contents|More viewed') => {:href => url_for({:controller => 'search', :action => 'contents', :filter => 'more_popular'})}},
+      {s_('contents|Most commented') => {:href => url_for({:controller => 'search', :action => 'contents', :filter => 'more_comments'})}}
+    ]
+    if logged_in?
+      links.push(_('New content') => colorbox_options({:href => url_for({:controller => 'cms', :action => 'new', :profile => current_user.login, :cms => true})}))
+    end
+
+    link_to(content_tag(:span, _('Contents'), :class => 'icon-menu-articles'), {:controller => "search", :action => 'contents', :category_path => ''}, :id => 'submenu-contents') +
+    link_to(content_tag(:span, _('Contents menu')), '#', :onclick => "toggleSubmenu(this,'',#{links.to_json}); return false", :class => 'menu-submenu-trigger up', :id => 'submenu-contents-trigger')
+  end
+  alias :browse_contents_menu :search_contents_menu
+
+  def search_people_menu
      links = [
-       {s_('people|More Recent') => {:href => url_for({:controller => 'browse', :action => 'people', :filter => 'more_recent'})}},
-       {s_('people|More Active') => {:href => url_for({:controller => 'browse', :action => 'people', :filter => 'more_active'})}},
-       {s_('people|More Popular') => {:href => url_for({:controller => 'browse', :action => 'people', :filter => 'more_popular'})}}
+       {s_('people|More recent') => {:href => url_for({:controller => 'search', :action => 'people', :filter => 'more_recent'})}},
+       {s_('people|More active') => {:href => url_for({:controller => 'search', :action => 'people', :filter => 'more_active'})}},
+       {s_('people|More popular') => {:href => url_for({:controller => 'search', :action => 'people', :filter => 'more_popular'})}}
      ]
      if logged_in?
        links.push(_('My friends') => {:href => url_for({:profile => current_user.login, :controller => 'friends'})})
        links.push(_('Invite friends') => {:href => url_for({:profile => current_user.login, :controller => 'invite', :action => 'friends'})})
      end
 
-    link_to(content_tag(:span, _('People'), :class => 'icon-menu-people'), {:controller => "browse", :action => 'people'}, :id => 'submenu-people') +
-    link_to(content_tag(:span, _('People Menu')), '#', :onclick => "toggleSubmenu(this,'',#{links.to_json}); return false", :class => 'menu-submenu-trigger up', :id => 'submenu-people-trigger')
+    link_to(content_tag(:span, _('People'), :class => 'icon-menu-people'), {:controller => "search", :action => 'people', :category_path => ''}, :id => 'submenu-people') +
+    link_to(content_tag(:span, _('People menu')), '#', :onclick => "toggleSubmenu(this,'',#{links.to_json}); return false", :class => 'menu-submenu-trigger up', :id => 'submenu-people-trigger')
   end
+  alias :browse_people_menu :search_people_menu
 
-  def browse_communities_menu
+  def search_communities_menu
      links = [
-       {s_('communities|More Recent') => {:href => url_for({:controller => 'browse', :action => 'communities', :filter => 'more_recent'})}},
-       {s_('communities|More Active') => {:href => url_for({:controller => 'browse', :action => 'communities', :filter => 'more_active'})}},
-       {s_('communities|More Popular') => {:href => url_for({:controller => 'browse', :action => 'communities', :filter => 'more_popular'})}}
+       {s_('communities|More recent') => {:href => url_for({:controller => 'search', :action => 'communities', :filter => 'more_recent'})}},
+       {s_('communities|More active') => {:href => url_for({:controller => 'search', :action => 'communities', :filter => 'more_active'})}},
+       {s_('communities|More popular') => {:href => url_for({:controller => 'search', :action => 'communities', :filter => 'more_popular'})}}
      ]
      if logged_in?
        links.push(_('My communities') => {:href => url_for({:profile => current_user.login, :controller => 'memberships'})})
        links.push(_('New community') => {:href => url_for({:profile => current_user.login, :controller => 'memberships', :action => 'new_community'})})
      end
 
-    link_to(content_tag(:span, _('Communities'), :class => 'icon-menu-community'), {:controller => "browse", :action => 'communities'}, :id => 'submenu-communities') +
-    link_to(content_tag(:span, _('Communities Menu')), '#', :onclick => "toggleSubmenu(this,'',#{links.to_json}); return false", :class => 'menu-submenu-trigger up', :id => 'submenu-communities-trigger')
+    link_to(content_tag(:span, _('Communities'), :class => 'icon-menu-community'), {:controller => "search", :action => 'communities'}, :id => 'submenu-communities') +
+    link_to(content_tag(:span, _('Communities menu')), '#', :onclick => "toggleSubmenu(this,'',#{links.to_json}); return false", :class => 'menu-submenu-trigger up', :id => 'submenu-communities-trigger')
   end
+  alias :browse_communities_menu :search_communities_menu
 
   def pagination_links(collection, options={})
-    options = {:prev_label => '&laquo; ' + _('Previous'), :next_label => _('Next') + ' &raquo;'}.merge(options)
+    options = {:previous_label => '&laquo; ' + _('Previous'), :next_label => _('Next') + ' &raquo;'}.merge(options)
     will_paginate(collection, options)
   end
 
   def render_environment_features(folder)
     result = ''
     environment.enabled_features.keys.each do |feature|
-      file = File.join(@controller.view_paths, 'shared', folder.to_s, "#{feature}.rhtml")
+      file = File.join(@controller.view_paths.last, 'shared', folder.to_s, "#{feature}.rhtml")
       if File.exists?(file)
         result << render(:file => file, :use_full_path => false)
       end
@@ -1104,16 +1150,27 @@ module ApplicationHelper
     result
   end
 
+  def manage_enterprises
+    if user && !user.enterprises.empty?
+      enterprises_link = user.enterprises.map do |enterprise|
+        link_to(content_tag('strong', [_('<span>Manage</span> %s') % enterprise.short_name(25)]), @environment.top_url + "/myprofile/#{enterprise.identifier}", :class => "icon-menu-"+enterprise.class.identification.underscore, :title => [_('Manage %s') % enterprise.short_name])
+      end
+      render :partial => 'shared/manage_enterprises', :locals => {:enterprises_link => enterprises_link}
+    end
+  end
+
   def usermenu_logged_in
     pending_tasks_count = ''
-    if user && user.all_pending_tasks.count > 0
-      pending_tasks_count = link_to(user.all_pending_tasks.count.to_s, '/myprofile/{login}/tasks', :id => 'pending-tasks-count', :title => _("Manage your pending tasks"))
+    count = user ? Task.to(user).pending.count : -1
+    if count > 0
+      pending_tasks_count = link_to(count.to_s, @environment.top_url + '/myprofile/{login}/tasks', :id => 'pending-tasks-count', :title => _("Manage your pending tasks"))
     end
 
-    (_('Welcome, %s') % link_to('<i></i><strong>{login}</strong>', '/{login}', :id => "homepage-link", :title => _('Go to your homepage'))) +
+    (_("<span class='welcome'>Welcome,</span> %s") % link_to('<i></i><strong>{login}</strong>', @environment.top_url + '/{login}', :id => "homepage-link", :title => _('Go to your homepage'))) +
     render_environment_features(:usermenu) +
-    link_to('<i class="icon-menu-admin"></i><strong>' + _('Administration') + '</strong>', { :controller => 'admin_panel', :action => 'index' }, :id => "controlpanel", :title => _("Configure the environment"), :class => 'admin-link', :style => 'display: none') +
-    link_to('<i class="icon-menu-ctrl-panel"></i><strong>' + _('Control panel') + '</strong>', '/myprofile/{login}', :id => "controlpanel", :title => _("Configure your personal account and content")) +
+    link_to('<i class="icon-menu-admin"></i><strong>' + _('Administration') + '</strong>', @environment.top_url + '/admin', :id => "controlpanel", :title => _("Configure the environment"), :class => 'admin-link', :style => 'display: none') +
+    manage_enterprises.to_s +
+    link_to('<i class="icon-menu-ctrl-panel"></i><strong>' + _('Control panel') + '</strong>', @environment.top_url + '/myprofile/{login}', :id => "controlpanel", :title => _("Configure your personal account and content")) +
     pending_tasks_count +
     link_to('<i class="icon-menu-logout"></i><strong>' + _('Logout') + '</strong>', { :controller => 'account', :action => 'logout'} , :id => "logout", :title => _("Leave the system"))
   end
@@ -1124,6 +1181,10 @@ module ApplicationHelper
       content_tag(:p, content_tag(:span, limit) + ' ' + _(' characters left'), :id => text_area_id + '_left'),
       content_tag(:p, _('Limit of characters reached'), :id => text_area_id + '_limit', :style => 'display: none')
     ], :class => 'limited-text-area')
+  end
+
+  def expandable_text_area(object_name, method, text_area_id, options = {})
+    text_area(object_name, method, { :id => text_area_id, :onkeyup => "grow_text_area('#{text_area_id}')" }.merge(options))
   end
 
   def pluralize_without_count(count, singular, plural = nil)
@@ -1153,15 +1214,12 @@ module ApplicationHelper
           else             _('1 minute')
         end
 
-      when 2..44           then _('%{distance} minutes') % { :distance => distance_in_minutes }
-      when 45..89          then _('about 1 hour')
-      when 90..1439        then _('about %{distance} hours') % { :distance => (distance_in_minutes.to_f / 60.0).round }
-      when 1440..2879      then _('1 day')
-      when 2880..43199     then _('%{distance} days') % { :distance => (distance_in_minutes / 1440).round }
-      when 43200..86399    then _('about 1 month')
-      when 86400..525599   then _('%{distance} months') % { :distance => (distance_in_minutes / 43200).round }
-      when 525600..1051199 then _('about 1 year')
-      else                      _('over %{distance} years') % { :distance => (distance_in_minutes / 525600).round }
+      when 2..44           then _('%{distance} minutes ago') % { :distance => distance_in_minutes }
+      when 45..89          then _('about 1 hour ago')
+      when 90..1439        then _('about %{distance} hours ago') % { :distance => (distance_in_minutes.to_f / 60.0).round }
+      when 1440..2879      then _('1 day ago')
+      when 2880..10079     then _('%{distance} days ago') % { :distance => (distance_in_minutes / 1440).round }
+      else                      show_time(from_time)
     end
   end
 
@@ -1169,7 +1227,7 @@ module ApplicationHelper
     wrapper = content_tag(:div, capture(&block), :class => 'comment-balloon-content')
     (1..8).to_a.reverse.each { |i| wrapper = content_tag(:div, wrapper, :class => "comment-wrapper-#{i}") }
     classes = options.delete(:class) || options.delete("class") || ''
-    concat(content_tag('div', wrapper + tag('br', :style => 'clear: both;'), { :class => 'comment-balloon ' + classes.to_s }.merge(options)), block.binding)
+    concat(content_tag('div', wrapper + tag('br', :style => 'clear: both;'), { :class => 'comment-balloon ' + classes.to_s }.merge(options)))
   end
 
   def display_source_info(page)
@@ -1190,25 +1248,185 @@ module ApplicationHelper
     task.information[:message] % values
   end
 
+  def add_zoom_to_article_images
+    add_zoom_to_images if environment.enabled?(:show_zoom_button_on_article_images)
+  end
+
   def add_zoom_to_images
-    if environment.enabled?(:show_zoom_button_on_article_images)
-      stylesheet_link_tag('fancybox') +
-      javascript_include_tag('jquery.fancybox-1.3.4.pack') +
-      javascript_tag("jQuery(function($) {
-        $(window).load( function() {
-          $('#article .article-body img').each( function(index) {
-            var original = original_image_dimensions($(this).attr('src'));
-            if ($(this).width() < original['width'] || $(this).height() < original['height']) {
-              $(this).wrap('<div class=\"zoomable-image\" />');
-              $(this).parent('.zoomable-image').attr('style', $(this).attr('style'));
-              $(this).attr('style', '');
-              $(this).after(\'<a href=\"' + $(this).attr('src') + '\" class=\"zoomify-image\"><span class=\"zoomify-text\">%s</span></a>');
-            }
-          });
-          $('.zoomify-image').fancybox();
+    stylesheet_link_tag('fancybox') +
+    javascript_include_tag('jquery.fancybox-1.3.4.pack') +
+    javascript_tag("jQuery(function($) {
+      $(window).load( function() {
+        $('#article .article-body img').each( function(index) {
+          var original = original_image_dimensions($(this).attr('src'));
+          if ($(this).width() < original['width'] || $(this).height() < original['height']) {
+            $(this).wrap('<div class=\"zoomable-image\" />');
+            $(this).parent('.zoomable-image').attr('style', $(this).attr('style'));
+            $(this).attr('style', '');
+            $(this).after(\'<a href=\"' + $(this).attr('src') + '\" class=\"zoomify-image\"><span class=\"zoomify-text\">%s</span></a>');
+          }
         });
-      });" % _('Zoom in'))
+        $('.zoomify-image').fancybox();
+      });
+    });" % _('Zoom in'))
+  end
+
+  def render_dialog_error_messages(instance_name)
+    render :partial => 'shared/dialog_error_messages', :locals => { :object_name => instance_name }
+  end
+
+  def report_abuse(profile, type, content=nil)
+    return if !user || user == profile
+
+    url = { :controller => 'profile',
+            :action => 'report_abuse',
+            :profile => profile.identifier }
+    url.merge!({:content_type => content.class.name, :content_id => content.id}) if content
+    text = content_tag('span', _('Report abuse'))
+    klass = 'report-abuse-action'
+    already_reported_message = _('You already reported this profile.')
+    report_profile_message = _('Report this profile for abusive behaviour')
+
+    if type == :button
+      if user.already_reported?(profile)
+        button(:alert, text, url, :class => klass+' disabled', :disabled => true, :title => already_reported_message)
+      else
+        button(:alert, text, url, :class => klass, :title => report_profile_message)
+      end
+    elsif type == :link
+      if user.already_reported?(profile)
+        content_tag('a', text, :class => klass + ' disabled button with-text icon-alert', :title => already_reported_message)
+      else
+        link_to(text, url, :class => klass + ' button with-text icon-alert', :title => report_profile_message)
+      end
+    elsif type == :comment_link
+      (user.already_reported?(profile) ?
+        content_tag('a', text, :class => klass + ' disabled comment-footer comment-footer-link', :title => already_reported_message) :
+        link_to(text, url, :class => klass + ' comment-footer comment-footer-link', :title => report_profile_message)
+      ) + content_tag('span', ' | ', :class => 'comment-footer comment-footer-hide')
     end
   end
 
+  def cache_timeout(key, timeout, &block)
+    cache(key, { :expires_in => timeout }, &block)
+  end
+
+  def is_cache_expired?(key)
+    !cache_store.fetch(ActiveSupport::Cache.expand_cache_key(key, :controller))
+  end
+
+  def render_tabs(tabs)
+    titles = tabs.inject(''){ |result, tab| result << content_tag(:li, link_to(tab[:title], '#'+tab[:id]), :class => 'tab') }
+    contents = tabs.inject(''){ |result, tab| result << content_tag(:div, tab[:content], :id => tab[:id]) }
+
+    content_tag :div, :class => 'ui-tabs' do
+      content_tag(:ul, titles) + contents
+    end
+  end
+
+  def jquery_token_input_messages_json(hintText = _('Type in an keyword'), noResultsText = _('No results'), searchingText = _('Searching...'))
+    "hintText: '#{hintText}', noResultsText: '#{noResultsText}', searchingText: '#{searchingText}'"
+  end
+
+  def delete_article_message(article)
+    if article.folder?
+      _("Are you sure that you want to remove the folder \"#{article.name}\"? Note that all the items inside it will also be removed!")
+    else
+      _("Are you sure that you want to remove the item \"#{article.name}\"?")
+    end
+  end
+
+  def expirable_link_to(expired, content, url, options = {})
+    if expired
+      options[:class] = (options[:class] || '') + ' disabled'
+      content_tag('a', '&nbsp;'+content_tag('span', content), options)
+    else
+      link_to content, url, options
+    end
+  end
+
+  def remove_content_button(action)
+    @plugins.dispatch("content_remove_#{action.to_s}", @page).include?(true)
+  end
+
+  def template_options(klass, field_name)
+    return '' if klass.templates.count == 0
+    return hidden_field_tag("#{field_name}[template_id]", klass.templates.first.id) if klass.templates.count == 1
+
+    counter = 0
+    radios = klass.templates.map do |template|
+      counter += 1
+      content_tag('li', labelled_radio_button(template.name, "#{field_name}[template_id]", template.id, counter==1))
+    end.join("\n")
+
+    content_tag('div', content_tag('span', _('Template:')) +
+      content_tag('ul', radios, :style => 'list-style: none; padding-left: 0; margin-top: 0.5em;'),
+      :id => 'template-options',
+      :style => 'margin-top: 1em'
+    )
+  end
+
+  def token_input_field_tag(name, element_id, search_action, options = {}, text_field_options = {}, html_options = {})
+    options[:min_chars] ||= 3
+    options[:hint_text] ||= _("Type in a search term")
+    options[:no_results_text] ||= _("No results")
+    options[:searching_text] ||= _("Searching...")
+    options[:search_delay] ||= 1000
+    options[:prevent_duplicates] ||=  true
+    options[:backspace_delete_item] ||= false
+    options[:focus] ||= false
+    options[:avoid_enter] ||= true
+    options[:on_result] ||= 'null'
+    options[:on_add] ||= 'null'
+    options[:on_delete] ||= 'null'
+    options[:on_ready] ||= 'null'
+
+    result = text_field_tag(name, nil, text_field_options.merge(html_options.merge({:id => element_id})))
+    result +=
+    "
+    <script type='text/javascript'>
+      jQuery('##{element_id}')
+      .tokenInput('#{url_for(search_action)}', {
+        minChars: #{options[:min_chars].to_json},
+        prePopulate: #{options[:pre_populate].to_json},
+        hintText: #{options[:hint_text].to_json},
+        noResultsText: #{options[:no_results_text].to_json},
+        searchingText: #{options[:searching_text].to_json},
+        searchDelay: #{options[:serach_delay].to_json},
+        preventDuplicates: #{options[:prevent_duplicates].to_json},
+        backspaceDeleteItem: #{options[:backspace_delete_item].to_json},
+        queryParam: #{name.to_json},
+        tokenLimit: #{options[:token_limit].to_json},
+        onResult: #{options[:on_result]},
+        onAdd: #{options[:on_add]},
+        onDelete: #{options[:on_delete]},
+        onReady: #{options[:on_ready]},
+      })
+    "
+    result += options[:focus] ? ".focus();" : ";"
+    if options[:avoid_enter]
+      result += "jQuery('#token-input-#{element_id}')
+                    .live('keydown', function(event){
+                    if(event.keyCode == '13') return false;
+                  });"
+    end
+    result += "</script>"
+    result
+  end
+
+  def expirable_content_reference(content, action, text, url, options = {})
+    reason = @plugins.dispatch("content_expire_#{action.to_s}", content).first
+    options[:title] = reason
+    expirable_link_to reason.present?, text, url, options
+  end
+
+  def expirable_button(content, action, text, url, options = {})
+    options[:class] = "button with-text icon-#{action.to_s}"
+    expirable_content_reference content, action, text, url, options
+  end
+
+  def expirable_comment_link(content, action, text, url, options = {})
+    options[:class] = "comment-footer comment-footer-link comment-footer-hide"
+    expirable_content_reference content, action, text, url, options
+  end
 end

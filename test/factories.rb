@@ -1,7 +1,17 @@
 module Noosfero::Factory
 
+  # Register factory extensions, including module methods for tests
+  def self.register_extension(mod)
+    @extensions ||= []
+    @extensions << mod
+  end
+
+  def self.included(base)
+    @extensions.each{ |m| base.send(:include, m) }
+  end
+
   def fast_create(name, attrs = {}, options = {})
-    data = defaults_for(name.to_s.gsub('::','')).merge(attrs)
+    data = defaults_for(name.to_s.gsub('::',''), attrs).merge(attrs)
     klass = name.to_s.camelize.constantize
     if klass.superclass != ActiveRecord::Base
       data[:type] = klass.to_s
@@ -22,7 +32,7 @@ module Noosfero::Factory
       end
     end
     if options[:search]
-      obj.ferret_create
+      obj.solr_save
     end
     obj
   end
@@ -39,12 +49,22 @@ module Noosfero::Factory
   end
 
   def build(name, attrs = {})
-    data = defaults_for(name).merge(attrs)
+    data = defaults_for(name, attrs).merge(attrs)
     name.to_s.camelize.constantize.new(data)
   end
 
-  def defaults_for(name)
-    send('defaults_for_' + name.to_s.underscore) || {}
+  def defaults_for(name, attrs = {})
+    method_name = "defaults_for_#{name.to_s.underscore}"
+    if respond_to?(method_name)
+      m = method(method_name)
+      if m.arity == -1
+        m.call(attrs)
+      else
+        m.call
+      end
+    else
+      {}
+    end
   end
 
   def self.num_seq
@@ -56,7 +76,7 @@ module Noosfero::Factory
   ###### old stuff to be rearranged
   def create_admin_user(env)
     admin_user = User.find_by_login('adminuser') || create_user('adminuser', :email => 'adminuser@noosfero.org', :password => 'adminuser', :password_confirmation => 'adminuser', :environment => env)
-    admin_role = Role.find_by_name('admin_role') || Role.create!(:name => 'admin_role', :permissions => ['view_environment_admin_panel','edit_environment_features', 'edit_environment_design', 'manage_environment_categories', 'manage_environment_roles', 'manage_environment_validators', 'manage_environment_users'])
+    admin_role = Role.find_by_name('admin_role') || Role.create!(:name => 'admin_role', :permissions => ['view_environment_admin_panel','edit_environment_features', 'edit_environment_design', 'manage_environment_categories', 'manage_environment_roles', 'manage_environment_validators', 'manage_environment_users', 'manage_environment_templates', 'manage_environment_licenses'])
     RoleAssignment.create!(:accessor => admin_user.person, :role => admin_role, :resource => env) unless admin_user.person.role_assignments.map{|ra|[ra.role, ra.accessor, ra.resource]}.include?([admin_role, admin_user, env])
     admin_user.login
   end
@@ -71,7 +91,8 @@ module Noosfero::Factory
   # testing that passes through the actual user creation process.
   #
   # Be aware that this is slow, though.
-  def create_user_full(name, options = {}, person_options = {})
+  def create_user_full(name = nil, options = {}, person_options = {})
+    name ||= 'user' + factory_num_seq.to_s
     data = {
       :login => name,
       :email => name + '@noosfero.org',
@@ -79,8 +100,8 @@ module Noosfero::Factory
       :password_confirmation => name.underscore
     }.merge(options)
     user = User.new(data)
+    user.person = Person.new(person_options)
     user.save!
-    user.person.update_attributes!(person_data.merge(person_options))
     user
   end
 
@@ -90,7 +111,8 @@ module Noosfero::Factory
 
   # This method knows way too much about the model. But since creating an
   # actual user is really expensive, for tests we need a fast alternative.
-  def create_user(name, options = {}, person_options = {})
+  def create_user(name = nil, options = {}, person_options = {})
+    name ||= 'user' + factory_num_seq.to_s
     environment_id = options.delete(:environment_id) || (options.delete(:environment) || Environment.default).id
 
     password = options.delete(:password)
@@ -249,7 +271,7 @@ module Noosfero::Factory
   ###############################################
   def defaults_for_blog
     name = 'My blog ' + factory_num_seq.to_s
-    { :name => name, :slug => name.to_slug }
+    { :name => name, :slug => name.to_slug, :path => name.to_slug }
   end
 
   def create_blog
@@ -311,6 +333,7 @@ module Noosfero::Factory
   end
 
   alias :defaults_for_blog_archives_block :defaults_for_block
+  alias :defaults_for_profile_list_block :defaults_for_block
 
   ###############################################
   # Task
@@ -369,7 +392,7 @@ module Noosfero::Factory
   ###############################################
 
   def defaults_for_scrap(params = {})
-    { :content => 'soment content ', :sender_id => 1, :receiver_id => 1, :created_at => DateTime.now }.merge(params)
+    { :content => 'some content ', :sender_id => 1, :receiver_id => 1, :created_at => DateTime.now }.merge(params)
   end
 
   ###############################################
@@ -437,7 +460,7 @@ module Noosfero::Factory
 
   def defaults_for_comment(params = {})
     name = "comment_#{rand(1000)}"
-    { :title => name, :body => "my own comment", :article_id => 1 }.merge(params)
+    { :title => name, :body => "my own comment", :source_id => 1, :source_type => 'Article' }.merge(params)
   end
 
   ###############################################
@@ -446,6 +469,22 @@ module Noosfero::Factory
 
   def defaults_for_unit
     { :singular => 'Litre', :plural => 'Litres', :environment_id => 1 }
+  end
+
+  ###############################################
+  # Production Cost
+  ###############################################
+
+  def defaults_for_production_cost
+    { :name => 'Production cost ' + factory_num_seq.to_s }
+  end
+
+  ###############################################
+  # National Region
+  ###############################################
+
+  def defaults_for_national_region
+    { :name => 'National region ' + factory_num_seq.to_s }
   end
 
 end

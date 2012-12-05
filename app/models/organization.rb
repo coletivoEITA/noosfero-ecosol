@@ -21,6 +21,19 @@ class Organization < Profile
 
   has_many :mailings, :class_name => 'OrganizationMailing', :foreign_key => :source_id, :as => 'source'
 
+  named_scope :more_popular,
+    :select => "#{Profile.qualified_column_names}, count(resource_id) as total",
+    :group => Profile.qualified_column_names,
+    :joins => "LEFT OUTER JOIN role_assignments ON profiles.id = role_assignments.resource_id",
+    :order => "total DESC"
+
+  named_scope :more_active,
+    :select => "#{Profile.qualified_column_names}, count(action_tracker.id) as total",
+    :joins => "LEFT OUTER JOIN action_tracker ON profiles.id = action_tracker.target_id",
+    :group => Profile.qualified_column_names,
+    :order => 'total DESC',
+    :conditions => ['action_tracker.created_at >= ? OR action_tracker.id IS NULL', ActionTracker::Record::RECENT_DELAY.days.ago]
+
   def validation_methodology
     self.validation_info ? self.validation_info.validation_methodology : nil
   end
@@ -64,6 +77,7 @@ class Organization < Profile
     state
     country
     tag_list
+    template_id
   ]
 
   def self.fields
@@ -82,12 +96,12 @@ class Organization < Profile
     []
   end
 
-  N_('Display name'); N_('Description'); N_('Contact person'); N_('Contact email'); N_('Acronym'); N_('Foundation year'); N_('Legal form'); N_('Economic activity'); N_('Management information'); N_('Validated'); N_('Tag list')
-  settings_items :display_name, :description, :contact_person, :contact_email, :acronym, :foundation_year, :legal_form, :economic_activity, :management_information, :validated, :cnpj
+  N_('Display name'); N_('Description'); N_('Contact person'); N_('Contact email'); N_('Acronym'); N_('Foundation year'); N_('Legal form'); N_('Economic activity'); N_('Management information'); N_('Tag list')
+  settings_items :display_name, :description, :contact_person, :contact_email, :acronym, :foundation_year, :legal_form, :economic_activity, :management_information
 
   validates_format_of :foundation_year, :with => Noosfero::Constants::INTEGER_FORMAT
-
   validates_format_of :contact_email, :with => Noosfero::Constants::EMAIL_FORMAT, :if => (lambda { |org| !org.contact_email.blank? })
+  validates_as_cnpj :cnpj
 
   xss_terminate :only => [ :acronym, :contact_person, :contact_email, :legal_form, :economic_activity, :management_information ], :on => 'validation'
 
@@ -136,4 +150,16 @@ class Organization < Profile
     false
   end
 
+  def members_to_json
+    members.map { |member| {:id => member.id, :name => member.name} }.to_json
+  end
+
+  def members_by_role_to_json(role)
+    members_by_role(role).map { |member| {:id => member.id, :name => member.name} }.to_json
+  end
+
+  def disable
+    self.visible = false
+    save!
+  end
 end

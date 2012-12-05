@@ -11,7 +11,7 @@ module ForumHelper
   def list_forum_posts(articles)
     pagination = will_paginate(articles, {
       :param_name => 'npage',
-      :prev_label => _('&laquo; Newer posts'),
+      :previous_label => _('&laquo; Newer posts'),
       :next_label => _('Older posts &raquo;')
     })
     content = [content_tag('tr',
@@ -42,9 +42,9 @@ module ForumHelper
   def last_topic_update(article)
     info = article.info_from_last_update
     if info[:author_url]
-      time_ago_as_sentence(info[:date]) + ' ' + _('ago') + ' ' + _('by') + ' ' + link_to(info[:author_name], info[:author_url])
+      time_ago_as_sentence(info[:date]) + ' ' + _('by') + ' ' + link_to(info[:author_name], info[:author_url])
     else
-      time_ago_as_sentence(info[:date]) + ' ' + _('ago') + ' ' + _('by') + ' ' + info[:author_name]
+      time_ago_as_sentence(info[:date]) + ' ' + _('by') + ' ' + info[:author_name]
     end
   end
 

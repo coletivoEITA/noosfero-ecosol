@@ -9,7 +9,11 @@ namespace :noosfero do
     end
   end
 
-  version = Noosfero::VERSION
+  def version
+    require 'noosfero'
+    Noosfero::VERSION
+  end
+
   desc 'checks if there is already a tag for the current version'
   task :check_tag do
     sh "git tag | grep '^#{version}$' >/dev/null" do |ok, res|
@@ -23,9 +27,9 @@ namespace :noosfero do
   desc 'checks the version of the Debian package'
   task :check_debian_package do
     debian_version = `dpkg-parsechangelog | grep Version: | cut -d ' ' -f 2`.strip
-    unless debian_version =~ /^#{Noosfero::VERSION}/
-      puts "Version mismatch: Debian version = #{debian_version}, Noosfero upstream version = #{Noosfero::VERSION}"
-      puts "Run `dch -v #{Noosfero::VERSION}` to add a new changelog entry that upgrades the Debian version"
+    unless debian_version =~ /^#{version}/
+      puts "Version mismatch: Debian version = #{debian_version}, Noosfero upstream version = #{version}"
+      puts "Run `dch -v #{version}` to add a new changelog entry that upgrades the Debian version"
       raise "Version mismatch between noosfero version and debian package version"
     end
   end
@@ -51,6 +55,9 @@ Raphael Rousseau <raph@r4f.org>
 Théo Bondolfi <move@cooperation.net>
 Vicente Aguiar <vicenteaguiar@colivre.coop.br>
 
+Arts
+===================================
+Nara Oliveira <narananet@gmail.com>
 EOF
 
   desc 'updates the AUTHORS file'
@@ -77,11 +84,19 @@ EOF
   desc 'Build Debian packages'
   task :debian_packages => :package do
     target = "pkg/noosfero-#{Noosfero::VERSION}"
+
+    # base pre-config
     mkdir "#{target}/tmp"
     ln_s '../../../vendor/rails', "#{target}/vendor/rails"
     cp "#{target}/config/database.yml.sqlite3", "#{target}/config/database.yml"
+    # solr inclusion
+    Dir.chdir(target) { sh "rake solr:download" }
+
     sh "cd #{target} && dpkg-buildpackage -us -uc -b"
   end
+
+  desc "Build Debian packages (shorcut)"
+  task :deb => :debian_packages
 
   desc 'Test Debian package'
   task 'debian:test' => :debian_packages do

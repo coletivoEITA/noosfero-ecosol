@@ -1,0 +1,222 @@
+#!/bin/sh
+
+set -e
+
+program_name=$(basename $0)
+
+if [ -e /etc/default/noosfero ]; then
+  . /etc/default/noosfero
+else
+  this_script=$(readlink -f $0)
+  NOOSFERO_DIR=$(dirname $this_script | xargs dirname)
+fi
+
+# data
+available_plugins_dir="$NOOSFERO_DIR/plugins"
+enabled_plugins_dir="$NOOSFERO_DIR/config/plugins"
+available_plugins=$(find "$available_plugins_dir" -maxdepth 1 -mindepth 1 -type d -not -name 'template' -printf '%f\n' | sort)
+enabled_plugins=$(find -L "$enabled_plugins_dir" -maxdepth 1 -mindepth 1 -type d -printf '%f\n' | sort)
+disabled_plugins=$(printf "%s\n" $available_plugins $enabled_plugins_dir | sort | uniq -u)
+
+# operation defaults
+quiet=false
+needs_migrate=false
+load_paths="$NOOSFERO_DIR/lib:$(echo $NOOSFERO_DIR/vendor/plugins/*/lib | tr ' ' :)"
+
+
+_list() {
+  for plugin in $available_plugins; do
+    echo "$plugin"
+  done
+}
+
+_status() {
+  for plugin in $available_plugins; do
+    if [ -h "$enabled_plugins_dir/$plugin" ]; then
+      status="*"
+    else
+      status=" "
+    fi
+    echo "[$status] $plugin"
+  done
+}
+
+_usage() {
+  echo "$program_name: manages Noosfero plugins system-wide"
+  echo
+  echo "Usage:"
+  echo "  $program_name [OPTIONS] list"
+  echo "  $program_name [OPTIONS] status"
+  echo "  $program_name [OPTIONS] enable PLUGIN [PLUGIN ...]"
+  echo "  $program_name [OPTIONS] disable PLUGIN [PLUGIN ...]"
+  echo "  $program_name [OPTIONS] enableall"
+  echo "  $program_name [OPTIONS] disableall"
+  echo "  $program_name [OPTIONS] new PLUGIN [PLUGIN ...]"
+  echo
+  echo "Options:"
+  echo "  --quiet|-q"
+  echo "    Run quietly"
+  echo "  --version|-v"
+  echo "    Prints version information and exits"
+  echo
+}
+
+_say(){
+  if [ "$quiet" = 'false' ]; then
+    echo $@
+  fi
+}
+
+_enable(){
+  plugin="$1"
+  source="$available_plugins_dir/$plugin"
+  target="$enabled_plugins_dir/$plugin"
+  if [ -h "$target" ]; then
+    _say "$plugin already enabled"
+  else
+    if [ ! -d "$source" ]; then
+      echo "E: $plugin plugin does not exist!"
+      return
+    fi
+    dependencies_ok=true
+    dependencies_file="$source/dependencies.rb"
+    if [ -e "$dependencies_file" ]; then
+      if ! ruby -I$load_paths -e "require '$dependencies_file'"; then
+        dependencies_ok=false
+      fi
+    fi
+    if [ "$dependencies_ok" = true ]; then
+      ln -s "$source" "$target"
+      plugins_public_dir="$NOOSFERO_DIR/public/plugins"
+      test -d "$target/public/" && ln -s "$target/public" "$plugins_public_dir/$plugin"
+      _say "$plugin enabled"
+      needs_migrate=true
+    else
+      echo "W: failed to load dependencies for $plugin; not enabling"
+    fi
+  fi
+}
+
+_disable(){
+  plugin="$1"
+  target="$enabled_plugins_dir/$plugin"
+  plugins_public_dir="$NOOSFERO_DIR/public/plugins"
+  if [ -h "$target" ]; then
+    rm "$target"
+    test -h "$plugins_public_dir/$plugin" && rm "$plugins_public_dir/$plugin"
+    _say "$plugin disabled"
+  else
+    _say "$plugin already disabled"
+  fi
+}
+
+_new(){
+  plugin=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+  target="$available_plugins_dir/$plugin"
+  if [ -d "$target" ]; then
+    _say "There is already a plugin called $plugin"
+    exit 1
+  else
+    template="$available_plugins_dir/template"
+    mkdir "$target"
+
+    plugin_name=$(echo "$plugin" | sed -e 's/^./\u&/; s/_\(.\)/\u\1/g')
+    for source_file in $(find "$template" -type f); do
+      target_file=$(echo "$source_file" | sed -e "s/template/$plugin/g")
+      mkdir -p $(dirname "$target_file")
+      sed "s/TemplatePlugin/${plugin_name}Plugin/g" "$source_file" > "$target_file"
+    done
+    _enable "$plugin"
+  fi
+}
+
+_enableall(){
+  for plugin in $available_plugins; do
+    _enable "$plugin"
+  done
+}
+
+_disableall() {
+  for plugin in $enabled_plugins; do
+    _disable "$plugin"
+  done
+}
+
+if [ $# -eq 0 ]; then
+  _usage
+  exit 0
+fi
+
+while [ ! -z "$1" ] && [ "${1##-}" != "$1" ]; do
+  opt="$1"
+  shift
+  case "$opt" in
+    -q|--quiet)
+      quiet=true
+      ;;
+    -v|--version)
+      ruby "-I$NOOSFERO_DIR/lib" -rnoosfero -e "puts \"$program_name version #{Noosfero::VERSION}\""
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $opt"
+      _usage
+      exit 1
+      ;;
+  esac
+done
+
+command="$1"
+if [ -z "$command" ]; then
+  _usage
+  exit 1
+fi
+shift
+
+
+case "$command" in
+  enableall|disableall|enable|disable|new)
+    if [ ! -w "$enabled_plugins_dir" ]; then
+      echo "E: sorry, you don't have the required permissions to manage plugins"
+      exit 2
+    fi
+    ;;
+esac
+
+case "$command" in
+  list|status|usage|enableall|disableall)
+    if [ ! -z "$1" ]; then
+      _usage
+      exit 1
+    fi
+    _$command
+    ;;
+  enable|disable|new)
+    for plugin in $@; do
+      _$command "$plugin"
+    done
+    ;;
+  *)
+    echo "Unknown command: $command"
+    _usage
+    exit 1
+    ;;
+esac
+
+if [ "$needs_migrate" = 'true' ] && [ "$quiet" = 'false' ]; then
+  cat <<-EOF
+====================================================================
+To finish the activation of the plugins you have just enabled, you
+need to restart Noosfero.
+
+If you installed Noosfero manually, run:
+
+  $ ./script/production restart
+
+If you installed Noosfero using Debian packages, run as root:
+
+  # service noosfero restart
+
+====================================================================
+EOF
+fi

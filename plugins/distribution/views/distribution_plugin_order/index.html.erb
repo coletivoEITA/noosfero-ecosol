@@ -1,0 +1,38 @@
+<div id="orders-view" class="orders page">
+  <h2><%= _("Orders' cycles") %></h2>
+
+  <div id="years-filter">
+    <% @node.sessions_custom_order.years.each do |session| %>
+      <%= link_to session.year, {:action => :index, :year => session.year}, :class => (@year == session.year ? "current" : nil) %>
+    <% end %>
+  </div>
+
+  <% @sessions.each do |session| %>
+    <div class="session-with-consumer-orders">
+      <h3>
+        <span><%= _('%{code}.') % { :code => session.code } %></span>
+        <%= link_to session.name, {:controller => :distribution_plugin_order, :action => :edit, :session_id => session.id} %>
+      </h3>
+
+      <%= render :partial => 'distribution_plugin_session/view_dates', :locals => {:session => session} %>
+
+      <% orders = session.orders.for_consumer @consumer %>
+      <% if orders.count > 0 %>
+        <div>
+          <strong><%= _('Your orders:') %></strong>
+          <div class="consumer-orders">
+            <% orders.each do |order| %>
+              <a href="<%= url_for :controller => :distribution_plugin_order, :action => :edit, :id => order.id %>">
+                <%= render :partial => 'status', :locals => {:order => order} %>
+              </a>
+            <% end %>
+            <div class="cleaner"></div>
+          </div>
+        </div>
+      <% else %>
+        <%= link_to _('Place an order'), {:controller => :distribution_plugin_order, :action => :new, :session_id => session.id}, :id => 'consumer-new-order' if session.orders? %>
+      <% end %>
+
+    </div>
+  <% end %>
+</div>

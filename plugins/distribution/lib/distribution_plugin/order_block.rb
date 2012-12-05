@@ -25,7 +25,7 @@ class DistributionPlugin::OrderBlock < Block
    _('Offer cycles for you members to make orders')
  end
 
- def content
+ def content(args = {})
    n = node
    block = self
 

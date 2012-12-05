@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ProfileTest < Test::Unit::TestCase
+class ProfileTest < ActiveSupport::TestCase
   fixtures :profiles, :environments, :users, :roles, :domains
 
   def test_identifier_validation
@@ -98,10 +98,11 @@ class ProfileTest < Test::Unit::TestCase
   end
 
   def test_find_by_contents
+    TestSolr.enable
     p = create(Profile, :name => 'wanted')
 
-    assert Profile.find_by_contents('wanted').include?(p)
-    assert ! Profile.find_by_contents('not_wanted').include?(p)
+    assert Profile.find_by_contents('wanted')[:results].include?(p)
+    assert ! Profile.find_by_contents('not_wanted')[:results].include?(p)
   end
 
   should 'remove pages when removing profile' do
@@ -117,20 +118,9 @@ class ProfileTest < Test::Unit::TestCase
   end
 
   def test_should_avoid_reserved_identifiers
-    assert_invalid_identifier 'admin'
-    assert_invalid_identifier 'system'
-    assert_invalid_identifier 'myprofile'
-    assert_invalid_identifier 'profile'
-    assert_invalid_identifier 'cms'
-    assert_invalid_identifier 'community'
-    assert_invalid_identifier 'test'
-    assert_invalid_identifier 'tag'
-    assert_invalid_identifier 'tags'
-    assert_invalid_identifier 'cat'
-    assert_invalid_identifier 'webmaster'
-    assert_invalid_identifier 'info'
-    assert_invalid_identifier 'root'
-    assert_invalid_identifier 'assets'
+    Profile::RESERVED_IDENTIFIERS.each do |identifier|
+      assert_invalid_identifier identifier
+    end
   end
 
   should 'provide recent documents' do
@@ -199,14 +189,16 @@ class ProfileTest < Test::Unit::TestCase
     assert_not_equal list.object_id, other_list.object_id
   end
 
-  should 'be able to find profiles by their names with ferret' do
+  # This problem should be solved; talk to Bráulio if it fails
+  should 'be able to find profiles by their names' do
+    TestSolr.enable
     small = create(Profile, :name => 'A small profile for testing')
     big = create(Profile, :name => 'A big profile for testing')
 
-    assert Profile.find_by_contents('small').include?(small)
-    assert Profile.find_by_contents('big').include?(big)
+    assert Profile.find_by_contents('small')[:results].include?(small)
+    assert Profile.find_by_contents('big')[:results].include?(big)
 
-    both = Profile.find_by_contents('profile testing')
+    both = Profile.find_by_contents('profile testing')[:results]
     assert both.include?(small)
     assert both.include?(big)
   end
@@ -271,7 +263,7 @@ class ProfileTest < Test::Unit::TestCase
   should 'help developers by adding a suitable port to url' do
     profile = build(Profile)
 
-    Noosfero.expects(:url_options).returns({ :port => 9999 })
+    Noosfero.stubs(:url_options).returns({ :port => 9999 })
 
     assert profile.url[:port] == 9999, 'Profile#url_options must include port option when running in development mode'
   end
@@ -394,12 +386,19 @@ class ProfileTest < Test::Unit::TestCase
     assert_respond_to c, :categories
   end
 
+  should 'responds to categories including virtual' do
+    c = fast_create(Profile)
+    assert_respond_to c, :categories_including_virtual
+  end
+
   should 'have categories' do
     c = fast_create(Profile)
-    cat = Environment.default.categories.build(:name => 'a category'); cat.save!
+    pcat = Environment.default.categories.build(:name => 'a category'); pcat.save!
+    cat = Environment.default.categories.build(:name => 'a category', :parent_id => pcat.id); cat.save!
     c.add_category cat
     c.save!
     assert_includes c.categories, cat
+    assert_includes c.categories_including_virtual, pcat
   end
 
   should 'be able to list recent profiles' do
@@ -439,16 +438,11 @@ class ProfileTest < Test::Unit::TestCase
     assert article.advertise?
   end
 
-  should 'have latitude and longitude' do
-    e = fast_create(Enterprise, :lat => 45, :lng => 45)
+  should 'search with latitude and longitude' do
+    TestSolr.enable
+    e = fast_create(Enterprise, {:lat => 45, :lng => 45}, :search => true)
 
-    assert_includes Enterprise.find_within(2, :origin => [45, 45]), e    
-  end
-
-  should 'have latitude and longitude and find' do
-    e = fast_create(Enterprise, :lat => 45, :lng => 45)
-
-    assert_includes Enterprise.find(:all, :within => 2, :origin => [45, 45]), e    
+    assert_includes Enterprise.find_by_contents('', {}, {:radius => 2, :latitude => 45, :longitude => 45})[:results].docs, e    
   end
 
   should 'have a public profile by default' do
@@ -526,20 +520,23 @@ class ProfileTest < Test::Unit::TestCase
   # content to be added to the index. The block returns "sample indexed text"
   # see test/mocks/test/testing_extra_data_for_index.rb
   should 'actually index by results of extra_data_for_index' do
+    TestSolr.enable
     profile = TestingExtraDataForIndex.create!(:name => 'testprofile', :identifier => 'testprofile')
 
-    assert_includes TestingExtraDataForIndex.find_by_contents('sample'), profile
+    assert_includes TestingExtraDataForIndex.find_by_contents('sample')[:results], profile
   end
 
   should 'index profile identifier for searching' do
+    TestSolr.enable
     Profile.destroy_all
     p = create(Profile, :identifier => 'lalala')
-    assert_includes Profile.find_by_contents('lalala'), p
+    assert_includes Profile.find_by_contents('lalala')[:results], p
   end
 
   should 'index profile name for searching' do
+    TestSolr.enable
     p = create(Profile, :name => 'Interesting Profile')
-    assert_includes Profile.find_by_contents('interesting'), p
+    assert_includes Profile.find_by_contents('interesting')[:results], p
   end
 
   should 'enabled by default on creation' do
@@ -555,13 +552,15 @@ class ProfileTest < Test::Unit::TestCase
     profile = create_user('testuser').person
     profile.add_category(c3)
 
-
     assert_equal [c3], profile.categories(true)
     assert_equal [profile], c2.people(true)
 
     assert_includes c3.people(true), profile
     assert_includes c2.people(true), profile
     assert_includes c1.people(true), profile
+
+    assert_includes profile.categories_including_virtual, c2
+    assert_includes profile.categories_including_virtual, c1
   end
 
   should 'redefine the entire category set at once' do
@@ -576,15 +575,18 @@ class ProfileTest < Test::Unit::TestCase
     profile.category_ids = [c2,c3].map(&:id)
 
     assert_equivalent [c2, c3], profile.categories(true)
+    assert_equivalent [c2, c1, c3], profile.categories_including_virtual(true)
   end
 
-  should 'be able to create an profile already with categories' do
-    c1 = create(Category)
+  should 'be able to create a profile with categories' do
+    pcat = create(Category)
+    c1 = create(Category, :parent_id => pcat)
     c2 = create(Category)
 
     profile = create(Profile, :category_ids => [c1.id, c2.id])
 
     assert_equivalent [c1, c2], profile.categories(true)
+    assert_equivalent [c1, pcat, c2], profile.categories_including_virtual(true)
   end
 
   should 'be associated with a region' do
@@ -637,32 +639,38 @@ class ProfileTest < Test::Unit::TestCase
 
   should 'be able to create with categories and region at the same time' do
     region = fast_create(Region)
-    category = fast_create(Category)
+    pcat = fast_create(Category)
+    category = fast_create(Category, :parent_id => pcat.id)
     profile = create(Profile, :region => region, :category_ids => [category.id])
 
     assert_equivalent [region, category], profile.categories(true)
+    assert_equivalent [region, category, pcat], profile.categories_including_virtual(true)
   end
 
   should 'be able to update categories and not get regions removed' do
     region = fast_create(Region)
     category = fast_create(Category)
-    category2 = fast_create(Category)
+    pcat = fast_create(Category)
+    category2 = fast_create(Category, :parent_id => pcat.id)
     profile = create(Profile, :region => region, :category_ids => [category.id])
 
     profile.update_attributes!(:category_ids => [category2.id])
 
     assert_includes profile.categories(true), region
+    assert_includes profile.categories_including_virtual(true), pcat
   end
 
   should 'be able to update region and not get categories removed' do
     region = fast_create(Region)
     region2 = fast_create(Region)
-    category = fast_create(Category)
+    pcat = fast_create(Category)
+    category = fast_create(Category, :parent_id => pcat.id)
     profile = create(Profile, :region => region, :category_ids => [category.id])
 
     profile.update_attributes!(:region => region2)
 
     assert_includes profile.categories(true), category
+    assert_includes profile.categories_including_virtual(true), pcat
   end
 
   should 'not accept product category as category' do
@@ -769,6 +777,7 @@ class ProfileTest < Test::Unit::TestCase
     profile = fast_create(Profile)
     profile.category_ids = [c2,c3,c3].map(&:id)
     assert_equal [c2, c3], profile.categories(true)
+    assert_equal [c2, c1, c3], profile.categories_including_virtual(true)
   end
 
   should 'not return nil members when a member is removed from system' do
@@ -971,13 +980,13 @@ class ProfileTest < Test::Unit::TestCase
 
     Profile.any_instance.stubs(:template).returns(template)
 
-    p = create(Profile)
+    p = create(Profile, :name => "ProfileTest1")
 
     a_copy = p.articles[0]
 
     assert !a_copy.advertise
   end
-  
+
   should 'copy set of boxes from profile template' do
     template = fast_create(Profile)
     template.boxes.destroy_all
@@ -1197,19 +1206,18 @@ class ProfileTest < Test::Unit::TestCase
     env = fast_create(Environment)
 
     p1 = fast_create(Profile, :identifier => 'mytestprofile', :environment_id => env.id)
-
     p2 = Profile.new(:identifier => 'mytestprofile', :environment => env)
-    assert !p2.valid?
 
+    assert !p2.valid?
     assert p2.errors.on(:identifier)
     assert_equal p1.environment, p2.environment
   end
 
   should 'be possible to have different profiles with the same identifier in different environments' do
-    p1 = fast_create(Profile, :identifier => 'mytestprofile')
-
-    env = fast_create(Environment)
-    p2 = create(Profile, :identifier => 'mytestprofile', :environment => env)
+    env1 = fast_create(Environment)
+    p1 = create(Profile, :identifier => 'mytestprofile', :environment => env1)
+    env2 = fast_create(Environment)
+    p2 = create(Profile, :identifier => 'mytestprofile', :environment => env2)
 
     assert_not_equal p1.environment, p2.environment
   end
@@ -1270,7 +1278,7 @@ class ProfileTest < Test::Unit::TestCase
     task = Task.create!(:requestor => person, :target => env)
 
     Person.any_instance.stubs(:is_admin?).returns(true)
-    assert_equal [task], person.all_pending_tasks
+    assert_equal [task], Task.to(person).pending
   end
 
   should 'find task from environment if is admin' do
@@ -1294,7 +1302,7 @@ class ProfileTest < Test::Unit::TestCase
 
     Person.any_instance.stubs(:is_admin?).returns(true)
 
-    assert_equal [task1, task2], person.all_pending_tasks
+    assert_equal [task1, task2], Task.to(person).pending
   end
 
   should 'find task by id on all environments' do
@@ -1368,12 +1376,6 @@ class ProfileTest < Test::Unit::TestCase
     assert !profile.folders.include?(child)
   end
 
-  should 'validates profile image when save' do
-    profile = build(Profile, :image_builder => {:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')})
-    profile.image.expects(:valid?).returns(false).at_least_once
-    assert !profile.valid?
-  end
-
   should 'profile is invalid when image not valid' do
     profile = build(Profile, :image_builder => {:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')})
     profile.image.expects(:valid?).returns(false).at_least_once
@@ -1404,6 +1406,42 @@ class ProfileTest < Test::Unit::TestCase
     assert_equal "header customized", person.custom_header
   end
 
+  should 'not have a profile as a template if it is not defined as a template' do
+    template = fast_create(Profile)
+    profile = Profile.new(:template => template)
+    !profile.valid?
+    assert profile.errors.invalid?(:template)
+
+    template.is_template = true
+    template.save!
+    profile.valid?
+    assert !profile.errors.invalid?(:template)
+  end
+
+  should 'be able to have a template' do
+    template = fast_create(Profile, :is_template => true)
+    profile = fast_create(Profile, :template_id => template.id)
+    assert_equal template, profile.template
+  end
+
+  should 'have a default template' do
+    template = fast_create(Profile, :is_template => true)
+    profile = fast_create(Profile)
+    profile.stubs(:default_template).returns(template)
+
+    assert_equal template, profile.template
+  end
+
+  should 'return a list of templates' do
+    t1 = fast_create(Profile, :is_template => true)
+    t2 = fast_create(Profile, :is_template => true)
+    profile = fast_create(Profile)
+
+    assert_includes Profile.templates, t1
+    assert_includes Profile.templates, t2
+    assert_not_includes Profile.templates, profile
+  end
+
   should 'provide URL to leave' do
     profile = build(Profile, :identifier => 'testprofile')
     assert_equal({ :profile => 'testprofile', :controller => 'profile', :action => 'leave', :reload => false}, profile.leave_url)
@@ -1421,10 +1459,12 @@ class ProfileTest < Test::Unit::TestCase
 
   should 'ignore category with id zero' do
     profile = fast_create(Profile)
-    c = fast_create(Category)
+    pcat = fast_create(Category, :id => 0)
+    c = fast_create(Category, :parent_id => pcat.id)
     profile.category_ids = ['0', c.id, nil]
 
     assert_equal [c], profile.categories
+    assert_not_includes profile.categories_including_virtual, [pcat]
   end
 
   should 'get first blog when has multiple blogs' do
@@ -1564,151 +1604,25 @@ class ProfileTest < Test::Unit::TestCase
     assert_match  /<!-- .* --> <h1> Wellformed html code <\/h1>/, profile.custom_footer
   end
 
-  should 'find more recent people' do
-    Person.delete_all
-    p1 = fast_create(Person,:created_at => 4.days.ago)
-    p2 = fast_create(Person, :created_at => DateTime.now)
-    p3 = fast_create(Person, :created_at => 2.days.ago)
+  should 'find more recent profile' do
+    Profile.delete_all
+    p1 = fast_create(Profile, :created_at => 4.days.ago)
+    p2 = fast_create(Profile, :created_at => Time.now)
+    p3 = fast_create(Profile, :created_at => 2.days.ago)
+    assert_equal [p2,p3,p1] , Profile.more_recent
 
-    assert_equal [p2,p3,p1] , Person.more_recent
-
-    p4 = fast_create(Person, :created_at => 3.days.ago)
-    assert_equal [p2,p3,p4,p1] , Person.more_recent
+    p4 = fast_create(Profile, :created_at => 3.days.ago)
+    assert_equal [p2,p3,p4,p1] , Profile.more_recent
   end
 
-  should 'find more active people' do
-    Person.delete_all
-    p1 = fast_create(Person)
-    p2 = fast_create(Person)
-    p3 = fast_create(Person)
-    Article.delete_all
-    fast_create(Article, :profile_id => p1, :created_at => 7.days.ago)
-    fast_create(Article, :profile_id => p1, :created_at => DateTime.now.beginning_of_day)
-    fast_create(Article, :profile_id => p2, :created_at => DateTime.now.beginning_of_day)
-    assert_equal [p1,p2] , Person.more_active
-
-    fast_create(Article, :profile_id => p2, :created_at => 1.day.ago)
-    fast_create(Article, :profile_id => p2, :created_at => 5.days.ago)
-    fast_create(Article, :profile_id => p3, :created_at => 2.days.ago)
-    assert_equal [p2,p1,p3] , Person.more_active
+  should 'respond to more active' do
+    profile = fast_create(Profile)
+    assert_respond_to Profile, :more_active
   end
 
-  should 'the ties on more active people be solved by the number of comments' do
-    Person.delete_all
-    p1 = fast_create(Person)
-    p2 = fast_create(Person)
-    Article.delete_all
-    a1 = fast_create(Article, :profile_id => p1, :created_at => DateTime.now.beginning_of_day)
-    a2 = fast_create(Article, :profile_id => p2, :created_at => DateTime.now.beginning_of_day)
-    assert_equal [], [p1,p2] - Person.more_active
-    assert_equal [], Person.more_active - [p1, p2]
-
-    a2.comments.build(:title => 'test comment', :body => 'anything', :author => p1).save!
-    assert_equal [p2,p1] , Person.more_active
-
-    a1.comments.build(:title => 'test comment', :body => 'anything', :author => p2).save!
-    a1.comments.build(:title => 'test comment', :body => 'anything', :author => p2).save!
-    assert_equal [p1,p2] , Person.more_active
-  end
-
-  should 'more active people take in consideration only articles created current the last week' do
-    Person.delete_all
-    env = fast_create(Environment)
-    p1 = fast_create(Person)
-    p2 = fast_create(Person)
-    p3 = fast_create(Person)
-    Article.delete_all
-    fast_create(Article, :profile_id => p1, :created_at => DateTime.now.beginning_of_day)
-    fast_create(Article, :profile_id => p2, :created_at => 10.days.ago)
-    assert_equal [p1] , Person.more_active
-
-    fast_create(Article, :profile_id => p2, :created_at => DateTime.now.beginning_of_day)
-    fast_create(Article, :profile_id => p2, :created_at => 7.days.ago)
-    fast_create(Article, :profile_id => p3, :created_at => 8.days.ago)
-    assert_equal [p2,p1] , Person.more_active
-  end
-
-  should 'find more recent community' do
-    c1 = fast_create(Community, :created_at => 3.days.ago)
-    c2 = fast_create(Community, :created_at => 1.day.ago)
-    c3 = fast_create(Community, :created_at => DateTime.now)
-
-    assert_equal [c3,c2,c1] , Community.more_recent
-
-    c4 = fast_create(Community, :created_at => 2.days.ago)
-    assert_equal [c3,c2,c4,c1] , Community.more_recent
-  end
-
-  should 'find more active community' do
-    c1 = fast_create(Community)
-    c2 = fast_create(Community)
-    c3 = fast_create(Community)
-
-    Article.delete_all
-    fast_create(Article, :profile_id => c1, :created_at => 1.day.ago)
-    fast_create(Article, :profile_id => c1, :created_at => DateTime.now.beginning_of_day)
-    fast_create(Article, :profile_id => c2, :created_at => DateTime.now.beginning_of_day)
-    assert_equal [c1,c2], Community.more_active
-
-    fast_create(Article, :profile_id => c2, :created_at => 2.days.ago)
-    fast_create(Article, :profile_id => c2, :created_at => 7.days.ago)
-    fast_create(Article, :profile_id => c3, :created_at => 1.day.ago)
-    assert_equal [c2,c1,c3] , Community.more_active
-  end
-
-  should 'the ties on more active communities be solved by the number of comments' do
-    env = create(Environment)
-    Community.delete_all
-    c1 = fast_create(Community)
-    c2 = fast_create(Community)
-    Article.delete_all
-    a1 = fast_create(Article, :profile_id => c1, :created_at => DateTime.now.beginning_of_day)
-    a2 = fast_create(Article, :profile_id => c2, :created_at => DateTime.now.beginning_of_day)
-    assert_equal [c1,c2] , Community.more_active
-
-    p1 = fast_create(Person)
-    a2.comments.build(:title => 'test comment', :body => 'anything', :author => p1).save!
-    assert_equal [c2,c1] , Community.more_active
-
-    a1.comments.build(:title => 'test comment', :body => 'anything', :author => p1).save!
-    a1.comments.build(:title => 'test comment', :body => 'anything', :author => p1).save!
-    assert_equal [c1,c2] , Community.more_active
-  end
-
-  should 'more active communities take in consideration only articles created current the last week' do
-    c1 = fast_create(Community)
-    c2 = fast_create(Community)
-    c3 = fast_create(Community)
-    Article.delete_all
-    fast_create(Article, :profile_id => c1, :created_at => DateTime.now.beginning_of_day)
-    fast_create(Article, :profile_id => c2, :created_at => 10.days.ago)
-    assert_equal [c1] , Community.more_active
-
-    fast_create(Article, :profile_id => c2, :created_at => DateTime.now.beginning_of_day)
-    fast_create(Article, :profile_id => c2, :created_at => 7.days.ago)
-    fast_create(Article, :profile_id => c3, :created_at => 8.days.ago)
-    assert_equal [c2,c1] , Community.more_active
-  end
-
-  should 'find more popular communities' do
-    Community.delete_all
-
-    c1 = fast_create(Community)
-    c2 = fast_create(Community)
-    fast_create(Community)
-
-    p1 = fast_create(Person)
-    p2 = fast_create(Person)
-    c1.add_member(p1)
-    assert_equal [c1] , Community.more_popular
-
-    c2.add_member(p1)
-    c2.add_member(p2)
-    assert_equal [c2,c1] , Community.more_popular
-
-    c2.remove_member(p2)
-    c2.remove_member(p1)
-    assert_equal [c1] , Community.more_popular
+  should 'respond to more popular' do
+    profile = fast_create(Profile)
+    assert_respond_to Profile, :more_popular
   end
 
   should "return the more recent label" do
@@ -1716,57 +1630,29 @@ class ProfileTest < Test::Unit::TestCase
     assert_equal "Since: ", p.more_recent_label
   end
 
-  should "return none on label if the profile hasn't articles" do
+  should "return no activity if profile has 0 actions" do
     p = fast_create(Profile)
-    assert_equal 0, p.articles.count
-    assert_equal "none", p.more_active_label
+    assert_equal 0, p.recent_actions.count
+    assert_equal "no activity", p.more_active_label
   end
 
-  should "return one article on label if the profile has one article" do
+  should "return one activity on label if the profile has one action" do
     p = fast_create(Profile)
-    fast_create(Article, :profile_id => p.id)
-    assert_equal 1, p.articles.count
-    assert_equal "one article", p.more_active_label
+    fast_create(ActionTracker::Record, :user_type => 'Profile', :user_id => p, :created_at => Time.now)
+    assert_equal 1, p.recent_actions.count
+    assert_equal "one activity", p.more_active_label
   end
 
-  should "return number of artciles on label if the profile has more than one article" do
+  should "return number of activities on label if the profile has more than one action" do
     p = fast_create(Profile)
-    fast_create(Article, :profile_id => p.id)
-    fast_create(Article, :profile_id => p.id)
-    assert_equal 2, p.articles.count
-    assert_equal "2 articles", p.more_active_label
+    fast_create(ActionTracker::Record, :user_type => 'Profile', :user_id => p, :created_at => Time.now)
+    fast_create(ActionTracker::Record, :user_type => 'Profile', :user_id => p, :created_at => Time.now)
+    assert_equal 2, p.recent_actions.count
+    assert_equal "2 activities", p.more_active_label
 
-    fast_create(Article, :profile_id => p.id)
-    assert_equal 3, p.articles.count
-    assert_equal "3 articles", p.more_active_label
-  end
-
-  should "return none on label if the profile hasn't members" do
-    p = fast_create(Profile)
-    assert_equal 0, p.members_count
-    assert_equal "none", p.more_popular_label
-  end
-
-  should "return one member on label if the profile has one member" do
-    person = fast_create(Person)
-    community = fast_create(Community)
-    community.add_member(person)
-
-    assert_equal "one member", community.more_popular_label
-  end
-
-  should "return the number of members on label if the profile has more than one member" do
-    person1 = fast_create(Person)
-    person2 = fast_create(Person)
-    community = fast_create(Community)
-
-    community.add_member(person1)
-    community.add_member(person2)
-    assert_equal "2 members", community.more_popular_label
-
-    person3 = fast_create(Person)
-    community.add_member(person3)
-    assert_equal "3 members", community.more_popular_label
+    fast_create(ActionTracker::Record, :user_type => 'Profile', :user_id => p, :created_at => Time.now)
+    assert_equal 3, p.recent_actions.count
+    assert_equal "3 activities", p.more_active_label
   end
 
   should 'provide list of galleries' do
@@ -1794,7 +1680,7 @@ class ProfileTest < Test::Unit::TestCase
 
   should 'have forum' do
     p = fast_create(Profile)
-    p.articles << Forum.new(:profile => p, :name => 'forum_feed_test')
+    p.articles << Forum.new(:profile => p, :name => 'forum_feed_test', :body => 'Forum test')
     assert p.has_forum?
   end
 
@@ -1810,9 +1696,9 @@ class ProfileTest < Test::Unit::TestCase
 
   should 'get first forum when has multiple forums' do
     p = fast_create(Profile)
-    p.forums << Forum.new(:profile => p, :name => 'Forum one')
-    p.forums << Forum.new(:profile => p, :name => 'Forum two')
-    p.forums << Forum.new(:profile => p, :name => 'Forum three')
+    p.forums << Forum.new(:profile => p, :name => 'Forum one', :body => 'Forum test')
+    p.forums << Forum.new(:profile => p, :name => 'Forum two', :body => 'Forum test')
+    p.forums << Forum.new(:profile => p, :name => 'Forum three', :body => 'Forum test')
     assert_equal 'Forum one', p.forum.name
     assert_equal 3, p.forums.count
   end
@@ -1833,6 +1719,147 @@ class ProfileTest < Test::Unit::TestCase
     assert_equal 1, community.members_count
   end
 
+  should 'index by schema name when database is postgresql' do
+    TestSolr.enable
+    uses_postgresql 'schema_one'
+    p1 = Profile.create!(:name => 'some thing', :identifier => 'some-thing')
+    assert_equal [p1], Profile.find_by_contents('thing')[:results].docs
+    uses_postgresql 'schema_two'
+    p2 = Profile.create!(:name => 'another thing', :identifier => 'another-thing')
+    assert_not_includes Profile.find_by_contents('thing')[:results], p1
+    assert_includes Profile.find_by_contents('thing')[:results], p2
+    uses_postgresql 'schema_one'
+    assert_includes Profile.find_by_contents('thing')[:results], p1
+    assert_not_includes Profile.find_by_contents('thing')[:results], p2
+    uses_sqlite
+  end
+
+  should 'not index by schema name when database is not postgresql' do
+    TestSolr.enable
+    uses_sqlite
+    p1 = Profile.create!(:name => 'some thing', :identifier => 'some-thing')
+    assert_equal [p1], Profile.find_by_contents('thing')[:results].docs
+    p2 = Profile.create!(:name => 'another thing', :identifier => 'another-thing')
+    assert_includes Profile.find_by_contents('thing')[:results], p1
+    assert_includes Profile.find_by_contents('thing')[:results], p2
+  end
+
+  should 'know if url is the profile homepage' do
+    profile = fast_create(Profile)
+
+    assert !profile.is_on_homepage?("/#{profile.identifier}/any_page")
+    assert profile.is_on_homepage?("/#{profile.identifier}")
+  end
+
+  should 'know if page is the profile homepage' do
+    profile = fast_create(Profile)
+    not_homepage = fast_create(Article, :profile_id => profile.id)
+
+    homepage = fast_create(Article, :profile_id => profile.id)
+    profile.home_page = homepage
+    profile.save
+
+    assert !profile.is_on_homepage?("/#{profile.identifier}/#{not_homepage.slug}",not_homepage)
+    assert profile.is_on_homepage?("/#{profile.identifier}/#{homepage.slug}", homepage)
+  end
+
+  
+  should 'find profiles with image' do
+    env = fast_create(Environment)
+    2.times do |n|
+      img = Image.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
+      fast_create(Person, :name => "with_image_#{n}", :environment_id => env.id, :image_id => img.id)
+    end
+    without_image = fast_create(Person, :name => 'without_image', :environment_id => env.id)
+    assert_equal 2, env.profiles.with_image.count
+    assert_not_includes env.profiles.with_image, without_image
+  end
+
+  should 'find profiles withouth image' do
+    env = fast_create(Environment)
+    2.times do |n|
+      fast_create(Person, :name => "without_image_#{n}", :environment_id => env.id)
+    end
+    img = Image.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
+    with_image = fast_create(Person, :name => 'with_image', :environment_id => env.id, :image_id => img.id)
+    assert_equal 2, env.profiles.without_image.count
+    assert_not_includes env.profiles.without_image, with_image
+  end
+
+  should 'return enterprises subclasses too on namedscope enterprises' do
+    class EnterpriseSubclass < Enterprise; end
+    child = EnterpriseSubclass.create!(:identifier => 'child', :name => 'Child')
+
+    assert_includes Profile.enterprises, child
+  end
+
+  should 'return communities subclasses too on namedscope communities' do
+    class CommunitySubclass < Community; end
+    child = CommunitySubclass.create!(:identifier => 'child', :name => 'Child')
+
+    assert_includes Profile.communities, child
+  end
+
+  should 'get organization roles' do
+    env = fast_create(Environment)
+    roles = %w(foo bar profile_foo profile_bar).map{ |r| Role.create!(:name => r, :key => r, :environment_id => env.id, :permissions => ["some"]) }
+    Role.create! :name => 'test', :key => 'profile_test', :environment_id => env.id + 1
+    Profile::Roles.expects(:all_roles).returns(roles)
+    assert_equal roles[2..3], Profile::Roles.organization_member_roles(env.id)
+  end
+
+  should 'get all roles' do
+    env = fast_create(Environment)
+    roles = %w(foo bar profile_foo profile_bar).map{ |r| Role.create!(:name => r, :environment_id => env.id, :permissions => ["some"]) }
+    Role.create! :name => 'test', :environment_id => env.id + 1
+    assert_equal roles, Profile::Roles.all_roles(env.id)
+  end
+
+  should 'define method for role' do
+    env = fast_create(Environment)
+    r = Role.create! :name => 'Test Role', :environment_id => env.id
+    assert_equal r, Profile::Roles.test_role(env.id)
+    assert_raise NoMethodError do
+      Profile::Roles.invalid_role(env.id)
+    end
+  end
+
+  should 'return empty array as activities' do
+    profile = Profile.new
+    assert_equal [], profile.activities
+  end
+
+  should 'merge members of plugins to original members' do
+    class Plugin1 < Noosfero::Plugin
+      def organization_members(profile)
+        Person.members_of(Community.find_by_identifier('community1'))
+      end
+    end
+
+    class Plugin2 < Noosfero::Plugin
+      def organization_members(profile)
+        Person.members_of(Community.find_by_identifier('community2'))
+      end
+    end
+    Environment.default.enable_plugin(Plugin1)
+    Environment.default.enable_plugin(Plugin2)
+
+    original_community = fast_create(Community)
+    community1 = fast_create(Community, :identifier => 'community1')
+    community2 = fast_create(Community, :identifier => 'community2')
+    original_member = fast_create(Person)
+    plugin1_member = fast_create(Person)
+    plugin2_member = fast_create(Person)
+    original_community.add_member(original_member)
+    community1.add_member(plugin1_member)
+    community2.add_member(plugin2_member)
+
+    assert_includes original_community.members, original_member
+    assert_includes original_community.members, plugin1_member
+    assert_includes original_community.members, plugin2_member
+    assert 3, original_community.members.count
+  end
+
   private
 
   def assert_invalid_identifier(id)
@@ -1840,4 +1867,53 @@ class ProfileTest < Test::Unit::TestCase
     assert !profile.valid?
     assert profile.errors.invalid?(:identifier)
   end
+
+  should 'act as faceted' do
+    st = fast_create(State, :acronym => 'XZ')
+    city = fast_create(City, :name => 'Tabajara', :parent_id => st.id)
+    cat = fast_create(Category)
+    prof = fast_create(Person, :region_id => city.id)
+    prof.add_category(cat, true)
+    assert_equal ['Tabajara', ', XZ'], Profile.facet_by_id(:f_region)[:proc].call(prof.send(:f_region))
+    assert_equal "category_filter:#{cat.id}", Person.facet_category_query.call(cat)
+  end
+
+  should 'act as searchable' do
+    TestSolr.enable
+    st = create(State, :name => 'California', :acronym => 'CA', :environment_id => Environment.default.id)
+    city = create(City, :name => 'Inglewood', :parent_id => st.id, :environment_id => Environment.default.id)
+    p = create(Person, :name => "Hiro", :address => 'U-Stor-It', :nickname => 'Protagonist',
+               :user_id => fast_create(User).id, :region_id => city.id)
+    cat = create(Category, :name => "Science Fiction", :acronym => "sf", :abbreviation => "sci-fi")
+    p.add_category cat
+
+    # fields
+    assert_includes Profile.find_by_contents('Hiro')[:results].docs, p
+    assert_includes Profile.find_by_contents('Protagonist')[:results].docs, p
+    # filters
+    assert_includes Profile.find_by_contents('Hiro', {}, { :filter_queries => ["public:true"]})[:results].docs, p
+    assert_not_includes Profile.find_by_contents('Hiro', {}, { :filter_queries => ["public:false"]})[:results].docs, p
+    assert_includes Profile.find_by_contents('Hiro', {}, { :filter_queries => ["environment_id:\"#{Environment.default.id}\""]})[:results].docs, p
+    # includes
+    assert_includes Profile.find_by_contents("Inglewood")[:results].docs, p
+    assert_includes Profile.find_by_contents("California")[:results].docs, p
+    assert_includes Profile.find_by_contents("Science")[:results].docs, p
+    # not includes
+    assert_not_includes Profile.find_by_contents('Stor')[:results].docs, p
+  end
+
+  should 'boost name matches' do
+    TestSolr.enable
+    in_addr = create(Person, :name => 'something', :address => 'bananas in the address!', :user_id => fast_create(User).id)
+    in_name = create(Person, :name => 'bananas in the name!', :user_id => fast_create(User).id)
+    assert_equal [in_name], Person.find_by_contents('bananas')[:results].docs
+  end
+
+  should 'reindex articles after saving' do
+    profile = create(Person, :name => 'something', :user_id => fast_create(User).id)
+    art = profile.articles.build(:name => 'something')
+    Profile.expects(:solr_batch_add).with(includes(art))
+    profile.save!
+  end
+
 end

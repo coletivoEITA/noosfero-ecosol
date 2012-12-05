@@ -9,6 +9,8 @@ class Input < ActiveRecord::Base
 
   belongs_to :unit
 
+  named_scope :relevant_to_price, :conditions => { :relevant_to_price => true }
+
   include FloatHelper
 
   def price_per_unit=(value)
@@ -45,6 +47,21 @@ class Input < ActiveRecord::Base
     %w[price_per_unit amount_used].each do |field|
       return true unless self.send(field).blank?
     end
-    return false
+    false
   end
+
+  def has_all_price_details?
+    %w[price_per_unit unit amount_used].each do |field|
+      return false if self.send(field).blank?
+    end
+    true
+  end
+
+  def cost
+    return 0 if self.amount_used.blank? || self.price_per_unit.blank?
+    self.amount_used * self.price_per_unit
+  end
+
+  alias_method :price, :cost
+
 end

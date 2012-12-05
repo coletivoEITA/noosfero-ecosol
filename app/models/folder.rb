@@ -1,5 +1,9 @@
 class Folder < Article
 
+  def self.type_name
+    _('Folder')
+  end
+
   validate :not_belong_to_blog
 
   def not_belong_to_blog
@@ -29,7 +33,7 @@ class Folder < Article
   def to_html(options = {})
     folder = self
     lambda do
-      render :file => 'content_viewer/folder', :locals => { :folder => folder }
+      render :file => 'content_viewer/folder', :locals => {:folder => folder}
     end
   end
 
@@ -53,4 +57,9 @@ class Folder < Article
                     :foreign_key => 'parent_id',
                     :order => 'articles.type, articles.name',
                     :conditions => ["articles.type = 'UploadedFile' and articles.content_type in (?) or articles.type in ('Folder','Gallery')", UploadedFile.content_types]
+
+  def accept_uploads?
+    !self.has_posts? || self.gallery?
+  end
+
 end

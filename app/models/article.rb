@@ -2,9 +2,13 @@ require 'hpricot'
 
 class Article < ActiveRecord::Base
 
-  track_actions :create_article, :after_create, :keep_params => [:name, :url], :if => Proc.new { |a| a.is_trackable? && !a.image? }, :custom_target => :action_tracker_target
-  track_actions :update_article, :before_update, :keep_params => [:name, :url], :if => Proc.new { |a| a.is_trackable? && (a.body_changed? || a.name_changed?) }, :custom_target => :action_tracker_target
-  track_actions :remove_article, :before_destroy, :keep_params => [:name], :if => Proc.new { |a| a.is_trackable? }, :custom_target => :action_tracker_target
+  # use for internationalizable human type names in search facets
+  # reimplement on subclasses
+  def self.type_name
+    _('Content')
+  end
+
+  track_actions :create_article, :after_create, :keep_params => [:name, :url, :lead, :first_image], :if => Proc.new { |a| a.is_trackable? && !a.image? }
 
   # xss_terminate plugin can't sanitize array fields
   before_save :sanitize_tag_list
@@ -13,28 +17,35 @@ class Article < ActiveRecord::Base
   validates_presence_of :profile_id, :name
   validates_presence_of :slug, :path, :if => lambda { |article| !article.name.blank? }
 
-  validates_uniqueness_of :slug, :scope => ['profile_id', 'parent_id'], :message => N_('<!-- %{fn} -->The title (article name) is already being used by another article, please use another title.'), :if => lambda { |article| !article.slug.blank? }
+  validates_uniqueness_of :slug, :scope => ['profile_id', 'parent_id'], :message => N_('The title (article name) is already being used by another article, please use another title.'), :if => lambda { |article| !article.slug.blank? }
 
   belongs_to :last_changed_by, :class_name => 'Person', :foreign_key => 'last_changed_by_id'
 
-  has_many :comments, :dependent => :destroy, :order => 'created_at asc'
+  has_many :comments, :class_name => 'Comment', :foreign_key => 'source_id', :dependent => :destroy, :order => 'created_at asc'
 
   has_many :article_categorizations, :conditions => [ 'articles_categories.virtual = ?', false ]
   has_many :categories, :through => :article_categorizations
+
+  has_many :article_categorizations_including_virtual, :class_name => 'ArticleCategorization', :dependent => :destroy
+  has_many :categories_including_virtual, :through => :article_categorizations_including_virtual, :source => :category
 
   acts_as_having_settings :field => :setting
 
   settings_items :display_hits, :type => :boolean, :default => true
   settings_items :author_name, :type => :string, :default => ""
+  settings_items :allow_members_to_edit, :type => :boolean, :default => false
+  settings_items :followers, :type => Array, :default => []
 
   belongs_to :reference_article, :class_name => "Article", :foreign_key => 'reference_article_id'
+
+  belongs_to :license
 
   has_many :translations, :class_name => 'Article', :foreign_key => :translation_of_id
   belongs_to :translation_of, :class_name => 'Article', :foreign_key => :translation_of_id
   before_destroy :rotate_translations
 
   before_create do |article|
-    article.published_at = article.created_at if article.published_at.nil?
+    article.published_at ||= Time.now
     if article.reference_article && !article.parent
       parent = article.reference_article.parent
       if parent && parent.blog? && article.profile.has_blog?
@@ -43,10 +54,15 @@ class Article < ActiveRecord::Base
     end
   end
 
+  after_destroy :destroy_activity
+  def destroy_activity
+    self.activity.destroy if self.activity
+  end
+
   xss_terminate :only => [ :name ], :on => 'validation', :with => 'white_list'
 
   named_scope :in_category, lambda { |category|
-    {:include => 'categories', :conditions => { 'categories.id' => category.id }}
+    {:include => 'categories_including_virtual', :conditions => { 'categories.id' => category.id }}
   }
 
   named_scope :by_range, lambda { |range| {
@@ -64,7 +80,7 @@ class Article < ActiveRecord::Base
   validate :translation_must_have_language
 
   def is_trackable?
-    self.published? && self.notifiable? && self.advertise?
+    self.published? && self.notifiable? && self.advertise? && self.profile.public_profile
   end
 
   def external_link=(link)
@@ -95,11 +111,13 @@ class Article < ActiveRecord::Base
     @pending_categorizations ||= []
   end
 
-  def add_category(c)
-    if self.id
-      ArticleCategorization.add_category_to_article(c, self)
-    else
+  def add_category(c, reload=false)
+    if new_record?
       pending_categorizations << c
+    else
+      ArticleCategorization.add_category_to_article(c, self)
+      self.categories(reload)
+      self.solr_save
     end
   end
 
@@ -108,6 +126,7 @@ class Article < ActiveRecord::Base
     ids.uniq.each do |item|
       add_category(Category.find(item)) unless item.to_i.zero?
     end
+    self.categories(true)
   end
 
   after_create :create_pending_categorizations
@@ -115,6 +134,8 @@ class Article < ActiveRecord::Base
     pending_categorizations.each do |item|
       ArticleCategorization.add_category_to_article(item, self)
     end
+    self.categories(true)
+    self.solr_save
     pending_categorizations.clear
   end
 
@@ -125,8 +146,6 @@ class Article < ActiveRecord::Base
 
   acts_as_versioned
 
-  acts_as_searchable :additional_fields => [ :comment_data ]
-
   def comment_data
     comments.map {|item| [item.title, item.body].join(' ') }.join(' ')
   end
@@ -134,20 +153,40 @@ class Article < ActiveRecord::Base
   before_update do |article|
     article.advertise = true
   end
-  
+
   # retrieves all articles belonging to the given +profile+ that are not
   # sub-articles of any other article.
   named_scope :top_level_for, lambda { |profile|
     {:conditions => [ 'parent_id is null and profile_id = ?', profile.id ]}
   }
 
+  named_scope :join_profile, :joins => [:profile]
+
+  named_scope :public,
+    :conditions => [ "advertise = ? AND published = ? AND profiles.visible = ? AND profiles.public_profile = ?", true, true, true, true ]
+
+  named_scope :more_recent,
+    :conditions => [ "advertise = ? AND published = ? AND profiles.visible = ? AND profiles.public_profile = ? AND
+      ((articles.type != ?) OR articles.type is NULL)",
+      true, true, true, true, 'RssFeed'
+    ],
+    :order => 'articles.published_at desc, articles.id desc'
+
+  # retrives the most commented articles, sorted by the comment count (largest
+  # first)
+  def self.most_commented(limit)
+    paginate(:order => 'comments_count DESC', :page => 1, :per_page => limit)
+  end
+
+  named_scope :more_popular, :order => 'hits DESC'
+
   # retrieves the latest +limit+ articles, sorted from the most recent to the
   # oldest.
   #
   # Only includes articles where advertise == true
-  def self.recent(limit, extra_conditions = {})
+  def self.recent(limit = nil, extra_conditions = {})
     # FIXME this method is a horrible hack
-    options = { :limit => limit,
+    options = { :page => 1, :per_page => limit,
                 :conditions => [
                   "advertise = ? AND
                   published = ? AND
@@ -165,18 +204,12 @@ class Article < ActiveRecord::Base
       options.delete(:include)
     end
     if extra_conditions == {}
-      self.find(:all, options)
+      self.paginate(options)
     else
       with_scope :find => {:conditions => extra_conditions} do
-        self.find(:all, options)
+        self.paginate(options)
       end
     end
-  end
-
-  # retrives the most commented articles, sorted by the comment count (largest
-  # first)
-  def self.most_commented(limit)
-    find(:all, :order => 'comments_count DESC', :limit => limit)
   end
 
   # produces the HTML code that is to be displayed as this article's contents.
@@ -186,6 +219,14 @@ class Article < ActiveRecord::Base
   # views of themselves.
   def to_html(options = {})
     body || ''
+  end
+
+  include ApplicationHelper
+  def reported_version(options = {})
+    article = self
+    search_path = File.join(Rails.root, 'app', 'views', 'shared', 'reported_versions')
+    partial_path = File.join('shared', 'reported_versions', partial_for_class_in_view_path(article.class, search_path))
+    lambda { render_to_string(:partial => partial_path, :locals => {:article => article}) }
   end
 
   # returns the data of the article. Must be overriden in each subclass to
@@ -225,7 +266,7 @@ class Article < ActiveRecord::Base
 
   include ActionView::Helpers::TextHelper
   def short_title
-    truncate self.title, 15, '...'
+    truncate self.title, :length => 15, :omission => '...'
   end
 
   def belongs_to_blog?
@@ -262,6 +303,10 @@ class Article < ActiveRecord::Base
   end
 
   def forum?
+    false
+  end
+
+  def uploaded_file?
     false
   end
 
@@ -319,12 +364,12 @@ class Article < ActiveRecord::Base
   end
 
   def get_translation_to(locale)
-    if self.language.nil? || self.language == locale
+    if self.language.nil? || self.language.blank? || self.language == locale
       self
     elsif self.native_translation.language == locale
       self.native_translation
     else
-      self.native_translation.translations.first(:conditions => { :language => locale }) || self
+      self.native_translation.translations.first(:conditions => { :language => locale })
     end
   end
 
@@ -343,11 +388,20 @@ class Article < ActiveRecord::Base
     ['Folder', 'Blog', 'Forum', 'Gallery']
   end
 
+  def self.text_article_types
+    ['TextArticle', 'TextileArticle', 'TinyMceArticle']
+  end
+
   named_scope :published, :conditions => { :published => true }
   named_scope :folders, :conditions => { :type => folder_types}
   named_scope :no_folders, :conditions => ['type NOT IN (?)', folder_types]
   named_scope :galleries, :conditions => { :type => 'Gallery' }
   named_scope :images, :conditions => { :is_image => true }
+  named_scope :text_articles, :conditions => [ 'articles.type IN (?)', text_article_types ]
+
+  named_scope :more_comments, :order => "comments_count DESC"
+  named_scope :more_views, :order => "hits DESC"
+  named_scope :more_recent, :order => "created_at DESC"
 
   def self.display_filter(user, profile)
     return {:conditions => ['published = ?', true]} if !user
@@ -387,8 +441,19 @@ class Article < ActiveRecord::Base
     user && user.has_permission?('view_private_content', profile)
   end
 
+  alias :allow_delete?  :allow_post_content?
+  alias :allow_spread?  :allow_post_content?
+
+  def allow_create?(user)
+    allow_post_content?(user) || allow_publish_content?(user)
+  end
+
+  def allow_edit?(user)
+    allow_post_content?(user) || user && allow_members_to_edit && user.is_member_of?(profile)
+  end
+
   def comments_updated
-    ferret_update
+    solr_save
   end
 
   def accept_category?(cat)
@@ -417,6 +482,7 @@ class Article < ActiveRecord::Base
     :profile_id,
     :parent_id,
     :path,
+    :slug,
     :updated_at,
     :created_at,
     :last_changed_by_id,
@@ -474,8 +540,8 @@ class Article < ActiveRecord::Base
   end
 
   alias :active_record_cache_key :cache_key
-  def cache_key(params = {}, the_profile = nil)
-    active_record_cache_key +
+  def cache_key(params = {}, the_profile = nil, language = 'en')
+    active_record_cache_key+'-'+language +
       (allow_post_content?(the_profile) ? "-owner" : '') +
       (params[:npage] ? "-npage-#{params[:npage]}" : '') +
       (params[:year] ? "-year-#{params[:year]}" : '') +
@@ -492,7 +558,7 @@ class Article < ActiveRecord::Base
   end
 
   def short_lead
-    truncate sanitize_html(self.lead), 170, '...'
+    truncate sanitize_html(self.lead), :length => 170, :omission => '...'
   end
 
   def creator
@@ -503,6 +569,147 @@ class Article < ActiveRecord::Base
   def notifiable?
     false
   end
+
+  def accept_uploads?
+    self.parent && self.parent.accept_uploads?
+  end
+
+  def body_images_paths
+    require 'uri'
+    Hpricot(self.body.to_s).search('img[@src]').collect do |i|
+      (self.profile && self.profile.environment) ? URI.join(self.profile.environment.top_url, URI.escape(i.attributes['src'])).to_s : i.attributes['src']
+    end
+  end
+
+  def more_comments_label
+    amount = self.comments_count
+    {
+      0 => _('no comments'),
+      1 => _('one comment')
+    }[amount] || _("%s comments") % amount
+
+  end
+
+  def more_views_label
+    amount = self.hits
+    {
+      0 => _('no views'),
+      1 => _('one view')
+    }[amount] || _("%s views") % amount
+
+  end
+
+  def more_recent_label
+    _('Created at: ')
+  end
+
+  def activity
+    ActionTracker::Record.find_by_target_type_and_target_id 'Article', self.id
+  end
+
+  def create_activity
+    if is_trackable? && !image?
+      save_action_for_verb 'create_article', [:name, :url, :lead, :first_image], Proc.new{}, :author
+    end
+  end
+
+  def first_image
+    img = Hpricot(self.lead.to_s).search('img[@src]').first || Hpricot(self.body.to_s).search('img').first
+    img.nil? ? '' : img.attributes['src']
+  end
+
+  private
+
+  # FIXME: workaround for development env.
+  # Subclasses aren't (re)loaded, and acts_as_solr
+  # depends on subclasses method to search
+  # see http://stackoverflow.com/questions/4138957/activerecordsubclassnotfound-error-when-using-sti-in-rails/4139245
+  UploadedFile
+  TextArticle
+  TinyMceArticle
+  TextileArticle
+  Folder
+  EnterpriseHomepage
+  Gallery
+  Blog
+  Forum
+  Event
+
+  def self.f_type_proc(klass)
+    klass.constantize.type_name
+  end
+
+  def self.f_profile_type_proc(klass)
+    klass.constantize.type_name
+  end
+
+  def f_type
+    #join common types
+    case self.class.name
+    when 'TinyMceArticle', 'TextileArticle'
+      TextArticle.name
+    else
+      self.class.name
+    end
+  end
+
+  def f_profile_type
+    self.profile.class.name
+  end
+
+  def f_published_at
+    self.published_at
+  end
+
+  def f_category
+    self.categories.collect(&:name)
+  end
+
+  delegate :region, :region_id, :environment, :environment_id, :to => :profile
+  def name_sortable # give a different name for solr
+    name
+  end
+
+  def public
+    self.public?
+  end
+
+  def category_filter
+    categories_including_virtual_ids
+  end
+
+  public
+
+  acts_as_faceted :fields => {
+      :f_type => {:label => _('Type'), :proc => proc{|klass| f_type_proc(klass)}},
+      :f_published_at => {:type => :date, :label => _('Published date'), :queries => {'[* TO NOW-1YEARS/DAY]' => _("Older than one year"),
+        '[NOW-1YEARS TO NOW/DAY]' => _("In the last year"), '[NOW-1MONTHS TO NOW/DAY]' => _("In the last month"), '[NOW-7DAYS TO NOW/DAY]' => _("In the last week"), '[NOW-1DAYS TO NOW/DAY]' => _("In the last day")},
+        :queries_order => ['[NOW-1DAYS TO NOW/DAY]', '[NOW-7DAYS TO NOW/DAY]', '[NOW-1MONTHS TO NOW/DAY]', '[NOW-1YEARS TO NOW/DAY]', '[* TO NOW-1YEARS/DAY]']},
+      :f_profile_type => {:label => _('Profile'), :proc => proc{|klass| f_profile_type_proc(klass)}},
+      :f_category => {:label => _('Categories')},
+    }, :category_query => proc { |c| "category_filter:\"#{c.id}\"" },
+    :order => [:f_type, :f_published_at, :f_profile_type, :f_category]
+
+  acts_as_searchable :fields => facets_fields_for_solr + [
+      # searched fields
+      {:name => {:type => :text, :boost => 2.0}},
+      {:slug => :text}, {:body => :text},
+      {:abstract => :text}, {:filename => :text},
+      # filtered fields
+      {:public => :boolean}, {:environment_id => :integer},
+      {:profile_id => :integer}, :language,
+      {:category_filter => :integer},
+      # ordered/query-boosted fields
+      {:name_sortable => :string}, :last_changed_by_id, :published_at, :is_image,
+      :updated_at, :created_at,
+    ], :include => [
+      {:profile => {:fields => [:name, :identifier, :address, :nickname, :region_id, :lat, :lng]}},
+      {:comments => {:fields => [:title, :body, :author_name, :author_email]}},
+      {:categories => {:fields => [:name, :path, :slug, :lat, :lng, :acronym, :abbreviation]}},
+    ], :facets => facets_option_for_solr,
+    :boost => proc { |a| 10 if a.profile && a.profile.enabled },
+    :if => proc{ |a| ! ['RssFeed'].include?(a.class.name) }
+  handle_asynchronously :solr_save
 
   private
 

@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class TagsBlockTest < Test::Unit::TestCase
+class TagsBlockTest < ActiveSupport::TestCase
 
   def setup
     @user = create_user('testinguser').person
@@ -35,6 +35,10 @@ class TagsBlockTest < Test::Unit::TestCase
   should 'generate links when profile has own hostname' do
     @user.domains << Domain.new(:name => 'testuser.net'); @user.save!
     assert_match /profile\/testinguser\/tags\/first-tag/, block.content
+  end
+
+  should 'order tags alphabetically' do
+    assert /\/first-tag".*\/second-tag".*\/third-tag"/m =~  block.content
   end
 
 end

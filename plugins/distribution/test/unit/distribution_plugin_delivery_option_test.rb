@@ -1,24 +1,24 @@
 require File.dirname(__FILE__) + '/../../../../test/test_helper'
 
-class DistributionDeliveryOptionTest < ActiveSupport::TestCase
+class DistributionPluginDeliveryOptionTest < ActiveSupport::TestCase
+
   def setup
-    @profile = Enterprise.create!(:name => "trocas verdes", :identifier => "trocas-verdes")
-    @pc = ProductCategory.create!(:name => 'cat', :environment_id => 1)
-    @profile.products = [Product.create!(:name => 'banana', :product_category => @pc),
-      Product.new(:name => 'mandioca', :product_category => @pc), Product.new(:name => 'alface', :product_category => @pc)]
-
-    @node = DistributionPluginNode.create!(:profile => @profile, :role => 'collective')
-    @node.products = @profile.products.map { |p| DistributionPluginDistributedProduct.create!(:product => p) }
-    @session = DistributionPluginSession.create!(:node => @node)
-
-    @dm = DistributionPluginDeliveryMethod.create!(:node => @node, :name => 'metodo de envio', :delivery_type => 'deliver')
+    @profile = build(Profile)
+    @node = build(DistributionPluginNode, :profile => @profile)
+    @session = build(DistributionPluginSession, :node => @node)
+    @delivery_method = build(DistributionPluginDeliveryMethod, :node => @node)
   end
 
-  should 'add an option to an session' do
-    assert_includes @node.delivery_methods, @dm
+  attr_accessor :profile
+  attr_accessor :node
+  attr_accessor :session
+  attr_accessor :delivery_method
 
-    option = DistributionPluginDeliveryOption.create!(:session => @session, :delivery_method => @dm)
-    assert_includes @session.delivery_options, option
-    assert_includes @session.delivery_methods, @dm
+  should 'be associated with a session and a delivery method' do
+    option = DistributionPluginDeliveryOption.new :session => @session, :delivery_method => @delivery_method
+    assert option.valid?
+    option = DistributionPluginDeliveryOption.new
+    assert !option.valid?
   end
+
 end

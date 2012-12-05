@@ -1,16 +1,31 @@
 ENV["RAILS_ENV"] = "test"
-require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
+
+# ensure we are on the root dir
+require 'fileutils'
+while !File.exists?('Rakefile')
+  FileUtils.cd '..'
+end
+
+# Start/stop Solr
+if not $test_helper_loaded
+  abort unless system 'rake -s solr:start'
+  at_exit { system 'rake -s solr:stop' }
+  $test_helper_loaded = true
+end
+
+require 'config/environment'
 require 'test_help'
 require 'mocha'
 require 'tidy'
 require 'hpricot'
 
 require 'noosfero/test'
-require File.dirname(__FILE__) + '/factories'
-require File.dirname(__FILE__) + '/noosfero_doc_test'
-require File.dirname(__FILE__) + '/action_tracker_test_helper'
-
-FileUtils.rm_rf(File.join(RAILS_ROOT, 'index', 'test'))
+require 'test/noosfero_doc_test'
+require 'test/action_tracker_test_helper'
+require 'test/test_solr_helper.rb'
+require 'test/factories'
+plugins_factories = Dir.glob(File.join(Rails.root, 'config', 'plugins', '*','test', 'factories.rb'))
+plugins_factories.each { |f| require f.sub(/\.rb$/, '') }
 
 Image.attachment_options[:path_prefix] = 'test/tmp/public/images'
 Thumbnail.attachment_options[:path_prefix] = 'test/tmp/public/thumbnails'
@@ -18,7 +33,7 @@ Thumbnail.attachment_options[:path_prefix] = 'test/tmp/public/thumbnails'
 FastGettext.add_text_domain 'noosferotest', :type => :chain, :chain => []
 FastGettext.default_text_domain = 'noosferotest'
 
-class Test::Unit::TestCase
+class ActiveSupport::TestCase
   # Transactional fixtures accelerate your tests by wrapping each test method
   # in a transaction that's rolled back on completion.  This ensures that the
   # test database remains unchanged so your fixtures don't have to be reloaded
@@ -42,12 +57,23 @@ class Test::Unit::TestCase
 
   # Add more helper methods to be used by all tests here...
 
+  # for fixture_file_upload
+  include ActionController::TestProcess
+
   include Noosfero::Factory
 
   include AuthenticatedTestHelper
 
   fixtures :environments, :roles
-  
+
+  def setup
+    TestSolr.disable
+  end
+
+  def teardown
+    TestSolr.disable
+  end
+
   def self.all_fixtures
     Dir.glob(File.join(RAILS_ROOT, 'test', 'fixtures', '*.yml')).each do |item|
       fixtures File.basename(item).sub(/\.yml$/, '').to_s
@@ -59,7 +85,7 @@ class Test::Unit::TestCase
 
     destname = 'test_should_' + name.gsub(/[^a-zA-z0-9]+/, '_')
     if @shoulds.include?(destname)
-      raise "there is already a test named \"#{destname}\"" 
+      raise "there is already a test named \"#{destname}\""
     end
 
     @shoulds << destname
@@ -101,7 +127,7 @@ class Test::Unit::TestCase
     object.valid?
     assert !object.errors.invalid?(attribute)
   end
-  
+
   def assert_subclass(parent, child)
     assert_equal parent, child.superclass, "Class #{child} expected to be a subclass of #{parent}"
   end
@@ -130,7 +156,7 @@ class Test::Unit::TestCase
       get action, params
     end
     doc = Hpricot @response.body
-    
+
     # Test style references:
     (doc/'style').each do |s|
       s = s.to_s().gsub( /\/\*.*\*\//, '' ).
@@ -173,6 +199,12 @@ class Test::Unit::TestCase
     assert !tag, "expected no tag #{options.inspect}, but tag found in #{text.inspect}"
   end
 
+  # For models that render views (blocks, articles, ...)
+  def render(*args)
+    view_paths = @explicit_view_paths || ActionController::Base.view_paths
+    ActionView::Base.new(view_paths, {}).render(*args)
+  end
+
   private
 
   def uses_host(name)
@@ -183,6 +215,19 @@ class Test::Unit::TestCase
     silence_stream(STDOUT) do
       Delayed::Worker.new.work_off
     end
+  end
+
+  def uses_postgresql(schema_name = 'test_schema')
+    adapter = ActiveRecord::Base.connection.class
+    adapter.any_instance.stubs(:adapter_name).returns('PostgreSQL')
+    adapter.any_instance.stubs(:schema_search_path).returns(schema_name)
+    Noosfero::MultiTenancy.stubs(:on?).returns(true)
+  end
+
+  def uses_sqlite
+    adapter = ActiveRecord::Base.connection.class
+    adapter.any_instance.stubs(:adapter_name).returns('SQLite')
+    Noosfero::MultiTenancy.stubs(:on?).returns(false)
   end
 
 end
@@ -205,8 +250,9 @@ module NoosferoTestHelper
     ''
   end
 
-  def tag(tag)
-    "<#{tag}/>"
+  def tag(tag, args = {})
+    attrs = args.map{|k,v| "#{k}='#{v}'"}.join(' ')
+    "<#{tag} #{attrs} />"
   end
 
   def options_from_collection_for_select(collection, value_method, content_method)
@@ -217,7 +263,7 @@ module NoosferoTestHelper
     "<select id='#{id}'>fake content</select>"
   end
 
-  def options_for_select(collection)
+  def options_for_select(collection, selected = nil)
     collection.map{|item| "<option value='#{item[1]}'>#{item[0]}</option>"}.join("\n")
   end
 
@@ -231,6 +277,35 @@ module NoosferoTestHelper
 
   def will_paginate(arg1, arg2)
   end
+
+  def url_for(args = {})
+    args
+  end
+  def javascript_tag(any)
+    ''
+  end
+  def javascript_include_tag(any)
+    ''
+  end
+  def check_box_tag(name, value = 1, checked = false, options = {})
+    name
+  end
+  def stylesheet_link_tag(arg)
+    arg
+  end
+
+  def show_date(date)
+    date.to_s
+  end
+
+  def strip_tags(html)
+    html.gsub(/<[^>]+>/, '')
+  end
+
+  def icon_for_article(article)
+    ''
+  end
+
 end
 
 class ActionController::IntegrationTest

@@ -6,73 +6,34 @@
 
 <div id="article" class="<%= @page.css_class_name %>">
 
+<%= render :partial => 'confirm_unfollow' %>
 
-<div<%= " class='logged-in'" if user %>>
-  <% if @page.allow_post_content?(user) || @page.allow_publish_content?(user) %>
-    <div id="article-actions">
-      <% if @page.allow_post_content?(user) %>
-        <%= link_to content_tag( 'span', label_for_edit_article(@page) ),
-            profile.admin_url.merge({ :controller => 'cms', :action => 'edit', :id => @page.id }),
-            :class => 'button with-text icon-edit' %>
-        <% if !(profile.kind_of?(Enterprise) && environment.enabled?('disable_cms')) %>
-          <% if @page != profile.home_page && !@page.has_posts? %>
-            <%= link_to content_tag( 'span', _('Delete') ),
-              profile.admin_url.merge({ :controller => 'cms', :action => 'destroy', :id => @page }),
-              :class => 'button with-text icon-delete' %>
-          <% end %>
-          <% if !environment.enabled?('disable_cms') && !@page.folder? %>
-            <% if profile.kind_of?(Person) %>
-              <%= link_to content_tag( 'span', _('Spread this') ),
-                  profile.admin_url.merge({ :controller => 'cms', :action => 'publish', :id => @page }),
-                  :class => 'button with-text icon-spread' %>
-            <% elsif profile.kind_of?(Community) && environment.portal_community %>
-              <%= link_to content_tag( 'span', _('Spread this') ),
-                  profile.admin_url.merge({ :controller => 'cms', :action => 'publish_on_portal_community', :id => @page }),
-                  :class => 'button with-text icon-spread' %>
-            <% end %>
-          <% end %>
-        <% end %>
-      <% end %>
-      <% if !(profile.kind_of?(Enterprise) && environment.enabled?('disable_cms')) %>
-        <% if !@page.gallery? %>
-          <%= link_to _('Add translation'),
-              profile.admin_url.merge(:controller => 'cms', :action => 'new',
-                                      :parent_id => (@page.folder? ? @page : (@page.parent.nil? ? nil : @page.parent)),
-                                      :type => @page.type, :article => { :translation_of_id => @page.native_translation.id }),
-              :class => 'button with-text icon-locale' if @page.translatable? && !@page.native_translation.language.blank? %>
-          <%= lightbox_button(:new, label_for_new_article(@page), profile.admin_url.merge(:controller => 'cms', :action => 'new', :parent_id => (@page.folder? ? @page : (@page.parent.nil? ? nil : @page.parent)))) %>
-        <% end %>
-        <% if (@page.folder? && !@page.has_posts?) || (@page.parent && @page.parent.folder? && !@page.parent.has_posts?) %>
-          <%= button('upload-file', _('Upload files'), profile.admin_url.merge(:controller => 'cms', :action => 'upload_files', :parent_id => (@page.folder? ? @page : @page.parent))) %>
-        <% end %>
-      <% end %>
-      <% if profile.kind_of?(Enterprise) && @page.gallery? %>
-        <%= button('upload-file', _('Upload files'), :controller => 'cms', :action => 'upload_files', :parent_id => (@page.folder? ? @page : @page.parent)) %>
-      <% end %>
-    </div>
-  <% elsif profile.community? && (@page.blog? || @page.parent && @page.parent.blog?) %>
-    <div id="article-actions">
-      <%= link_to content_tag( 'span', _('Suggest an article') ), profile.admin_url.merge({ :controller => 'cms', :action => 'suggest_an_article'}), :id => 'suggest-article-link', :class => 'button with-text icon-new' %>
-    </div>
-  <% end %>
-  <div id="article-header">
-    <%= link_to(image_tag('icons-mime/rss-feed.png'), @page.feed.url, :class => 'blog-feed-link') if @page.has_posts? && @page.feed %>
-    <%= article_title(@page, :no_link => true) %>
-    <%= article_translations(@page) %>
+<div id="article-toolbar"></div>
+
+<script type="text/javascript">
+  <%= remote_function :update => "article-toolbar", :url => @page.url.merge({ :toolbar => true, :only_path => true }) %>
+</script>
+
+<% if @page.display_hits? || @page.license.present? %>
+  <div id='article-sub-header'>
+    <% if @page.display_hits? %>
+      <div id="article-hits">
+        <%= n_('Viewed one time', 'Viewed %{num} times', @page.hits) % { :num => @page.hits } %>
+      </div>
+    <% end %>
+
+    <% if @page.license.present? %>
+      <div id="article-license">
+        <%= _('Licensed under %s') % (@page.license.url.present? ? link_to(@page.license.name, @page.license.url, :target => '_blank') : @page.license.name) %>
+      </div>
+    <% end %>
   </div>
-</div>
-
+<% end %>
 
 <% if !@page.tags.empty? %>
   <div id="article-tags">
     <%= _("This article's tags:") %>
     <%= @page.tags.map { |t| link_to(t, :controller => 'profile', :profile => @profile.identifier, :action => 'tags', :id => t.name ) }.join("\n") %>
-  </div>
-<% end %>
-
-<% if @page.display_hits? %>
-  <div id="article-hits">
-    <%= n_('Viewed one time', 'Viewed %{num} times', @page.hits) % { :num => @page.hits } %>
   </div>
 <% end %>
 
@@ -84,7 +45,26 @@
 
 <%= render :partial => 'shared/disabled_enterprise' %>
 
-<% cache(@page.cache_key(params, user)) do %>
+<% if NOOSFERO_CONF['addthis_enabled'] %>
+<div id="addThis">
+<script type="text/javascript">
+  addthis_pub = '<%= escape_javascript( NOOSFERO_CONF['addthis_pub'] ) %>';
+  addthis_logo = '<%= escape_javascript( NOOSFERO_CONF['addthis_logo'] ) %>';
+  addthis_config = {
+    services_custom: {
+      name: 'Facebook',
+      url: '<%= addthis_facebook_url(@page) %>',
+      icon: 'http://cache.addthiscdn.com/icons/v1/thumbs/facebook.gif'
+    }
+  };
+  addthis_options = '<%= escape_javascript( NOOSFERO_CONF['addthis_options'] ) %>';
+</script>
+<a href="http://www.addthis.com/bookmark.php" id="bt_addThis" target="_blank" onmouseover="return addthis_open(this, '', '[URL]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><%= addthis_image_tag %></a>
+<script type="text/javascript" src="http://s7.addthis.com/js/152/addthis_widget.js"></script>
+</div>
+<% end %>
+
+<% cache(@page.cache_key(params, user, language)) do %>
   <div class="<%="article-body article-body-" + @page.css_class_name %>">
     <% options = @page.image? ? {:gallery_view => true} : {} %>
     <%= article_to_html(@page, options) %>
@@ -101,38 +81,26 @@
 
 <%= display_source_info(@page) %>
 
-<% if NOOSFERO_CONF['addthis_enabled'] %>
-<div id="addThis">
-<script type="text/javascript">
-  addthis_brand = '<%= escape_javascript( @environment.name ) %>';
-  addthis_pub = '<%= escape_javascript( NOOSFERO_CONF['addthis_pub'] ) %>';
-  addthis_logo = '<%= escape_javascript( NOOSFERO_CONF['addthis_logo'] ) %>';
-  addthis_options = '<%= escape_javascript( NOOSFERO_CONF['addthis_options'] ) %>';
-</script>
-<a href="http://www.addthis.com/bookmark.php" id="bt_addThis" target="_blank" onmouseover="return addthis_open(this, '', '[URL]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="/images/bt-bookmark.gif" width="53" height="16" border="0" alt="" /></a><script type="text/javascript" src="http://s7.addthis.com/js/152/addthis_widget.js"></script>
-</div>
-<% end %>
-
 <div class="comments" id="comments_list">
-  <% if @page.accept_comments? %>
-  <h3 <%= 'class="no-comments-yet"' if @comments.size == 0 %>>
-    <%= number_of_comments(@page) %>
-  </h3>
-  <% if @comments_count > 1 %>
-  <p class="post-comment-button"><a href="#comment_form" onclick="jQuery('#page-comment-form h4').first().trigger('click')"><%= _('Post a comment') %></a></p>
+
+  <% if @page.accept_comments? || @comments_count > 0 %>
+    <h3 <%= 'class="no-comments-yet"' if @comments_count == 0 %>>
+      <%= number_of_comments(@page) %>
+    </h3>
   <% end %>
+
+  <% if @page.accept_comments? && @comments_count > 1 %>
+    <p class="post-comment-button"><a href="#comment_form" onclick="jQuery('#page-comment-form h4').first().trigger('click')"><%= _('Post a comment') %></a></p>
+  <% end %>
+
   <ul class="article-comments-list">
     <%= render :partial => 'comment', :collection => @comments %>
   </ul>
-  <div id="page-comment-form"><%= render :partial => 'comment_form' %></div>
-  <script type="text/javascript">
-  jQuery( function() {
-    jQuery('.article-comment').live('mouseover', function() { jQuery(this).find('.icon-delete:first').show(); });
-    jQuery('.article-comment').live('mouseout', function() { jQuery(this).find('.icon-delete').hide(); });
-  });
-  </script>
+
+  <% if @page.accept_comments? %>
+    <div id="page-comment-form"><%= render :partial => 'comment_form', :locals => {:url => url_for(@page.view_url.merge({:only_path => true})), :display_link => true, :cancel_triggers_hide => true}%></div>
   <% end %>
 </div><!-- end class="comments" -->
 
 </div><!-- end id="article" -->
-<%= add_zoom_to_images %>
+<%= add_zoom_to_article_images %>

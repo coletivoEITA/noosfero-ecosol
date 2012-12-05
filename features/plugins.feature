@@ -19,7 +19,7 @@ Feature: plugins
     And the following events of TestPlugin
       | event                 | body                                                                                                     |
       | control_panel_buttons | lambda { {:title => 'Test plugin button', :icon => '', :url => ''} }                                     |
-      | profile_tabs          | lambda { {:title => 'Test plugin tab', :id => 'test_plugin', :content => 'Test plugin random content'} } |
+      | profile_tabs          | lambda { {:title => 'Test plugin tab', :id => 'test_plugin', :content => lambda {'Test plugin random content'} } } |
 
   Scenario: a user must see the plugin\'s button in the control panel if the plugin is enabled
     Given plugin TestPlugin is enabled on environment
@@ -49,11 +49,10 @@ Feature: plugins
     When I go to the profile
     Then I should see "Test plugin tab"
     And I go to the environment control panel
-    And I follow "Enable/disable plugins"
+    And I follow "Plugins"
     And I uncheck "Test plugin"
     And I press "Save changes"
     When I go to the Control panel
     Then I should not see "Test plugin button"
     When I go to the profile
     Then I should not see "Test plugin tab"
-

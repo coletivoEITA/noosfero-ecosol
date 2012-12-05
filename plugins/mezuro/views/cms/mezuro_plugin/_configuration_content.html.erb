@@ -1,0 +1,28 @@
+<h1> <%= _(MezuroPlugin::ConfigurationContent.short_description) %> </h1>
+
+<%
+  kalibro_configuration = @article.title.nil? ? nil : @article.kalibro_configuration
+  kalibro_configuration_names = @article.kalibro_configuration_names
+%>
+
+<%= error_messages_for 'kalibro_configuration' %>
+
+<%= hidden_field_tag 'kalibro_configuration[profile_id]', profile.id %>
+<%= hidden_field_tag 'id', @article.id %>
+
+ 
+<% selected = (kalibro_configuration.nil? ? "None" : @article.configuration_to_clone_name) %>
+
+<%= required_fields_message %>
+
+<%= required labelled_form_field _('Clone Configuration'),
+if !kalibro_configuration.nil? && !@article.id.nil?
+  f.select(:configuration_to_clone_name, kalibro_configuration_names, {:selected => selected}, :disabled => 'true')
+else
+  f.select(:configuration_to_clone_name, kalibro_configuration_names, {:selected => selected})
+end %>
+<br/>
+
+<%= required f.text_field(:name, :disabled => !(kalibro_configuration.nil? || @article.id.nil?)) %>
+
+<%= f.text_field :description %><br/>

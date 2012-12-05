@@ -85,10 +85,49 @@ Then /^"([^\"]*)" should be (left|right) aligned$/ do |element_class, align|
   response.selenium.get_xpath_count("//*[contains(@class,'#{element_class}') and contains(@style,'float: #{align}')]").to_i.should be(1)
 end
 
+When /^I confirm$/ do
+  selenium.get_confirmation
+end
+
+When /^I type "([^\"]*)" in TinyMCE field "([^\"]*)"$/ do |value, field_id|
+  response.selenium.type("dom=document.getElementById('#{field_id}_ifr').contentDocument.body", value)
+end
+
+When /^I refresh the page$/ do
+  response.selenium.refresh
+end
+
+When /^I click on the logo$/ do
+  selenium.click("css=h1#site-title a")
+  selenium.wait_for_page_to_load(10000)
+end
+
+When /^I open (.*)$/ do |url|
+  selenium.open(URI.join(response.selenium.get_location, url))
+end
+
+Then /^the page title should be "([^"]+)"$/ do |text|
+  selenium.get_text("//title").should == text
+end
+
 #### Noosfero specific steps ####
 
 Then /^the select for category "([^\"]*)" should be visible$/ do |name|
   sleep 2 # FIXME horrible hack to wait categories selection scolling to right
   category = Category.find_by_name(name)
   selenium.is_visible(string_to_element_locator("option=#{category.id}")).should be_true
+end
+
+When /^I follow "([^\"]*)" and sleep ([^\"]*) seconds?$/ do |link, time|
+  click_link(link)
+  sleep time.to_i
+end
+
+When /^I follow "([^\"]*)" and wait for jquery$/ do |link|
+  click_link(link)
+  selenium.wait_for(:wait_for => :ajax, :javascript_framework => framework)
+end
+
+When /^I leave the "([^\"]+)" field$/ do |field|
+   selenium.fire_event("css=#{field}", "blur")
 end

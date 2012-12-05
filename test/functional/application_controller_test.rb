@@ -4,7 +4,7 @@ require 'test_controller'
 # Re-raise errors caught by the controller.
 class TestController; def rescue_action(e) raise e end; end
 
-class ApplicationControllerTest < Test::Unit::TestCase
+class ApplicationControllerTest < ActionController::TestCase
   all_fixtures
   def setup
     @controller = TestController.new
@@ -62,7 +62,7 @@ class ApplicationControllerTest < Test::Unit::TestCase
   def test_local_files_reference
     assert_local_files_reference
   end
-  
+
   def test_valid_xhtml
     assert_valid_xhtml
   end
@@ -160,16 +160,13 @@ class ApplicationControllerTest < Test::Unit::TestCase
     assert !DoesNotUsesBlocksTestController.new.uses_design_blocks?
   end
 
-  should 'use design plugin to generate blocks' do
+  should 'generate blocks' do
     get :index
     assert_tag :tag => 'div', :attributes => { :id => 'boxes', :class => 'boxes' }
   end
 
-  should 'not use design plugin when tells so' do
-    class NoDesignBlocksTestController < ApplicationController
-      no_design_blocks
-    end
-    @controller = NoDesignBlocksTestController.new
+  should 'not generate blocks when told not to do so' do
+    @controller.stubs(:uses_design_blocks?).returns(false)
     get :index
     assert_no_tag :tag => 'div', :attributes => { :id => 'boxes', :class => 'boxes'  }
   end
@@ -248,101 +245,8 @@ class ApplicationControllerTest < Test::Unit::TestCase
     env.stubs(:terminology).returns(term)
     env.stubs(:id).returns(-9999)
 
-    Noosfero.expects(:terminology=).with(term)
     get :index
-  end
-
-  should 'require ssl when told to' do
-    Environment.default.update_attribute(:enable_ssl, true)
-    @request.expects(:ssl?).returns(false).at_least_once
-    get :sslonly
-    assert_redirected_to :protocol => 'https://'
-  end
-
-  should 'not force ssl in development mode' do
-    ENV.expects(:[]).with('RAILS_ENV').returns('development').at_least_once
-    @request.expects(:ssl?).returns(false).at_least_once
-    get :sslonly
-    assert_response :success
-  end
-
-  should 'not force ssl when not told to' do
-    @request.expects(:ssl?).returns(false).at_least_once
-    get :doesnt_need_ssl
-    assert_response :success
-  end
-
-  should 'not force ssl when already in ssl' do
-    @request.expects(:ssl?).returns(true).at_least_once
-    get :sslonly
-    assert_response :success
-  end
-
-  should 'keep arguments when redirecting to ssl' do
-    Environment.default.update_attribute(:enable_ssl, true)
-    @request.expects(:ssl?).returns(false).at_least_once
-    get :sslonly, :x => '1', :y => '2'
-    assert_redirected_to :protocol => 'https://', :x => '1', :y => '2'
-  end
-
-  should 'refuse ssl when told to' do
-    @request.expects(:ssl?).returns(true).at_least_once
-    get :nossl
-    assert_redirected_to :protocol => "http://"
-  end
-
-  should 'not refuse ssl when not told to' do
-    @request.expects(:ssl?).returns(true).at_least_once
-    get :doesnt_refuse_ssl
-    assert_response :success
-  end
-  should 'not refuse ssl while in development mode' do
-    ENV.expects(:[]).with('RAILS_ENV').returns('development').at_least_once
-    @request.expects(:ssl?).returns(true).at_least_once
-    get :nossl
-    assert_response :success
-  end
-  should 'not refuse ssl when not in ssl' do
-    @request.expects(:ssl?).returns(false).at_least_once
-    get :nossl
-    assert_response :success
-  end
-
-  should 'keep arguments when redirecting to non-ssl' do
-    @request.expects(:ssl?).returns(true).at_least_once
-    get :nossl, :x => '1', :y => '2'
-    assert_redirected_to :protocol => 'http://', :x => '1', :y => '2'
-  end
-
-  should 'add https protocols on redirect_to_ssl' do
-    Environment.default.update_attribute(:enable_ssl, true)
-    get :sslonly, :x => '1', :y => '1'
-    assert_redirected_to :x => '1', :y => '1', :protocol => 'https://'
-  end
-
-  should 'return true in redirect_to_ssl' do
-    env = mock
-    env.expects(:enable_ssl).returns(true)
-    env.stubs(:default_hostname).returns('test.mydomain.net')
-    @controller.stubs(:environment).returns(env)
-    @controller.expects(:params).returns({})
-    @controller.expects(:redirect_to).with({:protocol => 'https://', :host => 'test.mydomain.net'})
-    assert_equal true, @controller.redirect_to_ssl
-  end
-  should 'return false in redirect_to_ssl when ssl is disabled' do
-    env = mock
-    env.expects(:enable_ssl).returns(false)
-    @controller.expects(:environment).returns(env)
-    assert_equal false, @controller.redirect_to_ssl
-  end
-
-  should 'not force ssl when ssl is disabled' do
-    env = Environment.default
-    env.expects(:enable_ssl).returns(false)
-    @controller.stubs(:environment).returns(env)
-    @request.expects(:ssl?).returns(false).at_least_once
-    get :sslonly
-    assert_response :success
+    assert_equal Noosfero.terminology, term
   end
 
   should 'not display categories menu if categories feature disabled' do
@@ -384,7 +288,7 @@ class ApplicationControllerTest < Test::Unit::TestCase
     uses_host 'other.environment'
     get :index
     assert_tag :tag => 'div', :attributes => {:id => 'user_menu_ul'}
-    assert_tag :tag => 'div', :attributes => {:id => 'user_menu_ul'}, 
+    assert_tag :tag => 'div', :attributes => {:id => 'user_menu_ul'},
                 :descendant => {:tag => 'a', :attributes => { :href => 'http://other.environment/adminuser' }},
                 :descendant => {:tag => 'a', :attributes => { :href => 'http://other.environment/myprofile/adminuser' }},
                 :descendant => {:tag => 'a', :attributes => { :href => '/admin' }}
@@ -401,17 +305,6 @@ class ApplicationControllerTest < Test::Unit::TestCase
     get :index, :profile => p.identifier
 
     assert_no_tag :tag => 'div', :attributes => {:id => 'block-' + b.id.to_s}
-  end
-
-  should 'return false when not avoid ssl' do
-    req = mock
-    req.stubs(:ssl?).returns(true)
-
-    @controller.expects(:request).returns(req)
-    @controller.stubs(:params).returns({})
-    @controller.stubs(:redirect_to)
-
-    assert_equal false, @controller.avoid_ssl
   end
 
   should 'diplay name of environment in description' do
@@ -441,4 +334,139 @@ class ApplicationControllerTest < Test::Unit::TestCase
     assert_tag :html, :attributes => { :lang => 'es' }
   end
 
+  should 'set Rails locale correctly' do
+    @request.env['HTTP_ACCEPT_LANGUAGE'] = 'pt-BR,pt;q=0.8,en;q=0.6,en-US;q=0.4'
+    get :index
+    assert_equal 'pt', I18n.locale.to_s
+  end
+
+  should 'include stylesheets supplied by plugins' do
+    class Plugin1 < Noosfero::Plugin
+      def stylesheet?
+        true
+      end
+    end
+    plugin1_path = '/plugin1/style.css'
+
+    class Plugin2 < Noosfero::Plugin
+      def stylesheet?
+        true
+      end
+    end
+    plugin2_path = '/plugin2/style.css'
+
+    environment = Environment.default
+    environment.enable_plugin(Plugin1.name)
+    environment.enable_plugin(Plugin2.name)
+
+    get :index
+
+    assert_tag :tag => 'link', :attributes => {:href => /#{plugin1_path}/, :type => 'text/css', :rel => 'stylesheet'}
+    assert_tag :tag => 'link', :attributes => {:href => /#{plugin2_path}/, :type => 'text/css', :rel => 'stylesheet'}
+  end
+
+  should 'include javascripts supplied by plugins' do
+    class Plugin1 < Noosfero::Plugin
+      def js_files
+        ['js1.js']
+      end
+    end
+
+    js1 = 'js1.js'
+    plugin1_path = '/plugin1/'+js1
+
+    class Plugin2 < Noosfero::Plugin
+      def js_files
+        ['js2.js', 'js3.js']
+      end
+    end
+
+    js2 = 'js2.js'
+    js3 = 'js3.js'
+    plugin2_path2 = '/plugin2/'+js2
+    plugin2_path3 = '/plugin2/'+js3
+
+    environment = Environment.default
+    environment.enable_plugin(Plugin1.name)
+    environment.enable_plugin(Plugin2.name)
+
+    get :index
+
+    assert_tag :tag => 'script', :attributes => {:src => /#{plugin1_path}/, :type => 'text/javascript'}
+    assert_tag :tag => 'script', :attributes => {:src => /#{plugin2_path2}/, :type => 'text/javascript'}
+    assert_tag :tag => 'script', :attributes => {:src => /#{plugin2_path3}/, :type => 'text/javascript'}
+  end
+
+  should 'include content in the beginning of body supplied by plugins regardless it is a block or html code' do
+    class TestBodyBeginning1Plugin < Noosfero::Plugin
+      def plugin1_method
+        '[[plugin1]]'
+      end
+      def body_beginning
+        lambda {"<span id='plugin1'>This is #{plugin1_method} speaking!</span>"}
+      end
+    end
+    class TestBodyBeginning2Plugin < Noosfero::Plugin
+      def body_beginning
+        "<span id='plugin2'>This is Plugin2 speaking!</span>"
+      end
+    end
+
+    Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([TestBodyBeginning1Plugin.new, TestBodyBeginning2Plugin.new])
+
+    get :index
+
+    assert_tag :tag => 'span', :content => 'This is [[plugin1]] speaking!', :attributes => {:id => 'plugin1'}
+    assert_tag :tag => 'span', :content => 'This is Plugin2 speaking!', :attributes => {:id => 'plugin2'}
+  end
+
+  should 'include content in the ending of head supplied by plugins regardless it is a block or html code' do
+
+    class TestHeadEnding1Plugin < Noosfero::Plugin
+      def plugin1_method
+        '[[plugin1]]'
+      end
+      def head_ending
+        lambda {"<script>alert('This is #{plugin1_method} speaking!')</script>"}
+      end
+    end
+    class TestHeadEnding2Plugin < Noosfero::Plugin
+      def head_ending
+        "<style>This is Plugin2 speaking!</style>"
+      end
+    end
+
+    Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([TestHeadEnding1Plugin.new, TestHeadEnding2Plugin.new])
+
+    get :index
+
+    assert_tag :tag => 'script', :content => "alert('This is [[plugin1]] speaking!')"
+    assert_tag :tag => 'style', :content => 'This is Plugin2 speaking!'
+  end
+
+  should 'not include jquery-validation language script if they do not exist' do
+    Noosfero.stubs(:available_locales).returns(['bli'])
+    get :index, :lang => 'bli'
+    assert_no_tag :tag => 'script', :attributes => {:src => /messages_bli/}
+    assert_no_tag :tag => 'script', :attributes => {:src => /methods_bli/}
+  end
+
+  if ActiveRecord::Base.connection.adapter_name == 'PostgreSQL'
+
+    should 'change postgresql schema' do
+      uses_host 'schema1.com'
+      Noosfero::MultiTenancy.expects(:on?).returns(true)
+      Noosfero::MultiTenancy.expects(:mapping).returns({ 'schema1.com' => 'schema1' })
+      exception = assert_raise(ActiveRecord::StatementInvalid) { get :index }
+      assert_match /SET search_path TO schema1/, exception.message
+    end
+
+    should 'not change postgresql schema if multitenancy is off' do
+      uses_host 'schema1.com'
+      Noosfero::MultiTenancy.stubs(:on?).returns(false)
+      Noosfero::MultiTenancy.stubs(:mapping).returns({ 'schema1.com' => 'schema1' })
+      assert_nothing_raised(ActiveRecord::StatementInvalid) { get :index }
+    end
+
+  end
 end

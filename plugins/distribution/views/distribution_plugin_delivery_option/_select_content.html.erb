@@ -1,0 +1,25 @@
+<div id="delivery-method-choose">
+  <% form_remote_for :session, @session, :url => {:controller => :distribution_plugin_delivery_option, :action => :new, :session_id => @session.id} do |f| %>
+    <%= labelled_field f, :add_delivery_options, _('Choose a delivery method from the list'),
+      f.select(:add_delivery_options, @node.delivery_methods.collect{ |m| [m.name, m.id] }, {}, :multiple => '') %>
+
+    <div id="delivery-menu">
+      <%= link_to_function _('add new'), "distribution.delivery_view_toggle()" %>
+      <%= link_to_function _('edit this'),
+        "jQuery.get('#{url_for :controller => :distribution_plugin_delivery_option, :action => :method_edit, :session_id => @session.id}',
+           { id: jQuery('#delivery-method-choose select').val() });" %>
+      <%= link_to_function _('remove method'),
+        "jQuery.post('#{url_for :controller => :distribution_plugin_delivery_option, :action => :method_destroy, :session_id => @session.id}',
+           { id: jQuery('#delivery-method-choose select').val() });", :confirm => _('Are you sure you want to delete this method?') %>
+    </div>
+
+    <div class="cleaner"></div>
+
+   <%= f.submit _('Add') %>
+   <%= colorbox_close_link _('cancel') %>
+  <% end %>
+</div>
+
+<div id="delivery-method-edit" style="display: none">
+  <%= render :partial => 'method_edit', :locals => {:delivery_method => @delivery_method} %>
+</div>

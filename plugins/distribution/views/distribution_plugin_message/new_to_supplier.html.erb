@@ -1,0 +1,10 @@
+<div id="" class="distribution-plugin-popin distribution-plugin-message">
+  <h1><%= _('Message to supplier "%{supplier}"') % {:supplier => @supplier.name} %></h1>
+
+  <% form_remote_tag :url => params do %>
+    <%= render :partial => 'fields' %>
+
+     <%= submit_tag _('Send') %>
+     <%= colorbox_close_link _('cancel') %>
+  <% end %>
+</div>

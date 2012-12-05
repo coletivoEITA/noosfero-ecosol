@@ -16,7 +16,7 @@ module CmsHelper
   end
 
   def pagination_links(collection, options={})
-    options = {:prev_label => '&laquo; ', :next_label => ' &raquo;', :page_links => false}.merge(options)
+    options = {:previous_label => '&laquo; ', :next_label => ' &raquo;', :page_links => false}.merge(options)
     will_paginate(collection, options)
   end
 
@@ -42,19 +42,25 @@ module CmsHelper
 
   def display_spread_button(profile, article)
     if profile.person?
-      button_without_text :spread, _('Spread this'), :action => 'publish', :id => article.id
+      expirable_button article, :spread, _('Spread this'), :action => 'publish', :id => article.id
     elsif profile.community? && environment.portal_community
-      button_without_text :spread, _('Spread this'), :action => 'publish_on_portal_community', :id => article.id
+      expirable_button article, :spread, _('Spread this'), :action => 'publish_on_portal_community', :id => article.id
     end
   end
 
   def display_delete_button(article)
-    confirm_message = if article.folder?
-        _('Are you sure that you want to remove this folder? Note that all the items inside it will also be removed!')
-      else
-        _('Are you sure that you want to remove this item?')
-      end
+    expirable_button article, :delete, _('Delete'), { :action => 'destroy', :id => article.id }, :method => :post, :confirm => delete_article_message(article)
+  end
 
-    button_without_text :delete, _('Delete'), { :action => 'destroy', :id => article.id }, :method => :post, :confirm => confirm_message
+  def expirable_button(content, action, title, url, options = {})
+    reason = @plugins.dispatch("content_expire_#{action.to_s}", content).first
+    if reason.present?
+      options[:class] = (options[:class] || '') + ' disabled'
+      options[:disabled] = 'disabled'
+      options.delete(:confirm)
+      options.delete(:method)
+      title = reason
+    end
+    button_without_text action.to_sym, title, url, options
   end
 end

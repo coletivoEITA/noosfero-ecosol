@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class LightboxHelperTest < Test::Unit::TestCase
+class LightboxHelperTest < ActiveSupport::TestCase
 
   include LightboxHelper
 
@@ -54,6 +54,12 @@ class LightboxHelperTest < Test::Unit::TestCase
     request.expects(:xhr?).returns(true)
 
     assert lightbox?
+  end
+
+  should 'provide lightbox_remote_button' do
+    expects(:button).with('type', 'label', { :action => 'popup'}, has_entries({ :class => 'remote-lbOn' })).returns('[button]')
+
+    assert_equal '[button]', lightbox_remote_button('type', 'label', { :action => 'popup'})
   end
 
 end

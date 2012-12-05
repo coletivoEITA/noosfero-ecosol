@@ -11,6 +11,12 @@ Feature: manage products
       | redemoinho | joaosilva | Rede Moinho | true |
     And feature "disable_products_for_enterprises" is disabled on environment
 
+  Scenario: display "create new product" button
+    Given I am logged in as "joaosilva"
+    And I am on Rede Moinho's control panel
+    When I follow "Manage Products and Services"
+    Then I should see "New product or service"
+
   Scenario: paginate public listing products and services
     Given the following product_category
       | name |
@@ -29,19 +35,20 @@ Feature: manage products
       | redemoinho | bicycle  | Bike J | bicycle 10 |
       | redemoinho | bicycle  | Bike K | bicycle 11 |
     When I go to /catalog/redemoinho
-    Then I should see "Bike A" within "#product_list"
-    And I should see "Bike B" within "#product_list"
-    And I should see "Bike C" within "#product_list"
-    And I should see "Bike D" within "#product_list"
-    And I should see "Bike E" within "#product_list"
-    And I should see "Bike F" within "#product_list"
-    And I should see "Bike G" within "#product_list"
-    And I should see "Bike H" within "#product_list"
-    And I should see "Bike I" within "#product_list"
-    And I should see "Bike J" within "#product_list"
-    And I should not see "Bike K" within "#product_list"
+    Then I should see "Bike A" within "#product-list"
+    And I should see "Bike B" within "#product-list"
+    And I should see "Bike C" within "#product-list"
+    And I should see "Bike D" within "#product-list"
+    And I should see "Bike E" within "#product-list"
+    And I should see "Bike F" within "#product-list"
+    And I should see "Bike G" within "#product-list"
+    And I should see "Bike H" within "#product-list"
+    And I should see "Bike I" within "#product-list"
+    And I should not see "Bike J" within "#product-list"
+    And I should not see "Bike K" within "#product-list"
     When I follow "Next"
-    Then I should see "Bike K" within "#product_list"
+    Then I should see "Bike J" within "#product-list"
+    Then I should see "Bike K" within "#product-list"
 
   Scenario: listing products and services
     Given I am logged in as "joaosilva"
@@ -133,7 +140,7 @@ Feature: manage products
     And I am on Rede Moinho's control panel
     And I follow "Manage Products and Services"
     When I follow "New product or service"
-    And I select "Toplevel Product ... »" and wait for jquery
+    And I select "Toplevel Product Categories »" and wait for jquery
     And I select "Category Level 1" and wait for jquery
     Then I should see "Toplevel Product Categories" link
     And I should not see "Category Level 1" link
@@ -149,14 +156,14 @@ Feature: manage products
 
   @selenium
   Scenario: enable save button when select one category
-    Given the following product_category
+    Given I am logged in as "joaosilva"
+    And the following product_category
       | name |
       | Browsers (accept categories) |
-    Given I am logged in as "joaosilva"
     And I am on Rede Moinho's control panel
     And I follow "Manage Products and Services"
     When I follow "New product or service"
-    And I select "Browsers (accept ..." and wait for jquery
+    And I select "Browsers (accept categories)" and wait for jquery
     Then the "Save and continue" button should be enabled
 
   @selenium
@@ -290,7 +297,7 @@ Feature: manage products
     And I am logged in as "joaosilva"
     When I go to Rede Moinho's page of product Bike
     And I follow "Edit name"
-    And I fill in "product_name" with "Red bicycle"
+    And I fill in "Red bicycle" for "product_name"
     And I press "Save"
     Then I should see "Red bicycle"
     And I should be on Rede Moinho's page of product Red bicycle
@@ -453,7 +460,7 @@ Feature: manage products
       | Nanonote nanotech with long long name |
     And the following product_category
       | name | parent |
-      | Netbook Quantum | Super Quantum Computers |
+      | Netbook Quantum | Super Quantum Computers with teraflops |
     And I am logged in as "joaosilva"
     When I go to Rede Moinho's new product page
     Then I should see "Nanonote nanotech with long lo..."
@@ -473,7 +480,7 @@ Feature: manage products
     And I am logged in as "joaosilva"
     When I go to Rede Moinho's page of product Bike
     And I follow "Edit name and unit"
-    And I fill in "product_name" with "Red bicycle"
+    And I fill in "Red bicycle" for "product_name"
     And I select "Kilo"
     And I press "Save"
     Then I should see "Red bicycle - kilo"
@@ -489,7 +496,7 @@ Feature: manage products
     And I am logged in as "joaosilva"
     When I go to Rede Moinho's page of product Bike
     And I follow "Add price and other basic information"
-    And I fill in "product_price" with "10"
+    And I fill in "10" for "product_price"
     And I choose "No"
     And I press "Save"
     Then I should see "Product not available!"
@@ -519,3 +526,17 @@ Feature: manage products
     And I follow "Delete qualifier"
     And I press "Save"
     Then I should not see "Organic (Self declared)"
+
+  @selenium
+  Scenario: Show checkbox to mark product as highlight
+    Given the following product_category
+      | name    |
+      | Bicycle |
+    And the following products
+      | owner      | category | name |
+      | redemoinho | bicycle  | Bike |
+    And I am logged in as "joaosilva"
+    When I go to Rede Moinho's page of product Bike
+    And I follow "Add price and other basic information"
+    Then I should see "Highlight this product?"
+    And I check "Highlight this product?"

@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class InputTest < Test::Unit::TestCase
+class InputTest < ActiveSupport::TestCase
 
   should 'require product_category' do
     product_category = fast_create(ProductCategory, :name => 'Products')
@@ -160,6 +160,35 @@ class InputTest < Test::Unit::TestCase
   should 'has relation with unit' do
     input = Input.new
     assert_kind_of Unit, input.build_unit
+  end
+
+  should 'calculate cost of input' do
+    input = Input.new(:amount_used => 10, :price_per_unit => 2.00)
+    assert_equal 20.00, input.cost
+  end
+
+  should 'cost 0 if amount not defined' do
+    input = Input.new(:price_per_unit => 2.00)
+    assert_equal 0.00, input.cost
+  end
+
+  should 'cost 0 if price_per_unit is not defined' do
+    input = Input.new(:amount_used => 10)
+    assert_equal 0.00, input.cost
+  end
+
+  should 'list inputs relevants to price' do
+    product_category = fast_create(ProductCategory)
+    product = fast_create(Product, :product_category_id => product_category.id)
+
+    i1 = Input.create!(:product => product, :product_category => product_category, :relevant_to_price => true)
+
+    i2 = Input.create!(:product => product, :product_category => product_category, :relevant_to_price => false)
+
+    i1.save!
+    i2.save!
+    assert_includes Input.relevant_to_price, i1
+    assert_not_includes Input.relevant_to_price, i2
   end
 
 end

@@ -1,10 +1,13 @@
 class DistributionPluginOrder < ActiveRecord::Base
+
   belongs_to :session, :class_name => 'DistributionPluginSession'
+  has_one :node, :through => :session
+
   belongs_to :consumer, :class_name => 'DistributionPluginNode'
 
   has_many :suppliers, :through => :products, :uniq => true
   has_many :products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'order_id', :dependent => :destroy,
-    :order => 'id asc', :include => :product
+    :order => 'id ASC'
 
   has_many :session_products, :through => :products, :source => :product
   has_many :distributed_products, :through => :session_products, :source => :from_products
@@ -12,11 +15,13 @@ class DistributionPluginOrder < ActiveRecord::Base
 
   has_many :from_products, :through => :products
   has_many :to_products, :through => :products
-  
+
   belongs_to :supplier_delivery, :class_name => 'DistributionPluginDeliveryMethod'
   belongs_to :consumer_delivery, :class_name => 'DistributionPluginDeliveryMethod'
 
-  named_scope :for_consumer, lambda { |consumer| { :conditions => {:consumer_id => consumer.id} } }
+  named_scope :for_consumer, lambda { |consumer| {
+    :conditions => {:consumer_id => consumer ? consumer.id : nil} }
+  }
   named_scope :for_session, lambda { |session| { :conditions => {:session_id => session.id} } }
   named_scope :for_node, lambda { |node| {
       :conditions => ['distribution_plugin_nodes.id = ?', node.id],
@@ -28,12 +33,10 @@ class DistributionPluginOrder < ActiveRecord::Base
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.session.orders }
 
-  STATUSES = ['draft', 'planned', 'confirmed', 'cancelled']
   validates_presence_of :session
   validates_presence_of :consumer
   validates_presence_of :supplier_delivery
-  #not yet implemented on interface
-  #validates_presence_of :consumer_delivery, :if => :is_delivery?
+  STATUSES = ['draft', 'planned', 'confirmed', 'cancelled']
   validates_inclusion_of :status, :in => STATUSES
 
   named_scope :draft, :conditions => {:status => 'draft'}
@@ -64,13 +67,6 @@ class DistributionPluginOrder < ActiveRecord::Base
     self['status']
   end
 
-  def delivery?
-    session.delivery?
-  end
-  def is_delivery?
-    supplier_delivery and supplier_delivery.deliver?
-  end
-
   STATUS_MESSAGE = {
    'open' => _('Order in progress'),
    'forgotten' => _('Order not confirmed'),
@@ -80,6 +76,10 @@ class DistributionPluginOrder < ActiveRecord::Base
   }
   def status_message
     _(STATUS_MESSAGE[current_status])
+  end
+
+  def delivery?
+    session.delivery?
   end
 
   alias_method :supplier_delivery!, :supplier_delivery
@@ -92,14 +92,14 @@ class DistributionPluginOrder < ActiveRecord::Base
 
   def total_quantity_asked(dirty = false)
     if dirty
-      products.collect(&:quantity_asked).inject{ |sum,q| sum+q }
+      products.collect(&:quantity_asked).inject(0){ |sum,q| sum+q }
     else
       products.sum(:quantity_asked)
     end
   end
   def total_price_asked(dirty = false)
     if dirty
-      products.collect(&:price_asked).inject{ |sum,q| sum+q }
+      products.collect(&:price_asked).inject(0){ |sum,q| sum+q }
     else
       products.sum(:price_asked)
     end
@@ -119,12 +119,11 @@ class DistributionPluginOrder < ActiveRecord::Base
     }
   end
 
-  protected 
+  protected
 
   before_validation :default_values
   def default_values
     self.status ||= 'draft'
-    self.supplier_delivery
   end
 
 end

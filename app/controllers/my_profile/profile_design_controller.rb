@@ -3,9 +3,9 @@ class ProfileDesignController < BoxOrganizerController
   needs_profile
 
   protect 'edit_profile_design', :profile
-  
+
   def available_blocks
-    blocks = [ ArticleBlock, TagsBlock, RecentDocumentsBlock, ProfileInfoBlock, LinkListBlock, MyNetworkBlock, FeedReaderBlock, ProfileImageBlock, LocationBlock, SlideshowBlock, ProfileSearchBlock ]
+    blocks = [ ArticleBlock, TagsBlock, RecentDocumentsBlock, ProfileInfoBlock, LinkListBlock, MyNetworkBlock, FeedReaderBlock, ProfileImageBlock, LocationBlock, SlideshowBlock, ProfileSearchBlock, HighlightsBlock ]
 
     # blocks exclusive for organizations
     if profile.has_members?
@@ -25,6 +25,7 @@ class ProfileDesignController < BoxOrganizerController
       blocks << DisabledEnterpriseMessageBlock
       blocks << HighlightsBlock
       blocks << FeaturedProductsBlock
+      blocks << FansBlock
     end
 
     # product block exclusive for enterprises in environments that permits it
@@ -36,6 +37,12 @@ class ProfileDesignController < BoxOrganizerController
     if profile.has_blog?
       blocks << BlogArchivesBlock
     end
+
+    if user.is_admin?(profile.environment)
+      blocks << RawHTMLBlock
+    end
+
+    blocks += @plugins.map(:profile_blocks, profile)
 
     blocks
   end

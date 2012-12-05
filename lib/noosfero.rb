@@ -1,6 +1,8 @@
+require 'fast_gettext'
+
 module Noosfero
   PROJECT = 'noosfero'
-  VERSION = '0.29.3'
+  VERSION = '0.39.0~1'
 
   def self.pattern_for_controllers_in_directory(dir)
     disjunction = controllers_in_directory(dir).join('|')
@@ -9,7 +11,20 @@ module Noosfero
   end
 
   class << self
-    attr_accessor :locales
+    def locales
+      @locales ||= {
+        'en' => 'English',
+        'pt' => 'Português',
+        'fr' => 'Français',
+        'hy' => 'հայերեն լեզու',
+        'de' => 'Deutsch',
+        'ru' => 'русский язык',
+        'es' => 'Español',
+        'eo' => 'Esperanto',
+        'it' => 'Italiano'
+      }
+    end
+    attr_writer :locales
     attr_accessor :default_locale
     def available_locales
       @available_locales ||=
@@ -66,7 +81,7 @@ module Noosfero
     if ENV['RAILS_ENV'] == 'development'
       development_url_options
     elsif ENV['RAILS_ENV'] == 'cucumber'
-      {:host => ''}
+      Webrat.configuration.mode == :rails ? { :host => '' } : { :port => Webrat.configuration.application_port }
     else
       {}
     end
@@ -75,7 +90,6 @@ module Noosfero
   def self.development_url_options
     @development_url_options || {}
   end
-
 
 end
 

@@ -12,7 +12,7 @@ module DistributionPlugin::DistributionDisplayHelper
   end
 
   def labelled_radio(form, field, label, value, options = {})
-    content_tag('div', 
+    content_tag('div',
                 form.radio_button(:role, value) +
                 form.label("#{field}_#{value}", label) +
                 content_tag('div', '', :class => 'cleaner'),
@@ -51,6 +51,10 @@ module DistributionPlugin::DistributionDisplayHelper
     })
   end
 
+  def day_time_short(time)
+    time.strftime time.min > 0 ? _('%-m/%-d %Hh%M') : _('%-m/%-d %Hh')
+  end
+
   def datetime_period_with_day(start, finish)
     (start.to_date == finish.to_date ?
       _("%{start_day}, from %{start_time} to %{finish_time}") :
@@ -67,8 +71,8 @@ module DistributionPlugin::DistributionDisplayHelper
 
   def datetime_period_short(start, finish)
     _("%{start} - %{finish}") % {
-      :start => start.strftime(_('%m/%d %Hh%M')),
-      :finish => finish.strftime(_('%m/%d %Hh%M')),
+      :start => day_time_short(start),
+      :finish => day_time_short(finish)
     }
   end
 
@@ -80,7 +84,7 @@ module DistributionPlugin::DistributionDisplayHelper
     options[:class] ||= ''
     options[:onclick] ||= ''
     options[:class] += ' actions-circle toggle-edit'
-    options[:onclick] = "r = distribution_edit_arrow_toggle(this); #{options[:onclick]}; return r;" if toggle
+    options[:onclick] = "r = distribution.edit_arrow_toggle(this); #{options[:onclick]}; return r;" if toggle
 
     link_to content_tag('div', '', :class => 'actions-arrow'), anchor, options
   end
@@ -107,5 +111,16 @@ module DistributionPlugin::DistributionDisplayHelper
   def submit_to_function(name, function, html_options={})
     content_tag 'input', '', html_options.merge(:onclick => function, :type => 'submit', :value => name)
   end
+
+  include ColorboxHelper
+
+  def colorbox_link_to label, url, options = {}
+    link_to label, url, colorbox_options(options)
+  end
+
+  def colorbox_close_link text, options = {}
+    link_to text, '#', colorbox_options(options, :close)
+  end
+
 
 end

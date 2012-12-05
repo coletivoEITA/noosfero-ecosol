@@ -16,7 +16,7 @@ Feature: delete profile
   Scenario: deleting profile
     Given I am logged in as "joaosilva"
     And I am on Joao Silva's control panel
-    And I follow "Profile Info and settings"
+    And I follow "Edit Profile"
     And I follow "Delete profile"
     Then I should see "Are you sure you want to delete this profile?"
     When I follow "Yes, I am sure"
@@ -32,7 +32,7 @@ Feature: delete profile
   Scenario: giving up of deleting profile
     Given I am logged in as "joaosilva"
     And I am on Joao Silva's control panel
-    And I follow "Profile Info and settings"
+    And I follow "Edit Profile"
     And I follow "Delete profile"
     Then I should see "Are you sure you want to delete this profile?"
     When I follow "No, I gave up"
@@ -98,17 +98,10 @@ Feature: delete profile
     And I go to /myprofile/sample-enterprise/profile_editor/destroy_profile
     Then I should see "Access denied"
 
-  Scenario: community regular member cannot see link to delete profile
-    Given "Joao Silva" is a member of "Sample Community"
-    And I am logged in as "joaosilva"
-    And I am on Sample Community's control panel
-    When I follow "Community Info and settings"
-    Then I should not see "Delete profile"
-
   Scenario: environment admin deletes profile
     Given I am logged in as admin
     And I am on Joao Silva's control panel
-    And I follow "Profile Info and settings"
+    And I follow "Edit Profile"
     And I follow "Delete profile"
     Then I should see "Are you sure you want to delete this profile?"
     When I follow "Yes, I am sure"

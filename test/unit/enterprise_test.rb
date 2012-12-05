@@ -1,9 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class EnterpriseTest < Test::Unit::TestCase
+class EnterpriseTest < ActiveSupport::TestCase
   fixtures :profiles, :environments, :users
 
   def setup
+    super
     @product_category = fast_create(ProductCategory, :name => 'Products')
   end
 
@@ -49,6 +50,15 @@ class EnterpriseTest < Test::Unit::TestCase
     end
   end
 
+  should 'have fans' do
+    p = fast_create(Person)
+    e = fast_create(Enterprise)
+
+    p.favorite_enterprises << e
+
+    assert_includes Enterprise.find(e.id).fans, p
+  end
+
   should 'remove products when removing enterprise' do
     e = fast_create(Enterprise, :name => "My enterprise", :identifier => 'myenterprise')
     e.products.create!(:name => 'One product', :product_category => @product_category)
@@ -76,19 +86,21 @@ class EnterpriseTest < Test::Unit::TestCase
   end
 
   should 'be found in search for its product categories' do
+    TestSolr.enable
     ent1 = fast_create(Enterprise, :name => 'test1', :identifier => 'test1')
     prod_cat = fast_create(ProductCategory, :name => 'pctest', :environment_id => Environment.default.id)
     prod = ent1.products.create!(:name => 'teste', :product_category => prod_cat)
 
     ent2 = fast_create(Enterprise, :name => 'test2', :identifier => 'test2')
 
-    result = Enterprise.find_by_contents(prod_cat.name)
+    result = Enterprise.find_by_contents(prod_cat.name)[:results]
 
     assert_includes result, ent1
     assert_not_includes result, ent2
   end
 
-   should 'be found in search for its product categories hierarchy' do
+  should 'be found in search for its product categories hierarchy' do
+    TestSolr.enable
     ent1 = fast_create(Enterprise, :name => 'test1', :identifier => 'test1')
     prod_cat = fast_create(ProductCategory, :name => 'pctest', :environment_id => Environment.default.id)
     prod_child = fast_create(ProductCategory, :name => 'pchild', :environment_id => Environment.default.id, :parent_id => prod_cat.id)
@@ -96,7 +108,7 @@ class EnterpriseTest < Test::Unit::TestCase
 
     ent2 = fast_create(Enterprise, :name => 'test2', :identifier => 'test2')
 
-    result = Enterprise.find_by_contents(prod_cat.name)
+    result = Enterprise.find_by_contents(prod_cat.name)[:results]
 
     assert_includes result, ent1
     assert_not_includes result, ent2
@@ -191,9 +203,9 @@ class EnterpriseTest < Test::Unit::TestCase
     ent.reload
     assert_equal 1, ent.boxes.size
     assert_equal 1, ent.boxes[0].blocks.size
-   end
+  end
 
-   should 'not replace template if environment doesnt allow' do
+  should 'not replace template if environment doesnt allow' do
     inactive_template = fast_create(Enterprise, :name => 'inactive enteprise template', :identifier => 'inactive_enterprise_template')
     inactive_template.boxes.destroy_all
     inactive_template.boxes << Box.new
@@ -266,9 +278,28 @@ class EnterpriseTest < Test::Unit::TestCase
   end
 
   should 'have a enterprise template' do
+    template = fast_create(Enterprise, :is_template => true)
+    p = fast_create(Enterprise, :name => 'test_com', :identifier => 'test_com', :template_id => template.id)
+    assert_equal template, p.template
+  end
+
+  should 'have a default enterprise template' do
     env = Environment.create!(:name => 'test env')
     p = fast_create(Enterprise, :name => 'test_com', :identifier => 'test_com', :environment_id => env.id)
     assert_kind_of Enterprise, p.template
+  end
+
+  should 'have inactive_template even when there is a template set' do
+    another_template = fast_create(Enterprise, :is_template => true)
+    inactive_template = fast_create(Enterprise, :name => 'inactive enteprise template', :identifier => 'inactive_enterprise_template', :is_template => true)
+
+    e = Environment.default
+    e.enable('enterprises_are_disabled_when_created')
+    e.inactive_enterprise_template = inactive_template
+    e.save!
+
+    ent = Enterprise.create!(:name => 'test enteprise', :identifier => 'test_ent', :template => another_template, :environment => e)
+    assert_equal inactive_template, ent.template
   end
 
   should 'contact us enabled by default' do
@@ -341,6 +372,20 @@ class EnterpriseTest < Test::Unit::TestCase
     assert_equal false, Enterprise['test_ent'].enabled?
   end
 
+  should 'enterprise is validated according to feature enterprises_are_validated_when_created' do
+    e = Environment.default
+
+    e.enable('enterprises_are_validated_when_created')
+    e.save
+    enterprise = Enterprise.create(:name => 'test enteprise', :identifier => 'test_ent1')
+    assert enterprise.validated
+
+    e.disable('enterprises_are_validated_when_created')
+    e.save
+    enterprise = Enterprise.create(:name => 'test enteprise', :identifier => 'test_ent2')
+    assert !enterprise.validated
+  end
+
   should 'have inactive_template when creating enterprise and feature is enabled' do
     inactive_template = fast_create(Enterprise, :name => 'inactive enteprise template', :identifier => 'inactive_enterprise_template')
     inactive_template.boxes.destroy_all
@@ -384,8 +429,8 @@ class EnterpriseTest < Test::Unit::TestCase
     }
     Product.create!(:name => "product 4", :enterprise_id => e1.id, :product_category_id => @product_category.id, :highlighted => true)
     Product.create!(:name => "product 5", :enterprise_id => e1.id, :product_category_id => @product_category.id, :image_builder => {
-        :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')
-      })
+      :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')
+    })
     assert_equal products, e1.highlighted_products_with_image
   end
 
@@ -396,6 +441,13 @@ class EnterpriseTest < Test::Unit::TestCase
     product.inputs << Input.new(:product_category => @product_category)
 
     assert_equal product.inputs, enterprise.inputs
+  end
+
+  should 'reindex when products are changed' do
+    enterprise = fast_create(Enterprise)
+    product = fast_create(Product, :enterprise_id => enterprise.id, :product_category_id => @product_category.id)
+    Product.expects(:solr_batch_add_association).with(product, :enterprise)
+    product.update_attribute :name, "novo nome"
   end
 
   should "the followed_by? be true only to members" do
@@ -421,6 +473,52 @@ class EnterpriseTest < Test::Unit::TestCase
   should 'receive scrap notification' do
     enterprise = fast_create(Enterprise)
     assert_equal false, enterprise.receives_scrap_notification?
+  end
+
+  should 'have production cost' do
+    e = fast_create(Enterprise)
+    assert_respond_to e, :production_costs
+  end
+
+  should 'reindex products with full category name after save' do
+    product = mock
+    product.expects(:category_full_name)
+    Enterprise.any_instance.stubs(:products).returns([product])
+    Enterprise.expects(:solr_batch_add).with(includes(product))
+    ent = fast_create(Enterprise)
+    ent.save!
+  end
+
+  should 'return scraps as activities' do
+    person = fast_create(Person)
+    enterprise = fast_create(Enterprise)
+
+
+    activity = ActionTracker::Record.last
+    scrap = Scrap.create!(defaults_for_scrap(:sender => person, :receiver => enterprise, :content => 'A scrap'))
+
+    assert_equal [scrap], enterprise.activities.map { |a| a.klass.constantize.find(a.id) }
+  end
+
+  should 'return tracked_actions of community as activities' do
+    person = fast_create(Person)
+    enterprise = fast_create(Enterprise)
+
+    UserStampSweeper.any_instance.expects(:current_user).returns(person).at_least_once
+    article = create(TinyMceArticle, :profile => enterprise, :name => 'An article about free software')
+
+    assert_equal [article.activity], enterprise.activities.map { |a| a.klass.constantize.find(a.id) }
+  end
+
+  should 'not return tracked_actions of other community as activities' do
+    person = fast_create(Person)
+    enterprise = fast_create(Enterprise)
+    enterprise2 = fast_create(Enterprise)
+
+    UserStampSweeper.any_instance.expects(:current_user).returns(person).at_least_once
+    article = create(TinyMceArticle, :profile => enterprise2, :name => 'Another article about free software')
+
+    assert_not_includes enterprise.activities.map { |a| a.klass.constantize.find(a.id) }, article.activity
   end
 
 end

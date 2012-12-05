@@ -1,6 +1,5 @@
 /* ==> button.css <== */
 
-
 .button {
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -63,6 +62,10 @@ body, th, td, input {
   background-color: white;
 }
 
+.msie7 #wrap-2 {
+  height: 100%;
+}
+
 #content {
   margin-top: 105px;
 }
@@ -72,7 +75,7 @@ body, th, td, input {
 #user {
   text-align: right;
   position: absolute;
-  right: 20px;
+  right: 10px;
   z-index: 10;
 }
 
@@ -86,7 +89,7 @@ body, th, td, input {
   color: #555753;
 }
 
-#controlpanel, #logout, #openchat {
+#controlpanel, #logout, #openchat, #manage-enterprises {
   margin-left: 25px;
 }
 
@@ -108,14 +111,14 @@ body, th, td, input {
   margin-left: 20px;
 }
 
-#user form input {
+#user form input .blur {
   width: 160px;
   border: 1px solid #BBB;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   color: #CCC;
 }
-#user form.focused input {
+#user form input {
   border: 1px solid #888;
   color: #555;
 }
@@ -280,23 +283,6 @@ body, th, td, input {
   -webkit-border-radius: 0px;
 }
 
-/***************************** boxes ********************************/
-
-.template-default .box-1 { /* Center */
-  position: relative;
-  margin: 0px 200px 0px 200px;
-}
-
-.template-default .box-2 { /* Left */
-  position: relative;
-  width: 190px;
-}
-
-.template-default .box-3 { /* Right */
-  position: relative;
-  width: 190px;
-}
-
 /************************** main content *****************************/
 
 #main-content-wrapper-1, #main-content-wrapper-2,
@@ -323,6 +309,12 @@ body, th, td, input {
   color: #555753;
   text-align: left;
   border-bottom: 2px solid #2e3436;
+}
+
+.block {
+  position: relative;
+  padding: 10px 0;
+  float: none;
 }
 
 /***************************** header ********************************/
@@ -483,11 +475,23 @@ div#notice {
 #content .enterprises-block ul,
 #content .members-block ul,
 #content .communities-block ul,
-#content .friends-block ul {
+#content .friends-block ul,
+#content .fans-block ul {
   min-width: 196px;
   width: 192px;
   margin: 0px 0px 0px -3px;
   padding: 0px;
+}
+
+#content .box-1 .people-block ul,
+#content .box-1 .profile-list-block ul,
+#content .box-1 .enterprises-block ul,
+#content .box-1 .members-block ul,
+#content .box-1 .communities-block ul,
+#content .box-1 .friends-block ul,
+#content .box-1 .fans-block ul {
+  width: auto;
+  display: block;
 }
 
 #content .tags-block .block-footer-content a,
@@ -512,11 +516,11 @@ div#notice {
 }
 
 #content .profile-list li a,
-#content .common-profile-list-block li a {
+#content .common-profile-list-block .vcard li a {
   color: #555;
 }
 #content .profile-list li a:hover,
-#content .common-profile-list-block li a:hover {
+#content .common-profile-list-block .vcard li a:hover {
   color: #000;
   text-decoration: none;
 }
@@ -595,10 +599,18 @@ div#notice {
   display: none;
 }
 
+#content .box-1 .link-list-block {
+  margin: 0px;
+}
+
 #content .link-list-block li {
   background: #FFF;
   padding: 0px;
   margin: 5px 0px;
+}
+
+#content .box-1 .link-list-block li {
+  display: inline-block;
 }
 
 #content .link-list-block li a {
@@ -607,19 +619,29 @@ div#notice {
   color: #000;
   background-color: #EEE;
   background-position: 4px 50%;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+
+#content .box-1 .link-list-block li a {
+  padding-left: 25px;
+  padding-right: 10px;
+  margin-right: 5px;
+  background-position: 5px 50%;
 }
 
 #content .link-list-block li a.link-this-page {
-  -moz-border-radius-topright: 0px;
-  -moz-border-radius-bottomright: 0px;
-  -webkit-border-radius-topright: 0px;
-  -webkit-border-radius-bottomright: 0px;
+  border-radius-topright: 0px;
+  border-radius-bottomright: 0px;
   background-color: #cecece;
   max-width: 175px;
   width: 200px;
   border-right: 2px solid #555753;
+}
+
+#content .box-1 .link-list-block li a.link-this-page {
+  width: auto;
+  border: none;
+  border-radius: 4px;
 }
 
 #content .link-list-block li a:hover {
@@ -642,13 +664,6 @@ div#notice {
   height: auto;
 }
 
-.communities-block .vcard a {
-  clear: left;
-  text-align: left;
-  padding-bottom: 3px;
-  width: 99%;
-  height: auto;
-}
 .msie7 .communities-block .common-profile-list-block .vcard a {
   height: auto;
   width: 99%;
@@ -676,6 +691,7 @@ div#notice {
 
 .tag_cloud a {
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .tag_cloud a small {
@@ -830,26 +846,6 @@ X.sep {
   display: none;
 }
 
-.controller-search #content .search_form {
-  background: #DDD;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  padding: 12px 15px 13px 15px;
-  position: relative;
-  text-align: left;
-}
-
-#advanced_search_link {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  background: url(imgs/arrow-down-p.png) 100% 55% no-repeat;
-  padding-right: 15px;
-  color: #000;
-  text-decoration: none;
-  font-weight: bold;
-}
-
 .controller-search #content .search_form h3 {
   display: none;
 }
@@ -902,38 +898,17 @@ X.sep {
   border-top: 1px solid #CCC;
 }
 
-#content .search-results-box a.see-more {
-  z-index: 10;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  background: transparent url(imgs/arrow-right-p.png) 100% 55% no-repeat;
-  border: none;
-  padding-right: 15px;
-  color: #000;
-  text-decoration: none;
-  font-weight: bold;
-}
-#content .search-results-box a.see-more:hover {
-  background: transparent url(imgs/arrow-right-p.png) 100% 55% no-repeat;
-  color: #888;
-}
-
-
-.search-results-type-article.search-results-innerbox {
-  padding: 5px 0px 5px 10px;
-  max-height: 215px;
-  height: 225px;
-}
-
-#content .search-results-type-article li {
+#content .search-results-type-article li,
+#content .search-results-type-event li {
   padding: 5px 0px;
 }
 
-.search-results-type-article a {
+.search-results-type-article a,
+.search-results-type-event a {
   text-decoration: none;
 }
-.search-results-type-article a:hover {
+.search-results-type-article a:hover,
+.search-results-type-event a:hover {
   text-decoration: underline;
 }
 
@@ -961,6 +936,16 @@ hr.pre-posts, hr.sep-posts {
 }
 #article-actions a.button:hover {
   color: #555753;
+}
+#content a.disabled,
+#content a.disabled:hover {
+  color: #888;
+  text-decoration: none;
+}
+#content a.button.disabled,
+#content a.button.disabled:hover {
+  background-color: #CCC;
+  border-color: #CCC;
 }
 
 #addThis {
@@ -1234,47 +1219,6 @@ table.profile th {
 
 /**************************** Browse *******************************/
 
-.controller-browse #content .search_form {
-  background: #DDD;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  padding: 12px 15px 13px 15px;
-  position: relative;
-  text-align: left;
-}
-
-.controller-browse a {
-  color: #555753;
-}
-
-.browse-results-innerbox {
-  margin-top: 10px;
-  border-bottom: none;
-  border: 1px solid #CCC;
-  background: url(imgs/comment-bg-S.png) 0% 100% repeat-x;
-  padding-bottom: 10px;
-
-}
-.browse-results-innerbox ul{
-  padding: 0px;
-}
-
-.browse-results-innerbox .browse-results-type-empty div {
-  text-align: center;
-  color: #DDD;
-  font-weight: bold;
-  font-size: 30px;
-  padding: 70px 10px 0px 0px;
-  border: none;
-
-}
-
-.search-results-type-article.search-results-innerbox {
-  padding: 5px 0px 5px 10px;
-  max-height: 215px;
-  height: 225px;
-}
-
 #content .search-results-type-article li {
   padding: 5px 0px;
 }
@@ -1305,4 +1249,10 @@ table.profile th {
 }
 #chat-window .history .other-name {
    color: #7F1F1F;
+}
+
+/* recaptcha*/
+
+table#recaptcha_table tr:hover td {
+  background-color: #fff;
 }

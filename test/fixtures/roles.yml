@@ -34,6 +34,8 @@ four:
    - moderate_comments
    - perform_task
    - manage_environment_users
+   - manage_environment_templates
+   - manage_environment_licenses
 profile_admin:
   id: 5
   environment_id: 1
@@ -58,9 +60,7 @@ profile_member:
   name: 'Profile Member'
   system: true
   permissions:
-   - edit_profile
-   - post_content
-   - manage_products
+   - invite_members
 profile_moderator:
   id: 7
   environment_id: 1
@@ -88,3 +88,5 @@ environment_administrator:
    - manage_environment_users
    - edit_profile
    - destroy_profile
+   - manage_environment_templates
+   - manage_environment_licenses
