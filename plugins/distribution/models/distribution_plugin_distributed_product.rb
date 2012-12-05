@@ -73,6 +73,8 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
   def save_supplier_product
     return unless supplier_product
     self.from_products << supplier_product unless self.from_products.include? supplier_product
+    # force save on update
+    self.supplier_product.save
   end
 
 end
