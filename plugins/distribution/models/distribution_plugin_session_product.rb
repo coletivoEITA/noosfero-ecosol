@@ -15,12 +15,11 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
   def self.create_from_distributed(session, product)
     sp = self.new :node => product.node
     sp.attributes = product.attributes
-    sp.type = name
-    sp.session = session
+    sp.type = self.name
     sp.freeze_default_attributes product
     sp.price = sp.price_with_margins(product.price, product)
     sp.from_products << product
-    sp.save!
+    session.products << sp
     sp
   end
 
