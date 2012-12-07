@@ -1,6 +1,7 @@
 <div class="session-name-and-code">
   <strong><%= _('%{code}.') % {:code => session.code} %></strong>
   <%= link_to session.name, {:action => 'edit', :id => session.id } %>
+  <%= n_("(1 confirmed order)","(%{orders} confirmed orders)",session.orders_confirmed.count) % {:orders => session.orders_confirmed.count} %>
 </div>
 
 <div class="session-dates">
