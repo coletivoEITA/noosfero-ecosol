@@ -11,7 +11,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
       @quantity_asked = params[:quantity_asked] || 1
       @ordered_product = DistributionPluginOrderedProduct.create! :order_id => @order.id, :session_product_id => @session_product.id, :quantity_asked => @quantity_asked
     else
-      @quantity_asked = params[:quantity_asked].to_i
+      @quantity_asked = params[:quantity_asked].to_f
       if @quantity_asked == 0
         @ordered_product.destroy
         render :action => :destroy
@@ -25,7 +25,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
     @ordered_product = DistributionPluginOrderedProduct.find params[:id]
     @order = @ordered_product.order
     raise 'Order confirmed or cycle is closed for orders' unless @order.open?
- 
+
     if params[:ordered_product][:quantity_asked].to_i == 0
       @ordered_product.destroy
       render :action => :destroy
