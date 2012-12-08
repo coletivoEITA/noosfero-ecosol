@@ -54,6 +54,13 @@ body.plugin-distribution {
 
 /* ----- ends layout stuff  ----- */
 
+/* ----- general stuff  ----- */
+.plugin-distribution .distribution-loading {
+  background-image: url('images/loading.gif');
+  opacity: 0.92;
+  display: none;
+}
+/* ----- ends general stuff  ----- */
 /* ----- header stuff  ----- */
 
 #distribution-plugin-header {
@@ -458,6 +465,14 @@ body.plugin-distribution {
 /* ----- ends common stuff  ----- */
 
 /* ----- not so common stuff  ----- */
+
+.plugin-distribution .product-loading {
+  width: 280px;
+  height: 35px;
+  position: relative;
+  top: -50px;
+  margin-bottom: -35px;
+}
 
 .plugin-distribution .our-product .product-supplier *[disabled],
 .plugin-distribution .our-product-distributed-column *[readOnly],
@@ -1461,7 +1476,7 @@ body.plugin-distribution {
   width: 100px;
 }
 .plugin-distribution .session-view #session-products-for-order .box-field.quantity {
-  width: 102px;
+  width: 100px;
 }
 .plugin-distribution .session-view #session-products-for-order .box-field.stock {
   width: 80px;
