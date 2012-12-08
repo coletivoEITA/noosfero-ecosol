@@ -90,18 +90,6 @@
   </div>
 
   <%= javascript_include_tag '/plugins/distribution/waypoints.min.js' %>
-  <% javascript_tag do %>
-    jQuery(document).ready(function() {
-      jQuery('#order-column').waypoint(function(event, direction) {
-        if (jQuery(window).height() <= jQuery(this).height()) {
-          jQuery(this).removeClass('sticky');
-          return;
-        }
-        jQuery(this).css('left', jQuery(this).offset().left).toggleClass('sticky', direction == 'down');
-        jQuery(this).parents('.page').css('margin-bottom', jQuery(this).height());
-      }, {});
-    });
-  <% end %>
 
   <div class="cleaner"></div>
 </div>
