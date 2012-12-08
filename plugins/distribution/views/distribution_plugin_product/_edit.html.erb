@@ -9,7 +9,7 @@
     <% end %>
   </div>
 
-  <% form_remote_for :product, product, :url => {:controller => :distribution_plugin_product, :action => new_record ? :new : :edit, :id => product ? product.id : nil} do |f| %>
+  <% form_remote_for :product, product, :loading => 'jQuery("#product-'+product.id.to_s+'-loading").show()', :loaded => 'jQuery("#product-'+product.id.to_s+'-loading").hide()', :url => {:controller => :distribution_plugin_product, :action => new_record ? :new : :edit, :id => product ? product.id : nil} do |f| %>
     <%= supplier_select f, @node, @supplier, new_record %>
 
     <% if product.blank? or (!product.own? and (product.supplier.blank? or @not_distributed_products)) %>
@@ -156,7 +156,9 @@
 
       <div class="cleaner">
         <%= f.submit _('Save') %>
-        <%= link_to_function _('cancel'), '', :class => 'toggle-edit' %>
+        <%= link_to_function _('cancel'), :class => 'toggle-edit' %>
+        <%= link_to_remote _('remove product'), :loading => 'jQuery("#product-'+product.id.to_s+'-loading").show()', :loaded => 'jQuery("#product-'+product.id.to_s+'-loading").hide()', :url => {:controller => 'distribution_plugin_product', :action => 'destroy', :id => product.id } %>
+        <div id='product-<%= product.id.to_s %>-loading' class="product-loading distribution-loading"></div>
       </div>
     <% end %>
   <% end %>
