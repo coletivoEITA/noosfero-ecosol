@@ -129,6 +129,17 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     flash[:notice] = _('Product removed from cycle')
   end
 
+  def destroy
+    @product = DistributionPluginProduct.find params[:id]
+    if @product.nil?
+      flash[:notice] = _('The product was not removed')
+      false
+    else
+      @product.archive and flash[:notice] = _('Product removed successfully')
+    end
+  end
+
+
   protected
 
   def not_distributed_products(supplier_product_id = nil)
