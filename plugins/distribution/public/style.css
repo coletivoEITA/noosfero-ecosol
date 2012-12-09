@@ -474,6 +474,27 @@ body.plugin-distribution {
   margin-bottom: -35px;
 }
 
+.plugin-distribution #filter-products-loading {
+  width: 205px;
+  height: 20px;
+  position: relative;
+  left: 235px;
+  margin-bottom: -20px;
+}
+.plugin-distribution #confirm-order-loading {
+  width: 350px;
+  height: 40px;
+  position: relative;
+  top: -63px;
+  margin-bottom: -40px;
+}
+.plugin-distribution .order-product-loading {
+  width: 100px;
+  height: 32px;
+  position: relative;
+  top: -52px;
+  margin-bottom: -32px;
+}
 .plugin-distribution .our-product .product-supplier *[disabled],
 .plugin-distribution .our-product-distributed-column *[readOnly],
 .plugin-distribution .our-product-distributed-column *[disabled] {
