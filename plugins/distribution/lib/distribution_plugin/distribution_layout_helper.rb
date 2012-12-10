@@ -10,7 +10,7 @@ module DistributionPlugin::DistributionLayoutHelper
 
   def display_header_buttons
     HeaderButtons.map do |key, label, url, cond_proc|
-      next if key == :adm and @user_node.nil? and @node.profile.admins.include? @user_node.profile
+      next if key == :adm and (@user_node.nil? or (@user_node and not @node.profile.admins.include? @user_node.profile))
 
       url = instance_eval(&url) if url.is_a?(Proc)
       if key != :adm and @admin_action
