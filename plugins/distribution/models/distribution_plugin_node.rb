@@ -171,14 +171,29 @@ class DistributionPluginNode < ActiveRecord::Base
   def enable_collective_view
     self.add_order_block
     self.profile.update_attribute :theme, 'distribution'
-    return if self.profile.blocks.collect{ |b| b.class.name }.include? "ProfileBlock"
+
+    image_block = self.profile.blocks.select{ |b| b.class.name == "ProfileImageBlock" }.first
+    image_block.destroy if image_block
+
+    self.profile.home_page = self.profile.blogs.first
+    self.profile.save!
   end
   def disable_collective_view
     self.profile.update_attribute :theme, nil
+
+    order_block = self.profile.blocks.select{ |b| b.class.name == "DistributionPlugin::OrderBlock" }.first
+    order_block.destroy if order_block
+
+    image_block = self.profile.blocks.select{ |b| b.class.name == "ProfileImageBlock" }.first
+    if not image_block
+      box = self.profile.boxes.first :conditions => {:position => 2}
+      image_block = ProfileImageBlock.create! :box => box
+      image_block.move_to_top
+    end
   end
 
   def add_order_block
-    return if self.profile.blocks.collect{ |b| b.class.name }.include? "DistributionPlugin::OrderBlock"
+    return unless self.profile.blocks.select{ |b| b.class.name == "DistributionPlugin::OrderBlock" }.first
 
     boxes = self.profile.boxes.select{ |box| !box.blocks.collect{ |b| b.class.name }.include?("MainBlock") }
     box = boxes.count > 1 ? boxes.max{ |a,b| a.position <=> b.position } : Box.create(:owner => self.profile, :position => 3)
