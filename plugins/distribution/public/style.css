@@ -42,7 +42,7 @@ body.plugin-distribution {
 .plugin-distribution-layout #content h2 {
   color: #036475;
   margin-bottom: 7px;
-  height: 44px;
+  height: 34px;
 }
 .plugin-distribution-layout #content h2 a {
   text-decoration: none;
@@ -1052,8 +1052,6 @@ body.plugin-distribution {
 .plugin-distribution #session-listing .session-timeline-selected-item {
   text-decoration: underline;
 }
-.plugin-distribution #session-listing .session-dates {
-}
 .plugin-distribution #session-listing .session-date {
   float: left;
   width: 270px;
@@ -1432,10 +1430,13 @@ body.plugin-distribution {
   border-bottom: 2px solid #ddd;
   margin-bottom: 0;
 }
+.plugin-distribution .session-view #session-header .subtitle,
+.plugin-distribution .session-view #session-header #session-dates {
+  width: 520px;
+}
 .plugin-distribution .session-view #session-header .subtitle {
   display: block;
-  margin-top: 30px;
-  width: 400px;
+  margin-top: 20px;
   font-style: italic;
 }
 
@@ -1583,15 +1584,10 @@ body.plugin-distribution {
   vertical-align: top;
 }
 
-.plugin-distribution .orders-date.happening {
-  margin-left: -168px;
-  display: inline-block;
-  padding: 0 8px;
-}
-.plugin-distribution .orders-date.happening span {
+.plugin-distribution .orders-date td.happening {
+  padding-right: 20px;
+  text-align: right;
   text-transform: uppercase;
-  width: 156px;
-  display: inline-block;
 }
 
 /* ----- ends session date stuff  ----- */
@@ -1627,11 +1623,6 @@ body.plugin-distribution {
   font-weight: bold;
 }
 
-.plugin-distribution .orders #session-others,
-.plugin-distribution .orders #session-header,
-.plugin-distribution #orders-view > * {
-  padding-left: 241px;
-}
 .plugin-distribution #orders-view h2 {
   margin-top: 20px;
 }

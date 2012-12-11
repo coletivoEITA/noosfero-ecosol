@@ -3,14 +3,14 @@
 <table id='session-dates'>
   <tr class="orders-date <%= "happening" if happening and session.orders? %>">
     <th>
-      <% if happening %>
-        <span class='happening'><%= _("Happening") if session.orders? %></span>
-      <% end %>
       <strong><%= _("Orders: ") %>&emsp;</strong>
     </th>
     <td>
       <%= datetime_period_with_day session.start, session.finish %>
     </td>
+    <% if happening and session.orders? %>
+      <td class='happening'> <%= _("Happening") %> </td>
+    <% end %>
   </tr>
 
   <tr class="delivery-date">
