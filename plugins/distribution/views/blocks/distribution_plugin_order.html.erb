@@ -1,0 +1,41 @@
+<div class="distribution-plugin-order-block">
+  <%= block_title block.title %>
+
+  <% if consumer and node.has_consumer_node?(consumer) %>
+    <% open_sessions = node.sessions.open %>
+    <% if open_sessions.count > 0 %>
+      <% open_sessions.each do |s| %>
+        <div id="session-<%=s.id%>" class="session">
+          <div class="session-title">
+            <%= link_to s.name, {:controller => :distribution_plugin_order, :action => :edit, :session_id => s.id} %>
+          </div>
+
+          <div class="session-period">
+            <strong><%= _('orders') %></strong>&emsp;
+            <span><%= date_period s.start, s.finish %></span>
+          </div>
+          <div class="session-period">
+            <strong><%= _('delivery') %></strong>&emsp;
+            <span><%= date_period s.delivery_start, s.delivery_finish %></span>
+          </div>
+
+        </div>
+
+        <div class="links">
+          <%= link_to _('see all cycles'), {:controller => :distribution_plugin_order, :action => :index} %>
+          <%# link_to _('meet the producers'), {} %>
+          <%# link_to _('meet the products'), {} %>
+        </div>
+      <% end %>
+    <% else %>
+      <%= _('Any cycle is open for orders.') %>
+    <% end %>
+  <% else %>
+    <% if profile.community? %>
+      <%= _('Join this community to buy from this collective.') %>
+    <% else %>
+      <%= _('Ask an administrator to became a member of this enterprise.') %>
+    <% end %>
+  <% end %>
+
+</div>

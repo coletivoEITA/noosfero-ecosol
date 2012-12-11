@@ -1,0 +1,87 @@
+<div class="box-view">
+  <% editable = order && order.open? %>
+
+  <div class="box-field product box-edit-link"><%= product.name %></div>
+  <div class="box-field price-with-unit"><%= price_with_unit_span product.price, product.unit %></div>
+
+  <div class="box-field quantity">
+    <div class="quantity-label">
+      <% if ordered_product %>
+        <span class="label"><%= ordered_product.quantity_asked %></span>
+        <span class="unit"><%= product.unit.singular %></span>
+        <%= link_to_function _('change'), "" if editable %>
+      <% elsif editable %>
+        <%= link_to_function _('include'), "" %>
+      <% end %>
+    </div>
+    <div class="quantity-entry" style="display: none">
+      <% if editable %>
+        <%= text_field_tag 'quantity_asked', ordered_product ? ordered_product.quantity_asked : '1' %>
+      <% elsif ordered_product %>
+        <%= ordered_product.quantity_asked %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="cleaner"></div>
+</div>
+
+<div class="box-edit subtitle" style="display: none">
+  <div class="box-field product-info">
+    <div>
+      <div class="box-field product product-desc">
+        <%= product.description.blank? ? _('No description') : excerpt_ending(product.description, 250) %>
+      </div>
+
+      <div class="box-field price-with-unit">
+        <div><%= _("price's descriptive") %></div>
+        <div class="price-descriptive">
+          <%= _("%{price} + %{percent}% = %{price_with_margin}") % {
+            :price => product.buy_price,
+            :percent => product.margin_percentage,
+            :price_with_margin => product.price, } %>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <% if product.supplier.profile.city %>
+        <div class="product-city">
+          <span class="field-title"><%= _('City') %></span>
+          <span><%= _('%{city}/%{state}') % {:city => product.supplier.profile.city, :state => product.supplier.profile.state} %></span>
+        </div>
+      <% end %>
+
+    </div>
+
+    <div class="product-supplier-link">
+      <% unless product.supplier.dummy? %>
+        <%= link_to _("More about the producer \"%{supplier}\"") % {:supplier => product.supplier.name}, product.supplier.profile.url, :target => '_blank' %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="box-field quantity">
+    <span class="unit"><%= product.unit.singular %></span>
+
+    <div class="product-image">
+      <%= _('Product Image'); %>
+    </div>
+
+    <% if editable %>
+      <%= submit_to_function (ordered_product ? _('Change') : _('Add')), "jQuery('#order-product-#{product.id}-loading').fadeIn(); jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}',
+        {order_id: #{order.id}, session_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-session-product').find('.quantity-entry input').val() });" %>
+      <%= link_to_function _('cancel'), :class => 'toggle-edit' %>
+      <div id='order-product-<%=product.id%>-loading' class="order-product-loading distribution-loading"></div>
+    <% end %>
+  </div>
+
+  <div class="cleaner"></div>
+</div>
+
+<% javascript_tag do %>
+  jQuery("#session-product-<%=product.id%>").toggleClass('in-order', <%= !ordered_product.blank? %>);
+<% end %>
+
+<div class="cleaner"></div>
+

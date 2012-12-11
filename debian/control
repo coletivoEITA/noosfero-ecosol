@@ -29,6 +29,7 @@ Depends:
  ruby1.8,
  ruby,
  rake,
+ libzip-ruby1.8,
  libgettext-rails-ruby1.8,
  libsqlite3-ruby,
  libpgsql-ruby,

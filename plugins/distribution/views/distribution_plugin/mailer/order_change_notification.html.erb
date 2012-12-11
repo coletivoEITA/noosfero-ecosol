@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <p>
+      <%= _('Hi %{name},') % {:name => @order.consumer.name} %>
+      <%= _("Your order #%{id} was changed by an %{supplier}'s administrator.") % {:id => @order.id, :supplier => link_to(@node.name, @node.profile.url)} %>
+    </p>
+
+    <% if @message %>
+      <p>
+        <%= _('The administrator left a message for this change') %>
+        <i><%= @message %></i>
+      </p>
+    <% end %>
+
+    <div>
+      <% if @removed.count > 0 %>
+      <p><%=_('The following products were removed:')%></p>
+      <ul>
+        <% @removed.each do |p| %>
+          <li><%= p.product.name %></li>
+        <% end %>
+      <ul>
+      <% end %>
+    </div>
+
+    <div>
+      <% if @changed.count > 0 %>
+      <p><%=_('The following products had their quantity changed:')%></p>
+      <ul>
+        <% @changed.each do |p| %>
+          <li><%= _('%{name}, from %{quantity_was} to %{quantity}') % {:name => p.product.name, :quantity_was => p.quantity_asked_was, :quantity => p.quantity_asked} %></li>
+        <% end %>
+      <ul>
+      <% end %>
+    </div>
+
+    <p>
+      --<br/>
+      <%= _('Thanks for buying with us!') %><br/>
+      <%= link_to @node.name, @node.profile.url %>
+    </p>
+
+    <small style="color: #888"><%= _('A service of %s.') % @environment.name %></small>
+  </body>
+</html>

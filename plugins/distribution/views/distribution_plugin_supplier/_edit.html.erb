@@ -1,0 +1,12 @@
+<div id="supplier">
+  <div class="title"><%= supplier.new_record? ? _('Register new supplier') : _('Edit supplier') %></div>
+  <% form_remote_for :supplier, supplier, :url => {:action => supplier.new_record? ? :new : :edit, :id => supplier.id} do |f| %>
+    <%= labelled_field f, :name, _('Name'), f.text_field(:name) %>
+    <%= labelled_field f, :name_abbreviation, _('Name abbreviation'), f.text_field(:name_abbreviation) %>
+    <%= labelled_field f, :description, _('Description'), f.text_area(:description) %>
+    <div class="cleaner"></div>
+
+    <%= f.submit _('Save') %>
+    <%= link_to_function _('cancel'), '', :class => 'toggle-edit' %>
+  <% end %>
+</div>

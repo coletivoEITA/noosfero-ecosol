@@ -1,0 +1,1 @@
+page.replace_html 'select-content', :partial => 'select_content'

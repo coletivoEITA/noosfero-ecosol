@@ -129,6 +129,12 @@ class Noosfero::Plugin
     nil
   end
 
+  # -> Adds new block types in profile
+  # returs = class implements Block
+  def profile_blocks(profile)
+    nil
+  end
+
   # -> Adds plugin-specific content types to CMS
   # returns  = [ContentClass1, ContentClass2, ...]
   def content_types
