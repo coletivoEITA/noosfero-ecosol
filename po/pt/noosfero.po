@@ -4519,7 +4519,7 @@ msgstr "Clique nesse ícone para ir para a página inicial de <b>%s</b>"
 #: app/helpers/application_helper.rb:637 app/helpers/application_helper.rb:648
 #: plugins/distribution/views/distribution_plugin_order/_status.rhtml:6
 msgid "open"
-msgstr "aberto"
+msgstr "abrir"
 
 #: app/helpers/application_helper.rb:672
 #: app/views/layouts/application-ng.rhtml:73
@@ -12306,7 +12306,7 @@ msgstr ""
 
 #: plugins/distribution/models/distribution_plugin_node.rb:-
 msgid "Start"
-msgstr "Começo"
+msgstr "Início"
 
 #: plugins/distribution/models/distribution_plugin_node.rb:-
 msgid "Finish"
