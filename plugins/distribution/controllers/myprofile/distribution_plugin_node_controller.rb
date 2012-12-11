@@ -29,22 +29,14 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
 
   def settings
     if params[:commit]
+      was_enabled = @node.enabled?
       @node.update_attributes! params[:node]
       session[:notice] = _('Distribution settings saved.')
 
-      unless @node.profile.blocks.collect{ |b| b.class.name }.include?("DistributionPlugin::OrderBlock")
-        boxes = @node.profile.boxes.select{ |box| !box.blocks.collect{ |b| b.class.name }.include?("MainBlock") }
-        box = boxes.count > 1 ? boxes.max{ |a,b| a.position <=> b.position } : Box.create(:owner => @node.profile, :position => 3)
-
-        block = DistributionPlugin::OrderBlock.create! :box => box
-        block.move_to_top
-      end
-
-      link = url_for :controller => :distribution_plugin_node, :action => :index, :profile => @node.profile.identifier, :only_path => true
-      link_list = @node.profile.blocks.select{ |b| b.class.name == 'LinkListBlock' }.first
-      if link_list and not link_list.links.map{ |l| l[:address] }.include?(link)
-        link_list.links = [{:name => _("Consumers' Collective"), :address => link, :icon => 'nil'}] + link_list.links
-        link_list.save!
+      if !was_enabled and @node.enabled?
+        @node.enable_collective_view
+      elsif was_enabled
+        @node.disable_collective_view
       end
     end
   end

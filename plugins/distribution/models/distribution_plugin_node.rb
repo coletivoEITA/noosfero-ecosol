@@ -38,6 +38,12 @@ class DistributionPluginNode < ActiveRecord::Base
   acts_as_having_image
   belongs_to :image, :class_name => 'DistributionPluginHeaderImage'
 
+  after_create :add_self_supplier
+  after_create :add_own_members
+  after_create :add_own_products
+  after_update :save_image
+  before_create :check_roles
+
   def self.find_or_create(profile)
     find_by_profile_id(profile.id) || create!(:profile => profile, :role => 'consumer')
   end
@@ -158,14 +164,29 @@ class DistributionPluginNode < ActiveRecord::Base
     destroy!
   end
 
+  def enable_collective_view
+    self.add_order_block
+    self.profile.update_attribute :theme, 'distribution'
+  end
+  def disable_collective_view
+    self.profile.update_attribute :theme, nil
+  end
+
+  def add_order_block
+    return if self.profile.blocks.collect{ |b| b.class.name }.include? "DistributionPlugin::OrderBlock"
+
+    boxes = self.profile.boxes.select{ |box| !box.blocks.collect{ |b| b.class.name }.include?("MainBlock") }
+    box = boxes.count > 1 ? boxes.max{ |a,b| a.position <=> b.position } : Box.create(:owner => self.profile, :position => 3)
+    block = DistributionPlugin::OrderBlock.create! :box => box, :display => 'except_home_page'
+    block.move_to_top
+  end
+
   protected
 
-  after_create :add_self_supplier
   def add_self_supplier
     self_supplier
   end
 
-  after_create :add_own_members
   def add_own_members
     profile.members.map do |member|
       consumer = DistributionPluginNode.find_or_create member
@@ -174,7 +195,6 @@ class DistributionPluginNode < ActiveRecord::Base
     end
   end
 
-  after_create :add_own_products
   def add_own_products
     return unless profile.respond_to? :products
 
@@ -185,7 +205,6 @@ class DistributionPluginNode < ActiveRecord::Base
     end
   end
 
-  after_update :save_image
   def save_image
     image.save if image
   end
@@ -204,7 +223,6 @@ class DistributionPluginNode < ActiveRecord::Base
   acts_as_accessor
   acts_as_accessible
 
-  before_create :check_roles
   def check_roles
     Role.create!(
       :key => 'distribution_node_consumer',
