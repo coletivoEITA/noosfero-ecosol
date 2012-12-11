@@ -31,7 +31,7 @@ class Task < ActiveRecord::Base
     end
   end
 
-  belongs_to :requestor, :class_name => 'Person', :foreign_key => :requestor_id
+  belongs_to :requestor, :class_name => 'Profile', :foreign_key => :requestor_id
   belongs_to :target, :foreign_key => :target_id, :polymorphic => true
 
   validates_uniqueness_of :code, :on => :create
@@ -267,7 +267,10 @@ class Task < ActiveRecord::Base
   end
 
   named_scope :pending, :conditions => { :status =>  Task::Status::ACTIVE }
-  named_scope :finished, :conditions => { :status =>  [Task::Status::CANCELLED, Task::Status::FINISHED] }
+  named_scope :hidden, :conditions => { :status =>  Task::Status::HIDDEN }
+  named_scope :finished, :conditions => { :status =>  Task::Status::FINISHED }
+  named_scope :canceled, :conditions => { :status =>  Task::Status::CANCELLED }
+  named_scope :closed, :conditions => { :status =>  [Task::Status::CANCELLED, Task::Status::FINISHED] }
   named_scope :opened, :conditions => { :status =>  [Task::Status::ACTIVE, Task::Status::HIDDEN] }
   named_scope :of, lambda { |type| conditions = type ? "type LIKE '#{type}'" : "1=1"; {:conditions =>  [conditions]} }
   named_scope :order_by, lambda { |attribute, ord| {:order => "#{attribute} #{ord}"} }

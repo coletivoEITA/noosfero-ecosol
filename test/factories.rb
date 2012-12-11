@@ -442,7 +442,7 @@ module Noosfero::Factory
 
   def defaults_for_forum(params = {})
     name = "forum_#{rand(1000)}"
-    { :profile_id => 1, :path => name, :name => name, :slug => name.to_slug }.merge(params)
+    { :profile_id => 1, :path => name.to_slug, :name => name, :slug => name.to_slug }.merge(params)
   end
 
   ###############################################
@@ -451,7 +451,7 @@ module Noosfero::Factory
 
   def defaults_for_gallery(params = {})
     name = "gallery_#{rand(1000)}"
-    { :profile_id => 1, :path => name, :name => name, :slug => name.to_slug }.merge(params)
+    { :profile_id => 1, :path => name.to_slug, :name => name, :slug => name.to_slug }.merge(params)
   end
 
   def defaults_for_suggest_article

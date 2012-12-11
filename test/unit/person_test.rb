@@ -441,6 +441,14 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal e.active_person_fields, person.active_fields
   end
 
+  should 'return email as active_person_fields' do
+    e = Environment.default
+    e.expects(:active_person_fields).returns(['nickname']).at_least_once
+    person = Person.new(:environment => e)
+
+    assert_equal ['nickname', 'email'], person.active_fields
+  end
+
   should 'return required_person_fields' do
     e = Environment.default
     e.expects(:required_person_fields).returns(['cell_phone', 'comercial_phone']).at_least_once
@@ -1262,4 +1270,65 @@ class PersonTest < ActiveSupport::TestCase
 
     assert person.has_permission?('bli', Profile.new)
   end
+
+  should 'active fields are public if fields privacy is nil' do
+    p = fast_create(Person)
+    p.expects(:fields_privacy).returns(nil)
+    f = %w(sex birth_date)
+    p.expects(:active_fields).returns(f)
+    assert_equal f, p.public_fields
+  end
+
+  should 'return public fields' do
+    p = fast_create(Person)
+    p.stubs(:fields_privacy).returns({ 'sex' => 'public', 'birth_date' => 'private' })
+    assert_equal ['sex'], p.public_fields
+  end
+
+  should 'define abuser?' do
+    abuser = create_user('abuser').person
+    AbuseComplaint.create!(:reported => abuser).finish
+    person = create_user('person').person
+
+    assert abuser.abuser?
+    assert !person.abuser?
+  end
+
+  should 'be able to retrieve abusers and non abusers' do
+    abuser1 = create_user('abuser1').person
+    AbuseComplaint.create!(:reported => abuser1).finish
+    abuser2 = create_user('abuser2').person
+    AbuseComplaint.create!(:reported => abuser2).finish
+    person = create_user('person').person
+
+    abusers = Person.abusers
+
+    assert_equal ActiveRecord::NamedScope::Scope, abusers.class
+    assert_includes abusers, abuser1
+    assert_includes abusers, abuser2
+    assert_not_includes abusers, person
+
+    non_abusers = Person.non_abusers
+
+    assert_equal ActiveRecord::NamedScope::Scope, non_abusers.class
+    assert_not_includes non_abusers, abuser1
+    assert_not_includes non_abusers, abuser2
+    assert_includes non_abusers, person
+  end
+
+  should 'not return canceled complaints as abusers' do
+    abuser = create_user('abuser1').person
+    AbuseComplaint.create!(:reported => abuser).finish
+    not_abuser = create_user('abuser2').person
+    AbuseComplaint.create!(:reported => not_abuser).cancel
+
+    abusers = Person.abusers
+    assert_includes abusers, abuser
+    assert_not_includes abusers, not_abuser
+
+    non_abusers = Person.non_abusers
+    assert_not_includes non_abusers, abuser
+    assert_includes non_abusers, not_abuser
+  end
+
 end

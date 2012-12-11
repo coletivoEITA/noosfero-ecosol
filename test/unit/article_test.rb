@@ -708,14 +708,6 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal a.url, a.view_url
   end
 
-  should 'know its author' do
-    assert_equal profile, Article.new(:last_changed_by => profile).author
-  end
-
-  should 'use owning profile as author when we dont know who did the last change' do
-    assert_equal profile, Article.new(:last_changed_by => nil, :profile => profile).author
-  end
-
   should 'have published_at' do
     assert_respond_to Article.new, :published_at
   end
@@ -791,15 +783,7 @@ class ArticleTest < ActiveSupport::TestCase
     assert_match(/-owner/, a.cache_key({}, c))
   end
 
-  should 'have a creator method' do
-    c = fast_create(Community)
-    a = c.articles.create!(:name => 'a test article', :last_changed_by => profile)
-    p = create_user('other_user').person
-    a.update_attributes(:body => 'some content', :last_changed_by => p); a.save!
-    assert_equal profile, a.creator
-  end
-
-  should 'allow creator to edit if is publisher' do
+  should 'allow author to edit if is publisher' do
     c = fast_create(Community)
     p = create_user_with_permission('test_user', 'publish_content', c)
     a = c.articles.create!(:name => 'a test article', :last_changed_by => p)
@@ -1210,8 +1194,8 @@ class ArticleTest < ActiveSupport::TestCase
     assert_nothing_raised { a.language = 'en' }
   end
 
-  should 'validade inclusion of language' do
-    a = build(Article)
+  should 'validate inclusion of language' do
+    a = build(Article, :profile_id => fast_create(Profile).id)
     a.language = '12'
     a.valid?
     assert a.errors.invalid?(:language)
@@ -1243,7 +1227,7 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   should 'list possible translations' do
-    native_article = fast_create(Article, :language => 'pt')
+    native_article = fast_create(Article, :language => 'pt', :profile_id => fast_create(Profile).id             )
     article_translation = fast_create(Article, :language => 'en', :translation_of_id => native_article.id)
     possible_translations = native_article.possible_translations
     assert !possible_translations.include?('en')
@@ -1253,7 +1237,7 @@ class ArticleTest < ActiveSupport::TestCase
   should 'verify if translation is already in use' do
     native_article = fast_create(Article, :language => 'pt')
     article_translation = fast_create(Article, :language => 'en', :translation_of_id => native_article.id)
-    a = build(Article)
+    a = build(Article, :profile => fast_create(Profile))
     a.language = 'en'
     a.translation_of = native_article
     a.valid?
@@ -1265,7 +1249,7 @@ class ArticleTest < ActiveSupport::TestCase
 
   should 'verify if native translation is already in use' do
     native_article = fast_create(Article, :language => 'pt')
-    a = build(Article)
+    a = build(Article, :profile => fast_create(Profile))
     a.language = 'pt'
     a.translation_of = native_article
     a.valid?
@@ -1277,7 +1261,7 @@ class ArticleTest < ActiveSupport::TestCase
 
   should 'translation have a language' do
     native_article = fast_create(Article, :language => 'pt')
-    a = build(Article)
+    a = build(Article, :profile_id => fast_create(Profile).id)
     a.translation_of = native_article
     a.valid?
     assert a.errors.invalid?(:language)
@@ -1287,8 +1271,8 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   should 'native translation have a language' do
-    native_article = fast_create(Article)
-    a = build(Article)
+    native_article = fast_create(Article, :profile_id => fast_create(Profile).id             )
+    a = build(Article, :profile_id => fast_create(Profile).id)
     a.language = 'en'
     a.translation_of = native_article
     a.valid?
@@ -1356,15 +1340,15 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   should 'not list own language as a possible translation if language has changed' do
-    a = build(Article, :language => 'pt')
+    a = build(Article, :language => 'pt', :profile_id => fast_create(Profile).id)
     assert !a.possible_translations.include?('pt')
-    a = fast_create(Article, :language => 'pt')
+    a = fast_create(Article, :language => 'pt', :profile_id => fast_create(Profile).id             )
     a.language = 'en'
     assert !a.possible_translations.include?('en')
   end
 
   should 'list own language as a possible translation if language has not changed' do
-    a = fast_create(Article, :language => 'pt')
+    a = fast_create(Article, :language => 'pt', :profile_id => fast_create(Profile).id)
     assert a.possible_translations.include?('pt')
   end
 
@@ -1372,19 +1356,18 @@ class ArticleTest < ActiveSupport::TestCase
     assert Article.method_defined?('author_name')
   end
 
-  should "the author_name returns the name od the article's author" do
-    author = mock()
-    author.expects(:name).returns('author name')
-    a = Article.new
-    a.expects(:author).returns(author)
-    assert_equal 'author name', a.author_name
+  should "the author_name returns the name of the article's author" do
+    author = fast_create(Person)
+    a = profile.articles.create!(:name => 'a test article', :last_changed_by => author)
+    assert_equal author.name, a.author_name
+    author.destroy
     a.author_name = 'some name'
     assert_equal 'some name', a.author_name
   end
 
   should 'retrieve latest info from topic when has no comments' do
     forum = fast_create(Forum, :name => 'Forum test', :profile_id => profile.id)
-    post = fast_create(TextileArticle, :name => 'First post', :profile_id => profile.id, :parent_id => forum.id, :updated_at => Time.now)
+    post = fast_create(TextileArticle, :name => 'First post', :profile_id => profile.id, :parent_id => forum.id, :updated_at => Time.now, :last_changed_by_id => profile.id)
     assert_equal post.updated_at, post.info_from_last_update[:date]
     assert_equal profile.name, post.info_from_last_update[:author_name]
     assert_equal profile.url, post.info_from_last_update[:author_url]
@@ -1780,6 +1763,53 @@ class ArticleTest < ActiveSupport::TestCase
     license = License.create!(:name => 'GPLv3', :environment => Environment.default)
     article = Article.new(:license_id => license.id)
     assert_equal license, article.license
+  end
+
+  should 'update path if parent is changed' do
+    f1 = Folder.create!(:name => 'Folder 1', :profile => profile)
+    f2 = Folder.create!(:name => 'Folder 2', :profile => profile)
+    article = TinyMceArticle.create!(:name => 'Sample Article', :parent_id => f1.id, :profile => profile)
+    assert_equal [f1.path,article.slug].join('/'), article.path
+
+    article.parent = f2
+    article.save!
+    assert_equal [f2.path,article.slug].join('/'), article.path
+
+    article.parent = nil
+    article.save!
+    assert_equal article.slug, article.path
+
+    article.update_attributes({:parent_id => f2.id})
+    assert_equal [f2.path,article.slug].join('/'), article.path
+  end
+
+  should 'not allow parent as itself' do
+    article = Article.create!(:name => 'Sample Article', :profile => profile)
+    article.parent = article
+    article.valid?
+
+    assert article.errors.invalid?(:parent_id)
+  end
+
+  should 'not allow cyclical paternity' do
+    a1 = Article.create!(:name => 'Sample Article 1', :profile => profile)
+    a2 = Article.create!(:name => 'Sample Article 2', :profile => profile, :parent => a1)
+    a3 = Article.create!(:name => 'Sample Article 3', :profile => profile, :parent => a2)
+    a1.parent = a3
+    a1.valid?
+
+    assert a1.errors.invalid?(:parent_id)
+  end
+
+  should 'set author_name before creating article if there is an author' do
+    author = fast_create(Person)
+    article = Article.create!(:name => 'Test', :profile => profile, :last_changed_by => author)
+    assert_equal author.name, article.author_name
+
+    author_name = author.name
+    author.destroy
+    article.reload
+    assert_equal author_name, article.author_name
   end
 
 end
