@@ -58,7 +58,7 @@ module Noosfero::Factory
   ###### old stuff to be rearranged
   def create_admin_user(env)
     admin_user = User.find_by_login('adminuser') || create_user('adminuser', :email => 'adminuser@noosfero.org', :password => 'adminuser', :password_confirmation => 'adminuser', :environment => env)
-    admin_role = Role.find_by_name('admin_role') || Role.create!(:name => 'admin_role', :permissions => ['view_environment_admin_panel','edit_environment_features', 'edit_environment_design', 'manage_environment_categories', 'manage_environment_roles', 'manage_environment_validators', 'manage_environment_users'])
+    admin_role = Role.find_by_name('admin_role') || Role.create!(:name => 'admin_role', :permissions => ['view_environment_admin_panel','edit_environment_features', 'edit_environment_design', 'manage_environment_categories', 'manage_environment_roles', 'manage_environment_validators', 'manage_environment_users', 'manage_environment_templates', 'manage_environment_licenses'])
     RoleAssignment.create!(:accessor => admin_user.person, :role => admin_role, :resource => env) unless admin_user.person.role_assignments.map{|ra|[ra.role, ra.accessor, ra.resource]}.include?([admin_role, admin_user, env])
     admin_user.login
   end
@@ -424,7 +424,7 @@ module Noosfero::Factory
 
   def defaults_for_forum(params = {})
     name = "forum_#{rand(1000)}"
-    { :profile_id => 1, :path => name, :name => name, :slug => name.to_slug }.merge(params)
+    { :profile_id => 1, :path => name.to_slug, :name => name, :slug => name.to_slug }.merge(params)
   end
 
   ###############################################
@@ -433,7 +433,7 @@ module Noosfero::Factory
 
   def defaults_for_gallery(params = {})
     name = "gallery_#{rand(1000)}"
-    { :profile_id => 1, :path => name, :name => name, :slug => name.to_slug }.merge(params)
+    { :profile_id => 1, :path => name.to_slug, :name => name, :slug => name.to_slug }.merge(params)
   end
 
   def defaults_for_suggest_article
@@ -442,7 +442,7 @@ module Noosfero::Factory
 
   def defaults_for_comment(params = {})
     name = "comment_#{rand(1000)}"
-    { :title => name, :body => "my own comment", :source_id => 1 }.merge(params)
+    { :title => name, :body => "my own comment", :source_id => 1, :source_type => 'Article' }.merge(params)
   end
 
   ###############################################

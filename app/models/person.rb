@@ -22,7 +22,20 @@ class Person < Profile
     super
   end
 
-  named_scope :members_of, lambda { |resource| { :select => 'DISTINCT profiles.*', :joins => :role_assignments, :conditions => ['role_assignments.resource_type = ? AND role_assignments.resource_id = ?', resource.class.base_class.name, resource.id ] } }
+  named_scope :members_of, lambda { |resources|
+    resources = [resources] if !resources.kind_of?(Array)
+    conditions = resources.map {|resource| "role_assignments.resource_type = '#{resource.class.base_class.name}' AND role_assignments.resource_id = #{resource.id || -1}"}.join(' OR ')
+    { :select => 'DISTINCT profiles.*', :joins => :role_assignments, :conditions => [conditions] }
+  }
+
+  def has_permission_with_plugins?(permission, profile)
+    permissions = [has_permission_without_plugins?(permission, profile)]
+    permissions += plugins.map do |plugin|
+      plugin.has_permission?(self, permission, profile)
+    end
+    permissions.include?(true)
+  end
+  alias_method_chain :has_permission?, :plugins
 
   def memberships
     Profile.memberships_of(self)
@@ -54,14 +67,14 @@ class Person < Profile
     :order => 'total DESC',
     :conditions => ['action_tracker.created_at >= ? OR action_tracker.id IS NULL', ActionTracker::Record::RECENT_DELAY.days.ago]
 
+  named_scope :abusers, :joins => :abuse_complaints, :conditions => ['tasks.status = 3'], :select => 'DISTINCT profiles.*'
+  named_scope :non_abusers, :joins => "LEFT JOIN tasks ON profiles.id = tasks.requestor_id AND tasks.type='AbuseComplaint'", :conditions => ["tasks.status != 3 OR tasks.id is NULL"], :select => "DISTINCT profiles.*"
+
   after_destroy do |person|
     Friendship.find(:all, :conditions => { :friend_id => person.id}).each { |friendship| friendship.destroy }
   end
 
-  after_destroy :destroy_user
-  def destroy_user
-    self.user.destroy if self.user
-  end
+  belongs_to :user, :dependent => :delete
 
   def can_control_scrap?(scrap)
     begin
@@ -134,7 +147,6 @@ class Person < Profile
   contact_phone
   contact_information
   description
-  image
   ]
 
   validates_multiparameter_assignments
@@ -168,7 +180,8 @@ class Person < Profile
   include MaybeAddHttp
 
   def active_fields
-    environment ? environment.active_person_fields : []
+    fields = environment ? environment.active_person_fields : []
+    fields << 'email'
   end
 
   def required_fields
@@ -238,7 +251,7 @@ class Person < Profile
 
   def is_admin?(environment = nil)
     environment ||= self.environment
-    role_assignments.select { |ra| ra.resource == environment }.map{|ra|ra.role.permissions}.any? do |ps|
+    role_assignments.includes([:role, :resource]).select { |ra| ra.resource == environment }.map{|ra|ra.role.permissions}.any? do |ps|
       ps.any? do |p|
         ActiveRecord::Base::PERMISSIONS['Environment'].keys.include?(p)
       end
@@ -285,7 +298,7 @@ class Person < Profile
     end
   end
 
-  def template
+  def default_template
     environment.person_template
   end
 
@@ -430,6 +443,10 @@ class Person < Profile
     abuse_report.save!
   end
 
+  def abuser?
+    AbuseComplaint.finished.where(:requestor_id => self).count > 0
+  end
+
   def control_panel_settings_button
     {:title => _('Edit Profile'), :icon => 'edit-profile'}
   end
@@ -444,6 +461,10 @@ class Person < Profile
 
   def activities
     Scrap.find_by_sql("SELECT id, updated_at, '#{Scrap.to_s}' AS klass FROM #{Scrap.table_name} WHERE scraps.receiver_id = #{self.id} AND scraps.scrap_id IS NULL UNION SELECT id, updated_at, '#{ActionTracker::Record.to_s}' AS klass FROM #{ActionTracker::Record.table_name} WHERE action_tracker.user_id = #{self.id} and action_tracker.verb != 'leave_scrap_to_self' and action_tracker.verb != 'add_member_in_community' ORDER BY updated_at DESC")
+  end
+
+  def public_fields
+    self.fields_privacy.nil? ? self.active_fields : self.fields_privacy.reject{ |k, v| v != 'public' }.keys.map(&:to_s)
   end
 
   protected

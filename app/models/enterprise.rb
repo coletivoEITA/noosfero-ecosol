@@ -17,7 +17,7 @@ class Enterprise < Organization
   after_save_reindex [:products], :with => :delayed_job
   extra_data_for_index :product_categories
   def product_categories
-    products.map{|p| p.category_full_name}.compact
+    products.includes(:product_category).map{|p| p.category_full_name}.compact
   end
 
   N_('Organization website'); N_('Historic and current context'); N_('Activities short description'); N_('City'); N_('State'); N_('Country'); N_('ZIP code')
@@ -154,13 +154,14 @@ class Enterprise < Organization
     true
   end
 
-  def template
-    if enabled?
-      environment.enterprise_template
-    else
-      environment.inactive_enterprise_template
-    end
+  def default_template
+    environment.enterprise_template
   end
+
+  def template_with_inactive_enterprise
+    !enabled? ? environment.inactive_enterprise_template : template_without_inactive_enterprise
+  end
+  alias_method_chain :template, :inactive_enterprise
 
   def control_panel_settings_button
     {:title => __('Enterprise Info and settings'), :icon => 'edit-profile-enterprise'}

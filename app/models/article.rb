@@ -13,6 +13,12 @@ class Article < ActiveRecord::Base
   # xss_terminate plugin can't sanitize array fields
   before_save :sanitize_tag_list
 
+  before_create do |article|
+    if article.last_changed_by_id
+      article.author_name = Person.find(article.last_changed_by_id).name
+    end
+  end
+
   belongs_to :profile
   validates_presence_of :profile_id, :name
   validates_presence_of :slug, :path, :if => lambda { |article| !article.name.blank? }
@@ -34,8 +40,11 @@ class Article < ActiveRecord::Base
   settings_items :display_hits, :type => :boolean, :default => true
   settings_items :author_name, :type => :string, :default => ""
   settings_items :allow_members_to_edit, :type => :boolean, :default => false
+  settings_items :followers, :type => Array, :default => []
 
   belongs_to :reference_article, :class_name => "Article", :foreign_key => 'reference_article_id'
+
+  belongs_to :license
 
   has_many :translations, :class_name => 'Article', :foreign_key => :translation_of_id
   belongs_to :translation_of, :class_name => 'Article', :foreign_key => :translation_of_id
@@ -75,6 +84,25 @@ class Article < ActiveRecord::Base
   validate :used_translation
   validate :native_translation_must_have_language
   validate :translation_must_have_language
+
+  validate :no_self_reference
+  validate :no_cyclical_reference, :if => 'parent_id.present?'
+
+  def no_self_reference
+    errors.add(:parent_id, _('self-reference is not allowed.')) if id && parent_id == id
+  end
+
+  def no_cyclical_reference
+    current_parent = Article.find(parent_id)
+    while current_parent
+      if current_parent == self
+        errors.add(:parent_id, _('cyclical reference is not allowed.'))
+        break
+      end
+      current_parent = current_parent.parent
+    end
+  end
+
 
   def is_trackable?
     self.published? && self.notifiable? && self.advertise? && self.profile.public_profile
@@ -151,6 +179,12 @@ class Article < ActiveRecord::Base
     article.advertise = true
   end
 
+  before_save do |article|
+    article.parent = article.parent_id ? Article.find(article.parent_id) : nil
+    parent_path = article.parent ? article.parent.path : nil
+    article.path = [parent_path, article.slug].compact.join('/')
+  end
+
   # retrieves all articles belonging to the given +profile+ that are not
   # sub-articles of any other article.
   named_scope :top_level_for, lambda { |profile|
@@ -176,37 +210,23 @@ class Article < ActiveRecord::Base
   end
 
   named_scope :more_popular, :order => 'hits DESC'
+  named_scope :relevant_as_recent, :conditions => ["(articles.type != 'UploadedFile' and articles.type != 'RssFeed' and articles.type != 'Blog') OR articles.type is NULL"]
 
-  # retrieves the latest +limit+ articles, sorted from the most recent to the
-  # oldest.
-  #
-  # Only includes articles where advertise == true
-  def self.recent(limit = nil, extra_conditions = {})
-    # FIXME this method is a horrible hack
-    options = { :page => 1, :per_page => limit,
-                :conditions => [
-                  "advertise = ? AND
-                  published = ? AND
-                  profiles.visible = ? AND
-                  profiles.public_profile = ? AND
-                  ((articles.type != ? and articles.type != ? and articles.type != ?) OR articles.type is NULL)", true, true, true, true, 'UploadedFile', 'RssFeed', 'Blog'
-                ],
-                :include => 'profile',
-                :order => 'articles.published_at desc, articles.id desc'
-              }
-    if ( scoped_methods && scoped_methods.last &&
-         scoped_methods.last[:find] &&
-         scoped_methods.last[:find][:joins] &&
-         scoped_methods.last[:find][:joins].index('profiles') )
-      options.delete(:include)
+  def self.recent(limit = nil, extra_conditions = {}, pagination = true)
+    result = scoped({:conditions => extra_conditions}).
+      public.
+      relevant_as_recent.
+      limit(limit).
+      order(['articles.published_at desc', 'articles.id desc'])
+
+    if !( scoped_methods && scoped_methods.last &&
+        scoped_methods.last[:find] &&
+        scoped_methods.last[:find][:joins] &&
+        scoped_methods.last[:find][:joins].index('profiles') )
+      result = result.includes(:profile)
     end
-    if extra_conditions == {}
-      self.paginate(options)
-    else
-      with_scope :find => {:conditions => extra_conditions} do
-        self.paginate(options)
-      end
-    end
+
+    pagination ? result.paginate({:page => 1, :per_page => limit}) : result
   end
 
   # produces the HTML code that is to be displayed as this article's contents.
@@ -275,7 +295,7 @@ class Article < ActiveRecord::Base
     if last_comment
       {:date => last_comment.created_at, :author_name => last_comment.author_name, :author_url => last_comment.author_url}
     else
-      {:date => updated_at, :author_name => author.name, :author_url => author.url}
+      {:date => updated_at, :author_name => author_name, :author_url => author_url}
     end
   end
 
@@ -322,14 +342,14 @@ class Article < ActiveRecord::Base
   end
 
   def possible_translations
-    possibilities = Noosfero.locales.keys - self.native_translation.translations(:select => :language).map(&:language) - [self.native_translation.language]
+    possibilities = environment.locales.keys - self.native_translation.translations(:select => :language).map(&:language) - [self.native_translation.language]
     possibilities << self.language unless self.language_changed?
     possibilities
   end
 
   def known_language
     unless self.language.blank?
-      errors.add(:language, N_('Language not supported by Noosfero')) unless Noosfero.locales.key?(self.language)
+      errors.add(:language, N_('Language not supported by the environment.')) unless environment.locales.key?(self.language)
     end
   end
 
@@ -427,7 +447,7 @@ class Article < ActiveRecord::Base
   end
 
   def allow_post_content?(user = nil)
-    user && (user.has_permission?('post_content', profile) || allow_publish_content?(user) && (user == self.creator))
+    user && (user.has_permission?('post_content', profile) || allow_publish_content?(user) && (user == author))
   end
 
   def allow_publish_content?(user = nil)
@@ -482,7 +502,6 @@ class Article < ActiveRecord::Base
     :slug,
     :updated_at,
     :created_at,
-    :last_changed_by_id,
     :version,
     :lock_version,
     :type,
@@ -525,15 +544,20 @@ class Article < ActiveRecord::Base
   end
 
   def author
-    if reference_article
-      reference_article.author
+    if versions.empty?
+      last_changed_by
     else
-      last_changed_by || profile
+      author_id = versions.first.last_changed_by_id
+      Person.exists?(author_id) ? Person.find(author_id) : nil
     end
   end
 
   def author_name
-    setting[:author_name].blank? ? author.name : setting[:author_name]
+    author ? author.name : (setting[:author_name] || _('Unknown'))
+  end
+
+  def author_url
+    author ? author.url : nil
   end
 
   alias :active_record_cache_key :cache_key
@@ -556,11 +580,6 @@ class Article < ActiveRecord::Base
 
   def short_lead
     truncate sanitize_html(self.lead), :length => 170, :omission => '...'
-  end
-
-  def creator
-    creator_id = versions[0][:last_changed_by_id]
-    creator_id && Profile.find(creator_id)
   end
 
   def notifiable?
@@ -662,7 +681,7 @@ class Article < ActiveRecord::Base
     self.categories.collect(&:name)
   end
 
-  delegate :region, :region_id, :environment, :environment_id, :to => :profile
+  delegate :region, :region_id, :environment, :environment_id, :to => :profile, :allow_nil => true
   def name_sortable # give a different name for solr
     name
   end

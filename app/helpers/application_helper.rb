@@ -265,9 +265,9 @@ module ApplicationHelper
 
   VIEW_EXTENSIONS = %w[.rhtml .html.erb]
 
-  def partial_for_class_in_view_path(klass, view_path)
+  def partial_for_class_in_view_path(klass, view_path, suffix = nil)
     return nil if klass.nil?
-    name = klass.name.underscore
+    name = [klass.name.underscore, suffix].compact.map(&:to_s).join('_')
 
     search_name = String.new(name)
     if search_name.include?("/")
@@ -282,29 +282,18 @@ module ApplicationHelper
       return name if File.exists?(File.join(path))
     end
 
-    partial_for_class_in_view_path(klass.superclass, view_path)
+    partial_for_class_in_view_path(klass.superclass, view_path, suffix)
   end
 
-  def partial_for_class(klass)
+  def partial_for_class(klass, suffix=nil)
     raise ArgumentError, 'No partial for object. Is there a partial for any class in the inheritance hierarchy?' if klass.nil?
     name = klass.name.underscore
     @controller.view_paths.each do |view_path|
-      partial = partial_for_class_in_view_path(klass, view_path)
+      partial = partial_for_class_in_view_path(klass, view_path, suffix)
       return partial if partial
     end
 
     raise ArgumentError, 'No partial for object. Is there a partial for any class in the inheritance hierarchy?'
-  end
-
-  def partial_for_task_class(klass, action)
-    raise ArgumentError, 'No partial for object. Is there a partial for any class in the inheritance hierarchy?' if klass.nil?
-
-    name = "#{klass.name.underscore}_#{action.to_s}"
-    VIEW_EXTENSIONS.each do |ext|
-      return name if File.exists?(File.join(RAILS_ROOT, 'app', 'views', params[:controller], '_'+name+ext))
-    end
-
-    partial_for_task_class(klass.superclass, action)
   end
 
   def view_for_profile_actions(klass)
@@ -664,19 +653,6 @@ module ApplicationHelper
     content_tag('div', result)
   end
 
-  def select_folder(label, object, method, collection, html_options = {}, js_options = {})
-    root = profile ? profile.identifier : _("root")
-    labelled_form_field(label, select(object, method,
-                                      collection.map {|f| [ root + '/' + f.full_name, f.id ]},
-                                      {:include_blank => root}, html_options.merge(js_options)))
-  end
-
-  def select_profile_folder(label, object, method, profile, html_options = {}, js_options = {})
-    labelled_form_field(label, select(object, method,
-                                      profile.folders.map {|f| [ profile.identifier + '/' + f.full_name, f.id ]},
-                                      {:include_blank => profile.identifier}, html_options.merge(js_options)))
-  end
-
   def theme_option(opt = nil)
     conf = RAILS_ROOT.to_s() +
            '/public' + theme_path +
@@ -877,7 +853,7 @@ module ApplicationHelper
       end
     else
       if profile.active_fields.include?(name)
-        result = field_html
+        result = content_tag('div', field_html + profile_field_privacy_selector(profile, name), :class => 'field-with-privacy-selector')
       end
     end
 
@@ -890,6 +866,11 @@ module ApplicationHelper
     end
 
     result
+  end
+
+  def profile_field_privacy_selector(profile, name)
+    return '' unless profile.public?
+    content_tag('div', labelled_check_box(_('Public'), 'profile_data[fields_privacy]['+name+']', 'public', profile.public_fields.include?(name)), :class => 'field-privacy-selector')
   end
 
   def template_stylesheet_path
@@ -1334,5 +1315,100 @@ module ApplicationHelper
     else
       _("Are you sure that you want to remove the item \"#{article.name}\"?")
     end
+  end
+
+  def expirable_link_to(expired, content, url, options = {})
+    if expired
+      options[:class] = (options[:class] || '') + ' disabled'
+      content_tag('a', '&nbsp;'+content_tag('span', content), options)
+    else
+      link_to content, url, options
+    end
+  end
+
+  def remove_content_button(action)
+    @plugins.dispatch("content_remove_#{action.to_s}", @page).include?(true)
+  end
+
+  def template_options(klass, field_name)
+    return '' if klass.templates.count == 0
+    return hidden_field_tag("#{field_name}[template_id]", klass.templates.first.id) if klass.templates.count == 1
+
+    counter = 0
+    radios = klass.templates.map do |template|
+      counter += 1
+      content_tag('li', labelled_radio_button(link_to(template.name, template.url, :target => '_blank'), "#{field_name}[template_id]", template.id, counter==1))
+    end.join("\n")
+
+    content_tag('div', content_tag('label', _('Profile organization'), :for => 'template-options', :class => 'formlabel') +
+      content_tag('p', _('Your profile will be created according to the selected template. Click on the options to view them.'), :style => 'margin: 5px 15px;padding: 0px 10px;') +
+      content_tag('ul', radios, :style => 'list-style: none; padding-left: 20px; margin-top: 0.5em;'),
+      :id => 'template-options',
+      :style => 'margin-top: 1em'
+    )
+  end
+
+  def token_input_field_tag(name, element_id, search_action, options = {}, text_field_options = {}, html_options = {})
+    options[:min_chars] ||= 3
+    options[:hint_text] ||= _("Type in a search term")
+    options[:no_results_text] ||= _("No results")
+    options[:searching_text] ||= _("Searching...")
+    options[:search_delay] ||= 1000
+    options[:prevent_duplicates] ||=  true
+    options[:backspace_delete_item] ||= false
+    options[:focus] ||= false
+    options[:avoid_enter] ||= true
+    options[:on_result] ||= 'null'
+    options[:on_add] ||= 'null'
+    options[:on_delete] ||= 'null'
+    options[:on_ready] ||= 'null'
+
+    result = text_field_tag(name, nil, text_field_options.merge(html_options.merge({:id => element_id})))
+    result +=
+    "
+    <script type='text/javascript'>
+      jQuery('##{element_id}')
+      .tokenInput('#{url_for(search_action)}', {
+        minChars: #{options[:min_chars].to_json},
+        prePopulate: #{options[:pre_populate].to_json},
+        hintText: #{options[:hint_text].to_json},
+        noResultsText: #{options[:no_results_text].to_json},
+        searchingText: #{options[:searching_text].to_json},
+        searchDelay: #{options[:serach_delay].to_json},
+        preventDuplicates: #{options[:prevent_duplicates].to_json},
+        backspaceDeleteItem: #{options[:backspace_delete_item].to_json},
+        queryParam: #{name.to_json},
+        tokenLimit: #{options[:token_limit].to_json},
+        onResult: #{options[:on_result]},
+        onAdd: #{options[:on_add]},
+        onDelete: #{options[:on_delete]},
+        onReady: #{options[:on_ready]},
+      })
+    "
+    result += options[:focus] ? ".focus();" : ";"
+    if options[:avoid_enter]
+      result += "jQuery('#token-input-#{element_id}')
+                    .live('keydown', function(event){
+                    if(event.keyCode == '13') return false;
+                  });"
+    end
+    result += "</script>"
+    result
+  end
+
+  def expirable_content_reference(content, action, text, url, options = {})
+    reason = @plugins.dispatch("content_expire_#{action.to_s}", content).first
+    options[:title] = reason
+    expirable_link_to reason.present?, text, url, options
+  end
+
+  def expirable_button(content, action, text, url, options = {})
+    options[:class] = "button with-text icon-#{action.to_s}"
+    expirable_content_reference content, action, text, url, options
+  end
+
+  def expirable_comment_link(content, action, text, url, options = {})
+    options[:class] = "comment-footer comment-footer-link comment-footer-hide"
+    expirable_content_reference content, action, text, url, options
   end
 end

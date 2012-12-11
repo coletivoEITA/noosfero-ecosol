@@ -570,15 +570,16 @@ class CmsControllerTest < ActionController::TestCase
 
   should 'display published option' do
     get :edit, :profile => profile.identifier, :id => profile.home_page.id
-    assert_tag :tag => 'input', :attributes => { :type => 'checkbox', :name => 'article[published]', :checked => 'checked' }
+    assert_tag :tag => 'input', :attributes => { :type => 'radio', :name => 'article[published]', :id => 'article_published_true', :checked => 'checked' }
+    assert_tag :tag => 'input', :attributes => { :type => 'radio', :name => 'article[published]', :id => 'article_published_false' }
   end
 
   should "display properly a non-published articles' status" do
     article = profile.articles.create!(:name => 'test', :published => false)
 
     get :edit, :profile => profile.identifier, :id => article.id
-    assert_tag :tag => 'input', :attributes => { :type => 'checkbox', :name => 'article[published]' }
-    assert_no_tag :tag => 'input', :attributes => { :type => 'checkbox', :name => 'article[published]', :checked => 'checked' }
+    assert_tag :tag => 'input', :attributes => { :type => 'radio', :name => 'article[published]', :id => 'article_published_true' }
+    assert_tag :tag => 'input', :attributes => { :type => 'radio', :name => 'article[published]', :id => 'article_published_false', :checked => 'checked' }
   end
 
   should 'be able to add image with alignment' do
@@ -964,7 +965,7 @@ class CmsControllerTest < ActionController::TestCase
 
     post :upload_files, :profile => profile.identifier, :parent_id => folder.id, :back_to => @request.referer, :uploaded_files => [fixture_file_upload('files/rails.png', 'image/png')]
     assert_template nil
-    assert_redirected_to 'http://colivre.net/testinguser/test-folder'
+    assert_redirected_to "#{profile.environment.top_url}/testinguser/test-folder"
   end
 
   should 'record when coming from public view on edit files with view true' do
@@ -1543,6 +1544,65 @@ class CmsControllerTest < ActionController::TestCase
 
     assert_includes special_article_types, Integer
     assert_includes special_article_types, Float
+  end
+
+  should 'be able to define license when updating article' do
+    article = fast_create(Article, :profile_id => profile.id)
+    license = License.create!(:name => 'GPLv3', :environment => profile.environment)
+    login_as(profile.identifier)
+
+    post :edit, :profile => profile.identifier, :id => article.id, :article => { :license_id => license.id }
+
+    article.reload
+    assert_equal license, article.license
+  end
+
+  should 'list folders options to move content' do
+    article = fast_create(Article, :profile_id => profile.id)
+    f1 = fast_create(Folder, :profile_id => profile.id)
+    f2 = fast_create(Folder, :profile_id => profile.id)
+    f3 = fast_create(Folder, :profile_id => profile, :parent_id => f2.id)
+    login_as(profile.identifier)
+
+    get :edit, :profile => profile.identifier, :id => article.id
+
+    assert_tag :tag => 'option', :attributes => {:value => f1.id}, :content => "#{profile.identifier}/#{f1.name}"
+    assert_tag :tag => 'option', :attributes => {:value => f2.id}, :content => "#{profile.identifier}/#{f2.name}"
+    assert_tag :tag => 'option', :attributes => {:value => f3.id}, :content => "#{profile.identifier}/#{f2.name}/#{f3.name}"
+  end
+
+  should 'be able to move content' do
+    f1 = fast_create(Folder, :profile_id => profile.id)
+    f2 = fast_create(Folder, :profile_id => profile.id)
+    article = fast_create(Article, :profile_id => profile.id, :parent_id => f1)
+    login_as(profile.identifier)
+
+    post :edit, :profile => profile.identifier, :id => article.id, :article => {:parent_id => f2.id}
+    article.reload
+
+    assert_equal f2, article.parent
+  end
+
+  should 'set author when creating article' do
+    login_as(profile.identifier)
+
+    post :new, :type => 'TinyMceArticle', :profile => profile.identifier, :article => { :name => 'Sample Article', :body => 'content ...' }
+
+    a = profile.articles.find_by_path('sample-article')
+    assert_not_nil a
+    assert_equal profile, a.author
+  end
+
+  should 'not allow user upload files if he can not create on the parent folder' do
+    c = Community.create!(:name => 'test_comm', :identifier => 'test_comm')
+    u = create_user('test_user')
+    a = c.articles.create!(:name => 'test_article')
+    a.stubs(:allow_create?).with(u).returns(true)
+    login_as :test_user
+
+    get :upload_files, :profile => c.identifier, :parent_id => a.id
+    assert_response :forbidden
+    assert_template 'access_denied.rhtml'
   end
 
   protected

@@ -57,22 +57,37 @@ class Profile < ActiveRecord::Base
     'view_private_content' => N_('View private content'),
     'publish_content'      => N_('Publish content'),
     'invite_members'       => N_('Invite members'),
+    'send_mail_to_members' => N_('Send e-Mail to members'),
   }
 
   acts_as_accessible
+
+  include Noosfero::Plugin::HotSpot
 
   named_scope :memberships_of, lambda { |person| { :select => 'DISTINCT profiles.*', :joins => :role_assignments, :conditions => ['role_assignments.accessor_type = ? AND role_assignments.accessor_id = ?', person.class.base_class.name, person.id ] } }
   #FIXME: these will work only if the subclass is already loaded
   named_scope :enterprises, lambda { {:conditions => (Enterprise.send(:subclasses).map(&:name) << 'Enterprise').map { |klass| "profiles.type = '#{klass}'"}.join(" OR ")} }
   named_scope :communities, lambda { {:conditions => (Community.send(:subclasses).map(&:name) << 'Community').map { |klass| "profiles.type = '#{klass}'"}.join(" OR ")} }
+  named_scope :templates, :conditions => {:is_template => true}
 
   def members
-    Person.members_of(self)
+    scopes = plugins.dispatch_scopes(:organization_members, self)
+    scopes << Person.members_of(self)
+    scopes.size == 1 ? scopes.first : Person.or_scope(scopes)
   end
 
   def members_count
-    members.count('DISTINCT(profiles.id)')
+    members.count
   end
+
+  class << self
+    def count_with_distinct(*args)
+      options = args.last || {}
+      count_without_distinct(:id, {:distinct => true}.merge(options))
+    end
+    alias_method_chain :count, :distinct
+  end
+
 
   def members_by_role(role)
     Person.members_of(self).all(:conditions => ['role_assignments.role_id = ?', role.id])
@@ -98,6 +113,9 @@ class Profile < ActiveRecord::Base
   has_many :action_tracker_notifications, :foreign_key => 'profile_id'
   has_many :tracked_notifications, :through => :action_tracker_notifications, :source => :action_tracker, :order => 'updated_at DESC'
   has_many :scraps_received, :class_name => 'Scrap', :foreign_key => :receiver_id, :order => "updated_at DESC", :dependent => :destroy
+  belongs_to :template, :class_name => 'Profile', :foreign_key => 'template_id'
+
+  has_many :comments_received, :class_name => 'Comment', :through => :articles, :source => :comments
 
   # FIXME ugly workaround
   def self.human_attribute_name(attrib)
@@ -126,6 +144,7 @@ class Profile < ActiveRecord::Base
   settings_items :redirect_l10n, :type => :boolean, :default => false
   settings_items :public_content, :type => :boolean, :default => true
   settings_items :description
+  settings_items :fields_privacy, :type => :hash, :default => {}
 
   validates_length_of :description, :maximum => 550, :allow_nil => true
 
@@ -241,7 +260,7 @@ class Profile < ActiveRecord::Base
       self.categories(true)
       self.solr_save
     end
-	 self.categories(reload)
+    self.categories(reload)
   end
 
   def category_ids=(ids)
@@ -274,8 +293,14 @@ class Profile < ActiveRecord::Base
   validates_format_of :identifier, :with => IDENTIFIER_FORMAT, :if => lambda { |profile| !profile.identifier.blank? }
   validates_exclusion_of :identifier, :in => RESERVED_IDENTIFIERS
   validates_uniqueness_of :identifier, :scope => :environment_id
-
   validates_length_of :nickname, :maximum => 16, :allow_nil => true
+  validate :valid_template
+
+  def valid_template
+    if template_id.present? and !template.is_template
+      errors.add(:template, _('is not a template.'))
+    end
+  end
 
   before_create :set_default_environment
   def set_default_environment
@@ -322,9 +347,14 @@ class Profile < ActiveRecord::Base
   end
 
   # this method should be overwritten to provide the correct template
-  def template
+  def default_template
     nil
   end
+
+  def template_with_default
+    template_without_default || default_template
+  end
+  alias_method_chain :template, :default
 
   def apply_template(template, options = {:copy_articles => true})
     copy_blocks_from(template)
@@ -370,8 +400,8 @@ class Profile < ActiveRecord::Base
   #
   # +limit+ is the maximum number of documents to be returned. It defaults to
   # 10.
-  def recent_documents(limit = 10, options = {})
-    self.articles.recent(limit, options)
+  def recent_documents(limit = 10, options = {}, pagination = true)
+    self.articles.recent(limit, options, pagination)
   end
 
   def last_articles(limit = 10, options = {})
@@ -847,6 +877,15 @@ private :generate_url, :url_options
     []
   end
 
+  # field => privacy (e.g.: "address" => "public")
+  def fields_privacy
+    self.data[:fields_privacy]
+  end
+
+  def public_fields
+    self.active_fields
+  end
+
   private
   def self.f_categories_label_proc(environment)
     ids = environment.top_level_category_as_facet_ids
@@ -943,4 +982,8 @@ private :generate_url, :url_options
     end
   end
 
+  validates_inclusion_of :redirection_after_login, :in => Environment.login_redirection_options.keys, :allow_nil => true
+  def preferred_login_redirection
+    redirection_after_login.blank? ? environment.redirection_after_login : redirection_after_login
+  end
 end

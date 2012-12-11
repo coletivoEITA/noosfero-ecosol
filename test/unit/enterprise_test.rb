@@ -278,9 +278,28 @@ class EnterpriseTest < ActiveSupport::TestCase
   end
 
   should 'have a enterprise template' do
+    template = fast_create(Enterprise, :is_template => true)
+    p = fast_create(Enterprise, :name => 'test_com', :identifier => 'test_com', :template_id => template.id)
+    assert_equal template, p.template
+  end
+
+  should 'have a default enterprise template' do
     env = Environment.create!(:name => 'test env')
     p = fast_create(Enterprise, :name => 'test_com', :identifier => 'test_com', :environment_id => env.id)
     assert_kind_of Enterprise, p.template
+  end
+
+  should 'have inactive_template even when there is a template set' do
+    another_template = fast_create(Enterprise, :is_template => true)
+    inactive_template = fast_create(Enterprise, :name => 'inactive enteprise template', :identifier => 'inactive_enterprise_template', :is_template => true)
+
+    e = Environment.default
+    e.enable('enterprises_are_disabled_when_created')
+    e.inactive_enterprise_template = inactive_template
+    e.save!
+
+    ent = Enterprise.create!(:name => 'test enteprise', :identifier => 'test_ent', :template => another_template, :environment => e)
+    assert_equal inactive_template, ent.template
   end
 
   should 'contact us enabled by default' do
@@ -463,9 +482,11 @@ class EnterpriseTest < ActiveSupport::TestCase
 
   should 'reindex products with full category name after save' do
     product = mock
+    products = mock
     product.expects(:category_full_name)
-    Enterprise.any_instance.stubs(:products).returns([product])
-    Enterprise.expects(:solr_batch_add).with(includes(product))
+    products.stubs(:includes).returns([product])
+    Enterprise.any_instance.stubs(:products).returns(products)
+    Enterprise.expects(:solr_batch_add).with([products])
     ent = fast_create(Enterprise)
     ent.save!
   end

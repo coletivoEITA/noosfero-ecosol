@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120818030329) do
+ActiveRecord::Schema.define(:version => 20121008185303) do
 
   create_table "abuse_reports", :force => true do |t|
     t.integer  "reporter_id"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(:version => 20120818030329) do
     t.integer  "translation_of_id"
     t.string   "language"
     t.string   "source_name"
+    t.integer  "license_id"
   end
 
   create_table "articles", :force => true do |t|
@@ -125,6 +126,7 @@ ActiveRecord::Schema.define(:version => 20120818030329) do
     t.integer  "translation_of_id"
     t.string   "language"
     t.string   "source_name"
+    t.integer  "license_id"
   end
 
   add_index "articles", ["translation_of_id"], :name => "index_articles_on_translation_of_id"
@@ -211,6 +213,8 @@ ActiveRecord::Schema.define(:version => 20120818030329) do
     t.string   "ip_address"
     t.boolean  "spam"
     t.string   "source_type"
+    t.string   "user_agent"
+    t.string   "referrer"
   end
 
   create_table "contact_lists", :force => true do |t|
@@ -257,6 +261,10 @@ ActiveRecord::Schema.define(:version => 20120818030329) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "reports_lower_bound",          :default => 0,         :null => false
+    t.string   "redirection_after_login",      :default => "keep_on_same_page"
+    t.text     "signup_welcome_text"
+    t.string   "languages"
+    t.string   "default_language"
   end
 
   create_table "external_feeds", :force => true do |t|
@@ -313,6 +321,13 @@ ActiveRecord::Schema.define(:version => 20120818030329) do
 
   add_index "inputs", ["product_category_id"], :name => "index_inputs_on_product_category_id"
   add_index "inputs", ["product_id"], :name => "index_inputs_on_product_id"
+
+  create_table "licenses", :force => true do |t|
+    t.string  "name",           :null => false
+    t.string  "slug",           :null => false
+    t.string  "url"
+    t.integer "environment_id", :null => false
+  end
 
   create_table "mailing_sents", :force => true do |t|
     t.integer  "mailing_id"
@@ -425,6 +440,9 @@ ActiveRecord::Schema.define(:version => 20120818030329) do
     t.boolean  "validated",                          :default => true
     t.string   "cnpj"
     t.string   "national_region_code"
+    t.boolean  "is_template",                        :default => false
+    t.integer  "template_id"
+    t.string   "redirection_after_login"
   end
 
   add_index "profiles", ["environment_id"], :name => "index_profiles_on_environment_id"

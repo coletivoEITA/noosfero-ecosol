@@ -888,15 +888,6 @@ class ProfileEditorControllerTest < ActionController::TestCase
     assert_tag :tag => 'input', :attributes => {:id => 'field_added_by_plugin', :value => 'value_of_field_added_by_plugin'}
   end
 
-  should 'show image upload field from environment person fields' do
-    env = Environment.default
-    env.custom_person_fields = { 'image' => {'active' => 'true', 'required' => 'true'} }
-    env.save!
-    get :edit, :profile => profile.identifier
-    assert_tag :tag => 'input', :attributes => { :name => 'profile_data[image_builder][uploaded_data]' }
-    assert_no_tag :tag => 'div', :attributes => { :id => 'profile_change_picture' }
-  end
-
   should 'show image upload field from profile editor' do
     env = Environment.default
     env.custom_person_fields = { }
@@ -947,6 +938,44 @@ class ProfileEditorControllerTest < ActionController::TestCase
 
     assert_tag :tag => 'strong', :content => 'Plugin1 text'
     assert_tag :tag => 'strong', :content => 'Plugin2 text'
+  end
+
+  should 'see is_template check_box' do
+    give_permission(profile, 'manage_environment_templates', profile.environment)
+    get :edit, :profile =>  profile.identifier
+    assert_tag :tag => 'input', :attributes => {:name => 'profile_data[is_template]'}
+  end
+
+  should 'not see is_template check_box' do
+    another_user = create_user('another_user').person
+    login_as('another_user')
+    get :edit, :profile => profile.identifier
+    assert_no_tag :tag => 'input', :attributes => {:name => 'profile_data[is_template]'}
+  end
+
+  should 'display select to change redirection after login if enabled' do
+    e = Environment.default
+    e.enable('allow_change_of_redirection_after_login')
+    e.save
+
+    get :edit, :profile => profile.identifier
+    assert_tag :tag => 'select', :attributes => {:id => 'profile_data_redirection_after_login'}
+  end
+
+  should 'not display select to change redirection after login if not enabled' do
+    e = Environment.default
+    e.disable('allow_change_of_redirection_after_login')
+    e.save
+
+    get :edit, :profile => profile.identifier
+    assert_no_tag :tag => 'select', :attributes => {:id => 'profile_data_redirection_after_login'}
+  end
+
+  should 'uncheck all field privacy fields' do
+    person = profile
+    assert_nil person.fields_privacy
+    post :edit, :profile => profile.identifier, :profile_data => {}
+    assert_equal({}, person.reload.fields_privacy)
   end
 
 end

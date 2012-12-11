@@ -1,9 +1,11 @@
 class Noosfero::Plugin::Manager
 
+  attr_reader :environment
   attr_reader :context
 
-  def initialize(controller)
-    @context = Noosfero::Plugin::Context.new(controller)
+  def initialize(environment, context)
+    @environment = environment
+    @context = context
   end
 
   delegate :each, :to => :enabled_plugins
@@ -18,11 +20,17 @@ class Noosfero::Plugin::Manager
   # return [1,0,1,2,3]
   #
   def dispatch(event, *args)
-    map { |plugin| plugin.send(event, *args) }.compact.flatten
+    dispatch_without_flatten(event, *args).flatten
   end
 
+  def dispatch_without_flatten(event, *args)
+    map { |plugin| plugin.send(event, *args) }.compact
+  end
+
+  alias :dispatch_scopes :dispatch_without_flatten
+
   def enabled_plugins
-    @enabled_plugins ||= (Noosfero::Plugin.all & context.environment.enabled_plugins).map do |plugin|
+    @enabled_plugins ||= (Noosfero::Plugin.all & environment.enabled_plugins).map do |plugin|
       p = plugin.constantize.new
       p.context = context
       p

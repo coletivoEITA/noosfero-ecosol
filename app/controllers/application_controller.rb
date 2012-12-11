@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
 
   before_filter :setup_multitenancy
+  before_filter :detect_stuff_by_domain
+  before_filter :init_noosfero_plugins
 
   include ApplicationHelper
   layout :get_layout
@@ -40,9 +42,9 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_locale
   def set_locale
-    FastGettext.available_locales = Noosfero.available_locales
-    FastGettext.default_locale = Noosfero.default_locale
-    FastGettext.locale = (params[:lang] || session[:lang] || Noosfero.default_locale || request.env['HTTP_ACCEPT_LANGUAGE'] || 'en')
+    FastGettext.available_locales = environment.available_locales
+    FastGettext.default_locale = environment.default_locale
+    FastGettext.locale = (params[:lang] || session[:lang] || environment.default_locale || request.env['HTTP_ACCEPT_LANGUAGE'] || 'en')
     I18n.locale = FastGettext.locale
     if params[:lang]
       session[:lang] = params[:lang]
@@ -51,8 +53,6 @@ class ApplicationController < ActionController::Base
 
   include NeedsProfile
 
-  before_filter :detect_stuff_by_domain
-  before_filter :init_noosfero_plugins
   attr_reader :environment
 
   before_filter :load_terminology
@@ -101,9 +101,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  include Noosfero::Plugin::HotSpot
+
   def init_noosfero_plugins
-    @plugins = Noosfero::Plugin::Manager.new(self)
-    @plugins.each do |plugin|
+    plugins.each do |plugin|
       prepend_view_path(plugin.class.view_path)
     end
     init_noosfero_plugins_controller_filters
@@ -112,8 +113,10 @@ class ApplicationController < ActionController::Base
   # This is a generic method that initialize any possible filter defined by a
   # plugin to the current controller being initialized.
   def init_noosfero_plugins_controller_filters
-    @plugins.each do |plugin|
-      plugin.send(self.class.name.underscore + '_filters').each do |plugin_filter|
+    plugins.each do |plugin|
+      filters = plugin.send(self.class.name.underscore + '_filters')
+      filters = [filters] if !filters.kind_of?(Array)
+      filters.each do |plugin_filter|
         self.class.send(plugin_filter[:type], plugin.class.name.underscore + '_' + plugin_filter[:method_name], (plugin_filter[:options] || {}))
         self.class.send(:define_method, plugin.class.name.underscore + '_' + plugin_filter[:method_name], plugin_filter[:block])
       end

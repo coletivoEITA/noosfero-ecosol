@@ -4,11 +4,11 @@ module ContentViewerHelper
   include ForumHelper
 
   def number_of_comments(article)
-    n = article.comments.size
+    n = article.comments.without_spam.count
     if n == 0
      _('No comments yet')
     else
-     n_('One comment', '%{comments} comments', n) % { :comments => n }
+     n_('One comment', '<span class="comment-count">%{comments}</span> comments', n) % { :comments => n }
     end
   end
 
@@ -26,7 +26,7 @@ module ContentViewerHelper
       end
       title << content_tag('span',
         content_tag('span', show_date(article.published_at), :class => 'date') +
-        content_tag('span', [_(", by %s") % link_to(article.author_name, article.author.url)], :class => 'author') +
+        content_tag('span', [_(", by %s") % link_to(article.author_name, article.author_url)], :class => 'author') +
         content_tag('span', comments, :class => 'comments'),
         :class => 'created-at'
       )
@@ -42,7 +42,7 @@ module ContentViewerHelper
   def article_translations(article)
     unless article.native_translation.translations.empty?
       links = (article.native_translation.translations + [article.native_translation]).map do |translation|
-        { Noosfero.locales[translation.language] => { :href => url_for(translation.url) } }
+        { article.environment.locales[translation.language] => { :href => url_for(translation.url) } }
       end
       content_tag(:div, link_to(_('Translations'), '#',
                                 :onclick => "toggleSubmenu(this, '#{_('Translations')}', #{links.to_json}); return false",

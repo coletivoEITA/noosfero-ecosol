@@ -21,6 +21,7 @@ public/image_uploads
 public/thumbnails
 public/user_themes
 public/designs/themes/default
+public/designs/themes/*
 public/designs/icons/default
 public/javascripts/cache
 public/javascripts/cache*.js

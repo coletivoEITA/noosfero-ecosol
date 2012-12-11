@@ -10,6 +10,9 @@ class Comment < ActiveRecord::Base
   has_many :children, :class_name => 'Comment', :foreign_key => 'reply_of_id', :dependent => :destroy
   belongs_to :reply_of, :class_name => 'Comment', :foreign_key => 'reply_of_id'
 
+  named_scope :without_spam, :conditions => ['spam IS NULL OR spam = ?', false]
+  named_scope :spam, :conditions => ['spam = ?', true]
+
   # unauthenticated authors:
   validates_presence_of :name, :if => (lambda { |record| !record.email.blank? })
   validates_presence_of :email, :if => (lambda { |record| !record.name.blank? })
@@ -24,6 +27,8 @@ class Comment < ActiveRecord::Base
   end
 
   xss_terminate :only => [ :body, :title, :name ], :on => 'validation'
+
+  delegate :environment, :to => :source
 
   def action_tracker_target
     self.article.profile
@@ -75,11 +80,51 @@ class Comment < ActiveRecord::Base
     article.comments_updated if article.kind_of?(Article)
   end
 
-  after_create do |comment|
-    if comment.source.kind_of?(Article) && comment.article.notify_comments? && !comment.article.profile.notification_emails.empty?
-      Comment::Notifier.deliver_mail(comment)
+  after_create :new_follower
+  def new_follower
+    if source.kind_of?(Article)
+      article.followers += [author_email]
+      article.followers -= article.profile.notification_emails
+      article.followers.uniq!
+      article.save
     end
+  end
 
+  after_create :schedule_notification
+
+  def schedule_notification
+    Delayed::Job.enqueue CommentHandler.new(self.id, :verify_and_notify)
+  end
+
+  delegate :environment, :to => :profile
+  delegate :profile, :to => :source
+
+  include Noosfero::Plugin::HotSpot
+
+  def verify_and_notify
+    check_for_spam
+    unless spam?
+      notify_by_mail
+    end
+  end
+
+  def check_for_spam
+    plugins.dispatch(:check_comment_for_spam, self)
+  end
+
+  def notify_by_mail
+    if source.kind_of?(Article) && article.notify_comments?
+      if !article.profile.notification_emails.empty?
+        Comment::Notifier.deliver_mail(self)
+      end
+      emails = article.followers - [author_email]
+      if !emails.empty?
+        Comment::Notifier.deliver_mail_to_followers(self, emails)
+      end
+    end
+  end
+
+  after_create do |comment|
     if comment.source.kind_of?(Article)
       comment.article.create_activity if comment.article.activity.nil?
       if comment.article.activity
@@ -104,10 +149,14 @@ class Comment < ActiveRecord::Base
   def self.as_thread
     result = {}
     root = []
-    all.each do |c|
+    order(:id).each do |c|
       c.replies = []
       result[c.id] ||= c
-      c.reply_of_id.nil? ? root << c : result[c.reply_of_id].replies << c
+      if result[c.reply_of_id]
+        result[c.reply_of_id].replies << c
+      else
+        root << c
+      end
     end
     root
   end
@@ -138,6 +187,22 @@ class Comment < ActiveRecord::Base
         :environment => profile.environment.name,
         :url => profile.environment.top_url
     end
+    def mail_to_followers(comment, emails)
+      profile = comment.article.profile
+      bcc emails
+      from "#{profile.environment.name} <#{profile.environment.contact_email}>"
+      subject _("[%s] %s commented on a content of %s") % [profile.environment.name, comment.author_name, profile.short_name]
+      body :recipient => profile.nickname || profile.name,
+        :sender => comment.author_name,
+        :sender_link => comment.author_link,
+        :article_title => comment.article.name,
+        :comment_url => comment.url,
+        :unsubscribe_url => comment.article.view_url.merge({:unfollow => true}),
+        :comment_title => comment.title,
+        :comment_body => comment.body,
+        :environment => profile.environment.name,
+        :url => profile.environment.top_url
+    end
   end
 
   def rejected?
@@ -146,6 +211,36 @@ class Comment < ActiveRecord::Base
 
   def reject!
     @rejected = true
+  end
+
+  def spam?
+    !spam.nil? && spam
+  end
+
+  def ham?
+    !spam.nil? && !spam
+  end
+
+  def spam!
+    self.spam = true
+    self.save!
+    Delayed::Job.enqueue(CommentHandler.new(self.id, :marked_as_spam))
+    self
+  end
+
+  def ham!
+    self.spam = false
+    self.save!
+    Delayed::Job.enqueue(CommentHandler.new(self.id, :marked_as_ham))
+    self
+  end
+
+  def marked_as_spam
+    plugins.dispatch(:comment_marked_as_spam, self)
+  end
+
+  def marked_as_ham
+    plugins.dispatch(:comment_marked_as_ham, self)
   end
 
 end

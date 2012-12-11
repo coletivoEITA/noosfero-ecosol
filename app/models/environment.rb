@@ -24,6 +24,8 @@ class Environment < ActiveRecord::Base
     'manage_environment_roles' => N_('Manage environment roles'),
     'manage_environment_validators' => N_('Manage environment validators'),
     'manage_environment_users' => N_('Manage environment users'),
+    'manage_environment_templates' => N_('Manage environment templates'),
+    'manage_environment_licenses' => N_('Manage environment licenses'),
   }
 
   module Roles
@@ -121,9 +123,22 @@ class Environment < ActiveRecord::Base
       'xmpp_chat' => _('XMPP/Jabber based chat'),
       'show_zoom_button_on_article_images' => _('Show a zoom link on all article images'),
       'captcha_for_logged_users' => _('Ask captcha when a logged user comments too'),
-      'skip_new_user_email_confirmation' => _('Skip e-mail confirmation for new users')
+      'skip_new_user_email_confirmation' => _('Skip e-mail confirmation for new users'),
+      'send_welcome_email_to_new_users' => _('Send welcome e-mail to new users'),
+      'allow_change_of_redirection_after_login' => _('Allow users to set the page to redirect after login')
     }
   end
+
+  def self.login_redirection_options
+    {
+      'keep_on_same_page' => _('Stays on the same page the user was before login.'),
+      'site_homepage' => _('Redirects the user to the environment homepage.'),
+      'user_profile_page' => _('Redirects the user to his profile page.'),
+      'user_homepage' => _('Redirects the user to his homepage.'),
+      'user_control_panel' => _('Redirects the user to his control panel.')
+    }
+  end
+  validates_inclusion_of :redirection_after_login, :in => Environment.login_redirection_options.keys, :allow_nil => true
 
   # #################################################
   # Relationships and applied behaviour
@@ -158,6 +173,7 @@ class Environment < ActiveRecord::Base
   has_many :products, :through => :enterprises
   has_many :people
   has_many :communities
+  has_many :licenses
 
   has_many :categories
   has_many :display_categories, :class_name => 'Category', :conditions => 'display_color is not null and parent_id is null', :order => 'display_color'
@@ -527,6 +543,31 @@ class Environment < ActiveRecord::Base
     signup_fields
   end
 
+  serialize :signup_welcome_text, Hash
+  def signup_welcome_text
+    self[:signup_welcome_text] ||= {}
+  end
+
+  def signup_welcome_text_subject
+    self.signup_welcome_text[:subject]
+  end
+
+  def signup_welcome_text_subject=(subject)
+    self.signup_welcome_text[:subject] = subject
+  end
+
+  def signup_welcome_text_body
+    self.signup_welcome_text[:body]
+  end
+
+  def signup_welcome_text_body=(body)
+    self.signup_welcome_text[:body] = body
+  end
+
+  def has_signup_welcome_text?
+    signup_welcome_text && !signup_welcome_text_body.blank?
+  end
+
   # #################################################
   # Validations
   # #################################################
@@ -588,8 +629,8 @@ class Environment < ActiveRecord::Base
   end
 
   has_many :articles, :through => :profiles
-  def recent_documents(limit = 10)
-    self.articles.recent(limit)
+  def recent_documents(limit = 10, options = {}, pagination = true)
+    self.articles.recent(limit, options, pagination)
   end
 
   has_many :events, :through => :profiles, :source => :articles, :class_name => 'Event'
@@ -719,12 +760,12 @@ class Environment < ActiveRecord::Base
 
   def create_templates
     pre = self.name.to_slug + '_'
-    ent_id = Enterprise.create!(:name => 'Enterprise template', :identifier => pre + 'enterprise_template', :environment => self, :visible => false).id
-    inactive_enterprise_tmpl = Enterprise.create!(:name => 'Inactive Enterprise template', :identifier => pre + 'inactive_enterprise_template', :environment => self, :visible => false)
-    com_id = Community.create!(:name => 'Community template', :identifier => pre + 'community_template', :environment => self, :visible => false).id
+    ent_id = Enterprise.create!(:name => 'Enterprise template', :identifier => pre + 'enterprise_template', :environment => self, :visible => false, :is_template => true).id
+    inactive_enterprise_tmpl = Enterprise.create!(:name => 'Inactive Enterprise template', :identifier => pre + 'inactive_enterprise_template', :environment => self, :visible => false, :is_template => true)
+    com_id = Community.create!(:name => 'Community template', :identifier => pre + 'community_template', :environment => self, :visible => false, :is_template => true).id
     pass = Digest::MD5.hexdigest rand.to_s
     user = User.create!(:login => (pre + 'person_template'), :email => (pre + 'template@template.noo'), :password => pass, :password_confirmation => pass, :environment => self).person
-    user.update_attributes(:visible => false, :name => "Person template")
+    user.update_attributes(:visible => false, :name => "Person template", :is_template => true)
     usr_id = user.id
     self.settings[:enterprise_template_id] = ent_id
     self.inactive_enterprise_template = inactive_enterprise_tmpl
@@ -740,6 +781,18 @@ class Environment < ActiveRecord::Base
     end
   end
 
+  after_create :create_default_licenses
+  def create_default_licenses
+    License.create!(:name => 'CC (by)', :url => 'http://creativecommons.org/licenses/by/3.0/legalcode', :environment => self)
+    License.create!(:name => 'CC (by-nd)', :url => 'http://creativecommons.org/licenses/by-nd/3.0/legalcode', :environment => self)
+    License.create!(:name => 'CC (by-sa)', :url => 'http://creativecommons.org/licenses/by-sa/3.0/legalcode', :environment => self)
+    License.create!(:name => 'CC (by-nc)', :url => 'http://creativecommons.org/licenses/by-nc/3.0/legalcode', :environment => self)
+    License.create!(:name => 'CC (by-nc-nd)', :url => 'http://creativecommons.org/licenses/by-nc-nd/3.0/legalcode', :environment => self)
+    License.create!(:name => 'CC (by-nc-sa)', :url => 'http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode', :environment => self)
+    License.create!(:name => 'Free Art', :url => 'http://artlibre.org/licence/lal/en', :environment => self)
+    License.create!(:name => 'GNU FDL', :url => 'http://www.gnu.org/licenses/fdl-1.3.txt', :environment => self)
+  end
+
   def highlighted_products_with_image(options = {})
     Product.find(:all, {:conditions => {:highlighted => true, :enterprise_id => self.enterprises.find(:all, :select => :id) }, :joins => :image}.merge(options))
   end
@@ -750,5 +803,54 @@ class Environment < ActiveRecord::Base
 
   def image_galleries
     portal_community ? portal_community.image_galleries : []
+  end
+
+  serialize :languages
+
+  before_validation do |environment|
+    environment.default_language = nil if environment.default_language.blank?
+  end
+
+  validate :default_language_available
+  validate :languages_available
+
+  def locales
+    if languages.present?
+      languages.inject({}) {|r, l| r.merge({l => Noosfero.locales[l]})}
+    else
+      Noosfero.locales
+    end
+  end
+
+  def default_locale
+    default_language || Noosfero.default_locale
+  end
+
+  def available_locales
+    locales_list = locales.keys
+    # move English to the beginning
+    if locales_list.include?('en')
+      locales_list = ['en'] + (locales_list - ['en']).sort
+    end
+    locales_list
+  end
+
+  private
+
+  def default_language_available
+    if default_language.present? && !available_locales.include?(default_language)
+      errors.add(:default_language, _('is not available.'))
+    end
+  end
+
+  def languages_available
+    if languages.present?
+      languages.each do |language|
+        if !Noosfero.available_locales.include?(language)
+          errors.add(:languages, _('have unsupported languages.'))
+          break
+        end
+      end
+    end
   end
 end
