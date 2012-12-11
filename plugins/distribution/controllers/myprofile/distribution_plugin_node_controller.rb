@@ -3,7 +3,7 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
   before_filter :set_admin_action, :only => [:index]
 
   def index
-    if @node.profile.admins.include? @user_node.profile
+    if @node.has_admin? @user_node
       redirect_to :controller => :distribution_plugin_session, :action => :index
     else
       redirect_to :controller => :distribution_plugin_order, :action => :index

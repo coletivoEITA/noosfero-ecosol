@@ -158,6 +158,10 @@ class DistributionPluginNode < ActiveRecord::Base
     supplier.node.products.unarchived.own.distributed - self.from_products.unarchived.distributed.by_node(supplier.node)
   end
 
+  def has_admin?(node)
+    node.profile.has_permission? 'edit_profile', self.profile
+  end
+
   alias_method :destroy!, :destroy
   def destroy
     self.products.distributed.update_all ['archived = true']
@@ -167,6 +171,7 @@ class DistributionPluginNode < ActiveRecord::Base
   def enable_collective_view
     self.add_order_block
     self.profile.update_attribute :theme, 'distribution'
+    return if self.profile.blocks.collect{ |b| b.class.name }.include? "ProfileBlock"
   end
   def disable_collective_view
     self.profile.update_attribute :theme, nil

@@ -5,18 +5,21 @@ module DistributionPlugin::DistributionLayoutHelper
     [:orders, _('Orders'), {:controller => :distribution_plugin_order, :action => :index}],
     #[:about, _('About'), {:controller => :distribution_plugin_node, :action => :about}],
     #[:history, _('History'), {:controller => :distribution_plugin_node, :action => :history}],
-    [:adm, _('Administration'), {:controller => :distribution_plugin_node, :action => 'index'}, proc{ @admin_action }]
+    [:adm, _('Administration'), {:controller => :distribution_plugin_node, :action => 'index'}, proc{ @admin_action },
+      proc{ @user_node and @node.has_admin?(@user_node) }],
+    [:control_panel, _('Control panel'), proc{ @node.profile.admin_url }, nil,
+      proc{ @user_node and @node.has_admin?(@user_node) }],
   ]
 
   def display_header_buttons
-    HeaderButtons.map do |key, label, url, cond_proc|
-      next if key == :adm and (@user_node.nil? or (@user_node and not @node.profile.admins.include? @user_node.profile))
+    HeaderButtons.map do |key, label, url, selected_proc, if_proc|
+      next if if_proc and !instance_eval(&if_proc)
 
       url = instance_eval(&url) if url.is_a?(Proc)
       if key != :adm and @admin_action
         selected = false
-      elsif cond_proc
-        selected = instance_eval(&cond_proc)
+      elsif selected_proc
+        selected = instance_eval(&selected_proc)
       else
         selected = params[:controller].to_s == url[:controller].to_s
       end
