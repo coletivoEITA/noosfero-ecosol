@@ -38,6 +38,7 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
       elsif was_enabled
         @node.disable_collective_view
       end
+      redirect_to profile_url if @node.enabled?
     end
   end
 
