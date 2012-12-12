@@ -157,7 +157,7 @@ body.plugin-distribution {
 /* ----- common stuff  ----- */
 
 .controller-profile_editor a.control-panel-distribution-solidary-network {
-  background-image: url(images/distribution-solidary-network.png);
+  background-image: url(/plugins/distribution/images/distribution-solidary-network.png);
 }
 
 .plugin-distribution .cleaner {
@@ -490,10 +490,10 @@ body.plugin-distribution {
 }
 .plugin-distribution .order-product-loading {
   width: 100px;
-  height: 32px;
+  height: 34px;
   position: relative;
-  top: -52px;
-  margin-bottom: -32px;
+  top: -54px;
+  margin-bottom: -34px;
 }
 .plugin-distribution .our-product .product-supplier *[disabled],
 .plugin-distribution .our-product-distributed-column *[readOnly],
@@ -1627,7 +1627,9 @@ body.plugin-distribution {
   margin-top: 20px;
 }
 
-.plugin-distribution .orders #session-others,
+.plugin-distribution .orders #session-others {
+  border-bottom: 2px dotted #aaa;
+}
 .plugin-distribution #orders-view .session-with-consumer-orders:last-child {
   border-bottom: 2px dotted #aaa;
 }
