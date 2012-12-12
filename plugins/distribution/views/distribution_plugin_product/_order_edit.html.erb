@@ -69,10 +69,9 @@
     </div>
 
     <% if editable %>
-      <%= submit_to_function (ordered_product ? _('Change') : _('Add')), "jQuery('#order-product-#{product.id}-loading').fadeIn(); jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}',
+      <%= submit_to_function (ordered_product ? _('Change') : _('Add')), "distribution.setLoading('session-product-#{product.id}'); jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}',
         {order_id: #{order.id}, session_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-session-product').find('.quantity-entry input').val() });" %>
       <%= link_to_function _('cancel'), :class => 'toggle-edit' %>
-      <div id='order-product-<%=product.id%>-loading' class="order-product-loading distribution-loading"></div>
     <% end %>
   </div>
 

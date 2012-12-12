@@ -1,1 +1,2 @@
 page << "jQuery('#filter-form').submit()"
+distribution.unsetLoading('our-product-add');
