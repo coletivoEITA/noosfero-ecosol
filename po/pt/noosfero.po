@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noosfero 0.39.0\n"
 "POT-Creation-Date: 2012-12-10 23:39-0200\n"
-"PO-Revision-Date: 2012-12-12 00:01-0200\n"
+"PO-Revision-Date: 2012-12-12 17:11-0200\n"
 "Last-Translator: Joenio Costa <joenio@colivre.coop.br>\n"
 "Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
 "Language: \n"
@@ -12644,7 +12644,7 @@ msgstr "remover produto"
 
 #: plugins/distribution/views/distribution_plugin_product/_edit.html.erb:160
 msgid "Are you sure you want to delete this product?"
-msgstr "Tem certeza de que quer remover este perfil?"
+msgstr "Tem certeza de que quer remover este produto?"
 
 #: plugins/distribution/views/distribution_plugin_product/_select_missing.html.erb:5
 msgid "There isn't any new product from this supplier."
