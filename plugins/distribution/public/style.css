@@ -157,7 +157,7 @@ body.plugin-distribution {
 /* ----- common stuff  ----- */
 
 .controller-profile_editor a.control-panel-distribution-solidary-network {
-  background-image: url(images/distribution-solidary-network.png);
+  background-image: url(/plugins/distribution/images/distribution-solidary-network.png);
 }
 
 .plugin-distribution .cleaner {
@@ -466,14 +466,6 @@ body.plugin-distribution {
 
 /* ----- not so common stuff  ----- */
 
-.plugin-distribution .product-loading {
-  width: 280px;
-  height: 35px;
-  position: relative;
-  top: -50px;
-  margin-bottom: -35px;
-}
-
 .plugin-distribution #filter-products-loading {
   width: 205px;
   height: 20px;
@@ -481,19 +473,6 @@ body.plugin-distribution {
   left: 235px;
   margin-bottom: -20px;
 }
-.plugin-distribution #confirm-order-loading {
-  width: 350px;
-  height: 40px;
-  position: relative;
-  top: -63px;
-  margin-bottom: -40px;
-}
-.plugin-distribution .order-product-loading {
-  width: 100px;
-  height: 32px;
-  position: relative;
-  top: -52px;
-  margin-bottom: -32px;
 }
 .plugin-distribution .our-product .product-supplier *[disabled],
 .plugin-distribution .our-product-distributed-column *[readOnly],
@@ -1627,7 +1606,9 @@ body.plugin-distribution {
   margin-top: 20px;
 }
 
-.plugin-distribution .orders #session-others,
+.plugin-distribution .orders #session-others {
+  border-bottom: 2px dotted #aaa;
+}
 .plugin-distribution #orders-view .session-with-consumer-orders:last-child {
   border-bottom: 2px dotted #aaa;
 }
