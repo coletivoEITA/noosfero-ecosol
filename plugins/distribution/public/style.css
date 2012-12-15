@@ -1846,22 +1846,22 @@ body.plugin-distribution {
   display: inline-block;
 }
 
-.plugin-distribution .color-purple {
+.distribution-enabled .color-purple {
   background-color: #705496;
 }
-.plugin-distribution .color-yellow {
+.distribution-enabled .color-yellow {
   background-color: #f5b900;
 }
-.plugin-distribution .color-beige {
+.distribution-enabled .color-beige {
   background-color: #c4bf66;
 }
-.plugin-distribution .color-blue {
+.distribution-enabled .color-blue {
   background-color: #0094c9;
 }
-.plugin-distribution .color-petro {
+.distribution-enabled .color-petro {
   background-color: #036475;
 }
-.plugin-distribution .color-green {
+.distribution-enabled .color-green {
   background-color: #4aa133;
 }
 /* ----- end settings stuff  ----- */
