@@ -1833,11 +1833,37 @@ body.plugin-distribution {
 
 #distribution-plugin-settings .field {
   width: 360px;
+  margin-top: 5px;
 }
 #distribution-plugin-settings input[type=text] {
   width: 100%;
 }
 
+#distribution-plugin-settings div.color-choose {
+  width: 130px;
+  height: 10px;
+  border: 1px solid rgba(255,255,255,0.3);
+  display: inline-block;
+}
+
+.plugin-distribution .color-purple {
+  background-color: #705496;
+}
+.plugin-distribution .color-yellow {
+  background-color: #f5b900;
+}
+.plugin-distribution .color-beige {
+  background-color: #c4bf66;
+}
+.plugin-distribution .color-blue {
+  background-color: #0094c9;
+}
+.plugin-distribution .color-petro {
+  background-color: #036475;
+}
+.plugin-distribution .color-green {
+  background-color: #4aa133;
+}
 /* ----- end settings stuff  ----- */
 
 /* ----- calendrial stuff  ----- */
