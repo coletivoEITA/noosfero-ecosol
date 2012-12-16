@@ -1864,6 +1864,11 @@ body.plugin-distribution {
 .distribution-enabled .color-green {
   background-color: #4aa133;
 }
+
+.distribution-enabled .disabled {
+  background-color: gray;
+}
+
 /* ----- end settings stuff  ----- */
 
 /* ----- calendrial stuff  ----- */

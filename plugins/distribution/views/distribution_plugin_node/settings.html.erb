@@ -22,12 +22,14 @@
                       "it will be automatically cropped to this size.")} %>
       <% end %>
 
-      <% radios = ''; @node.header_bg_color ||= 'purple' %>
-      <% ['purple', 'yellow', 'beige', 'blue', 'petro', 'green'].each do |color| %>
-        <% radios += f.radio_button :header_bg_color, color %>
-        <% radios += "<div class='color-choose color-#{color}'></div><br />" %>
-      <% end %>
-      <%= labelled_field f, :b_color, _("Header background color"), radios %>
+      <div id=distribution-header-bg-color>
+        <% radios = ''; @node.header_bg_color ||= 'purple' %>
+        <% ['purple', 'yellow', 'beige', 'blue', 'petro', 'green'].each do |color| %>
+          <% radios += f.radio_button :header_bg_color, color %>
+          <% radios += "<div class='color-choose color-#{color}'></div><br />" %>
+        <% end %>
+        <%= labelled_field f, :b_color, _("Header background color"), radios %>
+      </div>
 
       <% @node.header_fg_color ||= 'black' %>
       <%= labelled_field f, :f_color, _('Text color'),
@@ -38,3 +40,10 @@
       <%= link_to _('cancel'), {:controller => :profile_editor, :profile => profile.identifier} %>
   <% end %>
 </div>
+
+<% javascript_tag do %>
+  jQuery('input[name=node\\[header_type\\]]').click(function() {
+  distribution.toggle_header_color_area($(this));
+  });
+  distribution.toggle_header_color_area(jQuery('input[name=node\\[header_type\\]]:checked')[0]);
+<% end %>
