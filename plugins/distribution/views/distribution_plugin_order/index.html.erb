@@ -30,7 +30,7 @@
           </div>
         </div>
       <% else %>
-        <%= link_to _('Place an order'), {:controller => :distribution_plugin_order, :action => :new, :session_id => session.id}, :id => 'consumer-new-order' if session.orders? %>
+        <%= link_to _('Place an order'), {:controller => :distribution_plugin_order, :action => :new, :session_id => session.id}, :id => 'consumer-new-order' if session.orders? and not @consumer.nil?%>
       <% end %>
 
     </div>

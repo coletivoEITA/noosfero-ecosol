@@ -8,7 +8,7 @@
     <h3>
       <% if @admin_edit %>
         <%= _("Orders from \"%{consumer}\" on this cycle") % {:consumer => @consumer.name} %>
-      <% else %>
+      <% elsif @consumer %>
         <%= _("Your orders on this cycle") %>
         <%= link_to _('new order'), {:controller => :distribution_plugin_order, :action => :new, :session_id => @session.id} if !@admin_edit and @session.orders? %>
       <% end %>
@@ -32,7 +32,7 @@
         <%= link_to _("New order"), {:controller => :distribution_plugin_order, :action => :admin_new, :consumer_id => @order.consumer.id, :session_id => @session.id} if @session.orders? %>
       </div>
     <% else %>
-      <% unless @session.orders? and @consumer_orders.count != 0 %>
+      <% unless not @consumer or (@session.orders? and @consumer_orders.count != 0) %>
         <div id="order-place-new">
           <% if @session.orders? %>
             <%= _("You haven't placed any order on this cycle yet.") %>
