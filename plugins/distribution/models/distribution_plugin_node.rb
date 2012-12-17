@@ -159,7 +159,9 @@ class DistributionPluginNode < ActiveRecord::Base
   end
 
   def has_admin?(node)
-    node.profile.has_permission? 'edit_profile', self.profile
+    if node and node.profile
+      node.profile.has_permission? 'edit_profile', self.profile
+    end
   end
 
   alias_method :destroy!, :destroy
