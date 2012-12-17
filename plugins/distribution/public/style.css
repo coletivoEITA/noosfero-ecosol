@@ -239,7 +239,7 @@ body.plugin-distribution {
   background-color: #666;
 }
 .plugin-distribution a.button.colorbox-close,
-.plugin-distribution input[type=submit] {
+.plugin-distribution #wrap-1 input[type=submit] {
   display: inline-block;
   background: none;
   background-color: #000;
