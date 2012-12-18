@@ -30,11 +30,16 @@
         [ _('Spreadsheet with the orders'), {:action => :report_orders, :id => session.id} ],
         [ _('Spreadsheet with product listing'), {:action => :report_products, :id => session.id} ],
       ],
+      :closed => [
+      ]
     }
     actions[:edition].unshift [ _('Finish cycle editing'), {:action => :step, :id => session.id, :method => :post},
       { :id => 'session-open-session' } ] unless session.passed_by?('edition')
     actions[:orders].unshift [ session.orders? ? _('Block orders period') : _('Close orders period'),
-      {:action => :step, :id => session.id, :method => :post}, { :id => 'session-open-session' } ] unless session.passed_by?('orders')
+      {:action => :step, :id => session.id, :method => :post}, { :id => 'session-open-session' , :confirm => _("Are you sure you want to close the orders cycle?")} ] unless session.passed_by?('orders')
+    actions[:closed].unshift [  _('Reopen orders period'),
+      {:action => :step_back, :id => session.id, :method => :post}, { :id => 'session-open-session' , :confirm => _("Are you sure you want to reopen the orders cycle?")} ] if session.passed_by?('orders')
+
   %>
 
   <% unless actions[view.to_sym].blank? %>
