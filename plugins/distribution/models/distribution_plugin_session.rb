@@ -89,6 +89,9 @@ class DistributionPluginSession < ActiveRecord::Base
   def step
     self.status = STATUS_SEQUENCE[STATUS_SEQUENCE.index(self.status)+1]
   end
+  def step_back
+    self.status = STATUS_SEQUENCE[STATUS_SEQUENCE.index(self.status)-1]
+  end
   def passed_by?(status)
     STATUS_SEQUENCE.index(self.status) > STATUS_SEQUENCE.index(status)
   end

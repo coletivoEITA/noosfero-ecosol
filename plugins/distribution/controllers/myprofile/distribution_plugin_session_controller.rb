@@ -55,6 +55,13 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     redirect_to :action => 'edit', :id => @session.id
   end
 
+  def step_back
+    @session = DistributionPluginSession.find params[:id]
+    @session.step_back
+    @session.save!
+    redirect_to :action => 'edit', :id => @session.id
+  end
+
   def add_products
     @session = DistributionPluginSession.find params[:id]
     @missing_products = @node.products.unarchived.distributed.active - @session.from_products.unarchived
