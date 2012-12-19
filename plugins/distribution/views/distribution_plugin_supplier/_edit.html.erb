@@ -1,13 +1,59 @@
 <% supplier_label = (supplier.new_record? ? "add" : supplier.id) %>
-  <div id="supplier">
-  <div class="title"><%= supplier.new_record? ? _('Register new supplier') : _('Edit supplier') %></div>
-  <% form_remote_for :supplier, supplier, :loading => "distribution.setLoading('supplier-#{supplier_label}');", :loaded => "distribution.unsetLoading('supplier-#{supplier_label}');", :url => {:action => supplier.new_record? ? :new : :edit, :id => supplier.id} do |f| %>
-    <%= labelled_field f, :name, _('Name'), f.text_field(:name) %>
-    <%= labelled_field f, :name_abbreviation, _('Name abbreviation'), f.text_field(:name_abbreviation) %>
-    <%= labelled_field f, :description, _('Description'), f.text_area(:description) %>
-    <div class="cleaner"></div>
 
-    <%= f.submit _('Save') %>
-    <%= link_to_function _('cancel'), '', :class => 'toggle-edit' %>
+<div class="title">
+  <% if supplier.new_record? %>
+    <% if supplier.dummy? %>
+      <%= _('Add supplier managed by the collective') %>
+    <% else %>
+      <%= _('Register new supplier') %>
+    <% end %>
+  <% else %>
+    <%= _('Edit supplier') %>
   <% end %>
 </div>
+
+<% if supplier.dummy? %>
+  <div class="subtitle">
+  <%= _('The registry of the supplier will be managed by the collective itself, ' \
+        'e will be private to it, your registry may be shared on demand to others ' \
+        'collectives. The supplier will receive the invitation to join the network ' \
+        'and manage its own distribution for the collectives inside the network.') %>
+  </div>
+
+  <%= check_box_tag :full_registration, '1', true,
+    :onchange => "jQuery(this).parents('.supplier').find('form').toggleClass('full-registration', this.checked)" %>
+  <%= label_tag :full_registration, _('Full registration') %>
+<% end %>
+
+<% form_remote_for :supplier, supplier, :loading => "distribution.setLoading('supplier-#{supplier_label}');",
+  :loaded => "distribution.unsetLoading('supplier-#{supplier_label}');",
+  :url => {:action => supplier.new_record? ? :new : :edit, :id => supplier.id},
+  :html => {:class => 'full-registration'} do |f| %>
+
+  <div class="data">
+    <div class="basic-data">
+      <h3><%= _('Basic data') %></h3>
+
+      <%= labelled_field f, :name, _('Name'), f.text_field(:name) %>
+      <%= labelled_field f, :name_abbreviation, _('Abbreviated name'), f.text_field(:name_abbreviation) %>
+      <%= labelled_field f, :description, _('Description'), f.text_area(:description) %>
+
+      <div class="cleaner"></div>
+    </div>
+    <div class="estrategic-info full-data">
+      <h3><%= _('Estrategic informations') %></h3>
+    </div>
+    <div class="full-data">
+      <h3><%= _('Registry form') %></h3>
+    </div>
+    <div class="additional-fields full-data">
+      <h3><%= _('Additional fields') %></h3>
+    </div>
+
+    <div class="cleaner"></div>
+  </div>
+
+  <%= f.submit _('Save') %>
+  <%= link_to_function _('cancel'), '', :class => 'toggle-edit' %>
+<% end %>
+

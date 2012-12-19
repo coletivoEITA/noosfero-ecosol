@@ -711,6 +711,34 @@ body.plugin-distribution {
   margin: 20px 0;
 }
 
+.plugin-distribution #suppliers-page .supplier form {
+  width: 640px;
+}
+
+.plugin-distribution #suppliers-page .data textarea,
+.plugin-distribution #suppliers-page .data input {
+  width: 100%;
+}
+
+.plugin-distribution #suppliers-page .basic-data,
+.plugin-distribution #suppliers-page .full-data {
+  float: left;
+  width: 290px;
+  margin-right: 30px;
+}
+.plugin-distribution #suppliers-page .estrategic-info {
+  float: right;
+}
+.plugin-distribution #suppliers-page .additional-fields {
+  width: 100%;
+}
+.plugin-distribution #suppliers-page .full-data {
+  display: none;
+}
+.plugin-distribution #suppliers-page .full-registration .full-data {
+  display: block;
+}
+
 /* ----- ends suppliers stuff  ----- */
 
 /* ----- session orders  ----- */
