@@ -7,8 +7,6 @@ module DistributionPlugin::DistributionLayoutHelper
     #[:history, _('History'), {:controller => :distribution_plugin_node, :action => :history}],
     [:adm, _('Administration'), {:controller => :distribution_plugin_node, :action => 'index'}, proc{ @admin_action },
       proc{ @user_node and @node.has_admin?(@user_node) }],
-    [:control_panel, _('Control panel'), proc{ @node.profile.admin_url }, nil,
-      proc{ @user_node and @node.has_admin?(@user_node) }],
   ]
 
   def display_header_buttons

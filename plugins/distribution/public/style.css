@@ -29,6 +29,21 @@ body.plugin-distribution {
 
 /* ----- layout stuff  ----- */
 
+.distribution-enabled .profile-image-block,
+.distribution-enabled .profile-info-block {
+  display: none;
+}
+.distribution-enabled.logged-in .login-block {
+  display: none;
+}
+.distribution-enabled.logged-in .profile-image-block,
+.distribution-enabled.logged-in .profile-info-block {
+  display: block;
+}
+.distribution-enabled.logged-in .profile-info-block h2 {
+  display: none;
+}
+
 .plugin-distribution-layout .page-title,
 .distribution-enabled .page-title {
   display: none !important;
