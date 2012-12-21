@@ -25,8 +25,9 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
     @ordered_product = DistributionPluginOrderedProduct.find params[:id]
     @order = @ordered_product.order
     raise 'Order confirmed or cycle is closed for orders' unless @order.open?
+    raise 'You are not logged or is not the owner of this order' unless @user_node.nil? or @user_node != @order.consumer
 
-    if params[:ordered_product][:quantity_asked].to_i == 0
+    if params[:ordered_product][:quantity_asked].to_f == 0
       @ordered_product.destroy
       render :action => :destroy
     else
