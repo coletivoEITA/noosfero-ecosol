@@ -10,7 +10,7 @@ class DistributionPluginNode < ActiveRecord::Base
   has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy, :order => 'id ASC'
   has_many :parcels, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy, :order => 'id ASC'
 
-  has_many :suppliers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'consumer_id', :order => 'id ASC', :dependent => :destroy
+  has_many :suppliers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'consumer_id', :order => 'name ASC', :dependent => :destroy
   has_many :consumers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'node_id', :order => 'id ASC'
   has_many :suppliers_nodes, :through => :suppliers, :source => :node, :order => 'distribution_plugin_nodes.id ASC'
   has_many :consumers_nodes, :through => :consumers, :source => :consumer, :order => 'distribution_plugin_nodes.id ASC'
@@ -159,7 +159,9 @@ class DistributionPluginNode < ActiveRecord::Base
   end
 
   def has_admin?(node)
-    node.profile.has_permission? 'edit_profile', self.profile
+    if node and node.profile
+      node.profile.has_permission? 'edit_profile', self.profile
+    end
   end
 
   alias_method :destroy!, :destroy
@@ -172,8 +174,12 @@ class DistributionPluginNode < ActiveRecord::Base
     self.add_order_block
     self.profile.update_attribute :theme, 'distribution'
 
-    image_block = self.profile.blocks.select{ |b| b.class.name == "ProfileImageBlock" }.first
-    image_block.destroy if image_block
+    login_block = self.profile.blocks.select{ |b| b.class.name == "LoginBlock" }.first
+    if not login_block
+      box = self.profile.boxes.first :conditions => {:position => 2}
+      login_block = LoginBlock.create! :box => box
+      login_block.move_to_top
+    end
 
     self.profile.home_page = self.profile.blogs.first
     self.profile.save!
@@ -184,12 +190,8 @@ class DistributionPluginNode < ActiveRecord::Base
     order_block = self.profile.blocks.select{ |b| b.class.name == "DistributionPlugin::OrderBlock" }.first
     order_block.destroy if order_block
 
-    image_block = self.profile.blocks.select{ |b| b.class.name == "ProfileImageBlock" }.first
-    if not image_block
-      box = self.profile.boxes.first :conditions => {:position => 2}
-      image_block = ProfileImageBlock.create! :box => box
-      image_block.move_to_top
-    end
+    login_block = self.profile.blocks.select{ |b| b.class.name == "LoginBlock" }.first
+    login_block.destroy if login_block
   end
 
   def add_order_block

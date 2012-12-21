@@ -11,10 +11,10 @@ module DistributionPlugin::DistributionDisplayHelper
                 options.merge(:class => options[:class].to_s + ' field'))
   end
 
-  def labelled_radio(form, field, label, value, options = {})
+  def labelled_radio(form, field, label_text, value, options = {})
     content_tag('div',
-                form.radio_button(:role, value) +
-                form.label("#{field}_#{value}", label) +
+                form.radio_button(field, value) +
+                form.label("#{field}_#{value}", label_text) +
                 content_tag('div', '', :class => 'cleaner'),
                 options.merge(:class => options[:class].to_s + ' field-radio'))
   end

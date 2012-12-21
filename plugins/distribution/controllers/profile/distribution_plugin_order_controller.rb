@@ -14,6 +14,11 @@ class DistributionPluginOrderController < DistributionPluginProfileController
   end
 
   def new
+    if @user_node.nil?
+      session[:notice] = _('Login first')
+      redirect_to :action => :index
+      return
+    end
     @consumer = @user_node
     @session = DistributionPluginSession.find params[:session_id]
     @order = DistributionPluginOrder.create! :session => @session, :consumer => @consumer
@@ -21,10 +26,14 @@ class DistributionPluginOrderController < DistributionPluginProfileController
   end
 
   def admin_new
-    @consumer = DistributionPluginNode.find params[:consumer_id]
-    @session = DistributionPluginSession.find params[:session_id]
-    @order = DistributionPluginOrder.create! :session => @session, :consumer => @consumer
-    redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
+    if @node.has_admin? @user_node
+      @consumer = DistributionPluginNode.find params[:consumer_id]
+      @session = DistributionPluginSession.find params[:session_id]
+      @order = DistributionPluginOrder.create! :session => @session, :consumer => @consumer
+      redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
+    else
+      redirect_to :action => :index
+    end
   end
 
   def edit
@@ -44,8 +53,10 @@ class DistributionPluginOrderController < DistributionPluginProfileController
 
   def reopen
     @order = DistributionPluginOrder.find params[:id]
-    raise "Cycle's orders period already ended" unless @order.session.orders?
-    @order.update_attributes! :status => 'draft'
+    if @order.consumer == @user_node
+      raise "Cycle's orders period already ended" unless @order.session.orders?
+      @order.update_attributes! :status => 'draft'
+    end
 
     redirect_to :action => :edit, :id => @order.id
   end
@@ -54,6 +65,15 @@ class DistributionPluginOrderController < DistributionPluginProfileController
     params[:order] ||= {}
 
     @order = DistributionPluginOrder.find params[:id]
+    if @order.consumer != @user_node and not @node.has_admin? @user_node
+      if @user_node.nil?
+        session[:notice] = _('Login first')
+      else
+        session[:notice] = _('You are not the owner of this order')
+      end
+      redirect_to :action => :index
+      return
+    end
     raise "Cycle's orders period already ended" unless @order.session.orders?
     if @order.products.count > 0
       @order.update_attributes! params[:order].merge(:status => 'confirmed')
@@ -67,6 +87,15 @@ class DistributionPluginOrderController < DistributionPluginProfileController
 
   def cancel
     @order = DistributionPluginOrder.find params[:id]
+    if @order.consumer != @user_node and not @node.has_admin? @user_node
+      if @user_node.nil?
+        session[:notice] = _('Login first')
+      else
+        session[:notice] = _('You are not the owner of this order')
+      end
+      redirect_to :action => :index
+      return
+    end
     @order.update_attributes! :status => 'cancelled'
 
     DistributionPlugin::Mailer.deliver_order_cancellation @order
@@ -76,6 +105,15 @@ class DistributionPluginOrderController < DistributionPluginProfileController
 
   def remove
     @order = DistributionPluginOrder.find params[:id]
+    if @order.consumer != @user_node and not @node.has_admin? @user_node
+      if @user_node.nil?
+        session[:notice] = _('Login first')
+      else
+        session[:notice] = _('You are not the owner of this order')
+      end
+      redirect_to :action => :index
+      return
+    end
     @order.destroy
 
     session[:notice] = _('Order removed')
@@ -90,6 +128,15 @@ class DistributionPluginOrderController < DistributionPluginProfileController
 
   def session_edit
     @order = DistributionPluginOrder.find params[:id]
+    if @order.consumer != @user_node and not @node.has_admin? @user_node
+      if @user_node.nil?
+        session[:notice] = _('Login first')
+      else
+        session[:notice] = _('You are not the owner of this order')
+      end
+      redirect_to :action => :index
+      return
+    end
 
     if @order.session.orders?
       a = {}; @order.products.map{ |p| a[p.id] = p }

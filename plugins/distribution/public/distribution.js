@@ -20,6 +20,24 @@ distribution = {
     return arrow.hasClass('edit');
   },
 
+  toggle_header_color_area: function(t) {
+    if (t.value == 'pure_color') {
+      jQuery('#distribution-header-bg-color input').each(function(f){
+        $(this).disable();
+      });
+      jQuery('#distribution-header-bg-color div.color-choose').each(function(f){
+        $(this).addClassName('disabled');
+      });
+    }
+    else {
+      jQuery('#distribution-header-bg-color input').each(function(f) {
+        $(this).enable();
+      });
+      jQuery('#distribution-header-bg-color div.color-choose').each(function(f){
+        $(this).removeClassName('disabled');
+      });
+    }
+  },
 
   calculate_price: function (price_input, margin_input, base_price_input) {
     var price = parseFloat(jQuery(price_input).val().replace(',','.'));
@@ -164,19 +182,24 @@ distribution = {
     }
   },
   our_product_add_missing_products: function (context, url) {
+    distribution.setLoading('our-product-add');
     supplier = jQuery('#our-product-add').find('#product_supplier_id');
     jQuery.post(url, jQuery(supplier).serialize(), function() {
     });
+    distribution.unsetLoading('our-product-add');
   },
   our_product_add_change_supplier: function (context, url) {
+    distribution.setLoading('our-product-add');
     jQuery('#our-product-add').load(url, jQuery(context).serialize(), function() {
       distribution.our_product_toggle_edit();
     });
   },
   our_product_add_from_product: function (context, url, data) {
+    distribution.setLoading('our-product-add');
     jQuery('#our-product-add').load(url, data, function() {
       distribution.our_product_toggle_edit();
     });
+    distribution.unsetLoading('our-product-add');
   },
 
   our_product_pmsync: function (context, to_price) {
@@ -445,6 +468,30 @@ distribution = {
     jQuery.colorbox(options);
   },
 
+// block user actions while making a post. Also indicate the network transaction
+  setLoading: function (element) {
+    var pos       = jQuery.extend({
+      width:    jQuery("#"+element).outerWidth(),
+      height:   jQuery("#"+element).outerHeight()
+    }, jQuery("#"+element).position());
+    jQuery('<div>', {
+      id: element + '-overlay',
+      css:   {
+        position:         'absolute',
+        top:              pos.top,
+        left:             pos.left,
+        width:            pos.width,
+        height:           pos.height,
+        backgroundImage:  'url(/plugins/distribution/images/loading.gif)',
+        opacity:          0.90,
+        zIndex:          10
+      }
+      }).appendTo(jQuery("#"+element));
+    },
+
+    unsetLoading: function (element) {
+      jQuery("#"+element+"-overlay").remove();
+    },
 }
 
 /* ----- events  ----- */

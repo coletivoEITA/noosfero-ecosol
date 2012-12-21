@@ -29,6 +29,21 @@ body.plugin-distribution {
 
 /* ----- layout stuff  ----- */
 
+.distribution-enabled .profile-image-block,
+.distribution-enabled .profile-info-block {
+  display: none;
+}
+.distribution-enabled.logged-in .login-block {
+  display: none;
+}
+.distribution-enabled.logged-in .profile-image-block,
+.distribution-enabled.logged-in .profile-info-block {
+  display: block;
+}
+.distribution-enabled.logged-in .profile-info-block h2 {
+  display: none;
+}
+
 .plugin-distribution-layout .page-title,
 .distribution-enabled .page-title {
   display: none !important;
@@ -157,7 +172,7 @@ body.plugin-distribution {
 /* ----- common stuff  ----- */
 
 .controller-profile_editor a.control-panel-distribution-solidary-network {
-  background-image: url(images/distribution-solidary-network.png);
+  background-image: url(/plugins/distribution/images/distribution-solidary-network.png);
 }
 
 .plugin-distribution .cleaner {
@@ -239,7 +254,8 @@ body.plugin-distribution {
   background-color: #666;
 }
 .plugin-distribution a.button.colorbox-close,
-.plugin-distribution input[type=submit] {
+#wrap-1 .plugin-distribution input[type=submit],
+.plugin-distribution #wrap-1 input[type=submit] {
   display: inline-block;
   background: none;
   background-color: #000;
@@ -466,14 +482,6 @@ body.plugin-distribution {
 
 /* ----- not so common stuff  ----- */
 
-.plugin-distribution .product-loading {
-  width: 280px;
-  height: 35px;
-  position: relative;
-  top: -50px;
-  margin-bottom: -35px;
-}
-
 .plugin-distribution #filter-products-loading {
   width: 205px;
   height: 20px;
@@ -481,19 +489,6 @@ body.plugin-distribution {
   left: 235px;
   margin-bottom: -20px;
 }
-.plugin-distribution #confirm-order-loading {
-  width: 350px;
-  height: 40px;
-  position: relative;
-  top: -63px;
-  margin-bottom: -40px;
-}
-.plugin-distribution .order-product-loading {
-  width: 100px;
-  height: 32px;
-  position: relative;
-  top: -52px;
-  margin-bottom: -32px;
 }
 .plugin-distribution .our-product .product-supplier *[disabled],
 .plugin-distribution .our-product-distributed-column *[readOnly],
@@ -714,6 +709,34 @@ body.plugin-distribution {
 
 .plugin-distribution #suppliers-page .supplier-add-link {
   margin: 20px 0;
+}
+
+.plugin-distribution #suppliers-page .supplier form {
+  width: 640px;
+}
+
+.plugin-distribution #suppliers-page .data textarea,
+.plugin-distribution #suppliers-page .data input {
+  width: 100%;
+}
+
+.plugin-distribution #suppliers-page .basic-data,
+.plugin-distribution #suppliers-page .full-data {
+  float: left;
+  width: 290px;
+  margin-right: 30px;
+}
+.plugin-distribution #suppliers-page .estrategic-info {
+  float: right;
+}
+.plugin-distribution #suppliers-page .additional-fields {
+  width: 100%;
+}
+.plugin-distribution #suppliers-page .full-data {
+  display: none;
+}
+.plugin-distribution #suppliers-page .full-registration .full-data {
+  display: block;
 }
 
 /* ----- ends suppliers stuff  ----- */
@@ -1627,7 +1650,9 @@ body.plugin-distribution {
   margin-top: 20px;
 }
 
-.plugin-distribution .orders #session-others,
+.plugin-distribution .orders #session-others {
+  border-bottom: 2px dotted #aaa;
+}
 .plugin-distribution #orders-view .session-with-consumer-orders:last-child {
   border-bottom: 2px dotted #aaa;
 }
@@ -1852,9 +1877,40 @@ body.plugin-distribution {
 
 #distribution-plugin-settings .field {
   width: 360px;
+  margin-top: 5px;
 }
 #distribution-plugin-settings input[type=text] {
   width: 100%;
+}
+
+#distribution-plugin-settings div.color-choose {
+  width: 130px;
+  height: 10px;
+  border: 1px solid rgba(255,255,255,0.3);
+  display: inline-block;
+}
+
+.distribution-enabled .color-purple {
+  background-color: #705496;
+}
+.distribution-enabled .color-yellow {
+  background-color: #f5b900;
+}
+.distribution-enabled .color-beige {
+  background-color: #c4bf66;
+}
+.distribution-enabled .color-blue {
+  background-color: #0094c9;
+}
+.distribution-enabled .color-petro {
+  background-color: #036475;
+}
+.distribution-enabled .color-green {
+  background-color: #4aa133;
+}
+
+.distribution-enabled .disabled {
+  background-color: gray;
 }
 
 /* ----- end settings stuff  ----- */

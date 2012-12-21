@@ -11,7 +11,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
       @quantity_asked = params[:quantity_asked] || 1
       @ordered_product = DistributionPluginOrderedProduct.create! :order_id => @order.id, :session_product_id => @session_product.id, :quantity_asked => @quantity_asked
     else
-      @quantity_asked = params[:quantity_asked].to_f
+      @quantity_asked = params[:quantity_asked].gsub(',','.').to_f
       if @quantity_asked == 0
         @ordered_product.destroy
         render :action => :destroy
