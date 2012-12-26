@@ -70,6 +70,9 @@ body.plugin-distribution {
 /* ----- ends layout stuff  ----- */
 
 /* ----- general stuff  ----- */
+.plugin-distribution .distribution-error-message {
+  color: red;
+}
 .plugin-distribution .distribution-loading {
   background-image: url('images/loading.gif');
   opacity: 0.92;
