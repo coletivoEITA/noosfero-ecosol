@@ -32,25 +32,28 @@
         <%= link_to _("New order"), {:controller => :distribution_plugin_order, :action => :admin_new, :consumer_id => @order.consumer.id, :session_id => @session.id} if @session.orders? %>
       </div>
     <% else %>
-      <div id="order-place-new">
-        <% if @consumer.nil? %>
-          <%= _("To place an order you need to be logged in and registered in the collective.") %>
-          <%= thickbox_inline_popup_link(_('Login.'), login_url, 'inlineLoginBox', :id => 'link_login') %>
-          <% unless @plugins.dispatch(:allow_user_registration).include?(false) %>
-            <%= _('Or ') + link_to(_('sign up'), :controller => 'account', :action => 'signup')%>
-          <% end %>
-        <% else %>
-          <% if @session.orders? %>
-            <% if @consumer_orders.count == 0 %>
-              <%= _("You haven't placed any order on this cycle yet.") %>
-            <% end %>
-          <% elsif @session.edition? %>
-            <%= _("This cycle is not open yet.") %>
-          <% else %>
-            <%= _("This cycle is already closed.") %>
-          <% end %>
+      <% if @consumer.nil? %>
+        <% message = _("To place an order you need to be logged in and registered in the collective.") %>
+        <% message += thickbox_inline_popup_link(_('Login.'), login_url, 'inlineLoginBox', :id => 'link_login') %>
+        <% unless @plugins.dispatch(:allow_user_registration).include?(false) %>
+          <% message += _('Or ') + link_to(_('sign up'), :controller => 'account', :action => 'signup')%>
         <% end %>
-      </div>
+      <% else %>
+        <% if @session.orders? %>
+          <% if @consumer_orders.count == 0 %>
+            <% message = _("You haven't placed any order on this cycle yet.") %>
+          <% end %>
+        <% elsif @session.edition? %>
+          <% message = _("This cycle is not open yet.") %>
+        <% else %>
+          <% message = _("This cycle is already closed.") %>
+        <% end %>
+      <% end %>
+      <% if message %>
+        <div id="order-place-new">
+          <%= message %>
+        </div>
+      <% end %>
     <% end %>
 
     <div class="cleaner"></div>
