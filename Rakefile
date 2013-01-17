@@ -9,4 +9,6 @@ require 'rake/rdoctask'
 
 ACTS_AS_SEARCHABLE_ENABLED = false if Rake.application.top_level_tasks.detect{|t| t == 'db:data:minimal'}
 
+require 'active_support/all'
+ActiveSupport::Deprecation.silenced = true
 require 'tasks/rails'
