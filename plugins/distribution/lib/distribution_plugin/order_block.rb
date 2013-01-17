@@ -9,7 +9,7 @@ class DistributionPlugin::OrderBlock < Block
  end
 
  def self.available_for(profile)
-   node = DistributionPluginNode.find_or_create owner
+   node = DistributionPluginNode.find_or_create profile
    !node.blank? && !node.consumer?
  end
 
