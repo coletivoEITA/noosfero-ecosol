@@ -1,4 +1,7 @@
 <div id="ordered-product-<%=ordered_product.id%>" class="value-row ordered-product" toggleedit="distribution.ordered_product_edit();">
+  <% if @quantity_asked_less_than_minimum and @quantity_asked_less_than_minimum == ordered_product.id %>
+    <div class=distribution-error-message><%= _("This product requires a minimum of #{product.minimum_selleable}. The minimum was kept.") %></div>
+  <% end %>
   <% f.fields_for "ordered_product-#{ordered_product.id}", ordered_product do |f| %>
 
     <%= f.hidden_field :id %>
