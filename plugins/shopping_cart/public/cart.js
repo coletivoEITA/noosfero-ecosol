@@ -11,9 +11,10 @@ function Cart(config) {
   $(".cart-buy", this.cartElem).button({ icons: { primary: 'ui-icon-cart'} });
   if (!this.empty) {
     $(this.cartElem).show();
+    this.enterprise = config.enterprise;
     me = this;
     $.ajax({
-      url: '/plugin/shopping_cart/visibility',
+      url: '/profile/'+ this.enterprise +'/plugin/shopping_cart/visibility',
       dataType: 'json',
       success: function(data, status, ajax){
         me.visible = /^true$/i.test(data);
@@ -24,7 +25,7 @@ function Cart(config) {
         alert('Visibility - HTTP '+status+': '+errorThrown);
       }
     });
-    $(".cart-buy", this.cartElem).colorbox({ href: '/plugin/shopping_cart/buy' });
+    $(".cart-buy", this.cartElem).colorbox({href: '/profile/' + this.enterprise + '/plugin/shopping_cart/buy'});
   }
 }
 
@@ -33,7 +34,7 @@ function Cart(config) {
   Cart.prototype.listProducts = function() {
     var me = this;
     $.ajax({
-      url: '/plugin/shopping_cart/list',
+      url: '/profile/'+ this.enterprise +'/plugin/shopping_cart/list',
       dataType: 'json',
       success: function(data, ststus, ajax){
         if ( !data.ok ) alert(data.error.message);
@@ -60,7 +61,7 @@ function Cart(config) {
         '<span class="item-name">'+ item.name +'</span>' +
         '<div class="item-price">' +
         '<input size="1" value="'+item.quantity+'" />'+ (item.price ? '&times; '+ item.price : '') +'</div>' +
-        ' <a href="remove:'+item.name+'" onclick="Cart.removeItem('+item.id+'); return false"' +
+        ' <a href="remove:'+item.name+'" onclick="Cart.removeItem(\''+this.enterprise+'\', '+item.id+'); return false"' +
         ' class="button icon-remove"><span>remove</span></a>'
        ).appendTo(li);
       var input = $("input", li)[0];
@@ -99,7 +100,7 @@ function Cart(config) {
     var me = this;
     if( quantity == NaN ) return input.value = input.lastValue;
     $.ajax({
-      url: '/plugin/shopping_cart/update_quantity/'+ itemId +'?quantity='+ quantity,
+      url: '/profile/'+ this.enterprise +'/plugin/shopping_cart/update_quantity/'+ itemId +'?quantity='+ quantity,
       dataType: 'json',
       success: function(data, status, ajax){
         if ( !data.ok ) {
@@ -131,7 +132,8 @@ function Cart(config) {
     this.updateTotal();
   }
 
-  Cart.addItem = function(itemId, link) {
+  Cart.addItem = function(enterprise, itemId, link) {
+    // on the future, the instance may be found by the enterprise identifier.
     link.intervalId = setInterval(function() {
       steps = ['w', 'n', 'e', 's'];
       if( !link.step || link.step==3 ) link.step = 0;
@@ -142,13 +144,18 @@ function Cart(config) {
       clearInterval(link.intervalId);
       $(link).button({ icons: { primary: 'ui-icon-cart'}, disable: false });
     };
-    this.instance.addItem(itemId, stopBtLoading);
+    this.instance.addItem(enterprise, itemId, stopBtLoading);
   }
 
-  Cart.prototype.addItem = function(itemId, callback) {
+  Cart.prototype.addItem = function(enterprise, itemId, callback) {
+    if(!this.enterprise) {
+      this.enterprise = enterprise;
+      $(".cart-buy", this.cartElem).colorbox({href: '/profile/' + this.enterprise + '/plugin/shopping_cart/buy'});
+//      $(this.cartElem).show();
+    }
     var me = this;
     $.ajax({
-      url: '/plugin/shopping_cart/add/'+ itemId,
+      url: '/profile/'+ enterprise +'/plugin/shopping_cart/add/'+ itemId,
       dataType: 'json',
       success: function(data, status, ajax){
         if ( !data.ok ) alert(data.error.message);
@@ -162,16 +169,16 @@ function Cart(config) {
     });
   }
 
-  Cart.removeItem = function(itemId) {
+  Cart.removeItem = function(enterprise, itemId) {
     var message = this.instance.cartElem.getAttribute('data-l10nRemoveItem');
-    if( confirm(message) ) this.instance.removeItem(itemId);
+    if( confirm(message) ) this.instance.removeItem(enterprise, itemId);
   }
 
-  Cart.prototype.removeItem = function(itemId) {
+  Cart.prototype.removeItem = function(enterprise, itemId) {
     if ($("li", this.itemsBox).size() < 2) return this.clean();
     var me = this;
     $.ajax({
-      url: '/plugin/shopping_cart/remove/'+ itemId,
+      url: '/profile/'+ enterprise +'/plugin/shopping_cart/remove/'+ itemId,
       dataType: 'json',
       success: function(data, status, ajax){
         if ( !data.ok ) alert(data.error.message);
@@ -193,7 +200,7 @@ function Cart(config) {
 
   Cart.prototype.show = function() {
     $.ajax({
-      url: '/plugin/shopping_cart/show',
+      url: '/profile/'+ this.enterprise +'/plugin/shopping_cart/show',
       dataType: 'json',
       cache: false,
       error: function(ajax, status, errorThrown) {
@@ -208,7 +215,7 @@ function Cart(config) {
   }
   Cart.prototype.hide = function() {
     $.ajax({
-      url: '/plugin/shopping_cart/hide',
+      url: '/profile/'+ this.enterprise +'/plugin/shopping_cart/hide',
       dataType: 'json',
       cache: false,
       error: function(ajax, status, errorThrown) {
@@ -245,7 +252,7 @@ function Cart(config) {
   Cart.prototype.clean = function() {
     var me = this;
     $.ajax({
-      url: '/plugin/shopping_cart/clean',
+      url: '/profile/'+ me.enterprise +'/plugin/shopping_cart/clean',
       dataType: 'json',
       success: function(data, status, ajax){
         if ( !data.ok ) alert(data.error.message);
@@ -254,6 +261,7 @@ function Cart(config) {
           $(me.cartElem).slideUp(500, function() {
             $(me.itemsBox).empty();
             me.hide();
+            me.enterprise = null;
             me.updateTotal();
             me.empty = true;
           });
@@ -276,7 +284,7 @@ function Cart(config) {
     var me = this;
     $.ajax({
       type: 'POST',
-      url: '/plugin/shopping_cart/send_request',
+      url: '/profile/'+ me.enterprise +'/plugin/shopping_cart/send_request',
       data: params,
       dataType: 'json',
       success: function(data, status, ajax){
@@ -301,19 +309,7 @@ function Cart(config) {
   }
 
   $(function(){
-
-    $.ajax({
-      url: "/plugin/shopping_cart/get",
-      dataType: 'json',
-      success: function(data) {
-        new Cart(data);
-        $('.cart-add-item').button({ icons: { primary: 'ui-icon-cart'} })
-      },
-      cache: false,
-      error: function(ajax, status, errorThrown) {
-        alert('Error getting shopping cart - HTTP '+status+': '+errorThrown);
-      }
-    });
+    $('.cart-add-item').button({ icons: { primary: 'ui-icon-cart'} })
   });
 
 })(jQuery);

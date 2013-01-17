@@ -1,7 +1,5 @@
 class ShoppingCartPlugin::Mailer < Noosfero::Plugin::MailerBase
 
-  include ShoppingCartPlugin::CartHelper
-
   def customer_notification(customer, supplier, items)
     domain = supplier.hostname || supplier.environment.default_hostname
     recipients    customer[:email]
@@ -12,8 +10,7 @@ class ShoppingCartPlugin::Mailer < Noosfero::Plugin::MailerBase
     body :customer => customer,
          :supplier => supplier,
          :items => items,
-         :environment => supplier.environment,
-         :helper => self
+         :environment => supplier.environment
   end
 
   def supplier_notification(customer, supplier, items)
@@ -26,8 +23,6 @@ class ShoppingCartPlugin::Mailer < Noosfero::Plugin::MailerBase
     body :customer => customer,
          :supplier => supplier,
          :items => items,
-         :environment => supplier.environment,
-         :helper => self
-
+         :environment => supplier.environment
   end
 end

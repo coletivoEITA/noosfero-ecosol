@@ -23,8 +23,10 @@ public/user_themes
 public/designs/themes/default
 public/designs/themes/*
 public/designs/icons/default
-public/javascripts/cache*
-public/stylesheets/cache*
+public/javascripts/cache
+public/javascripts/cache*.js
+public/stylesheets/cache
+public/stylesheets/cache*.css
 public/plugins
 db/development.db
 db/production.db

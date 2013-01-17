@@ -74,10 +74,6 @@ class Comment < ActiveRecord::Base
     self.find(:all, :order => 'created_at desc, id desc', :limit => limit)
   end
 
-  def notification_emails
-    self.article.profile.notification_emails - [self.author_email || self.email]
-  end
-
   after_save :notify_article
   after_destroy :notify_article
   def notify_article
@@ -118,7 +114,7 @@ class Comment < ActiveRecord::Base
 
   def notify_by_mail
     if source.kind_of?(Article) && article.notify_comments?
-      if !notification_emails.empty?
+      if !article.profile.notification_emails.empty?
         Comment::Notifier.deliver_mail(self)
       end
       emails = article.followers - [author_email]
@@ -178,7 +174,7 @@ class Comment < ActiveRecord::Base
   class Notifier < ActionMailer::Base
     def mail(comment)
       profile = comment.article.profile
-      recipients comment.notification_emails
+      recipients profile.notification_emails
       from "#{profile.environment.name} <#{profile.environment.contact_email}>"
       subject _("[%s] you got a new comment!") % [profile.environment.name]
       body :recipient => profile.nickname || profile.name,

@@ -1,7 +1,6 @@
 module ShoppingCartPlugin::CartHelper
 
   include ActionView::Helpers::NumberHelper
-  include ActionView::Helpers::TagHelper
 
   def sell_price(product)
     return 0 if product.price.nil?
