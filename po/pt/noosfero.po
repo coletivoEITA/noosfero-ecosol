@@ -9,7 +9,6 @@
 # Joenio Costa <joenio@colivre.coop.br>, 2008.
 #
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: noosfero 0.39.0~1\n"
@@ -6990,7 +6989,7 @@ msgstr "Nuvem de marcadores"
 
 #: app/views/search/_facets_unselect_menu.rhtml:3
 msgid "Applied filters"
-msgstr "Aplicar filtros"
+msgstr "Filtros aplicados"
 
 #: app/views/search/_image.rhtml:35 app/views/search/_image.rhtml:47
 #: app/views/catalog/index.rhtml:20
@@ -13581,7 +13580,6 @@ msgstr "Mudar"
 #~ msgid "Anyone online"
 #~ msgstr "Ninguém online"
 
-#, fuzzy
 #~ msgid "You are already a member of %s"
 #~ msgstr "Você já é integrante de \"%s\""
 
@@ -13617,7 +13615,6 @@ msgstr "Mudar"
 #~ msgid "Welcome, %s."
 #~ msgstr "Bem-vindo(a), %s"
 
-#, fuzzy
 #~ msgid "Chat offline"
 #~ msgstr "Criar papel"
 
@@ -13670,15 +13667,12 @@ msgstr "Mudar"
 #~ msgid "People more active"
 #~ msgstr "Pessoas mais ativas"
 
-#, fuzzy
 #~ msgid "People more popular"
 #~ msgstr "{#} Pessoas ou Grupos"
 
-#, fuzzy
 #~ msgid "Communities more recent"
 #~ msgstr "Comunidades"
 
-#, fuzzy
 #~ msgid "Communities more popular"
 #~ msgstr "Comunidades"
 
