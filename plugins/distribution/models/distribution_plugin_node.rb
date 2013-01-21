@@ -29,7 +29,6 @@ class DistributionPluginNode < ActiveRecord::Base
   has_many :sessions_custom_order, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy,
     :conditions => ["distribution_plugin_sessions.status <> 'new'"]
 
-  validates_associated :profile
   validates_presence_of :profile
   validates_inclusion_of :role, :in => ['supplier', 'collective', 'consumer']
   validates_numericality_of :margin_percentage, :allow_nil => true
