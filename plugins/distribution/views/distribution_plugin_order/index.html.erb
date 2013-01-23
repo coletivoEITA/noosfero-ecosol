@@ -7,6 +7,11 @@
     <% end %>
   </div>
 
+  <% if @sessions.blank? %>
+    <div>
+      <%= _("There's no open session") %>
+    </div>
+  <% end %>
   <% @sessions.each do |session| %>
     <div class="session-with-consumer-orders">
       <h3>
