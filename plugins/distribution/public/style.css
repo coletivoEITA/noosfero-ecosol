@@ -986,7 +986,7 @@ body.plugin-distribution {
   -moz-transition: all 0.2s ease-in-out;
   */
 }
-.plugin-distribution .ordered-product .box-field {
+.plugin-distribution .ordered-product .box-field.product-quantity {
   height: 24px;
   white-space: nowrap;
   overflow: hidden;
