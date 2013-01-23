@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noosfero 0.39.0\n"
 "POT-Creation-Date: 2012-12-10 23:39-0200\n"
-"PO-Revision-Date: 2012-12-12 17:11-0200\n"
+"PO-Revision-Date: 2013-01-23 18:00-0200\n"
 "Last-Translator: Joenio Costa <joenio@colivre.coop.br>\n"
 "Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
 "Language: \n"
@@ -4660,7 +4660,7 @@ msgstr "Clique nesse ícone para ir para a página inicial de <b>%s</b>"
 #: app/helpers/application_helper.rb:637
 #: plugins/distribution/views/distribution_plugin_order/_status.html.erb:6
 msgid "open"
-msgstr "aberto"
+msgstr "abrir"
 
 #: app/helpers/application_helper.rb:672
 #: app/views/layouts/application-ng.rhtml:73
@@ -10632,7 +10632,7 @@ msgstr "Produto de que fornecedor?"
 #: plugins/distribution/lib/distribution_plugin/order_block.rb:4
 #: plugins/distribution/views/distribution_plugin_order/index.html.erb:2
 msgid "Orders' cycles"
-msgstr "Ciclo de pedidos"
+msgstr "Ciclos de pedidos"
 
 #: plugins/distribution/lib/distribution_plugin/order_block.rb:8
 msgid "Distribution orders' cycles for members"
