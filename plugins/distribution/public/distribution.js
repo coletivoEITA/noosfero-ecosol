@@ -21,7 +21,7 @@ distribution = {
   },
 
   toggle_header_color_area: function(t) {
-    if (t.value == 'pure_color') {
+    if (t.value != 'pure_color') {
       jQuery('#distribution-header-bg-color input').each(function(f){
         $(this).disable();
       });
