@@ -1,2 +1,2 @@
-page << "jQuery('#filter-form').submit()"
-distribution.unsetLoading('our-product-add');
+page << "jQuery('#filter-form').submit();"
+page << "distribution.unsetLoading('our-product-add');"
