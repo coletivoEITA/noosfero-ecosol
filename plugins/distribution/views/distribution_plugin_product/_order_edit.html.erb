@@ -62,12 +62,14 @@
   </div>
 
   <div class="box-field quantity">
-    <% product.unit_detail.blank? ? detail = " (#{product.unit_detail})" : detail = "" %>
+    <% product.unit_detail.blank? ? detail = "" : detail = " (#{product.unit_detail})"%>
     <span class="unit"><%= product.unit.singular + detail %></span>
 
-    <div class="product-image">
-      <%= _('Product Image'); %>
-    </div>
+    <% if false # by now, it has no way to submit images %>
+      <div class="product-image">
+        <%= _('Product Image'); %>
+      </div>
+    <% end %>
 
     <% if editable %>
       <%= submit_to_function (ordered_product ? _('Change') : _('Add')), "distribution.setLoading('session-product-#{product.id}'); jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}',
