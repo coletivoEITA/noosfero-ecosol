@@ -1480,7 +1480,6 @@ body.plugin-distribution {
 }
 .plugin-distribution .session-view #session-products-for-order .value-row.edit { 
   background-color: #ffe546; 
-  height: 260px;
   border: 1px solid black;
   border-radius: 5px;
   -moz-border-radius: 5px;
@@ -1516,7 +1515,7 @@ body.plugin-distribution {
   width: 140px;
 }
 .plugin-distribution .session-view #session-products-for-order .box-field.product-info {
-  height: 218px;
+  min-height: 80px;
   width: 330px;
   position: relative;
 }
@@ -1582,9 +1581,6 @@ body.plugin-distribution {
   float: right;
 }
 
-.plugin-distribution .session-view #session-products-for-order .box-edit  {
-  height: 120px;
-}
 .plugin-distribution .session-view #session-products-for-order .box-edit .product-image {
   height: 100px;
   margin-bottom: 26px;
