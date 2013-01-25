@@ -73,6 +73,17 @@ body.plugin-distribution {
 .plugin-distribution .distribution-error-message {
   color: red;
 }
+.plugin-distribution .distribution-product-errors {
+  color: red;
+  background-color: white;
+}
+.plugin-distribution .distribution-product-errors > div {
+  border: 1px solid gray;
+  padding-left: 10px;
+}
+.plugin-distribution #product-errors, .plugin-distribution #supplier-product-errors ul {
+}
+
 .plugin-distribution .distribution-loading {
   background-image: url('images/loading.gif');
   opacity: 0.92;
