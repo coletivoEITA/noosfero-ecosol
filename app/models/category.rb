@@ -97,15 +97,7 @@ class Category < ActiveRecord::Base
   end
 
   def children_for_menu
-    results = []
-    pending = children.find(:all, :conditions => { :display_in_menu => true})
-    while !pending.empty?
-      cat = pending.shift
-      results << cat
-      pending += cat.children.find(:all, :conditions => { :display_in_menu => true} )
-    end
-
-    results
+    self.descendents.all :conditions => {:display_in_menu => true}, :order => 'path asc'
   end
 
   def is_leaf_displayable_in_menu?
