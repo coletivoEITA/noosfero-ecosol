@@ -1908,7 +1908,7 @@ body.plugin-distribution {
   background-color: #4aa133;
 }
 
-.distribution-enabled .disabled {
+.distribution-enabled #distribution-plugin-settings .disabled {
   background-color: gray;
 }
 
