@@ -100,15 +100,16 @@ class ShoppingCartPluginController < PublicController
   def buy
     @cart = cart
     @enterprise = environment.enterprises.find(cart[:enterprise_id])
+    @settings = Noosfero::Plugin::Settings.new(@enterprise, ShoppingCartPlugin)
     render :layout => false
   end
 
   def send_request
     register_order(params[:customer], self.cart[:items])
     begin
-      enterprise = Enterprise.find(cart[:enterprise_id])
-      ShoppingCartPlugin::Mailer.deliver_customer_notification(params[:customer], enterprise, self.cart[:items])
-      ShoppingCartPlugin::Mailer.deliver_supplier_notification(params[:customer], enterprise, self.cart[:items])
+      enterprise = environment.enterprises.find(cart[:enterprise_id])
+      ShoppingCartPlugin::Mailer.deliver_customer_notification(params[:customer], enterprise, self.cart[:items], params[:delivery_option])
+      ShoppingCartPlugin::Mailer.deliver_supplier_notification(params[:customer], enterprise, self.cart[:items], params[:delivery_option])
       self.cart = nil
       render :text => {
         :ok => true,
@@ -166,6 +167,25 @@ class ShoppingCartPluginController < PublicController
         }
       }.to_json
     end
+  end
+
+  def update_delivery_option
+    enterprise = environment.enterprises.find(cart[:enterprise_id])
+    settings = Noosfero::Plugin::Settings.new(enterprise, ShoppingCartPlugin)
+    delivery_price = settings.delivery_options[params[:delivery_option]]
+    delivery = Product.new(:name => params[:delivery_option], :price => delivery_price)
+    delivery.save(false)
+    items = self.cart[:items].clone
+    items[delivery.id] = 1
+    total_price = get_total_on_currency(items, environment)
+    delivery.destroy
+    render :text => {
+      :ok => true,
+      :delivery_price => float_to_currency_cart(delivery_price, environment),
+      :total_price => total_price,
+      :message => _('Delivery option updated.'),
+      :error => {:code => 0}
+    }.to_json
   end
 
   private
@@ -254,10 +274,14 @@ class ShoppingCartPluginController < PublicController
       :customer => user,
       :status => ShoppingCartPlugin::PurchaseOrder::Status::OPENED,
       :products_list => new_items,
+      :customer_delivery_option => params[:delivery_option],
+      :customer_payment => params[:customer][:payment],
+      :customer_change => params[:customer][:change],
       :customer_name => params[:customer][:name],
       :customer_email => params[:customer][:email],
       :customer_contact_phone => params[:customer][:contact_phone],
       :customer_address => params[:customer][:address],
+      :customer_district => params[:customer][:district],
       :customer_city => params[:customer][:city],
       :customer_zip_code => params[:customer][:zip_code]
     )
