@@ -5,20 +5,26 @@
   <%= labelled_field(f, :name, _('Name'), f.text_field(:name), :class => 'session-field-name') %>
   <%= labelled_field(f, :description, _('Description'), f.text_area(:description), :class => 'session-field-description') %>
 
-  <%= labelled_period_field(f, :start, :finish, _('Orders period'), :class => 'session-orders-period') %>
-  <%= labelled_period_field(f, :delivery_start, :delivery_finish, _('Delivery period'), :class => 'session-orders-period') %>
+  <div class="session-fields-block">
+    <%= labelled_period_field(f, :start, :finish, _('Orders'), :class => 'session-orders-period') %>
+  </div>
+  <div class="session-fields-block">
+    <%= labelled_period_field(f, :delivery_start, :delivery_finish, _('Deliveries'), :class => 'session-orders-period') %>
+  </div>
 
-  <div id='session-delivery' class="field">
-    <%= f.label(:delivery_methods, _('Available delivery methods')) %>
+  <div class="session-fields-block">
+    <div id='session-delivery' class="field">
+      <%= f.label(:delivery_methods, _('Available delivery methods')) %>
 
-    <div>
-      <div id='session-delivery-options' class="subtitle">
-        <%= render :partial => 'distribution_plugin_delivery_option/index' %>
+      <div>
+        <div id='session-delivery-options' class="subtitle">
+          <%= render :partial => 'distribution_plugin_delivery_option/index' %>
+        </div>
+        <%= colorbox_link_to _('Add method'), { :controller => :distribution_plugin_delivery_option, :action => "select", :session_id => @session.id }, :class => 'session-add-delivery-option subtitle'  %>
       </div>
-      <%= colorbox_link_to _('Add method'), { :controller => :distribution_plugin_delivery_option, :action => "select", :session_id => @session.id }, :class => 'session-add-delivery-option subtitle'  %>
-    </div>
 
-    <div class="cleaner"></div>
+      <div class="cleaner"></div>
+    </div>
   </div>
 
   <%= f.submit @session.new? ? _('Create new cycle') : _('Save'), :onclick => 'saveClick = true' %>

@@ -833,6 +833,10 @@ body.plugin-distribution {
   margin: 20px 0;
 }
 
+.plugin-distribution .session-fields-block {
+  margin: 10px 0;
+}
+
 .plugin-distribution .session-orders {
   margin-bottom: 20px;
 }
