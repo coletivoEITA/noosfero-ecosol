@@ -57,7 +57,12 @@ class DistributionPluginSupplier < ActiveRecord::Base
     end
   end
 
-  alias_method :destroy!, :destroy
+  alias_method :destroy_orig, :destroy
+  def destroy!
+    supplied_products.each{ |p| p.destroy! }
+    destroy_orig
+  end
+
   # FIXME: inactivate instead of deleting
   def destroy
     if node.dummy?
