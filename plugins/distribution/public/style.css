@@ -1616,6 +1616,19 @@ body.plugin-distribution {
 
 /* ----- session date stuff  ----- */
 
+.plugin-distribution #session-new-mail-send {
+  margin-bottom: 0;
+}
+
+.plugin-distribution #session-new-mail label {
+  font-weight: bold;
+}
+
+.plugin-distribution #session-new-mail .mail-message {
+  margin-top: 10px;
+}
+
+
 .plugin-distribution #session-dates th {
   width: 80px;
   vertical-align: top;

@@ -27,6 +27,17 @@
     </div>
   </div>
 
+  <div id="session-new-mail">
+    <%= check_box_tag('sendmail', 'yes', true, :id => 'session-new-mail-send') %>
+    <%= content_tag('label', _('Notify members of open orders'), :for => 'sendmail') %>
+
+    <div class='mail-message'>
+      <%= f.label(:sendmail, _('Opening Message')) %>
+      <div><%=_('This message will be sent by mail for the collective consumers') %></div>
+      <%= f.text_area(:opening_message) %>
+    </div>
+    <%= observe_field 'session-new-mail-send', :on => 'click', :function => "distribution.session_mail_message_toggle()" %>
+  </div>
   <%= f.submit @session.new? ? _('Create new cycle') : _('Save'), :onclick => 'saveClick = true' %>
   <%= link_to _('cancel changes'), @session.new? ? {:action => :index} : params %>
 <% end %>
