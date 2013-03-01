@@ -125,6 +125,8 @@ class DistributionPluginNode < ActiveRecord::Base
     supplier.remove_consumer self
   end
   def add_consumer(consumer_node)
+    return if has_consumer_node? consumer_node
+
     consumer_node.affiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
     supplier = DistributionPluginSupplier.create!(:node => self, :consumer => consumer_node) || suppliers.from_node(consumer_node)
 

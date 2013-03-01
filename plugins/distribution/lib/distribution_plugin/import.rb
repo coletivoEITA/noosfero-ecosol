@@ -35,9 +35,10 @@ class DistributionPlugin::Import
         address = "#{row[7]} - #{row[8]}"
         profile_data = {:name => name, :zip_code => row[4], :city => row[5], :contact_phone => row[6], :address => address}
 
-        User.send :define_method, :delay_activation_check do
-          puts 'ia mandar email mas nao vou mais'
-        end
+        p = proc{ puts 'ia mandar email mas nao vou mais' }
+        User.send :define_method, :activate, &p
+        User.send :define_method, :deliver_activation_code, &p
+        User.send :define_method, :delay_activation_check, &p
         u = User.new(:login => login, :email => email, :password => pass, :password_confirmation => pass, :terms_accepted => "1")
         u.terms_of_use = environment.terms_of_use
         u.environment = environment
@@ -51,6 +52,10 @@ class DistributionPlugin::Import
         owner_role = Role.find_by_name('owner')
         u.person.affiliate(u.person, [owner_role]) if owner_role
       end
+
+      consumer = DistributionPluginNode.find_or_create u.person
+      node.profile.add_member u.person
+      node.add_consumer consumer
     end
 
     id_s = {}
