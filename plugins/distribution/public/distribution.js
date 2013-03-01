@@ -350,6 +350,15 @@ distribution = {
   session_product_edit: function () {
     distribution.editing().find('.box-edit').toggle(distribution.isEditing());
   },
+  session_mail_message_toggle: function () {
+    if ($('session-new-mail-send').checked) {
+      jQuery('#session-new-mail').removeClass('disabled');
+      jQuery('#session-new-mail textarea').removeAttr('disabled');
+    } else {
+      jQuery('#session-new-mail').addClass('disabled');
+      jQuery('#session-new-mail textarea').attr('disabled', true);
+    }
+  },
   order_session_product_toggle: function () {
     distribution.editing().find('.box-edit').toggle(distribution.isEditing());
     distribution.editing().find('.quantity-label').toggle(!distribution.isEditing());
