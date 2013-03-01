@@ -26,6 +26,8 @@
             <%= product.own? ? _("Own product") : _("How we distribute the product") %>
           </div>
 
+          <div id=product-errors-<%=product.new_record? ? 'add' : product.id%> class=distribution-product-errors></div>
+
           <div class="properties-block">
             <%= labelled_field f, :name, _('Name'), f.text_field(:name, :oldvalue => product.own_name) %>
             <%= labelled_field f, :description, _('Description'), f.text_area(:description, :oldvalue => product.own_description) %>
@@ -131,6 +133,9 @@
 
           <div class="our-product-supplied-column alignment2x <%= "dummy-product" if product.dummy? %>">
             <div class="column-title"><%= _("How we order the product") %></div>
+
+            <div id=supplier-product-errors-<%=product.new_record? ? 'add' : product.id%> class=distribution-product-errors></div>
+
             <% f.fields_for :supplier_product, product.supplier_product do |f| %>
               <% if product.dummy? %>
                 <div class="properties-block subtitle">

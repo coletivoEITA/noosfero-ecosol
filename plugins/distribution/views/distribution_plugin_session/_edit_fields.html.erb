@@ -5,22 +5,39 @@
   <%= labelled_field(f, :name, _('Name'), f.text_field(:name), :class => 'session-field-name') %>
   <%= labelled_field(f, :description, _('Description'), f.text_area(:description), :class => 'session-field-description') %>
 
-  <%= labelled_period_field(f, :start, :finish, _('Orders period'), :class => 'session-orders-period') %>
-  <%= labelled_period_field(f, :delivery_start, :delivery_finish, _('Delivery period'), :class => 'session-orders-period') %>
-
-  <div id='session-delivery' class="field">
-    <%= f.label(:delivery_methods, _('Available delivery methods')) %>
-
-    <div>
-      <div id='session-delivery-options' class="subtitle">
-        <%= render :partial => 'distribution_plugin_delivery_option/index' %>
-      </div>
-      <%= colorbox_link_to _('Add method'), { :controller => :distribution_plugin_delivery_option, :action => "select", :session_id => @session.id }, :class => 'session-add-delivery-option subtitle'  %>
-    </div>
-
-    <div class="cleaner"></div>
+  <div class="session-fields-block">
+    <%= labelled_period_field(f, :start, :finish, _('Orders'), :class => 'session-orders-period') %>
+  </div>
+  <div class="session-fields-block">
+    <%= labelled_period_field(f, :delivery_start, :delivery_finish, _('Deliveries'), :class => 'session-orders-period') %>
   </div>
 
+  <div class="session-fields-block">
+    <div id='session-delivery' class="field">
+      <%= f.label(:delivery_methods, _('Available delivery methods')) %>
+
+      <div>
+        <div id='session-delivery-options' class="subtitle">
+          <%= render :partial => 'distribution_plugin_delivery_option/index' %>
+        </div>
+        <%= colorbox_link_to _('Add method'), { :controller => :distribution_plugin_delivery_option, :action => "select", :session_id => @session.id }, :class => 'session-add-delivery-option subtitle'  %>
+      </div>
+
+      <div class="cleaner"></div>
+    </div>
+  </div>
+
+  <div id="session-new-mail">
+    <%= check_box_tag('sendmail', 'yes', true, :id => 'session-new-mail-send') %>
+    <%= content_tag('label', _('Notify members of open orders'), :for => 'sendmail') %>
+
+    <div class='mail-message'>
+      <%= f.label(:sendmail, _('Opening Message')) %>
+      <div><%=_('This message will be sent by mail for the collective consumers') %></div>
+      <%= f.text_area(:opening_message) %>
+    </div>
+    <%= observe_field 'session-new-mail-send', :on => 'click', :function => "distribution.session_mail_message_toggle()" %>
+  </div>
   <%= f.submit @session.new? ? _('Create new cycle') : _('Save'), :onclick => 'saveClick = true' %>
   <%= link_to _('cancel changes'), @session.new? ? {:action => :index} : params %>
 <% end %>

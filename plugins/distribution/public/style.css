@@ -73,6 +73,17 @@ body.plugin-distribution {
 .plugin-distribution .distribution-error-message {
   color: red;
 }
+.plugin-distribution .distribution-product-errors {
+  color: red;
+  background-color: white;
+}
+.plugin-distribution .distribution-product-errors > div {
+  border: 1px solid gray;
+  padding-left: 10px;
+}
+.plugin-distribution #product-errors, .plugin-distribution #supplier-product-errors ul {
+}
+
 .plugin-distribution .distribution-loading {
   background-image: url('images/loading.gif');
   opacity: 0.92;
@@ -822,6 +833,10 @@ body.plugin-distribution {
   margin: 20px 0;
 }
 
+.plugin-distribution .session-fields-block {
+  margin: 10px 0;
+}
+
 .plugin-distribution .session-orders {
   margin-bottom: 20px;
 }
@@ -986,7 +1001,7 @@ body.plugin-distribution {
   -moz-transition: all 0.2s ease-in-out;
   */
 }
-.plugin-distribution .ordered-product .box-field {
+.plugin-distribution .ordered-product .box-field.product-quantity {
   height: 24px;
   white-space: nowrap;
   overflow: hidden;
@@ -1480,7 +1495,6 @@ body.plugin-distribution {
 }
 .plugin-distribution .session-view #session-products-for-order .value-row.edit { 
   background-color: #ffe546; 
-  height: 260px;
   border: 1px solid black;
   border-radius: 5px;
   -moz-border-radius: 5px;
@@ -1516,7 +1530,7 @@ body.plugin-distribution {
   width: 140px;
 }
 .plugin-distribution .session-view #session-products-for-order .box-field.product-info {
-  height: 218px;
+  min-height: 80px;
   width: 330px;
   position: relative;
 }
@@ -1582,9 +1596,6 @@ body.plugin-distribution {
   float: right;
 }
 
-.plugin-distribution .session-view #session-products-for-order .box-edit  {
-  height: 120px;
-}
 .plugin-distribution .session-view #session-products-for-order .box-edit .product-image {
   height: 100px;
   margin-bottom: 26px;
@@ -1604,6 +1615,19 @@ body.plugin-distribution {
 /* ----- ends session view stuff  ----- */
 
 /* ----- session date stuff  ----- */
+
+.plugin-distribution #session-new-mail-send {
+  margin-bottom: 0;
+}
+
+.plugin-distribution #session-new-mail label {
+  font-weight: bold;
+}
+
+.plugin-distribution #session-new-mail .mail-message {
+  margin-top: 10px;
+}
+
 
 .plugin-distribution #session-dates th {
   width: 80px;
@@ -1912,7 +1936,7 @@ body.plugin-distribution {
   background-color: #4aa133;
 }
 
-.distribution-enabled .disabled {
+.distribution-enabled #distribution-plugin-settings .disabled {
   background-color: gray;
 }
 

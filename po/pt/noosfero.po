@@ -11586,6 +11586,9 @@ msgstr "Código do Pedido"
 msgid "Member name"
 msgstr "Nome do Membro"
 
+#~ msgid "Edit Inactive Enterprise Template"
+#~ msgstr "Editar Modelo de Empreendimento inativo"
+
 #: plugins/distribution/lib/distribution_plugin/report.rb:127
 msgid "Total Value"
 msgstr "total pago"
@@ -11613,11 +11616,6 @@ msgstr "Valor"
 #: plugins/distribution/lib/distribution_plugin/distribution_product_helper.rb:14
 msgid "Product from which supplier?"
 msgstr "Produto de que fornecedor?"
-
-#: plugins/distribution/lib/distribution_plugin/order_block.rb:4
-#: plugins/distribution/views/distribution_plugin_order/index.html.erb:2
-msgid "Orders' cycles"
-msgstr "Ciclo de pedidos"
 
 #: plugins/distribution/lib/distribution_plugin/order_block.rb:8
 msgid "Distribution orders' cycles for members"
@@ -11759,6 +11757,9 @@ msgstr "Início de Entrega"
 #: plugins/distribution/models/distribution_plugin_node.rb:-
 msgid "Delivery finish"
 msgstr "Fim de entrega"
+
+#~ msgid "Listing sellers of %s witin %s km from %s %s"
+#~ msgstr "Listando vendedores de %s dentro de %s km de %s %s"
 
 #: plugins/distribution/models/distribution_plugin_node.rb:-
 msgid "distribution plugin order"
@@ -13052,6 +13053,9 @@ msgstr "Mudar"
 #~ msgid "Remove this comment and all its replies"
 #~ msgstr "Remover este comentário e todas as suas respostas"
 
+#~ msgid "Option"
+#~ msgstr "Opção"
+
 #~ msgid "What's new"
 #~ msgstr "Novidades"
 
@@ -13111,6 +13115,9 @@ msgstr "Mudar"
 #~ "adicionou 1 imagem:<br />%{thumbnails}<br style=\"clear: both;\" />"
 #~ msgstr[1] ""
 #~ "adicionou %{num} imagens:<br />%{thumbnails}<br style=\"clear: both;\" />"
+
+#~ msgid "Usp"
+#~ msgstr "Usp"
 
 #~ msgid "Edit Inactive Enterprise Template"
 #~ msgstr "Editar Modelo de Empreendimento inativo"
@@ -13180,6 +13187,9 @@ msgstr "Mudar"
 
 #~ msgid "product categorization"
 #~ msgstr "categorização do produto"
+
+#~ msgid "There is no categories."
+#~ msgstr "Não há categorias."
 
 #~ msgid "Listing sellers of %s witin %s km from %s %s"
 #~ msgstr "Listando vendedores de %s dentro de %s km de %s %s"

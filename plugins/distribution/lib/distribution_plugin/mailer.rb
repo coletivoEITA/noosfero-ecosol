@@ -97,6 +97,19 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
          :environment => node.profile.environment
   end
 
+  def open_session(node, session, subject, message)
+    domain = node.profile.hostname || node.profile.environment.default_hostname
+    recipients    community_members(node.profile)
+    from          'no-reply@' + domain
+    reply_to      profile_recipients(node.profile)
+    subject       _("[%{node}] %{subject}") % {:node => node.name, :subject => subject}
+    content_type  'text/html'
+    body :node => node,
+         :session => session,
+         :message => message,
+         :environment => node.profile.environment
+  end
+
   private
 
   def profile_recipients(profile)
@@ -107,4 +120,9 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
     end
   end
 
+  def community_members(profile)
+    if profile.community?
+      profile.members.map{ |p| p.contact_email }
+    end
+  end
 end

@@ -24,6 +24,10 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
       @success = @session.update_attributes params[:session]
       if @success
         session[:notice] = _('Cycle created')
+        if params[:sendmail]
+          DistributionPlugin::Mailer.delay(:run_at => @session.start).deliver_open_session @session.node,
+            @session,_('New open cycle: ')+@session.name, @session.opening_message
+        end
         render :partial => 'new'
       else
         render :partial => 'edit'

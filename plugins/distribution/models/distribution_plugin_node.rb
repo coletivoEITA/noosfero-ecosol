@@ -29,7 +29,6 @@ class DistributionPluginNode < ActiveRecord::Base
   has_many :sessions_custom_order, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy,
     :conditions => ["distribution_plugin_sessions.status <> 'new'"]
 
-  validates_associated :profile
   validates_presence_of :profile
   validates_inclusion_of :role, :in => ['supplier', 'collective', 'consumer']
   validates_numericality_of :margin_percentage, :allow_nil => true
@@ -126,6 +125,8 @@ class DistributionPluginNode < ActiveRecord::Base
     supplier.remove_consumer self
   end
   def add_consumer(consumer_node)
+    return if has_consumer_node? consumer_node
+
     consumer_node.affiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
     supplier = DistributionPluginSupplier.create!(:node => self, :consumer => consumer_node) || suppliers.from_node(consumer_node)
 

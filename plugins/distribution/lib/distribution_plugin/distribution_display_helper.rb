@@ -97,9 +97,10 @@ module DistributionPlugin::DistributionDisplayHelper
       options
   end
 
-  def price_with_unit_span(price, unit)
+  def price_with_unit_span(price, unit, detail="")
     return nil if price.blank?
-    _("%{price}%{unit}") % {:price => price_span(price), :unit => content_tag('span', _('/') + unit.singular, :class => 'price-unit')}
+    detail = " (#{detail})" unless detail.blank?
+    _("%{price}%{unit}") % {:price => price_span(price), :unit => content_tag('span', _('/') + unit.singular + detail, :class => 'price-unit')}
   end
 
   def excerpt_ending(text, length)
