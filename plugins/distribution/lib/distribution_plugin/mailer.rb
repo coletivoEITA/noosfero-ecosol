@@ -105,6 +105,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
     subject       _("[%{node}] %{subject}") % {:node => node.name, :subject => subject}
     content_type  'text/html'
     body :node => node,
+         :session => session,
          :message => message,
          :environment => node.profile.environment
   end
