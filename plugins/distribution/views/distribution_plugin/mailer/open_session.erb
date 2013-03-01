@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <p>
+      <%= _("Hello member of %{name},") % {:name => @node.name} %>
+    </p>
+
+    <p><%= _("A new cycle is open called ") + @session.name %></p>
+    <p><%= _("The cycle description is..") %></p>
+    <p><%= @session.description %></p>
+    <p><%= _("The administrator let a message about this cycle") %></p>
+    <p><%= @message %></p>
+
+    <p>
+      --<br/>
+    </p>
+
+    <small style="color: #888"><%= @environment.name %></small>
+  </body>
+</html>
+
