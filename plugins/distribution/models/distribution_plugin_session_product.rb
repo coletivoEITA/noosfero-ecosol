@@ -57,8 +57,8 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
     supplier_products.sum(:price)
   end
   def buy_unit
-    #FIXME: handle multiple products
-    supplier_product.unit
+    #TODO: handle multiple products
+    supplier_product ? supplier_product.unit : self.class.default_unit
   end
   def sell_unit
     unit
