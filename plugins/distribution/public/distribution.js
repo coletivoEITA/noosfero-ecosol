@@ -501,6 +501,18 @@ distribution = {
     unsetLoading: function (element) {
       jQuery("#"+element+"-overlay").remove();
     },
+
+    ajaxifyPagination: function(elementId) {
+      jQuery(".pagination a").click(function() {
+        distribution.setLoading(elementId);
+        jQuery.ajax({
+          type: "GET",
+          url: jQuery(this).attr("href"),
+          dataType: "script"
+        });
+        return false;
+      });
+    }
 }
 
 /* ----- events  ----- */
