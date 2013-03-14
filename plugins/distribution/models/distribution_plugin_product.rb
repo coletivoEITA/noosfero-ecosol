@@ -77,6 +77,10 @@ class DistributionPluginProduct < ActiveRecord::Base
   default_item :minimum_selleable, :if => :default_price, :delegate_to => :from_product
   default_item :unit_detail, :if => :default_price, :delegate_to => :from_product
 
+  def self.default_unit
+    Unit.new(:singular => _('unit'), :plural => _('units'))
+  end
+
   def dummy?
     supplier ? supplier.dummy? : false
   end
@@ -113,7 +117,7 @@ class DistributionPluginProduct < ActiveRecord::Base
   end
 
   def unit
-    self['unit'] || Unit.new(:singular => _('unit'), :plural => _('units'))
+    self['unit'] || self.class.default_unit
   end
 
   def archive

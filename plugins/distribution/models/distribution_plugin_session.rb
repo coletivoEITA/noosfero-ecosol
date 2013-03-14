@@ -24,6 +24,7 @@ class DistributionPluginSession < ActiveRecord::Base
   code_numbering :code, :scope => Proc.new { self.node.sessions }
 
   named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year desc'
+  named_scope :defuncts, :conditions => ["status = 'new' AND created_at < ?", 2.days.ago ]
 
   named_scope :not_new, :conditions => ["status <> 'new'"]
   named_scope :open, lambda {
@@ -66,6 +67,10 @@ class DistributionPluginSession < ActiveRecord::Base
   validates_numericality_of :margin_fixed, :allow_nil => true, :if => :not_new?
   validate :validate_orders_dates, :if => :not_new?
   validate :validate_delivery_dates, :if => :not_new?
+
+  before_validation :step_new
+  after_save :add_products_on_edition_state
+  before_create :delay_purge_defuncts
 
   extend SplitDatetime::SplitMethods
   split_datetime :start
@@ -136,15 +141,16 @@ class DistributionPluginSession < ActiveRecord::Base
     end
   end
 
-  after_create :add_distributed_products
   def add_distributed_products
     already_in = self.products.unarchived.all
-    node.products.unarchived.distributed.active.each do |product|
-      p = already_in.find{ |f| f.from_product == product }
-      unless p
-        p = DistributionPluginSessionProduct.create_from_distributed(self, product)
+    ActiveRecord::Base.transaction do
+      node.products.unarchived.distributed.active.each do |product|
+        p = already_in.find{ |f| f.from_product == product }
+        unless p
+          p = DistributionPluginSessionProduct.create_from_distributed(self, product)
+        end
+        p
       end
-      p
     end
   end
 
@@ -164,10 +170,16 @@ class DistributionPluginSession < ActiveRecord::Base
 
   protected
 
-  before_validation :step_new
+  def add_products_on_edition_state
+    self.add_distributed_products if @was_new
+  end
+
   def step_new
     return if new_record?
-    self.step if self.new?
+    if self.new?
+      @was_new = true
+      self.step
+    end
   end
 
   def not_new?
@@ -183,6 +195,14 @@ class DistributionPluginSession < ActiveRecord::Base
     return if self.new? or delivery_start.nil? or delivery_finish.nil?
     errors.add_to_base(_("Invalid delivery' period")) unless delivery_start < delivery_finish
     errors.add_to_base(_("Delivery' period before orders' period")) unless finish < delivery_start
+  end
+
+  def purge_defuncts
+    self.defuncts.each{ |s| s.destroy }
+  end
+
+  def delay_purge_defuncts
+    self.delay.purge_defuncts
   end
 
 end

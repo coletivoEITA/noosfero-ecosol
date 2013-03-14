@@ -1132,6 +1132,7 @@ body.plugin-distribution {
   float: left;
   clear: none;
   margin-right: 40px;
+  width: 120px;
 }
 
 .plugin-distribution #session-products .box-view .box-field {
