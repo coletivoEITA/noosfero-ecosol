@@ -6,7 +6,7 @@ module CatalogHelper
   def catalog_load_index options = {:page => params[:page], :show_categories => true}
     if options[:show_categories]
       @category = params[:level] ? ProductCategory.find(params[:level]) : nil
-      @categories = ProductCategory.on_level(params[:level])
+      @categories = ProductCategory.on_level(params[:level]).order(:name)
     end
 
     @products = profile.products.from_category(@category).paginate(:order => 'available desc, highlighted desc, name asc', :per_page => 9, :page => options[:page])
@@ -30,7 +30,7 @@ module CatalogHelper
 
   def category_sub_links(category)
     sub_categories = []
-    category.children.each do |sub_category|
+    category.children.order(:name).each do |sub_category|
       sub_categories << category_link(sub_category, true)
     end
     content_tag('ul', sub_categories) if sub_categories.size > 1
