@@ -12,7 +12,7 @@
       <% chars = 30 - line.size %>
       <% chars = 0 if chars < 0 %>
 
-      <% line += ' ' * (chars) + _("%{quantity} %{unit}") % {:quantity => p.quantity_asked, :unit => p.product.unit.singular} %>
+      <% line += ' ' * (chars) + _("%{quantity} %{unit}") % {:quantity => p.quantity_asked_as_currency_number, :unit => p.product.unit.singular} %>
       <% chars = 49 - line.size %>
       <% chars = 0 if chars < 0 %>
 

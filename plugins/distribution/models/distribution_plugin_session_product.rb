@@ -12,6 +12,13 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
   # p in session -> p distributed -> p from supplier
   has_many :from_2x_products, :through => :from_products, :source => :from_products
 
+  extend DistributionPlugin::DistributionCurrencyHelper::ClassMethods
+  has_number_with_locale :total_quantity_asked
+  has_number_with_locale :total_parcel_quantity
+  has_currency :total_price_asked
+  has_currency :total_parcel_price
+  has_currency :buy_price
+
   def self.create_from_distributed(session, product)
     sp = self.new :node => product.node
     sp.attributes = product.attributes
@@ -63,9 +70,6 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
   def sell_unit
     unit
   end
-
-  extend DistributionPlugin::DistributionCurrencyHelper::ClassMethods
-  has_currency :buy_price
 
   # session products freezes properties and don't use the original
   DEFAULT_ATTRIBUTES.each do |a|

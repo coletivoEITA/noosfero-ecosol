@@ -90,6 +90,7 @@ class DistributionPluginProduct < ActiveRecord::Base
   has_number_with_locale :stored
   has_number_with_locale :own_stored
   has_number_with_locale :original_stored
+  has_number_with_locale :quantity
   has_currency :price
   has_currency :own_price
   has_currency :original_price
