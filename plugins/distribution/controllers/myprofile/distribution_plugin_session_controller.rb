@@ -40,9 +40,17 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
 
   def edit
     @session = DistributionPluginSession.find params[:id]
+    @products = (@session.products.unarchived.paginate(:per_page => 15, :page => params["page"]))
+
     if request.xhr?
-      @success = @session.update_attributes params[:session]
-      render :partial => 'edit'
+      if params[:commit]
+        @success = @session.update_attributes params[:session]
+        render :partial => 'edit'
+      else
+        render :update do |page|
+          page.replace_html "session-product-lines", :partial => "product_lines"
+        end
+      end
     end
   end
 
