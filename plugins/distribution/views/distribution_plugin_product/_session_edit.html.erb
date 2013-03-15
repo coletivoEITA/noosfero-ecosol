@@ -3,7 +3,7 @@
   <span class='box-field supplier'><%= p.supplier.name %></span>
   <span class='box-field name box-edit-link'><%= p.name %></span>
   <span class="box-field price"><%= price_span p.price_as_currency %></span>
-  <span class="box-field quantity-available"><%= p.quantity || '∞' %></span>
+  <span class="box-field quantity-available"><%= p.quantity_as_currency_number || '∞' %></span>
 
   <%= edit_arrow "", false, :onclick => 'return false;', :class => "box-field session-product-actions" %>
 </div>
@@ -14,7 +14,7 @@
     <div class="session-product-line">
       <%= labelled_field f, :price, _('Sell price'), f.text_field(:price, :value => p.price_as_currency_number, :onkeyup => 'distribution.session_product_pmsync(this, false);') %>
       <%= labelled_field f, :margin_percentage, _('Margin'), f.text_field(:margin_percentage, :value => p.margin_percentage_as_currency_number, :onkeyup => "distribution.session_product_pmsync(this, true);") %>
-      <%# labelled_field f, :quantity, _('Qty. offered'), f.text_field(:quantity) %>
+      <%# labelled_field f, :quantity, _('Qty. offered'), f.text_field(:quantity, :value => p.quantity_as_currency_number) %>
 
       <div class="cleaner"></div>
     </div>

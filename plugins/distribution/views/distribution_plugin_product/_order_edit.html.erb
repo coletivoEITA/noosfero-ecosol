@@ -7,7 +7,7 @@
   <div class="box-field quantity">
     <div class="quantity-label">
       <% if ordered_product %>
-        <span class="label"><%= ordered_product.quantity_asked %></span>
+        <span class="label"><%= ordered_product.quantity_asked_as_currency_number %></span>
         <span class="unit"><%= product.unit.singular %></span>
         <%= link_to_function _('change'), "" if editable %>
       <% elsif editable %>
@@ -16,9 +16,9 @@
     </div>
     <div class="quantity-entry" style="display: none">
       <% if editable %>
-        <%= text_field_tag 'quantity_asked', ordered_product ? ordered_product.quantity_asked : '1' %>
+        <%= text_field_tag 'quantity_asked', ordered_product ? ordered_product.quantity_asked_as_currency_number : '1' %>
       <% elsif ordered_product %>
-        <%= ordered_product.quantity_asked %>
+        <%= ordered_product.quantity_asked_as_currency_number %>
       <% end %>
     </div>
   </div>

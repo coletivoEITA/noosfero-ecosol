@@ -25,9 +25,9 @@
             <% next unless p.total_quantity_asked > 0 %>
             <div class="session-ordered-product subtitle">
               <span class="box-field product"><%= p.name %></span>
-              <span class="box-field total-asked"><%= p.total_quantity_asked %></span>
+              <span class="box-field total-asked"><%= p.total_quantity_asked_as_currency_number %></span>
               <span class="box-field unit"><%= p.unit.singular %></span>
-              <span class="box-field sell-value"><%= price_span p.total_price_asked %></span>
+              <span class="box-field sell-value"><%= price_span p.total_price_asked_as_currency %></span>
               <span class="box-field forecast-parcel"><%= p.total_parcel_quantity_as_currency_number %></span>
               <span class="box-field forecast-parcel-value"><%= price_span p.total_parcel_price_as_currency %></span>
 
@@ -42,9 +42,9 @@
           <span class="box-field product"><%= _('Totals') %></span>
           <span class="box-field total-asked"></span>
           <span class="box-field unit"></span>
-          <span class="box-field sell-value"><%= price_span total_price_asked_as_currency %></span>
+          <span class="box-field sell-value"><%= price_span DistributionPlugin::DistributionCurrencyHelper.number_as_currency(total_price_asked) %></span>
           <span class="box-field forecast-parcel"></span>
-          <span class="box-field forecast-parcel-value"><%= price_span total_parcel_price_as_currency %></span>
+          <span class="box-field forecast-parcel-value"><%= price_span DistributionPlugin::DistributionCurrencyHelper.number_as_currency(total_parcel_price) %></span>
         </div>
       </div>
 
