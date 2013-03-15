@@ -1,0 +1,13 @@
+<%= pagination_links @products %>
+<div id="result-count">
+  <small><%= _("Showing %{pcount} products of %{allpcount}") % {:pcount => @products.length, :allpcount => @session.products.count} %></small>
+</div>
+<% @products.each do |p| %>
+  <div id="session-product-<%=p.id%>" class='session-product value-row' toggleedit="distribution.session_product_edit();">
+    <%= render :partial => 'distribution_plugin_product/session_edit', :locals => {:p => p} %>
+  </div>
+<% end %>
+<% javascript_tag do %>
+  jQuery(document).ready(function() {distribution.ajaxifyPagination("session-product-lines");});
+<% end %>
+
