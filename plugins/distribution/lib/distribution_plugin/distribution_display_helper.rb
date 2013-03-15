@@ -97,7 +97,7 @@ module DistributionPlugin::DistributionDisplayHelper
       options
   end
 
-  def price_with_unit_span(price, unit, detail)
+  def price_with_unit_span(price, unit, detail=nil)
     return nil if price.blank?
     detail ||= ''
     detail = " (#{detail})" unless detail.blank?
