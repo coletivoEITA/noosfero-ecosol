@@ -40,20 +40,24 @@ distribution = {
   },
 
   calculate_price: function (price_input, margin_input, base_price_input) {
-    var price = parseFloat(jQuery(price_input).val().replace(',','.'));
-    var base_price = parseFloat(jQuery(base_price_input).val().replace(',','.'));
-    var margin = parseFloat(jQuery(margin_input).val().replace(',','.'));
+    var price = unlocalize_currency(jQuery(price_input).val());
+    var base_price = unlocalize_currency(jQuery(base_price_input).val());
+    var margin = unlocalize_currency(jQuery(margin_input).val());
 
-    var value = distribution.currency( base_price + (margin / 100) * base_price );
-    jQuery(price_input).val( isNaN(value) ? base_price_input.val().replace(',','.') : value );
+    var value = base_price + (margin / 100) * base_price;
+    if (isNaN(value))
+      value = unlocalize_currency(base_price_input.val());
+    jQuery(price_input).val(localize_currency(value));
   },
   calculate_margin: function (margin_input, price_input, base_price_input) {
-    var price = parseFloat(jQuery(price_input).val().replace(',','.'));
-    var base_price = parseFloat(jQuery(base_price_input).val().replace(',','.'));
-    var margin = parseFloat(jQuery(margin_input).val().replace(',','.'));
+    var price = unlocalize_currency(jQuery(price_input).val());
+    var base_price = unlocalize_currency(jQuery(base_price_input).val());
+    var margin = unlocalize_currency(jQuery(margin_input).val());
 
-    var value = distribution.currency( ((price - base_price) / base_price ) * 100 );
-    jQuery(margin_input).val( isFinite(value) ? value : '' );
+    var value = ((price - base_price) / base_price ) * 100;
+    if (!isFinite(value))
+      value = ''
+    jQuery(margin_input).val(localize_currency(value));
   },
 
   /* ----- session stuff  ----- */
@@ -215,11 +219,11 @@ distribution = {
     if (to_price || price_input.get(0).disabled)
       distribution.calculate_price(price_input, margin_input, buy_price_input);
     else {
-      var oldvalue = parseFloat(margin_input.val().replace(',','.'));
+      var oldvalue = unlocalize_currency(margin_input.val());
       distribution.calculate_margin(margin_input, price_input, buy_price_input);
-      var newvalue = parseFloat(margin_input.val().replace(',','.'));
+      var newvalue = unlocalize_currency(margin_input.val());
       if (newvalue != oldvalue) {
-        var checked = newvalue == parseFloat(margin_input.attr('defaultvalue').toString().replace(',','.'));
+        var checked = newvalue == unlocalize_currency(margin_input.attr('defaultvalue'));
         default_margin_input.attr('checked', checked ? 'checked' : null);
         margin_input.get(0).disabled = checked;
       }
@@ -286,7 +290,7 @@ distribution = {
   /* ----- session editions stuff  ----- */
 
   session_product_pmsync: function (context, to_price) {
-    p = jQuery(context).parents('.session-product-edit');
+    p = jQuery(context).parents('.session-product .box-edit');
     margin = p.find('#product_margin_percentage');
     price = p.find('#product_price');
     buy_price = p.find('#product_buy_price');
@@ -396,10 +400,6 @@ distribution = {
       distribution.setEditing(el);
       distribution.value_row.toggle_edit();
     }
-  },
-
-  currency: function (value) {
-    return parseFloat(value.toString().replace(',','.')).toFixed(2);
   },
 
   value_row: {
@@ -573,4 +573,52 @@ function jQuerySort(elements, options) {
 }
 
 /* ----- ends infrastructure stuff  ----- */
+
+/* ----- localization stuff  ----- */
+
+locale = 'pt'; //FIXME: don't hardcode
+standard_locale = 'en';
+locale_info = {
+  'en': {
+    'currency': {
+      'delimiter': ',',
+      'separator': '.',
+      'decimals': 2
+    }
+  },
+  'pt': {
+    'currency': {
+      'delimiter': '.',
+      'separator': ',',
+      'decimals': 2
+    }
+  },
+}
+
+function localize_currency(value, to, from) {
+  if (!to)
+    to = locale;
+  if (!from)
+    from = standard_locale;
+  var lvalue = unlocalize_currency(value, from);
+  from = standard_locale;
+  lvalue = lvalue.toFixed(locale_info[to].currency.decimals);
+  lvalue = lvalue.replace(locale_info[from].currency.delimiter, locale_info[to].currency.delimiter);
+  lvalue = lvalue.replace(locale_info[from].currency.separator, locale_info[to].currency.separator);
+  return lvalue;
+}
+
+function unlocalize_currency(value, from) {
+  if (!value)
+    return '';
+  if (!from)
+    from = locale;
+  var lvalue = value.toString();
+  var to = standard_locale;
+  lvalue = lvalue.replace(locale_info[from].currency.delimiter, locale_info[to].currency.delimiter);
+  lvalue = lvalue.replace(locale_info[from].currency.separator, locale_info[to].currency.separator);
+  return parseFloat(lvalue);
+}
+
+/* ----- ends localization stuff  ----- */
 

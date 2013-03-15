@@ -16,16 +16,16 @@
       <% chars = 49 - line.size %>
       <% chars = 0 if chars < 0 %>
 
-      <% line += ' ' * chars + _("R$ %{price}/%{unit}") % {:price => p.product.price, :unit => p.product.unit.singular} %>
+      <% line += ' ' * chars + _("%{price}/%{unit}") % {:price => p.product.price_as_currency, :unit => p.product.unit.singular} %>
       <% chars = 71 - line.size %>
       <% chars = 0 if chars < 0 %>
 
-      <% body += line + ' ' * chars + _("R$ %{price}") % {:price => p.price_asked} + "\n\n" %>
+      <% body += line + ' ' * chars + p.price_asked_as_currency + "\n\n" %>
 
     <% end %>
   <% end %>
   <% body += "-" * 79 + "\n" %>
   <% chars = 71-_("TOTAL:").size %>
   <% chars = 0 if chars < 0 %>
-  <%= body + _('TOTAL:') + ' '*chars + _("R$ %{price}") % {:price => @order.total_price_asked} + "\n</pre>" %>
+  <%= body + _('TOTAL:') + ' '*chars + @order.total_price_asked_as_currency + "\n</pre>" %>
 

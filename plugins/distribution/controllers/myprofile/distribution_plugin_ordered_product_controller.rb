@@ -8,7 +8,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
 
     @session_product = DistributionPluginProduct.find params[:session_product_id]
     @ordered_product = DistributionPluginOrderedProduct.find_by_order_id_and_session_product_id(@order.id, @session_product.id)
-    @quantity_asked = params[:quantity_asked].gsub(',','.').to_f || 1
+    @quantity_asked = params[:quantity_asked] || 1
     min = @session_product.minimum_selleable || 0.1
 
     if @ordered_product.nil? and @quantity_asked > 0

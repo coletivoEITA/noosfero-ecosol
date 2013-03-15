@@ -34,6 +34,10 @@ class DistributionPluginNode < ActiveRecord::Base
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
 
+  extend DistributionPlugin::DistributionCurrencyHelper::ClassMethods
+  has_number_with_locale :margin_percentage
+  has_number_with_locale :margin_fixed
+
   acts_as_having_image
   belongs_to :image, :class_name => 'DistributionPluginHeaderImage'
 

@@ -7,11 +7,11 @@
   <% end %>
 
   <%= labelled_field f, :price, _('Price'),
-    f.text_field(:price, options.merge(:oldvalue => product.own_price)), :class => 'left-column' %>
+    f.text_field(:price, options.merge(:value => product.price_as_currency_number, :oldvalue => product.own_price_as_currency_number)), :class => 'left-column' %>
   <%= labelled_field f, :unit_id, _('Unit'),
     f.select(:unit_id, Unit.all.map{ |u| [u.singular, u.id] }, {}, options.merge(:oldvalue => product.own_unit_id)) %>
   <%= labelled_field f, :minimum_selleable, _('Minimum order'),
-    f.text_field(:minimum_selleable, options.merge(:oldvalue => product.own_minimum_selleable)), :class => 'left-column' %>
+    f.text_field(:minimum_selleable, options.merge(:value => product.minimum_selleable_as_currency_number, :oldvalue => product.own_minimum_selleable_as_currency_number)), :class => 'left-column' %>
   <%= labelled_field f, :unit_detail, _('Unit specification'),
     f.text_field(:unit_detail, options.merge(:oldvalue => product.own_unit_detail)) %>
 

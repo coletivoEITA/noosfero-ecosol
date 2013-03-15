@@ -2,7 +2,7 @@
   <span class='box-field category'><%= nil %></span>
   <span class='box-field supplier'><%= p.supplier.name %></span>
   <span class='box-field name box-edit-link'><%= p.name %></span>
-  <span class="box-field price"><%= price_span(p.price) %></span>
+  <span class="box-field price"><%= price_span p.price_as_currency %></span>
   <span class="box-field quantity-available"><%= p.quantity || '∞' %></span>
 
   <%= edit_arrow "", false, :onclick => 'return false;', :class => "box-field session-product-actions" %>
@@ -12,23 +12,23 @@
   <% form_remote_for :product, p, :url => {:controller => :distribution_plugin_product, :action => :session_edit, :id => p.id } do |f| %>
 
     <div class="session-product-line">
-      <%= labelled_field f, :price, _('Sell price'), f.text_field(:price, :onkeyup => 'distribution.session_product_pmsync(this, false);') %>
-      <%= labelled_field f, :margin_percentage, _('Margin'), f.text_field(:margin_percentage, :onkeyup => "distribution.session_product_pmsync(this, true);") %>
+      <%= labelled_field f, :price, _('Sell price'), f.text_field(:price, :value => p.price_as_currency_number, :onkeyup => 'distribution.session_product_pmsync(this, false);') %>
+      <%= labelled_field f, :margin_percentage, _('Margin'), f.text_field(:margin_percentage, :value => p.margin_percentage_as_currency_number, :onkeyup => "distribution.session_product_pmsync(this, true);") %>
       <%# labelled_field f, :quantity, _('Qty. offered'), f.text_field(:quantity) %>
 
       <div class="cleaner"></div>
     </div>
 
     <div class="session-product-line">
-      <%= labelled_field f, :original_price, _('Default sell price'), f.text_field(:original_price, :disabled => '') %>
-      <%= labelled_field f, :original_margin, _('Default margin'), f.text_field(:original_margin_percentage, :disabled => '') %>
-      <%# labelled_field f, :original_stored, _('Qty. in stock'), f.text_field(:original_stored, :disabled => '') %>
+      <%= labelled_field f, :original_price, _('Default sell price'), f.text_field(:original_price, :value => p.original_price_as_currency_number, :disabled => '') %>
+      <%= labelled_field f, :original_margin, _('Default margin'), f.text_field(:original_margin_percentage, :value => p.original_margin_percentage_as_currency_number, :disabled => '') %>
+      <%# labelled_field f, :original_stored, _('Qty. in stock'), f.text_field(:original_stored, :value => p.original_stored_as_currency_number, :disabled => '') %>
 
       <div class="cleaner"></div>
     </div>
 
     <div class="session-product-line">
-      <%= labelled_field f, :buy_price, _('Buy price'), f.text_field(:buy_price, :disabled => '') %>
+      <%= labelled_field f, :buy_price, _('Buy price'), f.text_field(:buy_price, :value => p.buy_price_as_currency_number, :disabled => '') %>
       <%= labelled_field f, :buy_unit, _('Buy unit'), text_field_tag(:buy_unit, p.buy_unit.singular, :disabled => '') %>
       <%= labelled_field f, :sell_unit, _('Sell unit'), text_field_tag(:sell_unit, p.sell_unit.singular, :disabled => '') %>
 

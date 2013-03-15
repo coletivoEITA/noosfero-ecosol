@@ -104,6 +104,7 @@ class DistributionPluginOrder < ActiveRecord::Base
       products.sum(:price_asked)
     end
   end
+
   def parcel_quantity_total
     #TODO
     total_quantity_asked
@@ -112,6 +113,12 @@ class DistributionPluginOrder < ActiveRecord::Base
     #TODO
     total_price_asked
   end
+
+  extend DistributionPlugin::DistributionCurrencyHelper::ClassMethods
+  has_number_with_locale :total_quantity_asked
+  has_number_with_locale :parcel_quantity_total
+  has_currency :total_price_asked
+  has_currency :parcel_price_total
 
   def code
     _("%{sessioncode}.%{ordercode}") % {
