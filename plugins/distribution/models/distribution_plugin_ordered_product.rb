@@ -32,6 +32,14 @@ class DistributionPluginOrderedProduct < ActiveRecord::Base
   validates_numericality_of :price_allocated
   validates_numericality_of :price_payed
 
+  extend DistributionPlugin::DistributionCurrencyHelper::ClassMethods
+  has_number_with_locale :quantity_asked
+  has_number_with_locale :quantity_allocated
+  has_number_with_locale :quantity_payed
+  has_currency :price_asked
+  has_currency :price_allocated
+  has_currency :price_asked
+
   def price_asked
     product.price * quantity_asked
   end

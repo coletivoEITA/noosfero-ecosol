@@ -3,7 +3,7 @@
   <div class="box-field category"><%= nil %></div>
   <div class="box-field supplier"><%= product.supplier.abbreviation_or_name %></div>
   <div class="box-field product box-edit-link"><%= product.name %></div>
-  <div class="box-field price-with-unit"><%=  price_with_unit_span product.price, product.unit %></div>
+  <div class="box-field price-with-unit"><%= price_with_unit_span product.price_as_currency, product.unit %></div>
   <div class="box-field stock"><%= product.stored || '∞' %></div>
   <%= edit_arrow "#our-product-#{product.id}", false, :class => "box-field" %>
 

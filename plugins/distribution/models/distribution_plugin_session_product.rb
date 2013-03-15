@@ -64,6 +64,9 @@ class DistributionPluginSessionProduct < DistributionPluginProduct
     unit
   end
 
+  extend DistributionPlugin::DistributionCurrencyHelper::ClassMethods
+  has_currency :buy_price
+
   # session products freezes properties and don't use the original
   DEFAULT_ATTRIBUTES.each do |a|
     define_method "default_#{a}" do

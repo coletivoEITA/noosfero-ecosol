@@ -77,6 +77,23 @@ class DistributionPluginProduct < ActiveRecord::Base
   default_item :minimum_selleable, :if => :default_price, :delegate_to => :from_product
   default_item :unit_detail, :if => :default_price, :delegate_to => :from_product
 
+  extend DistributionPlugin::DistributionCurrencyHelper::ClassMethods
+  has_number_with_locale :minimum_selleable
+  has_number_with_locale :own_minimum_selleable
+  has_number_with_locale :original_minimum_selleable
+  has_number_with_locale :margin_percentage
+  has_number_with_locale :own_margin_percentage
+  has_number_with_locale :original_margin_percentage
+  has_number_with_locale :margin_fixed
+  has_number_with_locale :own_margin_fixed
+  has_number_with_locale :original_margin_fixed
+  has_number_with_locale :stored
+  has_number_with_locale :own_stored
+  has_number_with_locale :original_stored
+  has_currency :price
+  has_currency :own_price
+  has_currency :original_price
+
   def self.default_unit
     Unit.new(:singular => _('unit'), :plural => _('units'))
   end
@@ -106,14 +123,6 @@ class DistributionPluginProduct < ActiveRecord::Base
     end
 
     ret
-  end
-
-  # FIXME: use i18n to deal with number formats
-  def price=(value)
-    self['price'] = value.to_s.gsub(/,/, '.')
-  end
-  def minimum_selleable=(value)
-    self['minimum_selleable'] = value.to_s.gsub(/,/, '.')
   end
 
   def unit

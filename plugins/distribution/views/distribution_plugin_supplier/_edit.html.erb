@@ -21,7 +21,7 @@
   </div>
 
   <%= check_box_tag :full_registration, '1', true,
-    :onchange => "jQuery(this).parents('.supplier').find('form').toggleClass('full-registration', this.checked)" %>
+    :onchange => "jQuery(this).parents('.supplier').find('.data').toggleClass('full-registration', this.checked)" %>
   <%= label_tag :full_registration, _('Full registration') %>
 <% end %>
 

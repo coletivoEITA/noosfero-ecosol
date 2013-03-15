@@ -2,7 +2,7 @@
   <% editable = order && order.open? %>
 
   <div class="box-field product box-edit-link"><%= product.name %></div>
-  <div class="box-field price-with-unit"><%= price_with_unit_span product.price, product.unit, product.unit_detail %></div>
+  <div class="box-field price-with-unit"><%= price_with_unit_span product.price_as_currency, product.unit, product.unit_detail %></div>
 
   <div class="box-field quantity">
     <div class="quantity-label">
@@ -37,9 +37,9 @@
         <div><%= _("price's descriptive") %></div>
         <div class="price-descriptive">
           <%= _("%{price} + %{percent}% = %{price_with_margin}") % {
-            :price => product.buy_price,
+            :price => product.buy_price_as_currency,
             :percent => product.margin_percentage,
-            :price_with_margin => product.price, } %>
+            :price_with_margin => product.price_as_currency, } %>
         </div>
       </div>
     </div>

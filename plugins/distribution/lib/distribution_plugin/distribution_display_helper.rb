@@ -92,12 +92,11 @@ module DistributionPlugin::DistributionDisplayHelper
   def price_span(price, options = {})
     return nil if price.blank?
     content_tag 'span',
-      content_tag('span', environment.currency_unit, :class => 'price-currency-unit') +
-      content_tag('span', number_to_currency(price, :unit => '', :delimiter => environment.currency_delimiter, :separator => environment.currency_separator), :class => 'price-value'),
+      content_tag('span', price, :class => 'price-value'),
       options
   end
 
-  def price_with_unit_span(price, unit, detail)
+  def price_with_unit_span(price, unit, detail=nil)
     return nil if price.blank?
     detail ||= ''
     detail = " (#{detail})" unless detail.blank?
