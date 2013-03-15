@@ -15,7 +15,7 @@
     <p><%= _('The products in the order') %></p>
     <ul>
       <% @order.products.each do |p| %>
-        <li><%= _('%{quantity} %{unit} of %{product}') % {:quantity => p.quantity_asked, :unit => p.product.unit.plural, :product => p.product.name} %></li>
+        <li><%= _('%{quantity} %{unit} of %{product}') % {:quantity => p.quantity_asked_as_currency_number, :unit => p.product.unit.plural, :product => p.product.name} %></li>
       <% end %>
     </ul>
 

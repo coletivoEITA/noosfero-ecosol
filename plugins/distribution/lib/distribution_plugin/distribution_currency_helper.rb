@@ -1,12 +1,23 @@
 module DistributionPlugin::DistributionCurrencyHelper
 
   def self.parse_localized_number number
-    return number if number.blank? or number.is_a?(Float)
+    return number if number.blank?
+    number = number.to_s
     number.gsub(I18n.t("number.currency.format.unit"), '').gsub(I18n.t("number.currency.format.delimiter"), '').gsub(I18n.t("number.currency.format.separator"), '.').to_f
   end
 
   def self.parse_currency currency
     self.parse_localized_number currency
+  end
+
+  def self.number_as_currency_number number
+    string = ActionController::Base.helpers.number_to_currency(number, :unit => '')
+    string.gsub!(' ', '') if string
+    string
+  end
+
+  def self.number_as_currency number
+    ActionController::Base.helpers.number_to_currency(number)
   end
 
   module ClassMethods
@@ -18,13 +29,11 @@ module DistributionPlugin::DistributionCurrencyHelper
 
       define_method "#{field}_as_currency_number" do |*args, &block|
         number = send(field, *args, &block) rescue self[field]
-        string = ActionController::Base.helpers.number_to_currency(number, :unit => '')
-        string.gsub!(' ', '') if string
-        string
+        DistributionPlugin::DistributionCurrencyHelper.number_as_currency_number number
       end
       define_method "#{field}_as_currency" do |*args, &block|
         number = send(field, *args, &block) rescue self[field]
-        ActionController::Base.helpers.number_to_currency(number)
+        DistributionPlugin::DistributionCurrencyHelper.number_as_currency number
       end
     end
 

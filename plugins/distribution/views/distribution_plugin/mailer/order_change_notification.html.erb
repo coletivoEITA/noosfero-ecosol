@@ -32,7 +32,10 @@
       <p><%=_('The following products had their quantity changed:')%></p>
       <ul>
         <% @changed.each do |p| %>
-          <li><%= _('%{name}, from %{quantity_was} to %{quantity}') % {:name => p.product.name, :quantity_was => p.quantity_asked_was, :quantity => p.quantity_asked} %></li>
+          <li><%= _('%{name}, from %{quantity_was} to %{quantity}') % {
+            :name => p.product.name,
+            :quantity_was => DistributionPlugin::DistributionCurrencyHelper.number_as_currency_number(p.quantity_asked_was),
+            :quantity => p.quantity_asked_as_currency_number} %></li>
         <% end %>
       <ul>
       <% end %>
