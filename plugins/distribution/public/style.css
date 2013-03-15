@@ -660,7 +660,7 @@ body.plugin-distribution {
 .plugin-distribution #session-products {
   margin-top: 40px;
 }
-.plugin-distribution #session-products .table-header {
+.plugin-distribution #session-products .session-products-table {
   margin-top: 30px;
 }
 .plugin-distribution #session-products-header div {
