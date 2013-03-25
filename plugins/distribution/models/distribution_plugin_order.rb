@@ -5,9 +5,9 @@ class DistributionPluginOrder < ActiveRecord::Base
 
   belongs_to :consumer, :class_name => 'DistributionPluginNode'
 
-  has_many :suppliers, :through => :products, :uniq => true
-  has_many :products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'order_id', :dependent => :destroy,
-    :order => 'id ASC'
+  has_many :suppliers, :through => :session_products, :uniq => true
+  has_many :products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'order_id', :dependent => :destroy, :include => 'product',
+    :order => 'distribution_plugin_products.name ASC'
 
   has_many :session_products, :through => :products, :source => :product
   has_many :distributed_products, :through => :session_products, :source => :from_products
@@ -112,6 +112,10 @@ class DistributionPluginOrder < ActiveRecord::Base
   def parcel_price_total
     #TODO
     total_price_asked
+  end
+
+  def products_by_supplier
+    self.products.group_by{|p| p.supplier.name}
   end
 
   extend DistributionPlugin::DistributionCurrencyHelper::ClassMethods
