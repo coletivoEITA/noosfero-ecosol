@@ -3,7 +3,7 @@ class DistributionPluginSupplier < ActiveRecord::Base
   belongs_to :node,  :class_name => 'DistributionPluginNode'
   belongs_to :consumer,  :class_name => 'DistributionPluginNode'
 
-  has_many :supplied_products, :foreign_key => 'supplier_id', :class_name => 'DistributionPluginProduct'
+  has_many :supplied_products, :foreign_key => 'supplier_id', :class_name => 'DistributionPluginProduct', :order => 'name ASC'
 
   has_one :profile, :through => :node
   def profile
