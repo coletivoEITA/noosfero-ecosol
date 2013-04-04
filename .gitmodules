@@ -1,0 +1,3 @@
+[submodule "public/designs/themes/escambo"]
+	path = public/designs/themes/escambo
+	url = git://github.com/ESCAMBO/escambo-theme.git
