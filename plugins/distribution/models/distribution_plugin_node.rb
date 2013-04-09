@@ -11,14 +11,14 @@ class DistributionPluginNode < ActiveRecord::Base
   has_many :parcels, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy, :order => 'id ASC'
 
   has_many :suppliers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'consumer_id', :order => 'name ASC', :dependent => :destroy
-  has_many :consumers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'node_id', :order => 'id ASC'
+  has_many :consumers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'node_id', :order => 'name ASC'
   has_many :suppliers_nodes, :through => :suppliers, :source => :node, :order => 'distribution_plugin_nodes.id ASC'
   has_many :consumers_nodes, :through => :consumers, :source => :consumer, :order => 'distribution_plugin_nodes.id ASC'
 
-  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => 'node_id', :dependent => :destroy, :order => 'distribution_plugin_products.id ASC'
-  has_many :order_products, :through => :orders, :source => :products, :order => 'id ASC'
+  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => 'node_id', :dependent => :destroy, :order => 'distribution_plugin_products.name ASC'
+  has_many :order_products, :through => :orders, :source => :products, :order => 'name ASC'
   has_many :parcel_products, :through => :parcels, :source => :products, :order => 'id ASC'
-  has_many :supplier_products, :through => :suppliers, :source => :products, :order => 'id ASC'
+  has_many :supplier_products, :through => :suppliers, :source => :products, :order => 'name ASC'
   has_many :consumer_products, :through => :consumers, :source => :consumer_products, :order => 'id ASC'
 
   has_many :from_products, :through => :products

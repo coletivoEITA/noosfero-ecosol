@@ -34,6 +34,13 @@ module DistributionPlugin::DistributionDisplayHelper
     }
   end
 
+  def datetime_period_with_from(start, finish)
+    _('from %{start} to %{finish}') % {
+     :start => start.to_time.strftime(_("%m/%d/%y %Hh%M")),
+     :finish => finish.to_time.strftime(_("%m/%d/%y %Hh%M")),
+    }
+  end
+
   def date_period(start, finish)
     _('%{start} - %{finish}') % {
      :start => start.to_time.strftime(_("%m/%d")),

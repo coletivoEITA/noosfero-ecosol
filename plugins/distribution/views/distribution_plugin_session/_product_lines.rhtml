@@ -1,13 +1,28 @@
-<%= pagination_links @products %>
-<div id="result-count">
-  <small><%= _("Showing %{pcount} products of %{allpcount}") % {:pcount => @products.length, :allpcount => @session.products.count} %></small>
-</div>
-<% @products.each do |p| %>
-  <div id="session-product-<%=p.id%>" class='session-product value-row' toggleedit="distribution.session_product_edit();">
-    <%= render :partial => 'distribution_plugin_product/session_edit', :locals => {:p => p} %>
+<div class="session-products-table box-align">
+  <%= pagination_links @products %>
+  <div id="result-count">
+    <small><%= _("Showing %{pcount} products of %{allpcount}") % {:pcount => @products.length, :allpcount => @session.products.count} %></small>
   </div>
-<% end %>
-<% javascript_tag do %>
-  jQuery(document).ready(function() {distribution.ajaxifyPagination("session-product-lines");});
-<% end %>
+  <div class='table-header'>
+    <span class='box-field category'><%= _('Category') %></span>
+    <span class='box-field supplier'><%= _('Supplier') %></span>
+    <span class='box-field name'><%= _('Product') %></span>
+    <span class="box-field price"><%= _('Price') %></span>
+    <span class="box-field quantity-available"><%= _('Qty. avail.') %></span>
+    <span class="box-field actions"></span>
+
+    <div class="cleaner"></div>
+  </div>
+
+  <div class='table-content'>
+    <% @products.each do |p| %>
+      <div id="session-product-<%=p.id%>" class='session-product value-row' toggleedit="distribution.session_product_edit();">
+        <%= render :partial => 'distribution_plugin_product/session_edit', :locals => {:p => p} %>
+      </div>
+    <% end %>
+    <% javascript_tag do %>
+      jQuery(document).ready(function() {distribution.ajaxifyPagination("session-product-lines");});
+    <% end %>
+  </div>
+</div>
 

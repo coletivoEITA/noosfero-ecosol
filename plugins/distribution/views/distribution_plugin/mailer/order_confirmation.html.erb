@@ -18,12 +18,13 @@
     </p>
 
     <p>
-      <%= _('Atention to the delivery instructions, that will occur in %{date}.') % {
-        :date => day_time_period(@order.session.delivery_start, @order.session.delivery_finish)
+      <%= _('The delivery period will occur %{date}.') % {
+        :date => datetime_period_with_from(@order.session.delivery_start, @order.session.delivery_finish)
       } %>
     </p>
 
     <p>
+      <p><%= _('Attention to the following delivery instructions:') %></p>
       <b><%= @order.supplier_delivery.name %></b><br />
       <%= @order.supplier_delivery.description %><br />
     </p>
