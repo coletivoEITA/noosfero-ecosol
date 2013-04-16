@@ -4268,17 +4268,17 @@ msgstr "&laquo; Posts mais novos"
 msgid "Older posts &raquo;"
 msgstr "Posts mais antigos &raquo;"
 
-#: app/helpers/forum_helper.rb:18
+#: app/helpers/forum_helper.rb:19
 msgid "Discussion topic"
 msgstr "Tópico de discussão"
 
-#: app/helpers/forum_helper.rb:19
-msgid "Posts"
-msgstr "Posts"
-
 #: app/helpers/forum_helper.rb:20
-msgid "Last post"
-msgstr "Último post"
+msgid "Answers"
+msgstr "Respostas"
+
+#: app/helpers/forum_helper.rb:21
+msgid "Last answer"
+msgstr "Última resposta"
 
 #: app/helpers/chat_helper.rb:5 app/views/layouts/chat.rhtml:16
 msgid "Online"
@@ -8828,6 +8828,15 @@ msgstr "Digite seu comentário"
 #: app/views/content_viewer/_comment_form.rhtml:88
 msgid "Post comment"
 msgstr "Enviar comentário"
+
+#: app/views/content_viewer/_comment_form.rhtml:90
+#: app/views/content_viewer/_comment_form.rhtml:96
+msgid "Post answer"
+msgstr "Enviar resposta"
+
+#: app/views/content_viewer/_comment_form.rhtml:44
+msgid "Answer"
+msgstr "Responder"
 
 #: app/views/content_viewer/_confirm_unfollow.rhtml:3
 msgid "Cancel notification of new comments"

@@ -39,8 +39,12 @@ function submit_comment_form(button) {
                  d.addClass('opened');
                  d.find('input[name=comment[title]], textarea').val('');
                  d.find('.comment_form input[name=comment[<%= focus_on %>]]').focus();
-               }">
-    <%= content_tag('a', '', :name => 'comment_form') + _('Post a comment') %>
+                 }">
+    <% if @page.parent.is_a?(Forum) %>
+      <%= content_tag('a', '', :name => 'comment_form') + _('Answer') %>
+    <% else %>
+      <%= content_tag('a', '', :name => 'comment_form') + _('Post a comment') %>
+    <% end %>
   </h4>
 <% end %>
 
@@ -82,10 +86,17 @@ function submit_comment_form(button) {
   <% end %>
 
   <%= labelled_form_field(_('Title'), text_field(:comment, :title)) %>
-  <%= required labelled_form_field(_('Enter your comment'), text_area(:comment, :body, :rows => 5)) %>
-
+  <% if @page.parent.is_a?(Forum) %>
+    <%= required labelled_form_field(_('Post answer'), text_area(:comment, :body, :rows => 5)) %>
+ <% else %>
+   <%= required labelled_form_field(_('Enter your comment'), text_area(:comment, :body, :rows => 5)) %>
+  <% end %>
   <% button_bar do %>
-    <%= submit_button('add', _('Post comment'), :onclick => "submit_comment_form(this); return false") %>
+    <% if @page.parent.is_a?(Forum) %>
+      <%= submit_button('add', _('Post answer'), :onclick => "submit_comment_form(this); return false") %>
+    <% else %>
+      <%= submit_button('add', _('Post comment'), :onclick => "submit_comment_form(this); return false") %>
+    <% end %>
     <% if cancel_triggers_hide %>
       <%= button_to_function :cancel, _('Cancel'), "f=jQuery(this).parents('.post_comment_box'); f.removeClass('opened'); f.addClass('closed'); return false" %>
     <% else %>

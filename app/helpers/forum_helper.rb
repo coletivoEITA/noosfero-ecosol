@@ -14,10 +14,11 @@ module ForumHelper
       :previous_label => _('&laquo; Newer posts'),
       :next_label => _('Older posts &raquo;')
     })
+    content = [content_tag('tr',_('Answers'))]
     content = [content_tag('tr',
                            content_tag('th', _('Discussion topic')) +
-                           content_tag('th', _('Posts')) +
-                           content_tag('th', _('Last post'))
+                           content_tag('th', _('Answers')) +
+                           content_tag('th', _('Last answer'))
                           )
               ]
     artic_len = articles.length
