@@ -21,7 +21,7 @@ function Cart(config) {
       },
       cache: false,
       error: function(ajax, status, errorThrown) {
-        alert('Visibility - HTTP '+status+': '+errorThrown);
+        console.log('Visibility - HTTP '+status+': '+errorThrown);
       }
     });
     $(".cart-buy", this.cartElem).colorbox({ href: '/plugin/shopping_cart/buy' });
@@ -41,7 +41,7 @@ function Cart(config) {
       },
       cache: false,
       error: function(ajax, status, errorThrown) {
-        alert('List cart items - HTTP '+status+': '+errorThrown);
+        console.log('List cart items - HTTP '+status+': '+errorThrown);
       }
     });
   }
@@ -114,7 +114,7 @@ function Cart(config) {
       },
       cache: false,
       error: function(ajax, status, errorThrown) {
-        alert('Add item - HTTP '+status+': '+errorThrown);
+        console.log('Add item - HTTP '+status+': '+errorThrown);
         input.value = input.lastValue;
       },
       complete: function(){
@@ -156,7 +156,7 @@ function Cart(config) {
       },
       cache: false,
       error: function(ajax, status, errorThrown) {
-        alert('Add item - HTTP '+status+': '+errorThrown);
+        console.log('Add item - HTTP '+status+': '+errorThrown);
       },
       complete: callback
     });
@@ -179,7 +179,7 @@ function Cart(config) {
       },
       cache: false,
       error: function(ajax, status, errorThrown) {
-        alert('Remove item - HTTP '+status+': '+errorThrown);
+        console.log('Remove item - HTTP '+status+': '+errorThrown);
       }
     });
   }
@@ -197,7 +197,7 @@ function Cart(config) {
       dataType: 'json',
       cache: false,
       error: function(ajax, status, errorThrown) {
-        alert('Show - HTTP '+status+': '+errorThrown);
+        console.log('Show - HTTP '+status+': '+errorThrown);
       }
     });
     this.visible = true;
@@ -212,7 +212,7 @@ function Cart(config) {
       dataType: 'json',
       cache: false,
       error: function(ajax, status, errorThrown) {
-        alert('Hide - HTTP '+status+': '+errorThrown);
+        console.log('Hide - HTTP '+status+': '+errorThrown);
       }
     });
     this.visible = false;
@@ -261,7 +261,7 @@ function Cart(config) {
       },
       cache: false,
       error: function(ajax, status, errorThrown) {
-        alert('Remove item - HTTP '+status+': '+errorThrown);
+        console.log('Remove item - HTTP '+status+': '+errorThrown);
       }
     });
   }
@@ -288,7 +288,7 @@ function Cart(config) {
       },
       cache: false,
       error: function(ajax, status, errorThrown) {
-        alert('Send request - HTTP '+status+': '+errorThrown);
+        console.log('Send request - HTTP '+status+': '+errorThrown);
       },
       complete: function() {
         $.colorbox.close();
@@ -311,7 +311,7 @@ function Cart(config) {
       },
       cache: false,
       error: function(ajax, status, errorThrown) {
-        alert('Error getting shopping cart - HTTP '+status+': '+errorThrown);
+        console.log('Error getting shopping cart - HTTP '+status+': '+errorThrown);
       }
     });
   });
