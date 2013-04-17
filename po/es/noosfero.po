@@ -9281,14 +9281,10 @@ msgstr "Por favor, espera..."
 msgid "Your e-mails contacts are being fetched"
 msgstr "Tus contactos del correo electrónico están siendo recuperados"
 
-#: app/views/invite/_dialog_wait_loading.rhtml:17
-msgid ""
-"If it takes too long, you will be redirected to the previous page to try "
-"again. Be sure to fill in the fields with your correct login and password."
+#: app/views/layouts/application-ng.rhtml:68
+msgid "<span class='or'>or</span> <span class='signup'>%s</span>"
 msgstr ""
-"Si se tarda demasiado , serás redirigido a la página anterior para "
-"intentarde nuevo. Asegúrate de llenar los campos con tu nombre de usuario y "
-"contraseña correctos."
+"<span class='or'>o</span> <span class='signup'>%s</span>"
 
 #: app/views/invite/_dialog_wait_loading.rhtml:19
 msgid "Verify contact list"

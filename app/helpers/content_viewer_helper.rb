@@ -6,9 +6,17 @@ module ContentViewerHelper
   def number_of_comments(article)
     n = article.comments.without_spam.count
     if n == 0
-     _('No comments yet')
+      if article.parent.is_a?(Forum)
+        _('No answers yet')
+      else
+        _('No comments yet')
+      end
     else
-     n_('One comment', '<span class="comment-count">%{comments}</span> comments', n) % { :comments => n }
+      if article.parent.is_a?(Forum)
+       n_('One answer', '<span class="comment-count">%{comments}</span> answers', n) % { :comments => n }
+      else
+       n_('One comment', '<span class="comment-count">%{comments}</span> comments', n) % { :comments => n }
+      end
     end
   end
 
