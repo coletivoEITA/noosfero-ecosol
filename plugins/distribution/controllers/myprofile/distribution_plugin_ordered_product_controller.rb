@@ -9,7 +9,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
     @session_product = DistributionPluginProduct.find params[:session_product_id]
     @ordered_product = DistributionPluginOrderedProduct.find_by_order_id_and_session_product_id(@order.id, @session_product.id)
     @quantity_asked = DistributionPlugin::DistributionCurrencyHelper.parse_localized_number(params[:quantity_asked]) || 1
-    min = @session_product.minimum_selleable || 0.1
+    min = @session_product.minimum_selleable
 
     if @ordered_product.nil? and @quantity_asked > 0
       if @quantity_asked < min
@@ -24,8 +24,8 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
         render :action => :destroy
       else
         if @quantity_asked < min
-            @quantity_asked = min
-            @quantity_asked_less_than_minimum = @ordered_product.id
+          @quantity_asked = min
+          @quantity_asked_less_than_minimum = @ordered_product.id
         end
         @ordered_product.update_attributes! :quantity_asked => @quantity_asked
       end
