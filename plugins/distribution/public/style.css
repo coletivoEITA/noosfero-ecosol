@@ -1746,7 +1746,7 @@ body.plugin-distribution {
 }
 .plugin-distribution #orders-view .status-confirmed.order-message-title div {
   padding-left: 20px;
-  background-position: 0px 0px;
+  background-position: 0px 3px;
 }
 .plugin-distribution #orders-view .status-open.order-message-title div {
   padding-left: 20px;
