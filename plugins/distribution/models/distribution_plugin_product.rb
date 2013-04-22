@@ -99,6 +99,10 @@ class DistributionPluginProduct < ActiveRecord::Base
     Unit.new(:singular => _('unit'), :plural => _('units'))
   end
 
+  def minimum_selleable
+    self['minimum_selleable'] || 0.1
+  end
+
   def dummy?
     supplier ? supplier.dummy? : false
   end
