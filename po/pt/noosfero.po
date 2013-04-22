@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noosfero 0.41.0\n"
 "POT-Creation-Date: 2013-03-08 13:36-0300\n"
-"PO-Revision-Date: 2013-03-08 16:55-0300\n"
+"PO-Revision-Date: 2013-04-22 11:18-0300\n"
 "Last-Translator: Rodrigo Souto <rodrigo@colivre.coop.br>\n"
 "Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
 "Language: \n"
@@ -11201,7 +11201,6 @@ msgid "ADD NEW OPTION"
 msgstr "ADCIONAR NOVA OPÇÂO"
 
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:36
-#, fuzzy
 msgid "Free delivery price:"
 msgstr "Preço de entrega grátis:"
 
@@ -12697,6 +12696,14 @@ msgstr "No conteúdo"
 msgid "From spammers"
 msgstr "De spammers"
 
+#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:11
+msgid "shopping_cart|Change"
+msgstr "Troco"
+
+#: plugins/shopping_cart/views/cart.html.erb:2
+msgid "Are you sure you want to remove this item?"
+msgstr "Tem certeza de que quer excluir este ítem?"
+
 #: plugins/spaminator/views/spaminator_plugin_admin/reports.html.erb:13
 msgid "With spam comments"
 msgstr "Com comentários spams"
@@ -12793,6 +12800,12 @@ msgstr "Tipo de cliente"
 #: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:8
 msgid "Business type"
 msgstr "Nome fantasia"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:35
+#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:22
+#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:20
+msgid "Change"
+msgstr "Mudar"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/_contract_form.html.erb:18
 msgid "Type in search term for enterprise"
