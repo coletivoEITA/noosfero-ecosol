@@ -279,6 +279,7 @@ class ShoppingCartPluginController < PublicController
       :customer_address => params[:customer][:address],
       :customer_district => params[:customer][:district],
       :customer_city => params[:customer][:city],
+      :customer_state => params[:customer][:state],
       :customer_zip_code => params[:customer][:zip_code]
     )
   end
