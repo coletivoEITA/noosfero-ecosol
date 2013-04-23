@@ -9337,6 +9337,10 @@ msgstr ""
 msgid "Verify contact list"
 msgstr "Veriricar lista de contatos"
 
+#: app/views/layouts/application-ng.rhtml:68
+msgid "<span class='or'>or</span> <span class='signup'>%s</span>"
+msgstr "<span class='or'>ou</span> <span class='signup'>%s</span>"
+
 #: app/views/invite/_dialog_wait_loading.rhtml:20
 msgid "Add contact list"
 msgstr "Adicionar lista de contatos"
@@ -11472,13 +11476,6 @@ msgstr "Opção de entrega:"
 #: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:10
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:18
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:20
-#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:35
-msgid "Payment"
-msgstr "Pagamento"
-
-#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:10
-#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:18
-#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:20
 msgid "Money"
 msgstr "Dinheiro"
 
@@ -11571,6 +11568,10 @@ msgstr "Aqui estão os produtos que você pediu:"
 msgid "Thanks for buying with us!"
 msgstr "Obrigado por comprar conosco!"
 
+#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:11
+msgid "shopping_cart|Change"
+msgstr "Troco"
+
 #: plugins/shopping_cart/views/cart.html.erb:2
 msgid "Are you sure you want to remove this item?"
 msgstr "Tem certeza de que quer excluir este ítem?"
@@ -11612,6 +11613,36 @@ msgstr "Lista de pedidos"
 msgid "No results."
 msgstr "Sem resultados."
 
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:7
+msgid "Customer"
+msgstr "Cliente"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:8
+msgid "Purchase value"
+msgstr "Valor de compra"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:35
+msgid "E-mail"
+msgstr "E-mail"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:35
+#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:9
+msgid "Delivery option"
+msgstr "Opção de entrega:"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:35
+#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:20
+#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:18
+#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:10
+msgid "Payment"
+msgstr "Pagamento"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:35
+#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:22
+#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:20
+msgid "Change"
+msgstr "Mudar"
+
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:1
 msgid "Basket options"
 msgstr "Opções do cesto"
@@ -11642,18 +11673,6 @@ msgstr "Preço de entrega grátis:"
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:37
 msgid "Empty stands for no free delivery price."
 msgstr "Vazio significa sem preço de frete grátis."
-
-#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:7
-msgid "Customer"
-msgstr "Cliente"
-
-#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:8
-msgid "Purchase value"
-msgstr "Valor de compra"
-
-#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:35
-msgid "E-mail"
-msgstr "E-mail"
 
 #: plugins/mezuro/views/mezuro_plugin_reading/_form.html.erb:4
 msgid "Label:"
