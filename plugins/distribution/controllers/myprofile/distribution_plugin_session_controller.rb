@@ -101,9 +101,9 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     if report_file.nil?
       return false
     end
-    send_file report_file, :type => 'application/ods',
+    send_file report_file, :type => 'application/xlsx',
       :disposition => 'attachment',
-      :filename => _("Products Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.ods") % {
+      :filename => _("Products Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx") % {
         :date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @session.code, :cycle_name => @session.name}
     require 'fileutils'
     #FileUtils.rm_rf tmp_dir
@@ -117,9 +117,9 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
       render :nothing => true, :status => :ok
       return
     end
-    send_file report_file, :type => 'application/ods',
+    send_file report_file, :type => 'application/xlsx',
       :disposition => 'attachment',
-      :filename => _("Cycle Orders Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.ods") % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @session.code, :cycle_name => @session.name}
+      :filename => _("Cycle Orders Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx") % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @session.code, :cycle_name => @session.name}
     require 'fileutils'
     #FileUtils.rm_rf tmp_dir
   end
