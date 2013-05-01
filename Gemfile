@@ -3,6 +3,8 @@ source "https://rubygems.org"
 gem 'exception_notification', '1.0.20090728'
 gem 'system_timer'
 
+gem 'sass'
+
 group :test do
   gem 'rspec', '1.2.9'
   gem 'rspec-rails', '1.2.9'
