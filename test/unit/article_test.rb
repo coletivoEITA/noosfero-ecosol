@@ -97,6 +97,16 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal '', a.to_html
   end
 
+  should 'provide short html version' do
+    a = fast_create(Article, :body => 'full body', :abstract => 'lead', :profile_id => profile.id)
+    assert_match /lead/, a.to_html(:format=>'short')
+  end
+
+  should 'provide full html version' do
+    a = fast_create(Article, :body => 'full body', :abstract => 'lead')
+    assert_equal 'full body', a.to_html(:format=>'full body')
+  end
+
   should 'provide first paragraph of HTML version' do
     profile = create_user('testinguser').person
     a = fast_create(Article, :name => 'my article', :profile_id => profile.id)
@@ -1371,6 +1381,7 @@ class ArticleTest < ActiveSupport::TestCase
     a = profile.articles.create!(:name => 'a test article', :last_changed_by => author)
     assert_equal author.name, a.author_name
     author.destroy
+    a.reload
     a.author_name = 'some name'
     assert_equal 'some name', a.author_name
   end
@@ -1820,6 +1831,17 @@ class ArticleTest < ActiveSupport::TestCase
     author.destroy
     article.reload
     assert_equal author_name, article.author_name
+  end
+
+  should "author_id return the author id of the article's author" do
+    author = fast_create(Person)
+    article = Article.create!(:name => 'Test', :profile => profile, :last_changed_by => author)
+    assert_equal author.id, article.author_id
+  end
+
+  should "author_id return nil if there is no article's author" do
+    article = Article.create!(:name => 'Test', :profile => profile, :last_changed_by => nil)
+    assert_nil article.author_id
   end
 
 end

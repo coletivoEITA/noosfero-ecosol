@@ -246,6 +246,13 @@ class ProfileTest < ActiveSupport::TestCase
     assert_equal({ :profile => 'testprofile', :controller => 'profile_editor', :action => 'index'}, profile.admin_url)
   end
 
+  should 'provide URL to tasks area' do
+    environment = create_environment('mycolivre.net')
+    profile = build(Profile, :identifier => 'testprofile', :environment_id => create_environment('mycolivre.net').id)
+
+    assert_equal({ :host => profile.default_hostname, :profile => 'testprofile', :controller => 'tasks', :action => 'index'}, profile.tasks_url)
+  end
+
   should 'provide URL to public profile' do
     environment = create_environment('mycolivre.net')
     profile = build(Profile, :identifier => 'testprofile', :environment_id => environment.id)
@@ -1437,9 +1444,9 @@ class ProfileTest < ActiveSupport::TestCase
     t2 = fast_create(Profile, :is_template => true)
     profile = fast_create(Profile)
 
-    assert_includes Profile.templates, t1
-    assert_includes Profile.templates, t2
-    assert_not_includes Profile.templates, profile
+    assert_includes Profile.templates(Environment.default), t1
+    assert_includes Profile.templates(Environment.default), t2
+    assert_not_includes Profile.templates(Environment.default), profile
   end
 
   should 'provide URL to leave' do
