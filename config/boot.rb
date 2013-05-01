@@ -12,18 +12,6 @@ module Rails
       end
     end
 
-    def local_path
-      File.dirname(__FILE__) + '/../vendor/rails'
-    end
-
-    def local?
-      File.symlink?(Rails.local_path)
-    end
-
-    def recommended_version
-      self.local? ? '2.3.5' : '2.3.15'
-    end
-
     def booted?
       defined? Rails::Initializer
     end
@@ -119,18 +107,17 @@ end
 
 # yeah, I know, I shouldn't change this file. But ...
 def install_debian_rails
+  local_rails = File.dirname(__FILE__) + '/../vendor/rails'
   debian_rails = ['/usr/share/rails-ruby1.8', '/usr/lib/ruby/vendor_ruby/rails'].find { |d| File.exists?(d) }
-  if !Rails.local? && debian_rails && File.exists?(debian_rails)
-    File.delete(Rails.local_path) if File.symlink?(Rails.local_path) # remove dangling symlink
+  if !File.exist?(local_rails) && debian_rails && File.exists?(debian_rails)
+    File.delete(local_rails) if File.symlink?(local_rails) # remove dangling symlink
     puts "I: Installing Debian-installed Rails from /usr/share/rails into vendor/rails."
-    File.symlink(debian_rails, Rails.local_path)
-    puts "I: Please note that the recommended Rails version is #{Rails.recommended_version}, and that other versions might not work"
+    recommended_rails_version = Rails::GemBoot.gem_version
+    puts "I: Please note that the recommended Rails version is #{recommended_rails_version}, and that other versions might not work"
+    File.symlink(debian_rails, local_rails)
   end
 end
 install_debian_rails
-
-# Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = Rails.recommended_version unless defined? RAILS_GEM_VERSION
 
 # All that for this:
 Rails.boot!
