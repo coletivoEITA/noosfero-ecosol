@@ -93,6 +93,7 @@
         precision: 2
         significant: false
         strip_insignificant_zeros: false
+        xlsx_currency: "[$R$-416]* #,##0.00;[RED]-[$R$-416]* #,##0.00"
 
     percentage:
       format:

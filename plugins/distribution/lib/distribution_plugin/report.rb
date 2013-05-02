@@ -14,7 +14,6 @@ module DistributionPlugin::Report
       wb = p.workbook
 
       # create styles
-      # todo: make font-weight: bold on the next 3
       greencell = wb.styles.add_style :bg_color => "00AE00", :fg_color => "ffffff", :sz => 8, :b => true, :wrap_text => true, :alignment => { :horizontal=> :left }, :border => 0
       bluecell  = wb.styles.add_style :bg_color => "99CCFF", :fg_color => "000000", :sz => 8, :b => true, :wrap_text => true, :alignment => { :horizontal=> :left }, :border => 0
       redcell   = wb.styles.add_style :bg_color => "FF6633", :fg_color => "000000", :sz => 8, :b => true, :wrap_text => true, :alignment => { :horizontal=> :left }, :border => 0
@@ -92,35 +91,55 @@ module DistributionPlugin::Report
       report_file = tmp_dir + '/report.xlsx'
       p = Axlsx::Package.new
       wb = p.workbook
+
       # create styles
-      # todo: make font-weight: bold on the next 3
-      greencell = wb.styles.add_style :bg_color => "ffffff", :fg_color => "00FF00", :sz => 14, :b => true, :alignment => { :horizontal=> :center }
-      bluecell  = wb.styles.add_style :bg_color => "ffffff", :fg_color => "0000FF", :sz => 14, :b => true, :alignment => { :horizontal=> :center }
-      redcell   = wb.styles.add_style :bg_color => "aaccbb", :fg_color => "FF0000", :sz => 14, :b => true, :alignment => { :horizontal=> :center }
+      defaults = {:fg_color => "000000", :sz => 8, :alignment => { :horizontal=> :left, :vertical => :center, :wrap_text => true }, :border => 0}
+      greencell = wb.styles.add_style(defaults.merge({:bg_color => "00AE00", :fg_color => "ffffff", :b => true }))
+      bluecell  = wb.styles.add_style(defaults.merge({:bg_color => "99CCFF", :b => true}))
+      default   = wb.styles.add_style(defaults.merge({:border => 0}))
+      bluecell_b_top  = wb.styles.add_style(defaults.merge({:bg_color => "99CCFF", :b => true, :border => {:style => :thin, :color => "FF000000", :edges => [:top]}}))
+      date  = wb.styles.add_style(defaults.merge({:format_code => _("MM/DD/YY HH:MM AM/PM")}))
+      currency  = wb.styles.add_style(defaults.merge({:format_code => t('number.currency.format.xlsx_currency')}))
+      border_top = wb.styles.add_style :border => {:style => :thin, :color => "FF000000", :edges => [:top]}
+
       # create sheet and populates
       wb.add_worksheet(:name => _("Closed Orders")) do |sheet|
+        # supplier block start index (shifts on the loop for each supplier)
+        sbs = 1
         orders.each do |order|
 
-          sheet.add_row [_("Order code"), _("Member name")], :style => bluecell
+          sheet.add_row [_("Order code"), _("Member name"), '', '', '', '', ''], :style => bluecell_b_top
+          sheet.merge_cells "B#{sbs}:C#{sbs}"
 
-          sheet.add_row [order.id, order.consumer.name]
+          sheet.add_row [order.id, order.consumer.name, '','','','',''], :style => default
 
-          sheet.add_row [_("Total Value"),_("created"), _("modified")], :style => bluecell
+          sheet.merge_cells "B#{sbs+1}:C#{sbs+1}"
 
-          sheet.add_row [order.total_price_asked, order.created_at, order.created_at]
+          sheet.add_row [_("Total Value"),_("created"), _("modified"), '','', '',''], :style => bluecell
 
-          sheet.add_row [_("product cod."), _("supplier"), _("product name"), _("qty ordered"),_("price/un."),  _("value")], :style => greencell
+          # sp = index of the start of the products list / ep = index of the end of the products list
+          sp = sbs + 5
+          ep = sp + order.products.count - 1
+          sheet.add_row ["=SUM(G#{sp}:G#{ep})", order.created_at, order.updated_at, '', '', '', '',''], :style => [currency,date,date]
 
-          order.products.each do |ordered_product|
+          sheet.add_row [_("product cod."), _("supplier"), _("product name"),
+                         _("qty ordered"),_("un."),_("price/un."), _("value")], :style => greencell
 
-            sheet.add_row [ordered_product.product.id, ordered_product.product.supplier.name,
-                           ordered_product.product.name, ordered_product.quantity_asked,
-                           ordered_product.product.unit.singular, ordered_product.product.price, ordered_product.price_asked]
+          sbe = sp
+          order.products.each do |op|
 
-          end # closes ordered_products.each
-          sheet.add_row ["", "", ""]
-          sheet.add_row ["", "", ""]
+            sheet.add_row [op.product.id, op.product.supplier.abbreviation_or_name,
+                           op.product.name, op.quantity_asked,
+                           op.product.unit.singular, op.product.price,
+                           "=F#{sbe}*D#{sbe}"], :style => [default,default,default,default,default,currency,currency]
+
+            sbe += 1
+          end # closes order.products.each
+          sheet.add_row ["", "", "", "","","",""], :style => border_top
+          sheet.add_row ["", "", "", "","","",""]
+          sbs = sbe + 2
         end # closes ordered_products_by_supplier
+        sheet.column_widths 12,30,30,9,6,8,10
       end # closes spreadsheet
       p.serialize report_file
       [tmp_dir, report_file]
