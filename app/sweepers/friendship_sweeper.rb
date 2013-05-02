@@ -35,7 +35,7 @@ protected
     end
 
     blocks = profile.blocks.select{|b| b.kind_of?(FriendsBlock)}
-    BlockSweeper.expire_blocks(blocks)
+    expire_profile_blocks(blocks)
   end
 
 end
