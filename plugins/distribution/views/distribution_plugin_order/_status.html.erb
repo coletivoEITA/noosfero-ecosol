@@ -3,7 +3,7 @@
     <%= _("%{code} %{status_message}") % { :code => order.code, :status_message => order.status_message } %>
   </div>
 
-  <%= link_to _('open'), {:controller => :distribution_plugin_order, :action => :edit, :id => order.id}, :class => 'open' if order != @order %>
+  <%= link_to _('open it'), {:controller => :distribution_plugin_order, :action => :edit, :id => order.id}, :class => 'open' if order != @order %>
 
   <div class="cleaner"></div>
 </div>

@@ -1,6 +1,6 @@
   <%= pagination_links @suppliers %>
 <% if suppliers.empty? %>
-  <strong><%=__("Esta busca não retornou nenhum produtor.") %></strong>
+  <strong><%= _("This search didn't return suppliers.") %></strong>
 <% else %>
   <% @suppliers.each do |supplier| %>
     <div id="supplier-<%=supplier.id%>" class="supplier value-row" without-hover without-click-edit toggleedit='distribution.supplier_toggle_edit();'>

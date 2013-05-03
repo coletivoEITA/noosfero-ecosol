@@ -6,10 +6,10 @@
   <%= labelled_field(f, :description, _('Description'), f.text_area(:description), :class => 'session-field-description') %>
 
   <div class="session-fields-block">
-    <%= labelled_period_field(f, :start, :finish, _('Orders'), :class => 'session-orders-period') %>
+    <%= labelled_period_field(f, :start, :finish, _('Orders Interval'), :class => 'session-orders-period') %>
   </div>
   <div class="session-fields-block">
-    <%= labelled_period_field(f, :delivery_start, :delivery_finish, _('Deliveries'), :class => 'session-orders-period') %>
+    <%= labelled_period_field(f, :delivery_start, :delivery_finish, _('Deliveries Interval'), :class => 'session-orders-period') %>
   </div>
 
   <div class="session-fields-block">
@@ -28,7 +28,7 @@
   </div>
 
   <div id="session-new-mail">
-    <%= check_box_tag('sendmail', 'yes', true, :id => 'session-new-mail-send') %>
+    <%= check_box_tag('sendmail', 'yes', false, :id => 'session-new-mail-send') %>
     <%= content_tag('label', _('Notify members of open orders'), :for => 'sendmail') %>
 
     <div class='mail-message'>
