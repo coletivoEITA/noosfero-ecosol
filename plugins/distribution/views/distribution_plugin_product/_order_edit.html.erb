@@ -1,6 +1,19 @@
-<div class="box-view">
-  <% editable = order && order.open? %>
+<% editable = order && order.open? %>
+<% draft_order = session.orders.draft.for_consumer(@user_node).first %>
+<% include_message = '' %>
+<% if order.nil? %>
+  <% if draft_order %>
+    <% order_id = draft_order.id %>
+    <% include_message = _('Opening order %{code} for your product inclusion') % {:code => draft_order.code} %>
+  <% else %>
+    <% order_id = 'new' %>
+    <% include_message = _('Opening new order for your product inclusion') %>
+  <% end %>
+<% else %>
+  <% order_id = order.id %>
+<% end %>
 
+<div class="box-view">
   <div class="box-field product box-edit-link"><%= product.name %></div>
   <div class="box-field price-with-unit"><%= price_with_unit_span product.price_as_currency, product.unit, product.unit_detail %></div>
 
@@ -10,12 +23,12 @@
         <span class="label"><%= ordered_product.quantity_asked_as_currency_number %></span>
         <span class="unit"><%= product.unit.singular %></span>
         <%= link_to_function _('change'), "" if editable %>
-      <% elsif editable %>
+      <% elsif session.orders? %>
         <%= link_to_function _('include'), "" %>
       <% end %>
     </div>
     <div class="quantity-entry" style="display: none">
-      <% if editable %>
+      <% if session.orders? %>
         <%= text_field_tag 'quantity_asked', ordered_product ? ordered_product.quantity_asked_as_currency_number : '1' %>
       <% elsif ordered_product %>
         <%= ordered_product.quantity_asked_as_currency_number %>
@@ -71,9 +84,11 @@
       </div>
     <% end %>
 
-    <% if editable %>
-      <%= submit_to_function (ordered_product ? _('Change') : _('Add')), "distribution.setLoading('session-product-#{product.id}'); jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}',
-        {order_id: #{order.id}, session_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-session-product').find('.quantity-entry input').val() });" %>
+    <% if session.orders? %>
+      <%= submit_to_function (ordered_product ? _('Change') : _('Add')),
+        "distribution.setLoading('session-product-#{product.id}'); " +
+        "distribution.order_product_include('#{include_message}'); " +
+        "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}', {order_id: '#{order_id}', redirect: #{order.nil? ? '1' : ''}, session_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-session-product').find('.quantity-entry input').val() }); " %>
       <%= link_to_function _('cancel'), :class => 'toggle-edit' %>
     <% end %>
   </div>
