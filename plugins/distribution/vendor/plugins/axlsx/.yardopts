@@ -1,0 +1,9 @@
+--protected
+--no-private
+--title "AXLSX"
+--readme README.md
+--markup markdown
+--markup-provider kramdown
+-
+CHANGELOG.md
+LICENSE
