@@ -29,7 +29,7 @@
     </div>
     <div class="quantity-entry" style="display: none">
       <% if session.orders? %>
-        <%= text_field_tag 'quantity_asked', ordered_product ? ordered_product.quantity_asked_as_currency_number : '1' %>
+        <%= text_field_tag 'quantity_asked', ordered_product ? ordered_product.quantity_asked_as_currency_number : '1,00' %>
       <% elsif ordered_product %>
         <%= ordered_product.quantity_asked_as_currency_number %>
       <% end %>
@@ -88,7 +88,7 @@
       <%= submit_to_function (ordered_product ? _('Change') : _('Add')),
         "distribution.setLoading('session-product-#{product.id}'); " +
         "distribution.order_product_include('#{include_message}'); " +
-        "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}', {order_id: '#{order_id}', redirect: #{order.nil? ? '1' : ''}, session_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-session-product').find('.quantity-entry input').val() }); " %>
+        "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}', {order_id: '#{order_id}', redirect: '#{order.nil? ? '1' : ''}', session_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-session-product').find('.quantity-entry input').val() }); " %>
       <%= link_to_function _('cancel'), :class => 'toggle-edit' %>
     <% end %>
   </div>

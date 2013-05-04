@@ -77,6 +77,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
 
   def destroy
     @ordered_product = DistributionPluginOrderedProduct.find params[:id]
+    @session_product = @ordered_product.session_product
     @order = @ordered_product.order
     @session = @order.session
     @ordered_product.destroy
