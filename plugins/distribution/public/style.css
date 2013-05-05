@@ -571,12 +571,6 @@ body.plugin-distribution {
   float: right;
   clear: both;
 }
-#distribution-plugin-sessions-gadget td.third-column form input {
-  margin: 0;
-  margin-bottom: 8px;
-  width: 140px;
-}
-
 #distribution-plugin-sessions-gadget .session .happening {
   line-height: 20px;
   text-transform: uppercase;
@@ -1580,6 +1574,8 @@ body.plugin-distribution {
 }
 .plugin-distribution .session-view #session-products-for-order .box-edit .box-field.quantity input[type=submit] {
   margin-bottom: 0;
+  cursor: hand;
+  cursor: pointer;
 }
 .plugin-distribution .session-view #session-products-for-order .product-supplier-link {
   position: absolute;
@@ -1781,6 +1777,15 @@ body.plugin-distribution {
 .plugin-distribution #order-column > h3 a {
   text-transform: lowercase;
   float: right;
+  color: #000000;
+  border: 2px solid #000000;
+  margin-bottom: 10px;
+  margin-right: -7px;
+  padding: 5px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  background-color: #FFE546;
 }
 
 .plugin-distribution #order-column .consumer-order,
@@ -1810,6 +1815,10 @@ body.plugin-distribution {
 .plugin-distribution #order-column .order-message-actions {
   margin-top: 10px;
   font-size: 10px;
+}
+
+.plugin-distribution #order-column .order-message-actions a {
+  font-weight: bold;
 }
 
 .plugin-distribution #order-column #order-products .value-row {
