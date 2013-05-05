@@ -62,10 +62,11 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     session = DistributionPluginSession.find params['session_id']
     @products = session.products_for_order_by_supplier conditions
     @order = DistributionPluginOrder.find_by_id params[:order_id]
+    @session = @order.session
     #@product_categories = ProductCategory.find(:all)
 
     render :partial => 'order_search', :locals => {
-      :products_for_order_by_supplier => @products, :order => @order}
+      :products_for_order_by_supplier => @products, :order => @order, :session => @session}
   end
 
   def new

@@ -24,7 +24,11 @@ module DistributionPlugin::DistributionCurrencyHelper
 
     def has_number_with_locale field
       define_method "#{field}=" do |value|
-        self[field] = DistributionPlugin::DistributionCurrencyHelper.parse_localized_number value
+        if value.is_a?(String)
+          self[field] = DistributionPlugin::DistributionCurrencyHelper.parse_localized_number value
+        else
+          self[field] = value
+        end
       end
 
       define_method "#{field}_as_currency_number" do |*args, &block|

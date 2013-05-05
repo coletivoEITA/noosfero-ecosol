@@ -15,14 +15,14 @@ class DistributionPluginOrderController < DistributionPluginProfileController
 
   def new
     if @user_node.nil?
-      session[:notice] = _('Login first')
+      session[:notice] = _('Please login first')
       redirect_to :action => :index
       return
     end
     @consumer = @user_node
     @session = DistributionPluginSession.find params[:session_id]
     @order = DistributionPluginOrder.create! :session => @session, :consumer => @consumer
-    redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
+    redirect_to params.merge(:action => :edit, :id => @order.id)
   end
 
   def admin_new
@@ -49,6 +49,8 @@ class DistributionPluginOrderController < DistributionPluginProfileController
       @admin_edit = @user_node && @user_node != @consumer
     end
     @consumer_orders = @session.orders.for_consumer @consumer
+
+    render :partial => 'consumer_orders' if params[:consumer_orders]
   end
 
   def reopen
