@@ -263,6 +263,8 @@ body.plugin-distribution {
 .plugin-distribution a.button.colorbox-close:hover,
 .plugin-distribution input[type=submit]:hover {
   background-color: #666;
+  cursor: hand;
+  cursor: pointer;
 }
 .plugin-distribution a.button.colorbox-close,
 #wrap-1 .plugin-distribution input[type=submit],
@@ -284,6 +286,8 @@ body.plugin-distribution {
   -mox-border-radius: 5px 5px 5px 5px;
   -webkit-border-radius: 5px 5px 5px 5px;
   -o-border-radius: 5px 5px 5px 5px;
+  cursor: hand;
+  cursor: pointer;
 }
 
 .plugin-distribution .happening {
@@ -571,12 +575,6 @@ body.plugin-distribution {
   float: right;
   clear: both;
 }
-#distribution-plugin-sessions-gadget td.third-column form input {
-  margin: 0;
-  margin-bottom: 8px;
-  width: 140px;
-}
-
 #distribution-plugin-sessions-gadget .session .happening {
   line-height: 20px;
   text-transform: uppercase;
@@ -1781,6 +1779,15 @@ body.plugin-distribution {
 .plugin-distribution #order-column > h3 a {
   text-transform: lowercase;
   float: right;
+  color: #000000;
+  border: 2px solid #000000;
+  margin-bottom: 10px;
+  margin-right: -7px;
+  padding: 5px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  background-color: #FFE546;
 }
 
 .plugin-distribution #order-column .consumer-order,
@@ -1810,6 +1817,10 @@ body.plugin-distribution {
 .plugin-distribution #order-column .order-message-actions {
   margin-top: 10px;
   font-size: 10px;
+}
+
+.plugin-distribution #order-column .order-message-actions a {
+  font-weight: bold;
 }
 
 .plugin-distribution #order-column #order-products .value-row {

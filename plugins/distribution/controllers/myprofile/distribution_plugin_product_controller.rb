@@ -21,7 +21,7 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
      if not params['name'].blank?
        conditions[0] += ' AND ' unless conditions[0].blank?
        conditions[0] += 'LOWER(name) LIKE ?'
-       conditions[1] += ['%'+params["name"]+'%']
+       conditions[1] += ['%'+params["name"].strip+'%']
      end
     conditions = DistributionPluginDistributedProduct.send :merge_conditions, conditions.flatten
 
@@ -50,7 +50,7 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     if not params['name'].blank?
       conditions[0] += ' AND ' unless conditions[0].blank?
       conditions[0] += 'LOWER(name) LIKE ?'
-      conditions[1] += ['%'+params["name"].downcase+'%']
+      conditions[1] += ['%'+params["name"].strip.downcase+'%']
     end
     if not params["session_id"].blank?
       conditions[0] += ' AND ' unless conditions[0].blank?

@@ -16,7 +16,7 @@
 
   <div>
     <% if order.open? %>
-      <%= f.submit _('Confirm order') %>&emsp;
+      <%= f.submit _('Confirm order'), :confirm => _('Confirming this order you are responsible for paying it. Do you want to continue?') %>&emsp;
       <%= link_to _('cancel order'), {:controller => :distribution_plugin_order, :action => :cancel, :id => order.id} %>
     <% end %>
   </div>
