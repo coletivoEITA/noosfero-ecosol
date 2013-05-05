@@ -263,6 +263,8 @@ body.plugin-distribution {
 .plugin-distribution a.button.colorbox-close:hover,
 .plugin-distribution input[type=submit]:hover {
   background-color: #666;
+  cursor: hand;
+  cursor: pointer;
 }
 .plugin-distribution a.button.colorbox-close,
 #wrap-1 .plugin-distribution input[type=submit],
@@ -284,6 +286,8 @@ body.plugin-distribution {
   -mox-border-radius: 5px 5px 5px 5px;
   -webkit-border-radius: 5px 5px 5px 5px;
   -o-border-radius: 5px 5px 5px 5px;
+  cursor: hand;
+  cursor: pointer;
 }
 
 .plugin-distribution .happening {
@@ -1574,8 +1578,6 @@ body.plugin-distribution {
 }
 .plugin-distribution .session-view #session-products-for-order .box-edit .box-field.quantity input[type=submit] {
   margin-bottom: 0;
-  cursor: hand;
-  cursor: pointer;
 }
 .plugin-distribution .session-view #session-products-for-order .product-supplier-link {
   position: absolute;
