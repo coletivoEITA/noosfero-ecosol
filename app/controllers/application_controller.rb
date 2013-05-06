@@ -11,6 +11,12 @@ class ApplicationController < ActionController::Base
     theme_option(:layout) || 'application'
   end
 
+  before_filter :load_active_organization
+  def load_active_organization
+    profile = Profile.find_by_id session[:active_organization]
+    @active_organization = (profile and profile.admins.include? user) ? profile : nil
+  end
+
   filter_parameter_logging :password
 
   def log_processing
@@ -83,7 +89,7 @@ class ApplicationController < ActionController::Base
   def user
     current_user.person if logged_in?
   end
-  
+
   alias :current_person :user
 
   # TODO: move this logic somewhere else (Domain class?)
