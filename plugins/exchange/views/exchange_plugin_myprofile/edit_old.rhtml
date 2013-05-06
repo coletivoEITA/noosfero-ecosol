@@ -1,0 +1,52 @@
+  <li><%= _('Proposer: %s') % @exchange.enterprise_origin.name %></li>
+  <li><%= _('Exchange Elements:') %></li>
+  <ul id="origin_elements">
+    <% @origin_elements.each do |p| %>
+      <li id="origin_element_<%= p.id %>"><%= (eval(p.element_type).find p.element_id).name %> | 
+      <%= text_field_tag "origin_quantity[" + p.element_id.to_s + "]", p.quantity, 
+      :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :element_id => p.id}', {quantity: jQuery(this).val()});"%>
+      <%= link_to_remote "[-]", :url => {:action => :remove_element, :enterprise => "origin", :element_id => p.id, :exchange_id => @exchange.id} %></li>
+    <% end %>
+  </ul>
+  <li><%= _('Add Elements to Exchange') %></li>
+  <ul id="origin_products">
+    <% @origin_products.each do |p| %>
+      <li id="origin_Product_<%= p.id %>"> <%= p.name %> | <%= link_to_remote "[+]", :url => {:action => "add_element", :element_id => p.id, :exchange_id => @exchange.id, 
+        :enterprise => "origin", :enterprise_id => @exchange.enterprise_origin.id, :element_type => "Product"} %>
+        </li>
+    <% end %>
+  </ul>
+   <ul id="origin_knowledges">
+    <% @origin_knowledges.each do |k| %>
+      <li id="origin_CmsLearningPluginLearning_<%= k.id %>"> <%= k.name %> | <%= link_to_remote "[+]", :url => {:action => "add_element", :element_id => k.id, :exchange_id => @exchange.id, 
+        :enterprise => "origin", :enterprise_id => @exchange.enterprise_origin.id, :element_type => "CmsLearningPluginLearning"} %>
+        </li>
+    <% end %>
+  </ul>
+ <li><%= _('Proposed: %s') % @exchange.enterprise_target.name %></li>
+  <li><%= _('Exchange Elements:') %></li>
+  <ul id="target_elements">
+    <% @target_elements.each do |p| %>
+      <li id="target_element_<%= p.id %>"><%= (eval(p.element_type).find p.element_id).name %> | <%= text_field_tag "target_quantity[" + p.element_id.to_s + "]", p.quantity,
+      :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :element_id => p.id}', {quantity: jQuery(this).val()});" %>
+      <%= link_to_remote "[-]", :url => {:action => :remove_element, :enterprise => "target", :element_id => p.id, :exchange_id => @exchange.id} %></li>
+    <% end %>
+  </ul>
+  <li><%= _('Add Elements to Exchange') %></li>
+  <ul id="target_products">
+    <% @target_products.each do |p| %>
+      <li id="target_product_<%= p.id %>"> <%= p.name %> | <%= link_to_remote "[+]", :url => {:action => "add_element", :element_id => p.id, :exchange_id => @exchange.id, 
+        :enterprise => "target", :enterprise_id => @exchange.enterprise_target.id, :element_type => "Product"} %>
+        </li>
+     <% end %>
+  </ul>
+   <ul id="target_knowledges">
+    <% @target_knowledges.each do |k| %>
+      <li id="target_CmsLearningPluginLearning_<%= k.id %>"> <%= k.name %> | <%= link_to_remote "[+]", :url => {:action => "add_element", :element_id => k.id, :exchange_id => @exchange.id, 
+        :enterprise => "origin", :enterprise_id => @exchange.enterprise_origin.id, :element_type => "CmsLearningPluginLearning"} %>
+        </li>
+    <% end %>
+  </ul>
+</ul>
+
+

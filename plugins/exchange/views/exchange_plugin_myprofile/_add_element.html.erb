@@ -1,0 +1,7 @@
+<tr id="exchange_<%= enterprise %>_element_<%= element.id %>">
+  <td><%= (eval(element.element_type).find element.element_id).name %></td>
+  <td id="exchange_element_quantity"><%= text_field_tag "#{enterprise}_quantity[" + element.element_id.to_s + "]", element.quantity, 
+    :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :element_id => element.id}', {quantity: jQuery(this).val()});", :class => "exchange_quantity_input" %></td>
+  <td><%= link_to_remote _('[remove]'), :url => {:action => :remove_element, :enterprise => enterprise, :element_id => element.id, :exchange_id => @exchange.id} %></td>
+</tr>
+

@@ -1,0 +1,96 @@
+<h1> <%= _('Edit Exchange') %>  </h1>
+
+
+<table id="exchange_elements">
+  <tr>
+    <td>
+      <table id="exchange_origin_elements" >
+        <tr>
+          <th colspan="3"><h1><%= _('Proposer: %s') % @exchange.enterprise_origin.name %></h1></th>
+        </tr>
+        <tr>
+          <th><%= _('Exchange Elements:') %></th>
+          <th><%= _('Quantity:') %></th>
+          <th></th>
+          </tr>
+          <% @origin_elements.each do |p| %>
+          <% if p.element != nil %>
+            <tr id="exchange_origin_element_<%= p.id %>">
+              <td> <%= (eval(p.element_type).find p.element_id).name %></td> 
+              <td id="exchange_element_quantity"><%= text_field_tag "origin_quantity[" + p.element_id.to_s + "]", p.quantity, 
+                :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :element_id => p.id}', {quantity: jQuery(this).val()});", :class => "exchange_quantity_input"%></td>
+              <td><%= link_to_remote _('[remove]'), :url => {:action => :remove_element, :enterprise => "origin", :element_id => p.id, :exchange_id => @exchange.id} %></td>
+          </tr>
+            <% end %>
+        <% end %>
+      </table>
+    </td>
+    <td>
+      <table id="exchange_target_elements" >
+        <tr>
+          <th colspan="3"><h1><%= _('Proposed: %s') % @exchange.enterprise_target.name %></h1></th>
+        </tr>
+        <tr>
+          <th><%= _('Exchange Elements:') %></th>
+          <th><%= _('Quantity:') %></th>
+          <th></th>
+          </tr>
+          <% @target_elements.each do |p| %>
+          <% if p.element != nil %>
+            <tr id="exchange_target_element_<%= p.id %>">
+              <td> <%= (eval(p.element_type).find p.element_id).name %></td> 
+              <td id="exchange_element_quantity"><%= text_field_tag "target_quantity[" + p.element_id.to_s + "]", p.quantity, 
+                :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :element_id => p.id}', {quantity: jQuery(this).val()});", :class => "exchange_quantity_input" %></td>
+              <td> <%= link_to_remote _('[remove]'), :url => {:action => :remove_element, :enterprise => "target", :element_id => p.id, :exchange_id => @exchange.id} %></td>
+          </tr>
+        <% end %>
+            <% end %>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 10px;">
+      <table id="exchange_origin_products">    
+        <tr>
+          <th colspan="2"><%= _('Add Elements to Exchange') %></th>
+        </tr>
+        <% @origin_products.each do |p| %>
+          <tr id="exchange_origin_Product_<%= p.id %>"> 
+            <td><%= p.name %></td> 
+            <td><%= link_to_remote "[+]", :url => {:action => "add_element", :element_id => p.id, :exchange_id => @exchange.id, 
+              :enterprise => "origin", :enterprise_id => @exchange.enterprise_origin.id, :element_type => "Product"} %></td>
+          </tr>
+        <% end %>
+        <% @origin_knowledges.each do |k| %>
+          <tr id="exchange_origin_CmsLearningPluginLearning_<%= k.id %>"> 
+            <td><%= k.name %></td> 
+            <td><%= link_to_remote "[+]", :url => {:action => "add_element", :element_id => k.id, :exchange_id => @exchange.id, 
+              :enterprise => "origin", :enterprise_id => @exchange.enterprise_origin.id, :element_type => "CmsLearningPluginLearning"} %></td>
+          </tr>
+        <% end %>
+      </table>
+    </td>
+    <td style="padding: 10px;">
+      <table id="exchange_target_products">    
+        <tr>
+          <th colspan="2"><%= _('Add Elements to Exchange') %></th>
+        </tr>
+        <% @target_products.each do |p| %>
+          <tr id="exchange_target_Product_<%= p.id %>"> 
+            <td><%= p.name %></td> 
+            <td><%= link_to_remote "[+]", :url => {:action => "add_element", :element_id => p.id, :exchange_id => @exchange.id, 
+              :enterprise => "target", :enterprise_id => @exchange.enterprise_target.id, :element_type => "Product"} %></td>
+          </tr>
+        <% end %>
+        <% @target_knowledges.each do |k| %>
+          <tr id="exchange_target_CmsLearningPluginLearning_<%= k.id %>"> 
+            <td><%= k.name %></td> 
+            <td><%= link_to_remote "[+]", :url => {:action => "add_element", :element_id => k.id, :exchange_id => @exchange.id, 
+              :enterprise => "target", :enterprise_id => @exchange.enterprise_target.id, :element_type => "CmsLearningPluginLearning"} %></td>
+          </tr>
+        <% end %>
+      </table>
+  </td>
+</tr>
+</table> 
+<%= button_to _('Back to console'), :action => "console", :id => @exchange.id %>

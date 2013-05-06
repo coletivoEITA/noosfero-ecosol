@@ -1,0 +1,134 @@
+
+
+<% button_bar(:style => 'margin-bottom: 1em;') do %>
+  <%= button(:back, _('Back to My Exchanges'), :action => "index") %>
+<% end %>
+
+  <div id="exchange_console_top">
+
+  <div id="exchange_summary">
+  <h2><%= _('Exchange Summary')%></h2>
+
+
+  <table>
+    <!--<tr><td class="exchange_label"><%= _("Slug: ") %></td><td><%= @exchange.slug %></td></tr>-->
+    <tr><td class="exchange_label"><%= _("Exchange with: ") %></td><td><%= @exchange.the_other(profile).name %></td></tr>
+    <tr>
+      <td class="exchange_label"><%= _("I offer:") %></td>
+      <td>
+        <% @exchange.my_elements(profile).each do |x| %>
+          <% if x.element != nil%>
+          <%= "#{x.element.name} (#{x.quantity}) "%>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td class="exchange_label"><%= _("%{other} offers me:") % {:other => @exchange.the_other(profile).name} %></td>
+      <td>  
+        <% @exchange.other_elements(profile).each do |x| %>
+          <% if x.element != nil%> 
+          <%= "#{x.element.name} (#{x.quantity}) "%>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td class="exchange_label"><%= _('Exchange State:') %></td>
+      <td> <%= ExchangePlugin::Exchange.state[@exchange.state] %> - <%= @exchange.simplified_state %><%= @no_button_message %></td>
+    </tr>
+    <% if @origin_evaluation_score %>
+      <tr>
+        <td class="exchange_label"><%= _("%s's evaluation:") % @exchange.enterprise_origin.name%></td>
+        <td><%= @origin_evaluation_score %> - <%= @origin_evaluation_desc %></td>
+      </tr>
+    <% end %>
+    <% if @target_evaluation_score %>
+      <tr>
+        <td class="exchange_label"><%= _("%s's evaluation:") % @exchange.enterprise_target.name %></td>
+        <td><%= @target_evaluation_score %> - <%= @target_evaluation_desc %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <td colspan="2">
+        <%if @edit_allowed %><%= button_to _('Edit exchange elements'), :action => "edit", :id => @exchange.id %> <% end %>
+        <% if @button %>
+          <% button_bar do %>
+            <%= button_to @button[0][0], {:action => @button[0][1], :id => @exchange.id} %>
+            <%= button_to @button[1][0], {:action => @button[1][1], :id => @exchange.id} %>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  </table>
+  </div><!--exchange_summary--> 
+  <div id="exchange_system_messages">
+  <table>
+    <tr><th><%= _('Last Updates') %>
+    <% i = 0%>  
+  <% @system_messages.each do |m| %> 
+    <tr><td><%= m.created_at.strftime("%d de %B de %Y, às %H:%M") + "<br />" + m.body %></td></tr>
+    <% i = i + 1 %>
+    <% i == 5 ? break : true %>
+  <% end %>
+
+    </table>
+</div>
+</div><!--exchange_console_top-->
+
+<div id="exchange_messages">
+  <h2><%= _('Messages')%></h2>
+
+<div id='leave_scrap' style="float:none; height:70px;">
+
+      <% form_for :message, :url => {:controller => 'exchange_plugin_myprofile', :action => 'new_message', :exchange_id => @exchange.id} do |f| %>
+        <%= text_area_tag 'body',nil, :rows => 2, :cols => 30, :placeholder => _('Leave a scrap') %>
+    <%= f.submit _('Leave a scrap')%>
+  <% end %>
+</div>
+<div id="messages">
+  <table>
+  <% @messages.each do |m| %> 
+    <tr>
+      <td><% if m.enterprise_sender.id == profile.id%><%= link_to profile_image(profile, :thumb) +"\n", profile.url %><% end %></td>
+      <td>
+    <% if m.enterprise_sender.id == profile.id%>
+      <div class="exchange_my_message">
+    <% else %>
+      <div class="exchange_other_message">
+    <% end %>
+    <% divclass = (m.enterprise_sender.id == profile.id) ? "comment-ballon" : "comment-ballon-inverted" %><div class="<%= divclass%>">
+    <div class="comment-wrapper-1">
+    <div class="comment-wrapper-2">
+    <% divclass = (m.enterprise_sender.id == profile.id) ? "comment-wrapper-3" : "comment-wrapper-3-inverted" %><div class="<%= divclass%>">
+    <div class="comment-wrapper-4">
+    <% divclass = (m.enterprise_sender.id == profile.id) ? "comment-wrapper-5" : "comment-wrapper-5-inverted" %><div class="<%= divclass%>">
+    <div class="comment-wrapper-6">
+      <% divclass = (m.enterprise_sender.id == profile.id) ? "comment-wrapper-7" : "comment-wrapper-7-inverted" %><div class="<%= divclass%>">
+      <% divclass = (m.enterprise_sender.id == profile.id) ? "comment-wrapper-8" : "comment-wrapper-8-inverted" %><div class="<%= divclass%>">
+    <div  class="comment-balloon-content">
+      <table>
+        <tr><td class="exchange_label"> <%=_('From:') %></td><td><%= m.enterprise_sender.name + " - " + m.person_sender.name %></td></tr>
+        <tr><td class="exchange_label"> <%=_('To:') %></td><td><%= m.enterprise_recipient.name %></td></tr>
+        <tr><td class="exchange_label"><%=_('Date sent:') %></td><td><%= m.created_at.strftime("%d de %B de %Y, às %H:%M") %></td></tr>
+        <tr><td colspan="2"><%= m.body %></td></tr>
+      </table>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <br />
+  </td>
+  <td><% if m.enterprise_sender.id != profile.id %><%= link_to profile_image(@exchange.the_other(profile), :thumb) +"\n", profile.url %><% end %></td>
+  </tr>
+<% end %>
+</table>
+</div>
+</div>

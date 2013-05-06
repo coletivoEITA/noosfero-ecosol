@@ -1,0 +1,16 @@
+
+<h1> <%= _("%s's Exchanges") % profile.name %>  </h1>
+
+<% form_for :exchange,:url => {:controller => 'exchange_plugin_myprofile', :action => 'new'} do |f| %>
+  <%= f.label :slug, 'Dê um apelido para a troca:'%>
+  <%= f.text_field :slug %><br />
+  <%= f.label :description, 'Descreva a troca:'%>
+  <%= f.text_field :description %><br />
+  <%= f.label :state, 'Estado da Troca'%>
+  <%= f.select :state, {_('Happening'), _('Happening'),_('Concluded'),_("Concluded"),_("Canceled"),_("Canceled")} %><br />
+  <%= f.label :enterprise_origin_id, _("Enterprise - Origin") %>
+  <%= f.select :enterprise_origin_id, Enterprise.visible.find(:all).collect {|e| [e.name, e.id]} %><br />
+  <%= f.label :enterprise_target_id, _("Enterprise - Target") %>
+  <%= f.select :enterprise_target_id, Enterprise.visible.find(:all).collect {|e| [e.name, e.id]} %><br />
+  <%= f.submit %>
+<% end %>

@@ -1,0 +1,60 @@
+
+<h1> <%= _("%s's Exchanges") % profile.name %>  </h1>
+
+<% if @exchanges.blank? %>
+  <%= _("%s has no exchanges registered.") % profile.name %>
+<% else %>
+  <table>
+    <tr>
+      <!--<th><%= sortable "slug",_('Slug') %></th>-->
+      <th><%= sortable "state", _('State') %></th>
+      <!--<th><%= sortable "description",_('Description') %></th>-->
+      <th><%= _('Proposer') %></th>
+      <th><%= _('Proposed') %></th>
+      <th><%= sortable "created_at" ,_('Date Created') %></th>
+      <th><%= sortable "updated_at" ,_('Last modified') %></th>
+      <!--  <th><%= _('Edit') %></th>-->
+      <th><%= _('View') %></th>
+      <th><%= _('Destroy') %></th>
+    </tr>
+
+    <% @exchanges.each do |exchange|   %>
+      <tr>
+        <!--<td><%= exchange.slug %></td>-->
+        <td><%= ExchangePlugin::Exchange.state[exchange.simplified_state] %></td>
+        <!--<td><%= exchange.description %></td>-->
+        <% if (ev = (exchange.evaluations.find_by_evaluator_id exchange.enterprise_origin_id)) %>
+          <td title="<%= ev.text %>"><%= exchange.enterprise_origin.name %> | <%= ev.score %></td>
+        <% else %>
+          <td><%= exchange.enterprise_origin.name %></td>
+        <% end %>
+        <% if (ev = (exchange.evaluations.find_by_evaluator_id exchange.enterprise_target_id)) %>
+          <td title="<%= ev.text %>"><%= exchange.enterprise_target.name %> | <%= ev.score %></td>
+        <% else %>
+          <td><%= exchange.enterprise_target.name %></td>
+        <% end %>
+
+        <td><%= exchange.created_at.strftime("%d/%m/%Y") %></td>
+        <td><%= exchange.updated_at.strftime("%d/%m/%Y") %></td>
+        <!--<td><%= link_to _('View'), :controller => 'exchange_plugin_myprofile', :action => 'console', :id => exchange.id %></td>-->
+        <td class="article-controls">
+          <%= button_without_text :edit, _('Edit'), :controller => 'exchange_plugin_myprofile', :action => 'console', :id => exchange.id %>
+        </td>
+        <td class="article-controls">
+          <% message = _('Are you shure you want do delete this exchage?') %>
+          <%= button_without_text :delete, _('Delete'), { :action => 'destroy', :id => exchange.id },
+              :method => :post, :confirm => message %>
+        </td>  
+        <!-- <td><%= link_to _('Edit'), :controller => 'exchange_plugin_myprofile', :action => 'edit', :id => exchange.id %></td>-->
+        <!--<td><%= link_to _('Remove'), :controller => 'exchange_plugin_myprofile', :action => 'destroy', :id => exchange.id %></td>-->
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+
+
+<!--
+<% button_bar do %>
+  <%= button :new, _('Register a new exchange'), :action => 'new' %>
+<% end %>
+-->
