@@ -1,0 +1,9 @@
+<%= block_title(block.title) %>
+
+<ul>
+  <% learnings.each do |learning| %>
+    <li>
+      <%= link_to_article(learning) %>
+    </li>
+  <% end %>
+</ul>
