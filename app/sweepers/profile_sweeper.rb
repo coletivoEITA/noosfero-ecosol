@@ -22,14 +22,14 @@ protected
 
     expire_profile_index(profile) if profile.person?
 
-    expire_blocks(profile)
+    expire_profile_blocks(profile.blocks)
 
     expire_blogs(profile) if profile.organization?
   end
 
   def expire_statistics_block_cache(profile)
     blocks = profile.environment.blocks.select { |b| b.kind_of?(EnvironmentStatisticsBlock) }
-   expire_profile_blocks(blocks)
+    expire_profile_blocks(blocks)
   end
 
   def expire_blogs(profile)

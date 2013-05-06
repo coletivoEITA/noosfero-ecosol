@@ -23,7 +23,7 @@ protected
       expire_timeout_fragment(ck)
     }
 
-    expire_blocks(profile)
+    expire_profile_blocks(profile.blocks)
   end
 
 end
