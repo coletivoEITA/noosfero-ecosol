@@ -1,0 +1,191 @@
+<style type="text/css">
+
+/*160 + 68 + 131 + 68 + 131 + 68 + 131 + 68 + 160 = */
+
+#exchange_wrapper{
+  background: #FAF7DC;
+  width: 100%;
+  height: 100%;
+  height: 1000px; /*provisório */
+  width: 1200px; /*provisório */
+}
+#states_wrapper{
+  width: 985px;
+  height: 170px;
+  margin: 45px auto;
+  border: 1px solid #C5AAA5;
+  background: #ECE4DB;
+}
+#states{
+  height: 120px;
+}
+.state{
+  float: left;
+  height: 68px;
+  width: 68px;
+  line-height: 150px;
+  text-align: center;
+  margin: 15px 65.5px 0 65.5px;
+}
+.one_past{
+  background: url('/plugins/exchange/images/exchange_state_1_past.png');
+  margin-left: 160px;
+}
+.two_past{
+  background: url('/plugins/exchange/images/exchange_state_2_past.png');
+}
+.three_past{
+  background: url('/plugins/exchange/images/exchange_state_3_past.png');
+}
+.four_past{
+  background: url('/plugins/exchange/images/exchange_state_4_past.png');
+  margin-right: 160px;
+}
+.one_active{
+  background: url('/plugins/exchange/images/exchange_state_1_active.png');
+  margin-left: 160px;
+}
+.two_active{
+  background: url('/plugins/exchange/images/exchange_state_2_active.png');
+}
+.three_active{
+  background: url('/plugins/exchange/images/exchange_state_3_active.png');
+}
+.four_active{
+  background: url('/plugins/exchange/images/exchange_state_4_active.png');
+  margin-right: 160px;
+}
+
+.one{
+  background: url('/plugins/exchange/images/exchange_state_1.png');
+  margin-left: 160px;
+}
+.two{
+  background: url('/plugins/exchange/images/exchange_state_2.png');
+}
+.three{
+  background: url('/plugins/exchange/images/exchange_state_3.png');
+}
+.four{
+  background: url('/plugins/exchange/images/exchange_state_4.png');
+  margin-right: 160px;
+}
+#enterprise_headers{
+  color:white;
+}
+#enterprise_origin{
+  background: #7857B8;
+  float: left;
+  width: 492.5px;
+  height: 50px;
+  text-align: left;
+}
+#enterprise_target{
+  background: #C32478;
+  float: left;
+  width: 492.5px;
+  height: 50px;
+  text-align: right;
+}
+#origin_thumb{
+  background: black;
+  float: left;
+  height: 65px;
+  width: 65px;
+  margin: -7.5px 10px 0 25px;
+}
+#target_thumb{
+  background: black;
+  float: right;
+  height: 65px;
+  width: 65px;
+  margin: -7.5px 25px 0 10px;
+}
+
+#proposal_wrapper{
+  width: 985px;
+  margin: 30px auto;
+  border: 3px solid #E47455;
+  border-radius: 10px;
+  overflow: hidden;
+}
+#proposal_header{
+  background: #7857B8;
+  height: 37px;
+}
+.exchange_plugin_button{
+  float: left;
+}
+#proposal_header_buttons{
+  background: #DFD3ED;
+  height: 35px;
+}
+#proposal_messages{
+  background: #F0E9F6;
+}
+#proposal_offer_request_wrapper
+#proposal_offer{
+  background: #F0E9F6;
+  float: left;
+  width: 50%;
+}
+#proposal_request{
+  background: #F8F4FB;
+  float: right;
+  width: 50%;
+}
+
+
+
+</style>
+
+<div id="exchange_wrapper">
+  <h1> <%= _('Exchange Negociation') %> </h1>
+  <div id="states_wrapper">
+    <div id="states">
+      <div class="state one_active">
+        <%= _('Proposal') %>
+      </div>
+      <div class="state two">
+        <%= _('Negociation') %>
+      </div>
+      <div class="state three">
+        <%= _('Evaluation') %> 
+    </div>
+      <div class="state four">
+        <%= _('Finished') %>
+      </div>
+    </div> <!-- states -->
+    <div id="enterprise_headers">
+      <div id="enterprise_origin">
+        <div id="origin_thumb"></div>
+        As irmãs da Providência
+      </div>
+      <div id="enterprise_target">
+        <div id="target_thumb"></div>
+        Associação Pé de Pinho
+      </div>
+    </div> <!-- enterprise_headers -->
+  </div> <!-- states wrapper -->
+
+  <div id="proposal_wrapper">
+    <div id="proposal_header">
+        <p style="font-family: Roboto; color: white;">As irmãs da providência propoe</p>
+    </div>
+    <div id="proposal_header_buttons">
+      <button class="exchange_plugin_button">Enviar esta proposta</button>
+      <button class="exchange_plugin_button">Cancelar esta proposta</button>
+    </div>
+    <div id="proposal_messages">
+    </div>
+    <div id="proposal_offer_request_wrapper">
+      <div id="proposal_offer">
+        Oferta
+      </div>
+      <div id="proposal_request">
+        Pedido
+      </div>
+    </div> <!-- proposal_offer_request_wrapper -->
+  </div> <!-- proposal_wrapper -->
+
+</div> <!-- exchange_wrapper -->
