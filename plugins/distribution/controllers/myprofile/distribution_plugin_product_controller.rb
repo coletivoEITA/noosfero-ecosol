@@ -124,16 +124,16 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
   def session_destroy
     @product = DistributionPluginSessionProduct.find params[:id]
     @product.destroy!
-    flash[:notice] = _('Product removed from cycle')
+    flash[:notice] = t('distribution_plugin.controllers.myprofile.product_controller.product_removed_from_')
   end
 
   def destroy
     @product = DistributionPluginProduct.find params[:id]
     if @product.nil?
-      flash[:notice] = _('The product was not removed')
+      flash[:notice] = t('distribution_plugin.controllers.myprofile.product_controller.the_product_was_not_r')
       false
     else
-      @product.archive and flash[:notice] = _('Product removed successfully')
+      @product.archive and flash[:notice] = t('distribution_plugin.controllers.myprofile.product_controller.product_removed_succe')
     end
   end
 

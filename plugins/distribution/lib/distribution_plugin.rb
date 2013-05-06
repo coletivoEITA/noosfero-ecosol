@@ -10,7 +10,7 @@ class DistributionPlugin < Noosfero::Plugin
   end
 
   def self.plugin_description
-    _("A solidary distribution plugin.")
+    I18n.t('distribution_plugin.lib.a_solidary_distributi')
   end
 
   def self.view_path
@@ -33,7 +33,7 @@ class DistributionPlugin < Noosfero::Plugin
     profile = context.profile
     return nil unless profile.community?
     node = DistributionPluginNode.find_or_create(profile)
-    { :title => _('Settings Solidary Distribution Network'), :icon => 'distribution-solidary-network', :url => {:controller => :distribution_plugin_node, :profile => profile.identifier, :action => :settings} }
+    { :title => I18n.t('distribution_plugin.lib.settings_solidary_dis'), :icon => 'distribution-solidary-network', :url => {:controller => :distribution_plugin_node, :profile => profile.identifier, :action => :settings} }
   end
 
 end

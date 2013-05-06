@@ -1,6 +1,6 @@
 <% if @session.orders? or @session.passed_by?('orders') %>
   <% if @session.orders? %>
-    <% header = _("The orders period is still on, take care to edit the orders already open, it may confuse the users") %>
+    <% header = t('distribution_plugin.views.session._orders.the_orders_period_is_') %>
   <% elsif @session.passed_by?('orders') %>
     <% header = _("The orders period was already closed, It's not possible to edit the originals orders. " +
                   "In the redistribution phase it is possible to edit the order, before the delivery it also " +
@@ -9,12 +9,12 @@
 <% end %>
 
 <div id='session-orders'>
-  <h3><%= _('The orders') %></h3>
+  <h3><%= t('distribution_plugin.views.session._orders.the_orders') %></h3>
 
   <div id='session-orders-draft' class="session-orders box-align">
     <div class="order-header">
       <span class="order-label">
-        <%= (@session.orders? ? _('Open Orders (%{count})') : _('Cancelled Orders (%{count})')) % {:count => @session.orders.draft.count} %>
+        <%= (@session.orders? ? t('distribution_plugin.views.session._orders.open_orders_count') : t('distribution_plugin.views.session._orders.cancelled_orders_coun')) % {:count => @session.orders.draft.count} %>
       </span>
 
       <%= edit_arrow "#", false, :onclick => 'distribution.in_session_order_toggle(this); return false;', :class => "box-field" %>
@@ -30,7 +30,7 @@
 
   <div id='session-orders-confirmed' class="session-orders box-align show">
     <div class="order-header">
-      <span class="order-label"><%= _('Closed Orders (%{count})') % {:count => @session.orders.confirmed.count} %></span>
+      <span class="order-label"><%= t('distribution_plugin.views.session._orders.closed_orders_count') % {:count => @session.orders.confirmed.count} %></span>
 
       <%= edit_arrow "#", false, :onclick => 'distribution.in_session_order_toggle(this); return false;', :class => "box-field edit" %>
       <div class="line"></div>

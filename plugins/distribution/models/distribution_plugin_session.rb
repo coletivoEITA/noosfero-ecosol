@@ -79,7 +79,7 @@ class DistributionPluginSession < ActiveRecord::Base
   split_datetime :delivery_finish
 
   def name_with_code
-    _("%{code}. %{name}") % {
+    I18n.t('distribution_plugin.models.session.code_name') % {
       :code => code, :name => name
     }
   end
@@ -188,13 +188,13 @@ class DistributionPluginSession < ActiveRecord::Base
 
   def validate_orders_dates
     return if self.new? or self.finish.nil?
-    errors.add_to_base(_("Invalid orders' period")) unless self.start < self.finish
+    errors.add_to_base(I18n.t('distribution_plugin.models.session.invalid_orders_period')) unless self.start < self.finish
   end
 
   def validate_delivery_dates
     return if self.new? or delivery_start.nil? or delivery_finish.nil?
-    errors.add_to_base(_("Invalid delivery' period")) unless delivery_start < delivery_finish
-    errors.add_to_base(_("Delivery' period before orders' period")) unless finish < delivery_start
+    errors.add_to_base(I18n.t('distribution_plugin.models.session.invalid_delivery_peri')) unless delivery_start < delivery_finish
+    errors.add_to_base(I18n.t('distribution_plugin.models.session.delivery_period_befor')) unless finish < delivery_start
   end
 
   def purge_defuncts

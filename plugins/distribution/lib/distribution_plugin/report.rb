@@ -23,11 +23,11 @@ module DistributionPlugin::Report
       # supplier block start index (shifts on the loop for each supplier)
       sbs = 1
       # create sheet and populates
-      wb.add_worksheet(:name => _("products report")) do |sheet|
+      wb.add_worksheet(:name => I18n.t('distribution_plugin.lib.report.products_report')) do |sheet|
 
         ordered_products_by_supplier.each do |supplier, ordered_products, total_price_asked, total_parcel_asked|
 
-          sheet.add_row [_("Supplier"),'', _("Total selled value"), '',_('Total parcel value'), '','','','','',''], :style => bluecell
+          sheet.add_row [I18n.t('distribution_plugin.lib.report.supplier'),'', I18n.t('distribution_plugin.lib.report.total_selled_value'), '',I18n.t('distribution_plugin.lib.report.total_parcel_value'), '','','','','',''], :style => bluecell
 
           ["A#{sbs}:B#{sbs}","C#{sbs}:D#{sbs}", "E#{sbs}:F#{sbs}"].each {|c| sheet.merge_cells c }
 
@@ -44,8 +44,8 @@ module DistributionPlugin::Report
           sheet.add_row ['', '', '', '', '', '', '', '', '', '', ''], :style => default # empty line
 
           sheet.add_row [
-            _("product cod."), _("product name"), _("qty ordered"), _('stock qtt'), _("min. stock"),
-            _('qtt to be parcelled'),_('projected stock'), _("un."), _("price/un"), _("selled value"), _('value parcel')], :style => greencell
+            I18n.t('distribution_plugin.lib.report.product_cod'), I18n.t('distribution_plugin.lib.report.product_name'), I18n.t('distribution_plugin.lib.report.qty_ordered'), I18n.t('distribution_plugin.lib.report.stock_qtt'), I18n.t('distribution_plugin.lib.report.min_stock'),
+            I18n.t('distribution_plugin.lib.report.qtt_to_be_parcelled'),I18n.t('distribution_plugin.lib.report.projected_stock'), I18n.t('distribution_plugin.lib.report.un'), I18n.t('distribution_plugin.lib.report.price_un'), I18n.t('distribution_plugin.lib.report.selled_value'), I18n.t('distribution_plugin.lib.report.value_parcel')], :style => greencell
 
           # pl = product line
           pl = sp
@@ -65,12 +65,12 @@ module DistributionPlugin::Report
 
         end # closes ordered_products_by_supplier
           sheet.rows[0].add_cell ''
-          sheet.rows[0].add_cell _("selled total"), :style => redcell
+          sheet.rows[0].add_cell I18n.t('distribution_plugin.lib.report.selled_total'), :style => redcell
           sheet.rows[1].add_cell ''
           sheet.rows[1].add_cell "=SUM(j1:j1000)", :style => default
 
           sheet.rows[2].add_cell ''
-          sheet.rows[2].add_cell _("Parcelled total"), :style => redcell
+          sheet.rows[2].add_cell I18n.t('distribution_plugin.lib.report.parcelled_total'), :style => redcell
           sheet.rows[3].add_cell ''
           sheet.rows[3].add_cell "=SUM(K1:K1000)", :style => default
         sheet.column_widths 8,25,8,8,10,10,10,8,8,10,10
@@ -98,32 +98,32 @@ module DistributionPlugin::Report
       bluecell  = wb.styles.add_style(defaults.merge({:bg_color => "99CCFF", :b => true}))
       default   = wb.styles.add_style(defaults.merge({:border => 0}))
       bluecell_b_top  = wb.styles.add_style(defaults.merge({:bg_color => "99CCFF", :b => true, :border => {:style => :thin, :color => "FF000000", :edges => [:top]}}))
-      date  = wb.styles.add_style(defaults.merge({:format_code => _("MM/DD/YY HH:MM AM/PM")}))
+      date  = wb.styles.add_style(defaults.merge({:format_code => I18n.t('distribution_plugin.lib.report.mm_dd_yy_hh_mm_am_pm')}))
       currency  = wb.styles.add_style(defaults.merge({:format_code => t('number.currency.format.xlsx_currency')}))
       border_top = wb.styles.add_style :border => {:style => :thin, :color => "FF000000", :edges => [:top]}
 
       # create sheet and populates
-      wb.add_worksheet(:name => _("Closed Orders")) do |sheet|
+      wb.add_worksheet(:name => I18n.t('distribution_plugin.lib.report.closed_orders')) do |sheet|
         # supplier block start index (shifts on the loop for each supplier)
         sbs = 1
         orders.each do |order|
 
-          sheet.add_row [_("Order code"), _("Member name"), '', '', '', '', ''], :style => bluecell_b_top
+          sheet.add_row [I18n.t('distribution_plugin.lib.report.order_code'), I18n.t('distribution_plugin.lib.report.member_name'), '', '', '', '', ''], :style => bluecell_b_top
           sheet.merge_cells "B#{sbs}:C#{sbs}"
 
           sheet.add_row [order.id, order.consumer.name, '','','','',''], :style => default
 
           sheet.merge_cells "B#{sbs+1}:C#{sbs+1}"
 
-          sheet.add_row [_("Total Value"),_("created"), _("modified"), '','', '',''], :style => bluecell
+          sheet.add_row [I18n.t('distribution_plugin.lib.report.total_value'),I18n.t('distribution_plugin.lib.report.created'), I18n.t('distribution_plugin.lib.report.modified'), '','', '',''], :style => bluecell
 
           # sp = index of the start of the products list / ep = index of the end of the products list
           sp = sbs + 5
           ep = sp + order.products.count - 1
           sheet.add_row ["=SUM(G#{sp}:G#{ep})", order.created_at, order.updated_at, '', '', '', '',''], :style => [currency,date,date]
 
-          sheet.add_row [_("product cod."), _("supplier"), _("product name"),
-                         _("qty ordered"),_("un."),_("price/un."), _("value")], :style => greencell
+          sheet.add_row [I18n.t('distribution_plugin.lib.report.product_cod'), I18n.t('distribution_plugin.lib.report.supplier'), I18n.t('distribution_plugin.lib.report.product_name'),
+                         I18n.t('distribution_plugin.lib.report.qty_ordered'),I18n.t('distribution_plugin.lib.report.un'),I18n.t('distribution_plugin.lib.report.price_un'), I18n.t('distribution_plugin.lib.report.value')], :style => greencell
 
           sbe = sp
           order.products.each do |op|

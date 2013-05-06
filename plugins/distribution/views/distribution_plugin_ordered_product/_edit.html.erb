@@ -1,6 +1,6 @@
 <div id="ordered-product-<%=ordered_product.id%>" class="value-row ordered-product" toggleedit="distribution.ordered_product_edit();">
   <% if @quantity_asked_less_than_minimum and @quantity_asked_less_than_minimum == ordered_product.id %>
-    <div class=distribution-error-message><%= _("This product requires a minimum of %{value}. The minimum was kept.") % {:value => product.minimum_selleable_as_currency_number} %></div>
+    <div class=distribution-error-message><%= t('distribution_plugin.views.ordered_product._edit.this_product_requires') % {:value => product.minimum_selleable_as_currency_number} %></div>
   <% end %>
   <% f.fields_for "ordered_product-#{ordered_product.id}", ordered_product do |f| %>
 
@@ -30,11 +30,11 @@
     <div class="more-actions" style="display: none">
       <div class="box-field box-details">
         <% if @admin_action %>
-          <%= link_to_function _('remove from order'), "jQuery(this).parents('.value-row').remove();" if ordered_product.order.session.orders? %>
+          <%= link_to_function t('distribution_plugin.views.ordered_product._edit.remove_from_order'), "jQuery(this).parents('.value-row').remove();" if ordered_product.order.session.orders? %>
         <% else %>
-          <%= link_to _('see product details'), "#session-product-#{product.id}", :class => 'toggle-ignore-event' %>
+          <%= link_to t('distribution_plugin.views.ordered_product._edit.see_product_details'), "#session-product-#{product.id}", :class => 'toggle-ignore-event' %>
           &nbsp;&nbsp;
-          <%= link_to_remote _('remove from order'), :update => "ordered-product-#{ordered_product.id}",
+          <%= link_to_remote t('distribution_plugin.views.ordered_product._edit.remove_from_order'), :update => "ordered-product-#{ordered_product.id}",
                              :url => {:controller => 'distribution_plugin_ordered_product', :action => :destroy, :id => ordered_product.id} if ordered_product.order.open? %>
         <% end %>
       </div>

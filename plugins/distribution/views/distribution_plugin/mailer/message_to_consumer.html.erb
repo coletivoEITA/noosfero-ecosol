@@ -5,16 +5,16 @@
   </head>
   <body>
     <p>
-      <%= _('Hello %{name},') % {:name => @consumer.name} %>
+      <%= t('distribution_plugin.views.mailer.message_to_consumer.hello_name') % {:name => @consumer.name} %>
     </p>
 
-    <p><%= _('The collective %{node} sent a messsage to you') % {:node => @node.name} %></p>
+    <p><%= t('distribution_plugin.views.mailer.message_to_consumer.the_collective_node_s') % {:node => @node.name} %></p>
     <p><i><%= @message %></i></p>
 
     <p>
       --<br/>
     </p>
 
-    <small style="color: #888"><%= _('A service of %s.') % @environment.name %></small>
+    <small style="color: #888"><%= t('distribution_plugin.views.mailer.message_to_consumer.a_service_of_s') % @environment.name %></small>
   </body>
 </html>

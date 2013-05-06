@@ -1,22 +1,22 @@
 <div id="delivery-method-choose">
   <% form_remote_for :session, @session, :url => {:controller => :distribution_plugin_delivery_option, :action => :new, :session_id => @session.id} do |f| %>
-    <%= labelled_field f, :add_delivery_options, _('Choose a delivery method from the list'),
+    <%= labelled_field f, :add_delivery_options, t('distribution_plugin.views.delivery_option._select_content.choose_a_delivery_met'),
       f.select(:add_delivery_options, @node.delivery_methods.collect{ |m| [m.name, m.id] }, {}, :multiple => '') %>
 
     <div id="delivery-menu">
-      <%= link_to_function _('add new'), "distribution.delivery_view_toggle()" %>
-      <%= link_to_function _('edit this'),
+      <%= link_to_function t('distribution_plugin.views.delivery_option._select_content.add_new'), "distribution.delivery_view_toggle()" %>
+      <%= link_to_function t('distribution_plugin.views.delivery_option._select_content.edit_this'),
         "jQuery.get('#{url_for :controller => :distribution_plugin_delivery_option, :action => :method_edit, :session_id => @session.id}',
            { id: jQuery('#delivery-method-choose select').val() });" %>
-      <%= link_to_function _('remove method'),
+      <%= link_to_function t('distribution_plugin.views.delivery_option._select_content.remove_method'),
         "jQuery.post('#{url_for :controller => :distribution_plugin_delivery_option, :action => :method_destroy, :session_id => @session.id}',
-           { id: jQuery('#delivery-method-choose select').val() });", :confirm => _('Are you sure you want to delete this method?') %>
+           { id: jQuery('#delivery-method-choose select').val() });", :confirm => t('distribution_plugin.views.delivery_option._select_content.are_you_sure_you_want') %>
     </div>
 
     <div class="cleaner"></div>
 
-   <%= f.submit _('Add') %>
-   <%= colorbox_close_link _('cancel') %>
+   <%= f.submit t('distribution_plugin.views.delivery_option._select_content.add') %>
+   <%= colorbox_close_link t('distribution_plugin.views.delivery_option._select_content.cancel') %>
   <% end %>
 </div>
 

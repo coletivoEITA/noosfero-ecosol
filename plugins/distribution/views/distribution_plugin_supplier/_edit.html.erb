@@ -3,12 +3,12 @@
 <div class="title">
   <% if supplier.new_record? %>
     <% if supplier.dummy? %>
-      <%= _('Add supplier managed by the collective') %>
+      <%= t('distribution_plugin.views.supplier._edit.add_supplier_managed_') %>
     <% else %>
-      <%= _('Register new supplier') %>
+      <%= t('distribution_plugin.views.supplier._edit.register_new_supplier') %>
     <% end %>
   <% else %>
-    <%= _('Edit supplier') %>
+    <%= t('distribution_plugin.views.supplier._edit.edit_supplier') %>
   <% end %>
 </div>
 
@@ -22,7 +22,7 @@
 
   <%= check_box_tag :full_registration, '1', true,
     :onchange => "jQuery(this).parents('.supplier').find('.data').toggleClass('full-registration', this.checked)" %>
-  <%= label_tag :full_registration, _('Full registration') %>
+  <%= label_tag :full_registration, t('distribution_plugin.views.supplier._edit.full_registration') %>
 <% end %>
 
 <% form_remote_for :supplier, supplier, :loading => "distribution.setLoading('supplier-#{supplier_label}');",
@@ -32,28 +32,28 @@
 
   <div class="data">
     <div class="basic-data">
-      <h3><%= _('Basic data') %></h3>
+      <h3><%= t('distribution_plugin.views.supplier._edit.basic_data') %></h3>
 
-      <%= labelled_field f, :name, _('Name'), f.text_field(:name) %>
-      <%= labelled_field f, :name_abbreviation, _('Abbreviated name'), f.text_field(:name_abbreviation) %>
-      <%= labelled_field f, :description, _('Description'), f.text_area(:description) %>
+      <%= labelled_field f, :name, t('distribution_plugin.views.supplier._edit.name'), f.text_field(:name) %>
+      <%= labelled_field f, :name_abbreviation, t('distribution_plugin.views.supplier._edit.abbreviated_name'), f.text_field(:name_abbreviation) %>
+      <%= labelled_field f, :description, t('distribution_plugin.views.supplier._edit.description'), f.text_area(:description) %>
 
       <div class="cleaner"></div>
     </div>
     <div class="estrategic-info full-data">
-      <h3><%= _('Estrategic informations') %></h3>
+      <h3><%= t('distribution_plugin.views.supplier._edit.estrategic_informatio') %></h3>
     </div>
     <div class="full-data">
-      <h3><%= _('Registry form') %></h3>
+      <h3><%= t('distribution_plugin.views.supplier._edit.registry_form') %></h3>
     </div>
     <div class="additional-fields full-data">
-      <h3><%= _('Additional fields') %></h3>
+      <h3><%= t('distribution_plugin.views.supplier._edit.additional_fields') %></h3>
     </div>
 
     <div class="cleaner"></div>
   </div>
 
-  <%= f.submit _('Save') %>
-  <%= link_to_function _('cancel'), '', :class => 'toggle-edit' %>
+  <%= f.submit t('distribution_plugin.views.supplier._edit.save') %>
+  <%= link_to_function t('distribution_plugin.views.supplier._edit.cancel'), '', :class => 'toggle-edit' %>
 <% end %>
 

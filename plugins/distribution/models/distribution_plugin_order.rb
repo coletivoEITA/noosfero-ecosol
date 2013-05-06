@@ -68,14 +68,14 @@ class DistributionPluginOrder < ActiveRecord::Base
   end
 
   STATUS_MESSAGE = {
-   'open' => _('Order in progress'),
-   'forgotten' => _('Order not confirmed'),
-   'planned' => _('Order planned'),
-   'confirmed' => _('Order confirmed'),
-   'cancelled' => _('Order cancelled'),
+   'open' => 'distribution_plugin.models.order.order_in_progress',
+   'forgotten' => 'distribution_plugin.models.order.order_not_confirmed',
+   'planned' => 'distribution_plugin.models.order.order_planned',
+   'confirmed' => 'distribution_plugin.models.order.order_confirmed',
+   'cancelled' => 'distribution_plugin.models.order.order_cancelled',
   }
   def status_message
-    _(STATUS_MESSAGE[current_status])
+    I18n.t STATUS_MESSAGE[current_status]
   end
 
   def delivery?
@@ -125,7 +125,7 @@ class DistributionPluginOrder < ActiveRecord::Base
   has_currency :parcel_price_total
 
   def code
-    _("%{sessioncode}.%{ordercode}") % {
+    I18n.t('distribution_plugin.models.order.sessioncode_ordercode') % {
       :sessioncode => session.code, :ordercode => self['code']
     }
   end

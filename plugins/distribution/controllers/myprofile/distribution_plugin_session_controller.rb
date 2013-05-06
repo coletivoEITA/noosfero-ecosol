@@ -23,10 +23,10 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
       @session = DistributionPluginSession.find params[:id]
       @success = @session.update_attributes params[:session]
       if @success
-        session[:notice] = _('Cycle created')
+        session[:notice] = t('distribution_plugin.controllers.myprofile.session_controller.cycle_created')
         if params[:sendmail]
           DistributionPlugin::Mailer.delay(:run_at => @session.start).deliver_open_session @session.node,
-            @session,_('New open cycle: ')+@session.name, @session.opening_message
+            @session,t('distribution_plugin.controllers.myprofile.session_controller.new_open_cycle')+@session.name, @session.opening_message
         end
         render :partial => 'new'
       else
@@ -34,7 +34,7 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
       end
     else
       count = DistributionPluginSession.count :conditions => {:node_id => @node}
-      @session = DistributionPluginSession.create! :node => @node, :status => 'new', :name => _("Cycle n.%{n}") % {:n => count+1}
+      @session = DistributionPluginSession.create! :node => @node, :status => 'new', :name => t('distribution_plugin.controllers.myprofile.session_controller.cycle_n_n') % {:n => count+1}
     end
   end
 
@@ -103,7 +103,7 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     end
     send_file report_file, :type => 'application/xlsx',
       :disposition => 'attachment',
-      :filename => _("Products Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx") % {
+      :filename => t('distribution_plugin.controllers.myprofile.session_controller.products_report_date_') % {
         :date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @session.code, :cycle_name => @session.name}
     require 'fileutils'
     #FileUtils.rm_rf tmp_dir
@@ -119,7 +119,7 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     end
     send_file report_file, :type => 'application/xlsx',
       :disposition => 'attachment',
-      :filename => _("Cycle Orders Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx") % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @session.code, :cycle_name => @session.name}
+      :filename => t('distribution_plugin.controllers.myprofile.session_controller.cycle_orders_report_d') % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @session.code, :cycle_name => @session.name}
     require 'fileutils'
     #FileUtils.rm_rf tmp_dir
   end

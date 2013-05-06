@@ -6,20 +6,20 @@
     <% options = options.merge(:onkeyup => 'distribution.our_product_pmsync(this, false);') %>
   <% end %>
 
-  <%= labelled_field f, :price, _('Price'),
+  <%= labelled_field f, :price, t('distribution_plugin.views.product._price_details.price'),
     f.text_field(:price, options.merge(:value => product.price_as_currency_number, :oldvalue => product.own_price_as_currency_number)), :class => 'left-column' %>
-  <%= labelled_field f, :unit_id, _('Unit'),
+  <%= labelled_field f, :unit_id, t('distribution_plugin.views.product._price_details.unit'),
     f.select(:unit_id, Unit.all.map{ |u| [u.singular, u.id] }, {}, options.merge(:oldvalue => product.own_unit_id)) %>
-  <%= labelled_field f, :minimum_selleable, _('Minimum order'),
+  <%= labelled_field f, :minimum_selleable, t('distribution_plugin.views.product._price_details.minimum_order'),
     f.text_field(:minimum_selleable, options.merge(:value => product.minimum_selleable_as_currency_number, :oldvalue => product.own_minimum_selleable_as_currency_number)), :class => 'left-column' %>
-  <%= labelled_field f, :unit_detail, _('Unit specification'),
+  <%= labelled_field f, :unit_detail, t('distribution_plugin.views.product._price_details.unit_specification'),
     f.text_field(:unit_detail, options.merge(:oldvalue => product.own_unit_detail)) %>
 
   <%# put here due to css align, see distribution.js %>
   <% if supplier_product and not product.dummy? %>
     <div class="cleaner">
       <%= check_box_tag :product_supplier_product_active, 1, false, :style => 'float: left', :disabled => 'disabled' %>
-      <%= f.label :active, _('Commercialization active'), :class => 'line-label' %>
+      <%= f.label :active, t('distribution_plugin.views.product._price_details.commercialization_act'), :class => 'line-label' %>
     </div>
   <% end %>
 

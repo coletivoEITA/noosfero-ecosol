@@ -1,10 +1,10 @@
 <div id="" class="distribution-plugin-popin distribution-plugin-message">
-  <h1><%= _('Message to member "%{consumer}"') % {:consumer => @consumer.name} %></h1>
+  <h1><%= t('distribution_plugin.views.message.new_to_consumer.message_to_member_con') % {:consumer => @consumer.name} %></h1>
 
   <% form_remote_tag :url => params do %>
     <%= render :partial => 'fields' %>
 
-     <%= submit_tag _('Send') %>
-     <%= colorbox_close_link _('cancel') %>
+     <%= submit_tag t('distribution_plugin.views.message.new_to_consumer.send') %>
+     <%= colorbox_close_link t('distribution_plugin.views.message.new_to_consumer.cancel') %>
   <% end %>
 </div>

@@ -1,12 +1,12 @@
 <div class="session-timeline box-align">
   <% urls = [
-      [_('Edition'), 'edition'],
-      #[_('Call'), 'call'],
-      [_('Orders'), 'orders'],
-      #[_('Parcels'), 'parcels'],
-      #[_('Redistribution'), 'redistribution'],
-      #[_('Delivery'), 'delivery'],
-      #[_('Close'), 'close'],
+      [t('distribution_plugin.views.session._timeline.edition'), 'edition'],
+      #[t('distribution_plugin.views.session._timeline.call'), 'call'],
+      [t('distribution_plugin.views.session._timeline.orders'), 'orders'],
+      #[t('distribution_plugin.views.session._timeline.parcels'), 'parcels'],
+      #[t('distribution_plugin.views.session._timeline.redistribution'), 'redistribution'],
+      #[t('distribution_plugin.views.session._timeline.delivery'), 'delivery'],
+      #[t('distribution_plugin.views.session._timeline.close'), 'close'],
     ]
   %>
   <% view = params[:view] || session.status %>
@@ -27,18 +27,18 @@
       :edition => [
       ],
       :orders => [
-        [ _('Spreadsheet with the orders'), {:action => :report_orders, :id => session.id} ],
-        [ _('Spreadsheet with product listing'), {:action => :report_products, :id => session.id} ],
+        [ t('distribution_plugin.views.session._timeline.spreadsheet_with_the_'), {:action => :report_orders, :id => session.id} ],
+        [ t('distribution_plugin.views.session._timeline.spreadsheet_with_prod'), {:action => :report_products, :id => session.id} ],
       ],
       :closed => [
       ]
     }
-    actions[:edition].unshift [ _('Finish cycle editing'), {:action => :step, :id => session.id, :method => :post},
+    actions[:edition].unshift [ t('distribution_plugin.views.session._timeline.finish_cycle_editing'), {:action => :step, :id => session.id, :method => :post},
       { :id => 'session-open-session' } ] unless session.passed_by?('edition')
-    actions[:orders].unshift [ session.orders? ? _('Block orders period') : _('Close orders period'),
-      {:action => :step, :id => session.id, :method => :post}, { :id => 'session-open-session' , :confirm => _("Are you sure you want to close the orders cycle?")} ] unless session.passed_by?('orders')
-    actions[:closed].unshift [  _('Reopen orders period'),
-      {:action => :step_back, :id => session.id, :method => :post}, { :id => 'session-open-session' , :confirm => _("Are you sure you want to reopen the orders cycle?")} ] if session.passed_by?('orders')
+    actions[:orders].unshift [ session.orders? ? t('distribution_plugin.views.session._timeline.block_orders_period') : t('distribution_plugin.views.session._timeline.close_orders_period'),
+      {:action => :step, :id => session.id, :method => :post}, { :id => 'session-open-session' , :confirm => t('distribution_plugin.views.session._timeline.are_you_sure_you_want')} ] unless session.passed_by?('orders')
+    actions[:closed].unshift [  t('distribution_plugin.views.session._timeline.reopen_orders_period'),
+      {:action => :step_back, :id => session.id, :method => :post}, { :id => 'session-open-session' , :confirm => t('distribution_plugin.views.session._timeline.are_you_sure_you_want')} ] if session.passed_by?('orders')
 
   %>
 
@@ -47,7 +47,7 @@
       <% actions[view.to_sym].each do |args| %>
         <%= link_to *args %>
       <% end %>
-      <strong><%= _('Actions') %></strong>
+      <strong><%= t('distribution_plugin.views.session._timeline.actions') %></strong>
 
       <div class="cleaner"></div>
     </div>

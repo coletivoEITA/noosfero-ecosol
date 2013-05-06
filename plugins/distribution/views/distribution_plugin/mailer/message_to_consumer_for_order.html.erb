@@ -5,17 +5,17 @@
   </head>
   <body>
     <p>
-      <%= _('Hello %{name}!') % {:name => @consumer.name} %>
+      <%= t('distribution_plugin.views.mailer.message_to_consumer_for_order.hello_name') % {:name => @consumer.name} %>
     </p>
 
-    <p><%= _('The collective %{node} sent a messsage to you regarding your %{order}') %
-    { :node => @node.name, :order => link_to(_('order'), {:controller => :distribution_plugin_order, :action => :edit, :id => @order.id, :profile => @node.profile.identifier}) } %></p>
+    <p><%= t('distribution_plugin.views.mailer.message_to_consumer_for_order.the_collective_node_s') %
+    { :node => @node.name, :order => link_to(t('distribution_plugin.views.mailer.message_to_consumer_for_order.order'), {:controller => :distribution_plugin_order, :action => :edit, :id => @order.id, :profile => @node.profile.identifier}) } %></p>
     <p><i><%= @message %></i></p>
 
-    <p><%= _('The products in the order') %></p>
+    <p><%= t('distribution_plugin.views.mailer.message_to_consumer_for_order.the_products_in_the_o') %></p>
     <ul>
       <% @order.products.each do |p| %>
-        <li><%= _('%{quantity} %{unit} of %{product}') % {:quantity => p.quantity_asked_as_currency_number, :unit => p.product.unit.plural, :product => p.product.name} %></li>
+        <li><%= t('distribution_plugin.views.mailer.message_to_consumer_for_order.quantity_unit_of_prod') % {:quantity => p.quantity_asked_as_currency_number, :unit => p.product.unit.plural, :product => p.product.name} %></li>
       <% end %>
     </ul>
 
@@ -23,7 +23,7 @@
       --<br/>
     </p>
 
-    <small style="color: #888"><%= _('A service of %s.') % @environment.name %></small>
+    <small style="color: #888"><%= t('distribution_plugin.views.mailer.message_to_consumer_for_order.a_service_of_s') % @environment.name %></small>
   </body>
 </html>
 

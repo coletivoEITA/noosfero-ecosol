@@ -1,8 +1,8 @@
 <div class="session">
-  <div class='happening alignment'><%= _('Happening') %></div>
+  <div class='happening alignment'><%= t('distribution_plugin.views.gadgets._session.happening') %></div>
   <div class='info alignment'>
     <h2>
-      <%= _('Orders open: <b>%{session}</b>') % {:session => session.name_with_code} %>
+      <%= t('distribution_plugin.views.gadgets._session.orders_open_b_session') % {:session => session.name_with_code} %>
     </h2>
 
     <table>
@@ -15,8 +15,8 @@
           <div class="subtitle"><%= session.description %></div>
         </td>
         <td class='third-column'>
-          <%= button_to _("see orders' cycle"), {:controller => :distribution_plugin_order, :action => :edit, :session_id => session.id} %>
-          <%# button_to _("place an order"), {:controller => :distribution_plugin_order, :action => :new, :session_id => session.id} %>
+          <%= button_to t('distribution_plugin.views.gadgets._session.see_orders_cycle'), {:controller => :distribution_plugin_order, :action => :edit, :session_id => session.id} %>
+          <%# button_to t('distribution_plugin.views.gadgets._session.place_an_order'), {:controller => :distribution_plugin_order, :action => :new, :session_id => session.id} %>
           <div class='cleaner'></div>
         </td>
       <tr>

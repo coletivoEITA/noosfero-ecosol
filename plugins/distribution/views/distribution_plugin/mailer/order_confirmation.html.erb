@@ -8,41 +8,41 @@
 
   <body>
     <p>
-      <%= _('Dear %{name},') % {:name => @consumer.name} %>
+      <%= t('distribution_plugin.views.mailer.order_confirmation.dear_name') % {:name => @consumer.name} %>
     </p>
 
     <p>
-      <%= _('Your order made on collective %{node} in %{date} is confirmed.') % {
+      <%= t('distribution_plugin.views.mailer.order_confirmation.your_order_made_on_co') % {
         :node => @node.name, :date => day_time(@order.updated_at)
       } %>
     </p>
 
     <p>
-      <%= _('The delivery period will occur %{date}.') % {
+      <%= t('distribution_plugin.views.mailer.order_confirmation.the_delivery_period_w') % {
         :date => datetime_period_with_from(@order.session.delivery_start, @order.session.delivery_finish)
       } %>
     </p>
 
     <p>
-      <p><%= _('Attention to the following delivery instructions:') %></p>
+      <p><%= t('distribution_plugin.views.mailer.order_confirmation.attention_to_the_foll') %></p>
       <b><%= @order.supplier_delivery.name %></b><br />
       <%= @order.supplier_delivery.description %><br />
     </p>
 
-    <p><%= _('Order data confirmed:') %></p>
+    <p><%= t('distribution_plugin.views.mailer.order_confirmation.order_data_confirmed') %></p>
 
     <%= render :partial => 'distribution_plugin/mailer/complete_order' %>
 
     <p>
-      <%= _('Your order can be checked in the following link:') %><br />
-     <%= link_to _('Order %{code} of %{node}') % {:code => @order.code, :node => @node.name },
+      <%= t('distribution_plugin.views.mailer.order_confirmation.your_order_can_be_che') %><br />
+     <%= link_to t('distribution_plugin.views.mailer.order_confirmation.order_code_of_node') % {:code => @order.code, :node => @node.name },
         "http://" + @host_with_port + url_for(:controller => :distribution_plugin_order,
                                               :action => :edit,:profile => @node.profile.identifier, :id => @order.id) %>
     </p>
 
     <p>
       --<br/>
-      <%= _("Greetings") %>
+      <%= t('distribution_plugin.views.mailer.order_confirmation.greetings') %>
     </p>
   </body>
 </html>

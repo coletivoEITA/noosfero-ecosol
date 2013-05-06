@@ -1,13 +1,13 @@
 <% if orders.count == 0 %>
-  <div class="subtitle"><%= _('No orders to show') %></div>
+  <div class="subtitle"><%= t('distribution_plugin.views.session._orders_view.no_orders_to_show') %></div>
 <% else %>
   <div class='table-header'>
-    <span class='box-field code'><%= _('Code') %></span>
-    <span class='box-field member'><%= _('Member') %></span>
-    <span class='box-field created'><%= _('Created') %></span>
-    <span class='box-field modified'><%= _('Modified') %></span>
-    <span class='box-field products-count'><%= _('Prod. Qty.') %></span>
-    <span class='box-field price'><%= _('Value') %></span>
+    <span class='box-field code'><%= t('distribution_plugin.views.session._orders_view.code') %></span>
+    <span class='box-field member'><%= t('distribution_plugin.views.session._orders_view.member') %></span>
+    <span class='box-field created'><%= t('distribution_plugin.views.session._orders_view.created') %></span>
+    <span class='box-field modified'><%= t('distribution_plugin.views.session._orders_view.modified') %></span>
+    <span class='box-field products-count'><%= t('distribution_plugin.views.session._orders_view.prod_qty') %></span>
+    <span class='box-field price'><%= t('distribution_plugin.views.session._orders_view.value') %></span>
 
     <div class="cleaner"></div>
   </div>

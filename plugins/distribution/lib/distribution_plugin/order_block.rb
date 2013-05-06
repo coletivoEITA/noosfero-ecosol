@@ -1,11 +1,11 @@
 class DistributionPlugin::OrderBlock < Block
 
  def self.short_description
-   _("Orders' cycles")
+   I18n.t('distribution_plugin.lib.order_block.orders_cycles')
  end
 
  def self.description
-   _("Distribution orders' cycles for members")
+   I18n.t('distribution_plugin.lib.order_block.distribution_orders_c')
  end
 
  def self.available_for(profile)
@@ -22,7 +22,7 @@ class DistributionPlugin::OrderBlock < Block
  end
 
  def help
-   _('Offer cycles for you members to make orders')
+   I18n.t('distribution_plugin.lib.order_block.offer_cycles_for_you_')
  end
 
  def content(args = {})

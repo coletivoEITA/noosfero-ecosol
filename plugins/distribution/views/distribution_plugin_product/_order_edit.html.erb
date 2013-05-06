@@ -4,10 +4,10 @@
 <% if order.nil? %>
   <% if draft_order %>
     <% order_id = draft_order.id %>
-    <% include_message = _('Opening order %{code} for your product inclusion') % {:code => draft_order.code} %>
+    <% include_message = t('distribution_plugin.views.product._order_edit.opening_order_code_fo') % {:code => draft_order.code} %>
   <% else %>
     <% order_id = 'new' %>
-    <% include_message = _('Opening new order for your product inclusion') %>
+    <% include_message = t('distribution_plugin.views.product._order_edit.opening_new_order_for') %>
   <% end %>
 <% else %>
   <% order_id = order.id %>
@@ -22,9 +22,9 @@
       <% if ordered_product %>
         <span class="label"><%= ordered_product.quantity_asked_as_currency_number %></span>
         <span class="unit"><%= product.unit.singular %></span>
-        <%= link_to_function _('change'), "" if editable %>
+        <%= link_to_function t('distribution_plugin.views.product._order_edit.change'), "" if editable %>
       <% elsif session.orders? %>
-        <%= link_to_function _('include'), "" %>
+        <%= link_to_function t('distribution_plugin.views.product._order_edit.include'), "" %>
       <% end %>
     </div>
     <div class="quantity-entry" style="display: none">
@@ -43,13 +43,13 @@
   <div class="box-field product-info">
     <div>
       <div class="box-field product product-desc">
-        <%= product.description.blank? ? _('No description') : excerpt_ending(product.description, 250) %>
+        <%= product.description.blank? ? t('distribution_plugin.views.product._order_edit.no_description') : excerpt_ending(product.description, 250) %>
       </div>
 
       <div class="box-field price-with-unit">
-        <div><%= _("price's descriptive") %></div>
+        <div><%= t('distribution_plugin.views.product._order_edit.price_s_descriptive') %></div>
         <div class="price-descriptive">
-          <%= _("%{price} + %{percent}% = %{price_with_margin}") % {
+          <%= t('distribution_plugin.views.product._order_edit.price_percent_price_w') % {
             :price => product.buy_price_as_currency,
             :percent => product.margin_percentage,
             :price_with_margin => product.price_as_currency, } %>
@@ -60,8 +60,8 @@
     <div>
       <% if product.supplier.profile.city %>
         <div class="product-city">
-          <span class="field-title"><%= _('City') %></span>
-          <span><%= _('%{city}/%{state}') % {:city => product.supplier.profile.city, :state => product.supplier.profile.state} %></span>
+          <span class="field-title"><%= t('distribution_plugin.views.product._order_edit.city') %></span>
+          <span><%= t('distribution_plugin.views.product._order_edit.city_state') % {:city => product.supplier.profile.city, :state => product.supplier.profile.state} %></span>
         </div>
       <% end %>
 
@@ -69,7 +69,7 @@
 
     <div class="product-supplier-link">
       <% unless product.supplier.dummy? %>
-        <%= link_to _("More about the producer \"%{supplier}\"") % {:supplier => product.supplier.name}, product.supplier.profile.url, :target => '_blank' %>
+        <%= link_to t('distribution_plugin.views.product._order_edit.more_about_the_produc') % {:supplier => product.supplier.name}, product.supplier.profile.url, :target => '_blank' %>
       <% end %>
     </div>
   </div>
@@ -80,16 +80,16 @@
 
     <% if false # by now, it has no way to submit images %>
       <div class="product-image">
-        <%= _('Product Image'); %>
+        <%= t('distribution_plugin.views.product._order_edit.product_image'); %>
       </div>
     <% end %>
 
     <% if session.orders? %>
-      <%= submit_to_function (ordered_product ? _('Change') : _('Add')),
+      <%= submit_to_function (ordered_product ? t('distribution_plugin.views.product._order_edit.change') : t('distribution_plugin.views.product._order_edit.add')),
         "distribution.setLoading('session-product-#{product.id}'); " +
         "distribution.order_product_include('#{include_message}'); " +
         "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}', {order_id: '#{order_id}', redirect: '#{order.nil? ? '1' : ''}', session_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-session-product').find('.quantity-entry input').val() }); " %>
-      <%= link_to_function _('cancel'), :class => 'toggle-edit' %>
+      <%= link_to_function t('distribution_plugin.views.product._order_edit.cancel'), :class => 'toggle-edit' %>
     <% end %>
   </div>
 
