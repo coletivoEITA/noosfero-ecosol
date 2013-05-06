@@ -1,5 +1,5 @@
 <div id="orders-view" class="orders page">
-  <h2><%= _("Orders' cycles") %></h2>
+  <h2><%= t('distribution_plugin.views.order.index.orders_cycles') %></h2>
 
   <div id="years-filter">
     <% @node.sessions_custom_order.years.each do |session| %>
@@ -9,13 +9,13 @@
 
   <% if @sessions.blank? %>
     <div>
-      <%= _("There's no open session") %>
+      <%= t('distribution_plugin.views.order.index.there_s_no_open_sessi') %>
     </div>
   <% end %>
   <% @sessions.each do |session| %>
     <div class="session-with-consumer-orders">
       <h3>
-        <span><%= _('%{code}.') % { :code => session.code } %></span>
+        <span><%= t('distribution_plugin.views.order.index.code') % { :code => session.code } %></span>
         <%= link_to session.name, {:controller => :distribution_plugin_order, :action => :edit, :session_id => session.id} %>
       </h3>
 
@@ -24,7 +24,7 @@
       <% orders = session.orders.for_consumer @consumer %>
       <% if orders.count > 0 %>
         <div>
-          <strong><%= _('Your orders:') %></strong>
+          <strong><%= t('distribution_plugin.views.order.index.your_orders') %></strong>
           <div class="consumer-orders">
             <% orders.each do |order| %>
               <a href="<%= url_for :controller => :distribution_plugin_order, :action => :edit, :id => order.id %>">
@@ -35,7 +35,7 @@
           </div>
         </div>
       <% else %>
-        <%= link_to _('Place an order'), {:controller => :distribution_plugin_order, :action => :new, :session_id => session.id}, :id => 'consumer-new-order' if session.orders? and not @consumer.nil?%>
+        <%= link_to t('distribution_plugin.views.order.index.place_an_order'), {:controller => :distribution_plugin_order, :action => :new, :session_id => session.id}, :id => 'consumer-new-order' if session.orders? and not @consumer.nil?%>
       <% end %>
 
     </div>

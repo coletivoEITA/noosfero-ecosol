@@ -1,8 +1,8 @@
-<% body = "<pre>" + _('Order Nº: %{code}') % {:code => @order.code} + "\n"%>
+<% body = "<pre>" + t('distribution_plugin.views.mailer._complete_order.order_no_code') % {:code => @order.code} + "\n"%>
 <% body += "-" * 79 + "\n" %>
-<% body += _('Products list') + "\n" %>
+<% body += t('distribution_plugin.views.mailer._complete_order.products_list') + "\n" %>
 <% body += "-" * 79 + "\n" %>
-<% body +=  _('Supplier/Product') + " "*(26-_('Supplier/Product').size) + _('QTT.') + ' '*(23-_('QTT.').size) + _('Price/un') + " "*(23-_('Price/un').size) + _('Price') + "\n" %>
+<% body +=  t('distribution_plugin.views.mailer._complete_order.supplier_product') + " "*(26-t('distribution_plugin.views.mailer._complete_order.supplier_product').size) + t('distribution_plugin.views.mailer._complete_order.qtt') + ' '*(23-t('distribution_plugin.views.mailer._complete_order.qtt').size) + t('distribution_plugin.views.mailer._complete_order.price_un') + " "*(23-t('distribution_plugin.views.mailer._complete_order.price_un').size) + t('distribution_plugin.views.mailer._complete_order.price') + "\n" %>
 <% body += "-" * 79 + "\n" %>
   <% @order.products.group_by{|op| op.supplier}.each do |supplier, products| %>
  <% body += supplier.name.upcase + ":</pre>" %>
@@ -12,11 +12,11 @@
       <% chars = 30 - line.size %>
       <% chars = 0 if chars < 0 %>
 
-      <% line += ' ' * (chars) + _("%{quantity} %{unit}") % {:quantity => p.quantity_asked_as_currency_number, :unit => p.product.unit.singular} %>
+      <% line += ' ' * (chars) + t('distribution_plugin.views.mailer._complete_order.quantity_unit') % {:quantity => p.quantity_asked_as_currency_number, :unit => p.product.unit.singular} %>
       <% chars = 49 - line.size %>
       <% chars = 0 if chars < 0 %>
 
-      <% line += ' ' * chars + _("%{price}/%{unit}") % {:price => p.product.price_as_currency, :unit => p.product.unit.singular} %>
+      <% line += ' ' * chars + t('distribution_plugin.views.mailer._complete_order.price_unit') % {:price => p.product.price_as_currency, :unit => p.product.unit.singular} %>
       <% chars = 71 - line.size %>
       <% chars = 0 if chars < 0 %>
 
@@ -25,7 +25,7 @@
     <% end %>
   <% end %>
   <% body += "-" * 79 + "\n" %>
-  <% chars = 71-_("TOTAL:").size %>
+  <% chars = 71-t('distribution_plugin.views.mailer._complete_order.total').size %>
   <% chars = 0 if chars < 0 %>
-  <%= body + _('TOTAL:') + ' '*chars + @order.total_price_asked_as_currency + "\n</pre>" %>
+  <%= body + t('distribution_plugin.views.mailer._complete_order.total') + ' '*chars + @order.total_price_asked_as_currency + "\n</pre>" %>
 

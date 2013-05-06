@@ -6,7 +6,7 @@
 
     <div class='supplier-body'>
       <div class="supplier-type subtitle">
-        <%= supplier.dummy? ? _("Supplier with registry managed by the collective") : _("Registered supplier in the network") %>
+        <%= supplier.dummy? ? t('distribution_plugin.views.supplier._supplier.supplier_with_registr') : t('distribution_plugin.views.supplier._supplier.registered_supplier_i') %>
       </div>
 
       <div class="supplier-name">
@@ -17,33 +17,33 @@
         <% end %>
       </div>
       <% if supplier.name_abbreviation %>
-        <div class="subtitle"><strong><%= _("Abreviated Name") + '  ' %></strong><%= supplier.name_abbreviation %></div>
+        <div class="subtitle"><strong><%= t('distribution_plugin.views.supplier._supplier.abreviated_name') + '  ' %></strong><%= supplier.name_abbreviation %></div>
       <% end %>
       <p class="subtitle"><%= supplier.description %></p>
 
-      <div class="subtitle"><strong><%= _("This supplier has") %></strong></div>
+      <div class="subtitle"><strong><%= t('distribution_plugin.views.supplier._supplier.this_supplier_has') %></strong></div>
       <div class='supplier-products-count subtitle'>
         <% if supplier.node.products.unarchived.own.distributed.count > 0 %>
-          <%= link_to _("#{supplier.node.products.unarchived.own.distributed.count} registered products"),
-            {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id} %><%= _(", among them") %>
+          <%= link_to t('distribution_plugin.views.supplier._supplier.supplier_node_product'),
+            {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id} %><%= t('distribution_plugin.views.supplier._supplier.among_them') %>
 
-          <% msg = supplier.dummy? ? _("#{@node.products.unarchived.distributed.active.from_supplier(supplier).count} products active") :
-            _("#{@node.products.unarchived.distributed.from_supplier(supplier).count} products commercialized") %>
+          <% msg = supplier.dummy? ? t('distribution_plugin.views.supplier._supplier.node_products_unarchi') :
+            t('distribution_plugin.views.supplier._supplier.node_products_unarchi') %>
           <%= link_to msg, {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id}, :class => 'supplier-distributed-products-count' %>
         <% else %>
-          <%= _('any registered product') %>
+          <%= t('distribution_plugin.views.supplier._supplier.any_registered_produc') %>
         <% end %>
       </div>
     </div>
 
     <div class='supplier-actions subtitle'>
-      <div><strong><%= _("Actions") %></strong></div>
-      <div><%= link_to_function _("edit"), '', :class => 'toggle-edit' %></div>
-      <div><%# link_to _("desactivate"), :url => {:controller => :distribution_plugin_supplier, :action => :desactivate, :id => supplier.id} %></div>
-      <div><%= link_to_remote _("remove"), :url => {:controller => :distribution_plugin_supplier, :action => :destroy, :id => supplier.id},
-        :confirm => _("By removing this supplier all its products won't be available for future cycles. Please confirm you choice"), :class => 'supplier-remove' %></div>
-      <div><%= link_to _("products"), {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id, :anchor => 'filter-fields'} %></div>
-      <div><%= link_to _("add products"), {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id, :anchor => 'our-product-add'} %></div>
+      <div><strong><%= t('distribution_plugin.views.supplier._supplier.actions') %></strong></div>
+      <div><%= link_to_function t('distribution_plugin.views.supplier._supplier.edit'), '', :class => 'toggle-edit' %></div>
+      <div><%# link_to t('distribution_plugin.views.supplier._supplier.desactivate'), :url => {:controller => :distribution_plugin_supplier, :action => :desactivate, :id => supplier.id} %></div>
+      <div><%= link_to_remote t('distribution_plugin.views.supplier._supplier.remove'), :url => {:controller => :distribution_plugin_supplier, :action => :destroy, :id => supplier.id},
+        :confirm => t('distribution_plugin.views.supplier._supplier.by_removing_this_supp'), :class => 'supplier-remove' %></div>
+      <div><%= link_to t('distribution_plugin.views.supplier._supplier.products'), {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id, :anchor => 'filter-fields'} %></div>
+      <div><%= link_to t('distribution_plugin.views.supplier._supplier.add_products'), {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id, :anchor => 'our-product-add'} %></div>
     </div>
 
     <div class="cleaner"></div>

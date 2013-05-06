@@ -49,7 +49,7 @@ class DistributionPluginMessageController < DistributionPluginMyprofileControlle
   protected
 
   def page_reload
-    session[:notice] = _('Message sent')
+    session[:notice] = t('distribution_plugin.controllers.myprofile.message_controller.message_sent')
     respond_to do |format|
       format.js { render :partial => 'distribution_plugin_shared/pagereload' }
     end

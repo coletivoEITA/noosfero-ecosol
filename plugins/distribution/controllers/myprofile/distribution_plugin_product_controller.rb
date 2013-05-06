@@ -21,7 +21,7 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
      if not params['name'].blank?
        conditions[0] += ' AND ' unless conditions[0].blank?
        conditions[0] += 'LOWER(name) LIKE ?'
-       conditions[1] += ['%'+params["name"]+'%']
+       conditions[1] += ['%'+params["name"].strip+'%']
      end
     conditions = DistributionPluginDistributedProduct.send :merge_conditions, conditions.flatten
 
@@ -50,7 +50,7 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     if not params['name'].blank?
       conditions[0] += ' AND ' unless conditions[0].blank?
       conditions[0] += 'LOWER(name) LIKE ?'
-      conditions[1] += ['%'+params["name"].downcase+'%']
+      conditions[1] += ['%'+params["name"].strip.downcase+'%']
     end
     if not params["session_id"].blank?
       conditions[0] += ' AND ' unless conditions[0].blank?
@@ -62,10 +62,11 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     session = DistributionPluginSession.find params['session_id']
     @products = session.products_for_order_by_supplier conditions
     @order = DistributionPluginOrder.find_by_id params[:order_id]
+    @session = @order.session
     #@product_categories = ProductCategory.find(:all)
 
     render :partial => 'order_search', :locals => {
-      :products_for_order_by_supplier => @products, :order => @order}
+      :products_for_order_by_supplier => @products, :order => @order, :session => @session}
   end
 
   def new
@@ -123,16 +124,16 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
   def session_destroy
     @product = DistributionPluginSessionProduct.find params[:id]
     @product.destroy!
-    flash[:notice] = _('Product removed from cycle')
+    flash[:notice] = t('distribution_plugin.controllers.myprofile.product_controller.product_removed_from_')
   end
 
   def destroy
     @product = DistributionPluginProduct.find params[:id]
     if @product.nil?
-      flash[:notice] = _('The product was not removed')
+      flash[:notice] = t('distribution_plugin.controllers.myprofile.product_controller.the_product_was_not_r')
       false
     else
-      @product.archive and flash[:notice] = _('Product removed successfully')
+      @product.archive and flash[:notice] = t('distribution_plugin.controllers.myprofile.product_controller.product_removed_succe')
     end
   end
 

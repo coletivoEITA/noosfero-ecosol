@@ -31,7 +31,7 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
     if params[:commit]
       was_enabled = @node.enabled?
       @node.update_attributes! params[:node]
-      session[:notice] = _('Distribution settings saved.')
+      session[:notice] = t('distribution_plugin.controllers.myprofile.node_controller.distribution_settings')
 
       if !was_enabled and @node.enabled?
         @node.enable_collective_view

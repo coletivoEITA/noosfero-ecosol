@@ -2,11 +2,21 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
   no_design_blocks
 
   def new
-    @order = DistributionPluginOrder.find params[:order_id]
+    @session_product = DistributionPluginProduct.find params[:session_product_id]
+    return render_not_found unless @session_product
+
+    if params[:order_id] == 'new'
+      @session = @session_product.session
+      raise 'Cycle closed for orders' unless @session.orders?
+      @order = DistributionPluginOrder.create! :session => @session, :consumer => @user_node
+    else
+      @order = DistributionPluginOrder.find params[:order_id]
+      @session = @order.session
+    end
+
     raise 'Order confirmed or cycle is closed for orders' unless @order.open?
     raise 'You are not logged or is not the owner of this order' if @user_node.nil? or @user_node != @order.consumer
 
-    @session_product = DistributionPluginProduct.find params[:session_product_id]
     @ordered_product = DistributionPluginOrderedProduct.find_by_order_id_and_session_product_id(@order.id, @session_product.id)
     @quantity_asked = DistributionPlugin::DistributionCurrencyHelper.parse_localized_number(params[:quantity_asked]) || 1
     min = @session_product.minimum_selleable
@@ -40,6 +50,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
     @ordered_product = DistributionPluginOrderedProduct.find params[:id]
     @session_product = @ordered_product.session_product
     @order = @ordered_product.order
+    @session = @order.session
     raise 'Order confirmed or cycle is closed for orders' unless @order.open?
     raise 'You are not logged or is not the owner of this order' if @user_node.nil? or @user_node != @order.consumer
 
@@ -58,6 +69,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
   def admin_edit
     @ordered_product = DistributionPluginOrderedProduct.find params[:id]
     @order = @ordered_product.order
+    @session = @order.session
     #update on association for total
     @order.products.each{ |p| p.attributes = params[:ordered_product] if p.id == @ordered_product.id }
     @ordered_product.attributes = params[:ordered_product]
@@ -65,13 +77,16 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
 
   def destroy
     @ordered_product = DistributionPluginOrderedProduct.find params[:id]
+    @session_product = @ordered_product.session_product
     @order = @ordered_product.order
+    @session = @order.session
     @ordered_product.destroy
   end
 
   def session_destroy
     @ordered_product = DistributionPluginOrderedProduct.find params[:id]
     @order = @ordered_product.order
+    @session = @order.session
   end
 
 end

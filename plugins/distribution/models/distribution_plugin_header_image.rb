@@ -7,7 +7,7 @@ class DistributionPluginHeaderImage < ActiveRecord::Base
                  :resize_to => 'crop: 1040x90',
                  :max_size => 500.kilobytes # remember to update validate message below
 
-  validates_attachment :size => N_("%{fn} of uploaded file was larger than the maximum size of 500.0 KB")
+  validates_attachment :size => I18n.t('distribution_plugin.models.header_image.fn_of_uploaded_file_w')
 
   protected
 

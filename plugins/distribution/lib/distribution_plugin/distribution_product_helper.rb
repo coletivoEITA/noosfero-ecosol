@@ -11,7 +11,7 @@ module DistributionPlugin::DistributionProductHelper
    options[:selected] = selected_supplier.id if selected_supplier
    options[:include_blank] = true
 
-   labelled_field f, :supplier_id, _('Product from which supplier?'),
+   labelled_field f, :supplier_id, I18n.t('distribution_plugin.lib.distribution_product_helper.product_from_which_su'),
      f.select(:supplier_id, supplier_choices(node), options, field_options), :class => 'product-supplier'
   end
 

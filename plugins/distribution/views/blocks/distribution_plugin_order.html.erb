@@ -11,30 +11,30 @@
           </div>
 
           <div class="session-period">
-            <strong><%= _('orders') %></strong>&emsp;
+            <strong><%= t('distribution_plugin.views.blocks.order.orders') %></strong>&emsp;
             <span><%= date_period s.start, s.finish %></span>
           </div>
           <div class="session-period">
-            <strong><%= _('delivery') %></strong>&emsp;
+            <strong><%= t('distribution_plugin.views.blocks.order.delivery') %></strong>&emsp;
             <span><%= date_period s.delivery_start, s.delivery_finish %></span>
           </div>
 
         </div>
 
         <div class="links">
-          <%= link_to _('see all cycles'), {:controller => :distribution_plugin_order, :action => :index} %>
-          <%# link_to _('meet the producers'), {} %>
-          <%# link_to _('meet the products'), {} %>
+          <%= link_to t('distribution_plugin.views.blocks.order.see_all_cycles'), {:controller => :distribution_plugin_order, :action => :index} %>
+          <%# link_to t('distribution_plugin.views.blocks.order.meet_the_producers'), {} %>
+          <%# link_to t('distribution_plugin.views.blocks.order.meet_the_products'), {} %>
         </div>
       <% end %>
     <% else %>
-      <%= _('Any cycle is open for orders.') %>
+      <%= t('distribution_plugin.views.blocks.order.any_cycle_is_open_for') %>
     <% end %>
   <% else %>
     <% if profile.community? %>
-      <%= _('Join this community to buy from this collective.') %>
+      <%= t('distribution_plugin.views.blocks.order.join_this_community_t') %>
     <% else %>
-      <%= _('Ask an administrator to became a member of this enterprise.') %>
+      <%= t('distribution_plugin.views.blocks.order.ask_an_administrator_') %>
     <% end %>
   <% end %>
 

@@ -15,14 +15,14 @@ class DistributionPluginOrderController < DistributionPluginProfileController
 
   def new
     if @user_node.nil?
-      session[:notice] = _('Login first')
+      session[:notice] = t('distribution_plugin.controllers.profile.order_controller.please_login_first')
       redirect_to :action => :index
       return
     end
     @consumer = @user_node
     @session = DistributionPluginSession.find params[:session_id]
     @order = DistributionPluginOrder.create! :session => @session, :consumer => @consumer
-    redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
+    redirect_to params.merge(:action => :edit, :id => @order.id)
   end
 
   def admin_new
@@ -49,6 +49,8 @@ class DistributionPluginOrderController < DistributionPluginProfileController
       @admin_edit = @user_node && @user_node != @consumer
     end
     @consumer_orders = @session.orders.for_consumer @consumer
+
+    render :partial => 'consumer_orders' if params[:consumer_orders]
   end
 
   def reopen
@@ -67,9 +69,9 @@ class DistributionPluginOrderController < DistributionPluginProfileController
     @order = DistributionPluginOrder.find params[:id]
     if @order.consumer != @user_node and not @node.has_admin? @user_node
       if @user_node.nil?
-        session[:notice] = _('Login first')
+        session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
       else
-        session[:notice] = _('You are not the owner of this order')
+        session[:notice] = t('distribution_plugin.controllers.profile.order_controller.you_are_not_the_owner')
       end
       redirect_to :action => :index
       return
@@ -78,9 +80,9 @@ class DistributionPluginOrderController < DistributionPluginProfileController
     if @order.products.count > 0
       @order.update_attributes! params[:order].merge(:status => 'confirmed')
       DistributionPlugin::Mailer.deliver_order_confirmation @order, request.host_with_port
-      session[:notice] = _('Order confirmed')
+      session[:notice] = t('distribution_plugin.controllers.profile.order_controller.order_confirmed')
     else
-      session[:notice] = _('Can not confirm. Your order list is empty')
+      session[:notice] = t('distribution_plugin.controllers.profile.order_controller.can_not_confirm_your_')
     end
     redirect_to :action => :edit, :id => @order.id
   end
@@ -89,9 +91,9 @@ class DistributionPluginOrderController < DistributionPluginProfileController
     @order = DistributionPluginOrder.find params[:id]
     if @order.consumer != @user_node and not @node.has_admin? @user_node
       if @user_node.nil?
-        session[:notice] = _('Login first')
+        session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
       else
-        session[:notice] = _('You are not the owner of this order')
+        session[:notice] = t('distribution_plugin.controllers.profile.order_controller.you_are_not_the_owner')
       end
       redirect_to :action => :index
       return
@@ -99,7 +101,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
     @order.update_attributes! :status => 'cancelled'
 
     DistributionPlugin::Mailer.deliver_order_cancellation @order
-    session[:notice] = _('Order cancelled')
+    session[:notice] = t('distribution_plugin.controllers.profile.order_controller.order_cancelled')
     redirect_to :action => :index, :session_id => @order.session.id
   end
 
@@ -107,16 +109,16 @@ class DistributionPluginOrderController < DistributionPluginProfileController
     @order = DistributionPluginOrder.find params[:id]
     if @order.consumer != @user_node and not @node.has_admin? @user_node
       if @user_node.nil?
-        session[:notice] = _('Login first')
+        session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
       else
-        session[:notice] = _('You are not the owner of this order')
+        session[:notice] = t('distribution_plugin.controllers.profile.order_controller.you_are_not_the_owner')
       end
       redirect_to :action => :index
       return
     end
     @order.destroy
 
-    session[:notice] = _('Order removed')
+    session[:notice] = t('distribution_plugin.controllers.profile.order_controller.order_removed')
     redirect_to :action => :index, :session_id => @order.session.id
   end
 
@@ -130,9 +132,9 @@ class DistributionPluginOrderController < DistributionPluginProfileController
     @order = DistributionPluginOrder.find params[:id]
     if @order.consumer != @user_node and not @node.has_admin? @user_node
       if @user_node.nil?
-        session[:notice] = _('Login first')
+        session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
       else
-        session[:notice] = _('You are not the owner of this order')
+        session[:notice] = t('distribution_plugin.controllers.profile.order_controller.you_are_not_the_owner')
       end
       redirect_to :action => :index
       return

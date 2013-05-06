@@ -1,14 +1,14 @@
 <div class="session-products-table box-align">
   <%= pagination_links @products %>
   <div id="result-count">
-    <small><%= _("Showing %{pcount} products of %{allpcount}") % {:pcount => @products.length, :allpcount => @session.products.count} %></small>
+    <small><%= t('distribution_plugin.views.session._product_lines.showing_pcount_produc') % {:pcount => @products.length, :allpcount => @session.products.count} %></small>
   </div>
   <div class='table-header'>
-    <span class='box-field category'><%= _('Category') %></span>
-    <span class='box-field supplier'><%= _('Supplier') %></span>
-    <span class='box-field name'><%= _('Product') %></span>
-    <span class="box-field price"><%= _('Price') %></span>
-    <span class="box-field quantity-available"><%= _('Qty. avail.') %></span>
+    <span class='box-field category'><%= t('distribution_plugin.views.session._product_lines.category') %></span>
+    <span class='box-field supplier'><%= t('distribution_plugin.views.session._product_lines.supplier') %></span>
+    <span class='box-field name'><%= t('distribution_plugin.views.session._product_lines.product') %></span>
+    <span class="box-field price"><%= t('distribution_plugin.views.session._product_lines.price') %></span>
+    <span class="box-field quantity-available"><%= t('distribution_plugin.views.session._product_lines.qty_avail') %></span>
     <span class="box-field actions"></span>
 
     <div class="cleaner"></div>

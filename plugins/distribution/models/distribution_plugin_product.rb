@@ -96,7 +96,7 @@ class DistributionPluginProduct < ActiveRecord::Base
   has_currency :original_price
 
   def self.default_unit
-    Unit.new(:singular => _('unit'), :plural => _('units'))
+    Unit.new(:singular => I18n.t('distribution_plugin.models.product.unit'), :plural => I18n.t('distribution_plugin.models.product.units'))
   end
 
   def minimum_selleable

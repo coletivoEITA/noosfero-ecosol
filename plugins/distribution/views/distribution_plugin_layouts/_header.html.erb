@@ -1,4 +1,4 @@
-<div class="menu-header"><%= _("Collective consumption network") %></div>
+<div class="menu-header"><%= t('distribution_plugin.views.layouts._header.collective_consumptio') %></div>
 
 <% style = (@node.image and @node.header_type != 'pure_color') ? "style=\"background: url('" + @node.image.public_filename + "') no-repeat;\" " : ""  %>
 <% color = @node.header_bg_color ? "color-"+@node.header_bg_color.to_s : " " %>

@@ -1,9 +1,9 @@
 <div class="distribution-plugin-popin">
-  <h1><%= _("Cycle editing") %></h1>
+  <h1><%= t('distribution_plugin.views.session._edit_popin.cycle_editing') %></h1>
 
   <div>
     <% if session.valid? %>
-      <%= _('Cycle saved.') %>
+      <%= t('distribution_plugin.views.session._edit_popin.cycle_saved') %>
     <% else %>
       <% session.errors.each_full do |msg| %>
         <div><%= msg %></div>
@@ -12,7 +12,7 @@
   </div>
 
   <div>
-    <%= colorbox_close_button _('Close') %>
+    <%= colorbox_close_button t('distribution_plugin.views.session._edit_popin.close') %>
   </div>
 
 </div>

@@ -253,7 +253,7 @@ class DistributionPluginNode < ActiveRecord::Base
   def check_roles
     Role.create!(
       :key => 'distribution_node_consumer',
-      :name => N_('Consumer'),
+      :name => I18n.t('distribution_plugin.models.node.consumer'),
       :environment => profile.environment,
       :permissions => [
         'order_product',

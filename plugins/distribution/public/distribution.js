@@ -251,6 +251,12 @@ distribution = {
 
   /* ----- order stuff  ----- */
 
+  order_product_include: function (message, url) {
+    if (message)
+      alert(message);
+    return false;
+  },
+
   order_products_toggle: function (fields, toggle) {
     jQuery.each(fields, function(index, field) {
       var p = jQuery(field).parents('.order-session-product');

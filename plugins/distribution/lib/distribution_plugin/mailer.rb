@@ -5,7 +5,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(order.consumer.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       _("[%{node}] Your order was changed") % {:node => node.name}
+    subject       I18n.t('distribution_plugin.lib.mailer.node_your_order_was_c') % {:node => node.name}
     content_type  'text/html'
     body :node => node,
          :order => order,
@@ -21,7 +21,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(order.consumer.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       _("[%{node}] Your order was confirmed") % {:node => node.name}
+    subject       I18n.t('distribution_plugin.lib.mailer.node_your_order_was_c') % {:node => node.name}
     content_type  'text/html'
     body :node => node,
          :order => order,
@@ -36,7 +36,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(order.consumer.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       _("[%{node}] Your order was cancelled") % {:node => node.name}
+    subject       I18n.t('distribution_plugin.lib.mailer.node_your_order_was_c') % {:node => node.name}
     content_type  'text/html'
     body :node => node,
          :order => order,
@@ -49,7 +49,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(order.consumer.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       _("[%{node}] %{subject}") % {:node => node.name, :subject => subject}
+    subject       I18n.t('distribution_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
     content_type  'text/html'
     body :node => node,
          :order => order,
@@ -63,7 +63,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(consumer.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       _("[%{node}] %{subject}") % {:node => node.name, :subject => subject}
+    subject       I18n.t('distribution_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
     content_type  'text/html'
     body :node => node,
          :consumer => consumer,
@@ -76,7 +76,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(supplier.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       _("[%{node}] %{subject}") % {:node => node.name, :subject => subject}
+    subject       I18n.t('distribution_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
     content_type  'text/html'
     body :node => node,
          :supplier => supplier,
@@ -89,7 +89,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(node.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(member.profile)
-    subject       _("[%{node}] %{subject}") % {:node => node.name, :subject => subject}
+    subject       I18n.t('distribution_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
     content_type  'text/html'
     body :node => node,
          :member => member,
@@ -102,7 +102,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    community_members(node.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       _("[%{node}] %{subject}") % {:node => node.name, :subject => subject}
+    subject       I18n.t('distribution_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
     content_type  'text/html'
     body :node => node,
          :session => session,

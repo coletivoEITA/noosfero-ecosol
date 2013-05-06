@@ -14,11 +14,11 @@
 
 <div id='session-products'>
   <div id="session-products-header">
-    <h3><%= _("The products") %></h3>
+    <h3><%= t('distribution_plugin.views.session._edition.the_products') %></h3>
 
-    <div class="subtitle"><%= _('The following list of products are available in this cycle.') %></div>
-    <div class="subtitle"><%= _('It was automatically created from the active products. See the list below and check for needed changes.') %></div>
-    <%= colorbox_link_to _('Add product'), {:controller => :distribution_plugin_session, :action => :add_products, :id => @session.id}, :class => 'subtitle' %>
+    <div class="subtitle"><%= t('distribution_plugin.views.session._edition.the_following_list_of') %></div>
+    <div class="subtitle"><%= t('distribution_plugin.views.session._edition.it_was_automatically_') %></div>
+    <%= colorbox_link_to t('distribution_plugin.views.session._edition.add_product'), {:controller => :distribution_plugin_session, :action => :add_products, :id => @session.id}, :class => 'subtitle' %>
   </div>
 
   <div id="session-product-lines">

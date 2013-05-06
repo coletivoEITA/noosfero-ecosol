@@ -1,11 +1,11 @@
 module DistributionPlugin::DistributionLayoutHelper
 
   HeaderButtons = [
-    [:start, _('Start'), proc{ @node.profile.url }, proc{ on_homepage? }],
-    [:orders, _('Orders'), {:controller => :distribution_plugin_order, :action => :index}],
-    #[:about, _('About'), {:controller => :distribution_plugin_node, :action => :about}],
-    #[:history, _('History'), {:controller => :distribution_plugin_node, :action => :history}],
-    [:adm, _('Administration'), {:controller => :distribution_plugin_node, :action => 'index'}, proc{ @admin_action },
+    [:start, I18n.t('distribution_plugin.lib.distribution_layout_helper.start'), proc{ @node.profile.url }, proc{ on_homepage? }],
+    [:orders, I18n.t('distribution_plugin.lib.distribution_layout_helper.orders'), {:controller => :distribution_plugin_order, :action => :index}],
+    #[:about, I18n.t('distribution_plugin.lib.distribution_layout_helper.about'), {:controller => :distribution_plugin_node, :action => :about}],
+    #[:history, I18n.t('distribution_plugin.lib.distribution_layout_helper.history'), {:controller => :distribution_plugin_node, :action => :history}],
+    [:adm, I18n.t('distribution_plugin.lib.distribution_layout_helper.administration'), {:controller => :distribution_plugin_node, :action => 'index'}, proc{ @admin_action },
       proc{ @user_node and @node.has_admin?(@user_node) }],
   ]
 

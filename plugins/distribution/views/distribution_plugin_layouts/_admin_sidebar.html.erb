@@ -1,10 +1,10 @@
 <%
   urls = [
-    [_("Orders' Cycles"), {:controller => :distribution_plugin_session, :action => :index, :profile => profile.identifier}, false],
-    #[_("Parcels"), {:controller => :distribution_plugin_parcel, :action => :index, :profile => profile.identifier}, false],
-    [_("Products"), {:controller => :distribution_plugin_product, :action => :index, :profile => profile.identifier}, false],
-    [_("Suppliers"), {:controller => :distribution_plugin_supplier, :action => :index, :profile => profile.identifier}, false],
-    #[_("Members"), {:controller => :distribution_plugin_collective, :action => :members, :profile => profile.identifier}, true],
+    [t('distribution_plugin.views.layouts._admin_sidebar.orders_cycles'), {:controller => :distribution_plugin_session, :action => :index, :profile => profile.identifier}, false],
+    #[t('distribution_plugin.views.layouts._admin_sidebar.parcels'), {:controller => :distribution_plugin_parcel, :action => :index, :profile => profile.identifier}, false],
+    [t('distribution_plugin.views.layouts._admin_sidebar.products'), {:controller => :distribution_plugin_product, :action => :index, :profile => profile.identifier}, false],
+    [t('distribution_plugin.views.layouts._admin_sidebar.suppliers'), {:controller => :distribution_plugin_supplier, :action => :index, :profile => profile.identifier}, false],
+    #[t('distribution_plugin.views.layouts._admin_sidebar.members'), {:controller => :distribution_plugin_collective, :action => :members, :profile => profile.identifier}, true],
   ]
 %>
 <% urls.each do |name, url, exact| %>

@@ -1,7 +1,7 @@
 <div id="session-products-for-order">
   <div class="alignment">
-    <h3><%=_("The products")%></h3>
-    <div><%= _("Choose from the list below the products you want to include to your order. Click them to choose the quantity.")%></div>
+    <h3><%=t('distribution_plugin.views.session._view_products.the_products')%></h3>
+    <div><%= t('distribution_plugin.views.session._view_products.choose_from_the_list_')%></div>
   </div>
 
   <%= render :partial => "distribution_plugin_order/filter_products", :locals => {:session => session, :order => order}%>

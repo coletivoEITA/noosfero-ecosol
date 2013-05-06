@@ -1,26 +1,26 @@
-<h3><%= _("General settings") %></h3>
+<h3><%= t('distribution_plugin.views.session._edit_fields.general_settings') %></h3>
 
 <% form_remote_for :session, @session, :url => {:action => @session.new? ? :new : :edit, :id => @session.id } do |f| %>
 
-  <%= labelled_field(f, :name, _('Name'), f.text_field(:name), :class => 'session-field-name') %>
-  <%= labelled_field(f, :description, _('Description'), f.text_area(:description), :class => 'session-field-description') %>
+  <%= labelled_field(f, :name, t('distribution_plugin.views.session._edit_fields.name'), f.text_field(:name), :class => 'session-field-name') %>
+  <%= labelled_field(f, :description, t('distribution_plugin.views.session._edit_fields.description'), f.text_area(:description), :class => 'session-field-description') %>
 
   <div class="session-fields-block">
-    <%= labelled_period_field(f, :start, :finish, _('Orders'), :class => 'session-orders-period') %>
+    <%= labelled_period_field(f, :start, :finish, t('distribution_plugin.views.session._edit_fields.orders_interval'), :class => 'session-orders-period') %>
   </div>
   <div class="session-fields-block">
-    <%= labelled_period_field(f, :delivery_start, :delivery_finish, _('Deliveries'), :class => 'session-orders-period') %>
+    <%= labelled_period_field(f, :delivery_start, :delivery_finish, t('distribution_plugin.views.session._edit_fields.deliveries_interval'), :class => 'session-orders-period') %>
   </div>
 
   <div class="session-fields-block">
     <div id='session-delivery' class="field">
-      <%= f.label(:delivery_methods, _('Available delivery methods')) %>
+      <%= f.label(:delivery_methods, t('distribution_plugin.views.session._edit_fields.available_delivery_me')) %>
 
       <div>
         <div id='session-delivery-options' class="subtitle">
           <%= render :partial => 'distribution_plugin_delivery_option/index' %>
         </div>
-        <%= colorbox_link_to _('Add method'), { :controller => :distribution_plugin_delivery_option, :action => "select", :session_id => @session.id }, :class => 'session-add-delivery-option subtitle'  %>
+        <%= colorbox_link_to t('distribution_plugin.views.session._edit_fields.add_method'), { :controller => :distribution_plugin_delivery_option, :action => "select", :session_id => @session.id }, :class => 'session-add-delivery-option subtitle'  %>
       </div>
 
       <div class="cleaner"></div>
@@ -28,18 +28,18 @@
   </div>
 
   <div id="session-new-mail">
-    <%= check_box_tag('sendmail', 'yes', true, :id => 'session-new-mail-send') %>
-    <%= content_tag('label', _('Notify members of open orders'), :for => 'sendmail') %>
+    <%= check_box_tag('sendmail', 'yes', false, :id => 'session-new-mail-send') %>
+    <%= content_tag('label', t('distribution_plugin.views.session._edit_fields.notify_members_of_ope'), :for => 'sendmail') %>
 
     <div class='mail-message'>
-      <%= f.label(:sendmail, _('Opening Message')) %>
-      <div><%=_('This message will be sent by mail for the collective consumers') %></div>
+      <%= f.label(:sendmail, t('distribution_plugin.views.session._edit_fields.opening_message')) %>
+      <div><%=t('distribution_plugin.views.session._edit_fields.this_message_will_be_') %></div>
       <%= f.text_area(:opening_message) %>
     </div>
     <%= observe_field 'session-new-mail-send', :on => 'click', :function => "distribution.session_mail_message_toggle()" %>
   </div>
-  <%= f.submit @session.new? ? _('Create new cycle') : _('Save'), :onclick => 'saveClick = true' %>
-  <%= link_to _('cancel changes'), @session.new? ? {:action => :index} : params %>
+  <%= f.submit @session.new? ? t('distribution_plugin.views.session._edit_fields.create_new_cycle') : t('distribution_plugin.views.session._edit_fields.save'), :onclick => 'saveClick = true' %>
+  <%= link_to t('distribution_plugin.views.session._edit_fields.cancel_changes'), @session.new? ? {:action => :index} : params %>
 <% end %>
 
 <%= javascript_include_tag '/plugins/distribution/jquery.calendrical.js' %>

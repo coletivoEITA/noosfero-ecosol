@@ -1,0 +1,26 @@
+language: ruby
+bundler_args: --without profile
+notifications:
+  irc: "irc.freenode.org#axlsx"
+  email:
+    recipients:
+      - digital.ipseity@gmail.com
+    on_success: always
+rvm:
+  - 1.8.7
+  - 1.9.2
+  - 1.9.3
+  - 2.0.0
+  - jruby-18mode
+  - rbx-18mode
+  - rbx-19mode
+  - jruby-19mode
+  - ruby-head
+  - jruby-head
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+    - rvm: jruby-head
+    - rvm: 1.8.7
+before_install:
+  - gem install nokogiri -- --with-cflags='--std=gnu99'

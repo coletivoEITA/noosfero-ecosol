@@ -16,7 +16,7 @@ class DistributionPluginSupplierController < DistributionPluginMyprofileControll
 
   def new
     @new_supplier.update_attributes! params[:supplier] #beautiful transactional save
-    session[:notice] = _('Supplier created')
+    session[:notice] = t('distribution_plugin.controllers.myprofile.supplier_controller.supplier_created')
   end
 
   def edit
