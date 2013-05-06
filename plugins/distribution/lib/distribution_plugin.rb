@@ -3,6 +3,13 @@ require_dependency 'ext/community'
 require_dependency 'ext/category'
 require_dependency 'ext/product'
 
+[ ActiveSupport::Dependencies.load_paths, $:].each do |path|
+  vendor = Dir.glob File.join(File.dirname(__FILE__), '/../vendor/plugins/*')
+  vendor.each do |plugin|
+    path << plugin + '/lib'
+  end
+end
+
 class DistributionPlugin < Noosfero::Plugin
 
   def self.plugin_name
