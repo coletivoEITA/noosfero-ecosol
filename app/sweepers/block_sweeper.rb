@@ -5,7 +5,6 @@ class BlockSweeper < ActiveRecord::Observer
   class << self
     include SweeperHelper
 
-    # depreciated, implamented on SweeperHelper
     # Expire block's all languages cache
     def expire_block(block)
       return if !block.environment
