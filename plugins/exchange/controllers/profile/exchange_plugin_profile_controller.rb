@@ -2,6 +2,8 @@ class ExchangePluginProfileController < ProfileController
 
  # skip_before_filter :login_required
  # before_filter :login_required #:only => [:activation_question, :accept_terms, :activate_enterprise]
+  append_view_path File.expand_path "#{File.dirname(__FILE__)}/../../views"
+  no_design_blocks
 
   def index
     redirect_to :action => :create_proposal
@@ -9,43 +11,43 @@ class ExchangePluginProfileController < ProfileController
 
   def create_proposal
 #    @target_products = profile.products
-#    @enterprises = current_user.person.enterprises.find(:all, :conditions => ["profiles.id <> ?",profile.id])    
+#    @enterprises = current_user.person.enterprises.find(:all, :conditions => ["profiles.id <> ?",profile.id])
 #    @target_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == profile.id}
 
 #    @origin_enterprise = Enterprise.find params[:origin_enterprise_id]
 #    @origin_products = origin_enterprise.products
-    
-    
+
+
   end
-  
-  
+
+
   def choose_target_offers
     #only registered users can access here
     @target_products = profile.products
     @enterprises = current_user.person.enterprises.find(:all, :conditions => ["profiles.id <> ?",profile.id])
-    
+
     @target_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == profile.id}
   end
 
 
-  
-  
+
+
   def choose_origin_offers
     if request.post?
       if !(params[:target_product_id] || params[:target_knowledge_id])
         redirect_to :action => :choose_target_offers
         return
       end
-      
+
       @origin_enterprise = Enterprise.find params[:origin_enterprise_id]
       @target_enterprise_name = profile.name
-      
+
       if params[:target_product_id]
         @target_products = Product.find params[:target_product_id]
         @target_quantities = params[:target_quantity]
       end
 
-      if params[:target_knowledge_id] 
+      if params[:target_knowledge_id]
         @target_knowledges = CmsLearningPluginLearning.find params[:target_knowledge_id]
         @target_knowledge_quantities = params[:target_knowledge_quantity]
       end
@@ -75,9 +77,9 @@ class ExchangePluginProfileController < ProfileController
       index_aux1 = @matching_products_interests.collect{|m| m.opportunity_id.to_i}
       index_aux2 = @matching_knowledges_interests.collect{|m| m.interest_cat.to_i}
       matching_interests_index = index_aux1 + index_aux2
- 
+
       target_interests = SnifferPluginOpportunity.all.select{|i| i.profile_id == ((SnifferPluginProfile.find_by_profile_id profile.id).id)}
-      @target_interests_filtered = target_interests.reject{|i| matching_interests_index.index(i.opportunity_id)} 
+      @target_interests_filtered = target_interests.reject{|i| matching_interests_index.index(i.opportunity_id)}
       @target_interests_names_filtered = @target_interests_filtered.collect{|i| (i.opportunity_type.constantize.find i.opportunity_id).name }
 
     end
@@ -110,11 +112,11 @@ class ExchangePluginProfileController < ProfileController
     @exchange.state = "proposed"
     @exchange.simplified_state = "happening"
     @exchange.save!
-    
+
     #message
     body = _('%{origin} proposed an exchange with %{target}: %{message}') % {:target => profile.name, :origin => @exchange.enterprise_origin.name, :message => params[:message]}
     m = ExchangePlugin::Message.new_exchange_message(@exchange, nil, nil, nil , body)
-  
+
     if params[:target_product_id]
       params[:target_product_id].each do |p|
         element = ExchangePlugin::ExchangeElement.new
