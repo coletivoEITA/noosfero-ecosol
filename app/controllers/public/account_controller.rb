@@ -47,6 +47,12 @@ class AccountController < ApplicationController
     end
   end
 
+  def select_active_organization
+    profile = Profile.find_by_id params[:profile_id]
+    profile_id = (profile.nil? or profile.admins.include? user) ? nil : profile.id
+    session[:active_organization] = profile_id
+  end
+
   def logout_popup
     render :action => 'logout_popup', :layout => false
   end
@@ -125,7 +131,7 @@ class AccountController < ApplicationController
   def change_password
     if request.post?
       @user = current_user
-      begin 
+      begin
         @user.change_password!(params[:current_password],
                                params[:new_password],
                                params[:new_password_confirmation])
@@ -218,7 +224,7 @@ class AccountController < ApplicationController
     @question = @enterprise.question
     return unless check_answer
     return unless check_acceptance_of_terms
-    
+
     activation = load_enterprise_activation
     if activation && user
       activation.requestor = user

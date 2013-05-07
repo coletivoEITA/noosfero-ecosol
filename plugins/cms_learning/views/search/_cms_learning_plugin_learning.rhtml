@@ -1,0 +1,27 @@
+<li class="search-cms-learning-item article-item">
+  <%= link_to(cms_learning_plugin_learning.title, cms_learning_plugin_learning.url, :class => "search-result-title") %>
+  <div class="search-content-first-column">
+    <div class="search-image-container">
+      <div class="search-content-type-icon icon-content-cms-learning"></div>
+    </div>
+  </div>
+  <div class="search-content-second-column">
+    <div style="clear: both">
+      <span class="search-field-label"><%= _("Summary") %></span>
+      <% content = strip_tags(cms_learning_plugin_learning.summary.to_s) %>
+      <span><%= excerpt(content, content.first(3), 70) %></span>
+    </div>
+    <div style="clear: both">
+      <span class="search-field-label"><%= _("Good practices") %></span>
+      <% content = strip_tags(cms_learning_plugin_learning.good_practices.to_s) %>
+      <span><%= excerpt(content, content.first(3), 70) %></span>
+    </div>
+    <div style="clear: both">
+      <span class="search-field-label"><%= _("Details") %></span>
+      <% content = strip_tags(cms_learning_plugin_learning.body.to_s) %>
+      <span><%= excerpt(content, content.first(3), 70) %></span>
+    </div>
+    <%= render :partial => 'article_common', :object => cms_learning_plugin_learning, :locals => {:show_description => false} %>
+  </div>
+  <br class="clear"/>
+</li>
