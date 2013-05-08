@@ -82,14 +82,14 @@ td {
 
 #exchange_system_messages{
   padding: 10px;
-  padding-top: 20px;
+  padding-top: 30px;
   float:right;  
-  max-width: 430px;
+  width: 400px;
 }
 #exchange_summary{
   padding: 10px;
   float:left;
-  max-width: 430px;
+  width: 400px;
 }
 
 #exchange_summary td{
@@ -113,23 +113,206 @@ td {
 }
 
 .comment-wrapper-3-inverted {
-  background: url(imgs/comment-bg-L-inverted.png)  100%   0% repeat-y;
+  background: url(/plugins/exchange/images/comment-bg-L-inverted.png)  100%   0% repeat-y;
 }
 .comment-wrapper-5-inverted {
-  background: url(imgs/comment-bg-SL-inverted.png) 100% 100% no-repeat;
+  background: url(/plugins/exchange/images/comment-bg-SL-inverted.png) 100% 100% no-repeat;
 }
 .comment-wrapper-7-inverted {
-  background: url(imgs/comment-bg-NL-inverted.png) 100%   0% no-repeat;
+  background: url(/plugins/exchange/images/comment-bg-NL-inverted.png) 100%   0% no-repeat;
 }
 .comment-wrapper-8-inverted {
-  background: url(imgs/comment-bg-NO-inverted.png)   0%   0% no-repeat;
+  background: url(/plugins/exchange/images/comment-bg-NO-inverted.png)   0%   0% no-repeat;
 }
 
 .controller-profile_editor a.control-panel-exchange{
-  background-image: url(imgs/exchange-64x64.png);
+  background-image: url(/plugins/exchange/images/exchange-64x64.png);
 }
 .icon-exchange,
 .icon-newexchange {
-  background-image: url(imgs/exchange-16x16.png);
+  background-image: url(/plugins/exchange/images/exchange-16x16.png);
 }
 
+/*####### new layout ########*/
+
+#exc-plg-exchange_wrapper{
+  background: #FAF7DC;
+  width: 100%;
+  height: 100%;
+  height: 1000px; /*provisório */
+  width: 1200px; /*provisório */
+}
+#exc-plg-title_wrapper{
+  width: 985px;
+  margin: auto;
+}
+#exc-plg-states_wrapper{
+  width: 985px;
+  height: 170px;
+  margin: 36px auto;
+  border: 1px solid #C5AAA5;
+  background: #ECE4DB;
+}
+#exc-plg-states{
+  height: 120px;
+}
+
+.exc-plg-state{
+
+}
+.exc-plg-past{
+  float: left;
+  line-height: 150px;
+  text-align: center;
+  margin: 15px 65.5px 0 65.5px;
+  border: 4px solid #7F005C;
+  border-radius: 40px;
+  height: 40px;
+  width: 40px;
+  background: white;
+}
+.exc-plg-active{
+  float: left;
+/*   line-height: 150px; */
+  text-align: center;
+  margin: 15px 65.5px 0 65.5px;
+  border: 4px solid #ECE4DB;
+  border-radius: 40px;
+  height: 40px;
+  width: 40px;
+  background: #7F005C;
+  color: white;
+  font-weight: bold;
+}
+.exc-plg-future{
+  float: left;
+/*   line-height: 150px; */
+  text-align: center;
+  margin: 15px 65.5px 0 65.5px;
+  border: 4px solid #7F005C;
+  border-radius: 40px;
+  height: 40px;
+  width: 40px;
+  background: white;
+  color: #7F005C;
+}
+
+.exc-plg-outer-border{
+/*  height: 40px;
+  width: 40px;
+  border: 4px solid #28370C;
+  border-radius: 40px;*/
+}
+  
+.exc-plg-state_name{
+  line-height:0px;
+  color: #28370C;
+}
+.exc-plg-state_number{
+  font-size: 30px;
+  line-height:0px;
+}
+
+
+.one_past{
+  margin-left: 160px;
+}
+.two_past{
+}
+.three_past{
+}
+.four_past{
+}
+.one_active{
+/*   background: url('/plugins/exchange/images/exchange_state_1_active.png'); */
+  margin-left: 160px;
+}
+.two_active{
+/*   background: url('/plugins/exchange/images/exchange_state_2_active.png'); */
+}
+.three_active{
+/*   background: url('/plugins/exchange/images/exchange_state_3_active.png'); */
+}
+.four_active{
+/*   background: url('/plugins/exchange/images/exchange_state_4_active.png'); */
+  margin-right: 160px;
+}
+
+.one{
+/*   background: url('/plugins/exchange/images/exchange_state_1.png'); */
+  margin-left: 160px;
+}
+.two{
+/*   background: url('/plugins/exchange/images/exchange_state_2.png'); */
+}
+.three{
+/*   background: url('/plugins/exchange/images/exchange_state_3.png'); */
+}
+.four{
+/*   background: url('/plugins/exchange/images/exchange_state_4.png'); */
+  margin-right: 160px;
+}
+#exc-plg-enterprise_headers{
+  color:white;
+}
+#exc-plg-enterprise_origin{
+  background: #7857B8;
+  float: left;
+  width: 492.5px;
+  height: 50px;
+  text-align: left;
+}
+#exc-plg-enterprise_target{
+  background: #C32478;
+  float: left;
+  width: 492.5px;
+  height: 50px;
+  text-align: right;
+}
+#exc-plg-origin_thumb{
+  background: black;
+  float: left;
+  height: 65px;
+  width: 65px;
+  margin: -7.5px 10px 0 25px;
+}
+#exc-plg-target_thumb{
+  background: black;
+  float: right;
+  height: 65px;
+  width: 65px;
+  margin: -7.5px 25px 0 10px;
+}
+
+#exc-plg-proposal_wrapper{
+  width: 985px;
+  margin: 30px auto;
+  border: 3px solid #E47455;
+  border-radius: 10px;
+  overflow: hidden;
+}
+#exc-plg-proposal_header{
+  background: #7857B8;
+  height: 37px;
+}
+.exc-plg-exchange_plugin_button{
+  float: left;
+}
+#exc-plg-proposal_header_buttons{
+  background: #DFD3ED;
+  height: 35px;
+}
+#exc-plg-proposal_messages{
+  background: #F0E9F6;
+}
+#exc-plg-proposal_offer_request_wrapper
+#exc-plg-proposal_offer{
+  background: #F0E9F6;
+  float: left;
+  width: 50%;
+}
+#exc-plg-proposal_request{
+  background: #F8F4FB;
+  float: right;
+  width: 50%;
+}

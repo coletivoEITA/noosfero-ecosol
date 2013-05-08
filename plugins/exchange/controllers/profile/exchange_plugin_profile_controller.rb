@@ -2,7 +2,7 @@ class ExchangePluginProfileController < ProfileController
 
  # skip_before_filter :login_required
  # before_filter :login_required #:only => [:activation_question, :accept_terms, :activate_enterprise]
-  append_view_path File.expand_path "#{File.dirname(__FILE__)}/../../views"
+
   no_design_blocks
 
   def index
