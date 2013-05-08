@@ -49,7 +49,7 @@ class AccountController < ApplicationController
 
   def select_active_organization
     profile = Profile.find_by_id params[:profile_id]
-    profile_id = (profile.nil? or profile.admins.include? user) ? nil : profile.id
+    profile_id = (profile and profile.members.include? user) ? profile.id : nil
     session[:active_organization] = profile_id
   end
 

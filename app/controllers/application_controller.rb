@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   before_filter :load_active_organization
   def load_active_organization
     profile = Profile.find_by_id session[:active_organization]
-    @active_organization = (profile and profile.admins.include? user) ? profile : nil
+    @active_organization = (profile and profile.members.include? user) ? profile : nil
   end
 
   filter_parameter_logging :password
