@@ -1,11 +1,11 @@
 class ExchangePlugin::Exchange < Noosfero::Plugin::ActiveRecord
 
-  validates_inclusion_of :state, :in => ["proposed", "happening", "conclusion_proposed_by_target", 
-    "conclusion_proposed_by_origin",  "concluded", "evaluated_by_origin", "evaluated_by_target", "evaluated", "cancelled"]  
-  validates_presence_of :enterprise_origin, :enterprise_target
+  validates_inclusion_of :state, :in => ["proposal", "negociation", "eavluation", 
+    "finished",  "cancelled"]  
 
   has_many :exchange_elements, :dependent => :destroy, :order => "id asc"
   has_many :enterprises
+  has_many :proposals, :class_name => "ExchangePlugin::Proposal"
   has_many :products, :through => :exchange_elements, :source => :element_np, :class_name => 'Product',
     :conditions => "exchange_plugin_exchange_elements.element_type = 'Product'"
 
