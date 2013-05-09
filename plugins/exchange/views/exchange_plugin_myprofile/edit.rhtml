@@ -42,8 +42,8 @@
               <td id="exchange_element_quantity"><%= text_field_tag "target_quantity[" + p.element_id.to_s + "]", p.quantity, 
                 :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :element_id => p.id}', {quantity: jQuery(this).val()});", :class => "exchange_quantity_input" %></td>
               <td> <%= link_to_remote _('[remove]'), :url => {:action => :remove_element, :enterprise => "target", :element_id => p.id, :exchange_id => @exchange.id} %></td>
-          </tr>
-        <% end %>
+            </tr>
+          <% end %>
             <% end %>
       </table>
     </td>

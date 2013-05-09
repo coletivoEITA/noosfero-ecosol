@@ -10,16 +10,39 @@ class ExchangePluginProfileController < ProfileController
   end
 
   def create_proposal
-#    @target_products = profile.products
-#    @enterprises = current_user.person.enterprises.find(:all, :conditions => ["profiles.id <> ?",profile.id])
-#    @target_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == profile.id}
+    @exchange = ExchangePlugin::Exchange.new
+    @exchange.state = "proposal"
+    @exchange.save!
+    
+    @proposal = ExchangePlugin::Proposal.new
+    @proposal.exchange_id = @exchange.id
 
-#    @origin_enterprise = Enterprise.find params[:origin_enterprise_id]
-#    @origin_products = origin_enterprise.products
+    @target = profile
+    @target_knowledges = nil #CmsLearningPluginLearning.all.select{|k| k.profile.id == profile.id}
 
-
+    @origin = @active_organization
+    @origin_knowledges = nil
+ 
+    @proposal.exchange_id = @exchange.id
+    @proposal.enterprise_origin_id = @origin.id
+    @proposal.enterprise_target_id = @target.id
+    @proposal.save!
   end
 
+  def add_element
+    @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
+    @element = ExchangePlugin::ExchangeElement.new
+    @element.element_id = params[:element_id]
+    @element.enterprise_id = params[:enterprise_id]
+    @element.element_type = params[:element_type]
+#     @element.quantity = nil 
+    @element.proposal_id = params[:proposal_id]
+    @element.save!
+  
+#     #message
+#     body = _('%{enterprise} added a new element to the exchange: %{element}') % {:enterprise => profile.name, :element => (@element.element_type.constantize.find @element.element_id).name} 
+#     m = ExchangePlugin::Message.new_exchange_message(@exchange, nil, nil, nil , body)
+  end
 
   def choose_target_offers
     #only registered users can access here

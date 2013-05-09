@@ -1,6 +1,6 @@
 class ExchangePlugin::Proposal < Noosfero::Plugin::ActiveRecord
 
-  validates_presence_of :enterprise_origin, :enterprise_target
+  validates_presence_of :enterprise_origin, :enterprise_target, :exchange_id
 
   has_many :exchange_elements, :class_name => "ExchangePlugin::ExchangeElement" #, :dependent => :destroy, :order => "id asc"
 #  has_many :enterprises

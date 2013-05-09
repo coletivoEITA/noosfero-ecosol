@@ -1,0 +1,3 @@
+page.remove "exchange_#{@enterprise}_element_#{@element.id}"
+page.insert_html :bottom, "exchange_#{@enterprise}_products", :partial => "remove_element", :locals => {:element => @element, :enterprise => @enterprise}
+
