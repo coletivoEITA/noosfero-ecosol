@@ -1,0 +1,20 @@
+<div class="snippet sniffer-plugin-interest-snippet">
+  <div class="first-column">
+    <div class="label">
+      <%= _('Interest') %>
+    </div>
+  </div>
+
+  <div class="second-column">
+    <%= _('%{profile} has interest in %{interest}') % {
+      :profile => link_to(profile.name, profile.url),
+      :interest => link_to(interest, {:controller => :search, :query => interest})
+    } %>
+  </div>
+
+  <div class="third-column">
+    <div class="exchange">
+      <%= link_to _('Start an exchange'), '#' %>
+    </div>
+  </div>
+</div>

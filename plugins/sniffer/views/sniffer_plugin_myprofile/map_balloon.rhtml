@@ -1,0 +1,26 @@
+<div id="balloon">
+  <div class="sniffer-plugin-profile-title">
+    <%= profile_image @profile, :minor %>
+    <strong><%= link_to_profile @profile.name, @profile.identifier %></strong>
+  </div>
+  <div id="sniffer-plugin-suppliers-products" class="sniffer-plugin-products">
+    <% unless @suppliers_hashes.blank? %>
+      <strong><%= _('Offers you') %></strong>
+      <ul>
+        <% @suppliers_hashes.each do |h| %>
+          <li><%= render :partial => h[:partial], :locals => {:hash => h} %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+  <div id="sniffer-plugin-buyers-products" class="sniffer-plugin-products">
+    <% unless @buyers_hashes.blank? %>
+      <strong><%= _('Interested in') %></strong>
+      <ul>
+        <% @buyers_hashes.each do |h| %>
+          <li><%= render :partial => h[:partial], :locals => {:hash => h} %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>
