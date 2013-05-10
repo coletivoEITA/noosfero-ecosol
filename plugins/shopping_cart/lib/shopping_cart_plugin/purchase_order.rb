@@ -14,6 +14,7 @@ class ShoppingCartPlugin::PurchaseOrder < Noosfero::Plugin::ActiveRecord
   settings_items :customer_address, :type => String
   settings_items :customer_district, :type => String
   settings_items :customer_city, :type => String
+  settings_items :customer_state, :type => String
   settings_items :customer_zip_code, :type => String
   settings_items :customer_delivery_option, :type => String
   settings_items :customer_payment, :type => String
