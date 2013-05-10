@@ -332,23 +332,28 @@ td {
   width: 50%;
 }
 
-ul#exc-plg-products_list{
+ul.exc-plg-target_offers{
   padding:0;
   margin:0;
 }
 
-ul#exc-plg-products_list li{
+ul.exc-plg-origin_offers{
+  padding:0;
+  margin:0;
+}
+
+.exc-plg-origin_offers li{
+  background: #D8CAEA;
   padding:8px;
   margin:5px 10px;
   list-style-type: none;
 }
 
-.exc-plg-origin_offers li{
-  background: #D8CAEA;
-}
-
 .exc-plg-target_offers li{
   background: #F3C3D4;
+  padding:8px;
+  margin:5px 10px;
+  list-style-type: none;
 }
 
 .exc-plg-add{

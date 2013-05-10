@@ -72,15 +72,15 @@
           
           <% if !@origin.products.blank? %>
             <h4><%= _('Your Products') %></h4>
-            <ul id="exc-plg-products_list" class="exc-plg-origin_offers">
+            <ul id="exc-plg-Product_origin_list" class="exc-plg-origin_offers">
             <% @origin.products.each do |p| %>
               <li id=exchange_Product_<%= p.id %>>
                   <%= link_to(p.category_name) + " " + link_to(p.name) %>
                   
-
                   <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
                   :url => {:action => "add_element", :element_id => p.id,  
-                  :enterprise_id => @origin.id, :element_type => "Product", :exchange_id => @exchange.id, :proposal_id => @proposal.id, :enterprise => "origin"} %>
+                  :element_type => "Product", :enterprise => "origin", :exchange_id => @exchange.id,
+                  :proposal_id => @proposal.id} %>
 
               </li>
             <% end %>
@@ -88,9 +88,15 @@
           <% end %>
           <% if !@origin_knowledges.blank? %>
             <h4><%= _('Your Knowledges') %></h4>
-            <ul id="exc-plg-knowledges_list" class="exc-plg-origin_offers">
+            <ul id="exc-plg-CmsLearningPluginLearning_origin_list" class="exc-plg-origin_offers">
             <% @origin_knowledges.each do |k| %>
-              <li><%= link_to(k.category_name) + " " + link_to(k.name) %></li>
+              <li id="exchange_CmsLearningPluginLearning_<%= k.id %>">
+                  <%= link_to(k.name) %>
+
+                  <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
+                  :url => {:action => "add_element", :element_id => k.id,  
+                  :enterprise_id => @origin.id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => @proposal.id, :enterprise => "origin"} %>
+              </li>
             <% end %>
             </ul>
           <% end %>
@@ -114,25 +120,34 @@
         <% else %>
           <% if !@target.products.blank? %>
             <h4><%= _('Products') %></h4>
-            <ul id="exc-plg-products_list" class="exc-plg-target_offers">
+            <ul id="exc-plg-Product_target_list" class="exc-plg-target_offers">
             <% @target.products.each do |p| %>
               <li id=exchange_Product_<%= p.id %>>
-                  <%= link_to(p.category_name) + " " + link_to(p.name) %>
 
+                  <%= link_to(p.category_name) + " " + link_to(p.name) %>
+                  
                   <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
                   :url => {:action => "add_element", :element_id => p.id,  
-                  :enterprise_id => @origin.id, :element_type => "Product", :exchange_id => @exchange.id, :proposal_id => @proposal.id, :enterprise => "target"} %>
-
+                  :element_type => "Product", :enterprise => "target", :exchange_id => @exchange.id,
+                  :proposal_id => @proposal.id} %>
 
               </li>
             <% end %>
             </ul>
           <% end %>
           <% if !@target_knowledges.blank? %>
-            <h4><%= _('Knowledges') %></h4>
-            <ul id="exc-plg-knowledges_list" class="exc-plg-target_offers">
+            <h4><%= _('Knowle dges') %></h4>
+            <ul id="exc-plg-CmsLearningPluginLearning_target_list" class="exc-plg-target_offers">
             <% @target_knowledges.each do |k| %>
-              <li><%= link_to(k.category_name) + " " + link_to(k.name) %></li>
+              <li id=exchange_CmsLearningPluginLearning_<%= k.id %>>
+
+                  <%= link_to(k.name) %>
+
+                  <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
+                  :url => {:action => "add_element", :element_id => k.id,  
+                  :enterprise_id => @origin.id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => @proposal.id, :enterprise => "origin"} %>
+
+              </li>
             <% end %>
             </ul>
           <% end %>

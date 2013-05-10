@@ -18,10 +18,10 @@ class ExchangePluginProfileController < ProfileController
     @proposal.exchange_id = @exchange.id
 
     @target = profile
-    @target_knowledges = nil #CmsLearningPluginLearning.all.select{|k| k.profile.id == profile.id}
+    @target_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @target.id}
 
     @origin = @active_organization
-    @origin_knowledges = nil
+    @origin_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @origin.id}
  
     @proposal.exchange_id = @exchange.id
     @proposal.enterprise_origin_id = @origin.id
@@ -35,15 +35,16 @@ class ExchangePluginProfileController < ProfileController
     @element.element_id = params[:element_id]
     @element.enterprise_id = params[:enterprise_id]
     @element.element_type = params[:element_type]
-#     @element.quantity = nil 
     @element.proposal_id = params[:proposal_id]
+
     @element.save!
-  
-#     #message
-#     body = _('%{enterprise} added a new element to the exchange: %{element}') % {:enterprise => profile.name, :element => (@element.element_type.constantize.find @element.element_id).name} 
-#     m = ExchangePlugin::Message.new_exchange_message(@exchange, nil, nil, nil , body)
   end
 
+  def remove_element
+    @element = ExchangePlugin::ExchangeElement.find params[:id]
+    @element.destroy
+  end
+  
   def choose_target_offers
     #only registered users can access here
     @target_products = profile.products
