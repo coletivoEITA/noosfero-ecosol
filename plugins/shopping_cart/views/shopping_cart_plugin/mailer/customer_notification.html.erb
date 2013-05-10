@@ -33,6 +33,9 @@
       <% if !@customer[:city].blank? %>
         <%= @customer[:city] %><br \>
       <% end %>
+      <% if !@customer[:state].blank? %>
+        <%= @customer[:state] %><br \>
+      <% end %>
       <% if !@customer[:zip_code].blank? %>
         <%= @customer[:zip_code] %>
       <% end %>
