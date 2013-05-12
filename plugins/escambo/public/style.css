@@ -1,0 +1,7 @@
+.snippet .first-column {
+  display: inline-block;
+  width: 180px; }
+.snippet .second-column {
+  display: inline-block; }
+.snippet .third-column {
+  display: inline-block; }
