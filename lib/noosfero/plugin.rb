@@ -21,6 +21,20 @@ class Noosfero::Plugin
       end.each do |dir|
         plugin_name = File.basename(dir)
 
+        Rails.configuration.controller_paths << File.join(dir, 'controllers')
+        ActiveSupport::Dependencies.load_paths << File.join(dir, 'controllers')
+        controllers_folders = %w[public profile myprofile admin]
+        controllers_folders.each do |folder|
+          Rails.configuration.controller_paths << File.join(dir, 'controllers', folder)
+          ActiveSupport::Dependencies.load_paths << File.join(dir, 'controllers', folder)
+        end
+        [ ActiveSupport::Dependencies.load_paths, $:].each do |path|
+          path << File.join(dir, 'models')
+          path << File.join(dir, 'lib')
+        end
+      end.each do |dir|
+        plugin_name = File.basename(dir)
+
         plugin_dependencies_ok = true
         plugin_dependencies_file = File.join(dir, 'dependencies.rb')
         if File.exists?(plugin_dependencies_file)
@@ -33,18 +47,6 @@ class Noosfero::Plugin
         end
 
         if plugin_dependencies_ok
-          Rails.configuration.controller_paths << File.join(dir, 'controllers')
-          ActiveSupport::Dependencies.load_paths << File.join(dir, 'controllers')
-          controllers_folders = %w[public profile myprofile admin]
-          controllers_folders.each do |folder|
-            Rails.configuration.controller_paths << File.join(dir, 'controllers', folder)
-            ActiveSupport::Dependencies.load_paths << File.join(dir, 'controllers', folder)
-          end
-          [ ActiveSupport::Dependencies.load_paths, $:].each do |path|
-            path << File.join(dir, 'models')
-            path << File.join(dir, 'lib')
-          end
-
           klass(plugin_name)
         end
       end

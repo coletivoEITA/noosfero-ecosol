@@ -102,7 +102,11 @@ Rails::Initializer.run do |config|
 
   require 'sass/plugin/rack'
   config.middleware.use Sass::Plugin::Rack
-  Sass::Plugin.add_template_location "#{RAILS_ROOT}/public/designs/themes/escambo", "#{RAILS_ROOT}/public/designs/themes/escambo"
+  locations = Dir.glob("#{RAILS_ROOT}/public/designs/themes/*") +
+    Dir.glob("#{RAILS_ROOT}/plugins/*/public")
+  locations.each do |location|
+    Sass::Plugin.add_template_location location, location
+  end
 end
 extra_controller_dirs.each do |item|
   (ActiveSupport.const_defined?('Dependencies') ? ActiveSupport::Dependencies : ::Dependencies).load_paths << item
