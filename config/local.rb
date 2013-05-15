@@ -1,4 +1,6 @@
 Noosfero.default_locale = 'pt'
+FastGettext.locale = Noosfero.default_locale
+I18n.locale = Noosfero.default_locale
 
 require 'noosfero/terminology'
 class CirandasTerminology < Noosfero::Terminology::Custom
