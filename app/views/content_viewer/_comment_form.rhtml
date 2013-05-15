@@ -21,8 +21,6 @@ function submit_comment_form(button) {
 }
 </script>
 
-<% focus_on = logged_in? ? 'title' : 'name' %>
-
 <% if @comment && @comment.errors.any? && @comment.reply_of_id.blank? %>
   <%= error_messages_for :comment %>
   <script type="text/javascript">jQuery(function() { document.location.href = '#page-comment-form'; });</script>
@@ -32,21 +30,8 @@ function submit_comment_form(button) {
 
 <div class="post_comment_box <%= @form_div %>">
 
-<% if display_link %>
-  <h4 onclick="var d = jQuery(this).parent('.post_comment_box');
-               if (d.hasClass('closed')) {
-                 d.removeClass('closed');
-                 d.addClass('opened');
-                 d.find('input[name=comment[title]], textarea').val('');
-                 d.find('.comment_form input[name=comment[<%= focus_on %>]]').focus();
-                 }">
-    <% if @page.parent.is_a?(Forum) %>
-      <%= content_tag('a', '', :name => 'comment_form') + _('Answer') %>
-    <% else %>
-      <%= content_tag('a', '', :name => 'comment_form') + _('Post a comment') %>
-    <% end %>
-  </h4>
-<% end %>
+  <% text = @page.parent.is_a?(Forum) ? _('Answer') : _('Post a comment') %>
+  <%= link_to(text, '#', :class => 'display-comment-form') if display_link %>
 
 <% unless pass_without_comment_captcha? %>
   <div id="recaptcha-container" style="display: none">
@@ -66,8 +51,6 @@ function submit_comment_form(button) {
 <% end %>
 
 <% form_tag( url, { :class => 'comment_form' } ) do %>
-  <%= hidden_field_tag(:confirm, 'false') %>
-
   <%= required_fields_message %>
 
   <% unless logged_in? %>
@@ -86,11 +69,13 @@ function submit_comment_form(button) {
   <% end %>
 
   <%= labelled_form_field(_('Title'), text_field(:comment, :title)) %>
-  <% if @page.parent.is_a?(Forum) %>
-    <%= required labelled_form_field(_('Post answer'), text_area(:comment, :body, :rows => 5)) %>
- <% else %>
-   <%= required labelled_form_field(_('Enter your comment'), text_area(:comment, :body, :rows => 5)) %>
-  <% end %>
+
+  <% text = @page.parent.is_a?(Forum) ? _('Post answer') : _('Enter your comment') %>
+  <%= required labelled_form_field(text, text_area(:comment, :body, :rows => 5)) %>
+
+  <%= hidden_field_tag(:confirm, 'false') %>
+  <%= hidden_field_tag(:view, params[:view])%>
+
   <% button_bar do %>
     <% if @page.parent.is_a?(Forum) %>
       <%= submit_button('add', _('Post answer'), :onclick => "submit_comment_form(this); return false") %>
@@ -98,7 +83,7 @@ function submit_comment_form(button) {
       <%= submit_button('add', _('Post comment'), :onclick => "submit_comment_form(this); return false") %>
     <% end %>
     <% if cancel_triggers_hide %>
-      <%= button_to_function :cancel, _('Cancel'), "f=jQuery(this).parents('.post_comment_box'); f.removeClass('opened'); f.addClass('closed'); return false" %>
+      <%= button :cancel, _('Cancel'), '', :id => 'cancel-comment' %>
     <% else %>
       <%= button('cancel', _('Cancel'), {:action => 'view_page', :profile => profile.identifier, :page => @comment.article.explode_path})%>
     <% end %>
@@ -106,3 +91,5 @@ function submit_comment_form(button) {
 <% end %>
 
 </div><!-- end class="post_comment_box" -->
+
+<%= javascript_include_tag 'comment_form'%>
