@@ -152,6 +152,13 @@ distribution = {
       distribution.our_product.css_align();
     },
 
+    load: function(el) {
+      el.find('input[onchange]').each(function() {
+        this.onchange();
+      });
+      el.find('.properties-block').click(distribution.our_product.enable_if_disabled);
+    },
+
     add_link: function () {
       if (distribution.isEditing())
         distribution.value_row.toggle_edit();
@@ -231,22 +238,17 @@ distribution = {
       var buy_price_input = p.find('#product_supplier_product_price');
       var default_margin_input = p.find('#product_default_margin_percentage');
 
-      if (!margin_input.get(0).value) //own product don't have a margin
-        return;
-
-      if (to_price || price_input.get(0).disabled)
+      if (to_price || price_input.get(0).disabled) {
         if (margin_input.get(0).disabled)
           distribution.calculate_price(price_input, margin_input, buy_price_input);
-        else {
-          var oldvalue = unlocalize_currency(margin_input.val());
-          distribution.calculate_margin(margin_input, price_input, buy_price_input);
+      } else
+        distribution.calculate_margin(margin_input, price_input, buy_price_input);
 
-          // auto check 'use default margin'
-          var newvalue = unlocalize_currency(margin_input.val());
-          var checked = newvalue == unlocalize_currency(margin_input.attr('defaultvalue'));
-          default_margin_input.attr('checked', checked ? 'checked' : null);
-          margin_input.get(0).disabled = checked;
-        }
+      // auto check 'use default margin'
+      var newvalue = unlocalize_currency(margin_input.val());
+      var checked = newvalue == unlocalize_currency(margin_input.attr('defaultvalue'));
+      default_margin_input.attr('checked', checked ? 'checked' : null);
+      margin_input.get(0).disabled = checked;
     },
 
     css_align: function () {
