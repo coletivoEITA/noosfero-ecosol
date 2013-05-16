@@ -55,9 +55,8 @@ distribution = {
     var margin = unlocalize_currency(jQuery(margin_input).val());
 
     var value = ((price - base_price) / base_price ) * 100;
-    if (!isFinite(value))
-      value = ''
-    jQuery(margin_input).val(localize_currency(value));
+    value = !isFinite(value) ? '' : localize_currency(value);
+    jQuery(margin_input).val(value);
   },
 
   /* ----- session stuff  ----- */
@@ -178,12 +177,13 @@ distribution = {
   our_product_sync_referred: function (context) {
     var p = jQuery(context).parents('.box-edit');
     var referred = p.find('#'+context.id.replace('product_supplier_product', 'product')).get(0);
-    if (referred && referred.disabled) {
+    if (!referred)
+      return;
+    if (referred.disabled) {
       jQuery(referred).val(jQuery(context).val());
-
-      if (referred.onkeyup)
-        referred.onkeyup();
     }
+    if (referred.onkeyup)
+      referred.onkeyup();
   },
   our_product_add_missing_products: function (context, url) {
     distribution.setLoading('our-product-add');
@@ -213,20 +213,21 @@ distribution = {
     var buy_price_input = p.find('#product_supplier_product_price');
     var default_margin_input = p.find('#product_default_margin_percentage');
 
-    if (!margin_input.get(0)) //own product don't have a margin
+    if (!margin_input.get(0).value) //own product don't have a margin
       return;
 
     if (to_price || price_input.get(0).disabled)
+      if (margin_input.get(0).disabled)
       distribution.calculate_price(price_input, margin_input, buy_price_input);
     else {
       var oldvalue = unlocalize_currency(margin_input.val());
       distribution.calculate_margin(margin_input, price_input, buy_price_input);
+
+      // auto check 'use default margin'
       var newvalue = unlocalize_currency(margin_input.val());
-      if (newvalue != oldvalue) {
-        var checked = newvalue == unlocalize_currency(margin_input.attr('defaultvalue'));
-        default_margin_input.attr('checked', checked ? 'checked' : null);
-        margin_input.get(0).disabled = checked;
-      }
+      var checked = newvalue == unlocalize_currency(margin_input.attr('defaultvalue'));
+      default_margin_input.attr('checked', checked ? 'checked' : null);
+      margin_input.get(0).disabled = checked;
     }
   },
 
@@ -616,7 +617,7 @@ function localize_currency(value, to, from) {
 
 function unlocalize_currency(value, from) {
   if (!value)
-    return '';
+    return 0;
   if (!from)
     from = locale;
   var lvalue = value.toString();

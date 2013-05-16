@@ -248,11 +248,6 @@ body.plugin-distribution {
 }
 .plugin-distribution input[type=checkbox] {
   margin: 15px 0 2px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  -o-appearance: none;
-  background: white;
-  border: 1px solid black;
   width: 11px;
   height: 11px;
 }
@@ -1932,26 +1927,26 @@ body.plugin-distribution {
   display: inline-block;
 }
 
-#distribution-plugin-settings .color-purple {
+#distribution-plugin-settings .color-purple,.distribution-plugin-enabled .color-purple {
   background-color: #705496;
 }
-#distribution-plugin-settings .color-yellow {
+#distribution-plugin-settings .color-yellow,.distribution-plugin-enabled .color-yellow {
   background-color: #f5b900;
 }
-#distribution-plugin-settings .color-beige {
+#distribution-plugin-settings .color-beige,.distribution-plugin-enabled .color-beige {
   background-color: #c4bf66;
 }
-#distribution-plugin-settings .color-blue {
+#distribution-plugin-settings .color-blue,.distribution-plugin-enabled .color-blue {
   background-color: #0094c9;
 }
-#distribution-plugin-settings .color-petro {
+#distribution-plugin-settings .color-petro,.distribution-plugin-enabled .color-petro {
   background-color: #036475;
 }
-#distribution-plugin-settings .color-green {
+#distribution-plugin-settings .color-green,.distribution-plugin-enabled .color-green {
   background-color: #4aa133;
 }
 
-.distribution-enabled #distribution-plugin-settings .disabled {
+#distribution-plugin-settings .disabled {
   background-color: gray;
 }
 

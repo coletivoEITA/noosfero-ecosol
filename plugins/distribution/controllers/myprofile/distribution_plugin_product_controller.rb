@@ -90,10 +90,7 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
 
   def edit
     @product = DistributionPluginDistributedProduct.find params[:id]
-    begin
-      @product.update_attributes params[:product]
-    rescue
-    end
+    @product.update_attributes params[:product]
   end
 
   def add_missing_products
