@@ -45,7 +45,6 @@
                   {{ }); }}
                   <a href=" " class="type" onclick="distribution.category_reselect_sub(); return false;"></a>
                 </script>
-                <div> </div>
               </div>
 
               <div class="category-selected" style="display: none">
@@ -95,10 +94,10 @@
               <div class="margin-line">
                 <%= labelled_field f, :margin_percentage, t('distribution_plugin.views.product._edit.margin'),
                   f.text_field(:margin_percentage, :class => 'small-input',
-                               :value => product.own_margin_percentage, :oldvalue => product.own_margin_percentage, :defaultvalue => product.node.margin_percentage,
-                               :onkeyup => 'distribution.our_product_pmsync(this, true);') + ' ' + t('distribution_plugin.views.product._edit.%') %>
+                               :value => product.own_margin_percentage_as_currency_number, :oldvalue => product.own_margin_percentage_as_currency_number, :defaultvalue => product.node.margin_percentage_as_currency_number,
+                               :onkeyup => 'distribution.our_product.pmsync(this, true);') + ' ' + t('distribution_plugin.views.product._edit.%') %>
                 <div class="default-margin">
-                  <%= f.check_box :default_margin_percentage, :onchange => "distribution.our_product_toggle_referred(this)", :for => '#product_margin_percentage' %>
+                  <%= f.check_box :default_margin_percentage, :onchange => "distribution.our_product.toggle_referred(this)", :for => '#product_margin_percentage' %>
                   <%= f.label :default_margin_percentage, t('distribution_plugin.views.product._edit.use_default_margin') %>
                 </div>
 
@@ -109,7 +108,7 @@
             </div>
           <% end %>
 
-          <%= render :partial => 'price_details', :locals => {:f => f, :product => product, :supplier_product => nil} %>
+          <%= render :partial => 'price_details', :locals => {:f => f, :product => product, :supplier_product => false} %>
 
           <%= f.check_box :active, :style => 'float: left' %>
           <%= f.label :active, t('distribution_plugin.views.product._edit.commercialization_act'), :class => 'line-label' %>
@@ -123,11 +122,11 @@
             <div class="column-title"><%= t('distribution_plugin.views.product._edit.use_original') %></div>
             <div class="guideline">
               <%= f.check_box :default_name, :class => 'default-checkbox', :for => '#product_name',
-                :onchange => "distribution.our_product_toggle_referred(this)" unless product.default_name.nil? %>
+                :onchange => "distribution.our_product.toggle_referred(this)" unless product.default_name.nil? %>
               <%= f.check_box :default_description, :class => 'default-checkbox', :for => '#product_description',
-                :onchange => "distribution.our_product_toggle_referred(this)" unless product.default_description.nil? %>
+                :onchange => "distribution.our_product.toggle_referred(this)" unless product.default_description.nil? %>
               <%= f.check_box :default_price, :class => 'default-checkbox', :for => '#product_price, #product_unit_id, #product_minimum_selleable, #product_unit_detail',
-                :onchange => "distribution.our_product_toggle_referred(this)" unless product.default_price.nil? %>
+                :onchange => "distribution.our_product.toggle_referred(this)" unless product.default_price.nil? %>
             </div>
           </div>
 
@@ -144,20 +143,18 @@
                 </div>
               <% else %>
                 <div class="properties-block disabled-fields">
-                  <%= labelled_field f, :name, t('distribution_plugin.views.product._edit.name'), f.text_field(:name, :disabled => 'disabled', :onkeyup => 'distribution.our_product_sync_referred(this)') %>
-                  <%= labelled_field f, :description, t('distribution_plugin.views.product._edit.description'), f.text_area(:description, :disabled => 'disabled', :onkeyup => 'distribution.our_product_sync_referred(this)') %>
+                  <%= labelled_field f, :name, t('distribution_plugin.views.product._edit.name'), f.text_field(:name, :disabled => 'disabled', :onkeyup => 'distribution.our_product.sync_referred(this)') %>
+                  <%= labelled_field f, :description, t('distribution_plugin.views.product._edit.description'), f.text_area(:description, :disabled => 'disabled', :onkeyup => 'distribution.our_product.sync_referred(this)') %>
                 </div>
               <% end %>
 
-              <%= render :partial => 'price_details', :locals => {:f => f, :product => product, :supplier_product => product.supplier_product} %>
+              <%= render :partial => 'price_details', :locals => {:f => f, :product => product.supplier_product, :supplier_product => true} %>
             <% end %>
           </div>
         <% end %>
 
         <% javascript_tag do %>
-          el = jQuery('#our-product-<%=product.new_record? ? 'add' : product.id%>');
-          el.find('input[onchange]').each(function() { this.onchange(); });
-          el.find('.properties-block').click(distribution.our_product_enable_if_disabled);
+          distribution.our_product.load(jQuery('#our-product-<%=product.new_record? ? 'add' : product.id%>'));
         <% end %>
       </div>
 

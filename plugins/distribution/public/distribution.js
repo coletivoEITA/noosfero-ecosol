@@ -55,9 +55,8 @@ distribution = {
     var margin = unlocalize_currency(jQuery(margin_input).val());
 
     var value = ((price - base_price) / base_price ) * 100;
-    if (!isFinite(value))
-      value = ''
-    jQuery(margin_input).val(localize_currency(value));
+    value = !isFinite(value) ? '' : localize_currency(value);
+    jQuery(margin_input).val(value);
   },
 
   /* ----- session stuff  ----- */
@@ -88,7 +87,7 @@ distribution = {
     edit.find('.category-hierarchy').toggle(view != 0);
     edit.find('.category-type-select').toggle(view == 2);
     edit.find('.field-box').toggle(view == 0);
-    distribution.our_product_css_align();
+    distribution.our_product.css_align();
   },
 
   subcategory_select: function (context) {
@@ -142,109 +141,133 @@ distribution = {
 
   /* ----- our products stuff  ----- */
 
-  our_product_enable_if_disabled: function (event) {
-    target = jQuery(event.target);
-    if (target.is('input[type=text][disabled], select[disabled]')) {
-      product = jQuery(target).parents('.our-product');
-      default_checkbox = jQuery(jQuery.grep(product.find('input[type=checkbox][for]'), function(element, index) {
+  our_product: {
+
+    toggle_edit: function () {
+      if (distribution.editing().is('#our-product-add'))
+        distribution.editing().toggle(distribution.isEditing());
+      distribution.editing().find('.box-view').toggle(!distribution.isEditing());
+      distribution.editing().find('.box-edit').toggle(distribution.isEditing());
+
+      distribution.our_product.css_align();
+    },
+
+    load: function(el) {
+      el.find('input[onchange]').each(function() {
+        this.onchange();
+      });
+      el.find('.properties-block').click(distribution.our_product.enable_if_disabled);
+    },
+
+    add_link: function () {
+      if (distribution.isEditing())
+        distribution.value_row.toggle_edit();
+      distribution.setEditing(jQuery('#our-product-add'));
+      distribution.value_row.toggle_edit();
+    },
+
+    enable_if_disabled: function (event) {
+      target = jQuery(event.target);
+      if (target.is('input[type=text][disabled], select[disabled]')) {
+        product = jQuery(target).parents('.our-product');
+        default_checkbox = jQuery(jQuery.grep(product.find('input[type=checkbox][for]'), function(element, index) {
           return jQuery(element).attr('for').indexOf(target.attr('id')) >= 0;
-      }));
-      default_checkbox.attr('checked', null);
-      distribution.our_product_toggle_referred(default_checkbox);
-      target.focus();
-    }
-  },
-
-  our_product_toggle_referred: function (context) {
-    var p = jQuery(context).parents('.box-edit');
-    var referred = p.find(jQuery(context).attr('for'));
-
-    jQuery.each(referred, function(i, value) {
-      value.disabled = context.checked;
-
-      if (value.disabled) {
-        jQuery(value).attr('oldvalue', jQuery(value).val());
-        jQuery(value).val(value.hasAttribute('defaultvalue')
-          ? jQuery(value).attr('defaultvalue') : p.find('#'+value.id.replace('product', 'product_supplier_product')).val());
-      } else {
-        jQuery(value).val(jQuery(value).attr('oldvalue'));
+        }));
+        default_checkbox.attr('checked', null);
+        distribution.our_product.toggle_referred(default_checkbox);
+        target.focus();
       }
+    },
 
-      if (value.onkeyup)
+    toggle_referred: function (context) {
+      var p = jQuery(context).parents('.box-edit');
+      var referred = p.find(jQuery(context).attr('for'));
+
+      jQuery.each(referred, function(i, value) {
+        value.disabled = context.checked;
+
+        if (value.disabled) {
+          jQuery(value).attr('oldvalue', jQuery(value).val());
+          jQuery(value).val(value.hasAttribute('defaultvalue')
+            ? jQuery(value).attr('defaultvalue') : p.find('#'+value.id.replace('product', 'product_supplier_product')).val());
+        } else {
+          jQuery(value).val(jQuery(value).attr('oldvalue'));
+        }
+
+        if (value.onkeyup)
         value.onkeyup();
-    });
-    referred.first().focus();
-  },
-  our_product_sync_referred: function (context) {
-    var p = jQuery(context).parents('.box-edit');
-    var referred = p.find('#'+context.id.replace('product_supplier_product', 'product')).get(0);
-    if (referred && referred.disabled) {
-      jQuery(referred).val(jQuery(context).val());
+      });
+      referred.first().focus();
+    },
 
+    add_missing_products: function (context, url) {
+      distribution.setLoading('our-product-add');
+      supplier = jQuery('#our-product-add').find('#product_supplier_id');
+      jQuery.post(url, jQuery(supplier).serialize(), function() {
+      });
+      distribution.unsetLoading('our-product-add');
+    },
+    add_change_supplier: function (context, url) {
+      distribution.setLoading('our-product-add');
+      jQuery('#our-product-add').load(url, jQuery(context).serialize(), function() {
+        distribution.our_product.toggle_edit();
+      });
+    },
+    add_from_product: function (context, url, data) {
+      distribution.setLoading('our-product-add');
+      jQuery('#our-product-add').load(url, data, function() {
+        distribution.our_product.toggle_edit();
+      });
+      distribution.unsetLoading('our-product-add');
+    },
+
+    sync_referred: function (context) {
+      var p = jQuery(context).parents('.box-edit');
+      var referred = p.find('#'+context.id.replace('product_supplier_product', 'product')).get(0);
+      if (!referred)
+        return;
+      if (referred.disabled)
+        jQuery(referred).val(jQuery(context).val());
       if (referred.onkeyup)
         referred.onkeyup();
-    }
-  },
-  our_product_add_missing_products: function (context, url) {
-    distribution.setLoading('our-product-add');
-    supplier = jQuery('#our-product-add').find('#product_supplier_id');
-    jQuery.post(url, jQuery(supplier).serialize(), function() {
-    });
-    distribution.unsetLoading('our-product-add');
-  },
-  our_product_add_change_supplier: function (context, url) {
-    distribution.setLoading('our-product-add');
-    jQuery('#our-product-add').load(url, jQuery(context).serialize(), function() {
-      distribution.our_product_toggle_edit();
-    });
-  },
-  our_product_add_from_product: function (context, url, data) {
-    distribution.setLoading('our-product-add');
-    jQuery('#our-product-add').load(url, data, function() {
-      distribution.our_product_toggle_edit();
-    });
-    distribution.unsetLoading('our-product-add');
-  },
+    },
+    pmsync: function (context, to_price) {
+      var p = jQuery(context).parents('.our-product');
+      var margin_input = p.find('#product_margin_percentage');
+      var price_input = p.find('#product_price');
+      var buy_price_input = p.find('#product_supplier_product_price');
+      var default_margin_input = p.find('#product_default_margin_percentage');
 
-  our_product_pmsync: function (context, to_price) {
-    var p = jQuery(context).parents('.our-product');
-    var margin_input = p.find('#product_margin_percentage');
-    var price_input = p.find('#product_price');
-    var buy_price_input = p.find('#product_supplier_product_price');
-    var default_margin_input = p.find('#product_default_margin_percentage');
+      if (to_price || price_input.get(0).disabled) {
+        if (margin_input.get(0).disabled)
+          distribution.calculate_price(price_input, margin_input, buy_price_input);
+      } else
+        distribution.calculate_margin(margin_input, price_input, buy_price_input);
 
-    if (!margin_input.get(0)) //own product don't have a margin
-      return;
-
-    if (to_price || price_input.get(0).disabled)
-      distribution.calculate_price(price_input, margin_input, buy_price_input);
-    else {
-      var oldvalue = unlocalize_currency(margin_input.val());
-      distribution.calculate_margin(margin_input, price_input, buy_price_input);
+      // auto check 'use default margin'
       var newvalue = unlocalize_currency(margin_input.val());
-      if (newvalue != oldvalue) {
-        var checked = newvalue == unlocalize_currency(margin_input.attr('defaultvalue'));
-        default_margin_input.attr('checked', checked ? 'checked' : null);
-        margin_input.get(0).disabled = checked;
-      }
-    }
-  },
+      var checked = newvalue == unlocalize_currency(margin_input.attr('defaultvalue'));
+      default_margin_input.attr('checked', checked ? 'checked' : null);
+      margin_input.get(0).disabled = checked;
+    },
 
-  our_product_css_align: function () {
-    var distributed = distribution.editing().find('.our-product-distributed-column');
-    var use_original = distribution.editing().find('.our-product-use-original-column');
-    var supplied = distribution.editing().find('.our-product-supplied-column');
+    css_align: function () {
+      var distributed = distribution.editing().find('.our-product-distributed-column');
+      var use_original = distribution.editing().find('.our-product-use-original-column');
+      var supplied = distribution.editing().find('.our-product-supplied-column');
 
-    use_original.height(distributed.height());
-    supplied.height(distributed.height());
+      use_original.height(distributed.height());
+      supplied.height(distributed.height());
 
-    if (supplied.length > 0)
-      supplied.find('.price-block').css('top', distributed.find('.price-block').position().top);
+      if (supplied.length > 0)
+        supplied.find('.price-block').css('top', distributed.find('.price-block').position().top);
 
-    use_original.find('input[type=checkbox]').each(function(index, checkbox) {
-      checkbox = jQuery(checkbox);
-      checkbox.css('top', distributed.find(checkbox.attr('for')).first().position().top - use_original.find('.guideline').position().top);
-    });
+      use_original.find('input[type=checkbox]').each(function(index, checkbox) {
+        checkbox = jQuery(checkbox);
+        checkbox.css('top', distributed.find(checkbox.attr('for')).first().position().top - use_original.find('.guideline').position().top);
+      });
+    },
+
   },
 
   /* ----- ends our products stuff  ----- */
@@ -343,20 +366,7 @@ distribution = {
     distribution.editing().find('.box-edit').toggle(distribution.isEditing());
     distribution.edit_arrow_toggle(distribution.editing(), distribution.isEditing());
   },
-  our_product_add_link: function () {
-    if (distribution.isEditing())
-      distribution.value_row.toggle_edit();
-    distribution.setEditing(jQuery('#our-product-add'));
-    distribution.value_row.toggle_edit();
-  },
-  our_product_toggle_edit: function () {
-    if (distribution.editing().is('#our-product-add'))
-      distribution.editing().toggle(distribution.isEditing());
-    distribution.editing().find('.box-view').toggle(!distribution.isEditing());
-    distribution.editing().find('.box-edit').toggle(distribution.isEditing());
 
-    distribution.our_product_css_align();
-  },
   session_product_edit: function () {
     distribution.editing().find('.box-edit').toggle(distribution.isEditing());
   },
@@ -616,7 +626,7 @@ function localize_currency(value, to, from) {
 
 function unlocalize_currency(value, from) {
   if (!value)
-    return '';
+    return 0;
   if (!from)
     from = locale;
   var lvalue = value.toString();
