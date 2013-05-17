@@ -9,26 +9,41 @@ class ExchangePluginProfileController < ProfileController
     redirect_to :action => :create_proposal
   end
 
-  def create_proposal
+  def start_exchange
     @exchange = ExchangePlugin::Exchange.new
     @exchange.state = "proposal"
     @exchange.save!
     
     @proposal = ExchangePlugin::Proposal.new
     @proposal.exchange_id = @exchange.id
-
+    @proposal.state = "open"
+    
     @target = profile
-    @target_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @target.id}
-
     @origin = @active_organization
-    @origin_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @origin.id}
  
     @proposal.exchange_id = @exchange.id
     @proposal.enterprise_origin_id = @origin.id
     @proposal.enterprise_target_id = @target.id
     @proposal.save!
+    
+    redirect_to :action => "exchange_console", :proposal_id => @proposal.id
   end
 
+  def exchange_console
+    @proposal = ExchangePlugin::Proposal.find params[:proposal_id]
+    @exchange = @proposal.exchange
+    
+    @target = profile
+    @target_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @target.id}
+
+    @origin = @active_organization
+    @origin_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @origin.id}  
+
+    @elements_origin = @proposal.exchange_elements.select{|k| k.enterprise_id == @origin.id} 
+    @elements_target = @proposal.exchange_elements.select{|k| k.enterprise_id == @target.id} 
+    
+  end
+  
   def add_element
     @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
     @element = ExchangePlugin::ExchangeElement.new
@@ -44,6 +59,16 @@ class ExchangePluginProfileController < ProfileController
     @element = ExchangePlugin::ExchangeElement.find params[:id]
     @element.destroy
   end
+  
+  def new_message
+    p = ExchangePlugin::Proposal.find params[:proposal_id]
+    
+    recipient = (p.enterprise_target_id == profile.id)? p.enterprise_origin : p.enterprise_target
+
+    @message = ExchangePlugin::Message.new_exchange_message(p, profile, recipient, current_user.person, params[:body])
+#     redirect_to :action => 'console', :id => e.id
+  end
+
   
   def choose_target_offers
     #only registered users can access here
