@@ -9,24 +9,9 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     @supplier = DistributionPluginSupplier.find_by_id params[:supplier_id].to_i
     not_distributed_products
 
-    conditions = ['', []]
-     if not params["active"].blank?
-       conditions = ['active = ?', [params["active"]]]
-     end
-     if not params["supplier_id"].blank?
-       conditions[0] += ' AND ' unless conditions[0].blank?
-       conditions[0] += 'supplier_id = ?'
-       conditions[1] += [params["supplier_id"]]
-     end
-     if not params['name'].blank?
-       conditions[0] += ' AND ' unless conditions[0].blank?
-       conditions[0] += 'LOWER(name) LIKE ?'
-       conditions[1] += ['%'+params["name"].strip+'%']
-     end
-    conditions = DistributionPluginDistributedProduct.send :merge_conditions, conditions.flatten
-
-    @products = (@node.products.unarchived.distributed.all :conditions => conditions, \
-                 :group => (['supplier_id', 'id']+DistributionPluginProduct.new.attributes.keys).join(',')).paginate(:per_page => 10, :page => params["page"])
+    @products = @node.products.unarchived.distributed.paginate :per_page => 10, :page => params[:page],
+                 :conditions => search_filters,
+                 :group => (['supplier_id', 'id']+DistributionPluginProduct.new.attributes.keys).join(',')
     @all_products_count = @node.products.unarchived.distributed.count
     @product_categories = ProductCategory.find(:all)
     @new_product = DistributionPluginDistributedProduct.new :node => @node, :supplier => @supplier
@@ -37,32 +22,10 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     end
   end
 
-  def filter_products
-    conditions = ['', []]
-    if not params["active"].blank?
-      conditions = ['active = ?', [params["active"]]]
-    end
-    if not params["supplier_id"].blank?
-      conditions[0] += ' AND ' unless conditions[0].blank?
-      conditions[0] += 'supplier_id = ?'
-      conditions[1] += [params["supplier_id"]]
-    end
-    if not params['name'].blank?
-      conditions[0] += ' AND ' unless conditions[0].blank?
-      conditions[0] += 'LOWER(name) LIKE ?'
-      conditions[1] += ['%'+params["name"].strip.downcase+'%']
-    end
-    if not params["session_id"].blank?
-      conditions[0] += ' AND ' unless conditions[0].blank?
-      conditions[0] += 'session_id = ?'
-      conditions[1] += [params["session_id"]]
-    end
-    conditions = DistributionPluginSessionProduct.send :merge_conditions, conditions.flatten
-    logger.debug conditions
-    session = DistributionPluginSession.find params['session_id']
-    @products = session.products_for_order_by_supplier conditions
+  def session_filter
+    @session = DistributionPluginSession.find params[:session_id]
+    @products = @session.products_for_order_by_supplier [search_filters]
     @order = DistributionPluginOrder.find_by_id params[:order_id]
-    @session = @order.session
     #@product_categories = ProductCategory.find(:all)
 
     render :partial => 'order_search', :locals => {
@@ -137,8 +100,20 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
 
   protected
 
-  def not_distributed_products(supplier_product_id = nil)
+  def not_distributed_products supplier_product_id = nil
     @not_distributed_products = @node.not_distributed_products @supplier unless !@supplier or @supplier.dummy? or supplier_product_id
+  end
+
+  def search_filters
+    base = DistributionPluginProduct.scoped :conditions => {:session_id => params[:session_id]}
+    base = base.scoped :conditions => {:active_id => params[:active]} unless params[:active].blank?
+    base = base.scoped :conditions => {:supplier_id => params[:supplier_id]} unless params[:supplier_id].blank?
+    unless params[:name].blank?
+      name = ActiveSupport::Inflector.transliterate params[:name].strip.downcase
+      base = base.scoped :conditions => ["LOWER(name) LIKE ?", "%#{name}%"]
+    end
+
+    base.proxy_options[:conditions]
   end
 
 end

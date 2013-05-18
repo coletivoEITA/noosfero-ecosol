@@ -289,31 +289,6 @@ distribution = {
     });
   },
 
-  order_filter_products: function (text) {
-    text = text.toLowerCase();
-    fields = jQuery('#session-products-for-order .box-field');
-    results = jQuery.grep(fields, function(field, index) {
-      fieldText = jQuery(field).text().toLowerCase();
-      supplierText = jQuery(field).parents('.supplier-table').find('.supplier').text().toLowerCase();
-
-      matchField = fieldText.indexOf(text) > -1;
-      matchSupplier = supplierText.indexOf(text) > -1;
-      return matchField || matchSupplier;
-    });
-    jQuery('#session-products-for-order .supplier-table').show();
-    distribution.order_products_toggle(jQuery(fields), false);
-    distribution.order_products_toggle(jQuery(results), true);
-
-    jQuery('#session-products-for-order .supplier-table').each(function(index, supplier) {
-      jQuery(supplier).toggle(jQuery(supplier).find('.order-session-product:visible').length > 0 ? true : false);
-    });
-  },
-
-  order_filter: function () {
-    distribution.order_filter_products(jQuery(this).text());
-    jQuery(this).parents('#order-filter').find('input').val(jQuery(this).text());
-  },
-
   /* ----- ends order stuff  ----- */
 
   /* ----- session editions stuff  ----- */
