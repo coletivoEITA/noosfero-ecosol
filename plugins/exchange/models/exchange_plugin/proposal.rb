@@ -1,18 +1,22 @@
 class ExchangePlugin::Proposal < Noosfero::Plugin::ActiveRecord
 
+  validates_inclusion_of :state, :in => ["open", "closed"]
   validates_presence_of :enterprise_origin, :enterprise_target, :exchange_id
 
   has_many :exchange_elements, :class_name => "ExchangePlugin::ExchangeElement" #, :dependent => :destroy, :order => "id asc"
 #  has_many :enterprises
   has_many :products, :through => :exchange_elements, :source => :element_np, :class_name => 'Product',
     :conditions => "exchange_plugin_exchange_elements.element_type = 'Product'"
-  has_many :messages, :dependent => :destroy, :order => "created_at desc"
+  has_many :messages, :class_name => "ExchangePlugin::Message", :dependent => :destroy, :order => "created_at desc"
 
 
   belongs_to :enterprise_origin, :class_name => "Enterprise"
   belongs_to :enterprise_target, :class_name => "Enterprise"
   belongs_to :exchange, :class_name => "ExchangePlugin::Exchange"
   
+#   def initialize
+#     self.state = "open";
+#   end
   
   def target_elements
     self.exchange_elements.all :conditions => {:enterprise_id => self.enterprise_target_id}, :include => :element

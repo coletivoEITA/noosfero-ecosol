@@ -8,4 +8,8 @@ class ExchangePlugin::ExchangeElement < Noosfero::Plugin::ActiveRecord
     raise 'Dont use me'
   end
 
+  def enterprise_id
+    return (eval(self.element_type).find self.element_id).enterprise_id
+  end
+  
 end

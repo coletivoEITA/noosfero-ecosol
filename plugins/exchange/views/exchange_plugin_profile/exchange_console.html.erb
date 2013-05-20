@@ -1,0 +1,241 @@
+<div id="exc-plg-exchange_wrapper">
+  <div id="exc-plg-title_wrapper">
+    <h1> <%= _('Exchange Negociation') %> </h1>
+  </div>
+  <div id="exc-plg-states_wrapper">
+    <div id="exc-plg-states">
+      <div class="exc-plg-outer-border">
+        <div class="exc-plg-state exc-plg-active">
+          <p class="exc-plg-state_number">1</p>
+          <p class="exc-plg-state_name"><%= _('Proposal') %></p>
+        </div>
+      </div>
+      <div class="exc-plg-outer-border">
+        <div class="exc-plg-state exc-plg-future">
+          <p class="exc-plg-state_number">2</p>
+          <p class="exc-plg-state_name"><%= _('Negociation') %></p>
+        </div>
+      </div>
+      <div class="exc-plg-outer-border">
+        <div class="exc-plg-state exc-plg-future">
+          <p class="exc-plg-state_number">3</p>
+          <p class="exc-plg-state_name"><%= _('Evaluation') %></p> 
+        </div>
+      </div>
+      <div class="exc-plg-outer-border">
+        <div class="exc-plg-state exc-plg-future">
+          <p class="exc-plg-state_number">4</p>
+          <p class="exc-plg-state_name"><%= _('Finished') %></p>
+        </div>
+      </div>
+    </div> <!-- states -->
+    <div id="exc-plg-enterprise_headers">
+      <div id="exc-plg-enterprise_origin">
+        <div id="exc-plg-origin_thumb" style="background: black;">
+          <%= link_to profile_image(@origin, :thumb, :style => "width: 65px;") +"\n", @origin.url %>
+        </div>
+        <p class="menu_g_selecionado"><%= @origin.name %></p>
+      </div>
+      <div id="exc-plg-enterprise_target">
+        <div id="exc-plg-target_thumb" style="background: black;">
+          <%= link_to profile_image(@target, :thumb, :style => "width: 65px;") +"\n", @target.url %>
+        </div>
+        <p class="menu_g_selecionado"><%= @target.name %></p>
+      </div>
+    </div> <!-- enterprise_headers -->
+  </div> <!-- states wrapper -->
+
+  <div id="exc-plg-proposal_wrapper">
+    <div id="exc-plg-proposal_header">
+        <p><strong><%= @origin.name %></strong> propõe</p>
+    </div>
+    <div id="exc-plg-proposal_header_buttons">
+      <button class="exc-plg-exchange_plugin_button">Enviar esta proposta</button>
+      <button class="exc-plg-exchange_plugin_button">Cancelar esta proposta</button>
+    </div>
+    <div id="exc-plg-proposal_messages">
+
+<div id="exchange_messages">
+  <h2><%= _('Messages')%></h2>
+  <div id='leave_scrap' style="float:none; height:70px;">
+      <%= text_area_tag 'body',nil, :rows => 2, :cols => 30, :placeholder => _('Leave a scrap') %>
+
+      <%= link_to_remote "<button class='exc-plg-exchange_plugin_button'>Send Message</button>", 
+      :url => {:action => "new_message", :proposal_id => @proposal.id, :body => "isso é um teste"} %>
+  </div>
+
+  <div id="messages">
+  <table id="exc-plg-messages">
+  <% if !@messages.blank? %>
+  <% @messages.each do |m| %> 
+    <tr>
+      <td><% if m.enterprise_sender.id == profile.id%><%= link_to profile_image(profile, :thumb) +"\n", profile.url %><% end %></td>
+      <td>
+    <% if m.enterprise_sender.id == profile.id%>
+      <div class="exchange_my_message">
+    <% else %>
+      <div class="exchange_other_message">
+    <% end %>
+    <% divclass = (m.enterprise_sender.id == profile.id) ? "comment-ballon" : "comment-ballon-inverted" %><div class="<%= divclass%>">
+    <div class="comment-wrapper-1">
+    <div class="comment-wrapper-2">
+    <% divclass = (m.enterprise_sender.id == profile.id) ? "comment-wrapper-3" : "comment-wrapper-3-inverted" %><div class="<%= divclass%>">
+    <div class="comment-wrapper-4">
+    <% divclass = (m.enterprise_sender.id == profile.id) ? "comment-wrapper-5" : "comment-wrapper-5-inverted" %><div class="<%= divclass%>">
+    <div class="comment-wrapper-6">
+      <% divclass = (m.enterprise_sender.id == profile.id) ? "comment-wrapper-7" : "comment-wrapper-7-inverted" %><div class="<%= divclass%>">
+      <% divclass = (m.enterprise_sender.id == profile.id) ? "comment-wrapper-8" : "comment-wrapper-8-inverted" %><div class="<%= divclass%>">
+    <div  class="comment-balloon-content">
+      <table>
+        <tr><td class="exchange_label"> <%=_('From:') %></td><td><%= m.enterprise_sender.name + " - " + m.person_sender.name %></td></tr>
+        <tr><td class="exchange_label"> <%=_('To:') %></td><td><%= m.enterprise_recipient.name %></td></tr>
+        <tr><td class="exchange_label"><%=_('Date sent:') %></td><td><%= m.created_at.strftime("%d de %B de %Y, às %H:%M") %></td></tr>
+        <tr><td colspan="2"><%= m.body %></td></tr>
+      </table>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <br />
+  </td>
+  <td><% if m.enterprise_sender.id != profile.id %><%= link_to profile_image(@exchange.the_other(profile), :thumb) +"\n", profile.url %><% end %></td>
+  </tr>
+<% end %>
+<% end %>
+</table>
+</div>
+</div>
+
+
+
+    </div>
+    <div id="exc-plg-proposal_offer_request_wrapper">
+      <div id="exc-plg-proposal_offer">
+        <h2><%= _('Oferta') %></h2>
+        <ul id="exc-plg-origin_elements_list">
+          <% if !@elements_origin.blank? %>
+            <% @elements_origin.each do |e| %>              
+              <li id="exchange_<%= e.element_type %>_element_<%= e.element_id %>">
+                <%= (eval(e.element_type).find e.element_id).name %>
+                <%= link_to_remote _('[remove]'), :url => {:action => :remove_element, :id => e.id,
+                :element_type => e.element_type, :element_id => e.element_id,
+                  :enterprise => "origin", :exchange_id => @proposal.exchange_id, :proposal_id => e.proposal_id} %>
+              </li>
+            <% end %>
+          <% end %>
+        </ul>
+        <h2><%= _('What you can offer?') %></h2>
+        <div id="exc-plg-button-wrapper">
+          <button class="exc-plg-exchange_plugin_button"><%= _('Add not registered product')%></button>
+          <button class="exc-plg-exchange_plugin_button"><%= _('Add amount in money')%></button>
+        </div>
+
+        <% if @origin.products.blank? && @origin_knowledges.blank? %>
+          <%= _("%s has no offers registered.") % profile.name %>
+        <% else %>
+          
+          <% if !@origin.products.blank? %>
+            <h4><%= _('Your Products') %></h4>
+            <ul id="exc-plg-Product_origin_list" class="exc-plg-origin_offers">
+            <% @origin.products.each do |p| %>
+              <li id=exchange_Product_<%= p.id %>>
+                  <%= link_to(p.category_name) + " " + link_to(p.name) %>
+                  
+                  <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
+                  :url => {:action => "add_element", :element_id => p.id,  
+                  :element_type => "Product", :enterprise => "origin", :exchange_id => @exchange.id,
+                  :proposal_id => @proposal.id} %>
+
+              </li>
+            <% end %>
+            </ul>
+          <% end %>
+          <% if !@origin_knowledges.blank? %>
+            <h4><%= _('Your Knowledges') %></h4>
+            <ul id="exc-plg-CmsLearningPluginLearning_origin_list" class="exc-plg-origin_offers">
+            <% @origin_knowledges.each do |k| %>
+              <li id="exchange_CmsLearningPluginLearning_<%= k.id %>">
+                  <%= link_to(k.name) %>
+
+                  <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
+                  :url => {:action => "add_element", :element_id => k.id,  
+                  :enterprise_id => @origin.id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => @proposal.id, :enterprise => "origin"} %>
+              </li>
+            <% end %>
+            </ul>
+          <% end %>
+        <% end %>
+
+
+      </div>
+      <div id="exc-plg-proposal_request">
+        <h2>Pedido</h2>
+        <ul id="exc-plg-target_elements_list">
+          <% if !@elements_target.blank? %>
+            <% @elements_target.each do |e| %>              
+              <li id="exchange_<%= e.element_type %>_element_<%= e.element_id %>">
+                <%= (eval(e.element_type).find e.element_id).name %>
+                <%= link_to_remote _('[remove]'), :url => {:action => :remove_element, :id => e.id,
+                :element_type => e.element_type, :element_id => e.element_id,
+                  :enterprise => "target", :exchange_id => @proposal.exchange_id, :proposal_id => e.proposal_id} %>
+              </li>
+            <% end %>
+          <% end %>          
+        </ul>
+        <h2><%= _('What do the other can offer?') %></h2>
+        <div id="exc-plg-button-wrapper">
+          <button class="exc-plg-exchange_plugin_button"><%= _('Add not registered product')%></button>
+          <button class="exc-plg-exchange_plugin_button"><%= _('Add amount in money')%></button>
+        </div>
+
+
+        <% if @target.products.blank? && @target_knowledges.blank? %>
+          <%= _("%s has no offers registered.") % profile.name %>
+        <% else %>
+          <% if !@target.products.blank? %>
+            <h4><%= _('Products') %></h4>
+            <ul id="exc-plg-Product_target_list" class="exc-plg-target_offers">
+            <% @target.products.each do |p| %>
+              <li id=exchange_Product_<%= p.id %>>
+
+                  <%= link_to(p.category_name) + " " + link_to(p.name) %>
+                  
+                  <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
+                  :url => {:action => "add_element", :element_id => p.id,  
+                  :element_type => "Product", :enterprise => "target", :exchange_id => @exchange.id,
+                  :proposal_id => @proposal.id} %>
+
+              </li>
+            <% end %>
+            </ul>
+          <% end %>
+          <% if !@target_knowledges.blank? %>
+            <h4><%= _('Knowle dges') %></h4>
+            <ul id="exc-plg-CmsLearningPluginLearning_target_list" class="exc-plg-target_offers">
+            <% @target_knowledges.each do |k| %>
+              <li id=exchange_CmsLearningPluginLearning_<%= k.id %>>
+
+                  <%= link_to(k.name) %>
+
+                  <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
+                  :url => {:action => "add_element", :element_id => k.id,  
+                  :enterprise_id => @origin.id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => @proposal.id, :enterprise => "origin"} %>
+
+              </li>
+            <% end %>
+            </ul>
+          <% end %>
+        <% end %>
+
+      </div>
+    </div> <!-- proposal_offer_request_wrapper -->
+  </div> <!-- proposal_wrapper -->
+
+</div> <!-- exchange_wrapper -->

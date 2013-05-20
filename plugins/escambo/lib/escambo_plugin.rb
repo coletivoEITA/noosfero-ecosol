@@ -34,4 +34,23 @@ class EscamboPlugin < Noosfero::Plugin
     ]
   end
 
+  #implementation followed app/helpers/application_helper.rb
+  #method profile_image_link
+  def profile_image_link profile
+    return unless profile.enterprise?
+    lambda do
+      product_categories = profile.product_categories
+
+      #should call ExchangePlugin.exchanges.state=conluded
+      escambo_sumary = {:exchanges_count => 23, :enterprises_count => 17}
+
+      render :file => 'escambo_plugin_shared/profile_image_link',
+             :locals => {
+               :profile => profile,
+               :product_categories => product_categories,
+               :escambo_sumary => escambo_sumary
+             }
+    end
+  end
+
 end

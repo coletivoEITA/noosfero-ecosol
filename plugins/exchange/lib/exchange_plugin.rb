@@ -20,5 +20,4 @@ class ExchangePlugin < Noosfero::Plugin
     true
   end
 
-
 end

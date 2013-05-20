@@ -113,24 +113,24 @@ td {
 }
 
 .comment-wrapper-3-inverted {
-  background: url(/plugins/exchange/images/comment-bg-L-inverted.png)  100%   0% repeat-y;
+  background: url(/plugins/exchange/imgs/comment-bg-L-inverted.png)  100%   0% repeat-y;
 }
 .comment-wrapper-5-inverted {
-  background: url(/plugins/exchange/images/comment-bg-SL-inverted.png) 100% 100% no-repeat;
+  background: url(/plugins/exchange/imgs/comment-bg-SL-inverted.png) 100% 100% no-repeat;
 }
 .comment-wrapper-7-inverted {
-  background: url(/plugins/exchange/images/comment-bg-NL-inverted.png) 100%   0% no-repeat;
+  background: url(/plugins/exchange/imgs/comment-bg-NL-inverted.png) 100%   0% no-repeat;
 }
 .comment-wrapper-8-inverted {
-  background: url(/plugins/exchange/images/comment-bg-NO-inverted.png)   0%   0% no-repeat;
+  background: url(/plugins/exchange/imgs/comment-bg-NO-inverted.png)   0%   0% no-repeat;
 }
 
 .controller-profile_editor a.control-panel-exchange{
-  background-image: url(/plugins/exchange/images/exchange-64x64.png);
+  background-image: url(/plugins/exchange/imgs/exchange-64x64.png);
 }
 .icon-exchange,
 .icon-newexchange {
-  background-image: url(/plugins/exchange/images/exchange-16x16.png);
+  background-image: url(/plugins/exchange/imgs/exchange-16x16.png);
 }
 
 /*####### new layout ########*/
@@ -319,6 +319,7 @@ td {
 
 #exc-plg-proposal_messages{
   background: #F0E9F6;
+  border-bottom: 1px solid #BDA8DC;
 }
 #exc-plg-proposal_offer_request_wrapper
 #exc-plg-proposal_offer{

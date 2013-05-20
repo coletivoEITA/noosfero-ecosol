@@ -6,44 +6,39 @@ class ExchangePluginProfileController < ProfileController
   no_design_blocks
 
   def index
-    redirect_to :action => :create_proposal
+#     redirect_to :action => :create_proposal
   end
 
-  def create_proposal
+  def start_exchange
     @exchange = ExchangePlugin::Exchange.new
     @exchange.state = "proposal"
     @exchange.save!
+
+    cross_exchange_enterprise = ExchangePlugin::ExchangeEnterprise.new
+    cross_exchange_enterprise.enterprise_id = profile.id
+    cross_exchange_enterprise.exchange_id = @exchange.id
+    cross_exchange_enterprise.save
+
+    cross_exchange_enterprise = ExchangePlugin::ExchangeEnterprise.new
+    cross_exchange_enterprise.enterprise_id = @active_organization.id
+    cross_exchange_enterprise.exchange_id = @exchange.id
+    cross_exchange_enterprise.save
     
     @proposal = ExchangePlugin::Proposal.new
     @proposal.exchange_id = @exchange.id
-
+    @proposal.state = "open"
+    
     @target = profile
-    @target_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @target.id}
-
     @origin = @active_organization
-    @origin_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @origin.id}
  
     @proposal.exchange_id = @exchange.id
     @proposal.enterprise_origin_id = @origin.id
     @proposal.enterprise_target_id = @target.id
     @proposal.save!
+    
+    redirect_to :controller => "exchange_plugin_myprofile", :action => "exchange_console", :proposal_id => @proposal.id
   end
 
-  def add_element
-    @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
-    @element = ExchangePlugin::ExchangeElement.new
-    @element.element_id = params[:element_id]
-    @element.enterprise_id = params[:enterprise_id]
-    @element.element_type = params[:element_type]
-    @element.proposal_id = params[:proposal_id]
-
-    @element.save!
-  end
-
-  def remove_element
-    @element = ExchangePlugin::ExchangeElement.find params[:id]
-    @element.destroy
-  end
   
   def choose_target_offers
     #only registered users can access here
