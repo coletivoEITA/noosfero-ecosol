@@ -1,0 +1,2 @@
+#page.remove "exchange_#{@element.element_type}_#{@element.element_id}"
+page.insert_html :bottom, "exc-plg-messages", :partial => "new_message", :locals => {:message => @message}

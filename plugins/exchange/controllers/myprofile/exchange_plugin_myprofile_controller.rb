@@ -1,4 +1,3 @@
-
 class ExchangePluginMyprofileController < MyProfileController
   no_design_blocks
   protect 'edit_profile', :profile
@@ -7,13 +6,57 @@ class ExchangePluginMyprofileController < MyProfileController
   helper_method :sort_column, :sort_direction 
 
   def index
-    @exchanges = ExchangePlugin::Exchange.all(:order => sort_column + " " + sort_direction, 
-                        :conditions => ["enterprise_target_id = ? OR enterprise_origin_id = ? ", profile.id, profile.id], :include => :evaluations)
+    
+#    @exchanges = ExchangePlugin::Exchange.all(:order => sort_column + " " + sort_direction, 
+#                        :conditions => ["enterprise1_id = ? OR enterprise2_id = ? ", profile.id, profile.id], :include => :evaluations)
+    @exchanges = ExchangePlugin::Exchange.all
     @enterprises = Enterprise.visible
     render :action => 'index'
     
   end
+    
+  def exchange_console
+      @proposal = ExchangePlugin::Proposal.find params[:proposal_id]
+      @exchange = @proposal.exchange
+      
+      @target = profile
+      @target_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @target.id}
 
+      @origin = @active_organization
+      @origin_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @origin.id}  
+
+      @elements_origin = @proposal.exchange_elements.select{|k| k.enterprise_id == @origin.id} 
+      @elements_target = @proposal.exchange_elements.select{|k| k.enterprise_id == @target.id} 
+      
+    end
+    
+    def add_element
+      @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
+      @element = ExchangePlugin::ExchangeElement.new
+      @element.element_id = params[:element_id]
+      @element.enterprise_id = params[:enterprise_id]
+      @element.element_type = params[:element_type]
+      @element.proposal_id = params[:proposal_id]
+
+      @element.save!
+    end
+
+    def remove_element
+      @element = ExchangePlugin::ExchangeElement.find params[:id]
+      @element.destroy
+    end
+    
+  def new_message
+    p = ExchangePlugin::Proposal.find params[:proposal_id]
+    
+    recipient = (p.enterprise_target_id == @active_organization.id)? p.enterprise_origin : p.enterprise_target
+
+    @message = ExchangePlugin::Message.new_exchange_message(p, @active_organization, recipient, current_user.person, params[:body])
+#     redirect_to :action => 'console', :id => e.id
+  end
+  
+  
+  
   #this should not be used
   def new
     @exchange = ExchangePlugin::Exchange.new
@@ -228,33 +271,6 @@ class ExchangePluginMyprofileController < MyProfileController
 
   ## Methods for exchange elements editing###
 
-  def add_element
-    @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
-    @enterprise = params[:enterprise]
-    @element = ExchangePlugin::ExchangeElement.new
-    @element.element_id = params[:element_id]
-    @element.enterprise_id = params[:enterprise_id]
-    @element.element_type = params[:element_type]
-    @element.quantity = nil 
-    @element.exchange_id = @exchange.id
-    @element.save!
-  
-    #message
-    body = _('%{enterprise} added a new element to the exchange: %{element}') % {:enterprise => profile.name, :element => (@element.element_type.constantize.find @element.element_id).name} 
-    m = ExchangePlugin::Message.new_exchange_message(@exchange, nil, nil, nil , body)
-  end
-
-  def remove_element
-    @enterprise = params[:enterprise]
-    @element = ExchangePlugin::ExchangeElement.find params[:element_id]
-    @exchange = ExchangePlugin::Exchange.find params[:exchange_id]    
-   
-    #message
-    body = _('%{enterprise} removed an element from the exchange: %{element}') % {:enterprise => profile.name, :element => (@element.element_type.constantize.find @element.element_id).name} 
-    m = ExchangePlugin::Message.new_exchange_message(@exchange, nil, nil, nil , body)
-
-    @element.destroy
-  end
 
   def update_quantity
     @element = ExchangePlugin::ExchangeElement.find params[:element_id]
