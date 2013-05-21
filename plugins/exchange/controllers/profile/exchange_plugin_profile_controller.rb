@@ -35,8 +35,8 @@ class ExchangePluginProfileController < ProfileController
     @proposal.enterprise_origin_id = @origin.id
     @proposal.enterprise_target_id = @target.id
     @proposal.save!
-    
-    redirect_to :controller => "exchange_plugin_myprofile", :action => "exchange_console", :proposal_id => @proposal.id
+        
+    redirect_to :controller => "exchange_plugin_myprofile", :action => "exchange_console", :exchange_id => @exchange.id, :profile => @active_organization.identifier
   end
 
   
