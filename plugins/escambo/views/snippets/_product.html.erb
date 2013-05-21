@@ -1,3 +1,5 @@
+<% profile = product.enterprise %>
+
 <div class="escambo-snippet product-snippet">
   <div class="first-column">
     <div class="label">
@@ -6,10 +8,22 @@
   </div>
 
   <div class="second-column">
+    <%= _('%{profile} offers %{product}') % {
+      :profile => link_to(profile.name, profile.url),
+      :product => link_to(product.name, product.url),
+      } %>
+
+    <div class="description">
+      <%= product.description %>
+    </div>
+
+    <%= render :partial => 'snippets/local', :locals => {:profile => profile} %>
   </div>
 
   <div class="third-column">
-    <%= link_to _('Start an exchange'), '#', :class => 'exchange' %>
+    <%= render :partial => 'snippets/start_exchange', :locals => {:profile => profile} %>
   </div>
+
+  <div class="clean"></div>
 </div>
 
