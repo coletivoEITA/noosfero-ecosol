@@ -1,3 +1,5 @@
+<% profile = interest.profile %>
+
 <div class="escambo-snippet sniffer-plugin-interest-snippet">
   <div class="first-column">
     <div class="label">
@@ -6,13 +8,15 @@
   </div>
 
   <div class="second-column">
-    <%= _('%{profile} has interest in %{interest}') % {
+    <%= _('%{profile} is interest in %{interest}') % {
       :profile => link_to(profile.name, profile.url),
       :interest => link_to(interest, {:controller => :search, :query => interest})
-    } %>
+      } %>
+
+    <%= render :partial => 'snippets/local', :locals => {:profile => profile} %>
   </div>
 
-  <div class="third-column">
-    <%= link_to _('Start an exchange'), '#', :class => 'exchange' %>
-  </div>
+  <%= render :partial => 'snippets/start_exchange', :locals => {:profile => profile} %>
+
+  <div class="clean"></div>
 </div>
