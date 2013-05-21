@@ -30,8 +30,9 @@ class ExchangePluginMyprofileController < MyProfileController
 #     @elements_origin = @proposal.exchange_elements.select{|k| k.enterprise_id == @origin.id} 
 #     @elements_target = @proposal.exchange_elements.select{|k| k.enterprise_id == @target.id} 
 
-    @origin_products = @origin.products#.reject{|p| @proposal.exchange_elements.find(:all, :conditions => {:element_id => p.id})}
-    @target_products = @target.products#.reject{|p| @proposal.exchange_elements.find(:all, :conditions => {:element_id => p.id})}
+    @origin_products = @origin.products - @proposal.products
+    #@origin_products = @origin.products.reject{|p| @proposal.exchange_elements.find(:all, :conditions => {:element_id => p.id})}
+    @target_products = @target.products - @proposal.products
   
     @proposals = @exchange.proposals.all(:order => "created_at desc")
     
