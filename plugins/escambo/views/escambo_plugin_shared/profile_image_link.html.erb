@@ -1,39 +1,28 @@
-<div class="escambo-plugin-profile-block">
+<div class="escambo-plugin-profile-block <%= var= 'bg-purple inside-border-purple' %>">
   <div class="image-profile-area">
     <div class="escambo-plugin-exchange-icons">
-      <img class="has<%= var='' %>-exchanged" src="url"></img>
+      <img class="has<%= exchange_icon %>-exchanged" src="url"></img>
       <img class="is<%= var='not' %>-bookmarked" src="url"></img>
     </div>
     <div class="profile-image">
       <%= link_to profile_image( profile, :portrait ) +"\n", profile.url %>
     </div>
-    <a class="escambo-plugin-exchange-button" href="/exchange/">Iniciar propostaaaaaaaa</a>
+    <a class="exchange-button" href="/exchange/"><%= _('Start Exchange') %></a>
   </div>
 
-  <div class="content-profile-area <%= var= 'bg-purple' %>">
-    <div class="enterprise-area dotted-border-bottom">
-      <a class="profile_homepage_link" href="/profile/<%= profile.identifier %>"><%= profile.name %></a>
-    </div>
+  <a class="profile_homepage_link dotted-border-bottom" href="/profile/<%= profile.identifier %>"><%= profile.name %></a>
 
-    <div class="categories-area dotted-border-bottom">
-      <% product_categories.each do |category| %>
-        <a class="product_categories" href="/search/<%= category.name %>"><%= category.name %></a>
-      <% end %>
-    </div>
-
-    <div class="location-area dotted-border-bottom">
-      <% if profile.location.present? %>
-        <a class="profile_geo_location_link" href="/profile/<%= profile.identifier %>">
-          <%= profile.city + ', ' + profile.state %>
-        </a>
-      <% else %>
-        <p> Localização não foi informada.</p>
-      <% end %>
-    </div>
-
-    <div class="sumary-area">
-      <p> Já realizou <%= escambo_sumary[:exchanges_count] %> trocas com <%= escambo_sumary[:enterprises_count]%> pontos de cultura.
-      </p>
-    </div>
+  <div class="categories-area dotted-border-bottom">
+    <%= product_categories.first(3).map{ |c| link_to c.name, c.name }.join(', ')  %>
   </div>
+
+  <% if profile.location.present? %>
+    <a class="profile_geo_location_link location-area dotted-border-bottom" href="/profile/<%= profile.identifier %>"><%= profile.city + ', ' + profile.state %></a>
+  <% else %>
+    <p class="location-area dotted-border-bottom"> Localização não foi informada.</p>
+  <% end %>
+
+  <p class="summary-area">
+    <%= _('Já realizou %{exchange_count} trocas com %{enterprises_count} pontos de cultura.') % {:exchange_count => escambo_sumary[:exchanges_count], :enterprises_count => escambo_sumary[:enterprises_count] } %>
+  </p>
 </div>
