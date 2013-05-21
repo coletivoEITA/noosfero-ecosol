@@ -16,45 +16,101 @@ class ExchangePluginMyprofileController < MyProfileController
   end
     
   def exchange_console
-      @proposal = ExchangePlugin::Proposal.find params[:proposal_id]
-      @exchange = @proposal.exchange
-      
-      @target = profile
-      @target_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @target.id}
-
-      @origin = @active_organization
-      @origin_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @origin.id}  
-
-      @elements_origin = @proposal.exchange_elements.select{|k| k.enterprise_id == @origin.id} 
-      @elements_target = @proposal.exchange_elements.select{|k| k.enterprise_id == @target.id} 
-      
-    end
+    @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
     
-    def add_element
-      @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
-      @element = ExchangePlugin::ExchangeElement.new
-      @element.element_id = params[:element_id]
-      @element.enterprise_id = params[:enterprise_id]
-      @element.element_type = params[:element_type]
-      @element.proposal_id = params[:proposal_id]
-
-      @element.save!
-    end
-
-    def remove_element
-      @element = ExchangePlugin::ExchangeElement.find params[:id]
-      @element.destroy
-    end
+    @proposals = @exchange.proposals.all(:order => "created_at desc")
+    @proposal = @proposals.first
     
+    @target = @proposal.enterprise_target
+    @target_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @target.id}
+
+    @origin = @proposal.enterprise_origin
+    @origin_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @origin.id}  
+
+#     @elements_origin = @proposal.exchange_elements.select{|k| k.enterprise_id == @origin.id} 
+#     @elements_target = @proposal.exchange_elements.select{|k| k.enterprise_id == @target.id} 
+
+    @origin_products = @origin.products#.reject{|p| @proposal.exchange_elements.find(:all, :conditions => {:element_id => p.id})}
+    @target_products = @target.products#.reject{|p| @proposal.exchange_elements.find(:all, :conditions => {:element_id => p.id})}
+  
+    @proposals = @exchange.proposals.all(:order => "created_at desc")
+    
+    #css classes for the states
+    if @exchange.state == "proposal"
+      @state1class = "exc-plg-active"
+      @state2class = "exc-plg-future"
+      @state3class = "exc-plg-future"
+      @state4class = "exc-plg-future"
+    elsif @exchange.state == "negociation"
+      @state1class = "exc-plg-past"
+      @state2class = "exc-plg-active"
+      @state3class = "exc-plg-future"
+      @state4class = "exc-plg-future"
+    elsif @exchange.state == "evaluation"
+      @state1class = "exc-plg-past"
+      @state2class = "exc-plg-past"
+      @state3class = "exc-plg-active"
+      @state4class = "exc-plg-future"
+    elsif @exchange.state == "finished"
+      @state1class = "exc-plg-past"
+      @state2class = "exc-plg-past"
+      @state3class = "exc-plg-past"
+      @state4class = "exc-plg-active"
+    end
+  end
+        
+  def add_element
+    @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
+    @element = ExchangePlugin::ExchangeElement.new
+    @element.element_id = params[:element_id]
+    @element.enterprise_id = params[:enterprise_id]
+    @element.element_type = params[:element_type]
+    @element.proposal_id = params[:proposal_id]
+
+    @element.save!
+  end
+
+  def remove_element
+    @element = ExchangePlugin::ExchangeElement.find params[:id]
+    @element.destroy
+  end
+  
   def new_message
     p = ExchangePlugin::Proposal.find params[:proposal_id]
     
     recipient = (p.enterprise_target_id == @active_organization.id)? p.enterprise_origin : p.enterprise_target
 
     @message = ExchangePlugin::Message.new_exchange_message(p, @active_organization, recipient, current_user.person, params[:body])
-#     redirect_to :action => 'console', :id => e.id
+
   end
   
+  def close_proposal
+    @proposal = ExchangePlugin::Proposal.find params[:proposal_id]
+    @proposal.state = "closed"
+    @proposal.date_sent = Time.now
+    @proposal.save
+    
+    @proposal.exchange.state = "negociation"
+    @proposal.exchange.save    
+#    @proposal = ExchangePlugin::Proposal.create
+    #como copiar um objeto??
+    redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
+  end
+    
+  def new_proposal
+    @proposal = ExchangePlugin::Proposal.new      
+    @proposal.exchange_id = params[:exchange_id]
+    @proposal.state = "open"
+
+    @proposal.enterprise_origin = @active_organization
+    @proposal.enterprise_target = @proposal.exchange.enterprises.select{|k| k.id != @active_organization.id}.first #not good
+
+#     @proposal.exchange_elements = ExchangePlugin::Proposal.last.exchange_elements
+    
+    @proposal.save
+
+    redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
+  end
   
   
   #this should not be used
@@ -203,14 +259,14 @@ class ExchangePluginMyprofileController < MyProfileController
     end
   end
 
-  def new_message
-    e = ExchangePlugin::Exchange.find params[:exchange_id]
-
-    recipient = (e.enterprise_target_id == profile.id)? e.enterprise_origin : e.enterprise_target
-
-    m = ExchangePlugin::Message.new_exchange_message(e, profile, recipient, current_user.person, params[:body])
-    redirect_to :action => 'console', :id => e.id
-  end
+#   def new_message
+#     e = ExchangePlugin::Exchange.find params[:exchange_id]
+# 
+#     recipient = (e.enterprise_target_id == profile.id)? e.enterprise_origin : e.enterprise_target
+# 
+#     m = ExchangePlugin::Message.new_exchange_message(e, profile, recipient, current_user.person, params[:body])
+#     redirect_to :action => 'console', :id => e.id
+#   end
 
 ### Methods for changing exchange state ###
  

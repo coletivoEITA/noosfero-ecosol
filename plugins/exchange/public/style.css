@@ -158,25 +158,23 @@ td {
 }
 
 .exc-plg-state{
-
+  margin: auto;
 }
 .exc-plg-past{
+  margin-top: 10px;
   float: left;
-  line-height: 150px;
   text-align: center;
-  margin: 15px 65.5px 0 65.5px;
   border: 4px solid #7F005C;
   border-radius: 40px;
   height: 40px;
   width: 40px;
-  background: white;
+  color: white;
+  background: #7F005C;
 }
 .exc-plg-active{
   float: left;
-/*   line-height: 150px; */
   text-align: center;
-  margin: 15px 65.5px 0 65.5px;
-  border: 4px solid #ECE4DB;
+  border: 15px double #ECE4DB;
   border-radius: 40px;
   height: 40px;
   width: 40px;
@@ -186,9 +184,8 @@ td {
 }
 .exc-plg-future{
   float: left;
-/*   line-height: 150px; */
+  margin-top: 10px;
   text-align: center;
-  margin: 15px 65.5px 0 65.5px;
   border: 4px solid #7F005C;
   border-radius: 40px;
   height: 40px;
@@ -198,19 +195,18 @@ td {
 }
 
 .exc-plg-outer-border{
-/*  height: 40px;
-  width: 40px;
-  border: 4px solid #28370C;
-  border-radius: 40px;*/
+  width: 80px;
+  height: 80px;
+  float: left;
+  margin: 10px 83px;
 }
   
 .exc-plg-state_name{
-  line-height:0px;
   color: #28370C;
 }
 .exc-plg-state_number{
   font-size: 30px;
-  line-height:0px;
+  margin:3px;
 }
 
 
@@ -361,4 +357,11 @@ ul.exc-plg-origin_offers{
   width: 25px;
   height: 25px;
   float:right;
+}
+
+.exc-plg-proposal_sent{
+  width: 945px;
+  margin: 0px auto -22px auto;
+  text-align: right;
+  font-size: 10pt;
 }

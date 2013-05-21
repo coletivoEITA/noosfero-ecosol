@@ -1,6 +1,6 @@
 class ExchangePlugin::Exchange < Noosfero::Plugin::ActiveRecord
 
-  validates_inclusion_of :state, :in => ["proposal", "negociation", "eavluation", 
+  validates_inclusion_of :state, :in => ["proposal", "negociation", "evaluation", 
     "finished",  "cancelled"]  
 
   has_many :exchange_elements, :dependent => :destroy, :order => "id asc"
