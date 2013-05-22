@@ -1,12 +1,14 @@
 class ExchangePlugin::Proposal < Noosfero::Plugin::ActiveRecord
 
-  validates_inclusion_of :state, :in => ["open", "closed"]
+  validates_inclusion_of :state, :in => ["open", "closed", "accepted"]
   validates_presence_of :enterprise_origin, :enterprise_target, :exchange_id
 
   has_many :exchange_elements, :class_name => "ExchangePlugin::ExchangeElement" #, :dependent => :destroy, :order => "id asc"
 #  has_many :enterprises
   has_many :products, :through => :exchange_elements, :source => :element_np, :class_name => 'Product', :conditions => "exchange_plugin_exchange_elements.element_type = 'Product'"
 
+  has_many :knowledges, :through => :exchange_elements, :source => :element_np, :class_name => 'CmsLearningPluginLearning', :conditions => "exchange_plugin_exchange_elements.element_type = 'CmsLearningPluginLearning'"
+  
   #has_many :products, :conditions => {:element_type => 'Product'}, :class_name => 'Product', :foreign_key => :element_id
   
   

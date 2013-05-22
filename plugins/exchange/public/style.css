@@ -139,8 +139,6 @@ td {
   background: #FAF7DC;
   width: 100%;
   height: 100%;
-  height: 1000px; /*provisório */
-  width: 1200px; /*provisório */
 }
 #exc-plg-title_wrapper{
   width: 985px;
@@ -292,6 +290,7 @@ td {
   background: #7857B8;
   height: 37px;
   color: white;
+  margin-top: -21px;
 }
 .exc-plg-exchange_plugin_button{
   float: left;
@@ -364,4 +363,11 @@ ul.exc-plg-origin_offers{
   margin: 0px auto -22px auto;
   text-align: right;
   font-size: 10pt;
+}
+
+#exc-plg-accepted_header{
+  background: #394E41;
+  height: 30px;
+  color: white;
+  text-align: center;
 }

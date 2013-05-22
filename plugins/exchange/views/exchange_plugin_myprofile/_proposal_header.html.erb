@@ -1,0 +1,5 @@
+<% if proposal.state == "accepted"%>
+  <p><strong><%= proposal.enterprise_origin.name %></strong> <%= _('proposed') %> and </strong><%= proposal.enterprise_target.name %></strong> <%= _('accepted!') %></p>
+<% else %>
+  <p><strong><%= proposal.enterprise_origin.name %></strong> <%= _('proposes') %></p>
+<% end %>
