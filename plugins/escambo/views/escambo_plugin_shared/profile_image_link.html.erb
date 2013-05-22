@@ -2,7 +2,6 @@
   <div class="image-profile-area">
     <div class="escambo-plugin-exchange-icons">
       <img class="has<%= exchange_icon %>-exchanged" src="url"></img>
-      <img class="is<%= var='not' %>-bookmarked" src="url"></img>
     </div>
     <div class="profile-image">
       <%= link_to profile_image( profile, :portrait ) +"\n", profile.url %>
@@ -16,8 +15,11 @@
     <%= product_categories.first(3).map{ |c| link_to c.name, c.name }.join(', ')  %>
   </div>
 
-  <% if profile.location.present? %>
-    <a class="profile_geo_location_link location-area dotted-border-bottom" href="/profile/<%= profile.identifier %>"><%= profile.city + ', ' + profile.state %></a>
+  <% if profile.region.present? %>
+    <a class="profile_geo_location_link location-area dotted-border-bottom" href="/profile/<%= profile.identifier %>">
+      <% extend SearchHelper %>
+      <%= city_with_state profile.region %>
+    </a>
   <% else %>
     <p class="location-area dotted-border-bottom"> Localização não foi informada.</p>
   <% end %>
