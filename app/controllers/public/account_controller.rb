@@ -48,9 +48,7 @@ class AccountController < ApplicationController
   end
 
   def select_active_organization
-    profile = Profile.find_by_id params[:profile_id]
-    profile_id = (profile and profile.members.include? user) ? profile.id : nil
-    session[:active_organization] = profile_id
+    load_active_organization params[:profile_id]
   end
 
   def logout_popup
