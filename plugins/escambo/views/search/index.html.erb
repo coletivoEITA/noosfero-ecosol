@@ -1,5 +1,5 @@
-<%= search_page_title(_('Search Results'), @category) %>
-<%= render :partial => 'search_form', :locals => { :hint => '' } %>
+<%= search_page_title(_('Offers, interests and knowledges'), @category) %>
+<%= render :partial => 'search_form', :locals => { :hint => _('search for...') } %>
 
 <% @results.each do |result| %>
   <%= render :partial => "search/#{result.class.name.underscore}", :locals => {:result => result} %>
