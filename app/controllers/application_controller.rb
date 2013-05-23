@@ -11,10 +11,18 @@ class ApplicationController < ActionController::Base
     theme_option(:layout) || 'application'
   end
 
-  before_filter :load_active_organization
-  def load_active_organization
-    profile = Profile.find_by_id session[:active_organization]
-    @active_organization = (profile and profile.members.include? user) ? profile : nil
+  before_filter :load_active_organization, :except => :select_active_organization
+  def load_active_organization id = nil
+    return unless user
+    if id
+      @active_organization = Profile.find_by_id id
+    elsif session[:active_organization]
+      @active_organization = Profile.find_by_id session[:active_organization]
+    else
+      @active_organization = user.memberships.first
+    end
+    #@active_organization = nil unless @active_organization and @active_organization.admins.include? user
+    session[:active_organization] = @active_organization.id if @active_organization
   end
 
   filter_parameter_logging :password
