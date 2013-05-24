@@ -1,0 +1,16 @@
+<div id="escambo-enterprise-items">
+
+  <div id="offers">
+    <h2><%= _('Offers from enterprise') %></h2>
+    <span><%= link_to _("See all"), '' %></span>
+
+    <% @profile.products.first(3).each do |product| %>
+      <%= render :partial => 'snippets/product', :object => product %>
+    <% end %>
+  </div>
+
+</div>
+
+<div id="escambo-enterprise-info">
+</div>
+
