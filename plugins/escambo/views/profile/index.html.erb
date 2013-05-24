@@ -1,16 +1,51 @@
 <div id="escambo-enterprise-items">
 
   <div id="offers">
-    <h2><%= _('Offers from enterprise') %></h2>
-    <span><%= link_to _("See all"), '' %></span>
+    <h3><%= _('Offers from this enterprise') %></h3>
+    <span class="see-all"><%= link_to _("See all"), '' %></span>
 
     <% @profile.products.first(3).each do |product| %>
       <%= render :partial => 'snippets/product', :object => product %>
     <% end %>
   </div>
 
+  <div id="knowledges">
+    <h3><%= _('Knowledges') %></h3>
+    <span class="see-all"><%= link_to _("See all"), '' %></span>
+
+    <% @profile.knowledges.first(5).each do |knowledge| %>
+      <%= render :partial => 'snippets/cms_learning_plugin_learning', :locals => {:knowledge => knowledge} %>
+    <% end %>
+  </div>
+
+  <div id="interests">
+    <h3><%= _('Interests') %></h3>
+    <span class="see-all"><%= link_to _("See all"), '' %></span>
+
+    <% @profile.interests.first(4).each do |interest| %>
+      <%= render :partial => 'snippets/sniffer_plugin_opportunity', :locals => {:interest => interest} %>
+    <% end %>
+  </div>
+
 </div>
 
 <div id="escambo-enterprise-info">
+  <h3>blank</h3>
+  <div class="sidebar">
+    <div class="info">
+      <h4><%= _('About this enterprise') %></h4>
+    </div>
+    <div class="evaluation">
+      <h4><%= _('Evaluations of this enterprise') %></h4>
+    </div>
+    <div class="members">
+      <h4><%= _('Members') %></h4>
+    </div>
+    <div class="currencies">
+      <h4><%= _('Currencies') %></h4>
+    </div>
+  </div>
 </div>
+
+<div class=clean></div>
 
