@@ -23,7 +23,9 @@ protected
       expire_timeout_fragment(ck)
     }
 
-    expire_profile_blocks(profile.blocks)
+    profile.blocks_to_expire_cache.each { |block|
+      blocks = profile.blocks.select{|b| b.kind_of?(block)}
+      expire_profile_blocks(blocks)
+    }
   end
-
 end
