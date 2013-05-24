@@ -22,19 +22,14 @@ class ExchangePluginMyprofileController < MyProfileController
     @proposal = @proposals.first
     
     @target = @proposal.enterprise_target
-    @target_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @target.id}
-
     @origin = @proposal.enterprise_origin
-    @origin_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @origin.id}  
-
-#     @elements_origin = @proposal.exchange_elements.select{|k| k.enterprise_id == @origin.id} 
-#     @elements_target = @proposal.exchange_elements.select{|k| k.enterprise_id == @target.id} 
-
-    @origin_products = @origin.products#.reject{|p| @proposal.exchange_elements.find(:all, :conditions => {:element_id => p.id})}
-    @target_products = @target.products#.reject{|p| @proposal.exchange_elements.find(:all, :conditions => {:element_id => p.id})}
-  
-    @proposals = @exchange.proposals.all(:order => "created_at desc")
     
+    @target_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @target.id} - @proposal.knowledges
+    @origin_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @origin.id} - @proposal.knowledges 
+    
+    @origin_products = @origin.products - @proposal.products
+    @target_products = @target.products - @proposal.products
+      
     #css classes for the states
     if @exchange.state == "proposal"
       @state1class = "exc-plg-active"
@@ -98,20 +93,49 @@ class ExchangePluginMyprofileController < MyProfileController
   end
     
   def new_proposal
+    exchange = ExchangePlugin::Exchange.find params[:exchange_id]
+    proposal_last = exchange.closed_proposals.last
+    
     @proposal = ExchangePlugin::Proposal.new      
-    @proposal.exchange_id = params[:exchange_id]
+    @proposal.exchange_id = proposal_last.exchange_id
     @proposal.state = "open"
 
     @proposal.enterprise_origin = @active_organization
     @proposal.enterprise_target = @proposal.exchange.enterprises.select{|k| k.id != @active_organization.id}.first #not good
-
-#     @proposal.exchange_elements = ExchangePlugin::Proposal.last.exchange_elements
     
     @proposal.save
 
+    proposal_last.exchange_elements.each do |ex|
+      ex_el = ExchangePlugin::ExchangeElement.new
+      ex_el.element_id = ex.element_id
+      ex_el.element_type = ex.element_type
+      ex_el.quantity = ex.quantity
+      ex_el.proposal_id = @proposal.id
+      ex_el.save
+    end
+    
     redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
   end
+
+  def destroy_proposal
+    @proposal = ExchangePlugin::Proposal.find params[:proposal_id]
+    exchange_id = @proposal.exchange_id
+    @proposal.destroy
+        
+    redirect_to :action => 'exchange_console', :exchange_id => exchange_id
+  end
+
   
+  
+  def evaluate
+    @proposal = ExchangePlugin::Proposal.find params[:proposal_id]
+    @proposal.exchange.state = "evaluation"
+    @proposal.exchange.save
+    @proposal.state = "accepted"
+    @proposal.save
+    
+    redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
+  end  
   
   #this should not be used
   def new
@@ -235,29 +259,29 @@ class ExchangePluginMyprofileController < MyProfileController
     end
   end
 
-  def evaluate
-    @exchange = ExchangePlugin::Exchange.find params[:id]
-    @origin_elements = @exchange.exchange_elements.select{|p| p.enterprise_id == @exchange.enterprise_origin_id}
-    @target_elements = @exchange.exchange_elements.select{|p| p.enterprise_id == @exchange.enterprise_target_id}
-    @enterprise_other = @exchange.target?(profile) ? @exchange.enterprise_origin : @exchange.enterprise_target
-    if request.post?
-      evaluation = EvaluationPlugin::Evaluation.new
-      evaluation.object_type = "ExchangePlugin::Exchange"
-      evaluation.object_id = params[:exchange_id]
-      evaluation.score = params[:score]
-      evaluation.text = params[:text]
-      evaluation.evaluator = profile
-      evaluation.evaluated = @enterprise_other  
-      evaluation.save
-      if (@exchange.state == 'evaluated_by_target') || (@exchange.state == 'evaluated_by_origin')
-        @exchange.state = 'evaluated'
-      else
-        @exchange.state = @exchange.target?(profile) ? 'evaluated_by_target' : 'evaluated_by_origin'
-      end
-      @exchange.save
-      redirect_to :action => 'index'
-    end
-  end
+#   def evaluate
+#     @exchange = ExchangePlugin::Exchange.find params[:id]
+#     @origin_elements = @exchange.exchange_elements.select{|p| p.enterprise_id == @exchange.enterprise_origin_id}
+#     @target_elements = @exchange.exchange_elements.select{|p| p.enterprise_id == @exchange.enterprise_target_id}
+#     @enterprise_other = @exchange.target?(profile) ? @exchange.enterprise_origin : @exchange.enterprise_target
+#     if request.post?
+#       evaluation = EvaluationPlugin::Evaluation.new
+#       evaluation.object_type = "ExchangePlugin::Exchange"
+#       evaluation.object_id = params[:exchange_id]
+#       evaluation.score = params[:score]
+#       evaluation.text = params[:text]
+#       evaluation.evaluator = profile
+#       evaluation.evaluated = @enterprise_other  
+#       evaluation.save
+#       if (@exchange.state == 'evaluated_by_target') || (@exchange.state == 'evaluated_by_origin')
+#         @exchange.state = 'evaluated'
+#       else
+#         @exchange.state = @exchange.target?(profile) ? 'evaluated_by_target' : 'evaluated_by_origin'
+#       end
+#       @exchange.save
+#       redirect_to :action => 'index'
+#     end
+#   end
 
 #   def new_message
 #     e = ExchangePlugin::Exchange.find params[:exchange_id]

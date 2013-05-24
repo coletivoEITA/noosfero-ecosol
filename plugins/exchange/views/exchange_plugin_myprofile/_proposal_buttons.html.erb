@@ -1,0 +1,20 @@
+<div id="exc-plg-proposal_header_buttons">
+  <% if proposal.state == "open"%>
+    <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'close_proposal', :proposal_id => proposal.id} do |f| %>
+      <%= f.submit _('Send this proposal'), :class => "exc-plg-exchange_plugin_button"%>
+    <% end %>
+    <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'destroy_proposal', :proposal_id => proposal.id} do |f| %>
+      <%= f.submit _('Delete this proposal'), :class => "exc-plg-exchange_plugin_button"%>
+    <% end %>
+  <% else %>
+    <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'new_proposal', :exchange_id => @exchange.id, :enterprise_origin_id => @origin.id, :enterprise_target_id => @target.id,} do |f| %>
+      <%= f.submit _('Create new proposal'), :class => "exc-plg-exchange_plugin_button"%>
+    <% end %>
+    <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'cancel_negociation', :exchange_id => @exchange.id, :enterprise_origin_id => @origin.id, :enterprise_target_id => @target.id,} do |f| %>
+      <%= f.submit _('Cancel Negociation'), :class => "exc-plg-exchange_plugin_button"%>
+    <% end %>
+    <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'evaluate', :proposal_id => @proposal.id } do |f| %>
+      <%= f.submit _('Finish Exchange'), :class => "exc-plg-exchange_plugin_button"%>
+    <% end %>
+  <% end %>
+</div>

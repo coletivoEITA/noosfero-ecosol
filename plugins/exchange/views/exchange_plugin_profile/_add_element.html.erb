@@ -1,6 +1,0 @@
-<li id="exchange_<%= params[:element_type] %>_element_<%= params[:element_id] %>">
-  <%= (eval(params[:element_type]).find params[:element_id]).name %>
-  <%= link_to_remote _('[remove]'), :url => {:action => :remove_element, :id => @element.id,
-   :element_type => params[:element_type], :element_id => params[:element_id],
-    :enterprise => params[:enterprise], :exchange_id => params[:exchange_id], :proposal_id => params[:proposal_id]} %>
-</li>
