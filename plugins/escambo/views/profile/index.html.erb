@@ -34,6 +34,8 @@
   <div class="sidebar">
     <div class="info">
       <h4><%= _('About this enterprise') %></h4>
+
+       <%= link_to _('Contact the enterprise'), :controller => :contact, :action => :new %>
     </div>
     <div class="evaluation">
       <h4><%= _('Evaluations of this enterprise') %></h4>

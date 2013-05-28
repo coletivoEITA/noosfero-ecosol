@@ -1,4 +1,4 @@
-require_dependency '../../../../app/models/product'
+require_dependency 'product'
 
 class Product
   has_many :elements, :foreign_key => "element_id", :conditions => {:element_type => "Product"}, :class_name => 'ExchangePlugin::ExchangeElement', :dependent => :destroy

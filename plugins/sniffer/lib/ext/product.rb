@@ -1,4 +1,4 @@
-require_dependency '../../../../app/models/product'
+require_dependency 'product'
 
 class Product
   KM_LAT = 111.2 # aproximate distance in km for 1 degree latitude
@@ -72,7 +72,7 @@ class Product
       INNER JOIN sniffer_plugin_opportunities as op ON ( categories.id = op.opportunity_id AND op.opportunity_type = 'ProductCategory' )
       INNER JOIN sniffer_plugin_profiles sniffer ON ( op.profile_id = sniffer.id AND sniffer.enabled = true )
       INNER JOIN profiles ON ( sniffer.profile_id = profiles.id )",
-    :conditions => "products.enterprise_id = #{profile.id} 
+    :conditions => "products.enterprise_id = #{profile.id}
       AND profiles.public_profile = true AND profiles.visible = true
       AND profiles.id <> #{profile.id}"
     }
@@ -83,7 +83,7 @@ class Product
     {
     :select => "DISTINCT products.id as my_product_id, products.name as my_product_name,
       profiles.id as profile_id, profiles.identifier as profile_identifier, profiles.name as profile_name, profiles.lat as profile_lat, profiles.lng as profile_lng,
-      inputs.product_category_id, 
+      inputs.product_category_id,
       articles.name as knowledge_name, articles.id AS knowledge_id, article_resources.resource_id AS knowledge_category,
       products.enterprise_id AS buyer_id,
       'knowledge_buyer_input' as view,
@@ -103,7 +103,7 @@ class Product
      {
     :select => "DISTINCT products.id as my_product_id, products.name as my_product_name,
       profiles.id as profile_id, profiles.identifier as profile_identifier, profiles.name as profile_name, profiles.lat as profile_lat, profiles.lng as profile_lng,
-      inputs.product_category_id, 
+      inputs.product_category_id,
       articles.name as knowledge_name, articles.id AS knowledge_id, article_resources.resource_id AS knowledge_category,
       'knowledge_supplier_input' as view,
       SQRT( POW((#{KM_LAT} * (#{profile.lat} - profiles.lat)), 2) + POW((#{KM_LNG} * (#{profile.lng} - profiles.lng)), 2)) AS profile_distance",
@@ -122,7 +122,7 @@ class Product
     {
     :select => "DISTINCT articles.id AS knowledge_id, articles.name AS knowledge_name,
               op.opportunity_id AS product_category_id,
-              profiles.id as profile_id, profiles.identifier as profile_identifier, 
+              profiles.id as profile_id, profiles.identifier as profile_identifier,
               profiles.name as profile_name, profiles.lat as profile_lat, profiles.lng as profile_lng,
               'knowledge_buyer_interest' as view,
               SQRT( POW((#{KM_LAT} * (#{profile.lat} - profiles.lat)), 2) + POW((#{KM_LNG} * (#{profile.lng} - profiles.lng)), 2)) AS profile_distance",
@@ -131,8 +131,8 @@ class Product
                INNER JOIN sniffer_plugin_opportunities as op ON ( article_resources.resource_id = op.opportunity_id AND op.opportunity_type = 'ProductCategory' AND article_resources.resource_type = 'ProductCategory' )
                INNER JOIN sniffer_plugin_profiles sniffer ON ( op.profile_id = sniffer.id AND sniffer.enabled = true )
                INNER JOIN profiles ON ( sniffer.profile_id = profiles.id )",
-    :conditions => "articles.profile_id = #{profile.id} 
-                  AND profiles.public_profile = true 
+    :conditions => "articles.profile_id = #{profile.id}
+                  AND profiles.public_profile = true
                   AND profiles.visible = true
                   AND profiles.id <> #{profile.id}"
     }
@@ -143,7 +143,7 @@ class Product
     {
     :select => "DISTINCT articles.id AS knowledge_id, articles.name AS knowledge_name, articles.profile_id AS wise,
               op.opportunity_id AS product_category_id,
-              profiles.id as profile_id, profiles.identifier as profile_identifier, 
+              profiles.id as profile_id, profiles.identifier as profile_identifier,
               profiles.name as profile_name, profiles.lat as profile_lat, profiles.lng as profile_lng,
               'knowledge_supplier_interest' as view,
               SQRT( POW((#{KM_LAT} * (#{profile.lat} - profiles.lat)), 2) + POW((#{KM_LNG} * (#{profile.lng} - profiles.lng)), 2)) AS profile_distance",
@@ -152,24 +152,24 @@ class Product
                INNER JOIN sniffer_plugin_opportunities as op ON ( article_resources.resource_id = op.opportunity_id AND op.opportunity_type = 'ProductCategory' AND article_resources.resource_type = 'ProductCategory' )
                INNER JOIN sniffer_plugin_profiles sniffer ON ( op.profile_id = sniffer.id AND sniffer.enabled = true )
                INNER JOIN profiles ON ( articles.profile_id = profiles.id )",
-    :conditions => "articles.profile_id <> #{profile.id} 
-                  AND profiles.public_profile = true 
+    :conditions => "articles.profile_id <> #{profile.id}
+                  AND profiles.public_profile = true
                   AND profiles.visible = true
                   AND sniffer.profile_id = #{profile.id}"
     }
   }
 
-  ########### from here on, methods that try to find individual matches ########################## 
+  ########### from here on, methods that try to find individual matches ##########################
 
   #search for inputs of supplier that matches the products of producer
   named_scope :products_inputs, lambda { |supplier, producer|
     {
       :select => "products.id, products.name, inputs.id AS input_id, inputs.product_category_id AS input_category_id,
-                  products_supplier.name AS products_supplier_name, products_supplier.id AS products_supplier_id", 
-      :joins => " INNER JOIN inputs ON (products.id = inputs.product_id) 
+                  products_supplier.name AS products_supplier_name, products_supplier.id AS products_supplier_id",
+      :joins => " INNER JOIN inputs ON (products.id = inputs.product_id)
                   INNER JOIN categories ON (inputs.product_category_id = categories.id)
                   INNER JOIN products AS products_supplier ON (categories.id = products_supplier.product_category_id)",
-      :conditions => "products.enterprise_id = #{producer.id} 
+      :conditions => "products.enterprise_id = #{producer.id}
                   AND products_supplier.enterprise_id = #{supplier.id}"
     }
   }
@@ -177,14 +177,14 @@ class Product
   #search for interests of interested that matches the products of producer
   named_scope :products_interests, lambda { |producer, interested|
     {
-    :select => "products.id, products.name, 
+    :select => "products.id, products.name,
       categories.id as product_category_id, categories.name as product_category_name,
       op.opportunity_id",
     :joins => "INNER JOIN categories ON ( categories.id = products.product_category_id )
       INNER JOIN sniffer_plugin_opportunities as op ON ( categories.id = op.opportunity_id AND op.opportunity_type = 'ProductCategory' )
       INNER JOIN sniffer_plugin_profiles sniffer ON ( op.profile_id = sniffer.id AND sniffer.enabled = true )
       INNER JOIN profiles ON ( sniffer.profile_id = profiles.id )",
-    :conditions => "products.enterprise_id = #{producer.id} 
+    :conditions => "products.enterprise_id = #{producer.id}
       AND profiles.public_profile = true AND profiles.visible = true
       AND profiles.id = #{interested.id}"
     }
@@ -196,7 +196,7 @@ class Product
     {
       :select => "inputs.product_category_id AS input_cat, products.name AS product, products.product_category_id AS product_cat,
                   articles.id AS id, articles.name AS knowledge_name, article_resources.resource_id AS knowledge_category",
-      :joins => "INNER JOIN inputs ON (products.id = inputs.product_id) 
+      :joins => "INNER JOIN inputs ON (products.id = inputs.product_id)
                  INNER JOIN article_resources ON (article_resources.resource_id = inputs.product_category_id AND article_resources.resource_type = 'ProductCategory')
                INNER JOIN articles ON (article_resources.article_id = articles.id)",
       :conditions => "articles.type = 'CmsLearningPluginLearning'

@@ -1,3 +1,5 @@
+require "#{File.dirname __FILE__}/ext/profile"
+
 class CmsLearningPlugin < Noosfero::Plugin
 
   def self.plugin_name
@@ -7,7 +9,7 @@ class CmsLearningPlugin < Noosfero::Plugin
   def self.plugin_description
     _("Share your knowledge to the network.")
   end
- 
+
   def self.view_path
     (RAILS_ROOT + '/plugins/cms_learning/views')
   end

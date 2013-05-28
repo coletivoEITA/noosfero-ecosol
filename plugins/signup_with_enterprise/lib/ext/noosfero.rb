@@ -1,4 +1,4 @@
-require_dependency 'noosfero'
+require_dependency "#{Rails.root}/lib/noosfero"
 
 module Noosfero
   # see also convToValidIdentifier at application.js
