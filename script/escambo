@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 # Contants
+Production = false
 PluginsClasses = ["CmsLearningPlugin", "EscamboPlugin", "EvaluationPlugin", "ExchangePlugin", "SignupWithEnterprisePlugin", "SnifferPlugin"]
 
 def echo text
@@ -28,7 +29,12 @@ echo 'Loading (or creating) the environment'
 e = Environment.default 
 unless e
   e = Environment.create! :name => "ESCAMBO", :is_default => true
-  e.domains.create! :name => '0.0.0.0', :is_default => true
+  if Production
+    e.domains.create! :name => 'escambo.org.br', :is_default => true
+    e.domains.create! :name => 'escambo.org'
+  else
+    e.domains.create! :name => '0.0.0.0', :is_default => true
+  end
 end
 
 echo 'Loading categories, units, certifiers and qualifiers'
