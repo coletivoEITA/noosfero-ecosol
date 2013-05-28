@@ -51,6 +51,13 @@ echo 'Enabling plugins in environment'
 e.enabled_plugins = PluginsClasses
 e.save!
 
+echo 'Enable and disable features'
+e.disable 'disable_products_for_enterprises'
+e.enable 'skip_new_user_email_confirmation'
+e.enable 'send_welcome_email_to_new_users'
+e.enable 'disable_asset_products'
+e.save!
+
 echo 'Setup templates and existing profiles'
 profiles = [e.person_template, e.community_template, e.enterprise_template]
 profiles += Profile.all
