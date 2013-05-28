@@ -31,6 +31,12 @@ unless e
   e.domains.create! :name => '0.0.0.0', :is_default => true
 end
 
+echo 'Loading categories, units, certifiers and qualifiers'
+database = Rails.configuration.database_configuration[Rails.env]['database']
+run "psql #{database} < db/categories.sql"
+run "psql #{database} < db/qualifiers-and-certifiers.sql"
+run "psql #{database} < db/units.sql"
+
 echo 'Setting theme'
 e.theme = 'escambo'
 e.save!

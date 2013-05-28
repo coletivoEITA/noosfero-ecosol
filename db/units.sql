@@ -1,3 +1,4 @@
+delete from units;
 
 COPY units (id, singular, plural, "position", environment_id) FROM stdin;
 1	Unidade	Unidade	1	2

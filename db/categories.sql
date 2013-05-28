@@ -1,3 +1,4 @@
+delete from categories;
 
 COPY categories (id, name, slug, path, display_color, environment_id, parent_id, type, lat, lng, display_in_menu, children_count, accept_products, image_id, acronym, abbreviation) FROM stdin;
 29	Nacional	nacional	territorios/nacional	\N	2	5	Region	\N	\N	t	5	t	\N	\N	\N
