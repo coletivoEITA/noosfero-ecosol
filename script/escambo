@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+
+# Contants
+PluginsClasses = ["CmsLearningPlugin", "EscamboPlugin", "EvaluationPlugin", "ExchangePlugin", "SignupWithEnterprisePlugin", "SnifferPlugin"]
+
+def echo text
+  puts "=== #{text}"
+end
+def run cmd
+  echo "$ #{cmd}"
+  output = `#{cmd}`
+  #puts output
+end
+
+require 'rubygems'
+require 'active_support/all'
+Plugins = PluginsClasses.map{ |p| p.underscore.gsub /_plugin$/, '' }
+Plugins.each do |plugin|
+  run "script/noosfero-plugins disable #{plugin}"
+  run "script/noosfero-plugins enable #{plugin}"
+end
+
+echo 'Loading rails'
+require File.dirname(__FILE__) + '/../config/boot'
+require File.dirname(__FILE__) + '/../config/environment'
+
+echo 'Loading (or creating) the environment'
+e = Environment.default 
+unless e
+  e = Environment.create! :name => "ESCAMBO", :is_default => true
+  e.domains.create! :name => '0.0.0.0', :is_default => true
+end
+
+echo 'Setting theme'
+e.theme = 'escambo'
+e.save!
+
+echo 'Enabling plugins in environment'
+e.enabled_plugins = PluginsClasses
+e.save!
+
+echo 'Setup templates'
+templates = [e.person_template, e.community_template, e.enterprise_template]
+templates.each do |template|
+  template.theme = 'escambo'
+  template.update_layout_template 'nobars'
+  template.save
+end
+
+
