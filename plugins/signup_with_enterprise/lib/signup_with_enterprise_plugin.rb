@@ -1,4 +1,4 @@
-require "#{File.dirname __FILE__}/ext/noosfero"
+require_dependency "#{File.dirname __FILE__}/ext/noosfero"
 
 class SignupWithEnterprisePlugin < Noosfero::Plugin
 
