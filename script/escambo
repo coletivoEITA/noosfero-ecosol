@@ -39,12 +39,13 @@ echo 'Enabling plugins in environment'
 e.enabled_plugins = PluginsClasses
 e.save!
 
-echo 'Setup templates'
-templates = [e.person_template, e.community_template, e.enterprise_template]
-templates.each do |template|
-  template.theme = 'escambo'
-  template.update_layout_template 'nobars'
-  template.save
+echo 'Setup templates and existing profiles'
+profiles = [e.person_template, e.community_template, e.enterprise_template]
+profiles += Profile.all
+profiles.each do |profile|
+  profile.theme = 'escambo'
+  profile.update_layout_template 'nobars'
+  profile.save
 end
 
 
