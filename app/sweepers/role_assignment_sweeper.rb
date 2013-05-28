@@ -25,8 +25,7 @@ protected
 
     profile.blocks_to_expire_cache.each { |block|
       blocks = profile.blocks.select{|b| b.kind_of?(block)}
-      BlockSweeper.expire_blocks(blocks)
+      expire_profile_blocks(blocks)
     }
   end
-
 end
