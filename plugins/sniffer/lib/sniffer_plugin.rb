@@ -1,7 +1,7 @@
-require_dependency 'ext/enterprise'
-require_dependency 'ext/product'
-require_dependency 'ext/profile'
-require_dependency 'ext/article'
+require_dependency "#{File.dirname __FILE__}/ext/enterprise"
+require_dependency "#{File.dirname __FILE__}/ext/product"
+require_dependency "#{File.dirname __FILE__}/ext/profile"
+require_dependency "#{File.dirname __FILE__}/ext/article"
 
 class SnifferPlugin < Noosfero::Plugin
 
