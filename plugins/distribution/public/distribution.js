@@ -152,18 +152,18 @@ distribution = {
       distribution.our_product.css_align();
     },
 
-    load: function(el) {
-      el.find('input[onchange]').each(function() {
-        this.onchange();
-      });
-      el.find('.properties-block').click(distribution.our_product.enable_if_disabled);
-    },
-
     add_link: function () {
       if (distribution.isEditing())
         distribution.value_row.toggle_edit();
       distribution.setEditing(jQuery('#our-product-add'));
       distribution.value_row.toggle_edit();
+    },
+
+    load: function(el) {
+      // load default logic
+      el.find('#product_default_margin_percentage').get(0).onchange();
+      // click
+      el.find('.properties-block').click(distribution.our_product.enable_if_disabled);
     },
 
     enable_if_disabled: function (event) {
@@ -180,24 +180,70 @@ distribution = {
     },
 
     toggle_referred: function (context) {
+      var is_margin = jQuery(context).attr('id') == 'product_default_margin_percentage';
       var p = jQuery(context).parents('.box-edit');
       var referred = p.find(jQuery(context).attr('for'));
 
-      jQuery.each(referred, function(i, value) {
-        value.disabled = context.checked;
+      jQuery.each(referred, function(i, field) {
+        // disable or enable according to checkbox
+        field.disabled = context.checked;
 
-        if (value.disabled) {
-          jQuery(value).attr('oldvalue', jQuery(value).val());
-          jQuery(value).val(value.hasAttribute('defaultvalue')
-            ? jQuery(value).attr('defaultvalue') : p.find('#'+value.id.replace('product', 'product_supplier_product')).val());
+        if (field.disabled) {
+          // keep current value in oldvalue
+          jQuery(field).attr('oldvalue', jQuery(field).val());
+          // put default value or supplier value in it
+          jQuery(field).val(field.hasAttribute('defaultvalue')
+            ? jQuery(field).attr('defaultvalue')
+            : p.find('#'+field.id.replace('product', 'product_supplier_product')).val()
+          );
         } else {
-          jQuery(value).val(jQuery(value).attr('oldvalue'));
+          // put back custom value
+          jQuery(field).val(jQuery(field).attr('oldvalue'));
         }
 
-        if (value.onkeyup)
-        value.onkeyup();
+        // blank margin oldvalue if it is equal to default
+        // this is necessary because if oldvalue is equal to default value the
+        // checkbox will tick again
+        if (is_margin && field.disabled)
+          jQuery(field).attr('oldvalue', '');
+
+        if (field.onkeyup)
+          field.onkeyup();
       });
       referred.first().focus();
+    },
+    sync_referred: function (context) {
+      var p = jQuery(context).parents('.box-edit');
+      var referred = p.find('#'+context.id.replace('product_supplier_product', 'product')).get(0);
+      if (!referred)
+        return;
+      if (referred.disabled)
+        jQuery(referred).val(jQuery(context).val());
+      if (referred.onkeyup)
+        referred.onkeyup();
+    },
+    pmsync: function (context, to_price) {
+      var p = jQuery(context).parents('.our-product');
+      var margin_input = p.find('#product_margin_percentage');
+      var price_input = p.find('#product_price');
+      var buy_price_input = p.find('#product_supplier_product_price');
+
+      if (to_price)
+        distribution.calculate_price(price_input, margin_input, buy_price_input);
+      else
+        distribution.calculate_margin(margin_input, price_input, buy_price_input);
+
+      // auto check 'use default margin'
+      if (!to_price) {
+        var default_margin_input = p.find('#product_default_margin_percentage');
+        var newvalue = unlocalize_currency(margin_input.val());
+        var defaultvalue = unlocalize_currency(margin_input.attr('defaultvalue'));
+        var oldvalue = unlocalize_currency(margin_input.attr('oldvalue'));
+        var currentchecked = default_margin_input.get(0).checked;
+        var checked = newvalue == defaultvalue;
+        default_margin_input.attr('checked', checked ? 'checked' : null);
+        margin_input.get(0).disabled = checked;
+      }
     },
 
     add_missing_products: function (context, url) {
@@ -219,36 +265,6 @@ distribution = {
         distribution.our_product.toggle_edit();
       });
       distribution.unsetLoading('our-product-add');
-    },
-
-    sync_referred: function (context) {
-      var p = jQuery(context).parents('.box-edit');
-      var referred = p.find('#'+context.id.replace('product_supplier_product', 'product')).get(0);
-      if (!referred)
-        return;
-      if (referred.disabled)
-        jQuery(referred).val(jQuery(context).val());
-      if (referred.onkeyup)
-        referred.onkeyup();
-    },
-    pmsync: function (context, to_price) {
-      var p = jQuery(context).parents('.our-product');
-      var margin_input = p.find('#product_margin_percentage');
-      var price_input = p.find('#product_price');
-      var buy_price_input = p.find('#product_supplier_product_price');
-      var default_margin_input = p.find('#product_default_margin_percentage');
-
-      if (to_price || price_input.get(0).disabled) {
-        if (margin_input.get(0).disabled)
-          distribution.calculate_price(price_input, margin_input, buy_price_input);
-      } else
-        distribution.calculate_margin(margin_input, price_input, buy_price_input);
-
-      // auto check 'use default margin'
-      var newvalue = unlocalize_currency(margin_input.val());
-      var checked = newvalue == unlocalize_currency(margin_input.attr('defaultvalue'));
-      default_margin_input.attr('checked', checked ? 'checked' : null);
-      margin_input.get(0).disabled = checked;
     },
 
     css_align: function () {
@@ -293,15 +309,22 @@ distribution = {
 
   /* ----- session editions stuff  ----- */
 
-  session_product_pmsync: function (context, to_price) {
-    p = jQuery(context).parents('.session-product .box-edit');
-    margin = p.find('#product_margin_percentage');
-    price = p.find('#product_price');
-    buy_price = p.find('#product_buy_price');
-    if (to_price)
-      distribution.calculate_price(price, margin, buy_price);
-    else
-      distribution.calculate_margin(margin, price, buy_price);
+  session_product: {
+
+    pmsync: function (context, to_price) {
+      p = jQuery(context).parents('.session-product .box-edit');
+      margin = p.find('#product_margin_percentage');
+      price = p.find('#product_price');
+      buy_price = p.find('#product_buy_price');
+      original_price = p.find('#product_original_price');
+      base_price = unlocalize_currency(buy_price.val()) ? buy_price : original_price;
+
+      if (to_price)
+        distribution.calculate_price(price, margin, base_price);
+      else
+        distribution.calculate_margin(margin, price, base_price);
+    },
+
   },
 
   /* ----- ends session editions stuff  ----- */
@@ -569,19 +592,27 @@ function jQuerySort(elements, options) {
 
 locale = 'pt'; //FIXME: don't hardcode
 standard_locale = 'en';
+code_locale = 'code';
 locale_info = {
+  'code': {
+    'currency': {
+      'delimiter': '',
+      'separator': '.',
+      'decimals': null,
+    }
+  },
   'en': {
     'currency': {
       'delimiter': ',',
       'separator': '.',
-      'decimals': 2
+      'decimals': 2,
     }
   },
   'pt': {
     'currency': {
       'delimiter': '.',
       'separator': ',',
-      'decimals': 2
+      'decimals': 2,
     }
   },
 }
@@ -605,7 +636,7 @@ function unlocalize_currency(value, from) {
   if (!from)
     from = locale;
   var lvalue = value.toString();
-  var to = standard_locale;
+  var to = code_locale;
   lvalue = lvalue.replace(locale_info[from].currency.delimiter, locale_info[to].currency.delimiter);
   lvalue = lvalue.replace(locale_info[from].currency.separator, locale_info[to].currency.separator);
   return parseFloat(lvalue);
