@@ -74,6 +74,11 @@
               <%= link_to t('distribution_plugin.views.order._consumer_orders.change_order'), {:controller => :distribution_plugin_order, :action => :reopen, :id => order.id}  %>
               <%= t('distribution_plugin.views.order._consumer_orders.before_the_closing') %>&emsp;
             <% end %>
+            <%= '<br>' %>
+            <% unless order.cancelled? %>
+              <%= link_to t('distribution_plugin.views.order._delivery.cancel_order'), {:controller => :distribution_plugin_order, :action => :cancel, :id => order.id} %>
+              <%= '<br>' %>
+            <% end %>
             <%= colorbox_link_to t('distribution_plugin.views.order._consumer_orders.send_message_to_the_m'), {:controller => :distribution_plugin_message, :action => :new_to_admins} %>
           </div>
         </div>
