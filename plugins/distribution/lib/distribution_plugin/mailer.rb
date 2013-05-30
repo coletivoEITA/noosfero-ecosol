@@ -5,7 +5,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(order.consumer.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       I18n.t('distribution_plugin.lib.mailer.node_your_order_was_c') % {:node => node.name}
+    subject       I18n.t('distribution_plugin.lib.mailer.order_was_changed') % {:node => node.name}
     content_type  'text/html'
     body :node => node,
          :order => order,
@@ -21,7 +21,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(order.consumer.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       I18n.t('distribution_plugin.lib.mailer.node_your_order_was_c') % {:node => node.name}
+    subject       I18n.t('distribution_plugin.lib.mailer.order_was_confirmed') % {:node => node.name}
     content_type  'text/html'
     body :node => node,
          :order => order,
@@ -36,7 +36,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(order.consumer.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       I18n.t('distribution_plugin.lib.mailer.node_your_order_was_c') % {:node => node.name}
+    subject       I18n.t('distribution_plugin.lib.mailer.order_was_cancelled') % {:node => node.name}
     content_type  'text/html'
     body :node => node,
          :order => order,
