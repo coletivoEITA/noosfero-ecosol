@@ -292,7 +292,9 @@
         product_from_which_su: "Produto de que fornecedor?"
       mailer: 
         node_subject: "[%{node}] %{subject}"
-        node_your_order_was_c: "[%{node}] Seu pedido foi cancelado"
+        order_was_confirmed: "[%{node}] Seu pedido foi confirmado"
+        order_was_cancelled: "[%{node}] Seu pedido foi cancelado"
+        order_was_changed: "[%{node}] Seu pedido foi modificado"
       order_block: 
         distribution_orders_c: "Ciclos de pedidos para consumidores"
         offer_cycles_for_you_: "Ciclo de oferta para membros fazerem pedidos"
@@ -526,34 +528,34 @@
           cancel_order: "Cancelar pedido"
           choose_another: "Escolha outro método:"
           confirm_order: "Confirme pedido"
-          confirming_this_order: "Confirming this order you are responsible for paying it. Do you want to continue?"
+          confirming_this_order: "Ao confirmar este pedido, você está responsável por pagá-lo. Você quer continuar?"
           delivery_method: "Método de entrega"
         _filter_products: 
           active: Ativo
-          all_the_categories: "all the categories"
+          all_the_categories: "todas as categorias"
           all_the_suppliers: "todos os fornecedores"
           and_being: "e que estejam"
           anyone: anyone
-          bigger_than_the_stock: "bigger than the stock"
+          bigger_than_the_stock: "maior do que o estoque"
           filter: Filtro
           in_any_state: "Em qualquer estado"
           inactive: Inativo
           product_name: "Nome do produto"
           supplier: Fornecedor
-          whose_qty_available_i: "whose qty. available is"
+          whose_qty_available_i: "cuja quantidade disponível é"
         _session_edit: 
           actions: Ações
-          add_product: "add product"
+          add_product: "adicionar produto"
           cancel: Cancelar
           edit_on_the_order_pag: "Editar na página de pedidos"
           empty_order: "Pedido vazio"
           include_message: "Incluir uma mensagem"
           message_to_member: "Mensagem para o membro"
-          remove_order: "remove order"
+          remove_order: "remover pedido"
           save: Salvar
-          see_delivery: "see delivery"
-          see_redistribution: "see redistribution"
-          the_collective_member: "O membro do coletivo receberá um email que discrimina todas as mudançasfeitas em seu pedido."
+          see_delivery: "veja entrega"
+          see_redistribution: "veja redistribuição"
+          the_collective_member: "O membro do coletivo receberá um email que discrimina todas as mudanças feitas em seu pedido."
           warn_member_of_the_ch: "Avise o membro das mudanças em seu pedido"
         _status: 
           code_status_message: "%{code} %{status_message}"
@@ -579,7 +581,7 @@
           : " / "
           ? "%"
           : "%"
-          add_product_to_the_li: "Adicione produto à lista de produtos distribuídos"
+          add_product_to_the_li: "Adicione o produto à lista de produtos distribuídos"
           are_you_sure_you_want: "Tem certeza de que quer remover este produto?"
           cancel: Cancelar
           category: Categoria
@@ -613,8 +615,8 @@
           include: Incluir
           more_about_the_produc: "Mais sobre o produtor \"%{supplier}\""
           no_description: "Sem Descrição"
-          opening_new_order_for: "Opening new order for your product inclusion"
-          opening_order_code_fo: "Opening order %{code} for your product inclusion"
+          opening_new_order_for: "Abrindo novo pedido para a inclusão do produto."
+          opening_order_code_fo: "Abrindo pedido %{code} para a inclusão do produto"
           price_percent_price_w: "%{price} + %{percent}% = %{price_with_margin}"
           price_s_descriptive: "descrictivo do preço"
           product_image: "Imagem do produto"
@@ -622,7 +624,7 @@
           order_qty: "Qtd pedidos"
           price: Preço
           product: Produto
-          this_search_hasn_t_re: "This search hasn't returned any product"
+          this_search_hasn_t_re: "Esta busca não retornou produtos"
         _price_details: 
           commercialization_act: "Comercialização ativa"
           minimum_order: "Pedido mínimo"
@@ -652,8 +654,8 @@
           default_sell_price: "Preço de venda padrão"
           edit_product: "Editar produto"
           margin: Margem
-          qty_in_stock: "Qty. in stock"
-          qty_offered: "Qty. offered"
+          qty_in_stock: "Qtd em estoque"
+          qty_offered: "Qtd oferecida"
           remove_from_cycle: "Remover do pedido"
           save: Salvar
           sell_price: "Preço de venda:"
@@ -661,11 +663,11 @@
         index: 
           active: Ativo
           add_product: "Adicionar produto"
-          all_the_categories: "all the categories"
+          all_the_categories: "todas as categorias"
           all_the_suppliers: "todos os fornecedores"
           and_being: "e que estejam"
           anyone: anyone
-          bigger_than_the_stock: "bigger than the stock"
+          bigger_than_the_stock: "maior do que o estoque"
           change: mudar
           default_margin_of_com: "Margem padrão de comercialização"
           filter: Filtro
@@ -677,9 +679,9 @@
           show_products_from: "Mostar produtos de"
           the_products: "Os produtos"
           whose_name_contains: "cujo nome contenha"
-          whose_qty_available_i: "whose qty. available is"
-          with_the_category: "with the category"
-          with_the_qualifiers: "with the qualifiers"
+          whose_qty_available_i: "cuja qtd disponível é"
+          with_the_category: "com a categoria"
+          with_the_qualifiers: "com os qualificadores"
       session: 
         _brief: 
           code: "%{code}."
@@ -718,7 +720,7 @@
           the_orders_period_is_: "O período de pedidos está ainda aberto, tome cuidado ao editar os pedidos abertos. Isso pode confundir os usuários."
         _orders_suppliers: 
           actions: Ações
-          do_prelimary_parcel: "do prelimary parcel"
+          do_prelimary_parcel: "fazer encomenda preliminar"
           forecast_parcel: "Encomenda prevista"
           forecast_value: "Valor previsto"
           message_to_the_suppli: "Mensagem ao fornecedor"

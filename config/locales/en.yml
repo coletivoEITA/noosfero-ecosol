@@ -282,7 +282,9 @@
         product_from_which_su: "Product from which supplier?"
       mailer: 
         node_subject: "[%{node}] %{subject}"
-        node_your_order_was_c: "[%{node}] Your order was cancelled"
+        order_was_confirmed: "[%{node}] Your order was confirmado"
+        order_was_cancelled: "[%{node}] Your order was cancelado"
+        order_was_changed: "[%{node}] Your order was modificado"
       order_block: 
         distribution_orders_c: "Distribution orders' cycles for members"
         offer_cycles_for_you_: "Offer cycles for you members to make orders"
