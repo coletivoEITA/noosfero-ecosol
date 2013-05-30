@@ -595,7 +595,7 @@
           remove_product: "remover produto"
           save: Salvar
           search_another_catego: "Buscar outra categoria"
-          search_for_another_ca: "search for another category"
+          search_for_another_ca: "busque outra categoria"
           to_end_the_categoriza: "Ao fim da categorização, escolha uma das subcategorias da categoria \"{{=cat.own_name}}\":"
           use_default_margin: "Usar a margem padrão"
           use_original: "usar original"
@@ -818,19 +818,20 @@
           actions: Ações
           add_products: "adicionar produtos"
           among_them: ", entre eles"
-          any_registered_produc: "qualquer produto registrado"
+          any_registered_produc: "nenhum produto registrado"
           by_removing_this_supp: "Ao remover este fornecedor, todos os produtos ficarão indisponíveis em futuras sessões. Por favor, confirme sua opção"
-          desactivate: desactivate
+          desactivate: desativar
           edit: editar
-          node_products_unarchi: "#{@node.products.unarchived.distributed.from_supplier(supplier).count} products commercialized"
+          products_are_active: " produtos estão ativos"
+          products_distributed: " produtos distribuídos pelo coletivo"
           products: produtos
           registered_supplier_i: "Fornecedor registrado na rede"
           remove: remover
-          supplier_node_product: "#{supplier.node.products.unarchived.own.distributed.count} registered products"
+          supplier_node_product: "produtos registrados"
           supplier_with_registr: "Fornecedor com registro administrado pelo coletivo"
           this_supplier_has: "Este fornecedor tem"
         _suppliers_list: 
-          this_search_didn_t_re: "This search didn't return suppliers."
+          this_search_didn_t_re: "Esta busca não retornou fornecedores."
         index: 
           add_supplier: "Adicionar fornecedor"
           filter: Filtro

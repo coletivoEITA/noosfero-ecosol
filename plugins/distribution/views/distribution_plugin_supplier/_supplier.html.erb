@@ -24,11 +24,20 @@
       <div class="subtitle"><strong><%= t('distribution_plugin.views.supplier._supplier.this_supplier_has') %></strong></div>
       <div class='supplier-products-count subtitle'>
         <% if supplier.node.products.unarchived.own.distributed.count > 0 %>
-          <%= link_to t('distribution_plugin.views.supplier._supplier.supplier_node_product'),
-            {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id} %><%= t('distribution_plugin.views.supplier._supplier.among_them') %>
+          <% msg = supplier.node.products.unarchived.own.distributed.count.to_s + " "%>
+          <% msg += supplier.dummy? ? t('distribution_plugin.views.supplier._supplier.supplier_node_product') :
+            t('distribution_plugin.views.supplier._supplier.products') %>
 
-          <% msg = supplier.dummy? ? t('distribution_plugin.views.supplier._supplier.node_products_unarchi') :
-            t('distribution_plugin.views.supplier._supplier.node_products_unarchi') %>
+          <%= link_to msg, {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id} %>
+
+          <%= t('distribution_plugin.views.supplier._supplier.among_them') %>
+
+          <% if supplier.dummy? %>
+            <% msg = @node.products.unarchived.distributed.active.from_supplier(supplier).count.to_s +
+              t('distribution_plugin.views.supplier._supplier.products_are_active') %>
+          <% else %>
+            <% msg = @node.products.unarchived.distributed.from_supplier(supplier).count + t('distribution_plugin.views.supplier._supplier.products_distributed') %>
+          <% end %>
           <%= link_to msg, {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id}, :class => 'supplier-distributed-products-count' %>
         <% else %>
           <%= t('distribution_plugin.views.supplier._supplier.any_registered_produc') %>

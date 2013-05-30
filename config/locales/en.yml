@@ -812,11 +812,12 @@
           by_removing_this_supp: "By removing this supplier all its products won't be available for future cycles. Please confirm you choice"
           desactivate: desactivate
           edit: edit
-          node_products_unarchi: "#{@node.products.unarchived.distributed.from_supplier(supplier).count} products commercialized"
+          products_are_active: " produtos estão ativos"
+          products_distributed: " distributed products by the collective"
           products: products
           registered_supplier_i: "Registered supplier in the network"
           remove: remove
-          supplier_node_product: "#{supplier.node.products.unarchived.own.distributed.count} registered products"
+          supplier_node_product: " registered products"
           supplier_with_registr: "Supplier with registry managed by the collective"
           this_supplier_has: "This supplier has"
         _suppliers_list: 
