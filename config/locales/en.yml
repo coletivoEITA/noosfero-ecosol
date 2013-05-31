@@ -494,6 +494,8 @@
           white: white
       order: 
         _consumer_orders: 
+          show_cancelled_orders: "show cancelled orders"
+          hide_cancelled_orders: "hide cancelled orders"
           administration_of_thi: "Administration of this cycle"
           before_the_closing: "(before the closing)"
           change_order: "change order"

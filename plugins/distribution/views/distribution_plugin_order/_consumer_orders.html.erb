@@ -74,10 +74,10 @@
               <%= link_to t('distribution_plugin.views.order._consumer_orders.change_order'), {:controller => :distribution_plugin_order, :action => :reopen, :id => order.id}  %>
               <%= t('distribution_plugin.views.order._consumer_orders.before_the_closing') %>&emsp;
             <% end %>
-            <%= '<br>' %>
+            <br>
             <% unless order.cancelled? %>
               <%= link_to t('distribution_plugin.views.order._delivery.cancel_order'), {:controller => :distribution_plugin_order, :action => :cancel, :id => order.id} %>
-              <%= '<br>' %>
+              <br>
             <% end %>
             <%= colorbox_link_to t('distribution_plugin.views.order._consumer_orders.send_message_to_the_m'), {:controller => :distribution_plugin_message, :action => :new_to_admins} %>
           </div>
@@ -96,4 +96,11 @@
     <% end %>
   </div>
 <% end %>
+
+<div id="show-cancelled-orders">
+  <%= link_to_function t('distribution_plugin.views.order._consumer_orders.show_cancelled_orders'), "distribution.toggleCancelledOrders()" %>
+</div>
+<div id="hide-cancelled-orders">
+  <%= link_to_function t('distribution_plugin.views.order._consumer_orders.hide_cancelled_orders'), "distribution.toggleCancelledOrders()", :style => 'display:none' %>
+</div>
 

@@ -504,6 +504,8 @@
           white: branco
       order: 
         _consumer_orders: 
+          show_cancelled_orders: "mostrar pedidos cancelados"
+          hide_cancelled_orders: "esconder pedidos cancelados"
           administration_of_thi: "Administração deste ciclo"
           before_the_closing: "(antes do fechamento)"
           change_order: "Mudar o pedido"

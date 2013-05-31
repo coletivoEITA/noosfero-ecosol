@@ -539,6 +539,9 @@ body.plugin-distribution {
   margin-bottom: 10px;
 }
 
+.plugin-distribution #show-cancelled_orders a.disabled {
+  display: none;
+}
 /* ----- end order block stuff  ----- */
 
 /* ----- common stuff  ----- */
@@ -1711,6 +1714,14 @@ body.plugin-distribution {
   font-weight: bold;
   padding: 8px;
 }
+
+.plugin-distribution .orders .status-cancelled{
+  display: none;
+}
+.plugin-distribution .orders .edit .status-cancelled{
+  display: block;
+}
+
 .plugin-distribution .orders .status-cancelled,
 .plugin-distribution .orders .status-forgotten {
   background-color: #FECBCA;

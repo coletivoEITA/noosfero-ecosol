@@ -528,7 +528,13 @@ distribution = {
         });
         return false;
       });
-    }
+    },
+
+    toggleCancelledOrders: function (el) {
+       jQuery('.plugin-distribution #show-cancelled-orders a').toggle();
+       jQuery('.plugin-distribution #hide-cancelled-orders a').toggle();
+       jQuery('.plugin-distribution .consumer-order:not(.edit) .status-cancelled').toggle()
+     }
 }
 
 /* ----- events  ----- */
