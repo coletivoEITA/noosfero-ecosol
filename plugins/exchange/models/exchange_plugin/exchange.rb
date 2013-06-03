@@ -3,12 +3,11 @@ class ExchangePlugin::Exchange < Noosfero::Plugin::ActiveRecord
   validates_inclusion_of :state, :in => ["proposal", "negociation", "evaluation", 
     "finished",  "cancelled"]  
 
-  has_many :exchange_elements, :dependent => :destroy, :order => "id asc"
+  has_many :proposals, :class_name => "ExchangePlugin::Proposal", :dependent => :destroy, :order => "id asc"
   
   has_many :exchanges_enterprises, :class_name => "ExchangePlugin::ExchangeEnterprise"
   has_many :enterprises, :through => :exchanges_enterprises
 
-  has_many :proposals, :class_name => "ExchangePlugin::Proposal"
   has_many :closed_proposals, :class_name => "ExchangePlugin::Proposal", :conditions => "exchange_plugin_proposals.state = 'closed'"
   has_many :products, :through => :exchange_elements, :source => :element_np, :class_name => 'Product',
     :conditions => "exchange_plugin_exchange_elements.element_type = 'Product'"

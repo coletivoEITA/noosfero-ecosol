@@ -21,19 +21,28 @@
     <% @exchanges.each do |exchange|   %>
       <tr>
         <!--<td><%= exchange.slug %></td>-->
-        <td><%= exchange.state %></td>
+        <td><%= ExchangePlugin::Exchange.state[exchange.simplified_state] %></td>
         <!--<td><%= exchange.description %></td>-->
-        <td><%= exchange.enterprises[0].name %></td>
-        <td><%= exchange.enterprises[1].name %></td>
+        <% if (ev = (exchange.evaluations.find_by_evaluator_id exchange.enterprise_origin_id)) %>
+          <td title="<%= ev.text %>"><%= exchange.enterprise_origin.name %> | <%= ev.score %></td>
+        <% else %>
+          <td><%= exchange.enterprise_origin.name %></td>
+        <% end %>
+        <% if (ev = (exchange.evaluations.find_by_evaluator_id exchange.enterprise_target_id)) %>
+          <td title="<%= ev.text %>"><%= exchange.enterprise_target.name %> | <%= ev.score %></td>
+        <% else %>
+          <td><%= exchange.enterprise_target.name %></td>
+        <% end %>
+
         <td><%= exchange.created_at.strftime("%d/%m/%Y") %></td>
         <td><%= exchange.updated_at.strftime("%d/%m/%Y") %></td>
         <!--<td><%= link_to _('View'), :controller => 'exchange_plugin_myprofile', :action => 'console', :id => exchange.id %></td>-->
         <td class="article-controls">
-          <%= button_without_text :edit, _('Edit'), :controller => 'exchange_plugin_myprofile', :action => 'exchange_console', :exchange_id => exchange.id %>
+          <%= button_without_text :edit, _('Edit'), :controller => 'exchange_plugin_myprofile', :action => 'console', :id => exchange.id %>
         </td>
         <td class="article-controls">
           <% message = _('Are you shure you want do delete this exchage?') %>
-          <%= button_without_text :delete, _('Delete'), { :action => 'destroy', :exchange_id => exchange.id },
+          <%= button_without_text :delete, _('Delete'), { :action => 'destroy', :id => exchange.id },
               :method => :post, :confirm => message %>
         </td>  
         <!-- <td><%= link_to _('Edit'), :controller => 'exchange_plugin_myprofile', :action => 'edit', :id => exchange.id %></td>-->
