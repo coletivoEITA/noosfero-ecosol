@@ -16,18 +16,22 @@ body.action-sniffer_plugin_myprofile-search {
   #sniffer-search-wrap #map-wrap #map {
     height: 500px;
     width: 100%; }
-  #sniffer-search-wrap #map-wrap #map-overlay {
+  #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 {
     position: absolute;
-    top: 24px; }
-#sniffer-search-wrap #legend {
-  clear: both;
-  float: right;
-  margin: 10px; }
-  #sniffer-search-wrap #legend img {
-    vertical-align: middle; }
-  #sniffer-search-wrap #legend span {
-    display: inline-block;
-    line-height: 32px; }
+    top: 0;
+    width: 100%; }
+    #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 {
+      width: 960px;
+      margin: auto; }
+      #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay h1 {
+        text-shadow: 0px 2px white, 0 -2px white, 2px 0px white, -2px 0px white;
+        float: left; }
+      #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search {
+        float: right; }
+#sniffer-search-wrap #legend img {
+  vertical-align: middle; }
+#sniffer-search-wrap #legend span {
+  display: inline-block; }
 
 .sniffer-edit-enable-label {
   font-weight: bold; }

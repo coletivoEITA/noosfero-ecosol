@@ -29,27 +29,16 @@ sniffer = {
       wrap.css('height', jQuery(window).height() - wrap.offset().top);
 
       map = jQuery('#map');
-      legend = jQuery('#legend');
+      legend = jQuery('#legend-wrap-1');
       map.css('height', wrap.height() - legend.outerHeight(true));
     },
 
-    fillBalloon: function (marker) {
-      if (marker.cachedData)
-        mapOpenBalloon(marker, marker.cachedData);
-      else
-        jQuery.post(marker.balloonUrl, marker.balloonData, function (data) {
-          marker.cachedData = jQuery(data).html();
-          mapOpenBalloon(marker, marker.cachedData);
-        });
-    },
-
     load: function (options) {
-      var profile = options.profile;
-
-      mapLoad(options.zoom);
       jQuery(window).load(sniffer.map.resize);
       jQuery(window).resize(sniffer.map.resize);
+      mapLoad(options.zoom);
 
+      var profile = options.profile;
       var ltblueIcon = "http://www.google.com/intl/en_us/mapfiles/ms/micons/ltblue-dot.png";
       var greenIcon = "http://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png";
       var yellowIcon = "http://www.google.com/intl/en_us/mapfiles/ms/micons/yellow-dot.png";
@@ -88,6 +77,16 @@ sniffer = {
       sniffer.map.filter();
 
       mapCenter();
+    },
+
+    fillBalloon: function (marker) {
+      if (marker.cachedData)
+        mapOpenBalloon(marker, marker.cachedData);
+      else
+        jQuery.post(marker.balloonUrl, marker.balloonData, function (data) {
+          marker.cachedData = jQuery(data).html();
+          mapOpenBalloon(marker, marker.cachedData);
+        });
     },
 
     matchCategoryFilters: function (marker) {

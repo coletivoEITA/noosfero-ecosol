@@ -28,24 +28,36 @@ body.action-sniffer_plugin_myprofile-search {
       width: 100%;
     }
 
-    #map-overlay {
+    #map-overlay-wrap-1 {
       position: absolute;
-      top: 24px;
-    }
+      top: 0;
+      width: 100%;
 
+      #map-overlay-wrap-2 {
+        width: 960px;
+        margin: auto;
+
+        #map-overlay {
+          h1 {
+            text-shadow: 0px 2px white, 0 -2px white, 2px 0px white, -2px 0px white;
+            float: left;
+          }
+
+          #product-search {
+            float: right;
+
+          }
+        }
+      }
+    }
   }
 
   #legend {
-    clear: both;
-    float: right;
-    margin: 10px;
-
     img {
       vertical-align: middle;
     }
     span {
       display: inline-block;
-      line-height: 32px;
     }
   }
 }
