@@ -7,10 +7,9 @@ class ExchangePluginMyprofileController < MyProfileController
 
   def index
     
-#    @exchanges = ExchangePlugin::Exchange.all(:order => sort_column + " " + sort_direction, 
-#                        :conditions => ["enterprise1_id = ? OR enterprise2_id = ? ", profile.id, profile.id], :include => :evaluations)
-    @exchanges = ExchangePlugin::Exchange.all
-    @enterprises = Enterprise.visible
+   @exchanges = ExchangePlugin::Exchange.all.select{|ex| ex.enterprises.find(:first, :conditions => {:id => profile.id})}
+   
+   @enterprises = Enterprise.visible
     render :action => 'index'
     
   end
@@ -125,7 +124,10 @@ class ExchangePluginMyprofileController < MyProfileController
     redirect_to :action => 'exchange_console', :exchange_id => exchange_id
   end
 
-  
+  def destroy
+    (ExchangePlugin::Exchange.find params[:exchange_id]).destroy
+    redirect_to :action => 'index'
+  end  
   
   def evaluate
     @proposal = ExchangePlugin::Proposal.find params[:proposal_id]
@@ -148,10 +150,6 @@ class ExchangePluginMyprofileController < MyProfileController
     end
   end
 
-  def destroy
-    (ExchangePlugin::Exchange.find params[:id]).destroy
-    redirect_to :action => 'index'
-  end
 
   def edit
     @exchange = ExchangePlugin::Exchange.find params[:id]
