@@ -1,0 +1,70 @@
+#!/usr/bin/env ruby
+
+# Contants
+Production = false
+PluginsClasses = ["CmsLearningPlugin", "EscamboPlugin", "EvaluationPlugin", "ExchangePlugin", "SignupWithEnterprisePlugin", "SnifferPlugin"]
+
+def echo text
+  puts "=== #{text}"
+end
+def run cmd
+  echo "$ #{cmd}"
+  output = `#{cmd}`
+  #puts output
+end
+
+require 'rubygems'
+require 'active_support/all'
+Plugins = PluginsClasses.map{ |p| p.underscore.gsub /_plugin$/, '' }
+Plugins.each do |plugin|
+  run "script/noosfero-plugins disable #{plugin}"
+  run "script/noosfero-plugins enable #{plugin}"
+end
+
+echo 'Loading rails'
+require File.dirname(__FILE__) + '/../config/boot'
+require File.dirname(__FILE__) + '/../config/environment'
+
+echo 'Loading (or creating) the environment'
+e = Environment.default 
+unless e
+  e = Environment.create! :name => "ESCAMBO", :is_default => true
+  if Production
+    e.domains.create! :name => 'escambo.org.br', :is_default => true
+    e.domains.create! :name => 'escambo.org'
+  else
+    e.domains.create! :name => '0.0.0.0', :is_default => true
+  end
+end
+
+echo 'Loading categories, units, certifiers and qualifiers'
+database = Rails.configuration.database_configuration[Rails.env]['database']
+run "psql #{database} < db/categories.sql"
+run "psql #{database} < db/qualifiers-and-certifiers.sql"
+run "psql #{database} < db/units.sql"
+
+echo 'Setting theme'
+e.theme = 'escambo'
+e.save!
+
+echo 'Enabling plugins in environment'
+e.enabled_plugins = PluginsClasses
+e.save!
+
+echo 'Enable and disable features'
+e.disable 'disable_products_for_enterprises'
+e.enable 'skip_new_user_email_confirmation'
+e.enable 'send_welcome_email_to_new_users'
+e.enable 'disable_asset_products'
+e.save!
+
+echo 'Setup templates and existing profiles'
+profiles = [e.person_template, e.community_template, e.enterprise_template]
+profiles += Profile.all
+profiles.each do |profile|
+  profile.theme = 'escambo'
+  profile.update_layout_template 'nobars'
+  profile.save
+end
+
+

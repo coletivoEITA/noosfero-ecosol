@@ -1,0 +1,36 @@
+<div id="sniffer-search-wrap">
+
+  <div id="map-wrap">
+    <div id="map"></div>
+
+    <div id="map-overlay">
+      <h2> <%= _('Opportunities Sniffer') %> </h2>
+    </div>
+  </div>
+
+  <div id="legend">
+    <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png"/> <span><%= _("Your enterprise") %></span>
+    <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png"/> <span><%= _("Supplier") %></span>
+    <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/ltblue-dot.png"/> <span><%= _("Consumer") %></span>
+    <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/yellow-dot.png"/> <span><%= _("Supplier and Consumer") %></span>
+  </div>
+
+  <div style="clear:both">
+
+</div>
+
+<%= content_tag 'script', '', :src => "http://maps.googleapis.com/maps/api/js?sensor=false", :type => 'text/javascript' %>
+<%= javascript_include_tag 'google_maps' %>
+
+<% json_opts = {:only => [:id, :name, :lat, :lng], :methods => [:distance]} %>
+<% map_data = @profiles.select{ |profile, data| profile.lat and profile.lng } %>
+
+<script type='text/javascript'>
+  sniffer.map.load({
+      zoom: <%= GoogleMaps.initial_zoom.to_json %>,
+      balloonUrl: '<%= url_for(:controller => :sniffer_plugin_myprofile, :action => :map_balloon, :id => "<id>", :escape => false) %>',
+      myBalloonUrl: '<%= url_for(:controller => :sniffer_plugin_myprofile, :action => :map_balloon, :escape => false) %>',
+      profile: <%= profile.to_json json_opts %>,
+      mapData: <%= map_data.to_json %>,
+  });
+</script>

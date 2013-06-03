@@ -26,11 +26,22 @@ class EscamboPlugin < Noosfero::Plugin
     # overwrite controller action
     render :action => :index
   end
-
   def search_controller_filters
     [
       {:type => 'before_filter', :method_name => 'escambo_searches',
        :options => {:only => :index}, :block => SearchIndexFilter},
+    ]
+  end
+
+  ProfileHome = proc do
+    return unless profile.enterprise?
+
+    render :action => 'index'
+  end
+  def profile_controller_filters
+    [
+      {:type => 'before_filter', :method_name => 'escambo_profile_home',
+       :options => {:only => :index}, :block => ProfileHome},
     ]
   end
 
@@ -40,9 +51,7 @@ class EscamboPlugin < Noosfero::Plugin
     return unless profile.enterprise?
     lambda do
       product_categories = profile.product_categories
-
       exchange_icon = '-not'
-
       #should call ExchangePlugin.exchanges.state=conluded
       escambo_sumary = {:exchanges_count => 23, :enterprises_count => 17}
 
@@ -51,7 +60,7 @@ class EscamboPlugin < Noosfero::Plugin
                :profile => profile,
                :product_categories => product_categories,
                :escambo_sumary => escambo_sumary,
-               :exchange_icon => exchange_icon
+               :exchange_icon => exchange_icon,
              }
     end
   end
