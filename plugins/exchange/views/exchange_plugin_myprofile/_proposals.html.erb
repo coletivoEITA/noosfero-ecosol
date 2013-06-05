@@ -1,14 +1,15 @@
+<% first = true %>
 <% @proposals.each do |proposal| %>
     <% if !(proposal.state == "open" && proposal.enterprise_origin != profile) %>
       
-    <% if proposal.state == "closed" %>
-      <p class="exc-plg-proposal_sent"><%= _('Proposal sent ') + proposal.date_sent.strftime("%d/%m/%Y") %></p>
+    <% if proposal.state != "open" %>
+      <p class="exc-plg-proposal_sent"><%= _('Proposal sent ') + proposal.date_sent.strftime("%d/%m/%Y @ %H:%Mh") %></p>
     <% end %>
     <div id="exc-plg-proposal_wrapper">
       <div id="exc-plg-proposal_header">
         <%= render :partial => "proposal_header", :locals => {:proposal => proposal}%>
       </div>
-      <% if (proposal == @exchange.closed_proposals.last) || (proposal == @exchange.proposals.last) %>
+      <% if first %>
         <%= render :partial => "proposal_buttons", :locals => {:proposal => proposal}%>
       <% end %>
     <div id="exc-plg-proposal_messages">
@@ -16,15 +17,14 @@
       <div id="exchange_messages">
         <h2><%= _('Messages')%></h2>
 
-        <% if proposal.state == "open" %>
-
-        <div id='leave_scrap' style="float:none; height:70px;">
-            <% form_remote_tag :url => {:action => 'new_message', :proposal_id => proposal.id} do  %>
-              <%= text_area_tag 'body',nil, :rows => 2, :cols => 30, :placeholder => _('Digite sua mensagem') %>
-              <%= submit_tag 'Enviar mensagem' %>
-            <% end %>
-        </div>
-    
+        <% if first %>
+          <div id='leave_scrap' style="float:none; height:70px;">
+              <% form_remote_tag :url => {:action => 'new_message', :proposal_id => proposal.id} do  %>
+                <%= text_area_tag 'body',nil, :rows => 2, :cols => 30, :placeholder => _('Digite sua mensagem') %>
+                <%= submit_tag 'Enviar mensagem' %>
+              <% end %>
+          </div>
+          <% first = false %>    
         <% end %>
 
         <div id="messages">
@@ -194,7 +194,7 @@
             </ul>
           <% end %>
           <% if !@target_knowledges.blank? %>
-            <h4><%= _('Knowle dges') %></h4>
+            <h4><%= _('Knowledges') %></h4>
             <ul id="exc-plg-CmsLearningPluginLearning_target_list" class="exc-plg-target_offers">
             <% @target_knowledges.each do |k| %>
               <li id=exchange_CmsLearningPluginLearning_<%= k.id %>>

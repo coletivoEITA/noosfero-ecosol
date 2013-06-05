@@ -1,1 +1,42 @@
 <h5>Exchange Summary</h5>
+
+    <div id="exc-plg-proposal_offer_request_wrapper">
+      <div id="exc-plg-proposal_offer">
+        <h5><%= proposal.enterprise_origin.name + _(' will offer') %></h5>
+        <ul id="exc-plg-origin_elements_list">
+          <% @elements_origin = proposal.exchange_elements.select{|k| k.enterprise_id == @origin.id} %>
+          <% if !@elements_origin.blank? %>
+            <% @elements_origin.each do |e| %>              
+              <li id="exchange_<%= e.element_type %>_element_<%= e.element_id %>">
+                <%= (eval(e.element_type).find e.element_id).name %>
+
+                <% if proposal.state == "open" %>
+                  <%= link_to_remote _('[remove]'), :url => {:action => :remove_element, :id => e.id,
+                  :element_type => e.element_type, :element_id => e.element_id,
+                    :enterprise => "origin", :exchange_id => proposal.exchange_id, :proposal_id => e.proposal_id} %>
+                <% end %>
+              </li>
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+      <div id="exc-plg-proposal_request">
+        <h5><%= proposal.enterprise_target.name + _(' will offer') %></h5>
+        <ul id="exc-plg-target_elements_list">
+          <% @elements_target = proposal.exchange_elements.select{|k| k.enterprise_id == @target.id} %>
+          <% if !@elements_target.blank? %>
+            <% @elements_target.each do |e| %>              
+              <li id="exchange_<%= e.element_type %>_element_<%= e.element_id %>">
+                <%= (eval(e.element_type).find e.element_id).name %>
+                <% if proposal.state == "open" %>
+                
+                <%= link_to_remote _('[remove]'), :url => {:action => :remove_element, :id => e.id,
+                :element_type => e.element_type, :element_id => e.element_id,
+                  :enterprise => "target", :exchange_id => proposal.exchange_id, :proposal_id => e.proposal_id} %>
+                <% end %>
+              </li>
+            <% end %>
+          <% end %>          
+        </ul>        
+      </div>
+    </div> <!-- proposal_offer_request_wrapper -->

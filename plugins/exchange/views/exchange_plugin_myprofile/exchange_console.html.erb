@@ -47,10 +47,10 @@
 
   <% if @proposal.state == "accepted" %>
     <div id="exc-plg-accepted_header">
-      <%= _('Exchange arranged between <strong>' + @origin.name + '</strong> and <strong>' + @target.name + '</strong>') %>
+      <%= _('Exchange arranged between <strong>' + @origin.name + '</strong> & <strong>' + @target.name + '</strong>') %>
     </div>
     <%= render :partial => "evaluation" %>
-    <%= render :partial => "exchange_summary" %>
+    <%= render :partial => "exchange_summary", :locals => {:proposal => @proposal} %>
     <hr />
     <%= _('Negociation history') %>
   <% end %>
