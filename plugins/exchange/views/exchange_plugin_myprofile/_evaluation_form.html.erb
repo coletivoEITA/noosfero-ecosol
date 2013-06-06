@@ -1,0 +1,15 @@
+<div id="exc-plg-evaluation">
+  <% form_for :evaluation, :url => {:controller => 'exchange_plugin_myprofile', :action => 'evaluate', :exchange_id => @exchange.id } do |f| %>      
+    <table style="width:auto">
+      <tr><td><%= _("1 (Very bad)") %></td><td><%= radio_button_tag "score", 1 %></td></tr>
+      <tr><td><%= _("2 (Less than expected)") %></td><td><%= radio_button_tag "score", 2 %></td></tr>
+      <tr><td><%= _("3 (Regular)") %></td><td><%= radio_button_tag "score", 3 %></td></tr>
+      <tr><td><%= _("4 (Better than expected)") %></td><td><%= radio_button_tag "score", 4 %></td></tr>
+      <tr><td><%= _("5 (Excellent)") %></td><td><%= radio_button_tag "score", 5 %></td></tr>
+    </table>
+    <div id='leave_scrap' style="float:none; height:70px;">
+      <%= text_area_tag 'text',nil, :rows => 2, :cols => 30, :placeholder => _("Please evaluate the behaviour of #{@theother.name} during the exchange process") %>
+      <%= f.submit _('Submit')%>
+    </div>
+  <% end %>
+</div>

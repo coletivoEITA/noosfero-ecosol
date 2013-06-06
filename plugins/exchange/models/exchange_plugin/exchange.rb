@@ -1,7 +1,7 @@
 class ExchangePlugin::Exchange < Noosfero::Plugin::ActiveRecord
 
   validates_inclusion_of :state, :in => ["proposal", "negociation", "evaluation", 
-    "finished",  "cancelled"]  
+    "concluded",  "cancelled"]  
 
   has_many :proposals, :class_name => "ExchangePlugin::Proposal", :dependent => :destroy, :order => "id asc"
   
@@ -24,27 +24,27 @@ class ExchangePlugin::Exchange < Noosfero::Plugin::ActiveRecord
       "evaluated" => _('Evaluated'), "cancelled" => _('Cancelled'),  "cancelled_by_origin" => _('Cancelled by Proposer'), "cancelled_by_target" => _('Cancelled by Proposed')}
   end
 
-  def target_elements
-    self.exchange_elements.all :conditions => {:enterprise_id => self.enterprise_target_id}, :include => :element
-  end
-
-  def origin_elements
-    self.exchange_elements.all :conditions => {:enterprise_id => self.enterprise_origin_id}, :include => :element
-  end
+#   def target_elements
+#     self.exchange_elements.all :conditions => {:enterprise_id => self.enterprise_target_id}, :include => :element
+#   end
+# 
+#   def origin_elements
+#     self.exchange_elements.all :conditions => {:enterprise_id => self.enterprise_origin_id}, :include => :element
+#   end
 
   def target?(profile)
     (profile.id == self.enterprise_target_id) 
   end
 
 
-
-  def my_elements(profile)
-    target?(profile) ? self.target_elements : self.origin_elements
-  end
-
-  def other_elements(profile)
-    target?(profile) ? self.origin_elements : self.target_elements 
-  end
+# 
+#   def my_elements(profile)
+#     target?(profile) ? self.target_elements : self.origin_elements
+#   end
+# 
+#   def other_elements(profile)
+#     target?(profile) ? self.origin_elements : self.target_elements 
+#   end
 
 
 

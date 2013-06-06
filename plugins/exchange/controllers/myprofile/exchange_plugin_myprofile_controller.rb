@@ -22,12 +22,13 @@ class ExchangePluginMyprofileController < MyProfileController
     
     @target = @proposal.enterprise_target
     @origin = @proposal.enterprise_origin
+    @theother = @exchange.enterprises.find(:first, :conditions => ["enterprise_id != ?",profile.id])  
     
-    @target_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @target.id} - @proposal.knowledges
-    @origin_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @origin.id} - @proposal.knowledges 
+    @theother_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @theother.id} - @proposal.knowledges
+    @profile_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @profile.id} - @proposal.knowledges 
     
-    @origin_products = @origin.products - @proposal.products
-    @target_products = @target.products - @proposal.products
+    @profile_products = @profile.products - @proposal.products
+    @theother_products = @theother.products - @proposal.products
       
     #css classes for the states
     if @exchange.state == "proposal"
@@ -45,7 +46,7 @@ class ExchangePluginMyprofileController < MyProfileController
       @state2class = "exc-plg-past"
       @state3class = "exc-plg-active"
       @state4class = "exc-plg-future"
-    elsif @exchange.state == "finished"
+    elsif @exchange.state == "concluded"
       @state1class = "exc-plg-past"
       @state2class = "exc-plg-past"
       @state3class = "exc-plg-past"
@@ -148,11 +149,12 @@ class ExchangePluginMyprofileController < MyProfileController
     evaluation.score = params[:score]
     evaluation.text = params[:text]
     evaluation.evaluator = profile
-    evaluation.evaluated_id = params[:evaluated_id]
+    evaluation.evaluated = @theother
     evaluation.save
 
     if (@exchange.evaluations.count == 2)
-        @exchange.state = 'finished'
+        @exchange.state = 'concluded'
+        @exchange.concluded_at = Time.now
         @exchange.save  
     end
 

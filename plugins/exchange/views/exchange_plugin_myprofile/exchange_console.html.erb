@@ -30,22 +30,25 @@
       </div>
     </div> <!-- states -->
     <div id="exc-plg-enterprise_headers">
-      <div id="exc-plg-enterprise_origin">
-        <div id="exc-plg-origin_thumb" style="background: black;">
-          <%= link_to profile_image(@origin, :thumb, :style => "width: 65px;") +"\n", @origin.url %>
+      <div id="exc-plg-enterprise_profile">
+        <div id="exc-plg-profile_thumb" style="background: black;">
+          <%= link_to profile_image(profile, :thumb, :style => "width: 65px;") +"\n", profile.url %>
         </div>
-        <p class="menu_g_selecionado"><%= @origin.name %></p>
+        <p class="menu_g_selecionado"><%= profile.name %></p>
       </div>
-      <div id="exc-plg-enterprise_target">
-        <div id="exc-plg-target_thumb" style="background: black;">
-          <%= link_to profile_image(@target, :thumb, :style => "width: 65px;") +"\n", @target.url %>
+      <div id="exc-plg-enterprise_theother">
+        <div id="exc-plg-theother_thumb" style="background: black;">
+          <%= link_to profile_image(@theother, :thumb, :style => "width: 65px;") +"\n", @theother.url %>
         </div>
-        <p class="menu_g_selecionado"><%= @target.name %></p>
+        <p class="menu_g_selecionado"><%= @theother.name %></p>
       </div>
     </div> <!-- enterprise_headers -->
   </div> <!-- states wrapper -->
 
   <% if @proposal.state == "accepted" %>
+    <% if @exchange.state == "concluded" %>
+      <div style="overflow:hidden"><p style="float:right"><%= _('Concluded at %s') % @exchange.concluded_at.strftime("%d/%m/%Y @ %H:%Mh") %></p></div>
+    <% end %>
     <div id="exc-plg-accepted_header">
       <%= _('Exchange arranged between <strong>' + @origin.name + '</strong> & <strong>' + @target.name + '</strong>') %>
     </div>

@@ -1,48 +1,17 @@
-<div id="exc-plg-origin-evaluation">
-  <% if (evaluation = @exchange.evaluations.select{|x| x.evaluator_id == @proposal.enterprise_origin_id }.first) %>
-    <p><%= _("Evaluation done by #{evaluation.evaluator.name} at #{evaluation.created_at.strftime("%d/%m/%Y @ %H:%Mh")}") %></p>
-  <% else %>
-    <p><%= _('Your evaluation (still to be done)') %></p>
-    <% if @proposal.enterprise_origin == profile %>
-      <div id="exc-plg-evaluation">
-        <% form_for :evaluation, :url => {:controller => 'exchange_plugin_myprofile', :action => 'evaluate', :exchange_id => @exchange.id, :evaluated => @proposal.enterprise_target_id} do |f| %>      
-          <table style="width:auto">
-            <tr><td><%= _("1 (Very bad)") %></td><td><%= radio_button_tag "score", 1 %></td></tr>
-            <tr><td><%= _("2 (Less than expected)") %></td><td><%= radio_button_tag "score", 1 %></td></tr>
-            <tr><td><%= _("3 (Regular)") %></td><td><%= radio_button_tag "score", 1 %></td></tr>
-            <tr><td><%= _("4 (Better than expected)") %></td><td><%= radio_button_tag "score", 1 %></td></tr>
-            <tr><td><%= _("5 (Excellent)") %></td><td><%= radio_button_tag "score", 1 %></td></tr>
-          </table>
-            <div id='leave_scrap' style="float:none; height:70px;">
-              <%= text_area_tag 'text',nil, :rows => 2, :cols => 30, :placeholder => _("Please evaluate the behaviour of #{@proposal.enterprise_origin.name} during the exchange process") %>
-              <%= f.submit _('Submit')%>
-            </div>
-        <% end %>
-      </div>
+<div id="exc-plg-evaluation">
+  <div id="exc-plg-profile-evaluation">
+    <% if (evaluation = @exchange.evaluations.select{|x| x.evaluator_id == profile.id }.first) %>
+      <%= render :partial => "enterprise_evaluation", :locals => {:evaluation => evaluation}%>
+    <% else %>
+      <p><%= _('Your evaluation (still to be done)') %></p>
+      <%= render :partial => "evaluation_form" %>
     <% end %>
-  <% end %>
-</div>
-<div id="exc-plg-target-evaluation">
-  <% if (evaluation = @exchange.evaluations.select{|x| x.evaluator_id == @proposal.enterprise_target_id }.first) %>
-    <p><%= _("Evaluation done by #{evaluation.evaluator.name} at #{evaluation.created_at.strftime("%d/%m/%Y @ %H:%Mh")}") %></p>
-  <% else %>
-    <p><%= _('Your evaluation (still to be done)') %></p>
-    <% if @proposal.enterprise_target == profile %>
-      <div id="exc-plg-evaluation">
-        <% form_for :evaluation, :url => {:controller => 'exchange_plugin_myprofile', :action => 'evaluate', :exchange_id => @exchange.id, :evaluated => @proposal.enterprise_origin_id} do |f| %>      
-          <table style="width:auto">
-            <tr><td><%= _("1 (Very bad)") %></td><td><%= radio_button_tag "score", 1 %></td></tr>
-            <tr><td><%= _("2 (Less than expected)") %></td><td><%= radio_button_tag "score", 1 %></td></tr>
-            <tr><td><%= _("3 (Regular)") %></td><td><%= radio_button_tag "score", 1 %></td></tr>
-            <tr><td><%= _("4 (Better than expected)") %></td><td><%= radio_button_tag "score", 1 %></td></tr>
-            <tr><td><%= _("5 (Excellent)") %></td><td><%= radio_button_tag "score", 1 %></td></tr>
-          </table>
-            <div id='leave_scrap' style="float:none; height:70px;">
-              <%= text_area_tag 'text',nil, :rows => 2, :cols => 30, :placeholder => _("Please evaluate the behaviour of #{@proposal.enterprise_origin.name} during the exchange process") %>
-              <%= f.submit _('Submit')%>
-            </div>
-        <% end %>
-      </div>
+  </div>
+  <div id="exc-plg-theother-evaluation">
+    <% if (evaluation = @exchange.evaluations.select{|x| x.evaluator_id == @theother.id }.first) %>
+      <%= render :partial => "enterprise_evaluation", :locals => {:evaluation => evaluation}%>
+    <% else %>
+      <p><%= _("%s evaluation (still to be done)") % @theother.name %></p>
     <% end %>
-  <% end %>
+  </div>
 </div>
