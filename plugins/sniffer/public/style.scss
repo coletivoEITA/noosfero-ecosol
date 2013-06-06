@@ -1,18 +1,54 @@
 @import url(token-input-sniffer.css);
 
+/* Colors */
+
+$color-suppliers: #B4BDDA;
+$color-consumers: #BCD1A9;
+
+/* Base measuments */
+
+$base: 12px;
+$module: 6*$base;
+$intercolumn: 2*$base;
+$module1: 1*$module + 1*$intercolumn;
+$module2: 2*$module + 1*$intercolumn;
+$module3: 3*$module + 2*$intercolumn;
+$module4: 4*$module + 3*$intercolumn;
+$module5: 5*$module + 4*$intercolumn;
+$module6: 6*$module + 5*$intercolumn;
+$module7: 7*$module + 6*$intercolumn;
+$module8: 8*$module + 7*$intercolumn;
+$module9: 9*$module + 8*$intercolumn;
+$wireframe: 10*$module + 10*$intercolumn;
+
+$margin: $intercolumn;
+$half-margin: $margin/2;
+/* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
+$padding: $intercolumn/2;
+$half-padding: $padding/2;
+
+$shadow: 2px;
+
+/* Images */
+
 /* Search */
 
 body.action-sniffer_plugin_myprofile-search {
   overflow: hidden;
 
   #wrap-1 {
-    margin: 0;
     width: 100%;
   }
   #wrap-2 {
-    padding: 0;
     border: none;
   }
+  #wrap-1,
+  #wrap-2,
+  #content {
+    margin: 0;
+    padding: 0;
+  }
+
   #theme-footer, #profile-header, #profile-footer {
     display: none;
   }
@@ -34,18 +70,62 @@ body.action-sniffer_plugin_myprofile-search {
       width: 100%;
 
       #map-overlay-wrap-2 {
-        width: 960px;
+        width: $wireframe;
         margin: auto;
 
         #map-overlay {
           h1 {
-            text-shadow: 0px 2px white, 0 -2px white, 2px 0px white, -2px 0px white;
+            text-shadow: 0 $shadow white, 0 -$shadow white, $shadow 0 white, -$shadow 0 white;
             float: left;
           }
 
           #product-search {
             float: right;
 
+            .legend {
+              float: right;
+              
+              .suppliers, .consumers {
+                display: inline-block;
+                margin-bottom: $half-padding;
+
+                span {
+                  float: left;
+                }
+                .icon {
+                  width: $base;
+                  height: $base;
+                  display: inline-block;
+                  margin-right: $half-padding;
+                }
+              }
+              .suppliers {
+                margin-right: $margin;
+
+                .icon {
+                  background: $color-suppliers;
+                }
+              }
+              .consumers {
+                .icon {
+                  background: $color-consumers;
+                }
+              }
+            }
+
+            .search-field {
+              clear: both;
+            }
+
+            .focus-pane {
+              display: none;
+            }
+
+            &.focus {
+              .focus-pane {
+                display: block;
+              }
+            }
           }
         }
       }
@@ -60,14 +140,6 @@ body.action-sniffer_plugin_myprofile-search {
       display: inline-block;
     }
   }
-}
-
-.sniffer-edit-enable-label {
-  font-weight: bold;
-}
-.sniffer-edit-enable-help {
-  margin: 5px 0 20px 25px;
-  width: 300px;
 }
 
 /* Control panel buttons */
@@ -85,80 +157,15 @@ body.action-sniffer_plugin_myprofile-search {
   background-image: url(images/sniff-opportunities.gif)
 }
 
-#sniffer-plugin-disable-pane {
-  filter:alpha(opacity=06);
-  -moz-opacity:.06;
-  opacity:.06;
-  background-color: black;
-  position: absolute;
-  display: none;
-  top: 0px;
-  left: 0px;
-  z-index: 500; /* just preventing */
-}
+/* Interest interface */
+
 #sniffer-plugin-product-select {
   width: 428px;
-  margin-left: 25px;
+  margin-left: $margin;
 }
 #sniffer-plugin-product-select.disabled {
   color: #ccc;
 }
 #sniffer-plugin-product-select.disabled ul {
   border-color: #ccc;
-}
-
-.sniffer-plugin-products strong {
-  line-height: 30px;
-}
-.sniffer-plugin-products ul {
-  list-style: none;
-  margin: 0;
-  padding: 0 20px;
-}
-.sniffer-plugin-products li small {
-  font-size: 9px;
-}
-.sniffer-plugin-search-list .sniffer-plugin-profile-title strong {
-  margin-left: 5px;
-}
-.sniffer-plugin-profile-title strong {
-  margin-left: 12px;
-}
-.sniffer-plugin-profile-title img {
-  vertical-align: middle;
-}
-.sniffer-plugin-profile-title span {
-  font-size: 10px;
-}
-.sniffer-plugin-filter-by-distance span {
-  color: #777;
-}
-.sniffer-plugin-profile-result {
-  margin: 15px 10px 15px 0;
-}
-
-.sniffer-plugin-summary {
-  font-size: 12px;
-  color: #777;
-}
-.sniffer-plugin-filter-by-distance #distance {
-  border: 1px solid #999;
-  padding: 3px 5px;
-  width: 30px;
-}
-.sniffer-plugin-search-list .no-results {
-  margin: 8px 0;
-}
-#sniffer-plugin-search-invisible-list {
-  display: none;
-}
-.sniffer-plugin-hide-show-link {
-  font-size: 10px;
-}
-.sniffer-plugin-results .any-result {
-  margin-top: 25px;
-}
-#sniffer-plugin-tips {
-  margin-top: 40px;
-  font-size: 10px;
 }

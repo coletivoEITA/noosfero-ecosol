@@ -1,23 +1,22 @@
 <h1> <%= _('Buyer interests') %> </h1>
-  
+
 <% form_for(:sniffer, @sniffer_profile, :url => {:action => 'edit'}, :html => {:method => 'post'}) do |f| %>
-  
+
   <div id='sniffer-plugin-product-select'>
     <div><%= _('Products and Services of Interest') %></div>
+
     <%= f.text_field 'product_category_string_ids' %>
     <% array = @sniffer_profile.product_categories.collect{|i| {:id => i.id, :name => i.name}} %>
     <% javascript_tag do %>
       jQuery.TokenList(jQuery("#sniffer_product_category_string_ids"), '<%= url_for(:action => 'product_categories') %>',
       {searchDelay:150, prePopulate: <%= array.to_json %>, preventDuplicates: true, <%= jquery_token_input_messages_json %>});
     <% end %>
+
   </div>
-  
+
   <% button_bar do %>
     <%= submit_button(:save, _('Save')) %>
     <%= button :back, _('Back to control panel'), :controller => 'profile_editor' %>
   <% end %>
 <% end %>
-
-<div id="sniffer-plugin-disable-pane">
-</div>
 

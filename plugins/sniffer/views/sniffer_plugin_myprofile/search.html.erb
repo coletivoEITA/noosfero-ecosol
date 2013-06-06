@@ -8,18 +8,7 @@
         <div id="map-overlay">
           <h1> <%= _('Opportunities Sniffer') %> </h1>
 
-          <div id="product-search" class="search-box">
-            <div class="legend">
-              <span><%= _('Suppliers') %></span>
-              <span><%= _('Consumers') %></span>
-            </div>
-
-            <div class="search-field">
-              <input type="text" class="search-input"/>
-              <div class="search-submit">
-              </div>
-            </div>
-          </div>
+          <%= render :partial => 'product_search_box' %>
         </div>
       </div>
     </div>

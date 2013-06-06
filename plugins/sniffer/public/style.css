@@ -1,13 +1,20 @@
 @import url(token-input-sniffer.css);
+/* Colors */
+/* Base measuments */
+/* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
+/* Images */
 /* Search */
 body.action-sniffer_plugin_myprofile-search {
   overflow: hidden; }
   body.action-sniffer_plugin_myprofile-search #wrap-1 {
-    margin: 0;
     width: 100%; }
   body.action-sniffer_plugin_myprofile-search #wrap-2 {
-    padding: 0;
     border: none; }
+  body.action-sniffer_plugin_myprofile-search #wrap-1,
+  body.action-sniffer_plugin_myprofile-search #wrap-2,
+  body.action-sniffer_plugin_myprofile-search #content {
+    margin: 0;
+    padding: 0; }
   body.action-sniffer_plugin_myprofile-search #theme-footer, body.action-sniffer_plugin_myprofile-search #profile-header, body.action-sniffer_plugin_myprofile-search #profile-footer {
     display: none; }
 
@@ -24,21 +31,38 @@ body.action-sniffer_plugin_myprofile-search {
       width: 960px;
       margin: auto; }
       #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay h1 {
-        text-shadow: 0px 2px white, 0 -2px white, 2px 0px white, -2px 0px white;
+        text-shadow: 0 2px white, -2px white, 2px 0 white, -2px 0 white;
         float: left; }
       #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search {
         float: right; }
+        #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend {
+          float: right; }
+          #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers {
+            display: inline-block;
+            margin-bottom: 6px; }
+            #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers span, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers span {
+              float: left; }
+            #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .icon, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .icon {
+              width: 12px;
+              height: 12px;
+              display: inline-block;
+              margin-right: 6px; }
+          #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers {
+            margin-right: 24px; }
+            #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .icon {
+              background: #b4bdda; }
+          #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .icon {
+            background: #bcd1a9; }
+        #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .search-field {
+          clear: both; }
+        #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .focus-pane {
+          display: none; }
+        #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search.focus .focus-pane {
+          display: block; }
 #sniffer-search-wrap #legend img {
   vertical-align: middle; }
 #sniffer-search-wrap #legend span {
   display: inline-block; }
-
-.sniffer-edit-enable-label {
-  font-weight: bold; }
-
-.sniffer-edit-enable-help {
-  margin: 5px 0 20px 25px;
-  width: 300px; }
 
 /* Control panel buttons */
 .controller-profile_editor a.control-panel-buyer-interests {
@@ -53,78 +77,13 @@ body.action-sniffer_plugin_myprofile-search {
 .controller-profile_editor .msie6 a.control-panel-sniff-opportunities {
   background-image: url(images/sniff-opportunities.gif); }
 
-#sniffer-plugin-disable-pane {
-  filter: alpha(opacity=6);
-  -moz-opacity: .06;
-  opacity: .06;
-  background-color: black;
-  position: absolute;
-  display: none;
-  top: 0px;
-  left: 0px;
-  z-index: 500;
-  /* just preventing */ }
-
+/* Interest interface */
 #sniffer-plugin-product-select {
   width: 428px;
-  margin-left: 25px; }
+  margin-left: 24px; }
 
 #sniffer-plugin-product-select.disabled {
   color: #ccc; }
 
 #sniffer-plugin-product-select.disabled ul {
   border-color: #ccc; }
-
-.sniffer-plugin-products strong {
-  line-height: 30px; }
-
-.sniffer-plugin-products ul {
-  list-style: none;
-  margin: 0;
-  padding: 0 20px; }
-
-.sniffer-plugin-products li small {
-  font-size: 9px; }
-
-.sniffer-plugin-search-list .sniffer-plugin-profile-title strong {
-  margin-left: 5px; }
-
-.sniffer-plugin-profile-title strong {
-  margin-left: 12px; }
-
-.sniffer-plugin-profile-title img {
-  vertical-align: middle; }
-
-.sniffer-plugin-profile-title span {
-  font-size: 10px; }
-
-.sniffer-plugin-filter-by-distance span {
-  color: #777; }
-
-.sniffer-plugin-profile-result {
-  margin: 15px 10px 15px 0; }
-
-.sniffer-plugin-summary {
-  font-size: 12px;
-  color: #777; }
-
-.sniffer-plugin-filter-by-distance #distance {
-  border: 1px solid #999;
-  padding: 3px 5px;
-  width: 30px; }
-
-.sniffer-plugin-search-list .no-results {
-  margin: 8px 0; }
-
-#sniffer-plugin-search-invisible-list {
-  display: none; }
-
-.sniffer-plugin-hide-show-link {
-  font-size: 10px; }
-
-.sniffer-plugin-results .any-result {
-  margin-top: 25px; }
-
-#sniffer-plugin-tips {
-  margin-top: 40px;
-  font-size: 10px; }
