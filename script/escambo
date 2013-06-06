@@ -42,6 +42,10 @@ database = Rails.configuration.database_configuration[Rails.env]['database']
 run "psql #{database} < db/categories.sql"
 run "psql #{database} < db/qualifiers-and-certifiers.sql"
 run "psql #{database} < db/units.sql"
+Category.update_all ['environment_id = ?', e.id]
+Qualifier.update_all ['environment_id = ?', e.id]
+Certifier.update_all ['environment_id = ?', e.id]
+Unit.update_all ['environment_id = ?', e.id]
 
 echo 'Setting theme'
 e.theme = 'escambo'

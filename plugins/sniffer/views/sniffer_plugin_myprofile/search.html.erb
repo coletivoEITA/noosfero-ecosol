@@ -3,20 +3,28 @@
   <div id="map-wrap">
     <div id="map"></div>
 
-    <div id="map-overlay">
-      <h2> <%= _('Opportunities Sniffer') %> </h2>
+    <div id="map-overlay-wrap-1">
+      <div id="map-overlay-wrap-2">
+        <div id="map-overlay">
+          <h1> <%= _('Opportunities Sniffer') %> </h1>
+
+          <%= render :partial => 'product_search_box' %>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div id="legend">
-    <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png"/> <span><%= _("Your enterprise") %></span>
-    <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png"/> <span><%= _("Supplier") %></span>
-    <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/ltblue-dot.png"/> <span><%= _("Consumer") %></span>
-    <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/yellow-dot.png"/> <span><%= _("Supplier and Consumer") %></span>
+  <div id="legend-wrap-1">
+    <div id="legend-wrap-2">
+      <div id="legend">
+        <span> <b> <%= _('Reading') %> </b> </span>
+        <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png"/> <span><%= _("your enterprise") %></span>
+        <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png"/> <span><%= _("suppliers") %></span>
+        <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/ltblue-dot.png"/> <span><%= _("consumers") %></span>
+        <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/yellow-dot.png"/> <span><%= _("both") %></span>
+      </div>
+    </div>
   </div>
-
-  <div style="clear:both">
-
 </div>
 
 <%= content_tag 'script', '', :src => "http://maps.googleapis.com/maps/api/js?sensor=false", :type => 'text/javascript' %>

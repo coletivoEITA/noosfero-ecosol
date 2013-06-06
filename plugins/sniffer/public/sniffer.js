@@ -1,22 +1,3 @@
-function sniffer_plugin_interest_enable(enabled) {
-  el = jQuery('#sniffer-plugin-product-select');
-  el.toggleClass('disabled', !enabled);
-
-  margin = 10;
-  return jQuery('#sniffer-plugin-disable-pane').css({
-    top: el.position().top - margin,
-    left: el.position().left - margin,
-    width: el.innerWidth() + margin*2,
-    height: el.innerHeight() + margin*2,
-  }).toggle(!enabled);
-}
-
-function sniffer_plugin_show_hide_toggle(context, hideText, showText, element) {
-  isShow = (jQuery(context).text() == showText);
-  element.fadeToggle();
-  jQuery(context).text(isShow ? hideText : showText);
-}
-
 sniffer = {
 
   map: {
@@ -29,27 +10,16 @@ sniffer = {
       wrap.css('height', jQuery(window).height() - wrap.offset().top);
 
       map = jQuery('#map');
-      legend = jQuery('#legend');
-      map.css('height', wrap.height() - legend.outerHeight(true));
-    },
-
-    fillBalloon: function (marker) {
-      if (marker.cachedData)
-        mapOpenBalloon(marker, marker.cachedData);
-      else
-        jQuery.post(marker.balloonUrl, marker.balloonData, function (data) {
-          marker.cachedData = jQuery(data).html();
-          mapOpenBalloon(marker, marker.cachedData);
-        });
+      legend = jQuery('#legend-wrap-1');
+      map.css('height', wrap.outerHeight() - legend.outerHeight(true));
     },
 
     load: function (options) {
-      var profile = options.profile;
-
-      mapLoad(options.zoom);
       jQuery(window).load(sniffer.map.resize);
       jQuery(window).resize(sniffer.map.resize);
+      mapLoad(options.zoom);
 
+      var profile = options.profile;
       var ltblueIcon = "http://www.google.com/intl/en_us/mapfiles/ms/micons/ltblue-dot.png";
       var greenIcon = "http://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png";
       var yellowIcon = "http://www.google.com/intl/en_us/mapfiles/ms/micons/yellow-dot.png";
@@ -88,6 +58,16 @@ sniffer = {
       sniffer.map.filter();
 
       mapCenter();
+    },
+
+    fillBalloon: function (marker) {
+      if (marker.cachedData)
+        mapOpenBalloon(marker, marker.cachedData);
+      else
+        jQuery.post(marker.balloonUrl, marker.balloonData, function (data) {
+          marker.cachedData = jQuery(data).html();
+          mapOpenBalloon(marker, marker.cachedData);
+        });
     },
 
     matchCategoryFilters: function (marker) {
