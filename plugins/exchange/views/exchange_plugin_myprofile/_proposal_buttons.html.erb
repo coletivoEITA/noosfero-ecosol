@@ -14,7 +14,7 @@
       <%= f.submit _('Cancel Negociation'), :class => "exc-plg-exchange_plugin_button"%>
     <% end %>
     <% if proposal.enterprise_target == profile %>
-      <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'evaluate', :proposal_id => @proposal.id } do |f| %>
+      <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'accept', :proposal_id => @proposal.id } do |f| %>
         <%= f.submit _('Accept proposal and finish Exchange'), :class => "exc-plg-exchange_plugin_button"%>
       <% end %>
     <% else %>

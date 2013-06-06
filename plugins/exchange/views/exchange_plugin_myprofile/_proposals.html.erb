@@ -9,7 +9,7 @@
       <div id="exc-plg-proposal_header">
         <%= render :partial => "proposal_header", :locals => {:proposal => proposal}%>
       </div>
-      <% if first %>
+      <% if first && (@exchange.state == "proposal" || @exchange.state == "negociation")%>
         <%= render :partial => "proposal_buttons", :locals => {:proposal => proposal}%>
       <% end %>
     <div id="exc-plg-proposal_messages">

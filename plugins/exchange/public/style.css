@@ -371,3 +371,13 @@ ul.exc-plg-origin_offers{
   color: white;
   text-align: center;
 }
+
+#exc-plg-origin-evaluation{
+  float:left;
+  width: 50%;
+}
+
+#exc-plg-origin-evaluation{
+  width: 49%;
+  float:left;
+}

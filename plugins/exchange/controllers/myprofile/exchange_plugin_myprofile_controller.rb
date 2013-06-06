@@ -129,7 +129,7 @@ class ExchangePluginMyprofileController < MyProfileController
     redirect_to :action => 'index'
   end  
   
-  def evaluate
+  def accept
     @proposal = ExchangePlugin::Proposal.find params[:proposal_id]
     @proposal.exchange.state = "evaluation"
     @proposal.exchange.save
@@ -138,6 +138,36 @@ class ExchangePluginMyprofileController < MyProfileController
     
     redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
   end  
+  
+
+  def evaluate
+    @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
+    evaluation = EvaluationPlugin::Evaluation.new
+    evaluation.object_type = "ExchangePlugin::Exchange"
+    evaluation.object_id = params[:exchange_id]
+    evaluation.score = params[:score]
+    evaluation.text = params[:text]
+    evaluation.evaluator = profile
+    evaluation.evaluated_id = params[:evaluated_id]
+    evaluation.save
+
+    if (@exchange.evaluations.count == 2)
+        @exchange.state = 'finished'
+        @exchange.save  
+    end
+
+    redirect_to :action => 'exchange_console', :exchange_id => @exchange.id
+
+  end
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   #this should not be used
   def new
