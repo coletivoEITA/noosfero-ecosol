@@ -1,1 +1,17 @@
-<h5>Evaluation</h5>
+<div id="exc-plg-evaluation">
+  <div id="exc-plg-profile-evaluation">
+    <% if (evaluation = @exchange.evaluations.select{|x| x.evaluator_id == profile.id }.first) %>
+      <%= render :partial => "enterprise_evaluation", :locals => {:evaluation => evaluation}%>
+    <% else %>
+      <p><%= _('Your evaluation (still to be done)') %></p>
+      <%= render :partial => "evaluation_form" %>
+    <% end %>
+  </div>
+  <div id="exc-plg-theother-evaluation">
+    <% if (evaluation = @exchange.evaluations.select{|x| x.evaluator_id == @theother.id }.first) %>
+      <%= render :partial => "enterprise_evaluation", :locals => {:evaluation => evaluation}%>
+    <% else %>
+      <p><%= _("%s evaluation (still to be done)") % @theother.name %></p>
+    <% end %>
+  </div>
+</div>

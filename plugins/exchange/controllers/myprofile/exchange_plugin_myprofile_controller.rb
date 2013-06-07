@@ -7,7 +7,7 @@ class ExchangePluginMyprofileController < MyProfileController
 
   def index
     
-   @exchanges = ExchangePlugin::Exchange.all.select{|ex| ex.enterprises.find(:first, :conditions => {:id => profile.id})}
+   @exchanges = ExchangePlugin::Exchange.all.select{|ex| (ex.state != "proposal") && ex.enterprises.find(:first, :conditions => {:id => profile.id})}
    
    @enterprises = Enterprise.visible
     render :action => 'index'
@@ -22,12 +22,13 @@ class ExchangePluginMyprofileController < MyProfileController
     
     @target = @proposal.enterprise_target
     @origin = @proposal.enterprise_origin
+    @theother = @exchange.enterprises.find(:first, :conditions => ["enterprise_id != ?",profile.id])  
     
-    @target_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @target.id} - @proposal.knowledges
-    @origin_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @origin.id} - @proposal.knowledges 
+    @theother_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @theother.id} - @proposal.knowledges
+    @profile_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @profile.id} - @proposal.knowledges 
     
-    @origin_products = @origin.products - @proposal.products
-    @target_products = @target.products - @proposal.products
+    @profile_products = @profile.products - @proposal.products
+    @theother_products = @theother.products - @proposal.products
       
     #css classes for the states
     if @exchange.state == "proposal"
@@ -45,7 +46,7 @@ class ExchangePluginMyprofileController < MyProfileController
       @state2class = "exc-plg-past"
       @state3class = "exc-plg-active"
       @state4class = "exc-plg-future"
-    elsif @exchange.state == "finished"
+    elsif @exchange.state == "concluded"
       @state1class = "exc-plg-past"
       @state2class = "exc-plg-past"
       @state3class = "exc-plg-past"
@@ -129,7 +130,7 @@ class ExchangePluginMyprofileController < MyProfileController
     redirect_to :action => 'index'
   end  
   
-  def evaluate
+  def accept
     @proposal = ExchangePlugin::Proposal.find params[:proposal_id]
     @proposal.exchange.state = "evaluation"
     @proposal.exchange.save
@@ -138,6 +139,37 @@ class ExchangePluginMyprofileController < MyProfileController
     
     redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
   end  
+  
+
+  def evaluate
+    @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
+    evaluation = EvaluationPlugin::Evaluation.new
+    evaluation.object_type = "ExchangePlugin::Exchange"
+    evaluation.object_id = params[:exchange_id]
+    evaluation.score = params[:score]
+    evaluation.text = params[:text]
+    evaluation.evaluator = profile
+    evaluation.evaluated = @theother
+    evaluation.save
+
+    if (@exchange.evaluations.count == 2)
+        @exchange.state = 'concluded'
+        @exchange.concluded_at = Time.now
+        @exchange.save  
+    end
+
+    redirect_to :action => 'exchange_console', :exchange_id => @exchange.id
+
+  end
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   #this should not be used
   def new

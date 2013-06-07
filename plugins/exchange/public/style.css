@@ -36,12 +36,12 @@ td {
 }
 
 
-#exchange_origin_elements td, #exchange_target_elements td,#exchange_origin_products td, #exchange_target_products td
+#exchange_profile_elements td, #exchange_theother_elements td,#exchange_profile_products td, #exchange_theother_products td
 {
   border:0px;
 }
 
-#exchange_origin_elements th, #exchange_target_elements th,#exchange_origin_products th, #exchange_target_products th
+#exchange_profile_elements th, #exchange_theother_elements th,#exchange_profile_products th, #exchange_theother_products th
 {
   border:0px;
 }
@@ -249,27 +249,27 @@ td {
 #exc-plg-enterprise_headers{
   color:white;
 }
-#exc-plg-enterprise_origin{
+#exc-plg-enterprise_profile{
   background: #7857B8;
   float: left;
   width: 492.5px;
   height: 50px;
   text-align: left;
 }
-#exc-plg-enterprise_target{
+#exc-plg-enterprise_theother{
   background: #C32478;
   float: left;
   width: 492.5px;
   height: 50px;
   text-align: right;
 }
-#exc-plg-origin_thumb{
+#exc-plg-profile_thumb{
   float: left;
   height: 65px;
   width: 65px;
   margin: -7.5px 10px 0 25px;
 }
-#exc-plg-target_thumb{
+#exc-plg-theother_thumb{
   float: right;
   height: 65px;
   width: 65px;
@@ -316,7 +316,10 @@ td {
   background: #F0E9F6;
   border-bottom: 1px solid #BDA8DC;
 }
-#exc-plg-proposal_offer_request_wrapper
+#exc-plg-proposal_offer_request_wrapper{
+  overflow:hidden;
+  margin-bottom: 5px;
+}
 #exc-plg-proposal_offer{
   background: #F0E9F6;
   float: left;
@@ -328,24 +331,24 @@ td {
   width: 50%;
 }
 
-ul.exc-plg-target_offers{
+ul.exc-plg-theother_offers{
   padding:0;
   margin:0;
 }
 
-ul.exc-plg-origin_offers{
+ul.exc-plg-profile_offers{
   padding:0;
   margin:0;
 }
 
-.exc-plg-origin_offers li{
+.exc-plg-profile_offers li{
   background: #D8CAEA;
   padding:8px;
   margin:5px 10px;
   list-style-type: none;
 }
 
-.exc-plg-target_offers li{
+.exc-plg-theother_offers li{
   background: #F3C3D4;
   padding:8px;
   margin:5px 10px;
@@ -370,4 +373,39 @@ ul.exc-plg-origin_offers{
   height: 30px;
   color: white;
   text-align: center;
+}
+
+/* evaluation */
+#exc-plg-evaluation{
+  width: 100%;
+  overflow:hidden;
+}
+
+#exc-plg-profile-evaluation{
+  float:left;
+  width: 50%;
+  overflow:hidden;
+}
+
+#exc-plg-theother-evaluation{
+  overflow:hidden;
+  width: 49%;
+  float:left;
+}
+
+#exc-plg-evaluation-text{
+  background: white;
+  width: 70%;
+  margin: auto;
+}
+#exc-plg-evaluation-footer{
+  overflow:hidden;
+}
+#exc-plg-score{
+  width: 50%;
+  float: left;
+}
+#exc-plg-exchange_result{
+  width: 49%;
+  float: left;
 }

@@ -1,0 +1,15 @@
+<p><%= _("Evaluation done by #{evaluation.evaluator.name} at #{evaluation.created_at.strftime("%d/%m/%Y @ %H:%Mh")}") %></p>
+<div id="exc-plg-evaluation-text">
+  <p>
+    <%= evaluation.text %>
+  </p>
+  <div id="exc-plg-evaluation-footer">
+    <div id="exc-plg-score">
+      <h5><%= _('Score') %></h5>
+      <%= evaluation.score %>
+    </div>
+    <div id="exc-plg-exchange_result">
+      <h5><%= _('The exchange happened?') %></h5>
+    </div>
+  </div>
+</div>

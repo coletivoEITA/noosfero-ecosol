@@ -1,14 +1,15 @@
+<% first = true %>
 <% @proposals.each do |proposal| %>
     <% if !(proposal.state == "open" && proposal.enterprise_origin != profile) %>
       
-    <% if proposal.state == "closed" %>
-      <p class="exc-plg-proposal_sent"><%= _('Proposal sent ') + proposal.date_sent.strftime("%d/%m/%Y") %></p>
+    <% if proposal.state != "open" %>
+      <p class="exc-plg-proposal_sent"><%= _('Proposal sent ') + proposal.date_sent.strftime("%d/%m/%Y @ %H:%Mh") %></p>
     <% end %>
     <div id="exc-plg-proposal_wrapper">
       <div id="exc-plg-proposal_header">
         <%= render :partial => "proposal_header", :locals => {:proposal => proposal}%>
       </div>
-      <% if (proposal == @exchange.closed_proposals.last) || (proposal == @exchange.proposals.last) %>
+      <% if first && (@exchange.state == "proposal" || @exchange.state == "negociation")%>
         <%= render :partial => "proposal_buttons", :locals => {:proposal => proposal}%>
       <% end %>
     <div id="exc-plg-proposal_messages">
@@ -16,15 +17,14 @@
       <div id="exchange_messages">
         <h2><%= _('Messages')%></h2>
 
-        <% if proposal.state == "open" %>
-
-        <div id='leave_scrap' style="float:none; height:70px;">
-            <% form_remote_tag :url => {:action => 'new_message', :proposal_id => proposal.id} do  %>
-              <%= text_area_tag 'body',nil, :rows => 2, :cols => 30, :placeholder => _('Digite sua mensagem') %>
-              <%= submit_tag 'Enviar mensagem' %>
-            <% end %>
-        </div>
-    
+        <% if first && (@exchange.state == "proposal" || @exchange.state == "negociation")%>
+          <div id='leave_scrap' style="float:none; height:70px;">
+              <% form_remote_tag :url => {:action => 'new_message', :proposal_id => proposal.id} do  %>
+                <%= text_area_tag 'body',nil, :rows => 2, :cols => 30, :placeholder => _('Digite sua mensagem') %>
+                <%= submit_tag 'Enviar mensagem' %>
+              <% end %>
+          </div>
+          <% first = false %>    
         <% end %>
 
         <div id="messages">
@@ -81,18 +81,18 @@
     </div>
     <div id="exc-plg-proposal_offer_request_wrapper">
       <div id="exc-plg-proposal_offer">
-        <h2><%= _('Oferta') %></h2>
-        <ul id="exc-plg-origin_elements_list">
-          <% @elements_origin = proposal.exchange_elements.select{|k| k.enterprise_id == @origin.id} %>
-          <% if !@elements_origin.blank? %>
-            <% @elements_origin.each do |e| %>              
+        <h2><%= _('You offer') %></h2>
+        <ul id="exc-plg-profile_elements_list">
+          <% @elements_profile = proposal.exchange_elements.select{|k| k.enterprise_id == profile.id} %>
+          <% if !@elements_profile.blank? %>
+            <% @elements_profile.each do |e| %>              
               <li id="exchange_<%= e.element_type %>_element_<%= e.element_id %>">
                 <%= (eval(e.element_type).find e.element_id).name %>
 
                 <% if proposal.state == "open" %>
                   <%= link_to_remote _('[remove]'), :url => {:action => :remove_element, :id => e.id,
                   :element_type => e.element_type, :element_id => e.element_id,
-                    :enterprise => "origin", :exchange_id => proposal.exchange_id, :proposal_id => e.proposal_id} %>
+                    :enterprise => "proposal", :exchange_id => proposal.exchange_id, :proposal_id => e.proposal_id} %>
                 <% end %>
               </li>
             <% end %>
@@ -107,36 +107,36 @@
             <button class="exc-plg-exchange_plugin_button"><%= _('Add amount in money')%></button>
           </div>
 
-          <% if @origin_products.blank? && @origin_knowledges.blank? %>
+          <% if @profile_products.blank? && @profile_knowledges.blank? %>
             <%= _("%s has no offers registered.") % profile.name %>
           <% else %>
             
-            <% if !@origin_products.blank? %>
+            <% if !@profile_products.blank? %>
               <h4><%= _('Your Products') %></h4>
-              <ul id="exc-plg-Product_origin_list" class="exc-plg-origin_offers">
-              <% @origin_products.each do |p| %>
+              <ul id="exc-plg-Product_profile_list" class="exc-plg-profile_offers">
+              <% @profile_products.each do |p| %>
                 <li id=exchange_Product_<%= p.id %>>
                     <%= link_to(p.category_name) + " " + link_to(p.name) %>
                     
                     <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
                     :url => {:action => "add_element", :element_id => p.id,  
-                    :element_type => "Product", :enterprise => "origin", :exchange_id => @exchange.id,
+                    :element_type => "Product", :enterprise => "profile", :exchange_id => @exchange.id,
                     :proposal_id => proposal.id} %>
 
                 </li>
               <% end %>
               </ul>
             <% end %>
-            <% if !@origin_knowledges.blank? %>
+            <% if !@profile_knowledges.blank? %>
               <h4><%= _('Your Knowledges') %></h4>
-              <ul id="exc-plg-CmsLearningPluginLearning_origin_list" class="exc-plg-origin_offers">
-              <% @origin_knowledges.each do |k| %>
+              <ul id="exc-plg-CmsLearningPluginLearning_profile_list" class="exc-plg-profile_offers">
+              <% @profile_knowledges.each do |k| %>
                 <li id="exchange_CmsLearningPluginLearning_<%= k.id %>">
                     <%= link_to(k.name) %>
 
                     <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
                     :url => {:action => "add_element", :element_id => k.id,  
-                    :enterprise_id => @origin.id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => proposal.id, :enterprise => "origin"} %>
+                    :enterprise_id => profile.id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => proposal.id, :enterprise => "profile"} %>
                 </li>
               <% end %>
               </ul>
@@ -146,18 +146,18 @@
 
       </div>
       <div id="exc-plg-proposal_request">
-        <h2>Pedido</h2>
-        <ul id="exc-plg-target_elements_list">
-          <% @elements_target = proposal.exchange_elements.select{|k| k.enterprise_id == @target.id} %>
-          <% if !@elements_target.blank? %>
-            <% @elements_target.each do |e| %>              
+        <h2><%= _('You ask') %></h2>
+        <ul id="exc-plg-theother_elements_list">
+          <% @elements_theother = proposal.exchange_elements.select{|k| k.enterprise_id == @theother.id} %>
+          <% if !@elements_theother.blank? %>
+            <% @elements_theother.each do |e| %>              
               <li id="exchange_<%= e.element_type %>_element_<%= e.element_id %>">
                 <%= (eval(e.element_type).find e.element_id).name %>
                 <% if proposal.state == "open" %>
                 
                 <%= link_to_remote _('[remove]'), :url => {:action => :remove_element, :id => e.id,
                 :element_type => e.element_type, :element_id => e.element_id,
-                  :enterprise => "target", :exchange_id => proposal.exchange_id, :proposal_id => e.proposal_id} %>
+                  :enterprise => "theother", :exchange_id => proposal.exchange_id, :proposal_id => e.proposal_id} %>
                 <% end %>
               </li>
             <% end %>
@@ -173,37 +173,37 @@
         </div>
 
 
-        <% if @target_products.blank? && @target_knowledges.blank? %>
+        <% if @theother_products.blank? && @theother_knowledges.blank? %>
           <%= _("%s has no offers registered.") % profile.name %>
         <% else %>
-          <% if !@target_products.blank? %>
+          <% if !@theother_products.blank? %>
             <h4><%= _('Products') %></h4>
-            <ul id="exc-plg-Product_target_list" class="exc-plg-target_offers">
-            <% @target_products.each do |p| %>
+            <ul id="exc-plg-Product_theother_list" class="exc-plg-theother_offers">
+            <% @theother_products.each do |p| %>
               <li id=exchange_Product_<%= p.id %>>
 
                   <%= link_to(p.category_name) + " " + link_to(p.name) %>
                   
                   <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
                   :url => {:action => "add_element", :element_id => p.id,  
-                  :element_type => "Product", :enterprise => "target", :exchange_id => @exchange.id,
+                  :element_type => "Product", :enterprise => "theother", :exchange_id => @exchange.id,
                   :proposal_id => proposal.id} %>
 
               </li>
             <% end %>
             </ul>
           <% end %>
-          <% if !@target_knowledges.blank? %>
-            <h4><%= _('Knowle dges') %></h4>
-            <ul id="exc-plg-CmsLearningPluginLearning_target_list" class="exc-plg-target_offers">
-            <% @target_knowledges.each do |k| %>
+          <% if !@theother_knowledges.blank? %>
+            <h4><%= _('Knowledges') %></h4>
+            <ul id="exc-plg-CmsLearningPluginLearning_theother_list" class="exc-plg-theother_offers">
+            <% @theother_knowledges.each do |k| %>
               <li id=exchange_CmsLearningPluginLearning_<%= k.id %>>
 
                   <%= link_to(k.name) %>
 
                   <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
                   :url => {:action => "add_element", :element_id => k.id,  
-                  :enterprise_id => @target.id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => proposal.id, :enterprise => "target"} %>
+                  :enterprise_id => @theother.id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => proposal.id, :enterprise => "theother"} %>
 
               </li>
             <% end %>
