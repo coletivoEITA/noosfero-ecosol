@@ -13,11 +13,11 @@
       </ul>
     <% end %>
   </div>
-  <div id="sniffer-plugin-buyers-products" class="sniffer-plugin-products">
-    <% unless @buyers_hashes.blank? %>
+  <div id="sniffer-plugin-consumer-products" class="sniffer-plugin-products">
+    <% unless @consumer_hashes.blank? %>
       <strong><%= _('Interested in') %></strong>
       <ul>
-        <% @buyers_hashes.each do |h| %>
+        <% @consumer_hashes.each do |h| %>
           <li><%= render :partial => h[:partial], :locals => {:hash => h} %></li>
         <% end %>
       </ul>

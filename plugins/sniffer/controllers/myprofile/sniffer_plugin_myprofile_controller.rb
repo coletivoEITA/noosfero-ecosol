@@ -12,12 +12,10 @@ class SnifferPluginMyprofileController < MyProfileController
         @sniffer_profile.update_attributes(params[:sniffer])
         @sniffer_profile.enabled = true
         @sniffer_profile.save!
-        session[:notice] = @sniffer_profile.enabled ?
-          _('Buyer interests published') : _('Buyer interests disabled')
+        session[:notice] = _('Consumer interests updated')
       rescue Exception => exception
-        flash[:error] = _('Could not save buyer interests options')
+        flash[:error] = _('Could not save consumer interests')
       end
-      redirect_to :action => 'edit'
     end
   end
 
@@ -33,28 +31,28 @@ class SnifferPluginMyprofileController < MyProfileController
     self.class.no_design_blocks
 
     @suppliers_products = @sniffer_profile.suppliers_products
-    @buyers_products = @sniffer_profile.buyers_products
-    @no_results = @suppliers_products.count == 0 && @buyers_products.count == 0
+    @consumers_products = @sniffer_profile.consumers_products
+    @no_results = @suppliers_products.count == 0 && @consumers_products.count == 0
 
     @suppliers_hashes = build_products(@suppliers_products.collect(&:attributes))
-    @buyers_hashes = build_products(@buyers_products.collect(&:attributes))
+    @consumers_hashes = build_products(@consumers_products.collect(&:attributes))
 
     suppliers = @suppliers_products.group_by{ |p| @id_profiles[p['profile_id'].to_i] }
-    buyers = @buyers_products.group_by{ |p| @id_profiles[p['profile_id'].to_i] }
-    buyers.each{ |k, v| suppliers[k] ||= [] }
-    suppliers.each{ |k, v| buyers[k] ||= [] }
-    @profiles = suppliers.merge!(buyers) do |profile, suppliers_products, buyers_products|
-      {:suppliers_products => suppliers_products, :buyers_products => buyers_products}
+    consumers = @consumers_products.group_by{ |p| @id_profiles[p['profile_id'].to_i] }
+    consumers.each{ |k, v| suppliers[k] ||= [] }
+    suppliers.each{ |k, v| consumers[k] ||= [] }
+    @profiles = suppliers.merge!(consumers) do |profile, suppliers_products, consumers_products|
+      {:suppliers_products => suppliers_products, :consumers_products => consumers_products}
     end
   end
 
   def map_balloon
     @profile = Profile.find params[:id]
     supplier_products = params[:suppliers_products] ? params[:suppliers_products].values : []
-    buyer_products = params[:buyers_products] ? params[:buyers_products].values : []
+    consumer_products = params[:consumers_products] ? params[:consumers_products].values : []
 
     @suppliers_hashes = build_products(supplier_products).values.first
-    @buyers_hashes = build_products(buyer_products).values.first
+    @consumers_hashes = build_products(consumer_products).values.first
 
     render :layout => false
   end
@@ -107,7 +105,7 @@ class SnifferPluginMyprofileController < MyProfileController
 end
 
 # monkey patch old rails bug
-ActiveSupport::OrderedHash.class_eval do 
+ActiveSupport::OrderedHash.class_eval do
   def merge!(other_hash)
     if block_given?
       other_hash.each { |k, v| self[k] = key?(k) ? yield(k, self[k], v) : v }

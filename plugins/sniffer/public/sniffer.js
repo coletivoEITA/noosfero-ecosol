@@ -4,12 +4,13 @@ sniffer = {
 
     markerIndex: [],
     markerList: [],
+    filters: [],
 
     resize: function () {
-      wrap = jQuery('#sniffer-search-wrap');
+      var wrap = jQuery('#sniffer-search-wrap');
       wrap.css('height', jQuery(window).height() - wrap.offset().top);
 
-      map = jQuery('#map');
+      var map = jQuery('#map');
       legend = jQuery('#legend-wrap-1');
       map.css('height', wrap.outerHeight() - legend.outerHeight(true));
     },
@@ -20,30 +21,33 @@ sniffer = {
       mapLoad(options.zoom);
 
       var profile = options.profile;
-      var ltblueIcon = "http://www.google.com/intl/en_us/mapfiles/ms/micons/ltblue-dot.png";
-      var greenIcon = "http://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png";
-      var yellowIcon = "http://www.google.com/intl/en_us/mapfiles/ms/micons/yellow-dot.png";
+      var homeIcon = "/plugins/sniffer/images/marker_home.png";
+      var suppliersIcon = "/plugins/sniffer/images/marker_suppliers.png";
+      var consumersIcon = "/plugins/sniffer/images/marker_consumers.png";
+      var bothIcon = "/plugins/sniffer/images/marker_both.png";
 
-      _.each(options.mapData, function (data, profile) {
-        var sp = data['suppliers_products'];
-        var bp = data['buyers_products'];
+      _.each(options.mapData, function (data) {
+        var profile = data.profile;
+        var data = data.data;
+        var sp = data.suppliers_products;
+        var cp = data.consumers_products;
 
         var icon = null;
-        if (_.size(sp) > 0 && _.size(bp) > 0)
-          icon = yellowIcon;
+        if (_.size(sp) > 0 && _.size(cp) > 0)
+          icon = bothIcon;
         else if (_.size(sp) > 0)
-          icon = greenIcon;
+          icon = suppliersIcon;
         else
-          icon = ltblueIcon;
+          icon = consumersIcon;
 
         var marker = mapPutMarker(profile.lat, profile.lng, profile.name, icon, sniffer.map.fillBalloon);
-        marker.balloonUrl = options.balloonUrl.replace('<id>', profile.id);
-        marker.balloonData = data.to_json;
+        marker.balloonUrl = options.balloonUrl.replace('_id_', profile.id);
+        marker.balloonData = data;
         marker.profile = profile;
         marker.distance = profile.distance;
         marker.inListElement = jQuery("#sniffer-plugin-profile-"+profile.id);
 
-        _each(_.extend(sp, bp), function (p) {
+        _.each(_.extend(sp, cp), function (p) {
           if (sniffer.map.markerIndex[p.product_category_id] == undefined)
             sniffer.map.markerIndex[p.product_category_id] = [];
 
@@ -53,8 +57,7 @@ sniffer = {
         sniffer.map.markerList.push(marker);
       });
 
-      var filters = [];
-      var marker = mapPutMarker(profile.lat, profile.lng, profile.name, null, options.myBalloonUrl);
+      var marker = mapPutMarker(profile.lat, profile.lng, profile.name, homeIcon, options.myBalloonUrl);
       sniffer.map.filter();
 
       mapCenter();
@@ -72,7 +75,7 @@ sniffer = {
 
     matchCategoryFilters: function (marker) {
       var match = true;
-      jQuery.each(filters, function (index, id) {
+      jQuery.each(sniffer.map.filters, function (index, id) {
         if (sniffer.map.markerIndex[id].indexOf(marker) == -1)
         match = false;
       });
@@ -81,7 +84,7 @@ sniffer = {
 
     filter: function () {
       jQuery.each(sniffer.map.markerList, function(index, marker) {
-        var visible = (!filters.distance || filters.distance >= marker.distance) && (sniffer.map.matchCategoryFilters(marker));
+        var visible = (!sniffer.map.filters.distance || sniffer.map.filters.distance >= marker.distance) && (sniffer.map.matchCategoryFilters(marker));
         marker.setVisible(visible);
         parent = visible ? '#sniffer-plugin-search-visible-list' : '#sniffer-plugin-search-invisible-list'
         jQuery(parent + ' .sniffer-plugin-results').hide().append(marker.inListElement).fadeIn();
@@ -97,18 +100,18 @@ sniffer = {
     },
 
     applyCategoryFilter: function (id) {
-      filters.push(id);
+      sniffer.map.filters.push(id);
       sniffer.map.filter();
     },
 
     unapplyCategoryFilter: function (id) {
-      filters.pop(id);
+      sniffer.map.filters.pop(id);
       sniffer.map.filter();
     },
 
     maxDistance: function (distance) {
       distance = parseInt(distance);
-      filters.distance = distance > 0 ? distance : undefined;
+      sniffer.map.filters.distance = distance > 0 ? distance : undefined;
       sniffer.map.filter();
     },
 

@@ -1,4 +1,3 @@
-@import url(token-input-sniffer.css);
 /* Colors */
 /* Base measuments */
 /* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
@@ -26,6 +25,7 @@ body.action-sniffer_plugin_myprofile-search {
   #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 {
     position: absolute;
     top: 0;
+    height: 0;
     width: 100%; }
     #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 {
       width: 960px;
@@ -60,22 +60,22 @@ body.action-sniffer_plugin_myprofile-search {
         #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search.focus .focus-pane {
           display: block; }
 #sniffer-search-wrap #legend img {
-  vertical-align: middle; }
+  vertical-align: middle;
+  width: 19px;
+  height: 28px; }
+  #sniffer-search-wrap #legend img.home {
+    width: 21px;
+    height: 19px; }
 #sniffer-search-wrap #legend span {
-  display: inline-block; }
+  display: inline-block;
+  margin-right: 24px; }
 
 /* Control panel buttons */
-.controller-profile_editor a.control-panel-buyer-interests {
-  background-image: url(images/buyer-interests.png); }
-
-.controller-profile_editor .msie6 a.control-panel-buyer-interests {
-  background-image: url(images/buyer-interests.gif); }
+.controller-profile_editor a.control-panel-consumer-interests {
+  background-image: url(images/consumer-interests.png); }
 
 .controller-profile_editor a.control-panel-sniff-opportunities {
   background-image: url(images/sniff-opportunities.png); }
-
-.controller-profile_editor .msie6 a.control-panel-sniff-opportunities {
-  background-image: url(images/sniff-opportunities.gif); }
 
 /* Interest interface */
 #sniffer-plugin-product-select {

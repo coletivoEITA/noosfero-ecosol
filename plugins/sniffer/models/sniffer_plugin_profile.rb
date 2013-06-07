@@ -1,4 +1,5 @@
 class SnifferPluginProfile < ActiveRecord::Base
+
   belongs_to :profile
 
   has_many :opportunities, :class_name => 'SnifferPluginOpportunity', :foreign_key => 'profile_id', :dependent => :destroy
@@ -7,7 +8,7 @@ class SnifferPluginProfile < ActiveRecord::Base
 
   validates_presence_of :profile
 
-  def self.find_or_create(profile)
+  def self.find_or_create profile
     sniffer = SnifferPluginProfile.find_by_profile_id profile.id
     if sniffer.nil?
       sniffer = SnifferPluginProfile.new(:profile => profile, :enabled => true)
@@ -44,24 +45,24 @@ class SnifferPluginProfile < ActiveRecord::Base
   def suppliers_products
     products = []
 
-    products += Product.suppliers_products(profile) if profile.enterprise?
-    products += Product.interests_suppliers_products(profile)
+    products += Product.suppliers_products profile if profile.enterprise?
+    products += Product.interests_suppliers_products profile
     if defined?(CmsLearningPlugin)
-      products += Product.knowledge_suppliers_inputs(profile)
-      products += Product.knowledge_suppliers_interests(profile)
+      products += Product.knowledge_suppliers_inputs profile
+      products += Product.knowledge_suppliers_interests profile
     end
 
     products
   end
 
-  def buyers_products
+  def consumers_products
     products = []
 
-    products += Product.buyers_products(profile) if profile.enterprise?
-    products += Product.interests_buyers_products(profile)
+    products += Product.consumers_products profile if profile.enterprise?
+    products += Product.interests_consumers_products profile
     if defined?(CmsLearningPlugin)
-      products += Product.knowledge_buyers_inputs(profile)
-      products += Product.knowledge_buyers_interests(profile)
+      products += Product.knowledge_consumers_inputs profile
+      products += Product.knowledge_consumers_interests profile
     end
 
     products

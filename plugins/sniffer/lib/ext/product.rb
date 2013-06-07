@@ -24,12 +24,12 @@ class Product
   }
 
   #inputs x products
-  named_scope :buyers_products, lambda { |enterprise|
+  named_scope :consumers_products, lambda { |enterprise|
     {
     :select => "DISTINCT products.id, products.name, products_2.id as my_product_id, products_2.name as my_product_name,
       profiles.id as profile_id, profiles.identifier as profile_identifier, profiles.name as profile_name, profiles.lat as profile_lat, profiles.lng as profile_lng,
       inputs.product_category_id, categories.name as product_category_name,
-      'buyer_product' as view,
+      'consumers_product' as view,
       SQRT( POW((#{KM_LAT} * (#{enterprise.lat} - profiles.lat)), 2) + POW((#{KM_LNG} * (#{enterprise.lng} - profiles.lng)), 2)) AS profile_distance",
     :joins => "INNER JOIN inputs ON ( products.id = inputs.product_id )
       INNER JOIN categories ON ( inputs.product_category_id = categories.id )
@@ -61,12 +61,12 @@ class Product
   }
 
   #products x interests
-  named_scope :interests_buyers_products, lambda { |profile|
+  named_scope :interests_consumers_products, lambda { |profile|
     {
     :select => "DISTINCT products.id, products.name,
       profiles.id as profile_id, profiles.identifier as profile_identifier, profiles.name as profile_name, profiles.lat as profile_lat, profiles.lng as profile_lng,
       categories.id as product_category_id, categories.name as product_category_name,
-      'interest_buyer_product' as view,
+      'interest_consumers_product' as view,
       SQRT( POW((#{KM_LAT} * (#{profile.lat} - profiles.lat)), 2) + POW((#{KM_LNG} * (#{profile.lng} - profiles.lng)), 2)) AS profile_distance",
     :joins => "INNER JOIN categories ON ( categories.id = products.product_category_id )
       INNER JOIN sniffer_plugin_opportunities as op ON ( categories.id = op.opportunity_id AND op.opportunity_type = 'ProductCategory' )
@@ -79,14 +79,14 @@ class Product
   }
 
   #knowledge x inputs
-  named_scope :knowledge_buyers_inputs, lambda { |profile|
+  named_scope :knowledge_consumers_inputs, lambda { |profile|
     {
     :select => "DISTINCT products.id as my_product_id, products.name as my_product_name,
       profiles.id as profile_id, profiles.identifier as profile_identifier, profiles.name as profile_name, profiles.lat as profile_lat, profiles.lng as profile_lng,
       inputs.product_category_id,
       articles.name as knowledge_name, articles.id AS knowledge_id, article_resources.resource_id AS knowledge_category,
-      products.enterprise_id AS buyer_id,
-      'knowledge_buyer_input' as view,
+      products.enterprise_id AS consumer_id,
+      'knowledge_consumers_input' as view,
       SQRT( POW((#{KM_LAT} * (#{profile.lat} - profiles.lat)), 2) + POW((#{KM_LNG} * (#{profile.lng} - profiles.lng)), 2)) AS profile_distance",
     :joins => "INNER JOIN inputs ON ( products.id = inputs.product_id )
       INNER JOIN article_resources ON (article_resources.resource_id = inputs.product_category_id AND article_resources.resource_type = 'ProductCategory')
@@ -118,13 +118,13 @@ class Product
   }
 
   #knowledge x interests
-  named_scope :knowledge_buyers_interests, lambda { |profile|
+  named_scope :knowledge_consumers_interests, lambda { |profile|
     {
     :select => "DISTINCT articles.id AS knowledge_id, articles.name AS knowledge_name,
               op.opportunity_id AS product_category_id,
               profiles.id as profile_id, profiles.identifier as profile_identifier,
               profiles.name as profile_name, profiles.lat as profile_lat, profiles.lng as profile_lng,
-              'knowledge_buyer_interest' as view,
+              'knowledge_consumers_interest' as view,
               SQRT( POW((#{KM_LAT} * (#{profile.lat} - profiles.lat)), 2) + POW((#{KM_LNG} * (#{profile.lng} - profiles.lng)), 2)) AS profile_distance",
     :from => "articles",
     :joins =>   "INNER JOIN article_resources ON (articles.id = article_resources.article_id)

@@ -17,11 +17,11 @@
   <div id="legend-wrap-1">
     <div id="legend-wrap-2">
       <div id="legend">
-        <span> <b> <%= _('Reading') %> </b> </span>
-        <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png"/> <span><%= _("your enterprise") %></span>
-        <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png"/> <span><%= _("suppliers") %></span>
-        <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/ltblue-dot.png"/> <span><%= _("consumers") %></span>
-        <img src="http://www.google.com/intl/en_us/mapfiles/ms/micons/yellow-dot.png"/> <span><%= _("both") %></span>
+        <span class="reading"> <b> <%= _('Reading') %> </b> </span>
+        <img class="home" src="/plugins/sniffer/images/marker_home.png"/> <span><%= _("your enterprise") %></span>
+        <img class="suppliers" src="/plugins/sniffer/images/marker_suppliers.png"/> <span><%= _("suppliers") %></span>
+        <img class="consumers" src="/plugins/sniffer/images/marker_consumers.png"/> <span><%= _("consumers") %></span>
+        <img class="both" src="/plugins/sniffer/images/marker_both.png"/> <span><%= _("both") %></span>
       </div>
     </div>
   </div>
@@ -31,12 +31,19 @@
 <%= javascript_include_tag 'google_maps' %>
 
 <% json_opts = {:only => [:id, :name, :lat, :lng], :methods => [:distance]} %>
-<% map_data = @profiles.select{ |profile, data| profile.lat and profile.lng } %>
+<% map_data = @profiles.map do |profile, data|
+  #next unless profile.lat and profile.lng
+
+  profile_hash = {}
+  (json_opts[:only]+json_opts[:methods]).each{ |m| profile_hash[m] = profile.send m }
+
+  {:profile => profile_hash, :data => data}
+end %>
 
 <script type='text/javascript'>
   sniffer.map.load({
       zoom: <%= GoogleMaps.initial_zoom.to_json %>,
-      balloonUrl: '<%= url_for(:controller => :sniffer_plugin_myprofile, :action => :map_balloon, :id => "<id>", :escape => false) %>',
+      balloonUrl: '<%= url_for(:controller => :sniffer_plugin_myprofile, :action => :map_balloon, :id => "_id_", :escape => false) %>',
       myBalloonUrl: '<%= url_for(:controller => :sniffer_plugin_myprofile, :action => :map_balloon, :escape => false) %>',
       profile: <%= profile.to_json json_opts %>,
       mapData: <%= map_data.to_json %>,
