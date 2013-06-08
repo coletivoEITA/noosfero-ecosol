@@ -53,6 +53,18 @@ sniffer = {
       markerIndex: [],
       markerList: [],
 
+      //openBalloon: mapOpenBalloon,
+      openBalloon: function (marker, html) {
+        infoBox = new InfoBox({boxStyle: {width: null}, closeBoxURL: ""});
+        InfoBox.prototype.addClickHandler_ = function () {
+          closeBox = jQuery('#close-box')[0];
+          this.closeListener_ = google.maps.event.addDomListener(closeBox, 'click', this.getCloseClickHandler_());
+        }
+        infoBox.setPosition(marker.getPosition());
+        infoBox.setContent(html);
+        infoBox.open(map, marker);
+      },
+
       resize: function () {
         var wrap = jQuery('#sniffer-search-wrap');
         wrap.css('height', jQuery(window).height() - wrap.offset().top);
@@ -112,11 +124,11 @@ sniffer = {
 
       fillBalloon: function (marker) {
         if (marker.cachedData)
-          mapOpenBalloon(marker, marker.cachedData);
+          sniffer.search.map.openBalloon(marker, marker.cachedData);
         else
           jQuery.post(marker.balloonUrl, marker.balloonData, function (data) {
             marker.cachedData = jQuery(data).html();
-            mapOpenBalloon(marker, marker.cachedData);
+            sniffer.search.map.openBalloon(marker, marker.cachedData);
           });
       },
 

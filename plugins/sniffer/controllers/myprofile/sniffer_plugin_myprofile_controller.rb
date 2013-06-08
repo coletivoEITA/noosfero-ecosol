@@ -52,11 +52,11 @@ class SnifferPluginMyprofileController < MyProfileController
 
   def map_balloon
     @profile = Profile.find params[:id]
-    supplier_products = params[:suppliers_products] ? params[:suppliers_products].values : []
-    consumer_products = params[:consumers_products] ? params[:consumers_products].values : []
+    suppliers_products = params[:suppliers_products] ? params[:suppliers_products].values : []
+    consumers_products = params[:consumers_products] ? params[:consumers_products].values : []
 
-    build_products supplier_products
-    build_products consumer_products
+    @suppliers_hashes = build_products(suppliers_products).values.first
+    @consumers_hashes = build_products(consumers_products).values.first
 
     render :layout => false
   end

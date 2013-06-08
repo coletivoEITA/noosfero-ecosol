@@ -30,6 +30,9 @@
 <%= content_tag 'script', '', :src => "http://maps.googleapis.com/maps/api/js?sensor=false", :type => 'text/javascript' %>
 <%= javascript_include_tag 'google_maps' %>
 
+<%= content_tag 'script', '', :src => "/plugins/sniffer/underscore-min.js", :type => 'text/javascript' %>
+<%= content_tag 'script', '', :src => "/plugins/sniffer/infobox.js", :type => 'text/javascript' %>
+
 <% json_opts = {:only => [:id, :name, :lat, :lng], :methods => [:distance]} %>
 <% map_data = @profiles.map do |profile, data|
   #next unless profile.lat and profile.lng

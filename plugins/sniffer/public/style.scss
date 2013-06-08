@@ -1,9 +1,20 @@
+.clean {
+  clear: both;
+}
+.container-clean {
+  overflow: hidden;
+  display: inline-block; /* Necessary to trigger "hasLayout" in IE */
+  display: block; /* Sets element back to block */
+}
+
 /* Colors */
 
+$color-product-search-bg: #FAF7DC;
 $color-suppliers: #B4BDDA;
 $color-consumers: #BCD1A9;
 $color-border: #C5AAA5;
-$color-light-text-bg: #FEFCF2;
+$color-categories-table-strong-bg: #EBF49D;
+$color-categories-table-light-bg: #F0F7CE;
 
 /* Base measuments */
 
@@ -28,6 +39,7 @@ $padding: $intercolumn/2;
 $half-padding: $padding/2;
 
 $border: 1px;
+$border-radius: 5px;
 $shadow: 2px;
 
 /* Images */
@@ -84,13 +96,21 @@ body.action-sniffer_plugin_myprofile-search {
         margin: auto;
 
         #map-overlay {
+          margin-top: $margin;
+          padding: 0 $padding;
+
           h1 {
-            text-shadow: 0 $shadow white, 0 -$shadow white, $shadow 0 white, -$shadow 0 white;
+            text-shadow: 0 $shadow white, $shadow 0 white, 0 #{-$shadow} white, -$shadow 0 white;
             float: left;
+            user-select: none;
           }
 
           #product-search {
+            background: $color-product-search-bg;
             float: right;
+            width: $module4 + $intercolumn;
+            margin-top: -$half-padding;
+            margin-right: -$half-margin;
 
             .legend {
               float: right;
@@ -135,21 +155,35 @@ body.action-sniffer_plugin_myprofile-search {
               margin-top: $half-margin;
               max-height: 7*(3*$base);
               overflow: auto;
+              border: $border solid $color-border;
+              border-radius: $border-radius;
             }
 
             #categories-table {
               width: 100%;
 
+              border-collapse: collapse;
+              border-spacing: 0;
+              td { border: $border solid $color-border; }
+              td:first-child { border-left: none; }
+              td:last-child { border-right: none; }
+              tr:first-child td { border-top: none; }
+              tr:last-child td { border-bottom: none; }
+              tr:first-child td:first-child { border-top-left-radius: $border-radius; }
+              tr:first-child td:last-child { border-top-right-radius: $border-radius; }
+              tr:last-child td:first-child { border-bottom-left-radius: $border-radius; }
+              tr:last-child td:last-child { border-bottom-right-radius: $border-radius; }
+
               td {
                 padding: ($half-padding - $border) ($padding - $border);
                 height: 2*$base;
-                border: $border solid $color-border;
+                background: $color-categories-table-strong-bg;
 
                 &.select {
                   width: $base;
                 }
                 &.name {
-                  background: $color-light-text-bg;
+                  background: $color-categories-table-light-bg;
                 }
               }
               tr {
@@ -161,6 +195,11 @@ body.action-sniffer_plugin_myprofile-search {
         }
       }
     }
+  }
+
+  #legend-wrap-1 {
+    background: $color-product-search-bg;
+    padding: $padding 0;
   }
 
   #legend {
@@ -189,6 +228,72 @@ body.action-sniffer_plugin_myprofile-search {
 }
 .controller-profile_editor a.control-panel-sniff-opportunities {
   background-image: url(images/sniff-opportunities.png)
+}
+
+/* Balloon interface */
+
+#sniffer-search-wrap {
+
+  .infoBox {
+
+    #sniffer-balloon-arrow {
+      float: left;
+      margin-top: -3.5*$base;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: $base $base $base 0;
+      border-color: transparent $color-product-search-bg transparent transparent;
+    }
+
+    #sniffer-balloon {
+      float: left;
+      width: $module4;
+      background: $color-product-search-bg;
+      margin-top: -5.5*$base;
+      margin-left: $base;
+      border: 1px solid black;
+      box-shadow: 2px 2px 8px #aaa;
+
+      #close-box {
+        float: right;
+        cursor: pointer;
+      }
+
+      #balloon-header, #balloon-offers, #balloon-footer {
+        padding: $padding;
+      }
+      #balloon-header, #balloon-offers {
+        border-bottom: 1px solid black;
+      }
+
+      #balloon-header {
+        @extend .container-clean;
+
+        img, #sniffer-profile-info {
+          float: left;
+        }
+        #sniffer-profile-info {
+          padding: $padding;
+        }
+
+      }
+
+      #balloon-offers {
+        @extend .container-clean;
+
+        .products {
+          float: left;
+          width: $module2;
+
+          &#suppliers-products {
+            width: $module2 - $margin;
+            margin-right: $margin;
+          }
+        }
+      }
+    }
+  }
 }
 
 /* Interest interface */
