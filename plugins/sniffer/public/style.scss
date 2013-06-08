@@ -2,6 +2,8 @@
 
 $color-suppliers: #B4BDDA;
 $color-consumers: #BCD1A9;
+$color-border: #C5AAA5;
+$color-light-text-bg: #FEFCF2;
 
 /* Base measuments */
 
@@ -25,6 +27,7 @@ $half-margin: $margin/2;
 $padding: $intercolumn/2;
 $half-padding: $padding/2;
 
+$border: 1px;
 $shadow: 2px;
 
 /* Images */
@@ -49,6 +52,14 @@ body.action-sniffer_plugin_myprofile-search {
 
   #theme-footer, #profile-header, #profile-footer {
     display: none;
+  }
+
+  /* application.css overwrites */
+  th, td {
+    font-size: inherit;
+    height: auto;
+    padding: 0;
+    border: none;
   }
 }
 
@@ -120,11 +131,32 @@ body.action-sniffer_plugin_myprofile-search {
               display: none;
             }
 
-            &.focus {
-              .focus-pane {
-                display: block;
-              }
+            #categories-table-wrap {
+              margin-top: $half-margin;
+              max-height: 7*(3*$base);
+              overflow: auto;
             }
+
+            #categories-table {
+              width: 100%;
+
+              td {
+                padding: ($half-padding - $border) ($padding - $border);
+                height: 2*$base;
+                border: $border solid $color-border;
+
+                &.select {
+                  width: $base;
+                }
+                &.name {
+                  background: $color-light-text-bg;
+                }
+              }
+              tr {
+              }
+
+            }
+
           }
         }
       }
@@ -140,6 +172,7 @@ body.action-sniffer_plugin_myprofile-search {
       &.home {
         width: 21px;
         height: 19px;
+        padding-bottom: 9px;
       }
     }
     span {

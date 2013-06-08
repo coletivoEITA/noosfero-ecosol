@@ -32,10 +32,14 @@ class SnifferPluginMyprofileController < MyProfileController
 
     @suppliers_products = @sniffer_profile.suppliers_products
     @consumers_products = @sniffer_profile.consumers_products
-    @no_results = @suppliers_products.count == 0 && @consumers_products.count == 0
+    @no_results = @suppliers_products.count == 0 and @consumers_products.count == 0
 
-    @suppliers_hashes = build_products(@suppliers_products.collect(&:attributes))
-    @consumers_hashes = build_products(@consumers_products.collect(&:attributes))
+    build_products @suppliers_products.collect(&:attributes)
+    build_products @consumers_products.collect(&:attributes)
+
+    @suppliers_categories = @suppliers_products.collect &:product_category
+    @consumers_categories = @consumers_products.collect &:product_category
+    @categories = (@suppliers_categories + @consumers_categories).sort_by(&:name)
 
     suppliers = @suppliers_products.group_by{ |p| @id_profiles[p['profile_id'].to_i] }
     consumers = @consumers_products.group_by{ |p| @id_profiles[p['profile_id'].to_i] }
@@ -51,8 +55,8 @@ class SnifferPluginMyprofileController < MyProfileController
     supplier_products = params[:suppliers_products] ? params[:suppliers_products].values : []
     consumer_products = params[:consumers_products] ? params[:consumers_products].values : []
 
-    @suppliers_hashes = build_products(supplier_products).values.first
-    @consumers_hashes = build_products(consumer_products).values.first
+    build_products supplier_products
+    build_products consumer_products
 
     render :layout => false
   end
@@ -71,22 +75,29 @@ class SnifferPluginMyprofileController < MyProfileController
     @sniffer_profile = SnifferPluginProfile.find_or_create profile
   end
 
-  def build_products(data)
+  def build_products data
     @id_profiles ||= {}
     @id_products ||= {}
     @id_categories ||= {}
     @id_my_products ||= {}
     @id_knowledges ||= {}
 
-    return {} if data.blank?
-
-    Profile.all(:conditions => {:id => data.map{ |h| h['profile_id'].to_i }.uniq}).each{ |p| @id_profiles[p.id] ||= p }
-    Product.all(:conditions => {:id => data.map{ |h| h['id'].to_i }.uniq}, :include => :enterprise).each{ |p| @id_products[p.id] ||= p }
-    ProductCategory.all(:conditions => {:id => data.map{ |h| h['product_category_id'].to_i }.uniq}).each{ |c| @id_categories[c.id] ||= c }
-    Product.all(:conditions => {:id => data.map{ |h| h['my_product_id'].to_i }.uniq}, :include => :enterprise).each{ |p| @id_my_products[p.id] ||= p }
-    Article.all(:conditions => {:id => data.map{|h| h['knowledge_id'].to_i}.uniq}).each{ |k| @id_knowledges[k.id] ||= k}
-
     results = {}
+    return results if data.blank?
+
+    grab_id = proc{ |field| data.map{|h| h[field].to_i }.uniq }
+
+    profiles = Profile.all :conditions => {:id => grab_id.call('profile_id')}
+    profiles.each{ |p| @id_profiles[p.id] ||= p }
+    products = Product.all :conditions => {:id => grab_id.call('id')}, :include => [:enterprise, :product_category]
+    products.each{ |p| @id_products[p.id] ||= p }
+    my_products = Product.all :conditions => {:id => grab_id.call('my_product_id')}, :include => [:enterprise, :product_category]
+    my_products.each{ |p| @id_my_products[p.id] ||= p }
+    categories = ProductCategory.all :conditions => {:id => grab_id.call('product_category_id')}
+    categories.each{ |c| @id_categories[c.id] ||= c }
+    knowledges = Article.all :conditions => {:id => grab_id.call('knowledge_id')}
+    knowledges.each{ |k| @id_knowledges[k.id] ||= k}
+
     data.each do |attributes|
       profile = @id_profiles[attributes['profile_id'].to_i]
       profile.distance = attributes['profile_distance']
@@ -103,16 +114,3 @@ class SnifferPluginMyprofileController < MyProfileController
   end
 
 end
-
-# monkey patch old rails bug
-ActiveSupport::OrderedHash.class_eval do
-  def merge!(other_hash)
-    if block_given?
-      other_hash.each { |k, v| self[k] = key?(k) ? yield(k, self[k], v) : v }
-    else
-      other_hash.each { |k, v| self[k] = v }
-    end
-    self
-  end
-end
-

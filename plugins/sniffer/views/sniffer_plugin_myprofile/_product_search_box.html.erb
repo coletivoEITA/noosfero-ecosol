@@ -1,4 +1,5 @@
-<div id="product-search" class="search-box">
+<div id="product-search" class="search-box" onmouseover="sniffer.search.showFilters();"
+  onmouseout="sniffer.search.hideFilters();">
   <div class="legend">
     <span class="suppliers">
       <span class="icon"></span>
@@ -17,5 +18,19 @@
   </div>
 
   <div class="focus-pane">
+    <div id="categories-table-wrap">
+      <table id="categories-table">
+        <% @categories.each do |category| %>
+          <tr>
+            <td class="select">
+              <%= check_box_tag category.id, 1, true, :onclick => 'sniffer.search.toggleCategoryFilter(this);' %>
+            </td>
+            <td class="name">
+              <%= category.name %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
   </div>
 </div>

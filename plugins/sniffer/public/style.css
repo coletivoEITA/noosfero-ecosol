@@ -4,7 +4,8 @@
 /* Images */
 /* Search */
 body.action-sniffer_plugin_myprofile-search {
-  overflow: hidden; }
+  overflow: hidden;
+  /* application.css overwrites */ }
   body.action-sniffer_plugin_myprofile-search #wrap-1 {
     width: 100%; }
   body.action-sniffer_plugin_myprofile-search #wrap-2 {
@@ -16,6 +17,11 @@ body.action-sniffer_plugin_myprofile-search {
     padding: 0; }
   body.action-sniffer_plugin_myprofile-search #theme-footer, body.action-sniffer_plugin_myprofile-search #profile-header, body.action-sniffer_plugin_myprofile-search #profile-footer {
     display: none; }
+  body.action-sniffer_plugin_myprofile-search th, body.action-sniffer_plugin_myprofile-search td {
+    font-size: inherit;
+    height: auto;
+    padding: 0;
+    border: none; }
 
 #sniffer-search-wrap #map-wrap {
   position: relative; }
@@ -57,15 +63,28 @@ body.action-sniffer_plugin_myprofile-search {
           clear: both; }
         #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .focus-pane {
           display: none; }
-        #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search.focus .focus-pane {
-          display: block; }
+        #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search #categories-table-wrap {
+          margin-top: 12px;
+          max-height: 252px;
+          overflow: auto; }
+        #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search #categories-table {
+          width: 100%; }
+          #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search #categories-table td {
+            padding: 5px 11px;
+            height: 24px;
+            border: 1px solid #c5aaa5; }
+            #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search #categories-table td.select {
+              width: 12px; }
+            #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search #categories-table td.name {
+              background: #fefcf2; }
 #sniffer-search-wrap #legend img {
   vertical-align: middle;
   width: 19px;
   height: 28px; }
   #sniffer-search-wrap #legend img.home {
     width: 21px;
-    height: 19px; }
+    height: 19px;
+    padding-bottom: 9px; }
 #sniffer-search-wrap #legend span {
   display: inline-block;
   margin-right: 24px; }
