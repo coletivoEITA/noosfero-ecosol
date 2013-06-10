@@ -366,6 +366,7 @@ ul.exc-plg-profile_offers{
   margin: 0px auto -22px auto;
   text-align: right;
   font-size: 10pt;
+  overflow: hidden;
 }
 
 #exc-plg-accepted_header{
@@ -373,24 +374,28 @@ ul.exc-plg-profile_offers{
   height: 30px;
   color: white;
   text-align: center;
+  width: 985px;  
 }
 
 /* evaluation */
 #exc-plg-evaluation{
-  width: 100%;
-  overflow:hidden;
+  width: 985px;
+  margin: 30px auto;
+  overflow: hidden;  
 }
 
 #exc-plg-profile-evaluation{
   float:left;
-  width: 50%;
+  width: 45%;
   overflow:hidden;
+  padding:24px;
 }
 
 #exc-plg-theother-evaluation{
   overflow:hidden;
-  width: 49%;
-  float:left;
+  width: 45%;
+  float:right;
+  padding:24px;
 }
 
 #exc-plg-evaluation-text{
@@ -408,4 +413,97 @@ ul.exc-plg-profile_offers{
 #exc-plg-exchange_result{
   width: 49%;
   float: left;
+}
+
+#exc-plg-profile_elements_list {
+  margin:0px;
+  padding:0px;
+}
+#exc-plg-theother_elements_list{
+  margin:0px;
+  padding:0px;
+}
+
+.plg-exc-element{
+  width: 470px;
+  list-style-type:none;
+  background-size:auto 470px;
+  margin: 0 auto 25px auto;
+}
+
+.exc-plg-element-image{
+  width: 470px;
+  height: 155px;
+  background-position: center;
+}
+
+.plg-exc-element-profile{
+  background: #D8CAEA;
+}
+
+.plg-exc-element-theother{
+  background: #F3C3D4;
+}
+
+.plg-exc-message{
+  overflow: hidden;
+  margin: 24px 0px;
+}
+.plg-exc-message-theother-body{
+  width: 580px;
+  background: white;  
+  margin-left:280px;
+  padding:15px;
+  min-height:60px;
+  float: left;
+  margin-right:10px;
+}
+
+.plg-exc-message-profile-body{
+  width: 580px;
+  background: white;
+  padding:15px;
+  min-height:60px;
+  float: left;
+  margin-left:10px;
+}
+
+.plg-exc-message-profile-thumb{
+  float:left;
+  margin-left:25px;
+}
+
+.plg-exc-message-theother-thumb{
+  float:right;
+  margin-right:25px;
+}
+
+.exc-plg-qtd-input{
+  width: 85px;
+  border: none;
+  border-radius:3px;
+  padding: 3px;
+}
+
+.exc-plg-element_control{
+  float: right;
+  margin: 10px;
+}
+
+.exc-plg-trash{
+  display:inline;
+}
+
+.exc-plg-qtd{
+  display: inline;
+  background: #7857B8;
+  color: white;
+  padding: 4px; 
+  border-radius: 3px;
+}
+
+#exc-plg-summary_wrapper{
+  width: 985px;
+  margin: 30px auto;
+  overflow: hidden;
 }

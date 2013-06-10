@@ -1,2 +1,2 @@
 page.remove "exchange_#{@element.element_type}_#{@element.element_id}"
-page.insert_html :bottom, "exc-plg-#{params[:enterprise]}_elements_list", :partial => "add_element", :locals => {:element => @element, :enterprise => @enterprise}
+page.insert_html :bottom, "exc-plg-#{params[:enterprise]}_elements_list", :partial => "element", :locals => {:element => @element, :enterprise => params[:enterprise], :proposal_id => params[:proposal_id], :exchange_id => params[:exchange_id]}

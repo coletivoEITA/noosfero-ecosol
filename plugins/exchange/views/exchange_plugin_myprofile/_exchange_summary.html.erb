@@ -1,13 +1,11 @@
-<div id="exc-plg-proposal_offer_request_wrapper">
+<div id="exc-plg-summary_wrapper">
   <div id="exc-plg-proposal_offer">
     <h5><%= _("%s will offer") % profile.name %></h5>
     <ul id="exc-plg-profile_elements_list">
       <% @elements_profile = proposal.exchange_elements.select{|k| k.enterprise_id == @profile.id} %>
       <% if !@elements_profile.blank? %>
         <% @elements_profile.each do |e| %>              
-          <li id="exchange_<%= e.element_type %>_element_<%= e.element_id %>">
-            <%= (eval(e.element_type).find e.element_id).name %>
-          </li>
+          <%= render :partial => "element", :locals => {:element => e, :proposal => proposal, :enterprise => "profile"} %>
         <% end %>
       <% end %>
     </ul>
@@ -18,9 +16,7 @@
       <% @elements_theother = proposal.exchange_elements.select{|k| k.enterprise_id == @theother.id} %>
       <% if !@elements_theother.blank? %>
         <% @elements_theother.each do |e| %>              
-          <li id="exchange_<%= e.element_type %>_element_<%= e.element_id %>">
-            <%= (eval(e.element_type).find e.element_id).name %>
-          </li>
+          <%= render :partial => "element", :locals => {:element => e, :proposal => proposal, :enterprise => "profile"} %>              
         <% end %>
       <% end %>          
     </ul>        

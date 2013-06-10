@@ -1,8 +1,5 @@
 <li id=exchange_<%= params[:element_type] %>_<%= params[:element_id] %>>
-  <%= "Fix category to CmsLearning" + " " + link_to((eval(params[:element_type]).find params[:element_id]).name) %>
 
-  <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
-  :url => {:action => "add_element", :element_id => params[:element_id],  
-  :element_type => params[:element_type], :enterprise => params[:enterprise], 
-  :exchange_id => params[:exchange_id], :proposal_id => params[:proposal_id]} %>
+  <%= render :partial => "element_list" %>
+
 </li>
