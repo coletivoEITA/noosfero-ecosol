@@ -1,13 +1,1 @@
-.clean {
-  clear: both; }
-
-.container-clean {
-  overflow: hidden;
-  display: inline-block;
-  /* Necessary to trigger "hasLayout" in IE */
-  display: block;
-  /* Sets element back to block */ }
-
-/* Base measuments */
-/* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
-/* Colors */
+escambo.css

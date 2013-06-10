@@ -47,7 +47,7 @@ end %>
   sniffer.search.map.load({
       zoom: <%= GoogleMaps.initial_zoom.to_json %>,
       balloonUrl: '<%= url_for(:controller => :sniffer_plugin_myprofile, :action => :map_balloon, :id => "_id_", :escape => false) %>',
-      myBalloonUrl: '<%= url_for(:controller => :sniffer_plugin_myprofile, :action => :map_balloon, :escape => false) %>',
+      myBalloonUrl: '<%= url_for(:controller => :sniffer_plugin_myprofile, :action => :my_map_balloon, :escape => false) %>',
       profile: <%= profile.to_json json_opts %>,
       mapData: <%= map_data.to_json %>,
   });

@@ -1,5 +1,5 @@
 <div id="product-search" class="search-box" onmouseover="sniffer.search.showFilters();"
-  onmouseout="sniffer.search.hideFilters();">
+     onmouseout="sniffer.search.hideFilters();">
   <div class="legend">
     <span class="suppliers">
       <span class="icon"></span>
@@ -12,9 +12,9 @@
   </div>
 
   <div class="search-field">
-    <input type="text" class="search-input"/>
-    <div class="search-submit">
-    </div>
+    <input type="text" title="<%= _('look for products...') %>" class="search-input"/>
+    <%= javascript_tag 'jQuery(".search-input").hint();' %>
+    <div class="search-submit"> </div>
   </div>
 
   <div class="focus-pane">
