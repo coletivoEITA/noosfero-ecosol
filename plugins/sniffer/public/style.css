@@ -1,16 +1,16 @@
 .clean {
   clear: both; }
 
-.container-clean, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header {
+.container-clean, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
   display: block;
   /* Sets element back to block */ }
 
-/* Colors */
 /* Base measuments */
 /* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
+/* Colors */
 /* Images */
 /* Search */
 body.action-sniffer_plugin_myprofile-search {
@@ -147,16 +147,17 @@ body.action-sniffer_plugin_myprofile-search {
   height: 0;
   border-style: solid;
   border-width: 12px 12px 12px 0;
-  border-color: transparent #faf7dc transparent transparent; }
+  border-color: transparent #faf7dc transparent transparent;
+  position: relative;
+  left: 1px; }
 #sniffer-search-wrap .infoBox #sniffer-balloon {
   float: left;
   width: 360px;
   background: #faf7dc;
   margin-top: -66px;
-  margin-left: 12px; }
-  #sniffer-search-wrap .infoBox #sniffer-balloon #close-box {
-    float: right;
-    cursor: pointer; }
+  margin-left: 12px;
+  border: 1px solid black;
+  box-shadow: 2px 2px 8px #aaa; }
   #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-footer {
     padding: 12px; }
   #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers {
@@ -165,11 +166,15 @@ body.action-sniffer_plugin_myprofile-search {
     float: left; }
   #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header #sniffer-profile-info {
     padding: 12px; }
-  #sniffer-search-wrap .infoBox #sniffer-balloon .products {
+  #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers .products {
     float: left;
     width: 168px; }
-    #sniffer-search-wrap .infoBox #sniffer-balloon .products#suppliers-products {
+    #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers .products#suppliers-products {
+      width: 144px;
       margin-right: 24px; }
+  #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-footer #close-box {
+    float: right;
+    font-weight: bold; }
 
 /* Interest interface */
 #sniffer-plugin-product-select {
