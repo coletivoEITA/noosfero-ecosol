@@ -1,8 +1,10 @@
 <% e = eval(element.element_type).find element.element_id %>
-<li id="exchange_<%= element.element_type %>_element_<%= element.element_id %>" class="plg-exc-element plg-exc-element-<%= enterprise %>">
+
+<li id="exchange_<%= element.element_type %>_element_<%= element.element_id %>" class="exc-plg-element exc-plg-element-<%= enterprise %>">
+
 <% if element.element_type == "Product" %>
   <div class="exc-plg-element-image" style="background-image: url('<%= e.image.public_filename %>');">
-
+<% end %>
     <div class="exc-plg-element_control">
 
       <% if element.proposal.state == "open" %>
@@ -20,9 +22,13 @@
       <% else %>
         <h6 class="exc-plg-qtd"><%= _('Qtd: %s') % element.quantity %></h6>
       <% end %>
-    </div>
+    </div> <!-- element_control -->
 
-  </div>
+<% if element.element_type == "Product" %>
+  </div> <!-- if Product -->
+<% end %>
+
+<% if element.element_type == "Product" %>
   <h6><%= link_to(e.category_name) + " " + link_to(e.name) %></h6>
   <p><%= e.description %></p>
 <% else %>

@@ -1,19 +1,19 @@
-<div id="exc-plg-message-<%= message.id %>" class="plg-exc-message">
+<div id="exc-plg-message-<%= message.id %>" class="exc-plg-message">
   <% if message.enterprise_sender.id == profile.id%>
-    <div class="plg-exc-message-profile-thumb">
+    <div class="exc-plg-message-profile-thumb">
       <%= link_to profile_image(profile, :minor) +"\n", profile.url %>
       <br /><p align="center"><%= message.created_at.strftime("%d/%m/%y<br>%H:%M") %></p>
     </div>
   <% end %>
   <% if message.enterprise_sender.id == profile.id%>
-    <div class="plg-exc-message-profile-body">
+    <div class="exc-plg-message-profile-body">
   <% else %>
-    <div class="plg-exc-message-theother-body">
+    <div class="exc-plg-message-theother-body">
   <% end %>
   <p><%= message.body %></p>
     </div>
   <% if message.enterprise_sender.id != profile.id %>
-    <div class="plg-exc-message-theother-thumb">
+    <div class="exc-plg-message-theother-thumb">
       <%= link_to profile_image(message.proposal.the_other(profile), :minor) +"\n", profile.url %>
       <br /><p align="center"><%= message.created_at.strftime("%d/%m/%y<br>%H:%M") %></p>
     </div>
