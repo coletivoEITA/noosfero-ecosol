@@ -46,20 +46,20 @@ $color-categories-table-light-bg: #F0F7CE;
 $image-zoom: '/plugins/sniffer/images/lupa.png';
 
 /* Search input */
-.search-box {
+.sniffer-search-box {
   background: $color-product-search-bg;
   padding: $padding - $border;
   border-radius: 3px;
   border: $border solid black;
 }
 
-.search-field {
+.sniffer-search-field {
   background: white;
   border: 1px solid #aaa;
   box-shadow: 1px 1px 1px 0px #aaa;
   height: 3*$base;
 
-  .search-input {
+  .sniffer-search-input {
     float: left;
     height: 2*$base;
     width: 80%;
@@ -73,12 +73,13 @@ $image-zoom: '/plugins/sniffer/images/lupa.png';
     border: none;
     font-style: normal;
 
-    &.blur {
-
+    color: #81867B;
+    &:focus {
+      color: black;
     }
   }
 
-  .search-submit {
+  .sniffer-search-submit {
     float: right;
     cursor: pointer;
     background: transparent url($image-zoom) no-repeat left 8px;
