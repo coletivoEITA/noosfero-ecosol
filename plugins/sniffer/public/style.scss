@@ -1,9 +1,20 @@
-@import url(token-input-sniffer.css);
+.clean {
+  clear: both;
+}
+.container-clean {
+  overflow: hidden;
+  display: inline-block; /* Necessary to trigger "hasLayout" in IE */
+  display: block; /* Sets element back to block */
+}
 
 /* Colors */
 
+$color-product-search-bg: #FAF7DC;
 $color-suppliers: #B4BDDA;
 $color-consumers: #BCD1A9;
+$color-border: #C5AAA5;
+$color-categories-table-strong-bg: #EBF49D;
+$color-categories-table-light-bg: #F0F7CE;
 
 /* Base measuments */
 
@@ -27,6 +38,8 @@ $half-margin: $margin/2;
 $padding: $intercolumn/2;
 $half-padding: $padding/2;
 
+$border: 1px;
+$border-radius: 5px;
 $shadow: 2px;
 
 /* Images */
@@ -52,6 +65,14 @@ body.action-sniffer_plugin_myprofile-search {
   #theme-footer, #profile-header, #profile-footer {
     display: none;
   }
+
+  /* application.css overwrites */
+  th, td {
+    font-size: inherit;
+    height: auto;
+    padding: 0;
+    border: none;
+  }
 }
 
 #sniffer-search-wrap {
@@ -67,6 +88,7 @@ body.action-sniffer_plugin_myprofile-search {
     #map-overlay-wrap-1 {
       position: absolute;
       top: 0;
+      height: 0;
       width: 100%;
 
       #map-overlay-wrap-2 {
@@ -74,13 +96,21 @@ body.action-sniffer_plugin_myprofile-search {
         margin: auto;
 
         #map-overlay {
+          margin-top: $margin;
+          padding: 0 $padding;
+
           h1 {
-            text-shadow: 0 $shadow white, 0 -$shadow white, $shadow 0 white, -$shadow 0 white;
+            text-shadow: 0 $shadow white, $shadow 0 white, 0 #{-$shadow} white, -$shadow 0 white;
             float: left;
+            user-select: none;
           }
 
           #product-search {
+            background: $color-product-search-bg;
             float: right;
+            width: $module4 + $intercolumn;
+            margin-top: -$half-padding;
+            margin-right: -$half-margin;
 
             .legend {
               float: right;
@@ -121,40 +151,149 @@ body.action-sniffer_plugin_myprofile-search {
               display: none;
             }
 
-            &.focus {
-              .focus-pane {
-                display: block;
-              }
+            #categories-table-wrap {
+              margin-top: $half-margin;
+              max-height: 7*(3*$base);
+              overflow: auto;
+              border: $border solid $color-border;
+              border-radius: $border-radius;
             }
+
+            #categories-table {
+              width: 100%;
+
+              border-collapse: collapse;
+              border-spacing: 0;
+              td { border: $border solid $color-border; }
+              td:first-child { border-left: none; }
+              td:last-child { border-right: none; }
+              tr:first-child td { border-top: none; }
+              tr:last-child td { border-bottom: none; }
+              tr:first-child td:first-child { border-top-left-radius: $border-radius; }
+              tr:first-child td:last-child { border-top-right-radius: $border-radius; }
+              tr:last-child td:first-child { border-bottom-left-radius: $border-radius; }
+              tr:last-child td:last-child { border-bottom-right-radius: $border-radius; }
+
+              td {
+                padding: ($half-padding - $border) ($padding - $border);
+                height: 2*$base;
+                background: $color-categories-table-strong-bg;
+
+                &.select {
+                  width: $base;
+                }
+                &.name {
+                  background: $color-categories-table-light-bg;
+                }
+              }
+              tr {
+              }
+
+            }
+
           }
         }
       }
     }
   }
 
+  #legend-wrap-1 {
+    background: $color-product-search-bg;
+    padding: $padding 0;
+  }
+
   #legend {
     img {
       vertical-align: middle;
+      width: 19px;
+      height: 28px;
+
+      &.home {
+        width: 21px;
+        height: 19px;
+        padding-bottom: 9px;
+      }
     }
     span {
       display: inline-block;
+      margin-right: $margin;
     }
   }
 }
 
 /* Control panel buttons */
 
-.controller-profile_editor a.control-panel-buyer-interests {
-  background-image: url(images/buyer-interests.png)
-}
-.controller-profile_editor .msie6 a.control-panel-buyer-interests {
-  background-image: url(images/buyer-interests.gif)
+.controller-profile_editor a.control-panel-consumer-interests {
+  background-image: url(images/consumer-interests.png)
 }
 .controller-profile_editor a.control-panel-sniff-opportunities {
   background-image: url(images/sniff-opportunities.png)
 }
-.controller-profile_editor .msie6 a.control-panel-sniff-opportunities {
-  background-image: url(images/sniff-opportunities.gif)
+
+/* Balloon interface */
+
+#sniffer-search-wrap {
+
+  .infoBox {
+
+    #sniffer-balloon-arrow {
+      float: left;
+      margin-top: -3.5*$base;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: $base $base $base 0;
+      border-color: transparent $color-product-search-bg transparent transparent;
+    }
+
+    #sniffer-balloon {
+      float: left;
+      width: $module4;
+      background: $color-product-search-bg;
+      margin-top: -5.5*$base;
+      margin-left: $base;
+      border: 1px solid black;
+      box-shadow: 2px 2px 8px #aaa;
+
+      #close-box {
+        float: right;
+        cursor: pointer;
+      }
+
+      #balloon-header, #balloon-offers, #balloon-footer {
+        padding: $padding;
+      }
+      #balloon-header, #balloon-offers {
+        border-bottom: 1px solid black;
+      }
+
+      #balloon-header {
+        @extend .container-clean;
+
+        img, #sniffer-profile-info {
+          float: left;
+        }
+        #sniffer-profile-info {
+          padding: $padding;
+        }
+
+      }
+
+      #balloon-offers {
+        @extend .container-clean;
+
+        .products {
+          float: left;
+          width: $module2;
+
+          &#suppliers-products {
+            width: $module2 - $margin;
+            margin-right: $margin;
+          }
+        }
+      }
+    }
+  }
 }
 
 /* Interest interface */
