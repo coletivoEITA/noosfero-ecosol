@@ -5,8 +5,6 @@
 
   <div id="sniffer-balloon">
 
-    <img id="close-box" src="http://www.google.com/intl/en_us/mapfiles/close.gif" />
-
     <div id="balloon-header">
       <%= profile_image @profile, :minor %>
       <div id="balloon-profile-info">
@@ -47,6 +45,11 @@
     </div>
 
     <div id="balloon-footer">
+      <% @plugins.dispatch(:sniffer_balloon_footer).each do |lambda| %>
+        <%= instance_eval &lambda %>
+      <% end %>
+
+      <%= link_to_function _('Close'), '', :id => "close-box" %>
     </div>
 
     <div class="clean"></div>

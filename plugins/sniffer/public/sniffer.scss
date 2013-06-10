@@ -7,15 +7,6 @@
   display: block; /* Sets element back to block */
 }
 
-/* Colors */
-
-$color-product-search-bg: #FAF7DC;
-$color-suppliers: #B4BDDA;
-$color-consumers: #BCD1A9;
-$color-border: #C5AAA5;
-$color-categories-table-strong-bg: #EBF49D;
-$color-categories-table-light-bg: #F0F7CE;
-
 /* Base measuments */
 
 $base: 12px;
@@ -42,7 +33,61 @@ $border: 1px;
 $border-radius: 5px;
 $shadow: 2px;
 
+/* Colors */
+
+$color-product-search-bg: #FAF7DC;
+$color-suppliers: #B4BDDA;
+$color-consumers: #BCD1A9;
+$color-border: #C5AAA5;
+$color-categories-table-strong-bg: #EBF49D;
+$color-categories-table-light-bg: #F0F7CE;
+
 /* Images */
+$image-zoom: '/plugins/sniffer/images/lupa.png';
+
+/* Search input */
+.search-box {
+  background: $color-product-search-bg;
+  padding: $padding - $border;
+  border-radius: 3px;
+  border: $border solid black;
+}
+
+.search-field {
+  background: white;
+  border: 1px solid #aaa;
+  box-shadow: 1px 1px 1px 0px #aaa;
+  height: 3*$base;
+
+  .search-input {
+    float: left;
+    height: 2*$base;
+    width: 80%;
+    width: -webkit-calc(100% - 30px - 24px);
+    width: -moz-calc(100% - 30px - 24px);
+    width: -o-calc(100% - 30px - 24px);
+    width: calc(100% - 30px - 24px);
+    padding: $half-padding $padding;
+    @extend .pstyle-field;
+    outline: none;
+    border: none;
+    font-style: normal;
+
+    &.blur {
+
+    }
+  }
+
+  .search-submit {
+    float: right;
+    cursor: pointer;
+    background: transparent url($image-zoom) no-repeat left 8px;
+    border: none;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+  }
+}
 
 /* Search */
 
@@ -244,6 +289,8 @@ body.action-sniffer_plugin_myprofile-search {
       border-style: solid;
       border-width: $base $base $base 0;
       border-color: transparent $color-product-search-bg transparent transparent;
+      position: relative;
+      left: $border;
     }
 
     #sniffer-balloon {
@@ -255,10 +302,6 @@ body.action-sniffer_plugin_myprofile-search {
       border: 1px solid black;
       box-shadow: 2px 2px 8px #aaa;
 
-      #close-box {
-        float: right;
-        cursor: pointer;
-      }
 
       #balloon-header, #balloon-offers, #balloon-footer {
         padding: $padding;
@@ -290,6 +333,17 @@ body.action-sniffer_plugin_myprofile-search {
             width: $module2 - $margin;
             margin-right: $margin;
           }
+        }
+      }
+
+      #balloon-footer {
+
+        #close-box {
+          float: right;
+          font-weight: bold;
+          position: absolute;
+          bottom: $padding;
+          right: $padding;
         }
       }
     }

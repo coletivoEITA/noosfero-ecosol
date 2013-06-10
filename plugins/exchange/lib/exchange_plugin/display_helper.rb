@@ -1,4 +1,4 @@
-module ExchangePluginDisplayHelper
+module ExchangePlugin::ExchangeDisplayHelper
 
   def sortable(column, title = nil)
     title ||= column.titleize

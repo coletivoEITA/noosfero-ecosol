@@ -2,34 +2,34 @@ class ExchangePluginMyprofileController < MyProfileController
   no_design_blocks
   protect 'edit_profile', :profile
 
-  helper ExchangePluginDisplayHelper
-  helper_method :sort_column, :sort_direction 
+  helper ExchangePlugin::ExchangeDisplayHelper
+  helper_method :sort_column, :sort_direction
 
   def index
-    
+
    @exchanges = ExchangePlugin::Exchange.all.select{|ex| (ex.state != "proposal") && ex.enterprises.find(:first, :conditions => {:id => profile.id})}
-   
+
    @enterprises = Enterprise.visible
     render :action => 'index'
-    
+
   end
-    
+
   def exchange_console
     @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
-    
+
     @proposals = @exchange.proposals.all(:order => "created_at desc")
     @proposal = @proposals.first
-    
+
     @target = @proposal.enterprise_target
     @origin = @proposal.enterprise_origin
-    @theother = @exchange.enterprises.find(:first, :conditions => ["enterprise_id != ?",profile.id])  
-    
+    @theother = @exchange.enterprises.find(:first, :conditions => ["enterprise_id != ?",profile.id])
+
     @theother_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @theother.id} - @proposal.knowledges
-    @profile_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @profile.id} - @proposal.knowledges 
-    
+    @profile_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @profile.id} - @proposal.knowledges
+
     @profile_products = @profile.products - @proposal.products
     @theother_products = @theother.products - @proposal.products
-      
+
     #css classes for the states
     if @exchange.state == "proposal"
       @state1class = "exc-plg-active"
@@ -53,7 +53,7 @@ class ExchangePluginMyprofileController < MyProfileController
       @state4class = "exc-plg-active"
     end
   end
-        
+
   def add_element
     @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
     @element = ExchangePlugin::ExchangeElement.new
@@ -69,40 +69,40 @@ class ExchangePluginMyprofileController < MyProfileController
     @element = ExchangePlugin::ExchangeElement.find params[:id]
     @element.destroy
   end
-  
+
   def new_message
     p = ExchangePlugin::Proposal.find params[:proposal_id]
-    
+
     recipient = (p.enterprise_target_id == @active_organization.id)? p.enterprise_origin : p.enterprise_target
 
     @message = ExchangePlugin::Message.new_exchange_message(p, @active_organization, recipient, current_user.person, params[:body])
 
   end
-  
+
   def close_proposal
     @proposal = ExchangePlugin::Proposal.find params[:proposal_id]
     @proposal.state = "closed"
     @proposal.date_sent = Time.now
     @proposal.save
-    
+
     @proposal.exchange.state = "negociation"
-    @proposal.exchange.save    
+    @proposal.exchange.save
 #    @proposal = ExchangePlugin::Proposal.create
     #como copiar um objeto??
     redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
   end
-    
+
   def new_proposal
     exchange = ExchangePlugin::Exchange.find params[:exchange_id]
     proposal_last = exchange.closed_proposals.last
-    
-    @proposal = ExchangePlugin::Proposal.new      
+
+    @proposal = ExchangePlugin::Proposal.new
     @proposal.exchange_id = proposal_last.exchange_id
     @proposal.state = "open"
 
     @proposal.enterprise_origin = @active_organization
     @proposal.enterprise_target = @proposal.exchange.enterprises.select{|k| k.id != @active_organization.id}.first #not good
-    
+
     @proposal.save
 
     proposal_last.exchange_elements.each do |ex|
@@ -113,7 +113,7 @@ class ExchangePluginMyprofileController < MyProfileController
       ex_el.proposal_id = @proposal.id
       ex_el.save
     end
-    
+
     redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
   end
 
@@ -121,25 +121,25 @@ class ExchangePluginMyprofileController < MyProfileController
     @proposal = ExchangePlugin::Proposal.find params[:proposal_id]
     exchange_id = @proposal.exchange_id
     @proposal.destroy
-        
+
     redirect_to :action => 'exchange_console', :exchange_id => exchange_id
   end
 
   def destroy
     (ExchangePlugin::Exchange.find params[:exchange_id]).destroy
     redirect_to :action => 'index'
-  end  
-  
+  end
+
   def accept
     @proposal = ExchangePlugin::Proposal.find params[:proposal_id]
     @proposal.exchange.state = "evaluation"
     @proposal.exchange.save
     @proposal.state = "accepted"
     @proposal.save
-    
+
     redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
-  end  
-  
+  end
+
 
   def evaluate
     @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
@@ -155,7 +155,7 @@ class ExchangePluginMyprofileController < MyProfileController
     if (@exchange.evaluations.count == 2)
         @exchange.state = 'concluded'
         @exchange.concluded_at = Time.now
-        @exchange.save  
+        @exchange.save
     end
 
     redirect_to :action => 'exchange_console', :exchange_id => @exchange.id
@@ -167,18 +167,18 @@ class ExchangePluginMyprofileController < MyProfileController
     old_quantity = @element.quantity
     @element.quantity = params[:quantity]
     @element.save
-    @exchange = ExchangePlugin::Exchange.find @element.proposal.exchange_id   
+    @exchange = ExchangePlugin::Exchange.find @element.proposal.exchange_id
 
 #     #message
-#     body = _('%{enterprise} changed the quantity of element %{element} from %{old_quantity} to %{quantity}') % 
-#       {:enterprise => profile.name, :element => (@element.element_type.constantize.find @element.element_id).name, :old_quantity => old_quantity, :quantity => @element.quantity} 
+#     body = _('%{enterprise} changed the quantity of element %{element} from %{old_quantity} to %{quantity}') %
+#       {:enterprise => profile.name, :element => (@element.element_type.constantize.find @element.element_id).name, :old_quantity => old_quantity, :quantity => @element.quantity}
 #     m = ExchangePlugin::Message.new_exchange_message(@exchange, nil, nil, nil , body)
-   
+
     render :nothing => true
   end
 
-   
-  
+
+
   #this should not be used
   def new
     @exchange = ExchangePlugin::Exchange.new
@@ -193,7 +193,7 @@ class ExchangePluginMyprofileController < MyProfileController
 
   def edit
     @exchange = ExchangePlugin::Exchange.find params[:id]
-   
+
     @origin_elements = @exchange.exchange_elements.select{|p| p.enterprise_id == @exchange.enterprise_origin_id}
     @origin_products = @exchange.enterprise_origin.products.reject{|p| @exchange.exchange_elements.find_by_element_id p.id }
     @origin_knowledges = @exchange.enterprise_origin.articles.find(:all, :conditions => ["type = 'CmsLearningPluginLearning'"]).reject{|p| @exchange.exchange_elements.find_by_element_id p.id }
@@ -211,7 +211,7 @@ class ExchangePluginMyprofileController < MyProfileController
     @exchange = ExchangePlugin::Exchange.find params[:id]
     @messages = ExchangePlugin::Message.all(:order => "created_at desc").select{|m| (m.exchange_id == @exchange.id) && (m.enterprise_sender_id != nil)}
     @system_messages = ExchangePlugin::Message.all(:order => "created_at desc").select{|m| (m.exchange_id == @exchange.id) && (m.enterprise_sender_id == nil)}
-   
+
     #allowing edition
     @edit_allowed = true
     edit_not_allowed = ["proposed", "concluded", "conclusion_proposed_by_origin", "conclusion_proposed_by_target",
@@ -232,43 +232,43 @@ class ExchangePluginMyprofileController < MyProfileController
       "cancelled_by_target" => [ [_('Back to happening - this should not appear'), "happening"], [_('Cancel'), "cancel"] ],
       "cancelled_by_origin" => [ [_('Back to happening - this should not appear'), "happening"], [_('Cancel'), "cancel"] ]
     }
-    @button = state_buttons[@exchange.state] 
+    @button = state_buttons[@exchange.state]
 
     #state machine for buttons and redirecting for evaluation
     if (@exchange.state == "proposed") && (!@exchange.target?(profile))
-      @button = nil     
-      @no_button_message = _('Waiting for the other to accept the exchange proposal') 
+      @button = nil
+      @no_button_message = _('Waiting for the other to accept the exchange proposal')
 
     elsif (@exchange.state == "proposed") && (@exchange.target?(profile))
-      @no_button_message = _('Do you accept to start the exchange negociation?') 
+      @no_button_message = _('Do you accept to start the exchange negociation?')
 
     elsif (@exchange.state == "happening")
-      @no_button_message = _('Exchange is happening. You can send messages, edit the exchange elements, propose the conclusion of the exchange or cancel the negociation.') 
+      @no_button_message = _('Exchange is happening. You can send messages, edit the exchange elements, propose the conclusion of the exchange or cancel the negociation.')
 
     elsif (@exchange.state == "conclusion_proposed_by_origin") && (!@exchange.target?(profile))
-      @button = nil     
-      @no_button_message = _('Waiting for a response by the other part of the exchange') 
+      @button = nil
+      @no_button_message = _('Waiting for a response by the other part of the exchange')
 
     elsif (@exchange.state == "conclusion_proposed_by_origin") && (@exchange.target?(profile))
-      @no_button_message = _('The other part said that the exchange is concluded. If you agree, click Exchange Concluded. 
-                             If you want to continue the negotiation, click Exchange not Concluded.') 
+      @no_button_message = _('The other part said that the exchange is concluded. If you agree, click Exchange Concluded.
+                             If you want to continue the negotiation, click Exchange not Concluded.')
 
     elsif (@exchange.state == "conclusion_proposed_by_target") && (@exchange.target?(profile))
-      @button = nil    
-      @no_button_message = _('Waiting for a response by the other part of the exchange') 
+      @button = nil
+      @no_button_message = _('Waiting for a response by the other part of the exchange')
 
     elsif (@exchange.state == "conclusion_proposed_by_target") && (!@exchange.target?(profile))
-      @no_button_message = _('The other part said that the exchange is concluded. If you agree, click Exchange Concluded. 
-                             If you want to continue the negotiation, click Exchange not Concluded.') 
+      @no_button_message = _('The other part said that the exchange is concluded. If you agree, click Exchange Concluded.
+                             If you want to continue the negotiation, click Exchange not Concluded.')
 
-    elsif (@exchange.state == "concluded") 
+    elsif (@exchange.state == "concluded")
       redirect_to :action => "evaluate", :id => @exchange.id
 
     elsif (@exchange.state == "evaluated_by_target") && (@exchange.target?(profile))
       ev = @exchange.evaluations.find_by_evaluator_id @exchange.enterprise_target_id
       @origin_evaluation_score = ev.score
       @origin_evaluation_desc = ev.text
-      @no_button_message = _('Waiting for evaluation by the other part of the exchange') 
+      @no_button_message = _('Waiting for evaluation by the other part of the exchange')
 
     elsif (@exchange.state == "evaluated_by_target") && !(@exchange.target?(profile))
       redirect_to :action => "evaluate", :id => @exchange.id
@@ -277,19 +277,19 @@ class ExchangePluginMyprofileController < MyProfileController
       ev = @exchange.evaluations.find_by_evaluator_id @exchange.enterprise_origin_id
       @origin_evaluation_score = ev.score
       @origin_evaluation_desc = ev.text
-      @no_button_message = _('Waiting for evaluation by the other part of the exchange') 
+      @no_button_message = _('Waiting for evaluation by the other part of the exchange')
 
 
     elsif (@exchange.state == "evaluated_by_origin") && (@exchange.target?(profile))
       redirect_to :action => "evaluate", :id => @exchange.id
 
     elsif (@exchange.state == "evaluated")
-      @no_button_message = _('Exchange finished and evaluated') 
-      
+      @no_button_message = _('Exchange finished and evaluated')
+
       ev = @exchange.evaluations.find_by_evaluator_id @exchange.enterprise_origin_id
       @origin_evaluation_score = ev.score
       @origin_evaluation_desc = ev.text
-      
+
       ev = @exchange.evaluations.find_by_evaluator_id @exchange.enterprise_target_id
       @target_evaluation_score = ev.score
       @target_evaluation_desc = ev.text
@@ -309,7 +309,7 @@ class ExchangePluginMyprofileController < MyProfileController
 #       evaluation.score = params[:score]
 #       evaluation.text = params[:text]
 #       evaluation.evaluator = profile
-#       evaluation.evaluated = @enterprise_other  
+#       evaluation.evaluated = @enterprise_other
 #       evaluation.save
 #       if (@exchange.state == 'evaluated_by_target') || (@exchange.state == 'evaluated_by_origin')
 #         @exchange.state = 'evaluated'
@@ -323,15 +323,15 @@ class ExchangePluginMyprofileController < MyProfileController
 
 #   def new_message
 #     e = ExchangePlugin::Exchange.find params[:exchange_id]
-# 
+#
 #     recipient = (e.enterprise_target_id == profile.id)? e.enterprise_origin : e.enterprise_target
-# 
+#
 #     m = ExchangePlugin::Message.new_exchange_message(e, profile, recipient, current_user.person, params[:body])
 #     redirect_to :action => 'console', :id => e.id
 #   end
 
 ### Methods for changing exchange state ###
- 
+
   def propose_conclusion
     e = ExchangePlugin::Exchange.find params[:id]
     if profile.id == e.enterprise_target_id
@@ -340,23 +340,23 @@ class ExchangePluginMyprofileController < MyProfileController
       e.state = "conclusion_proposed_by_origin"
     end
     e.save
-  
+
     #message
-    body = _('Conclusion Proposed by %s') % profile.name 
+    body = _('Conclusion Proposed by %s') % profile.name
     m = ExchangePlugin::Message.new_exchange_message(e, nil, nil, nil , body)
 
     redirect_to :action => 'console', :id => params[:id]
 
   end
 
-  def conclude 
+  def conclude
     e = ExchangePlugin::Exchange.find params[:id]
     e.state = "concluded"
     e.simplified_state = "concluded"
     e.save
-   
+
     #message
-    body = _('Exchange Concluded') 
+    body = _('Exchange Concluded')
     m = ExchangePlugin::Message.new_exchange_message(e, nil, nil, nil , body)
 
     redirect_to :action => 'evaluate', :id => params[:id]
@@ -371,11 +371,11 @@ class ExchangePluginMyprofileController < MyProfileController
       e.simplified_state = "cancelled_by_origin"
     end
     e.save
-   
+
     #message
     body = _('Exchange Cancelled by %{enterprise}') % {:enterprise => profile.name}
     m = ExchangePlugin::Message.new_exchange_message(e, nil, nil, nil , body)
-   
+
     redirect_to :action => 'evaluate', :id => params[:id]
   end
 
@@ -383,20 +383,20 @@ class ExchangePluginMyprofileController < MyProfileController
     e = ExchangePlugin::Exchange.find params[:id]
     e.state = "happening"
     e.save
-    redirect_to :action => 'console', :id => params[:id]  
+    redirect_to :action => 'console', :id => params[:id]
     #this should generate a message
   end
 
   ## Methods for exchange elements editing###
 
-  private 
+  private
 
-  def sort_column 
+  def sort_column
     ExchangePlugin::Exchange.column_names.include?(params[:sort]) ? params[:sort] : "updated_at"
   end
 
   def sort_direction
     %w[asc desc].include?(params[:direction])?params[:direction]:"desc"
   end
-  
+
 end
