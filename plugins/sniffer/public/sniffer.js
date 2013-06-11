@@ -1,8 +1,37 @@
+// underscore use of <@ instead of <%
+_.templateSettings = {
+  interpolate: /\<\@\=(.+?)\@\>/gim,
+  evaluate: /\<\@(.+?)\@\>/gim
+};
+
+// from http://stackoverflow.com/questions/17033397/javascript-strings-with-keyword-parameters
+String.prototype.format = function(obj) {
+  return this.replace(/%\{([^}]+)\}/g,function(_,k){ return obj[k] });
+}
+
 sniffer = {
 
   search: {
 
     filters: [],
+
+    load_search_input: function (options) {
+      var input = jQuery(".sniffer-search-input");
+      input.hint();
+      input.autocomplete({
+        source: options.sourceUrl,
+        select: function (event, ui) {
+          category = {id: ui.item.value, name: ui.item.label};
+          sniffer.search.category.append([category]);
+
+          url = options.addUrl.replace('_id_', category.id);
+          jQuery.post(url, function (data) { eval(data); });
+
+          input.val('');
+          return false;
+        },
+      });
+    },
 
     showFilters: function () {
       jQuery('#product-search .focus-pane').show();
@@ -13,33 +42,9 @@ sniffer = {
 
     filter: function () {
       jQuery.each(sniffer.search.map.markerList, function(index, marker) {
-        var visible = (!sniffer.search.filters.distance || sniffer.search.filters.distance >= marker.distance) && (sniffer.search.matchCategoryFilters(marker));
+        var visible = (!sniffer.search.filters.distance || sniffer.search.filters.distance >= marker.profile.distance) && (sniffer.search.category.matchFilters(marker));
         marker.setVisible(visible);
       });
-    },
-    matchCategoryFilters: function (marker) {
-      var match = false;
-      jQuery.each(sniffer.search.filters, function (index, id) {
-        if (sniffer.search.map.markerIndex[id].indexOf(marker) != -1)
-          match = true;
-      });
-      return match;
-    },
-
-    toggleCategoryFilter: function (input) {
-      var id = parseInt(jQuery(input).attr('name'));
-      if (input.checked)
-        sniffer.search.applyCategoryFilter(id);
-      else
-        sniffer.search.unapplyCategoryFilter(id);
-    },
-    applyCategoryFilter: function (id) {
-      sniffer.search.filters.push(id);
-      sniffer.search.filter();
-    },
-    unapplyCategoryFilter: function (id) {
-      sniffer.search.filters.pop(id);
-      sniffer.search.filter();
     },
 
     maxDistance: function (distance) {
@@ -48,10 +53,75 @@ sniffer = {
       sniffer.search.filter();
     },
 
+    profile: {
+
+      findMarker: function (id) {
+        var marker;
+        jQuery.each(sniffer.search.map.markerList, function(index, m) {
+          if (m.profile.id == id)
+            marker = m;
+        });
+        return marker;
+      },
+
+    },
+
+    category: {
+
+      matchFilters: function (marker) {
+        var match = false;
+        jQuery.each(sniffer.search.filters, function (index, id) {
+          if (sniffer.search.map.markerIndex[id].indexOf(marker) != -1)
+          match = true;
+        });
+        return match;
+      },
+
+      toggleFilter: function (input) {
+        var id = parseInt(jQuery(input).attr('name'));
+        if (input.checked)
+          sniffer.search.category.applyFilter(id);
+        else
+          sniffer.search.category.unapplyFilter(id);
+      },
+      applyFilter: function (id) {
+        sniffer.search.filters.push(id);
+        sniffer.search.filter();
+      },
+      unapplyFilter: function (id) {
+        sniffer.search.filters.pop(id);
+        sniffer.search.filter();
+      },
+
+      exists: function (id) {
+        var find = jQuery('#categories-table input[name='+id+']');
+        find.length > 0;
+      },
+
+      template: function (categories) {
+        var template = jQuery('#sniffer-category-add-template');
+        return _.map(categories, function (category) {
+          if (sniffer.search.category.exists(category.id)) return;
+          return _.template(template.html(), {category: category});
+        }).join('');
+      },
+      append: function (categories) {
+        var target = jQuery('#categories-table');
+        var template = sniffer.search.category.template(categories);
+        target.append(template);
+      },
+
+    },
+
     map: {
 
       markerIndex: [],
       markerList: [],
+
+      homeIcon: "/plugins/sniffer/images/marker_home.png",
+      suppliersIcon: "/plugins/sniffer/images/marker_suppliers.png",
+      consumersIcon: "/plugins/sniffer/images/marker_consumers.png",
+      bothIcon: "/plugins/sniffer/images/marker_both.png",
 
       //openBalloon: mapOpenBalloon,
       openBalloon: function (marker, html) {
@@ -80,10 +150,8 @@ sniffer = {
         mapLoad(options.zoom);
 
         var profile = options.profile;
-        var homeIcon = "/plugins/sniffer/images/marker_home.png";
-        var suppliersIcon = "/plugins/sniffer/images/marker_suppliers.png";
-        var consumersIcon = "/plugins/sniffer/images/marker_consumers.png";
-        var bothIcon = "/plugins/sniffer/images/marker_both.png";
+        profile.balloonUrl = options.myBalloonUrl;
+        var marker = sniffer.search.map.addMarker(profile, sniffer.search.map.homeIcon, false);
 
         _.each(options.mapData, function (data) {
           var profile = data.profile;
@@ -93,51 +161,58 @@ sniffer = {
 
           var icon = null;
           if (_.size(sp) > 0 && _.size(cp) > 0)
-            icon = bothIcon;
+            icon = sniffer.search.map.bothIcon;
           else if (_.size(sp) > 0)
-            icon = suppliersIcon;
+            icon = sniffer.search.map.suppliersIcon;
           else
-            icon = consumersIcon;
+            icon = sniffer.search.map.consumersIcon;
 
-          var marker = mapPutMarker(profile.lat, profile.lng, profile.name, icon, sniffer.search.map.fillBalloon);
-          marker.balloonUrl = options.balloonUrl.replace('_id_', profile.id);
-          marker.balloonData = data;
-          marker.profile = profile;
-          marker.distance = profile.distance;
+          profile.balloonUrl = options.balloonUrl.replace('_id_', profile.id);
+          profile.balloonData = data;
+          var marker = sniffer.search.map.addMarker(profile, icon);
 
           _.each(_.union(sp, cp), function (p) {
-            if (sniffer.search.map.markerIndex[p.product_category_id] == undefined)
-              sniffer.search.map.markerIndex[p.product_category_id] = [];
-
-            sniffer.search.map.markerIndex[p.product_category_id].push(marker);
-            sniffer.search.filters.push(p.product_category_id);
+            sniffer.search.map.indexMarker(p.product_category_id, marker);
           });
-
-          sniffer.search.map.markerList.push(marker);
         });
 
-        var marker = mapPutMarker(profile.lat, profile.lng, profile.name, homeIcon, options.myBalloonUrl);
         sniffer.search.filter();
-
         mapCenter();
+      },
+
+      addMarker: function(profile, icon, filtered) {
+        if (filtered == undefined)
+          filtered = true;
+
+        var marker = sniffer.search.profile.findMarker(profile.id);
+        if (!marker)
+          marker = mapPutMarker(profile.lat, profile.lng, profile.name, icon, sniffer.search.map.fillBalloon);
+        marker.profile = profile;
+
+        if (filtered)
+          sniffer.search.map.markerList.push(marker);
+
+        return marker;
+      },
+
+      indexMarker: function (product_category_id, marker) {
+        if (sniffer.search.map.markerIndex[product_category_id] == undefined)
+          sniffer.search.map.markerIndex[product_category_id] = [];
+
+        sniffer.search.map.markerIndex[product_category_id].push(marker);
+        sniffer.search.filters.push(product_category_id);
       },
 
       fillBalloon: function (marker) {
         if (marker.cachedData)
           sniffer.search.map.openBalloon(marker, marker.cachedData);
         else
-          jQuery.post(marker.balloonUrl, marker.balloonData, function (data) {
+          jQuery.post(marker.profile.balloonUrl, marker.profile.balloonData, function (data) {
             marker.cachedData = jQuery(data).html();
             sniffer.search.map.openBalloon(marker, marker.cachedData);
           });
       },
 
-      showProfile: function (id) {
-        jQuery.each(sniffer.search.markerList, function(index, marker) {
-          if (marker.profile.id == id)
-          sniffer.search.fillBalloon(marker);
-        });
-      },
     },
   },
 }

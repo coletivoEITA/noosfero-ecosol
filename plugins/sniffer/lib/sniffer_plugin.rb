@@ -25,7 +25,7 @@ class SnifferPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['sniffer.js']
+    ['underscore-min.js', 'sniffer.js']
   end
 
   def profile_blocks(profile)

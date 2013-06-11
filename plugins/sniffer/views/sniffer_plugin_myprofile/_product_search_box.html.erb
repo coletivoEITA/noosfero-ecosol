@@ -1,4 +1,4 @@
-<div id="product-search" class="search-box" onmouseover="sniffer.search.showFilters();"
+<div id="product-search" class="sniffer-search-box" onmouseover="sniffer.search.showFilters();"
      onmouseout="sniffer.search.hideFilters();">
   <div class="legend">
     <span class="suppliers">
@@ -11,26 +11,36 @@
     </span>
   </div>
 
-  <div class="search-field">
-    <input type="text" title="<%= _('look for products...') %>" class="search-input"/>
-    <%= javascript_tag 'jQuery(".search-input").hint();' %>
-    <div class="search-submit"> </div>
+  <div class="sniffer-search-field">
+    <input type="text" title="<%= _('look for products...') %>" class="sniffer-search-input"/>
+    <div class="sniffer-search-submit"> </div>
+
+    <% javascript_tag do %>
+      sniffer.search.load_search_input({
+        sourceUrl: '<%= url_for :action => :product_category_search, :escape => false %>',
+        addUrl: '<%= url_for :controller => :sniffer_plugin_myprofile, :action => :product_category_add, :id => '_id_', :escape => false %>',
+      });
+    <% end %>
   </div>
+
 
   <div class="focus-pane">
     <div id="categories-table-wrap">
       <table id="categories-table">
-        <% @categories.each do |category| %>
-          <tr>
-            <td class="select">
-              <%= check_box_tag category.id, 1, true, :onclick => 'sniffer.search.toggleCategoryFilter(this);' %>
-            </td>
-            <td class="name">
-              <%= category.name %>
-            </td>
-          </tr>
-        <% end %>
       </table>
+
+      <script id="sniffer-category-add-template" type="text/html">
+        <tr>
+          <td class="select">
+            <input type="checkbox" name="<@= category.id @>" checked onclick='sniffer.search.category.toggleFilter(this);'/>
+          </td>
+          <td class="name">
+            <@= category.name @>
+          </td>
+        </tr>
+      </script>
+      <%= javascript_tag "sniffer.search.category.append(#{@categories.to_json :only => [:id, :name]});" %>
     </div>
   </div>
+
 </div>

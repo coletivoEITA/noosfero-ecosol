@@ -58,6 +58,7 @@ $image-zoom: '/plugins/sniffer/images/lupa.png';
   border: 1px solid #aaa;
   box-shadow: 1px 1px 1px 0px #aaa;
   height: 3*$base;
+  clear: both;
 
   .sniffer-search-input {
     float: left;
@@ -148,6 +149,9 @@ body.action-sniffer_plugin_myprofile-search {
           h1 {
             text-shadow: 0 $shadow white, $shadow 0 white, 0 #{-$shadow} white, -$shadow 0 white;
             float: left;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
             user-select: none;
           }
 
@@ -338,10 +342,12 @@ body.action-sniffer_plugin_myprofile-search {
       }
 
       #balloon-footer {
+        min-height: $base;
 
         #close-box {
           float: right;
           font-weight: bold;
+          color: black;
           position: absolute;
           bottom: $padding;
           right: $padding;

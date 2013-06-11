@@ -23,7 +23,8 @@
   background: white;
   border: 1px solid #aaa;
   box-shadow: 1px 1px 1px 0px #aaa;
-  height: 36px; }
+  height: 36px;
+  clear: both; }
   .sniffer-search-field .sniffer-search-input {
     float: left;
     height: 24px;
@@ -88,6 +89,9 @@ body.action-sniffer_plugin_myprofile-search {
         #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay h1 {
           text-shadow: 0 2px white, 2px 0 white, 0 -2px white, -2px 0 white;
           float: left;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
           user-select: none; }
         #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search {
           background: #faf7dc;

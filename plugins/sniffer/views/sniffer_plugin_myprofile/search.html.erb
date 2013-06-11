@@ -29,26 +29,19 @@
 
 <%= content_tag 'script', '', :src => "http://maps.googleapis.com/maps/api/js?sensor=false", :type => 'text/javascript' %>
 <%= javascript_include_tag 'google_maps' %>
-
-<%= content_tag 'script', '', :src => "/plugins/sniffer/underscore-min.js", :type => 'text/javascript' %>
 <%= content_tag 'script', '', :src => "/plugins/sniffer/infobox.js", :type => 'text/javascript' %>
 
-<% json_opts = {:only => [:id, :name, :lat, :lng], :methods => [:distance]} %>
 <% map_data = @profiles.map do |profile, data|
   #next unless profile.lat and profile.lng
-
-  profile_hash = {}
-  (json_opts[:only]+json_opts[:methods]).each{ |m| profile_hash[m] = profile.send m }
-
-  {:profile => profile_hash, :data => data}
+  {:profile => profile_hash(profile), :data => data}
 end %>
 
 <script type='text/javascript'>
   sniffer.search.map.load({
       zoom: <%= GoogleMaps.initial_zoom.to_json %>,
-      balloonUrl: '<%= url_for(:controller => :sniffer_plugin_myprofile, :action => :map_balloon, :id => "_id_", :escape => false) %>',
-      myBalloonUrl: '<%= url_for(:controller => :sniffer_plugin_myprofile, :action => :my_map_balloon, :escape => false) %>',
-      profile: <%= profile.to_json json_opts %>,
+      balloonUrl: '<%= url_for :controller => :sniffer_plugin_myprofile, :action => :map_balloon, :id => "_id_", :escape => false %>',
+      myBalloonUrl: '<%= url_for :controller => :sniffer_plugin_myprofile, :action => :my_map_balloon, :escape => false %>',
+      profile: <%= profile_hash(profile).to_json %>,
       mapData: <%= map_data.to_json %>,
   });
 </script>

@@ -1,10 +1,11 @@
 class SnifferPluginMyprofileController < MyProfileController
-  append_view_path File.join(File.dirname(__FILE__) + '/../views')
-  helper CmsHelper
 
   protect 'edit_profile', :profile
 
   before_filter :fetch_sniffer_profile
+
+  helper CmsHelper
+  helper_method :profile_hash
 
   def edit
     if request.post?
@@ -20,11 +21,29 @@ class SnifferPluginMyprofileController < MyProfileController
   end
 
   def product_categories
-    @categories = ProductCategory.find(:all, :limit => 20, :conditions => ["name ~* ?", params[:q]])
+    @categories = environment.categories.all :limit => 10,
+      :conditions => ["type = 'ProductCategory' and LOWER(name) LIKE ?", "%#{params[:q]}%"]
+
     respond_to do |format|
-      format.html
-      format.json { render :json => @categories.collect{ |i| {:id => i.id, :name => i.name} } }
+      format.json{ render :json => @categories.map{ |i| {:id => i.id, :name => i.name} } }
     end
+  end
+
+  def product_category_search
+    @categories = environment.categories.all :limit => 10,
+      :conditions => ["type = 'ProductCategory' and LOWER(name) LIKE ?", "%#{params[:term]}%"]
+
+    respond_to do |format|
+      format.json{ render :json => @categories.map{ |pc| {:value => pc.id, :label => pc.name} } }
+    end
+  end
+
+  #FIXME: move into class
+  ProductCategory.has_many :enterprises, :through => :products
+
+  def product_category_add
+    @product_category = environment.categories.find params[:id]
+    @profiles = @product_category.enterprises
   end
 
   def search
@@ -52,8 +71,10 @@ class SnifferPluginMyprofileController < MyProfileController
 
   def map_balloon
     @profile = Profile.find params[:id]
+
     suppliers_products = params[:suppliers_products] ? params[:suppliers_products].values : []
     consumers_products = params[:consumers_products] ? params[:consumers_products].values : []
+    @empty = suppliers_products.empty? and consumers_products.empty?
 
     @suppliers_hashes = build_products(suppliers_products).values.first
     @consumers_hashes = build_products(consumers_products).values.first
@@ -62,10 +83,6 @@ class SnifferPluginMyprofileController < MyProfileController
   end
 
   def my_map_balloon
-    @enterprise = profile
-    @inputs = @sniffer_profile.profile_input_categories
-    @categories = @sniffer_profile.profile_product_categories
-    @interests = @sniffer_profile.product_categories
     render :layout => false
   end
 
@@ -73,6 +90,12 @@ class SnifferPluginMyprofileController < MyProfileController
 
   def fetch_sniffer_profile
     @sniffer_profile = SnifferPluginProfile.find_or_create profile
+  end
+
+  def profile_hash profile
+    methods = [:id, :name, :lat, :lng, :distance]
+    profile_hash = {}; methods.each{ |m| profile_hash[m] = profile.send m }
+    profile_hash
   end
 
   def build_products data

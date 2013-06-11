@@ -6,54 +6,40 @@
   <div id="sniffer-balloon">
 
     <div id="balloon-header">
-      <%= profile_image @profile, :minor %>
-      <div id="balloon-profile-info">
-        <div>
-          <%= link_to_profile @profile.name, @profile.identifier, :class => 'name' %>
-        </div>
-        <div>
-          <% @profile.categories.collect(&:name).join ',' %>
-        </div>
-        <div>
-          <% extend SearchHelper %>
-          <% city_with_state @profile.region %>
-        </div>
-      </div>
+      <%= render :partial => 'balloon_header' %>
     </div>
 
-    <div id="balloon-offers">
-      <div id="suppliers-products" class="products">
-        <% unless @suppliers_hashes.blank? %>
-          <strong><%= _('As supplier') %></strong>
-          <div>
-            <% @suppliers_hashes.each do |h| %>
-              <div><%= render :partial => "item_#{h[:partial]}", :locals => {:hash => h} %></div>
-            <% end %>
-          </div>
-        <% end %>
+    <% unless @empty %>
+      <div id="balloon-offers">
+        <div id="suppliers-products" class="products">
+          <% unless @suppliers_hashes.blank? %>
+            <strong><%= _('As supplier') %></strong>
+            <div>
+              <% @suppliers_hashes.each do |h| %>
+                <div><%= render :partial => "item_#{h[:partial]}", :locals => {:hash => h} %></div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div id="consumer-products" class="products">
+          <% unless @consumers_hashes.blank? %>
+            <strong><%= _('As consumer') %></strong>
+            <div>
+              <% @consumers_hashes.each do |h| %>
+                <div><%= render :partial => "item_#{h[:partial]}", :locals => {:hash => h} %></div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
       </div>
-      <div id="consumer-products" class="products">
-        <% unless @consumers_hashes.blank? %>
-          <strong><%= _('As consumer') %></strong>
-          <div>
-            <% @consumers_hashes.each do |h| %>
-              <div><%= render :partial => "item_#{h[:partial]}", :locals => {:hash => h} %></div>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
-    </div>
+    <% end %>
 
     <div id="balloon-footer">
       <% @plugins.dispatch(:sniffer_balloon_footer).each do |lambda| %>
         <%= instance_eval &lambda %>
       <% end %>
 
-      <%= link_to_function _('Close'), '', :id => "close-box" %>
+      <%= render :partial => 'balloon_close' %>
     </div>
-
-    <div class="clean"></div>
   </div>
-
-  <div class="clean"></div>
 </div>

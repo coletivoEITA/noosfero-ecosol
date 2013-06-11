@@ -1,36 +1,16 @@
-<div id="balloon">
-  <div class="sniffer-plugin-profile-title">
-    <%= profile_image @enterprise, :minor %>
-    <strong><%= link_to_profile @enterprise.name, @enterprise.identifier %></strong>
+<div id="sniffer-balloon-wrap">
+
+  <div id="sniffer-balloon-arrow">
   </div>
-  <div id="sniffer-plugin-inputs-categories" class="sniffer-plugin-products">
-    <% unless @inputs.empty? %>
-      <strong><%= _('My Inputs and Raw Materials') %></strong>
-      <ul>
-        <% @inputs.each do |c| %>
-          <li><%= link_to_category c %></li>
-        <% end %>
-      </ul>
-    <% end %>
-  </div>
-  <div id="sniffer-plugin-products-categories" class="sniffer-plugin-products">
-    <% unless @categories.empty? %>
-      <strong><%= _('My Products Categories') %></strong>
-      <ul>
-        <% @categories.each do |c| %>
-          <li><%= link_to_category c %></li>
-        <% end %>
-      </ul>
-    <% end %>
-  </div>
-  <div id="sniffer-plugin-interests" class="sniffer-plugin-products">
-    <% unless @interests.empty? %>
-      <strong><%= _('My Interests') %></strong>
-      <ul>
-        <% @interests.each do |c| %>
-          <li><%= link_to_category c %></li>
-        <% end %>
-      </ul>
-    <% end %>
+
+  <div id="sniffer-balloon">
+
+    <div id="balloon-header">
+      <%= render :partial => 'balloon_header' %>
+    </div>
+
+    <div id="balloon-footer">
+      <%= render :partial => 'balloon_close' %>
+    </div>
   </div>
 </div>
