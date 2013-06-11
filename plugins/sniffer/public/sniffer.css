@@ -212,12 +212,15 @@ body.action-sniffer_plugin_myprofile-search {
     #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers .products#suppliers-products {
       width: 144px;
       margin-right: 24px; }
-  #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-footer #close-box {
-    float: right;
-    font-weight: bold;
-    position: absolute;
-    bottom: 12px;
-    right: 12px; }
+  #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-footer {
+    min-height: 12px; }
+    #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-footer #close-box {
+      float: right;
+      font-weight: bold;
+      color: black;
+      position: absolute;
+      bottom: 12px;
+      right: 12px; }
 
 /* Interest interface */
 #sniffer-plugin-product-select {

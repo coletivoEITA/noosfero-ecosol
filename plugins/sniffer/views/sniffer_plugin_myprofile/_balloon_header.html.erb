@@ -1,0 +1,17 @@
+<%= profile_image @profile, :minor %>
+<div id="balloon-profile-info">
+  <div>
+    <%= link_to_profile @profile.name, @profile.identifier, :class => 'name' %>
+  </div>
+  <div>
+    <% @profile.categories.collect(&:name).join ',' %>
+  </div>
+  <div>
+    <% extend SearchHelper %>
+    <% city_with_state @profile.region %>
+  </div>
+
+  <% @plugins.dispatch(:sniffer_balloon_header).each do |lambda| %>
+    <%= instance_eval &lambda %>
+  <% end %>
+</div>
