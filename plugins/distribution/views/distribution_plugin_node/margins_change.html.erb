@@ -9,12 +9,18 @@
             "margin updated. The open sessions won't be affected.") %>
     </div>
 
-    <%= labelled_field f, :margin_percentage, t('distribution_plugin.views.node.margins_change.new_margin'), f.text_field(:margin_percentage) + ' ' + t('distribution_plugin.views.node.margins_change.%') %>
+    <%= labelled_field f, :margin_percentage, t('distribution_plugin.views.node.margins_change.new_margin'), f.text_field(:margin_percentage, :value => @node.margin_percentage_as_currency_number) + ' ' + t('distribution_plugin.views.node.margins_change.%') %>
 
     <div>
       <%= check_box_tag :apply_to_all, 1, false, :style => 'float: left'  %>
-      <%= label_tag :apply_to_all, t('distribution_plugin.views.node.margins_change.force_apply_to_all_pr'), :class => 'line-label' %>
+      <%= label_tag :apply_to_all, t('distribution_plugin.views.node.margins_change.apply_to_all'), :class => 'line-label' %>
     </div>
+
+    <div>
+      <%= check_box_tag :apply_to_open_sessions, 1, false, :style => 'float: left'  %>
+      <%= label_tag :apply_to_open_sessions, t('distribution_plugin.views.node.margins_change.apply_to_open_sessions'), :class => 'line-label' %>
+    </div>
+
     <div class="cleaner"></div>
 
     <%= submit_tag t('distribution_plugin.views.node.margins_change.confirm') %>

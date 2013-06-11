@@ -95,7 +95,8 @@
                 <%= labelled_field f, :margin_percentage, t('distribution_plugin.views.product._edit.margin'),
                   f.text_field(:margin_percentage, :class => 'small-input',
                                :value => product.own_margin_percentage_as_currency_number, :oldvalue => product.own_margin_percentage_as_currency_number, :defaultvalue => product.node.margin_percentage_as_currency_number,
-                               :onkeyup => 'distribution.our_product.pmsync(this, true);') + ' ' + t('distribution_plugin.views.product._edit.%') %>
+                               :onkeyup => 'distribution.our_product.pmsync(this, true);') +
+                  ' ' + t('distribution_plugin.views.product._edit.%') %>
                 <div class="default-margin">
                   <%= f.check_box :default_margin_percentage, :onchange => "distribution.our_product.toggle_referred(this)", :for => '#product_margin_percentage' %>
                   <%= f.label :default_margin_percentage, t('distribution_plugin.views.product._edit.use_default_margin') %>

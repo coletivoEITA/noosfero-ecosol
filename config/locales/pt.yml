@@ -480,7 +480,8 @@
           cancel: Cancelar
           change_default_margin: "Mudar a margem padrão de comercialização"
           confirm: Confirmar
-          force_apply_to_all_pr: "Forçar aplicação a todos produtos"
+          apply_to_all: "Aplicar para produtos com margens personalizadas"
+          apply_to_open_sessions: "Aplicar para os produtos nos ciclos abertos"
           new_margin: "Nova margem"
         settings: 
           abbreviated_name_of_t: "Nome abreviado do coletivo"

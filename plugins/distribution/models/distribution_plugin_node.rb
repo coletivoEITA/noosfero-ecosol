@@ -86,16 +86,22 @@ class DistributionPluginNode < ActiveRecord::Base
   end
 
   def default_products_margins
-    products.unarchived.distributed.each do |product|
-      product.default_margin_percentage = true
-      product.default_margin_fixed = true
-      product.save!
-    end
-    sessions.open.each do |session|
-      session.products.each do |product|
-        product.margin_percentage = margin_percentage
-        product.margin_fixed = margin_fixed
+    self.class.transaction do
+      products.unarchived.distributed.each do |product|
+        product.default_margin_percentage = true
+        product.default_margin_fixed = true
         product.save!
+      end
+    end
+  end
+  def default_open_sessions_products_margins
+    self.class.transaction do
+      sessions.open.each do |session|
+        session.products.each do |product|
+          product.margin_percentage = margin_percentage
+          product.margin_fixed = margin_fixed
+          product.save!
+        end
       end
     end
   end
