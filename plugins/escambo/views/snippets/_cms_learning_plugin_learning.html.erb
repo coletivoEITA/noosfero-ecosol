@@ -1,4 +1,4 @@
-<% profile = learning.profile %>
+<% profile = knowledge.profile %>
 
 <div class="escambo-snippet cms-learning-plugin-learning-snippet">
   <div class="first-column">
@@ -8,10 +8,14 @@
   </div>
 
   <div class="second-column">
-    <%= _('%{profile} is interested in %{learning}') % {
+    <%= _('%{profile} knows %{learning}') % {
       :profile => link_to(profile.name, profile.url),
-      :learning => link_to(learning.name, learning.url),
+      :learning => link_to(knowledge.name, knowledge.url),
       } %>
+
+    <div class="description">
+      <%= knowledge.summary %>
+    </div>
 
     <%= render :partial => 'snippets/local', :locals => {:profile => profile} %>
   </div>
@@ -19,7 +23,9 @@
   <div class="third-column">
   </div>
 
-  <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile} %>
+  <% if profile != @active_organization %>
+    <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile} %>
+  <% end %>
 
   <div class="clean"></div>
 </div>

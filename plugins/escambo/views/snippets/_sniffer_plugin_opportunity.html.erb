@@ -8,9 +8,10 @@
   </div>
 
   <div class="second-column">
-    <%= _('%{profile} is interest in %{interest}') % {
+    <%= _('%{profile} is interested in %{interest}') % {
       :profile => link_to(profile.name, profile.url),
-      :interest => link_to(interest, {:controller => :search, :query => interest})
+      :interest => link_to((eval(interest.opportunity_type).find interest.opportunity_id).name, 
+       {:controller => :search, :query => interest})
       } %>
 
     <%= render :partial => 'snippets/local', :locals => {:profile => profile} %>
@@ -18,8 +19,10 @@
 
   <div class="third-column">
   </div>
-
-  <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile} %>
+  
+  <% if profile != @active_organization %>
+    <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile} %>
+  <% end %>
 
   <div class="clean"></div>
 </div>

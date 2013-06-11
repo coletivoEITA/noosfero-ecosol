@@ -23,7 +23,10 @@
   <div class="third-column">
   </div>
 
-  <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile} %>
+  <% if profile != @active_organization %>
+    <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile} %>
+  <% end %>
+
 
   <div class="clean"></div>
 </div>
