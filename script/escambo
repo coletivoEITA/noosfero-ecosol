@@ -2,7 +2,7 @@
 
 # Contants
 Production = false
-PluginsClasses = ["CmsLearningPlugin", "EscamboPlugin", "EvaluationPlugin", "ExchangePlugin", "SignupWithEnterprisePlugin", "SnifferPlugin"]
+PluginsClasses = ["CmsLearningPlugin", "CurrencyPlugin", "EscamboPlugin", "EvaluationPlugin", "ExchangePlugin", "SignupWithEnterprisePlugin", "SnifferPlugin"]
 
 def echo text
   puts "=== #{text}"

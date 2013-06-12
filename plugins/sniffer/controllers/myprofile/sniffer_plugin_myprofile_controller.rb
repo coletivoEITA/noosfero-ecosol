@@ -1,7 +1,5 @@
 class SnifferPluginMyprofileController < MyProfileController
 
-  protect 'edit_profile', :profile
-
   before_filter :fetch_sniffer_profile
 
   helper CmsHelper
