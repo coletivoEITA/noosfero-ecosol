@@ -19,7 +19,8 @@
 
   <div class="third-column">
     <% if profile != @active_organization %>
-      <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile} %>
+      <%= #render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile} 
+%>
     <% else %>
       <%= link_to _("Edit"), {:controller => :sniffer_plugin_myprofile, :action => :edit, :profile => profile.identifier}, :class => 'exchange' %> 
     <% end %>

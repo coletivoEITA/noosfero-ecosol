@@ -22,7 +22,7 @@
 
   <div class="third-column">
     <% if profile != @active_organization %>
-      <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile} %>
+      <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile, :element_id => product.id, :element_type => "Product"} %>
     <% else %>
       <%= link_to _("Edit"), {:controller => :manage_products, :action => :show, :profile => profile.identifier, :id => product.id}, :class => 'exchange' %> 
     <% end %>
