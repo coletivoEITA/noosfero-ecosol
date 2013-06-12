@@ -12,7 +12,7 @@
 /* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
 /* Colors */
 /* Exchange button */
-.action-button, .exchange {
+.exchange-action-button, .exchange {
   background: #394e41;
   color: white;
   text-align: center;
@@ -22,17 +22,6 @@
   border: 0px;
   border-radius: 3px; }
 
-/* Overwrites */
-table {
-  width: auto; }
-
-tr:hover td {
-  background: transparent; }
-
-td {
-  border: 0px; }
-
-/* end */
 /*####### new layout ########*/
 body.controller-exchange_plugin_myprofile {
   background-color: #FAF7DC; }

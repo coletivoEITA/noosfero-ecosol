@@ -30,7 +30,6 @@ $half-margin: $margin/2;
 $padding: $intercolumn/2;
 $half-padding: $padding/2;
 
-
 $border: 1px;
 $border-radius: 5px;
 $shadow: 2px;
@@ -41,8 +40,7 @@ $color-exchange: #394E41;
 
 /* Exchange button */
 
-.action-button {
-  @extend .pstyle-button-small;
+.exchange-action-button {
   background: $color-exchange;
   color: white;
   text-align: center;
@@ -54,25 +52,8 @@ $color-exchange: #394E41;
 }
 
 .exchange {
-  @extend .action-button;
+  @extend .exchange-action-button;
 }
-
-/* Overwrites */
-
-table {
-  width: auto;
-}
-
-tr:hover td{
-  background:transparent;
-}
-
-td {
-  border: 0px;
-}
-
-/* end */
-
 
 /*####### new layout ########*/
 

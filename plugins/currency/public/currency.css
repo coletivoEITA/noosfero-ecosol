@@ -1,0 +1,32 @@
+.clean {
+  clear: both; }
+
+.container-clean, #currency-wrap {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* Base measuments */
+/* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
+/* Colors */
+/* Buttons */
+.currency-action-button {
+  background: #394e41;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  padding: 6px 12px;
+  border: 0px;
+  border-radius: 3px; }
+
+/* index action */
+#currency-wrap #currency-organized {
+  float: left;
+  width: 552px;
+  margin-right: 24px; }
+#currency-wrap #currency-accepted {
+  float: left;
+  width: 384px; }

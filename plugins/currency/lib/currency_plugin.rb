@@ -11,9 +11,9 @@ class CurrencyPlugin < Noosfero::Plugin
   end
 
   def control_panel_buttons
-    if context.profile.enterprise?
-      { :title => _("My currencies"), :url => {:controller => 'currency_plugin_myprofile', :action => 'edit'} }
-    end
+    #if context.profile.enterprise?
+      #{ :title => _("My currencies"), :url => {:controller => 'currency_plugin_myprofile', :action => 'edit'} }
+    #end
   end
 
   def stylesheet?
