@@ -21,6 +21,7 @@ class CurrencyPlugin < Noosfero::Plugin
   end
 
   def js_files
+    ['currency.js']
   end
 
 end
