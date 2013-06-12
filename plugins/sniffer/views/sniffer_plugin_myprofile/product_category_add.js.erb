@@ -2,6 +2,6 @@
   profile = <%= profile_hash(profile).to_json %>;
   profile.balloonUrl = '<%= url_for :controller => :sniffer_plugin_myprofile, :action => :map_balloon, :id => profile.id, :escape => false %>';
 
-  var marker = sniffer.search.map.addMarker(profile);
-  sniffer.search.map.indexMarker(<%= @product_category.id %>, marker);
+  var marker = sniffer.search.map.marker.add(profile);
+  sniffer.search.map.marker.index(<%= @product_category.id %>, marker);
 <% end %>
