@@ -1,7 +1,7 @@
 <% profile = product.enterprise %>
 
 <div class="escambo-snippet product-snippet">
-  <div class="first-column">
+  <div class="first-column" <%= (product.image.blank? ? "" : "style=\"background-image: url('" + product.image.public_filename + "')\"") %> >
     <div class="label">
       <%= _('Offer') %>
     </div>
@@ -21,11 +21,14 @@
   </div>
 
   <div class="third-column">
+    <% if profile != @active_organization %>
+      <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile, :element_id => product.id, :element_type => "Product"} %>
+    <% else %>
+      <%= link_to _("Edit"), {:controller => :manage_products, :action => :show, :profile => profile.identifier, :id => product.id}, :class => 'exchange' %> 
+    <% end %>
   </div>
 
-  <% if profile != @active_organization %>
-    <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile} %>
-  <% end %>
+
 
 
   <div class="clean"></div>

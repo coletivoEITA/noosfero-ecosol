@@ -21,11 +21,13 @@
   </div>
 
   <div class="third-column">
+  <% if profile != @active_organization %>
+    <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile, :element_id => knowledge.id, :element_type => "CmsLearningPluginLearning"} %>
+  <% else %>
+    <%= link_to _("Edit"), {:controller => :cms, :action => :edit, :profile => profile.identifier, :id => knowledge.id}, :class => 'exchange' %> 
+  <% end %>
   </div>
 
-  <% if profile != @active_organization %>
-    <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile} %>
-  <% end %>
 
   <div class="clean"></div>
 </div>
