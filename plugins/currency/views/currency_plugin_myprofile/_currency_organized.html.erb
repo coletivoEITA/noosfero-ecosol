@@ -1,8 +1,8 @@
 <div class="currency-organized-item">
   <div class="header">
-    <h3> <%= _('%{name} (%{symbol})') % {:name => currency.name, :symbol => currency.symbol} %> </h3>
+    <h3> <%= currency.name_with_symbol %> </h3>
     <%= link_to _('Edit'), {:action => :edit, :id => currency.id}, :class => 'colorbox currency-action-button' %>
-    <%# link_to _('Disassociate'), {:action => :desassociate} , :class =>  'currency-action-button'%>
+    <%# link_to _('Disassociate'), {:action => :desassociate} , :class => 'currency-action-button'%>
   </div>
 
   <div class="description">

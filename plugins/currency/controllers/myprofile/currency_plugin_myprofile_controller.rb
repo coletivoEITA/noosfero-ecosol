@@ -1,7 +1,8 @@
 class CurrencyPluginMyprofileController < MyProfileController
 
   def index
-    @currencies = profile.organized_currencies
+    @organized_currencies = profile.organized_currencies
+    @accepted_currencies = profile.accepted_currencies
   end
 
   def create
@@ -34,7 +35,33 @@ class CurrencyPluginMyprofileController < MyProfileController
   end
 
   def accept
-    render :layout => false
+    if request.post?
+      @currencies = CurrencyPlugin::Currency.find params[:id]
+      profile.accepted_currencies << @currencies
+      redirect_to :action => :index
+    else
+      @currencies = []
+      render :layout => false
+    end
   end
+
+  def accept_search
+    query = params[:query].strip.downcase
+    options = {:limit => 10, :conditions => [
+      'LOWER(name) ~ ? OR LOWER(symbol) ~ ? OR LOWER(description) ~ ?',
+      query, query, query
+    ]}
+    @currencies = CurrencyPlugin::Currency.all(options)
+    @currencies = @currencies - profile.currencies
+    render :partial => 'accept_form'
+  end
+
+  def stop_accepting
+    @ce = profile.currency_enterprises.first :conditions => {:currency_id => params[:id]}
+    @currency = @ce.currency
+    @ce.destroy
+  end
+
+  protected
 
 end

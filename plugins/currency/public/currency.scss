@@ -68,7 +68,9 @@ $color-action-button: #394E41;
     padding: $padding;
     margin: $half-margin 0;
     border-top: $border solid black;
-    border-bottom: $border solid black;
+    &:last-child {
+      border-bottom: $border solid black;
+    }
 
     .header {
       @extend .container-clean;
@@ -94,4 +96,46 @@ $color-action-button: #394E41;
 #currency-accepted {
   float: left;
   width: $module4 + $intercolumn;
+  
+  .items {
+    margin-top: $half-margin;
+
+    .currency-accepted {
+      @extend .container-clean;
+      padding: $padding;
+      border-top: $border solid black;
+      &:last-child {
+        border-bottom: $border solid black;
+      }
+
+      span {
+        float: left;
+        padding: $half-padding 0;
+      }
+      .currency-action-button {
+        float: right;
+      }
+    }
+  }
+}
+
+.currency-accept-dialog {
+
+  form {
+
+    #results {
+      border-top: $border solid black;
+      border-bottom: $border solid black;
+      margin-bottom: $half-margin;
+      padding: $padding;
+
+      &.empty {
+        border: none;
+      }
+      .result {
+        height: $base;
+
+      }
+    }
+  }
 }
