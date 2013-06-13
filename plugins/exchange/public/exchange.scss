@@ -248,6 +248,11 @@ body.controller-exchange_plugin_myprofile{
   width: 50%;
   padding-top: 2*$base;
 }
+
+#content #exc-plg-proposal_offer h3{
+  margin-left:$base;
+}
+
 #exc-plg-proposal_request{
   background: #F8F4FB;
   float: right;
@@ -255,37 +260,42 @@ body.controller-exchange_plugin_myprofile{
   padding-top: 2*$base;
 }
 
-
+#content #exc-plg-proposal_request h3{
+  margin-left:$base;
+}
 
 ul.exc-plg-theother_offers{
   padding:0;
   margin:0;
+  margin-top: 2*$intercolumn;
 }
 
 ul.exc-plg-profile_offers{
   padding:0;
   margin:0;
+  margin-top: 2*$intercolumn;
 }
 
 .exc-plg-profile_offers li{
   background: #D8CAEA;
-  padding:8px;
-  margin:5px 10px;
+  padding:$base/2;
+  margin:$base $base;
   list-style-type: none;
+  height: $intercolumn;
 }
 
 .exc-plg-theother_offers li{
-  background: #F3C3D4;
-  padding:8px;
-  margin:5px 10px;
+  background: #D8CAEA;
+  padding:$base/2;
+  margin:$base $base;
   list-style-type: none;
+  height: $intercolumn;
 }
 
 .exc-plg-add{
   width: $intercolumn;
   height: $intercolumn;
   float:right;
-  margin-top: -5px;
   padding: 0;
 }
 
@@ -427,14 +437,22 @@ ul.exc-plg-profile_offers{
 
 .exc-plg-trash{
   display:inline;
+  top: 4px;
+  position: relative;
+  right: 2px;
 }
 
-#content h6.exc-plg-qtd{
+.exc-plg-qtd{
   display: inline;
   background: #7857B8;
   color: white;
   padding: $base/4 $base; 
   border-radius: $border-radius;
+  padding: 5px 0 4px 3px;
+}
+
+#content h6.exc-plg-qtd{
+    padding: 6px 12px;
 }
 
 #content h6.exc-plg-element_title{

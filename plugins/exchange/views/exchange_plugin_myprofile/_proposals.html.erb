@@ -75,8 +75,8 @@
               </ul>
             <% end %>
             <% if !@profile_knowledges.blank? %>
-              <h4><%= _('Your Knowledges') %></h4>
               <ul id="exc-plg-CmsLearningPluginLearning_profile_list" class="exc-plg-profile_offers">
+              <h4><%= _('Your Knowledges') %></h4>
               <% @profile_knowledges.each do |k| %>
                 <li id="exchange_CmsLearningPluginLearning_<%= k.id %>">
                     <%= link_to(k.name) %>
@@ -119,8 +119,8 @@
           </ul> <!-- necessary to receive removed items -->
         <% else %>
           <% if !@theother_products.blank? %>
-            <h4><%= _('Products and Services') %></h4>
             <ul id="exc-plg-Product_theother_list" class="exc-plg-theother_offers">
+            <h4><%= _('Products and Services') %></h4>
             <% @theother_products.each do |p| %>
               <li id=exchange_Product_<%= p.id %>>
 
@@ -136,8 +136,8 @@
             </ul>
           <% end %>
           <% if !@theother_knowledges.blank? %>
-            <h4><%= _('Knowledges') %></h4>
             <ul id="exc-plg-CmsLearningPluginLearning_theother_list" class="exc-plg-theother_offers">
+            <h4><%= _('Knowledges') %></h4>
             <% @theother_knowledges.each do |k| %>
               <li id=exchange_CmsLearningPluginLearning_<%= k.id %>>
 
