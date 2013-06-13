@@ -1,5 +1,7 @@
+<div id="currency-wrap" class="popin">
 
+  <h2> <%= _('Create a new currency') %> </h2>
 
-<% form_for @currency, {:action => :create} do |f| %>
-  <%=e%>
-<% end %>
+  <%= render :partial => 'currency_form' %>
+
+</div>

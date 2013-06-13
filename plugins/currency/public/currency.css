@@ -1,7 +1,7 @@
 .clean {
   clear: both; }
 
-.container-clean, #currency-wrap {
+.container-clean, #currency-wrap, #currency-organized .currency-organized-item .header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -22,11 +22,30 @@
   border: 0px;
   border-radius: 3px; }
 
-/* index action */
-#currency-wrap #currency-organized {
+/* end */
+#currency-wrap.popin {
+  padding: 12px;
+  padding-right: 24px; }
+
+#currency-organized {
   float: left;
   width: 552px;
   margin-right: 24px; }
-#currency-wrap #currency-accepted {
+  #currency-organized .currency-organized-item {
+    padding: 12px;
+    margin: 12px 0;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black; }
+    #currency-organized .currency-organized-item .header h3 {
+      float: left;
+      padding-left: 0; }
+    #currency-organized .currency-organized-item .header .currency-action-button {
+      float: right; }
+    #currency-organized .currency-organized-item .description, #currency-organized .currency-organized-item .acceptors, #currency-organized .currency-organized-item .coverage {
+      margin-bottom: 12px; }
+    #currency-organized .currency-organized-item label {
+      display: block; }
+
+#currency-accepted {
   float: left;
   width: 384px; }
