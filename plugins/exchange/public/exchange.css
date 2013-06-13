@@ -182,15 +182,20 @@ body.controller-exchange_plugin_myprofile {
   overflow: hidden;
   margin-bottom: 5px; }
 
+#exc-plg-proposal_offer h3 {
+  margin-left: 12px; }
+
 #exc-plg-proposal_offer {
   background: #F0E9F6;
   float: left;
-  width: 50%; }
+  width: 50%;
+  padding-top: 24px; }
 
 #exc-plg-proposal_request {
   background: #F8F4FB;
   float: right;
-  width: 50%; }
+  width: 50%;
+  padding-top: 24px; }
 
 ul.exc-plg-theother_offers {
   padding: 0;
@@ -278,7 +283,9 @@ ul.exc-plg-profile_offers {
   width: 470px;
   list-style-type: none;
   background-size: auto 470px;
-  margin: 0 auto 25px auto; }
+  margin: 0 12px 24px 12px;
+  min-height: 48px;
+  position: relative; }
 
 .exc-plg-element-image {
   width: 470px;
@@ -327,18 +334,25 @@ ul.exc-plg-profile_offers {
   padding: 3px; }
 
 .exc-plg-element_control {
-  float: right;
-  margin: 10px; }
+  position: absolute;
+  top: 12px;
+  right: 12px; }
 
 .exc-plg-trash {
   display: inline; }
 
-.exc-plg-qtd {
+#content h6.exc-plg-qtd {
   display: inline;
   background: #7857B8;
   color: white;
-  padding: 4px;
-  border-radius: 3px; }
+  padding: 3px 12px;
+  border-radius: 5px; }
+
+#content h6.exc-plg-element_title {
+  padding: 12px 12px 0 12px; }
+
+#content p.exc-plg-element_desc {
+  padding: 12px; }
 
 #exc-plg-summary_wrapper {
   width: 985px;
