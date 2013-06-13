@@ -60,7 +60,7 @@
           <% else %>
             <ul id="exc-plg-Product_profile_list" class="exc-plg-profile_offers">
             <% if !@profile_products.blank? %>
-              <h4><%= _('Your Products') %></h4>
+              <h4><%= _('Your Products and Services') %></h4>
               <% @profile_products.each do |p| %>
                 <li id=exchange_Product_<%= p.id %>>
                     <%= link_to(p.category_name) + " " + link_to(p.name) %>
@@ -119,7 +119,7 @@
           </ul> <!-- necessary to receive removed items -->
         <% else %>
           <% if !@theother_products.blank? %>
-            <h4><%= _('Products') %></h4>
+            <h4><%= _('Products and Services') %></h4>
             <ul id="exc-plg-Product_theother_list" class="exc-plg-theother_offers">
             <% @theother_products.each do |p| %>
               <li id=exchange_Product_<%= p.id %>>

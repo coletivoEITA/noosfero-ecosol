@@ -14,7 +14,7 @@
         :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :element_id => element.id}', {quantity: jQuery(this).val()});"%>
 
         <div class="exc-plg-trash">
-        <%= link_to_remote _('<img src="/designs/themes/escambo/images/lixeira.png"/>'), :url => {:action => :remove_element, :id => element.id,
+        <%= link_to_remote '<img src="/designs/themes/escambo/images/lixeira.png"/>', :url => {:action => :remove_element, :id => element.id,
         :element_type => element.element_type, :element_id => element.element_id,
           :enterprise => enterprise, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
         </div>
