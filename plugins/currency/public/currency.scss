@@ -48,23 +48,50 @@ $color-action-button: #394E41;
   border-radius: 3px;
 }
 
-/* index action */
+/* end */ 
 
 #currency-wrap {
   @extend .container-clean;
 
-  #currency-organized {
-    float: left;
-    width: $module6;
-    margin-right: $margin;
+  &.popin {
+    padding: $padding;
+    padding-right: 2*$padding; //strange colorbox bug
   }
-
-  #currency-accepted {
-    float: left;
-    width: $module4 + $intercolumn;
-  }
-
 }
 
+#currency-organized {
+  float: left;
+  width: $module6;
+  margin-right: $margin;
+  
+  .currency-organized-item {
+    padding: $padding;
+    margin: $half-margin 0;
+    border-top: $border solid black;
+    border-bottom: $border solid black;
 
+    .header {
+      @extend .container-clean;
+      h3 {
+        float: left;
+        padding-left: 0;
+      }
+      .currency-action-button {
+        float: right;
+      }
+    }
 
+    .description, .acceptors, .coverage {
+      margin-bottom: $half-margin;
+    }
+
+    label {
+      display: block;
+    }
+
+  }
+}
+#currency-accepted {
+  float: left;
+  width: $module4 + $intercolumn;
+}

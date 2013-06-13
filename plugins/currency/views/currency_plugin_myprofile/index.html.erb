@@ -4,6 +4,10 @@
     <h2> <%= _('Currencies organized by your enterprise') %> </h2>
 
     <%= link_to _('Create new currency'), {:action => :create}, :class => 'colorbox currency-action-button' %>
+
+    <% @currencies.each do |currency| %>
+      <%= render :partial => 'currency', :object => currency %>
+    <% end %>
   </div>
 
   <div id="currency-accepted">
