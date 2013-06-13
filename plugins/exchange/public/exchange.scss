@@ -292,6 +292,16 @@ ul.exc-plg-profile_offers{
   height: $intercolumn;
 }
 
+#content .exc-plg-profile_offers li h6{
+  display: inline-block;
+  padding-top: 5px;
+}
+
+#content .exc-plg-theother_offers li h6{
+  display: inline-block;
+  padding-top: 5px;
+}
+
 .exc-plg-add{
   width: $intercolumn;
   height: $intercolumn;

@@ -63,12 +63,8 @@
               <h4><%= _('Your Products and Services') %></h4>
               <% @profile_products.each do |p| %>
                 <li id=exchange_Product_<%= p.id %>>
-                    <%= link_to(p.category_name) + " " + link_to(p.name) %>
-                    
-                    <%= link_to_remote "<button class='exchange-button-console exc-plg-add'>+</button>", 
-                    :url => {:action => "add_element", :element_id => p.id,  
-                    :element_type => "Product", :enterprise => "profile", :exchange_id => @exchange.id,
-                    :proposal_id => proposal.id} %>
+
+                    <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal => proposal, :enterprise => "profile", :element => p} %>  
 
                 </li>
               <% end %>
@@ -79,11 +75,9 @@
               <h4><%= _('Your Knowledges') %></h4>
               <% @profile_knowledges.each do |k| %>
                 <li id="exchange_CmsLearningPluginLearning_<%= k.id %>">
-                    <%= link_to(k.name) %>
 
-                    <%= link_to_remote "<button class='exchange-button-console exc-plg-add'>+</button>", 
-                    :url => {:action => "add_element", :element_id => k.id,  
-                    :enterprise_id => profile.id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => proposal.id, :enterprise => "profile"} %>
+                    <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal => proposal, :enterprise => "profile", :element => k} %>  
+
                 </li>
               <% end %>
               </ul>
@@ -124,12 +118,7 @@
             <% @theother_products.each do |p| %>
               <li id=exchange_Product_<%= p.id %>>
 
-                  <%= link_to(p.category_name) + " " + link_to(p.name) %>
-                  
-                  <%= link_to_remote "<button class='exchange-button-console exc-plg-add'>+</button>", 
-                  :url => {:action => "add_element", :element_id => p.id,  
-                  :element_type => "Product", :enterprise => "theother", :exchange_id => @exchange.id,
-                  :proposal_id => proposal.id} %>
+                    <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal => proposal, :enterprise => "theother", :element => p} %>  
 
               </li>
             <% end %>
@@ -141,11 +130,7 @@
             <% @theother_knowledges.each do |k| %>
               <li id=exchange_CmsLearningPluginLearning_<%= k.id %>>
 
-                  <%= link_to(k.name) %>
-
-                  <%= link_to_remote "<button class='exchange-button-console exc-plg-add'>+</button>", 
-                  :url => {:action => "add_element", :element_id => k.id,  
-                  :enterprise_id => @theother.id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => proposal.id, :enterprise => "theother"} %>
+                    <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal => proposal, :enterprise => "theother", :element => k} %>  
 
               </li>
             <% end %>
