@@ -1,0 +1,19 @@
+<div id="interests">
+  <h3><%= _('Interests') %></h3>
+
+  <% unless all %>
+    <span class="see-all"><%= link_to _("See all"), {:action => :interests, :profile => profile.identifier} %></span>
+  <% end %>
+
+  <% if profile == @active_organization %>
+    <span class="see-all"><%= link_to _("Add"), {:controller => :sniffer_plugin_myprofile, :action => :edit, :profile => profile.identifier} %></span>
+  <% end %>
+
+  <% opportunities = @profile.opportunities %>
+  <% opportunities = opportunities.first(4) unless all %>
+
+  <% opportunities.each do |interest| %>
+    <%= render :partial => 'snippets/sniffer_plugin_opportunity', :locals => {:interest => interest} %>
+  <% end %>
+</div>
+

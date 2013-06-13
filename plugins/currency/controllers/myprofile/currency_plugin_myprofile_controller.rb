@@ -4,6 +4,7 @@ class CurrencyPluginMyprofileController < MyProfileController
   end
 
   def create
+    @currency = CurrencyPlugin::Currency.new
     render :layout => false
   end
 
