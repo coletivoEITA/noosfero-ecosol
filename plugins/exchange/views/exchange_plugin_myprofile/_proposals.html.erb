@@ -47,8 +47,8 @@
 
           <h3><%= _('What you can offer?') %></h3>
           <div id="exc-plg-button-wrapper">
-            <button class="exc-plg-exchange_plugin_button"><%= _('Add not registered product')%></button>
-            <button class="exc-plg-exchange_plugin_button"><%= _('Add amount in money')%></button>
+            <button class="exchange-button-console"><%= _('Add not registered product')%></button>
+            <button class="exchange-button-console"><%= _('Add amount in money')%></button>
           </div>
 
           <% if @profile_products.blank? && @profile_knowledges.blank? %>
@@ -60,12 +60,12 @@
           <% else %>
             <ul id="exc-plg-Product_profile_list" class="exc-plg-profile_offers">
             <% if !@profile_products.blank? %>
-              <h4><%= _('Your Products') %></h4>
+              <h4><%= _('Your Products and Services') %></h4>
               <% @profile_products.each do |p| %>
                 <li id=exchange_Product_<%= p.id %>>
                     <%= link_to(p.category_name) + " " + link_to(p.name) %>
                     
-                    <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
+                    <%= link_to_remote "<button class='exchange-button-console exc-plg-add'>+</button>", 
                     :url => {:action => "add_element", :element_id => p.id,  
                     :element_type => "Product", :enterprise => "profile", :exchange_id => @exchange.id,
                     :proposal_id => proposal.id} %>
@@ -81,7 +81,7 @@
                 <li id="exchange_CmsLearningPluginLearning_<%= k.id %>">
                     <%= link_to(k.name) %>
 
-                    <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
+                    <%= link_to_remote "<button class='exchange-button-console exc-plg-add'>+</button>", 
                     :url => {:action => "add_element", :element_id => k.id,  
                     :enterprise_id => profile.id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => proposal.id, :enterprise => "profile"} %>
                 </li>
@@ -107,8 +107,8 @@
 
         <h3><%= _('What do the other can offer?') %></h3>
         <div id="exc-plg-button-wrapper">
-          <button class="exc-plg-exchange_plugin_button"><%= _('Add not registered product')%></button>
-          <button class="exc-plg-exchange_plugin_button"><%= _('Add amount in money')%></button>
+          <button class="exchange-button-console"><%= _('Add not registered product')%></button>
+          <button class="exchange-button-console"><%= _('Add amount in money')%></button>
         </div>
 
         <% if @theother_products.blank? && @theother_knowledges.blank? %>
@@ -119,14 +119,14 @@
           </ul> <!-- necessary to receive removed items -->
         <% else %>
           <% if !@theother_products.blank? %>
-            <h4><%= _('Products') %></h4>
+            <h4><%= _('Products and Services') %></h4>
             <ul id="exc-plg-Product_theother_list" class="exc-plg-theother_offers">
             <% @theother_products.each do |p| %>
               <li id=exchange_Product_<%= p.id %>>
 
                   <%= link_to(p.category_name) + " " + link_to(p.name) %>
                   
-                  <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
+                  <%= link_to_remote "<button class='exchange-button-console exc-plg-add'>+</button>", 
                   :url => {:action => "add_element", :element_id => p.id,  
                   :element_type => "Product", :enterprise => "theother", :exchange_id => @exchange.id,
                   :proposal_id => proposal.id} %>
@@ -143,7 +143,7 @@
 
                   <%= link_to(k.name) %>
 
-                  <%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
+                  <%= link_to_remote "<button class='exchange-button-console exc-plg-add'>+</button>", 
                   :url => {:action => "add_element", :element_id => k.id,  
                   :enterprise_id => @theother.id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => proposal.id, :enterprise => "theother"} %>
 

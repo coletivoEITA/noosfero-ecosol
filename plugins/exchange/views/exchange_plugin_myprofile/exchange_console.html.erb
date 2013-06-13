@@ -50,7 +50,7 @@
       <div style="overflow:hidden"><p style="float:right"><%= _('Concluded at %s') % @exchange.concluded_at.strftime("%d/%m/%Y @ %H:%Mh") %></p></div>
     <% end %>
     <div id="exc-plg-accepted_header">
-      <h3 style="color:white"><%= _('Exchange arranged between <strong>' + @origin.name + '</strong> & <strong>' + @target.name + '</strong>') %></h3>
+      <h3 style="color:white"><%= _('Exchange arranged between <strong> %{origin} </strong> & <strong> %{target} </strong>') % {:origin => @origin.name, :target => @target.name}%></h3>
     </div>
     <%= render :partial => "evaluation", :object => @exchange %>
     <hr />

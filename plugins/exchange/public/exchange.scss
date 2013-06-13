@@ -55,6 +55,10 @@ $color-exchange: #394E41;
   @extend .exchange-action-button;
 }
 
+.exchange-button-console{
+  @extend .exchange-action-button;
+  float: left;
+}
 /*####### new layout ########*/
 
 body.controller-exchange_plugin_myprofile{
@@ -209,24 +213,16 @@ body.controller-exchange_plugin_myprofile{
   color: white;
   margin-top: -21px;
 }
-.exc-plg-exchange_plugin_button{
-  float: left;
-  color: white;
-  background: #394E41;
-  border: 0px;
-  border-radius: 5px;
-  font-family: 'RobotoBoldCondensed';
-  padding: 3px;
-}
+
 #exc-plg-proposal_header_buttons{
   background: #DFD3ED;
   height: 35px;
-  padding-left: 25px;
+  padding-left: $intercolumn;
 }
 
 #exc-plg-button-wrapper{
   height: 35px;
-  padding-left: 25px;
+  padding-left: $intercolumn;
 }
 
 #exc-plg-messages{
@@ -241,16 +237,25 @@ body.controller-exchange_plugin_myprofile{
   overflow:hidden;
   margin-bottom: 5px;
 }
+
+#exc-plg-proposal_offer h3{
+  margin-left: $base;
+}
+
 #exc-plg-proposal_offer{
   background: #F0E9F6;
   float: left;
   width: 50%;
+  padding-top: 2*$base;
 }
 #exc-plg-proposal_request{
   background: #F8F4FB;
   float: right;
   width: 50%;
+  padding-top: 2*$base;
 }
+
+
 
 ul.exc-plg-theother_offers{
   padding:0;
@@ -277,9 +282,11 @@ ul.exc-plg-profile_offers{
 }
 
 .exc-plg-add{
-  width: 25px;
-  height: 25px;
+  width: $intercolumn;
+  height: $intercolumn;
   float:right;
+  margin-top: -5px;
+  padding: 0;
 }
 
 .exc-plg-proposal_sent{
@@ -340,17 +347,22 @@ ul.exc-plg-profile_offers{
 #exc-plg-profile_elements_list {
   margin:0px;
   padding:0px;
+  margin-bottom: $module1;
+
 }
 #exc-plg-theother_elements_list{
   margin:0px;
   padding:0px;
+  margin-bottom: $module1;
 }
 
 .exc-plg-element{
   width: 470px;
   list-style-type:none;
   background-size:auto 470px;
-  margin: 0 auto 25px auto;
+  margin: 0 $base $intercolumn $base;
+  min-height: 2*$intercolumn; 
+  position: relative;
 }
 
 .exc-plg-element-image{
@@ -408,20 +420,29 @@ ul.exc-plg-profile_offers{
 }
 
 .exc-plg-element_control{
-  float: right;
-  margin: 10px;
+  position: absolute;
+  top: $base;
+  right: $base;
 }
 
 .exc-plg-trash{
   display:inline;
 }
 
-.exc-plg-qtd{
+#content h6.exc-plg-qtd{
   display: inline;
   background: #7857B8;
   color: white;
-  padding: 4px; 
-  border-radius: 3px;
+  padding: $base/4 $base; 
+  border-radius: $border-radius;
+}
+
+#content h6.exc-plg-element_title{
+  padding: $base $base 0 $base;
+}
+
+#content p.exc-plg-element_desc{
+  padding: $base;
 }
 
 #exc-plg-summary_wrapper{

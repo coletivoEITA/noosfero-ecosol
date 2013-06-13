@@ -11,7 +11,7 @@
     <% if (evaluation = @exchange.evaluations.select{|x| x.evaluator_id == @theother.id }.first) %>
       <%= render :partial => "enterprise_evaluation", :locals => {:evaluation => evaluation}%>
     <% else %>
-      <p><%= _("%s evaluation (still to be done)") % @theother.name %></p>
+      <p><%= _('%s evaluation (still to be done)') % @theother.name %></p>
     <% end %>
   </div>
 </div>

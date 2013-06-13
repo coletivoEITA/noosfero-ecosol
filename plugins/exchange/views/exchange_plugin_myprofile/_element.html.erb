@@ -4,6 +4,7 @@
 
 <% if element.element_type == "Product" %>
   <div class="exc-plg-element-image" style="background-image: url('<%= e.image.public_filename %>');">
+  </div>
 <% end %>
     <div class="exc-plg-element_control">
 
@@ -14,7 +15,7 @@
         :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :element_id => element.id}', {quantity: jQuery(this).val()});"%>
 
         <div class="exc-plg-trash">
-        <%= link_to_remote _('<img src="/designs/themes/escambo/images/lixeira.png"/>'), :url => {:action => :remove_element, :id => element.id,
+        <%= link_to_remote '<img src="/designs/themes/escambo/images/lixeira.png"/>', :url => {:action => :remove_element, :id => element.id,
         :element_type => element.element_type, :element_id => element.element_id,
           :enterprise => enterprise, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
         </div>
@@ -25,14 +26,10 @@
     </div> <!-- element_control -->
 
 <% if element.element_type == "Product" %>
-  </div> <!-- if Product -->
-<% end %>
-
-<% if element.element_type == "Product" %>
-  <h6><%= link_to(e.category_name) + " " + link_to(e.name) %></h6>
-  <p><%= e.description %></p>
+  <h6 class="exc-plg-element_title"><%= link_to(e.category_name) + " " + link_to(e.name) %></h6>
+  <p class="exc-plg-element_desc"><%= e.description %></p>
 <% else %>
-  <h6><%= e.name %></h6>
-  <p><%= e.body %></p>
+  <h6 class="exc-plg-element_title"><%= e.name %></h6>
+  <p class="exc-plg-element_desc"><%= e.summary %></p>
 <% end %>
 </li>

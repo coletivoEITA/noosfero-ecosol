@@ -1,5 +1,5 @@
 <% if proposal.state == "accepted"%>
-  <p><strong><%= proposal.enterprise_origin.name %></strong> <%= _('proposed') %> and <strong><%= proposal.enterprise_target.name %></strong> <%= _('accepted!') %></p>
+  <p><%= _('<strong>%{origin} </strong> proposed and <strong> %{target} </strong> accepted!') % {:origin => proposal.enterprise_origin.name, :target => proposal.enterprise_target.name} %></p>
 <% else %>
-  <p><strong><%= proposal.enterprise_origin.name %></strong> <%= _('proposes') %></p>
+  <p><%= _('<strong> %{origin} </strong> proposes') % {:origin => proposal.enterprise_origin.name}%></p>
 <% end %>

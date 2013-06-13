@@ -1,4 +1,7 @@
-<p><%= _("Evaluation done by #{evaluation.evaluator.name} at #{evaluation.created_at.strftime("%d/%m/%Y @ %H:%Mh")}") %></p>
+<p><%= _('Evaluation done by %{evaluator} at %{time}') % 
+          {:evaluator => evaluation.evaluator.name, 
+           :time => evaluation.created_at.strftime("%d/%m/%Y @ %H:%Mh")} 
+%></p>
 <div id="exc-plg-evaluation-text">
   <p>
     <%= evaluation.text %>
