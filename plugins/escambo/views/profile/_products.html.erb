@@ -1,12 +1,12 @@
 <div id="offers">
   <h3><%= _('Offers from this enterprise') %></h3>
 
-  <% unless all %>
-    <span class="see-all"><%= link_to _("See all"), {:controller => :catalog, :profile => profile.identifier} %></span>
+  <% if profile == @active_organization %>
+    <%= link_to _("Add"), {:controller => :manage_products, :action => :new}, :class => 'add action-button' %>
   <% end %>
 
-  <% if profile == @active_organization %>
-    <span class="see-all"><%= link_to _("Add"), {:controller => :manage_products, :action => :new, :profile => profile.identifier} %></span>
+  <% unless all %>
+    <span class="see-all"><%= link_to _("See all"), {:controller => :catalog, :profile => profile.identifier} %></span>
   <% end %>
 
   <% products = @profile.products %>

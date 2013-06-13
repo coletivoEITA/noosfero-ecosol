@@ -1,12 +1,12 @@
 <div id="knowledges">
   <h3><%= _('Knowledges') %></h3>
 
-  <% unless all %>
-    <span class="see-all"><%= link_to _("See all"), {:action => :knowledges, :profile => profile.identifier} %></span>
+  <% if profile == @active_organization %>
+    <%= link_to _("Add"), {:controller => :cms, :action => :new, :type => "CmsLearningPluginLearning"}, :class => 'add action-button' %>
   <% end %>
 
-  <% if profile == @active_organization %>
-    <span class="see-all"><%= link_to _("Add"), {:controller => :cms, :action => :new, :profile => profile.identifier, :type => "CmsLearningPluginLearning"} %></span>
+  <% unless all %>
+    <span class="see-all"><%= link_to _("See all"), {:action => :knowledges, :profile => profile.identifier} %></span>
   <% end %>
 
   <% knowledges = @profile.knowledges %>
