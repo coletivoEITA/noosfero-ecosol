@@ -12,7 +12,7 @@
 /* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
 /* Colors */
 /* Exchange button */
-.exchange-action-button, .exchange {
+.exchange-action-button, .exchange, .exchange-button-console {
   background: #394e41;
   color: white;
   text-align: center;
@@ -21,6 +21,9 @@
   padding: 6px 12px;
   border: 0px;
   border-radius: 3px; }
+
+.exchange-button-console {
+  float: left; }
 
 /*####### new layout ########*/
 body.controller-exchange_plugin_myprofile {
@@ -153,23 +156,14 @@ body.controller-exchange_plugin_myprofile {
   color: white;
   margin-top: -21px; }
 
-.exc-plg-exchange_plugin_button {
-  float: left;
-  color: white;
-  background: #394E41;
-  border: 0px;
-  border-radius: 5px;
-  font-family: 'RobotoBoldCondensed';
-  padding: 3px; }
-
 #exc-plg-proposal_header_buttons {
   background: #DFD3ED;
   height: 35px;
-  padding-left: 25px; }
+  padding-left: 24px; }
 
 #exc-plg-button-wrapper {
   height: 35px;
-  padding-left: 25px; }
+  padding-left: 24px; }
 
 #exc-plg-messages {
   padding: 1px; }
@@ -218,9 +212,11 @@ ul.exc-plg-profile_offers {
   list-style-type: none; }
 
 .exc-plg-add {
-  width: 25px;
-  height: 25px;
-  float: right; }
+  width: 24px;
+  height: 24px;
+  float: right;
+  margin-top: -5px;
+  padding: 0; }
 
 .exc-plg-proposal_sent {
   width: 945px;
@@ -273,11 +269,13 @@ ul.exc-plg-profile_offers {
 
 #exc-plg-profile_elements_list {
   margin: 0px;
-  padding: 0px; }
+  padding: 0px;
+  margin-bottom: 96px; }
 
 #exc-plg-theother_elements_list {
   margin: 0px;
-  padding: 0px; }
+  padding: 0px;
+  margin-bottom: 96px; }
 
 .exc-plg-element {
   width: 470px;

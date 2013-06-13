@@ -1,21 +1,21 @@
 <div id="exc-plg-proposal_header_buttons">
   <% if proposal.state == "open"%>
     <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'close_proposal', :proposal_id => proposal.id} do |f| %>
-      <%= f.submit _('Send this proposal'), :class => "exc-plg-exchange_plugin_button"%>
+      <%= f.submit _('Send this proposal'), :class => "exchange-button-console"%>
     <% end %>
     <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'destroy_proposal', :proposal_id => proposal.id} do |f| %>
-      <%= f.submit _('Delete this proposal'), :class => "exc-plg-exchange_plugin_button"%>
+      <%= f.submit _('Delete this proposal'), :class => "exchange-button-console"%>
     <% end %>
   <% else %>
     <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'new_proposal', :exchange_id => @exchange.id, :enterprise_origin_id => @origin.id, :enterprise_target_id => @target.id,} do |f| %>
-      <%= f.submit _('Create new proposal'), :class => "exc-plg-exchange_plugin_button"%>
+      <%= f.submit _('Create new proposal'), :class => "exchange-button-console"%>
     <% end %>
     <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'cancel_negociation', :exchange_id => @exchange.id, :enterprise_origin_id => @origin.id, :enterprise_target_id => @target.id,} do |f| %>
-      <%= f.submit _('Cancel Negociation'), :class => "exc-plg-exchange_plugin_button"%>
+      <%= f.submit _('Cancel Negociation'), :class => "exchange-button-console"%>
     <% end %>
     <% if proposal.enterprise_target == profile %>
       <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'accept', :proposal_id => @proposal.id } do |f| %>
-        <%= f.submit _('Accept proposal and finish Exchange'), :class => "exc-plg-exchange_plugin_button"%>
+        <%= f.submit _('Accept proposal and finish Exchange'), :class => "exchange-button-console"%>
       <% end %>
     <% else %>
         <p style="float:right"><%= _('*To finish this exchange, the other part must accept this proposal!') %>

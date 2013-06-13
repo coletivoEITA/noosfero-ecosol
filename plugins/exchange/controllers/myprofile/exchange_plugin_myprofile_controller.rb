@@ -7,7 +7,7 @@ class ExchangePluginMyprofileController < MyProfileController
 
   def index
 
-   @exchanges = ExchangePlugin::Exchange.all.select{|ex| (ex.state != "proposal") && ex.enterprises.find(:first, :conditions => {:id => profile.id})}
+   @exchanges = ExchangePlugin::Exchange.all.select{|ex| ex.enterprises.find(:first, :conditions => {:id => profile.id})}
 
    @enterprises = Enterprise.visible
     render :action => 'index'

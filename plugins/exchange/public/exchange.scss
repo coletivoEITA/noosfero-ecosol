@@ -55,6 +55,10 @@ $color-exchange: #394E41;
   @extend .exchange-action-button;
 }
 
+.exchange-button-console{
+  @extend .exchange-action-button;
+  float: left;
+}
 /*####### new layout ########*/
 
 body.controller-exchange_plugin_myprofile{
@@ -209,24 +213,16 @@ body.controller-exchange_plugin_myprofile{
   color: white;
   margin-top: -21px;
 }
-.exc-plg-exchange_plugin_button{
-  float: left;
-  color: white;
-  background: #394E41;
-  border: 0px;
-  border-radius: 5px;
-  font-family: 'RobotoBoldCondensed';
-  padding: 3px;
-}
+
 #exc-plg-proposal_header_buttons{
   background: #DFD3ED;
   height: 35px;
-  padding-left: 25px;
+  padding-left: $intercolumn;
 }
 
 #exc-plg-button-wrapper{
   height: 35px;
-  padding-left: 25px;
+  padding-left: $intercolumn;
 }
 
 #exc-plg-messages{
@@ -286,9 +282,11 @@ ul.exc-plg-profile_offers{
 }
 
 .exc-plg-add{
-  width: 25px;
-  height: 25px;
+  width: $intercolumn;
+  height: $intercolumn;
   float:right;
+  margin-top: -5px;
+  padding: 0;
 }
 
 .exc-plg-proposal_sent{
@@ -349,10 +347,13 @@ ul.exc-plg-profile_offers{
 #exc-plg-profile_elements_list {
   margin:0px;
   padding:0px;
+  margin-bottom: $module1;
+
 }
 #exc-plg-theother_elements_list{
   margin:0px;
   padding:0px;
+  margin-bottom: $module1;
 }
 
 .exc-plg-element{
