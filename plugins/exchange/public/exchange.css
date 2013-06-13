@@ -185,37 +185,54 @@ body.controller-exchange_plugin_myprofile {
   width: 50%;
   padding-top: 24px; }
 
+#content #exc-plg-proposal_offer h3 {
+  margin-left: 12px; }
+
 #exc-plg-proposal_request {
   background: #F8F4FB;
   float: right;
   width: 50%;
   padding-top: 24px; }
 
+#content #exc-plg-proposal_request h3 {
+  margin-left: 12px; }
+
 ul.exc-plg-theother_offers {
   padding: 0;
-  margin: 0; }
+  margin: 0;
+  margin-top: 48px; }
 
 ul.exc-plg-profile_offers {
   padding: 0;
-  margin: 0; }
+  margin: 0;
+  margin-top: 48px; }
 
 .exc-plg-profile_offers li {
   background: #D8CAEA;
-  padding: 8px;
-  margin: 5px 10px;
-  list-style-type: none; }
+  padding: 6px;
+  margin: 12px 12px;
+  list-style-type: none;
+  height: 24px; }
 
 .exc-plg-theother_offers li {
-  background: #F3C3D4;
-  padding: 8px;
-  margin: 5px 10px;
-  list-style-type: none; }
+  background: #D8CAEA;
+  padding: 6px;
+  margin: 12px 12px;
+  list-style-type: none;
+  height: 24px; }
+
+#content .exc-plg-profile_offers li h6 {
+  display: inline-block;
+  padding-top: 5px; }
+
+#content .exc-plg-theother_offers li h6 {
+  display: inline-block;
+  padding-top: 5px; }
 
 .exc-plg-add {
   width: 24px;
   height: 24px;
   float: right;
-  margin-top: -5px;
   padding: 0; }
 
 .exc-plg-proposal_sent {
@@ -337,14 +354,21 @@ ul.exc-plg-profile_offers {
   right: 12px; }
 
 .exc-plg-trash {
-  display: inline; }
+  display: inline;
+  top: 4px;
+  position: relative;
+  right: 2px; }
 
-#content h6.exc-plg-qtd {
+.exc-plg-qtd {
   display: inline;
   background: #7857B8;
   color: white;
   padding: 3px 12px;
-  border-radius: 5px; }
+  border-radius: 5px;
+  padding: 5px 0 4px 3px; }
+
+#content h6.exc-plg-qtd {
+  padding: 6px 12px; }
 
 #content h6.exc-plg-element_title {
   padding: 12px 12px 0 12px; }

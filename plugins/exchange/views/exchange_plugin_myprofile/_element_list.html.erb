@@ -1,11 +1,27 @@
-<% if params[:element_type] == "Product" %>
-  <%= link_to((eval(params[:element_type]).find params[:element_id]).category_name) + " " + link_to((eval(params[:element_type]).find params[:element_id]).name) %>
-<% elsif params[:element_type] == "CmsLearningPluginLearning" %>
-  <% cat = (eval(params[:element_type]).find params[:element_id]).categories %>
-  <% name = (cat.blank? ? "" : cat.first.name) %>
-  <%= name + " " + link_to((eval(params[:element_type]).find params[:element_id]).name) %>
+
+<% if element_type == "Product" %>
+
+  <h6>
+  <%= link_to(element.category_name) + " " + link_to(element.name) %>
+  </h6>
+
+  <%= link_to_remote "<button class='exchange-button-console exc-plg-add'>+</button>", 
+  :url => {:action => "add_element", :element_id => element.id,  
+  :element_type => "Product", :enterprise => enterprise, :exchange_id => @exchange.id,
+  :proposal_id => proposal.id} %>
+  
+<% elsif element_type == "CmsLearningPluginLearning" %>
+
+  <h6>
+  <%= link_to(element.name) %>
+  </h6>
+
+  <%= link_to_remote "<button class='exchange-button-console exc-plg-add'>+</button>", 
+  :url => {:action => "add_element", :element_id => element.id,  
+  :enterprise_id => profile.id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => proposal.id, :enterprise => enterprise} %>
+  
+
 <% end %>
-<%= link_to_remote "<button class='exc-plg-exchange_plugin_button exc-plg-add'>+</button>", 
-:url => {:action => "add_element", :element_id => params[:element_id],  
-:element_type => params[:element_type], :enterprise => params[:enterprise], 
-:exchange_id => params[:exchange_id], :proposal_id => params[:proposal_id]} %>
+
+
+
