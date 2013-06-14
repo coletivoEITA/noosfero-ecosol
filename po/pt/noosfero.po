@@ -12136,7 +12136,7 @@ msgstr "Qtd"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_element.html.erb:24
 msgid "Qtd: %s"
-msgstr "Qtd: %s"
+msgstr "Qtd %s"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:4
 msgid "Send this proposal"

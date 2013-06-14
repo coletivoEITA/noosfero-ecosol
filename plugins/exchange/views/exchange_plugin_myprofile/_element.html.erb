@@ -34,8 +34,10 @@
 <% if element.element_type == "Product" %>
   <h6 class="exc-plg-element_title"><%= link_to(e.category_name) + " " + link_to(e.name) %></h6>
   <p class="exc-plg-element_desc"><%= e.description %></p>
-<% else %>
+<% elsif element.element_type == "CmsLearningPluginLearning" %>
   <h6 class="exc-plg-element_title"><%= e.name %></h6>
   <p class="exc-plg-element_desc"><%= e.summary %></p>
+<% else %>
+  <h6 class="exc-plg-element_title"><%= e.name %>(<%= e.symbol %>)</h6>
 <% end %>
 </li>

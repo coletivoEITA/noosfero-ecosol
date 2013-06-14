@@ -8,7 +8,7 @@
   <%= link_to_remote "<button class='exchange-button-console exc-plg-add'>+</button>", 
   :url => {:action => "add_element", :element_id => element.id,  
   :element_type => "Product", :enterprise => enterprise, :exchange_id => @exchange.id,
-  :proposal_id => proposal.id} %>
+  :proposal_id => proposal.id, :enterprise_id => enterprise_id} %>
   
 <% elsif element_type == "CmsLearningPluginLearning" %>
 
@@ -18,7 +18,7 @@
 
   <%= link_to_remote "<button class='exchange-button-console exc-plg-add'>+</button>", 
   :url => {:action => "add_element", :element_id => element.id,  
-  :enterprise_id => profile.id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => proposal.id, :enterprise => enterprise} %>
+  :enterprise_id => enterprise_id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => proposal.id, :enterprise => enterprise} %>
   
 
 <% end %>

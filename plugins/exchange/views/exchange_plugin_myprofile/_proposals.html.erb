@@ -70,7 +70,7 @@
               <% @profile_products.each do |p| %>
                 <li id=exchange_Product_<%= p.id %>>
 
-                    <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal => proposal, :enterprise => "profile", :element => p} %>  
+                    <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal => proposal, :enterprise => "profile", :element => p, :enterprise_id => profile.id} %>  
 
                 </li>
               <% end %>
@@ -82,7 +82,7 @@
               <% @profile_knowledges.each do |k| %>
                 <li id="exchange_CmsLearningPluginLearning_<%= k.id %>">
 
-                    <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal => proposal, :enterprise => "profile", :element => k} %>  
+                    <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal => proposal, :enterprise => "profile", :element => k, :enterprise_id => profile.id} %>  
 
                 </li>
               <% end %>
@@ -124,7 +124,7 @@
             <% @theother_products.each do |p| %>
               <li id=exchange_Product_<%= p.id %>>
 
-                    <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal => proposal, :enterprise => "theother", :element => p} %>  
+                    <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal => proposal, :enterprise => "theother", :element => p, :enterprise_id => @theother.id} %>  
 
               </li>
             <% end %>
@@ -136,7 +136,7 @@
             <% @theother_knowledges.each do |k| %>
               <li id=exchange_CmsLearningPluginLearning_<%= k.id %>>
 
-                    <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal => proposal, :enterprise => "theother", :element => k} %>  
+                    <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal => proposal, :enterprise => "theother", :element => k, :enterprise_id => @theother.id} %>  
 
               </li>
             <% end %>
