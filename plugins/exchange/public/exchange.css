@@ -23,7 +23,8 @@
   border-radius: 3px; }
 
 .exchange-button-console {
-  float: left; }
+  float: left;
+  margin: 2px 12px; }
 
 /*####### new layout ########*/
 body.controller-exchange_plugin_myprofile {
@@ -39,13 +40,13 @@ body.controller-exchange_plugin_myprofile {
 
 #exc-plg-states_wrapper {
   width: 984px;
-  height: 170px;
+  height: 168px;
   margin: 36px auto;
   border: 1px solid #C5AAA5;
   background: #ECE4DB; }
 
 #exc-plg-states {
-  height: 144px; }
+  height: 122px; }
 
 .exc-plg-state {
   margin: auto; }
@@ -118,27 +119,41 @@ body.controller-exchange_plugin_myprofile {
   background: #7857B8;
   float: left;
   width: 50%;
-  height: 50px;
-  text-align: left; }
+  height: 46px;
+  text-align: left;
+  position: relative; }
 
 #exc-plg-enterprise_theother {
   background: #C32478;
   float: left;
   width: 50%;
-  height: 50px;
-  text-align: right; }
+  height: 46px;
+  text-align: right;
+  position: relative; }
 
 #exc-plg-profile_thumb {
   float: left;
   height: 65px;
   width: 65px;
-  margin: -7.5px 10px 0 25px; }
+  /*   margin: -7.5px 10px 0 25px; */
+  position: absolute;
+  left: 25px;
+  bottom: -8px; }
 
 #exc-plg-theother_thumb {
   float: right;
   height: 65px;
   width: 65px;
-  margin: -7.5px 25px 0 10px; }
+  /*   margin: -7.5px 25px 0 10px; */
+  position: absolute;
+  right: 25px;
+  bottom: -8px; }
+
+.exc-plg-theother-name {
+  margin-right: 108px; }
+
+.exc-plg-profile-name {
+  margin-left: 108px; }
 
 #exc-plg-proposal_wrapper {
   width: 985px;

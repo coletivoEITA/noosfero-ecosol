@@ -34,13 +34,13 @@
         <div id="exc-plg-profile_thumb" style="background: black;">
           <%= link_to profile_image(profile, :thumb, :style => "width: 65px;") +"\n", profile.url %>
         </div>
-        <p class="menu_g_selecionado"><%= profile.name %></p>
+        <p class="menu_g_selecionado exc-plg-profile-name"><%= profile.name %></p>
       </div>
       <div id="exc-plg-enterprise_theother">
         <div id="exc-plg-theother_thumb" style="background: black;">
           <%= link_to profile_image(@theother, :thumb, :style => "width: 65px;") +"\n", @theother.url %>
         </div>
-        <p class="menu_g_selecionado"><%= @theother.name %></p>
+        <p class="menu_g_selecionado exc-plg-theother-name"><%= @theother.name %></p>
       </div>
     </div> <!-- enterprise_headers -->
   </div> <!-- states wrapper -->
