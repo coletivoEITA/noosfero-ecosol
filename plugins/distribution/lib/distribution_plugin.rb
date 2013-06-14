@@ -1,7 +1,7 @@
-require_dependency 'ext/profile'
-require_dependency 'ext/community'
-require_dependency 'ext/category'
-require_dependency 'ext/product'
+require_dependency "#{File.dirname __FILE__}/ext/profile"
+require_dependency "#{File.dirname __FILE__}/ext/community"
+require_dependency "#{File.dirname __FILE__}/ext/category"
+require_dependency "#{File.dirname __FILE__}/ext/product"
 
 [ ActiveSupport::Dependencies.load_paths, $:].each do |path|
   vendor = Dir.glob File.join(File.dirname(__FILE__), '/../vendor/plugins/*')
