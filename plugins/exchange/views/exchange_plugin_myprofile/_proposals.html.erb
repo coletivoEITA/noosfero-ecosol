@@ -13,17 +13,23 @@
         <%= render :partial => "proposal_buttons", :locals => {:proposal => proposal}%>
       <% end %>
     <div id="exc-plg-proposal_messages">
-      <% if first && (@exchange.state == "proposal" || @exchange.state == "negociation")%>
-        <div id='leave_scrap' style="float:none; height:70px;">
-            <% form_remote_tag :url => {:action => 'new_message', :proposal_id => proposal.id} do  %>
-              <%= text_area_tag 'body',nil, :rows => 2, :cols => 30, :placeholder => _('Digite sua mensagem') %>
-              <%= submit_tag 'Enviar mensagem' %>
-            <% end %>
-        </div>
-        <% first = false %>    
-      <% end %>
-
       <div id="exc-plg-messages">
+
+        <% if first && (@exchange.state == "proposal" || @exchange.state == "negociation")%>
+          <div id="exc-plg-new_message" class="exc-plg-message">
+            <div class="exc-plg-message-profile-thumb">
+              <%= link_to profile_image(profile, :minor) +"\n", profile.url %>
+              <br />
+            </div>
+            <div class="exc-plg-message-profile-body">
+              <% form_remote_tag :url => {:action => 'new_message', :proposal_id => proposal.id} do  %>
+                <%= text_area_tag 'body',nil, :rows => 2, :cols => 30, :placeholder => _('Digite sua mensagem') %>
+                <%= submit_tag 'Enviar mensagem' %>
+              <% end %>
+            </div>
+            <% first = false %>    
+          </div>
+        <% end %>
         <% if !proposal.messages.blank? %>
           <% proposal.messages.each do |m| %> 
             <%= render :partial => "message", :locals => {:message => m} %>          
