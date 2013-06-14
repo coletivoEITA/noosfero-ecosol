@@ -16,7 +16,7 @@
     </div>
     <span id="node-margin-percentage">
       <span class="<%= @node.margin_percentage.blank? ? 'none' : 'set' %>">
-        <%= @node.margin_percentage ? ( t('distribution_plugin.views.product.index.margin') % {:margin => @node.margin_percentage} ) : t('distribution_plugin.views.product.index.no_margin_set') %>
+        <%= @node.margin_percentage_as_currency_number ? ( t('distribution_plugin.views.product.index.margin') % {:margin => @node.margin_percentage_as_currency_number} ) : t('distribution_plugin.views.product.index.no_margin_set') %>
       </span>
       <%= colorbox_link_to t('distribution_plugin.views.product.index.change'), {:controller => :distribution_plugin_node, :action => :margins_change} %>
     </span>

@@ -472,7 +472,8 @@
           cancel: cancel
           change_default_margin: "Change default margin of commercialization"
           confirm: Confirm
-          force_apply_to_all_pr: "Force apply to ALL products"
+          apply_to_all: "Apply to products with custom margins"
+          apply_to_open_sessions: "Apply to the products in open cycles"
           new_margin: "New margin"
         settings: 
           abbreviated_name_of_t: "Abbreviated name of the Collective"

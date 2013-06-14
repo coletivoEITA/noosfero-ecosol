@@ -27,7 +27,7 @@
 <% else %>
   <% if @consumer.nil? %>
     <% message = t('distribution_plugin.views.order._consumer_orders.to_place_an_order_you') %>
-    <% message += thickbox_inline_popup_link(t('distribution_plugin.views.order._consumer_orders.login'), login_url, 'inlineLoginBox', :id => 'link_login') %>
+    <% message += colorbox_link_to t('distribution_plugin.views.order._consumer_orders.login'), login_url, 'inlineLoginBox', :id => 'link_login' %>
     <% unless @plugins.dispatch(:allow_user_registration).include?(false) %>
       <% message += t('distribution_plugin.views.order._consumer_orders.or') + link_to(t('distribution_plugin.views.order._consumer_orders.sign_up'), :controller => 'account', :action => 'signup')%>
     <% end %>

@@ -2,9 +2,11 @@
   <div id='filter-products-loading' class="distribution-loading"></div>
   <strong><%= t('distribution_plugin.views.order._filter_products.filter') %></strong>
 
-  <% form_remote_tag :update => 'order-filter', :loading => 'jQuery("#filter-products-loading").show()', :loaded => 'jQuery("#filter-products-loading").hide()', :url => {:controller => :distribution_plugin_product, :action => :filter_products}, :html => {:id => 'filter-form'}, :method => :get do %>
+  <% form_remote_tag :update => 'order-filter', :loading => 'jQuery("#filter-products-loading").show()', :loaded => 'jQuery("#filter-products-loading").hide()', :url => {:controller => :distribution_plugin_product, :action => :session_filter}, :html => {:id => 'filter-form'}, :method => :get do %>
+
     <%= hidden_field_tag(:session_id, session.id)  %>
     <%= hidden_field_tag(:order_id, order.id) unless order.nil?  %>
+
     <div class="box-field name">
       <div><%= t('distribution_plugin.views.order._filter_products.product_name') %></div>
       <div><%= text_field_tag :name, params[:name], :onkeydown => "var field = this; function name_form_submit() {field.form.onsubmit();}; setTimeout(name_form_submit, 700);" %></div>

@@ -18,9 +18,8 @@ class DistributionPluginNodeController < DistributionPluginMyprofileController
   def margins_change
     if params[:commit]
       @node.update_attributes params[:node]
-      if params[:apply_to_all]
-        @node.default_products_margins
-      end
+      @node.default_products_margins if params[:apply_to_all]
+      @node.default_open_sessions_products_margins if params[:apply_to_open_sessions]
       render :partial => 'distribution_plugin_shared/pagereload'
     else
       render :layout => false
