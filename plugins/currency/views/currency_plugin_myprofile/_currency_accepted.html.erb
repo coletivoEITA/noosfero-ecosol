@@ -1,0 +1,4 @@
+<div id="currency-accepted-<%=currency.id%>" class="currency-accepted">
+  <span> <%= currency.name_with_symbol %> </span>
+  <%= link_to_function _('Stop accepting'), "jQuery.post('#{url_for :action => :stop_accepting, :id => currency.id}')", :class => 'currency-action-button' %>
+</div>

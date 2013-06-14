@@ -1,7 +1,7 @@
 .clean {
   clear: both; }
 
-.container-clean, #currency-wrap, #currency-organized .currency-organized-item .header {
+.container-clean, #currency-wrap, #currency-organized .currency-organized-item .header, #currency-accepted .items .currency-accepted {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -34,8 +34,9 @@
   #currency-organized .currency-organized-item {
     padding: 12px;
     margin: 12px 0;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black; }
+    border-top: 1px solid black; }
+    #currency-organized .currency-organized-item:last-child {
+      border-bottom: 1px solid black; }
     #currency-organized .currency-organized-item .header h3 {
       float: left;
       padding-left: 0; }
@@ -49,3 +50,25 @@
 #currency-accepted {
   float: left;
   width: 384px; }
+  #currency-accepted .items {
+    margin-top: 12px; }
+    #currency-accepted .items .currency-accepted {
+      padding: 12px;
+      border-top: 1px solid black; }
+      #currency-accepted .items .currency-accepted:last-child {
+        border-bottom: 1px solid black; }
+      #currency-accepted .items .currency-accepted span {
+        float: left;
+        padding: 6px 0; }
+      #currency-accepted .items .currency-accepted .currency-action-button {
+        float: right; }
+
+.currency-accept-dialog form #results {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  margin-bottom: 12px;
+  padding: 12px; }
+  .currency-accept-dialog form #results.empty {
+    border: none; }
+  .currency-accept-dialog form #results .result {
+    height: 12px; }
