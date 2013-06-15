@@ -26,7 +26,7 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
         session[:notice] = t('distribution_plugin.controllers.myprofile.session_controller.cycle_created')
         if params[:sendmail]
           DistributionPlugin::Mailer.delay(:run_at => @session.start).deliver_open_session @session.node,
-            @session,t('distribution_plugin.controllers.myprofile.session_controller.new_open_cycle')+@session.name, @session.opening_message
+            @session,t('distribution_plugin.controllers.myprofile.session_controller.new_open_cycle')+": "+@session.name, @session.opening_message
         end
         render :partial => 'new'
       else
@@ -45,6 +45,10 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
     if request.xhr?
       if params[:commit]
         @success = @session.update_attributes params[:session]
+        if params[:sendmail]
+          DistributionPlugin::Mailer.delay(:run_at => @session.start).deliver_open_session @session.node,
+            @session,t('distribution_plugin.controllers.myprofile.session_controller.new_open_cycle')+": "+@session.name, @session.opening_message
+        end
         render :partial => 'edit'
       else
         render :update do |page|
