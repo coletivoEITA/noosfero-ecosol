@@ -4,6 +4,7 @@ class CreateCurrencyPluginProductCurrencies < ActiveRecord::Migration
       t.integer :product_id
       t.integer :currency_id
       t.float :price
+      t.float :discount
 
       t.timestamps
     end
