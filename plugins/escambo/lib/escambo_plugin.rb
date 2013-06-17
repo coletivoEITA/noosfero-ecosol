@@ -45,6 +45,16 @@ class EscamboPlugin < Noosfero::Plugin
     ]
   end
 
+  CatalogIndex = proc do
+    redirect_to :controller => :profile, :action => :products
+  end
+  def catalog_controller_filters
+    [
+      {:type => 'before_filter', :method_name => 'escambo_catalog_index',
+       :options => {:only => :index}, :block => CatalogIndex},
+    ]
+  end
+
   #implementation followed app/helpers/application_helper.rb
   #method profile_image_link
   def profile_image_link profile
