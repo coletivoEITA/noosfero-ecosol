@@ -449,11 +449,13 @@ ul.exc-plg-profile_offers{
   margin-right:25px;
 }
 
-.exc-plg-qtd-input{
+input[type=text].exc-plg-qtd-input{
   width: 85px;
   border: none;
   border-radius:3px;
   padding: 3px;
+  background: whitesmoke;
+  color: black;
 }
 
 .exc-plg-element_control{

@@ -41,6 +41,7 @@ class ExchangePluginProfileController < ProfileController
       ex_el.element_id = params[:element_id]
       ex_el.element_type = params[:element_type]
       ex_el.proposal_id = @proposal.id
+      ex_el.enterprise_id = profile.id
       ex_el.save
     end
         

@@ -1,5 +1,4 @@
-
-<% if element_type == "Product" %>
+<% if element.class.name == "Product" %>
 
   <h6>
   <%= link_to(element.category_name) + " " + link_to(element.name) %>
@@ -7,10 +6,10 @@
 
   <%= link_to_remote "<button class='exchange-button-console exc-plg-add'>+</button>", 
   :url => {:action => "add_element", :element_id => element.id,  
-  :element_type => "Product", :enterprise => enterprise, :exchange_id => @exchange.id,
-  :proposal_id => proposal.id, :enterprise_id => enterprise_id} %>
+  :element_type => "Product", :enterprise => enterprise,
+  :proposal_id => proposal_id, :enterprise_id => element.enterprise_id} %>
   
-<% elsif element_type == "CmsLearningPluginLearning" %>
+<% elsif element.class.name == "CmsLearningPluginLearning" %>
 
   <h6>
   <%= link_to(element.name) %>
@@ -18,7 +17,7 @@
 
   <%= link_to_remote "<button class='exchange-button-console exc-plg-add'>+</button>", 
   :url => {:action => "add_element", :element_id => element.id,  
-  :enterprise_id => enterprise_id, :element_type => "CmsLearningPluginLearning", :exchange_id => @exchange.id, :proposal_id => proposal.id, :enterprise => enterprise} %>
+  :enterprise_id => element.profile_id, :element_type => "CmsLearningPluginLearning", :proposal_id => proposal_id, :enterprise => enterprise} %>
   
 
 <% end %>

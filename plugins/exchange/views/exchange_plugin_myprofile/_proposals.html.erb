@@ -81,7 +81,7 @@
               <% @profile_products.each do |p| %>
                 <li id=exchange_Product_<%= p.id %>>
 
-                    <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal => proposal, :enterprise => "profile", :element => p, :enterprise_id => profile.id} %>  
+                    <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal_id => proposal.id, :enterprise => "profile", :element => p, :enterprise_id => profile.id} %>  
 
                 </li>
               <% end %>
@@ -93,7 +93,7 @@
               <% @profile_knowledges.each do |k| %>
                 <li id="exchange_CmsLearningPluginLearning_<%= k.id %>">
 
-                    <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal => proposal, :enterprise => "profile", :element => k, :enterprise_id => profile.id} %>  
+                    <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal_id => proposal.id, :enterprise => "profile", :element => k, :enterprise_id => profile.id} %>  
 
                 </li>
               <% end %>
@@ -119,7 +119,15 @@
         <h3><%= _('What do the other can offer?') %></h3>
         <div id="exc-plg-button-wrapper">
           <button class="exchange-button-console"><%= _('Add not registered product')%></button>
-          <button class="exchange-button-console"><%= _('Add amount in money')%></button>
+          <button class="exchange-button-console">
+            <%= _('Add amount in money') %>
+            <% form_remote_tag :url => {:action => 'add_element_currency', :proposal_id => proposal.id, :element_type => "CurrencyPlugin::Currency", :enterprise_id => @theother.id, :enterprise => "theother"} do  %>
+
+              <%= select("element_id", '', @theother.currencies.collect{|c| [c.name, c.id]}, { :include_blank => false }, :name => "element_id") %>
+
+              <%= submit_tag _('Go')%>
+            <% end %>
+          </button>
         </div>
 
         <% if @theother_products.blank? && @theother_knowledges.blank? %>
@@ -135,7 +143,7 @@
             <% @theother_products.each do |p| %>
               <li id=exchange_Product_<%= p.id %>>
 
-                    <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal => proposal, :enterprise => "theother", :element => p, :enterprise_id => @theother.id} %>  
+                    <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal_id => proposal.id, :enterprise => "theother", :element => p, :enterprise_id => @theother.id} %>  
 
               </li>
             <% end %>
@@ -147,7 +155,7 @@
             <% @theother_knowledges.each do |k| %>
               <li id=exchange_CmsLearningPluginLearning_<%= k.id %>>
 
-                    <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal => proposal, :enterprise => "theother", :element => k, :enterprise_id => @theother.id} %>  
+                    <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal_id => proposal.id, :enterprise => "theother", :element => k, :enterprise_id => @theother.id} %>  
 
               </li>
             <% end %>

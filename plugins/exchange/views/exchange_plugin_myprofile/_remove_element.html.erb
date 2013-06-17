@@ -1,5 +1,6 @@
 <li id=exchange_<%= params[:element_type] %>_<%= params[:element_id] %>>
 
-  <%= render :partial => "element_list", :locals => {:element => @element, :enterprise => @enterprise, :exchange => @exchange, :proposal => @proposal} %>
+  <% element = (eval(@element.element_type).find @element.element_id) %>
+  <%= render :partial => "element_list", :locals => {:element => element, :enterprise => enterprise, :proposal_id => proposal_id} %>
 
 </li>
