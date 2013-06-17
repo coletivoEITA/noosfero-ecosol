@@ -54,8 +54,19 @@ class ExchangePluginMyprofileController < MyProfileController
     end
   end
 
+  def add_element_currency
+    @element = ExchangePlugin::ExchangeElement.new
+    @element.element_id = params[:element_id]
+    @element.enterprise_id = params[:enterprise_id]
+    @element.element_type = params[:element_type]
+    @element.proposal_id = params[:proposal_id]
+
+    @element.save!
+
+  end
+  
   def add_element
-    @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
+#     @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
     @element = ExchangePlugin::ExchangeElement.new
     @element.element_id = params[:element_id]
     @element.enterprise_id = params[:enterprise_id]
@@ -67,9 +78,19 @@ class ExchangePluginMyprofileController < MyProfileController
 
   def remove_element
     @element = ExchangePlugin::ExchangeElement.find params[:id]
+    type = @element.element_type
+    @element.destroy
+#     if (type == "CurrencyPlugin::Currency")
+#       render :action => "remove_element_currency"
+#     end
+  end
+
+  def remove_element_currency
+    @element = ExchangePlugin::ExchangeElement.find params[:id]
     @element.destroy
   end
 
+  
   def new_message
     p = ExchangePlugin::Proposal.find params[:proposal_id]
 

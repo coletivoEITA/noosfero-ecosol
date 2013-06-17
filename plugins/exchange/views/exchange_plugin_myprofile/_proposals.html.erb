@@ -54,7 +54,18 @@
           <h3><%= _('What you can offer?') %></h3>
           <div id="exc-plg-button-wrapper">
             <button class="exchange-button-console"><%= _('Add not registered product')%></button>
-            <button class="exchange-button-console"><%= _('Add amount in money')%></button>
+
+
+          <button class="exchange-button-console">
+            <%= _('Add amount in money') %>
+            <% form_remote_tag :url => {:action => 'add_element_currency', :proposal_id => proposal.id, :element_type => "CurrencyPlugin::Currency", :enterprise_id => profile.id, :enterprise => "profile"} do  %>
+
+              <%= select("element_id", '', profile.currencies.collect{|c| [c.name, c.id]}, { :include_blank => false }, :name => "element_id") %>
+
+              <%= submit_tag _('Go')%>
+            <% end %>
+          </button>
+
           </div>
 
           <% if @profile_products.blank? && @profile_knowledges.blank? %>

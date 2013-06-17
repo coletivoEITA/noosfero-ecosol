@@ -395,3 +395,8 @@ ul.exc-plg-profile_offers {
   width: 985px;
   margin: 30px auto;
   overflow: hidden; }
+
+select {
+  background: transparent;
+  font: inherit;
+  color: white; }
