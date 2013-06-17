@@ -1,14 +1,3 @@
-// underscore use of <@ instead of <%
-_.templateSettings = {
-  interpolate: /\<\@\=(.+?)\@\>/gim,
-  evaluate: /\<\@(.+?)\@\>/gim
-};
-
-// from http://stackoverflow.com/questions/17033397/javascript-strings-with-keyword-parameters
-String.prototype.format = function(obj) {
-  return this.replace(/%\{([^}]+)\}/g,function(_,k){ return obj[k] });
-};
-
 sniffer = {
 
   search: {
@@ -242,5 +231,16 @@ sniffer = {
 
     },
   },
+};
+
+// underscore use of <@ instead of <%
+_.templateSettings = {
+  interpolate: /\<\@\=(.+?)\@\>/gim,
+  evaluate: /\<\@(.+?)\@\>/gim
+};
+
+// from http://stackoverflow.com/questions/17033397/javascript-strings-with-keyword-parameters
+String.prototype.format = function(obj) {
+  return this.replace(/%\{([^}]+)\}/g,function(_,k){ return obj[k] });
 };
 

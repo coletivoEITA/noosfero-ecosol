@@ -2,11 +2,14 @@ class CurrencyPlugin::Currency < Noosfero::Plugin::ActiveRecord
 
   belongs_to :environment
 
-  has_many :currency_enterprises, :class_name => 'CurrencyPlugin::CurrencyEnterprise'
-  has_many :acceptors, :through => :currency_enterprises, :source => :enterprise,
-    :conditions => ['currency_plugin_currency_enterprises.is_organizer <> ?', true], :order => 'id ASC'
-  has_many :organizers, :through => :currency_enterprises, :source => :enterprise,
-    :conditions => ['currency_plugin_currency_enterprises.is_organizer = ?', true], :order => 'id ASC'
+  has_many :enterprise_currencies, :class_name => 'CurrencyPlugin::EnterpriseCurrency'
+  has_many :acceptors, :through => :enterprise_currencies, :source => :enterprise,
+    :conditions => ['currency_plugin_enterprise_currencies.is_organizer <> ?', true], :order => 'id ASC'
+  has_many :organizers, :through => :enterprise_currencies, :source => :enterprise,
+    :conditions => ['currency_plugin_enterprise_currencies.is_organizer = ?', true], :order => 'id ASC'
+
+  has_many :product_currencies
+  has_many :products, :through => :product_currencies
 
   validates_presence_of :environment
   validates_presence_of :symbol, :name, :description

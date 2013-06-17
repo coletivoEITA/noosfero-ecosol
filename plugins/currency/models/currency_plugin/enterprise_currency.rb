@@ -1,4 +1,4 @@
-class CurrencyPlugin::CurrencyEnterprise < Noosfero::Plugin::ActiveRecord
+class CurrencyPlugin::EnterpriseCurrency < Noosfero::Plugin::ActiveRecord
 
   belongs_to :currency, :class_name => 'CurrencyPlugin::Currency'
   belongs_to :enterprise

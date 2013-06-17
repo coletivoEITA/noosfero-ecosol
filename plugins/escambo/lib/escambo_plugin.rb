@@ -14,7 +14,7 @@ class EscamboPlugin < Noosfero::Plugin
 
   SearchLimit = 20
   SearchIndexFilter = proc do
-    options = {:limit => SearchLimit, :conditions => ['created_at IS NOT NULL'], :order => 'created_at desc'}
+    options = {:limit => SearchLimit, :conditions => ['created_at IS NOT NULL'], :order => 'created_at DESC'}
     @interests = SnifferPluginOpportunity.all options
     @products = Product.all options
     @knowledges = CmsLearningPluginLearning.all options
@@ -42,6 +42,16 @@ class EscamboPlugin < Noosfero::Plugin
     [
       {:type => 'before_filter', :method_name => 'escambo_profile_home',
        :options => {:only => :index}, :block => ProfileHome},
+    ]
+  end
+
+  CatalogIndex = proc do
+    redirect_to :controller => :profile, :action => :products
+  end
+  def catalog_controller_filters
+    [
+      {:type => 'before_filter', :method_name => 'escambo_catalog_index',
+       :options => {:only => :index}, :block => CatalogIndex},
     ]
   end
 

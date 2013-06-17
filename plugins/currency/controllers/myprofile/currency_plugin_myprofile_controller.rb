@@ -7,7 +7,7 @@ class CurrencyPluginMyprofileController < MyProfileController
 
   def create
     @currency = CurrencyPlugin::Currency.new :environment => environment
-    @acceptance = CurrencyPlugin::CurrencyEnterprise.new :enterprise => profile, :is_organizer => true
+    @acceptance = CurrencyPlugin::EnterpriseCurrency.new :enterprise => profile, :is_organizer => true
     if request.post?
       @error = !ActiveRecord::Base.transaction do
         @currency.update_attributes! params[:currency]
@@ -57,7 +57,7 @@ class CurrencyPluginMyprofileController < MyProfileController
   end
 
   def stop_accepting
-    @ce = profile.currency_enterprises.first :conditions => {:currency_id => params[:id]}
+    @ce = profile.enterprise_currencies.first :conditions => {:currency_id => params[:id]}
     @currency = @ce.currency
     @ce.destroy
   end

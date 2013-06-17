@@ -33,6 +33,7 @@
   margin-right: 24px; }
   #currency-organized .currency-organized-item {
     padding: 12px;
+    padding-right: 0;
     margin: 12px 0;
     border-top: 1px solid black; }
     #currency-organized .currency-organized-item:last-child {
@@ -54,6 +55,7 @@
     margin-top: 12px; }
     #currency-accepted .items .currency-accepted {
       padding: 12px;
+      padding-right: 0;
       border-top: 1px solid black; }
       #currency-accepted .items .currency-accepted:last-child {
         border-bottom: 1px solid black; }

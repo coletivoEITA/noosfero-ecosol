@@ -71,4 +71,10 @@ profiles.each do |profile|
   profile.save
 end
 
+echo 'Set environment currency'
+e.currency_unit = 'R$'
+e.currency_separator = ','
+e.currency_delimiter = '.'
+e.save
+
 

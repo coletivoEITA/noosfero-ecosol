@@ -1,4 +1,6 @@
 require_dependency "#{File.dirname __FILE__}/ext/enterprise"
+require_dependency "#{File.dirname __FILE__}/ext/environment"
+require_dependency "#{File.dirname __FILE__}/ext/product"
 
 class CurrencyPlugin < Noosfero::Plugin
 
