@@ -12,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: noosfero 0.42.1\n"
-"POT-Creation-Date: 2013-06-13 11:42-0300\n"
+"POT-Creation-Date: 2013-06-18 12:23-0300\n"
 "PO-Revision-Date: 2013-03-13 17:47-0300\n"
 "Last-Translator: Rodrigo Souto <rodrigo@colivre.coop.br>\n"
 "Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
@@ -141,9 +141,9 @@ msgstr "Enviar e-mail"
 #: app/views/themes/add_css.rhtml:7
 #: app/views/region_validators/_search.rhtml:9
 #: app/views/box_organizer/add_block.rhtml:44
-#: plugins/escambo/views/profile/_products.html.erb:9
-#: plugins/escambo/views/profile/_knowledges.html.erb:9
-#: plugins/escambo/views/profile/_interests.html.erb:9
+#: plugins/escambo/views/profile/_products.html.erb:5
+#: plugins/escambo/views/profile/_knowledges.html.erb:5
+#: plugins/escambo/views/profile/_interests.html.erb:5
 msgid "Add"
 msgstr "Adicionar"
 
@@ -944,6 +944,7 @@ msgstr "Mover para o lado oposto"
 #: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:16
 #: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:32
 #: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:39
+#: plugins/currency/views/currency_plugin_myprofile/_currency_organized.html.erb:4
 #: plugins/escambo/views/snippets/_product.html.erb:27
 #: plugins/escambo/views/snippets/_cms_learning_plugin_learning.html.erb:27
 #: plugins/escambo/views/snippets/_sniffer_plugin_opportunity.html.erb:25
@@ -1108,7 +1109,7 @@ msgid "Sign out of chat"
 msgstr "Sair do bate-papo"
 
 #: app/helpers/search_helper.rb:15
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:122
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:141
 msgid "Products and Services"
 msgstr "Produtos e Serviços"
 
@@ -1232,10 +1233,10 @@ msgstr "%s comunidades encontradas"
 #: app/views/templates/_create_template_form.html.erb:16
 #: app/views/profile/report_abuse.html.erb:10
 #: app/views/licenses/_form.html.erb:10
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:230
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:231
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:232
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:233
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:252
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:253
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:254
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:255
 #: plugins/bsc/views/bsc_plugin_admin/new.html.erb:9
 #: plugins/bsc/views/bsc_plugin_admin/validate_enterprises.html.erb:10
 #: plugins/bsc/views/bsc_plugin_myprofile/manage_associated_enterprises.html.erb:23
@@ -2880,6 +2881,7 @@ msgstr "Preço"
 #: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:11
 #: plugins/mezuro/views/mezuro_plugin_repository/_form.html.erb:6
 #: plugins/mezuro/views/mezuro_plugin_repository/show.html.erb:10
+#: plugins/currency/views/currency_plugin_myprofile/_currency_organized.html.erb:9
 msgid "Description"
 msgstr "Descrição"
 
@@ -2888,6 +2890,7 @@ msgid "Discount"
 msgstr "Desconto"
 
 #: app/models/input.rb:- app/views/manage_products/_edit_info.rhtml:21
+#: plugins/currency/views/manage_products/_edit_info.html.erb:26
 msgid "Available"
 msgstr "Disponível"
 
@@ -3754,11 +3757,13 @@ msgstr "qualificador certificador"
 
 #: app/models/qualifier_certifier.rb:- app/models/product_qualifier.rb:-
 #: app/views/manage_products/_edit_info.rhtml:33
+#: plugins/currency/views/manage_products/_edit_info.html.erb:38
 msgid "Qualifier"
 msgstr "Qualificador"
 
 #: app/models/qualifier_certifier.rb:- app/models/product_qualifier.rb:-
 #: app/views/manage_products/_edit_info.rhtml:34
+#: plugins/currency/views/manage_products/_edit_info.html.erb:39
 msgid "Certifier"
 msgstr "Certificador"
 
@@ -4525,6 +4530,7 @@ msgstr "Novo"
 #: plugins/custom_forms/views/custom_forms_plugin_profile/show.html.erb:16
 #: plugins/custom_forms/views/custom_forms_plugin_myprofile/_form.html.erb:52
 #: plugins/sniffer/views/sniffer_plugin_myprofile/edit.html.erb:18
+#: plugins/currency/views/manage_products/_edit_info.html.erb:63
 #: plugins/tolerance_time/views/tolerance_time_plugin_myprofile/index.html.erb:21
 msgid "Save"
 msgstr "Salvar"
@@ -6231,6 +6237,7 @@ msgstr ""
 #: app/views/manage_products/_edit_input.rhtml:29
 #: app/views/manage_products/_edit_info.rhtml:22
 #: plugins/bsc/views/shared/_fields.html.erb:41
+#: plugins/currency/views/manage_products/_edit_info.html.erb:27
 msgid "Yes"
 msgstr "Sim"
 
@@ -6241,6 +6248,7 @@ msgstr "Sim"
 #: app/views/manage_products/_edit_input.rhtml:31
 #: app/views/manage_products/_edit_info.rhtml:22
 #: plugins/bsc/views/shared/_fields.html.erb:42
+#: plugins/currency/views/manage_products/_edit_info.html.erb:27
 msgid "No"
 msgstr "Não"
 
@@ -8622,23 +8630,28 @@ msgid "Remove product or service"
 msgstr "Remover produto ou serviço"
 
 #: app/views/manage_products/_edit_info.rhtml:13
+#: plugins/currency/views/manage_products/_edit_info.html.erb:13
 msgid "Price (%s)"
 msgstr "Preço (%s)"
 
 #: app/views/manage_products/_edit_info.rhtml:17
+#: plugins/currency/views/manage_products/_edit_info.html.erb:18
 msgid "Discount (%s)"
 msgstr "Desconto (%s)"
 
 #: app/views/manage_products/_edit_info.rhtml:18
+#: plugins/currency/views/manage_products/_edit_info.html.erb:19
 msgid "If your product is on sale, fill this field with the discount value"
 msgstr ""
 "Se o seu produto está à venda, preencha este campo com o valor de desconto"
 
 #: app/views/manage_products/_edit_info.rhtml:25
+#: plugins/currency/views/manage_products/_edit_info.html.erb:30
 msgid "Highlight this product?"
 msgstr "Destacar este produto?"
 
 #: app/views/manage_products/_edit_info.rhtml:49
+#: plugins/currency/views/manage_products/_edit_info.html.erb:54
 msgid "Add new qualifier"
 msgstr "Adicionar novo qualificador"
 
@@ -8783,10 +8796,12 @@ msgid "Choose an input or raw material to this product:"
 msgstr "Selecione um insumo ou matéria-prima para este produto:"
 
 #: app/views/manage_products/_display_info.rhtml:7
+#: plugins/currency/views/manage_products/_display_info_html.erb:12
 msgid "Edit basic information"
 msgstr "Editar informações básicas"
 
 #: app/views/manage_products/_display_info.rhtml:7
+#: plugins/currency/views/manage_products/_display_info_html.erb:12
 msgid ""
 "Click here to edit price, discount and qualifiers/certifiers to make your "
 "product more attractive and detailed for the consumers"
@@ -8795,10 +8810,12 @@ msgstr ""
 "para deixar seu produto mais atrativo e detalhado para os consumidores"
 
 #: app/views/manage_products/_display_info.rhtml:9
+#: plugins/currency/views/manage_products/_display_info_html.erb:14
 msgid "Add price and other basic information"
 msgstr "Adicionar preço e outras informações básicas"
 
 #: app/views/manage_products/_display_info.rhtml:10
+#: plugins/currency/views/manage_products/_display_info_html.erb:15
 msgid ""
 "Click here to add price, discount and qualifiers/certifiers to make your "
 "product more attractive and detailed for the consumers"
@@ -10502,65 +10519,65 @@ msgstr "é obrigatório"
 msgid "A plugin that does this and that."
 msgstr "Um plugin que faz isto e aquilo."
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:226
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:248
 #, fuzzy
 msgid "Accept Propose"
 msgstr "Aceitar produtos"
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:226
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:248
 #, fuzzy
 msgid "Don't Accept"
 msgstr "Aceitar"
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:227
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:228
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:359
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:249
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:250
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:381
 #, fuzzy
 msgid "Exchange Concluded"
 msgstr "Concluído"
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:227
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:228
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:249
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:250
 msgid "Exchange not Concluded"
 msgstr ""
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:229
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:251
 msgid "Propose Conclusion"
 msgstr ""
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:229
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:251
 #, fuzzy
 msgid "Cancel Exchange"
 msgstr "Salvar alterações"
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:230
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:231
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:232
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:233
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:252
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:253
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:254
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:255
 msgid "Back to happening - this should not appear"
 msgstr ""
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:240
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:262
 msgid "Waiting for the other to accept the exchange proposal"
 msgstr ""
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:243
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:265
 msgid "Do you accept to start the exchange negociation?"
 msgstr ""
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:246
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:268
 msgid ""
 "Exchange is happening. You can send messages, edit the exchange elements, "
 "propose the conclusion of the exchange or cancel the negociation."
 msgstr ""
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:250
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:258
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:272
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:280
 msgid "Waiting for a response by the other part of the exchange"
 msgstr ""
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:253
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:261
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:275
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:283
 msgid ""
 "The other part said that the exchange is concluded. If you agree, click "
 "Exchange Concluded.\n"
@@ -10568,25 +10585,25 @@ msgid ""
 "Exchange not Concluded."
 msgstr ""
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:271
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:280
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:293
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:302
 msgid "Waiting for evaluation by the other part of the exchange"
 msgstr ""
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:287
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:309
 msgid "Exchange finished and evaluated"
 msgstr ""
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:345
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:367
 msgid "Conclusion Proposed by %s"
 msgstr ""
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:376
+#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:398
 #, fuzzy
 msgid "Exchange Cancelled by %{enterprise}"
 msgstr "Gerenciar empreendimentos associados"
 
-#: plugins/exchange/controllers/profile/exchange_plugin_profile_controller.rb:144
+#: plugins/exchange/controllers/profile/exchange_plugin_profile_controller.rb:147
 msgid "%{origin} proposed an exchange with %{target}: %{message}"
 msgstr "%{origin} propôs uma troca com %{target}: %{message}"
 
@@ -10836,9 +10853,14 @@ msgstr ""
 msgid "A sample plugin to test autoload craziness."
 msgstr "Um plugin de teste para testar a loucura do caregamento."
 
-#: plugins/currency/lib/currency_plugin.rb:10
+#: plugins/currency/lib/currency_plugin.rb:12
 msgid "Create and accepts social currencies"
 msgstr ""
+
+#: plugins/currency/models/currency_plugin/currency.rb:24
+#, fuzzy
+msgid "%{name} (%{symbol})"
+msgstr "%{month} %{year}"
 
 #: plugins/ldap/controllers/ldap_plugin_admin_controller.rb:10
 #, fuzzy
@@ -11786,8 +11808,8 @@ msgid "%s's Offers"
 msgstr "Fãs de %s"
 
 #: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:24
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:55
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:115
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:71
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:133
 #, fuzzy
 msgid "%s has no offers registered."
 msgstr "%s não tem projetos registrados"
@@ -11935,41 +11957,40 @@ msgstr "Preço: %s"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_evaluation.html.erb:6
 msgid "Your evaluation (still to be done)"
-msgstr ""
+msgstr "Sua avaliação (a ser feita)"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_evaluation.html.erb:14
 msgid "%s evaluation (still to be done)"
-msgstr ""
+msgstr "Avaliação de %s (a ser feita)"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:4
 #: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:32
 msgid "1 (Very bad)"
-msgstr ""
+msgstr "1 (Muito ruim)"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:5
 #: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:33
 msgid "2 (Less than expected)"
-msgstr ""
+msgstr "2 (Pior do que o esperado)"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:6
 #: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:34
 msgid "3 (Regular)"
-msgstr ""
+msgstr "3 (Regular)"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:7
 #: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:35
 msgid "4 (Better than expected)"
-msgstr ""
+msgstr "4 (Melhor que o esperado)"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:8
 #: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:36
 msgid "5 (Excellent)"
-msgstr ""
+msgstr "5 (Excelente)"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:12
-#, fuzzy
 msgid "Submit Evaluation"
-msgstr "Situação"
+msgstr "Enviar avaliação"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:1
 #, fuzzy
@@ -11979,7 +12000,7 @@ msgstr "Salvar alterações"
 #: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:4
 #: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:10
 msgid "Exchange Summary"
-msgstr ""
+msgstr "Resumo da troca"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:6
 #: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:14
@@ -12004,15 +12025,15 @@ msgstr ""
 
 #: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:30
 msgid "Please evaluate the behaviour of %s during the exchange process:"
-msgstr ""
+msgstr "Por favor, avalie o comportamento de %s durante o processo de troca:"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:39
 msgid "Write your evaluation message here..."
-msgstr ""
+msgstr "Escreva sua avaliação aqui..."
 
 #: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:40
 msgid "Submit"
-msgstr ""
+msgstr "Enviar"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:2
 #: plugins/exchange/views/exchange_plugin_myprofile/new.html.erb:2
@@ -12130,11 +12151,11 @@ msgstr "Histórico da negociação"
 msgid "Back to the exchange listing"
 msgstr "Voltar para lista de trocas"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_element.html.erb:12
+#: plugins/exchange/views/exchange_plugin_myprofile/_element.html.erb:15
 msgid "Qtd"
 msgstr "Qtd"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_element.html.erb:24
+#: plugins/exchange/views/exchange_plugin_myprofile/_element.html.erb:36
 msgid "Qtd: %s"
 msgstr "Qtd %s"
 
@@ -12164,51 +12185,56 @@ msgstr ""
 "*Para que esta troca seja finalizada, a outra parte deve aceitar esta "
 "proposta!"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:6
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:5
 msgid "Proposal sent "
 msgstr "Proposta enviada em "
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:19
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:25
 #, fuzzy
 msgid "Digite sua mensagem"
 msgstr "Digite sua mensagem"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:36
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:41
 msgid "You offer"
 msgstr "Oferta"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:48
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:53
 msgid "What you can offer?"
 msgstr "O que você pode oferecer"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:50
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:110
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:55
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:120
 msgid "Add not registered product"
 msgstr "Adicionar produto não registrado"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:51
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:111
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:59
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:122
 msgid "Add amount in money"
 msgstr "Adicionar quantia em dinheiro"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:63
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:64
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:127
+msgid "Go"
+msgstr ""
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:79
 #, fuzzy
 msgid "Your Products and Services"
 msgstr "Produtos e Serviços"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:78
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:91
 msgid "Your Knowledges"
 msgstr "Seus saberes"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:96
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:106
 msgid "You ask"
 msgstr "Pedido"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:108
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:118
 msgid "What do the other can offer?"
 msgstr "O que o outro pode oferecer?"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:139
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:153
 #: plugins/escambo/views/profile/_knowledges.html.erb:2
 msgid "Knowledges"
 msgstr "Saberes"
@@ -12421,6 +12447,36 @@ msgstr "Produtos relacionados"
 msgid "Associated Persons"
 msgstr "Associar"
 
+#: plugins/currency/views/currency_plugin_myprofile/accept.html.erb:3
+#: plugins/currency/views/currency_plugin_myprofile/index.html.erb:18
+#, fuzzy
+msgid "Accept a new currency"
+msgstr "Criar nova comunidade"
+
+#: plugins/currency/views/currency_plugin_myprofile/accept.html.erb:13
+#, fuzzy
+msgid "search"
+msgstr "Busca"
+
+#: plugins/currency/views/currency_plugin_myprofile/_currency_accepted.html.erb:3
+msgid "Stop accepting"
+msgstr ""
+
+#: plugins/currency/views/currency_plugin_myprofile/_accept_form.html.erb:10
+msgid "%{name}, currency offered by %{organizer}"
+msgstr ""
+
+#: plugins/currency/views/currency_plugin_myprofile/_accept_form.html.erb:19
+#: plugins/currency/views/currency_plugin_myprofile/_currency_form.html.erb:6
+msgid "OK"
+msgstr "OK"
+
+#: plugins/currency/views/currency_plugin_myprofile/_accept_form.html.erb:20
+#: plugins/currency/views/currency_plugin_myprofile/_currency_form.html.erb:7
+#, fuzzy
+msgid "cancel"
+msgstr "Cancelar"
+
 #: plugins/currency/views/currency_plugin_myprofile/index.html.erb:4
 #, fuzzy
 msgid "Currencies organized by your enterprise"
@@ -12431,15 +12487,42 @@ msgstr "Ativar seu empreendimento"
 msgid "Create new currency"
 msgstr "Criar novo contrato"
 
-#: plugins/currency/views/currency_plugin_myprofile/index.html.erb:10
+#: plugins/currency/views/currency_plugin_myprofile/index.html.erb:16
 #, fuzzy
 msgid "Currencies already accepted"
 msgstr "Este empreendimento já foi ativado"
 
-#: plugins/currency/views/currency_plugin_myprofile/index.html.erb:12
+#: plugins/currency/views/currency_plugin_myprofile/edit.html.erb:3
 #, fuzzy
-msgid "Accept a new currency"
-msgstr "Criar nova comunidade"
+msgid "Edit currency"
+msgstr "Editar comentário"
+
+#: plugins/currency/views/currency_plugin_myprofile/_currency_organized.html.erb:14
+msgid "%{number} accept this currency"
+msgstr ""
+
+#: plugins/currency/views/currency_plugin_myprofile/_currency_organized.html.erb:21
+msgid "Coverage (how many are circulating)"
+msgstr ""
+
+#: plugins/currency/views/currency_plugin_myprofile/create.html.erb:3
+#, fuzzy
+msgid "Create a new currency"
+msgstr "Criar novo contrato"
+
+#: plugins/currency/views/manage_products/_add_in_currency.html.erb:2
+msgid "Specify %{field} in %{select}"
+msgstr ""
+
+#: plugins/currency/views/manage_products/_display_info_html.erb:5
+#: plugins/currency/views/manage_products/_product_currencies.html.erb:16
+#, fuzzy
+msgid "Price in %{currency}"
+msgstr "Criar novo contrato"
+
+#: plugins/currency/views/manage_products/_product_currencies.html.erb:18
+msgid "Discount in %{currency}"
+msgstr ""
 
 #: plugins/ldap/views/ldap_plugin_admin/index.html.erb:1
 #, fuzzy
@@ -12526,7 +12609,7 @@ msgid "Empty means unlimited and zero means right away."
 msgstr "Vazio significa ilimitado e zero significa imediatamente."
 
 #: plugins/escambo/views/search/index.html.erb:1
-msgid "Offers, interests and knowledges"
+msgid "Offers, knowledges and interests"
 msgstr ""
 
 #: plugins/escambo/views/search/index.html.erb:2
@@ -12574,9 +12657,9 @@ msgstr ""
 msgid "Offers from this enterprise"
 msgstr "Ofertas deste Ponto de Cultura"
 
-#: plugins/escambo/views/profile/_products.html.erb:5
-#: plugins/escambo/views/profile/_knowledges.html.erb:5
-#: plugins/escambo/views/profile/_interests.html.erb:5
+#: plugins/escambo/views/profile/_products.html.erb:9
+#: plugins/escambo/views/profile/_knowledges.html.erb:9
+#: plugins/escambo/views/profile/_interests.html.erb:9
 msgid "See all"
 msgstr "Ver todos"
 
@@ -13370,9 +13453,6 @@ msgstr ""
 
 #~ msgid "Processing task: %s"
 #~ msgstr "Processando tarefa: %s"
-
-#~ msgid "OK"
-#~ msgstr "OK"
 
 #~ msgid "Processing ticket: %s"
 #~ msgstr "Processando tíquete: %s"
