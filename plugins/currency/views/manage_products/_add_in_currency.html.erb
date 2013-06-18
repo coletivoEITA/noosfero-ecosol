@@ -1,0 +1,8 @@
+<span class="add-in-currency">
+  <%= _('Specify %{field} in %{select}') % {
+    :field => field,
+    :select => select_tag("available_currencies_for_#{field}",
+                          options_for_select([['','']] + @product.send("available_currencies_for_#{field}").collect{ |c| [c.name_with_symbol, c.id] }),
+                          :id => "#{field}-currency-select")
+  } %>
+</span>

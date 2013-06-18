@@ -1,7 +1,13 @@
 
-currency = {};
+currency = {
+  list: null,
 
-currency.accept: {
+  find: function(id) {
+    return currency.list.find(function(c) {c.id == id});
+  },
+};
+
+currency.accept = {
   query: null,
   last_query: null,
   query_url: null,
@@ -35,28 +41,56 @@ currency.accept: {
 
 currency.product = {
 
-  template: function (field, currency) {
-    addScript('/plugins/currency/underscore-min.js');
+  priceRow: null,
+  discountRow: null,
 
-    var container = jQuery('#currency-%{field}').format({field: field}));
-    var template = container.find('.template');
-    return _.template(template.html(), {: category});
-    }).join('');
+  load: function(options) {
+    currency.list = options.currencies;
+    currency.product.priceRow = jQuery('#price-row');
+    currency.product.discountRow = jQuery('#discount-row');
+
+    currencies.product.add('price', options.prices);
+    currencies.product.add('discount', options.discounts);
+
+    jQuery('#price-currency-select').change(function () {
+      var currency = currency.find(jQuery(this).val().get(0).value);
+      currency.product.add('price', [currency]);
+    });
+    jQuery('#discount-currency-select').change(function () {
+      var currency = currency.find(jQuery(this).val().get(0).value);
+      currency.product.add('discount', [currency]);
+    });
+  },
+
+  add: function(field, currencies) {
+    currency.product[field+'Row'].after(currency.product.template(field, currencies));
+  },
+
+  template: function (field, currencies) {
+    var template = jQuery('#currency-template');
+    return _.template(template.html(), {field: field, currencies: currencies});
   },
 };
 
+// don't strip underscore templates within ruby templates
+String.prototype.stripScripts = function () { return this; };
+
 window.addedScripts = window.addedScripts || [];
-function addScript(src) {
+function addScript(src, onload) {
   if (window.addedScripts.indexOf(src) != -1)
     return;
   window.addedScripts.push(src);
-  jQuery("<script type='text/javascript' src='%{src}'".format({src: src})).appendTo(jQuery('head'));
+  jQuery.ajax({async: false, url: src, success: function(js) { jQuery.globalEval(js); }});
+  if (onload != undefined)
+    onload();
 }
 
-// underscore use of <@ instead of <%
-_.templateSettings = {
-  interpolate: /\<\@\=(.+?)\@\>/gim,
-  evaluate: /\<\@(.+?)\@\>/gim
+currency.underscore_settings = function () {
+  // underscore use of <@ instead of <%
+  _.templateSettings = {
+    interpolate: /\<\@\=(.+?)\@\>/gim,
+    evaluate: /\<\@(.+?)\@\>/gim
+  };
 };
 
 // from http://stackoverflow.com/questions/17033397/javascript-strings-with-keyword-parameters
