@@ -6,6 +6,8 @@ class CurrencyPlugin::EnterpriseCurrency < Noosfero::Plugin::ActiveRecord
   validates_presence_of :currency
   validates_presence_of :enterprise
 
+  validates_uniqueness_of :currency_id, :scope => :enterprise_id
+
   def organizer?
     self.is_organizer
   end

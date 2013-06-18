@@ -17,7 +17,15 @@ class CurrencyPlugin::Currency < Noosfero::Plugin::ActiveRecord
   validates_uniqueness_of :symbol, :scope => :environment_id
   validates_uniqueness_of :name, :scope => :environment_id
 
+  named_scope :with_price, :conditions => ['currency_plugin_product_currencies.price IS NOT NULL']
+  named_scope :with_discount, :conditions => ['currency_plugin_product_currencies.discount IS NOT NULL']
+
   def name_with_symbol
     _('%{name} (%{symbol})') % {:name => self.name, :symbol => self.symbol}
   end
+
+  def as_json options
+    super options.merge(:methods => :name_with_symbol, :except => [:created_at, :updated_at])
+  end
+
 end

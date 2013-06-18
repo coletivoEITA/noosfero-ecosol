@@ -12,7 +12,7 @@
 $base: 12px;
 $module: 6*$base;
 $intercolumn: 2*$base;
-$module1: 1*$module + 1*$intercolumn;
+$module1: 1*$module + 0*$intercolumn;
 $module2: 2*$module + 1*$intercolumn;
 $module3: 3*$module + 2*$intercolumn;
 $module4: 4*$module + 3*$intercolumn;
@@ -141,3 +141,29 @@ $color-action-button: #394E41;
     }
   }
 }
+
+#product-info {
+  width: $module6;
+
+  #product-info-form.edit_product {
+
+    tr .formlabel,
+    .input-details-form tr .formlabel {
+      width: $module2;
+      margin-right: $margin;
+    }
+
+    input[type=text],
+    #product_price,
+    #product_discount {
+      width: $module1;
+      margin-right: $margin;
+    }
+
+    .add-in-currency {
+      width: $module3;
+      margin-right: $margin;
+    }
+  }
+}
+
