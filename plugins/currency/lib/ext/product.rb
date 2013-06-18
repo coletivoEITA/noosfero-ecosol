@@ -19,14 +19,20 @@ class Product
     Hash[zip]
   end
 
-  def currencies=(currencies)
+  def currencies= currencies
     ActiveRecord::Base.transaction do
       self.product_currencies.destroy_all
       currencies.each do |id, attrs|
-        next if attrs.values.select{ |v| v.empty? }.empty?
+        next unless attrs.values.select{ |v| v.empty? }.empty?
         self.product_currencies.create attrs.merge(:currency_id => id)
       end
     end
+  end
+
+  alias_method :orig_price_with_discount, :price_with_discount
+  def price_with_discount currency = nil
+    return orig_price_with_discount unless currency
+    currency.discount ? (currency.price - currency.discount) : currency.price
   end
 
 end

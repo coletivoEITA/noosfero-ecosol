@@ -3,6 +3,8 @@ class CurrencyPlugin::ProductCurrency < Noosfero::Plugin::ActiveRecord
   belongs_to :product
   belongs_to :currency, :class_name => 'CurrencyPlugin::Currency'
 
+  validates_presence_of :product
+  validates_presence_of :currency
   validates_uniqueness_of :currency_id, :scope => :product_id
 
   named_scope :with_price, :conditions => ['price IS NOT NULL']
@@ -13,7 +15,9 @@ class CurrencyPlugin::ProductCurrency < Noosfero::Plugin::ActiveRecord
   include FloatHelper
 
   def price= value
-    if value.is_a?(String)
+    if value.blank?
+      super nil
+    elsif value.is_a?(String)
       super decimal_to_float(value)
     else
       super value
@@ -21,7 +25,9 @@ class CurrencyPlugin::ProductCurrency < Noosfero::Plugin::ActiveRecord
   end
 
   def discount= value
-    if value.is_a?(String)
+    if value.blank?
+      super nil
+    elsif value.is_a?(String)
       super decimal_to_float(value)
     else
       super value

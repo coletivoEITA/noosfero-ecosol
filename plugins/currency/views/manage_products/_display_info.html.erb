@@ -1,9 +1,8 @@
 <div id='display-product-info'>
   <%= display_value(@product) %>
 
-  <% @product.product_currencies.with_price.each do |pc| %>
-    <%= display_price _('Price in %{currency}') % {:currency => pc.currency.name_with_symbol}, pc.price %>
-  <% end %>
+  <%= render :partial => 'currencies_display', :locals => {:field => 'price'} %>
+  <%= render :partial => 'currencies_display', :locals => {:field => 'discount'} %>
 
   <%= display_availability(@product) %>
   <%= display_qualifiers(@product) %>

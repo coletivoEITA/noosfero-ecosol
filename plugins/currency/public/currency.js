@@ -3,7 +3,8 @@ currency = {
   list: null,
 
   find: function(id) {
-    return currency.list.find(function(c) {c.id == id});
+    id = parseInt(id);
+    return currency.list.find(function(c) { return c.id == id; });
   },
 };
 
@@ -44,21 +45,26 @@ currency.product = {
   priceRow: null,
   discountRow: null,
 
+  setId: function (pc) {
+    pc.id = pc.currency_id;
+    return pc;
+  },
+
   load: function(options) {
     currency.list = options.currencies;
     currency.product.priceRow = jQuery('#price-row');
     currency.product.discountRow = jQuery('#discount-row');
 
-    currencies.product.add('price', options.prices);
-    currencies.product.add('discount', options.discounts);
+    currency.product.add('price', options.prices.map(currency.product.setId));
+    currency.product.add('discount', options.discounts.map(currency.product.setId));
 
     jQuery('#price-currency-select').change(function () {
-      var currency = currency.find(jQuery(this).val().get(0).value);
-      currency.product.add('price', [currency]);
+      var item = currency.find(jQuery(this).val());
+      currency.product.add('price', [item]);
     });
     jQuery('#discount-currency-select').change(function () {
-      var currency = currency.find(jQuery(this).val().get(0).value);
-      currency.product.add('discount', [currency]);
+      var item = currency.find(jQuery(this).val());
+      currency.product.add('discount', [item]);
     });
   },
 
