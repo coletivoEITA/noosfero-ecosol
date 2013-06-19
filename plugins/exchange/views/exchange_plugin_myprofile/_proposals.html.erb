@@ -1,10 +1,9 @@
 <% first = true %>
 <% @proposals.each do |proposal| %>
     <% if !(proposal.state == "open" && proposal.enterprise_origin != profile) %>
-      
-    <% if proposal.state != "open" %>
-      <p class="exc-plg-proposal_sent"><%= _('Proposal sent ') + proposal.date_sent.strftime("%d/%m/%Y @ %H:%Mh") %></p>
-    <% end %>
+      <% if proposal.state != "open" %>
+        <p class="exc-plg-proposal_sent"><%= _('Proposal sent ') + proposal.date_sent.strftime("%d/%m/%Y @ %H:%Mh") %></p>
+      <% end %>
     <div id="exc-plg-proposal_wrapper">
       <div id="exc-plg-proposal_header">
         <%= render :partial => "proposal_header", :locals => {:proposal => proposal}%>
@@ -12,140 +11,159 @@
       <% if first && (@exchange.state == "proposal" || @exchange.state == "negociation")%>
         <%= render :partial => "proposal_buttons", :locals => {:proposal => proposal}%>
       <% end %>
-    <div id="exc-plg-proposal_messages">
-      <div id="exc-plg-messages">
+      <div id="exc-plg-proposal_messages">
+        <div id="exc-plg-messages">
 
-        <% if first && (@exchange.state == "proposal" || @exchange.state == "negociation")%>
-          <div id="exc-plg-new_message" class="exc-plg-message">
-            <div class="exc-plg-message-profile-thumb">
-              <%= link_to profile_image(profile, :minor) +"\n", profile.url %>
-              <br />
+          <% if first && (@exchange.state == "proposal" || @exchange.state == "negociation")%>
+            <div id="exc-plg-new_message" class="exc-plg-message">
+              <div class="exc-plg-message-profile-thumb">
+                <%= link_to profile_image(profile, :minor) +"\n", profile.url %>
+                <br />
+              </div>
+              <div class="exc-plg-message-profile-body">
+                <% form_remote_tag :url => {:action => 'new_message', :proposal_id => proposal.id} do  %>
+                  <%= text_area_tag 'body',nil, :rows => 2, :cols => 30, :placeholder => _('Digite sua mensagem') %>
+                  <%= submit_tag 'Enviar mensagem' %>
+                <% end %>
+              </div>
+              <% first = false %>    
             </div>
-            <div class="exc-plg-message-profile-body">
-              <% form_remote_tag :url => {:action => 'new_message', :proposal_id => proposal.id} do  %>
-                <%= text_area_tag 'body',nil, :rows => 2, :cols => 30, :placeholder => _('Digite sua mensagem') %>
-                <%= submit_tag 'Enviar mensagem' %>
-              <% end %>
-            </div>
-            <% first = false %>    
-          </div>
-        <% end %>
-        <% if !proposal.messages.blank? %>
-          <% proposal.messages.each do |m| %> 
-            <%= render :partial => "message", :locals => {:message => m} %>          
           <% end %>
-        <% end %>
-      </div>
-    </div>
-    <div id="exc-plg-proposal_offer_request_wrapper">
-      <div id="exc-plg-proposal_offer">
-        <h3><%= _('You offer') %></h3>
-        <ul id="exc-plg-profile_elements_list">
-          <% @elements_profile = proposal.exchange_elements.select{|k| k.enterprise_id == profile.id} %>
-          <% if !@elements_profile.blank? %>
-            <% @elements_profile.each do |e| %>                            
-              <%= render :partial => "element", :locals => {:element => e, :proposal => proposal, :enterprise => "profile"} %>              
+          <% if !proposal.messages.blank? %>
+            <% proposal.messages.each do |m| %> 
+              <%= render :partial => "message", :locals => {:message => m} %>          
             <% end %>
           <% end %>
-        </ul>
+        </div>
+      </div> <!-- messages -->
+      <div id="exc-plg-proposal_offer_request_wrapper">
+        <div id="exc-plg-proposal_offer">
+          <h3><%= _('You offer') %></h3>
+          <ul id="exc-plg-profile_elements_list">
+            <% @elements_profile = proposal.exchange_elements.select{|k| k.enterprise_id == profile.id} %>
+            <% if !@elements_profile.blank? %>             
+              <% @elements_profile.each do |e| %>        
+                <%= render :partial => "element", :locals => {:element => e, :proposal => proposal, :enterprise => "profile"} %>
+              <% end %>
+            <% end %>
+          </ul>
 
+          <% if proposal.state == "open" %>
+
+            <h3><%= _('What you can offer?') %></h3>
+            <div id="exc-plg-button-wrapper">
+              <button class="exchange-button-console"><%= _('Add not registered product')%></button>
+
+
+            <button class="exchange-button-console">
+              <%= _('Add amount in money') %>
+              <% form_remote_tag :url => {:action => 'add_element_currency', :proposal_id => proposal.id, :element_type => "CurrencyPlugin::Currency", :enterprise_id => profile.id, :enterprise => "profile"} do  %>
+
+                <%= select("element_id", '', profile.currencies.collect{|c| [c.name, c.id]}, { :include_blank => false }, :name => "element_id") %>
+
+                <%= submit_tag _('Go')%>
+              <% end %>
+            </button>
+
+            </div>
+
+            <% if @profile_products.blank? && @profile_knowledges.blank? %>
+              <%= _("%s has no offers registered.") % profile.name %>
+              <ul id="exc-plg-Product_profile_list" class="exc-plg-profile_offers">
+              </ul> <!-- necessary to receive removed items -->
+              <ul id="exc-plg-CmsLearningPluginLearning_profile_list" class="exc-plg-profile_offers">
+              </ul> <!-- necessary to receive removed items -->
+            <% else %>
+              <ul id="exc-plg-Product_profile_list" class="exc-plg-profile_offers">
+              <% if !@profile_products.blank? %>
+                <h4><%= _('Your Products and Services') %></h4>
+                <% @profile_products.each do |p| %>
+                  <li id=exchange_Product_<%= p.id %>>
+
+                      <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal_id => proposal.id, :enterprise => "profile", :element => p, :enterprise_id => profile.id} %>  
+
+                  </li>
+                <% end %>
+                </ul>
+              <% end %>
+              <% if !@profile_knowledges.blank? %>
+                <ul id="exc-plg-CmsLearningPluginLearning_profile_list" class="exc-plg-profile_offers">
+                <h4><%= _('Your Knowledges') %></h4>
+                <% @profile_knowledges.each do |k| %>
+                  <li id="exchange_CmsLearningPluginLearning_<%= k.id %>">
+
+                      <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal_id => proposal.id, :enterprise => "profile", :element => k, :enterprise_id => profile.id} %>  
+
+                  </li>
+                <% end %>
+                </ul>
+              <% end %>
+            <% end %>
+        <% end %> <!-- if proposal.state == "open" -->
+
+        </div>
+        <div id="exc-plg-proposal_request">
+          <h3><%= _('You ask') %></h3>
+          <ul id="exc-plg-theother_elements_list">
+            <% @elements_theother = proposal.exchange_elements.select{|k| k.enterprise_id == @theother.id} %>
+            <% if !@elements_theother.blank? %>
+              <% @elements_theother.each do |e| %>              
+                <%= render :partial => "element", :locals => {:element => e, :proposal => proposal, :enterprise => "theother"} %> 
+              <% end %>
+            <% end %>          
+          </ul>
+          
         <% if proposal.state == "open" %>
 
-          <h3><%= _('What you can offer?') %></h3>
+          <h3><%= _('What do the other can offer?') %></h3>
           <div id="exc-plg-button-wrapper">
             <button class="exchange-button-console"><%= _('Add not registered product')%></button>
-            <button class="exchange-button-console"><%= _('Add amount in money')%></button>
+            <button class="exchange-button-console">
+              <%= _('Add amount in money') %>
+              <% form_remote_tag :url => {:action => 'add_element_currency', :proposal_id => proposal.id, :element_type => "CurrencyPlugin::Currency", :enterprise_id => @theother.id, :enterprise => "theother"} do  %>
+
+                <%= select("element_id", '', @theother.currencies.collect{|c| [c.name, c.id]}, { :include_blank => false }, :name => "element_id") %>
+
+                <%= submit_tag _('Go')%>
+              <% end %>
+            </button>
           </div>
 
-          <% if @profile_products.blank? && @profile_knowledges.blank? %>
+          <% if @theother_products.blank? && @theother_knowledges.blank? %>
             <%= _("%s has no offers registered.") % profile.name %>
-            <ul id="exc-plg-Product_profile_list" class="exc-plg-profile_offers">
+            <ul id="exc-plg-Product_theother_list" class="exc-plg-theother_offers">
             </ul> <!-- necessary to receive removed items -->
-            <ul id="exc-plg-CmsLearningPluginLearning_profile_list" class="exc-plg-profile_offers">
+            <ul id="exc-plg-CmsLearningPluginLearning_theother_list" class="exc-plg-theother_offers">
             </ul> <!-- necessary to receive removed items -->
           <% else %>
-            <ul id="exc-plg-Product_profile_list" class="exc-plg-profile_offers">
-            <% if !@profile_products.blank? %>
-              <h4><%= _('Your Products and Services') %></h4>
-              <% @profile_products.each do |p| %>
+            <% if !@theother_products.blank? %>
+              <ul id="exc-plg-Product_theother_list" class="exc-plg-theother_offers">
+              <h4><%= _('Products and Services') %></h4>
+              <% @theother_products.each do |p| %>
                 <li id=exchange_Product_<%= p.id %>>
 
-                    <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal => proposal, :enterprise => "profile", :element => p} %>  
+                      <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal_id => proposal.id, :enterprise => "theother", :element => p, :enterprise_id => @theother.id} %>  
 
                 </li>
               <% end %>
               </ul>
             <% end %>
-            <% if !@profile_knowledges.blank? %>
-              <ul id="exc-plg-CmsLearningPluginLearning_profile_list" class="exc-plg-profile_offers">
-              <h4><%= _('Your Knowledges') %></h4>
-              <% @profile_knowledges.each do |k| %>
-                <li id="exchange_CmsLearningPluginLearning_<%= k.id %>">
+            <% if !@theother_knowledges.blank? %>
+              <ul id="exc-plg-CmsLearningPluginLearning_theother_list" class="exc-plg-theother_offers">
+              <h4><%= _('Knowledges') %></h4>
+              <% @theother_knowledges.each do |k| %>
+                <li id=exchange_CmsLearningPluginLearning_<%= k.id %>>
 
-                    <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal => proposal, :enterprise => "profile", :element => k} %>  
+                      <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal_id => proposal.id, :enterprise => "theother", :element => k, :enterprise_id => @theother.id} %>  
 
                 </li>
               <% end %>
               </ul>
             <% end %>
           <% end %>
-      <% end %> <!-- if proposal.state == "open" -->
-
-      </div>
-      <div id="exc-plg-proposal_request">
-        <h3><%= _('You ask') %></h3>
-        <ul id="exc-plg-theother_elements_list">
-          <% @elements_theother = proposal.exchange_elements.select{|k| k.enterprise_id == @theother.id} %>
-          <% if !@elements_theother.blank? %>
-            <% @elements_theother.each do |e| %>              
-              <%= render :partial => "element", :locals => {:element => e, :proposal => proposal, :enterprise => "theother"} %> 
-            <% end %>
-          <% end %>          
-        </ul>
-        
-      <% if proposal.state == "open" %>
-
-        <h3><%= _('What do the other can offer?') %></h3>
-        <div id="exc-plg-button-wrapper">
-          <button class="exchange-button-console"><%= _('Add not registered product')%></button>
-          <button class="exchange-button-console"><%= _('Add amount in money')%></button>
+        <% end %> <!-- if proposal.state == "open" -->
         </div>
-
-        <% if @theother_products.blank? && @theother_knowledges.blank? %>
-          <%= _("%s has no offers registered.") % profile.name %>
-          <ul id="exc-plg-Product_theother_list" class="exc-plg-theother_offers">
-          </ul> <!-- necessary to receive removed items -->
-          <ul id="exc-plg-CmsLearningPluginLearning_theother_list" class="exc-plg-theother_offers">
-          </ul> <!-- necessary to receive removed items -->
-        <% else %>
-          <% if !@theother_products.blank? %>
-            <ul id="exc-plg-Product_theother_list" class="exc-plg-theother_offers">
-            <h4><%= _('Products and Services') %></h4>
-            <% @theother_products.each do |p| %>
-              <li id=exchange_Product_<%= p.id %>>
-
-                    <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal => proposal, :enterprise => "theother", :element => p} %>  
-
-              </li>
-            <% end %>
-            </ul>
-          <% end %>
-          <% if !@theother_knowledges.blank? %>
-            <ul id="exc-plg-CmsLearningPluginLearning_theother_list" class="exc-plg-theother_offers">
-            <h4><%= _('Knowledges') %></h4>
-            <% @theother_knowledges.each do |k| %>
-              <li id=exchange_CmsLearningPluginLearning_<%= k.id %>>
-
-                    <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal => proposal, :enterprise => "theother", :element => k} %>  
-
-              </li>
-            <% end %>
-            </ul>
-          <% end %>
-        <% end %>
-      <% end %> <!-- if proposal.state == "open" -->
-      </div>
-    </div> <!-- proposal_offer_request_wrapper -->
-  </div> <!-- proposal_wrapper -->
+      </div> <!-- proposal_offer_request_wrapper -->
+    </div> <!-- proposal_wrapper -->
   <% end %> <!-- if open and not profile -->
   <% end %> <!-- proposal.each -->

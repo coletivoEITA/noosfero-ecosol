@@ -17,11 +17,13 @@ class ExchangePluginProfileController < ProfileController
     cross_exchange_enterprise = ExchangePlugin::ExchangeEnterprise.new
     cross_exchange_enterprise.enterprise_id = profile.id
     cross_exchange_enterprise.exchange_id = @exchange.id
+    cross_exchange_enterprise.role = "target"
     cross_exchange_enterprise.save
 
     cross_exchange_enterprise = ExchangePlugin::ExchangeEnterprise.new
     cross_exchange_enterprise.enterprise_id = @active_organization.id
     cross_exchange_enterprise.exchange_id = @exchange.id
+    cross_exchange_enterprise.role = "origin"
     cross_exchange_enterprise.save
     
     @proposal = ExchangePlugin::Proposal.new
@@ -41,6 +43,7 @@ class ExchangePluginProfileController < ProfileController
       ex_el.element_id = params[:element_id]
       ex_el.element_type = params[:element_type]
       ex_el.proposal_id = @proposal.id
+      ex_el.enterprise_id = profile.id
       ex_el.save
     end
         

@@ -8,13 +8,15 @@ class ExchangePlugin::ExchangeElement < Noosfero::Plugin::ActiveRecord
     raise 'Dont use me'
   end
 
-  def enterprise_id
-    #not good!!! profile_id x enterprise_id
-    if (self.element_type == "Product")
-      return (eval(self.element_type).find self.element_id).enterprise_id
-    else
-      return (eval(self.element_type).find self.element_id).profile_id  
-    end
-  end
+#   def enterprise_id
+#     #not good!!! profile_id x enterprise_id
+#     if (self.element_type == "Product")
+#       return (eval(self.element_type).find self.element_id).enterprise_id
+#     elsif (self.element_type == "CmsLearningPluginLearning")
+#       return (eval(self.element_type).find self.element_id).profile_id  
+#     else
+#       return self.enterprise_id
+#     end
+#   end
   
 end

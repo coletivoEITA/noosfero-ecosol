@@ -1,0 +1,1 @@
+page.remove "exchange_#{params[:element_type]}_element_#{params[:element_id]}"

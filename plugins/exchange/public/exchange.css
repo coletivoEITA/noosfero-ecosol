@@ -272,15 +272,14 @@ ul.exc-plg-profile_offers {
 
 #exc-plg-profile-evaluation {
   float: left;
-  width: 45%;
+  width: 49%;
   overflow: hidden;
-  padding: 24px; }
+  padding-left: 24px; }
 
 #exc-plg-theother-evaluation {
   overflow: hidden;
-  width: 45%;
-  float: right;
-  padding: 24px; }
+  width: 48%;
+  float: right; }
 
 #exc-plg-evaluation-text {
   background: white;
@@ -298,6 +297,32 @@ ul.exc-plg-profile_offers {
 #exc-plg-exchange_result {
   width: 49%;
   float: left; }
+
+.eva-plg-score {
+  margin-top: 24px;
+  display: inline-block; }
+
+.eva-plg-exchange-result {
+  margin-top: 24px; }
+
+.eva-plg-radio {
+  display: inline-block;
+  margin-right: 24px; }
+
+.eva-plg-thumb {
+  margin: 0px;
+  padding: 0px;
+  float: left; }
+
+.eva-plg-body {
+  background: white;
+  width: 382px;
+  height: 130px;
+  margin-left: 54px;
+  float: left; }
+
+.eva-plg-select {
+  color: black; }
 
 #exc-plg-profile_elements_list {
   margin: 0px;
@@ -357,11 +382,13 @@ ul.exc-plg-profile_offers {
   float: right;
   margin-right: 25px; }
 
-.exc-plg-qtd-input {
+input[type=text].exc-plg-qtd-input {
   width: 85px;
   border: none;
   border-radius: 3px;
-  padding: 3px; }
+  padding: 3px;
+  background: whitesmoke;
+  color: black; }
 
 .exc-plg-element_control {
   position: absolute;
@@ -395,3 +422,8 @@ ul.exc-plg-profile_offers {
   width: 985px;
   margin: 30px auto;
   overflow: hidden; }
+
+select {
+  background: transparent;
+  font: inherit;
+  color: white; }
