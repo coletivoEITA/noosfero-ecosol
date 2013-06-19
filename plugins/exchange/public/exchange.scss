@@ -345,7 +345,7 @@ ul.exc-plg-profile_offers{
 /* evaluation */
 #exc-plg-evaluation{
   width: 985px;
-  margin: 30px auto;
+  margin: $base auto;
   overflow: hidden;  
 }
 
@@ -353,7 +353,6 @@ ul.exc-plg-profile_offers{
   float:left;
   width: 49%;
   overflow:hidden;
-  padding-left:24px;
 }
 
 #exc-plg-theother-evaluation{
@@ -364,9 +363,10 @@ ul.exc-plg-profile_offers{
 
 #exc-plg-evaluation-text{
   background: white;
-  width: 70%;
-  margin: auto;
+  width: 398px - 2*$margin;
+  margin: 0 $padding;
   padding: $padding $margin;
+  float: left;
 }
 #exc-plg-evaluation-footer{
   overflow:hidden;

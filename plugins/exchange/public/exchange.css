@@ -267,14 +267,13 @@ ul.exc-plg-profile_offers {
 /* evaluation */
 #exc-plg-evaluation {
   width: 985px;
-  margin: 30px auto;
+  margin: 12px auto;
   overflow: hidden; }
 
 #exc-plg-profile-evaluation {
   float: left;
   width: 49%;
-  overflow: hidden;
-  padding-left: 24px; }
+  overflow: hidden; }
 
 #exc-plg-theother-evaluation {
   overflow: hidden;
@@ -283,9 +282,10 @@ ul.exc-plg-profile_offers {
 
 #exc-plg-evaluation-text {
   background: white;
-  width: 70%;
-  margin: auto;
-  padding: 12px 24px; }
+  width: 350px;
+  margin: 0 12px;
+  padding: 12px 24px;
+  float: left; }
 
 #exc-plg-evaluation-footer {
   overflow: hidden; }
