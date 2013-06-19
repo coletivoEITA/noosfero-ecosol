@@ -11,13 +11,11 @@
 
   <% if element.proposal.state == "open" %>
 
-    <div id="exc-plg-quantity" class="exc-plg-qtd">
-      <h6 style="display:inline-block"><%= _('Qtd') %></h6>
-
-      <%= text_field_tag "origin_quantity[" + element.element_id.to_s + "]", element.quantity, :class => "exc-plg-qtd-input",
-      :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :element_id => element.id}', {quantity: jQuery(this).val()});"%>
-
-    </div>
+      <div id="exc-plg-quantity" class="exc-plg-qtd">
+        <h6 style="display:inline-block"><%= _('Qtd') %></h6>
+        <%= text_field_tag "origin_quantity[" + element.element_id.to_s + "]", element.quantity, :class => "exc-plg-qtd-input",
+        :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :element_id => element.id}', {quantity: jQuery(this).val()});"%>
+      </div>
 
     <div class="exc-plg-trash">
 
@@ -34,7 +32,9 @@
 
 
   <% else %>
-    <h6 class="exc-plg-qtd"><%= _('Qtd: %s') % element.quantity %></h6>
+    <% if !element.quantity.blank? %>
+      <h6 class="exc-plg-qtd"><%= _('Qtd: %s') % element.quantity %></h6>
+    <% end %>
   <% end %>
 </div> <!-- element_control -->
 

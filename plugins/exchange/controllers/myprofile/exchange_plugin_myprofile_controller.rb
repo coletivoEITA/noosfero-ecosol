@@ -132,6 +132,7 @@ class ExchangePluginMyprofileController < MyProfileController
       ex_el.element_type = ex.element_type
       ex_el.quantity = ex.quantity
       ex_el.proposal_id = @proposal.id
+      ex_el.enterprise_id = ex.enterprise_id
       ex_el.save
     end
 
@@ -169,6 +170,7 @@ class ExchangePluginMyprofileController < MyProfileController
     evaluation.object_id = params[:exchange_id]
     evaluation.score = params[:score]
     evaluation.text = params[:text]
+    evaluation.exchange_result = params[:exchange_result]
     evaluation.evaluator = profile
     evaluation.evaluated = @theother
     evaluation.save

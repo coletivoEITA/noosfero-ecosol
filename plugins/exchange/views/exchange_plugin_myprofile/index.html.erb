@@ -23,8 +23,8 @@
         <!--<td><%= exchange.slug %></td>-->
         <td><%= exchange.state %></td>
         <!--<td><%= exchange.description %></td>-->
-        <td><%= exchange.enterprises[0].name %></td>
-        <td><%= exchange.enterprises[1].name %></td>
+        <td><%= exchange.exchanges_enterprises.find(:first, :conditions => {:role => "origin"}).enterprise.name  %></td>
+        <td><%= exchange.exchanges_enterprises.find(:first, :conditions => {:role => "target"}).enterprise.name  %></td>
         <td><%= exchange.created_at.strftime("%d/%m/%Y") %></td>
         <td><%= exchange.updated_at.strftime("%d/%m/%Y") %></td>
         <!--<td><%= link_to _('View'), :controller => 'exchange_plugin_myprofile', :action => 'console', :id => exchange.id %></td>-->
