@@ -3,32 +3,8 @@
     <h1> <%= _('Exchange Negociation') %> </h1>
   </div>
   <div id="exc-plg-states_wrapper">
-    <div id="exc-plg-states">
-      <div class="exc-plg-outer-border">
-        <div class="exc-plg-state <%= @state1class %> ">
-          <p class="exc-plg-state_number">1</p>
-          <p class="exc-plg-state_name"><%= _('Proposal') %></p>
-        </div>
-      </div>
-      <div class="exc-plg-outer-border">
-        <div class="exc-plg-state <%= @state2class %> ">
-          <p class="exc-plg-state_number">2</p>
-          <p class="exc-plg-state_name"><%= _('Negociation') %></p>
-        </div>
-      </div>
-      <div class="exc-plg-outer-border">
-        <div class="exc-plg-state <%= @state3class %> ">
-          <p class="exc-plg-state_number">3</p>
-          <p class="exc-plg-state_name"><%= _('Evaluation') %></p> 
-        </div>
-      </div>
-      <div class="exc-plg-outer-border">
-        <div class="exc-plg-state <%= @state4class %> ">
-          <p class="exc-plg-state_number">4</p>
-          <p class="exc-plg-state_name"><%= _('Finished') %></p>
-        </div>
-      </div>
-    </div> <!-- states -->
+    <%= render :partial => "states", :locals => {:exchange => @exchange}%>
+
     <div id="exc-plg-enterprise_headers">
       <div id="exc-plg-enterprise_profile">
         <div id="exc-plg-profile_thumb" style="background: black;">

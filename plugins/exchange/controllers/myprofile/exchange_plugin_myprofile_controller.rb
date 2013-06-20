@@ -7,13 +7,14 @@ class ExchangePluginMyprofileController < MyProfileController
 
   def index
 
-   @exchanges = ExchangePlugin::Exchange.all.select{|ex| ex.enterprises.find(:first, :conditions => {:id => profile.id})}
-
-   @enterprises = Enterprise.visible
-    render :action => 'index'
-
+   @exchanges_enterprise = ExchangePlugin::ExchangeEnterprise.all.select{|ex| ex.enterprise_id == profile.id}
+   
+   @active_exchanges_enterprise = @exchanges_enterprise.select{|ex| ((ex.exchange.state != "concluded") && (ex.exchange.state != "cancelled"))}
+   
+   @inactive_exchanges_enterprise = @exchanges_enterprise.select{|ex| ((ex.exchange.state == "concluded") || (ex.exchange.state == "cancelled"))}
+   
   end
-
+  
   def exchange_console
     @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
 
@@ -28,32 +29,10 @@ class ExchangePluginMyprofileController < MyProfileController
     @profile_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @profile.id} - @proposal.knowledges
 
     @profile_products = @profile.products - @proposal.products
-    @theother_products = @theother.products - @proposal.products
+    @theother_products = @theother.products - @proposal.products 
 
-    #css classes for the states
-    if @exchange.state == "proposal"
-      @state1class = "exc-plg-active"
-      @state2class = "exc-plg-future"
-      @state3class = "exc-plg-future"
-      @state4class = "exc-plg-future"
-    elsif @exchange.state == "negociation"
-      @state1class = "exc-plg-past"
-      @state2class = "exc-plg-active"
-      @state3class = "exc-plg-future"
-      @state4class = "exc-plg-future"
-    elsif @exchange.state == "evaluation"
-      @state1class = "exc-plg-past"
-      @state2class = "exc-plg-past"
-      @state3class = "exc-plg-active"
-      @state4class = "exc-plg-future"
-    elsif @exchange.state == "concluded"
-      @state1class = "exc-plg-past"
-      @state2class = "exc-plg-past"
-      @state3class = "exc-plg-past"
-      @state4class = "exc-plg-active"
-    end
   end
-
+  
   def add_element_currency
     @element = ExchangePlugin::ExchangeElement.new
     @element.element_id = params[:element_id]

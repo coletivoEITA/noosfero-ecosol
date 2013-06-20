@@ -1,51 +1,60 @@
 
 <h1> <%= _("%s's Exchanges") % profile.name %>  </h1>
 
-<% if @exchanges.blank? %>
-  <%= _("%s has no exchanges registered.") % profile.name %>
-<% else %>
-  <table>
-    <tr>
-      <!--<th><%= sortable "slug",_('Slug') %></th>-->
-      <th><%= sortable "state", _('State') %></th>
-      <!--<th><%= sortable "description",_('Description') %></th>-->
-      <th><%= _('Proposer') %></th>
-      <th><%= _('Proposed') %></th>
-      <th><%= sortable "created_at" ,_('Date Created') %></th>
-      <th><%= sortable "updated_at" ,_('Last modified') %></th>
-      <!--  <th><%= _('Edit') %></th>-->
-      <th><%= _('View') %></th>
-      <th><%= _('Destroy') %></th>
-    </tr>
+<% if !@active_exchanges_enterprise.blank? %>
+  <h2><%= _('Active Exchanges') %></h2>
+  <% @active_exchanges_enterprise.each do |ee|  %>  
 
-    <% @exchanges.each do |exchange|   %>
-      <tr>
-        <!--<td><%= exchange.slug %></td>-->
-        <td><%= exchange.state %></td>
-        <!--<td><%= exchange.description %></td>-->
-        <td><%= exchange.exchanges_enterprises.find(:first, :conditions => {:role => "origin"}).enterprise.name  %></td>
-        <td><%= exchange.exchanges_enterprises.find(:first, :conditions => {:role => "target"}).enterprise.name  %></td>
-        <td><%= exchange.created_at.strftime("%d/%m/%Y") %></td>
-        <td><%= exchange.updated_at.strftime("%d/%m/%Y") %></td>
-        <!--<td><%= link_to _('View'), :controller => 'exchange_plugin_myprofile', :action => 'console', :id => exchange.id %></td>-->
-        <td class="article-controls">
-          <%= button_without_text :edit, _('Edit'), :controller => 'exchange_plugin_myprofile', :action => 'exchange_console', :exchange_id => exchange.id %>
-        </td>
-        <td class="article-controls">
-          <% message = _('Are you shure you want do delete this exchage?') %>
-          <%= button_without_text :delete, _('Delete'), { :action => 'destroy', :exchange_id => exchange.id },
-              :method => :post, :confirm => message %>
-        </td>  
-        <!-- <td><%= link_to _('Edit'), :controller => 'exchange_plugin_myprofile', :action => 'edit', :id => exchange.id %></td>-->
-        <!--<td><%= link_to _('Remove'), :controller => 'exchange_plugin_myprofile', :action => 'destroy', :id => exchange.id %></td>-->
-      </tr>
-    <% end %>
-  </table>
+  <div id="plg-exc-exchange_<%= ee.exchange_id %>" class="exc-plg-index-exchange">
+    <div class="exc-plg-index-col1">
+      <p><%= _('Exchange created at %{time} by %{enterprise}') % {:time => ee.exchange.created_at.strftime("%d/%m/%Y"), :enterprise => 
+      (ee.role == "origin" ? ee.enterprise.name : ee.the_other.name)}  %></p>
+
+
+      <%= link_to _('Open Exchange'), {:controller => 'exchange_plugin_myprofile', :action => 'exchange_console', :exchange_id => ee.exchange.id} , :class => 'exchange' %>
+
+    </div>
+
+    <div class="exc-plg-index-col2">
+
+      <%= render :partial => "states", :locals => {:exchange => ee.exchange}%>
+
+    </div>
+
+    <div class="exc-plg-index-col3">
+      <%= link_to profile_image(ee.the_other, :thumb) +"\n", ee.the_other.url %>
+      <h4 style="position: absolute; bottom: 0px;"><%= ee.the_other.name %></h4>
+    </div>
+  </div>
+
+  <% end %>
+<% end %>
+
+<% if !@inactive_exchanges_enterprise.blank? %>
+  <h2><%= _('Closed Exchanges') %></h2>
+  <% @inactive_exchanges_enterprise.each do |ee|  %>  
+
+  <div id="plg-exc-exchange_<%= ee.exchange_id %>" class="exc-plg-index-exchange">
+
+
+    <div class="exc-plg-index-col2">
+      <p><%= _('Exchange with %{the_other} created at %{time} by %{enterprise} and closed at %{closed_time}') % {:the_other => ee.the_other.name, :time => ee.exchange.created_at.strftime("%d/%m/%Y"), :enterprise => 
+      (ee.role == "origin" ? ee.enterprise.name : ee.the_other.name), :closed_time => ee.exchange.concluded_at.strftime("%d/%m/%Y")}  %></p>
+    </div>
+
+    <div class="exc-plg-index-col3">
+      <%= link_to _('See history'), {:controller => 'exchange_plugin_myprofile', :action => 'exchange_console', :exchange_id => ee.exchange.id} , :class => 'exchange' %>
+    </div>
+  </div>
+
+  <% end %>
 <% end %>
 
 
-<!--
-<% button_bar do %>
-  <%= button :new, _('Register a new exchange'), :action => 'new' %>
-<% end %>
--->
+<!--<td class="article-controls">
+          <% #message = _('Are you shure you want do delete this exchange?') 
+%>
+          <%= #button_without_text :delete, _('Delete'), { :action => 'destroy', :exchange_id => #exchange.id },
+           #   :method => :post, :confirm => message 
+%>
+        </td>  -->
