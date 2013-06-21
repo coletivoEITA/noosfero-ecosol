@@ -501,8 +501,9 @@ input[type=text].exc-plg-qtd-input{
   overflow: hidden;
 }
 
-select {
-  background: transparent;
-  font: inherit;
-  color: white;
-}
+// FIXME: degeneralize
+//select {
+ // background: transparent;
+  //font: inherit;
+  //color: white;
+//}
