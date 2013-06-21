@@ -9,16 +9,8 @@
   /* Sets element back to block */ }
 
 /* Base measuments */
-/* percentages */
 /* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
-.no-v-padding {
-  padding-top: 0;
-  padding-bottom: 0; }
-
-.no-h-padding {
-  padding-left: 0;
-  padding-right: 0; }
-
+/* percentages */
 /* Colors */
 /* Exchange button */
 .exchange-action-button, .exchange, .exchange-button-console {
@@ -431,8 +423,3 @@ input[type=text].exc-plg-qtd-input {
   width: 985px;
   margin: 30px auto;
   overflow: hidden; }
-
-select {
-  background: transparent;
-  font: inherit;
-  color: white; }

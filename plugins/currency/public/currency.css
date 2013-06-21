@@ -11,25 +11,6 @@
 /* Base measuments */
 /* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
 /* percentages */
-.no-v-padding {
-  padding-top: 0;
-  padding-bottom: 0;
-  width: 7.5%;
-  width: 17.5%;
-  width: 27.5%;
-  width: 37.5%;
-  width: 47.5%;
-  width: 57.5%;
-  width: 67.5%;
-  width: 77.5%;
-  width: 87.5%;
-  width: 2.5%;
-  width: 1.25%; }
-
-.no-h-padding {
-  padding-left: 0;
-  padding-right: 0; }
-
 /* Colors */
 /* Buttons */
 .currency-action-button {
@@ -61,8 +42,11 @@
     #currency-organized .currency-organized-item .header h3 {
       float: left;
       padding-left: 0; }
-    #currency-organized .currency-organized-item .header .currency-action-button {
+    #currency-organized .currency-organized-item .header .buttons {
       float: right; }
+      #currency-organized .currency-organized-item .header .buttons .currency-action-button {
+        float: left;
+        margin-left: 6px; }
     #currency-organized .currency-organized-item .description, #currency-organized .currency-organized-item .acceptors, #currency-organized .currency-organized-item .coverage {
       margin-bottom: 12px; }
     #currency-organized .currency-organized-item label {
@@ -94,6 +78,15 @@
     border: none; }
   .currency-accept-dialog form #results .result {
     height: 12px; }
+
+.currency-disassociate-dialog p {
+  width: 552px; }
+.currency-disassociate-dialog #enterprise-results .result {
+  margin-top: 12px; }
+  .currency-disassociate-dialog #enterprise-results .result img {
+    vertical-align: middle;
+    width: 32px;
+    height: 32px; }
 
 #product-info {
   width: 552px; }

@@ -1,5 +1,7 @@
 class CurrencyPluginMyprofileController < MyProfileController
 
+  before_filter :load_enterprise_currency, :only => [:edit, :disassociate, :enterprise_currency]
+
   def index
     @organized_currencies = profile.organized_currencies
     @accepted_currencies = profile.accepted_currencies
@@ -7,12 +9,12 @@ class CurrencyPluginMyprofileController < MyProfileController
 
   def create
     @currency = CurrencyPlugin::Currency.new :environment => environment
-    @acceptance = CurrencyPlugin::EnterpriseCurrency.new :enterprise => profile, :is_organizer => true
+    @enterprise_currency = CurrencyPlugin::EnterpriseCurrency.new :enterprise => profile, :is_organizer => true
     if request.post?
       @error = !ActiveRecord::Base.transaction do
         @currency.update_attributes! params[:currency]
-        @acceptance.currency = @currency
-        @acceptance.save
+        @enterprise_currency.currency = @currency
+        @enterprise_currency.save
       end
 
       if @error
@@ -25,7 +27,6 @@ class CurrencyPluginMyprofileController < MyProfileController
   end
 
   def edit
-    @currency = CurrencyPlugin::Currency.find params[:id]
     if request.post?
       @currency.update_attributes! params[:currency]
       redirect_to :action => :index
@@ -35,6 +36,33 @@ class CurrencyPluginMyprofileController < MyProfileController
   end
 
   def disassociate
+    if request.post?
+      if params[:keep_acceptance] == '1'
+        @enterprise_currency.update_attribute :is_organizer, false
+      else
+        @enterprise_currency.destroy
+      end
+
+      @enterprises = environment.enterprises.all :conditions => {:id => params[:enterprises]}, :include => :enterprise_currencies
+      @enterprises.each do |enterprise|
+        enterprise_currency = enterprise.enterprise_currencies.find_by_currency_id @currency.id
+        enterprise_currency ||= enterprise.enterprise_currencies.build :currency => @currency
+        enterprise_currency.is_organizer = true
+        enterprise_currency.save
+      end
+
+      redirect_to :action => :index
+    else
+      @results = []
+      render :layout => false
+    end
+  end
+
+  def enterprise_search
+    @query = params[:query]
+    @results = environment.enterprises.visible.all :limit => 10, :conditions => ['LOWER(name) ~ ?', @query]
+    @results = @results - [@profile]
+    render :partial => 'enterprise_results'
   end
 
   def accept
@@ -43,7 +71,7 @@ class CurrencyPluginMyprofileController < MyProfileController
       profile.accepted_currencies << @currencies
       redirect_to :action => :index
     else
-      @currencies = []
+      @currencies = @profile.other_currencies.first(10)
       render :layout => false
     end
   end
@@ -66,5 +94,11 @@ class CurrencyPluginMyprofileController < MyProfileController
   end
 
   protected
+
+  def load_enterprise_currency
+    @enterprise_currency = @profile.enterprise_currencies.find_by_currency_id params[:id]
+    @currency = @enterprise_currency.currency
+    raise "Enterprise isn't an organizer of this currency" unless @enterprise_currency.is_organizer
+  end
 
 end

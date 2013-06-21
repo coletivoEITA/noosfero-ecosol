@@ -44,12 +44,19 @@ $color-action-button: #394E41;
 
     .header {
       @extend .container-clean;
+
       h3 {
         float: left;
         padding-left: 0;
       }
-      .currency-action-button {
+
+      .buttons {
         float: right;
+
+        .currency-action-button {
+          float: left;
+          margin-left: $half-padding;
+        }
       }
     }
 
@@ -106,6 +113,26 @@ $color-action-button: #394E41;
       .result {
         height: $base;
 
+      }
+    }
+  }
+}
+
+.currency-disassociate-dialog {
+
+  p {
+    width: $module6;
+  }
+
+  #enterprise-results {
+
+    .result {
+      margin-top: $half-margin;
+
+      img {
+        vertical-align: middle;
+        width: 32px;
+        height: 32px;
       }
     }
   }
