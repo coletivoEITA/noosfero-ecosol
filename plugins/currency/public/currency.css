@@ -10,6 +10,26 @@
 
 /* Base measuments */
 /* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
+/* percentages */
+.no-v-padding {
+  padding-top: 0;
+  padding-bottom: 0;
+  width: 7.5%;
+  width: 17.5%;
+  width: 27.5%;
+  width: 37.5%;
+  width: 47.5%;
+  width: 57.5%;
+  width: 67.5%;
+  width: 77.5%;
+  width: 87.5%;
+  width: 2.5%;
+  width: 1.25%; }
+
+.no-h-padding {
+  padding-left: 0;
+  padding-right: 0; }
+
 /* Colors */
 /* Buttons */
 .currency-action-button {

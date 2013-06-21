@@ -34,6 +34,9 @@ class CurrencyPluginMyprofileController < MyProfileController
     end
   end
 
+  def disassociate
+  end
+
   def accept
     if request.post?
       @currencies = CurrencyPlugin::Currency.find params[:id]

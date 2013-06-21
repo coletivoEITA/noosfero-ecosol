@@ -1,0 +1,50 @@
+.clean {
+  clear: both;
+}
+.container-clean {
+  overflow: hidden;
+  display: inline-block; /* Necessary to trigger "hasLayout" in IE */
+  display: block; /* Sets element back to block */
+}
+
+/* Base measuments */
+
+$base: 12px;
+$module: 6*$base;
+$intercolumn: 2*$base;
+$module1: 1*$module + 0*$intercolumn;
+$module2: 2*$module + 1*$intercolumn;
+$module3: 3*$module + 2*$intercolumn;
+$module4: 4*$module + 3*$intercolumn;
+$module5: 5*$module + 4*$intercolumn;
+$module6: 6*$module + 5*$intercolumn;
+$module7: 7*$module + 6*$intercolumn;
+$module8: 8*$module + 7*$intercolumn;
+$module9: 9*$module + 8*$intercolumn;
+$wireframe: 10*$module + 10*$intercolumn;
+
+$margin: $intercolumn;
+$half-margin: $margin/2;
+/* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
+$padding: $intercolumn/2;
+$half-padding: $padding/2;
+
+$border: 1px;
+$border-radius: 5px;
+$shadow: 2px;
+
+/* percentages */
+$module1p: percentage($module1/$wireframe);
+$module2p: percentage($module2/$wireframe);
+$module3p: percentage($module3/$wireframe);
+$module4p: percentage($module4/$wireframe);
+$module5p: percentage($module5/$wireframe);
+$module6p: percentage($module6/$wireframe);
+$module7p: percentage($module7/$wireframe);
+$module8p: percentage($module8/$wireframe);
+$module9p: percentage($module9/$wireframe);
+$marginp: percentage($margin/$wireframe);
+$half-marginp: percentage($half-margin/$wireframe);
+$paddingp: percentage($padding/$wireframe);
+$half-paddingp: percentage($half-padding/$wireframe);
+
