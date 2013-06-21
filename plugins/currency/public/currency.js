@@ -54,7 +54,7 @@ currency.disassociate = {
 currency.accept = {
 
   load: function (hint) {
-    input = jQuery('#search-query')
+    input = jQuery('#search-query');
     input.hint(hint);
   },
 
