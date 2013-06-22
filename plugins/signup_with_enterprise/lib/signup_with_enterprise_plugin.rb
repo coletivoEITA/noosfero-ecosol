@@ -75,16 +75,13 @@ class SignupWithEnterprisePlugin < Noosfero::Plugin
     end
     clear_signup_start_time
 
+    # overwrite controller action
     render :action => 'signup'
   end
-
   def account_controller_filters
     [
-      {:type => 'before_filter',
-       :method_name => 'signup_with_enteprise_plugin',
-       :options => {:only => :signup},
-       :block => AccountSignup,
-      },
+      {:type => 'before_filter', :method_name => 'signup_with_enteprise_plugin',
+       :options => {:only => :signup}, :block => AccountSignup},
     ]
   end
 

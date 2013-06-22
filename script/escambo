@@ -64,6 +64,8 @@ e.enable 'disable_asset_products'
 e.save!
 
 echo 'Setup templates and existing profiles'
+e.layout_template = 'nobars'
+e.save
 profiles = [e.person_template, e.community_template, e.enterprise_template]
 profiles += Profile.all
 profiles.each do |profile|
@@ -83,7 +85,7 @@ e.settings[:custom_enterprise_fields] = {"display_name"=>{"required"=>"false", "
 e.save
 
 if solr_first_enable
-  echo 'Solr was enabled, reindexed'
+  echo 'Solr was enabled, reindexing'
   run 'cp plugins/solr/config/solr.yml.dist plugins/solr/config/solr.yml'
   run 'rake solr:download', :verbose => true
   run 'rake solr:start', :verbose => true
