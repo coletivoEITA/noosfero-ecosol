@@ -17,4 +17,16 @@ class SnifferPluginOpportunity < ActiveRecord::Base
     :conditions => ['opportunity_type = ?', 'ProductCategory']
   }
 
+  if defined? SolrPlugin
+    acts_as_searchable :fields => [
+        # searched fields
+        # filtered fields
+        # ordered/query-boosted fields
+      ], :include => [
+        {:product_category => {:fields => [:name, :path, :slug, :lat, :lng, :acronym, :abbreviation]}},
+      ]
+
+    handle_asynchronously :solr_save
+  end
+
 end
