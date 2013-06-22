@@ -10,4 +10,8 @@ class Enterprise
     :conditions => ['currency_plugin_enterprise_currencies.is_organizer = ?', true], :order => 'id ASC'
   has_many :currencies, :through => :enterprise_currencies, :source => :currency, :order => 'id ASC'
 
+  def other_currencies
+    self.environment.currencies - self.currencies
+  end
+
 end

@@ -8,34 +8,60 @@ currency = {
   },
 };
 
+currency.search = {
+
+  load: function() {
+    this.input = jQuery();
+    this.getResults = function(data) {};
+    this.query = null;
+    this.last_query = null;
+    this.query_url = null;
+    this.typing = false;
+    this.pending = false;
+  },
+
+  do: function (input, url, getResults) {
+    currency.search.input = input;
+    currency.search.typing = true;
+    currency.search.query = input.value;
+    currency.search.query_url = url;
+    currency.search.getResults = getResults;
+    setTimeout(currency.search.timeout, 200);
+  },
+
+  timeout: function () {
+    if (!currency.search.query ||
+        (currency.search.last_query && currency.search.query == currency.search.last_query))
+      return;
+    currency.search.typing = false;
+    currency.search.last_query = currency.search.query;
+
+    currency.search.pending = true;
+    currency.search.getResults();
+  },
+};
+
+currency.disassociate = {
+
+  search: function () {
+    jQuery.get(currency.search.query_url, {query: currency.search.query}, function (data) {
+      jQuery('#enterprise-results').html(data);
+      currency.search.pending = false;
+    });
+  },
+};
+
 currency.accept = {
-  query: null,
-  last_query: null,
-  query_url: null,
-  typing: false,
-  pending: false,
 
   load: function (hint) {
-    jQuery('#search-query').hint(hint);
+    input = jQuery('#search-query');
+    input.hint(hint);
   },
 
-  search: function (input, url) {
-    currency.accept.typing = true;
-    setTimeout(currency.accept.search_timeout, 200);
-    currency.accept.query = input.value;
-    currency.accept.query_url = url;
-  },
-
-  search_timeout: function () {
-    if (!currency.accept.query ||
-        (currency.accept.last_query && currency.accept.query == currency.accept.last_query))
-      return;
-    currency.accept.typing = false;
-    currency.accept.pending = true;
-    currency.accept.last_query = currency.accept.query;
-    jQuery.get(currency.accept.query_url, {query: currency.accept.query}, function (data) {
-      currency.accept.pending = false;
+  search: function () {
+    jQuery.get(currency.search.query_url, {query: currency.search.query}, function (data) {
       jQuery('#currency-search').html(data);
+      currency.search.pending = false;
     });
   },
 };
@@ -81,12 +107,18 @@ currency.product = {
 // don't strip underscore templates within ruby templates
 String.prototype.stripScripts = function () { return this; };
 
+// sync get
+jQuery.syncGet = function (url, data, success, dataType) {
+  jQuery.ajax({async: false, method: 'GET', url: url,
+    data: data, success: success, dataType: dataType});
+};
+
 window.addedScripts = window.addedScripts || [];
 function addScript(src, onload) {
   if (window.addedScripts.indexOf(src) != -1)
     return;
   window.addedScripts.push(src);
-  jQuery.ajax({async: false, url: src, success: function(js) { jQuery.globalEval(js); }});
+  jQuery.syncGet(src, {}, function(js) { jQuery.globalEval(js); });
   if (onload != undefined)
     onload();
 }

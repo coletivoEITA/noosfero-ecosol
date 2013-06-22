@@ -1,6 +1,10 @@
 <% form_tag :action => :accept do |f| %>
 
   <div id="results" class="<%= 'empty' if @currencies.empty? %>">
+    <% if @currencies.empty? %>
+      <%= _('No results') %>
+    <% end %>
+
     <% @currencies.each do |currency| %>
       <div class="result">
         <% organizer = currency.organizers.first %>

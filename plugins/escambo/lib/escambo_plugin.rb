@@ -14,11 +14,17 @@ class EscamboPlugin < Noosfero::Plugin
 
   SearchLimit = 20
   SearchIndexFilter = proc do
-    options = {:limit => SearchLimit, :conditions => ['created_at IS NOT NULL'], :order => 'created_at DESC'}
-    @interests = SnifferPluginOpportunity.all options
-    @products = Product.all options
-    @knowledges = CmsLearningPluginLearning.all options
-
+    if @query.empty?
+      options = {:limit => SearchLimit, :conditions => ['created_at IS NOT NULL'], :order => 'created_at DESC'}
+      @interests = SnifferPluginOpportunity.all options
+      @products = Product.all options
+      @knowledges = CmsLearningPluginLearning.all options
+    else
+      #@interests = find_by_contents :sniffer_plugin_opportunities, SnifferPluginOpportunity, @query, paginate_options
+      @interests = []
+      @products = find_by_contents(:products, Product, @query, paginate_options)[:results].results
+      @knowledges = find_by_contents(:cms_learning_plugin_learnings, CmsLearningPluginLearning, @query, paginate_options)[:results].results
+    end
     @results = @interests + @products + @knowledges
     @results = @results.sort_by{ |r| r.created_at }
     @results = @results.last SearchLimit

@@ -2,8 +2,12 @@
 
   <h2> <%= _('Accept a new currency') %> </h2>
 
+  <p>
+    <%= _("Find the currency you want to accept on the network") %>
+  </p>
+
   <%= text_field_tag :query, '', :id => 'search-query',
-    :onkeyup => "currency.accept.search(this, '#{url_for :action => :accept_search}');" %>
+    :onkeyup => "currency.search.do(this, '#{url_for :action => :accept_search}', currency.accept.search);" %>
 
   <div id="currency-search">
     <%= render :partial => 'accept_form' %>

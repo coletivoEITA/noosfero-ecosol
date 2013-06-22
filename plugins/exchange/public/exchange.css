@@ -10,6 +10,7 @@
 
 /* Base measuments */
 /* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
+/* percentages */
 /* Colors */
 /* Exchange button */
 .exchange-action-button, .exchange, .exchange-button-console {
@@ -424,7 +425,7 @@ input[type=text].exc-plg-qtd-input {
   margin: 30px auto;
   overflow: hidden; }
 
-select {
+.exc-plg-select {
   background: transparent;
   font: inherit;
   color: white; }
