@@ -5,9 +5,13 @@
       <% if @active_organization.has_exchanged(profile) %>
         <div class="has-exchanged"></div>
       <% end %>
-      <div class="is-bookmarked"></div>
+<!--       <div class="is-bookmarked"></div> -->
     </div>
-    <a class="exchange-button" href="/exchange/"><%= _('Start Exchange') %></a>
+    <div class="exchange_button">
+      <% if @active_organization != profile %>
+        <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile, :element_id => nil, :element_type => nil} %>
+      <% end %>
+    </div>
   </div>
 
   <h4 style="padding:12px 0 0 0"><%= link_to profile.name, profile.url, :class => "profile_homepage_link dotted-border-bottom" %></h4>

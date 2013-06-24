@@ -11902,9 +11902,8 @@ msgid "Back to %{target} offers"
 msgstr "Voltar à nuvem de marcadores"
 
 #: plugins/exchange/views/exchange_plugin_shared/_start_exchange.html.erb:1
-#, fuzzy
 msgid "Start an exchange"
-msgstr "Salvar alterações"
+msgstr "Escambo"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_exchange_summary.html.erb:3
 #: plugins/exchange/views/exchange_plugin_myprofile/_exchange_summary.html.erb:14

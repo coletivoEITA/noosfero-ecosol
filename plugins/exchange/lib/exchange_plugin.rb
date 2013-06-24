@@ -1,4 +1,5 @@
 require_dependency "#{File.dirname __FILE__}/ext/product"
+require_dependency "#{File.dirname __FILE__}/ext/enterprise"
 
 class ExchangePlugin < Noosfero::Plugin
 
