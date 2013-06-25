@@ -2,6 +2,13 @@
           {:evaluator => evaluation.evaluator.name, 
            :time => evaluation.created_at.strftime("%d/%m/%Y @ %H:%Mh")} 
 %></p>
+
+<% if evaluation.evaluator == profile %>
+<div class="eva-plg-thumb">
+  <%= link_to profile_image(profile, :minor) +"\n", profile.url %>
+</div>
+<% end %>
+
 <div id="exc-plg-evaluation-text">
   <p>
     <%= evaluation.text %>
@@ -17,3 +24,9 @@
     </div>
   </div>
 </div>
+
+<% if evaluation.evaluator != profile %>
+<div class="eva-plg-thumb" style="float:right">
+  <%= link_to profile_image(evaluation.evaluator, :minor) +"\n", profile.url %>
+</div>
+<% end %>

@@ -67,7 +67,8 @@ body.controller-exchange_plugin_myprofile {
   height: 122px; }
 
 .exc-plg-state {
-  margin: auto; }
+  margin: auto;
+  text-align: center; }
 
 .exc-plg-past {
   margin-top: 10px;
@@ -285,14 +286,13 @@ ul.exc-plg-profile_offers {
 /* evaluation */
 #exc-plg-evaluation {
   width: 985px;
-  margin: 30px auto;
+  margin: 12px auto;
   overflow: hidden; }
 
 #exc-plg-profile-evaluation {
   float: left;
   width: 49%;
-  overflow: hidden;
-  padding-left: 24px; }
+  overflow: hidden; }
 
 #exc-plg-theother-evaluation {
   overflow: hidden;
@@ -301,9 +301,10 @@ ul.exc-plg-profile_offers {
 
 #exc-plg-evaluation-text {
   background: white;
-  width: 70%;
-  margin: auto;
-  padding: 12px 24px; }
+  width: 350px;
+  margin: 0 12px;
+  padding: 12px 24px;
+  float: left; }
 
 #exc-plg-evaluation-footer {
   overflow: hidden; }
@@ -440,6 +441,36 @@ input[type=text].exc-plg-qtd-input {
   width: 985px;
   margin: 30px auto;
   overflow: hidden; }
+
+.exc-plg-select {
+  background: transparent;
+  font: inherit;
+  color: white; }
+
+.exc-plg-index-exchange {
+  height: 108px;
+  border-top: 3px solid black;
+  padding: 24px; }
+
+.exc-plg-index-col1 {
+  float: left;
+  width: 264px; }
+
+.exc-plg-index-col2 {
+  float: left;
+  width: 456px; }
+
+.exc-plg-index-col3 {
+  float: left;
+  width: 168px;
+  position: relative;
+  height: 100%; }
+
+.exc-plg-index-exchange div.exc-plg-outer-border {
+  margin: 10px 12px; }
+
+.exc-plg-index-exchange div.exc-plg-active {
+  border: 15px double #faf7dc; }
 
 .clean {
   clear: both; }
@@ -716,34 +747,44 @@ body.action-sniffer_plugin_myprofile-search {
 
 /* Profile block */
 .escambo-plugin-profile-block {
-  display: inline-block;
-  width: 168px;
-  border: 3px double #7F0085; }
+  width: 156px;
+  border: 3px double #7F0085;
+  margin-bottom: 24px;
+  margin-right: 12px;
+  border-radius: 3px; }
+  .escambo-plugin-profile-block .exchange_button {
+    position: absolute;
+    bottom: -12px;
+    right: 12px; }
   .escambo-plugin-profile-block .categories-area {
-    height: 72px; }
+    height: 36px; }
   .escambo-plugin-profile-block a.profile_homepage_link {
-    height: 108px;
-    display: block; }
+    height: 48px;
+    display: block;
+    margin: 24px 12px; }
   .escambo-plugin-profile-block .location-area {
-    height: 72px;
+    height: 36px;
     display: block; }
   .escambo-plugin-profile-block .summary-area {
-    height: 48px; }
+    height: 12px; }
   .escambo-plugin-profile-block .area, .escambo-plugin-profile-block .categories-area, .escambo-plugin-profile-block a.profile_homepage_link, .escambo-plugin-profile-block .location-area, .escambo-plugin-profile-block .summary-area {
-    width: 144px;
-    margin-top: 24px;
-    margin-left: 12px; }
+    margin: 24px 12px; }
   .escambo-plugin-profile-block .dotted-border-bottom {
     border-bottom: 1px dotted #000000; }
   .escambo-plugin-profile-block .image-profile-area {
-    width: 168px;
-    height: 180px; }
+    /*     width: $module2 - ($base*2); */
+    height: 144px;
+    position: relative;
+    padding-top: 4px;
+    background-position: center;
+    background-size: 144px;
+    background-repeat: no-repeat; }
     .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons {
-      width: 48px;
+      /*       width: $base*4; */
       height: 24px;
       margin-left: 120px; }
       .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .has-exchanged {
-        background: url("/designs/themes/escambo/images/troca_simbolo.png"); }
+        background: url("/designs/themes/escambo/images/troca_simbolo.png") no-repeat; }
       .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .has-not-exchanged {
         background: url("/designs/themes/escambo/images/troca_simbolo_vazio.png"); }
       .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .isnot-bookmarked {
@@ -792,3 +833,6 @@ body.action-sniffer_plugin_myprofile-search {
     background: url(/images/blocks/2.png) no-repeat; }
     #signup-form .signup-step#second-step #enterprise-find {
       display: none; }
+
+.escambo-plugin-has-exchanged {
+  background-image: url("/plugins/sniffer/images/trash.png"); }

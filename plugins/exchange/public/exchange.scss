@@ -63,6 +63,7 @@ body.controller-exchange_plugin_myprofile{
 
 .exc-plg-state{
   margin: auto;
+  text-align: center;
 }
 .exc-plg-past{
   margin-top: 10px;
@@ -321,7 +322,7 @@ ul.exc-plg-profile_offers{
 /* evaluation */
 #exc-plg-evaluation{
   width: 985px;
-  margin: 30px auto;
+  margin: $base auto;
   overflow: hidden;  
 }
 
@@ -329,7 +330,6 @@ ul.exc-plg-profile_offers{
   float:left;
   width: 49%;
   overflow:hidden;
-  padding-left:24px;
 }
 
 #exc-plg-theother-evaluation{
@@ -340,9 +340,10 @@ ul.exc-plg-profile_offers{
 
 #exc-plg-evaluation-text{
   background: white;
-  width: 70%;
-  margin: auto;
+  width: 398px - 2*$margin;
+  margin: 0 $padding;
   padding: $padding $margin;
+  float: left;
 }
 #exc-plg-evaluation-footer{
   overflow:hidden;
@@ -509,9 +510,40 @@ input[type=text].exc-plg-qtd-input{
   overflow: hidden;
 }
 
-// FIXME: degeneralize
-//select {
- // background: transparent;
-  //font: inherit;
-  //color: white;
-//}
+.exc-plg-select {
+  background: transparent;
+  font: inherit;
+  color: white;
+}
+
+.exc-plg-index-exchange{
+  height: $module1+$module1/2;
+  border-top: 3px solid black;
+  padding: 24px;
+}
+
+.exc-plg-index-col1{
+  float:left;
+  width: $module3;
+}
+
+.exc-plg-index-col2{
+  float:left;
+  width: $module5;
+}
+
+.exc-plg-index-col3{
+  float:left;
+  width: $module2;
+  position: relative;
+  height: 100%;
+
+}
+
+.exc-plg-index-exchange div.exc-plg-outer-border{ 
+  margin: 10px 12px;
+}
+
+.exc-plg-index-exchange div.exc-plg-active {
+  border: 15px double #FAF7DC
+}

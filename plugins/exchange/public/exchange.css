@@ -54,7 +54,8 @@ body.controller-exchange_plugin_myprofile {
   height: 122px; }
 
 .exc-plg-state {
-  margin: auto; }
+  margin: auto;
+  text-align: center; }
 
 .exc-plg-past {
   margin-top: 10px;
@@ -272,14 +273,13 @@ ul.exc-plg-profile_offers {
 /* evaluation */
 #exc-plg-evaluation {
   width: 985px;
-  margin: 30px auto;
+  margin: 12px auto;
   overflow: hidden; }
 
 #exc-plg-profile-evaluation {
   float: left;
   width: 49%;
-  overflow: hidden;
-  padding-left: 24px; }
+  overflow: hidden; }
 
 #exc-plg-theother-evaluation {
   overflow: hidden;
@@ -288,9 +288,10 @@ ul.exc-plg-profile_offers {
 
 #exc-plg-evaluation-text {
   background: white;
-  width: 70%;
-  margin: auto;
-  padding: 12px 24px; }
+  width: 350px;
+  margin: 0 12px;
+  padding: 12px 24px;
+  float: left; }
 
 #exc-plg-evaluation-footer {
   overflow: hidden; }
@@ -427,3 +428,33 @@ input[type=text].exc-plg-qtd-input {
   width: 985px;
   margin: 30px auto;
   overflow: hidden; }
+
+.exc-plg-select {
+  background: transparent;
+  font: inherit;
+  color: white; }
+
+.exc-plg-index-exchange {
+  height: 108px;
+  border-top: 3px solid black;
+  padding: 24px; }
+
+.exc-plg-index-col1 {
+  float: left;
+  width: 264px; }
+
+.exc-plg-index-col2 {
+  float: left;
+  width: 456px; }
+
+.exc-plg-index-col3 {
+  float: left;
+  width: 168px;
+  position: relative;
+  height: 100%; }
+
+.exc-plg-index-exchange div.exc-plg-outer-border {
+  margin: 10px 12px; }
+
+.exc-plg-index-exchange div.exc-plg-active {
+  border: 15px double #faf7dc; }
