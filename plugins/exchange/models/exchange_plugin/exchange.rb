@@ -29,5 +29,4 @@ class ExchangePlugin::Exchange < Noosfero::Plugin::ActiveRecord
     (profile.id == self.enterprise_target_id) 
   end
 
-
 end

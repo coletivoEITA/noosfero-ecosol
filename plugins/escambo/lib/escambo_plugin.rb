@@ -68,8 +68,7 @@ class EscamboPlugin < Noosfero::Plugin
     lambda do
       product_categories = profile.product_categories
       exchange_icon = '-not'
-      #should call ExchangePlugin.exchanges.state=conluded
-      escambo_sumary = {:exchanges_count => 23, :enterprises_count => 17}
+      escambo_sumary = {:exchanges_count => profile.exchanges_count, :enterprises_count => profile.enterprises_count}
 
       render :file => 'escambo_plugin_shared/profile_image_link',
              :locals => {

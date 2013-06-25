@@ -19,4 +19,21 @@ class Enterprise
     return found
   end
   
+  def exchanges_count
+    return self.exchanges.find(:all, :conditions => {:state => "concluded"}).count
+  end
+
+  def enterprises_count
+    enterprises = Array.new
+    self.exchanges_enterprises.each do |e|
+      if e.exchange.state == "concluded"
+        enterprises.push(e.the_other.id)
+      end
+    end
+    
+    return enterprises.uniq.count
+  end
+
+  
+  
 end
