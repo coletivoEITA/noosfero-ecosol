@@ -1,3 +1,5 @@
+require_dependency "#{File.dirname __FILE__}/ext/enterprise"
+
 class EvaluationPlugin < Noosfero::Plugin
 
   def self.plugin_name

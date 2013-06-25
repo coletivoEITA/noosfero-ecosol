@@ -151,7 +151,7 @@ class ExchangePluginMyprofileController < MyProfileController
     evaluation.text = params[:text]
     evaluation.exchange_result = params[:exchange_result]
     evaluation.evaluator = profile
-    evaluation.evaluated = @theother
+    evaluation.evaluated_id = params[:theother_id]
     evaluation.save
 
     if (@exchange.evaluations.count == 2)

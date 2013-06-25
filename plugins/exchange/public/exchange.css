@@ -300,6 +300,9 @@ ul.exc-plg-profile_offers {
   width: 49%;
   float: left; }
 
+.eva-plg-message {
+  display: inline-block; }
+
 .eva-plg-score {
   margin-top: 24px;
   display: inline-block; }
