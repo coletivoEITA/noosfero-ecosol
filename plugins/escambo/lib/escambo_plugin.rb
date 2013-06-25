@@ -166,7 +166,6 @@ class EscamboPlugin < Noosfero::Plugin
       @person.valid?
       @person.errors.delete(:identifier)
       @person.errors.delete(:user_id)
->>>>>>> d294265ab1136f62792501c06b78e1b4bd7e516f
     end
     clear_signup_start_time
 
