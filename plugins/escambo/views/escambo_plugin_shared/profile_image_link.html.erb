@@ -4,8 +4,10 @@
   <div class="image-profile-area" style="background-image: url('<%= profile.image.public_filename
  %>')">
     <div class="escambo-plugin-exchange-icons">
-      <% if @active_organization.has_exchanged(profile) %>
-        <div class="has-exchanged"></div>
+      <% if @active_organization %>
+        <% if @active_organization.has_exchanged(profile) %>
+          <div class="has-exchanged"></div>
+        <% end %>
       <% end %>
 <!--       <div class="is-bookmarked"></div> -->
     </div>
@@ -19,7 +21,7 @@
   <h4 style="padding:12px 0 0 0"><%= link_to profile.name, profile.url, :class => "profile_homepage_link dotted-border-bottom" %></h4>
 
   <div class="categories-area dotted-border-bottom">
-    <%= profile.product_categories.first(3).join(', ')  %>
+    <%= profile.product_categories.map{|p| p.name}.first(3).join(' ,') %>
   </div>
 
   <% if profile.region.present? %>

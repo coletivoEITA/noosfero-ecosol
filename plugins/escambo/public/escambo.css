@@ -317,6 +317,9 @@ ul.exc-plg-profile_offers {
   width: 49%;
   float: left; }
 
+.eva-plg-message {
+  display: inline-block; }
+
 .eva-plg-score {
   margin-top: 24px;
   display: inline-block; }
@@ -755,7 +758,7 @@ body.action-sniffer_plugin_myprofile-search {
   .escambo-plugin-profile-block .exchange_button {
     position: absolute;
     bottom: -12px;
-    right: 12px; }
+    right: 42px; }
   .escambo-plugin-profile-block .categories-area {
     height: 36px; }
   .escambo-plugin-profile-block a.profile_homepage_link {
