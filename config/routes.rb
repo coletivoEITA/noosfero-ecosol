@@ -2,7 +2,7 @@ require 'noosfero'
 
 ActionController::Routing::Routes.draw do |map|
   # The priority is based upon order of creation: first created -> highest priority.
-  
+
   # Sample of regular route:
   # map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action
@@ -16,7 +16,7 @@ ActionController::Routing::Routes.draw do |map|
   ######################################################
 
   map.connect 'test/:controller/:action/:id'  , :controller => /.*test.*/
- 
+
   # -- just remember to delete public/index.html.
   # You can have the root of your site routed by hooking up ''
   map.root :controller => "home", :conditions => { :if => lambda { |env| !Domain.hosting_profile_at(env[:host]) } }
@@ -35,7 +35,7 @@ ActionController::Routing::Routes.draw do |map|
   map.doc         'doc', :controller => 'doc', :action => 'index'
   map.doc_section 'doc/:section', :controller => 'doc', :action => 'section'
   map.doc_topic   'doc/:section/:topic', :controller => 'doc', :action => 'topic'
-  
+
   # user account controller
   map.connect 'account/new_password/:code', :controller => 'account', :action => 'new_password'
   map.connect 'account/:action', :controller => 'account'
@@ -46,13 +46,30 @@ ActionController::Routing::Routes.draw do |map|
   # tags
   map.tag 'tag', :controller => 'search', :action => 'tags'
   map.tag 'tag/:tag', :controller => 'search', :action => 'tag', :tag => /.*/
-  
+
   # categories index
   map.category 'cat/*category_path', :controller => 'search', :action => 'category_index'
   map.assets 'assets/:asset/*category_path', :controller => 'search', :action => 'assets'
   # search
   map.connect 'search/:action/*category_path', :controller => 'search'
- 
+
+  # map balloon
+  map.contact 'map_balloon/:action/:id', :controller => 'map_balloon', :id => /.*/
+
+  # chat
+  map.chat 'chat/:action/:id', :controller => 'chat'
+  map.chat 'chat/:action', :controller => 'chat'
+
+  ######################################################
+  # plugin routes
+  ######################################################
+  plugins_routes = File.join(File.dirname(__FILE__) + '/../lib/noosfero/plugin/routes.rb')
+  eval(IO.read(plugins_routes), binding, plugins_routes)
+
+  ######################################################
+  # public profile routes
+  ######################################################
+
   # events
   map.events 'profile/:profile/events_by_day', :controller => 'events', :action => 'events_by_day', :profile => /#{Noosfero.identifier_format}/
   map.events 'profile/:profile/events/:year/:month/:day', :controller => 'events', :action => 'events', :year => /\d*/, :month => /\d*/, :day => /\d*/, :profile => /#{Noosfero.identifier_format}/
@@ -61,6 +78,9 @@ ActionController::Routing::Routes.draw do |map|
 
   # catalog
   map.catalog 'catalog/:profile', :controller => 'catalog', :action => 'index', :profile => /#{Noosfero.identifier_format}/
+
+  # contact
+  map.contact 'contact/:profile/:action/:id', :controller => 'contact', :action => 'index', :id => /.*/, :profile => /#{Noosfero.identifier_format}/
 
   # invite
   map.invite 'profile/:profile/invite/friends', :controller => 'invite', :action => 'select_address_book', :profile => /#{Noosfero.identifier_format}/
@@ -79,23 +99,12 @@ ActionController::Routing::Routes.draw do |map|
   # public profile information
   map.profile 'profile/:profile/:action/:id', :controller => 'profile', :action => 'index', :id => /[^\/]*/, :profile => /#{Noosfero.identifier_format}/
 
-  # contact
-  map.contact 'contact/:profile/:action/:id', :controller => 'contact', :action => 'index', :id => /.*/, :profile => /#{Noosfero.identifier_format}/
-
-  # map balloon
-  map.contact 'map_balloon/:action/:id', :controller => 'map_balloon', :id => /.*/
-
-  # chat
-  map.chat 'chat/:action/:id', :controller => 'chat'
-  map.chat 'chat/:action', :controller => 'chat'
-
   ######################################################
   ## Controllers that are profile-specific (for profile admins )
   ######################################################
   # profile customization - "My profile"
   map.myprofile 'myprofile/:profile', :controller => 'profile_editor', :action => 'index', :profile => /#{Noosfero.identifier_format}/
   map.myprofile 'myprofile/:profile/:controller/:action/:id', :controller => Noosfero.pattern_for_controllers_in_directory('my_profile'), :profile => /#{Noosfero.identifier_format}/
-
 
   ######################################################
   ## Controllers that are used by environment admin
@@ -105,7 +114,6 @@ ActionController::Routing::Routes.draw do |map|
   map.admin 'admin/:controller/:action.:format/:id', :controller => Noosfero.pattern_for_controllers_in_directory('admin')
   map.admin 'admin/:controller/:action/:id', :controller => Noosfero.pattern_for_controllers_in_directory('admin')
 
-
   ######################################################
   ## Controllers that are used by system admin
   ######################################################
@@ -113,20 +121,16 @@ ActionController::Routing::Routes.draw do |map|
   map.system 'system', :controller => 'system'
   map.system 'system/:controller/:action/:id', :controller => Noosfero.pattern_for_controllers_in_directory('system')
 
-  ######################################################
-  # plugin routes
-  ######################################################
-  plugins_routes = File.join(File.dirname(__FILE__) + '/../lib/noosfero/plugin/routes.rb')
-  eval(IO.read(plugins_routes), binding, plugins_routes)
-
   # cache stuff - hack
   map.cache 'public/:action/:id', :controller => 'public'
 
+  ######################################################
+  ## CMS routes
+  ######################################################
   map.connect ':profile/edit_comment/:id/*page', :controller => 'content_viewer', :action => 'edit_comment', :profile => /#{Noosfero.identifier_format}/
 
   # match requests for profiles that don't have a custom domain
   map.homepage ':profile/*page', :controller => 'content_viewer', :action => 'view_page', :profile => /#{Noosfero.identifier_format}/, :conditions => { :if => lambda { |env| !Domain.hosting_profile_at(env[:host]) } }
-
 
   # match requests for content in domains hosted for profiles
   map.connect '*page', :controller => 'content_viewer', :action => 'view_page'
