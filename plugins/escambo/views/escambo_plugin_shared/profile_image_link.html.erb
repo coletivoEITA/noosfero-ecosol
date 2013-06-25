@@ -1,7 +1,9 @@
+<% escambo_sumary = {:exchanges_count => 23, :enterprises_count => 17} %>
+
 <div class="escambo-plugin-profile-block <%= 'bg-purple inside-border-purple' %>">
   <div class="image-profile-area" style="background-image: url('<%= profile.image.public_filename
  %>')">
-    <div class="escambo-plugin-exchange-icons">  
+    <div class="escambo-plugin-exchange-icons">
       <% if @active_organization.has_exchanged(profile) %>
         <div class="has-exchanged"></div>
       <% end %>
@@ -17,7 +19,7 @@
   <h4 style="padding:12px 0 0 0"><%= link_to profile.name, profile.url, :class => "profile_homepage_link dotted-border-bottom" %></h4>
 
   <div class="categories-area dotted-border-bottom">
-    <%= product_categories.first(3).map{ |c| link_to c.name, c.name }.join(', ')  %>
+    <%= profile.product_categories.first(3).join(', ')  %>
   </div>
 
   <% if profile.region.present? %>
@@ -26,7 +28,7 @@
       <%= city_with_state profile.region %>
     </a>
   <% else %>
-    <p class="location-area dotted-border-bottom"><%= _('Localização não foi informada.') %></p>
+    <p class="location-area dotted-border-bottom"> <%= _("Localization wasn't informed") %></p>
   <% end %>
 
   <p class="summary-area">

@@ -1,0 +1,28 @@
+<div id="enterprises-area">
+
+  <div>
+    <h2> <%= _('Some enterprises') %> </h2>
+    <%= link_to _('See all'), :controller => :search, :action => :enterprises %>
+  </div>
+
+  <span class="scroll-left"></span>
+
+  <div id="enterprises-crop">
+    <% @enterprises.each do |enterprise| %>
+      <%= profile_image_link enterprise, :portrait %>
+    <% end %>
+  </div>
+
+  <span class="scroll-right"></span>
+
+  <div class="clean"></div>
+</div>
+
+<div>
+  <h2> <%= _('Offers, knowledges and interests') %> </h2>
+  <%= render :partial => 'search/search_form', :locals => { :hint => _('search for...') } %>
+
+  <% @results.each do |result| %>
+    <%= render :partial => "search/#{result.class.name.underscore}", :locals => {:result => result} %>
+  <% end %>
+</div>
