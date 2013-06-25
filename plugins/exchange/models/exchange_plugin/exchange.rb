@@ -12,7 +12,7 @@ class ExchangePlugin::Exchange < Noosfero::Plugin::ActiveRecord
   has_many :products, :through => :exchange_elements, :source => :element_np, :class_name => 'Product',
     :conditions => "exchange_plugin_exchange_elements.element_type = 'Product'"
 
-  has_many :evaluations, :class_name => "EvaluationPlugin::Evaluation", :foreign_key => "object_id"
+  has_many :evaluations, :class_name => "EvaluationPlugin::Evaluation", :foreign_key => "object_id", :dependent => :destroy
 
   belongs_to :enterprise_origin, :class_name => "Enterprise"
   belongs_to :enterprise_target, :class_name => "Enterprise"
