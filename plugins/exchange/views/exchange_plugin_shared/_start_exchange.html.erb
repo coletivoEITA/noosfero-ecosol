@@ -1,2 +1,5 @@
-<%= link_to _('Start an exchange'), {:controller => :exchange_plugin_profile, :action => :start_exchange, :profile => profile.identifier, :element_id => element_id, :element_type => element_type}, :class => 'exchange' %>
-
+<% if logged_in? %>
+  <%= link_to _('Start an exchange'), {:controller => :exchange_plugin_profile, :action => :start_exchange, :profile => profile.identifier, :element_id => element_id, :element_type => element_type}, :class => 'exchange' %>
+<% else %>
+  <%= link_to _('Start an exchange'), {:controller => :account, :action => :signup}, :class => 'exchange' %>
+<% end %>
