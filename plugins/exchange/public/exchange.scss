@@ -6,24 +6,32 @@ $console-width: $wireframe + $intercolumn;
 
 $color-exchange: #394E41;
 
+/* Images */
+
+$image-exchange: '/designs/themes/escambo/images/troca_simbolo.png';
+$image-exchange-empty: '/designs/themes/escambo/images/troca_simbolo_vazio.png';
+
 /* Exchange button */
 
 .exchange-action-button {
+  display: inline-block;
+  padding: $half-padding $padding;
+  height: auto;
+  width: auto;
   background: $color-exchange;
   color: white;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
-  padding: $half-padding $padding;
-  border: 0px;
-  border-radius: 3px;
+  text-shadow: none;
+  border: none;
+  border-radius: $border-radius;
 }
 
 .exchange {
   @extend .exchange-action-button;
 }
 
-.exchange-button-console{
+.exchange-button-console {
   @extend .exchange-action-button;
   float: left;
   margin: $base/6 $base;

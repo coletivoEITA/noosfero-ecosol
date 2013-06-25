@@ -47,10 +47,6 @@ class AccountController < ApplicationController
     end
   end
 
-  def select_active_organization
-    load_active_organization params[:profile_id]
-  end
-
   def logout_popup
     render :action => 'logout_popup', :layout => false
   end

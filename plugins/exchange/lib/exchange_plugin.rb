@@ -16,7 +16,7 @@ class ExchangePlugin < Noosfero::Plugin
 
   def control_panel_buttons
     if context.profile.enterprise?
-      { :title => _('My Exchanges'), :icon => 'exchange', :url => {:controller => 'exchange_plugin_myprofile', :action => 'index'} }
+      { :title => _('My Exchanges'), :icon => 'exchange', :url => {:controller => :exchange_plugin_myprofile, :action => :index} }
     end
   end
 

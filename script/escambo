@@ -2,7 +2,7 @@
 
 # Contants
 Production = false
-PluginsClasses = ["CmsLearningPlugin", "CurrencyPlugin", "EscamboPlugin", "EvaluationPlugin", "ExchangePlugin", "SignupWithEnterprisePlugin", "SnifferPlugin", "SolrPlugin"]
+PluginsClasses = ["CmsLearningPlugin", "CurrencyPlugin", "EscamboPlugin", "EvaluationPlugin", "ExchangePlugin", "SnifferPlugin", "SolrPlugin"]
 
 def echo text
   puts "=== #{text}"
@@ -29,7 +29,7 @@ require File.dirname(__FILE__) + '/../config/environment'
 echo 'Loading (or creating) the environment'
 e = Environment.default 
 unless e
-  e = Environment.create! :name => "ESCAMBO", :is_default => true
+  e = Environment.create! :name => "set latter", :is_default => true
   if Production
     e.domains.create! :name => 'escambo.org.br', :is_default => true
     e.domains.create! :name => 'escambo.org'
@@ -37,6 +37,8 @@ unless e
     e.domains.create! :name => '0.0.0.0', :is_default => true
   end
 end
+e.name = 'ESCAMBO'
+e.save
 
 echo 'Loading categories, units, certifiers and qualifiers'
 database = Rails.configuration.database_configuration[Rails.env]['database']
@@ -82,6 +84,7 @@ e.save
 
 echo 'Set environment fields'
 e.settings[:custom_enterprise_fields] = {"display_name"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "contact_person"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "business_name"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "country"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "acronym"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "state"=>{"required"=>"false", "signup"=>"true", "active"=>"true"}, "management_information"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "address_reference"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "description"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "contact_phone"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "zip_code"=>{"required"=>"false", "signup"=>"true", "active"=>"true"}, "district"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "legal_form"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "tag_list"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "foundation_year"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "city"=>{"required"=>"false", "signup"=>"true", "active"=>"true"}, "address"=>{"required"=>"false", "signup"=>"true", "active"=>"true"}, "historic_and_current_context"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "economic_activity"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "activities_short_description"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "template_id"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "organization_website"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}, "contact_email"=>{"required"=>"false", "signup"=>"false", "active"=>"false"}}
+e.settings[:custom_person_fields] = {"preferred_domain"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "area_of_study"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "nationality"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "cell_phone"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "nickname"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "description"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "country"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "custom_area_of_study"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "custom_formation"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "comercial_phone"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "contact_phone"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "state"=>{"signup"=>"true", "required"=>"false", "active"=>"true"}, "sex"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "zip_code"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "district"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "city"=>{"signup"=>"true", "required"=>"false", "active"=>"true"}, "professional_activity"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "contact_information"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "address_reference"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "organization_website"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "formation"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "image"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "birth_date"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "schooling"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "address"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}, "organization"=>{"signup"=>"false", "required"=>"false", "active"=>"false"}}
 e.save
 
 if solr_first_enable

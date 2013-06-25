@@ -1,6 +1,209 @@
 @import 'base';
+@import 'exchange';
+@import 'sniffer';
 
 /* Colors */
 
 $color-exchange: #394E41;
+
+/* Images */
+
+$image-heart-empty: '/plugins/escambo/images/heart-empty.png'; // FIXME: missing
+$image-heart: '/plugins/escambo/images/heart.png';
+$image-previous: '/plugins/escambo/images/previous.png';
+$image-next: '/plugins/escambo/images/next.png';
+
+/* Home */
+
+#enterprises-area {
+  margin-left: -20px;
+  width: $wireframe + 2*20;
+  margin-bottom: 8*$base;
+
+  h2 {
+    display: inline-block;
+    margin-left: 20px !important;
+  }
+
+  .scroll-left, .scroll-right {
+    width: 20px;
+    height: 37px;
+    margin-top: 11*$base;
+    cursor: pointer;
+  }
+  .scroll-left {
+    float: left;
+    background: url($image-previous) no-repeat;
+  }
+  .scroll-right {
+    float: right;
+    background: url($image-next) no-repeat;
+  }
+
+  #enterprises-crop {
+    float: left;
+    width: $wireframe - 2*$padding;
+    padding-left: $padding;
+    padding-right: $padding;
+    @extend .container-clean;
+
+    .escambo-plugin-profile-block {
+      float: left;
+      margin-right: $margin;
+
+
+    }
+  }
+}
+
+/* colors of borders/backgrounds */
+.escambo-inside-border-purple {
+  border-color:#7F0085;
+}
+.escambo-bg-purple {
+  background-color:#F3E1EF;
+}
+
+
+/* Profile block */
+.escambo-plugin-profile-block {
+  display: inline-block;
+  width: $module2;
+  border: 3px double #7F0085;
+
+  .categories-area {
+    @extend .area;
+    @extend .pstyle-tm1;
+    height: $base*6;
+  }
+
+  a.profile_homepage_link {
+    @extend .area;      
+    height: $base*9;
+    display: block;
+  }
+
+  .location-area {
+    @extend .area;
+    @extend .pstyle-tm1;
+    height: $base*6;
+    display: block;
+  }
+
+  .summary-area {
+    @extend .area;
+    @extend .pstyle-tm2;
+    height: $base*4;      
+  }
+
+  .area {
+    width: $module2 - ($base*2);
+    margin-top: $base*2;
+    margin-left: $base;
+  }
+
+  .dotted-border-bottom {
+    border-bottom: 1px dotted #000000;
+  }
+
+
+  .image-profile-area {
+    width: $module2;
+    height: $base*15;
+
+    .escambo-plugin-exchange-icons {
+      width: $base*4;
+      height: $base*2;
+      margin-left: $module2 -($base*4);
+
+      .has-exchanged {
+        @extend .icon;
+        background: url($image-exchange);
+      }
+
+      .has-not-exchanged {
+        @extend .icon;
+        background: url($image-exchange-empty);
+      }
+
+      .is-bookmarked {}
+
+      .isnot-bookmarked {
+        background: url($image-heart-empty);
+      }
+    }
+
+    .profile-image {      
+      width: $module2;
+      height: $base*14;      
+      margin-top: -($base*2);
+    }   
+  }
+
+  .exchange-button {
+    @extend .exchange-action-button;    
+    margin-top: -28px;
+    margin-left: $base;
+  }
+}
+
+/* Signup */
+
+.action-account-signup .no-boxes form {
+  width: $module8;
+  margin: auto;
+}
+#signup-form {
+
+  .required-field label, .formlabel {
+    margin: 0;
+    padding: 0;
+    padding-top: $padding;
+  }
+  select, textarea, input, #signup-domain {
+    margin: 0;
+  }
+
+  .help-text {
+    margin-bottom: $half-margin;
+  }
+
+  small#signup-balloon, small#password-balloon, small#password-confirmation-balloon, small#email-balloon, small#name-balloon {
+    right: 80px;
+  }
+
+  .signup-step {
+    padding-left: $module1;
+    padding-right: $module1;
+    padding-top: $padding;
+    padding-bottom: $padding;
+    border: $border solid #CDCDCD;
+    border-radius: $border-radius;
+    margin-bottom: $margin;
+
+    &#first-step,
+    &#second-step {
+      background-position: 0px 0px;
+    }
+    &#first-step {
+      background: url(/images/blocks/1.png) no-repeat;
+
+      #user_login {
+        margin: 0;
+      }
+
+      #signup-form-profile {
+        margin: 0;
+      }
+    }
+    &#second-step {
+      min-height: 44*$base;
+      background: url(/images/blocks/2.png) no-repeat;
+
+      #enterprise-find {
+        display: none;
+      }
+    }
+  }
+}
 

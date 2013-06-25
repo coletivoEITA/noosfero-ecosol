@@ -11902,9 +11902,8 @@ msgid "Back to %{target} offers"
 msgstr "Voltar à nuvem de marcadores"
 
 #: plugins/exchange/views/exchange_plugin_shared/_start_exchange.html.erb:1
-#, fuzzy
 msgid "Start an exchange"
-msgstr "Salvar alterações"
+msgstr "Fazer escambo"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_exchange_summary.html.erb:3
 #: plugins/exchange/views/exchange_plugin_myprofile/_exchange_summary.html.erb:14
@@ -12640,10 +12639,6 @@ msgstr "Interesses"
 #: plugins/escambo/views/snippets/_sniffer_plugin_opportunity.html.erb:11
 msgid "%{profile} is interested in %{interest}"
 msgstr "%{profile} está interessado em %{interest}"
-
-#: plugins/escambo/views/escambo_plugin_shared/profile_image_link.html.erb:9
-msgid "Start Exchange"
-msgstr "Escambo!"
 
 #: plugins/escambo/views/escambo_plugin_shared/profile_image_link.html.erb:28
 msgid ""

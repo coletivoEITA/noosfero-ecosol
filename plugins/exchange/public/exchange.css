@@ -12,16 +12,20 @@
 /* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
 /* percentages */
 /* Colors */
+/* Images */
 /* Exchange button */
 .exchange-action-button, .exchange, .exchange-button-console {
+  display: inline-block;
+  padding: 6px 12px;
+  height: auto;
+  width: auto;
   background: #394e41;
   color: white;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
-  padding: 6px 12px;
-  border: 0px;
-  border-radius: 3px; }
+  text-shadow: none;
+  border: none;
+  border-radius: 5px; }
 
 .exchange-button-console {
   float: left;
