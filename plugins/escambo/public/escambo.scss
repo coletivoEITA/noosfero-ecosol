@@ -67,68 +67,80 @@ $image-next: '/plugins/escambo/images/next.png';
 
 /* Profile block */
 .escambo-plugin-profile-block {
-  display: inline-block;
-  width: $module2;
+  width: $module2 - $padding;
   border: 3px double #7F0085;
+  margin-bottom: $margin;
+  margin-right: $half-margin;
+  border-radius: 3px;
 
-  .categories-area {
-    @extend .area;
-    @extend .pstyle-tm1;
-    height: $base*6;
-  }
+    .exchange_button{
+      position:absolute; 
+      bottom: -$base;
+      right: $base
+    }
 
-  a.profile_homepage_link {
-    @extend .area;      
-    height: $base*9;
-    display: block;
-  }
+    .categories-area{
+      @extend .area;
+      @extend .pstyle-tm1;
+      height: $base*3;
+    }
 
-  .location-area {
-    @extend .area;
-    @extend .pstyle-tm1;
-    height: $base*6;
-    display: block;
-  }
+    a.profile_homepage_link{
+      @extend .area;      
+      height: $base*4;
+      display: block;
+      margin: 2*$base $base;
+    }
 
-  .summary-area {
-    @extend .area;
-    @extend .pstyle-tm2;
-    height: $base*4;      
-  }
+    .location-area{
+      @extend .area;
+      @extend .pstyle-tm1;
+      height: $base*3;
+      display: block;
+    }
 
-  .area {
-    width: $module2 - ($base*2);
-    margin-top: $base*2;
-    margin-left: $base;
-  }
+    .summary-area{
+      @extend .area;
+      @extend .pstyle-tm2;
+      height: $base;      
+    }
 
-  .dotted-border-bottom {
-    border-bottom: 1px dotted #000000;
-  }
+    .area{
+      margin: 2*$base $base;
+    }
 
+    .dotted-border-bottom {
+      border-bottom: 1px dotted #000000;
+    }
+  
 
-  .image-profile-area {
-    width: $module2;
-    height: $base*15;
+  .image-profile-area{
+/*     width: $module2 - ($base*2); */
+    height: $base*12;
+    position: relative;
+    padding-top:4px;
+    background-position: center;
+    background-size: $base*12;
+    background-repeat: no-repeat;
 
-    .escambo-plugin-exchange-icons {
-      width: $base*4;
+    .escambo-plugin-exchange-icons{
+/*       width: $base*4; */
       height: $base*2;
       margin-left: $module2 -($base*4);
 
-      .has-exchanged {
+      .has-exchanged{
         @extend .icon;
-        background: url($image-exchange);
+        background: url($image-exchange) no-repeat;
       }
 
-      .has-not-exchanged {
+      .has-not-exchanged{
         @extend .icon;
         background: url($image-exchange-empty);
       }
 
-      .is-bookmarked {}
+      .is-bookmarked{}
 
-      .isnot-bookmarked {
+      .isnot-bookmarked{
         background: url($image-heart-empty);
       }
     }
