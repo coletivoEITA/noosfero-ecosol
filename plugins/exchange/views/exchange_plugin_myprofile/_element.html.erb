@@ -20,11 +20,11 @@
     <div class="exc-plg-trash">
 
     <% if element.element_type != "CurrencyPlugin::Currency" %>
-      <%= link_to_remote '<img src="/designs/themes/escambo/images/lixeira.png"/>', :url => {:action => :remove_element, :id => element.id,
+      <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element, :id => element.id,
       :element_type => element.element_type, :element_id => element.element_id,
         :enterprise => enterprise, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
     <% else %>
-      <%= link_to_remote '<img src="/designs/themes/escambo/images/lixeira.png"/>', :url => {:action => :remove_element_currency, :id => element.id,
+      <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element_currency, :id => element.id,
       :element_type => element.element_type, :element_id => element.element_id,
         :enterprise => enterprise, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
     <% end %>
