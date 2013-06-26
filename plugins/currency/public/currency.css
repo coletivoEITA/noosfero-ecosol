@@ -81,6 +81,9 @@
 
 .currency-disassociate-dialog p {
   width: 552px; }
+.currency-disassociate-dialog #enterprise-results .loading {
+  cursor: progress;
+  background: transparent url(/images/loading.gif) no-repeat scroll right 0px; }
 .currency-disassociate-dialog #enterprise-results .result {
   margin-top: 12px; }
   .currency-disassociate-dialog #enterprise-results .result img {

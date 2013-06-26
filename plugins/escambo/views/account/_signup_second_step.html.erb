@@ -27,6 +27,10 @@
   </div>
 
   <%= render :partial => 'escambo_plugin_public/enterprise_search' %>
+  <%= hidden_field_tag 'enterprise_register', 'true', :id => 'enterprise-register-field' %>
 
+  <div id="help-wait-membership" class='help-text'>
+    <%= _("Your membership will wait for aproval of one the administrators from the selected enteprise") %>
+  </div>
 
 </div>

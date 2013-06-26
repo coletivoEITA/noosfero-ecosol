@@ -44,6 +44,11 @@
   float: left;
   margin: 2px 12px; }
 
+/* control panel button */
+.controller-profile_editor a.control-panel-my-exchanges {
+  background-image: url("/plugins/exchange/images/exchange.png");
+  background-size: 48px 48px; }
+
 /*####### new layout ########*/
 body.controller-exchange_plugin_myprofile {
   background-color: #FAF7DC; }
@@ -652,10 +657,10 @@ body.action-sniffer_plugin_myprofile-search {
 
 /* Control panel buttons */
 .controller-profile_editor a.control-panel-consumer-interests {
-  background-image: url(images/consumer-interests.png); }
+  background-image: url(/plugins/sniffer/images/consumer-interests.png); }
 
 .controller-profile_editor a.control-panel-sniff-opportunities {
-  background-image: url(images/sniff-opportunities.png); }
+  background-image: url(/plugins/sniffer/images/sniff-opportunities.png); }
 
 /* Balloon interface */
 #sniffer-search-wrap .infoBox #sniffer-balloon-arrow {
@@ -787,9 +792,9 @@ body.action-sniffer_plugin_myprofile-search {
       height: 24px;
       margin-left: 120px; }
       .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .has-exchanged {
-        background: url("/designs/themes/escambo/images/troca_simbolo.png") no-repeat; }
+        background: url("/plugins/exchange/images/exchange.png") no-repeat; }
       .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .has-not-exchanged {
-        background: url("/designs/themes/escambo/images/troca_simbolo_vazio.png"); }
+        background: url("/plugins/exchange/images/exchange-empty.png"); }
       .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .isnot-bookmarked {
         background: url("/plugins/escambo/images/heart-empty.png"); }
     .escambo-plugin-profile-block .image-profile-area .profile-image {
@@ -810,9 +815,30 @@ body.action-sniffer_plugin_myprofile-search {
   padding: 0;
   padding-top: 12px; }
 #signup-form select, #signup-form textarea, #signup-form input, #signup-form #signup-domain {
-  margin: 0; }
+  margin: 0;
+  padding: 7px 11px; }
+#signup-form #signup-domain {
+  padding-top: 0;
+  padding-bottom: 0; }
+#signup-form input[type=checkbox], #signup-form input[type=radio] {
+  width: 32px;
+  height: 20px;
+  margin: 0;
+  position: relative;
+  top: 6px; }
+#signup-form .filled-in, #signup-form .invalid, #signup-form input.validated, #signup-form .checking, #signup-form input.valid_input {
+  /* override application.css, copied from theme */
+  background: none;
+  border: 1px solid #999999;
+  color: inherit;
+  padding: 7px 11px; }
+#signup-form .loading {
+  cursor: progress;
+  background: transparent url(/images/loading.gif) no-repeat scroll right 0px; }
 #signup-form .help-text {
   margin-bottom: 12px; }
+  #signup-form .help-text#help-wait-membership {
+    margin-top: 24px; }
 #signup-form small#signup-balloon, #signup-form small#password-balloon, #signup-form small#password-confirmation-balloon, #signup-form small#email-balloon, #signup-form small#name-balloon {
   right: 80px; }
 #signup-form .signup-step {
@@ -836,6 +862,12 @@ body.action-sniffer_plugin_myprofile-search {
     background: url(/images/blocks/2.png) no-repeat; }
     #signup-form .signup-step#second-step #enterprise-find {
       display: none; }
+    #signup-form .signup-step#second-step #enterprise-results .result {
+      margin-top: 12px; }
+      #signup-form .signup-step#second-step #enterprise-results .result img {
+        vertical-align: middle;
+        width: 32px;
+        height: 32px; }
 
 .escambo-plugin-has-exchanged {
   background-image: url("/plugins/sniffer/images/trash.png"); }

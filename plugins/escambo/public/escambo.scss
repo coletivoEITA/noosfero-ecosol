@@ -174,10 +174,39 @@ $image-next: '/plugins/escambo/images/next.png';
   }
   select, textarea, input, #signup-domain {
     margin: 0;
+    padding: ($half-padding - $border + 2) ($padding - $border);
+  }
+  #signup-domain {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  input[type=checkbox], input[type=radio] {
+    width: 32px;
+    height: 20px;
+    margin: 0;
+    position: relative;
+    top: 6px;
+  }
+
+  .filled-in, .invalid, input.validated, .checking, input.valid_input {
+    /* override application.css, copied from theme */
+    background: none;
+    border: $border solid #999;
+    color: inherit;
+    padding: ($half-padding - $border + 2) ($padding - $border);
+  }
+
+  .loading {
+    cursor: progress;
+    background: transparent url(/images/loading.gif) no-repeat scroll right 0px;
   }
 
   .help-text {
     margin-bottom: $half-margin;
+
+    &#help-wait-membership {
+      margin-top: $margin;
+    }
   }
 
   small#signup-balloon, small#password-balloon, small#password-confirmation-balloon, small#email-balloon, small#name-balloon {
@@ -214,6 +243,19 @@ $image-next: '/plugins/escambo/images/next.png';
 
       #enterprise-find {
         display: none;
+      }
+
+      #enterprise-results {
+
+        .result {
+          margin-top: $half-margin;
+
+          img {
+            vertical-align: middle;
+            width: 32px;
+            height: 32px;
+          }
+        }
       }
     }
   }

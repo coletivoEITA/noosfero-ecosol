@@ -8,8 +8,9 @@ $color-exchange: #394E41;
 
 /* Images */
 
-$image-exchange: '/designs/themes/escambo/images/troca_simbolo.png';
-$image-exchange-empty: '/designs/themes/escambo/images/troca_simbolo_vazio.png';
+$image-exchange: '/plugins/exchange/images/exchange.png';
+$image-exchange-empty: '/plugins/exchange/images/exchange-empty.png';
+$image-trash: '/plugins/exchange/images/exchange-empty.png';
 
 /* Exchange button */
 
@@ -36,6 +37,14 @@ $image-exchange-empty: '/designs/themes/escambo/images/troca_simbolo_vazio.png';
   float: left;
   margin: $base/6 $base;
 }
+
+/* control panel button */
+
+.controller-profile_editor a.control-panel-my-exchanges {
+  background-image: url($image-exchange);
+  background-size: 48px 48px;
+}
+
 /*####### new layout ########*/
 
 body.controller-exchange_plugin_myprofile{

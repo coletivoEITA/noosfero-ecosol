@@ -1,6 +1,6 @@
-<% @results.each do |enterprise| %>
+<% @enterprises.each do |enterprise| %>
   <div class="result">
-    <%= check_box_tag "enterprises[]", enterprise.id %>
+    <%= radio_button_tag "enterprise_id", enterprise.id %>
     <%= profile_image enterprise %>
     <%= link_to enterprise.name, enterprise.url, :target => '_blank' %>
   </div>

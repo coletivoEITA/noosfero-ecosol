@@ -126,6 +126,11 @@ $color-action-button: #394E41;
 
   #enterprise-results {
 
+    .loading {
+      cursor: progress;
+      background: transparent url(/images/loading.gif) no-repeat scroll right 0px;
+    }
+
     .result {
       margin-top: $half-margin;
 

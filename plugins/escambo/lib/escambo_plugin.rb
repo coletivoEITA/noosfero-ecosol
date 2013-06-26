@@ -111,7 +111,7 @@ class EscamboPlugin < Noosfero::Plugin
       session[:notice] = _("This environment doesn't allow user registration.")
     end
 
-    @block_bot = !!session[:may_be_a_bot]
+    #@block_bot = !!session[:may_be_a_bot]
     @invitation_code = params[:invitation_code]
     begin
       @user = User.new(params[:user])
@@ -125,41 +125,37 @@ class EscamboPlugin < Noosfero::Plugin
       params[:enterprise_data] ||= {}
       @enterprise = Enterprise.new params[:enterprise_data].merge(:environment => environment)
 
+      @selected_enterprise = environment.enterprises.find_by_id params[:enterprise_id]
+      @enterprises = []
+
       if request.post?
-        if may_be_a_bot
-          set_signup_start_time_for_now
-          @block_bot = true
-          session[:may_be_a_bot] = true
-        else
-          if session[:may_be_a_bot]
-            return false unless verify_recaptcha :model=>@user, :message=>_('Captcha (the human test)')
+        ::ActiveRecord::Base.transaction do
+          @user.signup!
+          owner_role = Role.find_by_name('owner')
+          @user.person.affiliate(@user.person, [owner_role]) if owner_role
+          invitation = Task.find_by_code(@invitation_code)
+          if invitation
+            invitation.update_attributes!({:friend => @user.person})
+            invitation.finish
           end
+          @person = @user.person
 
-          ::ActiveRecord::Base.transaction do
-            @user.signup!
-            owner_role = Role.find_by_name('owner')
-            @user.person.affiliate(@user.person, [owner_role]) if owner_role
-            invitation = Task.find_by_code(@invitation_code)
-            if invitation
-              invitation.update_attributes!({:friend => @user.person})
-              invitation.finish
-            end
-            @person = @user.person
-
-            if params[:register_enterprise][:box] == "1"
-              @enterprise.identifier = Noosfero.convert_to_identifier @enterprise.name
-              @enterprise.save!
-              @enterprise.add_admin @person
-            end
-          end
-
-          if @user.activated?
-            self.current_user = @user
-            redirect_to :controller => :profile_editor, :profile => @enterprise.identifier
-            return
+          if params[:enterprise_register] == "true"
+            @enterprise.identifier = Noosfero.convert_to_identifier @enterprise.name
+            @enterprise.save!
+            @enterprise.add_admin @person
           else
-            @register_pending = true
+            @enterprise = @selected_enterprise
+            @selected_enterprise.add_member @person
           end
+        end
+
+        if @user.activated?
+          self.current_user = @user
+          redirect_to @enterprise.url
+          return
+        else
+          @register_pending = true
         end
       end
     rescue ::ActiveRecord::RecordInvalid
