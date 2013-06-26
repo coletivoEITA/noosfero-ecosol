@@ -621,6 +621,7 @@ class Environment < ActiveRecord::Base
     url << ':' << Noosfero.url_options[:port].to_s if Noosfero.url_options.key?(:port)
     url
   end
+  alias_method :url, :top_url
 
   def to_s
     self.name || '?'
