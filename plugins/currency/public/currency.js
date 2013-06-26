@@ -18,28 +18,29 @@ currency.search = {
     this.query_url = null;
     this.typing = false;
     this.pending = false;
+    this.timeout = 200;
   },
 
   do: function (input, url, getResults) {
-    currency.search.input = input;
-    currency.search.typing = true;
-    currency.search.query = input.value;
-    currency.search.query_url = url;
-    currency.search.getResults = getResults;
-    setTimeout(currency.search.timeout, 200);
+    this.input = input;
+    this.typing = true;
+    this.query = input.value;
+    this.query_url = url;
+    this.getResults = getResults;
+    setTimeout(this.expire, this.timeout);
   },
 
-  timeout: function () {
-    if (!currency.search.query ||
-        (currency.search.last_query && currency.search.query == currency.search.last_query))
+  expire: function () {
+    if (!this.query || (this.last_query && this.query == this.last_query))
       return;
-    currency.search.typing = false;
-    currency.search.last_query = currency.search.query;
+    this.typing = false;
+    this.last_query = this.query;
 
-    currency.search.pending = true;
-    currency.search.getResults();
+    this.pending = true;
+    this.getResults();
   },
 };
+currency.search.load();
 
 currency.disassociate = {
 

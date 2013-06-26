@@ -7,7 +7,7 @@ class EvaluationPlugin < Noosfero::Plugin
   end
 
   def self.plugin_description
-    _("A plugin for evaluation of noosfero elements - profiles, articles, exchanges, etc...")
+    _("User evaluation of network entities - profiles, articles, products, exchanges and others")
   end
 
   def stylesheet?
@@ -17,6 +17,5 @@ class EvaluationPlugin < Noosfero::Plugin
   def js_files
     ['evaluation.js']
   end
-
 
 end
