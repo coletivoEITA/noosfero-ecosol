@@ -7,14 +7,8 @@ $color-action-button: #394E41;
 /* Buttons */
 
 .currency-action-button {
-  background: $color-action-button;
+  @extend .action-button;
   color: white;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  padding: $half-padding $padding;
-  border: 0px;
-  border-radius: 3px;
 }
 
 /* end */ 

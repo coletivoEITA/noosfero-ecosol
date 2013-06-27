@@ -1,0 +1,52 @@
+@import 'base';
+
+#cms-learning-edit-products {
+  float:left;
+}
+
+#cms-learning-edit-products {
+  margin: 0px 0 10px 0px;
+}
+
+.cms-learning-field {
+}
+
+.cms-learning-association {
+}
+.cms-learning-association li {
+  white-space: pre-wrap;
+}
+
+#cms-learning-view-content {
+}
+#cms-learning-right-bar {
+  float: right;
+  width: 191px;
+  margin: 0 0 15px 15px;
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+}
+
+#cms-learning-view-content b {
+  line-height: 25px;
+}
+#cms-learning-right-bar b {
+  font-style: italic;
+  font-weight: normal;
+}
+#cms-learning-details {
+  clear: both;
+}
+
+.icon-content-cms-learning {
+  background-image: url(images/cms-learning-64x64.png);
+}
+.icon-cms-learning,
+.icon-newcms-learning {
+  background-image: url(images/cms-learning-16x16.png);
+}
+

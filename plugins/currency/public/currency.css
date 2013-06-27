@@ -1,3 +1,4 @@
+/* classes for CSS clear bugfix */
 .clean {
   clear: both; }
 
@@ -8,20 +9,35 @@
   display: block;
   /* Sets element back to block */ }
 
-/* Base measuments */
-/* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
-/* percentages */
+/* use for heights only */
+/* base measurements */
+/* use for widths only */
+/* use for padding and margins only
+   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+ */
+/* use for borders */
+/* use for text shadows */
+/* colors */
+/* buttons */
+.action-button, .currency-action-button {
+  display: inline-block;
+  padding: 6px 12px;
+  height: auto;
+  width: auto;
+  color: white;
+  background: #394e41;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  border: none;
+  border-radius: 5px; }
+  .action-button:visited, .currency-action-button:visited {
+    color: white; }
+
 /* Colors */
 /* Buttons */
 .currency-action-button {
-  background: #394e41;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  padding: 6px 12px;
-  border: 0px;
-  border-radius: 3px; }
+  color: white; }
 
 /* end */
 #currency-wrap.popin {

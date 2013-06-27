@@ -15,17 +15,8 @@ $image-trash: '/plugins/exchange/images/exchange-empty.png';
 /* Exchange button */
 
 .exchange-action-button {
-  display: inline-block;
-  padding: $half-padding $padding;
-  height: auto;
-  width: auto;
+  @extend .action-button;
   background: $color-exchange;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  text-shadow: none;
-  border: none;
-  border-radius: $border-radius;
 }
 
 .exchange {

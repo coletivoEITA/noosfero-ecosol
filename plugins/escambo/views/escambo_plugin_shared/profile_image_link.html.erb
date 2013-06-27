@@ -1,39 +1,31 @@
-<% escambo_sumary = {:exchanges_count => profile.exchanges_count, :enterprises_count => profile.enterprises_count} %>
-
 <div class="escambo-plugin-profile-block <%= 'bg-purple inside-border-purple' %>">
-  <div class="image-profile-area" style="background-image: url('<%= profile.image.public_filename
- %>')">
-    <div class="escambo-plugin-exchange-icons">
-      <% if @active_organization %>
-        <% if @active_organization.has_exchanged(profile) %>
-          <div class="has-exchanged"></div>
-        <% end %>
-      <% end %>
-<!--       <div class="is-bookmarked"></div> -->
-    </div>
-    <div class="exchange_button">
-      <% if @active_organization != profile %>
-        <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile, :element_id => nil, :element_type => nil} %>
-      <% end %>
-    </div>
+
+  <div class="image-profile-area" style="background-image: url('<%= profile.image.public_filename if profile.image %>')">
+
+    <% if @active_organization and @active_organization != profile %>
+      <div class="icons <%= 'has-exchanged' if @active_organization.has_exchanged(profile) %>">
+      </div>
+
+      <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile, :element_id => nil, :element_type => nil} %>
+    <% end %>
   </div>
 
-  <h4 style="padding:12px 0 0 0"><%= link_to profile.name, profile.url, :class => "profile_homepage_link dotted-border-bottom" %></h4>
+  <div class="profile-homepage-link"><%= link_to profile.name, profile.url %></div>
 
-  <div class="categories-area dotted-border-bottom">
-    <%= profile.product_categories.map{|p| p.name}.first(3).join(' ,') %>
+  <div class="categories-area">
+    <%= profile.product_categories.collect(&:name).first(3).join(', ') %>
   </div>
 
-  <% if profile.region.present? %>
-    <a class="profile_geo_location_link location-area dotted-border-bottom" href="/profile/<%= profile.identifier %>">
+  <div class="location-area <%= 'empty' unless profile.region.present? %>">
+    <% if profile.region.present? %>
       <% extend SearchHelper %>
       <%= city_with_state profile.region %>
-    </a>
-  <% else %>
-    <p class="location-area dotted-border-bottom"> <%= _("Localization wasn't informed") %></p>
-  <% end %>
+    <% else %>
+      <%= _("Localization wasn't informed") %>
+    <% end %>
+  </div>
 
-  <p class="summary-area">
-    <%= _('Já realizou %{exchange_count} trocas com %{enterprises_count} pontos de cultura.') % {:exchange_count => escambo_sumary[:exchanges_count], :enterprises_count => escambo_sumary[:enterprises_count] } %>
-  </p>
+  <div class="summary-area">
+    <%= _('Já realizou %{exchanges_count} trocas com %{enterprises_count} pontos de cultura.') % {:exchanges_count => profile.exchanges_count, :enterprises_count => profile.enterprises_count} %>
+  </div>
 </div>

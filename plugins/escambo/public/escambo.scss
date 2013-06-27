@@ -60,8 +60,6 @@ $image-next: '/plugins/escambo/images/next.png';
     .escambo-plugin-profile-block {
       float: left;
       margin-right: $margin;
-
-
     }
   }
 }
@@ -77,95 +75,74 @@ $image-next: '/plugins/escambo/images/next.png';
 
 /* Profile block */
 .escambo-plugin-profile-block {
-  width: $module2 - $padding;
-  border: 3px double #7F0085;
+  width: $module2;
+  border: 3*$border double #7F0085;
   margin-bottom: $margin;
-  margin-right: $half-margin;
-  border-radius: 3px;
+  margin-right: $half-margin - 3*$border;
+  border-radius: $border-radius;
 
-    .exchange_button{
-      position:absolute; 
-      bottom: -$base;
-      right: 42px;
-    }
+  .profile-homepage-link, .categories-area, .location-area, .summary-area {
+    margin: $padding ($padding - 3*$border);
+  }
+  .profile-homepage-link, .categories-area, .location-area {
+    border-bottom: $border dotted black;
+  }
 
-    .categories-area{
-      @extend .area;
-      @extend .pstyle-tm1;
-      height: $base*3;
-    }
+  .profile-homepage-link {
+    @extend .pstyle-basic;
+    margin-top: $half-margin;
+    padding: $padding 0;
+  }
+  .categories-area {
+    height: $base*3;
+  }
+  .location-area {
+    height: $base*3;
 
-    a.profile_homepage_link{
-      @extend .area;      
-      height: $base*4;
-      display: block;
-      margin: 2*$base $base;
-    }
-
-    .location-area{
-      @extend .area;
-      @extend .pstyle-tm1;
-      height: $base*3;
-      display: block;
-    }
-
-    .summary-area{
-      @extend .area;
+    &.empty {
       @extend .pstyle-tm2;
-      height: $base;      
     }
+  }
+  .summary-area {
+    @extend .pstyle-tm2;
+  }
 
-    .area{
-      margin: 2*$base $base;
-    }
-
-    .dotted-border-bottom {
-      border-bottom: 1px dotted #000000;
-    }
-  
-
-  .image-profile-area{
-/*     width: $module2 - ($base*2); */
+  .image-profile-area {
     height: $base*12;
     position: relative;
-    padding-top:4px;
     background-position: center;
-    background-size: $base*12;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
 
-    .escambo-plugin-exchange-icons{
-/*       width: $base*4; */
+    .icons {
       height: $base*2;
-      margin-left: $module2 -($base*4);
+      float: right;
+      margin-right: $half-margin;
 
-      .has-exchanged{
+      .has-exchanged {
         @extend .icon;
         background: url($image-exchange) no-repeat;
       }
 
-      .has-not-exchanged{
+      .has-not-exchanged {
         @extend .icon;
         background: url($image-exchange-empty);
       }
 
-      .is-bookmarked{}
+      .is-bookmarked {
 
-      .isnot-bookmarked{
+      }
+      .isnot-bookmarked {
         background: url($image-heart-empty);
       }
     }
 
-    .profile-image {      
-      width: $module2;
-      height: $base*14;      
-      margin-top: -($base*2);
-    }   
-  }
-
-  .exchange-button {
-    @extend .exchange-action-button;    
-    margin-top: -28px;
-    margin-left: $base;
+    .exchange {
+      position: absolute;
+      bottom: -$padding;
+      left: ($padding - 3*$border);
+      width: $module2 - 2*($padding - 3*$border) - 2*$padding;
+    }
   }
 }
 

@@ -33,7 +33,7 @@ class CurrencyPlugin::Currency < Noosfero::Plugin::ActiveRecord
   protected
 
   def dont_use_environment_symbol
-    self.errors.add :symbol, _("can't be equal to environment currency unit") if self.symbol == environment.currency_unit
+    self.errors.add :symbol, _("can't be equal to environment currency unit") if self.symbol.strip == self.environment.currency_unit.strip
   end
 
 end

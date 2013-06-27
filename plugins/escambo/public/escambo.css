@@ -1,3 +1,4 @@
+/* classes for CSS clear bugfix */
 .clean {
   clear: both; }
 
@@ -8,37 +9,72 @@
   display: block;
   /* Sets element back to block */ }
 
-/* Base measuments */
-/* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
-/* percentages */
-.clean {
-  clear: both; }
-
-.container-clean, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop {
-  overflow: hidden;
-  display: inline-block;
-  /* Necessary to trigger "hasLayout" in IE */
-  display: block;
-  /* Sets element back to block */ }
-
-/* Base measuments */
-/* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
-/* percentages */
-/* Colors */
-/* Images */
-/* Exchange button */
-.exchange-action-button, .exchange, .exchange-button-console, .escambo-plugin-profile-block .exchange-button, #escambo-enterprise-info .sidebar .info .contact-button a {
+/* use for heights only */
+/* base measurements */
+/* use for widths only */
+/* use for padding and margins only
+   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+ */
+/* use for borders */
+/* use for text shadows */
+/* colors */
+/* buttons */
+.action-button, .exchange-action-button, .exchange, .exchange-button-console, #escambo-enterprise-info .sidebar .info .contact-button a, #escambo-new-enterprise form input[type=submit] {
   display: inline-block;
   padding: 6px 12px;
   height: auto;
   width: auto;
-  background: #394e41;
   color: white;
+  background: #394e41;
   text-align: center;
   text-decoration: none;
   text-shadow: none;
   border: none;
   border-radius: 5px; }
+  .action-button:visited, .exchange-action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, #escambo-new-enterprise form input[type=submit]:visited {
+    color: white; }
+
+/* classes for CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* use for heights only */
+/* base measurements */
+/* use for widths only */
+/* use for padding and margins only
+   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+ */
+/* use for borders */
+/* use for text shadows */
+/* colors */
+/* buttons */
+.action-button, .exchange-action-button, .exchange, .exchange-button-console, #escambo-enterprise-info .sidebar .info .contact-button a, #escambo-new-enterprise form input[type=submit] {
+  display: inline-block;
+  padding: 6px 12px;
+  height: auto;
+  width: auto;
+  color: white;
+  background: #394e41;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  border: none;
+  border-radius: 5px; }
+  .action-button:visited, .exchange-action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, #escambo-new-enterprise form input[type=submit]:visited {
+    color: white; }
+
+/* Colors */
+/* Images */
+/* Exchange button */
+.exchange-action-button, .exchange, .exchange-button-console, #escambo-enterprise-info .sidebar .info .contact-button a {
+  background: #394e41; }
 
 .exchange-button-console {
   float: left;
@@ -497,6 +533,7 @@ input[type=text].exc-plg-qtd-input {
   .exc-plg-add-unreg-item-active p {
     text-align: left; }
 
+/* classes for CSS clear bugfix */
 .clean {
   clear: both; }
 
@@ -507,9 +544,31 @@ input[type=text].exc-plg-qtd-input {
   display: block;
   /* Sets element back to block */ }
 
-/* Base measuments */
-/* REMEMBER to disccount from padding the borders size, as borders uses padding's space. */
-/* percentages */
+/* use for heights only */
+/* base measurements */
+/* use for widths only */
+/* use for padding and margins only
+   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+ */
+/* use for borders */
+/* use for text shadows */
+/* colors */
+/* buttons */
+.action-button, .exchange-action-button, .exchange, .exchange-button-console, #escambo-enterprise-info .sidebar .info .contact-button a, #escambo-new-enterprise form input[type=submit] {
+  display: inline-block;
+  padding: 6px 12px;
+  height: auto;
+  width: auto;
+  color: white;
+  background: #394e41;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  border: none;
+  border-radius: 5px; }
+  .action-button:visited, .exchange-action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, #escambo-new-enterprise form input[type=submit]:visited {
+    color: white; }
+
 /* Colors */
 /* Images */
 /* Search input */
@@ -606,16 +665,16 @@ body.action-sniffer_plugin_myprofile-search {
               margin-bottom: 6px; }
               #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers span, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers span {
                 float: left; }
-              #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .icon, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .has-exchanged, .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .has-exchanged, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .has-not-exchanged, .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .has-not-exchanged, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .icon, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .has-exchanged, .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .has-exchanged, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .has-not-exchanged, .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .has-not-exchanged {
+              #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .icon, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .escambo-plugin-profile-block .image-profile-area .icons .has-exchanged, .escambo-plugin-profile-block .image-profile-area .icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .has-exchanged, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .escambo-plugin-profile-block .image-profile-area .icons .has-not-exchanged, .escambo-plugin-profile-block .image-profile-area .icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .has-not-exchanged, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .icon, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .escambo-plugin-profile-block .image-profile-area .icons .has-exchanged, .escambo-plugin-profile-block .image-profile-area .icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .has-exchanged, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .escambo-plugin-profile-block .image-profile-area .icons .has-not-exchanged, .escambo-plugin-profile-block .image-profile-area .icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .has-not-exchanged {
                 width: 12px;
                 height: 12px;
                 display: inline-block;
                 margin-right: 6px; }
             #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers {
               margin-right: 24px; }
-              #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .icon, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .has-exchanged, .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .has-exchanged, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .has-not-exchanged, .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .has-not-exchanged {
+              #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .icon, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .escambo-plugin-profile-block .image-profile-area .icons .has-exchanged, .escambo-plugin-profile-block .image-profile-area .icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .has-exchanged, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .escambo-plugin-profile-block .image-profile-area .icons .has-not-exchanged, .escambo-plugin-profile-block .image-profile-area .icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .suppliers .has-not-exchanged {
                 background: #b4bdda; }
-            #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .icon, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .has-exchanged, .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .has-exchanged, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .has-not-exchanged, .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .has-not-exchanged {
+            #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .icon, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .escambo-plugin-profile-block .image-profile-area .icons .has-exchanged, .escambo-plugin-profile-block .image-profile-area .icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .has-exchanged, #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .escambo-plugin-profile-block .image-profile-area .icons .has-not-exchanged, .escambo-plugin-profile-block .image-profile-area .icons #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .legend .consumers .has-not-exchanged {
               background: #bcd1a9; }
           #sniffer-search-wrap #map-wrap #map-overlay-wrap-1 #map-overlay-wrap-2 #map-overlay #product-search .search-field {
             clear: both; }
@@ -772,55 +831,43 @@ body.action-sniffer_plugin_myprofile-search {
 
 /* Profile block */
 .escambo-plugin-profile-block {
-  width: 156px;
-  border: 3px double #7F0085;
+  width: 168px;
+  border: 3px double #7f0085;
   margin-bottom: 24px;
-  margin-right: 12px;
-  border-radius: 3px; }
-  .escambo-plugin-profile-block .exchange_button {
-    position: absolute;
-    bottom: -12px;
-    right: 42px; }
+  margin-right: 9px;
+  border-radius: 5px; }
+  .escambo-plugin-profile-block .profile-homepage-link, .escambo-plugin-profile-block .categories-area, .escambo-plugin-profile-block .location-area, .escambo-plugin-profile-block .summary-area {
+    margin: 12px 9px; }
+  .escambo-plugin-profile-block .profile-homepage-link, .escambo-plugin-profile-block .categories-area, .escambo-plugin-profile-block .location-area {
+    border-bottom: 1px dotted black; }
+  .escambo-plugin-profile-block .profile-homepage-link {
+    margin-top: 12px;
+    padding: 12px 0; }
   .escambo-plugin-profile-block .categories-area {
     height: 36px; }
-  .escambo-plugin-profile-block a.profile_homepage_link {
-    height: 48px;
-    display: block;
-    margin: 24px 12px; }
   .escambo-plugin-profile-block .location-area {
-    height: 36px;
-    display: block; }
-  .escambo-plugin-profile-block .summary-area {
-    height: 12px; }
-  .escambo-plugin-profile-block .area, .escambo-plugin-profile-block .categories-area, .escambo-plugin-profile-block a.profile_homepage_link, .escambo-plugin-profile-block .location-area, .escambo-plugin-profile-block .summary-area {
-    margin: 24px 12px; }
-  .escambo-plugin-profile-block .dotted-border-bottom {
-    border-bottom: 1px dotted #000000; }
+    height: 36px; }
   .escambo-plugin-profile-block .image-profile-area {
-    /*     width: $module2 - ($base*2); */
     height: 144px;
     position: relative;
-    padding-top: 4px;
     background-position: center;
-    background-size: 144px;
+    background-size: 100% 100%;
     background-repeat: no-repeat; }
-    .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons {
-      /*       width: $base*4; */
+    .escambo-plugin-profile-block .image-profile-area .icons {
       height: 24px;
-      margin-left: 120px; }
-      .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .has-exchanged {
+      float: right;
+      margin-right: 12px; }
+      .escambo-plugin-profile-block .image-profile-area .icons .has-exchanged {
         background: url("/plugins/exchange/images/exchange.png") no-repeat; }
-      .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .has-not-exchanged {
+      .escambo-plugin-profile-block .image-profile-area .icons .has-not-exchanged {
         background: url("/plugins/exchange/images/exchange-empty.png"); }
-      .escambo-plugin-profile-block .image-profile-area .escambo-plugin-exchange-icons .isnot-bookmarked {
+      .escambo-plugin-profile-block .image-profile-area .icons .isnot-bookmarked {
         background: url("/plugins/escambo/images/heart-empty.png"); }
-    .escambo-plugin-profile-block .image-profile-area .profile-image {
-      width: 168px;
-      height: 168px;
-      margin-top: -24px; }
-  .escambo-plugin-profile-block .exchange-button {
-    margin-top: -28px;
-    margin-left: 12px; }
+    .escambo-plugin-profile-block .image-profile-area .exchange {
+      position: absolute;
+      bottom: -12px;
+      left: 9px;
+      width: 126px; }
 
 /* Signup */
 .action-account-signup .no-boxes form {
