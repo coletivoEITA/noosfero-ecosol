@@ -310,7 +310,8 @@ $image-next: '/plugins/escambo/images/next.png';
     margin-right: $half-margin;
   }
 
-  #offers {
+  #offers, #knowledges, #interests {
+    margin-bottom: $margin;
   }
 
   .escambo-snippet {
