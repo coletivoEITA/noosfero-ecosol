@@ -5486,6 +5486,10 @@ msgstr "Quero receber uma cópia da mensagem no meu e-mail."
 msgid "Products/Services"
 msgstr "Produtos/Serviços"
 
+#: app/views/catalog/index.rhtml:11
+msgid "Catalog start"
+msgstr "Pagina inicial da vitrine"
+
 #: app/views/catalog/index.rhtml:16
 msgid "There are no sub-categories for %s"
 msgstr "Não há subcategorias para %s"
