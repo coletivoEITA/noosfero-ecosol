@@ -22,7 +22,7 @@ class AddMember < Task
   end
 
   def information
-    {:message => _('%{requestor} wants to be a member of this community.')}
+    {:message => _('%{requestor} wants to be a member of %{target}.')}
   end
 
   def accept_details
@@ -38,7 +38,7 @@ class AddMember < Task
   end
 
   def target_notification_description
-    _('%{requestor} wants to be a member of this community.') % {:requestor => requestor.name}
+    _('%{requestor} wants to be a member of %{target}.') % {:requestor => requestor.name, :target => target.name}
   end
 
   def target_notification_message

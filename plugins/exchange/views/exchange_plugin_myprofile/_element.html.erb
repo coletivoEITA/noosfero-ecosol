@@ -20,11 +20,11 @@
     <div class="exc-plg-trash">
 
       <% if (element.element_type == "Product") || (element.element_type == "CmsLearningPluginLearning")%>
-        <%= link_to_remote '<img src="/designs/themes/escambo/images/lixeira.png"/>', :url => {:action => :remove_element, :id => element.id,
+        <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element, :id => element.id,
         :element_type => element.element_type, :element_id => element.element_id,
           :enterprise => enterprise, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
       <% else %>
-        <%= link_to_remote '<img src="/designs/themes/escambo/images/lixeira.png"/>', :url => {:action => :remove_element_currency, :id => element.id,
+        <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element_currency, :id => element.id,
         :element_type => element.element_type, :element_id => element.element_id,
           :enterprise => enterprise, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
       <% end %>
@@ -50,5 +50,9 @@
   <h6 class="exc-plg-element_title"><%= e.name %></h6>
   <p class="exc-plg-element_desc"><%= e.description %></p>
 <% end %>
+<<<<<<< HEAD
 
 </li>
+=======
+</li>
+>>>>>>> b1ea454fac9467c396858e048d6051b4fbcc3b3f

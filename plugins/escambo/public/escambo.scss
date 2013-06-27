@@ -4,6 +4,16 @@
 
 /* Colors */
 
+$color-interest-bg: #F3F5ED;
+$color-interest-label: #79A458;
+$color-knowledge-bg: #FCF0EE;
+$color-knowledge-label: #C37169;
+$color-offer-bg: #F1F1F7;
+$color-offer-label: #677FB7;
+
+$color-profile-info-bg: #EBF49D;
+$color-profile-info-border: #C5AAA5;
+
 $color-exchange: #394E41;
 
 /* Images */
@@ -174,10 +184,39 @@ $image-next: '/plugins/escambo/images/next.png';
   }
   select, textarea, input, #signup-domain {
     margin: 0;
+    padding: ($half-padding - $border + 2) ($padding - $border);
+  }
+  #signup-domain {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  input[type=checkbox], input[type=radio] {
+    width: 32px;
+    height: 20px;
+    margin: 0;
+    position: relative;
+    top: 6px;
+  }
+
+  .filled-in, .invalid, input.validated, .checking, input.valid_input {
+    /* override application.css, copied from theme */
+    background: none;
+    border: $border solid #999;
+    color: inherit;
+    padding: ($half-padding - $border + 2) ($padding - $border);
+  }
+
+  .loading {
+    cursor: progress;
+    background: transparent url(/images/loading.gif) no-repeat scroll right 0px;
   }
 
   .help-text {
     margin-bottom: $half-margin;
+
+    &#help-wait-membership {
+      margin-top: $margin;
+    }
   }
 
   small#signup-balloon, small#password-balloon, small#password-confirmation-balloon, small#email-balloon, small#name-balloon {
@@ -215,6 +254,19 @@ $image-next: '/plugins/escambo/images/next.png';
       #enterprise-find {
         display: none;
       }
+
+      #enterprise-results {
+
+        .result {
+          margin-top: $half-margin;
+
+          img {
+            vertical-align: middle;
+            width: 32px;
+            height: 32px;
+          }
+        }
+      }
     }
   }
 }
@@ -222,3 +274,181 @@ $image-next: '/plugins/escambo/images/next.png';
 .escambo-plugin-has-exchanged {
   background-image: url($image-trash);
 }
+
+/* New enterprise page */
+
+#escambo-new-enterprise {
+  
+  form {
+
+    input[type=submit] {
+      @extend .action-button;
+    }
+
+    .field-with-privacy-selector:hover {
+      background: none;
+    }
+  }
+
+}
+
+/* Profile homepage */
+
+#escambo-enterprise-items {
+  float: left;
+  width: $module7 + $padding;
+  margin-right: $half-margin;
+
+  h3 {
+    display: inline-block;
+    padding-left: $padding;
+  }
+  .see-all {
+    @extend .pstyle-tm1;
+  }
+  .add {
+    margin-right: $half-margin;
+  }
+
+  #offers {
+  }
+
+  .escambo-snippet {
+    .second-column {
+      width: $module3;
+    }
+    .third-column {
+      width: $module2 - $padding;
+    }
+  }
+}
+#escambo-enterprise-info {
+  float: left;
+  
+  h3 {
+    visibility: hidden;
+  }
+  .sidebar { 
+    width: $module3;
+    padding: $padding - $border;
+    border: $border solid $color-profile-info-border;
+    background: $color-profile-info-bg;
+
+    h4 {
+      padding: 0;
+    }
+
+    .info, .evaluation, .members {
+      border-bottom: $border solid $color-profile-info-border;
+      padding-bottom: $padding;
+      margin-bottom: $padding;
+    }
+
+    .info {
+
+      .description {
+        padding-bottom: $padding;
+      }
+
+      .contact-button a {
+        @extend .exchange-action-button;
+        margin-bottom: $margin;
+        display: block;
+      }
+
+      .label {
+        font-weight: bold;
+      }
+
+      .state, .city, .address, .phone1, .phone2, .email, .site {
+        float: none;
+        clear: both;
+        margin-bottom: $margin;
+      }
+      .state, .city, .phone1, .phone2 {
+        float: left;
+        clear: none;
+        display: inline-block;
+        width: $module;
+      }
+      .state, .phone1 {
+        margin-right: $margin;
+      }
+      .city {
+        width: $module2;
+      }
+    }
+  }
+}
+
+/* Snippets */
+
+.cms-learning-plugin-learning-snippet {
+  background: $color-knowledge-bg;
+  border: $border dotted $color-knowledge-label;
+  .label {
+    background: $color-knowledge-label;
+  }
+}
+.product-snippet {
+  background: $color-offer-bg;
+  border: $border solid $color-offer-label;
+  border-radius: 5px;
+  .label {
+    background: $color-offer-label;
+  }
+}
+.sniffer-plugin-interest-snippet {
+  background: $color-interest-bg;
+  border: $border dashed $color-interest-label;
+  .label {
+    background: $color-interest-label;
+  }
+}
+
+.escambo-snippet {
+  padding: $padding - $border;
+  margin-bottom: $half-margin;
+  min-height: 7*$base;
+  position: relative;
+
+  .first-column, .second-column, .third-column {
+    float: left;
+  }
+  .first-column {
+    width: $module2;
+    margin-right: $margin;
+    min-height: $module;
+    background-size: $module;
+    background-position: center;
+
+    .label {
+      text-transform: uppercase;
+      padding: $padding;
+      margin: -($padding - $border);
+      color: white;
+      display: inline-block;
+    }
+  }
+  .second-column {
+    width: $module6;
+    margin-right: $margin;
+
+    .descripxion, .local {
+      margin-top: $margin;
+      @extend .pstyle-tm2;
+    }
+  }
+  .third-column {
+    width: $module2;
+    margin-bottom: $margin;
+  }
+
+  .exchange {
+    position: absolute;
+    bottom: $padding;
+    right: $padding;
+  }
+
+}
+

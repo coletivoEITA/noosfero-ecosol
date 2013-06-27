@@ -31,6 +31,11 @@
   float: left;
   margin: 2px 12px; }
 
+/* control panel button */
+.controller-profile_editor a.control-panel-my-exchanges {
+  background-image: url("/plugins/exchange/images/exchange.png");
+  background-size: 48px 48px; }
+
 /*####### new layout ########*/
 body.controller-exchange_plugin_myprofile {
   background-color: #FAF7DC; }

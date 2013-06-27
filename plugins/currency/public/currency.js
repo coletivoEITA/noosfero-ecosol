@@ -22,7 +22,7 @@ currency.search = {
   },
 
   do: function (input, url, getResults) {
-    this.input = input;
+    this.input = jQuery(input);
     this.typing = true;
     this.query = input.value;
     this.query_url = url;
@@ -30,14 +30,23 @@ currency.search = {
     setTimeout(this.expire, this.timeout);
   },
 
-  expire: function () {
+  start: function () {
     if (!this.query || (this.last_query && this.query == this.last_query))
       return;
+    this.pending = false;
     this.typing = false;
     this.last_query = this.query;
-
     this.pending = true;
+    this.input.addClass('loading');
     this.getResults();
+  },
+  finish: function () {
+    this.pending = false;
+    this.input.removeClass('loading');
+  },
+
+  expire: function () {
+    currency.search.start();
   },
 };
 currency.search.load();
@@ -47,7 +56,7 @@ currency.disassociate = {
   search: function () {
     jQuery.get(currency.search.query_url, {query: currency.search.query}, function (data) {
       jQuery('#enterprise-results').html(data);
-      currency.search.pending = false;
+      currency.search.finish();
     });
   },
 };
@@ -62,7 +71,7 @@ currency.accept = {
   search: function () {
     jQuery.get(currency.search.query_url, {query: currency.search.query}, function (data) {
       jQuery('#currency-search').html(data);
-      currency.search.pending = false;
+      currency.search.finish();
     });
   },
 };

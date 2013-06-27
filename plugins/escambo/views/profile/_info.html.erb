@@ -3,6 +3,11 @@
   <div class="sidebar">
     <div class="info">
       <h4><%= _('About this enterprise') %></h4>
+      <div class="description"><%= profile.description %></div>
+
+      <div class="contact-button">
+        <%= link_to _('Contact the enterprise'), :controller => :contact, :action => :new %>
+      </div>
 
       <span class="state">
         <div class="label"><%= _('State') %></div>
@@ -35,10 +40,6 @@
         <div class="label"><%= _('Site') %></div>
         <div class="value"><%= profile.contact_email %></div>
       </div>
-
-      <div class="contact-button">
-        <%= link_to _('Contact the enterprise'), :controller => :contact, :action => :new %>
-     </div>
     </div>
     <div class="evaluation">
       <h4><%= _('Evaluations of this enterprise') %></h4>

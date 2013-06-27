@@ -175,10 +175,10 @@ body.action-sniffer_plugin_myprofile-search {
 
 /* Control panel buttons */
 .controller-profile_editor a.control-panel-consumer-interests {
-  background-image: url(images/consumer-interests.png); }
+  background-image: url(/plugins/sniffer/images/consumer-interests.png); }
 
 .controller-profile_editor a.control-panel-sniff-opportunities {
-  background-image: url(images/sniff-opportunities.png); }
+  background-image: url(/plugins/sniffer/images/sniff-opportunities.png); }
 
 /* Balloon interface */
 #sniffer-search-wrap .infoBox #sniffer-balloon-arrow {
