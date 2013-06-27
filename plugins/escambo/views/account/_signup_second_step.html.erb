@@ -12,10 +12,7 @@
     <%= link_to_function _('Your enterprise is already registered? Click here!'), 'escambo.signup.enterprise.find()' %>
   </div>
 
-  <% labelled_fields_for(:enterprise_data, @enterprise) do |f| %>
-    <%= required f.text_field(:name, :rel => _('Enterprise name')) %>
-    <%= render :partial => 'shared/organization_custom_fields', :locals => { :f => f, :object_name => :enterprise_data, :profile => @enterprise } %>
-  <% end %>
+  <%= render :partial => 'escambo_plugin_shared/enterprise_register' %>
 </div>
 
 <div id="enterprise-find">
