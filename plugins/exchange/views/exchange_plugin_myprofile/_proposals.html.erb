@@ -83,7 +83,7 @@
             <button id="exc-plg-add-money-profile" class="exchange-button-console exc-plg-add-money">
               <%= _('Add amount in money') %>
               <% form_remote_tag :url => {:action => 'add_element_currency', :proposal_id => proposal.id, :element_type => "CurrencyPlugin::Currency", :enterprise_id => profile.id, :enterprise => "profile"} do  %>
-                <%= select("element_id", '', profile.currencies_list, { :include_blank => false }, :name => "element_id") %>
+                <%= select("element_id", '', profile.currencies.collect{|c| [c.name_with_symbol, c.id]}, { :include_blank => false }, :name => "element_id") %>
                 <%= submit_tag _('Go')%>
               <% end %>
             </button>
@@ -153,7 +153,7 @@
             <button id="exc-plg-add-money-theother" class="exchange-button-console exc-plg-add-money">
               <%= _('Add amount in money') %>
               <% form_remote_tag :url => {:action => 'add_element_currency', :proposal_id => proposal.id, :element_type => "CurrencyPlugin::Currency", :enterprise_id => @theother.id, :enterprise => "theother"} do  %>
-                <%= select("element_id", '', @theother.currencies_list, { :include_blank => false }, :name => "element_id") %>
+                <%= select("element_id", '', @theother.currencies.collect{|c| [c.name_with_symbol, c.id]}, { :include_blank => false }, :name => "element_id") %>
                 <%= submit_tag _('Go')%>
               <% end %>
             </button>

@@ -583,3 +583,14 @@ input[type=text].exc-plg-qtd-input{
     text-align: left;
   }
 }
+
+#exc-plg-exchange_symbol{
+  background: url($image-exchange);
+  background-repeat: no-repeat;
+  height: 60px;
+  width: 60px;
+  position: absolute;
+  left: 455px;
+  margin-top: 12px;
+/*   display: inline-block; */
+}
