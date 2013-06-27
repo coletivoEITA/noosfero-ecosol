@@ -67,7 +67,7 @@ $color-action-button: #394E41;
   height: auto;
   width: auto;
   color: white;
-  &:visited { color: white; }
+  &:visited, &:active, &:hover { color: white; }
   background: $color-action-button;
   text-align: center;
   text-decoration: none;

@@ -11,7 +11,7 @@ class EscamboPluginMyprofileController < MyProfileController
       @enterprise.identifier = Noosfero.convert_to_identifier @enterprise.name
       @enterprise.save!
       @enterprise.add_admin profile
-      redirect_to enterprise.url
+      redirect_to @enterprise.url
     end
   end
 

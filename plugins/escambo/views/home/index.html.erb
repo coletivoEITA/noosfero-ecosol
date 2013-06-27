@@ -7,10 +7,12 @@
 
   <span class="scroll-left"></span>
 
-  <div id="enterprises-crop">
-    <% @enterprises.each do |enterprise| %>
-      <%= profile_image_link enterprise, :portrait %>
-    <% end %>
+  <div id="enterprises-crop-wrap">
+    <div id="enterprises-crop">
+      <% @enterprises.each do |enterprise| %>
+        <%= profile_image_link enterprise, :portrait %>
+      <% end %>
+    </div>
   </div>
 
   <span class="scroll-right"></span>

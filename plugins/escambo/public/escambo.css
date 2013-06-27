@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop {
+.container-clean, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -31,14 +31,14 @@
   text-shadow: none;
   border: none;
   border-radius: 5px; }
-  .action-button:visited, .exchange-action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, #escambo-new-enterprise form input[type=submit]:visited {
+  .action-button:visited, .exchange-action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, #escambo-new-enterprise form input[type=submit]:visited, .action-button:active, .exchange-action-button:active, .exchange:active, .exchange-button-console:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, #escambo-new-enterprise form input[type=submit]:active, .action-button:hover, .exchange-action-button:hover, .exchange:hover, .exchange-button-console:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover, #escambo-new-enterprise form input[type=submit]:hover {
     color: white; }
 
 /* classes for CSS clear bugfix */
 .clean {
   clear: both; }
 
-.container-clean, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop {
+.container-clean, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -67,7 +67,7 @@
   text-shadow: none;
   border: none;
   border-radius: 5px; }
-  .action-button:visited, .exchange-action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, #escambo-new-enterprise form input[type=submit]:visited {
+  .action-button:visited, .exchange-action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, #escambo-new-enterprise form input[type=submit]:visited, .action-button:active, .exchange-action-button:active, .exchange:active, .exchange-button-console:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, #escambo-new-enterprise form input[type=submit]:active, .action-button:hover, .exchange-action-button:hover, .exchange:hover, .exchange-button-console:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover, #escambo-new-enterprise form input[type=submit]:hover {
     color: white; }
 
 /* Colors */
@@ -547,7 +547,7 @@ input[type=text].exc-plg-qtd-input {
 .clean {
   clear: both; }
 
-.container-clean, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop {
+.container-clean, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -576,7 +576,7 @@ input[type=text].exc-plg-qtd-input {
   text-shadow: none;
   border: none;
   border-radius: 5px; }
-  .action-button:visited, .exchange-action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, #escambo-new-enterprise form input[type=submit]:visited {
+  .action-button:visited, .exchange-action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, #escambo-new-enterprise form input[type=submit]:visited, .action-button:active, .exchange-action-button:active, .exchange:active, .exchange-button-console:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, #escambo-new-enterprise form input[type=submit]:active, .action-button:hover, .exchange-action-button:hover, .exchange:hover, .exchange-button-console:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover, #escambo-new-enterprise form input[type=submit]:hover {
     color: white; }
 
 /* Colors */
@@ -807,7 +807,7 @@ body.action-sniffer_plugin_myprofile-search {
 /* Home */
 #enterprises-area {
   margin-left: -20px;
-  width: 1000px;
+  width: 1012px;
   margin-bottom: 96px; }
   #enterprises-area h2 {
     display: inline-block;
@@ -823,14 +823,16 @@ body.action-sniffer_plugin_myprofile-search {
   #enterprises-area .scroll-right {
     float: right;
     background: url("/plugins/escambo/images/next.png") no-repeat; }
-  #enterprises-area #enterprises-crop {
+  #enterprises-area #enterprises-crop-wrap {
     float: left;
-    width: 936px;
+    width: 948px;
     padding-left: 12px;
-    padding-right: 12px; }
-    #enterprises-area #enterprises-crop .escambo-plugin-profile-block {
-      float: left;
-      margin-right: 24px; }
+    padding-right: 12px;
+    overflow: hidden; }
+    #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+      width: 4800px; }
+      #enterprises-area #enterprises-crop-wrap #enterprises-crop .escambo-plugin-profile-block {
+        float: left; }
 
 /* colors of borders/backgrounds */
 .escambo-inside-border-purple {
@@ -843,9 +845,9 @@ body.action-sniffer_plugin_myprofile-search {
 .escambo-plugin-profile-block {
   width: 168px;
   border: 3px double #7f0085;
-  margin-bottom: 24px;
-  margin-right: 9px;
-  border-radius: 5px; }
+  border-radius: 5px;
+  margin-right: 19px;
+  margin-bottom: 24px; }
   .escambo-plugin-profile-block .profile-homepage-link, .escambo-plugin-profile-block .categories-area, .escambo-plugin-profile-block .location-area, .escambo-plugin-profile-block .summary-area {
     margin: 12px 9px; }
   .escambo-plugin-profile-block .profile-homepage-link, .escambo-plugin-profile-block .categories-area, .escambo-plugin-profile-block .location-area {

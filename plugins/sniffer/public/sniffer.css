@@ -31,7 +31,7 @@
   text-shadow: none;
   border: none;
   border-radius: 5px; }
-  .action-button:visited {
+  .action-button:visited, .action-button:active, .action-button:hover {
     color: white; }
 
 /* Colors */

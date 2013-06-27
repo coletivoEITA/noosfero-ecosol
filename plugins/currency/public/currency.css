@@ -31,7 +31,7 @@
   text-shadow: none;
   border: none;
   border-radius: 5px; }
-  .action-button:visited, .currency-action-button:visited {
+  .action-button:visited, .currency-action-button:visited, .action-button:active, .currency-action-button:active, .action-button:hover, .currency-action-button:hover {
     color: white; }
 
 /* Colors */

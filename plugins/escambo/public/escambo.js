@@ -1,16 +1,47 @@
 
-
 escambo = {
 
 };
 
+escambo.scroll = function (crop, attr, multiplier, unitSize) {
+  if (crop.is(':animated'))
+    return;
+  params = {}; params[attr] = parseInt(crop.css(attr)) + multiplier*unitSize;
+  crop.animate(params);
+};
+
 escambo.home = {
+};
 
-  scrollLeft: function() {
+escambo.home.enterprises = {
 
+  area: function () {
+    return jQuery('#enterprises-area');
   },
-  scrollRight: function() {
+  crop: function () {
+    return jQuery('#enterprises-crop');
+  },
+  children: function () {
+    return jQuery('.escambo-plugin-profile-block');
+  },
+  childrenFit: function () {
+    return Math.floor(this.area().width() / this.childSize());
+  },
+  childSize: function () {
+    return this.children().outerWidth(true);
+  },
 
+  scroll: function (multiplier) {
+    escambo.scroll(this.crop(), 'margin-left', multiplier, this.childSize());
+  },
+  scrollLeft: function () {
+    escambo.home.enterprises.scroll(1);
+  },
+  scrollRight: function () {
+    escambo.home.enterprises.scroll(-1);
+  },
+  scrollMiddle: function () {
+    escambo.home.enterprises.scroll(-Math.floor((this.children().length - this.childrenFit()) / 2));
   },
 };
 
@@ -94,4 +125,15 @@ escambo.signup = {
   },
 }
 
-jQuery('.scroll-left').click(escambo.home.scrollLeft);
+jQuery(document).ready(function () {
+  jQuery('.scroll-left').click(escambo.home.enterprises.scrollLeft);
+  jQuery('.scroll-right').click(escambo.home.enterprises.scrollRight);
+  escambo.home.enterprises.scrollMiddle();
+});
+
+jQuery.fn.isChildOverflowing = function (child) {
+  var p = jQuery(this).get(0);
+  var el = jQuery(child).get(0);
+  return (el.offsetTop + el.offsetHeight > p.offsetTop + p.offsetHeight || el.offsetLeft + el.offsetWidth > p.offsetLeft + p.offsetWidth);
+};
+

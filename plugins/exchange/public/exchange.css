@@ -31,7 +31,7 @@
   text-shadow: none;
   border: none;
   border-radius: 5px; }
-  .action-button:visited, .exchange-action-button:visited, .exchange:visited, .exchange-button-console:visited {
+  .action-button:visited, .exchange-action-button:visited, .exchange:visited, .exchange-button-console:visited, .action-button:active, .exchange-action-button:active, .exchange:active, .exchange-button-console:active, .action-button:hover, .exchange-action-button:hover, .exchange:hover, .exchange-button-console:hover {
     color: white; }
 
 /* Colors */

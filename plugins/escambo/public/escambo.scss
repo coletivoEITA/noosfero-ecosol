@@ -27,7 +27,7 @@ $image-next: '/plugins/escambo/images/next.png';
 
 #enterprises-area {
   margin-left: -20px;
-  width: $wireframe + 2*20;
+  width: $wireframe + 2*20 + $padding;
   margin-bottom: 8*$base;
 
   h2 {
@@ -50,26 +50,30 @@ $image-next: '/plugins/escambo/images/next.png';
     background: url($image-next) no-repeat;
   }
 
-  #enterprises-crop {
+  #enterprises-crop-wrap {
     float: left;
-    width: $wireframe - 2*$padding;
+    width: $wireframe - $padding;
     padding-left: $padding;
     padding-right: $padding;
-    @extend .container-clean;
+    overflow: hidden;
 
-    .escambo-plugin-profile-block {
-      float: left;
-      margin-right: $margin;
+    #enterprises-crop {
+      width: 5*$wireframe;
+      @extend .container-clean;
+
+      .escambo-plugin-profile-block {
+        float: left;
+      }
     }
   }
 }
 
 /* colors of borders/backgrounds */
 .escambo-inside-border-purple {
-  border-color:#7F0085;
+  border-color: #7F0085;
 }
 .escambo-bg-purple {
-  background-color:#F3E1EF;
+  background-color: #F3E1EF;
 }
 
 
@@ -77,9 +81,9 @@ $image-next: '/plugins/escambo/images/next.png';
 .escambo-plugin-profile-block {
   width: $module2;
   border: 3*$border double #7F0085;
-  margin-bottom: $margin;
-  margin-right: $half-margin - 3*$border;
   border-radius: $border-radius;
+  margin-right: $margin - 5*$border;
+  margin-bottom: $margin;
 
   .profile-homepage-link, .categories-area, .location-area, .summary-area {
     margin: $padding ($padding - 3*$border);
