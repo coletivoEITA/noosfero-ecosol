@@ -4,8 +4,6 @@ class ExchangePlugin::ExchangeEnterprise < Noosfero::Plugin::ActiveRecord
   belongs_to :enterprise, :class_name => "Enterprise"
 
   def the_other
-    ExchangePlugin::ExchangeEnterprise.find(:first, :conditions => ["exchange_id = ? AND enterprise_id != ?", self.exchange_id, self.enterprise_id]).enterprise
+    the_other = ExchangePlugin::ExchangeEnterprise.find(:first, :conditions => ["exchange_id = ? AND enterprise_id != ?", self.exchange_id, self.enterprise_id]).enterprise
   end
-  
-  
 end

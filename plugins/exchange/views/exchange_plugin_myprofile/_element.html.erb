@@ -19,15 +19,15 @@
 
     <div class="exc-plg-trash">
 
-    <% if element.element_type != "CurrencyPlugin::Currency" %>
-      <%= link_to_remote '<img src="/designs/themes/escambo/images/lixeira.png"/>', :url => {:action => :remove_element, :id => element.id,
-      :element_type => element.element_type, :element_id => element.element_id,
-        :enterprise => enterprise, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
-    <% else %>
-      <%= link_to_remote '<img src="/designs/themes/escambo/images/lixeira.png"/>', :url => {:action => :remove_element_currency, :id => element.id,
-      :element_type => element.element_type, :element_id => element.element_id,
-        :enterprise => enterprise, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
-    <% end %>
+      <% if (element.element_type == "Product") || (element.element_type == "CmsLearningPluginLearning")%>
+        <%= link_to_remote '<img src="/designs/themes/escambo/images/lixeira.png"/>', :url => {:action => :remove_element, :id => element.id,
+        :element_type => element.element_type, :element_id => element.element_id,
+          :enterprise => enterprise, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
+      <% else %>
+        <%= link_to_remote '<img src="/designs/themes/escambo/images/lixeira.png"/>', :url => {:action => :remove_element_currency, :id => element.id,
+        :element_type => element.element_type, :element_id => element.element_id,
+          :enterprise => enterprise, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
+      <% end %>
     </div>
 
 
@@ -46,5 +46,9 @@
   <p class="exc-plg-element_desc"><%= e.summary %></p>
 <% elsif element.element_type == "CurrencyPlugin::Currency" %>
   <h6 class="exc-plg-element_title"><%= e.name %>(<%= e.symbol %>)</h6>
+<% elsif element.element_type == "ExchangePlugin::UnregisteredItem" %>
+  <h6 class="exc-plg-element_title"><%= e.name %></h6>
+  <p class="exc-plg-element_desc"><%= e.description %></p>
 <% end %>
+
 </li>

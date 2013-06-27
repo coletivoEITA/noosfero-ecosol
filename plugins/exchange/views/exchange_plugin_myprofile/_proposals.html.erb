@@ -117,7 +117,17 @@
 
           <h3><%= _('What do the other can offer?') %></h3>
           <div id="exc-plg-button-wrapper">
-            <button class="exchange-button-console"><%= _('Add not registered product')%></button>
+            <button class="exchange-button-console">
+              <%= _('Add not registered product') %>
+              <% form_remote_tag :url => {:action => 'add_unregistered_item', :proposal_id => proposal.id, :element_type => "ExchangePlugin::UnregisteredItem", :enterprise_id => @theother.id, :enterprise => "theother"} do  %>
+
+                <%= text_field_tag "name"%>
+                <%= text_area_tag "description" %>
+
+                <%= submit_tag _('Go')%>
+              <% end %>
+            </button>
+
             <button class="exchange-button-console">
               <%= _('Add amount in money') %>
               <% form_remote_tag :url => {:action => 'add_element_currency', :proposal_id => proposal.id, :element_type => "CurrencyPlugin::Currency", :enterprise_id => @theother.id, :enterprise => "theother"} do  %>

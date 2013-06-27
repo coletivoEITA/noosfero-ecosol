@@ -33,6 +33,19 @@ class ExchangePluginMyprofileController < MyProfileController
 
   end
   
+  def add_unregistered_item
+    unreg_item = ExchangePlugin::UnregisteredItem.new
+    unreg_item.name = params[:name]
+    unreg_item.description = params[:description]
+    unreg_item.save!
+    
+    add_element_helper(unreg_item.id, "ExchangePlugin::UnregisteredItem", params[:proposal_id], params[:enterprise_id])
+                
+    render :action => 'add_element_currency'
+    
+  end
+  
+  
   def add_element_currency
     @element = ExchangePlugin::ExchangeElement.new
     @element.element_id = params[:element_id]
@@ -45,7 +58,6 @@ class ExchangePluginMyprofileController < MyProfileController
   end
   
   def add_element
-#     @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
     @element = ExchangePlugin::ExchangeElement.new
     @element.element_id = params[:element_id]
     @element.enterprise_id = params[:enterprise_id]
@@ -59,9 +71,7 @@ class ExchangePluginMyprofileController < MyProfileController
     @element = ExchangePlugin::ExchangeElement.find params[:id]
     type = @element.element_type
     @element.destroy
-#     if (type == "CurrencyPlugin::Currency")
-#       render :action => "remove_element_currency"
-#     end
+
   end
 
   def remove_element_currency
@@ -170,12 +180,7 @@ class ExchangePluginMyprofileController < MyProfileController
     @element.quantity = params[:quantity]
     @element.save
     @exchange = ExchangePlugin::Exchange.find @element.proposal.exchange_id
-
-#     #message
-#     body = _('%{enterprise} changed the quantity of element %{element} from %{old_quantity} to %{quantity}') %
-#       {:enterprise => profile.name, :element => (@element.element_type.constantize.find @element.element_id).name, :old_quantity => old_quantity, :quantity => @element.quantity}
-#     m = ExchangePlugin::Message.new_exchange_message(@exchange, nil, nil, nil , body)
-
+    
     render :nothing => true
   end
 
@@ -299,39 +304,6 @@ class ExchangePluginMyprofileController < MyProfileController
     end
   end
 
-#   def evaluate
-#     @exchange = ExchangePlugin::Exchange.find params[:id]
-#     @origin_elements = @exchange.exchange_elements.select{|p| p.enterprise_id == @exchange.enterprise_origin_id}
-#     @target_elements = @exchange.exchange_elements.select{|p| p.enterprise_id == @exchange.enterprise_target_id}
-#     @enterprise_other = @exchange.target?(profile) ? @exchange.enterprise_origin : @exchange.enterprise_target
-#     if request.post?
-#       evaluation = EvaluationPlugin::Evaluation.new
-#       evaluation.object_type = "ExchangePlugin::Exchange"
-#       evaluation.object_id = params[:exchange_id]
-#       evaluation.score = params[:score]
-#       evaluation.text = params[:text]
-#       evaluation.evaluator = profile
-#       evaluation.evaluated = @enterprise_other
-#       evaluation.save
-#       if (@exchange.state == 'evaluated_by_target') || (@exchange.state == 'evaluated_by_origin')
-#         @exchange.state = 'evaluated'
-#       else
-#         @exchange.state = @exchange.target?(profile) ? 'evaluated_by_target' : 'evaluated_by_origin'
-#       end
-#       @exchange.save
-#       redirect_to :action => 'index'
-#     end
-#   end
-
-#   def new_message
-#     e = ExchangePlugin::Exchange.find params[:exchange_id]
-#
-#     recipient = (e.enterprise_target_id == profile.id)? e.enterprise_origin : e.enterprise_target
-#
-#     m = ExchangePlugin::Message.new_exchange_message(e, profile, recipient, current_user.person, params[:body])
-#     redirect_to :action => 'console', :id => e.id
-#   end
-
 ### Methods for changing exchange state ###
 
   def propose_conclusion
@@ -399,6 +371,18 @@ class ExchangePluginMyprofileController < MyProfileController
 
   def sort_direction
     %w[asc desc].include?(params[:direction])?params[:direction]:"desc"
+  end
+
+  protected
+  
+  def add_element_helper(element_id, element_type, proposal_id, enterprise_id)
+    @element = ExchangePlugin::ExchangeElement.new
+    @element.element_id = element_id
+    @element.enterprise_id = enterprise_id
+    @element.element_type = element_type
+    @element.proposal_id = proposal_id
+
+    @element.save!
   end
 
 end
