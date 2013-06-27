@@ -466,3 +466,20 @@ input[type=text].exc-plg-qtd-input {
 
 .exc-plg-index-exchange div.exc-plg-active {
   border: 15px double #faf7dc; }
+
+.exc-plg-add-money p {
+  display: none; }
+
+.exc-plg-add-unreg-item p {
+  display: none; }
+.exc-plg-add-unreg-item input {
+  display: none; }
+
+.exc-plg-add-money-active {
+  width: 95%;
+  margin-bottom: 24px; }
+
+.exc-plg-add-unreg-item-active {
+  width: 95%; }
+  .exc-plg-add-unreg-item-active p {
+    text-align: left; }

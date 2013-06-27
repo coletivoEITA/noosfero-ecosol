@@ -556,3 +556,30 @@ input[type=text].exc-plg-qtd-input{
 .exc-plg-index-exchange div.exc-plg-active {
   border: 15px double #FAF7DC
 }
+
+.exc-plg-add-money{
+  p {
+    display: none;
+  }
+}
+
+.exc-plg-add-unreg-item{
+  p {
+    display: none;
+  }
+  input {
+    display:none;
+  }
+}
+
+.exc-plg-add-money-active{
+  width:95%;
+  margin-bottom: 2*$base;
+}
+
+.exc-plg-add-unreg-item-active{
+  width:95%;
+  p {
+    text-align: left;
+  }
+}

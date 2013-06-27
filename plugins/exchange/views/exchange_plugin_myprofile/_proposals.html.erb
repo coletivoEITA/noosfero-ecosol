@@ -1,3 +1,21 @@
+<script type="text/javascript">
+<!--
+    function add_unregistered_item_show_form (enterprise){
+       var e = document.getElementById('exc-plg-add-money' + '-' + enterprise);
+       e.className = 'exchange-button-console exc-plg-add-money-active'
+       var e = document.getElementById('exc-plg-add-unreg-item' + '-' + enterprise);
+       e.className = 'exchange-button-console exc-plg-add-unreg-item-active';
+    }
+
+    function add_unregistered_item_hide_form (enterprise){
+       var e = document.getElementById('exc-plg-add-money' + '-' + enterprise);
+       e.className = 'exchange-button-console exc-plg-add-money';      
+       var e = document.getElementById('exc-plg-add-unreg-item' + '-' + enterprise);
+       e.className = 'exchange-button-console exc-plg-add-unreg-item';        
+    }
+//-->
+</script>
+
 <% first = true %>
 <% @proposals.each do |proposal| %>
     <% if !(proposal.state == "open" && proposal.enterprise_origin != profile) %>
@@ -52,15 +70,20 @@
 
             <h3><%= _('What you can offer?') %></h3>
             <div id="exc-plg-button-wrapper">
-              <button class="exchange-button-console"><%= _('Add not registered product')%></button>
+            <button id="exc-plg-add-unreg-item-profile" class="exchange-button-console exc-plg-add-unreg-item">
+              <span onClick='add_unregistered_item_show_form("profile")'><%= _('Add not registered product') %></span>              
+              <p style="float:right" onClick='add_unregistered_item_hide_form("profile")'>[x]</p>
+              <% form_remote_tag :url => {:action => 'add_unregistered_item', :proposal_id => proposal.id, :element_type => "ExchangePlugin::UnregisteredItem", :enterprise_id => profile.id, :enterprise => "profile"} do  %>
+                <p><%= _('Name') %><%= text_field_tag "name"%></p>
+                <p><%= _('Description') %></p><p><%= text_area_tag "description" %></p>
+                <%= submit_tag _('Add'), :onClick => 'add_unregistered_item_hide_form("profile")'%>
+              <% end %>
+            </button>
 
-
-            <button class="exchange-button-console">
+            <button id="exc-plg-add-money-profile" class="exchange-button-console exc-plg-add-money">
               <%= _('Add amount in money') %>
               <% form_remote_tag :url => {:action => 'add_element_currency', :proposal_id => proposal.id, :element_type => "CurrencyPlugin::Currency", :enterprise_id => profile.id, :enterprise => "profile"} do  %>
-
-                <%= select("element_id", '', profile.currencies.collect{|c| [c.name, c.id]}, { :include_blank => false }, :name => "element_id") %>
-
+                <%= select("element_id", '', profile.currencies_list, { :include_blank => false }, :name => "element_id") %>
                 <%= submit_tag _('Go')%>
               <% end %>
             </button>
@@ -117,23 +140,20 @@
 
           <h3><%= _('What do the other can offer?') %></h3>
           <div id="exc-plg-button-wrapper">
-            <button class="exchange-button-console">
-              <%= _('Add not registered product') %>
+            <button id="exc-plg-add-unreg-item-theother" class="exchange-button-console exc-plg-add-unreg-item">
+              <span onClick='add_unregistered_item_show_form("theother")'><%= _('Add not registered product') %></span>              
+              <p style="float:right" onClick='add_unregistered_item_hide_form("theother")'>[x]</p>
               <% form_remote_tag :url => {:action => 'add_unregistered_item', :proposal_id => proposal.id, :element_type => "ExchangePlugin::UnregisteredItem", :enterprise_id => @theother.id, :enterprise => "theother"} do  %>
-
-                <%= text_field_tag "name"%>
-                <%= text_area_tag "description" %>
-
-                <%= submit_tag _('Go')%>
+                <p><%= _('Name') %><%= text_field_tag "name"%></p>
+                <p><%= _('Description') %></p><p><%= text_area_tag "description" %></p>
+                <%= submit_tag _('Add'), :onClick => 'add_unregistered_item_hide_form("theother")'%>
               <% end %>
             </button>
 
-            <button class="exchange-button-console">
+            <button id="exc-plg-add-money-theother" class="exchange-button-console exc-plg-add-money">
               <%= _('Add amount in money') %>
               <% form_remote_tag :url => {:action => 'add_element_currency', :proposal_id => proposal.id, :element_type => "CurrencyPlugin::Currency", :enterprise_id => @theother.id, :enterprise => "theother"} do  %>
-
-                <%= select("element_id", '', @theother.currencies.collect{|c| [c.name, c.id]}, { :include_blank => false }, :name => "element_id") %>
-
+                <%= select("element_id", '', @theother.currencies_list, { :include_blank => false }, :name => "element_id") %>
                 <%= submit_tag _('Go')%>
               <% end %>
             </button>
