@@ -11,6 +11,7 @@ class Enterprise
   has_many :currencies, :through => :enterprise_currencies, :source => :currency, :order => 'id ASC'
 
   alias_method :orig_currencies, :currencies
+
   def currencies
     self.orig_currencies + [self.environment.default_currency]
   end
