@@ -6,7 +6,7 @@ escambo = {
 escambo.scroll = function (crop, attr, multiplier, unitSize) {
   if (crop.is(':animated'))
     return;
-  params = {}; params[attr] = parseInt(crop.css(attr)) + multiplier*unitSize;
+  params = {}; params[attr] = parseInt(crop.css(attr)) + Math.floor(multiplier)*unitSize;
   crop.animate(params);
 };
 
@@ -35,13 +35,17 @@ escambo.home.enterprises = {
     escambo.scroll(this.crop(), 'margin-left', multiplier, this.childSize());
   },
   scrollLeft: function () {
-    escambo.home.enterprises.scroll(1);
+    self = escambo.home.enterprises;
+    if (self.area().isChildOverflowing(self.children().first()))
+      escambo.home.enterprises.scroll(1);
   },
   scrollRight: function () {
-    escambo.home.enterprises.scroll(-1);
+    self = escambo.home.enterprises;
+    if (self.area().isChildOverflowing(self.children().last()))
+      escambo.home.enterprises.scroll(-1);
   },
   scrollMiddle: function () {
-    escambo.home.enterprises.scroll(-Math.floor((this.children().length - this.childrenFit()) / 2));
+    escambo.home.enterprises.scroll(-(this.children().length - this.childrenFit()) / 2);
   },
 };
 
@@ -134,6 +138,7 @@ jQuery(document).ready(function () {
 jQuery.fn.isChildOverflowing = function (child) {
   var p = jQuery(this).get(0);
   var el = jQuery(child).get(0);
-  return (el.offsetTop + el.offsetHeight > p.offsetTop + p.offsetHeight || el.offsetLeft + el.offsetWidth > p.offsetLeft + p.offsetWidth);
+  return (el.offsetTop < p.offsetTop || el.offsetLeft < p.offsetLeft) ||
+    (el.offsetTop + el.offsetHeight > p.offsetTop + p.offsetHeight || el.offsetLeft + el.offsetWidth > p.offsetLeft + p.offsetWidth);
 };
 

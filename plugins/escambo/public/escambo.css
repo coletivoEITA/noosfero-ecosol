@@ -805,6 +805,45 @@ body.action-sniffer_plugin_myprofile-search {
 /* Colors */
 /* Images */
 /* Home */
+#presentation-wrap-1 {
+  background: #7f005c;
+  height: 360px;
+  margin-top: 48px;
+  margin-bottom: 72px; }
+  #presentation-wrap-1 #presentation-wrap-2 {
+    margin: auto;
+    width: 960px;
+    position: relative; }
+    #presentation-wrap-1 #presentation-wrap-2 img.left, #presentation-wrap-1 #presentation-wrap-2 img.right {
+      position: absolute;
+      bottom: 60px; }
+    #presentation-wrap-1 #presentation-wrap-2 img.left {
+      left: -280px;
+      bottom: 66px; }
+    #presentation-wrap-1 #presentation-wrap-2 img.right {
+      right: -273px; }
+    #presentation-wrap-1 #presentation-wrap-2 #presentation {
+      padding: 48px 12px; }
+      #presentation-wrap-1 #presentation-wrap-2 #presentation .text {
+        color: white;
+        font-size: 25px !important;
+        line-height: 38px !important; }
+      #presentation-wrap-1 #presentation-wrap-2 #presentation .join {
+        margin: auto;
+        margin-top: 36px;
+        width: 384px; }
+        #presentation-wrap-1 #presentation-wrap-2 #presentation .join #sign-up, #presentation-wrap-1 #presentation-wrap-2 #presentation .join #login {
+          display: inline-block;
+          padding: 12px 18px;
+          margin-right: 24px;
+          background: #e5f600;
+          text-transform: lowercase;
+          text-decoration: none; }
+        #presentation-wrap-1 #presentation-wrap-2 #presentation .join #know-more {
+          color: white;
+          font-weight: bold;
+          text-decoration: underline; }
+
 #enterprises-area {
   margin-left: -20px;
   width: 1012px;

@@ -1,3 +1,28 @@
+<% content_for :extra_header do %>
+  <% unless logged_in? %>
+    <div id="presentation-wrap-1">
+      <div id="presentation-wrap-2">
+        <img src="/plugins/escambo/images/decoration-left.png" class="left"/>
+
+        <div id="presentation">
+          <div class="text">
+            O escambo é uma rede para trocas entre pontos de cultura. O ponto de cultura pode ser um artesão, um coletivo cultural, uma banda, um grupo de teatro, ou qualquer outra forma de manifestação cultural. No escambo você cadastra o que pode oferecer, o que te interessa e começa a trocar. Simples assim. Registre seu ponto de cultura e comece a trocar!
+          </div>
+
+          <div class="join">
+            <%= thickbox_inline_popup_link _('Login'), login_url, 'inlineLoginBox', :id => 'login' %>
+            <%= link_to _('Sign up'), {:controller => 'account', :action => 'signup'}, :id => 'sign-up' %>
+
+            <%= link_to 'Saiba mais', {:controller => :home, :action => :how_it_works}, {:id => 'know-more'} %>
+          </div>
+        </div>
+
+        <img src="/plugins/escambo/images/decoration-right.png" class="right"/>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
 <div id="enterprises-area">
 
   <div>

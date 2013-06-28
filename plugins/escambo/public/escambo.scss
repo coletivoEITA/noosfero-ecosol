@@ -16,6 +16,12 @@ $color-profile-info-border: #C5AAA5;
 
 $color-exchange: #394E41;
 
+$color-yellow: #E5F600;
+$color-violet: #7F005C;
+
+$color-presentation-button: $color-yellow;
+$color-presentation-button-highlight: $color-violet;
+
 /* Images */
 
 $image-heart-empty: '/plugins/escambo/images/heart-empty.png'; // FIXME: missing
@@ -24,6 +30,62 @@ $image-previous: '/plugins/escambo/images/previous.png';
 $image-next: '/plugins/escambo/images/next.png';
 
 /* Home */
+
+#presentation-wrap-1 {
+  background: $color-violet;
+  height: 30*$base;
+  margin-top: 2*$margin;
+  margin-bottom: 3*$margin;
+
+  #presentation-wrap-2 {
+    margin: auto;
+    width: $wireframe;
+    position: relative;
+
+    img {
+      &.left, &.right {
+        position: absolute;
+        bottom: 5*$base;
+      }
+      &.left {
+        left: -(148 + 11*$base);
+        bottom: 5.5*$base;
+      }
+      &.right {
+        right: -(177 + 8*$base);
+      }
+    }
+
+    #presentation {
+      padding: 2*$margin $padding;
+
+      .text {
+        color: white;
+        font-size: 25px !important;
+        line-height: 38px !important;
+      }
+      .join {
+        margin: auto;
+        margin-top: 1.5*$margin;
+        width: 34*$base;
+
+        #sign-up, #login { 
+          display: inline-block;
+          padding: $padding 1.5*$padding;
+          margin-right: $margin;
+          background: $color-presentation-button;
+          text-transform: lowercase;
+          text-decoration: none;
+        }
+        #know-more {
+          color: white;
+          font-weight: bold;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
 
 #enterprises-area {
   margin-left: -20px;
