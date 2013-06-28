@@ -10,8 +10,8 @@
           </div>
 
           <div class="join">
-            <%= thickbox_inline_popup_link _('Login'), login_url, 'inlineLoginBox', :id => 'login' %>
             <%= link_to _('Sign up'), {:controller => 'account', :action => 'signup'}, :id => 'sign-up' %>
+            <%= thickbox_inline_popup_link _('Login'), login_url, 'inlineLoginBox', :id => 'login' %>
 
             <%= link_to 'Saiba mais', {:controller => :home, :action => :how_it_works}, {:id => 'know-more'} %>
           </div>
