@@ -5,7 +5,9 @@
     <% if @active_organization and @active_organization != profile %>
       <div class="icons <%= 'has-exchanged' if @active_organization.has_exchanged(profile) %>">
       </div>
+    <% end %>
 
+    <% if not logged_in? or (@active_organization and @active_organization != profile) %>
       <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile, :element_id => nil, :element_type => nil} %>
     <% end %>
   </div>
