@@ -19,7 +19,7 @@ class CmsLearningPlugin < Noosfero::Plugin
   end
 
   def js_files
-    []
+    ['cms_learning.js']
   end
 
   def profile_blocks(profile)

@@ -15,6 +15,10 @@ class ExchangePlugin < Noosfero::Plugin
     true
   end
 
+  def js_files
+    ['exchange.js']
+  end
+
   def control_panel_buttons
     if context.profile.enterprise?
       { :title => _('My Exchanges'), :icon => 'my-exchanges', :url => {:controller => :exchange_plugin_myprofile, :action => :index} }
