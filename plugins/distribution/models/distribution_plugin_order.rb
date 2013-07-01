@@ -35,7 +35,7 @@ class DistributionPluginOrder < ActiveRecord::Base
 
   validates_presence_of :session
   validates_presence_of :consumer
-  validates_presence_of :supplier_delivery
+  #validates_presence_of :supplier_delivery
   STATUSES = ['draft', 'planned', 'confirmed', 'cancelled']
   validates_inclusion_of :status, :in => STATUSES
 

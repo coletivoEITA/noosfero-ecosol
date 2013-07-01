@@ -712,8 +712,8 @@
           cycle_saved: "Ciclo salvo"
         _edition: 
           add_product: "Adicionar produto"
-          it_was_automatically_: "Ela foi automaticamente gerada a partir dos produtos ativos e suas respectivas margens. Verifique a lista de produtos e edite-a conforme as necessidades e particularidades desta seção de pedidos."
-          the_following_list_of: "A seguinte lista de produtos está disponível nesta sessão."
+          it_was_automatically_: "Ela foi automaticamente gerada a partir dos produtos ativos e suas respectivas margens. Verifique a lista de produtos e edite-a conforme as necessidades e particularidades deste ciclo de pedidos."
+          the_following_list_of: "A seguinte lista de produtos está disponível neste ciclo."
           the_products: "Os produtos"
         _orders: 
           cancelled_orders_coun: "Pedidos cancelados (%{count})"
@@ -760,7 +760,7 @@
           close_orders_period: "Fechar ciclo de pedidos"
           delivery: Entrega
           edition: Edição
-          finish_cycle_editing: "Finalizar edição de sessão"
+          finish_cycle_editing: "Abrir pedidos do ciclo"
           orders: Pedidos
           parcels: Parcels
           redistribution: Redistribution

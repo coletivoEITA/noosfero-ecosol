@@ -559,7 +559,7 @@
           code: "%{code}."
           orders_cycles: "Orders' cycles"
           place_an_order: "Place an order"
-          there_s_no_open_sessi: "There's no open session"
+          there_s_no_open_sessi: "There's no open cycle"
           your_orders: "Your orders:"
       ordered_product: 
         _edit: 
@@ -750,7 +750,7 @@
           close_orders_period: "Close orders period"
           delivery: Delivery
           edition: Edition
-          finish_cycle_editing: "Finish cycle editing"
+          finish_cycle_editing: "Open orders for cycle"
           orders: Orders
           parcels: Parcels
           redistribution: Redistribution
