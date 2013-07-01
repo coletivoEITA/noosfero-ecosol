@@ -98,9 +98,9 @@ escambo.signup = {
     var form = jQuery('#signup-form');
     form.submit(function (e) {
       e.preventDefault();
-      if (form.find('input[name=enterprise_register]').val() == 'true')
+      if (form.find('input[name=enterprise_register]').val() == 'true' || escambo.signup.enterprise.hasSelection())
         this.submit();
-      else if (!escambo.signup.enterprise.hasSelection())
+      else
         alert(empty_selection_message);
     });
   },
