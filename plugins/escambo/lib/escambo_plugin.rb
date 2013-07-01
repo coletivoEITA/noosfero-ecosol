@@ -1,9 +1,9 @@
-require_dependency 'cms_learning_plugin'
-require_dependency 'currency_plugin'
-require_dependency 'evaluation_plugin'
-require_dependency 'exchange_plugin'
-require_dependency 'sniffer_plugin'
-require_dependency 'solr_plugin'
+#require_dependency 'cms_learning_plugin'
+#require_dependency 'currency_plugin'
+#require_dependency 'evaluation_plugin'
+#require_dependency 'exchange_plugin'
+#require_dependency 'sniffer_plugin'
+#require_dependency 'solr_plugin'
 
 require_dependency "#{File.dirname __FILE__}/ext/noosfero"
 
