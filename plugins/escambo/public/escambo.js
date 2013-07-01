@@ -95,11 +95,12 @@ escambo.search.load();
 escambo.signup = {
 
   load: function (empty_selection_message) {
-    jQuery('#signup-form').submit(function (e) {
+    var form = jQuery('#signup-form');
+    form.submit(function (e) {
       e.preventDefault();
-      if (escambo.signup.enterprise.hasSelection())
+      if (form.find('input[name=enterprise_register]').val() == 'true')
         this.submit();
-      else
+      else if (!escambo.signup.enterprise.hasSelection())
         alert(empty_selection_message);
     });
   },
