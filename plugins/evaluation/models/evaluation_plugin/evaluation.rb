@@ -5,4 +5,5 @@ class EvaluationPlugin::Evaluation < Noosfero::Plugin::ActiveRecord
  
   validates_presence_of :object
 
+  
 end

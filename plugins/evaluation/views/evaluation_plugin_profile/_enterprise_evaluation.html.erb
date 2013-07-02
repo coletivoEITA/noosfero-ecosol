@@ -1,3 +1,6 @@
+<% @exchange_happened_array = [["Sim",0],["Parcialmente (fizemos nossa parte, o outro lado não)",1],
+     ["Parcialmente (fizemos nossa parte, o outro lado não)",2],["Não",3]] %>
+
 <p><%= _('Evaluation done by %{evaluator} at %{time}') % 
           {:evaluator => evaluation.evaluator.name, 
            :time => evaluation.created_at.strftime("%d/%m/%Y @ %H:%Mh")} 
@@ -20,7 +23,7 @@
     </div>
     <div id="exc-plg-exchange_result">
       <h5><%= _('The exchange happened?') %></h5>
-      <%= evaluation.exchange_result %>
+        <%= @exchange_happened_array[evaluation.exchange_result.to_i][0] %>
     </div>
   </div>
 </div>
