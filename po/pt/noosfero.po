@@ -12,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: noosfero 0.43.0\n"
-"POT-Creation-Date: 2013-07-01 10:29-0300\n"
+"POT-Creation-Date: 2013-07-02 09:48-0300\n"
 "PO-Revision-Date: 2013-03-13 17:47-0300\n"
 "Last-Translator: Rodrigo Souto <rodrigo@colivre.coop.br>\n"
 "Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
@@ -1253,10 +1253,6 @@ msgstr "Em destaque"
 #: app/views/templates/_create_template_form.html.erb:16
 #: app/views/profile/report_abuse.html.erb:10
 #: app/views/licenses/_form.html.erb:10
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:237
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:238
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:239
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:240
 #: plugins/bsc/views/bsc_plugin_admin/new.html.erb:9
 #: plugins/bsc/views/bsc_plugin_admin/validate_enterprises.html.erb:10
 #: plugins/bsc/views/bsc_plugin_myprofile/manage_associated_enterprises.html.erb:23
@@ -4454,9 +4450,8 @@ msgid "New member"
 msgstr "Novo membro"
 
 #: app/models/add_member.rb:25 app/models/add_member.rb:41
-#, fuzzy
 msgid "%{requestor} wants to be a member of %{target}."
-msgstr "%{requestor} quer ser um integrante desta comunidade."
+msgstr "%{requestor} quer ser um integrante de %{target}."
 
 #: app/models/add_member.rb:46
 msgid ""
@@ -10179,103 +10174,13 @@ msgstr "Submissão salva"
 msgid "Submission could not be saved"
 msgstr "A submissão não pode ser salva"
 
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:233
-#, fuzzy
-msgid "Accept Propose"
-msgstr "Aceitar produtos"
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:233
-#, fuzzy
-msgid "Don't Accept"
-msgstr "Aceitar"
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:234
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:235
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:333
-#, fuzzy
-msgid "Exchange Concluded"
-msgstr "Concluído"
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:234
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:235
-msgid "Exchange not Concluded"
-msgstr ""
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:236
-msgid "Propose Conclusion"
-msgstr ""
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:236
-#, fuzzy
-msgid "Cancel Exchange"
-msgstr "Salvar alterações"
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:237
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:238
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:239
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:240
-msgid "Back to happening - this should not appear"
-msgstr ""
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:247
-msgid "Waiting for the other to accept the exchange proposal"
-msgstr ""
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:250
-msgid "Do you accept to start the exchange negociation?"
-msgstr ""
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:253
-msgid ""
-"Exchange is happening. You can send messages, edit the exchange elements, "
-"propose the conclusion of the exchange or cancel the negociation."
-msgstr ""
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:257
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:265
-msgid "Waiting for a response by the other part of the exchange"
-msgstr ""
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:260
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:268
-msgid ""
-"The other part said that the exchange is concluded. If you agree, click "
-"Exchange Concluded.\n"
-"                             If you want to continue the negotiation, click "
-"Exchange not Concluded."
-msgstr ""
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:278
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:287
-msgid "Waiting for evaluation by the other part of the exchange"
-msgstr ""
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:294
-msgid "Exchange finished and evaluated"
-msgstr ""
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:319
-msgid "Conclusion Proposed by %s"
-msgstr ""
-
-#: plugins/exchange/controllers/myprofile/exchange_plugin_myprofile_controller.rb:350
-#, fuzzy
-msgid "Exchange Cancelled by %{enterprise}"
-msgstr "Gerenciar empreendimentos associados"
-
-#: plugins/exchange/controllers/profile/exchange_plugin_profile_controller.rb:147
-msgid "%{origin} proposed an exchange with %{target}: %{message}"
-msgstr "%{origin} propôs uma troca com %{target}: %{message}"
-
 #: plugins/sniffer/controllers/myprofile/sniffer_plugin_myprofile_controller.rb:14
-#, fuzzy
 msgid "Consumer interests updated"
-msgstr "Configurações do ambiente atualizadas"
+msgstr "Interesses atualizados"
 
 #: plugins/sniffer/controllers/myprofile/sniffer_plugin_myprofile_controller.rb:16
-#, fuzzy
 msgid "Could not save consumer interests"
-msgstr "Não foi possível encontrar o comentário no artigo"
+msgstr "Não foi possível salvar os interesses"
 
 #: plugins/ldap/controllers/ldap_plugin_admin_controller.rb:10
 #, fuzzy
@@ -12155,6 +12060,10 @@ msgstr "Sua avaliação (a ser feita)"
 msgid "%s evaluation (still to be done)"
 msgstr "Avaliação de %s (a ser feita)"
 
+#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:8
+msgid "Please evaluate the behaviour of %s during the exchange process"
+msgstr "Por favor, avalie o comportamento de %s durante o processo de troca:"
+
 #: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:35
 msgid "Submit Evaluation"
 msgstr "Enviar avaliação"
@@ -12232,7 +12141,6 @@ msgid "Active Exchanges"
 msgstr "Trocas ativas"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:10
-#, fuzzy
 msgid "Exchange created at %{time} by %{enterprise}"
 msgstr "Troca criada em %{time} por %{enterprise}"
 
@@ -12819,14 +12727,12 @@ msgstr "Ofertas, saberes e interesses"
 
 #: plugins/escambo/views/search/index.html.erb:2
 #: plugins/escambo/views/home/index.html.erb:50
-#, fuzzy
 msgid "search for..."
 msgstr "Buscar por:"
 
 #: plugins/escambo/views/home/index.html.erb:29
-#, fuzzy
 msgid "Some enterprises"
-msgstr "Um empreendimento"
+msgstr "Alguns pontos de cultura"
 
 #: plugins/escambo/views/home/index.html.erb:30
 #: plugins/escambo/views/profile/_products.html.erb:9
@@ -12905,7 +12811,8 @@ msgid ""
 "Your membership will wait for aproval of one the administrators from the "
 "selected enteprise"
 msgstr ""
-"Sua participação no ponto de cultura precisa ser aprovada. Por favor, aguarde a resposta do administrador do ponto de cultura. "
+"Sua participação no ponto de cultura precisa ser aprovada. Por favor, "
+"aguarde a resposta do administrador do ponto de cultura. "
 
 #: plugins/escambo/views/profile/_products.html.erb:2
 msgid "Offers from this enterprise"
@@ -12937,7 +12844,7 @@ msgstr "Avaliação média: %s"
 
 #: plugins/escambo/views/profile/_info.html.erb:47
 msgid "%s evaluations"
-msgstr "avaliações de %s"
+msgstr "%s avaliações"
 
 #: plugins/escambo/views/profile/_info.html.erb:48
 msgid "Read evaluations"
@@ -12950,6 +12857,31 @@ msgstr "Moedas"
 #: plugins/escambo/views/escambo_plugin_myprofile/new_enterprise.html.erb:2
 msgid "Create new enterprise"
 msgstr "Criar novo ponto de cultura"
+
+#, fuzzy
+#~ msgid "Accept Propose"
+#~ msgstr "Aceitar produtos"
+
+#, fuzzy
+#~ msgid "Don't Accept"
+#~ msgstr "Aceitar"
+
+#, fuzzy
+#~ msgid "Exchange Concluded"
+#~ msgstr "Concluído"
+
+#, fuzzy
+#~ msgid "Cancel Exchange"
+#~ msgstr "Salvar alterações"
+
+#~ msgid "Conclusion Proposed by %s"
+#~ msgstr "Conclusão proposta por %s"
+
+#~ msgid "Exchange Cancelled by %{enterprise}"
+#~ msgstr "Troca cancelada por %{enterprise}"
+
+#~ msgid "%{origin} proposed an exchange with %{target}: %{message}"
+#~ msgstr "%{origin} propôs uma troca com %{target}: %{message}"
 
 #~ msgid "Display in list"
 #~ msgstr "Mostrar como lista"
