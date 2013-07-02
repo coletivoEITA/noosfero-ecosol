@@ -5,12 +5,12 @@
     <div class="eva-plg-thumb">
       <%= link_to profile_image(profile, :minor) +"\n", profile.url %>
     </div>
-      <%= text_area_tag 'text',nil, :class => "eva-plg-body", :placeholder => _("Please evaluate the behaviour of #{@theother.name} during the exchange process") %>
+      <%= text_area_tag 'text',nil, :class => "eva-plg-body", :placeholder => _('Please evaluate the behaviour of %s during the exchange process') % @theother.name %>
  
   </div>
 
   <div class="eva-plg-score">
-
+    <h5><%= _('Score') %></h5>
     <label for="score_1">1</label>
     <%= radio_button_tag "score", 1 , '', :class => "eva-plg-radio"%>
     <label for="score_2">2</label>
@@ -27,12 +27,11 @@
   <div class="eva-plg-exchange-result">
 
     <h5><%= _('The exchange happened?') %></h5>
-    <%= select("exchange_result", '',  ["Sim", "Parcialmente (fizemos nossa parte, o outro lado não)",
-     "Parcialmente (fizemos nossa parte, o outro lado não)", "Não"], {:include_blank => "Select"}, {:class => "eva-plg-select", :name => "exchange_result"}) %>
+    <%= select("exchange_result", '',  @exchange_happened_array, {:include_blank => false}, {:class => "eva-plg-select", :name => "exchange_result"}) %>
  
   </div>
 
-      <%= f.submit _('Submit Evaluation'), :class => "exchange-button-console", :style => "float:right" %>
+      <%= f.submit _('Submit Evaluation'), :class => "exchange-button-console", :style => "margin-top:12px" %>
   <% end %>
 
 </div>
