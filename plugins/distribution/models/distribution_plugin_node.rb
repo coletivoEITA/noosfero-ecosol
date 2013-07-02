@@ -10,11 +10,6 @@ class DistributionPluginNode < ActiveRecord::Base
   has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy, :order => 'id ASC'
   has_many :parcels, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy, :order => 'id ASC'
 
-  has_many :suppliers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'consumer_id', :order => 'name ASC', :dependent => :destroy
-  has_many :consumers, :class_name => 'DistributionPluginSupplier', :foreign_key => 'node_id', :order => 'name ASC'
-  has_many :suppliers_nodes, :through => :suppliers, :source => :node, :order => 'distribution_plugin_nodes.id ASC'
-  has_many :consumers_nodes, :through => :consumers, :source => :consumer, :order => 'distribution_plugin_nodes.id ASC'
-
   has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => 'node_id', :dependent => :destroy, :order => 'distribution_plugin_products.name ASC'
   has_many :order_products, :through => :orders, :source => :products, :order => 'name ASC'
   has_many :parcel_products, :through => :parcels, :source => :products, :order => 'id ASC'
@@ -79,6 +74,12 @@ class DistributionPluginNode < ActiveRecord::Base
     profile.update_attributes! :visible => !value
   end
 
+  def has_admin?(node)
+    if node and node.profile
+      node.profile.has_permission? 'edit_profile', self.profile
+    end
+  end
+
   def closed_sessions_date_range
     list = sessions.not_open.all :order => 'start ASC'
     return DateTime.now..DateTime.now if list.blank?
@@ -103,75 +104,6 @@ class DistributionPluginNode < ActiveRecord::Base
           product.save!
         end
       end
-    end
-  end
-
-  alias_method :orig_suppliers, :suppliers
-  def suppliers
-    self_supplier # guarantee that the self_supplier is created
-    orig_suppliers
-  end
-  def self_supplier
-    return self.orig_suppliers.build(:node => self) if new_record?
-    orig_suppliers.from_node(self).first || self.orig_suppliers.create!(:node => self)
-  end
-
-  def has_supplier?(supplier)
-    suppliers.include? supplier
-  end
-  def has_consumer?(consumer)
-    consumers.include? consumer
-  end
-  def has_supplier_node?(supplier)
-    suppliers_nodes.include? supplier
-  end
-  def has_consumer_node?(consumer)
-    consumers_nodes.include? consumer
-  end
-  def add_supplier(supplier)
-    supplier.add_consumer self
-  end
-  def remove_supplier(supplier)
-    supplier.remove_consumer self
-  end
-  def add_consumer(consumer_node)
-    return if has_consumer_node? consumer_node
-
-    consumer_node.affiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
-    supplier = DistributionPluginSupplier.create!(:node => self, :consumer => consumer_node) || suppliers.from_node(consumer_node)
-
-    consumer_node.add_supplier_products supplier unless consumer_node.consumer?
-    supplier
-  end
-  def remove_consumer(consumer_node)
-    consumer_node.disaffiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
-    supplier = consumers.find_by_consumer_id(consumer_node.id)
-
-    supplier.destroy if supplier
-    supplier
-  end
-
-  def add_supplier_products(supplier)
-    raise "'#{supplier.name}' is not a supplier of #{self.profile.name}" unless has_supplier?(supplier)
-
-    already_supplied = self.products.unarchived.distributed.from_supplier(supplier).all
-    supplier.products.unarchived.each do |np|
-      next if already_supplied.find{ |f| f.supplier_product == np }
-
-      p = DistributionPluginDistributedProduct.new :node => self
-      p.distribute_from np
-    end
-  end
-
-  def not_distributed_products(supplier)
-    raise "'#{supplier.name}' is not a supplier of #{self.profile.name}" unless has_supplier?(supplier)
-
-    supplier.node.products.unarchived.own.distributed - self.from_products.unarchived.distributed.by_node(supplier.node)
-  end
-
-  def has_admin?(node)
-    if node and node.profile
-      node.profile.has_permission? 'edit_profile', self.profile
     end
   end
 

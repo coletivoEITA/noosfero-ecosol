@@ -1,0 +1,49 @@
+#suppliers-page .supplier {
+  border-top: 1px solid black;
+  border-bottom: none; }
+#suppliers-page .supplier:last-child {
+  border-bottom: 1px solid black; }
+#suppliers-page .supplier-type {
+  font-style: italic; }
+#suppliers-page #supplier-add,
+#suppliers-page .box-edit {
+  display: none; }
+#suppliers-page .box-edit {
+  background-color: #FDF2A3; }
+#suppliers-page .supplier-body {
+  width: 400px;
+  float: left; }
+#suppliers-page .supplier-name {
+  text-transform: uppercase; }
+#suppliers-page .supplier-logo {
+  float: left;
+  width: 60px;
+  min-height: 60px; }
+#suppliers-page .supplier-actions {
+  float: right;
+  text-align: right;
+  width: 140px; }
+#suppliers-page .supplier-add-link {
+  margin: 20px 0; }
+#suppliers-page .supplier form {
+  width: 640px; }
+#suppliers-page .data textarea,
+#suppliers-page .data input {
+  width: 100%; }
+#suppliers-page .basic-data,
+#suppliers-page .full-data {
+  float: left;
+  width: 290px;
+  margin-right: 30px; }
+#suppliers-page .estrategic-info {
+  float: right; }
+#suppliers-page .additional-fields {
+  width: 100%; }
+#suppliers-page .full-data {
+  display: none; }
+#suppliers-page .full-registration .full-data {
+  display: block; }
+#suppliers-page .filter-box .box-field,
+#suppliers-page .filter-box .box-field input {
+  width: 100%;
+  margin-left: 0; }

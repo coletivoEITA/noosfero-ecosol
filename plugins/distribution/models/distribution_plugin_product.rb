@@ -22,8 +22,8 @@ class DistributionPluginProduct < ActiveRecord::Base
 
   named_scope :own,
     :select => 'distribution_plugin_products.*',
-    :conditions => ['distribution_plugin_products.node_id = distribution_plugin_suppliers.node_id'],
-    :joins => 'INNER JOIN distribution_plugin_suppliers ON distribution_plugin_products.supplier_id = distribution_plugin_suppliers.id'
+    :conditions => ['distribution_plugin_products.node_id = suppliers_plugin_suppliers.node_id'],
+    :joins => 'INNER JOIN suppliers_plugin_suppliers ON suppliers_plugin_products.supplier_id = suppliers_plugin_suppliers.id'
   named_scope :active, :conditions => {:active => true}
   named_scope :inactive, :conditions => {:active => false}
   named_scope :archived, :conditions => {:archived => true}

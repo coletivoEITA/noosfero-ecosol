@@ -1,6 +1,6 @@
 module DistributionPlugin::DistributionDisplayHelper
 
-  include ActionView::Helpers::JavaScriptHelper # we want the original button_to_function!
+  include ::ActionView::Helpers::JavaScriptHelper # we want the original button_to_function!
 
   def labelled_field(form, field, label, field_html, options = {})
     help = options.delete(:help)
@@ -120,7 +120,7 @@ module DistributionPlugin::DistributionDisplayHelper
     content_tag 'input', '', html_options.merge(:onclick => function, :type => 'submit', :value => name)
   end
 
-  include ColorboxHelper
+  include ::ColorboxHelper
 
   def colorbox_link_to label, url, options = {}
     link_to label, url, colorbox_options(options)
@@ -129,6 +129,5 @@ module DistributionPlugin::DistributionDisplayHelper
   def colorbox_close_link text, options = {}
     link_to text, '#', colorbox_options(options, :close)
   end
-
 
 end

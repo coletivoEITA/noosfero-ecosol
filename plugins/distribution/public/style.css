@@ -673,81 +673,6 @@ body.plugin-distribution {
 
 /* ----- end session edition stuff  ----- */
 
-/* ----- suppliers stuff  ----- */
-
-.plugin-distribution #suppliers-page .supplier {
-  border-top: 1px solid black;
-  border-bottom: none;
-}
-.plugin-distribution #suppliers-page .supplier:last-child {
-  border-bottom: 1px solid black;
-}
-.plugin-distribution #suppliers-page .supplier-type {
-  font-style: italic;
-}
-.plugin-distribution #suppliers-page #supplier-add,
-.plugin-distribution #suppliers-page .box-edit {
-  display: none;
-}
-.plugin-distribution #suppliers-page .box-edit {
-  background-color: #FDF2A3;
-}
-
-.plugin-distribution #suppliers-page .supplier-body {
-  width: 400px;
-  float: left;
-}
-
-.plugin-distribution #suppliers-page .supplier-name {
-  text-transform: uppercase;
-}
-
-.plugin-distribution #suppliers-page .supplier-logo {
-  float: left;
-  width: 60px;
-  min-height: 60px;
-}
-
-.plugin-distribution #suppliers-page .supplier-actions {
-  float: right;
-  text-align: right;
-  width: 140px;
-}
-
-.plugin-distribution #suppliers-page .supplier-add-link {
-  margin: 20px 0;
-}
-
-.plugin-distribution #suppliers-page .supplier form {
-  width: 640px;
-}
-
-.plugin-distribution #suppliers-page .data textarea,
-.plugin-distribution #suppliers-page .data input {
-  width: 100%;
-}
-
-.plugin-distribution #suppliers-page .basic-data,
-.plugin-distribution #suppliers-page .full-data {
-  float: left;
-  width: 290px;
-  margin-right: 30px;
-}
-.plugin-distribution #suppliers-page .estrategic-info {
-  float: right;
-}
-.plugin-distribution #suppliers-page .additional-fields {
-  width: 100%;
-}
-.plugin-distribution #suppliers-page .full-data {
-  display: none;
-}
-.plugin-distribution #suppliers-page .full-registration .full-data {
-  display: block;
-}
-
-/* ----- ends suppliers stuff  ----- */
-
 /* ----- session orders  ----- */
 
 .plugin-distribution .order-products-by-supplier {
@@ -1237,11 +1162,6 @@ body.plugin-distribution {
 .plugin-distribution .filter-box .box-field {
   padding-left: 0;
   padding-right: 24px;
-}
-.plugin-distribution #suppliers-page .filter-box .box-field,
-.plugin-distribution #suppliers-page .filter-box .box-field input {
-  width: 100%;
-  margin-left: 0;
 }
 .plugin-distribution .filter-box .box-field,
 .plugin-distribution .filter-box .box-field select,
