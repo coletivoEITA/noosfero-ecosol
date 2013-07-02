@@ -10,7 +10,7 @@ def echo text
 end
 def run cmd, options = {}
   echo "$ #{cmd}"
-  cmd = "RAILS_ENV=#{Rails.env} #{cmd}" if defined? Rails
+  cmd = "bash -c 'RAILS_ENV=#{Rails.env} #{cmd}'" if defined? Rails
   output = `#{cmd}`
   puts output if options[:verbose]
 end
