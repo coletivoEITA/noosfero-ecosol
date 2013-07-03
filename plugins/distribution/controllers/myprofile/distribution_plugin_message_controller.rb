@@ -27,7 +27,7 @@ class DistributionPluginMessageController < DistributionPluginMyprofileControlle
   end
 
   def new_to_supplier
-    @supplier = DistributionPluginSupplier.find params[:supplier_id]
+    @supplier = SuppliersPlugin::Supplier.find params[:supplier_id]
     if params[:commit]
       DistributionPlugin::Mailer.deliver_message_to_supplier @node, @supplier, params[:email][:subject], params[:email][:message]
       page_reload

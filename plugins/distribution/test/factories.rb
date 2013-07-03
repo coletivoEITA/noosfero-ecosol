@@ -13,7 +13,7 @@ module DistributionPluginFactory
     node = attrs[:node] || build(DistributionPluginNode)
     {:node => node, :name => "product-#{factory_num_seq}", :price => 2.0,
      :product => build(Product, :enterprise => node.profile, :price => 2.0),
-     :supplier => build(DistributionPluginSupplier, :node => node, :consumer => node)}
+     :supplier => build(SuppliersPlugin::Supplier, :node => node, :consumer => node)}
   end
 
   def defaults_for_distribution_plugin_distributed_product(attrs = {})

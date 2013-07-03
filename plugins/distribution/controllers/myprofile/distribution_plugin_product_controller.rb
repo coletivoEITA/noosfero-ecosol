@@ -6,7 +6,7 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
   helper DistributionPlugin::DistributionProductHelper
 
   def index
-    @supplier = DistributionPluginSupplier.find_by_id params[:supplier_id].to_i
+    @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id].to_i
     not_distributed_products
 
     @products = @node.products.unarchived.distributed.paginate :per_page => 10, :page => params[:page],
@@ -33,7 +33,7 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
   end
 
   def new
-    @supplier = DistributionPluginSupplier.find_by_id params[:product][:supplier_id].to_i
+    @supplier = SuppliersPlugin::Supplier.find_by_id params[:product][:supplier_id].to_i
     if params[:commit]
       #:supplier_product_id must be set first. it will when params follow the form order with ruby 1.9 ordered hashes
       @product = DistributionPluginDistributedProduct.new :node => @node, :supplier_product_id => params[:product].delete(:supplier_product_id)
@@ -57,7 +57,7 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
   end
 
   def add_missing_products
-    @supplier = DistributionPluginSupplier.find params[:product][:supplier_id]
+    @supplier = SuppliersPlugin::Supplier.find params[:product][:supplier_id]
     @node.add_supplier_products @supplier
     render :partial => 'distribution_plugin_shared/pagereload'
   end

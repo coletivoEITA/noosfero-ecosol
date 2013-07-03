@@ -1,4 +1,4 @@
-class DistributionPluginDistributedProduct < DistributionPluginProduct
+class SuppliersPlugin::DistributedProduct < SuppliersPlugin::Product
 
   after_save :save_supplier_product
 
@@ -47,7 +47,7 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
 
   # Set _product_ and its supplier as the origin of this product
   def distribute_from(product)
-    s = node.suppliers.from_node(product.node).first
+    s = node.suppliers.from_profile(product.profile).first
     raise "Supplier not found" if s.blank?
 
     @supplier_product = product

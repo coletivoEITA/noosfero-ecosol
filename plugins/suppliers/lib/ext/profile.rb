@@ -2,6 +2,8 @@ require_dependency 'profile'
 
 class Profile
 
+  has_many :products
+
   has_many :suppliers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :consumer_id, :order => 'name ASC', :dependent => :destroy
   has_many :consumers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :profile_id, :order => 'name ASC'
 
@@ -23,7 +25,7 @@ class Profile
     return if has_consumer? consumer
 
     consumer.affiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
-    supplier = DistributionPluginSupplier.create!(:profile => self, :consumer => consumer) || suppliers.of_profile(consumer)
+    supplier = SuppliersPlugin::Supplier.create!(:profile => self, :consumer => consumer) || suppliers.of_profile(consumer)
 
     consumer.add_supplier_products supplier unless consumer.consumer?
     supplier

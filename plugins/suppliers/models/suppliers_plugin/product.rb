@@ -1,18 +1,14 @@
-class DistributionPluginProduct < ActiveRecord::Base
+class SuppliersPlugin::Product < Product
 
+  # FIXME remove
   belongs_to :node, :class_name => 'DistributionPluginNode'
-  belongs_to :supplier, :class_name => 'DistributionPluginSupplier'
+  belongs_to :supplier, :class_name => 'SuppliersPlugin::Supplier'
 
   named_scope :by_node, lambda { |n| { :conditions => {:node_id => n.id} } }
   named_scope :by_node_id, lambda { |id| { :conditions => {:node_id => id} } }
   named_scope :from_supplier, lambda { |supplier| supplier.nil? ? {} : { :conditions => {:supplier_id => supplier.id} } }
 
-  # optional fields
-  belongs_to :product
-  belongs_to :unit
-
-  has_one :product_category, :through => :product
-
+  # FIXME remove
   belongs_to :category, :class_name => 'ProductCategory'
   belongs_to :type_category, :class_name => 'ProductCategory'
 
@@ -29,8 +25,8 @@ class DistributionPluginProduct < ActiveRecord::Base
   named_scope :archived, :conditions => {:archived => true}
   named_scope :unarchived, :conditions => {:archived => false}
 
-  has_many :sources_from_products, :class_name => 'DistributionPluginSourceProduct', :foreign_key => 'to_product_id'
-  has_many :sources_to_products, :class_name => 'DistributionPluginSourceProduct', :foreign_key => 'from_product_id', :dependent => :destroy
+  has_many :sources_from_products, :class_name => 'DistributionPluginSourceProduct', :foreign_key => :to_product_id
+  has_many :sources_to_products, :class_name => 'DistributionPluginSourceProduct', :foreign_key => :from_product_id, :dependent => :destroy
 
   has_many :to_products, :through => :sources_to_products, :order => 'id asc'
   has_many :from_products, :through => :sources_from_products, :order => 'id asc'
@@ -43,8 +39,11 @@ class DistributionPluginProduct < ActiveRecord::Base
   def from_product=(value)
     self.from_products = [value]
   end
+  def supplier
+    self.from_product.supplier
+  end
   def supplier_products
-    self.supplier.nil? ? self.from_products : self.from_products.select{ |fp| fp.node == self.supplier.node }
+    self.supplier.nil? ? self.from_products : self.from_products.select{ |fp| fp.profile == self.supplier }
   end
   def supplier_product
     self.supplier_products.first

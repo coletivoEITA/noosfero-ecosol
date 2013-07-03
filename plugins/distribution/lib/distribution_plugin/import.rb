@@ -60,7 +60,7 @@ class DistributionPlugin::Import
 
     id_s = {}
     CSV.readlines(supplier_csv,:headers => true).each do |row|
-      s = DistributionPluginSupplier.create_dummy :consumer => node, :name => row[1]
+      s = SuppliersPlugin::Supplier.create_dummy :consumer => node, :name => row[1]
       id_s[row[0]] = s
       email = row[3]
       email = 'rede@terramater.org.br' if email.blank? or !email.include? '@'

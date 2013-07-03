@@ -2,6 +2,8 @@ require_dependency 'community'
 
 class Community
 
+  has_many :products
+
   def add_member(person)
     super(person)
 
