@@ -12547,6 +12547,14 @@ msgstr ""
 msgid "Choose at least one element!"
 msgstr ""
 
+#: plugins/sniffer/views/sniffer_plugin_myprofile/edit.html.erb:1 
+msgid "Buyer interests"
+msgstr "Interesses"
+
+#: plugins/sniffer/views/sniffer_plugin_myprofile/edit.html.erb:6
+msgid "Products and Services of Interest"
+msgstr "Produtos e Serviços de interesse"
+
 #: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:179
 #, fuzzy
 msgid "Continue >>"
@@ -12852,6 +12860,10 @@ msgid ""
 msgstr ""
 "Troca com %{the_other} criada em %{time} por %{enterprise} e fechada em"
 "%{closed_time}"
+
+#: plugins/escambo/views/snippets/_local.html.erb:4
+msgid "Region of %{city_with_state}"
+msgstr "Região de %{city_with_state}"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:46
 msgid "See history"
