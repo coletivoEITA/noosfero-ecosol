@@ -1020,7 +1020,7 @@ msgstr "Artigos"
 #: plugins/bsc/views/bsc_plugin_myprofile/_contract_form.html.erb:13
 #: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:18
 msgid "Enterprises"
-msgstr "Empreendimentos"
+msgstr "Ponto de Culturas"
 
 #: app/helpers/assets_helper.rb:12 app/helpers/search_helper.rb:14
 #: app/views/search/events.html.erb:1
@@ -1972,7 +1972,7 @@ msgstr "Você desbloqueou %s com sucesso."
 
 #: app/controllers/public/profile_controller.rb:170
 msgid "You are not allowed to unblock enterprises in this environment."
-msgstr "Você não está autorizado a desbloquear empreendimentos neste ambiente."
+msgstr "Você não está autorizado a desbloquear pontos de cultura neste ambiente."
 
 #: app/controllers/public/profile_controller.rb:182
 msgid "Message successfully sent."
@@ -2208,11 +2208,11 @@ msgstr "Campos de pessoa não atualizado com sucesso."
 
 #: app/controllers/admin/features_controller.rb:37
 msgid "Enterprise fields updated successfully."
-msgstr "Campos de empreendimento atualizados com sucesso."
+msgstr "Campos de ponto de cultura atualizados com sucesso."
 
 #: app/controllers/admin/features_controller.rb:39
 msgid "Enterprise fields not updated successfully."
-msgstr "Campos de empreendimento não atualizados com sucesso"
+msgstr "Campos de ponto de cultura não atualizados com sucesso"
 
 #: app/controllers/admin/features_controller.rb:47
 msgid "Community fields updated successfully."
@@ -2246,11 +2246,11 @@ msgstr "Número de notícias nas pastas salvo."
 #: app/models/favorite_enterprises_block.rb:12
 #: app/views/profile_editor/index.rhtml:55
 msgid "Favorite Enterprises"
-msgstr "Empreendimentos Favoritos"
+msgstr "Ponto de Culturas Favoritos"
 
 #: app/models/favorite_enterprises_block.rb:8
 msgid "This block lists your favorite enterprises."
-msgstr "Este bloco lista os empreendimentos favoritos."
+msgstr "Este bloco lista os pontos de cultura favoritos."
 
 #: app/models/favorite_enterprises_block.rb:19 app/models/members_block.rb:18
 #: app/models/fans_block.rb:18 app/models/people_block.rb:21
@@ -2794,7 +2794,7 @@ msgstr "organização"
 
 #: app/models/input.rb:-
 msgid "enterprise"
-msgstr "empreendimento"
+msgstr "ponto de cultura"
 
 #: app/models/input.rb:-
 msgid "person"
@@ -2963,7 +2963,7 @@ msgstr "produto"
 #: app/models/enterprise.rb:11 app/views/templates/index.html.erb:7
 #: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:61
 msgid "Enterprise"
-msgstr "Empreendimento"
+msgstr "Ponto de Cultura"
 
 #: app/models/input.rb:-
 msgid "Product category"
@@ -3225,15 +3225,15 @@ msgstr "Este bloco apresenta as categorias como um menu."
 #: app/views/account/accept_terms.rhtml:14
 #: app/views/account/activation_question.rhtml:26
 msgid "Enterprise activation"
-msgstr "Ativação de empreendimento"
+msgstr "Ativação de ponto de cultura"
 
 #: app/models/enterprise_activation.rb:31
 msgid "%{requestor} wants to activate enterprise %{linked_subject}."
-msgstr "%{requestor} quer ativar o empreendimento %{linked_subject}."
+msgstr "%{requestor} quer ativar o ponto de cultura %{linked_subject}."
 
 #: app/models/enterprise_activation.rb:39
 msgid "%{requestor} wants to activate enterprise %{enterprise}."
-msgstr "%{requestor} quer ativar o empreendimento %{enterprise}."
+msgstr "%{requestor} quer ativar o ponto de cultura %{enterprise}."
 
 #: app/models/environment_mailing.rb:19
 msgid "Sent by %s."
@@ -3248,7 +3248,7 @@ msgstr "Página inicial"
 
 #: app/models/enterprise_homepage.rb:8
 msgid "Enterprise homepage"
-msgstr "Página do Empreendimento"
+msgstr "Página do Ponto de Cultura"
 
 #: app/models/enterprise_homepage.rb:12
 msgid "Display the summary of profile."
@@ -3284,7 +3284,7 @@ msgstr "Gerenciar amigos"
 
 #: app/models/profile.rb:63
 msgid "Validate enterprise"
-msgstr "validar empreendimento"
+msgstr "validar ponto de cultura"
 
 #: app/models/profile.rb:64
 msgid "Perform task"
@@ -3604,7 +3604,7 @@ msgstr "Desabilitar busca por artigos "
 
 #: app/models/environment.rb:92
 msgid "Disable search for enterprises"
-msgstr "Desabilitar busca por empreendimentos"
+msgstr "Desabilitar busca por pontos de cultura"
 
 #: app/models/environment.rb:93
 msgid "Disable search for people"
@@ -3624,7 +3624,7 @@ msgstr "Desabilitar buscar por eventos"
 
 #: app/models/environment.rb:97
 msgid "Disable products for enterprises"
-msgstr "Desabilitar produtos para empreendimentos"
+msgstr "Desabilitar produtos para pontos de cultura"
 
 #: app/models/environment.rb:98
 msgid "Disable categories"
@@ -3658,11 +3658,11 @@ msgstr "Desabilitar contato para comunidades"
 #: app/views/enterprise_registration/basic_information.rhtml:3
 #: plugins/bsc/views/bsc_plugin_myprofile/create_enterprise.html.erb:3
 msgid "Enterprise registration"
-msgstr "Registro de empreendimento"
+msgstr "Registro de ponto de cultura"
 
 #: app/models/environment.rb:107
 msgid "Enable activation of enterprises"
-msgstr "Habilitar ativação de empreendimentos"
+msgstr "Habilitar ativação de pontos de cultura"
 
 #: app/models/environment.rb:108
 msgid "Media panel in WYSIWYG editor"
@@ -3710,11 +3710,11 @@ msgstr "Administrador tem que aprovar a criação de comunidades"
 
 #: app/models/environment.rb:120
 msgid "Enterprises are disabled when created"
-msgstr "Empreendimentos são desabilitados quando criados"
+msgstr "Ponto de Culturas são desabilitados quando criados"
 
 #: app/models/environment.rb:121
 msgid "Enterprises are validated when created"
-msgstr "Empreendimentos são validadodos quando criados"
+msgstr "Ponto de Culturas são validadodos quando criados"
 
 #: app/models/environment.rb:122
 msgid "Show a balloon with profile links when a profile image is clicked"
@@ -3768,7 +3768,7 @@ msgstr "Redireciona o usuário para seu painel de controle."
 
 #: app/models/environment.rb:239
 msgid "This enterprise needs to be enabled."
-msgstr "Esse empreendimento precisa ser habilitado."
+msgstr "Esse ponto de cultura precisa ser habilitado."
 
 #: app/models/environment.rb:579
 msgid "Only one Virtual Community can be the default one"
@@ -4079,7 +4079,7 @@ msgstr "Este bloco apresenta algumas informações sobre a sua rede."
 
 #: app/models/fans_block.rb:4
 msgid "Displays the people who like the enterprise"
-msgstr "Exibe as pessoas que gostam do empreendimento"
+msgstr "Exibe as pessoas que gostam do ponto de cultura"
 
 #: app/models/fans_block.rb:8
 msgid "{#} fan"
@@ -4090,8 +4090,8 @@ msgstr[1] "{#} fãs"
 #: app/models/fans_block.rb:12
 msgid "This block presents the fans of an enterprise."
 msgstr ""
-"Este bloco apresenta as pessoas que adicionaram um empreendimento como "
-"empreendimento favorito."
+"Este bloco apresenta as pessoas que adicionaram um ponto de cultura como "
+"ponto de cultura favorito."
 
 #: app/models/friends_block.rb:8
 msgid "{#} friend"
@@ -4163,7 +4163,7 @@ msgstr "Nome fantasia"
 
 #: app/models/enterprise.rb:128
 msgid "Enterprises's profile"
-msgstr "Perfil do empreendimento"
+msgstr "Perfil do ponto de cultura"
 
 #: app/models/enterprise.rb:129 app/models/enterprise.rb:145
 #: app/models/blog.rb:13 app/models/blog.rb:17 app/models/organization.rb:128
@@ -4174,7 +4174,7 @@ msgstr "Blog"
 
 #: app/models/enterprise.rb:167 app/models/enterprise.rb:177
 msgid "Enterprise Info and settings"
-msgstr "Informações e Configurações do Empreendimento"
+msgstr "Informações e Configurações do Ponto de Cultura"
 
 #: app/models/add_friend.rb:27 app/models/add_friend.rb:40
 #: app/models/invite_friend.rb:15 app/models/invite_friend.rb:27
@@ -4311,12 +4311,12 @@ msgstr "Atualizado: %s"
 #: app/models/enterprises_block.rb:4
 msgid "{#} enterprise"
 msgid_plural "{#} enterprises"
-msgstr[0] "{#} empreendimento"
-msgstr[1] "{#} empreendimentos"
+msgstr[0] "{#} ponto de cultura"
+msgstr[1] "{#} pontos de cultura"
 
 #: app/models/enterprises_block.rb:8
 msgid "This block displays the enterprises where this user works."
-msgstr "Este block apresenta os empreendimentos onde este usuário trabalha."
+msgstr "Este block apresenta os pontos de cultura onde este usuário trabalha."
 
 #: app/models/enterprises_block.rb:20 app/models/enterprises_block.rb:24
 msgid "enterprises|View all"
@@ -5003,11 +5003,11 @@ msgid ""
 "%{fn} is already being as identifier by another enterprise, organization or "
 "person."
 msgstr ""
-"%{fn} já está sendo usado por outro empreendimento, organização ou pessoa."
+"%{fn} já está sendo usado por outro ponto de cultura, organização ou pessoa."
 
 #: app/models/create_enterprise.rb:154 app/models/create_enterprise.rb:200
 msgid "%{requestor} wants to create enterprise %{subject}."
-msgstr "%{requestor} quer criar empreendimento %{subject}."
+msgstr "%{requestor} quer criar ponto de cultura %{subject}."
 
 #: app/models/create_enterprise.rb:162
 msgid ""
@@ -5018,7 +5018,7 @@ msgid ""
 "      You will be notified as soon as the validator organization has a "
 "position about your request."
 msgstr ""
-"Seu pedido para cadastro de empreendimento \"%{enterprise}\" em "
+"Seu pedido para cadastro de ponto de cultura \"%{enterprise}\" em "
 "%{environment} foi recebido. Ele será revisado por um organização validadora "
 "que você escolheu, de acordo com seu métodos e critérios.\n"
 "\n"
@@ -5031,9 +5031,9 @@ msgid ""
 "You can access %{environment} now and provide start providing all relevant "
 "information your new enterprise."
 msgstr ""
-"Sua requisição para registrar o empreendimento \"%{enterprise}\" foi "
+"Sua requisição para registrar o ponto de cultura \"%{enterprise}\" foi "
 "aprovada. Você pode acessar %{environment} agora e começar a fornecer "
-"informações relevantes sobre seu novo empreendimento."
+"informações relevantes sobre seu novo ponto de cultura."
 
 #: app/models/create_enterprise.rb:172
 msgid ""
@@ -5043,7 +5043,7 @@ msgid ""
 "\n"
 "%{explanation}"
 msgstr ""
-"Sua requisição para registrar o empreendimento %{enterprise} em "
+"Sua requisição para registrar o ponto de cultura %{enterprise} em "
 "%{environment} NÃO foi aprovada pelo validador de organização. A seguinte "
 "explicação foi dada: \n"
 "\n"
@@ -5055,13 +5055,13 @@ msgid ""
 "have to approve or reject it through the \"Pending Validations\" section in "
 "your control panel.\n"
 msgstr ""
-"O empreendimento \"%{enterprise}\" requisitou entrada em %{environment}. "
+"O ponto de cultura \"%{enterprise}\" requisitou entrada em %{environment}. "
 "Você tem que aprová-lo ou rejeitá-lo através da seção \"Validações pendentes"
 "\" no seu painel de controle.\n"
 
 #: app/models/create_enterprise.rb:179
 msgid "The data provided by the enterprise was the following:\n"
-msgstr "Os dados providos pelo empreendimento foram os seguintes:\n"
+msgstr "Os dados providos pelo ponto de cultura foram os seguintes:\n"
 
 #: app/models/create_enterprise.rb:182
 msgid "Name: %s"
@@ -5089,7 +5089,7 @@ msgstr "Atividade econômica: %s"
 
 #: app/models/create_enterprise.rb:189
 msgid "Information about enterprise's management:\n"
-msgstr "Alterar a informação sobre o empreendimento:\n"
+msgstr "Alterar a informação sobre o ponto de cultura:\n"
 
 #: app/models/create_enterprise.rb:191
 msgid "Contact phone: %s"
@@ -5178,11 +5178,11 @@ msgstr "Limitações"
 
 #: app/models/disabled_enterprise_message_block.rb:4
 msgid "\"Disabled enterprise\" message"
-msgstr "Mensagem \"Empreendimento desabilitado\""
+msgstr "Mensagem \"Ponto de Cultura desabilitado\""
 
 #: app/models/disabled_enterprise_message_block.rb:8
 msgid "Shows a message for disabled enterprises."
-msgstr "Mostrar mensagem para empreendimento desabilitado"
+msgstr "Mostrar mensagem para ponto de cultura desabilitado"
 
 #: app/models/email_activation.rb:10
 msgid "You have already requested activation of your mailbox."
@@ -5249,8 +5249,8 @@ msgstr[1] "%{num} usuários"
 #: app/models/environment_statistics_block.rb:23
 msgid "One enterprise"
 msgid_plural "%{num} enterprises"
-msgstr[0] "Um empreendimento"
-msgstr[1] "%{num} empreendimentos"
+msgstr[0] "Um ponto de cultura"
+msgstr[1] "%{num} pontos de cultura"
 
 #: app/models/environment_statistics_block.rb:25
 #: app/views/blocks/my_network/person.rhtml:6
@@ -5564,11 +5564,11 @@ msgstr "Campos"
 
 #: app/views/admin_panel/index.rhtml:36
 msgid "Enterprise-related settings"
-msgstr "Configurações relacionadas com empreendimento"
+msgstr "Configurações relacionadas com ponto de cultura"
 
 #: app/views/admin_panel/index.rhtml:39
 msgid "Message for disabled enterprises"
-msgstr "Mensagem para empreendimentos desabilitados"
+msgstr "Mensagem para pontos de cultura desabilitados"
 
 #: app/views/admin_panel/index.rhtml:40
 msgid "Validators by region"
@@ -5617,7 +5617,7 @@ msgstr "Voltar ao painel de administração"
 
 #: app/views/features/_manage_enterprise_fields.rhtml:1
 msgid "Manage enterprise fields"
-msgstr "Gerenciar campos de empreendimento"
+msgstr "Gerenciar campos de ponto de cultura"
 
 #: app/views/features/_manage_enterprise_fields.rhtml:10
 msgid "Display on registration?"
@@ -6260,7 +6260,7 @@ msgstr "Editando a informação de validação"
 #: app/views/enterprise_validation/list_processed.rhtml:1
 #: app/views/enterprise_validation/index.rhtml:30
 msgid "Processed enterprise validations"
-msgstr "Validações de empreendimento processadas"
+msgstr "Validações de ponto de cultura processadas"
 
 #: app/views/enterprise_validation/list_processed.rhtml:13
 #: app/views/enterprise_validation/_details.rhtml:11
@@ -6320,8 +6320,8 @@ msgid ""
 "If this enterprise passes the criteria to be considered an solidarity "
 "enconomy enterprise, you can approve it by click the button below."
 msgstr ""
-"Se este empreendimento passar no critério para ser considerado um "
-"empreendimento de economia solidária, você pode aprová-lo clicando no botão "
+"Se este ponto de cultura passar no critério para ser considerado um "
+"ponto de cultura de economia solidária, você pode aprová-lo clicando no botão "
 "abaixo"
 
 #: app/views/enterprise_validation/details.rhtml:23
@@ -6336,7 +6336,7 @@ msgid ""
 "If this enterprise does not pass the criteria do be considered, use this "
 "form."
 msgstr ""
-"Se este empreendimento não passar no critério para ser considerado, use este "
+"Se este ponto de cultura não passar no critério para ser considerado, use este "
 "formulário."
 
 #: app/views/enterprise_validation/details.rhtml:28
@@ -6349,7 +6349,7 @@ msgstr ""
 
 #: app/views/enterprise_validation/index.rhtml:1
 msgid "Enterprise validations"
-msgstr "Validações de empreendimento"
+msgstr "Validações de ponto de cultura"
 
 #: app/views/enterprise_validation/index.rhtml:4
 msgid "Edit validation info"
@@ -6361,7 +6361,7 @@ msgstr "Voltar"
 
 #: app/views/enterprise_validation/index.rhtml:8
 msgid "Pending enterprise validations"
-msgstr "Validações de empreendimento pendentes"
+msgstr "Validações de ponto de cultura pendentes"
 
 #: app/views/enterprise_validation/index.rhtml:27
 msgid "See details/approve/reject"
@@ -6369,7 +6369,7 @@ msgstr "Ver detalhes/aprovar/rejeitar"
 
 #: app/views/enterprise_validation/index.rhtml:32
 msgid "See the list of processed enterprise validations"
-msgstr "Ver lista validações de empreendimentos processados"
+msgstr "Ver lista validações de pontos de cultura processados"
 
 #: app/views/environment_role_manager/affiliate.rhtml:7
 #: app/views/profile_members/affiliate.rhtml:7
@@ -6513,27 +6513,27 @@ msgstr "Eu esqueci a minha senha!"
 
 #: app/views/account/already_activated.rhtml:1
 msgid "This enterprise is already active"
-msgstr "Este empreendimento já foi ativado"
+msgstr "Este ponto de cultura já foi ativado"
 
 #: app/views/account/invalid_enterprise_code.rhtml:1
 msgid "Invalid enterprise code"
-msgstr "Código de empreendimento inválido"
+msgstr "Código de ponto de cultura inválido"
 
 #: app/views/account/invalid_enterprise_code.rhtml:4
 msgid ""
 "The code you are using for validate your enterprise is not valid. Please "
 "check if you are typing it correctly."
 msgstr ""
-"O código que você está usando para validar seu empreendimento não é válido. "
+"O código que você está usando para validar seu ponto de cultura não é válido. "
 "Por favor verifique se você está digitando corretamente."
 
 #: app/views/account/blocked.rhtml:2
 msgid "This enterprise can't be activated by the system"
-msgstr "Este empreendimento não pôde ser ativado pelo sistema"
+msgstr "Este ponto de cultura não pôde ser ativado pelo sistema"
 
 #: app/views/account/blocked.rhtml:3
 msgid "Unfortunately this enterprise can't be activated via the system."
-msgstr "Infelizmente este empreendimento não pode ser ativado pelo sistema."
+msgstr "Infelizmente este ponto de cultura não pode ser ativado pelo sistema."
 
 #: app/views/account/blocked.rhtml:6
 msgid ""
@@ -6546,12 +6546,12 @@ msgstr ""
 #: app/views/account/blocked.rhtml:8
 msgid "We don't have enough information about your enterprise to identify you."
 msgstr ""
-"Nós não temos informação o suficiente sobre o seu empreendimento para "
+"Nós não temos informação o suficiente sobre o seu ponto de cultura para "
 "identificá-lo"
 
 #: app/views/account/blocked.rhtml:13
 msgid "Your enterprise has been blocked"
-msgstr "Seu empreendimento foi bloqueado"
+msgstr "Seu ponto de cultura foi bloqueado"
 
 #: app/views/account/index_anonymous.rhtml:1
 msgid "Identify yourself"
@@ -6694,7 +6694,7 @@ msgid ""
 "control panel of your enterprise"
 msgstr ""
 "%s foi ativado com sucesso. Agora você pode ir para o seu painel de controle "
-"ou ao painel de controle do seu empreendimento"
+"ou ao painel de controle do seu ponto de cultura"
 
 #: app/views/account/welcome.rhtml:7
 msgid "Go to my control panel"
@@ -6702,7 +6702,7 @@ msgstr "Ir para o meu painel de controle"
 
 #: app/views/account/welcome.rhtml:8
 msgid "Go to my enterprise control panel"
-msgstr "Ir para o painel de controle do meu empreendimento"
+msgstr "Ir para o painel de controle do meu ponto de cultura"
 
 #: app/views/account/invalid_change_password_code.rhtml:1
 msgid "Invalid change password code"
@@ -6797,33 +6797,33 @@ msgid ""
 "or phone."
 msgstr ""
 "Esta é uma pergunta para saber se você é realmente parte deste "
-"empreendimento. Preste atenção porque você tem apenas uma chance de "
-"responder corretamente e ativar seu empreendimento. Se você responder errado "
-"não será mais possível ativar seu empreendimento automaticamente e você terá "
+"ponto de cultura. Preste atenção porque você tem apenas uma chance de "
+"responder corretamente e ativar seu ponto de cultura. Se você responder errado "
+"não será mais possível ativar seu ponto de cultura automaticamente e você terá "
 "que entrar em contato com os administradores do %s por email ou telefone."
 
 #: app/views/account/activation_question.rhtml:33
 msgid ""
 "What year your enterprise was founded? It must have 4 digits, eg 1990. %s"
 msgstr ""
-"Qual o ano de fundação do seu empreendimento? Ele deve ter 4 dígitos, ex. "
+"Qual o ano de fundação do seu ponto de cultura? Ele deve ter 4 dígitos, ex. "
 "1990. %s"
 
 #: app/views/account/activation_question.rhtml:33
 msgid "What is the CNPJ of your enterprise?"
-msgstr "Qual o CNPJ do seu empreendimento?"
+msgstr "Qual o CNPJ do seu ponto de cultura?"
 
 #: app/views/account/activate_enterprise.rhtml:2
 msgid "Enterprise activation - part 3 of 3"
-msgstr "Ativação de empreendimento - parte 3 de 3"
+msgstr "Ativação de ponto de cultura - parte 3 de 3"
 
 #: app/views/account/activate_enterprise.rhtml:6
 msgid ""
 "Now for you manage your enterprise you have to associate an individual "
 "account to the enterprise."
 msgstr ""
-"Agora para gerenciar seu empreendimento você tem que associar uma conta de "
-"usuário individual ao empreendimento"
+"Agora para gerenciar seu ponto de cultura você tem que associar uma conta de "
+"usuário individual ao ponto de cultura"
 
 #: app/views/account/activate_enterprise.rhtml:7
 msgid "Do you have a personal user account in the system?"
@@ -6840,8 +6840,8 @@ msgid ""
 "enterprise."
 msgstr ""
 "<b>Atenção</b>: este formulário é para você cadastrar a sua conta pessoal, e "
-"não do empreendimento. Assim, você terá uma conta pessoal a partir da qual "
-"pode gerenciar o seu empreendimento"
+"não do ponto de cultura. Assim, você terá uma conta pessoal a partir da qual "
+"pode gerenciar o seu ponto de cultura"
 
 #: app/views/account/activate_enterprise.rhtml:22
 msgid "Enter you user name and password"
@@ -6942,7 +6942,7 @@ msgstr "Mensagem:"
 #: app/views/enterprise_registration/confirmation.rhtml:1
 #: app/views/enterprise_registration/creation.rhtml:1
 msgid "Enterprise registration completed"
-msgstr "Registro do empreendimento completo"
+msgstr "Registro do ponto de cultura completo"
 
 #: app/views/enterprise_registration/confirmation.rhtml:4
 msgid ""
@@ -6962,15 +6962,15 @@ msgstr "Você pode continuar navegando neste ambiente."
 
 #: app/views/enterprise_registration/creation.rhtml:4
 msgid "Your enterprise (%s) was successfully registered."
-msgstr "Seu empreendimento (%s) foi registrado com sucesso."
+msgstr "Seu ponto de cultura (%s) foi registrado com sucesso."
 
 #: app/views/enterprise_registration/creation.rhtml:8
 msgid "You can manage your enterprise now."
-msgstr "Você pode gerenciar seu empreendimento agora."
+msgstr "Você pode gerenciar seu ponto de cultura agora."
 
 #: app/views/enterprise_registration/select_validator.rhtml:1
 msgid "Enterprise registration: validator organization"
-msgstr "Registo do empreendimento: organização validadora"
+msgstr "Registo do ponto de cultura: organização validadora"
 
 #: app/views/enterprise_registration/select_validator.rhtml:4
 msgid ""
@@ -7004,7 +7004,7 @@ msgid ""
 "There are no validators to validate the registration of this new enterprise. "
 "Contact your administrator for instructions."
 msgstr ""
-"Não existem validadores para validar o registro desse novo empreendimento. "
+"Não existem validadores para validar o registro desse novo ponto de cultura. "
 "Contacte seu administrador para instruções"
 
 #: app/views/enterprise_registration/basic_information.rhtml:12
@@ -7028,9 +7028,9 @@ msgid ""
 "entitiy of your choice (within your state) and when the enterprise is "
 "aproved you will be able to activate its profile."
 msgstr ""
-"Para registrar um novo empreendimento, preencha o formulário e pressione o "
-"botão Registrar. O empreendimento será submetido à avaliação pela entidade "
-"validadora de sua escolha no seu estado, e quando quando o empreendimento "
+"Para registrar um novo ponto de cultura, preencha o formulário e pressione o "
+"botão Registrar. O ponto de cultura será submetido à avaliação pela entidade "
+"validadora de sua escolha no seu estado, e quando quando o ponto de cultura "
 "for aprovado você poderá ativar o seu perfil."
 
 #: app/views/events/_agenda.rhtml:6
@@ -7575,7 +7575,7 @@ msgstr "Criar nova comunidade"
 
 #: app/views/memberships/index.rhtml:7 app/views/profile/enterprises.rhtml:13
 msgid "Register a new enterprise"
-msgstr "Registrar um novo empreendimento"
+msgstr "Registrar um novo ponto de cultura"
 
 #: app/views/maps/edit_location.rhtml:1
 #: app/views/profile_editor/index.rhtml:17
@@ -7777,16 +7777,16 @@ msgstr "Voltar à galeria"
 
 #: app/views/favorite_enterprises/remove.rhtml:3
 msgid "Removing favorite enterprise: %s"
-msgstr "Removendo empreendimento favorito: %s"
+msgstr "Removendo ponto de cultura favorito: %s"
 
 #: app/views/favorite_enterprises/remove.rhtml:8
 msgid "Are you sure you want to remove %s from your favorite enterprise list?"
 msgstr ""
-"Tem certeza que quer remover %s da sua lista de empreendimentos favoritos?"
+"Tem certeza que quer remover %s da sua lista de pontos de cultura favoritos?"
 
 #: app/views/favorite_enterprises/remove.rhtml:14
 msgid "Yes, I want to remove %s from my favorite enterprise list"
-msgstr "Sim, quero remover %s da minha lista de empreendimentos favoritos"
+msgstr "Sim, quero remover %s da minha lista de pontos de cultura favoritos"
 
 #: app/views/favorite_enterprises/remove.rhtml:15
 #: app/views/favorite_enterprises/add.rhtml:11 app/views/profile/join.rhtml:12
@@ -7796,11 +7796,11 @@ msgstr "Não, não quero."
 
 #: app/views/favorite_enterprises/add.rhtml:1
 msgid "Adding %s as a favorite enterprise"
-msgstr "Adicionando %s como empreendimento favorito"
+msgstr "Adicionando %s como ponto de cultura favorito"
 
 #: app/views/favorite_enterprises/add.rhtml:4
 msgid "Are you sure you want to add %s as your favorite enterprise?"
-msgstr "Tem certeza que quer adicionar %s como seu empreendimento favorito?"
+msgstr "Tem certeza que quer adicionar %s como seu ponto de cultura favorito?"
 
 #: app/views/favorite_enterprises/add.rhtml:10
 #: app/views/profile_editor/destroy_profile.rhtml:7
@@ -7809,16 +7809,16 @@ msgstr "Sim, tenho certeza"
 
 #: app/views/favorite_enterprises/add.rhtml:10
 msgid "I want to add %s as a favorite enterprise"
-msgstr "Eu quero adicionar %s como empreendimento favorito"
+msgstr "Eu quero adicionar %s como ponto de cultura favorito"
 
 #: app/views/favorite_enterprises/index.rhtml:3
 #: app/views/profile/favorite_enterprises.rhtml:3
 msgid "%s's favorite enterprises"
-msgstr "Empreendimentos favoritos de %s"
+msgstr "Ponto de Culturas favoritos de %s"
 
 #: app/views/favorite_enterprises/index.rhtml:24
 msgid "You have no favorite enterprises yet."
-msgstr "Você não tem empreendimentos favoritos ainda."
+msgstr "Você não tem pontos de cultura favoritos ainda."
 
 #: app/views/catalog/index.rhtml:4 app/views/blocks/profile_info.rhtml:21
 #: app/views/profile/_organization_profile.rhtml:26
@@ -7943,7 +7943,7 @@ msgstr "Adicionar favorito"
 
 #: app/views/blocks/profile_info_actions/enterprise.rhtml:4
 msgid "Add enterprise as favorite"
-msgstr "Editar empreendimento como favorito"
+msgstr "Editar ponto de cultura como favorito"
 
 #: app/views/blocks/profile_info_actions/person.rhtml:6
 #: app/views/profile/_private_profile.rhtml:13
@@ -8020,7 +8020,7 @@ msgstr "Não, eu desisto"
 
 #: app/views/profile_editor/disable.rhtml:1
 msgid "Disabling '%s' enterprise"
-msgstr "Desabilitando empreendimentos '%s'"
+msgstr "Desabilitando pontos de cultura '%s'"
 
 #: app/views/profile_editor/disable.rhtml:4
 msgid "Are you sure you want to disable %s?"
@@ -8071,7 +8071,7 @@ msgstr "Conteúdo do rodapé"
 
 #: app/views/profile_editor/enable.rhtml:1
 msgid "Enabling '%s' enterprise"
-msgstr "Habilitando empreendimento '%s'"
+msgstr "Habilitando ponto de cultura '%s'"
 
 #: app/views/profile_editor/enable.rhtml:4
 msgid "Are you sure you want to enable %s?"
@@ -8226,11 +8226,11 @@ msgstr "Gerenciar Produtos e Serviços"
 
 #: app/views/profile_editor/index.rhtml:52
 msgid "Enterprise Validation"
-msgstr "Validações de empreendimento"
+msgstr "Validações de ponto de cultura"
 
 #: app/views/profile_editor/index.rhtml:81
 msgid "Activate your enterprise"
-msgstr "Ativar seu empreendimento"
+msgstr "Ativar seu ponto de cultura"
 
 #: app/views/profile_editor/index.rhtml:82
 msgid ""
@@ -8238,11 +8238,11 @@ msgid ""
 "add here the activation code that was sent."
 msgstr ""
 "Se você recebeu uma carta com informações sobre a ativação do seu "
-"empreendimento, coloque aqui o código de ativação recebido."
+"ponto de cultura, coloque aqui o código de ativação recebido."
 
 #: app/views/profile_editor/index.rhtml:84
 msgid "Enterprise activation code"
-msgstr "Código de Ativação do empreendimento"
+msgstr "Código de Ativação do ponto de cultura"
 
 #: app/views/profile_editor/index.rhtml:85
 msgid "Activate"
@@ -8325,7 +8325,7 @@ msgstr "Rede"
 
 #: app/views/profile/enterprises.rhtml:3
 msgid "%s's enterprises"
-msgstr "Empreendimentos de %s"
+msgstr "Ponto de Culturas de %s"
 
 #: app/views/profile/content_tagged.rhtml:3
 msgid "Content tagged with \"%s\""
@@ -8634,7 +8634,7 @@ msgid ""
 "to consumers about your enterprise"
 msgstr ""
 "Adicione insumos ou matéria-prima usado por este produto e dê mais "
-"transparência aos consumidores sobre seu empreendimento"
+"transparência aos consumidores sobre seu ponto de cultura"
 
 #: app/views/manage_products/_display_inputs.rhtml:15
 msgid "Add new input or raw material"
@@ -8646,7 +8646,7 @@ msgid ""
 "transparency to consumers about your enterprise"
 msgstr ""
 "Adicione novo insumo ou matéria-prime usado por este produto e dê mais "
-"transparência aos consumidores sobre seu empreendimento"
+"transparência aos consumidores sobre seu ponto de cultura"
 
 #: app/views/manage_products/_display_inputs.rhtml:16
 msgid "Drag the input with the mouse to change the order"
@@ -9148,11 +9148,11 @@ msgstr "Editar tema"
 
 #: app/views/shared/_manage_enterprises.rhtml:2
 msgid "Manage enterprises"
-msgstr "Gerenciar empreendimentos"
+msgstr "Gerenciar pontos de cultura"
 
 #: app/views/shared/_manage_enterprises.rhtml:2
 msgid "My enterprises"
-msgstr "Meus empreendimentos"
+msgstr "Meus pontos de cultura"
 
 #: app/views/shared/_redirect_via_javascript.rhtml:2
 msgid "redirecting..."
@@ -9272,7 +9272,7 @@ msgstr "Digite um termo de pesquisa para os usuários"
 #: app/views/templates/create_person_template.html.erb:7
 #: app/views/templates/create_community_template.html.erb:7
 msgid "Create enterprise template"
-msgstr "Criar um modelo de empreendimento"
+msgstr "Criar um modelo de ponto de cultura"
 
 #: app/views/templates/create_person_template.html.erb:5
 #: app/views/templates/create_community_template.html.erb:10
@@ -10029,7 +10029,7 @@ msgstr "Opção de entrega atualizada."
 
 #: plugins/shopping_cart/controllers/shopping_cart_plugin_controller.rb:195
 msgid "Can't join items from different enterprises."
-msgstr "Não é possível juntar itens de empreendimentos diferentes."
+msgstr "Não é possível juntar itens de pontos de cultura diferentes."
 
 #: plugins/shopping_cart/controllers/shopping_cart_plugin_controller.rb:209
 msgid "There is no basket."
@@ -10037,7 +10037,7 @@ msgstr "Não há cesto."
 
 #: plugins/shopping_cart/controllers/shopping_cart_plugin_controller.rb:225
 msgid "This enterprise doesn't have this product."
-msgstr "Este empreendimento não tem esse produto."
+msgstr "Este ponto de cultura não tem esse produto."
 
 #: plugins/shopping_cart/controllers/shopping_cart_plugin_controller.rb:239
 msgid "The basket doesn't have this product."
@@ -10071,11 +10071,11 @@ msgstr "Seu Bsc foi criado."
 
 #: plugins/bsc/controllers/bsc_plugin_admin_controller.rb:21
 msgid "Enterprises validated."
-msgstr "Empreendimento validados."
+msgstr "Ponto de Cultura validados."
 
 #: plugins/bsc/controllers/bsc_plugin_admin_controller.rb:24
 msgid "Enterprise validations couldn't be saved."
-msgstr "As validações de empreendimento não puderam ser salvas."
+msgstr "As validações de ponto de cultura não puderam ser salvas."
 
 #: plugins/bsc/controllers/bsc_plugin_myprofile_controller.rb:38
 msgid "This Bsc associations were saved successfully."
@@ -10087,11 +10087,11 @@ msgstr "As associações deste Bsc não puderam ser salvas."
 
 #: plugins/bsc/controllers/bsc_plugin_myprofile_controller.rb:71
 msgid "Enterprise ownership transferred."
-msgstr "A administração do empreendimento foi transferida."
+msgstr "A administração do ponto de cultura foi transferida."
 
 #: plugins/bsc/controllers/bsc_plugin_myprofile_controller.rb:85
 msgid "Enterprise was created in association with %s."
-msgstr "O empreendimento foi criado em associação com %s."
+msgstr "O ponto de cultura foi criado em associação com %s."
 
 #: plugins/bsc/controllers/bsc_plugin_myprofile_controller.rb:117
 msgid "Contract created."
@@ -10281,12 +10281,12 @@ msgstr "Gerenciar plugins"
 #: plugins/exchange/models/exchange_plugin_message.rb:-
 #, fuzzy
 msgid "Enterprise sender"
-msgstr "Empreendimentos"
+msgstr "Ponto de Culturas"
 
 #: plugins/exchange/models/exchange_plugin_message.rb:-
 #, fuzzy
 msgid "Enterprise recipient"
-msgstr "Registro de empreendimento"
+msgstr "Registro de ponto de cultura"
 
 #: plugins/exchange/models/exchange_plugin_message.rb:-
 #, fuzzy
@@ -10320,7 +10320,7 @@ msgstr "Tipo do repositório"
 #: plugins/sniffer/models/sniffer_plugin_profile.rb:-
 #, fuzzy
 msgid "sniffer plugin profile"
-msgstr "Perfil do empreendimento"
+msgstr "Perfil do ponto de cultura"
 
 #: plugins/cms_learning/models/article_resource.rb:-
 #, fuzzy
@@ -10381,7 +10381,7 @@ msgstr "Um plugin que permite envio de e-mails via formulários HTML."
 
 #: plugins/shopping_cart/lib/shopping_cart_plugin.rb:12
 msgid "A shopping basket feature for enterprises"
-msgstr "Funcionalidade de cesto de compras para empreendimentos"
+msgstr "Funcionalidade de cesto de compras para pontos de cultura"
 
 #: plugins/shopping_cart/lib/shopping_cart_plugin.rb:33
 msgid "Add to basket"
@@ -10478,7 +10478,7 @@ msgstr "%s pessoas encontradas"
 
 #: plugins/solr/lib/solr_plugin/search_helper.rb:141
 msgid "%s enterprises found"
-msgstr "%s empreendimentos encontrados"
+msgstr "%s pontos de cultura encontrados"
 
 #: plugins/solr/lib/solr_plugin/search_helper.rb:142
 msgid "%s communities found"
@@ -10550,12 +10550,12 @@ msgstr "Criar Bsc"
 
 #: plugins/bsc/lib/bsc_plugin.rb:18
 msgid "Validate Enterprises"
-msgstr "Validar empreendimentos"
+msgstr "Validar pontos de cultura"
 
 #: plugins/bsc/lib/bsc_plugin.rb:23
 #: plugins/bsc/views/bsc_plugin_myprofile/manage_associated_enterprises.html.erb:1
 msgid "Manage associated enterprises"
-msgstr "Gerenciar empreendimentos associados"
+msgstr "Gerenciar pontos de cultura associados"
 
 #: plugins/bsc/lib/bsc_plugin.rb:24 plugins/bsc/lib/bsc_plugin.rb:30
 msgid "Transfer ownership"
@@ -10608,7 +10608,7 @@ msgstr "Associação de BSC"
 
 #: plugins/bsc/lib/bsc_plugin/associate_enterprise.rb:18
 msgid "%{requestor} wants to associate this enterprise with %{linked_subject}."
-msgstr "%{requestor} quer associar este empreendimento com %{linked_subject}."
+msgstr "%{requestor} quer associar este ponto de cultura com %{linked_subject}."
 
 #: plugins/bsc/lib/bsc_plugin/associate_enterprise.rb:35
 msgid "%{enterprise} accepted your request to associate it with %{bsc}."
@@ -11471,7 +11471,7 @@ msgstr "Nenhum filtro disponível"
 
 #: plugins/solr/views/search/_facets.html.erb:5
 msgid "New enterprise"
-msgstr "Novo empreendimento"
+msgstr "Novo ponto de cultura"
 
 #: plugins/solr/views/search/_results_header.html.erb:7
 msgid "Showing page %s of %s"
@@ -11483,12 +11483,12 @@ msgstr "Registro de BSC"
 
 #: plugins/bsc/views/bsc_plugin_admin/validate_enterprises.html.erb:1
 msgid "Validate enterprises"
-msgstr "Validar empreendimentos"
+msgstr "Validar pontos de cultura"
 
 #: plugins/bsc/views/bsc_plugin_admin/validate_enterprises.html.erb:5
 #: plugins/bsc/views/bsc_plugin_myprofile/manage_associated_enterprises.html.erb:16
 msgid "Type in a search term for enterprise"
-msgstr "Digite um termo de pesquisa para empreendimentos"
+msgstr "Digite um termo de pesquisa para pontos de cultura"
 
 #: plugins/bsc/views/bsc_plugin/mailer/admin_notification.html.erb:1
 msgid "The management of %{bsc} was transferred to you."
@@ -11496,7 +11496,7 @@ msgstr "A adminstração de %{bsc} foi transferida para você."
 
 #: plugins/bsc/views/bsc_plugin_myprofile/_similar_enterprises.html.erb:2
 msgid "Existing enterprises:"
-msgstr "Empreendimento existentes"
+msgstr "Ponto de Cultura existentes"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/_similar_enterprises.html.erb:3
 msgid ""
@@ -11504,8 +11504,8 @@ msgid ""
 "decide to associate one of them or create the new enterprise confirming the "
 "informations you typed in."
 msgstr ""
-"Foram encontrados %{count} empreendimentos com nomes similares na mesma "
-"cidade, você pode decidir assoociar um deles ou criar um novo empreendimento "
+"Foram encontrados %{count} pontos de cultura com nomes similares na mesma "
+"cidade, você pode decidir assoociar um deles ou criar um novo ponto de cultura "
 "confirmando as informações que você digitou."
 
 #: plugins/bsc/views/bsc_plugin_myprofile/_similar_enterprises.html.erb:20
@@ -11518,7 +11518,7 @@ msgstr "Associações aguardando aprovação:"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/manage_associated_enterprises.html.erb:19
 msgid "Add new enterprise"
-msgstr "Adicionar novo empreendimento"
+msgstr "Adicionar novo ponto de cultura"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/_contract_form.html.erb:6
 #: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:7
@@ -11532,7 +11532,7 @@ msgstr "Nome fantasia"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/_contract_form.html.erb:18
 msgid "Type in search term for enterprise"
-msgstr "Digite um termo de pesquisa para empreendimentos"
+msgstr "Digite um termo de pesquisa para pontos de cultura"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/_contract_form.html.erb:24
 #: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:28
@@ -11581,7 +11581,7 @@ msgid ""
 "user. This action will remove all the current administrators. Be careful "
 "when confirming this procedure."
 msgstr ""
-"Esta opção permite que transfira a administração do empreendimento para "
+"Esta opção permite que transfira a administração do ponto de cultura para "
 "outro usuário. Esta ação removerá todos os administradores atuais. Seja "
 "cuidadoso ao confirmar este procedimento."
 
@@ -11746,7 +11746,7 @@ msgstr "Criar nova sub-comunidade"
 
 #: plugins/sub_organizations/views/sub_organizations_plugin_myprofile/index.html.erb:15
 msgid "Register a new sub-enterprise"
-msgstr "Registrar um novo sub-empreendimento"
+msgstr "Registrar um novo sub-ponto de cultura"
 
 #: plugins/sub_organizations/views/sub_organizations_plugin_myprofile/index.html.erb:18
 msgid ""
@@ -12181,12 +12181,12 @@ msgstr "Voltar ao painel de controle"
 #: plugins/exchange/views/exchange_plugin_myprofile/new.html.erb:11
 #, fuzzy
 msgid "Enterprise - Origin"
-msgstr "Registro de empreendimento"
+msgstr "Registro de ponto de cultura"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/new.html.erb:13
 #, fuzzy
 msgid "Enterprise - Target"
-msgstr "Página do Empreendimento"
+msgstr "Página do Ponto de Cultura"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:3
 msgid "Exchange Negociation"
@@ -12439,7 +12439,7 @@ msgstr "Carregando... "
 #: plugins/sniffer/views/sniffer_plugin_myprofile/search.html.erb:21
 #, fuzzy
 msgid "your enterprise"
-msgstr "Meus empreendimentos"
+msgstr "Meus pontos de cultura"
 
 #: plugins/sniffer/views/sniffer_plugin_myprofile/search.html.erb:22
 #, fuzzy
@@ -12546,7 +12546,7 @@ msgstr "Cancelar"
 #: plugins/currency/views/currency_plugin_myprofile/index.html.erb:4
 #, fuzzy
 msgid "Currencies organized by your enterprise"
-msgstr "Ativar seu empreendimento"
+msgstr "Ativar seu ponto de cultura"
 
 #: plugins/currency/views/currency_plugin_myprofile/index.html.erb:6
 #, fuzzy
@@ -12556,7 +12556,7 @@ msgstr "Criar novo contrato"
 #: plugins/currency/views/currency_plugin_myprofile/index.html.erb:16
 #, fuzzy
 msgid "Currencies already accepted"
-msgstr "Este empreendimento já foi ativado"
+msgstr "Este ponto de cultura já foi ativado"
 
 #: plugins/currency/views/currency_plugin_myprofile/edit.html.erb:3
 #, fuzzy
@@ -12890,10 +12890,10 @@ msgstr "Criar novo ponto de cultura"
 #~ msgstr "Mostrar no mapa"
 
 #~ msgid "Enterprises from network"
-#~ msgstr "Empreendimentos da rede"
+#~ msgstr "Ponto de Culturas da rede"
 
 #~ msgid "Type words about the enterprise you're looking for"
-#~ msgstr "Digite palavras sobre o empreendimento que está procurando"
+#~ msgstr "Digite palavras sobre o ponto de cultura que está procurando"
 
 #~ msgid "Type words about the community you're looking for"
 #~ msgstr "Digite palavras sobre a comunidade que está procurando"
@@ -12906,7 +12906,7 @@ msgstr "Criar novo ponto de cultura"
 
 #, fuzzy
 #~ msgid "I want to register a new Enterprise!"
-#~ msgstr "Registrar novo Empreendimento"
+#~ msgstr "Registrar novo Ponto de Cultura"
 
 #, fuzzy
 #~ msgid "%s has no exchanges registered."
@@ -12943,7 +12943,7 @@ msgstr "Criar novo ponto de cultura"
 #~ msgstr "Seus produtos e serviços"
 
 #~ msgid "Avaliações deste Ponto de Cultura"
-#~ msgstr "Habilitar ativação de empreendimentos"
+#~ msgstr "Habilitar ativação de pontos de cultura"
 
 #, fuzzy
 #~ msgid "accepted!"
@@ -13130,7 +13130,7 @@ msgstr "Criar novo ponto de cultura"
 #~ "adicionou %{num} imagens:<br />%{thumbnails}<br style=\"clear: both;\" />"
 
 #~ msgid "Edit Inactive Enterprise Template"
-#~ msgstr "Editar Modelo de Empreendimento inativo"
+#~ msgstr "Editar Modelo de Ponto de Cultura inativo"
 
 #~ msgid "Module:"
 #~ msgstr "Módulo"
@@ -13220,13 +13220,13 @@ msgstr "Criar novo ponto de cultura"
 #~ msgstr "Categoria:"
 
 #~ msgid "Enterprise results for \"%{query}\" in \"%{category}\""
-#~ msgstr "Resultados de empreendimentos por \"%{query}\" em \"%{category}\""
+#~ msgstr "Resultados de pontos de cultura por \"%{query}\" em \"%{category}\""
 
 #~ msgid "Enterprise results for \"%s\""
-#~ msgstr "Resultados de empreendimentos para \"%s\""
+#~ msgstr "Resultados de pontos de cultura para \"%s\""
 
 #~ msgid "Enterprises in \"%s\""
-#~ msgstr "Empreendimentos em \"%s\""
+#~ msgstr "Ponto de Culturas em \"%s\""
 
 #~ msgid "Within %s km from %s"
 #~ msgstr "No raio de %s km até %s"
@@ -13404,7 +13404,7 @@ msgstr "Criar novo ponto de cultura"
 #~ msgstr "Tem certeza que quer excluir este projeto?"
 
 #~ msgid "Type in serach term for enterprise"
-#~ msgstr "Desabilitar busca por empreendimentos"
+#~ msgstr "Desabilitar busca por pontos de cultura"
 
 #~ msgid "Leave"
 #~ msgstr "Sair"
@@ -13479,10 +13479,10 @@ msgstr "Criar novo ponto de cultura"
 #~ msgstr "Qual o resultado de '%s = ?'"
 
 #~ msgid "Disable Enterprise"
-#~ msgstr "Desabilitar Empreendimento"
+#~ msgstr "Desabilitar Ponto de Cultura"
 
 #~ msgid "Enable Enterprise"
-#~ msgstr "Habilitar Empreendimento"
+#~ msgstr "Habilitar Ponto de Cultura"
 
 #~ msgid "Sex not informed"
 #~ msgstr "(Sexo não informado)"
@@ -13786,10 +13786,10 @@ msgstr "Criar novo ponto de cultura"
 #~ msgstr "Comunidades"
 
 #~ msgid "Favorite enterprises"
-#~ msgstr "Empreendimentos favoritos"
+#~ msgstr "Ponto de Culturas favoritos"
 
 #~ msgid "%s's favorite enteprises"
-#~ msgstr "Empreendimentos favoritos de %s"
+#~ msgstr "Ponto de Culturas favoritos de %s"
 
 #~ msgid "%s environment system"
 #~ msgstr "Sistema do ambiente %s"
@@ -13883,19 +13883,19 @@ msgstr "Criar novo ponto de cultura"
 #~ msgstr "Ano de fundação:"
 
 #~ msgid "Change the information about the enterprise"
-#~ msgstr "Altera a informação sobre o empreendimento"
+#~ msgstr "Altera a informação sobre o ponto de cultura"
 
 #~ msgid "Remove the enterprise from the system"
-#~ msgstr "Excluir o empreendimento do sistema"
+#~ msgstr "Excluir o ponto de cultura do sistema"
 
 #~ msgid "Activate an approved enterprise"
-#~ msgstr "Ativa um empreendimento aprovado"
+#~ msgstr "Ativa um ponto de cultura aprovado"
 
 #~ msgid "Validation Entity"
 #~ msgstr "Entidade de Validação"
 
 #~ msgid "Edit enterprise informations"
-#~ msgstr "Editar informações do empreendimento"
+#~ msgstr "Editar informações do ponto de cultura"
 
 #~ msgid "Update"
 #~ msgstr "Atualizar"
@@ -13939,7 +13939,7 @@ msgstr "Criar novo ponto de cultura"
 #~ "um novo grupo de você quiser."
 
 #~ msgid "We need to be sure that this is your enterprise"
-#~ msgstr "Nós precisamos ter certeza que este empreendimento é seu"
+#~ msgstr "Nós precisamos ter certeza que este ponto de cultura é seu"
 
 #~ msgid ""
 #~ "If you are a registered user, enter your username and password to be "
@@ -14002,7 +14002,7 @@ msgstr "Criar novo ponto de cultura"
 #~ msgstr "De volta à página de onde você veio."
 
 #~ msgid "Here are all <b>%s</b>'s favorite enterprises."
-#~ msgstr "Aqui estão todos os empreendimentos favoritos de <b>%s</b>"
+#~ msgstr "Aqui estão todos os pontos de cultura favoritos de <b>%s</b>"
 
 #~ msgid "Here are all <b>%s</b>'s members."
 #~ msgstr "Aqui estão todos os integrantes de <b>%s</b>."
@@ -14011,7 +14011,7 @@ msgstr "Criar novo ponto de cultura"
 #~ msgstr "Aqui estão todas a comunidades de <b>%s</b>"
 
 #~ msgid "Here are all <b>%s</b>'s enterprises."
-#~ msgstr "Aqui estão todos os empreendimentos de <b>%s</b>"
+#~ msgstr "Aqui estão todos os pontos de cultura de <b>%s</b>"
 
 #~ msgid ""
 #~ "Validation info is the information the enterprises will see about how "
@@ -14019,7 +14019,7 @@ msgstr "Criar novo ponto de cultura"
 #~ "validation methodology, restrictions to the types of enterprises the "
 #~ "organization validates etc."
 #~ msgstr ""
-#~ "Informações de validação são as informações que os empreendimentos verão "
-#~ "sobre como sua organização processa as validações de empreendimento que "
+#~ "Informações de validação são as informações que os pontos de cultura verão "
+#~ "sobre como sua organização processa as validações de ponto de cultura que "
 #~ "ela recebe: metodologia de validação, restrição de tipos de "
-#~ "empreendimentos que a organização valida etc."
+#~ "pontos de cultura que a organização valida etc."
