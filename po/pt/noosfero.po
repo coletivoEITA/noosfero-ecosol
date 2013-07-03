@@ -12421,15 +12421,13 @@ msgstr ""
 msgid "look for products..."
 msgstr "Selecione alguns produtos"
 
-#: plugins/sniffer/views/sniffer_plugin_myprofile/edit.html.erb:1
-#, fuzzy
+#: plugins/sniffer/views/sniffer_plugin_myprofile/edit.html.erb:1 
 msgid "Buyer interests"
 msgstr "Interesses"
 
 #: plugins/sniffer/views/sniffer_plugin_myprofile/edit.html.erb:6
-#, fuzzy
 msgid "Products and Services of Interest"
-msgstr "Produtos e Serviços"
+msgstr "Produtos e Serviços de interesse"
 
 #: plugins/sniffer/views/sniffer_plugin_myprofile/search.html.erb:20
 #, fuzzy
@@ -12743,7 +12741,7 @@ msgstr "Ver todos"
 
 #: plugins/escambo/views/snippets/_local.html.erb:4
 msgid "Region of %{city_with_state}"
-msgstr ""
+msgstr "Região de %{city_with_state}"
 
 #: plugins/escambo/views/snippets/_product.html.erb:6
 msgid "Offer"
