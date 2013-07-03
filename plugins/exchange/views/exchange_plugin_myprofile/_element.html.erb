@@ -3,7 +3,7 @@
 <li id="exchange_<%= element.element_type %>_element_<%= element.element_id %>" class="exc-plg-element exc-plg-element-<%= enterprise %>">
 
 <% if element.element_type == "Product" %>
-  <div class="exc-plg-element-image" style="background-image: url('<%= e.image.public_filename %>');">
+  <div class="exc-plg-element-image" style="background-image: url('<%= e.image.blank? ? e.image.public_filename : ''%>');">
   </div>
 <% end %>
 
