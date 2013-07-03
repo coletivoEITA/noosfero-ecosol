@@ -22,7 +22,7 @@
     <% end %>
   </div>
 
-  <h2><%= _('Privacy options') %></h2>
+<!--   <h2><%= _('Privacy options') %></h2> -->
 
   <% if profile.person? %>
     <div>
@@ -32,12 +32,12 @@
       <%= labelled_radio_button _('Private &mdash; show my contents only to friends'), 'profile_data[public_profile]', false, !@profile.public_profile? %>
     </div>
   <% else %>
-    <div>
+<!--    <div>
       <%= labelled_radio_button _('Public &mdash; show content of this group to all internet users'), 'profile_data[public_profile]', true, @profile.public_profile? %>
     </div>
     <div>
       <%= labelled_radio_button _('Private &mdash; show content of this group only to members'), 'profile_data[public_profile]', false, !@profile.public_profile? %>
-    </div>
+    </div>-->
   <% end %>
 
   <% if environment.enabled?('allow_change_of_redirection_after_login') %>
@@ -45,19 +45,22 @@
     <%=  select 'profile_data', 'redirection_after_login', Environment.login_redirection_options.map{|key,value|[value,key]}, { :selected => @profile.preferred_login_redirection} %>
   <% end %>
 
-  <h2><%= _('Translations') %></h2>
-  <%= labelled_check_box(
-    _('Automaticaly redirect the visitor to the article translated to his/her language'),
-    'profile_data[redirect_l10n]', true, @profile.redirect_l10n
-  )%>
+<!--  <h2><%= _('Translations') %></h2>-->
+  <%= 
+   # labelled_check_box(
+   # _('Automaticaly redirect the visitor to the article translated to his/her language'),
+   # 'profile_data[redirect_l10n]', true, @profile.redirect_l10n
+   # )
+   %>
 
   <%=
-    @plugins.dispatch(:profile_editor_extras).each do |content|
-      content.respond_to?(:call) ? content.call : content
-    end.join("\n")
+  #  @plugins.dispatch(:profile_editor_extras).each do |content|
+  #    content.respond_to?(:call) ? content.call : content
+  #  end.join("\n")
   %>
 
-  <%= select_categories(:profile_data, _('Select the categories of your interest'), 2) %>
+  <%= #select_categories(:profile_data, _('Select the categories of your interest'), 2) 
+  %>
 
   <% button_bar do %>
     <%= submit_button('save', _('Save'), :cancel => {:action => 'index'}) %>
