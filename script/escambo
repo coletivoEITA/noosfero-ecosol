@@ -2,6 +2,7 @@
 
 # Contants
 Production = false
+ENV['RAILS_ENV'] = 'production' if Production
 PluginsClasses = ["CmsLearningPlugin", "CurrencyPlugin", "EscamboPlugin", "EvaluationPlugin", "ExchangePlugin", "SnifferPlugin", "SolrPlugin"]
 
 def echo text
@@ -9,6 +10,7 @@ def echo text
 end
 def run cmd, options = {}
   echo "$ #{cmd}"
+  cmd = "bash -c 'RAILS_ENV=#{Rails.env} #{cmd}'" if defined? Rails
   output = `#{cmd}`
   puts output if options[:verbose]
 end
