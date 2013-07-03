@@ -3,7 +3,7 @@
 <% form_for(:sniffer, @sniffer_profile, :url => {:action => 'edit'}, :html => {:method => 'post'}) do |f| %>
 
   <div id='sniffer-plugin-product-select'>
-    <div><%= _('Products and Services of Interest') %></div>
+    <div><%= _('Products and services of interest. Type some characters and choose your interests from our list.') %></div>
 
     <%= f.text_field 'product_category_string_ids' %>
     <% array = @sniffer_profile.product_categories.collect{|i| {:id => i.id, :name => i.name}} %>
@@ -16,7 +16,8 @@
 
   <% button_bar do %>
     <%= submit_button(:save, _('Save')) %>
-    <%= button :back, _('Back to control panel'), :controller => 'profile_editor' %>
+<!--    <%= button :back, _('Back to control panel'), :controller => 'profile_editor' %>-->
+    <%= button :back, _('Back to Interests'), :controller => 'profile', :action => 'interests' %>
   <% end %>
 <% end %>
 
