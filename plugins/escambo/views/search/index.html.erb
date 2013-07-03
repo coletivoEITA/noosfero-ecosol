@@ -2,5 +2,5 @@
 <%= render :partial => 'search/search_form', :locals => { :hint => _('search for...') } %>
 
 <% @results.each do |result| %>
-  <%= render :partial => "search/#{result.class.name.underscore}", :locals => {:result => result} %>
+  <%= render :partial => "escambo_search/#{result.class.name.underscore}", :locals => {:result => result} %>
 <% end %>
