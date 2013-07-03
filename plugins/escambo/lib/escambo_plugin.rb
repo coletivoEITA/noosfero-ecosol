@@ -41,7 +41,7 @@ class EscamboPlugin < Noosfero::Plugin
     if @query.empty?
       instance_eval &SearchDataLoad
     else
-      @interests = find_by_contents(:sniffer_plugin_opportunities, SnifferPluginOpportunity, @query, paginate_options).results
+      @interests = find_by_contents(:sniffer_plugin_opportunities, SnifferPluginOpportunity, @query, paginate_options)[:results].results
       @products = find_by_contents(:products, Product, @query, paginate_options)[:results].results
       @knowledges = find_by_contents(:cms_learning_plugin_learnings, CmsLearningPluginLearning, @query, paginate_options)[:results].results
     end
