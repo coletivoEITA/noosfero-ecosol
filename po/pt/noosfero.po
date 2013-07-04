@@ -1024,15 +1024,6 @@ msgstr "Editar pasta"
 msgid "Articles"
 msgstr "Artigos"
 
-#: app/helpers/assets_helper.rb:10 app/helpers/search_helper.rb:10
-#: app/controllers/public/search_controller.rb:50
-#: app/models/enterprises_block.rb:12 app/views/search/_sellers_form.rhtml:7
-#: app/views/profile/_person_profile.rhtml:23
-#: plugins/bsc/views/bsc_plugin_myprofile/_contract_form.html.erb:13
-#: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:18
-msgid "Enterprises"
-msgstr "Ponto de Culturas"
-
 #: app/helpers/assets_helper.rb:12 app/helpers/search_helper.rb:14
 #: app/views/search/events.html.erb:1
 #: public/designs/themes/base/navigation.rhtml:10
@@ -2255,12 +2246,6 @@ msgstr "Pastas do portal salvas"
 #: app/controllers/admin/admin_panel_controller.rb:68
 msgid "Saved the number of news on folders"
 msgstr "Número de notícias nas pastas salvo."
-
-#: app/models/favorite_enterprises_block.rb:4
-#: app/models/favorite_enterprises_block.rb:12
-#: app/views/profile_editor/index.rhtml:55
-msgid "Favorite Enterprises"
-msgstr "Ponto de Culturas Favoritos"
 
 #: app/models/favorite_enterprises_block.rb:8
 msgid "This block lists your favorite enterprises."
@@ -3726,11 +3711,11 @@ msgstr "Administrador tem que aprovar a criação de comunidades"
 
 #: app/models/environment.rb:120
 msgid "Enterprises are disabled when created"
-msgstr "Ponto de Culturas são desabilitados quando criados"
+msgstr "Pontos de Cultura são desabilitados quando criados"
 
 #: app/models/environment.rb:121
 msgid "Enterprises are validated when created"
-msgstr "Ponto de Culturas são validadodos quando criados"
+msgstr "Pontos de Cultura são validadodos quando criados"
 
 #: app/models/environment.rb:122
 msgid "Show a balloon with profile links when a profile image is clicked"
@@ -7875,7 +7860,7 @@ msgstr "Eu quero adicionar %s como ponto de cultura favorito"
 #: app/views/favorite_enterprises/index.rhtml:3
 #: app/views/profile/favorite_enterprises.rhtml:3
 msgid "%s's favorite enterprises"
-msgstr "Ponto de Culturas favoritos de %s"
+msgstr "Pontos de Cultura favoritos de %s"
 
 #: app/views/favorite_enterprises/index.rhtml:24
 msgid "You have no favorite enterprises yet."
@@ -8399,7 +8384,7 @@ msgstr "Rede"
 
 #: app/views/profile/enterprises.rhtml:3
 msgid "%s's enterprises"
-msgstr "Ponto de Culturas de %s"
+msgstr "Pontos de Cultura de %s"
 
 #: app/views/profile/content_tagged.rhtml:3
 msgid "Content tagged with \"%s\""
@@ -10431,7 +10416,7 @@ msgstr "Gerenciar plugins"
 #: plugins/exchange/models/exchange_plugin_message.rb:-
 #, fuzzy
 msgid "Enterprise sender"
-msgstr "Ponto de Culturas"
+msgstr "Pontos de Cultura"
 
 #: plugins/exchange/models/exchange_plugin_message.rb:-
 #, fuzzy
@@ -11644,7 +11629,7 @@ msgstr "A adminstração de %{bsc} foi transferida para você."
 
 #: plugins/bsc/views/bsc_plugin_myprofile/_similar_enterprises.html.erb:2
 msgid "Existing enterprises:"
-msgstr "Ponto de Cultura existentes"
+msgstr "Pontos de Cultura existentes"
 
 #: plugins/bsc/views/bsc_plugin_myprofile/_similar_enterprises.html.erb:3
 msgid ""
