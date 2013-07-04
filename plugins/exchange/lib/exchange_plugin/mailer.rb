@@ -1,9 +1,5 @@
 class ExchangePlugin::Mailer < Noosfero::Plugin::MailerBase
 
-  def void
-    raise "xx"
-  end
-  
   def start_exchange_notification(target, origin, exchange_id, message = nil)
     domain = origin.hostname || origin.environment.default_hostname
     recipients    profile_recipients(target)
