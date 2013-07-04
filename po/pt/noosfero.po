@@ -193,7 +193,7 @@ msgstr "Conteúdos"
 #: plugins/bsc/views/bsc_plugin_myprofile/_contract_form.html.erb:13
 #: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:18
 msgid "Enterprises"
-msgstr "Ponto de Culturas"
+msgstr "Pontos de Cultura"
 
 #: app/helpers/search_helper.rb:11 app/helpers/assets_helper.rb:8
 #: app/helpers/application_helper.rb:1062
@@ -4391,11 +4391,11 @@ msgstr "Administrador tem que aprovar a criação de comunidades"
 
 #: app/models/environment.rb:120
 msgid "Enterprises are disabled when created"
-msgstr "Ponto de Culturas são desabilitados quando criados"
+msgstr "Pontos de Cultura são desabilitados quando criados"
 
 #: app/models/environment.rb:121
 msgid "Enterprises are validated when created"
-msgstr "Ponto de Culturas são validadodos quando criados"
+msgstr "Pontos de Cultura são validadodos quando criados"
 
 #: app/models/environment.rb:122
 msgid "Show a balloon with profile links when a profile image is clicked"
@@ -4959,7 +4959,7 @@ msgstr ""
 #: app/models/favorite_enterprises_block.rb:12
 #: app/views/profile_editor/index.rhtml:55
 msgid "Favorite Enterprises"
-msgstr "Ponto de Culturas Favoritos"
+msgstr "Pontos de Cultura Favoritos"
 
 #: app/models/favorite_enterprises_block.rb:8
 msgid "This block lists your favorite enterprises."
@@ -6580,7 +6580,7 @@ msgstr "Ir para a página inicial do %s"
 #: app/views/profile/favorite_enterprises.rhtml:3
 #: app/views/favorite_enterprises/index.rhtml:3
 msgid "%s's favorite enterprises"
-msgstr "Ponto de Culturas favoritos de %s"
+msgstr "Pontos de Cultura favoritos de %s"
 
 #: app/views/profile/_common.rhtml:13
 msgid "One post"
@@ -6811,7 +6811,7 @@ msgstr "Veja o conteúdo marcado com \"%s\" em todo o site"
 
 #: app/views/profile/enterprises.rhtml:3
 msgid "%s's enterprises"
-msgstr "Ponto de Culturas de %s"
+msgstr "Pontos de Cultura de %s"
 
 #: app/views/profile/enterprises.rhtml:13 app/views/memberships/index.rhtml:7
 msgid "Register a new enterprise"
@@ -10369,7 +10369,7 @@ msgstr "Gerenciar plugins"
 #: plugins/exchange/models/exchange_plugin_message.rb:-
 #, fuzzy
 msgid "Enterprise sender"
-msgstr "Ponto de Culturas"
+msgstr "Pontos de Cultura"
 
 #: plugins/exchange/models/exchange_plugin_message.rb:-
 #, fuzzy
@@ -12979,7 +12979,7 @@ msgstr "avaliação"
 #~ msgstr "Mostrar no mapa"
 
 #~ msgid "Enterprises from network"
-#~ msgstr "Ponto de Culturas da rede"
+#~ msgstr "Pontos de Cultura da rede"
 
 #~ msgid "Type words about the enterprise you're looking for"
 #~ msgstr "Digite palavras sobre o ponto de cultura que está procurando"
@@ -13315,7 +13315,7 @@ msgstr "avaliação"
 #~ msgstr "Resultados de pontos de cultura para \"%s\""
 
 #~ msgid "Enterprises in \"%s\""
-#~ msgstr "Ponto de Culturas em \"%s\""
+#~ msgstr "Pontos de Cultura em \"%s\""
 
 #~ msgid "Within %s km from %s"
 #~ msgstr "No raio de %s km até %s"
@@ -13875,10 +13875,10 @@ msgstr "avaliação"
 #~ msgstr "Comunidades"
 
 #~ msgid "Favorite enterprises"
-#~ msgstr "Ponto de Culturas favoritos"
+#~ msgstr "Pontos de Cultura favoritos"
 
 #~ msgid "%s's favorite enteprises"
-#~ msgstr "Ponto de Culturas favoritos de %s"
+#~ msgstr "Pontos de Cultura favoritos de %s"
 
 #~ msgid "%s environment system"
 #~ msgstr "Sistema do ambiente %s"
