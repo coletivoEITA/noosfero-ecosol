@@ -75,6 +75,16 @@ class EscamboPlugin < Noosfero::Plugin
     ]
   end
 
+  ProfileEditorIndexFilter = proc do
+    redirect_to profile.url
+  end
+  def profile_editor_controller_filters
+    [
+      {:type => 'before_filter', :method_name => 'escambo_profile_editor_index',
+       :options => {:only => :index}, :block => ProfileEditorIndexFilter},
+    ]
+  end
+
   ProfileIndexFilter = proc do
     return unless profile.enterprise?
 
