@@ -3,11 +3,11 @@ require File.dirname(__FILE__) + '/../../../../test/test_helper'
 class DistributionPluginProductTest < ActiveSupport::TestCase
 
   def setup
-    @product = build(DistributionPluginProduct)
+    @product = build(SuppliersPlugin::BaseProduct)
   end
 
   should 'return first from product as supplier product' do
-    fp = build(DistributionPluginProduct, :node => @product.node)
+    fp = build(SuppliersPlugin::BaseProduct, :node => @product.node)
     @product.from_products = [fp]
     assert_equal fp, @product.from_product
     assert_equal fp, @product.supplier_product
@@ -19,8 +19,8 @@ class DistributionPluginProductTest < ActiveSupport::TestCase
   end
 
   should 'return price with margins' do
-    supplier_product = build(DistributionPluginDistributedProduct, :price => 10, :margin_percentage => 10, :node => @product.node, :supplier => @product.node.self_supplier)
-    product = build(DistributionPluginDistributedProduct, :price => 10, :margin_percentage => 10, :supplier_product => supplier_product, :node => @product.node, :supplier => @product.node.self_supplier)
+    supplier_product = build(SuppliersPlugin::DistributedProduct, :price => 10, :margin_percentage => 10, :node => @product.node, :supplier => @product.node.self_supplier)
+    product = build(SuppliersPlugin::DistributedProduct, :price => 10, :margin_percentage => 10, :supplier_product => supplier_product, :node => @product.node, :supplier => @product.node.self_supplier)
 
     product.default_margin_percentage = false
     assert_equal 11.0, product.price_with_margins

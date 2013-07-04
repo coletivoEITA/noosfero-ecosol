@@ -1,11 +1,11 @@
-class DistributionPluginSourceProduct < ActiveRecord::Base
+class SuppliersPlugin::SourceProduct < ActiveRecord::Base
 
   default_scope :include => [:from_product, :to_product]
 
-  belongs_to :from_product, :class_name => "DistributionPluginProduct"
-  belongs_to :to_product, :class_name => "DistributionPluginProduct"
+  belongs_to :from_product, :class_name => "Product"
+  belongs_to :to_product, :class_name => "Product"
 
-  belongs_to :supplier, :class_name => "Profile"
+  has_one :supplier, :class_name => "Profile"
 
   validates_presence_of :from_product
   validates_presence_of :to_product

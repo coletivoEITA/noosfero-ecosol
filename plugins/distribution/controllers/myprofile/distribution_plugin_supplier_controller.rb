@@ -3,7 +3,7 @@ class DistributionPluginSupplierController < SuppliersPluginMyprofileController
   no_design_blocks
 
   before_filter :load_node
-  before_filter :set_admin_action, :only => [:index]
+  before_filter :set_admin_action
 
   helper ApplicationHelper
   helper DistributionPlugin::DistributionDisplayHelper

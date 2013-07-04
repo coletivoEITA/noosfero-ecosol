@@ -48,8 +48,8 @@
     <div class='supplier-actions subtitle'>
       <div><strong><%= t('distribution_plugin.views.supplier._supplier.actions') %></strong></div>
       <div><%= link_to_function t('distribution_plugin.views.supplier._supplier.edit'), '', :class => 'toggle-edit' %></div>
-      <div><%# link_to t('distribution_plugin.views.supplier._supplier.desactivate'), :url => {:controller => :suppliers_plugin_myprofile, :action => :desactivate, :id => supplier.id} %></div>
-      <div><%= link_to_remote t('distribution_plugin.views.supplier._supplier.remove'), :url => {:controller => :suppliers_plugin_myprofile, :action => :destroy, :id => supplier.id},
+      <div><%# link_to t('distribution_plugin.views.supplier._supplier.desactivate'), :url => {:action => :desactivate, :id => supplier.id} %></div>
+      <div><%= link_to_remote t('distribution_plugin.views.supplier._supplier.remove'), :url => {:action => :destroy, :id => supplier.id},
         :confirm => t('distribution_plugin.views.supplier._supplier.by_removing_this_supp'), :class => 'supplier-remove' %></div>
       <div><%= link_to t('distribution_plugin.views.supplier._supplier.products'), {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id, :anchor => 'filter-fields'} %></div>
       <div><%= link_to t('distribution_plugin.views.supplier._supplier.add_products'), {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id, :anchor => 'our-product-add'} %></div>

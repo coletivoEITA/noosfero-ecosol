@@ -1,16 +1,16 @@
-module DistributionPluginFactory
+module DistributionPlugin::Factory
 
   def defaults_for_distribution_plugin_node
     {:profile => build(Enterprise), :role => 'supplier'}
   end
 
   def defaults_for_distribution_plugin_supplier
-    {:node => build(DistributionPluginNode),
-     :consumer => build(DistributionPluginNode)}
+    {:node => build(DistributionPlugin::Node),
+     :consumer => build(DistributionPlugin::Node)}
   end
 
   def defaults_for_distribution_plugin_product(attrs = {})
-    node = attrs[:node] || build(DistributionPluginNode)
+    node = attrs[:node] || build(DistributionPlugin::Node)
     {:node => node, :name => "product-#{factory_num_seq}", :price => 2.0,
      :product => build(Product, :enterprise => node.profile, :price => 2.0),
      :supplier => build(SuppliersPlugin::Supplier, :node => node, :consumer => node)}
@@ -24,42 +24,42 @@ module DistributionPluginFactory
     hash = defaults_for_distribution_plugin_product(attrs)
     node = hash[:node]
     hash.merge({
-      :from_products => [build(DistributionPluginDistributedProduct, :node => node)]})
+      :from_products => [build(SuppliersPlugin::DistributedProduct, :node => node)]})
   end
 
   def defaults_for_distribution_plugin_delivery_method
-    {:node => build(DistributionPluginNode),
+    {:node => build(DistributionPlugin::Node),
      :name => "My delivery #{factory_num_seq.to_s}",
      :delivery_type => 'deliver'}
   end
 
   def defaults_for_distribution_plugin_delivery_option
-    {:session => build(DistributionPluginSession),
-     :delivery_method => build(DistributionPluginDeliveryMethod)}
+    {:session => build(DistributionPlugin::Session),
+     :delivery_method => build(DistributionPlugin::DeliveryMethod)}
   end
 
   def defaults_for_distribution_plugin_session
-    {:node => build(DistributionPluginNode), :status => 'orders',
+    {:node => build(DistributionPlugin::Node), :status => 'orders',
      :name => 'weekly', :start => Time.now, :finish => Time.now+1.days}
   end
 
   def defaults_for_distribution_plugin_order(attrs = {})
-    node = attrs[:node] || build(DistributionPluginNode)
+    node = attrs[:node] || build(DistributionPlugin::Node)
     {:status => 'confirmed',
-     :session => build(DistributionPluginSession, :node => node),
-     :consumer => build(DistributionPluginNode),
-     :supplier_delivery => build(DistributionPluginDeliveryMethod, :node => node),
-     :consumer_delivery => build(DistributionPluginDeliveryMethod, :node => node)}
+     :session => build(DistributionPlugin::Session, :node => node),
+     :consumer => build(DistributionPlugin::Node),
+     :supplier_delivery => build(DistributionPlugin::DeliveryMethod, :node => node),
+     :consumer_delivery => build(DistributionPlugin::DeliveryMethod, :node => node)}
   end
 
   def defaults_for_distribution_plugin_ordered_product
-    {:order => build(DistributionPluginOrder),
-     :session_product => build(DistributionPluginSessionProduct),
+    {:order => build(DistributionPlugin::Order),
+     :session_product => build(DistributionPlugin::OfferedProduct),
      :quantity_payed => 1.0, :quantity_asked => 2.0, :quantity_allocated => 3.0,
      :price_payed => 10.0, :price_asked => 20.0, :price_allocated => 30.0}
   end
 
 end
 
-Noosfero::Factory.register_extension DistributionPluginFactory
+Noosfero::Factory.register_extension DistributionPlugin::Factory
 

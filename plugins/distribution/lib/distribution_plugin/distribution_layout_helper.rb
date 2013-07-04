@@ -26,8 +26,8 @@ module DistributionPlugin::DistributionLayoutHelper
   end
 
   def load_node
-    @node = DistributionPluginNode.find_by_profile_id profile.id if profile
-    @user_node = DistributionPluginNode.find_or_create current_user.person if current_user
+    @node = DistributionPlugin::Node.find_by_profile_id profile.id if profile
+    @user_node = DistributionPlugin::Node.find_or_create current_user.person if current_user
   end
 
   def render_header

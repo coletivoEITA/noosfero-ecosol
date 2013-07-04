@@ -6,12 +6,12 @@ class DistributionPluginNodeTest < ActiveRecord::TestCase
     @profile = build(Profile)
     @invisible_profile = build(Enterprise, :visible => false)
     @other_profile = build(Enterprise)
-    @node = build(DistributionPluginNode, :profile => @profile)
-    @dummy_node = build(DistributionPluginNode, :profile => @invisible_profile)
-    @other_node = build(DistributionPluginNode, :profile => @other_profile)
-    @self_supplier = build(DistributionPluginSupplier, :consumer => @node, :node => @node)
-    @dummy_supplier = build(DistributionPluginSupplier, :consumer => @node, :node => @dummy_node)
-    @other_supplier = build(DistributionPluginSupplier, :consumer => @node, :node => @other_node)
+    @node = build(DistributionPlugin::Node, :profile => @profile)
+    @dummy_node = build(DistributionPlugin::Node, :profile => @invisible_profile)
+    @other_node = build(DistributionPlugin::Node, :profile => @other_profile)
+    @self_supplier = build(DistributionPlugin::Supplier, :consumer => @node, :node => @node)
+    @dummy_supplier = build(DistributionPlugin::Supplier, :consumer => @node, :node => @dummy_node)
+    @other_supplier = build(DistributionPlugin::Supplier, :consumer => @node, :node => @other_node)
   end
 
   attr_accessor :profile, :invisible_profile, :other_profile,
@@ -32,8 +32,8 @@ class DistributionPluginNodeTest < ActiveRecord::TestCase
   should "return closed sessions' date range" do
     DateTime.expects(:now).returns(1).at_least_once
     assert_equal 1..1, node.closed_sessions_date_range
-    s1 = create(DistributionPluginSession, :node => node, :start => Time.now-1.days, :finish => nil)
-    s2 = create(DistributionPluginSession, :node => node, :finish => Time.now+1.days, :start => Time.now)
+    s1 = create(DistributionPlugin::Session, :node => node, :start => Time.now-1.days, :finish => nil)
+    s2 = create(DistributionPlugin::Session, :node => node, :finish => Time.now+1.days, :start => Time.now)
     assert_equal (s1.start.to_date..s2.finish.to_date), node.closed_sessions_date_range
   end
 
@@ -51,12 +51,12 @@ class DistributionPluginNodeTest < ActiveRecord::TestCase
 
   should "default products's margins when asked" do
     node.update_attributes! :margin_percentage => 10, :margin_fixed => 1
-    product = create(DistributionPluginDistributedProduct, :node => node, :supplier => node.self_supplier,
+    product = create(SuppliersPlugin::DistributedProduct, :node => node, :supplier => node.self_supplier,
                      :price => 10, :default_margin_percentage => false, :default_margin_fixed => true)
-    session = create(DistributionPluginSession, :node => node)
+    session = create(DistributionPlugin::Session, :node => node)
     sproduct = session.products.first
     sproduct.update_attributes! :margin_percentage => 5, :margin_fixed => 2
-    sessionclosed = create(DistributionPluginSession, :node => node, :status => 'closed')
+    sessionclosed = create(DistributionPlugin::Session, :node => node, :status => 'closed')
 
     node.default_products_margins
     product.reload
@@ -71,9 +71,9 @@ class DistributionPluginNodeTest < ActiveRecord::TestCase
     node.save!
     other_node.save!
     other_supplier.save!
-    product = create(DistributionPluginDistributedProduct, :node => other_node, :supplier => other_node.self_supplier)
+    product = create(SuppliersPlugin::DistributedProduct, :node => other_node, :supplier => other_node.self_supplier)
     node.add_supplier_products other_supplier
-    product2 = create(DistributionPluginDistributedProduct, :node => other_node, :supplier => other_node.self_supplier)
+    product2 = create(SuppliersPlugin::DistributedProduct, :node => other_node, :supplier => other_node.self_supplier)
     assert_equal [product2], node.not_distributed_products(other_supplier)
   end
 
@@ -96,15 +96,15 @@ class DistributionPluginNodeTest < ActiveRecord::TestCase
     assert node.errors.invalid?('role')
 
     ['supplier', 'consumer', 'collective'].each do |i|
-      node = build(DistributionPluginNode, :profile => @profile, :role => i)
+      node = build(DistributionPlugin::Node, :profile => @profile, :role => i)
       assert !node.errors.invalid?('role')
     end
   end
 
   should 'create necessary roles before instance creation' do
-    assert_nil DistributionPluginNode::Roles.consumer(profile.environment)
+    assert_nil DistributionPlugin::Node::Roles.consumer(profile.environment)
     node.save!
-    assert_not_nil DistributionPluginNode::Roles.consumer(node.profile.environment)
+    assert_not_nil DistributionPlugin::Node::Roles.consumer(node.profile.environment)
   end
 
   ###
@@ -115,7 +115,7 @@ class DistributionPluginNodeTest < ActiveRecord::TestCase
     @node.save!
     @other_node.save!
 
-    assert_difference DistributionPluginSupplier, :count do
+    assert_difference DistributionPlugin::Supplier, :count do
       assert_difference RoleAssignment, :count do
         @node.add_supplier @other_node
       end
@@ -127,7 +127,7 @@ class DistributionPluginNodeTest < ActiveRecord::TestCase
   should "add all supplier's products when supplier is added" do
     @node.save!
     @other_node.save!
-    product = create(DistributionPluginDistributedProduct, :node => @other_node)
+    product = create(SuppliersPlugin::DistributedProduct, :node => @other_node)
     @node.add_supplier @other_node
     assert_equal [product], @node.from_products
   end
@@ -137,7 +137,7 @@ class DistributionPluginNodeTest < ActiveRecord::TestCase
     @other_node.save!
 
     @node.add_supplier @other_node
-    assert_difference DistributionPluginSupplier, :count, -1 do
+    assert_difference DistributionPlugin::Supplier, :count, -1 do
       assert_difference RoleAssignment, :count, -1 do
         @node.remove_supplier @other_node
       end
@@ -148,7 +148,7 @@ class DistributionPluginNodeTest < ActiveRecord::TestCase
   should "archive supplier's products when supplier is removed" do
     @node.save!
     @other_node.save!
-    product = create(DistributionPluginDistributedProduct, :node => @other_node)
+    product = create(SuppliersPlugin::DistributedProduct, :node => @other_node)
     @node.add_supplier @other_node
     @node.remove_supplier @other_node
     assert_equal [product], @node.from_products
@@ -156,7 +156,7 @@ class DistributionPluginNodeTest < ActiveRecord::TestCase
   end
 
   should 'create self supplier automatically' do
-    node = create(DistributionPluginNode, :profile => @profile)
+    node = create(DistributionPlugin::Node, :profile => @profile)
     assert_equal 1, node.suppliers.count
   end
 

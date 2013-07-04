@@ -8,7 +8,7 @@ class Community
     super(person)
 
     if self.node.collective?
-      consumer_node = DistributionPluginNode.find_or_create person
+      consumer_node = DistributionPlugin::Node.find_or_create person
       self.node.add_consumer consumer_node
     end
   end
@@ -16,7 +16,7 @@ class Community
   def remove_member(person)
     super(person)
 
-    consumer_node = DistributionPluginNode.find_or_create person
+    consumer_node = DistributionPlugin::Node.find_or_create person
     self.node.remove_consumer consumer_node
   end
 

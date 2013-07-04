@@ -1,8 +1,8 @@
-class DistributionPluginSessionProduct < DistributionPluginProduct
+class DistributionPlugin::OfferedProduct < SuppliersPlugin::BaseProduct
 
-  belongs_to :session, :class_name => 'DistributionPluginSession'
+  belongs_to :session, :class_name => 'DistributionPlugin::Session'
 
-  has_many :ordered_products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'session_product_id', :dependent => :destroy
+  has_many :ordered_products, :class_name => 'DistributionPlugin::OrderedProduct', :foreign_key => 'session_product_id', :dependent => :destroy
   has_many :in_orders, :through => :ordered_products, :source => :order
 
   validates_presence_of :session

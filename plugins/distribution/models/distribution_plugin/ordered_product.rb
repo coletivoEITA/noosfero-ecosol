@@ -1,12 +1,12 @@
-class DistributionPluginOrderedProduct < ActiveRecord::Base
+class DistributionPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
 
-  belongs_to :order, :class_name => 'DistributionPluginOrder', :touch => true
+  belongs_to :order, :class_name => 'DistributionPlugin::Order', :touch => true
   has_one :session, :through => :order
   has_one :node, :through => :order
 
-  belongs_to :session_product, :class_name => 'DistributionPluginProduct'
+  belongs_to :session_product, :class_name => 'SuppliersPlugin::BaseProduct'
   # same as above
-  belongs_to :product, :class_name => 'DistributionPluginProduct', :foreign_key => :session_product_id
+  belongs_to :product, :class_name => 'SuppliersPlugin::BaseProduct', :foreign_key => :session_product_id
 
   has_one :supplier, :through => :product
   has_one :consumer, :through => :order

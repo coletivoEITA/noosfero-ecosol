@@ -9,12 +9,12 @@ class DistributionPlugin::OrderBlock < Block
  end
 
  def self.available_for(profile)
-   node = DistributionPluginNode.find_or_create profile
+   node = DistributionPlugin::Node.find_or_create profile
    !node.blank? && !node.consumer?
  end
 
  def node
-   @node ||= DistributionPluginNode.find_or_create owner
+   @node ||= DistributionPlugin::Node.find_or_create owner
  end
 
  def default_title
@@ -30,8 +30,8 @@ class DistributionPlugin::OrderBlock < Block
    block = self
 
    lambda do
-     consumer = current_user.is_a?(User) ? DistributionPluginNode.find_or_create(current_user.person) : nil
-     @controller.append_view_path DistributionPlugin.view_path
+     consumer = current_user.is_a?(User) ? DistributionPlugin::Node.find_or_create(current_user.person) : nil
+     @controller.append_view_path DistributionPlugin::.view_path
      extend DistributionPlugin::DistributionDisplayHelper
      render :file => 'blocks/distribution_plugin_order', :locals => { :block => block, :node => n, :consumer => consumer }
    end

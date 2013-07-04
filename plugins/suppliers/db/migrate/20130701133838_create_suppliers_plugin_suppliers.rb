@@ -9,7 +9,7 @@ class CreateSuppliersPluginSuppliers < ActiveRecord::Migration
       t.string   "name"
       t.string   "name_abbreviation"
       t.text     "description"
-      t.timestams
+      t.timestamps
     end
   end
 

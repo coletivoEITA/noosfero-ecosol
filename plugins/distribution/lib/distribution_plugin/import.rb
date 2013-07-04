@@ -53,7 +53,7 @@ class DistributionPlugin::Import
         u.person.affiliate(u.person, [owner_role]) if owner_role
       end
 
-      consumer = DistributionPluginNode.find_or_create u.person
+      consumer = DistributionPlugin::Node.find_or_create u.person
       node.profile.add_member u.person
       node.add_consumer consumer
     end
@@ -79,7 +79,7 @@ class DistributionPlugin::Import
         name = row[1]
         description = ''
       end
-      product =  DistributionPluginDistributedProduct.new :node => node, :name => name, :description => description, :active => row[2]
+      product =  SuppliersPlugin::DistributedProduct.new :node => node, :name => name, :description => description, :active => row[2]
       puts row[1] if product.nil? and verbose
       id_p[row[0]] = product
     end

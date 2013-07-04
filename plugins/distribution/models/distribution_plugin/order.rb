@@ -1,12 +1,12 @@
-class DistributionPluginOrder < ActiveRecord::Base
+class DistributionPlugin::Order < Noosfero::Plugin::ActiveRecord
 
-  belongs_to :session, :class_name => 'DistributionPluginSession'
+  belongs_to :session, :class_name => 'DistributionPlugin::Session'
   has_one :node, :through => :session
 
-  belongs_to :consumer, :class_name => 'DistributionPluginNode'
+  belongs_to :consumer, :class_name => 'DistributionPlugin::Node'
 
   has_many :suppliers, :through => :session_products, :uniq => true
-  has_many :products, :class_name => 'DistributionPluginOrderedProduct', :foreign_key => 'order_id', :dependent => :destroy, :include => 'product',
+  has_many :products, :class_name => 'DistributionPlugin::OrderedProduct', :foreign_key => 'order_id', :dependent => :destroy, :include => 'product',
     :order => 'distribution_plugin_products.name ASC'
 
   has_many :session_products, :through => :products, :source => :product
@@ -16,8 +16,8 @@ class DistributionPluginOrder < ActiveRecord::Base
   has_many :from_products, :through => :products
   has_many :to_products, :through => :products
 
-  belongs_to :supplier_delivery, :class_name => 'DistributionPluginDeliveryMethod'
-  belongs_to :consumer_delivery, :class_name => 'DistributionPluginDeliveryMethod'
+  belongs_to :supplier_delivery, :class_name => 'DistributionPlugin::DeliveryMethod'
+  belongs_to :consumer_delivery, :class_name => 'DistributionPlugin::DeliveryMethod'
 
   named_scope :for_consumer, lambda { |consumer| {
     :conditions => {:consumer_id => consumer ? consumer.id : nil} }

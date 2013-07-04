@@ -1,16 +1,16 @@
-class DistributionPluginNode < ActiveRecord::Base
+class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
 
   belongs_to :profile
 
-  has_many :delivery_methods, :class_name => 'DistributionPluginDeliveryMethod', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id ASC'
+  has_many :delivery_methods, :class_name => 'DistributionPlugin::DeliveryMethod', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id ASC'
   has_many :delivery_options, :through => :delivery_methods
 
-  has_many :sessions, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy, :order => 'created_at DESC',
+  has_many :sessions, :class_name => 'DistributionPlugin::Session', :foreign_key => 'node_id', :dependent => :destroy, :order => 'created_at DESC',
     :conditions => ["distribution_plugin_sessions.status <> 'new'"]
   has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy, :order => 'id ASC'
-  has_many :parcels, :class_name => 'DistributionPluginOrder', :foreign_key => 'consumer_id', :dependent => :destroy, :order => 'id ASC'
+  has_many :parcels, :class_name => 'DistributionPlugin::Order', :foreign_key => 'consumer_id', :dependent => :destroy, :order => 'id ASC'
 
-  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => 'node_id', :dependent => :destroy, :order => 'distribution_plugin_products.name ASC'
+  has_many :products, :class_name => 'SuppliersPlugin::BaseProduct', :foreign_key => 'node_id', :dependent => :destroy, :order => 'distribution_plugin_products.name ASC'
   has_many :order_products, :through => :orders, :source => :products, :order => 'name ASC'
   has_many :parcel_products, :through => :parcels, :source => :products, :order => 'id ASC'
   has_many :supplier_products, :through => :suppliers, :source => :products, :order => 'name ASC'
@@ -21,7 +21,7 @@ class DistributionPluginNode < ActiveRecord::Base
   has_many :from_nodes, :through => :products
   has_many :to_nodes, :through => :products
 
-  has_many :sessions_custom_order, :class_name => 'DistributionPluginSession', :foreign_key => 'node_id', :dependent => :destroy,
+  has_many :sessions_custom_order, :class_name => 'DistributionPlugin::Session', :foreign_key => 'node_id', :dependent => :destroy,
     :conditions => ["distribution_plugin_sessions.status <> 'new'"]
 
   validates_presence_of :profile
@@ -34,7 +34,7 @@ class DistributionPluginNode < ActiveRecord::Base
   has_number_with_locale :margin_fixed
 
   acts_as_having_image
-  belongs_to :image, :class_name => 'DistributionPluginHeaderImage'
+  belongs_to :image, :class_name => 'DistributionPlugin::HeaderImage'
 
   after_create :add_self_supplier
   after_create :add_own_members
@@ -154,7 +154,7 @@ class DistributionPluginNode < ActiveRecord::Base
 
   def add_own_members
     profile.members.map do |member|
-      consumer = DistributionPluginNode.find_or_create member
+      consumer = DistributionPlugin::Node.find_or_create member
       add_consumer consumer
       consumer
     end
@@ -166,7 +166,7 @@ class DistributionPluginNode < ActiveRecord::Base
     already_supplied = self.products.unarchived.distributed.from_supplier(self).all
     profile.products.map do |p|
       already_supplied.find{ |f| f.product == p } ||
-        DistributionPluginDistributedProduct.create!(:node => self, :supplier => self_supplier, :product => p, :name => p.name, :description => p.description, :price => p.price, :unit => p.unit)
+        SuppliersPlugin::DistributedProduct.create!(:node => self, :supplier => self_supplier, :product => p, :name => p.name, :description => p.description, :price => p.price, :unit => p.unit)
     end
   end
 
@@ -196,7 +196,7 @@ class DistributionPluginNode < ActiveRecord::Base
       :permissions => [
         'order_product',
       ]
-    ) if profile and not DistributionPluginNode::Roles.consumer(profile.environment)
+    ) if profile and not DistributionPlugin::Node::Roles.consumer(profile.environment)
   end
 
   #for access_control

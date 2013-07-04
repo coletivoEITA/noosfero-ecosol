@@ -24,14 +24,14 @@ class Profile
   def add_consumer(consumer)
     return if has_consumer? consumer
 
-    consumer.affiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
+    consumer.affiliate self, SuppliersPlugin::Supplier::Roles.consumer(self.profile.environment)
     supplier = SuppliersPlugin::Supplier.create!(:profile => self, :consumer => consumer) || suppliers.of_profile(consumer)
 
     consumer.add_supplier_products supplier unless consumer.consumer?
     supplier
   end
   def remove_consumer(consumer)
-    consumer.disaffiliate self, DistributionPluginNode::Roles.consumer(self.profile.environment)
+    consumer.disaffiliate self, SuppliersPlugin::Supplier::Roles.consumer(self.profile.environment)
     supplier = consumers.find_by_consumer_id(consumer.id)
 
     supplier.destroy if supplier
@@ -45,7 +45,7 @@ class Profile
     supplier.products.unarchived.each do |np|
       next if already_supplied.find{ |f| f.supplier_product == np }
 
-      p = DistributionPluginDistributedProduct.new :node => self
+      p = SuppliersPlugin::DistributedProduct.new :node => self
       p.distribute_from np
     end
   end

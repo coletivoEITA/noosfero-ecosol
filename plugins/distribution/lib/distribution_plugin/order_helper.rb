@@ -1,6 +1,5 @@
 module DistributionPlugin::OrderHelper
-  
-  include DistributionPlugin::DistributionDisplayHelper
 
+  include DistributionPlugin::DistributionDisplayHelper
 
 end

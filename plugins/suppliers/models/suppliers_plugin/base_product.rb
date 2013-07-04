@@ -1,11 +1,8 @@
-class SuppliersPlugin::Product < Product
+# FIXME remove Base when plugin became a module
+class SuppliersPlugin::BaseProduct < Product
 
-  # FIXME remove
-  belongs_to :node, :class_name => 'DistributionPluginNode'
-  belongs_to :supplier, :class_name => 'SuppliersPlugin::Supplier'
-
-  named_scope :by_node, lambda { |n| { :conditions => {:node_id => n.id} } }
-  named_scope :by_node_id, lambda { |id| { :conditions => {:node_id => id} } }
+  named_scope :by_profile, lambda { |n| { :conditions => {:profile_id => n.id} } }
+  named_scope :by_profile_id, lambda { |id| { :conditions => {:profile_id => id} } }
   named_scope :from_supplier, lambda { |supplier| supplier.nil? ? {} : { :conditions => {:supplier_id => supplier.id} } }
 
   # FIXME remove
@@ -18,20 +15,20 @@ class SuppliersPlugin::Product < Product
 
   named_scope :own,
     :select => 'distribution_plugin_products.*',
-    :conditions => ['distribution_plugin_products.node_id = suppliers_plugin_suppliers.node_id'],
+    :conditions => ['distribution_plugin_products.profile_id = suppliers_plugin_suppliers.profile_id'],
     :joins => 'INNER JOIN suppliers_plugin_suppliers ON suppliers_plugin_products.supplier_id = suppliers_plugin_suppliers.id'
   named_scope :active, :conditions => {:active => true}
   named_scope :inactive, :conditions => {:active => false}
   named_scope :archived, :conditions => {:archived => true}
   named_scope :unarchived, :conditions => {:archived => false}
 
-  has_many :sources_from_products, :class_name => 'DistributionPluginSourceProduct', :foreign_key => :to_product_id
-  has_many :sources_to_products, :class_name => 'DistributionPluginSourceProduct', :foreign_key => :from_product_id, :dependent => :destroy
+  has_many :sources_from_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :to_product_id
+  has_many :sources_to_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :from_product_id, :dependent => :destroy
 
-  has_many :to_products, :through => :sources_to_products, :order => 'id asc'
-  has_many :from_products, :through => :sources_from_products, :order => 'id asc'
-  has_many :to_nodes, :through => :to_products, :source => :node
-  has_many :from_nodes, :through => :from_products, :source => :node
+  has_many :to_products, :through => :sources_to_products, :order => 'id ASC'
+  has_many :from_products, :through => :sources_from_products, :order => 'id ASC'
+  has_many :to_profiles, :through => :to_products, :source => :profile
+  has_many :from_profiles, :through => :from_products, :source => :profile
 
   def from_product
     self.from_products.first
@@ -40,7 +37,7 @@ class SuppliersPlugin::Product < Product
     self.from_products = [value]
   end
   def supplier
-    self.from_product.supplier
+    self.from_product.supplier if self.from_product
   end
   def supplier_products
     self.supplier.nil? ? self.from_products : self.from_products.select{ |fp| fp.profile == self.supplier }
@@ -49,18 +46,19 @@ class SuppliersPlugin::Product < Product
     self.supplier_products.first
   end
 
-  validates_presence_of :type
-  validates_presence_of :node
-  validates_presence_of :name, :if => Proc.new { |p| !p.dummy? }
-  validates_associated :from_products
-  validates_numericality_of :price, :allow_nil => true
-  validates_numericality_of :minimum_selleable, :allow_nil => true
-  validates_numericality_of :margin_percentage, :allow_nil => true
-  validates_numericality_of :margin_fixed, :allow_nil => true
-  validates_numericality_of :stored, :allow_nil => true
-  validates_numericality_of :quantity, :allow_nil => true
+  settings_items :minimum_selleable, :type => Float, :default => nil
+  settings_items :margin_percentage, :type => Float, :default => nil
+  settings_items :margin_fixed, :type => Float, :default => nil
+  settings_items :stored, :type => Float, :default => nil
+  settings_items :quantity, :type => Float, :default => nil
+  settings_items :category_id
+  settings_items :type_category_id
 
-  acts_as_having_settings :field => :settings
+  validates_presence_of :name, :if => Proc.new { |p| !p.dummy? }
+  # disable name validation
+  validates_uniqueness_of :name, :scope => :profile_id, :allow_nil => true, :if => proc{ |p| false }
+
+  validates_associated :from_products
 
   DEFAULT_ATTRIBUTES = [:name, :description, :margin_percentage, :margin_fixed,
     :price, :stored, :unit_id, :minimum_selleable, :unit_detail]
@@ -68,15 +66,13 @@ class SuppliersPlugin::Product < Product
   extend ActsAsHavingSettings::DefaultItem::ClassMethods
   settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :from_product
-  settings_default_item :margin_percentage, :type => :boolean, :default => true, :delegate_to => :node
-  settings_default_item :margin_fixed, :type => :boolean, :default => true, :delegate_to => :node
   settings_default_item :price, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :stored, :type => :boolean, :default => true, :delegate_to => :from_product
   default_item :unit_id, :if => :default_price, :delegate_to => :from_product
   default_item :minimum_selleable, :if => :default_price, :delegate_to => :from_product
   default_item :unit_detail, :if => :default_price, :delegate_to => :from_product
 
-  extend DistributionPlugin::DistributionCurrencyHelper::ClassMethods
+  extend SuppliersPlugin::CurrencyHelper::ClassMethods
   has_number_with_locale :minimum_selleable
   has_number_with_locale :own_minimum_selleable
   has_number_with_locale :original_minimum_selleable

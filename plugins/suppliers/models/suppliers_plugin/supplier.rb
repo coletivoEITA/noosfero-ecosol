@@ -3,7 +3,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'
 
-  has_many :supplied_products, :foreign_key => 'supplier_id', :class_name => 'DistributionPluginProduct', :order => 'name ASC'
+  has_many :supplied_products, :foreign_key => 'supplier_id', :class_name => 'SuppliersPlugin::BaseProduct', :order => 'name ASC'
 
   named_scope :of_profile, lambda { |n| { :conditions => {:profile_id => n.id} } }
   named_scope :of_profile_id, lambda { |id| { :conditions => {:profile_id => id} } }

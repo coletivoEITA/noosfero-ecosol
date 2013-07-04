@@ -2,7 +2,7 @@ class DistributionPluginMessageController < DistributionPluginMyprofileControlle
   no_design_blocks
 
   def new_to_consumer_for_order
-    @order = DistributionPluginOrder.find params[:order_id]
+    @order = DistributionPlugin::Order.find params[:order_id]
     @consumer = @order.consumer
     if params[:commit]
       if params[:include_order]
@@ -17,7 +17,7 @@ class DistributionPluginMessageController < DistributionPluginMyprofileControlle
   end
 
   def new_to_consumer
-    @consumer = DistributionPluginNode.find params[:consumer_id]
+    @consumer = DistributionPlugin::Node.find params[:consumer_id]
     if params[:commit]
       DistributionPlugin::Mailer.deliver_message_to_consumer @node, @consumer, params[:email][:subject], params[:email][:message]
       page_reload

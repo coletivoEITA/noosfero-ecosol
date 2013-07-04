@@ -1,14 +1,14 @@
-class DistributionPluginSession < ActiveRecord::Base
+class DistributionPlugin::Session < Noosfero::Plugin::ActiveRecord
 
-  belongs_to :node, :class_name => 'DistributionPluginNode', :foreign_key => :node_id
+  belongs_to :node, :class_name => 'DistributionPlugin::Node', :foreign_key => :node_id
 
-  has_many :delivery_options, :class_name => 'DistributionPluginDeliveryOption', :foreign_key => :session_id, :dependent => :destroy
+  has_many :delivery_options, :class_name => 'DistributionPlugin::DeliveryOption', :foreign_key => :session_id, :dependent => :destroy
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 
-  has_many :orders, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC'
-  has_many :orders_confirmed, :class_name => 'DistributionPluginOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC',
+  has_many :orders, :class_name => 'DistributionPlugin::Order', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC'
+  has_many :orders_confirmed, :class_name => 'DistributionPlugin::Order', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC',
     :conditions => ['distribution_plugin_orders.status = ?', 'confirmed']
-  has_many :products, :class_name => 'DistributionPluginProduct', :foreign_key => :session_id, :order => 'name ASC'
+  has_many :products, :class_name => 'SuppliersPlugin::BaseProduct', :foreign_key => :session_id, :order => 'name ASC'
 
   has_many :from_products, :through => :products, :order => 'name ASC'
   has_many :from_nodes, :through => :products
@@ -150,7 +150,7 @@ class DistributionPluginSession < ActiveRecord::Base
       node.products.unarchived.distributed.active.each do |product|
         p = already_in.find{ |f| f.from_product == product }
         unless p
-          p = DistributionPluginSessionProduct.create_from_distributed(self, product)
+          p = DistributionPlugin::OfferedProduct.create_from_distributed(self, product)
         end
         p
       end

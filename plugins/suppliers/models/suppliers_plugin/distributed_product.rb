@@ -1,4 +1,4 @@
-class SuppliersPlugin::DistributedProduct < SuppliersPlugin::Product
+class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
   after_save :save_supplier_product
 
@@ -25,7 +25,7 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::Product
     @supplier_product = super
     # automatically create a product if supplier is dummy
     if !own? and dummy?
-      @supplier_product ||= DistributionPluginDistributedProduct.new(:node => supplier.node, :supplier => supplier.node.self_supplier)
+      @supplier_product ||= SuppliersPlugin::DistributedProduct.new(:node => supplier.node, :supplier => supplier.node.self_supplier)
     end
 
     @supplier_product
@@ -42,7 +42,7 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::Product
     supplier_product.id if supplier_product
   end
   def supplier_product_id=(id)
-    distribute_from DistributionPluginProduct.find(id) unless id.blank?
+    distribute_from SuppliersPlugin::BaseProduct.find(id) unless id.blank?
   end
 
   # Set _product_ and its supplier as the origin of this product

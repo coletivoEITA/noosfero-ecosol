@@ -1,8 +1,8 @@
-class DistributionPluginDeliveryMethod < ActiveRecord::Base
+class DistributionPlugin::DeliveryMethod < Noosfero::Plugin::ActiveRecord
 
-  belongs_to :node, :class_name => 'DistributionPluginNode'
+  belongs_to :node, :class_name => 'DistributionPlugin::Node'
 
-  has_many :delivery_options, :class_name => 'DistributionPluginDeliveryOption', :foreign_key => 'delivery_method_id', :dependent => :destroy
+  has_many :delivery_options, :class_name => 'DistributionPlugin::DeliveryOption', :foreign_key => 'delivery_method_id', :dependent => :destroy
 
   validates_presence_of :node
   validates_presence_of :name

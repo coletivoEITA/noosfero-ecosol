@@ -1,4 +1,4 @@
-class DistributionPluginHeaderImage < ActiveRecord::Base
+class DistributionPlugin::HeaderImage < ActiveRecord::Base
   set_table_name 'images'
 
   has_attachment :content_type => :image,

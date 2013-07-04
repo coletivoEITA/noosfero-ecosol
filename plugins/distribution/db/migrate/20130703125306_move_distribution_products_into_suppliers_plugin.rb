@@ -1,3 +1,6 @@
+class DistributionPluginNode < ActiveRecord::Base
+  belongs_to :profile
+end
 class DistributionPluginProduct < ActiveRecord::Base
   belongs_to :node, :class_name => 'DistributionPluginNode'
 end
@@ -5,9 +8,10 @@ class DistributionPluginDistributedProduct < DistributionPluginProduct
 end
 class DistributionPluginSessionProduct < DistributionPluginProduct
 end
-class SuppliersPlugin::Product < Product
+class SuppliersPlugin::BaseProduct < Product
+  validates_uniqueness_of :name, :scope => :profile_id, :allow_nil => true, :if => proc{ |p| false }
 end
-class SuppliersPlugin::DistributedProduct < SuppliersPlugin::Product
+class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 end
 class SuppliersPlugin::SourceProduct < Noosfero::Plugin::ActiveRecord
 end
@@ -19,7 +23,8 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
     id_translation = {}
     ::ActiveRecord::Base.transaction do
       DistributionPluginProduct.all.each do |product|
-        new_product = SuppliersPlugin::DistributedProduct.new :enterprise => product.node.profile, :name => product.name, :price => product.price, :description => product.description, :available => product.active, :unit_id => product.unit_id
+        profile = product.node.profile
+        new_product = SuppliersPlugin::DistributedProduct.new :enterprise => profile, :name => product.name, :price => product.price, :description => product.description, :available => product.active, :unit_id => product.unit_id
         new_product.data = product.settings
         new_product.data[:margin_fixed] = product.margin_fixed
         new_product.data[:margin_percentage] = product.margin_percentage
@@ -29,11 +34,11 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
         new_product.data[:quantity] = product.quantity
         new_product.product_category_id = product.category_id || ProductCategory.find_by_name('Produtos').id || ProductCategory.first.id
 
-        new_product.save!
+        new_product.save false
         id_translation[product.id] = new_product.id
 
         if product.product_id
-          SuppliersPlugin::SourceProduct.create! :from_product_id => product.product_id, :to_product => new_product.id
+          SuppliersPlugin::SourceProduct.create! :from_product_id => product.product_id, :to_product_id => new_product.id
         end
       end
 
