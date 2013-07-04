@@ -47,6 +47,8 @@ class ExchangePluginProfileController < ProfileController
       ex_el.save
     end
         
+    ExchangePlugin::Mailer.deliver_start_exchange_notification @target, @origin, @exchange.id
+    
     redirect_to :controller => "exchange_plugin_myprofile", :action => "exchange_console", :exchange_id => @exchange.id, :profile => @active_organization.identifier
   end
 
