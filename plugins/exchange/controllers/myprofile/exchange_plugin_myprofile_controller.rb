@@ -90,7 +90,6 @@ class ExchangePluginMyprofileController < MyProfileController
 
     @message = ExchangePlugin::Message.new_exchange_message(p, @active_organization, recipient, current_user.person, params[:body])
     
-    ActionMailer::Base.default_url_options[:host] = request.host_with_port
     ExchangePlugin::Mailer.deliver_new_message_notification @active_organization, recipient, p.exchange.id    
 
 

@@ -7,7 +7,7 @@
     <p>
     <%= _('%{sender} enviou uma mensagem para você.') % {:sender => @sender.name} %>
 <br /><br />
-    <%= link_to _('Clique aqui para ver!'), :host => @recipient.environment.url, :controller => 'exchange_plugin_myprofile', :profile => @recipient.identifier, :action => 'index' %>
+    <%= link_to _('Clique aqui para ver!'), @recipient.environment.url, :controller => 'exchange_plugin_myprofile', :profile => @recipient.identifier, :action => 'index' %>
  
     </p>
   </body>
