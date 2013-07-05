@@ -1,0 +1,15 @@
+<table>
+  <% profile.currencies.each do |currency| %>
+    <tr class="currency-item">
+      <td class="symbol">
+        <%= link_to_function currency.symbol, 'escambo.currency.popin(this)' %>
+      </td>
+      <td class="name">
+        <%= link_to_function currency.name, 'escambo.currency.popin(this)' %>
+      </td>
+      <td class="popin">
+        <%= render :partial => 'currency_plugin_shared/popin', :locals => {:currency => currency, :candidate => @active_organization} %>
+      </td>
+    </tr>
+  <% end %>
+</table>

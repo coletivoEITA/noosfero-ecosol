@@ -423,36 +423,63 @@ $image-next: '/plugins/escambo/images/next.png';
         width: $module2;
       }
     }
+
+    .currencies {
+      position: relative;
+      
+      .currency-item {
+
+        .symbol, .name {
+          padding: $half-padding/2 $padding;
+          padding-left: 0;
+        } 
+        .symbol {
+        }
+        .name {
+        } 
+        .popin {
+
+          .currency-popin {
+            &.current {
+              top: $margin;
+              left: -$margin;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
 /* Snippets */
 
-.cms-learning-plugin-learning-snippet {
-  background: $color-knowledge-bg;
-  border: $border dotted $color-knowledge-label;
-  .label {
-    background: $color-knowledge-label;
-  }
-}
 .product-snippet {
   background: $color-offer-bg;
+  padding: $padding - $border;
   border: $border solid $color-offer-label;
   border-radius: 5px;
   .label {
     background: $color-offer-label;
   }
 }
+.cms-learning-plugin-learning-snippet {
+  background: $color-knowledge-bg;
+  padding: $padding - 2*$border;
+  border: 2*$border dotted $color-knowledge-label;
+  .label {
+    background: $color-knowledge-label;
+  }
+}
 .sniffer-plugin-interest-snippet {
   background: $color-interest-bg;
-  border: $border dashed $color-interest-label;
+  padding: $padding - 2*$border;
+  border: 2*$border dashed $color-interest-label;
   .label {
     background: $color-interest-label;
   }
 }
 
 .escambo-snippet {
-  padding: $padding - $border;
   margin-bottom: $half-margin;
   min-height: 7*$base;
   position: relative;
@@ -470,7 +497,7 @@ $image-next: '/plugins/escambo/images/next.png';
     .label {
       text-transform: uppercase;
       padding: $padding;
-      margin: -($padding - $border);
+      margin: -$padding;
       color: white;
       display: inline-block;
     }
