@@ -46,7 +46,8 @@ class ExchangePluginProfileController < ProfileController
       ex_el.enterprise_id = profile.id
       ex_el.save
     end
-        
+
+    ActionMailer::Base.default_url_options[:host] = request.host_with_port
     ExchangePlugin::Mailer.deliver_start_exchange_notification @target, @origin, @exchange.id
     
     redirect_to :controller => "exchange_plugin_myprofile", :action => "exchange_console", :exchange_id => @exchange.id, :profile => @active_organization.identifier
