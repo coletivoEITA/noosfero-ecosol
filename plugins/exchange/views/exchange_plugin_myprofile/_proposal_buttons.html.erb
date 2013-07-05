@@ -13,7 +13,7 @@
     <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'cancel_negociation', :exchange_id => @exchange.id, :enterprise_origin_id => @origin.id, :enterprise_target_id => @target.id,} do |f| %>
       <%= f.submit _('Cancel Negociation'), :class => "exchange-button-console"%>
     <% end %>
-    <% if proposal.enterprise_target == profile %>
+    <% if proposal.enterprise_target == @active_organization %>
       <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'accept', :proposal_id => @proposal.id } do |f| %>
         <%= f.submit _('Accept proposal and finish Exchange'), :class => "exchange-button-console"%>
       <% end %>

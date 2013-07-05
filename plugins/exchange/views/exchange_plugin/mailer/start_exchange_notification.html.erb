@@ -5,10 +5,9 @@
   </head>
   <body>
     <p>
-    <%= _('Você tem uma nova troca esperando por você! %{origin} quer fazer uma troca.') % {:origin => @origin.name} %>
-<br /><br />
-    <%= link_to _('Acesse sua a troca!'), :controller => 'exchange_plugin_myprofile', :profile => @target.identifier, :action => 'index' %>
-
+      <%= _('Você tem uma nova troca esperando por você! %{origin} quer fazer uma troca.') % {:origin => @origin.name} %>
+      <br /><br />
+      <%= link_to _('Acesse sua a troca!'), :controller => 'exchange_plugin_myprofile', :profile => @target.identifier, :action => 'index' %>
     </p>
   </body>
 </html>

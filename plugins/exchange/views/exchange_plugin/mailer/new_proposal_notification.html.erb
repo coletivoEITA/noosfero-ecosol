@@ -5,10 +5,9 @@
   </head>
   <body>
     <p>
-    <%= _('%{origin} fez uma nova proposta para você.') % {:origin => @origin.name} %>
-<br /><br />
-    <%= link_to _('Clique aqui para ver!'), :controller => 'exchange_plugin_myprofile', :profile => @target.identifier, :action => 'index' %>
-
+      <%= _('%{origin} fez uma nova proposta para você.') % {:origin => @origin.name} %>
+      <br /><br />
+      <%= link_to _('Clique aqui para ver!'), :controller => 'exchange_plugin_myprofile', :profile => @target.identifier, :action => 'index' %>
     </p>
   </body>
 </html>
