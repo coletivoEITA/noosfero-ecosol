@@ -128,6 +128,9 @@ class ExchangePluginMyprofileController < MyProfileController
       ex_el.save
     end
 
+    ActionMailer::Base.default_url_options[:host] = request.host_with_port
+    ExchangePlugin::Mailer.deliver_new_proposal_notification @proposal.enterprise_target, @proposal.enterprise_origin, @proposal.id, @exchange.id    
+    
     redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
   end
 
