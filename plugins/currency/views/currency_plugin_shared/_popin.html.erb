@@ -1,0 +1,39 @@
+<div class="currency-popin">
+  <div class="title">
+    <h4>
+      <%= currency.name_with_symbol %>
+    </h4>
+
+    <%= link_to_function _('Close'), 'currency.popin.close(this)', :class => 'close' %>
+  </div>
+
+  <div class="description">
+    <label> <%= _('Description') %> </label>
+    <%= currency.description %>
+  </div>
+
+  <div class="acceptors">
+    <label>
+      <% if currency.enterprises.size == 0 %>
+        <%= _('No enterprise accept this currency yet') %>
+      <% else %>
+        <%= _('%{number} enterprises accept %{symbol}') % {
+          :number => currency.enterprises.size,
+          :symbol => currency.symbol,
+        } %>
+      <% end %>
+    </label>
+
+    <% currency.enterprises.each do |enterprise| %>
+      <div class="enterprise">
+        <%= link_to enterprise.name, enterprise.url %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if candidate and not candidate.currencies.include? currency %>
+    <div class="accept">
+      <%= link_to _('Accept this currency'), {:controller => :currency_plugin_myprofile, :action => :accept, :profile => candidate.identifier, :id => currency.id}, :method => :post, :class => 'action-button' %>
+    </div>
+  <% end %>
+</div>

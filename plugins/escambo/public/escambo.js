@@ -49,6 +49,15 @@ escambo.home.enterprises = {
   },
 };
 
+escambo.currency = {
+
+  popin: function (nameElement) {
+    var item = jQuery(nameElement).parents('.currency-item');
+    var parent = item.find('.popin');
+    currency.popin.show(parent);
+  },
+};
+
 escambo.search = {
 
   load: function() {

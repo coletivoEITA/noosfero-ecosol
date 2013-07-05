@@ -121,3 +121,27 @@
   #product-info #product-info-form.edit_product .add-in-currency {
     width: 264px;
     margin-right: 24px; }
+
+.currency-popin {
+  display: none;
+  /* by default */
+  min-width: 360px;
+  position: absolute;
+  background: #faf7dc;
+  border: 1px solid #cccccc;
+  box-shadow: 1px 2px 7px #888, -1px 2px 6px #999; }
+  .currency-popin .title h4 {
+    margin-right: 24px; }
+  .currency-popin .title .close {
+    position: absolute;
+    right: 24px;
+    top: 12px;
+    font-weight: bold; }
+  .currency-popin label {
+    display: block; }
+  .currency-popin .description, .currency-popin .acceptors, .currency-popin .accept {
+    border-top: 1px solid #cccccc; }
+  .currency-popin .title, .currency-popin .description, .currency-popin .acceptors, .currency-popin .accept {
+    padding: 12px 24px; }
+  .currency-popin .acceptors .enterprise {
+    padding-left: 24px; }

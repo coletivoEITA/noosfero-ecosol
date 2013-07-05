@@ -3,6 +3,7 @@
 /* Colors */
 
 $color-action-button: #394E41;
+$color-popin-bg: #FAF7DC;
 
 /* Buttons */
 
@@ -162,3 +163,42 @@ $color-action-button: #394E41;
   }
 }
 
+.currency-popin {
+  display: none; /* by default */
+  min-width: $module4;
+  position: absolute;
+  background: $color-popin-bg;
+  border: $border solid #ccc;
+  box-shadow: 1px 2px 7px #888, -1px 2px 6px #999;
+
+  .title {
+
+    h4 {
+      margin-right: $margin;
+    }
+    .close {
+      position: absolute;
+      right: $margin;
+      top: $padding;
+      font-weight: bold;
+    }
+  }
+
+  label {
+    display: block;
+  }
+
+  .description, .acceptors, .accept {
+    border-top: $border solid #ccc;
+  }
+  .title, .description, .acceptors, .accept {
+    padding: $padding $margin;
+  }
+
+  .acceptors {
+    .enterprise {
+      padding-left: $margin;
+    }
+  }
+
+}

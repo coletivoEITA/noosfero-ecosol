@@ -51,6 +51,24 @@ currency.search = {
 };
 currency.search.load();
 
+currency.popin = {
+  current: jQuery(),
+
+  show: function (parent) {
+    var popin = jQuery(parent).find('.currency-popin');
+    currency.popin.current.hide();
+    currency.popin.current = popin;
+    popin.addClass('current');
+    popin.show();
+    return popin;
+  },
+  close: function (button) {
+    var popin = jQuery(button).parents('.currency-popin');
+    popin.removeClass('current');
+    popin.hide();
+  },
+};
+
 currency.disassociate = {
 
   search: function () {

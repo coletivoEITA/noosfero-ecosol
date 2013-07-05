@@ -7,6 +7,7 @@ class CurrencyPlugin::Currency < Noosfero::Plugin::ActiveRecord
     :conditions => ['currency_plugin_enterprise_currencies.is_organizer <> ?', true], :order => 'id ASC'
   has_many :organizers, :through => :enterprise_currencies, :source => :enterprise,
     :conditions => ['currency_plugin_enterprise_currencies.is_organizer = ?', true], :order => 'id ASC'
+  has_many :enterprises, :through => :enterprise_currencies, :source => :enterprise
 
   has_many :product_currencies
   has_many :products, :through => :product_currencies

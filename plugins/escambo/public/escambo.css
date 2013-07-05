@@ -1044,29 +1044,39 @@ body.action-sniffer_plugin_myprofile-search {
       margin-right: 24px; }
     #escambo-enterprise-info .sidebar .info .city {
       width: 168px; }
+    #escambo-enterprise-info .sidebar .currencies {
+      position: relative; }
+      #escambo-enterprise-info .sidebar .currencies .currency-item .symbol, #escambo-enterprise-info .sidebar .currencies .currency-item .name {
+        padding: 3px 12px;
+        padding-left: 0; }
+      #escambo-enterprise-info .sidebar .currencies .currency-item .popin .currency-popin.current {
+        top: 24px;
+        left: -24px; }
 
 /* Snippets */
-.cms-learning-plugin-learning-snippet {
-  background: #fcf0ee;
-  border: 1px dotted #c37169; }
-  .cms-learning-plugin-learning-snippet .label {
-    background: #c37169; }
-
 .product-snippet {
   background: #f1f1f7;
+  padding: 11px;
   border: 1px solid #677fb7;
   border-radius: 5px; }
   .product-snippet .label {
     background: #677fb7; }
 
+.cms-learning-plugin-learning-snippet {
+  background: #fcf0ee;
+  padding: 10px;
+  border: 2px dotted #c37169; }
+  .cms-learning-plugin-learning-snippet .label {
+    background: #c37169; }
+
 .sniffer-plugin-interest-snippet {
   background: #f3f5ed;
-  border: 1px dashed #79a458; }
+  padding: 10px;
+  border: 2px dashed #79a458; }
   .sniffer-plugin-interest-snippet .label {
     background: #79a458; }
 
 .escambo-snippet {
-  padding: 11px;
   margin-bottom: 12px;
   min-height: 84px;
   position: relative; }
@@ -1081,7 +1091,7 @@ body.action-sniffer_plugin_myprofile-search {
     .escambo-snippet .first-column .label {
       text-transform: uppercase;
       padding: 12px;
-      margin: -11px;
+      margin: -12px;
       color: white;
       display: inline-block; }
   .escambo-snippet .second-column {
