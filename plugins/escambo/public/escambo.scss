@@ -22,6 +22,9 @@ $color-violet: #7F005C;
 $color-presentation-button: $color-yellow;
 $color-presentation-button-highlight: $color-violet;
 
+$color-user-bg: #FAF7DC;
+$color-user-border: #C5AAA5;
+
 /* Images */
 
 $image-heart-empty: '/plugins/escambo/images/heart-empty.png'; // FIXME: missing
@@ -156,21 +159,23 @@ $image-next: '/plugins/escambo/images/next.png';
   }
 
   .profile-homepage-link {
+    height: 6*$base;
     @extend .pstyle-basic;
     margin-top: $half-margin;
     padding: $padding 0;
   }
   .categories-area {
-    height: $base*3;
+    height: 4*$base;
   }
   .location-area {
-    height: $base*3;
+    height: 4*$base;
 
     &.empty {
       @extend .pstyle-tm2;
     }
   }
   .summary-area {
+    height: 2*$base;
     @extend .pstyle-tm2;
   }
 
@@ -434,6 +439,9 @@ $image-next: '/plugins/escambo/images/next.png';
           padding-left: 0;
         } 
         .symbol {
+          a {
+            text-decoration: none;
+          }
         }
         .name {
         } 
@@ -447,6 +455,41 @@ $image-next: '/plugins/escambo/images/next.png';
           }
         }
       }
+    }
+
+    .members {
+    }
+  }
+}
+
+/* Members */
+.escambo-profile-member {
+  @extend .container-clear;
+  background: $color-user-bg;
+  height: 8*$base;
+  border: $border solid $color-user-border;
+  width: $module3;
+
+  .profile-image {
+    float: left;
+    height: 8*$base;
+    width: 8*$base;
+  }
+  .right {
+    float: left;
+    width: $module2 - 2*$padding;
+    height: 8*$base - 2*($padding - $border);
+    padding: $padding - $border;
+    position: relative;
+
+    .name {
+      display: block;
+    }
+    .action-button {
+      width: $module2 - 4*$padding;
+      position: absolute;
+      left: $padding;
+      bottom: $padding - $border;
     }
   }
 }

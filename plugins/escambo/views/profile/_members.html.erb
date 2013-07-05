@@ -1,0 +1,15 @@
+<% profile.members.each do |member| %>
+  <div class="escambo-profile-member">
+
+    <%= profile_image member, :portrait, :class => 'profile-image' %>
+
+    <div class="right">
+      <div class="name">
+        <%= member.name %>
+      </div>
+
+      <%= link_to _('Get in contact'), {:controller => :contact, :profile => member.identifier, :action => :new, :back_to => url_for(params)}, :class => 'colorbox action-button' %>
+    </div>
+  </div>
+<% end %>
+
