@@ -7,8 +7,8 @@
     <p>
     <%= _('%{origin} fez uma nova proposta para você.') % {:origin => @origin.name} %>
 <br /><br />
-    <%= link_to _('Clique aqui para ver!'), :host => @target.environment.url, :controller => 'exchange_plugin_myprofile', :profile => @target.identifier, :action => 'index' %>
- 
+    <%= link_to _('Clique aqui para ver!'), :controller => 'exchange_plugin_myprofile', :profile => @target.identifier, :action => 'index' %>
+
     </p>
   </body>
 </html>

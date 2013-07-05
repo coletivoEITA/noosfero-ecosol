@@ -1,20 +1,20 @@
 class ExchangePluginMyprofileController < MyProfileController
+
   no_design_blocks
   protect 'edit_profile', :profile
 
   helper ExchangePlugin::ExchangeDisplayHelper
-  helper_method :sort_column, :sort_direction
+
+  before_filter :set_mailer_host
 
   def index
-
    @exchanges_enterprise = ExchangePlugin::ExchangeEnterprise.all.select{|ex| ex.enterprise_id == profile.id}
-   
+
    @active_exchanges_enterprise = @exchanges_enterprise.select{|ex| ((ex.exchange.state != "concluded") && (ex.exchange.state != "cancelled"))}
-   
+
    @inactive_exchanges_enterprise = @exchanges_enterprise.select{|ex| ((ex.exchange.state == "concluded") || (ex.exchange.state == "cancelled"))}
-   
   end
-  
+
   def exchange_console
     @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
 
@@ -29,26 +29,26 @@ class ExchangePluginMyprofileController < MyProfileController
     @profile_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @profile.id} - @proposal.knowledges
 
     @profile_products = @profile.products - @proposal.products
-    @theother_products = @theother.products - @proposal.products 
-    
+    @theother_products = @theother.products - @proposal.products
+
     @exchange_happened_array = [["Sim",0],["Parcialmente (fizemos nossa parte, o outro lado não)",1],
      ["Parcialmente (fizemos nossa parte, o outro lado não)",2],["Não",3]]
 
   end
-  
+
   def add_unregistered_item
     unreg_item = ExchangePlugin::UnregisteredItem.new
     unreg_item.name = params[:name]
     unreg_item.description = params[:description]
     unreg_item.save!
-    
+
     add_element_helper(unreg_item.id, "ExchangePlugin::UnregisteredItem", params[:proposal_id], params[:enterprise_id])
-                
+
     render :action => 'add_element_currency'
-    
+
   end
-  
-  
+
+
   def add_element_currency
     @element = ExchangePlugin::ExchangeElement.new
     @element.element_id = params[:element_id]
@@ -59,7 +59,7 @@ class ExchangePluginMyprofileController < MyProfileController
     @element.save!
 
   end
-  
+
   def add_element
     @element = ExchangePlugin::ExchangeElement.new
     @element.element_id = params[:element_id]
@@ -82,18 +82,12 @@ class ExchangePluginMyprofileController < MyProfileController
     @element.destroy
   end
 
-  
   def new_message
     p = ExchangePlugin::Proposal.find params[:proposal_id]
-
     recipient = (p.enterprise_target_id == @active_organization.id)? p.enterprise_origin : p.enterprise_target
-
     @message = ExchangePlugin::Message.new_exchange_message(p, @active_organization, recipient, current_user.person, params[:body])
-    
-    ActionMailer::Base.default_url_options[:host] = request.host_with_port
-    ExchangePlugin::Mailer.deliver_new_message_notification @active_organization, recipient, p.exchange.id    
 
-
+    ExchangePlugin::Mailer.deliver_new_message_notification @active_organization, recipient, p.exchange.id
   end
 
   def close_proposal
@@ -132,9 +126,8 @@ class ExchangePluginMyprofileController < MyProfileController
       ex_el.save
     end
 
-    ActionMailer::Base.default_url_options[:host] = request.host_with_port
-    ExchangePlugin::Mailer.deliver_new_proposal_notification @proposal.enterprise_target, @proposal.enterprise_origin, @proposal.id, @exchange.id    
-    
+    ExchangePlugin::Mailer.deliver_new_proposal_notification @proposal.enterprise_target, @proposal.enterprise_origin, @proposal.id, @exchange.id
+
     redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
   end
 
@@ -190,24 +183,12 @@ class ExchangePluginMyprofileController < MyProfileController
     @element.quantity = params[:quantity]
     @element.save
     @exchange = ExchangePlugin::Exchange.find @element.proposal.exchange_id
-    
+
     render :nothing => true
   end
 
-  ## Methods for exchange elements editing###
-
-  private
-
-  def sort_column
-    ExchangePlugin::Exchange.column_names.include?(params[:sort]) ? params[:sort] : "updated_at"
-  end
-
-  def sort_direction
-    %w[asc desc].include?(params[:direction])?params[:direction]:"desc"
-  end
-
   protected
-  
+
   def add_element_helper(element_id, element_type, proposal_id, enterprise_id)
     @element = ExchangePlugin::ExchangeElement.new
     @element.element_id = element_id
@@ -216,6 +197,10 @@ class ExchangePluginMyprofileController < MyProfileController
     @element.proposal_id = proposal_id
 
     @element.save!
+  end
+
+  def set_mailer_host
+    ExchangePlugin::Mailer.default_url_options = {:host => request.host_with_port}
   end
 
 end
