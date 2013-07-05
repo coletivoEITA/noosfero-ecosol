@@ -12,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: noosfero 0.43.0\n"
-"POT-Creation-Date: 2013-07-03 16:28-0300\n"
+"POT-Creation-Date: 2013-07-05 16:44-0300\n"
 "PO-Revision-Date: 2013-03-13 17:47-0300\n"
 "Last-Translator: Rodrigo Souto <rodrigo@colivre.coop.br>\n"
 "Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
@@ -83,18 +83,9 @@ msgstr "Ajuda"
 #: app/views/cms/_text_editor_sidebar.rhtml:4
 #: app/views/box_organizer/add_block.rhtml:45
 #: plugins/sniffer/views/sniffer_plugin_myprofile/_balloon_close.html.erb:1
+#: plugins/currency/views/currency_plugin_shared/_popin.html.erb:7
 msgid "Close"
 msgstr "Fechar"
-
-#: app/helpers/search_helper.rb:10 app/helpers/assets_helper.rb:10
-#: app/controllers/public/search_controller.rb:50
-#: app/models/enterprises_block.rb:12
-#: app/views/profile/_person_profile.rhtml:23
-#: app/views/search/_sellers_form.rhtml:7
-#: plugins/bsc/views/bsc_plugin_myprofile/_contract_form.html.erb:13
-#: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:18
-msgid "Enterprises"
-msgstr "Pontos de Cultura"
 
 #: app/helpers/application_helper.rb:160
 msgid "This is %s, version %s"
@@ -1024,6 +1015,15 @@ msgstr "Editar pasta"
 msgid "Articles"
 msgstr "Artigos"
 
+#: app/helpers/assets_helper.rb:10 app/helpers/search_helper.rb:10
+#: app/controllers/public/search_controller.rb:50
+#: app/models/enterprises_block.rb:12 app/views/search/_sellers_form.rhtml:7
+#: app/views/profile/_person_profile.rhtml:23
+#: plugins/bsc/views/bsc_plugin_myprofile/_contract_form.html.erb:13
+#: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:18
+msgid "Enterprises"
+msgstr "Pontos de Cultura"
+
 #: app/helpers/assets_helper.rb:12 app/helpers/search_helper.rb:14
 #: app/views/search/events.html.erb:1
 #: public/designs/themes/base/navigation.rhtml:10
@@ -1931,10 +1931,12 @@ msgid "Please enter a valid email address."
 msgstr "Por favor entre um endereço de e-mail válido."
 
 #: app/controllers/public/contact_controller.rb:14
+#: plugins/escambo/lib/escambo_plugin.rb:127
 msgid "Contact successfully sent"
 msgstr "Contato enviado com sucesso"
 
 #: app/controllers/public/contact_controller.rb:17
+#: plugins/escambo/lib/escambo_plugin.rb:130
 msgid "Contact not sent"
 msgstr "Contato não enviado"
 
@@ -2073,7 +2075,7 @@ msgid "Incorrect username or password"
 msgstr "Nome ou senha incorreto"
 
 #: app/controllers/public/account_controller.rb:68
-#: plugins/escambo/lib/escambo_plugin.rb:111
+#: plugins/escambo/lib/escambo_plugin.rb:147
 msgid "This environment doesn't allow user registration."
 msgstr "Este ambiente não permite o registro de usuários."
 
@@ -2246,6 +2248,12 @@ msgstr "Pastas do portal salvas"
 #: app/controllers/admin/admin_panel_controller.rb:68
 msgid "Saved the number of news on folders"
 msgstr "Número de notícias nas pastas salvo."
+
+#: app/models/favorite_enterprises_block.rb:4
+#: app/models/favorite_enterprises_block.rb:12
+#: app/views/profile_editor/index.rhtml:55
+msgid "Favorite Enterprises"
+msgstr "Pontos de Cultura Favoritos"
 
 #: app/models/favorite_enterprises_block.rb:8
 msgid "This block lists your favorite enterprises."
@@ -2852,6 +2860,7 @@ msgstr "certificador"
 #: plugins/mezuro/views/mezuro_plugin_repository/_form.html.erb:6
 #: plugins/mezuro/views/mezuro_plugin_repository/show.html.erb:10
 #: plugins/currency/views/currency_plugin_myprofile/_currency_organized.html.erb:11
+#: plugins/currency/views/currency_plugin_shared/_popin.html.erb:11
 msgid "Description"
 msgstr "Descrição"
 
@@ -4130,7 +4139,7 @@ msgstr "Breve descrição das atividades"
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:35
 #: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:18
 #: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:10
-#: plugins/escambo/views/profile_editor/edit.html.erb:69
+#: plugins/escambo/views/profile_editor/edit.html.erb:80
 #: plugins/escambo/views/profile/_info.html.erb:17
 msgid "City"
 msgstr "Cidade"
@@ -4140,7 +4149,7 @@ msgstr "Cidade"
 #: app/views/profile_editor/_person_form.rhtml:20
 #: plugins/bsc/lib/bsc_plugin/contract.rb:46
 #: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:9
-#: plugins/escambo/views/profile_editor/edit.html.erb:68
+#: plugins/escambo/views/profile_editor/edit.html.erb:79
 #: plugins/escambo/views/profile/_info.html.erb:13
 msgid "State"
 msgstr "Estado"
@@ -4151,7 +4160,7 @@ msgstr "Estado"
 #: app/views/shared/_organization_custom_fields.rhtml:18
 #: plugins/bsc/views/shared/_fields.html.erb:65
 #: plugins/escambo/views/profile_editor/_organization_custom_fields.html.erb:18
-#: plugins/escambo/views/profile_editor/edit.html.erb:67
+#: plugins/escambo/views/profile_editor/edit.html.erb:78
 msgid "Country"
 msgstr "País"
 
@@ -4160,7 +4169,7 @@ msgstr "País"
 #: app/views/shared/_organization_custom_fields.rhtml:15
 #: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:19
 #: plugins/escambo/views/profile_editor/_organization_custom_fields.html.erb:15
-#: plugins/escambo/views/profile_editor/edit.html.erb:70
+#: plugins/escambo/views/profile_editor/edit.html.erb:81
 msgid "ZIP code"
 msgstr "CEP"
 
@@ -4551,8 +4560,8 @@ msgstr "Novo"
 #: plugins/sniffer/views/sniffer_plugin_myprofile/edit.html.erb:18
 #: plugins/currency/views/manage_products/_edit_info.html.erb:63
 #: plugins/tolerance_time/views/tolerance_time_plugin_myprofile/index.html.erb:21
-#: plugins/escambo/views/profile_editor/edit.html.erb:74
-#: plugins/escambo/views/profile_editor/edit.html.erb:95
+#: plugins/escambo/views/profile_editor/edit.html.erb:60
+#: plugins/escambo/views/profile_editor/edit.html.erb:85
 msgid "Save"
 msgstr "Salvar"
 
@@ -4603,14 +4612,6 @@ msgstr "Acima Vermelho"
 #: plugins/custom_forms/views/custom_forms_plugin_myprofile/_edit_text.html.erb:7
 msgid "Ok"
 msgstr "Ok"
-
-#: app/models/environment.rb:120
-msgid "Enterprises are disabled when created"
-msgstr "Pontos de Cultura são desabilitados quando criados"
-
-#: app/models/environment.rb:121
-msgid "Enterprises are validated when created"
-msgstr "Pontos de Cultura são validados quando criados"
 
 #: app/models/link_list_block.rb:22 app/views/account/login.rhtml:3
 #: app/views/account/login_block.rhtml:4 app/views/shared/user_menu.rhtml:61
@@ -5250,12 +5251,6 @@ msgstr "[%s] Você recebeu um recado!"
 #: app/models/environment_statistics_block.rb:4
 msgid "Environment stastistics"
 msgstr "Estatísticas do Ambiente"
-
-#: app/models/favorite_enterprises_block.rb:4
-#: app/models/favorite_enterprises_block.rb:12
-#: app/views/profile_editor/index.rhtml:55
-msgid "Favorite Enterprises"
-msgstr "Pontos de Cultura Favoritos"
 
 #: app/models/environment_statistics_block.rb:8
 msgid "Statistics for %s"
@@ -5983,8 +5978,8 @@ msgstr "Gerenciamento de conteúdo"
 #: app/views/box_organizer/index.rhtml:5
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:43
 #: plugins/sniffer/views/sniffer_plugin_myprofile/edit.html.erb:19
-#: plugins/escambo/views/profile_editor/edit.html.erb:75
-#: plugins/escambo/views/profile_editor/edit.html.erb:96
+#: plugins/escambo/views/profile_editor/edit.html.erb:61
+#: plugins/escambo/views/profile_editor/edit.html.erb:86
 msgid "Back to control panel"
 msgstr "Voltar ao painel de controle"
 
@@ -6999,11 +6994,6 @@ msgstr "Seu ponto de cultura (%s) foi registrado com sucesso."
 msgid "You can manage your enterprise now."
 msgstr "Você pode gerenciar seu ponto de cultura agora."
 
-#: app/views/profile/favorite_enterprises.rhtml:3
-#: app/views/favorite_enterprises/index.rhtml:3
-msgid "%s's favorite enterprises"
-msgstr "Pontos de Cultura favoritos de %s"
-
 #: app/views/enterprise_registration/select_validator.rhtml:1
 msgid "Enterprise registration: validator organization"
 msgstr "Registo do ponto de cultura: organização validadora"
@@ -7218,10 +7208,6 @@ msgstr "Usar o tema padrão"
 #: app/views/themes/index.rhtml:41
 msgid "Are you sure you want to use the environment default theme?"
 msgstr "Tem certeza que quer usar o tema padrão do ambiente?"
-
-#: app/views/profile/enterprises.rhtml:3
-msgid "%s's enterprises"
-msgstr "Pontos de Cultura de %s"
 
 #: app/views/themes/index.rhtml:50 app/views/themes/index.rhtml:94
 msgid "The \"%s\" theme."
@@ -7620,7 +7606,7 @@ msgstr "Registrar um novo ponto de cultura"
 #: app/views/maps/edit_location.rhtml:1
 #: app/views/profile_editor/index.rhtml:17
 #: plugins/bsc/views/shared/_fields.html.erb:60
-#: plugins/escambo/views/profile_editor/edit.html.erb:59
+#: plugins/escambo/views/profile_editor/edit.html.erb:70
 msgid "Location"
 msgstr "Localização"
 
@@ -7629,17 +7615,17 @@ msgstr "Localização"
 #: app/views/shared/_organization_custom_fields.rhtml:12
 #: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:15
 #: plugins/escambo/views/profile_editor/_organization_custom_fields.html.erb:12
-#: plugins/escambo/views/profile_editor/edit.html.erb:71
+#: plugins/escambo/views/profile_editor/edit.html.erb:82
 msgid "Address (street and number)"
 msgstr "Endereço (rua e número)"
 
 #: app/views/maps/edit_location.rhtml:15
-#: plugins/escambo/views/profile_editor/edit.html.erb:73
+#: plugins/escambo/views/profile_editor/edit.html.erb:84
 msgid "Locate in the map"
 msgstr "Localize no mapa"
 
 #: app/views/maps/edit_location.rhtml:15
-#: plugins/escambo/views/profile_editor/edit.html.erb:73
+#: plugins/escambo/views/profile_editor/edit.html.erb:84
 msgid ""
 "Locate the address informed above in the map below (note that you'll "
 "probably need to adjust the marker to get a precise position)"
@@ -7648,7 +7634,7 @@ msgstr ""
 "provavelmente precisar ajustar o marcador para conseguir uma posição precisa)"
 
 #: app/views/maps/edit_location.rhtml:21
-#: plugins/escambo/views/profile_editor/edit.html.erb:79
+#: plugins/escambo/views/profile_editor/edit.html.erb:90
 msgid "Drag the balloon to find the exact location."
 msgstr "Arraste o balão para encontrar a localização exata."
 
@@ -8187,7 +8173,7 @@ msgid "Select the categories of your interest"
 msgstr "Selecione as categorias de seu interesse"
 
 #: app/views/profile_editor/edit.rhtml:69
-#: plugins/escambo/views/profile_editor/edit.html.erb:101
+#: plugins/escambo/views/profile_editor/edit.html.erb:66
 msgid "Delete profile"
 msgstr "Remover perfil"
 
@@ -10333,43 +10319,42 @@ msgstr "A tolerância foi atualizada"
 msgid "Tolerance could not be updated"
 msgstr "A tolerância não pode ser atualizada"
 
-#: plugins/currency/models/currency_plugin/currency.rb:26
+#: plugins/solr/vendor/plugins/acts_as_solr_reloaded/test/models/posting.rb:-
 #, fuzzy
-msgid "%{name} (%{symbol})"
-msgstr "%{month} %{year}"
+msgid "posting"
+msgstr "configurações"
 
-#: plugins/currency/models/currency_plugin/currency.rb:36
-msgid "can't be equal to environment currency unit"
+#: plugins/solr/vendor/plugins/acts_as_solr_reloaded/test/models/gadget.rb:-
+msgid "gadget"
 msgstr ""
 
-#: plugins/sniffer/models/sniffer_plugin_profile.rb:-
-#, fuzzy
-msgid "sniffer plugin profile"
-msgstr "Perfil do ponto de cultura"
-
-#: plugins/sniffer/models/sniffer_plugin_opportunity.rb:-
-msgid "sniffer plugin opportunity"
+#: plugins/solr/vendor/plugins/acts_as_solr_reloaded/test/models/book.rb:-
+msgid "book"
 msgstr ""
 
-#: plugins/sniffer/models/sniffer_plugin_opportunity.rb:-
+#: plugins/solr/vendor/plugins/acts_as_solr_reloaded/test/models/advertise.rb:-
 #, fuzzy
-msgid "Opportunity"
-msgstr "Comunidade"
+msgid "advertise"
+msgstr "Advertise"
 
-#: plugins/sniffer/models/sniffer_plugin_opportunity.rb:-
-#, fuzzy
-msgid "Opportunity type"
-msgstr "Tipo do repositório"
+#: plugins/solr/vendor/plugins/acts_as_solr_reloaded/test/models/movie.rb:-
+msgid "movie"
+msgstr ""
 
-#: plugins/exchange/models/exchange_plugin_message.rb:-
+#: plugins/solr/vendor/plugins/acts_as_solr_reloaded/test/models/author.rb:-
 #, fuzzy
-msgid "exchange plugin message"
-msgstr "Gerenciar plugins"
+msgid "author"
+msgstr "Autor"
 
-#: plugins/exchange/models/exchange_plugin_message.rb:-
+#: plugins/solr/vendor/plugins/acts_as_solr_reloaded/test/models/electronic.rb:-
 #, fuzzy
-msgid "Enterprise sender"
-msgstr "Pontos de Cultura"
+msgid "electronic"
+msgstr "Selecione"
+
+#: plugins/solr/vendor/plugins/acts_as_solr_reloaded/test/models/post.rb:-
+#, fuzzy
+msgid "post"
+msgstr "Novo post"
 
 #: plugins/exchange/models/exchange_plugin/exchange.rb:21
 msgid "Proposed"
@@ -10414,9 +10399,8 @@ msgid "exchange plugin message"
 msgstr "Gerenciar plugins"
 
 #: plugins/exchange/models/exchange_plugin_message.rb:-
-#, fuzzy
 msgid "Enterprise sender"
-msgstr "Pontos de Cultura"
+msgstr "Remetente"
 
 #: plugins/exchange/models/exchange_plugin_message.rb:-
 #, fuzzy
@@ -10478,12 +10462,12 @@ msgstr ""
 msgid "Learnings"
 msgstr ""
 
-#: plugins/currency/models/currency_plugin/currency.rb:26
+#: plugins/currency/models/currency_plugin/currency.rb:27
 #, fuzzy
 msgid "%{name} (%{symbol})"
 msgstr "%{month} %{year}"
 
-#: plugins/currency/models/currency_plugin/currency.rb:36
+#: plugins/currency/models/currency_plugin/currency.rb:37
 msgid "can't be equal to environment currency unit"
 msgstr ""
 
@@ -10956,6 +10940,18 @@ msgstr "é obrigatório"
 #: plugins/template/lib/template_plugin.rb:10
 msgid "A plugin that does this and that."
 msgstr "Um plugin que faz isto e aquilo."
+
+#: plugins/exchange/lib/exchange_plugin/mailer.rb:8
+msgid "[ESCAMBO] Vocẽ tem uma nova troca!"
+msgstr ""
+
+#: plugins/exchange/lib/exchange_plugin/mailer.rb:20
+msgid "[ESCAMBO] Vocẽ tem uma nova proposta!"
+msgstr ""
+
+#: plugins/exchange/lib/exchange_plugin/mailer.rb:33
+msgid "[ESCAMBO] Vocẽ tem uma nova mensagem!"
+msgstr ""
 
 #: plugins/exchange/lib/exchange_plugin.rb:11
 msgid "A plugin that implement an exchange system inside noosfero."
@@ -12734,31 +12730,43 @@ msgstr ""
 msgid "Still accept this currency"
 msgstr "Criar nova comunidade"
 
-#: plugins/currency/views/manage_products/_currency_template.html.erb:6
+#: plugins/currency/views/currency_plugin_shared/_popin.html.erb:18
 #, fuzzy
+msgid "No enterprise accept this currency yet"
+msgstr "Criar nova comunidade"
+
+#: plugins/currency/views/currency_plugin_shared/_popin.html.erb:20
+msgid "%{number} enterprises accept %{symbol}"
+msgstr ""
+
+#: plugins/currency/views/currency_plugin_shared/_popin.html.erb:36
+#, fuzzy
+msgid "Accept this currency"
+msgstr "Criar nova comunidade"
+
+#: plugins/currency/views/manage_products/_currency_template.html.erb:6
 msgid "Price in %{currency}"
-msgstr "Criar novo contrato"
+msgstr "Preço em %{currency}"
 
 #: plugins/currency/views/manage_products/_currency_template.html.erb:8
 msgid "Discount in %{currency}"
-msgstr ""
+msgstr "Desconto em %{currency}"
 
 #: plugins/currency/views/manage_products/_add_in_currency.html.erb:5
 msgid "Already specified in all %{link}"
-msgstr ""
+msgstr "Já especificado em %{link}"
 
 #: plugins/currency/views/manage_products/_add_in_currency.html.erb:6
-#, fuzzy
 msgid "accepted currencies"
-msgstr "Criar nova comunidade"
+msgstr "moedas aceitas"
 
 #: plugins/currency/views/manage_products/_add_in_currency.html.erb:9
 msgid "Specify %{field} in %{select}"
-msgstr ""
+msgstr "Especificar %{field} em %{select}"
 
 #: plugins/currency/views/manage_products/_currencies_display.html.erb:3
 msgid "%{field_name} in %{currency}: %{symbol} %{field}"
-msgstr ""
+msgstr "%{field_name} em %{currency}: %{symbol} %{field}"
 
 #: plugins/ldap/views/ldap_plugin_admin/index.html.erb:1
 #, fuzzy
@@ -12938,6 +12946,11 @@ msgstr ""
 "Sua participação no ponto de cultura precisa ser aprovada. Por favor, "
 "aguarde a resposta do administrador do ponto de cultura. "
 
+#: plugins/escambo/views/profile/_members.html.erb:11
+#, fuzzy
+msgid "Get in contact"
+msgstr "Criar novo contrato"
+
 #: plugins/escambo/views/profile/_products.html.erb:2
 msgid "Offers from this enterprise"
 msgstr "Ofertas deste Ponto de Cultura"
@@ -12974,13 +12987,17 @@ msgstr "%s avaliações"
 msgid "Read evaluations"
 msgstr "Ler avaliações"
 
-#: plugins/escambo/views/profile/_info.html.erb:54
-msgid "Currencies"
-msgstr "Moedas"
+#: plugins/escambo/views/profile/_info.html.erb:56
+#, fuzzy
+msgid "Accepted Currencies"
+msgstr "moedas aceitas"
 
 #: plugins/escambo/views/escambo_plugin_myprofile/new_enterprise.html.erb:2
 msgid "Create new enterprise"
 msgstr "Criar novo ponto de cultura"
+
+#~ msgid "Currencies"
+#~ msgstr "Moedas"
 
 #~ msgid "Products and Services of Interest"
 #~ msgstr "Produtos e Serviços"
