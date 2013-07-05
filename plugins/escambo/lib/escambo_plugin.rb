@@ -86,9 +86,11 @@ class EscamboPlugin < Noosfero::Plugin
   end
 
   ProfileIndexFilter = proc do
-    return unless profile.enterprise?
-
-    render :action => 'index'
+    if profile.enterprise?
+      render :action => 'index'
+    else
+      render_not_found
+    end
   end
   def profile_controller_filters
     [
