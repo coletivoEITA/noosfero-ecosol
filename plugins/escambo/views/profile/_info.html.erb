@@ -6,7 +6,7 @@
       <div class="description"><%= profile.description %></div>
 
       <div class="contact-button">
-        <%= link_to _('Contact the enterprise'), {:controller => :contact, :action => :new, :back_to => url_for(params)}, :class => 'colorbox' %>
+        <%= link_to _('Contact the enterprise'), {:controller => :contact, :action => :new}, :class => 'colorbox' %>
       </div>
 
       <span class="state">

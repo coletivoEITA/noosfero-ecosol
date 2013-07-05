@@ -125,7 +125,7 @@ class EscamboPlugin < Noosfero::Plugin
       @contact.state = (!params[:state].blank? && State.exists?(params[:state])) ? State.find(params[:state]).name : nil
       if @contact.deliver
         session[:notice] = _('Contact successfully sent')
-        redirect_to params[:back_to]
+        redirect_to request.referer
       else
         session[:notice] = _('Contact not sent')
       end

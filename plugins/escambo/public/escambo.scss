@@ -469,6 +469,8 @@ $image-next: '/plugins/escambo/images/next.png';
   height: 8*$base;
   border: $border solid $color-user-border;
   width: $module3;
+  margin-bottom: $half-margin;
+  &:last-child { margin-bottom: 0; }
 
   .profile-image {
     float: left;
