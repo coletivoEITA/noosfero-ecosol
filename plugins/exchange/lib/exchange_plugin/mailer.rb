@@ -17,7 +17,7 @@ class ExchangePlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(target)
     from          'no-reply@' + domain
     reply_to      profile_recipients(origin)
-    subject       _('[ESCAMBO] Vocẽ tem uma nova troca!')
+    subject       _('[ESCAMBO] Vocẽ tem uma nova proposta!')
     content_type  'text/html'
     body :target => target,
          :origin => origin,
@@ -25,7 +25,18 @@ class ExchangePlugin::Mailer < Noosfero::Plugin::MailerBase
          :proposal_id => proposal_id
   end
   
-
+  def new_message_notification(sender, recipient, exchange_id, message = nil)
+    domain = sender.hostname || sender.environment.default_hostname
+    recipients    profile_recipients(recipient)
+    from          'no-reply@' + domain
+    reply_to      profile_recipients(sender)
+    subject       _('[ESCAMBO] Vocẽ tem uma nova mensagem!')
+    content_type  'text/html'
+    body :recipient => recipient,
+         :sender => sender,
+         :exchange_id => exchange_id
+  end
+  
   private
 
   def profile_recipients(profile)
