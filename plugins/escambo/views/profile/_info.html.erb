@@ -6,7 +6,7 @@
       <div class="description"><%= profile.description %></div>
 
       <div class="contact-button">
-        <%= link_to _('Contact the enterprise'), :controller => :contact, :action => :new %>
+        <%= link_to _('Contact the enterprise'), {:controller => :contact, :action => :new, :back_to => url_for(params)}, :class => 'colorbox' %>
       </div>
 
       <span class="state">
@@ -49,6 +49,8 @@
     </div>
     <div class="members">
       <h4><%= _('Members') %></h4>
+
+      <%= render :partial => 'members' %>
     </div>
     <div class="currencies">
       <h4><%= _('Accepted Currencies') %></h4>

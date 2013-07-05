@@ -893,12 +893,15 @@ body.action-sniffer_plugin_myprofile-search {
   .escambo-plugin-profile-block .profile-homepage-link, .escambo-plugin-profile-block .categories-area, .escambo-plugin-profile-block .location-area {
     border-bottom: 1px dotted black; }
   .escambo-plugin-profile-block .profile-homepage-link {
+    height: 72px;
     margin-top: 12px;
     padding: 12px 0; }
   .escambo-plugin-profile-block .categories-area {
-    height: 36px; }
+    height: 48px; }
   .escambo-plugin-profile-block .location-area {
-    height: 36px; }
+    height: 48px; }
+  .escambo-plugin-profile-block .summary-area {
+    height: 24px; }
   .escambo-plugin-profile-block .image-profile-area {
     height: 144px;
     position: relative;
@@ -1049,9 +1052,35 @@ body.action-sniffer_plugin_myprofile-search {
       #escambo-enterprise-info .sidebar .currencies .currency-item .symbol, #escambo-enterprise-info .sidebar .currencies .currency-item .name {
         padding: 3px 12px;
         padding-left: 0; }
+      #escambo-enterprise-info .sidebar .currencies .currency-item .symbol a {
+        text-decoration: none; }
       #escambo-enterprise-info .sidebar .currencies .currency-item .popin .currency-popin.current {
         top: 24px;
         left: -24px; }
+
+/* Members */
+.escambo-profile-member {
+  background: #faf7dc;
+  height: 96px;
+  border: 1px solid #c5aaa5;
+  width: 264px; }
+  .escambo-profile-member .profile-image {
+    float: left;
+    height: 96px;
+    width: 96px; }
+  .escambo-profile-member .right {
+    float: left;
+    width: 144px;
+    height: 74px;
+    padding: 11px;
+    position: relative; }
+    .escambo-profile-member .right .name {
+      display: block; }
+    .escambo-profile-member .right .action-button, .escambo-profile-member .right .exchange-action-button, .escambo-profile-member .right .exchange, .escambo-profile-member .right .exchange-button-console, .escambo-profile-member .right #escambo-enterprise-info .sidebar .info .contact-button a, #escambo-enterprise-info .sidebar .info .contact-button .escambo-profile-member .right a, .escambo-profile-member .right #escambo-new-enterprise form input[type=submit], #escambo-new-enterprise form .escambo-profile-member .right input[type=submit] {
+      width: 120px;
+      position: absolute;
+      left: 12px;
+      bottom: 11px; }
 
 /* Snippets */
 .product-snippet {

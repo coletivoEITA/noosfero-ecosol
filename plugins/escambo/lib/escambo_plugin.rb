@@ -25,6 +25,13 @@ class EscamboPlugin < Noosfero::Plugin
     ['escambo.js']
   end
 
+  def profile_image_link profile, size=:portrait, tag='li', extra_info = nil
+    return unless profile.enterprise?
+    lambda do
+      render :file => 'escambo_plugin_shared/profile_image_link', :locals => {:profile => profile, :size => size}
+    end
+  end
+
   SearchLimit = 20
   SearchDataLoad = proc do
     options = {:limit => SearchLimit, :conditions => ['created_at IS NOT NULL'], :order => 'created_at DESC'}
@@ -109,11 +116,28 @@ class EscamboPlugin < Noosfero::Plugin
     ]
   end
 
-  def profile_image_link profile, size=:portrait, tag='li', extra_info = nil
-    return unless profile.enterprise?
-    lambda do
-      render :file => 'escambo_plugin_shared/profile_image_link', :locals => {:profile => profile, :size => size}
+  # FIXME code copied... try to share
+  ContactFilter = proc do
+    @contact
+    if request.post? && params[:confirm] == 'true'
+      @contact = user.build_contact(profile, params[:contact])
+      @contact.city = (!params[:city].blank? && City.exists?(params[:city])) ? City.find(params[:city]).name : nil
+      @contact.state = (!params[:state].blank? && State.exists?(params[:state])) ? State.find(params[:state]).name : nil
+      if @contact.deliver
+        session[:notice] = _('Contact successfully sent')
+        redirect_to params[:back_to]
+      else
+        session[:notice] = _('Contact not sent')
+      end
+    else
+      @contact = user.build_contact(profile)
     end
+  end
+  def contact_controller_filters
+    [
+      {:type => 'before_filter', :method_name => 'escambo_contact',
+       :options => {}, :block => ContactFilter},
+    ]
   end
 
   # Code copied from account_controller. FIXME: make that code reusable
