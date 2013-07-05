@@ -11008,22 +11008,19 @@ msgid "Sniffs opportunities ..."
 msgstr ""
 
 #: plugins/sniffer/lib/sniffer_plugin.rb:26
-#, fuzzy
 msgid "Consumer Interests"
-msgstr "Interesses"
+msgstr "Interesses de consumo"
 
 #: plugins/sniffer/lib/sniffer_plugin.rb:27
 #: plugins/sniffer/views/sniffer_plugin_myprofile/search.html.erb:9
 msgid "Opportunities Sniffer"
-msgstr ""
+msgstr "Farejador de Oportunidades"
 
 #: plugins/display_content/lib/display_content_block.rb:8
-#, fuzzy
 msgid "Display your contents"
 msgstr "Apresentar um dos seus conteúdos"
 
 #: plugins/display_content/lib/display_content_block.rb:12
-#, fuzzy
 msgid ""
 "This block displays articles chosen by you. You can edit the block to select "
 "which of your articles is going to be displayed in the block."
@@ -12531,27 +12528,24 @@ msgid "%{interest} from %{profile}"
 msgstr "{interest} de %{profile}"
 
 #: plugins/sniffer/views/sniffer_plugin_myprofile/map_balloon.html.erb:16
-#, fuzzy
 msgid "As supplier"
-msgstr "Fornecedor"
+msgstr "Como fornecedor"
 
 #: plugins/sniffer/views/sniffer_plugin_myprofile/map_balloon.html.erb:26
 msgid "As consumer"
-msgstr ""
+msgstr "Como consumidor"
 
 #: plugins/sniffer/views/sniffer_plugin_myprofile/_product_search_box.html.erb:6
-#, fuzzy
 msgid "Suppliers"
-msgstr "Fornecedor"
+msgstr "Fornecedores"
 
 #: plugins/sniffer/views/sniffer_plugin_myprofile/_product_search_box.html.erb:10
 msgid "Consumers"
-msgstr ""
+msgstr "Consumidores"
 
 #: plugins/sniffer/views/sniffer_plugin_myprofile/_product_search_box.html.erb:15
-#, fuzzy
 msgid "look for products..."
-msgstr "Selecione alguns produtos"
+msgstr "procure por produtos..."
 
 #: plugins/sniffer/views/sniffer_plugin_myprofile/edit.html.erb:1
 msgid "Buyer interests"
