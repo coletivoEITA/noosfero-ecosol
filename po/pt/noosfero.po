@@ -10451,21 +10451,20 @@ msgstr "Artigo removido."
 #: plugins/cms_learning/models/cms_learning_plugin_learning.rb:41
 #: plugins/escambo/views/snippets/_cms_learning_plugin_learning.html.erb:6
 msgid "Learning"
-msgstr ""
+msgstr "Saber"
 
 #: plugins/cms_learning/models/cms_learning_plugin_learning.rb:33
 msgid "Share learnings to the network."
-msgstr ""
+msgstr "Compartilhe saberes para a rede"
 
 #: plugins/cms_learning/models/cms_learning_plugin_learning.rb:52
 #: plugins/cms_learning/lib/cms_learning_plugin/learnings_block.rb:12
 msgid "Learnings"
-msgstr ""
+msgstr "Saberes"
 
 #: plugins/currency/models/currency_plugin/currency.rb:27
-#, fuzzy
 msgid "%{name} (%{symbol})"
-msgstr "%{month} %{year}"
+msgstr "%{name} (%{symbol})"
 
 #: plugins/currency/models/currency_plugin/currency.rb:37
 msgid "can't be equal to environment currency unit"
