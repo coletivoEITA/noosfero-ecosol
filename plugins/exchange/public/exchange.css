@@ -272,7 +272,8 @@ ul.exc-plg-profile_offers {
   width: 24px;
   height: 24px;
   float: right;
-  padding: 0; }
+  padding: 0;
+  margin: 0px; }
 
 .exc-plg-proposal_sent {
   width: 945px;
@@ -442,7 +443,7 @@ input[type=text].exc-plg-qtd-input {
 #content h6.exc-plg-element_title {
   padding: 12px 12px 0 12px; }
 
-#content p.exc-plg-element_desc {
+#content div.exc-plg-element_desc {
   padding: 12px; }
 
 #exc-plg-summary_wrapper {

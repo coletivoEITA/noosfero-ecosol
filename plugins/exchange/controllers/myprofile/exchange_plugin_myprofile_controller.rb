@@ -32,7 +32,7 @@ class ExchangePluginMyprofileController < MyProfileController
     @theother_products = @theother.products - @proposal.products
 
     @exchange_happened_array = [["Sim",0],["Parcialmente (fizemos nossa parte, o outro lado não)",1],
-     ["Parcialmente (fizemos nossa parte, o outro lado não)",2],["Não",3]]
+     ["Parcialmente (o outro lado fez sua parte, nós não)",2],["Não",3]]
 
   end
 
