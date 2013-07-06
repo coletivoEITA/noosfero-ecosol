@@ -503,14 +503,23 @@ $image-next: '/plugins/escambo/images/next.png';
   padding: $padding - $border;
   border: $border solid $color-offer-label;
   border-radius: 5px;
+
   .label {
     background: $color-offer-label;
+  }
+  .first-column {
+    height: $module2;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: $module2; /* not css3 enabled */
+    background-size: contain;
   }
 }
 .cms-learning-plugin-learning-snippet {
   background: $color-knowledge-bg;
   padding: $padding - 2*$border;
   border: 2*$border dotted $color-knowledge-label;
+
   .label {
     background: $color-knowledge-label;
   }
@@ -519,6 +528,7 @@ $image-next: '/plugins/escambo/images/next.png';
   background: $color-interest-bg;
   padding: $padding - 2*$border;
   border: 2*$border dashed $color-interest-label;
+
   .label {
     background: $color-interest-label;
   }
@@ -531,13 +541,11 @@ $image-next: '/plugins/escambo/images/next.png';
 
   .first-column, .second-column, .third-column {
     float: left;
+    min-height: $module;
   }
   .first-column {
     width: $module2;
     margin-right: $margin;
-    min-height: $module;
-    background-size: $module;
-    background-position: center;
 
     .label {
       text-transform: uppercase;
