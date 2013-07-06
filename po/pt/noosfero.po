@@ -12651,13 +12651,12 @@ msgstr "Associar"
 
 #: plugins/currency/views/currency_plugin_myprofile/accept.html.erb:3
 #: plugins/currency/views/currency_plugin_myprofile/index.html.erb:18
-#, fuzzy
 msgid "Accept a new currency"
-msgstr "Criar nova comunidade"
+msgstr "Aceitar nova moeda social"
 
 #: plugins/currency/views/currency_plugin_myprofile/accept.html.erb:6
 msgid "Find the currency you want to accept on the network"
-msgstr ""
+msgstr "Procure a moeda que você quer aceitar no seu ponto de cultura"
 
 #: plugins/currency/views/currency_plugin_myprofile/accept.html.erb:17
 #, fuzzy
@@ -12702,9 +12701,8 @@ msgstr "Editar moeda social"
 
 #: plugins/currency/views/currency_plugin_myprofile/_currency_organized.html.erb:6
 #: plugins/currency/views/currency_plugin_myprofile/disassociate.html.erb:26
-#, fuzzy
 msgid "Disassociate"
-msgstr "Associar"
+msgstr "Desassociar"
 
 #: plugins/currency/views/currency_plugin_myprofile/_currency_organized.html.erb:16
 msgid "%{number} enterprise(s) accept this currency"
