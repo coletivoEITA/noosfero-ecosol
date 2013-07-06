@@ -935,7 +935,7 @@ body.action-sniffer_plugin_myprofile-search {
     display: inline-block;
     padding-left: 12px; }
   #escambo-enterprise-items .add {
-    margin-right: 12px; }
+    margin: 0 12px; }
   #escambo-enterprise-items #offers, #escambo-enterprise-items #knowledges, #escambo-enterprise-items #interests {
     margin-bottom: 24px; }
   #escambo-enterprise-items .escambo-snippet .second-column {
@@ -1024,6 +1024,13 @@ body.action-sniffer_plugin_myprofile-search {
   border-radius: 5px; }
   .product-snippet .label {
     background: #677fb7; }
+  .product-snippet .first-column {
+    height: 168px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 168px;
+    /* not css3 enabled */
+    background-size: contain; }
 
 .cms-learning-plugin-learning-snippet {
   background: #fcf0ee;
@@ -1044,13 +1051,11 @@ body.action-sniffer_plugin_myprofile-search {
   min-height: 84px;
   position: relative; }
   .escambo-snippet .first-column, .escambo-snippet .second-column, .escambo-snippet .third-column {
-    float: left; }
+    float: left;
+    min-height: 72px; }
   .escambo-snippet .first-column {
     width: 168px;
-    margin-right: 24px;
-    min-height: 72px;
-    background-size: 72px;
-    background-position: center; }
+    margin-right: 24px; }
     .escambo-snippet .first-column .label {
       text-transform: uppercase;
       padding: 12px;

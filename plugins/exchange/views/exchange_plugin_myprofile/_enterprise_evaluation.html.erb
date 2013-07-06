@@ -16,7 +16,7 @@
   <div id="exchange-evaluation-footer">
     <div id="exchange-score">
       <h5><%= _('Score') %></h5>
-      <%= evaluation.score %>
+      <%= render :partial => 'evaluation_plugin_shared/star_value', :locals => {:value => evaluation.score.to_f} %>
     </div>
     <div id="exchange-exchange_result">
       <h5><%= _('The exchange happened?') %></h5>

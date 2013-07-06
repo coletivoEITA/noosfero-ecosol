@@ -356,7 +356,7 @@ $image-next: '/plugins/escambo/images/next.png';
     @extend .pstyle-tm1;
   }
   .add {
-    margin-right: $half-margin;
+    margin: 0 $half-margin;
   }
 
   #offers, #knowledges, #interests {

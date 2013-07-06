@@ -34,6 +34,30 @@
   .action-button:visited, .action-button:active, .action-button:hover {
     color: white; }
 
+/* Images */
+.evaluation-mean .evaluation-star-value-wrap {
+  margin-bottom: 24px; }
+
+.evaluation-star-value-wrap {
+  background: url("/plugins/evaluation/images/star_empty.png");
+  width: 145px;
+  height: 25px; }
+  .evaluation-star-value-wrap .value-icon {
+    background: url("/plugins/evaluation/images/star.png");
+    height: 25px; }
+    .evaluation-star-value-wrap .value-icon.value-0 {
+      width: 0px; }
+    .evaluation-star-value-wrap .value-icon.value-1 {
+      width: 29px; }
+    .evaluation-star-value-wrap .value-icon.value-2 {
+      width: 58px; }
+    .evaluation-star-value-wrap .value-icon.value-3 {
+      width: 87px; }
+    .evaluation-star-value-wrap .value-icon.value-4 {
+      width: 116px; }
+    .evaluation-star-value-wrap .value-icon.value-5 {
+      width: 145px; }
+
 .evaluation-message {
   display: inline-block; }
 
