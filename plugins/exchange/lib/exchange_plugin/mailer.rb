@@ -1,23 +1,23 @@
 class ExchangePlugin::Mailer < Noosfero::Plugin::MailerBase
 
-  def start_exchange_notification(target, origin, exchange_id, message = nil)
-    domain = origin.hostname || origin.environment.default_hostname
+  def start_exchange_notification target, origin, exchange_id
+    environment = origin.environment
     recipients    profile_recipients(target)
-    from          'noreply@' + domain
+    from          "#{origin.name} <#{environment.contact_email}>"
     reply_to      profile_recipients(origin)
-    subject       _('[ESCAMBO] Você tem uma nova troca!')
+    subject       _('[%{environment}] You have a new proposal of exchange!') % {:environment => environment}
     content_type  'text/html'
     body :target => target,
          :origin => origin,
          :exchange_id => exchange_id
   end
 
-  def new_proposal_notification(target, origin, exchange_id, proposal_id, message = nil)
-    domain = origin.hostname || origin.environment.default_hostname
+  def new_proposal_notification target, origin, exchange_id, proposal_id
+    environment = origin.environment
     recipients    profile_recipients(target)
-    from          'noreply@' + domain
+    from          "#{origin.name} <#{environment.contact_email}>"
     reply_to      profile_recipients(origin)
-    subject       _('[ESCAMBO] Você tem uma nova proposta!')
+    subject       _('[%{environment}] You have a new proposal of exchange!') % {:environment => environment}
     content_type  'text/html'
     body :target => target,
          :origin => origin,
@@ -25,12 +25,12 @@ class ExchangePlugin::Mailer < Noosfero::Plugin::MailerBase
          :proposal_id => proposal_id
   end
 
-  def new_message_notification(sender, recipient, exchange_id, message = nil)
-    domain = 'escambo.org.br'
+  def new_message_notification sender, recipient, exchange_id
+    environment = sender.environment
     recipients    profile_recipients(recipient)
-    from          'noreply@' + domain
+    from          "#{sender.name} <#{environment.contact_email}>"
     reply_to      profile_recipients(sender)
-    subject       _('[ESCAMBO] Você tem uma nova mensagem!')
+    subject       _('[%{environment}] You have a new exchange message!') % {:environment => environment}
     content_type  'text/html'
     body :recipient => recipient,
          :sender => sender,
@@ -39,17 +39,20 @@ class ExchangePlugin::Mailer < Noosfero::Plugin::MailerBase
 
   protected
 
-  def profile_recipients(profile)
+  def url_for(options = {})
+    options ||= {}
+    url = case options
+    when Hash
+      options[:only_path] = false;
+    end
+    super options
+  end
+
+  def profile_recipients profile
     if profile.person?
       profile.contact_email
     else
       profile.admins.map{ |p| p.contact_email }
-    end
-  end
-
-  def community_members(profile)
-    if profile.community?
-      profile.members.map{ |p| p.contact_email }
     end
   end
 
