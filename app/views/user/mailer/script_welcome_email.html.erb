@@ -1,14 +1,14 @@
 <% @cirandas_url = 'http://cirandas.net/' %>
 <p> <%=_("Olá %s,") % @name %> </p>
 
-<p> <%=_("Esta é a mensagem oficial de entrada do emprendimento %s no  Cirandas. Caso tenha recebido uma mensagem  anterior sobre Cirandas, pedimos que a desconsidere e que nos desculpe qualquer transtorno.") % @enterprise.name  %> </p>
+<p> <%=_("Esta é a mensagem oficial de entrada do empreendimento %s no  Cirandas. Caso tenha recebido uma mensagem  anterior sobre Cirandas, pedimos que a desconsidere e que nos desculpe qualquer transtorno.") % @enterprise.name  %> </p>
 <% if !@community.blank? %>
 <% @community_url = @cirandas_url + '%s' % [ @community.identifier ]  %>
-  <p> <%=_("A comunidade %s, foi mantida e criamos um empreendimento de economia solidária para %s. Sinta-se a vontade para usar ambos espaços, mas lembre-se apenas na página do emprendimento é possível adicionar produtos, exibí-los na vitrine e comercializá-los com clientes. Para ver todas as diferenças entre um empreendimento e uma comunidade acesse  <a href='%s' target='_blank'>%s</a>") % [ @community.name, @enterprise.name, @community_url, @community_url ] %> </p>
+  <p> <%=_("A comunidade %s, foi mantida e criamos um empreendimento de economia solidária para %s. Sinta-se a vontade para usar ambos espaços, mas lembre-se apenas na página do empreendimento é possível adicionar produtos, exibí-los na vitrine e comercializá-los.") % [ @community.name, @enterprise.name ] %> </p>
 <% end %>
 
 <% @enterprise_url = @cirandas_url + '%s' % [ @enterprise.identifier ]  %>
-<p> <%=_("O emprendimento %s a partir de agora está no Cirandas.net: <a href='%s' target='_blank'>%s</a>") % [ @enterprise.name, @enterprise_url, @enterprise_url ] %> </p>
+<p> <%=_("O empreendimento %s a partir de agora está no Cirandas.net: <a href='%s' target='_blank'>%s</a>") % [ @enterprise.name, @enterprise_url, @enterprise_url ] %> </p>
 
 <p> <%=_("Para começar a usar a página do empreendimento, siga os passos abaixo:") %> </p>
 
@@ -17,21 +17,23 @@
   <p style="margin-bottom:0cm">Acesse <a href="http://cirandas.net" target="_blank">cirandas.net</a> </p>
   </li>
   <li>
-  <% if @password.blank? %>
-    <p style="margin-bottom:0cm">
-    <%= _("Como você já era um CIRANDEIRA/O, tente efeturar login com seu usario e senha anteriores. Caso não se recorde sua senha clique <a href='%s' target='_blank'>%s</a>  para alterá-la, será solicitado login e e-mail!") % [ @change_pass_link, @change_pass_link ] %>
-    </p>
-  <% else %>
-    <p style="margin-bottom:0cm">
-    <%=_("Veja que na esquerda tem um quadro azul claro para ENTRAR no Cirandas. Preencha com os seguintes dados:") %>
-    </p>
-    <p style="margin-bottom:0cm">  <%=_("Nome do usuáro: %s ") % [ @login ] %>  </p>
-    <p style="margin-bottom:0cm">  <%=_("Senha: %s ") % [ @password ] %>  </p>
-  <% end %>
+    <% if @password.blank? %>
+      <p style="margin-bottom:0cm">
+        <%=_("Veja que na esquerda tem um quadro azul claro para ENTRAR no Cirandas.") %>
+      </p>
+      <p style="margin-bottom:0cm">
+        <%= _("O e-mail %s já está associado a um CIRANDEIRA/O, tente efeturar login com seu usario e senha anteriores. Caso não se recorde sua senha clique <a href='%s' target='_blank'>%s</a>  para alterá-la, será solicitado login e e-mail! Caso este e-mail não pertença a você, entre em contato com o SAAC (cirandas@fbes.org.br)!") % [ @email, @change_pass_link, @change_pass_link ] %>
+      </p>
+    <% else %>
+      <p style="margin-bottom:0cm">
+        <%=_("Veja que na esquerda tem um quadro azul claro para ENTRAR no Cirandas. Preencha com os seguintes dados:") %>
+      </p>
+      <p style="margin-bottom:0cm">  <%=_("Nome do usuáro: %s ") % [ @login ] %>  </p>
+      <p style="margin-bottom:0cm">  <%=_("Senha: %s ") % [ @password ] %>  </p>
+    <% end %>
   </li>
 </ul>
 <p> <%=_("Depois de preencher, clique no botão preto Entrar.") %> </p>
-<br />
 <ul>
   <li>
   <p style="margin-bottom:0cm">

@@ -7,14 +7,14 @@ require 'iconv' unless RUBY_VERSION >= "1.9"
 #monkey patch
 User::Mailer.class_eval do 
     def script_welcome_email(user, enterprise, community = nil)
-      #recipients  user.person.email
-      recipients "cirandas@fbes.org.br"
+      recipients  [ user.person.email, "cirandas@fbes.org.br" ]
       from "SACC <cirandas@fbes.org.br>"
       subject _("Bem vinda/o ao CIRANDAS")
       content_type "text/html"      
       body :name => user.person.name,
         :enterprise => enterprise,
         :login => user.login,
+        :email => user.person.email,
         :password =>  user.password,
         :change_pass_link =>  "http://cirandas.net/account/forgot_password",
         :help => {:index => "http://cirandas.net/ajuda", :videos => "http://cirandas.net/ajuda/video-aulas-sobre-cirandas"},
@@ -59,8 +59,8 @@ def create_user( name, mail, fone, city, state )
       $log.info "Não foi possível criar um usuário com login %s, pois já existe um perfil que usar este login como identificador! " % login
       return nil
     end
-    p = proc{ $log.warn 'Não será enviada notificação via e-mail com link de ativação o usuário será ativado automaticamente.' }
-    User.send :define_method, :activate, &p 
+    p = proc{ $log.warn 'Sobrescrevendo metodo para evitar comportamento indesejado.' }
+    User.send :define_method, :deliver_signup_welcome_email, &p 
     User.send :define_method, :deliver_activation_code, &p
     User.send :define_method, :delay_activation_check, &p
     user = User.new({
@@ -75,6 +75,7 @@ def create_user( name, mail, fone, city, state )
     $log.info "Registrando dados pessoais do usuário..." 
     if !name.blank? and !city.blank? and !state.blank?
       data = {:name => name, :zip_code => '', :city => city, :contact_phone => fone, :address => state}
+
       $log.info 'Registrado nome %s - cidade %s - estado %s - fone %s !' % [ name.upcase, city.upcase, state.upcase, fone ]
     else
       data = {:name => name, :zip_code => '', :city => city, :contact_phone => fone, :address => state} 
@@ -91,10 +92,12 @@ def create_user( name, mail, fone, city, state )
     end   
  
     $log.info 'Ativando o usuário...'
-    if User[ user.login ]
-           user.activate
-      $log.info 'Ativado!'    
-    end  
+    user.activate
+    if user.activated? 
+      $log.info 'Ativado!'
+    else
+      $log.info 'Não Ativado!'   
+    end
     return user
   rescue Exception => e
     $log.fatal 'Não foi possível criar ou ativar o usuário...devido a excessão %s' % [ e.message ]
@@ -109,7 +112,7 @@ def find_or_create_users( adm_users )
     i = i+1
     if !u[:mail].blank?
       $log.info "Verificando se o usuário já existe...."    
-      user = User.find_by_email( u[:mail].strip.downcase )
+      user = User.find_by_email( u[:mail].gsub("\302\240", ' ').strip.downcase.gsub(" ", "") )
       if user.blank?
         $log.info "não existe usuario com e-mail %s ...." % [ u[:mail].downcase ]
         user = create_user( u[:name], u[:mail], u[:fone], u[:city], u[:state] )
@@ -126,8 +129,11 @@ def add_adm_users( enterprise, users )
     $log.info "Adicionando usuário %s como %s administrador..." % [ user.name, enterprise.name ] 
     if enterprise.add_admin( user.person )
       begin
-        community_id = enterprise.identifier.gsub!("ees-").blank?
-        community = Community[ identifier ] if !community_id.blank?
+        community_id = enterprise.identifier.sub!(/ees-/,'')
+        community = Community[ community_id ] if !community_id.blank?
+        if !community.blank?
+          $log.info "Já existe a comunidade %s, por isso será criado um empreendimento %s!" % [ community.identifier, enterprise.identifier ] 
+        end
         User::Mailer.deliver_script_welcome_email( user, enterprise, community )
         $log.info "concluído!"
       rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPSyntaxError, Net::SMTPFatalError, Net::SMTPUnknownError => e
@@ -209,17 +215,6 @@ end
 start_time = Time.now
 puts start_time
 
-puts "Este script foi desenvolvido para a chamada de entrada de novos emprendimentos, mais detalhes aqui -> http://cirandas.net/fbes/blog/fbes-abre-o-cirandas-para-cadastro-de-novos-empreendimentos"
-puts ""
-puts "Antes de executá-lo siga as intruções abaixo:"
-puts "  1. remover as linhas extras, aquelas com explicação de uso, deixando apenas o cabeçalho de cada coluna."
-puts "  2. remover o nome do estado, afinal cada forum estadual vai enviar sua planilha separadamente."
-puts "  3. procurar por e-mail repetidos, pois  o CIRANDAS.NET não aceita criar usuário com email repeditos"
-puts "    -> dica: faça um hide nas colunas F e G (telefone da 1ª pessoa e nome da 2ª pessoa)"
-puts "    -> se encontrar: salve em uma outra planilha para reportar ao forum estadual, quem sabe solicitando ao emprendimento outro e-mail"
-puts "  4. salvar como .CSV, escolha Use Txt Format; Charset UTF8; delimitador de campo vírgula (,); delimitador de texto aspas duplas ('""')"
-puts "No caso de muitos erros retorne para as intruções de uso à cima."
-
 file = nil
 if ARGV.blank?
   exit
@@ -261,4 +256,16 @@ puts "------------"
 puts "Eram esperados %s novos emprendimentos..." % [ summary[:to_import] ] 
 puts "Foram importados %s..." % [  summary[:imported] ]
 puts "Aconteceram %s erros..." % [ error_enterprises ]
+
+puts "Este script foi desenvolvido para a chamada de entrada de novos emprendimentos, mais detalhes aqui -> http://cirandas.net/fbes/blog/fbes-abre-o-cirandas-para-cadastro-de-novos-empreendimentos"
+puts ""
+puts "Antes de executá-lo siga as intruções abaixo:"
+puts "  1. remover as linhas extras, aquelas com explicação de uso, deixando apenas o cabeçalho de cada coluna."
+puts "  2. remover o nome do estado, afinal cada forum estadual vai enviar sua planilha separadamente."
+puts "  3. procurar por e-mail repetidos, pois  o CIRANDAS.NET não aceita criar usuário com email repeditos"
+puts "    -> dica: faça um hide nas colunas F e G (telefone da 1ª pessoa e nome da 2ª pessoa)"
+puts "    -> se encontrar: salve em uma outra planilha para reportar ao forum estadual, quem sabe solicitando ao emprendimento outro e-mail"
+puts "  4. salvar como .CSV, escolha Use Txt Format; Charset UTF8; delimitador de campo vírgula (,); delimitador de texto aspas duplas ('""')"
+puts "No caso de muitos erros retorne para as intruções de uso à cima."
+
 
