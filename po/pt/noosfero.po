@@ -12422,8 +12422,8 @@ msgstr "Adicionar quantia em dinheiro"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:87
 #: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:157
-msgid "Go"
-msgstr ""
+msgid "Include"
+msgstr "Incluir"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:102
 msgid "Your Products and Services"
