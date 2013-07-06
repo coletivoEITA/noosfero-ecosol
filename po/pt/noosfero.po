@@ -12,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: noosfero 0.43.0\n"
-"POT-Creation-Date: 2013-07-05 18:27-0300\n"
+"POT-Creation-Date: 2013-07-06 11:32-0300\n"
 "PO-Revision-Date: 2013-03-13 17:47-0300\n"
 "Last-Translator: Rodrigo Souto <rodrigo@colivre.coop.br>\n"
 "Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
@@ -12685,24 +12685,20 @@ msgid "cancel"
 msgstr "Cancelar"
 
 #: plugins/currency/views/currency_plugin_myprofile/index.html.erb:4
-#, fuzzy
 msgid "Currencies organized by your enterprise"
-msgstr "Ativar seu ponto de cultura"
+msgstr "Moedas sociais organizadas pelo seu ponto de cultura"
 
 #: plugins/currency/views/currency_plugin_myprofile/index.html.erb:6
-#, fuzzy
 msgid "Create new currency"
-msgstr "Criar novo contrato"
+msgstr "Criar nova moeda"
 
 #: plugins/currency/views/currency_plugin_myprofile/index.html.erb:16
-#, fuzzy
 msgid "Currencies already accepted"
-msgstr "Este ponto de cultura já foi ativado"
+msgstr "Moedas sociais já aceitas"
 
 #: plugins/currency/views/currency_plugin_myprofile/edit.html.erb:3
-#, fuzzy
 msgid "Edit currency"
-msgstr "Editar comentário"
+msgstr "Editar moeda social"
 
 #: plugins/currency/views/currency_plugin_myprofile/_currency_organized.html.erb:6
 #: plugins/currency/views/currency_plugin_myprofile/disassociate.html.erb:26
@@ -12712,26 +12708,27 @@ msgstr "Associar"
 
 #: plugins/currency/views/currency_plugin_myprofile/_currency_organized.html.erb:16
 msgid "%{number} enterprise(s) accept this currency"
-msgstr ""
+msgstr "%{number} pontos de cultura aceitam esta moeda social"
 
 #: plugins/currency/views/currency_plugin_myprofile/_currency_organized.html.erb:23
 msgid "Coverage (how many are circulating)"
-msgstr ""
+msgstr "Cobertura (quantidade em circulação)"
 
 #: plugins/currency/views/currency_plugin_myprofile/create.html.erb:3
-#, fuzzy
 msgid "Create a new currency"
-msgstr "Criar novo contrato"
+msgstr "Criar nova moeda social"
 
 #: plugins/currency/views/currency_plugin_myprofile/disassociate.html.erb:3
 msgid "Disassociate currency '%{name}'"
-msgstr ""
+msgstr "Desassociar moeda social '%{name}'"
 
 #: plugins/currency/views/currency_plugin_myprofile/disassociate.html.erb:8
 msgid ""
 "This currency is now organized by your enterprise and potencially accepted "
 "by others enterprises and theirs products."
 msgstr ""
+"Essa moeda social agora é organizada pelo seu ponto de cultura e pode ser "
+"usada por outros pontos de cultura."
 
 #: plugins/currency/views/currency_plugin_myprofile/disassociate.html.erb:11
 msgid ""
@@ -12747,23 +12744,20 @@ msgid ""
 msgstr ""
 
 #: plugins/currency/views/currency_plugin_myprofile/disassociate.html.erb:23
-#, fuzzy
 msgid "Still accept this currency"
-msgstr "Criar nova comunidade"
+msgstr "Seguir aceitando essa moeda social"
 
 #: plugins/currency/views/currency_plugin_shared/_popin.html.erb:18
-#, fuzzy
 msgid "No enterprise accept this currency yet"
-msgstr "Criar nova comunidade"
+msgstr "Nenhuma ponto de cultura aceita essa moeda"
 
 #: plugins/currency/views/currency_plugin_shared/_popin.html.erb:20
 msgid "%{number} enterprises accept %{symbol}"
-msgstr ""
+msgstr "%{number} pontos de cultura aceitam %{symbol}"
 
 #: plugins/currency/views/currency_plugin_shared/_popin.html.erb:36
-#, fuzzy
 msgid "Accept this currency"
-msgstr "Criar nova comunidade"
+msgstr "Aceitar essa moeda social"
 
 #: plugins/currency/views/manage_products/_currency_template.html.erb:6
 msgid "Price in %{currency}"
