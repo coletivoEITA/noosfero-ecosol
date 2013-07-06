@@ -1,3 +1,5 @@
+<% element_id = nil unless defined?(element_id) %>
+
 <% if logged_in? %>
   <% url = {:controller => :exchange_plugin_profile, :action => :start_exchange, :profile => profile.identifier, :element_id => element_id, :element_type => element_type} %>
 <% else %>
