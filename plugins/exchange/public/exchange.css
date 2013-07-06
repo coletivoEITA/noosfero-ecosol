@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .exchange-index {
+.container-clean, #exchange-states, .exchange-index {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */

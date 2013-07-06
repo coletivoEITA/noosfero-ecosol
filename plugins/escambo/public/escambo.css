@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -19,7 +19,7 @@
 /* use for text shadows */
 /* colors */
 /* buttons */
-.action-button, .exchange, .exchange-button-console, #escambo-new-enterprise form input[type=submit] {
+.action-button, .exchange, .exchange-button-console, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
   display: inline-block;
   padding: 6px 12px;
   height: auto;
@@ -31,14 +31,14 @@
   text-shadow: none;
   border: none;
   border-radius: 5px; }
-  .action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-new-enterprise form input[type=submit]:visited, .action-button:active, .exchange:active, .exchange-button-console:active, #escambo-new-enterprise form input[type=submit]:active, .action-button:hover, .exchange:hover, .exchange-button-console:hover, #escambo-new-enterprise form input[type=submit]:hover {
+  .action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, .exchange-button-console:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, .exchange-button-console:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
     color: white; }
 
 /* classes for CSS clear bugfix */
 .clean {
   clear: both; }
 
-.container-clean, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -55,7 +55,7 @@
 /* use for text shadows */
 /* colors */
 /* buttons */
-.action-button, .exchange, .exchange-button-console, #escambo-new-enterprise form input[type=submit] {
+.action-button, .exchange, .exchange-button-console, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
   display: inline-block;
   padding: 6px 12px;
   height: auto;
@@ -67,7 +67,7 @@
   text-shadow: none;
   border: none;
   border-radius: 5px; }
-  .action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-new-enterprise form input[type=submit]:visited, .action-button:active, .exchange:active, .exchange-button-console:active, #escambo-new-enterprise form input[type=submit]:active, .action-button:hover, .exchange:hover, .exchange-button-console:hover, #escambo-new-enterprise form input[type=submit]:hover {
+  .action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, .exchange-button-console:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, .exchange-button-console:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
     color: white; }
 
 /* Colors */
@@ -478,7 +478,7 @@ input[type=text].exchange-qtd-input {
 .clean {
   clear: both; }
 
-.container-clean, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -495,7 +495,7 @@ input[type=text].exchange-qtd-input {
 /* use for text shadows */
 /* colors */
 /* buttons */
-.action-button, .exchange, .exchange-button-console, #escambo-new-enterprise form input[type=submit] {
+.action-button, .exchange, .exchange-button-console, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
   display: inline-block;
   padding: 6px 12px;
   height: auto;
@@ -507,7 +507,7 @@ input[type=text].exchange-qtd-input {
   text-shadow: none;
   border: none;
   border-radius: 5px; }
-  .action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-new-enterprise form input[type=submit]:visited, .action-button:active, .exchange:active, .exchange-button-console:active, #escambo-new-enterprise form input[type=submit]:active, .action-button:hover, .exchange:hover, .exchange-button-console:hover, #escambo-new-enterprise form input[type=submit]:hover {
+  .action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, .exchange-button-console:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, .exchange-button-console:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
     color: white; }
 
 /* Colors */
@@ -1010,7 +1010,7 @@ body.action-sniffer_plugin_myprofile-search {
     position: relative; }
     .escambo-profile-member .right .name {
       display: block; }
-    .escambo-profile-member .right .action-button, .escambo-profile-member .right .exchange, .escambo-profile-member .right .exchange-button-console, .escambo-profile-member .right #escambo-new-enterprise form input[type=submit], #escambo-new-enterprise form .escambo-profile-member .right input[type=submit] {
+    .escambo-profile-member .right .action-button, .escambo-profile-member .right .exchange, .escambo-profile-member .right .exchange-button-console, .escambo-profile-member .right #escambo-new-enterprise form input[type=submit], #escambo-new-enterprise form .escambo-profile-member .right input[type=submit], .escambo-profile-member .right #escambo-enterprise-info .sidebar .info .contact-button a, #escambo-enterprise-info .sidebar .info .contact-button .escambo-profile-member .right a {
       width: 120px;
       position: absolute;
       left: 12px;

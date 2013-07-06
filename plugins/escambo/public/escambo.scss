@@ -401,7 +401,7 @@ $image-next: '/plugins/escambo/images/next.png';
       }
 
       .contact-button a {
-        @extend .exchange-action-button;
+        @extend .action-button;
         margin-bottom: $margin;
         display: block;
       }
