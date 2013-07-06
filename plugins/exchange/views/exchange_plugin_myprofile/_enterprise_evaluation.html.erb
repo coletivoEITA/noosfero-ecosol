@@ -1,24 +1,24 @@
-<p><%= _('Evaluation done by %{evaluator} at %{time}') % 
-          {:evaluator => evaluation.evaluator.name, 
-           :time => evaluation.created_at.strftime("%d/%m/%Y @ %H:%Mh")} 
+<p><%= _('Evaluation done by %{evaluator} at %{time}') %
+          {:evaluator => evaluation.evaluator.name,
+           :time => evaluation.created_at.strftime("%d/%m/%Y @ %H:%Mh")}
 %></p>
 
 <% if evaluation.evaluator == profile %>
-<div class="eva-plg-thumb">
+<div class="evaluation-thumb">
   <%= link_to profile_image(profile, :minor) +"\n", profile.url %>
 </div>
 <% end %>
 
-<div id="exc-plg-evaluation-text">
+<div id="exchange-evaluation-text">
   <p>
     <%= evaluation.text %>
   </p>
-  <div id="exc-plg-evaluation-footer">
-    <div id="exc-plg-score">
+  <div id="exchange-evaluation-footer">
+    <div id="exchange-score">
       <h5><%= _('Score') %></h5>
       <%= evaluation.score %>
     </div>
-    <div id="exc-plg-exchange_result">
+    <div id="exchange-exchange_result">
       <h5><%= _('The exchange happened?') %></h5>
         <%= @exchange_happened_array[evaluation.result.to_i][0] %>
     </div>
@@ -26,7 +26,7 @@
 </div>
 
 <% if evaluation.evaluator != profile %>
-<div class="eva-plg-thumb" style="float:right">
+<div class="evaluation-thumb" style="float:right">
   <%= link_to profile_image(evaluation.evaluator, :minor) +"\n", profile.url %>
 </div>
 <% end %>

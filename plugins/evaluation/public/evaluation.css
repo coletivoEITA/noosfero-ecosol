@@ -1,0 +1,64 @@
+/* classes for CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* use for heights only */
+/* base measurements */
+/* use for widths only */
+/* use for padding and margins only
+   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+ */
+/* use for borders */
+/* use for text shadows */
+/* colors */
+/* buttons */
+.action-button {
+  display: inline-block;
+  padding: 6px 12px;
+  height: auto;
+  width: auto;
+  color: white;
+  background: #394e41;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  border: none;
+  border-radius: 5px; }
+  .action-button:visited, .action-button:active, .action-button:hover {
+    color: white; }
+
+.evaluation-message {
+  display: inline-block; }
+
+.evaluation-score {
+  margin-top: 24px;
+  display: inline-block; }
+
+.evaluation-result {
+  margin-top: 24px; }
+
+.evaluation-radio {
+  display: inline-block;
+  margin-right: 24px; }
+
+.evaluation-thumb {
+  margin: 0px;
+  padding: 0px;
+  float: left; }
+
+.evaluation-body {
+  background: white;
+  width: 382px;
+  height: 130px;
+  margin-left: 54px;
+  float: left; }
+
+.evaluation-select {
+  color: black; }

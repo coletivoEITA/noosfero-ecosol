@@ -1,34 +1,34 @@
-<div id="exc-plg-evaluation-form">
-  <% form_for :evaluation, :url => {:controller => 'exchange_plugin_myprofile', :action => 'evaluate', :exchange_id => @exchange.id, :theother_id => @theother.id } do |f| %>    
+<div id="exchange-evaluation-form">
+  <% form_for :evaluation, :url => {:controller => 'exchange_plugin_myprofile', :action => 'evaluate', :exchange_id => @exchange.id, :theother_id => @theother.id } do |f| %>
 
-  <div class="eva-plg-message">
-    <div class="eva-plg-thumb">
+  <div class="evaluation-message">
+    <div class="evaluation-thumb">
       <%= link_to profile_image(profile, :minor) +"\n", profile.url %>
     </div>
-      <%= text_area_tag 'text',nil, :class => "eva-plg-body", :placeholder => _('Please evaluate the behaviour of %s during the exchange process') % @theother.name %>
- 
+      <%= text_area_tag 'text',nil, :class => "evaluation-body", :placeholder => _('Please evaluate the behaviour of %s during the exchange process') % @theother.name %>
+
   </div>
 
-  <div class="eva-plg-score">
+  <div class="evaluation-score">
     <h5><%= _('Score') %></h5>
     <label for="score_1">1</label>
-    <%= radio_button_tag "score", 1 , '', :class => "eva-plg-radio"%>
+    <%= radio_button_tag "score", 1 , '', :class => "evaluation-radio"%>
     <label for="score_2">2</label>
-    <%= radio_button_tag "score", 2 , '', :class => "eva-plg-radio"%>
+    <%= radio_button_tag "score", 2 , '', :class => "evaluation-radio"%>
     <label for="score_3">3</label>
-    <%= radio_button_tag "score", 3, '', :class => "eva-plg-radio" %>
+    <%= radio_button_tag "score", 3, '', :class => "evaluation-radio" %>
     <label for="score_4">4</label>
-    <%= radio_button_tag "score", 4, '', :class => "eva-plg-radio" %>
+    <%= radio_button_tag "score", 4, '', :class => "evaluation-radio" %>
     <label for="score_5">5</label>
-    <%= radio_button_tag "score", 5, '', :class => "eva-plg-radio" %> 
- 
+    <%= radio_button_tag "score", 5, '', :class => "evaluation-radio" %>
+
   </div>
 
-  <div class="eva-plg-exchange-result">
+  <div class="evaluation-exchange-result">
 
     <h5><%= _('The exchange happened?') %></h5>
-    <%= select("result", '',  @exchange_happened_array, {:include_blank => false}, {:class => "eva-plg-select", :name => "result"}) %>
- 
+    <%= select("result", '',  @exchange_happened_array, {:include_blank => false}, {:class => "evaluation-select", :name => "result"}) %>
+
   </div>
 
       <%= f.submit _('Submit Evaluation'), :class => "exchange-button-console", :style => "margin-top:12px" %>

@@ -1,40 +1,55 @@
-<div id="exc-plg-exchange_wrapper">
-  <div id="exc-plg-title_wrapper">
-    <h1> <%= _('Exchange Negociation') %> </h1>
-  </div>
-  <div id="exc-plg-states_wrapper">
-    <%= render :partial => "states", :locals => {:exchange => @exchange}%>
+<div id="exchange-exchange_wrapper">
 
-    <div id="exc-plg-enterprise_headers">
-      <div id="exc-plg-enterprise_profile">
-        <div id="exc-plg-profile_thumb" style="background: black;">
-          <%= link_to profile_image(profile, :thumb, :style => "width: 65px;") +"\n", profile.url %>
+  <h1> <%= _('Exchange Negociation') %> </h1>
+
+  <div id="exchange-header">
+
+    <%= render :partial => "states", :locals => {:exchange => @exchange} %>
+
+    <div id="exchange-enterprise_headers">
+
+      <div id="exchange-enterprise_profile">
+        <div id="exchange-profile_thumb">
+          <%= link_to profile_image(profile, :thumb), profile.url %>
         </div>
-        <p class="menu_g_selecionado exc-plg-profile-name"><%= profile.name %></p>
+        <div id="exchange-profile-name"><%= profile.name %></div>
       </div>
-      <div id="exc-plg-enterprise_theother">
-        <div id="exc-plg-theother_thumb" style="background: black;">
-          <%= link_to profile_image(@theother, :thumb, :style => "width: 65px;") +"\n", @theother.url %>
+
+      <div id="exchange-enterprise_theother">
+        <div id="exchange-theother_thumb">
+          <%= link_to profile_image(@theother, :thumb), @theother.url %>
         </div>
-        <p class="menu_g_selecionado exc-plg-theother-name"><%= @theother.name %></p>
+        <div id="exchange-theother-name"><%= @theother.name %></div>
       </div>
-      <div id="exc-plg-exchange_symbol"></div>
-    </div> <!-- enterprise_headers -->
-  </div> <!-- states wrapper -->
+
+      <div id="exchange-exchange_symbol"></div>
+
+      <div class="clean"></div>
+    </div>
+  </div>
 
   <% if @proposal.state == "accepted" %>
+
     <% if @exchange.state == "concluded" %>
-      <div style="overflow:hidden"><p style="float:right"><%= _('Concluded at %s') % @exchange.concluded_at.strftime("%d/%m/%Y @ %H:%Mh") %></p></div>
+      <div style="overflow:hidden"><p style="float:right"><%= _('Concluded at %s') % @exchange.concluded_at.strftime(_("%Y/%m/%d @ %H:%Mh")) %></p></div>
     <% end %>
-    <div id="exc-plg-accepted_header">
-      <h3 style="color:white"><%= _('Exchange arranged between <strong> %{origin} </strong> & <strong> %{target} </strong>') % {:origin => @origin.name, :target => @target.name}%></h3>
+
+    <div id="exchange-accepted_header">
+      <h3>
+        <%= _('Exchange arranged between <strong> %{origin} </strong> & <strong> %{target} </strong>') % {
+          :origin => @origin.name, :target => @target.name
+        } %>
+      </h3>
     </div>
+
     <%= render :partial => "evaluation", :object => @exchange %>
     <hr />
     <%= render :partial => "exchange_summary", :locals => {:proposal => @proposal} %>
     <hr />
     <%= _('Negociation history') %>
+
   <% end %>
+
   <%= render :partial => "proposals", :object => @proposals %>
 
-</div> <!-- exchange_wrapper -->
+</div>

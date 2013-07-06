@@ -3,58 +3,50 @@
 
 <% if !@active_exchanges_enterprise.blank? %>
   <h2><%= _('Active Exchanges') %></h2>
-  <% @active_exchanges_enterprise.each do |ee|  %>  
+  <% @active_exchanges_enterprise.each do |ee|  %>
 
-  <div id="plg-exc-exchange_<%= ee.exchange_id %>" class="exc-plg-index-exchange">
-    <div class="exc-plg-index-col1">
-      <p><%= _('Exchange created at %{time} by %{enterprise}') % {:time => ee.exchange.created_at.strftime("%d/%m/%Y"), :enterprise => 
-      (ee.role == "origin" ? ee.enterprise.name : ee.the_other.name)}  %></p>
+  <div id="exchange-<%= ee.exchange_id %>" class="exchange-index">
+    <div class="exchange-index-col1">
+      <p><%= _('Exchange created at %{time} by %{enterprise}') % {
+        :time => ee.exchange.created_at.strftime("%d/%m/%Y"),
+        :enterprise => (ee.role == "origin" ? ee.enterprise.name : ee.the_other.name)
+      } %></p>
 
-
-      <%= link_to _('Open Exchange'), {:controller => 'exchange_plugin_myprofile', :action => 'exchange_console', :exchange_id => ee.exchange.id} , :class => 'exchange' %>
-
+      <%= link_to _('Open Exchange'), {:controller => 'exchange_plugin_myprofile', :action => 'exchange_console', :exchange_id => ee.exchange.id} , :class => 'action-button' %>
     </div>
 
-    <div class="exc-plg-index-col2">
-
+    <div class="exchange-index-col2">
       <%= render :partial => "states", :locals => {:exchange => ee.exchange}%>
-
     </div>
 
-    <div class="exc-plg-index-col3">
-      <%= link_to profile_image(ee.the_other, :thumb) +"\n", ee.the_other.url %>
-      <h4 style="position: absolute; bottom: 0px;"><%= ee.the_other.name %></h4>
+    <div class="exchange-index-col3">
+      <%= link_to profile_image(ee.the_other, :thumb), ee.the_other.url %>
+      <h4><%= link_to ee.the_other.name, ee.the_other.url %></h4>
     </div>
   </div>
 
   <% end %>
 <% end %>
 
-<% if !@inactive_exchanges_enterprise.blank? %>
+<% unless @inactive_exchanges_enterprise.blank? %>
+
   <h2><%= _('Closed Exchanges') %></h2>
-  <% @inactive_exchanges_enterprise.each do |ee|  %>  
 
-  <div id="plg-exc-exchange_<%= ee.exchange_id %>" class="exc-plg-index-exchange">
+  <% @inactive_exchanges_enterprise.each do |ee|  %>
 
+  <div id="exchange-<%= ee.exchange_id %>" class="exchange-index">
 
-    <div class="exc-plg-index-col2">
-      <p><%= _('Exchange with %{the_other} created at %{time} by %{enterprise} and closed at %{closed_time}') % {:the_other => ee.the_other.name, :time => ee.exchange.created_at.strftime("%d/%m/%Y"), :enterprise => 
-      (ee.role == "origin" ? ee.enterprise.name : ee.the_other.name), :closed_time => ee.exchange.concluded_at.strftime("%d/%m/%Y")}  %></p>
+    <div class="exchange-index-col2">
+      <p><%= _('Exchange with %{the_other} created at %{time} by %{enterprise} and closed at %{closed_time}') % {
+        :the_other => ee.the_other.name, :time => ee.exchange.created_at.strftime("%d/%m/%Y"),
+        :enterprise => (ee.role == "origin" ? ee.enterprise.name : ee.the_other.name), :closed_time => ee.exchange.concluded_at.strftime("%d/%m/%Y")
+      } %></p>
     </div>
 
-    <div class="exc-plg-index-col3">
-      <%= link_to _('See history'), {:controller => 'exchange_plugin_myprofile', :action => 'exchange_console', :exchange_id => ee.exchange.id} , :class => 'exchange' %>
+    <div class="exchange-index-col3">
+      <%= link_to _('See history'), {:controller => 'exchange_plugin_myprofile', :action => 'exchange_console', :exchange_id => ee.exchange.id} , :class => 'action-button' %>
     </div>
   </div>
 
   <% end %>
 <% end %>
-
-
-<!--<td class="article-controls">
-          <% #message = _('Are you shure you want do delete this exchange?') 
-%>
-          <%= #button_without_text :delete, _('Delete'), { :action => 'destroy', :exchange_id => #exchange.id },
-           #   :method => :post, :confirm => message 
-%>
-        </td>  -->
