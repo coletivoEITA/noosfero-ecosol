@@ -162,7 +162,7 @@ class ExchangePluginMyprofileController < MyProfileController
     evaluation.object_id = params[:exchange_id]
     evaluation.score = params[:score]
     evaluation.text = params[:text]
-    evaluation.exchange_result = params[:exchange_result]
+    evaluation.result = params[:result]
     evaluation.evaluator = profile
     evaluation.evaluated_id = params[:theother_id]
     evaluation.save

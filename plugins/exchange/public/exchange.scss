@@ -301,6 +301,7 @@ ul.exc-plg-profile_offers{
   height: $intercolumn;
   float:right;
   padding: 0;
+  margin:0px;
 }
 
 .exc-plg-proposal_sent{
@@ -500,7 +501,7 @@ input[type=text].exc-plg-qtd-input{
   padding: $base $base 0 $base;
 }
 
-#content p.exc-plg-element_desc{
+#content div.exc-plg-element_desc{
   padding: $base;
 }
 

@@ -12,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: noosfero 0.43.0\n"
-"POT-Creation-Date: 2013-07-05 16:44-0300\n"
+"POT-Creation-Date: 2013-07-05 18:27-0300\n"
 "PO-Revision-Date: 2013-03-13 17:47-0300\n"
 "Last-Translator: Rodrigo Souto <rodrigo@colivre.coop.br>\n"
 "Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
@@ -10942,15 +10942,15 @@ msgid "A plugin that does this and that."
 msgstr "Um plugin que faz isto e aquilo."
 
 #: plugins/exchange/lib/exchange_plugin/mailer.rb:8
-msgid "[ESCAMBO] Vocẽ tem uma nova troca!"
+msgid "[ESCAMBO] Você tem uma nova troca!"
 msgstr ""
 
 #: plugins/exchange/lib/exchange_plugin/mailer.rb:20
-msgid "[ESCAMBO] Vocẽ tem uma nova proposta!"
+msgid "[ESCAMBO] Você tem uma nova proposta!"
 msgstr ""
 
 #: plugins/exchange/lib/exchange_plugin/mailer.rb:33
-msgid "[ESCAMBO] Vocẽ tem uma nova mensagem!"
+msgid "[ESCAMBO] Você tem uma nova mensagem!"
 msgstr ""
 
 #: plugins/exchange/lib/exchange_plugin.rb:11
@@ -11984,6 +11984,28 @@ msgstr "Tempo"
 msgid "Back to forms"
 msgstr "Voltar para os formulários"
 
+#: plugins/exchange/views/exchange_plugin/mailer/new_message_notification.html.erb:8
+msgid "%{sender} enviou uma mensagem para você."
+msgstr ""
+
+#: plugins/exchange/views/exchange_plugin/mailer/new_message_notification.html.erb:10
+#: plugins/exchange/views/exchange_plugin/mailer/new_proposal_notification.html.erb:10
+msgid "Clique aqui para ver!"
+msgstr ""
+
+#: plugins/exchange/views/exchange_plugin/mailer/start_exchange_notification.html.erb:8
+msgid ""
+"Você tem uma nova troca esperando por você! %{origin} quer fazer uma troca."
+msgstr ""
+
+#: plugins/exchange/views/exchange_plugin/mailer/start_exchange_notification.html.erb:10
+msgid "Acesse sua a troca!"
+msgstr ""
+
+#: plugins/exchange/views/exchange_plugin/mailer/new_proposal_notification.html.erb:8
+msgid "%{origin} fez uma nova proposta para você."
+msgstr ""
+
 #: plugins/exchange/views/exchange_plugin_profile/conclude_exchange_proposal.html.erb:1
 #: plugins/exchange/views/exchange_plugin_shared/_exchange_elements.html.erb:1
 msgid "Exchange between %{origin} and %{target}"
@@ -12405,7 +12427,6 @@ msgid "Go"
 msgstr ""
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:102
-#, fuzzy
 msgid "Your Products and Services"
 msgstr "Produtos e Serviços"
 
