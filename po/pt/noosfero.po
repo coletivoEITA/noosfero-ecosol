@@ -783,8 +783,8 @@ msgid "Address"
 msgstr "Endereço"
 
 #: app/views/profile_editor/_organization.rhtml:42
-msgid "Internet Address"
-msgstr "Endereço na Internet"
+msgid "Internet Address (URL)"
+msgstr "Endereço na Internet (URL)"
 
 #: app/models/product.rb:- app/models/create_enterprise.rb:6
 #: app/views/profile_editor/_person_form.rhtml:13
