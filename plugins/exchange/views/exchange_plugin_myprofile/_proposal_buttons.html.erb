@@ -1,4 +1,4 @@
-<div id="exc-plg-proposal_header_buttons">
+<div id="exchange-proposal_header_buttons">
   <% if proposal.state == "open"%>
     <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'close_proposal', :proposal_id => proposal.id} do |f| %>
       <%= f.submit _('Send this proposal'), :class => "exchange-button-console"%>

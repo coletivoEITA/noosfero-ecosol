@@ -1,0 +1,88 @@
+/* classes for CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* use for heights only */
+/* base measurements */
+/* use for widths only */
+/* use for padding and margins only
+   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+ */
+/* use for borders */
+/* use for text shadows */
+/* colors */
+/* buttons */
+.action-button {
+  display: inline-block;
+  padding: 6px 12px;
+  height: auto;
+  width: auto;
+  color: white;
+  background: #394e41;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  border: none;
+  border-radius: 5px; }
+  .action-button:visited, .action-button:active, .action-button:hover {
+    color: white; }
+
+/* Images */
+.evaluation-mean .evaluation-star-value-wrap {
+  margin-bottom: 24px; }
+
+.evaluation-star-value-wrap {
+  background: url("/plugins/evaluation/images/star_empty.png");
+  width: 145px;
+  height: 25px; }
+  .evaluation-star-value-wrap .value-icon {
+    background: url("/plugins/evaluation/images/star.png");
+    height: 25px; }
+    .evaluation-star-value-wrap .value-icon.value-0 {
+      width: 0px; }
+    .evaluation-star-value-wrap .value-icon.value-1 {
+      width: 29px; }
+    .evaluation-star-value-wrap .value-icon.value-2 {
+      width: 58px; }
+    .evaluation-star-value-wrap .value-icon.value-3 {
+      width: 87px; }
+    .evaluation-star-value-wrap .value-icon.value-4 {
+      width: 116px; }
+    .evaluation-star-value-wrap .value-icon.value-5 {
+      width: 145px; }
+
+.evaluation-message {
+  display: inline-block; }
+
+.evaluation-score {
+  margin-top: 24px;
+  display: inline-block; }
+
+.evaluation-result {
+  margin-top: 24px; }
+
+.evaluation-radio {
+  display: inline-block;
+  margin-right: 24px; }
+
+.evaluation-thumb {
+  margin: 0px;
+  padding: 0px;
+  float: left; }
+
+.evaluation-body {
+  background: white;
+  width: 382px;
+  height: 130px;
+  margin-left: 54px;
+  float: left; }
+
+.evaluation-select {
+  color: black; }

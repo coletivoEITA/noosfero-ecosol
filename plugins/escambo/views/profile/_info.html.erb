@@ -43,9 +43,8 @@
     </div>
     <div class="evaluation">
       <h4><%= _('Evaluations of this enterprise') %></h4>
-      <p><%= (!profile.evaluations.blank?) ? _('Mean Score: %s') % profile.evaluations_mean : ""%></p>
-      <p><%= _('%s evaluations') % profile.evaluations.count %></p>
-      <p><%= (!profile.evaluations.blank?) ? (link_to _('Read evaluations'), {:controller => 'evaluation_plugin_profile', :action => 'index', :profile => profile.identifier}) : "" %></p>
+
+      <%= render :partial => 'evaluation_plugin_shared/profile_mean' %>
     </div>
     <div class="members">
       <h4><%= _('Members') %></h4>

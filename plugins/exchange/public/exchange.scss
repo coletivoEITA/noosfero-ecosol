@@ -14,19 +14,13 @@ $image-trash: '/plugins/exchange/images/exchange-empty.png';
 
 /* Exchange button */
 
-.exchange-action-button {
-  @extend .action-button;
-  background: $color-exchange;
-}
-
 .exchange {
-  @extend .exchange-action-button;
+  @extend .action-button;
 }
-
 .exchange-button-console {
-  @extend .exchange-action-button;
+  @extend .action-button;
   float: left;
-  margin: $base/6 $base;
+  margin: $half-margin/2 $half-margin;
 }
 
 /* control panel button */
@@ -38,167 +32,149 @@ $image-trash: '/plugins/exchange/images/exchange-empty.png';
 
 /*####### new layout ########*/
 
-body.controller-exchange_plugin_myprofile{
+body.controller-exchange_plugin_myprofile {
   background-color: #FAF7DC;
 }
 
-#exc-plg-exchange_wrapper{
-  margin-left: -$intercolumn;
-}
-#exc-plg-title_wrapper{
+#exchange-exchange_wrapper {
+  margin-left: -$intercolumn/2;
   width: $console-width;
-  margin: auto;
-  padding-left: $margin;
-}
-#exc-plg-states_wrapper{
-  width: $console-width;
-  height: 168px;
-  margin: 36px auto;
-  border: 1px solid #C5AAA5;
-  background: #ECE4DB;
-}
-#exc-plg-states{
-  height: 122px;
+
+  h1 {
+    padding-left: $margin !important;
+  }
+
+  #exchange-header {
+    border: $border solid #C5AAA5;
+    background: #ECE4DB;
+    margin: $margin auto;
+
+    #exchange-enterprise_headers {
+      
+      #exchange-exchange_symbol {
+        margin-left: -$half-margin;
+        margin-top: $half-margin;
+        width: 28px;
+        height: 22px;
+        position: absolute;
+        left: 50%;
+        background: url($image-exchange);
+        background-repeat: no-repeat;
+      }
+
+      #exchange-enterprise_profile {
+        background: #7857B8;
+        float: left;
+      }
+      #exchange-enterprise_theother {
+        background: #C32478;
+        float: right;
+      }
+      #exchange-enterprise_profile,
+      #exchange-enterprise_theother {
+        width: 50%;
+        height: 4*$base;
+      }
+
+      #exchange-theother-name,
+      #exchange-profile-name {
+        font-size: 21px;
+        padding-top: $padding;
+        color: white;
+      }
+      #exchange-profile_thumb,
+      #exchange-profile-name {
+        float: left;
+      }
+      #exchange-theother_thumb,
+      #exchange-theother-name {
+        float: right;
+      }
+      #exchange-profile_thumb,
+      #exchange-theother_thumb {
+        padding-left: $padding;
+        padding-right: $padding;
+        margin-top: -$base;
+
+        img {
+          height: 6*$base;
+          width: 6*$base;
+        }
+      }
+    }
+  }
 }
 
-.exc-plg-state{
-  margin: auto;
-  text-align: center;
-}
-.exc-plg-past{
-  margin-top: 10px;
-  float: left;
-  text-align: center;
-  border: 4px solid #7F005C;
-  border-radius: 40px;
-  height: 40px;
-  width: 40px;
-  color: white;
-  background: #7F005C;
-}
-.exc-plg-active{
-  float: left;
-  text-align: center;
-  border: 15px double #ECE4DB;
-  border-radius: 40px;
-  height: 40px;
-  width: 40px;
-  background: #7F005C;
-  color: white;
-  font-weight: bold;
-}
-.exc-plg-future{
-  float: left;
-  margin-top: 10px;
-  text-align: center;
-  border: 4px solid #7F005C;
-  border-radius: 40px;
-  height: 40px;
-  width: 40px;
-  background: white;
-  color: #7F005C;
+/* States */
+#exchange-states {
+  @extend .container-clean;
+  padding-bottom: $padding;
+  padding-left: 3*$padding;
+
+  .exchange-outer-border {
+    float: left;
+    width: 7*$base;
+    height: 7*$base;
+    margin-left: 5*$margin;
+  }
+
+  .exchange-state {
+    margin: auto;
+    text-align: center;
+  }
+
+  .exchange-past {
+    margin-top: 10px;
+    float: left;
+    text-align: center;
+    border: 4*$border solid #7F005C;
+    border-radius: 40px;
+    height: 40px;
+    width: 40px;
+    color: white;
+    background: #7F005C;
+  }
+  .exchange-active {
+    float: left;
+    text-align: center;
+    border: 15*$border double #ECE4DB;
+    border-radius: 40px;
+    height: 40px;
+    width: 40px;
+    background: #7F005C;
+    color: white;
+    font-weight: bold;
+  }
+  .exchange-future {
+    float: left;
+    margin-top: 10px;
+    text-align: center;
+    border: 4*$border solid #7F005C;
+    border-radius: 40px;
+    height: 40px;
+    width: 40px;
+    background: white;
+    color: #7F005C;
+  }
+
+  .exchange-state_name {
+    padding-top: $padding;
+    margin-left: -$padding;
+    color: #28370C;
+  }
+  .exchange-state_number {
+    font-size: 30px;
+    margin: 3px;
+  }
 }
 
-.exc-plg-outer-border{
-  width: 80px;
-  height: 80px;
-  float: left;
-  margin: 10px 83px;
-}
-  
-.exc-plg-state_name{
-  color: #28370C;
-}
-.exc-plg-state_number{
-  font-size: 30px;
-  margin:3px;
-}
-
-
-.one_past{
-  margin-left: 160px;
-}
-.two_past{
-}
-.three_past{
-}
-.four_past{
-}
-.one_active{
-  margin-left: 160px;
-}
-.two_active{
-}
-.three_active{
-}
-.four_active{
-  margin-right: 160px;
-}
-
-.one{
-  margin-left: 160px;
-}
-.two{
-}
-.three{
-}
-.four{
-  margin-right: 160px;
-}
-#exc-plg-enterprise_headers{
-  color:white;
-}
-#exc-plg-enterprise_profile{
-  background: #7857B8;
-  float: left;
-  width: 50%;
-  height: 46px;
-  text-align: left;
-  position: relative;
-}
-#exc-plg-enterprise_theother{
-  background: #C32478;
-  float: left;
-  width: 50%;
-  height: 46px;
-  text-align: right;
-  position: relative;
-}
-#exc-plg-profile_thumb{
-  float: left;
-  height: 65px;
-  width: 65px;
-/*   margin: -7.5px 10px 0 25px; */
-  position: absolute;
-  left: 25px;
-  bottom: -8px;
-}
-#exc-plg-theother_thumb{
-  float: right;
-  height: 65px;
-  width: 65px;
-/*   margin: -7.5px 25px 0 10px; */
-  position: absolute;
-  right: 25px;
-  bottom: -8px;
-}
-
-.exc-plg-theother-name{
-  margin-right: 108px;
-}
-
-.exc-plg-profile-name{
-  margin-left: 108px;
-}
-
-#exc-plg-proposal_wrapper{
-  width: 985px;
-  margin: 30px auto;
+#exchange-proposal_wrapper {
+  margin: ($margin + $base) auto;
   border: 6px double #E47455;
   border-radius: 10px;
   overflow: hidden;
 }
-#exc-plg-proposal_header{
+#exchange-proposal_header {
   font-family: 'RobotoRegular';
   font-size: 16pt;
   padding-left: 25px;
@@ -208,69 +184,69 @@ body.controller-exchange_plugin_myprofile{
   margin-top: -21px;
 }
 
-#exc-plg-proposal_header_buttons{
+#exchange-proposal_header_buttons {
   background: #DFD3ED;
   height: 35px;
   padding-left: $intercolumn;
 }
 
-#exc-plg-button-wrapper{
+#exchange-button-wrapper {
   height: 35px;
   padding-left: $intercolumn;
 }
 
-#exc-plg-messages{
- padding:1px; 
+#exchange-messages {
+ padding: 1px; 
 }
 
-#exc-plg-proposal_messages{
+#exchange-proposal_messages {
   background: #F0E9F6;
   border-bottom: 1px solid #BDA8DC;
 }
-#exc-plg-proposal_offer_request_wrapper{
-  overflow:hidden;
+#exchange-proposal_offer_request_wrapper {
+  overflow: hidden;
   margin-bottom: 5px;
 }
 
-#exc-plg-proposal_offer h3{
+#exchange-proposal_offer h3 {
   margin-left: $base;
 }
 
-#exc-plg-proposal_offer{
+#exchange-proposal_offer {
   background: #F0E9F6;
   float: left;
   width: 50%;
   padding-top: 2*$base;
 }
 
-#content #exc-plg-proposal_offer h3{
+#content #exchange-proposal_offer h3 {
   margin-left:$base;
 }
 
-#exc-plg-proposal_request{
+#exchange-proposal_request {
   background: #F8F4FB;
   float: right;
   width: 50%;
   padding-top: 2*$base;
 }
 
-#content #exc-plg-proposal_request h3{
+#content #exchange-proposal_request h3 {
   margin-left:$base;
 }
 
-ul.exc-plg-theother_offers{
-  padding:0;
-  margin:0;
+ul.exchange-theother_offers {
+  padding: 0;
+  margin: 0;
   margin-top: 2*$intercolumn;
 }
 
-ul.exc-plg-profile_offers{
-  padding:0;
-  margin:0;
+ul.exchange-profile_offers {
+  padding: 0;
+  margin: 0;
   margin-top: 2*$intercolumn;
 }
 
-.exc-plg-profile_offers li{
+.exchange-profile_offers li {
   background: #D8CAEA;
   padding:$base/2;
   margin:$base $base;
@@ -278,7 +254,7 @@ ul.exc-plg-profile_offers{
   height: $intercolumn;
 }
 
-.exc-plg-theother_offers li{
+.exchange-theother_offers li {
   background: #D8CAEA;
   padding:$base/2;
   margin:$base $base;
@@ -286,25 +262,25 @@ ul.exc-plg-profile_offers{
   height: $intercolumn;
 }
 
-#content .exc-plg-profile_offers li h6{
+#content .exchange-profile_offers li h6 {
   display: inline-block;
   padding-top: 5px;
 }
 
-#content .exc-plg-theother_offers li h6{
+#content .exchange-theother_offers li h6 {
   display: inline-block;
   padding-top: 5px;
 }
 
-.exc-plg-add{
+.exchange-add {
   width: $intercolumn;
   height: $intercolumn;
-  float:right;
+  float: right;
   padding: 0;
-  margin:0px;
+  margin: 0px;
 }
 
-.exc-plg-proposal_sent{
+.exchange-proposal_sent {
   width: 945px;
   margin: 0px auto -22px auto;
   text-align: right;
@@ -312,7 +288,7 @@ ul.exc-plg-profile_offers{
   overflow: hidden;
 }
 
-#exc-plg-accepted_header{
+#exchange-accepted_header {
   background: #394E41;
   height: 30px;
   color: white;
@@ -321,170 +297,137 @@ ul.exc-plg-profile_offers{
 }
 
 /* evaluation */
-#exc-plg-evaluation{
+#exchange-evaluation {
   width: 985px;
   margin: $base auto;
   overflow: hidden;  
 }
 
-#exc-plg-profile-evaluation{
-  float:left;
+#exchange-profile-evaluation {
+  float: left;
   width: 49%;
-  overflow:hidden;
+  overflow: hidden;
 }
 
-#exc-plg-theother-evaluation{
-  overflow:hidden;
+#exchange-theother-evaluation {
+  overflow: hidden;
   width: 48%;
-  float:right;
+  float: right;
 }
 
-#exc-plg-evaluation-text{
+#exchange-evaluation-text {
   background: white;
   width: 398px - 2*$margin;
   margin: 0 $padding;
   padding: $padding $margin;
   float: left;
 }
-#exc-plg-evaluation-footer{
-  overflow:hidden;
+#exchange-evaluation-footer {
+  overflow: hidden;
 }
-#exc-plg-score{
+#exchange-score {
   width: 50%;
   float: left;
 }
-#exc-plg-exchange_result{
+#exchange-exchange_result {
   width: 49%;
   float: left;
 }
 
 
 
-.eva-plg-message{
-  display: inline-block;
-}
-.eva-plg-score{
-  margin-top: 24px;
-  display: inline-block;
-}
-.eva-plg-exchange-result{
-  margin-top: 24px;
-}
 
-.eva-plg-radio{
-  display: inline-block;
-  margin-right: 24px;
-} 
-
-.eva-plg-thumb{
-  margin:0px;
-  padding:0px;
-  float: left;
-}
-
-.eva-plg-body{
-  background: white;
-  width: 382px;
-  height:130px;
-  margin-left: 54px;
-  float: left;
-}
-
-.eva-plg-select{
-  color:black;
-}
-
-#exc-plg-profile_elements_list {
-  margin:0px;
-  padding:0px;
+#exchange-profile_elements_list {
+  margin: 0px;
+  padding: 0px;
   margin-bottom: $module1;
 
 }
-#exc-plg-theother_elements_list{
-  margin:0px;
-  padding:0px;
+#exchange-theother_elements_list {
+  margin: 0px;
+  padding: 0px;
   margin-bottom: $module1;
 }
 
-.exc-plg-element{
+.exchange-element {
   width: 470px;
-  list-style-type:none;
-  background-size:auto 470px;
+  list-style-type: none;
+  background-size: auto 470px;
   margin: 0 $base $intercolumn $base;
   min-height: 2*$intercolumn; 
   position: relative;
 }
 
-.exc-plg-element-image{
+.exchange-element-image {
   width: 470px;
   height: 155px;
   background-position: center;
 }
 
-.exc-plg-element-profile{
+.exchange-element-profile {
   background: #D8CAEA;
 }
 
-.exc-plg-element-theother{
+.exchange-element-theother {
   background: #F3C3D4;
 }
 
-.exc-plg-message{
+.exchange-message {
   overflow: hidden;
   margin: 24px 0px;
 }
-.exc-plg-message-theother-body{
+.exchange-message-theother-body {
   width: 580px;
   background: white;  
-  margin-left:280px;
-  padding:15px;
-  min-height:60px;
+  margin-left: 280px;
+  padding: 15px;
+  min-height: 60px;
   float: left;
-  margin-right:10px;
+  margin-right: 10px;
 }
 
-.exc-plg-message-profile-body{
+.exchange-message-profile-body {
   width: 580px;
   background: white;
-  padding:15px;
-  min-height:60px;
+  padding: 15px;
+  min-height: 60px;
   float: left;
-  margin-left:10px;
+  margin-left: 10px;
 }
 
-.exc-plg-message-profile-thumb{
-  float:left;
-  margin-left:25px;
+.exchange-message-profile-thumb {
+  float: left;
+  margin-left: 25px;
 }
 
-.exc-plg-message-theother-thumb{
-  float:right;
-  margin-right:25px;
+.exchange-message-theother-thumb {
+  float: right;
+  margin-right: 25px;
 }
 
-input[type=text].exc-plg-qtd-input{
+input[type=text].exchange-qtd-input {
   width: 85px;
   border: none;
-  border-radius:3px;
+  border-radius: 3px;
   padding: 3px;
   background: whitesmoke;
   color: black;
 }
 
-.exc-plg-element_control{
+.exchange-element_control {
   position: absolute;
   top: $base;
   right: $base;
 }
 
-.exc-plg-trash{
-  display:inline;
+.exchange-trash {
+  display: inline;
   top: 4px;
   position: relative;
   right: 2px;
 }
 
-.exc-plg-qtd{
+.exchange-qtd {
   display: inline;
   background: #7857B8;
   color: white;
@@ -493,96 +436,96 @@ input[type=text].exc-plg-qtd-input{
   padding: 5px 0 4px 3px;
 }
 
-#content h6.exc-plg-qtd{
+#content h6.exchange-qtd {
     padding: 6px 12px;
 }
 
-#content h6.exc-plg-element_title{
+#content h6.exchange-element_title {
   padding: $base $base 0 $base;
 }
 
-#content div.exc-plg-element_desc{
+#content div.exchange-element_desc {
   padding: $base;
 }
 
-#exc-plg-summary_wrapper{
+#exchange-summary_wrapper {
   width: 985px;
   margin: 30px auto;
   overflow: hidden;
 }
 
-.exc-plg-select {
+.exchange-select {
   background: transparent;
   font: inherit;
   color: white;
 }
 
-.exc-plg-index-exchange{
-  height: $module1+$module1/2;
-  border-top: 3px solid black;
-  padding: 24px;
+/* Index */
+
+.exchange-index {
+  @extend .container-clean;
+  border-top: $border solid black;
+  padding: $padding;
+
+  .exchange-index-col1 {
+    float: left;
+    width: $module2;
+    margin-right: $margin;
+  }
+
+  .exchange-index-col2 {
+    float: left;
+    width: $module6;
+    margin-right: $margin;
+
+    #exchange-states {
+      padding-bottom: 0;
+
+      .exchange-outer-border { 
+        margin: $half-margin;
+      }
+    }
+  }
+
+  .exchange-index-col3 {
+    float: left;
+    width: $module2;
+    
+    img {
+      height: 7*$base;
+      width: 7*$base;
+    }
+    h4 {
+      padding-top: $half-padding;
+    }
+  }
+
 }
 
-.exc-plg-index-col1{
-  float:left;
-  width: $module3;
-}
-
-.exc-plg-index-col2{
-  float:left;
-  width: $module5;
-}
-
-.exc-plg-index-col3{
-  float:left;
-  width: $module2;
-  position: relative;
-  height: 100%;
-
-}
-
-.exc-plg-index-exchange div.exc-plg-outer-border{ 
-  margin: 10px 12px;
-}
-
-.exc-plg-index-exchange div.exc-plg-active {
-  border: 15px double #FAF7DC
-}
-
-.exc-plg-add-money{
+.exchange-add-money {
   p {
     display: none;
   }
 }
 
-.exc-plg-add-unreg-item{
+.exchange-add-unreg-item {
   p {
     display: none;
   }
   input {
-    display:none;
+    display: none;
   }
 }
 
-.exc-plg-add-money-active{
-  width:95%;
+.exchange-add-money-active {
+  width: 95%;
   margin-bottom: 2*$base;
 }
 
-.exc-plg-add-unreg-item-active{
-  width:95%;
+.exchange-add-unreg-item-active {
+  width: 95%;
   p {
     text-align: left;
   }
 }
 
-#exc-plg-exchange_symbol{
-  background: url($image-exchange);
-  background-repeat: no-repeat;
-  height: 60px;
-  width: 60px;
-  position: absolute;
-  left: 455px;
-  margin-top: 12px;
-/*   display: inline-block; */
-}

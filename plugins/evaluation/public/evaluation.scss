@@ -1,0 +1,66 @@
+@import 'base';
+
+/* Images */
+$image-star: "/plugins/evaluation/images/star.png";
+$image-star-empty: "/plugins/evaluation/images/star_empty.png";
+$image-star-width: 29px;
+$image-star-height: 25px;
+
+.evaluation-mean {
+
+  .evaluation-star-value-wrap {
+    margin-bottom: $margin;
+  }
+}
+
+.evaluation-star-value-wrap {
+  background: url($image-star-empty);
+  width: 5*$image-star-width;
+  height: $image-star-height;
+
+  .value-icon {
+    background: url($image-star);
+    height: $image-star-height;
+
+    &.value-0 { width: 0*$image-star-width; }
+    &.value-1 { width: 1*$image-star-width; }
+    &.value-2 { width: 2*$image-star-width; }
+    &.value-3 { width: 3*$image-star-width; }
+    &.value-4 { width: 4*$image-star-width; }
+    &.value-5 { width: 5*$image-star-width; }
+  }
+}
+
+.evaluation-message {
+  display: inline-block;
+}
+.evaluation-score {
+  margin-top: $margin;
+  display: inline-block;
+}
+.evaluation-result {
+  margin-top: $margin;
+}
+
+.evaluation-radio {
+  display: inline-block;
+  margin-right: $margin;
+} 
+
+.evaluation-thumb {
+  margin: 0px;
+  padding: 0px;
+  float: left;
+}
+
+.evaluation-body {
+  background: white;
+  width: 382px;
+  height: 130px;
+  margin-left: 54px;
+  float: left;
+}
+
+.evaluation-select {
+  color: black;
+}
