@@ -211,6 +211,8 @@ body.controller-exchange_plugin_myprofile {
         background: #DFD3ED; }
         #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form {
           float: left; }
+          #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form .action-button, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form .exchange, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons #escambo-new-enterprise form input[type=submit], #escambo-new-enterprise #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form input[type=submit], #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form #escambo-enterprise-info .sidebar .info .contact-button a, #escambo-enterprise-info .sidebar .info .contact-button #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form a {
+            margin-right: 6px; }
       #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-button-wrapper {
         margin-left: 12px;
         padding: 6px 12px; }

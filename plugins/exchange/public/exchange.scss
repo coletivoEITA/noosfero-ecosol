@@ -222,6 +222,10 @@ body.controller-exchange_plugin_myprofile {
 
         form {
           float: left;
+
+          .action-button {
+            margin-right: $half-padding;
+          }
         }
       }
       .exchange-button-wrapper {
