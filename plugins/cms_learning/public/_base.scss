@@ -64,12 +64,13 @@ $color-action-button: #394E41;
 .action-button {
   display: inline-block;
   padding: $half-padding $padding;
+  margin: 0; /* remove submit input browser's margin */
   height: auto;
   width: auto;
   color: white;
-  cursor: pointer;
   &:visited, &:active, &:hover { color: white; }
   background: $color-action-button;
+  cursor: pointer;
   text-align: center;
   text-decoration: none;
   text-shadow: none;

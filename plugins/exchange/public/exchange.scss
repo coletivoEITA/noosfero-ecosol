@@ -16,6 +16,9 @@ $image-trash: '/plugins/exchange/images/exchange-empty.png';
 
 $profile-thumb-size: 4*$base;
 
+/* Borders */
+$border-proposal: 6*$border;
+
 /* Buttons */
 
 .exchange {
@@ -180,14 +183,16 @@ body.controller-exchange_plugin_myprofile {
 
   .exchange-proposal-wrap {
     margin: $margin 0;
+    margin-left: -$border-proposal;
+    width: $console-width + 2*$border-proposal;
 
     .exchange-proposal-sent {
-      padding: $half-padding $intercolumn;
+      padding: $half-padding $intercolumn + $border-proposal;
       text-align: right;
     }
 
     .exchange-proposal {
-      border: 6px double #E47455;
+      border: $border-proposal double #E47455;
       border-radius: 10px;
       overflow: hidden;
 
@@ -391,18 +396,18 @@ body.controller-exchange_plugin_myprofile {
 
 .exchange-proposal-part {
   float: left;
-  width: $module5;
+  width: $module5 + $intercolumn/2;
   padding: $padding;
 
   &.offer {
     background: #F0E9F6;
+
+    h3 {
+      margin-left: $half-margin;
+    }
   }
   &.request {
     background: #F8F4FB;
-  }
-
-  h3 {
-    margin-left: $half-margin;
   }
 
   .exchange-elements-list {

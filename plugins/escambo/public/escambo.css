@@ -22,11 +22,13 @@
 .action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
   display: inline-block;
   padding: 6px 12px;
+  margin: 0;
+  /* remove submit input browser's margin */
   height: auto;
   width: auto;
   color: white;
-  cursor: pointer;
   background: #394e41;
+  cursor: pointer;
   text-align: center;
   text-decoration: none;
   text-shadow: none;
@@ -59,11 +61,13 @@
 .action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
   display: inline-block;
   padding: 6px 12px;
+  margin: 0;
+  /* remove submit input browser's margin */
   height: auto;
   width: auto;
   color: white;
-  cursor: pointer;
   background: #394e41;
+  cursor: pointer;
   text-align: center;
   text-decoration: none;
   text-shadow: none;
@@ -74,6 +78,7 @@
 
 /* Colors */
 /* Images */
+/* Borders */
 /* Buttons */
 .exchange-add {
   width: 24px;
@@ -181,12 +186,14 @@ body.controller-exchange_plugin_myprofile {
   #exchange-exchange-wrapper h2 {
     padding: 0 24px; }
   #exchange-exchange-wrapper .exchange-proposal-wrap {
-    margin: 24px 0; }
+    margin: 24px 0;
+    margin-left: -6px;
+    width: 996px; }
     #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal-sent {
-      padding: 6px 24px;
+      padding: 6px 30px;
       text-align: right; }
     #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal {
-      border: 6px double #E47455;
+      border: 6px double #e47455;
       border-radius: 10px;
       overflow: hidden; }
       #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal.sent .exchange-proposal-header {
@@ -217,7 +224,7 @@ body.controller-exchange_plugin_myprofile {
           #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message.theother .exchange-message-thumb, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message.theother .arrow-wrap, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message.theother .exchange-message-body {
             float: right; }
           #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message#exchange-new-message .exchange-message-body textarea {
-            display: block;
+            width: 100%;
             height: 60px;
             padding: 0;
             border: none;
@@ -319,14 +326,14 @@ body.controller-exchange_plugin_myprofile {
 
 .exchange-proposal-part {
   float: left;
-  width: 456px;
+  width: 468px;
   padding: 12px; }
   .exchange-proposal-part.offer {
     background: #F0E9F6; }
+    .exchange-proposal-part.offer h3 {
+      margin-left: 12px; }
   .exchange-proposal-part.request {
     background: #F8F4FB; }
-  .exchange-proposal-part h3 {
-    margin-left: 12px; }
   .exchange-proposal-part .exchange-elements-list {
     margin: 0px;
     padding: 0px;
@@ -440,11 +447,13 @@ body.controller-exchange_plugin_myprofile {
 .action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
   display: inline-block;
   padding: 6px 12px;
+  margin: 0;
+  /* remove submit input browser's margin */
   height: auto;
   width: auto;
   color: white;
-  cursor: pointer;
   background: #394e41;
+  cursor: pointer;
   text-align: center;
   text-decoration: none;
   text-shadow: none;
