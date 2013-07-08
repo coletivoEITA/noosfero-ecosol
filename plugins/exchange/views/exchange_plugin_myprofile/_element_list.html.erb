@@ -4,7 +4,7 @@
   <%= link_to(element.category_name) + " " + link_to(element.name) %>
   </h6>
 
-  <%= link_to_remote "<button class='exchange-button-console exchange-add'>+</button>",
+  <%= link_to_remote "<button class='action-button exchange-add'>+</button>",
   :url => {:action => "add_element", :element_id => element.id,
   :element_type => "Product", :enterprise => enterprise,
   :proposal_id => proposal_id, :enterprise_id => element.enterprise_id} %>
@@ -15,7 +15,7 @@
   <%= link_to(element.name) %>
   </h6>
 
-  <%= link_to_remote "<button class='exchange-button-console exchange-add'>+</button>",
+  <%= link_to_remote "<button class='action-button exchange-add'>+</button>",
   :url => {:action => "add_element", :element_id => element.id,
   :enterprise_id => element.profile_id, :element_type => "CmsLearningPluginLearning", :proposal_id => proposal_id, :enterprise => enterprise} %>
 

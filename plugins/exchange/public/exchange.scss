@@ -6,6 +6,8 @@ $console-width: $wireframe + $intercolumn;
 
 $color-exchange: #394E41;
 
+$color-text-area-border: #C5AAA5;
+
 /* Images */
 
 $image-exchange: '/plugins/exchange/images/exchange.png';
@@ -38,7 +40,7 @@ body.controller-exchange_plugin_myprofile {
   width: $console-width;
 
   h1 {
-    padding-left: $margin !important;
+    padding-left: $margin;
   }
 
   #exchange-header {
@@ -166,31 +168,32 @@ body.controller-exchange_plugin_myprofile {
     border-radius: 10px;
     overflow: hidden;
 
+    h3, .exchange-proposal-sent {
+      margin-left: $half-margin;
+      padding-left: $padding;
+    }
     .exchange-proposal-sent {
       text-align: right;
-      margin-right: $half-margin;
-      padding-right: $padding;
     }
 
     .exchange-proposal-header {
-      font-family: 'RobotoRegular';
-      font-size: 16pt;
-      margin-left: $margin;
-      margin-top: $margin;
+      padding: $half-padding $intercolumn;
       background: #7857B8;
-      height: 37px;
+      font-size: 16pt;
       color: white;
     }
 
-    .exchange-proposal_header_buttons {
+    .exchange-proposal-header-buttons {
       background: #DFD3ED;
-      height: 35px;
-      padding-left: $intercolumn;
-    }
+      padding: $half-padding $intercolumn;
 
+      .form {
+        float: left;
+      }
+    }
     .exchange-button-wrapper {
-      height: 35px;
-      padding-left: $intercolumn;
+      margin-left: $half-margin;
+      padding: $half-padding $padding;
     }
 
     .exchange-proposal-messages {
@@ -198,33 +201,69 @@ body.controller-exchange_plugin_myprofile {
       border-bottom: 1px solid #BDA8DC;
 
       .exchange-messages {
-        padding: 1px; 
+
+        .exchange-message-thumb {
+          img {
+            width: $profile-thumb-size;
+            width: $profile-thumb-size;
+
+
+          }
+          float: left;
+          &.profile {
+          }
+          &.theother {
+          }
+        }
 
         .exchange-message {
           overflow: hidden;
           margin: $margin 0;
 
-          .exchange-message-profile-thumb {
+          $arrow-size: $base/2;
+          $arrow-inner-size: $base/2 - $border;
+          .arrow-wrap {
             float: left;
-            margin-left: $margin;
-          }
-          .exchange-message-theother-thumb {
-            float: right;
-            margin-right: $margin;
+            margin-top: $profile-thumb-size/2 - $arrow-size;
+            width: 0;
+            height: 0;
+            position: relative;
+
+            .arrow {
+              margin-top: -$arrow-inner-size;
+            }
+            &.left {
+              left: $border;
+              border-style: solid;
+              border-width: $arrow-size $arrow-size $arrow-size 0;
+              border-color: transparent $color-text-area-border transparent transparent;
+              .arrow {
+                margin-left: $border;
+                border-style: solid;
+                border-width: $arrow-inner-size $arrow-inner-size $arrow-inner-size 0;
+                border-color: transparent white transparent transparent;
+              }
+            }
+            &.right {
+              left: -$border;
+              border-style: solid;
+              border-width: $arrow-size 0 $arrow-size $arrow-size;
+              border-color: transparent transparent transparent $color-text-area-border;
+              .arrow {
+                margin-left: -($arrow-inner-size + $border);
+                border-style: solid;
+                border-width: $arrow-inner-size 0 $arrow-inner-size $arrow-inner-size;
+                border-color: transparent transparent transparent white;
+              }
+            }
           }
 
-          .exchange-message-theother-body,
-          .exchange-message-profile-body {
-            width: $module5;
-            background: white;  
+          .exchange-message-body {
+            width: $module6 + $intercolumn;
             padding: $padding;
             min-height: 5*$base;
-          }
-          .exchange-message-theother-body {
-            float: right;
-          }
-          .exchange-message-profile-body {
-            float: left;
+            border: $border solid $color-text-area-border;
+            background: white;  
           }
         }
       }
@@ -313,7 +352,7 @@ body.controller-exchange_plugin_myprofile {
   }
 
   h3 {
-    margin-left: $half-margin !important;
+    margin-left: $half-margin;
   }
 }
 
@@ -346,12 +385,12 @@ ul.exchange-profile_offers {
   height: $intercolumn;
 }
 
-#content .exchange-profile_offers li h6 {
+.exchange-profile_offers li h6 {
   display: inline-block;
   padding-top: 5px;
 }
 
-#content .exchange-theother_offers li h6 {
+.exchange-theother_offers li h6 {
   display: inline-block;
   padding-top: 5px;
 }
@@ -369,101 +408,99 @@ ul.exchange-profile_offers {
   padding: 0px;
   margin-bottom: $module1;
 
-.exchange-element {
-  width: 470px;
-  list-style-type: none;
-  background-size: auto 470px;
-  margin: 0 $base $intercolumn $base;
-  min-height: 2*$intercolumn; 
-  position: relative;
-
-  &.profile {
-    background: #D8CAEA;
-  }
-  &.theother {
-    background: #F3C3D4;
-  }
-
-  .exchange-element-image {
+  .exchange-element {
     width: 470px;
-    height: 155px;
-    background-position: center;
-  }
-
-
-  input[type=text].exchange-qtd-input {
-    width: 85px;
-    border: none;
-    border-radius: 3px;
-    padding: 3px;
-    background: whitesmoke;
-    color: black;
-  }
-
-  .exchange-element_control {
-    position: absolute;
-    top: $base;
-    right: $base;
-  }
-
-  .exchange-trash {
-    display: inline;
-    top: 4px;
+    list-style-type: none;
+    background-size: auto 470px;
+    margin: 0 $base $intercolumn $base;
+    min-height: 2*$intercolumn; 
     position: relative;
-    right: 2px;
-  }
 
-  .exchange-qtd {
-    display: inline;
-    background: #7857B8;
-    color: white;
-    padding: $base/4 $base; 
-    border-radius: $border-radius;
-    padding: 5px 0 4px 3px;
-  }
-
-  #content h6.exchange-qtd {
-    padding: 6px 12px;
-  }
-
-  #content h6.exchange-element_title {
-    padding: $base $base 0 $base;
-  }
-
-  #content div.exchange-element_desc {
-    padding: $base;
-  }
-
-  .exchange-select {
-    background: transparent;
-    font: inherit;
-    color: white;
-  }
-
-  .exchange-add-money {
-    p {
-      display: none;
+    &.profile {
+      background: #D8CAEA;
     }
-  }
-
-  .exchange-add-unreg-item {
-    p {
-      display: none;
+    &.theother {
+      background: #F3C3D4;
     }
-    input {
-      display: none;
+
+    .exchange-element-image {
+      width: 470px;
+      height: 155px;
+      background-position: center;
     }
-  }
 
-  .exchange-add-money-active {
-    width: 95%;
-    margin-bottom: 2*$base;
-  }
+    input[type=text].exchange-qtd-input {
+      width: 85px;
+      border: none;
+      border-radius: 3px;
+      padding: 3px;
+      background: whitesmoke;
+      color: black;
+    }
 
-  .exchange-add-unreg-item-active {
-    width: 95%;
-    p {
-      text-align: left;
+    .exchange-element_control {
+      position: absolute;
+      top: $base;
+      right: $base;
+    }
+
+    .exchange-trash {
+      display: inline;
+      top: 4px;
+      position: relative;
+      right: 2px;
+    }
+
+    .exchange-qtd {
+      display: inline;
+      background: #7857B8;
+      color: white;
+      padding: $base/4 $base; 
+      border-radius: $border-radius;
+      padding: 5px 0 4px 3px;
+    }
+
+    h6.exchange-qtd {
+      padding: 6px 12px;
+    }
+
+    h6.exchange-element_title {
+      padding: $base $base 0 $base;
+    }
+
+    div.exchange-element_desc {
+      padding: $base;
+    }
+
+    .exchange-select {
+      background: transparent;
+      font: inherit;
+      color: white;
+    }
+
+    .exchange-add-money {
+      p {
+        display: none;
+      }
+    }
+
+    .exchange-add-unreg-item {
+      p {
+        display: none;
+      }
+      input {
+        display: none;
+      }
+    }
+
+    .exchange-add-money-active {
+      margin-bottom: 2*$base;
+    }
+
+    .exchange-add-unreg-item-active {
+      p {
+        text-align: left;
+      }
     }
   }
 }
@@ -507,6 +544,5 @@ ul.exchange-profile_offers {
       padding-top: $half-padding;
     }
   }
-
 }
 

@@ -1,22 +1,19 @@
 <% actor = message.enterprise_sender.id == profile.id ? 'profile' : 'theother' %>
+<% profile = actor == 'profile' ? profile : message.proposal.the_other(profile) %>
 
 <div id="exchange-message-<%= message.id %>" class="exchange-message">
 
-  <% if actor == 'profile' %>
-    <div class="exchange-message-profile-thumb">
-      <%= link_to profile_image(profile, :minor), profile.url %>
-      <p align="center"><%= message.created_at.strftime(_("%m/%d/%y<br>%H:%M")) %></p>
-    </div>
-  <% end %>
-
-  <div class="exchange-message-<%= actor %>-body">
-    <p><%= message.body %></p>
+  <div class="exchange-message-thumb <%=actor%>">
+    <%= link_to profile_image(profile, :minor), profile.url %>
+    <p align="center"><%= message.created_at.strftime(_("%m/%d/%y <br> %H:%M")) %></p>
   </div>
 
-  <% if actor == 'theother' %>
-    <div class="exchange-message-theother-thumb">
-      <%= link_to profile_image(message.proposal.the_other(profile), :minor), profile.url %>
-      <p align="center"><%= message.created_at.strftime(_("%m/%d/%y<br>%H:%M")) %></p>
+  <div class="arrow-wrap <%=actor == 'profile' ? 'left' : 'right' %>">
+    <div class="arrow">
     </div>
-  <% end %>
+  </div>
+
+  <div class="exchange-message-body <%=actor %>">
+    <p><%= message.body %></p>
+  </div>
 </div>

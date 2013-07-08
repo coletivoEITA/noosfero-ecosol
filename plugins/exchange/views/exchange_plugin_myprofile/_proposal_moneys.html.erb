@@ -1,4 +1,4 @@
-<button id="exchange-add-money-<%=actor%>" class="exchange-button-console exchange-add-money">
+<button id="exchange-add-money-<%=actor%>" class="action-button exchange-add-money">
   <%= _('Add amount in money') %>
 
   <% form_remote_tag :url => {:action => 'add_element_currency', :proposal_id => proposal.id, :element_type => "CurrencyPlugin::Currency", :enterprise_id => profile.id, :enterprise => actor} do %>
