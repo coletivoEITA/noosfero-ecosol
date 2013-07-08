@@ -19,7 +19,7 @@
 /* use for text shadows */
 /* colors */
 /* buttons */
-.action-button, .exchange, .exchange-button-console {
+.action-button, .exchange {
   display: inline-block;
   padding: 6px 12px;
   height: auto;
@@ -31,16 +31,12 @@
   text-shadow: none;
   border: none;
   border-radius: 5px; }
-  .action-button:visited, .exchange:visited, .exchange-button-console:visited, .action-button:active, .exchange:active, .exchange-button-console:active, .action-button:hover, .exchange:hover, .exchange-button-console:hover {
+  .action-button:visited, .exchange:visited, .action-button:active, .exchange:active, .action-button:hover, .exchange:hover {
     color: white; }
 
 /* Colors */
 /* Images */
 /* Exchange button */
-.exchange-button-console {
-  float: left;
-  margin: 6px 12px; }
-
 /* control panel button */
 .controller-profile_editor a.control-panel-my-exchanges {
   background-image: url("/plugins/exchange/images/exchange.png");
@@ -50,16 +46,16 @@
 body.controller-exchange_plugin_myprofile {
   background-color: #FAF7DC; }
 
-#exchange-exchange_wrapper {
+#exchange-exchange-wrapper {
   margin-left: -12px;
   width: 984px; }
-  #exchange-exchange_wrapper h1 {
+  #exchange-exchange-wrapper h1 {
     padding-left: 24px !important; }
-  #exchange-exchange_wrapper #exchange-header {
+  #exchange-exchange-wrapper #exchange-header {
     border: 1px solid #c5aaa5;
     background: #ECE4DB;
     margin: 24px auto; }
-    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-exchange_symbol {
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-exchange_symbol {
       margin-left: -12px;
       margin-top: 12px;
       width: 28px;
@@ -68,36 +64,68 @@ body.controller-exchange_plugin_myprofile {
       left: 50%;
       background: url("/plugins/exchange/images/exchange.png");
       background-repeat: no-repeat; }
-    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-enterprise_profile {
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-enterprise_profile {
       background: #7857B8;
       float: left; }
-    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-enterprise_theother {
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-enterprise_theother {
       background: #C32478;
       float: right; }
-    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-enterprise_profile,
-    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-enterprise_theother {
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-enterprise_profile,
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-enterprise_theother {
       width: 50%;
       height: 48px; }
-    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-theother-name,
-    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-profile-name {
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother-name,
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-profile-name {
       font-size: 21px;
       padding-top: 12px;
       color: white; }
-    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-profile_thumb,
-    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-profile-name {
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-profile_thumb,
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-profile-name {
       float: left; }
-    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-theother_thumb,
-    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-theother-name {
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother_thumb,
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother-name {
       float: right; }
-    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-profile_thumb,
-    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-theother_thumb {
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-profile_thumb,
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother_thumb {
       padding-left: 12px;
       padding-right: 12px;
       margin-top: -12px; }
-      #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-profile_thumb img,
-      #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-theother_thumb img {
+      #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-profile_thumb img,
+      #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother_thumb img {
         height: 72px;
         width: 72px; }
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-profile_thumb {
+      padding-left: 24px; }
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother_thumb {
+      padding-right: 24px; }
+  #exchange-exchange-wrapper #exchange-accepted-header {
+    padding: 6px 12px;
+    color: white;
+    background: #394E41;
+    font-size: 20px;
+    text-align: center; }
+  #exchange-exchange-wrapper #exchange-evaluation {
+    padding: 0 24px;
+    margin: 12px auto;
+    overflow: hidden; }
+    #exchange-exchange-wrapper #exchange-evaluation #exchange-profile-evaluation {
+      float: left;
+      overflow: hidden;
+      width: 49%; }
+    #exchange-exchange-wrapper #exchange-evaluation #exchange-theother-evaluation {
+      float: right;
+      overflow: hidden;
+      width: 48%; }
+    #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-text {
+      background: white; }
+    #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-footer {
+      overflow: hidden; }
+    #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-score {
+      width: 50%;
+      float: left; }
+    #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-result {
+      width: 49%;
+      float: left; }
 
 /* States */
 #exchange-states {
@@ -251,47 +279,6 @@ ul.exchange-profile_offers {
   font-size: 10pt;
   overflow: hidden; }
 
-#exchange-accepted_header {
-  background: #394E41;
-  height: 30px;
-  color: white;
-  text-align: center;
-  width: 985px; }
-
-/* evaluation */
-#exchange-evaluation {
-  width: 985px;
-  margin: 12px auto;
-  overflow: hidden; }
-
-#exchange-profile-evaluation {
-  float: left;
-  width: 49%;
-  overflow: hidden; }
-
-#exchange-theother-evaluation {
-  overflow: hidden;
-  width: 48%;
-  float: right; }
-
-#exchange-evaluation-text {
-  background: white;
-  width: 350px;
-  margin: 0 12px;
-  padding: 12px 24px;
-  float: left; }
-
-#exchange-evaluation-footer {
-  overflow: hidden; }
-
-#exchange-score {
-  width: 50%;
-  float: left; }
-
-#exchange-exchange_result {
-  width: 49%;
-  float: left; }
-
 #exchange-profile_elements_list {
   margin: 0px;
   padding: 0px;
@@ -384,11 +371,9 @@ input[type=text].exchange-qtd-input {
   padding: 12px 12px 0 12px; }
 
 #content div.exchange-element_desc {
-  padding: 12px; 
-}
+  padding: 12px; }
 
 #exchange-summary_wrapper {
-  width: 985px;
   margin: 30px auto;
   overflow: hidden; }
 

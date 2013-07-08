@@ -12,15 +12,12 @@ $image-exchange: '/plugins/exchange/images/exchange.png';
 $image-exchange-empty: '/plugins/exchange/images/exchange-empty.png';
 $image-trash: '/plugins/exchange/images/exchange-empty.png';
 
+$profile-thumb-size: 4*$base;
+
 /* Exchange button */
 
 .exchange {
   @extend .action-button;
-}
-.exchange-button-console {
-  @extend .action-button;
-  float: left;
-  margin: $half-margin/2 $half-margin;
 }
 
 /* control panel button */
@@ -36,7 +33,7 @@ body.controller-exchange_plugin_myprofile {
   background-color: #FAF7DC;
 }
 
-#exchange-exchange_wrapper {
+#exchange-exchange-wrapper {
   margin-left: -$intercolumn/2;
   width: $console-width;
 
@@ -49,7 +46,7 @@ body.controller-exchange_plugin_myprofile {
     background: #ECE4DB;
     margin: $margin auto;
 
-    #exchange-enterprise_headers {
+    #exchange-enterprise-headers {
       
       #exchange-exchange_symbol {
         margin-left: -$half-margin;
@@ -100,6 +97,55 @@ body.controller-exchange_plugin_myprofile {
           height: 6*$base;
           width: 6*$base;
         }
+      }
+      #exchange-profile_thumb {
+        padding-left: 2*$padding;
+      }
+      #exchange-theother_thumb {
+        padding-right: 2*$padding;
+      }
+    }
+  }
+
+  #exchange-accepted-header {
+    padding: $half-padding $padding;
+    color: white;
+    background: #394E41;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  #exchange-evaluation {
+    padding: 0 2*$padding;
+    margin: $base auto;
+    overflow: hidden;  
+
+    #exchange-profile-evaluation {
+      float: left;
+      overflow: hidden;
+      width: 49%;
+    }
+    #exchange-theother-evaluation {
+      float: right;
+      overflow: hidden;
+      width: 48%;
+    }
+
+    .evaluation-snippet {
+
+      .evaluation-text {
+        background: white;
+      }
+      .evaluation-footer {
+        overflow: hidden;
+      }
+      .evaluation-score {
+        width: 50%;
+        float: left;
+      }
+      .evaluation-result {
+        width: 49%;
+        float: left;
       }
     }
   }
@@ -288,51 +334,7 @@ ul.exchange-profile_offers {
   overflow: hidden;
 }
 
-#exchange-accepted_header {
-  background: #394E41;
-  height: 30px;
-  color: white;
-  text-align: center;
-  width: 985px;  
-}
 
-/* evaluation */
-#exchange-evaluation {
-  width: 985px;
-  margin: $base auto;
-  overflow: hidden;  
-}
-
-#exchange-profile-evaluation {
-  float: left;
-  width: 49%;
-  overflow: hidden;
-}
-
-#exchange-theother-evaluation {
-  overflow: hidden;
-  width: 48%;
-  float: right;
-}
-
-#exchange-evaluation-text {
-  background: white;
-  width: 398px - 2*$margin;
-  margin: 0 $padding;
-  padding: $padding $margin;
-  float: left;
-}
-#exchange-evaluation-footer {
-  overflow: hidden;
-}
-#exchange-score {
-  width: 50%;
-  float: left;
-}
-#exchange-exchange_result {
-  width: 49%;
-  float: left;
-}
 
 
 
@@ -457,7 +459,6 @@ input[type=text].exchange-qtd-input {
 }
 
 #exchange-summary_wrapper {
-  width: 985px;
   margin: 30px auto;
   overflow: hidden;
 }

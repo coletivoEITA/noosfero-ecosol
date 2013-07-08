@@ -1,35 +1,51 @@
-<% @exchange_happened_array = [["Sim",0],["Parcialmente (fizemos nossa parte, o outro lado não)",1],
-     ["Parcialmente (o outro lado fez sua parte, nós não)",2],["Não",3]] %>
+<div class="evaluation-snippet">
 
-<p><%= _('Evaluation done by %{evaluator} at %{time}') %
-          {:evaluator => evaluation.evaluator.name,
-           :time => evaluation.created_at.strftime("%d/%m/%Y @ %H:%Mh")}
-%></p>
-
-<% if evaluation.evaluator == profile %>
-<div class="eva-plg-thumb">
-  <%= link_to profile_image(profile, :minor) +"\n", profile.url %>
-</div>
-<% end %>
-
-<div id="evaluation-text">
   <p>
-    <%= evaluation.text %>
+    <%= _('Evaluation done by %{evaluator} at %{time}') % {
+      :evaluator => evaluation.evaluator.name,
+      :time => evaluation.created_at.strftime(_("%m/%d/%Y at %H:%Mh")),
+    } %>
   </p>
-  <div id="evaluation-footer">
-    <div id="evaluation-score">
-      <h5><%= _('Score') %></h5>
-      <%= evaluation.score %>
+
+  <% if evaluation.evaluator == profile %>
+    <div class="evaluation-thumb">
+      <%= link_to profile_image(evaluation.evaluator, :minor), profile.url %>
     </div>
-    <div id="evaluation-result">
-      <h5><%= _('The exchange happened?') %></h5>
-        <%= @exchange_happened_array[evaluation.result.to_i][0] %>
+
+    <div class="arrow-wrap left">
+      <div class="arrow">
+      </div>
+    </div>
+  <% end %>
+
+  <div class="evaluation-text">
+
+    <p class="evaluation-message">
+      <%= evaluation.text %>
+    </p>
+
+    <div class="evaluation-footer">
+      <div class="evaluation-score">
+        <h5><%= _('Score') %></h5>
+        <%= render :partial => 'evaluation_plugin_shared/star_value', :locals => {:value => evaluation.score.to_f} %>
+      </div>
+      <div class="evaluation-result">
+        <h5><%= _('The deal happened?') %></h5>
+        <%= evaluation.result_message %>
+      </div>
     </div>
   </div>
-</div>
 
-<% if evaluation.evaluator != profile %>
-<div class="evalution-thumb" style="float:right">
-  <%= link_to profile_image(evaluation.evaluator, :minor) +"\n", profile.url %>
+  <% if evaluation.evaluator != profile %>
+    <div class="arrow-wrap right">
+      <div class="arrow">
+      </div>
+    </div>
+    <div class="evalution-thumb">
+      <%= link_to profile_image(evaluation.evaluator, :minor), profile.url %>
+    </div>
+  <% end %>
+
+  <div class="clean"></div>
+
 </div>
-<% end %>
