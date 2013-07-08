@@ -2,65 +2,64 @@
 
 <% @proposals.each do |proposal| %>
 
-  <% if !(proposal.state == "open" && proposal.enterprise_origin != profile) %>
+  <% if proposal.state != "open" or proposal.enterprise_origin == profile %>
 
     <div class="exchange-proposal-wrap">
 
       <% if proposal.state != "open" %>
-        <p class="exchange-proposal-sent">
-          <%= _('Proposal sent ') + proposal.date_sent.strftime(_("%m/%d/%Y at H:%Mh")) %>
-        </p>
+        <div class="exchange-proposal-sent">
+          <%= _('Proposal sent %s') % proposal.date_sent.strftime(_("%m/%d/%Y at H:%Mh")) %>
+        </div>
       <% end %>
 
-      <div class="exchange-proposal">
+      <div class="exchange-proposal <%=proposal.enterprise_origin == profile ? 'sent' : 'received' %>">
         <%= render :partial => "proposal_header", :locals => {:proposal => proposal} %>
 
-        <% new_message = first and (@exchange.state == "proposal" or @exchange.state == "negociation") %>
-        <% if new_message %>
+        <% editable = first and (@exchange.state == "proposal" or @exchange.state == "negociation") %>
+        <% if editable %>
           <%= render :partial => "proposal_buttons", :locals => {:proposal => proposal} %>
+          <% first = false %>
         <% end %>
-        <%= render :partial => 'proposal_messages', :locals => {:proposal => proposal, :new_message => new_message} %>
-        <% first = false %>
+        <%= render :partial => 'proposal_messages', :locals => {:proposal => proposal, :new_message => editable} %>
 
-        <div class="exchange-proposal_offer_request_wrapper">
-          <div class="exchange-proposal-offer">
-            <h3><%= _('You offer') %></h3>
-            <%= render :partial => 'proposal_element_list', :locals => {:proposal => proposal, :profile => @profile, :actor => 'profile' } %>
+        <div class="exchange-proposal-part offer">
+          <h3><%= _('You offer') %></h3>
+          <%= render :partial => 'proposal_element_list', :locals => {:proposal => proposal, :profile => @profile, :actor => 'profile' } %>
 
-            <% if proposal.state == "open" %>
+          <% if proposal.state == "open" %>
 
-              <h3><%= _('What you can offer?') %></h3>
+            <h3><%= _('What you can offer?') %></h3>
 
-              <div class="exchange-button-wrapper">
-                <%= render :partial => 'proposal_unreg_items', :locals => {:profile => profile, :actor => 'profile'} %>
-                <%= render :partial => 'proposal_moneys', :locals => {:profile => @theother, :actor => 'theother'} %>
-              </div>
+            <div class="exchange-button-wrapper">
+              <%= render :partial => 'proposal_unreg_items', :locals => {:profile => profile, :actor => 'profile'} %>
+              <%= render :partial => 'proposal_moneys', :locals => {:profile => @theother, :actor => 'theother'} %>
+            </div>
 
-              <%= render :partial => 'proposal_offers', :locals => {:profile => profile, :actor => 'profile'} %>
-              <%= render :partial => 'proposal_knowledges', :locals => {:profile => profile, :actor => 'profile'} %>
+            <%= render :partial => 'proposal_offers', :locals => {:profile => profile, :actor => 'profile'} %>
+            <%= render :partial => 'proposal_knowledges', :locals => {:profile => profile, :actor => 'profile'} %>
 
-            <% end %>
+          <% end %>
 
-          </div>
-          <div class="exchange-proposal-request">
-            <h3><%= _('You ask') %></h3>
-            <%= render :partial => 'proposal_element_list', :locals => {:proposal => proposal, :profile => @theother, :actor => 'theother' } %>
+        </div>
+        <div class="exchange-proposal-part request">
+          <h3><%= _('You ask') %></h3>
+          <%= render :partial => 'proposal_element_list', :locals => {:proposal => proposal, :profile => @theother, :actor => 'theother' } %>
 
-            <% if proposal.state == "open" %>
+          <% if proposal.state == "open" %>
 
-              <h3><%= _('What do the other can offer?') %></h3>
-              <div class="exchange-button-wrapper">
-                <%= render :partial => 'proposal_unreg_items', :locals => {:profile => @theother, :actor => 'theother'} %>
+            <h3><%= _('What do the other can offer?') %></h3>
+            <div class="exchange-button-wrapper">
+              <%= render :partial => 'proposal_unreg_items', :locals => {:profile => @theother, :actor => 'theother'} %>
 
-                <%= render :partial => 'proposal_moneys', :locals => {:profile => @theother, :actor => 'theother'} %>
-              </div>
+              <%= render :partial => 'proposal_moneys', :locals => {:profile => @theother, :actor => 'theother'} %>
+            </div>
 
-              <%= render :partial => 'proposal_offers', :locals => {:profile => @theother, :actor => 'theother'} %>
-              <%= render :partial => 'proposal_knowledges', :locals => {:profile => @theother, :actor => 'theother'} %>
+            <%= render :partial => 'proposal_offers', :locals => {:profile => @theother, :actor => 'theother'} %>
+            <%= render :partial => 'proposal_knowledges', :locals => {:profile => @theother, :actor => 'theother'} %>
 
-            <% end %>
+          <% end %>
 
-          </div>
+        </div>
         </div>
       </div>
     </div>

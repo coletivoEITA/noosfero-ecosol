@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -39,7 +39,7 @@
 .clean {
   clear: both; }
 
-.container-clean, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -74,13 +74,19 @@
 
 /* Colors */
 /* Images */
-/* Exchange button */
-/* control panel button */
+/* Buttons */
+.exchange-add {
+  width: 24px;
+  height: 24px;
+  float: right;
+  padding: 0;
+  margin: 0px; }
+
 .controller-profile_editor a.control-panel-my-exchanges {
   background-image: url("/plugins/exchange/images/exchange.png");
   background-size: 48px 48px; }
 
-/*####### new layout ########*/
+/* end */
 body.controller-exchange_plugin_myprofile {
   background-color: #FAF7DC; }
 
@@ -88,7 +94,7 @@ body.controller-exchange_plugin_myprofile {
   margin-left: -12px;
   width: 984px; }
   #exchange-exchange-wrapper h1 {
-    padding-left: 24px !important; }
+    padding-left: 24px; }
   #exchange-exchange-wrapper #exchange-header {
     border: 1px solid #c5aaa5;
     background: #ECE4DB;
@@ -145,91 +151,99 @@ body.controller-exchange_plugin_myprofile {
     background: #394E41;
     font-size: 20px;
     text-align: center; }
-  #exchange-exchange-wrapper #exchange-evaluation {
-    padding: 0 12px;
-    margin: 12px;
-    overflow: hidden; }
-    #exchange-exchange-wrapper #exchange-evaluation #exchange-profile-evaluation {
-      float: left;
-      overflow: hidden;
-      width: 456px; }
-    #exchange-exchange-wrapper #exchange-evaluation #exchange-theother-evaluation {
-      float: right;
-      overflow: hidden;
-      width: 456px; }
-    #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-text {
-      background: white; }
-    #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-footer {
-      overflow: hidden; }
-    #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-score {
-      width: 456px;
-      float: left; }
-    #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-result {
-      width: 456px;
-      float: left; }
-  #exchange-exchange-wrapper .exchange-summary-wrapper {
-    margin: 12px;
-    padding: 0 12px; }
-  #exchange-exchange-wrapper .exchange-proposal {
-    margin: 36px auto;
-    border: 6px double #E47455;
-    border-radius: 10px;
-    overflow: hidden; }
-    #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-sent {
-      text-align: right;
-      margin-right: 12px;
-      padding-right: 12px; }
-    #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-header {
-      padding: 12px 24px;
-      background: #7857B8;
-      font-size: 16pt;
-      color: white; }
-    #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-header-buttons {
-      background: #DFD3ED;
-      padding: 6px 24px; }
-    #exchange-exchange-wrapper .exchange-proposal .exchange-button-wrapper {
-      margin-left: 12px;
-      padding: 6px 12px; }
-    #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages {
-      background: #F0E9F6;
-      border-bottom: 1px solid #BDA8DC; }
-      #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message-thumb {
-        float: left; }
-        #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message-thumb img {
-          width: 48px;
-          width: 48px; }
-      #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message {
+  #exchange-exchange-wrapper #exchange-evaluation-wrap {
+    border: 1px solid black; }
+    #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation {
+      margin: 24px 12px;
+      padding: 0 12px; }
+      #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation #exchange-profile-evaluation {
+        float: left;
         overflow: hidden;
-        margin: 24px 0; }
-        #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap {
+        width: 456px; }
+      #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation #exchange-theother-evaluation {
+        float: right;
+        overflow: hidden;
+        width: 456px; }
+      #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation .evaluation-snippet .evaluation-text {
+        background: white; }
+      #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation .evaluation-snippet .evaluation-footer {
+        overflow: hidden; }
+      #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation .evaluation-snippet .evaluation-score {
+        width: 456px;
+        float: left; }
+      #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation .evaluation-snippet .evaluation-result {
+        width: 456px;
+        float: left; }
+  #exchange-exchange-wrapper .exchange-summary-wrapper {
+    margin: 12px; }
+    #exchange-exchange-wrapper .exchange-summary-wrapper .exchange-proposal-part {
+      background: transparent; }
+  #exchange-exchange-wrapper h2 {
+    padding: 0 24px; }
+  #exchange-exchange-wrapper .exchange-proposal-wrap {
+    margin: 24px 0; }
+    #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal-sent {
+      padding: 6px 24px;
+      text-align: right; }
+    #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal {
+      border: 6px double #E47455;
+      border-radius: 10px;
+      overflow: hidden; }
+      #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal.sent .exchange-proposal-header {
+        text-align: left; }
+      #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal.received .exchange-proposal-header {
+        text-align: right; }
+      #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header {
+        padding: 6px 24px;
+        background: #7857B8;
+        font-size: 16pt;
+        color: white; }
+      #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons {
+        padding: 6px 24px;
+        background: #DFD3ED; }
+        #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form {
+          float: left; }
+      #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-button-wrapper {
+        margin-left: 12px;
+        padding: 6px 12px; }
+      #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages {
+        padding: 12px 24px;
+        background: #F0E9F6;
+        border-bottom: 1px solid #bda8dc; }
+        #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .exchange-message-thumb {
+          float: left; }
+          #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .exchange-message-thumb img {
+            width: 48px;
+            height: 48px; }
+        #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap {
           float: left;
           margin-top: 18px;
           width: 0;
           height: 0;
           position: relative; }
-          #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap .arrow {
+          #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap .arrow {
             margin-top: -5px; }
-          #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap.left {
+          #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap.left {
             left: 1px;
             border-style: solid;
             border-width: 6px 6px 6px 0;
             border-color: transparent #c5aaa5 transparent transparent; }
-            #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap.left .arrow {
+            #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap.left .arrow {
               margin-left: 1px;
               border-style: solid;
               border-width: 5px 5px 5px 0;
               border-color: transparent white transparent transparent; }
-          #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap.right {
+          #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap.right {
             left: -1px;
             border-style: solid;
             border-width: 6px 0 6px 6px;
             border-color: transparent transparent transparent #c5aaa5; }
-            #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap.right .arrow {
+            #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap.right .arrow {
               margin-left: -6px;
               border-style: solid;
               border-width: 5px 0 5px 5px;
               border-color: transparent transparent transparent white; }
-        #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .exchange-message-body {
+        #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .exchange-message-body {
           width: 576px;
           padding: 12px;
           min-height: 60px;
@@ -286,121 +300,78 @@ body.controller-exchange_plugin_myprofile {
     font-size: 30px;
     margin: 3px; }
 
-.exchange-proposal_offer_request_wrapper {
-  overflow: hidden;
-  margin-bottom: 5px; }
-
 .exchange-proposal-part {
   float: left;
-  width: 456px; }
+  width: 456px;
+  padding: 12px; }
   .exchange-proposal-part.offer {
     background: #F0E9F6; }
   .exchange-proposal-part.request {
     background: #F8F4FB; }
   .exchange-proposal-part h3 {
-    margin-left: 12px !important; }
-
-ul.exchange-theother_offers {
-  padding: 0;
-  margin: 0;
-  margin-top: 48px; }
-
-ul.exchange-profile_offers {
-  padding: 0;
-  margin: 0;
-  margin-top: 48px; }
-
-.exchange-profile_offers li {
-  background: #D8CAEA;
-  padding: 6px;
-  margin: 12px 12px;
-  list-style-type: none;
-  height: 24px; }
-
-.exchange-theother_offers li {
-  background: #D8CAEA;
-  padding: 6px;
-  margin: 12px 12px;
-  list-style-type: none;
-  height: 24px; }
-
-#content .exchange-profile_offers li h6 {
-  display: inline-block;
-  padding-top: 5px; }
-
-#content .exchange-theother_offers li h6 {
-  display: inline-block;
-  padding-top: 5px; }
-
-.exchange-add {
-  width: 24px;
-  height: 24px;
-  float: right;
-  padding: 0;
-  margin: 0px; }
-
-.exchange-elements-list {
-  margin: 0px;
-  padding: 0px;
-  margin-bottom: 72px; }
-  .exchange-elements-list #content .exchange-element {
-    width: 470px;
-    list-style-type: none;
-    background-size: auto 470px;
-    margin: 0 12px 24px 12px;
-    min-height: 48px;
-    position: relative; }
-    .exchange-elements-list #content .exchange-element.profile {
-      background: #D8CAEA; }
-    .exchange-elements-list #content .exchange-element.theother {
-      background: #F3C3D4; }
-    .exchange-elements-list #content .exchange-element .exchange-element-image {
+    margin-left: 12px; }
+  .exchange-proposal-part .exchange-elements-list {
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 72px; }
+    .exchange-proposal-part .exchange-elements-list .exchange-element {
       width: 470px;
-      height: 155px;
-      background-position: center; }
-    .exchange-elements-list #content .exchange-element input[type=text].exchange-qtd-input {
-      width: 85px;
-      border: none;
-      border-radius: 3px;
-      padding: 3px;
-      background: whitesmoke;
-      color: black; }
-    .exchange-elements-list #content .exchange-element .exchange-element_control {
-      position: absolute;
-      top: 12px;
-      right: 12px; }
-    .exchange-elements-list #content .exchange-element .exchange-trash {
-      display: inline;
-      top: 4px;
-      position: relative;
-      right: 2px; }
-    .exchange-elements-list #content .exchange-element .exchange-qtd {
-      display: inline;
-      background: #7857B8;
-      color: white;
-      padding: 3px 12px;
-      border-radius: 5px;
-      padding: 5px 0 4px 3px; }
-    .exchange-elements-list #content .exchange-element h6.exchange-qtd {
-      padding: 6px 12px; }
-    .exchange-elements-list #content .exchange-element h6.exchange-element_title {
-      padding: 12px 12px 0 12px; }
-    .exchange-elements-list #content .exchange-element div.exchange-element_desc {
-      padding: 12px; }
-    .exchange-elements-list #content .exchange-element .exchange-select {
-      background: transparent;
-      font: inherit;
-      color: white; }
-    .exchange-elements-list #content .exchange-element .exchange-add-money p {
-      display: none; }
-    .exchange-elements-list #content .exchange-element .exchange-add-unreg-item p {
-      display: none; }
-    .exchange-elements-list #content .exchange-element .exchange-add-unreg-item input {
-      display: none; }
-    .exchange-elements-list #content .exchange-element .exchange-add-money-active {
-      margin-bottom: 24px; }
-    .exchange-elements-list #content .exchange-element .exchange-add-unreg-item-active p {
-      text-align: left; }
+      list-style-type: none;
+      background-size: auto 470px;
+      margin: 0 12px 24px 12px;
+      min-height: 48px;
+      position: relative; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element.profile {
+        background: #D8CAEA; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element.theother {
+        background: #F3C3D4; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-image {
+        width: 470px;
+        height: 155px;
+        background-position: center; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element input[type=text].exchange-qtd-input {
+        width: 85px;
+        border: none;
+        border-radius: 3px;
+        padding: 3px;
+        background: whitesmoke;
+        color: black; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element_control {
+        position: absolute;
+        top: 12px;
+        right: 12px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-trash {
+        display: inline;
+        top: 4px;
+        position: relative;
+        right: 2px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-qtd {
+        display: inline;
+        background: #7857B8;
+        color: white;
+        padding: 3px 12px;
+        border-radius: 5px;
+        padding: 5px 0 4px 3px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element h6.exchange-qtd {
+        padding: 6px 12px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element h6.exchange-element_title {
+        padding: 12px 12px 0 12px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element div.exchange-element_desc {
+        padding: 12px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-select {
+        background: transparent;
+        font: inherit;
+        color: white; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-add-money p {
+        display: none; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-add-unreg-item p {
+        display: none; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-add-unreg-item input {
+        display: none; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-add-money-active {
+        margin-bottom: 24px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-add-unreg-item-active p {
+        text-align: left; }
 
 /* Index */
 .exchange-index {
@@ -431,7 +402,7 @@ ul.exchange-profile_offers {
 .clean {
   clear: both; }
 
-.container-clean, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -711,8 +682,8 @@ body.action-sniffer_plugin_myprofile-search {
       padding: 48px 12px; }
       #presentation-wrap-1 #presentation-wrap-2 #presentation .text {
         color: white;
-        font-size: 25px !important;
-        line-height: 38px !important; }
+        font-size: 25px;
+        line-height: 38px; }
       #presentation-wrap-1 #presentation-wrap-2 #presentation .join {
         margin: auto;
         margin-top: 36px;
@@ -737,7 +708,7 @@ body.action-sniffer_plugin_myprofile-search {
   #enterprises-area h2 {
     display: inline-block;
     padding: 0 12px;
-    margin-left: 20px !important; }
+    margin-left: 24px; }
   #enterprises-area .scroll-left, #enterprises-area .scroll-right {
     width: 20px;
     height: 37px;
