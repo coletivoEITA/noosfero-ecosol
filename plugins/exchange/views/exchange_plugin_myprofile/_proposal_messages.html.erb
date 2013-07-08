@@ -1,0 +1,30 @@
+<div class="exchange-proposal-messages">
+  <div class="exchange-messages">
+
+    <% if new_message %>
+
+      <div id="exchange-new-message" class="exchange-message">
+
+        <div class="exchange-message-profile-thumb">
+          <%= link_to profile_image(profile, :minor), profile.url %>
+        </div>
+
+        <div class="exchange-message-profile-body">
+          <% form_remote_tag :url => {:action => 'new_message', :proposal_id => proposal.id} do %>
+            <%= text_area_tag 'body', nil, :rows => 2, :cols => 30, :placeholder => _('Type your message') %>
+            <%= submit_tag _('Send message'), :class => 'action-button' %>
+          <% end %>
+        </div>
+
+      </div>
+    <% end %>
+
+    <% if not proposal.messages.blank? %>
+      <% proposal.messages.each do |m| %>
+        <%= render :partial => "message", :locals => {:message => m} %>
+      <% end %>
+    <% else %>
+      <%# FIXME %>
+    <% end %>
+  </div>
+</div>

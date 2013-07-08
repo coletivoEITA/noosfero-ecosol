@@ -9,10 +9,10 @@
   display: block;
   /* Sets element back to block */ }
 
-/* use for heights only */
+/* heights should only use multiples of this */
 /* base measurements */
-/* use for widths only */
-/* use for padding and margins only
+/* widths should only use these */
+/* paddings and margins should only use these
    REMEMBER to disccount the borders size from padding, as borders uses padding's space.
  */
 /* use for borders */
@@ -25,6 +25,7 @@
   height: auto;
   width: auto;
   color: white;
+  cursor: pointer;
   background: #394e41;
   text-align: center;
   text-decoration: none;
@@ -66,19 +67,19 @@
     height: 48px; }
 .evaluation-snippet .arrow-wrap {
   float: left;
-  margin-top: 21px;
+  margin-top: 18px;
   width: 0;
   height: 0;
   position: relative; }
   .evaluation-snippet .arrow-wrap .arrow {
-    margin-top: -5px;
-    margin-left: 1px; }
+    margin-top: -5px; }
   .evaluation-snippet .arrow-wrap.left {
     left: 1px;
     border-style: solid;
     border-width: 6px 6px 6px 0;
     border-color: transparent #c5aaa5 transparent transparent; }
     .evaluation-snippet .arrow-wrap.left .arrow {
+      margin-left: 1px;
       border-style: solid;
       border-width: 5px 5px 5px 0;
       border-color: transparent white transparent transparent; }
@@ -88,13 +89,14 @@
     border-width: 6px 0 6px 6px;
     border-color: transparent transparent transparent #c5aaa5; }
     .evaluation-snippet .arrow-wrap.right .arrow {
+      margin-left: -6px;
       border-style: solid;
       border-width: 5px 0 5px 5px;
       border-color: transparent transparent transparent white; }
 .evaluation-snippet .evaluation-text {
   float: left;
   width: 378px;
-  border: 1px solid #c5aaa5;
-  padding: 12px; }
+  padding: 11px;
+  border: 1px solid #c5aaa5; }
   .evaluation-snippet .evaluation-text .evaluation-message {
     display: inline-block; }

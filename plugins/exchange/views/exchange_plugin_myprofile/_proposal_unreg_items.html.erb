@@ -1,0 +1,10 @@
+<button id="exchange-add-unreg-item-<%=actor%>" class="exchange-button-console exchange-add-unreg-item">
+  <span onClick='exchange.add_unregistered_item_show_form("<%=actor%>")'><%= _('Add not registered product') %></span>
+  <p style="float:right" onClick='exchange.add_unregistered_item_hide_form("<%=actor%>")'>[x]</p>
+  <% form_remote_tag :url => {:action => 'add_unregistered_item', :proposal_id => proposal.id, :element_type => "ExchangePlugin::UnregisteredItem", :enterprise_id => @profile.id, :enterprise => actor} do  %>
+    <p><%= _('Name') %><%= text_field_tag "name"%></p>
+    <p><%= _('Description') %></p><p><%= text_area_tag "description" %></p>
+    <%= submit_tag _('Add'), :onClick => "exchange.add_unregistered_item_hide_form('#{actor}')"%>
+  <% end %>
+</button>
+

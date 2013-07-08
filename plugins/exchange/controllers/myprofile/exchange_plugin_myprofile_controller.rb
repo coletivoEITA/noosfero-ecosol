@@ -26,9 +26,6 @@ class ExchangePluginMyprofileController < MyProfileController
 
     @theother_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @theother.id} - @proposal.knowledges
     @profile_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @profile.id} - @proposal.knowledges
-
-    @profile_products = @profile.products - @proposal.products
-    @theother_products = @theother.products - @proposal.products
   end
 
   def add_unregistered_item

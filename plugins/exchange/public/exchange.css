@@ -9,10 +9,10 @@
   display: block;
   /* Sets element back to block */ }
 
-/* use for heights only */
+/* heights should only use multiples of this */
 /* base measurements */
-/* use for widths only */
-/* use for padding and margins only
+/* widths should only use these */
+/* paddings and margins should only use these
    REMEMBER to disccount the borders size from padding, as borders uses padding's space.
  */
 /* use for borders */
@@ -25,6 +25,7 @@
   height: auto;
   width: auto;
   color: white;
+  cursor: pointer;
   background: #394e41;
   text-align: center;
   text-decoration: none;
@@ -56,12 +57,11 @@ body.controller-exchange_plugin_myprofile {
     background: #ECE4DB;
     margin: 24px auto; }
     #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-exchange_symbol {
-      margin-left: -12px;
-      margin-top: 12px;
       width: 28px;
       height: 22px;
+      margin-top: 12px;
       position: absolute;
-      left: 50%;
+      left: 468px;
       background: url("/plugins/exchange/images/exchange.png");
       background-repeat: no-repeat; }
     #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-enterprise_profile {
@@ -72,7 +72,7 @@ body.controller-exchange_plugin_myprofile {
       float: right; }
     #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-enterprise_profile,
     #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-enterprise_theother {
-      width: 50%;
+      width: 491px;
       height: 48px; }
     #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother-name,
     #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-profile-name {
@@ -98,6 +98,10 @@ body.controller-exchange_plugin_myprofile {
       padding-left: 24px; }
     #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother_thumb {
       padding-right: 24px; }
+  #exchange-exchange-wrapper #concluded-message {
+    text-align: right;
+    margin-right: 12px;
+    padding-right: 12px; }
   #exchange-exchange-wrapper #exchange-accepted-header {
     padding: 6px 12px;
     color: white;
@@ -105,27 +109,78 @@ body.controller-exchange_plugin_myprofile {
     font-size: 20px;
     text-align: center; }
   #exchange-exchange-wrapper #exchange-evaluation {
-    padding: 0 24px;
-    margin: 12px auto;
+    padding: 0 12px;
+    margin: 12px;
     overflow: hidden; }
     #exchange-exchange-wrapper #exchange-evaluation #exchange-profile-evaluation {
       float: left;
       overflow: hidden;
-      width: 49%; }
+      width: 456px; }
     #exchange-exchange-wrapper #exchange-evaluation #exchange-theother-evaluation {
       float: right;
       overflow: hidden;
-      width: 48%; }
+      width: 456px; }
     #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-text {
       background: white; }
     #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-footer {
       overflow: hidden; }
     #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-score {
-      width: 50%;
+      width: 456px;
       float: left; }
     #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-result {
-      width: 49%;
+      width: 456px;
       float: left; }
+  #exchange-exchange-wrapper #exchange-summary-wrapper {
+    margin: 12px;
+    padding: 0 12px; }
+  #exchange-exchange-wrapper .exchange-proposal {
+    margin: 36px auto;
+    border: 6px double #E47455;
+    border-radius: 10px;
+    overflow: hidden; }
+    #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-sent {
+      text-align: right;
+      margin-right: 12px;
+      padding-right: 12px; }
+    #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-header {
+      font-family: 'RobotoRegular';
+      font-size: 16pt;
+      margin-left: 24px;
+      margin-top: 24px;
+      background: #7857B8;
+      height: 37px;
+      color: white; }
+    #exchange-exchange-wrapper .exchange-proposal .exchange-proposal_header_buttons {
+      background: #DFD3ED;
+      height: 35px;
+      padding-left: 24px; }
+    #exchange-exchange-wrapper .exchange-proposal .exchange-button-wrapper {
+      height: 35px;
+      padding-left: 24px; }
+    #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages {
+      background: #F0E9F6;
+      border-bottom: 1px solid #BDA8DC; }
+      #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages {
+        padding: 1px; }
+        #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message {
+          overflow: hidden;
+          margin: 24px 0; }
+          #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .exchange-message-profile-thumb {
+            float: left;
+            margin-left: 24px; }
+          #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .exchange-message-theother-thumb {
+            float: right;
+            margin-right: 24px; }
+          #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .exchange-message-theother-body,
+          #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .exchange-message-profile-body {
+            width: 456px;
+            background: white;
+            padding: 12px;
+            min-height: 60px; }
+          #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .exchange-message-theother-body {
+            float: right; }
+          #exchange-exchange-wrapper .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .exchange-message-profile-body {
+            float: left; }
 
 /* States */
 #exchange-states {
@@ -177,61 +232,23 @@ body.controller-exchange_plugin_myprofile {
     font-size: 30px;
     margin: 3px; }
 
-#exchange-proposal_wrapper {
-  margin: 36px auto;
-  border: 6px double #E47455;
-  border-radius: 10px;
-  overflow: hidden; }
-
-#exchange-proposal_header {
-  font-family: 'RobotoRegular';
-  font-size: 16pt;
-  padding-left: 25px;
-  background: #7857B8;
-  height: 37px;
-  color: white;
-  margin-top: -21px; }
-
-#exchange-proposal_header_buttons {
-  background: #DFD3ED;
-  height: 35px;
-  padding-left: 24px; }
-
-#exchange-button-wrapper {
-  height: 35px;
-  padding-left: 24px; }
-
-#exchange-messages {
-  padding: 1px; }
-
-#exchange-proposal_messages {
-  background: #F0E9F6;
-  border-bottom: 1px solid #BDA8DC; }
-
-#exchange-proposal_offer_request_wrapper {
+.exchange-proposal_offer_request_wrapper {
   overflow: hidden;
   margin-bottom: 5px; }
 
-#exchange-proposal_offer h3 {
-  margin-left: 12px; }
-
-#exchange-proposal_offer {
+.exchange-proposal-offer {
   background: #F0E9F6;
   float: left;
-  width: 50%;
-  padding-top: 24px; }
+  width: 456px;
+  margin-top: 24px; }
+  .exchange-proposal-offer h3 {
+    margin-left: 12px !important; }
 
-#content #exchange-proposal_offer h3 {
-  margin-left: 12px; }
-
-#exchange-proposal_request {
+.exchange-proposal-request {
   background: #F8F4FB;
   float: right;
-  width: 50%;
+  width: 456px;
   padding-top: 24px; }
-
-#content #exchange-proposal_request h3 {
-  margin-left: 12px; }
 
 ul.exchange-theother_offers {
   padding: 0;
@@ -272,13 +289,6 @@ ul.exchange-profile_offers {
   padding: 0;
   margin: 0px; }
 
-.exchange-proposal_sent {
-  width: 945px;
-  margin: 0px auto -22px auto;
-  text-align: right;
-  font-size: 10pt;
-  overflow: hidden; }
-
 #exchange-profile_elements_list {
   margin: 0px;
   padding: 0px;
@@ -307,35 +317,6 @@ ul.exchange-profile_offers {
 
 .exchange-element-theother {
   background: #F3C3D4; }
-
-.exchange-message {
-  overflow: hidden;
-  margin: 24px 0px; }
-
-.exchange-message-theother-body {
-  width: 580px;
-  background: white;
-  margin-left: 280px;
-  padding: 15px;
-  min-height: 60px;
-  float: left;
-  margin-right: 10px; }
-
-.exchange-message-profile-body {
-  width: 580px;
-  background: white;
-  padding: 15px;
-  min-height: 60px;
-  float: left;
-  margin-left: 10px; }
-
-.exchange-message-profile-thumb {
-  float: left;
-  margin-left: 25px; }
-
-.exchange-message-theother-thumb {
-  float: right;
-  margin-right: 25px; }
 
 input[type=text].exchange-qtd-input {
   width: 85px;
@@ -373,14 +354,27 @@ input[type=text].exchange-qtd-input {
 #content div.exchange-element_desc {
   padding: 12px; }
 
-#exchange-summary_wrapper {
-  margin: 30px auto;
-  overflow: hidden; }
-
 .exchange-select {
   background: transparent;
   font: inherit;
   color: white; }
+
+.exchange-add-money p {
+  display: none; }
+
+.exchange-add-unreg-item p {
+  display: none; }
+.exchange-add-unreg-item input {
+  display: none; }
+
+.exchange-add-money-active {
+  width: 95%;
+  margin-bottom: 24px; }
+
+.exchange-add-unreg-item-active {
+  width: 95%; }
+  .exchange-add-unreg-item-active p {
+    text-align: left; }
 
 /* Index */
 .exchange-index {
@@ -406,20 +400,3 @@ input[type=text].exchange-qtd-input {
       width: 84px; }
     .exchange-index .exchange-index-col3 h4 {
       padding-top: 6px; }
-
-.exchange-add-money p {
-  display: none; }
-
-.exchange-add-unreg-item p {
-  display: none; }
-.exchange-add-unreg-item input {
-  display: none; }
-
-.exchange-add-money-active {
-  width: 95%;
-  margin-bottom: 24px; }
-
-.exchange-add-unreg-item-active {
-  width: 95%; }
-  .exchange-add-unreg-item-active p {
-    text-align: left; }

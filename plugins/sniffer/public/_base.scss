@@ -8,7 +8,7 @@
   display: block; /* Sets element back to block */
 }
 
-/* use for heights only */
+/* heights should only use multiples of this */
 $base: 12px;
 
 /* base measurements */
@@ -16,7 +16,7 @@ $module: 6*$base;
 $intercolumn: 2*$base;
 $wireframe: 10*$module + 10*$intercolumn;
 
-/* use for widths only */
+/* widths should only use these */
 $module1: 1*$module + 0*$intercolumn;
 $module2: 2*$module + 1*$intercolumn;
 $module3: 3*$module + 2*$intercolumn;
@@ -36,7 +36,7 @@ $module7p: percentage($module7/$wireframe);
 $module8p: percentage($module8/$wireframe);
 $module9p: percentage($module9/$wireframe);
 
-/* use for padding and margins only
+/* paddings and margins should only use these
    REMEMBER to disccount the borders size from padding, as borders uses padding's space.
  */
 $margin: $intercolumn;
@@ -67,6 +67,7 @@ $color-action-button: #394E41;
   height: auto;
   width: auto;
   color: white;
+  cursor: pointer;
   &:visited, &:active, &:hover { color: white; }
   background: $color-action-button;
   text-align: center;

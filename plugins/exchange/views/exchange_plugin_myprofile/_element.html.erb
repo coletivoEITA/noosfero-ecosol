@@ -1,53 +1,49 @@
-<% e = eval(element.element_type).find element.element_id %>
+<% e = element.element_type.constantize.find element.element_id %>
 
-<li id="exchange_<%= element.element_type %>_element_<%= element.element_id %>" class="exchange-element exchange-element-<%= enterprise %>">
+<li id="exchange_<%= element.element_type %>_element_<%= element.element_id %>" class="exchange-element <%= actor %>">
 
-<% if element.element_type == "Product" %>
-  <div class="exchange-element-image" style="background-image: url('<%= !e.image.blank? ? e.image.public_filename : ''%>');">
-  </div>
-<% end %>
+  <% if element.element_type == "Product" %>
+    <div class="exchange-element-image" style="background-image: url('<%= e.image.public_filename if e.image %>');">
+    </div>
+  <% end %>
 
-<div class="exchange-element_control">
+  <div class="exchange-element_control">
 
-  <% if element.proposal.state == "open" %>
+    <% if element.proposal.state == "open" %>
 
       <div id="exchange-quantity" class="exchange-qtd">
         <h6 style="display:inline-block"><%= _('Qtd') %></h6>
-        <%= text_field_tag "origin_quantity[" + element.element_id.to_s + "]", element.quantity, :class => "exchange-qtd-input",
-        :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :element_id => element.id}', {quantity: jQuery(this).val()});"%>
+        <%= text_field_tag "origin_quantity[#{element.element_id}]", element.quantity, :class => "exchange-qtd-input",
+          :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :element_id => element.id}', {quantity: jQuery(this).val()});"%>
       </div>
 
-    <div class="exchange-trash">
+      <div class="exchange-trash">
 
-      <% if (element.element_type == "Product") || (element.element_type == "CmsLearningPluginLearning")%>
-        <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element, :id => element.id,
-        :element_type => element.element_type, :element_id => element.element_id,
-          :enterprise => enterprise, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
-      <% else %>
-        <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element_currency, :id => element.id,
-        :element_type => element.element_type, :element_id => element.element_id,
-          :enterprise => enterprise, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
+        <% if (element.element_type == "Product") || (element.element_type == "CmsLearningPluginLearning")%>
+          <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element, :id => element.id, :element_type => element.element_type, :element_id => element.element_id, :enterprise => actor, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
+        <% else %>
+          <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element_currency, :id => element.id, :element_type => element.element_type, :element_id => element.element_id, :enterprise => actor, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
+        <% end %>
+      </div>
+
+
+    <% else %>
+      <% if !element.quantity.blank? %>
+        <h6 class="exchange-qtd"><%= _('Qtd: %s') % element.quantity %></h6>
       <% end %>
-    </div>
-
-
-  <% else %>
-    <% if !element.quantity.blank? %>
-      <h6 class="exchange-qtd"><%= _('Qtd: %s') % element.quantity %></h6>
     <% end %>
-  <% end %>
-</div> <!-- element_control -->
+  </div> <!-- element_control -->
 
-<% if element.element_type == "Product" %>
-  <h6 class="exchange-element_title"><%= link_to(e.category_name) + " " + link_to(e.name) %></h6>
-  <div class="exchange-element_desc"><%= e.description %></div>
-<% elsif element.element_type == "CmsLearningPluginLearning" %>
-  <h6 class="exchange-element_title"><%= e.name %></h6>
-  <div class="exchange-element_desc"><%= e.summary %></div>
-<% elsif element.element_type == "CurrencyPlugin::Currency" %>
-  <h6 class="exchange-element_title"><%= e.name %>(<%= e.symbol %>)</h6>
-<% elsif element.element_type == "ExchangePlugin::UnregisteredItem" %>
-  <h6 class="exchange-element_title"><%= e.name %></h6>
-  <div class="exchange-element_desc"><%= e.description %></div>
-<% end %>
+  <% if element.element_type == "Product" %>
+    <h6 class="exchange-element_title"><%= link_to e.name, product.url, :target => '_blank' %></h6>
+    <div class="exchange-element_desc"><%= e.description %></div>
+  <% elsif element.element_type == "CmsLearningPluginLearning" %>
+    <h6 class="exchange-element_title"><%= link_to e.name, e.url, :target => 'blank' %></h6>
+    <div class="exchange-element_desc"><%= e.summary %></div>
+  <% elsif element.element_type == "CurrencyPlugin::Currency" %>
+    <h6 class="exchange-element_title"><%= e.name_with_symbol %></h6>
+  <% elsif element.element_type == "ExchangePlugin::UnregisteredItem" %>
+    <h6 class="exchange-element_title"><%= e.name %></h6>
+    <div class="exchange-element_desc"><%= e.description %></div>
+  <% end %>
 </li>
