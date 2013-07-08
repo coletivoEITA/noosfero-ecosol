@@ -9,14 +9,21 @@
 
   <% if evaluation.evaluator == profile %>
     <div class="evaluation-thumb">
-      <%= link_to profile_image(profile, :minor), profile.url %>
+      <%= link_to profile_image(evaluation.evaluator, :minor), profile.url %>
+    </div>
+
+    <div class="arrow-wrap left">
+      <div class="arrow">
+      </div>
     </div>
   <% end %>
 
   <div class="evaluation-text">
-    <p class="evaluation.message">
+
+    <p class="evaluation-message">
       <%= evaluation.text %>
     </p>
+
     <div class="evaluation-footer">
       <div class="evaluation-score">
         <h5><%= _('Score') %></h5>
@@ -30,9 +37,15 @@
   </div>
 
   <% if evaluation.evaluator != profile %>
+    <div class="arrow-wrap right">
+      <div class="arrow">
+      </div>
+    </div>
     <div class="evalution-thumb">
       <%= link_to profile_image(evaluation.evaluator, :minor), profile.url %>
     </div>
   <% end %>
+
+  <div class="clean"></div>
 
 </div>

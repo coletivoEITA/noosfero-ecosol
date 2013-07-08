@@ -35,6 +35,7 @@
     color: white; }
 
 /* Images */
+/* Colors */
 .evaluation-mean .evaluation-star-value-wrap {
   margin-bottom: 24px; }
 
@@ -59,8 +60,41 @@
       width: 145px; }
 
 .evaluation-snippet .evaluation-thumb {
+  float: left; }
+  .evaluation-snippet .evaluation-thumb img {
+    width: 48px;
+    height: 48px; }
+.evaluation-snippet .arrow-wrap {
   float: left;
-  margin: 0px;
-  padding: 0px; }
-.evaluation-snippet .evaluation-text .evaluation-message {
-  display: inline-block; }
+  margin-top: 21px;
+  width: 0;
+  height: 0;
+  position: relative; }
+  .evaluation-snippet .arrow-wrap .arrow {
+    margin-top: -5px;
+    margin-left: 1px; }
+  .evaluation-snippet .arrow-wrap.left {
+    left: 1px;
+    border-style: solid;
+    border-width: 6px 6px 6px 0;
+    border-color: transparent #c5aaa5 transparent transparent; }
+    .evaluation-snippet .arrow-wrap.left .arrow {
+      border-style: solid;
+      border-width: 5px 5px 5px 0;
+      border-color: transparent white transparent transparent; }
+  .evaluation-snippet .arrow-wrap.right {
+    left: -1px;
+    border-style: solid;
+    border-width: 6px 0 6px 6px;
+    border-color: transparent transparent transparent #c5aaa5; }
+    .evaluation-snippet .arrow-wrap.right .arrow {
+      border-style: solid;
+      border-width: 5px 0 5px 5px;
+      border-color: transparent transparent transparent white; }
+.evaluation-snippet .evaluation-text {
+  float: left;
+  width: 378px;
+  border: 1px solid #c5aaa5;
+  padding: 12px; }
+  .evaluation-snippet .evaluation-text .evaluation-message {
+    display: inline-block; }
