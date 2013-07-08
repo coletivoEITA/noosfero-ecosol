@@ -23,6 +23,9 @@ User::Mailer.class_eval do
         :community => community
     end
 end
+User.send :define_method, :deliver_signup_welcome_email, proc{}
+User.send :define_method, :deliver_activation_code, proc{}
+User.send :define_method, :delay_activation_check, proc{}
 
 def create_login( name, cont )    
   login =  name.split(' ')[0] + name.split(' ')[-1] + cont.to_s
@@ -54,16 +57,12 @@ def create_user( name, mail, fone, city, state )
   # PASS_LEN = 6
   pass = create_newpass( 6 )
 
-  $log.info "Criando usuário: login %s and password %s and email %s ..." % [ login, pass, mail ] 
+  $log.info "Criando usuário: login '%s' and password '%s' and email '%s' ..." % [ login, pass, mail ] 
   begin
     if !Profile[ login ].blank?
       $log.info "Não foi possível criar um usuário com login %s, pois já existe um perfil que usar este login como identificador! " % login
       return nil
     end
-    p = proc{ $log.warn 'Sobrescrevendo metodo para evitar comportamento indesejado.' }
-    User.send :define_method, :deliver_signup_welcome_email, &p 
-    User.send :define_method, :deliver_activation_code, &p
-    User.send :define_method, :delay_activation_check, &p
     user = User.new({
       :login => login,
       :email => mail,
@@ -75,8 +74,11 @@ def create_user( name, mail, fone, city, state )
     })
 
     $log.info "Registrando dados pessoais do usuário..." 
+    if !state.blank?
+      state =  State.find_by_acronym( state ).name 
+    end
     data = {:name => name, :zip_code => '', :city => city, :contact_phone => fone, :state => state}
-    $log.info "Registrado nome '%s' - cidade '%s' - estado '%s' - fone '%s' !" % [ name.upcase, city.upcase, state.upcase, fone ]
+    $log.info "Registrado nome '%s' - cidade '%s' - estado '%s' - fone '%s' !" % [     name.gsub("\302\240", ' ').strip.downcase.gsub(" ", ""),  city, state, fone ]
 
     user.person_data = data
     person = Person.new(data)
@@ -111,7 +113,7 @@ def find_or_create_users( adm_users )
       $log.info "Verificando se o usuário já existe...."    
       user = User.find_by_email( u[:mail].gsub("\302\240", ' ').strip.downcase.gsub(" ", "") )
       if user.blank?
-        $log.info "não existe usuario com e-mail %s ...." % [ u[:mail].downcase ]
+        $log.info "não existe usuario com e-mail '%s' ...." % [ u[:mail].downcase ]
         user = create_user( u[:name], u[:mail], u[:fone], u[:city], u[:state] )
       end    
     else
@@ -123,22 +125,22 @@ end
 
 def add_adm_users( enterprise, users )
   users.each do |user|
-    $log.info "Adicionando usuário %s como %s administrador..." % [ user.name, enterprise.name ] 
+    $log.info "Adicionando usuário '%s' como administrador do empreendimento '%s'..." % [ user.name, enterprise.name ] 
     if enterprise.add_admin( user.person )
       begin
         community_id = enterprise.identifier.sub!(/ees-/,'')
         community = Community[ community_id ] if !community_id.blank?
         if !community.blank?
-          $log.info "Já existe a comunidade %s, por isso será criado um empreendimento %s!" % [ community.identifier, enterprise.identifier ] 
+          $log.info "Já existe a comunidade '%s', por isso será criado um empreendimento '%s'!" % [ community.identifier, enterprise.identifier ] 
         end
         User::Mailer.deliver_script_welcome_email( user, enterprise, community )
         $log.info "concluído!"
       rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPSyntaxError, Net::SMTPFatalError, Net::SMTPUnknownError => e
-        $log.fatal "Não foi possível enviar o e-mail para %s...devido a excessão %s" % [ user.person.email, e ] 
+        $log.fatal "Não foi possível enviar o e-mail para '%s'...devido a excessão '%s'" % [ user.person.email, e ] 
         $log.fatal e.backtrace
       end
     else
-      $log.error "não foi possível adicionar usuário %s como administrador do emprendimento..." % user.person.name
+      $log.error "não foi possível adicionar o usuário '%s' como administrador do emprendimento..." % user.person.name
     end    
   end
 end
@@ -162,18 +164,18 @@ end
 
 def activate_enterprise( enterprise )
    enterprise.admins.each do |owner|
-   $log.info "Ativando emprendimento %s com %s como dono ..." % [ enterprise.name.upcase, owner.name.upcase ]
+   $log.info "Ativando emprendimento '%s' e configurando o usuário '%s' como dono ..." % [ enterprise.name, owner.name ]
    if enterprise.enable( owner )
       $log.info "ativado!"
       return 
     else
-      $log.error "não foi possível ativar o emprendimento %s" % enterprise.name.upcase
+      $log.error "não foi possível ativar o emprendimento '%s'" % enterprise.name
     end
   end
 end
 
 def create_enterprise( name, identifier, year, city, state )
-  $log.info "Criando emprendimento %s..." % [ name.upcase ]
+  $log.info "Criando emprendimento '%s'..." % name
   identifier = name.downcase.to_slug if identifier.blank?
   identifier = ActiveSupport::Inflector.transliterate(identifier.downcase.to_slug)
   profile = Profile[ identifier ] 
@@ -195,7 +197,7 @@ def create_enterprise( name, identifier, year, city, state )
     $log.info "Emprendimento criado!" 
     return enterprise
   rescue Exception => e
-    $log.fatal 'Não foi possível criar o emprendimento devido a excessão %s' % [ e.message ]
+    $log.fatal "Não foi possível criar o emprendimento devido a excessão '%s'" % e.message 
     $log.fatal e.backtrace 
     return nil
   end
@@ -265,4 +267,4 @@ puts "    -> se encontrar: salve em uma outra planilha para reportar ao forum es
 puts "  4. salvar como .CSV, escolha Use Txt Format; Charset UTF8; delimitador de campo vírgula (,); delimitador de texto aspas duplas ('""')"
 puts "No caso de muitos erros retorne para as intruções de uso à cima."
 
-
+puts "Verifique o arquivo de log '%s' para detalhes sobre a importação" % log_name
