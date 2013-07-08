@@ -19,7 +19,7 @@
 /* use for text shadows */
 /* colors */
 /* buttons */
-.action-button, .exchange, .exchange-button-console, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
+.action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
   display: inline-block;
   padding: 6px 12px;
   height: auto;
@@ -31,7 +31,7 @@
   text-shadow: none;
   border: none;
   border-radius: 5px; }
-  .action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, .exchange-button-console:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, .exchange-button-console:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
+  .action-button:visited, .exchange:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
     color: white; }
 
 /* classes for CSS clear bugfix */
@@ -55,7 +55,7 @@
 /* use for text shadows */
 /* colors */
 /* buttons */
-.action-button, .exchange, .exchange-button-console, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
+.action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
   display: inline-block;
   padding: 6px 12px;
   height: auto;
@@ -67,16 +67,12 @@
   text-shadow: none;
   border: none;
   border-radius: 5px; }
-  .action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, .exchange-button-console:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, .exchange-button-console:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
+  .action-button:visited, .exchange:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
     color: white; }
 
 /* Colors */
 /* Images */
 /* Exchange button */
-.exchange-button-console {
-  float: left;
-  margin: 6px 12px; }
-
 /* control panel button */
 .controller-profile_editor a.control-panel-my-exchanges {
   background-image: url("/plugins/exchange/images/exchange.png");
@@ -134,6 +130,16 @@ body.controller-exchange_plugin_myprofile {
       #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-theother_thumb img {
         height: 72px;
         width: 72px; }
+    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-profile_thumb {
+      padding-left: 24px; }
+    #exchange-exchange_wrapper #exchange-header #exchange-enterprise_headers #exchange-theother_thumb {
+      padding-right: 24px; }
+  #exchange-exchange_wrapper #exchange-accepted-header {
+    padding: 12px;
+    color: white;
+    background: #394E41;
+    font-size: 20px;
+    text-align: center; }
 
 /* States */
 #exchange-states {
@@ -287,46 +293,32 @@ ul.exchange-profile_offers {
   font-size: 10pt;
   overflow: hidden; }
 
-#exchange-accepted_header {
-  background: #394E41;
-  height: 30px;
-  color: white;
-  text-align: center;
-  width: 985px; }
-
 /* evaluation */
 #exchange-evaluation {
-  width: 985px;
   margin: 12px auto;
   overflow: hidden; }
-
-#exchange-profile-evaluation {
-  float: left;
-  width: 49%;
-  overflow: hidden; }
-
-#exchange-theother-evaluation {
-  overflow: hidden;
-  width: 48%;
-  float: right; }
-
-#exchange-evaluation-text {
-  background: white;
-  width: 350px;
-  margin: 0 12px;
-  padding: 12px 24px;
-  float: left; }
-
-#exchange-evaluation-footer {
-  overflow: hidden; }
-
-#exchange-score {
-  width: 50%;
-  float: left; }
-
-#exchange-exchange_result {
-  width: 49%;
-  float: left; }
+  #exchange-evaluation #exchange-profile-evaluation {
+    float: left;
+    overflow: hidden;
+    width: 49%; }
+  #exchange-evaluation #exchange-theother-evaluation {
+    float: right;
+    overflow: hidden;
+    width: 48%; }
+  #exchange-evaluation .evaluation-snippet .evaluation-text {
+    background: white;
+    width: 350px;
+    margin: 0 12px;
+    padding: 12px 24px;
+    float: left; }
+  #exchange-evaluation .evaluation-snippet .evaluation-footer {
+    overflow: hidden; }
+  #exchange-evaluation .evaluation-snippet .evaluation-score {
+    width: 50%;
+    float: left; }
+  #exchange-evaluation .evaluation-snippet .evaluation-result {
+    width: 49%;
+    float: left; }
 
 #exchange-profile_elements_list {
   margin: 0px;
@@ -423,7 +415,6 @@ input[type=text].exchange-qtd-input {
   padding: 12px; }
 
 #exchange-summary_wrapper {
-  width: 985px;
   margin: 30px auto;
   overflow: hidden; }
 
@@ -495,7 +486,7 @@ input[type=text].exchange-qtd-input {
 /* use for text shadows */
 /* colors */
 /* buttons */
-.action-button, .exchange, .exchange-button-console, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
+.action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
   display: inline-block;
   padding: 6px 12px;
   height: auto;
@@ -507,7 +498,7 @@ input[type=text].exchange-qtd-input {
   text-shadow: none;
   border: none;
   border-radius: 5px; }
-  .action-button:visited, .exchange:visited, .exchange-button-console:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, .exchange-button-console:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, .exchange-button-console:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
+  .action-button:visited, .exchange:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
     color: white; }
 
 /* Colors */
@@ -1010,7 +1001,7 @@ body.action-sniffer_plugin_myprofile-search {
     position: relative; }
     .escambo-profile-member .right .name {
       display: block; }
-    .escambo-profile-member .right .action-button, .escambo-profile-member .right .exchange, .escambo-profile-member .right .exchange-button-console, .escambo-profile-member .right #escambo-new-enterprise form input[type=submit], #escambo-new-enterprise form .escambo-profile-member .right input[type=submit], .escambo-profile-member .right #escambo-enterprise-info .sidebar .info .contact-button a, #escambo-enterprise-info .sidebar .info .contact-button .escambo-profile-member .right a {
+    .escambo-profile-member .right .action-button, .escambo-profile-member .right .exchange, .escambo-profile-member .right #escambo-new-enterprise form input[type=submit], #escambo-new-enterprise form .escambo-profile-member .right input[type=submit], .escambo-profile-member .right #escambo-enterprise-info .sidebar .info .contact-button a, #escambo-enterprise-info .sidebar .info .contact-button .escambo-profile-member .right a {
       width: 120px;
       position: absolute;
       left: 12px;

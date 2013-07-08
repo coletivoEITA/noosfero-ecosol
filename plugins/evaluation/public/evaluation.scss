@@ -31,36 +31,20 @@ $image-star-height: 25px;
   }
 }
 
-.evaluation-message {
-  display: inline-block;
-}
-.evaluation-score {
-  margin-top: $margin;
-  display: inline-block;
-}
-.evaluation-result {
-  margin-top: $margin;
-}
+.evaluation-snippet {
 
-.evaluation-radio {
-  display: inline-block;
-  margin-right: $margin;
-} 
+  .evaluation-thumb {
+    float: left;
+    margin: 0px;
+    padding: 0px;
+  }
 
-.evaluation-thumb {
-  margin: 0px;
-  padding: 0px;
-  float: left;
-}
+  .evaluation-text {
+    .evaluation-message {
+      display: inline-block;
+    }
 
-.evaluation-body {
-  background: white;
-  width: 382px;
-  height: 130px;
-  margin-left: 54px;
-  float: left;
-}
-
-.evaluation-select {
-  color: black;
+    .evaluation-footer {
+    }
+  }
 }

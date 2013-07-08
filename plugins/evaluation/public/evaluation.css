@@ -58,31 +58,9 @@
     .evaluation-star-value-wrap .value-icon.value-5 {
       width: 145px; }
 
-.evaluation-message {
-  display: inline-block; }
-
-.evaluation-score {
-  margin-top: 24px;
-  display: inline-block; }
-
-.evaluation-result {
-  margin-top: 24px; }
-
-.evaluation-radio {
-  display: inline-block;
-  margin-right: 24px; }
-
-.evaluation-thumb {
+.evaluation-snippet .evaluation-thumb {
+  float: left;
   margin: 0px;
-  padding: 0px;
-  float: left; }
-
-.evaluation-body {
-  background: white;
-  width: 382px;
-  height: 130px;
-  margin-left: 54px;
-  float: left; }
-
-.evaluation-select {
-  color: black; }
+  padding: 0px; }
+.evaluation-snippet .evaluation-text .evaluation-message {
+  display: inline-block; }

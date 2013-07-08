@@ -2,23 +2,22 @@ class ExchangePluginMyprofileController < MyProfileController
 
   no_design_blocks
   protect 'edit_profile', :profile
+  before_filter :set_mailer_host
 
   helper ExchangePlugin::ExchangeDisplayHelper
 
-  before_filter :set_mailer_host
-
   def index
-   @exchanges_enterprise = ExchangePlugin::ExchangeEnterprise.all.select{|ex| ex.enterprise_id == profile.id}
+    @exchanges_enterprise = ExchangePlugin::ExchangeEnterprise.all.select{|ex| ex.enterprise_id == profile.id}
 
-   @active_exchanges_enterprise = @exchanges_enterprise.select{|ex| ((ex.exchange.state != "concluded") && (ex.exchange.state != "cancelled"))}
+    @active_exchanges_enterprise = @exchanges_enterprise.select{|ex| ((ex.exchange.state != "concluded") && (ex.exchange.state != "cancelled"))}
 
-   @inactive_exchanges_enterprise = @exchanges_enterprise.select{|ex| ((ex.exchange.state == "concluded") || (ex.exchange.state == "cancelled"))}
+    @inactive_exchanges_enterprise = @exchanges_enterprise.select{|ex| ((ex.exchange.state == "concluded") || (ex.exchange.state == "cancelled"))}
   end
 
   def exchange_console
     @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
 
-    @proposals = @exchange.proposals.all(:order => "created_at desc")
+    @proposals = @exchange.proposals.all(:order => "created_at DESC")
     @proposal = @proposals.first
 
     @target = @proposal.enterprise_target
@@ -30,10 +29,6 @@ class ExchangePluginMyprofileController < MyProfileController
 
     @profile_products = @profile.products - @proposal.products
     @theother_products = @theother.products - @proposal.products
-
-    @exchange_happened_array = [["Sim",0],["Parcialmente (fizemos nossa parte, o outro lado não)",1],
-     ["Parcialmente (o outro lado fez sua parte, nós não)",2],["Não",3]]
-
   end
 
   def add_unregistered_item
@@ -45,7 +40,6 @@ class ExchangePluginMyprofileController < MyProfileController
     add_element_helper(unreg_item.id, "ExchangePlugin::UnregisteredItem", params[:proposal_id], params[:enterprise_id])
 
     render :action => 'add_element_currency'
-
   end
 
 
@@ -57,7 +51,6 @@ class ExchangePluginMyprofileController < MyProfileController
     @element.proposal_id = params[:proposal_id]
 
     @element.save!
-
   end
 
   def add_element
@@ -74,7 +67,6 @@ class ExchangePluginMyprofileController < MyProfileController
     @element = ExchangePlugin::ExchangeElement.find params[:id]
     type = @element.element_type
     @element.destroy
-
   end
 
   def remove_element_currency
@@ -94,12 +86,11 @@ class ExchangePluginMyprofileController < MyProfileController
     @proposal = ExchangePlugin::Proposal.find params[:proposal_id]
     @proposal.state = "closed"
     @proposal.date_sent = Time.now
-    @proposal.save
+    @proposal.save!
 
     @proposal.exchange.state = "negociation"
-    @proposal.exchange.save
-#    @proposal = ExchangePlugin::Proposal.create
-    #como copiar um objeto??
+    @proposal.exchange.save!
+
     redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
   end
 
@@ -114,7 +105,7 @@ class ExchangePluginMyprofileController < MyProfileController
     @proposal.enterprise_origin = @active_organization
     @proposal.enterprise_target = @proposal.exchange.enterprises.select{|k| k.id != @active_organization.id}.first #not good
 
-    @proposal.save
+    @proposal.save!
 
     proposal_last.exchange_elements.each do |ex|
       ex_el = ExchangePlugin::ExchangeElement.new
@@ -123,7 +114,7 @@ class ExchangePluginMyprofileController < MyProfileController
       ex_el.quantity = ex.quantity
       ex_el.proposal_id = @proposal.id
       ex_el.enterprise_id = ex.enterprise_id
-      ex_el.save
+      ex_el.save!
     end
 
     ExchangePlugin::Mailer.deliver_new_proposal_notification @proposal.enterprise_target, @proposal.enterprise_origin, @proposal.id, @exchange.id
@@ -140,7 +131,8 @@ class ExchangePluginMyprofileController < MyProfileController
   end
 
   def destroy
-    (ExchangePlugin::Exchange.find params[:exchange_id]).destroy
+    @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
+    @exchange.destroy
     redirect_to :action => 'index'
   end
 
@@ -167,14 +159,13 @@ class ExchangePluginMyprofileController < MyProfileController
     evaluation.evaluated_id = params[:theother_id]
     evaluation.save
 
-    if (@exchange.evaluations.count == 2)
-        @exchange.state = 'concluded'
-        @exchange.concluded_at = Time.now
-        @exchange.save
+    if @exchange.evaluations.count == 2
+      @exchange.state = 'concluded'
+      @exchange.concluded_at = Time.now
+      @exchange.save
     end
 
     redirect_to :action => 'exchange_console', :exchange_id => @exchange.id
-
   end
 
   def update_quantity

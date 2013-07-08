@@ -1,7 +1,7 @@
 <div id="exchange-evaluation">
   <div id="exchange-profile-evaluation">
     <% if (evaluation = @exchange.evaluations.select{|x| x.evaluator_id == profile.id }.first) %>
-      <%= render :partial => "enterprise_evaluation", :locals => {:evaluation => evaluation}%>
+      <%= render :partial => "evaluation_plugin_profile/enterprise_evaluation", :locals => {:evaluation => evaluation} %>
     <% else %>
       <p><%= _('Your evaluation (still to be done)') %></p>
       <%= render :partial => "evaluation_form" %>
@@ -9,7 +9,7 @@
   </div>
   <div id="exchange-theother-evaluation">
     <% if (evaluation = @exchange.evaluations.select{|x| x.evaluator_id == @theother.id }.first) %>
-      <%= render :partial => "enterprise_evaluation", :locals => {:evaluation => evaluation}%>
+      <%= render :partial => "evaluation_plugin_profile/enterprise_evaluation", :locals => {:evaluation => evaluation} %>
     <% else %>
       <p><%= _('%s evaluation (still to be done)') % @theother.name %></p>
     <% end %>
