@@ -73,15 +73,11 @@ def create_user( name, mail, fone, city, state )
       :terms_accepted => "1",
       :terms_of_use => Environment.default.terms_of_use
     })
-    $log.info "Registrando dados pessoais do usuário..." 
-    if !name.blank? and !city.blank? and !state.blank?
-      data = {:name => name, :zip_code => '', :city => city, :contact_phone => fone, :address => state}
 
-      $log.info 'Registrado nome %s - cidade %s - estado %s - fone %s !' % [ name.upcase, city.upcase, state.upcase, fone ]
-    else
-      data = {:name => name, :zip_code => '', :city => city, :contact_phone => fone, :address => state} 
-     $log.info 'Não registrado havia dados incompletos!'
-    end    
+    $log.info "Registrando dados pessoais do usuário..." 
+    data = {:name => name, :zip_code => '', :city => city, :contact_phone => fone, :state => state}
+    $log.info "Registrado nome '%s' - cidade '%s' - estado '%s' - fone '%s' !" % [ name.upcase, city.upcase, state.upcase, fone ]
+
     user.person_data = data
     person = Person.new(data)
     person.environment = user.environment
