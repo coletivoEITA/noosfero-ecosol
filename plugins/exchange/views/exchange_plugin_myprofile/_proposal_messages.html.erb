@@ -3,13 +3,18 @@
 
     <% if new_message %>
 
-      <div id="exchange-new-message" class="exchange-message">
+      <div id="exchange-new-message" class="exchange-message profile">
 
-        <div class="exchange-message-profile-thumb">
+        <div class="exchange-message-thumb">
           <%= link_to profile_image(profile, :minor), profile.url %>
         </div>
 
-        <div class="exchange-message-profile-body">
+        <div class="arrow-wrap left">
+          <div class="arrow">
+          </div>
+        </div>
+
+        <div class="exchange-message-body">
           <% form_remote_tag :url => {:action => 'new_message', :proposal_id => proposal.id} do %>
             <%= text_area_tag 'body', nil, :rows => 2, :cols => 30, :placeholder => _('Type your message') %>
             <%= submit_tag _('Send message'), :class => 'action-button' %>
@@ -23,7 +28,7 @@
       <% proposal.messages.each do |message| %>
 
         <% actor = message.enterprise_sender.id == profile.id ? 'profile' : 'theother' %>
-        <%= render :partial => "message", :locals => {
+        <%= render :partial => "proposal_message", :locals => {
           :message => message, :actor => actor,
           :profile => actor == 'profile' ? profile : message.proposal.the_other(profile),
         } %>

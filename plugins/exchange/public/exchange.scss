@@ -232,23 +232,59 @@ body.controller-exchange_plugin_myprofile {
 
           .exchange-message {
             @extend .container-clean;
+            margin-bottom: $margin;
+
+            &.profile {
+              .exchange-message-thumb, .arrow-wrap, .exchange-message-body {
+                float: left;
+              }
+            }
+            &.theother {
+              .exchange-message-thumb, .arrow-wrap, .exchange-message-body {
+                float: right;
+              }
+            }
+
+            &#exchange-new-message {
+              .exchange-message-body {
+
+                textarea {
+                  width: 100%;
+                  height: 5*$base;
+                  padding: 0;
+                  border: none;
+                  resize: none;
+                }
+              }
+              .action-button {
+                float: right;
+              }
+            }
 
             .exchange-message-thumb {
+              float: left;
+
               img {
                 width: $profile-thumb-size;
                 height: $profile-thumb-size;
               }
-              float: left;
-              &.profile {
+              .date {
+                padding: $half-padding 0;
+                font-size: 10px;
               }
-              &.theother {
-              }
+            }
+
+            .exchange-message-body {
+              width: $module6 + $intercolumn;
+              min-height: 5*$base;
+              padding: $padding;
+              border: $border solid $color-text-area-border;
+              background: white;  
             }
 
             $arrow-size: $base/2;
             $arrow-inner-size: $base/2 - $border;
             .arrow-wrap {
-              float: left;
               margin-top: $profile-thumb-size/2 - $arrow-size;
               width: 0;
               height: 0;
@@ -281,14 +317,6 @@ body.controller-exchange_plugin_myprofile {
                   border-color: transparent transparent transparent white;
                 }
               }
-            }
-
-            .exchange-message-body {
-              width: $module6 + $intercolumn;
-              padding: $padding;
-              min-height: 5*$base;
-              border: $border solid $color-text-area-border;
-              background: white;  
             }
           }
         }
