@@ -20,8 +20,13 @@
     <% end %>
 
     <% if not proposal.messages.blank? %>
-      <% proposal.messages.each do |m| %>
-        <%= render :partial => "message", :locals => {:message => m} %>
+      <% proposal.messages.each do |message| %>
+
+        <% actor = message.enterprise_sender.id == profile.id ? 'profile' : 'theother' %>
+        <%= render :partial => "message", :locals => {
+          :message => message, :actor => actor,
+          :profile => actor == 'profile' ? profile : message.proposal.the_other(profile),
+        } %>
       <% end %>
     <% else %>
       <%# FIXME %>

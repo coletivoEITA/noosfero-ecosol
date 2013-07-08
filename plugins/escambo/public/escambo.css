@@ -152,7 +152,7 @@ body.controller-exchange_plugin_myprofile {
     font-size: 20px;
     text-align: center; }
   #exchange-exchange-wrapper #exchange-evaluation-wrap {
-    border: 1px solid black; }
+    border-bottom: 1px solid black; }
     #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation {
       margin: 24px 12px;
       padding: 0 12px; }
@@ -253,7 +253,8 @@ body.controller-exchange_plugin_myprofile {
 /* States */
 #exchange-states {
   padding-bottom: 12px;
-  padding-left: 36px; }
+  padding-left: 36px;
+  margin-bottom: 24px; }
   #exchange-states .exchange-outer-border {
     float: left;
     width: 84px;
@@ -386,7 +387,8 @@ body.controller-exchange_plugin_myprofile {
     width: 552px;
     margin-right: 24px; }
     .exchange-index .exchange-index-col2 #exchange-states {
-      padding-bottom: 0; }
+      padding-bottom: 0;
+      margin: 0; }
       .exchange-index .exchange-index-col2 #exchange-states .exchange-outer-border {
         margin: 12px; }
   .exchange-index .exchange-index-col3 {

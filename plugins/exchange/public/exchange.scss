@@ -302,6 +302,7 @@ body.controller-exchange_plugin_myprofile {
   @extend .container-clean;
   padding-bottom: $padding;
   padding-left: 3*$padding;
+  margin-bottom: $margin;
 
   .exchange-outer-border {
     float: left;
@@ -499,6 +500,7 @@ body.controller-exchange_plugin_myprofile {
 
     #exchange-states {
       padding-bottom: 0;
+      margin: 0;
 
       .exchange-outer-border { 
         margin: $half-margin;

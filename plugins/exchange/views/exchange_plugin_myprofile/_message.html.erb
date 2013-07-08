@@ -1,6 +1,3 @@
-<% actor = message.enterprise_sender.id == profile.id ? 'profile' : 'theother' %>
-<% profile = actor == 'profile' ? profile : message.proposal.the_other(profile) %>
-
 <div id="exchange-message-<%= message.id %>" class="exchange-message">
 
   <div class="exchange-message-thumb <%=actor%>">

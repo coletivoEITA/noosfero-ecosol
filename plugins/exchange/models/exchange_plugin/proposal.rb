@@ -1,28 +1,19 @@
 class ExchangePlugin::Proposal < Noosfero::Plugin::ActiveRecord
 
-  validates_inclusion_of :state, :in => ["open", "closed", "accepted"]
-  validates_presence_of :enterprise_origin, :enterprise_target, :exchange_id
-
-  has_many :exchange_elements, :class_name => "ExchangePlugin::ExchangeElement", :dependent => :destroy, :order => "id asc"
-#  has_many :enterprises
-  has_many :products, :through => :exchange_elements, :source => :element_np, :class_name => 'Product', :conditions => "exchange_plugin_exchange_elements.element_type = 'Product'"
-
-  has_many :knowledges, :through => :exchange_elements, :source => :element_np, :class_name => 'CmsLearningPluginLearning', :conditions => "exchange_plugin_exchange_elements.element_type = 'CmsLearningPluginLearning'"
-  
-  #has_many :products, :conditions => {:element_type => 'Product'}, :class_name => 'Product', :foreign_key => :element_id
-  
-  
-  has_many :messages, :class_name => "ExchangePlugin::Message", :dependent => :destroy, :order => "created_at desc"
-
-
   belongs_to :enterprise_origin, :class_name => "Enterprise"
   belongs_to :enterprise_target, :class_name => "Enterprise"
   belongs_to :exchange, :class_name => "ExchangePlugin::Exchange"
-  
-#   def initialize
-#     self.state = "open";
-#   end
-  
+
+  has_many :exchange_elements, :class_name => "ExchangePlugin::ExchangeElement", :dependent => :destroy, :order => "id asc"
+
+  has_many :products, :through => :exchange_elements, :source => :element_np, :class_name => 'Product', :conditions => "exchange_plugin_exchange_elements.element_type = 'Product'"
+  has_many :knowledges, :through => :exchange_elements, :source => :element_np, :class_name => 'CmsLearningPluginLearning', :conditions => "exchange_plugin_exchange_elements.element_type = 'CmsLearningPluginLearning'"
+
+  has_many :messages, :class_name => "ExchangePlugin::Message", :dependent => :destroy, :order => "created_at desc"
+
+  validates_inclusion_of :state, :in => ["open", "closed", "accepted"]
+  validates_presence_of :enterprise_origin, :enterprise_target, :exchange_id
+
   def target_elements
     self.exchange_elements.all :conditions => {:enterprise_id => self.enterprise_target_id}, :include => :element
   end
@@ -32,7 +23,7 @@ class ExchangePlugin::Proposal < Noosfero::Plugin::ActiveRecord
   end
 
   def target?(profile)
-    (profile.id == self.enterprise_target_id) 
+    (profile.id == self.enterprise_target_id)
   end
 
   def the_other(profile)
@@ -44,10 +35,7 @@ class ExchangePlugin::Proposal < Noosfero::Plugin::ActiveRecord
   end
 
   def other_elements(profile)
-    target?(profile) ? self.origin_elements : self.target_elements 
+    target?(profile) ? self.origin_elements : self.target_elements
   end
-
-
-
 
 end
