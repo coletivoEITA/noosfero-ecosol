@@ -173,6 +173,7 @@ body.controller-exchange_plugin_myprofile {
     margin: $half-margin;
 
     .exchange-proposal-part {
+      width: $module5;
       background: transparent;
     }
   }
@@ -249,7 +250,7 @@ body.controller-exchange_plugin_myprofile {
                 float: right;
               }
             }
-
+            
             &#exchange-new-message {
               .exchange-message-body {
 

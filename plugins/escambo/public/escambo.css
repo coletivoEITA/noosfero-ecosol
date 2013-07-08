@@ -182,6 +182,7 @@ body.controller-exchange_plugin_myprofile {
   #exchange-exchange-wrapper .exchange-summary-wrapper {
     margin: 12px; }
     #exchange-exchange-wrapper .exchange-summary-wrapper .exchange-proposal-part {
+      width: 456px;
       background: transparent; }
   #exchange-exchange-wrapper h2 {
     padding: 0 24px; }
