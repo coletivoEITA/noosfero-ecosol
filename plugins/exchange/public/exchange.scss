@@ -398,11 +398,19 @@ ul.exchange-profile_offers {
 .exchange-message-profile-thumb {
   float: left;
   margin-left: 25px;
+  
+  a {
+    text-decoration: none;
+  }
 }
 
 .exchange-message-theother-thumb {
   float: right;
   margin-right: 25px;
+
+  a {
+    text-decoration: none;
+  }
 }
 
 input[type=text].exchange-qtd-input {
