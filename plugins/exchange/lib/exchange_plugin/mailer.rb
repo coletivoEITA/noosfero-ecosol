@@ -23,6 +23,7 @@ class ExchangePlugin::Mailer < Noosfero::Plugin::MailerBase
          :origin => origin,
          :exchange_id => exchange_id,
          :proposal_id => proposal_id
+    
   end
 
   def new_message_notification sender, recipient, exchange_id

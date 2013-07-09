@@ -4,7 +4,7 @@
 
   <%= render :partial => 'exchange_header' %>
 
-  <% if @proposal.state == "accepted" %>
+  <% if @current_proposal.state == "accepted" %>
 
     <% if @exchange.state == "concluded" %>
       <p id="concluded-message">
@@ -21,7 +21,7 @@
 
     <%= render :partial => "evaluation", :object => @exchange %>
 
-    <%= render :partial => "exchange_summary", :locals => {:proposal => @proposal} %>
+    <%= render :partial => "exchange_summary", :locals => {:proposal => @current_proposal} %>
 
     <h2>
       <%= _('Negociation history') %>

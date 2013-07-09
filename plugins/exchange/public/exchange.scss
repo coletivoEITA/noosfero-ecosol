@@ -452,7 +452,7 @@ body.controller-exchange_plugin_myprofile {
 
       .exchange-element_control {
         position: absolute;
-        top: $base;
+        top: -$base;
         right: $base;
       }
 
@@ -488,31 +488,6 @@ body.controller-exchange_plugin_myprofile {
         background: transparent;
         font: inherit;
         color: white;
-      }
-
-      .exchange-add-money {
-        p {
-          display: none;
-        }
-      }
-
-      .exchange-add-unreg-item {
-        p {
-          display: none;
-        }
-        input {
-          display: none;
-        }
-      }
-
-      .exchange-add-money-active {
-        margin-bottom: 2*$base;
-      }
-
-      .exchange-add-unreg-item-active {
-        p {
-          text-align: left;
-        }
       }
     }
   }
@@ -560,3 +535,61 @@ body.controller-exchange_plugin_myprofile {
   }
 }
 
+ul.exchange-theother_offers {
+  padding: 0;
+  margin: 0;
+  margin-top: 2*$intercolumn;
+}
+
+ul.exchange-profile_offers {
+  padding: 0;
+  margin: 0;
+  margin-top: 2*$intercolumn;
+}
+
+.exchange-profile_offers li {
+  background: #D8CAEA;
+  padding:$base/2;
+  margin:$base $base;
+  list-style-type: none;
+  height: $intercolumn;
+}
+
+.exchange-theother_offers li {
+  background: #D8CAEA;
+  padding:$base/2;
+  margin:$base $base;
+  list-style-type: none;
+  height: $intercolumn;
+}
+
+.proposal-offers{
+  h6.element-title {
+    display: inline;
+  }
+}
+
+.exchange-add-unreg-item {
+  p {
+    display: none;
+  }
+  input {
+    display: none;
+  }
+}
+
+.exchange-add-unreg-item-active {
+  p {
+    text-align: left;
+  }
+}
+
+.exchange-add-money {
+  p {
+    display: none;
+  }
+}
+
+.exchange-add-money-active {
+  margin-bottom: 2*$base;
+}

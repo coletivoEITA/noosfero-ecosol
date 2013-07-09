@@ -22,7 +22,7 @@
         <% end %>
         <%= render :partial => 'proposal_messages', :locals => {:proposal => proposal, :new_message => editable} %>
 
-        <div class="exchange-proposal-part offer">
+        <div class="exchange-proposal-part profile">
           <h3><%= _('You offer') %></h3>
           <%= render :partial => 'proposal_element_list', :locals => {:proposal => proposal, :profile => @profile, :actor => 'profile' } %>
 
@@ -31,17 +31,17 @@
             <h3><%= _('What you can offer?') %></h3>
 
             <div class="exchange-button-wrapper">
-              <%= render :partial => 'proposal_unreg_items', :locals => {:profile => profile, :actor => 'profile'} %>
-              <%= render :partial => 'proposal_moneys', :locals => {:profile => @theother, :actor => 'theother'} %>
+              <%= render :partial => 'proposal_unreg_items', :locals => {:profile => profile, :actor => 'profile', :proposal => proposal} %>
+              <%= render :partial => 'proposal_moneys', :locals => {:profile => profile, :actor => 'profile', :proposal => proposal} %>
             </div>
 
-            <%= render :partial => 'proposal_offers', :locals => {:profile => profile, :actor => 'profile'} %>
-            <%= render :partial => 'proposal_knowledges', :locals => {:profile => profile, :actor => 'profile'} %>
+            <%= render :partial => 'proposal_offers', :locals => {:profile => profile, :actor => 'profile', :proposal => proposal} %>
+            <%= render :partial => 'proposal_knowledges', :locals => {:profile => profile, :actor => 'profile', :proposal => proposal} %>
 
           <% end %>
 
         </div>
-        <div class="exchange-proposal-part request">
+        <div class="exchange-proposal-part theother">
           <h3><%= _('You ask') %></h3>
           <%= render :partial => 'proposal_element_list', :locals => {:proposal => proposal, :profile => @theother, :actor => 'theother' } %>
 
@@ -49,13 +49,13 @@
 
             <h3><%= _('What do the other can offer?') %></h3>
             <div class="exchange-button-wrapper">
-              <%= render :partial => 'proposal_unreg_items', :locals => {:profile => @theother, :actor => 'theother'} %>
+              <%= render :partial => 'proposal_unreg_items', :locals => {:profile => @theother, :actor => 'theother', :proposal => proposal} %>
 
-              <%= render :partial => 'proposal_moneys', :locals => {:profile => @theother, :actor => 'theother'} %>
+              <%= render :partial => 'proposal_moneys', :locals => {:profile => @theother, :actor => 'theother', :proposal => proposal} %>
             </div>
 
-            <%= render :partial => 'proposal_offers', :locals => {:profile => @theother, :actor => 'theother'} %>
-            <%= render :partial => 'proposal_knowledges', :locals => {:profile => @theother, :actor => 'theother'} %>
+            <%= render :partial => 'proposal_offers', :locals => {:profile => @theother, :actor => 'theother', :proposal => proposal} %>
+            <%= render :partial => 'proposal_knowledges', :locals => {:profile => @theother, :actor => 'theother', :proposal => proposal} %>
 
           <% end %>
 

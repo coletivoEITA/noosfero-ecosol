@@ -35,7 +35,7 @@
   </div> <!-- element_control -->
 
   <% if element.element_type == "Product" %>
-    <h6 class="exchange-element_title"><%= link_to e.name, product.url, :target => '_blank' %></h6>
+    <h6 class="exchange-element_title"><%= link_to e.name, e.url, :target => '_blank' %></h6>
     <div class="exchange-element_desc"><%= e.description %></div>
   <% elsif element.element_type == "CmsLearningPluginLearning" %>
     <h6 class="exchange-element_title"><%= link_to e.name, e.url, :target => 'blank' %></h6>

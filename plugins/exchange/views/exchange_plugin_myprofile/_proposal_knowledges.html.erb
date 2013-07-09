@@ -2,10 +2,10 @@
 
 <% if knowledges.blank? %>
   <%= _("%s has no knowledges registered.") % profile.name %>
-  <ul id="exchange-CmsLearningPluginLearning_<%=actor%>_list" class="exchange-<%=actor%>_offers">
+  <ul id="exchange-CmsLearningPluginLearning_<%=actor%>_list" class="exchange-<%=actor%>_offers proposal-offers">
   </ul> <!-- necessary to receive removed items -->
 <% else %>
-  <ul id="exchange-CmsLearningPluginLearning_<%=actor%>_list" class="exchange-<%=actor%>_offers">
+  <ul id="exchange-CmsLearningPluginLearning_<%=actor%>_list" class="exchange-<%=actor%>_offers proposal-offers">
     <h4><%= _('Knowledges') %></h4>
     <% knowledges.each do |k| %>
       <li id=exchange_CmsLearningPluginLearning_<%= k.id %>>

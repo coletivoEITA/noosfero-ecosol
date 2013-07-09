@@ -1,6 +1,6 @@
 <% if element.class.name == "Product" %>
 
-  <h6>
+  <h6 class="element-title">
   <%= link_to(element.category_name) + " " + link_to(element.name) %>
   </h6>
 
@@ -11,7 +11,7 @@
 
 <% elsif element.class.name == "CmsLearningPluginLearning" %>
 
-  <h6>
+  <h6 class="element-title">
   <%= link_to(element.name) %>
   </h6>
 

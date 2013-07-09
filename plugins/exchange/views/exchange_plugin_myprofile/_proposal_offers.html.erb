@@ -2,10 +2,10 @@
 
 <% if products.blank? %>
   <%= _("%s has no offers registered.") % profile.name %>
-  <ul id="exchange-Product_<%=actor%>_list" class="exchange-<%=actor%>_offers">
+  <ul id="exchange-Product_<%=actor%>_list" class="exchange-<%=actor%>_offers proposal-offers">
   </ul> <!-- necessary to receive removed items -->
 <% else %>
-  <ul id="exchange-Product_<%=actor%>_list" class="exchange-<%=actor%>_offers">
+  <ul id="exchange-Product_<%=actor%>_list" class="exchange-<%=actor%>_offers proposal-offers">
     <h4><%= _('Products and Services') %></h4>
     <% products.each do |p| %>
       <li id=exchange_Product_<%= p.id %>>
