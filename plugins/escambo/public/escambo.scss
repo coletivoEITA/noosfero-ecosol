@@ -34,108 +34,120 @@ $image-next: '/plugins/escambo/images/next.png';
 
 /* Home */
 
-#presentation-wrap-1 {
-  background: $color-violet;
-  height: 30*$base;
-  margin-top: 2*$margin;
-  margin-bottom: 3*$margin;
+.controller-home {
 
-  #presentation-wrap-2 {
-    margin: auto;
-    width: $wireframe;
-    position: relative;
+  #presentation-wrap-1 {
+    background: $color-violet;
+    height: 30*$base;
+    margin-top: 2*$margin;
+    margin-bottom: 3*$margin;
 
-    img {
-      &.left, &.right {
-        position: absolute;
-        bottom: 5*$base;
-      }
-      &.left {
-        left: -(148 + 11*$base);
-        bottom: 5.5*$base;
-      }
-      &.right {
-        right: -(177 + 8*$base);
-      }
-    }
+    #presentation-wrap-2 {
+      margin: auto;
+      width: $wireframe;
+      position: relative;
 
-    #presentation {
-      padding: 2*$margin $padding;
-
-      .text {
-        color: white;
-        font-size: 25px;
-        line-height: 38px;
-      }
-      .join {
-        margin: auto;
-        margin-top: 1.5*$margin;
-        width: 34*$base;
-
-        #sign-up, #login { 
-          display: inline-block;
-          padding: $padding 1.5*$padding;
-          margin-right: $margin;
-          background: $color-presentation-button;
-          font-weight: bold;
-          text-transform: lowercase;
-          text-decoration: none;
+      img {
+        &.left, &.right {
+          position: absolute;
+          bottom: 5*$base;
         }
-        #know-more {
+        &.left {
+          left: -(148 + 11*$base);
+          bottom: 5.5*$base;
+        }
+        &.right {
+          right: -(177 + 8*$base);
+        }
+      }
+
+      #presentation {
+        padding: 2*$margin $padding;
+
+        .text {
           color: white;
-          font-weight: bold;
-          text-decoration: underline;
+          font-size: 25px;
+          line-height: 38px;
+        }
+        .join {
+          margin: auto;
+          margin-top: 1.5*$margin;
+          width: 34*$base;
+
+          #sign-up, #login { 
+            display: inline-block;
+            padding: $padding 1.5*$padding;
+            margin-right: $margin;
+            background: $color-presentation-button;
+            font-weight: bold;
+            text-transform: lowercase;
+            text-decoration: none;
+          }
+          #know-more {
+            color: white;
+            font-weight: bold;
+            text-decoration: underline;
+          }
         }
       }
     }
   }
-}
-
-#enterprises-area {
-  margin-left: -20px;
-  width: $wireframe + 2*20 + $padding;
-  margin-bottom: 8*$base;
 
   h2 {
     display: inline-block;
     padding: 0 $padding;
-    margin-left: $margin;
   }
 
-  .scroll-left, .scroll-right {
-    width: 20px;
-    height: 37px;
-    margin-top: 11*$base;
-    cursor: pointer;
-  }
-  .scroll-left {
-    float: left;
-    background: url($image-previous) no-repeat;
-  }
-  .scroll-right {
-    float: right;
-    background: url($image-next) no-repeat;
+  #items-area {
+
+
   }
 
-  #enterprises-crop-wrap {
-    float: left;
-    width: $wireframe - $padding;
-    padding-left: $padding;
-    padding-right: $padding;
-    overflow: hidden;
+  #enterprises-area {
+    margin-left: -20px;
+    width: $wireframe + 2*20 + $padding;
+    margin-bottom: 8*$base;
 
-    #enterprises-crop {
-      width: 5*$wireframe;
-      @extend .container-clean;
+    h2 {
+      margin-left: $margin;
+    }
 
-      .escambo-plugin-profile-block {
-        float: left;
+    .scroll-left, .scroll-right {
+      width: 20px;
+      height: 37px;
+      margin-top: 11*$base;
+      cursor: pointer;
+    }
+    .scroll-left {
+      float: left;
+      background: url($image-previous) no-repeat;
+    }
+    .scroll-right {
+      float: right;
+      background: url($image-next) no-repeat;
+    }
+
+    #enterprises-crop-wrap {
+      float: left;
+      width: $wireframe - $padding;
+      padding-left: $padding;
+      padding-right: $padding;
+      overflow: hidden;
+
+      #enterprises-crop {
+        width: 5*$wireframe;
+        @extend .container-clean;
+
+        .escambo-plugin-profile-block {
+          float: left;
+        }
       }
     }
   }
 }
 
 /* colors of borders/backgrounds */
+
 .escambo-inside-border-purple {
   border-color: #7F0085;
 }
@@ -143,8 +155,8 @@ $image-next: '/plugins/escambo/images/next.png';
   background-color: #F3E1EF;
 }
 
-
 /* Profile block */
+
 .escambo-plugin-profile-block {
   width: $module2;
   border: 3*$border double #7F0085;

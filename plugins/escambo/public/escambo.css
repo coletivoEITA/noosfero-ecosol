@@ -1,8 +1,8 @@
-/* classes for CSS clear bugfix */
+/* use with @extend, CSS clear bugfix */
 .clean {
   clear: both; }
 
-.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -37,11 +37,85 @@
   .action-button:visited, .exchange:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
     color: white; }
 
-/* classes for CSS clear bugfix */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic, .escambo-plugin-profile-block .profile-homepage-link {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field, .sniffer-search-field .sniffer-search-input {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1, #escambo-enterprise-items .see-all {
+  font-size: 13px; }
+
+.pstyle-tm2, .escambo-plugin-profile-block .location-area.empty, .escambo-plugin-profile-block .summary-area, .escambo-snippet .second-column .descripxion, .escambo-snippet .second-column .local {
+  font-size: 10px; }
+
+/* use with @extend, CSS clear bugfix */
 .clean {
   clear: both; }
 
-.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -75,6 +149,80 @@
   border-radius: 5px; }
   .action-button:visited, .exchange:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
     color: white; }
+
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic, .escambo-plugin-profile-block .profile-homepage-link {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field, .sniffer-search-field .sniffer-search-input {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1, #escambo-enterprise-items .see-all {
+  font-size: 13px; }
+
+.pstyle-tm2, .escambo-plugin-profile-block .location-area.empty, .escambo-plugin-profile-block .summary-area, .escambo-snippet .second-column .descripxion, .escambo-snippet .second-column .local {
+  font-size: 10px; }
 
 /* Colors */
 /* Images */
@@ -426,11 +574,11 @@ body.controller-exchange_plugin_myprofile {
     .exchange-index .exchange-index-col3 h4 {
       padding-top: 6px; }
 
-/* classes for CSS clear bugfix */
+/* use with @extend, CSS clear bugfix */
 .clean {
   clear: both; }
 
-.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -464,6 +612,80 @@ body.controller-exchange_plugin_myprofile {
   border-radius: 5px; }
   .action-button:visited, .exchange:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
     color: white; }
+
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic, .escambo-plugin-profile-block .profile-homepage-link {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field, .sniffer-search-field .sniffer-search-input {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1, #escambo-enterprise-items .see-all {
+  font-size: 13px; }
+
+.pstyle-tm2, .escambo-plugin-profile-block .location-area.empty, .escambo-plugin-profile-block .summary-area, .escambo-snippet .second-column .descripxion, .escambo-snippet .second-column .local {
+  font-size: 10px; }
 
 /* Colors */
 /* Images */
@@ -691,34 +913,34 @@ body.action-sniffer_plugin_myprofile-search {
 /* Colors */
 /* Images */
 /* Home */
-#presentation-wrap-1 {
+.controller-home #presentation-wrap-1 {
   background: #7f005c;
   height: 360px;
   margin-top: 48px;
   margin-bottom: 72px; }
-  #presentation-wrap-1 #presentation-wrap-2 {
+  .controller-home #presentation-wrap-1 #presentation-wrap-2 {
     margin: auto;
     width: 960px;
     position: relative; }
-    #presentation-wrap-1 #presentation-wrap-2 img.left, #presentation-wrap-1 #presentation-wrap-2 img.right {
+    .controller-home #presentation-wrap-1 #presentation-wrap-2 img.left, .controller-home #presentation-wrap-1 #presentation-wrap-2 img.right {
       position: absolute;
       bottom: 60px; }
-    #presentation-wrap-1 #presentation-wrap-2 img.left {
+    .controller-home #presentation-wrap-1 #presentation-wrap-2 img.left {
       left: -280px;
       bottom: 66px; }
-    #presentation-wrap-1 #presentation-wrap-2 img.right {
+    .controller-home #presentation-wrap-1 #presentation-wrap-2 img.right {
       right: -273px; }
-    #presentation-wrap-1 #presentation-wrap-2 #presentation {
+    .controller-home #presentation-wrap-1 #presentation-wrap-2 #presentation {
       padding: 48px 12px; }
-      #presentation-wrap-1 #presentation-wrap-2 #presentation .text {
+      .controller-home #presentation-wrap-1 #presentation-wrap-2 #presentation .text {
         color: white;
         font-size: 25px;
         line-height: 38px; }
-      #presentation-wrap-1 #presentation-wrap-2 #presentation .join {
+      .controller-home #presentation-wrap-1 #presentation-wrap-2 #presentation .join {
         margin: auto;
         margin-top: 36px;
         width: 408px; }
-        #presentation-wrap-1 #presentation-wrap-2 #presentation .join #sign-up, #presentation-wrap-1 #presentation-wrap-2 #presentation .join #login {
+        .controller-home #presentation-wrap-1 #presentation-wrap-2 #presentation .join #sign-up, .controller-home #presentation-wrap-1 #presentation-wrap-2 #presentation .join #login {
           display: inline-block;
           padding: 12px 18px;
           margin-right: 24px;
@@ -726,39 +948,39 @@ body.action-sniffer_plugin_myprofile-search {
           font-weight: bold;
           text-transform: lowercase;
           text-decoration: none; }
-        #presentation-wrap-1 #presentation-wrap-2 #presentation .join #know-more {
+        .controller-home #presentation-wrap-1 #presentation-wrap-2 #presentation .join #know-more {
           color: white;
           font-weight: bold;
           text-decoration: underline; }
-
-#enterprises-area {
+.controller-home h2 {
+  display: inline-block;
+  padding: 0 12px; }
+.controller-home #enterprises-area {
   margin-left: -20px;
   width: 1012px;
   margin-bottom: 96px; }
-  #enterprises-area h2 {
-    display: inline-block;
-    padding: 0 12px;
+  .controller-home #enterprises-area h2 {
     margin-left: 24px; }
-  #enterprises-area .scroll-left, #enterprises-area .scroll-right {
+  .controller-home #enterprises-area .scroll-left, .controller-home #enterprises-area .scroll-right {
     width: 20px;
     height: 37px;
     margin-top: 132px;
     cursor: pointer; }
-  #enterprises-area .scroll-left {
+  .controller-home #enterprises-area .scroll-left {
     float: left;
     background: url("/plugins/escambo/images/previous.png") no-repeat; }
-  #enterprises-area .scroll-right {
+  .controller-home #enterprises-area .scroll-right {
     float: right;
     background: url("/plugins/escambo/images/next.png") no-repeat; }
-  #enterprises-area #enterprises-crop-wrap {
+  .controller-home #enterprises-area #enterprises-crop-wrap {
     float: left;
     width: 948px;
     padding-left: 12px;
     padding-right: 12px;
     overflow: hidden; }
-    #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+    .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop {
       width: 4800px; }
-      #enterprises-area #enterprises-crop-wrap #enterprises-crop .escambo-plugin-profile-block {
+      .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop .escambo-plugin-profile-block {
         float: left; }
 
 /* colors of borders/backgrounds */

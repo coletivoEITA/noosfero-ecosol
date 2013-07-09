@@ -1,4 +1,4 @@
-/* classes for CSS clear bugfix */
+/* use with @extend, CSS clear bugfix */
 .clean {
   clear: both;
 }
@@ -77,3 +77,81 @@ $color-action-button: #394E41;
   border: none;
   border-radius: $border-radius;
 }
+
+/* Fonts */
+
+/* Paragraphs Styles (use with @extend) */
+
+.pstyle-none {
+  font-size: 12px;
+}
+.pstyle-basic {
+  font-size: 16px;
+}
+.pstyle-button {
+  font-size: 16px;
+}
+.pstyle-button-small {
+  font-size: 13px;
+}
+.pstyle-title {
+  font-size: 72px;
+}
+.pstyle-h1 {
+  font-size: 34px;
+}
+.pstyle-h2 {
+  font-size: 26px;
+}
+.pstyle-h3 {
+  font-size: 21px;
+}
+.pstyle-h4 {
+  font-size: 16px;
+}
+.pstyle-h5 {
+  font-size: 13px;
+}
+.pstyle-title-section {
+  font-size: 92px;
+}
+.pstyle-field {
+  font-size: 13px;
+}
+.pstyle-menu-big-selected {
+  font-size: 21px;
+}
+.pstyle-menu-big-unselected {
+  font-size: 21px;
+}
+.pstyle-menu-medium-selected {
+  font-size: 16px;
+}
+.pstyle-menu-medium-unselected {
+  font-size: 16px;
+}
+.pstyle-menu-small-selected {
+  font-size: 13px;
+}
+.pstyle-menu-small-unselected {
+  font-size: 13px;
+}
+.pstyle-tp4 {
+  font-size: 42px;
+}
+.pstyle-tp3 {
+  font-size: 34px;
+}
+.pstyle-tp2 {
+  font-size: 26px;
+}
+.pstyle-tp1 {
+  font-size: 21px;
+}
+.pstyle-tm1 {
+  font-size: 13px;
+}
+.pstyle-tm2 {
+  font-size: 10px;
+}
+
