@@ -1,0 +1,1 @@
+page << "jQuery('#supplier-#{@supplier.id}').toggleClass('supplier-inactive')"

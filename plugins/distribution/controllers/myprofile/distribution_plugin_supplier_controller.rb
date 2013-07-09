@@ -29,6 +29,11 @@ class DistributionPluginSupplierController < DistributionPluginMyprofileControll
     @supplier.destroy!
   end
 
+  def toggle_active
+    @supplier = DistributionPluginSupplier.find params[:id]
+    @supplier.toggle!(:active)
+  end
+
   protected
 
   def load_new
