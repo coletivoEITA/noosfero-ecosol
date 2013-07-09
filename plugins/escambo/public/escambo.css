@@ -17,26 +17,7 @@
  */
 /* use for borders */
 /* use for text shadows */
-/* colors */
-/* buttons */
-.action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
-  display: inline-block;
-  padding: 6px 12px;
-  margin: 0;
-  /* remove submit input browser's margin */
-  height: auto;
-  width: auto;
-  color: white;
-  background: #394e41;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  text-shadow: none;
-  border: none;
-  border-radius: 5px; }
-  .action-button:visited, .exchange:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
-    color: white; }
-
+/* Colors */
 /* Fonts */
 /* Paragraphs Styles (use with @extend) */
 .pstyle-none {
@@ -110,6 +91,25 @@
 
 .pstyle-tm2, .escambo-plugin-profile-block .location-area.empty, .escambo-plugin-profile-block .summary-area, .escambo-snippet .second-column .descripxion, .escambo-snippet .second-column .local {
   font-size: 10px; }
+
+/* buttons */
+.action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  color: white;
+  background: #394e41;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  border: none;
+  border-radius: 5px; }
+  .action-button:visited, .exchange:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
+    color: white; }
 
 /* use with @extend, CSS clear bugfix */
 .clean {
@@ -130,26 +130,7 @@
  */
 /* use for borders */
 /* use for text shadows */
-/* colors */
-/* buttons */
-.action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
-  display: inline-block;
-  padding: 6px 12px;
-  margin: 0;
-  /* remove submit input browser's margin */
-  height: auto;
-  width: auto;
-  color: white;
-  background: #394e41;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  text-shadow: none;
-  border: none;
-  border-radius: 5px; }
-  .action-button:visited, .exchange:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
-    color: white; }
-
+/* Colors */
 /* Fonts */
 /* Paragraphs Styles (use with @extend) */
 .pstyle-none {
@@ -223,6 +204,25 @@
 
 .pstyle-tm2, .escambo-plugin-profile-block .location-area.empty, .escambo-plugin-profile-block .summary-area, .escambo-snippet .second-column .descripxion, .escambo-snippet .second-column .local {
   font-size: 10px; }
+
+/* buttons */
+.action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  color: white;
+  background: #394e41;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  border: none;
+  border-radius: 5px; }
+  .action-button:visited, .exchange:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
+    color: white; }
 
 /* Colors */
 /* Images */
@@ -593,26 +593,7 @@ body.controller-exchange_plugin_myprofile {
  */
 /* use for borders */
 /* use for text shadows */
-/* colors */
-/* buttons */
-.action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
-  display: inline-block;
-  padding: 6px 12px;
-  margin: 0;
-  /* remove submit input browser's margin */
-  height: auto;
-  width: auto;
-  color: white;
-  background: #394e41;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  text-shadow: none;
-  border: none;
-  border-radius: 5px; }
-  .action-button:visited, .exchange:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
-    color: white; }
-
+/* Colors */
 /* Fonts */
 /* Paragraphs Styles (use with @extend) */
 .pstyle-none {
@@ -686,6 +667,25 @@ body.controller-exchange_plugin_myprofile {
 
 .pstyle-tm2, .escambo-plugin-profile-block .location-area.empty, .escambo-plugin-profile-block .summary-area, .escambo-snippet .second-column .descripxion, .escambo-snippet .second-column .local {
   font-size: 10px; }
+
+/* buttons */
+.action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  color: white;
+  background: #394e41;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  border: none;
+  border-radius: 5px; }
+  .action-button:visited, .exchange:visited, #escambo-new-enterprise form input[type=submit]:visited, #escambo-enterprise-info .sidebar .info .contact-button a:visited, .action-button:active, .exchange:active, #escambo-new-enterprise form input[type=submit]:active, #escambo-enterprise-info .sidebar .info .contact-button a:active, .action-button:hover, .exchange:hover, #escambo-new-enterprise form input[type=submit]:hover, #escambo-enterprise-info .sidebar .info .contact-button a:hover {
+    color: white; }
 
 /* Colors */
 /* Images */

@@ -55,28 +55,9 @@ $border-radius: 5px;
 /* use for text shadows */
 $shadow: 2px;
 
-/* colors */
+/* Colors */
 
 $color-action-button: #394E41;
-
-/* buttons */
-
-.action-button {
-  display: inline-block;
-  padding: $half-padding $padding;
-  margin: 0; /* remove submit input browser's margin */
-  height: auto;
-  width: auto;
-  color: white;
-  &:visited, &:active, &:hover { color: white; }
-  background: $color-action-button;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  text-shadow: none;
-  border: none;
-  border-radius: $border-radius;
-}
 
 /* Fonts */
 
@@ -153,5 +134,24 @@ $color-action-button: #394E41;
 }
 .pstyle-tm2 {
   font-size: 10px;
+}
+
+/* buttons */
+
+.action-button {
+  display: inline-block;
+  padding: $half-padding $padding;
+  margin: 0; /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  color: white;
+  &:visited, &:active, &:hover { color: white; }
+  background: $color-action-button;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  border: none;
+  border-radius: $border-radius;
 }
 
