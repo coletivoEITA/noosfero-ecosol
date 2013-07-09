@@ -1,5 +1,5 @@
 <% unless supplier.new_record? %>
-  <div class='box-view'>
+  <div class='box-view <% "supplier-inactive" if !supplier.active? %>'>
     <div class='supplier-logo'>
       <%= profile_image(supplier.profile, :minor) %>
     </div>
@@ -48,7 +48,11 @@
     <div class='supplier-actions subtitle'>
       <div><strong><%= t('distribution_plugin.views.supplier._supplier.actions') %></strong></div>
       <div><%= link_to_function t('distribution_plugin.views.supplier._supplier.edit'), '', :class => 'toggle-edit' %></div>
-      <div><%# link_to t('distribution_plugin.views.supplier._supplier.desactivate'), :url => {:controller => :distribution_plugin_supplier, :action => :desactivate, :id => supplier.id} %></div>
+      <% if supplier.active %>
+        <div><%= link_to_remote t('distribution_plugin.views.supplier._supplier.desactivate'), :url => {:controller => :distribution_plugin_supplier, :action => :toggle_active, :id => supplier.id} %></div>
+      <% else %>
+        <div><%= link_to_remote t('distribution_plugin.views.supplier._supplier.activate'), :url => {:controller => :distribution_plugin_supplier, :action => :toggle_active, :id => supplier.id} %></div>
+      <% end %>
       <div><%= link_to_remote t('distribution_plugin.views.supplier._supplier.remove'), :url => {:controller => :distribution_plugin_supplier, :action => :destroy, :id => supplier.id},
         :confirm => t('distribution_plugin.views.supplier._supplier.by_removing_this_supp'), :class => 'supplier-remove' %></div>
       <div><%= link_to t('distribution_plugin.views.supplier._supplier.products'), {:controller => :distribution_plugin_product, :action => :index, :supplier_id => supplier.id, :anchor => 'filter-fields'} %></div>
