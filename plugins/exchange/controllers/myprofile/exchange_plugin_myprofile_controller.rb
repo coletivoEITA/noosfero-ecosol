@@ -18,14 +18,14 @@ class ExchangePluginMyprofileController < MyProfileController
     @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
 
     @proposals = @exchange.proposals.all(:order => "created_at DESC")
-    @proposal = @proposals.first
+    @current_proposal = @proposals.first
 
-    @target = @proposal.enterprise_target
-    @origin = @proposal.enterprise_origin
+    @target = @current_proposal.enterprise_target
+    @origin = @current_proposal.enterprise_origin
     @theother = @exchange.enterprises.find(:first, :conditions => ["enterprise_id != ?",profile.id])
 
-    @theother_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @theother.id} - @proposal.knowledges
-    @profile_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @profile.id} - @proposal.knowledges
+    @theother_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @theother.id} - @current_proposal.knowledges
+    @profile_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @profile.id} - @current_proposal.knowledges
   end
 
   def add_unregistered_item
@@ -88,6 +88,8 @@ class ExchangePluginMyprofileController < MyProfileController
     @proposal.exchange.state = "negociation"
     @proposal.exchange.save!
 
+    ExchangePlugin::Mailer.deliver_new_proposal_notification @proposal.enterprise_target, @proposal.enterprise_origin, @proposal.id, @proposal.exchange.id
+        
     redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
   end
 
@@ -113,8 +115,6 @@ class ExchangePluginMyprofileController < MyProfileController
       ex_el.enterprise_id = ex.enterprise_id
       ex_el.save!
     end
-
-    ExchangePlugin::Mailer.deliver_new_proposal_notification @proposal.enterprise_target, @proposal.enterprise_origin, @proposal.id, @exchange.id
 
     redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
   end
