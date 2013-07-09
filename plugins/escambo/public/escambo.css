@@ -2,17 +2,17 @@
 .clean {
   clear: both; }
 
-.container-clean, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
   display: block;
   /* Sets element back to block */ }
 
-/* use for heights only */
+/* heights should only use multiples of this */
 /* base measurements */
-/* use for widths only */
-/* use for padding and margins only
+/* widths should only use these */
+/* paddings and margins should only use these
    REMEMBER to disccount the borders size from padding, as borders uses padding's space.
  */
 /* use for borders */
@@ -22,10 +22,13 @@
 .action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
   display: inline-block;
   padding: 6px 12px;
+  margin: 0;
+  /* remove submit input browser's margin */
   height: auto;
   width: auto;
   color: white;
   background: #394e41;
+  cursor: pointer;
   text-align: center;
   text-decoration: none;
   text-shadow: none;
@@ -38,17 +41,17 @@
 .clean {
   clear: both; }
 
-.container-clean, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
   display: block;
   /* Sets element back to block */ }
 
-/* use for heights only */
+/* heights should only use multiples of this */
 /* base measurements */
-/* use for widths only */
-/* use for padding and margins only
+/* widths should only use these */
+/* paddings and margins should only use these
    REMEMBER to disccount the borders size from padding, as borders uses padding's space.
  */
 /* use for borders */
@@ -58,10 +61,13 @@
 .action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
   display: inline-block;
   padding: 6px 12px;
+  margin: 0;
+  /* remove submit input browser's margin */
   height: auto;
   width: auto;
   color: white;
   background: #394e41;
+  cursor: pointer;
   text-align: center;
   text-decoration: none;
   text-shadow: none;
@@ -72,13 +78,20 @@
 
 /* Colors */
 /* Images */
-/* Exchange button */
-/* control panel button */
+/* Borders */
+/* Buttons */
+.exchange-add {
+  width: 24px;
+  height: 24px;
+  float: right;
+  padding: 0;
+  margin: 0px; }
+
 .controller-profile_editor a.control-panel-my-exchanges {
   background-image: url("/plugins/exchange/images/exchange.png");
   background-size: 48px 48px; }
 
-/*####### new layout ########*/
+/* end */
 body.controller-exchange_plugin_myprofile {
   background-color: #FAF7DC; }
 
@@ -86,18 +99,17 @@ body.controller-exchange_plugin_myprofile {
   margin-left: -12px;
   width: 984px; }
   #exchange-exchange-wrapper h1 {
-    padding-left: 24px !important; }
+    padding-left: 24px; }
   #exchange-exchange-wrapper #exchange-header {
     border: 1px solid #c5aaa5;
     background: #ECE4DB;
     margin: 24px auto; }
     #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-exchange_symbol {
-      margin-left: -12px;
-      margin-top: 12px;
       width: 28px;
       height: 22px;
+      margin-top: 12px;
       position: absolute;
-      left: 50%;
+      left: 468px;
       background: url("/plugins/exchange/images/exchange.png");
       background-repeat: no-repeat; }
     #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-enterprise_profile {
@@ -108,7 +120,7 @@ body.controller-exchange_plugin_myprofile {
       float: right; }
     #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-enterprise_profile,
     #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-enterprise_theother {
-      width: 50%;
+      width: 491px;
       height: 48px; }
     #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother-name,
     #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-profile-name {
@@ -134,39 +146,141 @@ body.controller-exchange_plugin_myprofile {
       padding-left: 24px; }
     #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother_thumb {
       padding-right: 24px; }
+  #exchange-exchange-wrapper #concluded-message {
+    text-align: right;
+    margin-right: 12px;
+    padding-right: 12px; }
   #exchange-exchange-wrapper #exchange-accepted-header {
     padding: 6px 12px;
     color: white;
     background: #394E41;
     font-size: 20px;
     text-align: center; }
-  #exchange-exchange-wrapper #exchange-evaluation {
-    padding: 0 24px;
-    margin: 12px auto;
-    overflow: hidden; }
-    #exchange-exchange-wrapper #exchange-evaluation #exchange-profile-evaluation {
-      float: left;
-      overflow: hidden;
-      width: 49%; }
-    #exchange-exchange-wrapper #exchange-evaluation #exchange-theother-evaluation {
-      float: right;
-      overflow: hidden;
-      width: 48%; }
-    #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-text {
-      background: white; }
-    #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-footer {
+  #exchange-exchange-wrapper #exchange-evaluation-wrap {
+    border-bottom: 1px solid black; }
+    #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation {
+      margin: 24px 12px;
+      padding: 0 12px; }
+      #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation #exchange-profile-evaluation {
+        float: left;
+        overflow: hidden;
+        width: 456px; }
+      #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation #exchange-theother-evaluation {
+        float: right;
+        overflow: hidden;
+        width: 456px; }
+      #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation .evaluation-snippet .evaluation-text {
+        background: white; }
+      #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation .evaluation-snippet .evaluation-footer {
+        overflow: hidden; }
+      #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation .evaluation-snippet .evaluation-score {
+        width: 456px;
+        float: left; }
+      #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation .evaluation-snippet .evaluation-result {
+        width: 456px;
+        float: left; }
+  #exchange-exchange-wrapper .exchange-summary-wrapper {
+    margin: 12px; }
+    #exchange-exchange-wrapper .exchange-summary-wrapper .exchange-proposal-part {
+      width: 456px;
+      background: transparent; }
+  #exchange-exchange-wrapper h2 {
+    padding: 0 24px; }
+  #exchange-exchange-wrapper .exchange-proposal-wrap {
+    margin: 24px 0;
+    margin-left: -6px;
+    width: 996px; }
+    #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal-sent {
+      padding: 6px 30px;
+      text-align: right; }
+    #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal {
+      border: 6px double #e47455;
+      border-radius: 10px;
       overflow: hidden; }
-    #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-score {
-      width: 50%;
-      float: left; }
-    #exchange-exchange-wrapper #exchange-evaluation .evaluation-snippet .evaluation-result {
-      width: 49%;
-      float: left; }
+      #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal.sent .exchange-proposal-header {
+        text-align: left; }
+      #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal.received .exchange-proposal-header {
+        text-align: right; }
+      #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header {
+        padding: 6px 24px;
+        background: #7857B8;
+        font-size: 16pt;
+        color: white; }
+      #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons {
+        padding: 6px 24px;
+        background: #DFD3ED; }
+        #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form {
+          float: left; }
+          #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form .action-button, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form .exchange, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons #escambo-new-enterprise form input[type=submit], #escambo-new-enterprise #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form input[type=submit], #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form #escambo-enterprise-info .sidebar .info .contact-button a, #escambo-enterprise-info .sidebar .info .contact-button #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form a {
+            margin-right: 6px; }
+      #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-button-wrapper {
+        margin-left: 12px;
+        padding: 6px 12px; }
+      #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages {
+        padding: 12px 24px;
+        background: #F0E9F6;
+        border-bottom: 1px solid #bda8dc; }
+        #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message {
+          margin-bottom: 24px; }
+          #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message.profile .exchange-message-thumb, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message.profile .arrow-wrap, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message.profile .exchange-message-body {
+            float: left; }
+          #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message.theother .exchange-message-thumb, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message.theother .arrow-wrap, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message.theother .exchange-message-body {
+            float: right; }
+          #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message#exchange-new-message .exchange-message-body textarea {
+            width: 100%;
+            height: 60px;
+            padding: 0;
+            border: none;
+            resize: none; }
+          #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message#exchange-new-message .action-button, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message#exchange-new-message .exchange, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message#exchange-new-message #escambo-new-enterprise form input[type=submit], #escambo-new-enterprise form #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message#exchange-new-message input[type=submit], #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message#exchange-new-message #escambo-enterprise-info .sidebar .info .contact-button a, #escambo-enterprise-info .sidebar .info .contact-button #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message#exchange-new-message a {
+            float: right; }
+          #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .exchange-message-thumb {
+            float: left; }
+            #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .exchange-message-thumb img {
+              width: 48px;
+              height: 48px; }
+            #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .exchange-message-thumb .date {
+              padding: 6px 0;
+              font-size: 10px; }
+          #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .exchange-message-body {
+            width: 576px;
+            min-height: 60px;
+            padding: 12px;
+            border: 1px solid #c5aaa5;
+            background: white; }
+          #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap {
+            margin-top: 18px;
+            width: 0;
+            height: 0;
+            position: relative; }
+            #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap .arrow {
+              margin-top: -5px; }
+            #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap.left {
+              left: 1px;
+              border-style: solid;
+              border-width: 6px 6px 6px 0;
+              border-color: transparent #c5aaa5 transparent transparent; }
+              #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap.left .arrow {
+                margin-left: 1px;
+                border-style: solid;
+                border-width: 5px 5px 5px 0;
+                border-color: transparent white transparent transparent; }
+            #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap.right {
+              left: -1px;
+              border-style: solid;
+              border-width: 6px 0 6px 6px;
+              border-color: transparent transparent transparent #c5aaa5; }
+              #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message .arrow-wrap.right .arrow {
+                margin-left: -6px;
+                border-style: solid;
+                border-width: 5px 0 5px 5px;
+                border-color: transparent transparent transparent white; }
 
 /* States */
 #exchange-states {
   padding-bottom: 12px;
-  padding-left: 36px; }
+  padding-left: 36px;
+  margin-bottom: 24px; }
   #exchange-states .exchange-outer-border {
     float: left;
     width: 84px;
@@ -213,210 +327,78 @@ body.controller-exchange_plugin_myprofile {
     font-size: 30px;
     margin: 3px; }
 
-#exchange-proposal_wrapper {
-  margin: 36px auto;
-  border: 6px double #E47455;
-  border-radius: 10px;
-  overflow: hidden; }
-
-#exchange-proposal_header {
-  font-family: 'RobotoRegular';
-  font-size: 16pt;
-  padding-left: 25px;
-  background: #7857B8;
-  height: 37px;
-  color: white;
-  margin-top: -21px; }
-
-#exchange-proposal_header_buttons {
-  background: #DFD3ED;
-  height: 35px;
-  padding-left: 24px; }
-
-#exchange-button-wrapper {
-  height: 35px;
-  padding-left: 24px; }
-
-#exchange-messages {
-  padding: 1px; }
-
-#exchange-proposal_messages {
-  background: #F0E9F6;
-  border-bottom: 1px solid #BDA8DC; }
-
-#exchange-proposal_offer_request_wrapper {
-  overflow: hidden;
-  margin-bottom: 5px; }
-
-#exchange-proposal_offer h3 {
-  margin-left: 12px; }
-
-#exchange-proposal_offer {
-  background: #F0E9F6;
+.exchange-proposal-part {
   float: left;
-  width: 50%;
-  padding-top: 24px; }
-
-#content #exchange-proposal_offer h3 {
-  margin-left: 12px; }
-
-#exchange-proposal_request {
-  background: #F8F4FB;
-  float: right;
-  width: 50%;
-  padding-top: 24px; }
-
-#content #exchange-proposal_request h3 {
-  margin-left: 12px; }
-
-ul.exchange-theother_offers {
-  padding: 0;
-  margin: 0;
-  margin-top: 48px; }
-
-ul.exchange-profile_offers {
-  padding: 0;
-  margin: 0;
-  margin-top: 48px; }
-
-.exchange-profile_offers li {
-  background: #D8CAEA;
-  padding: 6px;
-  margin: 12px 12px;
-  list-style-type: none;
-  height: 24px; }
-
-.exchange-theother_offers li {
-  background: #D8CAEA;
-  padding: 6px;
-  margin: 12px 12px;
-  list-style-type: none;
-  height: 24px; }
-
-#content .exchange-profile_offers li h6 {
-  display: inline-block;
-  padding-top: 5px; }
-
-#content .exchange-theother_offers li h6 {
-  display: inline-block;
-  padding-top: 5px; }
-
-.exchange-add {
-  width: 24px;
-  height: 24px;
-  float: right;
-  padding: 0;
-  margin: 0px; }
-
-.exchange-proposal_sent {
-  width: 945px;
-  margin: 0px auto -22px auto;
-  text-align: right;
-  font-size: 10pt;
-  overflow: hidden; }
-
-#exchange-profile_elements_list {
-  margin: 0px;
-  padding: 0px;
-  margin-bottom: 72px; }
-
-#exchange-theother_elements_list {
-  margin: 0px;
-  padding: 0px;
-  margin-bottom: 72px; }
-
-.exchange-element {
-  width: 470px;
-  list-style-type: none;
-  background-size: auto 470px;
-  margin: 0 12px 24px 12px;
-  min-height: 48px;
-  position: relative; }
-
-.exchange-element-image {
-  width: 470px;
-  height: 155px;
-  background-position: center; }
-
-.exchange-element-profile {
-  background: #D8CAEA; }
-
-.exchange-element-theother {
-  background: #F3C3D4; }
-
-.exchange-message {
-  overflow: hidden;
-  margin: 24px 0px; }
-
-.exchange-message-theother-body {
-  width: 580px;
-  background: white;
-  margin-left: 280px;
-  padding: 15px;
-  min-height: 60px;
-  float: left;
-  margin-right: 10px; }
-
-.exchange-message-profile-body {
-  width: 580px;
-  background: white;
-  padding: 15px;
-  min-height: 60px;
-  float: left;
-  margin-left: 10px; }
-
-.exchange-message-profile-thumb {
-  float: left;
-  margin-left: 25px; }
-
-.exchange-message-theother-thumb {
-  float: right;
-  margin-right: 25px; }
-
-input[type=text].exchange-qtd-input {
-  width: 85px;
-  border: none;
-  border-radius: 3px;
-  padding: 3px;
-  background: whitesmoke;
-  color: black; }
-
-.exchange-element_control {
-  position: absolute;
-  top: 12px;
-  right: 12px; }
-
-.exchange-trash {
-  display: inline;
-  top: 4px;
-  position: relative;
-  right: 2px; }
-
-.exchange-qtd {
-  display: inline;
-  background: #7857B8;
-  color: white;
-  padding: 3px 12px;
-  border-radius: 5px;
-  padding: 5px 0 4px 3px; }
-
-#content h6.exchange-qtd {
-  padding: 6px 12px; }
-
-#content h6.exchange-element_title {
-  padding: 12px 12px 0 12px; }
-
-#content div.exchange-element_desc {
+  width: 468px;
   padding: 12px; }
-
-#exchange-summary_wrapper {
-  margin: 30px auto;
-  overflow: hidden; }
-
-.exchange-select {
-  background: transparent;
-  font: inherit;
-  color: white; }
+  .exchange-proposal-part.offer {
+    background: #F0E9F6; }
+    .exchange-proposal-part.offer h3 {
+      margin-left: 12px; }
+  .exchange-proposal-part.request {
+    background: #F8F4FB; }
+  .exchange-proposal-part .exchange-elements-list {
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 72px; }
+    .exchange-proposal-part .exchange-elements-list .exchange-element {
+      width: 470px;
+      list-style-type: none;
+      background-size: auto 470px;
+      margin: 0 12px 24px 12px;
+      min-height: 48px;
+      position: relative; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element.profile {
+        background: #D8CAEA; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element.theother {
+        background: #F3C3D4; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-image {
+        width: 470px;
+        height: 155px;
+        background-position: center; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element input[type=text].exchange-qtd-input {
+        width: 85px;
+        border: none;
+        border-radius: 3px;
+        padding: 3px;
+        background: whitesmoke;
+        color: black; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element_control {
+        position: absolute;
+        top: 12px;
+        right: 12px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-trash {
+        display: inline;
+        top: 4px;
+        position: relative;
+        right: 2px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-qtd {
+        display: inline;
+        background: #7857B8;
+        color: white;
+        padding: 3px 12px;
+        border-radius: 5px;
+        padding: 5px 0 4px 3px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element h6.exchange-qtd {
+        padding: 6px 12px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element h6.exchange-element_title {
+        padding: 12px 12px 0 12px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element div.exchange-element_desc {
+        padding: 12px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-select {
+        background: transparent;
+        font: inherit;
+        color: white; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-add-money p {
+        display: none; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-add-unreg-item p {
+        display: none; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-add-unreg-item input {
+        display: none; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-add-money-active {
+        margin-bottom: 24px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-add-unreg-item-active p {
+        text-align: left; }
 
 /* Index */
 .exchange-index {
@@ -431,7 +413,8 @@ input[type=text].exchange-qtd-input {
     width: 552px;
     margin-right: 24px; }
     .exchange-index .exchange-index-col2 #exchange-states {
-      padding-bottom: 0; }
+      padding-bottom: 0;
+      margin: 0; }
       .exchange-index .exchange-index-col2 #exchange-states .exchange-outer-border {
         margin: 12px; }
   .exchange-index .exchange-index-col3 {
@@ -443,38 +426,21 @@ input[type=text].exchange-qtd-input {
     .exchange-index .exchange-index-col3 h4 {
       padding-top: 6px; }
 
-.exchange-add-money p {
-  display: none; }
-
-.exchange-add-unreg-item p {
-  display: none; }
-.exchange-add-unreg-item input {
-  display: none; }
-
-.exchange-add-money-active {
-  width: 95%;
-  margin-bottom: 24px; }
-
-.exchange-add-unreg-item-active {
-  width: 95%; }
-  .exchange-add-unreg-item-active p {
-    text-align: left; }
-
 /* classes for CSS clear bugfix */
 .clean {
   clear: both; }
 
-.container-clean, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
   display: block;
   /* Sets element back to block */ }
 
-/* use for heights only */
+/* heights should only use multiples of this */
 /* base measurements */
-/* use for widths only */
-/* use for padding and margins only
+/* widths should only use these */
+/* paddings and margins should only use these
    REMEMBER to disccount the borders size from padding, as borders uses padding's space.
  */
 /* use for borders */
@@ -484,10 +450,13 @@ input[type=text].exchange-qtd-input {
 .action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
   display: inline-block;
   padding: 6px 12px;
+  margin: 0;
+  /* remove submit input browser's margin */
   height: auto;
   width: auto;
   color: white;
   background: #394e41;
+  cursor: pointer;
   text-align: center;
   text-decoration: none;
   text-shadow: none;
@@ -743,8 +712,8 @@ body.action-sniffer_plugin_myprofile-search {
       padding: 48px 12px; }
       #presentation-wrap-1 #presentation-wrap-2 #presentation .text {
         color: white;
-        font-size: 25px !important;
-        line-height: 38px !important; }
+        font-size: 25px;
+        line-height: 38px; }
       #presentation-wrap-1 #presentation-wrap-2 #presentation .join {
         margin: auto;
         margin-top: 36px;
@@ -768,7 +737,8 @@ body.action-sniffer_plugin_myprofile-search {
   margin-bottom: 96px; }
   #enterprises-area h2 {
     display: inline-block;
-    margin-left: 20px !important; }
+    padding: 0 12px;
+    margin-left: 24px; }
   #enterprises-area .scroll-left, #enterprises-area .scroll-right {
     width: 20px;
     height: 37px;

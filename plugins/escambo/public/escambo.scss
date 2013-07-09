@@ -64,8 +64,8 @@ $image-next: '/plugins/escambo/images/next.png';
 
       .text {
         color: white;
-        font-size: 25px !important;
-        line-height: 38px !important;
+        font-size: 25px;
+        line-height: 38px;
       }
       .join {
         margin: auto;
@@ -98,7 +98,8 @@ $image-next: '/plugins/escambo/images/next.png';
 
   h2 {
     display: inline-block;
-    margin-left: 20px !important;
+    padding: 0 $padding;
+    margin-left: $margin;
   }
 
   .scroll-left, .scroll-right {

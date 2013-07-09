@@ -9,10 +9,10 @@
   display: block;
   /* Sets element back to block */ }
 
-/* use for heights only */
+/* heights should only use multiples of this */
 /* base measurements */
-/* use for widths only */
-/* use for padding and margins only
+/* widths should only use these */
+/* paddings and margins should only use these
    REMEMBER to disccount the borders size from padding, as borders uses padding's space.
  */
 /* use for borders */
@@ -22,10 +22,13 @@
 .action-button {
   display: inline-block;
   padding: 6px 12px;
+  margin: 0;
+  /* remove submit input browser's margin */
   height: auto;
   width: auto;
   color: white;
   background: #394e41;
+  cursor: pointer;
   text-align: center;
   text-decoration: none;
   text-shadow: none;

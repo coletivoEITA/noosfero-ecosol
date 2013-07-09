@@ -1,0 +1,18 @@
+<div id="exchange-message-<%= message.id %>" class="exchange-message <%=actor%>">
+
+  <div class="exchange-message-thumb">
+    <%= link_to profile_image(profile, :minor), profile.url %>
+    <div class='date'>
+      <%= message.created_at.strftime(_("%m/%d/%y <br> %H:%M")) %>
+    </div>
+  </div>
+
+  <div class="arrow-wrap <%=actor == 'profile' ? 'left' : 'right' %>">
+    <div class="arrow">
+    </div>
+  </div>
+
+  <div class="exchange-message-body <%=actor %>">
+    <%= message.body %>
+  </div>
+</div>

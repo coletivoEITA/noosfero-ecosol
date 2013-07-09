@@ -1,8 +1,5 @@
 @import 'base';
 
-$arrow-size: $base/2;
-$arrow-inner-size: $base/2 - $border;
-
 /* Images */
 
 $image-star: "/plugins/evaluation/images/star.png";
@@ -14,7 +11,7 @@ $profile-thumb-size: 4*$base;
 
 /* Colors */
 
-$color-border: #C5AAA5;
+$color-text-area-border: #C5AAA5;
 
 
 .evaluation-mean {
@@ -53,23 +50,25 @@ $color-border: #C5AAA5;
     }
   }
 
+  $arrow-size: $base/2;
+  $arrow-inner-size: $base/2 - $border;
   .arrow-wrap {
     float: left;
-    margin-top: $profile-thumb-size/2 - $arrow-size/2;
+    margin-top: $profile-thumb-size/2 - $arrow-size;
     width: 0;
     height: 0;
     position: relative;
 
     .arrow {
       margin-top: -$arrow-inner-size;
-      margin-left: $border;
     }
     &.left {
       left: $border;
       border-style: solid;
       border-width: $arrow-size $arrow-size $arrow-size 0;
-      border-color: transparent $color-border transparent transparent;
+      border-color: transparent $color-text-area-border transparent transparent;
       .arrow {
+        margin-left: $border;
         border-style: solid;
         border-width: $arrow-inner-size $arrow-inner-size $arrow-inner-size 0;
         border-color: transparent white transparent transparent;
@@ -79,11 +78,12 @@ $color-border: #C5AAA5;
       left: -$border;
       border-style: solid;
       border-width: $arrow-size 0 $arrow-size $arrow-size;
-      border-color: transparent transparent transparent $color-border;
+      border-color: transparent transparent transparent $color-text-area-border;
       .arrow {
+        margin-left: -($arrow-inner-size + $border);
         border-style: solid;
         border-width: $arrow-inner-size 0 $arrow-inner-size $arrow-inner-size;
-        border-color: transparent transparent transparent white ;
+        border-color: transparent transparent transparent white;
       }
     }
   }
@@ -91,7 +91,7 @@ $color-border: #C5AAA5;
     float: left;
     width: $module4 + $intercolumn - $arrow-size;
     padding: $padding - $border;
-    border: $border solid $color-border;
+    border: $border solid $color-text-area-border;
 
     .evaluation-message {
       display: inline-block;

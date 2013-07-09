@@ -1,3 +1,2 @@
-#page.remove "exchange_#{@element.element_type}_#{@element.element_id}"
-page.insert_html :after, "exchange-new_message", :partial => "message", :locals => {:message => @message}
+page.insert_html :after, "exchange-new-message", :partial => "message", :locals => {:message => @message}
 page['body'].clear
