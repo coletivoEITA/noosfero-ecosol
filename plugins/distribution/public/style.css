@@ -746,6 +746,9 @@ body.plugin-distribution {
   display: block;
 }
 
+.plugin-distribution #suppliers-page .supplier-inactive {
+  background-color: #faeeee;
+}
 /* ----- ends suppliers stuff  ----- */
 
 /* ----- session orders  ----- */
