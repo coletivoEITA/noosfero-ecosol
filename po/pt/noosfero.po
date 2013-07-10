@@ -12581,11 +12581,9 @@ msgstr "Localização não informada"
 
 #: plugins/escambo/views/escambo_plugin_shared/profile_image_link.html.erb:31
 msgid ""
-"Já realizou %{exchanges_count} trocas com %{enterprises_count} pontos de "
-"cultura."
+"Already made %{exchanges_count} exchanges with %{enterprises_count} enterprises."
 msgstr ""
-"Já realizou %{exchange_count} trocas com %{enterprises_count} pontos de "
-"cultura."
+"Já realizou %{exchanges_count} trocas com %{enterprises_count} pontos de cultura."
 
 #: plugins/escambo/views/escambo_plugin_shared/_enterprise_register.html.erb:2
 #: plugins/escambo/views/account/_enterprise_register.html.erb:3

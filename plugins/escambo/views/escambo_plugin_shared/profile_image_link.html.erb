@@ -28,6 +28,8 @@
   </div>
 
   <div class="summary-area">
-    <%= _('Já realizou %{exchanges_count} trocas com %{enterprises_count} pontos de cultura.') % {:exchanges_count => profile.exchanges_count, :enterprises_count => profile.enterprises_count} %>
+    <%= _('Already made %{exchanges_count} exchanges with %{enterprises_count} enterprises.') % {
+      :exchanges_count => profile.exchanges_count, :enterprises_count => profile.enterprises_count
+    } %>
   </div>
 </div>
