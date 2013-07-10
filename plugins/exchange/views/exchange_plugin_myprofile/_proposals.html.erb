@@ -8,19 +8,20 @@
 
       <% if proposal.state != "open" %>
         <div class="exchange-proposal-sent">
-          <%= _('Proposal sent %s') % proposal.date_sent.strftime(_("%m/%d/%Y at H:%Mh")) %>
+          <%= _('Proposal sent %s') % proposal.date_sent.strftime(_("%d/%m/%Y at %H:%Mh")) %>
         </div>
       <% end %>
 
       <div class="exchange-proposal <%=proposal.enterprise_origin == profile ? 'sent' : 'received' %>">
         <%= render :partial => "proposal_header", :locals => {:proposal => proposal} %>
 
-        <% editable = first and (@exchange.state == "proposal" or @exchange.state == "negociation") %>
-        <% if editable %>
+        <% if first and (@exchange.state == "proposal" or @exchange.state == "negociation") %>
           <%= render :partial => "proposal_buttons", :locals => {:proposal => proposal} %>
-          <% first = false %>
         <% end %>
-        <%= render :partial => 'proposal_messages', :locals => {:proposal => proposal, :new_message => editable} %>
+
+        <%= render :partial => "proposal_messages", :locals => {:proposal => proposal, :new_message => first} %>
+
+        <% first = false %>
 
         <div class="exchange-proposal-part profile">
           <h3><%= _('You offer') %></h3>

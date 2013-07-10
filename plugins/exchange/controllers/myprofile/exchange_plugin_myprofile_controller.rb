@@ -9,7 +9,7 @@ class ExchangePluginMyprofileController < MyProfileController
   def index
     @exchanges_enterprise = ExchangePlugin::ExchangeEnterprise.all.select{|ex| ex.enterprise_id == profile.id}
 
-    @active_exchanges_enterprise = @exchanges_enterprise.select{|ex| ((ex.exchange.state != "concluded") && (ex.exchange.state != "cancelled"))}
+    @active_exchanges_enterprise = @exchanges_enterprise.select{|ex| (ex.exchange.state == "negociation")}
 
     @inactive_exchanges_enterprise = @exchanges_enterprise.select{|ex| ((ex.exchange.state == "concluded") || (ex.exchange.state == "cancelled"))}
   end

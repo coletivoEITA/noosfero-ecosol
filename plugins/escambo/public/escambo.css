@@ -361,7 +361,8 @@ body.controller-exchange_plugin_myprofile {
           #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form .action-button, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form .exchange, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons #escambo-new-enterprise form input[type=submit], #escambo-new-enterprise #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form input[type=submit], #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form #escambo-enterprise-info .sidebar .info .contact-button a, #escambo-enterprise-info .sidebar .info .contact-button #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons form a {
             margin-right: 6px; }
         #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons .finish-help-text {
-          float: right; }
+          float: right;
+          padding: 6px 0; }
       #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-button-wrapper {
         margin-left: 12px;
         padding: 6px 12px; }
@@ -542,11 +543,15 @@ body.controller-exchange_plugin_myprofile {
       .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-qty {
         display: inline-block;
         margin: 0;
-        padding: 6px;
+        padding: 2px;
         border-radius: 5px;
         background: #7857B8;
         color: white;
-        font-weight: bold; }
+        font-weight: bold;
+        height: 25px; }
+        .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-qty.readonly {
+          padding: 6px;
+          height: 12px; }
         .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-qty .label, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-qty .value {
           display: inline-block; }
         .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-qty .value {

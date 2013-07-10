@@ -514,11 +514,17 @@ body.controller-exchange_plugin_myprofile {
       .exchange-qty {
         display: inline-block;
         margin: 0;
-        padding: $half-padding;
+        padding: $half-padding/3;
         border-radius: $border-radius;
         background: #7857B8;
         color: white;
         font-weight: bold;
+        height: 2*$base+1;
+        
+        &.readonly {
+          padding: $half-padding;
+          height: $base;  
+        }
 
         .label, .value {
           display: inline-block;

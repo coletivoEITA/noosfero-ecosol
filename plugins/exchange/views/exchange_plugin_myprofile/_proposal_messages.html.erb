@@ -1,7 +1,7 @@
 <div class="exchange-proposal-messages">
-  <div class="exchange-messages <%= 'empty' if proposal.messages.empty? %>">
+  <div class="exchange-messages">
 
-    <% if new_message %>
+    <% if new_message and (@exchange.state == "proposal" or @exchange.state == "negociation")%>
 
       <div id="exchange-new-message" class="exchange-message profile">
 
