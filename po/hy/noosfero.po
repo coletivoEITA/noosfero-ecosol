@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: noosfero 0.43.0\n"
-"POT-Creation-Date: 2013-07-06 11:32-0300\n"
+"POT-Creation-Date: 2013-07-09 23:15-0300\n"
 "PO-Revision-Date: 2009-10-26 16:20-0300\n"
 "Last-Translator: Anahit Minassian <anahit.minassian@cooperation.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,6 +77,7 @@ msgstr "Օգնություն"
 #: app/views/cms/why_categorize.rhtml:8
 #: app/views/cms/_text_editor_sidebar.rhtml:4
 #: app/views/box_organizer/add_block.rhtml:45
+#: public/designs/themes/escambo/footer.html.erb:3
 #: plugins/sniffer/views/sniffer_plugin_myprofile/_balloon_close.html.erb:1
 #: plugins/currency/views/currency_plugin_shared/_popin.html.erb:7
 msgid "Close"
@@ -137,8 +138,7 @@ msgstr "էլ. հասցե"
 #: app/views/themes/add_css.rhtml:7
 #: app/views/region_validators/_search.rhtml:9
 #: app/views/box_organizer/add_block.rhtml:44
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:79
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:149
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_unreg_items.html.erb:7
 #: plugins/escambo/views/profile/_products.html.erb:5
 #: plugins/escambo/views/profile/_knowledges.html.erb:5
 #: plugins/escambo/views/profile/_interests.html.erb:5
@@ -150,7 +150,7 @@ msgstr "Ավելացնել"
 #: app/views/profile/_organization_profile.rhtml:7
 #: plugins/custom_forms/lib/custom_forms_plugin/helper.rb:6
 #: plugins/custom_forms/lib/custom_forms_plugin/helper.rb:34
-#: plugins/escambo/views/profile/_info.html.erb:51
+#: plugins/escambo/views/profile/_info.html.erb:50
 msgid "Members"
 msgstr "Անդամներ"
 
@@ -372,7 +372,7 @@ msgid "Manage %s"
 msgstr "Կառավարել"
 
 #: app/helpers/application_helper.rb:1112
-#: public/designs/themes/escambo/header.html.erb:37
+#: public/designs/themes/escambo/header.html.erb:38
 #, fuzzy
 msgid "Manage your pending tasks"
 msgstr "Կառավարել Ձեր բովանդակությունը:"
@@ -883,7 +883,6 @@ msgstr ""
 
 #: app/helpers/profile_editor_helper.rb:94
 #: plugins/exchange/models/exchange_plugin/exchange.rb:22
-#: plugins/exchange/views/exchange_plugin_myprofile/new.html.erb:10
 msgid "Concluded"
 msgstr ""
 
@@ -1150,7 +1149,7 @@ msgid "Sign out of chat"
 msgstr ""
 
 #: app/helpers/search_helper.rb:13
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:171
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_offers.html.erb:9
 msgid "Products and Services"
 msgstr "Արտադրանք և ծառայություններ"
 
@@ -1310,7 +1309,6 @@ msgstr "Բարձրություն"
 #: plugins/bsc/views/bsc_plugin_myprofile/manage_associated_enterprises.html.erb:23
 #: plugins/bsc/views/bsc_plugin_myprofile/transfer_ownership.html.erb:30
 #: plugins/sub_organizations/views/sub_organizations_plugin_myprofile/index.html.erb:26
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:113
 msgid "Cancel"
 msgstr "Հրաժարում"
 
@@ -1961,8 +1959,7 @@ msgstr "Էջը չի գտնվել"
 #: plugins/custom_forms/views/custom_forms_plugin_myprofile/_form.html.erb:23
 #: plugins/custom_forms/views/custom_forms_plugin_myprofile/index.html.erb:6
 #: plugins/custom_forms/views/custom_forms_plugin_myprofile/_edit_select.html.erb:6
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:77
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:147
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_unreg_items.html.erb:5
 #: plugins/mezuro/views/mezuro_plugin_repository/_form.html.erb:4
 #: plugins/mezuro/views/mezuro_plugin_repository/show.html.erb:6
 msgid "Name"
@@ -2467,7 +2464,6 @@ msgstr ""
 #: app/models/production_cost.rb:- app/models/abuse_report.rb:-
 #: app/models/contact_list.rb:- app/models/scrap.rb:-
 #: app/models/product_qualifier.rb:- app/models/mailing_sent.rb:-
-#: plugins/exchange/models/exchange_plugin_message.rb:-
 #: plugins/sniffer/models/sniffer_plugin_opportunity.rb:-
 #: plugins/sniffer/models/sniffer_plugin_profile.rb:-
 #: plugins/cms_learning/models/article_resource.rb:-
@@ -2480,7 +2476,6 @@ msgstr "Ստեղծված է"
 #: app/models/abuse_report.rb:- app/models/contact_list.rb:-
 #: app/models/scrap.rb:- app/models/product_qualifier.rb:-
 #: app/models/mailing_sent.rb:-
-#: plugins/exchange/models/exchange_plugin_message.rb:-
 #: plugins/sniffer/models/sniffer_plugin_opportunity.rb:-
 #: plugins/sniffer/models/sniffer_plugin_profile.rb:-
 #: plugins/cms_learning/models/article_resource.rb:-
@@ -2763,7 +2758,6 @@ msgstr "Ճանապարհ"
 
 #: app/models/input.rb:- app/models/mailing.rb:-
 #: app/views/admin_panel/_signup_welcome_text.rhtml:7
-#: plugins/exchange/models/exchange_plugin_message.rb:-
 msgid "Body"
 msgstr "Հիմնական"
 
@@ -3010,9 +3004,7 @@ msgstr "Որոշիչ"
 #: plugins/mezuro/views/content_viewer/show_reading_group.rhtml:18
 #: plugins/mezuro/views/content_viewer/show_configuration.rhtml:23
 #: plugins/custom_forms/views/custom_forms_plugin_myprofile/_form.html.erb:18
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:34
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:78
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:148
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_unreg_items.html.erb:6
 #: plugins/mezuro/views/mezuro_plugin_repository/_form.html.erb:6
 #: plugins/mezuro/views/mezuro_plugin_repository/show.html.erb:10
 #: plugins/currency/views/currency_plugin_myprofile/_currency_organized.html.erb:11
@@ -3139,7 +3131,6 @@ msgstr "արտադրանք"
 
 #: app/models/input.rb:- app/models/enterprise.rb:8
 #: app/models/enterprise.rb:11 app/views/templates/index.html.erb:7
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:61
 msgid "Enterprise"
 msgstr "Կազմակերպություն Ձեռնարկություն"
 
@@ -3246,13 +3237,6 @@ msgstr ""
 #: app/views/manage_products/index.rhtml:5
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_products_list.html.erb:6
 #: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:26
-#: plugins/exchange/views/exchange_plugin_profile/conclude_exchange_proposal.html.erb:7
-#: plugins/exchange/views/exchange_plugin_profile/conclude_exchange_proposal.html.erb:32
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:15
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:145
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:163
-#: plugins/exchange/views/exchange_plugin_shared/_exchange_elements.html.erb:7
-#: plugins/exchange/views/exchange_plugin_shared/_exchange_elements.html.erb:22
 msgid "Product"
 msgstr "Արտադրանք"
 
@@ -4690,7 +4674,7 @@ msgid "Cancelled"
 msgstr ""
 
 #: app/models/task.rb:30
-#: plugins/exchange/views/exchange_plugin_myprofile/_states.html.erb:49
+#: plugins/exchange/views/exchange_plugin_myprofile/_states.html.erb:48
 msgid "Finished"
 msgstr ""
 
@@ -6518,6 +6502,7 @@ msgstr ""
 #: app/views/manage_products/_edit_input.rhtml:20
 #: app/views/manage_products/_edit_input.rhtml:29
 #: app/views/manage_products/_edit_info.rhtml:22
+#: plugins/evaluation/models/evaluation_plugin/evaluation.rb:11
 #: plugins/bsc/views/shared/_fields.html.erb:41
 #: plugins/currency/views/manage_products/_edit_info.html.erb:27
 #: plugins/escambo/views/profile_editor/_organization.html.erb:51
@@ -6530,6 +6515,7 @@ msgstr "Այո"
 #: app/views/manage_products/_edit_input.rhtml:22
 #: app/views/manage_products/_edit_input.rhtml:31
 #: app/views/manage_products/_edit_info.rhtml:22
+#: plugins/evaluation/models/evaluation_plugin/evaluation.rb:14
 #: plugins/bsc/views/shared/_fields.html.erb:42
 #: plugins/currency/views/manage_products/_edit_info.html.erb:27
 #: plugins/escambo/views/profile_editor/_organization.html.erb:52
@@ -7348,7 +7334,6 @@ msgstr "(տեղեկացված չէ)"
 
 #: app/views/enterprise_registration/select_validator.rhtml:26
 #: app/views/content_viewer/_comment_form.rhtml:40
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:112
 msgid "Confirm"
 msgstr "Հաստատել"
 
@@ -10453,39 +10438,39 @@ msgid ""
 "version."
 msgstr ""
 
-#: public/designs/themes/escambo/header.html.erb:17
+#: public/designs/themes/escambo/header.html.erb:18
 msgid "home"
 msgstr ""
 
-#: public/designs/themes/escambo/header.html.erb:18
+#: public/designs/themes/escambo/header.html.erb:19
 msgid "culture points"
 msgstr ""
 
-#: public/designs/themes/escambo/header.html.erb:19
+#: public/designs/themes/escambo/header.html.erb:20
 msgid "offers, knowledges and interests"
 msgstr ""
 
-#: public/designs/themes/escambo/header.html.erb:20
+#: public/designs/themes/escambo/header.html.erb:21
 msgid "how it works"
 msgstr ""
 
-#: public/designs/themes/escambo/header.html.erb:41
+#: public/designs/themes/escambo/header.html.erb:42
 #: plugins/solr/views/search/_facets.html.erb:5
 #, fuzzy
 msgid "New enterprise"
 msgstr "Ավելի նոր ձեռնարկություններ"
 
-#: public/designs/themes/escambo/header.html.erb:46
+#: public/designs/themes/escambo/header.html.erb:47
 #, fuzzy
 msgid "Log out"
 msgstr "Մուտք"
 
-#: public/designs/themes/escambo/header.html.erb:53
+#: public/designs/themes/escambo/header.html.erb:54
 #, fuzzy
 msgid "sign up"
 msgstr "Գրանցվել"
 
-#: public/designs/themes/escambo/header.html.erb:54
+#: public/designs/themes/escambo/header.html.erb:55
 #, fuzzy
 msgid "login"
 msgstr "Մուտք"
@@ -10767,6 +10752,14 @@ msgstr "Վերջինը թարմացվել է %s"
 msgid "Tolerance could not be updated"
 msgstr "Սկզբնական նյութի թարմացումը ձախողված է"
 
+#: plugins/evaluation/models/evaluation_plugin/evaluation.rb:12
+msgid "Parcially (we did our part, the other didn't)"
+msgstr ""
+
+#: plugins/evaluation/models/evaluation_plugin/evaluation.rb:13
+msgid "Parcially (the other side did their part, we didn't)"
+msgstr ""
+
 #: plugins/solr/vendor/plugins/acts_as_solr_reloaded/test/models/posting.rb:-
 msgid "posting"
 msgstr ""
@@ -10808,7 +10801,6 @@ msgid "Proposed"
 msgstr ""
 
 #: plugins/exchange/models/exchange_plugin/exchange.rb:21
-#: plugins/exchange/views/exchange_plugin_myprofile/new.html.erb:10
 msgid "Happening"
 msgstr ""
 
@@ -10836,36 +10828,6 @@ msgstr ""
 
 #: plugins/exchange/models/exchange_plugin/exchange.rb:24
 msgid "Cancelled by Proposed"
-msgstr ""
-
-#: plugins/exchange/models/exchange_plugin_message.rb:-
-#, fuzzy
-msgid "exchange plugin message"
-msgstr "Կառավարել ընկերներին"
-
-#: plugins/exchange/models/exchange_plugin_message.rb:-
-#, fuzzy
-msgid "Enterprise sender"
-msgstr "Ձեռնարկություններ"
-
-#: plugins/exchange/models/exchange_plugin_message.rb:-
-#, fuzzy
-msgid "Enterprise recipient"
-msgstr "Ձեռնարկության գրանցում «%s»"
-
-#: plugins/exchange/models/exchange_plugin_message.rb:-
-#, fuzzy
-msgid "Person sender"
-msgstr "Անձ"
-
-#: plugins/exchange/models/exchange_plugin_message.rb:-
-#, fuzzy
-msgid "Exchange state"
-msgstr "Նոր կատեգորիա"
-
-#: plugins/exchange/models/exchange_plugin_message.rb:-
-#: plugins/exchange/views/exchange_plugin_myprofile/_states.html.erb:31
-msgid "Proposal"
 msgstr ""
 
 #: plugins/sniffer/models/sniffer_plugin_opportunity.rb:-
@@ -10991,7 +10953,6 @@ msgid "Opened"
 msgstr "բացել"
 
 #: plugins/shopping_cart/lib/shopping_cart_plugin/purchase_order.rb:38
-#: plugins/exchange/views/exchange_plugin_myprofile/new.html.erb:10
 #, fuzzy
 msgid "Canceled"
 msgstr "Հրաժարում"
@@ -11436,15 +11397,12 @@ msgid "A plugin that does this and that."
 msgstr ""
 
 #: plugins/exchange/lib/exchange_plugin/mailer.rb:8
-msgid "[ESCAMBO] Você tem uma nova troca!"
-msgstr ""
-
 #: plugins/exchange/lib/exchange_plugin/mailer.rb:20
-msgid "[ESCAMBO] Você tem uma nova proposta!"
+msgid "[%{environment}] You have a new proposal of exchange!"
 msgstr ""
 
-#: plugins/exchange/lib/exchange_plugin/mailer.rb:33
-msgid "[ESCAMBO] Você tem uma nova mensagem!"
+#: plugins/exchange/lib/exchange_plugin/mailer.rb:34
+msgid "[%{environment}] You have a new exchange message!"
 msgstr ""
 
 #: plugins/exchange/lib/exchange_plugin.rb:11
@@ -11841,21 +11799,38 @@ msgid "Choose which content should be displayed:"
 msgstr ""
 
 #: plugins/evaluation/views/evaluation_plugin_profile/_enterprise_evaluation.html.erb:4
-#: plugins/exchange/views/exchange_plugin_myprofile/_enterprise_evaluation.html.erb:1
 msgid "Evaluation done by %{evaluator} at %{time}"
 msgstr ""
 
-#: plugins/evaluation/views/evaluation_plugin_profile/_enterprise_evaluation.html.erb:21
-#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:13
-#: plugins/exchange/views/exchange_plugin_myprofile/_enterprise_evaluation.html.erb:18
+#: plugins/evaluation/views/evaluation_plugin_profile/_enterprise_evaluation.html.erb:6
+#: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:11
+msgid "%m/%d/%Y at %H:%Mh"
+msgstr ""
+
+#: plugins/evaluation/views/evaluation_plugin_profile/_enterprise_evaluation.html.erb:29
+#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:14
 msgid "Score"
 msgstr ""
 
-#: plugins/evaluation/views/evaluation_plugin_profile/_enterprise_evaluation.html.erb:25
+#: plugins/evaluation/views/evaluation_plugin_profile/_enterprise_evaluation.html.erb:33
 #: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:29
-#: plugins/exchange/views/exchange_plugin_myprofile/_enterprise_evaluation.html.erb:22
-msgid "The exchange happened?"
+msgid "The deal happened?"
 msgstr ""
+
+#: plugins/evaluation/views/evaluation_plugin_shared/_profile_mean.html.erb:7
+#, fuzzy
+msgid "%s evaluations"
+msgstr "%s-ի վավերացում"
+
+#: plugins/evaluation/views/evaluation_plugin_shared/_profile_mean.html.erb:11
+#, fuzzy
+msgid "Read evaluations"
+msgstr "Կրթություն"
+
+#: plugins/evaluation/views/evaluation_plugin_shared/_profile_mean.html.erb:15
+#, fuzzy
+msgid "No evaluations yet"
+msgstr "%s-ի վավերացում"
 
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/reports.html.erb:1
 msgid "Purchase Reports"
@@ -11952,16 +11927,6 @@ msgstr ""
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_products_list.html.erb:7
 #: plugins/bsc/views/bsc_plugin_myprofile/_contract_form.html.erb:23
 #: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:27
-#: plugins/exchange/views/exchange_plugin_profile/conclude_exchange_proposal.html.erb:8
-#: plugins/exchange/views/exchange_plugin_profile/conclude_exchange_proposal.html.erb:33
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:33
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:16
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:61
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:119
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:146
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:164
-#: plugins/exchange/views/exchange_plugin_shared/_exchange_elements.html.erb:8
-#: plugins/exchange/views/exchange_plugin_shared/_exchange_elements.html.erb:23
 #, fuzzy
 msgid "Quantity"
 msgstr "Որակ"
@@ -12542,282 +12507,91 @@ msgstr ""
 msgid "%{origin} fez uma nova proposta para você."
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_profile/conclude_exchange_proposal.html.erb:1
-#: plugins/exchange/views/exchange_plugin_shared/_exchange_elements.html.erb:1
-msgid "Exchange between %{origin} and %{target}"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/conclude_exchange_proposal.html.erb:3
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:11
-#: plugins/exchange/views/exchange_plugin_shared/_exchange_elements.html.erb:3
-msgid "%{target} offers:"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/conclude_exchange_proposal.html.erb:28
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:114
-#: plugins/exchange/views/exchange_plugin_shared/_exchange_elements.html.erb:18
-msgid "%{origin} offers:"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/conclude_exchange_proposal.html.erb:66
-msgid "Type a message presenting the exchange proposal:"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/conclude_exchange_proposal.html.erb:107
-msgid "Conclude Exchange Proposal"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/conclude_exchange_proposal.html.erb:108
-msgid "Back to %{origin} offers"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:19
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:177
-msgid "Choose at least one element!"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:21
-#, fuzzy
-msgid "%s's Offers"
-msgstr "%s-ի պիտակներ"
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:24
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:94
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:163
-#, fuzzy
-msgid "%s has no offers registered."
-msgstr "սեռը գրանցված չէ"
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:32
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:60
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:118
-#, fuzzy
-msgid "Product/Service/Knowledge"
-msgstr "Արտադրանք/Ծառայություններ"
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:57
-msgid ""
-"You belong to more than one Enterprise. Please choose with which one you "
-"want to exchange."
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:62
-msgid "Exchange Possibilities"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:85
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:72
-msgid ""
-"%{e_name} offers %{products_supplier_name} and %{profile_name} needs "
-"%{input_name} to make %{p_name} <br />"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:90
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:82
-msgid ""
-"%{e_name} offers %{product_name} and %{profile_name} is interested in "
-"%{interest_name} <br />"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:96
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:93
-msgid ""
-"%{e_name} knows %{knowledge_name} and %{profile_name} uses %{input_name} to "
-"make %{product_name}<br />"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:102
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:104
-msgid ""
-"%{e_name} knows %{knowledge_name} and %{profile_name} is interested in "
-"%{interest_name}<br />"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_target_offers.html.erb:122
-msgid "Propose exchange with selected objects!"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:39
-msgid ""
-"You dont have any offers registered. Please register products or knowledges "
-"and try again."
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:56
-msgid "%{origin} offers that matches %{target} interests:"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:110
-msgid "There are no offers by %{origin} that matches %{target} interests."
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:141
-msgid "Other inputs of %{target}:"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:150
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:169
-msgid ""
-"You dont have this product within your offers. Please add it and try again."
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:159
-msgid "Other interests of %{target}:"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:179
-msgid "Continue >>"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_profile/choose_origin_offers.html.erb:180
-#, fuzzy
-msgid "Back to %{target} offers"
-msgstr "Վերադառնալ պիտակների ցուցակին"
-
-#: plugins/exchange/views/exchange_plugin_shared/_start_exchange.html.erb:6
+#: plugins/exchange/views/exchange_plugin_shared/_start_exchange.html.erb:9
 #, fuzzy
 msgid "Start an exchange"
 msgstr "Գրանցել նոր ձեռնարկություն"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_exchange_summary.html.erb:3
-#: plugins/exchange/views/exchange_plugin_myprofile/_exchange_summary.html.erb:14
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_messages.html.erb:19
+#, fuzzy
+msgid "Type your message"
+msgstr "Գնալ Ձեր գլխավոր էջը:"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_messages.html.erb:20
+#, fuzzy
+msgid "Send message"
+msgstr "Օգտագործել որպես գլխավոր էջ"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_exchange_summary.html.erb:4
+#: plugins/exchange/views/exchange_plugin_myprofile/_exchange_summary.html.erb:10
 msgid "%s will offer"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_header.html.erb:2
-msgid ""
-"<strong>%{origin} </strong> proposed and <strong> %{target} </strong> "
-"accepted!"
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_header.html.erb:3
+msgid "%{origin} proposed and %{target} accepted!"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_header.html.erb:4
-msgid "<strong> %{origin} </strong> proposes"
-msgstr ""
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_header.html.erb:8
+#, fuzzy
+msgid "%{origin} proposes"
+msgstr "Հատկություններ"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_add_element.html.erb:3
-#: plugins/exchange/views/exchange_plugin_myprofile/edit.html.erb:22
-#: plugins/exchange/views/exchange_plugin_myprofile/edit.html.erb:44
 #, fuzzy
 msgid "[remove]"
 msgstr "Հեռացնել"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_states.html.erb:37
+#: plugins/exchange/views/exchange_plugin_myprofile/_states.html.erb:30
+msgid "Proposal"
+msgstr ""
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_states.html.erb:36
 #, fuzzy
 msgid "Negociation"
 msgstr "Պարամետրեր"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_states.html.erb:43
+#: plugins/exchange/views/exchange_plugin_myprofile/_states.html.erb:42
 #, fuzzy
 msgid "Evaluation"
 msgstr "Կրթություն"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/edit_old.html.erb:1
-#: plugins/exchange/views/exchange_plugin_myprofile/edit.html.erb:9
-#, fuzzy
-msgid "Proposer: %s"
-msgstr "Գին %s"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/edit_old.html.erb:2
-#: plugins/exchange/views/exchange_plugin_myprofile/edit_old.html.erb:27
-#: plugins/exchange/views/exchange_plugin_myprofile/edit.html.erb:12
-#: plugins/exchange/views/exchange_plugin_myprofile/edit.html.erb:34
-msgid "Exchange Elements:"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/edit_old.html.erb:11
-#: plugins/exchange/views/exchange_plugin_myprofile/edit_old.html.erb:35
-#: plugins/exchange/views/exchange_plugin_myprofile/edit.html.erb:55
-#: plugins/exchange/views/exchange_plugin_myprofile/edit.html.erb:76
-msgid "Add Elements to Exchange"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/edit_old.html.erb:26
-#: plugins/exchange/views/exchange_plugin_myprofile/edit.html.erb:31
-#, fuzzy
-msgid "Proposed: %s"
-msgstr "Գին %s"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation.html.erb:6
+#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation.html.erb:8
 msgid "Your evaluation (still to be done)"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation.html.erb:14
+#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation.html.erb:17
 msgid "%s evaluation (still to be done)"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:8
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_message.html.erb:6
+msgid "%m/%d/%y <br> %H:%M"
+msgstr ""
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_knowledges.html.erb:4
+#, fuzzy
+msgid "%s has no knowledges registered."
+msgstr "սեռը գրանցված չէ"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_knowledges.html.erb:9
+#: plugins/escambo/views/profile/_knowledges.html.erb:2
+msgid "Knowledges"
+msgstr ""
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_unreg_items.html.erb:2
+#, fuzzy
+msgid "Add not registered product"
+msgstr "Կառավարել արտադրանքը"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:9
 msgid "Please evaluate the behaviour of %s during the exchange process"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:34
+#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:33
 #, fuzzy
 msgid "Submit Evaluation"
 msgstr "Կրթություն"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:1
-#, fuzzy
-msgid "Evaluate Exchange"
-msgstr "Պահպանել փոփոխությունները"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:4
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:10
-msgid "Exchange Summary"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:6
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:14
-msgid "Slug: "
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:7
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:15
-msgid "Exchange with: "
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:9
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:17
-msgid "I offer:"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:17
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:27
-msgid "%{other} offers me:"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:30
-msgid "Please evaluate the behaviour of %s during the exchange process:"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:32
-msgid "1 (Very bad)"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:33
-msgid "2 (Less than expected)"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:34
-msgid "3 (Regular)"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:35
-msgid "4 (Better than expected)"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:36
-msgid "5 (Excellent)"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:39
-msgid "Write your evaluation message here..."
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/evaluate.html.erb:40
-msgid "Submit"
-msgstr ""
-
 #: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:2
-#: plugins/exchange/views/exchange_plugin_myprofile/new.html.erb:2
 #, fuzzy
 msgid "%s's Exchanges"
 msgstr "%s-ի պիտակներ"
@@ -12832,69 +12606,49 @@ msgstr "Պահպանել փոփոխությունները"
 msgid "Exchange created at %{time} by %{enterprise}"
 msgstr "Մեկ ձեռնարկություն"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:14
+#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:15
 #, fuzzy
 msgid "Open Exchange"
 msgstr "Փոխել նկարը"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:34
+#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:33
 #, fuzzy
 msgid "Closed Exchanges"
 msgstr "%s-ի պիտակներ"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:41
+#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:40
 msgid ""
 "Exchange with %{the_other} created at %{time} by %{enterprise} and closed at "
 "%{closed_time}"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:46
+#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:47
 #, fuzzy
 msgid "See history"
 msgstr "Պատմություն"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/edit.html.erb:1
-#, fuzzy
-msgid "Edit Exchange"
-msgstr "Փոփոխում %s"
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_moneys.html.erb:2
+msgid "Add amount in money"
+msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/edit.html.erb:13
-#: plugins/exchange/views/exchange_plugin_myprofile/edit.html.erb:35
-#, fuzzy
-msgid "Quantity:"
-msgstr "Որակ"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/edit.html.erb:96
-#, fuzzy
-msgid "Back to console"
-msgstr "Վերադառնալ կառավարման վահանակ"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/new.html.erb:11
-#, fuzzy
-msgid "Enterprise - Origin"
-msgstr "Ձեռնարկության գրանցում «%s»"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/new.html.erb:13
-#, fuzzy
-msgid "Enterprise - Target"
-msgstr "Ձեռնարկության գլխավոր էջ"
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_moneys.html.erb:6
+msgid "Include"
+msgstr ""
 
 #: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:3
 msgid "Exchange Negociation"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:27
+#: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:11
 #, fuzzy
 msgid "Concluded at %s"
 msgstr "Ստեղծված է: %s"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:30
-msgid ""
-"Exchange arranged between <strong> %{origin} </strong> & <strong> %{target} "
-"</strong>"
+#: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:16
+msgid "exchange arranged between %{origin} & %{target}"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:36
+#: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:27
 #, fuzzy
 msgid "Negociation history"
 msgstr "Պարամետրեր"
@@ -12904,146 +12658,68 @@ msgid "Back to the exchange listing"
 msgstr ""
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_element.html.erb:15
-msgid "Qtd"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/_element.html.erb:36
+#: plugins/exchange/views/exchange_plugin_myprofile/_element.html.erb:33
 #, fuzzy
-msgid "Qtd: %s"
-msgstr "Թարմացվել է"
+msgid "Qty"
+msgstr "Որակ"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:4
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:6
 msgid "Send this proposal"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:7
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:10
 #, fuzzy
 msgid "Delete this proposal"
 msgstr "Վերացնել անհատական էջը"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:11
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:15
 #, fuzzy
 msgid "Create new proposal"
 msgstr "Ստեղծել նոր համայնք"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:14
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:19
 #, fuzzy
 msgid "Cancel Negociation"
 msgstr "Պարամետրեր"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:18
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:25
 msgid "Accept proposal and finish Exchange"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:21
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:30
 msgid "*To finish this exchange, the other part must accept this proposal!"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:23
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:11
 #, fuzzy
-msgid "Proposal sent "
+msgid "Proposal sent %s"
 msgstr "Հատկություններ"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:43
-msgid "Digite sua mensagem"
-msgstr ""
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:11
+#, fuzzy
+msgid "%d/%m/%Y at %H:%Mh"
+msgstr "%d %B %Y, %H:%m"
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:59
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:27
 msgid "You offer"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:71
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:32
 msgid "What you can offer?"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:74
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:144
-#, fuzzy
-msgid "Add not registered product"
-msgstr "Կառավարել արտադրանքը"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:84
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:154
-msgid "Add amount in money"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:87
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:157
-msgid "Go"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:102
-#, fuzzy
-msgid "Your Products and Services"
-msgstr "Արտադրանք և ծառայություններ"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:114
-#, fuzzy
-msgid "Your Knowledges"
-msgstr "Արտադրանք/Ծառայություններ"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:129
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:46
 msgid "You ask"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:141
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:51
 msgid "What do the other can offer?"
 msgstr ""
 
-#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:183
-#: plugins/escambo/views/profile/_knowledges.html.erb:2
-msgid "Knowledges"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:4
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_offers.html.erb:4
 #, fuzzy
-msgid "Back to My Exchanges"
-msgstr "Վերադառնալ կառավարման վահանակ"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:37
-#, fuzzy
-msgid "Exchange State:"
-msgstr "Նոր կատեգորիա"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:42
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:48
-#, fuzzy
-msgid "%s's evaluation:"
-msgstr "%s-ի վավերացում"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:54
-msgid "Edit exchange elements"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:67
-#, fuzzy
-msgid "Last Updates"
-msgstr "Վերջինը թարմացվել է %s"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:80
-#, fuzzy
-msgid "Messages"
-msgstr "Էլ.փոստի պարամետրերը հաջողությամբ պահպանված են:"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:85
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:86
-#, fuzzy
-msgid "Leave a scrap"
-msgstr "Օգտագործել որպես գլխավոր էջ"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:111
-#, fuzzy
-msgid "From:"
-msgstr "Որտեղից"
-
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:112
-msgid "To:"
-msgstr ""
-
-#: plugins/exchange/views/exchange_plugin_myprofile/console.html.erb:113
-#, fuzzy
-msgid "Date sent:"
-msgstr "Էլ.փոստի պարամետրերը հաջողությամբ պահպանված են:"
+msgid "%s has no offers registered."
+msgstr "սեռը գրանցված չէ"
 
 #: plugins/mezuro/views/mezuro_plugin_range/_form.html.erb:8
 msgid "Label"
@@ -13569,22 +13245,7 @@ msgstr "Կայքի կառուցվածք"
 msgid "Evaluations of this enterprise"
 msgstr "Միանալ այս ձեռնարկությանը"
 
-#: plugins/escambo/views/profile/_info.html.erb:46
-#, fuzzy
-msgid "Mean Score: %s"
-msgstr "Գին %s"
-
-#: plugins/escambo/views/profile/_info.html.erb:47
-#, fuzzy
-msgid "%s evaluations"
-msgstr "%s-ի վավերացում"
-
-#: plugins/escambo/views/profile/_info.html.erb:48
-#, fuzzy
-msgid "Read evaluations"
-msgstr "Կրթություն"
-
-#: plugins/escambo/views/profile/_info.html.erb:56
+#: plugins/escambo/views/profile/_info.html.erb:55
 #, fuzzy
 msgid "Accepted Currencies"
 msgstr "Ստեղծել նոր համայնք"
@@ -13593,6 +13254,118 @@ msgstr "Ստեղծել նոր համայնք"
 #, fuzzy
 msgid "Create new enterprise"
 msgstr "Հեռացնել ձեռնարկությունը"
+
+#, fuzzy
+#~ msgid "Evaluate Exchange"
+#~ msgstr "Պահպանել փոփոխությունները"
+
+#, fuzzy
+#~ msgid "Enterprise - Origin"
+#~ msgstr "Ձեռնարկության գրանցում «%s»"
+
+#, fuzzy
+#~ msgid "Enterprise - Target"
+#~ msgstr "Ձեռնարկության գլխավոր էջ"
+
+#, fuzzy
+#~ msgid "exchange plugin message"
+#~ msgstr "Կառավարել ընկերներին"
+
+#, fuzzy
+#~ msgid "Enterprise sender"
+#~ msgstr "Ձեռնարկություններ"
+
+#, fuzzy
+#~ msgid "Enterprise recipient"
+#~ msgstr "Ձեռնարկության գրանցում «%s»"
+
+#, fuzzy
+#~ msgid "Person sender"
+#~ msgstr "Անձ"
+
+#, fuzzy
+#~ msgid "Exchange state"
+#~ msgstr "Նոր կատեգորիա"
+
+#, fuzzy
+#~ msgid "%s's Offers"
+#~ msgstr "%s-ի պիտակներ"
+
+#, fuzzy
+#~ msgid "Product/Service/Knowledge"
+#~ msgstr "Արտադրանք/Ծառայություններ"
+
+#, fuzzy
+#~ msgid "Back to %{target} offers"
+#~ msgstr "Վերադառնալ պիտակների ցուցակին"
+
+#, fuzzy
+#~ msgid "Proposer: %s"
+#~ msgstr "Գին %s"
+
+#, fuzzy
+#~ msgid "Proposed: %s"
+#~ msgstr "Գին %s"
+
+#, fuzzy
+#~ msgid "Edit Exchange"
+#~ msgstr "Փոփոխում %s"
+
+#, fuzzy
+#~ msgid "Quantity:"
+#~ msgstr "Որակ"
+
+#, fuzzy
+#~ msgid "Back to console"
+#~ msgstr "Վերադառնալ կառավարման վահանակ"
+
+#, fuzzy
+#~ msgid "Qtd: %s"
+#~ msgstr "Թարմացվել է"
+
+#, fuzzy
+#~ msgid "Your Products and Services"
+#~ msgstr "Արտադրանք և ծառայություններ"
+
+#, fuzzy
+#~ msgid "Your Knowledges"
+#~ msgstr "Արտադրանք/Ծառայություններ"
+
+#, fuzzy
+#~ msgid "Back to My Exchanges"
+#~ msgstr "Վերադառնալ կառավարման վահանակ"
+
+#, fuzzy
+#~ msgid "Exchange State:"
+#~ msgstr "Նոր կատեգորիա"
+
+#, fuzzy
+#~ msgid "%s's evaluation:"
+#~ msgstr "%s-ի վավերացում"
+
+#, fuzzy
+#~ msgid "Last Updates"
+#~ msgstr "Վերջինը թարմացվել է %s"
+
+#, fuzzy
+#~ msgid "Messages"
+#~ msgstr "Էլ.փոստի պարամետրերը հաջողությամբ պահպանված են:"
+
+#, fuzzy
+#~ msgid "Leave a scrap"
+#~ msgstr "Օգտագործել որպես գլխավոր էջ"
+
+#, fuzzy
+#~ msgid "From:"
+#~ msgstr "Որտեղից"
+
+#, fuzzy
+#~ msgid "Date sent:"
+#~ msgstr "Էլ.փոստի պարամետրերը հաջողությամբ պահպանված են:"
+
+#, fuzzy
+#~ msgid "Mean Score: %s"
+#~ msgstr "Գին %s"
 
 #, fuzzy
 #~ msgid "Currencies"
@@ -13678,10 +13451,6 @@ msgstr "Հեռացնել ձեռնարկությունը"
 #, fuzzy
 #~ msgid "accepted!"
 #~ msgstr "Պայմանները ընդունված են"
-
-#, fuzzy
-#~ msgid "proposes"
-#~ msgstr "Հատկություններ"
 
 #~ msgid "Principal Product Categories"
 #~ msgstr "Հիմնական արտադրանքի կատեգորիաներ"
@@ -13902,10 +13671,6 @@ msgstr "Հեռացնել ձեռնարկությունը"
 #, fuzzy
 #~ msgid "%s's activity"
 #~ msgstr "Տնտեսական գործունեություն"
-
-#, fuzzy
-#~ msgid "Send a message to %s"
-#~ msgstr "Օգտագործել որպես գլխավոր էջ"
 
 #, fuzzy
 #~ msgid "Coordinates:"
@@ -14526,9 +14291,6 @@ msgstr "Հեռացնել ձեռնարկությունը"
 #, fuzzy
 #~ msgid "Area %d: "
 #~ msgstr "Տարածաշրջան %d"
-
-#~ msgid "%d %B %Y, %H:%m"
-#~ msgstr "%d %B %Y, %H:%m"
 
 #~ msgid "Lock version"
 #~ msgstr "Փակ տարբերակ"
