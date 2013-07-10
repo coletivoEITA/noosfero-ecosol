@@ -1,6 +1,6 @@
 <div class="exchange-proposal-header-buttons">
 
-  <% if proposal.state == "open"%>
+  <% if proposal.state == 'open' %>
 
     <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'close_proposal', :proposal_id => proposal.id} do |f| %>
       <%= f.submit _('Send this proposal'), :class => "action-button"%>
@@ -26,7 +26,9 @@
       <% end %>
     <% else %>
 
-        <p style="float:right"><%= _('*To finish this exchange, the other part must accept this proposal!') %>
+      <div class="finish-help-text">
+        <%= _('*To finish this exchange, the other part must accept this proposal!') %>
+      </div>
     <% end %>
   <% end %>
 </div>

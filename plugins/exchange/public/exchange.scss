@@ -170,11 +170,13 @@ body.controller-exchange_plugin_myprofile {
   }
 
   .exchange-summary-wrapper {
-    margin: $half-margin;
 
     .exchange-proposal-part {
-      width: $module5;
       background: transparent;
+
+      h4 {
+        padding-left: $padding;
+      }
     }
   }
 
@@ -227,6 +229,11 @@ body.controller-exchange_plugin_myprofile {
             margin-right: $half-padding;
           }
         }
+
+        .finish-help-text {
+          float: right;
+          padding: $half-padding 0;
+        }
       }
       .exchange-button-wrapper {
         margin-left: $half-margin;
@@ -239,6 +246,10 @@ body.controller-exchange_plugin_myprofile {
         border-bottom: $border solid #BDA8DC;
 
         .exchange-messages {
+
+          &.empty {
+            display: none;
+          }
 
           .exchange-message {
             @extend .container-clean;
@@ -404,29 +415,71 @@ body.controller-exchange_plugin_myprofile {
   width: $module5 + $intercolumn/2;
   padding: $padding;
 
-  &.offer {
+  &.profile {
     background: #F0E9F6;
-
-    h3 {
-      margin-left: $half-margin;
-    }
   }
-  &.request {
+  &.theother {
     background: #F8F4FB;
   }
 
+  h3 {
+    margin-left: $half-margin;
+  }
+
+  .proposal-offers {
+    padding: 0;
+    margin: 0;
+    margin-top: margin;
+
+    h6.element-title {
+      display: inline;
+    }
+
+    li {
+      background: #D8CAEA;
+      padding:$half-padding;
+      margin:$half-margin;
+      list-style-type: none;
+      height: 2*$base;
+    }
+  }
+
+  .exchange-add-unreg-item {
+    p {
+      display: none;
+    }
+    input {
+      display: none;
+    }
+  }
+
+  .exchange-add-unreg-item-active {
+    p {
+      text-align: left;
+    }
+  }
+
+  .exchange-add-money {
+    p {
+      display: none;
+    }
+  }
+
+  .exchange-add-money-active {
+    margin-bottom: $margin;
+  }
+
   .exchange-elements-list {
-    margin: 0px;
-    padding: 0px;
-    margin-bottom: $module1;
+    margin: 0;
+    padding: 0;
+    width: $module5 + $intercolumn/2;
+    margin-bottom: 3*$margin;
 
     .exchange-element {
-      width: 470px;
-      list-style-type: none;
-      background-size: auto 470px;
-      margin: 0 $base $intercolumn $base;
-      min-height: 2*$intercolumn; 
+      min-height: 4*$base; 
+      margin-bottom: $half-margin;
       position: relative;
+      list-style-type: none;
 
       &.profile {
         background: #D8CAEA;
@@ -436,52 +489,68 @@ body.controller-exchange_plugin_myprofile {
       }
 
       .exchange-element-image {
-        width: 470px;
-        height: 155px;
+        width: $module5 + $intercolumn/2;
+        height: 12*$base;
+        background-size: 100%;
+        //background-size: contain;
+        //background-color: white;
         background-position: center;
+        background-repeat: no-repeat;
       }
 
-      input[type=text].exchange-qtd-input {
-        width: 85px;
-        border: none;
-        border-radius: 3px;
-        padding: 3px;
-        background: whitesmoke;
-        color: black;
-      }
-
-      .exchange-element_control {
+      .exchange-element-control {
         position: absolute;
-        top: -$base;
-        right: $base;
+        top: $half-padding;
+        right: $half-padding;
       }
 
       .exchange-trash {
-        display: inline;
-        top: 4px;
+        display: inline-block;
         position: relative;
-        right: 2px;
+        top: $half-padding/2;
+        right: $half-padding/2;
       }
 
-      .exchange-qtd {
-        display: inline;
+      .exchange-qty {
+        display: inline-block;
+        margin: 0;
+        padding: $half-padding;
+        border-radius: $border-radius;
         background: #7857B8;
         color: white;
-        padding: $base/4 $base; 
-        border-radius: $border-radius;
-        padding: 5px 0 4px 3px;
+        font-weight: bold;
+
+        .label, .value {
+          display: inline-block;
+        }
+
+        .value {
+          padding-left: $padding;
+          width: $module;
+          text-align: center;
+        }
+
+        .exchange-qty-input {
+          width: $module;
+          padding: $half-padding/2;
+          border: none;
+          border-radius: $border-radius;
+          background: whitesmoke;
+          color: black;
+        }
       }
 
-      h6.exchange-qtd {
-        padding: 6px 12px;
+      .exchange-element-title {
+        padding: $padding;
+        padding-bottom: 0;
+        @extend .pstyle-tp1;
       }
-
-      h6.exchange-element_title {
-        padding: $base $base 0 $base;
-      }
-
-      div.exchange-element_desc {
-        padding: $base;
+      .exchange-element-desc {
+        padding: $padding;
+        
+        > p {
+          margin: 0;
+        }
       }
 
       .exchange-select {
@@ -535,61 +604,3 @@ body.controller-exchange_plugin_myprofile {
   }
 }
 
-ul.exchange-theother_offers {
-  padding: 0;
-  margin: 0;
-  margin-top: 2*$intercolumn;
-}
-
-ul.exchange-profile_offers {
-  padding: 0;
-  margin: 0;
-  margin-top: 2*$intercolumn;
-}
-
-.exchange-profile_offers li {
-  background: #D8CAEA;
-  padding:$base/2;
-  margin:$base $base;
-  list-style-type: none;
-  height: $intercolumn;
-}
-
-.exchange-theother_offers li {
-  background: #D8CAEA;
-  padding:$base/2;
-  margin:$base $base;
-  list-style-type: none;
-  height: $intercolumn;
-}
-
-.proposal-offers{
-  h6.element-title {
-    display: inline;
-  }
-}
-
-.exchange-add-unreg-item {
-  p {
-    display: none;
-  }
-  input {
-    display: none;
-  }
-}
-
-.exchange-add-unreg-item-active {
-  p {
-    text-align: left;
-  }
-}
-
-.exchange-add-money {
-  p {
-    display: none;
-  }
-}
-
-.exchange-add-money-active {
-  margin-bottom: 2*$base;
-}

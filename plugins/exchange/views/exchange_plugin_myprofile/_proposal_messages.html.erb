@@ -1,5 +1,5 @@
 <div class="exchange-proposal-messages">
-  <div class="exchange-messages">
+  <div class="exchange-messages <%= 'empty' if proposal.messages.empty? %>">
 
     <% if new_message %>
 
