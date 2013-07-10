@@ -374,6 +374,10 @@ $image-next: '/plugins/escambo/images/next.png';
 
   #offers, #knowledges, #interests {
     margin-bottom: $margin;
+
+    h3 {
+      margin-right: $half-margin;
+    }
   }
 
   .escambo-snippet {
@@ -401,7 +405,7 @@ $image-next: '/plugins/escambo/images/next.png';
       padding: 0;
     }
 
-    .info, .evaluation, .members {
+    .info, .evaluation, .currencies {
       border-bottom: $border solid $color-profile-info-border;
       padding-bottom: $padding;
       margin-bottom: $padding;
@@ -426,7 +430,11 @@ $image-next: '/plugins/escambo/images/next.png';
       .state, .city, .address, .phone1, .phone2, .email, .site {
         float: none;
         clear: both;
-        margin-bottom: $margin;
+        margin-bottom: $half-margin;
+
+        &.site {
+          margin-bottom: 0;
+        }
       }
       .state, .city, .phone1, .phone2 {
         float: left;
@@ -590,3 +598,54 @@ $image-next: '/plugins/escambo/images/next.png';
 
 }
 
+/* Search */
+
+.controller-search {
+
+  h1 {
+    padding-left: $padding;
+  }
+  
+  #escambo-search-form {
+    @extend .search-box;
+    margin: -$padding;
+    margin-top: $margin;
+    margin-bottom: $margin;
+
+    form {
+      .search-field {
+        #search-input {
+          @extend .search-input;
+        }
+        input[type=submit] {
+          @extend .search-submit;
+        }
+      }
+    }
+  }
+
+  #search-column-left {
+    display: none;
+  }
+  #search-column-right {
+    float: none;
+    width: auto;
+  }
+
+  .search-results-header {
+    padding-left: $padding;
+  }
+  #search-results {
+    padding-left: $padding;
+
+    li.search-profile-item {
+      display: inline-block;
+      margin-top: $half-margin;
+
+      .escambo-plugin-profile-block {
+        margin-bottom: 0;
+        margin-right: $half-margin;
+      }
+    }
+  }
+}

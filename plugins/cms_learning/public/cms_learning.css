@@ -92,7 +92,27 @@
 .pstyle-tm2 {
   font-size: 10px; }
 
-/* buttons */
+/* Images */
+div.profile-image, a.profile-image {
+  background-repeat: no-repeat;
+  background-position: center; }
+  div.profile-image.thumb, a.thumb.profile-image {
+    width: 48px;
+    height: 48px;
+    background-size: 48px;
+    background-size: contain;
+    /* css3 enabled */ }
+  div.profile-image.portrait, a.portrait.profile-image {
+    width: 120px;
+    height: 120px;
+    background-size: 120px;
+    background-size: contain;
+    /* css3 enabled */ }
+
+a.profile-image {
+  display: inline-block; }
+
+/* Buttons */
 .action-button {
   display: inline-block;
   padding: 6px 12px;

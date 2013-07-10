@@ -4,21 +4,17 @@
 
   <div id="exchange-enterprise-headers">
 
-    <div id="exchange-enterprise_profile">
-      <div id="exchange-profile_thumb">
-        <%= link_to profile_image(profile, :thumb), profile.url %>
-      </div>
-      <div id="exchange-profile-name"><%= profile.name %></div>
+    <div class="exchange-enterprise profile">
+      <%= profile_link_with_image profile, :thumb %>
+      <div class="name"><%= profile.name %></div>
     </div>
 
-    <div id="exchange-enterprise_theother">
-      <div id="exchange-theother_thumb">
-        <%= link_to profile_image(@theother, :thumb), @theother.url %>
-      </div>
-      <div id="exchange-theother-name"><%= @theother.name %></div>
+    <div class="exchange-enterprise theother">
+      <%= profile_link_with_image @theother, :thumb %>
+      <div class="name"><%= @theother.name %></div>
     </div>
 
-    <div id="exchange-exchange_symbol"></div>
+    <div id="exchange-exchange-symbol"></div>
 
     <div class="clean"></div>
 

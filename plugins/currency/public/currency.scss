@@ -167,6 +167,7 @@ $color-popin-bg: #FAF7DC;
   display: none; /* by default */
   min-width: $module4;
   position: absolute;
+  z-index: 10;
   background: $color-popin-bg;
   border: $border solid #ccc;
   box-shadow: 1px 2px 7px #888, -1px 2px 6px #999;

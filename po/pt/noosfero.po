@@ -11971,11 +11971,11 @@ msgstr "{origin} fez uma nova proposta para você."
 
 #: plugins/exchange/views/exchange_plugin_shared/_start_exchange.html.erb:9
 msgid "Start an exchange"
-msgstr "Escambo!"
+msgstr "Fazer escambo"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_proposal_messages.html.erb:19
 msgid "Type your message"
-msgstr "Digite sua mensagem."
+msgstr "Digite sua mensagem"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_proposal_messages.html.erb:20
 msgid "Send message"

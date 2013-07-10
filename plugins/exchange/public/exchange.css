@@ -92,7 +92,27 @@
 .pstyle-tm2 {
   font-size: 10px; }
 
-/* buttons */
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 48px;
+    height: 48px; }
+  .profile-image.portrait {
+    width: 120px;
+    height: 120px; }
+  .profile-image .inner {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
 .action-button, .exchange {
   display: inline-block;
   padding: 6px 12px;
@@ -112,8 +132,8 @@
     color: white; }
 
 /* Colors */
-/* Images */
 /* Borders */
+/* Images */
 /* Buttons */
 .exchange-add {
   width: 24px;
@@ -139,7 +159,36 @@ body.controller-exchange_plugin_myprofile {
     border: 1px solid #c5aaa5;
     background: #ECE4DB;
     margin: 24px auto; }
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-exchange_symbol {
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers .exchange-enterprise {
+      width: 491px;
+      height: 48px;
+      float: left; }
+      #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers .exchange-enterprise.profile {
+        background: #7857B8; }
+        #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers .exchange-enterprise.profile .name, #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers .exchange-enterprise.profile .profile-image {
+          float: left; }
+        #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers .exchange-enterprise.profile .profile-image {
+          padding-left: 24px; }
+      #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers .exchange-enterprise.theother {
+        background: #C32478; }
+        #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers .exchange-enterprise.theother .name, #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers .exchange-enterprise.theother .profile-image {
+          float: right; }
+        #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers .exchange-enterprise.theother .profile-image {
+          padding-right: 24px; }
+      #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers .exchange-enterprise .name {
+        font-size: 21px;
+        padding-top: 12px;
+        color: white; }
+      #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers .exchange-enterprise .profile-image {
+        padding-left: 12px;
+        padding-right: 12px;
+        margin-top: -12px;
+        height: 72px;
+        width: 72px;
+        background-size: 72px;
+        background-size: contain;
+        /* css3 enabled */ }
+    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-exchange-symbol {
       width: 28px;
       height: 22px;
       margin-top: 12px;
@@ -147,40 +196,6 @@ body.controller-exchange_plugin_myprofile {
       left: 468px;
       background: url("/plugins/exchange/images/exchange.png");
       background-repeat: no-repeat; }
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-enterprise_profile {
-      background: #7857B8;
-      float: left; }
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-enterprise_theother {
-      background: #C32478;
-      float: right; }
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-enterprise_profile,
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-enterprise_theother {
-      width: 491px;
-      height: 48px; }
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother-name,
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-profile-name {
-      font-size: 21px;
-      padding-top: 12px;
-      color: white; }
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-profile_thumb,
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-profile-name {
-      float: left; }
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother_thumb,
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother-name {
-      float: right; }
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-profile_thumb,
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother_thumb {
-      padding-left: 12px;
-      padding-right: 12px;
-      margin-top: -12px; }
-      #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-profile_thumb img,
-      #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother_thumb img {
-        height: 72px;
-        width: 72px; }
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-profile_thumb {
-      padding-left: 24px; }
-    #exchange-exchange-wrapper #exchange-header #exchange-enterprise-headers #exchange-theother_thumb {
-      padding-right: 24px; }
   #exchange-exchange-wrapper #concluded-message {
     text-align: right;
     margin-right: 12px;

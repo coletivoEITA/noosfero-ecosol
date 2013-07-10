@@ -2,6 +2,8 @@ class ExchangePluginProfileController < ProfileController
 
   no_design_blocks
 
+  helper ExchangePlugin::ExchangeDisplayHelper
+
   def start_exchange
     @exchange = ExchangePlugin::Exchange.new
     @exchange.state = "proposal"

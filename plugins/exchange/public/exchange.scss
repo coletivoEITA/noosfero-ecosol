@@ -8,6 +8,9 @@ $color-exchange: #394E41;
 
 $color-text-area-border: #C5AAA5;
 
+/* Borders */
+$border-proposal: 6*$border;
+
 /* Images */
 
 $image-exchange: '/plugins/exchange/images/exchange.png';
@@ -15,9 +18,6 @@ $image-exchange-empty: '/plugins/exchange/images/exchange-empty.png';
 $image-trash: '/plugins/exchange/images/exchange-empty.png';
 
 $profile-thumb-size: 4*$base;
-
-/* Borders */
-$border-proposal: 6*$border;
 
 /* Buttons */
 
@@ -58,7 +58,50 @@ body.controller-exchange_plugin_myprofile {
 
     #exchange-enterprise-headers {
       
-      #exchange-exchange_symbol {
+      .exchange-enterprise {
+        width: $module5 + $intercolumn + $padding - $border;
+        height: 4*$base;
+        float: left;
+
+        &.profile {
+          background: #7857B8;
+
+          .name, .profile-image {
+            float: left;
+          }
+          .profile-image {
+            padding-left: 2*$padding;
+          }
+        }
+        &.theother {
+          background: #C32478;
+
+          .name, .profile-image {
+            float: right;
+          }
+          .profile-image {
+            padding-right: 2*$padding;
+          }
+        }
+
+        .name {
+          font-size: 21px;
+          padding-top: $padding;
+          color: white;
+        }
+        
+        .profile-image {
+          padding-left: $padding;
+          padding-right: $padding;
+          margin-top: -$base;
+          height: 6*$base;
+          width: 6*$base;
+          background-size: 6*$base;
+          background-size: contain; /* css3 enabled */
+        }
+      }
+
+      #exchange-exchange-symbol {
         width: 28px;
         height: 22px;
         margin-top: $half-margin;
@@ -66,52 +109,6 @@ body.controller-exchange_plugin_myprofile {
         left: $module5 + $padding;
         background: url($image-exchange);
         background-repeat: no-repeat;
-      }
-
-      #exchange-enterprise_profile {
-        background: #7857B8;
-        float: left;
-      }
-      #exchange-enterprise_theother {
-        background: #C32478;
-        float: right;
-      }
-      #exchange-enterprise_profile,
-      #exchange-enterprise_theother {
-        width: $module5 + $intercolumn + $padding - $border;
-        height: 4*$base;
-      }
-
-      #exchange-theother-name,
-      #exchange-profile-name {
-        font-size: 21px;
-        padding-top: $padding;
-        color: white;
-      }
-      #exchange-profile_thumb,
-      #exchange-profile-name {
-        float: left;
-      }
-      #exchange-theother_thumb,
-      #exchange-theother-name {
-        float: right;
-      }
-      #exchange-profile_thumb,
-      #exchange-theother_thumb {
-        padding-left: $padding;
-        padding-right: $padding;
-        margin-top: -$base;
-
-        img {
-          height: 6*$base;
-          width: 6*$base;
-        }
-      }
-      #exchange-profile_thumb {
-        padding-left: 2*$padding;
-      }
-      #exchange-theother_thumb {
-        padding-right: 2*$padding;
       }
     }
   }
