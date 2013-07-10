@@ -26,8 +26,8 @@
 
     <div class="evaluation-result">
 
-      <h5><%= _('The deal happened?') %></h5>
-      <%= select("result", '',  EvaluationPlugin::Evaluation::ResultMessage.values.map{ |m| _ m }, {:include_blank => false}, {:class => "evaluation-select", :name => "result"}) %>
+      <h5><%= _('The deal happened?') %>xx</h5>
+      <%= select("result", '',  EvaluationPlugin::Evaluation::ResultMessage.map{ |id,m| [_(m), id] }, {:include_blank => false}, {:class => "evaluation-select", :name => "result"}) %>
     </div>
 
     <%= f.submit _('Submit Evaluation'), :class => "action-button" %>
