@@ -93,24 +93,25 @@
   font-size: 10px; }
 
 /* Images */
-div.profile-image, a.profile-image {
-  background-repeat: no-repeat;
-  background-position: center; }
-  div.profile-image.thumb, a.thumb.profile-image {
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
     width: 48px;
-    height: 48px;
-    background-size: 48px;
-    background-size: contain;
-    /* css3 enabled */ }
-  div.profile-image.portrait, a.portrait.profile-image {
+    height: 48px; }
+  .profile-image.portrait {
     width: 120px;
-    height: 120px;
-    background-size: 120px;
+    height: 120px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
     background-size: contain;
     /* css3 enabled */ }
-
-a.profile-image {
-  display: inline-block; }
 
 /* Buttons */
 .action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
@@ -237,6 +238,7 @@ a.profile-image {
     width: 120px;
     height: 120px; }
   .profile-image .inner {
+    display: block;
     width: 100%;
     height: 100%;
     background-repeat: no-repeat;
@@ -733,24 +735,25 @@ body.controller-exchange_plugin_myprofile {
   font-size: 10px; }
 
 /* Images */
-div.profile-image, a.profile-image {
-  background-repeat: no-repeat;
-  background-position: center; }
-  div.profile-image.thumb, a.thumb.profile-image {
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
     width: 48px;
-    height: 48px;
-    background-size: 48px;
-    background-size: contain;
-    /* css3 enabled */ }
-  div.profile-image.portrait, a.portrait.profile-image {
+    height: 48px; }
+  .profile-image.portrait {
     width: 120px;
-    height: 120px;
-    background-size: 120px;
+    height: 120px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
     background-size: contain;
     /* css3 enabled */ }
-
-a.profile-image {
-  display: inline-block; }
 
 /* Buttons */
 .action-button, .exchange, #escambo-new-enterprise form input[type=submit], #escambo-enterprise-info .sidebar .info .contact-button a {
