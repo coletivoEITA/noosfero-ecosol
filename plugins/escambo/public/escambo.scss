@@ -364,6 +364,8 @@ $image-next: '/plugins/escambo/images/next.png';
   h3 {
     display: inline-block;
     padding-left: $padding;
+  }
+  h3, .add {
     margin-right: $half-margin;
   }
   .see-all {

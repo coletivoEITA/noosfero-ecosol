@@ -1199,12 +1199,10 @@ body.action-sniffer_plugin_myprofile-search {
   #escambo-enterprise-items h3 {
     display: inline-block;
     padding-left: 12px; }
-  #escambo-enterprise-items .add {
-    margin: 0 12px; }
+  #escambo-enterprise-items h3, #escambo-enterprise-items .add {
+    margin-right: 12px; }
   #escambo-enterprise-items #offers, #escambo-enterprise-items #knowledges, #escambo-enterprise-items #interests {
     margin-bottom: 24px; }
-    #escambo-enterprise-items #offers h3, #escambo-enterprise-items #knowledges h3, #escambo-enterprise-items #interests h3 {
-      margin-right: 12px; }
   #escambo-enterprise-items .escambo-snippet .second-column {
     width: 264px; }
   #escambo-enterprise-items .escambo-snippet .third-column {
