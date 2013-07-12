@@ -5,8 +5,6 @@
 #require_dependency 'sniffer_plugin'
 #require_dependency 'solr_plugin'
 
-require_dependency "#{File.dirname __FILE__}/ext/noosfero"
-
 class EscamboPlugin < Noosfero::Plugin
 
   def self.plugin_name

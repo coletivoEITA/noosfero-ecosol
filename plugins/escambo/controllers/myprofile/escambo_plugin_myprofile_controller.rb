@@ -8,7 +8,7 @@ class EscamboPluginMyprofileController < MyProfileController
     params[:enterprise_data] ||= {}
     @enterprise = Enterprise.new params[:enterprise_data].merge(:environment => environment)
     if request.post?
-      @enterprise.identifier = Noosfero.convert_to_identifier @enterprise.name
+      @enterprise.identifier = @enterprise.name.to_slug
       @enterprise.save!
       @enterprise.add_admin profile
       redirect_to @enterprise.url
