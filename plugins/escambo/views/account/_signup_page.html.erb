@@ -7,8 +7,6 @@
 
 <% @profile_data = @person %>
 
-<%= error_messages_for :user, :person, :enterprise, :header_message => _('The account could not be created') %>
-
 <% labelled_form_for :user, @user, :html => { :multipart => true, :id => 'signup-form', :honeypot => true } do |f| %>
 
   <input type="hidden" id="signup_time_key" name="signup_time_key" />
@@ -24,10 +22,12 @@
   </script>
 
   <div id="first-step" class="signup-step">
+    <%= error_messages_for :user, :person %>
     <%= render :partial => 'signup_form', :locals => {:f => f} %>
   </div>
 
   <div id="second-step" class="signup-step">
+    <%= error_messages_for :enterprise %>
     <%= render :partial => 'signup_second_step', :locals => {:f => f} %>
   </div>
 

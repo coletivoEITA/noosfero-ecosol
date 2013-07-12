@@ -165,6 +165,8 @@ class EscamboPlugin < Noosfero::Plugin
       @enterprises = []
 
       if request.post?
+        @enterprise = @selected_enterprise unless params[:enterprise_register] == "true"
+
         ::ActiveRecord::Base.transaction do
           @user.signup!
           owner_role = Role.find_by_name('owner')
@@ -177,12 +179,11 @@ class EscamboPlugin < Noosfero::Plugin
           @person = @user.person
 
           if params[:enterprise_register] == "true"
-            @enterprise.identifier = Noosfero.convert_to_identifier @enterprise.name
+            @enterprise.identifier = @enterprise.name.to_slug
             @enterprise.save!
             @enterprise.add_admin @person
           else
-            @enterprise = @selected_enterprise
-            @selected_enterprise.add_member @person
+            @enterprise.add_member @person
           end
         end
 

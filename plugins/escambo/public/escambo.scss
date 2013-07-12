@@ -364,20 +364,14 @@ $image-next: '/plugins/escambo/images/next.png';
   h3 {
     display: inline-block;
     padding-left: $padding;
+    margin-right: $half-margin;
   }
   .see-all {
     @extend .pstyle-tm1;
   }
-  .add {
-    margin: 0 $half-margin;
-  }
 
   #offers, #knowledges, #interests {
     margin-bottom: $margin;
-
-    h3 {
-      margin-right: $half-margin;
-    }
   }
 
   .escambo-snippet {
