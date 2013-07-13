@@ -5,7 +5,7 @@
     <%= t('distribution_plugin.views.supplier.index.this_is_the_list_of_s') %>
   </div>
 
-  <div class="subtitle supplier-add-link"><%= link_to t('distribution_plugin.views.supplier.index.add_supplier'), '#supplier-add', :onclick => 'distribution.supplier_add_link();', :class => 'toggle-edit' %></div>
+  <div class="subtitle supplier-add-link"><%= link_to t('distribution_plugin.views.supplier.index.add_supplier'), '#supplier-add', :onclick => 'suppliers.add_link();', :class => 'toggle-edit' %></div>
 
   <div id="filter-fields" class="filter-box">
     <strong><%= t('distribution_plugin.views.supplier.index.filter') %></strong>
@@ -19,7 +19,7 @@
   </div>
 
   <div class="supplier-listing box-align">
-    <div id="supplier-add" class="supplier value-row" toggleedit='distribution.supplier_toggle_edit();' >
+    <div id="supplier-add" class="supplier value-row" toggleedit='suppliers.toggle_edit();' >
       <%= render :partial => 'supplier', :object => @new_supplier %>
     </div>
 

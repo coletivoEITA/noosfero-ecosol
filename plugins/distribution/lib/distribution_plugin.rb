@@ -20,7 +20,7 @@ class DistributionPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['underscore-min.js', 'distribution']
+    ['underscore-min.js', 'toggle_edit', 'distribution']
   end
 
   def profile_blocks(profile)

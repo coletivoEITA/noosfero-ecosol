@@ -12,7 +12,7 @@ class DistributionPlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   # p in session -> p distributed -> p from supplier
   has_many :from_2x_products, :through => :from_products, :source => :from_products
 
-  extend DistributionPlugin::DistributionCurrencyHelper::ClassMethods
+  extend SuppliersPlugin::CurrencyHelper::ClassMethods
   has_number_with_locale :total_quantity_asked
   has_number_with_locale :total_parcel_quantity
   has_currency :total_price_asked

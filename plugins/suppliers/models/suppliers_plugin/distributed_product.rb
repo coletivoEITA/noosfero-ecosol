@@ -20,15 +20,6 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
   end
 
   def supplier_product
-    return @supplier_product if @supplier_product
-
-    @supplier_product = super
-    # automatically create a product if supplier is dummy
-    if !own? and dummy?
-      @supplier_product ||= SuppliersPlugin::DistributedProduct.new(:node => supplier.node, :supplier => supplier.node.self_supplier)
-    end
-
-    @supplier_product
   end
   def supplier_product=(value)
     if value.is_a?(Hash)

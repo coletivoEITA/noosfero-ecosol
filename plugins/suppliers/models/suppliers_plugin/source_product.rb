@@ -13,6 +13,10 @@ class SuppliersPlugin::SourceProduct < ActiveRecord::Base
   validates_associated :to_product
   validates_numericality_of :quantity, :allow_nil => true
 
+  def self.new_dummy attributes = {}
+    source self.new attributes
+  end
+
   alias_method :destroy!, :destroy
   def destroy
     to_product.destroy! if to_product

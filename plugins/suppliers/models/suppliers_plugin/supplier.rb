@@ -3,12 +3,20 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'
 
-  has_many :supplied_products, :foreign_key => 'supplier_id', :class_name => 'SuppliersPlugin::BaseProduct', :order => 'name ASC'
+  has_many :products, :through => :profile, :class_name => 'SuppliersPlugin::DistributedProduct'
+
+  has_many :supplied_products, :foreign_key => :supplier_id, :class_name => 'SuppliersPlugin::BaseProduct', :order => 'name ASC'
 
   named_scope :of_profile, lambda { |n| { :conditions => {:profile_id => n.id} } }
   named_scope :of_profile_id, lambda { |id| { :conditions => {:profile_id => id} } }
 
   named_scope :with_name, lambda { |name| { :conditions => ["LOWER(name) LIKE ?",'%'+name.downcase+'%']  } }
+
+  named_scope :from_supplier_id, lambda { |supplier_id| {
+      :conditions => ['suppliers_plugin_source_products.supplier_id = ?', supplier_id],
+      :joins => 'INNER JOIN suppliers_plugin_source_products ON products.id = suppliers_plugin_source_products.to_product_id'
+    }
+  }
 
   validates_presence_of :profile
   validates_presence_of :consumer
@@ -67,6 +75,31 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   end
 
   protected
+
+  module Roles
+    def self.consumer(env_id)
+      find_role('consumer', env_id)
+    end
+
+    private
+    def self.find_role(name, env_id)
+      ::Role.find_by_key_and_environment_id("distribution_node_#{name}", env_id)
+    end
+  end
+
+  acts_as_accessor
+  acts_as_accessible
+
+  def check_roles
+    Role.create!(
+      :key => 'distribution_node_consumer',
+      :name => I18n.t('distribution_plugin.models.node.consumer'),
+      :environment => self.profile.environment,
+      :permissions => [
+        'order_product',
+      ]
+    ) if self.profile and not SuppliersPlugin::Node::Roles.consumer(self.profile.environment)
+  end
 
   after_create :complete
   def complete

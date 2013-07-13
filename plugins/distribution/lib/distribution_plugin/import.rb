@@ -79,7 +79,7 @@ class DistributionPlugin::Import
         name = row[1]
         description = ''
       end
-      product =  SuppliersPlugin::DistributedProduct.new :node => node, :name => name, :description => description, :active => row[2]
+      product = SuppliersPlugin::DistributedProduct.new :node => node, :name => name, :description => description, :active => row[2]
       puts row[1] if product.nil? and verbose
       id_p[row[0]] = product
     end

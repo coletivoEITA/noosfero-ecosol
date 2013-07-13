@@ -2,17 +2,18 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
 
   belongs_to :profile
 
-  has_many :delivery_methods, :class_name => 'DistributionPlugin::DeliveryMethod', :foreign_key => 'node_id', :dependent => :destroy, :order => 'id ASC'
+  has_many :delivery_methods, :class_name => 'DistributionPlugin::DeliveryMethod', :foreign_key => :node_id, :dependent => :destroy, :order => 'id ASC'
   has_many :delivery_options, :through => :delivery_methods
 
-  has_many :sessions, :class_name => 'DistributionPlugin::Session', :foreign_key => 'node_id', :dependent => :destroy, :order => 'created_at DESC',
+  has_many :sessions, :class_name => 'DistributionPlugin::Session', :foreign_key => :node_id, :dependent => :destroy, :order => 'created_at DESC',
     :conditions => ["distribution_plugin_sessions.status <> 'new'"]
   has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy, :order => 'id ASC'
-  has_many :parcels, :class_name => 'DistributionPlugin::Order', :foreign_key => 'consumer_id', :dependent => :destroy, :order => 'id ASC'
+  has_many :parcels, :class_name => 'DistributionPlugin::Order', :foreign_key => :consumer_id, :dependent => :destroy, :order => 'id ASC'
 
-  has_many :products, :class_name => 'SuppliersPlugin::BaseProduct', :foreign_key => 'node_id', :dependent => :destroy, :order => 'distribution_plugin_products.name ASC'
-  has_many :order_products, :through => :orders, :source => :products, :order => 'name ASC'
-  has_many :parcel_products, :through => :parcels, :source => :products, :order => 'id ASC'
+  has_many :products, :through => :profile, :class_name => 'SuppliersPlugin::DistributedProduct', :dependent => :destroy, :order => 'products.name ASC'
+  has_many :offered_products, :through => :profile, :class_name => 'DistributionPlugin::OfferedProduct', :dependent => :destroy, :order => 'products.name ASC'
+  has_many :order_products, :through => :orders, :source => :offered_products, :order => 'name ASC'
+  has_many :parcel_products, :through => :parcels, :source => :offered_products, :order => 'id ASC'
   has_many :supplier_products, :through => :suppliers, :source => :products, :order => 'name ASC'
   has_many :consumer_products, :through => :consumers, :source => :consumer_products, :order => 'id ASC'
 
@@ -21,20 +22,20 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
   has_many :from_nodes, :through => :products
   has_many :to_nodes, :through => :products
 
-  has_many :sessions_custom_order, :class_name => 'DistributionPlugin::Session', :foreign_key => 'node_id', :dependent => :destroy,
+  has_many :sessions_custom_order, :class_name => 'DistributionPlugin::Session', :foreign_key => :node_id, :dependent => :destroy,
     :conditions => ["distribution_plugin_sessions.status <> 'new'"]
+
+  acts_as_having_image
+  belongs_to :image, :class_name => 'DistributionPlugin::HeaderImage'
 
   validates_presence_of :profile
   validates_inclusion_of :role, :in => ['supplier', 'collective', 'consumer']
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
 
-  extend DistributionPlugin::DistributionCurrencyHelper::ClassMethods
+  extend SuppliersPlugin::CurrencyHelper::ClassMethods
   has_number_with_locale :margin_percentage
   has_number_with_locale :margin_fixed
-
-  acts_as_having_image
-  belongs_to :image, :class_name => 'DistributionPlugin::HeaderImage'
 
   after_create :add_self_supplier
   after_create :add_own_members
@@ -172,31 +173,6 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
 
   def save_image
     image.save if image
-  end
-
-  module Roles
-    def self.consumer(env_id)
-      find_role('consumer', env_id)
-    end
-
-    private
-    def self.find_role(name, env_id)
-      ::Role.find_by_key_and_environment_id("distribution_node_#{name}", env_id)
-    end
-  end
-
-  acts_as_accessor
-  acts_as_accessible
-
-  def check_roles
-    Role.create!(
-      :key => 'distribution_node_consumer',
-      :name => I18n.t('distribution_plugin.models.node.consumer'),
-      :environment => profile.environment,
-      :permissions => [
-        'order_product',
-      ]
-    ) if profile and not DistributionPlugin::Node::Roles.consumer(profile.environment)
   end
 
   #for access_control

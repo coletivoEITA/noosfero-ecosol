@@ -7,7 +7,7 @@ class DistributionPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   has_many :suppliers, :through => :session_products, :uniq => true
   has_many :products, :class_name => 'DistributionPlugin::OrderedProduct', :foreign_key => 'order_id', :dependent => :destroy, :include => 'product',
-    :order => 'distribution_plugin_products.name ASC'
+    :order => 'products.name ASC'
 
   has_many :session_products, :through => :products, :source => :product
   has_many :distributed_products, :through => :session_products, :source => :from_products
@@ -118,7 +118,7 @@ class DistributionPlugin::Order < Noosfero::Plugin::ActiveRecord
     self.products.group_by{|p| p.supplier.name}
   end
 
-  extend DistributionPlugin::DistributionCurrencyHelper::ClassMethods
+  extend SuppliersPlugin::CurrencyHelper::ClassMethods
   has_number_with_locale :total_quantity_asked
   has_number_with_locale :parcel_quantity_total
   has_currency :total_price_asked

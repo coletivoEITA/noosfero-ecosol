@@ -32,7 +32,7 @@ class DistributionPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
   validates_numericality_of :price_allocated
   validates_numericality_of :price_payed
 
-  extend DistributionPlugin::DistributionCurrencyHelper::ClassMethods
+  extend SuppliersPlugin::CurrencyHelper::ClassMethods
   has_number_with_locale :quantity_asked
   has_number_with_locale :quantity_allocated
   has_number_with_locale :quantity_payed

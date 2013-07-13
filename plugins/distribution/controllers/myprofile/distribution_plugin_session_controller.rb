@@ -1,4 +1,4 @@
-class DistributionPlugin::SessionController < DistributionPluginMyprofileController
+class DistributionPluginSessionController < DistributionPluginMyprofileController
 
   no_design_blocks
 

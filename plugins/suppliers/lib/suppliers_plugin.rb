@@ -16,7 +16,7 @@ class SuppliersPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['suppliers.js']
+    ['toggle_edit', 'suppliers']
   end
 
 end

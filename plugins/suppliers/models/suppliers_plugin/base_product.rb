@@ -1,22 +1,21 @@
 # FIXME remove Base when plugin became a module
 class SuppliersPlugin::BaseProduct < Product
 
-  named_scope :by_profile, lambda { |n| { :conditions => {:profile_id => n.id} } }
-  named_scope :by_profile_id, lambda { |id| { :conditions => {:profile_id => id} } }
-  named_scope :from_supplier, lambda { |supplier| supplier.nil? ? {} : { :conditions => {:supplier_id => supplier.id} } }
-
-  # FIXME remove
   belongs_to :category, :class_name => 'ProductCategory'
   belongs_to :type_category, :class_name => 'ProductCategory'
 
-  named_scope :distributed, :conditions => ['distribution_plugin_products.session_id is null']
-  named_scope :in_session, :conditions => ['distribution_plugin_products.session_id is not null']
-  named_scope :for_session, lambda { |session| { :conditions => {:session_id => session.id} } }
+  named_scope :by_profile, lambda { |profile| { :conditions => {:profile_id => profile.id} } }
+  named_scope :by_profile_id, lambda { |profile_id| { :conditions => {:profile_id => profile_id} } }
+  named_scope :from_supplier, lambda { |supplier| supplier.nil? ? {} : { :conditions => {:supplier_id => supplier.id} } }
+
+  named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
 
   named_scope :own,
-    :select => 'distribution_plugin_products.*',
-    :conditions => ['distribution_plugin_products.profile_id = suppliers_plugin_suppliers.profile_id'],
-    :joins => 'INNER JOIN suppliers_plugin_suppliers ON suppliers_plugin_products.supplier_id = suppliers_plugin_suppliers.id'
+    :select => 'products.*',
+    :from => 'products, suppliers_plugin_suppliers',
+    :conditions => ['products.profile_id = suppliers_plugin_suppliers.profile_id'],
+    :joins => 'INNER JOIN suppliers_plugin_source_products ON products.id = suppliers_plugin_source_products.to_product_id ' +
+      'INNER JOIN suppliers_plugin_suppliers ON suppliers_plugin_source_products.supplier_id = suppliers_plugin_suppliers.id '
   named_scope :active, :conditions => {:active => true}
   named_scope :inactive, :conditions => {:active => false}
   named_scope :archived, :conditions => {:archived => true}
@@ -25,26 +24,12 @@ class SuppliersPlugin::BaseProduct < Product
   has_many :sources_from_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :to_product_id
   has_many :sources_to_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :from_product_id, :dependent => :destroy
 
+  has_many :suppliers, :through => :sources_from_products, :order => 'id ASC'
+
   has_many :to_products, :through => :sources_to_products, :order => 'id ASC'
   has_many :from_products, :through => :sources_from_products, :order => 'id ASC'
   has_many :to_profiles, :through => :to_products, :source => :profile
   has_many :from_profiles, :through => :from_products, :source => :profile
-
-  def from_product
-    self.from_products.first
-  end
-  def from_product=(value)
-    self.from_products = [value]
-  end
-  def supplier
-    self.from_product.supplier if self.from_product
-  end
-  def supplier_products
-    self.supplier.nil? ? self.from_products : self.from_products.select{ |fp| fp.profile == self.supplier }
-  end
-  def supplier_product
-    self.supplier_products.first
-  end
 
   settings_items :minimum_selleable, :type => Float, :default => nil
   settings_items :margin_percentage, :type => Float, :default => nil
@@ -94,15 +79,51 @@ class SuppliersPlugin::BaseProduct < Product
     Unit.new(:singular => I18n.t('distribution_plugin.models.product.unit'), :plural => I18n.t('distribution_plugin.models.product.units'))
   end
 
-  def minimum_selleable
-    self['minimum_selleable'] || 0.1
-  end
-
   def dummy?
     supplier ? supplier.dummy? : false
   end
   def own?
     supplier ? supplier.node == node : false
+  end
+
+  def from_product
+    self.from_products.first
+  end
+  def from_product= value
+    self.from_products = [value]
+  end
+
+  def supplier
+    self.from_product
+  end
+  def supplier= value
+    self.from_product.supplier = value if self.from_product
+  end
+
+  def supplier_products
+    self.from_products
+  end
+  def supplier_product
+    r = self.supplier_products.first
+    return r if r
+
+    # automatically create a product if supplier is dummy
+    if !own? and dummy?
+      @supplier_product ||= SuppliersPlugin::DistributedProduct.new :profile => supplier.node
+    end
+
+    @supplier_product
+  end
+  def supplier_product=(value)
+    if value.is_a?(Hash)
+      supplier_product.attributes = value if supplier_product
+    else
+      @supplier_product = value
+    end
+  end
+
+  def minimum_selleable
+    self['minimum_selleable'] || 0.1
   end
 
   def price_with_margins(base_price = nil, margin_source = nil)
