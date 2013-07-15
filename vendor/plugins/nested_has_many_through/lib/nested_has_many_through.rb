@@ -19,7 +19,7 @@ module NestedHasManyThrough
         alias_method :original_construct_joins, :construct_joins
 
         def construct_conditions
-          if @reflection.macro == :has_one
+          if @reflection.macro == :has_one or @reflection.through_reflection.macro == :belongs_to
             original_construct_conditions
           else
             @nested_join_attributes ||= construct_nested_join_attributes
@@ -28,7 +28,7 @@ module NestedHasManyThrough
         end
 
         def construct_joins(custom_joins = nil)
-          if @reflection.macro == :has_one
+          if @reflection.macro == :has_one or @reflection.through_reflection.macro == :belongs_to
             original_construct_joins(custom_joins)
           else
             @nested_join_attributes ||= construct_nested_join_attributes
