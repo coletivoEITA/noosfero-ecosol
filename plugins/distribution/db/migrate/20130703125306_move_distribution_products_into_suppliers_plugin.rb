@@ -6,7 +6,7 @@ class DistributionPluginProduct < ActiveRecord::Base
 end
 class DistributionPluginDistributedProduct < DistributionPluginProduct
 end
-class DistributionPluginSessionProduct < DistributionPluginProduct
+class DistributionPluginOfferedProduct < DistributionPluginProduct
 end
 class SuppliersPlugin::BaseProduct < Product
   validates_uniqueness_of :name, :scope => :profile_id, :allow_nil => true, :if => proc{ |p| false }

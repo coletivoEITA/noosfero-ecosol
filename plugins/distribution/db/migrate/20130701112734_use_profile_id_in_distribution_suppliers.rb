@@ -1,3 +1,5 @@
+class DistributionPluginNode < ActiveRecord::Base
+end
 class DistributionPluginSupplier < ActiveRecord::Base
   belongs_to :node, :class_name => 'DistributionPluginNode'
   belongs_to :consumer, :class_name => 'DistributionPluginNode'

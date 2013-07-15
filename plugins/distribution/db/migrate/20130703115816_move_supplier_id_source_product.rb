@@ -3,7 +3,7 @@ class DistributionPluginProduct < ActiveRecord::Base
 end
 class DistributionPluginDistributedProduct < DistributionPluginProduct
 end
-class DistributionPluginSessionProduct < DistributionPluginProduct
+class DistributionPluginOfferedProduct < DistributionPluginProduct
 end
 class DistributionPluginSourceProduct < ActiveRecord::Base
   belongs_to :to_product, :class_name => "DistributionPluginProduct"
@@ -16,7 +16,8 @@ class MoveSupplierIdSourceProduct < ActiveRecord::Migration
     ::ActiveRecord::Base.transaction do
       DistributionPluginSourceProduct.all.each do |sp|
         next if sp.to_product.nil?
-        sp.update_attribute! :supplier_id, sp.to_product.supplier.profile_id
+        sp.supplier_id = sp.to_product.supplier.profile_id
+        sp.save!
       end
     end
 

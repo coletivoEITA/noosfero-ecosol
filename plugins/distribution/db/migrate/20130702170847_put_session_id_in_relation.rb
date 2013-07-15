@@ -2,6 +2,8 @@ class DistributionPluginProduct < ActiveRecord::Base
 end
 class DistributionPluginSessionProduct < ActiveRecord::Base
 end
+class DistributionPluginOfferedProduct < DistributionPluginProduct
+end
 
 class PutSessionIdInRelation < ActiveRecord::Migration
   def self.up
@@ -9,6 +11,8 @@ class PutSessionIdInRelation < ActiveRecord::Migration
       t.integer :session_id
       t.integer :product_id
     end
+
+    DistributionPluginProduct.update_all "type = 'DistributionPluginOfferedProduct'", "type = 'DistributionPluginSessionProduct'"
 
     ::ActiveRecord::Base.transaction do
       DistributionPluginProduct.all(:conditions => ['session_id IS NOT NULL']).each do |product|
