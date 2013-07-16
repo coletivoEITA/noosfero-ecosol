@@ -5473,12 +5473,12 @@ msgid "Send an e-mail to %s"
 msgstr "Enviar e-mail para %s"
 
 #: app/views/contact/new.rhtml:4
-msgid "Send an e-mail to administrators"
-msgstr "Enviar um e-mail para os administradores"
+msgid "Send an e-mail to page administration of this enterprise"
+msgstr "Enviar um e-mail para administração da página deste empreendimento"
 
 #: app/views/contact/new.rhtml:6
-msgid "The e-mail will be sent to the administrators of '%s'"
-msgstr "O e-mail será enviado para os administradores de '%s'"
+msgid "The e-mail will be sent to the people who administers the page of '%s'"
+msgstr "O e-mail será enviado para as pessoas que administram a página de '%s'"
 
 #: app/views/contact/new.rhtml:23
 msgid "I want to receive a copy of the message in my e-mail."
