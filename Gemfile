@@ -12,7 +12,6 @@ gem 'hpricot', '0.8.2'
 gem 'i18n', '0.4.1'
 gem 'daemons', '1.0.10'
 gem 'rubyzip'
-gem 'rack-cache'
 
 #Indirect, matching debian squeeze versions
 gem 'builder', '2.1.2'
