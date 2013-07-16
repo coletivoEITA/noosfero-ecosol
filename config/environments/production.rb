@@ -19,3 +19,10 @@ config.action_view.cache_template_loading            = true
 # config.action_mailer.raise_delivery_errors = false
 
 config.cache_store = :mem_cache_store, "localhost"
+
+require 'rack/cache'
+config.middleware.use ::Rack::Cache,
+  :verbose     => true,
+  :metastore   => 'memcached://localhost:11211/',
+  :entitystore => 'file:/var/cache/rack'
+
