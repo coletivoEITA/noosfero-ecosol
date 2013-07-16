@@ -771,7 +771,6 @@ msgstr "Ativar"
 #: app/views/enterprise_validation/list_processed.rhtml:9
 #: app/views/enterprise_validation/index.rhtml:14
 #: app/views/enterprise_registration/basic_information.rhtml:23
-#: app/views/profile_editor/_organization.rhtml:42
 #: app/views/profile_editor/_person_form.rhtml:23 app/views/cms/_blog.rhtml:35
 #: app/views/box_organizer/_highlights_block.rhtml:4
 #: app/views/box_organizer/_feed_reader_block.rhtml:2
@@ -782,6 +781,10 @@ msgstr "Ativar"
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:23
 msgid "Address"
 msgstr "Endereço"
+
+#: app/views/profile_editor/_organization.rhtml:42
+msgid "Internet Address (URL)"
+msgstr "Endereço na Internet (URL)"
 
 #: app/models/product.rb:- app/models/create_enterprise.rb:6
 #: app/views/profile_editor/_person_form.rhtml:13
