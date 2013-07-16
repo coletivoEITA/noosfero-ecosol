@@ -94,7 +94,7 @@ class EscamboPlugin < Noosfero::Plugin
     if profile.enterprise?
       render :action => 'index'
     else
-      render_not_found
+      redirect_to :controller => 'home'
     end
   end
   def profile_controller_filters
