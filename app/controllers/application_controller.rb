@@ -72,13 +72,13 @@ class ApplicationController < ActionController::Base
     return unless user
     if id
       @active_organization = environment.profiles.find_by_id id
-    elsif session[:active_organization]
-      @active_organization = environment.profiles.find_by_id session[:active_organization]
+    elsif cookies[:active_organization]
+      @active_organization = environment.profiles.find_by_id cookies[:active_organization]
     else
       @active_organization = user.memberships.first
     end
-    #@active_organization = nil unless @active_organization and @active_organization.admins.include? user
-    session[:active_organization] = @active_organization.id if @active_organization
+    @active_organization = nil unless @active_organization and @active_organization.members.include? user
+    cookies[:active_organization] = @active_organization.id if @active_organization
   end
 
   def setup_multitenancy
