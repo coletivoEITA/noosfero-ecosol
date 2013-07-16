@@ -39,7 +39,6 @@ class EscamboPlugin < Noosfero::Plugin
   end
   SearchDataMix = proc do
     @results = @interests + @products + @knowledges
-    @results = @results.sort_by{ |r| r.created_at }
     @results = @results.last SearchLimit
   end
   SearchIndexFilter = proc do
@@ -70,6 +69,7 @@ class EscamboPlugin < Noosfero::Plugin
 
     instance_eval &SearchDataLoad
     instance_eval &SearchDataMix
+    @results = @results.sort_by{ rand }
 
     # overwrite controller action
     render :action => :index
