@@ -66,6 +66,7 @@ class EscamboPlugin < Noosfero::Plugin
     offset = environment.enterprises.count - SearchLimit
     offset = 0 if offset < 0
     @enterprises = environment.enterprises.visible.all :offset => rand(offset), :limit => SearchLimit
+    @enterprises = @enterprises.sort_by{ rand }
 
     instance_eval &SearchDataLoad
     instance_eval &SearchDataMix
