@@ -18,7 +18,7 @@ class DistributionPlugin::Session < Noosfero::Plugin::ActiveRecord
 
   has_many :ordered_suppliers, :through => :orders_confirmed, :source => :suppliers
   has_many :ordered_products, :through => :orders_confirmed, :source => :products
-  has_many :ordered_session_products, :through => :orders_confirmed, :source => :session_products, :uniq => true
+  has_many :ordered_session_products, :through => :orders_confirmed, :source => :products, :uniq => true
   has_many :ordered_distributed_products, :through => :orders_confirmed, :source => :distributed_products, :uniq => true
   has_many :ordered_supplier_products, :through => :orders_confirmed, :source => :supplier_products, :uniq => true
 

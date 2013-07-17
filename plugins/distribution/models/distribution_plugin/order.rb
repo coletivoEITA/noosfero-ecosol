@@ -12,7 +12,7 @@ class DistributionPlugin::Order < Noosfero::Plugin::ActiveRecord
   has_many :distributed_products, :through => :session_products, :source => :from_products
   has_many :supplier_products, :through => :distributed_products, :source => :from_products
 
-  has_many :suppliers, :through => :session_products, :uniq => true
+  has_many :suppliers, :through => :supplier_products, :uniq => true
 
   has_many :from_products, :through => :products
   has_many :to_products, :through => :products

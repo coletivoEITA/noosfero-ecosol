@@ -2,11 +2,11 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
   no_design_blocks
 
   def new
-    @session_product = SuppliersPlugin::BaseProduct.find params[:session_product_id]
-    return render_not_found unless @session_product
+    @offered_product = SuppliersPlugin::OfferedProduct.find params[:offered_product_id]
+    return render_not_found unless @offered_product
 
     if params[:order_id] == 'new'
-      @session = @session_product.session
+      @session = @offered_product.session
       raise 'Cycle closed for orders' unless @session.orders?
       @order = DistributionPlugin::Order.create! :session => @session, :consumer => @user_node
     else
@@ -17,16 +17,16 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
     raise 'Order confirmed or cycle is closed for orders' unless @order.open?
     raise 'You are not logged or is not the owner of this order' if @user_node.nil? or @user_node != @order.consumer
 
-    @ordered_product = DistributionPlugin::OrderedProduct.find_by_order_id_and_session_product_id(@order.id, @session_product.id)
+    @ordered_product = DistributionPlugin::OrderedProduct.find_by_order_id_and_product_id @order.id, @offered_product.id
     @quantity_asked = SuppliersPlugin::CurrencyHelper.parse_localized_number(params[:quantity_asked]) || 1
-    min = @session_product.minimum_selleable
+    min = @offered_product.minimum_selleable
 
     if @ordered_product.nil? and @quantity_asked > 0
       if @quantity_asked < min
         @quantity_asked = min
         @quantity_asked_less_than_minimum = true
       end
-      @ordered_product = DistributionPlugin::OrderedProduct.create! :order_id => @order.id, :session_product_id => @session_product.id, :quantity_asked => @quantity_asked
+      @ordered_product = DistributionPlugin::OrderedProduct.create! :order_id => @order.id, :product_id => @offered_product.id, :quantity_asked => @quantity_asked
       @quantity_asked_less_than_minimum = @ordered_product if @quantity_asked_less_than_minimum
     else
       if @quantity_asked <= 0
@@ -48,7 +48,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
       return
     end
     @ordered_product = DistributionPlugin::OrderedProduct.find params[:id]
-    @session_product = @ordered_product.session_product
+    @offered_product = @ordered_product.offered_product
     @order = @ordered_product.order
     @session = @order.session
     raise 'Order confirmed or cycle is closed for orders' unless @order.open?
@@ -77,7 +77,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
 
   def destroy
     @ordered_product = DistributionPlugin::OrderedProduct.find params[:id]
-    @session_product = @ordered_product.session_product
+    @offered_product = @ordered_product.offered_product
     @order = @ordered_product.order
     @session = @order.session
     @ordered_product.destroy

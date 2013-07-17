@@ -20,7 +20,7 @@ module DistributionPlugin::Factory
     defaults_for_distribution_plugin_product(attrs)
   end
 
-  def defaults_for_distribution_plugin_session_product(attrs = {})
+  def defaults_for_distribution_plugin_offered_product(attrs = {})
     hash = defaults_for_distribution_plugin_product(attrs)
     node = hash[:node]
     hash.merge({
@@ -54,7 +54,7 @@ module DistributionPlugin::Factory
 
   def defaults_for_distribution_plugin_ordered_product
     {:order => build(DistributionPlugin::Order),
-     :session_product => build(DistributionPlugin::OfferedProduct),
+     :product => build(DistributionPlugin::OfferedProduct),
      :quantity_payed => 1.0, :quantity_asked => 2.0, :quantity_allocated => 3.0,
      :price_payed => 10.0, :price_asked => 20.0, :price_allocated => 30.0}
   end

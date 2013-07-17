@@ -2,7 +2,7 @@
 <% if products_for_order_by_supplier.empty? %>
   <strong><%= t('distribution_plugin.views.product._order_search.this_search_hasn_t_re') %></strong>
 <% else %>
-  <% products_for_order_by_supplier.each do |supplier, session_products| %>
+  <% products_for_order_by_supplier.each do |supplier, offered_products| %>
     <div class="supplier-table">
       <div class="supplier"><%= supplier.name %></div>
 
@@ -15,8 +15,8 @@
       </div>
 
       <div class="table-content">
-        <% session_products.each do |product| %>
-          <div id="session-product-<%=product.id%>" class="order-session-product value-row" toggleedit="distribution.order_session_product_toggle();">
+        <% offered_products.each do |product| %>
+          <div id="session-product-<%=product.id%>" class="order-session-product value-row" toggleedit="distribution.order_offered_product_toggle();">
             <%= render :partial => "distribution_plugin_product/order_edit", :locals => {
               :product => product, :order => order, :session => session,
               :ordered_product => order.blank? ? nil : order.products.find_by_product_id(product.id) } %>
