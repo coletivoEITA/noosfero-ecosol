@@ -3,23 +3,24 @@ class SnifferPlugin < Noosfero::Plugin; end
 
 require_dependency "#{File.dirname __FILE__}/ext/enterprise"
 require_dependency "#{File.dirname __FILE__}/ext/product"
+require_dependency "#{File.dirname __FILE__}/ext/product_category"
 require_dependency "#{File.dirname __FILE__}/ext/profile"
 require_dependency "#{File.dirname __FILE__}/ext/article"
 require_dependency "#{File.dirname __FILE__}/ext/noosfero/plugin"
 
 # solr indexed models needs to be loaded
-if ActiveRecord::Base.connection.table_exists? "sniffer_plugin_opportunities"
+if defined? SolrPlugin and ActiveRecord::Base.connection.table_exists? "sniffer_plugin_opportunities"
   require "#{File.dirname __FILE__}/../models/sniffer_plugin/opportunity"
 end
 
 class SnifferPlugin < Noosfero::Plugin
 
   def self.plugin_name
-    "Sniffer"
+    _("Opportunities sniffer")
   end
 
   def self.plugin_description
-    _("Sniffs opportunities ...")
+    _("Finds potencial suppliers and consumers of a enterprise")
   end
 
   def stylesheet?
@@ -36,11 +37,11 @@ class SnifferPlugin < Noosfero::Plugin
     buttons
   end
 
-  def profile_blocks(profile)
+  def profile_blocks profile
     SnifferPlugin::InterestsBlock
   end
 
-  def environment_blocks(environment)
+  def environment_blocks environment
     SnifferPlugin::InterestsBlock
   end
 

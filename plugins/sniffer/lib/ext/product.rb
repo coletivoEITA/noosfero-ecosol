@@ -43,7 +43,7 @@ class Product
   # interest x products
   named_scope :interests_suppliers_products, lambda { |profile|
     {
-    :from => "sniffer_plugin_profiles sniffer",
+    :from => "profiles sniffer",
     :select => "DISTINCT products.id, products.name AS my_product_name,
       profiles.id as profile_id, profiles.identifier as profile_identifier, profiles.name as profile_name, profiles.lat as profile_lat, profiles.lng as profile_lng,
       categories.id as product_category_id, categories.name as product_category_name,
@@ -53,7 +53,7 @@ class Product
       INNER JOIN categories ON ( op.opportunity_id = categories.id )
       INNER JOIN products ON ( products.product_category_id = categories.id )
       INNER JOIN profiles ON ( products.enterprise_id = profiles.id )",
-    :conditions => "sniffer.enabled = true AND sniffer.profile_id = #{profile.id} AND products.enterprise_id <> #{profile.id}
+    :conditions => "sniffer.id = #{profile.id} AND products.enterprise_id <> #{profile.id}
       AND profiles.public_profile = true AND profiles.visible = true
       AND profiles.id <> #{profile.id}"
     }
@@ -69,8 +69,7 @@ class Product
       SQRT( POW((#{KM_LAT} * (#{profile.lat} - profiles.lat)), 2) + POW((#{KM_LNG} * (#{profile.lng} - profiles.lng)), 2)) AS profile_distance",
     :joins => "INNER JOIN categories ON ( categories.id = products.product_category_id )
       INNER JOIN sniffer_plugin_opportunities as op ON ( categories.id = op.opportunity_id AND op.opportunity_type = 'ProductCategory' )
-      INNER JOIN sniffer_plugin_profiles sniffer ON ( op.profile_id = sniffer.id AND sniffer.enabled = true )
-      INNER JOIN profiles ON ( sniffer.profile_id = profiles.id )",
+      INNER JOIN profiles ON ( op.profile_id = profiles.id )",
     :conditions => "products.enterprise_id = #{profile.id}
       AND profiles.public_profile = true AND profiles.visible = true
       AND profiles.id <> #{profile.id}"
@@ -128,8 +127,7 @@ class Product
     :from => "articles",
     :joins =>   "INNER JOIN article_resources ON (articles.id = article_resources.article_id)
                INNER JOIN sniffer_plugin_opportunities as op ON ( article_resources.resource_id = op.opportunity_id AND op.opportunity_type = 'ProductCategory' AND article_resources.resource_type = 'ProductCategory' )
-               INNER JOIN sniffer_plugin_profiles sniffer ON ( op.profile_id = sniffer.id AND sniffer.enabled = true )
-               INNER JOIN profiles ON ( sniffer.profile_id = profiles.id )",
+               INNER JOIN profiles ON ( op.profile_id = profiles.id )",
     :conditions => "articles.profile_id = #{profile.id}
                   AND profiles.public_profile = true
                   AND profiles.visible = true
@@ -149,12 +147,10 @@ class Product
     :from => "articles",
     :joins =>   "INNER JOIN article_resources ON (articles.id = article_resources.article_id)
                INNER JOIN sniffer_plugin_opportunities as op ON ( article_resources.resource_id = op.opportunity_id AND op.opportunity_type = 'ProductCategory' AND article_resources.resource_type = 'ProductCategory' )
-               INNER JOIN sniffer_plugin_profiles sniffer ON ( op.profile_id = sniffer.id AND sniffer.enabled = true )
                INNER JOIN profiles ON ( articles.profile_id = profiles.id )",
     :conditions => "articles.profile_id <> #{profile.id}
-                  AND profiles.public_profile = true
-                  AND profiles.visible = true
-                  AND sniffer.profile_id = #{profile.id}"
+                  AND profiles.public_profile = true AND profiles.visible = true
+                  AND profiles.id = #{profile.id}"
     }
   }
 
@@ -181,8 +177,7 @@ class Product
       op.opportunity_id",
     :joins => "INNER JOIN categories ON ( categories.id = products.product_category_id )
       INNER JOIN sniffer_plugin_opportunities as op ON ( categories.id = op.opportunity_id AND op.opportunity_type = 'ProductCategory' )
-      INNER JOIN sniffer_plugin_profiles sniffer ON ( op.profile_id = sniffer.id AND sniffer.enabled = true )
-      INNER JOIN profiles ON ( sniffer.profile_id = profiles.id )",
+      INNER JOIN profiles ON ( op.profile_id = profiles.id )",
     :conditions => "products.enterprise_id = #{producer.id}
       AND profiles.public_profile = true AND profiles.visible = true
       AND profiles.id = #{interested.id}"

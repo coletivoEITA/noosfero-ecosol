@@ -1,10 +1,6 @@
-# WORKAROUND: plugin class don't scope subclasses causing core classes conflict
-require_dependency "#{File.dirname __FILE__}/profile"
-
 class SnifferPlugin::Opportunity < Noosfero::Plugin::ActiveRecord
 
-  belongs_to :sniffer_profile, :class_name => 'SnifferPlugin::Profile', :foreign_key => :profile_id
-  has_one :profile, :through => :sniffer_profile
+  belongs_to :profile
 
   belongs_to :opportunity, :polymorphic => true
 
@@ -20,11 +16,15 @@ class SnifferPlugin::Opportunity < Noosfero::Plugin::ActiveRecord
     :conditions => ['sniffer_plugin_opportunities.opportunity_type = ?', 'ProductCategory']
   }
 
+  delegate :lat, :lng, :to => :product_category, :allow_nil => true
+
   if defined? SolrPlugin
     acts_as_searchable :fields => [
         # searched fields
         # filtered fields
+        {:profile_id => :integer},
         # ordered/query-boosted fields
+        {:lat => :float}, {:lng => :float},
       ], :include => [
         {:product_category => {:fields => [:name, :path, :slug, :lat, :lng, :acronym, :abbreviation]}},
       ]

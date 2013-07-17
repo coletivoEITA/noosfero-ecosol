@@ -1,16 +1,12 @@
 class SnifferPluginMyprofileController < MyProfileController
 
-  before_filter :fetch_sniffer_profile
-
   helper CmsHelper
   helper_method :profile_hash
 
   def edit
     if request.post?
       begin
-        @sniffer_profile.update_attributes(params[:sniffer])
-        @sniffer_profile.enabled = true
-        @sniffer_profile.save!
+        profile.update_attributes params[:sniffer]
         session[:notice] = _('Consumer interests updated')
       rescue Exception => exception
         flash[:error] = _('Could not save consumer interests')
@@ -38,9 +34,6 @@ class SnifferPluginMyprofileController < MyProfileController
     end
   end
 
-  #FIXME: move into class
-  ProductCategory.has_many :enterprises, :through => :products
-
   def product_category_add
     @product_category = environment.categories.find params[:id]
     @profiles = @product_category.enterprises
@@ -49,8 +42,8 @@ class SnifferPluginMyprofileController < MyProfileController
   def search
     self.class.no_design_blocks
 
-    @suppliers_products = @sniffer_profile.suppliers_products
-    @consumers_products = @sniffer_profile.consumers_products
+    @suppliers_products = profile.sniffer_suppliers_products
+    @consumers_products = profile.sniffer_consumers_products
     @no_results = @suppliers_products.count == 0 and @consumers_products.count == 0
 
     build_products @suppliers_products.collect(&:attributes)
@@ -87,10 +80,6 @@ class SnifferPluginMyprofileController < MyProfileController
   end
 
   protected
-
-  def fetch_sniffer_profile
-    @sniffer_profile = SnifferPlugin::Profile.find_or_create profile
-  end
 
   def profile_hash profile
     methods = [:id, :name, :lat, :lng, :distance]
