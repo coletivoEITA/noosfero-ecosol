@@ -1,7 +1,4 @@
-module DistributionPlugin::DistributionProductHelper
-
-  include DistributionPlugin::DistributionDisplayHelper
-  include DistributionPlugin::SessionHelper
+module SuppliersPlugin::SuppliersProductHelper
 
   def supplier_select f, profile, selected_supplier, new_record
    field_options = !new_record ? {:disabled => 'disabled'} :

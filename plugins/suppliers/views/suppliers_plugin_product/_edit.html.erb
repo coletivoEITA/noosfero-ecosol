@@ -15,7 +15,7 @@
     <%= supplier_select f, profile, product.supplier, new_record %>
 
     <% if product.blank? or (!product.own? and (product.supplier.blank? or @not_distributed_products)) %>
-      <%= render :partial => 'select_missing' %>
+      <%= render :partial => 'suppliers_plugin_product/select_missing' %>
     <% else %>
       <%= f.hidden_field :supplier_product_id if new_record %>
 
@@ -109,7 +109,7 @@
             </div>
           <% end %>
 
-          <%= render :partial => 'price_details', :locals => {:f => f, :product => product, :supplier_product => false} %>
+          <%= render :partial => 'suppliers_plugin_product/price_details', :locals => {:f => f, :product => product, :supplier_product => false} %>
 
           <%= f.check_box :available, :style => 'float: left' %>
           <%= f.label :available, t('distribution_plugin.views.product._edit.commercialization_act'), :class => 'line-label' %>
@@ -149,7 +149,7 @@
                 </div>
               <% end %>
 
-              <%= render :partial => 'price_details', :locals => {:f => f, :product => product.supplier_product, :supplier_product => true} %>
+              <%= render :partial => 'suppliers_plugin_product/price_details', :locals => {:f => f, :product => product.supplier_product, :supplier_product => true} %>
             <% end %>
           </div>
         <% end %>
