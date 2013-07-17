@@ -172,20 +172,15 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
     image.save if image
   end
 
-  #for access_control
-  def blocks_to_expire_cache
-    []
-  end
-  def cache_keys(params = {})
-    []
-  end
-
   def method_missing method, *args, &block
     if self.profile.respond_to? method
       self.profile.send method, *args, &block
     else
       super method, *args, &block
     end
+  end
+  def respond_to? method
+    super method or self.profile.respond_to? method
   end
 
 end

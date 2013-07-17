@@ -28,6 +28,9 @@ end
 class DistributionPlugin::OfferedProduct < SuppliersPlugin::BaseProduct
 end
 
+class DistributionPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
+end
+
 class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
   def self.up
     rename_table :distribution_plugin_source_products, :suppliers_plugin_source_products
@@ -58,9 +61,13 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
       end
 
       SuppliersPlugin::SourceProduct.all.each do |sp|
-        sp.to_product_id = id_translation[sp.to_product_id]
-        sp.from_product_id = id_translation[sp.from_product_id]
-        sp.save false
+        sp.update_attributes! :to_product_id => id_translation[sp.to_product_id],
+          :from_product_id => id_translation[sp.from_product_id]
+      end
+
+      rename_column :distribution_plugin_ordered_products, :session_product_id, :product_id
+      DistributionPlugin::OrderedProduct.all.each do |op|
+        op.update_attributes! :product_id => id_translation[op.product_id]
       end
     end
 

@@ -46,4 +46,9 @@ class Product
     self.from_products.first
   end
 
+  def supplier
+    @supplier ||= self.from_product.supplier if self.from_product
+    @supplier ||= self.profile.self_supplier
+  end
+
 end

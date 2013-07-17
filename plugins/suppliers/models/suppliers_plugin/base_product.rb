@@ -1,6 +1,8 @@
 # FIXME remove Base when plugin became a module
 class SuppliersPlugin::BaseProduct < Product
 
+  self.abstract_class = true
+
   validates_presence_of :name
 
   settings_items :minimum_selleable, :type => Float, :default => nil

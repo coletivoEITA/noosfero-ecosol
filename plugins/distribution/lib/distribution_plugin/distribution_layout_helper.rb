@@ -34,7 +34,7 @@ module DistributionPlugin::DistributionLayoutHelper
     return unless @node and @node.collective?
     output = render :file => 'distribution_plugin_layouts/default'
     if on_homepage?
-      extend DistributionPlugin::DistributionProductHelper
+      extend SuppliersPlugin::SuppliersProductHelper
       output += render :file => 'distribution_plugin_gadgets/sessions'
     end
     output

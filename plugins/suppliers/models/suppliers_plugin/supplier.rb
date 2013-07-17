@@ -80,9 +80,6 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     end
   end
 
-  acts_as_accessor
-  acts_as_accessible
-
   def check_roles
     Role.create!(
       :key => 'distribution_node_consumer',
@@ -107,6 +104,9 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     else
       super method, *args, &block
     end
+  end
+  def respond_to? method
+    super method or self.profile.respond_to? method
   end
 
 end

@@ -5,7 +5,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
   before_filter :login_required, :except => [:index, :edit]
   before_filter :set_admin_action, :only => [:session_edit]
 
-  helper DistributionPlugin::DistributionProductHelper
+  helper SuppliersPlugin::SuppliersProductHelper
 
   def index
     @year = (params[:year] || DateTime.now.year).to_s

@@ -8,7 +8,9 @@ class DistributionPlugin::Session < Noosfero::Plugin::ActiveRecord
   has_many :orders, :class_name => 'DistributionPlugin::Order', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC'
   has_many :orders_confirmed, :class_name => 'DistributionPlugin::Order', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC',
     :conditions => ['distribution_plugin_orders.status = ?', 'confirmed']
-  has_many :products, :class_name => 'SuppliersPlugin::BaseProduct', :foreign_key => :session_id, :order => 'name ASC'
+
+  has_many :session_products, :foreign_key => :session_id, :class_name => 'DistributionPlugin::SessionProduct'
+  has_many :products, :through => :session_products, :order => 'name ASC'
 
   has_many :from_products, :through => :products, :order => 'name ASC'
   has_many :from_nodes, :through => :products

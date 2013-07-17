@@ -5,10 +5,6 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
   after_save :save_self_source
 
-  def supplier
-    @supplier ||= self.from_product.supplier if self.from_product
-    @supplier ||= self.profile.self_supplier
-  end
   def supplier= value
     @supplier = value
   end

@@ -5,13 +5,14 @@ class DistributionPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   belongs_to :consumer, :class_name => 'DistributionPlugin::Node'
 
-  has_many :suppliers, :through => :session_products, :uniq => true
-  has_many :products, :class_name => 'DistributionPlugin::OrderedProduct', :foreign_key => 'order_id', :dependent => :destroy, :include => 'product',
-    :order => 'products.name ASC'
+  has_many :products, :class_name => 'DistributionPlugin::OrderedProduct', :foreign_key => :order_id, :dependent => :destroy,
+    :include => :product, :order => 'products.name ASC'
 
   has_many :session_products, :through => :products, :source => :product
   has_many :distributed_products, :through => :session_products, :source => :from_products
   has_many :supplier_products, :through => :distributed_products, :source => :from_products
+
+  has_many :suppliers, :through => :session_products, :uniq => true
 
   has_many :from_products, :through => :products
   has_many :to_products, :through => :products
