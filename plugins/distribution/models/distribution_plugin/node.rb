@@ -2,9 +2,6 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
 
   belongs_to :profile
 
-  has_many :delivery_methods, :class_name => 'DistributionPlugin::DeliveryMethod', :foreign_key => :node_id, :dependent => :destroy, :order => 'id ASC'
-  has_many :delivery_options, :through => :delivery_methods
-
   has_many :sessions, :class_name => 'DistributionPlugin::Session', :foreign_key => :node_id, :dependent => :destroy, :order => 'created_at DESC',
     :conditions => ["distribution_plugin_sessions.status <> 'new'"]
   has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy, :order => 'id ASC'

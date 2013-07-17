@@ -30,18 +30,15 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
   end
 
   def method_destroy
-    @session = DistributionPlugin::Session.find params[:session_id]
     @delivery_method = @node.delivery_methods.find_by_id params[:id]
     @delivery_method.destroy
   end
 
   def method_new
-    @session = DistributionPlugin::Session.find params[:session_id]
     @delivery_method = DistributionPlugin::DeliveryMethod.create! params[:delivery_method].merge(:node => @node, :delivery_type => 'pickup')
   end
 
   def method_edit
-    @session = DistributionPlugin::Session.find params[:session_id]
     @delivery_method = @node.delivery_methods.find_by_id params[:id]
     if request.post?
       @delivery_method.update_attributes! params[:delivery_method].merge(:node => @node, :delivery_type => 'pickup')
@@ -52,8 +49,8 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
   protected
 
   def load
-    @delivery_methods = @node.delivery_methods
-    @delivery_method = DistributionPlugin::DeliveryMethod.new
+    @delivery_methods = profile.delivery_methods
+    @delivery_method = profile.delivery_methods.build
   end
 
 end
