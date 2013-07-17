@@ -1,5 +1,5 @@
-<div class="properties-block price-block <%= "disabled-fields" if not product.dummy? %>">
-  <% options = {:class => "small-input"}.merge((product.dummy? or not supplier_product) ? {} : {:disabled => 'disabled'}) %>
+<div class="properties-block price-block <%= "disabled-fields" if not product.supplier_dummy? %>">
+  <% options = {:class => "small-input"}.merge((product.supplier_dummy? or not supplier_product) ? {} : {:disabled => 'disabled'}) %>
   <% if supplier_product %>
     <% options = options.merge(:onkeyup => 'distribution.our_product.sync_referred(this);') %>
   <% else %>
@@ -16,10 +16,10 @@
     f.text_field(:unit_detail, options.merge(:oldvalue => product.own_unit_detail)) %>
 
   <%# put here due to css align, see distribution.js %>
-  <% if supplier_product and not product.dummy? %>
+  <% if supplier_product and not product.supplier_dummy? %>
     <div class="cleaner">
-      <%= check_box_tag :product_supplier_product_active, 1, false, :style => 'float: left', :disabled => 'disabled' %>
-      <%= f.label :active, t('distribution_plugin.views.product._price_details.commercialization_act'), :class => 'line-label' %>
+      <%= check_box_tag :product_supplier_product_available, 1, false, :style => 'float: left', :disabled => 'disabled' %>
+      <%= f.label :available, t('distribution_plugin.views.product._price_details.commercialization_act'), :class => 'line-label' %>
     </div>
   <% end %>
 

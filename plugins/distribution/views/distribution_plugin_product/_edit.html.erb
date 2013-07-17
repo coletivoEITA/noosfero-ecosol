@@ -12,7 +12,7 @@
   </div>
 
   <% form_remote_for :product, product, :loading => "distribution.setLoading('our-product-#{product_label}')", :loaded => "distribution.unsetLoading('our-product-#{product_label}')", :url => {:controller => :distribution_plugin_product, :action => new_record ? :new : :edit, :id => product ? product.id : nil} do |f| %>
-    <%= supplier_select f, @node, @supplier, new_record %>
+    <%= supplier_select f, profile, product.supplier, new_record %>
 
     <% if product.blank? or (!product.own? and (product.supplier.blank? or @not_distributed_products)) %>
       <%= render :partial => 'select_missing' %>
@@ -62,7 +62,7 @@
                     {{ }); }}
                   </select>
                   <small><%= t('distribution_plugin.views.product._edit.or_then_link') % {:link => "
-                    <a href=' ' onclick=\"distribution.category_select_another(this); return false;\">#{t('distribution_plugin.views.product._edit.search_for_another_ca')}</a>" } %>
+                    <a href='#' onclick=\"distribution.category_select_another(this); return false;\">#{t('distribution_plugin.views.product._edit.search_for_another_ca')}</a>" } %>
                   </small>
                 </script>
                 <div> </div>
@@ -94,7 +94,7 @@
               <div class="margin-line">
                 <%= labelled_field f, :margin_percentage, t('distribution_plugin.views.product._edit.margin'),
                   f.text_field(:margin_percentage, :class => 'small-input',
-                               :value => product.own_margin_percentage_as_currency_number, :oldvalue => product.own_margin_percentage_as_currency_number, :defaultvalue => product.node.margin_percentage_as_currency_number,
+                               :value => product.own_margin_percentage_as_currency_number, :oldvalue => product.own_margin_percentage_as_currency_number, :defaultvalue => product.original_margin_percentage_as_currency_number,
                                :onkeyup => 'distribution.our_product.pmsync(this, true);') +
                   ' ' + t('distribution_plugin.views.product._edit.%') %>
                 <div class="default-margin">
@@ -111,8 +111,8 @@
 
           <%= render :partial => 'price_details', :locals => {:f => f, :product => product, :supplier_product => false} %>
 
-          <%= f.check_box :active, :style => 'float: left' %>
-          <%= f.label :active, t('distribution_plugin.views.product._edit.commercialization_act'), :class => 'line-label' %>
+          <%= f.check_box :available, :style => 'float: left' %>
+          <%= f.label :available, t('distribution_plugin.views.product._edit.commercialization_act'), :class => 'line-label' %>
 
           <%# f.check_box :use_stock %>
           <%# f.label :use_stock, t('distribution_plugin.views.product._edit.commercialization_act'), :class => 'line-label' %>
@@ -131,13 +131,13 @@
             </div>
           </div>
 
-          <div class="our-product-supplied-column alignment2x <%= "dummy-product" if product.dummy? %>">
+          <div class="our-product-supplied-column alignment2x <%= "dummy-product" if product.supplier_dummy? %>">
             <div class="column-title"><%= t('distribution_plugin.views.product._edit.how_we_order_the_prod') %></div>
 
             <div id=supplier-product-errors-<%=product.new_record? ? 'add' : product.id%> class=distribution-product-errors></div>
 
             <% f.fields_for :supplier_product, product.supplier_product do |f| %>
-              <% if product.dummy? %>
+              <% if product.supplier_dummy? %>
                 <div class="properties-block subtitle">
                   <%= _('The register of this supplier is managed by the own collective of consumption.
                       Because of this, there is no possible differences between the "Name" and the "Description"') %>

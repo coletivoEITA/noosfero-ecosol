@@ -2,6 +2,9 @@ require_dependency 'product'
 
 class Product
 
-  belongs_to :profile
+  has_one :distribution_node, :through => :profile
+  def distribution_node
+    self.profile.distribution_node
+  end
 
 end

@@ -147,7 +147,7 @@ class DistributionPlugin::Session < Noosfero::Plugin::ActiveRecord
   def add_distributed_products
     already_in = self.products.unarchived.all
     ActiveRecord::Base.transaction do
-      node.products.unarchived.distributed.active.each do |product|
+      node.products.unarchived.distributed.available.each do |product|
         p = already_in.find{ |f| f.from_product == product }
         unless p
           p = DistributionPlugin::OfferedProduct.create_from_distributed(self, product)

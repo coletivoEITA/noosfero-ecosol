@@ -1,27 +1,42 @@
 class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
-  after_save :save_supplier_product
+  validates_presence_of :supplier
+  validates_presence_of :name, :if => Proc.new { |p| !p.supplier_dummy? }
 
-  alias_method :super_default_name, :default_name
-  def default_name
-    dummy? ? nil : super_default_name
+  after_save :save_self_source
+
+  def supplier
+    @supplier ||= self.from_product.supplier if self.from_product
+    @supplier ||= self.profile.self_supplier
   end
-  alias_method :super_default_description, :default_description
-  def default_description
-    dummy? ? nil : super_default_description
+  def supplier= value
+    @supplier = value
+  end
+  def supplier_id
+    self.supplier.id if self.supplier
+  end
+  def supplier_id= id
+    @supplier = profile.environment.profiles.find id
   end
 
-  def price
-    return self['price'] if own?
-    supplier_price = supplier_product ? supplier_product.price : nil
-    return self['price'] if supplier_price.blank?
-
-    price_with_margins supplier_price
+  def supplier_dummy?
+    self.supplier ? self.supplier.dummy? : false
+  end
+  def own?
+    self.supplier.profile == self.profile
   end
 
   def supplier_product
+    r = self.from_product
+    return r if r
+
+    if self.new_record? or (!self.own? and self.supplier_dummy?)
+      @supplier_product ||= SuppliersPlugin::DistributedProduct.new :profile => self.supplier.profile, :supplier => self.supplier
+    end
+
+    @supplier_product
   end
-  def supplier_product=(value)
+  def supplier_product= value
     if value.is_a?(Hash)
       supplier_product.attributes = value if supplier_product
     else
@@ -30,21 +45,28 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
   end
 
   def supplier_product_id
-    supplier_product.id if supplier_product
+    self.supplier_product.id if self.supplier_product
   end
-  def supplier_product_id=(id)
-    distribute_from SuppliersPlugin::BaseProduct.find(id) unless id.blank?
+  def supplier_product_id= id
+    self.distribute_from SuppliersPlugin::BaseProduct.find(id) unless id.blank
   end
-
   # Set _product_ and its supplier as the origin of this product
-  def distribute_from(product)
-    s = node.suppliers.from_profile(product.profile).first
+  def distribute_from product
+    s = profile.suppliers.from_profile(product.profile).first
     raise "Supplier not found" if s.blank?
 
     @supplier_product = product
     self.name ||= product.name
     self.supplier = s
     self.save!
+  end
+
+  def price
+    return self['price'] if own?
+    supplier_price = self.supplier_product ? self.supplier_product.price : nil
+    return self['price'] if supplier_price.blank?
+
+    self.price_with_margins supplier_price
   end
 
   def self.json_for_category(c)
@@ -56,16 +78,26 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
     }
   end
   def json_for_category
-    self.class.json_for_category(self.category) if self.category
+    self.class.json_for_category(self.product_category)
+  end
+
+  alias_method :super_default_name, :default_name
+  def default_name
+    self.supplier_dummy? ? nil : super_default_name
+  end
+  alias_method :super_default_description, :default_description
+  def default_description
+    self.supplier_dummy? ? nil : super_default_description
   end
 
   protected
 
-  def save_supplier_product
-    return unless supplier_product
-    self.from_products << supplier_product unless self.from_products.include? supplier_product
-    # force save on update
-    self.supplier_product.save
+  def save_self_source
+    if self.sources_from_products.empty?
+      self.sources_from_products.create! :from_product => self.supplier_product, :supplier => self.supplier
+      # force save on update
+      self.supplier_product.save if self.supplier_product
+    end
   end
 
 end

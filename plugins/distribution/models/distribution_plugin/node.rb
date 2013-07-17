@@ -47,28 +47,25 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
     find_by_profile_id(profile.id) || create!(:profile => profile, :role => 'consumer')
   end
 
-  def name
-    profile.name
-  end
   def abbreviation_or_name
     self['name_abbreviation'] || name
   end
 
   def enabled?
-    !consumer?
+    !self.consumer?
   end
   def consumer?
-    role == 'consumer'
+    self.role == 'consumer'
   end
   def supplier?
-    role == 'supplier'
+    self.role == 'supplier'
   end
   def collective?
-    role == 'collective'
+    self.role == 'collective'
   end
 
   def dummy?
-    !profile.visible
+    !self.profile.visible
   end
   alias_method :dummy, :dummy?
   def dummy=(value)
@@ -164,7 +161,7 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
   def add_own_products
     return unless profile.respond_to? :products
 
-    already_supplied = self.products.unarchived.distributed.from_supplier(self).all
+    already_supplied = self.products.unarchived.distributed.from_supplier_id(self.self_supplier.id).all
     profile.products.map do |p|
       already_supplied.find{ |f| f.product == p } ||
         SuppliersPlugin::DistributedProduct.create!(:node => self, :supplier => self_supplier, :product => p, :name => p.name, :description => p.description, :price => p.price, :unit => p.unit)
@@ -181,6 +178,14 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
   end
   def cache_keys(params = {})
     []
+  end
+
+  def method_missing method, *args, &block
+    if self.profile.respond_to? method
+      self.profile.send method, *args, &block
+    else
+      super method, *args, &block
+    end
   end
 
 end

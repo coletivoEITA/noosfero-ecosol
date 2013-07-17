@@ -19,19 +19,15 @@ class DistributionPlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   has_currency :total_parcel_price
   has_currency :buy_price
 
-  def self.create_from_distributed(session, product)
+  def self.create_from_distributed session, product
     sp = self.new :node => product.node
     sp.attributes = product.attributes
     sp.type = self.name
     sp.freeze_default_attributes product
-    sp.price = sp.price_with_margins(product.price, product)
+    sp.price = sp.price_with_margins product.price, product
     sp.from_products << product
     session.products << sp
     sp
-  end
-
-  def supplier_products
-    self.supplier.nil? ? self.from_2x_products : self.from_2x_products.from_supplier(self.supplier)
   end
 
   def total_quantity_asked

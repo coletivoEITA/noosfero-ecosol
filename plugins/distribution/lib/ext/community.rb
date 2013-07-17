@@ -2,10 +2,8 @@ require_dependency 'community'
 
 class Community
 
-  has_many :products
-
-  def add_member(person)
-    super(person)
+  def add_member person
+    super person
 
     if self.node.collective?
       consumer_node = DistributionPlugin::Node.find_or_create person
@@ -13,8 +11,8 @@ class Community
     end
   end
 
-  def remove_member(person)
-    super(person)
+  def remove_member person
+    super person
 
     consumer_node = DistributionPlugin::Node.find_or_create person
     self.node.remove_consumer consumer_node

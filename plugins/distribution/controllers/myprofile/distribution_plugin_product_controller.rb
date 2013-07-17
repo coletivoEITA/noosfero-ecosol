@@ -7,7 +7,7 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
   helper DistributionPlugin::DistributionProductHelper
 
   def index
-    @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id].to_i
+    @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id]
     not_distributed_products
 
     @products = @node.products.unarchived.distributed.paginate({
@@ -15,7 +15,7 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
       }.merge(search_filters))
     @all_products_count = @node.products.unarchived.distributed.count
     @product_categories = ProductCategory.find(:all)
-    @new_product = SuppliersPlugin::DistributedProduct.new :node => @node, :supplier => @supplier
+    @new_product = SuppliersPlugin::DistributedProduct.new :profile => profile, :supplier => @supplier
 
     respond_to do |format|
       format.html
@@ -109,7 +109,7 @@ class DistributionPluginProductController < DistributionPluginMyprofileControlle
     base = SuppliersPlugin::BaseProduct.scoped :conditions => []
     base = base.for_session_id params[:session_id] unless params[:session_id].blank?
     base = base.from_supplier_id params[:supplier_id] unless params[:supplier_id].blank?
-    base = base.scoped :conditions => {:active_id => params[:active]} unless params[:active].blank?
+    base = base.scoped :conditions => {:available => params[:available]} unless params[:available].blank?
     unless params[:name].blank?
       name = ActiveSupport::Inflector.transliterate params[:name].strip.downcase
       base = base.scoped :conditions => ["LOWER(name) LIKE ?", "%#{name}%"]

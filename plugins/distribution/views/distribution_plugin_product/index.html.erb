@@ -33,7 +33,7 @@
       <div class="box-field supplier">
         <div><%=t('distribution_plugin.views.product.index.show_products_from') %></div>
         <div>
-          <%= select_tag :supplier_id, options_for_select([[t('distribution_plugin.views.product.index.all_the_suppliers'), ""]] + supplier_choices(@node), params[:supplier_id].to_i),
+          <%= select_tag :supplier_id, options_for_select([[t('distribution_plugin.views.product.index.all_the_suppliers'), ""]] + supplier_choices(profile), params[:supplier_profile_id].to_i),
             :onchange => "this.form.onsubmit()" %>
         </div>
       </div>
@@ -64,7 +64,7 @@
       <div class="box-field state">
         <div><%= t('distribution_plugin.views.product.index.and_being') %></div>
         <div>
-          <%= select_tag :active, options_for_select([[t('distribution_plugin.views.product.index.in_any_state'), ""], [ t('distribution_plugin.views.product.index.active'), 'true'], [ t('distribution_plugin.views.product.index.inactive'), 'false']], params[:active]),
+          <%= select_tag :available, options_for_select([[t('distribution_plugin.views.product.index.in_any_state'), ""], [ t('distribution_plugin.views.product.index.active'), 'true'], [ t('distribution_plugin.views.product.index.inactive'), 'false']], params[:available]),
             :onchange => "this.form.onsubmit()" %>
         </div>
       </div>

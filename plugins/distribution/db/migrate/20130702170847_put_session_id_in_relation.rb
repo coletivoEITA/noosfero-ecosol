@@ -1,6 +1,7 @@
-class DistributionPluginProduct < ActiveRecord::Base
-end
 class DistributionPluginSessionProduct < ActiveRecord::Base
+end
+
+class DistributionPluginProduct < ActiveRecord::Base
 end
 class DistributionPluginOfferedProduct < DistributionPluginProduct
 end

@@ -2,8 +2,10 @@ require_dependency "#{File.dirname __FILE__}/ext/profile"
 require_dependency "#{File.dirname __FILE__}/ext/community"
 require_dependency "#{File.dirname __FILE__}/ext/category"
 require_dependency "#{File.dirname __FILE__}/ext/product"
+
 require_dependency "#{File.dirname __FILE__}/ext/suppliers_plugin/supplier"
 require_dependency "#{File.dirname __FILE__}/ext/suppliers_plugin/base_product"
+require_dependency "#{File.dirname __FILE__}/ext/suppliers_plugin/distributed_product"
 
 class DistributionPlugin < Noosfero::Plugin
 

@@ -4,13 +4,12 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   belongs_to :consumer, :class_name => 'Profile'
 
   has_many :products, :through => :profile, :class_name => 'SuppliersPlugin::DistributedProduct'
-
-  has_many :supplied_products, :foreign_key => :supplier_id, :class_name => 'SuppliersPlugin::BaseProduct', :order => 'name ASC'
+  has_many :consumer_products, :through => :consumer, :source => :products, :class_name => 'SuppliersPlugin::DistributedProduct'
 
   named_scope :of_profile, lambda { |n| { :conditions => {:profile_id => n.id} } }
   named_scope :of_profile_id, lambda { |id| { :conditions => {:profile_id => id} } }
 
-  named_scope :with_name, lambda { |name| { :conditions => ["LOWER(name) LIKE ?",'%'+name.downcase+'%']  } }
+  named_scope :with_name, lambda { |name| { :conditions => ["LOWER(name) LIKE ?","%#{name.downcase}%"] } }
 
   named_scope :from_supplier_id, lambda { |supplier_id| {
       :conditions => ['suppliers_plugin_source_products.supplier_id = ?', supplier_id],
@@ -23,14 +22,14 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   validates_associated :profile
   validates_uniqueness_of :consumer_id, :scope => :profile_id
 
-  def self.new_dummy(attributes)
+  def self.new_dummy attributes
     profile = Enterprise.new :visible => false, :identifier => Digest::MD5.hexdigest(rand.to_s),
       :environment => attributes[:consumer].environment
     supplier = self.new :profile => profile
     supplier.attributes = attributes
     supplier
   end
-  def self.create_dummy(attributes)
+  def self.create_dummy attributes
     s = new_dummy attributes
     s.save!
     s
@@ -60,16 +59,10 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     end
   end
 
-  alias_method :destroy_orig, :destroy
-  def destroy!
-    supplied_products.each{ |p| p.destroy! }
-    destroy_orig
-  end
-
   # FIXME: inactivate instead of deleting
   def destroy
     profile.destroy if profile.dummy?
-    supplied_products.distributed.update_all({:archived => true})
+    consumer_products.from_supplier_id(self.id).distributed.update_all({:archived => true})
 
     super
   end
@@ -105,6 +98,14 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   def complete
     if dummy?
       consumer.profile.admins.each{ |a| profile.add_admin(a) } if profile.dummy?
+    end
+  end
+
+  def method_missing method, *args, &block
+    if self.profile.respond_to? method
+      self.profile.send method, *args, &block
+    else
+      super method, *args, &block
     end
   end
 
