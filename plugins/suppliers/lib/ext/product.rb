@@ -50,5 +50,8 @@ class Product
     @supplier ||= self.from_product.supplier if self.from_product
     @supplier ||= self.profile.self_supplier
   end
+  def supplier_dummy?
+    self.supplier ? self.supplier.dummy? : false
+  end
 
 end

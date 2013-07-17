@@ -18,8 +18,8 @@
         <% session_products.each do |product| %>
           <div id="session-product-<%=product.id%>" class="order-session-product value-row" toggleedit="distribution.order_session_product_toggle();">
             <%= render :partial => "distribution_plugin_product/order_edit", :locals => {
-              :product => product, :order => order, :session => product.session,
-              :ordered_product => order.blank? ? nil : order.products.find_by_session_product_id(product.id) } %>
+              :product => product, :order => order, :session => session,
+              :ordered_product => order.blank? ? nil : order.products.find_by_product_id(product.id) } %>
             </div>
           <% end %>
         </div>

@@ -1,16 +1,23 @@
 class DistributionPlugin::OfferedProduct < SuppliersPlugin::BaseProduct
 
-  belongs_to :session, :class_name => 'DistributionPlugin::Session'
+  has_many :session_products, :foreign_key => :product_id, :class_name => 'DistributionPlugin::SessionProduct'
+  has_many :sessions, :through => :session_products, :order => 'name ASC'
+  def session
+    self.sessions.first
+  end
 
-  has_many :ordered_products, :class_name => 'DistributionPlugin::OrderedProduct', :foreign_key => 'session_product_id', :dependent => :destroy
+  has_many :ordered_products, :class_name => 'DistributionPlugin::OrderedProduct', :foreign_key => :product_id, :dependent => :destroy
   has_many :in_orders, :through => :ordered_products, :source => :order
 
   validates_presence_of :session
-  validate :session_change
+  validate :session_cant_change
 
   # for products in session, these are the products of the suppliers
   # p in session -> p distributed -> p from supplier
   has_many :from_2x_products, :through => :from_products, :source => :from_products
+  def supplier_products
+    self.from_2x_products
+  end
 
   extend SuppliersPlugin::CurrencyHelper::ClassMethods
   has_number_with_locale :total_quantity_asked
@@ -83,7 +90,7 @@ class DistributionPlugin::OfferedProduct < SuppliersPlugin::BaseProduct
 
   protected
 
-  def session_change
+  def session_cant_change
     errors.add :session_id, "session can't change" if session_id_changed? and not new_record?
   end
 

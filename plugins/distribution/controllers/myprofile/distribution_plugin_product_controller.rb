@@ -15,7 +15,9 @@ class DistributionPluginProductController < SuppliersPluginProductController
     #@product_categories = ProductCategory.find(:all)
 
     render :partial => 'order_search', :locals => {
-      :products_for_order_by_supplier => @products, :order => @order, :session => @session}
+      :order => @order, :session => @session,
+      :products_for_order_by_supplier => @products,
+    }
   end
 
   def new

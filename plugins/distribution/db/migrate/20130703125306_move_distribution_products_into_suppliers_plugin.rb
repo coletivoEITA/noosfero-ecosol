@@ -30,6 +30,8 @@ end
 
 class DistributionPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
 end
+class DistributionPlugin::SessionProduct < Noosfero::Plugin::ActiveRecord
+end
 
 class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
   def self.up
@@ -68,6 +70,10 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
       rename_column :distribution_plugin_ordered_products, :session_product_id, :product_id
       DistributionPlugin::OrderedProduct.all.each do |op|
         op.update_attributes! :product_id => id_translation[op.product_id]
+      end
+
+      DistributionPlugin::SessionProduct.all.each do |sp|
+        sp.update_attributes! :product_id => id_translation[sp.product_id]
       end
     end
 

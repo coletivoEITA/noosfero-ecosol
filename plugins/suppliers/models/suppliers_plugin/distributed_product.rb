@@ -15,9 +15,6 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
     @supplier = profile.environment.profiles.find id
   end
 
-  def supplier_dummy?
-    self.supplier ? self.supplier.dummy? : false
-  end
   def own?
     self.supplier.profile == self.profile
   end
