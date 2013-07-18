@@ -162,7 +162,7 @@
       <div class="cleaner">
         <%= f.submit t('suppliers_plugin.views.product._edit.save') %>
         <%= link_to_function t('suppliers_plugin.views.product._edit.cancel'), :class => 'toggle-edit' %>
-        <%= link_to_remote t('suppliers_plugin.views.product._edit.remove_product'), :confirm => t('suppliers_plugin.views.product._edit.are_you_sure_you_want'), :loading => "distribution.setLoading('our-product-#{product.id}')", :loaded => "distribution.unsetLoading('our-product-#{product.id}')", :url => {:controller => 'suppliers_plugin_product', :action => 'destroy', :id => product.id } unless new_record %>
+        <%= link_to_remote t('suppliers_plugin.views.product._edit.remove_product'), :confirm => t('suppliers_plugin.views.product._edit.are_you_sure_you_want'), :loading => "distribution.setLoading('our-product-#{product.id}')", :loaded => "distribution.unsetLoading('our-product-#{product.id}')", :url => {:controller => :suppliers_plugin_product, :action => 'destroy', :id => product.id } unless new_record %>
       </div>
     <% end %>
   <% end %>

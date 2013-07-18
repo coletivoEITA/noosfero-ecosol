@@ -53,5 +53,11 @@ class Product
   def supplier_dummy?
     self.supplier ? self.supplier.dummy? : false
   end
+  def supplier_products
+    self.from_products
+  end
+  def supplier_product
+    self.supplier_products.first
+  end
 
 end

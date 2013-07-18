@@ -1,3 +1,4 @@
+# FIXME remove Delivery when plugins scope problem is solved
 class DeliveryPlugin::DeliveryOption < Noosfero::Plugin::ActiveRecord
 
   def self.table_name

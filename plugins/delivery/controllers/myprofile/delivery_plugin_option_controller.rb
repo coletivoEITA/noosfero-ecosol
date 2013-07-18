@@ -1,4 +1,4 @@
-class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileController
+class DeliveryPluginOptionController < MyProfileController
 
   no_design_blocks
 

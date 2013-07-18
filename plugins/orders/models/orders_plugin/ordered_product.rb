@@ -1,5 +1,7 @@
 class OrdersPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
 
+  default_scope :joins => 'INNER JOIN products ON orders_plugin_products.product_id = products.id'
+
   def self.table_name
     'orders_plugin_products'
   end
@@ -13,7 +15,7 @@ class OrdersPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
   has_many :to_products, :through => :product
 
   named_scope :confirmed, :conditions => ['orders_plugin_orders.status = ?', 'confirmed'],
-    :joins => 'INNER JOIN orders_plugin_orders ON orders_plugin_orders.id = orders_plugin_ordered_products.order_id'
+    :joins => 'INNER JOIN orders_plugin_orders ON orders_plugin_orders.id = orders_plugin_products.order_id'
 
   validates_presence_of :order
   validates_presence_of :product

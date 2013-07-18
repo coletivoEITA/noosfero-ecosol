@@ -10,7 +10,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
   def index
     @year = (params[:year] || DateTime.now.year).to_s
     @sessions = @node.sessions.by_year @year
-    @consumer = @user_node
+    @consumer = user
   end
 
   def new
@@ -19,15 +19,15 @@ class DistributionPluginOrderController < DistributionPluginProfileController
       redirect_to :action => :index
       return
     end
-    @consumer = @user_node
+    @consumer = user
     @session = DistributionPlugin::Session.find params[:session_id]
     @order = OrdersPlugin::Order.create! :session => @session, :consumer => @consumer
     redirect_to params.merge(:action => :edit, :id => @order.id)
   end
 
   def admin_new
-    if @node.has_admin? @user_node
-      @consumer = DistributionPlugin::Node.find params[:consumer_id]
+    if profile.has_admin? user
+      @consumer = user
       @session = DistributionPlugin::Session.find params[:session_id]
       @order = OrdersPlugin::Order.create! :session => @session, :consumer => @consumer
       redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
@@ -40,13 +40,13 @@ class DistributionPluginOrderController < DistributionPluginProfileController
     if session_id = params[:session_id]
       @session = DistributionPlugin::Session.find_by_id session_id
       return render_not_found unless @session
-      @consumer = @user_node
+      @consumer = user
     else
       @order = OrdersPlugin::Order.find_by_id params[:id]
       return render_not_found unless @order
       @session = @order.session
       @consumer = @order.consumer
-      @admin_edit = @user_node && @user_node != @consumer
+      @admin_edit = user and user != @consumer
     end
     @consumer_orders = @session.orders.for_consumer @consumer
 
@@ -55,7 +55,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
 
   def reopen
     @order = OrdersPlugin::Order.find params[:id]
-    if @order.consumer == @user_node
+    if @order.consumer == user
       raise "Cycle's orders period already ended" unless @order.session.orders?
       @order.update_attributes! :status => 'draft'
     end
@@ -67,7 +67,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
     params[:order] ||= {}
 
     @order = OrdersPlugin::Order.find params[:id]
-    if @order.consumer != @user_node and not @node.has_admin? @user_node
+    if @order.consumer != user and not profile.has_admin? user
       if @user_node.nil?
         session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
       else
@@ -89,7 +89,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
 
   def cancel
     @order = OrdersPlugin::Order.find params[:id]
-    if @order.consumer != @user_node and not @node.has_admin? @user_node
+    if @order.consumer != user and not profile.has_admin? user
       if @user_node.nil?
         session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
       else
@@ -107,7 +107,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
 
   def remove
     @order = OrdersPlugin::Order.find params[:id]
-    if @order.consumer != @user_node and not @node.has_admin? @user_node
+    if @order.consumer != user and not profile.has_admin? user
       if @user_node.nil?
         session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
       else
@@ -130,7 +130,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
 
   def session_edit
     @order = OrdersPlugin::Order.find params[:id]
-    if @order.consumer != @user_node and not @node.has_admin? @user_node
+    if @order.consumer != user and not profile.has_admin? user
       if @user_node.nil?
         session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
       else

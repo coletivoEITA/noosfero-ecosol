@@ -6,7 +6,7 @@ module DistributionPlugin::DistributionLayoutHelper
     #[:about, I18n.t('distribution_plugin.lib.distribution_layout_helper.about'), {:controller => :distribution_plugin_node, :action => :about}],
     #[:history, I18n.t('distribution_plugin.lib.distribution_layout_helper.history'), {:controller => :distribution_plugin_node, :action => :history}],
     [:adm, I18n.t('distribution_plugin.lib.distribution_layout_helper.administration'), {:controller => :distribution_plugin_node, :action => 'index'}, proc{ @admin_action },
-      proc{ @user_node and @node.has_admin?(@user_node) }],
+      proc{ user and profile.has_admin? user }],
   ]
 
   def display_header_buttons

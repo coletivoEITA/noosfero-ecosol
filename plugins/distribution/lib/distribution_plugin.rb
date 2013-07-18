@@ -4,6 +4,7 @@ require_dependency "#{File.dirname __FILE__}/ext/category"
 require_dependency "#{File.dirname __FILE__}/ext/product"
 
 require_dependency "#{File.dirname __FILE__}/ext/orders_plugin/order"
+require_dependency "#{File.dirname __FILE__}/ext/orders_plugin/ordered_product"
 
 require_dependency "#{File.dirname __FILE__}/ext/suppliers_plugin/supplier"
 require_dependency "#{File.dirname __FILE__}/ext/suppliers_plugin/base_product"

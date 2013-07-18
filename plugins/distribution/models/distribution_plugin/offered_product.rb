@@ -7,7 +7,7 @@ class DistributionPlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   end
 
   has_many :ordered_products, :class_name => 'OrdersPlugin::OrderedProduct', :foreign_key => :product_id, :dependent => :destroy
-  has_many :in_orders, :through => :ordered_products, :source => :order
+  has_many :orders, :through => :ordered_products, :source => :order
 
   validates_presence_of :session
   validate :session_cant_change

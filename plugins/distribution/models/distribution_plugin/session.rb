@@ -6,9 +6,8 @@ class DistributionPlugin::Session < Noosfero::Plugin::ActiveRecord
     :foreign_key => :owner_id, :conditions => ["delivery_plugin_options.owner_type = 'DistributionPlugin::Session'"]
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 
-  has_many :orders, :class_name => 'OrdersPlugin::Order', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC'
-  has_many :orders_confirmed, :class_name => 'OrdersPlugin::Order', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC',
-    :conditions => ['orders_plugin_orders.status = ?', 'confirmed']
+  has_many :session_orders, :class_name => 'DistributionPlugin::SessionOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC'
+  has_many :orders, :through => :session_orders, :source => :order, :dependent => :destroy, :order => 'id ASC'
 
   has_many :session_products, :foreign_key => :session_id, :class_name => 'DistributionPlugin::SessionProduct'
   has_many :products, :through => :session_products, :order => 'name ASC'
@@ -17,9 +16,12 @@ class DistributionPlugin::Session < Noosfero::Plugin::ActiveRecord
   has_many :from_nodes, :through => :products
   has_many :to_nodes, :through => :products
 
+  has_many :orders_confirmed, :through => :session_orders, :source => :order, :dependent => :destroy, :order => 'id ASC',
+    :conditions => ['orders_plugin_orders.status = ?', 'confirmed']
+
   has_many :ordered_suppliers, :through => :orders_confirmed, :source => :suppliers
   has_many :ordered_products, :through => :orders_confirmed, :source => :products
-  has_many :ordered_session_products, :through => :orders_confirmed, :source => :products, :uniq => true
+  has_many :ordered_offered_products, :through => :orders_confirmed, :source => :offered_products, :uniq => true
   has_many :ordered_distributed_products, :through => :orders_confirmed, :source => :distributed_products, :uniq => true
   has_many :ordered_supplier_products, :through => :orders_confirmed, :source => :supplier_products, :uniq => true
 
@@ -136,7 +138,7 @@ class DistributionPlugin::Session < Noosfero::Plugin::ActiveRecord
   end
 
   def ordered_products_by_suppliers
-    self.ordered_session_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
+    self.ordered_offered_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
       total_price_asked = total_parcel_price = 0
       products.each do |product|
         total_price_asked += product.total_price_asked if product.total_price_asked

@@ -1,4 +1,6 @@
-class DistributionPluginSupplierController < SuppliersPluginMyprofileController
+require_dependency 'delivery_plugin' #necessary to load extensions
+
+class DistributionPluginDeliveryOptionController < DeliveryPluginOptionController
 
   no_design_blocks
 
@@ -14,7 +16,7 @@ class DistributionPluginSupplierController < SuppliersPluginMyprofileController
 
   # use superclass instead of child
   def url_for options
-    options[:controller] = :distribution_plugin_supplier if options[:controller].to_s == 'suppliers_plugin_supplier'
+    options[:controller] = :distribution_plugin_delivery_option if options[:controller].to_s == 'delivery_plugin_option'
     super options
   end
 

@@ -8,8 +8,8 @@ class OrdersPlugin::Order
     self.sessions.first
   end
 
-  has_many :session_products, :through => :products, :source => :product
-  has_many :distributed_products, :through => :session_products, :source => :from_products
+  has_many :offered_products, :through => :products, :source => :offered_product
+  has_many :distributed_products, :through => :offered_products, :source => :from_products
   has_many :supplier_products, :through => :distributed_products, :source => :from_products
 
   has_many :suppliers, :through => :supplier_products, :uniq => true

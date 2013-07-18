@@ -3,8 +3,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'
 
-  has_many :products, :class_name => 'OrdersPlugin::OrderedProduct', :foreign_key => :order_id, :dependent => :destroy,
-    :include => :product, :order => 'products.name ASC'
+  has_many :products, :class_name => 'OrdersPlugin::OrderedProduct', :foreign_key => :order_id, :dependent => :destroy, :order => 'products.name ASC'
 
   belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::DeliveryMethod'
   belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::DeliveryMethod'
@@ -20,6 +19,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   #validates_presence_of :supplier_delivery
   STATUSES = ['draft', 'planned', 'confirmed', 'cancelled']
   validates_inclusion_of :status, :in => STATUSES
+  before_validation :default_values
 
   named_scope :draft, :conditions => {:status => 'draft'}
   named_scope :planned, :conditions => {:status => 'planned'}
@@ -54,18 +54,18 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     I18n.t STATUS_MESSAGE[current_status]
   end
 
-  def total_quantity_asked(dirty = false)
+  def total_quantity_asked dirty = false
     if dirty
       products.collect(&:quantity_asked).inject(0){ |sum,q| sum+q }
     else
-      products.sum(:quantity_asked)
+      products.sum :quantity_asked
     end
   end
-  def total_price_asked(dirty = false)
+  def total_price_asked dirty = false
     if dirty
       products.collect(&:price_asked).inject(0){ |sum,q| sum+q }
     else
-      products.sum(:price_asked)
+      products.sum :price_asked
     end
   end
 
@@ -90,7 +90,6 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   protected
 
-  before_validation :default_values
   def default_values
     self.status ||= 'draft'
   end

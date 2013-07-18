@@ -69,12 +69,6 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
     profile.update_attributes! :visible => !value
   end
 
-  def has_admin?(node)
-    if node and node.profile
-      node.profile.has_permission? 'edit_profile', self.profile
-    end
-  end
-
   def closed_sessions_date_range
     list = sessions.not_open.all :order => 'start ASC'
     return DateTime.now..DateTime.now if list.blank?
@@ -175,9 +169,6 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
     else
       super method, *args, &block
     end
-  end
-  def respond_to? method
-    super method or self.profile.respond_to? method
   end
 
 end
