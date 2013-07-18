@@ -250,8 +250,6 @@
           cycle_orders_report_d: "Relatório de pedidos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
           new_open_cycle: "Novo ciclo aberto"
           products_report_date_: "Relatório de produtos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
-        supplier_controller: 
-          supplier_created: "Fornecedor criado"
       profile: 
         order_controller: 
           can_not_confirm_your_: "Não pode confirmar. Sua lista de pedido está vazia"
@@ -288,8 +286,6 @@
         history: História
         orders: Pedidos
         start: Início
-      distribution_product_helper: 
-        product_from_which_su: "Produto de que fornecedor?"
       mailer: 
         node_subject: "[%{node}] %{subject}"
         order_was_confirmed: "[%{node}] Seu pedido foi confirmado"
@@ -327,13 +323,8 @@
         value_parcel: "Valor da encomenda"
       settings_solidary_dis: "Configuração da Rede de Distribuição Solidária"
     models: 
-      distributed_product: 
-        ? " > "
-        : " / "
       header_image: 
         fn_of_uploaded_file_w: "%{fn} do arquivo enviado é maior que o máximo permitido de 500.0 KB"
-      node: 
-        consumer: Consumidor
       order: 
         order_cancelled: "Pedido cancelado"
         order_confirmed: "Pedido confirmado"
@@ -341,9 +332,6 @@
         order_not_confirmed: "Pedido não confirmado"
         order_planned: "Pedido planejado"
         sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
-      product: 
-        unit: unidade
-        units: unidades
       session: 
         code_name: "%{code}. %{name}"
         delivery_period_befor: "Período de entrega antes do período de pedidos"
@@ -579,36 +567,6 @@
         _index: 
           empty_order: "Pedido vazio"
       product: 
-        _edit: 
-          ? " > "
-          : " / "
-          ? "%"
-          : "%"
-          add_product_to_the_li: "Adicione o produto à lista de produtos distribuídos"
-          are_you_sure_you_want: "Tem certeza de que quer remover este produto?"
-          cancel: Cancelar
-          category: Categoria
-          commercialization_act: "Comercialização ativa"
-          description: Descrição
-          editing_distributed_p: "Edição de produtos distribuídos"
-          how_we_distribute_the: "Como nós distribuímos o produto"
-          how_we_order_the_prod: "Como nós pedimos o produto"
-          margin: Margem
-          name: Nome
-          or_then_link: "ou então %{link}."
-          own_product: "Produto próprio"
-          remove_product: "remover produto"
-          save: Salvar
-          search_another_catego: "Buscar outra categoria"
-          search_for_another_ca: "busque outra categoria"
-          to_end_the_categoriza: "Ao fim da categorização, escolha uma das subcategorias da categoria \"{{=cat.own_name}}\":"
-          use_default_margin: "Usar a margem padrão"
-          use_original: "usar original"
-        _edit_line: 
-          active: Ativo
-          inactive: Inativo
-        _form_errors: 
-          errors_found: "Erros encontrados:"
         _order_edit: 
           add: Adicionar
           cancel: Cancelar
@@ -628,26 +586,6 @@
           price: Preço
           product: Produto
           this_search_hasn_t_re: "Esta busca não retornou produtos"
-        _price_details: 
-          commercialization_act: "Comercialização ativa"
-          minimum_order: "Pedido mínimo"
-          price: Preço
-          unit: Unidade
-          unit_specification: "Especificações de unidade"
-        _search: 
-          category: Categoria
-          price: Preço
-          product: Produto
-          qty_avail: "Qtd. dispon."
-          showing_pcount_produc: "Mostrando %{pcount} produtos de %{allpcount}"
-          status: Estado
-          supplier: Fornecedor
-          we_don_t_have_product: "Não temos produtos a mostrar."
-        _select_missing: 
-          add_all_missing_produ: "Adicione todos produtos que faltam deste fornecedor."
-          cancel: Cancelar
-          the_following_product: "Os seguintes produtos do fornecedor não são distribuídos pelo seu coletivo. Que produto voce quer adicionar?"
-          there_isn_t_any_new_p: "Não há qualquer produto deste fornecedor."
         _session_edit: 
           all_ordered_products_: "Todos pedidos deste produto serão removidos também; você deveria primeiro avisar os membros que pediram esse produto."
           buy_price: "Preço de compra"
@@ -663,28 +601,6 @@
           save: Salvar
           sell_price: "Preço de venda:"
           sell_unit: "Unidade de venda"
-        index: 
-          active: Ativo
-          add_product: "Adicionar produto"
-          all_the_categories: "todas as categorias"
-          all_the_suppliers: "todos os fornecedores"
-          and_being: "e que estejam"
-          anyone: anyone
-          bigger_than_the_stock: "maior do que o estoque"
-          change: mudar
-          default_margin_of_com: "Margem padrão de comercialização"
-          filter: Filtro
-          in_any_state: "Em qualquer estado"
-          inactive: Inativo
-          margin: "%{margin} %"
-          no_margin_set: "Sem margem definida"
-          products: Produtos
-          show_products_from: "Mostar produtos de"
-          the_products: "Os produtos"
-          whose_name_contains: "cujo nome contenha"
-          whose_qty_available_i: "cuja qtd disponível é"
-          with_the_category: "com a categoria"
-          with_the_qualifiers: "com os qualificadores"
       session: 
         _brief: 
           code: "%{code}."
@@ -803,6 +719,97 @@
           open_cycles: "Pedidos Abertos"
           orders_cycles: "Ciclo de pedidos"
           show_cycles_from_year: "Mostre os ciclos do ano"
+
+  suppliers_plugin:
+    controllers: 
+      myprofile: 
+        supplier_controller: 
+          supplier_created: "Fornecedor criado"
+    models:
+      distributed_product: 
+        greater: " > "
+      product: 
+        unit: unidade
+        units: unidades
+      node: 
+        consumer: Consumidor
+    lib:
+      suppliers_product_helper: 
+        product_from_which_su: "Produto de que fornecedor?"
+    views:
+      product:
+        _edit: 
+          ? " > "
+          : " / "
+          ? "%"
+          : "%"
+          add_product_to_the_li: "Adicione o produto à lista de produtos distribuídos"
+          are_you_sure_you_want: "Tem certeza de que quer remover este produto?"
+          cancel: Cancelar
+          category: Categoria
+          commercialization_act: "Comercialização ativa"
+          description: Descrição
+          editing_distributed_p: "Edição de produtos distribuídos"
+          how_we_distribute_the: "Como nós distribuímos o produto"
+          how_we_order_the_prod: "Como nós pedimos o produto"
+          margin: Margem
+          name: Nome
+          or_then_link: "ou então %{link}."
+          own_product: "Produto próprio"
+          remove_product: "remover produto"
+          save: Salvar
+          search_another_catego: "Buscar outra categoria"
+          search_for_another_ca: "busque outra categoria"
+          to_end_the_categoriza: "Ao fim da categorização, escolha uma das subcategorias da categoria \"{{=cat.own_name}}\":"
+          use_default_margin: "Usar a margem padrão"
+          use_original: "usar original"
+        _edit_line: 
+          active: Ativo
+          inactive: Inativo
+        _form_errors: 
+          errors_found: "Erros encontrados:"
+        _price_details: 
+          commercialization_act: "Comercialização ativa"
+          minimum_order: "Pedido mínimo"
+          price: Preço
+          unit: Unidade
+          unit_specification: "Especificações de unidade"
+        _search: 
+          category: Categoria
+          price: Preço
+          product: Produto
+          qty_avail: "Qtd. dispon."
+          showing_pcount_produc: "Mostrando %{pcount} produtos de %{allpcount}"
+          status: Estado
+          supplier: Fornecedor
+          we_don_t_have_product: "Não temos produtos a mostrar."
+        _select_missing: 
+          add_all_missing_produ: "Adicione todos produtos que faltam deste fornecedor."
+          cancel: Cancelar
+          the_following_product: "Os seguintes produtos do fornecedor não são distribuídos pelo seu coletivo. Que produto voce quer adicionar?"
+          there_isn_t_any_new_p: "Não há qualquer produto deste fornecedor."
+        index: 
+          active: Ativo
+          add_product: "Adicionar produto"
+          all_the_categories: "todas as categorias"
+          all_the_suppliers: "todos os fornecedores"
+          and_being: "e que estejam"
+          anyone: anyone
+          bigger_than_the_stock: "maior do que o estoque"
+          change: mudar
+          default_margin_of_com: "Margem padrão de comercialização"
+          filter: Filtro
+          in_any_state: "Em qualquer estado"
+          inactive: Inativo
+          margin: "%{margin} %"
+          no_margin_set: "Sem margem definida"
+          products: Produtos
+          show_products_from: "Mostar produtos de"
+          the_products: "Os produtos"
+          whose_name_contains: "cujo nome contenha"
+          whose_qty_available_i: "cuja qtd disponível é"
+          with_the_category: "com a categoria"
+          with_the_qualifiers: "com os qualificadores"
       supplier: 
         _edit: 
           abbreviated_name: "Nome Abreviado"
