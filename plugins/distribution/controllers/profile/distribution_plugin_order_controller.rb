@@ -21,7 +21,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
     end
     @consumer = @user_node
     @session = DistributionPlugin::Session.find params[:session_id]
-    @order = DistributionPlugin::Order.create! :session => @session, :consumer => @consumer
+    @order = OrdersPlugin::Order.create! :session => @session, :consumer => @consumer
     redirect_to params.merge(:action => :edit, :id => @order.id)
   end
 
@@ -29,7 +29,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
     if @node.has_admin? @user_node
       @consumer = DistributionPlugin::Node.find params[:consumer_id]
       @session = DistributionPlugin::Session.find params[:session_id]
-      @order = DistributionPlugin::Order.create! :session => @session, :consumer => @consumer
+      @order = OrdersPlugin::Order.create! :session => @session, :consumer => @consumer
       redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
     else
       redirect_to :action => :index
@@ -42,7 +42,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
       return render_not_found unless @session
       @consumer = @user_node
     else
-      @order = DistributionPlugin::Order.find_by_id params[:id]
+      @order = OrdersPlugin::Order.find_by_id params[:id]
       return render_not_found unless @order
       @session = @order.session
       @consumer = @order.consumer
@@ -54,7 +54,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
   end
 
   def reopen
-    @order = DistributionPlugin::Order.find params[:id]
+    @order = OrdersPlugin::Order.find params[:id]
     if @order.consumer == @user_node
       raise "Cycle's orders period already ended" unless @order.session.orders?
       @order.update_attributes! :status => 'draft'
@@ -66,7 +66,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
   def confirm
     params[:order] ||= {}
 
-    @order = DistributionPlugin::Order.find params[:id]
+    @order = OrdersPlugin::Order.find params[:id]
     if @order.consumer != @user_node and not @node.has_admin? @user_node
       if @user_node.nil?
         session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
@@ -88,7 +88,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
   end
 
   def cancel
-    @order = DistributionPlugin::Order.find params[:id]
+    @order = OrdersPlugin::Order.find params[:id]
     if @order.consumer != @user_node and not @node.has_admin? @user_node
       if @user_node.nil?
         session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
@@ -106,7 +106,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
   end
 
   def remove
-    @order = DistributionPlugin::Order.find params[:id]
+    @order = OrdersPlugin::Order.find params[:id]
     if @order.consumer != @user_node and not @node.has_admin? @user_node
       if @user_node.nil?
         session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
@@ -123,13 +123,13 @@ class DistributionPluginOrderController < DistributionPluginProfileController
   end
 
   def render_delivery
-    @order = DistributionPlugin::Order.find params[:id]
+    @order = OrdersPlugin::Order.find params[:id]
     @order.attributes = params[:order]
     render :partial => 'delivery', :layout => false, :locals => {:order => @order}
   end
 
   def session_edit
-    @order = DistributionPlugin::Order.find params[:id]
+    @order = OrdersPlugin::Order.find params[:id]
     if @order.consumer != @user_node and not @node.has_admin? @user_node
       if @user_node.nil?
         session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
@@ -143,7 +143,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
     if @order.session.orders?
       a = {}; @order.products.map{ |p| a[p.id] = p }
       b = {}; params[:order][:products].map do |key, attrs|
-        p = DistributionPlugin::OrderedProduct.new attrs
+        p = OrdersPlugin::OrderedProduct.new attrs
         p.id = attrs[:id]
         b[p.id] = p
       end

@@ -1,4 +1,4 @@
-module SuppliersPlugin::CurrencyHelper
+module CurrencyHelper
 
   def self.parse_localized_number number
     return number if number.blank?
@@ -25,7 +25,7 @@ module SuppliersPlugin::CurrencyHelper
     def has_number_with_locale field
       define_method "#{field}=" do |value|
         if value.is_a?(String)
-          self[field] = SuppliersPlugin::CurrencyHelper.parse_localized_number value
+          self[field] = CurrencyHelper.parse_localized_number value
         else
           self[field] = value
         end
@@ -33,11 +33,11 @@ module SuppliersPlugin::CurrencyHelper
 
       define_method "#{field}_as_currency_number" do |*args, &block|
         number = send(field, *args, &block) rescue self[field]
-        SuppliersPlugin::CurrencyHelper.number_as_currency_number number
+        CurrencyHelper.number_as_currency_number number
       end
       define_method "#{field}_as_currency" do |*args, &block|
         number = send(field, *args, &block) rescue self[field]
-        SuppliersPlugin::CurrencyHelper.number_as_currency number
+        CurrencyHelper.number_as_currency number
       end
     end
 

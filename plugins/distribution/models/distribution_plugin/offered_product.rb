@@ -6,7 +6,7 @@ class DistributionPlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     self.sessions.first
   end
 
-  has_many :ordered_products, :class_name => 'DistributionPlugin::OrderedProduct', :foreign_key => :product_id, :dependent => :destroy
+  has_many :ordered_products, :class_name => 'OrdersPlugin::OrderedProduct', :foreign_key => :product_id, :dependent => :destroy
   has_many :in_orders, :through => :ordered_products, :source => :order
 
   validates_presence_of :session
@@ -19,7 +19,7 @@ class DistributionPlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     self.from_2x_products
   end
 
-  extend SuppliersPlugin::CurrencyHelper::ClassMethods
+  extend CurrencyHelper::ClassMethods
   has_number_with_locale :total_quantity_asked
   has_number_with_locale :total_parcel_quantity
   has_currency :total_price_asked

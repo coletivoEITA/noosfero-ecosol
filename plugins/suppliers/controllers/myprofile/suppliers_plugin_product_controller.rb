@@ -27,10 +27,10 @@ class SuppliersPluginProductController < MyProfileController
   def destroy
     @product = SuppliersPlugin::BaseProduct.find params[:id]
     if @product.nil?
-      flash[:notice] = t('distribution_plugin.controllers.myprofile.product_controller.the_product_was_not_r')
+      flash[:notice] = t('suppliers_plugin.controllers.myprofile.product_controller.the_product_was_not_r')
       false
     else
-      @product.archive and flash[:notice] = t('distribution_plugin.controllers.myprofile.product_controller.product_removed_succe')
+      @product.archive and flash[:notice] = t('suppliers_plugin.controllers.myprofile.product_controller.product_removed_succe')
     end
   end
 

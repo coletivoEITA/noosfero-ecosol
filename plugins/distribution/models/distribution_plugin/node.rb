@@ -5,7 +5,7 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
   has_many :sessions, :class_name => 'DistributionPlugin::Session', :foreign_key => :node_id, :dependent => :destroy, :order => 'created_at DESC',
     :conditions => ["distribution_plugin_sessions.status <> 'new'"]
   has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy, :order => 'id ASC'
-  has_many :parcels, :class_name => 'DistributionPlugin::Order', :foreign_key => :consumer_id, :dependent => :destroy, :order => 'id ASC'
+  has_many :parcels, :class_name => 'OrdersPlugin::Order', :foreign_key => :consumer_id, :dependent => :destroy, :order => 'id ASC'
 
   has_many :products, :through => :profile, :class_name => 'SuppliersPlugin::DistributedProduct', :dependent => :destroy, :order => 'products.name ASC'
   has_many :offered_products, :through => :profile, :class_name => 'DistributionPlugin::OfferedProduct', :dependent => :destroy, :order => 'products.name ASC'
@@ -30,7 +30,7 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
 
-  extend SuppliersPlugin::CurrencyHelper::ClassMethods
+  extend CurrencyHelper::ClassMethods
   has_number_with_locale :margin_percentage
   has_number_with_locale :margin_fixed
 

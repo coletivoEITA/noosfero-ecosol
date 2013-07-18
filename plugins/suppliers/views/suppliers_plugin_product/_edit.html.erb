@@ -5,13 +5,13 @@
 
   <div class="title">
     <% if new_record %>
-      <%= t('distribution_plugin.views.product._edit.add_product_to_the_li') %>
+      <%= t('suppliers_plugin.views.product._edit.add_product_to_the_li') %>
     <% else %>
-      <%= t('distribution_plugin.views.product._edit.editing_distributed_p') %>
+      <%= t('suppliers_plugin.views.product._edit.editing_distributed_p') %>
     <% end %>
   </div>
 
-  <% form_remote_for :product, product, :loading => "distribution.setLoading('our-product-#{product_label}')", :loaded => "distribution.unsetLoading('our-product-#{product_label}')", :url => {:controller => :distribution_plugin_product, :action => new_record ? :new : :edit, :id => product ? product.id : nil} do |f| %>
+  <% form_remote_for :product, product, :loading => "distribution.setLoading('our-product-#{product_label}')", :loaded => "distribution.unsetLoading('our-product-#{product_label}')", :url => {:controller => :suppliers_plugin_product, :action => new_record ? :new : :edit, :id => product ? product.id : nil} do |f| %>
     <%= supplier_select f, profile, product.supplier, new_record %>
 
     <% if product.blank? or (!product.own? and (product.supplier.blank? or @not_distributed_products)) %>
@@ -23,24 +23,24 @@
 
         <div class="our-product-distributed-column">
           <div class="column-title">
-            <%= product.own? ? t('distribution_plugin.views.product._edit.own_product') : t('distribution_plugin.views.product._edit.how_we_distribute_the') %>
+            <%= product.own? ? t('suppliers_plugin.views.product._edit.own_product') : t('suppliers_plugin.views.product._edit.how_we_distribute_the') %>
           </div>
 
           <div id=product-errors-<%=product.new_record? ? 'add' : product.id%> class=distribution-product-errors></div>
 
           <div class="properties-block">
-            <%= labelled_field f, :name, t('distribution_plugin.views.product._edit.name'), f.text_field(:name, :oldvalue => product.own_name) %>
-            <%= labelled_field f, :description, t('distribution_plugin.views.product._edit.description'), f.text_area(:description, :oldvalue => product.own_description) %>
+            <%= labelled_field f, :name, t('suppliers_plugin.views.product._edit.name'), f.text_field(:name, :oldvalue => product.own_name) %>
+            <%= labelled_field f, :description, t('suppliers_plugin.views.product._edit.description'), f.text_area(:description, :oldvalue => product.own_description) %>
 
             <div class="category-edit">
-              <%= labelled_field f, :category, t('distribution_plugin.views.product._edit.category'), f.text_field(:category_id) %>
+              <%= labelled_field f, :category, t('suppliers_plugin.views.product._edit.category'), f.text_field(:category_id) %>
 
               <div class="category-hierarchy">
                 <script class="category-hierarchy" type="text/html">
                   {{ _.each(cat.hierarchy, function(cat) { }}
                     <span class="category">
                       <a href=" " onclick='distribution.category_reselect(this, {{=JSON.stringify(cat)}}); return false;'>{{=cat.name}}</a>
-                      <%= t('distribution_plugin.views.product._edit. > ') %>
+                      <%= t('suppliers_plugin.views.product._edit. > ') %>
                     </span>
                   {{ }); }}
                   <a href=" " class="type" onclick="distribution.category_reselect_sub(); return false;"></a>
@@ -49,27 +49,27 @@
 
               <div class="category-selected" style="display: none">
                 <small><%= _('This product is already categorized. In case you want to change its category,
-                             click above or %{search}.') % {:search => link_to_function(t('distribution_plugin.views.product._edit.search_another_catego'), 'distribution.category_select_another(this);')} %></small>
+                             click above or %{search}.') % {:search => link_to_function(t('suppliers_plugin.views.product._edit.search_another_catego'), 'distribution.category_select_another(this);')} %></small>
               </div>
 
               <div class="category-type-select">
                 <script class="category-type-select-template" type="text/html">
-                  <small><%= t('distribution_plugin.views.product._edit.to_end_the_categoriza') %></small>
+                  <small><%= t('suppliers_plugin.views.product._edit.to_end_the_categoriza') %></small>
                   <select id="product_type_category_id" name="product[type_category_id]", onchange='distribution.subcategory_select(this);'>
                     <option value=""></option>
                     {{ _.each(cat.subcats, function(subcat) { }}
                       <option value="{{=subcat.id}}" {{= subcat.id == selected ? "selected" : ""  }}>{{=subcat.name}}</option>
                     {{ }); }}
                   </select>
-                  <small><%= t('distribution_plugin.views.product._edit.or_then_link') % {:link => "
-                    <a href='#' onclick=\"distribution.category_select_another(this); return false;\">#{t('distribution_plugin.views.product._edit.search_for_another_ca')}</a>" } %>
+                  <small><%= t('suppliers_plugin.views.product._edit.or_then_link') % {:link => "
+                    <a href='#' onclick=\"distribution.category_select_another(this); return false;\">#{t('suppliers_plugin.views.product._edit.search_for_another_ca')}</a>" } %>
                   </small>
                 </script>
                 <div> </div>
               </div>
 
               <% javascript_tag do %>
-                jQuery("#our-product-<%=product.id%> #product_category_id").tokenInput('<%= url_for :controller => :distribution_plugin_product, :action => :search_category %>',
+                jQuery("#our-product-<%=product.id%> #product_category_id").tokenInput('<%= url_for :controller => :suppliers_plugin_product, :action => :search_category %>',
                 {searchDelay: 300, tokenLimit: 1, theme: 'distribution', preventDuplicates: true, <%= jquery_token_input_messages_json('') %>,
                 onAdd: distribution.category_select });
 
@@ -92,14 +92,14 @@
           <% unless product.own? %>
             <div class="properties-block">
               <div class="margin-line">
-                <%= labelled_field f, :margin_percentage, t('distribution_plugin.views.product._edit.margin'),
+                <%= labelled_field f, :margin_percentage, t('suppliers_plugin.views.product._edit.margin'),
                   f.text_field(:margin_percentage, :class => 'small-input',
                                :value => product.own_margin_percentage_as_currency_number, :oldvalue => product.own_margin_percentage_as_currency_number, :defaultvalue => product.original_margin_percentage_as_currency_number,
                                :onkeyup => 'distribution.our_product.pmsync(this, true);') +
-                  ' ' + t('distribution_plugin.views.product._edit.%') %>
+                  ' ' + t('suppliers_plugin.views.product._edit.%') %>
                 <div class="default-margin">
                   <%= f.check_box :default_margin_percentage, :onchange => "distribution.our_product.toggle_referred(this)", :for => '#product_margin_percentage' %>
-                  <%= f.label :default_margin_percentage, t('distribution_plugin.views.product._edit.use_default_margin') %>
+                  <%= f.label :default_margin_percentage, t('suppliers_plugin.views.product._edit.use_default_margin') %>
                 </div>
 
                 <div class="cleaner"></div>
@@ -112,15 +112,15 @@
           <%= render :partial => 'suppliers_plugin_product/price_details', :locals => {:f => f, :product => product, :supplier_product => false} %>
 
           <%= f.check_box :available, :style => 'float: left' %>
-          <%= f.label :available, t('distribution_plugin.views.product._edit.commercialization_act'), :class => 'line-label' %>
+          <%= f.label :available, t('suppliers_plugin.views.product._edit.commercialization_act'), :class => 'line-label' %>
 
           <%# f.check_box :use_stock %>
-          <%# f.label :use_stock, t('distribution_plugin.views.product._edit.commercialization_act'), :class => 'line-label' %>
+          <%# f.label :use_stock, t('suppliers_plugin.views.product._edit.commercialization_act'), :class => 'line-label' %>
         </div>
 
         <% unless product.own? %>
           <div class="our-product-use-original-column">
-            <div class="column-title"><%= t('distribution_plugin.views.product._edit.use_original') %></div>
+            <div class="column-title"><%= t('suppliers_plugin.views.product._edit.use_original') %></div>
             <div class="guideline">
               <%= f.check_box :default_name, :class => 'default-checkbox', :for => '#product_name',
                 :onchange => "distribution.our_product.toggle_referred(this)" unless product.default_name.nil? %>
@@ -132,7 +132,7 @@
           </div>
 
           <div class="our-product-supplied-column alignment2x <%= "dummy-product" if product.supplier_dummy? %>">
-            <div class="column-title"><%= t('distribution_plugin.views.product._edit.how_we_order_the_prod') %></div>
+            <div class="column-title"><%= t('suppliers_plugin.views.product._edit.how_we_order_the_prod') %></div>
 
             <div id=supplier-product-errors-<%=product.new_record? ? 'add' : product.id%> class=distribution-product-errors></div>
 
@@ -144,8 +144,8 @@
                 </div>
               <% else %>
                 <div class="properties-block disabled-fields">
-                  <%= labelled_field f, :name, t('distribution_plugin.views.product._edit.name'), f.text_field(:name, :disabled => 'disabled', :onkeyup => 'distribution.our_product.sync_referred(this)') %>
-                  <%= labelled_field f, :description, t('distribution_plugin.views.product._edit.description'), f.text_area(:description, :disabled => 'disabled', :onkeyup => 'distribution.our_product.sync_referred(this)') %>
+                  <%= labelled_field f, :name, t('suppliers_plugin.views.product._edit.name'), f.text_field(:name, :disabled => 'disabled', :onkeyup => 'distribution.our_product.sync_referred(this)') %>
+                  <%= labelled_field f, :description, t('suppliers_plugin.views.product._edit.description'), f.text_area(:description, :disabled => 'disabled', :onkeyup => 'distribution.our_product.sync_referred(this)') %>
                 </div>
               <% end %>
 
@@ -160,9 +160,9 @@
       </div>
 
       <div class="cleaner">
-        <%= f.submit t('distribution_plugin.views.product._edit.save') %>
-        <%= link_to_function t('distribution_plugin.views.product._edit.cancel'), :class => 'toggle-edit' %>
-        <%= link_to_remote t('distribution_plugin.views.product._edit.remove_product'), :confirm => t('distribution_plugin.views.product._edit.are_you_sure_you_want'), :loading => "distribution.setLoading('our-product-#{product.id}')", :loaded => "distribution.unsetLoading('our-product-#{product.id}')", :url => {:controller => 'distribution_plugin_product', :action => 'destroy', :id => product.id } unless new_record %>
+        <%= f.submit t('suppliers_plugin.views.product._edit.save') %>
+        <%= link_to_function t('suppliers_plugin.views.product._edit.cancel'), :class => 'toggle-edit' %>
+        <%= link_to_remote t('suppliers_plugin.views.product._edit.remove_product'), :confirm => t('suppliers_plugin.views.product._edit.are_you_sure_you_want'), :loading => "distribution.setLoading('our-product-#{product.id}')", :loaded => "distribution.unsetLoading('our-product-#{product.id}')", :url => {:controller => 'suppliers_plugin_product', :action => 'destroy', :id => product.id } unless new_record %>
       </div>
     <% end %>
   <% end %>

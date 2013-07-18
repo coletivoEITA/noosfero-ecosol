@@ -35,7 +35,7 @@ module DistributionPlugin::Factory
 
   def defaults_for_distribution_plugin_delivery_option
     {:session => build(DistributionPlugin::Session),
-     :delivery_method => build(DistributionPlugin::DeliveryMethod)}
+     :delivery_method => build(DeliveryPlugin::DeliveryMethod)}
   end
 
   def defaults_for_distribution_plugin_session
@@ -48,12 +48,12 @@ module DistributionPlugin::Factory
     {:status => 'confirmed',
      :session => build(DistributionPlugin::Session, :node => node),
      :consumer => build(DistributionPlugin::Node),
-     :supplier_delivery => build(DistributionPlugin::DeliveryMethod, :node => node),
-     :consumer_delivery => build(DistributionPlugin::DeliveryMethod, :node => node)}
+     :supplier_delivery => build(DeliveryPlugin::DeliveryMethod, :node => node),
+     :consumer_delivery => build(DeliveryPlugin::DeliveryMethod, :node => node)}
   end
 
   def defaults_for_distribution_plugin_ordered_product
-    {:order => build(DistributionPlugin::Order),
+    {:order => build(OrdersPlugin::Order),
      :product => build(DistributionPlugin::OfferedProduct),
      :quantity_payed => 1.0, :quantity_asked => 2.0, :quantity_allocated => 3.0,
      :price_payed => 10.0, :price_asked => 20.0, :price_allocated => 30.0}

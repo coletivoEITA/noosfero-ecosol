@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../../../../test/test_helper'
 class DistributionPluginOrderedProductTest < ActiveSupport::TestCase
 
   def setup
-    @product = build(DistributionPlugin::OrderedProduct,
+    @product = build(OrdersPlugin::OrderedProduct,
      :quantity_payed => 1.0, :quantity_asked => 2.0, :quantity_allocated => 3.0,
      :price_payed => 10.0, :price_asked => 20.0, :price_allocated => 30.0)
   end

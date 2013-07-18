@@ -2,7 +2,7 @@ class DistributionPluginMessageController < DistributionPluginMyprofileControlle
   no_design_blocks
 
   def new_to_consumer_for_order
-    @order = DistributionPlugin::Order.find params[:order_id]
+    @order = OrdersPlugin::Order.find params[:order_id]
     @consumer = @order.consumer
     if params[:commit]
       if params[:include_order]

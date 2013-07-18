@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../../../../test/test_helper'
 class DistributionPlugin::OrderTest < ActiveSupport::TestCase
 
   def setup
-    @order = build(DistributionPlugin::Order)
+    @order = build(OrdersPlugin::Order)
   end
 
   should 'format code with session code' do
@@ -12,7 +12,7 @@ class DistributionPlugin::OrderTest < ActiveSupport::TestCase
   end
 
   should 'use as draft default status' do
-    @order = create(DistributionPlugin::Order, :status => nil)
+    @order = create(OrdersPlugin::Order, :status => nil)
     assert_equal 'draft', @order.status
   end
 

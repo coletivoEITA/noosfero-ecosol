@@ -42,9 +42,9 @@
           <span class="box-field product"><%= t('distribution_plugin.views.session._orders_suppliers.totals') %></span>
           <span class="box-field total-asked"></span>
           <span class="box-field unit"></span>
-          <span class="box-field sell-value"><%= price_span SuppliersPlugin::CurrencyHelper.number_as_currency(total_price_asked) %></span>
+          <span class="box-field sell-value"><%= price_span CurrencyHelper.number_as_currency(total_price_asked) %></span>
           <span class="box-field forecast-parcel"></span>
-          <span class="box-field forecast-parcel-value"><%= price_span SuppliersPlugin::CurrencyHelper.number_as_currency(total_parcel_price) %></span>
+          <span class="box-field forecast-parcel-value"><%= price_span CurrencyHelper.number_as_currency(total_parcel_price) %></span>
         </div>
       </div>
 

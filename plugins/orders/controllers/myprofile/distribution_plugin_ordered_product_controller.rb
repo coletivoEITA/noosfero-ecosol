@@ -8,17 +8,17 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
     if params[:order_id] == 'new'
       @session = @offered_product.session
       raise 'Cycle closed for orders' unless @session.orders?
-      @order = DistributionPlugin::Order.create! :session => @session, :consumer => @user_node
+      @order = OrdersPlugin::Order.create! :session => @session, :consumer => @user_node
     else
-      @order = DistributionPlugin::Order.find params[:order_id]
+      @order = OrdersPlugin::Order.find params[:order_id]
       @session = @order.session
     end
 
     raise 'Order confirmed or cycle is closed for orders' unless @order.open?
     raise 'You are not logged or is not the owner of this order' if @user_node.nil? or @user_node != @order.consumer
 
-    @ordered_product = DistributionPlugin::OrderedProduct.find_by_order_id_and_product_id @order.id, @offered_product.id
-    @quantity_asked = SuppliersPlugin::CurrencyHelper.parse_localized_number(params[:quantity_asked]) || 1
+    @ordered_product = OrdersPlugin::OrderedProduct.find_by_order_id_and_product_id @order.id, @offered_product.id
+    @quantity_asked = CurrencyHelper.parse_localized_number(params[:quantity_asked]) || 1
     min = @offered_product.minimum_selleable
 
     if @ordered_product.nil? and @quantity_asked > 0
@@ -26,7 +26,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
         @quantity_asked = min
         @quantity_asked_less_than_minimum = true
       end
-      @ordered_product = DistributionPlugin::OrderedProduct.create! :order_id => @order.id, :product_id => @offered_product.id, :quantity_asked => @quantity_asked
+      @ordered_product = OrdersPlugin::OrderedProduct.create! :order_id => @order.id, :product_id => @offered_product.id, :quantity_asked => @quantity_asked
       @quantity_asked_less_than_minimum = @ordered_product if @quantity_asked_less_than_minimum
     else
       if @quantity_asked <= 0
@@ -47,7 +47,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
       redirect_to params.merge!(:action => :admin_edit)
       return
     end
-    @ordered_product = DistributionPlugin::OrderedProduct.find params[:id]
+    @ordered_product = OrdersPlugin::OrderedProduct.find params[:id]
     @offered_product = @ordered_product.offered_product
     @order = @ordered_product.order
     @session = @order.session
@@ -67,7 +67,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
   end
 
   def admin_edit
-    @ordered_product = DistributionPlugin::OrderedProduct.find params[:id]
+    @ordered_product = OrdersPlugin::OrderedProduct.find params[:id]
     @order = @ordered_product.order
     @session = @order.session
     #update on association for total
@@ -76,7 +76,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
   end
 
   def destroy
-    @ordered_product = DistributionPlugin::OrderedProduct.find params[:id]
+    @ordered_product = OrdersPlugin::OrderedProduct.find params[:id]
     @offered_product = @ordered_product.offered_product
     @order = @ordered_product.order
     @session = @order.session
@@ -84,7 +84,7 @@ class DistributionPluginOrderedProductController < DistributionPluginMyprofileCo
   end
 
   def session_destroy
-    @ordered_product = DistributionPlugin::OrderedProduct.find params[:id]
+    @ordered_product = OrdersPlugin::OrderedProduct.find params[:id]
     @order = @ordered_product.order
     @session = @order.session
   end

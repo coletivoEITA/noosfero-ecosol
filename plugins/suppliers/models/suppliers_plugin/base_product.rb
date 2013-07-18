@@ -33,7 +33,7 @@ class SuppliersPlugin::BaseProduct < Product
   default_item :minimum_selleable, :if => :default_price, :delegate_to => :from_product
   default_item :unit_detail, :if => :default_price, :delegate_to => :from_product
 
-  extend SuppliersPlugin::CurrencyHelper::ClassMethods
+  extend CurrencyHelper::ClassMethods
   has_number_with_locale :minimum_selleable
   has_number_with_locale :own_minimum_selleable
   has_number_with_locale :original_minimum_selleable
@@ -46,7 +46,7 @@ class SuppliersPlugin::BaseProduct < Product
   has_currency :original_price
 
   def self.default_unit
-    Unit.new(:singular => I18n.t('distribution_plugin.models.product.unit'), :plural => I18n.t('distribution_plugin.models.product.units'))
+    Unit.new(:singular => I18n.t('suppliers_plugin.models.product.unit'), :plural => I18n.t('suppliers_plugin.models.product.units'))
   end
 
   def minimum_selleable

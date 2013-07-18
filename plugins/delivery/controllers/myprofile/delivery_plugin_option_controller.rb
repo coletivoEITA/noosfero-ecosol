@@ -35,14 +35,14 @@ class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileCo
   end
 
   def method_new
-    @delivery_method = DistributionPlugin::DeliveryMethod.create! params[:delivery_method].merge(:node => @node, :delivery_type => 'pickup')
+    @delivery_method = DeliveryPlugin::DeliveryMethod.create! params[:delivery_method].merge(:node => @node, :delivery_type => 'pickup')
   end
 
   def method_edit
     @delivery_method = @node.delivery_methods.find_by_id params[:id]
     if request.post?
       @delivery_method.update_attributes! params[:delivery_method].merge(:node => @node, :delivery_type => 'pickup')
-      @delivery_method = DistributionPlugin::DeliveryMethod.new # reset form for a new method
+      @delivery_method = DeliveryPlugin::DeliveryMethod.new # reset form for a new method
     end
   end
 

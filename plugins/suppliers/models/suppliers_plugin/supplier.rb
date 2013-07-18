@@ -83,7 +83,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   def check_roles
     Role.create!(
       :key => 'distribution_node_consumer',
-      :name => I18n.t('distribution_plugin.models.node.consumer'),
+      :name => I18n.t('suppliers_plugin.models.node.consumer'),
       :environment => self.profile.environment,
       :permissions => [
         'order_product',

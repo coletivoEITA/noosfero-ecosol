@@ -8,7 +8,7 @@ module SuppliersPlugin::SuppliersProductHelper
    options[:selected] = selected_supplier.id if selected_supplier
    options[:include_blank] = true
 
-   labelled_field f, :supplier_id, I18n.t('distribution_plugin.lib.distribution_product_helper.product_from_which_su'),
+   labelled_field f, :supplier_id, I18n.t('suppliers_plugin.lib.suppliers_product_helper.product_from_which_su'),
      f.select(:supplier_id, supplier_choices(profile), options, field_options), :class => 'product-supplier'
   end
 

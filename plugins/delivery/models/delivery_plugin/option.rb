@@ -1,6 +1,10 @@
-class DistributionPlugin::DeliveryOption < Noosfero::Plugin::ActiveRecord
+class DeliveryPlugin::DeliveryOption < Noosfero::Plugin::ActiveRecord
 
-  belongs_to :delivery_method, :class_name => 'DistributionPlugin::DeliveryMethod'
+  def self.table_name
+    'delivery_plugin_options'
+  end
+
+  belongs_to :delivery_method, :class_name => 'DeliveryPlugin::DeliveryMethod'
   belongs_to :session, :class_name => 'DistributionPlugin::Session'
 
   validates_presence_of :session
