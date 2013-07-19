@@ -5,11 +5,11 @@ class DeliveryPlugin::DeliveryMethod < Noosfero::Plugin::ActiveRecord
     'delivery_plugin_methods'
   end
 
-  belongs_to :node, :class_name => 'DistributionPlugin::Node'
+  belongs_to :profile
 
   has_many :delivery_options, :class_name => 'DeliveryPlugin::DeliveryOption', :foreign_key => :delivery_method_id, :dependent => :destroy
 
-  validates_presence_of :node
+  validates_presence_of :profile
   validates_presence_of :name
   validates_inclusion_of :delivery_type, :in => ['pickup', 'deliver']
 

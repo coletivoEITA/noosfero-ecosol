@@ -1,1 +1,3 @@
-index.html.erb
+<% owner.delivery_options.each do |o| %>
+  <%= render :partial => 'delivery_plugin_option/show', :locals => {:owner => owner, :option => o} %>
+<% end %>

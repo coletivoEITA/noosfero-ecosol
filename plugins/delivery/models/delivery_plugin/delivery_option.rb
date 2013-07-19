@@ -6,9 +6,9 @@ class DeliveryPlugin::DeliveryOption < Noosfero::Plugin::ActiveRecord
   end
 
   belongs_to :delivery_method, :class_name => 'DeliveryPlugin::DeliveryMethod'
-  belongs_to :session, :class_name => 'DistributionPlugin::Session'
+  belongs_to :owner, :polymorphic => true
 
-  validates_presence_of :session
   validates_presence_of :delivery_method
+  validates_presence_of :owner
 
 end

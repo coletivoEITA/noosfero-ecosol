@@ -8,7 +8,7 @@ class DistributionPlugin::OrderBlock < Block
    I18n.t('distribution_plugin.lib.order_block.distribution_orders_c')
  end
 
- def self.available_for(profile)
+ def self.available_for? profile
    node = DistributionPlugin::Node.find_or_create profile
    !node.blank? && !node.consumer?
  end

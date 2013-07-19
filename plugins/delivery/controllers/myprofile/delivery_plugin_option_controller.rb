@@ -2,55 +2,55 @@ class DeliveryPluginOptionController < MyProfileController
 
   no_design_blocks
 
-  before_filter :load
+  before_filter :load_methods
+  before_filter :load_owner, :except => [:method_new]
 
   def select
-    @session = DistributionPlugin::Session.find params[:session_id]
     render :layout => false
   end
 
-  def index
-    @session = DistributionPlugin::Session.find params[:session_id]
-  end
-
-  def show
-    @delivery_option = DistributionPlugin::Session.find params[:id]
-  end
-
   def new
-    @session = DistributionPlugin::Session.find params[:session_id]
-    @session.add_delivery_options = params[:session][:add_delivery_options]
-    @session.save(false) # skip validations as needed for a new session
+    ids = params[:delivery_methods]
+    dms = profile.delivery_methods.find ids
+    (dms - @owner.delivery_methods).each do |dm|
+      DeliveryPlugin::DeliveryOption.create! :owner_id => @owner.id, :owner_type => @owner.class.name, :delivery_method => dm
+    end
   end
 
   def destroy
-    @delivery_option = @node.delivery_options.find params[:id]
-    @session = @delivery_option.session
+    @delivery_option = @owner.delivery_options.find params[:id]
     @delivery_option.destroy
   end
 
-  def method_destroy
-    @delivery_method = @node.delivery_methods.find_by_id params[:id]
-    @delivery_method.destroy
-  end
-
   def method_new
-    @delivery_method = DeliveryPlugin::DeliveryMethod.create! params[:delivery_method].merge(:node => @node, :delivery_type => 'pickup')
+    @delivery_method = DeliveryPlugin::DeliveryMethod.create! params[:delivery_method].merge(:profile => profile, :delivery_type => 'pickup')
   end
 
   def method_edit
-    @delivery_method = @node.delivery_methods.find_by_id params[:id]
+    @delivery_method = profile.delivery_methods.find_by_id params[:id]
     if request.post?
-      @delivery_method.update_attributes! params[:delivery_method].merge(:node => @node, :delivery_type => 'pickup')
-      @delivery_method = DeliveryPlugin::DeliveryMethod.new # reset form for a new method
+      @delivery_method.update_attributes! params[:delivery_method].merge(:profile => profile, :delivery_type => 'pickup')
+      # reset form for a new method
+      @delivery_method = DeliveryPlugin::DeliveryMethod.new
     end
+  end
+
+  def method_destroy
+    @delivery_method = profile.delivery_methods.find params[:id]
+    @delivery_method.destroy
   end
 
   protected
 
-  def load
+  def load_methods
     @delivery_methods = profile.delivery_methods
     @delivery_method = profile.delivery_methods.build
+  end
+
+  def load_owner
+    @owner_id = params[:owner_id]
+    @owner_type = params[:owner_type]
+    @owner = @owner_type.constantize.find @owner_id
   end
 
 end

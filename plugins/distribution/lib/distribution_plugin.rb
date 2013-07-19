@@ -3,6 +3,8 @@ require_dependency "#{File.dirname __FILE__}/ext/community"
 require_dependency "#{File.dirname __FILE__}/ext/category"
 require_dependency "#{File.dirname __FILE__}/ext/product"
 
+require_dependency "#{File.dirname __FILE__}/ext/delivery_plugin/delivery_option"
+
 require_dependency "#{File.dirname __FILE__}/ext/orders_plugin/order"
 require_dependency "#{File.dirname __FILE__}/ext/orders_plugin/ordered_product"
 
@@ -29,7 +31,7 @@ class DistributionPlugin < Noosfero::Plugin
   end
 
   def profile_blocks profile
-    DistributionPlugin::OrderBlock if DistributionPlugin::OrderBlock.available_for(profile)
+    DistributionPlugin::OrderBlock if DistributionPlugin::OrderBlock.available_for? profile
   end
 
   def control_panel_buttons

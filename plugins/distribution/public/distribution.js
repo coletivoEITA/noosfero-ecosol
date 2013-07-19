@@ -57,14 +57,6 @@ distribution = {
 
   /* ----- ends session stuff  ----- */
 
-  /* ----- delivery stuff  ----- */
-
-  delivery_view_toggle: function () {
-    jQuery('#delivery-method-choose, #delivery-method-edit').toggle();
-  },
-
-  /* ----- ends delivery stuff  ----- */
-
   /* ----- category select stuff  ----- */
 
   category: null,
