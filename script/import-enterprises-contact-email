@@ -1,0 +1,116 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require File.dirname(__FILE__) + '/../config/environment'
+require 'logger'
+require 'iconv' unless RUBY_VERSION >= "1.9"
+
+def add_contact_email( enterprise, mail )
+  mail = mail.gsub("\302\240", ' ').strip.downcase,gsub(" ","")
+  $log.info "Verificando se existe um o usuário com email '%s' ...." % [ u[:mail].downcase ]
+  user = User.find_by_email( u[:mail].gsub("\302\240", ' ').strip.downcase.gsub(" ", "") )
+  if !user.blank?
+    $log.info "existe!"  
+    $log.info "Verificando se o usuário faz parte da administração do empreendimento...."    
+    enterprise.admins do |admin|
+      if user.person.identifier == admin.identifier
+        $log.info "é admin!"      
+        enterprise.contact_email = user.person.email
+        return
+      end
+    end
+  end
+end
+
+def load_file(file_path, state)
+  require 'csv'
+  adm_users = []
+  enterprises = []
+  csv_line_reader = CSV.open(file_path, 'r')
+  csv_line_reader.shift  
+  csv_line_reader.each do |array|
+    user = {:name => array[3], :mail => array[4], :fone => array[5], :city => array[2], :state => state }
+    user2 = {:name => array[6], :mail => array[7], :fone => array[8], :city => array[2], :state => state }   
+    adm_users << user
+    adm_users << user2
+    enterprises << {:name => array[0], :identifier=> array[1], :adm_users => adm_users, :city => array[2], :state => state }
+    adm_users = []
+  end
+  enterprises
+end
+
+def find_enterprise( identifier, name )
+  $log.info "Buscando emprendimento '%s'..." % name
+  identifier = name.downcase.to_slug if identifier.blank?
+  identifier = ActiveSupport::Inflector.transliterate(identifier.downcase.to_slug)
+  profile = Profile[ identifier ] 
+  identifier = "ees-" + identifier if profile.blank? or profile.community? 
+  identifier = identifier.gsub("\302\240", ' ').strip 
+  profile = Profile[ identifier ] 
+  if !profile.blank?    
+    $log.info "encontrado!"
+  end
+  profile
+end
+
+def import_stats(count = nil, errors = 0)
+  imported = 0
+  if !count.blank?
+    imported = count - errors
+  end
+  stats = { :to_import => count, :imported => imported } 
+end
+
+start_time = Time.now
+puts start_time
+
+file = nil
+if ARGV.blank?
+  exit
+else
+  file = ARGV[0]
+  state = ARGV[1]
+end
+
+log_path = File.dirname(__FILE__) + "/../log/"
+log_date = start_time.strftime "%Y-%m-%d_%H:%M:%S"
+log_name = '%s-script-import-contact-email-%s.txt' % [ log_date, state ]
+$log = Logger.new( log_path + log_name )
+$log.debug "Arquivo de log Criado!"
+
+$log.debug "Carregando empreendimento enviados pelo %s  do arquivo %s  para a memoria..." % [ state, file ]
+enterprises = load_file( file, state )
+$log.debug "Carregado!"
+
+$log.debug "Iniciando importação. Esta operação pode demorar algum tempo..."
+error_enterprises = 0
+enterprises.each do |e|    
+  enterprise = find_enterprise( e[:identifier], e[:name] )
+  if enterprise.blank?
+    error_enterprises = error_enterprises + 1
+  else
+    add_contact_email( enterprise, e[:mail] )
+ end
+  $log.debug "."
+  puts "."
+end
+$log.debug "Importação finalizada!"
+
+summary = import_stats( enterprises.count,  error_enterprises )
+puts "------------"
+puts "Eram esperados %s novos emprendimentos..." % [ summary[:to_import] ] 
+puts "Foram importados %s..." % [  summary[:imported] ]
+puts "Aconteceram %s erros..." % [ error_enterprises ]
+
+puts "Este script foi desenvolvido para a chamada de entrada de novos emprendimentos, mais detalhes aqui -> http://cirandas.net/fbes/blog/fbes-abre-o-cirandas-para-cadastro-de-novos-empreendimentos"
+puts ""
+puts "Antes de executá-lo siga as intruções abaixo:"
+puts "  1. remover as linhas extras, aquelas com explicação de uso, deixando apenas o cabeçalho de cada coluna."
+puts "  2. remover o nome do estado, afinal cada forum estadual vai enviar sua planilha separadamente."
+puts "  3. procurar por e-mail repetidos, pois  o CIRANDAS.NET não aceita criar usuário com email repeditos"
+puts "    -> dica: faça um hide nas colunas F e G (telefone da 1ª pessoa e nome da 2ª pessoa)"
+puts "    -> se encontrar: salve em uma outra planilha para reportar ao forum estadual, quem sabe solicitando ao emprendimento outro e-mail"
+puts "  4. salvar como .CSV, escolha Use Txt Format; Charset UTF8; delimitador de campo vírgula (,); delimitador de texto aspas duplas ('""')"
+puts "No caso de muitos erros retorne para as intruções de uso à cima."
+
+puts "Verifique o arquivo de log '%s' para detalhes sobre a importação" % log_name
