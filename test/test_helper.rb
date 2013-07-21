@@ -1,31 +1,19 @@
 ENV["RAILS_ENV"] = "test"
 
-# ensure we are on the root dir
-require 'fileutils'
-while !File.exists?('Rakefile')
-  FileUtils.cd '..'
-end
-
-# Start/stop Solr
-if not $test_helper_loaded
-  abort unless system 'rake -s solr:start'
-  at_exit { system 'rake -s solr:stop' }
-  $test_helper_loaded = true
-end
-
-require 'config/environment'
+require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 require 'mocha'
 require 'tidy'
 require 'hpricot'
 
 require 'noosfero/test'
-require 'test/noosfero_doc_test'
-require 'test/action_tracker_test_helper'
-require 'test/test_solr_helper.rb'
-require 'test/factories'
+require File.dirname(__FILE__) + '/factories'
+require File.dirname(__FILE__) + '/noosfero_doc_test'
+require File.dirname(__FILE__) + '/action_tracker_test_helper'
 plugins_factories = Dir.glob(File.join(Rails.root, 'config', 'plugins', '*','test', 'factories.rb'))
 plugins_factories.each { |f| require f.sub(/\.rb$/, '') }
+
+FileUtils.rm_rf(File.join(RAILS_ROOT, 'index', 'test'))
 
 Image.attachment_options[:path_prefix] = 'test/tmp/public/images'
 Thumbnail.attachment_options[:path_prefix] = 'test/tmp/public/thumbnails'
@@ -65,14 +53,6 @@ class ActiveSupport::TestCase
   include AuthenticatedTestHelper
 
   fixtures :environments, :roles
-
-  def setup
-    TestSolr.disable
-  end
-
-  def teardown
-    TestSolr.disable
-  end
 
   def self.all_fixtures
     Dir.glob(File.join(RAILS_ROOT, 'test', 'fixtures', '*.yml')).each do |item|
@@ -278,9 +258,8 @@ module NoosferoTestHelper
   def will_paginate(arg1, arg2)
   end
 
-  def url_for *args
-    url = ActionController::UrlRewriter.new(@request, nil)
-    url.rewrite *args
+  def url_for(args = {})
+    args
   end
 
   def javascript_tag(any)

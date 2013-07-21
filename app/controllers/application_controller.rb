@@ -119,7 +119,7 @@ class ApplicationController < ActionController::Base
       @profile = @domain.profile
 
       # Check if the requested profile belongs to another domain
-      if @profile and !params[:profile].blank? and params[:profile] != @profile.identifier
+      if @profile && !params[:profile].blank? && params[:profile] != @profile.identifier
         @profile = @environment.profiles.find_by_identifier params[:profile]
         redirect_to params.merge(:host => @profile.default_hostname)
       end
@@ -177,6 +177,20 @@ class ApplicationController < ActionController::Base
         render_not_found(path)
       end
     end
+  end
+
+  def find_by_contents(asset, scope, query, paginate_options={:page => 1}, options={})
+    scope = scope.send(options[:filter]) if options[:filter]
+
+    @plugins.dispatch_first(:find_by_contents, asset, scope, query, paginate_options, options) ||
+    fallback_find_by_contents(asset, scope, query, paginate_options, options)
+  end
+
+  private
+
+  def fallback_find_by_contents(asset, scope, query, paginate_options, options)
+    return {:results => scope.paginate(paginate_options)} if query.blank?
+    {:results => scope.like_search(query).paginate(paginate_options)}
   end
 
 end

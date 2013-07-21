@@ -3,21 +3,14 @@ module ContentViewerHelper
   include BlogHelper
   include ForumHelper
 
+  def display_number_of_comments(n)
+    base_str = "<span class='comment-count hide'>#{n}</span>"
+    amount_str = n == 0 ? _('no comments yet') : (n == 1 ? _('One comment') : _('%s comments') % n)
+    base_str + "<span class='comment-count-write-out'>#{amount_str}</span>"
+  end
+
   def number_of_comments(article)
-    n = article.comments.without_spam.count
-    if n == 0
-      if article.parent.is_a?(Forum)
-        _('No answers yet')
-      else
-        _('No comments yet')
-      end
-    else
-      if article.parent.is_a?(Forum)
-       n_('One answer', '<span class="comment-count">%{comments}</span> answers', n) % { :comments => n }
-      else
-       n_('One comment', '<span class="comment-count">%{comments}</span> comments', n) % { :comments => n }
-      end
-    end
+    display_number_of_comments(article.comments.without_spam.count)
   end
 
   def article_title(article, args = {})

@@ -8836,11 +8836,14 @@ msgstr ""
 msgid "Enter your comment"
 msgstr "Digite seu comentário"
 
+#: app/views/content_viewer/_comment_form.rhtml:90
+msgid "Enter your answer"
+msgstr "Digite sua resposta"
+
 #: app/views/content_viewer/_comment_form.rhtml:88
 msgid "Post comment"
 msgstr "Enviar comentário"
 
-#: app/views/content_viewer/_comment_form.rhtml:90
 #: app/views/content_viewer/_comment_form.rhtml:96
 msgid "Post answer"
 msgstr "Enviar resposta"

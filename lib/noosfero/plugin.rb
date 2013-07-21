@@ -5,6 +5,10 @@ class Noosfero::Plugin
 
   attr_accessor :context
 
+  def initialize(context=nil)
+    self.context = context
+  end
+
   class << self
 
     def klass(dir)
@@ -16,38 +20,52 @@ class Noosfero::Plugin
       if Rails.env.test? && !enabled_plugins.include?(File.join(Rails.root, 'config', 'plugins', 'foo'))
         enabled_plugins << File.join(Rails.root, 'plugins', 'foo')
       end
+
       enabled_plugins.select do |entry|
         File.directory?(entry)
       end.each do |dir|
-        plugin_name = File.basename(dir)
+        load_plugin dir
+      end
+    end
 
-        plugin_dependencies_ok = true
-        plugin_dependencies_file = File.join(dir, 'dependencies.rb')
-        if File.exists?(plugin_dependencies_file)
-          begin
-            require plugin_dependencies_file
-          rescue LoadError => ex
-            plugin_dependencies_ok = false
-            $stderr.puts "W: Noosfero plugin #{plugin_name} failed to load (#{ex})"
-          end
-        end
+    def load_plugin dir
+      plugin_name = File.basename(dir)
 
-        if plugin_dependencies_ok
-          Rails.configuration.controller_paths << File.join(dir, 'controllers')
-          ActiveSupport::Dependencies.load_paths << File.join(dir, 'controllers')
-          controllers_folders = %w[public profile myprofile admin]
-          controllers_folders.each do |folder|
-            Rails.configuration.controller_paths << File.join(dir, 'controllers', folder)
-            ActiveSupport::Dependencies.load_paths << File.join(dir, 'controllers', folder)
-          end
-          [ ActiveSupport::Dependencies.load_paths, $:].each do |path|
-            path << File.join(dir, 'models')
-            path << File.join(dir, 'lib')
-          end
-
-          klass(plugin_name)
+      plugin_dependencies_ok = true
+      plugin_dependencies_file = File.join(dir, 'dependencies.rb')
+      if File.exists?(plugin_dependencies_file)
+        begin
+          require plugin_dependencies_file
+        rescue LoadError => ex
+          plugin_dependencies_ok = false
+          $stderr.puts "W: Noosfero plugin #{plugin_name} failed to load (#{ex})"
         end
       end
+
+      return unless plugin_dependencies_ok
+
+      # add load paths
+      Rails.configuration.controller_paths << File.join(dir, 'controllers')
+      ActiveSupport::Dependencies.load_paths << File.join(dir, 'controllers')
+      controllers_folders = %w[public profile myprofile admin]
+      controllers_folders.each do |folder|
+        Rails.configuration.controller_paths << File.join(dir, 'controllers', folder)
+        ActiveSupport::Dependencies.load_paths << File.join(dir, 'controllers', folder)
+      end
+      [ ActiveSupport::Dependencies.load_paths, $:].each do |path|
+        path << File.join(dir, 'models')
+        path << File.join(dir, 'lib')
+      end
+
+      # load vendor/plugins
+      Dir.glob(File.join(dir, '/vendor/plugins/*')).each do |vendor_plugin|
+        [ ActiveSupport::Dependencies.load_paths, $:].each{ |path| path << "#{vendor_plugin}/lib" }
+        init = "#{vendor_plugin}/init.rb"
+        require init.gsub(/.rb$/, '') if File.file? init
+      end
+
+      # load class
+      klass(plugin_name)
     end
 
     def all
@@ -124,6 +142,12 @@ class Noosfero::Plugin
     end
     blocks.compact!
     blocks || []
+  end
+
+  def macros
+    self.class.constants.map do |constant_name|
+      self.class.const_get(constant_name)
+    end.select {|const| const.is_a?(Class) && const < Noosfero::Plugin::Macro}
   end
 
   # Here the developer may specify the events to which the plugins can
@@ -234,8 +258,8 @@ class Noosfero::Plugin
 
   # -> Parse and possibly make changes of content (article, block, etc) during HTML rendering
   # returns = content as string after parser and changes
-  def parse_content(raw_content)
-    raw_content
+  def parse_content(html, source)
+    [html, source]
   end
 
   # -> Adds links to the admin panel
@@ -269,6 +293,18 @@ class Noosfero::Plugin
   #   end
   #
   def filter_comment(comment)
+  end
+
+  # Define custom logic to filter loaded comments.
+  #
+  # Example:
+  #
+  #   def unavailable_comments(scope)
+  #     scope.without_spams
+  #   end
+  #
+  def unavailable_comments(scope)
+    scope
   end
 
   # This method is called by the CommentHandler background job before sending
@@ -310,6 +346,30 @@ class Noosfero::Plugin
   #   end
   #
   def comment_marked_as_ham(comment)
+  end
+
+  # Adds extra actions for comments
+  # returns = list of hashes or lambda block that creates a list of hashes
+  # example:
+  #
+  #   def comment_actions(comment)
+  #     [{:link => link_to_function(...)}]
+  #   end
+  #
+  def comment_actions(comment)
+    nil
+  end
+
+  # This method is called when the user click on comment actions menu.
+  # returns = list or lambda block that return ids of enabled menu items for comments
+  # example:
+  #
+  #   def check_comment_actions(comment)
+  #     ['#action1', '#action2']
+  #   end
+  #
+  def check_comment_actions(comment)
+    []
   end
 
   # -> Adds fields to the signup form
@@ -384,6 +444,19 @@ class Noosfero::Plugin
   # returns = lambda block that creates html code
   def login_extra_contents
     nil
+  end
+
+  # -> Adds adicional content to comment form
+  # returns = lambda block that creates html code
+  def comment_form_extra_contents(args)
+    nil
+  end
+
+  # -> Finds objects by their contents
+  # returns = {:results => [a, b, c, ...], ...}
+  # P.S.: The plugin might add other informations on the return hash for its
+  # own use in specific views
+  def find_by_contents(asset, scope, query, paginate_options={}, options={})
   end
 
   # -> Adds additional blocks to profiles and environments.

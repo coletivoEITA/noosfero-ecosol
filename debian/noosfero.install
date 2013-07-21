@@ -28,7 +28,6 @@ public                            usr/share/noosfero
 
 debian/default/noosfero           etc/default
 etc/init.d/noosfero               etc/init.d
-debian/solr.yml                   etc/noosfero
 debian/thin.yml                   etc/noosfero
 etc/logrotate.d/noosfero          etc/logrotate.d
 debian/noosfero.yml               etc/noosfero
@@ -39,3 +38,4 @@ locale                            usr/share/noosfero
 doc/noosfero                      usr/share/noosfero/doc
 
 debian/noosfero-console           usr/sbin
+debian/noosfero-check-dbconfig    usr/sbin

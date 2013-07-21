@@ -202,26 +202,24 @@ class CmsControllerTest < ActionController::TestCase
     a = profile.articles.build(:name => 'my-article')
     a.save!
     assert_difference Article, :count, -1 do
-      @request.env['HTTP_REFERER'] = url_for :controller => 'cms', :profile => profile.identifier, :action => 'index'
       post :destroy, :profile => profile.identifier, :id => a.id
-      assert_redirected_to :controller => 'cms', :profile => profile.identifier, :action => 'index'
     end
   end
 
   should 'redirect to cms after remove article from content management' do
     a = profile.articles.build(:name => 'my-article')
     a.save!
-    @request.env['HTTP_REFERER'] = url_for :controller => 'cms', :profile => profile.identifier, :action => 'index'
+    @request.env['HTTP_REFERER'] = 'http://test.host/myprofile/testinguser/cms'
     post :destroy, :profile => profile.identifier, :id => a.id
-    assert_redirected_to :controller => 'cms', :profile => profile.identifier, :action => 'index'
+    assert_redirected_to :controller => 'cms', :action => 'index', :profile => profile.identifier
   end
 
   should 'redirect to blog after remove article from content viewer' do
     a = profile.articles.build(:name => 'my-article')
     a.save!
-    @request.env['HTTP_REFERER'] = url_for :controller => 'content_viewer', :action => 'view_page'
+    @request.env['HTTP_REFERER'] = 'http://colivre.net/testinguser'
     post :destroy, :profile => profile.identifier, :id => a.id
-    assert_redirected_to :controller => 'content_viewer', :action => 'view_page'
+    assert_redirected_to :controller => 'content_viewer', :action => 'view_page', :profile => profile.identifier, :page => [], :host => profile.environment.default_hostname
   end
 
   should 'be able to acess Rss feed creation page' do
@@ -300,7 +298,6 @@ class CmsControllerTest < ActionController::TestCase
   end
 
   should 'display destination folder of files when uploading file' do
-    TestSolr.enable
     f = Folder.new(:name => 'f'); profile.articles << f; f.save!
     get :upload_files, :profile => profile.identifier, :parent_id => f.id
 
@@ -904,13 +901,6 @@ class CmsControllerTest < ActionController::TestCase
     assert_tag :tag => 'a', :content => 'New content'
   end
 
-  should 'offer confirmation to remove article' do
-    a = profile.articles.create!(:name => 'my-article')
-    @request.env['HTTP_REFERER'] = url_for :controller => 'cms', :profile => profile.identifier, :action => 'index'
-    post :destroy, :profile => profile.identifier, :id => a.id
-    assert_response :redirect
-  end
-
   should 'display notify comments option' do
     a = profile.articles.create!(:name => 'test')
     get :edit, :profile => profile.identifier, :id => a.id
@@ -1495,7 +1485,6 @@ class CmsControllerTest < ActionController::TestCase
   end
 
   should 'search for content for inclusion in articles' do
-    TestSolr.enable
     file = UploadedFile.create!(:profile => @profile, :uploaded_data => fixture_file_upload('files/test.txt', 'text/plain'))
     get :search, :profile => @profile.identifier, :q => 'test.txt'
     assert_match /test.txt/, @response.body

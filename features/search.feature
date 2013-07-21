@@ -4,8 +4,7 @@ Feature: search
   In order to find stuff
 
   Background:
-    Given the search index is empty
-    And feature "disable_asset_products" is disabled on environment
+    Given feature "disable_asset_products" is disabled on environment
 
   Scenario: show empty results in all enabled assets
     Given I go to the search page
@@ -40,7 +39,7 @@ Feature: search
       | login      | name        |
       | joaosilva  | Joao Silva  |
     And the following articles
-      | owner     | name                 |
+      | owner     | name       |
       | joaosilva | article #1 |
       | joaosilva | article #2 |
       | joaosilva | article #3 |
@@ -53,8 +52,6 @@ Feature: search
     When I go to the search page
     And I fill in "search-input" with "article"
     And I press "Search"
-    Then I should see "article #8" within ".search-results-articles"
-    And I should not see "article #9" within ".search-results-articles"
     And I should see "see all (9)"
     When I follow "see all (9)"
     Then I should be on the search articles page
