@@ -1,4 +1,4 @@
-public/designs/themes/*
+.gitignore
 .rbenv-*
 vendor/rails
 doc/api
@@ -9,7 +9,6 @@ config/database.yml
 config/session.secret
 config/noosfero.yml
 config/mongrel_cluster.yml
-config/solr.yml
 config/plugins
 config/thin.yml
 config/local.rb
@@ -21,11 +20,10 @@ public/image_uploads
 public/thumbnails
 public/user_themes
 public/designs/themes/default
+public/designs/themes/*
 public/designs/icons/default
-public/javascripts/cache
-public/javascripts/cache*.js
-public/stylesheets/cache
-public/stylesheets/cache*.css
+public/javascripts/cache*
+public/stylesheets/cache*
 public/plugins
 db/development.db
 db/production.db
@@ -34,7 +32,6 @@ doc/noosfero/*.xhtml
 doc/noosfero/*/*.xhtml
 tags
 pkg
-solr
 *~
 *.swp
 debian/*.log
