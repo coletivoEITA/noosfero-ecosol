@@ -6,8 +6,8 @@ class Image < ActiveRecord::Base
 
   sanitize_filename
 
-  has_attachment :content_type => :image, 
-                 :storage => :file_system, 
+  has_attachment :content_type => :image,
+                 :storage => :file_system,
                  :path_prefix => 'public/image_uploads',
                  :resize_to => '800x600>',
                  :thumbnails => { :big      => '150x150',
@@ -22,5 +22,9 @@ class Image < ActiveRecord::Base
   delay_attachment_fu_thumbnails
 
   postgresql_attachment_fu
+
+  def public_filename *args
+    "http://cirandas.net/#{super *args}"
+  end
 
 end
