@@ -140,7 +140,7 @@ def add_adm_users( enterprise, users )
         $log.fatal e.backtrace
       end
     else
-      $log.error "não foi possível adicionar o usuário '%s' como administrador do emprendimento..." % user.person.name
+      $log.error "não foi possível adicionar o usuário '%s' como administrador do empreendimento..." % user.person.name
     end    
   end
 end
@@ -169,19 +169,26 @@ def activate_enterprise( enterprise )
       $log.info "ativado!"
       return 
     else
-      $log.error "não foi possível ativar o emprendimento '%s'" % enterprise.name
+      $log.error "não foi possível ativar o empreendimento '%s'" % enterprise.name
     end
   end
 end
 
-def create_enterprise( name, identifier, year, city, state )
-  $log.info "Criando emprendimento '%s'..." % name
+def create_enterprise( name, identifier, adm_users, year, city, state )
+  $log.info "Criando empreendimento '%s'..." % name
   identifier = name.downcase.to_slug if identifier.blank?
   identifier = ActiveSupport::Inflector.transliterate(identifier.downcase.to_slug)
   profile = Profile[ identifier ] 
   identifier = "ees-" + identifier if !profile.blank? and !profile.enterprise? 
   name = name.gsub("\302\240", ' ').strip
   identifier = identifier.gsub("\302\240", ' ').strip 
+  mail = nil
+  adm_users.each do |u|
+     if !u[:mail].blank?
+       mail = u[:mail].gsub("\302\240", ' ').strip.downcase.gsub(" ", "") 
+       break
+     end     
+  end 
   $log.info "Id = %s..." % identifier
   enterprise = Enterprise.new(
     :name => name,        
@@ -190,14 +197,15 @@ def create_enterprise( name, identifier, year, city, state )
     :foundation_year => year,
     :lat => nil,
     :lng => nil,
-    :environment => Environment.default
+    :environment => Environment.default,
+    :contact_email => mail
   )
   begin
     enterprise.save!
-    $log.info "Emprendimento criado!" 
+    $log.info "Empreendimento criado!" 
     return enterprise
   rescue Exception => e
-    $log.fatal "Não foi possível criar o emprendimento devido a excessão '%s'" % e.message 
+    $log.fatal "Não foi possível criar o empreendimento devido a excessão '%s'" % e.message 
     $log.fatal e.backtrace 
     return nil
   end
@@ -228,14 +236,14 @@ log_name = '%s-script-import-%s.txt' % [ log_date, state ]
 $log = Logger.new( log_path + log_name )
 $log.debug "Arquivo de log Criado!"
 
-$log.debug "Carregando empreendimento enviados pelo %s  do arquivo %s  para a memoria..." % [ state, file ]
+$log.debug "Carregando empreendimento enviados pelo %s do arquivo %s para a memoria..." % [ state, file ]
 enterprises = load_file( file, state )
 $log.debug "Carregado!"
 
 $log.debug "Iniciando importação. Esta operação pode demorar algum tempo..."
 error_enterprises = 0
-enterprises.each do |e|    
-  enterprise = create_enterprise( e[:name], e[:identifier], e[:foundation_year], e[:city], e[:state] )
+enterprises.each do |e|      
+  enterprise = create_enterprise( e[:name], e[:identifier], e[:adm_users], e[:foundation_year], e[:city], e[:state] )
   if enterprise.blank?
     error_enterprises = error_enterprises + 1
   else
@@ -246,19 +254,20 @@ enterprises.each do |e|
     end 
   end
   $log.debug "."
-  puts "."
+  print "."
 end
+puts ""
 $log.debug "Importação finalizada!"
 
 summary = import_stats( enterprises.count,  error_enterprises )
 puts "------------"
-puts "Eram esperados %s novos emprendimentos..." % [ summary[:to_import] ] 
+puts "Eram esperados %s novos empreendimentos..." % [ summary[:to_import] ] 
 puts "Foram importados %s..." % [  summary[:imported] ]
 puts "Aconteceram %s erros..." % [ error_enterprises ]
 
-puts "Este script foi desenvolvido para a chamada de entrada de novos emprendimentos, mais detalhes aqui -> http://cirandas.net/fbes/blog/fbes-abre-o-cirandas-para-cadastro-de-novos-empreendimentos"
+puts "Este script foi desenvolvido para a chamada de entrada de novos empreendimentos, mais detalhes aqui -> http://cirandas.net/fbes/blog/fbes-abre-o-cirandas-para-cadastro-de-novos-empreendimentos"
 puts ""
-puts "Antes de executá-lo siga as intruções abaixo:"
+puts "Antes de executá-lo siga as instruções abaixo:"
 puts "  1. remover as linhas extras, aquelas com explicação de uso, deixando apenas o cabeçalho de cada coluna."
 puts "  2. remover o nome do estado, afinal cada forum estadual vai enviar sua planilha separadamente."
 puts "  3. procurar por e-mail repetidos, pois  o CIRANDAS.NET não aceita criar usuário com email repeditos"

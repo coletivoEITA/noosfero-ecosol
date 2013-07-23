@@ -6,8 +6,8 @@ require 'logger'
 require 'iconv' unless RUBY_VERSION >= "1.9"
 
 def add_contact_email( enterprise, mail )
-  mail = mail.gsub("\302\240", ' ').strip.downcase,gsub(" ","")
-  $log.info "Verificando se existe um o usuário com email '%s' ...." % [ u[:mail].downcase ]
+  mail = mail.gsub("\302\240", ' ').strip.downcase,gsub(" ","") if !mail.blank?
+  $log.info "Verificando se existe um o usuário com email '%s' ...." %  mail
   user = User.find_by_email( u[:mail].gsub("\302\240", ' ').strip.downcase.gsub(" ", "") )
   if !user.blank?
     $log.info "existe!"  
