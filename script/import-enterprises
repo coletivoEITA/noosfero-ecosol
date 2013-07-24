@@ -174,18 +174,27 @@ def activate_enterprise( enterprise )
   end
 end
 
+class String
+  def normalize_spaces
+    self.gsub("\302\240", ' ').squish
+  end
+  def normalize str
+    ActiveSupport::Inflector.transliterate(self).normalize_spaces.gsub(" ", "").downcase.to_slug
+  end
+end
+
 def create_enterprise( name, identifier, adm_users, year, city, state )
   $log.info "Criando empreendimento '%s'..." % name
   identifier = name.downcase.to_slug if identifier.blank?
   identifier = ActiveSupport::Inflector.transliterate(identifier.downcase.to_slug)
   profile = Profile[ identifier ] 
   identifier = "ees-" + identifier if !profile.blank? and !profile.enterprise? 
-  name = name.gsub("\302\240", ' ').strip
+  name = name.normalize_spaces
   identifier = identifier.gsub("\302\240", ' ').strip 
   mail = nil
   adm_users.each do |u|
      if !u[:mail].blank?
-       mail = u[:mail].gsub("\302\240", ' ').strip.downcase.gsub(" ", "") 
+       mail = u[:mail].normalize
        break
      end     
   end 

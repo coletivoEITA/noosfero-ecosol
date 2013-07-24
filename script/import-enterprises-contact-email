@@ -5,18 +5,36 @@ require File.dirname(__FILE__) + '/../config/environment'
 require 'logger'
 require 'iconv' unless RUBY_VERSION >= "1.9"
 
-def add_contact_email( enterprise, mail )
-  mail = mail.gsub("\302\240", ' ').strip.downcase,gsub(" ","") if !mail.blank?
+def add_contact_email( enterprise, adm_users )
+  mail = nil
+  adm_users.each do |u|
+     if !u[:mail].blank?
+       mail = u[:mail].gsub("\302\240", ' ').strip.downcase.gsub(" ", "") 
+       break
+     end     
+  end 
   $log.info "Verificando se existe um o usuário com email '%s' ...." %  mail
-  user = User.find_by_email( u[:mail].gsub("\302\240", ' ').strip.downcase.gsub(" ", "") )
+  user = User.find_by_email( mail )
   if !user.blank?
     $log.info "existe!"  
-    $log.info "Verificando se o usuário faz parte da administração do empreendimento...."    
-    enterprise.admins do |admin|
-      if user.person.identifier == admin.identifier
-        $log.info "é admin!"      
-        enterprise.contact_email = user.person.email
-        return
+    $log.info "Verificando se o usuário faz parte da administração do empreendimento '%s'..." % enterprise.name
+    if enterprise.admins.blank?
+      $log.erro "não existem admins para o empreendimento!"
+    else
+      enterprise.admins.each do |admin|
+        if user.person.identifier == admin.identifier
+          $log.info "é admin!"      
+          enterprise.contact_email = user.person.email
+          begin
+            enterprise.save!
+            $log.info "e-mail adicionado!" 
+            return enterprise
+          rescue Exception => e
+            $log.fatal "Não foi possível adicionar o e-mail ao empreendimento devido a excessão '%s'" % e.message 
+            $log.fatal e.backtrace 
+            return nil
+          end
+        end
       end
     end
   end
@@ -41,14 +59,17 @@ end
 
 def find_enterprise( identifier, name )
   $log.info "Buscando emprendimento '%s'..." % name
-  identifier = name.downcase.to_slug if identifier.blank?
-  identifier = ActiveSupport::Inflector.transliterate(identifier.downcase.to_slug)
+  identifier = name.gsub("\302\240", ' ').strip.downcase.to_slug if identifier.blank?
+  identifier = ActiveSupport::Inflector.transliterate(identifier.gsub("\302\240", ' ').strip.downcase.to_slug)
   profile = Profile[ identifier ] 
-  identifier = "ees-" + identifier if profile.blank? or profile.community? 
-  identifier = identifier.gsub("\302\240", ' ').strip 
-  profile = Profile[ identifier ] 
+  if profile.blank? or profile.community? 
+    identifier = "ees-" + identifier
+    profile = Profile[ identifier ] 
+  end
   if !profile.blank?    
     $log.info "encontrado!"
+  else
+    $log.error 'nao encontrou!'
   end
   profile
 end
@@ -89,11 +110,12 @@ enterprises.each do |e|
   if enterprise.blank?
     error_enterprises = error_enterprises + 1
   else
-    add_contact_email( enterprise, e[:mail] )
+    add_contact_email( enterprise, e[:adm_users] )
  end
   $log.debug "."
-  puts "."
+  print "."
 end
+puts ""
 $log.debug "Importação finalizada!"
 
 summary = import_stats( enterprises.count,  error_enterprises )

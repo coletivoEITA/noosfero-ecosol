@@ -77,7 +77,6 @@ list_date = start_time.strftime "%Y-%m-%d_%H:%M:%S"
 list_name = "empreendimentos_importados_%s_%s.csv" % [ state, list_date ]
 
 CSV.open( list_path + list_name, 'w') do |csv|
-  csv << ['Listagem de Empreendimentos Importados']
   csv << ['Nome', 'Endereço da Internet', 'E-mail de Contato']
   enterprises_imported.each do |e|
     csv << [ e.name, "cirandas.net/"+e.identifier, e.contact_email ]
