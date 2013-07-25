@@ -5,21 +5,34 @@ require File.dirname(__FILE__) + '/../config/environment'
 require 'logger'
 require 'iconv' unless RUBY_VERSION >= "1.9"
 
+class String
+  def normalize_spaces
+    self.gsub("\302\240", ' ').squish
+  end
+  def normalize
+    ActiveSupport::Inflector.transliterate(self).normalize_spaces.gsub(" ", "").downcase.to_slug
+  end
+end
+
 def add_contact_email( enterprise, adm_users )
   mail = nil
   adm_users.each do |u|
      if !u[:mail].blank?
-       mail = u[:mail].gsub("\302\240", ' ').strip.downcase.gsub(" ", "") 
+       mail = u[:mail].normalize_spaces.downcase
        break
      end     
   end 
   $log.info "Verificando se existe um o usuário com email '%s' ...." %  mail
   user = User.find_by_email( mail )
-  if !user.blank?
+  if user.blank?
+    $log.info "não existe!"
+    return nil
+  else    
     $log.info "existe!"  
     $log.info "Verificando se o usuário faz parte da administração do empreendimento '%s'..." % enterprise.name
     if enterprise.admins.blank?
       $log.erro "não existem admins para o empreendimento!"
+      return nil
     else
       enterprise.admins.each do |admin|
         if user.person.identifier == admin.identifier
@@ -59,13 +72,17 @@ end
 
 def find_enterprise( identifier, name )
   $log.info "Buscando emprendimento '%s'..." % name
-  identifier = name.gsub("\302\240", ' ').strip.downcase.to_slug if identifier.blank?
-  identifier = ActiveSupport::Inflector.transliterate(identifier.gsub("\302\240", ' ').strip.downcase.to_slug)
-  profile = Profile[ identifier ] 
-  if profile.blank? or profile.community? 
-    identifier = "ees-" + identifier
-    profile = Profile[ identifier ] 
+   if !identifier.blank?
+    identifier = identifier.normalize 
+  else
+    identifier = name.normalize if !name.blank?
   end
+  profile = Profile[ identifier ] 
+  if !profile.blank? and !profile.enterprise?       
+    identifier = "ees-" + identifier
+    profile = Profile[ identifier ]
+  end
+
   if !profile.blank?    
     $log.info "encontrado!"
   else
@@ -110,7 +127,10 @@ enterprises.each do |e|
   if enterprise.blank?
     error_enterprises = error_enterprises + 1
   else
-    add_contact_email( enterprise, e[:adm_users] )
+    enterprise = add_contact_email( enterprise, e[:adm_users] )
+    if enterprise.blank?
+      enterprise = error_enterprises + 1
+    end
  end
   $log.debug "."
   print "."
