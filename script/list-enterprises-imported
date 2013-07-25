@@ -5,6 +5,15 @@ require File.dirname(__FILE__) + '/../config/environment'
 require 'logger'
 require 'iconv' unless RUBY_VERSION >= "1.9"
 
+class String
+  def normalize_spaces
+    self.gsub("\302\240", ' ').squish
+  end
+  def normalize
+    ActiveSupport::Inflector.transliterate(self).normalize_spaces.gsub(" ", "").downcase.to_slug
+  end
+end
+
 def load_file(file_path, state)
   require 'csv'
   adm_users = []
@@ -23,16 +32,22 @@ def load_file(file_path, state)
 end
 
 def find_enterprise( name, identifier )
-  name = name.gsub("\302\240", ' ').strip if !name.blank?
-  identifier = identifier.gsub("\302\240", ' ').strip if !identifier.blank?
-  identifier = name.downcase.to_slug if identifier.blank?
-  identifier = ActiveSupport::Inflector.transliterate(identifier.downcase.to_slug)
-  profile = Profile[ identifier ] 
-  identifier = "ees-" + identifier if !profile.blank? and !profile.enterprise?
-  profile = Profile[ identifier ]
-  identifier = name if !profile.blank? and !profile.enterprise? 
-  enterprise = Enterprise[ identifier ]
-  return enterprise
+  if !identifier.blank?
+    identifier = identifier.normalize
+  else
+    identifier = name.normalize if !name.blank?
+  end
+  if identifier.blank?
+    return nil
+  else
+    profile = Profile[ identifier ] 
+    if !profile.blank? and !profile.enterprise?
+      identifier = "ees-" + identifier 
+      profile = Profile[ identifier ]  
+    end
+    enterprise = Enterprise[ identifier ]
+    return enterprise
+  end
 end
 
 start_time = Time.now
