@@ -10,7 +10,16 @@ class String
     self.gsub("\302\240", ' ').squish
   end
   def normalize
-    ActiveSupport::Inflector.transliterate(self).normalize_spaces.gsub(" ", "").downcase.to_slug
+    ActiveSupport::Inflector.transliterate(self).normalize_spaces
+  end
+  def normalize_id
+    self.normalize.gsub(" ", "").downcase.to_slug
+  end
+  def normalize_login_email
+    self.normalize.gsub(" ", "").downcase
+  end
+  def normalize_name
+    self.normalize.capitalize
   end
 end
 
@@ -38,7 +47,7 @@ User.send :define_method, :delay_activation_check, proc{}
 
 def create_login( name, cont )    
   login =  name.split(' ')[0] + name.split(' ')[-1] + cont.to_s
-  login = ActiveSupport::Inflector.transliterate(login).downcase
+  login = login.normalize_login_email
   if User.find_by_login( login ).blank?    
     return login
   else
@@ -60,8 +69,8 @@ def create_user( name, mail, fone, city, state )
     $log.error 'Email não pode ser nulo...usuário não foi criado!'    
     return nil
   else
-    mail = mail.normalize
-    login = create_login( name.normalize_spaces.downcase, "" ) 
+    mail = mail.normalize_email
+    login = create_login( name.normalize_name, "" ) 
   end
   # PASS_LEN = 6
   pass = create_newpass( 6 )
@@ -86,8 +95,8 @@ def create_user( name, mail, fone, city, state )
     if !state.blank?
       state =  State.find_by_acronym( state ).name 
     end
-    data = {:name => name.normalize_spaces.downcase, :zip_code => '', :city => city, :contact_phone => fone, :state => state}
-    $log.info "Registrado nome '%s' - cidade '%s' - estado '%s' - fone '%s' !" % [     name.normalize_spaces.downcase,  city, state, fone ]
+    data = {:name => name.normalize_name, :zip_code => '', :city => city, :contact_phone => fone, :state => state}
+    $log.info "Registrado nome '%s' - cidade '%s' - estado '%s' - fone '%s' !" % [     name.normalize_name,  city, state, fone ]
 
     user.person_data = data
     person = Person.new(data)
@@ -120,9 +129,9 @@ def find_or_create_users( adm_users )
     i = i+1
     if !u[:mail].blank?
       $log.info "Verificando se o usuário já existe...."    
-      user = User.find_by_email( u[:mail].normalize )
+      user = User.find_by_email( u[:mail].normalize_email )
       if user.blank?
-        $log.info "não existe usuario com e-mail '%s' ...." % [ u[:mail].normalize ]
+        $log.info "não existe usuario com e-mail '%s' ...." % [ u[:mail].normalize_email ]
         user = create_user( u[:name], u[:mail], u[:fone], u[:city], u[:state] )
       end    
     else
@@ -184,21 +193,21 @@ def activate_enterprise( enterprise )
 end
 
 def create_enterprise( name, identifier, adm_users, year, city, state )
-  $log.info "Criando empreendimento '%s'..." % name.normalize_spaces.capitalize
+  $log.info "Criando empreendimento '%s'..." % name.normalize_name
   if !identifier.blank?
-    identifier = identifier.normalize 
+    identifier = identifier.normalize_id
   else
-    identifier = name.normalize if !name.blank?
+    identifier = name.normalize_id if !name.blank?
   end
   profile = Profile[ identifier ] 
   if !profile.blank? and !profile.enterprise?       
     identifier = "ees-" + identifier
   end
-  name = name.normalize_spaces.capitalize
+  name = name.normalize_name
   mail = nil
   adm_users.each do |u|
     if !u[:mail].blank?
-      mail = u[:mail].normalize
+      mail = u[:mail].normalize_email
       break
     end     
   end 

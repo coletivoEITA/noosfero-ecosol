@@ -10,7 +10,16 @@ class String
     self.gsub("\302\240", ' ').squish
   end
   def normalize
-    ActiveSupport::Inflector.transliterate(self).normalize_spaces.gsub(" ", "").downcase.to_slug
+    ActiveSupport::Inflector.transliterate(self).normalize_spaces
+  end
+  def normalize_id
+    self.normalize.gsub(" ", "").downcase.to_slug
+  end
+  def normalize_email
+    self.normalize.gsub(" ", "").downcase
+  end
+  def normalize_name
+    self.normalize.capitalize
   end
 end
 
@@ -18,7 +27,7 @@ def add_contact_email( enterprise, adm_users )
   mail = nil
   adm_users.each do |u|
      if !u[:mail].blank?
-       mail = u[:mail].normalize_spaces.downcase
+       mail = u[:mail].normalize_email
        break
      end     
   end 
@@ -73,9 +82,9 @@ end
 def find_enterprise( identifier, name )
   $log.info "Buscando emprendimento '%s'..." % name
    if !identifier.blank?
-    identifier = identifier.normalize 
+    identifier = identifier.normalize_id
   else
-    identifier = name.normalize if !name.blank?
+    identifier = name.normalize_id if !name.blank?
   end
   profile = Profile[ identifier ] 
   if !profile.blank? and !profile.enterprise?       
