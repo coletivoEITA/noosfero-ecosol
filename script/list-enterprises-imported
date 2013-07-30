@@ -23,6 +23,17 @@ class String
   end
 end
 
+class Object
+  def convert_to_s
+    if self.blank?
+      return ''
+    else
+      return self.to_s
+    end
+  end
+end
+
+
 def load_file(file_path, state)
   require 'csv'
   adm_users = []
@@ -72,7 +83,7 @@ end
 
 log_path = File.dirname(__FILE__) + "/../log/"
 log_date = start_time.strftime "%Y-%m-%d_%H:%M:%S"
-log_name = '%s-script-import-%s.txt' % [ log_date, state ]
+log_name = '%s-script-list-%s.txt' % [ log_date, state ]
 $log = Logger.new( log_path + log_name )
 $log.debug "Arquivo de log Criado!"
 
@@ -87,8 +98,10 @@ enterprises.each do |e|
   enterprise = find_enterprise( e[:name], e[:identifier] )
   if enterprise.blank?
     error_enterprises = error_enterprises + 1
+    $log.debug "Empreendimento não encontrado..."
   else
     enterprises_imported << enterprise
+    $log.debug "Empreendimento '%s' encontrado..." % enterprise.name
   end
   $log.debug "."
   print "."
@@ -101,9 +114,26 @@ list_date = start_time.strftime "%Y-%m-%d_%H:%M:%S"
 list_name = "empreendimentos_importados_%s_%s.csv" % [ state, list_date ]
 
 CSV.open( list_path + list_name, 'w') do |csv|
-  csv << ['Nome', 'Endereço da Internet', 'E-mail de Contato']
+  csv << ['Nome', 'Endereço da Internet','E-mail para contato EES','Situação','Cidade e UF','Nome da primeira pessoa de referência do EES','E-mail da primeira pessoa de referência do EES','Telefone da primeira pessoa de referência do EES','Nome da segunda pessoa de referência do EES','E-mail da segunda pessoa de referência do EES','Telefone da segunda pessoa de referência do EES']
+  puts 'qtd: %s' % enterprises_imported.count
   enterprises_imported.each do |e|
-    csv << [ e.name, "cirandas.net/"+e.identifier, e.contact_email ]
+    #admins
+    first_admin = nil
+    last_admin = nil
+    if !e.admins.first.blank? || !e.admins.last.blank? 
+      first_admin = "'" + e.admins.first.name.convert_to_s + "','" + e.admins.first.email.convert_to_s + "','" + e.admins.first.contact_phone.convert_to_s + "'"
+      if e.admins.first != e.admins.last 
+        last_admin = "'" + e.admins.last.name.convert_to_s + "','" + e.admins.last.email.convert_to_s + "','" + e.admins.last.contact_phone.convert_to_s + "'"
+      end
+    end
+    #city and state
+    if !e.blank? and !e.region.blank? and !e.state.blank?
+      city_state = "'" + e.region.name + '-' + e.state + "'"
+    else
+      city_state = ""
+    end
+    status = "Importado"
+    csv << [ e.name, "cirandas.net/"+e.identifier, e.contact_email, status, city_state, first_admin, last_admin ]
   end
 end
 
