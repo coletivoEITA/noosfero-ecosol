@@ -65,6 +65,10 @@ class Domain < ActiveRecord::Base
 
   @hosting = {}
 
+  def protocol
+    self.ssl ? 'https' : 'http'
+  end
+
   # Tells whether the given domain name is hosting a profile or not.
   #
   # Since this is going to be called a lot, The queries are cached so the

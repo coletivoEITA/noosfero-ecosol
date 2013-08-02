@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130606110602) do
+ActiveRecord::Schema.define(:version => 20130802134445) do
 
   create_table "abuse_reports", :force => true do |t|
     t.integer  "reporter_id"
@@ -255,6 +255,7 @@ ActiveRecord::Schema.define(:version => 20130606110602) do
     t.integer "owner_id"
     t.boolean "is_default",      :default => false
     t.string  "google_maps_key"
+    t.boolean "ssl"
   end
 
   create_table "environments", :force => true do |t|

@@ -232,6 +232,12 @@ class EnvironmentTest < ActiveSupport::TestCase
     assert_equal 'http://www.lalala.net', env.top_url
   end
 
+  should 'respect domain protocol' do
+    env = Environment.create :name => 'default'
+    env.domains.create! :name => 'lalala.net', :ssl => true
+    assert_equal 'https://lalala.net', env.top_url
+  end
+
   should 'include port in default top URL for development environment' do
     env = Environment.new
     Noosfero.expects(:url_options).returns({ :port => 9999 }).at_least_once
@@ -733,7 +739,7 @@ class EnvironmentTest < ActiveSupport::TestCase
     assert_equal c, e.portal_community
     e.unset_portal_community!
     e.reload
-    assert_nil e.portal_community 
+    assert_nil e.portal_community
     assert_equal [], e.portal_folders
     assert_equal 0, e.news_amount_by_folder
     assert_equal false, e.enabled?('use_portal_community')

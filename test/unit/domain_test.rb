@@ -43,7 +43,14 @@ class DomainTest < ActiveSupport::TestCase
     assert !domain.errors.invalid?(:name)
   end
 
-  def test_owner
+  should 'return protocol' do
+    http = Domain.new :name => 'http_domain.org'
+    https = Domain.new :name => 'https_domain.org', :ssl => true
+    assert_equal http.protocol, 'http'
+    assert_equal https.protocol, 'https'
+  end
+
+ def test_owner
     d = Domain.new(:name => 'example.com')
     d.owner = Environment.new(:name => 'Example')
     assert d.save

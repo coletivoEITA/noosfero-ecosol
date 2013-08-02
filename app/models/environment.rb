@@ -618,6 +618,14 @@ class Environment < ActiveRecord::Base
     Category.top_level_for(self)
   end
 
+  def default_domain
+    @default_domain ||= self.domains.find_by_is_default(true) || self.domains.find(:first, :order => 'id')
+  end
+
+  def default_protocol
+    default_domain.protocol
+  end
+
   # Returns the hostname of the first domain associated to this environment.
   #
   # If #force_www is true, adds 'www.' at the beginning of the hostname. If the
@@ -625,14 +633,14 @@ class Environment < ActiveRecord::Base
   def default_hostname(email_hostname = false)
     domain = 'localhost'
     unless self.domains(true).empty?
-      domain = (self.domains.find_by_is_default(true) || self.domains.find(:first, :order => 'id')).name
+      domain = default_domain.name
       domain = email_hostname ? domain : (force_www ? ('www.' + domain) : domain)
     end
     domain
   end
 
   def top_url
-    url = 'http://'
+    url = default_domain ? "#{default_protocol}://" : 'http://'
     url << (Noosfero.url_options.key?(:host) ? Noosfero.url_options[:host] : default_hostname)
     url << ':' << Noosfero.url_options[:port].to_s if Noosfero.url_options.key?(:port)
     url

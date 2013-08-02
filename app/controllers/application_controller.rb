@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def default_url_options options={}
+    { :protocol => @domain.protocol }
+  end
+
   def allow_cross_domain_access
     origin = request.headers['Origin']
     return if origin.blank?
@@ -117,7 +121,7 @@ class ApplicationController < ActionController::Base
       # Check if the requested profile belongs to another domain
       if @profile && !params[:profile].blank? && params[:profile] != @profile.identifier
         @profile = @environment.profiles.find_by_identifier params[:profile]
-        redirect_to params.merge(:host => @profile.default_hostname)
+        redirect_to params.merge(:host => @profile.default_hostname, :protocol => @domain.protocol)
       end
     end
   end
