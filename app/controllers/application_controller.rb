@@ -7,10 +7,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def default_url_options options={}
-    { :protocol => 'https' }
-  end
-
   def allow_cross_domain_access
     origin = request.headers['Origin']
     return if origin.blank?
