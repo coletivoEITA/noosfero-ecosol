@@ -501,31 +501,35 @@ class Profile < ActiveRecord::Base
   end
 
   def url_options
-    options = { :host => default_hostname, :profile => (own_hostname ? nil : self.identifier) }
+    options = { :host => default_hostname, :profile => (own_hostname ? nil : self.identifier)}
+    options[:protocol] = self.default_protocol if self.default_protocol and self.default_protocol != 'http'
     options.merge(Noosfero.url_options)
   end
 
 private :generate_url, :url_options
 
-  def default_hostname
-    @default_hostname ||= (hostname || environment.default_hostname)
+  def default_domain
+    @default_domain ||= self.domains.sort_by{ |d| d.is_default ? 0 : 1 }.first
+  end
+
+  def default_protocol
+    default_domain.protocol if default_domain
   end
 
   def hostname
-    if preferred_domain
-      return preferred_domain.name
-    else
-      own_hostname
-    end
+    preferred_domain ? preferred_domain.name : own_hostname
+  end
+
+  def default_hostname
+    @default_hostname ||= self.hostname || self.environment.default_hostname
   end
 
   def own_hostname
-    domain = self.domains.first
-    domain ? domain.name : nil
+    default_domain ? default_domain.name : nil
   end
 
   def possible_domains
-    environment.domains + domains
+    environment.domains + self.domains
   end
 
   def article_tags

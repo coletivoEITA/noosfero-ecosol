@@ -623,7 +623,7 @@ class Environment < ActiveRecord::Base
   end
 
   def default_protocol
-    default_domain.protocol
+    default_domain.protocol if default_domain
   end
 
   # Returns the hostname of the first domain associated to this environment.
@@ -640,7 +640,7 @@ class Environment < ActiveRecord::Base
   end
 
   def top_url
-    url = default_domain ? "#{default_protocol}://" : 'http://'
+    url = default_protocol ? "#{default_protocol}://" : 'http://'
     url << (Noosfero.url_options.key?(:host) ? Noosfero.url_options[:host] : default_hostname)
     url << ':' << Noosfero.url_options[:port].to_s if Noosfero.url_options.key?(:port)
     url
