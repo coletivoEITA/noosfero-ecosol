@@ -73,8 +73,9 @@ class Environment < ActiveRecord::Base
     )
   end
 
-  def add_admin(user)
-    self.affiliate(user, Environment::Roles.admin(self.id))
+  def add_admin user
+    self.affiliate user, Environment::Roles.admin(self.id)
+    self.affiliate user, Profile::Roles.admin(self.id)
   end
 
   def remove_admin(user)
