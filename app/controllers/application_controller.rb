@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def default_url_options options={}
-    { :protocol => 'https' } if Rails.env.production?
+    { :protocol => 'https' }
   end
 
   def allow_cross_domain_access
