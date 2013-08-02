@@ -7,6 +7,7 @@
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.15' unless defined? RAILS_GEM_VERSION
 
+require 'rubygems'
 require 'active_support/all'
 ActiveSupport::Deprecation.silenced = true
 
