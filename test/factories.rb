@@ -7,6 +7,7 @@ module Noosfero::Factory
   end
 
   def self.included(base)
+    @extensions ||= []
     @extensions.each{ |m| base.send(:include, m) }
   end
 
