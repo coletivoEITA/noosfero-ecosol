@@ -240,8 +240,6 @@
           cycle_orders_report_d: "Cycle Orders Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
           new_open_cycle: "New open cycle: "
           products_report_date_: "Products Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
-        supplier_controller: 
-          supplier_created: "Supplier created"
       profile: 
         order_controller: 
           can_not_confirm_your_: "Can not confirm. Your order list is empty"
@@ -317,13 +315,8 @@
         value_parcel: "value parcel"
       settings_solidary_dis: "Settings Solidary Distribution Network"
     models: 
-      distributed_product: 
-        ? " > "
-        : " > "
       header_image: 
         fn_of_uploaded_file_w: "%{fn} of uploaded file was larger than the maximum size of 500.0 KB"
-      node: 
-        consumer: Consumer
       order: 
         order_cancelled: "Order cancelled"
         order_confirmed: "Order confirmed"
@@ -331,9 +324,6 @@
         order_not_confirmed: "Order not confirmed"
         order_planned: "Order planned"
         sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
-      product: 
-        unit: unit
-        units: units
       session: 
         code_name: "%{code}. %{name}"
         delivery_period_befor: "Delivery' period before orders' period"
@@ -350,25 +340,6 @@
           meet_the_products: "meet the products"
           orders: orders
           see_all_cycles: "see all cycles"
-      delivery_option: 
-        _method_edit: 
-          add: Add
-          cancel: cancel
-          instructions: Instructions
-          name: Name
-          save: Save
-        _select_content: 
-          add: Add
-          add_new: "add new"
-          are_you_sure_you_want: "Are you sure you want to delete this method?"
-          cancel: cancel
-          choose_a_delivery_met: "Choose a delivery method from the list"
-          edit_this: "edit this"
-          remove_method: "remove method"
-        _show: 
-          x: X
-        select: 
-          add_a_delivery_method: "Add a delivery method to the Orders' Cycle"
       gadgets: 
         _session: 
           happening: Happening
@@ -569,36 +540,6 @@
         _index: 
           empty_order: "Empty order"
       product: 
-        _edit: 
-          ? " > "
-          : " > "
-          ? "%"
-          : "%"
-          add_product_to_the_li: "Add product to the list of distributed products"
-          are_you_sure_you_want: "Are you sure you want to delete this product?"
-          cancel: cancel
-          category: Category
-          commercialization_act: "Commercialization active"
-          description: Description
-          editing_distributed_p: "Editing distributed product"
-          how_we_distribute_the: "How we distribute the product"
-          how_we_order_the_prod: "How we order the product"
-          margin: Margin
-          name: Name
-          or_then_link: "or then %{link}."
-          own_product: "Own product"
-          remove_product: "remove product"
-          save: Save
-          search_another_catego: "search another category"
-          search_for_another_ca: "search for another category"
-          to_end_the_categoriza: "To end the categorization choose one the subcategories of the category \"{{=cat.own_name}}\":"
-          use_default_margin: "Use default margin"
-          use_original: "use original"
-        _edit_line: 
-          active: Active
-          inactive: Inactive
-        _form_errors: 
-          errors_found: "Errors found:"
         _order_edit: 
           add: Add
           cancel: cancel
@@ -618,26 +559,6 @@
           price: Price
           product: Product
           this_search_hasn_t_re: "This search hasn't returned any product"
-        _price_details: 
-          commercialization_act: "Commercialization active"
-          minimum_order: "Minimum order"
-          price: Price
-          unit: Unit
-          unit_specification: "Unit specification"
-        _search: 
-          category: Category
-          price: Price
-          product: Product
-          qty_avail: "Qty. avail."
-          showing_pcount_produc: "Showing %{pcount} products of %{allpcount}"
-          status: Status
-          supplier: Supplier
-          we_don_t_have_product: "We don't have products to show."
-        _select_missing: 
-          add_all_missing_produ: "add all missing products from this supplier"
-          cancel: cancel
-          the_following_product: "The following products from this supplier are not distributed by your collective. Which product do you want to add?"
-          there_isn_t_any_new_p: "There isn't any new product from this supplier."
         _session_edit: 
           all_ordered_products_: "All ordered products from this product will also be removed; you should first warn members that ordered this products"
           buy_price: "Buy price"
@@ -653,28 +574,6 @@
           save: Save
           sell_price: "Sell price"
           sell_unit: "Sell unit"
-        index: 
-          active: active
-          add_product: "Add product"
-          all_the_categories: "all the categories"
-          all_the_suppliers: "all the suppliers"
-          and_being: "and being"
-          anyone: anyone
-          bigger_than_the_stock: "bigger than the stock"
-          change: change
-          default_margin_of_com: "Default margin of commercialization"
-          filter: Filter
-          in_any_state: "In any state"
-          inactive: inactive
-          margin: "%{margin} %"
-          no_margin_set: "no margin set"
-          products: Products
-          show_products_from: "Show products from"
-          the_products: "The products"
-          whose_name_contains: "whose name contains"
-          whose_qty_available_i: "whose qty. available is"
-          with_the_category: "with the category"
-          with_the_qualifiers: "with the qualifiers"
       session: 
         _brief: 
           code: "%{code}."
@@ -793,6 +692,97 @@
           open_cycles: "Open Cycles"
           orders_cycles: "Orders' Cycles"
           show_cycles_from_year: "Show cycles from year"
+
+  suppliers_plugin:
+    controllers: 
+      myprofile: 
+        supplier_controller: 
+          supplier_created: "Supplier created"
+    lib:
+      suppliers_product_helper: 
+        product_from_which_su: "Product from which supplier?"
+    models:
+      distributed_product: 
+        greater: " > "
+      product: 
+        unit: unit
+        units: units
+      node: 
+        consumer: Consumer
+    views:
+      product:
+        _edit: 
+          ? " > "
+          : " > "
+          ? "%"
+          : "%"
+          add_product_to_the_li: "Add product to the list of distributed products"
+          are_you_sure_you_want: "Are you sure you want to delete this product?"
+          cancel: cancel
+          category: Category
+          commercialization_act: "Commercialization active"
+          description: Description
+          editing_distributed_p: "Editing distributed product"
+          how_we_distribute_the: "How we distribute the product"
+          how_we_order_the_prod: "How we order the product"
+          margin: Margin
+          name: Name
+          or_then_link: "or then %{link}."
+          own_product: "Own product"
+          remove_product: "remove product"
+          save: Save
+          search_another_catego: "search another category"
+          search_for_another_ca: "search for another category"
+          to_end_the_categoriza: "To end the categorization choose one the subcategories of the category \"{{=cat.own_name}}\":"
+          use_default_margin: "Use default margin"
+          use_original: "use original"
+        _edit_line: 
+          active: Active
+          inactive: Inactive
+        _form_errors: 
+          errors_found: "Errors found:"
+        _price_details: 
+          commercialization_act: "Commercialization active"
+          minimum_order: "Minimum order"
+          price: Price
+          unit: Unit
+          unit_specification: "Unit specification"
+        _search: 
+          category: Category
+          price: Price
+          product: Product
+          qty_avail: "Qty. avail."
+          showing_pcount_produc: "Showing %{pcount} products of %{allpcount}"
+          status: Status
+          supplier: Supplier
+          we_don_t_have_product: "We don't have products to show."
+        _select_missing: 
+          add_all_missing_produ: "add all missing products from this supplier"
+          cancel: cancel
+          the_following_product: "The following products from this supplier are not distributed by your collective. Which product do you want to add?"
+          there_isn_t_any_new_p: "There isn't any new product from this supplier."
+        index: 
+          active: active
+          add_product: "Add product"
+          all_the_categories: "all the categories"
+          all_the_suppliers: "all the suppliers"
+          and_being: "and being"
+          anyone: anyone
+          bigger_than_the_stock: "bigger than the stock"
+          change: change
+          default_margin_of_com: "Default margin of commercialization"
+          filter: Filter
+          in_any_state: "In any state"
+          inactive: inactive
+          margin: "%{margin} %"
+          no_margin_set: "no margin set"
+          products: Products
+          show_products_from: "Show products from"
+          the_products: "The products"
+          whose_name_contains: "whose name contains"
+          whose_qty_available_i: "whose qty. available is"
+          with_the_category: "with the category"
+          with_the_qualifiers: "with the qualifiers"
       supplier: 
         _edit: 
           abbreviated_name: "Abbreviated name"
@@ -833,3 +823,25 @@
           name: Name
           suppliers: Suppliers
           this_is_the_list_of_s: "This is the list of suppliers associated to this consumption collective. It is possible to associate with existent suppliers or register one."
+
+  delivery_plugin:
+    views:
+      delivery_option: 
+        _method_edit: 
+          add: Add
+          cancel: cancel
+          instructions: Instructions
+          name: Name
+          save: Save
+        _select_content: 
+          add: Add
+          add_new: "add new"
+          are_you_sure_you_want: "Are you sure you want to delete this method?"
+          cancel: cancel
+          choose_a_delivery_met: "Choose a delivery method from the list"
+          edit_this: "edit this"
+          remove_method: "remove method"
+        _show: 
+          x: X
+        select: 
+          add_a_delivery_method: "Add a delivery method to the Orders' Cycle"

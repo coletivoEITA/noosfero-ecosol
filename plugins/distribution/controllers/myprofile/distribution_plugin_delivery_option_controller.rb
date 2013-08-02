@@ -1,59 +1,23 @@
-class DistributionPluginDeliveryOptionController < DistributionPluginMyprofileController
+require_dependency 'delivery_plugin' #necessary to load extensions
+
+class DistributionPluginDeliveryOptionController < DeliveryPluginOptionController
 
   no_design_blocks
 
-  before_filter :load
+  before_filter :load_node
+  before_filter :set_admin_action
 
-  def select
-    @session = DistributionPlugin::Session.find params[:session_id]
-    render :layout => false
-  end
-
-  def index
-    @session = DistributionPlugin::Session.find params[:session_id]
-  end
-
-  def show
-    @delivery_option = DistributionPlugin::Session.find params[:id]
-  end
-
-  def new
-    @session = DistributionPlugin::Session.find params[:session_id]
-    @session.add_delivery_options = params[:session][:add_delivery_options]
-    @session.save(false) # skip validations as needed for a new session
-  end
-
-  def destroy
-    @delivery_option = @node.delivery_options.find params[:id]
-    @session = @delivery_option.session
-    @delivery_option.destroy
-  end
-
-  def method_destroy
-    @session = DistributionPlugin::Session.find params[:session_id]
-    @delivery_method = @node.delivery_methods.find_by_id params[:id]
-    @delivery_method.destroy
-  end
-
-  def method_new
-    @session = DistributionPlugin::Session.find params[:session_id]
-    @delivery_method = DistributionPlugin::DeliveryMethod.create! params[:delivery_method].merge(:node => @node, :delivery_type => 'pickup')
-  end
-
-  def method_edit
-    @session = DistributionPlugin::Session.find params[:session_id]
-    @delivery_method = @node.delivery_methods.find_by_id params[:id]
-    if request.post?
-      @delivery_method.update_attributes! params[:delivery_method].merge(:node => @node, :delivery_type => 'pickup')
-      @delivery_method = DistributionPlugin::DeliveryMethod.new # reset form for a new method
-    end
-  end
+  helper ApplicationHelper
+  helper DistributionPlugin::DistributionDisplayHelper
 
   protected
 
-  def load
-    @delivery_methods = @node.delivery_methods
-    @delivery_method = DistributionPlugin::DeliveryMethod.new
+  include DistributionPlugin::ControllerHelper
+
+  # use superclass instead of child
+  def url_for options
+    options[:controller] = :distribution_plugin_delivery_option if options[:controller].to_s == 'delivery_plugin_option'
+    super options
   end
 
 end

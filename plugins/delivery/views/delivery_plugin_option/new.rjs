@@ -1,0 +1,3 @@
+page.replace_html 'session-delivery-options', :partial => 'index', :locals => {:owner => @owner}
+page << 'jQuery.colorbox.close()'
+

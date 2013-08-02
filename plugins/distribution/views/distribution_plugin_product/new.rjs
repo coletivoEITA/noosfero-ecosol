@@ -1,9 +1,0 @@
-page.replace_html "product-errors-add", :partial => 'form_errors', :object => @product
-page.visual_effect :scrollTo, "product-errors-add", :duration=>1
-page.replace_html "supplier-product-errors-add", :partial => 'form_errors', :object => @product.supplier_product
-page.visual_effect :scrollTo, "supplier-product-errors-add", :duration=>1
-
-unless @product.errors.any? or @product.supplier_product.errors.any?
-  page << "jQuery('#filter-form').submit();"
-  page << "distribution.unsetLoading('our-product-add');"
-end

@@ -57,14 +57,6 @@ distribution = {
 
   /* ----- ends session stuff  ----- */
 
-  /* ----- delivery stuff  ----- */
-
-  delivery_view_toggle: function () {
-    jQuery('#delivery-method-choose, #delivery-method-edit').toggle();
-  },
-
-  /* ----- ends delivery stuff  ----- */
-
   /* ----- category select stuff  ----- */
 
   category: null,
@@ -296,7 +288,7 @@ distribution = {
 
   /* ----- session editions stuff  ----- */
 
-  session_product: {
+  offered_product: {
 
     pmsync: function (context, to_price) {
       p = jQuery(context).parents('.session-product .box-edit');
@@ -340,7 +332,7 @@ distribution = {
     distribution.edit_arrow_toggle(toggle_edit.editing(), toggle_edit.isEditing());
   },
 
-  session_product_edit: function () {
+  offered_product_edit: function () {
     toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
   },
   session_mail_message_toggle: function () {
@@ -352,7 +344,7 @@ distribution = {
       jQuery('#session-new-mail textarea').attr('disabled', true);
     }
   },
-  order_session_product_toggle: function () {
+  order_offered_product_toggle: function () {
     toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
     toggle_edit.editing().find('.quantity-label').toggle(!toggle_edit.isEditing());
     toggle_edit.editing().find('.quantity-entry').toggle(toggle_edit.isEditing());

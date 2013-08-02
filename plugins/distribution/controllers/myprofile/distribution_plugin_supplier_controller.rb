@@ -12,4 +12,10 @@ class DistributionPluginSupplierController < SuppliersPluginMyprofileController
 
   include DistributionPlugin::ControllerHelper
 
+  # use superclass instead of child
+  def url_for options
+    options[:controller] = :distribution_plugin_supplier if options[:controller].to_s == 'suppliers_plugin_supplier'
+    super options
+  end
+
 end

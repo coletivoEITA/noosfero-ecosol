@@ -7,7 +7,7 @@ class SuppliersPlugin::Supplier
     self.profile.distribution_node
   end
 
-  has_one :consumer_node, :through => :consumer_node
+  has_one :consumer_node, :through => :consumer
   def consumer_node
     self.consumer.distribution_node
   end

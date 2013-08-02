@@ -2,13 +2,10 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
 
   belongs_to :profile
 
-  has_many :delivery_methods, :class_name => 'DistributionPlugin::DeliveryMethod', :foreign_key => :node_id, :dependent => :destroy, :order => 'id ASC'
-  has_many :delivery_options, :through => :delivery_methods
-
   has_many :sessions, :class_name => 'DistributionPlugin::Session', :foreign_key => :node_id, :dependent => :destroy, :order => 'created_at DESC',
     :conditions => ["distribution_plugin_sessions.status <> 'new'"]
   has_many :orders, :through => :sessions, :source => :orders, :dependent => :destroy, :order => 'id ASC'
-  has_many :parcels, :class_name => 'DistributionPlugin::Order', :foreign_key => :consumer_id, :dependent => :destroy, :order => 'id ASC'
+  has_many :parcels, :class_name => 'OrdersPlugin::Order', :foreign_key => :consumer_id, :dependent => :destroy, :order => 'id ASC'
 
   has_many :products, :through => :profile, :class_name => 'SuppliersPlugin::DistributedProduct', :dependent => :destroy, :order => 'products.name ASC'
   has_many :offered_products, :through => :profile, :class_name => 'DistributionPlugin::OfferedProduct', :dependent => :destroy, :order => 'products.name ASC'
@@ -33,7 +30,7 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
   validates_numericality_of :margin_percentage, :allow_nil => true
   validates_numericality_of :margin_fixed, :allow_nil => true
 
-  extend SuppliersPlugin::CurrencyHelper::ClassMethods
+  extend CurrencyHelper::ClassMethods
   has_number_with_locale :margin_percentage
   has_number_with_locale :margin_fixed
 
@@ -47,38 +44,29 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
     find_by_profile_id(profile.id) || create!(:profile => profile, :role => 'consumer')
   end
 
-  def name
-    profile.name
-  end
   def abbreviation_or_name
     self['name_abbreviation'] || name
   end
 
   def enabled?
-    !consumer?
+    !self.consumer?
   end
   def consumer?
-    role == 'consumer'
+    self.role == 'consumer'
   end
   def supplier?
-    role == 'supplier'
+    self.role == 'supplier'
   end
   def collective?
-    role == 'collective'
+    self.role == 'collective'
   end
 
   def dummy?
-    !profile.visible
+    !self.profile.visible
   end
   alias_method :dummy, :dummy?
   def dummy=(value)
     profile.update_attributes! :visible => !value
-  end
-
-  def has_admin?(node)
-    if node and node.profile
-      node.profile.has_permission? 'edit_profile', self.profile
-    end
   end
 
   def closed_sessions_date_range
@@ -164,7 +152,7 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
   def add_own_products
     return unless profile.respond_to? :products
 
-    already_supplied = self.products.unarchived.distributed.from_supplier(self).all
+    already_supplied = self.products.unarchived.distributed.from_supplier_id(self.self_supplier.id).all
     profile.products.map do |p|
       already_supplied.find{ |f| f.product == p } ||
         SuppliersPlugin::DistributedProduct.create!(:node => self, :supplier => self_supplier, :product => p, :name => p.name, :description => p.description, :price => p.price, :unit => p.unit)
@@ -175,12 +163,12 @@ class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
     image.save if image
   end
 
-  #for access_control
-  def blocks_to_expire_cache
-    []
-  end
-  def cache_keys(params = {})
-    []
+  def method_missing method, *args, &block
+    if self.profile.respond_to? method
+      self.profile.send method, *args, &block
+    else
+      super method, *args, &block
+    end
   end
 
 end

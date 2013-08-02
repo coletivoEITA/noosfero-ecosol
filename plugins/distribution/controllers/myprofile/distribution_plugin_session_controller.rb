@@ -76,7 +76,7 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
 
   def add_products
     @session = DistributionPlugin::Session.find params[:id]
-    @missing_products = @node.products.unarchived.distributed.active - @session.from_products.unarchived
+    @missing_products = @node.products.unarchived.distributed.available - @session.from_products.unarchived
     if params[:products_id]
       params[:products_id].each do |id|
         product = SuppliersPlugin::DistributedProduct.find id

@@ -16,7 +16,7 @@
 
   <div class='table-content'>
     <% @products.each do |p| %>
-      <div id="session-product-<%=p.id%>" class='session-product value-row' toggleedit="distribution.session_product_edit();">
+      <div id="session-product-<%=p.id%>" class='session-product value-row' toggleedit="distribution.offered_product_edit();">
         <%= render :partial => 'distribution_plugin_product/session_edit', :locals => {:p => p} %>
       </div>
     <% end %>

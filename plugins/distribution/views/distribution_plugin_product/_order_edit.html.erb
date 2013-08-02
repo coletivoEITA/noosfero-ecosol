@@ -68,7 +68,7 @@
     </div>
 
     <div class="product-supplier-link">
-      <% unless product.supplier.dummy? %>
+      <% unless product.supplier_dummy? %>
         <%= link_to t('distribution_plugin.views.product._order_edit.more_about_the_produc') % {:supplier => product.supplier.name}, product.supplier.profile.url, :target => '_blank' %>
       <% end %>
     </div>
@@ -88,7 +88,7 @@
       <%= submit_to_function (ordered_product ? t('distribution_plugin.views.product._order_edit.change') : t('distribution_plugin.views.product._order_edit.add')),
         "distribution.setLoading('session-product-#{product.id}'); " +
         "distribution.order_product_include('#{include_message}'); " +
-        "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}', {order_id: '#{order_id}', redirect: '#{order.nil? ? '1' : ''}', session_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-session-product').find('.quantity-entry input').val() }); " %>
+        "jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :new)}', {order_id: '#{order_id}', redirect: '#{order.nil? ? '1' : ''}', offered_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-session-product').find('.quantity-entry input').val() }); " %>
       <%= link_to_function t('distribution_plugin.views.product._order_edit.cancel'), :class => 'toggle-edit' %>
     <% end %>
   </div>

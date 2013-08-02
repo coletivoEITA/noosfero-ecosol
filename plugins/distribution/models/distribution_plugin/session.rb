@@ -2,21 +2,26 @@ class DistributionPlugin::Session < Noosfero::Plugin::ActiveRecord
 
   belongs_to :node, :class_name => 'DistributionPlugin::Node', :foreign_key => :node_id
 
-  has_many :delivery_options, :class_name => 'DistributionPlugin::DeliveryOption', :foreign_key => :session_id, :dependent => :destroy
+  has_many :delivery_options, :class_name => 'DeliveryPlugin::DeliveryOption', :dependent => :destroy,
+    :foreign_key => :owner_id, :conditions => ["delivery_plugin_options.owner_type = 'DistributionPlugin::Session'"]
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 
-  has_many :orders, :class_name => 'DistributionPlugin::Order', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC'
-  has_many :orders_confirmed, :class_name => 'DistributionPlugin::Order', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC',
-    :conditions => ['distribution_plugin_orders.status = ?', 'confirmed']
-  has_many :products, :class_name => 'SuppliersPlugin::BaseProduct', :foreign_key => :session_id, :order => 'name ASC'
+  has_many :session_orders, :class_name => 'DistributionPlugin::SessionOrder', :foreign_key => :session_id, :dependent => :destroy, :order => 'id ASC'
+  has_many :orders, :through => :session_orders, :source => :order, :dependent => :destroy, :order => 'id ASC'
+
+  has_many :session_products, :foreign_key => :session_id, :class_name => 'DistributionPlugin::SessionProduct'
+  has_many :products, :through => :session_products, :order => 'name ASC'
 
   has_many :from_products, :through => :products, :order => 'name ASC'
   has_many :from_nodes, :through => :products
   has_many :to_nodes, :through => :products
 
+  has_many :orders_confirmed, :through => :session_orders, :source => :order, :dependent => :destroy, :order => 'id ASC',
+    :conditions => ['orders_plugin_orders.status = ?', 'confirmed']
+
   has_many :ordered_suppliers, :through => :orders_confirmed, :source => :suppliers
   has_many :ordered_products, :through => :orders_confirmed, :source => :products
-  has_many :ordered_session_products, :through => :orders_confirmed, :source => :session_products, :uniq => true
+  has_many :ordered_offered_products, :through => :orders_confirmed, :source => :offered_products, :uniq => true
   has_many :ordered_distributed_products, :through => :orders_confirmed, :source => :distributed_products, :uniq => true
   has_many :ordered_supplier_products, :through => :orders_confirmed, :source => :supplier_products, :uniq => true
 
@@ -133,7 +138,7 @@ class DistributionPlugin::Session < Noosfero::Plugin::ActiveRecord
   end
 
   def ordered_products_by_suppliers
-    self.ordered_session_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
+    self.ordered_offered_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
       total_price_asked = total_parcel_price = 0
       products.each do |product|
         total_price_asked += product.total_price_asked if product.total_price_asked
@@ -147,7 +152,7 @@ class DistributionPlugin::Session < Noosfero::Plugin::ActiveRecord
   def add_distributed_products
     already_in = self.products.unarchived.all
     ActiveRecord::Base.transaction do
-      node.products.unarchived.distributed.active.each do |product|
+      node.products.unarchived.distributed.available.each do |product|
         p = already_in.find{ |f| f.from_product == product }
         unless p
           p = DistributionPlugin::OfferedProduct.create_from_distributed(self, product)
@@ -160,15 +165,6 @@ class DistributionPlugin::Session < Noosfero::Plugin::ActiveRecord
   def destroy
     products.each{ |p| p.destroy! }
     super
-  end
-
-  def add_delivery_options
-  end
-  def add_delivery_options=(ids)
-    dms = node.delivery_methods.find ids.to_s.split(',')
-    (dms - self.delivery_methods).each do |dm|
-      delivery_options.create! :session => self, :delivery_method => dm
-    end
   end
 
   protected

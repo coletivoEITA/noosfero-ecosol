@@ -1,0 +1,184 @@
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both;
+}
+.container-clean {
+  overflow: hidden;
+  display: inline-block; /* Necessary to trigger "hasLayout" in IE */
+  display: block; /* Sets element back to block */
+}
+
+/* heights should only use multiples of this */
+$base: 12px;
+
+/* base measurements */
+$module: 6*$base;
+$intercolumn: 2*$base;
+$wireframe: 10*$module + 10*$intercolumn;
+
+/* widths should only use these */
+$module1: 1*$module + 0*$intercolumn;
+$module2: 2*$module + 1*$intercolumn;
+$module3: 3*$module + 2*$intercolumn;
+$module4: 4*$module + 3*$intercolumn;
+$module5: 5*$module + 4*$intercolumn;
+$module6: 6*$module + 5*$intercolumn;
+$module7: 7*$module + 6*$intercolumn;
+$module8: 8*$module + 7*$intercolumn;
+$module9: 9*$module + 8*$intercolumn;
+$module1p: percentage($module1/$wireframe);
+$module2p: percentage($module2/$wireframe);
+$module3p: percentage($module3/$wireframe);
+$module4p: percentage($module4/$wireframe);
+$module5p: percentage($module5/$wireframe);
+$module6p: percentage($module6/$wireframe);
+$module7p: percentage($module7/$wireframe);
+$module8p: percentage($module8/$wireframe);
+$module9p: percentage($module9/$wireframe);
+
+/* paddings and margins should only use these
+   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+ */
+$margin: $intercolumn;
+$half-margin: $margin/2;
+$padding: $intercolumn/2;
+$half-padding: $padding/2;
+$marginp: percentage($margin/$wireframe);
+$half-marginp: percentage($half-margin/$wireframe);
+$paddingp: percentage($padding/$wireframe);
+$half-paddingp: percentage($half-padding/$wireframe);
+
+/* use for borders */
+$border: 1px;
+$border-radius: 5px;
+
+/* use for text shadows */
+$shadow: 2px;
+
+/* Colors */
+
+$color-action-button: #394E41;
+
+/* Fonts */
+
+/* Paragraphs Styles (use with @extend) */
+
+.pstyle-none {
+  font-size: 12px;
+}
+.pstyle-basic {
+  font-size: 16px;
+}
+.pstyle-button {
+  font-size: 16px;
+}
+.pstyle-button-small {
+  font-size: 13px;
+}
+.pstyle-title {
+  font-size: 72px;
+}
+.pstyle-h1 {
+  font-size: 34px;
+}
+.pstyle-h2 {
+  font-size: 26px;
+}
+.pstyle-h3 {
+  font-size: 21px;
+}
+.pstyle-h4 {
+  font-size: 16px;
+}
+.pstyle-h5 {
+  font-size: 13px;
+}
+.pstyle-title-section {
+  font-size: 92px;
+}
+.pstyle-field {
+  font-size: 13px;
+}
+.pstyle-menu-big-selected {
+  font-size: 21px;
+}
+.pstyle-menu-big-unselected {
+  font-size: 21px;
+}
+.pstyle-menu-medium-selected {
+  font-size: 16px;
+}
+.pstyle-menu-medium-unselected {
+  font-size: 16px;
+}
+.pstyle-menu-small-selected {
+  font-size: 13px;
+}
+.pstyle-menu-small-unselected {
+  font-size: 13px;
+}
+.pstyle-tp4 {
+  font-size: 42px;
+}
+.pstyle-tp3 {
+  font-size: 34px;
+}
+.pstyle-tp2 {
+  font-size: 26px;
+}
+.pstyle-tp1 {
+  font-size: 21px;
+}
+.pstyle-tm1 {
+  font-size: 13px;
+}
+.pstyle-tm2 {
+  font-size: 10px;
+}
+
+/* Images */
+
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+
+  &.thumb {
+    width: 4*$base;
+    height: 4*$base;
+  }
+  &.portrait {
+    width: 10*$base;
+    height: 10*$base;
+  }
+
+  /* do not put padding in this as background size will consider it. */
+  .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain; /* css3 enabled */
+  }
+}
+
+/* Buttons */
+
+.action-button {
+  display: inline-block;
+  padding: $half-padding $padding;
+  margin: 0; /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  color: white;
+  &:visited, &:active, &:hover { color: white; }
+  background: $color-action-button;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  border: none;
+  border-radius: $border-radius;
+}
+

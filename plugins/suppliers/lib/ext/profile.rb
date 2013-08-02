@@ -4,8 +4,22 @@ class Profile
 
   has_many :products
 
+  def dummy?
+    !self.visible
+  end
+
   has_many :suppliers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :consumer_id, :order => 'name ASC', :dependent => :destroy
   has_many :consumers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :profile_id, :order => 'name ASC'
+
+  alias_method :orig_suppliers, :suppliers
+  def suppliers
+    self_supplier # guarantee that the self_supplier is created
+    orig_suppliers
+  end
+  def self_supplier
+    return self.orig_suppliers.build(:profile => self) if new_record?
+    orig_suppliers.of_profile(self).first || self.orig_suppliers.create!(:profile => self)
+  end
 
   def has_supplier?(supplier)
     suppliers.include? supplier
@@ -54,16 +68,6 @@ class Profile
     raise "'#{supplier.name}' is not a supplier of #{self.profile.name}" unless has_supplier?(supplier)
 
     supplier.node.products.unarchived.own.distributed - self.from_products.unarchived.distributed.by_node(supplier.node)
-  end
-
-  alias_method :orig_suppliers, :suppliers
-  def suppliers
-    self_supplier # guarantee that the self_supplier is created
-    orig_suppliers
-  end
-  def self_supplier
-    return self.orig_suppliers.build(:profile => self) if new_record?
-    orig_suppliers.of_profile(self).first || self.orig_suppliers.create!(:profile => self)
   end
 
 end
