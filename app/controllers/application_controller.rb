@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   def default_url_options options={}
     if @domain or (@profile and @profile.default_protocol)
       protocol = @profile ? @profile.default_protocol : @domain.protocol
-      options.merge :protocol => protocol if protocol != 'http'
+      options.merge! :protocol => protocol if protocol != 'http'
     end
     options
   end
