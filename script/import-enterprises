@@ -13,7 +13,7 @@ class String
     ActiveSupport::Inflector.transliterate(self).normalize_spaces
   end
   def normalize_id
-    self.normalize.gsub(" ", "").downcase.to_slug
+    self.normalize.to_slug.gsub(" ", "")
   end
   def normalize_login_email
     self.normalize.gsub(" ", "").downcase

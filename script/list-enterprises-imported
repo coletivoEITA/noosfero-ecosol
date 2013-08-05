@@ -13,7 +13,7 @@ class String
     ActiveSupport::Inflector.transliterate(self).normalize_spaces
   end
   def normalize_id
-    self.normalize.gsub(" ", "").downcase.to_slug
+    self.normalize.to_slug.gsub(" ", "")
   end
   def normalize_email
     self.normalize.gsub(" ", "").downcase
@@ -118,12 +118,16 @@ CSV.open( list_path + list_name, 'w') do |csv|
   puts 'qtd: %s' % enterprises_imported.count
   enterprises_imported.each do |e|
     #admins
-    first_admin = nil
-    last_admin = nil
+    first_admin_name, first_admin_mail, first_admin_fone  = nil
+    last_admin_name, last_admin_mail, last_admin_fone = nil
     if !e.admins.first.blank? || !e.admins.last.blank? 
-      first_admin = "'" + e.admins.first.name.convert_to_s + "','" + e.admins.first.email.convert_to_s + "','" + e.admins.first.contact_phone.convert_to_s + "'"
+      first_admin_name  = e.admins.first.name.convert_to_s 
+      first_admin_mail = e.admins.first.email.convert_to_s 
+      first_admin_fone = e.admins.first.contact_phone.convert_to_s 
       if e.admins.first != e.admins.last 
-        last_admin = "'" + e.admins.last.name.convert_to_s + "','" + e.admins.last.email.convert_to_s + "','" + e.admins.last.contact_phone.convert_to_s + "'"
+        last_admin_name = e.admins.last.name.convert_to_s
+        last_admin_mail = e.admins.last.email.convert_to_s
+        last_admina_fone = e.admins.last.contact_phone.convert_to_s
       end
     end
     #city and state
@@ -132,8 +136,7 @@ CSV.open( list_path + list_name, 'w') do |csv|
     else
       city_state = ""
     end
-    status = "Importado"
-    csv << [ e.name, "cirandas.net/"+e.identifier, e.contact_email, status, city_state, first_admin, last_admin ]
+    csv << [ e.name, "cirandas.net/"+e.identifier, e.contact_email, city_state, first_admin_name, first_admin_mail, first_admin_fone, last_admin_name, last_admin_mail, last_admin_fone ]
   end
 end
 

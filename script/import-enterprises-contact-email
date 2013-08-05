@@ -13,7 +13,7 @@ class String
     ActiveSupport::Inflector.transliterate(self).normalize_spaces
   end
   def normalize_id
-    self.normalize.gsub(" ", "").downcase.to_slug
+    self.normalize.to_slug.gsub(" ", "")
   end
   def normalize_email
     self.normalize.gsub(" ", "").downcase
@@ -86,6 +86,7 @@ def find_enterprise( identifier, name )
   else
     identifier = name.normalize_id if !name.blank?
   end
+  $log.info "Usando '%s' como identificador..." % identifier
   profile = Profile[ identifier ] 
   if !profile.blank? and !profile.enterprise?       
     identifier = "ees-" + identifier
