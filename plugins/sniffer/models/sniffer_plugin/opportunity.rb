@@ -1,4 +1,4 @@
-# fix scope problem
+# WORKAROUND: plugin class don't scope subclasses causing core classes conflict
 require_dependency "#{File.dirname __FILE__}/profile"
 
 class SnifferPlugin::Opportunity < Noosfero::Plugin::ActiveRecord

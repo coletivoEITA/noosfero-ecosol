@@ -1,4 +1,6 @@
 require_dependency 'profile'
+# WORKAROUND: plugin class don't scope subclasses causing core classes conflict
+require_dependency File.expand_path "#{File.dirname __FILE__}/../../models/sniffer_plugin/profile"
 
 class Profile
 

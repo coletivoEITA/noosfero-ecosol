@@ -1,3 +1,6 @@
+# WORKAROUND: plugin class don't scope subclasses causing core classes conflict
+class SnifferPlugin < Noosfero::Plugin; end
+
 require_dependency "#{File.dirname __FILE__}/ext/enterprise"
 require_dependency "#{File.dirname __FILE__}/ext/product"
 require_dependency "#{File.dirname __FILE__}/ext/profile"
