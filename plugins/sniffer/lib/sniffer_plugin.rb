@@ -7,6 +7,9 @@ require_dependency "#{File.dirname __FILE__}/ext/profile"
 require_dependency "#{File.dirname __FILE__}/ext/article"
 require_dependency "#{File.dirname __FILE__}/ext/noosfero/plugin"
 
+# solr indexed models needs to be loaded
+require "#{File.dirname __FILE__}/../models/sniffer_plugin/opportunity"
+
 class SnifferPlugin < Noosfero::Plugin
 
   def self.plugin_name
