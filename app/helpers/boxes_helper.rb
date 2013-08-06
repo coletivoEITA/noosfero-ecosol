@@ -5,7 +5,7 @@ module BoxesHelper
       content + display_boxes_editor(@controller.boxes_holder)
     else
       maybe_display_custom_element(@controller.boxes_holder, :custom_header_expanded, :id => 'profile-header') +
-      if @controller.send(:uses_design_blocks?) and @controller.boxes_holder.boxes_limit > 0
+      if @controller.send(:uses_design_blocks?)
         display_boxes(@controller.boxes_holder, content)
       else
         content_tag('div',
@@ -99,8 +99,8 @@ module BoxesHelper
     unless block.visible?
       options[:title] = _("This block is invisible. Your visitors will not see it.")
     end
-    @controller.send(:content_editor?) || @plugins.each do |plugin|
-      result = plugin.parse_content(result)
+    if @controller.send(:content_editor?)
+      result = filter_html(result, block)
     end
     box_decorator.block_target(block.box, block) +
       content_tag('div',

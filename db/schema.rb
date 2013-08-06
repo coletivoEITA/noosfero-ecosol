@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130606110602) do
+ActiveRecord::Schema.define(:version => 20130711213046) do
 
   create_table "abuse_reports", :force => true do |t|
     t.integer  "reporter_id"
@@ -221,6 +221,7 @@ ActiveRecord::Schema.define(:version => 20130606110602) do
     t.string   "source_type"
     t.string   "user_agent"
     t.string   "referrer"
+    t.integer  "group_id"
   end
 
   add_index "comments", ["source_id", "spam"], :name => "index_comments_on_source_id_and_spam"
@@ -517,6 +518,7 @@ ActiveRecord::Schema.define(:version => 20130606110602) do
     t.integer  "scrap_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "context_id"
   end
 
   create_table "taggings", :force => true do |t|
