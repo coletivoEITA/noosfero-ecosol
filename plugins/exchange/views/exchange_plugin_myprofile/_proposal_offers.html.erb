@@ -12,13 +12,13 @@
     <% products.each do |p| %>
       <li id=exchange-<%=type%>-<%= p.id %>>
         <h6 class="element-title">
-          <%= k.name %>
+          <%= p.name %>
         </h6>
 
         <%= link_to_remote "<button class='action-button exchange-add'>+</button>",
-          :url => {:action => "add_element", :element_id => k.id,
+          :url => {:action => "add_element", :element_id => p.id,
                    :element_type => "Product", :enterprise => enterprise,
-                   :proposal_id => proposal_id, :enterprise_id => k.enterprise_id} %>
+                   :proposal_id => proposal_id, :enterprise_id => p.enterprise_id} %>
       </li>
     <% end %>
   </ul>
