@@ -1,6 +1,7 @@
 <% e = element.element_type.constantize.find element.element_id %>
+<% type = element.element_type.gsub('::', '').underscore %>
 
-<li id="exchange_<%= element.element_type %>_element_<%= element.element_id %>" class="exchange-element <%= actor %>">
+<li id="exchange-<%=type%>-element-<%= element.element_id %>" class="exchange-element <%= actor %>">
 
   <% if element.element_type == "Product" %>
     <div class="exchange-element-image" style="background-image: url('<%= e.image.public_filename if e.image %>');">
@@ -19,7 +20,7 @@
 
       <div class="exchange-trash">
 
-        <% if (element.element_type == "Product") || (element.element_type == "CmsLearningPlugin::Learning") %>
+        <% if element.element_type == "Product" or element.element_type == "CmsLearningPlugin::Learning" %>
           <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element, :id => element.id, :element_type => element.element_type, :element_id => element.element_id, :enterprise => actor, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
         <% else %>
           <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element_currency, :id => element.id, :element_type => element.element_type, :element_id => element.element_id, :enterprise => actor, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
