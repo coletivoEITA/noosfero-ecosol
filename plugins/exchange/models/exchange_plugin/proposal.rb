@@ -6,8 +6,10 @@ class ExchangePlugin::Proposal < Noosfero::Plugin::ActiveRecord
 
   has_many :exchange_elements, :class_name => "ExchangePlugin::ExchangeElement", :dependent => :destroy, :order => "id asc"
 
-  has_many :products, :through => :exchange_elements, :source => :element_np, :class_name => 'Product', :conditions => "exchange_plugin_exchange_elements.element_type = 'Product'"
-  has_many :knowledges, :through => :exchange_elements, :source => :element_np, :class_name => 'CmsLearningPluginLearning', :conditions => "exchange_plugin_exchange_elements.element_type = 'CmsLearningPluginLearning'"
+  has_many :products, :through => :exchange_elements, :source => :element_np, :class_name => 'Product',
+    :conditions => "exchange_plugin_exchange_elements.element_type = 'Product'"
+  has_many :knowledges, :through => :exchange_elements, :source => :element_np, :class_name => 'CmsLearningPlugin::Learning',
+    :conditions => "exchange_plugin_exchange_elements.element_type = 'CmsLearningPlugin::Learning'"
 
   has_many :messages, :class_name => "ExchangePlugin::Message", :dependent => :destroy, :order => "created_at desc"
 

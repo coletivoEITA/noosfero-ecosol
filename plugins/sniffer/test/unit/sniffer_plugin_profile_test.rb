@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../../../test/test_helper'
 
 class SnifferPluginProfileTest < ActiveSupport::TestCase
   should 'find consumer and its products for a profile' do
-    SnifferPluginProfile.all.first.product_categories.collect(&:id)
+    SnifferPlugin::Profile.all.first.product_categories.collect(&:id)
   end
 
   should 'add find methods for input-products relations' do

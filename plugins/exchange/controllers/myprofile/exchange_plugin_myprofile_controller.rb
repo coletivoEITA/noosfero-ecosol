@@ -24,8 +24,8 @@ class ExchangePluginMyprofileController < MyProfileController
     @origin = @current_proposal.enterprise_origin
     @theother = @exchange.enterprises.find(:first, :conditions => ["enterprise_id != ?",profile.id])
 
-    @theother_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @theother.id} - @current_proposal.knowledges
-    @profile_knowledges = CmsLearningPluginLearning.all.select{|k| k.profile.id == @profile.id} - @current_proposal.knowledges
+    @theother_knowledges = CmsLearningPlugin::Learning.all.select{|k| k.profile.id == @theother.id} - @current_proposal.knowledges
+    @profile_knowledges = CmsLearningPlugin::Learning.all.select{|k| k.profile.id == @profile.id} - @current_proposal.knowledges
   end
 
   def add_unregistered_item
@@ -89,7 +89,7 @@ class ExchangePluginMyprofileController < MyProfileController
     @proposal.exchange.save!
 
     ExchangePlugin::Mailer.deliver_new_proposal_notification @proposal.enterprise_target, @proposal.enterprise_origin, @proposal.id, @proposal.exchange.id
-        
+
     redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
   end
 

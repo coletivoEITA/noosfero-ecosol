@@ -1,4 +1,4 @@
-class CmsLearningPluginLearning < Article
+class CmsLearningPlugin::Learning < Article
 
   settings_items :summary, :type => :string, :default => ""
   settings_items :good_practices, :type => :string, :default => ""
@@ -10,7 +10,7 @@ class CmsLearningPluginLearning < Article
   has_many :resources_persons, :foreign_key => 'article_id', :order => 'id asc', :class_name => 'ArticleResource',
     :conditions => ['article_resources.resource_type = ?', 'Person']
 
-  
+
   has_many :product_categories, :through => :resources, :source => :product_category, :foreign_key => 'article_id', :readonly => true,
     :class_name => 'ProductCategory', :conditions => ['article_resources.resource_type = ?', 'ProductCategory']
 

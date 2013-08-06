@@ -12,7 +12,7 @@ class Article
                 INNER JOIN sniffer_plugin_opportunities AS op ON (article_resources.resource_id = op.opportunity_id
                       AND article_resources.resource_type = 'ProductCategory' AND op.opportunity_type = 'ProductCategory')
                 INNER JOIN sniffer_plugin_profiles sniffer ON (op.profile_id = sniffer.id AND sniffer.enabled = true)",
-      :conditions => "articles.type = 'CmsLearningPluginLearning'
+      :conditions => "articles.type = 'CmsLearningPlugin::Learning'
                 AND articles.profile_id = #{wise.id}
                 AND sniffer.profile_id = #{interested.id}"
     }

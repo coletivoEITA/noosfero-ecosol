@@ -33,9 +33,9 @@ class EscamboPlugin < Noosfero::Plugin
   SearchLimit = 20
   SearchDataLoad = proc do
     options = {:limit => SearchLimit, :conditions => ['created_at IS NOT NULL'], :order => 'created_at DESC'}
-    @interests = SnifferPluginOpportunity.all options
+    @interests = SnifferPlugin::Opportunity.all options
     @products = Product.all options
-    @knowledges = CmsLearningPluginLearning.all options
+    @knowledges = CmsLearningPlugin::Learning.all options
   end
   SearchDataMix = proc do
     @results = @interests + @products + @knowledges
@@ -45,9 +45,9 @@ class EscamboPlugin < Noosfero::Plugin
     if @query.empty?
       instance_eval &SearchDataLoad
     else
-      @interests = find_by_contents(:sniffer_plugin_opportunities, SnifferPluginOpportunity, @query, paginate_options)[:results].results
+      @interests = find_by_contents(:sniffer_plugin_opportunities, SnifferPlugin::Opportunity, @query, paginate_options)[:results].results
       @products = find_by_contents(:products, Product, @query, paginate_options)[:results].results
-      @knowledges = find_by_contents(:cms_learning_plugin_learnings, CmsLearningPluginLearning, @query, paginate_options)[:results].results
+      @knowledges = find_by_contents(:cms_learning_plugin_learnings, CmsLearningPlugin::Learning, @query, paginate_options)[:results].results
     end
     instance_eval &SearchDataMix
 

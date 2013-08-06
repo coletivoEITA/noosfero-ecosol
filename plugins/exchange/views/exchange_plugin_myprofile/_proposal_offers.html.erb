@@ -1,17 +1,17 @@
 <% products = profile.products - proposal.products %>
+<% type = Product.to_s.underscore %>
 
 <% if products.blank? %>
   <%= _("%s has no offers registered.") % profile.name %>
-  <ul id="exchange-Product_<%=actor%>_list" class="exchange-<%=actor%>_offers proposal-offers">
+  <ul id="exchange-<%=type%>-<%=actor%>-list" class="exchange-<%=actor%>-offers proposal-offers">
   </ul> <!-- necessary to receive removed items -->
 <% else %>
-  <ul id="exchange-Product_<%=actor%>_list" class="exchange-<%=actor%>_offers proposal-offers">
-    <h4><%= _('Products and Services') %></h4>
+  <h4><%= _('Products and Services') %></h4>
+
+  <ul id="exchange-<%=type%>-<%=actor%>-list" class="exchange-<%=actor%>-offers proposal-offers">
     <% products.each do |p| %>
-      <li id=exchange_Product_<%= p.id %>>
-
+      <li id=exchange-<%=type%>-<%= p.id %>>
         <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal_id => proposal.id, :enterprise => actor, :element => p, :enterprise_id => profile.id} %>
-
       </li>
     <% end %>
   </ul>

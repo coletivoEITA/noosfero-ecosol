@@ -1,5 +1,5 @@
-<% profile.evaluations.each do |ev| %>
-  <div id="evaluation-<%= ev.id %>" class="evaluations">
-    <%= render :partial => 'enterprise_evaluation', :locals => {:evaluation => ev} %>
+<% @evaluations.each do |evaluation| %>
+  <div id="evaluation-<%= evaluation.id %>" class="evaluations">
+    <%= render :partial => 'enterprise_evaluation', :locals => {:evaluation => evaluation} %>
   </div>
 <% end %>

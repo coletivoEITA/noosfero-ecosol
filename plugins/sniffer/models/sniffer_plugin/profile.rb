@@ -1,17 +1,17 @@
-class SnifferPluginProfile < ActiveRecord::Base
+class SnifferPlugin::Profile < Noosfero::Plugin::ActiveRecord
 
   belongs_to :profile
 
-  has_many :opportunities, :class_name => 'SnifferPluginOpportunity', :foreign_key => 'profile_id', :dependent => :destroy
+  has_many :opportunities, :class_name => 'SnifferPlugin::Opportunity', :foreign_key => 'profile_id', :dependent => :destroy
   has_many :product_categories, :through => :opportunities, :source => :product_category, :foreign_key => 'profile_id', :class_name => 'ProductCategory',
     :conditions => ['sniffer_plugin_opportunities.opportunity_type = ?', 'ProductCategory']
 
   validates_presence_of :profile
 
   def self.find_or_create profile
-    sniffer = SnifferPluginProfile.find_by_profile_id profile.id
+    sniffer = SnifferPlugin::Profile.find_by_profile_id profile.id
     if sniffer.nil?
-      sniffer = SnifferPluginProfile.new(:profile => profile, :enabled => true)
+      sniffer = SnifferPlugin::Profile.new(:profile => profile, :enabled => true)
       sniffer.profile = profile
       sniffer.save!
     end

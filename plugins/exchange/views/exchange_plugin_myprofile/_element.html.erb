@@ -19,7 +19,7 @@
 
       <div class="exchange-trash">
 
-        <% if (element.element_type == "Product") || (element.element_type == "CmsLearningPluginLearning") %>
+        <% if (element.element_type == "Product") || (element.element_type == "CmsLearningPlugin::Learning") %>
           <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element, :id => element.id, :element_type => element.element_type, :element_id => element.element_id, :enterprise => actor, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
         <% else %>
           <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element_currency, :id => element.id, :element_type => element.element_type, :element_id => element.element_id, :enterprise => actor, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
@@ -40,7 +40,7 @@
   <% if element.element_type == "Product" %>
     <div class="exchange-element-title"><%= link_to e.name, e.url, :target => '_blank' %></div>
     <div class="exchange-element-desc"><%= e.description %></div>
-  <% elsif element.element_type == "CmsLearningPluginLearning" %>
+  <% elsif element.element_type == "CmsLearningPlugin::Learning" %>
     <div class="exchange-element-title"><%= link_to e.name, e.url, :target => 'blank' %></div>
     <div class="exchange-element-desc"><%= e.summary %></div>
   <% elsif element.element_type == "CurrencyPlugin::Currency" %>

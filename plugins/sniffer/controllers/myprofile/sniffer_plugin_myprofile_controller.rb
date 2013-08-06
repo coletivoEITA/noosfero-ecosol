@@ -87,7 +87,7 @@ class SnifferPluginMyprofileController < MyProfileController
   protected
 
   def fetch_sniffer_profile
-    @sniffer_profile = SnifferPluginProfile.find_or_create profile
+    @sniffer_profile = SnifferPlugin::Profile.find_or_create profile
   end
 
   def profile_hash profile

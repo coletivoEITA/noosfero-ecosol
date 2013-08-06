@@ -5,7 +5,7 @@ class EvaluationPluginProfileController < ProfileController
   helper EvaluationPlugin::EvaluationDisplayHelper
 
   def index
-
+    @evaluations = profile.evaluations
   end
 
 end

@@ -1,17 +1,19 @@
 <% knowledges = profile.knowledges - proposal.knowledges %>
+<% type = CmsLearningPlugin::Learning.to_s.gsub('::', '').underscore %>
 
 <% if knowledges.blank? %>
   <%= _("%s has no knowledges registered.") % profile.name %>
-  <ul id="exchange-CmsLearningPluginLearning_<%=actor%>_list" class="proposal-offers <%=actor%>">
-  </ul> <!-- necessary to receive removed items -->
+
+  <%# necessary to receive removed items %>
+  <ul id="exchange-<%=type%>-<%=actor%>-list" class="proposal-offers <%=actor%>">
+  </ul>
 <% else %>
-  <ul id="exchange-CmsLearningPluginLearning_<%=actor%>_list" class="proposal-offers <%=actor%>">
-    <h4><%= _('Knowledges') %></h4>
+  <h4><%= _('Knowledges') %></h4>
+
+  <ul id="exchange-<%=type%>-<%=actor%>-list" class="proposal-offers <%=actor%>">
     <% knowledges.each do |k| %>
-      <li id=exchange_CmsLearningPluginLearning_<%= k.id %>>
-
-        <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPluginLearning", :proposal_id => proposal.id, :enterprise => actor, :element => k, :enterprise_id => profile.id} %>
-
+      <li id=exchange-<%=type%>-<%= k.id %>>
+        <%= render :partial => "element_list", :locals => {:element_type => "CmsLearningPlugin::Learning", :proposal_id => proposal.id, :enterprise => actor, :element => k, :enterprise_id => profile.id} %>
       </li>
     <% end %>
   </ul>

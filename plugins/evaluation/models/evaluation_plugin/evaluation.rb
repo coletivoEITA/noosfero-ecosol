@@ -5,7 +5,8 @@ class EvaluationPlugin::Evaluation < Noosfero::Plugin::ActiveRecord
   belongs_to :evaluated, :class_name => "Profile"
 
   validates_presence_of :object
-  validates_presence_of :object
+  validates_presence_of :evaluator
+  validates_presence_of :evaluated
 
   ResultMessage = {
     0 => _("Yes"),

@@ -91,7 +91,7 @@ class Product
       INNER JOIN article_resources ON (article_resources.resource_id = inputs.product_category_id AND article_resources.resource_type = 'ProductCategory')
       INNER JOIN articles ON (article_resources.article_id = articles.id)
       INNER JOIN profiles ON ( products.enterprise_id = profiles.id )",
-    :conditions => "articles.type = 'CmsLearningPluginLearning'
+    :conditions => "articles.type = 'CmsLearningPlugin::Learning'
       AND articles.profile_id = #{profile.id}
       AND products.enterprise_id <> #{profile.id}"
     }
@@ -110,7 +110,7 @@ class Product
       INNER JOIN article_resources ON (article_resources.resource_id = inputs.product_category_id AND article_resources.resource_type = 'ProductCategory')
       INNER JOIN articles ON (article_resources.article_id = articles.id)
       INNER JOIN profiles ON ( articles.profile_id = profiles.id )",
-    :conditions => "articles.type = 'CmsLearningPluginLearning'
+    :conditions => "articles.type = 'CmsLearningPlugin::Learning'
       AND articles.profile_id <> #{profile.id}
       AND products.enterprise_id = #{profile.id}"
     }
@@ -198,7 +198,7 @@ class Product
       :joins => "INNER JOIN inputs ON (products.id = inputs.product_id)
                  INNER JOIN article_resources ON (article_resources.resource_id = inputs.product_category_id AND article_resources.resource_type = 'ProductCategory')
                INNER JOIN articles ON (article_resources.article_id = articles.id)",
-      :conditions => "articles.type = 'CmsLearningPluginLearning'
+      :conditions => "articles.type = 'CmsLearningPlugin::Learning'
                     AND articles.profile_id = #{wise.id}
                     AND products.enterprise_id = #{producer.id}"
    }

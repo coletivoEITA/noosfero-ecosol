@@ -9,7 +9,7 @@
   :element_type => "Product", :enterprise => enterprise,
   :proposal_id => proposal_id, :enterprise_id => element.enterprise_id} %>
 
-<% elsif element.class.name == "CmsLearningPluginLearning" %>
+<% elsif element.class.name == "CmsLearningPlugin::Learning" %>
 
   <h6 class="element-title">
   <%= link_to(element.name) %>
@@ -17,7 +17,7 @@
 
   <%= link_to_remote "<button class='action-button exchange-add'>+</button>",
   :url => {:action => "add_element", :element_id => element.id,
-  :enterprise_id => element.profile_id, :element_type => "CmsLearningPluginLearning", :proposal_id => proposal_id, :enterprise => enterprise} %>
+  :enterprise_id => element.profile_id, :element_type => "CmsLearningPlugin::Learning", :proposal_id => proposal_id, :enterprise => enterprise} %>
 
 
 <% end %>

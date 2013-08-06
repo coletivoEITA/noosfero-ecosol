@@ -20,7 +20,7 @@ class CmsLearningPlugin::LearningsBlock < Block
     block = self
     lambda do
       extend CmsHelper
-      learnings = CmsLearningPluginLearning.by_profile(block.owner)
+      learnings = CmsLearningPlugin::Learning.by_profile(block.owner)
       render :file => 'blocks/cms_learning_plugin/learnings_block',
         :locals => {:block => block, :learnings => learnings}
     end

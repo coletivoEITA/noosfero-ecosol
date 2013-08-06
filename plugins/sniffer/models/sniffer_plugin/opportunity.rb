@@ -1,6 +1,6 @@
-class SnifferPluginOpportunity < ActiveRecord::Base
+class SnifferPlugin::Opportunity < Noosfero::Plugin::ActiveRecord
 
-  belongs_to :sniffer_profile, :class_name => 'SnifferPluginProfile', :foreign_key => :profile_id
+  belongs_to :sniffer_profile, :class_name => 'SnifferPlugin::Profile', :foreign_key => :profile_id
   has_one :profile, :through => :sniffer_profile
 
   belongs_to :opportunity, :polymorphic => true

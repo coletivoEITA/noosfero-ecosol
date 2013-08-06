@@ -20,11 +20,11 @@ class SnifferPlugin::InterestsBlock < Block
     block = self
     lambda do
       if block.owner.is_a?(Profile)
-        sniffer = SnifferPluginProfile.find_or_create(block.owner)
+        sniffer = SnifferPlugin::Profile.find_or_create(block.owner)
         interests = sniffer.opportunities
         interests |= sniffer.profile.inputs if sniffer.profile.enterprise?
       else # Environment
-        interests = SnifferPluginOpportunity.product_categories :limit => 5, :order => 'created_at DESC'
+        interests = SnifferPlugin::Opportunity.product_categories :limit => 5, :order => 'created_at DESC'
         interests += Input.all :limit => 5, :order => 'created_at DESC'
         interests.sort{ |a, b| -1 * a.created_at.to_i <=> b.created_at.to_i }
       end

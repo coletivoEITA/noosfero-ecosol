@@ -12,11 +12,11 @@ class ExchangePlugin::ExchangeElement < Noosfero::Plugin::ActiveRecord
 #     #not good!!! profile_id x enterprise_id
 #     if (self.element_type == "Product")
 #       return (eval(self.element_type).find self.element_id).enterprise_id
-#     elsif (self.element_type == "CmsLearningPluginLearning")
-#       return (eval(self.element_type).find self.element_id).profile_id  
+#     elsif (self.element_type == "CmsLearningPlugin::Learning")
+#       return (eval(self.element_type).find self.element_id).profile_id
 #     else
 #       return self.enterprise_id
 #     end
 #   end
-  
+
 end

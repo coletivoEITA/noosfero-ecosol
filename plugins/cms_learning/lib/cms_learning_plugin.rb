@@ -27,7 +27,7 @@ class CmsLearningPlugin < Noosfero::Plugin
   end
 
   def content_types
-    [CmsLearningPluginLearning]
+    [CmsLearningPlugin::Learning]
   end
 
   def search_controller_filter

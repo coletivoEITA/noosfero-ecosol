@@ -2,7 +2,7 @@
   <h3><%= _('Knowledges') %></h3>
 
   <% if profile == @active_organization %>
-    <%= link_to _("Add"), {:controller => :cms, :action => :new, :type => "CmsLearningPluginLearning"}, :class => 'add action-button' %>
+    <%= link_to _("Add"), {:controller => :cms, :action => :new, :type => "CmsLearningPlugin::Learning"}, :class => 'add action-button' %>
   <% end %>
 
   <% unless all %>
