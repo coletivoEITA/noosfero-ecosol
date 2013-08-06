@@ -11,7 +11,14 @@
   <ul id="exchange-<%=type%>-<%=actor%>-list" class="exchange-<%=actor%>-offers proposal-offers">
     <% products.each do |p| %>
       <li id=exchange-<%=type%>-<%= p.id %>>
-        <%= render :partial => "element_list", :locals => {:element_type => "Product", :proposal_id => proposal.id, :enterprise => actor, :element => p, :enterprise_id => profile.id} %>
+        <h6 class="element-title">
+          <%= k.name %>
+        </h6>
+
+        <%= link_to_remote "<button class='action-button exchange-add'>+</button>",
+          :url => {:action => "add_element", :element_id => k.id,
+                   :element_type => "Product", :enterprise => enterprise,
+                   :proposal_id => proposal_id, :enterprise_id => k.enterprise_id} %>
       </li>
     <% end %>
   </ul>
