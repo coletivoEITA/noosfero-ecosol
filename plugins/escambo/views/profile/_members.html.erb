@@ -8,7 +8,9 @@
         <%= member.name %>
       </div>
 
-      <%= link_to _('Get in contact'), {:controller => :contact, :profile => member.identifier, :action => :new}, :class => 'colorbox action-button' %>
+      <% if user != member %>
+        <%= link_to _('Get in contact'), {:controller => :contact, :profile => member.identifier, :action => :new}, :class => 'colorbox action-button' %>
+      <% end %>
     </div>
   </div>
 <% end %>
