@@ -46,10 +46,10 @@
 </div>
 
 <div id="items-area" class='controller-search'>
-  <h2> <%= _('Offers, knowledges and interests') %> </h2>
+  <div>
+    <h2> <%= _('Offers, knowledges and interests') %> </h2>
+    <%= link_to _('See all'), :controller => :search %>
+  </div>
   <%= render :partial => 'search/search_form', :locals => { :hint => _('search for...') } %>
-
-  <% @results.each do |result| %>
-    <%= render :partial => "escambo_search/#{result.class.name.gsub('::', '').underscore}", :locals => {:result => result} %>
-  <% end %>
+  <%= render :partial => 'escambo_search/results' %>
 </div>

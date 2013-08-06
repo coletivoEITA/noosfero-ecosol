@@ -1,6 +1,3 @@
 <%= search_page_title(_('Offers, knowledges and interests'), @category) %>
 <%= render :partial => 'search/search_form', :locals => { :hint => _('search for...') } %>
-
-<% @results.each do |result| %>
-  <%= render :partial => "escambo_search/#{result.class.name.underscore}", :locals => {:result => result} %>
-<% end %>
+<%= render :partial => 'escambo_search/results' %>

@@ -1,5 +1,5 @@
 # fix scope problem
-require "#{File.dirname __FILE__}/profile"
+require_dependency "#{File.dirname __FILE__}/profile"
 
 class SnifferPlugin::Opportunity < Noosfero::Plugin::ActiveRecord
 

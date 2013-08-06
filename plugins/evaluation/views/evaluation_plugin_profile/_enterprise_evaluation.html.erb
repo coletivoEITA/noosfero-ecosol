@@ -4,7 +4,7 @@
 
   <p>
     <%= _('Evaluation done by %{evaluator} at %{time}') % {
-      :evaluator => evaluation.evaluator.name,
+      :evaluator => link_to(evaluation.evaluator.name, evaluation.evaluator.url),
       :time => evaluation.created_at.strftime(_("%m/%d/%Y at %H:%Mh")),
     } %>
   </p>

@@ -1,0 +1,3 @@
+<% @results.each do |result| %>
+  <%= render :partial => "escambo_search/#{result.class.name.gsub('::', '').underscore}", :locals => {:result => result} %>
+<% end %>
