@@ -1,3 +1,6 @@
+# fix scope problem
+require_dependency "#{File.dirname __FILE__}/profile"
+
 class SnifferPlugin::Opportunity < Noosfero::Plugin::ActiveRecord
 
   belongs_to :sniffer_profile, :class_name => 'SnifferPlugin::Profile', :foreign_key => :profile_id
