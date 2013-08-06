@@ -2,8 +2,8 @@ class SnifferPlugin::Profile < Noosfero::Plugin::ActiveRecord
 
   belongs_to :profile
 
-  has_many :opportunities, :class_name => 'SnifferPlugin::Opportunity', :foreign_key => 'profile_id', :dependent => :destroy
-  has_many :product_categories, :through => :opportunities, :source => :product_category, :foreign_key => 'profile_id', :class_name => 'ProductCategory',
+  has_many :opportunities, :class_name => 'SnifferPlugin::Opportunity', :foreign_key => :profile_id, :dependent => :destroy
+  has_many :product_categories, :through => :opportunities, :source => :product_category, :foreign_key => :profile_id, :class_name => 'ProductCategory',
     :conditions => ['sniffer_plugin_opportunities.opportunity_type = ?', 'ProductCategory']
 
   validates_presence_of :profile
