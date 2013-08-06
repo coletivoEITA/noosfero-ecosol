@@ -1102,7 +1102,8 @@ body.action-sniffer_plugin_myprofile-search {
     height: 144px;
     position: relative;
     background-position: center;
-    background-size: 100% 100%;
+    background-size: 100%;
+    background-size: contain;
     background-repeat: no-repeat; }
     .escambo-plugin-profile-block .image-profile-area .icons {
       height: 24px;
