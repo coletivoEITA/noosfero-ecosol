@@ -1,4 +1,6 @@
-<div class="evaluation-snippet">
+<% my_evaluation = evaluation.evaluator == profile unless defined? my_evaluation %>
+
+<div class="evaluation-snippet <%= my_evaluation ? 'left' : 'right' %>">
 
   <p>
     <%= _('Evaluation done by %{evaluator} at %{time}') % {
@@ -7,16 +9,14 @@
     } %>
   </p>
 
-  <% if evaluation.evaluator == profile %>
-    <div class="evaluation-thumb">
-      <%= link_to profile_image(evaluation.evaluator, :minor), profile.url %>
-    </div>
+  <div class="evaluation-thumb">
+    <%= link_to profile_image(evaluation.evaluator, :minor), evaluation.evaluator.url %>
+  </div>
 
-    <div class="arrow-wrap left">
-      <div class="arrow">
-      </div>
+  <div class="arrow-wrap <%= my_evaluation ? 'left' : 'right' %>">
+    <div class="arrow">
     </div>
-  <% end %>
+  </div>
 
   <div class="evaluation-text">
 
@@ -35,16 +35,6 @@
       </div>
     </div>
   </div>
-
-  <% if evaluation.evaluator != profile %>
-    <div class="arrow-wrap right">
-      <div class="arrow">
-      </div>
-    </div>
-    <div class="evaluation-thumb">
-      <%= link_to profile_image(evaluation.evaluator, :minor), profile.url %>
-    </div>
-  <% end %>
 
   <div class="clean"></div>
 
