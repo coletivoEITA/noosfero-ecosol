@@ -1117,12 +1117,10 @@ msgid "Products and Services"
 msgstr "Produtos e Serviços"
 
 #: app/helpers/search_helper.rb:18
-#, fuzzy
 msgid "More popular"
 msgstr "Mais populares"
 
 #: app/helpers/search_helper.rb:19
-#, fuzzy
 msgid "More active"
 msgstr "Mais ativas"
 
@@ -1133,9 +1131,8 @@ msgid "More recent"
 msgstr "Mais recentes"
 
 #: app/helpers/search_helper.rb:21
-#, fuzzy
 msgid "More comments"
-msgstr "Moderar comentários"
+msgstr "mais comentados"
 
 #: app/helpers/search_helper.rb:46
 msgid ", "
@@ -1146,22 +1143,18 @@ msgid "search in all categories"
 msgstr "procurar em todas as categorias"
 
 #: app/helpers/search_helper.rb:94
-#, fuzzy
 msgid "Compact"
-msgstr "Computação"
+msgstr "Compacto"
 
 #: app/helpers/search_helper.rb:95
-#, fuzzy
 msgid "Map"
-msgstr "Maio"
+msgstr "Map"
 
 #: app/helpers/search_helper.rb:96
-#, fuzzy
 msgid "Full"
-msgstr "Nome completo"
+msgstr "Completo"
 
 #: app/helpers/search_helper.rb:98
-#, fuzzy
 msgid "Display"
 msgstr "Nome de exibição"
 
@@ -1209,19 +1202,16 @@ msgid "More popular communities from network"
 msgstr "Comunidades mais populares da rede"
 
 #: app/helpers/search_helper.rb:129
-#, fuzzy
 msgid "More recent enterprises from network"
-msgstr "Conteúdos mais recentes da rede"
+msgstr "Pontos de cultura mais recentes da rede"
 
 #: app/helpers/search_helper.rb:130
-#, fuzzy
 msgid "More active enterprises from network"
-msgstr "Pessoas mais ativas da rede"
+msgstr "Pontos de cultura mais ativos da rede"
 
 #: app/helpers/search_helper.rb:131
-#, fuzzy
 msgid "More popular enterprises from network"
-msgstr "Pessoas mais populares da rede"
+msgstr "Pontos de cultura mais populares da rede"
 
 #: app/helpers/search_helper.rb:132 app/models/highlights_block.rb:23
 #: app/views/box_organizer/_highlights_block.rhtml:1
@@ -3797,9 +3787,8 @@ msgid "user"
 msgstr "usuário"
 
 #: app/models/user.rb:-
-#, fuzzy
 msgid "Username / Email"
-msgstr "Nome de usuário"
+msgstr "Nome de usuário / Email"
 
 #: app/models/user.rb:- app/models/user.rb:19 app/models/contact.rb:14
 msgid "e-Mail"
@@ -7843,18 +7832,16 @@ msgid "Products/Services"
 msgstr "Produtos/Serviços"
 
 #: app/views/catalog/index.rhtml:11
-#, fuzzy
 msgid "Catalog start"
-msgstr "Status do bate-papo"
+msgstr "Início da vitrine"
 
 #: app/views/catalog/index.rhtml:18
 msgid "There are no sub-categories for %s"
 msgstr "Não há subcategorias para %s"
 
 #: app/views/catalog/index.rhtml:20
-#, fuzzy
 msgid "There are no categories available."
-msgstr "Não há contratos."
+msgstr "Não há categorias disponíveis."
 
 #: app/views/catalog/index.rhtml:38
 msgid "Highlighted product"
@@ -8828,14 +8815,12 @@ msgstr ""
 "este bloco para que ele funcione corretamente."
 
 #: app/views/box_organizer/_article_block.rhtml:19
-#, fuzzy
 msgid "Number of posts:"
-msgstr "Número de produtores"
+msgstr "Número de postagens"
 
 #: app/views/box_organizer/_article_block.rhtml:24
-#, fuzzy
 msgid "How to display this content:"
-msgstr "Mostrar posts como:"
+msgstr "Como mostrar este conteúdo:"
 
 #: app/views/box_organizer/_article_block.rhtml:27
 #: app/views/shared/_lead_and_body.rhtml:11
@@ -9076,9 +9061,8 @@ msgid "None of your friends is online at the moment"
 msgstr "Nenhum dos seus amigos está online no momento"
 
 #: app/views/shared/logged_in/xmpp_chat.rhtml:9
-#, fuzzy
 msgid "Friends in chat (<span class='amount_of_friends'>%{amount}</span>)"
-msgstr "Amigos no chat <span class='amount_of_friends'>(%{amount})</span>"
+msgstr "Amigos no chat (<span class='amount_of_friends'>(%{amount}</span>)"
 
 #: app/views/shared/not_found.rhtml:2
 msgid "There is no such page: %s"
@@ -9194,9 +9178,8 @@ msgstr "redirecionando..."
 #: app/views/search/search_page.html.erb:3
 #: app/views/search/products.html.erb:3
 #: plugins/solr/views/search/_results.html.erb:1
-#, fuzzy
 msgid "Type words about the %s you're looking for"
-msgstr "Digite palavras sobre a pessoa que está procurando"
+msgstr "Digite palavras sobre a %s que está procurando"
 
 #: app/views/search/_full_blog.html.erb:8
 msgid "Last posts"
@@ -9275,9 +9258,8 @@ msgstr "As senhas não correspondem"
 
 #: app/views/account/_signup_page.html.erb:3
 #: plugins/escambo/views/account/_signup_page.html.erb:3
-#, fuzzy
 msgid "Are you a robot?"
-msgstr "Você tem certeza?"
+msgstr "Você é um robô?"
 
 #: app/views/account/_signup_page.html.erb:4
 #: plugins/escambo/views/account/_signup_page.html.erb:4
@@ -10152,14 +10134,12 @@ msgid "Invalid quantity."
 msgstr "Quantidade inválida."
 
 #: plugins/shopping_cart/controllers/shopping_cart_plugin_controller.rb:333
-#, fuzzy
 msgid "Undefined product"
-msgstr "Produto não categorizado"
+msgstr "Produto indefinido"
 
 #: plugins/shopping_cart/controllers/shopping_cart_plugin_controller.rb:335
-#, fuzzy
 msgid "Wrong product id"
-msgstr "Sem produto"
+msgstr "Id de produto incorreto"
 
 #: plugins/shopping_cart/controllers/shopping_cart_plugin_myprofile_controller.rb:13
 msgid "Option updated successfully."
@@ -10371,43 +10351,36 @@ msgid "Evaluated by proposed"
 msgstr ""
 
 #: plugins/exchange/models/exchange_plugin/exchange.rb:24
-#, fuzzy
 msgid "Evaluated"
-msgstr "Validado"
+msgstr "Avaliado"
 
 #: plugins/exchange/models/exchange_plugin/exchange.rb:24
-#, fuzzy
 msgid "Cancelled by Proposer"
-msgstr "Cancelado"
+msgstr "Cancelado pelo proponente"
 
 #: plugins/exchange/models/exchange_plugin/exchange.rb:24
-#, fuzzy
 msgid "Cancelled by Proposed"
-msgstr "Cancelado"
+msgstr "Cancelado pela outra parte"
 
 #: plugins/sniffer/models/sniffer_plugin_opportunity.rb:-
 msgid "sniffer plugin opportunity"
 msgstr ""
 
 #: plugins/sniffer/models/sniffer_plugin_opportunity.rb:-
-#, fuzzy
 msgid "Opportunity"
-msgstr "Comunidade"
+msgstr "Oportunidade"
 
 #: plugins/sniffer/models/sniffer_plugin_opportunity.rb:-
-#, fuzzy
 msgid "Opportunity type"
-msgstr "Tipo do repositório"
+msgstr "Tipo do oportunidade"
 
 #: plugins/sniffer/models/sniffer_plugin_profile.rb:-
-#, fuzzy
 msgid "sniffer plugin profile"
-msgstr "Perfil do ponto de cultura"
+msgstr "Perfil de farejador"
 
 #: plugins/cms_learning/models/article_resource.rb:-
-#, fuzzy
 msgid "article resource"
-msgstr "Artigo removido."
+msgstr "recurso de artigo"
 
 #: plugins/cms_learning/models/cms_learning_plugin_learning.rb:25
 #: plugins/cms_learning/models/cms_learning_plugin_learning.rb:29
@@ -10916,9 +10889,8 @@ msgid "A plugin that implement an exchange system inside noosfero."
 msgstr ""
 
 #: plugins/exchange/lib/exchange_plugin.rb:24
-#, fuzzy
 msgid "My Exchanges"
-msgstr "Salvar alterações"
+msgstr "Minha trocas"
 
 #: plugins/google_analytics/lib/google_analytics_plugin.rb:16
 msgid "Tracking and web analytics to people and communities"
@@ -10948,14 +10920,12 @@ msgid "Lists declared and inputs interests"
 msgstr ""
 
 #: plugins/sniffer/lib/sniffer_plugin/interests_block.rb:8
-#, fuzzy
 msgid "Lists interests"
-msgstr "Interesses"
+msgstr "Lista interesses"
 
 #: plugins/sniffer/lib/sniffer_plugin/interests_block.rb:16
-#, fuzzy
 msgid "This block show interests of your profile or environment"
-msgstr "Este bloco apresenta suas estatísticas sobre seu ambiente."
+msgstr "Este bloco apresenta os interesses de seu perfil ou ambiente"
 
 #: plugins/sniffer/lib/sniffer_plugin.rb:14
 msgid "Sniffs opportunities ..."
@@ -11018,14 +10988,12 @@ msgstr "Novo tpo de conteúdo para organizações."
 
 #: plugins/cms_learning/lib/cms_learning_plugin/learnings_block.rb:4
 #: plugins/cms_learning/lib/cms_learning_plugin/learnings_block.rb:8
-#, fuzzy
 msgid "Profile's Learnigs"
-msgstr "Imagem do Perfil"
+msgstr "Saberes do Perfil"
 
 #: plugins/cms_learning/lib/cms_learning_plugin/learnings_block.rb:16
-#, fuzzy
 msgid "This block show learnings of your profile"
-msgstr "Este bloco apresenta a lista de seus produtos."
+msgstr "Este bloco apresenta a lista de saberes de seu perfil"
 
 #: plugins/cms_learning/lib/cms_learning_plugin.rb:10
 msgid "Share your knowledge to the network."
@@ -12201,9 +12169,8 @@ msgid "Edit %{inputs} and %{interests}"
 msgstr ""
 
 #: plugins/sniffer/views/blocks/sniffer_plugin/interests_block.html.erb:13
-#, fuzzy
 msgid "products' inputs"
-msgstr "Lista de produtos"
+msgstr "insumos de produtos"
 
 #: plugins/sniffer/views/blocks/sniffer_plugin/interests_block.html.erb:14
 msgid "declared interests"
@@ -12649,9 +12616,8 @@ msgid "Evaluations of this enterprise"
 msgstr "Avaliações deste ponto de cultura"
 
 #: plugins/escambo/views/profile/_info.html.erb:55
-#, fuzzy
 msgid "Accepted Currencies"
-msgstr "moedas aceitas"
+msgstr "Moedas Aceitas"
 
 #: plugins/escambo/views/escambo_plugin_myprofile/new_enterprise.html.erb:2
 msgid "Create new enterprise"
