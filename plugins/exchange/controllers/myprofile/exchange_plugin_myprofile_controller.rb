@@ -72,11 +72,14 @@ class ExchangePluginMyprofileController < MyProfileController
   end
 
   def new_message
-    p = ExchangePlugin::Proposal.find params[:proposal_id]
-    recipient = (p.enterprise_target_id == @active_organization.id)? p.enterprise_origin : p.enterprise_target
-    @message = ExchangePlugin::Message.new_exchange_message(p, @active_organization, recipient, current_user.person, params[:body])
+    proposal = ExchangePlugin::Proposal.find params[:proposal_id]
+    sender, recipient = (proposal.enterprise_target_id == @active_organization.id) ?
+      [proposal.enterprise_target, proposal.enterprise_origin] :
+      [proposal.enterprise_origin, proposal.enterprise_target]
 
-    ExchangePlugin::Mailer.deliver_new_message_notification @active_organization, recipient, p.exchange.id
+    @message = ExchangePlugin::Message.new_exchange_message proposal, sender, recipient, user, params[:body]
+
+    ExchangePlugin::Mailer.deliver_new_message_notification @active_organization, recipient, proposal.exchange_id
   end
 
   def close_proposal

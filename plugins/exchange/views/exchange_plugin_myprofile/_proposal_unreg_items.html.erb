@@ -1,4 +1,4 @@
-<button id="exchange-add-unreg-item-<%=actor%>" class="action-button exchange-add-unreg-item">
+<div id="exchange-add-unreg-item-<%=actor%>" class="action-button exchange-add-unreg-item">
 
   <span onClick='exchange.add_unregistered_item_show_form("<%=actor%>")'><%= _('Add not registered product') %></span>
   <p style="float:right" onClick='exchange.add_unregistered_item_hide_form("<%=actor%>")'>[x]</p>
@@ -10,7 +10,7 @@
     <%= label_tag 'description', _('Description') %>
     <%= text_area_tag 'description' %>
 
-    <%= submit_tag _('Add'), :onClick => "exchange.add_unregistered_item_hide_form('#{actor}')"%>
+    <%= submit_tag _('Add'), :onClick => "exchange.add_unregistered_item_hide_form('#{actor}')" %>
   <% end %>
-</button>
+</div>
 

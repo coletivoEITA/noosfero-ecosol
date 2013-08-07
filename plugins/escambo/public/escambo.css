@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-proposal-part .exchange-button-wrapper, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -136,7 +136,7 @@
 .clean {
   clear: both; }
 
-.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-proposal-part .exchange-button-wrapper, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -288,7 +288,7 @@ body.controller-exchange_plugin_myprofile {
 #exchange-exchange-wrapper {
   margin-left: -12px;
   width: 984px; }
-  #exchange-exchange-wrapper h1 {
+  #exchange-exchange-wrapper h1, #exchange-exchange-wrapper h2 {
     padding-left: 24px; }
   #exchange-exchange-wrapper #exchange-header {
     border: 1px solid #c5aaa5;
@@ -366,10 +366,6 @@ body.controller-exchange_plugin_myprofile {
         float: left; }
   #exchange-exchange-wrapper .exchange-summary-wrapper .exchange-proposal-part {
     background: transparent; }
-    #exchange-exchange-wrapper .exchange-summary-wrapper .exchange-proposal-part h4 {
-      padding-left: 12px; }
-  #exchange-exchange-wrapper h2 {
-    padding: 0 24px; }
   #exchange-exchange-wrapper .exchange-proposal-wrap {
     margin: 24px 0;
     margin-left: -6px;
@@ -400,9 +396,6 @@ body.controller-exchange_plugin_myprofile {
         #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons .finish-help-text {
           float: right;
           padding: 6px 0; }
-      #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-button-wrapper {
-        margin-left: 12px;
-        padding: 6px 12px; }
       #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages {
         padding: 12px 24px;
         background: #F0E9F6;
@@ -524,30 +517,36 @@ body.controller-exchange_plugin_myprofile {
     background: #F0E9F6; }
   .exchange-proposal-part.theother {
     background: #F8F4FB; }
-  .exchange-proposal-part h3 {
-    margin-left: 12px; }
+  .exchange-proposal-part h3, .exchange-proposal-part h4 {
+    padding-left: 12px; }
   .exchange-proposal-part .proposal-offers {
     padding: 0;
     margin: 0;
-    margin-top: margin; }
+    margin-top: 24px; }
     .exchange-proposal-part .proposal-offers h6.element-title {
       display: inline; }
     .exchange-proposal-part .proposal-offers li {
       background: #D8CAEA;
-      padding: 6px;
-      margin: 12px;
+      padding: 6px 12px;
+      margin-bottom: 12px;
       list-style-type: none;
       height: 24px; }
-  .exchange-proposal-part .exchange-add-unreg-item p {
-    display: none; }
-  .exchange-proposal-part .exchange-add-unreg-item input {
-    display: none; }
-  .exchange-proposal-part .exchange-add-unreg-item-active p {
-    text-align: left; }
-  .exchange-proposal-part .exchange-add-money p {
-    display: none; }
-  .exchange-proposal-part .exchange-add-money-active {
-    margin-bottom: 24px; }
+  .exchange-proposal-part .exchange-button-wrapper {
+    margin-left: 12px; }
+    .exchange-proposal-part .exchange-button-wrapper .exchange-add-money,
+    .exchange-proposal-part .exchange-button-wrapper .exchange-add-unreg-item {
+      float: left;
+      width: 222px; }
+    .exchange-proposal-part .exchange-button-wrapper .exchange-add-unreg-item {
+      margin-right: 12px; }
+      .exchange-proposal-part .exchange-button-wrapper .exchange-add-unreg-item.active p {
+        text-align: left; }
+      .exchange-proposal-part .exchange-button-wrapper .exchange-add-unreg-item p {
+        display: none; }
+    .exchange-proposal-part .exchange-button-wrapper .exchange-add-money.active {
+      margin-bottom: 24px; }
+    .exchange-proposal-part .exchange-button-wrapper .exchange-add-money p {
+      display: none; }
   .exchange-proposal-part .exchange-elements-list {
     margin: 0;
     padding: 0;
@@ -572,36 +571,39 @@ body.controller-exchange_plugin_myprofile {
         position: absolute;
         top: 6px;
         right: 6px; }
-      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-trash {
-        display: inline-block;
-        position: relative;
-        top: 3px;
-        right: 3px; }
-      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-qty {
-        display: inline-block;
-        margin: 0;
-        padding: 2px;
-        border-radius: 5px;
-        background: #7857B8;
-        color: white;
-        font-weight: bold;
-        height: 25px; }
-        .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-qty.readonly {
-          padding: 6px;
-          height: 12px; }
-        .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-qty .label, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-qty .value {
-          display: inline-block; }
-        .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-qty .value {
-          padding-left: 12px;
-          width: 72px;
-          text-align: center; }
-        .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-qty .exchange-qty-input {
-          width: 72px;
-          padding: 3px;
-          border: none;
+        .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-trash {
+          float: left;
+          position: relative;
+          top: 3px;
+          right: 3px; }
+        .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty {
+          float: left;
+          margin: 0;
+          margin-right: 12px;
+          padding: 1px;
           border-radius: 5px;
-          background: whitesmoke;
-          color: black; }
+          background: #7857B8;
+          color: white;
+          font-weight: bold; }
+          .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty.readonly {
+            padding: 6px; }
+          .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty .label, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty .value {
+            float: left; }
+          .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty .label {
+            padding: 0 6px;
+            padding-top: 4px; }
+          .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty .value {
+            padding-left: 12px;
+            width: 72px;
+            text-align: center; }
+          .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty .exchange-qty-input {
+            width: 72px;
+            padding: 3px;
+            margin: 0;
+            border: none;
+            border-radius: 5px;
+            background: whitesmoke;
+            color: black; }
       .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-title {
         padding: 12px;
         padding-bottom: 0; }
@@ -644,7 +646,7 @@ body.controller-exchange_plugin_myprofile {
 .clean {
   clear: both; }
 
-.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-proposal-part .exchange-button-wrapper, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */

@@ -10878,11 +10878,11 @@ msgstr "Um plugin que faz isto e aquilo."
 #: plugins/exchange/lib/exchange_plugin/mailer.rb:8
 #: plugins/exchange/lib/exchange_plugin/mailer.rb:20
 msgid "[%{environment}] You have a new proposal of exchange!"
-msgstr ""
+msgstr "[%{environment}] Você tem uma nova proposta de troca!"
 
 #: plugins/exchange/lib/exchange_plugin/mailer.rb:34
 msgid "[%{environment}] You have a new exchange message!"
-msgstr ""
+msgstr "[%{environment}] Você tem uma nova mensagem na troca!"
 
 #: plugins/exchange/lib/exchange_plugin.rb:11
 msgid "A plugin that implement an exchange system inside noosfero."
