@@ -17,8 +17,8 @@
 
         <%= link_to_remote "<button class='action-button exchange-add'>+</button>",
           :url => {:action => "add_element", :proposal_id => proposal.id,
-                   :element_id => p.id, :element_type => "Product",
-                   :enterprise_id => profile.id, :enterprise => actor} %>
+                   :object_id => p.id, :object_type => "Product",
+                   :profile_id => profile.id, :actor => actor} %>
       </li>
     <% end %>
   </ul>

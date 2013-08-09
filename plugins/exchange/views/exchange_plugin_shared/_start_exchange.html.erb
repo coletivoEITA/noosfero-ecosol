@@ -1,8 +1,8 @@
-<% element_id = nil unless defined?(element_id) %>
-<% element_type = nil unless defined?(element_type) %>
+<% object_id = nil unless defined?(object_id) %>
+<% object_type = nil unless defined?(object_type) %>
 
 <% if logged_in? %>
-  <% url = {:controller => :exchange_plugin_profile, :action => :start_exchange, :profile => profile.identifier, :element_id => element_id, :element_type => element_type} %>
+  <% url = {:controller => :exchange_plugin_profile, :action => :start_exchange, :profile => profile.identifier, :object_id => object_id, :object_type => object_type} %>
 <% else %>
   <% url = {:controller => :account, :action => :signup} %>
 <% end %>

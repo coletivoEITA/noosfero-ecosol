@@ -1,9 +1,9 @@
-<% e = element.element_type.constantize.find element.element_id %>
-<% type = element.element_type.gsub('::', '').underscore %>
+<% e = element.object_type.constantize.find element.object_id %>
+<% type = element.object_type.gsub('::', '').underscore %>
 
-<li id="exchange-<%=type%>-element-<%= element.element_id %>" class="exchange-element <%= actor %>">
+<li id="exchange-<%=type%>-element-<%= element.object_id %>" class="exchange-element <%= actor %>">
 
-  <% if element.element_type == "Product" %>
+  <% if element.object_type == "Product" %>
     <div class="exchange-element-image" style="background-image: url('<%= e.image.public_filename if e.image %>');">
     </div>
   <% end %>
@@ -14,16 +14,16 @@
 
       <div id="exchange-quantity" class="exchange-qty">
         <div class="label"><%= _('Qty') %></div>
-        <%= text_field_tag "origin_quantity[#{element.element_id}]", element.quantity, :class => "exchange-qty-input",
-          :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :element_id => element.id}', {quantity: jQuery(this).val()});"%>
+        <%= text_field_tag "origin_quantity[#{element.object_id}]", element.quantity, :class => "exchange-qty-input",
+          :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :object_id => element.id}', {quantity: jQuery(this).val()});"%>
       </div>
 
       <div class="exchange-trash">
 
-        <% if element.element_type == "Product" or element.element_type == "CmsLearningPlugin::Learning" %>
-          <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element, :id => element.id, :element_type => element.element_type, :element_id => element.element_id, :enterprise => actor, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
+        <% if element.object_type == "Product" or element.object_type == "CmsLearningPlugin::Learning" %>
+          <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element, :id => element.id, :object_type => element.object_type, :object_id => element.object_id, :actor => actor, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
         <% else %>
-          <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element_currency, :id => element.id, :element_type => element.element_type, :element_id => element.element_id, :enterprise => actor, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
+          <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:action => :remove_element_currency, :id => element.id, :object_type => element.object_type, :object_id => element.object_id, :actor => actor, :exchange_id => element.proposal.exchange_id, :proposal_id => element.proposal_id} %>
         <% end %>
       </div>
 
@@ -38,15 +38,15 @@
     <% end %>
   </div>
 
-  <% if element.element_type == "Product" %>
+  <% if element.object_type == "Product" %>
     <div class="exchange-element-title"><%= link_to e.name, e.url, :target => '_blank' %></div>
     <div class="exchange-element-desc"><%= e.description %></div>
-  <% elsif element.element_type == "CmsLearningPlugin::Learning" %>
+  <% elsif element.object_type == "CmsLearningPlugin::Learning" %>
     <div class="exchange-element-title"><%= link_to e.name, e.url, :target => 'blank' %></div>
     <div class="exchange-element-desc"><%= e.summary %></div>
-  <% elsif element.element_type == "CurrencyPlugin::Currency" %>
+  <% elsif element.object_type == "CurrencyPlugin::Currency" %>
     <div class="exchange-element-title"><%= e.name_with_symbol %></div>
-  <% elsif element.element_type == "ExchangePlugin::UnregisteredItem" %>
+  <% elsif element.object_type == "ExchangePlugin::UnregisteredItem" %>
     <div class="exchange-element-title"><%= e.name %></div>
     <div class="exchange-element-desc"><%= e.description %></div>
   <% end %>

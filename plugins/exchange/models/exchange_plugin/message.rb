@@ -1,20 +1,20 @@
 class ExchangePlugin::Message < Noosfero::Plugin::ActiveRecord
 
   belongs_to :proposal, :class_name => "ExchangePlugin::Proposal"
-  belongs_to :enterprise_sender, :class_name => "Enterprise"
-  belongs_to :enterprise_recipient, :class_name => "Enterprise"
+  belongs_to :sender, :class_name => "Profile"
+  belongs_to :recipient, :class_name => "Profile"
   belongs_to :person_sender, :class_name => "Person"
 
-  validates_presence_of :enterprise_sender
-  validates_presence_of :enterprise_recipient
+  validates_presence_of :sender
+  validates_presence_of :recipient
   validates_presence_of :person_sender
   validates_presence_of :body
 
-  def self.new_exchange_message proposal, enterprise_sender, enterprise_recipient, person_sender, body
+  def self.new_exchange_message proposal, sender, recipient, person_sender, body
     m = self.new
     m.proposal = proposal
-    m.enterprise_sender = enterprise_sender
-    m.enterprise_recipient = enterprise_recipient
+    m.sender = sender
+    m.recipient = recipient
     m.person_sender = person_sender
     m.body = body
     m.save!

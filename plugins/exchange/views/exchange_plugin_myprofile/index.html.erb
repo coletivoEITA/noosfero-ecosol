@@ -1,15 +1,15 @@
 
 <h1> <%= _("%s's Exchanges") % profile.name %>  </h1>
 
-<% if !@active_exchanges_enterprise.blank? %>
+<% if !@active_exchanges.blank? %>
   <h2><%= _('Active Exchanges') %></h2>
-  <% @active_exchanges_enterprise.each do |ee|  %>
+  <% @active_exchanges.each do |ee|  %>
 
   <div id="exchange-<%= ee.exchange_id %>" class="exchange-index">
     <div class="exchange-index-col1">
-      <p><%= _('Exchange created at %{time} by %{enterprise}') % {
+      <p><%= _('Exchange created at %{time} by %{profile}') % {
         :time => ee.exchange.created_at.strftime("%d/%m/%Y"),
-        :enterprise => (ee.role == "origin" ? ee.enterprise.name : ee.the_other.name)
+        :profile => (ee.role == "origin" ? ee.profile.name : ee.the_other.name)
       } %></p>
 
       <%= link_to _('Open Exchange'), {:controller => 'exchange_plugin_myprofile', :action => 'exchange_console', :exchange_id => ee.exchange.id} , :class => 'action-button' %>
@@ -28,18 +28,18 @@
   <% end %>
 <% end %>
 
-<% unless @inactive_exchanges_enterprise.blank? %>
+<% unless @inactive_exchanges.blank? %>
 
   <h2><%= _('Closed Exchanges') %></h2>
 
-  <% @inactive_exchanges_enterprise.each do |ee|  %>
+  <% @inactive_exchanges.each do |ee|  %>
 
   <div id="exchange-<%= ee.exchange_id %>" class="exchange-index">
 
     <div class="exchange-index-col2">
-      <p><%= _('Exchange with %{the_other} created at %{time} by %{enterprise} and closed at %{closed_time}') % {
+      <p><%= _('Exchange with %{the_other} created at %{time} by %{profile} and closed at %{closed_time}') % {
         :the_other => ee.the_other.name, :time => ee.exchange.created_at.strftime("%d/%m/%Y"),
-        :enterprise => (ee.role == "origin" ? ee.enterprise.name : ee.the_other.name), :closed_time => ee.exchange.concluded_at.strftime("%d/%m/%Y")
+        :profile => (ee.role == "origin" ? ee.profile.name : ee.the_other.name), :closed_time => ee.exchange.concluded_at.strftime("%d/%m/%Y")
       } %></p>
     </div>
 

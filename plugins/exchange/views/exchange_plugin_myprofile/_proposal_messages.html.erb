@@ -28,7 +28,7 @@
     <% if not proposal.messages.blank? %>
       <% proposal.messages.each do |message| %>
 
-        <% actor = message.enterprise_sender.id == profile.id ? 'profile' : 'theother' %>
+        <% actor = message.sender.id == profile.id ? 'profile' : 'theother' %>
         <%= render :partial => "proposal_message", :locals => {
           :message => message, :actor => actor,
           :profile => actor == 'profile' ? profile : message.proposal.the_other(profile),

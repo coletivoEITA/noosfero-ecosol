@@ -1,4 +1,4 @@
-<% elements = proposal.exchange_elements.select{ |el| el.enterprise_id == profile.id} %>
+<% elements = proposal.elements.select{ |el| el.profile_id == profile.id} %>
 
 <ul class="exchange-elements-list" id="exchange-elements-list-<%= actor %>">
   <% if !elements.blank? %>

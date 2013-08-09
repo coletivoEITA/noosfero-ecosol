@@ -1,9 +1,9 @@
 <button id="exchange-add-money-<%=actor%>" class="action-button exchange-add-money">
   <%= _('Add amount in money') %>
 
-  <% form_remote_tag :url => {:action => 'add_element_currency', :proposal_id => proposal.id, :element_type => "CurrencyPlugin::Currency", :enterprise_id => profile.id, :enterprise => actor},
+  <% form_remote_tag :url => {:action => 'add_element_currency', :proposal_id => proposal.id, :object_type => "CurrencyPlugin::Currency", :profile_id => profile.id, :actor => actor},
     :before => "formSubmit.disable(this, '#{_ 'including'}')", :complete => 'formSubmit.enable()' do %>
-    <%= select("element_id", '', profile.currencies.collect{|c| [c.name_with_symbol, c.id]}, { :include_blank => false }, :name => "element_id") %>
+    <%= select("object_id", '', profile.currencies.collect{|c| [c.name_with_symbol, c.id]}, { :include_blank => false }, :name => "object_id") %>
     <%= submit_tag _('Include') %>
   <% end %>
 </button>

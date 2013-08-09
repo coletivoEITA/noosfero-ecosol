@@ -7,11 +7,9 @@ class ExchangePluginMyprofileController < MyProfileController
   helper ExchangePlugin::ExchangeDisplayHelper
 
   def index
-    @exchanges_enterprise = ExchangePlugin::ExchangeEnterprise.all.select{|ex| ex.enterprise_id == profile.id}
-
-    @active_exchanges_enterprise = @exchanges_enterprise.select{|ex| (ex.exchange.state == "negociation")}
-
-    @inactive_exchanges_enterprise = @exchanges_enterprise.select{|ex| ((ex.exchange.state == "concluded") || (ex.exchange.state == "cancelled"))}
+    @profile_exchanges = ExchangePlugin::ProfileExchange.all :conditions => {:profile_id => profile.id}
+    @active_exchanges = @profile_exchanges.select{|ex| (ex.exchange.state == "negociation")}
+    @inactive_exchanges = @profile_exchanges.select{|ex| ((ex.exchange.state == "concluded") || (ex.exchange.state == "cancelled"))}
   end
 
   def exchange_console
@@ -20,9 +18,9 @@ class ExchangePluginMyprofileController < MyProfileController
     @proposals = @exchange.proposals.all(:order => "created_at DESC")
     @current_proposal = @proposals.first
 
-    @target = @current_proposal.enterprise_target
-    @origin = @current_proposal.enterprise_origin
-    @theother = @exchange.enterprises.find(:first, :conditions => ["enterprise_id != ?",profile.id])
+    @target = @current_proposal.target
+    @origin = @current_proposal.origin
+    @theother = @exchange.profiles.first :conditions => ["profile_id <> ?", profile.id]
 
     @theother_knowledges = CmsLearningPlugin::Learning.all.select{|k| k.profile.id == @theother.id} - @current_proposal.knowledges
     @profile_knowledges = CmsLearningPlugin::Learning.all.select{|k| k.profile.id == @profile.id} - @current_proposal.knowledges
@@ -34,48 +32,48 @@ class ExchangePluginMyprofileController < MyProfileController
     unreg_item.description = params[:description]
     unreg_item.save!
 
-    add_element_helper(unreg_item.id, "ExchangePlugin::UnregisteredItem", params[:proposal_id], params[:enterprise_id])
+    add_element_helper(unreg_item.id, "ExchangePlugin::UnregisteredItem", params[:proposal_id], params[:profile_id])
 
     render :action => 'add_element_currency'
   end
 
 
   def add_element_currency
-    @element = ExchangePlugin::ExchangeElement.new
-    @element.element_id = params[:element_id]
-    @element.enterprise_id = params[:enterprise_id]
-    @element.element_type = params[:element_type]
+    @element = ExchangePlugin::Element.new
+    @element.object_id = params[:object_id]
+    @element.profile_id = params[:profile_id]
+    @element.object_type = params[:object_type]
     @element.proposal_id = params[:proposal_id]
 
     @element.save!
   end
 
   def add_element
-    @element = ExchangePlugin::ExchangeElement.new
-    @element.element_id = params[:element_id]
-    @element.enterprise_id = params[:enterprise_id]
-    @element.element_type = params[:element_type]
+    @element = ExchangePlugin::Element.new
+    @element.object_id = params[:object_id]
+    @element.profile_id = params[:profile_id]
+    @element.object_type = params[:object_type]
     @element.proposal_id = params[:proposal_id]
 
     @element.save!
   end
 
   def remove_element
-    @element = ExchangePlugin::ExchangeElement.find params[:id]
-    type = @element.element_type
+    @element = ExchangePlugin::Element.find params[:id]
+    type = @element.object_type
     @element.destroy
   end
 
   def remove_element_currency
-    @element = ExchangePlugin::ExchangeElement.find params[:id]
+    @element = ExchangePlugin::Element.find params[:id]
     @element.destroy
   end
 
   def new_message
     proposal = ExchangePlugin::Proposal.find params[:proposal_id]
-    sender, recipient = (proposal.enterprise_target_id == @active_organization.id) ?
-      [proposal.enterprise_target, proposal.enterprise_origin] :
-      [proposal.enterprise_origin, proposal.enterprise_target]
+    sender, recipient = (proposal.target_id == @active_organization.id) ?
+      [proposal.target, proposal.origin] :
+      [proposal.origin, proposal.target]
 
     @message = ExchangePlugin::Message.new_exchange_message proposal, sender, recipient, user, params[:body]
 
@@ -85,13 +83,13 @@ class ExchangePluginMyprofileController < MyProfileController
   def close_proposal
     @proposal = ExchangePlugin::Proposal.find params[:proposal_id]
     @proposal.state = "closed"
-    @proposal.date_sent = Time.now
+    @proposal.sent_at = Time.now
     @proposal.save!
 
     @proposal.exchange.state = "negociation"
     @proposal.exchange.save!
 
-    ExchangePlugin::Mailer.deliver_new_proposal_notification @proposal.enterprise_target, @proposal.enterprise_origin, @proposal.id, @proposal.exchange.id
+    ExchangePlugin::Mailer.deliver_new_proposal_notification @proposal.target, @proposal.origin, @proposal.id, @proposal.exchange.id
 
     redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
   end
@@ -104,18 +102,18 @@ class ExchangePluginMyprofileController < MyProfileController
     @proposal.exchange_id = proposal_last.exchange_id
     @proposal.state = "open"
 
-    @proposal.enterprise_origin = @active_organization
-    @proposal.enterprise_target = @proposal.exchange.enterprises.select{|k| k.id != @active_organization.id}.first #not good
+    @proposal.origin = @active_organization
+    @proposal.target = @proposal.exchange.profiles.select{|k| k.id != @active_organization.id}.first #not good
 
     @proposal.save!
 
-    proposal_last.exchange_elements.each do |ex|
-      ex_el = ExchangePlugin::ExchangeElement.new
-      ex_el.element_id = ex.element_id
-      ex_el.element_type = ex.element_type
+    proposal_last.elements.each do |ex|
+      ex_el = ExchangePlugin::Element.new
+      ex_el.object_id = ex.object_id
+      ex_el.object_type = ex.object_type
       ex_el.quantity = ex.quantity
       ex_el.proposal_id = @proposal.id
-      ex_el.enterprise_id = ex.enterprise_id
+      ex_el.profile_id = ex.profile_id
       ex_el.save!
     end
 
@@ -169,7 +167,7 @@ class ExchangePluginMyprofileController < MyProfileController
   end
 
   def update_quantity
-    @element = ExchangePlugin::ExchangeElement.find params[:element_id]
+    @element = ExchangePlugin::Element.find params[:object_id]
     old_quantity = @element.quantity
     @element.quantity = params[:quantity]
     @element.save
@@ -180,11 +178,11 @@ class ExchangePluginMyprofileController < MyProfileController
 
   protected
 
-  def add_element_helper(element_id, element_type, proposal_id, enterprise_id)
-    @element = ExchangePlugin::ExchangeElement.new
-    @element.element_id = element_id
-    @element.enterprise_id = enterprise_id
-    @element.element_type = element_type
+  def add_element_helper(object_id, object_type, proposal_id, profile_id)
+    @element = ExchangePlugin::Element.new
+    @element.object_id = object_id
+    @element.profile_id = profile_id
+    @element.object_type = object_type
     @element.proposal_id = proposal_id
 
     @element.save!

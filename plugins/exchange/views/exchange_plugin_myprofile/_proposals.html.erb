@@ -2,17 +2,17 @@
 
 <% @proposals.each do |proposal| %>
 
-  <% if proposal.state != "open" or proposal.enterprise_origin == profile %>
+  <% if proposal.state != "open" or proposal.origin == profile %>
 
     <div class="exchange-proposal-wrap">
 
       <% if proposal.state != "open" %>
         <div class="exchange-proposal-sent">
-          <%= _('Proposal sent %s') % proposal.date_sent.strftime(_("%d/%m/%Y at %H:%Mh")) %>
+          <%= _('Proposal sent %s') % proposal.sent_at.strftime(_("%d/%m/%Y at %H:%Mh")) %>
         </div>
       <% end %>
 
-      <div class="exchange-proposal <%=proposal.enterprise_origin == profile ? 'sent' : 'received' %>">
+      <div class="exchange-proposal <%=proposal.origin == profile ? 'sent' : 'received' %>">
         <%= render :partial => "proposal_header", :locals => {:proposal => proposal} %>
 
         <% if first and (@exchange.state == "proposal" or @exchange.state == "negociation") %>
