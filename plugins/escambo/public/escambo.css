@@ -531,22 +531,11 @@ body.controller-exchange_plugin_myprofile {
       margin-bottom: 12px;
       list-style-type: none;
       height: 24px; }
-  .exchange-proposal-part .exchange-button-wrapper {
-    margin-left: 12px; }
-    .exchange-proposal-part .exchange-button-wrapper .exchange-add-money,
-    .exchange-proposal-part .exchange-button-wrapper .exchange-add-unreg-item {
-      float: left;
-      width: 222px; }
-    .exchange-proposal-part .exchange-button-wrapper .exchange-add-unreg-item {
-      margin-right: 12px; }
-      .exchange-proposal-part .exchange-button-wrapper .exchange-add-unreg-item.active p {
-        text-align: left; }
-      .exchange-proposal-part .exchange-button-wrapper .exchange-add-unreg-item p {
-        display: none; }
-    .exchange-proposal-part .exchange-button-wrapper .exchange-add-money.active {
-      margin-bottom: 24px; }
-    .exchange-proposal-part .exchange-button-wrapper .exchange-add-money p {
-      display: none; }
+  .exchange-proposal-part .exchange-button-wrapper .exchange-add-money,
+  .exchange-proposal-part .exchange-button-wrapper .exchange-add-unreg-item {
+    float: left;
+    margin-left: 12px;
+    width: 198px; }
   .exchange-proposal-part .exchange-elements-list {
     margin: 0;
     padding: 0;
@@ -565,6 +554,7 @@ body.controller-exchange_plugin_myprofile {
         width: 468px;
         height: 144px;
         background-size: 100%;
+        background-size: contain;
         background-position: center;
         background-repeat: no-repeat; }
       .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control {
@@ -604,17 +594,24 @@ body.controller-exchange_plugin_myprofile {
             border-radius: 5px;
             background: whitesmoke;
             color: black; }
-      .exchange-proposal-part .exchange-elements-list .exchange-element .title, .exchange-proposal-part .exchange-elements-list .exchange-element .desc, .exchange-proposal-part .exchange-elements-list .exchange-element .comment {
+      .exchange-proposal-part .exchange-elements-list .exchange-element label {
+        display: block; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element input, .exchange-proposal-part .exchange-elements-list .exchange-element textarea {
+        width: 444px;
+        box-sizing: border-box; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element label, .exchange-proposal-part .exchange-elements-list .exchange-element textarea, .exchange-proposal-part .exchange-elements-list .exchange-element input, .exchange-proposal-part .exchange-elements-list .exchange-element select {
+        margin-left: 12px; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element.exchange_plugin_unregistered_item .title {
+        margin-bottom: 24px !important; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .title, .exchange-proposal-part .exchange-elements-list .exchange-element .desc {
         padding: 12px; }
       .exchange-proposal-part .exchange-elements-list .exchange-element .title {
         padding-bottom: 0; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element select.title {
+        padding: 0;
+        margin-top: 12px; }
       .exchange-proposal-part .exchange-elements-list .exchange-element .desc > p {
         margin: 0; }
-      .exchange-proposal-part .exchange-elements-list .exchange-element .comment label {
-        display: block; }
-      .exchange-proposal-part .exchange-elements-list .exchange-element .comment textarea {
-        width: 100%;
-        box-sizing: border-box; }
       .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-select {
         background: transparent;
         font: inherit;

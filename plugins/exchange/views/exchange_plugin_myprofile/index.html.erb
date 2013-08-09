@@ -8,7 +8,7 @@
   <div id="exchange-<%= ee.exchange_id %>" class="exchange-index">
     <div class="exchange-index-col1">
       <p><%= _('Exchange created at %{time} by %{profile}') % {
-        :time => ee.exchange.created_at.strftime("%d/%m/%Y"),
+        :time => ee.exchange.created_at.strftime("%m/%d/%Y"),
         :profile => (ee.role == "origin" ? ee.profile.name : ee.the_other.name)
       } %></p>
 
@@ -38,8 +38,8 @@
 
     <div class="exchange-index-col2">
       <p><%= _('Exchange with %{the_other} created at %{time} by %{profile} and closed at %{closed_time}') % {
-        :the_other => ee.the_other.name, :time => ee.exchange.created_at.strftime("%d/%m/%Y"),
-        :profile => (ee.role == "origin" ? ee.profile.name : ee.the_other.name), :closed_time => ee.exchange.concluded_at.strftime("%d/%m/%Y")
+        :the_other => ee.the_other.name, :time => ee.exchange.created_at.strftime("%m/%d/%Y"),
+        :profile => (ee.role == "origin" ? ee.profile.name : ee.the_other.name), :closed_time => ee.exchange.concluded_at.strftime("%m/%d/%Y")
       } %></p>
     </div>
 

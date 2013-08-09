@@ -1,3 +1,0 @@
-type = params[:object_type].gsub('::', '').underscore
-
-page.remove "exchange-#{type}-element-#{params[:object_id]}"

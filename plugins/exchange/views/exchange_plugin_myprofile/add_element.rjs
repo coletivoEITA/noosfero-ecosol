@@ -1,4 +1,0 @@
-type = params[:object_type].gsub('::', '').underscore
-
-page.remove "exchange-#{type}-#{@element.object_id}"
-page.insert_html :bottom, "exchange-elements-list-#{params[:actor]}", :partial => "element", :locals => {:element => @element, :actor => params[:actor], :proposal_id => params[:proposal_id], :exchange_id => params[:exchange_id]}

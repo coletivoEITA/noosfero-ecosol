@@ -2,16 +2,17 @@ class ExchangePlugin::Proposal < Noosfero::Plugin::ActiveRecord
 
   belongs_to :origin, :class_name => "Profile"
   belongs_to :target, :class_name => "Profile"
+
   belongs_to :exchange, :class_name => "ExchangePlugin::Exchange"
 
-  has_many :elements, :class_name => "ExchangePlugin::Element", :dependent => :destroy, :order => "id asc"
+  has_many :elements, :class_name => "ExchangePlugin::Element", :dependent => :destroy, :order => "id ASC"
 
-  has_many :products, :through => :elements, :source => :element_np, :class_name => 'Product',
+  has_many :products, :through => :elements, :source => :object_np, :class_name => 'Product',
     :conditions => "exchange_plugin_elements.object_type = 'Product'"
-  has_many :knowledges, :through => :elements, :source => :element_np, :class_name => 'CmsLearningPlugin::Learning',
+  has_many :knowledges, :through => :elements, :source => :object_np, :class_name => 'CmsLearningPlugin::Learning',
     :conditions => "exchange_plugin_elements.object_type = 'CmsLearningPlugin::Learning'"
 
-  has_many :messages, :class_name => "ExchangePlugin::Message", :dependent => :destroy, :order => "created_at desc"
+  has_many :messages, :class_name => "ExchangePlugin::Message", :dependent => :destroy, :order => "created_at DESC"
 
   validates_inclusion_of :state, :in => ["open", "closed", "accepted"]
   validates_presence_of :origin, :target, :exchange_id

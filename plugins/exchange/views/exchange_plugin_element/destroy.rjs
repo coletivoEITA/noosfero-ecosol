@@ -1,0 +1,2 @@
+page.remove "exchange-element-#{@element.id}"
+

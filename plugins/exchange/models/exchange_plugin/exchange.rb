@@ -9,7 +9,7 @@ class ExchangePlugin::Exchange < Noosfero::Plugin::ActiveRecord
   has_many :profiles, :through => :profile_exchanges
 
   has_many :closed_proposals, :class_name => "ExchangePlugin::Proposal", :conditions => "exchange_plugin_proposals.state = 'closed'"
-  has_many :products, :through => :elements, :source => :element_np, :class_name => 'Product',
+  has_many :products, :through => :elements, :source => :object_np, :class_name => 'Product',
     :conditions => "exchange_plugin_elements.object_type = 'Product'"
 
   has_many :evaluations, :class_name => "EvaluationPlugin::Evaluation", :foreign_key => "object_id", :dependent => :destroy

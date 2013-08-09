@@ -4,14 +4,24 @@ class ExchangePlugin::Element < Noosfero::Plugin::ActiveRecord
   has_one :exchange, :through => :proposal
 
   belongs_to :object, :polymorphic => true
+  accepts_nested_attributes_for :object
+
+  # np: non polymorphic version
+  belongs_to :object_np, :foreign_key => :object_id
+  def object_np
+    raise 'Dont use me'
+  end
 
   validates_presence_of :proposal
-  validates_presence_of :object
 
-  # don't use directly
-  belongs_to :element_np, :foreign_key => :object_id
-  def element_np
-    raise 'Dont use me'
+  protected
+
+  def build_object *args
+    if self.object
+      self.object
+    else
+      self.object_type.constantize.new *args
+    end
   end
 
 end

@@ -1,0 +1,2 @@
+page.insert_html :bottom, "exchange-elements-list-#{params[:actor]}", :partial => 'view',
+  :locals => {:element => @element, :actor => params[:actor]}

@@ -26,49 +26,6 @@ class ExchangePluginMyprofileController < MyProfileController
     @profile_knowledges = CmsLearningPlugin::Learning.all.select{|k| k.profile.id == @profile.id} - @current_proposal.knowledges
   end
 
-  def add_unregistered_item
-    unreg_item = ExchangePlugin::UnregisteredItem.new
-    unreg_item.name = params[:name]
-    unreg_item.description = params[:description]
-    unreg_item.save!
-
-    add_element_helper(unreg_item.id, "ExchangePlugin::UnregisteredItem", params[:proposal_id], params[:profile_id])
-
-    render :action => 'add_element_currency'
-  end
-
-
-  def add_element_currency
-    @element = ExchangePlugin::Element.new
-    @element.object_id = params[:object_id]
-    @element.profile_id = params[:profile_id]
-    @element.object_type = params[:object_type]
-    @element.proposal_id = params[:proposal_id]
-
-    @element.save!
-  end
-
-  def add_element
-    @element = ExchangePlugin::Element.new
-    @element.object_id = params[:object_id]
-    @element.profile_id = params[:profile_id]
-    @element.object_type = params[:object_type]
-    @element.proposal_id = params[:proposal_id]
-
-    @element.save!
-  end
-
-  def remove_element
-    @element = ExchangePlugin::Element.find params[:id]
-    type = @element.object_type
-    @element.destroy
-  end
-
-  def remove_element_currency
-    @element = ExchangePlugin::Element.find params[:id]
-    @element.destroy
-  end
-
   def new_message
     proposal = ExchangePlugin::Proposal.find params[:proposal_id]
     sender, recipient = (proposal.target_id == @active_organization.id) ?
@@ -144,7 +101,6 @@ class ExchangePluginMyprofileController < MyProfileController
     redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
   end
 
-
   def evaluate
     @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
     evaluation = EvaluationPlugin::Evaluation.new
@@ -167,16 +123,6 @@ class ExchangePluginMyprofileController < MyProfileController
   end
 
   protected
-
-  def add_element_helper(object_id, object_type, proposal_id, profile_id)
-    @element = ExchangePlugin::Element.new
-    @element.object_id = object_id
-    @element.profile_id = profile_id
-    @element.object_type = object_type
-    @element.proposal_id = proposal_id
-
-    @element.save!
-  end
 
   def set_mailer_host
     ExchangePlugin::Mailer.default_url_options = {:host => request.host_with_port}

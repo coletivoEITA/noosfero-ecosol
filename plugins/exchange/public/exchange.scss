@@ -432,41 +432,16 @@ body.controller-exchange_plugin_myprofile {
 
   .exchange-button-wrapper {
     @extend .container-clean;
-    margin-left: $half-margin;
 
     .exchange-add-money,
     .exchange-add-unreg-item {
       float: left;
-      width: $module5/2 -$half-margin/2;
+      margin-left: $half-margin;
+      width: $module5/2 - $intercolumn - $half-margin/2;
 
       input {
 
 
-      }
-    }
-
-    .exchange-add-unreg-item {
-      margin-right: $half-margin;
-
-      &.active {
-        p {
-          text-align: left;
-        }
-      }
-
-      p {
-        display: none;
-      }
-    }
-
-    .exchange-add-money {
-
-      &.active {
-        margin-bottom: $margin;
-      }
-
-      p {
-        display: none;
       }
     }
   }
@@ -494,8 +469,7 @@ body.controller-exchange_plugin_myprofile {
         width: $module5 + $intercolumn/2;
         height: 12*$base;
         background-size: 100%;
-        //background-size: contain;
-        //background-color: white;
+        background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
       }
@@ -555,27 +529,39 @@ body.controller-exchange_plugin_myprofile {
         }
       }
 
-      .title, .desc, .comment {
+      label {
+        display: block;
+      }
+      input, textarea {
+        width: $module5 - $padding;
+        box-sizing: border-box;
+      }
+      label, textarea, input, select {
+        margin-left: $padding;
+      }
+
+      &.exchange_plugin_unregistered_item {
+
+        .title {
+          margin-bottom: $margin !important;
+        }
+      }
+
+      .title, .desc {
         padding: $padding;
       }
       .title {
         padding-bottom: 0;
         @extend .pstyle-tp1;
       }
+      select.title {
+        padding: 0;
+        margin-top: $padding;
+      }
       .desc {
         
         > p {
           margin: 0;
-        }
-      }
-      .comment {
-        
-        label {
-          display: block;
-        }
-        textarea {
-          width: 100%;
-          box-sizing: border-box;
         }
       }
 

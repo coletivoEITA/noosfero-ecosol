@@ -13,28 +13,36 @@ class CurrencyPlugin::Currency < Noosfero::Plugin::ActiveRecord
   has_many :products, :through => :product_currencies
 
   validates_presence_of :environment
-  validates_presence_of :symbol, :name, :description
+  validates_presence_of :symbol
+  validates_presence_of :name, :description, :unless => :default?
+  validate :dont_use_environment_symbol
 
   validates_uniqueness_of :symbol, :scope => :environment_id
   validates_uniqueness_of :name, :scope => :environment_id
-
-  validate :dont_use_environment_symbol
 
   named_scope :with_price, :conditions => ['currency_plugin_product_currencies.price IS NOT NULL']
   named_scope :with_discount, :conditions => ['currency_plugin_product_currencies.discount IS NOT NULL']
 
   def name_with_symbol
-    _('%{name} (%{symbol})') % {:name => self.name, :symbol => self.symbol}
+    if self.name.present?
+      _('%{name} (%{symbol})') % {:name => self.name, :symbol => self.symbol}
+    else
+      self.symbol
+    end
   end
 
   def as_json options
     super options.merge(:methods => :name_with_symbol, :except => [:created_at, :updated_at])
   end
 
+  def default?
+    self == self.environment.default_currency
+  end
+
   protected
 
   def dont_use_environment_symbol
-    self.errors.add :symbol, _("can't be equal to environment currency unit") if self.symbol.strip == self.environment.currency_unit.strip
+    self.errors.add :symbol, _("can't be equal to environment currency unit") if (not self.default?) and self.symbol.strip == self.environment.currency_unit.strip
   end
 
 end
