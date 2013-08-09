@@ -40,7 +40,7 @@
   <% end %>
 
 <!--  <h2><%= _('Translations') %></h2>-->
-  <%= 
+  <%=
    # labelled_check_box(
    # _('Automaticaly redirect the visitor to the article translated to his/her language'),
    # 'profile_data[redirect_l10n]', true, @profile.redirect_l10n
@@ -53,7 +53,7 @@
   #  end.join("\n")
   %>
 
-  <%= #select_categories(:profile_data, _('Select the categories of your interest'), 2) 
+  <%= #select_categories(:profile_data, _('Select the categories of your interest'), 2)
   %>
 
   <% button_bar do %>
@@ -66,6 +66,7 @@
       <%= button(:remove, _('Delete profile'), {:action => :destroy_profile}) %>
     <% end %>
   <% end %>
+<% end %>
 
 <h1><%= _('Location') %></h1>
 <div class="error">
@@ -100,8 +101,5 @@
 
 <%= content_tag('script', '', :src => "http://maps.googleapis.com/maps/api/js?sensor=false", :type => 'text/javascript') %>
 <%= content_tag('script', '', :src => url_for(:controller => :maps, :action => :google_map), :type => 'text/javascript') %>
-
-<% end %>
-
 
 <%# = generate_form :info, @info, {...} %>
