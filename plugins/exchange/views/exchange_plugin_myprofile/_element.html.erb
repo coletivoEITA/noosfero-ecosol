@@ -41,11 +41,13 @@
     <div class="title"><%= link_to element.object.name, element.object.url, :target => '_blank' %></div>
     <div class="desc"><%= element.object.description %></div>
 
-    <div class='comment'>
-      <%= label_tag :comment, _('Comment (optional)') %>
-      <%= text_area_tag :comment, element.comment,
-        :onblur => "jQuery.post('#{url_for :controller => :exchange_plugin_element, :action => :edit, :id => element.id}', {element: {comment: jQuery(this).val()}});" %>
-    </div>
+    <% if element.proposal.open? %>
+      <div class='comment'>
+        <%= label_tag :comment, _('Comment (optional)') %>
+        <%= text_area_tag :comment, element.comment,
+          :onblur => "jQuery.post('#{url_for :controller => :exchange_plugin_element, :action => :edit, :id => element.id}', {element: {comment: jQuery(this).val()}});" %>
+      </div>
+    <% end %>
 
   <% elsif element.object_type == "CmsLearningPlugin::Learning" %>
     <div class="title"><%= link_to element.object.name, element.object.url, :target => 'blank' %></div>
