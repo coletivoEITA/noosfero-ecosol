@@ -12054,7 +12054,7 @@ msgstr "Incluir"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:3
 msgid "Exchange Negociation"
-msgstr "Negociação de uma troca"
+msgstr "Negociação da troca"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:11
 msgid "Concluded at %s"
@@ -12088,7 +12088,7 @@ msgid "Delete this proposal"
 msgstr "Apagar esta proposta"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:15
-msgid "Create new proposal"
+msgid "Set up a counter-offer"
 msgstr "Montar contra-proposta"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:19
