@@ -83,7 +83,7 @@
 .pstyle-tp2 {
   font-size: 26px; }
 
-.pstyle-tp1, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-title {
+.pstyle-tp1, .exchange-proposal-part .exchange-elements-list .exchange-element .title {
   font-size: 21px; }
 
 .pstyle-tm1, #escambo-enterprise-items .see-all {
@@ -217,7 +217,7 @@
 .pstyle-tp2 {
   font-size: 26px; }
 
-.pstyle-tp1, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-title {
+.pstyle-tp1, .exchange-proposal-part .exchange-elements-list .exchange-element .title {
   font-size: 21px; }
 
 .pstyle-tm1, #escambo-enterprise-items .see-all {
@@ -604,13 +604,17 @@ body.controller-exchange_plugin_myprofile {
             border-radius: 5px;
             background: whitesmoke;
             color: black; }
-      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-title {
-        padding: 12px;
-        padding-bottom: 0; }
-      .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-desc {
+      .exchange-proposal-part .exchange-elements-list .exchange-element .title, .exchange-proposal-part .exchange-elements-list .exchange-element .desc, .exchange-proposal-part .exchange-elements-list .exchange-element .comment {
         padding: 12px; }
-        .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-desc > p {
-          margin: 0; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .title {
+        padding-bottom: 0; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .desc > p {
+        margin: 0; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .comment label {
+        display: block; }
+      .exchange-proposal-part .exchange-elements-list .exchange-element .comment textarea {
+        width: 100%;
+        box-sizing: border-box; }
       .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-select {
         background: transparent;
         font: inherit;
@@ -727,7 +731,7 @@ body.controller-exchange_plugin_myprofile {
 .pstyle-tp2 {
   font-size: 26px; }
 
-.pstyle-tp1, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-title {
+.pstyle-tp1, .exchange-proposal-part .exchange-elements-list .exchange-element .title {
   font-size: 21px; }
 
 .pstyle-tm1, #escambo-enterprise-items .see-all {

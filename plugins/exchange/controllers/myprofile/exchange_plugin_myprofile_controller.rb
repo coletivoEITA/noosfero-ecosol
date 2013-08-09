@@ -166,16 +166,6 @@ class ExchangePluginMyprofileController < MyProfileController
     redirect_to :action => 'exchange_console', :exchange_id => @exchange.id
   end
 
-  def update_quantity
-    @element = ExchangePlugin::Element.find params[:object_id]
-    old_quantity = @element.quantity
-    @element.quantity = params[:quantity]
-    @element.save
-    @exchange = ExchangePlugin::Exchange.find @element.proposal.exchange_id
-
-    render :nothing => true
-  end
-
   protected
 
   def add_element_helper(object_id, object_type, proposal_id, profile_id)

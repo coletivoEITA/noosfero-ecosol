@@ -16,6 +16,19 @@ class ExchangePlugin::Proposal < Noosfero::Plugin::ActiveRecord
   validates_inclusion_of :state, :in => ["open", "closed", "accepted"]
   validates_presence_of :origin, :target, :exchange_id
 
+  named_scope :open, :conditions => {:state => 'open'}
+  named_scope :closed, :conditions => {:state => 'closed'}
+  named_scope :accepted, :conditions => {:state => 'accepted'}
+  def open?
+    self.state == 'open'
+  end
+  def closed?
+    self.state == 'closed'
+  end
+  def accepted?
+    self.state == 'accepted'
+  end
+
   def target_elements
     self.elements.all :conditions => {:profile_id => self.target_id}, :include => :element
   end

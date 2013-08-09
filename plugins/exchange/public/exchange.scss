@@ -555,16 +555,27 @@ body.controller-exchange_plugin_myprofile {
         }
       }
 
-      .exchange-element-title {
+      .title, .desc, .comment {
         padding: $padding;
+      }
+      .title {
         padding-bottom: 0;
         @extend .pstyle-tp1;
       }
-      .exchange-element-desc {
-        padding: $padding;
+      .desc {
         
         > p {
           margin: 0;
+        }
+      }
+      .comment {
+        
+        label {
+          display: block;
+        }
+        textarea {
+          width: 100%;
+          box-sizing: border-box;
         }
       }
 

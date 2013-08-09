@@ -17,16 +17,8 @@ class ExchangePlugin::Exchange < Noosfero::Plugin::ActiveRecord
   belongs_to :origin, :class_name => "Profile"
   belongs_to :target, :class_name => "Profile"
 
-  def self.state
-    name = {"proposed" => _('Proposed'), "happening" => _('Happening'), "conclusion_proposed_by_origin" => _('Conclusion Proposed'),
-      "conclusion_proposed_by_target" => _('Conclusion Proposed'), "concluded" => _('Concluded'),
-      "evaluated_by_origin" => _('Evaluated by proposer'), "evaluated_by_target" => _('Evaluated by proposed'),
-      "evaluated" => _('Evaluated'), "cancelled" => _('Cancelled'),  "cancelled_by_origin" => _('Cancelled by Proposer'), "cancelled_by_target" => _('Cancelled by Proposed')}
-  end
-
-
-  def target?(profile)
-    (profile.id == self.target_id)
+  def target? profile
+    profile.id == self.target_id
   end
 
 end

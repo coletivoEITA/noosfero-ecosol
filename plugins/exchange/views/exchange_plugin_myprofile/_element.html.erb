@@ -1,21 +1,20 @@
-<% e = element.object_type.constantize.find element.object_id %>
 <% type = element.object_type.gsub('::', '').underscore %>
 
 <li id="exchange-<%=type%>-element-<%= element.object_id %>" class="exchange-element <%= actor %>">
 
   <% if element.object_type == "Product" %>
-    <div class="exchange-element-image" style="background-image: url('<%= e.image.public_filename if e.image %>');">
+    <div class="exchange-element-image" style="background-image: url('<%= element.object.image.public_filename if element.object.image %>');">
     </div>
   <% end %>
 
   <div class="exchange-element-control">
 
-    <% if element.proposal.state == "open" %>
+    <% if element.proposal.open? %>
 
       <div id="exchange-quantity" class="exchange-qty">
         <div class="label"><%= _('Qty') %></div>
-        <%= text_field_tag "origin_quantity[#{element.object_id}]", element.quantity, :class => "exchange-qty-input",
-          :onBlur => "jQuery.post('#{url_for :action => 'update_quantity', :object_id => element.id}', {quantity: jQuery(this).val()});"%>
+        <%= text_field_tag "quantity", element.quantity, :class => "exchange-qty-input",
+          :onblur => "jQuery.post('#{url_for :controller => :exchange_plugin_element, :action => :edit, :id => element.id}', {element: {quantity: jQuery(this).val()}});" %>
       </div>
 
       <div class="exchange-trash">
@@ -39,15 +38,24 @@
   </div>
 
   <% if element.object_type == "Product" %>
-    <div class="exchange-element-title"><%= link_to e.name, e.url, :target => '_blank' %></div>
-    <div class="exchange-element-desc"><%= e.description %></div>
+    <div class="title"><%= link_to element.object.name, element.object.url, :target => '_blank' %></div>
+    <div class="desc"><%= element.object.description %></div>
+
+    <div class='comment'>
+      <%= label_tag :comment, _('Comment (optional)') %>
+      <%= text_area_tag :comment, element.comment,
+        :onblur => "jQuery.post('#{url_for :controller => :exchange_plugin_element, :action => :edit, :id => element.id}', {element: {comment: jQuery(this).val()}});" %>
+    </div>
+
   <% elsif element.object_type == "CmsLearningPlugin::Learning" %>
-    <div class="exchange-element-title"><%= link_to e.name, e.url, :target => 'blank' %></div>
-    <div class="exchange-element-desc"><%= e.summary %></div>
+    <div class="title"><%= link_to element.object.name, element.object.url, :target => 'blank' %></div>
+    <div class="desc"><%= element.object.summary %></div>
+
   <% elsif element.object_type == "CurrencyPlugin::Currency" %>
-    <div class="exchange-element-title"><%= e.name_with_symbol %></div>
+    <div class="title"><%= element.object.name_with_symbol %></div>
+
   <% elsif element.object_type == "ExchangePlugin::UnregisteredItem" %>
-    <div class="exchange-element-title"><%= e.name %></div>
-    <div class="exchange-element-desc"><%= e.description %></div>
+    <div class="title"><%= element.object.name %></div>
+    <div class="desc"><%= element.object.description %></div>
   <% end %>
 </li>
