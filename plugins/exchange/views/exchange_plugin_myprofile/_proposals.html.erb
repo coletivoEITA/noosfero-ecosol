@@ -24,11 +24,11 @@
       <% first = false %>
 
       <div class="exchange-proposal-part profile">
+
         <h3><%= _('You offer') %></h3>
         <%= render :partial => 'proposal_element_list', :locals => {:proposal => proposal, :profile => @profile, :actor => 'profile' } %>
 
         <% if proposal.open? %>
-
           <h3><%= _('What you can offer?') %></h3>
 
           <div class="exchange-button-wrapper">
@@ -40,15 +40,14 @@
           <%= render :partial => 'proposal_knowledges', :locals => {:profile => profile, :actor => 'profile', :proposal => proposal} %>
 
         <% end %>
-
       </div>
+
       <div class="exchange-proposal-part theother">
+
         <h3><%= _('You ask') %></h3>
         <%= render :partial => 'proposal_element_list', :locals => {:proposal => proposal, :profile => @theother, :actor => 'theother' } %>
 
         <% if proposal.open? %>
-
-          <h3><%= _('What do the other can offer?') %></h3>
           <div class="exchange-button-wrapper">
             <%= render :partial => 'proposal_add_unreg_item', :locals => {:profile => @theother, :actor => 'theother', :proposal => proposal} %>
 
@@ -57,9 +56,7 @@
 
           <%= render :partial => 'proposal_offers', :locals => {:profile => @theother, :actor => 'theother', :proposal => proposal} %>
           <%= render :partial => 'proposal_knowledges', :locals => {:profile => @theother, :actor => 'theother', :proposal => proposal} %>
-
         <% end %>
-
       </div>
     </div>
   </div>

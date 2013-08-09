@@ -469,7 +469,7 @@ body.controller-exchange_plugin_myprofile {
         margin-left: 12px; }
       .exchange-proposal-part .exchange-elements-list .exchange-element.exchange_plugin_unregistered_item .title {
         margin-bottom: 24px !important; }
-      .exchange-proposal-part .exchange-elements-list .exchange-element .title, .exchange-proposal-part .exchange-elements-list .exchange-element .desc {
+      .exchange-proposal-part .exchange-elements-list .exchange-element .title, .exchange-proposal-part .exchange-elements-list .exchange-element .desc, .exchange-proposal-part .exchange-elements-list .exchange-element .comment {
         padding: 12px; }
       .exchange-proposal-part .exchange-elements-list .exchange-element .title {
         padding-bottom: 0; }

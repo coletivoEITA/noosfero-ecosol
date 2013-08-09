@@ -4,9 +4,8 @@
 
 <% if knowledges.blank? %>
   <%= _("%s has no knowledges registered.") % profile.name %>
-
 <% else %>
-  <ul id="exchange-<%=actor%>-list" class="proposal-offers <%=actor%>">
+  <ul class="proposal-offers <%=actor%>">
     <% knowledges.each do |k| %>
       <li>
         <h6 class="element-title">

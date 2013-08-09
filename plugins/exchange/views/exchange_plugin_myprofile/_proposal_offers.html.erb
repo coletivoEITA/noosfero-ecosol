@@ -5,8 +5,7 @@
 <% if products.blank? %>
   <%= _("%s has no offers registered.") % profile.name %>
 <% else %>
-
-  <ul class="exchange-<%=actor%>-offers proposal-offers">
+  <ul class="proposal-offers <%=actor%>">
     <% products.each do |p| %>
       <li>
         <h6 class="element-title">

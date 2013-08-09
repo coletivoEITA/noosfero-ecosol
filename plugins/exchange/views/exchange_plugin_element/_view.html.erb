@@ -34,10 +34,15 @@
     <div class="desc"><%= element.object.description %></div>
 
     <% if element.proposal.open? %>
-      <div class='comment'>
-        <%= label_tag :comment, _('Comment (optional)') %>
-        <%= text_area_tag :comment, element.comment,
-          :onblur => "exchange.updateField(this, '#{url_for :controller => :exchange_plugin_element, :action => :edit, :id => element.id}', {element: {comment: this.value}});" %>
+      <%= label_tag :comment, _('Comment (optional)') %>
+      <%= text_area_tag :comment, element.comment,
+        :onblur => "exchange.updateField(this, '#{url_for :controller => :exchange_plugin_element, :action => :edit, :id => element.id}', {element: {comment: this.value}});" %>
+    <% end %>
+
+    <% if element.comment.present? %>
+      <div class="comment">
+        <strong><%= _('Comment:') %></strong>
+        <%= element.comment %>
       </div>
     <% end %>
 

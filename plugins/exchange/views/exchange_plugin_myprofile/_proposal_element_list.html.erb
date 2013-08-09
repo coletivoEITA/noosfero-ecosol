@@ -1,11 +1,11 @@
 <% elements = proposal.elements.select{ |el| el.profile_id == profile.id } %>
 
-<ul class="exchange-elements-list" id="exchange-elements-list-<%= actor %>">
-  <% if !elements.blank? %>
+<% if elements.present? %>
+  <ul class="exchange-elements-list" id="exchange-elements-list-<%=actor%>">
     <% elements.each do |e| %>
       <%= render :partial => "exchange_plugin_element/view", :locals => {:element => e, :actor => actor} %>
     <% end %>
-  <% else %>
-    <%# FIXME %>
-  <% end %>
-</ul>
+  </ul>
+<% else %>
+  <%# FIXME %>
+<% end %>
