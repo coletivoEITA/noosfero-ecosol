@@ -11275,7 +11275,7 @@ msgstr "Avaliação feita por %{evaluator} em %{time}"
 #: plugins/evaluation/views/evaluation_plugin_profile/_enterprise_evaluation.html.erb:6
 #: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:11
 msgid "%m/%d/%Y at %H:%Mh"
-msgstr ""
+msgstr "%d/%m/%Y às %H:%Mh"
 
 #: plugins/evaluation/views/evaluation_plugin_profile/_enterprise_evaluation.html.erb:29
 #: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:14
@@ -11989,7 +11989,7 @@ msgstr "Avaliação de %s (a ser feita)"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_proposal_message.html.erb:6
 msgid "%m/%d/%y <br> %H:%M"
-msgstr "%m/%d/%y <br> %H:%M"
+msgstr "%d/%m/%y <br> %H:%M"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_proposal_knowledges.html.erb:4
 msgid "%s has no knowledges registered."
@@ -12110,8 +12110,8 @@ msgid "Proposal sent %s"
 msgstr "Proposta enviada em %s"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:11
-msgid "%d/%m/%Y at %H:%Mh"
-msgstr "%d/%m/%Y at %H:%Mh"
+msgid "%m/%d/%Y at %H:%Mh"
+msgstr "%d/%m/%Y às %H:%Mh"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:27
 msgid "You offer"
