@@ -9,7 +9,6 @@ config/database.yml
 config/session.secret
 config/noosfero.yml
 config/mongrel_cluster.yml
-config/solr.yml
 config/plugins
 config/thin.yml
 config/local.rb
@@ -33,7 +32,6 @@ doc/noosfero/*.xhtml
 doc/noosfero/*/*.xhtml
 tags
 pkg
-solr
 *~
 *.swp
 debian/*.log

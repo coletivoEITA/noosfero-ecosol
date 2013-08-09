@@ -287,8 +287,8 @@ end
 Given /^I am logged in as "(.+)"$/ do |username|
   Given %{I go to logout page}
     And %{I go to login page}
-    And %{I fill in "Username" with "#{username}"}
-    And %{I fill in "Password" with "123456"}
+    And %{I fill in "main_user_login" with "#{username}"}
+    And %{I fill in "user_password" with "123456"}
    When %{I press "Log in"}
     # FIXME:
     # deveria apenas verificar que esta no myprofile do usuario
@@ -613,25 +613,6 @@ Given /^([^\s]+) (enabled|disabled) translation redirection in (?:his|her) profi
   profile = Profile[login]
   profile.redirect_l10n = ( status == "enabled" )
   profile.save
-end
-
-Given /^the search index is empty$/ do
-  ActsAsSolr::Post.execute(Solr::Request::Delete.new(:query => '*:*'))
-end
-
-# This could be merged with "the following categories"
-Given /^the following categories as facets$/ do |table|
-  ids = []
-  table.hashes.each do |item|
-    cat = Category.find_by_name(item[:name])
-    if cat.nil?
-      cat = Category.create!(:environment_id => Environment.default.id, :name => item[:name])
-    end
-    ids << cat.id
-  end
-  env = Environment.default
-  env.top_level_category_as_facet_ids = ids
-  env.save!
 end
 
 Given /^the following cities$/ do |table|

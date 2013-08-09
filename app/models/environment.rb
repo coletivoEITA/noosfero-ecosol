@@ -26,6 +26,7 @@ class Environment < ActiveRecord::Base
     'manage_environment_users' => N_('Manage environment users'),
     'manage_environment_templates' => N_('Manage environment templates'),
     'manage_environment_licenses' => N_('Manage environment licenses'),
+    'manage_environment_trusted_sites' => N_('Manage environment trusted sites')
   }
 
   module Roles
@@ -268,7 +269,12 @@ class Environment < ActiveRecord::Base
 
   settings_items :search_hints, :type => Hash, :default => {}
 
-  settings_items :top_level_category_as_facet_ids, :type => Array, :default => []
+  # Set to return http forbidden to host not on the allow origin list bellow
+  settings_items :restrict_to_access_control_origins, :default => false
+  # Set this according to http://www.w3.org/TR/cors/. Headers are set at every response
+  # For multiple domains acts as suggested in http://stackoverflow.com/questions/1653308/access-control-allow-origin-multiple-origin-domains
+  settings_items :access_control_allow_origin, :type => Array
+  settings_items :access_control_allow_methods, :type => String
 
   # Set to return http forbidden to host not on the allow origin list bellow
   settings_items :restrict_to_access_control_origins, :default => false
@@ -625,7 +631,7 @@ class Environment < ActiveRecord::Base
   end
 
   def top_url
-    url = 'http://'
+    url = 'https://'
     url << (Noosfero.url_options.key?(:host) ? Noosfero.url_options[:host] : default_hostname)
     url << ':' << Noosfero.url_options[:port].to_s if Noosfero.url_options.key?(:port)
     url

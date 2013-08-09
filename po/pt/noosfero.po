@@ -771,7 +771,6 @@ msgstr "Ativar"
 #: app/views/enterprise_validation/list_processed.rhtml:9
 #: app/views/enterprise_validation/index.rhtml:14
 #: app/views/enterprise_registration/basic_information.rhtml:23
-#: app/views/profile_editor/_organization.rhtml:42
 #: app/views/profile_editor/_person_form.rhtml:23 app/views/cms/_blog.rhtml:35
 #: app/views/box_organizer/_highlights_block.rhtml:4
 #: app/views/box_organizer/_feed_reader_block.rhtml:2
@@ -782,6 +781,10 @@ msgstr "Ativar"
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:23
 msgid "Address"
 msgstr "Endereço"
+
+#: app/views/profile_editor/_organization.rhtml:42
+msgid "Internet Address (URL)"
+msgstr "Endereço na Internet (URL)"
 
 #: app/models/product.rb:- app/models/create_enterprise.rb:6
 #: app/views/profile_editor/_person_form.rhtml:13
@@ -5470,12 +5473,12 @@ msgid "Send an e-mail to %s"
 msgstr "Enviar e-mail para %s"
 
 #: app/views/contact/new.rhtml:4
-msgid "Send an e-mail to administrators"
-msgstr "Enviar um e-mail para os administradores"
+msgid "Send an e-mail to page administration of this enterprise"
+msgstr "Enviar um e-mail para administração da página deste empreendimento"
 
 #: app/views/contact/new.rhtml:6
-msgid "The e-mail will be sent to the administrators of '%s'"
-msgstr "O e-mail será enviado para os administradores de '%s'"
+msgid "The e-mail will be sent to the people who administers the page of '%s'"
+msgstr "O e-mail será enviado para as pessoas que administram a página de '%s'"
 
 #: app/views/contact/new.rhtml:23
 msgid "I want to receive a copy of the message in my e-mail."
@@ -8833,11 +8836,14 @@ msgstr ""
 msgid "Enter your comment"
 msgstr "Digite seu comentário"
 
+#: app/views/content_viewer/_comment_form.rhtml:90
+msgid "Enter your answer"
+msgstr "Digite sua resposta"
+
 #: app/views/content_viewer/_comment_form.rhtml:88
 msgid "Post comment"
 msgstr "Enviar comentário"
 
-#: app/views/content_viewer/_comment_form.rhtml:90
 #: app/views/content_viewer/_comment_form.rhtml:96
 msgid "Post answer"
 msgstr "Enviar resposta"

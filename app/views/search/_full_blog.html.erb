@@ -1,0 +1,28 @@
+<li class="search-blog article-item">
+  <div>
+    <%= link_to blog.title, blog.view_url, :class => 'search-result-title' %>
+  </div>
+
+  <div class="search-content-first-column">
+    <%= render :partial => 'image', :object => blog %>
+  </div>
+
+  <table class="noborder search-content-second-column">
+    <tr class="search-blog-items">
+      <td class="search-field-label"><%= _("Last posts") %></td>
+
+      <% last_posts = blog.last_posts %>
+      <td class="<%= "search-field-none" if last_posts.empty? %>">
+        <% last_posts.each do |post| %>
+          <%= link_to post.title, post.view_url, :class => 'search-blog-sample-item '+icon_for_article(post) %>
+        <% end %>
+        <%= _('None') if last_posts.empty? %>
+      </td>
+    </tr>
+
+    <%= render :partial => 'article_common', :object => blog %>
+  </table>
+  <%= render :partial => 'article_last_change', :object => blog %>
+
+  <div style="clear: both;"/></div>
+</li>

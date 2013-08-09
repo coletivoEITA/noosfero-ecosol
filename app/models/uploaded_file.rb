@@ -52,9 +52,9 @@ class UploadedFile < Article
   has_attachment :storage => :file_system,
     :thumbnails => { :icon => [24,24], :thumb => '130x130>', :slideshow => '320x240>', :display => '640X480>' },
     :thumbnail_class => Thumbnail,
-    :max_size => 5.megabytes # remember to update validate message below
+    :max_size => 10.megabytes # remember to update validate message below
 
-  validates_attachment :size => N_("%{fn} of uploaded file was larger than the maximum size of 5.0 MB").fix_i18n
+  validates_attachment :size => N_("%{fn} of uploaded file was larger than the maximum size of 10.0 MB").fix_i18n
 
   delay_attachment_fu_thumbnails
 

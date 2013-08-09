@@ -1,0 +1,20 @@
+<% extend SolrPlugin::SearchHelper %>
+<% set_facets_variables %>
+
+<%= search_page_title( @titles[@asset], @category ) %>
+
+<div id='search-column-left'>
+  <%= render :partial => 'facets' if !@empty_query %>
+</div>
+
+<div id='search-column-right'>
+  <%= render :partial => 'results' %>
+</div>
+
+<div style="clear: both"></div>
+
+<% if @asset == :products %>
+  <% javascript_tag do %>
+    jQuery('.search-product-price-details').altBeautify();
+  <% end %>
+<% end %>
