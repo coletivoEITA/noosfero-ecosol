@@ -21,6 +21,32 @@ def env
   ENV['RAILS_ENV'] || 'development'
 end
 
+# inspired by http://www.simonecarletti.com/blog/2011/02/how-to-restart-god-when-you-deploy-a-new-release/
+module God
+  module Conditions
+    class RestartFileTouched < PollCondition
+      attr_accessor :restart_file
+
+      def process_start_time
+        Time.parse `ps -o lstart -p #{self.watch.pid} --no-heading`
+      end
+      def restart_file_modification_time
+        File.mtime self.restart_file
+      end
+
+      def valid?
+        valid = true
+        valid &= complain("Attribute 'restart_file' must be specified", self) if self.restart_file.nil?
+        valid
+      end
+
+      def test
+        process_start_time < restart_file_modification_time if File.exists?(self.restart_file)
+      end
+    end
+  end
+end
+
 def commons w
   w.dir = RailsRoot
   w.env = {
@@ -43,6 +69,12 @@ def commons w
   w.transition(:up, :start) do |on|
     on.condition(:process_exits) do |c|
       c.notify = 'developers'
+    end
+  end
+  w.transition(:up, :restart) do |on|
+    on.condition(:restart_file_touched) do |c|
+      c.interval = 5.seconds
+      c.restart_file = "#{RailsRoot}/tmp/restart.txt"
     end
   end
 
