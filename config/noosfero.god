@@ -1,6 +1,6 @@
 require 'yaml'
 
-RailsRoot = Dir.getwd
+RailsRoot = File.expand_path "#{File.dirname __FILE__}/../"
 ConfigPath = "#{RailsRoot}/config"
 LogPath = "#{RailsRoot}/log"
 PidDir = 'tmp/pids'
