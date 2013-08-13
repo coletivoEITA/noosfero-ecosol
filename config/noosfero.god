@@ -18,7 +18,7 @@ God.contact(:email) do |c|
 end
 
 def env
-  ENV['RAILS_ENV'] || 'development'
+  ENV['RAILS_ENV'] || 'production'
 end
 
 # inspired by http://www.simonecarletti.com/blog/2011/02/how-to-restart-god-when-you-deploy-a-new-release/
