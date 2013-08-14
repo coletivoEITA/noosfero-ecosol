@@ -62,14 +62,17 @@ def create_newpass( len = 8 )
   Array.new(len){ || chars[rand(chars.size)] }.join
 end
 
-def create_user( name, mail, fone, city, state )
+def create_user( name, mail, fone )
   user = nil
   # MULT_STRING = 1
-  if mail.blank?
+  if mail.blank?    
     $log.error 'Email não pode ser nulo...usuário não foi criado!'    
     return nil
   else
-    mail = mail.normalize_email
+    mail = mail.normalize_login_email
+    if name.blank?
+      name = mail.split('@')[0]
+    end
     login = create_login( name.normalize_name, "" ) 
   end
   # PASS_LEN = 6
@@ -91,12 +94,8 @@ def create_user( name, mail, fone, city, state )
       :terms_of_use => Environment.default.terms_of_use
     })
 
-    $log.info "Registrando dados pessoais do usuário..." 
-    if !state.blank?
-      state =  State.find_by_acronym( state ).name 
-    end
-    data = {:name => name.normalize_name, :zip_code => '', :city => city, :contact_phone => fone, :state => state}
-    $log.info "Registrado nome '%s' - cidade '%s' - estado '%s' - fone '%s' !" % [     name.normalize_name,  city, state, fone ]
+    data = {:name => name.normalize_name, :zip_code => '', :city => '', :contact_phone => fone, :state => ''}
+    $log.info "Registrado nome '%s' - fone '%s' !" % [ name.normalize_name, fone ]
 
     user.person_data = data
     person = Person.new(data)
@@ -128,11 +127,13 @@ def find_or_create_users( adm_users )
   adm_users.map do |u|   
     i = i+1
     if !u[:mail].blank?
-      $log.info "Verificando se o usuário já existe...."    
-      user = User.find_by_email( u[:mail].normalize_email )
+      $log.info "Verificando se o usuário com e-mail '%s' já existe...." % u[:mail].normalize_login_email
+      user = User.find_by_email( u[:mail].normalize_login_email )
       if user.blank?
-        $log.info "não existe usuario com e-mail '%s' ...." % [ u[:mail].normalize_email ]
-        user = create_user( u[:name], u[:mail], u[:fone], u[:city], u[:state] )
+        $log.info "não existe!"
+        user = create_user( u[:name], u[:mail], u[:fone] )
+      else
+        $log.info "já existe!"
       end    
     else
       $log.info "O %sº e-mail não foi informado, usuário não foi criado!" % i.to_s
@@ -143,23 +144,29 @@ end
 
 def add_adm_users( enterprise, users )
   users.each do |user|
-    $log.info "Adicionando usuário '%s' como administrador do empreendimento '%s'..." % [ user.name, enterprise.name ] 
-    if enterprise.add_admin( user.person )
-      begin
-        community_id = enterprise.identifier.sub!(/ees-/,'')
-        community = Community[ community_id ] if !community_id.blank?
-        if !community.blank?
-          $log.info "Já existe a comunidade '%s', por isso será criado um empreendimento '%s'!" % [ community.identifier, enterprise.identifier ] 
+    $log.info "Verificando se o usuário '%s' já é um administrador do empreendimento 's'" % [ user.login, enterprise.name ]   
+    if !user.person.is_admin?(enterprise)
+      $log.info "não é admin!"
+      $log.info "Adicionando usuário '%s' como administrador do empreendimento '%s'..." % [ user.name, enterprise.name ] 
+      if enterprise.add_admin( user.person )
+        begin
+          community_id = enterprise.identifier.sub!(/ees-/,'')
+          community = Community[ community_id ] if !community_id.blank?
+          if !community.blank?
+            $log.info "Já existe a comunidade '%s', por isso será criado um empreendimento '%s'!" % [ community.identifier, enterprise.identifier ] 
+          end
+          User::Mailer.deliver_script_welcome_email( user, enterprise, community )
+          $log.info "concluído!"
+        rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPSyntaxError, Net::SMTPFatalError, Net::SMTPUnknownError => e
+          $log.fatal "Não foi possível enviar o e-mail para '%s'...devido a excessão '%s'" % [ user.person.email, e ] 
+          $log.fatal e.backtrace
         end
-        User::Mailer.deliver_script_welcome_email( user, enterprise, community )
-        $log.info "concluído!"
-      rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPSyntaxError, Net::SMTPFatalError, Net::SMTPUnknownError => e
-        $log.fatal "Não foi possível enviar o e-mail para '%s'...devido a excessão '%s'" % [ user.person.email, e ] 
-        $log.fatal e.backtrace
-      end
+      else
+        $log.error "não foi possível adicionar o usuário '%s' como administrador do empreendimento..." % user.person.name
+      end    
     else
-      $log.error "não foi possível adicionar o usuário '%s' como administrador do empreendimento..." % user.person.name
-    end    
+      $log.info "já é admin!"
+    end
   end
 end
 
@@ -170,8 +177,8 @@ def load_file(file_path, state)
   csv_line_reader = CSV.open(file_path, 'r')
   csv_line_reader.shift  
   csv_line_reader.each do |array|
-    user = {:name => array[3], :mail => array[4], :fone => array[5], :city => array[2], :state => state }
-    user2 = {:name => array[6], :mail => array[7], :fone => array[8], :city => array[2], :state => state }   
+    user = {:name => array[3], :mail => array[4], :fone => array[5] }
+    user2 = {:name => array[6], :mail => array[7], :fone => array[8] }   
     adm_users << user
     adm_users << user2
     enterprises << {:name => array[0], :identifier=> array[1], :adm_users => adm_users, :city => array[2], :state => state }
@@ -183,12 +190,36 @@ end
 def activate_enterprise( enterprise )
    enterprise.admins.each do |owner|
    $log.info "Ativando emprendimento '%s' e configurando o usuário '%s' como dono ..." % [ enterprise.name, owner.name ]
-   if enterprise.enable( owner )
+   if enterprise.enabled or enterprise.enable( owner )
       $log.info "ativado!"
       return 
     else
       $log.error "não foi possível ativar o empreendimento '%s'" % enterprise.name
     end
+  end
+end
+
+def find_enterprise( name, identifier, adm_users, year, city, state )
+  $log.info "Procurando empreendimento '%s'..." % name.normalize_name
+  if !identifier.blank?
+    identifier = identifier.normalize_id
+  else
+    identifier = name.normalize_id if !name.blank?
+  end
+  enterprise = Enterprise[ identifier ]
+  if enterprise.blank?
+    identifier = "ees-" + identifier
+    enterprise = Enterprise[ identifier ]
+    if enterprise.blank?      
+      $log.info "não encontrado!"
+      return nil
+    else
+      $log.info "encontrado!"
+      return enterprise
+    end
+  else
+     $log.info "encontrado!"
+     return enterprise
   end
 end
 
@@ -207,7 +238,7 @@ def create_enterprise( name, identifier, adm_users, year, city, state )
   mail = nil
   adm_users.each do |u|
     if !u[:mail].blank?
-      mail = u[:mail].normalize_email
+      mail = u[:mail].normalize_login_email
       break
     end     
   end 
@@ -222,6 +253,16 @@ def create_enterprise( name, identifier, adm_users, year, city, state )
     :environment => Environment.default,
     :contact_email => mail
   )
+
+  $log.info "Registrando dados geográficos do empreendimento..." 
+  if !state.blank? and !city.blank?
+    enterprise.city_with_region = city.to_s 
+    enterprise.state_with_region = State.find_by_acronym( state ).name 
+    $log.info "registrado!"
+  else
+    $log.info "falta dados para cidade '%s' ou estado '%s'!"
+  end
+
   begin
     enterprise.save!
     $log.info "Empreendimento criado!" 
@@ -264,8 +305,13 @@ $log.debug "Carregado!"
 
 $log.debug "Iniciando importação. Esta operação pode demorar algum tempo..."
 error_enterprises = 0
-enterprises.each do |e|      
-  enterprise = create_enterprise( e[:name], e[:identifier], e[:adm_users], e[:foundation_year], e[:city], e[:state] )
+enterprises.each do |e| 
+  enterprise = find_enterprise( e[:name], e[:identifier], e[:adm_users], e[:foundation_year], e[:city], e[:state] )
+  #TODO if not blank update data, if blank create data
+  if enterprise.blank?
+    enterprise = create_enterprise( e[:name], e[:identifier], e[:adm_users], e[:foundation_year], e[:city], e[:state] )
+  end
+
   if enterprise.blank?
     error_enterprises = error_enterprises + 1
   else

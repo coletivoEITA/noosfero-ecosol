@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
+require 'fastercsv'
 require File.dirname(__FILE__) + '/../config/environment'
 require 'logger'
 require 'iconv' unless RUBY_VERSION >= "1.9"
@@ -38,7 +39,7 @@ def load_file(file_path, state)
   require 'csv'
   adm_users = []
   enterprises = []
-  csv_line_reader = CSV.open(file_path, 'r')
+  csv_line_reader = FasterCSV.open(file_path, 'r')
   csv_line_reader.shift  
   csv_line_reader.each do |array|
     user = {:name => array[3], :mail => array[4], :fone => array[5], :city => array[2], :state => state }
@@ -113,8 +114,8 @@ list_path = File.dirname(__FILE__) + "/../tmp/"
 list_date = start_time.strftime "%Y-%m-%d_%H:%M:%S"
 list_name = "empreendimentos_importados_%s_%s.csv" % [ state, list_date ]
 
-CSV.open( list_path + list_name, 'w') do |csv|
-  csv << ['Nome', 'Endereço da Internet','E-mail para contato EES','Situação','Cidade e UF','Nome da primeira pessoa de referência do EES','E-mail da primeira pessoa de referência do EES','Telefone da primeira pessoa de referência do EES','Nome da segunda pessoa de referência do EES','E-mail da segunda pessoa de referência do EES','Telefone da segunda pessoa de referência do EES']
+FasterCSV.open( list_path + list_name, 'w') do |csv|
+  csv << ['Nome', 'Endereço da Internet','E-mail para contato EES','Cidade / UF','Nome da primeira pessoa de referência do EES','E-mail da primeira pessoa de referência do EES','Telefone da primeira pessoa de referência do EES','Nome da segunda pessoa de referência do EES','E-mail da segunda pessoa de referência do EES','Telefone da segunda pessoa de referência do EES']
   puts 'qtd: %s' % enterprises_imported.count
   enterprises_imported.each do |e|
     #admins
@@ -130,11 +131,10 @@ CSV.open( list_path + list_name, 'w') do |csv|
         last_admina_fone = e.admins.last.contact_phone.convert_to_s
       end
     end
-    #city and state
     if !e.blank? and !e.region.blank? and !e.state.blank?
-      city_state = "'" + e.region.name + '-' + e.state + "'"
+      city_state = "'" + e.region.name + '/' + State.find_by_name(e.state).acronym
     else
-      city_state = ""
+      city_state = nil
     end
     csv << [ e.name, "cirandas.net/"+e.identifier, e.contact_email, city_state, first_admin_name, first_admin_mail, first_admin_fone, last_admin_name, last_admin_mail, last_admin_fone ]
   end
