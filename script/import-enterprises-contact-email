@@ -33,7 +33,7 @@ def add_contact_email( enterprise, adm_users )
   end 
   $log.info "Verificando se existe um o usuário com email '%s' ...." %  mail
   user = User.find_by_email( mail )
-  if user.blank?
+  if user.blank? or user.person.blank?
     $log.info "não existe!"
     return nil
   else    
