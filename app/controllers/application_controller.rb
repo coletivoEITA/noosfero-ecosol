@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :init_noosfero_plugins
   before_filter :allow_cross_domain_access
 
-    protected
+  protected
 
   def allow_cross_domain_access
     origin = request.headers['Origin']

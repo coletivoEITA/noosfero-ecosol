@@ -4,6 +4,8 @@ require 'redcloth'
 # application.
 module ApplicationHelper
 
+  protected
+
   include PermissionNameHelper
 
   include LightboxHelper

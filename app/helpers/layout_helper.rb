@@ -1,5 +1,7 @@
 module LayoutHelper
 
+  protected
+
   def body_classes
     # Identify the current controller and action for the CSS:
     " controller-#{@controller.controller_name}" +
