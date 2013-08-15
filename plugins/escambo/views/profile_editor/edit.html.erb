@@ -5,6 +5,9 @@
 <% labelled_form_for :profile_data, @profile, :html => { :id => 'profile-data', :multipart => true } do |f| %>
 
   <%= render :partial => partial_for_class(@profile.class), :locals => { :f => f } %>
+  <% javascript_tag do %>
+    jQuery('#profile_data_city, #profile_data_state').parents('.required-field').remove();
+  <% end %>
 
   <div id="profile_change_picture_title">
     <h2><%= _('Change picture') %></h2>
@@ -68,6 +71,8 @@
   <% end %>
 <% end %>
 
+<hr/>
+
 <h1><%= _('Location') %></h1>
 <div class="error">
   <%= flash[:error] %>
@@ -102,4 +107,3 @@
 <%= content_tag('script', '', :src => "http://maps.googleapis.com/maps/api/js?sensor=false", :type => 'text/javascript') %>
 <%= content_tag('script', '', :src => url_for(:controller => :maps, :action => :google_map), :type => 'text/javascript') %>
 
-<%# = generate_form :info, @info, {...} %>
