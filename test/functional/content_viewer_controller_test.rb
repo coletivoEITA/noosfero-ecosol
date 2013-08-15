@@ -1014,6 +1014,7 @@ class ContentViewerControllerTest < ActionController::TestCase
     profile = create_user('testuser').person
     article = profile.articles.build(:name => 'test')
     article.save!
+    Comment.destroy_all
     comment = Comment.create!(:author => profile, :title => 'a comment', :body => 'lalala', :article => article)
     login_as 'testuser'
     get :view_page, :profile => 'testuser', :page => [ 'test' ]
@@ -1063,6 +1064,7 @@ class ContentViewerControllerTest < ActionController::TestCase
   should 'not show a post comment button on top if there is only one comment' do
     profile = create_user('testuser').person
     article = profile.articles.build(:name => 'test')
+    Comment.destroy_all
     article.save!
     comment = article.comments.build(:author => profile, :title => 'hi', :body => 'hello')
     comment.save!
@@ -1073,6 +1075,7 @@ class ContentViewerControllerTest < ActionController::TestCase
   should 'not show a post comment button on top if there are no comments' do
     profile = create_user('testuser').person
     article = profile.articles.build(:name => 'test')
+    Comment.destroy_all
     article.save!
     get :view_page, :profile => 'testuser', :page => [ 'test' ]
     assert_no_tag :tag => 'a', :attributes => { :id => 'top-post-comment-button' }
@@ -1081,6 +1084,7 @@ class ContentViewerControllerTest < ActionController::TestCase
   should 'show a post comment button on top if there are at least two comments' do
     profile = create_user('testuser').person
     article = profile.articles.build(:name => 'test')
+    Comment.destroy_all
     article.save!
     comment1 = article.comments.build(:author => profile, :title => 'hi', :body => 'hello')
     comment1.save!
@@ -1093,6 +1097,7 @@ class ContentViewerControllerTest < ActionController::TestCase
   should 'not show a post comment button on top if there are one comment and one reply' do
     profile = create_user('testuser').person
     article = profile.articles.build(:name => 'test')
+    Comment.destroy_all
     article.save!
     comment1 = article.comments.build(:author => profile, :title => 'hi', :body => 'hello')
     comment1.save!
@@ -1250,5 +1255,20 @@ class ContentViewerControllerTest < ActionController::TestCase
     get 'view_page', :profile => profile.identifier, :page => article.path.split('/')
     assert_tag :tag => 'a', :attributes => { :href => "/#{profile.identifier}/#{article.path}?comment_page=2", :rel => 'next' }
   end 
+
+  should 'not escape acceptable HTML in list of blog posts' do
+    login_as('testinguser')
+    blog = Blog.create!(:name => 'A blog test', :profile => profile)
+    blog.posts << TinyMceArticle.create!(
+      :name => 'Post',
+      :profile => profile,
+      :parent => blog,
+      :published => true,
+      :body => "<p>This is a <strong>bold</strong> statement right there!</p>"
+    )
+
+    get :view_page, :profile => profile.identifier, :page => [blog.path]
+    assert_tag :tag => 'strong', :content => /bold/
+  end
 
 end
