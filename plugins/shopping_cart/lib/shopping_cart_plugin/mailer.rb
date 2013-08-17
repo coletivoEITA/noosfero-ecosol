@@ -21,8 +21,7 @@ class ShoppingCartPlugin::Mailer < Noosfero::Plugin::MailerBase
     domain = supplier.environment.default_hostname
     contact_email = []
     if supplier.contact_email.blank?
-      supplier.admins do |admin|
-        puts 'admins e-mail: %s' % admin.email
+      supplier.admins.each do |admin|
         contact_email << admin.email
       end
     else
