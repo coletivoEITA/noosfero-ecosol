@@ -3,6 +3,20 @@ class ApplicationController < ActionController::Base
   before_filter :setup_multitenancy
   before_filter :detect_stuff_by_domain
   before_filter :init_noosfero_plugins
+  before_filter :allow_cross_domain_access
+
+  def allow_cross_domain_access
+    origin = request.headers['Origin']
+    return if origin.blank?
+    if environment.access_control_allow_origin.include? origin
+      response.headers["Access-Control-Allow-Origin"] = origin
+      unless environment.access_control_allow_methods.blank?
+        response.headers["Access-Control-Allow-Methods"] = environment.access_control_allow_methods
+      end
+    elsif environment.restrict_to_access_control_origins
+      render_access_denied _('Origin not in allowed.')
+    end
+  end
 
   include ApplicationHelper
   layout :get_layout
@@ -79,11 +93,10 @@ class ApplicationController < ActionController::Base
     false
   end
 
-
   def user
     current_user.person if logged_in?
   end
-  
+
   alias :current_person :user
 
   # TODO: move this logic somewhere else (Domain class?)
@@ -98,6 +111,12 @@ class ApplicationController < ActionController::Base
     else
       @environment = @domain.environment
       @profile = @domain.profile
+
+      # Check if the requested profile belongs to another domain
+      if @profile && !params[:profile].blank? && params[:profile] != @profile.identifier
+        @profile = @environment.profiles.find_by_identifier params[:profile]
+        redirect_to params.merge(:host => @profile.default_hostname)
+      end
     end
   end
 
@@ -152,6 +171,20 @@ class ApplicationController < ActionController::Base
         render_not_found(path)
       end
     end
+  end
+
+  def find_by_contents(asset, scope, query, paginate_options={:page => 1}, options={})
+    scope = scope.send(options[:filter]) if options[:filter]
+
+    @plugins.dispatch_first(:find_by_contents, asset, scope, query, paginate_options, options) ||
+    fallback_find_by_contents(asset, scope, query, paginate_options, options)
+  end
+
+  private
+
+  def fallback_find_by_contents(asset, scope, query, paginate_options, options)
+    return {:results => scope.paginate(paginate_options)} if query.blank?
+    {:results => scope.like_search(query).paginate(paginate_options)}
   end
 
 end

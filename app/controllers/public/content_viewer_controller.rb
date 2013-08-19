@@ -2,8 +2,6 @@ class ContentViewerController < ApplicationController
 
   needs_profile
 
-  before_filter :comment_author, :only => :edit_comment
-
   helper ProfileHelper
   helper TagsHelper
 
@@ -70,24 +68,8 @@ class ContentViewerController < ApplicationController
 
     @form_div = params[:form]
 
-    if params[:comment] && params[:confirm] == 'true'
-      @comment = Comment.new(params[:comment])
-      if request.post? && @page.accept_comments?
-        add_comment
-      end
-    else
-      @comment = Comment.new
-    end
-
-    if request.post?
-      if params[:remove_comment]
-        remove_comment
-        return
-      elsif params[:mark_comment_as_spam]
-        mark_comment_as_spam
-        return
-      end
-    end
+    #FIXME see a better way to do this. It's not need to pass this variable anymore
+    @comment = Comment.new
     
     if @page.has_posts?
       posts = if params[:year] and params[:month]
@@ -97,11 +79,17 @@ class ContentViewerController < ApplicationController
         @page.posts
       end
 
-      if @page.blog? && @page.display_posts_in_current_language?
-        posts = posts.native_translations.all(Article.display_filter(user, profile)).map{ |p| p.get_translation_to(FastGettext.locale) }.compact
-      end
+      #FIXME Need to run this before the pagination because this version of
+      #      will_paginate returns a will_paginate collection instead of a
+      #      relation.
+      blog_with_translation = @page.blog? && @page.display_posts_in_current_language?
+      posts = posts.native_translations if blog_with_translation
 
       @posts = posts.paginate({ :page => params[:npage], :per_page => @page.posts_per_page }.merge(Article.display_filter(user, profile)))
+
+      if blog_with_translation
+        @posts.replace @posts.map{ |p| p.get_translation_to(FastGettext.locale) }.compact
+      end
     end
 
     if @page.folder? && @page.gallery?
@@ -117,88 +105,17 @@ class ContentViewerController < ApplicationController
       end
     end
 
-    comments = @page.comments.without_spam
-    @comments = comments.as_thread
-    @comments_count = comments.count
+    @comments = @page.comments.without_spam
+    @comments = @plugins.filter(:unavailable_comments, @comments)
+    @comments_count = @comments.count
+    @comments = @comments.without_reply.paginate(:per_page => per_page, :page => params[:comment_page] )
+
     if params[:slideshow]
       render :action => 'slideshow', :layout => 'slideshow'
     end
   end
 
-  def edit_comment
-    path = params[:page].join('/')
-    @page = profile.articles.find_by_path(path)
-    @form_div = 'opened'
-    @comment = @page.comments.find_by_id(params[:id])
-    if @comment
-      if request.post?
-        begin
-          @comment.update_attributes(params[:comment])
-          session[:notice] = _('Comment succesfully updated')
-          redirect_to :action => 'view_page', :profile => profile.identifier, :page => @comment.article.explode_path
-        rescue
-          session[:notice] = _('Comment could not be updated')
-        end
-      end
-    else
-      redirect_to @page.view_url
-      session[:notice] = _('Could not find the comment in the article')
-    end
-  end
-
   protected
-
-  def add_comment
-    @comment.author = user if logged_in?
-    @comment.article = @page
-    @comment.ip_address = request.remote_ip
-    @comment.user_agent = request.user_agent
-    @comment.referrer = request.referrer
-    plugins_filter_comment(@comment)
-    return if @comment.rejected?
-    if (pass_without_comment_captcha? || verify_recaptcha(:model => @comment, :message => _('Please type the words correctly'))) && @comment.save
-      @page.touch
-      @comment = nil # clear the comment form
-      redirect_to :action => 'view_page', :profile => params[:profile], :page => @page.explode_path, :view => params[:view]
-    else
-      @form_div = 'opened' if params[:comment][:reply_of_id].blank?
-    end
-  end
-
-  def plugins_filter_comment(comment)
-    @plugins.each do |plugin|
-      plugin.filter_comment(comment)
-    end
-  end
-
-  def pass_without_comment_captcha?
-    logged_in? && !environment.enabled?('captcha_for_logged_users')
-  end
-  helper_method :pass_without_comment_captcha?
-
-  def remove_comment
-    @comment = @page.comments.find(params[:remove_comment])
-    if (user == @comment.author || user == @page.profile || user.has_permission?(:moderate_comments, @page.profile))
-      @comment.destroy
-    end
-    finish_comment_handling
-  end
-
-  def mark_comment_as_spam
-    @comment = @page.comments.find(params[:mark_comment_as_spam])
-    if logged_in? && (user == @page.profile || user.has_permission?(:moderate_comments, @page.profile))
-      @comment.spam!
-    end
-    finish_comment_handling
-  end
-
-  def finish_comment_handling
-    if request.xhr?
-      render :text => {'ok' => true}.to_json, :content_type => 'application/json'
-    else
-      redirect_to :action => 'view_page', :profile => params[:profile], :page => @page.explode_path, :view => params[:view]
-    end
-  end
 
   def per_page
     12
@@ -223,13 +140,9 @@ class ContentViewerController < ApplicationController
     end
   end
 
-  def comment_author
-    comment = Comment.find_by_id(params[:id])
-    if comment
-      render_access_denied if comment.author.blank? || comment.author != user
-    else
-      render_not_found
-    end
+  def pass_without_comment_captcha?
+    logged_in? && !environment.enabled?('captcha_for_logged_users')
   end
+  helper_method :pass_without_comment_captcha?
 
 end

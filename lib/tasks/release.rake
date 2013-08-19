@@ -1,11 +1,40 @@
 namespace :noosfero do
 
+  def pendencies_on_authors
+    sh "git status | grep 'AUTHORS' > /dev/null" do |ok, res| 
+      return {:ok => !ok, :res => res}
+    end
+  end
+
+  def pendencies_on_repo
+    sh "git status | grep 'nothing.*commit' > /dev/null" do |ok, res| 
+      return {:ok => ok, :res => res}
+    end
+  end
+
+  def pendencies_on_public_errors
+    sh "git status | grep -e '500.html' -e '503.html' > /dev/null" do |ok, res| 
+      return {:ok => !ok, :res => res}
+    end
+  end
+
+  def commit_changes(files, commit_message)
+    files = files.join(' ')
+    puts "\nThere are changes in the following files:"
+    sh "git diff #{files}"
+    if confirm('Do you want to commit these changes')
+      sh "git add #{files}"
+      sh "git commit -m '#{commit_message}'"
+    else
+      sh "git checkout #{files}"
+      abort 'There are changes to be commited. Reverting changes and exiting...'
+    end
+  end
+
   desc 'checks if there are uncommitted changes in the repo'
   task :check_repo do
-    sh "git status | grep 'nothing.*commit'" do |ok, res|
-      if !ok
-        raise "******** There are uncommited changes in the repository, cannot continue"
-      end
+    if !pendencies_on_repo[:ok]
+      raise "******** There are uncommited changes in the repository, cannot continue"
     end
   end
 
@@ -68,17 +97,165 @@ EOF
         output.puts `git log --pretty=format:'%aN <%aE>' | sort | uniq`
         output.puts AUTHORS_FOOTER
       end
+      commit_changes(['AUTHORS'], 'Updating AUTHORS file') if !pendencies_on_authors[:ok]
     rescue Exception => e
       rm_f 'AUTHORS'
       raise e
     end
   end
 
+  def ask(message, default = nil, default_message = nil, symbol = ':')
+    default_choice = default ? " [#{default_message || default}]#{symbol} " : "#{symbol} "
+    print message + default_choice
+    answer = STDIN.gets.chomp
+    answer.blank? && default.present? ? default : answer
+  end
+
+  def confirm(message, default=true)
+    default_message = default ? 'Y/n' : 'y/N'
+    default_value = default ? 'y' : 'n'
+    choice = nil
+    while choice.nil?
+      answer = ask(message, default_value, default_message, '?')
+      if answer.blank?
+        choice = default
+      elsif ['y', 'yes'].include?(answer.downcase)
+        choice = true
+      elsif ['n', 'no'].include?(answer.downcase)
+        choice = false
+      end
+    end
+    choice
+  end
+
+  desc 'sets the new version on apropriate files'
+  task :set_version, :release_kind do |t, args|
+    next if File.exist?("tmp/pending-release")
+    release_kind = args[:release_kind] || 'stable'
+
+    if release_kind == 'test'
+      version_question = "Release candidate of which version"
+      distribution = 'squeeze-test'
+    else
+      version_question = "Version that is being released"
+      distribution = 'unstable'
+    end
+
+    version_name = new_version = ask(version_question)
+
+    if release_kind == 'test'
+      timestamp = Time.now.strftime('%Y%m%d%H%M%S')
+      version_name += "~rc#{timestamp}"
+    end
+    release_message = ask("Release message")
+
+    sh 'git checkout debian/changelog lib/noosfero.rb'
+    sh "sed -i \"s/VERSION = '[^']*'/VERSION = '#{version_name}'/\" lib/noosfero.rb"
+    sh "dch --newversion #{version_name} --distribution #{distribution} --force-distribution '#{release_message}'"
+
+    sh 'git diff debian/changelog lib/noosfero.rb'
+    if confirm("Commit version bump to #{version_name} on #{distribution} distribution")
+      sh 'git add debian/changelog lib/noosfero.rb'
+      sh "git commit -m 'Bumping version #{version_name}'"
+      sh "touch tmp/pending-release"
+    else
+      sh 'git checkout debian/changelog lib/noosfero.rb'
+      abort 'Version update not confirmed. Reverting changes and exiting...'
+    end
+  end
+
+  desc "uploads the packages to the repository"
+  task :upload_packages, :release_kind do |t, args|
+    release_kind = args[:release_kind] || 'stable'
+    sh "dput --unchecked #{release_kind} #{Dir['pkg/*.changes'].first}"
+  end
+
+  desc 'sets the new version on apropriate files'
+  task :set_version, :release_kind do |t, args|
+    next if File.exist?("tmp/pending-release")
+    release_kind = args[:release_kind] || 'stable'
+
+    if release_kind == 'test'
+      version_question = "Release candidate of which version: "
+      distribution = 'squeeze-test'
+    else
+      version_question = "Version that is being released: "
+      distribution = 'unstable'
+    end
+
+    version_name = new_version = ask(version_question)
+
+    if release_kind == 'test'
+      timestamp = Time.now.strftime('%Y%m%d%H%M%S')
+      version_name += "~rc#{timestamp}"
+    end
+    release_message = ask("Release message")
+
+    sh 'git checkout debian/changelog lib/noosfero.rb'
+    sh "sed -i \"s/VERSION = '[^']*'/VERSION = '#{version_name}'/\" lib/noosfero.rb"
+    sh "dch --newversion #{version_name} --distribution #{distribution} --force-distribution '#{release_message}'"
+
+    sh 'git diff debian/changelog lib/noosfero.rb'
+    if confirm("Commit version bump to #{version_name} on #{distribution} distribution")
+      sh 'git add debian/changelog lib/noosfero.rb'
+      sh "git commit -m 'Bumping version #{version_name}'"
+      sh "touch tmp/pending-release"
+    else
+      sh 'git checkout debian/changelog lib/noosfero.rb'
+      abort 'Version update not confirmed. Reverting changes and exiting...'
+    end
+  end
+
+  desc "uploads the packages to the repository"
+  task :upload_packages, :release_kind do |t, args|
+    release_kind = args[:release_kind] || 'stable'
+    sh "dput --unchecked #{release_kind} #{Dir['pkg/*.changes'].first}"
+  end
+
   desc 'prepares a release tarball'
-  task :release => [ :check_tag, :check_debian_package, 'noosfero:error-pages:translate', :authors, :check_repo, :package, :debian_packages ] do
-    sh "git tag #{version}"
+  task :release, :release_kind do |t, args|
+    release_kind = args[:release_kind] || 'stable'
+
+    Rake::Task['noosfero:set_version'].invoke(release_kind)
+
+    puts "==> Checking tags..."
+    Rake::Task['noosfero:check_tag'].invoke
+
+    puts "==> Checking debian package version..."
+    Rake::Task['noosfero:check_debian_package'].invoke
+
+    puts "==> Checking translations..."
+    Rake::Task['noosfero:error-pages:translate'].invoke
+    if !pendencies_on_public_errors[:ok]
+      commit_changes(['public/500.html', 'public/503.html'], 'Updating public error pages')
+    end
+
+    puts "==> Updating authors..."
+    Rake::Task['noosfero:authors'].invoke
+
+    puts "==> Checking repository..."
+    Rake::Task['noosfero:check_repo'].invoke
+
+    puts "==> Preparing debian packages..."
+    Rake::Task['noosfero:debian_packages'].invoke
+    if confirm('Do you want to upload the packages')
+      puts "==> Uploading debian packages..."
+      Rake::Task['noosfero:upload_packages'].invoke(release_kind)
+    end
+
+    sh "git tag #{version.gsub('~','-')}"
+    push_tags = confirm('Push new version tag')
+    if push_tags
+      repository = ask('Repository name', 'origin')
+      puts "==> Uploading tags..."
+      sh "git push #{repository} #{version.gsub('~','-')}"
+    end
+
+    sh "rm tmp/pending-release" if Dir["tmp/pending-release"].first.present?
+
     puts "I: please upload the tarball and Debian packages to the website!"
-    puts "I: please push the tag for version #{version} that was just created!"
+    puts "I: please push the tag for version #{version} that was just created!" if !push_tags
+    puts "I: notify the community about this sparkling new version!"
   end
 
   desc 'Build Debian packages'
@@ -89,8 +266,6 @@ EOF
     mkdir "#{target}/tmp"
     ln_s '../../../vendor/rails', "#{target}/vendor/rails"
     cp "#{target}/config/database.yml.sqlite3", "#{target}/config/database.yml"
-    # solr inclusion
-    Dir.chdir(target) { sh "rake solr:download" }
 
     sh "cd #{target} && dpkg-buildpackage -us -uc -b"
   end
