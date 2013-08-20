@@ -1,8 +1,6 @@
 notifications:
-  irc: "irc.freenode.org#noosfero"
   email:
     - braulio@eita.org.br
-    #- noosfero-dev@listas.softwarelivre.org
 
 language: ruby
 rvm:
