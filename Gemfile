@@ -45,12 +45,9 @@ group :databases do
 end
 
 group :test do
-  gem 'system_timer'
   gem 'tidy'
   gem 'rcov'
-end
-
-group :test do
+  gem 'system_timer'
   gem 'rspec', '1.2.9'
   gem 'rspec-rails', '1.2.9'
 end
