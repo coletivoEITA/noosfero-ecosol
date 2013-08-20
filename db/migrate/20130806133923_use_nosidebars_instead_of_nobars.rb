@@ -4,9 +4,10 @@ class UseNosidebarsInsteadOfNobars < ActiveRecord::Migration
       profile.layout_template = 'nosidebars' if profile.layout_template == 'nobars'
       profile.save false
     end
-    e = Environment.default
-    e.layout_template = 'nosidebars'
-    e.save!
+    if e = Environment.default
+      e.layout_template = 'nosidebars'
+      e.save!
+    end
   end
 
   def self.down

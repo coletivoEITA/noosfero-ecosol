@@ -8,7 +8,9 @@ require_dependency "#{File.dirname __FILE__}/ext/article"
 require_dependency "#{File.dirname __FILE__}/ext/noosfero/plugin"
 
 # solr indexed models needs to be loaded
-require "#{File.dirname __FILE__}/../models/sniffer_plugin/opportunity"
+if ActiveRecord::Base.connection.table_exists? "sniffer_plugin_opportunities"
+  require "#{File.dirname __FILE__}/../models/sniffer_plugin/opportunity"
+end
 
 class SnifferPlugin < Noosfero::Plugin
 
