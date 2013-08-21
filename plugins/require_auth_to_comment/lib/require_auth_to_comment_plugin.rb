@@ -4,7 +4,7 @@ class RequireAuthToCommentPlugin < Noosfero::Plugin
 
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::FormTagHelper
-  include ApplicationHelper
+  include FormsHelper
 
   def self.plugin_name
     "RequireAuthToCommentPlugin"
@@ -27,7 +27,7 @@ class RequireAuthToCommentPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['hide_comment_form.js']
+    ['hide_comment_form.js', 'jquery.livequery.min.js']
   end
 
   def body_beginning
