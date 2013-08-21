@@ -240,16 +240,11 @@
           cycle_orders_report_d: "Cycle Orders Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
           new_open_cycle: "New open cycle: "
           products_report_date_: "Products Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
-      profile: 
-        order_controller: 
-          can_not_confirm_your_: "Can not confirm. Your order list is empty"
-          login_first: "Login first"
-          order_cancelled: "Order cancelled"
-          order_confirmed: "Order confirmed"
-          order_removed: "Order removed"
-          please_login_first: "Please login first"
-          you_are_not_the_owner: "You are not the owner of this order"
     lib: 
+      ext:
+        orders_plugin:
+          order:
+            sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
       a_solidary_distributi: "A solidary distribution plugin."
       distribution_display_helper: 
         /: /
@@ -317,13 +312,6 @@
     models: 
       header_image: 
         fn_of_uploaded_file_w: "%{fn} of uploaded file was larger than the maximum size of 500.0 KB"
-      order: 
-        order_cancelled: "Order cancelled"
-        order_confirmed: "Order confirmed"
-        order_in_progress: "Order in progress"
-        order_not_confirmed: "Order not confirmed"
-        order_planned: "Order planned"
-        sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
       session: 
         code_name: "%{code}. %{name}"
         delivery_period_befor: "Delivery' period before orders' period"
@@ -472,16 +460,15 @@
           before_the_closing: "(before the closing)"
           change_order: "change order"
           edit_your_orders: "Edit your orders"
-          login: Login.
+          login: login
           new_order: "New order"
-          or: "Or "
           orders_from_another_m: "Orders from another member"
           orders_from_consumer_: "Orders from \"%{consumer}\" on this cycle"
           send_message_to_the_m: "send message to the managers"
           sign_up: "sign up"
           this_cycle_is_already: "This cycle is already closed."
           this_cycle_is_not_ope: "This cycle is not open yet."
-          to_place_an_order_you: "To place an order you need to be logged in and registered in the collective."
+          to_place_an_order_you: "To place an order you need to be logged in and registered in the collective. Please %{login} or %{signup}."
           you_haven_t_placed_an: "You haven't placed any order on this cycle yet."
           you_still_can: "You still can:"
           your_order_is_confirm: "Your order is confirmed and registered. Please follow the guidelines of the delivery method below, so that it happens without problems."
@@ -845,3 +832,22 @@
           x: X
         select: 
           add_a_delivery_method: "Add a delivery method to the Orders' Cycle"
+
+  orders_plugin:
+    controllers:
+      profile:
+        consumer: 
+          can_not_confirm_your_: "Can not confirm. Your order list is empty"
+          login_first: "Login first"
+          order_cancelled: "Order cancelled"
+          order_confirmed: "Order confirmed"
+          order_removed: "Order removed"
+          please_login_first: "Please login first"
+          you_are_not_the_owner: "You are not the owner of this order"
+    models:
+      order: 
+        order_cancelled: "Order cancelled"
+        order_confirmed: "Order confirmed"
+        order_in_progress: "Order in progress"
+        order_not_confirmed: "Order not confirmed"
+        order_planned: "Order planned"

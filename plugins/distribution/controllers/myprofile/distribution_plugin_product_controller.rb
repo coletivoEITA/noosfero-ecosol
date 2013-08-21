@@ -1,3 +1,6 @@
+# workaround for plugin class scope problem
+require_dependency 'distribution_plugin/display_helper'
+
 class DistributionPluginProductController < SuppliersPluginProductController
 
   no_design_blocks
@@ -6,7 +9,7 @@ class DistributionPluginProductController < SuppliersPluginProductController
   before_filter :set_admin_action
 
   helper ApplicationHelper
-  helper DistributionPlugin::DistributionDisplayHelper
+  helper DistributionPlugin::DisplayHelper
 
   def session_filter
     @session = DistributionPlugin::Session.find params[:session_id]

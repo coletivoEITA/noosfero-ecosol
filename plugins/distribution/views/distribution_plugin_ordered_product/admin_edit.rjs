@@ -1,3 +1,0 @@
-page.replace_html "product-price-total-#{@ordered_product.id}", :partial => 'distribution_plugin_ordered_product/price_total', :locals => {:product => @ordered_product}
-page.replace_html "order-total-#{@order.id}", :partial => 'distribution_plugin_order/total', :locals => {:order => @order, :dirty => true}
-

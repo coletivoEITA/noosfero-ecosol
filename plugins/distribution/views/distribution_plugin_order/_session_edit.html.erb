@@ -18,9 +18,9 @@
       <%= link_to_function t('distribution_plugin.views.order._session_edit.cancel'), :class => 'toggle-edit' %>
     </div>
   <% else %>
-    <% form_remote_for :order, order, :url => {:controller => :distribution_plugin_order, :action => :session_edit, :id => order.id} do |f| %>
+    <% form_remote_for :order, order, :url => {:action => :session_edit, :id => order.id} do |f| %>
 
-      <%= render :partial => 'distribution_plugin_ordered_product/index', :locals => {:order => order, :f => f} %>
+      <%= render :partial => 'orders_plugin_product/index', :locals => {:order => order, :f => f} %>
       <div class="cleaner"></div>
 
       <% if order.session.orders? %>
@@ -57,7 +57,7 @@
     <%# link_to_function t('distribution_plugin.views.order._session_edit.add_product'), '' if order.session.orders? %>
     <%# link_to_function t('distribution_plugin.views.order._session_edit.see_redistribution'), '' unless order.session.orders? %>
     <%# link_to_function t('distribution_plugin.views.order._session_edit.see_delivery'), '' unless order.session.orders? %>
-    <%= link_to t('distribution_plugin.views.order._session_edit.edit_on_the_order_pag'), {:controller => :distribution_plugin_order, :action => :edit, :id => order.id}, :target => '_blank' %>
+    <%= link_to t('distribution_plugin.views.order._session_edit.edit_on_the_order_pag'), {:action => :edit, :id => order.id}, :target => '_blank' %>
     <%= colorbox_link_to t('distribution_plugin.views.order._session_edit.message_to_member'), {:controller => :distribution_plugin_message, :action => :new_to_consumer_for_order, :order_id => order.id} %>
     <strong><%= t('distribution_plugin.views.order._session_edit.actions') %></strong>
 

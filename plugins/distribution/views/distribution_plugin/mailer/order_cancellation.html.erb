@@ -1,4 +1,8 @@
-<% extend DistributionPlugin::DistributionDisplayHelper %>
+<%
+  # workaround for plugin class scope problem
+  require_dependency 'distribution_plugin/display_helper'
+  extend DistributionPlugin::DisplayHelper
+%>
 
 <!DOCTYPE html>
 <html>

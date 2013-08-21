@@ -402,10 +402,10 @@ distribution = {
     });
   },
 
-  toggleCancelledOrders: function (el) {
+  toggleCancelledOrders: function () {
     jQuery('.plugin-distribution #show-cancelled-orders a').toggle();
     jQuery('.plugin-distribution #hide-cancelled-orders a').toggle();
-    jQuery('.plugin-distribution .consumer-order:not(.edit) .status-cancelled').toggle()
+    jQuery('.plugin-distribution .consumer-order:not(.edit) .status-cancelled').toggle();
   },
 }
 

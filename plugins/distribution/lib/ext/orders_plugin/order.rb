@@ -28,7 +28,7 @@ class OrdersPlugin::Order
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.session.orders }
 
-  validates_presence_of :profile
+  validates_presence_of :profilen
 
   def delivery?
     self.session.delivery?
@@ -41,7 +41,7 @@ class OrdersPlugin::Order
   end
 
   def code
-    I18n.t('distribution_plugin.models.order.sessioncode_ordercode') % {
+    I18n.t('distribution_plugin.lib.ext.orders_plugin.order.sessioncode_ordercode') % {
       :sessioncode => self.session.code, :ordercode => self['code']
     }
   end

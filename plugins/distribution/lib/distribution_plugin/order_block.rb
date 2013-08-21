@@ -1,3 +1,6 @@
+# workaround for plugin class scope problem
+require_dependency 'distribution_plugin/display_helper'
+
 class DistributionPlugin::OrderBlock < Block
 
  def self.short_description
@@ -31,8 +34,7 @@ class DistributionPlugin::OrderBlock < Block
 
    lambda do
      consumer = current_user.is_a?(User) ? DistributionPlugin::Node.find_or_create(current_user.person) : nil
-     @controller.append_view_path DistributionPlugin::.view_path
-     extend DistributionPlugin::DistributionDisplayHelper
+     extend DistributionPlugin::DisplayHelper
      render :file => 'blocks/distribution_plugin_order', :locals => { :block => block, :node => n, :consumer => consumer }
    end
  end

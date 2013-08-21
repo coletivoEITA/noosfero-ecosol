@@ -5,7 +5,7 @@
   <%= render :partial => 'distribution_plugin_session/view_products', :locals => {:session => @session, :order => @order} %>
 
   <div id="order-column">
-    <%= render :partial => 'distribution_plugin_order/consumer_orders' %>
+    <%= render :partial => 'consumer_orders' %>
   </div>
 
   <%= javascript_include_tag '/plugins/distribution/waypoints.min.js' %>

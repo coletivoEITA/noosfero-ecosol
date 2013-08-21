@@ -1,3 +1,6 @@
+# workaround for plugin class scope problem
+require_dependency 'distribution_plugin/display_helper'
+
 class DistributionPluginSupplierController < SuppliersPluginMyprofileController
 
   no_design_blocks
@@ -6,7 +9,7 @@ class DistributionPluginSupplierController < SuppliersPluginMyprofileController
   before_filter :set_admin_action
 
   helper ApplicationHelper
-  helper DistributionPlugin::DistributionDisplayHelper
+  helper DistributionPlugin::DisplayHelper
 
   protected
 

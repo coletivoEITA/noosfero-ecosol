@@ -3,7 +3,7 @@
     <%= t('distribution_plugin.views.order._consumer_orders.orders_from_consumer_') % {:consumer => @consumer.name} %>
   <% elsif @consumer %>
     <%= t('distribution_plugin.views.order._consumer_orders.your_orders_on_this_c') %>
-    <%= link_to t('distribution_plugin.views.order._consumer_orders.new_order'), {:controller => :distribution_plugin_order, :action => :new, :session_id => @session.id} if !@admin_edit and @session.orders? %>
+    <%= link_to t('distribution_plugin.views.order._consumer_orders.new_order'), {:action => :new, :session_id => @session.id} if !@admin_edit and @session.orders? %>
   <% end %>
 </h3>
 
@@ -16,21 +16,20 @@
         :consumer => @consumer.name } %>
     </div>
     <div class="order-message-actions">
-      <%= link_to t('distribution_plugin.views.order._consumer_orders.edit_your_orders'), {:controller => :distribution_plugin_order, :action => :edit, :session_id => @session.id} %>&emsp;
-      <%# link_to t('distribution_plugin.views.order._consumer_orders.orders_from_another_m'), {:controller => :distribution_plugin_order, :action => :reopen, :id => @order.id} %>
+      <%= link_to t('distribution_plugin.views.order._consumer_orders.edit_your_orders'), {:action => :edit, :session_id => @session.id} %>&emsp;
+      <%# link_to t('distribution_plugin.views.order._consumer_orders.orders_from_another_m'), {:action => :reopen, :id => @order.id} %>
       <%= link_to t('distribution_plugin.views.order._consumer_orders.administration_of_thi'), {:controller => :distribution_plugin_session, :action => :edit, :id => @session.id} %>&emsp;
     </div>
   </div>
   <div id="order-place-new" class="admin">
-    <%= link_to t('distribution_plugin.views.order._consumer_orders.new_order'), {:controller => :distribution_plugin_order, :action => :admin_new, :consumer_id => @order.consumer.id, :session_id => @session.id} if @session.orders? %>
+    <%= link_to t('distribution_plugin.views.order._consumer_orders.new_order'), {:action => :admin_new, :consumer_id => @order.consumer.id, :session_id => @session.id} if @session.orders? %>
   </div>
 <% else %>
   <% if @consumer.nil? %>
-    <% message = t('distribution_plugin.views.order._consumer_orders.to_place_an_order_you') %>
-    <% message += colorbox_link_to t('distribution_plugin.views.order._consumer_orders.login'), login_url, 'inlineLoginBox', :id => 'link_login' %>
-    <% unless @plugins.dispatch(:allow_user_registration).include?(false) %>
-      <% message += t('distribution_plugin.views.order._consumer_orders.or') + link_to(t('distribution_plugin.views.order._consumer_orders.sign_up'), :controller => 'account', :action => 'signup')%>
-    <% end %>
+    <% message = t('distribution_plugin.views.order._consumer_orders.to_place_an_order_you') % {
+      :login => colorbox_link_to(t('distribution_plugin.views.order._consumer_orders.login'), login_url, :id => 'link_login'),
+      :signup => link_to(t('distribution_plugin.views.order._consumer_orders.sign_up'), :controller => 'account', :action => 'signup'),
+    } %>
   <% else %>
     <% if @session.orders? %>
       <% if @consumer_orders.count == 0 %>
@@ -71,12 +70,12 @@
           <div class="order-message-actions">
             <div><%= t('distribution_plugin.views.order._consumer_orders.you_still_can') %></div>
             <% if @session.orders? %>
-              <%= link_to t('distribution_plugin.views.order._consumer_orders.change_order'), {:controller => :distribution_plugin_order, :action => :reopen, :id => order.id}  %>
+              <%= link_to t('distribution_plugin.views.order._consumer_orders.change_order'), {:action => :reopen, :id => order.id}  %>
               <%= t('distribution_plugin.views.order._consumer_orders.before_the_closing') %>&emsp;
             <% end %>
             <br>
             <% unless order.cancelled? %>
-              <%= link_to t('distribution_plugin.views.order._delivery.cancel_order'), {:controller => :distribution_plugin_order, :action => :cancel, :id => order.id} %>
+              <%= link_to t('distribution_plugin.views.order._delivery.cancel_order'), {:action => :cancel, :id => order.id} %>
               <br>
             <% end %>
             <%= colorbox_link_to t('distribution_plugin.views.order._consumer_orders.send_message_to_the_m'), {:controller => :distribution_plugin_message, :action => :new_to_admins} %>
@@ -85,7 +84,7 @@
       <% end %>
 
       <div id="order-products">
-        <%= render :partial => 'products', :locals => {:order => order} %>
+        <%= render :partial => 'orders_plugin_consumer/products', :locals => {:order => order} %>
       </div>
 
       <div id="delivery-box">

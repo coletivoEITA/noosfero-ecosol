@@ -250,16 +250,11 @@
           cycle_orders_report_d: "Relatório de pedidos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
           new_open_cycle: "Novo ciclo aberto"
           products_report_date_: "Relatório de produtos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
-      profile: 
-        order_controller: 
-          can_not_confirm_your_: "Não pode confirmar. Sua lista de pedido está vazia"
-          login_first: "Faça login primeiro"
-          order_cancelled: "Pedido cancelado"
-          order_confirmed: "Pedido confirmado"
-          order_removed: "Pedido removido"
-          please_login_first: "Please login first"
-          you_are_not_the_owner: "Você não é o proprietário desse pedido"
     lib: 
+      ext:
+        orders_plugin:
+          order:
+            sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
       a_solidary_distributi: "Um plugin de distribuição solidária"
       distribution_display_helper: 
         /: /
@@ -325,13 +320,6 @@
     models: 
       header_image: 
         fn_of_uploaded_file_w: "%{fn} do arquivo enviado é maior que o máximo permitido de 500.0 KB"
-      order: 
-        order_cancelled: "Pedido cancelado"
-        order_confirmed: "Pedido confirmado"
-        order_in_progress: "Pedido em andamento"
-        order_not_confirmed: "Pedido não confirmado"
-        order_planned: "Pedido planejado"
-        sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
       session: 
         code_name: "%{code}. %{name}"
         delivery_period_befor: "Período de entrega antes do período de pedidos"
@@ -480,16 +468,15 @@
           before_the_closing: "(antes do fechamento)"
           change_order: "Mudar o pedido"
           edit_your_orders: "Edite seus pedidos"
-          login: Login.
+          login: login
           new_order: "Novo pedido"
-          or: "Or "
           orders_from_another_m: "Orders from another member"
           orders_from_consumer_: "Pedidos do \"%{consumer}\" neste ciclo"
           send_message_to_the_m: "Enviar mensagem para gestores"
-          sign_up: Registre-se
+          sign_up: registre-se
           this_cycle_is_already: "Este ciclo já foi fechado."
           this_cycle_is_not_ope: "Este ciclo não está aberto."
-          to_place_an_order_you: "Para fazer um pedido você precisa estar logado e registrado no coletivo."
+          to_place_an_order_you: "Para fazer um pedido você precisa estar logado e registrado no coletivo. Por favor faça %{login} ou %{signup}."
           you_haven_t_placed_an: "Você ainda não fez pedidos neste ciclo."
           you_still_can: "Você ainda pode:"
           your_order_is_confirm: "Seu pedido está confirmado e registrado. Por favor, siga as diretrizes do método de entrega abaixo para que isso aconteça sem problemas."
@@ -853,3 +840,22 @@
           x: X
         select: 
           add_a_delivery_method: "Adicionar um método de entrega ao ciclo de pedidos"
+
+  orders_plugin:
+    controllers:
+      profile:
+        consumer: 
+          can_not_confirm_your_: "Não foi possível confirmar. Sua lista de pedido está vazia"
+          login_first: "Faça login primeiro"
+          order_cancelled: "Pedido cancelado"
+          order_confirmed: "Pedido confirmado"
+          order_removed: "Pedido removido"
+          please_login_first: "Please login first"
+          you_are_not_the_owner: "Você não é o proprietário desse pedido"
+    models:
+      order: 
+        order_cancelled: "Pedido cancelado"
+        order_confirmed: "Pedido confirmado"
+        order_in_progress: "Pedido em andamento"
+        order_not_confirmed: "Pedido não confirmado"
+        order_planned: "Pedido planejado"

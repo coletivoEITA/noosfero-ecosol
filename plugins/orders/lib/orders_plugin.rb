@@ -15,7 +15,7 @@ class OrdersPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['orders']
+    ['toggle_edit', 'orders']
   end
 
 end
