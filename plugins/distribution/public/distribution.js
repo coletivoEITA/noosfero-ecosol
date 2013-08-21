@@ -349,11 +349,6 @@ distribution = {
     toggle_edit.editing().find('.quantity-label').toggle(!toggle_edit.isEditing());
     toggle_edit.editing().find('.quantity-entry').toggle(toggle_edit.isEditing());
   },
-  ordered_product_edit: function () {
-    toggle_edit.editing().find('.more-actions').toggle(toggle_edit.isEditing());
-    if (toggle_edit.isEditing())
-      toggle_edit.editing().find('.product-quantity input').focus();
-  },
 
   checkbox_change: function () {
     jQuery(this).attr('checked', this.checked ? 'checked' : null);

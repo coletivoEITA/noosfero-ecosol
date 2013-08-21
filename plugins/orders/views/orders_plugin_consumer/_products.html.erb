@@ -1,0 +1,3 @@
+<% form_remote_for :order, order, :url => {:action => :edit, :id => order.id} do |f| %>
+  <%= render :partial => "orders_plugin_product/index", :locals => {:order => order, :f => f} %>
+<% end %>

@@ -519,21 +519,12 @@
         _status: 
           code_status_message: "%{code} %{status_message}"
           open_it: abrir
-        _total: 
-          total: Total
         index: 
           code: "%{code}."
           orders_cycles: "Ciclos de pedidos"
           place_an_order: "Faça um pedido"
           there_s_no_open_sessi: "Nã há ciclos abertos"
           your_orders: "Seus pedidos:"
-      ordered_product: 
-        _edit: 
-          remove_from_order: "Remover do pedido"
-          see_product_details: "Ver detalhes do produto"
-          this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
-        _index: 
-          empty_order: "Pedido vazio"
       product: 
         _order_edit: 
           add: Adicionar
@@ -859,3 +850,14 @@
         order_in_progress: "Pedido em andamento"
         order_not_confirmed: "Pedido não confirmado"
         order_planned: "Pedido planejado"
+    views:
+      consumer:
+        _total: 
+          total: Total
+      product: 
+        _edit: 
+          remove_from_order: "Remover do pedido"
+          see_product_details: "Ver detalhes do produto"
+          this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
+        _index: 
+          empty_order: "Pedido vazio"

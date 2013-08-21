@@ -6,5 +6,5 @@ page.visual_effect :scrollTo, "supplier-product-errors-"+@product.id.to_s, :dura
 
 unless @product.errors.any? or @product.supplier_product.errors.any?
   page.replace_html "our-product-#{@product.id}", :partial => 'suppliers_plugin_product/edit_line', :locals => {:product => @product}
-  page << "distribution.value_row.reload();" unless @product.new_record?
+  page << "toggle_edit.value_row.reload();" unless @product.new_record?
 end

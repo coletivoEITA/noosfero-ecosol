@@ -511,21 +511,12 @@
         _status: 
           code_status_message: "%{code} %{status_message}"
           open_it: "open it"
-        _total: 
-          total: Total
         index: 
           code: "%{code}."
           orders_cycles: "Orders' cycles"
           place_an_order: "Place an order"
           there_s_no_open_sessi: "There's no open cycle"
           your_orders: "Your orders:"
-      ordered_product: 
-        _edit: 
-          remove_from_order: "remove from order"
-          see_product_details: "see product details"
-          this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
-        _index: 
-          empty_order: "Empty order"
       product: 
         _order_edit: 
           add: Add
@@ -851,3 +842,14 @@
         order_in_progress: "Order in progress"
         order_not_confirmed: "Order not confirmed"
         order_planned: "Order planned"
+    views:
+      consumer:
+        _total: 
+          total: Total
+      product: 
+        _edit: 
+          remove_from_order: "remove from order"
+          see_product_details: "see product details"
+          this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
+        _index: 
+          empty_order: "Empty order"
