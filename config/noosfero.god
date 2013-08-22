@@ -7,6 +7,9 @@ PidDir = 'tmp/pids'
 PidPath = "#{RailsRoot}/#{PidDir}"
 God.pid_file_directory = PidPath
 
+# force load (necessary on xen vms)
+God::EventHandler.load
+
 God::Contacts::Email.defaults do |d|
   d.from_email = "god@#{`hostname`}"
   d.delivery_method = :sendmail
@@ -106,7 +109,8 @@ def monitor_thin
         w.send "#{command}=", "#{w.group} #{command} -C #{file} -o #{port}"
       end
 
-      w.stop_grace = (timeout * (w.stop_grace+3)).seconds if timeout = config['timeout'] and timeout > 0
+      timeout = config['timeout']
+      w.stop_grace = (timeout * (w.stop_grace+3)).seconds if timeout > 0
     end
   end
 end
