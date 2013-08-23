@@ -264,8 +264,6 @@
         start: Início
       mailer: 
         node_subject: "[%{node}] %{subject}"
-        order_was_confirmed: "[%{node}] Seu pedido foi confirmado"
-        order_was_cancelled: "[%{node}] Seu pedido foi cancelado"
         order_was_changed: "[%{node}] Seu pedido foi modificado"
       order_block: 
         distribution_orders_c: "Ciclos de pedidos para consumidores"
@@ -369,10 +367,6 @@
           hello_member_of_name: "Olá membros da comunidade %{name}!"
           the_administrator_let: "O administrador deixou uma mensagem sobre este ciclo"
           the_cycle_description: "A descrição do ciclo é.."
-        order_cancellation: 
-          dear_name: "Olá %{name},"
-          greetings: "Saudações,"
-          your_order_made_on_co: "Seu pedido feito no coletivo %{node} em %{date} foi cancelado com sucesso."
         order_change_notification: 
           a_service_of_s: "Um serviço de %s."
           hi_name: "Olá %{name}!"
@@ -381,15 +375,6 @@
           the_administrator_lef: "O administrador deixou uma mensagem para esta mudança"
           the_following_product: "Os seguintes produtos tiveram suas quantidades mudadas:"
           your_order_id_was_cha: "Your order %{id} was changed by an %{supplier}'s administrator."
-        order_confirmation: 
-          attention_to_the_foll: "Atenção às instruções de entrega a seguir:"
-          dear_name: "Olá %{name},"
-          greetings: "Saudações,"
-          order_code_of_node: "Pedido %{code} de %{node}"
-          order_data_confirmed: "Pedido confirmado"
-          the_delivery_period_w: "O período de entrega ocorrerá em %{date}."
-          your_order_can_be_che: "Seu pedido pode ser checado no seguinte link:"
-          your_order_made_on_co: "Seu pedido feito no coletivo %{node} em %{date} foi confirmado."
       message: 
         _fields: 
           message: Mensagem
@@ -815,6 +800,9 @@
 
   orders_plugin:
     lib:
+      mailer:
+        order_was_confirmed: "[%{name}] Seu pedido foi confirmado"
+        order_was_cancelled: "[%{name}] Seu pedido foi cancelado"
       date_helper:
         a: "%A"
         b_d_at_hh_m: "%d/%m/%y às %H:%M"
@@ -863,3 +851,17 @@
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
         _index: 
           empty_order: "Pedido vazio"
+      mailer:
+        order_confirmation: 
+          attention_to_the_foll: "Atenção às instruções de entrega a seguir:"
+          dear_name: "Olá %{name},"
+          greetings: "Saudações,"
+          order_code_of_node: "Pedido %{code} de %{name}"
+          order_data_confirmed: "Pedido confirmado"
+          the_delivery_period_w: "O período de entrega ocorrerá em %{date}."
+          your_order_can_be_che: "Seu pedido pode ser checado no seguinte link:"
+          your_order_made_on_co: "Seu pedido feito no coletivo %{name} em %{date} foi confirmado."
+        order_cancellation: 
+          dear_name: "Olá %{name},"
+          greetings: "Saudações,"
+          your_order_made_on_co: "Seu pedido feito no coletivo %{name} em %{date} foi cancelado com sucesso."

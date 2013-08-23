@@ -1,12 +1,18 @@
+# workaround for plugin class scope problem
+require_dependency 'orders_plugin/display_helper'
+
 class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
 
+  add_template_helper OrdersPlugin::DisplayHelper
+
   def order_confirmation order, host_with_port
-    node = order.session.node
-    domain = node.profile.hostname || node.profile.environment.default_hostname
-    recipients    profile_recipients(order.consumer.profile)
+    profile = order.profile
+    domain = profile.hostname || profile.environment.default_hostname
+
+    recipients    profile_recipients(order.consumer)
     from          'no-reply@' + domain
-    reply_to      profile_recipients(node.profile)
-    subject       I18n.t('distribution_plugin.lib.mailer.order_was_confirmed') % {:node => node.name}
+    reply_to      profile_recipients(profile)
+    subject       I18n.t('orders_plugin.lib.mailer.order_was_confirmed') % {:name => profile.name}
     content_type  'text/html'
     body :node => node,
          :order => order,
@@ -16,17 +22,28 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
   end
 
   def order_cancellation order
-    node = order.session.node
-    domain = node.profile.hostname || node.profile.environment.default_hostname
-    recipients    profile_recipients(order.consumer.profile)
+    profile = order.profile
+    domain = profile.hostname || profile.environment.default_hostname
+
+    recipients    profile_recipients(order.consumer)
     from          'no-reply@' + domain
-    reply_to      profile_recipients(node.profile)
-    subject       I18n.t('distribution_plugin.lib.mailer.order_was_cancelled') % {:node => node.name}
+    reply_to      profile_recipients(profile)
+    subject       I18n.t('orders_plugin.lib.mailer.order_was_cancelled') % {:name => profile.name}
     content_type  'text/html'
-    body :node => node,
+    body :profile => profile,
          :order => order,
          :consumer => order.consumer,
-         :environment => node.profile.environment
+         :environment => profile.environment
+  end
+
+  protected
+
+  def profile_recipients profile
+    if profile.person?
+      profile.contact_email
+    else
+      profile.admins.map{ |p| p.contact_email }
+    end
   end
 
 end

@@ -256,8 +256,6 @@
         product_from_which_su: "Product from which supplier?"
       mailer: 
         node_subject: "[%{node}] %{subject}"
-        order_was_confirmed: "[%{node}] Your order was confirmado"
-        order_was_cancelled: "[%{node}] Your order was cancelado"
         order_was_changed: "[%{node}] Your order was modificado"
       order_block: 
         distribution_orders_c: "Distribution orders' cycles for members"
@@ -361,10 +359,6 @@
           hello_member_of_name: "Hello member of %{name},"
           the_administrator_let: "The administrator let a message about this cycle"
           the_cycle_description: "The cycle description is.."
-        order_cancellation: 
-          dear_name: "Dear %{name},"
-          greetings: Greetings
-          your_order_made_on_co: "Your order made on collective %{node} in %{date} was successfully cancelled."
         order_change_notification: 
           a_service_of_s: "A service of %s."
           hi_name: "Hi %{name},"
@@ -373,15 +367,6 @@
           the_administrator_lef: "The administrator left a message for this change"
           the_following_product: "The following products had their quantity changed:"
           your_order_id_was_cha: "Your order %{id} was changed by an %{supplier}'s administrator."
-        order_confirmation: 
-          attention_to_the_foll: "Attention to the following delivery instructions:"
-          dear_name: "Dear %{name},"
-          greetings: Greetings
-          order_code_of_node: "Order %{code} of %{node}"
-          order_data_confirmed: "Order data confirmed:"
-          the_delivery_period_w: "The delivery period will occur %{date}."
-          your_order_can_be_che: "Your order can be checked in the following link:"
-          your_order_made_on_co: "Your order made on collective %{node} in %{date} is confirmed."
       message: 
         _fields: 
           message: Message
@@ -807,6 +792,9 @@
 
   orders_plugin:
     lib:
+      mailer:
+        order_was_confirmed: "[%{name}] Your order was confirmmed"
+        order_was_cancelled: "[%{name}] Your order was cancelled"
       date_helper:
         a: "%A"
         b_d_at_hh_m: "%B %d, at %Hh%M"
@@ -855,3 +843,17 @@
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
         _index: 
           empty_order: "Empty order"
+      mailer:
+        order_confirmation: 
+          attention_to_the_foll: "Attention to the following delivery instructions:"
+          dear_name: "Dear %{name},"
+          greetings: Greetings
+          order_code_of_node: "Order %{code} of %{name}"
+          order_data_confirmed: "Order data confirmed:"
+          the_delivery_period_w: "The delivery period will occur %{date}."
+          your_order_can_be_che: "Your order can be checked in the following link:"
+          your_order_made_on_co: "Your order made on collective %{name} in %{date} is confirmed."
+        order_cancellation: 
+          dear_name: "Dear %{name},"
+          greetings: Greetings
+          your_order_made_on_co: "Your order made on collective %{name} in %{date} was successfully cancelled."

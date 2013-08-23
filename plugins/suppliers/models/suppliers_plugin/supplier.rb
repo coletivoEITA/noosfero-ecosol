@@ -94,7 +94,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   after_create :complete
   def complete
     if dummy?
-      consumer.profile.admins.each{ |a| profile.add_admin(a) } if profile.dummy?
+      consumer.admins.each{ |a| profile.add_admin(a) } if profile.dummy?
     end
   end
 

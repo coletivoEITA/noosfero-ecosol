@@ -39,7 +39,7 @@ class OrdersPluginProductController < MyProfileController
       min = @ordered_product.product.minimum_selleable rescue nil
       if min and @quantity_asked < min
         @quantity_asked = min
-        @quantity_asked_less_than_minimum = true
+        @quantity_asked_less_than_minimum = @ordered_product.id || true
       end
     else
       @ordered_product.destroy if @ordered_product
