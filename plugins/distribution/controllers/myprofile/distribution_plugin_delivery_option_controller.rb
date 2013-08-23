@@ -2,8 +2,9 @@ require_dependency 'delivery_plugin' #necessary to load extensions
 
 class DistributionPluginDeliveryOptionController < DeliveryPluginOptionController
 
-  no_design_blocks
+  include DistributionPlugin::ControllerHelper
 
+  no_design_blocks
   before_filter :load_node
   before_filter :set_admin_action
 
@@ -11,8 +12,6 @@ class DistributionPluginDeliveryOptionController < DeliveryPluginOptionControlle
   helper DistributionPlugin::DistributionDisplayHelper
 
   protected
-
-  include DistributionPlugin::ControllerHelper
 
   # use superclass instead of child
   def url_for options

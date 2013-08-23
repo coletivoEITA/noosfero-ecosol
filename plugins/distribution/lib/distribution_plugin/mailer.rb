@@ -1,6 +1,6 @@
 class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
 
-  def order_change_notification(node, order, changed, removed, message = nil)
+  def order_change_notification node, order, changed, removed, message = nil
     domain = node.profile.hostname || node.profile.environment.default_hostname
     recipients    profile_recipients(order.consumer.profile)
     from          'no-reply@' + domain
@@ -15,36 +15,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
          :environment => node.profile.environment
   end
 
-  def order_confirmation(order,host_with_port)
-    node = order.session.node
-    domain = node.profile.hostname || node.profile.environment.default_hostname
-    recipients    profile_recipients(order.consumer.profile)
-    from          'no-reply@' + domain
-    reply_to      profile_recipients(node.profile)
-    subject       I18n.t('distribution_plugin.lib.mailer.order_was_confirmed') % {:node => node.name}
-    content_type  'text/html'
-    body :node => node,
-         :order => order,
-         :consumer => order.consumer,
-         :environment => node.profile.environment,
-         :host_with_port => host_with_port
-  end
-
-  def order_cancellation(order)
-    node = order.session.node
-    domain = node.profile.hostname || node.profile.environment.default_hostname
-    recipients    profile_recipients(order.consumer.profile)
-    from          'no-reply@' + domain
-    reply_to      profile_recipients(node.profile)
-    subject       I18n.t('distribution_plugin.lib.mailer.order_was_cancelled') % {:node => node.name}
-    content_type  'text/html'
-    body :node => node,
-         :order => order,
-         :consumer => order.consumer,
-         :environment => node.profile.environment
-  end
-
-  def message_to_consumer_for_order(node, order, subject, message = nil)
+  def message_to_consumer_for_order node, order, subject, message = nil
     domain = node.profile.hostname || node.profile.environment.default_hostname
     recipients    profile_recipients(order.consumer.profile)
     from          'no-reply@' + domain
@@ -58,7 +29,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
          :environment => node.profile.environment
   end
 
-  def message_to_consumer(node, consumer, subject, message)
+  def message_to_consumer node, consumer, subject, message
     domain = node.profile.hostname || node.profile.environment.default_hostname
     recipients    profile_recipients(consumer.profile)
     from          'no-reply@' + domain
@@ -71,7 +42,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
          :environment => node.profile.environment
   end
 
-  def message_to_supplier(node, supplier, subject, message)
+  def message_to_supplier node, supplier, subject, message
     domain = node.profile.hostname || node.profile.environment.default_hostname
     recipients    profile_recipients(supplier.profile)
     from          'no-reply@' + domain
@@ -84,7 +55,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
          :environment => node.profile.environment
   end
 
-  def message_to_admins(node, member, subject, message)
+  def message_to_admins node, member, subject, message
     domain = node.profile.hostname || node.profile.environment.default_hostname
     recipients    profile_recipients(node.profile)
     from          'no-reply@' + domain
@@ -97,7 +68,7 @@ class DistributionPlugin::Mailer < Noosfero::Plugin::MailerBase
          :environment => node.profile.environment
   end
 
-  def open_session(node, session, subject, message)
+  def open_session node, session, subject, message
     domain = node.profile.hostname || node.profile.environment.default_hostname
     recipients    community_members(node.profile)
     from          'no-reply@' + domain

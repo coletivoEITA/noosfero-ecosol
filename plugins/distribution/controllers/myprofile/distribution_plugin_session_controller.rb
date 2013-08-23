@@ -1,10 +1,9 @@
 class DistributionPluginSessionController < DistributionPluginMyprofileController
 
   no_design_blocks
+  before_filter :set_admin_action
 
   helper DistributionPlugin::SessionHelper
-
-  before_filter :set_admin_action
 
   def index
     @sessions = @node.sessions

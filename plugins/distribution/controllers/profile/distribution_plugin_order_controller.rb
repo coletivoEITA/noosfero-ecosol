@@ -4,8 +4,9 @@ require_dependency 'suppliers_plugin/product_helper'
 
 class DistributionPluginOrderController < OrdersPluginConsumerController
 
-  no_design_blocks
+  include DistributionPlugin::ControllerHelper
 
+  no_design_blocks
   before_filter :load_node
   before_filter :set_admin_action, :only => [:session_edit]
   before_filter :login_required, :except => [:index]
@@ -148,8 +149,6 @@ class DistributionPluginOrderController < OrdersPluginConsumerController
   end
 
   protected
-
-  include DistributionPlugin::ControllerHelper
 
   # use superclass instead of child
   def url_for options

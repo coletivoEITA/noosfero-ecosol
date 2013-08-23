@@ -246,25 +246,6 @@
           order:
             sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
       a_solidary_distributi: "A solidary distribution plugin."
-      distribution_display_helper: 
-        /: /
-        a: "%A"
-        b_d_at_hh_m: "%B %d, at %Hh%M"
-        b_d_from_time_start_t: "%B %d, from %{time_start} to %{time_finish}"
-        from_start_to_finish: "from %{start} to %{finish}"
-        hh_m: "%Hh%M"
-        m_d: "%m/%d"
-        m_d_hh: "%-m/%-d %Hh"
-        m_d_hh_m: "%m/%d %Hh%M"
-        m_d_y_at_hh_m: "%m/%d/%y at %Hh%M"
-        m_d_y_hh_m: "%m/%d/%y %Hh%M"
-        m_y_hh_m: "%m/%y - %Hh%M"
-        price_unit: "%{price}%{unit}"
-        start_day_from_start_: "%{start_day}, from %{start_time} to %{finish_time}"
-        start_day_start_datet: "%{start_day}, %{start_datetime} - %{finish_day}, %{finish_datetime}"
-        start_finish: "%{start} - %{finish}"
-        start_to_finish: "%{start} to %{finish}"
-        to: to
       distribution_layout_helper: 
         about: About
         administration: Administration
@@ -825,6 +806,27 @@
           add_a_delivery_method: "Add a delivery method to the Orders' Cycle"
 
   orders_plugin:
+    lib:
+      date_helper:
+        a: "%A"
+        b_d_at_hh_m: "%B %d, at %Hh%M"
+        b_d_from_time_start_t: "%B %d, from %{time_start} to %{time_finish}"
+        from_start_to_finish: "from %{start} to %{finish}"
+        hh_m: "%Hh%M"
+        m_d: "%m/%d"
+        m_d_hh: "%-m/%-d %Hh"
+        m_d_hh_m: "%m/%d %Hh%M"
+        m_d_y_at_hh_m: "%m/%d/%y at %Hh%M"
+        m_d_y_hh_m: "%m/%d/%y %Hh%M"
+        m_y_hh_m: "%m/%y - %Hh%M"
+        start_day_from_start_: "%{start_day}, from %{start_time} to %{finish_time}"
+        start_day_start_datet: "%{start_day}, %{start_datetime} - %{finish_day}, %{finish_datetime}"
+        start_finish: "%{start} - %{finish}"
+        start_to_finish: "%{start} to %{finish}"
+        to: to
+      price_helper: 
+        /: /
+        price_unit: "%{price}%{unit}"
     controllers:
       profile:
         consumer: 

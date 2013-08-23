@@ -1,5 +1,7 @@
 class DistributionPluginMessageController < DistributionPluginMyprofileController
+
   no_design_blocks
+  before_filter :load_node
 
   def new_to_consumer_for_order
     @order = OrdersPlugin::Order.find params[:order_id]

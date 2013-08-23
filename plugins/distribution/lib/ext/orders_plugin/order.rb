@@ -7,6 +7,9 @@ class OrdersPlugin::Order
   def session
     self.sessions.first
   end
+  def session= session
+    self.sessions = [session]
+  end
 
   has_many :offered_products, :through => :products, :source => :offered_product
   has_many :distributed_products, :through => :offered_products, :source => :from_products
@@ -28,7 +31,7 @@ class OrdersPlugin::Order
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.session.orders }
 
-  validates_presence_of :profilen
+  validates_presence_of :profile
 
   def delivery?
     self.session.delivery?

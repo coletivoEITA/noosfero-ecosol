@@ -10,7 +10,7 @@ class OrdersPluginConsumerController < ProfileController
 
     if @order.products.size > 0
       @order.update_attributes! params[:order].merge(:status => 'confirmed')
-      DistributionPlugin::Mailer.deliver_order_confirmation @order, request.host_with_port
+      OrdersPlugin::Mailer.deliver_order_confirmation @order, request.host_with_port
       session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
     else
       session[:notice] = t('orders_plugin.controllers.profile.consumer.can_not_confirm_your_')
@@ -32,7 +32,7 @@ class OrdersPluginConsumerController < ProfileController
     end
     @order.update_attributes! :status => 'cancelled'
 
-    DistributionPlugin::Mailer.deliver_order_cancellation @order
+    OrdersPlugin::Mailer.deliver_order_cancellation @order
     session[:notice] = t('orders_plugin.controllers.profile.consumer.order_cancelled')
     redirect_to :action => :index, :session_id => @order.session.id
   end

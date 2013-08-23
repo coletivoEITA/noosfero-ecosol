@@ -1,0 +1,7 @@
+unless params[:redirect] == '1'
+  page.replace_html "session-product-#{@ordered_product.product_id.to_s}",
+    :partial => 'distribution_plugin_product/order_edit',
+    :locals => {:product => @ordered_product.offered_product, :order => @order, :session => @session, :ordered_product => @ordered_product}
+
+  render :template => 'orders_plugin_product/new'
+end

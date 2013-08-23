@@ -6,6 +6,7 @@ module DistributionPlugin::LayoutHelper
   protected
 
   include DistributionPlugin::DisplayHelper
+  include DistributionPlugin::ControllerHelper
 
   HeaderButtons = [
     [:start, I18n.t('distribution_plugin.lib.distribution_layout_helper.start'), proc{ @node.profile.url }, proc{ on_homepage? }],
@@ -30,11 +31,6 @@ module DistributionPlugin::LayoutHelper
       end
       link_to label, url, :class => "menu-button #{"menu-selected" if selected}"
     end.join
-  end
-
-  def load_node
-    @node = DistributionPlugin::Node.find_by_profile_id profile.id if profile
-    @user_node = DistributionPlugin::Node.find_or_create current_user.person if current_user
   end
 
   def render_header

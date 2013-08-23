@@ -7,6 +7,7 @@ class OrdersPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
   end
 
   belongs_to :order, :class_name => 'OrdersPlugin::Order', :touch => true
+  belongs_to :product, :foreign_key => :product_id
 
   has_one :profile, :through => :order
   has_one :consumer, :through => :order
@@ -25,6 +26,8 @@ class OrdersPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
   validates_numericality_of :price_asked
   validates_numericality_of :price_allocated
   validates_numericality_of :price_payed
+
+  before_save :calculate_prices
 
   extend CurrencyHelper::ClassMethods
   has_number_with_locale :quantity_asked
@@ -46,7 +49,6 @@ class OrdersPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
 
   protected
 
-  before_save :calculate_prices
   def calculate_prices
     self.price_asked = price_asked
     self.price_allocated = price_allocated

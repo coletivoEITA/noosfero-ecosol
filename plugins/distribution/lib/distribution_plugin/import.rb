@@ -7,6 +7,8 @@ CSV = FasterCSV
 
 class DistributionPlugin::Import
 
+  protected
+
   def self.terramater_db(node, supplier_csv, products_csv, supplier_products_csv, users_csv, verbose=true)
     environment = node.profile.environment
 

@@ -10,7 +10,6 @@ class OrdersPlugin::OrderedProduct
   end
 
   belongs_to :offered_product, :foreign_key => :product_id, :class_name => 'DistributionPlugin::OfferedProduct'
-  belongs_to :product, :foreign_key => :product_id
 
   named_scope :for_session, lambda { |session| {
       :conditions => ['distribution_plugin_sessions.id = ?', session.id],

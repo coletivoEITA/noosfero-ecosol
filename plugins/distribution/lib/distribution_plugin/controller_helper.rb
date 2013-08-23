@@ -1,5 +1,7 @@
 module DistributionPlugin::ControllerHelper
 
+  protected
+
   def set_admin_action
     @admin_action = true
     @admin_edit = @user_node && @user_node != @consumer

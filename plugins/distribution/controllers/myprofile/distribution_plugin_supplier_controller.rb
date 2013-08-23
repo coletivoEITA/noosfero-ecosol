@@ -3,8 +3,9 @@ require_dependency 'distribution_plugin/display_helper'
 
 class DistributionPluginSupplierController < SuppliersPluginMyprofileController
 
-  no_design_blocks
+  include DistributionPlugin::ControllerHelper
 
+  no_design_blocks
   before_filter :load_node
   before_filter :set_admin_action
 
@@ -12,8 +13,6 @@ class DistributionPluginSupplierController < SuppliersPluginMyprofileController
   helper DistributionPlugin::DisplayHelper
 
   protected
-
-  include DistributionPlugin::ControllerHelper
 
   # use superclass instead of child
   def url_for options

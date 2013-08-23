@@ -3,8 +3,6 @@ if params[:redirect] == '1'
 else
   page.replace_html 'order-products', :partial => 'orders_plugin_consumer/products', :locals => {:order => @order}
   page.replace_html "order-total-#{@order.id}", :partial => 'orders_plugin_consumer/total', :locals => {:order => @order}
-  page.replace_html "session-product-#{@ordered_product.product_id.to_s}",
-  :partial => "orders_plugin_product/order_edit",
-    :locals => {:product => @ordered_product.offered_product, :order => @order, :session => @session, :ordered_product => @ordered_product}
+
   page << 'toggle_edit.value_row.reload();'
 end
