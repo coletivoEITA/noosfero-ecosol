@@ -14,10 +14,7 @@
 
 <% if supplier.dummy? %>
   <div class="subtitle">
-  <%= _('The registry of the supplier will be managed by the collective itself, ' \
-        'e will be private to it, your registry may be shared on demand to others ' \
-        'collectives. The supplier will receive the invitation to join the network ' \
-        'and manage its own distribution for the collectives inside the network.') %>
+    <%= t('suppliers_plugin.views.supplier._edit.registry_help') %>
   </div>
 
   <%= check_box_tag :full_registration, '1', true,

@@ -2,9 +2,7 @@
   <% if @session.orders? %>
     <% header = t('distribution_plugin.views.session._orders.the_orders_period_is_') %>
   <% elsif @session.passed_by?('orders') %>
-    <% header = _("The orders period was already closed, It's not possible to edit the originals orders. " +
-                  "In the redistribution phase it is possible to edit the order, before the delivery it also " +
-                  "possible to edit this order.") %>
+    <% header = t('distribution_plugin.views.session._orders.already_closed') %>
   <% end %>
 <% end %>
 

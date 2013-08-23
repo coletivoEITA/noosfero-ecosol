@@ -4,6 +4,7 @@ class OrdersPluginConsumerController < ProfileController
 
   before_filter :login_required, :except => [:index, :edit]
   before_filter :load_order, :except => [:new]
+  before_filter :check_access, :only => [:remove, :cancel]
 
   def confirm
     params[:order] ||= {}
@@ -20,38 +21,9 @@ class OrdersPluginConsumerController < ProfileController
   end
 
   def cancel
-    @order = OrdersPlugin::Order.find params[:id]
-    if @order.consumer != user and not profile.has_admin? user
-      if user.nil?
-        session[:notice] = t('orders_plugin.controllers.profile.consumer.login_first')
-      else
-        session[:notice] = t('orders_plugin.controllers.profile.consumer.you_are_not_the_owner')
-      end
-      redirect_to :action => :index
-      return
-    end
     @order.update_attributes! :status => 'cancelled'
-
     OrdersPlugin::Mailer.deliver_order_cancellation @order
     session[:notice] = t('orders_plugin.controllers.profile.consumer.order_cancelled')
-    redirect_to :action => :index, :session_id => @order.session.id
-  end
-
-  def remove
-    @order = OrdersPlugin::Order.find params[:id]
-    if @order.consumer != user and not profile.has_admin? user
-      if user.nil?
-        session[:notice] = t('orders_plugin.controllers.profile.consumer.login_first')
-      else
-        session[:notice] = t('orders_plugin.controllers.profile.consumer.you_are_not_the_owner')
-      end
-      redirect_to :action => :index
-      return
-    end
-    @order.destroy
-
-    session[:notice] = t('orders_plugin.controllers.profile.consumer.order_removed')
-    redirect_to :action => :index, :session_id => @order.session.id
   end
 
   protected
@@ -59,6 +31,18 @@ class OrdersPluginConsumerController < ProfileController
   def load_order
     @order = OrdersPlugin::Order.find_by_id params[:id]
     render_access_denied if @order and @order.consumer != user
+  end
+
+  def check_access
+    if @order.consumer != user and not profile.has_admin? user
+      if user.nil?
+        session[:notice] = t('orders_plugin.controllers.profile.consumer.login_first')
+      else
+        session[:notice] = t('orders_plugin.controllers.profile.consumer.you_are_not_the_owner')
+      end
+      redirect_to :action => :index
+      return
+    end
   end
 
 end

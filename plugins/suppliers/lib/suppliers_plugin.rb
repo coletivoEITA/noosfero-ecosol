@@ -1,6 +1,10 @@
 require_dependency "#{File.dirname __FILE__}/ext/profile"
 require_dependency "#{File.dirname __FILE__}/ext/product"
 
+if defined? OrdersPlugin
+  require_dependency "#{File.dirname __FILE__}/ext/orders_plugin/product"
+end
+
 class SuppliersPlugin < Noosfero::Plugin
 
   def self.plugin_name
@@ -8,7 +12,7 @@ class SuppliersPlugin < Noosfero::Plugin
   end
 
   def self.plugin_description
-    _('Suppliers registry')
+    t('suppliers_plugin.lib.plugin.description')
   end
 
   def stylesheet?

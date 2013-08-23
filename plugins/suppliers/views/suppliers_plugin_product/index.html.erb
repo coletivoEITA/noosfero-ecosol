@@ -1,19 +1,19 @@
 <div id="our-products" class="admin-page">
-  <h2><%=t('suppliers_plugin.views.product.index.products')%></h2>
+  <h2>
+    <%= t('suppliers_plugin.views.product.index.products') %>
+  </h2>
 
   <div>
 
-    <div class="subtitle">
-      <%= _("Here are listed all the products with which your collective works.
-             Here it's possible to add and remove products, besides desactivating
-             temporarily your commercialization in the Cycles' orders.") %>
+   <div class="subtitle">
+     <%= t('suppliers_plugin.views.product.index.info') %>
     </div>
 
     <h3><%= t('suppliers_plugin.views.product.index.default_margin_of_com') %></h3>
     <div class="subtitle">
-       <%= _("This margin is automatically applied in all the products, but
-              it is possible to stabilish specific margins for certain products.") %>
+      <%= t('suppliers_plugin.views.product.index.default_margin_info') %>
     </div>
+
     <span id="node-margin-percentage">
       <span class="<%= @node.margin_percentage.blank? ? 'none' : 'set' %>">
         <%= @node.margin_percentage_as_currency_number ? ( t('suppliers_plugin.views.product.index.margin') % {:margin => @node.margin_percentage_as_currency_number} ) : t('suppliers_plugin.views.product.index.no_margin_set') %>

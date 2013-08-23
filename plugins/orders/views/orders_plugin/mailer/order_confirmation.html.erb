@@ -37,7 +37,7 @@
       <%= t('orders_plugin.views.mailer.order_confirmation.your_order_can_be_che') %><br />
      <%= link_to t('orders_plugin.views.mailer.order_confirmation.order_code_of_node') % {:code => @order.code, :name => @profile.name },
         "http://" + @host_with_port + url_for(:controller => :orders_plugin_consumer,
-                                              :action => :edit, :profile => profile.identifier, :id => @order.id) %>
+                                              :action => :edit, :profile => @profile.identifier, :id => @order.id) %>
     </p>
 
     <p>

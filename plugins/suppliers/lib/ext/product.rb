@@ -50,6 +50,16 @@ class Product
     @supplier ||= self.from_product.supplier if self.from_product
     @supplier ||= self.profile.self_supplier
   end
+  def supplier= value
+    @supplier = value
+  end
+  def supplier_id
+    self.supplier.id if self.supplier
+  end
+  def supplier_id= id
+    @supplier = profile.environment.profiles.find id
+  end
+
   def supplier_dummy?
     self.supplier ? self.supplier.dummy? : false
   end

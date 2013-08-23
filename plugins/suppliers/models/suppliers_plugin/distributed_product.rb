@@ -5,16 +5,6 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
   after_save :save_self_source
 
-  def supplier= value
-    @supplier = value
-  end
-  def supplier_id
-    self.supplier.id if self.supplier
-  end
-  def supplier_id= id
-    @supplier = profile.environment.profiles.find id
-  end
-
   def own?
     self.supplier.profile == self.profile
   end

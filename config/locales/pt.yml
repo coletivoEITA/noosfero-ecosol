@@ -333,16 +333,6 @@
         _header: 
           collective_consumptio: "Rede de coletivos de consumo"
       mailer: 
-        _complete_order: 
-          order_no_code: "Código do Pedido: %{code}"
-          price: Preço
-          price_un: preço/un
-          price_unit: "%{price}/%{unit}"
-          products_list: "Lista de produtos"
-          qtt: QTD
-          quantity_unit: "%{quantity} %{unit}"
-          supplier_product: Fornecedor/Produto
-          total: "TOTAL:"
         message_to_admins: 
           a_service_of_s: "Um serviço de %s."
           hello_managers_of_nam: "Olá gestores de %{name}!"
@@ -402,6 +392,7 @@
         margins_change: 
           ? "%"
           : "%"
+          notice: "Ao mudar a margem padrão de comercialização, os produtos que são marcados como \"use a margem padrão\" automaticamente terão sua margem atualizada. Os ciclos abertos não serão afetados."
           cancel: Cancelar
           change_default_margin: "Mudar a margem padrão de comercialização"
           confirm: Confirmar
@@ -420,6 +411,7 @@
           header_type: "Tipo de cabeçalho"
           image_collective_name: "Imagem + nome do coletivo"
           only_the_image: "Apenas a imagem"
+          image_help: "Esta imagem será usada no cabeçalho da página do coletivo, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
           pure_color_collective: "Cor pura + nome do coletivo"
           save: Salvar
           settings_of_solidary_: "Configurações da Rede de Distribuição solidária"
@@ -428,6 +420,7 @@
           white: branco
       order: 
         _consumer_orders: 
+          caution: "<strong>Cuidado</strong>, voce está editando os pedidos de \"%{consumer}\". É preferível fazer pequenas edições pela administração do ciclo. Desta forma, a pessoa será propriamente avisada das mudanças. Nós recomendamos que esta página seja usada somente se você está fazendo o pedido pra pessoa."
           show_cancelled_orders: "mostrar pedidos cancelados"
           hide_cancelled_orders: "esconder pedidos cancelados"
           administration_of_thi: "Administração deste ciclo"
@@ -528,6 +521,9 @@
           sell_unit: "Unidade de venda"
       session: 
         _brief: 
+          confirmed_orders:
+            one: "(1 pedido confirmado)"
+            others: "(%{count} pedidos confirmados)"
           code: "%{code}."
           delivery: Entrega
           orders: Pedidos
@@ -552,6 +548,7 @@
           cycle_editing: "Edição de ciclo"
           cycle_saved: "Ciclo salvo"
         _edition: 
+          info: "O tempo de edição acabou e a sessão está ainda pública. Na verdade, a sessão está em fase de chamada de fornecedores.<br/><br/> Ainda é possível editar alguns parametros do Ciclo através desta página, no entanto, esteja ciente do risco. Algumas operações têm diferentes implicações dependendo da fase em que se está, quando assim for você será avisado por uma janelinha de aviso das consequências das mudanças efetuadas."
           add_product: "Adicionar produto"
           it_was_automatically_: "Ela foi automaticamente gerada a partir dos produtos ativos e suas respectivas margens. Verifique a lista de produtos e edite-a conforme as necessidades e particularidades deste ciclo de pedidos."
           the_following_list_of: "A seguinte lista de produtos está disponível neste ciclo."
@@ -562,6 +559,7 @@
           open_orders_count: "Pedidos abertos (%{count})"
           the_orders: "Os pedidos"
           the_orders_period_is_: "O período de pedidos está ainda aberto, tome cuidado ao editar os pedidos abertos. Isso pode confundir os usuários."
+          already_closed: "O período de pedidos já foi fechado, Não é possível editar os pedidos originais. Na fase de redistribuição é possível editar o pedido, e também antes da entrega."
         _orders_suppliers: 
           actions: Ações
           do_prelimary_parcel: "fazer encomenda preliminar"
@@ -646,6 +644,9 @@
           show_cycles_from_year: "Mostre os ciclos do ano"
 
   suppliers_plugin:
+    lib:
+      plugin:
+        description: "Registro de fornecedores"
     controllers: 
       myprofile: 
         supplier_controller: 
@@ -668,6 +669,7 @@
           : " / "
           ? "%"
           : "%"
+          registry_help: "O registro do fornecedor será administrado pelo próprio coletivo e será privado a ele. Seu registro pode ser compartilhado conforme demanda para outros coletivos. O fornecedor receberá um convite para se juntar à rede e administrar sua própria distribuição aos coletivos dentro da rede."
           add_product_to_the_li: "Adicione o produto à lista de produtos distribuídos"
           are_you_sure_you_want: "Tem certeza de que quer remover este produto?"
           cancel: Cancelar
@@ -677,6 +679,7 @@
           editing_distributed_p: "Edição de produtos distribuídos"
           how_we_distribute_the: "Como nós distribuímos o produto"
           how_we_order_the_prod: "Como nós pedimos o produto"
+          managed_registry: "O registro deste fornecedor é administrado pelo próprio coletivo de consumo. Por causa disso, não há possíveis diferenças entre o \"Nome\" e a \"Descrição\"." 
           margin: Margem
           name: Nome
           or_then_link: "ou então %{link}."
@@ -685,6 +688,7 @@
           save: Salvar
           search_another_catego: "Buscar outra categoria"
           search_for_another_ca: "busque outra categoria"
+          already_categorized: "Este produto já foi categorizado. No caso de você querer mudar sua categoria, clique em cima ou %{search}."
           to_end_the_categoriza: "Ao fim da categorização, escolha uma das subcategorias da categoria \"{{=cat.own_name}}\":"
           use_default_margin: "Usar a margem padrão"
           use_original: "usar original"
@@ -723,12 +727,14 @@
           bigger_than_the_stock: "maior do que o estoque"
           change: mudar
           default_margin_of_com: "Margem padrão de comercialização"
+          default_margin_info: "Esta margem é automaticamente aplicada em todos os produtos, mas é possível estabelecer margens específicas para certos produtos."
           filter: Filtro
           in_any_state: "Em qualquer estado"
           inactive: Inativo
           margin: "%{margin} %"
           no_margin_set: "Sem margem definida"
           products: Produtos
+          info: "Esta é a lista de produtos com que o coletivo trabalha e é aqui que é feito o controle de estoque. Os produtos se dividem entre ativos e inativos. Os produtos ativos automaticamente são adicionados à lista de uma nova sessão de pedidos."
           show_products_from: "Mostar produtos de"
           the_products: "Os produtos"
           whose_name_contains: "cujo nome contenha"
@@ -777,12 +783,16 @@
           this_is_the_list_of_s: "Esta é a lista de fornecedores associados ao coletivo de consumo. É possível associá-lo a fornecedores existentes ou registrar um."
 
   delivery_plugin:
+    lib:
+      plugin:
+        description: "Gestão de métodos e opções de entrega"
     views:
       delivery_option: 
         _method_edit: 
           add: Adicionar
           cancel: Cancelar
           instructions: Instruções
+          instructions_help: "Dê instruções aos membros para a entrega. Inclua o endereço e quaisquer recomendações que você achar úteis. Este texto estará disponível na página do pedido e, ao confirmar uma compra, a pessoa receberá uma cópia dela."
           name: Nome
           save: Salvar
         _select_content: 
@@ -865,3 +875,13 @@
           dear_name: "Olá %{name},"
           greetings: "Saudações,"
           your_order_made_on_co: "Seu pedido feito no coletivo %{name} em %{date} foi cancelado com sucesso."
+        _complete_order: 
+          order_no_code: "Código do Pedido: %{code}"
+          price: Preço
+          price_un: preço/un
+          price_unit: "%{price}/%{unit}"
+          products_list: "Lista de produtos"
+          qtt: QTD
+          quantity_unit: "%{quantity} %{unit}"
+          supplier_product: Fornecedor/Produto
+          total: "TOTAL:"

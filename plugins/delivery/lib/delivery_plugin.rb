@@ -7,7 +7,7 @@ class DeliveryPlugin < Noosfero::Plugin
   end
 
   def self.plugin_description
-    _('Delivery management')
+    t('delivery_plugin.lib.plugin.description')
   end
 
   def stylesheet?

@@ -1,11 +1,5 @@
 <% if @session.passed_by?('edition') %>
-  <%= render :partial => 'header', :object =>
-    _('The edition time is gone and the cycle is already public. ' +
-         'Actually, the cycle is in a supply call period.') + '<br /><br />' +
-    _('It is still possible to edit some Cycle parameters through this page, however, ' +
-      'beware of the risk. Some operations have different implications depending' +
-      ' on the fase you are. When needed, you will be notified by a notification window ' +
-      'of the consequences of the changes made.') %>
+  <%= render :partial => 'header', :object => t('distribution_plugin.views.session._edition.info') %>
 <% end %>
 
 <div id="session-fields">
@@ -14,7 +8,7 @@
 
 <div id='session-products'>
   <div id="session-products-header">
-    <h3><%= t('distribution_plugin.views.session._edition.the_products') %></h3>
+    <h3><%= t('') %></h3>
 
     <div class="subtitle"><%= t('distribution_plugin.views.session._edition.the_following_list_of') %></div>
     <div class="subtitle"><%= t('distribution_plugin.views.session._edition.it_was_automatically_') %></div>

@@ -48,8 +48,8 @@
               </div>
 
               <div class="category-selected" style="display: none">
-                <small><%= _('This product is already categorized. In case you want to change its category,
-                             click above or %{search}.') % {:search => link_to_function(t('suppliers_plugin.views.product._edit.search_another_catego'), 'distribution.category_select_another(this);')} %></small>
+                <small><%= t('suppliers_plugin.views.product._edit.already_categorized') % {
+                  :search => link_to_function(t('suppliers_plugin.views.product._edit.search_another_catego'), 'distribution.category_select_another(this);')} %></small>
               </div>
 
               <div class="category-type-select">
@@ -139,8 +139,7 @@
             <% f.fields_for :supplier_product, product.supplier_product do |f| %>
               <% if product.supplier_dummy? %>
                 <div class="properties-block subtitle">
-                  <%= _('The register of this supplier is managed by the own collective of consumption.
-                      Because of this, there is no possible differences between the "Name" and the "Description"') %>
+                  <%= t('suppliers_plugin.views.product._edit.managed_registry') %>
                 </div>
               <% else %>
                 <div class="properties-block disabled-fields">

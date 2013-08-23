@@ -10,9 +10,7 @@
 <% if @admin_edit %>
   <div id="order-admin-warning" class="order-message">
     <div class="order-message-text">
-      <%= _("<strong>Caution</strong>, you are editing the orders of \"%{consumer}\". It is preferable
-                to make small editions through the cycle's administration, this way the person will be properly
-                warned of the updates. We recommend using this page only if you're doing the order for the person") % {
+      <%= t('distribution_plugin.views.order._consumer_orders.caution') % {
         :consumer => @consumer.name } %>
     </div>
     <div class="order-message-actions">

@@ -3,7 +3,9 @@ require_dependency 'orders_plugin/display_helper'
 
 class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
 
-  add_template_helper OrdersPlugin::DisplayHelper
+  include ActionMailer::Helpers
+  helper OrdersPlugin::DisplayHelper
+  helper OrdersPlugin::DateHelper
 
   def order_confirmation order, host_with_port
     profile = order.profile
@@ -14,10 +16,10 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
     reply_to      profile_recipients(profile)
     subject       I18n.t('orders_plugin.lib.mailer.order_was_confirmed') % {:name => profile.name}
     content_type  'text/html'
-    body :node => node,
+    body :profile => profile,
          :order => order,
          :consumer => order.consumer,
-         :environment => node.profile.environment,
+         :environment => profile.environment,
          :host_with_port => host_with_port
   end
 
