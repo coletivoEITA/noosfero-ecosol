@@ -5,7 +5,7 @@
  * @package    etherpadlite
  * @link http://cirandas.net/dtygel
  * EtherPad plugin for TinyMCE
- * GPL 3 LICENCES
+ * AFFERO LICENCES
  */
 
 (function() {
@@ -60,7 +60,7 @@
 				longname : 'Insert a collaborative text with Etherpad Lite',
 				author : 'Daniel Tygel',
 				authorurl : 'http://cirandas.net/dtygel',
-				infourl : 'no url yet',
+				infourl : 'https://github.com/dtygel/tinymce-etherpadlite-embed',
 				version : tinymce.majorVersion + "." + tinymce.minorVersion
 			};
 		}
