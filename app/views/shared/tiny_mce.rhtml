@@ -73,6 +73,9 @@ tinyMCE.init({
   extended_valid_elements : "applet[style|archive|codebase|code|height|width],comment,iframe[src|style|allowtransparency|frameborder|width|height|scrolling],embed[title|src|type|height|width]",
   content_css: '/stylesheets/tinymce.css,<%= macro_css_files %>',
   language: <%= tinymce_language.inspect %>,
+  // Parameters for etherpadlite Plugin:
+  plugin_etherpadlite_padServerUrl: "http://pad.eita.org.br/p/", 
+  plugin_etherpadlite_padNamesPrefix : "cirandas-autopad-", 
   entity_encoding: 'raw',
   setup : function(ed) {
     <% macros_with_buttons.each do |macro| %>
