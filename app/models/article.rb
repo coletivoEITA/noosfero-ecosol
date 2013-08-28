@@ -605,14 +605,15 @@ class Article < ActiveRecord::Base
       (params[:year] ? "-year-#{params[:year]}" : '') +
       (params[:month] ? "-month-#{params[:month]}" : '')
   end
-
-  def first_paragraph
-    paragraphs = Hpricot(to_html).search('p')
-    paragraphs.empty? ? '' : paragraphs.first.to_html
+  
+  def automatic_abstract
+  	a = strip_tags(to_html)
+  	b = a.split[0...profile.environment.automatic_abstract_length].join(' ')
+  	(a == b) ? b : b + " ..."
   end
 
   def lead
-    abstract.blank? ? first_paragraph.html_safe : abstract.html_safe
+    abstract.blank? ? automatic_abstract : abstract.html_safe
   end
 
   def short_lead
@@ -687,6 +688,10 @@ class Article < ActiveRecord::Base
   def sanitize_html(text)
     sanitizer = HTML::FullSanitizer.new
     sanitizer.sanitize(text)
+  end
+  
+  def strip_tags(html)
+    html.gsub(/<[^>]+>/, ' ').gsub(/\s+/, ' ').strip
   end
 
 end
