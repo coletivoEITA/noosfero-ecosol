@@ -112,6 +112,7 @@ class Profile < ActiveRecord::Base
   end
 
   named_scope :visible, :conditions => { :visible => true }
+  named_scope :enabled, :conditions => { :enabled => true }
   # Subclasses must override these methods
   named_scope :more_popular
   named_scope :more_active
