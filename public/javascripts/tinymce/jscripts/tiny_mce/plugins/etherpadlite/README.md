@@ -24,7 +24,7 @@ The prefix that will be added automatically to the pad that will be created. It'
 * plugin_etherpadlite_padWidth (Default: 100%)
 The width of the pad that will be inserted
 
-* plugin_etherpadlite_padWidth (Default: 400px)
+* plugin_etherpadlite_padHeight (Default: 400px)
 The height of the pad that will be inserted
 
 Simple usage example

@@ -74,8 +74,10 @@ tinyMCE.init({
   content_css: '/stylesheets/tinymce.css,<%= macro_css_files %>',
   language: <%= tinymce_language.inspect %>,
   // Parameters for etherpadlite Plugin:
-  plugin_etherpadlite_padServerUrl: "http://pad.eita.org.br/p/", 
-  plugin_etherpadlite_padNamesPrefix : "cirandas-autopad-", 
+  plugin_etherpadlite_padServerUrl: "<%= environment.tinymce_plugin_etherpadlite_padServerUrl %>", 
+  plugin_etherpadlite_padNamesPrefix : "<%= environment.tinymce_plugin_etherpadlite_padNamesPrefix %>",
+  plugin_etherpadlite_padWidth : "<%= environment.tinymce_plugin_etherpadlite_padWidth %>",  
+  plugin_etherpadlite_padHeight : "<%= environment.tinymce_plugin_etherpadlite_padHeight %>",  
   entity_encoding: 'raw',
   setup : function(ed) {
     <% macros_with_buttons.each do |macro| %>
