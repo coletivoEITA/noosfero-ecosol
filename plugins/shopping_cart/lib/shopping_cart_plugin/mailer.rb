@@ -5,14 +5,14 @@ class ShoppingCartPlugin::Mailer < Noosfero::Plugin::MailerBase
   def get_contact_email(supplier)
     contact_email = []
     if supplier.enterprise?
-    if supplier.contact_email.blank?
-      supplier.admins.each do |admin|
-        contact_email << admin.email
+      if supplier.contact_email.blank?
+        supplier.admins.each do |admin|
+          contact_email << admin.email
+        end
+        contact_email
+      else
+        contact_email << supplier.contact_email
       end
-      contact_email
-    else
-      contact_email << supplier.contact_email
-    end
     else
       contact_email
     end
