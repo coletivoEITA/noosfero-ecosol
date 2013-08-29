@@ -42,3 +42,8 @@ class DistributionPlugin < Noosfero::Plugin
   end
 
 end
+
+# workaround for plugin class scope problem
+require_dependency 'distribution_plugin/layout_helper'
+DistributionPlugin::DistributionLayoutHelper = DistributionPlugin::LayoutHelper
+
