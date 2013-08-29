@@ -2,7 +2,7 @@
 <%= javascript_include_tag 'tinymce/jscripts/tiny_mce/tiny_mce.js' %>
 <%= include_macro_js_files %>
 <script type="text/javascript">
-  var myplugins = "searchreplace,print,table,contextmenu,-macrosPlugin";
+  var myplugins = "searchreplace,print,table,contextmenu,-macrosPlugin,etherpadlite";
   var first_line, second_line;
   var mode = '<%= mode ||= false %>'
   <% if mode %>
@@ -10,7 +10,7 @@
     second_line = ""
   <% else %>
     first_line = "print,separator,copy,paste,separator,undo,redo,separator,search,replace,separator,forecolor,fontsizeselect,formatselect"
-    second_line = "bold,italic,underline,strikethrough,separator,bullist,numlist,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,link,unlink,image,table,separator,cleanup,code,macros"
+    second_line = "bold,italic,underline,strikethrough,separator,bullist,numlist,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,link,unlink,image,table,etherpadlite,separator,cleanup,code,macros"
     <% macros_with_buttons.each do |macro| %>
       second_line += ',<%=macro.identifier %>'
     <% end %>
@@ -73,6 +73,11 @@ tinyMCE.init({
   extended_valid_elements : "applet[style|archive|codebase|code|height|width],comment,iframe[src|style|allowtransparency|frameborder|width|height|scrolling],embed[title|src|type|height|width]",
   content_css: '/stylesheets/tinymce.css,<%= macro_css_files %>',
   language: <%= tinymce_language.inspect %>,
+  // Parameters for etherpadlite Plugin:
+  plugin_etherpadlite_padServerUrl: "<%= environment.tinymce_plugin_etherpadlite_padServerUrl %>", 
+  plugin_etherpadlite_padNamesPrefix : "<%= environment.default_hostname %>",
+  plugin_etherpadlite_padWidth : "<%= environment.tinymce_plugin_etherpadlite_padWidth %>",  
+  plugin_etherpadlite_padHeight : "<%= environment.tinymce_plugin_etherpadlite_padHeight %>",  
   entity_encoding: 'raw',
   setup : function(ed) {
     <% macros_with_buttons.each do |macro| %>
