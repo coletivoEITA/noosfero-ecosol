@@ -285,7 +285,7 @@ class Environment < ActiveRecord::Base
   settings_items :access_control_allow_methods, :type => String
   
   # Configuration of the Tinymce Collaborative TextPad plugin. If you don't want to activate the plugin, set padServerUrl as "". For understanding the meanings of the parameters, please look at https://github.com/dtygel/tinymce-etherpadlite-embed/blob/master/README.md
-  # IMPORTANT: the padServerUrl must be among the "trusted sites" configured by the admin control panel!!
+  # IMPORTANT: the padServerUrl must be among the "trusted sites" configured by the admin control panel! If not, the embedded iframe will be erased when the article is saved.
   settings_items :tinymce_plugin_etherpadlite_padServerUrl, :type => String, :default => ""
   settings_items :tinymce_plugin_etherpadlite_padNamesPrefix, :type => String, :default => ""
   settings_items :tinymce_plugin_etherpadlite_padWidth, :type => String, :default => "100%"
