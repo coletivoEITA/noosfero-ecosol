@@ -34,21 +34,9 @@
 				: "400";
 
 			ed.addCommand('mceEtherPadLite', function() {
-				var xmlhttp;
-		    	if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
-    			    xmlhttp = new XMLHttpRequest();
-    			} else { // code for IE6, IE5
-    			    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    			}
-			    xmlhttp.onreadystatechange = function() {
-		    	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-		    	    	var padName = xmlhttp.responseText;
-						var iframe = "<iframe name='embed_readwrite' src='" + padUrl + padName + "?showControls=true&showChat=true&&alwaysShowChat=true&lang=pt&showLineNumbers=true&useMonospaceFont=false' width='" + padWidth + "' height='" + padHeight + "'></iframe>";
-						ed.execCommand('mceInsertContent', false, iframe);
-		    	    }
-			    };
-			    xmlhttp.open("GET", url+"/etherpad_name_generator.php?padPrefix="+padPrefix, true);
-    			xmlhttp.send();
+    	    	var padName = padPrefix + '.' + randomPadName();
+				var iframe = "<iframe name='embed_readwrite' src='" + padUrl + padName + "?showControls=true&showChat=true&&alwaysShowChat=true&lang=pt&showLineNumbers=true&useMonospaceFont=false' width='" + padWidth + "' height='" + padHeight + "'></iframe>";
+				ed.execCommand('mceInsertContent', false, iframe);
 			});
 
 			ed.addButton('etherpadlite', {title : 'etherpadlite.desc', cmd : 'mceEtherPadLite', image : url + '/img/etherpadlite.gif'});
@@ -64,6 +52,17 @@
 			};
 		}
 	});
+	
+	function randomPadName() {
+		var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		var string_length = 10;
+		var randomstring = '';
+		for (var i = 0; i < string_length; i++) {
+			var rnum = Math.floor(Math.random() * chars.length);
+			randomstring += chars.substring(rnum, rnum + 1);
+		}
+		return randomstring;
+	}
 
 
 	// Register plugin
