@@ -75,7 +75,7 @@ tinyMCE.init({
   language: <%= tinymce_language.inspect %>,
   // Parameters for etherpadlite Plugin:
   plugin_etherpadlite_padServerUrl: "<%= environment.tinymce_plugin_etherpadlite_padServerUrl %>", 
-  plugin_etherpadlite_padNamesPrefix : "<%= environment.tinymce_plugin_etherpadlite_padNamesPrefix %>",
+  plugin_etherpadlite_padNamesPrefix : "<%= environment.default_hostname %>",
   plugin_etherpadlite_padWidth : "<%= environment.tinymce_plugin_etherpadlite_padWidth %>",  
   plugin_etherpadlite_padHeight : "<%= environment.tinymce_plugin_etherpadlite_padHeight %>",  
   entity_encoding: 'raw',
