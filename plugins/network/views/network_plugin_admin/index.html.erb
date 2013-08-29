@@ -1,0 +1,12 @@
+<h1><%= "Descrição do nó " + @node.name %></h1> 
+
+<p>
+  <%= @node.description %>
+</p>
+
+<%= link_to("Modificar descrição do nó", :controller => 'network_plugin_admin',
+  :action => 'edit', :id => @node.id) %>
+<br />
+<%= link_to("Voltar para a administração da rede", 
+  :controller => 'profile_editor', :action => 'index', 
+  :profile => @network.identifier) %>
