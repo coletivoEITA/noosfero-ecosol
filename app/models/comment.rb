@@ -96,9 +96,7 @@ class Comment < ActiveRecord::Base
         _("an enterprise which you are listed as contact email or you are an admin of its page")
       end
     else
-      if profile.person?
-        _("your user profile")
-      end
+      _("your user profile")
     end
   end
 
@@ -179,17 +177,12 @@ class Comment < ActiveRecord::Base
   end
 
   class Notifier < ActionMailer::Base
-    def mail(comment)     
+    def mail(comment)
       profile = comment.article.profile
-      if profile.person? and profile.nickname != ""
-        article_owner = profile.nickname
-      else
-        article_owner = profile.name
-      end
       recipients comment.notification_emails
       from "#{profile.environment.name} <#{profile.environment.contact_email}>"
       subject _("[%s] you got a new comment!") % [profile.environment.name]
-      body :recipient => article_owner,
+      body :recipient => profile.nickname
         :sender => comment.author_name,
         :sender_link => comment.author_link,
         :article_title => comment.article.name,
