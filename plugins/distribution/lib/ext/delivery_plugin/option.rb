@@ -1,6 +1,6 @@
-require_dependency 'delivery_plugin/delivery_option'
+require_dependency 'delivery_plugin/option'
 
-class DeliveryPlugin::DeliveryOption
+class DeliveryPlugin::Option
 
   belongs_to :session, :class_name => 'DistributionPlugin::Session',
     :foreign_key => :owner_id, :conditions => ["delivery_plugin_options.owner_type = 'DistributionPlugin::Session'"]
