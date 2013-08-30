@@ -1,5 +1,6 @@
-# workaround for plugins' scope problem
+# workaround for plugin class scope problem
 require_dependency 'suppliers_plugin/product_helper'
+require_dependency 'distribution_plugin/display_helper'
 
 module DistributionPlugin::LayoutHelper
 
