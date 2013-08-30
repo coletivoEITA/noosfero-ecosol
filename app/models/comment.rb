@@ -83,6 +83,15 @@ class Comment < ActiveRecord::Base
     self.find(:all, :order => 'created_at desc, id desc', :limit => limit)
   end
 
+  def recipient_name_or_nickname
+    profile = self.article.profile
+    if !profile.nickname.nil? and profile.nickname != ""
+       article_owner = profile.nickname
+     else
+       article_owner = profile.name
+     end
+  end
+
   def notification_emails
     self.article.profile.notification_emails - [self.author_email || self.email]
   end
@@ -182,7 +191,7 @@ class Comment < ActiveRecord::Base
       recipients comment.notification_emails
       from "#{profile.environment.name} <#{profile.environment.contact_email}>"
       subject _("[%s] you got a new comment!") % [profile.environment.name]
-      body :recipient => profile.nickname
+      body :recipient => comment.recipient_name_or_nickname,
         :sender => comment.author_name,
         :sender_link => comment.author_link,
         :article_title => comment.article.name,

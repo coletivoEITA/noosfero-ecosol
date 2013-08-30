@@ -684,14 +684,6 @@ private :generate_url, :url_options
     self[:custom_header] || environment && environment.custom_header
   end
 
-  def nickname
-    if self.person? and self.nickname != ""
-      self.nickname
-    else
-      self.name
-    end
-  end
-
   def custom_header_expanded
     header = custom_header
     if header
