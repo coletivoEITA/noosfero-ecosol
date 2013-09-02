@@ -961,7 +961,7 @@ hr.pre-posts, hr.sep-posts {
   text-decoration: none;
 }
 
-#content #boxes .box-1 .article-block imgimg.automatic-abstract-thumb, #content #article .article-body img.automatic-abstract-thumb {
+#content #boxes .box-1 .article-block img.automatic-abstract-thumb, #content #article .article-body img.automatic-abstract-thumb {
   float:left;
   max-width:100px;
   max-height:100px;
