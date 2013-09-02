@@ -14,7 +14,7 @@ class EnvironmentStatisticsBlock < Block
 
   def content(args={})
     users = owner.people.visible.count
-    enterprises = owner.enterprises.visible.count
+    enterprises = owner.enterprises.visible.enabled.count
     communities = owner.communities.visible.count
 
     info = []

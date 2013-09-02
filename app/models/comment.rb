@@ -87,6 +87,19 @@ class Comment < ActiveRecord::Base
     self.article.profile.notification_emails - [self.author_email || self.email]
   end
 
+  def notification_rule_msg
+    profile = self.article.profile if !self.article.profile.blank?
+    if profile.organization?
+      if profile.community?
+        _("a comuninity which you are listed as contact email or you are an admin of its page")
+      else
+        _("an enterprise which you are listed as contact email or you are an admin of its page")
+      end
+    else
+      _("your user profile")
+    end
+  end
+
   after_create :new_follower
   def new_follower
     if source.kind_of?(Article)
@@ -169,7 +182,7 @@ class Comment < ActiveRecord::Base
       recipients comment.notification_emails
       from "#{profile.environment.name} <#{profile.environment.contact_email}>"
       subject _("[%s] you got a new comment!") % [profile.environment.name]
-      body :recipient => profile.nickname || profile.name,
+      body :recipient => comment.article.profile.short_name(200),
         :sender => comment.author_name,
         :sender_link => comment.author_link,
         :article_title => comment.article.name,
@@ -177,7 +190,8 @@ class Comment < ActiveRecord::Base
         :comment_title => comment.title,
         :comment_body => comment.body,
         :environment => profile.environment.name,
-        :url => profile.environment.top_url
+        :url => profile.environment.top_url,
+        :notification_rule_msg => comment.notification_rule_msg      
     end
     def mail_to_followers(comment, emails)
       profile = comment.article.profile

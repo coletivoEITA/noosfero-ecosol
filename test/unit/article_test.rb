@@ -107,11 +107,17 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal 'full body', a.to_html(:format=>'full body')
   end
 
-  should 'provide first paragraph of HTML version' do
+  should 'provide automatic abstract (excerpt) of HTML version' do
     profile = create_user('testinguser').person
     a = fast_create(Article, :name => 'my article', :profile_id => profile.id)
-    a.expects(:body).returns('<p>the first paragraph of the article</p><p>The second paragraph</p>')
-    assert_equal '<p>the first paragraph of the article</p>', a.first_paragraph
+    a.expects(:body).returns("
+    	<p>The first paragraph of the article.</p>
+	    <p>The second paragraph</p>
+	    <p>The third which <a href=\"link\">is a really biiiiiiig paragraph</a> jds ksajdhf ksdfkjhsdh fakdshf askdjhfsd lfhsdlkfa dslkfah dskjahsd faksdhfk sdfkas fkjshfk sdhjf sdkjf sdkj fkdsjhfal ksdjhflaksjdhdsghfg sjhfgsdjhf sdjhgf asdjf sadj fadjhs gfas dkjgf asdjhf asdjh fjkdsg fjsdgf asdjf sadjlgf jsçlkdsjhfdsa lksajsalj aldja lkja slkdjal aj dasldkjas lkjsdj kj sjdlkjsdkfjsl lkjsdkf lk jsdkfjsjflsj kjdlsfjdslfj</p>
+	")
+	b = "The first paragraph of the article. The second paragraph The third which is a really biiiiiiig paragraph jds ksajdhf ksdfkjhsdh fakdshf askdjhfsd lfhsdlkfa dslkfah dskjahsd faksdhfk sdfkas fkjshfk sdhjf sdkjf sdkj fkdsjhfal ksdjhflaksjdhdsghfg sjhfgsdjhf sdjhgf asdjf sadj fadjhs gfas dkjgf asdjhf asdjh fjkdsg fjsdgf asdjf sadjlgf jsçlkdsjhfdsa lksajsalj aldja lkja slkdjal aj dasldkjas lkjsdj kj sjdlkjsdkfjsl lkjsdkf lk jsdkfjsjflsj kjdlsfjdslfj"
+	b = (profile.environment.automatic_abstract_length >= b.split.count) ? b : b.split[0...profile.environment.automatic_abstract_length].join(' ') + " ..."
+    assert_equal b, a.automatic_abstract
   end
 
   should 'inform the icon to be used' do

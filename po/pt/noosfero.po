@@ -6458,13 +6458,17 @@ msgstr "Enviar resposta"
 msgid "Post comment"
 msgstr "Enviar comentário"
 
+#: app/models/comment.rb:95
+msgid "a comuninity which you are listed as contact email or you are an admin of its page"
+msgstr "uma comunidade que você está listado como um e-mail de contato ou você é um dos administradores da página"
+
+#: app/models/comment.rb:97
+msgid "an enterprise which you are listed as contact email or you are an admin of its page"
+msgstr "um empreendimento que você está listado como um e-mail de contato ou você é um dos administradores da página"
+
 #: app/views/comment/notifier/mail.rhtml:3
-msgid ""
-"%{sender} (%{sender_link}) created a new comment on your article "
-"\"%{article_title}\"."
-msgstr ""
-"%{sender} (%{sender_link}) criou um novo comentário no seu artigo "
-"\"%{article_title}\"."
+msgid "%{sender} (%{sender_link}) created a new comment on the article "%{article_title}" posted on %{notification_rule_msg}."
+msgstr "%{sender} (%{sender_link}) criou um novo comentário no artigo "%{article_title}" postado em %{notification_rule_msg}."
 
 #: app/views/comment/notifier/mail.rhtml:5
 #: app/views/comment/notifier/mail_to_followers.rhtml:5

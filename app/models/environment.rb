@@ -251,6 +251,9 @@ class Environment < ActiveRecord::Base
   settings_items :currency_unit, :type => String, :default => '$'
   settings_items :currency_separator, :type => String, :default => '.'
   settings_items :currency_delimiter, :type => String, :default => ','
+  
+  # Define the default number of words for automatic abstracts (leads) of articles do be shown in blog lists in the 'short' visualization format
+  settings_items :automatic_abstract_length, :type => Integer, :default => 55 #words
 
   settings_items :trusted_sites_for_iframe, :type => Array, :default => %w[
     developer.myspace.com
@@ -283,6 +286,13 @@ class Environment < ActiveRecord::Base
   # For multiple domains acts as suggested in http://stackoverflow.com/questions/1653308/access-control-allow-origin-multiple-origin-domains
   settings_items :access_control_allow_origin, :type => Array
   settings_items :access_control_allow_methods, :type => String
+  
+  # Configuration of the Tinymce Collaborative TextPad plugin. If you don't want to activate the plugin, set padServerUrl as "". For understanding the meanings of the parameters, please look at https://github.com/dtygel/tinymce-etherpadlite-embed/blob/master/README.md
+  # Note 1: The padServerUrl is the url of the pad just before the pad name. Normally it includes a "/p/", as for example: "http://pad.textb.org/p/".
+  # Note 2: Your chosen padServerUrl must be among the "trusted sites" configured by the admin control panel. If not, the embedded iframe will be erased when the article is saved.
+  settings_items :tinymce_plugin_etherpadlite_padServerUrl, :type => String, :default => ""
+  settings_items :tinymce_plugin_etherpadlite_padWidth, :type => String, :default => "100%"
+  settings_items :tinymce_plugin_etherpadlite_padHeight, :type => String, :default => "400px"
 
   def news_amount_by_folder=(amount)
     settings[:news_amount_by_folder] = amount.to_i
