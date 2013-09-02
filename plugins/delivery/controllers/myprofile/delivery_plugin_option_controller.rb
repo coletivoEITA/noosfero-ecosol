@@ -13,7 +13,7 @@ class DeliveryPluginOptionController < MyProfileController
     ids = params[:delivery_methods]
     dms = profile.delivery_methods.find ids
     (dms - @owner.delivery_methods).each do |dm|
-      DeliveryPlugin::DeliveryOption.create! :owner_id => @owner.id, :owner_type => @owner.class.name, :delivery_method => dm
+      DeliveryPlugin::Option.create! :owner_id => @owner.id, :owner_type => @owner.class.name, :delivery_method => dm
     end
   end
 
@@ -23,7 +23,7 @@ class DeliveryPluginOptionController < MyProfileController
   end
 
   def method_new
-    @delivery_method = DeliveryPlugin::DeliveryMethod.create! params[:delivery_method].merge(:profile => profile, :delivery_type => 'pickup')
+    @delivery_method = DeliveryPlugin::Method.create! params[:delivery_method].merge(:profile => profile, :delivery_type => 'pickup')
   end
 
   def method_edit
@@ -31,7 +31,7 @@ class DeliveryPluginOptionController < MyProfileController
     if request.post?
       @delivery_method.update_attributes! params[:delivery_method].merge(:profile => profile, :delivery_type => 'pickup')
       # reset form for a new method
-      @delivery_method = DeliveryPlugin::DeliveryMethod.new
+      @delivery_method = DeliveryPlugin::Method.new
     end
   end
 

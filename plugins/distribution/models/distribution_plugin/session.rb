@@ -2,7 +2,7 @@ class DistributionPlugin::Session < Noosfero::Plugin::ActiveRecord
 
   belongs_to :node, :class_name => 'DistributionPlugin::Node', :foreign_key => :node_id
 
-  has_many :delivery_options, :class_name => 'DeliveryPlugin::DeliveryOption', :dependent => :destroy,
+  has_many :delivery_options, :class_name => 'DeliveryPlugin::Option', :dependent => :destroy,
     :foreign_key => :owner_id, :conditions => ["delivery_plugin_options.owner_type = 'DistributionPlugin::Session'"]
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 

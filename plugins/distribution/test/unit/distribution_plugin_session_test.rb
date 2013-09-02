@@ -10,7 +10,7 @@ class DistributionPluginSessionTest < ActiveSupport::TestCase
 
     @node = DistributionPlugin::Node.create!(:profile => @profile, :role => 'collective')
     @node.products = @profile.products.map { |p| DistributionPlugin::OfferedProduct.create!(:product => p) }
-    DeliveryPlugin::DeliveryMethod.create! :name => 'at home', :delivery_type => 'pickup', :node => @node
+    DeliveryPlugin::Method.create! :name => 'at home', :delivery_type => 'pickup', :node => @node
     @session = DistributionPlugin::Session.create!(:node => @node)
   end
 

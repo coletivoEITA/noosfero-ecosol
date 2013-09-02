@@ -3,7 +3,7 @@ require_dependency "#{File.dirname __FILE__}/ext/community"
 require_dependency "#{File.dirname __FILE__}/ext/category"
 require_dependency "#{File.dirname __FILE__}/ext/product"
 
-require_dependency "#{File.dirname __FILE__}/ext/delivery_plugin/delivery_option"
+require_dependency "#{File.dirname __FILE__}/ext/delivery_plugin/option"
 
 require_dependency "#{File.dirname __FILE__}/ext/orders_plugin/order"
 require_dependency "#{File.dirname __FILE__}/ext/orders_plugin/ordered_product"
@@ -42,3 +42,8 @@ class DistributionPlugin < Noosfero::Plugin
   end
 
 end
+
+# workaround for plugin class scope problem
+require_dependency 'distribution_plugin/layout_helper'
+DistributionPlugin::DistributionLayoutHelper = DistributionPlugin::LayoutHelper
+

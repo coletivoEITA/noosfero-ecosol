@@ -1,13 +1,8 @@
-# FIXME remove Delivery when plugins scope problem is solved
-class DeliveryPlugin::DeliveryMethod < Noosfero::Plugin::ActiveRecord
-
-  def self.table_name
-    'delivery_plugin_methods'
-  end
+class DeliveryPlugin::Method < Noosfero::Plugin::ActiveRecord
 
   belongs_to :profile
 
-  has_many :delivery_options, :class_name => 'DeliveryPlugin::DeliveryOption', :foreign_key => :delivery_method_id, :dependent => :destroy
+  has_many :delivery_options, :class_name => 'DeliveryPlugin::Option', :foreign_key => :delivery_method_id, :dependent => :destroy
 
   validates_presence_of :profile
   validates_presence_of :name

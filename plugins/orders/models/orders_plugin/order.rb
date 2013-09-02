@@ -5,8 +5,8 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   has_many :products, :class_name => 'OrdersPlugin::OrderedProduct', :foreign_key => :order_id, :dependent => :destroy, :order => 'products.name ASC'
 
-  belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::DeliveryMethod'
-  belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::DeliveryMethod'
+  belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::Method'
+  belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::Method'
 
   named_scope :for_consumer, lambda { |consumer| {
     :conditions => {:consumer_id => consumer ? consumer.id : nil} }
