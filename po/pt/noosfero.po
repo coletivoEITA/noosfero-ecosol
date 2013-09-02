@@ -6156,7 +6156,7 @@ msgstr "Desbloquear"
 #: app/views/shared/_lead_and_body.rhtml:11
 #: app/views/box_organizer/_article_block.rhtml:27
 msgid "Lead"
-msgstr "Prévia"
+msgstr "Prévia (primeiras linhas do artigo)"
 
 #: app/views/shared/_lead_and_body.rhtml:12
 msgid "Used when a short version of your text is needed."

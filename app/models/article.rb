@@ -608,8 +608,10 @@ class Article < ActiveRecord::Base
   
   def automatic_abstract
   	a = strip_tags(to_html)
+    automatic_abstract_img = (first_image) ? "<img src='" + first_image + "' style='float:left;max-width:100px;max-height:100px'>" : ''
   	b = a.split[0...profile.environment.automatic_abstract_length].join(' ')
-  	(a == b) ? b : b + " ..."
+  	b = (a == b) ? b : b + " ..."
+  	b = automatic_abstract_img + b
   end
 
   def lead
@@ -668,7 +670,7 @@ class Article < ActiveRecord::Base
   end
 
   def first_image
-    img = Hpricot(self.lead.to_s).search('img[@src]').first || Hpricot(self.body.to_s).search('img').first
+    img = Hpricot(self.abstract.to_s).search('img[@src]').first || Hpricot(self.body.to_s).search('img').first
     img.nil? ? '' : img.attributes['src']
   end
 
