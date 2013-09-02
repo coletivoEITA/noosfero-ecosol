@@ -732,11 +732,13 @@ class ContentViewerControllerTest < ActionController::TestCase
 	")
 	b = "The first paragraph of the article. The second paragraph The third which is a really biiiiiiig paragraph jds ksajdhf ksdfkjhsdh fakdshf askdjhfsd lfhsdlkfa dslkfah dskjahsd faksdhfk sdfkas fkjshfk sdhjf sdkjf sdkj fkdsjhfal ksdjhflaksjdhdsghfg sjhfgsdjhf sdjhgf asdjf sadj fadjhs gfas dkjgf asdjhf asdjh fjkdsg fjsdgf asdjf sadjlgf jsçlkdsjhfdsa lksajsalj aldja lkja slkdjal aj dasldkjas lkjsdj kj sjdlkjsdkfjsl lkjsdkf lk jsdkfjsjflsj kjdlsfjdslfj"
 	b = (profile.environment.automatic_abstract_length >= b.split.count) ? b : b.split[0...profile.environment.automatic_abstract_length].join(' ') + " ..."
-	b = "<img src='http://this_is_an_url/this_is_an_image.png' style='float:left;max-width:100px;max-height:100px'>" + b
 
     get :view_page, :profile => profile.identifier, :page => blog.explode_path
-
-    assert_tag :tag => 'div', :attributes => { :class => 'short-post'}, :content => b
+    
+	assert_tag :tag => 'img', :attributes => { :class => 'automatic-abstract-thumb', :src => 'http://this_is_an_url/this_is_an_image.png', :style => nil}
+	
+    assert_tag :tag => 'div', :attributes => { :class => 'short-post'}, :content => /#{b}/
+    
   end
 
   should 'display link to edit blog for allowed' do

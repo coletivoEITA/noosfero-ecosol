@@ -961,6 +961,13 @@ hr.pre-posts, hr.sep-posts {
   text-decoration: none;
 }
 
+#content .automatic-abstract-image {
+  float:left;
+  max-width:100px;
+  max-height:100px;
+  margin: 5px 5px 5px 0;
+}
+
 #content .main-block .created-at {
   text-align: left;
   color: #AAA;
