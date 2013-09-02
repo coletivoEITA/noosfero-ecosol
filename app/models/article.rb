@@ -607,7 +607,8 @@ class Article < ActiveRecord::Base
   end
   
   def automatic_abstract
-  	a = strip_tags(to_html)
+  	return nil if self.body.nil?
+  	a = strip_tags(self.body)
     automatic_abstract_img = (first_image) ? "<img src='" + first_image + "' style='float:left;max-width:100px;max-height:100px'>" : ''
   	b = a.split[0...profile.environment.automatic_abstract_length].join(' ')
   	b = (a == b) ? b : b + " ..."
@@ -693,7 +694,7 @@ class Article < ActiveRecord::Base
   end
   
   def strip_tags(html)
-    html.gsub(/<[^>]+>/, ' ').gsub(/\s+/, ' ').strip
+    html.gsub(/<[^>]+>/, ' ').gsub(/\s+/, ' ')
   end
 
 end
