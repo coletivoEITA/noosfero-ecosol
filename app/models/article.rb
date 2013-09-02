@@ -609,7 +609,7 @@ class Article < ActiveRecord::Base
   def automatic_abstract
   	return nil if self.body.nil?
   	a = strip_tags(self.body)
-    automatic_abstract_img = (first_image) ? "<img src='" + first_image + "' style='float:left;max-width:100px;max-height:100px'>" : ''
+    automatic_abstract_img = (first_image) ? "<img src='" + first_image + "' class = 'automatic-abstract-thumb'>" : ''
   	b = a.split[0...profile.environment.automatic_abstract_length].join(' ')
   	b = (a == b) ? b : b + " ..."
   	b = automatic_abstract_img + b
