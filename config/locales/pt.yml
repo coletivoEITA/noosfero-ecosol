@@ -327,7 +327,7 @@
         _admin_sidebar: 
           members: Integrantes
           orders_cycles: "Ciclo de pedidos"
-          parcels: Parcels
+          parcels: Encomendas
           products: Produtos
           suppliers: Fornecedores
         _header: 
