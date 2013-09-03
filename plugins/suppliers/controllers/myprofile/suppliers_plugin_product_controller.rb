@@ -11,7 +11,7 @@ class SuppliersPluginProductController < MyProfileController
 
     @products = @node.products.unarchived.distributed.paginate({
       :per_page => 10, :page => params[:page],
-      }.merge(search_filters))
+      }.merge(search_scope.proxy_options))
     @all_products_count = @node.products.unarchived.distributed.count
     @product_categories = ProductCategory.find(:all)
     @new_product = SuppliersPlugin::DistributedProduct.new :profile => profile, :supplier => @supplier
@@ -43,17 +43,16 @@ class SuppliersPluginProductController < MyProfileController
     @not_distributed_products = @node.not_distributed_products @supplier unless !@supplier or @supplier.dummy? or supplier_product_id
   end
 
-  def search_filters
+  def search_scope
     base = SuppliersPlugin::BaseProduct.scoped :conditions => []
-    base = base.for_session_id params[:session_id] unless params[:session_id].blank?
     base = base.from_supplier_id params[:supplier_id] unless params[:supplier_id].blank?
-    base = base.scoped :conditions => {:available => params[:available]} unless params[:available].blank?
+    base = base.where :available => params[:available] unless params[:available].blank?
     unless params[:name].blank?
-      name = ActiveSupport::Inflector.transliterate params[:name].strip.downcase
-      base = base.scoped :conditions => ["LOWER(name) LIKE ?", "%#{name}%"]
+      name = ActiveSupport::Inflector.transliterate(params[:name]).strip.downcase
+      base = base.where ["LOWER(name) LIKE ?", "%#{name}%"]
     end
 
-    base.proxy_options
+    base
   end
 
 end

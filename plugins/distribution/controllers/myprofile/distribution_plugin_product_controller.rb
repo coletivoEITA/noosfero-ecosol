@@ -14,7 +14,7 @@ class DistributionPluginProductController < SuppliersPluginProductController
 
   def session_filter
     @session = DistributionPlugin::Session.find params[:session_id]
-    @products = @session.products_for_order_by_supplier [search_filters]
+    @products = @session.products_for_order_by_supplier search_scope
     @order = OrdersPlugin::Order.find_by_id params[:order_id]
     #@product_categories = ProductCategory.find(:all)
 
