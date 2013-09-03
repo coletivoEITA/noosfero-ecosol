@@ -79,7 +79,8 @@ class Environment < ActiveRecord::Base
   end
 
   def remove_admin(user)
-    self.disaffiliate(user, Environment::Roles.admin(self.id))
+    self.disaffiliate user, Environment::Roles.admin(self.id)
+    self.disaffiliate user, Profile::Roles.admin(self.id)
   end
 
   def admins
@@ -251,7 +252,7 @@ class Environment < ActiveRecord::Base
   settings_items :currency_unit, :type => String, :default => '$'
   settings_items :currency_separator, :type => String, :default => '.'
   settings_items :currency_delimiter, :type => String, :default => ','
-  
+
   # Define the default number of words for automatic abstracts (leads) of articles do be shown in blog lists in the 'short' visualization format
   settings_items :automatic_abstract_length, :type => Integer, :default => 55 #words
 
@@ -286,7 +287,7 @@ class Environment < ActiveRecord::Base
   # For multiple domains acts as suggested in http://stackoverflow.com/questions/1653308/access-control-allow-origin-multiple-origin-domains
   settings_items :access_control_allow_origin, :type => Array
   settings_items :access_control_allow_methods, :type => String
-  
+
   # Configuration of the Tinymce Collaborative TextPad plugin. If you don't want to activate the plugin, set padServerUrl as "". For understanding the meanings of the parameters, please look at https://github.com/dtygel/tinymce-etherpadlite-embed/blob/master/README.md
   # Note 1: The padServerUrl is the url of the pad just before the pad name. Normally it includes a "/p/", as for example: "http://pad.textb.org/p/".
   # Note 2: Your chosen padServerUrl must be among the "trusted sites" configured by the admin control panel. If not, the embedded iframe will be erased when the article is saved.
