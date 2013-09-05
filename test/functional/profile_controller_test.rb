@@ -308,7 +308,7 @@ class ProfileControllerTest < ActionController::TestCase
 
   should 'not display contact us for non-enterprises' do
     @profile.boxes.first.blocks << block = ProfileInfoBlock.create!
-    get :profile_info, :profile => @profile, :block_id => block.id
+    get :profile_info, :profile => @profile.identifier, :block_id => block.id
     assert_no_match /\/contact\/#{@profile.identifier}\/new/, @response.body
   end
 
@@ -987,12 +987,12 @@ class ProfileControllerTest < ActionController::TestCase
     @controller.stubs(:current_user).returns(user)
     Person.any_instance.stubs(:follows?).returns(true)
     get :index, :profile => c.identifier
-    assert_equal [s2,s3], assigns(:activities)
+    assert_equivalent [s2,s3], assigns(:activities)
   end
 
   should 'the activities be paginated in people profiles' do
     p1 = Person.first
-    40.times{fast_create(Scrap, :sender_id => p1.id, :created_at => Time.now)}
+    40.times{fast_create(Scrap, :receiver_id => p1.id, :created_at => Time.now)}
 
     @controller.stubs(:logged_in?).returns(true)
     user = mock()
