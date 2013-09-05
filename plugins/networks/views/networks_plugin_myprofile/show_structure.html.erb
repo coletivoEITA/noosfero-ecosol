@@ -1,9 +1,8 @@
 <h1><%= 'Estrutura da rede ' + @network.name %></h1>
 
 <div>
-  <%= button_to "Adicionar empreendimento", 
-    {:action => 'profile_search', :controller => 'network_plugin_admin', 
-     :net_id => @network.id} %>
+  <%= button_to "Adicionar empreendimento",
+    {:action => :profile_search, :controller => :networks_plugin_admin, :net_id => @network.id} %>
   <button>Criar nó</button>
 </div>
 
@@ -22,11 +21,9 @@
         <%= node.child.name %>
       </td>
       <td style="text-align: right;">
-        <%= link_to('Editar', :controller => 'network_plugin_admin',
-          :action => 'index', :id => node.child.id)  %>
+        <%= link_to 'Editar', :controller => :networks_plugin_admin, :action => :index, :id => node.child.id %>
         |
-        <%= link_to('Remover', :controller => 'network_plugin_admin',
-          :action => 'destroy', :id => node.id)  %>
+        <%= link_to 'Remover', :controller => :networks_plugin_admin, :action => :destroy, :id => node.id %>
       </td>
     </tr>
   <% end %>

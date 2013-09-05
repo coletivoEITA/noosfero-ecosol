@@ -234,28 +234,14 @@
         format: "%{attribute} %{message}"
 
   distribution_plugin: 
-    controllers: 
-      myprofile: 
-        message_controller: 
-          message_sent: "A mensagem foi enviada"
-        node_controller: 
-          distribution_settings: "Configurações salvas"
-        product_controller: 
-          product_removed_from_: "Produto removido do ciclo"
-          product_removed_succe: "Produto removido com sucesso"
-          the_product_was_not_r: "O produto não foi removido"
-        session_controller: 
-          cycle_created: "Ciclo criado"
-          cycle_n_n: "Ciclo n.%{n}"
-          cycle_orders_report_d: "Relatório de pedidos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
-          new_open_cycle: "Novo ciclo aberto"
-          products_report_date_: "Relatório de produtos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
-    lib: 
+    lib:
+      plugin:
+        name: Distribuição
+        description: "Um plugin de distribuição solidária"
       ext:
         orders_plugin:
           order:
             sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
-      a_solidary_distributi: "Um plugin de distribuição solidária"
       distribution_layout_helper: 
         about: About
         administration: Administração
@@ -296,6 +282,22 @@
         value: Valor
         value_parcel: "Valor da encomenda"
       settings_solidary_dis: "Configuração da Rede de Distribuição Solidária"
+    controllers: 
+      myprofile: 
+        message_controller: 
+          message_sent: "A mensagem foi enviada"
+        node_controller: 
+          distribution_settings: "Configurações salvas"
+        product_controller: 
+          product_removed_from_: "Produto removido do ciclo"
+          product_removed_succe: "Produto removido com sucesso"
+          the_product_was_not_r: "O produto não foi removido"
+        session_controller: 
+          cycle_created: "Ciclo criado"
+          cycle_n_n: "Ciclo n.%{n}"
+          cycle_orders_report_d: "Relatório de pedidos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
+          new_open_cycle: "Novo ciclo aberto"
+          products_report_date_: "Relatório de produtos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
     models: 
       header_image: 
         fn_of_uploaded_file_w: "%{fn} do arquivo enviado é maior que o máximo permitido de 500.0 KB"
@@ -624,7 +626,10 @@
   suppliers_plugin:
     lib:
       plugin:
-        description: "Registro de fornecedores"
+        name: "Fornecedores"
+        description: "Registro de fornecedores e produtos distribuídos"
+      suppliers_product_helper: 
+        product_from_which_su: "Produto de que fornecedor?"
     controllers: 
       myprofile: 
         supplier_controller: 
@@ -637,9 +642,6 @@
         units: unidades
       node: 
         consumer: Consumidor
-    lib:
-      suppliers_product_helper: 
-        product_from_which_su: "Produto de que fornecedor?"
     views:
       product:
         _edit: 
@@ -763,6 +765,7 @@
   delivery_plugin:
     lib:
       plugin:
+        name: "Entrega"
         description: "Gestão de métodos e opções de entrega"
     views:
       delivery_option: 
@@ -788,6 +791,9 @@
 
   orders_plugin:
     lib:
+      plugin:
+        name: "Pedidos"
+        description: "Gestão de pedidos"
       mailer:
         order_was_confirmed: "[%{name}] Seu pedido foi confirmado"
         order_was_cancelled: "[%{name}] Seu pedido foi cancelado"
@@ -887,3 +893,13 @@
           quantity_unit: "%{quantity} %{unit}"
           supplier_product: Fornecedor/Produto
           total: "TOTAL:"
+
+  networks_plugin:
+   lib:
+     plugin:
+       name: Redes
+       description: "Cria a gerencia redes."
+       info_control_panel_button: "Informações e configurações da rede"
+       manage_control_panel_button: "Gerenciar estrutura da rede"
+
+     

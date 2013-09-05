@@ -15,11 +15,11 @@ require_dependency "#{File.dirname __FILE__}/ext/suppliers_plugin/distributed_pr
 class DistributionPlugin < Noosfero::Plugin
 
   def self.plugin_name
-    "Distribution"
+    I18n.t('distribution_plugin.lib.plugin.name')
   end
 
   def self.plugin_description
-    I18n.t('distribution_plugin.lib.a_solidary_distributi')
+    I18n.t('distribution_plugin.lib.plugin.description')
   end
 
   def stylesheet?

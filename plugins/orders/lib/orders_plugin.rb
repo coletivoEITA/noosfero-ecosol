@@ -3,11 +3,11 @@ require_dependency "#{File.dirname __FILE__}/ext/profile"
 class OrdersPlugin < Noosfero::Plugin
 
   def self.plugin_name
-    "Orders"
+    I18n.t('orders_plugin.lib.plugin.name')
   end
 
   def self.plugin_description
-    _('Orders management')
+    I18n.t('orders_plugin.lib.plugin.description')
   end
 
   def stylesheet?

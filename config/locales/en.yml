@@ -224,28 +224,14 @@
         format: "%{attribute} %{message}"
 
   distribution_plugin: 
-    controllers: 
-      myprofile: 
-        message_controller: 
-          message_sent: "Message sent"
-        node_controller: 
-          distribution_settings: "Distribution settings saved."
-        product_controller: 
-          product_removed_from_: "Product removed from cycle"
-          product_removed_succe: "Product removed successfully"
-          the_product_was_not_r: "The product was not removed"
-        session_controller: 
-          cycle_created: "Cycle created"
-          cycle_n_n: "Cycle n.%{n}"
-          cycle_orders_report_d: "Cycle Orders Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
-          new_open_cycle: "New open cycle: "
-          products_report_date_: "Products Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
-    lib: 
+    lib:
+      plugin:
+        name: Distribution
+        description: "A solidary distribution plugin."
       ext:
         orders_plugin:
           order:
             sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
-      a_solidary_distributi: "A solidary distribution plugin."
       distribution_layout_helper: 
         about: About
         administration: Administration
@@ -288,6 +274,22 @@
         value: value
         value_parcel: "value parcel"
       settings_solidary_dis: "Settings Solidary Distribution Network"
+    controllers: 
+      myprofile: 
+        message_controller: 
+          message_sent: "Message sent"
+        node_controller: 
+          distribution_settings: "Distribution settings saved."
+        product_controller: 
+          product_removed_from_: "Product removed from cycle"
+          product_removed_succe: "Product removed successfully"
+          the_product_was_not_r: "The product was not removed"
+        session_controller: 
+          cycle_created: "Cycle created"
+          cycle_n_n: "Cycle n.%{n}"
+          cycle_orders_report_d: "Cycle Orders Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
+          new_open_cycle: "New open cycle: "
+          products_report_date_: "Products Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
     models: 
       header_image: 
         fn_of_uploaded_file_w: "%{fn} of uploaded file was larger than the maximum size of 500.0 KB"
@@ -613,14 +615,14 @@
   suppliers_plugin:
     lib:
       plugin:
-        description: "Suppliers registry"
+        name: "Suppliers"
+        description: "Suppliers and its distributed products registry"
+      suppliers_product_helper: 
+        product_from_which_su: "Product from which supplier?"
     controllers: 
       myprofile: 
         supplier_controller: 
           supplier_created: "Supplier created"
-    lib:
-      suppliers_product_helper: 
-        product_from_which_su: "Product from which supplier?"
     models:
       distributed_product: 
         greater: " > "
@@ -752,6 +754,7 @@
   delivery_plugin:
     lib:
       plugin:
+        name: "Delivery"
         description: "Management of delivery's methods and options"
     views:
       delivery_option: 
@@ -777,6 +780,9 @@
 
   orders_plugin:
     lib:
+      plugin:
+        name: "Orders"
+        description: "Orders management"
       mailer:
         order_was_confirmed: "[%{name}] Your order was confirmmed"
         order_was_cancelled: "[%{name}] Your order was cancelled"
@@ -876,3 +882,11 @@
           quantity_unit: "%{quantity} %{unit}"
           supplier_product: Supplier/Product
           total: "TOTAL:"
+
+  networks_plugin:
+   lib:
+     plugin:
+       name: Networks
+       description: "Create and manage networks."
+       info_control_panel_button: "Informações e configurações da rede"
+       manage_control_panel_button: "Manage network's structure"

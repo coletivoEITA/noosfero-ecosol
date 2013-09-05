@@ -8,11 +8,11 @@ end
 class SuppliersPlugin < Noosfero::Plugin
 
   def self.plugin_name
-    "Suppliers"
+    I18n.t('suppliers_plugin.lib.plugin.name')
   end
 
   def self.plugin_description
-    t('suppliers_plugin.lib.plugin.description')
+    I18n.t('suppliers_plugin.lib.plugin.description')
   end
 
   def stylesheet?

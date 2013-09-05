@@ -16,11 +16,10 @@
       <tr>
         <td>
           <%= profile.name %>
-        </td>  
+        </td>
         <td>
-          <%= link_to 'Adicionar', {:controller => 'network_plugin_admin', 
-            :action => 'add_to_network', :net_id => @net.id, 
-            :profile_id => profile.id} %>
+          <%= link_to 'Adicionar', {:controller => :networks_plugin_admin,
+            :action => :add_to_network, :net_id => @net.id, :profile_id => profile.id} %>
         </td>
       </tr>
     <% end %>
