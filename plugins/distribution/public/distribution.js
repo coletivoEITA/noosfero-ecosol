@@ -57,67 +57,6 @@ distribution = {
 
   /* ----- ends session stuff  ----- */
 
-  /* ----- category select stuff  ----- */
-
-  category: null,
-
-  category_toggle_view: function (edit, view) {
-    edit.find('.category-selected').toggle(view == 1);
-    edit.find('.category-hierarchy').toggle(view != 0);
-    edit.find('.category-type-select').toggle(view == 2);
-    edit.find('.field-box').toggle(view == 0);
-    distribution.our_product.css_align();
-  },
-
-  subcategory_select: function (context) {
-    edit = jQuery(context).parents('.category-edit');
-    option = context.options[context.selectedIndex];
-    edit.find('.category-hierarchy .type').text(jQuery(option).text());
-
-    distribution.category_toggle_view(edit, 1);
-  },
-
-  category_reselect_sub: function () {
-    edit.find('.category-hierarchy .type').text('');
-    distribution.category_toggle_view(edit, 2);
-  },
-
-  category_select_another: function (context) {
-    edit = jQuery(context).parents('.category-edit');
-    edit.find('#product_category_id').tokenInput('clear');
-
-    distribution.category_toggle_view(edit, 0);
-  },
-
-  category_reselect: function (context, item) {
-    jQuery(context).parents('.category').nextAll('.category').remove();
-    jQuery(context).parents('.category').siblings('.type').text('');
-    edit = jQuery(context).parents('.category-edit');
-    edit.find('#product_category_id').val(item.id);
-    category = item;
-    distribution.category_template_type_select(edit);
-    distribution.category_toggle_view(edit, 2);
-  },
-
-  category_template_hierarchy: function (edit) {
-    edit.find('.category-hierarchy div').html(_.template(edit.find('.category-hierarchy script').html(), {cat: category}));
-  },
-  category_template_type_select: function (edit, selected) {
-    edit.find('.category-type-select div').html(_.template(edit.find('.category-type-select script').html(), {cat: category, selected: selected}));
-    if (selected)
-      edit.find('select').get(0).onchange();
-  },
-  category_select: function (item) {
-    category = item;
-    edit = jQuery(this).parents('.category-edit');
-    distribution.category_template_hierarchy(edit);
-    distribution.category_template_type_select(edit);
-
-    distribution.category_toggle_view(edit, 2);
-  },
-
-  /* ----- end category select stuff  ----- */
-
   /* ----- our products stuff  ----- */
 
   our_product: {
@@ -327,11 +266,6 @@ distribution = {
 
   /* ----- toggle edit stuff  ----- */
 
-  in_session_order_toggle_edit: function () {
-    toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
-    distribution.edit_arrow_toggle(toggle_edit.editing(), toggle_edit.isEditing());
-  },
-
   offered_product_edit: function () {
     toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
   },
@@ -420,12 +354,6 @@ jQuery('.plugin-distribution .table-header .box-field').live('click', distributi
     });
   };
 })(jQuery);
-
-_.templateSettings = {
-  evaluate: /\{\{([\s\S]+?)\}\}/g,
-  interpolate: /\{\{=([\s\S]+?)\}\}/g,
-  escape: /\{\{-([\s\S]+?)\}\}/g
-}
 
 Array.prototype.diff = function(a) {
   return this.filter(function(i) {return !(a.indexOf(i) > -1);});

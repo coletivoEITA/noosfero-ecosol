@@ -7,4 +7,12 @@ orders = {
       toggle_edit.editing().find('.product-quantity input').focus();
   },
 
+  admin: {
+
+    toggle_edit: function () {
+      toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
+      distribution.edit_arrow_toggle(toggle_edit.editing(), toggle_edit.isEditing());
+    },
+  },
+
 };

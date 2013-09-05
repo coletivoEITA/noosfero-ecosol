@@ -32,60 +32,6 @@
             <%= labelled_field f, :name, t('suppliers_plugin.views.product._edit.name'), f.text_field(:name, :oldvalue => product.own_name) %>
             <%= labelled_field f, :description, t('suppliers_plugin.views.product._edit.description'), f.text_area(:description, :oldvalue => product.own_description) %>
 
-            <div class="category-edit">
-              <%= labelled_field f, :category, t('suppliers_plugin.views.product._edit.category'), f.text_field(:category_id) %>
-
-              <div class="category-hierarchy">
-                <script class="category-hierarchy" type="text/html">
-                  {{ _.each(cat.hierarchy, function(cat) { }}
-                    <span class="category">
-                      <a href=" " onclick='distribution.category_reselect(this, {{=JSON.stringify(cat)}}); return false;'>{{=cat.name}}</a>
-                      <%= t('suppliers_plugin.views.product._edit. > ') %>
-                    </span>
-                  {{ }); }}
-                  <a href=" " class="type" onclick="distribution.category_reselect_sub(); return false;"></a>
-                </script>
-              </div>
-
-              <div class="category-selected" style="display: none">
-                <small><%= t('suppliers_plugin.views.product._edit.already_categorized') % {
-                  :search => link_to_function(t('suppliers_plugin.views.product._edit.search_another_catego'), 'distribution.category_select_another(this);')} %></small>
-              </div>
-
-              <div class="category-type-select">
-                <script class="category-type-select-template" type="text/html">
-                  <small><%= t('suppliers_plugin.views.product._edit.to_end_the_categoriza') %></small>
-                  <select id="product_type_category_id" name="product[type_category_id]", onchange='distribution.subcategory_select(this);'>
-                    <option value=""></option>
-                    {{ _.each(cat.subcats, function(subcat) { }}
-                      <option value="{{=subcat.id}}" {{= subcat.id == selected ? "selected" : ""  }}>{{=subcat.name}}</option>
-                    {{ }); }}
-                  </select>
-                  <small><%= t('suppliers_plugin.views.product._edit.or_then_link') % {:link => "
-                    <a href='#' onclick=\"distribution.category_select_another(this); return false;\">#{t('suppliers_plugin.views.product._edit.search_for_another_ca')}</a>" } %>
-                  </small>
-                </script>
-                <div> </div>
-              </div>
-
-              <% javascript_tag do %>
-                jQuery("#our-product-<%=product.id%> #product_category_id").tokenInput('<%= url_for :controller => :suppliers_plugin_product, :action => :search_category %>',
-                {searchDelay: 300, tokenLimit: 1, theme: 'distribution', preventDuplicates: true, <%= jquery_token_input_messages_json('') %>,
-                onAdd: distribution.category_select });
-
-                // token input cleans the preexistent value :(
-                jQuery("#our-product-<%=product.id%> #product_category_id").val("<%=product.category_id%>");
-
-                <% if product.category %>
-                  edit = jQuery("#our-product-<%=product.id%> .category-edit");
-                  category = <%= product.json_for_category.to_json %>;
-                  distribution.category_template_hierarchy(edit);
-                  distribution.category_template_type_select(edit, "<%=product.type_category_id%>");
-                  distribution.category_toggle_view(edit, <%= product.type_category ? 1 : 2 %>);
-                <% end %>
-              <% end %>
-            </div>
-
             <div class="cleaner"></div>
           </div>
 

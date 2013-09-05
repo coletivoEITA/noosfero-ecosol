@@ -1,0 +1,213 @@
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use these */
+/* paddings and margins should only use these
+   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2 {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  color: white;
+  background: #394e41;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  border: none;
+  border-radius: 5px; }
+  .action-button:visited, .action-button:active, .action-button:hover {
+    color: white; }
+
+.orders-admin-index {
+  margin-bottom: 20px; }
+  .orders-admin-index .order-header {
+    background-color: #B1DFEF;
+    clear: both;
+    float: left;
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box; }
+  .orders-admin-index .order-header .order-label {
+    font-weight: bold;
+    font-size: 13px;
+    display: block;
+    float: left; }
+  .orders-admin-index .order-header .actions-circle {
+    float: right;
+    background-color: transparent; }
+  .orders-admin-index .order-header .actions-circle .actions-arrow {
+    border-top: 7px solid black;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    margin: 8px 6px 0 5px; }
+  .orders-admin-index .order-header .actions-circle.edit .actions-arrow {
+    border-bottom: 7px solid black;
+    border-top: 6px solid transparent;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    margin: 2px 6px 0px 5px; }
+  .orders-admin-index .orders-admin-index.show .order-header .line {
+    border-bottom: 2px solid white;
+    clear: both;
+    width: 100%;
+    padding-top: 10px; }
+  .orders-admin-index .order {
+    clear: both; }
+  .orders-admin-index .order .actions-bar {
+    width: 100%;
+    margin-left: -10px;
+    margin-bottom: -10px; }
+  .orders-admin-index .order.edit {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    margin-top: -1px; }
+  .orders-admin-index .order.edit,
+  .orders-admin-index .order .box-edit {
+    background-color: #fff2a3; }
+  .orders-admin-index .order .box-edit {
+    padding-top: 8px; }
+  .orders-admin-index .order .box-edit .empty-order {
+    text-align: center;
+    margin-bottom: 8px; }
+  .orders-admin-index .order .box-edit form {
+    padding: 0 16px 0 240px;
+    width: 400px; }
+  .orders-admin-index .order .box-edit textarea {
+    width: 100%; }
+  .orders-admin-index .order .box-edit input[type=checkbox] {
+    float: left; }
+  .orders-admin-index .order .value-row {
+    padding: 8px 10px; }
+  .orders-admin-index .actions {
+    min-height: 1px; }
+  .orders-admin-index .box-view .code {
+    font-size: 10px; }
+  .orders-admin-index .code {
+    width: 70px; }
+  .orders-admin-index .member {
+    width: 200px; }
+  .orders-admin-index .created {
+    width: 100px; }
+  .orders-admin-index .modified {
+    width: 100px; }
+  .orders-admin-index .products-count {
+    width: 80px; }
+  .orders-admin-index .price {
+    width: 70px; }

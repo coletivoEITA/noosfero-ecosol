@@ -17,9 +17,12 @@ module CodeNumbering
     def create_code_numbering
       scope = code_numbering_options[:scope]
       if scope
-        max = scope.is_a?(Symbol) ?
-          send(scope).maximum(code_numbering_field) :
-          instance_eval(&scope).maximum(code_numbering_field)
+        max = case scope
+              when Symbol
+                send(scope).maximum(code_numbering_field)
+              when Proc
+                instance_eval(&scope).maximum(code_numbering_field)
+              end rescue 0
       else
         max = self.class.maximum(code_numbering_field)
       end

@@ -28,9 +28,6 @@ class OrdersPlugin::Order
     }
   }
 
-  extend CodeNumbering::ClassMethods
-  code_numbering :code, :scope => Proc.new { self.session.orders }
-
   validates_presence_of :profile
 
   def delivery?
@@ -43,10 +40,16 @@ class OrdersPlugin::Order
     self.draft? && session.orders?
   end
 
+  extend CodeNumbering::ClassMethods
+  code_numbering :code, :scope => Proc.new { self.session.orders }
   def code
-    I18n.t('distribution_plugin.lib.ext.orders_plugin.order.sessioncode_ordercode') % {
-      :sessioncode => self.session.code, :ordercode => self['code']
-    }
+    if self.session
+      I18n.t('distribution_plugin.lib.ext.orders_plugin.order.sessioncode_ordercode') % {
+        :sessioncode => self.session.code, :ordercode => self['code']
+      }
+    else
+      super
+    end
   end
 
   alias_method :supplier_delivery!, :supplier_delivery

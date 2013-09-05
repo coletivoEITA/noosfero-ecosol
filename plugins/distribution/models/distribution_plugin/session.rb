@@ -130,11 +130,10 @@ class DistributionPlugin::Session < Noosfero::Plugin::ActiveRecord
     status == 'orders' && ( (self.delivery_start <= now && self.delivery_finish.nil?) || (self.delivery_start <= now && self.delivery_finish >= now) )
   end
 
-  def products_for_order_by_supplier scope=nil
-    scope ||= SuppliersPlugin::BaseProduct.scoped :conditions => []
-    scope.where 'price > 0'
+  def products_for_order_by_supplier options={}
+    options[:conditions] = self.class.merge_conditions *['price > 0', options[:conditions]]
 
-    self.products.unarchived.all(scope.proxy_options).group_by{ |sp| sp.supplier }
+    self.products.unarchived.all(options).group_by{ |sp| sp.supplier }
   end
 
   def ordered_products_by_suppliers

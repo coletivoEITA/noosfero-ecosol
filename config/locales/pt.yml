@@ -324,7 +324,7 @@
         sessions: 
           all_cycles: "todos ciclos"
       layouts: 
-        _admin_sidebar: 
+        _admin_submenu: 
           members: Integrantes
           orders_cycles: "Ciclo de pedidos"
           parcels: Encomendas
@@ -461,20 +461,6 @@
           product_name: "Nome do produto"
           supplier: Fornecedor
           whose_qty_available_i: "cuja quantidade disponível é"
-        _session_edit: 
-          actions: Ações
-          add_product: "adicionar produto"
-          cancel: Cancelar
-          edit_on_the_order_pag: "Editar na página de pedidos"
-          empty_order: "Pedido vazio"
-          include_message: "Incluir uma mensagem"
-          message_to_member: "Mensagem para o membro"
-          remove_order: "remover pedido"
-          save: Salvar
-          see_delivery: "veja entrega"
-          see_redistribution: "veja redistribuição"
-          the_collective_member: "O membro do coletivo receberá um email que discrimina todas as mudanças feitas em seu pedido."
-          warn_member_of_the_ch: "Avise o membro das mudanças em seu pedido"
         _status: 
           code_status_message: "%{code} %{status_message}"
           open_it: abrir
@@ -522,8 +508,9 @@
       session: 
         _brief: 
           confirmed_orders:
+            zero: "(nenhum pedido)"
             one: "(1 pedido confirmado)"
-            others: "(%{count} pedidos confirmados)"
+            other: "(%{count} pedidos confirmados)"
           code: "%{code}."
           delivery: Entrega
           orders: Pedidos
@@ -557,7 +544,6 @@
           cancelled_orders_coun: "Pedidos cancelados (%{count})"
           closed_orders_count: "Pedidos fechados (%{count})"
           open_orders_count: "Pedidos abertos (%{count})"
-          the_orders: "Os pedidos"
           the_orders_period_is_: "O período de pedidos está ainda aberto, tome cuidado ao editar os pedidos abertos. Isso pode confundir os usuários."
           already_closed: "O período de pedidos já foi fechado, Não é possível editar os pedidos originais. Na fase de redistribuição é possível editar o pedido, e também antes da entrega."
         _orders_suppliers: 
@@ -573,14 +559,6 @@
           total_asked: "Total pago"
           totals: Totals
           unit: Unidade
-        _orders_view: 
-          code: Código
-          created: Criado
-          member: Integrante
-          modified: Modificado
-          no_orders_to_show: "Sem pedidos a mostrar"
-          prod_qty: "Qtd prod."
-          value: Valor
         _product_lines: 
           category: Categoria
           price: Preço
@@ -832,7 +810,7 @@
         to: para
       price_helper: 
         /: /
-        price_unit: "%{price}%{unit}"
+        price_unit: "%{price}/%{unit}"
     controllers:
       profile:
         consumer: 
@@ -861,6 +839,30 @@
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
         _index: 
           empty_order: "Pedido vazio"
+      admin:
+        index: 
+          code: Código
+          created: Criado
+          member: Integrante
+          modified: Modificado
+          no_orders_to_show: "Sem pedidos a mostrar"
+          prod_qty: "Qtd prod."
+          value: Valor
+        _edit: 
+          actions: Ações
+          add_product: "adicionar produto"
+          cancel: Cancelar
+          edit_on_the_order_pag: "Editar na página de pedidos"
+          empty_order: "Pedido vazio"
+          include_message: "Incluir uma mensagem"
+          message_to_member: "Mensagem para o membro"
+          remove_order: "remover pedido"
+          save: Salvar
+          see_delivery: "veja entrega"
+          see_redistribution: "veja redistribuição"
+          the_collective_member: "O membro do coletivo receberá um email que discrimina todas as mudanças feitas em seu pedido."
+          warn_member_of_the_ch: "Avise o membro das mudanças em seu pedido"
+
       mailer:
         order_confirmation: 
           attention_to_the_foll: "Atenção às instruções de entrega a seguir:"

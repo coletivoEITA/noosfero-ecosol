@@ -9,14 +9,12 @@ class DistributionPluginProductController < SuppliersPluginProductController
   before_filter :load_node
   before_filter :set_admin_action
 
-  helper ApplicationHelper
   helper DistributionPlugin::DisplayHelper
 
   def session_filter
     @session = DistributionPlugin::Session.find params[:session_id]
-    @products = @session.products_for_order_by_supplier search_scope
+    @products = @session.products_for_order_by_supplier search_scope.proxy_options
     @order = OrdersPlugin::Order.find_by_id params[:order_id]
-    #@product_categories = ProductCategory.find(:all)
 
     render :partial => 'order_search', :locals => {
       :order => @order, :session => @session,

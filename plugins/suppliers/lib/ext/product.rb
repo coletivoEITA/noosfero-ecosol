@@ -13,7 +13,7 @@ class Product
   named_scope :by_profile_id, lambda { |profile_id| { :conditions => {:profile_id => profile_id} } }
 
   named_scope :from_supplier_profile_id, lambda { |profile_id|
-    return {} if profile_id.nil?
+    return {} if profile_id.blank?
     {
       :conditions => ['suppliers_plugin_suppliers.profile_id = ?', profile_id],
       :joins => 'INNER JOIN suppliers_plugin_source_products ON suppliers_plugin_source_products.to_product_id = products.id ' +
@@ -21,7 +21,7 @@ class Product
     }
   }
   named_scope :from_supplier_id, lambda { |supplier_id|
-    return {} if supplier_id.nil?
+    return {} if supplier_id.blank?
     {
       :conditions => ['suppliers_plugin_source_products.supplier_id = ?', supplier_id],
       :joins => 'INNER JOIN suppliers_plugin_source_products ON suppliers_plugin_source_products.to_product_id = products.id '

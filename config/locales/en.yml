@@ -316,7 +316,7 @@
         sessions: 
           all_cycles: "all cycles"
       layouts: 
-        _admin_sidebar: 
+        _admin_submenu: 
           members: Members
           orders_cycles: "Orders' Cycles"
           parcels: Parcels
@@ -453,20 +453,6 @@
           product_name: "Product Name"
           supplier: Supplier
           whose_qty_available_i: "whose qty. available is"
-        _session_edit: 
-          actions: Actions
-          add_product: "add product"
-          cancel: cancel
-          edit_on_the_order_pag: "edit on the order page"
-          empty_order: "Empty order"
-          include_message: "Include message"
-          message_to_member: "message to member"
-          remove_order: "remove order"
-          save: Save
-          see_delivery: "see delivery"
-          see_redistribution: "see redistribution"
-          the_collective_member: "The collective member will receive an email that discriminates all changes made in his/her order"
-          warn_member_of_the_ch: "Warn member of the changes in his/her order"
         _status: 
           code_status_message: "%{code} %{status_message}"
           open_it: "open it"
@@ -514,8 +500,9 @@
       session: 
         _brief: 
           confirmed_orders:
+            zero: "(no order)"
             one: "(1 confirmed order)"
-            others: "(%{count} confirmed orders)"
+            other: "(%{count} confirmed orders)"
           code: "%{code}."
           delivery: Delivery
           orders: Orders
@@ -546,10 +533,6 @@
           the_following_list_of: "The following list of products are available in this cycle."
           the_products: "The products"
         _orders: 
-          cancelled_orders_coun: "Cancelled Orders (%{count})"
-          closed_orders_count: "Closed Orders (%{count})"
-          open_orders_count: "Open Orders (%{count})"
-          the_orders: "The orders"
           the_orders_period_is_: "The orders period is still on, take care to edit the orders already open, it may confuse the users"
           already_closed: "The orders period was already closed, It's not possible to edit the originals orders. In the redistribution phase it is possible to edit the order, before the delivery it also possible to edit this order."
         _orders_suppliers: 
@@ -565,14 +548,6 @@
           total_asked: "Total asked"
           totals: Totals
           unit: Unit
-        _orders_view: 
-          code: Code
-          created: Created
-          member: Member
-          modified: Modified
-          no_orders_to_show: "No orders to show"
-          prod_qty: "Prod. Qty."
-          value: Value
         _product_lines: 
           category: Category
           price: Price
@@ -824,7 +799,7 @@
         to: to
       price_helper: 
         /: /
-        price_unit: "%{price}%{unit}"
+        price_unit: "%{price}/%{unit}"
     controllers:
       profile:
         consumer: 
@@ -853,6 +828,30 @@
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
         _index: 
           empty_order: "Empty order"
+      admin:
+        index: 
+          code: Code
+          created: Created
+          member: Member
+          modified: Modified
+          no_orders_to_show: "No orders to show"
+          prod_qty: "Prod. Qty."
+          value: Value
+        _edit: 
+          actions: Actions
+          add_product: "add product"
+          cancel: cancel
+          edit_on_the_order_pag: "edit on the order page"
+          empty_order: "Empty order"
+          include_message: "Include message"
+          message_to_member: "message to member"
+          remove_order: "remove order"
+          save: Save
+          see_delivery: "see delivery"
+          see_redistribution: "see redistribution"
+          the_collective_member: "The collective member will receive an email that discriminates all changes made in his/her order"
+          warn_member_of_the_ch: "Warn member of the changes in his/her order"
+
       mailer:
         order_confirmation: 
           attention_to_the_foll: "Attention to the following delivery instructions:"

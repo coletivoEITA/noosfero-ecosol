@@ -44,15 +44,21 @@ class SuppliersPluginProductController < MyProfileController
   end
 
   def search_scope
-    base = SuppliersPlugin::BaseProduct.scoped :conditions => []
-    base = base.from_supplier_id params[:supplier_id] unless params[:supplier_id].blank?
-    base = base.where :available => params[:available] unless params[:available].blank?
+    klass = SuppliersPlugin::BaseProduct
+    scope = SuppliersPlugin::BaseProduct.scoped :conditions => []
+    scope = scope.from_supplier_id(params[:supplier_id]) unless params[:supplier_id].blank?
+
+    conditions = []
+    conditions << {:available => params[:available]} unless params[:available].blank?
     unless params[:name].blank?
       name = ActiveSupport::Inflector.transliterate(params[:name]).strip.downcase
-      base = base.where ["LOWER(name) LIKE ?", "%#{name}%"]
+      conditions << ["LOWER(name) LIKE ?", "%#{name}%"]
     end
+    conditions = [scope.proxy_options[:conditions], *conditions]
 
-    base
+    scope.proxy_options[:conditions] = klass.merge_conditions *conditions
+
+    scope
   end
 
 end
