@@ -6,8 +6,14 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   has_many :products, :through => :profile, :class_name => 'SuppliersPlugin::DistributedProduct'
   has_many :consumer_products, :through => :consumer, :source => :products, :class_name => 'SuppliersPlugin::DistributedProduct'
 
+  validates_presence_of :profile
+  validates_presence_of :consumer
+  validates_associated :profile
+  validates_uniqueness_of :consumer_id, :scope => :profile_id
+
   named_scope :of_profile, lambda { |n| { :conditions => {:profile_id => n.id} } }
   named_scope :of_profile_id, lambda { |id| { :conditions => {:profile_id => id} } }
+  named_scope :of_consumer_id, lambda { |id| { :conditions => {:consumer_id => id} } }
 
   named_scope :with_name, lambda { |name| { :conditions => ["LOWER(name) LIKE ?","%#{name.downcase}%"] } }
 
@@ -18,11 +24,6 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   }
 
   named_scope :active, :conditions => {:active => true}
-
-  validates_presence_of :profile
-  validates_presence_of :consumer
-  validates_associated :profile
-  validates_uniqueness_of :consumer_id, :scope => :profile_id
 
   def self.new_dummy attributes
     profile = Enterprise.new :visible => false, :identifier => Digest::MD5.hexdigest(rand.to_s),
