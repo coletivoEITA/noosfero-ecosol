@@ -10,11 +10,9 @@ module DistributionPlugin::LayoutHelper
   include DistributionPlugin::ControllerHelper
 
   HeaderButtons = [
-    [:start, I18n.t('distribution_plugin.lib.distribution_layout_helper.start'), proc{ @node.profile.url }, proc{ on_homepage? }],
-    [:orders, I18n.t('distribution_plugin.lib.distribution_layout_helper.orders'), {:controller => :distribution_plugin_order, :action => :index}],
-    #[:about, I18n.t('distribution_plugin.lib.distribution_layout_helper.about'), {:controller => :distribution_plugin_node, :action => :about}],
-    #[:history, I18n.t('distribution_plugin.lib.distribution_layout_helper.history'), {:controller => :distribution_plugin_node, :action => :history}],
-    [:adm, I18n.t('distribution_plugin.lib.distribution_layout_helper.administration'), {:controller => :distribution_plugin_node, :action => 'index'}, proc{ @admin_action },
+    [:start, 'distribution_plugin.lib.layout_helper.start', proc{ @node.profile.url }, proc{ on_homepage? }],
+    [:orders, 'distribution_plugin.lib.layout_helper.orders', {:controller => :distribution_plugin_order, :action => :index}],
+    [:adm, 'distribution_plugin.lib.layout_helper.administration', {:controller => :distribution_plugin_node, :action => 'index'}, proc{ @admin_action },
       proc{ user and profile.has_admin? user }],
   ]
 
@@ -22,6 +20,7 @@ module DistributionPlugin::LayoutHelper
     HeaderButtons.map do |key, label, url, selected_proc, if_proc|
       next if if_proc and !instance_eval(&if_proc)
 
+      label = t label
       url = instance_eval(&url) if url.is_a?(Proc)
       if key != :adm and @admin_action
         selected = false
