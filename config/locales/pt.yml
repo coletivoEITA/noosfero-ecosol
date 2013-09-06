@@ -898,7 +898,6 @@
      plugin:
        name: Redes
        description: "Cria a gerencia redes."
-       info_control_panel_button: "Informações e configurações da rede"
        manage_control_panel_button: "Gerenciar estrutura da rede"
 
      

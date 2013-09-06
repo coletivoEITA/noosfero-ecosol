@@ -1,0 +1,23 @@
+<h1>Buscar um empreendimento</h1>
+
+<% form_tag 'enterprise_search', :method => :get do %>
+  <%= text_field_tag 'query', nil, :placeholder => 'Nome do emprendimento' %>
+  <%= submit_tag 'Buscar' %>
+<% end %>
+
+<% if @enterprises.blank? %>
+  <%= "Nenhum empreendimento foi encontrado. Por favor revise o texto da busca, conferindo espaços, acentos gráficos etc." %>
+<% else %>
+  <table>
+    <% @enterprises.each do |enterprise| %>
+      <tr>
+        <td>
+          <%= enterprise.name %>
+        </td>
+        <td>
+          <%= link_to 'Adicionar', {:controller => :networks_plugin_enterprise, :action => :add, :enterprise_id => enterprise.id} %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

@@ -1,0 +1,30 @@
+<h1><%= "Estrutura da rede %{name}" % {:name => @network.name} %></h1>
+
+<div>
+  <%= button_to "Adicionar empreendimento", {:controller => :networks_plugin_network, :action => :enterprise_search} %>
+  <button>Criar nó</button>
+</div>
+
+<% if flash[:error] %>
+  <div class="error"><%= flash[:error] %></div>
+<% end %>
+
+<% if flash[:notice] %>
+  <div class="notice"><%= flash[:notice] %></div>
+<% end %>
+
+<table>
+  <% @profiles.each do |profiles| %>
+    <tr>
+      <td>
+        <%= profiles.name %>
+      </td>
+      <td style="text-align: right;">
+        <%# FIXME only for nodes, not for suppliers %>
+        <%= link_to 'Editar', :controller => :networks_plugin_node, :action => :show, :id => profile.id %>
+        |
+        <%= link_to 'Remover', :controller => :networks_plugin_node, :action => :destroy, :id => profile.id %>
+      </td>
+    </tr>
+  <% end %>
+</table>

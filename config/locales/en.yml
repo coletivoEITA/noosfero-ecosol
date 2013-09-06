@@ -887,5 +887,4 @@
      plugin:
        name: Networks
        description: "Create and manage networks."
-       info_control_panel_button: "Informações e configurações da rede"
        manage_control_panel_button: "Manage network's structure"
