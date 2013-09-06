@@ -16,9 +16,6 @@ class SuppliersPlugin::BaseProduct < Product
   belongs_to :category, :class_name => 'ProductCategory'
   belongs_to :type_category, :class_name => 'ProductCategory'
 
-  # disable name validation
-  validates_uniqueness_of :name, :scope => :profile_id, :allow_nil => true, :if => proc{ |p| false }
-
   validates_associated :from_products
 
   DEFAULT_ATTRIBUTES = [:name, :description, :margin_percentage, :margin_fixed,
@@ -85,5 +82,9 @@ class SuppliersPlugin::BaseProduct < Product
   end
 
   protected
+
+  def validate_uniqueness_of_column_name?
+    false
+  end
 
 end
