@@ -248,7 +248,7 @@
           cycle_created: "Ciclo criado"
           cycle_n_n: "Ciclo n.%{n}"
           cycle_orders_report_d: "Relatório de pedidos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
-          new_open_cycle: "Novo ciclo aberto"
+          new_open_cycle: "Novo ciclo aberto: "
           products_report_date_: "Relatório de produtos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
         supplier_controller: 
           supplier_created: "Fornecedor criado"
@@ -826,6 +826,7 @@
           any_registered_produc: "nenhum produto registrado"
           by_removing_this_supp: "Ao remover este fornecedor, todos os produtos ficarão indisponíveis em futuras sessões. Por favor, confirme sua opção"
           desactivate: desativar
+          activate: ativar
           edit: editar
           products_are_active: " produtos estão ativos"
           products_distributed: " produtos distribuídos pelo coletivo"
