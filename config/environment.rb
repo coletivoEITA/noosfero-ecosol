@@ -7,7 +7,6 @@
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.15' unless defined? RAILS_GEM_VERSION
 
-require 'rubygems'
 require 'active_support/all'
 ActiveSupport::Deprecation.silenced = true
 
@@ -99,6 +98,14 @@ Rails::Initializer.run do |config|
   extra_controller_dirs.each do |item|
     $LOAD_PATH << item
     config.controller_paths << item
+  end
+
+  require 'sass/plugin/rack'
+  config.middleware.use Sass::Plugin::Rack
+  locations = Dir.glob("#{RAILS_ROOT}/public/designs/themes/*{,/stylesheets}") +
+    Dir.glob("#{RAILS_ROOT}/plugins/*/public{,/stylesheets}")
+  locations.each do |location|
+    Sass::Plugin.add_template_location location, location
   end
 end
 extra_controller_dirs.each do |item|
