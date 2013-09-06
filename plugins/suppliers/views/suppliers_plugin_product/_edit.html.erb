@@ -41,10 +41,10 @@
                 <%= labelled_field f, :margin_percentage, t('suppliers_plugin.views.product._edit.margin'),
                   f.text_field(:margin_percentage, :class => 'small-input',
                                :value => product.own_margin_percentage_as_currency_number, :oldvalue => product.own_margin_percentage_as_currency_number, :defaultvalue => product.original_margin_percentage_as_currency_number,
-                               :onkeyup => 'distribution.our_product.pmsync(this, true);') +
+                               :onkeyup => 'suppliers.our_product.pmsync(this, true);') +
                   ' ' + t('suppliers_plugin.views.product._edit.%') %>
                 <div class="default-margin">
-                  <%= f.check_box :default_margin_percentage, :onchange => "distribution.our_product.toggle_referred(this)", :for => '#product_margin_percentage' %>
+                  <%= f.check_box :default_margin_percentage, :onchange => "suppliers.our_product.toggle_referred(this)", :for => '#product_margin_percentage' %>
                   <%= f.label :default_margin_percentage, t('suppliers_plugin.views.product._edit.use_default_margin') %>
                 </div>
 
@@ -69,11 +69,11 @@
             <div class="column-title"><%= t('suppliers_plugin.views.product._edit.use_original') %></div>
             <div class="guideline">
               <%= f.check_box :default_name, :class => 'default-checkbox', :for => '#product_name',
-                :onchange => "distribution.our_product.toggle_referred(this)" unless product.default_name.nil? %>
+                :onchange => "suppliers.our_product.toggle_referred(this)" unless product.default_name.nil? %>
               <%= f.check_box :default_description, :class => 'default-checkbox', :for => '#product_description',
-                :onchange => "distribution.our_product.toggle_referred(this)" unless product.default_description.nil? %>
+                :onchange => "suppliers.our_product.toggle_referred(this)" unless product.default_description.nil? %>
               <%= f.check_box :default_price, :class => 'default-checkbox', :for => '#product_price, #product_unit_id, #product_minimum_selleable, #product_unit_detail',
-                :onchange => "distribution.our_product.toggle_referred(this)" unless product.default_price.nil? %>
+                :onchange => "suppliers.our_product.toggle_referred(this)" unless product.default_price.nil? %>
             </div>
           </div>
 
@@ -89,8 +89,8 @@
                 </div>
               <% else %>
                 <div class="properties-block disabled-fields">
-                  <%= labelled_field f, :name, t('suppliers_plugin.views.product._edit.name'), f.text_field(:name, :disabled => 'disabled', :onkeyup => 'distribution.our_product.sync_referred(this)') %>
-                  <%= labelled_field f, :description, t('suppliers_plugin.views.product._edit.description'), f.text_area(:description, :disabled => 'disabled', :onkeyup => 'distribution.our_product.sync_referred(this)') %>
+                  <%= labelled_field f, :name, t('suppliers_plugin.views.product._edit.name'), f.text_field(:name, :disabled => 'disabled', :onkeyup => 'suppliers.our_product.sync_referred(this)') %>
+                  <%= labelled_field f, :description, t('suppliers_plugin.views.product._edit.description'), f.text_area(:description, :disabled => 'disabled', :onkeyup => 'suppliers.our_product.sync_referred(this)') %>
                 </div>
               <% end %>
 
@@ -100,7 +100,7 @@
         <% end %>
 
         <% javascript_tag do %>
-          distribution.our_product.load(jQuery('#our-product-<%=product.new_record? ? 'add' : product.id%>'));
+          suppliers.our_product.load(jQuery('#our-product-<%=product.new_record? ? 'add' : product.id%>'));
         <% end %>
       </div>
 

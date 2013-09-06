@@ -4,7 +4,7 @@ module SuppliersPlugin::ProductHelper
 
   def supplier_select f, profile, selected_supplier, new_record
    field_options = !new_record ? {:disabled => 'disabled'} :
-     {:onchange => "distribution.our_product.add_change_supplier(this, '#{url_for(:controller => :distribution_plugin_product, :action => :new)}');"}
+     {:onchange => "suppliers.our_product.add_change_supplier(this, '#{url_for(:controller => :suppliers_plugin_product, :action => :new)}');"}
 
    options = {}
    options[:selected] = selected_supplier.id if selected_supplier

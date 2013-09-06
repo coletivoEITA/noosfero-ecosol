@@ -242,12 +242,10 @@
         orders_plugin:
           order:
             sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
-      distribution_layout_helper: 
-        about: About
-        administration: Administração
-        history: História
-        orders: Pedidos
+      layout_helper: 
         start: Início
+        orders: Pedidos
+        administration: Administração
       mailer: 
         node_subject: "[%{node}] %{subject}"
         order_was_changed: "[%{node}] Seu pedido foi modificado"

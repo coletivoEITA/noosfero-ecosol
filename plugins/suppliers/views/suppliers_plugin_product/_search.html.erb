@@ -15,7 +15,7 @@
   </div>
 
   <div class="table-content">
-    <div id="our-product-add" class="our-product value-row" toggleedit="distribution.our_product.toggle_edit();" style="display: none">
+    <div id="our-product-add" class="our-product value-row" toggleedit="suppliers.our_product.toggle_edit();" style="display: none">
       <%= render :partial => "suppliers_plugin_product/edit", :locals => {:product => @new_product} %>
     </div>
 
@@ -23,7 +23,7 @@
       <%=  t('suppliers_plugin.views.product._search.we_don_t_have_product') %>
     <% else %>
       <% @products.each do |product| %>
-        <div id="our-product-<%=product.id%>" class="our-product value-row" toggleedit="distribution.our_product.toggle_edit();">
+        <div id="our-product-<%=product.id%>" class="our-product value-row" toggleedit="suppliers.our_product.toggle_edit();">
           <%= render :partial => "suppliers_plugin_product/edit_line", :locals => {:product => product} %>
         </div>
       <% end %>

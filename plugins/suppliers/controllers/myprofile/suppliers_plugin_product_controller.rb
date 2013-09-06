@@ -18,7 +18,7 @@ class SuppliersPluginProductController < MyProfileController
 
     respond_to do |format|
       format.html
-      format.js { render :partial => 'search' }
+      format.js { render :partial => 'suppliers_plugin_product/search' }
     end
   end
 

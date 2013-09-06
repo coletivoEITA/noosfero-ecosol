@@ -232,12 +232,10 @@
         orders_plugin:
           order:
             sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
-      distribution_layout_helper: 
-        about: About
-        administration: Administration
-        history: History
+      layout_helper: 
         orders: Orders
         start: Start
+        administration: Administration
       distribution_product_helper: 
         product_from_which_su: "Product from which supplier?"
       mailer: 
@@ -733,6 +731,7 @@
           any_registered_produc: "any registered product"
           by_removing_this_supp: "By removing this supplier all its products won't be available for future cycles. Please confirm you choice"
           desactivate: desactivate
+          activate: activate
           edit: edit
           products_are_active: " produtos estão ativos"
           products_distributed: " distributed products by the collective"
