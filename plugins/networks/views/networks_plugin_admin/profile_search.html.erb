@@ -1,0 +1,27 @@
+<h1>Buscar um empreendimento</h1>
+
+<% form_tag 'profile_search', :method => :get do %>
+  <%= hidden_field_tag 'net_id', :value => @net.id %>
+  <%= text_field_tag 'query', nil, :placeholder => 'Nome do emprendimento' %>
+  <%= submit_tag 'Buscar' %>
+<% end %>
+
+<% if flash[:error] %>
+  <div class="error"><%= flash[:error] %></div>
+<% end %>
+
+<% unless @profiles.blank? %>
+  <table>
+    <% @profiles.each do |profile| %>
+      <tr>
+        <td>
+          <%= profile.name %>
+        </td>
+        <td>
+          <%= link_to 'Adicionar', {:controller => :networks_plugin_admin,
+            :action => :add_to_network, :net_id => @net.id, :profile_id => profile.id} %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

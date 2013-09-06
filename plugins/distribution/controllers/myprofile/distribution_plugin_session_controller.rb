@@ -1,10 +1,9 @@
 class DistributionPluginSessionController < DistributionPluginMyprofileController
 
   no_design_blocks
+  before_filter :set_admin_action
 
   helper DistributionPlugin::SessionHelper
-
-  before_filter :set_admin_action
 
   def index
     @sessions = @node.sessions
@@ -20,7 +19,7 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
 
   def new
     if request.post?
-      @session = DistributionPluginSession.find params[:id]
+      @session = DistributionPlugin::Session.find params[:id]
       @success = @session.update_attributes params[:session]
       if @success
         session[:notice] = t('distribution_plugin.controllers.myprofile.session_controller.cycle_created')
@@ -33,13 +32,13 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
         render :partial => 'edit'
       end
     else
-      count = DistributionPluginSession.count :conditions => {:node_id => @node}
-      @session = DistributionPluginSession.create! :node => @node, :status => 'new', :name => t('distribution_plugin.controllers.myprofile.session_controller.cycle_n_n') % {:n => count+1}
+      count = DistributionPlugin::Session.count :conditions => {:node_id => @node}
+      @session = DistributionPlugin::Session.create! :node => @node, :status => 'new', :name => t('distribution_plugin.controllers.myprofile.session_controller.cycle_n_n') % {:n => count+1}
     end
   end
 
   def edit
-    @session = DistributionPluginSession.find params[:id]
+    @session = DistributionPlugin::Session.find params[:id]
     @products = (@session.products.unarchived.paginate(:per_page => 15, :page => params["page"]))
 
     if request.xhr?
@@ -59,32 +58,32 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
   end
 
   def destroy
-    @session = DistributionPluginSession.find params[:id]
+    @session = DistributionPlugin::Session.find params[:id]
     @session.destroy
     render :nothing => true
   end
 
   def step
-    @session = DistributionPluginSession.find params[:id]
+    @session = DistributionPlugin::Session.find params[:id]
     @session.step
     @session.save!
     redirect_to :action => 'edit', :id => @session.id
   end
 
   def step_back
-    @session = DistributionPluginSession.find params[:id]
+    @session = DistributionPlugin::Session.find params[:id]
     @session.step_back
     @session.save!
     redirect_to :action => 'edit', :id => @session.id
   end
 
   def add_products
-    @session = DistributionPluginSession.find params[:id]
-    @missing_products = @node.products.unarchived.distributed.active - @session.from_products.unarchived
+    @session = DistributionPlugin::Session.find params[:id]
+    @missing_products = @node.products.unarchived.distributed.available - @session.from_products.unarchived
     if params[:products_id]
       params[:products_id].each do |id|
-        product = DistributionPluginDistributedProduct.find id
-        DistributionPluginSessionProduct.create_from_distributed @session, product
+        product = SuppliersPlugin::DistributedProduct.find id
+        DistributionPlugin::OfferedProduct.create_from_distributed @session, product
       end
       render :partial => 'distribution_plugin_shared/pagereload'
     else
@@ -93,14 +92,14 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
   end
 
   def add_missing_products
-    @session = DistributionPluginSession.find params[:id]
+    @session = DistributionPlugin::Session.find params[:id]
     @session.add_distributed_products
     render :partial => 'distribution_plugin_shared/pagereload'
   end
 
   def report_products
     extend DistributionPlugin::Report::ClassMethods
-    @session = DistributionPluginSession.find params[:id]
+    @session = DistributionPlugin::Session.find params[:id]
     tmp_dir, report_file = report_products_by_supplier @session
     if report_file.nil?
       return false
@@ -115,7 +114,7 @@ class DistributionPluginSessionController < DistributionPluginMyprofileControlle
 
   def report_orders
     extend DistributionPlugin::Report::ClassMethods
-    @session = DistributionPluginSession.find params[:id]
+    @session = DistributionPlugin::Session.find params[:id]
     tmp_dir, report_file = report_orders_by_consumer @session
     if report_file.nil?
       render :nothing => true, :status => :ok

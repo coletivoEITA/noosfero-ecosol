@@ -1,5 +1,12 @@
 class Category < ActiveRecord::Base
 
+  SEARCHABLE_FIELDS = {
+    :name => 10,
+    :acronym => 5,
+    :abbreviation => 5,
+    :slug => 1,
+  }
+
   validates_exclusion_of :slug, :in => [ 'index' ], :message => N_('%{fn} cannot be like that.').fix_i18n
   validates_presence_of :name, :environment_id
   validates_uniqueness_of :slug,:scope => [ :environment_id, :parent_id ], :message => N_('%{fn} is already being used by another category.').fix_i18n
@@ -15,23 +22,15 @@ class Category < ActiveRecord::Base
 
   named_scope :on_level, lambda { |parent| {:conditions => {:parent_id => parent}} }
 
-  named_scope :sub_categories, lambda { |category|
-    {:conditions => ['categories.path LIKE ? AND categories.id != ?', "%#{category.slug}%", category.id]}
-  }
-
-  named_scope :sub_tree, lambda { |category|
-    {:conditions => ['categories.path LIKE ?', "%#{category.slug}%"]}
-  }
-
   acts_as_filesystem
 
-  has_many :article_categorizations, :dependent => :destroy
+  has_many :article_categorizations
   has_many :articles, :through => :article_categorizations
   has_many :comments, :through => :articles
 
   has_many :events, :through => :article_categorizations, :class_name => 'Event', :source => :article
 
-  has_many :profile_categorizations, :dependent => :destroy
+  has_many :profile_categorizations
   has_many :profiles, :through => :profile_categorizations, :source => :profile
   has_many :enterprises, :through => :profile_categorizations, :source => :profile, :class_name => 'Enterprise'
   has_many :people, :through => :profile_categorizations, :source => :profile, :class_name => 'Person'
@@ -99,24 +98,5 @@ class Category < ActiveRecord::Base
     return false if self.display_in_menu == false
     self.children.find(:all, :conditions => {:display_in_menu => true}).empty?
   end
-
-  private
-  def name_sortable # give a different name for solr
-    name
-  end
-  public
-
-  acts_as_searchable :fields => [
-    # searched fields
-    {:name => {:type => :text, :boost => 2.0}},
-    {:path => :text}, {:slug => :text},
-    {:abbreviation => :text}, {:acronym => :text},
-    # filtered fields
-    :parent_id,
-    # ordered/query-boosted fields
-    {:name_sortable => :string},
-  ]
-  after_save_reindex [:articles, :profiles], :with => :delayed_job
-  handle_asynchronously :solr_save
 
 end

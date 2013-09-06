@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + '/../../../../test/test_helper'
 
-class DistributionPluginOrderTest < ActiveSupport::TestCase
+class DistributionPlugin::OrderTest < ActiveSupport::TestCase
 
   def setup
-    @order = build(DistributionPluginOrder)
+    @order = build(OrdersPlugin::Order)
   end
 
   should 'format code with session code' do
@@ -12,7 +12,7 @@ class DistributionPluginOrderTest < ActiveSupport::TestCase
   end
 
   should 'use as draft default status' do
-    @order = create(DistributionPluginOrder, :status => nil)
+    @order = create(OrdersPlugin::Order, :status => nil)
     assert_equal 'draft', @order.status
   end
 
@@ -85,9 +85,9 @@ class DistributionPluginOrderTest < ActiveSupport::TestCase
 
   should 'give total price and quantity asked' do
     @order.session.node.save!
-    product = create(DistributionPluginDistributedProduct, :price => 2.0, :node => @order.session.node, :supplier => @order.session.node.self_supplier)
+    product = create(SuppliersPlugin::DistributedProduct, :price => 2.0, :node => @order.session.node, :supplier => @order.session.node.self_supplier)
     @order.save!
-    @order.products.create! :session_product => @order.session.products.first, :quantity_asked => 2.0
+    @order.products.create! :product => @order.session.products.first, :quantity_asked => 2.0
     assert_equal 2.0, @order.total_quantity_asked
     assert_equal 4.0, @order.total_price_asked
   end

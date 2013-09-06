@@ -4,19 +4,13 @@ class Region < Category
 
   require_dependency 'enterprise' # enterprises can also be validators
 
-  # searches for organizations that could become validators for this region.
-  # <tt>search</tt> is passed as is to find_by_contents on Organization.
-  def search_possible_validators(search)
-    Organization.find_by_contents(search)[:results].docs.reject {|item| self.validator_ids.include?(item.id) }
-  end
-
   def has_validator?
     validators.count > 0
   end
 
-  named_scope :with_validators, :group => 'id',
+  named_scope :with_validators, :select => 'DISTINCT ON (categories.id) *',
     :joins => 'INNER JOIN region_validators on (region_validators.region_id = categories.id)'
-  
+
 end
 
 require_dependency 'city'

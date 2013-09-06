@@ -1,0 +1,2 @@
+page.replace_html 'session-delivery-options', :partial => 'index', :locals => {:owner => @owner}
+page.replace_html 'select-content', :partial => 'select_content'

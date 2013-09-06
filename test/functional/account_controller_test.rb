@@ -190,7 +190,7 @@ class AccountControllerTest < ActionController::TestCase
     post :change_password, :current_password => 'test', :new_password => 'blabla', :new_password_confirmation => 'blabla'
     assert_response :redirect
     assert_redirected_to :action => 'index'
-    assert User.find_by_login('ze').authenticated?('blabla')
+    assert assigns(:current_user).authenticated?('blabla')
     assert_equal users(:ze), @controller.send(:current_user)
   end
 
@@ -222,6 +222,12 @@ class AccountControllerTest < ActionController::TestCase
 
     post :forgot_password, :change_password => { :login => 'test', :email => 'test@localhost.localdomain' }
     assert_template 'password_recovery_sent'
+  end
+
+  should 'use redirect_to parameter on successful login' do
+    url = 'http://kernel.org'
+    post :login, :return_to => url, :user => {:login => 'ze', :password => 'test'}
+    assert_redirected_to url
   end
 
   should 'provide interface for entering new password' do

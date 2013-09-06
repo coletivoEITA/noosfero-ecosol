@@ -350,7 +350,7 @@ class CategoryTest < ActiveSupport::TestCase
     p1.add_category c
     p2 = create_user('testuser_2').person
     p2.add_category c
-    assert_equal [p1, p2], c.people
+    assert_equivalent [p1, p2], c.people
   end
 
   should 'have communities' do
@@ -359,7 +359,7 @@ class CategoryTest < ActiveSupport::TestCase
     c1.add_category c
     c2 = fast_create(Community, :name => 'testcommunity_2')
     c2.add_category c
-    assert_equal [c1, c2], c.communities
+    assert_equivalent [c1, c2], c.communities
   end
 
   should 'have products through enteprises' do
@@ -488,12 +488,16 @@ class CategoryTest < ActiveSupport::TestCase
   end
 
   should 'paginate upcoming events' do
+    Event.destroy_all
     category = Category.create!(:name => 'category1', :environment_id => Environment.default.id)
     profile = fast_create(Profile)
-    event1 = category.events.build(:name => 'event1', :start_date => Time.now, :profile => profile)	
-    event2 = category.events.build(:name => 'event2', :start_date => Time.now + 1.hour, :profile => profile)	
-    event3 = category.events.build(:name => 'event3', :start_date => Time.now + 1.day, :profile => profile)
-    category.save!
+    event1 = Event.create!(:name => 'event1', :profile => profile, :start_date => Time.now)
+    event2 = Event.create!(:name => 'event2', :profile => profile, :start_date => Time.now + 1.day)
+    event3 = Event.create!(:name => 'event3', :profile => profile, :start_date => Time.now + 2.days)
+    ArticleCategorization.add_category_to_article(category, event1)
+    ArticleCategorization.add_category_to_article(category, event2)
+    ArticleCategorization.add_category_to_article(category, event3)
+
     assert_equal [event1, event2], category.upcoming_events(2)
   end
 
@@ -511,45 +515,6 @@ class CategoryTest < ActiveSupport::TestCase
     p.add_category cat
     cat.destroy
     assert p.categories.reload.empty?
-  end
-
-  should 'act as searchable' do
-    TestSolr.enable
-    parent = fast_create(Category, :name => 'books')
-    c = Category.create!(:name => "science fiction", :acronym => "sf", :abbreviation => "sci-fi",
-                         :environment_id => Environment.default.id, :parent_id => parent.id)
-
-    # fields
-    assert_includes Category.find_by_contents('fiction')[:results].docs, c
-    assert_includes Category.find_by_contents('sf')[:results].docs, c
-    assert_includes Category.find_by_contents('sci-fi')[:results].docs, c
-    # filters
-    assert_includes Category.find_by_contents('science', {}, {
-      :filter_queries => ["parent_id:#{parent.id}"]})[:results].docs, c
-  end
-
-  should 'boost name matches' do
-    TestSolr.enable
-    c_abbr = Category.create!(:name => "something else", :abbreviation => "science", :environment_id => Environment.default.id)
-    c_name = Category.create!(:name => "science fiction", :environment_id => Environment.default.id)
-    assert_equal [c_name, c_abbr], Category.find_by_contents("science")[:results].docs
-  end
-
-  should 'solr save' do
-    c = @env.categories.build(:name => 'my category');
-    c.expects(:solr_save)
-    c.save!
-  end
-
-  should 'reindex articles after saving' do
-    cat = Category.create!(:name => 'category 1', :environment_id => Environment.default.id)
-    art = Article.create!(:name => 'something', :profile_id => fast_create(Person).id)
-    art.add_category cat
-    cat.reload
-
-    solr_doc = art.to_solr_doc
-    Article.any_instance.expects(:to_solr_doc).returns(solr_doc)
-    cat.save!
   end
 
   should 'return categories of a level' do
@@ -574,40 +539,6 @@ class CategoryTest < ActiveSupport::TestCase
 
     assert_includes Category.on_level(parent), category
     assert_includes Category.on_level(parent.id), category
-  end
-
-  should 'list category sub-categories' do
-    c1 = Category.create!(:name => 'Category 1', :environment => Environment.default)
-    c2 = Category.create!(:name => 'Category 2', :environment => Environment.default)
-    c3 = Category.create!(:name => 'Category 3', :environment => Environment.default, :parent_id => c1)
-    c4 = Category.create!(:name => 'Category 4', :environment => Environment.default, :parent_id => c1)
-    c5 = Category.create!(:name => 'Category 5', :environment => Environment.default, :parent_id => c3)
-
-    sub_categories = Category.sub_categories(c1)
-
-    assert ActiveRecord::NamedScope::Scope, sub_categories.class
-    assert_not_includes sub_categories, c1
-    assert_not_includes sub_categories, c2
-    assert_includes sub_categories, c3
-    assert_includes sub_categories, c4
-    assert_includes sub_categories, c5
-  end
-
-  should 'list category sub-tree' do
-    c1 = Category.create!(:name => 'Category 1', :environment => Environment.default)
-    c2 = Category.create!(:name => 'Category 2', :environment => Environment.default)
-    c3 = Category.create!(:name => 'Category 3', :environment => Environment.default, :parent_id => c1)
-    c4 = Category.create!(:name => 'Category 4', :environment => Environment.default, :parent_id => c1)
-    c5 = Category.create!(:name => 'Category 5', :environment => Environment.default, :parent_id => c3)
-
-    sub_tree = Category.sub_tree(c1)
-
-    assert ActiveRecord::NamedScope::Scope, sub_tree.class
-    assert_includes sub_tree, c1
-    assert_not_includes sub_tree, c2
-    assert_includes sub_tree, c3
-    assert_includes sub_tree, c4
-    assert_includes sub_tree, c5
   end
 
 end

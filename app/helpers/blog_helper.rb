@@ -32,7 +32,7 @@ module BlogHelper
       css_add << position + '-inner'
       content << content_tag('div',
                              content_tag('div',
-                                         display_post(art, format) + '<br style="clear:both"/>',
+                                         display_post(art, format).html_safe + '<br style="clear:both"/>'.html_safe,
                                          :class => 'blog-post ' + css_add.join(' '),
                                          :id => "post-#{art.id}"), :class => position
                             )
@@ -42,7 +42,7 @@ module BlogHelper
 
   def display_post(article, format = 'full')
     no_comments = (format == 'full') ? false : true
-    html = send("display_#{format}_format", article)
+    html = send("display_#{format}_format", article).html_safe
 
     article_title(article, :no_comments => no_comments) + html
   end

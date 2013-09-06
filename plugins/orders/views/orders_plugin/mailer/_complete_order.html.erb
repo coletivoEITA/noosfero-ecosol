@@ -1,0 +1,34 @@
+<%
+body = "<pre>" + t('orders_plugin.views.mailer._complete_order.order_no_code') % {:code => @order.code} + "\n"
+body += "-" * 79 + "\n"
+body += t('orders_plugin.views.mailer._complete_order.products_list') + "\n"
+body += "-" * 79 + "\n"
+body +=  t('orders_plugin.views.mailer._complete_order.supplier_product') + " "*(26-t('orders_plugin.views.mailer._complete_order.supplier_product').size) + t('orders_plugin.views.mailer._complete_order.qtt') + ' '*(23-t('orders_plugin.views.mailer._complete_order.qtt').size) + t('orders_plugin.views.mailer._complete_order.price_un') + " "*(23-t('orders_plugin.views.mailer._complete_order.price_un').size) + t('orders_plugin.views.mailer._complete_order.price') + "\n"
+body += "-" * 79 + "\n"
+@order.products.group_by{|op| op.supplier}.each do |supplier, products|
+  body += supplier.name.upcase + ":</pre>"
+  products.each do |p|
+    body += '<pre>'
+    line = ' '*3 + p.product.name
+    chars = 30 - line.size
+    chars = 0 if chars < 0
+
+    line += ' ' * (chars) + t('orders_plugin.views.mailer._complete_order.quantity_unit') % {:quantity => p.quantity_asked_as_currency_number, :unit => p.product.unit.singular}
+    chars = 49 - line.size
+    chars = 0 if chars < 0
+
+    line += ' ' * chars + t('orders_plugin.views.mailer._complete_order.price_unit') % {:price => p.product.price_as_currency, :unit => p.product.unit.singular}
+    chars = 71 - line.size
+    chars = 0 if chars < 0
+
+    body += line + ' ' * chars + p.price_asked_as_currency + "\n\n"
+
+  end
+end
+body += "-" * 79 + "\n"
+chars = 71-t('orders_plugin.views.mailer._complete_order.total').size
+chars = 0 if chars < 0
+%>
+
+<%= t('orders_plugin.views.mailer._complete_order.total') + ':' + @order.total_price_asked_as_currency %>
+

@@ -2,20 +2,20 @@
 # only enterprises can offer products and services.
 class Enterprise < Organization
 
+  SEARCH_DISPLAYS += %w[map full]
+
   def self.type_name
     _('Enterprise')
   end
 
   N_('Enterprise')
 
-  has_many :products, :dependent => :destroy, :order => 'name ASC'
+  has_many :products, :foreign_key => :profile_id, :dependent => :destroy, :order => 'name ASC'
   has_many :inputs, :through => :products
   has_many :production_costs, :as => :owner
 
   has_and_belongs_to_many :fans, :class_name => 'Person', :join_table => 'favorite_enteprises_people'
 
-  after_save_reindex [:products], :with => :delayed_job
-  extra_data_for_index :product_categories
   def product_categories
     products.includes(:product_category).map{|p| p.category_full_name}.compact
   end
@@ -182,11 +182,15 @@ class Enterprise < Organization
   end
 
   def activities
-    Scrap.find_by_sql("SELECT id, updated_at, 'Scrap' AS klass FROM scraps WHERE scraps.receiver_id = #{self.id} AND scraps.scrap_id IS NULL UNION SELECT id, updated_at, 'ActionTracker::Record' AS klass FROM action_tracker WHERE action_tracker.target_id = #{self.id} UNION SELECT action_tracker.id, action_tracker.updated_at, 'ActionTracker::Record' AS klass FROM action_tracker INNER JOIN articles ON action_tracker.target_id = articles.id WHERE articles.profile_id = #{self.id} AND action_tracker.target_type = 'Article' ORDER BY action_tracker.updated_at DESC")
+    Scrap.find_by_sql("SELECT id, updated_at, 'Scrap' AS klass FROM scraps WHERE scraps.receiver_id = #{self.id} AND scraps.scrap_id IS NULL UNION SELECT id, updated_at, 'ActionTracker::Record' AS klass FROM action_tracker WHERE action_tracker.target_id = #{self.id} UNION SELECT action_tracker.id, action_tracker.updated_at, 'ActionTracker::Record' AS klass FROM action_tracker INNER JOIN articles ON action_tracker.target_id = articles.id WHERE articles.profile_id = #{self.id} AND action_tracker.target_type = 'Article' ORDER BY updated_at DESC")
   end
 
   def catalog_url
     { :profile => identifier, :controller => 'catalog'}
+  end
+
+  def more_recent_label
+    ''
   end
 
 end

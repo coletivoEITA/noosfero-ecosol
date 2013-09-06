@@ -7,6 +7,8 @@ CSV = FasterCSV
 
 class DistributionPlugin::Import
 
+  protected
+
   def self.terramater_db(node, supplier_csv, products_csv, supplier_products_csv, users_csv, verbose=true)
     environment = node.profile.environment
 
@@ -53,14 +55,14 @@ class DistributionPlugin::Import
         u.person.affiliate(u.person, [owner_role]) if owner_role
       end
 
-      consumer = DistributionPluginNode.find_or_create u.person
+      consumer = DistributionPlugin::Node.find_or_create u.person
       node.profile.add_member u.person
       node.add_consumer consumer
     end
 
     id_s = {}
     CSV.readlines(supplier_csv,:headers => true).each do |row|
-      s = DistributionPluginSupplier.create_dummy :consumer => node, :name => row[1]
+      s = SuppliersPlugin::Supplier.create_dummy :consumer => node, :name => row[1]
       id_s[row[0]] = s
       email = row[3]
       email = 'rede@terramater.org.br' if email.blank? or !email.include? '@'
@@ -79,7 +81,7 @@ class DistributionPlugin::Import
         name = row[1]
         description = ''
       end
-      product =  DistributionPluginDistributedProduct.new :node => node, :name => name, :description => description, :active => row[2]
+      product = SuppliersPlugin::DistributedProduct.new :node => node, :name => name, :description => description, :available => row[2]
       puts row[1] if product.nil? and verbose
       id_p[row[0]] = product
     end

@@ -8,7 +8,8 @@
 
   <div id="order-filter">
     <%= render :partial => "distribution_plugin_product/order_search", :locals => {
-      :products_for_order_by_supplier => session.products_for_order_by_supplier, :order => order
+      :session => session, :order => order,
+      :products_for_order_by_supplier => session.products_for_order_by_supplier,
     } %>
   </div>
 </div>

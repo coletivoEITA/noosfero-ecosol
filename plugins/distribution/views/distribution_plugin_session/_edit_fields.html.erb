@@ -18,9 +18,9 @@
 
       <div>
         <div id='session-delivery-options' class="subtitle">
-          <%= render :partial => 'distribution_plugin_delivery_option/index' %>
+          <%= render :partial => 'distribution_plugin_delivery_option/index', :locals => {:owner => @session} %>
         </div>
-        <%= colorbox_link_to t('distribution_plugin.views.session._edit_fields.add_method'), { :controller => :distribution_plugin_delivery_option, :action => "select", :session_id => @session.id }, :class => 'session-add-delivery-option subtitle'  %>
+        <%= colorbox_link_to t('distribution_plugin.views.session._edit_fields.add_method'), { :controller => :distribution_plugin_delivery_option, :action => :select, :owner_id => @session.id, :owner_type => @session.class.name }, :class => 'session-add-delivery-option subtitle'  %>
       </div>
 
       <div class="cleaner"></div>

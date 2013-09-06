@@ -1,8 +1,10 @@
 class DistributionPluginMessageController < DistributionPluginMyprofileController
+
   no_design_blocks
+  before_filter :load_node
 
   def new_to_consumer_for_order
-    @order = DistributionPluginOrder.find params[:order_id]
+    @order = OrdersPlugin::Order.find params[:order_id]
     @consumer = @order.consumer
     if params[:commit]
       if params[:include_order]
@@ -17,7 +19,7 @@ class DistributionPluginMessageController < DistributionPluginMyprofileControlle
   end
 
   def new_to_consumer
-    @consumer = DistributionPluginNode.find params[:consumer_id]
+    @consumer = DistributionPlugin::Node.find params[:consumer_id]
     if params[:commit]
       DistributionPlugin::Mailer.deliver_message_to_consumer @node, @consumer, params[:email][:subject], params[:email][:message]
       page_reload
@@ -27,7 +29,7 @@ class DistributionPluginMessageController < DistributionPluginMyprofileControlle
   end
 
   def new_to_supplier
-    @supplier = DistributionPluginSupplier.find params[:supplier_id]
+    @supplier = SuppliersPlugin::Supplier.find params[:supplier_id]
     if params[:commit]
       DistributionPlugin::Mailer.deliver_message_to_supplier @node, @supplier, params[:email][:subject], params[:email][:message]
       page_reload

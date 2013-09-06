@@ -234,66 +234,22 @@
         format: "%{attribute} %{message}"
 
   distribution_plugin: 
-    controllers: 
-      myprofile: 
-        message_controller: 
-          message_sent: "A mensagem foi enviada"
-        node_controller: 
-          distribution_settings: "Configurações salvas"
-        product_controller: 
-          product_removed_from_: "Produto removido do ciclo"
-          product_removed_succe: "Produto removido com sucesso"
-          the_product_was_not_r: "O produto não foi removido"
-        session_controller: 
-          cycle_created: "Ciclo criado"
-          cycle_n_n: "Ciclo n.%{n}"
-          cycle_orders_report_d: "Relatório de pedidos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
-          new_open_cycle: "Novo ciclo aberto: "
-          products_report_date_: "Relatório de produtos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
-        supplier_controller: 
-          supplier_created: "Fornecedor criado"
-      profile: 
-        order_controller: 
-          can_not_confirm_your_: "Não pode confirmar. Sua lista de pedido está vazia"
-          login_first: "Faça login primeiro"
-          order_cancelled: "Pedido cancelado"
-          order_confirmed: "Pedido confirmado"
-          order_removed: "Pedido removido"
-          please_login_first: "Please login first"
-          you_are_not_the_owner: "Você não é o proprietário desse pedido"
-    lib: 
-      a_solidary_distributi: "Um plugin de distribuição solidária"
-      distribution_display_helper: 
-        /: /
-        a: "%A"
-        b_d_at_hh_m: "%d/%m/%y às %H:%M"
-        b_d_from_time_start_t: "%d/%m/%y, from %{time_start} para %{time_finish}"
-        from_start_to_finish: "de %{start} para %{finish}"
-        hh_m: "%Hh%M"
-        m_d: "%d/%m"
-        m_d_hh: "%d/%m - %Hh%M"
-        m_d_hh_m: "%d/%m - %Hh%M"
-        m_d_y_at_hh_m: "%d/%m/%y às %H:%M"
-        m_d_y_hh_m: "%d/%m/%y às %H:%M"
-        m_y_hh_m: "%m/%y - %Hh%M"
-        price_unit: "%{price}%{unit}"
-        start_day_from_start_: "%{start_day}, de %{start_time} para %{finish_time}"
-        start_day_start_datet: "%{start_day}, %{start_datetime} - %{finish_day}, %{finish_datetime}"
-        start_finish: "%{start} - %{finish}"
-        start_to_finish: "%{start} para %{finish}"
-        to: para
+    lib:
+      plugin:
+        name: Distribuição
+        description: "Um plugin de distribuição solidária"
+      ext:
+        orders_plugin:
+          order:
+            sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
       distribution_layout_helper: 
         about: About
         administration: Administração
         history: História
         orders: Pedidos
         start: Início
-      distribution_product_helper: 
-        product_from_which_su: "Produto de que fornecedor?"
       mailer: 
         node_subject: "[%{node}] %{subject}"
-        order_was_confirmed: "[%{node}] Seu pedido foi confirmado"
-        order_was_cancelled: "[%{node}] Seu pedido foi cancelado"
         order_was_changed: "[%{node}] Seu pedido foi modificado"
       order_block: 
         distribution_orders_c: "Ciclos de pedidos para consumidores"
@@ -326,24 +282,25 @@
         value: Valor
         value_parcel: "Valor da encomenda"
       settings_solidary_dis: "Configuração da Rede de Distribuição Solidária"
+    controllers: 
+      myprofile: 
+        message_controller: 
+          message_sent: "A mensagem foi enviada"
+        node_controller: 
+          distribution_settings: "Configurações salvas"
+        product_controller: 
+          product_removed_from_: "Produto removido do ciclo"
+          product_removed_succe: "Produto removido com sucesso"
+          the_product_was_not_r: "O produto não foi removido"
+        session_controller: 
+          cycle_created: "Ciclo criado"
+          cycle_n_n: "Ciclo n.%{n}"
+          cycle_orders_report_d: "Relatório de pedidos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
+          new_open_cycle: "Novo ciclo aberto"
+          products_report_date_: "Relatório de produtos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
     models: 
-      distributed_product: 
-        ? " > "
-        : " / "
       header_image: 
         fn_of_uploaded_file_w: "%{fn} do arquivo enviado é maior que o máximo permitido de 500.0 KB"
-      node: 
-        consumer: Consumidor
-      order: 
-        order_cancelled: "Pedido cancelado"
-        order_confirmed: "Pedido confirmado"
-        order_in_progress: "Pedido em andamento"
-        order_not_confirmed: "Pedido não confirmado"
-        order_planned: "Pedido planejado"
-        sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
-      product: 
-        unit: unidade
-        units: unidades
       session: 
         code_name: "%{code}. %{name}"
         delivery_period_befor: "Período de entrega antes do período de pedidos"
@@ -360,25 +317,6 @@
           meet_the_products: "meet the products"
           orders: pedidos
           see_all_cycles: "ver todos ciclos"
-      delivery_option: 
-        _method_edit: 
-          add: Adicionar
-          cancel: Cancelar
-          instructions: Instruções
-          name: Nome
-          save: Salvar
-        _select_content: 
-          add: Adicionar
-          add_new: "adicionar novo"
-          are_you_sure_you_want: "Tem certeza que quer remover este método?"
-          cancel: Cancelar
-          choose_a_delivery_met: "Escolha um método de entrega da lista"
-          edit_this: Editar
-          remove_method: "Remover método"
-        _show: 
-          x: X
-        select: 
-          add_a_delivery_method: "Adicionar um método de entrega ao ciclo de pedidos"
       gadgets: 
         _session: 
           happening: Acontecendo
@@ -388,25 +326,15 @@
         sessions: 
           all_cycles: "todos ciclos"
       layouts: 
-        _admin_sidebar: 
+        _admin_submenu: 
           members: Integrantes
           orders_cycles: "Ciclo de pedidos"
-          parcels: Parcels
+          parcels: Encomendas
           products: Produtos
           suppliers: Fornecedores
         _header: 
           collective_consumptio: "Rede de coletivos de consumo"
       mailer: 
-        _complete_order: 
-          order_no_code: "Código do Pedido: %{code}"
-          price: Preço
-          price_un: preço/un
-          price_unit: "%{price}/%{unit}"
-          products_list: "Lista de produtos"
-          qtt: QTD
-          quantity_unit: "%{quantity} %{unit}"
-          supplier_product: Fornecedor/Produto
-          total: "TOTAL:"
         message_to_admins: 
           a_service_of_s: "Um serviço de %s."
           hello_managers_of_nam: "Olá gestores de %{name}!"
@@ -431,10 +359,6 @@
           hello_member_of_name: "Olá membros da comunidade %{name}!"
           the_administrator_let: "O administrador deixou uma mensagem sobre este ciclo"
           the_cycle_description: "A descrição do ciclo é.."
-        order_cancellation: 
-          dear_name: "Olá %{name},"
-          greetings: "Saudações,"
-          your_order_made_on_co: "Seu pedido feito no coletivo %{node} em %{date} foi cancelado com sucesso."
         order_change_notification: 
           a_service_of_s: "Um serviço de %s."
           hi_name: "Olá %{name}!"
@@ -443,15 +367,6 @@
           the_administrator_lef: "O administrador deixou uma mensagem para esta mudança"
           the_following_product: "Os seguintes produtos tiveram suas quantidades mudadas:"
           your_order_id_was_cha: "Your order %{id} was changed by an %{supplier}'s administrator."
-        order_confirmation: 
-          attention_to_the_foll: "Atenção às instruções de entrega a seguir:"
-          dear_name: "Olá %{name},"
-          greetings: "Saudações,"
-          order_code_of_node: "Pedido %{code} de %{node}"
-          order_data_confirmed: "Pedido confirmado"
-          the_delivery_period_w: "O período de entrega ocorrerá em %{date}."
-          your_order_can_be_che: "Seu pedido pode ser checado no seguinte link:"
-          your_order_made_on_co: "Seu pedido feito no coletivo %{node} em %{date} foi confirmado."
       message: 
         _fields: 
           message: Mensagem
@@ -479,6 +394,7 @@
         margins_change: 
           ? "%"
           : "%"
+          notice: "Ao mudar a margem padrão de comercialização, os produtos que são marcados como \"use a margem padrão\" automaticamente terão sua margem atualizada. Os ciclos abertos não serão afetados."
           cancel: Cancelar
           change_default_margin: "Mudar a margem padrão de comercialização"
           confirm: Confirmar
@@ -497,6 +413,7 @@
           header_type: "Tipo de cabeçalho"
           image_collective_name: "Imagem + nome do coletivo"
           only_the_image: "Apenas a imagem"
+          image_help: "Esta imagem será usada no cabeçalho da página do coletivo, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
           pure_color_collective: "Cor pura + nome do coletivo"
           save: Salvar
           settings_of_solidary_: "Configurações da Rede de Distribuição solidária"
@@ -505,22 +422,22 @@
           white: branco
       order: 
         _consumer_orders: 
+          caution: "<strong>Cuidado</strong>, voce está editando os pedidos de \"%{consumer}\". É preferível fazer pequenas edições pela administração do ciclo. Desta forma, a pessoa será propriamente avisada das mudanças. Nós recomendamos que esta página seja usada somente se você está fazendo o pedido pra pessoa."
           show_cancelled_orders: "mostrar pedidos cancelados"
           hide_cancelled_orders: "esconder pedidos cancelados"
           administration_of_thi: "Administração deste ciclo"
           before_the_closing: "(antes do fechamento)"
           change_order: "Mudar o pedido"
           edit_your_orders: "Edite seus pedidos"
-          login: Login.
+          login: login
           new_order: "Novo pedido"
-          or: "Or "
           orders_from_another_m: "Orders from another member"
           orders_from_consumer_: "Pedidos do \"%{consumer}\" neste ciclo"
           send_message_to_the_m: "Enviar mensagem para gestores"
-          sign_up: Registre-se
+          sign_up: registre-se
           this_cycle_is_already: "Este ciclo já foi fechado."
           this_cycle_is_not_ope: "Este ciclo não está aberto."
-          to_place_an_order_you: "Para fazer um pedido você precisa estar logado e registrado no coletivo."
+          to_place_an_order_you: "Para fazer um pedido você precisa estar logado e registrado no coletivo. Por favor faça %{login} ou %{signup}."
           you_haven_t_placed_an: "Você ainda não fez pedidos neste ciclo."
           you_still_can: "Você ainda pode:"
           your_order_is_confirm: "Seu pedido está confirmado e registrado. Por favor, siga as diretrizes do método de entrega abaixo para que isso aconteça sem problemas."
@@ -546,69 +463,16 @@
           product_name: "Nome do produto"
           supplier: Fornecedor
           whose_qty_available_i: "cuja quantidade disponível é"
-        _session_edit: 
-          actions: Ações
-          add_product: "adicionar produto"
-          cancel: Cancelar
-          edit_on_the_order_pag: "Editar na página de pedidos"
-          empty_order: "Pedido vazio"
-          include_message: "Incluir uma mensagem"
-          message_to_member: "Mensagem para o membro"
-          remove_order: "remover pedido"
-          save: Salvar
-          see_delivery: "veja entrega"
-          see_redistribution: "veja redistribuição"
-          the_collective_member: "O membro do coletivo receberá um email que discrimina todas as mudanças feitas em seu pedido."
-          warn_member_of_the_ch: "Avise o membro das mudanças em seu pedido"
         _status: 
           code_status_message: "%{code} %{status_message}"
           open_it: abrir
-        _total: 
-          total: Total
         index: 
           code: "%{code}."
           orders_cycles: "Ciclos de pedidos"
           place_an_order: "Faça um pedido"
           there_s_no_open_sessi: "Nã há ciclos abertos"
           your_orders: "Seus pedidos:"
-      ordered_product: 
-        _edit: 
-          remove_from_order: "Remover do pedido"
-          see_product_details: "Ver detalhes do produto"
-          this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
-        _index: 
-          empty_order: "Pedido vazio"
       product: 
-        _edit: 
-          ? " > "
-          : " / "
-          ? "%"
-          : "%"
-          add_product_to_the_li: "Adicione o produto à lista de produtos distribuídos"
-          are_you_sure_you_want: "Tem certeza de que quer remover este produto?"
-          cancel: Cancelar
-          category: Categoria
-          commercialization_act: "Comercialização ativa"
-          description: Descrição
-          editing_distributed_p: "Edição de produtos distribuídos"
-          how_we_distribute_the: "Como nós distribuímos o produto"
-          how_we_order_the_prod: "Como nós pedimos o produto"
-          margin: Margem
-          name: Nome
-          or_then_link: "ou então %{link}."
-          own_product: "Produto próprio"
-          remove_product: "remover produto"
-          save: Salvar
-          search_another_catego: "Buscar outra categoria"
-          search_for_another_ca: "busque outra categoria"
-          to_end_the_categoriza: "Ao fim da categorização, escolha uma das subcategorias da categoria \"{{=cat.own_name}}\":"
-          use_default_margin: "Usar a margem padrão"
-          use_original: "usar original"
-        _edit_line: 
-          active: Ativo
-          inactive: Inativo
-        _form_errors: 
-          errors_found: "Erros encontrados:"
         _order_edit: 
           add: Adicionar
           cancel: Cancelar
@@ -628,26 +492,6 @@
           price: Preço
           product: Produto
           this_search_hasn_t_re: "Esta busca não retornou produtos"
-        _price_details: 
-          commercialization_act: "Comercialização ativa"
-          minimum_order: "Pedido mínimo"
-          price: Preço
-          unit: Unidade
-          unit_specification: "Especificações de unidade"
-        _search: 
-          category: Categoria
-          price: Preço
-          product: Produto
-          qty_avail: "Qtd. dispon."
-          showing_pcount_produc: "Mostrando %{pcount} produtos de %{allpcount}"
-          status: Estado
-          supplier: Fornecedor
-          we_don_t_have_product: "Não temos produtos a mostrar."
-        _select_missing: 
-          add_all_missing_produ: "Adicione todos produtos que faltam deste fornecedor."
-          cancel: Cancelar
-          the_following_product: "Os seguintes produtos do fornecedor não são distribuídos pelo seu coletivo. Que produto voce quer adicionar?"
-          there_isn_t_any_new_p: "Não há qualquer produto deste fornecedor."
         _session_edit: 
           all_ordered_products_: "Todos pedidos deste produto serão removidos também; você deveria primeiro avisar os membros que pediram esse produto."
           buy_price: "Preço de compra"
@@ -663,30 +507,12 @@
           save: Salvar
           sell_price: "Preço de venda:"
           sell_unit: "Unidade de venda"
-        index: 
-          active: Ativo
-          add_product: "Adicionar produto"
-          all_the_categories: "todas as categorias"
-          all_the_suppliers: "todos os fornecedores"
-          and_being: "e que estejam"
-          anyone: anyone
-          bigger_than_the_stock: "maior do que o estoque"
-          change: mudar
-          default_margin_of_com: "Margem padrão de comercialização"
-          filter: Filtro
-          in_any_state: "Em qualquer estado"
-          inactive: Inativo
-          margin: "%{margin} %"
-          no_margin_set: "Sem margem definida"
-          products: Produtos
-          show_products_from: "Mostar produtos de"
-          the_products: "Os produtos"
-          whose_name_contains: "cujo nome contenha"
-          whose_qty_available_i: "cuja qtd disponível é"
-          with_the_category: "com a categoria"
-          with_the_qualifiers: "com os qualificadores"
       session: 
         _brief: 
+          confirmed_orders:
+            zero: "(nenhum pedido)"
+            one: "(1 pedido confirmado)"
+            other: "(%{count} pedidos confirmados)"
           code: "%{code}."
           delivery: Entrega
           orders: Pedidos
@@ -711,16 +537,17 @@
           cycle_editing: "Edição de ciclo"
           cycle_saved: "Ciclo salvo"
         _edition: 
+          info: "O tempo de edição acabou e a sessão está ainda pública. Na verdade, a sessão está em fase de chamada de fornecedores.<br/><br/> Ainda é possível editar alguns parametros do Ciclo através desta página, no entanto, esteja ciente do risco. Algumas operações têm diferentes implicações dependendo da fase em que se está, quando assim for você será avisado por uma janelinha de aviso das consequências das mudanças efetuadas."
           add_product: "Adicionar produto"
-          it_was_automatically_: "Ela foi automaticamente gerada a partir dos produtos ativos e suas respectivas margens. Verifique a lista de produtos e edite-a conforme as necessidades e particularidades desta seção de pedidos."
-          the_following_list_of: "A seguinte lista de produtos está disponível nesta sessão."
+          it_was_automatically_: "Ela foi automaticamente gerada a partir dos produtos ativos e suas respectivas margens. Verifique a lista de produtos e edite-a conforme as necessidades e particularidades deste ciclo de pedidos."
+          the_following_list_of: "A seguinte lista de produtos está disponível neste ciclo."
           the_products: "Os produtos"
         _orders: 
           cancelled_orders_coun: "Pedidos cancelados (%{count})"
           closed_orders_count: "Pedidos fechados (%{count})"
           open_orders_count: "Pedidos abertos (%{count})"
-          the_orders: "Os pedidos"
           the_orders_period_is_: "O período de pedidos está ainda aberto, tome cuidado ao editar os pedidos abertos. Isso pode confundir os usuários."
+          already_closed: "O período de pedidos já foi fechado, Não é possível editar os pedidos originais. Na fase de redistribuição é possível editar o pedido, e também antes da entrega."
         _orders_suppliers: 
           actions: Ações
           do_prelimary_parcel: "fazer encomenda preliminar"
@@ -734,14 +561,6 @@
           total_asked: "Total pago"
           totals: Totals
           unit: Unidade
-        _orders_view: 
-          code: Código
-          created: Criado
-          member: Integrante
-          modified: Modificado
-          no_orders_to_show: "Sem pedidos a mostrar"
-          prod_qty: "Qtd prod."
-          value: Valor
         _product_lines: 
           category: Categoria
           price: Preço
@@ -760,7 +579,7 @@
           close_orders_period: "Fechar ciclo de pedidos"
           delivery: Entrega
           edition: Edição
-          finish_cycle_editing: "Finalizar edição de sessão"
+          finish_cycle_editing: "Abrir pedidos do ciclo"
           orders: Pedidos
           parcels: Parcels
           redistribution: Redistribution
@@ -803,6 +622,105 @@
           open_cycles: "Pedidos Abertos"
           orders_cycles: "Ciclo de pedidos"
           show_cycles_from_year: "Mostre os ciclos do ano"
+
+  suppliers_plugin:
+    lib:
+      plugin:
+        name: "Fornecedores"
+        description: "Registro de fornecedores e produtos distribuídos"
+      suppliers_product_helper: 
+        product_from_which_su: "Produto de que fornecedor?"
+    controllers: 
+      myprofile: 
+        supplier_controller: 
+          supplier_created: "Fornecedor criado"
+    models:
+      distributed_product: 
+        greater: " > "
+      product: 
+        unit: unidade
+        units: unidades
+      node: 
+        consumer: Consumidor
+    views:
+      product:
+        _edit: 
+          ? " > "
+          : " / "
+          ? "%"
+          : "%"
+          registry_help: "O registro do fornecedor será administrado pelo próprio coletivo e será privado a ele. Seu registro pode ser compartilhado conforme demanda para outros coletivos. O fornecedor receberá um convite para se juntar à rede e administrar sua própria distribuição aos coletivos dentro da rede."
+          add_product_to_the_li: "Adicione o produto à lista de produtos distribuídos"
+          are_you_sure_you_want: "Tem certeza de que quer remover este produto?"
+          cancel: Cancelar
+          category: Categoria
+          commercialization_act: "Comercialização ativa"
+          description: Descrição
+          editing_distributed_p: "Edição de produtos distribuídos"
+          how_we_distribute_the: "Como nós distribuímos o produto"
+          how_we_order_the_prod: "Como nós pedimos o produto"
+          managed_registry: "O registro deste fornecedor é administrado pelo próprio coletivo de consumo. Por causa disso, não há possíveis diferenças entre o \"Nome\" e a \"Descrição\"." 
+          margin: Margem
+          name: Nome
+          or_then_link: "ou então %{link}."
+          own_product: "Produto próprio"
+          remove_product: "remover produto"
+          save: Salvar
+          search_another_catego: "Buscar outra categoria"
+          search_for_another_ca: "busque outra categoria"
+          already_categorized: "Este produto já foi categorizado. No caso de você querer mudar sua categoria, clique em cima ou %{search}."
+          to_end_the_categoriza: "Ao fim da categorização, escolha uma das subcategorias da categoria \"{{=cat.own_name}}\":"
+          use_default_margin: "Usar a margem padrão"
+          use_original: "usar original"
+        _edit_line: 
+          active: Ativo
+          inactive: Inativo
+        _form_errors: 
+          errors_found: "Erros encontrados:"
+        _price_details: 
+          commercialization_act: "Comercialização ativa"
+          minimum_order: "Pedido mínimo"
+          price: Preço
+          unit: Unidade
+          unit_specification: "Especificações de unidade"
+        _search: 
+          category: Categoria
+          price: Preço
+          product: Produto
+          qty_avail: "Qtd. dispon."
+          showing_pcount_produc: "Mostrando %{pcount} produtos de %{allpcount}"
+          status: Estado
+          supplier: Fornecedor
+          we_don_t_have_product: "Não temos produtos a mostrar."
+        _select_missing: 
+          add_all_missing_produ: "Adicione todos produtos que faltam deste fornecedor."
+          cancel: Cancelar
+          the_following_product: "Os seguintes produtos do fornecedor não são distribuídos pelo seu coletivo. Que produto voce quer adicionar?"
+          there_isn_t_any_new_p: "Não há qualquer produto deste fornecedor."
+        index: 
+          active: Ativo
+          add_product: "Adicionar produto"
+          all_the_categories: "todas as categorias"
+          all_the_suppliers: "todos os fornecedores"
+          and_being: "e que estejam"
+          anyone: anyone
+          bigger_than_the_stock: "maior do que o estoque"
+          change: mudar
+          default_margin_of_com: "Margem padrão de comercialização"
+          default_margin_info: "Esta margem é automaticamente aplicada em todos os produtos, mas é possível estabelecer margens específicas para certos produtos."
+          filter: Filtro
+          in_any_state: "Em qualquer estado"
+          inactive: Inativo
+          margin: "%{margin} %"
+          no_margin_set: "Sem margem definida"
+          products: Produtos
+          info: "Esta é a lista de produtos com que o coletivo trabalha e é aqui que é feito o controle de estoque. Os produtos se dividem entre ativos e inativos. Os produtos ativos automaticamente são adicionados à lista de uma nova sessão de pedidos."
+          show_products_from: "Mostar produtos de"
+          the_products: "Os produtos"
+          whose_name_contains: "cujo nome contenha"
+          whose_qty_available_i: "cuja qtd disponível é"
+          with_the_category: "com a categoria"
+          with_the_qualifiers: "com os qualificadores"
       supplier: 
         _edit: 
           abbreviated_name: "Nome Abreviado"
@@ -844,3 +762,145 @@
           name: Nome
           suppliers: Fornecedores
           this_is_the_list_of_s: "Esta é a lista de fornecedores associados ao coletivo de consumo. É possível associá-lo a fornecedores existentes ou registrar um."
+
+  delivery_plugin:
+    lib:
+      plugin:
+        name: "Entrega"
+        description: "Gestão de métodos e opções de entrega"
+    views:
+      delivery_option: 
+        _method_edit: 
+          add: Adicionar
+          cancel: Cancelar
+          instructions: Instruções
+          instructions_help: "Dê instruções aos membros para a entrega. Inclua o endereço e quaisquer recomendações que você achar úteis. Este texto estará disponível na página do pedido e, ao confirmar uma compra, a pessoa receberá uma cópia dela."
+          name: Nome
+          save: Salvar
+        _select_content: 
+          add: Adicionar
+          add_new: "adicionar novo"
+          are_you_sure_you_want: "Tem certeza que quer remover este método?"
+          cancel: Cancelar
+          choose_a_delivery_met: "Escolha um método de entrega da lista"
+          edit_this: Editar
+          remove_method: "Remover método"
+        _show: 
+          x: X
+        select: 
+          add_a_delivery_method: "Adicionar um método de entrega ao ciclo de pedidos"
+
+  orders_plugin:
+    lib:
+      plugin:
+        name: "Pedidos"
+        description: "Gestão de pedidos"
+      mailer:
+        order_was_confirmed: "[%{name}] Seu pedido foi confirmado"
+        order_was_cancelled: "[%{name}] Seu pedido foi cancelado"
+      date_helper:
+        a: "%A"
+        b_d_at_hh_m: "%d/%m/%y às %H:%M"
+        b_d_from_time_start_t: "%d/%m/%y, de %{time_start} para %{time_finish}"
+        from_start_to_finish: "de %{start} para %{finish}"
+        hh_m: "%Hh%M"
+        m_d: "%d/%m"
+        m_d_hh: "%d/%m - %Hh%M"
+        m_d_hh_m: "%d/%m - %Hh%M"
+        m_d_y_at_hh_m: "%d/%m/%y às %H:%M"
+        m_d_y_hh_m: "%d/%m/%y às %H:%M"
+        m_y_hh_m: "%m/%y - %Hh%M"
+        start_day_from_start_: "%{start_day}, de %{start_time} para %{finish_time}"
+        start_day_start_datet: "%{start_day}, %{start_datetime} - %{finish_day}, %{finish_datetime}"
+        start_finish: "%{start} - %{finish}"
+        start_to_finish: "%{start} para %{finish}"
+        to: para
+      price_helper: 
+        /: /
+        price_unit: "%{price}/%{unit}"
+    controllers:
+      profile:
+        consumer: 
+          can_not_confirm_your_: "Não foi possível confirmar. Sua lista de pedido está vazia"
+          login_first: "Faça login primeiro"
+          order_cancelled: "Pedido cancelado"
+          order_confirmed: "Pedido confirmado"
+          order_removed: "Pedido removido"
+          please_login_first: "Please login first"
+          you_are_not_the_owner: "Você não é o proprietário desse pedido"
+    models:
+      order: 
+        order_cancelled: "Pedido cancelado"
+        order_confirmed: "Pedido confirmado"
+        order_in_progress: "Pedido em andamento"
+        order_not_confirmed: "Pedido não confirmado"
+        order_planned: "Pedido planejado"
+    views:
+      consumer:
+        _total: 
+          total: Total
+      product: 
+        _edit: 
+          remove_from_order: "Remover do pedido"
+          see_product_details: "Ver detalhes do produto"
+          this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
+        _index: 
+          empty_order: "Pedido vazio"
+      admin:
+        index: 
+          code: Código
+          created: Criado
+          member: Integrante
+          modified: Modificado
+          no_orders_to_show: "Sem pedidos a mostrar"
+          prod_qty: "Qtd prod."
+          value: Valor
+        _edit: 
+          actions: Ações
+          add_product: "adicionar produto"
+          cancel: Cancelar
+          edit_on_the_order_pag: "Editar na página de pedidos"
+          empty_order: "Pedido vazio"
+          include_message: "Incluir uma mensagem"
+          message_to_member: "Mensagem para o membro"
+          remove_order: "remover pedido"
+          save: Salvar
+          see_delivery: "veja entrega"
+          see_redistribution: "veja redistribuição"
+          the_collective_member: "O membro do coletivo receberá um email que discrimina todas as mudanças feitas em seu pedido."
+          warn_member_of_the_ch: "Avise o membro das mudanças em seu pedido"
+
+      mailer:
+        order_confirmation: 
+          attention_to_the_foll: "Atenção às instruções de entrega a seguir:"
+          dear_name: "Olá %{name},"
+          greetings: "Saudações,"
+          order_code_of_node: "Pedido %{code} de %{name}"
+          order_data_confirmed: "Pedido confirmado"
+          the_delivery_period_w: "O período de entrega ocorrerá em %{date}."
+          your_order_can_be_che: "Seu pedido pode ser checado no seguinte link:"
+          your_order_made_on_co: "Seu pedido feito no coletivo %{name} em %{date} foi confirmado."
+        order_cancellation: 
+          dear_name: "Olá %{name},"
+          greetings: "Saudações,"
+          your_order_made_on_co: "Seu pedido feito no coletivo %{name} em %{date} foi cancelado com sucesso."
+        _complete_order: 
+          order_no_code: "Código do Pedido: %{code}"
+          price: Preço
+          price_un: preço/un
+          price_unit: "%{price}/%{unit}"
+          products_list: "Lista de produtos"
+          qtt: QTD
+          quantity_unit: "%{quantity} %{unit}"
+          supplier_product: Fornecedor/Produto
+          total: "TOTAL:"
+
+  networks_plugin:
+   lib:
+     plugin:
+       name: Redes
+       description: "Cria a gerencia redes."
+       info_control_panel_button: "Informações e configurações da rede"
+       manage_control_panel_button: "Gerenciar estrutura da rede"
+
+     

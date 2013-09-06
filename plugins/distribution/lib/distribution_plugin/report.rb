@@ -1,5 +1,7 @@
 module DistributionPlugin::Report
+
   module ClassMethods
+
     def report_products_by_supplier(session)
       ordered_products_by_supplier = session.ordered_products_by_suppliers
 
@@ -147,5 +149,3 @@ module DistributionPlugin::Report
   end
 end
 
-
-  #ActiveRecord::Base.extend Report::ClassMethods

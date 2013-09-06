@@ -18,14 +18,14 @@ class ProductTest < ActiveSupport::TestCase
   should 'return associated enterprise region' do
     @profile.region = fast_create Region, :name => 'Salvador'
     @profile.save!
-    p = fast_create(Product, :name => 'test product1', :product_category_id => @product_category.id, :enterprise_id => @profile.id)
+    p = fast_create(Product, :name => 'test product1', :product_category_id => @product_category.id, :profile_id => @profile.id)
 
     assert_equal @profile.region, p.region
   end
 
   should 'create product' do
     assert_difference Product, :count do
-      p = Product.new(:name => 'test product1', :product_category => @product_category, :enterprise_id => @profile.id)
+      p = Product.new(:name => 'test product1', :product_category => @product_category, :profile_id => @profile.id)
       assert p.save
     end
   end
@@ -84,7 +84,7 @@ class ProductTest < ActiveSupport::TestCase
     assert_difference Product, :count do
       p = Product.create!(:name => 'test product1', :product_category => @product_category, :image_builder => {
         :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')
-      }, :enterprise_id => @profile.id)
+      }, :profile_id => @profile.id)
       assert_equal p.image(true).filename, 'rails.png'
     end
   end
@@ -102,19 +102,6 @@ class ProductTest < ActiveSupport::TestCase
     p = Product.new
     p.stubs(:product_category).returns(nil)
     assert_equal nil, p.category_full_name
-  end
-
-  should 'be indexed by category full name' do
-    TestSolr.enable
-    parent_cat = fast_create(ProductCategory, :name => 'Parent')
-    prod_cat = fast_create(ProductCategory, :name => 'Category1', :parent_id => parent_cat.id)
-    prod_cat2 = fast_create(ProductCategory, :name => 'Category2')
-    p = Product.create(:name => 'a test', :product_category => prod_cat, :enterprise_id => @profile.id)
-    p2 = Product.create(:name => 'another test', :product_category => prod_cat2, :enterprise_id => @profile.id)
-
-    r = Product.find_by_contents('Parent')[:results].docs
-    assert_includes r, p
-    assert_not_includes r, p2
   end
 
   should 'have same lat and lng of its enterprise' do
@@ -151,7 +138,7 @@ class ProductTest < ActiveSupport::TestCase
 
   should 'respond to public? as its enterprise public?' do
     e1 = fast_create(Enterprise, :name => 'test ent 1', :identifier => 'test_ent1')
-    p1 = fast_create(Product, :name => 'test product 1', :enterprise_id => e1.id, :product_category_id => @product_category.id)
+    p1 = fast_create(Product, :name => 'test product 1', :profile_id => e1.id, :product_category_id => @product_category.id)
 
     assert p1.public?
 
@@ -210,7 +197,7 @@ class ProductTest < ActiveSupport::TestCase
   end
 
   should 'use name of category when has no name yet' do
-    product = Product.new(:product_category => @product_category, :enterprise_id => @profile.id)
+    product = Product.new(:product_category => @product_category, :profile_id => @profile.id)
     assert product.valid?
     assert_equal product.name, @product_category.name
   end
@@ -230,7 +217,7 @@ class ProductTest < ActiveSupport::TestCase
 
   should 'format values to float with 2 decimals' do
     ent = fast_create(Enterprise, :name => 'test ent 1', :identifier => 'test_ent1')
-    product = fast_create(Product, :enterprise_id => ent.id, :price => 12.994, :discount => 1.994)
+    product = fast_create(Product, :profile_id => ent.id, :price => 12.994, :discount => 1.994)
 
     assert_equal "12.99", product.formatted_value(:price)
     assert_equal "1.99", product.formatted_value(:discount)
@@ -238,14 +225,14 @@ class ProductTest < ActiveSupport::TestCase
 
   should 'calculate price with discount' do
     ent = fast_create(Enterprise, :name => 'test ent 1', :identifier => 'test_ent1')
-    product = fast_create(Product, :enterprise_id => ent.id, :price => 12.994, :discount => 1.994)
+    product = fast_create(Product, :profile_id => ent.id, :price => 12.994, :discount => 1.994)
 
     assert_equal 11.00, product.price_with_discount
   end
 
   should 'calculate price without discount' do
     ent = fast_create(Enterprise, :name => 'test ent 1', :identifier => 'test_ent1')
-    product = fast_create(Product, :enterprise_id => ent.id, :price => 12.994, :discount => 0)
+    product = fast_create(Product, :profile_id => ent.id, :price => 12.994, :discount => 0)
 
     assert_equal product.price, product.price_with_discount
   end
@@ -267,7 +254,7 @@ class ProductTest < ActiveSupport::TestCase
 
   should 'return product inputs' do
     ent = fast_create(Enterprise)
-    product = fast_create(Product, :enterprise_id => ent.id)
+    product = fast_create(Product, :profile_id => ent.id)
     input = fast_create(Input, :product_id => product.id, :product_category_id => @product_category.id)
 
     assert_equal [input], product.inputs
@@ -275,7 +262,7 @@ class ProductTest < ActiveSupport::TestCase
 
   should 'destroy inputs when product is removed' do
     ent = fast_create(Enterprise)
-    product = fast_create(Product, :enterprise_id => ent.id)
+    product = fast_create(Product, :profile_id => ent.id)
     input = fast_create(Input, :product_id => product.id, :product_category_id => @product_category.id)
 
     services_category = fast_create(ProductCategory, :name => 'Services')
@@ -341,31 +328,6 @@ class ProductTest < ActiveSupport::TestCase
   should 'have relation with unit' do
     product = Product.new
     assert_kind_of Unit, product.build_unit
-  end
-
-  should 'index by schema name when database is postgresql' do
-    TestSolr.enable
-    uses_postgresql 'schema_one'
-    p1 = Product.create!(:name => 'some thing', :product_category => @product_category, :enterprise_id => @profile.id)
-    assert_equal [p1], Product.find_by_contents('thing')[:results].docs
-    uses_postgresql 'schema_two'
-    p2 = Product.create!(:name => 'another thing', :product_category => @product_category, :enterprise_id => @profile.id)
-    assert_not_includes Product.find_by_contents('thing')[:results], p1
-    assert_includes Product.find_by_contents('thing')[:results], p2
-    uses_postgresql 'schema_one'
-    assert_includes Product.find_by_contents('thing')[:results], p1
-    assert_not_includes Product.find_by_contents('thing')[:results], p2
-    uses_sqlite
-  end
-
-  should 'not index by schema name when database is not postgresql' do
-    TestSolr.enable
-    uses_sqlite
-    p1 = Product.create!(:name => 'some thing', :product_category => @product_category, :enterprise_id => @profile.id)
-    assert_equal [p1], Product.find_by_contents('thing')[:results].docs
-    p2 = Product.create!(:name => 'another thing', :product_category => @product_category, :enterprise_id => @profile.id)
-    assert_includes Product.find_by_contents('thing')[:results], p1
-    assert_includes Product.find_by_contents('thing')[:results], p2
   end
 
   should 'respond to price details' do
@@ -452,7 +414,7 @@ class ProductTest < ActiveSupport::TestCase
 
   should 'return production costs from enterprise and environment' do
     ent = fast_create(Enterprise)
-    product = fast_create(Product, :enterprise_id => ent.id)
+    product = fast_create(Product, :profile_id => ent.id)
     ent_production_cost = fast_create(ProductionCost, :owner_id => ent.id, :owner_type => 'Profile')
     env_production_cost = fast_create(ProductionCost, :owner_id => ent.environment.id, :owner_type => 'Environment')
 
@@ -461,7 +423,7 @@ class ProductTest < ActiveSupport::TestCase
 
   should 'return all production costs' do
     ent = fast_create(Enterprise)
-    product = fast_create(Product, :enterprise_id => ent.id)
+    product = fast_create(Product, :profile_id => ent.id)
 
     env_production_cost = fast_create(ProductionCost, :owner_id => ent.environment.id, :owner_type => 'Environment')
     ent_production_cost = fast_create(ProductionCost, :owner_id => ent.id, :owner_type => 'Profile')
@@ -471,7 +433,7 @@ class ProductTest < ActiveSupport::TestCase
 
   should 'return total value of production costs' do
     ent = fast_create(Enterprise)
-    product = fast_create(Product, :enterprise_id => ent.id)
+    product = fast_create(Product, :profile_id => ent.id)
 
     env_production_cost = fast_create(ProductionCost, :owner_id => ent.environment.id, :owner_type => 'Environment')
     price_detail = product.price_details.create(:production_cost => env_production_cost, :price => 10)
@@ -483,7 +445,7 @@ class ProductTest < ActiveSupport::TestCase
 
   should 'return inputs cost as total value of production costs if has no price details' do
     ent = fast_create(Enterprise)
-    product = fast_create(Product, :enterprise_id => ent.id)
+    product = fast_create(Product, :profile_id => ent.id)
 
     input = fast_create(Input, :product_id => product.id, :product_category_id => fast_create(ProductCategory).id, :price_per_unit => 20.0, :amount_used => 2)
 
@@ -498,7 +460,7 @@ class ProductTest < ActiveSupport::TestCase
 
   should 'format inputs cost values to float with 2 decimals' do
     ent = fast_create(Enterprise)
-    product = fast_create(Product, :enterprise_id => ent.id)
+    product = fast_create(Product, :profile_id => ent.id)
     first = fast_create(Input, :product_id => product.id, :product_category_id => fast_create(ProductCategory).id, :price_per_unit => 20.0, :amount_used => 2)
     second = fast_create(Input, :product_id => product.id, :product_category_id => fast_create(ProductCategory).id, :price_per_unit => 10.0, :amount_used => 1)
 
@@ -528,7 +490,7 @@ class ProductTest < ActiveSupport::TestCase
   end
 
   should 'return solidarity percentage from inputs' do
-    prod = fast_create(Product, :name => 'test product1', :product_category_id => @product_category.id, :enterprise_id => @profile.id)
+    prod = fast_create(Product, :name => 'test product1', :product_category_id => @product_category.id, :profile_id => @profile.id)
     assert_equal 0, prod.percentage_from_solidarity_economy.first
 
     Input.create!(:product_id => prod.id, :product_category_id => @product_category.id,
@@ -543,7 +505,7 @@ class ProductTest < ActiveSupport::TestCase
                   :amount_used => 10, :price_per_unit => 10, :is_from_solidarity_economy => false)
     assert_equal 25, prod.percentage_from_solidarity_economy.first
 
-    prod = fast_create(Product, :name => 'test product1', :product_category_id => @product_category.id, :enterprise_id => @profile.id)
+    prod = fast_create(Product, :name => 'test product1', :product_category_id => @product_category.id, :profile_id => @profile.id)
     Input.create!(:product_id => prod.id, :product_category_id => @product_category.id,
                   :amount_used => 10, :price_per_unit => 10, :is_from_solidarity_economy => true)
     Input.create!(:product_id => prod.id, :product_category_id => @product_category.id,
@@ -554,7 +516,7 @@ class ProductTest < ActiveSupport::TestCase
                   :amount_used => 10, :price_per_unit => 10, :is_from_solidarity_economy => false)
     assert_equal 75, prod.percentage_from_solidarity_economy.first
 
-    prod = fast_create(Product, :name => 'test product', :product_category_id => @product_category.id, :enterprise_id => @profile.id)
+    prod = fast_create(Product, :name => 'test product', :product_category_id => @product_category.id, :profile_id => @profile.id)
     Input.create!(:product_id => prod.id, :product_category_id => @product_category.id,
                   :amount_used => 10, :price_per_unit => 10, :is_from_solidarity_economy => true)
     assert_equal 100, prod.percentage_from_solidarity_economy.first
@@ -564,7 +526,7 @@ class ProductTest < ActiveSupport::TestCase
     enterprise = fast_create(Enterprise)
     Enterprise.any_instance.expects(:region)
     Enterprise.any_instance.expects(:region_id)
-    product = fast_create(Product, :enterprise_id => enterprise.id)
+    product = fast_create(Product, :profile_id => enterprise.id)
     product.region
     product.region_id
   end
@@ -573,197 +535,17 @@ class ProductTest < ActiveSupport::TestCase
     enterprise = fast_create(Enterprise)
     Enterprise.any_instance.expects(:environment)
     Enterprise.any_instance.expects(:environment_id)
-    product = fast_create(Product, :enterprise_id => enterprise.id)
+    product = fast_create(Product, :profile_id => enterprise.id)
     product.environment
     product.environment_id
-  end
-
-  should 'act as faceted' do
-    s = fast_create(State, :acronym => 'XZ')
-    c = fast_create(City, :name => 'Tabajara', :parent_id => s.id)
-    ent = fast_create(Enterprise, :region_id => c.id)
-    cat = fast_create(ProductCategory, :name => 'hardcore')
-    p = Product.create!(:name => 'black flag', :enterprise_id => ent.id, :product_category_id => cat.id)
-    pq = p.product_qualifiers.create!(:qualifier => fast_create(Qualifier, :name => 'qualifier'),
-                                      :certifier => fast_create(Certifier, :name => 'certifier'))
-    assert_equal 'Related products', Product.facet_by_id(:f_category)[:label]
-    assert_equal ['Tabajara', ', XZ'], Product.facet_by_id(:f_region)[:proc].call(p.send(:f_region))
-    assert_equal ['qualifier', ' cert. certifier'], Product.facet_by_id(:f_qualifier)[:proc].call(p.send(:f_qualifier).last)
-    assert_equal 'hardcore', p.send(:f_category)
-    assert_equal "category_filter:#{cat.id}", Product.facet_category_query.call(cat)
-  end
-
-  should 'act as searchable' do
-    TestSolr.enable
-    s = fast_create(State, :acronym => 'XZ')
-    c = fast_create(City, :name => 'Tabajara', :parent_id => s.id)
-    ent = fast_create(Enterprise, :region_id => c.id, :name => "Black Sun")
-    category = fast_create(ProductCategory, :name => "homemade", :acronym => "hm", :abbreviation => "homey")
-    p = Product.create!(:name => 'bananas syrup', :description => 'surrounded by mosquitos', :enterprise_id => ent.id,
-                        :product_category_id => category.id)
-    qual = Qualifier.create!(:name => 'qualificador', :environment_id => Environment.default.id)
-    cert = Certifier.create!(:name => 'certificador', :environment_id => Environment.default.id)
-    pq = p.product_qualifiers.create!(:qualifier => qual,	:certifier => cert)
-    p.qualifiers.reload
-    p.certifiers.reload
-    p.save!
-    # fields
-    assert_includes Product.find_by_contents('bananas')[:results].docs, p
-    assert_includes Product.find_by_contents('mosquitos')[:results].docs, p
-    assert_includes Product.find_by_contents('homemade')[:results].docs, p
-    # filters
-    assert_includes Product.find_by_contents('bananas', {}, { :filter_queries => ["public:true"]})[:results].docs, p
-    assert_not_includes Product.find_by_contents('bananas', {}, { :filter_queries => ["public:false"]})[:results].docs, p
-    assert_includes Product.find_by_contents('bananas', {}, { :filter_queries => ["environment_id:\"#{Environment.default.id}\""]})[:results].docs, p
-    # includes
-    assert_includes Product.find_by_contents("homemade")[:results].docs, p
-    assert_includes Product.find_by_contents(category.slug)[:results].docs, p
-    assert_includes Product.find_by_contents("hm")[:results].docs, p
-    assert_includes Product.find_by_contents("homey")[:results].docs, p
-    assert_includes Product.find_by_contents("Tabajara")[:results].docs, p
-    assert_includes Product.find_by_contents("Black Sun")[:results].docs, p
-    assert_includes Product.find_by_contents("qualificador")[:results].docs, p
-    assert_includes Product.find_by_contents("certificador")[:results].docs, p
-  end
-
-  should 'boost name matches' do
-    TestSolr.enable
-    ent = fast_create(Enterprise)
-    cat = fast_create(ProductCategory)
-    in_desc = Product.create!(:name => 'something', :enterprise_id => ent.id, :description => 'bananas in the description!',
-                              :product_category_id => cat.id)
-    in_name = Product.create!(:name => 'bananas in the name!', :enterprise_id => ent.id, :product_category_id => cat.id)
-    assert_equal [in_name, in_desc], Product.find_by_contents('bananas')[:results].docs
-  end
-
-  should 'reindex enterprise after saving' do
-    ent = fast_create(Enterprise)
-    cat = fast_create(ProductCategory)
-    prod = Product.create!(:name => 'something', :enterprise_id => ent.id, :product_category_id => cat.id)
-    Product.expects(:solr_batch_add).with([ent])
-    prod.save!
-  end
-
-  should 'boost search results that include an image' do
-    TestSolr.enable
-    product_without_image = Product.create!(:name => 'product without image', :product_category => @product_category,
-                                            :enterprise_id => @profile.id)
-    product_with_image = Product.create!(:name => 'product with image', :product_category => @product_category,
-                                         :image_builder => { :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')},
-                                         :enterprise_id => @profile.id)
-    assert_equal [product_with_image, product_without_image], Product.find_by_contents('product image')[:results].docs
-  end
-
-  should 'boost search results that include qualifier' do
-    TestSolr.enable
-    product_without_q = Product.create!(:name => 'product without qualifier', :product_category => @product_category,
-                                        :enterprise_id => @profile.id)
-    product_with_q = Product.create!(:name => 'product with qualifier', :product_category => @product_category,
-                                     :enterprise_id => @profile.id)
-    product_with_q.product_qualifiers.create(:qualifier => fast_create(Qualifier), :certifier => nil)
-    product_with_q.save!
-
-    assert_equal [product_with_q, product_without_q], Product.find_by_contents('product qualifier')[:results].docs
-  end
-
-  should 'boost search results with open price' do
-    TestSolr.enable
-    product = Product.create!(:name => 'product 1', :product_category => @product_category, :enterprise_id => @profile.id, :price => 100)
-    open_price = Product.new(:name => 'product 2', :product_category => @product_category, :enterprise_id => @profile.id, :price => 100)
-    open_price.inputs << Input.new(:product => open_price, :product_category_id => @product_category.id, :amount_used => 10, :price_per_unit => 10)
-    open_price.save!
-
-    assert_equal [open_price, product], Product.find_by_contents('product')[:results].docs
-  end
-
-  should 'boost search results with solidarity inputs' do
-    TestSolr.enable
-    product = Product.create!(:name => 'product 1', :product_category => @product_category, :enterprise_id => @profile.id)
-    perc_50 = Product.create!(:name => 'product 2', :product_category => @product_category, :enterprise_id => @profile.id)
-    Input.create!(:product_id => perc_50.id, :product_category_id => @product_category.id,
-                  :amount_used => 10, :price_per_unit => 10, :is_from_solidarity_economy => true)
-    Input.create!(:product_id => perc_50.id, :product_category_id => @product_category.id,
-                  :amount_used => 10, :price_per_unit => 10, :is_from_solidarity_economy => false)
-    perc_50.save!
-    perc_75 = Product.create!(:name => 'product 3', :product_category => @product_category, :enterprise_id => @profile.id)
-    Input.create!(:product_id => perc_75.id, :product_category_id => @product_category.id,
-                  :amount_used => 10, :price_per_unit => 10, :is_from_solidarity_economy => false)
-    Input.create!(:product_id => perc_75.id, :product_category_id => @product_category.id,
-                  :amount_used => 10, :price_per_unit => 10, :is_from_solidarity_economy => true)
-    Input.create!(:product_id => perc_75.id, :product_category_id => @product_category.id,
-                  :amount_used => 10, :price_per_unit => 10, :is_from_solidarity_economy => true)
-    Input.create!(:product_id => perc_75.id, :product_category_id => @product_category.id,
-                  :amount_used => 10, :price_per_unit => 10, :is_from_solidarity_economy => true)
-    perc_75.save!
-
-    assert_equal [perc_75, perc_50, product], Product.find_by_contents('product')[:results].docs
-  end
-
-  should 'boost available search results' do
-    TestSolr.enable
-    product = Product.create!(:name => 'product 1', :product_category => @product_category, :enterprise_id => @profile.id)
-    product.available = false
-    product.save!
-    product2 = Product.create!(:name => 'product 2', :product_category => @product_category, :enterprise_id => @profile.id)
-    product2.available = true
-    product2.save!
-
-    assert_equal [product2, product], Product.find_by_contents('product')[:results].docs
-  end
-
-  should 'boost search results created updated recently' do
-    TestSolr.enable
-    product = Product.create!(:name => 'product 1', :product_category => @product_category, :enterprise_id => @profile.id)
-    product.update_attribute :created_at, Time.now - 10.day
-    product2 = Product.create!(:name => 'product 2', :product_category => @product_category, :enterprise_id => @profile.id)
-
-    assert_equal [product2, product], Product.find_by_contents('product')[:results].docs
-  end
-
-  should 'boost search results with description' do
-    TestSolr.enable
-    product = Product.create!(:name => 'product 1', :product_category => @product_category, :enterprise_id => @profile.id,
-                              :description => '')
-    product2 = Product.create!(:name => 'product 2', :product_category => @product_category, :enterprise_id => @profile.id,
-                               :description => 'a small description')
-
-    assert_equal [product2, product], Product.find_by_contents('product')[:results].docs
-  end
-
-  should 'boost if enterprise is enabled' do
-    TestSolr.enable
-    ent = Enterprise.create!(:name => 'ent', :identifier => 'ent', :enabled => false)
-    product = Product.create!(:name => 'product 1', :product_category => @product_category, :enterprise_id => ent.id)
-    product2 = Product.create!(:name => 'product 2', :product_category => @product_category, :enterprise_id => @profile.id)
-
-    assert_equal [product2, product], Product.find_by_contents('product')[:results].docs
-  end
-
-  should 'combine different boost types' do
-    TestSolr.enable
-    product = Product.create!(:name => 'product', :product_category => @product_category,	:enterprise_id => @profile.id)
-    image_only = Product.create!(:name => 'product with image', :product_category => @product_category,
-                                 :image_builder => { :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')},
-                                 :enterprise_id => @profile.id)
-    qual_only = Product.create!(:name => 'product with qualifier', :product_category => @product_category,
-                                :enterprise_id => @profile.id)
-    img_and_qual = Product.create!(:name => 'product with image and qualifier', :product_category => @product_category,
-                                   :image_builder => { :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')},
-                                   :enterprise_id => @profile.id)
-    qual_only.product_qualifiers.create(:qualifier => fast_create(Qualifier), :certifier => nil)
-    img_and_qual.product_qualifiers.create(:qualifier => fast_create(Qualifier), :certifier => nil)
-    qual_only.save!
-    img_and_qual.save!
-
-    assert_equal [img_and_qual, image_only, qual_only, product], Product.find_by_contents('product')[:results].docs
   end
 
   should 'return more recent products' do
     Product.destroy_all
 
-    prod1 = Product.create!(:name => 'Damaged LP', :enterprise_id => @profile.id, :product_category_id => @product_category.id)
-    prod2 = Product.create!(:name => 'Damaged CD', :enterprise_id => @profile.id, :product_category_id => @product_category.id)
-    prod3 = Product.create!(:name => 'Damaged DVD', :enterprise_id => @profile.id, :product_category_id => @product_category.id)
+    prod1 = Product.create!(:name => 'Damaged LP', :profile_id => @profile.id, :product_category_id => @product_category.id)
+    prod2 = Product.create!(:name => 'Damaged CD', :profile_id => @profile.id, :product_category_id => @product_category.id)
+    prod3 = Product.create!(:name => 'Damaged DVD', :profile_id => @profile.id, :product_category_id => @product_category.id)
 
     prod1.update_attribute :created_at, Time.now-2.days
     prod2.update_attribute :created_at, Time.now-1.days
@@ -797,9 +579,9 @@ class ProductTest < ActiveSupport::TestCase
 
   should 'return from_category scope untouched if passed nil' do
     enterprise = fast_create(Enterprise)
-    p1 = fast_create(Product, :enterprise_id => enterprise.id)
-    p2 = fast_create(Product, :enterprise_id => enterprise.id)
-    p3 = fast_create(Product, :enterprise_id => enterprise.id)
+    p1 = fast_create(Product, :profile_id => enterprise.id)
+    p2 = fast_create(Product, :profile_id => enterprise.id)
+    p3 = fast_create(Product, :profile_id => enterprise.id)
 
     products = enterprise.products.from_category(nil)
 

@@ -1,6 +1,0 @@
-if !request.post?
-  page.replace_html 'delivery-method-edit', :partial => 'method_edit', :locals => {:delivery_method => @delivery_method} 
-  page << 'distribution.delivery_view_toggle()'
-else
-  page.replace_html 'select-content', :partial => 'select_content'
-end

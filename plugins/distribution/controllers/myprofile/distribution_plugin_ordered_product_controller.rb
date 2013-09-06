@@ -1,92 +1,67 @@
-class DistributionPluginOrderedProductController < DistributionPluginMyprofileController
+class DistributionPluginOrderedProductController < OrdersPluginProductController
+
+  include DistributionPlugin::ControllerHelper
+
   no_design_blocks
+  before_filter :set_admin_action, :only => [:admin_edit]
+
+  helper ApplicationHelper
+  helper DistributionPlugin::DisplayHelper
 
   def new
-    @session_product = DistributionPluginProduct.find params[:session_product_id]
-    return render_not_found unless @session_product
+    @offered_product = Product.find params[:offered_product_id]
+    return render_not_found unless @offered_product
+    @consumer = user
 
     if params[:order_id] == 'new'
-      @session = @session_product.session
+      @session = @offered_product.session
       raise 'Cycle closed for orders' unless @session.orders?
-      @order = DistributionPluginOrder.create! :session => @session, :consumer => @user_node
+      @order = OrdersPlugin::Order.create! :session => @session, :consumer => consumer
     else
-      @order = DistributionPluginOrder.find params[:order_id]
+      @order = OrdersPlugin::Order.find params[:order_id]
       @session = @order.session
     end
 
     raise 'Order confirmed or cycle is closed for orders' unless @order.open?
-    raise 'You are not logged or is not the owner of this order' if @user_node.nil? or @user_node != @order.consumer
+    raise 'Please login to place an order' if @consumer.blank?
+    raise 'You are not the owner of this order' if @consumer != @order.consumer
 
-    @ordered_product = DistributionPluginOrderedProduct.find_by_order_id_and_session_product_id(@order.id, @session_product.id)
-    @quantity_asked = DistributionPlugin::DistributionCurrencyHelper.parse_localized_number(params[:quantity_asked]) || 1
-    min = @session_product.minimum_selleable
-
-    if @ordered_product.nil? and @quantity_asked > 0
-      if @quantity_asked < min
-        @quantity_asked = min
-        @quantity_asked_less_than_minimum = true
-      end
-      @ordered_product = DistributionPluginOrderedProduct.create! :order_id => @order.id, :session_product_id => @session_product.id, :quantity_asked => @quantity_asked
-      @quantity_asked_less_than_minimum = @ordered_product if @quantity_asked_less_than_minimum
-    else
-      if @quantity_asked <= 0
-        @ordered_product.destroy if @ordered_product
-        render :action => :destroy
-      else
-        if @quantity_asked < min
-          @quantity_asked = min
-          @quantity_asked_less_than_minimum = @ordered_product.id
-        end
-        @ordered_product.update_attributes! :quantity_asked => @quantity_asked
-      end
+    @ordered_product = OrdersPlugin::OrderedProduct.find_by_order_id_and_product_id @order.id, @offered_product.id
+    @ordered_product ||= OrdersPlugin::OrderedProduct.new :order => @order, :product => @offered_product
+    if set_quantity_asked(params[:quantity_asked] || 1)
+      @ordered_product.update_attributes! :quantity_asked => @quantity_asked
     end
   end
 
   def edit
-    if @admin_edit
-      redirect_to params.merge!(:action => :admin_edit)
-      return
-    end
-    @ordered_product = DistributionPluginOrderedProduct.find params[:id]
-    @session_product = @ordered_product.session_product
-    @order = @ordered_product.order
+    return redirect_to params.merge!(:action => :admin_edit) if @admin_edit
+    super
     @session = @order.session
-    raise 'Order confirmed or cycle is closed for orders' unless @order.open?
-    raise 'You are not logged or is not the owner of this order' if @user_node.nil? or @user_node != @order.consumer
-
-    if params[:ordered_product][:quantity_asked].to_f <= 0
-      @ordered_product.destroy
-      render :action => :destroy
-    else
-      if @ordered_product.product.minimum_selleable and params[:ordered_product][:quantity_asked].to_f < @ordered_product.product.minimum_selleable
-        params[:ordered_product][:quantity_asked] = @ordered_product.product.minimum_selleable
-        @quantity_asked_less_than_minimum = @ordered_product.id
-      end
-      @ordered_product.update_attributes params[:ordered_product]
-    end
   end
 
   def admin_edit
-    @ordered_product = DistributionPluginOrderedProduct.find params[:id]
+    @ordered_product = OrdersPlugin::OrderedProduct.find params[:id]
     @order = @ordered_product.order
     @session = @order.session
+
     #update on association for total
     @order.products.each{ |p| p.attributes = params[:ordered_product] if p.id == @ordered_product.id }
-    @ordered_product.attributes = params[:ordered_product]
+
+    @ordered_product.update_attributes = params[:ordered_product]
   end
 
   def destroy
-    @ordered_product = DistributionPluginOrderedProduct.find params[:id]
-    @session_product = @ordered_product.session_product
-    @order = @ordered_product.order
+    super
+    @offered_product = @ordered_product.offered_product
     @session = @order.session
-    @ordered_product.destroy
   end
 
-  def session_destroy
-    @ordered_product = DistributionPluginOrderedProduct.find params[:id]
-    @order = @ordered_product.order
-    @session = @order.session
+  protected
+
+  # use superclass instead of child
+  def url_for options
+    options[:controller] = :distribution_plugin_ordered_product if options[:controller].to_s == 'orders_plugin_product'
+    super options
   end
 
 end

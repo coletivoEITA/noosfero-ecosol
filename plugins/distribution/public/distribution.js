@@ -1,18 +1,5 @@
 distribution = {
 
-  _editing: jQuery(),
-  _isInner: false,
-
-  setEditing: function (value) {
-    distribution._editing = jQuery(value);
-  },
-  editing: function () {
-    return distribution._editing.first();
-  },
-  isEditing: function () {
-    return distribution.editing().first().hasClass('edit');
-  },
-
   edit_arrow_toggle: function (context, toggle) {
     arrow = jQuery(context).hasClass('actions-circle') ? jQuery(context) : jQuery(context).find('.actions-circle');
 
@@ -70,93 +57,24 @@ distribution = {
 
   /* ----- ends session stuff  ----- */
 
-  /* ----- delivery stuff  ----- */
-
-  delivery_view_toggle: function () {
-    jQuery('#delivery-method-choose, #delivery-method-edit').toggle();
-  },
-
-  /* ----- ends delivery stuff  ----- */
-
-  /* ----- category select stuff  ----- */
-
-  category: null,
-
-  category_toggle_view: function (edit, view) {
-    edit.find('.category-selected').toggle(view == 1);
-    edit.find('.category-hierarchy').toggle(view != 0);
-    edit.find('.category-type-select').toggle(view == 2);
-    edit.find('.field-box').toggle(view == 0);
-    distribution.our_product.css_align();
-  },
-
-  subcategory_select: function (context) {
-    edit = jQuery(context).parents('.category-edit');
-    option = context.options[context.selectedIndex];
-    edit.find('.category-hierarchy .type').text(jQuery(option).text());
-
-    distribution.category_toggle_view(edit, 1);
-  },
-
-  category_reselect_sub: function () {
-    edit.find('.category-hierarchy .type').text('');
-    distribution.category_toggle_view(edit, 2);
-  },
-
-  category_select_another: function (context) {
-    edit = jQuery(context).parents('.category-edit');
-    edit.find('#product_category_id').tokenInput('clear');
-
-    distribution.category_toggle_view(edit, 0);
-  },
-
-  category_reselect: function (context, item) {
-    jQuery(context).parents('.category').nextAll('.category').remove();
-    jQuery(context).parents('.category').siblings('.type').text('');
-    edit = jQuery(context).parents('.category-edit');
-    edit.find('#product_category_id').val(item.id);
-    category = item;
-    distribution.category_template_type_select(edit);
-    distribution.category_toggle_view(edit, 2);
-  },
-
-  category_template_hierarchy: function (edit) {
-    edit.find('.category-hierarchy div').html(_.template(edit.find('.category-hierarchy script').html(), {cat: category}));
-  },
-  category_template_type_select: function (edit, selected) {
-    edit.find('.category-type-select div').html(_.template(edit.find('.category-type-select script').html(), {cat: category, selected: selected}));
-    if (selected)
-      edit.find('select').get(0).onchange();
-  },
-  category_select: function (item) {
-    category = item;
-    edit = jQuery(this).parents('.category-edit');
-    distribution.category_template_hierarchy(edit);
-    distribution.category_template_type_select(edit);
-
-    distribution.category_toggle_view(edit, 2);
-  },
-
-  /* ----- end category select stuff  ----- */
-
   /* ----- our products stuff  ----- */
 
   our_product: {
 
     toggle_edit: function () {
-      if (distribution.editing().is('#our-product-add'))
-        distribution.editing().toggle(distribution.isEditing());
-      distribution.editing().find('.box-view').toggle(!distribution.isEditing());
-      distribution.editing().find('.box-edit').toggle(distribution.isEditing());
+      if (toggle_edit.editing().is('#our-product-add'))
+        toggle_edit.editing().toggle(toggle_edit.isEditing());
+      toggle_edit.editing().find('.box-view').toggle(!toggle_edit.isEditing());
+      toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
 
       distribution.our_product.css_align();
     },
 
     add_link: function () {
-      if (distribution.isEditing())
-        distribution.value_row.toggle_edit();
-      distribution.setEditing(jQuery('#our-product-add'));
-      distribution.value_row.toggle_edit();
+      if (toggle_edit.isEditing())
+        toggle_edit.value_row.toggle_edit();
+      toggle_edit.setEditing(jQuery('#our-product-add'));
+      toggle_edit.value_row.toggle_edit();
     },
 
     load: function(el) {
@@ -268,9 +186,9 @@ distribution = {
     },
 
     css_align: function () {
-      var distributed = distribution.editing().find('.our-product-distributed-column');
-      var use_original = distribution.editing().find('.our-product-use-original-column');
-      var supplied = distribution.editing().find('.our-product-supplied-column');
+      var distributed = toggle_edit.editing().find('.our-product-distributed-column');
+      var use_original = toggle_edit.editing().find('.our-product-use-original-column');
+      var supplied = toggle_edit.editing().find('.our-product-supplied-column');
 
       use_original.height(distributed.height());
       supplied.height(distributed.height());
@@ -309,7 +227,7 @@ distribution = {
 
   /* ----- session editions stuff  ----- */
 
-  session_product: {
+  offered_product: {
 
     pmsync: function (context, to_price) {
       p = jQuery(context).parents('.session-product .box-edit');
@@ -348,25 +266,8 @@ distribution = {
 
   /* ----- toggle edit stuff  ----- */
 
-  supplier_add_link: function () {
-    if (distribution.isEditing())
-      distribution.value_row.toggle_edit();
-    distribution.setEditing(jQuery('#supplier-add'));
-    distribution.value_row.toggle_edit();
-  },
-  supplier_toggle_edit: function () {
-    if (distribution.editing().is('#supplier-add'))
-      distribution.editing().toggle(distribution.isEditing());
-    distribution.editing().find('.box-view').toggle(!distribution.isEditing());
-    distribution.editing().find('.box-edit').toggle(distribution.isEditing());
-  },
-  in_session_order_toggle_edit: function () {
-    distribution.editing().find('.box-edit').toggle(distribution.isEditing());
-    distribution.edit_arrow_toggle(distribution.editing(), distribution.isEditing());
-  },
-
-  session_product_edit: function () {
-    distribution.editing().find('.box-edit').toggle(distribution.isEditing());
+  offered_product_edit: function () {
+    toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
   },
   session_mail_message_toggle: function () {
     if ($('session-new-mail-send').checked) {
@@ -377,108 +278,10 @@ distribution = {
       jQuery('#session-new-mail textarea').attr('disabled', true);
     }
   },
-  order_session_product_toggle: function () {
-    distribution.editing().find('.box-edit').toggle(distribution.isEditing());
-    distribution.editing().find('.quantity-label').toggle(!distribution.isEditing());
-    distribution.editing().find('.quantity-entry').toggle(distribution.isEditing());
-  },
-  ordered_product_edit: function () {
-    distribution.editing().find('.more-actions').toggle(distribution.isEditing());
-    if (distribution.isEditing())
-      distribution.editing().find('.product-quantity input').focus();
-  },
-
-  locate_value_row: function (context) {
-    return jQuery(context).hasClass('value-row') ? jQuery(context) : jQuery(context).parents('.value-row');
-  },
-
-  target_isToggle: function (target) {
-    return (jQuery(target).hasClass('box-edit-link') && !distribution.isEditing()) ||
-      jQuery(target).hasClass('toggle-edit') || jQuery(target).parents().hasClass('toggle-edit');
-  },
-
-  document_click: function(event) {
-    var isToggle = distribution.target_isToggle(event.target);
-    var out = distribution.locate_value_row(event.target).length == 0;
-    if (!isToggle && out && distribution.isEditing()) {
-      distribution.value_row.toggle_edit();
-      return false;
-    }
-    return true;
-  },
-
-  open_anchor: function () {
-    el = jQuery(window.location.hash);
-    distribution.value_row.reload();
-    if (el.hasClass('value-row')) {
-      distribution.setEditing(el);
-      distribution.value_row.toggle_edit();
-    }
-  },
-
-  value_row: {
-    mouseenter: function () {
-      if (jQuery(this).attr('without-hover') != undefined)
-        return;
-      jQuery(this).addClass('hover');
-    },
-
-    mouseleave: function () {
-      if (jQuery(this).attr('without-hover') != undefined)
-        return;
-      jQuery(this).removeClass('hover');
-    },
-
-    click: function (event) {
-      var value_row = distribution.locate_value_row(event.target);
-      var now_isInner = value_row.length > 1;
-
-      if (jQuery(event.target).hasClass('toggle-ignore-event'))
-        return true;
-
-      var isToggle = distribution.target_isToggle(event.target);
-      var isAnother = value_row.get(0) != distribution.editing().get(0) || (now_isInner && !distribution._isInner);
-      if (now_isInner && !distribution._isInner)
-        distribution.setEditing(value_row);
-      distribution._isInner = now_isInner;
-
-      if (!isToggle && value_row.attr('without-click-edit') != undefined)
-        return;
-
-      if (isToggle) {
-        if (isAnother)
-          distribution.value_row.toggle_edit();
-        distribution.setEditing(value_row);
-        distribution.value_row.toggle_edit();
-
-        return false;
-      } else if (isAnother || !distribution.isEditing()) {
-        if (distribution.isEditing())
-          distribution.value_row.toggle_edit();
-        distribution.setEditing(value_row);
-        if (!distribution.isEditing())
-          distribution.value_row.toggle_edit();
-
-        return false;
-      }
-
-      return true;
-    },
-
-    toggle_edit: function () {
-      distribution.editing().toggleClass('edit');
-      eval(distribution.editing().attr('toggleedit'));
-      if (!distribution.isEditing()) {
-        if (distribution._editing.length > 1)
-          distribution.setEditing(jQuery(distribution._editing[1]));
-        else
-          distribution.setEditing(jQuery());
-      }
-    },
-    reload: function () {
-      distribution.value_row.toggle_edit();
-    },
-
+  order_offered_product_toggle: function () {
+    toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
+    toggle_edit.editing().find('.quantity-label').toggle(!toggle_edit.isEditing());
+    toggle_edit.editing().find('.quantity-entry').toggle(toggle_edit.isEditing());
   },
 
   checkbox_change: function () {
@@ -491,61 +294,54 @@ distribution = {
     jQuery.colorbox(options);
   },
 
-// block user actions while making a post. Also indicate the network transaction
+  // block user actions while making a post. Also indicate the network transaction
   setLoading: function (element) {
     var pos       = jQuery.extend({
       width:    jQuery("#"+element).outerWidth(),
-      height:   jQuery("#"+element).outerHeight()
+    height:   jQuery("#"+element).outerHeight()
     }, jQuery("#"+element).position());
     jQuery('<div>', {
       id: element + '-overlay',
       css:   {
         position:         'absolute',
-        top:              pos.top,
-        left:             pos.left,
-        width:            pos.width,
-        height:           pos.height,
-        backgroundImage:  'url(/plugins/distribution/images/loading.gif)',
-        opacity:          0.90,
-        zIndex:          10
+      top:              pos.top,
+      left:             pos.left,
+      width:            pos.width,
+      height:           pos.height,
+      backgroundImage:  'url(/plugins/distribution/images/loading.gif)',
+      opacity:          0.90,
+      zIndex:          10
       }
-      }).appendTo(jQuery("#"+element));
-    },
+    }).appendTo(jQuery("#"+element));
+  },
 
-    unsetLoading: function (element) {
-      jQuery("#"+element+"-overlay").remove();
-    },
+  unsetLoading: function (element) {
+    jQuery("#"+element+"-overlay").remove();
+  },
 
-    ajaxifyPagination: function(elementId) {
-      jQuery(".pagination a").click(function() {
-        distribution.setLoading(elementId);
-        jQuery.ajax({
-          type: "GET",
-          url: jQuery(this).attr("href"),
-          dataType: "script"
-        });
-        return false;
+  ajaxifyPagination: function(elementId) {
+    jQuery(".pagination a").click(function() {
+      distribution.setLoading(elementId);
+      jQuery.ajax({
+        type: "GET",
+        url: jQuery(this).attr("href"),
+        dataType: "script"
       });
-    },
+      return false;
+    });
+  },
 
-    toggleCancelledOrders: function (el) {
-       jQuery('.plugin-distribution #show-cancelled-orders a').toggle();
-       jQuery('.plugin-distribution #hide-cancelled-orders a').toggle();
-       jQuery('.plugin-distribution .consumer-order:not(.edit) .status-cancelled').toggle()
-     }
+  toggleCancelledOrders: function () {
+    jQuery('.plugin-distribution #show-cancelled-orders a').toggle();
+    jQuery('.plugin-distribution #hide-cancelled-orders a').toggle();
+    jQuery('.plugin-distribution .consumer-order:not(.edit) .status-cancelled').toggle();
+  },
 }
 
 /* ----- events  ----- */
 
-jQuery('.plugin-distribution .value-row').live('mouseenter', distribution.value_row.mouseenter);
-jQuery('.plugin-distribution .value-row').live('mouseleave', distribution.value_row.mouseleave);
-jQuery('.plugin-distribution .value-row').live('click', distribution.value_row.click);
 jQuery('.plugin-distribution input[type=checkbox]').live('change', distribution.checkbox_change);
 jQuery('.plugin-distribution .table-header .box-field').live('click', distribution.table.header_click);
-
-jQuery(document).click(distribution.document_click);
-jQuery(document).ready(distribution.open_anchor);
-jQuery(window).bind('hashchange', distribution.open_anchor);
 
 /* ----- ends events  ----- */
 
@@ -558,12 +354,6 @@ jQuery(window).bind('hashchange', distribution.open_anchor);
     });
   };
 })(jQuery);
-
-_.templateSettings = {
-  evaluate: /\{\{([\s\S]+?)\}\}/g,
-  interpolate: /\{\{=([\s\S]+?)\}\}/g,
-  escape: /\{\{-([\s\S]+?)\}\}/g
-}
 
 Array.prototype.diff = function(a) {
   return this.filter(function(i) {return !(a.indexOf(i) > -1);});

@@ -7,6 +7,8 @@ class PluginTest < ActiveSupport::TestCase
   end
   attr_reader :environment
 
+  include Noosfero::Plugin::HotSpot
+
   should 'keep the list of all loaded subclasses' do
     class Plugin1 < Noosfero::Plugin
     end
@@ -493,9 +495,5 @@ class PluginTest < ActiveSupport::TestCase
       p.extra_blocks
     end
   end
-
-
-
-
 
 end

@@ -399,13 +399,13 @@ class EnvironmentTest < ActiveSupport::TestCase
     p1 = e1.products.create!(:name => 'test_prod1', :product_category_id => category.id)
     products = []
     3.times {|n|
-      products.push(Product.create!(:name => "product #{n}", :enterprise_id => e1.id,
+      products.push(Product.create!(:name => "product #{n}", :profile_id => e1.id,
         :product_category_id => category.id, :highlighted => true,
         :image_builder => { :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png') }
       ))
     }
-    Product.create!(:name => "product 4", :enterprise_id => e1.id, :product_category_id => category.id, :highlighted => true)
-    Product.create!(:name => "product 5", :enterprise_id => e1.id, :product_category_id => category.id, :image_builder => {
+    Product.create!(:name => "product 4", :profile_id => e1.id, :product_category_id => category.id, :highlighted => true)
+    Product.create!(:name => "product 5", :profile_id => e1.id, :product_category_id => category.id, :image_builder => {
         :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')
       })
     assert_equal products, env.highlighted_products_with_image
@@ -439,14 +439,6 @@ class EnvironmentTest < ActiveSupport::TestCase
     env = Environment.new
     env.message_for_disabled_enterprise = 'this enterprise was disabled'
     assert_equal 'this enterprise was disabled', env.message_for_disabled_enterprise
-  end
-
-  should 'find by contents from articles' do
-    TestSolr.enable
-    environment = fast_create(Environment)
-    assert_nothing_raised do
-      environment.articles.find_by_contents('')[:results]
-    end
   end
 
   should 'provide custom header' do
@@ -543,17 +535,6 @@ class EnvironmentTest < ActiveSupport::TestCase
 
   should 'have a default layout template' do
     assert_equal 'default', Environment.new.layout_template
-  end
-
-  should 'return more than 10 enterprises by contents' do
-    TestSolr.enable
-    env = Environment.default
-    Enterprise.destroy_all
-    ('1'..'20').each do |n|
-      Enterprise.create!(:name => 'test ' + n, :identifier => 'test_' + n)
-    end
-
-    assert_equal 20, env.enterprises.find_by_contents('test')[:results].total_entries
   end
 
   should 'set replace_enterprise_template_when_enable on environment' do
@@ -752,7 +733,7 @@ class EnvironmentTest < ActiveSupport::TestCase
     assert_equal c, e.portal_community
     e.unset_portal_community!
     e.reload
-    assert_nil e.portal_community 
+    assert_nil e.portal_community
     assert_equal [], e.portal_folders
     assert_equal 0, e.news_amount_by_folder
     assert_equal false, e.enabled?('use_portal_community')

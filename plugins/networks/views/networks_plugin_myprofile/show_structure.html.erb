@@ -1,0 +1,30 @@
+<h1><%= 'Estrutura da rede ' + @network.name %></h1>
+
+<div>
+  <%= button_to "Adicionar empreendimento",
+    {:action => :profile_search, :controller => :networks_plugin_admin, :net_id => @network.id} %>
+  <button>Criar nó</button>
+</div>
+
+<% if flash[:error] %>
+  <div class="error"><%= flash[:error] %></div>
+<% end %>
+
+<% if flash[:notice] %>
+  <div class="notice"><%= flash[:notice] %></div>
+<% end %>
+
+<table>
+  <% @relations.each do |node| %>
+    <tr>
+      <td>
+        <%= node.child.name %>
+      </td>
+      <td style="text-align: right;">
+        <%= link_to 'Editar', :controller => :networks_plugin_admin, :action => :index, :id => node.child.id %>
+        |
+        <%= link_to 'Remover', :controller => :networks_plugin_admin, :action => :destroy, :id => node.id %>
+      </td>
+    </tr>
+  <% end %>
+</table>

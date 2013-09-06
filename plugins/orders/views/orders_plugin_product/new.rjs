@@ -1,0 +1,8 @@
+if params[:redirect] == '1'
+  page << "window.location = '#{url_for :controller => :orders_plugin_consumer, :action => :edit, :id => @order.id}'"
+else
+  page.replace_html 'order-products', :partial => 'orders_plugin_consumer/products', :locals => {:order => @order}
+  page.replace_html "order-total-#{@order.id}", :partial => 'orders_plugin_consumer/total', :locals => {:order => @order}
+
+  page << 'toggle_edit.value_row.reload();'
+end

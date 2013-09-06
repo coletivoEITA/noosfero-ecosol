@@ -1,6 +1,11 @@
+# workaround for plugin class scope problem
+require_dependency 'distribution_plugin/display_helper'
+
 module DistributionPlugin::SessionHelper
 
-  include DistributionPlugin::DistributionDisplayHelper
+  protected
+
+  include DistributionPlugin::DisplayHelper
 
   def timeline_class(session, status, selected)
     klass = ""

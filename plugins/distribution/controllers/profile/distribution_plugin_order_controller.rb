@@ -1,61 +1,71 @@
-class DistributionPluginOrderController < DistributionPluginProfileController
+# workaround for plugin class scope problem
+require_dependency 'distribution_plugin/display_helper'
+require_dependency 'suppliers_plugin/product_helper'
+
+class DistributionPluginOrderController < OrdersPluginConsumerController
+
+  include DistributionPlugin::ControllerHelper
 
   no_design_blocks
-
-  before_filter :login_required, :except => [:index, :edit]
+  before_filter :load_node
   before_filter :set_admin_action, :only => [:session_edit]
+  before_filter :login_required, :except => [:index]
 
-  helper DistributionPlugin::DistributionProductHelper
+  helper ApplicationHelper
+  helper DistributionPlugin::DisplayHelper
+  helper SuppliersPlugin::ProductHelper
 
   def index
     @year = (params[:year] || DateTime.now.year).to_s
     @sessions = @node.sessions.by_year @year
-    @consumer = @user_node
+    @consumer = user
   end
 
   def new
-    if @user_node.nil?
-      session[:notice] = t('distribution_plugin.controllers.profile.order_controller.please_login_first')
+    if user.nil?
+      session[:notice] = t('orders_plugin.controllers.profile.consumer.please_login_first')
       redirect_to :action => :index
       return
     end
-    @consumer = @user_node
-    @session = DistributionPluginSession.find params[:session_id]
-    @order = DistributionPluginOrder.create! :session => @session, :consumer => @consumer
+    @consumer = user
+    @order = OrdersPlugin::Order.create! :consumer => @consumer
     redirect_to params.merge(:action => :edit, :id => @order.id)
-  end
-
-  def admin_new
-    if @node.has_admin? @user_node
-      @consumer = DistributionPluginNode.find params[:consumer_id]
-      @session = DistributionPluginSession.find params[:session_id]
-      @order = DistributionPluginOrder.create! :session => @session, :consumer => @consumer
-      redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
-    else
-      redirect_to :action => :index
-    end
+    @session = DistributionPlugin::Session.find params[:session_id]
+    @session_order = DistributionPlugin::SessionOrder.create! :session => @session, :order => @order
   end
 
   def edit
     if session_id = params[:session_id]
-      @session = DistributionPluginSession.find_by_id session_id
+      @session = DistributionPlugin::Session.find_by_id session_id
       return render_not_found unless @session
-      @consumer = @user_node
+      @consumer = user
     else
-      @order = DistributionPluginOrder.find_by_id params[:id]
       return render_not_found unless @order
-      @session = @order.session
+      @admin_edit = user and user != @consumer
       @consumer = @order.consumer
-      @admin_edit = @user_node && @user_node != @consumer
-    end
-    @consumer_orders = @session.orders.for_consumer @consumer
+      @session = @order.session
+      @consumer_orders = @session.orders.for_consumer @consumer
 
+      render :partial => 'consumer_orders' if params[:consumer_orders]
+    end
+
+    @consumer_orders = @session.orders.for_consumer @consumer
     render :partial => 'consumer_orders' if params[:consumer_orders]
   end
 
+  def cancel
+    super
+    redirect_to :action => :index, :session_id => @order.session.id
+  end
+
+  def remove
+    super
+    redirect_to :action => :index, :session_id => @order.session.id
+  end
+
   def reopen
-    @order = DistributionPluginOrder.find params[:id]
-    if @order.consumer == @user_node
+    @order = OrdersPlugin::Order.find params[:id]
+    if @order.consumer == user
       raise "Cycle's orders period already ended" unless @order.session.orders?
       @order.update_attributes! :status => 'draft'
     end
@@ -64,11 +74,8 @@ class DistributionPluginOrderController < DistributionPluginProfileController
   end
 
   def confirm
-    params[:order] ||= {}
-
-    @order = DistributionPluginOrder.find params[:id]
-    if @order.consumer != @user_node and not @node.has_admin? @user_node
-      if @user_node.nil?
+    if @order.consumer != user and not profile.has_admin? user
+      if user.nil?
         session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
       else
         session[:notice] = t('distribution_plugin.controllers.profile.order_controller.you_are_not_the_owner')
@@ -76,61 +83,26 @@ class DistributionPluginOrderController < DistributionPluginProfileController
       redirect_to :action => :index
       return
     end
+
     raise "Cycle's orders period already ended" unless @order.session.orders?
-    if @order.products.count > 0
-      @order.update_attributes! params[:order].merge(:status => 'confirmed')
-      DistributionPlugin::Mailer.deliver_order_confirmation @order, request.host_with_port
-      session[:notice] = t('distribution_plugin.controllers.profile.order_controller.order_confirmed')
+
+    super
+  end
+
+  def admin_new
+    if profile.has_admin? user
+      @consumer = user
+      @session = DistributionPlugin::Session.find params[:session_id]
+      @order = OrdersPlugin::Order.create! :session => @session, :consumer => @consumer
+      redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
     else
-      session[:notice] = t('distribution_plugin.controllers.profile.order_controller.can_not_confirm_your_')
-    end
-    redirect_to :action => :edit, :id => @order.id
-  end
-
-  def cancel
-    @order = DistributionPluginOrder.find params[:id]
-    if @order.consumer != @user_node and not @node.has_admin? @user_node
-      if @user_node.nil?
-        session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
-      else
-        session[:notice] = t('distribution_plugin.controllers.profile.order_controller.you_are_not_the_owner')
-      end
       redirect_to :action => :index
-      return
     end
-    @order.update_attributes! :status => 'cancelled'
-
-    DistributionPlugin::Mailer.deliver_order_cancellation @order
-    session[:notice] = t('distribution_plugin.controllers.profile.order_controller.order_cancelled')
-    redirect_to :action => :index, :session_id => @order.session.id
-  end
-
-  def remove
-    @order = DistributionPluginOrder.find params[:id]
-    if @order.consumer != @user_node and not @node.has_admin? @user_node
-      if @user_node.nil?
-        session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
-      else
-        session[:notice] = t('distribution_plugin.controllers.profile.order_controller.you_are_not_the_owner')
-      end
-      redirect_to :action => :index
-      return
-    end
-    @order.destroy
-
-    session[:notice] = t('distribution_plugin.controllers.profile.order_controller.order_removed')
-    redirect_to :action => :index, :session_id => @order.session.id
-  end
-
-  def render_delivery
-    @order = DistributionPluginOrder.find params[:id]
-    @order.attributes = params[:order]
-    render :partial => 'delivery', :layout => false, :locals => {:order => @order}
   end
 
   def session_edit
-    @order = DistributionPluginOrder.find params[:id]
-    if @order.consumer != @user_node and not @node.has_admin? @user_node
+    @order = OrdersPlugin::Order.find params[:id]
+    if @order.consumer != user and not profile.has_admin? user
       if @user_node.nil?
         session[:notice] = t('distribution_plugin.controllers.profile.order_controller.login_first')
       else
@@ -143,7 +115,7 @@ class DistributionPluginOrderController < DistributionPluginProfileController
     if @order.session.orders?
       a = {}; @order.products.map{ |p| a[p.id] = p }
       b = {}; params[:order][:products].map do |key, attrs|
-        p = DistributionPluginOrderedProduct.new attrs
+        p = OrdersPlugin::OrderedProduct.new attrs
         p.id = attrs[:id]
         b[p.id] = p
       end
@@ -170,6 +142,18 @@ class DistributionPluginOrderController < DistributionPluginProfileController
 
   end
 
+  def render_delivery
+    @order = OrdersPlugin::Order.find params[:id]
+    @order.attributes = params[:order]
+    render :partial => 'delivery', :layout => false, :locals => {:order => @order}
+  end
+
   protected
+
+  # use superclass instead of child
+  def url_for options
+    options[:controller] = :distribution_plugin_order if options[:controller].to_s == 'orders_plugin_consumer'
+    super options
+  end
 
 end
