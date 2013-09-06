@@ -2,6 +2,8 @@
 
 ../../../../script/noosfero-plugins disable distribution
 ../../../../script/noosfero-plugins enable distribution
+../../../../script/noosfero-plugins disable suppliers
+../../../../script/noosfero-plugins enable suppliers
 ../../../../script/noosfero-plugins disable orders
 ../../../../script/noosfero-plugins enable orders
 ../../../../script/noosfero-plugins disable delivery
