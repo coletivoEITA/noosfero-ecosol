@@ -378,7 +378,7 @@
 .plugin-distribution #filter .filter-box {
   padding-left: 48px;
   padding-right: 48px;
-  border-bottom: 1px solid #d5efb0;
+  border-bottom: 1px solid #d6e9bc;
   padding-top: 4px;
   padding-bottom: 4px; }
 
@@ -387,7 +387,7 @@
   font-size: 13px; }
 
 .plugin-distribution #filter .fields > div {
-  border-right: 1px solid #d5efb0;
+  border-right: 1px solid #d6e9bc;
   padding-left: 8px;
   padding-right: 8px;
   float: left; }
@@ -398,7 +398,7 @@
 .plugin-distribution #filter .fields > div:first-child {
   padding-left: 0; }
 
-.plugin-distribution #filter .fields div:last-child {
+.plugin-distribution #filter .fields div.name {
   border-right: 0; }
 
 .plugin-distribution #filter .submit input[type=submit] {
@@ -407,15 +407,29 @@
   padding: 8px;
   background-color: #4B583C;
   color: #FFFFFF;
-  border: 1px solid #d5efb0;
+  border: 1px solid white;
   font-size: 10px;
   text-align: center;
   margin: none; }
 
-.plugin-distribution #filter .box-field select,
-.plugin-distribution #filter .box-field input {
-  width: 144px; }
+.plugin-distribution #filter .filter-box select,
+.plugin-distribution #filter .filter-box input {
+  width: 164px; }
 
+.plugin-distribution #filter .filter-box .name input {
+  width: 308px; }
+
+/*
+WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
+.plugin-distribution #filter .filter-box select,
+.plugin-distribution #filter .filter-box input {
+  width: 160px -(2*$padding);
+}
+
+.plugin-distribution #filter .filter-box .name input {
+  width:288px;
+}
+  */
 .plugin-distribution {
   /* use with @extend, CSS clear bugfix */
   /* layout base parameters */

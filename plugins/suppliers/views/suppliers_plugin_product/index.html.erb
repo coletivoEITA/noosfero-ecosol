@@ -32,39 +32,38 @@
 
       <div class="fields filter-box">
 
-        <div class="box-field state">
+        <div class="state">
           <div><%= t('suppliers_plugin.views.product.index.situation') %></div>
           <div>
             <%= select_tag :available, options_for_select([[t('suppliers_plugin.views.product.index.in_any_state'), ""], [ t('suppliers_plugin.views.product.index.active'), 'true'], [ t('suppliers_plugin.views.product.index.inactive'), 'false']], params[:available]) %>
           </div>
         </div>
 
-        <div class="box-field category">
+        <div class="category">
           <div><%= t('suppliers_plugin.views.product.index.with_the_category') %></div>
           <div>
-            <%= select_tag :category_id, options_for_select(@product_categories.map{ |pc| [pc.name, pc.id]}.insert(0,[t('suppliers_plugin.views.product.index.all_the_categories'), ""])),
-              {:onchange => "this.form.onsubmit()"} %>
+            <%= select_tag :category_id, options_for_select(@product_categories.map{ |pc| [pc.name, pc.id]}.insert(0,[t('suppliers_plugin.views.product.index.all_the_categories'), ""])) %>
           </div>
         </div>
 
-        <div class="box-field supplier">
+        <div class="supplier">
           <div><%=t('suppliers_plugin.views.product.index.show_products_from') %></div>
           <div>
             <%= select_tag :supplier_id, options_for_select([[t('suppliers_plugin.views.product.index.all_the_suppliers'), ""]] + supplier_choices(profile), params[:supplier_profile_id].to_i) %>
           </div>
         </div>
 
-        <div class="box-field qualifier">
-          <div><%= t('suppliers_plugin.views.product.index.with_the_qualifiers') %></div>
-          <div><%= select_tag :qualifier_id, options_for_select([t('suppliers_plugin.views.product.index.anyone'), '']) %></div>
+        <div class="qualifier">
+          <div><%# t('suppliers_plugin.views.product.index.with_the_qualifiers') %></div>
+          <div><%# select_tag :qualifier_id, options_for_select([t('suppliers_plugin.views.product.index.anyone'), '']) %></div>
         </div>
 
-        <div class="box-field stock">
+        <div class="stock">
           <div><%# t('suppliers_plugin.views.product.index.whose_qty_available_i') %></div>
           <div><%# select_tag :stock, options_for_select([t('suppliers_plugin.views.product.index.bigger_than_the_stock'), '']) %></div>
         </div>
 
-        <div class="box-field name">
+        <div class="name">
           <div><%= t('suppliers_plugin.views.product.index.whose_name_contains') %></div>
           <div><%= text_field_tag :name, params[:name], :onkeydown => "var field = this; function name_form_submit() {field.form.onsubmit();}; setTimeout(name_form_submit, 300);" %></div>
         </div>

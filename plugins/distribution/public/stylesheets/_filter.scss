@@ -1,6 +1,6 @@
 @import 'base';
 
-$border: 1px solid #D5EFB0;
+$border: 1px solid #d6e9bc;
 
 .plugin-distribution #filter {
   background-color: #BCDC91;
@@ -43,7 +43,7 @@ $border: 1px solid #D5EFB0;
 .plugin-distribution #filter .fields > div:first-child {
   padding-left: 0;
 }
-.plugin-distribution #filter .fields div:last-child {
+.plugin-distribution #filter .fields div.name {
   border-right: 0;
 }
 
@@ -53,15 +53,30 @@ $border: 1px solid #D5EFB0;
   padding: $padding;
   background-color: #4B583C;
   color: #FFFFFF;
-  border: $border;
+  border: 1px solid white;
   font-size: 10px;
   text-align: center;
   margin: none;
 }
 
-.plugin-distribution #filter .box-field select,
-.plugin-distribution #filter .box-field input {
+.plugin-distribution #filter .filter-box select,
+.plugin-distribution #filter .filter-box input {
+  width: 180px -(2*$padding);
+}
+
+.plugin-distribution #filter .filter-box .name input {
+  width:308px;
+}
+/*
+WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
+.plugin-distribution #filter .filter-box select,
+.plugin-distribution #filter .filter-box input {
   width: 160px -(2*$padding);
 }
+
+.plugin-distribution #filter .filter-box .name input {
+  width:288px;
+}
+  */
 
 
