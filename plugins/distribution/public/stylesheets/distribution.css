@@ -357,9 +357,9 @@ body.plugin-distribution {
 .plugin-distribution .page > *,
 .plugin-distribution .admin-page > * {
   padding-left: 8px; }
-.plugin-distribution .box-align {
+.plugin-distribution .box-align, .plugin-distribution #session-products .session-products-table, .plugin-distribution .order-products-by-supplier, .plugin-distribution #session-listing .session-list-item, .plugin-distribution #session-listing .session-timeline, .plugin-distribution #session-header-warning, .plugin-distribution .filter-box, .plugin-distribution .session-view #session-products-for-order .title {
   margin-left: -8px; }
-.plugin-distribution .alignment {
+.plugin-distribution .alignment, .plugin-distribution #distribution-plugin-sessions-gadget .session .happening, #distribution-plugin-sessions-gadget .session .plugin-distribution .happening, .plugin-distribution #distribution-plugin-sessions-gadget .session .info, #distribution-plugin-sessions-gadget .session .plugin-distribution .info {
   padding-left: 8px; }
 .plugin-distribution .alignment2x {
   padding-left: 16px; }
@@ -477,93 +477,6 @@ body.plugin-distribution {
   text-transform: lowercase;
   margin-left: 4px; }
 
-.plugin-distribution .table-header {
-  width: 100%;
-  padding: 8px;
-  background-color: #B1DFEF;
-  color: #000; }
-
-.plugin-distribution .table-content {
-  border-bottom: 1px solid black;
-  width: auto;
-  margin-bottom: 40px; }
-
-.plugin-distribution .sort-arrow {
-  border-top: 6px solid black;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  position: absolute; }
-
-.plugin-distribution .sort-arrow.desc {
-  border-bottom: 6px solid black;
-  border-top: 6px solid transparent;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  margin-top: -6px; }
-
-.plugin-distribution .value-row {
-  border-bottom: 1px dotted #ccc;
-  width: 100%;
-  padding: 8px; }
-
-.plugin-distribution .value-row:last-child {
-  border-bottom: 1px dotted transparent; }
-
-.plugin-distribution .table-header,
-.plugin-distribution .value-row {
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box; }
-
-.plugin-distribution .value-row.edit,
-.plugin-distribution .value-row.hover {
-  background-color: #FDF2A3; }
-
-.plugin-distribution .value-row.edit {
-  border-top: 2px solid #333;
-  border-bottom: 2px solid #333;
-  margin-top: -1px; }
-
-.plugin-distribution .value-row.edit .box-view {
-  padding-bottom: 10px; }
-
-.plugin-distribution .box-view,
-.plugin-distribution .box-edit {
-  float: left;
-  width: 100%; }
-
-.plugin-distribution .box-edit {
-  clear: both; }
-
-.plugin-distribution .table-header .box-field {
-  text-decoration: underline;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 10px; }
-
-.plugin-distribution .box-field {
-  float: left;
-  min-height: 1px;
-  overflow: hidden;
-  margin-left: 10px; }
-
-.plugin-distribution .box-field:first-child {
-  margin-left: 0; }
-
-.plugin-distribution .box-field.box-edit-link {
-  font-size: 12px !important;
-  font-weight: bold;
-  text-decoration: underline;
-  color: #38727E;
-  cursor: pointer; }
-
-.plugin-distribution .value-row.edit .box-field.box-edit-link {
-  cursor: inherit;
-  color: black;
-  text-decoration: none; }
-
 .plugin-distribution .box-view .box-field.price,
 .plugin-distribution .value-row .box-field.price-with-unit {
   font-size: 12px !important;
@@ -573,34 +486,6 @@ body.plugin-distribution {
 .plugin-distribution .value-row .box-field.price-with-unit .price-unit {
   font-size: 10px;
   font-weight: normal; }
-
-.plugin-distribution .actions-circle {
-  height: 20px;
-  width: 20px;
-  background-color: #FDF2A3;
-  float: right;
-  margin-right: 0;
-  padding: 0;
-  margin-top: 3px;
-  border-radius: 10px;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -o-border-radius: 10px; }
-
-.plugin-distribution .actions-circle .actions-arrow {
-  border-top: 6px solid black;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  margin: 8px 6px 0 5px;
-  display: block; }
-
-.plugin-distribution .actions-circle.edit .actions-arrow {
-  border-bottom: 6px solid black;
-  border-top: 5px solid transparent;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  margin: 2px 6px 0px 5px;
-  display: block; }
 
 .plugin-distribution .actions-bar {
   background-color: #FEC64D;
@@ -622,19 +507,8 @@ body.plugin-distribution {
   left: 235px;
   margin-bottom: -20px; }
 
-.plugin-distribution .our-product .product-supplier *[disabled],
-.plugin-distribution .our-product-distributed-column *[readOnly],
-.plugin-distribution .our-product-distributed-column *[disabled] {
-  font-style: italic;
-  background-color: #F1F6F2;
-  border-color: #B9BEC2; }
-
-.plugin-distribution .our-product-supplied-column *[disabled],
 .plugin-distribution .session-product-line *[disabled] {
   background-color: transparent; }
-
-.plugin-distribution .our-product-supplied-column input[type=checkbox][disabled] {
-  background: url(/plugins/distribution/images/checked_box.png) transparent; }
 
 /* ----- order block ----- */
 .distribution-plugin-order-block {
@@ -1107,182 +981,6 @@ body.plugin-distribution {
 .plugin-distribution .filter-box .box-field select,
 .plugin-distribution .filter-box .box-field input {
   width: 205px; }
-
-/* ----- our products ----- */
-.plugin-distribution #our-products .subtitle {
-  width: 450px; }
-
-.plugin-distribution #our-products h3 {
-  margin-top: 30px; }
-
-.plugin-distribution #search-results #result-count {
-  padding: 8px; }
-
-.plugin-distribution #search-results .box-view {
-  font-size: 10px; }
-
-.plugin-distribution #search-results .box-index {
-  border: none; }
-
-.plugin-distribution #search-results .box-field.status {
-  width: 60px; }
-
-.plugin-distribution #search-results .box-field.category {
-  width: 100px; }
-
-.plugin-distribution #search-results .box-field.supplier {
-  width: 100px; }
-
-.plugin-distribution #search-results .box-field.product {
-  width: 170px; }
-
-.plugin-distribution #search-results .box-field.price-with-unit {
-  width: 90px; }
-
-.plugin-distribution #search-results .box-field.stock {
-  width: 80px; }
-
-.plugin-distribution #node-margin-percentage span {
-  font-weight: bold; }
-
-.plugin-distribution #node-margin-percentage span.set {
-  font-size: 13px; }
-
-.plugin-distribution #filter-fields .category,
-.plugin-distribution #filter-fields .qualifier,
-.plugin-distribution #filter-fields .stock {
-  display: none; }
-
-.plugin-distribution .our-product input[type=text],
-.plugin-distribution .our-product textarea,
-.plugin-distribution .our-product select {
-  width: 280px; }
-
-.plugin-distribution .our-product .box-edit {
-  float: left;
-  background-color: #FDF2A3;
-  font-size: 12px;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box; }
-
-.plugin-distribution #our-product-add .our-product .box-edit {
-  float: none; }
-
-.plugin-distribution .our-product.edit .value-row {
-  padding: 0; }
-
-.plugin-distribution #our-product-add .supplier-missing-products-column-view {
-  margin-bottom: 30px; }
-
-.plugin-distribution #our-product-add .supplier-missing-products-column {
-  float: left;
-  margin-right: 20px; }
-
-.plugin-distribution #our-product-add .supplier-missing-products-item {
-  display: block; }
-
-.plugin-distribution .supplier-missing-products-column-view .missing-explanation {
-  width: 420px;
-  margin-bottom: 20px; }
-
-.plugin-distribution .our-product .product-supplier {
-  margin-bottom: 10px; }
-
-.plugin-distribution .our-product .product-supplier label {
-  font-weight: normal; }
-
-.plugin-distribution .our-product .box-edit .properties-block {
-  margin-top: 16px; }
-
-.plugin-distribution .our-product-supplied-column .price-block {
-  position: absolute; }
-
-.plugin-distribution .our-product .box-edit .price-block .field {
-  float: left;
-  clear: none; }
-
-.plugin-distribution .our-product .box-edit .column-title {
-  font-style: italic; }
-
-.plugin-distribution .our-product .box-edit .price-block .field,
-.plugin-distribution .our-product .box-edit .margin-line .default-margin,
-.plugin-distribution .our-product .box-edit .small-input {
-  width: 120px; }
-
-.plugin-distribution .our-product .box-edit .price-block .field.left-column {
-  margin-right: 40px; }
-
-.plugin-distribution .our-product .box-edit .margin-line .field {
-  width: 160px; }
-
-.plugin-distribution .our-product .box-edit .margin-line .field,
-.plugin-distribution .our-product .box-edit .margin-line .default-margin {
-  float: left; }
-
-.plugin-distribution .our-product .box-edit .margin-line .default-margin {
-  margin-top: 28px; }
-
-.plugin-distribution .our-product .box-edit .margin-line .default-margin #product_default_margin_percentage {
-  margin: 3px 8px 8px 0;
-  float: left; }
-
-.plugin-distribution .our-product .box-edit .margin-line .default-margin label {
-  font-weight: bold;
-  display: block;
-  line-height: 16px; }
-
-.plugin-distribution .our-product-distributed-column {
-  float: left;
-  width: 280px;
-  margin-right: 30px; }
-
-.plugin-distribution .our-product-use-original-column {
-  width: 62px;
-  float: left;
-  overflow: hidden; }
-
-.plugin-distribution .our-product-supplied-column {
-  width: 300px;
-  float: left;
-  border-left: 1px solid black; }
-
-.plugin-distribution .our-product-columns {
-  overflow: hidden; }
-
-.plugin-distribution .our-product-columns > div {
-  position: relative; }
-
-.plugin-distribution .our-product-use-original-column .column-title {
-  margin-top: 23px;
-  font-weight: bold;
-  font-style: normal;
-  margin-bottom: 4px; }
-
-.plugin-distribution .our-product-use-original-column .guideline {
-  position: absolute;
-  margin-left: 5px;
-  border-left: 1px dotted black;
-  height: 1000px; }
-
-.plugin-distribution .our-product-use-original-column .default-checkbox {
-  margin: 0 !important;
-  position: absolute;
-  left: -6px; }
-
-.plugin-distribution .our-product-use-original-column #product_default_name {
-  top: 0px; }
-
-.plugin-distribution .our-product-use-original-column #product_default_description {
-  top: 55px; }
-
-.plugin-distribution .our-product-use-original-column #product_default_price {
-  top: 241px; }
-
-.plugin-distribution .our-product-supplied-column .properties-block.subtitle {
-  margin-top: 41px;
-  width: auto !important; }
 
 /* ----- session view ----- */
 .plugin-distribution .session-view #session-products-for-order {

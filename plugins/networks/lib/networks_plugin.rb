@@ -11,7 +11,7 @@ class NetworksPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['networks']
+    ['networks'].map{ |j| "javascripts/#{j}" }
   end
 
   def stylesheet?
