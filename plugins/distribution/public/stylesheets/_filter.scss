@@ -1,0 +1,67 @@
+@import 'base';
+
+$border: 1px solid #D5EFB0;
+
+.plugin-distribution #filter {
+  background-color: #BCDC91;
+  padding: 0;
+  margin-top: 2*$height;
+  margin-left: -($wireframe-padding);
+  margin-right: -($wireframe-padding);
+  margin-bottom: 2*$height;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  font-size: 11px;
+}
+
+.plugin-distribution #filter .filter-box {
+  padding-left: $wireframe-padding + $padding;
+  padding-right: $wireframe-padding + $padding;
+  border-bottom: $border;
+  padding-top: $half-padding;
+  padding-bottom: $half-padding;
+}
+
+.plugin-distribution #filter .title {
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.plugin-distribution #filter .fields > div {
+  border-right: $border;
+  padding-left: $padding;
+  padding-right: $padding;
+  float: left;
+}
+
+.plugin-distribution #filter .fields > div.clean {
+  float: none;
+}
+
+.plugin-distribution #filter .fields > div:first-child {
+  padding-left: 0;
+}
+.plugin-distribution #filter .fields div:last-child {
+  border-right: 0;
+}
+
+.plugin-distribution #filter .submit input[type=submit] {
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: $padding;
+  background-color: #4B583C;
+  color: #FFFFFF;
+  border: $border;
+  font-size: 10px;
+  text-align: center;
+  margin: none;
+}
+
+.plugin-distribution #filter .box-field select,
+.plugin-distribution #filter .box-field input {
+  width: 160px -(2*$padding);
+}
+
+
