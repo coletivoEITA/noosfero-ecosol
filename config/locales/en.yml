@@ -674,7 +674,7 @@
           add_product: "Add product"
           all_the_categories: "all the categories"
           all_the_suppliers: "all the suppliers"
-          and_being: "and being"
+          situation: "distribution situation"
           anyone: anyone
           bigger_than_the_stock: "bigger than the stock"
           change: change
@@ -731,6 +731,7 @@
         index: 
           add_supplier: "Add supplier"
           filter: Filter
+          filter_it: Filter
           name: Name
           suppliers: Suppliers
           this_is_the_list_of_s: "This is the list of suppliers associated to this consumption collective. It is possible to associate with existent suppliers or register one."
