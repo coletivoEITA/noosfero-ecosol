@@ -29,8 +29,8 @@
 
 <%= content_tag 'script', '', :src => "http://maps.googleapis.com/maps/api/js?sensor=false", :type => 'text/javascript' %>
 <%= javascript_include_tag 'google_maps' %>
-<%= content_tag 'script', '', :src => "/plugins/sniffer/infobox.js", :type => 'text/javascript' %>
-<%= content_tag 'script', '', :src => "/plugins/sniffer/custom_marker.js", :type => 'text/javascript' %>
+<%= content_tag 'script', '', :src => "/plugins/sniffer/javascripts/infobox.js", :type => 'text/javascript' %>
+<%= content_tag 'script', '', :src => "/plugins/sniffer/javascripts/custom_marker.js", :type => 'text/javascript' %>
 
 <% map_data = @profiles.map do |profile, data|
   #next unless profile.lat and profile.lng

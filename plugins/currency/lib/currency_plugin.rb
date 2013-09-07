@@ -23,7 +23,7 @@ class CurrencyPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['currency.js']
+    ['currency.js'].map{ |j| "javascripts/#{j}" }
   end
 
 end

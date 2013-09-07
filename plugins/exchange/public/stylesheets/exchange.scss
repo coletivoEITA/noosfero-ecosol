@@ -59,7 +59,7 @@ body.controller-exchange_plugin_myprofile {
     #exchange-enterprise-headers {
       
       .exchange-enterprise {
-        width: $module5 + $intercolumn + $padding - $border;
+        width: $module05 + $intercolumn + $padding - $border;
         height: 4*$base;
         float: left;
 
@@ -106,7 +106,7 @@ body.controller-exchange_plugin_myprofile {
         height: 22px;
         margin-top: $half-margin;
         position: absolute;
-        left: $module5 + $padding;
+        left: $module05 + $padding;
         background: url($image-exchange);
         background-repeat: no-repeat;
       }
@@ -138,12 +138,12 @@ body.controller-exchange_plugin_myprofile {
       #exchange-profile-evaluation {
         float: left;
         overflow: hidden;
-        width: $module5;
+        width: $module05;
       }
       #exchange-theother-evaluation {
         float: right;
         overflow: hidden;
-        width: $module5;
+        width: $module05;
       }
 
       .evaluation-snippet {
@@ -155,11 +155,11 @@ body.controller-exchange_plugin_myprofile {
           overflow: hidden;
         }
         .evaluation-score {
-          width: $module5;
+          width: $module05;
           float: left;
         }
         .evaluation-result {
-          width: $module5;
+          width: $module05;
           float: left;
         }
       }
@@ -282,7 +282,7 @@ body.controller-exchange_plugin_myprofile {
             }
 
             .exchange-message-body {
-              width: $module6 + $intercolumn;
+              width: $module06 + $intercolumn;
               min-height: 5*$base;
               padding: $padding;
               border: $border solid $color-text-area-border;
@@ -398,7 +398,7 @@ body.controller-exchange_plugin_myprofile {
 
 .exchange-proposal-part {
   float: left;
-  width: $module5 + $intercolumn/2;
+  width: $module05 + $intercolumn/2;
   padding: $padding;
 
   &.profile {
@@ -437,7 +437,7 @@ body.controller-exchange_plugin_myprofile {
     .exchange-add-unreg-item {
       float: left;
       margin-left: $half-margin;
-      width: $module5/2 - $intercolumn - $half-margin/2;
+      width: $module05/2 - $intercolumn - $half-margin/2;
 
       input {
 
@@ -449,7 +449,7 @@ body.controller-exchange_plugin_myprofile {
   .exchange-elements-list {
     margin: 0;
     padding: 0;
-    width: $module5 + $intercolumn/2;
+    width: $module05 + $intercolumn/2;
     margin-bottom: 3*$margin;
 
     .exchange-element {
@@ -466,10 +466,9 @@ body.controller-exchange_plugin_myprofile {
       }
 
       .exchange-element-image {
-        width: $module5 + $intercolumn/2;
+        width: $module05 + $intercolumn/2;
         height: 12*$base;
         background-size: 100%;
-        background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
       }
@@ -533,7 +532,7 @@ body.controller-exchange_plugin_myprofile {
         display: block;
       }
       input, textarea {
-        width: $module5 - $padding;
+        width: $module05 - $padding;
         box-sizing: border-box;
       }
       label, textarea, input, select {
@@ -583,13 +582,13 @@ body.controller-exchange_plugin_myprofile {
 
   .exchange-index-col1 {
     float: left;
-    width: $module2;
+    width: $module02;
     margin-right: $margin;
   }
 
   .exchange-index-col2 {
     float: left;
-    width: $module6;
+    width: $module06;
     margin-right: $margin;
 
     #exchange-states {
@@ -604,7 +603,7 @@ body.controller-exchange_plugin_myprofile {
 
   .exchange-index-col3 {
     float: left;
-    width: $module2;
+    width: $module02;
     
     img {
       height: 7*$base;

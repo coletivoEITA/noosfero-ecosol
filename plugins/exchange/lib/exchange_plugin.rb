@@ -17,7 +17,7 @@ class ExchangePlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['exchange.js']
+    ['exchange.js'].map{ |j| "javascripts/#{j}" }
   end
 
   def control_panel_buttons

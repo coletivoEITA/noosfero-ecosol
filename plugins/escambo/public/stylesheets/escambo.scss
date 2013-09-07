@@ -158,7 +158,7 @@ $image-next: '/plugins/escambo/images/next.png';
 /* Profile block */
 
 .escambo-plugin-profile-block {
-  width: $module2;
+  width: $module02;
   border: 3*$border double #7F0085;
   border-radius: $border-radius;
   margin-right: $margin - 5*$border;
@@ -227,7 +227,7 @@ $image-next: '/plugins/escambo/images/next.png';
       position: absolute;
       bottom: -$padding;
       left: ($padding - 3*$border);
-      width: $module2 - 2*($padding - 3*$border) - 2*$padding;
+      width: $module02 - 2*($padding - 3*$border) - 2*$padding;
     }
   }
 }
@@ -235,7 +235,7 @@ $image-next: '/plugins/escambo/images/next.png';
 /* Signup */
 
 .action-account-signup .no-boxes form {
-  width: $module8;
+  width: $module08;
   margin: auto;
 }
 #signup-form {
@@ -287,8 +287,8 @@ $image-next: '/plugins/escambo/images/next.png';
   }
 
   .signup-step {
-    padding-left: $module1;
-    padding-right: $module1;
+    padding-left: $module01;
+    padding-right: $module01;
     padding-top: $padding;
     padding-bottom: $padding;
     border: $border solid #CDCDCD;
@@ -359,7 +359,7 @@ $image-next: '/plugins/escambo/images/next.png';
 
 #escambo-enterprise-items {
   float: left;
-  width: $module7 + $padding;
+  width: $module07 + $padding;
   margin-right: $half-margin;
 
   h3 {
@@ -379,10 +379,10 @@ $image-next: '/plugins/escambo/images/next.png';
 
   .escambo-snippet {
     .second-column {
-      width: $module3;
+      width: $module03;
     }
     .third-column {
-      width: $module2 - $padding;
+      width: $module02 - $padding;
     }
   }
 }
@@ -393,7 +393,7 @@ $image-next: '/plugins/escambo/images/next.png';
     visibility: hidden;
   }
   .sidebar { 
-    width: $module3;
+    width: $module03;
     padding: $padding - $border;
     border: $border solid $color-profile-info-border;
     background: $color-profile-info-bg;
@@ -443,7 +443,7 @@ $image-next: '/plugins/escambo/images/next.png';
         margin-right: $margin;
       }
       .city {
-        width: $module2;
+        width: $module02;
       }
     }
 
@@ -486,7 +486,7 @@ $image-next: '/plugins/escambo/images/next.png';
   background: $color-user-bg;
   height: 8*$base;
   border: $border solid $color-user-border;
-  width: $module3;
+  width: $module03;
   margin-bottom: $half-margin;
   &:last-child { margin-bottom: 0; }
 
@@ -497,7 +497,7 @@ $image-next: '/plugins/escambo/images/next.png';
   }
   .right {
     float: left;
-    width: $module2 - 2*$padding;
+    width: $module02 - 2*$padding;
     height: 8*$base - 2*($padding - $border);
     padding: $padding - $border;
     position: relative;
@@ -506,7 +506,7 @@ $image-next: '/plugins/escambo/images/next.png';
       display: block;
     }
     .action-button {
-      width: $module2 - 4*$padding;
+      width: $module02 - 4*$padding;
       position: absolute;
       left: $padding;
       bottom: $padding - $border;
@@ -526,10 +526,10 @@ $image-next: '/plugins/escambo/images/next.png';
     background: $color-offer-label;
   }
   .first-column {
-    height: $module2;
+    height: $module02;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: $module2; /* not css3 enabled */
+    background-size: $module02; /* not css3 enabled */
     background-size: contain;
   }
 }
@@ -562,7 +562,7 @@ $image-next: '/plugins/escambo/images/next.png';
     min-height: $module;
   }
   .first-column {
-    width: $module2;
+    width: $module02;
     margin-right: $margin;
 
     .label {
@@ -574,7 +574,7 @@ $image-next: '/plugins/escambo/images/next.png';
     }
   }
   .second-column {
-    width: $module6;
+    width: $module06;
     margin-right: $margin;
 
     .descripxion, .local {
@@ -583,7 +583,7 @@ $image-next: '/plugins/escambo/images/next.png';
     }
   }
   .third-column {
-    width: $module2;
+    width: $module02;
     margin-bottom: $margin;
   }
 

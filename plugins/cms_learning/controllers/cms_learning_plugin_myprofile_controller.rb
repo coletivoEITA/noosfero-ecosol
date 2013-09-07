@@ -1,5 +1,4 @@
 class CmsLearningPluginMyprofileController < MyProfileController
-  append_view_path File.join(File.dirname(__FILE__) + '/../views')
 
   protect 'edit_profile', :profile
 

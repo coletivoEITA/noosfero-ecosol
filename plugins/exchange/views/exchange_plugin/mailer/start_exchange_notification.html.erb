@@ -4,10 +4,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   </head>
   <body>
+
     <p>
-      <%= _('Você tem uma nova troca esperando por você! %{origin} quer fazer uma troca.') % {:origin => @origin.name} %>
-      <br /><br />
-      <%= link_to _('Acesse sua a troca!'), :controller => 'exchange_plugin_myprofile', :profile => @target.identifier, :action => 'index' %>
+      <%= _('You have a new %{exchange} waiting for you! %{origin} wants to exchange.') % {
+        :origin => @origin.name,
+        :exchange => link_to(_('exchange'), :controller => 'exchange_plugin_myprofile', :profile => @target.identifier, :action => 'index'),
+      } %>
     </p>
+
+    <br /><br />
+
   </body>
 </html>

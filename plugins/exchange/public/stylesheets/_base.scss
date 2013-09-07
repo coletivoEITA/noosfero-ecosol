@@ -8,35 +8,46 @@
   display: block; /* Sets element back to block */
 }
 
-/* heights should only use multiples of this */
+/* layout base parameters */
+$modules: 10;
 $base: 12px;
+$wireframe: 960px;
+
+/* heights should only use multiples of this */
+$height: $base;
 
 /* base measurements */
-$module: 6*$base;
 $intercolumn: 2*$base;
-$wireframe: 10*$module + 10*$intercolumn;
+$module: $wireframe/$modules - $intercolumn;
 
-/* widths should only use these */
-$module1: 1*$module + 0*$intercolumn;
-$module2: 2*$module + 1*$intercolumn;
-$module3: 3*$module + 2*$intercolumn;
-$module4: 4*$module + 3*$intercolumn;
-$module5: 5*$module + 4*$intercolumn;
-$module6: 6*$module + 5*$intercolumn;
-$module7: 7*$module + 6*$intercolumn;
-$module8: 8*$module + 7*$intercolumn;
-$module9: 9*$module + 8*$intercolumn;
-$module1p: percentage($module1/$wireframe);
-$module2p: percentage($module2/$wireframe);
-$module3p: percentage($module3/$wireframe);
-$module4p: percentage($module4/$wireframe);
-$module5p: percentage($module5/$wireframe);
-$module6p: percentage($module6/$wireframe);
-$module7p: percentage($module7/$wireframe);
-$module8p: percentage($module8/$wireframe);
-$module9p: percentage($module9/$wireframe);
+/* widths should only use one of these */
+$module01: 01*$module + 00*$intercolumn;
+$module02: 02*$module + 01*$intercolumn;
+$module03: 03*$module + 02*$intercolumn;
+$module04: 04*$module + 03*$intercolumn;
+$module05: 05*$module + 04*$intercolumn;
+$module06: 06*$module + 05*$intercolumn;
+$module07: 07*$module + 06*$intercolumn;
+$module08: 08*$module + 07*$intercolumn;
+$module09: 09*$module + 08*$intercolumn;
+$module09: 09*$module + 08*$intercolumn;
+$module10: 10*$module + 09*$intercolumn;
+$module11: 11*$module + 10*$intercolumn;
+$module12: 12*$module + 11*$intercolumn;
+$module01p: percentage($module01/$wireframe);
+$module02p: percentage($module02/$wireframe);
+$module03p: percentage($module03/$wireframe);
+$module04p: percentage($module04/$wireframe);
+$module05p: percentage($module05/$wireframe);
+$module06p: percentage($module06/$wireframe);
+$module07p: percentage($module07/$wireframe);
+$module08p: percentage($module08/$wireframe);
+$module09p: percentage($module09/$wireframe);
+$module10p: percentage($module10/$wireframe);
+$module11p: percentage($module11/$wireframe);
+$module12p: percentage($module12/$wireframe);
 
-/* paddings and margins should only use these
+/* paddings and margins should only use one of these
    REMEMBER to disccount the borders size from padding, as borders uses padding's space.
  */
 $margin: $intercolumn;
@@ -47,6 +58,8 @@ $marginp: percentage($margin/$wireframe);
 $half-marginp: percentage($half-margin/$wireframe);
 $paddingp: percentage($padding/$wireframe);
 $half-paddingp: percentage($half-padding/$wireframe);
+
+$wireframe-padding: 5*$padding;
 
 /* use for borders */
 $border: 1px;

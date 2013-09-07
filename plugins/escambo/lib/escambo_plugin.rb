@@ -20,7 +20,7 @@ class EscamboPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['escambo.js']
+    ['escambo.js'].map{ |j| "javascripts/#{j}" }
   end
 
   def profile_image_link profile, size=:portrait, tag='li', extra_info = nil

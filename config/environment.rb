@@ -102,8 +102,8 @@ Rails::Initializer.run do |config|
 
   require 'sass/plugin/rack'
   config.middleware.use Sass::Plugin::Rack
-  locations = Dir.glob("#{RAILS_ROOT}/public/designs/themes/*") +
-    Dir.glob("#{RAILS_ROOT}/plugins/*/public")
+  locations = Dir.glob("#{RAILS_ROOT}/public/designs/themes/*{,/stylesheets}") +
+    Dir.glob("#{RAILS_ROOT}/plugins/*/public{,/stylesheets}")
   locations.each do |location|
     Sass::Plugin.add_template_location location, location
   end

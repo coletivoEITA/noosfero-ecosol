@@ -10,33 +10,20 @@ class CmsLearningPlugin < Noosfero::Plugin
     _("Share your knowledge to the network.")
   end
 
-  def self.view_path
-    (RAILS_ROOT + '/plugins/cms_learning/views')
-  end
-
   def stylesheet?
     true
   end
 
   def js_files
-    ['cms_learning.js']
+    ['cms_learning.js'].map{ |j| "javascripts/#{j}" }
   end
 
-  def profile_blocks(profile)
+  def profile_blocks profile
     CmsLearningPlugin::LearningsBlock
   end
 
   def content_types
     [CmsLearningPlugin::Learning]
-  end
-
-  def search_controller_filter
-    [{
-      :type => 'before_filter',
-      :method_name => 'append_view_path',
-      :options => {},
-      :block => lambda { @controller.append_view_path CmsLearningPlugin.view_path }
-    }]
   end
 
 end

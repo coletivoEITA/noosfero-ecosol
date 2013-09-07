@@ -25,7 +25,7 @@ $color-popin-bg: #FAF7DC;
 
 #currency-organized {
   float: left;
-  width: $module6;
+  width: $module06;
   margin-right: $margin;
   
   .currency-organized-item {
@@ -67,7 +67,7 @@ $color-popin-bg: #FAF7DC;
 }
 #currency-accepted {
   float: left;
-  width: $module4 + $intercolumn;
+  width: $module04 + $intercolumn;
   
   .items {
     margin-top: $half-margin;
@@ -116,7 +116,7 @@ $color-popin-bg: #FAF7DC;
 .currency-disassociate-dialog {
 
   p {
-    width: $module6;
+    width: $module06;
   }
 
   #enterprise-results {
@@ -139,25 +139,25 @@ $color-popin-bg: #FAF7DC;
 }
 
 #product-info {
-  width: $module6;
+  width: $module06;
 
   #product-info-form.edit_product {
 
     tr .formlabel,
     .input-details-form tr .formlabel {
-      width: $module2;
+      width: $module02;
       margin-right: $margin;
     }
 
     input[type=text],
     #product_price,
     #product_discount {
-      width: $module1;
+      width: $module01;
       margin-right: $margin;
     }
 
     .add-in-currency {
-      width: $module3;
+      width: $module03;
       margin-right: $margin;
     }
   }
@@ -165,7 +165,7 @@ $color-popin-bg: #FAF7DC;
 
 .currency-popin {
   display: none; /* by default */
-  min-width: $module4;
+  min-width: $module04;
   position: absolute;
   z-index: 10;
   background: $color-popin-bg;

@@ -27,7 +27,7 @@ class SnifferPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['underscore-min.js', 'sniffer.js']
+    ['underscore-min.js', 'sniffer.js'].map{ |j| "javascripts/#{j}" }
   end
 
   def control_panel_buttons

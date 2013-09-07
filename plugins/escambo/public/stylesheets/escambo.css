@@ -554,7 +554,6 @@ body.controller-exchange_plugin_myprofile {
         width: 468px;
         height: 144px;
         background-size: 100%;
-        background-size: contain;
         background-position: center;
         background-repeat: no-repeat; }
       .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control {

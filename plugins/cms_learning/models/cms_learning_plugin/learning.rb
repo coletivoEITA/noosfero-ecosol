@@ -43,7 +43,6 @@ class CmsLearningPlugin::Learning < Article
 
   def to_html(options = {})
     lambda do
-      @controller.append_view_path CmsLearningPlugin.view_path
       render :file => 'cms/cms_learning_plugin_page'
     end
   end

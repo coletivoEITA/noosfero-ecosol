@@ -15,7 +15,7 @@ class EvaluationPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['evaluation.js']
+    ['evaluation.js'].map{ |j| "javascripts/#{j}" }
   end
 
 end

@@ -126,7 +126,7 @@ body.action-sniffer_plugin_myprofile-search {
           #product-search {
             background: $color-product-search-bg;
             float: right;
-            width: $module4 + $intercolumn;
+            width: $module04 + $intercolumn;
             margin-top: -$half-padding;
             margin-right: -$half-margin;
 
@@ -268,7 +268,7 @@ body.action-sniffer_plugin_myprofile-search {
 
     #sniffer-balloon {
       float: left;
-      width: $module4;
+      width: $module04;
       background: $color-product-search-bg;
       margin-top: -5.5*$base;
       margin-left: $base;
@@ -300,10 +300,10 @@ body.action-sniffer_plugin_myprofile-search {
 
         .products {
           float: left;
-          width: $module2;
+          width: $module02;
 
           &#suppliers-products {
-            width: $module2 - $margin;
+            width: $module02 - $margin;
             margin-right: $margin;
           }
         }
