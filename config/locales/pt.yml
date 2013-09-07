@@ -671,7 +671,7 @@
           product: Produto
           margin: Margem
           price: Preço
-          stock: "Em estoque"
+          stock: Estoque
           unit: Unidade
           showing_pcount_produc: "Mostrando %{pcount} produtos de %{allpcount}"
           we_don_t_have_product: "Não temos produtos a mostrar."

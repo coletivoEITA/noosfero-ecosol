@@ -660,7 +660,7 @@
           product: Product
           margin: Margin
           price: Price
-          stock: "In stock"
+          stock: Stock
           unit: Unit
           showing_pcount_produc: "Showing %{pcount} products of %{allpcount}"
           we_don_t_have_product: "We don't have products to show."
