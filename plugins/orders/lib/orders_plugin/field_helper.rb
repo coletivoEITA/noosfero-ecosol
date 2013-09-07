@@ -15,7 +15,7 @@ module OrdersPlugin::FieldHelper
     content_tag 'div',
                 form.radio_button(field, value) +
                 form.label("#{field}_#{value}", label_text) +
-                content_tag('div', '', :class => 'cleaner'),
+                content_tag('div', '', :class => 'clean'),
                 options.merge(:class => options[:class].to_s + ' field-radio')
   end
 

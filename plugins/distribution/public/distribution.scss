@@ -78,8 +78,10 @@ body.plugin-distribution {
 
 #distribution-plugin-header {
 
-  margin: 10px 0 30px -39px;
-  width: 1040px;
+  margin-left: -$wireframe-padding;
+  margin-top: $margin;
+  margin-bottom: $margin;
+  width: $wireframe + 2*$wireframe-padding;
 
   #menu-title {
     color: black;
@@ -98,7 +100,7 @@ body.plugin-distribution {
   }
   .menu-logo {
     height: 90px;
-    padding-left: 39px;
+    padding-left: $wireframe-padding;
     text-transform: capitalize;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -108,21 +110,27 @@ body.plugin-distribution {
 
   .admin-submenu {
     
-    .menu-button {
-      font-size: 11px;
-      padding: $half-padding;
+    .menu-button-container {
+
+      .menu-button {
+        font-size: 11px;
+        padding: $half-padding;
+      }
     }
   }
 
   .menu-button-container {
     background: #646158;
-    padding: 4px 0 4px 39px;
+    padding: $padding;
+    padding-left: $wireframe-padding + $padding;
+    @extend .container-clean;
 
     .menu-button {
-      display: inline-block;
+      float: left;
       padding: $padding $half-padding;
-      color: white;
+      margin-right: $half-margin;
       background-color: transparent;
+      color: white;
       text-transform: uppercase;
       text-decoration: none;
       border-radius: 5px;
@@ -166,72 +174,73 @@ body.plugin-distribution {
 
 /* ----- common ----- */
 
-.plugin-distribution .cleaner {
-  clear: both;
-  float: none !important;
+.plugin-distribution {
+  .page,
+  .admin-page {
+
+    > * {
+      padding-left: $padding;
+    }
+  }
+
+  .box-align {
+    margin-left: -$padding;
+  }
+  .alignment {
+    padding-left: $padding;
+  }
+  .alignment2x {
+    padding-left: 2*$padding;
+  }
+  .text-wrap {
+    width: 400px;
+  }
+
+  small {
+    font-size: 10px;
+  }
+  form {
+    margin: 0; /* come on browsers!? */
+  }
+  select,
+  input[type=text],
+  textarea {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+  }
+  select,
+  input[type=text] {
+    height: 24px;
+  }
+  select {
+    background-color: #fff;
+    border: 1px solid black;
+    padding: 0 0 0 5px;
+  }
+  input[type=text] {
+    border: 1px solid black;
+    padding: 3px 5px;
+    margin: 0;
+  }
+  input[type=checkbox] {
+    margin: 15px 0 2px;
+    width: 11px;
+    height: 11px;
+  }
+  textarea {
+    height: 64px;
+    padding-left: 5px;
+  }
+  a.button.colorbox-close:hover,
+  input[type=submit]:hover {
+    background-color: #666;
+    cursor: hand;
+    cursor: pointer;
+  }
 }
 
-.plugin-distribution .page > *,
-.plugin-distribution .admin-page > * {
-  padding-left: 8px;
-}
-.plugin-distribution .box-align {
-  margin-left: -8px;
-}
-.plugin-distribution .alignment {
-  padding-left: 8px;
-}
-.plugin-distribution .alignment2x {
-  padding-left: 16px;
-}
-.plugin-distribution .text-wrap {
-  width: 400px;
-}
-
-
-.plugin-distribution small {
-  font-size: 10px;
-}
-.plugin-distribution form {
-  margin: 0; /* come on browsers!? */
-}
-.plugin-distribution select,
-.plugin-distribution input[type=text],
-.plugin-distribution textarea {
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-}
-.plugin-distribution select,
-.plugin-distribution input[type=text] {
-  height: 24px;
-}
-.plugin-distribution select {
-  background-color: #fff;
-  border: 1px solid black;
-  padding: 0 0 0 5px;
-}
-.plugin-distribution input[type=text] {
-  border: 1px solid black;
-  padding: 3px 5px;
-  margin: 0;
-}
-.plugin-distribution input[type=checkbox] {
-  margin: 15px 0 2px;
-  width: 11px;
-  height: 11px;
-}
-.plugin-distribution textarea {
-  height: 64px;
-  padding-left: 5px;
-}
-.plugin-distribution a.button.colorbox-close:hover,
-.plugin-distribution input[type=submit]:hover {
-  background-color: #666;
-  cursor: hand;
-  cursor: pointer;
-}
 .plugin-distribution a.button.colorbox-close,
 #wrap-1 .plugin-distribution input[type=submit],
 .plugin-distribution #wrap-1 input[type=submit] {

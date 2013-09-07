@@ -32,7 +32,7 @@
             <%= labelled_field f, :name, t('suppliers_plugin.views.product._edit.name'), f.text_field(:name, :oldvalue => product.own_name) %>
             <%= labelled_field f, :description, t('suppliers_plugin.views.product._edit.description'), f.text_area(:description, :oldvalue => product.own_description) %>
 
-            <div class="cleaner"></div>
+            <div class="clean"></div>
           </div>
 
           <% unless product.own? %>
@@ -48,10 +48,10 @@
                   <%= f.label :default_margin_percentage, t('suppliers_plugin.views.product._edit.use_default_margin') %>
                 </div>
 
-                <div class="cleaner"></div>
+                <div class="clean"></div>
               </div>
 
-              <div class="cleaner"></div>
+              <div class="clean"></div>
             </div>
           <% end %>
 
@@ -104,7 +104,7 @@
         <% end %>
       </div>
 
-      <div class="cleaner">
+      <div class="clean">
         <%= f.submit t('suppliers_plugin.views.product._edit.save') %>
         <%= link_to_function t('suppliers_plugin.views.product._edit.cancel'), :class => 'toggle-edit' %>
         <%= link_to_remote t('suppliers_plugin.views.product._edit.remove_product'), :confirm => t('suppliers_plugin.views.product._edit.are_you_sure_you_want'), :loading => "distribution.setLoading('our-product-#{product.id}')", :loaded => "distribution.unsetLoading('our-product-#{product.id}')", :url => {:controller => :suppliers_plugin_product, :action => 'destroy', :id => product.id } unless new_record %>
@@ -112,8 +112,8 @@
     <% end %>
   <% end %>
 
-  <div class="cleaner"></div>
+  <div class="clean"></div>
 </div>
 
-<div class="cleaner"></div>
+<div class="clean"></div>
 

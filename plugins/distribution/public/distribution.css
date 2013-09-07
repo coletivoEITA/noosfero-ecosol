@@ -2,17 +2,18 @@
 .clean {
   clear: both; }
 
-.container-clean {
+.container-clean, #distribution-plugin-header .menu-button-container {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
   display: block;
   /* Sets element back to block */ }
 
+/* layout base parameters */
 /* heights should only use multiples of this */
 /* base measurements */
-/* widths should only use these */
-/* paddings and margins should only use these
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
    REMEMBER to disccount the borders size from padding, as borders uses padding's space.
  */
 /* use for borders */
@@ -287,7 +288,9 @@ body.plugin-distribution {
 
 /* ----- header ----- */
 #distribution-plugin-header {
-  margin: 10px 0 30px -39px;
+  margin-left: -40px;
+  margin-top: 16px;
+  margin-bottom: 16px;
   width: 1040px; }
   #distribution-plugin-header #menu-title {
     color: black;
@@ -303,23 +306,25 @@ body.plugin-distribution {
     text-transform: uppercase; }
   #distribution-plugin-header .menu-logo {
     height: 90px;
-    padding-left: 39px;
+    padding-left: 40px;
     text-transform: capitalize;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box; }
-  #distribution-plugin-header .admin-submenu .menu-button {
+  #distribution-plugin-header .admin-submenu .menu-button-container .menu-button {
     font-size: 11px;
     padding: 4px; }
   #distribution-plugin-header .menu-button-container {
     background: #646158;
-    padding: 4px 0 4px 39px; }
+    padding: 8px;
+    padding-left: 48px; }
     #distribution-plugin-header .menu-button-container .menu-button {
-      display: inline-block;
+      float: left;
       padding: 8px 4px;
-      color: white;
+      margin-right: 8px;
       background-color: transparent;
+      color: white;
       text-transform: uppercase;
       text-decoration: none;
       border-radius: 5px;
@@ -350,33 +355,22 @@ body.plugin-distribution {
   display: none; }
 
 /* ----- common ----- */
-.plugin-distribution .cleaner {
-  clear: both;
-  float: none !important; }
-
 .plugin-distribution .page > *,
 .plugin-distribution .admin-page > * {
   padding-left: 8px; }
-
 .plugin-distribution .box-align {
   margin-left: -8px; }
-
 .plugin-distribution .alignment {
   padding-left: 8px; }
-
 .plugin-distribution .alignment2x {
   padding-left: 16px; }
-
 .plugin-distribution .text-wrap {
   width: 400px; }
-
 .plugin-distribution small {
   font-size: 10px; }
-
 .plugin-distribution form {
   margin: 0;
   /* come on browsers!? */ }
-
 .plugin-distribution select,
 .plugin-distribution input[type=text],
 .plugin-distribution textarea {
@@ -384,30 +378,24 @@ body.plugin-distribution {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box; }
-
 .plugin-distribution select,
 .plugin-distribution input[type=text] {
   height: 24px; }
-
 .plugin-distribution select {
   background-color: #fff;
   border: 1px solid black;
   padding: 0 0 0 5px; }
-
 .plugin-distribution input[type=text] {
   border: 1px solid black;
   padding: 3px 5px;
   margin: 0; }
-
 .plugin-distribution input[type=checkbox] {
   margin: 15px 0 2px;
   width: 11px;
   height: 11px; }
-
 .plugin-distribution textarea {
   height: 64px;
   padding-left: 5px; }
-
 .plugin-distribution a.button.colorbox-close:hover,
 .plugin-distribution input[type=submit]:hover {
   background-color: #666;

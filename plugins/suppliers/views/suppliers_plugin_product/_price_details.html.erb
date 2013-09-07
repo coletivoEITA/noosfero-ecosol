@@ -17,11 +17,11 @@
 
   <%# put here due to css align, see distribution.js %>
   <% if supplier_product and not product.supplier_dummy? %>
-    <div class="cleaner">
+    <div class="clean">
       <%= check_box_tag :product_supplier_product_available, 1, false, :style => 'float: left', :disabled => 'disabled' %>
       <%= f.label :available, t('suppliers_plugin.views.product._price_details.commercialization_act'), :class => 'line-label' %>
     </div>
   <% end %>
 
-  <div class="cleaner"></div>
+  <div class="clean"></div>
 </div>

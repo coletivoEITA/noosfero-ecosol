@@ -14,7 +14,7 @@
     <span><%= datetime_period_short(session.delivery_start, session.delivery_finish) %></span>
   </div>
 
-  <div class="cleaner"></div>
+  <div class="clean"></div>
 </div>
 
 <%= render :partial => 'timeline', :locals => {:session => session} if session.status != 'new' if timeline %>

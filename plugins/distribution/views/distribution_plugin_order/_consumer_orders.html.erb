@@ -46,7 +46,7 @@
   <% end %>
 <% end %>
 
-<div class="cleaner"></div>
+<div class="clean"></div>
 
 <% @consumer_orders.each do |order| %>
   <div id="consumer-order-<%= order.id %>" class="consumer-order <%= "edit" if @order == order %>">
@@ -89,7 +89,7 @@
         <%= render :partial => 'delivery', :locals => {:order => order} %>
       </div>
 
-      <div class="cleaner"></div>
+      <div class="clean"></div>
     <% end %>
   </div>
 <% end %>
