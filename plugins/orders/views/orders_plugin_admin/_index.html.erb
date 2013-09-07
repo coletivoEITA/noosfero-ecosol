@@ -1,6 +1,6 @@
 <% orders = @orders unless defined? orders %>
 
-<div class='orders-admin-index'>
+<div class='orders-admin-index sortable-table'>
   <% if orders.count == 0 %>
     <div class="subtitle"><%= t('orders_plugin.views.admin.index.no_orders_to_show') %></div>
   <% else %>

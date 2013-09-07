@@ -2,10 +2,10 @@
 
 <% sums = session.ordered_products_by_suppliers %>
 <% if sums.count == 0 %>
-  <span class="subtitle box-align"><%= t('distribution_plugin.views.session._orders_suppliers.no_product_ordered') %></span>
+  <span class="subtitle"><%= t('distribution_plugin.views.session._orders_suppliers.no_product_ordered') %></span>
 <% else %>
   <% sums.each do |supplier, products, total_price_asked, total_parcel_price| %>
-    <div class="order-products-by-supplier box-align">
+    <div class="order-products-by-supplier">
       <div class="inner-box">
         <div class="supplier-name"><%= supplier.name %></div>
 

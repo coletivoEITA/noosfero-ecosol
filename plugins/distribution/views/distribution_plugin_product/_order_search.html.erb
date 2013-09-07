@@ -2,7 +2,7 @@
   <strong><%= t('distribution_plugin.views.product._order_search.this_search_hasn_t_re') %></strong>
 <% else %>
   <% products_for_order_by_supplier.each do |supplier, offered_products| %>
-    <div class="supplier-table">
+    <div class="supplier-table sortable-table">
       <div class="supplier"><%= supplier.name %></div>
 
       <div class="table-header">

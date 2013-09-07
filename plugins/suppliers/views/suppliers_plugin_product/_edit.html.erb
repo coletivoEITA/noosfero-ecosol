@@ -77,7 +77,7 @@
             </div>
           </div>
 
-          <div class="our-product-supplied-column alignment2x <%= "dummy-product" if product.supplier_dummy? %>">
+          <div class="our-product-supplied-column <%= "dummy-product" if product.supplier_dummy? %>">
             <div class="column-title"><%= t('suppliers_plugin.views.product._edit.how_we_order_the_prod') %></div>
 
             <div id=supplier-product-errors-<%=product.new_record? ? 'add' : product.id%> class=distribution-product-errors></div>

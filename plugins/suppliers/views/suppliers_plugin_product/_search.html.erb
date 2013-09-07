@@ -1,9 +1,9 @@
   <%= pagination_links @products %>
-<div id="result-count" class="box-align">
+<div id="result-count" class="">
   <small><%= t('suppliers_plugin.views.product._search.showing_pcount_produc') % {:pcount => @products.length, :allpcount => @all_products_count} %></small>
 </div>
 
-<div id="results" class="box-align">
+<div id="results" class="sortable-table">
   <div class="table-header" style="<%= "display: none" if @products.empty? %>">
     <div class="box-field status"><%=t('suppliers_plugin.views.product._search.status')%></div>
     <div class="box-field category"><%=t('suppliers_plugin.views.product._search.category')%></div>

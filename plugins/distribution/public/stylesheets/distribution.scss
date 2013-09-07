@@ -323,99 +323,6 @@ body.plugin-distribution {
   margin-left: 4px;
 }
 
-.plugin-distribution .table-header {
-  width: 100%;
-  padding: 8px;
-  background-color: #B1DFEF;
-  color: #000;
-}
-.plugin-distribution .table-content {
-  border-bottom: 1px solid black;
-  width: auto;
-  margin-bottom: 40px;
-}
-
-.plugin-distribution .sort-arrow {
-  border-top: 6px solid black;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  position: absolute;
-}
-.plugin-distribution .sort-arrow.desc {
-  border-bottom: 6px solid black;
-  border-top: 6px solid transparent;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  margin-top: -6px;
-}
-
-.plugin-distribution .value-row {
-  border-bottom: 1px dotted #ccc;
-  width: 100%;
-  padding: 8px;
-}
-.plugin-distribution .value-row:last-child {
-  border-bottom: 1px dotted transparent;
-}
-.plugin-distribution .table-header,
-.plugin-distribution .value-row {
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-}
-.plugin-distribution .value-row.edit,
-.plugin-distribution .value-row.hover {
-  background-color: #FDF2A3;
-}
-.plugin-distribution .value-row.edit {
-  border-top: 2px solid #333;
-  border-bottom: 2px solid #333;
-  margin-top: -1px;
-}
-
-.plugin-distribution .value-row.edit .box-view {
-  padding-bottom: 10px;
-}
-.plugin-distribution .box-view,
-.plugin-distribution .box-edit {
-  float: left;
-  width: 100%;
-}
-.plugin-distribution .box-edit {
-  clear: both;
-}
-
-.plugin-distribution .table-header .box-field {
-  text-decoration: underline;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 10px;
-}
-.plugin-distribution .box-field {
-  float: left;
-  min-height: 1px;
-  overflow: hidden;
-  margin-left: 10px;
-}
-.plugin-distribution .box-field:first-child {
-  margin-left: 0;
-}
-
-.plugin-distribution .box-field.box-edit-link {
-  font-size: 12px !important;
-  font-weight: bold;
-  text-decoration: underline;
-  color: #38727E;
-  cursor: pointer;
-}
-.plugin-distribution .value-row.edit .box-field.box-edit-link {
-  cursor: inherit;
-  color: black;
-  text-decoration: none;
-}
-
 .plugin-distribution .box-view .box-field.price,
 .plugin-distribution .value-row .box-field.price-with-unit {
   font-size: 12px !important;
@@ -425,35 +332,6 @@ body.plugin-distribution {
 .plugin-distribution .value-row .box-field.price-with-unit .price-unit {
   font-size: 10px;
   font-weight: normal;
-}
-
-.plugin-distribution .actions-circle {
-  height: 20px;
-  width: 20px;
-  background-color: #FDF2A3;
-  float: right;
-  margin-right: 0;
-  padding: 0;
-  margin-top: 3px;
-  border-radius: 10px;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -o-border-radius: 10px;
-}
-.plugin-distribution .actions-circle .actions-arrow {
-  border-top: 6px solid black;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  margin: 8px 6px 0 5px;
-  display: block;
-}
-.plugin-distribution .actions-circle.edit .actions-arrow {
-  border-bottom: 6px solid black;
-  border-top: 5px solid transparent;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  margin: 2px 6px 0px 5px;
-  display: block;
 }
 
 .plugin-distribution .actions-bar {
@@ -549,10 +427,12 @@ body.plugin-distribution {
   clear: both;
 }
 #distribution-plugin-sessions-gadget .session .happening {
+  @extend .alignment;
   line-height: 20px;
   text-transform: uppercase;
 }
 #distribution-plugin-sessions-gadget .session .info {
+  @extend .alignment;
   background: #DDF2C5;
   padding-top: 8px;
 }
@@ -625,6 +505,7 @@ body.plugin-distribution {
   margin-top: 40px;
 }
 .plugin-distribution #session-products .session-products-table {
+  @extend .box-align;
   margin-top: 30px;
 }
 .plugin-distribution #session-products-header div {
@@ -645,6 +526,7 @@ body.plugin-distribution {
 /* ----- session orders  ----- */
 
 .plugin-distribution .order-products-by-supplier {
+  @extend .box-align;
   float: left;
   background-color: #E1F5C4;
   margin-bottom: 20px;
@@ -837,6 +719,7 @@ body.plugin-distribution {
 /* ----- session listing ----- */
 
 .plugin-distribution #session-listing .session-list-item {
+  @extend .box-align;
   border-top: 1px dotted #ccc;
   padding: 8px;
 }
@@ -847,6 +730,7 @@ body.plugin-distribution {
   font-weight: bold;
 }
 .plugin-distribution #session-listing .session-timeline {
+  @extend .box-align;
   border: none;
   font-size: 10px;
   margin-left: 0;
@@ -874,6 +758,7 @@ body.plugin-distribution {
 /* ----- session ----- */
 
 .plugin-distribution #session-header-warning {
+  @extend .box-align;
   background-color: #FECBCA;
   padding: 8px;
   box-sizing: border-box;
@@ -997,6 +882,7 @@ body.plugin-distribution {
 /* ----- filter box ----- */
 
 .plugin-distribution .filter-box {
+  @extend .box-align;
   background-color: #e9f9d5;
   padding: 8px;
   margin-top: 13px;
@@ -1025,7 +911,11 @@ body.plugin-distribution {
   margin-top: 30px;
 }
 
+.plugin-distribution #search-results #results {
+  @extend .box-align;
+}
 .plugin-distribution #search-results #result-count {
+  @extend .box-align;
   padding: 8px;
 }
 .plugin-distribution #search-results .box-view {
@@ -1172,6 +1062,7 @@ body.plugin-distribution {
   overflow: hidden;
 }
 .plugin-distribution .our-product-supplied-column {
+  @extend .alignment2x;
   width: 300px;
   float: left;
   border-left: 1px solid black;
@@ -1221,6 +1112,10 @@ body.plugin-distribution {
   float: left;
   margin-bottom: 80px;
   padding-left: 0;
+
+  .title {
+    @extend .box-align;
+  }
 }
 
 .plugin-distribution .session-view #session-others,

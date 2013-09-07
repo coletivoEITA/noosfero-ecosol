@@ -11,7 +11,7 @@
       <div class="subtitle"><%= t('distribution_plugin.views.session.index.no_cycles_to_show') %></div>
     <% else %>
       <% sessions.each do |session| %>
-        <div id="session-list-item-<%= session.id %>" class="session-list-item box-align">
+        <div id="session-list-item-<%= session.id %>" class="session-list-item">
           <%= render :partial => 'brief', :locals => {:session => session, :timeline => true} %>
         </div>
       <% end %>
@@ -21,7 +21,7 @@
   <div id="session-closed-listing">
     <h3><%= t('distribution_plugin.views.session.index.closed_cycles') %></h3>
 
-    <div class="filter-box box-align">
+    <div class="filter-box">
       <strong><%= t('distribution_plugin.views.session.index.filter') %></strong>
 
       <% form_remote_tag :update => 'cycles-results', :url => {:action => :index}, :html => {}, :method => :get do %>

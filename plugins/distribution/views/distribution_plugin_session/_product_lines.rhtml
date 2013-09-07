@@ -1,4 +1,4 @@
-<div class="session-products-table box-align">
+<div class="session-products-table sortable-table">
   <%= pagination_links @products %>
   <div id="result-count">
     <small><%= t('distribution_plugin.views.session._product_lines.showing_pcount_produc') % {:pcount => @products.length, :allpcount => @session.products.count} %></small>

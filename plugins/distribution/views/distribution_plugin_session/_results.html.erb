@@ -4,7 +4,7 @@
   <div class="subtitle"><%= t('distribution_plugin.views.session._results.no_cycles_to_show') %></div>
 <% else %>
   <% sessions.each do |session| %>
-    <div id="session-list-item-<%= session.id %>" class="session-list-item box-align">
+    <div id="session-list-item-<%= session.id %>" class="session-list-item">
       <%= render :partial => 'brief', :locals => {:session => session, :timeline => false} %>
     </div>
   <% end %>
