@@ -1,119 +1,60 @@
-<% new_record = !product || product.new_record? %>
-<%  product_label = (new_record ? "add" : product.id ) %>
+<div class="box-edit">
 
-<div class="box-edit" style="<%= "display: none" unless new_record %>">
+  <% form_remote_for :product, product, :loading => "distribution.setLoading('our-product-#{product.id}')", :loaded => "distribution.unsetLoading('our-product-#{product.id}')", :url => {:controller => :suppliers_plugin_product, :action => :edit, :id => product ? product.id : nil} do |f| %>
 
-  <div class="title">
-    <% if new_record %>
-      <%= t('suppliers_plugin.views.product._edit.add_product_to_the_li') %>
-    <% else %>
-      <%= t('suppliers_plugin.views.product._edit.editing_distributed_p') %>
-    <% end %>
-  </div>
+    <div class="internal-edit">
+      <div class="title">
+        <%= t('suppliers_plugin.views.product._edit.distribution_setts') %>
+      </div>
 
-  <% form_remote_for :product, product, :loading => "distribution.setLoading('our-product-#{product_label}')", :loaded => "distribution.unsetLoading('our-product-#{product_label}')", :url => {:controller => :suppliers_plugin_product, :action => new_record ? :new : :edit, :id => product ? product.id : nil} do |f| %>
-    <%= supplier_select f, profile, product.supplier, new_record %>
-
-    <% if product.blank? or (!product.own? and (product.supplier.blank? or @not_distributed_products)) %>
-      <%= render :partial => 'suppliers_plugin_product/select_missing' %>
-    <% else %>
-      <%= f.hidden_field :supplier_product_id if new_record %>
-
-      <div class="our-product-columns">
-
-        <div class="our-product-distributed-column">
-          <div class="column-title">
-            <%= product.own? ? t('suppliers_plugin.views.product._edit.own_product') : t('suppliers_plugin.views.product._edit.how_we_distribute_the') %>
+      <div class="row">
+        <div class="block margin-price">
+          <div class="field">
+            <%= f.label :margin_percentage, t('suppliers_plugin.views.product._edit.margin_price') %>
           </div>
 
-          <div id=product-errors-<%=product.new_record? ? 'add' : product.id%> class=distribution-product-errors></div>
-
-          <div class="properties-block">
-            <%= labelled_field f, :name, t('suppliers_plugin.views.product._edit.name'), f.text_field(:name, :oldvalue => product.own_name) %>
-            <%= labelled_field f, :description, t('suppliers_plugin.views.product._edit.description'), f.text_area(:description, :oldvalue => product.own_description) %>
-
-            <div class="clean"></div>
+          <div>
+            <%= f.check_box :default_margin_percentage %>
+            <%= f.label :default_margin_percentage, t('suppliers_plugin.views.product._edit.default_margin') %>
           </div>
 
-          <% unless product.own? %>
-            <div class="properties-block">
-              <div class="margin-line">
-                <%= labelled_field f, :margin_percentage, t('suppliers_plugin.views.product._edit.margin'),
-                  f.text_field(:margin_percentage, :class => 'small-input',
-                               :value => product.own_margin_percentage_as_currency_number, :oldvalue => product.own_margin_percentage_as_currency_number, :defaultvalue => product.original_margin_percentage_as_currency_number,
-                               :onkeyup => 'suppliers.our_product.pmsync(this, true);') +
-                  ' ' + t('suppliers_plugin.views.product._edit.%') %>
-                <div class="default-margin">
-                  <%= f.check_box :default_margin_percentage, :onchange => "suppliers.our_product.toggle_referred(this)", :for => '#product_margin_percentage' %>
-                  <%= f.label :default_margin_percentage, t('suppliers_plugin.views.product._edit.use_default_margin') %>
-                </div>
-
-                <div class="clean"></div>
-              </div>
-
-              <div class="clean"></div>
-            </div>
-          <% end %>
-
-          <%= render :partial => 'suppliers_plugin_product/price_details', :locals => {:f => f, :product => product, :supplier_product => false} %>
-
-          <%= f.check_box :available, :style => 'float: left' %>
-          <%= f.label :available, t('suppliers_plugin.views.product._edit.commercialization_act'), :class => 'line-label' %>
-
-          <%# f.check_box :use_stock %>
-          <%# f.label :use_stock, t('suppliers_plugin.views.product._edit.commercialization_act'), :class => 'line-label' %>
+          <div>
+            <span class="field-secondary with-unit">
+              <%= f.text_field :margin_percentage %>
+              <span class="field-unit"> <%= '%' %> </span>
+            </span>
+            <span class="field-secondary with-unit">
+              <%= hidden_field_tag :base_price, product.from_product.price %>
+              <span class="field-unit"> <%= environment.currency_unit %> </span>
+              <%= f.text_field :price %>
+            </span>
+          </div>
         </div>
 
-        <% unless product.own? %>
-          <div class="our-product-use-original-column">
-            <div class="column-title"><%= t('suppliers_plugin.views.product._edit.use_original') %></div>
-            <div class="guideline">
-              <%= f.check_box :default_name, :class => 'default-checkbox', :for => '#product_name',
-                :onchange => "suppliers.our_product.toggle_referred(this)" unless product.default_name.nil? %>
-              <%= f.check_box :default_description, :class => 'default-checkbox', :for => '#product_description',
-                :onchange => "suppliers.our_product.toggle_referred(this)" unless product.default_description.nil? %>
-              <%= f.check_box :default_price, :class => 'default-checkbox', :for => '#product_price, #product_unit_id, #product_minimum_selleable, #product_unit_detail',
-                :onchange => "suppliers.our_product.toggle_referred(this)" unless product.default_price.nil? %>
-            </div>
+        <div class="block stock">
+          <div class="field">
+            <%= f.label :stock, t('suppliers_plugin.views.product._edit.stock') %>
           </div>
 
-          <div class="our-product-supplied-column <%= "dummy-product" if product.supplier_dummy? %>">
-            <div class="column-title"><%= t('suppliers_plugin.views.product._edit.how_we_order_the_prod') %></div>
-
-            <div id=supplier-product-errors-<%=product.new_record? ? 'add' : product.id%> class=distribution-product-errors></div>
-
-            <% f.fields_for :supplier_product, product.supplier_product do |f| %>
-              <% if product.supplier_dummy? %>
-                <div class="properties-block subtitle">
-                  <%= t('suppliers_plugin.views.product._edit.managed_registry') %>
-                </div>
-              <% else %>
-                <div class="properties-block disabled-fields">
-                  <%= labelled_field f, :name, t('suppliers_plugin.views.product._edit.name'), f.text_field(:name, :disabled => 'disabled', :onkeyup => 'suppliers.our_product.sync_referred(this)') %>
-                  <%= labelled_field f, :description, t('suppliers_plugin.views.product._edit.description'), f.text_area(:description, :disabled => 'disabled', :onkeyup => 'suppliers.our_product.sync_referred(this)') %>
-                </div>
-              <% end %>
-
-              <%= render :partial => 'suppliers_plugin_product/price_details', :locals => {:f => f, :product => product.supplier_product, :supplier_product => true} %>
-            <% end %>
+          <div>
+            <%= f.check_box :default_stored %>
+            <%= f.label :default_stored, t('suppliers_plugin.views.product._edit.default_stock') %>
           </div>
-        <% end %>
 
-        <% javascript_tag do %>
-          suppliers.our_product.load(jQuery('#our-product-<%=product.new_record? ? 'add' : product.id%>'));
-        <% end %>
+          <div>
+            <span class="field-secondary">
+              <%= f.label :stored, t('suppliers_plugin.views.product._edit.current_stock') %>
+              <%= f.text_field :stored %>
+            </span>
+          </div>
+        </div>
       </div>
 
-      <div class="clean">
-        <%= f.submit t('suppliers_plugin.views.product._edit.save') %>
-        <%= link_to_function t('suppliers_plugin.views.product._edit.cancel'), :class => 'toggle-edit' %>
-        <%= link_to_remote t('suppliers_plugin.views.product._edit.remove_product'), :confirm => t('suppliers_plugin.views.product._edit.are_you_sure_you_want'), :loading => "distribution.setLoading('our-product-#{product.id}')", :loaded => "distribution.unsetLoading('our-product-#{product.id}')", :url => {:controller => :suppliers_plugin_product, :action => 'destroy', :id => product.id } unless new_record %>
-      </div>
-    <% end %>
+    </div>_
+
+    <%= link_to_function t('suppliers_plugin.views.product._edit.cancel'), :class => 'toggle-edit' %>
+    <%= link_to_remote t('suppliers_plugin.views.product._edit.remove_product'), :confirm => t('suppliers_plugin.views.product._edit.are_you_sure_you_want'), :loading => "distribution.setLoading('our-product-#{product.id}')", :loaded => "distribution.unsetLoading('our-product-#{product.id}')", :url => {:controller => :suppliers_plugin_product, :action => 'destroy', :id => product.id } %>
   <% end %>
 
-  <div class="clean"></div>
 </div>
-
-<div class="clean"></div>
 

@@ -1,6 +1,10 @@
 @import 'base';
 @import 'calendrial';
 
+.plugin-distribution {
+  @import 'field';
+}
+
 /* ----- override some noosfero's css  ----- */
 
 body.plugin-distribution {
@@ -200,46 +204,6 @@ body.plugin-distribution {
   small {
     font-size: 10px;
   }
-  form {
-    margin: 0; /* come on browsers!? */
-  }
-  select,
-  input[type=text],
-  textarea {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-  }
-  select,
-  input[type=text] {
-    height: 24px;
-  }
-  select {
-    background-color: #fff;
-    border: 1px solid black;
-    padding: 0 0 0 5px;
-  }
-  input[type=text] {
-    border: 1px solid black;
-    padding: 3px 5px;
-    margin: 0;
-  }
-  input[type=checkbox] {
-    margin: 15px 0 2px;
-    width: 11px;
-    height: 11px;
-  }
-  textarea {
-    height: 64px;
-    padding-left: 5px;
-  }
-  a.button.colorbox-close:hover,
-  input[type=submit]:hover {
-    background-color: #666;
-    cursor: hand;
-    cursor: pointer;
-  }
 }
 
 .plugin-distribution a.button.colorbox-close,
@@ -283,44 +247,6 @@ body.plugin-distribution {
 }
 .plugin-distribution .subtitle {
   font-size: 10px;
-}
-.plugin-distribution .field-title {
-  text-transform: uppercase;
-  font-weight: bold;
-}
-.plugin-distribution .field {
-  clear: both;
-}
-.plugin-distribution .field label {
-  font-weight: bold;
-  line-height: 20px;
-  margin-top: 4px;
-  float: left;
-}
-.plugin-distribution .field .field-box {
-  clear: both;
-  float: left;
-  width: 100%;
-}
-.plugin-distribution .field .field-help {
-  font-size: 10px;
-  clear: both;
-  margin-bottom: 7px;
-}
-
-.plugin-distribution .field-radio {
-  clear: both;
-  margin-bottom: 3px;
-}
-.plugin-distribution .field-radio input {
-  float: left;
-  margin-left: 0;
-}
-.plugin-distribution .field-radio label {
-  font-weight: normal;
-  line-height: 10px;
-  text-transform: lowercase;
-  margin-left: 4px;
 }
 
 .plugin-distribution .box-view .box-field.price,

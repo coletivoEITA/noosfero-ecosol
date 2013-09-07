@@ -1,4 +1,4 @@
-<div id="our-products" class="admin-page">
+<div id="supplier-our-products">
   <h2>
     <%= t('suppliers_plugin.views.product.index.products') %>
   </h2>
@@ -20,9 +20,6 @@
       </span>
       <%= colorbox_link_to t('suppliers_plugin.views.product.index.change'), {:controller => :distribution_plugin_node, :action => :margins_change} %>
     </span>
-
-    <h3><%= t('suppliers_plugin.views.product.index.the_products')%></h3>
-    <div class="subtitle"><%= link_to t('suppliers_plugin.views.product.index.add_product'), '#our-product-add', :class => 'toggle-edit', :onclick => "suppliers.our_product.add_link();" %></div>
 
   </div>
 

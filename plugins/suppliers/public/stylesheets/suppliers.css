@@ -2,7 +2,142 @@
 .clean {
   clear: both; }
 
-.container-clean {
+.container-clean, .sortable-table .box-edit .internal-edit, #supplier-our-products .field {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2 {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  color: white;
+  background: #394e41;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  border: none;
+  border-radius: 5px; }
+  .action-button:visited, .action-button:active, .action-button:hover {
+    color: white; }
+
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean, .sortable-table .box-edit .internal-edit, #supplier-our-products .field {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -138,6 +273,12 @@
   padding: 8px;
   background-color: #B1DFEF;
   color: #000; }
+  .sortable-table .table-header .box-field {
+    text-decoration: underline;
+    cursor: pointer;
+    text-transform: lowercase;
+    font-weight: bold;
+    font-size: 10px; }
 .sortable-table .table-content {
   border-bottom: 1px solid black;
   width: auto;
@@ -147,62 +288,55 @@
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
   position: absolute; }
-.sortable-table .sort-arrow.desc {
-  border-bottom: 6px solid black;
-  border-top: 6px solid transparent;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  margin-top: -6px; }
+  .sortable-table .sort-arrow.desc {
+    border-bottom: 6px solid black;
+    border-top: 6px solid transparent;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    margin-top: -6px; }
 .sortable-table .value-row {
   border-bottom: 1px dotted #ccc;
-  width: 100%;
   padding: 8px; }
-.sortable-table .value-row:last-child {
-  border-bottom: 1px dotted transparent; }
-.sortable-table .table-header,
-.sortable-table .value-row {
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box; }
-.sortable-table .value-row.edit,
-.sortable-table .value-row.hover {
-  background-color: #FDF2A3; }
-.sortable-table .value-row.edit {
-  border-top: 2px solid #333;
-  border-bottom: 2px solid #333;
-  margin-top: -1px; }
-.sortable-table .value-row.edit .box-view {
-  padding-bottom: 10px; }
+  .sortable-table .value-row:last-child {
+    border-bottom: 1px dotted transparent; }
+  .sortable-table .value-row.edit {
+    border-top: 2px solid #333;
+    border-bottom: 2px solid #333;
+    margin-top: -1px; }
+    .sortable-table .value-row.edit .box-view {
+      padding-bottom: 10px; }
+    .sortable-table .value-row.edit .box-field.box-edit-link {
+      cursor: inherit;
+      color: black;
+      text-decoration: none; }
+  .sortable-table .value-row.hover .box-view {
+    background-color: #fdf2a3; }
 .sortable-table .box-view,
 .sortable-table .box-edit {
   float: left;
   width: 100%; }
-.sortable-table .box-edit {
-  clear: both; }
-.sortable-table .table-header .box-field {
-  text-decoration: underline;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 10px; }
+.sortable-table .box-edit .internal-edit {
+  float: left;
+  margin-left: 24px;
+  background-color: #fdf2a3;
+  border: 1px solid black;
+  border-radius: 3px; }
+  .sortable-table .box-edit .internal-edit .title {
+    margin: 0;
+    padding: 4px 8px;
+    text-transform: uppercase;
+    font-weight: normal; }
 .sortable-table .box-field {
   float: left;
-  min-height: 1px;
-  overflow: hidden;
   margin-left: 10px; }
-.sortable-table .box-field:first-child {
-  margin-left: 0; }
-.sortable-table .box-field.box-edit-link {
-  font-size: 12px !important;
-  font-weight: bold;
-  text-decoration: underline;
-  color: #38727E;
-  cursor: pointer; }
-.sortable-table .value-row.edit .box-field.box-edit-link {
-  cursor: inherit;
-  color: black;
-  text-decoration: none; }
+  .sortable-table .box-field:first-child {
+    margin-left: 0; }
+  .sortable-table .box-field.box-edit-link {
+    font-size: 12px !important;
+    font-weight: bold;
+    text-decoration: underline;
+    color: #38727E;
+    cursor: pointer; }
 .sortable-table .actions-circle {
   height: 20px;
   width: 20px;
@@ -215,205 +349,367 @@
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   -o-border-radius: 10px; }
-.sortable-table .actions-circle .actions-arrow {
-  border-top: 6px solid black;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  margin: 8px 6px 0 5px;
-  display: block; }
-.sortable-table .actions-circle.edit .actions-arrow {
-  border-bottom: 6px solid black;
-  border-top: 5px solid transparent;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  margin: 2px 6px 0px 5px;
-  display: block; }
+  .sortable-table .actions-circle .actions-arrow {
+    border-top: 6px solid black;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    margin: 8px 6px 0 5px;
+    display: block; }
+  .sortable-table .actions-circle.edit .actions-arrow {
+    border-bottom: 6px solid black;
+    border-top: 5px solid transparent;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    margin: 2px 6px 0px 5px;
+    display: block; }
 
-.our-product .product-supplier *[disabled],
-.our-product-distributed-column *[readOnly],
-.our-product-distributed-column *[disabled] {
-  font-style: italic;
-  background-color: #F1F6F2;
-  border-color: #B9BEC2; }
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
 
-.our-product-supplied-column *[disabled] {
-  background-color: transparent; }
+.container-clean, .sortable-table .box-edit .internal-edit, #supplier-our-products .field {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
 
-/* ----- our products ----- */
-#our-products .subtitle {
-  width: 450px; }
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
 
-#our-products h3 {
-  margin-top: 30px; }
+.pstyle-basic {
+  font-size: 16px; }
 
-#search-results #result-count {
-  padding: 8px; }
+.pstyle-button {
+  font-size: 16px; }
 
-#search-results .box-view {
-  font-size: 10px; }
-
-#search-results .box-index {
-  border: none; }
-
-#search-results .box-field.status {
-  width: 60px; }
-
-#search-results .box-field.category {
-  width: 100px; }
-
-#search-results .box-field.supplier {
-  width: 100px; }
-
-#search-results .box-field.product {
-  width: 170px; }
-
-#search-results .box-field.price-with-unit {
-  width: 90px; }
-
-#search-results .box-field.stock {
-  width: 80px; }
-
-#node-margin-percentage span {
-  font-weight: bold; }
-
-#node-margin-percentage span.set {
+.pstyle-button-small {
   font-size: 13px; }
 
-#filter-fields .category,
-#filter-fields .qualifier,
-#filter-fields .stock {
-  display: none; }
+.pstyle-title {
+  font-size: 72px; }
 
-.our-product input[type=text],
-.our-product textarea,
-.our-product select {
-  width: 280px; }
+.pstyle-h1 {
+  font-size: 34px; }
 
-.our-product .box-edit {
-  float: left;
-  background-color: #FDF2A3;
-  font-size: 12px;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box; }
+.pstyle-h2 {
+  font-size: 26px; }
 
-#our-product-add .our-product .box-edit {
-  float: none; }
+.pstyle-h3 {
+  font-size: 21px; }
 
-.our-product.edit .value-row {
-  padding: 0; }
+.pstyle-h4 {
+  font-size: 16px; }
 
-#our-product-add .supplier-missing-products-column-view {
-  margin-bottom: 30px; }
+.pstyle-h5 {
+  font-size: 13px; }
 
-#our-product-add .supplier-missing-products-column {
-  float: left;
-  margin-right: 20px; }
+.pstyle-title-section {
+  font-size: 92px; }
 
-#our-product-add .supplier-missing-products-item {
-  display: block; }
+.pstyle-field {
+  font-size: 13px; }
 
-.supplier-missing-products-column-view .missing-explanation {
-  width: 420px;
-  margin-bottom: 20px; }
+.pstyle-menu-big-selected {
+  font-size: 21px; }
 
-.our-product .product-supplier {
-  margin-bottom: 10px; }
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
 
-.our-product .product-supplier label {
-  font-weight: normal; }
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
 
-.our-product .box-edit .properties-block {
-  margin-top: 16px; }
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
 
-.our-product-supplied-column .price-block {
-  position: absolute; }
+.pstyle-menu-small-selected {
+  font-size: 13px; }
 
-.our-product .box-edit .price-block .field {
-  float: left;
-  clear: none; }
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
 
-.our-product .box-edit .column-title {
-  font-style: italic; }
+.pstyle-tp4 {
+  font-size: 42px; }
 
-.our-product .box-edit .price-block .field,
-.our-product .box-edit .margin-line .default-margin,
-.our-product .box-edit .small-input {
-  width: 120px; }
+.pstyle-tp3 {
+  font-size: 34px; }
 
-.our-product .box-edit .price-block .field.left-column {
-  margin-right: 40px; }
+.pstyle-tp2 {
+  font-size: 26px; }
 
-.our-product .box-edit .margin-line .field {
-  width: 160px; }
+.pstyle-tp1 {
+  font-size: 21px; }
 
-.our-product .box-edit .margin-line .field,
-.our-product .box-edit .margin-line .default-margin {
-  float: left; }
+.pstyle-tm1 {
+  font-size: 13px; }
 
-.our-product .box-edit .margin-line .default-margin {
-  margin-top: 28px; }
+.pstyle-tm2 {
+  font-size: 10px; }
 
-.our-product .box-edit .margin-line .default-margin #product_default_margin_percentage {
-  margin: 3px 8px 8px 0;
-  float: left; }
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
 
-.our-product .box-edit .margin-line .default-margin label {
-  font-weight: bold;
-  display: block;
-  line-height: 16px; }
+/* Buttons */
+.action-button {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  color: white;
+  background: #394e41;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  border: none;
+  border-radius: 5px; }
+  .action-button:visited, .action-button:active, .action-button:hover {
+    color: white; }
 
-.our-product-distributed-column {
-  float: left;
-  width: 280px;
-  margin-right: 30px; }
-
-.our-product-use-original-column {
-  width: 62px;
-  float: left;
-  overflow: hidden; }
-
-.our-product-supplied-column {
-  width: 300px;
-  float: left;
-  border-left: 1px solid black; }
-
-.our-product-columns {
-  overflow: hidden; }
-
-.our-product-columns > div {
-  position: relative; }
-
-.our-product-use-original-column .column-title {
-  margin-top: 23px;
-  font-weight: bold;
-  font-style: normal;
-  margin-bottom: 4px; }
-
-.our-product-use-original-column .guideline {
-  position: absolute;
-  margin-left: 5px;
-  border-left: 1px dotted black;
-  height: 1000px; }
-
-.our-product-use-original-column .default-checkbox {
-  margin: 0 !important;
-  position: absolute;
-  left: -6px; }
-
-.our-product-use-original-column #product_default_name {
-  top: 0px; }
-
-.our-product-use-original-column #product_default_description {
-  top: 55px; }
-
-.our-product-use-original-column #product_default_price {
-  top: 241px; }
-
-.our-product-supplied-column .properties-block.subtitle {
-  margin-top: 41px;
-  width: auto !important; }
+#supplier-our-products {
+  /* use with @extend, CSS clear bugfix */
+  /* layout base parameters */
+  /* heights should only use multiples of this */
+  /* base measurements */
+  /* widths should only use one of these */
+  /* paddings and margins should only use one of these
+     REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+   */
+  /* use for borders */
+  /* use for text shadows */
+  /* Colors */
+  /* Fonts */
+  /* Paragraphs Styles (use with @extend) */
+  /* Images */
+  /* profile-image that can be centered and resized with aspect ratio */
+  /* Buttons */ }
+  #supplier-our-products .clean {
+    clear: both; }
+  #supplier-our-products .container-clean, #supplier-our-products .sortable-table .box-edit .internal-edit, .sortable-table .box-edit #supplier-our-products .internal-edit, #supplier-our-products .field {
+    overflow: hidden;
+    display: inline-block;
+    /* Necessary to trigger "hasLayout" in IE */
+    display: block;
+    /* Sets element back to block */ }
+  #supplier-our-products .pstyle-none {
+    font-size: 12px; }
+  #supplier-our-products .pstyle-basic {
+    font-size: 16px; }
+  #supplier-our-products .pstyle-button {
+    font-size: 16px; }
+  #supplier-our-products .pstyle-button-small {
+    font-size: 13px; }
+  #supplier-our-products .pstyle-title {
+    font-size: 72px; }
+  #supplier-our-products .pstyle-h1 {
+    font-size: 34px; }
+  #supplier-our-products .pstyle-h2 {
+    font-size: 26px; }
+  #supplier-our-products .pstyle-h3 {
+    font-size: 21px; }
+  #supplier-our-products .pstyle-h4 {
+    font-size: 16px; }
+  #supplier-our-products .pstyle-h5 {
+    font-size: 13px; }
+  #supplier-our-products .pstyle-title-section {
+    font-size: 92px; }
+  #supplier-our-products .pstyle-field {
+    font-size: 13px; }
+  #supplier-our-products .pstyle-menu-big-selected {
+    font-size: 21px; }
+  #supplier-our-products .pstyle-menu-big-unselected {
+    font-size: 21px; }
+  #supplier-our-products .pstyle-menu-medium-selected {
+    font-size: 16px; }
+  #supplier-our-products .pstyle-menu-medium-unselected {
+    font-size: 16px; }
+  #supplier-our-products .pstyle-menu-small-selected {
+    font-size: 13px; }
+  #supplier-our-products .pstyle-menu-small-unselected {
+    font-size: 13px; }
+  #supplier-our-products .pstyle-tp4 {
+    font-size: 42px; }
+  #supplier-our-products .pstyle-tp3 {
+    font-size: 34px; }
+  #supplier-our-products .pstyle-tp2 {
+    font-size: 26px; }
+  #supplier-our-products .pstyle-tp1 {
+    font-size: 21px; }
+  #supplier-our-products .pstyle-tm1 {
+    font-size: 13px; }
+  #supplier-our-products .pstyle-tm2 {
+    font-size: 10px; }
+  #supplier-our-products .profile-image {
+    display: inline-block;
+    /* do not put padding in this as background size will consider it. */ }
+    #supplier-our-products .profile-image.thumb {
+      width: 32px;
+      height: 32px; }
+    #supplier-our-products .profile-image.portrait {
+      width: 80px;
+      height: 80px; }
+    #supplier-our-products .profile-image .inner {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100%;
+      background-size: contain;
+      /* css3 enabled */ }
+  #supplier-our-products .action-button {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 0;
+    /* remove submit input browser's margin */
+    height: auto;
+    width: auto;
+    color: white;
+    background: #394e41;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: none;
+    border: none;
+    border-radius: 5px; }
+    #supplier-our-products .action-button:visited, #supplier-our-products .action-button:active, #supplier-our-products .action-button:hover {
+      color: white; }
+  #supplier-our-products .field-title {
+    text-transform: uppercase;
+    font-weight: bold; }
+  #supplier-our-products .field {
+    clear: both; }
+    #supplier-our-products .field label {
+      font-weight: bold;
+      line-height: 20px;
+      margin-top: 4px;
+      float: left;
+      display: block; }
+    #supplier-our-products .field .field-box {
+      clear: both;
+      float: left;
+      width: 100%; }
+    #supplier-our-products .field .field-help {
+      font-size: 10px;
+      clear: both;
+      margin-bottom: 7px; }
+  #supplier-our-products .field-radio {
+    clear: both;
+    margin-bottom: 3px; }
+    #supplier-our-products .field-radio input {
+      float: left;
+      margin-left: 0; }
+    #supplier-our-products .field-radio label {
+      font-weight: normal;
+      line-height: 10px;
+      text-transform: lowercase;
+      margin-left: 4px; }
+  #supplier-our-products .field-secondary, #supplier-our-products .field-secondary input {
+    width: 144px; }
+  #supplier-our-products .field-secondary.with-unit, #supplier-our-products .field-secondary.with-unit input {
+    width: 128px; }
+  #supplier-our-products .field-secondary .field-unit {
+    width: 16px; }
+  #supplier-our-products form {
+    margin: 0;
+    /* come on browsers!? */ }
+  #supplier-our-products select,
+  #supplier-our-products input[type=text],
+  #supplier-our-products textarea {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box; }
+  #supplier-our-products select,
+  #supplier-our-products input[type=text] {
+    height: 24px; }
+  #supplier-our-products select {
+    background-color: #fff;
+    border: 1px solid black;
+    padding: 0 0 0 5px; }
+  #supplier-our-products input[type=text] {
+    border: 1px solid black;
+    padding: 3px 5px;
+    margin: 0; }
+  #supplier-our-products input[type=checkbox] {
+    margin: 15px 0 2px;
+    width: 11px;
+    height: 11px; }
+  #supplier-our-products textarea {
+    height: 64px;
+    padding-left: 5px; }
+  #supplier-our-products a.button.colorbox-close:hover,
+  #supplier-our-products input[type=submit]:hover {
+    background-color: #666;
+    cursor: hand;
+    cursor: pointer; }
+  #supplier-our-products .sortable-table .box-field.status {
+    width: 64px; }
+  #supplier-our-products .sortable-table .box-field.category {
+    width: 64px; }
+  #supplier-our-products .sortable-table .box-field.supplier {
+    width: 144px; }
+  #supplier-our-products .sortable-table .box-field.product {
+    width: 304px; }
+  #supplier-our-products .sortable-table .box-field.margin {
+    width: 64px; }
+  #supplier-our-products .sortable-table .box-field.price {
+    width: 64px; }
+  #supplier-our-products .sortable-table .box-field.stock {
+    width: 64px; }
+  #supplier-our-products .sortable-table .box-field.unit {
+    width: 64px; }
+  #supplier-our-products .row .block {
+    float: left;
+    border-top: 2px solid #ccc;
+    border-right: 2px solid #ccc;
+    padding: 8px 14px; }
+    #supplier-our-products .row .block.margin-price {
+      width: 288px; }
+    #supplier-our-products .row .block.stock {
+      width: 288px; }
+    #supplier-our-products .row .block.avaible {
+      width: 208px; }
+    #supplier-our-products .row .block .field-secondary {
+      margin-right: 16px; }
+      #supplier-our-products .row .block .field-secondary, #supplier-our-products .row .block .field-secondary input {
+        width: 128px; }
+      #supplier-our-products .row .block .field-secondary.with-unit, #supplier-our-products .row .block .field-secondary.with-unit input {
+        width: 112px; }
+      #supplier-our-products .row .block .field-secondary .field-unit {
+        width: 16px; }
 
 #suppliers-page .supplier {
   border-top: 1px solid black;

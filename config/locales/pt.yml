@@ -643,33 +643,15 @@
     views:
       product:
         _edit: 
-          ? " > "
-          : " / "
-          ? "%"
-          : "%"
-          registry_help: "O registro do fornecedor será administrado pelo próprio coletivo e será privado a ele. Seu registro pode ser compartilhado conforme demanda para outros coletivos. O fornecedor receberá um convite para se juntar à rede e administrar sua própria distribuição aos coletivos dentro da rede."
-          add_product_to_the_li: "Adicione o produto à lista de produtos distribuídos"
-          are_you_sure_you_want: "Tem certeza de que quer remover este produto?"
-          cancel: Cancelar
-          category: Categoria
-          commercialization_act: "Comercialização ativa"
-          description: Descrição
-          editing_distributed_p: "Edição de produtos distribuídos"
-          how_we_distribute_the: "Como nós distribuímos o produto"
-          how_we_order_the_prod: "Como nós pedimos o produto"
-          managed_registry: "O registro deste fornecedor é administrado pelo próprio coletivo de consumo. Por causa disso, não há possíveis diferenças entre o \"Nome\" e a \"Descrição\"." 
-          margin: Margem
-          name: Nome
-          or_then_link: "ou então %{link}."
-          own_product: "Produto próprio"
-          remove_product: "remover produto"
-          save: Salvar
-          search_another_catego: "Buscar outra categoria"
-          search_for_another_ca: "busque outra categoria"
-          already_categorized: "Este produto já foi categorizado. No caso de você querer mudar sua categoria, clique em cima ou %{search}."
-          to_end_the_categoriza: "Ao fim da categorização, escolha uma das subcategorias da categoria \"{{=cat.own_name}}\":"
-          use_default_margin: "Usar a margem padrão"
-          use_original: "usar original"
+          distribution_setts: "Configurações de distribuição do produto"
+          margin_price: "Margem / preço"
+          default_margin: "Usar padrão"
+          stock: "Configuração de estoque"
+          default_stock: "Manter estoque"
+          current_stock: "Estoque atual"
+          remove_product: "remover"
+          are_you_sure_you_want: "Tem certeza que deseja remover este produto?"
+          cancel: cancelar
         _edit_line: 
           active: Ativo
           inactive: Inativo
@@ -682,13 +664,15 @@
           unit: Unidade
           unit_specification: "Especificações de unidade"
         _search: 
-          category: Categoria
-          price: Preço
-          product: Produto
-          qty_avail: "Qtd. dispon."
-          showing_pcount_produc: "Mostrando %{pcount} produtos de %{allpcount}"
           status: Estado
+          category: Categoria
           supplier: Fornecedor
+          product: Produto
+          margin: Margem
+          price: Preço
+          stock: "Em estoque"
+          unit: Unidade
+          showing_pcount_produc: "Mostrando %{pcount} produtos de %{allpcount}"
           we_don_t_have_product: "Não temos produtos a mostrar."
         _select_missing: 
           add_all_missing_produ: "Adicione todos produtos que faltam deste fornecedor."

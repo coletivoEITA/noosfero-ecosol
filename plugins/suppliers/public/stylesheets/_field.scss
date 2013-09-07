@@ -1,0 +1,108 @@
+@import 'base';
+
+.field-title {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.field {
+  clear: both;
+  @extend .container-clean;
+
+  label {
+    font-weight: bold;
+    line-height: 20px;
+    margin-top: 4px;
+    float: left;
+    display: block;
+  }
+  .field-box {
+    clear: both;
+    float: left;
+    width: 100%;
+  }
+  .field-help {
+    font-size: 10px;
+    clear: both;
+    margin-bottom: 7px;
+  }
+}
+
+.field-radio {
+  clear: both;
+  margin-bottom: 3px;
+
+  input {
+    float: left;
+    margin-left: 0;
+  }
+  label {
+    font-weight: normal;
+    line-height: 10px;
+    text-transform: lowercase;
+    margin-left: 4px;
+  }
+}
+
+.field-secondary {
+  &, input {
+    width: $module02;
+  }
+
+  &.with-unit {
+    &, input {
+      width: $module02 - $intercolumn;
+    }
+  }
+  .field-unit {
+    width: $intercolumn;
+  }
+}
+
+form {
+  margin: 0; /* come on browsers!? */
+}
+
+select,
+input[type=text],
+textarea {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+
+select,
+input[type=text] {
+  height: 24px;
+}
+
+select {
+  background-color: #fff;
+  border: 1px solid black;
+  padding: 0 0 0 5px;
+}
+
+input[type=text] {
+  border: 1px solid black;
+  padding: 3px 5px;
+  margin: 0;
+}
+
+input[type=checkbox] {
+  margin: 15px 0 2px;
+  width: 11px;
+  height: 11px;
+}
+
+textarea {
+  height: 64px;
+  padding-left: 5px;
+}
+
+a.button.colorbox-close:hover,
+input[type=submit]:hover {
+  background-color: #666;
+  cursor: hand;
+  cursor: pointer;
+}

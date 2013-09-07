@@ -1,3 +1,7 @@
+@import 'base';
+
+$bg-yellow: #FDF2A3;
+
 .sortable-table {
   
   .table-header {
@@ -5,7 +9,16 @@
     padding: 8px;
     background-color: #B1DFEF;
     color: #000;
+
+    .box-field {
+      text-decoration: underline;
+      cursor: pointer;
+      text-transform: lowercase;
+      font-weight: bold;
+      font-size: 10px;
+    }
   }
+
   .table-content {
     border-bottom: 1px solid black;
     width: auto;
@@ -17,80 +30,94 @@
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
     position: absolute;
+
+    &.desc {
+      border-bottom: 6px solid black;
+      border-top: 6px solid transparent;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      margin-top: -6px;
+    }
   }
-  .sort-arrow.desc {
-    border-bottom: 6px solid black;
-    border-top: 6px solid transparent;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    margin-top: -6px;
+
+  .table-header,
+  .value-row {
+    
   }
 
   .value-row {
     border-bottom: 1px dotted #ccc;
-    width: 100%;
-    padding: 8px;
-  }
-  .value-row:last-child {
-    border-bottom: 1px dotted transparent;
-  }
-  .table-header,
-  .value-row {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-  }
-  .value-row.edit,
-  .value-row.hover {
-    background-color: #FDF2A3;
-  }
-  .value-row.edit {
-    border-top: 2px solid #333;
-    border-bottom: 2px solid #333;
-    margin-top: -1px;
+    padding: $padding;
+
+    &:last-child {
+      border-bottom: 1px dotted transparent;
+    }
+
+    &.edit {
+      border-top: 2px solid #333;
+      border-bottom: 2px solid #333;
+      margin-top: -1px;
+
+      .box-view {
+        padding-bottom: 10px;
+      }
+      .box-field.box-edit-link {
+        cursor: inherit;
+        color: black;
+        text-decoration: none;
+      }
+    }
+
+    
+    &.hover {
+
+      .box-view {
+        background-color: $bg-yellow;
+      }
+    }
   }
 
-  .value-row.edit .box-view {
-    padding-bottom: 10px;
-  }
   .box-view,
   .box-edit {
     float: left;
     width: 100%;
   }
+
   .box-edit {
-    clear: both;
+    
+    .internal-edit {
+      float: left;
+      margin-left: 3*$padding;
+      background-color: $bg-yellow;
+      border: $border solid black;
+      border-radius: 3px;
+      @extend .container-clean;
+
+      .title {
+        margin: 0;
+        padding: $half-padding $padding;
+        text-transform: uppercase;
+        font-weight: normal;
+      }
+    }
   }
 
-  .table-header .box-field {
-    text-decoration: underline;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 10px;
-  }
   .box-field {
     float: left;
-    min-height: 1px;
-    overflow: hidden;
     margin-left: 10px;
-  }
-  .box-field:first-child {
-    margin-left: 0;
-  }
 
-  .box-field.box-edit-link {
-    font-size: 12px !important;
-    font-weight: bold;
-    text-decoration: underline;
-    color: #38727E;
-    cursor: pointer;
-  }
-  .value-row.edit .box-field.box-edit-link {
-    cursor: inherit;
-    color: black;
-    text-decoration: none;
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &.box-edit-link {
+      font-size: 12px !important;
+      font-weight: bold;
+      text-decoration: underline;
+      color: #38727E;
+      cursor: pointer;
+    }
+
   }
 
   .actions-circle {
@@ -105,21 +132,21 @@
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     -o-border-radius: 10px;
-  }
-  .actions-circle .actions-arrow {
-    border-top: 6px solid black;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    margin: 8px 6px 0 5px;
-    display: block;
-  }
-  .actions-circle.edit .actions-arrow {
-    border-bottom: 6px solid black;
-    border-top: 5px solid transparent;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    margin: 2px 6px 0px 5px;
-    display: block;
-  }
 
+    .actions-arrow {
+      border-top: 6px solid black;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      margin: 8px 6px 0 5px;
+      display: block;
+    }
+    &.edit .actions-arrow {
+      border-bottom: 6px solid black;
+      border-top: 5px solid transparent;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      margin: 2px 6px 0px 5px;
+      display: block;
+    }
+  }
 }

@@ -632,33 +632,15 @@
     views:
       product:
         _edit: 
-          ? " > "
-          : " > "
-          ? "%"
-          : "%"
-          registry_help: "The registry of the supplier will be managed by the collective itself, e will be private to it, your registry may be shared on demand to others collectives. The supplier will receive the invitation to join the network and manage its own distribution for the collectives inside the network."
-          add_product_to_the_li: "Add product to the list of distributed products"
+          distribution_setts: "Product's distribution settings"
+          margin_price: "Margin / price"
+          default_margin: "Use default"
+          stock: "Stock configuration"
+          default_stock: "Keep in stock"
+          current_stock: "Current stock"
+          remove_product: "remover"
           are_you_sure_you_want: "Are you sure you want to delete this product?"
           cancel: cancel
-          category: Category
-          commercialization_act: "Commercialization active"
-          description: Description
-          editing_distributed_p: "Editing distributed product"
-          how_we_distribute_the: "How we distribute the product"
-          how_we_order_the_prod: "How we order the product"
-          managed_registry: 'The register of this supplier is managed by the own collective of consumption. Because of this, there is no possible differences between the "Name" and the "Description".'
-          margin: Margin
-          name: Name
-          or_then_link: "or then %{link}."
-          own_product: "Own product"
-          remove_product: "remove product"
-          save: Save
-          search_another_catego: "search another category"
-          search_for_another_ca: "search for another category"
-          already_categorized: "This product is already categorized. In case you want to change its category, click above or %{search}."
-          to_end_the_categoriza: "To end the categorization choose one the subcategories of the category \"{{=cat.own_name}}\":"
-          use_default_margin: "Use default margin"
-          use_original: "use original"
         _edit_line: 
           active: Active
           inactive: Inactive
@@ -671,13 +653,15 @@
           unit: Unit
           unit_specification: "Unit specification"
         _search: 
-          category: Category
-          price: Price
-          product: Product
-          qty_avail: "Qty. avail."
-          showing_pcount_produc: "Showing %{pcount} products of %{allpcount}"
           status: Status
           supplier: Supplier
+          category: Category
+          product: Product
+          margin: Margin
+          price: Price
+          stock: "In stock"
+          unit: Unit
+          showing_pcount_produc: "Showing %{pcount} products of %{allpcount}"
           we_don_t_have_product: "We don't have products to show."
         _select_missing: 
           add_all_missing_produ: "add all missing products from this supplier"

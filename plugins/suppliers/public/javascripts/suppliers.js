@@ -18,19 +18,7 @@ suppliers = {
   our_product: {
 
     toggle_edit: function () {
-      if (toggle_edit.editing().is('#our-product-add'))
-        toggle_edit.editing().toggle(toggle_edit.isEditing());
-      toggle_edit.editing().find('.box-view').toggle(!toggle_edit.isEditing());
       toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
-
-      suppliers.our_product.css_align();
-    },
-
-    add_link: function () {
-      if (toggle_edit.isEditing())
-        toggle_edit.value_row.toggle_edit();
-      toggle_edit.setEditing(jQuery('#our-product-add'));
-      toggle_edit.value_row.toggle_edit();
     },
 
     load: function(el) {
@@ -139,23 +127,6 @@ suppliers = {
         suppliers.our_product.toggle_edit();
       });
       distribution.unsetLoading('our-product-add');
-    },
-
-    css_align: function () {
-      var distributed = toggle_edit.editing().find('.our-product-distributed-column');
-      var use_original = toggle_edit.editing().find('.our-product-use-original-column');
-      var supplied = toggle_edit.editing().find('.our-product-supplied-column');
-
-      use_original.height(distributed.height());
-      supplied.height(distributed.height());
-
-      if (supplied.length > 0)
-        supplied.find('.price-block').css('top', distributed.find('.price-block').position().top);
-
-      use_original.find('input[type=checkbox]').each(function(index, checkbox) {
-        checkbox = jQuery(checkbox);
-        checkbox.css('top', distributed.find(checkbox.attr('for')).first().position().top - use_original.find('.guideline').position().top);
-      });
     },
   },
 };
