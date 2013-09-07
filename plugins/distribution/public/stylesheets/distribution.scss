@@ -207,30 +207,6 @@ body.plugin-distribution {
   }
 }
 
-.plugin-distribution a.button.colorbox-close,
-#wrap-1 .plugin-distribution input[type=submit],
-.plugin-distribution #wrap-1 input[type=submit] {
-  display: inline-block;
-  background: none;
-  background-color: #000;
-  color: #fff;
-  font-weight: bold;
-  font-size: 13px;
-  text-align: left;
-  min-width: 80px;
-  padding: 8px 8px;
-  margin: 15px 0;
-  margin-right: 4px;
-  border: none;
-  text-decoration: none;
-  border-radius: 5px 5px 5px 5px;
-  -mox-border-radius: 5px 5px 5px 5px;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  -o-border-radius: 5px 5px 5px 5px;
-  cursor: hand;
-  cursor: pointer;
-}
-
 .plugin-distribution .happening {
   background-color: #ffe546;
 }

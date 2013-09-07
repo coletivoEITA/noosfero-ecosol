@@ -115,23 +115,26 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button {
+.action-button, .plugin-distribution a.button.colorbox-close,
+.plugin-distribution #wrap-1 input[type=submit],
+.plugin-distribution input[type=submit] {
   display: inline-block;
   padding: 4px 8px;
   margin: 0;
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  color: white;
-  background: #394e41;
+  background: #fbca47;
+  border: 1px solid #f4a439;
   cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
   text-align: center;
   text-decoration: none;
+  text-transform: uppercase;
   text-shadow: none;
-  border: none;
   border-radius: 5px; }
-  .action-button:visited, .action-button:active, .action-button:hover {
-    color: white; }
 
 .calendricalDatePopup {
   background: white;
@@ -220,6 +223,198 @@
 
 .calendricalEndTimePopup {
   width: 160px; }
+
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean, .plugin-distribution .field, #distribution-plugin-header .menu-button-container {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2 {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button, .plugin-distribution a.button.colorbox-close,
+.plugin-distribution #wrap-1 input[type=submit],
+.plugin-distribution input[type=submit] {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  background: #fbca47;
+  border: 1px solid #f4a439;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: none;
+  border-radius: 5px; }
+
+.plugin-distribution #filter {
+  background-color: #BCDC91;
+  padding: 0;
+  margin-top: 16px;
+  margin-left: -40px;
+  margin-right: -40px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  font-size: 11px; }
+
+.plugin-distribution #filter .filter-box {
+  padding-left: 48px;
+  padding-right: 48px;
+  border-bottom: 1px solid #d5efb0;
+  padding-top: 4px;
+  padding-bottom: 4px; }
+
+.plugin-distribution #filter .title {
+  font-weight: bold;
+  font-size: 13px; }
+
+.plugin-distribution #filter .fields > div {
+  border-right: 1px solid #d5efb0;
+  padding-left: 8px;
+  padding-right: 8px;
+  float: left; }
+
+.plugin-distribution #filter .fields > div.clean {
+  float: none; }
+
+.plugin-distribution #filter .fields > div:first-child {
+  padding-left: 0; }
+
+.plugin-distribution #filter .fields div:last-child {
+  border-right: 0; }
+
+.plugin-distribution #filter .submit input[type=submit] {
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 8px;
+  background-color: #4B583C;
+  color: #FFFFFF;
+  border: 1px solid #d5efb0;
+  font-size: 10px;
+  text-align: center;
+  margin: none; }
+
+.plugin-distribution #filter .box-field select,
+.plugin-distribution #filter .box-field input {
+  width: 144px; }
 
 .plugin-distribution {
   /* use with @extend, CSS clear bugfix */
@@ -312,23 +507,26 @@
       background-size: 100%;
       background-size: contain;
       /* css3 enabled */ }
-  .plugin-distribution .action-button {
+  .plugin-distribution .action-button, .plugin-distribution a.button.colorbox-close,
+  .plugin-distribution #wrap-1 input[type=submit],
+  .plugin-distribution input[type=submit] {
     display: inline-block;
     padding: 4px 8px;
     margin: 0;
     /* remove submit input browser's margin */
     height: auto;
     width: auto;
-    color: white;
-    background: #394e41;
+    background: #fbca47;
+    border: 1px solid #f4a439;
     cursor: pointer;
+    color: black;
+    font-weight: bold;
+    line-height: 16px;
     text-align: center;
     text-decoration: none;
+    text-transform: uppercase;
     text-shadow: none;
-    border: none;
     border-radius: 5px; }
-    .plugin-distribution .action-button:visited, .plugin-distribution .action-button:active, .plugin-distribution .action-button:hover {
-      color: white; }
   .plugin-distribution .field-title {
     text-transform: uppercase;
     font-weight: bold; }
@@ -535,7 +733,7 @@ body.plugin-distribution {
 .plugin-distribution .page > *,
 .plugin-distribution .admin-page > * {
   padding-left: 8px; }
-.plugin-distribution .box-align, .plugin-distribution #session-products .session-products-table, .plugin-distribution .order-products-by-supplier, .plugin-distribution #session-listing .session-list-item, .plugin-distribution #session-listing .session-timeline, .plugin-distribution #session-header-warning, .plugin-distribution .filter-box, .plugin-distribution .session-view #session-products-for-order .title {
+.plugin-distribution .box-align, .plugin-distribution #session-products .session-products-table, .plugin-distribution .order-products-by-supplier, .plugin-distribution #session-listing .session-list-item, .plugin-distribution #session-listing .session-timeline, .plugin-distribution #session-header-warning, .plugin-distribution .session-view #session-products-for-order .title {
   margin-left: -8px; }
 .plugin-distribution .alignment, .plugin-distribution #distribution-plugin-sessions-gadget .session .happening, #distribution-plugin-sessions-gadget .session .plugin-distribution .happening, .plugin-distribution #distribution-plugin-sessions-gadget .session .info, #distribution-plugin-sessions-gadget .session .plugin-distribution .info {
   padding-left: 8px; }
@@ -545,29 +743,6 @@ body.plugin-distribution {
   width: 400px; }
 .plugin-distribution small {
   font-size: 10px; }
-
-.plugin-distribution a.button.colorbox-close,
-#wrap-1 .plugin-distribution input[type=submit],
-.plugin-distribution #wrap-1 input[type=submit] {
-  display: inline-block;
-  background: none;
-  background-color: #000;
-  color: #fff;
-  font-weight: bold;
-  font-size: 13px;
-  text-align: left;
-  min-width: 80px;
-  padding: 8px 8px;
-  margin: 15px 0;
-  margin-right: 4px;
-  border: none;
-  text-decoration: none;
-  border-radius: 5px 5px 5px 5px;
-  -mox-border-radius: 5px 5px 5px 5px;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  -o-border-radius: 5px 5px 5px 5px;
-  cursor: hand;
-  cursor: pointer; }
 
 .plugin-distribution .happening {
   background-color: #ffe546; }
@@ -1070,26 +1245,6 @@ body.plugin-distribution {
 .plugin-distribution .new-delivery-method input {
   text-align: left; }
 
-/* ----- filter box ----- */
-.plugin-distribution .filter-box {
-  background-color: #e9f9d5;
-  padding: 8px;
-  margin-top: 13px;
-  margin-bottom: 13px;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box; }
-
-.plugin-distribution .filter-box .box-field {
-  padding-left: 0;
-  padding-right: 24px; }
-
-.plugin-distribution .filter-box .box-field,
-.plugin-distribution .filter-box .box-field select,
-.plugin-distribution .filter-box .box-field input {
-  width: 205px; }
-
 /* ----- session view ----- */
 .plugin-distribution .session-view #session-products-for-order {
   width: 460px;
@@ -1135,16 +1290,6 @@ body.plugin-distribution {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   -o-border-radius: 5px; }
-
-.plugin-distribution .session-view #session-products-for-order #filter-fields .supplier,
-.plugin-distribution .session-view #session-products-for-order #filter-fields .qualifier {
-  padding: 0;
-  padding-left: 5px;
-  background: none; }
-
-.plugin-distribution .session-view #session-products-for-order #filter-fields .box-field {
-  font-weight: bold;
-  margin: 0; }
 
 .plugin-distribution .session-view #session-products-for-order .supplier {
   background-color: #B1DFEF;

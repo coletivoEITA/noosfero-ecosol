@@ -106,3 +106,10 @@ input[type=submit]:hover {
   cursor: hand;
   cursor: pointer;
 }
+
+a.button.colorbox-close,
+#wrap-1 input[type=submit],
+input[type=submit] {
+  @extend .action-button;
+}
+

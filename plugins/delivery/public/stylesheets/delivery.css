@@ -122,13 +122,14 @@
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  color: white;
-  background: #394e41;
+  background: #fbca47;
+  border: 1px solid #f4a439;
   cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
   text-align: center;
   text-decoration: none;
+  text-transform: uppercase;
   text-shadow: none;
-  border: none;
   border-radius: 5px; }
-  .action-button:visited, .action-button:active, .action-button:hover {
-    color: white; }

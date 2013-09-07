@@ -32,6 +32,21 @@
       }
     }
 
+    form {
+
+      .action-button-container {
+        float: left;
+        clear: both;
+        width: $module10;
+
+        .save {
+          float: right;
+        }
+        .remove, .cancel {
+          float: left;
+        }
+      }
+    }
   }
 
   .row {
@@ -48,7 +63,7 @@
         width: $module04 - $intercolumn;
       }
       &.avaible {
-        width: $module03 - $intercolumn;
+        width: $module02 - $intercolumn;
       }
 
       .field-secondary {

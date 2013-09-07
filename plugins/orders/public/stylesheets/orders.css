@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .box-edit .internal-edit {
+.container-clean, .sortable-table .box-edit .internal-table {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -122,22 +122,23 @@
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  color: white;
-  background: #394e41;
+  background: #fbca47;
+  border: 1px solid #f4a439;
   cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
   text-align: center;
   text-decoration: none;
+  text-transform: uppercase;
   text-shadow: none;
-  border: none;
   border-radius: 5px; }
-  .action-button:visited, .action-button:active, .action-button:hover {
-    color: white; }
 
 /* use with @extend, CSS clear bugfix */
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .box-edit .internal-edit {
+.container-clean, .sortable-table .box-edit .internal-table {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -257,16 +258,17 @@
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  color: white;
-  background: #394e41;
+  background: #fbca47;
+  border: 1px solid #f4a439;
   cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
   text-align: center;
   text-decoration: none;
+  text-transform: uppercase;
   text-shadow: none;
-  border: none;
   border-radius: 5px; }
-  .action-button:visited, .action-button:active, .action-button:hover {
-    color: white; }
 
 .sortable-table .table-header {
   width: 100%;
@@ -315,17 +317,18 @@
 .sortable-table .box-edit {
   float: left;
   width: 100%; }
-.sortable-table .box-edit .internal-edit {
-  float: left;
-  margin-left: 24px;
-  background-color: #fdf2a3;
-  border: 1px solid black;
-  border-radius: 3px; }
-  .sortable-table .box-edit .internal-edit .title {
-    margin: 0;
-    padding: 4px 8px;
-    text-transform: uppercase;
-    font-weight: normal; }
+.sortable-table .box-edit {
+  padding-left: 24px; }
+  .sortable-table .box-edit .internal-table {
+    float: left;
+    background-color: #fdf2a3;
+    border: 1px solid black;
+    border-radius: 3px; }
+    .sortable-table .box-edit .internal-table .title {
+      margin: 0;
+      padding: 4px 8px;
+      text-transform: uppercase;
+      font-weight: normal; }
 .sortable-table .box-field {
   float: left;
   margin-left: 10px; }

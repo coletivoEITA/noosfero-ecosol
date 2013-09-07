@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .box-edit .internal-edit, #supplier-our-products .field {
+.container-clean, .sortable-table .box-edit .internal-table, #supplier-our-products .field {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -115,29 +115,32 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button {
+.action-button, #supplier-our-products a.button.colorbox-close,
+#supplier-our-products #wrap-1 input[type=submit],
+#supplier-our-products input[type=submit] {
   display: inline-block;
   padding: 4px 8px;
   margin: 0;
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  color: white;
-  background: #394e41;
+  background: #fbca47;
+  border: 1px solid #f4a439;
   cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
   text-align: center;
   text-decoration: none;
+  text-transform: uppercase;
   text-shadow: none;
-  border: none;
   border-radius: 5px; }
-  .action-button:visited, .action-button:active, .action-button:hover {
-    color: white; }
 
 /* use with @extend, CSS clear bugfix */
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .box-edit .internal-edit, #supplier-our-products .field {
+.container-clean, .sortable-table .box-edit .internal-table, #supplier-our-products .field {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -250,23 +253,26 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button {
+.action-button, #supplier-our-products a.button.colorbox-close,
+#supplier-our-products #wrap-1 input[type=submit],
+#supplier-our-products input[type=submit] {
   display: inline-block;
   padding: 4px 8px;
   margin: 0;
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  color: white;
-  background: #394e41;
+  background: #fbca47;
+  border: 1px solid #f4a439;
   cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
   text-align: center;
   text-decoration: none;
+  text-transform: uppercase;
   text-shadow: none;
-  border: none;
   border-radius: 5px; }
-  .action-button:visited, .action-button:active, .action-button:hover {
-    color: white; }
 
 .sortable-table .table-header {
   width: 100%;
@@ -315,17 +321,18 @@
 .sortable-table .box-edit {
   float: left;
   width: 100%; }
-.sortable-table .box-edit .internal-edit {
-  float: left;
-  margin-left: 24px;
-  background-color: #fdf2a3;
-  border: 1px solid black;
-  border-radius: 3px; }
-  .sortable-table .box-edit .internal-edit .title {
-    margin: 0;
-    padding: 4px 8px;
-    text-transform: uppercase;
-    font-weight: normal; }
+.sortable-table .box-edit {
+  padding-left: 24px; }
+  .sortable-table .box-edit .internal-table {
+    float: left;
+    background-color: #fdf2a3;
+    border: 1px solid black;
+    border-radius: 3px; }
+    .sortable-table .box-edit .internal-table .title {
+      margin: 0;
+      padding: 4px 8px;
+      text-transform: uppercase;
+      font-weight: normal; }
 .sortable-table .box-field {
   float: left;
   margin-left: 10px; }
@@ -367,7 +374,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .box-edit .internal-edit, #supplier-our-products .field {
+.container-clean, .sortable-table .box-edit .internal-table, #supplier-our-products .field {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -480,23 +487,26 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button {
+.action-button, #supplier-our-products a.button.colorbox-close,
+#supplier-our-products #wrap-1 input[type=submit],
+#supplier-our-products input[type=submit] {
   display: inline-block;
   padding: 4px 8px;
   margin: 0;
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  color: white;
-  background: #394e41;
+  background: #fbca47;
+  border: 1px solid #f4a439;
   cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
   text-align: center;
   text-decoration: none;
+  text-transform: uppercase;
   text-shadow: none;
-  border: none;
   border-radius: 5px; }
-  .action-button:visited, .action-button:active, .action-button:hover {
-    color: white; }
 
 #supplier-our-products {
   /* use with @extend, CSS clear bugfix */
@@ -517,7 +527,7 @@
   /* Buttons */ }
   #supplier-our-products .clean {
     clear: both; }
-  #supplier-our-products .container-clean, #supplier-our-products .sortable-table .box-edit .internal-edit, .sortable-table .box-edit #supplier-our-products .internal-edit, #supplier-our-products .field {
+  #supplier-our-products .container-clean, #supplier-our-products .sortable-table .box-edit .internal-table, .sortable-table .box-edit #supplier-our-products .internal-table, #supplier-our-products .field {
     overflow: hidden;
     display: inline-block;
     /* Necessary to trigger "hasLayout" in IE */
@@ -589,23 +599,26 @@
       background-size: 100%;
       background-size: contain;
       /* css3 enabled */ }
-  #supplier-our-products .action-button {
+  #supplier-our-products .action-button, #supplier-our-products a.button.colorbox-close,
+  #supplier-our-products #wrap-1 input[type=submit],
+  #supplier-our-products input[type=submit] {
     display: inline-block;
     padding: 4px 8px;
     margin: 0;
     /* remove submit input browser's margin */
     height: auto;
     width: auto;
-    color: white;
-    background: #394e41;
+    background: #fbca47;
+    border: 1px solid #f4a439;
     cursor: pointer;
+    color: black;
+    font-weight: bold;
+    line-height: 16px;
     text-align: center;
     text-decoration: none;
+    text-transform: uppercase;
     text-shadow: none;
-    border: none;
     border-radius: 5px; }
-    #supplier-our-products .action-button:visited, #supplier-our-products .action-button:active, #supplier-our-products .action-button:hover {
-      color: white; }
   #supplier-our-products .field-title {
     text-transform: uppercase;
     font-weight: bold; }
@@ -691,6 +704,14 @@
     width: 64px; }
   #supplier-our-products .sortable-table .box-field.unit {
     width: 64px; }
+  #supplier-our-products .sortable-table form .action-button-container {
+    float: left;
+    clear: both;
+    width: 864px; }
+    #supplier-our-products .sortable-table form .action-button-container .save {
+      float: right; }
+    #supplier-our-products .sortable-table form .action-button-container .remove, #supplier-our-products .sortable-table form .action-button-container .cancel {
+      float: right; }
   #supplier-our-products .row .block {
     float: left;
     border-top: 2px solid #ccc;

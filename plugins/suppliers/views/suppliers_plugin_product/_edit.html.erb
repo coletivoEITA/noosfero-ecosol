@@ -1,8 +1,11 @@
 <div class="box-edit">
 
-  <% form_remote_for :product, product, :loading => "distribution.setLoading('our-product-#{product.id}')", :loaded => "distribution.unsetLoading('our-product-#{product.id}')", :url => {:controller => :suppliers_plugin_product, :action => :edit, :id => product ? product.id : nil} do |f| %>
+  <% form_remote_for :product, product,
+    :loading => "distribution.setLoading('our-product-#{product.id}')",
+    :loaded => "distribution.unsetLoading('our-product-#{product.id}')",
+    :url => {:controller => :suppliers_plugin_product, :action => :edit, :id => product ? product.id : nil} do |f| %>
 
-    <div class="internal-edit">
+    <div class="internal-table">
       <div class="title">
         <%= t('suppliers_plugin.views.product._edit.distribution_setts') %>
       </div>
@@ -50,10 +53,18 @@
         </div>
       </div>
 
-    </div>_
+    </div>
 
-    <%= link_to_function t('suppliers_plugin.views.product._edit.cancel'), :class => 'toggle-edit' %>
-    <%= link_to_remote t('suppliers_plugin.views.product._edit.remove_product'), :confirm => t('suppliers_plugin.views.product._edit.are_you_sure_you_want'), :loading => "distribution.setLoading('our-product-#{product.id}')", :loaded => "distribution.unsetLoading('our-product-#{product.id}')", :url => {:controller => :suppliers_plugin_product, :action => 'destroy', :id => product.id } %>
+    <div class="action-button-container">
+      <%= f.submit t('suppliers_plugin.views.product._edit.save'), :class => 'save' %>
+      <%= link_to_function t('suppliers_plugin.views.product._edit.cancel'), :class => 'toggle-edit action-button cancel' %>
+      <%= link_to_remote t('suppliers_plugin.views.product._edit.remove_product'), {
+        :confirm => t('suppliers_plugin.views.product._edit.are_you_sure_you_want'),
+        :loading => "distribution.setLoading('our-product-#{product.id}')",
+        :loaded => "distribution.unsetLoading('our-product-#{product.id}')",
+        :url => {:controller => :suppliers_plugin_product, :action => 'destroy', :id => product.id }
+      }, :class => 'action-button remove' %>
+    </div>
   <% end %>
 
 </div>

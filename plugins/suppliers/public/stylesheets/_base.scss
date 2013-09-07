@@ -70,7 +70,8 @@ $shadow: 2px;
 
 /* Colors */
 
-$color-action-button: #394E41;
+$border-action-button: #F4A439;
+$bg-action-button: #FBCA47;
 
 /* Fonts */
 
@@ -184,14 +185,17 @@ $color-action-button: #394E41;
   margin: 0; /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  color: white;
-  &:visited, &:active, &:hover { color: white; }
-  background: $color-action-button;
+  //&:visited, &:active, &:hover { color: white; }
+  background: $bg-action-button;
+  border: $border solid $border-action-button;
   cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 2*$height;
   text-align: center;
   text-decoration: none;
+  text-transform: uppercase;
   text-shadow: none;
-  border: none;
   border-radius: $border-radius;
 }
 

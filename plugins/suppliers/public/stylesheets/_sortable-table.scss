@@ -84,10 +84,10 @@ $bg-yellow: #FDF2A3;
   }
 
   .box-edit {
+    padding-left: 3*$padding;
     
-    .internal-edit {
+    .internal-table {
       float: left;
-      margin-left: 3*$padding;
       background-color: $bg-yellow;
       border: $border solid black;
       border-radius: 3px;
