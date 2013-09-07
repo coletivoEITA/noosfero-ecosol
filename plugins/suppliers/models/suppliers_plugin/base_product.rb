@@ -3,6 +3,8 @@ class SuppliersPlugin::BaseProduct < Product
 
   self.abstract_class = true
 
+  default_scope :include => [:from_products]
+
   validates_presence_of :name
 
   settings_items :minimum_selleable, :type => Float, :default => nil

@@ -15,7 +15,7 @@ class OrdersPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['toggle_edit', 'orders']
+    ['toggle_edit', 'sortable-table', 'orders'].map{ |j| "javascripts/#{j}" }
   end
 
 end

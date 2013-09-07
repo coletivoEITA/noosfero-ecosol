@@ -15,7 +15,7 @@ class DeliveryPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['delivery']
+    ['delivery'].map{ |j| "javascripts/#{j}" }
   end
 
 end

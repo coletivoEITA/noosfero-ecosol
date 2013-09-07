@@ -1,0 +1,1 @@
+../../../suppliers/public/javascripts/sortable-table.js

@@ -20,7 +20,7 @@ class SuppliersPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['toggle_edit', 'suppliers']
+    ['toggle_edit', 'sortable-table', 'suppliers'].map{ |j| "javascripts/#{j}" }
   end
 
 end

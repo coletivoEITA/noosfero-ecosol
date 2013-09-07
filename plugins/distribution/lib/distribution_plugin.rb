@@ -27,8 +27,7 @@ class DistributionPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['distribution']
-    # also uses toggle_edit from orders_plugin
+    ['distribution'].map{ |j| "javascripts/#{j}" }
   end
 
   def profile_blocks profile
