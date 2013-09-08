@@ -133,7 +133,9 @@ distribution = {
   setLoading: function (element) {
     var pos       = jQuery.extend({
       width:    jQuery("#"+element).outerWidth(),
-    height:   jQuery("#"+element).outerHeight()
+    height:   jQuery("#"+element).outerHeight(),
+    leftMargin: jQuery('#'+element).css('margin-left'),
+    topMargin: jQuery('#'+element).css('margin-top'),
     }, jQuery("#"+element).position());
     jQuery('<div>', {
       id: element + '-overlay',
@@ -143,6 +145,8 @@ distribution = {
       left:             pos.left,
       width:            pos.width,
       height:           pos.height,
+      marginLeft:       pos.leftMargin,
+      marginTop:        pos.topMargin,
       backgroundImage:  'url(/plugins/distribution/images/loading.gif)',
       opacity:          0.90,
       zIndex:          10
