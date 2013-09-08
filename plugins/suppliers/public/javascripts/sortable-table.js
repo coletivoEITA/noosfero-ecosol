@@ -17,6 +17,14 @@ sortable_table = {
     });
   },
 
+  edit_arrow_toggle: function (context, toggle) {
+    arrow = jQuery(context).hasClass('actions-circle') ? jQuery(context) : jQuery(context).find('.actions-circle');
+
+    hide = arrow.find('.action-hide').toggle(toggle);
+    show = arrow.find('.action-show').toggle(!toggle);
+    return hide.is(':visible');
+  },
+
 },
 
 jQuery('.sortable-table .table-header .box-field').live('click', sortable_table.header_click);

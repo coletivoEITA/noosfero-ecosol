@@ -1,12 +1,5 @@
 distribution = {
 
-  edit_arrow_toggle: function (context, toggle) {
-    arrow = jQuery(context).hasClass('actions-circle') ? jQuery(context) : jQuery(context).find('.actions-circle');
-
-    arrow.toggleClass('edit', toggle);
-    return arrow.hasClass('edit');
-  },
-
   toggle_header_color_area: function(t) {
     if (t.value != 'pure_color') {
       jQuery('#distribution-header-bg-color input').each(function(f){
@@ -52,7 +45,7 @@ distribution = {
     container = jQuery(context).hasClass('session-orders') ? jQuery(context) : jQuery(context).parents('.session-orders');
     container.toggleClass('show');
     container.find('.order-content').toggle();
-    distribution.edit_arrow_toggle(container);
+    sortable_table.edit_arrow_toggle(container);
   },
 
   /* ----- ends session stuff  ----- */

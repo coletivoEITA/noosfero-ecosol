@@ -3,6 +3,7 @@
 $bg-yellow: #FDF2A3;
 $bg-header: #70BCFA;
 $border-header: #3C729F;
+$bg-row: #F3F4EE;
 
 .sortable-table {
 
@@ -55,43 +56,99 @@ $border-header: #3C729F;
     margin-bottom: 40px;
 
     .value-row {
-      border-bottom: 1px dotted #ccc;
-
-      .box-field {
-
-        &.box-edit-link {
-          font-size: 12px !important;
-          font-weight: bold;
-          text-decoration: underline;
-          color: #38727E;
-          cursor: pointer;
-        }
-      }
+      margin-left: -3*$base;
+      width: $wireframe + 2*3*$base;
+      border-bottom: $border dotted #ccc;
+      background: white;
 
       &:last-child {
-        border-bottom: 1px dotted transparent;
+        border-bottom: $border dotted transparent;
       }
 
       &.edit {
-        border-top: 2px solid #333;
-        border-bottom: 2px solid #333;
-        margin-top: -1px;
+        border: $border solid black;
 
-        .box-view {
-          padding-bottom: 10px;
-        }
         .box-field.box-edit-link {
           cursor: inherit;
           color: black;
           text-decoration: none;
         }
+
+        .box-field {
+          &.actions {
+            .actions-circle {
+              .action-hide {
+                display: block;
+              }
+              .action-show {
+                display: none;
+              }
+            }
+          }
+        }
       }
-
-
       &.hover {
 
         .box-view {
           background-color: $bg-yellow;
+        }
+      }
+      .box-field {
+        &.select, &.actions {
+          width: 2*$base;
+          padding: $base $base/2;
+          background: white;
+        }
+
+        &.select input[type=checkbox] {
+          margin-top: 4px !important;
+          margin-left: 3px !important;
+        }
+
+        &.actions {
+          .actions-circle {
+            float: right;
+            height: 16px;
+            width: 16px;
+            margin-right: 0;
+            margin-top: 3px;
+            padding: 0;
+            background-color: #FDF2A3;
+            border-radius: 8px;
+            -moz-border-radius: 8px;
+            -webkit-border-radius: 8px;
+            -o-border-radius: 8px;
+            text-decoration: none;
+
+            .action-hide, .action-show {
+              font-weight: bolder;
+              font-size: 17px;
+              margin-left: 3px;
+            }
+            .action-show {
+              margin-top: -1px;
+            }
+            .action-hide {
+              display: none; //initial state
+              margin-top: -9px;
+            }
+          }
+        }
+      }
+
+      .box-view {
+        background: $bg-row;
+        @extend .container-clean;
+
+        .box-field {
+
+          &.box-edit-link {
+            font-size: 12px !important;
+            font-weight: bold;
+            text-decoration: underline;
+            color: #38727E;
+            cursor: pointer;
+          }
         }
       }
     }
@@ -113,36 +170,6 @@ $border-header: #3C729F;
           text-transform: uppercase;
           font-weight: normal;
         }
-      }
-    }
-
-    .actions-circle {
-      height: 20px;
-      width: 20px;
-      background-color: #FDF2A3;
-      float: right;
-      margin-right: 0;
-      padding: 0;
-      margin-top: 3px;
-      border-radius: 10px;
-      -moz-border-radius: 10px;
-      -webkit-border-radius: 10px;
-      -o-border-radius: 10px;
-
-      .actions-arrow {
-        border-top: 6px solid black;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        margin: 8px 6px 0 5px;
-        display: block;
-      }
-      &.edit .actions-arrow {
-        border-bottom: 6px solid black;
-        border-top: 5px solid transparent;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        margin: 2px 6px 0px 5px;
-        display: block;
       }
     }
   }

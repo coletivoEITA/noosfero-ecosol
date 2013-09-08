@@ -15,9 +15,11 @@ module DistributionPlugin::DisplayHelper
     options[:class] ||= ''
     options[:onclick] ||= ''
     options[:class] += ' actions-circle toggle-edit'
-    options[:onclick] = "r = distribution.edit_arrow_toggle(this); #{options[:onclick]}; return r;" if toggle
+    options[:onclick] = "r = sortable_table.edit_arrow_toggle(this); #{options[:onclick]}; return r;" if toggle
 
-    link_to content_tag('div', '', :class => 'actions-arrow'), anchor, options
+    content_tag 'div',
+      link_to(content_tag('div', '_', :class => 'action-hide') + content_tag('div', '+', :class => 'action-show'), anchor, options),
+      :class => 'box-field actions'
   end
 
   def excerpt_ending text, length
