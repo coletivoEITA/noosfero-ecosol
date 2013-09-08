@@ -6,7 +6,7 @@ class SuppliersPluginProductController < MyProfileController
   helper SuppliersPlugin::ProductHelper
 
   def index
-    @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id]
+    @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id] unless params[:supplier_id].blank?
     not_distributed_products
 
     @products = @node.products.unarchived.distributed.paginate({
