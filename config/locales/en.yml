@@ -638,10 +638,14 @@
           stock: "Stock configuration"
           default_stock: "Keep in stock"
           current_stock: "Current stock"
+          distribution_state: "Distribution state"
+          available: Active
           are_you_sure_you_want: "Are you sure you want to delete this product?"
           remove_product: remove
           cancel: cancel
           save: save changes
+          view_on_supplier_page: "See product at supplier's page"
+          product_registry: "Product's registry"
         _edit_line: 
           active: Active
           inactive: Inactive

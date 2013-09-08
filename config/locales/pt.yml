@@ -649,10 +649,14 @@
           stock: "Configuração de estoque"
           default_stock: "Manter estoque"
           current_stock: "Estoque atual"
+          distribution_state: "Estado da distribuição"
+          available: Ativa
           are_you_sure_you_want: "Tem certeza que deseja remover este produto?"
           remove_product: remover
           cancel: cancelar
           save: salvar mudanças
+          view_on_supplier_page: "Ver produto na página do fornecedor"
+          product_registry: "Cadastro do produto"
         _edit_line: 
           active: Ativo
           inactive: Inativo

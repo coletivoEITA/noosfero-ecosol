@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .box-edit .internal-table, #supplier-our-products .field {
+.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -14,7 +14,9 @@
 /* base measurements */
 /* widths should only use one of these */
 /* paddings and margins should only use one of these
-   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
  */
 /* use for borders */
 /* use for text shadows */
@@ -140,7 +142,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .box-edit .internal-table, #supplier-our-products .field {
+.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -152,7 +154,9 @@
 /* base measurements */
 /* widths should only use one of these */
 /* paddings and margins should only use one of these
-   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
  */
 /* use for borders */
 /* use for text shadows */
@@ -274,11 +278,8 @@
   text-shadow: none;
   border-radius: 5px; }
 
-.sortable-table .box-view,
-.sortable-table .box-edit,
 .sortable-table .box-field {
-  float: left; }
-.sortable-table .box-field {
+  float: left;
   padding: 8px; }
 .sortable-table .table-header {
   width: 960px;
@@ -306,18 +307,17 @@
     font-weight: bold;
     font-size: 10px; }
 .sortable-table .table-content {
-  border-bottom: 1px solid black;
   width: auto;
-  margin-bottom: 40px; }
+  margin-bottom: 16px; }
   .sortable-table .table-content .value-row {
     margin-left: -24px;
     width: 1008px;
-    border-bottom: 1px dotted #cccccc;
-    background: white; }
-    .sortable-table .table-content .value-row:last-child {
-      border-bottom: 1px dotted transparent; }
+    background: white;
+    border: 1px solid transparent; }
     .sortable-table .table-content .value-row.edit {
       border: 1px solid black; }
+      .sortable-table .table-content .value-row.edit .box-view {
+        background-color: white; }
       .sortable-table .table-content .value-row.edit .box-field.box-edit-link {
         cursor: inherit;
         color: black;
@@ -327,11 +327,12 @@
       .sortable-table .table-content .value-row.edit .box-field.actions .actions-circle .action-show {
         display: none; }
     .sortable-table .table-content .value-row.hover .box-view {
-      background-color: #fdf2a3; }
+      background: #fdf2a3 !important; }
+    .sortable-table .table-content .value-row.hover.edit .box-view {
+      background: white !important; }
     .sortable-table .table-content .value-row .box-field.select, .sortable-table .table-content .value-row .box-field.actions {
       width: 16px;
-      padding: 8px 4px;
-      background: white; }
+      padding: 8px 4px; }
     .sortable-table .table-content .value-row .box-field.select input[type=checkbox] {
       margin-top: 4px !important;
       margin-left: 3px !important; }
@@ -358,32 +359,38 @@
         display: none;
         margin-top: -9px; }
     .sortable-table .table-content .value-row .box-view {
+      border-bottom: 2px dotted #cccccc;
       background: #f3f4ee; }
+      .sortable-table .table-content .value-row .box-view.with-inner {
+        background: white; }
+        .sortable-table .table-content .value-row .box-view.with-inner .box-view-inner {
+          background: #f3f4ee; }
       .sortable-table .table-content .value-row .box-view .box-field.box-edit-link {
         font-size: 12px !important;
         font-weight: bold;
         text-decoration: underline;
         color: #38727E;
         cursor: pointer; }
-  .sortable-table .table-content .box-edit {
-    padding: 16px;
-    display: none; }
-    .sortable-table .table-content .box-edit .internal-table {
-      float: left;
-      background-color: #fdf2a3;
-      border: 1px solid black;
-      border-radius: 3px; }
-      .sortable-table .table-content .box-edit .internal-table .title {
-        margin: 0;
-        padding: 4px 8px;
-        text-transform: uppercase;
-        font-weight: normal; }
+    .sortable-table .table-content .value-row .box-edit {
+      padding: 16px 24px;
+      overflow: hidden;
+      display: none; }
+      .sortable-table .table-content .value-row .box-edit .internal-table {
+        float: left;
+        background-color: #fdf2a3;
+        border: 1px solid black;
+        border-radius: 3px; }
+        .sortable-table .table-content .value-row .box-edit .internal-table .title {
+          margin: 0;
+          padding: 4px 7px;
+          text-transform: uppercase;
+          font-weight: normal; }
 
 /* use with @extend, CSS clear bugfix */
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .box-edit .internal-table, #supplier-our-products .field {
+.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -395,7 +402,9 @@
 /* base measurements */
 /* widths should only use one of these */
 /* paddings and margins should only use one of these
-   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
  */
 /* use for borders */
 /* use for text shadows */
@@ -524,7 +533,9 @@
   /* base measurements */
   /* widths should only use one of these */
   /* paddings and margins should only use one of these
-     REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+     Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+     Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+     box doesn't have a padding, then sum $intercolumn to the width.
    */
   /* use for borders */
   /* use for text shadows */
@@ -536,7 +547,7 @@
   /* Buttons */ }
   #supplier-our-products .clean {
     clear: both; }
-  #supplier-our-products .container-clean, #supplier-our-products .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row #supplier-our-products .box-view, #supplier-our-products .sortable-table .table-content .box-edit .internal-table, .sortable-table .table-content .box-edit #supplier-our-products .internal-table, #supplier-our-products .field {
+  #supplier-our-products .container-clean, #supplier-our-products .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row #supplier-our-products .box-view, #supplier-our-products .sortable-table .table-content .value-row .box-edit .internal-table, .sortable-table .table-content .value-row .box-edit #supplier-our-products .internal-table, #supplier-our-products .field, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
     overflow: hidden;
     display: inline-block;
     /* Necessary to trigger "hasLayout" in IE */
@@ -713,34 +724,59 @@
     width: 64px; }
   #supplier-our-products .sortable-table .box-field.unit {
     width: 64px; }
-  #supplier-our-products .sortable-table form .action-button-container {
-    float: left;
-    clear: both;
-    width: 784px;
-    margin-top: 8px; }
-    #supplier-our-products .sortable-table form .action-button-container .save {
-      float: right; }
-    #supplier-our-products .sortable-table form .action-button-container .remove, #supplier-our-products .sortable-table form .action-button-container .cancel {
-      float: left; }
-  #supplier-our-products .row .block {
-    float: left;
-    border-top: 2px solid #ccc;
-    border-right: 2px solid #ccc;
-    padding: 8px 14px; }
-    #supplier-our-products .row .block.margin-price {
-      width: 288px; }
-    #supplier-our-products .row .block.stock {
-      width: 288px; }
-    #supplier-our-products .row .block.avaible {
-      width: 128px; }
-    #supplier-our-products .row .block .field-secondary {
-      margin-right: 16px; }
-      #supplier-our-products .row .block .field-secondary, #supplier-our-products .row .block .field-secondary input {
-        width: 128px; }
-      #supplier-our-products .row .block .field-secondary.with-unit, #supplier-our-products .row .block .field-secondary.with-unit input {
-        width: 112px; }
-      #supplier-our-products .row .block .field-secondary .field-unit {
-        width: 16px; }
+  #supplier-our-products .sortable-table form {
+    width: 800px;
+    float: left; }
+    #supplier-our-products .sortable-table form .internal-table .row .block {
+      float: left;
+      border-top: 2px solid rgba(255, 255, 255, 0.5);
+      border-right: 2px solid rgba(255, 255, 255, 0.5);
+      padding: 8px;
+      padding-right: 6px;
+      margin: 0; }
+      #supplier-our-products .sortable-table form .internal-table .row .block:last-child {
+        border-right: none; }
+      #supplier-our-products .sortable-table form .internal-table .row .block.margin-price {
+        width: 304px; }
+      #supplier-our-products .sortable-table form .internal-table .row .block.stock {
+        width: 304px; }
+      #supplier-our-products .sortable-table form .internal-table .row .block.available {
+        width: 144px;
+        color: black; }
+      #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary {
+        margin-right: 16px; }
+        #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary, #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary input {
+          width: 128px; }
+        #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary.with-unit input {
+          width: 112px; }
+        #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary .field-unit {
+          width: 16px; }
+    #supplier-our-products .sortable-table form .action-button-container {
+      float: left;
+      width: 800px;
+      margin-top: 8px; }
+      #supplier-our-products .sortable-table form .action-button-container .action-button.save, #supplier-our-products .sortable-table form .action-button-container a.save.button.colorbox-close,
+      #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.save[type=submit],
+      #supplier-our-products #wrap-1 .sortable-table form .action-button-container input.save[type=submit],
+      #supplier-our-products .sortable-table form .action-button-container input.save[type=submit] {
+        float: right; }
+      #supplier-our-products .sortable-table form .action-button-container .action-button.remove, #supplier-our-products .sortable-table form .action-button-container a.remove.button.colorbox-close,
+      #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.remove[type=submit],
+      #supplier-our-products #wrap-1 .sortable-table form .action-button-container input.remove[type=submit],
+      #supplier-our-products .sortable-table form .action-button-container input.remove[type=submit], #supplier-our-products .sortable-table form .action-button-container .action-button.cancel, #supplier-our-products .sortable-table form .action-button-container a.cancel.button.colorbox-close,
+      #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.cancel[type=submit],
+      #supplier-our-products #wrap-1 .sortable-table form .action-button-container input.cancel[type=submit],
+      #supplier-our-products .sortable-table form .action-button-container input.cancel[type=submit] {
+        margin-right: 16px;
+        float: left; }
+  #supplier-our-products .links {
+    float: right;
+    width: 144px; }
+    #supplier-our-products .links .action-button, #supplier-our-products .links a.button.colorbox-close,
+    #supplier-our-products .links #wrap-1 input[type=submit],
+    #supplier-our-products #wrap-1 .links input[type=submit],
+    #supplier-our-products .links input[type=submit] {
+      margin-bottom: 8px; }
 
 #suppliers-page .supplier {
   border-top: 1px solid black;

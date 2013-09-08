@@ -5,15 +5,12 @@ $bg-header: #70BCFA;
 $border-header: #3C729F;
 $bg-row: #F3F4EE;
 
+$negative-area: 3*$base;
+
 .sortable-table {
 
-  .box-view,
-  .box-edit,
   .box-field {
     float: left;
-  }
-
-  .box-field {
     padding: $padding;
   }
   
@@ -51,22 +48,21 @@ $bg-row: #F3F4EE;
   }
 
   .table-content {
-    border-bottom: 1px solid black;
     width: auto;
-    margin-bottom: 40px;
+    margin-bottom: $margin;
 
     .value-row {
-      margin-left: -3*$base;
-      width: $wireframe + 2*3*$base;
-      border-bottom: $border dotted #ccc;
+      margin-left: -$negative-area;
+      width: $wireframe + 2*$negative-area;
       background: white;
-
-      &:last-child {
-        border-bottom: $border dotted transparent;
-      }
+      border: $border solid transparent; //avoid size change with .edit class
 
       &.edit {
         border: $border solid black;
+
+        .box-view {
+          background-color: white;
+        }
 
         .box-field.box-edit-link {
           cursor: inherit;
@@ -88,16 +84,21 @@ $bg-row: #F3F4EE;
         }
       }
       &.hover {
-
+        //important is used because of .with-inner selector
         .box-view {
-          background-color: $bg-yellow;
+          background: $bg-yellow !important;
+        }
+        &.edit {
+          .box-view {
+            background: white !important;
+          }
         }
       }
+
       .box-field {
         &.select, &.actions {
           width: 2*$base;
           padding: $base $base/2;
-          background: white;
         }
 
         &.select input[type=checkbox] {
@@ -137,8 +138,17 @@ $bg-row: #F3F4EE;
       }
 
       .box-view {
-        background: $bg-row;
         @extend .container-clean;
+        border-bottom: 2*$border dotted #ccc;
+        background: $bg-row;
+
+        &.with-inner {
+          background: white;
+
+          .box-view-inner {
+            background: $bg-row;
+          }
+        }
 
         .box-field {
 
@@ -151,24 +161,25 @@ $bg-row: #F3F4EE;
           }
         }
       }
-    }
 
-    .box-edit {
-      padding: 2*$padding;
-      display: none; //default
+      .box-edit {
+        padding: $margin $negative-area;
+        overflow: hidden; //from .container-clean, but without display: block
+        display: none; //default
 
-      .internal-table {
-        float: left;
-        background-color: $bg-yellow;
-        border: $border solid black;
-        border-radius: 3px;
-        @extend .container-clean;
+        .internal-table {
+          float: left;
+          background-color: $bg-yellow;
+          border: $border solid black;
+          border-radius: 3px;
+          @extend .container-clean;
 
-        .title {
-          margin: 0;
-          padding: $half-padding $padding;
-          text-transform: uppercase;
-          font-weight: normal;
+          .title {
+            margin: 0;
+            padding: $half-padding ($padding - $border);
+            text-transform: uppercase;
+            font-weight: normal;
+          }
         }
       }
     }

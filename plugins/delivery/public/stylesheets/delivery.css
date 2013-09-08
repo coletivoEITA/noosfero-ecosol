@@ -14,7 +14,9 @@
 /* base measurements */
 /* widths should only use one of these */
 /* paddings and margins should only use one of these
-   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
  */
 /* use for borders */
 /* use for text shadows */

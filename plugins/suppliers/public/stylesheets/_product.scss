@@ -33,59 +33,83 @@
     }
 
     form {
+      width: $module10 + $intercolumn;
+      float: left;
+      @extend .container-clean;
+
+      .internal-table {
+
+        .row {
+          @extend .container-clean;
+
+          .block {
+            float: left;
+            border-top: 2*$border solid rgba(255,255,255,0.5);
+            border-right: 2*$border solid rgba(255,255,255,0.5);
+            padding: $padding;
+            padding-right: $padding - 2*$border;
+            margin: 0;
+
+            &:last-child {
+              border-right: none;
+            }
+
+            &.margin-price {
+              width: $module04;
+            }
+            &.stock {
+              width: $module04;
+            }
+            &.available {
+              width: $module02;
+              color: black; //overwrite stupid application.css style
+            }
+
+            .field-secondary {
+              margin-right: $margin; 
+
+              &, input {
+                width: $module02 - $intercolumn;
+              }
+
+              &.with-unit {
+                &, input {
+                  width: $module02 - 2*$intercolumn;
+                }
+              }
+              .field-unit {
+                width: $intercolumn;
+              }
+            }
+          }
+        }
+      }
 
       .action-button-container {
         float: left;
-        clear: both;
-        width: $module10;
+        width: $module10 + $intercolumn;
         margin-top: $half-margin;
 
-        .save {
-          float: right;
-        }
-        .remove, .cancel {
-          float: left;
-        }
-      }
-    }
-  }
+        .action-button {
 
-  .row {
-    .block {
-      float: left;
-      border-top: 2px solid #ccc;
-      border-right: 2px solid #ccc;
-      padding: $padding (2*$padding - 2);
-
-      &.margin-price {
-        width: $module04 - $intercolumn;
-      }
-      &.stock {
-        width: $module04 - $intercolumn;
-      }
-      &.avaible {
-        width: $module02 - $intercolumn;
-      }
-
-      .field-secondary {
-        margin-right: $margin; 
-
-        &, input {
-          width: $module02 - $intercolumn;
-        }
-
-        &.with-unit {
-          &, input {
-            width: $module02 - 2*$intercolumn;
+          &.save {
+            float: right;
+          }
+          &.remove, &.cancel {
+            margin-right: $margin;
+            float: left;
           }
         }
-        .field-unit {
-          width: $intercolumn;
-        }
       }
     }
-
   }
- 
 
+  .links {
+    float: right;
+    width: $module02;
+
+    .action-button {
+      margin-bottom: $half-margin;
+    }
+  }
 }

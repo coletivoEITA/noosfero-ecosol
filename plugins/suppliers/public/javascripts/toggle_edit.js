@@ -15,9 +15,22 @@ toggle_edit = {
     return toggle_edit.editing().first().hasClass('edit');
   },
 
+  target: {
+    isToggle: function (target) {
+      return (jQuery(target).hasClass('box-edit-link') && !toggle_edit.isEditing()) ||
+        jQuery(target).hasClass('toggle-edit') || jQuery(target).parents().hasClass('toggle-edit');
+    },
+    isToggleIgnore: function (target) {
+      return jQuery(target).hasClass('toggle-ignore') || jQuery(target).parents().hasClass('toggle-ignore');
+    },
+  },
+
   document_click: function(event) {
-    var isToggle = toggle_edit.target_isToggle(event.target);
-    var out = toggle_edit.locate_value_row(event.target).length == 0;
+    if (toggle_edit.target.isToggleIgnore(event.target))
+      return;
+
+    var isToggle = toggle_edit.target.isToggle(event.target);
+    var out = toggle_edit.value_row.locate(event.target).length == 0;
     if (!isToggle && out && toggle_edit.isEditing()) {
       toggle_edit.value_row.toggle_edit();
       return false;
@@ -34,15 +47,11 @@ toggle_edit = {
     }
   },
 
-  locate_value_row: function (context) {
-    return jQuery(context).hasClass('value-row') ? jQuery(context) : jQuery(context).parents('.value-row');
-  },
-  target_isToggle: function (target) {
-    return (jQuery(target).hasClass('box-edit-link') && !toggle_edit.isEditing()) ||
-      jQuery(target).hasClass('toggle-edit') || jQuery(target).parents().hasClass('toggle-edit');
-  },
-
   value_row: {
+
+    locate: function (context) {
+      return jQuery(context).hasClass('value-row') ? jQuery(context) : jQuery(context).parents('.value-row');
+    },
 
     mouseenter: function () {
       if (jQuery(this).attr('without-hover') != undefined)
@@ -57,13 +66,12 @@ toggle_edit = {
     },
 
     click: function (event) {
-      var value_row = toggle_edit.locate_value_row(event.target);
-      var now_isInner = value_row.length > 1;
-
-      if (jQuery(event.target).hasClass('toggle-ignore-event'))
+      if (toggle_edit.target.isToggleIgnore(event.target))
         return true;
 
-      var isToggle = toggle_edit.target_isToggle(event.target);
+      var value_row = toggle_edit.value_row.locate(event.target);
+      var now_isInner = value_row.length > 1;
+      var isToggle = toggle_edit.target.isToggle(event.target);
       var isAnother = value_row.get(0) != toggle_edit.editing().get(0) || (now_isInner && !toggle_edit._isInner);
       if (now_isInner && !toggle_edit._isInner)
         toggle_edit.setEditing(value_row);

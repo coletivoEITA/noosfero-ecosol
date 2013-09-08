@@ -37,7 +37,7 @@
         <% if @admin_action %>
           <%= link_to_function t('orders_plugin.views.product._edit.remove_from_order'), "jQuery(this).parents('.value-row').remove();" if ordered_product.order.session.orders? %>
         <% else %>
-          <%= link_to t('orders_plugin.views.product._edit.see_product_details'), "#session-product-#{product.id}", :class => 'toggle-ignore-event' %>
+          <%= link_to t('orders_plugin.views.product._edit.see_product_details'), "#session-product-#{product.id}", :class => 'toggle-ignore' %>
           &nbsp;&nbsp;
           <%= link_to_remote t('orders_plugin.views.product._edit.remove_from_order'), :update => "ordered-product-#{ordered_product.id}",
             :url => {:controller => 'orders_plugin_product', :action => :destroy, :id => ordered_product.id} if ordered_product.order.open? %>
