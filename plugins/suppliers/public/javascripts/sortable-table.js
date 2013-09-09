@@ -29,4 +29,18 @@ sortable_table = {
 
 jQuery('.sortable-table .table-header .box-field').live('click', sortable_table.header_click);
 
+/* infrastructure */
+function jQuerySort(elements, options) {
+  if (typeof options === 'undefined') options = {};
+  options.ascending = typeof options.ascending === 'undefined' ? 1 : (options.ascending ? 1 : -1);
+  var list = elements.get();
+  list.sort(function(a, b) {
+    var compA = (options.find ? jQuery(a).find(options.find) : jQuery(a)).text().toUpperCase();
+    var compB = (options.find ? jQuery(b).find(options.find) : jQuery(b)).text().toUpperCase();
+    return options.ascending * ((compA < compB) ? -1 : (compA > compB) ? 1 : 0);
+  });
+  parent = elements.first().parent();
+  jQuery.each(list, function(index, element) { parent.append(element); });
+}
+
 }

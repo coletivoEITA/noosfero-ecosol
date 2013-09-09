@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .plugin-distribution .field, #distribution-plugin-header .menu-button-container {
+.container-clean, .plugin-distribution .field, .plugin-distribution .field-secondary.with-unit, #distribution-plugin-header .menu-button-container {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -230,7 +230,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .plugin-distribution .field, #distribution-plugin-header .menu-button-container {
+.container-clean, .plugin-distribution .field, .plugin-distribution .field-secondary.with-unit, #distribution-plugin-header .menu-button-container {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -455,7 +455,7 @@ WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
   /* Buttons */ }
   .plugin-distribution .clean {
     clear: both; }
-  .plugin-distribution .container-clean, .plugin-distribution .field, .plugin-distribution #distribution-plugin-header .menu-button-container, #distribution-plugin-header .plugin-distribution .menu-button-container {
+  .plugin-distribution .container-clean, .plugin-distribution .field, .plugin-distribution .field-secondary.with-unit, .plugin-distribution #distribution-plugin-header .menu-button-container, #distribution-plugin-header .plugin-distribution .menu-button-container {
     overflow: hidden;
     display: inline-block;
     /* Necessary to trigger "hasLayout" in IE */
@@ -552,23 +552,25 @@ WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
     font-weight: bold; }
   .plugin-distribution .field {
     clear: both; }
+    .plugin-distribution .field:first-child label {
+      padding-top: 0; }
     .plugin-distribution .field label {
-      font-weight: bold;
-      line-height: 20px;
-      margin-top: 4px;
+      display: block;
       float: left;
-      display: block; }
+      padding-top: 4px;
+      font-weight: bold;
+      line-height: 20px; }
     .plugin-distribution .field .field-box {
       clear: both;
       float: left;
       width: 100%; }
     .plugin-distribution .field .field-help {
-      font-size: 10px;
       clear: both;
-      margin-bottom: 7px; }
+      margin-bottom: 8px;
+      font-size: 10px; }
   .plugin-distribution .field-radio {
     clear: both;
-    margin-bottom: 3px; }
+    margin-bottom: 4px; }
     .plugin-distribution .field-radio input {
       float: left;
       margin-left: 0; }
@@ -577,15 +579,23 @@ WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
       line-height: 10px;
       text-transform: lowercase;
       margin-left: 4px; }
-  .plugin-distribution .field-secondary, .plugin-distribution .field-secondary input {
-    width: 144px; }
-  .plugin-distribution .field-secondary.with-unit, .plugin-distribution .field-secondary.with-unit input {
-    width: 128px; }
-  .plugin-distribution .field-secondary .field-unit {
-    width: 16px; }
+  .plugin-distribution .field-secondary {
+    display: block; }
+    .plugin-distribution .field-secondary, .plugin-distribution .field-secondary input {
+      width: 128px; }
+    .plugin-distribution .field-secondary.with-unit input {
+      float: left;
+      width: 112px; }
+    .plugin-distribution .field-secondary.with-unit .field-unit {
+      float: left;
+      width: 16px;
+      line-height: 24px; }
   .plugin-distribution form {
     margin: 0;
     /* come on browsers!? */ }
+  .plugin-distribution label.field-bellow {
+    display: block;
+    margin-bottom: 4px; }
   .plugin-distribution select,
   .plugin-distribution input[type=text],
   .plugin-distribution textarea {
@@ -599,23 +609,18 @@ WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
   .plugin-distribution select {
     background-color: #fff;
     border: 1px solid black;
-    padding: 0 0 0 5px; }
+    padding-left: 4px; }
   .plugin-distribution input[type=text] {
     border: 1px solid black;
-    padding: 3px 5px;
+    padding: 4px;
     margin: 0; }
   .plugin-distribution input[type=checkbox] {
-    margin: 15px 0 2px;
-    width: 11px;
-    height: 11px; }
+    width: 12px;
+    height: 12px;
+    margin: 0; }
   .plugin-distribution textarea {
     height: 64px;
-    padding-left: 5px; }
-  .plugin-distribution a.button.colorbox-close:hover,
-  .plugin-distribution input[type=submit]:hover {
-    background-color: #666;
-    cursor: hand;
-    cursor: pointer; }
+    padding-left: 4px; }
 
 /* ----- override some noosfero's css  ----- */
 body.plugin-distribution {

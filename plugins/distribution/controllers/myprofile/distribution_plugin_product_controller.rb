@@ -41,12 +41,6 @@ class DistributionPluginProductController < SuppliersPluginProductController
     end
   end
 
-  def add_missing_products
-    @supplier = SuppliersPlugin::Supplier.find params[:product][:supplier_id]
-    @node.add_supplier_products @supplier
-    render :partial => 'distribution_plugin_shared/pagereload'
-  end
-
   def session_edit
     @product = DistributionPlugin::OfferedProduct.find params[:id]
     if request.xhr?

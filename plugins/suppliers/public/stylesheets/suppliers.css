@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -142,7 +142,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -390,7 +390,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -547,7 +547,7 @@
   /* Buttons */ }
   #supplier-our-products .clean {
     clear: both; }
-  #supplier-our-products .container-clean, #supplier-our-products .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row #supplier-our-products .box-view, #supplier-our-products .sortable-table .table-content .value-row .box-edit .internal-table, .sortable-table .table-content .value-row .box-edit #supplier-our-products .internal-table, #supplier-our-products .field, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+  #supplier-our-products .container-clean, #supplier-our-products .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row #supplier-our-products .box-view, #supplier-our-products .sortable-table .table-content .value-row .box-edit .internal-table, .sortable-table .table-content .value-row .box-edit #supplier-our-products .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
     overflow: hidden;
     display: inline-block;
     /* Necessary to trigger "hasLayout" in IE */
@@ -644,23 +644,25 @@
     font-weight: bold; }
   #supplier-our-products .field {
     clear: both; }
+    #supplier-our-products .field:first-child label {
+      padding-top: 0; }
     #supplier-our-products .field label {
-      font-weight: bold;
-      line-height: 20px;
-      margin-top: 4px;
+      display: block;
       float: left;
-      display: block; }
+      padding-top: 4px;
+      font-weight: bold;
+      line-height: 20px; }
     #supplier-our-products .field .field-box {
       clear: both;
       float: left;
       width: 100%; }
     #supplier-our-products .field .field-help {
-      font-size: 10px;
       clear: both;
-      margin-bottom: 7px; }
+      margin-bottom: 8px;
+      font-size: 10px; }
   #supplier-our-products .field-radio {
     clear: both;
-    margin-bottom: 3px; }
+    margin-bottom: 4px; }
     #supplier-our-products .field-radio input {
       float: left;
       margin-left: 0; }
@@ -669,15 +671,23 @@
       line-height: 10px;
       text-transform: lowercase;
       margin-left: 4px; }
-  #supplier-our-products .field-secondary, #supplier-our-products .field-secondary input {
-    width: 144px; }
-  #supplier-our-products .field-secondary.with-unit, #supplier-our-products .field-secondary.with-unit input {
-    width: 128px; }
-  #supplier-our-products .field-secondary .field-unit {
-    width: 16px; }
+  #supplier-our-products .field-secondary {
+    display: block; }
+    #supplier-our-products .field-secondary, #supplier-our-products .field-secondary input {
+      width: 128px; }
+    #supplier-our-products .field-secondary.with-unit input {
+      float: left;
+      width: 112px; }
+    #supplier-our-products .field-secondary.with-unit .field-unit {
+      float: left;
+      width: 16px;
+      line-height: 24px; }
   #supplier-our-products form {
     margin: 0;
     /* come on browsers!? */ }
+  #supplier-our-products label.field-bellow {
+    display: block;
+    margin-bottom: 4px; }
   #supplier-our-products select,
   #supplier-our-products input[type=text],
   #supplier-our-products textarea {
@@ -691,23 +701,18 @@
   #supplier-our-products select {
     background-color: #fff;
     border: 1px solid black;
-    padding: 0 0 0 5px; }
+    padding-left: 4px; }
   #supplier-our-products input[type=text] {
     border: 1px solid black;
-    padding: 3px 5px;
+    padding: 4px;
     margin: 0; }
   #supplier-our-products input[type=checkbox] {
-    margin: 15px 0 2px;
-    width: 11px;
-    height: 11px; }
+    width: 12px;
+    height: 12px;
+    margin: 0; }
   #supplier-our-products textarea {
     height: 64px;
-    padding-left: 5px; }
-  #supplier-our-products a.button.colorbox-close:hover,
-  #supplier-our-products input[type=submit]:hover {
-    background-color: #666;
-    cursor: hand;
-    cursor: pointer; }
+    padding-left: 4px; }
   #supplier-our-products .sortable-table .box-field.status {
     width: 64px; }
   #supplier-our-products .sortable-table .box-field.category {
@@ -727,6 +732,10 @@
   #supplier-our-products .sortable-table form {
     width: 800px;
     float: left; }
+    #supplier-our-products .sortable-table form .field-secondary {
+      float: left; }
+    #supplier-our-products .sortable-table form .internal-table .row.first .block {
+      height: 96px; }
     #supplier-our-products .sortable-table form .internal-table .row .block {
       float: left;
       border-top: 2px solid rgba(255, 255, 255, 0.5);
@@ -745,12 +754,6 @@
         color: black; }
       #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary {
         margin-right: 16px; }
-        #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary, #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary input {
-          width: 128px; }
-        #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary.with-unit input {
-          width: 112px; }
-        #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary .field-unit {
-          width: 16px; }
     #supplier-our-products .sortable-table form .action-button-container {
       float: left;
       width: 800px;

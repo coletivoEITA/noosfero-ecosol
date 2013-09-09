@@ -22,8 +22,8 @@
   <%= label_tag :full_registration, t('suppliers_plugin.views.supplier._edit.full_registration') %>
 <% end %>
 
-<% form_remote_for :supplier, supplier, :loading => "distribution.setLoading('supplier-#{supplier_label}');",
-  :loaded => "distribution.unsetLoading('supplier-#{supplier_label}');",
+<% form_remote_for :supplier, supplier, :loading => "loading_overlay.show('supplier-#{supplier_label}');",
+  :loaded => "loading_overlay.hide('supplier-#{supplier_label}');",
   :url => {:action => supplier.new_record? ? :new : :edit, :id => supplier.id},
   :html => {:class => 'full-registration'} do |f| %>
 

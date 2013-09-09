@@ -37,10 +37,20 @@
       float: left;
       @extend .container-clean;
 
+      .field-secondary {
+        float: left;
+      }
+
       .internal-table {
 
         .row {
           @extend .container-clean;
+
+          &.first {
+            .block {
+              height: 12*$height;
+            }
+          }
 
           .block {
             float: left;
@@ -67,19 +77,6 @@
 
             .field-secondary {
               margin-right: $margin; 
-
-              &, input {
-                width: $module02 - $intercolumn;
-              }
-
-              &.with-unit {
-                &, input {
-                  width: $module02 - 2*$intercolumn;
-                }
-              }
-              .field-unit {
-                width: $intercolumn;
-              }
             }
           }
         }

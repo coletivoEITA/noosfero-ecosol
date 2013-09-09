@@ -1,5 +1,7 @@
 @import 'base';
 
+$input-height: 3*$height;
+
 .field-title {
   text-transform: uppercase;
   font-weight: bold;
@@ -9,12 +11,18 @@
   clear: both;
   @extend .container-clean;
 
+  &:first-child {
+    label {
+      padding-top: 0;
+    }
+  }
+
   label {
+    display: block;
+    float: left;
+    padding-top: $half-padding;
     font-weight: bold;
     line-height: 20px;
-    margin-top: 4px;
-    float: left;
-    display: block;
   }
   .field-box {
     clear: both;
@@ -22,15 +30,15 @@
     width: 100%;
   }
   .field-help {
-    font-size: 10px;
     clear: both;
-    margin-bottom: 7px;
+    margin-bottom: $half-margin;
+    font-size: 10px;
   }
 }
 
 .field-radio {
   clear: both;
-  margin-bottom: 3px;
+  margin-bottom: $half-padding;
 
   input {
     float: left;
@@ -40,27 +48,42 @@
     font-weight: normal;
     line-height: 10px;
     text-transform: lowercase;
-    margin-left: 4px;
+    margin-left: $half-padding;
   }
 }
 
 .field-secondary {
+  display: block;
+
   &, input {
-    width: $module02;
+    width: $module02 - $intercolumn;
   }
 
   &.with-unit {
-    &, input {
-      width: $module02 - $intercolumn;
+    @extend .container-clean;
+
+    input {
+      float: left;
+      width: $module02 - 2*$intercolumn;
     }
-  }
-  .field-unit {
-    width: $intercolumn;
+    .field-unit {
+      float: left;
+      width: $intercolumn;
+      line-height: $input-height;
+    }
   }
 }
 
 form {
   margin: 0; /* come on browsers!? */
+}
+
+label {
+
+  &.field-bellow {
+    display: block;
+    margin-bottom: $half-padding;
+  }
 }
 
 select,
@@ -74,42 +97,39 @@ textarea {
 
 select,
 input[type=text] {
-  height: 24px;
+  height: $input-height;
 }
 
 select {
   background-color: #fff;
-  border: 1px solid black;
-  padding: 0 0 0 5px;
+  border: $border solid black;
+  padding-left: $half-padding;
 }
 
 input[type=text] {
-  border: 1px solid black;
-  padding: 3px 5px;
+  border: $border solid black;
+  padding: $half-padding;
   margin: 0;
 }
 
 input[type=checkbox] {
-  margin: 15px 0 2px;
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
+  margin: 0;
 }
 
 textarea {
-  height: 64px;
-  padding-left: 5px;
-}
-
-a.button.colorbox-close:hover,
-input[type=submit]:hover {
-  background-color: #666;
-  cursor: hand;
-  cursor: pointer;
+  height: 8*$height;
+  padding-left: $half-padding;
 }
 
 a.button.colorbox-close,
 #wrap-1 input[type=submit],
 input[type=submit] {
   @extend .action-button;
+
+  &:hover {
+
+  }
 }
 

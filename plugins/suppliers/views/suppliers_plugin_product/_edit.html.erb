@@ -1,8 +1,8 @@
 <div class="box-edit">
 
   <% form_remote_for :product, product,
-    :loading => "distribution.setLoading('our-product-#{product.id}')",
-    :loaded => "distribution.unsetLoading('our-product-#{product.id}')",
+    :loading => "loading_overlay.show('our-product-#{product.id}')",
+    :loaded => "loading_overlay.hide('our-product-#{product.id}')",
     :url => {:controller => :suppliers_plugin_product, :action => :edit, :id => product ? product.id : nil} do |f| %>
 
     <div class="internal-table">
@@ -10,26 +10,30 @@
         <%= t('suppliers_plugin.views.product._edit.distribution_setts') %>
       </div>
 
-      <div class="row">
+      <div class="row first">
         <div class="block margin-price">
           <div class="field">
             <%= f.label :margin_percentage, t('suppliers_plugin.views.product._edit.margin_price') %>
           </div>
 
-          <div>
+          <div data-default-toggle>
             <%= f.check_box :default_margin_percentage %>
             <%= f.label :default_margin_percentage, t('suppliers_plugin.views.product._edit.default_margin') %>
           </div>
 
-          <div>
+          <div data-non-defaults>
             <span class="field-secondary with-unit">
-              <%= f.text_field :margin_percentage %>
+              <%= f.text_field :margin_percentage,
+                :value => product.margin_percentage_as_currency_number,
+                :onkeyup => 'suppliers.our_product.pmsync(this, true);' %>
               <span class="field-unit"> <%= '%' %> </span>
             </span>
             <span class="field-secondary with-unit">
-              <%= hidden_field_tag :base_price, product.from_product.price %>
+              <%= hidden_field_tag :base_price, product.from_product.price, :id => 'product_base_price' %>
               <span class="field-unit"> <%= environment.currency_unit %> </span>
-              <%= f.text_field :price %>
+              <%= f.text_field :price,
+                :value => product.price_as_currency_number,
+                :onkeyup => 'suppliers.our_product.pmsync(false, true);' %>
             </span>
           </div>
         </div>
@@ -39,14 +43,14 @@
             <%= f.label :stock, t('suppliers_plugin.views.product._edit.stock') %>
           </div>
 
-          <div>
+          <div data-default-toggle>
             <%= f.check_box :default_stored %>
             <%= f.label :default_stored, t('suppliers_plugin.views.product._edit.default_stock') %>
           </div>
 
-          <div>
+          <div data-non-defaults>
             <span class="field-secondary">
-              <%= f.label :stored, t('suppliers_plugin.views.product._edit.current_stock') %>
+              <%= f.label :stored, t('suppliers_plugin.views.product._edit.current_stock'), :class => 'field-bellow' %>
               <%= f.text_field :stored %>
             </span>
           </div>
@@ -71,8 +75,8 @@
       <%= link_to_function t('suppliers_plugin.views.product._edit.cancel'), :class => 'toggle-edit action-button cancel' %>
       <%= link_to_remote t('suppliers_plugin.views.product._edit.remove_product'), {
         :confirm => t('suppliers_plugin.views.product._edit.are_you_sure_you_want'),
-        :loading => "distribution.setLoading('our-product-#{product.id}')",
-        :loaded => "distribution.unsetLoading('our-product-#{product.id}')",
+        :loading => "loading_overlay.show('our-product-#{product.id}')",
+        :loaded => "loading_overlay.hide('our-product-#{product.id}')",
         :url => {:controller => :suppliers_plugin_product, :action => 'destroy', :id => product.id }
       }, :class => 'action-button remove' %>
     </div>

@@ -1,5 +1,4 @@
 <div id="filter-fields" class="filter-box">
-  <div id='filter-products-loading' class="distribution-loading"></div>
   <strong><%= t('distribution_plugin.views.order._filter_products.filter') %></strong>
 
   <% form_remote_tag :update => 'order-filter', :loading => 'jQuery("#filter-products-loading").show()', :loaded => 'jQuery("#filter-products-loading").hide()', :url => {:controller => :distribution_plugin_product, :action => :session_filter}, :html => {:id => 'filter-form'}, :method => :get do %>

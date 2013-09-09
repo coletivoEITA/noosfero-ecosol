@@ -1,5 +1,7 @@
 distribution = {
 
+  /* ----- header ----- */
+
   toggle_header_color_area: function(t) {
     if (t.value != 'pure_color') {
       jQuery('#distribution-header-bg-color input').each(function(f){
@@ -19,27 +21,7 @@ distribution = {
     }
   },
 
-  calculate_price: function (price_input, margin_input, base_price_input) {
-    var price = unlocalize_currency(jQuery(price_input).val());
-    var base_price = unlocalize_currency(jQuery(base_price_input).val());
-    var margin = unlocalize_currency(jQuery(margin_input).val());
-
-    var value = base_price + (margin / 100) * base_price;
-    if (isNaN(value))
-      value = unlocalize_currency(base_price_input.val());
-    jQuery(price_input).val(localize_currency(value));
-  },
-  calculate_margin: function (margin_input, price_input, base_price_input) {
-    var price = unlocalize_currency(jQuery(price_input).val());
-    var base_price = unlocalize_currency(jQuery(base_price_input).val());
-    var margin = unlocalize_currency(jQuery(margin_input).val());
-
-    var value = ((price - base_price) / base_price ) * 100;
-    value = !isFinite(value) ? '' : localize_currency(value);
-    jQuery(margin_input).val(value);
-  },
-
-  /* ----- session stuff  ----- */
+  /* ----- session ----- */
 
   in_session_order_toggle: function (context) {
     container = jQuery(context).hasClass('session-orders') ? jQuery(context) : jQuery(context).parents('.session-orders');
@@ -48,10 +30,7 @@ distribution = {
     sortable_table.edit_arrow_toggle(container);
   },
 
-  /* ----- ends session stuff  ----- */
-
-
-  /* ----- order stuff  ----- */
+  /* ----- order ----- */
 
   order_product_include: function (message, url) {
     if (message)
@@ -68,9 +47,7 @@ distribution = {
     });
   },
 
-  /* ----- ends order stuff  ----- */
-
-  /* ----- session editions stuff  ----- */
+  /* ----- session editions ----- */
 
   offered_product: {
 
@@ -83,16 +60,14 @@ distribution = {
       base_price = unlocalize_currency(buy_price.val()) ? buy_price : original_price;
 
       if (to_price)
-        distribution.calculate_price(price, margin, base_price);
+        suppliers.price.calculate(price, margin, base_price);
       else
-        distribution.calculate_margin(margin, price, base_price);
+        suppliers.margin.calculate(margin, price, base_price);
     },
 
   },
 
-  /* ----- ends session editions stuff  ----- */
-
-  /* ----- toggle edit stuff  ----- */
+  /* ----- toggle edit ----- */
 
   offered_product_edit: function () {
     toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
@@ -112,44 +87,14 @@ distribution = {
     toggle_edit.editing().find('.quantity-entry').toggle(toggle_edit.isEditing());
   },
 
-  checkbox_change: function () {
-    jQuery(this).attr('checked', this.checked ? 'checked' : null);
-    return false;
-  },
-
   colorbox: function (options) {
     options.innerWidth = 500;
     jQuery.colorbox(options);
   },
 
-  // block user actions while making a post. Also indicate the network transaction
-  setLoading: function (element) {
-    var pos       = jQuery.extend({
-      width:    jQuery("#"+element).outerWidth(),
-    height:   jQuery("#"+element).outerHeight()
-    }, jQuery("#"+element).position());
-    jQuery('<div>', {
-      id: element + '-overlay',
-      css:   {
-        position:         'absolute',
-      top:              pos.top,
-      left:             pos.left,
-      width:            pos.width,
-      height:           pos.height,
-      backgroundImage:  'url(/plugins/distribution/images/loading.gif)',
-      opacity:          0.90,
-      zIndex:          10
-      }
-    }).appendTo(jQuery("#"+element));
-  },
-
-  unsetLoading: function (element) {
-    jQuery("#"+element+"-overlay").remove();
-  },
-
   ajaxifyPagination: function(elementId) {
     jQuery(".pagination a").click(function() {
-      distribution.setLoading(elementId);
+      loading_overlay.show(elementId);
       jQuery.ajax({
         type: "GET",
         url: jQuery(this).attr("href"),
@@ -166,21 +111,7 @@ distribution = {
   },
 }
 
-/* ----- events  ----- */
-
-jQuery('.plugin-distribution input[type=checkbox]').live('change', distribution.checkbox_change);
-
-/* ----- ends events  ----- */
-
-/* ----- infrastructure stuff  ----- */
-
-(function($) {
-  $.fn.toggleDisabled = function() {
-    return this.each(function() {
-      this.disabled = !this.disabled;
-    });
-  };
-})(jQuery);
+/* ----- infrastructure ----- */
 
 Array.prototype.diff = function(a) {
   return this.filter(function(i) {return !(a.indexOf(i) > -1);});
@@ -195,75 +126,4 @@ Array.prototype.max = function(){
 Array.prototype.min = function(){
   return Math.min.apply({}, this);
 }
-
-function jQuerySort(elements, options) {
-  if (typeof options === 'undefined') options = {};
-  options.ascending = typeof options.ascending === 'undefined' ? 1 : (options.ascending ? 1 : -1);
-  var list = elements.get();
-  list.sort(function(a, b) {
-    var compA = (options.find ? jQuery(a).find(options.find) : jQuery(a)).text().toUpperCase();
-    var compB = (options.find ? jQuery(b).find(options.find) : jQuery(b)).text().toUpperCase();
-    return options.ascending * ((compA < compB) ? -1 : (compA > compB) ? 1 : 0);
-  });
-  parent = elements.first().parent();
-  jQuery.each(list, function(index, element) { parent.append(element); });
-}
-
-/* ----- ends infrastructure stuff  ----- */
-
-/* ----- localization stuff  ----- */
-
-locale = 'pt'; //FIXME: don't hardcode
-standard_locale = 'en';
-code_locale = 'code';
-locale_info = {
-  'code': {
-    'currency': {
-      'delimiter': '',
-      'separator': '.',
-      'decimals': null,
-    }
-  },
-  'en': {
-    'currency': {
-      'delimiter': ',',
-      'separator': '.',
-      'decimals': 2,
-    }
-  },
-  'pt': {
-    'currency': {
-      'delimiter': '.',
-      'separator': ',',
-      'decimals': 2,
-    }
-  },
-}
-
-function localize_currency(value, to, from) {
-  if (!to)
-    to = locale;
-  if (!from)
-    from = standard_locale;
-  var lvalue = unlocalize_currency(value, from);
-  from = standard_locale;
-  lvalue = lvalue.toFixed(locale_info[to].currency.decimals);
-  lvalue = lvalue.replace(locale_info[from].currency.delimiter, locale_info[to].currency.delimiter);
-  lvalue = lvalue.replace(locale_info[from].currency.separator, locale_info[to].currency.separator);
-  return lvalue;
-}
-
-function unlocalize_currency(value, from) {
-  if (!value)
-    return 0;
-  if (!from)
-    from = locale;
-  var lvalue = value.toString();
-  var to = code_locale;
-  lvalue = lvalue.replace(locale_info[from].currency.delimiter, locale_info[to].currency.delimiter);
-  lvalue = lvalue.replace(locale_info[from].currency.separator, locale_info[to].currency.separator);
-  return parseFloat(lvalue);
-}
-
-/* ----- ends localization stuff  ----- */
 
