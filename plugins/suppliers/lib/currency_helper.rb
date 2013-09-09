@@ -22,27 +22,27 @@ module CurrencyHelper
 
   module ClassMethods
 
-    def has_number_with_locale field
-      define_method "#{field}=" do |value|
-        if value.is_a?(String)
-          self[field] = CurrencyHelper.parse_localized_number value
-        else
-          self[field] = value
+    def has_number_with_locale attr
+      if self.methods.include? "#{attr}="
+        alias_method_chain "#{attr}=", :locale
+        define_method "#{attr}_with_locale=" do |value|
+          value = CurrencyHelper.parse_localized_number(value) if value.is_a?(String)
+          self.send "#{attr}_without_locale=", value
         end
       end
 
-      define_method "#{field}_as_currency_number" do |*args, &block|
-        number = send(field, *args, &block) rescue self[field]
+      define_method "#{attr}_as_currency_number" do |*args, &block|
+        number = send(attr, *args, &block) rescue self[attr]
         CurrencyHelper.number_as_currency_number number
       end
-      define_method "#{field}_as_currency" do |*args, &block|
-        number = send(field, *args, &block) rescue self[field]
+      define_method "#{attr}_as_currency" do |*args, &block|
+        number = send(attr, *args, &block) rescue self[attr]
         CurrencyHelper.number_as_currency number
       end
     end
 
-    def has_currency field
-      self.has_number_with_locale field
+    def has_currency attr
+      self.has_number_with_locale attr
     end
 
   end

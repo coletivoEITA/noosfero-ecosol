@@ -1,0 +1,54 @@
+<div id="filter-fields" class="filter-box">
+  <strong><%= t('orders_cycle_plugin.views.order._filter_products.filter') %></strong>
+
+  <% form_remote_tag :update => 'order-filter', :loading => 'jQuery("#filter-products-loading").show()', :loaded => 'jQuery("#filter-products-loading").hide()', :url => {:controller => :orders_cycle_plugin_product, :action => :cycle_filter}, :html => {:id => 'filter-form'}, :method => :get do %>
+
+    <%= hidden_field_tag(:cycle_id, cycle.id)  %>
+    <%= hidden_field_tag(:order_id, order.id) unless order.nil?  %>
+
+    <div class="box-field name">
+      <div><%= t('orders_cycle_plugin.views.order._filter_products.product_name') %></div>
+      <div><%= text_field_tag :name, params[:name], :onkeydown => "var field = this; function name_form_submit() {field.form.onsubmit();}; setTimeout(name_form_submit, 700);" %></div>
+    </div>
+
+    <div class="box-field supplier">
+      <div>
+        <div><%= t('orders_cycle_plugin.views.order._filter_products.supplier') %></div>
+        <%= select_tag :supplier_id, options_for_select([[t('orders_cycle_plugin.views.order._filter_products.all_the_suppliers'), ""]] + supplier_choices(profile), params[:supplier_profile_id].to_i),
+          :onchange => "this.form.onsubmit()" %>
+      </div>
+    </div>
+
+    <div class="box-field category">
+      <div>
+        <%# select_tag :category_id, options_for_select(@product_categories.map{ |pc| [pc.name, pc.id]}.insert(0,[t('orders_cycle_plugin.views.order._filter_products.all_the_categories'), ""])),
+          {:onchange => "this.form.onsubmit()"} %>
+      </div>
+    </div>
+
+    <div class="box-field qualifier">
+      <div><%# select_tag :qualifier_id, options_for_select([t('orders_cycle_plugin.views.order._filter_products.anyone'), '']) %></div>
+    </div>
+
+    <div class="box-field stock">
+      <div><%# t('orders_cycle_plugin.views.order._filter_products.whose_qty_available_i') %></div>
+      <div><%# select_tag :stock, options_for_select([t('orders_cycle_plugin.views.order._filter_products.bigger_than_the_stock'), '']) %></div>
+    </div>
+
+    <% if false -%>
+      <div class="box-field state">
+        <div><%= t('orders_cycle_plugin.views.order._filter_products.and_being') %></div>
+        <div>
+          <%= select_tag :available, options_for_select([[t('orders_cycle_plugin.views.order._filter_products.in_any_state'), ""], [ t('orders_cycle_plugin.views.order._filter_products.active'), 'true'], [ t('orders_cycle_plugin.views.order._filter_products.inactive'), 'false']], params[:active]),
+            :onchange => "this.form.onsubmit()" %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="clean"></div>
+</div>
+
+
+
+

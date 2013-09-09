@@ -734,13 +734,12 @@
     float: left; }
     #supplier-our-products .sortable-table form .field-secondary {
       float: left; }
-    #supplier-our-products .sortable-table form .internal-table .row.first .block {
-      height: 96px; }
     #supplier-our-products .sortable-table form .internal-table .row .block {
       float: left;
       border-top: 2px solid rgba(255, 255, 255, 0.5);
       border-right: 2px solid rgba(255, 255, 255, 0.5);
       padding: 8px;
+      padding-top: 6px;
       padding-right: 6px;
       margin: 0; }
       #supplier-our-products .sortable-table form .internal-table .row .block:last-child {

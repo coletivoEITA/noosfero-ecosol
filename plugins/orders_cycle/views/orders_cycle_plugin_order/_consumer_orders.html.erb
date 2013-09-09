@@ -1,0 +1,103 @@
+<h3>
+  <% if @admin_edit %>
+    <%= t('orders_cycle_plugin.views.order._consumer_orders.orders_from_consumer_') % {:consumer => @consumer.name} %>
+  <% elsif @consumer %>
+    <%= t('orders_cycle_plugin.views.order._consumer_orders.your_orders_on_this_c') %>
+    <%= link_to t('orders_cycle_plugin.views.order._consumer_orders.new_order'), {:action => :new, :cycle_id => @cycle.id} if !@admin_edit and @cycle.orders? %>
+  <% end %>
+</h3>
+
+<% if @admin_edit %>
+  <div id="order-admin-warning" class="order-message">
+    <div class="order-message-text">
+      <%= t('orders_cycle_plugin.views.order._consumer_orders.caution') % {
+        :consumer => @consumer.name } %>
+    </div>
+    <div class="order-message-actions">
+      <%= link_to t('orders_cycle_plugin.views.order._consumer_orders.edit_your_orders'), {:action => :edit, :cycle_id => @cycle.id} %>&emsp;
+      <%# link_to t('orders_cycle_plugin.views.order._consumer_orders.orders_from_another_m'), {:action => :reopen, :id => @order.id} %>
+      <%= link_to t('orders_cycle_plugin.views.order._consumer_orders.administration_of_thi'), {:controller => :orders_cycle_plugin_cycle, :action => :edit, :id => @cycle.id} %>&emsp;
+    </div>
+  </div>
+  <div id="order-place-new" class="admin">
+    <%= link_to t('orders_cycle_plugin.views.order._consumer_orders.new_order'), {:action => :admin_new, :consumer_id => @order.consumer.id, :cycle_id => @cycle.id} if @cycle.orders? %>
+  </div>
+<% else %>
+  <% if @consumer.nil? %>
+    <% message = t('orders_cycle_plugin.views.order._consumer_orders.to_place_an_order_you') % {
+      :login => colorbox_link_to(t('orders_cycle_plugin.views.order._consumer_orders.login'), login_url, :id => 'link_login'),
+      :signup => link_to(t('orders_cycle_plugin.views.order._consumer_orders.sign_up'), :controller => 'account', :action => 'signup'),
+    } %>
+  <% else %>
+    <% if @cycle.orders? %>
+      <% if @consumer_orders.count == 0 %>
+        <% message = t('orders_cycle_plugin.views.order._consumer_orders.you_haven_t_placed_an') %>
+      <% end %>
+    <% elsif @cycle.edition? %>
+      <% message = t('orders_cycle_plugin.views.order._consumer_orders.this_cycle_is_not_ope') %>
+    <% else %>
+      <% message = t('orders_cycle_plugin.views.order._consumer_orders.this_cycle_is_already') %>
+    <% end %>
+  <% end %>
+  <% if message %>
+    <div id="order-place-new">
+      <%= message %>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="clean"></div>
+
+<% @consumer_orders.each do |order| %>
+  <div id="consumer-order-<%= order.id %>" class="consumer-order <%= "edit" if @order == order %>">
+
+    <%= render :partial => 'status', :locals => {:order => order} %>
+
+    <% if @order == order %>
+      <% unless order.open? %>
+        <div id="order-status-message" class="order-message status-<%= order.current_status %>">
+          <div class="order-message-text">
+            <% if order.confirmed? %>
+              <%= t('orders_cycle_plugin.views.order._consumer_orders.your_order_is_confirm') %>
+            <% elsif order.cancelled? %>
+              <%= t('orders_cycle_plugin.views.order._consumer_orders.your_order_was_cancel') %>
+            <% else %>
+              <%= t('orders_cycle_plugin.views.order._consumer_orders.your_order_wasn_t_con') %>
+            <% end %>
+          </div>
+          <div class="order-message-actions">
+            <div><%= t('orders_cycle_plugin.views.order._consumer_orders.you_still_can') %></div>
+            <% if @cycle.orders? %>
+              <%= link_to t('orders_cycle_plugin.views.order._consumer_orders.change_order'), {:action => :reopen, :id => order.id}  %>
+              <%= t('orders_cycle_plugin.views.order._consumer_orders.before_the_closing') %>&emsp;
+            <% end %>
+            <br>
+            <% unless order.cancelled? %>
+              <%= link_to t('orders_cycle_plugin.views.order._delivery.cancel_order'), {:action => :cancel, :id => order.id} %>
+              <br>
+            <% end %>
+            <%= colorbox_link_to t('orders_cycle_plugin.views.order._consumer_orders.send_message_to_the_m'), {:controller => :orders_cycle_plugin_message, :action => :new_to_admins} %>
+          </div>
+        </div>
+      <% end %>
+
+      <div id="order-products">
+        <%= render :partial => 'orders_plugin_consumer/products', :locals => {:order => order} %>
+      </div>
+
+      <div id="delivery-box">
+        <%= render :partial => 'delivery', :locals => {:order => order} %>
+      </div>
+
+      <div class="clean"></div>
+    <% end %>
+  </div>
+<% end %>
+
+<div id="show-cancelled-orders">
+  <%= link_to_function t('orders_cycle_plugin.views.order._consumer_orders.show_cancelled_orders'), "distribution.toggleCancelledOrders()" %>
+</div>
+<div id="hide-cancelled-orders">
+  <%= link_to_function t('orders_cycle_plugin.views.order._consumer_orders.hide_cancelled_orders'), "distribution.toggleCancelledOrders()", :style => 'display:none' %>
+</div>
+

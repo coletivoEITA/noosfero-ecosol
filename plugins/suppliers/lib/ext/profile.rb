@@ -8,8 +8,12 @@ class Profile
     !self.visible
   end
 
+  def supplier_settings
+    @supplier_settings ||= Noosfero::Plugin::Settings.new self, SuppliersPlugin
+  end
+
   has_many :suppliers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :consumer_id, :order => 'name ASC', :dependent => :destroy
-  has_many :consumers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :profile_id, :order => 'name ASC'
+  has_many :consumers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :profile_id, :order => 'name ASC', :dependent => :destroy
 
   alias_method :orig_suppliers, :suppliers
   def suppliers
@@ -21,21 +25,21 @@ class Profile
     orig_suppliers.of_profile(self).first || self.orig_suppliers.create!(:profile => self)
   end
 
-  def has_supplier?(supplier)
+  def has_supplier? supplier
     suppliers.include? supplier
   end
-  def has_consumer?(consumer)
+  def has_consumer? consumer
     consumers.include? consumer
   end
 
-  def add_supplier(supplier)
+  def add_supplier supplier
     supplier.add_consumer self
   end
-  def remove_supplier(supplier)
+  def remove_supplier supplier
     supplier.remove_consumer self
   end
 
-  def add_consumer(consumer)
+  def add_consumer consumer
     return if has_consumer? consumer
 
     consumer.affiliate self, SuppliersPlugin::Supplier::Roles.consumer(self.profile.environment)
@@ -44,7 +48,7 @@ class Profile
     consumer.add_supplier_products supplier unless consumer.consumer?
     supplier
   end
-  def remove_consumer(consumer)
+  def remove_consumer consumer
     consumer.disaffiliate self, SuppliersPlugin::Supplier::Roles.consumer(self.profile.environment)
     supplier = consumers.find_by_consumer_id(consumer.id)
 
@@ -52,10 +56,10 @@ class Profile
     supplier
   end
 
-  def add_supplier_products(supplier)
-    raise "'#{supplier.name}' is not a supplier of #{self.profile.name}" unless has_supplier?(supplier)
+  def add_supplier_products supplier
+    raise "'#{supplier.name}' is not a supplier of #{self.profile.name}" unless has_supplier? supplier
 
-    already_supplied = self.products.unarchived.distributed.of_supplier(supplier).all
+    already_supplied = self.products.unarchived.distributed.of_supplier supplier.all
     supplier.products.unarchived.each do |np|
       next if already_supplied.find{ |f| f.supplier_product == np }
 
@@ -64,10 +68,24 @@ class Profile
     end
   end
 
-  def not_distributed_products(supplier)
-    raise "'#{supplier.name}' is not a supplier of #{self.profile.name}" unless has_supplier?(supplier)
+  def not_distributed_products supplier
+    raise "'#{supplier.name}' is not a supplier of #{self.profile.name}" unless has_supplier? supplier
 
     supplier.node.products.unarchived.own.distributed - self.from_products.unarchived.distributed.by_node(supplier.node)
+  end
+
+  delegate :margin_percentage, :to => :supplier_settings
+  delegate :margin_percentage=, :to => :supplier_settings
+  extend CurrencyHelper::ClassMethods
+  has_number_with_locale :margin_percentage
+
+  def default_products_margins
+    self.class.transaction do
+      products.unarchived.distributed.each do |product|
+        product.default_margin_percentage = true
+        product.save!
+      end
+    end
   end
 
 end

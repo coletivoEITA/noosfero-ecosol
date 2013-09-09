@@ -1,15 +1,26 @@
 #!/bin/bash
 
-../../../../script/noosfero-plugins disable distribution
-../../../../script/noosfero-plugins enable distribution
-../../../../script/noosfero-plugins disable suppliers
-../../../../script/noosfero-plugins enable suppliers
-../../../../script/noosfero-plugins disable orders
-../../../../script/noosfero-plugins enable orders
-../../../../script/noosfero-plugins disable delivery
-../../../../script/noosfero-plugins enable delivery
+set -x
 
-ln -sf `ls orders_plugin_move/*` `ls suppliers_plugin_move/*` `ls delivery_plugin_move/*` .
+noosfero_plugins=../../../../script/noosfero-plugins
+$noosfero_plugins disable distribution
+$noosfero_plugins enable distribution
+
+runner=../../../../script/runner
+$runner 'e=Environment.default; e.enabled_plugins = ["ShoppingCartPlugin", "SolrPlugin", "DeliveryPlugin", "OrdersPlugin", "OrdersCyclePlugin", "SuppliersPlugin", "ConsumersCoopPlugin"]; e.save'
+
+PLUGINS="suppliers delivery orders orders_cycle consumers_coop"
+for plugin in $PLUGINS; do
+  $noosfero_plugins disable $plugin
+  $noosfero_plugins enable $plugin
+done
+
+MIGRATIONS=""
+for plugin in $PLUGINS; do
+  MIGRATIONS+="${plugin}_plugin_move/* "
+done
+
+ln -sf $MIGRATIONS .
 
 rake db:migrate --trace
 rake db:migrate --trace

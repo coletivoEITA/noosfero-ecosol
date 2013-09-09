@@ -48,7 +48,7 @@
 
           &.first {
             .block {
-              height: 12*$height;
+              //height: 12*$height;
             }
           }
 
@@ -57,6 +57,7 @@
             border-top: 2*$border solid rgba(255,255,255,0.5);
             border-right: 2*$border solid rgba(255,255,255,0.5);
             padding: $padding;
+            padding-top: $padding - 2*$border;
             padding-right: $padding - 2*$border;
             margin: 0;
 

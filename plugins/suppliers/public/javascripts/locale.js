@@ -3,7 +3,7 @@ if (typeof locale === 'undefined') {
 locale = 'pt'; //FIXME: don't hardcode
 standard_locale = 'en';
 code_locale = 'code';
-locale_info = {
+locale_data = {
   'code': {
     'currency': {
       'delimiter': '',
@@ -34,9 +34,9 @@ function localize_currency(value, to, from) {
     from = standard_locale;
   var lvalue = unlocalize_currency(value, from);
   from = standard_locale;
-  lvalue = lvalue.toFixed(locale_info[to].currency.decimals);
-  lvalue = lvalue.replace(locale_info[from].currency.delimiter, locale_info[to].currency.delimiter);
-  lvalue = lvalue.replace(locale_info[from].currency.separator, locale_info[to].currency.separator);
+  lvalue = lvalue.toFixed(locale_data[to].currency.decimals);
+  lvalue = lvalue.replace(locale_data[from].currency.delimiter, locale_data[to].currency.delimiter);
+  lvalue = lvalue.replace(locale_data[from].currency.separator, locale_data[to].currency.separator);
   return lvalue;
 }
 
@@ -47,8 +47,8 @@ function unlocalize_currency(value, from) {
     from = locale;
   var lvalue = value.toString();
   var to = code_locale;
-  lvalue = lvalue.replace(locale_info[from].currency.delimiter, locale_info[to].currency.delimiter);
-  lvalue = lvalue.replace(locale_info[from].currency.separator, locale_info[to].currency.separator);
+  lvalue = lvalue.replace(locale_data[from].currency.delimiter, locale_data[to].currency.delimiter);
+  lvalue = lvalue.replace(locale_data[from].currency.separator, locale_data[to].currency.separator);
   return parseFloat(lvalue);
 }
 

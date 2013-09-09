@@ -9,7 +9,6 @@ class SuppliersPlugin::BaseProduct < Product
 
   settings_items :minimum_selleable, :type => Float, :default => nil
   settings_items :margin_percentage, :type => Float, :default => nil
-  settings_items :margin_fixed, :type => Float, :default => nil
   settings_items :stored, :type => Float, :default => nil
   settings_items :quantity, :type => Float, :default => nil
   settings_items :category_id, :type => Integer, :default => nil
@@ -20,17 +19,18 @@ class SuppliersPlugin::BaseProduct < Product
 
   validates_associated :from_products
 
-  DEFAULT_ATTRIBUTES = [:name, :description, :margin_percentage, :margin_fixed,
+  DEFAULT_ATTRIBUTES = [:name, :description, :margin_percentage,
     :price, :stored, :unit_id, :minimum_selleable, :unit_detail]
 
   extend ActsAsHavingSettings::DefaultItem::ClassMethods
   settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :from_product
-  settings_default_item :price, :type => :boolean, :default => true, :delegate_to => :from_product
+  settings_default_item :margin_percentage, :type => :boolean, :default => true, :delegate_to => :profile
+  default_item :price, :if => :default_margin_percentage, :delegate_to => :from_product
+  settings_default_item :unit_id, :type => :boolean, :default => true, :delegate_to => :from_product
+  default_item :unit_detail, :if => :default_unit_id, :delegate_to => :from_product
   settings_default_item :stored, :type => :boolean, :default => true, :delegate_to => :from_product
-  default_item :unit_id, :if => :default_price, :delegate_to => :from_product
-  default_item :minimum_selleable, :if => :default_price, :delegate_to => :from_product
-  default_item :unit_detail, :if => :default_price, :delegate_to => :from_product
+  settings_default_item :minimum_selleable, :type => :boolean, :default => true, :delegate_to => :from_product
 
   extend CurrencyHelper::ClassMethods
   has_number_with_locale :minimum_selleable
@@ -40,6 +40,9 @@ class SuppliersPlugin::BaseProduct < Product
   has_number_with_locale :own_stored
   has_number_with_locale :original_stored
   has_number_with_locale :quantity
+  has_number_with_locale :margin_percentage
+  has_number_with_locale :own_margin_percentage
+  has_number_with_locale :original_margin_percentage
   has_currency :price
   has_currency :own_price
   has_currency :original_price
@@ -55,13 +58,13 @@ class SuppliersPlugin::BaseProduct < Product
   def price_with_margins base_price = nil, margin_source = nil
     price = 0 unless price
     base_price ||= price
+    margin_source ||= self
     ret = base_price
 
     if margin_source.margin_percentage
       ret += (margin_source.margin_percentage / 100) * ret
-    end
-    if margin_source.margin_fixed
-      ret += margin_source.margin_fixed
+    elsif self.profile.supplier_margin_percentage
+      ret += (self.profile.supplier_margin_percentage / 100) * ret
     end
 
     ret

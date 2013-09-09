@@ -1,0 +1,58 @@
+<h3><%= t('orders_cycle_plugin.views.cycle._edit_fields.general_settings') %></h3>
+
+<% form_remote_for :cycle, @cycle, :url => {:action => @cycle.new? ? :new : :edit, :id => @cycle.id } do |f| %>
+
+  <%= labelled_field(f, :name, t('orders_cycle_plugin.views.cycle._edit_fields.name'), f.text_field(:name), :class => 'cycle-field-name') %>
+  <%= labelled_field(f, :description, t('orders_cycle_plugin.views.cycle._edit_fields.description'), f.text_area(:description), :class => 'cycle-field-description') %>
+
+  <div class="cycle-fields-block">
+    <%= labelled_period_field(f, :start, :finish, t('orders_cycle_plugin.views.cycle._edit_fields.orders_interval'), :class => 'cycle-orders-period') %>
+  </div>
+  <div class="cycle-fields-block">
+    <%= labelled_period_field(f, :delivery_start, :delivery_finish, t('orders_cycle_plugin.views.cycle._edit_fields.deliveries_interval'), :class => 'cycle-orders-period') %>
+  </div>
+
+  <div class="cycle-fields-block">
+    <div id='cycle-delivery' class="field">
+      <%= f.label(:delivery_methods, t('orders_cycle_plugin.views.cycle._edit_fields.available_delivery_me')) %>
+
+      <div>
+        <div id='cycle-delivery-options' class="subtitle">
+          <%= render :partial => 'delivery_plugin_option/index', :locals => {:owner => @cycle} %>
+        </div>
+        <%= colorbox_link_to t('orders_cycle_plugin.views.cycle._edit_fields.add_method'), { :controller => :orders_cycle_plugin_delivery_option, :action => :select, :owner_id => @cycle.id, :owner_type => @cycle.class.name }, :class => 'cycle-add-delivery-option subtitle'  %>
+      </div>
+
+      <div class="clean"></div>
+    </div>
+  </div>
+
+  <div id="cycle-new-mail">
+    <%= check_box_tag('sendmail', 'yes', false, :id => 'cycle-new-mail-send') %>
+    <%= content_tag('label', t('orders_cycle_plugin.views.cycle._edit_fields.notify_members_of_ope'), :for => 'sendmail') %>
+
+    <div class='mail-message'>
+      <%= f.label(:sendmail, t('orders_cycle_plugin.views.cycle._edit_fields.opening_message')) %>
+      <div><%=t('orders_cycle_plugin.views.cycle._edit_fields.this_message_will_be_') %></div>
+      <%= f.text_area(:opening_message) %>
+    </div>
+    <%= observe_field 'cycle-new-mail-send', :on => 'click', :function => "distribution.cycle_mail_message_toggle()" %>
+  </div>
+  <%= f.submit @cycle.new? ? t('orders_cycle_plugin.views.cycle._edit_fields.create_new_cycle') : t('orders_cycle_plugin.views.cycle._edit_fields.save'), :onclick => 'saveClick = true' %>
+  <%= link_to t('orders_cycle_plugin.views.cycle._edit_fields.cancel_changes'), @cycle.new? ? {:action => :index} : params %>
+<% end %>
+
+<%= javascript_include_tag '/plugins/distribution/jquery.calendrical.js' %>
+<% javascript_tag do %>
+  options = {isoTime: true}
+  jQuery('#cycle_start_date, #cycle_start_time, #cycle_finish_date, #cycle_finish_time').calendricalDateTimeRange(options);
+  jQuery('#cycle_delivery_start_date, #cycle_delivery_start_time, #cycle_delivery_finish_date, #cycle_delivery_finish_time').calendricalDateTimeRange(options);
+
+  var saveClick = false;
+  <% if @cycle.new? %>
+    jQuery(window).bind('beforeunload', function () {
+      if (!saveClick)
+        jQuery.ajax({type: 'POST', async: false, url: '<%= url_for(:action => :destroy, :id => @cycle.id) %>'});
+    });
+  <% end %>
+<% end %>

@@ -1,0 +1,28 @@
+<div class="cycle-products-table sortable-table">
+  <%= pagination_links @products %>
+  <div id="result-count">
+    <small><%= t('orders_cycle_plugin.views.cycle._product_lines.showing_pcount_produc') % {:pcount => @products.length, :allpcount => @cycle.products.count} %></small>
+  </div>
+  <div class='table-header'>
+    <span class='box-field category'><%= t('orders_cycle_plugin.views.cycle._product_lines.category') %></span>
+    <span class='box-field supplier'><%= t('orders_cycle_plugin.views.cycle._product_lines.supplier') %></span>
+    <span class='box-field name'><%= t('orders_cycle_plugin.views.cycle._product_lines.product') %></span>
+    <span class="box-field price"><%= t('orders_cycle_plugin.views.cycle._product_lines.price') %></span>
+    <span class="box-field quantity-available"><%= t('orders_cycle_plugin.views.cycle._product_lines.qty_avail') %></span>
+    <span class="box-field actions"></span>
+
+    <div class="clean"></div>
+  </div>
+
+  <div class='table-content'>
+    <% @products.each do |p| %>
+      <div id="cycle-product-<%=p.id%>" class='cycle-product value-row' toggleedit="distribution.offered_product_edit();">
+        <%= render :partial => 'orders_cycle_plugin_product/cycle_edit', :locals => {:p => p} %>
+      </div>
+    <% end %>
+    <% javascript_tag do %>
+      jQuery(document).ready(function() {distribution.ajaxifyPagination("cycle-product-lines");});
+    <% end %>
+  </div>
+</div>
+

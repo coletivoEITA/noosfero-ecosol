@@ -21,11 +21,13 @@ suppliers = {
       toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
     },
 
-    load: function(el) {
-      // load default logic
-      el.find('#product_default_margin_percentage').get(0).onchange();
-      // click
-      el.find('.default-toggle').click(suppliers.our_product.enable_if_disabled);
+    default_change: function (event) {
+      block = jQuery(this).parents('.block');
+      block.find('div[data-non-defaults]').toggle(!this.checked);
+    },
+
+    load: function() {
+      jQuery('.our-product div[data-default-toggle] input').live('change', suppliers.our_product.default_change).change();
     },
 
     pmsync: function (context, to_price) {

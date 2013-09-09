@@ -1,1 +1,0 @@
-page << "window.location.href = '#{url_for(:action => :edit, :id => @session.id)}'"

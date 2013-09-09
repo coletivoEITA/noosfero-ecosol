@@ -24,6 +24,21 @@ class SuppliersPluginMyprofileController < MyProfileController
     @supplier.update_attributes! params[:supplier]
   end
 
+  def margin_change
+    if params[:commit]
+      profile.update_attributes params[:node]
+      profile.default_products_margins if params[:apply_to_all]
+      render :partial => 'suppliers_plugin_shared/pagereload'
+    else
+      render :layout => false
+    end
+  end
+
+  def toggle_active
+    @supplier = SuppliersPlugin::Supplier.find params[:id]
+    @supplier.toggle! :active
+  end
+
   def destroy
     @supplier = SuppliersPlugin::Supplier.find params[:id]
     @supplier.destroy!

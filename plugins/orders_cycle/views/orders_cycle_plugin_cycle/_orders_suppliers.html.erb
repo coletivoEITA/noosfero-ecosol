@@ -1,0 +1,63 @@
+<h3><%= t('orders_cycle_plugin.views.cycle._orders_suppliers.products_totals') %></h3>
+
+<% sums = cycle.ordered_products_by_suppliers %>
+<% if sums.count == 0 %>
+  <span class="subtitle"><%= t('orders_cycle_plugin.views.cycle._orders_suppliers.no_product_ordered') %></span>
+<% else %>
+  <% sums.each do |supplier, products, total_price_asked, total_parcel_price| %>
+    <div class="order-products-by-supplier">
+      <div class="inner-box">
+        <div class="supplier-name"><%= supplier.name %></div>
+
+        <div class="products-header subtitle">
+          <span class="box-field product"><%= t('orders_cycle_plugin.views.cycle._orders_suppliers.product') %></span>
+          <span class="box-field total-asked"><%= t('orders_cycle_plugin.views.cycle._orders_suppliers.total_asked') %></span>
+          <span class="box-field unit"><%= t('orders_cycle_plugin.views.cycle._orders_suppliers.unit') %></span>
+          <span class="box-field sell-value"><%= t('orders_cycle_plugin.views.cycle._orders_suppliers.sell_value') %></span>
+          <span class="box-field forecast-parcel"><%= t('orders_cycle_plugin.views.cycle._orders_suppliers.forecast_parcel') %></span>
+          <span class="box-field forecast-parcel-value"><%= t('orders_cycle_plugin.views.cycle._orders_suppliers.forecast_value') %></span>
+
+          <div class="clean"></div>
+        </div>
+
+        <div class="supplier-products">
+          <% products.each do |p| %>
+            <% next unless p.total_quantity_asked > 0 %>
+            <div class="cycle-ordered-product subtitle">
+              <span class="box-field product"><%= p.name %></span>
+              <span class="box-field total-asked"><%= p.total_quantity_asked_as_currency_number %></span>
+              <span class="box-field unit"><%= p.unit.singular %></span>
+              <span class="box-field sell-value"><%= price_span p.total_price_asked_as_currency_number %></span>
+              <span class="box-field forecast-parcel"><%= p.total_parcel_quantity_as_currency_number %></span>
+              <span class="box-field forecast-parcel-value"><%= price_span p.total_parcel_price_as_currency_number %></span>
+
+              <div class="clean"></div>
+            </div>
+          <% end %>
+
+          <div class="clean"></div>
+        </div>
+
+        <div class="supplier-total">
+          <span class="box-field product"><%= t('orders_cycle_plugin.views.cycle._orders_suppliers.totals') %></span>
+          <span class="box-field total-asked"></span>
+          <span class="box-field unit"></span>
+          <span class="box-field sell-value"><%= price_span CurrencyHelper.number_as_currency_number(total_price_asked) %></span>
+          <span class="box-field forecast-parcel"></span>
+          <span class="box-field forecast-parcel-value"><%= price_span CurrencyHelper.number_as_currency_number(total_parcel_price) %></span>
+        </div>
+      </div>
+
+      <div class="actions-bar">
+        <%# link_to_function t('orders_cycle_plugin.views.cycle._orders_suppliers.do_prelimary_parcel'), '' %>
+        <%= colorbox_link_to t('orders_cycle_plugin.views.cycle._orders_suppliers.message_to_the_suppli'), {:controller => :orders_cycle_plugin_message, :action => :new_to_supplier, :supplier_id => supplier.id} %>
+
+        <strong><%= t('orders_cycle_plugin.views.cycle._orders_suppliers.actions') %></strong>
+
+        <div class="clean"></div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="clean"></div>

@@ -14,11 +14,11 @@
       <%= t('suppliers_plugin.views.product.index.default_margin_info') %>
     </div>
 
-    <span id="node-margin-percentage">
-      <span class="<%= @node.margin_percentage.blank? ? 'none' : 'set' %>">
-        <%= @node.margin_percentage_as_currency_number ? ( t('suppliers_plugin.views.product.index.margin') % {:margin => @node.margin_percentage_as_currency_number} ) : t('suppliers_plugin.views.product.index.no_margin_set') %>
+    <span id="profile-margin-percentage">
+      <span class="<%= profile.margin_percentage.blank? ? 'none' : 'set' %>">
+        <%= profile.margin_percentage_as_currency_number ? ( t('suppliers_plugin.views.product.index.margin') % {:margin => profile.margin_percentage_as_currency_number} ) : t('suppliers_plugin.views.product.index.no_margin_set') %>
       </span>
-      <%= colorbox_link_to t('suppliers_plugin.views.product.index.change'), {:controller => :distribution_plugin_node, :action => :margins_change} %>
+      <%= colorbox_link_to t('suppliers_plugin.views.product.index.change'), {:action => :margin_change} %>
     </span>
 
   </div>
@@ -81,5 +81,9 @@
   <div id="search-results">
     <%= render :partial => 'suppliers_plugin_product/search' %>
   </div>
+
+  <% javascript_tag do %>
+    suppliers.our_product.load();
+  <% end %>
 
 </div>

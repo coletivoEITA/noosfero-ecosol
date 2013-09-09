@@ -1,4 +1,0 @@
-<% fields_for :email do |f| %>
-  <%= labelled_field f, :subject, t('distribution_plugin.views.message._fields.subject'), f.text_field(:subject) %>
-  <%= labelled_field f, :message, t('distribution_plugin.views.message._fields.message'), f.text_area(:message) %>
-<% end %>

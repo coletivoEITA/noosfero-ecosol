@@ -233,19 +233,15 @@
       full_messages:
         format: "%{attribute} %{message}"
 
-  distribution_plugin: 
+  orders_cycle_plugin: 
     lib:
       plugin:
-        name: Distribuição
-        description: "Um plugin de distribuição solidária"
+        name: Orders' cycle
+        description: "Create and manage orders' cycle"
       ext:
         orders_plugin:
           order:
             sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
-      layout_helper: 
-        start: Início
-        orders: Pedidos
-        administration: Administração
       mailer: 
         node_subject: "[%{node}] %{subject}"
         order_was_changed: "[%{node}] Seu pedido foi modificado"
@@ -284,8 +280,6 @@
       myprofile: 
         message_controller: 
           message_sent: "A mensagem foi enviada"
-        node_controller: 
-          distribution_settings: "Configurações salvas"
         product_controller: 
           product_removed_from_: "Produto removido do ciclo"
           product_removed_succe: "Produto removido com sucesso"
@@ -883,6 +877,20 @@
           supplier_product: Fornecedor/Produto
           total: "TOTAL:"
 
+  consumers_coop_plugin: 
+    lib:
+      plugin:
+        name: Cooperativa de Consumo
+        description: "Torne uma organização em uma cooperativa de consumo"
+      layout_helper: 
+        start: Início
+        orders: Pedidos
+        administration: Administração
+    controllers:
+      myprofile:
+        node_controller: 
+          distribution_settings: "Configurações salvas"
+
   networks_plugin:
    lib:
      plugin:
@@ -890,4 +898,3 @@
        description: "Cria a gerencia redes."
        manage_control_panel_button: "Gerenciar estrutura da rede"
 
-     

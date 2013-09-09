@@ -29,11 +29,13 @@
               <span class="field-unit"> <%= '%' %> </span>
             </span>
             <span class="field-secondary with-unit">
-              <%= hidden_field_tag :base_price, product.from_product.price, :id => 'product_base_price' %>
+              <%= hidden_field_tag :base_price, product.from_product.price, :id => 'product_base_price',
+                :value => product.from_product.price_as_currency_number %>
+
               <span class="field-unit"> <%= environment.currency_unit %> </span>
               <%= f.text_field :price,
                 :value => product.price_as_currency_number,
-                :onkeyup => 'suppliers.our_product.pmsync(false, true);' %>
+                :onkeyup => 'suppliers.our_product.pmsync(this, false);' %>
             </span>
           </div>
         </div>

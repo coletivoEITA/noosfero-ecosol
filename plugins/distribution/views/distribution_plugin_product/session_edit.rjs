@@ -1,2 +1,0 @@
-page.replace_html "session-product-#{@product.id}", :partial => 'session_edit', :locals => {:p => @product}
-page << "toggle_edit.value_row.click();"

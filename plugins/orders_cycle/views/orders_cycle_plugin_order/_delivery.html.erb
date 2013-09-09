@@ -1,0 +1,23 @@
+<% form_for :order, order, :url => {:action => :confirm, :id => order} do |f| %>
+  <% if order.cycle.delivery_methods.count > 0 %>
+    <div>
+      <h3><%= t('orders_cycle_plugin.views.order._delivery.delivery_method') %></h3>
+      <strong><%= order.supplier_delivery.name %></strong>
+      <div class="subtitle"><%= order.supplier_delivery.description %></div>
+    </div>
+
+    <% if order.open? and order.cycle.delivery_methods.count > 1 %>
+      <%= labelled_field f, :supplier_delivery_id, t('orders_cycle_plugin.views.order._delivery.choose_another'),
+        f.select(:supplier_delivery_id, order.cycle.delivery_methods.collect{ |d| [d.name, d.id] }, {},
+                 :onchange => "jQuery('#delivery-box').load('#{url_for(:action => :render_delivery, :id => order.id)}', jQuery(this).parents('form').serialize());"),
+        :class => 'subtitle' %>
+    <% end %>
+  <% end %>
+
+  <div>
+    <% if order.open? %>
+      <%= f.submit t('orders_cycle_plugin.views.order._delivery.confirm_order'), :confirm => t('orders_cycle_plugin.views.order._delivery.confirming_this_order') %>&emsp;
+      <%= link_to t('orders_cycle_plugin.views.order._delivery.cancel_order'), {:action => :cancel, :id => order.id} %>
+    <% end %>
+  </div>
+<% end %>

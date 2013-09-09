@@ -1,0 +1,1 @@
+suppliers_plugin_move/20130703115816_move_supplier_id_source_product.rb

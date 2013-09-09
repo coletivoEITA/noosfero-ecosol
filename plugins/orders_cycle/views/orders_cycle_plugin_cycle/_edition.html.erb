@@ -1,0 +1,23 @@
+<% if @cycle.passed_by?('edition') %>
+  <%= render :partial => 'header', :object => t('orders_cycle_plugin.views.cycle._edition.info') %>
+<% end %>
+
+<div id="cycle-fields">
+  <%= render :partial => 'edit_fields' %>
+</div>
+
+<div id='cycle-products'>
+  <div id="cycle-products-header">
+    <h3><%= t('') %></h3>
+
+    <div class="subtitle"><%= t('orders_cycle_plugin.views.cycle._edition.the_following_list_of') %></div>
+    <div class="subtitle"><%= t('orders_cycle_plugin.views.cycle._edition.it_was_automatically_') %></div>
+    <%= colorbox_link_to t('orders_cycle_plugin.views.cycle._edition.add_product'), {:controller => :orders_cycle_plugin_cycle, :action => :add_products, :id => @cycle.id}, :class => 'subtitle' %>
+  </div>
+
+  <div id="cycle-product-lines">
+    <%= render :partial => 'product_lines', :locals => {:p => p} %>
+  </div>
+
+</div>
+
