@@ -3,7 +3,16 @@
 require 'rubygems'
 require File.dirname(__FILE__) + '/../config/environment'
 require 'logger'
-require 'iconv' unless RUBY_VERSION >= "1.9"
+
+# FIXME: remove when db is fixed
+def remove_dependency_on_csv
+  require 'csv'
+  Profile.all.each do |profile|
+    next unless profile.city.is_a?(CSV::Cell)
+    profile.city = profile.city.to_s
+    profile.save
+  end
+end
 
 class String
   def normalize_spaces
@@ -181,7 +190,7 @@ def load_file(file_path, state)
     user2 = {:name => array[6], :mail => array[7], :fone => array[8] }   
     adm_users << user
     adm_users << user2
-    enterprises << {:name => array[0], :identifier=> array[1], :adm_users => adm_users, :city => array[2], :state => state }
+    enterprises << {:name => array[0], :identifier=> array[1], :adm_users => adm_users, :city => array[2].to_s, :state => state }
     adm_users = []
   end
   enterprises
