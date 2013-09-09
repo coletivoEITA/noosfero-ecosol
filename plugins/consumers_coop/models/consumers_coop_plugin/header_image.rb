@@ -5,7 +5,7 @@ class DistributionPlugin::HeaderImage < ActiveRecord::Base
                  :storage => :file_system,
                  :path_prefix => 'public/image_uploads',
                  :resize_to => 'crop: 1040x90',
-                 :max_size => 500.kilobytes # remember to update validate message below
+                 :max_size => 2.megabytes # remember to update validate message below
 
   validates_attachment :size => I18n.t('consumers_coop_plugin.models.header_image.fn_of_uploaded_file_w')
 

@@ -291,8 +291,6 @@
           new_open_cycle: "Novo ciclo aberto"
           products_report_date_: "Relatório de produtos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
     models: 
-      header_image: 
-        fn_of_uploaded_file_w: "%{fn} do arquivo enviado é maior que o máximo permitido de 500.0 KB"
       session: 
         code_name: "%{code}. %{name}"
         delivery_period_befor: "Período de entrega antes do período de pedidos"
@@ -317,15 +315,6 @@
           see_orders_cycle: "Ver ciclo de pedidos"
         sessions: 
           all_cycles: "todos ciclos"
-      layouts: 
-        _admin_submenu: 
-          members: Integrantes
-          orders_cycles: "Ciclo de pedidos"
-          parcels: Encomendas
-          products: Produtos
-          suppliers: Fornecedores
-        _header: 
-          collective_consumptio: "Rede de coletivos de consumo"
       mailer: 
         message_to_admins: 
           a_service_of_s: "Um serviço de %s."
@@ -381,8 +370,6 @@
           message_to_supplier_s: "Mensagem para o fornecedor \"%{supplier}\""
           send: Enviar
       node: 
-        index: 
-          dashboard: Painel
         margins_change: 
           ? "%"
           : "%"
@@ -393,25 +380,6 @@
           apply_to_all: "Aplicar para produtos com margens personalizadas"
           apply_to_open_sessions: "Aplicar para os produtos nos ciclos abertos"
           new_margin: "Nova margem"
-        settings: 
-          abbreviated_name_of_t: "Nome abreviado do coletivo"
-          activated: Ativado
-          black: preto
-          cancel: Cancelar
-          collective_consumptio: "Modo coletivo de consumo"
-          disabled: Desabilitado
-          header_background_col: "Cor de fundo de cabeçalho"
-          header_s_image: "Imagem do cabeçalho"
-          header_type: "Tipo de cabeçalho"
-          image_collective_name: "Imagem + nome do coletivo"
-          only_the_image: "Apenas a imagem"
-          image_help: "Esta imagem será usada no cabeçalho da página do coletivo, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
-          pure_color_collective: "Cor pura + nome do coletivo"
-          save: Salvar
-          settings_of_solidary_: "Configurações da Rede de Distribuição solidária"
-          text_color: "Cor do texto"
-          this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso do coletivo. Como o coletivo é comumente chamado pelas pessoas?"
-          white: branco
       order: 
         _consumer_orders: 
           caution: "<strong>Cuidado</strong>, voce está editando os pedidos de \"%{consumer}\". É preferível fazer pequenas edições pela administração do ciclo. Desta forma, a pessoa será propriamente avisada das mudanças. Nós recomendamos que esta página seja usada somente se você está fazendo o pedido pra pessoa."
@@ -890,6 +858,41 @@
       myprofile:
         node_controller: 
           distribution_settings: "Configurações salvas"
+    models:
+      header_image: 
+        fn_of_uploaded_file_w: "%{fn} do arquivo enviado é maior que o máximo permitido de 2.0 MB"
+    views:
+      layouts: 
+        _admin_submenu: 
+          members: Integrantes
+          orders_cycles: "Ciclo de pedidos"
+          parcels: Encomendas
+          products: Produtos
+          suppliers: Fornecedores
+        _header: 
+          collective_consumptio: "Rede de coletivos de consumo"
+      node:
+        index: 
+          dashboard: Painel
+        settings: 
+          abbreviated_name_of_t: "Nome abreviado do coletivo"
+          activated: Ativado
+          black: preto
+          cancel: Cancelar
+          collective_consumptio: "Modo coletivo de consumo"
+          disabled: Desabilitado
+          header_background_col: "Cor de fundo de cabeçalho"
+          header_s_image: "Imagem do cabeçalho"
+          header_type: "Tipo de cabeçalho"
+          image_collective_name: "Imagem + nome do coletivo"
+          only_the_image: "Apenas a imagem"
+          image_help: "Esta imagem será usada no cabeçalho da página do coletivo, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
+          pure_color_collective: "Cor pura + nome do coletivo"
+          save: Salvar
+          settings_of_solidary_: "Configurações da Rede de Distribuição solidária"
+          text_color: "Cor do texto"
+          this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso do coletivo. Como o coletivo é comumente chamado pelas pessoas?"
+          white: branco
 
   networks_plugin:
    lib:

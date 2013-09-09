@@ -494,10 +494,6 @@
         orders_plugin:
           order:
             sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
-      layout_helper: 
-        orders: Orders
-        start: Start
-        administration: Administration
       distribution_product_helper: 
         product_from_which_su: "Product from which supplier?"
       mailer: 
@@ -538,8 +534,6 @@
       myprofile: 
         message_controller: 
           message_sent: "Message sent"
-        node_controller: 
-          distribution_settings: "Distribution settings saved."
         product_controller: 
           product_removed_from_: "Product removed from cycle"
           product_removed_succe: "Product removed successfully"
@@ -551,8 +545,6 @@
           new_open_cycle: "New open cycle: "
           products_report_date_: "Products Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
     models: 
-      header_image: 
-        fn_of_uploaded_file_w: "%{fn} of uploaded file was larger than the maximum size of 500.0 KB"
       session: 
         code_name: "%{code}. %{name}"
         delivery_period_befor: "Delivery' period before orders' period"
@@ -577,15 +569,6 @@
           see_orders_cycle: "see orders' cycle"
         sessions: 
           all_cycles: "all cycles"
-      layouts: 
-        _admin_submenu: 
-          members: Members
-          orders_cycles: "Orders' Cycles"
-          parcels: Parcels
-          products: Products
-          suppliers: Suppliers
-        _header: 
-          collective_consumptio: "Collective consumption network"
       mailer: 
         message_to_admins: 
           a_service_of_s: "A service of %s."
@@ -641,8 +624,6 @@
           message_to_supplier_s: "Message to supplier \"%{supplier}\""
           send: Send
       node: 
-        index: 
-          dashboard: Dashboard
         margins_change:
           ? "%"
           : "%"
@@ -653,25 +634,6 @@
           apply_to_all: "Apply to products with custom margins"
           apply_to_open_sessions: "Apply to the products in open cycles"
           new_margin: "New margin"
-        settings: 
-          abbreviated_name_of_t: "Abbreviated name of the Collective"
-          activated: Activated
-          black: black
-          cancel: cancel
-          collective_consumptio: "Collective Consumption Mode"
-          disabled: Disabled
-          header_background_col: "Header background color"
-          header_s_image: "Header's image"
-          header_type: "Header Type"
-          image_collective_name: "Image + collective name"
-          only_the_image: "Only the image"
-          image_help: "This image will be used on the Collective's page, must be 1040x90px, it will be automatically cropped to this size."
-          pure_color_collective: "pure color + collective name"
-          save: Save
-          settings_of_solidary_: "Settings of Solidary Distribution Network"
-          text_color: "Text color"
-          this_name_will_be_use: "This name will be used to avoid always use the full name of the Collective. How the Collective is generally called by the people?"
-          white: white
       order: 
         _consumer_orders: 
           caution: "<strong>Caution</strong>, you are editing the orders of \"%{consumer}\". It is preferable to make small editions through the cycle's administration, this way the person will be properly warned of the updates. We recommend using this page only if you're doing the order for the person"
@@ -877,6 +839,49 @@
       plugin:
         name: Consumers' Coop
         description: "Make an organization a consumers cooperative"
+      layout_helper: 
+        orders: Orders
+        start: Start
+        administration: Administration
+    controllers:
+      myprofile:
+        node_controller: 
+          distribution_settings: "Distribution settings saved."
+    models:
+      header_image: 
+        fn_of_uploaded_file_w: "%{fn} of uploaded file was larger than the maximum size of 2.0 MB"
+    views:
+      layouts: 
+        _admin_submenu: 
+          members: Members
+          orders_cycles: "Orders' Cycles"
+          parcels: Parcels
+          products: Products
+          suppliers: Suppliers
+        _header: 
+          collective_consumptio: "Collective consumption network"
+      node:
+        index: 
+          dashboard: Dashboard
+        settings: 
+          abbreviated_name_of_t: "Abbreviated name of the Collective"
+          activated: Activated
+          black: black
+          cancel: cancel
+          collective_consumptio: "Collective Consumption Mode"
+          disabled: Disabled
+          header_background_col: "Header background color"
+          header_s_image: "Header's image"
+          header_type: "Header Type"
+          image_collective_name: "Image + collective name"
+          only_the_image: "Only the image"
+          image_help: "This image will be used on the Collective's page, must be 1040x90px, it will be automatically cropped to this size."
+          pure_color_collective: "pure color + collective name"
+          save: Save
+          settings_of_solidary_: "Settings of Solidary Distribution Network"
+          text_color: "Text color"
+          this_name_will_be_use: "This name will be used to avoid always use the full name of the Collective. How the Collective is generally called by the people?"
+          white: white
 
   networks_plugin:
    lib:

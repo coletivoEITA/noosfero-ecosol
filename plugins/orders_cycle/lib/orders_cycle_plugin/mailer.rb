@@ -6,7 +6,7 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(order.consumer)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       I18n.t('consumers_coop_plugin.lib.mailer.order_was_changed') % {:node => node.name}
+    subject       I18n.t('orders_cycle_plugin.lib.mailer.order_was_changed') % {:node => node.name}
     content_type  'text/html'
     body :node => node,
          :order => order,
@@ -22,7 +22,7 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(order.consumer)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       I18n.t('consumers_coop_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
+    subject       I18n.t('orders_cycle_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
     content_type  'text/html'
     body :node => node,
          :order => order,
@@ -37,7 +37,7 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(consumer)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       I18n.t('consumers_coop_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
+    subject       I18n.t('orders_cycle_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
     content_type  'text/html'
     body :node => node,
          :consumer => consumer,
@@ -51,7 +51,7 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(supplier.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       I18n.t('consumers_coop_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
+    subject       I18n.t('orders_cycle_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
     content_type  'text/html'
     body :node => node,
          :supplier => supplier,
@@ -65,7 +65,7 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(node.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(member.profile)
-    subject       I18n.t('consumers_coop_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
+    subject       I18n.t('orders_cycle_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
     content_type  'text/html'
     body :node => node,
          :member => member,
@@ -79,7 +79,7 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    community_members(node.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(node.profile)
-    subject       I18n.t('consumers_coop_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
+    subject       I18n.t('orders_cycle_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
     content_type  'text/html'
     body :node => node,
          :session => session,
