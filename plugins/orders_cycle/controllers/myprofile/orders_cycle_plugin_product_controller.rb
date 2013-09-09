@@ -3,10 +3,7 @@ require_dependency 'orders_cycle_plugin/display_helper'
 
 class OrdersCyclePluginProductController < SuppliersPluginProductController
 
-  include OrdersCyclePlugin::ControllerHelper
-
   no_design_blocks
-  before_filter :set_admin_action
 
   helper OrdersCyclePlugin::DisplayHelper
 
@@ -25,15 +22,15 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
     @supplier = SuppliersPlugin::Supplier.find_by_id params[:product][:supplier_id].to_i
     if params[:commit]
       #:supplier_product_id must be set first. it will when params follow the form order with ruby 1.9 ordered hashes
-      @product = SuppliersPlugin::DistributedProduct.new :node => @node, :supplier_product_id => params[:product].delete(:supplier_product_id)
+      @product = SuppliersPlugin::DistributedProduct.new :profile => profile, :supplier_product_id => params[:product].delete(:supplier_product_id)
       begin
         @product.update_attributes params[:product]
       rescue
       end
     else
       if @supplier
-        @product = SuppliersPlugin::DistributedProduct.new :node => @node, :supplier => @supplier
-        @product.supplier_product_id = params[:product][:supplier_product_id] if @supplier.node != @node
+        @product = SuppliersPlugin::DistributedProduct.new :profile => profile, :supplier => @supplier
+        @product.supplier_product_id = params[:product][:supplier_product_id] if @supplier.profile != profile
         not_distributed_products(params[:product][:supplier_product_id])
       end
       render :partial => 'edit', :locals => {:product => @product}

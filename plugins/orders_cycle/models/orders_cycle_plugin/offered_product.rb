@@ -27,7 +27,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   has_currency :buy_price
 
   def self.create_from_distributed cycle, product
-    sp = self.new :node => product.node
+    sp = self.new :profile => product.profile
     sp.attributes = product.attributes
     sp.type = self.name
     sp.freeze_default_attributes product

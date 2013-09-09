@@ -1,13 +1,10 @@
 require_dependency 'delivery_plugin' #necessary to load extensions
 
-class ConsumersCoopPluginDeliveryOptionController < DeliveryPluginOptionController
-
-  include ConsumersCoopPlugin::ControllerHelper
+class OrdersCyclePluginDeliveryOptionController < DeliveryPluginOptionController
 
   no_design_blocks
-  before_filter :set_admin_action
 
-  helper ConsumersCoopPlugin::DisplayHelper
+  helper OrdersCyclePlugin::DisplayHelper
 
   protected
 

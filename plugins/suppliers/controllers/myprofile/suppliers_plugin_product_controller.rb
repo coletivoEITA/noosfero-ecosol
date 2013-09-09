@@ -7,12 +7,11 @@ class SuppliersPluginProductController < MyProfileController
 
   def index
     @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id]
-    not_distributed_products
 
-    @products = @node.products.unarchived.distributed.paginate({
+    @products = profile.products.unarchived.distributed.paginate({
       :per_page => 10, :page => params[:page],
       }.merge(search_scope.proxy_options))
-    @all_products_count = @node.products.unarchived.distributed.count
+    @all_products_count = profile.products.unarchived.distributed.count
     @product_categories = ProductCategory.find(:all)
     @new_product = SuppliersPlugin::DistributedProduct.new :profile => profile, :supplier => @supplier
 
@@ -38,10 +37,6 @@ class SuppliersPluginProductController < MyProfileController
   end
 
   protected
-
-  def not_distributed_products supplier_product_id = nil
-    @not_distributed_products = @node.not_distributed_products @supplier unless !@supplier or @supplier.dummy? or supplier_product_id
-  end
 
   def search_scope
     klass = SuppliersPlugin::BaseProduct

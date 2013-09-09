@@ -243,8 +243,8 @@
           order:
             sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
       mailer: 
-        node_subject: "[%{node}] %{subject}"
-        order_was_changed: "[%{node}] Seu pedido foi modificado"
+        profile_subject: "[%{profile}] %{subject}"
+        order_was_changed: "[%{profile}] Seu pedido foi modificado"
       order_block: 
         distribution_orders_c: "Ciclos de pedidos para consumidores"
         offer_cycles_for_you_: "Ciclo de oferta para membros fazerem pedidos"
@@ -323,18 +323,18 @@
         message_to_consumer: 
           a_service_of_s: "Um serviço de %s."
           hello_name: "Olá %{name}!,"
-          the_collective_node_s: "O coletivo %{node} mandou uma mensagem para você"
+          the_collective_profile_s: "O coletivo %{profile} mandou uma mensagem para você"
         message_to_consumer_for_order: 
           a_service_of_s: "Um serviço de %s."
           hello_name: "Olá %{name}!,"
           order: Pedido
           quantity_unit_of_prod: "%{quantity} %{unit} do %{product}"
-          the_collective_node_s: "O coletivo %{node} mandou uma mensagem para voce relacionado a seu %{order}"
+          the_collective_profile_s: "O coletivo %{profile} mandou uma mensagem para voce relacionado a seu %{order}"
           the_products_in_the_o: "Os produtos no pedido"
         message_to_supplier: 
           a_service_of_s: "Um serviço de %s."
           hello_administrators_: "Olá administradores de %{name}!"
-          the_collective_node_s: "O coletivo %{node} mandou uma mensagem para você"
+          the_collective_profile_s: "O coletivo %{profile} mandou uma mensagem para você"
         open_session: 
           a_new_cycle_is_open_c: "Um novo ciclo de pedidos está aberto chamado "
           hello_member_of_name: "Olá membros da comunidade %{name}!"
@@ -354,7 +354,7 @@
           subject: Assunto
         new_to_admins: 
           cancel: Cancelar
-          message_to_managers_o: "Mensagem para o membro \"%{node}\""
+          message_to_managers_o: "Mensagem para o membro \"%{profile}\""
           send: Enviar
         new_to_consumer: 
           cancel: Cancelar
@@ -369,7 +369,7 @@
           cancel: Cancelar
           message_to_supplier_s: "Mensagem para o fornecedor \"%{supplier}\""
           send: Enviar
-      node: 
+      profile: 
         margins_change: 
           ? "%"
           : "%"
@@ -600,7 +600,7 @@
       product: 
         unit: unidade
         units: unidades
-      node: 
+      profile: 
         consumer: Consumidor
     views:
       product:
@@ -701,7 +701,7 @@
           products: produtos
           registered_supplier_i: "Fornecedor registrado na rede"
           remove: remover
-          supplier_node_product: "produtos registrados"
+          supplier_profile_product: "produtos registrados"
           supplier_with_registr: "Fornecedor com registro administrado pelo coletivo"
           this_supplier_has: "Este fornecedor tem"
         _suppliers_list: 
@@ -825,7 +825,7 @@
           attention_to_the_foll: "Atenção às instruções de entrega a seguir:"
           dear_name: "Olá %{name},"
           greetings: "Saudações,"
-          order_code_of_node: "Pedido %{code} de %{name}"
+          order_code_of_profile: "Pedido %{code} de %{name}"
           order_data_confirmed: "Pedido confirmado"
           the_delivery_period_w: "O período de entrega ocorrerá em %{date}."
           your_order_can_be_che: "Seu pedido pode ser checado no seguinte link:"
@@ -856,7 +856,7 @@
         administration: Administração
     controllers:
       myprofile:
-        node_controller: 
+        profile_controller: 
           distribution_settings: "Configurações salvas"
     models:
       header_image: 
@@ -871,7 +871,7 @@
           suppliers: Fornecedores
         _header: 
           collective_consumptio: "Rede de coletivos de consumo"
-      node:
+      profile:
         index: 
           dashboard: Painel
         settings: 

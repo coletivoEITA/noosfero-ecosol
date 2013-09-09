@@ -76,28 +76,6 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   protected
 
-  module Roles
-    def self.consumer(env_id)
-      find_role('consumer', env_id)
-    end
-
-    private
-    def self.find_role(name, env_id)
-      ::Role.find_by_key_and_environment_id("distribution_node_#{name}", env_id)
-    end
-  end
-
-  def check_roles
-    Role.create!(
-      :key => 'distribution_node_consumer',
-      :name => I18n.t('suppliers_plugin.models.node.consumer'),
-      :environment => self.profile.environment,
-      :permissions => [
-        'order_product',
-      ]
-    ) if self.profile and not SuppliersPlugin::Node::Roles.consumer(self.profile.environment)
-  end
-
   after_create :complete
   def complete
     if dummy?

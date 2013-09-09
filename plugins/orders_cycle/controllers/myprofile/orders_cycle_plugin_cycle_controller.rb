@@ -1,12 +1,11 @@
-class DistributionPluginCycleController < ConsumersCoopPluginMyprofileController
+class OrdersCyclePluginCycleController < MyProfileController
 
   no_design_blocks
-  before_filter :set_admin_action
 
   helper OrdersCyclePlugin::CycleHelper
 
   def index
-    @cycles = @node.cycles
+    @cycles = profile.orders_cycles
     params[:date] ||= {}
     year = params[:date][:year]
     month = params[:date][:month]
@@ -24,7 +23,7 @@ class DistributionPluginCycleController < ConsumersCoopPluginMyprofileController
       if @success
         session[:notice] = t('orders_cycle_plugin.controllers.myprofile.cycle_controller.cycle_created')
         if params[:sendmail]
-          OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).deliver_open_cycle @cycle.node,
+          OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).deliver_open_cycle @cycle.profile,
             @cycle,t('orders_cycle_plugin.controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message
         end
         render :partial => 'new'
@@ -32,8 +31,8 @@ class DistributionPluginCycleController < ConsumersCoopPluginMyprofileController
         render :partial => 'edit'
       end
     else
-      count = OrdersCyclePlugin::Cycle.count :conditions => {:node_id => @node}
-      @cycle = OrdersCyclePlugin::Cycle.create! :node => @node, :status => 'new', :name => t('orders_cycle_plugin.controllers.myprofile.cycle_controller.cycle_n_n') % {:n => count+1}
+      count = OrdersCyclePlugin::Cycle.count :conditions => {:profile_id => profile}
+      @cycle = OrdersCyclePlugin::Cycle.create! :profile => :profile, :status => 'new', :name => t('orders_cycle_plugin.controllers.myprofile.cycle_controller.cycle_n_n') % {:n => count+1}
     end
   end
 
@@ -45,7 +44,7 @@ class DistributionPluginCycleController < ConsumersCoopPluginMyprofileController
       if params[:commit]
         @success = @cycle.update_attributes params[:cycle]
         if params[:sendmail]
-          OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).deliver_open_cycle @cycle.node,
+          OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).deliver_open_cycle @cycle.profile,
             @cycle,t('orders_cycle_plugin.controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message
         end
         render :partial => 'edit'
@@ -79,7 +78,7 @@ class DistributionPluginCycleController < ConsumersCoopPluginMyprofileController
 
   def add_products
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
-    @missing_products = @node.products.unarchived.distributed.available - @cycle.from_products.unarchived
+    @missing_products = profile.products.unarchived.distributed.available - @cycle.from_products.unarchived
     if params[:products_id]
       params[:products_id].each do |id|
         product = SuppliersPlugin::DistributedProduct.find id

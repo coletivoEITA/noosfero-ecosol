@@ -5,12 +5,12 @@ module OrdersCyclePlugin::Factory
   end
 
   def defaults_for_orders_cycle_plugin_supplier
-    {:node => build(OrdersCyclePlugin::Node),
-     :consumer => build(OrdersCyclePlugin::Node)}
+    {:node => build(OrdersCyclePlugin::Profile),
+     :consumer => build(OrdersCyclePlugin::Profile)}
   end
 
   def defaults_for_orders_cycle_plugin_product(attrs = {})
-    node = attrs[:node] || build(OrdersCyclePlugin::Node)
+    node = attrs[:node] || build(OrdersCyclePlugin::Profile)
     {:node => node, :name => "product-#{factory_num_seq}", :price => 2.0,
      :product => build(Product, :enterprise => node.profile, :price => 2.0),
      :supplier => build(SuppliersPlugin::Supplier, :node => node, :consumer => node)}
@@ -28,7 +28,7 @@ module OrdersCyclePlugin::Factory
   end
 
   def defaults_for_orders_cycle_plugin_delivery_method
-    {:node => build(OrdersCyclePlugin::Node),
+    {:node => build(OrdersCyclePlugin::Profile),
      :name => "My delivery #{factory_num_seq.to_s}",
      :delivery_type => 'deliver'}
   end
@@ -39,15 +39,15 @@ module OrdersCyclePlugin::Factory
   end
 
   def defaults_for_orders_cycle_plugin_cycle
-    {:node => build(OrdersCyclePlugin::Node), :status => 'orders',
+    {:node => build(OrdersCyclePlugin::Profile), :status => 'orders',
      :name => 'weekly', :start => Time.now, :finish => Time.now+1.days}
   end
 
   def defaults_for_orders_cycle_plugin_order(attrs = {})
-    node = attrs[:node] || build(OrdersCyclePlugin::Node)
+    node = attrs[:node] || build(OrdersCyclePlugin::Profile)
     {:status => 'confirmed',
      :cycle => build(OrdersCyclePlugin::Cycle, :node => node),
-     :consumer => build(OrdersCyclePlugin::Node),
+     :consumer => build(OrdersCyclePlugin::Profile),
      :supplier_delivery => build(DeliveryPlugin::Method, :node => node),
      :consumer_delivery => build(DeliveryPlugin::Method, :node => node)}
   end

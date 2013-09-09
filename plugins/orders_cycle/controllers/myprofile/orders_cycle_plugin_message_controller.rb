@@ -1,4 +1,4 @@
-class ConsumersCoopPluginMessageController < ConsumersCoopPluginMyprofileController
+class OrdersCyclePluginMessageController < MyProfileController
 
   no_design_blocks
 
@@ -7,9 +7,9 @@ class ConsumersCoopPluginMessageController < ConsumersCoopPluginMyprofileControl
     @consumer = @order.consumer
     if params[:commit]
       if params[:include_order]
-        ConsumersCoopPlugin::Mailer.deliver_message_to_consumer_for_order @node, @order, params[:email][:subject], params[:email][:message]
+        ConsumersCoopPlugin::Mailer.deliver_message_to_consumer_for_order profile, @order, params[:email][:subject], params[:email][:message]
       else
-        ConsumersCoopPlugin::Mailer.deliver_message_to_consumer @node, @consumer, params[:email][:subject], params[:email][:message]
+        ConsumersCoopPlugin::Mailer.deliver_message_to_consumer profile, @consumer, params[:email][:subject], params[:email][:message]
       end
       page_reload
     else
@@ -18,9 +18,9 @@ class ConsumersCoopPluginMessageController < ConsumersCoopPluginMyprofileControl
   end
 
   def new_to_consumer
-    @consumer = ConsumersCoopPlugin::Node.find params[:consumer_id]
+    @consumer = Profile.find params[:consumer_id]
     if params[:commit]
-      ConsumersCoopPlugin::Mailer.deliver_message_to_consumer @node, @consumer, params[:email][:subject], params[:email][:message]
+      ConsumersCoopPlugin::Mailer.deliver_message_to_consumer profile, @consumer, params[:email][:subject], params[:email][:message]
       page_reload
     else
       render :layout => false
@@ -30,7 +30,7 @@ class ConsumersCoopPluginMessageController < ConsumersCoopPluginMyprofileControl
   def new_to_supplier
     @supplier = SuppliersPlugin::Supplier.find params[:supplier_id]
     if params[:commit]
-      ConsumersCoopPlugin::Mailer.deliver_message_to_supplier @node, @supplier, params[:email][:subject], params[:email][:message]
+      ConsumersCoopPlugin::Mailer.deliver_message_to_supplier profile, @supplier, params[:email][:subject], params[:email][:message]
       page_reload
     else
       render :layout => false
@@ -38,9 +38,9 @@ class ConsumersCoopPluginMessageController < ConsumersCoopPluginMyprofileControl
   end
 
   def new_to_admins
-    @member = @user_node
+    @member = user
     if params[:commit]
-      ConsumersCoopPlugin::Mailer.deliver_message_to_admins @node, @member, params[:email][:subject], params[:email][:message]
+      ConsumersCoopPlugin::Mailer.deliver_message_to_admins profile, @member, params[:email][:subject], params[:email][:message]
       page_reload
     else
       render :layout => false

@@ -1,7 +1,5 @@
 require_dependency "#{File.dirname __FILE__}/ext/profile"
-require_dependency "#{File.dirname __FILE__}/ext/community"
 require_dependency "#{File.dirname __FILE__}/ext/category"
-require_dependency "#{File.dirname __FILE__}/ext/product"
 
 class ConsumersCoopPlugin < Noosfero::Plugin
 
@@ -28,8 +26,7 @@ class ConsumersCoopPlugin < Noosfero::Plugin
   def control_panel_buttons
     profile = context.profile
     return nil unless profile.community?
-    node = ConsumersCoopPlugin::Node.find_or_create profile
-    { :title => I18n.t('consumers_coop_plugin.lib.name'), :icon => 'consumers-coop', :url => {:controller => :consumers_coop_plugin_node, :profile => profile.identifier, :action => :settings} }
+    { :title => I18n.t('consumers_coop_plugin.lib.name'), :icon => 'consumers-coop', :url => {:controller => :consumers_coop_plugin_myprofile, :profile => profile.identifier, :action => :settings} }
   end
 
 end

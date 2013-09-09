@@ -1,17 +1,17 @@
 require File.dirname(__FILE__) + '/../../../../test/test_helper'
 
-class DistributionPluginDistributedProductTest < ActiveSupport::TestCase
+class SuppliersPluginDistributedProductTest < ActiveSupport::TestCase
 
   def setup
     @profile = build(Enterprise)
     @invisible_profile = build(Enterprise, :visible => false)
     @other_profile = build(Enterprise)
-    @node = build(DistributionPlugin::Node, :profile => @profile)
-    @dummy_node = build(DistributionPlugin::Node, :profile => @invisible_profile)
-    @other_node = build(DistributionPlugin::Node, :profile => @other_profile)
-    @self_supplier = build(DistributionPlugin::Supplier, :consumer => @node, :node => @node)
-    @dummy_supplier = build(DistributionPlugin::Supplier, :consumer => @node, :node => @dummy_node)
-    @other_supplier = build(DistributionPlugin::Supplier, :consumer => @node, :node => @other_node)
+    @node = build(SuppliersPlugin::Node, :profile => @profile)
+    @dummy_node = build(SuppliersPlugin::Node, :profile => @invisible_profile)
+    @other_node = build(SuppliersPlugin::Node, :profile => @other_profile)
+    @self_supplier = build(SuppliersPlugin::Supplier, :consumer => @node, :node => @node)
+    @dummy_supplier = build(SuppliersPlugin::Supplier, :consumer => @node, :node => @dummy_node)
+    @other_supplier = build(SuppliersPlugin::Supplier, :consumer => @node, :node => @other_node)
   end
 
   attr_accessor :profile, :invisible_profile, :other_profile,

@@ -4,13 +4,11 @@ class OrdersCyclePluginOptionTest < ActiveSupport::TestCase
 
   def setup
     @profile = build(Profile)
-    @node = build(OrdersCyclePluginNode, :profile => @profile)
-    @cycle = build(OrdersCyclePluginCycle, :node => @node)
-    @delivery_method = build(OrdersCyclePluginMethod, :node => @node)
+    @cycle = build(OrdersCyclePluginCycle, :profile => @profile)
+    @delivery_method = build(OrdersCyclePluginMethod, :profile => @profile)
   end
 
   attr_accessor :profile
-  attr_accessor :node
   attr_accessor :cycle
   attr_accessor :delivery_method
 

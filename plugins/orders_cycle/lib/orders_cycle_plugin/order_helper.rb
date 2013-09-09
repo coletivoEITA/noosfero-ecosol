@@ -5,6 +5,6 @@ module OrdersCyclePlugin::OrderHelper
 
   protected
 
-  include OrdersCyclePlugin::DistributionDisplayHelper
+  include OrdersCyclePlugin::DisplayHelper
 
 end

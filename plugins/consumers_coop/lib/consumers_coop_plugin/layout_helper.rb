@@ -8,11 +8,13 @@ module ConsumersCoopPlugin::LayoutHelper
   HeaderButtons = [
     [:start, 'consumers_coop_plugin.lib.layout_helper.start', proc{ profile.url }, proc{ on_homepage? }],
     [:orders, 'consumers_coop_plugin.lib.layout_helper.orders', {:controller => :consumers_coop_plugin_order, :action => :index}],
-    [:adm, 'consumers_coop_plugin.lib.layout_helper.administration', {:controller => :consumers_coop_plugin_node, :action => 'index'}, proc{ @admin_action },
-      proc{ user and profile.has_admin? user }],
+    [:adm, 'consumers_coop_plugin.lib.layout_helper.administration', {:controller => :consumers_coop_plugin_myprofile, :action => 'index'},
+     proc{ @admin_action }, proc{ user and profile.has_admin? user }],
   ]
 
   def display_header_buttons
+    @admin_action = @controller.is_a? MyProfileController
+
     HeaderButtons.map do |key, label, url, selected_proc, if_proc|
       next if if_proc and !instance_eval(&if_proc)
 

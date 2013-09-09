@@ -1,6 +1,6 @@
 class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
-  belongs_to :node, :class_name => 'OrdersCyclePlugin::Node', :foreign_key => :node_id
+  belongs_to :profile
 
   has_many :delivery_options, :class_name => 'DeliveryPlugin::Option', :dependent => :destroy,
     :foreign_key => :owner_id, :conditions => ["delivery_plugin_options.owner_type = 'OrdersCyclePlugin::Cycle'"]
@@ -13,8 +13,6 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   has_many :products, :through => :cycle_products, :order => 'name ASC'
 
   has_many :from_products, :through => :products, :order => 'name ASC'
-  has_many :from_nodes, :through => :products
-  has_many :to_nodes, :through => :products
 
   has_many :orders_confirmed, :through => :cycle_orders, :source => :order, :order => 'id ASC',
     :conditions => ['orders_plugin_orders.status = ?', 'confirmed']
@@ -26,7 +24,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   has_many :ordered_supplier_products, :through => :orders_confirmed, :source => :supplier_products, :uniq => true
 
   extend CodeNumbering::ClassMethods
-  code_numbering :code, :scope => Proc.new { self.node.cycles }
+  code_numbering :code, :scope => Proc.new { self.profile.orders_cycles }
 
   named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year desc'
   named_scope :defuncts, :conditions => ["status = 'new' AND created_at < ?", 2.days.ago]
@@ -63,7 +61,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     'new', 'edition', 'orders', 'closed'
   ]
 
-  validates_presence_of :node
+  validates_presence_of :profile
   validates_presence_of :name, :if => :not_new?
   validates_presence_of :start, :if => :not_new?
   #FIXME only ,
@@ -150,7 +148,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   def add_distributed_products
     already_in = self.products.unarchived.all
     ActiveRecord::Base.transaction do
-      node.products.unarchived.distributed.available.each do |product|
+      profile.products.unarchived.distributed.available.each do |product|
         p = already_in.find{ |f| f.from_product == product }
         unless p
           p = OrdersCyclePlugin::OfferedProduct.create_from_distributed(self, product)

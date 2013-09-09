@@ -1,12 +1,8 @@
-class ConsumersCoopPluginOrderedProductController < OrdersPluginProductController
-
-  include ConsumersCoopPlugin::ControllerHelper
+class OrdersCyclePluginOrderedProductController < OrdersPluginProductController
 
   no_design_blocks
-  before_filter :set_admin_action, :only => [:admin_edit]
 
-  helper ApplicationHelper
-  helper ConsumersCoopPlugin::DisplayHelper
+  helper OrdersCyclePlugin::DisplayHelper
 
   def new
     @offered_product = Product.find params[:offered_product_id]

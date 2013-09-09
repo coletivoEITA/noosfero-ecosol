@@ -10,8 +10,7 @@ class OrdersCyclePluginCycleControllerTest < Test::Unit::TestCase
 
   should 'create a new cycle' do
     p = create(Profile)
-    n = create(OrdersCyclePluginNode, :profile => p)
-    get :new, :node_id => n.id
+    get :new, :profile => profile.identifier
     assert_equal ss, assigns(:cycle)
   end
 

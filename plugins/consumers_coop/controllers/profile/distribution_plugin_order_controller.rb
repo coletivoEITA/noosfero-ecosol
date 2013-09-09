@@ -16,7 +16,7 @@ class ConsumersCoopPluginOrderController < OrdersPluginConsumerController
 
   def index
     @year = (params[:year] || DateTime.now.year).to_s
-    @cycles = @node.cycles.by_year @year
+    @cycles = profile.orders_cycles.by_year @year
     @consumer = user
   end
 
@@ -102,7 +102,7 @@ class ConsumersCoopPluginOrderController < OrdersPluginConsumerController
   def cycle_edit
     @order = OrdersPlugin::Order.find params[:id]
     if @order.consumer != user and not profile.has_admin? user
-      if @user_node.nil?
+      if user.nil?
         session[:notice] = t('orders_cycle_plugin.controllers.profile.order_controller.login_first')
       else
         session[:notice] = t('orders_cycle_plugin.controllers.profile.order_controller.you_are_not_the_owner')
@@ -136,7 +136,7 @@ class ConsumersCoopPluginOrderController < OrdersPluginConsumerController
 
     if params[:warn_consumer]
       message = (params[:include_message] and !params[:message].blank?) ? params[:message] : nil
-      ConsumersCoopPlugin::Mailer.deliver_order_change_notification @node, @order, changed, removed, message
+      ConsumersCoopPlugin::Mailer.deliver_order_change_notification profile, @order, changed, removed, message
     end
 
   end

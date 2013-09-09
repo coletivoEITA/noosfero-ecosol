@@ -4,16 +4,16 @@ class Profile
 
   has_many :products
 
-  def dummy?
-    !self.visible
-  end
+  has_many :suppliers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :consumer_id, :order => 'name ASC', :dependent => :destroy
+  has_many :consumers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :profile_id, :order => 'name ASC', :dependent => :destroy
 
   def supplier_settings
     @supplier_settings ||= Noosfero::Plugin::Settings.new self, SuppliersPlugin
   end
 
-  has_many :suppliers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :consumer_id, :order => 'name ASC', :dependent => :destroy
-  has_many :consumers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :profile_id, :order => 'name ASC', :dependent => :destroy
+  def dummy?
+    !self.visible
+  end
 
   alias_method :orig_suppliers, :suppliers
   def suppliers
@@ -79,9 +79,9 @@ class Profile
   extend CurrencyHelper::ClassMethods
   has_number_with_locale :margin_percentage
 
-  def default_products_margins
+  def supplier_products_default_margins
     self.class.transaction do
-      products.unarchived.distributed.each do |product|
+      self.products.unarchived.distributed.each do |product|
         product.default_margin_percentage = true
         product.save!
       end

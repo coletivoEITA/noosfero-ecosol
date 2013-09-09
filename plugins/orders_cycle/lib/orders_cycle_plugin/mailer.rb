@@ -1,90 +1,90 @@
 class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
 
-  def order_change_notification node, order, changed, removed, message = nil
-    domain = node.profile.hostname || node.profile.environment.default_hostname
+  def order_change_notification profile, order, changed, removed, message = nil
+    domain = profile.hostname || profile.environment.default_hostname
 
     recipients    profile_recipients(order.consumer)
     from          'no-reply@' + domain
-    reply_to      profile_recipients(node.profile)
-    subject       I18n.t('orders_cycle_plugin.lib.mailer.order_was_changed') % {:node => node.name}
+    reply_to      profile_recipients(profile)
+    subject       I18n.t('orders_cycle_plugin.lib.mailer.order_was_changed') % {:profile => name}
     content_type  'text/html'
-    body :node => node,
+    body :profile => profile,
          :order => order,
          :changed => changed,
          :removed => removed,
          :message => message,
-         :environment => node.profile.environment
+         :environment => profile.environment
   end
 
-  def message_to_consumer_for_order node, order, subject, message = nil
-    domain = node.profile.hostname || node.profile.environment.default_hostname
+  def message_to_consumer_for_order profile, order, subject, message = nil
+    domain = profile.hostname || profile.environment.default_hostname
 
     recipients    profile_recipients(order.consumer)
     from          'no-reply@' + domain
-    reply_to      profile_recipients(node.profile)
-    subject       I18n.t('orders_cycle_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
+    reply_to      profile_recipients(profile)
+    subject       I18n.t('orders_cycle_plugin.lib.mailer.profile_subject') % {:profile => name, :subject => subject}
     content_type  'text/html'
-    body :node => node,
+    body :profile => profile,
          :order => order,
          :consumer => order.consumer,
          :message => message,
-         :environment => node.profile.environment
+         :environment => profile.environment
   end
 
-  def message_to_consumer node, consumer, subject, message
-    domain = node.profile.hostname || node.profile.environment.default_hostname
+  def message_to_consumer profile, consumer, subject, message
+    domain = profile.hostname || profile.environment.default_hostname
 
     recipients    profile_recipients(consumer)
     from          'no-reply@' + domain
-    reply_to      profile_recipients(node.profile)
-    subject       I18n.t('orders_cycle_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
+    reply_to      profile_recipients(profile)
+    subject       I18n.t('orders_cycle_plugin.lib.mailer.profile_subject') % {:profile => name, :subject => subject}
     content_type  'text/html'
-    body :node => node,
+    body :profile => profile,
          :consumer => consumer,
          :message => message,
-         :environment => node.profile.environment
+         :environment => profile.environment
   end
 
-  def message_to_supplier node, supplier, subject, message
-    domain = node.profile.hostname || node.profile.environment.default_hostname
+  def message_to_supplier profile, supplier, subject, message
+    domain = profile.hostname || profile.environment.default_hostname
 
     recipients    profile_recipients(supplier.profile)
     from          'no-reply@' + domain
-    reply_to      profile_recipients(node.profile)
-    subject       I18n.t('orders_cycle_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
+    reply_to      profile_recipients(profile)
+    subject       I18n.t('orders_cycle_plugin.lib.mailer.profile_subject') % {:profile => name, :subject => subject}
     content_type  'text/html'
-    body :node => node,
+    body :profile => profile,
          :supplier => supplier,
          :message => message,
-         :environment => node.profile.environment
+         :environment => profile.environment
   end
 
-  def message_to_admins node, member, subject, message
-    domain = node.profile.hostname || node.profile.environment.default_hostname
+  def message_to_admins profile, member, subject, message
+    domain = profile.hostname || profile.environment.default_hostname
 
-    recipients    profile_recipients(node.profile)
+    recipients    profile_recipients(profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(member.profile)
-    subject       I18n.t('orders_cycle_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
+    subject       I18n.t('orders_cycle_plugin.lib.mailer.profile_subject') % {:profile => name, :subject => subject}
     content_type  'text/html'
-    body :node => node,
+    body :profile => profile,
          :member => member,
          :message => message,
-         :environment => node.profile.environment
+         :environment => profile.environment
   end
 
-  def open_session node, session, subject, message
-    domain = node.profile.hostname || node.profile.environment.default_hostname
+  def open_session profile, session, subject, message
+    domain = profile.hostname || profile.environment.default_hostname
 
-    recipients    community_members(node.profile)
+    recipients    community_members(profile)
     from          'no-reply@' + domain
-    reply_to      profile_recipients(node.profile)
-    subject       I18n.t('orders_cycle_plugin.lib.mailer.node_subject') % {:node => node.name, :subject => subject}
+    reply_to      profile_recipients(profile)
+    subject       I18n.t('orders_cycle_plugin.lib.mailer.profile_subject') % {:profile => name, :subject => subject}
     content_type  'text/html'
-    body :node => node,
+    body :profile => profile,
          :session => session,
          :message => message,
-         :environment => node.profile.environment
+         :environment => profile.environment
   end
 
   private

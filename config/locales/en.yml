@@ -240,7 +240,7 @@
       product: 
         unit: unit
         units: units
-      node: 
+      profile: 
         consumer: Consumer
     views:
       product:
@@ -340,7 +340,7 @@
           products: products
           registered_supplier_i: "Registered supplier in the network"
           remove: remove
-          supplier_node_product: " registered products"
+          supplier_profile_product: " registered products"
           supplier_with_registr: "Supplier with registry managed by the collective"
           this_supplier_has: "This supplier has"
         _suppliers_list: 
@@ -465,7 +465,7 @@
           attention_to_the_foll: "Attention to the following delivery instructions:"
           dear_name: "Dear %{name},"
           greetings: Greetings
-          order_code_of_node: "Order %{code} of %{name}"
+          order_code_of_profile: "Order %{code} of %{name}"
           order_data_confirmed: "Order data confirmed:"
           the_delivery_period_w: "The delivery period will occur %{date}."
           your_order_can_be_che: "Your order can be checked in the following link:"
@@ -497,8 +497,8 @@
       distribution_product_helper: 
         product_from_which_su: "Product from which supplier?"
       mailer: 
-        node_subject: "[%{node}] %{subject}"
-        order_was_changed: "[%{node}] Your order was modificado"
+        profile_subject: "[%{profile}] %{subject}"
+        order_was_changed: "[%{profile}] Your order was modificado"
       order_block: 
         distribution_orders_c: "Distribution orders' cycles for members"
         offer_cycles_for_you_: "Offer cycles for you members to make orders"
@@ -577,18 +577,18 @@
         message_to_consumer: 
           a_service_of_s: "A service of %s."
           hello_name: "Hello %{name},"
-          the_collective_node_s: "The collective %{node} sent a messsage to you"
+          the_collective_profile_s: "The collective %{profile} sent a messsage to you"
         message_to_consumer_for_order: 
           a_service_of_s: "A service of %s."
           hello_name: "Hello %{name}!"
           order: order
           quantity_unit_of_prod: "%{quantity} %{unit} of %{product}"
-          the_collective_node_s: "The collective %{node} sent a messsage to you regarding your %{order}"
+          the_collective_profile_s: "The collective %{profile} sent a messsage to you regarding your %{order}"
           the_products_in_the_o: "The products in the order"
         message_to_supplier: 
           a_service_of_s: "A service of %s."
           hello_administrators_: "Hello administrators of %{name},"
-          the_collective_node_s: "The collective %{node} sent a messsage to you"
+          the_collective_profile_s: "The collective %{profile} sent a messsage to you"
         open_session: 
           a_new_cycle_is_open_c: "A new cycle is open called "
           hello_member_of_name: "Hello member of %{name},"
@@ -608,7 +608,7 @@
           subject: Subject
         new_to_admins: 
           cancel: cancel
-          message_to_managers_o: "Message to managers of \"%{node}\""
+          message_to_managers_o: "Message to managers of \"%{profile}\""
           send: Send
         new_to_consumer: 
           cancel: cancel
@@ -623,7 +623,7 @@
           cancel: cancel
           message_to_supplier_s: "Message to supplier \"%{supplier}\""
           send: Send
-      node: 
+      profile: 
         margins_change:
           ? "%"
           : "%"
@@ -845,7 +845,7 @@
         administration: Administration
     controllers:
       myprofile:
-        node_controller: 
+        profile_controller: 
           distribution_settings: "Distribution settings saved."
     models:
       header_image: 
@@ -860,7 +860,7 @@
           suppliers: Suppliers
         _header: 
           collective_consumptio: "Collective consumption network"
-      node:
+      profile:
         index: 
           dashboard: Dashboard
         settings: 

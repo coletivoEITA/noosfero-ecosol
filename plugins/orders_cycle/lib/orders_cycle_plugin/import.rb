@@ -2,17 +2,17 @@ require 'rubygems'
 require 'faster_csv'
 CSV = FasterCSV
 
-#OrdersCyclePlugin::Import.terramater_db Profile['rede-guandu-producao-e-consumo-responsavel'].node,
+#OrdersCyclePlugin::Import.terramater_db Profile['rede-guandu-producao-e-consumo-responsavel'],
 #  'fornecedor.csv', 'produto.csv', 'fornecedor_produto.csv', 'usuario.csv'
 
 class OrdersCyclePlugin::Import
 
   protected
 
-  def self.terramater_db(node, supplier_csv, products_csv, supplier_products_csv, users_csv, verbose=true)
-    environment = node.profile.environment
+  def self.terramater_db profile, supplier_csv, products_csv, supplier_products_csv, users_csv, verbose=true
+    environment = profile.environment
 
-    node.suppliers.each{ |s| s.destroy! }
+    profile.suppliers.each{ |s| s.destroy! }
 
     CSV.readlines(users_csv,:headers=> true).each do |row|
       name = row[1].strip
@@ -55,14 +55,12 @@ class OrdersCyclePlugin::Import
         u.person.affiliate(u.person, [owner_role]) if owner_role
       end
 
-      consumer = OrdersCyclePlugin::Node.find_or_create u.person
-      node.profile.add_member u.person
-      node.add_consumer consumer
+      profile.add_member u.person #also add consumer
     end
 
     id_s = {}
     CSV.readlines(supplier_csv,:headers => true).each do |row|
-      s = SuppliersPlugin::Supplier.create_dummy :consumer => node, :name => row[1]
+      s = SuppliersPlugin::Supplier.create_dummy :consumer => profile, :name => row[1]
       id_s[row[0]] = s
       email = row[3]
       email = 'rede@terramater.org.br' if email.blank? or !email.include? '@'
@@ -70,7 +68,7 @@ class OrdersCyclePlugin::Import
       puts email if verbose
 
       s.profile.update_attributes! :contact_phone => row[2], :contact_email => email
-      node.profile.admins.each{ |a| s.profile.add_admin a }
+      profile.admins.each{ |a| s.profile.add_admin a }
     end
 
     id_p = {}
@@ -81,7 +79,7 @@ class OrdersCyclePlugin::Import
         name = row[1]
         description = ''
       end
-      product = SuppliersPlugin::DistributedProduct.new :node => node, :name => name, :description => description, :available => row[2]
+      product = SuppliersPlugin::DistributedProduct.new :profile => profile, :name => name, :description => description, :available => row[2]
       puts row[1] if product.nil? and verbose
       id_p[row[0]] = product
     end
