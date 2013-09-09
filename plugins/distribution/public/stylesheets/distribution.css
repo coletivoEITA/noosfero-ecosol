@@ -749,11 +749,6 @@ body.plugin-distribution {
   border: 1px solid gray;
   padding-left: 10px; }
 
-.plugin-distribution .distribution-loading {
-  background-image: url(/plugins/distribution/images/loading.gif);
-  opacity: 0.92;
-  display: none; }
-
 /* ----- common ----- */
 .plugin-distribution .page > *,
 .plugin-distribution .admin-page > * {

@@ -1,22 +1,25 @@
-if (typeof loading === 'undefined') {
+if (typeof loading_overlay === 'undefined') {
 
+// block user actions while making a post. Also indicate the network transaction
 loading_overlay = {
 
-  // block user actions while making a post. Also indicate the network transaction
-  show: function (element) {
-    var pos = jQuery.extend({
-      width: jQuery("#"+element).outerWidth(),
-      height: jQuery("#"+element).outerHeight(),
-    }, jQuery("#"+element).position());
+  show: function (elementId) {
+    element = jQuery("#"+elementId);
+    var pos = {
+      width: element.outerWidth(),
+      height: element.outerHeight(),
+      top: element.position().top + parseFloat(element.css('margin-top')),
+      left: element.position().left + parseFloat(element.css('margin-left')),
+    };
 
     jQuery('<div>', {
-      id: element + '-overlay',
+      id: elementId + '-overlay',
       class: 'loading-overlay',
       css: {
         top: pos.top, left: pos.left,
         width: pos.width, height: pos.height,
       },
-    }).appendTo(jQuery("#"+element));
+    }).appendTo(element);
   },
 
   hide: function (element) {

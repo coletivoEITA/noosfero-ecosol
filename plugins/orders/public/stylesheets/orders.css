@@ -382,6 +382,12 @@
           text-transform: uppercase;
           font-weight: normal; }
 
+.loading-overlay {
+  position: absolute;
+  background-image: url(/images/loading-overlay.gif);
+  opacity: 0.90;
+  z-index: 10; }
+
 .orders-admin-index {
   margin-bottom: 20px; }
   .orders-admin-index .order-header {

@@ -781,6 +781,12 @@
     #supplier-our-products .links input[type=submit] {
       margin-bottom: 8px; }
 
+.loading-overlay {
+  position: absolute;
+  background-image: url(/images/loading-overlay.gif);
+  opacity: 0.90;
+  z-index: 10; }
+
 #suppliers-page .supplier {
   border-top: 1px solid black;
   border-bottom: none; }
