@@ -1,4 +1,5 @@
 class ConsumersCoopPlugin::HeaderImage < ActiveRecord::Base
+
   set_table_name 'images'
 
   has_attachment :content_type => :image,
@@ -12,7 +13,7 @@ class ConsumersCoopPlugin::HeaderImage < ActiveRecord::Base
   protected
 
   # Override image resizing method for adding crop support
-  def resize_image(img, size)
+  def resize_image img, size
     # resize_image take size in a number of formats, we just want
     # Strings in the form of "crop: WxH"
     if (size.is_a?(String) && size =~ /^crop: (\d*)x(\d*)/i) || (size.is_a?(Array) && size.first.is_a?(String) && size.first =~ /^crop: (\d*)x(\d*)/i)
@@ -24,4 +25,5 @@ class ConsumersCoopPlugin::HeaderImage < ActiveRecord::Base
       super # Otherwise let attachment_fu handle it
     end
   end
+
 end

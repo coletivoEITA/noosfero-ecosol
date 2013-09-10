@@ -10,7 +10,7 @@ class OrdersCyclePluginDeliveryOptionController < DeliveryPluginOptionController
 
   # use superclass instead of child
   def url_for options
-    options[:controller] = :consumers_coop_plugin_delivery_option if options[:controller].to_s == 'delivery_plugin_option'
+    options[:controller] = :orders_cycle_plugin_delivery_option if options[:controller].to_s == 'delivery_plugin_option'
     super options
   end
 

@@ -2,16 +2,12 @@
 require_dependency 'orders_cycle_plugin/display_helper'
 require_dependency 'suppliers_plugin/product_helper'
 
-class ConsumersCoopPluginOrderController < OrdersPluginConsumerController
-
-  include ConsumersCoopPlugin::ControllerHelper
+class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
   no_design_blocks
-  before_filter :set_admin_action, :only => [:cycle_edit]
   before_filter :login_required, :except => [:index]
 
-  helper ApplicationHelper
-  helper ConsumersCoopPlugin::DisplayHelper
+  helper OrdersCyclePlugin::DisplayHelper
   helper SuppliersPlugin::ProductHelper
 
   def index

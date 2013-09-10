@@ -8,14 +8,17 @@ class Profile
     @consumers_coop_settings ||= Noosfero::Plugin::Settings.new self, ConsumersCoopPlugin
   end
 
-  belongs_to :consumers_coop_header_image, :foreign_key => :consumers_coop_header_image_id, :class_name => 'ConsumersCoopPlugin::HeaderImage'
+  # belongs_to only works with real attributes :(
+  def consumers_coop_header_image
+    @consumers_coop_header_image ||= ConsumersCoopPlugin::HeaderImage.find self.consumers_coop_header_image_id
+  end
   delegate :consumers_coop_header_image_id, :consumers_coop_header_image_id=, :to => :consumers_coop_settings
   def consumers_coop_header_image_builder= img
     image = self.consumers_coop_header_image
     if image && image.id == img[:id]
       image.attributes = img
     else
-      build_image(img)
+      build_consumers_coop_header_image.attributes = img
     end unless img[:uploaded_data].blank?
   end
 
@@ -69,6 +72,10 @@ class Profile
 
   def abbreviation_or_name
     self['name_abbreviation'] || name
+  end
+
+  def build_consumers_coop_header_image
+    ConsumersCoopPlugin::HeaderImage.new
   end
 
 end
