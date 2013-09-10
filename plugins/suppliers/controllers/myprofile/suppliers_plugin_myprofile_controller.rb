@@ -2,6 +2,8 @@ class SuppliersPluginMyprofileController < MyProfileController
 
   before_filter :load_new, :only => [:index, :new]
 
+  no_design_blocks
+
   helper SuppliersPlugin::SuppliersDisplayHelper
 
   def index
