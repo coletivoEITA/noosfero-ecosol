@@ -4,14 +4,15 @@ require_dependency 'suppliers_plugin/product_helper'
 class SuppliersPluginProductController < MyProfileController
 
   helper SuppliersPlugin::ProductHelper
+  helper SuppliersPlugin::DisplayHelper
 
   def index
     @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id]
 
-    @products = profile.products.unarchived.distributed.paginate({
-      :per_page => 10, :page => params[:page], :order => 'name ASC'
+    @products =           profile.products.unarchived.distributed.paginate({
+      :per_page => 10, :page => params[:page], :order => 'products.name ASC'
       }.merge(search_scope.proxy_options))
-    @all_products_count = profile.products.unarchived.distributed.count
+    @all_products_count = profile.products.unarchived.distributed.count search_scope.proxy_options
     @product_categories = ProductCategory.find(:all)
     @new_product = SuppliersPlugin::DistributedProduct.new :profile => profile, :supplier => @supplier
 
@@ -47,7 +48,7 @@ class SuppliersPluginProductController < MyProfileController
     conditions << {:available => params[:available]} unless params[:available].blank?
     unless params[:name].blank?
       name = ActiveSupport::Inflector.transliterate(params[:name]).strip.downcase
-      conditions << ["LOWER(name) LIKE ?", "%#{name}%"]
+      conditions << ["LOWER(products.name) LIKE ?", "%#{name}%"]
     end
     conditions = [scope.proxy_options[:conditions], *conditions]
 

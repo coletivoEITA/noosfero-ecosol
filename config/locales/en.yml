@@ -313,6 +313,7 @@
           margin: "%{margin} %"
           no_margin_set: "no margin set"
           products: Products
+          supplier: Supplier
           info: "This is list of all the products with which your collective works. Here it's possible to add and remove products, besides desactivating temporarily your commercialization in the Cycles' orders."
           show_products_from: "Show products from"
           the_products: "The products"

@@ -663,7 +663,7 @@
           no_margin_set: "Sem margem definida"
           products: Produtos
           info: "Esta é a lista de produtos com que o coletivo trabalha e é aqui que é feito o controle de estoque. Os produtos se dividem entre ativos e inativos. Os produtos ativos automaticamente são adicionados à lista de uma nova sessão de pedidos."
-          suppliers: "Fornecedores"
+          supplier: Fornecedor
           the_products: "Os produtos"
           name: "Nome"
           whose_qty_available_i: "cuja qtd disponível é"
