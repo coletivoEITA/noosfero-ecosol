@@ -1,8 +1,13 @@
+# workaround for plugin class scope problem
+require_dependency 'orders_cycle_plugin/display_helper'
+
 class ConsumersCoopPluginMyprofileController < MyProfileController
 
   include ConsumersCoopPlugin::ControllerHelper
 
   before_filter :set_admin_action, :only => [:index]
+
+  helper OrdersCyclePlugin::DisplayHelper
 
   def index
     if profile.has_admin? user
@@ -16,6 +21,9 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
     if params[:commit]
       was_enabled = profile.consumers_coop_settings.enabled?
 
+      params[:profile_data].delete(:consumers_coop_settings).each do |attr, value|
+        profile.consumers_coop_settings.send "#{attr}=", value
+      end
       @profile.update_attributes! params[:profile_data]
       profile.consumers_coop_header_image_save
 
@@ -25,7 +33,7 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
         profile.consumers_coop_disable
       end
 
-      session[:notice] = t('consumers_coop_plugin.controllers.myprofile.profile_controller.distribution_settings')
+      session[:notice] = t('consumers_coop_plugin.controllers.myprofile.distribution_settings')
       redirect_to profile_url if profile.consumers_coop_settings.enabled?
     end
   end

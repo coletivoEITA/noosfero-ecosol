@@ -847,7 +847,7 @@
   consumers_coop_plugin: 
     lib:
       plugin:
-        name: Cooperativa de Consumo
+        name: "Cooperativa de Consumo"
         description: "Torne uma organização em uma cooperativa de consumo"
       layout_helper: 
         start: Início
@@ -855,7 +855,7 @@
         administration: Administração
     controllers:
       myprofile:
-          distribution_settings: "Configurações salvas"
+        distribution_settings: "Configurações salvas"
     models:
       header_image: 
         fn_of_uploaded_file_w: "%{fn} do arquivo enviado é maior que o máximo permitido de 2.0 MB"

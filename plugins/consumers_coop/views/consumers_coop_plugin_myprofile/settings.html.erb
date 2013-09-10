@@ -4,10 +4,10 @@
 <div id="consumers-coop-plugin-settings">
   <% form_for :profile_data, @profile, :url => {:controller => :consumers_coop_plugin_myprofile, :action => :settings, :profile => profile.identifier}, :html => {:multipart => true} do |f| %>
 
-    <% f.fields_for :consumers_coop_settings do |f| %>
+    <% f.fields_for :consumers_coop_settings, profile.consumers_coop_settings do |f| %>
       <%= labelled_field f, :enabled, t('consumers_coop_plugin.views.profile.settings.collective_consumptio'),
-        labelled_radio(f, :enabled, t('consumers_coop_plugin.views.profile.settings.disabled'), 'false') +
-        labelled_radio(f, :enabled, t('consumers_coop_plugin.views.profile.settings.activated'), 'true') %>
+        labelled_radio(f, :enabled, t('consumers_coop_plugin.views.profile.settings.disabled'), false) +
+        labelled_radio(f, :enabled, t('consumers_coop_plugin.views.profile.settings.activated'), true) %>
 
       <%= labelled_field f, :name_abbreviation, t('consumers_coop_plugin.views.profile.settings.abbreviated_name_of_t'), f.text_field(:name_abbreviation),
         {:help => t('consumers_coop_plugin.views.profile.settings.this_name_will_be_use')} %>
@@ -24,7 +24,7 @@
         {:help => t('consumers_coop_plugin.views.profile.settings.image_help')} %>
     <% end %>
 
-    <% f.fields_for :consumers_coop_settings do |f| %>
+    <% f.fields_for :consumers_coop_settings, profile.consumers_coop_settings do |f| %>
       <div id=consumers-coop-header-bg-color>
         <% radios = ''; profile.consumers_coop_settings.header_bg_color ||= 'purple' %>
         <% ['purple', 'yellow', 'beige', 'blue', 'petro', 'green'].each do |color| %>

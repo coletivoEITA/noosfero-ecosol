@@ -26,7 +26,7 @@ class ConsumersCoopPlugin < Noosfero::Plugin
   def control_panel_buttons
     profile = context.profile
     return nil unless profile.community?
-    { :title => I18n.t('consumers_coop_plugin.lib.name'), :icon => 'consumers-coop', :url => {:controller => :consumers_coop_plugin_myprofile, :profile => profile.identifier, :action => :settings} }
+    { :title => I18n.t('consumers_coop_plugin.lib.plugin.name'), :icon => 'consumers-coop', :url => {:controller => :consumers_coop_plugin_myprofile, :profile => profile.identifier, :action => :settings} }
   end
 
 end

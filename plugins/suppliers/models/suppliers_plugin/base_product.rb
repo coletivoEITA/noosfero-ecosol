@@ -3,6 +3,7 @@ class SuppliersPlugin::BaseProduct < Product
 
   self.abstract_class = true
 
+  # join source_products
   default_scope :include => [:from_products]
 
   validates_presence_of :name

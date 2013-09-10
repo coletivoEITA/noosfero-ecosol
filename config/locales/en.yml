@@ -837,7 +837,7 @@
   consumers_coop_plugin: 
     lib:
       plugin:
-        name: Consumers' Coop
+        name: "Consumers' Coop"
         description: "Make an organization a consumers cooperative"
       layout_helper: 
         orders: Orders
@@ -845,8 +845,7 @@
         administration: Administration
     controllers:
       myprofile:
-        profile_controller: 
-          distribution_settings: "Distribution settings saved."
+        distribution_settings: "Distribution settings saved."
     models:
       header_image: 
         fn_of_uploaded_file_w: "%{fn} of uploaded file was larger than the maximum size of 2.0 MB"
