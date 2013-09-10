@@ -28,7 +28,7 @@
         <div class="box-field year">
           <div><%=t('orders_cycle_plugin.views.cycle.index.show_cycles_from_year') %></div>
           <div>
-            <% range = @profile.closed_cycles_date_range %>
+            <% range = @profile.orders_cycles_closed_date_range %>
             <%= select_year @year_date, {:start_year => range.first.year, :end_year => range.last.year}, :onchange => "this.form.onsubmit()" %>
           </div>
         </div>

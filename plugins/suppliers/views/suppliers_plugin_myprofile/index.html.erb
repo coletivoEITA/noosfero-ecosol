@@ -20,11 +20,11 @@
 
   <div class="supplier-listing">
     <div id="supplier-add" class="supplier value-row" toggleedit='suppliers.toggle_edit();' >
-      <%= render :partial => 'supplier', :object => @new_supplier %>
+      <%= render :partial => 'suppliers_plugin_myprofile/supplier', :object => @new_supplier %>
     </div>
 
     <div id="suppliers-list">
-      <%= render :partial => 'suppliers_list', :locals => { :suppliers => @suppliers} %>
+      <%= render :partial => 'suppliers_plugin_myprofile/suppliers_list', :locals => { :suppliers => @suppliers} %>
     </div>
   </div>
 </div>

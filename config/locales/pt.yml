@@ -241,7 +241,7 @@
       ext:
         orders_plugin:
           order:
-            sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
+            cyclecode_ordercode: "%{cyclecode}.%{ordercode}"
       mailer: 
         profile_subject: "[%{profile}] %{subject}"
         order_was_changed: "[%{profile}] Seu pedido foi modificado"
@@ -284,14 +284,14 @@
           product_removed_from_: "Produto removido do ciclo"
           product_removed_succe: "Produto removido com sucesso"
           the_product_was_not_r: "O produto não foi removido"
-        session_controller: 
+        cycle_controller: 
           cycle_created: "Ciclo criado"
           cycle_n_n: "Ciclo n.%{n}"
           cycle_orders_report_d: "Relatório de pedidos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
           new_open_cycle: "Novo ciclo aberto"
           products_report_date_: "Relatório de produtos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
     models: 
-      session: 
+      cycle: 
         code_name: "%{code}. %{name}"
         delivery_period_befor: "Período de entrega antes do período de pedidos"
         invalid_delivery_peri: "Período de entrega inválido"
@@ -308,12 +308,12 @@
           orders: pedidos
           see_all_cycles: "ver todos ciclos"
       gadgets: 
-        _session: 
+        _cycle: 
           happening: Acontecendo
-          orders_open_b_session: "Pedidos abertos: <b>%{session}</b>"
+          orders_open_b_cycle: "Pedidos abertos: <b>%{cycle}</b>"
           place_an_order: "place an order"
           see_orders_cycle: "Ver ciclo de pedidos"
-        sessions: 
+        cycles: 
           all_cycles: "todos ciclos"
       mailer: 
         message_to_admins: 
@@ -335,7 +335,7 @@
           a_service_of_s: "Um serviço de %s."
           hello_administrators_: "Olá administradores de %{name}!"
           the_collective_profile_s: "O coletivo %{profile} mandou uma mensagem para você"
-        open_session: 
+        open_cycle: 
           a_new_cycle_is_open_c: "Um novo ciclo de pedidos está aberto chamado "
           hello_member_of_name: "Olá membros da comunidade %{name}!"
           the_administrator_let: "O administrador deixou uma mensagem sobre este ciclo"
@@ -441,7 +441,7 @@
           price: Preço
           product: Produto
           this_search_hasn_t_re: "Esta busca não retornou produtos"
-        _session_edit: 
+        _cycle_edit: 
           all_ordered_products_: "Todos pedidos deste produto serão removidos também; você deveria primeiro avisar os membros que pediram esse produto."
           buy_price: "Preço de compra"
           buy_unit: "Unidade de compra"
@@ -456,7 +456,7 @@
           save: Salvar
           sell_price: "Preço de venda:"
           sell_unit: "Unidade de venda"
-      session: 
+      cycle: 
         _brief: 
           confirmed_orders:
             zero: "(nenhum pedido)"
@@ -600,7 +600,7 @@
           change_default_margin: "Mudar a margem padrão de comercialização"
           confirm: Confirmar
           apply_to_all: "Aplicar para os produtos com margens personalizadas"
-          apply_to_open_sessions: "Aplicar para os produtos nos ciclos abertos"
+          apply_to_open_cycles: "Aplicar para os produtos nos ciclos abertos"
           new_margin: "Nova margem"
       product:
         _edit: 

@@ -4,7 +4,7 @@
 <% else %>
   <% @suppliers.each do |supplier| %>
     <div id="supplier-<%=supplier.id%>" class="supplier value-row" without-hover without-click-edit toggleedit='suppliers.toggle_edit();'>
-      <%= render :partial => 'supplier', :object => supplier %>
+      <%= render :partial => 'suppliers_plugin_myprofile/supplier', :object => supplier %>
     </div>
   <% end %>
 <% end %>

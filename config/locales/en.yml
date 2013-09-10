@@ -246,12 +246,12 @@
         margin_change:
           ? "%"
           : "%"
-          notice: "By changing the default margin of commercialization, the products that are \"use the default margin\" marked will automatically have their margin updated. The open sessions won't be affected."
+          notice: "By changing the default margin of commercialization, the products that are \"use the default margin\" marked will automatically have their margin updated. The open cycles won't be affected."
           cancel: cancel
           change_default_margin: "Change default margin of commercialization"
           confirm: Confirm
           apply_to_all: "Apply to the products with custom margins"
-          apply_to_open_sessions: "Apply to the products in open cycles"
+          apply_to_open_cycles: "Apply to the products in open cycles"
           new_margin: "New margin"
       product:
         _edit: 
@@ -503,7 +503,7 @@
       ext:
         orders_plugin:
           order:
-            sessioncode_ordercode: "%{sessioncode}.%{ordercode}"
+            cyclecode_ordercode: "%{cyclecode}.%{ordercode}"
       distribution_product_helper: 
         product_from_which_su: "Product from which supplier?"
       mailer: 
@@ -548,14 +548,14 @@
           product_removed_from_: "Product removed from cycle"
           product_removed_succe: "Product removed successfully"
           the_product_was_not_r: "The product was not removed"
-        session_controller: 
+        cycle_controller: 
           cycle_created: "Cycle created"
           cycle_n_n: "Cycle n.%{n}"
           cycle_orders_report_d: "Cycle Orders Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
           new_open_cycle: "New open cycle: "
           products_report_date_: "Products Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
     models: 
-      session: 
+      cycle: 
         code_name: "%{code}. %{name}"
         delivery_period_befor: "Delivery' period before orders' period"
         invalid_delivery_peri: "Invalid delivery' period"
@@ -572,12 +572,12 @@
           orders: orders
           see_all_cycles: "see all cycles"
       gadgets: 
-        _session: 
+        _cycle: 
           happening: Happening
-          orders_open_b_session: "Orders open: <b>%{session}</b>"
+          orders_open_b_cycle: "Orders open: <b>%{cycle}</b>"
           place_an_order: "place an order"
           see_orders_cycle: "see orders' cycle"
-        sessions: 
+        cycles: 
           all_cycles: "all cycles"
       mailer: 
         message_to_admins: 
@@ -599,7 +599,7 @@
           a_service_of_s: "A service of %s."
           hello_administrators_: "Hello administrators of %{name},"
           the_collective_profile_s: "The collective %{profile} sent a messsage to you"
-        open_session: 
+        open_cycle: 
           a_new_cycle_is_open_c: "A new cycle is open called "
           hello_member_of_name: "Hello member of %{name},"
           the_administrator_let: "The administrator let a message about this cycle"
@@ -706,7 +706,7 @@
           price: Price
           product: Product
           this_search_hasn_t_re: "This search hasn't returned any product"
-        _session_edit: 
+        _cycle_edit: 
           all_ordered_products_: "All ordered products from this product will also be removed; you should first warn members that ordered this products"
           buy_price: "Buy price"
           buy_unit: "Buy unit"
@@ -721,7 +721,7 @@
           save: Save
           sell_price: "Sell price"
           sell_unit: "Sell unit"
-      session: 
+      cycle: 
         _brief: 
           confirmed_orders:
             zero: "(no order)"

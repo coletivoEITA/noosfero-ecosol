@@ -1,1 +1,1 @@
-page.replace_html "supplier-#{@supplier.id}", :partial => 'supplier', :object => @supplier
+page.replace_html "supplier-#{@supplier.id}", :partial => 'suppliers_plugin_myprofile/supplier', :object => @supplier
