@@ -275,7 +275,6 @@
         un: un.
         value: Valor
         value_parcel: "Valor da encomenda"
-      settings_solidary_dis: "Configuração da Rede de Distribuição Solidária"
     controllers: 
       myprofile: 
         message_controller: 
@@ -847,8 +846,8 @@
   consumers_coop_plugin: 
     lib:
       plugin:
-        name: "Cooperativa de Consumo"
-        description: "Torne uma organização em uma cooperativa de consumo"
+        name: "Coletivo de consumo"
+        description: "Torne uma organização em uma coletivo de consumo"
       layout_helper: 
         start: Início
         orders: Pedidos
@@ -868,7 +867,7 @@
           products: Produtos
           suppliers: Fornecedores
         _header: 
-          collective_consumptio: "Rede de coletivos de consumo"
+          collective_consumptio: "Rede de Coletivos de Consumo"
       profile:
         index: 
           dashboard: Painel
@@ -887,7 +886,7 @@
           image_help: "Esta imagem será usada no cabeçalho da página do coletivo, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
           pure_color_collective: "Cor pura + nome do coletivo"
           save: Salvar
-          settings_of_solidary_: "Configurações da Rede de Distribuição solidária"
+          settings_of_solidary_: "Configurações do Coletivo de Consumo"
           text_color: "Cor do texto"
           this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso do coletivo. Como o coletivo é comumente chamado pelas pessoas?"
           white: branco
