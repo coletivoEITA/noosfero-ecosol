@@ -1,14 +1,16 @@
 @import 'base';
 @import 'sortable-table';
-@import 'product';
 @import 'loading-overlay';
 @import 'filter';
+@import 'product';
 
 #suppliers-page {
 
   .supplier {
     border-top: 1px solid black;
     border-bottom: none;
+    padding-top: $padding;
+    padding-left: $padding;
   }
   .supplier:last-child {
     border-bottom: 1px solid black;

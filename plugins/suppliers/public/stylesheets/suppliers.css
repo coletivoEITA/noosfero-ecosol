@@ -386,6 +386,223 @@
           text-transform: uppercase;
           font-weight: normal; }
 
+.loading-overlay {
+  position: absolute;
+  background-image: url(/images/loading-overlay.gif);
+  opacity: 0.90;
+  z-index: 10; }
+
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2 {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button, #supplier-our-products a.button.colorbox-close,
+#supplier-our-products #wrap-1 input[type=submit],
+#supplier-our-products input[type=submit] {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  background: #fbca47;
+  border: 1px solid #f4a439;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: none;
+  border-radius: 5px; }
+
+.consumers-coop #filter {
+  background-color: #BCDC91;
+  padding: 0;
+  margin-top: 16px;
+  margin-left: -40px;
+  margin-right: -40px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  font-size: 9px; }
+
+.consumers-coop #filter .filter-box {
+  padding-left: 48px;
+  padding-right: 48px;
+  border-bottom: 1px solid #d6e9bc;
+  padding-top: 4px;
+  padding-bottom: 4px; }
+
+.consumers-coop #filter .title {
+  font-weight: bold;
+  font-size: 13px; }
+
+.consumers-coop #filter .fields > div {
+  border-right: 1px solid #d6e9bc;
+  padding-left: 8px;
+  padding-right: 8px;
+  float: left; }
+
+.consumers-coop #filter .fields > div.clean {
+  float: none; }
+
+.consumers-coop #filter .fields > div:first-child {
+  padding-left: 0; }
+
+.consumers-coop #filter .fields div.name {
+  border-right: 0; }
+
+.consumers-coop #filter .fields label {
+  font-weight: bold; }
+
+.consumers-coop #filter .submit input[type=submit] {
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 8px;
+  background-color: #4B583C;
+  color: #FFFFFF;
+  border: 1px solid white;
+  font-size: 9px;
+  text-align: center;
+  margin: none; }
+
+.consumers-coop #filter .filter-box select,
+.consumers-coop #filter .filter-box input {
+  width: 164px; }
+
+.consumers-coop #filter .filter-box .name input {
+  width: 308px; }
+
+/*
+WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
+.consumers-coop #filter .filter-box select,
+.consumers-coop #filter .filter-box input {
+  width: 160px -(2*$padding);
+}
+
+.consumers-coop #filter .filter-box .name input {
+  width:288px;
+}
+  */
 /* use with @extend, CSS clear bugfix */
 .clean {
   clear: both; }
@@ -780,226 +997,11 @@
     #supplier-our-products .links input[type=submit] {
       margin-bottom: 8px; }
 
-.loading-overlay {
-  position: absolute;
-  background-image: url(/images/loading-overlay.gif);
-  opacity: 0.90;
-  z-index: 10; }
-
-/* use with @extend, CSS clear bugfix */
-.clean {
-  clear: both; }
-
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
-  overflow: hidden;
-  display: inline-block;
-  /* Necessary to trigger "hasLayout" in IE */
-  display: block;
-  /* Sets element back to block */ }
-
-/* layout base parameters */
-/* heights should only use multiples of this */
-/* base measurements */
-/* widths should only use one of these */
-/* paddings and margins should only use one of these
-   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
-   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
-   box doesn't have a padding, then sum $intercolumn to the width.
- */
-/* use for borders */
-/* use for text shadows */
-/* Colors */
-/* Fonts */
-/* Paragraphs Styles (use with @extend) */
-.pstyle-none {
-  font-size: 12px; }
-
-.pstyle-basic {
-  font-size: 16px; }
-
-.pstyle-button {
-  font-size: 16px; }
-
-.pstyle-button-small {
-  font-size: 13px; }
-
-.pstyle-title {
-  font-size: 72px; }
-
-.pstyle-h1 {
-  font-size: 34px; }
-
-.pstyle-h2 {
-  font-size: 26px; }
-
-.pstyle-h3 {
-  font-size: 21px; }
-
-.pstyle-h4 {
-  font-size: 16px; }
-
-.pstyle-h5 {
-  font-size: 13px; }
-
-.pstyle-title-section {
-  font-size: 92px; }
-
-.pstyle-field {
-  font-size: 13px; }
-
-.pstyle-menu-big-selected {
-  font-size: 21px; }
-
-.pstyle-menu-big-unselected {
-  font-size: 21px; }
-
-.pstyle-menu-medium-selected {
-  font-size: 16px; }
-
-.pstyle-menu-medium-unselected {
-  font-size: 16px; }
-
-.pstyle-menu-small-selected {
-  font-size: 13px; }
-
-.pstyle-menu-small-unselected {
-  font-size: 13px; }
-
-.pstyle-tp4 {
-  font-size: 42px; }
-
-.pstyle-tp3 {
-  font-size: 34px; }
-
-.pstyle-tp2 {
-  font-size: 26px; }
-
-.pstyle-tp1 {
-  font-size: 21px; }
-
-.pstyle-tm1 {
-  font-size: 13px; }
-
-.pstyle-tm2 {
-  font-size: 10px; }
-
-/* Images */
-/* profile-image that can be centered and resized with aspect ratio */
-.profile-image {
-  display: inline-block;
-  /* do not put padding in this as background size will consider it. */ }
-  .profile-image.thumb {
-    width: 32px;
-    height: 32px; }
-  .profile-image.portrait {
-    width: 80px;
-    height: 80px; }
-  .profile-image .inner {
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 100%;
-    background-size: contain;
-    /* css3 enabled */ }
-
-/* Buttons */
-.action-button, #supplier-our-products a.button.colorbox-close,
-#supplier-our-products #wrap-1 input[type=submit],
-#supplier-our-products input[type=submit] {
-  display: inline-block;
-  padding: 4px 8px;
-  margin: 0;
-  /* remove submit input browser's margin */
-  height: auto;
-  width: auto;
-  background: #fbca47;
-  border: 1px solid #f4a439;
-  cursor: pointer;
-  color: black;
-  font-weight: bold;
-  line-height: 16px;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  text-shadow: none;
-  border-radius: 5px; }
-
-.consumers-coop #filter {
-  background-color: #BCDC91;
-  padding: 0;
-  margin-top: 16px;
-  margin-left: -40px;
-  margin-right: -40px;
-  margin-bottom: 16px;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  font-size: 9px; }
-
-.consumers-coop #filter .filter-box {
-  padding-left: 48px;
-  padding-right: 48px;
-  border-bottom: 1px solid #d6e9bc;
-  padding-top: 4px;
-  padding-bottom: 4px; }
-
-.consumers-coop #filter .title {
-  font-weight: bold;
-  font-size: 13px; }
-
-.consumers-coop #filter .fields > div {
-  border-right: 1px solid #d6e9bc;
-  padding-left: 8px;
-  padding-right: 8px;
-  float: left; }
-
-.consumers-coop #filter .fields > div.clean {
-  float: none; }
-
-.consumers-coop #filter .fields > div:first-child {
-  padding-left: 0; }
-
-.consumers-coop #filter .fields div.name {
-  border-right: 0; }
-
-.consumers-coop #filter .fields label {
-  font-weight: bold; }
-
-.consumers-coop #filter .submit input[type=submit] {
-  font-weight: bold;
-  text-transform: uppercase;
-  padding: 8px;
-  background-color: #4B583C;
-  color: #FFFFFF;
-  border: 1px solid white;
-  font-size: 9px;
-  text-align: center;
-  margin: none; }
-
-.consumers-coop #filter .filter-box select,
-.consumers-coop #filter .filter-box input {
-  width: 164px; }
-
-.consumers-coop #filter .filter-box .name input {
-  width: 308px; }
-
-/*
-WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
-.consumers-coop #filter .filter-box select,
-.consumers-coop #filter .filter-box input {
-  width: 160px -(2*$padding);
-}
-
-.consumers-coop #filter .filter-box .name input {
-  width:288px;
-}
-  */
 #suppliers-page .supplier {
   border-top: 1px solid black;
-  border-bottom: none; }
+  border-bottom: none;
+  padding-top: 8px;
+  padding-left: 8px; }
 #suppliers-page .supplier:last-child {
   border-bottom: 1px solid black; }
 #suppliers-page .supplier-type {

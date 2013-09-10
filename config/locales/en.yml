@@ -318,7 +318,7 @@
           the_products: "The products"
           whose_name_contains: "whose name contains"
           whose_qty_available_i: "whose qty. available is"
-          with_the_category: "with the category"
+          category: "Category"
           with_the_qualifiers: "with the qualifiers"
       supplier: 
         _edit: 

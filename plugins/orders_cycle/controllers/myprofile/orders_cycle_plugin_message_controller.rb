@@ -1,5 +1,8 @@
 class OrdersCyclePluginMessageController < MyProfileController
 
+  # FIXME: remove me when styles move from consumers_coop plugin
+  include ConsumersCoopPlugin::ControllerHelper
+
   no_design_blocks
 
   def new_to_consumer_for_order

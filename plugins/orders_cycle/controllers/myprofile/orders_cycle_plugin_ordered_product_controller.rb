@@ -1,5 +1,8 @@
 class OrdersCyclePluginOrderedProductController < OrdersPluginProductController
 
+  # FIXME: remove me when styles move from consumers_coop plugin
+  include ConsumersCoopPlugin::ControllerHelper
+
   no_design_blocks
 
   helper OrdersCyclePlugin::DisplayHelper

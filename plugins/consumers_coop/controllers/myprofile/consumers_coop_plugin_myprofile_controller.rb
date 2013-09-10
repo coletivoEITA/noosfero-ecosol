@@ -5,8 +5,6 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
 
   include ConsumersCoopPlugin::ControllerHelper
 
-  before_filter :set_admin_action, :only => [:index]
-
   helper OrdersCyclePlugin::DisplayHelper
 
   def index

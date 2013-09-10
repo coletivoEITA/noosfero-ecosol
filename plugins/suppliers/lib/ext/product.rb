@@ -2,8 +2,6 @@ require_dependency 'product'
 
 class Product
 
-  named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
-
   named_scope :available, :conditions => {:available => true}
   named_scope :inavailable, :conditions => {:available => false}
   named_scope :archived, :conditions => {:archived => true}
@@ -11,6 +9,8 @@ class Product
 
   named_scope :by_profile, lambda { |profile| { :conditions => {:profile_id => profile.id} } }
   named_scope :by_profile_id, lambda { |profile_id| { :conditions => {:profile_id => profile_id} } }
+
+  named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
 
   named_scope :from_supplier_profile_id, lambda { |profile_id| {
       :conditions => ['suppliers_plugin_suppliers.profile_id = ?', profile_id],

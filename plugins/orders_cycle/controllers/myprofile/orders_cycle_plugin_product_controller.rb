@@ -3,6 +3,9 @@ require_dependency 'orders_cycle_plugin/display_helper'
 
 class OrdersCyclePluginProductController < SuppliersPluginProductController
 
+  # FIXME: remove me when styles move from consumers_coop plugin
+  include ConsumersCoopPlugin::ControllerHelper
+
   no_design_blocks
 
   helper OrdersCyclePlugin::DisplayHelper
