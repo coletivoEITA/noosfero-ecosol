@@ -12,6 +12,9 @@ class Product
 
   named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
 
+  # join source_products
+  default_scope :include => [:from_products]
+
   named_scope :from_supplier_profile_id, lambda { |profile_id| {
       :conditions => ['suppliers_plugin_suppliers.profile_id = ?', profile_id],
       :joins => 'INNER JOIN suppliers_plugin_suppliers ON suppliers_plugin_suppliers.profile_id = suppliers_plugin_source_products.supplier_id'
