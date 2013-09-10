@@ -10,7 +10,7 @@ class SuppliersPluginMyprofileController < MyProfileController
 
     respond_to do |format|
       format.html
-      format.js { render :partial => 'suppliers_list', :locals => {:suppliers => @suppliers}}
+      format.js { render :partial => 'suppliers_plugin_myprofile/suppliers_list', :locals => {:suppliers => @suppliers}}
     end
   end
 
