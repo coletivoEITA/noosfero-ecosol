@@ -13,7 +13,7 @@ $border: 1px solid #d6e9bc;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
-  font-size: 11px;
+  font-size: 9px;
 }
 
 .consumers-coop #filter .filter-box {
@@ -47,6 +47,10 @@ $border: 1px solid #d6e9bc;
   border-right: 0;
 }
 
+.consumers-coop #filter .fields label {
+  font-weight: bold;
+}
+
 .consumers-coop #filter .submit input[type=submit] {
   font-weight: bold;
   text-transform: uppercase;
@@ -54,7 +58,7 @@ $border: 1px solid #d6e9bc;
   background-color: #4B583C;
   color: #FFFFFF;
   border: 1px solid white;
-  font-size: 10px;
+  font-size: 9px;
   text-align: center;
   margin: none;
 }
