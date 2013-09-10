@@ -1,0 +1,35 @@
+<div id="consumers-coop-cycle-product-add" class="consumers-coop-plugin-popin">
+  <h1><%= t('orders_cycle_plugin.views.cycle.add_products.add_product_to_cycle_') %></h1>
+
+  <% form_remote_tag :url => params do %>
+    <% if @missing_products.blank? %>
+      <%= hidden_field_tag 'products_id', :value => '' %>
+      <div>
+        <%= t('orders_cycle_plugin.views.cycle.add_products.you_already_have_all_') %>
+      </div>
+
+      <%= colorbox_close_link t('orders_cycle_plugin.views.cycle.add_products.close') %>
+    <% else %>
+      <div>
+        <%= label_tag :products_id, t('orders_cycle_plugin.views.cycle.add_products.search_for_a_product_') %>
+      </div>
+      <div>
+        <%= text_field_tag 'products_id' %>
+        <% javascript_tag do %>
+          jQuery.TokenList(jQuery("#products_id"), <%= @missing_products.map { |p| {:id => p.id, :name => p.name} }.to_json %>,
+          {searchDelay: 0, showAllResults: true, theme: 'distribution', preventDuplicates: true, <%= jquery_token_input_messages_json(t('orders_cycle_plugin.views.cycle.add_products.type_in_a_name')) %> });
+        <% end %>
+      </div>
+      <div>
+        <%= t('orders_cycle_plugin.views.cycle.add_products.or') %>
+        <%= link_to_remote(t('orders_cycle_plugin.views.cycle.add_products.add_all_missing_produ'),
+                           :url => {:controller => :orders_cycle_plugin_cycle, :action => :add_missing_products, :id => @cycle.id, :method => :post}) %>
+      </div>
+
+      <%= submit_tag t('orders_cycle_plugin.views.cycle.add_products.send') %>
+      <%= colorbox_close_link t('orders_cycle_plugin.views.cycle.add_products.cancel') %>
+    <% end %>
+
+  <% end %>
+</div>
+

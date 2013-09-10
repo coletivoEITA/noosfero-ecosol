@@ -1,0 +1,14 @@
+<div id="order-page" class="orders page cycle-view">
+
+  <%= render :partial => 'orders_cycle_plugin_cycle/view_header', :locals => {:cycle => @cycle} %>
+
+  <%= render :partial => 'orders_cycle_plugin_cycle/view_products', :locals => {:cycle => @cycle, :order => @order} %>
+
+  <div id="order-column">
+    <%= render :partial => 'consumer_orders' %>
+  </div>
+
+  <%= javascript_include_tag '/plugins/orders/waypoints.min.js' %>
+
+  <div class="clean"></div>
+</div>

@@ -1,0 +1,15 @@
+<div id="cycle-products-for-order">
+  <div class="title">
+    <h3><%=t('orders_cycle_plugin.views.cycle._view_products.the_products')%></h3>
+    <div><%= t('orders_cycle_plugin.views.cycle._view_products.choose_from_the_list_')%></div>
+  </div>
+
+  <%= render :partial => "orders_cycle_plugin_order/filter_products", :locals => {:cycle => cycle, :order => order}%>
+
+  <div id="order-filter">
+    <%= render :partial => "orders_cycle_plugin_product/order_search", :locals => {
+      :cycle => cycle, :order => order,
+      :products_for_order_by_supplier => cycle.products_for_order_by_supplier,
+    } %>
+  </div>
+</div>

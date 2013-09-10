@@ -1,0 +1,13 @@
+<% form_remote_for :delivery_method, delivery_method,
+  :url => {:controller => :delivery_plugin_option, :action => delivery_method.new_record? ? :method_new : :method_edit, :id => delivery_method.id, :owner_id => @owner_id, :owner_type => @owner_type} do |f| %>
+  <%= labelled_field f, :name, t('delivery_plugin.views.delivery_option._method_edit.name'), f.text_field(:name) %>
+  <%= labelled_field f, :description, t('delivery_plugin.views.delivery_option._method_edit.instructions'),
+    f.text_area(:description), :help => t('delivery_plugin.views.delivery_option._method_edit.instructions_help') %>
+
+  <div class="clean"></div>
+
+  <div>
+    <%= f.submit delivery_method.new_record? ? t('delivery_plugin.views.delivery_option._method_edit.add') : t('delivery_plugin.views.delivery_option._method_edit.save') %>
+    <%= link_to_function t('delivery_plugin.views.delivery_option._method_edit.cancel'), "delivery.view_toggle()" %>
+  </div>
+<% end %>

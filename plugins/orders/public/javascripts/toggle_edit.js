@@ -1,0 +1,1 @@
+../../../suppliers/public/javascripts/toggle_edit.js

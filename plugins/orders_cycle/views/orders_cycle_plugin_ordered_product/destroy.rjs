@@ -1,0 +1,7 @@
+page.replace_html "cycle-product-#{@offered_product.id.to_s}",
+  :partial => "orders_plugin_product/order_edit", :locals => {
+    :product => @offered_product, :order => @order, :cycle => @cycle, :ordered_product => nil}
+
+render :template => 'orders_plugin_product/destroy'
+
+

@@ -1,0 +1,57 @@
+<div class="cycle-timeline">
+  <% urls = [
+      [t('orders_cycle_plugin.views.cycle._timeline.edition'), 'edition'],
+      #[t('orders_cycle_plugin.views.cycle._timeline.call'), 'call'],
+      [t('orders_cycle_plugin.views.cycle._timeline.orders'), 'orders'],
+      #[t('orders_cycle_plugin.views.cycle._timeline.parcels'), 'parcels'],
+      #[t('orders_cycle_plugin.views.cycle._timeline.redistribution'), 'redistribution'],
+      #[t('orders_cycle_plugin.views.cycle._timeline.delivery'), 'delivery'],
+      #[t('orders_cycle_plugin.views.cycle._timeline.close'), 'close'],
+    ]
+  %>
+  <% view = params[:view] || cycle.status %>
+
+  <div>
+    <% urls.each do |name, status| %>
+      <% klass = "cycle-timeline-item #{timeline_class(cycle, status, view)}" %>
+      <% if cycle.passed_by?(status) or cycle.status == status %>
+        <%= link_to name, params.merge(:action => :edit, :id => cycle.id, :view => status), :class => klass %>
+      <% else %>
+        <span class="<%=klass%>"><%= name %></span>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%
+    actions = {
+      :edition => [
+      ],
+      :orders => [
+        [ t('orders_cycle_plugin.views.cycle._timeline.spreadsheet_with_the_'), {:action => :report_orders, :id => cycle.id} ],
+        [ t('orders_cycle_plugin.views.cycle._timeline.spreadsheet_with_prod'), {:action => :report_products, :id => cycle.id} ],
+      ],
+      :closed => [
+      ]
+    }
+    actions[:edition].unshift [ t('orders_cycle_plugin.views.cycle._timeline.finish_cycle_editing'), {:action => :step, :id => cycle.id, :method => :post},
+      { :id => 'cycle-open-cycle' } ] unless cycle.passed_by?('edition')
+    actions[:orders].unshift [ cycle.orders? ? t('orders_cycle_plugin.views.cycle._timeline.block_orders_period') : t('orders_cycle_plugin.views.cycle._timeline.close_orders_period'),
+      {:action => :step, :id => cycle.id, :method => :post}, { :id => 'cycle-open-cycle' , :confirm => t('orders_cycle_plugin.views.cycle._timeline.are_you_sure_you_want')} ] unless cycle.passed_by?('orders')
+    actions[:closed].unshift [  t('orders_cycle_plugin.views.cycle._timeline.reopen_orders_period'),
+      {:action => :step_back, :id => cycle.id, :method => :post}, { :id => 'cycle-open-cycle' , :confirm => t('orders_cycle_plugin.views.cycle._timeline.are_you_sure_you_want')} ] if cycle.passed_by?('orders')
+
+  %>
+
+  <% unless actions[view.to_sym].blank? %>
+    <div class="actions-bar">
+      <% actions[view.to_sym].each do |args| %>
+        <%= link_to *args %>
+      <% end %>
+      <strong><%= t('orders_cycle_plugin.views.cycle._timeline.actions') %></strong>
+
+      <div class="clean"></div>
+    </div>
+  <% end %>
+
+  <div class="clean"></div>
+</div>

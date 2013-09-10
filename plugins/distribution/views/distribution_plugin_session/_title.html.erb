@@ -1,8 +1,0 @@
-<h2>
-  <% if session.new? %>
-    <div class="session-edit-link"><%= t('distribution_plugin.views.session._title.new_cycle') %></div>
-  <% else %>
-    <%= link_to t('distribution_plugin.views.session._title.order_cycle') + session.name_with_code, {:action => 'edit', :id => session.id }, :class => "session-edit-link" %>
-  <% end %>
-</h2>
-<%= render :partial => 'timeline', :locals => {:session => session} unless session.new? %>

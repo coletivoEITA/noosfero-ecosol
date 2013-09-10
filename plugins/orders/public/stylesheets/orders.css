@@ -1,0 +1,678 @@
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2 {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  background: #fbca47;
+  border: 1px solid #f4a439;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: none;
+  border-radius: 5px; }
+
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2 {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  background: #fbca47;
+  border: 1px solid #f4a439;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: none;
+  border-radius: 5px; }
+
+.sortable-table .box-field {
+  float: left;
+  padding: 8px; }
+.sortable-table .table-header {
+  width: 960px;
+  margin-left: -40px;
+  padding: 0 40px;
+  background-color: #70bcfa;
+  border-bottom: 2px solid #3c729f;
+  color: black; }
+  .sortable-table .table-header .sort-arrow {
+    border-top: 6px solid black;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    position: absolute; }
+    .sortable-table .table-header .sort-arrow.desc {
+      border-bottom: 6px solid black;
+      border-top: 6px solid transparent;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      margin-top: -6px; }
+  .sortable-table .table-header .box-field {
+    padding-left: 7px;
+    border-left: 1px solid white;
+    cursor: pointer;
+    text-transform: lowercase;
+    font-weight: bold;
+    font-size: 10px; }
+.sortable-table .table-content {
+  width: auto;
+  margin-bottom: 16px; }
+  .sortable-table .table-content .value-row {
+    margin-left: -24px;
+    width: 1008px;
+    background: white;
+    border: 1px solid transparent; }
+    .sortable-table .table-content .value-row.edit {
+      border: 1px solid black; }
+      .sortable-table .table-content .value-row.edit .box-view {
+        background-color: white; }
+      .sortable-table .table-content .value-row.edit .box-field.box-edit-link {
+        cursor: inherit;
+        color: black;
+        text-decoration: none; }
+      .sortable-table .table-content .value-row.edit .box-field.actions .actions-circle .action-hide {
+        display: block; }
+      .sortable-table .table-content .value-row.edit .box-field.actions .actions-circle .action-show {
+        display: none; }
+    .sortable-table .table-content .value-row.hover .box-view {
+      background: #fdf2a3 !important; }
+    .sortable-table .table-content .value-row.hover.edit .box-view {
+      background: white !important; }
+    .sortable-table .table-content .value-row .box-field.select, .sortable-table .table-content .value-row .box-field.actions {
+      width: 16px;
+      padding: 8px 4px; }
+    .sortable-table .table-content .value-row .box-field.select input[type=checkbox] {
+      margin-top: 4px !important;
+      margin-left: 3px !important; }
+    .sortable-table .table-content .value-row .box-field.actions .actions-circle {
+      float: right;
+      height: 16px;
+      width: 16px;
+      margin-right: 0;
+      margin-top: 3px;
+      padding: 0;
+      background-color: #FDF2A3;
+      border-radius: 8px;
+      -moz-border-radius: 8px;
+      -webkit-border-radius: 8px;
+      -o-border-radius: 8px;
+      text-decoration: none; }
+      .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-hide, .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-show {
+        font-weight: bolder;
+        font-size: 17px;
+        margin-left: 3px; }
+      .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-show {
+        margin-top: -1px; }
+      .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-hide {
+        display: none;
+        margin-top: -9px; }
+    .sortable-table .table-content .value-row .box-view {
+      border-bottom: 2px dotted #cccccc;
+      background: #f3f4ee; }
+      .sortable-table .table-content .value-row .box-view.with-inner {
+        background: white; }
+        .sortable-table .table-content .value-row .box-view.with-inner .box-view-inner {
+          background: #f3f4ee; }
+      .sortable-table .table-content .value-row .box-view .box-field.box-edit-link {
+        font-size: 12px !important;
+        font-weight: bold;
+        text-decoration: underline;
+        color: #38727E;
+        cursor: pointer; }
+    .sortable-table .table-content .value-row .box-edit {
+      padding: 16px 24px;
+      overflow: hidden;
+      display: none; }
+      .sortable-table .table-content .value-row .box-edit .internal-table {
+        float: left;
+        background-color: #fdf2a3;
+        border: 1px solid black;
+        border-radius: 3px; }
+        .sortable-table .table-content .value-row .box-edit .internal-table .title {
+          margin: 0;
+          padding: 4px 7px;
+          text-transform: uppercase;
+          font-weight: normal; }
+
+.loading-overlay {
+  position: absolute;
+  background-image: url(/images/loading-overlay.gif);
+  opacity: 0.90;
+  z-index: 10; }
+
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2 {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  background: #fbca47;
+  border: 1px solid #f4a439;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: none;
+  border-radius: 5px; }
+
+.consumers-coop #filter {
+  background-color: #BCDC91;
+  padding: 0;
+  margin-top: 16px;
+  margin-left: -40px;
+  margin-right: -40px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  font-size: 9px; }
+
+.consumers-coop #filter .filter-box {
+  padding-left: 48px;
+  padding-right: 48px;
+  border-bottom: 1px solid #d6e9bc;
+  padding-top: 4px;
+  padding-bottom: 4px; }
+
+.consumers-coop #filter .title {
+  font-weight: bold;
+  font-size: 13px; }
+
+.consumers-coop #filter .fields > div {
+  border-right: 1px solid #d6e9bc;
+  padding-left: 8px;
+  padding-right: 8px;
+  float: left; }
+
+.consumers-coop #filter .fields > div.clean {
+  float: none; }
+
+.consumers-coop #filter .fields > div:first-child {
+  padding-left: 0; }
+
+.consumers-coop #filter .fields div.name {
+  border-right: 0; }
+
+.consumers-coop #filter .fields label {
+  font-weight: bold; }
+
+.consumers-coop #filter .submit input[type=submit] {
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 8px;
+  background-color: #4B583C;
+  color: #FFFFFF;
+  border: 1px solid white;
+  font-size: 9px;
+  text-align: center;
+  margin: none; }
+
+.consumers-coop #filter .filter-box select,
+.consumers-coop #filter .filter-box input {
+  width: 164px; }
+
+.consumers-coop #filter .filter-box .name input {
+  width: 308px; }
+
+/*
+WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
+.consumers-coop #filter .filter-box select,
+.consumers-coop #filter .filter-box input {
+  width: 160px -(2*$padding);
+}
+
+.consumers-coop #filter .filter-box .name input {
+  width:288px;
+}
+  */
+.orders-admin-index {
+  margin-bottom: 20px; }
+  .orders-admin-index .order-header {
+    background-color: #B1DFEF;
+    clear: both;
+    float: left;
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box; }
+  .orders-admin-index .order-header .order-label {
+    font-weight: bold;
+    font-size: 13px;
+    display: block;
+    float: left; }
+  .orders-admin-index .order-header .actions-circle {
+    float: right;
+    background-color: transparent; }
+  .orders-admin-index .order-header .actions-circle .actions-arrow {
+    border-top: 7px solid black;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    margin: 8px 6px 0 5px; }
+  .orders-admin-index .order-header .actions-circle.edit .actions-arrow {
+    border-bottom: 7px solid black;
+    border-top: 6px solid transparent;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    margin: 2px 6px 0px 5px; }
+  .orders-admin-index .orders-admin-index.show .order-header .line {
+    border-bottom: 2px solid white;
+    clear: both;
+    width: 100%;
+    padding-top: 10px; }
+  .orders-admin-index .order {
+    clear: both; }
+  .orders-admin-index .order .actions-bar {
+    width: 100%;
+    margin-left: -10px;
+    margin-bottom: -10px; }
+  .orders-admin-index .order.edit {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    margin-top: -1px; }
+  .orders-admin-index .order.edit,
+  .orders-admin-index .order .box-edit {
+    background-color: #fff2a3; }
+  .orders-admin-index .order .box-edit {
+    padding-top: 8px; }
+  .orders-admin-index .order .box-edit .empty-order {
+    text-align: center;
+    margin-bottom: 8px; }
+  .orders-admin-index .order .box-edit form {
+    padding: 0 16px 0 240px;
+    width: 400px; }
+  .orders-admin-index .order .box-edit textarea {
+    width: 100%; }
+  .orders-admin-index .order .box-edit input[type=checkbox] {
+    float: left; }
+  .orders-admin-index .order .value-row {
+    padding: 8px 10px; }
+  .orders-admin-index .actions {
+    min-height: 1px; }
+  .orders-admin-index .box-view .code {
+    font-size: 10px; }
+  .orders-admin-index .code {
+    width: 70px; }
+  .orders-admin-index .member {
+    width: 200px; }
+  .orders-admin-index .created {
+    width: 100px; }
+  .orders-admin-index .modified {
+    width: 100px; }
+  .orders-admin-index .products-count {
+    width: 80px; }
+  .orders-admin-index .price {
+    width: 70px; }

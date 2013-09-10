@@ -1,3 +1,0 @@
-page.replace_html "in-session-order-#{@order.id}", :partial => 'session_edit', :locals => {:order => @order}
-page.replace_html "session-products-sums", :partial => 'distribution_plugin_session/orders_suppliers', :locals => {:session => @order.session}
-page << "distribution.value_row.reload();"

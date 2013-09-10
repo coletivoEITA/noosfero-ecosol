@@ -1,0 +1,6 @@
+page.replace_html 'order-products', :partial => 'orders_plugin_consumer/products', :locals => {:order => @order}
+
+#an empty order doesn't have a total box!
+page.replace_html_if_exists "order-total-#{@order.id}", :partial => 'orders_plugin_consumer/total', :locals => {:order => @order}
+
+page << 'toggle_edit.value_row.reload();'

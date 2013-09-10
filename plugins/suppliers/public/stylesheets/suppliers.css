@@ -1,0 +1,1050 @@
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2 {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button, #supplier-our-products a.button.colorbox-close,
+#supplier-our-products #wrap-1 input[type=submit],
+#supplier-our-products input[type=submit] {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  background: #fbca47;
+  border: 1px solid #f4a439;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: none;
+  border-radius: 5px; }
+
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2 {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button, #supplier-our-products a.button.colorbox-close,
+#supplier-our-products #wrap-1 input[type=submit],
+#supplier-our-products input[type=submit] {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  background: #fbca47;
+  border: 1px solid #f4a439;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: none;
+  border-radius: 5px; }
+
+.sortable-table .box-field {
+  float: left;
+  padding: 8px; }
+.sortable-table .table-header {
+  width: 960px;
+  margin-left: -40px;
+  padding: 0 40px;
+  background-color: #70bcfa;
+  border-bottom: 2px solid #3c729f;
+  color: black; }
+  .sortable-table .table-header .sort-arrow {
+    border-top: 6px solid black;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    position: absolute; }
+    .sortable-table .table-header .sort-arrow.desc {
+      border-bottom: 6px solid black;
+      border-top: 6px solid transparent;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      margin-top: -6px; }
+  .sortable-table .table-header .box-field {
+    padding-left: 7px;
+    border-left: 1px solid white;
+    cursor: pointer;
+    text-transform: lowercase;
+    font-weight: bold;
+    font-size: 10px; }
+.sortable-table .table-content {
+  width: auto;
+  margin-bottom: 16px; }
+  .sortable-table .table-content .value-row {
+    margin-left: -24px;
+    width: 1008px;
+    background: white;
+    border: 1px solid transparent; }
+    .sortable-table .table-content .value-row.edit {
+      border: 1px solid black; }
+      .sortable-table .table-content .value-row.edit .box-view {
+        background-color: white; }
+      .sortable-table .table-content .value-row.edit .box-field.box-edit-link {
+        cursor: inherit;
+        color: black;
+        text-decoration: none; }
+      .sortable-table .table-content .value-row.edit .box-field.actions .actions-circle .action-hide {
+        display: block; }
+      .sortable-table .table-content .value-row.edit .box-field.actions .actions-circle .action-show {
+        display: none; }
+    .sortable-table .table-content .value-row.hover .box-view {
+      background: #fdf2a3 !important; }
+    .sortable-table .table-content .value-row.hover.edit .box-view {
+      background: white !important; }
+    .sortable-table .table-content .value-row .box-field.select, .sortable-table .table-content .value-row .box-field.actions {
+      width: 16px;
+      padding: 8px 4px; }
+    .sortable-table .table-content .value-row .box-field.select input[type=checkbox] {
+      margin-top: 4px !important;
+      margin-left: 3px !important; }
+    .sortable-table .table-content .value-row .box-field.actions .actions-circle {
+      float: right;
+      height: 16px;
+      width: 16px;
+      margin-right: 0;
+      margin-top: 3px;
+      padding: 0;
+      background-color: #FDF2A3;
+      border-radius: 8px;
+      -moz-border-radius: 8px;
+      -webkit-border-radius: 8px;
+      -o-border-radius: 8px;
+      text-decoration: none; }
+      .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-hide, .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-show {
+        font-weight: bolder;
+        font-size: 17px;
+        margin-left: 3px; }
+      .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-show {
+        margin-top: -1px; }
+      .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-hide {
+        display: none;
+        margin-top: -9px; }
+    .sortable-table .table-content .value-row .box-view {
+      border-bottom: 2px dotted #cccccc;
+      background: #f3f4ee; }
+      .sortable-table .table-content .value-row .box-view.with-inner {
+        background: white; }
+        .sortable-table .table-content .value-row .box-view.with-inner .box-view-inner {
+          background: #f3f4ee; }
+      .sortable-table .table-content .value-row .box-view .box-field.box-edit-link {
+        font-size: 12px !important;
+        font-weight: bold;
+        text-decoration: underline;
+        color: #38727E;
+        cursor: pointer; }
+    .sortable-table .table-content .value-row .box-edit {
+      padding: 16px 24px;
+      overflow: hidden;
+      display: none; }
+      .sortable-table .table-content .value-row .box-edit .internal-table {
+        float: left;
+        background-color: #fdf2a3;
+        border: 1px solid black;
+        border-radius: 3px; }
+        .sortable-table .table-content .value-row .box-edit .internal-table .title {
+          margin: 0;
+          padding: 4px 7px;
+          text-transform: uppercase;
+          font-weight: normal; }
+
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2 {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button, #supplier-our-products a.button.colorbox-close,
+#supplier-our-products #wrap-1 input[type=submit],
+#supplier-our-products input[type=submit] {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  background: #fbca47;
+  border: 1px solid #f4a439;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: none;
+  border-radius: 5px; }
+
+#supplier-our-products {
+  /* use with @extend, CSS clear bugfix */
+  /* layout base parameters */
+  /* heights should only use multiples of this */
+  /* base measurements */
+  /* widths should only use one of these */
+  /* paddings and margins should only use one of these
+     Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+     Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+     box doesn't have a padding, then sum $intercolumn to the width.
+   */
+  /* use for borders */
+  /* use for text shadows */
+  /* Colors */
+  /* Fonts */
+  /* Paragraphs Styles (use with @extend) */
+  /* Images */
+  /* profile-image that can be centered and resized with aspect ratio */
+  /* Buttons */ }
+  #supplier-our-products .clean {
+    clear: both; }
+  #supplier-our-products .container-clean, #supplier-our-products .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row #supplier-our-products .box-view, #supplier-our-products .sortable-table .table-content .value-row .box-edit .internal-table, .sortable-table .table-content .value-row .box-edit #supplier-our-products .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+    overflow: hidden;
+    display: inline-block;
+    /* Necessary to trigger "hasLayout" in IE */
+    display: block;
+    /* Sets element back to block */ }
+  #supplier-our-products .pstyle-none {
+    font-size: 12px; }
+  #supplier-our-products .pstyle-basic {
+    font-size: 16px; }
+  #supplier-our-products .pstyle-button {
+    font-size: 16px; }
+  #supplier-our-products .pstyle-button-small {
+    font-size: 13px; }
+  #supplier-our-products .pstyle-title {
+    font-size: 72px; }
+  #supplier-our-products .pstyle-h1 {
+    font-size: 34px; }
+  #supplier-our-products .pstyle-h2 {
+    font-size: 26px; }
+  #supplier-our-products .pstyle-h3 {
+    font-size: 21px; }
+  #supplier-our-products .pstyle-h4 {
+    font-size: 16px; }
+  #supplier-our-products .pstyle-h5 {
+    font-size: 13px; }
+  #supplier-our-products .pstyle-title-section {
+    font-size: 92px; }
+  #supplier-our-products .pstyle-field {
+    font-size: 13px; }
+  #supplier-our-products .pstyle-menu-big-selected {
+    font-size: 21px; }
+  #supplier-our-products .pstyle-menu-big-unselected {
+    font-size: 21px; }
+  #supplier-our-products .pstyle-menu-medium-selected {
+    font-size: 16px; }
+  #supplier-our-products .pstyle-menu-medium-unselected {
+    font-size: 16px; }
+  #supplier-our-products .pstyle-menu-small-selected {
+    font-size: 13px; }
+  #supplier-our-products .pstyle-menu-small-unselected {
+    font-size: 13px; }
+  #supplier-our-products .pstyle-tp4 {
+    font-size: 42px; }
+  #supplier-our-products .pstyle-tp3 {
+    font-size: 34px; }
+  #supplier-our-products .pstyle-tp2 {
+    font-size: 26px; }
+  #supplier-our-products .pstyle-tp1 {
+    font-size: 21px; }
+  #supplier-our-products .pstyle-tm1 {
+    font-size: 13px; }
+  #supplier-our-products .pstyle-tm2 {
+    font-size: 10px; }
+  #supplier-our-products .profile-image {
+    display: inline-block;
+    /* do not put padding in this as background size will consider it. */ }
+    #supplier-our-products .profile-image.thumb {
+      width: 32px;
+      height: 32px; }
+    #supplier-our-products .profile-image.portrait {
+      width: 80px;
+      height: 80px; }
+    #supplier-our-products .profile-image .inner {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100%;
+      background-size: contain;
+      /* css3 enabled */ }
+  #supplier-our-products .action-button, #supplier-our-products a.button.colorbox-close,
+  #supplier-our-products #wrap-1 input[type=submit],
+  #supplier-our-products input[type=submit] {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 0;
+    /* remove submit input browser's margin */
+    height: auto;
+    width: auto;
+    background: #fbca47;
+    border: 1px solid #f4a439;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+    line-height: 16px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-shadow: none;
+    border-radius: 5px; }
+  #supplier-our-products .field-title {
+    text-transform: uppercase;
+    font-weight: bold; }
+  #supplier-our-products .field {
+    clear: both; }
+    #supplier-our-products .field:first-child label {
+      padding-top: 0; }
+    #supplier-our-products .field label {
+      display: block;
+      float: left;
+      padding-top: 4px;
+      font-weight: bold;
+      line-height: 20px; }
+    #supplier-our-products .field .field-box {
+      clear: both;
+      float: left;
+      width: 100%; }
+    #supplier-our-products .field .field-help {
+      clear: both;
+      margin-bottom: 8px;
+      font-size: 10px; }
+  #supplier-our-products .field-radio {
+    clear: both;
+    margin-bottom: 4px; }
+    #supplier-our-products .field-radio input {
+      float: left;
+      margin-left: 0; }
+    #supplier-our-products .field-radio label {
+      font-weight: normal;
+      line-height: 10px;
+      text-transform: lowercase;
+      margin-left: 4px; }
+  #supplier-our-products .field-secondary {
+    display: block; }
+    #supplier-our-products .field-secondary, #supplier-our-products .field-secondary input {
+      width: 128px; }
+    #supplier-our-products .field-secondary.with-unit input {
+      float: left;
+      width: 112px; }
+    #supplier-our-products .field-secondary.with-unit .field-unit {
+      float: left;
+      width: 16px;
+      line-height: 24px; }
+  #supplier-our-products form {
+    margin: 0;
+    /* come on browsers!? */ }
+  #supplier-our-products label.field-bellow {
+    display: block;
+    margin-bottom: 4px; }
+  #supplier-our-products select,
+  #supplier-our-products input[type=text],
+  #supplier-our-products textarea {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box; }
+  #supplier-our-products select,
+  #supplier-our-products input[type=text] {
+    height: 24px; }
+  #supplier-our-products select {
+    background-color: #fff;
+    border: 1px solid black;
+    padding-left: 4px; }
+  #supplier-our-products input[type=text] {
+    border: 1px solid black;
+    padding: 4px;
+    margin: 0; }
+  #supplier-our-products input[type=checkbox] {
+    width: 12px;
+    height: 12px;
+    margin: 0; }
+  #supplier-our-products textarea {
+    height: 64px;
+    padding-left: 4px; }
+  #supplier-our-products .sortable-table .box-field.status {
+    width: 64px; }
+  #supplier-our-products .sortable-table .box-field.category {
+    width: 64px; }
+  #supplier-our-products .sortable-table .box-field.supplier {
+    width: 144px; }
+  #supplier-our-products .sortable-table .box-field.product {
+    width: 304px; }
+  #supplier-our-products .sortable-table .box-field.margin {
+    width: 64px; }
+  #supplier-our-products .sortable-table .box-field.price {
+    width: 64px; }
+  #supplier-our-products .sortable-table .box-field.stock {
+    width: 64px; }
+  #supplier-our-products .sortable-table .box-field.unit {
+    width: 64px; }
+  #supplier-our-products .sortable-table form {
+    width: 800px;
+    float: left; }
+    #supplier-our-products .sortable-table form .field-secondary {
+      float: left; }
+    #supplier-our-products .sortable-table form .internal-table .row .block {
+      float: left;
+      border-top: 2px solid rgba(255, 255, 255, 0.5);
+      border-right: 2px solid rgba(255, 255, 255, 0.5);
+      padding: 8px;
+      padding-top: 6px;
+      padding-right: 6px;
+      margin: 0; }
+      #supplier-our-products .sortable-table form .internal-table .row .block:last-child {
+        border-right: none; }
+      #supplier-our-products .sortable-table form .internal-table .row .block.margin-price {
+        width: 304px; }
+      #supplier-our-products .sortable-table form .internal-table .row .block.stock {
+        width: 304px; }
+      #supplier-our-products .sortable-table form .internal-table .row .block.available {
+        width: 144px;
+        color: black; }
+      #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary {
+        margin-right: 16px; }
+    #supplier-our-products .sortable-table form .action-button-container {
+      float: left;
+      width: 800px;
+      margin-top: 8px; }
+      #supplier-our-products .sortable-table form .action-button-container .action-button.save, #supplier-our-products .sortable-table form .action-button-container a.save.button.colorbox-close,
+      #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.save[type=submit],
+      #supplier-our-products #wrap-1 .sortable-table form .action-button-container input.save[type=submit],
+      #supplier-our-products .sortable-table form .action-button-container input.save[type=submit] {
+        float: right; }
+      #supplier-our-products .sortable-table form .action-button-container .action-button.remove, #supplier-our-products .sortable-table form .action-button-container a.remove.button.colorbox-close,
+      #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.remove[type=submit],
+      #supplier-our-products #wrap-1 .sortable-table form .action-button-container input.remove[type=submit],
+      #supplier-our-products .sortable-table form .action-button-container input.remove[type=submit], #supplier-our-products .sortable-table form .action-button-container .action-button.cancel, #supplier-our-products .sortable-table form .action-button-container a.cancel.button.colorbox-close,
+      #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.cancel[type=submit],
+      #supplier-our-products #wrap-1 .sortable-table form .action-button-container input.cancel[type=submit],
+      #supplier-our-products .sortable-table form .action-button-container input.cancel[type=submit] {
+        margin-right: 16px;
+        float: left; }
+  #supplier-our-products .links {
+    float: right;
+    width: 144px; }
+    #supplier-our-products .links .action-button, #supplier-our-products .links a.button.colorbox-close,
+    #supplier-our-products .links #wrap-1 input[type=submit],
+    #supplier-our-products #wrap-1 .links input[type=submit],
+    #supplier-our-products .links input[type=submit] {
+      margin-bottom: 8px; }
+
+.loading-overlay {
+  position: absolute;
+  background-image: url(/images/loading-overlay.gif);
+  opacity: 0.90;
+  z-index: 10; }
+
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2 {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button, #supplier-our-products a.button.colorbox-close,
+#supplier-our-products #wrap-1 input[type=submit],
+#supplier-our-products input[type=submit] {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  background: #fbca47;
+  border: 1px solid #f4a439;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: none;
+  border-radius: 5px; }
+
+.consumers-coop #filter {
+  background-color: #BCDC91;
+  padding: 0;
+  margin-top: 16px;
+  margin-left: -40px;
+  margin-right: -40px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  font-size: 9px; }
+
+.consumers-coop #filter .filter-box {
+  padding-left: 48px;
+  padding-right: 48px;
+  border-bottom: 1px solid #d6e9bc;
+  padding-top: 4px;
+  padding-bottom: 4px; }
+
+.consumers-coop #filter .title {
+  font-weight: bold;
+  font-size: 13px; }
+
+.consumers-coop #filter .fields > div {
+  border-right: 1px solid #d6e9bc;
+  padding-left: 8px;
+  padding-right: 8px;
+  float: left; }
+
+.consumers-coop #filter .fields > div.clean {
+  float: none; }
+
+.consumers-coop #filter .fields > div:first-child {
+  padding-left: 0; }
+
+.consumers-coop #filter .fields div.name {
+  border-right: 0; }
+
+.consumers-coop #filter .fields label {
+  font-weight: bold; }
+
+.consumers-coop #filter .submit input[type=submit] {
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 8px;
+  background-color: #4B583C;
+  color: #FFFFFF;
+  border: 1px solid white;
+  font-size: 9px;
+  text-align: center;
+  margin: none; }
+
+.consumers-coop #filter .filter-box select,
+.consumers-coop #filter .filter-box input {
+  width: 164px; }
+
+.consumers-coop #filter .filter-box .name input {
+  width: 308px; }
+
+/*
+WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
+.consumers-coop #filter .filter-box select,
+.consumers-coop #filter .filter-box input {
+  width: 160px -(2*$padding);
+}
+
+.consumers-coop #filter .filter-box .name input {
+  width:288px;
+}
+  */
+#suppliers-page .supplier {
+  border-top: 1px solid black;
+  border-bottom: none; }
+#suppliers-page .supplier:last-child {
+  border-bottom: 1px solid black; }
+#suppliers-page .supplier-type {
+  font-style: italic; }
+#suppliers-page #supplier-add,
+#suppliers-page .box-edit {
+  display: none; }
+#suppliers-page .box-edit {
+  background-color: #FDF2A3; }
+#suppliers-page .supplier-inactive {
+  background-color: #faeeee; }
+#suppliers-page .supplier-body {
+  width: 400px;
+  float: left; }
+#suppliers-page .supplier-name {
+  text-transform: uppercase; }
+#suppliers-page .supplier-logo {
+  float: left;
+  width: 60px;
+  min-height: 60px; }
+#suppliers-page .supplier-actions {
+  float: right;
+  text-align: right;
+  width: 140px; }
+#suppliers-page .supplier-add-link {
+  margin: 20px 0; }
+#suppliers-page .supplier form {
+  width: 640px; }
+#suppliers-page .data textarea,
+#suppliers-page .data input {
+  width: 100%; }
+#suppliers-page .basic-data,
+#suppliers-page .full-data {
+  float: left;
+  width: 290px;
+  margin-right: 30px; }
+#suppliers-page .estrategic-info {
+  float: right; }
+#suppliers-page .additional-fields {
+  width: 100%; }
+#suppliers-page .full-data {
+  display: none; }
+#suppliers-page .full-registration .full-data {
+  display: block; }
+#suppliers-page .filter-box .box-field,
+#suppliers-page .filter-box .box-field input {
+  width: 100%;
+  margin-left: 0; }

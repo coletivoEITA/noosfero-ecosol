@@ -1,0 +1,115 @@
+@import 'base';
+@import 'sortable-table';
+@import 'loading-overlay';
+@import 'filter';
+
+.orders-admin-index {
+
+  margin-bottom: 20px;
+
+  .order-header {
+    background-color: #B1DFEF;
+    clear: both;
+    float: left;
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+  }
+  .order-header .order-label {
+    font-weight: bold;
+    font-size: 13px;
+    display: block;
+    float: left;
+  }
+  .order-header .actions-circle {
+    float: right;
+    background-color: transparent;
+  }
+  .order-header .actions-circle .actions-arrow {
+    border-top: 7px solid black;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    margin: 8px 6px 0 5px;
+  }
+  .order-header .actions-circle.edit .actions-arrow {
+    border-bottom: 7px solid black;
+    border-top: 6px solid transparent;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    margin: 2px 6px 0px 5px;
+  }
+  .orders-admin-index.show .order-header .line {
+    border-bottom: 2px solid white;
+    clear: both;
+    width: 100%;
+    padding-top: 10px;
+  }
+
+  .order {
+    clear: both;
+  }
+  .order .actions-bar {
+    width: 100%;
+    margin-left: -10px;
+    margin-bottom: -10px;
+  }
+  .order.edit {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    margin-top: -1px;
+  }
+  .order.edit,
+  .order .box-edit {
+    background-color: #fff2a3;
+  }
+
+  .order .box-edit {
+    padding-top: 8px;
+  }
+  .order .box-edit .empty-order {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .order .box-edit form {
+    padding: 0 16px 0 240px;
+    width: 400px;
+  }
+  .order .box-edit textarea {
+    width: 100%;
+  }
+  .order .box-edit input[type=checkbox] {
+    float: left;
+  }
+
+  .order .value-row {
+    padding: 8px 10px;
+  }
+  .actions {
+    min-height: 1px;
+  }
+  .box-view .code {
+    font-size: 10px;
+  }
+  .code {
+    width: 70px;
+  }
+  .member {
+    width: 200px;
+  }
+  .created {
+    width: 100px;
+  }
+  .modified {
+    width: 100px;
+  }
+  .products-count {
+    width: 80px;
+  }
+  .price {
+    width: 70px;
+  }
+
+}

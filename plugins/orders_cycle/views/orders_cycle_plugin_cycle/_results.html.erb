@@ -1,0 +1,11 @@
+<% cycles = @cycles.status_closed.by_month(@month_date) %>
+
+<% if cycles.blank? %>
+  <div class="subtitle"><%= t('orders_cycle_plugin.views.cycle._results.no_cycles_to_show') %></div>
+<% else %>
+  <% cycles.each do |cycle| %>
+    <div id="cycle-list-item-<%= cycle.id %>" class="cycle-list-item">
+      <%= render :partial => 'brief', :locals => {:cycle => cycle, :timeline => false} %>
+    </div>
+  <% end %>
+<% end %>

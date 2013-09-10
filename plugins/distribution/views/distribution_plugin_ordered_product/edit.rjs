@@ -1,7 +1,0 @@
-page.replace_html 'order-products', :partial => 'distribution_plugin_order/products', :locals => {:order => @order}
-page.replace_html "product-price-total-#{@ordered_product.id}", :partial => 'distribution_plugin_ordered_product/price_total', :locals => {:product => @ordered_product}
-page.replace_html "order-total-#{@order.id}", :partial => 'distribution_plugin_order/total', :locals => {:order => @order}
-page.replace_html "session-product-#{@ordered_product.session_product.id}",
-  :partial => "distribution_plugin_product/order_edit", :locals => {
-    :product => @ordered_product.session_product, :order => @order, 
-    :session => @session, :ordered_product => @ordered_product}

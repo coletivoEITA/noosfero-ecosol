@@ -1,4 +1,0 @@
-<%= f.text_field :quantity_asked, :value => product.quantity_asked_as_currency_number, :onblur =>
-"jQuery.post('#{url_for(:controller => :distribution_plugin_ordered_product, :action => :edit, :id => product)}',
-                 { 'ordered_product[quantity_asked]': jQuery(this).val() });" %>
-<span class="lower"><%= product.product.unit.singular %></span>

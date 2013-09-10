@@ -1,0 +1,9 @@
+<div class="order-message-title status-<%= order.current_status %>">
+  <div>
+    <%= t('orders_cycle_plugin.views.order._status.code_status_message') % { :code => order.code, :status_message => order.status_message } %>
+  </div>
+
+  <%= link_to t('orders_cycle_plugin.views.order._status.open_it'), {:action => :edit, :id => order.id}, :class => 'open' if order != @order %>
+
+  <div class="clean"></div>
+</div>

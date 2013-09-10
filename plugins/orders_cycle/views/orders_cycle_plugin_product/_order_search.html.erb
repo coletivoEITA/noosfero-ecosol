@@ -1,0 +1,27 @@
+<% if products_for_order_by_supplier.empty? %>
+  <strong><%= t('orders_cycle_plugin.views.product._order_search.this_search_hasn_t_re') %></strong>
+<% else %>
+  <% products_for_order_by_supplier.each do |supplier, offered_products| %>
+    <div class="supplier-table sortable-table">
+      <div class="supplier"><%= supplier.name %></div>
+
+      <div class="table-header">
+        <div class="box-field product"><%=t('orders_cycle_plugin.views.product._order_search.product')%></div>
+        <div class="box-field price-with-unit"><%=t('orders_cycle_plugin.views.product._order_search.price')%></div>
+        <div class="box-field quantity"><%=t('orders_cycle_plugin.views.product._order_search.order_qty')%></div>
+
+        <div class="clean"></div>
+      </div>
+
+      <div class="table-content">
+        <% offered_products.each do |product| %>
+          <div id="cycle-product-<%=product.id%>" class="order-cycle-product value-row" toggleedit="distribution.order_offered_product_toggle();">
+            <%= render :partial => "orders_cycle_plugin_product/order_edit", :locals => {
+              :product => product, :order => order, :cycle => cycle,
+              :ordered_product => order.blank? ? nil : order.products.find_by_product_id(product.id) } %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>

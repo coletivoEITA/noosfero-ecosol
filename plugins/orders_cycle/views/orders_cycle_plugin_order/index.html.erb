@@ -1,0 +1,43 @@
+<div id="orders-view" class="orders page">
+  <h2><%= t('orders_cycle_plugin.views.order.index.orders_cycles') %></h2>
+
+  <div id="years-filter">
+    <% profile.orders_cycles_custom_order.years.each do |cycle| %>
+      <%= link_to cycle.year, {:action => :index, :year => cycle.year}, :class => (@year == cycle.year ? "current" : nil) %>
+    <% end %>
+  </div>
+
+  <% if @cycles.blank? %>
+    <div>
+      <%= t('orders_cycle_plugin.views.order.index.there_s_no_open_sessi') %>
+    </div>
+  <% end %>
+  <% @cycles.each do |cycle| %>
+    <div class="cycle-with-consumer-orders">
+      <h3>
+        <span><%= t('orders_cycle_plugin.views.order.index.code') % { :code => cycle.code } %></span>
+        <%= link_to cycle.name, {:action => :edit, :cycle_id => cycle.id} %>
+      </h3>
+
+      <%= render :partial => 'orders_cycle_plugin_cycle/view_dates', :locals => {:cycle => cycle} %>
+
+      <% orders = cycle.orders.for_consumer @consumer %>
+      <% if orders.count > 0 %>
+        <div>
+          <strong><%= t('orders_cycle_plugin.views.order.index.your_orders') %></strong>
+          <div class="consumer-orders">
+            <% orders.each do |order| %>
+              <a href="<%= url_for :action => :edit, :id => order.id %>">
+                <%= render :partial => 'status', :locals => {:order => order} %>
+              </a>
+            <% end %>
+            <div class="clean"></div>
+          </div>
+        </div>
+      <% else %>
+        <%= link_to t('orders_cycle_plugin.views.order.index.place_an_order'), {:action => :new, :cycle_id => cycle.id}, :id => 'consumer-new-order' if cycle.orders? and not @consumer.nil?%>
+      <% end %>
+
+    </div>
+  <% end %>
+</div>

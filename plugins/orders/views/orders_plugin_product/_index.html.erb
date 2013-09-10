@@ -1,0 +1,20 @@
+<div class="order-products-container <%= "empty" if order.products.count == 0 %>">
+  <% if order.products.count > 0 %>
+    <div class="order-products">
+      <% f.fields_for :products, order.products do |f| %>
+        <% order.products.each do |product| %>
+          <%= render :partial => "orders_plugin_product/edit", :locals => {:ordered_product => product, :product => product.offered_product, :f => f} %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div id="order-total-<%=order.id%>" class="order-total">
+      <%= render :partial => 'orders_plugin_consumer/total', :locals => {:order => order} %>
+    </div>
+  <% else %>
+    <%= t('orders_plugin.views.product._index.empty_order') %>
+  <% end %>
+
+  <div class="clean"></div>
+</div>
+

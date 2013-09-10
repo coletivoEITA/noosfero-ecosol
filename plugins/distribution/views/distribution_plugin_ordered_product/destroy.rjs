@@ -1,7 +1,0 @@
-page.replace_html 'order-products', :partial => 'distribution_plugin_order/products', :locals => {:order => @order}
-#an empty order doesn't have a total box!
-page.replace_html_if_exists "order-total-#{@order.id}", :partial => 'distribution_plugin_order/total', :locals => {:order => @order}
-page.replace_html "session-product-#{@session_product.id.to_s}",
-  :partial => "distribution_plugin_product/order_edit", :locals => {
-    :product => @session_product, :order => @order, :session => @session, :ordered_product => nil}
-page << 'distribution.value_row.reload();'

@@ -1,6 +1,0 @@
-<div id="session-delivery-option-<%=option.id%>" class="session-delivery-option">
-  <span><%= option.delivery_method.name %></span>
-  <%= link_to_remote(t('distribution_plugin.views.delivery_option._show.x'), {:update => 'delivery-session-option-'+option.id.to_s,
-                     :url => { :controller => :distribution_plugin_delivery_option, :action => "destroy", :id => option.id }},
-                     :class => 'session-delete-delivery-option') %>
-</div>

@@ -1,0 +1,187 @@
+@import 'base';
+
+$bg-yellow: #FDF2A3;
+$bg-header: #70BCFA;
+$border-header: #3C729F;
+$bg-row: #F3F4EE;
+
+$negative-area: 3*$base;
+
+.sortable-table {
+
+  .box-field {
+    float: left;
+    padding: $padding;
+  }
+  
+  .table-header {
+    width: $wireframe;
+    margin-left: -$wireframe-padding;
+    padding: 0 $wireframe-padding;
+    background-color: $bg-header;
+    border-bottom: 2*$border solid $border-header;
+    color: black;
+
+    .sort-arrow {
+      border-top: 6px solid black;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      position: absolute;
+
+      &.desc {
+        border-bottom: 6px solid black;
+        border-top: 6px solid transparent;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        margin-top: -6px;
+      }
+    }
+
+    .box-field {
+      padding-left: $padding - $border;
+      border-left: $border solid white;
+      cursor: pointer;
+      text-transform: lowercase;
+      font-weight: bold;
+      font-size: 10px;
+    }
+  }
+
+  .table-content {
+    width: auto;
+    margin-bottom: $margin;
+
+    .value-row {
+      margin-left: -$negative-area;
+      width: $wireframe + 2*$negative-area;
+      background: white;
+      border: $border solid transparent; //avoid size change with .edit class
+
+      &.edit {
+        border: $border solid black;
+
+        .box-view {
+          background-color: white;
+        }
+
+        .box-field.box-edit-link {
+          cursor: inherit;
+          color: black;
+          text-decoration: none;
+        }
+
+        .box-field {
+          &.actions {
+            .actions-circle {
+              .action-hide {
+                display: block;
+              }
+              .action-show {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+      &.hover {
+        //important is used because of .with-inner selector
+        .box-view {
+          background: $bg-yellow !important;
+        }
+        &.edit {
+          .box-view {
+            background: white !important;
+          }
+        }
+      }
+
+      .box-field {
+        &.select, &.actions {
+          width: 2*$base;
+          padding: $base $base/2;
+        }
+
+        &.select input[type=checkbox] {
+          margin-top: 4px !important;
+          margin-left: 3px !important;
+        }
+
+        &.actions {
+          .actions-circle {
+            float: right;
+            height: 16px;
+            width: 16px;
+            margin-right: 0;
+            margin-top: 3px;
+            padding: 0;
+            background-color: #FDF2A3;
+            border-radius: 8px;
+            -moz-border-radius: 8px;
+            -webkit-border-radius: 8px;
+            -o-border-radius: 8px;
+            text-decoration: none;
+
+            .action-hide, .action-show {
+              font-weight: bolder;
+              font-size: 17px;
+              margin-left: 3px;
+            }
+            .action-show {
+              margin-top: -1px;
+            }
+            .action-hide {
+              display: none; //initial state
+              margin-top: -9px;
+            }
+          }
+        }
+      }
+
+      .box-view {
+        @extend .container-clean;
+        border-bottom: 2*$border dotted #ccc;
+        background: $bg-row;
+
+        &.with-inner {
+          background: white;
+
+          .box-view-inner {
+            background: $bg-row;
+          }
+        }
+
+        .box-field {
+
+          &.box-edit-link {
+            font-size: 12px !important;
+            font-weight: bold;
+            text-decoration: underline;
+            color: #38727E;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .box-edit {
+        padding: $margin $negative-area;
+        overflow: hidden; //from .container-clean, but without display: block
+        display: none; //default
+
+        .internal-table {
+          float: left;
+          background-color: $bg-yellow;
+          border: $border solid black;
+          border-radius: 3px;
+          @extend .container-clean;
+
+          .title {
+            margin: 0;
+            padding: $half-padding ($padding - $border);
+            text-transform: uppercase;
+            font-weight: normal;
+          }
+        }
+      }
+    }
+  }
+}

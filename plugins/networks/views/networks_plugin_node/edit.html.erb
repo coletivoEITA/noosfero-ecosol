@@ -1,0 +1,11 @@
+<h1>Edição da apresentação do nó.</h1>
+
+<h2><%= @node.name %></h2>
+
+<% form_for @node, :url => {:action => :edit, :id => @node.id} do |f| %>
+  <p>
+    <%= f.label "Descrição:" %>
+    <%= f.text_area :description %>
+  </p>
+  <%= f.submit 'Salvar' %>
+<% end %>

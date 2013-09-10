@@ -1,0 +1,87 @@
+@import 'base';
+
+$border: 1px solid #d6e9bc;
+
+.consumers-coop #filter {
+  background-color: #BCDC91;
+  padding: 0;
+  margin-top: 2*$height;
+  margin-left: -($wireframe-padding);
+  margin-right: -($wireframe-padding);
+  margin-bottom: 2*$height;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  font-size: 9px;
+}
+
+.consumers-coop #filter .filter-box {
+  padding-left: $wireframe-padding + $padding;
+  padding-right: $wireframe-padding + $padding;
+  border-bottom: $border;
+  padding-top: $half-padding;
+  padding-bottom: $half-padding;
+}
+
+.consumers-coop #filter .title {
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.consumers-coop #filter .fields > div {
+  border-right: $border;
+  padding-left: $padding;
+  padding-right: $padding;
+  float: left;
+}
+
+.consumers-coop #filter .fields > div.clean {
+  float: none;
+}
+
+.consumers-coop #filter .fields > div:first-child {
+  padding-left: 0;
+}
+.consumers-coop #filter .fields div.name {
+  border-right: 0;
+}
+
+.consumers-coop #filter .fields label {
+  font-weight: bold;
+}
+
+.consumers-coop #filter .submit input[type=submit] {
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: $padding;
+  background-color: #4B583C;
+  color: #FFFFFF;
+  border: 1px solid white;
+  font-size: 9px;
+  text-align: center;
+  margin: none;
+}
+
+.consumers-coop #filter .filter-box select,
+.consumers-coop #filter .filter-box input {
+  width: 180px -(2*$padding);
+}
+
+.consumers-coop #filter .filter-box .name input {
+  width:308px;
+}
+
+/*
+WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
+.consumers-coop #filter .filter-box select,
+.consumers-coop #filter .filter-box input {
+  width: 160px -(2*$padding);
+}
+
+.consumers-coop #filter .filter-box .name input {
+  width:288px;
+}
+  */
+
+

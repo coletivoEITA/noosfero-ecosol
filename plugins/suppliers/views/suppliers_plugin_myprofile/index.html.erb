@@ -1,0 +1,30 @@
+<div id="suppliers-page" class="admin-page">
+  <h2><%= t('suppliers_plugin.views.supplier.index.suppliers') %></h2>
+
+  <div class="subtitle text-wrap">
+    <%= t('suppliers_plugin.views.supplier.index.this_is_the_list_of_s') %>
+  </div>
+
+  <div class="subtitle supplier-add-link"><%= link_to t('suppliers_plugin.views.supplier.index.add_supplier'), '#supplier-add', :onclick => 'suppliers.add_link();', :class => 'toggle-edit' %></div>
+
+  <div id="filter-fields" class="filter-box">
+    <strong><%= t('suppliers_plugin.views.supplier.index.filter') %></strong>
+    <div class="box-field name">
+      <div><%= t('suppliers_plugin.views.supplier.index.name') %></div>
+      <div><%= text_field_tag :name, params[:name] %></div>
+      <%= observe_field 'name', :url => {:action => 'index'}, :frequency => 1.0,
+        :update => 'suppliers-list', :with => "'name=' + $('name').value" %>
+    </div>
+    <div class="clean"></div>
+  </div>
+
+  <div class="supplier-listing">
+    <div id="supplier-add" class="supplier value-row" toggleedit='suppliers.toggle_edit();' >
+      <%= render :partial => 'suppliers_plugin_myprofile/supplier', :object => @new_supplier %>
+    </div>
+
+    <div id="suppliers-list">
+      <%= render :partial => 'suppliers_plugin_myprofile/suppliers_list', :locals => { :suppliers => @suppliers} %>
+    </div>
+  </div>
+</div>

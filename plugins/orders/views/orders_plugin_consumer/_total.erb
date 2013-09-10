@@ -1,0 +1,5 @@
+<% dirty = false unless defined? dirty %>
+
+<div class="box-field total-title"><%= t('orders_plugin.views.consumer._total.total') %></div>
+<div class="box-field total-value"><%= price_span order.total_price_asked_as_currency_number(dirty) %></div>
+<div class="clean"></div>

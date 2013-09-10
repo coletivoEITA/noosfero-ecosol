@@ -1,0 +1,89 @@
+<div id="supplier-our-products">
+  <h2>
+    <%= t('suppliers_plugin.views.product.index.products') %>
+  </h2>
+
+  <div>
+
+   <div class="subtitle">
+     <%= t('suppliers_plugin.views.product.index.info') %>
+    </div>
+
+    <h3><%= t('suppliers_plugin.views.product.index.default_margin_of_com') %></h3>
+    <div class="subtitle">
+      <%= t('suppliers_plugin.views.product.index.default_margin_info') %>
+    </div>
+
+    <span id="profile-margin-percentage">
+      <span class="<%= profile.margin_percentage.blank? ? 'none' : 'set' %>">
+        <%= profile.margin_percentage_as_currency_number ? ( t('suppliers_plugin.views.product.index.margin') % {:margin => profile.margin_percentage_as_currency_number} ) : t('suppliers_plugin.views.product.index.no_margin_set') %>
+      </span>
+      <%= colorbox_link_to t('suppliers_plugin.views.product.index.change'), {:controller => :suppliers_plugin_myprofile, :action => :margin_change} %>
+    </span>
+
+  </div>
+
+  <div id="filter">
+    <div class="title filter-box">
+      <%= t('suppliers_plugin.views.product.index.filter') %>
+    </div>
+
+    <% form_remote_tag :update => 'search-results',:loading => "distribution.setLoading('filter');", :loaded => "distribution.unsetLoading('filter');", :url => {:action => :index}, :html => {:id => 'filter-form'}, :method => :get do %>
+
+      <div class="fields filter-box">
+
+        <div class="state">
+          <label><%= t('suppliers_plugin.views.product.index.situation') %></label>
+          <div>
+            <%= select_tag :available, options_for_select([[t('suppliers_plugin.views.product.index.in_any_state'), ""], [ t('suppliers_plugin.views.product.index.active'), 'true'], [ t('suppliers_plugin.views.product.index.inactive'), 'false']], params[:available]) %>
+          </div>
+        </div>
+
+        <div class="category">
+          <label><%= t('suppliers_plugin.views.product.index.category') %></label>
+          <div>
+            <%= select_tag :category_id, options_for_select(@product_categories.map{ |pc| [pc.name, pc.id]}.insert(0,[t('suppliers_plugin.views.product.index.all_the_categories'), ""])) %>
+          </div>
+        </div>
+
+        <div class="supplier">
+          <label><%=t('suppliers_plugin.views.product.index.suppliers') %></label>
+          <div>
+            <%= select_tag :supplier_id, options_for_select([[t('suppliers_plugin.views.product.index.all_the_suppliers'), ""]] + supplier_choices(profile), params[:supplier_profile_id].to_i) %>
+          </div>
+        </div>
+
+        <div class="qualifier">
+          <label><%# t('suppliers_plugin.views.product.index.with_the_qualifiers') %></label>
+          <div><%# select_tag :qualifier_id, options_for_select([t('suppliers_plugin.views.product.index.anyone'), '']) %></div>
+        </div>
+
+        <div class="stock">
+          <label><%# t('suppliers_plugin.views.product.index.whose_qty_available_i') %></label>
+          <div><%# select_tag :stock, options_for_select([t('suppliers_plugin.views.product.index.bigger_than_the_stock'), '']) %></div>
+        </div>
+
+        <div class="name">
+          <label><%= t('suppliers_plugin.views.product.index.name') %></label>
+          <div><%= text_field_tag :name, params[:name], :onkeydown => "var field = this; function name_form_submit() {field.form.onsubmit();}; setTimeout(name_form_submit, 300);" %></div>
+        </div>
+
+      <div class="clean"></div>
+      </div>
+      <div class="clean"></div>
+      <div class="submit filter-box">
+        <%= submit_tag t('suppliers_plugin.views.product.index.filter_it'), :onclick => "var field = this; function name_form_submit() {field.form.onsubmit();}; setTimeout(name_form_submit, 300);" %>
+      </div>
+    <% end %>
+
+  </div>
+
+  <div id="search-results">
+    <%= render :partial => 'suppliers_plugin_product/search' %>
+  </div>
+
+  <% javascript_tag do %>
+    suppliers.our_product.load();
+  <% end %>
+
+</div>

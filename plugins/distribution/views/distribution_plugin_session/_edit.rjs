@@ -1,1 +1,0 @@
-page << "distribution.colorbox({html:'#{escape_javascript render(:partial => 'edit_popin', :locals => {:session => @session})}'})"

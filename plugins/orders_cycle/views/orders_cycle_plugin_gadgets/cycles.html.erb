@@ -1,0 +1,10 @@
+<div id="consumers-coop-plugin-cycles-gadget" class="consumers-coop consumers-coop-layout">
+  <% profile.orders_cycles.open.all(:limit => 2).each do |cycle| %>
+    <%= render :partial => 'orders_cycle_plugin_gadgets/cycle', :locals => {:cycle => cycle} %>
+  <% end %>
+
+  <div>
+    <%= link_to t('orders_cycle_plugin.views.gadgets.cycles.all_cycles'), {:controller => :orders_cycle_plugin_order}, :id => "all-cycles" %>
+    <div class='clean'></div>
+  </div>
+</div>

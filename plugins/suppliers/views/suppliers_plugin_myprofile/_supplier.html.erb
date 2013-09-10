@@ -1,0 +1,74 @@
+<% unless supplier.new_record? %>
+  <div class='box-view'>
+    <div class='supplier-logo'>
+      <%= profile_image(supplier.profile, :minor) %>
+    </div>
+
+    <div class='supplier-body'>
+      <div class="supplier-type subtitle">
+        <%= supplier.dummy? ? t('suppliers_plugin.views.supplier._supplier.supplier_with_registr') : t('suppliers_plugin.views.supplier._supplier.registered_supplier_i') %>
+      </div>
+
+      <div class="supplier-name">
+        <% if supplier.dummy? %>
+          <%= supplier.name %>
+        <% else %>
+          <%= link_to_profile supplier.name, supplier.profile.identifier, :class => 'supplier-name' %>
+        <% end %>
+      </div>
+      <% if supplier.name_abbreviation %>
+        <div class="subtitle"><strong><%= t('suppliers_plugin.views.supplier._supplier.abreviated_name') + '  ' %></strong><%= supplier.name_abbreviation %></div>
+      <% end %>
+      <p class="subtitle"><%= supplier.description %></p>
+
+      <div class="subtitle"><strong><%= t('suppliers_plugin.views.supplier._supplier.this_supplier_has') %></strong></div>
+      <div class='supplier-products-count subtitle'>
+        <% products = supplier.consumer_products.unarchived.distributed.from_supplier_id(supplier.id) %>
+        <% if products.size > 0 %>
+          <% msg = products.size.to_s + " " %>
+          <% msg += supplier.dummy? ? t('suppliers_plugin.views.supplier._supplier.supplier_profile_product') :
+            t('suppliers_plugin.views.supplier._supplier.products') %>
+
+          <%= link_to msg, {:controller => :suppliers_plugin_product, :action => :index, :supplier_id => supplier.id} %>
+
+          <%= t('suppliers_plugin.views.supplier._supplier.among_them') %>
+
+          <% if supplier.dummy? %>
+            <% msg = products.available.size.to_s +
+              t('suppliers_plugin.views.supplier._supplier.products_are_active') %>
+          <% else %>
+            <% msg = products.size.to_s + t('suppliers_plugin.views.supplier._supplier.products_distributed') %>
+          <% end %>
+          <%= link_to msg, {:controller => :suppliers_plugin_product, :action => :index, :supplier_id => supplier.id}, :class => 'supplier-distributed-products-count' %>
+        <% else %>
+          <%= t('suppliers_plugin.views.supplier._supplier.any_registered_produc') %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class='supplier-actions subtitle'>
+      <div><strong><%= t('suppliers_plugin.views.supplier._supplier.actions') %></strong></div>
+      <div><%= link_to_function t('suppliers_plugin.views.supplier._supplier.edit'), '', :class => 'toggle-edit' %></div>
+
+      <% if supplier.active %>
+        <div><%= link_to_remote t('suppliers_plugin.views.supplier._supplier.desactivate'), :url => {:action => :toggle_active, :id => supplier.id} %></div>
+      <% else %>
+        <div><%= link_to_remote t('suppliers_plugin.views.supplier._supplier.activate'), :url => {:action => :toggle_active, :id => supplier.id} %></div>
+      <% end %>
+
+      <div><%# link_to t('suppliers_plugin.views.supplier._supplier.desactivate'), :url => {:action => :desactivate, :id => supplier.id} %></div>
+      <div><%= link_to_remote t('suppliers_plugin.views.supplier._supplier.remove'), :url => {:action => :destroy, :id => supplier.id},
+        :confirm => t('suppliers_plugin.views.supplier._supplier.by_removing_this_supp'), :class => 'supplier-remove' %></div>
+      <div><%= link_to t('suppliers_plugin.views.supplier._supplier.products'), {:controller => :suppliers_plugin_product, :action => :index, :supplier_id => supplier.id, :anchor => 'filter-fields'} %></div>
+      <div><%= link_to t('suppliers_plugin.views.supplier._supplier.add_products'), {:controller => :suppliers_plugin_product, :action => :index, :supplier_id => supplier.id, :anchor => 'our-product-add'} %></div>
+    </div>
+
+    <div class="clean"></div>
+  </div>
+<% end %>
+
+<div class='box-edit'>
+  <%= render :partial => 'suppliers_plugin_myprofile/edit', :locals => {:supplier => supplier} %>
+</div>
+
+<div class="clean"></div>

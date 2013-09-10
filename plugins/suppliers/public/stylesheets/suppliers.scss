@@ -1,0 +1,89 @@
+@import 'base';
+@import 'sortable-table';
+@import 'product';
+@import 'loading-overlay';
+@import 'filter';
+
+#suppliers-page {
+
+  .supplier {
+    border-top: 1px solid black;
+    border-bottom: none;
+  }
+  .supplier:last-child {
+    border-bottom: 1px solid black;
+  }
+  .supplier-type {
+    font-style: italic;
+  }
+  #supplier-add,
+  .box-edit {
+    display: none;
+  }
+  .box-edit {
+    background-color: #FDF2A3;
+  }
+
+  .supplier-inactive {
+    background-color: #faeeee;
+  }
+
+  .supplier-body {
+    width: 400px;
+    float: left;
+  }
+
+  .supplier-name {
+    text-transform: uppercase;
+  }
+
+  .supplier-logo {
+    float: left;
+    width: 60px;
+    min-height: 60px;
+  }
+
+  .supplier-actions {
+    float: right;
+    text-align: right;
+    width: 140px;
+  }
+
+  .supplier-add-link {
+    margin: 20px 0;
+  }
+
+  .supplier form {
+    width: 640px;
+  }
+
+  .data textarea,
+  .data input {
+    width: 100%;
+  }
+
+  .basic-data,
+  .full-data {
+    float: left;
+    width: 290px;
+    margin-right: 30px;
+  }
+  .estrategic-info {
+    float: right;
+  }
+  .additional-fields {
+    width: 100%;
+  }
+  .full-data {
+    display: none;
+  }
+  .full-registration .full-data {
+    display: block;
+  }
+
+  .filter-box .box-field,
+  .filter-box .box-field input {
+    width: 100%;
+    margin-left: 0;
+  }
+}
