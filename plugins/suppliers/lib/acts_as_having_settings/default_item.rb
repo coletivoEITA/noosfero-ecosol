@@ -1,7 +1,7 @@
 module ActsAsHavingSettings
   module DefaultItem
     module ClassMethods
-      def settings_default_item(field, options, &block)
+      def settings_default_item field, options, &block
         extend ActsAsHavingSettings::ClassMethods
         extend ::DefaultItem::ClassMethods
 

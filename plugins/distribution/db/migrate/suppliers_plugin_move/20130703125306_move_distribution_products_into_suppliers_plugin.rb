@@ -45,6 +45,7 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
         new_type = product.attributes['type']
         new_type = 'SuppliersPlugin::DistributedProduct' if new_type == 'DistributionPluginDistributedProduct'
         new_type = 'DistributionPlugin::OfferedProduct' if new_type == 'DistributionPluginOfferedProduct'
+        new_type = 'Product' if product.own?
         klass = new_type.constantize
 
         new_product = klass.new :enterprise => profile, :name => product.name, :price => product.price,

@@ -3,8 +3,6 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
   validates_presence_of :supplier
   validates_presence_of :name, :if => Proc.new { |p| !p.supplier_dummy? }
 
-  after_save :save_self_source
-
   def own?
     self.supplier.profile == self.profile
   end
@@ -14,7 +12,7 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
     return r if r
 
     if self.new_record? or (!self.own? and self.supplier_dummy?)
-      @supplier_product ||= SuppliersPlugin::DistributedProduct.new :profile => self.supplier.profile, :supplier => self.supplier
+      @supplier_product ||= Product.new :profile => self.supplier.profile, :supplier => self.supplier
     end
 
     @supplier_product
@@ -74,13 +72,5 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
   end
 
   protected
-
-  def save_self_source
-    if self.sources_from_products.empty?
-      self.sources_from_products.create! :from_product => self.supplier_product, :supplier => self.supplier
-      # force save on update
-      self.supplier_product.save if self.supplier_product
-    end
-  end
 
 end
