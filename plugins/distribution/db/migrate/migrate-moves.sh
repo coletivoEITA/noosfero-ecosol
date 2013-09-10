@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -x
+set -e
 
 noosfero_plugins=../../../../script/noosfero-plugins
 $noosfero_plugins disable distribution
@@ -22,7 +23,6 @@ done
 
 ln -sf $MIGRATIONS .
 
-rake db:migrate --trace
 rake db:migrate --trace
 
 find -type l -delete

@@ -1,14 +1,24 @@
+# OLD ONES
 class DistributionPlugin::Node < Noosfero::Plugin::ActiveRecord
   belongs_to :profile
 end
+class DistributionPluginSupplier < ActiveRecord::Base
+  belongs_to :profile
+  belongs_to :consumer, :class_name => 'Profile'
+end
 class DistributionPluginProduct < ActiveRecord::Base
   belongs_to :node, :class_name => 'DistributionPlugin::Node'
+  belongs_to :supplier, :class_name => 'DistributionPluginSupplier'
+end
+class DistributionPluginSourceProduct < ActiveRecord::Base
+  belongs_to :to_product, :class_name => 'DistributionPluginProduct'
 end
 class DistributionPluginDistributedProduct < DistributionPluginProduct
 end
 class DistributionPluginOfferedProduct < DistributionPluginProduct
 end
 
+# NEW ONES
 class SuppliersPlugin::SourceProduct < Noosfero::Plugin::ActiveRecord
   belongs_to :from_product, :class_name => 'Product'
   belongs_to :to_product, :class_name => 'Product'
@@ -35,8 +45,6 @@ end
 
 class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
   def self.up
-    rename_table :distribution_plugin_source_products, :suppliers_plugin_source_products
-
     id_translation = {}
 
     ::ActiveRecord::Base.transaction do
@@ -45,7 +53,7 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
         new_type = product.attributes['type']
         new_type = 'SuppliersPlugin::DistributedProduct' if new_type == 'DistributionPluginDistributedProduct'
         new_type = 'DistributionPlugin::OfferedProduct' if new_type == 'DistributionPluginOfferedProduct'
-        new_type = 'Product' if product.own?
+        new_type = 'Product' if product.supplier and product.supplier.profile == profile
         klass = new_type.constantize
 
         new_product = klass.new :enterprise => profile, :name => product.name, :price => product.price,
@@ -63,6 +71,17 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
         id_translation[product.id] = new_product.id
       end
 
+      # move supplier_id
+      add_column :distribution_plugin_source_products, :supplier_id, :integer
+      DistributionPluginSourceProduct.all.each do |sp|
+        next sp.destroy if sp.to_product.nil?
+        sp.supplier_id = sp.to_product.supplier.id
+        sp.save!
+      end
+      remove_column :distribution_plugin_products, :supplier_id
+
+      rename_table :distribution_plugin_suppliers, :suppliers_plugin_suppliers
+      rename_table :distribution_plugin_source_products, :suppliers_plugin_source_products
       SuppliersPlugin::SourceProduct.all.each do |sp|
         sp.update_attributes! :to_product_id => id_translation[sp.to_product_id],
           :from_product_id => id_translation[sp.from_product_id]
