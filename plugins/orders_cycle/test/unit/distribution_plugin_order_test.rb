@@ -68,13 +68,13 @@ class OrdersCyclePlugin::OrderTest < ActiveSupport::TestCase
 
   should 'give default value to supplier delivery if not present' do
     @order.save!
-    @order.node.save!
+    @order.profile.save!
 
     @order.cycle.delivery_methods = []
     @order.supplier_delivery = nil
     assert_nil @order.supplier_delivery
 
-    default = @order.cycle.delivery_methods.create! :node => @order.node, :name => 'method', :delivery_type => 'deliver'
+    default = @order.cycle.delivery_methods.create! :profile => @order.profile, :name => 'method', :delivery_type => 'deliver'
     assert_equal default, @order.supplier_delivery
     assert_equal default.id, @order.supplier_delivery_id
   end
@@ -84,8 +84,8 @@ class OrdersCyclePlugin::OrderTest < ActiveSupport::TestCase
   ###
 
   should 'give total price and quantity asked' do
-    @order.cycle.node.save!
-    product = create(SuppliersPlugin::DistributedProduct, :price => 2.0, :node => @order.cycle.node, :supplier => @order.cycle.node.self_supplier)
+    @order.cycle.profile.save!
+    product = create(SuppliersPlugin::DistributedProduct, :price => 2.0, :profile => @order.cycle.profile, :supplier => @order.cycle.profile.self_supplier)
     @order.save!
     @order.products.create! :product => @order.cycle.products.first, :quantity_asked => 2.0
     assert_equal 2.0, @order.total_quantity_asked

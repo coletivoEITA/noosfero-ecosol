@@ -18,7 +18,7 @@
       <span class="<%= profile.margin_percentage.blank? ? 'none' : 'set' %>">
         <%= profile.margin_percentage_as_currency_number ? ( t('suppliers_plugin.views.product.index.margin') % {:margin => profile.margin_percentage_as_currency_number} ) : t('suppliers_plugin.views.product.index.no_margin_set') %>
       </span>
-      <%= colorbox_link_to t('suppliers_plugin.views.product.index.change'), {:action => :margin_change} %>
+      <%= colorbox_link_to t('suppliers_plugin.views.product.index.change'), {:controller => :suppliers_plugin_myprofile, :action => :margin_change} %>
     </span>
 
   </div>

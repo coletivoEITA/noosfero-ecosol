@@ -26,7 +26,7 @@
         <% products = supplier.consumer_products.unarchived.distributed.from_supplier_id(supplier.id) %>
         <% if products.size > 0 %>
           <% msg = products.size.to_s + " " %>
-          <% msg += supplier.dummy? ? t('suppliers_plugin.views.supplier._supplier.supplier_node_product') :
+          <% msg += supplier.dummy? ? t('suppliers_plugin.views.supplier._supplier.supplier_profile_product') :
             t('suppliers_plugin.views.supplier._supplier.products') %>
 
           <%= link_to msg, {:controller => :suppliers_plugin_product, :action => :index, :supplier_id => supplier.id} %>

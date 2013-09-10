@@ -12,16 +12,11 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
     end
   end
 
-  def edit
-    profile.update_attributes params[:profile]
-    render :nothing => true
-  end
-
   def settings
     if params[:commit]
       was_enabled = profile.consumers_coop_settings.enabled?
 
-      @profile.update_attributes! params[:profile]
+      @profile.update_attributes! params[:profile_data]
       profile.consumers_coop_header_image_save
 
       if !was_enabled and profile.consumers_coop_settings.enabled?

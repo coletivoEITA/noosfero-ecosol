@@ -9,7 +9,7 @@ class SuppliersPluginProductController < MyProfileController
     @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id]
 
     @products = profile.products.unarchived.distributed.paginate({
-      :per_page => 10, :page => params[:page],
+      :per_page => 10, :page => params[:page], :order => 'name ASC'
       }.merge(search_scope.proxy_options))
     @all_products_count = profile.products.unarchived.distributed.count
     @product_categories = ProductCategory.find(:all)

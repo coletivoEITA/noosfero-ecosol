@@ -7,7 +7,7 @@ class SuppliersPluginProductTest < ActiveSupport::TestCase
   end
 
   should 'return first from product as supplier product' do
-    fp = build(SuppliersPlugin::BaseProduct, :node => @product.node)
+    fp = build(SuppliersPlugin::BaseProduct, :profile => @product.profile)
     @product.from_products = [fp]
     assert_equal fp, @product.from_product
     assert_equal fp, @product.supplier_product
@@ -19,12 +19,12 @@ class SuppliersPluginProductTest < ActiveSupport::TestCase
   end
 
   should 'return price with margins' do
-    supplier_product = build(SuppliersPlugin::DistributedProduct, :price => 10, :margin_percentage => 10, :node => @product.node, :supplier => @product.node.self_supplier)
-    product = build(SuppliersPlugin::DistributedProduct, :price => 10, :margin_percentage => 10, :supplier_product => supplier_product, :node => @product.node, :supplier => @product.node.self_supplier)
+    supplier_product = build(SuppliersPlugin::DistributedProduct, :price => 10, :margin_percentage => 10, :profile => @product.profile, :supplier => @product.profile.self_supplier)
+    product = build(SuppliersPlugin::DistributedProduct, :price => 10, :margin_percentage => 10, :supplier_product => supplier_product, :profile => @product.profile, :supplier => @product.profile.self_supplier)
 
     product.default_margin_percentage = false
     assert_equal 11.0, product.price_with_margins
-    @product.node.margin_percentage = 20
+    @product.profile.margin_percentage = 20
     product.default_margin_percentage = true
     assert_equal 12.0, product.price_with_margins
   end

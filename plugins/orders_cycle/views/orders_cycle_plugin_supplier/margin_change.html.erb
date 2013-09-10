@@ -7,12 +7,16 @@
       <%= t('suppliers_plugin.views.myprofile.margin_change.notice') %>
     </div>
 
-    <%= labelled_field f, :margin_percentage, t('suppliers_plugin.views.myprofile.margin_change.new_margin'),
-      f.text_field(:margin_percentage, :value => profile.margin_percentage_as_currency_number) + ' ' + t('suppliers_plugin.views.myprofile.margin_change.%') %>
+    <%= labelled_field f, :margin_percentage, t('suppliers_plugin.views.myprofile.margin_change.new_margin'), f.text_field(:margin_percentage, :value => profile.margin_percentage_as_currency_number) + ' ' + t('suppliers_plugin.views.myprofile.margin_change.%') %>
 
     <div>
       <%= check_box_tag :apply_to_all, 1, false, :style => 'float: left'  %>
       <%= label_tag :apply_to_all, t('suppliers_plugin.views.myprofile.margin_change.apply_to_all'), :class => 'line-label' %>
+    </div>
+
+    <div>
+      <%= check_box_tag :apply_to_open_sessions, 1, false, :style => 'float: left'  %>
+      <%= label_tag :apply_to_open_sessions, t('suppliers_plugin.views.myprofile.margin_change.apply_to_open_sessions'), :class => 'line-label' %>
     </div>
 
     <div class="clean"></div>

@@ -63,8 +63,8 @@ class SuppliersPlugin::BaseProduct < Product
 
     if margin_source.margin_percentage
       ret += (margin_source.margin_percentage / 100) * ret
-    elsif self.profile.supplier_margin_percentage
-      ret += (self.profile.supplier_margin_percentage / 100) * ret
+    elsif self.profile.margin_percentage
+      ret += (self.profile.margin_percentage / 100) * ret
     end
 
     ret

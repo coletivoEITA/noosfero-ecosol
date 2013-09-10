@@ -1,8 +1,8 @@
 class SuppliersPluginMyprofileController < MyProfileController
 
-  helper SuppliersPlugin::SuppliersDisplayHelper
-
   before_filter :load_new, :only => [:index, :new]
+
+  helper SuppliersPlugin::SuppliersDisplayHelper
 
   def index
     params['name'] = "" if params['name'].blank?
@@ -16,7 +16,7 @@ class SuppliersPluginMyprofileController < MyProfileController
 
   def new
     @new_supplier.update_attributes! params[:supplier] #beautiful transactional save
-    session[:notice] = t('suppliers_plugin.controllers.myprofile.supplier_controller.supplier_created')
+    session[:notice] = t('suppliers_plugin.controllers.myprofile.supplier_created')
   end
 
   def edit
@@ -26,8 +26,10 @@ class SuppliersPluginMyprofileController < MyProfileController
 
   def margin_change
     if params[:commit]
-      profile.update_attributes params[:node]
+      profile.margin_percentage = params[:profile_data][:margin_percentage]
+      profile.save
       profile.supplier_products_default_margins if params[:apply_to_all]
+
       render :partial => 'suppliers_plugin_shared/pagereload'
     else
       render :layout => false

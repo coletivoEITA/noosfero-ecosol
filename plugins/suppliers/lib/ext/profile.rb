@@ -63,7 +63,7 @@ class Profile
     supplier.products.unarchived.each do |np|
       next if already_supplied.find{ |f| f.supplier_product == np }
 
-      p = SuppliersPlugin::DistributedProduct.new :node => self
+      p = SuppliersPlugin::DistributedProduct.new :profile => self
       p.distribute_from np
     end
   end
@@ -71,11 +71,10 @@ class Profile
   def not_distributed_products supplier
     raise "'#{supplier.name}' is not a supplier of #{self.profile.name}" unless has_supplier? supplier
 
-    supplier.node.products.unarchived.own.distributed - self.from_products.unarchived.distributed.by_node(supplier.node)
+    supplier.profile.products.unarchived.own.distributed - self.from_products.unarchived.distributed.by_profile(supplier.profile)
   end
 
-  delegate :margin_percentage, :to => :supplier_settings
-  delegate :margin_percentage=, :to => :supplier_settings
+  delegate :margin_percentage, :margin_percentage=, :to => :supplier_settings
   extend CurrencyHelper::ClassMethods
   has_number_with_locale :margin_percentage
 

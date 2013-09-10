@@ -1,19 +1,19 @@
 module OrdersCyclePlugin::Factory
 
-  def defaults_for_orders_cycle_plugin_node
+  def defaults_for_orders_cycle_plugin_profile
     {:profile => build(Enterprise), :role => 'supplier'}
   end
 
   def defaults_for_orders_cycle_plugin_supplier
-    {:node => build(OrdersCyclePlugin::Profile),
-     :consumer => build(OrdersCyclePlugin::Profile)}
+    {:profile => build(Profile),
+     :consumer => build(Profile)}
   end
 
   def defaults_for_orders_cycle_plugin_product(attrs = {})
-    node = attrs[:node] || build(OrdersCyclePlugin::Profile)
-    {:node => node, :name => "product-#{factory_num_seq}", :price => 2.0,
-     :product => build(Product, :enterprise => node.profile, :price => 2.0),
-     :supplier => build(SuppliersPlugin::Supplier, :node => node, :consumer => node)}
+    profile = attrs[:profile] || build(Profile)
+    {:profile => profile, :name => "product-#{factory_num_seq}", :price => 2.0,
+     :product => build(Product, :enterprise => profile.profile, :price => 2.0),
+     :supplier => build(SuppliersPlugin::Supplier, :profile => profile, :consumer => profile)}
   end
 
   def defaults_for_orders_cycle_plugin_distributed_product(attrs = {})
@@ -22,13 +22,13 @@ module OrdersCyclePlugin::Factory
 
   def defaults_for_orders_cycle_plugin_offered_product(attrs = {})
     hash = defaults_for_orders_cycle_plugin_product(attrs)
-    node = hash[:node]
+    profile = hash[:profile]
     hash.merge({
-      :from_products => [build(SuppliersPlugin::DistributedProduct, :node => node)]})
+      :from_products => [build(SuppliersPlugin::DistributedProduct, :profile => profile)]})
   end
 
   def defaults_for_orders_cycle_plugin_delivery_method
-    {:node => build(OrdersCyclePlugin::Profile),
+    {:profile => build(OrdersCyclePlugin::Profile),
      :name => "My delivery #{factory_num_seq.to_s}",
      :delivery_type => 'deliver'}
   end
@@ -39,17 +39,17 @@ module OrdersCyclePlugin::Factory
   end
 
   def defaults_for_orders_cycle_plugin_cycle
-    {:node => build(OrdersCyclePlugin::Profile), :status => 'orders',
+    {:profile => build(OrdersCyclePlugin::Profile), :status => 'orders',
      :name => 'weekly', :start => Time.now, :finish => Time.now+1.days}
   end
 
   def defaults_for_orders_cycle_plugin_order(attrs = {})
-    node = attrs[:node] || build(OrdersCyclePlugin::Profile)
+    profile = attrs[:profile] || build(OrdersCyclePlugin::Profile)
     {:status => 'confirmed',
-     :cycle => build(OrdersCyclePlugin::Cycle, :node => node),
+     :cycle => build(OrdersCyclePlugin::Cycle, :profile => profile),
      :consumer => build(OrdersCyclePlugin::Profile),
-     :supplier_delivery => build(DeliveryPlugin::Method, :node => node),
-     :consumer_delivery => build(DeliveryPlugin::Method, :node => node)}
+     :supplier_delivery => build(DeliveryPlugin::Method, :profile => profile),
+     :consumer_delivery => build(DeliveryPlugin::Method, :profile => profile)}
   end
 
   def defaults_for_orders_cycle_plugin_ordered_product

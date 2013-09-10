@@ -369,17 +369,6 @@
           cancel: Cancelar
           message_to_supplier_s: "Mensagem para o fornecedor \"%{supplier}\""
           send: Enviar
-      profile: 
-        margins_change: 
-          ? "%"
-          : "%"
-          notice: "Ao mudar a margem padrão de comercialização, os produtos que são marcados como \"use a margem padrão\" automaticamente terão sua margem atualizada. Os ciclos abertos não serão afetados."
-          cancel: Cancelar
-          change_default_margin: "Mudar a margem padrão de comercialização"
-          confirm: Confirmar
-          apply_to_all: "Aplicar para produtos com margens personalizadas"
-          apply_to_open_sessions: "Aplicar para os produtos nos ciclos abertos"
-          new_margin: "Nova margem"
       order: 
         _consumer_orders: 
           caution: "<strong>Cuidado</strong>, voce está editando os pedidos de \"%{consumer}\". É preferível fazer pequenas edições pela administração do ciclo. Desta forma, a pessoa será propriamente avisada das mudanças. Nós recomendamos que esta página seja usada somente se você está fazendo o pedido pra pessoa."
@@ -592,8 +581,7 @@
         product_from_which_su: "Produto de que fornecedor?"
     controllers: 
       myprofile: 
-        supplier_controller: 
-          supplier_created: "Fornecedor criado"
+        supplier_created: "Fornecedor criado"
     models:
       distributed_product: 
         greater: " > "
@@ -603,6 +591,17 @@
       profile: 
         consumer: Consumidor
     views:
+      myprofile:
+        margin_change: 
+          ? "%"
+          : "%"
+          notice: "Ao mudar a margem padrão de comercialização, os produtos que são marcados como \"use a margem padrão\" automaticamente terão sua margem atualizada. Os ciclos abertos não serão afetados."
+          cancel: Cancelar
+          change_default_margin: "Mudar a margem padrão de comercialização"
+          confirm: Confirmar
+          apply_to_all: "Aplicar para os produtos com margens personalizadas"
+          apply_to_open_sessions: "Aplicar para os produtos nos ciclos abertos"
+          new_margin: "Nova margem"
       product:
         _edit: 
           distribution_setts: "Configurações de distribuição do produto"
@@ -856,7 +855,6 @@
         administration: Administração
     controllers:
       myprofile:
-        profile_controller: 
           distribution_settings: "Configurações salvas"
     models:
       header_image: 

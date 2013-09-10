@@ -232,8 +232,7 @@
         product_from_which_su: "Product from which supplier?"
     controllers: 
       myprofile: 
-        supplier_controller: 
-          supplier_created: "Supplier created"
+        supplier_created: "Supplier created"
     models:
       distributed_product: 
         greater: " > "
@@ -243,6 +242,17 @@
       profile: 
         consumer: Consumer
     views:
+      myprofile:
+        margin_change:
+          ? "%"
+          : "%"
+          notice: "By changing the default margin of commercialization, the products that are \"use the default margin\" marked will automatically have their margin updated. The open sessions won't be affected."
+          cancel: cancel
+          change_default_margin: "Change default margin of commercialization"
+          confirm: Confirm
+          apply_to_all: "Apply to the products with custom margins"
+          apply_to_open_sessions: "Apply to the products in open cycles"
+          new_margin: "New margin"
       product:
         _edit: 
           distribution_setts: "Product's distribution settings"
@@ -624,16 +634,6 @@
           message_to_supplier_s: "Message to supplier \"%{supplier}\""
           send: Send
       profile: 
-        margins_change:
-          ? "%"
-          : "%"
-          notice: "By changing the default margin of commercialization, the products that are \"use the default margin\" marked will automatically have their margin updated. The open sessions won't be affected."
-          cancel: cancel
-          change_default_margin: "Change default margin of commercialization"
-          confirm: Confirm
-          apply_to_all: "Apply to products with custom margins"
-          apply_to_open_sessions: "Apply to the products in open cycles"
-          new_margin: "New margin"
       order: 
         _consumer_orders: 
           caution: "<strong>Caution</strong>, you are editing the orders of \"%{consumer}\". It is preferable to make small editions through the cycle's administration, this way the person will be properly warned of the updates. We recommend using this page only if you're doing the order for the person"

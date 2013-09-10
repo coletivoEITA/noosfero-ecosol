@@ -27,14 +27,4 @@ module OrdersCyclePlugin::DisplayHelper
     excerpt text, text.first(3), length
   end
 
-  include ::ColorboxHelper
-
-  def colorbox_link_to label, url, options = {}
-    link_to label, url, colorbox_options(options)
-  end
-
-  def colorbox_close_link text, options = {}
-    link_to text, '#', colorbox_options(options, :close)
-  end
-
 end
