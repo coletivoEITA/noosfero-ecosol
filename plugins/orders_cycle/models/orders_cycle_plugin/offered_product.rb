@@ -65,7 +65,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   end
 
   def buy_price
-    self.supplier_products.inject(0){ |sum, p| sum += p.price }
+    self.supplier_products.inject(0){ |sum, p| sum += p.price || 0 }
   end
   def buy_unit
     #TODO: handle multiple products
