@@ -3,6 +3,8 @@ require_dependency 'suppliers_plugin/product_helper'
 
 class SuppliersPluginProductController < MyProfileController
 
+  no_design_blocks
+
   helper SuppliersPlugin::ProductHelper
   helper SuppliersPlugin::DisplayHelper
 

@@ -714,7 +714,8 @@ body.consumers-coop {
   font-weight: bold; }
 
 .consumers-coop #cycle-orders {
-  margin: 20px 0; }
+  margin: 20px 0;
+  margin-left: -8px; }
 
 .consumers-coop .cycle-fields-block {
   margin: 10px 0; }

@@ -1,14 +1,13 @@
 class SuppliersPluginMyprofileController < MyProfileController
 
-  before_filter :load_new, :only => [:index, :new]
-
   no_design_blocks
+  before_filter :load_new, :only => [:index, :new]
 
   helper SuppliersPlugin::SuppliersDisplayHelper
 
   def index
-    params['name'] = "" if params['name'].blank?
-    @suppliers = profile.suppliers.with_name(params['name']).paginate(:per_page => 10, :page => params["page"])
+    params[:name] = "" if params[:name].blank?
+    @suppliers = profile.suppliers.with_name(params[:name]).paginate(:per_page => 10, :page => params["page"])
 
     respond_to do |format|
       format.html
