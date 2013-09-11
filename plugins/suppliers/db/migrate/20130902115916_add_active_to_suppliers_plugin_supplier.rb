@@ -1,6 +1,6 @@
 class AddActiveToSuppliersPluginSupplier < ActiveRecord::Migration
   def self.up
-    #add_column :suppliers_plugin_suppliers, :active, :string
+    add_column :suppliers_plugin_suppliers, :active, :string
   end
 
   def self.down

@@ -11,7 +11,7 @@ class UseProfileIdInDistributionSuppliers < ActiveRecord::Migration
     remove_index "distribution_plugin_suppliers", :column => ["node_id", "consumer_id"]
     add_column :distribution_plugin_suppliers, :profile_id, :integer
 
-    DistributionPluginSupplier.all.each do |supplier|
+    DistributionPluginSupplier.find_each do |supplier|
       supplier.profile_id = supplier.node.profile_id
       supplier.consumer_id = supplier.consumer.profile_id
       supplier.save(false)

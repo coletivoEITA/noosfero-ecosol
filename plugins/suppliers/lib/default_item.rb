@@ -27,7 +27,7 @@ module DefaultItem
 
       define_method "#{field}_with_default" do
         cond_method = options[:if] || "default_#{field}"
-        if self.send cond_method or (own = self[field] || self.send("own_#{field}")).blank?
+        if self.send cond_method or (own = self[field]).blank?
           self.send "delegated_#{field}"
         else
           own

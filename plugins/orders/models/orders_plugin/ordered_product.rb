@@ -7,7 +7,7 @@ class OrdersPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
   end
 
   belongs_to :order, :class_name => 'OrdersPlugin::Order', :touch => true
-  belongs_to :product, :foreign_key => :product_id
+  belongs_to :product
 
   has_one :profile, :through => :order
   has_one :consumer, :through => :order

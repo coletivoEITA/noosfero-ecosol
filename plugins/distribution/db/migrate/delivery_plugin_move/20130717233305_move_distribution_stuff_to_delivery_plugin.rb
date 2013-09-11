@@ -11,7 +11,7 @@ class MoveDistributionStuffToDeliveryPlugin < ActiveRecord::Migration
 
     rename_column :distribution_plugin_delivery_methods, :node_id, :profile_id
     ::ActiveRecord::Base.transaction do
-      DistributionPlugin::DeliveryMethod.all.each do |method|
+      DistributionPlugin::DeliveryMethod.find_each do |method|
         node_id = method.profile_id
         node = DistributionPlugin::Node.find node_id
         method.update_attributes! :profile_id => node.profile_id

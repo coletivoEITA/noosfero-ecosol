@@ -7,7 +7,7 @@ end
 
 class MoveDistributionPluginStuffToConsumersCoopPlugin < ActiveRecord::Migration
   def self.up
-    DistributionPlugin::Node.all.each do |node|
+    DistributionPlugin::Node.find_each do |node|
       profile = node.profile
       next if profile.nil?
 
@@ -23,7 +23,7 @@ class MoveDistributionPluginStuffToConsumersCoopPlugin < ActiveRecord::Migration
       profile.save
     end
 
-    DistributionPlugin::Session.all.each do |session|
+    DistributionPlugin::Session.find_each do |session|
       session.update_attributes! :node_id => session.node.profile_id
     end
     rename_column :distribution_plugin_sessions, :node_id, :profile_id

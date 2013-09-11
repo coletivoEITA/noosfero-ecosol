@@ -47,11 +47,11 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
     id_translation = {}
 
     ::ActiveRecord::Base.transaction do
-      DistributionPluginProduct.all.each do |product|
+      DistributionPluginProduct.find_each do |product|
         profile = product.node.profile
         new_type = product.attributes['type']
         new_type = 'SuppliersPlugin::DistributedProduct' if new_type == 'DistributionPluginDistributedProduct'
-        new_type = 'DistributionPlugin::OfferedProduct' if new_type == 'DistributionPluginOfferedProduct'
+        new_type = 'OrdersCyclePlugin::OfferedProduct' if new_type == 'DistributionPluginOfferedProduct'
         new_type = 'Product' if product.supplier and product.supplier.profile == profile
         klass = new_type.constantize
 
@@ -61,7 +61,7 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
         if new_type != 'Product'
           # reset default_ as it has changed
           product.settings.each do |key, value|
-            value = nil if key.to_s.start_with? 'default_'
+            next if key.to_s.start_with? 'default_'
             new_product.data[key] = value
           end
           new_product.data[:margin_percentage] = product.attributes['margin_percentage']
@@ -77,7 +77,7 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
 
       # move supplier_id
       add_column :distribution_plugin_source_products, :supplier_id, :integer
-      DistributionPluginSourceProduct.all.each do |sp|
+      DistributionPluginSourceProduct.find_each do |sp|
         next sp.destroy if sp.to_product.nil?
         sp.supplier_id = sp.to_product.supplier.id
         sp.save!
@@ -86,17 +86,17 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
 
       rename_table :distribution_plugin_suppliers, :suppliers_plugin_suppliers
       rename_table :distribution_plugin_source_products, :suppliers_plugin_source_products
-      SuppliersPlugin::SourceProduct.all.each do |sp|
+      SuppliersPlugin::SourceProduct.find_each do |sp|
         sp.update_attributes! :to_product_id => id_translation[sp.to_product_id],
           :from_product_id => id_translation[sp.from_product_id]
       end
 
       rename_column :distribution_plugin_ordered_products, :session_product_id, :product_id
-      DistributionPlugin::OrderedProduct.all.each do |op|
+      DistributionPlugin::OrderedProduct.find_each do |op|
         op.update_attributes! :product_id => id_translation[op.product_id]
       end
 
-      DistributionPlugin::SessionProduct.all.each do |sp|
+      DistributionPlugin::SessionProduct.find_each do |sp|
         sp.update_attributes! :product_id => id_translation[sp.product_id]
       end
     end
