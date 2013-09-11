@@ -12,6 +12,9 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   validates_presence_of :cycle
   validate :cycle_cant_change
 
+  # workaround: remove duplicated
+  default_scope {}
+
   # for products in cycle, these are the products of the suppliers
   # p in cycle -> p distributed -> p from supplier
   has_many :from_2x_products, :through => :from_products, :source => :from_products
@@ -58,15 +61,15 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   end
   def margin_percentage=(value)
     self['margin_percentage'] = value
-    self.price = price_with_margins buy_price
+    self.price = self.price_with_margins buy_price
   end
 
   def buy_price
-    supplier_products.sum(:price)
+    self.supplier_products.inject(0){ |sum, p| sum += p.price }
   end
   def buy_unit
     #TODO: handle multiple products
-    supplier_product ? supplier_product.unit : self.class.default_unit
+    self.supplier_product ? self.supplier_product.unit : self.class.default_unit
   end
   def sell_unit
     unit

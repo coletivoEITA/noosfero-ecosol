@@ -4,11 +4,10 @@ class Profile
 
   has_many :orders_cycles, :class_name => 'OrdersCyclePlugin::Cycle', :dependent => :destroy, :order => 'created_at DESC',
     :conditions => ["orders_cycle_plugin_cycles.status <> 'new'"]
+  has_many :orders_cycles_without_order, :class_name => 'OrdersCyclePlugin::Cycle',
+    :conditions => ["orders_cycle_plugin_cycles.status <> 'new'"]
 
   has_many :offered_products, :through => :profile, :order => 'products.name ASC'
-
-  has_many :cycles_custom_order, :class_name => 'OrdersCyclePlugin::Cycle',
-    :conditions => ["orders_cycle_plugin_cycles.status <> 'new'"]
 
   def orders_cycles_closed_date_range
     list = self.orders_cycles.not_open.all :order => 'start ASC'

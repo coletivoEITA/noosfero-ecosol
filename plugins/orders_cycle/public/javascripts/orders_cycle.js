@@ -1,10 +1,10 @@
 
 orders_cycle = {
 
-  /* ----- session ----- */
+  /* ----- cycle ----- */
 
-  in_session_order_toggle: function (context) {
-    container = jQuery(context).hasClass('session-orders') ? jQuery(context) : jQuery(context).parents('.session-orders');
+  in_cycle_order_toggle: function (context) {
+    container = jQuery(context).hasClass('cycle-orders') ? jQuery(context) : jQuery(context).parents('.cycle-orders');
     container.toggleClass('show');
     container.find('.order-content').toggle();
     sortable_table.edit_arrow_toggle(container);
@@ -20,19 +20,19 @@ orders_cycle = {
 
   order_products_toggle: function (fields, toggle) {
     jQuery.each(fields, function(index, field) {
-      var p = jQuery(field).parents('.order-session-product');
+      var p = jQuery(field).parents('.order-cycle-product');
       p.toggle(toggle);
       //v = p.is(':visible');
       //toggle ? (!v ? p.fadeIn() : 0) : (v ? p.fadeOut() : 0);
     });
   },
 
-  /* ----- session editions ----- */
+  /* ----- cycle editions ----- */
 
   offered_product: {
 
     pmsync: function (context, to_price) {
-      p = jQuery(context).parents('.session-product .box-edit');
+      p = jQuery(context).parents('.cycle-product .box-edit');
       margin = p.find('#product_margin_percentage');
       price = p.find('#product_price');
       buy_price = p.find('#product_buy_price');
@@ -52,13 +52,13 @@ orders_cycle = {
   offered_product_edit: function () {
     toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
   },
-  session_mail_message_toggle: function () {
-    if ($('session-new-mail-send').checked) {
-      jQuery('#session-new-mail').removeClass('disabled');
-      jQuery('#session-new-mail textarea').removeAttr('disabled');
+  cycle_mail_message_toggle: function () {
+    if ($('cycle-new-mail-send').checked) {
+      jQuery('#cycle-new-mail').removeClass('disabled');
+      jQuery('#cycle-new-mail textarea').removeAttr('disabled');
     } else {
-      jQuery('#session-new-mail').addClass('disabled');
-      jQuery('#session-new-mail textarea').attr('disabled', true);
+      jQuery('#cycle-new-mail').addClass('disabled');
+      jQuery('#cycle-new-mail textarea').attr('disabled', true);
     }
   },
   order_offered_product_toggle: function () {

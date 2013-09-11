@@ -135,7 +135,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
     if params[:warn_consumer]
       message = (params[:include_message] and !params[:message].blank?) ? params[:message] : nil
-      ConsumersCoopPlugin::Mailer.deliver_order_change_notification profile, @order, changed, removed, message
+      OrdersCyclePlugin::Mailer.deliver_order_change_notification profile, @order, changed, removed, message
     end
 
   end
