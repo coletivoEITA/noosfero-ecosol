@@ -24,6 +24,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   }
 
   named_scope :active, :conditions => {:active => true}
+  named_scope :by_active, lambda { |n| {:conditions => {:active => n} } }
 
   def self.new_dummy attributes
     profile = Enterprise.new :visible => false, :identifier => Digest::MD5.hexdigest(rand.to_s),
