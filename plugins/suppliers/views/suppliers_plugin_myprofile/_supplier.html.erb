@@ -59,8 +59,8 @@
       <div><%# link_to t('suppliers_plugin.views.supplier._supplier.desactivate'), :url => {:action => :desactivate, :id => supplier.id} %></div>
       <div><%= link_to_remote t('suppliers_plugin.views.supplier._supplier.remove'), :url => {:action => :destroy, :id => supplier.id},
         :confirm => t('suppliers_plugin.views.supplier._supplier.by_removing_this_supp'), :class => 'supplier-remove' %></div>
-      <div><%= link_to t('suppliers_plugin.views.supplier._supplier.products'), {:controller => :suppliers_plugin_product, :action => :index, :supplier_id => supplier.id, :anchor => 'filter-fields'} %></div>
-      <div><%= link_to t('suppliers_plugin.views.supplier._supplier.add_products'), {:controller => :suppliers_plugin_product, :action => :index, :supplier_id => supplier.id, :anchor => 'our-product-add'} %></div>
+      <div><%= link_to t('suppliers_plugin.views.supplier._supplier.products'), {:controller => :manage_products, :action => :index, :profile => supplier.identifier}, :target => '_blank' %></div>
+      <div><%= link_to t('suppliers_plugin.views.supplier._supplier.add_products'), {:controller => :manage_products, :action => :new, :profile => supplier.identifier}, :target => '_blank' %></div>
     </div>
 
     <div class="clean"></div>
