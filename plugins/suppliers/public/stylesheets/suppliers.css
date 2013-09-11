@@ -278,13 +278,16 @@
   text-shadow: none;
   border-radius: 5px; }
 
+.sortable-table.wireframe-size .table-header, #supplier-our-products .sortable-table .table-header {
+  width: 960px;
+  margin-left: -40px;
+  padding: 0 40px; }
+.sortable-table.wireframe-size .value-row, #supplier-our-products .sortable-table .value-row {
+  width: 1008px; }
 .sortable-table .box-field {
   float: left;
   padding: 8px; }
 .sortable-table .table-header {
-  width: 960px;
-  margin-left: -40px;
-  padding: 0 40px;
   background-color: #70bcfa;
   border-bottom: 2px solid #3c729f;
   color: black; }
@@ -311,7 +314,6 @@
   margin-bottom: 16px; }
   .sortable-table .table-content .value-row {
     margin-left: -24px;
-    width: 1008px;
     background: white;
     border: 1px solid transparent; }
     .sortable-table .table-content .value-row.edit {

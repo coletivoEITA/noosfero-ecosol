@@ -22,7 +22,7 @@
       <% else %>
         <div class="box-field product-quantity">
           <span><%= ordered_product.quantity_asked_as_currency_number %></span>
-          <span class="lower"><%= product.unit.singular %></span>
+          <span class="lower"><%= product.unit.singular rescue '' %></span>
         </div>
       <% end %>
 

@@ -63,8 +63,7 @@ class Profile
     supplier.products.unarchived.each do |np|
       next if already_supplied.find{ |f| f.supplier_product == np }
 
-      p = SuppliersPlugin::DistributedProduct.new :profile => self
-      p.distribute_from np
+      SuppliersPlugin::DistributedProduct.create :profile => self, :from_products => [np]
     end
   end
 

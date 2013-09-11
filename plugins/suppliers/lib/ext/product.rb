@@ -39,9 +39,6 @@ class Product
 
   has_many :to_products, :through => :sources_to_products, :order => 'id ASC'
   has_many :from_products, :through => :sources_from_products, :order => 'id ASC'
-  has_many :to_profiles, :through => :to_products, :source => :profile
-  has_many :from_profiles, :through => :from_products, :source => :profile
-
   def from_product
     self.from_products.first
   end
@@ -60,9 +57,13 @@ class Product
     @supplier = profile.environment.profiles.find id
   end
 
+  def own?
+    self.supplier.profile == self.profile
+  end
   def supplier_dummy?
     self.supplier ? self.supplier.dummy? : false
   end
+
   def supplier_products
     self.from_products
   end

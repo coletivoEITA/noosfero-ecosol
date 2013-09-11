@@ -3,7 +3,7 @@ class SuppliersPlugin::SourceProduct < Noosfero::Plugin::ActiveRecord
   default_scope :include => [:from_product, :to_product]
 
   belongs_to :from_product, :class_name => 'Product'
-  belongs_to :to_product, :class_name => 'Product'
+  belongs_to :to_product, :class_name => 'Product', :dependent => :destroy
 
   has_one :supplier, :class_name => 'SuppliersPlugin::Supplier'
   has_one :supplier_profile, :through => :supplier, :source => :profile

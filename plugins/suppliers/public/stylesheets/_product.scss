@@ -5,6 +5,8 @@
   @import 'field';
 
   .sortable-table {
+    @extend .wireframe-size;
+
     .box-field {
       &.status {
         width: $module01;

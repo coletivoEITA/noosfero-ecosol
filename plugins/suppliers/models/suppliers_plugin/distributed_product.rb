@@ -3,43 +3,12 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
   validates_presence_of :supplier
   validates_presence_of :name, :if => Proc.new { |p| !p.supplier_dummy? }
 
-  def own?
-    self.supplier.profile == self.profile
-  end
-
-  def supplier_product
-    r = self.from_product
-    return r if r
-
-    if self.new_record? or (!self.own? and self.supplier_dummy?)
-      @supplier_product ||= Product.new :profile => self.supplier.profile, :supplier => self.supplier
-    end
-
-    @supplier_product
-  end
   def supplier_product= value
     if value.is_a?(Hash)
       supplier_product.attributes = value if supplier_product
     else
-      @supplier_product = value
+      self.from_products = [value]
     end
-  end
-
-  def supplier_product_id
-    self.supplier_product.id if self.supplier_product
-  end
-  def supplier_product_id= id
-    self.distribute_from SuppliersPlugin::BaseProduct.find(id) unless id.blank
-  end
-  # Set _product_ and its supplier as the origin of this product
-  def distribute_from product
-    s = profile.suppliers.from_profile(product.profile).first
-    raise "Supplier not found" if s.blank?
-
-    @supplier_product = product
-    self.name ||= product.name
-    self.supplier = s
-    self.save!
   end
 
   def price

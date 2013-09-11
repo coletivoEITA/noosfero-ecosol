@@ -18,28 +18,33 @@ end
 class DistributionPluginOfferedProduct < DistributionPluginProduct
 end
 
+Object.send :remove_const, :Product
+SuppliersPlugin.send :remove_const, :BaseProduct
+
 # NEW ONES
+class Product < ActiveRecord::Base
+  belongs_to :profile
+
+  has_many :sources_from_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :to_product_id
+  has_many :from_products, :through => :sources_from_products, :order => 'id ASC'
+
+  acts_as_having_settings :field => :data
+end
+class SuppliersPlugin::BaseProduct < Product
+end
+class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
+end
+class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
+end
 class SuppliersPlugin::SourceProduct < Noosfero::Plugin::ActiveRecord
   belongs_to :from_product, :class_name => 'Product'
   belongs_to :to_product, :class_name => 'Product'
   has_one :supplier, :class_name => 'SuppliersPlugin::Supplier'
 end
-class Product
-  belongs_to :profile
+class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
+end
 
-  has_many :sources_from_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :to_product_id
-  has_many :from_products, :through => :sources_from_products, :order => 'id ASC'
-end
-class SuppliersPlugin::BaseProduct < Product
-  validates_uniqueness_of :name, :scope => :profile_id, :allow_nil => true, :if => proc{ |p| false }
-end
-class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
-end
-class DistributionPlugin::OfferedProduct < SuppliersPlugin::BaseProduct
-end
 class DistributionPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
-end
-class DistributionPlugin::SessionProduct < Noosfero::Plugin::ActiveRecord
 end
 
 class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
@@ -55,7 +60,7 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
         new_type = 'Product' if product.supplier and product.supplier.profile == profile
         klass = new_type.constantize
 
-        new_product = klass.new :enterprise => profile, :name => product.name, :price => product.price,
+        new_product = klass.new :profile => profile, :name => product.name, :price => product.price,
           :description => product.description, :available => product.active, :unit_id => product.unit_id
         new_product.product_category_id = product.category_id || ProductCategory.find_by_name('Produtos').id || ProductCategory.first.id
         if new_type != 'Product'
@@ -82,7 +87,7 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
         sp.supplier_id = sp.to_product.supplier.id
         sp.save!
       end
-      remove_column :distribution_plugin_products, :supplier_id
+      drop_table :distribution_plugin_products
 
       rename_table :distribution_plugin_suppliers, :suppliers_plugin_suppliers
       rename_table :distribution_plugin_source_products, :suppliers_plugin_source_products
@@ -95,13 +100,8 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
       DistributionPlugin::OrderedProduct.find_each do |op|
         op.update_attributes! :product_id => id_translation[op.product_id]
       end
-
-      DistributionPlugin::SessionProduct.find_each do |sp|
-        sp.update_attributes! :product_id => id_translation[sp.product_id]
-      end
     end
 
-    drop_table :distribution_plugin_products
   end
 
   def self.down
