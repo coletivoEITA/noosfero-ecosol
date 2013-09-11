@@ -7,7 +7,7 @@ class SuppliersPluginProductController < MyProfileController
   helper SuppliersPlugin::DisplayHelper
 
   def index
-    @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id]
+    @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id] if params[:supplier_id].present?
 
     @products =           profile.products.unarchived.distributed.paginate({
       :per_page => 10, :page => params[:page], :order => 'products.name ASC'
@@ -41,12 +41,12 @@ class SuppliersPluginProductController < MyProfileController
 
   def search_scope
     klass = SuppliersPlugin::BaseProduct
-    scope = SuppliersPlugin::BaseProduct.scoped :conditions => []
-    scope = scope.from_supplier_id(params[:supplier_id]) unless params[:supplier_id].blank?
+    scope = klass.scoped :conditions => []
+    scope = scope.from_supplier_id params[:supplier_id] if params[:supplier_id].present?
 
     conditions = []
-    conditions << {:available => params[:available]} unless params[:available].blank?
-    unless params[:name].blank?
+    conditions << {:available => params[:available]} if params[:available].present?
+    if params[:name].present?
       name = ActiveSupport::Inflector.transliterate(params[:name]).strip.downcase
       conditions << ["LOWER(products.name) LIKE ?", "%#{name}%"]
     end

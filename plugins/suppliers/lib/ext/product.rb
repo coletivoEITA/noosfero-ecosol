@@ -10,6 +10,9 @@ class Product
   named_scope :by_profile, lambda { |profile| { :conditions => {:profile_id => profile.id} } }
   named_scope :by_profile_id, lambda { |profile_id| { :conditions => {:profile_id => profile_id} } }
 
+  extend CurrencyHelper::ClassMethods
+  has_currency :price
+
   named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
 
   # join source_products

@@ -37,7 +37,6 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 end
 class DistributionPlugin::OfferedProduct < SuppliersPlugin::BaseProduct
 end
-
 class DistributionPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
 end
 class DistributionPlugin::SessionProduct < Noosfero::Plugin::ActiveRecord
@@ -58,14 +57,19 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
 
         new_product = klass.new :enterprise => profile, :name => product.name, :price => product.price,
           :description => product.description, :available => product.active, :unit_id => product.unit_id
-        new_product.data = product.settings
-        new_product.data[:margin_fixed] = product.attributes['margin_fixed']
-        new_product.data[:margin_percentage] = product.attributes['margin_percentage']
-        new_product.data[:unit_detail] = product.attributes['unit_detail']
-        new_product.data[:minimum_selleable] = product.attributes['minimum_selleable']
-        new_product.data[:stored] = product.attributes['stored']
-        new_product.data[:quantity] = product.attributes['quantity']
         new_product.product_category_id = product.category_id || ProductCategory.find_by_name('Produtos').id || ProductCategory.first.id
+        if new_type != 'Product'
+          # reset default_ as it has changed
+          product.settings.each do |key, value|
+            value = nil if key.to_s.start_with? 'default_'
+            new_product.data[key] = value
+          end
+          new_product.data[:margin_percentage] = product.attributes['margin_percentage']
+          new_product.data[:unit_detail] = product.attributes['unit_detail']
+          new_product.data[:minimum_selleable] = product.attributes['minimum_selleable']
+          new_product.data[:stored] = product.attributes['stored']
+          new_product.data[:quantity] = product.attributes['quantity']
+        end
 
         new_product.send :create_or_update_without_callbacks
         id_translation[product.id] = new_product.id

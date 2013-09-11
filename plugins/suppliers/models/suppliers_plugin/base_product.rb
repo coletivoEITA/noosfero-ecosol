@@ -26,14 +26,17 @@ class SuppliersPlugin::BaseProduct < Product
   extend ActsAsHavingSettings::DefaultItem::ClassMethods
   settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :from_product
+  settings_default_item :unit, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :margin_percentage, :type => :boolean, :default => true, :delegate_to => :profile
-  default_item :price, :if => :default_margin_percentage, :delegate_to => :from_product
-  settings_default_item :unit_id, :type => :boolean, :default => true, :delegate_to => :from_product
-  default_item :unit_detail, :if => :default_unit_id, :delegate_to => :from_product
+  default_item :price, :if => :default_margin_percentage, :delegate_to => proc{ self.from.product.price_with_discount }
+
+  default_item :unit_detail, :if => :default_unit, :delegate_to => :from_product
   settings_default_item :stored, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :minimum_selleable, :type => :boolean, :default => true, :delegate_to => :from_product
 
   extend CurrencyHelper::ClassMethods
+  has_currency :own_price
+  has_currency :original_price
   has_number_with_locale :minimum_selleable
   has_number_with_locale :own_minimum_selleable
   has_number_with_locale :original_minimum_selleable
@@ -44,9 +47,6 @@ class SuppliersPlugin::BaseProduct < Product
   has_number_with_locale :margin_percentage
   has_number_with_locale :own_margin_percentage
   has_number_with_locale :original_margin_percentage
-  has_currency :price
-  has_currency :own_price
-  has_currency :original_price
 
   def self.default_unit
     Unit.new(:singular => I18n.t('suppliers_plugin.models.product.unit'), :plural => I18n.t('suppliers_plugin.models.product.units'))
@@ -71,9 +71,10 @@ class SuppliersPlugin::BaseProduct < Product
     ret
   end
 
-  def unit
-    self['unit'] || self.class.default_unit
+  def unit_with_default
+    unit_without_default || self.class.default_unit
   end
+  alias_method_chain :unit, :default
 
   def archive
     self.update_attributes! :archived => true
