@@ -34,6 +34,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   end
 
   def edit
+    @product_categories = ProductCategory.find(:all)
     if cycle_id = params[:cycle_id]
       @cycle = OrdersCyclePlugin::Cycle.find_by_id cycle_id
       return render_not_found unless @cycle

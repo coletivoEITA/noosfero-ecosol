@@ -12,6 +12,16 @@
       @extend .box-align;
     }
 
+
+    #filter {
+      width: $module06;
+      margin: auto;
+
+      .fields div.category {
+        border-right: 0;
+      }
+    }
+
     #cycle-products {
       .box-field {
         &.category {
