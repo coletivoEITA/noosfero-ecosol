@@ -651,7 +651,7 @@ body.consumers-coop {
 
 /* ----- cycle orders  ----- */
 .consumers-coop .order-products-by-supplier {
-  float: left;
+  width: 550px;
   background-color: #E1F5C4;
   margin-bottom: 20px;
   border: 1px solid #116C7C;
@@ -661,8 +661,7 @@ body.consumers-coop {
   -o-border-radius: 3px; }
 
 .consumers-coop .order-products-by-supplier .inner-box {
-  padding: 8px;
-  float: left; }
+  padding: 8px; }
 
 .consumers-coop .order-products-by-supplier .supplier-name {
   font-weight: bold;
@@ -689,6 +688,9 @@ body.consumers-coop {
   float: left;
   clear: both; }
 
+.consumers-coop .order-products-by-supplier span.box-field {
+  display: inline-block; }
+
 .consumers-coop .order-products-by-supplier .box-field.product {
   width: 110px; }
 
@@ -699,7 +701,7 @@ body.consumers-coop {
   width: 110px; }
 
 .consumers-coop .order-products-by-supplier .box-field.forecast-parcel {
-  width: 60px; }
+  width: 65px; }
 
 .consumers-coop .order-products-by-supplier .box-field.sell-value,
 .consumers-coop .order-products-by-supplier .box-field.forecast-parcel-value {
