@@ -339,27 +339,18 @@
       margin-top: 4px !important;
       margin-left: 3px !important; }
     .sortable-table .table-content .value-row .box-field.actions .actions-circle {
-      float: right;
-      height: 16px;
-      width: 16px;
       margin-right: 0;
       margin-top: 3px;
-      padding: 0;
-      background-color: #FDF2A3;
-      border-radius: 8px;
-      -moz-border-radius: 8px;
-      -webkit-border-radius: 8px;
-      -o-border-radius: 8px;
-      text-decoration: none; }
-      .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-hide, .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-show {
-        font-weight: bolder;
-        font-size: 17px;
-        margin-left: 3px; }
+      padding: 0; }
       .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-show {
-        margin-top: -1px; }
+        background: url("images/plus.png") no-repeat;
+        width: 16px;
+        height: 16px; }
       .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-hide {
         display: none;
-        margin-top: -9px; }
+        background: url("images/minus.png") no-repeat;
+        width: 16px;
+        height: 16px; }
     .sortable-table .table-content .value-row .box-view {
       border-bottom: 2px dotted #cccccc;
       background: #f3f4ee; }

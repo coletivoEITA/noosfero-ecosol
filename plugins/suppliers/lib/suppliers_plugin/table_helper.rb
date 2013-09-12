@@ -9,7 +9,7 @@ module SuppliersPlugin::TableHelper
     options[:onclick] = "r = sortable_table.edit_arrow_toggle(this); #{options[:onclick]}; return r;" if toggle
 
     content_tag 'div',
-      link_to(content_tag('div', '_', :class => 'action-hide') + content_tag('div', '+', :class => 'action-show'), anchor, options),
+      link_to(content_tag('div', '', :class => 'action-hide') + content_tag('div', '', :class => 'action-show'), anchor, options),
       :class => 'box-field actions'
   end
 
