@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean {
+.container-clean, #networks-network-show-structure .listing .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -138,3 +138,10 @@
 
 #networks-node-create {
   height: 80px; }
+
+#networks-network-show-structure .listing .row .name {
+  float: left;
+  width: 65%; }
+#networks-network-show-structure .listing .row .actions {
+  width: 31.66667%;
+  float: right; }

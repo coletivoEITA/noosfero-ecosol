@@ -17,9 +17,9 @@
         profile.control_panel_settings_button[:icon],
         :controller => 'profile_editor', :action => 'edit' %>
 
-      <% @plugins.dispatch(:control_panel_buttons).each do |button| %>
-        <%= control_panel_button(button[:title], button[:icon], button[:url]) %>
-      <% end %>
+      <%= control_panel_button _('Manage Content'), 'cms', :controller => 'cms' %>
+
+      <%= control_panel_button t('networks_plugin.views.control_panel.structure'), nil, :controller => :networks_plugin_network, :action => :show_structure %>
 
     <% end %>
   </div>

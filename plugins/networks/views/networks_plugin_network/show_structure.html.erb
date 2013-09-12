@@ -1,32 +1,50 @@
-<h1><%= t('networks_plugin.views.network.show_structure.title') %></h1>
+<div id="networks-network-show-structure">
+  <h1><%= t('networks_plugin.views.network.show_structure.title') %></h1>
 
-<div>
-  <% button_bar do %>
-    <%= link_to t('networks_plugin.views.network.show_structure.add_enterprise'), {:controller => :networks_plugin_network, :action => :enterprise_search}, :class => 'button colorbox' %>
-    <%= link_to t('networks_plugin.views.network.show_structure.add_node'), {:controller => :networks_plugin_node, :action => :create}, :class => 'button colorbox' %>
+  <div>
+    <% button_bar do %>
+      <%= link_to t('networks_plugin.views.network.show_structure.add_enterprise'), {:controller => :networks_plugin_network, :action => :enterprise_search}, :class => 'button colorbox' %>
+      <%= link_to t('networks_plugin.views.network.show_structure.add_node'), {:controller => :networks_plugin_node, :action => :create, :id => @node.id}, :class => 'button colorbox' %>
+    <% end %>
+  </div>
+
+  <% if flash[:error] %>
+    <div class="error"><%= flash[:error] %></div>
   <% end %>
+
+  <% if flash[:notice] %>
+    <div class="notice"><%= flash[:notice] %></div>
+  <% end %>
+
+  <h2><%= t('networks_plugin.views.network.show_structure.context') % {:name => @node.name} %></h2>
+
+  <div class="listing">
+    <h3><%= t('networks_plugin.views.network.show_structure.nodes') %></h3>
+    <% @nodes.each do |node| %>
+      <div class="row">
+        <div class="name">
+          <%= link_to node.name, :node_id => node.id %>
+        </div>
+        <div class="actions">
+          <%= link_to t('networks_plugin.views.network.show_structure.edit'), :controller => :networks_plugin_node, :action => :show, :id => node.id %>
+          |
+          <%= link_to t('networks_plugin.views.network.show_structure.remove'), :controller => :networks_plugin_node, :action => :destroy, :id => node.id %>
+        </div>
+      </div>
+    <% end %>
+
+    <h3><%= t('networks_plugin.views.network.show_structure.enterprises') %></h3>
+    <% @enterprises.each do |enterprise| %>
+      <div class="row">
+        <div class="name">
+          <%= link_to enterprise.name, enterprise.url, :target => '_blank' %>
+        </div>
+        <div class="actions">
+          <%= link_to t('networks_plugin.views.network.show_structure.edit'), :controller => :networks_plugin_enterprise, :action => :show, :id => enterprise.id %>
+          |
+          <%= link_to t('networks_plugin.views.network.show_structure.remove'), :controller => :networks_plugin_enterprise, :action => :destroy, :id => enterprise.id %>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
-
-<% if flash[:error] %>
-  <div class="error"><%= flash[:error] %></div>
-<% end %>
-
-<% if flash[:notice] %>
-  <div class="notice"><%= flash[:notice] %></div>
-<% end %>
-
-<table>
-  <% @profiles.each do |profiles| %>
-    <tr>
-      <td>
-        <%= profiles.name %>
-      </td>
-      <td style="text-align: right;">
-        <%# FIXME only for nodes, not for enterprises %>
-        <%= link_to 'Editar', :controller => :networks_plugin_node, :action => :show, :id => profile.id %>
-        |
-        <%= link_to 'Remover', :controller => :networks_plugin_node, :action => :destroy, :id => profile.id %>
-      </td>
-    </tr>
-  <% end %>
-</table>

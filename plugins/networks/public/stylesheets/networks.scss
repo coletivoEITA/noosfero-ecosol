@@ -10,3 +10,22 @@
 #networks-node-create {
   height: 10*$height;
 }
+
+#networks-network-show-structure {
+
+  .listing {
+
+    .row {
+      @extend .container-clean;
+
+      .name {
+        float: left;
+        width: $module08p;
+      }
+      .actions {
+        width: $module04p;
+        float: right;
+      }
+    }
+  }
+}

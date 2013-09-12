@@ -1,4 +1,10 @@
+# workaround for plugins classes scope problem
+require_dependency 'networks_plugin/display_helper'
+NetworksPlugin::NetworksDisplayHelper = NetworksPlugin::DisplayHelper
+
 class NetworksPluginNetworkController < MyProfileController
+
+  helper NetworksPlugin::NetworksDisplayHelper
 
   def index
     redirect_to :show_structure
@@ -6,18 +12,13 @@ class NetworksPluginNetworkController < MyProfileController
 
   def show_structure
     @network = profile
+    @node = NetworksPlugin::Node.find_by_id(params[:node_id]) || @network
 
-    relations = SubOrganizationsPlugin::Relation.all :conditions => ["parent_id = ?", @network.id], :include => [:child]
-    suppliers = SuppliersPlugin::Supplier.of_consumer_id(profile.id).all :include => :profile
-    @profiles = relations.collect(&:child) + suppliers.collect(&:profile)
+    @nodes = @node.as_parent_relations.all.collect(&:child)
+    @enterprises = @node.suppliers.except_self.collect(&:supplier)
   end
 
-  def enterprise_search
-    @network = profile
-
-    if params[:query]
-      @enterprises = find_by_contents(:enterprises, environment.enterprises, params[:query])[:results]
-    end
+  def add_enterprise
   end
 
   protected

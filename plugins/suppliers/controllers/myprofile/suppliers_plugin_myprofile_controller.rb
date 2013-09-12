@@ -55,6 +55,10 @@ class SuppliersPluginMyprofileController < MyProfileController
     @supplier.destroy!
   end
 
+  def enterprise_search
+    @enterprises = find_by_contents(:enterprises, environment.enterprises, params[:query])[:results]
+  end
+
   protected
 
   def load_new

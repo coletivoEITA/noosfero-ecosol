@@ -1,4 +1,6 @@
-<% form_remote_for :node, @node, :url => {:action => :create} do |f| %>
+<h2> <%= t('networks_plugin.views.node.create.context') % {:name => @node.name} %> </h2>
+
+<% form_remote_for :node, @new_node, :url => {:action => :create} do |f| %>
   <%= error_messages_for :node %>
 
   <%= f.label :name %>

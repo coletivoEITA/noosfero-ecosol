@@ -6,8 +6,8 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     self.profile
   end
 
-  has_many :products, :through => :profile, :class_name => 'SuppliersPlugin::DistributedProduct'
-  has_many :consumer_products, :through => :consumer, :source => :products, :class_name => 'SuppliersPlugin::DistributedProduct'
+  has_many :products, :through => :profile
+  has_many :consumer_products, :through => :consumer, :source => :products
 
   validates_presence_of :profile
   validates_presence_of :consumer
@@ -81,7 +81,9 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     destroy_without_dummy
   end
   def destroy_with_products
-    self.consumer_products.from_supplier_id(self.id).distributed.update_all({:archived => true})
+    self.consumer_products.from_supplier_id(self.id).each do |product|
+      product.update_attribute :archived, true
+    end
     destroy_without_products
   end
   alias_method_chain :destroy, :dummy
