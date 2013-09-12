@@ -132,3 +132,6 @@
   border-radius: 5px; }
   .action-button:visited, .action-button:active, .action-button:hover {
     color: white; }
+
+#networks-admin-index #network-list {
+  margin-bottom: 16px; }

@@ -7,7 +7,6 @@ set -e
 noosfero_plugins=../../../../script/noosfero-plugins
 
 $noosfero_plugins disable distribution
-$noosfero_plugins enable distribution
 PLUGINS="suppliers delivery orders orders_cycle consumers_coop"
 for plugin in $PLUGINS; do
   $noosfero_plugins disable $plugin

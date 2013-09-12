@@ -897,3 +897,13 @@
        name: Networks
        description: "Create and manage networks."
        manage_control_panel_button: "Manage network's structure"
+   models:
+   controllers:
+   views:
+     admin:
+       index:
+         title: "Networks' configurations"
+         no_network: "Any registered network."
+         new: "Create network"
+         new_button: "Criar"
+

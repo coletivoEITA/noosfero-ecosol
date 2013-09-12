@@ -906,4 +906,13 @@
        name: Redes
        description: "Cria a gerencia redes."
        manage_control_panel_button: "Gerenciar estrutura da rede"
+   models:
+   controllers:
+   views:
+     admin:
+       index:
+         title: "Configurações de Redes"
+         no_network: "Nenhuma rede registrada."
+         new: "Criar rede"
+         new_button: "Criar"
 
