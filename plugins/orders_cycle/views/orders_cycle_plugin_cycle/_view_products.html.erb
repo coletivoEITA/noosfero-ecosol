@@ -9,7 +9,7 @@
   <div id="order-filter">
     <%= render :partial => "orders_cycle_plugin_product/order_search", :locals => {
       :cycle => cycle, :order => order,
-      :products_for_order_by_supplier => cycle.products_for_order_by_supplier,
+      :products_for_order => cycle.products_for_order,
     } %>
   </div>
 </div>

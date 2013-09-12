@@ -436,7 +436,9 @@
           price_s_descriptive: "descrictivo do preço"
           product_image: "Imagem do produto"
         _order_search: 
-          order_qty: "Qtd pedidos"
+          order_qty: "Qtd pedida"
+          category: Categoria
+          producer: Produtor
           price: Preço
           product: Produto
           this_search_hasn_t_re: "Esta busca não retornou produtos"

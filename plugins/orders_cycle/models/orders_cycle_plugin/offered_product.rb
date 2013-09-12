@@ -9,17 +9,16 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   has_many :ordered_products, :class_name => 'OrdersPlugin::OrderedProduct', :foreign_key => :product_id, :dependent => :destroy
   has_many :orders, :through => :ordered_products, :source => :order
 
-  validates_presence_of :cycle
-
-  # workaround: remove duplicated
-  default_scope {}
-
   # for products in cycle, these are the products of the suppliers
   # p in cycle -> p distributed -> p from supplier
   has_many :from_2x_products, :through => :from_products, :source => :from_products
   def supplier_products
     self.from_2x_products
   end
+
+  default_scope :includes => [:from_2x_products]
+
+  validates_presence_of :cycle
 
   extend CurrencyHelper::ClassMethods
   has_number_with_locale :total_quantity_asked

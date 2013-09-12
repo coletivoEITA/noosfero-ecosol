@@ -12,8 +12,8 @@
   <% form_remote_for :product, p, :url => {:controller => :orders_cycle_plugin_product, :action => :cycle_edit, :id => p.id } do |f| %>
 
     <div class="cycle-product-line">
-      <%= labelled_field f, :price, t('orders_cycle_plugin.views.product._cycle_edit.sell_price'), f.text_field(:price, :value => p.price_as_currency_number, :onkeyup => 'distribution.offered_product.pmsync(this, false);') %>
-      <%= labelled_field f, :margin_percentage, t('orders_cycle_plugin.views.product._cycle_edit.margin'), f.text_field(:margin_percentage, :value => p.margin_percentage_as_currency_number, :onkeyup => "distribution.offered_product.pmsync(this, true);") %>
+      <%= labelled_field f, :price, t('orders_cycle_plugin.views.product._cycle_edit.sell_price'), f.text_field(:price, :value => p.price_as_currency_number, :onkeyup => 'orders_cycle.offered_product.pmsync(this, false);') %>
+      <%= labelled_field f, :margin_percentage, t('orders_cycle_plugin.views.product._cycle_edit.margin'), f.text_field(:margin_percentage, :value => p.margin_percentage_as_currency_number, :onkeyup => "orders_cycle.offered_product.pmsync(this, true);") %>
       <%# labelled_field f, :quantity, t('orders_cycle_plugin.views.product._cycle_edit.qty_offered'), f.text_field(:quantity, :value => p.quantity_as_currency_number) %>
 
       <div class="clean"></div>

@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -140,7 +140,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -279,7 +279,8 @@
   margin-left: -40px;
   padding: 0 40px; }
 .sortable-table.wireframe-size .value-row {
-  width: 1008px; }
+  width: 1008px;
+  margin-left: -24px; }
 .sortable-table .box-field {
   float: left;
   padding: 8px; }
@@ -309,7 +310,6 @@
   width: auto;
   margin-bottom: 16px; }
   .sortable-table .table-content .value-row {
-    margin-left: -24px;
     background: white;
     border: 1px solid transparent; }
     .sortable-table .table-content .value-row.edit {
@@ -394,7 +394,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */

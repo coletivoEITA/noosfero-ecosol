@@ -12,19 +12,12 @@ orders_cycle = {
 
   /* ----- order ----- */
 
-  order_product_include: function (message, url) {
-    if (message)
-      alert(message);
-    return false;
-  },
-
-  order_products_toggle: function (fields, toggle) {
-    jQuery.each(fields, function(index, field) {
-      var p = jQuery(field).parents('.order-cycle-product');
-      p.toggle(toggle);
-      //v = p.is(':visible');
-      //toggle ? (!v ? p.fadeIn() : 0) : (v ? p.fadeOut() : 0);
-    });
+  order_product: {
+    include: function (message, url) {
+      if (message)
+        alert(message);
+      return false;
+    },
   },
 
   /* ----- cycle editions ----- */
@@ -45,13 +38,21 @@ orders_cycle = {
         suppliers.margin.calculate(margin, price, base_price);
     },
 
+    edit: function () {
+      toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
+    },
+
+    order: {
+      toggle: function () {
+        toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
+        toggle_edit.editing().find('.quantity-label').toggle(!toggle_edit.isEditing());
+        toggle_edit.editing().find('.quantity-entry').toggle(toggle_edit.isEditing());
+      },
+    },
   },
 
   /* ----- toggle edit ----- */
 
-  offered_product_edit: function () {
-    toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
-  },
   cycle_mail_message_toggle: function () {
     if ($('cycle-new-mail-send').checked) {
       jQuery('#cycle-new-mail').removeClass('disabled');
@@ -60,11 +61,6 @@ orders_cycle = {
       jQuery('#cycle-new-mail').addClass('disabled');
       jQuery('#cycle-new-mail textarea').attr('disabled', true);
     }
-  },
-  order_offered_product_toggle: function () {
-    toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
-    toggle_edit.editing().find('.quantity-label').toggle(!toggle_edit.isEditing());
-    toggle_edit.editing().find('.quantity-entry').toggle(toggle_edit.isEditing());
   },
 
   colorbox: function (options) {

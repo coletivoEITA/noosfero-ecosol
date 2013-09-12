@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -142,7 +142,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -283,7 +283,8 @@
   margin-left: -40px;
   padding: 0 40px; }
 .sortable-table.wireframe-size .value-row, #supplier-our-products .sortable-table .value-row {
-  width: 1008px; }
+  width: 1008px;
+  margin-left: -24px; }
 .sortable-table .box-field {
   float: left;
   padding: 8px; }
@@ -313,7 +314,6 @@
   width: auto;
   margin-bottom: 16px; }
   .sortable-table .table-content .value-row {
-    margin-left: -24px;
     background: white;
     border: 1px solid transparent; }
     .sortable-table .table-content .value-row.edit {
@@ -398,7 +398,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -610,7 +610,7 @@ WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -767,7 +767,7 @@ WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
   /* Buttons */ }
   #supplier-our-products .clean {
     clear: both; }
-  #supplier-our-products .container-clean, #supplier-our-products .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row #supplier-our-products .box-view, #supplier-our-products .sortable-table .table-content .value-row .box-edit .internal-table, .sortable-table .table-content .value-row .box-edit #supplier-our-products .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
+  #supplier-our-products .container-clean, #supplier-our-products .sortable-table .table-header, .sortable-table #supplier-our-products .table-header, #supplier-our-products .sortable-table .table-content, .sortable-table #supplier-our-products .table-content, #supplier-our-products .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row #supplier-our-products .box-view, #supplier-our-products .sortable-table .table-content .value-row .box-edit .internal-table, .sortable-table .table-content .value-row .box-edit #supplier-our-products .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row {
     overflow: hidden;
     display: inline-block;
     /* Necessary to trigger "hasLayout" in IE */
