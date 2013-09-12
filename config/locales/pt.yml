@@ -380,7 +380,7 @@
           login: login
           new_order: "Novo pedido"
           orders_from_another_m: "Orders from another member"
-          orders_from_consumer_: "Pedidos do \"%{consumer}\" neste ciclo"
+          orders_from_consumer_: "Pedidos de \"%{consumer}\" neste ciclo"
           send_message_to_the_m: "Enviar mensagem para gestores"
           sign_up: registre-se
           this_cycle_is_already: "Este ciclo já foi fechado."
