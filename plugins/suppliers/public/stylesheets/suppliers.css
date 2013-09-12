@@ -893,7 +893,7 @@ WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
       margin-left: 4px; }
   #supplier-our-products .field-secondary {
     display: block; }
-    #supplier-our-products .field-secondary, #supplier-our-products .field-secondary input {
+    #supplier-our-products .field-secondary, #supplier-our-products .field-secondary input, #supplier-our-products .field-secondary select {
       width: 128px; }
     #supplier-our-products .field-secondary.with-unit input {
       float: left;
@@ -907,7 +907,8 @@ WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
     /* come on browsers!? */ }
   #supplier-our-products label.field-bellow {
     display: block;
-    margin-bottom: 4px; }
+    margin-bottom: 4px;
+    font-size: 10px; }
   #supplier-our-products select,
   #supplier-our-products input[type=text],
   #supplier-our-products textarea {
