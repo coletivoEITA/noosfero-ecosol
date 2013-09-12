@@ -458,7 +458,7 @@ body.consumers-coop {
 .consumers-coop .page > *,
 .consumers-coop .admin-page > * {
   padding-left: 8px; }
-.consumers-coop .box-align, .consumers-coop #cycle-products .cycle-products-table, .consumers-coop .order-products-by-supplier, .consumers-coop #cycle-listing .cycle-list-item, .consumers-coop #cycle-listing .cycle-timeline, .consumers-coop #cycle-header-warning {
+.consumers-coop .box-align, .consumers-coop .order-products-by-supplier, .consumers-coop #cycle-listing .cycle-list-item, .consumers-coop #cycle-listing .cycle-timeline {
   margin-left: -8px; }
 .consumers-coop .alignment, .consumers-coop #consumers-coop-plugin-cycles-gadget .cycle .happening, #consumers-coop-plugin-cycles-gadget .cycle .consumers-coop .happening, .consumers-coop #consumers-coop-plugin-cycles-gadget .cycle .info, #consumers-coop-plugin-cycles-gadget .cycle .consumers-coop .info {
   padding-left: 8px; }
@@ -629,21 +629,6 @@ body.consumers-coop {
 
 .consumers-coop #cycle-delivery label {
   font-weight: bold; }
-
-.consumers-coop #cycle-products {
-  margin-top: 40px; }
-
-.consumers-coop #cycle-products .cycle-products-table {
-  margin-top: 30px; }
-
-.consumers-coop #cycle-products-header div {
-  width: 400px; }
-
-.consumers-coop #cycle-products-header a {
-  line-height: 30px; }
-
-.consumers-coop #cycle-product-line .field {
-  width: 120px; }
 
 .consumers-coop .cycle-new {
   margin-bottom: 29px;
@@ -863,59 +848,6 @@ body.consumers-coop {
   width: 270px;
   font-size: 10px;
   line-height: 23px; }
-
-/* ----- cycle ----- */
-.consumers-coop #cycle-header-warning {
-  background-color: #FECBCA;
-  padding: 8px;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box; }
-
-.consumers-coop #cycle-header-warning-wrap {
-  width: 70%; }
-
-.consumers-coop #cycle-products .value-row.edit .box-view {
-  border-bottom: 1px solid #333;
-  margin-left: -8px;
-  padding-right: 8px;
-  padding-left: 8px; }
-
-.consumers-coop #cycle-products .value-row.edit .price,
-.consumers-coop #cycle-products .value-row.edit .quantity-available,
-.consumers-coop #cycle-products .value-row.edit .actions {
-  visibility: hidden; }
-
-.consumers-coop #cycle-products .box-edit .field {
-  float: left;
-  clear: none;
-  margin-right: 40px;
-  width: 120px; }
-
-.consumers-coop #cycle-products .box-view .box-field {
-  font-size: 10px; }
-
-.consumers-coop #cycle-products .box-field.category {
-  width: 80px; }
-
-.consumers-coop #cycle-products .box-field.supplier {
-  width: 110px; }
-
-.consumers-coop #cycle-products .box-field.name {
-  width: 190px; }
-
-.consumers-coop #cycle-products .box-field.price {
-  width: 150px; }
-
-.consumers-coop #cycle-products .box-field.quantity-available {
-  width: 80px; }
-
-.consumers-coop #cycle-products .quantity-available input {
-  width: 60px; }
-
-.consumers-coop #cycle-products .box-edit input[type=text] {
-  width: 120px; }
 
 /* ----- delivery ----- */
 .consumers-coop .cycle-delivery-option {

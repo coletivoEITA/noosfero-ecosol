@@ -312,7 +312,7 @@
     -moz-border-radius: 3px;
     background-color: #FFE546; }
   .cycle-view #order-column .consumer-order,
-  .cycle-view #order-column .consumers-coop #order-page .in-order {
+  .cycle-view #order-column #order-page .in-order {
     background-color: #FFF2A3; }
   .cycle-view #order-column .consumer-order {
     margin-bottom: 10px; }
@@ -356,3 +356,53 @@
     min-width: 160px; }
   .cycle-view #order-column .quantity-entry input {
     width: 76px; }
+
+#cycles-page #cycle-header-warning {
+  background-color: #FECBCA;
+  padding: 8px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box; }
+#cycles-page #cycle-header-warning-wrap {
+  width: 70%; }
+#cycles-page #cycle-products {
+  margin-top: 40px; }
+#cycles-page #cycle-products .cycle-products-table {
+  margin-top: 30px; }
+#cycles-page #cycle-products-header div {
+  width: 400px; }
+#cycles-page #cycle-products-header a {
+  line-height: 30px; }
+#cycles-page #cycle-product-line .field {
+  width: 120px; }
+#cycles-page #cycle-products .value-row.edit .box-view {
+  border-bottom: 1px solid #333;
+  margin-left: -8px;
+  padding-right: 8px;
+  padding-left: 8px; }
+#cycles-page #cycle-products .value-row.edit .price,
+#cycles-page #cycle-products .value-row.edit .quantity-available,
+#cycles-page #cycle-products .value-row.edit .actions {
+  visibility: hidden; }
+#cycles-page #cycle-products .box-edit .field {
+  float: left;
+  clear: none;
+  margin-right: 40px;
+  width: 120px; }
+#cycles-page #cycle-products .box-view .box-field {
+  font-size: 10px; }
+#cycles-page #cycle-products .box-field.category {
+  width: 80px; }
+#cycles-page #cycle-products .box-field.supplier {
+  width: 110px; }
+#cycles-page #cycle-products .box-field.name {
+  width: 190px; }
+#cycles-page #cycle-products .box-field.price {
+  width: 150px; }
+#cycles-page #cycle-products .box-field.quantity-available {
+  width: 80px; }
+#cycles-page #cycle-products .quantity-available input {
+  width: 60px; }
+#cycles-page #cycle-products .box-edit input[type=text] {
+  width: 120px; }
