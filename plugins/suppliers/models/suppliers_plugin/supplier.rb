@@ -26,6 +26,10 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   named_scope :active, :conditions => {:active => true}
   named_scope :by_active, lambda { |n| {:conditions => {:active => n} } }
 
+  named_scope :except_people, { :conditions => ['profiles.type <> ?', Person.name], :joins => [:consumer] }
+
+  after_create :add_admins_if_dummy
+
   def self.new_dummy attributes
     profile = Enterprise.new :visible => false, :identifier => Digest::MD5.hexdigest(rand.to_s),
       :environment => attributes[:consumer].environment
@@ -42,11 +46,12 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   def self?
     profile == consumer
   end
-
+  def person?
+    self.consumer.person?
+  end
   def dummy?
     !profile.visible
   end
-
   def active?
     self.active
   end
@@ -59,7 +64,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     name_abbreviation.blank? ? name : name_abbreviation
   end
 
-  def name=(value)
+  def name= value
     self['name'] = value
     if dummy?
       self.profile.name = value
@@ -67,7 +72,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     end
   end
 
-  # FIXME: inactivate instead of deleting
+  # FIXME: archive instead of deleting
   def destroy
     profile.destroy if profile.dummy?
     consumer_products.from_supplier_id(self.id).distributed.update_all({:archived => true})
@@ -77,13 +82,13 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   protected
 
-  after_create :complete
-  def complete
+  def add_admins_if_dummy
     if dummy?
-      consumer.admins.each{ |a| profile.add_admin(a) } if profile.dummy?
+      self.consumer.admins.each{ |a| self.profile.add_admin a }
     end
   end
 
+  # delete missing methods to profile
   def method_missing method, *args, &block
     if self.profile.respond_to? method
       self.profile.send method, *args, &block

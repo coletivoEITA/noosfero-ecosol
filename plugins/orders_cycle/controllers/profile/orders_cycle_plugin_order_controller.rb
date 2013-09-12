@@ -1,5 +1,6 @@
 # workaround for plugin class scope problem
 require_dependency 'orders_cycle_plugin/display_helper'
+OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
 require_dependency 'suppliers_plugin/product_helper'
 
 class OrdersCyclePluginOrderController < OrdersPluginConsumerController
@@ -10,7 +11,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   no_design_blocks
   before_filter :login_required, :except => [:index]
 
-  helper OrdersCyclePlugin::DisplayHelper
+  helper OrdersCyclePlugin::OrdersCycleDisplayHelper
   helper SuppliersPlugin::ProductHelper
 
   def index

@@ -7,16 +7,31 @@ class Product
   named_scope :archived, :conditions => {:archived => true}
   named_scope :unarchived, :conditions => {:archived => false}
 
+  named_scope :with_available, lambda { |available| { :conditions => {:available => available} } }
+
+  # FIXME: transliterate input and on db
+  named_scope :name_like, lambda { |name| { :conditions => ["LOWER(products.name) LIKE ?", "%#{name}%"] } }
+
   named_scope :by_profile, lambda { |profile| { :conditions => {:profile_id => profile.id} } }
   named_scope :by_profile_id, lambda { |profile_id| { :conditions => {:profile_id => profile_id} } }
 
-  extend CurrencyHelper::ClassMethods
-  has_currency :price
+  # the above code should be on the core
 
-  named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
+  has_many :sources_from_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :to_product_id, :dependent => :destroy
+  has_many :sources_to_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :from_product_id, :dependent => :destroy
+
+  has_many :suppliers, :through => :sources_from_products, :order => 'id ASC'
+
+  has_many :to_products, :through => :sources_to_products, :order => 'id ASC'
+  has_many :from_products, :through => :sources_from_products, :order => 'id ASC'
+  def from_product
+    self.from_products.first
+  end
 
   # join source_products
   default_scope :include => [:from_products]
+
+  named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
 
   named_scope :from_supplier_profile_id, lambda { |profile_id| {
       :conditions => ['suppliers_plugin_suppliers.profile_id = ?', profile_id],
@@ -32,16 +47,10 @@ class Product
     :conditions => ['products.profile_id = suppliers_plugin_source_products.to_product_id AND suppliers_plugin_source_products.from_product_id IS NULL'],
     :joins => 'INNER JOIN suppliers_plugin_source_products ON suppliers_plugin_source_products.to_product_id = products.id '
 
-  has_many :sources_from_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :to_product_id, :dependent => :destroy
-  has_many :sources_to_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :from_product_id, :dependent => :destroy
+  extend CurrencyHelper::ClassMethods
+  has_currency :price
 
-  has_many :suppliers, :through => :sources_from_products, :order => 'id ASC'
-
-  has_many :to_products, :through => :sources_to_products, :order => 'id ASC'
-  has_many :from_products, :through => :sources_from_products, :order => 'id ASC'
-  def from_product
-    self.from_products.first
-  end
+  after_create :distribute_to_consumers
 
   def supplier
     @supplier ||= self.from_product.supplier if self.from_product
@@ -69,6 +78,15 @@ class Product
   end
   def supplier_product
     self.supplier_products.first
+  end
+
+  protected
+
+  # see also #distribute_supplier_products
+  def distribute_to_consumers
+    self.consumers.except_people.each do |consumer|
+      SuppliersPlugin::DistributedProduct.create! :profile => consumer.profile, :from_products => [self]
+    end
   end
 
 end

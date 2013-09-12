@@ -1,3 +1,7 @@
+# workaround for plugins' class scope problem
+require_dependency 'delivery_plugin'
+OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
+
 require_dependency 'delivery_plugin' #necessary to load extensions
 
 class OrdersCyclePluginDeliveryOptionController < DeliveryPluginOptionController
@@ -7,7 +11,7 @@ class OrdersCyclePluginDeliveryOptionController < DeliveryPluginOptionController
 
   no_design_blocks
 
-  helper OrdersCyclePlugin::DisplayHelper
+  helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
   protected
 

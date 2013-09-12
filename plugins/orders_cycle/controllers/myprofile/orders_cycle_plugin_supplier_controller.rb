@@ -1,5 +1,6 @@
-# workaround for plugin class scope problem
+# workaround for plugins' class scope problem
 require_dependency 'orders_cycle_plugin/display_helper'
+OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
 
 class OrdersCyclePluginSupplierController < SuppliersPluginMyprofileController
 
@@ -8,7 +9,7 @@ class OrdersCyclePluginSupplierController < SuppliersPluginMyprofileController
 
   no_design_blocks
 
-  helper OrdersCyclePlugin::DisplayHelper
+  helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
   def margin_change
     super

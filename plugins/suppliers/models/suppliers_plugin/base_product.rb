@@ -3,10 +3,11 @@ class SuppliersPlugin::BaseProduct < Product
 
   self.abstract_class = true
 
-  # join source_products
-  default_scope :include => [:from_products]
+  belongs_to :category, :class_name => 'ProductCategory'
+  belongs_to :type_category, :class_name => 'ProductCategory'
 
   validates_presence_of :name
+  validates_associated :from_products
 
   settings_items :minimum_selleable, :type => Float, :default => nil
   settings_items :margin_percentage, :type => Float, :default => nil
@@ -14,11 +15,6 @@ class SuppliersPlugin::BaseProduct < Product
   settings_items :quantity, :type => Float, :default => nil
   settings_items :category_id, :type => Integer, :default => nil
   settings_items :type_category_id, :type => Integer, :default => nil
-
-  belongs_to :category, :class_name => 'ProductCategory'
-  belongs_to :type_category, :class_name => 'ProductCategory'
-
-  validates_associated :from_products
 
   DEFAULT_ATTRIBUTES = [:name, :description, :margin_percentage,
     :price, :stored, :unit_id, :minimum_selleable, :unit_detail]
@@ -30,6 +26,7 @@ class SuppliersPlugin::BaseProduct < Product
   settings_default_item :margin_percentage, :type => :boolean, :default => true, :delegate_to => :profile
   default_item :price, :if => :default_margin_percentage, :delegate_to => proc{ self.from.product.price_with_discount }
 
+  default_item :unit_id, :if => :default_unit, :delegate_to => :from_product
   default_item :unit_detail, :if => :default_unit, :delegate_to => :from_product
   settings_default_item :stored, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :minimum_selleable, :type => :boolean, :default => true, :delegate_to => :from_product

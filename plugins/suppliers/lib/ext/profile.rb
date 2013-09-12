@@ -4,8 +4,10 @@ class Profile
 
   has_many :products
 
-  has_many :suppliers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :consumer_id, :order => 'name ASC', :dependent => :destroy
-  has_many :consumers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :profile_id, :order => 'name ASC', :dependent => :destroy
+  has_many :suppliers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :consumer_id, :dependent => :destroy,
+    :include => [:profile], :order => 'name ASC'
+  has_many :consumers, :class_name => 'SuppliersPlugin::Consumer', :foreign_key => :profile_id, :dependent => :destroy,
+    :include => [:profile], :order => 'name ASC'
 
   def supplier_settings
     @supplier_settings ||= Noosfero::Plugin::Settings.new self, SuppliersPlugin
@@ -15,15 +17,18 @@ class Profile
     !self.visible
   end
 
-  alias_method :orig_suppliers, :suppliers
-  def suppliers
-    self_supplier # guarantee that the self_supplier is created
-    orig_suppliers
-  end
   def self_supplier
-    return self.orig_suppliers.build(:profile => self) if new_record?
-    orig_suppliers.of_profile(self).first || self.orig_suppliers.create!(:profile => self)
+    @self_supplier ||= if new_record?
+      self.suppliers_without_self_supplier.build :profile => self
+    else
+      suppliers_without_self_supplier.of_profile(self).first || self.suppliers_without_self_supplier.create!(:profile => self)
+    end
   end
+  def suppliers_with_self_supplier
+    self_supplier # guarantee that the self_supplier is created
+    suppliers_without_self_supplier
+  end
+  alias_method_chain :suppliers, :self_supplier
 
   def has_supplier? supplier
     suppliers.include? supplier
@@ -42,34 +47,37 @@ class Profile
   def add_consumer consumer
     return if has_consumer? consumer
 
-    consumer.affiliate self, SuppliersPlugin::Supplier::Roles.consumer(self.profile.environment)
+    consumer.affiliate self, SuppliersPlugin::Supplier::Roles.consumer(self.environment)
     supplier = SuppliersPlugin::Supplier.create!(:profile => self, :consumer => consumer) || suppliers.of_profile(consumer)
 
-    consumer.add_supplier_products supplier unless consumer.consumer?
+    consumer.distribute_supplier_products supplier
     supplier
   end
   def remove_consumer consumer
-    consumer.disaffiliate self, SuppliersPlugin::Supplier::Roles.consumer(self.profile.environment)
+    consumer.disaffiliate self, SuppliersPlugin::Supplier::Roles.consumer(self.environment)
     supplier = consumers.find_by_consumer_id(consumer.id)
 
     supplier.destroy if supplier
     supplier
   end
 
-  def add_supplier_products supplier
-    raise "'#{supplier.name}' is not a supplier of #{self.profile.name}" unless has_supplier? supplier
+  # see also #distribute_to_consumers
+  def distribute_supplier_products supplier
+    raise "'#{supplier.name}' is not a supplier of #{self.name}" unless self.has_supplier? supplier
+    return if self.person?
 
     already_supplied = self.products.unarchived.distributed.of_supplier supplier.all
     supplier.products.unarchived.each do |np|
       next if already_supplied.find{ |f| f.supplier_product == np }
 
-      SuppliersPlugin::DistributedProduct.create :profile => self, :from_products => [np]
+      SuppliersPlugin::DistributedProduct.create! :profile => self, :from_products => [np]
     end
   end
 
   def not_distributed_products supplier
-    raise "'#{supplier.name}' is not a supplier of #{self.profile.name}" unless has_supplier? supplier
+    raise "'#{supplier.name}' is not a supplier of #{self.name}" unless self.has_supplier? supplier
 
+    # FIXME: only select all products if supplier is dummy
     supplier.profile.products.unarchived.own.distributed - self.from_products.unarchived.distributed.by_profile(supplier.profile)
   end
 

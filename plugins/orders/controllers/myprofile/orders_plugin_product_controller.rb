@@ -1,12 +1,13 @@
 # workaround for plugin class scope problem
 require_dependency 'orders_plugin/display_helper'
+OrdersPlugin::OrdersDisplayHelper = OrdersPlugin::DisplayHelper
 
 class OrdersPluginProductController < MyProfileController
 
   no_design_blocks
 
   helper OrdersPlugin::PriceHelper
-  helper OrdersPlugin::DisplayHelper
+  helper OrdersPlugin::OrdersDisplayHelper
 
   def edit
     @consumer = user

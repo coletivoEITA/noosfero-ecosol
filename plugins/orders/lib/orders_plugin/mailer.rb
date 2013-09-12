@@ -1,10 +1,11 @@
 # workaround for plugin class scope problem
 require_dependency 'orders_plugin/display_helper'
+OrdersPlugin::OrdersDisplayHelper = OrdersPlugin::DisplayHelper
 
 class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
 
   include ActionMailer::Helpers
-  helper OrdersPlugin::DisplayHelper
+  helper OrdersPlugin::OrdersDisplayHelper
   helper OrdersPlugin::DateHelper
 
   def message_to_consumer_for_order profile, order, subject, message = nil

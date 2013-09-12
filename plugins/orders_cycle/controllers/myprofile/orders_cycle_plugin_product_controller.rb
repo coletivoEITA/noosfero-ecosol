@@ -1,5 +1,6 @@
-# workaround for plugin class scope problem
+# workaround for plugins' class scope problem
 require_dependency 'orders_cycle_plugin/display_helper'
+OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
 
 class OrdersCyclePluginProductController < SuppliersPluginProductController
 
@@ -8,7 +9,7 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
 
   no_design_blocks
 
-  helper OrdersCyclePlugin::DisplayHelper
+  helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
   def cycle_filter
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
@@ -19,25 +20,6 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
       :order => @order, :cycle => @cycle,
       :products_for_order_by_supplier => @products,
     }
-  end
-
-  def new
-    @supplier = SuppliersPlugin::Supplier.find_by_id params[:product][:supplier_id].to_i
-    if params[:commit]
-      #:supplier_product_id must be set first. it will when params follow the form order with ruby 1.9 ordered hashes
-      @product = SuppliersPlugin::DistributedProduct.new :profile => profile, :supplier_product_id => params[:product].delete(:supplier_product_id)
-      begin
-        @product.update_attributes params[:product]
-      rescue
-      end
-    else
-      if @supplier
-        @product = SuppliersPlugin::DistributedProduct.new :profile => profile, :supplier => @supplier
-        @product.supplier_product_id = params[:product][:supplier_product_id] if @supplier.profile != profile
-        not_distributed_products(params[:product][:supplier_product_id])
-      end
-      render :partial => 'edit', :locals => {:product => @product}
-    end
   end
 
   def cycle_edit

@@ -1,12 +1,12 @@
 # workaround for plugins' scope problem
-require_dependency 'suppliers_plugin/product_helper'
+require_dependency 'suppliers_plugin/display_helper'
+SuppliersPlugin::SuppliersDisplayHelper = SuppliersPlugin::DisplayHelper
 
 class SuppliersPluginProductController < MyProfileController
 
   no_design_blocks
 
-  helper SuppliersPlugin::ProductHelper
-  helper SuppliersPlugin::DisplayHelper
+  helper SuppliersPlugin::SuppliersDisplayHelper
 
   def index
     @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id] if params[:supplier_id].present?
