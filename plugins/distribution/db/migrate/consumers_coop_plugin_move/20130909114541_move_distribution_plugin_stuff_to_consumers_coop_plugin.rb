@@ -20,7 +20,7 @@ class MoveDistributionPluginStuffToConsumersCoopPlugin < ActiveRecord::Migration
       end
       profile.consumers_coop_header_image_id = node.image_id
 
-      profile.save
+      profile.send :create_or_update_without_callbacks
     end
 
     DistributionPlugin::Session.find_each do |session|

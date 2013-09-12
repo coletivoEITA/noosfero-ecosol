@@ -7,7 +7,7 @@ class Product < ActiveRecord::Base
   has_many :sources_from_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :to_product_id, :dependent => :destroy
   has_many :from_products, :through => :sources_from_products, :order => 'id ASC'
 end
-SuppliersPlugin.remove_const :DistributedProduct if defined? SuppliersPlugin::DistributedProduct
+SuppliersPlugin.send :remove_const, :DistributedProduct if defined? SuppliersPlugin::DistributedProduct
 class SuppliersPlugin::DistributedProduct < Product
 end
 
