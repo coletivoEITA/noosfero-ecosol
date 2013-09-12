@@ -601,6 +601,9 @@
           apply_to_all: "Aplicar para os produtos com margens personalizadas"
           apply_to_open_cycles: "Aplicar para os produtos nos ciclos abertos"
           new_margin: "Nova margem"
+        index:
+          redistribution_situation: "Distribuição dos produtos"
+          name: "Nome"
       product:
         _edit: 
           distribution_setts: "Configurações de distribuição do produto"
@@ -617,6 +620,10 @@
           save: salvar mudanças
           view_on_supplier_page: "Ver produto na página do fornecedor"
           product_registry: "Cadastro do produto"
+          selling_unit: "Unidade de venda"
+          same_from_purchase: "Mesma da compra"
+          unit: "Unidade"
+          unit_detail: "Especificação da unidade"
         _edit_line: 
           active: Ativo
           inactive: Inativo

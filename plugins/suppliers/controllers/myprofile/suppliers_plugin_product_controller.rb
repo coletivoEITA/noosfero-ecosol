@@ -17,6 +17,7 @@ class SuppliersPluginProductController < MyProfileController
     @all_products_count = profile.products.unarchived.distributed.count search_scope.proxy_options
     @product_categories = ProductCategory.find(:all)
     @new_product = SuppliersPlugin::DistributedProduct.new :profile => profile, :supplier => @supplier
+    @units = Unit.all
 
     respond_to do |format|
       format.html

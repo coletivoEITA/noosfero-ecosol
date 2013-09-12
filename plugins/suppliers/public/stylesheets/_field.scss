@@ -57,7 +57,7 @@ $input-height: 3*$height;
 .field-secondary {
   display: block;
 
-  &, input {
+  &, input, select {
     width: $module02 - $intercolumn;
   }
 
@@ -85,6 +85,7 @@ label {
   &.field-bellow {
     display: block;
     margin-bottom: $half-padding;
+    font-size: 10px;
   }
 }
 
