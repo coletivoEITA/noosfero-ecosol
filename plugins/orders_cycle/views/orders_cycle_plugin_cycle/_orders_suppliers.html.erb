@@ -7,7 +7,7 @@
   <% sums.each do |supplier, products, total_price_asked, total_parcel_price| %>
     <div class="order-products-by-supplier">
       <div class="inner-box">
-        <div class="supplier-name"><%= supplier.name %></div>
+        <div class="supplier-name"><%= supplier.abbreviation_or_name%></div>
 
         <div class="products-header subtitle">
           <span class="box-field product"><%= t('orders_cycle_plugin.views.cycle._orders_suppliers.product') %></span>

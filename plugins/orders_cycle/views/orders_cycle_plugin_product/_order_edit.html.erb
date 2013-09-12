@@ -69,7 +69,7 @@
 
     <div class="product-supplier-link">
       <% unless product.supplier_dummy? %>
-        <%= link_to t('orders_cycle_plugin.views.product._order_edit.more_about_the_produc') % {:supplier => product.supplier.name}, product.supplier.profile.url, :target => '_blank' %>
+        <%= link_to t('orders_cycle_plugin.views.product._order_edit.more_about_the_produc') % {:supplier => product.supplier.abbreviation_or_name}, product.supplier.profile.url, :target => '_blank' %>
       <% end %>
     </div>
   </div>

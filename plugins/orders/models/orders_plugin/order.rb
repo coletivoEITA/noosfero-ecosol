@@ -79,7 +79,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
 
   def products_by_supplier
-    self.products.group_by{|p| p.supplier.name}
+    self.products.group_by{|p| p.supplier.abbreviation_or_name}
   end
 
   extend CurrencyHelper::ClassMethods

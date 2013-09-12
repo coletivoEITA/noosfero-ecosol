@@ -12,7 +12,7 @@
 
     <%# keep this div for :first-child to work %>
     <div>
-      <div class="box-field supplier"><%= product.supplier.name %></div>
+      <div class="box-field supplier"><%= product.supplier.name_abbreviation %></div>
       <div class="box-field product"><%= product.name %></div>
 
       <% if ordered_product.order.open? or (@admin_action and ordered_product.order.cycle.orders?) %>

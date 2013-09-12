@@ -1,6 +1,6 @@
 <div class="box-view">
   <span class='box-field category'><%= nil %></span>
-  <span class='box-field supplier'><%= p.supplier.name %></span>
+  <span class='box-field supplier'><%= p.supplier.abbreviation_or_name %></span>
   <span class='box-field name box-edit-link'><%= p.name %></span>
   <span class="box-field price"><%= price_span p.price_as_currency_number %></span>
   <span class="box-field quantity-available"><%= p.quantity_as_currency_number || '∞' %></span>
