@@ -898,7 +898,7 @@ code input {
 #article-tags {
   font-size: 10px;
   text-align: right;
-  margin-bottom: -10px;
+  margin-top: -30px;
 }
 #article-tags a {
   text-decoration: none;
@@ -1371,6 +1371,9 @@ a.comment-picture {
 }
 #addthis_dropdown15 table td {
   border: none;
+}
+div#addThis {
+  margin-top: 5px;
 }
 /* * *  Blog  * * */
 
@@ -3399,9 +3402,12 @@ div.event-info div.event-description {
   background: white;
 }
 div#article-parent {
-  margin: 5px 0px;
+  margin: 15px 0 0;
   text-align: right;
   font-style: italic;
+}
+div#article-parent a.button{
+  margin: 0;
 }
 .article-body-uploaded-file {
   text-align: center;
