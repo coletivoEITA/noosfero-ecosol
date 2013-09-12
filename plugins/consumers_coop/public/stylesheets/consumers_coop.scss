@@ -385,23 +385,6 @@ body.consumers-coop {
   font-weight: bold;
 }
 
-.consumers-coop #cycle-products {
-  margin-top: 40px;
-}
-.consumers-coop #cycle-products .cycle-products-table {
-  @extend .box-align;
-  margin-top: 30px;
-}
-.consumers-coop #cycle-products-header div {
-  width: 400px;
-}
-.consumers-coop #cycle-products-header a {
-  line-height: 30px;
-}
-.consumers-coop #cycle-product-line .field {
-  width: 120px;
-}
-
 .consumers-coop .cycle-new {
   margin-bottom: 29px;
   display: block;
@@ -642,65 +625,6 @@ body.consumers-coop {
   line-height: 23px;
 }
 
-/* ----- cycle ----- */
-
-.consumers-coop #cycle-header-warning {
-  @extend .box-align;
-  background-color: #FECBCA;
-  padding: 8px;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-}
-.consumers-coop #cycle-header-warning-wrap {
-  width: 70%;
-}
-
-.consumers-coop #cycle-products .value-row.edit .box-view {
-  border-bottom: 1px solid #333;
-  margin-left: -8px;
-  padding-right: 8px;
-  padding-left: 8px;
-}
-.consumers-coop #cycle-products .value-row.edit .price,
-.consumers-coop #cycle-products .value-row.edit .quantity-available,
-.consumers-coop #cycle-products .value-row.edit .actions {
-  visibility: hidden;
-}
-
-.consumers-coop #cycle-products .box-edit .field {
-  float: left;
-  clear: none;
-  margin-right: 40px;
-  width: 120px;
-}
-
-.consumers-coop #cycle-products .box-view .box-field {
-  font-size: 10px;
-}
-.consumers-coop #cycle-products .box-field.category {
-  width: 80px;
-}
-.consumers-coop #cycle-products .box-field.supplier {
-  width: 110px;
-}
-.consumers-coop #cycle-products .box-field.name {
-  width: 190px;
-}
-.consumers-coop #cycle-products .box-field.price {
-  width: 150px;
-}
-.consumers-coop #cycle-products .box-field.quantity-available {
-  width: 80px;
-}
-.consumers-coop #cycle-products .quantity-available input {
-  width: 60px;
-}
-.consumers-coop #cycle-products .box-edit input[type=text] {
-  width: 120px;
-}
-
 /* ----- delivery ----- */
 
 .consumers-coop .cycle-delivery-option {
@@ -768,17 +692,6 @@ body.consumers-coop {
 
 /* ----- cycle view ----- */
 
-.consumers-coop .cycle-view #cycle-products-for-order {
-  width: 460px;
-  float: left;
-  margin-bottom: 80px;
-  padding-left: 0;
-
-  .title {
-    @extend .box-align;
-  }
-}
-
 .consumers-coop .cycle-view #cycle-others,
 .consumers-coop .cycle-view #cycle-header {
   padding-bottom: 10px;
@@ -809,116 +722,6 @@ body.consumers-coop {
   margin-bottom: 20px;
 }
 
-.consumers-coop .cycle-view #cycle-products-for-order .value-row {
-  border-left: 1px solid transparent;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .value-row.edit {
-  background-color: #ffe546;
-  border: 1px solid black;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -o-border-radius: 5px;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .supplier {
-  background-color: #B1DFEF;
-  padding: 10px 8px 5px;
-  font-weight: bold;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .table-header {
-  background: none;
-  border-bottom: 1px solid black;
-  text-decoration: none;
-}
-
-.consumers-coop .cycle-view #cycle-products-for-order .box-field.product {
-  width: 180px;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .box-field.price-with-unit {
-  width: 140px;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .box-field.product-info {
-  min-height: 80px;
-  width: 330px;
-  position: relative;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .box-edit .product-image {
-  width: 100px;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .box-field.quantity {
-  width: 100px;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .box-field.stock {
-  width: 80px;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .box-edit .price-descriptive {
-  font-weight: normal;
-}
-
-.consumers-coop .cycle-view #cycle-products-for-order .box-field.product-info .product,
-.consumers-coop .cycle-view #cycle-products-for-order .box-field.product-info .price-with-unit {
-}
-.consumers-coop .cycle-view #cycle-products-for-order .box-field.product-info .price-with-unit {
-  font-size: 10px !important;
-  margin-right: 0;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .box-field.product-info .price-with-unit .unit {
-  font-weight: normal !important;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .box-field.product-info > div {
-  max-height: 100px;
-  clear: both;
-  float: left;
-  margin-bottom: 10px;
-}
-
-.consumers-coop .cycle-view #cycle-products-for-order .box-view .box-field.quantity a {
-  font-size: 10px;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .box-edit .box-field.quantity a {
-  margin-left: 8px;
-  font-size: 12px;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .box-field.quantity input {
-  width: 100%;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .box-edit .box-field.quantity input[type=submit] {
-  margin-bottom: 0;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .product-supplier-link {
-  position: absolute;
-  bottom: 0;
-}
-
-
-.consumers-coop .cycle-view #cycle-products-for-order .box-edit .box-field.product .product-desc {
-  max-height: 60px;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .box-edit .box-field.product .product-city {
-}
-
-.consumers-coop .cycle-view #cycle-products-for-order .edit .box-field.quantity-label span {
-  color: #B6B6B6;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .edit .box-field.quantity-entry .unit {
-  float: right;
-}
-
-.consumers-coop .cycle-view #cycle-products-for-order .box-edit .product-image {
-  height: 100px;
-  margin-bottom: 26px;
-  background-color: #12AF60;
-  color: #FFF;
-  text-align: left;
-  padding: 0 8px;
-}
-
-.consumers-coop .cycle-view #cycle-products-for-order .box-edit .box-field.quantity {
-  margin-top: -10px;
-}
-.consumers-coop .cycle-view #cycle-products-for-order .box-edit .box-field.quantity .unit {
-  line-height: 25px;
-}
 
 /* ----- cycle date ----- */
 
@@ -1067,107 +870,6 @@ body.consumers-coop {
 
 /* ----- order edit ----- */
 
-.consumers-coop #order-page {
-}
-
-.consumers-coop #order-column {
-  float: left;
-  margin-left: 88px; /*removed 8px of padding-left */
-  width: 400px;
-}
-.consumers-coop #order-column.sticky {
-  position: fixed;
-  top: 0;
-  margin: 0;
-}
-.consumers-coop #order-column > h3 {
-  padding: 0 8px;
-}
-.consumers-coop #order-column > h3 a {
-  text-transform: lowercase;
-  float: right;
-  color: #000000;
-  border: 2px solid #000000;
-  margin-bottom: 10px;
-  margin-right: -7px;
-  padding: 5px;
-  border-radius: 3px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  background-color: #FFE546;
-}
-
-.consumers-coop #order-column .consumer-order,
-.consumers-coop #order-page .in-order {
-  background-color: #FFF2A3;
-}
-.consumers-coop #order-column .consumer-order {
-  margin-bottom: 10px;
-}
-
-.consumers-coop #order-column #order-admin-warning {
-  background-color: #FECBCA;
-}
-
-.consumers-coop #order-column #order-admin-warning {
-  margin-bottom: 10px;
-}
-
-.consumers-coop #order-column .order-message {
-  padding: 8px;
-}
-
-.consumers-coop #order-column .order-message-text {
-  font-size: 10px;
-  font-style: italic;
-}
-.consumers-coop #order-column .order-message-actions {
-  margin-top: 10px;
-  font-size: 10px;
-}
-
-.consumers-coop #order-column .order-message-actions a {
-  font-weight: bold;
-}
-
-.consumers-coop #order-column #order-products .value-row {
-  border-top: 1px dotted black;
-  border-bottom: none;
-}
-.consumers-coop #order-column .order-products-container.empty {
-  border-top: 1px dotted black;
-  text-align: center;
-  padding: 8px;
-  font-size: 10px;
-}
-
-.consumers-coop #order-column #close-order,
-.consumers-coop #order-column #desist-order {
-  margin-top: 30px;
-  margin-bottom: 8px;
-}
-
-.consumers-coop #order-column #delivery-box {
-  border-top: 2px solid black;
-  width: auto;
-  padding: 8px;
-}
-.consumers-coop #order-column #delivery-box h3 {
-  margin-top: 0;
-}
-.consumers-coop #order-column #delivery-box select {
-  text-size: 10px;
-}
-.consumers-coop #order-column #delivery-box div {
-  margin-bottom: 10px;
-}
-.consumers-coop #order-column #delivery-box input[type=submit] {
-  min-width: 160px;
-}
-
-.consumers-coop #order-column .quantity-entry input {
-  width: 76px;
-}
 
 /* ----- popin ----- */
 

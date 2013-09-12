@@ -13,12 +13,12 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
 
   def cycle_filter
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @products = @cycle.products_for_order_by_supplier search_scope.proxy_options
+    @products = @cycle.products_for_order search_scope.proxy_options
     @order = OrdersPlugin::Order.find_by_id params[:order_id]
 
     render :partial => 'order_search', :locals => {
       :order => @order, :cycle => @cycle,
-      :products_for_order_by_supplier => @products,
+      :products_for_order => @products,
     }
   end
 

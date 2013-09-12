@@ -223,3 +223,186 @@
 
 .calendricalEndTimePopup {
   width: 160px; }
+
+.cycle-view #cycle-products-for-order {
+  width: 464px;
+  float: left;
+  padding-left: 0; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-field.category {
+    border: none;
+    width: 64px; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-field.supplier {
+    width: 64px; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-field.product {
+    width: 144px; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-field.price-with-unit {
+    width: 64px; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-field.quantity {
+    width: 32px; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-field.product-info {
+    min-height: 80px;
+    width: 330px;
+    position: relative; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-edit .product-image {
+    width: 100px; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-field.stock {
+    width: 80px; }
+  .cycle-view #cycle-products-for-order #cycle-products .value-row.edit .box-field.quantity-label span {
+    color: #B6B6B6; }
+  .cycle-view #cycle-products-for-order #cycle-products .value-row.edit .box-field.quantity-entry .unit {
+    float: right; }
+  .cycle-view #cycle-products-for-order #cycle-products .value-row .box-edit .price-descriptive {
+    font-weight: normal; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-view .box-field.quantity a {
+    font-size: 10px; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-edit .product-supplier-link {
+    position: absolute;
+    bottom: 0; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-edit .box-field.product-info .price-with-unit {
+    font-size: 10px !important;
+    margin-right: 0; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-edit .box-field.product-info .price-with-unit .unit {
+    font-weight: normal !important; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-edit .box-field.product-info > div {
+    max-height: 100px;
+    clear: both;
+    float: left;
+    margin-bottom: 10px; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-edit .quantity input {
+    width: 100%; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-edit .quantity .quantity a {
+    margin-left: 8px;
+    font-size: 12px; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-edit .quantity .quantity input[type=submit] {
+    margin-bottom: 0; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-edit .box-field.product .product-desc {
+    max-height: 60px; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-edit .product-image {
+    height: 100px;
+    margin-bottom: 26px;
+    background-color: #12AF60;
+    color: #FFF;
+    text-align: left;
+    padding: 0 8px; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-edit .box-field.quantity {
+    margin-top: -10px; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-edit .box-field.quantity .unit {
+    line-height: 25px; }
+.cycle-view #order-column {
+  float: left;
+  width: 432px;
+  margin-left: 40px;
+  padding: 0; }
+  .cycle-view #order-column.sticky {
+    position: fixed;
+    top: 0;
+    margin: 0; }
+  .cycle-view #order-column > h3 {
+    padding: 0 8px; }
+  .cycle-view #order-column > h3 a {
+    text-transform: lowercase;
+    float: right;
+    color: #000000;
+    border: 2px solid #000000;
+    margin-bottom: 10px;
+    margin-right: -7px;
+    padding: 5px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    background-color: #FFE546; }
+  .cycle-view #order-column .consumer-order,
+  .cycle-view #order-column #order-page .in-order {
+    background-color: #FFF2A3; }
+  .cycle-view #order-column .consumer-order {
+    margin-bottom: 10px; }
+  .cycle-view #order-column #order-admin-warning {
+    background-color: #FECBCA; }
+  .cycle-view #order-column #order-admin-warning {
+    margin-bottom: 10px; }
+  .cycle-view #order-column .order-message {
+    padding: 8px; }
+  .cycle-view #order-column .order-message-text {
+    font-size: 10px;
+    font-style: italic; }
+  .cycle-view #order-column .order-message-actions {
+    margin-top: 10px;
+    font-size: 10px; }
+  .cycle-view #order-column .order-message-actions a {
+    font-weight: bold; }
+  .cycle-view #order-column #order-products .value-row {
+    border-top: 1px dotted black;
+    border-bottom: none; }
+  .cycle-view #order-column .order-products-container.empty {
+    border-top: 1px dotted black;
+    text-align: center;
+    padding: 8px;
+    font-size: 10px; }
+  .cycle-view #order-column #close-order,
+  .cycle-view #order-column #desist-order {
+    margin-top: 30px;
+    margin-bottom: 8px; }
+  .cycle-view #order-column #delivery-box {
+    border-top: 2px solid black;
+    width: auto;
+    padding: 8px; }
+  .cycle-view #order-column #delivery-box h3 {
+    margin-top: 0; }
+  .cycle-view #order-column #delivery-box select {
+    text-size: 10px; }
+  .cycle-view #order-column #delivery-box div {
+    margin-bottom: 10px; }
+  .cycle-view #order-column #delivery-box input[type=submit] {
+    min-width: 160px; }
+  .cycle-view #order-column .quantity-entry input {
+    width: 76px; }
+
+#cycles-page #cycle-header-warning {
+  background-color: #FECBCA;
+  padding: 8px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box; }
+#cycles-page #cycle-header-warning-wrap {
+  width: 70%; }
+#cycles-page #cycle-products {
+  margin-top: 40px; }
+#cycles-page #cycle-products .cycle-products-table {
+  margin-top: 30px; }
+#cycles-page #cycle-products-header div {
+  width: 400px; }
+#cycles-page #cycle-products-header a {
+  line-height: 30px; }
+#cycles-page #cycle-product-line .field {
+  width: 120px; }
+#cycles-page #cycle-products .value-row.edit .box-view {
+  border-bottom: 1px solid #333;
+  margin-left: -8px;
+  padding-right: 8px;
+  padding-left: 8px; }
+#cycles-page #cycle-products .value-row.edit .price,
+#cycles-page #cycle-products .value-row.edit .quantity-available,
+#cycles-page #cycle-products .value-row.edit .actions {
+  visibility: hidden; }
+#cycles-page #cycle-products .box-edit .field {
+  float: left;
+  clear: none;
+  margin-right: 40px;
+  width: 120px; }
+#cycles-page #cycle-products .box-view .box-field {
+  font-size: 10px; }
+#cycles-page #cycle-products .box-field.category {
+  width: 80px; }
+#cycles-page #cycle-products .box-field.supplier {
+  width: 110px; }
+#cycles-page #cycle-products .box-field.name {
+  width: 190px; }
+#cycles-page #cycle-products .box-field.price {
+  width: 150px; }
+#cycles-page #cycle-products .box-field.quantity-available {
+  width: 80px; }
+#cycles-page #cycle-products .quantity-available input {
+  width: 60px; }
+#cycles-page #cycle-products .box-edit input[type=text] {
+  width: 120px; }

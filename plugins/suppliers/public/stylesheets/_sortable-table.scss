@@ -18,12 +18,17 @@ $negative-area: 3*$base;
 
     .value-row {
       width: $wireframe + 2*$negative-area;
+        margin-left: -$negative-area;
     }
   }
 
   .box-field {
     float: left;
     padding: $padding;
+  }
+
+  .table-header, .table-content {
+    @extend .container-clean;
   }
   
   .table-header {
@@ -61,7 +66,6 @@ $negative-area: 3*$base;
     margin-bottom: $margin;
 
     .value-row {
-      margin-left: -$negative-area;
       background: white;
       border: $border solid transparent; //avoid size change with .edit class
 

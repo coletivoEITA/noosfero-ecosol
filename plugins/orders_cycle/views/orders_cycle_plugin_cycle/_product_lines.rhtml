@@ -16,12 +16,12 @@
 
   <div class='table-content'>
     <% @products.each do |p| %>
-      <div id="cycle-product-<%=p.id%>" class='cycle-product value-row' toggleedit="distribution.offered_product_edit();">
+      <div id="cycle-product-<%=p.id%>" class='cycle-product value-row' toggleedit="orders_cycle.offered_product.edit();">
         <%= render :partial => 'orders_cycle_plugin_product/cycle_edit', :locals => {:p => p} %>
       </div>
     <% end %>
     <% javascript_tag do %>
-      jQuery(document).ready(function() {distribution.ajaxifyPagination("cycle-product-lines");});
+      jQuery(document).ready(function() {orders_cycle.ajaxifyPagination("cycle-product-lines");});
     <% end %>
   </div>
 </div>

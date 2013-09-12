@@ -710,6 +710,8 @@
           product_image: "Product Image"
         _order_search: 
           order_qty: "Order qty"
+          category: Category
+          producer: Producer
           price: Price
           product: Product
           this_search_hasn_t_re: "This search hasn't returned any product"
