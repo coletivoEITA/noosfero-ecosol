@@ -1,7 +1,6 @@
 class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
   validates_presence_of :supplier
-  validates_presence_of :name, :if => Proc.new { |p| !p.supplier_dummy? }
 
   def supplier_product= value
     if value.is_a?(Hash)
@@ -19,7 +18,7 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
     self.price_with_margins supplier_price
   end
 
-  def self.json_for_category(c)
+  def self.json_for_category c
     {
       :id => c.id.to_s, :name => c.full_name(I18n.t('suppliers_plugin.models.distributed_product.greater')), :own_name => c.name,
       :hierarchy => c.hierarchy.map{ |c| {:id => c.id.to_s, :name => c.name, :own_name => c.name,
@@ -29,15 +28,6 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
   end
   def json_for_category
     self.class.json_for_category(self.product_category)
-  end
-
-  alias_method :super_default_name, :default_name
-  def default_name
-    self.supplier_dummy? ? nil : super_default_name
-  end
-  alias_method :super_default_description, :default_description
-  def default_description
-    self.supplier_dummy? ? nil : super_default_description
   end
 
   protected

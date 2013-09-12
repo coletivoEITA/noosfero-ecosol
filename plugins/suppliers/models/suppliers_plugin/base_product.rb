@@ -6,9 +6,6 @@ class SuppliersPlugin::BaseProduct < Product
   belongs_to :category, :class_name => 'ProductCategory'
   belongs_to :type_category, :class_name => 'ProductCategory'
 
-  validates_presence_of :name
-  validates_associated :from_products
-
   settings_items :minimum_selleable, :type => Float, :default => nil
   settings_items :margin_percentage, :type => Float, :default => nil
   settings_items :stored, :type => Float, :default => nil
@@ -21,11 +18,13 @@ class SuppliersPlugin::BaseProduct < Product
 
   extend ActsAsHavingSettings::DefaultItem::ClassMethods
   settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :from_product
+  settings_default_item :product_category, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :unit, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :margin_percentage, :type => :boolean, :default => true, :delegate_to => :profile
   default_item :price, :if => :default_margin_percentage, :delegate_to => proc{ self.from.product.price_with_discount }
 
+  default_item :product_category_id, :if => :default_product_category, :delegate_to => :from_product
   default_item :unit_id, :if => :default_unit, :delegate_to => :from_product
   default_item :unit_detail, :if => :default_unit, :delegate_to => :from_product
   settings_default_item :stored, :type => :boolean, :default => true, :delegate_to => :from_product
@@ -89,6 +88,10 @@ class SuppliersPlugin::BaseProduct < Product
 
   def validate_uniqueness_of_column_name?
     false
+  end
+
+  # reimplement after_create callback to avoid infinite loop
+  def distribute_to_consumers
   end
 
 end

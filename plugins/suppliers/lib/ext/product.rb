@@ -84,7 +84,7 @@ class Product
 
   # see also #distribute_supplier_products
   def distribute_to_consumers
-    self.consumers.except_people.each do |consumer|
+    self.profile.consumers.except_people.except_self.each do |consumer|
       SuppliersPlugin::DistributedProduct.create! :profile => consumer.profile, :from_products => [self]
     end
   end

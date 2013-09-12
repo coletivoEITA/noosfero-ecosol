@@ -10,7 +10,6 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   has_many :orders, :through => :ordered_products, :source => :order
 
   validates_presence_of :cycle
-  validate :cycle_cant_change
 
   # workaround: remove duplicated
   default_scope {}
@@ -59,7 +58,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     return self['margin_percentage'] if price.nil? or buy_price.nil? or price.zero? or buy_price.zero?
     ((price / buy_price) - 1) * 100
   end
-  def margin_percentage=(value)
+  def margin_percentage= value
     self['margin_percentage'] = value
     self.price = self.price_with_margins buy_price
   end
@@ -83,17 +82,13 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   end
 
   FROOZEN_DEFAULT_ATTRIBUTES = DEFAULT_ATTRIBUTES
-  def freeze_default_attributes(from_product)
+  def freeze_default_attributes from_product
     FROOZEN_DEFAULT_ATTRIBUTES.each do |a|
       self[a.to_s] = from_product.send a
     end
   end
 
   protected
-
-  def cycle_cant_change
-    errors.add :cycle_id, "cycle can't change" if cycle_id_changed? and not new_record?
-  end
 
   after_update :sync_ordered
   def sync_ordered
