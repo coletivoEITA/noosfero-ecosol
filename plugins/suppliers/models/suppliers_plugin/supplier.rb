@@ -2,7 +2,9 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'
-  belongs_to :supplier, :foreign_key => :profile_id, :class_name => 'Profile'
+  def supplier
+    self.profile
+  end
 
   has_many :products, :through => :profile, :class_name => 'SuppliersPlugin::DistributedProduct'
   has_many :consumer_products, :through => :consumer, :source => :products, :class_name => 'SuppliersPlugin::DistributedProduct'
@@ -52,7 +54,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     self.consumer.person?
   end
   def dummy?
-    !self.profile.visible
+    !self.supplier.visible
   end
   def active?
     self.active
@@ -61,26 +63,29 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   def name
     self.attributes['name'] || self.profile.name
   end
-
-  def abbreviation_or_name
-    name_abbreviation.blank? ? name : name_abbreviation
-  end
-
   def name= value
     self['name'] = value
     if dummy?
-      self.profile.name = value
-      self.profile.save!
+      self.supplier.name = value
+      self.supplier.save!
     end
   end
 
-  # FIXME: archive instead of deleting
-  def destroy
-    profile.destroy if profile.dummy?
-    consumer_products.from_supplier_id(self.id).distributed.update_all({:archived => true})
-
-    super
+  def abbreviation_or_name
+    self.name_abbreviation.blank? ? self.name : self.name_abbreviation
   end
+
+  def destroy_with_dummy
+    # FIXME: archive instead of deleting
+    self.supplier.destroy if self.supplier.dummy?
+    destroy_without_dummy
+  end
+  def destroy_with_products
+    self.consumer_products.from_supplier_id(self.id).distributed.update_all({:archived => true})
+    destroy_without_products
+  end
+  alias_method_chain :destroy, :dummy
+  alias_method_chain :destroy, :products
 
   protected
 

@@ -17,11 +17,9 @@ class MoveDefaultDataFromDistributedToProduct < ActiveRecord::Migration
 
       distributed_product.from_products.each do |product|
 
-        [:name, :description, :price, :unit_id].each do |attr|
-          if product[attr].blank?
-            product[attr] = distributed_product[attr]
-            distributed_product[attr] = nil
-          end
+        [:name, :description, :price, :unit_id, :product_category_id].each do |attr|
+          product[attr] = distributed_product[attr] if product[attr].blank?
+          distributed_product[attr] = nil
         end
 
         product.save!

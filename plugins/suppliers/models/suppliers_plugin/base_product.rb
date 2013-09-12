@@ -79,11 +79,6 @@ class SuppliersPlugin::BaseProduct < Product
     self.update_attributes! :archived => false
   end
 
-  alias_method :destroy!, :destroy
-  def destroy
-    raise "Products shouldn't be destroyed for the sake of the history!"
-  end
-
   protected
 
   def validate_uniqueness_of_column_name?

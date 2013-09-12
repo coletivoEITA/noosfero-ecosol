@@ -11,10 +11,10 @@ class SuppliersPluginMyprofileController < MyProfileController
 
   def index
     params[:name] = "" if params[:name].blank?
-    if params['active'].blank?
-      @suppliers = profile.suppliers.with_name(params['name']).paginate(:per_page => 10, :page => params["page"])
+    if params[:active].blank?
+      @suppliers = profile.suppliers.except_self.with_name(params[:name]).paginate(:per_page => 10, :page => params[:page])
     else
-      @suppliers = profile.suppliers.by_active(params['active']).with_name(params['name']).paginate(:per_page => 10, :page => params["page"])
+      @suppliers = profile.suppliers.except_self.by_active(params[:active]).with_name(params[:name]).paginate(:per_page => 10, :page => params[:page])
     end
 
     respond_to do |format|
