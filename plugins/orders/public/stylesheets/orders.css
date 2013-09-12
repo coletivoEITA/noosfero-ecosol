@@ -579,7 +579,8 @@
   border: 1px solid white;
   font-size: 9px;
   text-align: center;
-  margin: none; }
+  margin: none;
+  width: auto !important; }
 
 .consumers-coop #filter .filter-box select,
 .consumers-coop #filter .filter-box input {

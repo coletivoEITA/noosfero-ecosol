@@ -253,6 +253,9 @@
           apply_to_all: "Apply to the products with custom margins"
           apply_to_open_cycles: "Apply to the products in open cycles"
           new_margin: "New margin"
+        index:
+          redistribution_situation: "Product distribution"
+          name: "Name"
       product:
         _edit: 
           distribution_setts: "Product's distribution settings"
@@ -269,6 +272,10 @@
           save: save changes
           view_on_supplier_page: "See product at supplier's page"
           product_registry: "Product's registry"
+          selling_unit: "Selling unit"
+          same_from_purchase: "Same from purchase"
+          unit: "Unit"
+          unit_detail: "Unit detail"
         _edit_line: 
           active: Active
           inactive: Inactive

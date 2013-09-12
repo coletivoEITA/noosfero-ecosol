@@ -31,6 +31,6 @@
 
           <div class="name">
             <label><%= t('suppliers_plugin.views.product.index.name') %></label>
-            <div><%= text_field_tag :name, params[:name], :onkeydown => "var field = this; function name_form_submit() {field.form.onsubmit();}; setTimeout(name_form_submit, 300);" %></div>
+            <div><%= text_field_tag :name, params[:name] %></div>
           </div>
 

@@ -70,6 +70,30 @@
 
         </div>
       </div>
+      <div class="row second">
+        <div class="block unit">
+          <div class="field">
+            <%= f.label :unit_id, t('suppliers_plugin.views.product._edit.selling_unit') %>
+          </div>
+
+          <div data-default-toggle>
+            <%= f.check_box :default_unit %>
+            <%= f.label :default_unit, t('suppliers_plugin.views.product._edit.same_from_purchase') %>
+          </div>
+
+          <div data-non-defaults>
+            <span class="field-secondary">
+              <%= f.label :unit_id, t('suppliers_plugin.views.product._edit.unit'), :class => 'field-bellow' %>
+              <%= f.select :unit_id, options_for_select(@units.map{ |u| [u.name, u.id]}) %>
+            </span>
+            <span class="field-secondary">
+              <%= f.label :unit_detail, t('suppliers_plugin.views.product._edit.unit_detail'), :class => 'field-bellow' %>
+              <%= f.text_field :unit_detail %>
+            </span>
+          </div>
+        </div>
+
+      </div>
     </div>
 
     <div class="action-button-container">
