@@ -1,5 +1,25 @@
 class NetworksPluginNodeController < MyProfileController
 
+  def create
+    @node = NetworksPlugin::Node.new((params[:node] || {}).merge(:environment => environment))
+
+    if params[:commit]
+      @node.identifier = @node.name.to_slug
+      @node.parent_relations.build :parent => profile, :child => @node
+      if @node.save
+        render :partial => 'suppliers_plugin_shared/pagereload'
+      else
+        respond_to do |format|
+          format.js
+        end
+      end
+    else
+      respond_to do |format|
+        format.html{ render :layout => false }
+      end
+    end
+  end
+
   def show
     @node = NetworksPlugin::Node.find params[:id]
   end

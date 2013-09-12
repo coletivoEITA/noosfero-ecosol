@@ -135,3 +135,6 @@
 
 #networks-admin-index #network-list {
   margin-bottom: 16px; }
+
+#networks-node-create {
+  height: 80px; }

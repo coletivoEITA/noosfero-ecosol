@@ -915,4 +915,12 @@
          no_network: "Nenhuma rede registrada."
          new: "Criar rede"
          new_button: "Criar"
+     network:
+       show_structure: 
+         title: "Estrutura da rede"
+         add_enterprise: "Adicionar empreendimento"
+         add_node: "Criar nó"
+     node:
+       create:
+         new_button: "Criar"
 

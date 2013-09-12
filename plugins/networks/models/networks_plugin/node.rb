@@ -1,9 +1,6 @@
 class NetworksPlugin::Node < Organization
 
-  # This method recovers who is the parent of the node that called this method.
-  # Returns the object that represents the parent of the caller.
-  def is_child_of
-    SubOrganizationsPlugin::Relation.find_by_child_id(self).parent
-  end
+  has_many :child_relations, :foreign_key => :child_id, :class_name => 'SubOrganizationsPlugin::Relation'
+  has_many :parent_relations, :foreign_key => :parent_id, :class_name => 'SubOrganizationsPlugin::Relation'
 
 end

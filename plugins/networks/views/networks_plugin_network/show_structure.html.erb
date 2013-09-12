@@ -1,8 +1,10 @@
-<h1><%= "Estrutura da rede %{name}" % {:name => @network.name} %></h1>
+<h1><%= t('networks_plugin.views.network.show_structure.title') %></h1>
 
 <div>
-  <%= button_to "Adicionar empreendimento", {:controller => :networks_plugin_network, :action => :enterprise_search} %>
-  <button>Criar nó</button>
+  <% button_bar do %>
+    <%= link_to t('networks_plugin.views.network.show_structure.add_enterprise'), {:controller => :networks_plugin_network, :action => :enterprise_search}, :class => 'button colorbox' %>
+    <%= link_to t('networks_plugin.views.network.show_structure.add_node'), {:controller => :networks_plugin_node, :action => :create}, :class => 'button colorbox' %>
+  <% end %>
 </div>
 
 <% if flash[:error] %>
@@ -20,7 +22,7 @@
         <%= profiles.name %>
       </td>
       <td style="text-align: right;">
-        <%# FIXME only for nodes, not for suppliers %>
+        <%# FIXME only for nodes, not for enterprises %>
         <%= link_to 'Editar', :controller => :networks_plugin_node, :action => :show, :id => profile.id %>
         |
         <%= link_to 'Remover', :controller => :networks_plugin_node, :action => :destroy, :id => profile.id %>

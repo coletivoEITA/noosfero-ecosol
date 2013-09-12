@@ -1,0 +1,1 @@
+page.replace_html 'networks-node-create', render(:partial => 'create')

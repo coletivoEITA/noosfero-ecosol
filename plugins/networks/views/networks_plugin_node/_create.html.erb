@@ -1,0 +1,9 @@
+<% form_remote_for :node, @node, :url => {:action => :create} do |f| %>
+  <%= error_messages_for :node %>
+
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.submit t('networks_plugin.views.node.create.new_button') %>
+<% end %>
+
