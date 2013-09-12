@@ -6,7 +6,7 @@ class SuppliersPluginMyprofileController < MyProfileController
   helper SuppliersPlugin::SuppliersDisplayHelper
 
   def index
-    params['name'] = "" if params['name'].blank?
+    params[:name] = "" if params[:name].blank?
     if params['active'].blank?
       @suppliers = profile.suppliers.with_name(params['name']).paginate(:per_page => 10, :page => params["page"])
     else
