@@ -52,7 +52,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     self.consumer.person?
   end
   def dummy?
-    !self.supplier.visible
+    !self.profile.visible
   end
   def active?
     self.active
