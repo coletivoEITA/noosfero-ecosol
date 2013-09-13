@@ -52,8 +52,15 @@ class Product
 
   after_create :distribute_to_consumers
 
+  def supplier_products
+    self.from_products
+  end
+  def supplier_product
+    self.supplier_products.first
+  end
+
   def supplier
-    @supplier ||= self.from_product.supplier if self.from_product
+    @supplier ||= self.supplier_product.supplier if self.supplier_product
     @supplier ||= self.profile.self_supplier
   end
   def supplier= value
@@ -71,13 +78,6 @@ class Product
   end
   def supplier_dummy?
     self.supplier ? self.supplier.dummy? : false
-  end
-
-  def supplier_products
-    self.from_products
-  end
-  def supplier_product
-    self.supplier_products.first
   end
 
   protected

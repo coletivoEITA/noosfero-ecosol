@@ -6,6 +6,9 @@ class SuppliersPlugin::SourceProduct < Noosfero::Plugin::ActiveRecord
   belongs_to :to_product, :class_name => 'Product', :dependent => :destroy
   belongs_to :supplier, :class_name => 'SuppliersPlugin::Supplier'
 
+  has_many :sources_from_products, :through => :from_product
+  has_many :sources_to_products, :through => :to_product
+
   has_one :supplier_profile, :through => :supplier, :source => :profile
 
   before_validation :find_supplier

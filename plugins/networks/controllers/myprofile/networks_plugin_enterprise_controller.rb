@@ -13,7 +13,6 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
     render :partial => 'suppliers_plugin_myprofile/pagereload'
   end
 
-
   def add
     @network = profile
     @node = NetworksPlugin::Node.find_by_id(params[:id]) || @network
