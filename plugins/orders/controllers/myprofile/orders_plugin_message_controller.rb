@@ -2,6 +2,8 @@ class OrdersPluginMessageController < MyProfileController
 
   no_design_blocks
 
+  helper OrdersPlugin::FieldHelper
+
   def new_to_consumer_for_order
     @order = OrdersPlugin::Order.find params[:order_id]
     @consumer = @order.consumer

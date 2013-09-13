@@ -228,6 +228,11 @@
   width: 464px;
   float: left;
   padding-left: 0; }
+  .cycle-view #cycle-products-for-order #filter {
+    width: 464px;
+    margin: auto; }
+    .cycle-view #cycle-products-for-order #filter .fields div.category {
+      border-right: 0; }
   .cycle-view #cycle-products-for-order #cycle-products .box-field.category {
     border: none;
     width: 64px; }
@@ -406,3 +411,9 @@
   width: 60px; }
 #cycles-page #cycle-products .box-edit input[type=text] {
   width: 120px; }
+
+.vertical-spacer {
+  height: 16px; }
+
+#cycle-closed-listing {
+  padding-left: 0; }

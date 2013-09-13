@@ -809,6 +809,9 @@ body.consumers-coop {
 .consumers-coop .orders .order-message-title div {
   float: left;
 }
+.consumers-coop .orders .order-message-title div.clean {
+  float: none;
+}
 .consumers-coop .orders .order-message-title a.open {
   float: right;
   font-weight: normal;

@@ -12,6 +12,16 @@
       @extend .box-align;
     }
 
+
+    #filter {
+      width: $module06;
+      margin: auto;
+
+      .fields div.category {
+        border-right: 0;
+      }
+    }
+
     #cycle-products {
       .box-field {
         &.category {
@@ -304,4 +314,12 @@
   #cycle-products .box-edit input[type=text] {
     width: 120px;
   }
+
+}
+.vertical-spacer {
+  height: $intercolumn;
+}
+
+#cycle-closed-listing {
+  padding-left: 0;
 }
