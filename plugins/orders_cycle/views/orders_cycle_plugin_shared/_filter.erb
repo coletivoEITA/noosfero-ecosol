@@ -3,7 +3,9 @@
       <%= t('suppliers_plugin.views.product.index.filter') %>
     </div>
 
-    <% form_remote_tag :update => 'search-results',:loading => "loading_overlay.show('filter');", :loaded => "loading_overlay.hide('filter');", :url => {:action => :index}, :html => {:id => 'filter-form'}, :method => :get do %>
+    <% url = {} %>
+    <% url = {:controller => :orders_cycle_plugin_product, :action => :cycle_filter} if type == :order %>
+    <% form_remote_tag :update => 'search-results',:loading => "loading_overlay.show('filter');", :loaded => "loading_overlay.hide('filter');", :url => url , :html => {:id => 'filter-form'}, :method => :get do %>
 
       <div class="fields filter-box">
 
@@ -13,6 +15,8 @@
           <%= render :partial => 'suppliers_plugin_product/filter_fields' %>
         <% elsif type == :order %>
           <%= render :partial => 'filter_fields', :locals => {:cycle => cycle, :order => order} %>
+        <% else %>
+          <%= render :partial => 'filter_fields' %>
         <% end %>
 
         <div class="clean"></div>
