@@ -15,6 +15,10 @@ suppliers = {
     toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
   },
 
+  supplier_added: function() {
+    jQuery('#enterprises-results').html('');
+  },
+
   our_product: {
 
     toggle_edit: function () {

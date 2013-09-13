@@ -151,6 +151,9 @@ $bg-action-button: #FBCA47;
 .pstyle-tm2 {
   font-size: 10px;
 }
+.subtitle {
+  @extend .pstyle-tm2;
+}
 
 /* Images */
 

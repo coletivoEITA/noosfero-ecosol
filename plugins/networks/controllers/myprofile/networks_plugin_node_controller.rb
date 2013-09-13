@@ -8,7 +8,7 @@ class NetworksPluginNodeController < MyProfileController
 
     if params[:commit]
       @new_node.identifier = @new_node.name.to_slug
-      @new_node.as_child_relations.build :parent => @node, :child => @new_node
+      @new_node.parent = @node
       if @new_node.save
         render :partial => 'suppliers_plugin_shared/pagereload'
       else
@@ -23,15 +23,14 @@ class NetworksPluginNodeController < MyProfileController
     end
   end
 
-  def show
-    @node = NetworksPlugin::Node.find params[:id]
-  end
-
   def edit
     @node = NetworksPlugin::Node.find params[:id]
 
+    @profile = @node
+    @profile_data = profile
+
     if request.post?
-      @node.update_attributes params[:networks_plugin_node]
+      @node.update_attributes params[:profile_data]
     end
   end
 

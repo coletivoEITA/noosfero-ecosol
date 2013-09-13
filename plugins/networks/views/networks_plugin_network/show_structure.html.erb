@@ -3,7 +3,7 @@
 
   <div>
     <% button_bar do %>
-      <%= link_to t('networks_plugin.views.network.show_structure.add_enterprise'), {:controller => :networks_plugin_network, :action => :enterprise_search}, :class => 'button colorbox' %>
+      <%= link_to t('networks_plugin.views.network.show_structure.add_enterprise'), {:controller => :networks_plugin_network, :action => :add}, :class => 'button colorbox' %>
       <%= link_to t('networks_plugin.views.network.show_structure.add_node'), {:controller => :networks_plugin_node, :action => :create, :id => @node.id}, :class => 'button colorbox' %>
     <% end %>
   </div>
@@ -16,7 +16,13 @@
     <div class="notice"><%= flash[:notice] %></div>
   <% end %>
 
-  <h2><%= t('networks_plugin.views.network.show_structure.context') % {:name => @node.name} %></h2>
+  <h2>
+    <%= t('networks_plugin.views.network.show_structure.context') % {:name => @node.name} %>
+    <% if @node.parent %>
+      <%= t('networks_plugin.views.network.show_structure.back_to_parent') % {
+        :parent => link_to(@node.parent.name, :node_id => @node.parent.id)} %>
+    <% end %>
+  </h2>
 
   <div class="listing">
     <h3><%= t('networks_plugin.views.network.show_structure.nodes') %></h3>
@@ -26,7 +32,7 @@
           <%= link_to node.name, :node_id => node.id %>
         </div>
         <div class="actions">
-          <%= link_to t('networks_plugin.views.network.show_structure.edit'), :controller => :networks_plugin_node, :action => :show, :id => node.id %>
+          <%= link_to t('networks_plugin.views.network.show_structure.edit'), :controller => :networks_plugin_node, :action => :edit, :id => node.id %>
           |
           <%= link_to t('networks_plugin.views.network.show_structure.remove'), :controller => :networks_plugin_node, :action => :destroy, :id => node.id %>
         </div>
@@ -40,7 +46,7 @@
           <%= link_to enterprise.name, enterprise.url, :target => '_blank' %>
         </div>
         <div class="actions">
-          <%= link_to t('networks_plugin.views.network.show_structure.edit'), :controller => :networks_plugin_enterprise, :action => :show, :id => enterprise.id %>
+          <%= link_to t('networks_plugin.views.network.show_structure.edit'), :controller => :networks_plugin_enterprise, :action => :edit, :id => enterprise.id %>
           |
           <%= link_to t('networks_plugin.views.network.show_structure.remove'), :controller => :networks_plugin_enterprise, :action => :destroy, :id => enterprise.id %>
         </div>

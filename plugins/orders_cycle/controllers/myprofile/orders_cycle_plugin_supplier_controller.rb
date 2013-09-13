@@ -25,4 +25,11 @@ class OrdersCyclePluginSupplierController < SuppliersPluginMyprofileController
     super options
   end
 
+  def default_template_with_super *args
+    default_template_without_super *args
+  rescue ActionView::MissingTemplate => e
+    self.view_paths.find_template("#{self.class.superclass.controller_path}/#{action_name}", default_template_format)
+  end
+  alias_method_chain :default_template, :super
+
 end

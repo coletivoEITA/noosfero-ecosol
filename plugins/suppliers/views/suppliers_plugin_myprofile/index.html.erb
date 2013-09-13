@@ -8,9 +8,10 @@
   <div class="subtitle supplier-add-link"><%= link_to t('suppliers_plugin.views.supplier.index.add_supplier'), '#supplier-add', :onclick => 'suppliers.add_link();', :class => 'toggle-edit' %></div>
 
   <%= render :partial => 'suppliers_plugin_shared/filter', :locals => { :type => :supplier } %>
+
   <div class="supplier-listing">
     <div id="supplier-add" class="supplier value-row" toggleedit='suppliers.toggle_edit();' >
-      <%= render :partial => 'suppliers_plugin_myprofile/supplier', :object => @new_supplier %>
+      <%= render :partial => 'suppliers_plugin_myprofile/new', :locals => {:supplier => @new_supplier} %>
     </div>
 
     <div id="search-results">

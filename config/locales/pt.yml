@@ -679,7 +679,14 @@
           category: "Categoria"
           with_the_qualifiers: "com os qualificadores"
       supplier: 
+        _new:
+          title: "Buscar um empreendimento a adicionar"
+          query_placeholder: "Nome do emprendimento"
+          search: "Buscar"
+          none_found: "Nenhum empreendimento foi encontrado. Por favor revise o texto da busca."
+          add: "Adicionar"
         _edit: 
+          registry_help: "O registro do fornecedor será administrado pelo próprio coletivo e será privado a ele. Seu registro pode ser compartilhado conforme demanda para outros coletivos. O fornecedor receberá um convite para se juntar à rede e administrar sua própria distribuição aos coletivos dentro da rede."
           abbreviated_name: "Nome Abreviado"
           add_supplier_managed_: "Adicionar fornecedor com registro administrado pelo coletivo"
           additional_fields: "Campos adicionais"
@@ -713,6 +720,7 @@
           this_supplier_has: "Este fornecedor tem"
         _suppliers_list: 
           this_search_didn_t_re: "Esta busca não retornou fornecedores."
+          any_registered: "Nenhum fornecedor registrado."
         index: 
           add_supplier: "Adicionar fornecedor"
           filter: Filtro
@@ -921,7 +929,8 @@
          title: "Estrutura da rede"
          add_enterprise: "Adicionar empreendimento"
          add_node: "Criar nó"
-         context: "Contexto: %{name}"
+         context: "Contexto: %{name}."
+         back_to_parent: "Voltar a %{parent}"
          edit: "Editar"
          remove: "Remover"
          nodes: "Nós"

@@ -3,7 +3,9 @@
       <%= t('suppliers_plugin.views.product.index.filter') %>
     </div>
 
-    <% form_remote_tag :update => 'search-results',:loading => "loading_overlay.show('filter');", :loaded => "loading_overlay.hide('filter');", :url => {:action => :index}, :html => {:id => 'filter-form'}, :method => :get do %>
+    <% form_remote_tag :update => 'search-results',
+      :loading => "loading_overlay.show('filter');", :loaded => "loading_overlay.hide('filter');",
+      :url => {:action => :index}, :html => {:id => 'filter-form'}, :method => :get do %>
 
       <div class="fields filter-box">
 

@@ -92,7 +92,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2 {
+.pstyle-tm2, .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -230,7 +230,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2 {
+.pstyle-tm2, .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -484,7 +484,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2 {
+.pstyle-tm2, .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -528,7 +528,7 @@
   text-shadow: none;
   border-radius: 5px; }
 
-.consumers-coop #filter {
+#filter {
   background-color: #BCDC91;
   padding: 0;
   margin-top: 16px;
@@ -540,66 +540,55 @@
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   font-size: 9px; }
+  #filter .title {
+    font-weight: bold;
+    font-size: 13px; }
+  #filter .fields > div {
+    border-right: 1px solid #d6e9bc;
+    padding-left: 8px;
+    padding-right: 8px;
+    float: left; }
+  #filter .fields > div.clean {
+    float: none; }
+  #filter .fields > div:first-child {
+    padding-left: 0; }
+  #filter .fields div.name {
+    border-right: 0; }
+  #filter .fields label {
+    font-weight: bold; }
+  #filter .submit input[type=submit] {
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 8px;
+    background-color: #4B583C;
+    color: #FFFFFF;
+    border: 1px solid white;
+    font-size: 9px;
+    text-align: center;
+    margin: none;
+    width: auto !important; }
+  #filter .filter-box {
+    padding-left: 48px;
+    padding-right: 48px;
+    border-bottom: 1px solid #d6e9bc;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    /*
+      WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
+        select,
+        input {
+          width: 160px -(2*$padding);
+        }
+    
+        .name input {
+          width:288px;
+        }
+    */ }
+    #filter .filter-box select, #filter .filter-box input {
+      width: 164px; }
+    #filter .filter-box .name input {
+      width: 308px; }
 
-.consumers-coop #filter .filter-box {
-  padding-left: 48px;
-  padding-right: 48px;
-  border-bottom: 1px solid #d6e9bc;
-  padding-top: 4px;
-  padding-bottom: 4px; }
-
-.consumers-coop #filter .title {
-  font-weight: bold;
-  font-size: 13px; }
-
-.consumers-coop #filter .fields > div {
-  border-right: 1px solid #d6e9bc;
-  padding-left: 8px;
-  padding-right: 8px;
-  float: left; }
-
-.consumers-coop #filter .fields > div.clean {
-  float: none; }
-
-.consumers-coop #filter .fields > div:first-child {
-  padding-left: 0; }
-
-.consumers-coop #filter .fields div.name {
-  border-right: 0; }
-
-.consumers-coop #filter .fields label {
-  font-weight: bold; }
-
-.consumers-coop #filter .submit input[type=submit] {
-  font-weight: bold;
-  text-transform: uppercase;
-  padding: 8px;
-  background-color: #4B583C;
-  color: #FFFFFF;
-  border: 1px solid white;
-  font-size: 9px;
-  text-align: center;
-  margin: none;
-  width: auto !important; }
-
-.consumers-coop #filter .filter-box select,
-.consumers-coop #filter .filter-box input {
-  width: 164px; }
-
-.consumers-coop #filter .filter-box .name input {
-  width: 308px; }
-
-/*
-WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
-.consumers-coop #filter .filter-box select,
-.consumers-coop #filter .filter-box input {
-  width: 160px -(2*$padding);
-}
-
-.consumers-coop #filter .filter-box .name input {
-  width:288px;
-}
-  */
 .orders-admin-index {
   margin-bottom: 20px; }
   .orders-admin-index .order-header {

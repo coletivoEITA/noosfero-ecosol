@@ -14,11 +14,11 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   validates_associated :profile
   validates_uniqueness_of :consumer_id, :scope => :profile_id
 
+  named_scope :active, :conditions => {:active => true}
+
   named_scope :of_profile, lambda { |n| { :conditions => {:profile_id => n.id} } }
   named_scope :of_profile_id, lambda { |id| { :conditions => {:profile_id => id} } }
   named_scope :of_consumer_id, lambda { |id| { :conditions => {:consumer_id => id} } }
-
-  named_scope :with_name, lambda { |name| { :conditions => ["LOWER(suppliers_plugin_suppliers.name) LIKE ?","%#{name.downcase}%"] } }
 
   named_scope :from_supplier_id, lambda { |supplier_id| {
       :conditions => ['suppliers_plugin_source_products.supplier_id = ?', supplier_id],
@@ -26,8 +26,8 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     }
   }
 
-  named_scope :active, :conditions => {:active => true}
-  named_scope :by_active, lambda { |n| {:conditions => {:active => n} } }
+  named_scope :with_name, lambda { |name| name ? {:conditions => ["LOWER(suppliers_plugin_suppliers.name) LIKE ?","%#{name.downcase}%"]} : {} }
+  named_scope :by_active, lambda { |active| active ? {:conditions => {:active => active}} : {} }
 
   named_scope :except_people, { :conditions => ['profiles.type <> ?', Person.name], :joins => [:consumer] }
   named_scope :except_self, { :conditions => 'profile_id <> consumer_id' }

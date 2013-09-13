@@ -1,0 +1,30 @@
+<h2> <%= t('suppliers_plugin.views.supplier._new.title') %> </h2>
+
+<% form_remote_tag :method => :get, :url => {:action => :enterprise_search} do %>
+  <%= text_field_tag 'query', nil, :placeholder => t('suppliers_plugin.views.supplier._new.query_placeholder') %>
+  <%= submit_tag t('suppliers_plugin.views.supplier._new.search') %>
+<% end %>
+
+<% unless @enterprises.nil? %>
+  <% if @enterprises.empty? %>
+    <%= t('suppliers_plugin.views.supplier._new.none_found') %>
+  <% else %>
+    <table id="enterprises-results">
+      <% @enterprises.each do |enterprise| %>
+        <tr>
+          <td>
+            <%= enterprise.name %>
+          </td>
+          <td>
+            <%= link_to_remote t('suppliers_plugin.views.supplier._new.add'),
+              :loading => "loading_overlay.show('supplier-add')",
+              :loaded => "loading_overlay.hide('supplier-add'); suppliers.supplier_added();",
+              :update => "search-results",
+              :url => {:action => :add_enterprise, :id => enterprise.id},
+              :class => 'action-button' %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+<% end %>

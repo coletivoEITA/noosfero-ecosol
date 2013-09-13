@@ -329,7 +329,15 @@
           category: "Category"
           with_the_qualifiers: "with the qualifiers"
       supplier: 
+        _new:
+          title: "Find an enterprise to add"
+          query_placeholder: "Enterprise's name"
+          search: "Search"
+          none_found: "No enterprise found. Please revise the search text."
+          add: "Add"
         _edit: 
+          registry_help: "The registry of the supplier will be managed by the collective itself, e will be private to it, your registry may be shared on demand to others collectives. The su
+        pplier will receive the invitation to join the network and manage its own distribution for the collectives inside the network."
           abbreviated_name: "Abbreviated name"
           add_supplier_managed_: "Add supplier managed by the collective"
           additional_fields: "Additional fields"
@@ -363,6 +371,7 @@
           this_supplier_has: "This supplier has"
         _suppliers_list: 
           this_search_didn_t_re: "This search didn't return suppliers."
+          any_registered: "No registered supplier."
         index: 
           add_supplier: "Add supplier"
           filter: Filter
@@ -912,7 +921,8 @@
          title: "Network's structure"
          add_enterprise: "Add enterprise"
          add_node: "Create node"
-         context: "Context: %{name}"
+         context: "Context: %{name}."
+         back_to_parent: "Back to %{parent}"
          edit: "Edit"
          remove: "Remove"
          nodes: "Nodes"

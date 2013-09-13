@@ -5,7 +5,7 @@ class SubOrganizationsPlugin::Relation < Noosfero::Plugin::ActiveRecord
   validates_presence_of :parent, :child
   validate :no_self_reference
   validate :no_cyclical_reference, :if => 'parent.present? && child.present?'
-  validate :no_multi_level, :if => 'parent.present? && child.present?'
+  #validate :no_multi_level, :if => 'parent.present? && child.present?'
 
   def no_self_reference
     errors.add(:child, _('self-reference is not allowed.')) if parent == child

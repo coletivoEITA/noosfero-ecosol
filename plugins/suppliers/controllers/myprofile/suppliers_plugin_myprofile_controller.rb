@@ -10,12 +10,8 @@ class SuppliersPluginMyprofileController < MyProfileController
   helper SuppliersPlugin::SuppliersDisplayHelper
 
   def index
-    params[:name] = "" if params[:name].blank?
-    if params[:active].blank?
-      @suppliers = profile.suppliers.except_self.with_name(params[:name]).paginate(:per_page => 10, :page => params[:page])
-    else
-      @suppliers = profile.suppliers.except_self.by_active(params[:active]).with_name(params[:name]).paginate(:per_page => 10, :page => params[:page])
-    end
+    @suppliers = profile.suppliers.except_self.by_active(params[:active]).with_name(params[:name]).paginate(:per_page => 10, :page => params[:page])
+    @is_search = params[:name] or params[:active]
 
     respond_to do |format|
       format.html
@@ -52,11 +48,18 @@ class SuppliersPluginMyprofileController < MyProfileController
 
   def destroy
     @supplier = SuppliersPlugin::Supplier.find params[:id]
-    @supplier.destroy!
+    @supplier.destroy
   end
 
   def enterprise_search
     @enterprises = find_by_contents(:enterprises, environment.enterprises, params[:query])[:results]
+    @enterprises -= profile.suppliers.collect(&:profile)
+  end
+
+  def add_enterprise
+    @enterprise = environment.enterprises.find params[:id]
+    profile.suppliers.create! :profile => @enterprise
+    self.index
   end
 
   protected

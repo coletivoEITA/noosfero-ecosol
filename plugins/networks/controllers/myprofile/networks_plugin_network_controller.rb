@@ -18,9 +18,6 @@ class NetworksPluginNetworkController < MyProfileController
     @enterprises = @node.suppliers.except_self.collect(&:supplier)
   end
 
-  def add_enterprise
-  end
-
   protected
 
 end
