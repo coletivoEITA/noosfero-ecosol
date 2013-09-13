@@ -685,8 +685,10 @@
           search: "Buscar"
           none_found: "Nenhum empreendimento foi encontrado. Por favor revise o texto da busca."
           add: "Adicionar"
+          suggest_creation: "Não encontrou o empreendimento que buscava?. Você pode criar um novo empreendimento gerido pela organização."
+          create_dummy: "Criar empreendimento"
         _edit: 
-          registry_help: "O registro do fornecedor será administrado pelo próprio coletivo e será privado a ele. Seu registro pode ser compartilhado conforme demanda para outros coletivos. O fornecedor receberá um convite para se juntar à rede e administrar sua própria distribuição aos coletivos dentro da rede."
+          registry_help: "O registro do fornecedor será administrado pelo própria organização e será privado a ela."
           abbreviated_name: "Nome Abreviado"
           add_supplier_managed_: "Adicionar fornecedor com registro administrado pelo coletivo"
           additional_fields: "Campos adicionais"

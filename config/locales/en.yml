@@ -335,9 +335,10 @@
           search: "Search"
           none_found: "No enterprise found. Please revise the search text."
           add: "Add"
+          suggest_creation: "Haven't found the enterprise you were searching?.\n You can create a new enterprise managed by organization."
+          create_dummy: "Create enterprise"
         _edit: 
-          registry_help: "The registry of the supplier will be managed by the collective itself, e will be private to it, your registry may be shared on demand to others collectives. The su
-        pplier will receive the invitation to join the network and manage its own distribution for the collectives inside the network."
+          registry_help: "The registry of the supplier will be managed by the organization itself and will be private to it."
           abbreviated_name: "Abbreviated name"
           add_supplier_managed_: "Add supplier managed by the collective"
           additional_fields: "Additional fields"

@@ -18,7 +18,7 @@
           <td>
             <%= link_to_remote t('suppliers_plugin.views.supplier._new.add'),
               :loading => "loading_overlay.show('supplier-add')",
-              :loaded => "loading_overlay.hide('supplier-add'); suppliers.supplier_added();",
+              :loaded => "loading_overlay.hide('supplier-add'); suppliers.add.supplier_added();",
               :update => "search-results",
               :url => {:action => :add_enterprise, :id => enterprise.id},
               :class => 'action-button' %>
@@ -26,5 +26,13 @@
         </tr>
       <% end %>
     </table>
+
+    <div id="suggest-creation">
+      <div class="subtitle">
+        <%= t('suppliers_plugin.views.supplier._new.suggest_creation') %>
+      </div>
+
+      <%= link_to_function t('suppliers_plugin.views.supplier._new.create_dummy'), 'suppliers.add.create_dummy();' %>
+    </div>
   <% end %>
 <% end %>

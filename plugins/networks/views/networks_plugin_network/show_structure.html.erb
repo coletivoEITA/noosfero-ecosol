@@ -3,8 +3,8 @@
 
   <div>
     <% button_bar do %>
-      <%= link_to t('networks_plugin.views.network.show_structure.add_enterprise'), {:controller => :networks_plugin_network, :action => :add}, :class => 'button colorbox' %>
-      <%= link_to t('networks_plugin.views.network.show_structure.add_node'), {:controller => :networks_plugin_node, :action => :create, :id => @node.id}, :class => 'button colorbox' %>
+      <%= link_to t('networks_plugin.views.network.show_structure.add_enterprise'), {:controller => :networks_plugin_enterprise, :action => :add, :id => @node.id}, :class => 'action-button colorbox' %>
+      <%= link_to t('networks_plugin.views.network.show_structure.add_node'), {:controller => :networks_plugin_node, :action => :create, :id => @node.id}, :class => 'action-button colorbox' %>
     <% end %>
   </div>
 
