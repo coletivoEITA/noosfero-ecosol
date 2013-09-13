@@ -6,7 +6,6 @@ set -e
 
 noosfero_plugins=../../../../script/noosfero-plugins
 
-$noosfero_plugins disable distribution
 PLUGINS="suppliers delivery orders orders_cycle consumers_coop"
 for plugin in $PLUGINS; do
   $noosfero_plugins disable $plugin
@@ -20,9 +19,10 @@ MIGRATIONS=""
 for plugin in $PLUGINS; do
   MIGRATIONS+="${plugin}_plugin_move/* "
 done
-
 ln -sf $MIGRATIONS .
 
+$noosfero_plugins enable distribution
 rake db:migrate --trace
+$noosfero_plugins disable distribution
 
 find -type l -delete

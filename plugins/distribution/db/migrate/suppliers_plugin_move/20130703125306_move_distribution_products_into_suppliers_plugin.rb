@@ -11,7 +11,9 @@ class DistributionPluginProduct < ActiveRecord::Base
   belongs_to :supplier, :class_name => 'DistributionPluginSupplier'
 end
 class DistributionPluginSourceProduct < ActiveRecord::Base
+  belongs_to :from_product, :class_name => 'DistributionPluginProduct'
   belongs_to :to_product, :class_name => 'DistributionPluginProduct'
+  belongs_to :supplier, :class_name => 'DistributionPluginSupplier'
 end
 class DistributionPluginDistributedProduct < DistributionPluginProduct
 end
@@ -85,8 +87,9 @@ class MoveDistributionProductsIntoSuppliersPlugin < ActiveRecord::Migration
       # move supplier_id
       add_column :distribution_plugin_source_products, :supplier_id, :integer
       DistributionPluginSourceProduct.find_each do |sp|
-        next sp.destroy if sp.to_product.nil?
-        sp.supplier_id = sp.to_product.supplier.id
+        next sp.destroy if sp.to_product.nil? or sp.from_product.nil?
+        sp.supplier = DistributionPluginSupplier.first :conditions => {:profile_id => sp.from_product.node.profile_id, :consumer_id => sp.to_product.node.profile_id}
+        raise "can't find supplier" if sp.supplier.nil?
         sp.save!
       end
       drop_table :distribution_plugin_products
