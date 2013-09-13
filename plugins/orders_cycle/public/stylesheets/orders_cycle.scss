@@ -314,4 +314,12 @@
   #cycle-products .box-edit input[type=text] {
     width: 120px;
   }
+
+}
+.vertical-spacer {
+  height: $intercolumn;
+}
+
+#cycle-closed-listing {
+  padding-left: 0;
 }

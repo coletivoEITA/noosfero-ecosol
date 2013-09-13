@@ -411,3 +411,9 @@
   width: 60px; }
 #cycles-page #cycle-products .box-edit input[type=text] {
   width: 120px; }
+
+.vertical-spacer {
+  height: 16px; }
+
+#cycle-closed-listing {
+  padding-left: 0; }
