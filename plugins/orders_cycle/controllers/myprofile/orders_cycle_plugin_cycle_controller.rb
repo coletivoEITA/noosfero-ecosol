@@ -8,14 +8,11 @@ class OrdersCyclePluginCycleController < MyProfileController
   helper OrdersCyclePlugin::CycleHelper
 
   def index
-    @cycles = profile.orders_cycles
-    params[:date] ||= {}
-    year = params[:date][:year]
-    month = params[:date][:month]
-    @year_date = year.blank? ? Date.today : Time.mktime(year).to_date
-    @month_date = month.blank? ? Date.today : Time.mktime(year, month).to_date
+    @closed_cycles = profile.orders_cycles.status_closed.all search_scope.proxy_options
     if request.xhr?
       render :partial => 'results'
+    else
+      @open_cycles = profile.orders_cycles.status_open
     end
   end
 
@@ -127,6 +124,29 @@ class OrdersCyclePluginCycleController < MyProfileController
       :filename => t('orders_cycle_plugin.controllers.myprofile.cycle_controller.cycle_orders_report_d') % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @cycle.code, :cycle_name => @cycle.name}
     require 'fileutils'
     #FileUtils.rm_rf tmp_dir
+  end
+
+  def search_scope
+    klass = OrdersCyclePlugin::Cycle
+    scope = klass.scoped :conditions => []
+    conditions  = []
+    params[:date] ||= {}
+
+    if params[:date][:year].present?
+      conditions << ["EXTRACT(year from start) <= ? and EXTRACT(year from finish) >= ?", params[:date][:year], params[:date][:year]]
+    end
+
+    if params[:date][:month].present?
+      conditions << ["EXTRACT(month from start) <= ? and EXTRACT(month from finish) >= ?", params[:date][:month], params[:date][:month]]
+    end
+
+    conditions << {:status => params['status']} if params['status'].present?
+
+
+    conditions = [scope.proxy_options[:conditions], *conditions]
+    scope.proxy_options[:conditions] = klass.merge_conditions *conditions
+
+    scope
   end
 
 end
