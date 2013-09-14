@@ -44,7 +44,7 @@ class SuppliersPluginProductController < MyProfileController
   def search_scope scope
     scope = scope.from_supplier_id params[:supplier_id] if params[:supplier_id].present?
     scope = scope.with_available params[:available] if params[:available].present?
-    scope = scope.with_name params[:name] if params[:name].present?
+    scope = scope.name_like params[:name] if params[:name].present?
     scope = scope.with_product_category_id params[:category_id] if params[:category_id].present?
     scope
   end
