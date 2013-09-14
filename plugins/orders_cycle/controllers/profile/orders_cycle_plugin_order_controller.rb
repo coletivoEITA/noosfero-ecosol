@@ -34,7 +34,6 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   end
 
   def edit
-    @product_categories = ProductCategory.find(:all)
     if cycle_id = params[:cycle_id]
       @cycle = OrdersCyclePlugin::Cycle.find_by_id cycle_id
       return render_not_found unless @cycle
@@ -48,8 +47,10 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
       render :partial => 'consumer_orders' if params[:consumer_orders]
     end
-
+    @products = @cycle.products_for_order
+    @product_categories = Product.product_categories_of @products
     @consumer_orders = @cycle.orders.for_consumer @consumer
+
     render :partial => 'consumer_orders' if params[:consumer_orders]
   end
 

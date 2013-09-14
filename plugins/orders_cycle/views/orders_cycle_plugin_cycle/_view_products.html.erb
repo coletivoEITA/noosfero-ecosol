@@ -11,7 +11,7 @@
   <div id="search-results">
     <%= render :partial => "orders_cycle_plugin_product/order_search", :locals => {
       :cycle => cycle, :order => order,
-      :products_for_order => cycle.products_for_order,
+      :products_for_order => @products,
     } %>
   </div>
 </div>

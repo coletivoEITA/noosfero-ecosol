@@ -8,12 +8,18 @@ class Product
   named_scope :unarchived, :conditions => {:archived => false}
 
   named_scope :with_available, lambda { |available| { :conditions => {:available => available} } }
+  named_scope :with_price, :conditions => 'products.price > 0'
+  named_scope :with_product_category_id, lambda { |id| { :conditions => {:product_category_id => id} } }
 
   # FIXME: transliterate input and on db
   named_scope :name_like, lambda { |name| { :conditions => ["LOWER(products.name) LIKE ?", "%#{name}%"] } }
 
   named_scope :by_profile, lambda { |profile| { :conditions => {:profile_id => profile.id} } }
   named_scope :by_profile_id, lambda { |profile_id| { :conditions => {:profile_id => profile_id} } }
+
+  def self.product_categories_of products
+    ProductCategory.find products.collect(&:product_category_id)
+  end
 
   # the above code should be on the core
 
@@ -43,9 +49,7 @@ class Product
     }
   }
 
-  named_scope :own,
-    :conditions => ['products.profile_id = suppliers_plugin_source_products.to_product_id AND suppliers_plugin_source_products.from_product_id IS NULL'],
-    :joins => 'INNER JOIN suppliers_plugin_source_products ON suppliers_plugin_source_products.to_product_id = products.id '
+  named_scope :own, :conditions => ['products.type = ?', Product]
 
   extend CurrencyHelper::ClassMethods
   has_currency :price

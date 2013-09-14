@@ -150,4 +150,5 @@
   float: right; }
 
 #colorbox #suppliers-page {
-  min-height: 160px; }
+  min-height: 240px;
+  min-width: 464px; }

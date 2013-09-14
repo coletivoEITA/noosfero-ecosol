@@ -127,10 +127,8 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     status == 'orders' && ( (self.delivery_start <= now && self.delivery_finish.nil?) || (self.delivery_start <= now && self.delivery_finish >= now) )
   end
 
-  def products_for_order options={}
-    options[:conditions] = self.class.merge_conditions *['price > 0', options[:conditions]]
-
-    self.products.unarchived.all options
+  def products_for_order
+    self.products.unarchived.with_price
   end
 
   def ordered_products_by_suppliers

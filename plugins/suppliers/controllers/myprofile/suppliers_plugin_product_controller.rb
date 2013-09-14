@@ -11,11 +11,10 @@ class SuppliersPluginProductController < MyProfileController
   def index
     @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id] if params[:supplier_id].present?
 
-    @products =           profile.products.unarchived.distributed.paginate({
-      :per_page => 10, :page => params[:page], :order => 'products.name ASC'
-      }.merge(search_scope.proxy_options))
-    @all_products_count = profile.products.unarchived.distributed.count search_scope.proxy_options
-    @product_categories = ProductCategory.find(:all)
+    scope = profile.products.unarchived.distributed
+    @products =           search_scope(scope).paginate :per_page => 10, :page => params[:page], :order => 'products.name ASC'
+    @all_products_count = search_scope(scope).count
+    @product_categories = Product.product_categories_of @products
     @new_product = SuppliersPlugin::DistributedProduct.new :profile => profile, :supplier => @supplier
     @units = Unit.all
 
@@ -42,21 +41,11 @@ class SuppliersPluginProductController < MyProfileController
 
   protected
 
-  def search_scope
-    klass = SuppliersPlugin::BaseProduct
-    scope = klass.scoped :conditions => []
+  def search_scope scope
     scope = scope.from_supplier_id params[:supplier_id] if params[:supplier_id].present?
-
-    conditions = []
-    conditions << {:available => params[:available]} if params[:available].present?
-    if params[:name].present?
-      name = ActiveSupport::Inflector.transliterate(params[:name]).strip.downcase
-      conditions << ["LOWER(products.name) LIKE ?", "%#{name}%"]
-    end
-    conditions = [scope.proxy_options[:conditions], *conditions]
-
-    scope.proxy_options[:conditions] = klass.merge_conditions *conditions
-
+    scope = scope.with_available params[:available] if params[:available].present?
+    scope = scope.with_name params[:name] if params[:name].present?
+    scope = scope.with_product_category_id params[:category_id] if params[:category_id].present?
     scope
   end
 
