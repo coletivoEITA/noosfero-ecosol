@@ -3,6 +3,7 @@ require_dependency 'profile'
 class Profile
 
   has_many :products
+  has_many :distributed_products, :class_name => 'SuppliersPlugin::DistributedProduct'
 
   has_many :suppliers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :consumer_id, :dependent => :destroy,
     :include => [:profile], :order => 'name ASC'

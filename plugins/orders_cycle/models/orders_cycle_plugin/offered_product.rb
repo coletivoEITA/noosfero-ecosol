@@ -15,6 +15,8 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   # overhide original
   named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_source_products_2.supplier_id = ?', supplier_id] } }
 
+  # for products in cycle, these are the products of the suppliers
+  # p in cycle -> p distributed -> p from supplier
   def supplier_products
     self.from_2x_products
   end

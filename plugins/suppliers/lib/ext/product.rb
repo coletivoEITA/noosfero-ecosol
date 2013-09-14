@@ -21,25 +21,22 @@ class Product
     ProductCategory.find products.collect(&:product_category_id)
   end
 
-  # the above code should be on the core
+  # The lines above should be on the core. The following are real extensions
 
   has_many :sources_from_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :to_product_id, :dependent => :destroy
   has_many :sources_to_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :from_product_id, :dependent => :destroy
-
-  has_many :suppliers, :through => :sources_from_products, :order => 'id ASC'
-
   has_many :to_products, :through => :sources_to_products, :order => 'id ASC'
   has_many :from_products, :through => :sources_from_products, :order => 'id ASC'
   def from_product
     self.from_products.first
   end
 
-  # for products in cycle, these are the products of the suppliers
-  # p in cycle -> p distributed -> p from supplier
   has_many :sources_from_2x_products, :through => :sources_from_products, :source => :sources_from_products
   has_many :sources_to_2x_products, :through => :sources_to_product, :source => :sources_to_products
   has_many :from_2x_products, :through => :sources_from_2x_products, :source => :from_product
   has_many :to_2x_products, :through => :sources_to_2x_products, :source => :to_product
+
+  has_many :suppliers, :through => :sources_from_products, :order => 'id ASC'
 
   # join source_products
   default_scope :include => [:from_products]
