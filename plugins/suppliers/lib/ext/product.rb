@@ -56,6 +56,10 @@ class Product
 
   after_create :distribute_to_consumers
 
+  def own?
+    self.class.name == Product
+  end
+
   def supplier_products
     self.from_products
   end
@@ -77,9 +81,6 @@ class Product
     @supplier = profile.environment.profiles.find id
   end
 
-  def own?
-    self.supplier.profile == self.profile
-  end
   def supplier_dummy?
     self.supplier ? self.supplier.dummy? : false
   end
