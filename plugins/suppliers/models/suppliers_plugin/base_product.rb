@@ -13,8 +13,10 @@ class SuppliersPlugin::BaseProduct < Product
   settings_items :category_id, :type => Integer, :default => nil
   settings_items :type_category_id, :type => Integer, :default => nil
 
-  DEFAULT_ATTRIBUTES = [:name, :description, :margin_percentage,
-    :price, :stored, :unit_id, :minimum_selleable, :unit_detail]
+  DEFAULT_ATTRIBUTES = [
+    :name, :description, :price, :unit_id, :product_category_id,
+    :margin_percentage, :stored, :minimum_selleable, :unit_detail
+  ]
 
   extend ActsAsHavingSettings::DefaultItem::ClassMethods
   settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :from_product

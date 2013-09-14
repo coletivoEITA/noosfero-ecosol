@@ -34,22 +34,25 @@ class Product
     self.from_products.first
   end
 
+  # for products in cycle, these are the products of the suppliers
+  # p in cycle -> p distributed -> p from supplier
+  has_many :sources_from_2x_products, :through => :sources_from_products, :source => :sources_from_products
+  has_many :sources_to_2x_products, :through => :sources_to_product, :source => :sources_to_products
+  has_many :from_2x_products, :through => :sources_from_2x_products, :source => :from_product
+  has_many :to_2x_products, :through => :sources_to_2x_products, :source => :to_product
+
   # join source_products
   default_scope :include => [:from_products]
 
   named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
+  named_scope :own, :conditions => ["products.type = 'Product'"]
 
   named_scope :from_supplier_profile_id, lambda { |profile_id| {
       :conditions => ['suppliers_plugin_suppliers.profile_id = ?', profile_id],
       :joins => 'INNER JOIN suppliers_plugin_suppliers ON suppliers_plugin_suppliers.profile_id = suppliers_plugin_source_products.supplier_id'
     }
   }
-  named_scope :from_supplier_id, lambda { |supplier_id| {
-      :conditions => ['suppliers_plugin_source_products.supplier_id = ?', supplier_id],
-    }
-  }
-
-  named_scope :own, :conditions => ['products.type = ?', Product]
+  named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_source_products.supplier_id = ?', supplier_id] } }
 
   extend CurrencyHelper::ClassMethods
   has_currency :price

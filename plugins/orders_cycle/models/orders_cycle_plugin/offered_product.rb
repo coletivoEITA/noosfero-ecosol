@@ -9,13 +9,12 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   has_many :ordered_products, :class_name => 'OrdersPlugin::OrderedProduct', :foreign_key => :product_id, :dependent => :destroy
   has_many :orders, :through => :ordered_products, :source => :order
 
-  has_many :sources_from_2x_products, :through => :sources_from_products, :source => :sources_from_products
-  has_many :sources_to_2x_products, :through => :sources_to_product, :source => :sources_to_products
-  has_many :from_2x_products, :through => :sources_from_2x_products, :source => :from_product
-  has_many :to_2x_products, :through => :sources_to_2x_products, :source => :to_product
+  named_scope :sources_from_2x_products_joins, :joins =>
+    'INNER JOIN suppliers_plugin_source_products ON ( products.id = suppliers_plugin_source_products.to_product_id ) INNER JOIN products products_2 ON ( suppliers_plugin_source_products.from_product_id = products_2.id ) INNER JOIN suppliers_plugin_source_products suppliers_plugin_source_products_2 ON ( products_2.id = suppliers_plugin_source_products_2.to_product_id )'
 
-  # for products in cycle, these are the products of the suppliers
-  # p in cycle -> p distributed -> p from supplier
+  # overhide original
+  named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_source_products_2.supplier_id = ?', supplier_id] } }
+
   def supplier_products
     self.from_2x_products
   end

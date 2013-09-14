@@ -13,9 +13,10 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
 
   def cycle_filter
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @products = search_scope(@cycle.products_for_order)
     @order = OrdersPlugin::Order.find_by_id params[:order_id]
-    @product_categories = Product.product_categories_of @products
+
+    scope = @cycle.products_for_order
+    @products = search_scope(scope).sources_from_2x_products_joins.all
 
     render :partial => 'order_search', :locals => {
       :order => @order, :cycle => @cycle,
