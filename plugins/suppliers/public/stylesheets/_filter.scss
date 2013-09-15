@@ -1,6 +1,6 @@
 @import 'base';
 
-$border: 1px solid #d6e9bc;
+$filter-border-color: #d6e9bc;
 
 #filter {
   background-color: #BCDC91;
@@ -21,7 +21,7 @@ $border: 1px solid #d6e9bc;
   }
 
   .fields > div {
-    border-right: $border;
+    border-right: $border solid $filter-border-color;
     padding-left: $padding;
     padding-right: $padding;
     float: left;
@@ -58,7 +58,7 @@ $border: 1px solid #d6e9bc;
   .filter-box {
     padding-left: $wireframe-padding + $padding;
     padding-right: $wireframe-padding + $padding;
-    border-bottom: $border;
+    border-bottom: $border solid $filter-border-color;
     padding-top: $half-padding;
     padding-bottom: $half-padding;
 

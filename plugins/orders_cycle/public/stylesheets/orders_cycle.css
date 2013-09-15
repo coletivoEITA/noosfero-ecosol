@@ -136,6 +136,144 @@
   text-shadow: none;
   border-radius: 5px; }
 
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2, .subtitle {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  background: #fbca47;
+  border: 1px solid #f4a439;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: none;
+  border-radius: 5px; }
+
 .calendricalDatePopup {
   background: white;
   border: solid 1px #999999;
@@ -224,8 +362,24 @@
 .calendricalEndTimePopup {
   width: 160px; }
 
+.cycle-view #cycle-others,
+.cycle-view #cycle-header {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  margin-left: -2px;
+  padding-right: 2px; }
+.cycle-view #cycle-header {
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 0; }
+  .cycle-view #cycle-header .subtitle,
+  .cycle-view #cycle-header #cycle-dates {
+    width: 520px; }
+  .cycle-view #cycle-header .subtitle {
+    display: block;
+    margin-top: 20px;
+    font-style: italic; }
 .cycle-view #cycle-products-for-order {
-  width: 464px;
+  width: 480px;
   float: left;
   padding-left: 0; }
   .cycle-view #cycle-products-for-order #filter {
@@ -296,7 +450,7 @@
 .cycle-view #order-column {
   float: left;
   width: 432px;
-  margin-left: 40px;
+  margin-left: 48px;
   padding: 0; }
   .cycle-view #order-column.sticky {
     position: fixed;
@@ -335,14 +489,6 @@
     font-size: 10px; }
   .cycle-view #order-column .order-message-actions a {
     font-weight: bold; }
-  .cycle-view #order-column #order-products .value-row {
-    border-top: 1px dotted black;
-    border-bottom: none; }
-  .cycle-view #order-column .order-products-container.empty {
-    border-top: 1px dotted black;
-    text-align: center;
-    padding: 8px;
-    font-size: 10px; }
   .cycle-view #order-column #close-order,
   .cycle-view #order-column #desist-order {
     margin-top: 30px;
@@ -417,3 +563,90 @@
 
 #cycle-closed-listing {
   padding-left: 0; }
+
+#cycle-new-mail-send {
+  margin-bottom: 0; }
+
+#cycle-new-mail label {
+  font-weight: bold; }
+
+#cycle-new-mail .mail-message {
+  margin-top: 10px; }
+
+#cycle-dates th {
+  width: 80px;
+  vertical-align: top; }
+  #cycle-dates th .cycle-list-item {
+    border-top: 1px dotted #ccc;
+    padding: 8px; }
+  #cycle-dates th .cycle-list-item:last-child {
+    border-bottom: 1px dotted #ccc; }
+  #cycle-dates th .cycle-name-and-code {
+    font-weight: bold; }
+  #cycle-dates th .cycle-timeline {
+    border: none;
+    font-size: 10px;
+    margin-left: 0;
+    margin-bottom: 0; }
+    #cycle-dates th .cycle-timeline .actions-bar {
+      display: none; }
+    #cycle-dates th .cycle-timeline .cycle-timeline-item {
+      padding: 1px 10px; }
+    #cycle-dates th .cycle-timeline .cycle-timeline-citem {
+      display: none; }
+    #cycle-dates th .cycle-timeline .cycle-timeline-selected-item {
+      text-decoration: underline; }
+  #cycle-dates th .cycle-date {
+    float: left;
+    width: 270px;
+    font-size: 10px;
+    line-height: 23px; }
+
+.cycle-timeline {
+  border: 1px solid #FEC64D;
+  margin-bottom: 20px;
+  padding-left: 0; }
+  .cycle-timeline .cycle-timeline-item {
+    float: left;
+    padding: 8px 10px; }
+  .cycle-timeline .cycle-timeline-citem {
+    display: none; }
+  .cycle-timeline .cycle-timeline-selected-item {
+    color: black;
+    text-decoration: none;
+    font-weight: bold; }
+  .cycle-timeline .cycle-timeline-passed-item,
+  .cycle-timeline .cycle-timeline-current-item {
+    background: url(/plugins/orders_cycle/images/progressbar.png) left top no-repeat; }
+  .cycle-timeline .cycle-timeline-current-item {
+    background-position: 103% 0; }
+  .cycle-timeline .cycle-timeline .actions-bar a {
+    font-weight: bold; }
+
+.cycle-product-line *[disabled] {
+  background-color: transparent; }
+
+#cycles-gadget {
+  margin-bottom: 30px; }
+  #cycles-gadget #all-cycles {
+    float: right; }
+  #cycles-gadget h2 {
+    color: #036475; }
+  #cycles-gadget td {
+    padding-right: 8px;
+    vertical-align: top; }
+  #cycles-gadget td.first-column {
+    width: 300px; }
+  #cycles-gadget td.second-column {
+    width: 400px; }
+  #cycles-gadget td.third-column {
+    vertical-align: bottom; }
+  #cycles-gadget td.third-column form {
+    float: right;
+    clear: both; }
+  #cycles-gadget .cycle .happening {
+    line-height: 20px;
+    text-transform: uppercase; }
+  #cycles-gadget .cycle .info {
+    background: #DDF2C5;
+    padding-top: 8px; }

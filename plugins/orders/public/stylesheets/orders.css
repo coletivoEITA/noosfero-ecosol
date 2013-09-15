@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, .order-products-container .order-products .table-header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -140,7 +140,145 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, .order-products-container .order-products .table-header {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2, .subtitle {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  background: #fbca47;
+  border: 1px solid #f4a439;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: none;
+  border-radius: 5px; }
+
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, .order-products-container .order-products .table-header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -385,7 +523,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, .order-products-container .order-products .table-header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -658,3 +796,66 @@
     width: 80px; }
   .orders-admin-index .price {
     width: 70px; }
+
+.order-products-container {
+  width: 432px;
+  border: 1px solid black; }
+  .order-products-container.empty {
+    padding: 8px;
+    border-top: 1px dotted black;
+    text-align: center;
+    font-size: 10px; }
+  .order-products-container .order-total {
+    text-align: right;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-top: 1px solid black;
+    float: right; }
+  .order-products-container .total-title {
+    width: 278px; }
+  .order-products-container .total-value {
+    max-width: 65px;
+    font-weight: bold;
+    float: right; }
+  .order-products-container .order-products .table-header {
+    font-weight: bold; }
+  .order-products-container .order-products .box-field {
+    float: left;
+    padding: 4px 8px; }
+    .order-products-container .order-products .box-field.supplier {
+      width: 96px; }
+    .order-products-container .order-products .box-field.product {
+      width: 144px; }
+    .order-products-container .order-products .box-field.quantity {
+      width: 64px; }
+    .order-products-container .order-products .box-field.price-total {
+      width: 64px; }
+  .order-products-container .order-products .table-content .ordered-product .box-field, .order-products-container .order-products .table-content .ordered-product .box-field.product-quantity input {
+    font-size: 10px; }
+  .order-products-container .order-products .table-content .ordered-product .box-field.product-quantity {
+    height: 24px;
+    white-space: nowrap;
+    overflow: hidden; }
+    .order-products-container .order-products .table-content .ordered-product .box-field.product-quantity input {
+      width: 40px; }
+  .order-products-container .order-products .table-content .ordered-product .more-actions {
+    margin-top: 4px; }
+    .order-products-container .order-products .table-content .ordered-product .more-actions .box-field {
+      height: auto; }
+    .order-products-container .order-products .table-content .ordered-product .more-actions .box-details a {
+      color: black; }
+  .order-products-container .order-products .table-content .ordered-product.hover, .order-products-container .order-products .table-content .ordered-product.edit {
+    background-color: #ffe546; }
+  .order-products-container .order-products .table-content .ordered-product.edit {
+    width: 436px;
+    padding-bottom: 4px;
+    margin-left: -5px;
+    padding-left: 4px;
+    border: 1px solid black;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); }

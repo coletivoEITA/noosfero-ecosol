@@ -233,6 +233,298 @@
       full_messages:
         format: "%{attribute} %{message}"
 
+  suppliers_plugin:
+    lib:
+      plugin:
+        name: "Fornecedores"
+        description: "Registro de fornecedores e produtos distribuídos"
+      suppliers_product_helper: 
+        product_from_which_su: "Produto de que fornecedor?"
+    controllers: 
+      myprofile: 
+        supplier_created: "Fornecedor criado"
+    models:
+      distributed_product: 
+        greater: " > "
+      product: 
+        unit: unidade
+        units: unidades
+      profile: 
+        consumer: Consumidor
+    views:
+      myprofile:
+        margin_change: 
+          ? "%"
+          : "%"
+          notice: "Ao mudar a margem padrão de comercialização, os produtos que são marcados como \"use a margem padrão\" automaticamente terão sua margem atualizada. Os ciclos abertos não serão afetados."
+          cancel: Cancelar
+          change_default_margin: "Mudar a margem padrão de comercialização"
+          confirm: Confirmar
+          apply_to_all: "Aplicar para os produtos com margens personalizadas"
+          apply_to_open_cycles: "Aplicar para os produtos nos ciclos abertos"
+          new_margin: "Nova margem"
+        index:
+          redistribution_situation: "Distribuição dos produtos"
+          name: "Nome"
+      product:
+        _edit: 
+          distribution_setts: "Configurações de distribuição do produto"
+          margin_price: "Margem / preço"
+          default_margin: "Usar padrão"
+          stock: "Configuração de estoque"
+          default_stock: "Manter estoque"
+          current_stock: "Estoque atual"
+          distribution_state: "Estado da distribuição"
+          available: Ativa
+          are_you_sure_you_want: "Tem certeza que deseja remover este produto?"
+          remove_product: remover
+          cancel: cancelar
+          save: salvar mudanças
+          view_on_supplier_page: "Ver produto na página do fornecedor"
+          product_registry: "Cadastro do produto"
+          selling_unit: "Unidade de venda"
+          same_from_purchase: "Mesma da compra"
+          unit: "Unidade"
+          unit_detail: "Especificação da unidade"
+        _edit_line: 
+          active: Ativo
+          inactive: Inativo
+        _form_errors: 
+          errors_found: "Erros encontrados:"
+        _price_details: 
+          commercialization_act: "Comercialização ativa"
+          minimum_order: "Pedido mínimo"
+          price: Preço
+          unit: Unidade
+          unit_specification: "Especificações de unidade"
+        _search: 
+          status: Estado
+          category: Categoria
+          supplier: Fornecedor
+          product: Produto
+          margin: Margem
+          price: Preço
+          stock: Estoque
+          unit: Unidade
+          showing_pcount_produc: "Mostrando %{pcount} produtos de %{allpcount}"
+          we_don_t_have_product: "Não temos produtos a mostrar."
+        _select_missing: 
+          add_all_missing_produ: "Adicione todos produtos que faltam deste fornecedor."
+          cancel: Cancelar
+          the_following_product: "Os seguintes produtos do fornecedor não são distribuídos pelo seu coletivo. Que produto voce quer adicionar?"
+          there_isn_t_any_new_p: "Não há qualquer produto deste fornecedor."
+        index: 
+          active: ativa
+          add_product: "Adicionar produto"
+          all_the_categories: "todas as categorias"
+          all_the_suppliers: "todos os fornecedores"
+          situation: "Situação de distribuição"
+          anyone: anyone
+          bigger_than_the_stock: "maior do que o estoque"
+          change: mudar
+          default_margin_of_com: "Margem padrão de comercialização"
+          default_margin_info: "Esta margem é automaticamente aplicada em todos os produtos, mas é possível estabelecer margens específicas para certos produtos."
+          filter: Filtro
+          filter_it: Filtrar
+          in_any_state: "Em qualquer estado"
+          inactive: inativa
+          margin: "%{margin} %"
+          no_margin_set: "Sem margem definida"
+          products: Produtos
+          info: "Esta é a lista de produtos com que o coletivo trabalha e é aqui que é feito o controle de estoque. Os produtos se dividem entre ativos e inativos. Os produtos ativos automaticamente são adicionados à lista de uma novo ciclo de pedidos."
+          supplier: Fornecedor
+          the_products: "Os produtos"
+          name: "Nome"
+          whose_qty_available_i: "cuja qtd disponível é"
+          category: "Categoria"
+          with_the_qualifiers: "com os qualificadores"
+      supplier: 
+        _new:
+          title: "Buscar um empreendimento a adicionar"
+          query_placeholder: "Nome do emprendimento"
+          search: "Buscar"
+          none_found: "Nenhum empreendimento foi encontrado. Por favor revise o texto da busca."
+          add: "Adicionar"
+          suggest_creation: "Não encontrou o empreendimento que buscava?. Você pode criar um novo empreendimento gerido pela organização."
+          create_dummy: "Criar empreendimento"
+        _edit: 
+          registry_help: "O registro do fornecedor será administrado pelo própria organização e será privado a ela."
+          abbreviated_name: "Nome Abreviado"
+          add_supplier_managed_: "Adicionar fornecedor com registro administrado pelo coletivo"
+          additional_fields: "Campos adicionais"
+          basic_data: "Informações básicas"
+          cancel: Cancelar
+          description: Descrição
+          edit_supplier: "Editar fornecedor"
+          estrategic_informatio: "Informações estratégicas"
+          full_registration: "Registro completo"
+          name: Nome
+          register_new_supplier: "Registrar um novo fornecedor"
+          registry_form: "Formulário de registro"
+          save: Salvar
+        _supplier: 
+          abreviated_name: "Nome Abreviado"
+          actions: Ações
+          add_products: "adicionar produtos"
+          among_them: ", entre eles"
+          any_registered_produc: "nenhum produto registrado"
+          by_removing_this_supp: "Ao remover este fornecedor, todos os produtos ficarão indisponíveis em futuras sessões. Por favor, confirme sua opção"
+          desactivate: desativar
+          activate: ativar
+          edit: editar
+          products_are_active: " produtos estão ativos"
+          products_distributed: " produtos distribuídos pelo coletivo"
+          products: produtos
+          registered_supplier_i: "Fornecedor registrado na rede"
+          remove: remover
+          supplier_profile_product: "produtos registrados"
+          supplier_with_registr: "Fornecedor com registro administrado pelo coletivo"
+          this_supplier_has: "Este fornecedor tem"
+        _suppliers_list: 
+          this_search_didn_t_re: "Esta busca não retornou fornecedores."
+          any_registered: "Nenhum fornecedor registrado."
+        index: 
+          add_supplier: "Adicionar fornecedor"
+          filter: Filtro
+          name: Nome
+          suppliers: Fornecedores
+          this_is_the_list_of_s: "Esta é a lista de fornecedores associados ao coletivo de consumo. É possível associá-lo a fornecedores existentes ou registrar um."
+
+  delivery_plugin:
+    lib:
+      plugin:
+        name: "Entrega"
+        description: "Gestão de métodos e opções de entrega"
+    views:
+      delivery_option: 
+        _method_edit: 
+          add: Adicionar
+          cancel: Cancelar
+          instructions: Instruções
+          instructions_help: "Dê instruções aos membros para a entrega. Inclua o endereço e quaisquer recomendações que você achar úteis. Este texto estará disponível na página do pedido e, ao confirmar uma compra, a pessoa receberá uma cópia dela."
+          name: Nome
+          save: Salvar
+        _select_content: 
+          add: Adicionar
+          add_new: "adicionar novo"
+          are_you_sure_you_want: "Tem certeza que quer remover este método?"
+          cancel: Cancelar
+          choose_a_delivery_met: "Escolha um método de entrega da lista"
+          edit_this: Editar
+          remove_method: "Remover método"
+        _show: 
+          x: X
+        select: 
+          add_a_delivery_method: "Adicionar um método de entrega ao ciclo de pedidos"
+
+  orders_plugin:
+    lib:
+      plugin:
+        name: "Pedidos"
+        description: "Gestão de pedidos"
+      mailer:
+        order_was_confirmed: "[%{name}] Seu pedido foi confirmado"
+        order_was_cancelled: "[%{name}] Seu pedido foi cancelado"
+      date_helper:
+        a: "%A"
+        b_d_at_hh_m: "%d/%m/%y às %H:%M"
+        b_d_from_time_start_t: "%d/%m/%y, de %{time_start} para %{time_finish}"
+        from_start_to_finish: "de %{start} para %{finish}"
+        hh_m: "%Hh%M"
+        m_d: "%d/%m"
+        m_d_hh: "%d/%m - %Hh%M"
+        m_d_hh_m: "%d/%m - %Hh%M"
+        m_d_y_at_hh_m: "%d/%m/%y às %H:%M"
+        m_d_y_hh_m: "%d/%m/%y às %H:%M"
+        m_y_hh_m: "%m/%y - %Hh%M"
+        start_day_from_start_: "%{start_day}, de %{start_time} para %{finish_time}"
+        start_day_start_datet: "%{start_day}, %{start_datetime} - %{finish_day}, %{finish_datetime}"
+        start_finish: "%{start} - %{finish}"
+        start_to_finish: "%{start} para %{finish}"
+        to: para
+      price_helper: 
+        /: /
+        price_unit: "%{price}/%{unit}"
+    controllers:
+      profile:
+        consumer: 
+          can_not_confirm_your_: "Não foi possível confirmar. Sua lista de pedido está vazia"
+          login_first: "Faça login primeiro"
+          order_cancelled: "Pedido cancelado"
+          order_confirmed: "Pedido confirmado"
+          order_removed: "Pedido removido"
+          please_login_first: "Please login first"
+          you_are_not_the_owner: "Você não é o proprietário desse pedido"
+    models:
+      order: 
+        order_cancelled: "Pedido cancelado"
+        order_confirmed: "Pedido confirmado"
+        order_in_progress: "Pedido em andamento"
+        order_not_confirmed: "Pedido não confirmado"
+        order_planned: "Pedido planejado"
+    views:
+      consumer:
+        _total: 
+          total: Total
+      product: 
+        _edit: 
+          remove_from_order: "Remover do pedido"
+          this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
+        _index: 
+          supplier: "fornecedor"
+          product: "produto"
+          quantity: "qtd"
+          price_total: "valor (%{currency})"
+          empty_order: "Pedido vazio"
+      admin:
+        index: 
+          code: Código
+          created: Criado
+          member: Integrante
+          modified: Modificado
+          no_orders_to_show: "Sem pedidos a mostrar"
+          prod_qty: "Qtd prod."
+          value: Valor
+        _edit: 
+          actions: Ações
+          add_product: "adicionar produto"
+          cancel: Cancelar
+          edit_on_the_order_pag: "Editar na página de pedidos"
+          empty_order: "Pedido vazio"
+          include_message: "Incluir uma mensagem"
+          message_to_member: "Mensagem para o membro"
+          remove_order: "remover pedido"
+          save: Salvar
+          see_delivery: "veja entrega"
+          see_redistribution: "veja redistribuição"
+          the_collective_member: "O membro do coletivo receberá um email que discrimina todas as mudanças feitas em seu pedido."
+          warn_member_of_the_ch: "Avise o membro das mudanças em seu pedido"
+
+      mailer:
+        order_confirmation: 
+          attention_to_the_foll: "Atenção às instruções de entrega a seguir:"
+          dear_name: "Olá %{name},"
+          greetings: "Saudações,"
+          order_code_of_profile: "Pedido %{code} de %{name}"
+          order_data_confirmed: "Pedido confirmado"
+          the_delivery_period_w: "O período de entrega ocorrerá em %{date}."
+          your_order_can_be_che: "Seu pedido pode ser checado no seguinte link:"
+          your_order_made_on_co: "Seu pedido feito no coletivo %{name} em %{date} foi confirmado."
+        order_cancellation: 
+          dear_name: "Olá %{name},"
+          greetings: "Saudações,"
+          your_order_made_on_co: "Seu pedido feito no coletivo %{name} em %{date} foi cancelado com sucesso."
+        _complete_order: 
+          order_no_code: "Código do Pedido: %{code}"
+          price: Preço
+          price_un: preço/un
+          price_unit: "%{price}/%{unit}"
+          products_list: "Lista de produtos"
+          qtt: QTD
+          quantity_unit: "%{quantity} %{unit}"
+          supplier_product: Fornecedor/Produto
+          total: "TOTAL:"
+
   orders_cycle_plugin: 
     lib:
       plugin:
@@ -487,7 +779,7 @@
           cycle_editing: "Edição de ciclo"
           cycle_saved: "Ciclo salvo"
         _edition: 
-          info: "O tempo de edição acabou e a sessão está ainda pública. Na verdade, a sessão está em fase de chamada de fornecedores.<br/><br/> Ainda é possível editar alguns parametros do Ciclo através desta página, no entanto, esteja ciente do risco. Algumas operações têm diferentes implicações dependendo da fase em que se está, quando assim for você será avisado por uma janelinha de aviso das consequências das mudanças efetuadas."
+          info: "O tempo de edição acabou e o ciclo está ainda pública. Na verdade, o ciclo está em fase de chamada de fornecedores.<br/><br/> Ainda é possível editar alguns parametros do Ciclo através desta página, no entanto, esteja ciente do risco. Algumas operações têm diferentes implicações dependendo da fase em que se está, quando assim for você será avisado por uma janelinha de aviso das consequências das mudanças efetuadas."
           add_product: "Adicionar produto"
           it_was_automatically_: "Ela foi automaticamente gerada a partir dos produtos ativos e suas respectivas margens. Verifique a lista de produtos e edite-a conforme as necessidades e particularidades deste ciclo de pedidos."
           the_following_list_of: "A seguinte lista de produtos está disponível neste ciclo."
@@ -572,295 +864,6 @@
           open_cycles: "Pedidos Abertos"
           orders_cycles: "Ciclo de pedidos"
           show_cycles_from_year: "Mostre os ciclos do ano"
-
-  suppliers_plugin:
-    lib:
-      plugin:
-        name: "Fornecedores"
-        description: "Registro de fornecedores e produtos distribuídos"
-      suppliers_product_helper: 
-        product_from_which_su: "Produto de que fornecedor?"
-    controllers: 
-      myprofile: 
-        supplier_created: "Fornecedor criado"
-    models:
-      distributed_product: 
-        greater: " > "
-      product: 
-        unit: unidade
-        units: unidades
-      profile: 
-        consumer: Consumidor
-    views:
-      myprofile:
-        margin_change: 
-          ? "%"
-          : "%"
-          notice: "Ao mudar a margem padrão de comercialização, os produtos que são marcados como \"use a margem padrão\" automaticamente terão sua margem atualizada. Os ciclos abertos não serão afetados."
-          cancel: Cancelar
-          change_default_margin: "Mudar a margem padrão de comercialização"
-          confirm: Confirmar
-          apply_to_all: "Aplicar para os produtos com margens personalizadas"
-          apply_to_open_cycles: "Aplicar para os produtos nos ciclos abertos"
-          new_margin: "Nova margem"
-        index:
-          redistribution_situation: "Distribuição dos produtos"
-          name: "Nome"
-      product:
-        _edit: 
-          distribution_setts: "Configurações de distribuição do produto"
-          margin_price: "Margem / preço"
-          default_margin: "Usar padrão"
-          stock: "Configuração de estoque"
-          default_stock: "Manter estoque"
-          current_stock: "Estoque atual"
-          distribution_state: "Estado da distribuição"
-          available: Ativa
-          are_you_sure_you_want: "Tem certeza que deseja remover este produto?"
-          remove_product: remover
-          cancel: cancelar
-          save: salvar mudanças
-          view_on_supplier_page: "Ver produto na página do fornecedor"
-          product_registry: "Cadastro do produto"
-          selling_unit: "Unidade de venda"
-          same_from_purchase: "Mesma da compra"
-          unit: "Unidade"
-          unit_detail: "Especificação da unidade"
-        _edit_line: 
-          active: Ativo
-          inactive: Inativo
-        _form_errors: 
-          errors_found: "Erros encontrados:"
-        _price_details: 
-          commercialization_act: "Comercialização ativa"
-          minimum_order: "Pedido mínimo"
-          price: Preço
-          unit: Unidade
-          unit_specification: "Especificações de unidade"
-        _search: 
-          status: Estado
-          category: Categoria
-          supplier: Fornecedor
-          product: Produto
-          margin: Margem
-          price: Preço
-          stock: Estoque
-          unit: Unidade
-          showing_pcount_produc: "Mostrando %{pcount} produtos de %{allpcount}"
-          we_don_t_have_product: "Não temos produtos a mostrar."
-        _select_missing: 
-          add_all_missing_produ: "Adicione todos produtos que faltam deste fornecedor."
-          cancel: Cancelar
-          the_following_product: "Os seguintes produtos do fornecedor não são distribuídos pelo seu coletivo. Que produto voce quer adicionar?"
-          there_isn_t_any_new_p: "Não há qualquer produto deste fornecedor."
-        index: 
-          active: ativa
-          add_product: "Adicionar produto"
-          all_the_categories: "todas as categorias"
-          all_the_suppliers: "todos os fornecedores"
-          situation: "Situação de distribuição"
-          anyone: anyone
-          bigger_than_the_stock: "maior do que o estoque"
-          change: mudar
-          default_margin_of_com: "Margem padrão de comercialização"
-          default_margin_info: "Esta margem é automaticamente aplicada em todos os produtos, mas é possível estabelecer margens específicas para certos produtos."
-          filter: Filtro
-          filter_it: Filtrar
-          in_any_state: "Em qualquer estado"
-          inactive: inativa
-          margin: "%{margin} %"
-          no_margin_set: "Sem margem definida"
-          products: Produtos
-          info: "Esta é a lista de produtos com que o coletivo trabalha e é aqui que é feito o controle de estoque. Os produtos se dividem entre ativos e inativos. Os produtos ativos automaticamente são adicionados à lista de uma nova sessão de pedidos."
-          supplier: Fornecedor
-          the_products: "Os produtos"
-          name: "Nome"
-          whose_qty_available_i: "cuja qtd disponível é"
-          category: "Categoria"
-          with_the_qualifiers: "com os qualificadores"
-      supplier: 
-        _new:
-          title: "Buscar um empreendimento a adicionar"
-          query_placeholder: "Nome do emprendimento"
-          search: "Buscar"
-          none_found: "Nenhum empreendimento foi encontrado. Por favor revise o texto da busca."
-          add: "Adicionar"
-          suggest_creation: "Não encontrou o empreendimento que buscava?. Você pode criar um novo empreendimento gerido pela organização."
-          create_dummy: "Criar empreendimento"
-        _edit: 
-          registry_help: "O registro do fornecedor será administrado pelo própria organização e será privado a ela."
-          abbreviated_name: "Nome Abreviado"
-          add_supplier_managed_: "Adicionar fornecedor com registro administrado pelo coletivo"
-          additional_fields: "Campos adicionais"
-          basic_data: "Informações básicas"
-          cancel: Cancelar
-          description: Descrição
-          edit_supplier: "Editar fornecedor"
-          estrategic_informatio: "Informações estratégicas"
-          full_registration: "Registro completo"
-          name: Nome
-          register_new_supplier: "Registrar um novo fornecedor"
-          registry_form: "Formulário de registro"
-          save: Salvar
-        _supplier: 
-          abreviated_name: "Nome Abreviado"
-          actions: Ações
-          add_products: "adicionar produtos"
-          among_them: ", entre eles"
-          any_registered_produc: "nenhum produto registrado"
-          by_removing_this_supp: "Ao remover este fornecedor, todos os produtos ficarão indisponíveis em futuras sessões. Por favor, confirme sua opção"
-          desactivate: desativar
-          activate: ativar
-          edit: editar
-          products_are_active: " produtos estão ativos"
-          products_distributed: " produtos distribuídos pelo coletivo"
-          products: produtos
-          registered_supplier_i: "Fornecedor registrado na rede"
-          remove: remover
-          supplier_profile_product: "produtos registrados"
-          supplier_with_registr: "Fornecedor com registro administrado pelo coletivo"
-          this_supplier_has: "Este fornecedor tem"
-        _suppliers_list: 
-          this_search_didn_t_re: "Esta busca não retornou fornecedores."
-          any_registered: "Nenhum fornecedor registrado."
-        index: 
-          add_supplier: "Adicionar fornecedor"
-          filter: Filtro
-          name: Nome
-          suppliers: Fornecedores
-          this_is_the_list_of_s: "Esta é a lista de fornecedores associados ao coletivo de consumo. É possível associá-lo a fornecedores existentes ou registrar um."
-
-  delivery_plugin:
-    lib:
-      plugin:
-        name: "Entrega"
-        description: "Gestão de métodos e opções de entrega"
-    views:
-      delivery_option: 
-        _method_edit: 
-          add: Adicionar
-          cancel: Cancelar
-          instructions: Instruções
-          instructions_help: "Dê instruções aos membros para a entrega. Inclua o endereço e quaisquer recomendações que você achar úteis. Este texto estará disponível na página do pedido e, ao confirmar uma compra, a pessoa receberá uma cópia dela."
-          name: Nome
-          save: Salvar
-        _select_content: 
-          add: Adicionar
-          add_new: "adicionar novo"
-          are_you_sure_you_want: "Tem certeza que quer remover este método?"
-          cancel: Cancelar
-          choose_a_delivery_met: "Escolha um método de entrega da lista"
-          edit_this: Editar
-          remove_method: "Remover método"
-        _show: 
-          x: X
-        select: 
-          add_a_delivery_method: "Adicionar um método de entrega ao ciclo de pedidos"
-
-  orders_plugin:
-    lib:
-      plugin:
-        name: "Pedidos"
-        description: "Gestão de pedidos"
-      mailer:
-        order_was_confirmed: "[%{name}] Seu pedido foi confirmado"
-        order_was_cancelled: "[%{name}] Seu pedido foi cancelado"
-      date_helper:
-        a: "%A"
-        b_d_at_hh_m: "%d/%m/%y às %H:%M"
-        b_d_from_time_start_t: "%d/%m/%y, de %{time_start} para %{time_finish}"
-        from_start_to_finish: "de %{start} para %{finish}"
-        hh_m: "%Hh%M"
-        m_d: "%d/%m"
-        m_d_hh: "%d/%m - %Hh%M"
-        m_d_hh_m: "%d/%m - %Hh%M"
-        m_d_y_at_hh_m: "%d/%m/%y às %H:%M"
-        m_d_y_hh_m: "%d/%m/%y às %H:%M"
-        m_y_hh_m: "%m/%y - %Hh%M"
-        start_day_from_start_: "%{start_day}, de %{start_time} para %{finish_time}"
-        start_day_start_datet: "%{start_day}, %{start_datetime} - %{finish_day}, %{finish_datetime}"
-        start_finish: "%{start} - %{finish}"
-        start_to_finish: "%{start} para %{finish}"
-        to: para
-      price_helper: 
-        /: /
-        price_unit: "%{price}/%{unit}"
-    controllers:
-      profile:
-        consumer: 
-          can_not_confirm_your_: "Não foi possível confirmar. Sua lista de pedido está vazia"
-          login_first: "Faça login primeiro"
-          order_cancelled: "Pedido cancelado"
-          order_confirmed: "Pedido confirmado"
-          order_removed: "Pedido removido"
-          please_login_first: "Please login first"
-          you_are_not_the_owner: "Você não é o proprietário desse pedido"
-    models:
-      order: 
-        order_cancelled: "Pedido cancelado"
-        order_confirmed: "Pedido confirmado"
-        order_in_progress: "Pedido em andamento"
-        order_not_confirmed: "Pedido não confirmado"
-        order_planned: "Pedido planejado"
-    views:
-      consumer:
-        _total: 
-          total: Total
-      product: 
-        _edit: 
-          remove_from_order: "Remover do pedido"
-          see_product_details: "Ver detalhes do produto"
-          this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
-        _index: 
-          empty_order: "Pedido vazio"
-      admin:
-        index: 
-          code: Código
-          created: Criado
-          member: Integrante
-          modified: Modificado
-          no_orders_to_show: "Sem pedidos a mostrar"
-          prod_qty: "Qtd prod."
-          value: Valor
-        _edit: 
-          actions: Ações
-          add_product: "adicionar produto"
-          cancel: Cancelar
-          edit_on_the_order_pag: "Editar na página de pedidos"
-          empty_order: "Pedido vazio"
-          include_message: "Incluir uma mensagem"
-          message_to_member: "Mensagem para o membro"
-          remove_order: "remover pedido"
-          save: Salvar
-          see_delivery: "veja entrega"
-          see_redistribution: "veja redistribuição"
-          the_collective_member: "O membro do coletivo receberá um email que discrimina todas as mudanças feitas em seu pedido."
-          warn_member_of_the_ch: "Avise o membro das mudanças em seu pedido"
-
-      mailer:
-        order_confirmation: 
-          attention_to_the_foll: "Atenção às instruções de entrega a seguir:"
-          dear_name: "Olá %{name},"
-          greetings: "Saudações,"
-          order_code_of_profile: "Pedido %{code} de %{name}"
-          order_data_confirmed: "Pedido confirmado"
-          the_delivery_period_w: "O período de entrega ocorrerá em %{date}."
-          your_order_can_be_che: "Seu pedido pode ser checado no seguinte link:"
-          your_order_made_on_co: "Seu pedido feito no coletivo %{name} em %{date} foi confirmado."
-        order_cancellation: 
-          dear_name: "Olá %{name},"
-          greetings: "Saudações,"
-          your_order_made_on_co: "Seu pedido feito no coletivo %{name} em %{date} foi cancelado com sucesso."
-        _complete_order: 
-          order_no_code: "Código do Pedido: %{code}"
-          price: Preço
-          price_un: preço/un
-          price_unit: "%{price}/%{unit}"
-          products_list: "Lista de produtos"
-          qtt: QTD
-          quantity_unit: "%{quantity} %{unit}"
-          supplier_product: Fornecedor/Produto
-          total: "TOTAL:"
 
   consumers_coop_plugin: 
     lib:

@@ -1,10 +1,33 @@
 @import 'base';
+@import 'orders_variables';
+
 @import 'calendrial';
 
 .cycle-view {
 
+  #cycle-others,
+  #cycle-header {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    margin-left: -2px;
+    padding-right: 2px;
+  }
+  #cycle-header {
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 0;
+    .subtitle,
+    #cycle-dates {
+      width: 520px;
+    }
+    .subtitle {
+      display: block;
+      margin-top: 20px;
+      font-style: italic;
+    }
+  }
+
   #cycle-products-for-order {
-    width: $module06;
+    width: $module06 + $intercolumn;
     float: left;
     padding-left: 0;
 
@@ -140,8 +163,8 @@
 
   #order-column {
     float: left;
-    width: $module06 - 2*$intercolumn;
-    margin-left: $wireframe-padding;
+    width: $order-products-width;
+    margin-left: 3*$intercolumn;
     padding: 0;
 
     &.sticky {
@@ -197,17 +220,6 @@
 
     .order-message-actions a {
       font-weight: bold;
-    }
-
-    #order-products .value-row {
-      border-top: 1px dotted black;
-      border-bottom: none;
-    }
-    .order-products-container.empty {
-      border-top: 1px dotted black;
-      text-align: center;
-      padding: 8px;
-      font-size: 10px;
     }
 
     #close-order,
@@ -322,4 +334,136 @@
 
 #cycle-closed-listing {
   padding-left: 0;
+}
+
+#cycle-new-mail-send {
+  margin-bottom: 0;
+}
+
+#cycle-new-mail label {
+  font-weight: bold;
+}
+
+#cycle-new-mail .mail-message {
+  margin-top: 10px;
+}
+
+
+#cycle-dates th {
+  width: 80px;
+  vertical-align: top;
+
+  .cycle-list-item {
+    @extend .box-align;
+    border-top: 1px dotted #ccc;
+    padding: 8px;
+  }
+  .cycle-list-item:last-child {
+    border-bottom: 1px dotted #ccc;
+  }
+  .cycle-name-and-code {
+    font-weight: bold;
+  }
+
+  .cycle-timeline {
+    @extend .box-align;
+    border: none;
+    font-size: 10px;
+    margin-left: 0;
+    margin-bottom: 0;
+
+    .actions-bar {
+      display: none;
+    }
+    .cycle-timeline-item {
+      padding: 1px 10px;
+    }
+    .cycle-timeline-citem {
+      display: none;
+    }
+    .cycle-timeline-selected-item {
+      text-decoration: underline;
+    }
+  }
+
+  .cycle-date {
+    float: left;
+    width: 270px;
+    font-size: 10px;
+    line-height: 23px;
+  }
+
+}
+
+.cycle-timeline {
+  border: 1px solid #FEC64D;
+  margin-bottom: 20px;
+  padding-left: 0;
+
+  .cycle-timeline-item {
+    float: left;
+    padding: 8px 10px;
+  }
+  .cycle-timeline-citem {
+    display: none;
+  }
+  .cycle-timeline-selected-item {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .cycle-timeline-passed-item,
+  .cycle-timeline-current-item {
+    background: url(/plugins/orders_cycle/images/progressbar.png) left top no-repeat;
+  }
+  .cycle-timeline-current-item {
+    background-position: 103% 0;
+  }
+  .cycle-timeline .actions-bar a {
+    font-weight: bold;
+  }
+}
+
+.cycle-product-line *[disabled] {
+  background-color: transparent;
+}
+
+
+#cycles-gadget {
+  margin-bottom: 30px;
+
+  #all-cycles {
+    float: right;
+  }
+  h2 {
+    color: #036475;
+  }
+
+  td {
+    padding-right: 8px;
+    vertical-align: top;
+  }
+  td.first-column {
+    width: 300px;
+  }
+  td.second-column {
+    width: 400px;
+  }
+  td.third-column {
+    vertical-align: bottom;
+  }
+  td.third-column form {
+    float: right;
+    clear: both;
+  }
+  .cycle .happening {
+    @extend .alignment;
+    line-height: 20px;
+    text-transform: uppercase;
+  }
+  .cycle .info {
+    @extend .alignment;
+    background: #DDF2C5;
+    padding-top: 8px;
+  }
 }

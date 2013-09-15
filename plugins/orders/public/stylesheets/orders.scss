@@ -1,4 +1,6 @@
 @import 'base';
+@import 'orders_variables';
+
 @import 'sortable-table';
 @import 'loading-overlay';
 @import 'filter';
@@ -112,3 +114,117 @@
   }
 
 }
+
+
+.order-products-container {
+  width: $order-products-width;
+  border: $border solid black;
+
+  &.empty {
+    padding: $padding;
+    border-top: $border dotted black;
+    text-align: center;
+    font-size: 10px;
+  }
+
+  .order-total {
+    text-align: right;
+    text-transform: uppercase;
+    padding: $half-padding $padding;
+    border-top: $border solid black;
+    float: right;
+  }
+  .total-title {
+    width: 278px;
+  }
+  .total-value {
+    max-width: 65px;
+    font-weight: bold;
+    float: right;
+  }
+
+  .order-products {
+
+    .table-header {
+      @extend .container-clean;
+    }
+    //ordered-product do overflow, so no overflow:hidden for its parents
+
+    .table-header {
+      font-weight: bold;
+    }
+
+    .box-field {
+      float: left;
+      padding: $half-padding $padding;
+
+      &.supplier {
+        width: $module01 + 2*$intercolumn;
+      }
+      &.product {
+        width: $module02;
+      }
+      &.quantity {
+        width: $module01;
+      }
+      &.price-total {
+        width: $module01;
+      }
+    }
+
+    .table-content {
+
+      .ordered-product {
+
+        .box-field {
+          &, &.product-quantity input {
+            font-size: 10px;
+          }
+          &.product-quantity {
+            height: 24px;
+            white-space: nowrap;
+            overflow: hidden;
+
+            input {
+              width: 40px;
+            }
+          }
+        }
+
+        .more-actions {
+          margin-top: $half-padding;
+          .box-field {
+            height: auto;
+          }
+          .box-details a {
+            color: black;
+          }
+        }
+
+        &.hover,
+        &.edit {
+          background-color: #ffe546;
+        }
+
+        &.edit {
+          width: $order-products-width + $half-padding;
+          padding-bottom: $half-padding;
+          margin-left: -($half-padding + $border);
+          padding-left: ($half-padding);
+          border: $border solid black;
+
+          border-radius: $border-radius;
+          -moz-border-radius: $border-radius;
+          -o-border-radius: $border-radius;
+          -webkit-border-radius: $border-radius;
+
+          box-shadow: 0 0 3px rgba(0,0,0,.5);
+          -moz-box-shadow: 0 0 3px rgba(0,0,0,.5);
+          -webkit-box-shadow: 0 0 3px rgba(0,0,0,.5);
+        }
+      }
+    }
+  }
+}
+
+

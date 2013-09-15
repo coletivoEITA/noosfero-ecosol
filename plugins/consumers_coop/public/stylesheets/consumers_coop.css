@@ -455,12 +455,9 @@ body.consumers-coop {
   padding-left: 10px; }
 
 /* ----- common ----- */
-.consumers-coop .page > *,
-.consumers-coop .admin-page > * {
-  padding-left: 8px; }
-.consumers-coop .box-align, .consumers-coop .order-products-by-supplier, .consumers-coop #cycle-listing .cycle-list-item, .consumers-coop #cycle-listing .cycle-timeline {
+.consumers-coop .box-align {
   margin-left: -8px; }
-.consumers-coop .alignment, .consumers-coop #consumers-coop-plugin-cycles-gadget .cycle .happening, #consumers-coop-plugin-cycles-gadget .cycle .consumers-coop .happening, .consumers-coop #consumers-coop-plugin-cycles-gadget .cycle .info, #consumers-coop-plugin-cycles-gadget .cycle .consumers-coop .info {
+.consumers-coop .alignment {
   padding-left: 8px; }
 .consumers-coop .alignment2x {
   padding-left: 16px; }
@@ -504,103 +501,6 @@ body.consumers-coop {
 .consumers-coop .actions-bar strong {
   float: right; }
 
-/* ----- not so common ----- */
-.consumers-coop #filter-products-loading {
-  width: 205px;
-  height: 20px;
-  position: relative;
-  left: 235px;
-  margin-bottom: -20px; }
-
-.consumers-coop .cycle-product-line *[disabled] {
-  background-color: transparent; }
-
-/* ----- order block ----- */
-.consumers-coop-plugin-order-block {
-  background-color: #EBE5EF;
-  padding-left: 8px;
-  padding-bottom: 10px;
-  line-height: 20px; }
-
-.consumers-coop-plugin-order-block .block-title {
-  background-color: #D4CCE1 !important;
-  margin-left: -8px !important; }
-
-.consumers-coop-plugin-order-block .cycle .cycle-period {
-  font-size: 10px; }
-
-.consumers-coop-plugin-order-block .cycle {
-  margin-bottom: 10px; }
-
-.consumers-coop #show-cancelled_orders a.disabled {
-  display: none; }
-
-/* ----- common ----- */
-#consumers-coop-plugin-cycles-gadget {
-  margin-bottom: 30px; }
-
-#consumers-coop-plugin-cycles-gadget #all-cycles {
-  float: right; }
-
-#consumers-coop-plugin-cycles-gadget h2 {
-  color: #036475; }
-
-#consumers-coop-plugin-cycles-gadget td {
-  padding-right: 8px;
-  vertical-align: top; }
-
-#consumers-coop-plugin-cycles-gadget td.first-column {
-  width: 300px; }
-
-#consumers-coop-plugin-cycles-gadget td.second-column {
-  width: 400px; }
-
-#consumers-coop-plugin-cycles-gadget td.third-column {
-  vertical-align: bottom; }
-
-#consumers-coop-plugin-cycles-gadget td.third-column form {
-  float: right;
-  clear: both; }
-
-#consumers-coop-plugin-cycles-gadget .cycle .happening {
-  line-height: 20px;
-  text-transform: uppercase; }
-
-#consumers-coop-plugin-cycles-gadget .cycle .info {
-  background: #DDF2C5;
-  padding-top: 8px; }
-
-/* ----- cycle timeline  ----- */
-.consumers-coop #cycles-page .cycle-timeline {
-  margin-left: 0; }
-
-.consumers-coop .cycle-timeline {
-  border: 1px solid #FEC64D;
-  margin-bottom: 20px;
-  padding-left: 0; }
-
-.consumers-coop .cycle-timeline-item {
-  float: left;
-  padding: 8px 10px; }
-
-.consumers-coop .cycle-timeline-citem {
-  display: none; }
-
-.consumers-coop .cycle-timeline-selected-item {
-  color: black;
-  text-decoration: none;
-  font-weight: bold; }
-
-.consumers-coop .cycle-timeline-passed-item,
-.consumers-coop .cycle-timeline-current-item {
-  background: url(/plugins/orders_cycle/images/progressbar.png) left top no-repeat; }
-
-.consumers-coop .cycle-timeline-current-item {
-  background-position: 103% 0; }
-
-.consumers-coop .cycle-timeline .actions-bar a {
-  font-weight: bold; }
-
 /* ----- cycle edition ----- */
 .consumers-coop #cycle-fields input {
   margin-right: 7px; }
@@ -632,72 +532,6 @@ body.consumers-coop {
   display: block; }
 
 /* ----- cycle orders  ----- */
-.consumers-coop .order-products-by-supplier {
-  width: 550px;
-  background-color: #E1F5C4;
-  margin-bottom: 20px;
-  border: 1px solid #116C7C;
-  border-radius: 3px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  -o-border-radius: 3px; }
-
-.consumers-coop .order-products-by-supplier .inner-box {
-  padding: 8px; }
-
-.consumers-coop .order-products-by-supplier .supplier-name {
-  font-weight: bold;
-  margin-bottom: 10px; }
-
-.consumers-coop .order-products-by-supplier .products-header {
-  padding-bottom: 5px;
-  font-weight: bold; }
-
-.consumers-coop .order-products-by-supplier .supplier-products {
-  border-top: 1px dotted #999;
-  border-bottom: 1px dotted #999;
-  padding: 5px 0;
-  margin-bottom: 5px; }
-
-.consumers-coop .order-products-by-supplier .supplier-total {
-  font-size: 10px; }
-
-.consumers-coop .order-products-by-supplier .supplier-total .product {
-  text-transform: uppercase;
-  font-weight: bold; }
-
-.consumers-coop .order-products-by-supplier .cycle-ordered-product {
-  float: left;
-  clear: both; }
-
-.consumers-coop .order-products-by-supplier span.box-field {
-  display: inline-block; }
-
-.consumers-coop .order-products-by-supplier .box-field.product {
-  width: 110px; }
-
-.consumers-coop .order-products-by-supplier .box-field.total-asked {
-  width: 60px; }
-
-.consumers-coop .order-products-by-supplier .box-field.unit {
-  width: 110px; }
-
-.consumers-coop .order-products-by-supplier .box-field.forecast-parcel {
-  width: 65px; }
-
-.consumers-coop .order-products-by-supplier .box-field.sell-value,
-.consumers-coop .order-products-by-supplier .box-field.forecast-parcel-value {
-  width: 70px; }
-
-.consumers-coop .order-products-by-supplier .cycle-ordered-product .total-asked,
-.consumers-coop .order-products-by-supplier .cycle-ordered-product .forecast-parcel,
-.consumers-coop .order-products-by-supplier .cycle-ordered-product .product {
-  font-size: 12px; }
-
-.consumers-coop .order-products-by-supplier .cycle-ordered-product .total-asked,
-.consumers-coop .order-products-by-supplier .cycle-ordered-product .forecast-parcel {
-  font-weight: bold; }
-
 .consumers-coop #cycle-orders {
   margin: 20px 0;
   margin-left: -8px; }
@@ -706,146 +540,7 @@ body.consumers-coop {
   margin: 10px 0; }
 
 /* ----- ordered product  ----- */
-.consumers-coop .ordered-product.value-row.hover,
-.consumers-coop .ordered-product.value-row.edit {
-  background-color: #ffe546; }
-
-.consumers-coop .cycle-orders .order-products-container {
-  background-color: #FFEA6B;
-  border: 1px solid black;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -o-border-radius: 4px; }
-
-.consumers-coop .order-products-container {
-  width: 400px;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box; }
-
-.consumers-coop .order-products {
-  width: 100%; }
-
-.consumers-coop .order-products-container .order-total {
-  width: 100%;
-  text-align: right;
-  text-transform: uppercase;
-  padding: 5px 8px;
-  border-top: 1px solid black;
-  float: right;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box; }
-
-.consumers-coop .order-products-container .total-title {
-  width: 278px; }
-
-.consumers-coop .order-products-container .total-value {
-  max-width: 65px;
-  font-weight: bold;
-  float: right; }
-
-.consumers-coop .ordered-product {
-  /*
-  transition: all 0.2s ease-in-out;
-  -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
-  */ }
-
-.consumers-coop .ordered-product .box-field.product-quantity {
-  height: 24px;
-  white-space: nowrap;
-  overflow: hidden; }
-
-.consumers-coop .ordered-product .box-field,
-.consumers-coop .ordered-product .box-field.product-quantity input {
-  font-size: 10px; }
-
-.consumers-coop .ordered-product .box-field.product-quantity input {
-  width: 40px; }
-
-.consumers-coop .ordered-product .box-field.supplier {
-  width: 80px; }
-
-.consumers-coop .ordered-product .box-field.product {
-  width: 130px;
-  font-weight: bold;
-  font-size: 12px; }
-
-.consumers-coop .ordered-product .box-field.product-quantity {
-  width: 78px; }
-
-.consumers-coop .ordered-product .box-field.price-total {
-  width: 60px; }
-
-.consumers-coop .ordered-product .more-actions {
-  margin-top: 4px; }
-
-.consumers-coop .ordered-product .more-actions .box-field {
-  height: auto; }
-
-.consumers-coop .ordered-product .more-actions .box-details a {
-  color: black; }
-
-.consumers-coop .ordered-product .box-field.price-total,
-.consumers-coop .ordered-product .more-actions .box-field.price-with-unit {
-  float: right;
-  text-align: right; }
-
-.consumers-coop .ordered-product.edit {
-  border: 1px solid black !important;
-  padding-bottom: 4px;
-  margin-left: -5px;
-  width: 410px;
-  /*transform: scale(1.03);
-  -webkit-transform: scale(1.03);
-  -moz-transform: scale(1.03);*/
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -o-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); }
-
 /* ----- cycle listing ----- */
-.consumers-coop #cycle-listing .cycle-list-item {
-  border-top: 1px dotted #ccc;
-  padding: 8px; }
-
-.consumers-coop #cycle-listing .cycle-list-item:last-child {
-  border-bottom: 1px dotted #ccc; }
-
-.consumers-coop #cycle-listing .cycle-name-and-code {
-  font-weight: bold; }
-
-.consumers-coop #cycle-listing .cycle-timeline {
-  border: none;
-  font-size: 10px;
-  margin-left: 0;
-  margin-bottom: 0; }
-
-.consumers-coop #cycle-listing .cycle-timeline .actions-bar {
-  display: none; }
-
-.consumers-coop #cycle-listing .cycle-timeline-item {
-  padding: 1px 10px; }
-
-.consumers-coop #cycle-listing .cycle-timeline-citem {
-  display: none; }
-
-.consumers-coop #cycle-listing .cycle-timeline-selected-item {
-  text-decoration: underline; }
-
-.consumers-coop #cycle-listing .cycle-date {
-  float: left;
-  width: 270px;
-  font-size: 10px;
-  line-height: 23px; }
-
 /* ----- delivery ----- */
 .consumers-coop .cycle-delivery-option {
   float: left;
@@ -902,49 +597,7 @@ body.consumers-coop {
 .consumers-coop .new-delivery-method input {
   text-align: left; }
 
-/* ----- cycle view ----- */
-.consumers-coop .cycle-view #cycle-others,
-.consumers-coop .cycle-view #cycle-header {
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  margin-left: -2px;
-  padding-right: 2px; }
-
-.consumers-coop .cycle-view #cycle-header {
-  border-bottom: 2px solid #ddd;
-  margin-bottom: 0; }
-
-.consumers-coop .cycle-view #cycle-header .subtitle,
-.consumers-coop .cycle-view #cycle-header #cycle-dates {
-  width: 520px; }
-
-.consumers-coop .cycle-view #cycle-header .subtitle {
-  display: block;
-  margin-top: 20px;
-  font-style: italic; }
-
-.consumers-coop .cycle-view #category-filter .category {
-  float: left;
-  width: 80px; }
-
-.consumers-coop .cycle-view #category-filter .categories {
-  width: 250px;
-  margin-bottom: 20px; }
-
 /* ----- cycle date ----- */
-.consumers-coop #cycle-new-mail-send {
-  margin-bottom: 0; }
-
-.consumers-coop #cycle-new-mail label {
-  font-weight: bold; }
-
-.consumers-coop #cycle-new-mail .mail-message {
-  margin-top: 10px; }
-
-.consumers-coop #cycle-dates th {
-  width: 80px;
-  vertical-align: top; }
-
 .consumers-coop .orders-date td.happening {
   padding-right: 20px;
   text-align: right;

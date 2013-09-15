@@ -460,9 +460,12 @@
       product: 
         _edit: 
           remove_from_order: "remove from order"
-          see_product_details: "see product details"
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
         _index: 
+          supplier: "supplier"
+          product: "product"
+          quantity: "qty"
+          price_total: "value (%{currency})"
           empty_order: "Empty order"
       admin:
         index: 

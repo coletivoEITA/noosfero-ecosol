@@ -11,8 +11,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
 
   named_scope :sources_from_2x_products_joins, :joins =>
     'INNER JOIN suppliers_plugin_source_products ON ( products.id = suppliers_plugin_source_products.to_product_id ) INNER JOIN products products_2 ON ( suppliers_plugin_source_products.from_product_id = products_2.id ) INNER JOIN suppliers_plugin_source_products suppliers_plugin_source_products_2 ON ( products_2.id = suppliers_plugin_source_products_2.to_product_id )'
-
-  # overhide original
+  # overhide original. this scope depends on the above one
   named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_source_products_2.supplier_id = ?', supplier_id] } }
 
   # for products in cycle, these are the products of the suppliers
@@ -72,7 +71,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   end
   def buy_unit
     #TODO: handle multiple products
-    self.supplier_product ? self.supplier_product.unit : self.class.default_unit
+    self.supplier_product.unit || self.class.default_unit
   end
   def sell_unit
     unit
