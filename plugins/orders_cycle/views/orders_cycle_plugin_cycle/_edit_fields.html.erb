@@ -44,15 +44,5 @@
 
 <%= javascript_include_tag '/plugins/distribution/jquery.calendrical.js' %>
 <% javascript_tag do %>
-  options = {isoTime: true}
-  jQuery('#cycle_start_date, #cycle_start_time, #cycle_finish_date, #cycle_finish_time').calendricalDateTimeRange(options);
-  jQuery('#cycle_delivery_start_date, #cycle_delivery_start_time, #cycle_delivery_finish_date, #cycle_delivery_finish_time').calendricalDateTimeRange(options);
-
-  var saveClick = false;
-  <% if @cycle.new? %>
-    jQuery(window).bind('beforeunload', function () {
-      if (!saveClick)
-        jQuery.ajax({type: 'POST', async: false, url: '<%= url_for(:action => :destroy, :id => @cycle.id) %>'});
-    });
-  <% end %>
+  orders_cycle.cycle.edit('<%= url_for(:action => :destroy, :id => @cycle.id) %>');
 <% end %>

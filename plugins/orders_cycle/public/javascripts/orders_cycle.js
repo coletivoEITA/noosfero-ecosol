@@ -1,6 +1,23 @@
 
 orders_cycle = {
 
+  cycle: {
+
+    edit: function (destroy_url) {
+      options = {isoTime: true};
+      jQuery('#cycle_start_date, #cycle_start_time, #cycle_finish_date, #cycle_finish_time').calendricalDateTimeRange(options);
+      jQuery('#cycle_delivery_start_date, #cycle_delivery_start_time, #cycle_delivery_finish_date, #cycle_delivery_finish_time').calendricalDateTimeRange(options);
+
+      var saveClick = false;
+      if (destroy_url) {
+        jQuery(window).bind('beforeunload', function () {
+          if (!saveClick)
+            jQuery.ajax({type: 'POST', async: false, url: destroy_url});
+        });
+      }
+    },
+  },
+
   /* ----- cycle ----- */
 
   in_cycle_order_toggle: function (context) {
