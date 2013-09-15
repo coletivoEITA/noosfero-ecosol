@@ -9,7 +9,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   has_many :cycle_orders, :class_name => 'OrdersCyclePlugin::CycleOrder', :foreign_key => :cycle_id, :dependent => :destroy, :order => 'id ASC'
   has_many :orders, :through => :cycle_orders, :source => :order, :order => 'id ASC'
 
-  has_many :cycle_products, :foreign_key => :cycle_id, :class_name => 'OrdersCyclePlugin::CycleProduct'
+  has_many :cycle_products, :foreign_key => :cycle_id, :class_name => 'OrdersCyclePlugin::CycleProduct', :dependent => :destroy
   has_many :products, :through => :cycle_products, :order => 'name ASC'
 
   has_many :from_products, :through => :products, :order => 'name ASC'
