@@ -37,7 +37,7 @@ module OrdersCyclePlugin::Report
           sp = sbs + 4
           ep = sp + ordered_products.count - 1
           sheet.add_row [
-            supplier.name, '',
+            supplier.abbreviation_or_name, '',
             "=SUM(j#{sp}:j#{ep})", '',
             "=SUM(k#{sp}:k#{ep})", '', '', '', '', '', ''], :style => default
             sbe = sbs+1
