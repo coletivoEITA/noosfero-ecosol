@@ -38,21 +38,18 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     {:conditions => ["NOT ( ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) AND status = 'orders' )",
       {:now => DateTime.now}]}
   }
-  named_scope :by_month, lambda { |date| {
-    :conditions => [ ':start BETWEEN start AND finish OR :finish BETWEEN start AND finish',
-      { :start => date.to_time, :finish => date.to_time + 1.month - 1 }
-    ]}
+  named_scope :by_month, lambda { |month| {
+    :conditions => [ 'EXTRACT(month from start) <= :month and EXTRACT(month from finish) >= :month', { :month => month } ]}
   }
   named_scope :by_year, lambda { |year| {
-    :conditions => [ 'start BETWEEN :start AND :finish',
-      { :start => Time.mktime(year), :finish => Time.mktime(year.to_i+1) }
-    ]}
+    :conditions => [ 'EXTRACT(year from start) <= :year and EXTRACT(year from finish) >= :year', { :year => year } ]}
   }
   named_scope :by_range, lambda { |range| {
     :conditions => [ 'start BETWEEN :start AND :finish OR finish BETWEEN :start AND :finish',
       { :start => range.first, :finish => range.last }
     ]}
   }
+  named_scope :by_status, lambda { |status| { :conditions => {:status => status} } }
 
   named_scope :status_open, :conditions => ["status <> 'closed'"]
   named_scope :status_closed, :conditions => ["status = 'closed'"]

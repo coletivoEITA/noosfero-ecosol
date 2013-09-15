@@ -8,7 +8,7 @@ class OrdersCyclePluginCycleController < MyProfileController
   helper OrdersCyclePlugin::CycleHelper
 
   def index
-    @closed_cycles = search_scope.all
+    @closed_cycles = search_scope(profile.orders_cycles.status_closed).all
     if request.xhr?
       render :partial => 'results'
     else
@@ -126,21 +126,11 @@ class OrdersCyclePluginCycleController < MyProfileController
     #FileUtils.rm_rf tmp_dir
   end
 
-  def search_scope
-    scope = profile.orders_cycles.status_closed
-    conditions = []
-
+  def search_scope scope
     params[:date] ||= {}
-    if params[:date][:year].present?
-      conditions << ["EXTRACT(year from start) <= ? and EXTRACT(year from finish) >= ?", params[:date][:year], params[:date][:year]]
-    end
-    if params[:date][:month].present?
-      conditions << ["EXTRACT(month from start) <= ? and EXTRACT(month from finish) >= ?", params[:date][:month], params[:date][:month]]
-    end
-    conditions << {:status => params[:status]} if params[:status].present?
-
-    scope.proxy_options[:conditions] = OrdersCyclePlugin::Cycle.merge_conditions [scope.proxy_options[:conditions], *conditions]
-
+    scope = scope.by_year params[:date][:year] if params[:date][:year].present?
+    scope = scope.by_month params[:date][:month] if params[:date][:month].present?
+    scope = scope.by_status params[:status] if params[:status].present?
     scope
   end
 
