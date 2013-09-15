@@ -5,6 +5,7 @@ class DeliveryPluginOptionController < MyProfileController
   before_filter :load_methods
   before_filter :load_owner, :except => [:method_new]
 
+  helper OrdersPlugin::FieldHelper
   def select
     render :layout => false
   end
