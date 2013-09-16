@@ -22,8 +22,6 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
 
   default_scope :includes => [:from_2x_products]
 
-  validates_presence_of :cycle
-
   extend CurrencyHelper::ClassMethods
   has_number_with_locale :total_quantity_asked
   has_number_with_locale :total_parcel_quantity

@@ -32,7 +32,8 @@ class OrdersCyclePluginCycleController < MyProfileController
       end
     else
       count = OrdersCyclePlugin::Cycle.count :conditions => {:profile_id => profile}
-      @cycle = OrdersCyclePlugin::Cycle.create! :profile => profile, :status => 'new', :name => t('orders_cycle_plugin.controllers.myprofile.cycle_controller.cycle_n_n') % {:n => count+1}
+      @cycle = OrdersCyclePlugin::Cycle.create! :profile => profile, :status => 'new',
+        :name => t('orders_cycle_plugin.controllers.myprofile.cycle_controller.cycle_n_n') % {:n => count+1}
     end
   end
 

@@ -650,3 +650,7 @@
   #cycles-gadget .cycle .info {
     background: #DDF2C5;
     padding-top: 8px; }
+
+#cycle_opening_message {
+  margin-bottom: 16px;
+  width: 420px; }
