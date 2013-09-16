@@ -10,28 +10,30 @@ $negative-area: 3*$base;
 .sortable-table {
 
   &.wireframe-size {
-    .table-header {
+    > .table-header {
       width: $wireframe;
       margin-left: -$wireframe-padding;
       padding: 0 $wireframe-padding;
     }
 
-    .value-row {
-      width: $wireframe + 2*$negative-area;
+    > .table-content {
+      > .value-row {
+        width: $wireframe + 2*$negative-area;
         margin-left: -$negative-area;
+      }
     }
   }
 
-  .box-field {
-    float: left;
-    padding: $padding;
-  }
-
-  .table-header, .table-content {
+  > .table-header, > .table-content {
     @extend .container-clean;
+
+    .box-field {
+      float: left;
+      padding: $padding;
+    }
   }
   
-  .table-header {
+  > .table-header {
     background-color: $bg-header;
     border-bottom: 2*$border solid $border-header;
     color: black;
@@ -61,11 +63,11 @@ $negative-area: 3*$base;
     }
   }
 
-  .table-content {
+  > .table-content {
     width: auto;
     margin-bottom: $margin;
 
-    .value-row {
+    > .value-row {
       background: white;
       border: $border solid transparent; //avoid size change with .edit class
 

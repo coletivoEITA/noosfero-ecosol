@@ -469,6 +469,7 @@
       product: 
         _edit: 
           remove_from_order: "Remover do pedido"
+          submit: 'OK'
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
         _index: 
           supplier: "fornecedor"
@@ -499,7 +500,6 @@
           see_redistribution: "veja redistribuição"
           the_collective_member: "O membro do coletivo receberá um email que discrimina todas as mudanças feitas em seu pedido."
           warn_member_of_the_ch: "Avise o membro das mudanças em seu pedido"
-
       mailer:
         order_confirmation: 
           attention_to_the_foll: "Atenção às instruções de entrega a seguir:"

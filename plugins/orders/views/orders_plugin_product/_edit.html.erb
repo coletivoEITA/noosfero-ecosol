@@ -1,4 +1,4 @@
-<div id="ordered-product-<%=ordered_product.id%>" class="value-row ordered-product" toggleedit="orders.product_edit();">
+<div id="ordered-product-<%=ordered_product.id%>" class="value-row ordered-product" toggleedit="orders.product.edit();">
 
   <% if @quantity_asked_less_than_minimum and @quantity_asked_less_than_minimum == ordered_product.id %>
     <div class=distribution-error-message>
@@ -7,7 +7,6 @@
   <% end %>
 
   <% f.fields_for "ordered_product-#{ordered_product.id}", ordered_product do |f| %>
-
     <%= f.hidden_field :id %>
 
     <div>
@@ -18,9 +17,10 @@
         <span><%= ordered_product.quantity_asked_as_currency_number %></span>
         <span class="lower"><%= product.unit.singular rescue '' %></span>
       </div>
-      <% if order.may_edit? @admin_action %>
+      <% if order.may_edit? %>
         <div class="box-field quantity-edit">
-          <%= render :partial => "orders_plugin_product/quantity", :locals => {:product => ordered_product, :f => f} %>
+          <%= f.text_field :quantity_asked, :value => ordered_product.quantity_asked_as_currency_number, :onkeyup => 'orders.product.quantity_keyup(this, event);' %>
+          <span class="lower"><%= product.unit.singular rescue '' %></span>
         </div>
       <% end %>
 
@@ -32,12 +32,11 @@
     <div class="more">
 
       <div class="actions">
-        <% if @admin_action %>
-          <%= link_to_function t('orders_plugin.views.product._edit.remove_from_order'), "jQuery(this).parents('.value-row').remove();" if order.may_edit?(@admin_action) %>
-        <% else %>
-          <%= link_to_remote t('orders_plugin.views.product._edit.remove_from_order'), :update => "ordered-product-#{ordered_product.id}",
-            :url => {:controller => 'orders_plugin_product', :action => :destroy, :id => ordered_product.id} if order.may_edit?(@admin_action) %>
-        <% end %>
+        <%= link_to_function t('orders_plugin.views.product._edit.submit'), "orders.product.submit(this, '#{url_for(:controller => :orders_plugin_product, :action => :edit, :id => ordered_product.id)}')", :class => 'action-button' %>
+
+        <%= link_to_remote t('orders_plugin.views.product._edit.remove_from_order'), :update => "ordered-product-#{ordered_product.id}",
+          :loading => "loading_overlay.show('#ordered-product-#{ordered_product.id}", :loaded => "loading_overlay.hide('#ordered-product-#{ordered_product.id}",
+          :url => {:controller => 'orders_plugin_product', :action => :destroy, :id => ordered_product.id} if order.may_edit? %>
       </div>
 
       <div class="price-with-unit"><%= price_with_unit_span product.price_as_currency_number, product.unit %></div>

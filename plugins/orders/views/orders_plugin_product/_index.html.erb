@@ -1,3 +1,5 @@
+<% partial = @admin_action ? 'admin_edit' : 'edit' %>
+
 <div class="order-products-container <%= "empty" if order.products.count == 0 %>">
   <% if order.products.count > 0 %>
     <div class="order-products">
@@ -11,7 +13,7 @@
       <div class="table-content">
         <% f.fields_for :products, order.products do |f| %>
           <% order.products.each do |ordered_product| %>
-            <%= render :partial => "orders_plugin_product/edit", :locals => {:order => order,
+            <%= render :partial => "orders_plugin_product/#{partial}", :locals => {:order => order,
               :ordered_product => ordered_product, :product => ordered_product.product, :f => f} %>
           <% end %>
         <% end %>

@@ -21,8 +21,8 @@
 
   <% end %>
 
-  <% form_remote_for :supplier, supplier, :loading => "loading_overlay.show('supplier-#{supplier_label}');",
-    :loaded => "loading_overlay.hide('supplier-#{supplier_label}');",
+  <% form_remote_for :supplier, supplier, :loading => "loading_overlay.show('#supplier-#{supplier_label}');",
+    :loaded => "loading_overlay.hide('#supplier-#{supplier_label}');",
     :url => {:action => supplier.new_record? ? :new : :edit, :id => supplier.id},
     :html => {:class => 'full-registration'} do |f| %>
 

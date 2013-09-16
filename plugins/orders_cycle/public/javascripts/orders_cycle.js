@@ -87,7 +87,7 @@ orders_cycle = {
 
   ajaxifyPagination: function(elementId) {
     jQuery(".pagination a").click(function() {
-      loading_overlay.show(elementId);
+      loading_overlay.show('#'+elementId);
       jQuery.ajax({
         type: "GET",
         url: jQuery(this).attr("href"),

@@ -27,10 +27,9 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
       return
     end
     @consumer = user
-    @order = OrdersPlugin::Order.create! :consumer => @consumer
-    redirect_to params.merge(:action => :edit, :id => @order.id)
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @cycle_order = OrdersCyclePlugin::CycleOrder.create! :cycle => @cycle, :order => @order
+    @order = OrdersPlugin::Order.create! :profile => profile, :consumer => @consumer, :cycle => @cycle
+    redirect_to params.merge(:action => :edit, :id => @order.id)
   end
 
   def edit

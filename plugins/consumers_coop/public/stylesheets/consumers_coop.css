@@ -494,97 +494,10 @@ body.consumers-coop {
   float: right; }
 
 /* ----- cycle edition ----- */
-.consumers-coop #cycle-fields input {
-  margin-right: 7px; }
-
-.consumers-coop .cycle-field-name input {
-  width: 195px; }
-
-.consumers-coop.action-orders_cycle_plugin_cycle-new .cycle-edit-link,
-.consumers-coop.action-orders_cycle_plugin_cycle-edit .cycle-edit-link {
-  height: 44px;
-  display: block; }
-
-.consumers-coop .cycle-field-description textarea {
-  width: 412px;
-  height: 100px; }
-
-.consumers-coop #cycle-delivery-options {
-  clear: both; }
-
-.consumers-coop #cycle-delivery label {
-  font-weight: bold; }
-
-.consumers-coop .cycle-new {
-  margin-bottom: 29px;
-  display: block; }
-
 /* ----- cycle orders  ----- */
-.consumers-coop #cycle-orders {
-  margin: 20px 0;
-  margin-left: -8px; }
-
-.consumers-coop .cycle-fields-block {
-  margin: 10px 0; }
-
 /* ----- ordered product  ----- */
 /* ----- cycle listing ----- */
 /* ----- delivery ----- */
-.consumers-coop .cycle-delivery-option {
-  float: left;
-  display: inline-block;
-  padding: 2px 5px;
-  margin-right: 10px;
-  background-color: #E5E0EC;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -o-border-radius: 4px; }
-
-.consumers-coop .cycle-add-delivery-option {
-  float: left;
-  padding: 2px 0; }
-
-.action-orders_cycle_plugin_cycle-new #colorbox, .action-orders_cycle_plugin_cycle-edit #colorbox {
-  top: 80%; }
-
-#consumers-coop-plugin-add-delivery select {
-  height: 130px;
-  padding: 0;
-  width: 280px; }
-
-#consumers-coop-plugin-add-delivery .field {
-  float: left; }
-
-#consumers-coop-plugin-add-delivery #delivery-menu {
-  float: left;
-  line-height: 20px;
-  margin-left: 10px;
-  margin-top: 26px; }
-
-#consumers-coop-plugin-add-delivery #delivery-menu a {
-  display: block; }
-
-.consumers-coop #delivery-method-choose {
-  height: 235px; }
-
-.consumers-coop #delivery-method-choose #delivery-menu a {
-  text-transform: capitalize; }
-
-.consumers-coop .cycle-delete-delivery-option {
-  font-weight: bold; }
-
-.consumers-coop #delivery-option-new-method {
-  background-color: #E5E0EC;
-  display: none; }
-
-.consumers-coop .new-delivery-method label {
-  width: 100px;
-  text-align: right; }
-
-.consumers-coop .new-delivery-method input {
-  text-align: left; }
-
 /* ----- cycle date ----- */
 .consumers-coop .orders-date td.happening {
   padding-right: 20px;

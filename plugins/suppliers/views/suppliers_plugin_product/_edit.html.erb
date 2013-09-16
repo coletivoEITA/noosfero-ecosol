@@ -1,8 +1,8 @@
 <div class="box-edit">
 
   <% form_remote_for :product, product,
-    :loading => "loading_overlay.show('our-product-#{product.id}')",
-    :loaded => "loading_overlay.hide('our-product-#{product.id}')",
+    :loading => "loading_overlay.show('#our-product-#{product.id}')",
+    :loaded => "loading_overlay.hide('#our-product-#{product.id}')",
     :url => {:controller => :suppliers_plugin_product, :action => :edit, :id => product ? product.id : nil} do |f| %>
 
     <div class="internal-table">
@@ -101,8 +101,8 @@
       <%= link_to_function t('suppliers_plugin.views.product._edit.cancel'), :class => 'toggle-edit action-button cancel' %>
       <%= link_to_remote t('suppliers_plugin.views.product._edit.remove_product'), {
         :confirm => t('suppliers_plugin.views.product._edit.are_you_sure_you_want'),
-        :loading => "loading_overlay.show('our-product-#{product.id}')",
-        :loaded => "loading_overlay.hide('our-product-#{product.id}')",
+        :loading => "loading_overlay.show('#our-product-#{product.id}')",
+        :loaded => "loading_overlay.hide('#our-product-#{product.id}')",
         :url => {:controller => :suppliers_plugin_product, :action => 'destroy', :id => product.id }
       }, :class => 'action-button remove' %>
     </div>

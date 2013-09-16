@@ -460,6 +460,7 @@
       product: 
         _edit: 
           remove_from_order: "remove from order"
+          submit: 'OK'
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
         _index: 
           supplier: "supplier"

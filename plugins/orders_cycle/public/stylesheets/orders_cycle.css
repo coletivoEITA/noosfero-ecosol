@@ -654,3 +654,81 @@
 #cycle_opening_message {
   margin-bottom: 16px;
   width: 420px; }
+
+#cycle-fields input {
+  margin-right: 7px; }
+
+.cycle-field-name input {
+  width: 195px; }
+
+.cycle-fields-block {
+  margin: 10px 0; }
+
+.cycle-field-description textarea {
+  width: 412px;
+  height: 100px; }
+
+.action-orders_cycle_plugin_cycle-new .cycle-edit-link,
+.action-orders_cycle_plugin_cycle-edit .cycle-edit-link {
+  height: 44px;
+  display: block; }
+
+#cycle-delivery-options {
+  clear: both; }
+
+#cycle-delivery label {
+  font-weight: bold; }
+
+.cycle-new {
+  margin-bottom: 29px;
+  display: block; }
+
+.cycle-delivery-option {
+  float: left;
+  display: inline-block;
+  padding: 2px 5px;
+  margin-right: 10px;
+  background-color: #E5E0EC;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px; }
+
+.cycle-add-delivery-option {
+  float: left;
+  padding: 2px 0; }
+
+.action-orders_cycle_plugin_cycle-new #colorbox, .action-orders_cycle_plugin_cycle-edit #colorbox {
+  top: 80%; }
+
+#consumers-coop-plugin-add-delivery select {
+  height: 130px;
+  padding: 0;
+  width: 280px; }
+#consumers-coop-plugin-add-delivery .field {
+  float: left; }
+  #consumers-coop-plugin-add-delivery .field #delivery-menu {
+    float: left;
+    line-height: 20px;
+    margin-left: 10px;
+    margin-top: 26px; }
+    #consumers-coop-plugin-add-delivery .field #delivery-menu a {
+      display: block; }
+
+#delivery-method-choose {
+  height: 235px; }
+  #delivery-method-choose #delivery-menu a {
+    text-transform: capitalize; }
+
+.cycle-delete-delivery-option {
+  font-weight: bold; }
+
+#delivery-option-new-method {
+  background-color: #E5E0EC;
+  display: none; }
+
+.new-delivery-method label {
+  width: 100px;
+  text-align: right; }
+.new-delivery-method input {
+  text-align: left; }

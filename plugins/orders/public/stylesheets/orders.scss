@@ -135,6 +135,7 @@
     .total-value {
       float: right;
       width: $module01;
+      text-transform: uppercase;
     }
 
     .total-value {
@@ -160,7 +161,6 @@
       float: left;
       padding: $half-padding $padding;
       padding-right: $padding - $border;
-
       border-right: $border solid white;
       &:last-child {
         border-right: none;
@@ -188,10 +188,11 @@
       .ordered-product {
 
         .more {
-          margin-top: $half-padding;
+          padding: $half-padding $padding;
           display: none; //default
 
           .actions {
+            float: left;
 
             a {
               color: black;
@@ -202,13 +203,13 @@
           }
         }
 
-        .quantity-edit {
-          display: none;
-        }
-
         &.hover,
         &.edit {
           background-color: #ffe546;
+        }
+
+        .quantity-edit {
+          display: none;
         }
 
         &.edit {
@@ -232,6 +233,10 @@
           }
           .quantity {
             display: none;
+          }
+          .box-field {
+            border-right: none;
+            padding-right: $padding;
           }
         }
       }

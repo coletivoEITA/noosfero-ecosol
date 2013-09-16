@@ -89,7 +89,7 @@
     <% if cycle.orders? %>
       <%# FIXME: put js in a function of orders_cycle.js %>
       <%= submit_to_function (ordered_product ? t('orders_cycle_plugin.views.product._order_edit.change') : t('orders_cycle_plugin.views.product._order_edit.add')),
-        "loading_overlay.show('cycle-product-#{product.id}'); " +
+        "loading_overlay.show('#cycle-product-#{product.id}'); " +
         "orders_cycle.order_product.include('#{include_message}'); " +
         "jQuery.post('#{url_for(:controller => :orders_cycle_plugin_ordered_product, :action => :new)}', {order_id: '#{order_id}', redirect: '#{order.nil? ? '1' : ''}', offered_product_id: #{product.id}, quantity_asked: jQuery(this).parents('.order-cycle-product').find('.quantity-entry input').val() }); " %>
     <%= link_to_function t('orders_cycle_plugin.views.product._order_edit.cancel'), :class => 'toggle-edit' %>

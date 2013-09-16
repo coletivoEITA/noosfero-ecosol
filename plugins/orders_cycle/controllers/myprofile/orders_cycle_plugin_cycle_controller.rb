@@ -4,6 +4,7 @@ class OrdersCyclePluginCycleController < MyProfileController
   include ConsumersCoopPlugin::ControllerHelper
 
   no_design_blocks
+  before_filter :set_admin_action
 
   helper OrdersCyclePlugin::CycleHelper
 
@@ -127,12 +128,18 @@ class OrdersCyclePluginCycleController < MyProfileController
     #FileUtils.rm_rf tmp_dir
   end
 
+  protected
+
   def search_scope scope
     params[:date] ||= {}
     scope = scope.by_year params[:date][:year] if params[:date][:year].present?
     scope = scope.by_month params[:date][:month] if params[:date][:month].present?
     scope = scope.by_status params[:status] if params[:status].present?
     scope
+  end
+
+  def set_admin_action
+    @admin_action = true
   end
 
 end
