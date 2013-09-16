@@ -36,6 +36,7 @@ module ConsumersCoopPlugin::LayoutHelper
     output = render :file => 'consumers_coop_plugin_layouts/default'
     if on_homepage?
       extend SuppliersPlugin::ProductHelper
+      extend OrdersPlugin::DateHelper
       output += render :file => 'orders_cycle_plugin_gadgets/cycles'
     end
     output
