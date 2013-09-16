@@ -211,7 +211,7 @@
     font-size: 21px; }
   .consumers-coop .pstyle-tm1 {
     font-size: 13px; }
-  .consumers-coop .pstyle-tm2 {
+  .consumers-coop .pstyle-tm2, .consumers-coop .subtitle {
     font-size: 10px; }
   .consumers-coop .profile-image {
     display: inline-block;
@@ -568,7 +568,7 @@ body.consumers-coop {
 
 #consumers-coop-plugin-cycles-gadget .cycle .info {
   background: #DDF2C5;
-  padding-top: 8px; }
+  padding: 8px; }
 
 /* ----- cycle timeline  ----- */
 .consumers-coop #cycles-page .cycle-timeline {
