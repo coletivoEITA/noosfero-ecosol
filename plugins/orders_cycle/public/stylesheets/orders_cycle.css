@@ -417,3 +417,7 @@
 
 #cycle-closed-listing {
   padding-left: 0; }
+
+#cycle_opening_message {
+  margin-bottom: 16px;
+  width: 420px; }
