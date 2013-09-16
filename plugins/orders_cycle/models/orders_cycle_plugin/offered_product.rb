@@ -70,7 +70,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   end
   def buy_unit
     #TODO: handle multiple products
-    self.supplier_product:and self.supplier_product.unit ? self.supplier_product.unit : self.class.default_unit
+    self.supplier_product and self.supplier_product.unit ? self.supplier_product.unit : self.class.default_unit
   end
   def sell_unit
     unit

@@ -139,7 +139,7 @@ class OrdersCyclePluginCycleController < MyProfileController
     end
     conditions << {:status => params[:status]} if params[:status].present?
 
-    scope.proxy_options[:conditions] = OrdersCyclePlugin::Cycle.merge_conditions [scope.proxy_options[:conditions], *conditions]
+    scope.proxy_options[:conditions] = OrdersCyclePlugin::Cycle.merge_conditions *[scope.proxy_options[:conditions], *conditions]
 
     scope
   end
