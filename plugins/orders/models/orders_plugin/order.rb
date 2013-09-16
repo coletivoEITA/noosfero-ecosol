@@ -43,6 +43,11 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     self['status']
   end
 
+  def may_edit? admin_action = false
+    self.draft? or admin_action
+  end
+
+
   STATUS_MESSAGE = {
    'open' => 'orders_plugin.models.order.order_in_progress',
    'forgotten' => 'orders_plugin.models.order.order_not_confirmed',

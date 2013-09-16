@@ -118,29 +118,29 @@
 
 .order-products-container {
   width: $order-products-width;
-  border: $border solid black;
+  font-size: 10px;
 
   &.empty {
     padding: $padding;
     border-top: $border dotted black;
     text-align: center;
-    font-size: 10px;
   }
 
   .order-total {
-    text-align: right;
-    text-transform: uppercase;
     padding: $half-padding $padding;
     border-top: $border solid black;
-    float: right;
-  }
-  .total-title {
-    width: 278px;
-  }
-  .total-value {
-    max-width: 65px;
-    font-weight: bold;
-    float: right;
+    @extend .container-clean;
+
+    .total-title,
+    .total-value {
+      float: right;
+      width: $module01;
+    }
+
+    .total-value {
+      width: $module01;
+      clear: both;
+    }
   }
 
   .order-products {
@@ -152,11 +152,19 @@
 
     .table-header {
       font-weight: bold;
+      border-bottom: $border solid black;
+      text-transform: uppercase;
     }
 
     .box-field {
       float: left;
       padding: $half-padding $padding;
+      padding-right: $padding - $border;
+
+      border-right: $border solid white;
+      &:last-child {
+        border-right: none;
+      }
 
       &.supplier {
         width: $module01 + 2*$intercolumn;
@@ -164,8 +172,11 @@
       &.product {
         width: $module02;
       }
-      &.quantity {
-        width: $module01;
+      &.quantity,
+      &.quantity-edit {
+        &, input {
+          width: $module01;
+        }
       }
       &.price-total {
         width: $module01;
@@ -176,29 +187,23 @@
 
       .ordered-product {
 
-        .box-field {
-          &, &.product-quantity input {
-            font-size: 10px;
-          }
-          &.product-quantity {
-            height: 24px;
-            white-space: nowrap;
-            overflow: hidden;
+        .more {
+          margin-top: $half-padding;
+          display: none; //default
 
-            input {
-              width: 40px;
+          .actions {
+
+            a {
+              color: black;
             }
+          }
+          .price-with-unit {
+            float: right;
           }
         }
 
-        .more-actions {
-          margin-top: $half-padding;
-          .box-field {
-            height: auto;
-          }
-          .box-details a {
-            color: black;
-          }
+        .quantity-edit {
+          display: none;
         }
 
         &.hover,
@@ -221,6 +226,13 @@
           box-shadow: 0 0 3px rgba(0,0,0,.5);
           -moz-box-shadow: 0 0 3px rgba(0,0,0,.5);
           -webkit-box-shadow: 0 0 3px rgba(0,0,0,.5);
+
+          .quantity-edit {
+            display: block;
+          }
+          .quantity {
+            display: none;
+          }
         }
       }
     }

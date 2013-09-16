@@ -90,7 +90,7 @@ label {
 }
 
 select,
-input[type=text],
+input[type=text], input[type=password],
 textarea {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -99,7 +99,7 @@ textarea {
 }
 
 select,
-input[type=text] {
+input[type=text], input[type=password] {
   height: $input-height;
 }
 
@@ -109,16 +109,23 @@ select {
   padding-left: $half-padding;
 }
 
-input[type=text] {
-  border: $border solid black;
-  padding: $half-padding;
-  margin: 0;
-}
+input {
+  &.date-select,
+  &.time-select {
+    width: 94px;
+  }
 
-input[type=checkbox] {
-  width: 12px;
-  height: 12px;
-  margin: 0;
+  &[type=text] {
+    border: $border solid black;
+    padding: $half-padding;
+    margin: 0;
+  }
+
+  &[type=checkbox] {
+    width: 12px;
+    height: 12px;
+    margin: 0;
+  }
 }
 
 textarea {

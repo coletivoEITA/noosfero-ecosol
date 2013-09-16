@@ -906,19 +906,21 @@
     margin-bottom: 4px;
     font-size: 10px; }
   #supplier-our-products select,
-  #supplier-our-products input[type=text],
+  #supplier-our-products input[type=text], #supplier-our-products input[type=password],
   #supplier-our-products textarea {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box; }
   #supplier-our-products select,
-  #supplier-our-products input[type=text] {
+  #supplier-our-products input[type=text], #supplier-our-products input[type=password] {
     height: 24px; }
   #supplier-our-products select {
     background-color: #fff;
     border: 1px solid black;
     padding-left: 4px; }
+  #supplier-our-products input.date-select, #supplier-our-products input.time-select {
+    width: 94px; }
   #supplier-our-products input[type=text] {
     border: 1px solid black;
     padding: 4px;
@@ -1202,19 +1204,21 @@
         margin-bottom: 4px;
         font-size: 10px; }
       #suppliers-page .supplier .box-edit form select,
-      #suppliers-page .supplier .box-edit form input[type=text],
+      #suppliers-page .supplier .box-edit form input[type=text], #suppliers-page .supplier .box-edit form input[type=password],
       #suppliers-page .supplier .box-edit form textarea {
         box-sizing: border-box;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         -ms-box-sizing: border-box; }
       #suppliers-page .supplier .box-edit form select,
-      #suppliers-page .supplier .box-edit form input[type=text] {
+      #suppliers-page .supplier .box-edit form input[type=text], #suppliers-page .supplier .box-edit form input[type=password] {
         height: 24px; }
       #suppliers-page .supplier .box-edit form select {
         background-color: #fff;
         border: 1px solid black;
         padding-left: 4px; }
+      #suppliers-page .supplier .box-edit form input.date-select, #suppliers-page .supplier .box-edit form input.time-select {
+        width: 94px; }
       #suppliers-page .supplier .box-edit form input[type=text] {
         border: 1px solid black;
         padding: 4px;

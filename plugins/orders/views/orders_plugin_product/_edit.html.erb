@@ -11,17 +11,16 @@
     <%= f.hidden_field :id %>
 
     <div>
-      <div class="box-field supplier"><%= product.supplier.abbreviation_or_name %></div>
+      <div class="box-field supplier"><%= excerpt_ending product.supplier.abbreviation_or_name, 15 %></div>
       <div class="box-field product"><%= product.name %></div>
 
-      <% if ordered_product.order.open? or (@admin_action and ordered_product.order.cycle.orders?) %>
-        <div id=<%="quantity-#{ordered_product.id.to_s}"%> class="box-field quantity">
+      <div class="box-field quantity">
+        <span><%= ordered_product.quantity_asked_as_currency_number %></span>
+        <span class="lower"><%= product.unit.singular rescue '' %></span>
+      </div>
+      <% if order.may_edit? @admin_action %>
+        <div class="box-field quantity-edit">
           <%= render :partial => "orders_plugin_product/quantity", :locals => {:product => ordered_product, :f => f} %>
-        </div>
-      <% else %>
-        <div class="box-field quantity">
-          <span><%= ordered_product.quantity_asked_as_currency_number %></span>
-          <span class="lower"><%= product.unit.singular rescue '' %></span>
         </div>
       <% end %>
 
@@ -30,20 +29,18 @@
       </div>
     </div>
 
-    <div class="more-actions" style="display: none">
+    <div class="more">
 
-      <div class="box-field box-details">
+      <div class="actions">
         <% if @admin_action %>
-          <%= link_to_function t('orders_plugin.views.product._edit.remove_from_order'), "jQuery(this).parents('.value-row').remove();" if ordered_product.order.cycle.orders? %>
+          <%= link_to_function t('orders_plugin.views.product._edit.remove_from_order'), "jQuery(this).parents('.value-row').remove();" if order.may_edit?(@admin_action) %>
         <% else %>
-          <%= link_to t('orders_plugin.views.product._edit.see_product_details'), "#cycle-product-#{product.id}", :class => 'toggle-ignore' %>
-          &nbsp;&nbsp;
           <%= link_to_remote t('orders_plugin.views.product._edit.remove_from_order'), :update => "ordered-product-#{ordered_product.id}",
-            :url => {:controller => 'orders_plugin_product', :action => :destroy, :id => ordered_product.id} if ordered_product.order.open? %>
+            :url => {:controller => 'orders_plugin_product', :action => :destroy, :id => ordered_product.id} if order.may_edit?(@admin_action) %>
         <% end %>
       </div>
 
-      <div class="box-field price-with-unit"><%= price_with_unit_span product.price_as_currency_number, product.unit %></div>
+      <div class="price-with-unit"><%= price_with_unit_span product.price_as_currency_number, product.unit %></div>
 
       <div class="clean"></div>
     </div>

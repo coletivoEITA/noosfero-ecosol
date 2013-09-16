@@ -32,6 +32,10 @@ class OrdersPlugin::Order
     self.draft? && cycle.orders?
   end
 
+  def may_edit? admin_action = false
+    self.open? or admin_action
+  end
+
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.cycle.orders }
   def code

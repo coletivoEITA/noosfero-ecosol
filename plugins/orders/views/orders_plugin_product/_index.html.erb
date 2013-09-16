@@ -11,7 +11,8 @@
       <div class="table-content">
         <% f.fields_for :products, order.products do |f| %>
           <% order.products.each do |ordered_product| %>
-            <%= render :partial => "orders_plugin_product/edit", :locals => {:ordered_product => ordered_product, :product => ordered_product.product, :f => f} %>
+            <%= render :partial => "orders_plugin_product/edit", :locals => {:order => order,
+              :ordered_product => ordered_product, :product => ordered_product.product, :f => f} %>
           <% end %>
         <% end %>
       </div>

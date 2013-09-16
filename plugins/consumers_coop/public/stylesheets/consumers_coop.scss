@@ -203,17 +203,6 @@ body.consumers-coop {
   margin-bottom: 8px;
 }
 
-.consumers-coop .box-view .box-field.price,
-.consumers-coop .value-row .box-field.price-with-unit {
-  font-size: 12px !important;
-  color: #0095B5;
-  font-weight: bold;
-}
-.consumers-coop .value-row .box-field.price-with-unit .price-unit {
-  font-size: 10px;
-  font-weight: normal;
-}
-
 .consumers-coop .actions-bar {
   background-color: #FEC64D;
   padding: 6px 8px;
@@ -236,11 +225,6 @@ body.consumers-coop {
 .consumers-coop .cycle-field-name input {
   width: 195px;
 }
-.consumers-coop input.date-select,
-.consumers-coop input.time-select {
-  width: 94px;
-}
-
 .consumers-coop.action-orders_cycle_plugin_cycle-new .cycle-edit-link,
 .consumers-coop.action-orders_cycle_plugin_cycle-edit .cycle-edit-link {
   height: 44px;

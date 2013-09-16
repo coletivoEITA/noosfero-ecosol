@@ -302,19 +302,21 @@
     margin-bottom: 4px;
     font-size: 10px; }
   .consumers-coop select,
-  .consumers-coop input[type=text],
+  .consumers-coop input[type=text], .consumers-coop input[type=password],
   .consumers-coop textarea {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box; }
   .consumers-coop select,
-  .consumers-coop input[type=text] {
+  .consumers-coop input[type=text], .consumers-coop input[type=password] {
     height: 24px; }
   .consumers-coop select {
     background-color: #fff;
     border: 1px solid black;
     padding-left: 4px; }
+  .consumers-coop input.date-select, .consumers-coop input.time-select {
+    width: 94px; }
   .consumers-coop input[type=text] {
     border: 1px solid black;
     padding: 4px;
@@ -479,16 +481,6 @@ body.consumers-coop {
   clear: both;
   margin-bottom: 8px; }
 
-.consumers-coop .box-view .box-field.price,
-.consumers-coop .value-row .box-field.price-with-unit {
-  font-size: 12px !important;
-  color: #0095B5;
-  font-weight: bold; }
-
-.consumers-coop .value-row .box-field.price-with-unit .price-unit {
-  font-size: 10px;
-  font-weight: normal; }
-
 .consumers-coop .actions-bar {
   background-color: #FEC64D;
   padding: 6px 8px;
@@ -507,10 +499,6 @@ body.consumers-coop {
 
 .consumers-coop .cycle-field-name input {
   width: 195px; }
-
-.consumers-coop input.date-select,
-.consumers-coop input.time-select {
-  width: 94px; }
 
 .consumers-coop.action-orders_cycle_plugin_cycle-new .cycle-edit-link,
 .consumers-coop.action-orders_cycle_plugin_cycle-edit .cycle-edit-link {

@@ -75,7 +75,7 @@ class Profile
   protected
 
   def abbreviation_or_name
-    self['name_abbreviation'] || name
+    self.consumers_coop_settings.name_abbreviation.blank? ? self.name : self.consumers_coop_settings.name_abbreviation
   end
 
   def build_consumers_coop_header_image

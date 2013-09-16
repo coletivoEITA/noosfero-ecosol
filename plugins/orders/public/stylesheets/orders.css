@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, .order-products-container .order-products .table-header {
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, .order-products-container .order-total, .order-products-container .order-products .table-header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -140,7 +140,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, .order-products-container .order-products .table-header {
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, .order-products-container .order-total, .order-products-container .order-products .table-header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -278,7 +278,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, .order-products-container .order-products .table-header {
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, .order-products-container .order-total, .order-products-container .order-products .table-header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -523,7 +523,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, .order-products-container .order-products .table-header {
+.container-clean, .sortable-table .table-header, .sortable-table .table-content, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table, .order-products-container .order-total, .order-products-container .order-products .table-header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -799,51 +799,49 @@
 
 .order-products-container {
   width: 432px;
-  border: 1px solid black; }
+  font-size: 10px; }
   .order-products-container.empty {
     padding: 8px;
     border-top: 1px dotted black;
-    text-align: center;
-    font-size: 10px; }
+    text-align: center; }
   .order-products-container .order-total {
-    text-align: right;
-    text-transform: uppercase;
     padding: 4px 8px;
-    border-top: 1px solid black;
-    float: right; }
-  .order-products-container .total-title {
-    width: 278px; }
-  .order-products-container .total-value {
-    max-width: 65px;
-    font-weight: bold;
-    float: right; }
+    border-top: 1px solid black; }
+    .order-products-container .order-total .total-title,
+    .order-products-container .order-total .total-value {
+      float: right;
+      width: 64px; }
+    .order-products-container .order-total .total-value {
+      width: 64px;
+      clear: both; }
   .order-products-container .order-products .table-header {
-    font-weight: bold; }
+    font-weight: bold;
+    border-bottom: 1px solid black;
+    text-transform: uppercase; }
   .order-products-container .order-products .box-field {
     float: left;
-    padding: 4px 8px; }
+    padding: 4px 8px;
+    padding-right: 7px;
+    border-right: 1px solid white; }
+    .order-products-container .order-products .box-field:last-child {
+      border-right: none; }
     .order-products-container .order-products .box-field.supplier {
       width: 96px; }
     .order-products-container .order-products .box-field.product {
       width: 144px; }
-    .order-products-container .order-products .box-field.quantity {
+    .order-products-container .order-products .box-field.quantity, .order-products-container .order-products .box-field.quantity input, .order-products-container .order-products .box-field.quantity-edit, .order-products-container .order-products .box-field.quantity-edit input {
       width: 64px; }
     .order-products-container .order-products .box-field.price-total {
       width: 64px; }
-  .order-products-container .order-products .table-content .ordered-product .box-field, .order-products-container .order-products .table-content .ordered-product .box-field.product-quantity input {
-    font-size: 10px; }
-  .order-products-container .order-products .table-content .ordered-product .box-field.product-quantity {
-    height: 24px;
-    white-space: nowrap;
-    overflow: hidden; }
-    .order-products-container .order-products .table-content .ordered-product .box-field.product-quantity input {
-      width: 40px; }
-  .order-products-container .order-products .table-content .ordered-product .more-actions {
-    margin-top: 4px; }
-    .order-products-container .order-products .table-content .ordered-product .more-actions .box-field {
-      height: auto; }
-    .order-products-container .order-products .table-content .ordered-product .more-actions .box-details a {
+  .order-products-container .order-products .table-content .ordered-product .more {
+    margin-top: 4px;
+    display: none; }
+    .order-products-container .order-products .table-content .ordered-product .more .actions a {
       color: black; }
+    .order-products-container .order-products .table-content .ordered-product .more .price-with-unit {
+      float: right; }
+  .order-products-container .order-products .table-content .ordered-product .quantity-edit {
+    display: none; }
   .order-products-container .order-products .table-content .ordered-product.hover, .order-products-container .order-products .table-content .ordered-product.edit {
     background-color: #ffe546; }
   .order-products-container .order-products .table-content .ordered-product.edit {
@@ -859,3 +857,7 @@
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); }
+    .order-products-container .order-products .table-content .ordered-product.edit .quantity-edit {
+      display: block; }
+    .order-products-container .order-products .table-content .ordered-product.edit .quantity {
+      display: none; }

@@ -13,9 +13,4 @@ module OrdersCyclePlugin::DisplayHelper
   include OrdersPlugin::DateHelper
   include SuppliersPlugin::DisplayHelper
 
-  def excerpt_ending text, length
-    return nil if text.blank?
-    excerpt text, text.first(3), length
-  end
-
 end
