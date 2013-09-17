@@ -11,9 +11,11 @@ class SuppliersPluginProductController < MyProfileController
   def index
     @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id] if params[:supplier_id].present?
 
-    scope = profile.distributed_products.unarchived.from_products_joins
-    @products = search_scope(scope).paginate :per_page => 10, :page => params[:page], :order => 'products_2.name ASC'
-    @products_count = search_scope(scope).count :include => []
+    SuppliersPlugin::DistributedProduct.send :with_exclusive_scope do
+      scope = profile.distributed_products.unarchived.from_products_joins
+      @products = search_scope(scope).paginate :per_page => 10, :page => params[:page], :order => 'products_2.name ASC'
+      @products_count = search_scope(scope).count
+    end
     @product_categories = Product.product_categories_of @products
     @new_product = SuppliersPlugin::DistributedProduct.new :profile => profile, :supplier => @supplier
     @units = Unit.all
