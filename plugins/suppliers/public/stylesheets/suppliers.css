@@ -813,7 +813,7 @@
     font-size: 21px; }
   #supplier-our-products .pstyle-tm1 {
     font-size: 13px; }
-  #supplier-our-products .pstyle-tm2, #supplier-our-products #suppliers-page .supplier .box-edit form .subtitle, #suppliers-page .supplier .box-edit form #supplier-our-products .subtitle {
+  #supplier-our-products .pstyle-tm2, #supplier-our-products .subtitle, #supplier-our-products #suppliers-page .supplier .box-edit form .subtitle, #suppliers-page .supplier .box-edit form #supplier-our-products .subtitle {
     font-size: 10px; }
   #supplier-our-products .profile-image {
     display: inline-block;
@@ -1005,6 +1005,8 @@
   display: block;
   margin-top: 48px;
   border-top: 1px solid black; }
+#suppliers-page .supplier.supplier-inactive {
+  background-color: #faeeee; }
 #suppliers-page .supplier {
   border-top: 1px solid black;
   border-bottom: none; }
@@ -1019,8 +1021,6 @@
     padding-right: 0; }
     #suppliers-page .supplier .box-view .supplier-type {
       font-style: italic; }
-    #suppliers-page .supplier .box-view .supplier-inactive {
-      background-color: #faeeee; }
     #suppliers-page .supplier .box-view .supplier-logo {
       float: left;
       width: 60px;
@@ -1113,7 +1113,7 @@
         font-size: 21px; }
       #suppliers-page .supplier .box-edit form .pstyle-tm1 {
         font-size: 13px; }
-      #suppliers-page .supplier .box-edit form .pstyle-tm2 {
+      #suppliers-page .supplier .box-edit form .pstyle-tm2, #suppliers-page .supplier .box-edit form .subtitle {
         font-size: 10px; }
       #suppliers-page .supplier .box-edit form .profile-image {
         display: inline-block;
