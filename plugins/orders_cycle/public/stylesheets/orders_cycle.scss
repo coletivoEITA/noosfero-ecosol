@@ -37,13 +37,18 @@
 
 
     #filter {
-      width: $module06;
+      width: $module06 + $intercolumn;
       margin: auto;
 
       .fields div.category {
         border-right: 0;
       }
+
+      .filter-box {
+        padding-left: 8px;
+      }
     }
+
 
     #cycle-products {
       .box-field {
@@ -577,4 +582,8 @@
   input {
     text-align: left;
   }
+}
+
+.consumers-coop #supplier-add {
+  display: none;
 }

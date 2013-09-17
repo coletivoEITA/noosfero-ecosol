@@ -383,10 +383,12 @@
   float: left;
   padding-left: 0; }
   .cycle-view #cycle-products-for-order #filter {
-    width: 464px;
+    width: 480px;
     margin: auto; }
     .cycle-view #cycle-products-for-order #filter .fields div.category {
       border-right: 0; }
+    .cycle-view #cycle-products-for-order #filter .filter-box {
+      padding-left: 8px; }
   .cycle-view #cycle-products-for-order #cycle-products .box-field.category {
     border: none;
     width: 64px; }
@@ -732,3 +734,6 @@
   text-align: right; }
 .new-delivery-method input {
   text-align: left; }
+
+.consumers-coop #supplier-add {
+  display: none; }
