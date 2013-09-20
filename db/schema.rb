@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(:version => 20130918183842) do
   end
 
   add_index "article_versions", ["article_id"], :name => "index_article_versions_on_article_id"
+  add_index "article_versions", ["parent_id"], :name => "index_article_versions_on_parent_id"
 
   create_table "articles", :force => true do |t|
     t.string   "name"
@@ -187,7 +188,10 @@ ActiveRecord::Schema.define(:version => 20130918183842) do
     t.integer "image_id"
     t.string  "acronym"
     t.string  "abbreviation"
+    t.text    "ancestry"
   end
+
+  add_index "categories", ["parent_id"], :name => "index_categories_on_parent_id"
 
   create_table "categories_profiles", :id => false, :force => true do |t|
     t.integer "profile_id"
@@ -221,6 +225,7 @@ ActiveRecord::Schema.define(:version => 20130918183842) do
     t.string   "source_type"
     t.string   "user_agent"
     t.string   "referrer"
+    t.integer  "group_id"
   end
 
   add_index "comments", ["source_id", "spam"], :name => "index_comments_on_source_id_and_spam"
@@ -319,6 +324,8 @@ ActiveRecord::Schema.define(:version => 20130918183842) do
     t.integer "height"
     t.boolean "thumbnails_processed", :default => false
   end
+
+  add_index "images", ["parent_id"], :name => "index_images_on_parent_id"
 
   create_table "inputs", :force => true do |t|
     t.integer  "product_id",                                    :null => false
@@ -547,6 +554,8 @@ ActiveRecord::Schema.define(:version => 20130918183842) do
     t.boolean "pending",   :default => false
   end
 
+  add_index "tags", ["parent_id"], :name => "index_tags_on_parent_id"
+
   create_table "tasks", :force => true do |t|
     t.text     "data"
     t.integer  "status"
@@ -569,6 +578,8 @@ ActiveRecord::Schema.define(:version => 20130918183842) do
     t.integer "parent_id"
     t.string  "thumbnail"
   end
+
+  add_index "thumbnails", ["parent_id"], :name => "index_thumbnails_on_parent_id"
 
   create_table "units", :force => true do |t|
     t.string  "singular",       :null => false
