@@ -1,0 +1,1 @@
+page.replace_html 'find-enterprise', :partial => 'suppliers_plugin_myprofile/enterprise_search'

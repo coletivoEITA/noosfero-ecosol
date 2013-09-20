@@ -1,10 +1,27 @@
 
 orders = {
 
-  product_edit: function () {
-    toggle_edit.editing().find('.more-actions').toggle(toggle_edit.isEditing());
-    if (toggle_edit.isEditing())
-      toggle_edit.editing().find('.product-quantity input').focus();
+  product: {
+
+    edit: function () {
+      toggle_edit.editing().find('.more').toggle(toggle_edit.isEditing());
+    },
+
+    quantity_keyup: function(context, event) {
+      if (event.keyCode == 13) {
+        orders.product.submit();
+        return false;
+      }
+    },
+
+    submit: function(context, url) {
+      var container = jQuery(context).parents('.order-products-container');
+      var product = jQuery(context).parents('.ordered-product');
+      var quantity_asked = product.find('.quantity-edit input');
+
+      loading_overlay.show(container);
+      jQuery.post(url, {'ordered_product[quantity_asked]': quantity_asked.val()});
+    },
   },
 
   admin: {

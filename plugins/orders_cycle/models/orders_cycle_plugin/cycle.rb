@@ -9,7 +9,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   has_many :cycle_orders, :class_name => 'OrdersCyclePlugin::CycleOrder', :foreign_key => :cycle_id, :dependent => :destroy, :order => 'id ASC'
   has_many :orders, :through => :cycle_orders, :source => :order, :order => 'id ASC'
 
-  has_many :cycle_products, :foreign_key => :cycle_id, :class_name => 'OrdersCyclePlugin::CycleProduct'
+  has_many :cycle_products, :foreign_key => :cycle_id, :class_name => 'OrdersCyclePlugin::CycleProduct', :dependent => :destroy
   has_many :products, :through => :cycle_products, :order => 'name ASC'
 
   has_many :from_products, :through => :products, :order => 'name ASC'
@@ -26,7 +26,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.profile.orders_cycles }
 
-  named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year desc'
+  named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year DESC'
   named_scope :defuncts, :conditions => ["status = 'new' AND created_at < ?", 2.days.ago]
 
   named_scope :not_new, :conditions => ["status <> 'new'"]
@@ -38,21 +38,18 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     {:conditions => ["NOT ( ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) AND status = 'orders' )",
       {:now => DateTime.now}]}
   }
-  named_scope :by_month, lambda { |date| {
-    :conditions => [ ':start BETWEEN start AND finish OR :finish BETWEEN start AND finish',
-      { :start => date.to_time, :finish => date.to_time + 1.month - 1 }
-    ]}
+  named_scope :by_month, lambda { |month| {
+    :conditions => [ 'EXTRACT(month FROM start) <= :month AND EXTRACT(month FROM finish) >= :month', { :month => month } ]}
   }
   named_scope :by_year, lambda { |year| {
-    :conditions => [ 'start BETWEEN :start AND :finish',
-      { :start => Time.mktime(year), :finish => Time.mktime(year.to_i+1) }
-    ]}
+    :conditions => [ 'EXTRACT(year FROM start) <= :year AND EXTRACT(year FROM finish) >= :year', { :year => year } ]}
   }
   named_scope :by_range, lambda { |range| {
     :conditions => [ 'start BETWEEN :start AND :finish OR finish BETWEEN :start AND :finish',
       { :start => range.first, :finish => range.last }
     ]}
   }
+  named_scope :by_status, lambda { |status| { :conditions => {:status => status} } }
 
   named_scope :status_open, :conditions => ["status <> 'closed'"]
   named_scope :status_closed, :conditions => ["status = 'closed'"]
@@ -127,10 +124,8 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     status == 'orders' && ( (self.delivery_start <= now && self.delivery_finish.nil?) || (self.delivery_start <= now && self.delivery_finish >= now) )
   end
 
-  def products_for_order_by_supplier options={}
-    options[:conditions] = self.class.merge_conditions *['price > 0', options[:conditions]]
-
-    self.products.unarchived.all(options).group_by{ |sp| sp.supplier }
+  def products_for_order
+    self.products.unarchived.with_price
   end
 
   def ordered_products_by_suppliers
@@ -150,10 +145,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     ActiveRecord::Base.transaction do
       profile.products.unarchived.distributed.available.each do |product|
         p = already_in.find{ |f| f.from_product == product }
-        unless p
-          p = OrdersCyclePlugin::OfferedProduct.create_from_distributed(self, product)
-        end
-        p
+        p = OrdersCyclePlugin::OfferedProduct.create_from_distributed self, product unless p
       end
     end
   end

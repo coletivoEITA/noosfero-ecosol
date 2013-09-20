@@ -253,6 +253,9 @@
           apply_to_all: "Apply to the products with custom margins"
           apply_to_open_cycles: "Apply to the products in open cycles"
           new_margin: "New margin"
+        index:
+          redistribution_situation: "Product distribution"
+          name: "Name"
       product:
         _edit: 
           distribution_setts: "Product's distribution settings"
@@ -269,6 +272,10 @@
           save: save changes
           view_on_supplier_page: "See product at supplier's page"
           product_registry: "Product's registry"
+          selling_unit: "Selling unit"
+          same_from_purchase: "Same from purchase"
+          unit: "Unit"
+          unit_detail: "Unit detail"
         _edit_line: 
           active: Active
           inactive: Inactive
@@ -313,15 +320,25 @@
           margin: "%{margin} %"
           no_margin_set: "no margin set"
           products: Products
+          supplier: Supplier
           info: "This is list of all the products with which your collective works. Here it's possible to add and remove products, besides desactivating temporarily your commercialization in the Cycles' orders."
           show_products_from: "Show products from"
           the_products: "The products"
           whose_name_contains: "whose name contains"
           whose_qty_available_i: "whose qty. available is"
-          with_the_category: "with the category"
+          category: "Category"
           with_the_qualifiers: "with the qualifiers"
       supplier: 
+        _new:
+          title: "Find an enterprise to add"
+          query_placeholder: "Enterprise's name"
+          search: "Search"
+          none_found: "No enterprise found. Please revise the search text."
+          add: "Add"
+          suggest_creation: "Haven't found the enterprise you were searching?.\n You can create a new enterprise managed by organization."
+          create_dummy: "Create enterprise"
         _edit: 
+          registry_help: "The registry of the supplier will be managed by the organization itself and will be private to it."
           abbreviated_name: "Abbreviated name"
           add_supplier_managed_: "Add supplier managed by the collective"
           additional_fields: "Additional fields"
@@ -355,6 +372,7 @@
           this_supplier_has: "This supplier has"
         _suppliers_list: 
           this_search_didn_t_re: "This search didn't return suppliers."
+          any_registered: "No registered supplier."
         index: 
           add_supplier: "Add supplier"
           filter: Filter
@@ -442,9 +460,13 @@
       product: 
         _edit: 
           remove_from_order: "remove from order"
-          see_product_details: "see product details"
+          submit: 'OK'
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
         _index: 
+          supplier: "supplier"
+          product: "product"
+          quantity: "qty"
+          price_total: "value (%{currency})"
           empty_order: "Empty order"
       admin:
         index: 
@@ -702,6 +724,8 @@
           product_image: "Product Image"
         _order_search: 
           order_qty: "Order qty"
+          category: Category
+          producer: Producer
           price: Price
           product: Product
           this_search_hasn_t_re: "This search hasn't returned any product"
@@ -886,4 +910,30 @@
      plugin:
        name: Networks
        description: "Create and manage networks."
+   models:
+   controllers:
+   views:
+     control_panel:
        manage_control_panel_button: "Manage network's structure"
+     admin:
+       index:
+         title: "Networks' configurations"
+         no_network: "Any registered network."
+         new: "Create network"
+         new_button: "Criar"
+     network:
+       show_structure:
+         title: "Network's structure"
+         add_enterprise: "Add enterprise"
+         add_node: "Create node"
+         context: "Context: %{name}."
+         back_to_parent: "Back to %{parent}"
+         edit: "Edit"
+         remove: "Remove"
+         nodes: "Nodes"
+         enterprises: "Enterprises"
+     node:
+       create:
+         new_button: "Create"
+         context: "Create new node inside '%{name}'"
+

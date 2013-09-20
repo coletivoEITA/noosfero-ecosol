@@ -1,15 +1,11 @@
 module ActsAsHavingSettings
   module DefaultItem
     module ClassMethods
-      def settings_default_item(field, options, &block)
+      def settings_default_item field, options, &block
         extend ActsAsHavingSettings::ClassMethods
         extend ::DefaultItem::ClassMethods
 
-        soptions = {}
-        soptions[:default] = options.delete(:default)
-        soptions[:type] = options.delete(:type)
-        settings_items "default_#{field}".to_sym, soptions
-
+        settings_items "default_#{field}", :default => options[:default], :type => options[:type]
         default_item field, options
 
         include ActsAsHavingSettings::DefaultItem::InstanceMethods

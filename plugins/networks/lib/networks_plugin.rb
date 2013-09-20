@@ -1,4 +1,8 @@
 require_dependency "#{File.dirname __FILE__}/ext/environment"
+require_dependency "#{File.dirname __FILE__}/ext/profile"
+require_dependency "#{File.dirname __FILE__}/ext/organization"
+
+require_dependency "#{File.dirname __FILE__}/ext/sub_organizations_plugin/relation"
 
 class NetworksPlugin < Noosfero::Plugin
 
@@ -16,15 +20,6 @@ class NetworksPlugin < Noosfero::Plugin
 
   def stylesheet?
     true
-  end
-
-  def control_panel_buttons
-    buttons = []
-    if context.profile.is_a? NetworksPlugin::Network
-      buttons << {:title => I18n.t('networks_plugin.lib.plugin.manage_control_panel_button'), :icon => '',
-        :url => {:controller => :networks_plugin_network, :action => :show_structure, :identifier => context.profile.identifier}}
-    end
-    buttons
   end
 
 end

@@ -1,7 +1,7 @@
 <%= pagination_links @products %>
 
 <div id="result-count" class="">
-  <small><%= t('suppliers_plugin.views.product._search.showing_pcount_produc') % {:pcount => @products.length, :allpcount => @all_products_count} %></small>
+  <small><%= t('suppliers_plugin.views.product._search.showing_pcount_produc') % {:pcount => @products.count, :allpcount => @products_count} %></small>
 </div>
 
 <div id="results" class="sortable-table">

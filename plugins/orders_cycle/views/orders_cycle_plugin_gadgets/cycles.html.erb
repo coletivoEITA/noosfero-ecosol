@@ -1,4 +1,4 @@
-<div id="consumers-coop-plugin-cycles-gadget" class="consumers-coop consumers-coop-layout">
+<div id="cycles-gadget">
   <% profile.orders_cycles.open.all(:limit => 2).each do |cycle| %>
     <%= render :partial => 'orders_cycle_plugin_gadgets/cycle', :locals => {:cycle => cycle} %>
   <% end %>

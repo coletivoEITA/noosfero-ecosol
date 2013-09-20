@@ -1,4 +1,4 @@
-class CreateSuppliersPluginSuppliers < ActiveRecord::Migration
+class CreateSuppliersPluginTables < ActiveRecord::Migration
   def self.up
     # check if distribution plugin already moved the table
     return if ActiveRecord::Base.connection.table_exists? "suppliers_plugin_suppliers"

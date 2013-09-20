@@ -1,13 +1,17 @@
 # workaround for plugin class scope problem
 require_dependency 'orders_cycle_plugin/display_helper'
+OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
 require_dependency 'suppliers_plugin/product_helper'
 
 class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
+  # FIXME: remove me when styles move from consumers_coop plugin
+  include ConsumersCoopPlugin::ControllerHelper
+
   no_design_blocks
   before_filter :login_required, :except => [:index]
 
-  helper OrdersCyclePlugin::DisplayHelper
+  helper OrdersCyclePlugin::OrdersCycleDisplayHelper
   helper SuppliersPlugin::ProductHelper
 
   def index
@@ -23,10 +27,9 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
       return
     end
     @consumer = user
-    @order = OrdersPlugin::Order.create! :consumer => @consumer
-    redirect_to params.merge(:action => :edit, :id => @order.id)
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @cycle_order = OrdersCyclePlugin::CycleOrder.create! :cycle => @cycle, :order => @order
+    @order = OrdersPlugin::Order.create! :profile => profile, :consumer => @consumer, :cycle => @cycle
+    redirect_to params.merge(:action => :edit, :id => @order.id)
   end
 
   def edit
@@ -43,8 +46,10 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
       render :partial => 'consumer_orders' if params[:consumer_orders]
     end
-
+    @products = @cycle.products_for_order
+    @product_categories = Product.product_categories_of @products
     @consumer_orders = @cycle.orders.for_consumer @consumer
+
     render :partial => 'consumer_orders' if params[:consumer_orders]
   end
 
@@ -132,7 +137,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
     if params[:warn_consumer]
       message = (params[:include_message] and !params[:message].blank?) ? params[:message] : nil
-      ConsumersCoopPlugin::Mailer.deliver_order_change_notification profile, @order, changed, removed, message
+      OrdersCyclePlugin::Mailer.deliver_order_change_notification profile, @order, changed, removed, message
     end
 
   end

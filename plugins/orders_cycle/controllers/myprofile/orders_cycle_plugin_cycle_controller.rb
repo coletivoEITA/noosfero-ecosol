@@ -1,18 +1,19 @@
 class OrdersCyclePluginCycleController < MyProfileController
 
+  # FIXME: remove me when styles move from consumers_coop plugin
+  include ConsumersCoopPlugin::ControllerHelper
+
   no_design_blocks
+  before_filter :set_admin_action
 
   helper OrdersCyclePlugin::CycleHelper
 
   def index
-    @cycles = profile.orders_cycles
-    params[:date] ||= {}
-    year = params[:date][:year]
-    month = params[:date][:month]
-    @year_date = year.blank? ? Date.today : Time.mktime(year).to_date
-    @month_date = month.blank? ? Date.today : Time.mktime(year, month).to_date
+    @closed_cycles = search_scope(profile.orders_cycles.status_closed).all
     if request.xhr?
       render :partial => 'results'
+    else
+      @open_cycles = profile.orders_cycles.status_open
     end
   end
 
@@ -32,7 +33,8 @@ class OrdersCyclePluginCycleController < MyProfileController
       end
     else
       count = OrdersCyclePlugin::Cycle.count :conditions => {:profile_id => profile}
-      @cycle = OrdersCyclePlugin::Cycle.create! :profile => :profile, :status => 'new', :name => t('orders_cycle_plugin.controllers.myprofile.cycle_controller.cycle_n_n') % {:n => count+1}
+      @cycle = OrdersCyclePlugin::Cycle.create! :profile => profile, :status => 'new',
+        :name => t('orders_cycle_plugin.controllers.myprofile.cycle_controller.cycle_n_n') % {:n => count+1}
     end
   end
 
@@ -124,6 +126,20 @@ class OrdersCyclePluginCycleController < MyProfileController
       :filename => t('orders_cycle_plugin.controllers.myprofile.cycle_controller.cycle_orders_report_d') % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @cycle.code, :cycle_name => @cycle.name}
     require 'fileutils'
     #FileUtils.rm_rf tmp_dir
+  end
+
+  protected
+
+  def search_scope scope
+    params[:date] ||= {}
+    scope = scope.by_year params[:date][:year] if params[:date][:year].present?
+    scope = scope.by_month params[:date][:month] if params[:date][:month].present?
+    scope = scope.by_status params[:status] if params[:status].present?
+    scope
+  end
+
+  def set_admin_action
+    @admin_action = true
   end
 
 end

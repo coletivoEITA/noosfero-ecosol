@@ -1,89 +1,126 @@
 @import 'base';
 @import 'sortable-table';
-@import 'product';
 @import 'loading-overlay';
 @import 'filter';
+@import 'product';
 
 #suppliers-page {
 
+  #search-results {
+
+    > strong {
+      display: block;
+      margin-top: 3*$margin;
+      border-top: $border solid black;
+    }
+  }
+
   .supplier {
-    border-top: 1px solid black;
+    border-top: $border solid black;
     border-bottom: none;
-  }
-  .supplier:last-child {
-    border-bottom: 1px solid black;
-  }
-  .supplier-type {
-    font-style: italic;
-  }
-  #supplier-add,
-  .box-edit {
-    display: none;
-  }
-  .box-edit {
-    background-color: #FDF2A3;
+    
+    &:last-child {
+      border-bottom: $border solid black;
+    }
+
+    .supplier-add-link {
+      margin: 20px 0;
+    }
+
+    #create-dummy {
+      display: none; //default
+    }
+
+    .box-view {
+      padding: $padding;
+      padding-right: 0;
+      @extend .container-clean;
+
+      .supplier-type {
+        font-style: italic;
+      }
+
+      .supplier-inactive {
+        background-color: #faeeee;
+      }
+
+      .supplier-logo {
+        float: left;
+        width: 60px;
+        min-height: 60px;
+      }
+
+      .supplier-body {
+        width: 400px;
+        float: left;
+      }
+
+      .supplier-name {
+        text-transform: uppercase;
+      }
+
+      .supplier-actions {
+        float: right;
+        width: 140px;
+        text-align: right;
+      }
+    }
+
+    .box-edit {
+      display: none; //default
+      padding: $padding;
+      background-color: #FDF2A3;
+
+      form {
+        width: 640px;
+        @import 'field';
+
+        // disable them until they are ready
+        .full-registration-check,
+        .full-data {
+          display: none !important;
+        }
+
+        .data {
+
+          textarea,
+          input {
+            width: 100%;
+          }
+
+          .basic-data,
+          .full-data {
+            float: left;
+            @extend .container-clean;
+            width: 290px;
+            margin-right: $wireframe-padding;
+          }
+          .full-data {
+            &.estrategic-info {
+              float: right;
+            }
+            &.additional-fields {
+              width: 100%;
+            }
+          }
+        }
+
+        input[type=submit] {
+          margin-top: $half-margin;
+          margin-right: $half-margin;
+        }
+      }
+    }
   }
 
-  .supplier-inactive {
-    background-color: #faeeee;
-  }
+  .filter-box {
 
-  .supplier-body {
-    width: 400px;
-    float: left;
-  }
+    .box-field {
 
-  .supplier-name {
-    text-transform: uppercase;
-  }
-
-  .supplier-logo {
-    float: left;
-    width: 60px;
-    min-height: 60px;
-  }
-
-  .supplier-actions {
-    float: right;
-    text-align: right;
-    width: 140px;
-  }
-
-  .supplier-add-link {
-    margin: 20px 0;
-  }
-
-  .supplier form {
-    width: 640px;
-  }
-
-  .data textarea,
-  .data input {
-    width: 100%;
-  }
-
-  .basic-data,
-  .full-data {
-    float: left;
-    width: 290px;
-    margin-right: 30px;
-  }
-  .estrategic-info {
-    float: right;
-  }
-  .additional-fields {
-    width: 100%;
-  }
-  .full-data {
-    display: none;
-  }
-  .full-registration .full-data {
-    display: block;
-  }
-
-  .filter-box .box-field,
-  .filter-box .box-field input {
-    width: 100%;
-    margin-left: 0;
+      &, input {
+        width: 100%;
+        margin-left: 0;
+      }
+    }
   }
 }

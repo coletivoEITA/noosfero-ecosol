@@ -3,10 +3,8 @@ class SuppliersPlugin::BaseProduct < Product
 
   self.abstract_class = true
 
-  # join source_products
-  default_scope :include => [:from_products]
-
-  validates_presence_of :name
+  belongs_to :category, :class_name => 'ProductCategory'
+  belongs_to :type_category, :class_name => 'ProductCategory'
 
   settings_items :minimum_selleable, :type => Float, :default => nil
   settings_items :margin_percentage, :type => Float, :default => nil
@@ -15,25 +13,28 @@ class SuppliersPlugin::BaseProduct < Product
   settings_items :category_id, :type => Integer, :default => nil
   settings_items :type_category_id, :type => Integer, :default => nil
 
-  belongs_to :category, :class_name => 'ProductCategory'
-  belongs_to :type_category, :class_name => 'ProductCategory'
-
-  validates_associated :from_products
-
-  DEFAULT_ATTRIBUTES = [:name, :description, :margin_percentage,
-    :price, :stored, :unit_id, :minimum_selleable, :unit_detail]
+  DEFAULT_ATTRIBUTES = [
+    :name, :description, :price, :unit_id, :product_category_id,
+    :margin_percentage, :stored, :minimum_selleable, :unit_detail
+  ]
 
   extend ActsAsHavingSettings::DefaultItem::ClassMethods
   settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :from_product
+  settings_default_item :product_category, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :from_product
+  settings_default_item :unit, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :margin_percentage, :type => :boolean, :default => true, :delegate_to => :profile
-  default_item :price, :if => :default_margin_percentage, :delegate_to => :from_product
-  settings_default_item :unit_id, :type => :boolean, :default => true, :delegate_to => :from_product
-  default_item :unit_detail, :if => :default_unit_id, :delegate_to => :from_product
+  default_item :price, :if => :default_margin_percentage, :delegate_to => proc{ self.from_product.price_with_discount }
+
+  default_item :product_category_id, :if => :default_product_category, :delegate_to => :from_product
+  default_item :unit_id, :if => :default_unit, :delegate_to => :from_product
+  default_item :unit_detail, :if => :default_unit, :delegate_to => :from_product
   settings_default_item :stored, :type => :boolean, :default => true, :delegate_to => :from_product
   settings_default_item :minimum_selleable, :type => :boolean, :default => true, :delegate_to => :from_product
 
   extend CurrencyHelper::ClassMethods
+  has_currency :own_price
+  has_currency :original_price
   has_number_with_locale :minimum_selleable
   has_number_with_locale :own_minimum_selleable
   has_number_with_locale :original_minimum_selleable
@@ -44,9 +45,6 @@ class SuppliersPlugin::BaseProduct < Product
   has_number_with_locale :margin_percentage
   has_number_with_locale :own_margin_percentage
   has_number_with_locale :original_margin_percentage
-  has_currency :price
-  has_currency :own_price
-  has_currency :original_price
 
   def self.default_unit
     Unit.new(:singular => I18n.t('suppliers_plugin.models.product.unit'), :plural => I18n.t('suppliers_plugin.models.product.units'))
@@ -71,9 +69,10 @@ class SuppliersPlugin::BaseProduct < Product
     ret
   end
 
-  def unit
-    self['unit'] || self.class.default_unit
+  def unit_with_default
+    unit_without_default || self.class.default_unit
   end
+  alias_method_chain :unit, :default
 
   def archive
     self.update_attributes! :archived => true
@@ -82,15 +81,14 @@ class SuppliersPlugin::BaseProduct < Product
     self.update_attributes! :archived => false
   end
 
-  alias_method :destroy!, :destroy
-  def destroy
-    raise "Products shouldn't be destroyed for the sake of the history!"
-  end
-
   protected
 
   def validate_uniqueness_of_column_name?
     false
+  end
+
+  # reimplement after_create callback to avoid infinite loop
+  def distribute_to_consumers
   end
 
 end

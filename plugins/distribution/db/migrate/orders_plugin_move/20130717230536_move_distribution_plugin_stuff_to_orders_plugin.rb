@@ -22,7 +22,7 @@ class MoveDistributionPluginStuffToOrdersPlugin < ActiveRecord::Migration
 
     rename_column :distribution_plugin_orders, :session_id, :profile_id
     ::ActiveRecord::Base.transaction do
-      DistributionPlugin::Order.all.each do |order|
+      DistributionPlugin::Order.find_each do |order|
         session_id = order.profile_id
         DistributionPlugin::SessionOrder.create! :session_id => session_id, :order_id => order.id
 

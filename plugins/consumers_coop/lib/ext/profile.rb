@@ -32,7 +32,11 @@ class Profile
   end
 
   def consumers_coop_enable_view
-    self.profile.update_attribute :theme, 'distribution'
+    # FIXME don't hardcode
+    consumers_coop_theme = 'distribution'
+    if Theme.system_themes.collect(&:id).include? consumers_coop_theme
+      self.profile.update_attribute :theme, consumers_coop_theme
+    end
 
     login_block = self.profile.blocks.select{ |b| b.class.name == "LoginBlock" }.first
     if not login_block
@@ -71,7 +75,7 @@ class Profile
   protected
 
   def abbreviation_or_name
-    self['name_abbreviation'] || name
+    self.consumers_coop_settings.name_abbreviation.blank? ? self.name : self.consumers_coop_settings.name_abbreviation
   end
 
   def build_consumers_coop_header_image

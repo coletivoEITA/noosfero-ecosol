@@ -1,16 +1,21 @@
+# workaround for plugins' scope problem
+require_dependency 'suppliers_plugin/display_helper'
+SuppliersPlugin::SuppliersDisplayHelper = SuppliersPlugin::DisplayHelper
+
 class SuppliersPluginMyprofileController < MyProfileController
 
+  no_design_blocks
   before_filter :load_new, :only => [:index, :new]
 
   helper SuppliersPlugin::SuppliersDisplayHelper
 
   def index
-    params['name'] = "" if params['name'].blank?
-    @suppliers = profile.suppliers.with_name(params['name']).paginate(:per_page => 10, :page => params["page"])
+    @suppliers = profile.suppliers.except_self.by_active(params[:active]).with_name(params[:name]).paginate(:per_page => 10, :page => params[:page])
+    @is_search = params[:name] or params[:active]
 
     respond_to do |format|
       format.html
-      format.js { render :partial => 'suppliers_list', :locals => {:suppliers => @suppliers}}
+      format.js { render :partial => 'suppliers_plugin_myprofile/suppliers_list', :locals => {:suppliers => @suppliers}}
     end
   end
 
@@ -43,7 +48,18 @@ class SuppliersPluginMyprofileController < MyProfileController
 
   def destroy
     @supplier = SuppliersPlugin::Supplier.find params[:id]
-    @supplier.destroy!
+    @supplier.destroy
+  end
+
+  def enterprise_search
+    @enterprises = find_by_contents(:enterprises, environment.enterprises, params[:query])[:results]
+    @enterprises -= profile.suppliers.collect(&:profile)
+  end
+
+  def add_enterprise
+    @enterprise = environment.enterprises.find params[:id]
+    profile.suppliers.create! :profile => @enterprise
+    self.index
   end
 
   protected

@@ -15,6 +15,13 @@ toggle_edit = {
     return toggle_edit.editing().first().hasClass('edit');
   },
 
+  toggle: function() {
+    toggle_edit.editing().toggle();
+  },
+  hide: function() {
+    toggle_edit.editing().hide();
+  },
+
   target: {
     isToggle: function (target) {
       return (jQuery(target).hasClass('box-edit-link') && !toggle_edit.isEditing()) ||

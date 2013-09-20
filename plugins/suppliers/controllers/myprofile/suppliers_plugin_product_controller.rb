@@ -1,19 +1,24 @@
 # workaround for plugins' scope problem
-require_dependency 'suppliers_plugin/product_helper'
+require_dependency 'suppliers_plugin/display_helper'
+SuppliersPlugin::SuppliersDisplayHelper = SuppliersPlugin::DisplayHelper
 
 class SuppliersPluginProductController < MyProfileController
 
-  helper SuppliersPlugin::ProductHelper
+  no_design_blocks
+
+  helper SuppliersPlugin::SuppliersDisplayHelper
 
   def index
-    @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id]
+    @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id] if params[:supplier_id].present?
 
-    @products = profile.products.unarchived.distributed.paginate({
-      :per_page => 10, :page => params[:page], :order => 'name ASC'
-      }.merge(search_scope.proxy_options))
-    @all_products_count = profile.products.unarchived.distributed.count
-    @product_categories = ProductCategory.find(:all)
+    SuppliersPlugin::DistributedProduct.send :with_exclusive_scope do
+      scope = profile.distributed_products.unarchived.from_products_joins
+      @products = search_scope(scope).paginate :per_page => 10, :page => params[:page], :order => 'products_2.name ASC'
+      @products_count = search_scope(scope).count
+    end
+    @product_categories = Product.product_categories_of @products
     @new_product = SuppliersPlugin::DistributedProduct.new :profile => profile, :supplier => @supplier
+    @units = Unit.all
 
     respond_to do |format|
       format.html
@@ -38,21 +43,11 @@ class SuppliersPluginProductController < MyProfileController
 
   protected
 
-  def search_scope
-    klass = SuppliersPlugin::BaseProduct
-    scope = SuppliersPlugin::BaseProduct.scoped :conditions => []
-    scope = scope.from_supplier_id(params[:supplier_id]) unless params[:supplier_id].blank?
-
-    conditions = []
-    conditions << {:available => params[:available]} unless params[:available].blank?
-    unless params[:name].blank?
-      name = ActiveSupport::Inflector.transliterate(params[:name]).strip.downcase
-      conditions << ["LOWER(name) LIKE ?", "%#{name}%"]
-    end
-    conditions = [scope.proxy_options[:conditions], *conditions]
-
-    scope.proxy_options[:conditions] = klass.merge_conditions *conditions
-
+  def search_scope scope
+    scope = scope.from_supplier_id params[:supplier_id] if params[:supplier_id].present?
+    scope = scope.with_available params[:available] if params[:available].present?
+    scope = scope.name_like params[:name] if params[:name].present?
+    scope = scope.with_product_category_id params[:category_id] if params[:category_id].present?
     scope
   end
 

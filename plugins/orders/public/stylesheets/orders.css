@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-edit .internal-table, .order-products-container .order-total, .order-products-container .order-products .table-header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -92,7 +92,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2 {
+.pstyle-tm2, .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -140,7 +140,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-edit .internal-table, .order-products-container .order-total, .order-products-container .order-products .table-header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -230,7 +230,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2 {
+.pstyle-tm2, .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -274,109 +274,240 @@
   text-shadow: none;
   border-radius: 5px; }
 
-.sortable-table .box-field {
-  float: left;
-  padding: 8px; }
-.sortable-table .table-header {
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-edit .internal-table, .order-products-container .order-total, .order-products-container .order-products .table-header {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2, .subtitle {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  background: #fbca47;
+  border: 1px solid #f4a439;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: none;
+  border-radius: 5px; }
+
+.sortable-table.wireframe-size > .table-header {
   width: 960px;
   margin-left: -40px;
-  padding: 0 40px;
+  padding: 0 40px; }
+.sortable-table.wireframe-size > .table-content > .value-row {
+  width: 1008px;
+  margin-left: -24px; }
+.sortable-table > .table-header .box-field, .sortable-table > .table-content .box-field {
+  float: left;
+  padding: 8px; }
+.sortable-table > .table-header {
   background-color: #70bcfa;
   border-bottom: 2px solid #3c729f;
   color: black; }
-  .sortable-table .table-header .sort-arrow {
+  .sortable-table > .table-header .sort-arrow {
     border-top: 6px solid black;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
     position: absolute; }
-    .sortable-table .table-header .sort-arrow.desc {
+    .sortable-table > .table-header .sort-arrow.desc {
       border-bottom: 6px solid black;
       border-top: 6px solid transparent;
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       margin-top: -6px; }
-  .sortable-table .table-header .box-field {
+  .sortable-table > .table-header .box-field {
     padding-left: 7px;
     border-left: 1px solid white;
     cursor: pointer;
     text-transform: lowercase;
     font-weight: bold;
     font-size: 10px; }
-.sortable-table .table-content {
+.sortable-table > .table-content {
   width: auto;
   margin-bottom: 16px; }
-  .sortable-table .table-content .value-row {
-    margin-left: -24px;
-    width: 1008px;
+  .sortable-table > .table-content > .value-row {
     background: white;
     border: 1px solid transparent; }
-    .sortable-table .table-content .value-row.edit {
+    .sortable-table > .table-content > .value-row.edit {
       border: 1px solid black; }
-      .sortable-table .table-content .value-row.edit .box-view {
+      .sortable-table > .table-content > .value-row.edit .box-view {
         background-color: white; }
-      .sortable-table .table-content .value-row.edit .box-field.box-edit-link {
+      .sortable-table > .table-content > .value-row.edit .box-field.box-edit-link {
         cursor: inherit;
         color: black;
         text-decoration: none; }
-      .sortable-table .table-content .value-row.edit .box-field.actions .actions-circle .action-hide {
+      .sortable-table > .table-content > .value-row.edit .box-field.actions .actions-circle .action-hide {
         display: block; }
-      .sortable-table .table-content .value-row.edit .box-field.actions .actions-circle .action-show {
+      .sortable-table > .table-content > .value-row.edit .box-field.actions .actions-circle .action-show {
         display: none; }
-    .sortable-table .table-content .value-row.hover .box-view {
+    .sortable-table > .table-content > .value-row.hover .box-view {
       background: #fdf2a3 !important; }
-    .sortable-table .table-content .value-row.hover.edit .box-view {
+    .sortable-table > .table-content > .value-row.hover.edit .box-view {
       background: white !important; }
-    .sortable-table .table-content .value-row .box-field.select, .sortable-table .table-content .value-row .box-field.actions {
+    .sortable-table > .table-content > .value-row .box-field.select, .sortable-table > .table-content > .value-row .box-field.actions {
       width: 16px;
       padding: 8px 4px; }
-    .sortable-table .table-content .value-row .box-field.select input[type=checkbox] {
+    .sortable-table > .table-content > .value-row .box-field.select input[type=checkbox] {
       margin-top: 4px !important;
       margin-left: 3px !important; }
-    .sortable-table .table-content .value-row .box-field.actions .actions-circle {
-      float: right;
-      height: 16px;
-      width: 16px;
+    .sortable-table > .table-content > .value-row .box-field.actions .actions-circle {
       margin-right: 0;
       margin-top: 3px;
-      padding: 0;
-      background-color: #FDF2A3;
-      border-radius: 8px;
-      -moz-border-radius: 8px;
-      -webkit-border-radius: 8px;
-      -o-border-radius: 8px;
-      text-decoration: none; }
-      .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-hide, .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-show {
-        font-weight: bolder;
-        font-size: 17px;
-        margin-left: 3px; }
-      .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-show {
-        margin-top: -1px; }
-      .sortable-table .table-content .value-row .box-field.actions .actions-circle .action-hide {
+      padding: 0; }
+      .sortable-table > .table-content > .value-row .box-field.actions .actions-circle .action-show {
+        background: url("images/plus.png") no-repeat;
+        width: 16px;
+        height: 16px; }
+      .sortable-table > .table-content > .value-row .box-field.actions .actions-circle .action-hide {
         display: none;
-        margin-top: -9px; }
-    .sortable-table .table-content .value-row .box-view {
+        background: url("images/minus.png") no-repeat;
+        width: 16px;
+        height: 16px; }
+    .sortable-table > .table-content > .value-row .box-view {
       border-bottom: 2px dotted #cccccc;
       background: #f3f4ee; }
-      .sortable-table .table-content .value-row .box-view.with-inner {
+      .sortable-table > .table-content > .value-row .box-view.with-inner {
         background: white; }
-        .sortable-table .table-content .value-row .box-view.with-inner .box-view-inner {
+        .sortable-table > .table-content > .value-row .box-view.with-inner .box-view-inner {
           background: #f3f4ee; }
-      .sortable-table .table-content .value-row .box-view .box-field.box-edit-link {
+      .sortable-table > .table-content > .value-row .box-view .box-field.box-edit-link {
         font-size: 12px !important;
         font-weight: bold;
         text-decoration: underline;
         color: #38727E;
         cursor: pointer; }
-    .sortable-table .table-content .value-row .box-edit {
+    .sortable-table > .table-content > .value-row .box-edit {
       padding: 16px 24px;
       overflow: hidden;
       display: none; }
-      .sortable-table .table-content .value-row .box-edit .internal-table {
+      .sortable-table > .table-content > .value-row .box-edit .internal-table {
         float: left;
         background-color: #fdf2a3;
         border: 1px solid black;
         border-radius: 3px; }
-        .sortable-table .table-content .value-row .box-edit .internal-table .title {
+        .sortable-table > .table-content > .value-row .box-edit .internal-table .title {
           margin: 0;
           padding: 4px 7px;
           text-transform: uppercase;
@@ -392,7 +523,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table .table-content .value-row .box-view, .sortable-table .table-content .value-row .box-edit .internal-table {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-edit .internal-table, .order-products-container .order-total, .order-products-container .order-products .table-header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -482,7 +613,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2 {
+.pstyle-tm2, .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -526,7 +657,7 @@
   text-shadow: none;
   border-radius: 5px; }
 
-.consumers-coop #filter {
+#filter {
   background-color: #BCDC91;
   padding: 0;
   margin-top: 16px;
@@ -538,65 +669,55 @@
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   font-size: 9px; }
+  #filter .title {
+    font-weight: bold;
+    font-size: 13px; }
+  #filter .fields > div {
+    border-right: 1px solid #d6e9bc;
+    padding-left: 8px;
+    padding-right: 8px;
+    float: left; }
+  #filter .fields > div.clean {
+    float: none; }
+  #filter .fields > div:first-child {
+    padding-left: 0; }
+  #filter .fields div.name {
+    border-right: 0; }
+  #filter .fields label {
+    font-weight: bold; }
+  #filter .submit input[type=submit] {
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 8px;
+    background-color: #4B583C;
+    color: #FFFFFF;
+    border: 1px solid white;
+    font-size: 9px;
+    text-align: center;
+    margin: none;
+    width: auto !important; }
+  #filter .filter-box {
+    padding-left: 48px;
+    padding-right: 48px;
+    border-bottom: 1px solid #d6e9bc;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    /*
+      WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
+        select,
+        input {
+          width: 160px -(2*$padding);
+        }
+    
+        .name input {
+          width:288px;
+        }
+    */ }
+    #filter .filter-box select, #filter .filter-box input {
+      width: 164px; }
+    #filter .filter-box .name input {
+      width: 308px; }
 
-.consumers-coop #filter .filter-box {
-  padding-left: 48px;
-  padding-right: 48px;
-  border-bottom: 1px solid #d6e9bc;
-  padding-top: 4px;
-  padding-bottom: 4px; }
-
-.consumers-coop #filter .title {
-  font-weight: bold;
-  font-size: 13px; }
-
-.consumers-coop #filter .fields > div {
-  border-right: 1px solid #d6e9bc;
-  padding-left: 8px;
-  padding-right: 8px;
-  float: left; }
-
-.consumers-coop #filter .fields > div.clean {
-  float: none; }
-
-.consumers-coop #filter .fields > div:first-child {
-  padding-left: 0; }
-
-.consumers-coop #filter .fields div.name {
-  border-right: 0; }
-
-.consumers-coop #filter .fields label {
-  font-weight: bold; }
-
-.consumers-coop #filter .submit input[type=submit] {
-  font-weight: bold;
-  text-transform: uppercase;
-  padding: 8px;
-  background-color: #4B583C;
-  color: #FFFFFF;
-  border: 1px solid white;
-  font-size: 9px;
-  text-align: center;
-  margin: none; }
-
-.consumers-coop #filter .filter-box select,
-.consumers-coop #filter .filter-box input {
-  width: 164px; }
-
-.consumers-coop #filter .filter-box .name input {
-  width: 308px; }
-
-/*
-WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
-.consumers-coop #filter .filter-box select,
-.consumers-coop #filter .filter-box input {
-  width: 160px -(2*$padding);
-}
-
-.consumers-coop #filter .filter-box .name input {
-  width:288px;
-}
-  */
 .orders-admin-index {
   margin-bottom: 20px; }
   .orders-admin-index .order-header {
@@ -615,8 +736,7 @@ WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
     display: block;
     float: left; }
   .orders-admin-index .order-header .actions-circle {
-    float: right;
-    background-color: transparent; }
+    float: right; }
   .orders-admin-index .order-header .actions-circle .actions-arrow {
     border-top: 7px solid black;
     border-left: 6px solid transparent;
@@ -676,3 +796,74 @@ WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
     width: 80px; }
   .orders-admin-index .price {
     width: 70px; }
+
+.order-products-container {
+  width: 432px;
+  font-size: 10px; }
+  .order-products-container.empty {
+    padding: 8px;
+    border-top: 1px dotted black;
+    text-align: center; }
+  .order-products-container .order-total {
+    padding: 4px 8px;
+    border-top: 1px solid black; }
+    .order-products-container .order-total .total-title,
+    .order-products-container .order-total .total-value {
+      float: right;
+      width: 64px;
+      text-transform: uppercase; }
+    .order-products-container .order-total .total-value {
+      width: 64px;
+      clear: both; }
+  .order-products-container .order-products .table-header {
+    font-weight: bold;
+    border-bottom: 1px solid black;
+    text-transform: uppercase; }
+  .order-products-container .order-products .box-field {
+    float: left;
+    padding: 4px 8px;
+    padding-right: 7px;
+    border-right: 1px solid white; }
+    .order-products-container .order-products .box-field:last-child {
+      border-right: none; }
+    .order-products-container .order-products .box-field.supplier {
+      width: 96px; }
+    .order-products-container .order-products .box-field.product {
+      width: 144px; }
+    .order-products-container .order-products .box-field.quantity, .order-products-container .order-products .box-field.quantity input, .order-products-container .order-products .box-field.quantity-edit, .order-products-container .order-products .box-field.quantity-edit input {
+      width: 64px; }
+    .order-products-container .order-products .box-field.price-total {
+      width: 64px; }
+  .order-products-container .order-products .table-content .ordered-product .more {
+    padding: 4px 8px;
+    display: none; }
+    .order-products-container .order-products .table-content .ordered-product .more .actions {
+      float: left; }
+      .order-products-container .order-products .table-content .ordered-product .more .actions a {
+        color: black; }
+    .order-products-container .order-products .table-content .ordered-product .more .price-with-unit {
+      float: right; }
+  .order-products-container .order-products .table-content .ordered-product.hover, .order-products-container .order-products .table-content .ordered-product.edit {
+    background-color: #ffe546; }
+  .order-products-container .order-products .table-content .ordered-product .quantity-edit {
+    display: none; }
+  .order-products-container .order-products .table-content .ordered-product.edit {
+    width: 436px;
+    padding-bottom: 4px;
+    margin-left: -5px;
+    padding-left: 4px;
+    border: 1px solid black;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); }
+    .order-products-container .order-products .table-content .ordered-product.edit .quantity-edit {
+      display: block; }
+    .order-products-container .order-products .table-content .ordered-product.edit .quantity {
+      display: none; }
+    .order-products-container .order-products .table-content .ordered-product.edit .box-field {
+      border-right: none;
+      padding-right: 8px; }

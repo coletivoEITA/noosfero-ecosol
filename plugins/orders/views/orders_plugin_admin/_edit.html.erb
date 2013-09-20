@@ -6,7 +6,7 @@
   <span class='box-field products-count'><%= order.products.count %></span>
   <span class='box-field price'><%= price_span order.total_price_asked_as_currency_number %></span>
 
-  <%= edit_arrow "#in-session-order-#{order.id}", true, :class => 'actions' %>
+  <%= edit_arrow "#in-cycle-order-#{order.id}", true, :class => 'actions' %>
 
   <div class="clean"></div>
 </div>
@@ -14,38 +14,38 @@
 <div class="box-edit" style="display: none">
   <% if order.products.count == 0 %>
     <div class="empty-order">
-      <span class="subtitle"><%= t('orders_plugin.views.order._edit.empty_order') %></span>
-      <%= link_to_function t('orders_plugin.views.order._edit.cancel'), :class => 'toggle-edit' %>
+      <span class="subtitle"><%= t('orders_plugin.views.admin._edit.empty_order') %></span>
+      <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), :class => 'toggle-edit' %>
     </div>
   <% else %>
-    <% form_remote_for :order, order, :url => {:action => :session_edit, :id => order.id} do |f| %>
+    <% form_remote_for :order, order, :url => {:action => :cycle_edit, :id => order.id} do |f| %>
 
       <%= render :partial => 'orders_plugin_product/index', :locals => {:order => order, :f => f} %>
       <div class="clean"></div>
 
-      <% if order.session.orders? %>
+      <% if order.cycle.orders? %>
 
         <div>
           <%= check_box_tag 'warn_consumer', 1, false, :onchange => "jQuery(this).parent().next().toggle(this.checked); jQuery(this).siblings('.subtitle').toggle(this.checked);" %>
-          <%= label_tag 'warn_consumer', t('orders_plugin.views.order._edit.warn_member_of_the_ch'), :class => 'line-label' %>
+          <%= label_tag 'warn_consumer', t('orders_plugin.views.admin._edit.warn_member_of_the_ch'), :class => 'line-label' %>
           <div class="clean"></div>
-          <div class="subtitle"><%= t('orders_plugin.views.order._edit.the_collective_member') %></div>
+          <div class="subtitle"><%= t('orders_plugin.views.admin._edit.the_collective_member') %></div>
         </div>
 
         <div>
           <%= check_box_tag 'include_message', 1, false, :onchange => "jQuery(this).parent().find('textarea').toggle(this.checked)" %>
-          <%= label_tag 'include_message', t('orders_plugin.views.order._edit.include_message'), :class => 'line-label' %>
+          <%= label_tag 'include_message', t('orders_plugin.views.admin._edit.include_message'), :class => 'line-label' %>
           <div class="clean"></div>
           <div><%= text_area_tag 'message' %></div>
         </div>
 
         <div>
-          <%= f.submit t('orders_plugin.views.order._edit.save') %>
-          <%= link_to_function t('orders_plugin.views.order._edit.cancel'), :class => 'toggle-edit' %>
+          <%= f.submit t('orders_plugin.views.admin._edit.save') %>
+          <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), :class => 'toggle-edit' %>
         </div>
 
         <% javascript_tag do %>
-          jQuery('#in-session-order-<%=order.id%> input[type=checkbox]').change();
+          jQuery('#in-cycle-order-<%=order.id%> input[type=checkbox]').change();
         <% end %>
 
       <% end %>
@@ -53,13 +53,13 @@
   <% end %>
 
   <div class="actions-bar">
-    <%# link_to_function t('orders_plugin.views.order._edit.remove_order'), '' if order.session.orders? %>
-    <%# link_to_function t('orders_plugin.views.order._edit.add_product'), '' if order.session.orders? %>
-    <%# link_to_function t('orders_plugin.views.order._edit.see_redistribution'), '' unless order.session.orders? %>
-    <%# link_to_function t('orders_plugin.views.order._edit.see_delivery'), '' unless order.session.orders? %>
-    <%= link_to t('orders_plugin.views.order._edit.edit_on_the_order_pag'), {:action => :edit, :id => order.id}, :target => '_blank' %>
-    <%= colorbox_link_to t('orders_plugin.views.order._edit.message_to_member'), {:controller => :distribution_plugin_message, :action => :new_to_consumer_for_order, :order_id => order.id} %>
-    <strong><%= t('orders_plugin.views.order._edit.actions') %></strong>
+    <%# link_to_function t('orders_plugin.views.admin._edit.remove_order'), '' if order.cycle.orders? %>
+    <%# link_to_function t('orders_plugin.views.admin._edit.add_product'), '' if order.cycle.orders? %>
+    <%# link_to_function t('orders_plugin.views.admin._edit.see_redistribution'), '' unless order.cycle.orders? %>
+    <%# link_to_function t('orders_plugin.views.admin._edit.see_delivery'), '' unless order.cycle.orders? %>
+    <%= link_to t('orders_plugin.views.admin._edit.edit_on_the_order_pag'), {:action => :edit, :id => order.id}, :target => '_blank' %>
+    <%= colorbox_link_to t('orders_plugin.views.admin._edit.message_to_member'), {:controller => :orders_plugin_message, :action => :new_to_consumer_for_order, :order_id => order.id} %>
+    <strong><%= t('orders_plugin.views.admin._edit.actions') %></strong>
 
     <div class="clean"></div>
   </div>

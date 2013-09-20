@@ -1,1 +1,39 @@
 @import 'base';
+
+#networks-admin-index {
+
+  #network-list {
+    margin-bottom: $margin;
+  }
+}
+
+#networks-node-create {
+  height: 20*$height;
+}
+
+#networks-network-show-structure {
+
+  .listing {
+
+    .row {
+      @extend .container-clean;
+
+      .name {
+        float: left;
+        width: $module08p;
+      }
+      .actions {
+        width: $module04p;
+        float: right;
+      }
+    }
+  }
+
+}
+
+#colorbox {
+  #suppliers-page {
+    min-height: 30*$height;
+    min-width: $module06;
+  }
+}

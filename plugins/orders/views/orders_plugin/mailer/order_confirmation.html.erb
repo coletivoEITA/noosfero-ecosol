@@ -15,10 +15,10 @@
       } %>
     </p>
 
-    <% if @order.respond_to? :session %>
+    <% if @order.respond_to? :cycle %>
       <p>
         <%= t('orders_plugin.views.mailer.order_confirmation.the_delivery_period_w') % {
-          :date => datetime_period_with_from(@order.session.delivery_start, @order.session.delivery_finish)
+          :date => datetime_period_with_from(@order.cycle.delivery_start, @order.cycle.delivery_finish)
         } %>
       </p>
     <% end %>

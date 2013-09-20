@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean {
+.container-clean, #networks-network-show-structure .listing .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -14,7 +14,9 @@
 /* base measurements */
 /* widths should only use one of these */
 /* paddings and margins should only use one of these
-   REMEMBER to disccount the borders size from padding, as borders uses padding's space.
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
  */
 /* use for borders */
 /* use for text shadows */
@@ -122,13 +124,31 @@
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  color: white;
-  background: #394e41;
+  background: #fbca47;
+  border: 1px solid #f4a439;
   cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
   text-align: center;
   text-decoration: none;
+  text-transform: uppercase;
   text-shadow: none;
-  border: none;
   border-radius: 5px; }
-  .action-button:visited, .action-button:active, .action-button:hover {
-    color: white; }
+
+#networks-admin-index #network-list {
+  margin-bottom: 16px; }
+
+#networks-node-create {
+  height: 160px; }
+
+#networks-network-show-structure .listing .row .name {
+  float: left;
+  width: 65%; }
+#networks-network-show-structure .listing .row .actions {
+  width: 31.66667%;
+  float: right; }
+
+#colorbox #suppliers-page {
+  min-height: 240px;
+  min-width: 464px; }

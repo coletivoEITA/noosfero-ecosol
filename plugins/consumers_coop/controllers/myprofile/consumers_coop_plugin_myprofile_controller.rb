@@ -1,13 +1,12 @@
 # workaround for plugin class scope problem
 require_dependency 'orders_cycle_plugin/display_helper'
+OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
 
 class ConsumersCoopPluginMyprofileController < MyProfileController
 
   include ConsumersCoopPlugin::ControllerHelper
 
-  before_filter :set_admin_action, :only => [:index]
-
-  helper OrdersCyclePlugin::DisplayHelper
+  helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
   def index
     if profile.has_admin? user

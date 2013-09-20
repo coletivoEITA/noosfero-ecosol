@@ -7,7 +7,7 @@ end
 
 class MoveDistributionPluginStuffToConsumersCoopPlugin < ActiveRecord::Migration
   def self.up
-    DistributionPlugin::Node.all.each do |node|
+    DistributionPlugin::Node.find_each do |node|
       profile = node.profile
       next if profile.nil?
 
@@ -20,10 +20,10 @@ class MoveDistributionPluginStuffToConsumersCoopPlugin < ActiveRecord::Migration
       end
       profile.consumers_coop_header_image_id = node.image_id
 
-      profile.save
+      profile.send :create_or_update_without_callbacks
     end
 
-    DistributionPlugin::Session.all.each do |session|
+    DistributionPlugin::Session.find_each do |session|
       session.update_attributes! :node_id => session.node.profile_id
     end
     rename_column :distribution_plugin_sessions, :node_id, :profile_id

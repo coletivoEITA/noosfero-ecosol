@@ -1,4 +1,31 @@
-<% @networks.each do |network| %>
-  <%= link_to network.name, network.url %>
-<% end %>
+<div id="networks-admin-index">
 
+  <h1><%= t('networks_plugin.views.admin.index.title') %></h1>
+
+  <% unless @networks.nil? %>
+    <div id="network-list">
+      <% if @networks.empty? %>
+        <%= t('networks_plugin.views.admin.index.no_network') %>
+      <% else %>
+        <% @networks.each do |network| %>
+          <div>
+            <%= link_to network.name, network.url %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <h2><%= t('networks_plugin.views.admin.index.new') %></h2>
+  <div>
+    <% form_for :network, @network, :url => {:action => :create} do |f| %>
+      <%= error_messages_for :network %>
+
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+
+      <%= f.submit t('networks_plugin.views.admin.index.new_button') %>
+    <% end %>
+  </div>
+
+</div>

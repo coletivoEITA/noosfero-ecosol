@@ -16,35 +16,6 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
          :environment => profile.environment
   end
 
-  def message_to_consumer_for_order profile, order, subject, message = nil
-    domain = profile.hostname || profile.environment.default_hostname
-
-    recipients    profile_recipients(order.consumer)
-    from          'no-reply@' + domain
-    reply_to      profile_recipients(profile)
-    subject       I18n.t('orders_cycle_plugin.lib.mailer.profile_subject') % {:profile => name, :subject => subject}
-    content_type  'text/html'
-    body :profile => profile,
-         :order => order,
-         :consumer => order.consumer,
-         :message => message,
-         :environment => profile.environment
-  end
-
-  def message_to_consumer profile, consumer, subject, message
-    domain = profile.hostname || profile.environment.default_hostname
-
-    recipients    profile_recipients(consumer)
-    from          'no-reply@' + domain
-    reply_to      profile_recipients(profile)
-    subject       I18n.t('orders_cycle_plugin.lib.mailer.profile_subject') % {:profile => name, :subject => subject}
-    content_type  'text/html'
-    body :profile => profile,
-         :consumer => consumer,
-         :message => message,
-         :environment => profile.environment
-  end
-
   def message_to_supplier profile, supplier, subject, message
     domain = profile.hostname || profile.environment.default_hostname
 
@@ -73,21 +44,21 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
          :environment => profile.environment
   end
 
-  def open_session profile, session, subject, message
+  def open_cycle profile, cycle, subject, message
     domain = profile.hostname || profile.environment.default_hostname
 
-    recipients    community_members(profile)
+    recipients    organization_members(profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(profile)
     subject       I18n.t('orders_cycle_plugin.lib.mailer.profile_subject') % {:profile => name, :subject => subject}
     content_type  'text/html'
     body :profile => profile,
-         :session => session,
+         :cycle => cycle,
          :message => message,
          :environment => profile.environment
   end
 
-  private
+  protected
 
   def profile_recipients profile
     if profile.person?
@@ -97,9 +68,10 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     end
   end
 
-  def community_members(profile)
-    if profile.community?
+  def organization_members profile
+    if profile.organization?
       profile.members.map{ |p| p.contact_email }
     end
   end
+
 end

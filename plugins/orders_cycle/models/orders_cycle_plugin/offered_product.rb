@@ -9,15 +9,18 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   has_many :ordered_products, :class_name => 'OrdersPlugin::OrderedProduct', :foreign_key => :product_id, :dependent => :destroy
   has_many :orders, :through => :ordered_products, :source => :order
 
-  validates_presence_of :cycle
-  validate :cycle_cant_change
+  named_scope :sources_from_2x_products_joins, :joins =>
+    'INNER JOIN suppliers_plugin_source_products ON ( products.id = suppliers_plugin_source_products.to_product_id ) INNER JOIN products products_2 ON ( suppliers_plugin_source_products.from_product_id = products_2.id ) INNER JOIN suppliers_plugin_source_products suppliers_plugin_source_products_2 ON ( products_2.id = suppliers_plugin_source_products_2.to_product_id )'
+  # overhide original. this scope depends on the above one
+  named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_source_products_2.supplier_id = ?', supplier_id] } }
 
   # for products in cycle, these are the products of the suppliers
   # p in cycle -> p distributed -> p from supplier
-  has_many :from_2x_products, :through => :from_products, :source => :from_products
   def supplier_products
     self.from_2x_products
   end
+
+  default_scope :includes => [:from_2x_products]
 
   extend CurrencyHelper::ClassMethods
   has_number_with_locale :total_quantity_asked
@@ -56,17 +59,17 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     return self['margin_percentage'] if price.nil? or buy_price.nil? or price.zero? or buy_price.zero?
     ((price / buy_price) - 1) * 100
   end
-  def margin_percentage=(value)
+  def margin_percentage= value
     self['margin_percentage'] = value
-    self.price = price_with_margins buy_price
+    self.price = self.price_with_margins buy_price
   end
 
   def buy_price
-    supplier_products.sum(:price)
+    self.supplier_products.inject(0){ |sum, p| sum += p.price || 0 }
   end
   def buy_unit
     #TODO: handle multiple products
-    supplier_product ? supplier_product.unit : self.class.default_unit
+    self.supplier_product.unit || self.class.default_unit
   end
   def sell_unit
     unit
@@ -80,17 +83,13 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   end
 
   FROOZEN_DEFAULT_ATTRIBUTES = DEFAULT_ATTRIBUTES
-  def freeze_default_attributes(from_product)
+  def freeze_default_attributes from_product
     FROOZEN_DEFAULT_ATTRIBUTES.each do |a|
       self[a.to_s] = from_product.send a
     end
   end
 
   protected
-
-  def cycle_cant_change
-    errors.add :cycle_id, "cycle can't change" if cycle_id_changed? and not new_record?
-  end
 
   after_update :sync_ordered
   def sync_ordered

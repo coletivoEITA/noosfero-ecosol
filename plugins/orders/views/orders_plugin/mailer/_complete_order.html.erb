@@ -6,7 +6,7 @@ body += "-" * 79 + "\n"
 body +=  t('orders_plugin.views.mailer._complete_order.supplier_product') + " "*(26-t('orders_plugin.views.mailer._complete_order.supplier_product').size) + t('orders_plugin.views.mailer._complete_order.qtt') + ' '*(23-t('orders_plugin.views.mailer._complete_order.qtt').size) + t('orders_plugin.views.mailer._complete_order.price_un') + " "*(23-t('orders_plugin.views.mailer._complete_order.price_un').size) + t('orders_plugin.views.mailer._complete_order.price') + "\n"
 body += "-" * 79 + "\n"
 @order.products.group_by{|op| op.supplier}.each do |supplier, products|
-  body += supplier.name.upcase + ":</pre>"
+  body += supplier.abbreviation_or_name.upcase + ":</pre>"
   products.each do |p|
     body += '<pre>'
     line = ' '*3 + p.product.name

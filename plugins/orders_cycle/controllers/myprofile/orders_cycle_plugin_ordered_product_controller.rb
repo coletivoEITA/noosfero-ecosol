@@ -1,8 +1,15 @@
+# workaround for plugins' class scope problem
+require_dependency 'orders_cycle_plugin/display_helper'
+OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
+
 class OrdersCyclePluginOrderedProductController < OrdersPluginProductController
+
+  # FIXME: remove me when styles move from consumers_coop plugin
+  include ConsumersCoopPlugin::ControllerHelper
 
   no_design_blocks
 
-  helper OrdersCyclePlugin::DisplayHelper
+  helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
   def new
     @offered_product = Product.find params[:offered_product_id]
