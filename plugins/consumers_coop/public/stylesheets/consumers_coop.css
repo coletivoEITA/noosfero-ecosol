@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .consumers-coop .field, .consumers-coop .field-secondary.with-unit, #consumers-coop-plugin-header .menu-button-container {
+.container-clean, #consumers-coop-plugin-header .menu-button-container, #consumers-coop-settings form .field, #consumers-coop-settings form .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -92,7 +92,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle, .consumers-coop .subtitle {
+.pstyle-tm2, .subtitle, #consumers-coop-settings form .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -117,9 +117,9 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, .consumers-coop a.button.colorbox-close,
-.consumers-coop #wrap-1 input[type=submit],
-.consumers-coop input[type=submit] {
+.action-button, #consumers-coop-settings form a.button.colorbox-close,
+#consumers-coop-settings form #wrap-1 input[type=submit],
+#consumers-coop-settings form input[type=submit] {
   display: inline-block;
   padding: 4px 8px;
   margin: 0;
@@ -137,197 +137,6 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
-
-.consumers-coop {
-  /* use with @extend, CSS clear bugfix */
-  /* layout base parameters */
-  /* heights should only use multiples of this */
-  /* base measurements */
-  /* widths should only use one of these */
-  /* paddings and margins should only use one of these
-     Ps. 1: disccount the borders size from padding, as borders uses padding's space.
-     Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
-     box doesn't have a padding, then sum $intercolumn to the width.
-   */
-  /* use for borders */
-  /* use for text shadows */
-  /* Colors */
-  /* Fonts */
-  /* Paragraphs Styles (use with @extend) */
-  /* Images */
-  /* profile-image that can be centered and resized with aspect ratio */
-  /* Buttons */ }
-  .consumers-coop .clean {
-    clear: both; }
-  .consumers-coop .container-clean, .consumers-coop .field, .consumers-coop .field-secondary.with-unit, .consumers-coop #consumers-coop-plugin-header .menu-button-container, #consumers-coop-plugin-header .consumers-coop .menu-button-container {
-    overflow: hidden;
-    display: inline-block;
-    /* Necessary to trigger "hasLayout" in IE */
-    display: block;
-    /* Sets element back to block */ }
-  .consumers-coop .pstyle-none {
-    font-size: 12px; }
-  .consumers-coop .pstyle-basic {
-    font-size: 16px; }
-  .consumers-coop .pstyle-button {
-    font-size: 16px; }
-  .consumers-coop .pstyle-button-small {
-    font-size: 13px; }
-  .consumers-coop .pstyle-title {
-    font-size: 72px; }
-  .consumers-coop .pstyle-h1 {
-    font-size: 34px; }
-  .consumers-coop .pstyle-h2 {
-    font-size: 26px; }
-  .consumers-coop .pstyle-h3 {
-    font-size: 21px; }
-  .consumers-coop .pstyle-h4 {
-    font-size: 16px; }
-  .consumers-coop .pstyle-h5 {
-    font-size: 13px; }
-  .consumers-coop .pstyle-title-section {
-    font-size: 92px; }
-  .consumers-coop .pstyle-field {
-    font-size: 13px; }
-  .consumers-coop .pstyle-menu-big-selected {
-    font-size: 21px; }
-  .consumers-coop .pstyle-menu-big-unselected {
-    font-size: 21px; }
-  .consumers-coop .pstyle-menu-medium-selected {
-    font-size: 16px; }
-  .consumers-coop .pstyle-menu-medium-unselected {
-    font-size: 16px; }
-  .consumers-coop .pstyle-menu-small-selected {
-    font-size: 13px; }
-  .consumers-coop .pstyle-menu-small-unselected {
-    font-size: 13px; }
-  .consumers-coop .pstyle-tp4 {
-    font-size: 42px; }
-  .consumers-coop .pstyle-tp3 {
-    font-size: 34px; }
-  .consumers-coop .pstyle-tp2 {
-    font-size: 26px; }
-  .consumers-coop .pstyle-tp1 {
-    font-size: 21px; }
-  .consumers-coop .pstyle-tm1 {
-    font-size: 13px; }
-  .consumers-coop .pstyle-tm2 {
-    font-size: 10px; }
-  .consumers-coop .profile-image {
-    display: inline-block;
-    /* do not put padding in this as background size will consider it. */ }
-    .consumers-coop .profile-image.thumb {
-      width: 32px;
-      height: 32px; }
-    .consumers-coop .profile-image.portrait {
-      width: 80px;
-      height: 80px; }
-    .consumers-coop .profile-image .inner {
-      display: block;
-      width: 100%;
-      height: 100%;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 100%;
-      background-size: contain;
-      /* css3 enabled */ }
-  .consumers-coop .action-button, .consumers-coop a.button.colorbox-close,
-  .consumers-coop #wrap-1 input[type=submit],
-  .consumers-coop input[type=submit] {
-    display: inline-block;
-    padding: 4px 8px;
-    margin: 0;
-    /* remove submit input browser's margin */
-    height: auto;
-    width: auto;
-    background: #fbca47;
-    border: 1px solid #f4a439;
-    cursor: pointer;
-    color: black;
-    font-weight: bold;
-    line-height: 16px;
-    text-align: center;
-    text-decoration: none;
-    text-transform: uppercase;
-    text-shadow: none;
-    border-radius: 5px; }
-  .consumers-coop .field-title {
-    text-transform: uppercase;
-    font-weight: bold; }
-  .consumers-coop .field {
-    clear: both; }
-    .consumers-coop .field:first-child label {
-      padding-top: 0; }
-    .consumers-coop .field label {
-      display: block;
-      float: left;
-      padding-top: 4px;
-      font-weight: bold;
-      line-height: 20px; }
-    .consumers-coop .field .field-box {
-      clear: both;
-      float: left;
-      width: 100%; }
-    .consumers-coop .field .field-help {
-      clear: both;
-      margin-bottom: 8px;
-      font-size: 10px; }
-  .consumers-coop .field-radio {
-    clear: both;
-    margin-bottom: 4px; }
-    .consumers-coop .field-radio input {
-      float: left;
-      margin-left: 0; }
-    .consumers-coop .field-radio label {
-      font-weight: normal;
-      line-height: 10px;
-      text-transform: lowercase;
-      margin-left: 4px; }
-  .consumers-coop .field-secondary {
-    display: block; }
-    .consumers-coop .field-secondary, .consumers-coop .field-secondary input, .consumers-coop .field-secondary select {
-      width: 128px; }
-    .consumers-coop .field-secondary.with-unit input {
-      float: left;
-      width: 112px; }
-    .consumers-coop .field-secondary.with-unit .field-unit {
-      float: left;
-      width: 16px;
-      line-height: 24px; }
-  .consumers-coop form {
-    margin: 0;
-    /* come on browsers!? */ }
-  .consumers-coop label.field-bellow {
-    display: block;
-    margin-bottom: 4px;
-    font-size: 10px; }
-  .consumers-coop select,
-  .consumers-coop input[type=text], .consumers-coop input[type=password],
-  .consumers-coop textarea {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box; }
-  .consumers-coop select,
-  .consumers-coop input[type=text], .consumers-coop input[type=password] {
-    height: 24px; }
-  .consumers-coop select {
-    background-color: #fff;
-    border: 1px solid black;
-    padding-left: 4px; }
-  .consumers-coop input.date-select, .consumers-coop input.time-select {
-    width: 94px; }
-  .consumers-coop input[type=text] {
-    border: 1px solid black;
-    padding: 4px;
-    margin: 0; }
-  .consumers-coop input[type=checkbox] {
-    width: 12px;
-    height: 12px;
-    margin: 0; }
-  .consumers-coop textarea {
-    height: 64px;
-    padding-left: 4px; }
 
 /* ----- override some noosfero's css  ----- */
 body.consumers-coop {
@@ -659,36 +468,217 @@ body.consumers-coop {
   width: 100%; }
 
 /* ----- settings ----- */
-#consumers-coop-plugin-settings .field {
-  width: 360px;
-  margin-top: 5px; }
-
-#consumers-coop-plugin-settings input[type=text] {
-  width: 100%; }
-
-#consumers-coop-plugin-settings div.color-choose {
-  width: 130px;
-  height: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  display: inline-block; }
-
-#consumers-coop-plugin-settings .color-purple, #consumers-coop-plugin-header .color-purple {
-  background-color: #705496; }
-
-#consumers-coop-plugin-settings .color-yellow, #consumers-coop-plugin-header .color-yellow {
-  background-color: #f5b900; }
-
-#consumers-coop-plugin-settings .color-beige, #consumers-coop-plugin-header .color-beige {
-  background-color: #c4bf66; }
-
-#consumers-coop-plugin-settings .color-blue, #consumers-coop-plugin-header .color-blue {
-  background-color: #0094c9; }
-
-#consumers-coop-plugin-settings .color-petro, #consumers-coop-plugin-header .color-petro {
-  background-color: #036475; }
-
-#consumers-coop-plugin-settings .color-green, #consumers-coop-plugin-header .color-green {
-  background-color: #4aa133; }
-
-#consumers-coop-plugin-settings .disabled {
-  background-color: gray; }
+#consumers-coop-settings form {
+  /* use with @extend, CSS clear bugfix */
+  /* layout base parameters */
+  /* heights should only use multiples of this */
+  /* base measurements */
+  /* widths should only use one of these */
+  /* paddings and margins should only use one of these
+     Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+     Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+     box doesn't have a padding, then sum $intercolumn to the width.
+   */
+  /* use for borders */
+  /* use for text shadows */
+  /* Colors */
+  /* Fonts */
+  /* Paragraphs Styles (use with @extend) */
+  /* Images */
+  /* profile-image that can be centered and resized with aspect ratio */
+  /* Buttons */ }
+  #consumers-coop-settings form .clean {
+    clear: both; }
+  #consumers-coop-settings form .container-clean, #consumers-coop-settings form #consumers-coop-plugin-header .menu-button-container, #consumers-coop-plugin-header #consumers-coop-settings form .menu-button-container, #consumers-coop-settings form .field, #consumers-coop-settings form .field-secondary.with-unit {
+    overflow: hidden;
+    display: inline-block;
+    /* Necessary to trigger "hasLayout" in IE */
+    display: block;
+    /* Sets element back to block */ }
+  #consumers-coop-settings form .pstyle-none {
+    font-size: 12px; }
+  #consumers-coop-settings form .pstyle-basic {
+    font-size: 16px; }
+  #consumers-coop-settings form .pstyle-button {
+    font-size: 16px; }
+  #consumers-coop-settings form .pstyle-button-small {
+    font-size: 13px; }
+  #consumers-coop-settings form .pstyle-title {
+    font-size: 72px; }
+  #consumers-coop-settings form .pstyle-h1 {
+    font-size: 34px; }
+  #consumers-coop-settings form .pstyle-h2 {
+    font-size: 26px; }
+  #consumers-coop-settings form .pstyle-h3 {
+    font-size: 21px; }
+  #consumers-coop-settings form .pstyle-h4 {
+    font-size: 16px; }
+  #consumers-coop-settings form .pstyle-h5 {
+    font-size: 13px; }
+  #consumers-coop-settings form .pstyle-title-section {
+    font-size: 92px; }
+  #consumers-coop-settings form .pstyle-field {
+    font-size: 13px; }
+  #consumers-coop-settings form .pstyle-menu-big-selected {
+    font-size: 21px; }
+  #consumers-coop-settings form .pstyle-menu-big-unselected {
+    font-size: 21px; }
+  #consumers-coop-settings form .pstyle-menu-medium-selected {
+    font-size: 16px; }
+  #consumers-coop-settings form .pstyle-menu-medium-unselected {
+    font-size: 16px; }
+  #consumers-coop-settings form .pstyle-menu-small-selected {
+    font-size: 13px; }
+  #consumers-coop-settings form .pstyle-menu-small-unselected {
+    font-size: 13px; }
+  #consumers-coop-settings form .pstyle-tp4 {
+    font-size: 42px; }
+  #consumers-coop-settings form .pstyle-tp3 {
+    font-size: 34px; }
+  #consumers-coop-settings form .pstyle-tp2 {
+    font-size: 26px; }
+  #consumers-coop-settings form .pstyle-tp1 {
+    font-size: 21px; }
+  #consumers-coop-settings form .pstyle-tm1 {
+    font-size: 13px; }
+  #consumers-coop-settings form .pstyle-tm2 {
+    font-size: 10px; }
+  #consumers-coop-settings form .profile-image {
+    display: inline-block;
+    /* do not put padding in this as background size will consider it. */ }
+    #consumers-coop-settings form .profile-image.thumb {
+      width: 32px;
+      height: 32px; }
+    #consumers-coop-settings form .profile-image.portrait {
+      width: 80px;
+      height: 80px; }
+    #consumers-coop-settings form .profile-image .inner {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100%;
+      background-size: contain;
+      /* css3 enabled */ }
+  #consumers-coop-settings form .action-button, #consumers-coop-settings form a.button.colorbox-close,
+  #consumers-coop-settings form #wrap-1 input[type=submit],
+  #consumers-coop-settings form input[type=submit] {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 0;
+    /* remove submit input browser's margin */
+    height: auto;
+    width: auto;
+    background: #fbca47;
+    border: 1px solid #f4a439;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+    line-height: 16px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-shadow: none;
+    border-radius: 5px; }
+  #consumers-coop-settings form .field-title {
+    text-transform: uppercase;
+    font-weight: bold; }
+  #consumers-coop-settings form .field {
+    clear: both; }
+    #consumers-coop-settings form .field:first-child label {
+      padding-top: 0; }
+    #consumers-coop-settings form .field label {
+      display: block;
+      float: left;
+      padding-top: 4px;
+      font-weight: bold;
+      line-height: 20px; }
+    #consumers-coop-settings form .field .field-box {
+      clear: both;
+      float: left;
+      width: 100%; }
+    #consumers-coop-settings form .field .field-help {
+      clear: both;
+      margin-bottom: 8px;
+      font-size: 10px; }
+  #consumers-coop-settings form .field-radio {
+    clear: both;
+    margin-bottom: 4px; }
+    #consumers-coop-settings form .field-radio input {
+      float: left;
+      margin-left: 0; }
+    #consumers-coop-settings form .field-radio label {
+      font-weight: normal;
+      line-height: 10px;
+      text-transform: lowercase;
+      margin-left: 4px; }
+  #consumers-coop-settings form .field-secondary {
+    display: block; }
+    #consumers-coop-settings form .field-secondary, #consumers-coop-settings form .field-secondary input, #consumers-coop-settings form .field-secondary select {
+      width: 128px; }
+    #consumers-coop-settings form .field-secondary.with-unit input {
+      float: left;
+      width: 112px; }
+    #consumers-coop-settings form .field-secondary.with-unit .field-unit {
+      float: left;
+      width: 16px;
+      line-height: 24px; }
+  #consumers-coop-settings form form {
+    margin: 0;
+    /* come on browsers!? */ }
+  #consumers-coop-settings form label.field-bellow {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 10px; }
+  #consumers-coop-settings form select,
+  #consumers-coop-settings form input[type=text], #consumers-coop-settings form input[type=password],
+  #consumers-coop-settings form textarea {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box; }
+  #consumers-coop-settings form select,
+  #consumers-coop-settings form input[type=text], #consumers-coop-settings form input[type=password] {
+    height: 24px; }
+  #consumers-coop-settings form select {
+    background-color: #fff;
+    border: 1px solid black;
+    padding-left: 4px; }
+  #consumers-coop-settings form input.date-select, #consumers-coop-settings form input.time-select {
+    width: 94px; }
+  #consumers-coop-settings form input[type=text] {
+    border: 1px solid black;
+    padding: 4px;
+    margin: 0; }
+  #consumers-coop-settings form input[type=checkbox] {
+    width: 12px;
+    height: 12px;
+    margin: 0; }
+  #consumers-coop-settings form textarea {
+    height: 64px;
+    padding-left: 4px; }
+  #consumers-coop-settings form .field {
+    width: 360px;
+    margin-top: 5px; }
+  #consumers-coop-settings form input[type=text] {
+    width: 100%; }
+  #consumers-coop-settings form div.color-choose {
+    width: 130px;
+    height: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: inline-block; }
+  #consumers-coop-settings form .color-purple, #consumers-coop-settings form #consumers-coop-plugin-header .color-purple {
+    background-color: #705496; }
+  #consumers-coop-settings form .color-yellow, #consumers-coop-settings form #consumers-coop-plugin-header .color-yellow {
+    background-color: #f5b900; }
+  #consumers-coop-settings form .color-beige, #consumers-coop-settings form #consumers-coop-plugin-header .color-beige {
+    background-color: #c4bf66; }
+  #consumers-coop-settings form .color-blue, #consumers-coop-settings form #consumers-coop-plugin-header .color-blue {
+    background-color: #0094c9; }
+  #consumers-coop-settings form .color-petro, #consumers-coop-settings form #consumers-coop-plugin-header .color-petro {
+    background-color: #036475; }
+  #consumers-coop-settings form .color-green, #consumers-coop-settings form #consumers-coop-plugin-header .color-green {
+    background-color: #4aa133; }
+  #consumers-coop-settings form .disabled {
+    background-color: gray; }

@@ -1,5 +1,6 @@
 @import 'base';
-@import 'orders_variables';
+@import 'sortable-table';
+@import 'orders-variables';
 
 @import 'calendrial';
 
@@ -35,25 +36,40 @@
       @extend .box-align;
     }
 
-
     #filter {
-      width: $module06 + $intercolumn;
-      margin: auto;
+      margin-left: -$sortable-table-negative-area;
 
-      .fields div.category {
-        border-right: 0;
+      > * {
+        padding-left: $sortable-table-negative-area + $padding !important;
       }
 
       .filter-box {
-        padding-left: 8px;
+        padding-left: $padding;
+
+        .fields {
+
+          .supplier {
+            padding-left: 0;
+          }
+          .category {
+            border-right: 0;
+          }
+        }
       }
     }
 
 
     #cycle-products {
+
+      .table-header, .table-content {
+        margin-left: -$sortable-table-negative-area;
+      }
+      .table-header {
+        padding-left: $sortable-table-negative-area;
+      }
+
       .box-field {
         &.category {
-          border: none;
           width: $module01;
         }
         &.supplier {
@@ -97,8 +113,6 @@
         }
 
       }
-
-
 
       .box-view {
         .box-field.quantity a {
@@ -332,9 +346,6 @@
     width: 120px;
   }
 
-}
-.vertical-spacer {
-  height: $intercolumn;
 }
 
 #cycle-closed-listing {

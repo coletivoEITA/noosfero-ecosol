@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
 #suppliers-page .supplier .box-edit form .data .full-data {
   overflow: hidden;
   display: inline-block;
@@ -93,7 +93,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle, #supplier-our-products .subtitle, #suppliers-page .supplier .box-edit form .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, #supplier-our-products .sortable-table form .subtitle, #suppliers-page .supplier .box-edit form .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -118,9 +118,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #supplier-our-products a.button.colorbox-close,
-#supplier-our-products #wrap-1 input[type=submit],
-#supplier-our-products input[type=submit], #suppliers-page .supplier .box-edit form a.button.colorbox-close,
+.action-button, #filter .filter-box a.button.colorbox-close,
+#filter .filter-box #wrap-1 input[type=submit],
+#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form a.button.colorbox-close,
+#supplier-our-products .sortable-table form #wrap-1 input[type=submit],
+#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form a.button.colorbox-close,
 #suppliers-page .supplier .box-edit form #wrap-1 input[type=submit],
 #suppliers-page .supplier .box-edit form input[type=submit] {
   display: inline-block;
@@ -145,7 +147,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
 #suppliers-page .supplier .box-edit form .data .full-data {
   overflow: hidden;
   display: inline-block;
@@ -236,7 +238,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle, #supplier-our-products .subtitle, #suppliers-page .supplier .box-edit form .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, #supplier-our-products .sortable-table form .subtitle, #suppliers-page .supplier .box-edit form .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -261,9 +263,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #supplier-our-products a.button.colorbox-close,
-#supplier-our-products #wrap-1 input[type=submit],
-#supplier-our-products input[type=submit], #suppliers-page .supplier .box-edit form a.button.colorbox-close,
+.action-button, #filter .filter-box a.button.colorbox-close,
+#filter .filter-box #wrap-1 input[type=submit],
+#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form a.button.colorbox-close,
+#supplier-our-products .sortable-table form #wrap-1 input[type=submit],
+#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form a.button.colorbox-close,
 #suppliers-page .supplier .box-edit form #wrap-1 input[type=submit],
 #suppliers-page .supplier .box-edit form input[type=submit] {
   display: inline-block;
@@ -288,7 +292,7 @@
   width: 960px;
   margin-left: -40px;
   padding: 0 40px; }
-.sortable-table.wireframe-size > .table-content > .value-row, #supplier-our-products .sortable-table > .table-content > .value-row {
+.sortable-table.checkable > .table-content > .value-row {
   width: 1008px;
   margin-left: -24px; }
 .sortable-table > .table-header .box-field, .sortable-table > .table-content .box-field {
@@ -349,21 +353,22 @@
       margin-top: 3px;
       padding: 0; }
       .sortable-table > .table-content > .value-row .box-field.actions .actions-circle .action-show {
-        background: url("images/plus.png") no-repeat;
+        background: url("/plugins/suppliers/images/plus.png") no-repeat;
         width: 16px;
         height: 16px; }
       .sortable-table > .table-content > .value-row .box-field.actions .actions-circle .action-hide {
         display: none;
-        background: url("images/minus.png") no-repeat;
+        background: url("/plugins/suppliers/images/minus.png") no-repeat;
         width: 16px;
         height: 16px; }
     .sortable-table > .table-content > .value-row .box-view {
-      border-bottom: 2px dotted #cccccc;
-      background: #f3f4ee; }
+      border-bottom: 2px dotted #cccccc; }
+      .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner {
+        background: #f3f4ee; }
       .sortable-table > .table-content > .value-row .box-view.with-inner {
         background: white; }
         .sortable-table > .table-content > .value-row .box-view.with-inner .box-view-inner {
-          background: #f3f4ee; }
+          float: left; }
       .sortable-table > .table-content > .value-row .box-view .box-field.box-edit-link {
         font-size: 12px !important;
         font-weight: bold;
@@ -395,7 +400,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
 #suppliers-page .supplier .box-edit form .data .full-data {
   overflow: hidden;
   display: inline-block;
@@ -486,7 +491,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle, #supplier-our-products .subtitle, #suppliers-page .supplier .box-edit form .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, #supplier-our-products .sortable-table form .subtitle, #suppliers-page .supplier .box-edit form .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -511,9 +516,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #supplier-our-products a.button.colorbox-close,
-#supplier-our-products #wrap-1 input[type=submit],
-#supplier-our-products input[type=submit], #suppliers-page .supplier .box-edit form a.button.colorbox-close,
+.action-button, #filter .filter-box a.button.colorbox-close,
+#filter .filter-box #wrap-1 input[type=submit],
+#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form a.button.colorbox-close,
+#supplier-our-products .sortable-table form #wrap-1 input[type=submit],
+#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form a.button.colorbox-close,
 #suppliers-page .supplier .box-edit form #wrap-1 input[type=submit],
 #suppliers-page .supplier .box-edit form input[type=submit] {
   display: inline-block;
@@ -535,71 +542,255 @@
   border-radius: 5px; }
 
 #filter {
-  background-color: #BCDC91;
+  background-color: #bcdc91;
   padding: 0;
   margin-top: 16px;
-  margin-left: -40px;
-  margin-right: -40px;
   margin-bottom: 16px;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
   font-size: 9px; }
+  #filter.wireframe-size, #supplier-our-products #filter.sortable-table {
+    margin-left: -40px;
+    margin-right: -40px; }
+    #filter.wireframe-size .title, #supplier-our-products #filter.sortable-table .title, #filter.wireframe-size .filter-box, #supplier-our-products #filter.sortable-table .filter-box, #filter.wireframe-size .submit, #supplier-our-products #filter.sortable-table .submit {
+      padding-left: 48px;
+      padding-right: 48px; }
   #filter .title {
+    padding: 8px;
+    margin: 0;
     font-weight: bold;
     font-size: 13px; }
-  #filter .fields > div {
-    border-right: 1px solid #d6e9bc;
-    padding-left: 8px;
-    padding-right: 8px;
-    float: left; }
-  #filter .fields > div.clean {
-    float: none; }
-  #filter .fields > div:first-child {
-    padding-left: 0; }
-  #filter .fields div.name {
-    border-right: 0; }
-  #filter .fields label {
-    font-weight: bold; }
-  #filter .submit input[type=submit] {
-    font-weight: bold;
-    text-transform: uppercase;
-    padding: 8px;
-    background-color: #4B583C;
-    color: #FFFFFF;
-    border: 1px solid white;
-    font-size: 9px;
-    text-align: center;
-    margin: none;
-    width: auto !important; }
+  #filter .submit {
+    padding: 8px; }
+    #filter .submit input[type=submit] {
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      background-color: #4B583C;
+      color: #FFFFFF;
+      border: 1px solid white;
+      border-radius: 5px;
+      font-size: 9px;
+      text-align: center;
+      margin: none;
+      width: auto !important; }
   #filter .filter-box {
-    padding-left: 48px;
-    padding-right: 48px;
     border-bottom: 1px solid #d6e9bc;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    /*
-      WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
-        select,
-        input {
-          width: 160px -(2*$padding);
-        }
-    
-        .name input {
-          width:288px;
-        }
-    */ }
-    #filter .filter-box select, #filter .filter-box input {
-      width: 164px; }
-    #filter .filter-box .name input {
-      width: 308px; }
+    /* use with @extend, CSS clear bugfix */
+    /* layout base parameters */
+    /* heights should only use multiples of this */
+    /* base measurements */
+    /* widths should only use one of these */
+    /* paddings and margins should only use one of these
+       Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+       Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+       box doesn't have a padding, then sum $intercolumn to the width.
+     */
+    /* use for borders */
+    /* use for text shadows */
+    /* Colors */
+    /* Fonts */
+    /* Paragraphs Styles (use with @extend) */
+    /* Images */
+    /* profile-image that can be centered and resized with aspect ratio */
+    /* Buttons */ }
+    #filter .filter-box .clean {
+      clear: both; }
+    #filter .filter-box .container-clean, #filter .filter-box .sortable-table > .table-header, #filter .filter-box .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #filter .filter-box .box-view, #filter .filter-box .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #filter .filter-box .box-view-inner, #filter .filter-box .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #filter .filter-box .internal-table, #filter .filter-box .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #filter .filter-box #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table #filter .filter-box form, #filter .filter-box #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form #filter .filter-box .field, #filter .filter-box #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form #filter .filter-box .field-secondary.with-unit, #filter .filter-box #supplier-our-products .sortable-table form .internal-table .row, #supplier-our-products .sortable-table form .internal-table #filter .filter-box .row, #filter .filter-box #suppliers-page .supplier .box-view, #suppliers-page .supplier #filter .filter-box .box-view, #filter .filter-box #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form #filter .filter-box .field, #filter .filter-box #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form #filter .filter-box .field-secondary.with-unit, #filter .filter-box #suppliers-page .supplier .box-edit form .data .basic-data, #suppliers-page .supplier .box-edit form .data #filter .filter-box .basic-data,
+    #filter .filter-box #suppliers-page .supplier .box-edit form .data .full-data,
+    #suppliers-page .supplier .box-edit form .data #filter .filter-box .full-data {
+      overflow: hidden;
+      display: inline-block;
+      /* Necessary to trigger "hasLayout" in IE */
+      display: block;
+      /* Sets element back to block */ }
+    #filter .filter-box .pstyle-none {
+      font-size: 12px; }
+    #filter .filter-box .pstyle-basic {
+      font-size: 16px; }
+    #filter .filter-box .pstyle-button {
+      font-size: 16px; }
+    #filter .filter-box .pstyle-button-small {
+      font-size: 13px; }
+    #filter .filter-box .pstyle-title {
+      font-size: 72px; }
+    #filter .filter-box .pstyle-h1 {
+      font-size: 34px; }
+    #filter .filter-box .pstyle-h2 {
+      font-size: 26px; }
+    #filter .filter-box .pstyle-h3 {
+      font-size: 21px; }
+    #filter .filter-box .pstyle-h4 {
+      font-size: 16px; }
+    #filter .filter-box .pstyle-h5 {
+      font-size: 13px; }
+    #filter .filter-box .pstyle-title-section {
+      font-size: 92px; }
+    #filter .filter-box .pstyle-field {
+      font-size: 13px; }
+    #filter .filter-box .pstyle-menu-big-selected {
+      font-size: 21px; }
+    #filter .filter-box .pstyle-menu-big-unselected {
+      font-size: 21px; }
+    #filter .filter-box .pstyle-menu-medium-selected {
+      font-size: 16px; }
+    #filter .filter-box .pstyle-menu-medium-unselected {
+      font-size: 16px; }
+    #filter .filter-box .pstyle-menu-small-selected {
+      font-size: 13px; }
+    #filter .filter-box .pstyle-menu-small-unselected {
+      font-size: 13px; }
+    #filter .filter-box .pstyle-tp4 {
+      font-size: 42px; }
+    #filter .filter-box .pstyle-tp3 {
+      font-size: 34px; }
+    #filter .filter-box .pstyle-tp2 {
+      font-size: 26px; }
+    #filter .filter-box .pstyle-tp1 {
+      font-size: 21px; }
+    #filter .filter-box .pstyle-tm1 {
+      font-size: 13px; }
+    #filter .filter-box .pstyle-tm2, #filter .filter-box #supplier-our-products .sortable-table form .subtitle, #supplier-our-products .sortable-table form #filter .filter-box .subtitle, #filter .filter-box #suppliers-page .supplier .box-edit form .subtitle, #suppliers-page .supplier .box-edit form #filter .filter-box .subtitle {
+      font-size: 10px; }
+    #filter .filter-box .profile-image {
+      display: inline-block;
+      /* do not put padding in this as background size will consider it. */ }
+      #filter .filter-box .profile-image.thumb {
+        width: 32px;
+        height: 32px; }
+      #filter .filter-box .profile-image.portrait {
+        width: 80px;
+        height: 80px; }
+      #filter .filter-box .profile-image .inner {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
+        background-size: contain;
+        /* css3 enabled */ }
+    #filter .filter-box .action-button, #filter .filter-box a.button.colorbox-close,
+    #filter .filter-box #wrap-1 input[type=submit],
+    #filter .filter-box input[type=submit], #filter .filter-box #supplier-our-products .sortable-table form a.button.colorbox-close, #supplier-our-products .sortable-table form #filter .filter-box a.button.colorbox-close,
+    #filter .filter-box #supplier-our-products .sortable-table form input[type=submit],
+    #supplier-our-products .sortable-table form #filter .filter-box input[type=submit], #filter .filter-box #suppliers-page .supplier .box-edit form a.button.colorbox-close, #suppliers-page .supplier .box-edit form #filter .filter-box a.button.colorbox-close,
+    #filter .filter-box #suppliers-page .supplier .box-edit form input[type=submit],
+    #suppliers-page .supplier .box-edit form #filter .filter-box input[type=submit] {
+      display: inline-block;
+      padding: 4px 8px;
+      margin: 0;
+      /* remove submit input browser's margin */
+      height: auto;
+      width: auto;
+      background: #fbca47;
+      border: 1px solid #f4a439;
+      cursor: pointer;
+      color: black;
+      font-weight: bold;
+      line-height: 16px;
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+      text-shadow: none;
+      border-radius: 5px; }
+    #filter .filter-box .field-title {
+      text-transform: uppercase;
+      font-weight: bold; }
+    #filter .filter-box .field {
+      clear: both; }
+      #filter .filter-box .field:first-child label {
+        padding-top: 0; }
+      #filter .filter-box .field label {
+        display: block;
+        float: left;
+        padding-top: 4px;
+        font-weight: bold;
+        line-height: 20px; }
+      #filter .filter-box .field .field-box {
+        clear: both;
+        float: left;
+        width: 100%; }
+      #filter .filter-box .field .field-help {
+        clear: both;
+        margin-bottom: 8px;
+        font-size: 10px; }
+    #filter .filter-box .field-radio {
+      clear: both;
+      margin-bottom: 4px; }
+      #filter .filter-box .field-radio input {
+        float: left;
+        margin-left: 0; }
+      #filter .filter-box .field-radio label {
+        font-weight: normal;
+        line-height: 10px;
+        text-transform: lowercase;
+        margin-left: 4px; }
+    #filter .filter-box .field-secondary {
+      display: block; }
+      #filter .filter-box .field-secondary, #filter .filter-box .field-secondary input, #filter .filter-box .field-secondary select {
+        width: 128px; }
+      #filter .filter-box .field-secondary.with-unit input {
+        float: left;
+        width: 112px; }
+      #filter .filter-box .field-secondary.with-unit .field-unit {
+        float: left;
+        width: 16px;
+        line-height: 24px; }
+    #filter .filter-box form {
+      margin: 0;
+      /* come on browsers!? */ }
+    #filter .filter-box label.field-bellow {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 10px; }
+    #filter .filter-box select,
+    #filter .filter-box input[type=text], #filter .filter-box input[type=password],
+    #filter .filter-box textarea {
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box; }
+    #filter .filter-box select,
+    #filter .filter-box input[type=text], #filter .filter-box input[type=password] {
+      height: 24px; }
+    #filter .filter-box select {
+      background-color: #fff;
+      border: 1px solid black;
+      padding-left: 4px; }
+    #filter .filter-box input.date-select, #filter .filter-box input.time-select {
+      width: 94px; }
+    #filter .filter-box input[type=text] {
+      border: 1px solid black;
+      padding: 4px;
+      margin: 0; }
+    #filter .filter-box input[type=checkbox] {
+      width: 12px;
+      height: 12px;
+      margin: 0; }
+    #filter .filter-box textarea {
+      height: 64px;
+      padding-left: 4px; }
+    #filter .filter-box.fields .field {
+      float: left;
+      clear: none;
+      padding: 8px;
+      border-right: 1px solid #d6e9bc; }
+      #filter .filter-box.fields .field:first-child {
+        padding-left: 0; }
+      #filter .filter-box.fields .field:last-child {
+        border-right: 0; }
+      #filter .filter-box.fields .field label {
+        font-weight: bold;
+        padding-top: 0; }
+      #filter .filter-box.fields .field select, #filter .filter-box.fields .field input {
+        width: 144px; }
+      #filter .filter-box.fields .field .name input {
+        width: 304px; }
 
 /* use with @extend, CSS clear bugfix */
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-edit .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
 #suppliers-page .supplier .box-edit form .data .full-data {
   overflow: hidden;
   display: inline-block;
@@ -690,7 +881,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle, #supplier-our-products .subtitle, #suppliers-page .supplier .box-edit form .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, #supplier-our-products .sortable-table form .subtitle, #suppliers-page .supplier .box-edit form .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -715,9 +906,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #supplier-our-products a.button.colorbox-close,
-#supplier-our-products #wrap-1 input[type=submit],
-#supplier-our-products input[type=submit], #suppliers-page .supplier .box-edit form a.button.colorbox-close,
+.action-button, #filter .filter-box a.button.colorbox-close,
+#filter .filter-box #wrap-1 input[type=submit],
+#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form a.button.colorbox-close,
+#supplier-our-products .sortable-table form #wrap-1 input[type=submit],
+#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form a.button.colorbox-close,
 #suppliers-page .supplier .box-edit form #wrap-1 input[type=submit],
 #suppliers-page .supplier .box-edit form input[type=submit] {
   display: inline-block;
@@ -738,7 +931,25 @@
   text-shadow: none;
   border-radius: 5px; }
 
-#supplier-our-products {
+#supplier-our-products .sortable-table .box-field.status {
+  width: 64px; }
+#supplier-our-products .sortable-table .box-field.category {
+  width: 64px; }
+#supplier-our-products .sortable-table .box-field.supplier {
+  width: 144px; }
+#supplier-our-products .sortable-table .box-field.product {
+  width: 304px; }
+#supplier-our-products .sortable-table .box-field.margin {
+  width: 64px; }
+#supplier-our-products .sortable-table .box-field.price {
+  width: 64px; }
+#supplier-our-products .sortable-table .box-field.stock {
+  width: 64px; }
+#supplier-our-products .sortable-table .box-field.unit {
+  width: 64px; }
+#supplier-our-products .sortable-table form {
+  width: 800px;
+  float: left;
   /* use with @extend, CSS clear bugfix */
   /* layout base parameters */
   /* heights should only use multiples of this */
@@ -757,74 +968,74 @@
   /* Images */
   /* profile-image that can be centered and resized with aspect ratio */
   /* Buttons */ }
-  #supplier-our-products .clean {
+  #supplier-our-products .sortable-table form .clean {
     clear: both; }
-  #supplier-our-products .container-clean, #supplier-our-products .sortable-table > .table-header, #supplier-our-products .sortable-table > .table-content, #supplier-our-products .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #supplier-our-products .box-view, #supplier-our-products .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #supplier-our-products .internal-table, #supplier-our-products .field, #supplier-our-products .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .internal-table .row, #supplier-our-products #suppliers-page .supplier .box-view, #suppliers-page .supplier #supplier-our-products .box-view, #supplier-our-products #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form #supplier-our-products .field, #supplier-our-products #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form #supplier-our-products .field-secondary.with-unit, #supplier-our-products #suppliers-page .supplier .box-edit form .data .basic-data, #suppliers-page .supplier .box-edit form .data #supplier-our-products .basic-data,
-  #supplier-our-products #suppliers-page .supplier .box-edit form .data .full-data,
-  #suppliers-page .supplier .box-edit form .data #supplier-our-products .full-data {
+  #supplier-our-products .sortable-table form .container-clean, #supplier-our-products .sortable-table form .sortable-table > .table-header, #supplier-our-products .sortable-table > .table-content > .value-row form .box-view, #supplier-our-products .sortable-table > .table-content > .value-row form .box-view .box-view-inner, #supplier-our-products .sortable-table > .table-content > .value-row .box-view form .box-view-inner, #supplier-our-products .sortable-table > .table-content > .value-row form .box-edit .internal-table, #supplier-our-products .sortable-table > .table-content > .value-row .box-edit form .internal-table, #supplier-our-products .sortable-table form #filter .filter-box, #filter #supplier-our-products .sortable-table form .filter-box, #supplier-our-products .sortable-table form form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #supplier-our-products .sortable-table form #suppliers-page .supplier .box-view, #suppliers-page .supplier #supplier-our-products .sortable-table form .box-view, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .data .basic-data, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .data .basic-data,
+  #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .data .full-data,
+  #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .data .full-data {
     overflow: hidden;
     display: inline-block;
     /* Necessary to trigger "hasLayout" in IE */
     display: block;
     /* Sets element back to block */ }
-  #supplier-our-products .pstyle-none {
+  #supplier-our-products .sortable-table form .pstyle-none {
     font-size: 12px; }
-  #supplier-our-products .pstyle-basic {
+  #supplier-our-products .sortable-table form .pstyle-basic {
     font-size: 16px; }
-  #supplier-our-products .pstyle-button {
+  #supplier-our-products .sortable-table form .pstyle-button {
     font-size: 16px; }
-  #supplier-our-products .pstyle-button-small {
+  #supplier-our-products .sortable-table form .pstyle-button-small {
     font-size: 13px; }
-  #supplier-our-products .pstyle-title {
+  #supplier-our-products .sortable-table form .pstyle-title {
     font-size: 72px; }
-  #supplier-our-products .pstyle-h1 {
+  #supplier-our-products .sortable-table form .pstyle-h1 {
     font-size: 34px; }
-  #supplier-our-products .pstyle-h2 {
+  #supplier-our-products .sortable-table form .pstyle-h2 {
     font-size: 26px; }
-  #supplier-our-products .pstyle-h3 {
+  #supplier-our-products .sortable-table form .pstyle-h3 {
     font-size: 21px; }
-  #supplier-our-products .pstyle-h4 {
+  #supplier-our-products .sortable-table form .pstyle-h4 {
     font-size: 16px; }
-  #supplier-our-products .pstyle-h5 {
+  #supplier-our-products .sortable-table form .pstyle-h5 {
     font-size: 13px; }
-  #supplier-our-products .pstyle-title-section {
+  #supplier-our-products .sortable-table form .pstyle-title-section {
     font-size: 92px; }
-  #supplier-our-products .pstyle-field {
+  #supplier-our-products .sortable-table form .pstyle-field {
     font-size: 13px; }
-  #supplier-our-products .pstyle-menu-big-selected {
+  #supplier-our-products .sortable-table form .pstyle-menu-big-selected {
     font-size: 21px; }
-  #supplier-our-products .pstyle-menu-big-unselected {
+  #supplier-our-products .sortable-table form .pstyle-menu-big-unselected {
     font-size: 21px; }
-  #supplier-our-products .pstyle-menu-medium-selected {
+  #supplier-our-products .sortable-table form .pstyle-menu-medium-selected {
     font-size: 16px; }
-  #supplier-our-products .pstyle-menu-medium-unselected {
+  #supplier-our-products .sortable-table form .pstyle-menu-medium-unselected {
     font-size: 16px; }
-  #supplier-our-products .pstyle-menu-small-selected {
+  #supplier-our-products .sortable-table form .pstyle-menu-small-selected {
     font-size: 13px; }
-  #supplier-our-products .pstyle-menu-small-unselected {
+  #supplier-our-products .sortable-table form .pstyle-menu-small-unselected {
     font-size: 13px; }
-  #supplier-our-products .pstyle-tp4 {
+  #supplier-our-products .sortable-table form .pstyle-tp4 {
     font-size: 42px; }
-  #supplier-our-products .pstyle-tp3 {
+  #supplier-our-products .sortable-table form .pstyle-tp3 {
     font-size: 34px; }
-  #supplier-our-products .pstyle-tp2 {
+  #supplier-our-products .sortable-table form .pstyle-tp2 {
     font-size: 26px; }
-  #supplier-our-products .pstyle-tp1 {
+  #supplier-our-products .sortable-table form .pstyle-tp1 {
     font-size: 21px; }
-  #supplier-our-products .pstyle-tm1 {
+  #supplier-our-products .sortable-table form .pstyle-tm1 {
     font-size: 13px; }
-  #supplier-our-products .pstyle-tm2, #supplier-our-products .subtitle, #supplier-our-products #suppliers-page .supplier .box-edit form .subtitle, #suppliers-page .supplier .box-edit form #supplier-our-products .subtitle {
+  #supplier-our-products .sortable-table form .pstyle-tm2, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .subtitle, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .subtitle {
     font-size: 10px; }
-  #supplier-our-products .profile-image {
+  #supplier-our-products .sortable-table form .profile-image {
     display: inline-block;
     /* do not put padding in this as background size will consider it. */ }
-    #supplier-our-products .profile-image.thumb {
+    #supplier-our-products .sortable-table form .profile-image.thumb {
       width: 32px;
       height: 32px; }
-    #supplier-our-products .profile-image.portrait {
+    #supplier-our-products .sortable-table form .profile-image.portrait {
       width: 80px;
       height: 80px; }
-    #supplier-our-products .profile-image .inner {
+    #supplier-our-products .sortable-table form .profile-image .inner {
       display: block;
       width: 100%;
       height: 100%;
@@ -833,11 +1044,11 @@
       background-size: 100%;
       background-size: contain;
       /* css3 enabled */ }
-  #supplier-our-products .action-button, #supplier-our-products a.button.colorbox-close,
-  #supplier-our-products #wrap-1 input[type=submit],
-  #supplier-our-products input[type=submit], #supplier-our-products #suppliers-page .supplier .box-edit form a.button.colorbox-close, #suppliers-page .supplier .box-edit form #supplier-our-products a.button.colorbox-close,
-  #supplier-our-products #suppliers-page .supplier .box-edit form input[type=submit],
-  #suppliers-page .supplier .box-edit form #supplier-our-products input[type=submit] {
+  #supplier-our-products .sortable-table form .action-button, #supplier-our-products .sortable-table form a.button.colorbox-close,
+  #supplier-our-products .sortable-table form #wrap-1 input[type=submit],
+  #supplier-our-products .sortable-table form input[type=submit], #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form a.button.colorbox-close, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form a.button.colorbox-close,
+  #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form input[type=submit],
+  #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form input[type=submit] {
     display: inline-block;
     padding: 4px 8px;
     margin: 0;
@@ -855,151 +1066,135 @@
     text-transform: uppercase;
     text-shadow: none;
     border-radius: 5px; }
-  #supplier-our-products .field-title {
+  #supplier-our-products .sortable-table form .field-title {
     text-transform: uppercase;
     font-weight: bold; }
-  #supplier-our-products .field {
+  #supplier-our-products .sortable-table form .field {
     clear: both; }
-    #supplier-our-products .field:first-child label {
+    #supplier-our-products .sortable-table form .field:first-child label {
       padding-top: 0; }
-    #supplier-our-products .field label {
+    #supplier-our-products .sortable-table form .field label {
       display: block;
       float: left;
       padding-top: 4px;
       font-weight: bold;
       line-height: 20px; }
-    #supplier-our-products .field .field-box {
+    #supplier-our-products .sortable-table form .field .field-box {
       clear: both;
       float: left;
       width: 100%; }
-    #supplier-our-products .field .field-help {
+    #supplier-our-products .sortable-table form .field .field-help {
       clear: both;
       margin-bottom: 8px;
       font-size: 10px; }
-  #supplier-our-products .field-radio {
+  #supplier-our-products .sortable-table form .field-radio {
     clear: both;
     margin-bottom: 4px; }
-    #supplier-our-products .field-radio input {
+    #supplier-our-products .sortable-table form .field-radio input {
       float: left;
       margin-left: 0; }
-    #supplier-our-products .field-radio label {
+    #supplier-our-products .sortable-table form .field-radio label {
       font-weight: normal;
       line-height: 10px;
       text-transform: lowercase;
       margin-left: 4px; }
-  #supplier-our-products .field-secondary {
+  #supplier-our-products .sortable-table form .field-secondary {
     display: block; }
-    #supplier-our-products .field-secondary, #supplier-our-products .field-secondary input, #supplier-our-products .field-secondary select {
+    #supplier-our-products .sortable-table form .field-secondary, #supplier-our-products .sortable-table form .field-secondary input, #supplier-our-products .sortable-table form .field-secondary select {
       width: 128px; }
-    #supplier-our-products .field-secondary.with-unit input {
+    #supplier-our-products .sortable-table form .field-secondary.with-unit input {
       float: left;
       width: 112px; }
-    #supplier-our-products .field-secondary.with-unit .field-unit {
+    #supplier-our-products .sortable-table form .field-secondary.with-unit .field-unit {
       float: left;
       width: 16px;
       line-height: 24px; }
-  #supplier-our-products form {
+  #supplier-our-products .sortable-table form form {
     margin: 0;
     /* come on browsers!? */ }
-  #supplier-our-products label.field-bellow {
+  #supplier-our-products .sortable-table form label.field-bellow {
     display: block;
     margin-bottom: 4px;
     font-size: 10px; }
-  #supplier-our-products select,
-  #supplier-our-products input[type=text], #supplier-our-products input[type=password],
-  #supplier-our-products textarea {
+  #supplier-our-products .sortable-table form select,
+  #supplier-our-products .sortable-table form input[type=text], #supplier-our-products .sortable-table form input[type=password],
+  #supplier-our-products .sortable-table form textarea {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box; }
-  #supplier-our-products select,
-  #supplier-our-products input[type=text], #supplier-our-products input[type=password] {
+  #supplier-our-products .sortable-table form select,
+  #supplier-our-products .sortable-table form input[type=text], #supplier-our-products .sortable-table form input[type=password] {
     height: 24px; }
-  #supplier-our-products select {
+  #supplier-our-products .sortable-table form select {
     background-color: #fff;
     border: 1px solid black;
     padding-left: 4px; }
-  #supplier-our-products input.date-select, #supplier-our-products input.time-select {
+  #supplier-our-products .sortable-table form input.date-select, #supplier-our-products .sortable-table form input.time-select {
     width: 94px; }
-  #supplier-our-products input[type=text] {
+  #supplier-our-products .sortable-table form input[type=text] {
     border: 1px solid black;
     padding: 4px;
     margin: 0; }
-  #supplier-our-products input[type=checkbox] {
+  #supplier-our-products .sortable-table form input[type=checkbox] {
     width: 12px;
     height: 12px;
     margin: 0; }
-  #supplier-our-products textarea {
+  #supplier-our-products .sortable-table form textarea {
     height: 64px;
     padding-left: 4px; }
-  #supplier-our-products .sortable-table .box-field.status {
-    width: 64px; }
-  #supplier-our-products .sortable-table .box-field.category {
-    width: 64px; }
-  #supplier-our-products .sortable-table .box-field.supplier {
-    width: 144px; }
-  #supplier-our-products .sortable-table .box-field.product {
-    width: 304px; }
-  #supplier-our-products .sortable-table .box-field.margin {
-    width: 64px; }
-  #supplier-our-products .sortable-table .box-field.price {
-    width: 64px; }
-  #supplier-our-products .sortable-table .box-field.stock {
-    width: 64px; }
-  #supplier-our-products .sortable-table .box-field.unit {
-    width: 64px; }
-  #supplier-our-products .sortable-table form {
-    width: 800px;
+  #supplier-our-products .sortable-table form .field-secondary {
     float: left; }
-    #supplier-our-products .sortable-table form .field-secondary {
+  #supplier-our-products .sortable-table form .internal-table .row .block {
+    float: left;
+    border-top: 2px solid rgba(255, 255, 255, 0.5);
+    border-right: 2px solid rgba(255, 255, 255, 0.5);
+    padding: 8px;
+    padding-top: 6px;
+    padding-right: 6px;
+    margin: 0; }
+    #supplier-our-products .sortable-table form .internal-table .row .block:last-child {
+      border-right: none; }
+    #supplier-our-products .sortable-table form .internal-table .row .block.margin-price {
+      width: 304px; }
+    #supplier-our-products .sortable-table form .internal-table .row .block.stock {
+      width: 304px; }
+    #supplier-our-products .sortable-table form .internal-table .row .block.available {
+      width: 144px;
+      color: black; }
+    #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary {
+      margin-right: 16px; }
+  #supplier-our-products .sortable-table form .action-button-container {
+    float: left;
+    width: 800px;
+    margin-top: 8px; }
+    #supplier-our-products .sortable-table form .action-button-container .action-button.save, #supplier-our-products .sortable-table form .action-button-container a.save.button.colorbox-close,
+    #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.save[type=submit],
+    #supplier-our-products .sortable-table form #wrap-1 .action-button-container input.save[type=submit],
+    #supplier-our-products .sortable-table form .action-button-container input.save[type=submit] {
+      float: right; }
+    #supplier-our-products .sortable-table form .action-button-container .action-button.remove, #supplier-our-products .sortable-table form .action-button-container a.remove.button.colorbox-close,
+    #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.remove[type=submit],
+    #supplier-our-products .sortable-table form #wrap-1 .action-button-container input.remove[type=submit],
+    #supplier-our-products .sortable-table form .action-button-container input.remove[type=submit], #supplier-our-products .sortable-table form .action-button-container .action-button.cancel, #supplier-our-products .sortable-table form .action-button-container a.cancel.button.colorbox-close,
+    #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.cancel[type=submit],
+    #supplier-our-products .sortable-table form #wrap-1 .action-button-container input.cancel[type=submit],
+    #supplier-our-products .sortable-table form .action-button-container input.cancel[type=submit] {
+      margin-right: 16px;
       float: left; }
-    #supplier-our-products .sortable-table form .internal-table .row .block {
-      float: left;
-      border-top: 2px solid rgba(255, 255, 255, 0.5);
-      border-right: 2px solid rgba(255, 255, 255, 0.5);
-      padding: 8px;
-      padding-top: 6px;
-      padding-right: 6px;
-      margin: 0; }
-      #supplier-our-products .sortable-table form .internal-table .row .block:last-child {
-        border-right: none; }
-      #supplier-our-products .sortable-table form .internal-table .row .block.margin-price {
-        width: 304px; }
-      #supplier-our-products .sortable-table form .internal-table .row .block.stock {
-        width: 304px; }
-      #supplier-our-products .sortable-table form .internal-table .row .block.available {
-        width: 144px;
-        color: black; }
-      #supplier-our-products .sortable-table form .internal-table .row .block .field-secondary {
-        margin-right: 16px; }
-    #supplier-our-products .sortable-table form .action-button-container {
-      float: left;
-      width: 800px;
-      margin-top: 8px; }
-      #supplier-our-products .sortable-table form .action-button-container .action-button.save, #supplier-our-products .sortable-table form .action-button-container a.save.button.colorbox-close,
-      #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.save[type=submit],
-      #supplier-our-products #wrap-1 .sortable-table form .action-button-container input.save[type=submit],
-      #supplier-our-products .sortable-table form .action-button-container input.save[type=submit] {
-        float: right; }
-      #supplier-our-products .sortable-table form .action-button-container .action-button.remove, #supplier-our-products .sortable-table form .action-button-container a.remove.button.colorbox-close,
-      #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.remove[type=submit],
-      #supplier-our-products #wrap-1 .sortable-table form .action-button-container input.remove[type=submit],
-      #supplier-our-products .sortable-table form .action-button-container input.remove[type=submit], #supplier-our-products .sortable-table form .action-button-container .action-button.cancel, #supplier-our-products .sortable-table form .action-button-container a.cancel.button.colorbox-close,
-      #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.cancel[type=submit],
-      #supplier-our-products #wrap-1 .sortable-table form .action-button-container input.cancel[type=submit],
-      #supplier-our-products .sortable-table form .action-button-container input.cancel[type=submit] {
-        margin-right: 16px;
-        float: left; }
-  #supplier-our-products .links {
-    float: right;
-    width: 144px; }
-    #supplier-our-products .links .action-button, #supplier-our-products .links a.button.colorbox-close,
-    #supplier-our-products .links #wrap-1 input[type=submit],
-    #supplier-our-products #wrap-1 .links input[type=submit],
-    #supplier-our-products .links input[type=submit], #supplier-our-products .links #suppliers-page .supplier .box-edit form a.button.colorbox-close, #suppliers-page .supplier .box-edit form #supplier-our-products .links a.button.colorbox-close,
-    #supplier-our-products .links #suppliers-page .supplier .box-edit form input[type=submit],
-    #suppliers-page .supplier .box-edit form #supplier-our-products .links input[type=submit] {
-      margin-bottom: 8px; }
+#supplier-our-products .links {
+  float: right;
+  width: 144px; }
+  #supplier-our-products .links .action-button, #supplier-our-products .links #filter .filter-box a.button.colorbox-close, #filter .filter-box #supplier-our-products .links a.button.colorbox-close,
+  #supplier-our-products .links #filter .filter-box input[type=submit],
+  #filter .filter-box #supplier-our-products .links input[type=submit], #supplier-our-products .links .sortable-table form a.button.colorbox-close, #supplier-our-products .sortable-table form .links a.button.colorbox-close,
+  #supplier-our-products .links .sortable-table form #wrap-1 input[type=submit],
+  #supplier-our-products .sortable-table form #wrap-1 .links input[type=submit],
+  #supplier-our-products .links .sortable-table form input[type=submit],
+  #supplier-our-products .sortable-table form .links input[type=submit], #supplier-our-products .links #suppliers-page .supplier .box-edit form a.button.colorbox-close, #suppliers-page .supplier .box-edit form #supplier-our-products .links a.button.colorbox-close,
+  #supplier-our-products .links #suppliers-page .supplier .box-edit form input[type=submit],
+  #suppliers-page .supplier .box-edit form #supplier-our-products .links input[type=submit] {
+    margin-bottom: 8px; }
 
 #suppliers-page #search-results > strong {
   display: block;
@@ -1060,7 +1255,7 @@
       /* Buttons */ }
       #suppliers-page .supplier .box-edit form .clean {
         clear: both; }
-      #suppliers-page .supplier .box-edit form .container-clean, #suppliers-page .supplier .box-edit form .sortable-table > .table-header, #suppliers-page .supplier .box-edit form .sortable-table > .table-content, #suppliers-page .supplier .sortable-table > .table-content > .value-row .box-edit form .internal-table, .sortable-table > .table-content > .value-row #suppliers-page .supplier .box-edit form .internal-table, #suppliers-page .supplier .box-edit form #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form form, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .internal-table .row, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .internal-table .row, #suppliers-page .supplier .box-edit form .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
+      #suppliers-page .supplier .box-edit form .container-clean, #suppliers-page .supplier .box-edit form .sortable-table > .table-header, #suppliers-page .supplier .box-edit form .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #suppliers-page .supplier .box-edit form .box-view-inner, #suppliers-page .supplier .sortable-table > .table-content > .value-row .box-edit form .internal-table, .sortable-table > .table-content > .value-row #suppliers-page .supplier .box-edit form .internal-table, #suppliers-page .supplier .box-edit form #filter .filter-box, #filter #suppliers-page .supplier .box-edit form .filter-box, #suppliers-page .supplier .box-edit form #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form form, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .internal-table .row, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .internal-table .row, #suppliers-page .supplier .box-edit form .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
       #suppliers-page .supplier .box-edit form .data .full-data {
         overflow: hidden;
         display: inline-block;
@@ -1113,7 +1308,7 @@
         font-size: 21px; }
       #suppliers-page .supplier .box-edit form .pstyle-tm1 {
         font-size: 13px; }
-      #suppliers-page .supplier .box-edit form .pstyle-tm2, #suppliers-page .supplier .box-edit form .subtitle {
+      #suppliers-page .supplier .box-edit form .pstyle-tm2 {
         font-size: 10px; }
       #suppliers-page .supplier .box-edit form .profile-image {
         display: inline-block;

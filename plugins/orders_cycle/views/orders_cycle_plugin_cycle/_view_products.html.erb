@@ -4,9 +4,7 @@
     <div><%= t('orders_cycle_plugin.views.cycle._view_products.choose_from_the_list_')%></div>
   </div>
 
-  <%= render :partial => "orders_cycle_plugin_shared/filter", :locals => {:type => :order, :cycle => cycle, :order => order}%>
-
-  <div class="vertical-spacer"></div>
+  <%= render :partial => "orders_cycle_plugin_shared/filter", :locals => {:type => :order, :cycle => cycle, :order => order} %>
 
   <div id="search-results">
     <%= render :partial => "orders_cycle_plugin_product/order_search", :locals => {

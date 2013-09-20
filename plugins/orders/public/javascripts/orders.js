@@ -9,7 +9,10 @@ orders = {
 
     quantity_keyup: function(context, event) {
       if (event.keyCode == 13) {
-        orders.product.submit();
+        var product = jQuery(context).parents('.ordered-product');
+        product.find('.more .action-button').get(0).onclick();
+
+        event.preventDefault();
         return false;
       }
     },

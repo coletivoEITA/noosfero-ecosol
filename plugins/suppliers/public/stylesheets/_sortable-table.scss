@@ -5,7 +5,7 @@ $bg-header: #70BCFA;
 $border-header: #3C729F;
 $bg-row: #F3F4EE;
 
-$negative-area: 3*$base;
+$sortable-table-negative-area: 3*$base;
 
 .sortable-table {
 
@@ -15,17 +15,18 @@ $negative-area: 3*$base;
       margin-left: -$wireframe-padding;
       padding: 0 $wireframe-padding;
     }
+  }
 
+  &.checkable {
     > .table-content {
       > .value-row {
-        width: $wireframe + 2*$negative-area;
-        margin-left: -$negative-area;
+        width: $wireframe + 2*$sortable-table-negative-area;
+        margin-left: -$sortable-table-negative-area;
       }
     }
   }
 
   > .table-header, > .table-content {
-    @extend .container-clean;
 
     .box-field {
       float: left;
@@ -37,6 +38,7 @@ $negative-area: 3*$base;
     background-color: $bg-header;
     border-bottom: 2*$border solid $border-header;
     color: black;
+    @extend .container-clean; //.table-content can't have this
 
     .sort-arrow {
       border-top: 6px solid black;
@@ -127,13 +129,13 @@ $negative-area: 3*$base;
             padding: 0;
 
             .action-show {
-              background: url("images/plus.png") no-repeat;
+              background: url("/plugins/suppliers/images/plus.png") no-repeat;
               width: 16px;
               height: 16px;
             }
             .action-hide {
               display: none; //initial state
-              background: url("images/minus.png") no-repeat;
+              background: url("/plugins/suppliers/images/minus.png") no-repeat;
               width: 16px;
               height: 16px;
             }
@@ -142,15 +144,18 @@ $negative-area: 3*$base;
       }
 
       .box-view {
-        @extend .container-clean;
         border-bottom: 2*$border dotted #ccc;
-        background: $bg-row;
+
+        &, .box-view-inner {
+          @extend .container-clean;
+          background: $bg-row;
+        }
 
         &.with-inner {
           background: white;
 
           .box-view-inner {
-            background: $bg-row;
+            float: left;
           }
         }
 
@@ -167,7 +172,7 @@ $negative-area: 3*$base;
       }
 
       .box-edit {
-        padding: $margin $negative-area;
+        padding: $margin $sortable-table-negative-area;
         overflow: hidden; //from .container-clean, but without display: block
         display: none; //default
 

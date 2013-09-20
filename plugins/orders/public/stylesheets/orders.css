@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-edit .internal-table, .order-products-container .order-total, .order-products-container .order-products .table-header {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .consumer-order .field, .consumer-order .field-secondary.with-unit, .order-products-container .order-total, .order-products-container .order-products .table-header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -92,7 +92,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .consumer-order .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -117,7 +117,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button {
+.action-button, #filter .filter-box a.button.colorbox-close,
+#filter .filter-box #wrap-1 input[type=submit],
+#filter .filter-box input[type=submit], .consumer-order a.button.colorbox-close,
+.consumer-order #wrap-1 input[type=submit],
+.consumer-order input[type=submit] {
   display: inline-block;
   padding: 4px 8px;
   margin: 0;
@@ -140,7 +144,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-edit .internal-table, .order-products-container .order-total, .order-products-container .order-products .table-header {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .consumer-order .field, .consumer-order .field-secondary.with-unit, .order-products-container .order-total, .order-products-container .order-products .table-header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -230,7 +234,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .consumer-order .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -255,7 +259,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button {
+.action-button, #filter .filter-box a.button.colorbox-close,
+#filter .filter-box #wrap-1 input[type=submit],
+#filter .filter-box input[type=submit], .consumer-order a.button.colorbox-close,
+.consumer-order #wrap-1 input[type=submit],
+.consumer-order input[type=submit] {
   display: inline-block;
   padding: 4px 8px;
   margin: 0;
@@ -278,7 +286,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-edit .internal-table, .order-products-container .order-total, .order-products-container .order-products .table-header {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .consumer-order .field, .consumer-order .field-secondary.with-unit, .order-products-container .order-total, .order-products-container .order-products .table-header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -368,7 +376,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .consumer-order .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -393,7 +401,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button {
+.action-button, #filter .filter-box a.button.colorbox-close,
+#filter .filter-box #wrap-1 input[type=submit],
+#filter .filter-box input[type=submit], .consumer-order a.button.colorbox-close,
+.consumer-order #wrap-1 input[type=submit],
+.consumer-order input[type=submit] {
   display: inline-block;
   padding: 4px 8px;
   margin: 0;
@@ -416,7 +428,7 @@
   width: 960px;
   margin-left: -40px;
   padding: 0 40px; }
-.sortable-table.wireframe-size > .table-content > .value-row {
+.sortable-table.checkable > .table-content > .value-row {
   width: 1008px;
   margin-left: -24px; }
 .sortable-table > .table-header .box-field, .sortable-table > .table-content .box-field {
@@ -477,21 +489,22 @@
       margin-top: 3px;
       padding: 0; }
       .sortable-table > .table-content > .value-row .box-field.actions .actions-circle .action-show {
-        background: url("images/plus.png") no-repeat;
+        background: url("/plugins/suppliers/images/plus.png") no-repeat;
         width: 16px;
         height: 16px; }
       .sortable-table > .table-content > .value-row .box-field.actions .actions-circle .action-hide {
         display: none;
-        background: url("images/minus.png") no-repeat;
+        background: url("/plugins/suppliers/images/minus.png") no-repeat;
         width: 16px;
         height: 16px; }
     .sortable-table > .table-content > .value-row .box-view {
-      border-bottom: 2px dotted #cccccc;
-      background: #f3f4ee; }
+      border-bottom: 2px dotted #cccccc; }
+      .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner {
+        background: #f3f4ee; }
       .sortable-table > .table-content > .value-row .box-view.with-inner {
         background: white; }
         .sortable-table > .table-content > .value-row .box-view.with-inner .box-view-inner {
-          background: #f3f4ee; }
+          float: left; }
       .sortable-table > .table-content > .value-row .box-view .box-field.box-edit-link {
         font-size: 12px !important;
         font-weight: bold;
@@ -523,7 +536,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-edit .internal-table, .order-products-container .order-total, .order-products-container .order-products .table-header {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .consumer-order .field, .consumer-order .field-secondary.with-unit, .order-products-container .order-total, .order-products-container .order-products .table-header {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -613,7 +626,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .consumer-order .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -638,7 +651,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button {
+.action-button, #filter .filter-box a.button.colorbox-close,
+#filter .filter-box #wrap-1 input[type=submit],
+#filter .filter-box input[type=submit], .consumer-order a.button.colorbox-close,
+.consumer-order #wrap-1 input[type=submit],
+.consumer-order input[type=submit] {
   display: inline-block;
   padding: 4px 8px;
   margin: 0;
@@ -658,65 +675,243 @@
   border-radius: 5px; }
 
 #filter {
-  background-color: #BCDC91;
+  background-color: #bcdc91;
   padding: 0;
   margin-top: 16px;
-  margin-left: -40px;
-  margin-right: -40px;
   margin-bottom: 16px;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
   font-size: 9px; }
+  #filter.wireframe-size {
+    margin-left: -40px;
+    margin-right: -40px; }
+    #filter.wireframe-size .title, #filter.wireframe-size .filter-box, #filter.wireframe-size .submit {
+      padding-left: 48px;
+      padding-right: 48px; }
   #filter .title {
+    padding: 8px;
+    margin: 0;
     font-weight: bold;
     font-size: 13px; }
-  #filter .fields > div {
-    border-right: 1px solid #d6e9bc;
-    padding-left: 8px;
-    padding-right: 8px;
-    float: left; }
-  #filter .fields > div.clean {
-    float: none; }
-  #filter .fields > div:first-child {
-    padding-left: 0; }
-  #filter .fields div.name {
-    border-right: 0; }
-  #filter .fields label {
-    font-weight: bold; }
-  #filter .submit input[type=submit] {
-    font-weight: bold;
-    text-transform: uppercase;
-    padding: 8px;
-    background-color: #4B583C;
-    color: #FFFFFF;
-    border: 1px solid white;
-    font-size: 9px;
-    text-align: center;
-    margin: none;
-    width: auto !important; }
+  #filter .submit {
+    padding: 8px; }
+    #filter .submit input[type=submit] {
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      background-color: #4B583C;
+      color: #FFFFFF;
+      border: 1px solid white;
+      border-radius: 5px;
+      font-size: 9px;
+      text-align: center;
+      margin: none;
+      width: auto !important; }
   #filter .filter-box {
-    padding-left: 48px;
-    padding-right: 48px;
     border-bottom: 1px solid #d6e9bc;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    /*
-      WHILE QUALIFIER IS COMMENTED OUT WE INCREASE THE INPUT SIZE
-        select,
-        input {
-          width: 160px -(2*$padding);
-        }
-    
-        .name input {
-          width:288px;
-        }
-    */ }
-    #filter .filter-box select, #filter .filter-box input {
-      width: 164px; }
-    #filter .filter-box .name input {
-      width: 308px; }
+    /* use with @extend, CSS clear bugfix */
+    /* layout base parameters */
+    /* heights should only use multiples of this */
+    /* base measurements */
+    /* widths should only use one of these */
+    /* paddings and margins should only use one of these
+       Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+       Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+       box doesn't have a padding, then sum $intercolumn to the width.
+     */
+    /* use for borders */
+    /* use for text shadows */
+    /* Colors */
+    /* Fonts */
+    /* Paragraphs Styles (use with @extend) */
+    /* Images */
+    /* profile-image that can be centered and resized with aspect ratio */
+    /* Buttons */ }
+    #filter .filter-box .clean {
+      clear: both; }
+    #filter .filter-box .container-clean, #filter .filter-box .sortable-table > .table-header, #filter .filter-box .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #filter .filter-box .box-view, #filter .filter-box .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #filter .filter-box .box-view-inner, #filter .filter-box .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #filter .filter-box .internal-table, #filter .filter-box .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #filter .filter-box .order-products-container .order-total, .order-products-container #filter .filter-box .order-total, #filter .filter-box .order-products-container .order-products .table-header, .order-products-container .order-products #filter .filter-box .table-header {
+      overflow: hidden;
+      display: inline-block;
+      /* Necessary to trigger "hasLayout" in IE */
+      display: block;
+      /* Sets element back to block */ }
+    #filter .filter-box .pstyle-none {
+      font-size: 12px; }
+    #filter .filter-box .pstyle-basic {
+      font-size: 16px; }
+    #filter .filter-box .pstyle-button {
+      font-size: 16px; }
+    #filter .filter-box .pstyle-button-small {
+      font-size: 13px; }
+    #filter .filter-box .pstyle-title {
+      font-size: 72px; }
+    #filter .filter-box .pstyle-h1 {
+      font-size: 34px; }
+    #filter .filter-box .pstyle-h2 {
+      font-size: 26px; }
+    #filter .filter-box .pstyle-h3 {
+      font-size: 21px; }
+    #filter .filter-box .pstyle-h4 {
+      font-size: 16px; }
+    #filter .filter-box .pstyle-h5 {
+      font-size: 13px; }
+    #filter .filter-box .pstyle-title-section {
+      font-size: 92px; }
+    #filter .filter-box .pstyle-field {
+      font-size: 13px; }
+    #filter .filter-box .pstyle-menu-big-selected {
+      font-size: 21px; }
+    #filter .filter-box .pstyle-menu-big-unselected {
+      font-size: 21px; }
+    #filter .filter-box .pstyle-menu-medium-selected {
+      font-size: 16px; }
+    #filter .filter-box .pstyle-menu-medium-unselected {
+      font-size: 16px; }
+    #filter .filter-box .pstyle-menu-small-selected {
+      font-size: 13px; }
+    #filter .filter-box .pstyle-menu-small-unselected {
+      font-size: 13px; }
+    #filter .filter-box .pstyle-tp4 {
+      font-size: 42px; }
+    #filter .filter-box .pstyle-tp3 {
+      font-size: 34px; }
+    #filter .filter-box .pstyle-tp2 {
+      font-size: 26px; }
+    #filter .filter-box .pstyle-tp1 {
+      font-size: 21px; }
+    #filter .filter-box .pstyle-tm1 {
+      font-size: 13px; }
+    #filter .filter-box .pstyle-tm2 {
+      font-size: 10px; }
+    #filter .filter-box .profile-image {
+      display: inline-block;
+      /* do not put padding in this as background size will consider it. */ }
+      #filter .filter-box .profile-image.thumb {
+        width: 32px;
+        height: 32px; }
+      #filter .filter-box .profile-image.portrait {
+        width: 80px;
+        height: 80px; }
+      #filter .filter-box .profile-image .inner {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
+        background-size: contain;
+        /* css3 enabled */ }
+    #filter .filter-box .action-button, #filter .filter-box a.button.colorbox-close,
+    #filter .filter-box #wrap-1 input[type=submit],
+    #filter .filter-box input[type=submit] {
+      display: inline-block;
+      padding: 4px 8px;
+      margin: 0;
+      /* remove submit input browser's margin */
+      height: auto;
+      width: auto;
+      background: #fbca47;
+      border: 1px solid #f4a439;
+      cursor: pointer;
+      color: black;
+      font-weight: bold;
+      line-height: 16px;
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+      text-shadow: none;
+      border-radius: 5px; }
+    #filter .filter-box .field-title {
+      text-transform: uppercase;
+      font-weight: bold; }
+    #filter .filter-box .field {
+      clear: both; }
+      #filter .filter-box .field:first-child label {
+        padding-top: 0; }
+      #filter .filter-box .field label {
+        display: block;
+        float: left;
+        padding-top: 4px;
+        font-weight: bold;
+        line-height: 20px; }
+      #filter .filter-box .field .field-box {
+        clear: both;
+        float: left;
+        width: 100%; }
+      #filter .filter-box .field .field-help {
+        clear: both;
+        margin-bottom: 8px;
+        font-size: 10px; }
+    #filter .filter-box .field-radio {
+      clear: both;
+      margin-bottom: 4px; }
+      #filter .filter-box .field-radio input {
+        float: left;
+        margin-left: 0; }
+      #filter .filter-box .field-radio label {
+        font-weight: normal;
+        line-height: 10px;
+        text-transform: lowercase;
+        margin-left: 4px; }
+    #filter .filter-box .field-secondary {
+      display: block; }
+      #filter .filter-box .field-secondary, #filter .filter-box .field-secondary input, #filter .filter-box .field-secondary select {
+        width: 128px; }
+      #filter .filter-box .field-secondary.with-unit input {
+        float: left;
+        width: 112px; }
+      #filter .filter-box .field-secondary.with-unit .field-unit {
+        float: left;
+        width: 16px;
+        line-height: 24px; }
+    #filter .filter-box form {
+      margin: 0;
+      /* come on browsers!? */ }
+    #filter .filter-box label.field-bellow {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 10px; }
+    #filter .filter-box select,
+    #filter .filter-box input[type=text], #filter .filter-box input[type=password],
+    #filter .filter-box textarea {
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box; }
+    #filter .filter-box select,
+    #filter .filter-box input[type=text], #filter .filter-box input[type=password] {
+      height: 24px; }
+    #filter .filter-box select {
+      background-color: #fff;
+      border: 1px solid black;
+      padding-left: 4px; }
+    #filter .filter-box input.date-select, #filter .filter-box input.time-select {
+      width: 94px; }
+    #filter .filter-box input[type=text] {
+      border: 1px solid black;
+      padding: 4px;
+      margin: 0; }
+    #filter .filter-box input[type=checkbox] {
+      width: 12px;
+      height: 12px;
+      margin: 0; }
+    #filter .filter-box textarea {
+      height: 64px;
+      padding-left: 4px; }
+    #filter .filter-box.fields .field {
+      float: left;
+      clear: none;
+      padding: 8px;
+      border-right: 1px solid #d6e9bc; }
+      #filter .filter-box.fields .field:first-child {
+        padding-left: 0; }
+      #filter .filter-box.fields .field:last-child {
+        border-right: 0; }
+      #filter .filter-box.fields .field label {
+        font-weight: bold;
+        padding-top: 0; }
+      #filter .filter-box.fields .field select, #filter .filter-box.fields .field input {
+        width: 144px; }
+      #filter .filter-box.fields .field .name input {
+        width: 304px; }
 
 .orders-admin-index {
   margin-bottom: 20px; }
@@ -796,6 +991,201 @@
     width: 80px; }
   .orders-admin-index .price {
     width: 70px; }
+
+.consumer-order {
+  /* use with @extend, CSS clear bugfix */
+  /* layout base parameters */
+  /* heights should only use multiples of this */
+  /* base measurements */
+  /* widths should only use one of these */
+  /* paddings and margins should only use one of these
+     Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+     Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+     box doesn't have a padding, then sum $intercolumn to the width.
+   */
+  /* use for borders */
+  /* use for text shadows */
+  /* Colors */
+  /* Fonts */
+  /* Paragraphs Styles (use with @extend) */
+  /* Images */
+  /* profile-image that can be centered and resized with aspect ratio */
+  /* Buttons */ }
+  .consumer-order .clean {
+    clear: both; }
+  .consumer-order .container-clean, .consumer-order .sortable-table > .table-header, .consumer-order .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .consumer-order .box-view, .consumer-order .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view .consumer-order .box-view-inner, .consumer-order .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit .consumer-order .internal-table, .consumer-order #filter .filter-box, #filter .consumer-order .filter-box, .consumer-order #filter .filter-box .field, #filter .filter-box .consumer-order .field, .consumer-order #filter .filter-box .field-secondary.with-unit, #filter .filter-box .consumer-order .field-secondary.with-unit, .consumer-order .field, .consumer-order .field-secondary.with-unit, .consumer-order .order-products-container .order-total, .order-products-container .consumer-order .order-total, .consumer-order .order-products-container .order-products .table-header, .order-products-container .order-products .consumer-order .table-header {
+    overflow: hidden;
+    display: inline-block;
+    /* Necessary to trigger "hasLayout" in IE */
+    display: block;
+    /* Sets element back to block */ }
+  .consumer-order .pstyle-none {
+    font-size: 12px; }
+  .consumer-order .pstyle-basic {
+    font-size: 16px; }
+  .consumer-order .pstyle-button {
+    font-size: 16px; }
+  .consumer-order .pstyle-button-small {
+    font-size: 13px; }
+  .consumer-order .pstyle-title {
+    font-size: 72px; }
+  .consumer-order .pstyle-h1 {
+    font-size: 34px; }
+  .consumer-order .pstyle-h2 {
+    font-size: 26px; }
+  .consumer-order .pstyle-h3 {
+    font-size: 21px; }
+  .consumer-order .pstyle-h4 {
+    font-size: 16px; }
+  .consumer-order .pstyle-h5 {
+    font-size: 13px; }
+  .consumer-order .pstyle-title-section {
+    font-size: 92px; }
+  .consumer-order .pstyle-field {
+    font-size: 13px; }
+  .consumer-order .pstyle-menu-big-selected {
+    font-size: 21px; }
+  .consumer-order .pstyle-menu-big-unselected {
+    font-size: 21px; }
+  .consumer-order .pstyle-menu-medium-selected {
+    font-size: 16px; }
+  .consumer-order .pstyle-menu-medium-unselected {
+    font-size: 16px; }
+  .consumer-order .pstyle-menu-small-selected {
+    font-size: 13px; }
+  .consumer-order .pstyle-menu-small-unselected {
+    font-size: 13px; }
+  .consumer-order .pstyle-tp4 {
+    font-size: 42px; }
+  .consumer-order .pstyle-tp3 {
+    font-size: 34px; }
+  .consumer-order .pstyle-tp2 {
+    font-size: 26px; }
+  .consumer-order .pstyle-tp1 {
+    font-size: 21px; }
+  .consumer-order .pstyle-tm1 {
+    font-size: 13px; }
+  .consumer-order .pstyle-tm2, .consumer-order #filter .filter-box .subtitle, #filter .filter-box .consumer-order .subtitle {
+    font-size: 10px; }
+  .consumer-order .profile-image {
+    display: inline-block;
+    /* do not put padding in this as background size will consider it. */ }
+    .consumer-order .profile-image.thumb {
+      width: 32px;
+      height: 32px; }
+    .consumer-order .profile-image.portrait {
+      width: 80px;
+      height: 80px; }
+    .consumer-order .profile-image .inner {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100%;
+      background-size: contain;
+      /* css3 enabled */ }
+  .consumer-order .action-button, .consumer-order #filter .filter-box a.button.colorbox-close, #filter .filter-box .consumer-order a.button.colorbox-close,
+  .consumer-order #filter .filter-box #wrap-1 input[type=submit],
+  #filter .filter-box #wrap-1 .consumer-order input[type=submit],
+  .consumer-order #filter .filter-box input[type=submit],
+  #filter .filter-box .consumer-order input[type=submit], .consumer-order a.button.colorbox-close,
+  .consumer-order #wrap-1 input[type=submit],
+  .consumer-order input[type=submit] {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 0;
+    /* remove submit input browser's margin */
+    height: auto;
+    width: auto;
+    background: #fbca47;
+    border: 1px solid #f4a439;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+    line-height: 16px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-shadow: none;
+    border-radius: 5px; }
+  .consumer-order .field-title {
+    text-transform: uppercase;
+    font-weight: bold; }
+  .consumer-order .field {
+    clear: both; }
+    .consumer-order .field:first-child label {
+      padding-top: 0; }
+    .consumer-order .field label {
+      display: block;
+      float: left;
+      padding-top: 4px;
+      font-weight: bold;
+      line-height: 20px; }
+    .consumer-order .field .field-box {
+      clear: both;
+      float: left;
+      width: 100%; }
+    .consumer-order .field .field-help {
+      clear: both;
+      margin-bottom: 8px;
+      font-size: 10px; }
+  .consumer-order .field-radio {
+    clear: both;
+    margin-bottom: 4px; }
+    .consumer-order .field-radio input {
+      float: left;
+      margin-left: 0; }
+    .consumer-order .field-radio label {
+      font-weight: normal;
+      line-height: 10px;
+      text-transform: lowercase;
+      margin-left: 4px; }
+  .consumer-order .field-secondary {
+    display: block; }
+    .consumer-order .field-secondary, .consumer-order .field-secondary input, .consumer-order .field-secondary select {
+      width: 128px; }
+    .consumer-order .field-secondary.with-unit input {
+      float: left;
+      width: 112px; }
+    .consumer-order .field-secondary.with-unit .field-unit {
+      float: left;
+      width: 16px;
+      line-height: 24px; }
+  .consumer-order form {
+    margin: 0;
+    /* come on browsers!? */ }
+  .consumer-order label.field-bellow {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 10px; }
+  .consumer-order select,
+  .consumer-order input[type=text], .consumer-order input[type=password],
+  .consumer-order textarea {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box; }
+  .consumer-order select,
+  .consumer-order input[type=text], .consumer-order input[type=password] {
+    height: 24px; }
+  .consumer-order select {
+    background-color: #fff;
+    border: 1px solid black;
+    padding-left: 4px; }
+  .consumer-order input.date-select, .consumer-order input.time-select {
+    width: 94px; }
+  .consumer-order input[type=text] {
+    border: 1px solid black;
+    padding: 4px;
+    margin: 0; }
+  .consumer-order input[type=checkbox] {
+    width: 12px;
+    height: 12px;
+    margin: 0; }
+  .consumer-order textarea {
+    height: 64px;
+    padding-left: 4px; }
 
 .order-products-container {
   width: 432px;

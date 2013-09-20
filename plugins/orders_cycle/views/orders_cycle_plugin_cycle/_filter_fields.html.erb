@@ -1,4 +1,4 @@
-<div class="year">
+<div class="field year">
   <label><%=t('orders_cycle_plugin.views.cycle.index.show_cycles_from_year') %></label>
   <div>
     <% range = @profile.orders_cycles_closed_date_range %>
@@ -6,10 +6,10 @@
   </div>
 </div>
 
-<div class="month">
+<div class="field month">
   <label><%=t('orders_cycle_plugin.views.cycle.index.and_are_from_the_mont') %></label>
   <div>
     <%= select_month @month_date, {:prompt => '' } %>
   </div>
 </div>
-<div class="clean"></div>
+
