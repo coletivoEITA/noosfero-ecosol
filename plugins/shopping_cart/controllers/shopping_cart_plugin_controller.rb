@@ -12,8 +12,8 @@ class ShoppingCartPluginController < PublicController
 
   def get
     config =
-      if cart.nil?
-        { :profile_id => nil,
+      if cart.blank?
+        { :enterprise_id => nil,
           :has_products => false,
           :visible => false,
           :products => []}
@@ -29,7 +29,7 @@ class ShoppingCartPluginController < PublicController
   def add
     product = find_product(params[:id])
     if product && enterprise = validate_same_enterprise(product)
-      self.cart = { :profile_id => enterprise.id, :items => {} } if self.cart.nil?
+      self.cart = { :enterprise_id => enterprise.id, :items => {} } if self.cart.blank?
       self.cart[:items][product.id] = 0 if self.cart[:items][product.id].nil?
       self.cart[:items][product.id] += 1
       render :text => {
@@ -201,7 +201,7 @@ class ShoppingCartPluginController < PublicController
   end
 
   def validate_cart_presence
-    if self.cart.nil?
+    if self.cart.blank?
       render :text => {
         :ok => false,
         :error => {
@@ -287,11 +287,7 @@ class ShoppingCartPluginController < PublicController
   protected
 
   def cart
-    @cart ||=
-      begin
-        cookies[cookie_key] && YAML.load(Base64.decode64(cookies[cookie_key])) || nil
-      end
-    @cart
+    @cart ||= (cookies[cookie_key] && YAML.load(Base64.decode64(cookies[cookie_key]))) || {}
   end
 
   def cart=(data)
@@ -300,7 +296,7 @@ class ShoppingCartPluginController < PublicController
 
   after_filter :save_cookie
   def save_cookie
-    if @cart.nil?
+    if @cart.blank?
       cookies.delete(cookie_key, :path => '/plugin/shopping_cart')
     else
       cookies[cookie_key] = {
