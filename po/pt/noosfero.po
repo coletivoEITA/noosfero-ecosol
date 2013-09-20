@@ -11,9 +11,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0~rc4\n"
-"POT-Creation-Date: 2014-12-18 17:22-0300\n"
-"PO-Revision-Date: 2014-12-18 18:40-0200\n"
+"Project-Id-Version: 1.0\n"
+"POT-Creation-Date: 2015-01-15 11:00-0300\n"
+"PO-Revision-Date: 2015-01-30 15:34-0300\n"
 "Last-Translator: Luciano Prestes Cavalcanti <lucianopcbr@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero/"
 "noosfero/pt/>\n"
@@ -5722,7 +5722,7 @@ msgstr "Como mostrar esse conteúdo:"
 #: app/views/shared/_lead_and_body.html.erb:17
 #: app/views/spam/_suggest_article.html.erb:13
 msgid "Lead"
-msgstr "Prévia"
+msgstr "Prévia (primeiras linhas do artigo)"
 
 #: app/views/box_organizer/_article_block.html.erb:27
 #: app/views/cms/_blog.html.erb:66

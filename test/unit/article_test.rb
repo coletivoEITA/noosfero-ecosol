@@ -963,16 +963,6 @@ class ArticleTest < ActiveSupport::TestCase
     a.stubs(:automatic_abstract).returns('beginning')
     assert_equal 'beginning', a.lead
   end
-  #should 'return first paragraph as lead with empty but non-null abstract' do
-  #  a = build(Article, :abstract => '')
-  #  a.stubs(:first_paragraph).returns('<p>first</p>')
-  #  assert_equal '<p>first</p>', a.lead
-  #end
-
-  #should 'return blank as lead when article has no paragraphs' do
-  #  a = build(Article, :body => "<div>an article with content <em>but without</em> a paragraph</div>")
-  #  assert_equal '', a.lead
-  #end
 
   should 'have short lead' do
     a = fast_create(TinyMceArticle, :profile_id => profile.id, :body => '<p>' + ('a' *180) + '</p>')
