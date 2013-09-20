@@ -1,6 +1,6 @@
 # Be sure to restart your web server when you modify this file.
 
-# Uncomment below to force Rails into production mode when 
+# Uncomment below to force Rails into production mode when
 # you don't control web/app server and can't set it the proper way
 #ENV['RAILS_ENV'] ||= 'production'
 
@@ -10,7 +10,7 @@ RAILS_GEM_VERSION = '2.3.15' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
-# extra directories for controllers organization 
+# extra directories for controllers organization
 extra_controller_dirs = %w[
   app/controllers/my_profile
   app/controllers/admin
@@ -34,7 +34,7 @@ end
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
-  
+
   # Skip frameworks you're not going to use (only works if using vendor/rails)
   # config.frameworks -= [ :action_web_service, :action_mailer ]
 
@@ -42,7 +42,7 @@ Rails::Initializer.run do |config|
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
   config.load_paths += %W( #{RAILS_ROOT}/app/sweepers )
 
-  # Force all environments to use the same logger level 
+  # Force all environments to use the same logger level
   # (by default production uses :info, the others :debug)
   # config.log_level = :debug
 
@@ -51,7 +51,7 @@ Rails::Initializer.run do |config|
   # config.action_controller.session_store = :active_record_store
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
-  # This is necessary if your schema can't be completely dumped by the schema dumper, 
+  # This is necessary if your schema can't be completely dumped by the schema dumper,
   # like if you have constraints or database-specific column types
   # config.active_record.schema_format = :sql
 
@@ -77,7 +77,7 @@ Rails::Initializer.run do |config|
 
   # Your secret key for verifying cookie session data integrity.
   # If you change this key, all old sessions will become invalid!
-  # Make sure the secret is at least 30 characters and all random, 
+  # Make sure the secret is at least 30 characters and all random,
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
     :session_key => '_noosfero_session',
@@ -85,8 +85,8 @@ Rails::Initializer.run do |config|
   }
 
   # Adds custom attributes to the Set of allowed html attributes for the #sanitize helper
-  config.action_view.sanitized_allowed_attributes = 'align', 'border', 'alt', 'vspace', 'hspace', 'width', 'heigth', 'value', 'type', 'data', 'style', 'target', 'codebase', 'archive', 'classid', 'code', 'flashvars', 'scrolling', 'frameborder', 'controls', 'autoplay'
-  
+  config.action_view.sanitized_allowed_attributes = 'align', 'border', 'alt', 'vspace', 'hspace', 'width', 'heigth', 'value', 'type', 'data', 'style', 'target', 'codebase', 'archive', 'classid', 'code', 'flashvars', 'scrolling', 'frameborder', 'controls', 'autoplay', 'colspan', 'rowspan'
+
    # Adds custom tags to the Set of allowed html tags for the #sanitize helper
   config.action_view.sanitized_allowed_tags = 'object', 'embed', 'param', 'table', 'tr', 'th', 'td', 'applet', 'comment', 'iframe', 'audio', 'video', 'source'
 
@@ -101,7 +101,7 @@ extra_controller_dirs.each do |item|
   (ActiveSupport.const_defined?('Dependencies') ? ActiveSupport::Dependencies : ::Dependencies).load_paths << item
 end
 
-# Add new inflection rules using the following format 
+# Add new inflection rules using the following format
 # (all these examples are active by default):
 # Inflector.inflections do |inflect|
 #   inflect.plural /^(ox)$/i, '\1en'
