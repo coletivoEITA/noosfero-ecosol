@@ -281,13 +281,6 @@ class Environment < ActiveRecord::Base
   settings_items :access_control_allow_origin, :type => Array, :default => []
   settings_items :access_control_allow_methods, :type => String
 
-  # Set to return http forbidden to host not on the allow origin list bellow
-  settings_items :restrict_to_access_control_origins, :default => false
-  # Set this according to http://www.w3.org/TR/cors/. Headers are set at every response
-  # For multiple domains acts as suggested in http://stackoverflow.com/questions/1653308/access-control-allow-origin-multiple-origin-domains
-  settings_items :access_control_allow_origin, :type => Array
-  settings_items :access_control_allow_methods, :type => String
-
   # Configuration of the Tinymce Collaborative TextPad plugin. If you don't want to activate the plugin, set padServerUrl as "". For understanding the meanings of the parameters, please look at https://github.com/dtygel/tinymce-etherpadlite-embed/blob/master/README.md
   # Note 1: The padServerUrl is the url of the pad just before the pad name. Normally it includes a "/p/", as for example: "http://pad.textb.org/p/".
   # Note 2: Your chosen padServerUrl must be among the "trusted sites" configured by the admin control panel. If not, the embedded iframe will be erased when the article is saved.

@@ -17,8 +17,7 @@
 			t.editor = ed;
 			
 			//If the person who activated the plugin didn't put a Pad Server URL, the plugin will be disabled
-			if (!ed.getParam("plugin_etherpadlite_padServerUrl")) {
-				alert(etherpadlite.error);
+			if (!ed.getParam("plugin_etherpadlite_padServerUrl") || ed.getParam("plugin_etherpadlite_padServerUrl")=="") {
 				return null;
 			}
 			
