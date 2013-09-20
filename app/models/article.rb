@@ -606,13 +606,18 @@ class Article < ActiveRecord::Base
       (params[:month] ? "-month-#{params[:month]}" : '')
   end
 
-  def first_paragraph
-    paragraphs = Hpricot(to_html).search('p')
-    paragraphs.empty? ? '' : paragraphs.first.to_html
+  def automatic_abstract
+  	return nil if self.body.nil?
+  	a = strip_tags(self.body)
+    automatic_abstract_img = (first_image) ? "<img src='" + first_image + "' class = 'automatic-abstract-thumb'>" : ''
+  	b = a.split[0...profile.environment.automatic_abstract_length].join(' ')
+  	c = a.split.join(' ')
+  	b = (b == c) ? b : b + " ..."
+  	b = automatic_abstract_img + b
   end
 
   def lead
-    abstract.blank? ? first_paragraph.html_safe : abstract.html_safe
+    abstract.blank? ? automatic_abstract : abstract.html_safe
   end
 
   def short_lead
@@ -667,7 +672,7 @@ class Article < ActiveRecord::Base
   end
 
   def first_image
-    img = Hpricot(self.lead.to_s).search('img[@src]').first || Hpricot(self.body.to_s).search('img').first
+    img = Hpricot(self.abstract.to_s).search('img[@src]').first || Hpricot(self.body.to_s).search('img').first
     img.nil? ? '' : img.attributes['src']
   end
 
@@ -687,6 +692,10 @@ class Article < ActiveRecord::Base
   def sanitize_html(text)
     sanitizer = HTML::FullSanitizer.new
     sanitizer.sanitize(text)
+  end
+
+  def strip_tags(html)
+    html.gsub(/<[^>]+>/, ' ').gsub(/\s+/, ' ')
   end
 
 end

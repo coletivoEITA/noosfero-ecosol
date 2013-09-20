@@ -720,17 +720,25 @@ class ContentViewerControllerTest < ActionController::TestCase
     assert_tag :tag => 'span', :content => '(removed user)', :attributes => {:class => 'comment-user-status icon-user-removed'}
   end
 
-  should 'show only first paragraph of blog posts if visualization_format is short' do
+  should 'show only beginning of blog posts if visualization_format is short' do
+    env = Environment.default
+    env.automatic_abstract_length = 55
+    env.save
+
     login_as(profile.identifier)
 
     blog = Blog.create!(:name => 'A blog test', :profile => profile, :visualization_format => 'short')
 
-    blog.posts << TinyMceArticle.create!(:name => 'first post', :parent => blog, :profile => profile, :body => '<p>Content to be displayed.</p> Anything')
+    blog.posts << TinyMceArticle.create!(:name => 'first post', :parent => blog, :profile => profile, :body => "
+    	<p>The first paragraph of the article.</p>
+	    <p>The second paragraph</p>
+	    <p>The third which <a href=\"link\">is a really biiiiiiig paragraph</a> jds ksajdhf ksdfkjhsdh fakdshf askdjhfsd lfhsdlkfa dslkfah dskjahsd faksdhfk sdfkas fkjshfk sdhjf sdkjf sdkj fkdsjhfal ksdjhflaksjdhdsghfg <br /><img src='http://this_is_an_url/this_is_an_image.png' style='this_is_a_style'>sjhfgsdjhf sdjhgf asdjf sadj fadjhs gfas dkjgf asdjhf asdjh fjkdsg fjsdgf asdjf sadjlgf jsçlkdsjhfdsa lksajsalj aldja lkja slkdjal aj dasldkjas lkjsdj kj sjdlkjsdkfjsl lkjsdkf lk jsdkfjsjflsj kjdlsfjdslfj</p>
+	")
 
     get :view_page, :profile => profile.identifier, :page => blog.explode_path
 
-    assert_tag :tag => 'div', :attributes => { :class => 'short-post'}, :content => /Content to be displayed./
-    assert_no_tag :tag => 'div', :attributes => { :class => 'short-post'}, :content => /Anything/
+    assert_tag :tag => 'img', :attributes => { :class => 'automatic-abstract-thumb', :src => 'http://this_is_an_url/this_is_an_image.png', :style => nil}
+    assert_tag :tag => 'div', :attributes => { :class => 'short-post'}, :content => /#{b}/
   end
 
   should 'display link to edit blog for allowed' do
