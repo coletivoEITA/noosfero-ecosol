@@ -276,6 +276,13 @@ class Environment < ActiveRecord::Base
   settings_items :access_control_allow_origin, :type => Array, :default => []
   settings_items :access_control_allow_methods, :type => String
 
+# Configuration of the Tinymce Collaborative TextPad plugin. If you don't want to activate the plugin, set padServerUrl as "". For understanding the meanings of the parameters, please look at https://github.com/dtygel/tinymce-etherpadlite-embed/blob/master/README.md
+  # Note 1: The padServerUrl is the url of the pad just before the pad name. Normally it includes a "/p/", as for example: "http://pad.textb.org/p/".
+  # Note 2: Your chosen padServerUrl must be among the "trusted sites" configured by the admin control panel. If not, the embedded iframe will be erased when the article is saved.
+  settings_items :tinymce_plugin_etherpadlite_padServerUrl, :type => String, :default => ""
+  settings_items :tinymce_plugin_etherpadlite_padWidth, :type => String, :default => "100%"
+  settings_items :tinymce_plugin_etherpadlite_padHeight, :type => String, :default => "400px"
+
   def news_amount_by_folder=(amount)
     settings[:news_amount_by_folder] = amount.to_i
   end

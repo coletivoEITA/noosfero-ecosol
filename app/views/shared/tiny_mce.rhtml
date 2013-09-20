@@ -10,7 +10,7 @@
     second_line = ""
   <% else %>
     first_line = "print,separator,copy,paste,separator,undo,redo,separator,search,replace,separator,forecolor,fontsizeselect,formatselect"
-    second_line = "bold,italic,underline,strikethrough,separator,bullist,numlist,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,link,unlink,image,table,separator,cleanup,code,macros"
+    second_line = "bold,italic,underline,strikethrough,separator,bullist,numlist,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,link,unlink,image,table,etherpadlite,separator,cleanup,code,macros"
     <% macros_with_buttons.each do |macro| %>
       second_line += ',<%=macro.identifier %>'
     <% end %>
@@ -59,7 +59,15 @@ tinyMCE.init({
   relative_urls : false,
   remove_script_host : false,
   document_base_url : <%= environment.top_url.to_json %>,
-  plugins: myplugins,
+  <% if environment.tinymce_plugin_etherpadlite_padServerUrl!="" %>
+    plugin_etherpadlite_padServerUrl: "<%= environment.tinymce_plugin_etherpadlite_padServerUrl %>", 
+    plugin_etherpadlite_padNamesPrefix : "<%= environment.default_hostname %>",
+    plugin_etherpadlite_padWidth : "<%= environment.tinymce_plugin_etherpadlite_padWidth %>",  
+    plugin_etherpadlite_padHeight : "<%= environment.tinymce_plugin_etherpadlite_padHeight %>",  
+    plugins: myplugins+",etherpadlite",
+  <% else %>
+    plugins: myplugins,
+  <% end %>
   theme_advanced_toolbar_location : "top",
   theme_advanced_layout_manager: 'SimpleLayout',
   theme_advanced_buttons1 : first_line,
