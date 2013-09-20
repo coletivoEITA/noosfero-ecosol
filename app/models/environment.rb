@@ -251,6 +251,9 @@ class Environment < ActiveRecord::Base
   settings_items :currency_separator, :type => String, :default => '.'
   settings_items :currency_delimiter, :type => String, :default => ','
 
+  # Define the default number of words for automatic abstracts (leads) of articles do be shown in blog lists in the 'short' visualization format
+  settings_items :automatic_abstract_length, :type => Integer, :default => 55 #words
+
   settings_items :trusted_sites_for_iframe, :type => Array, :default => %w[
     developer.myspace.com
     itheora.org
