@@ -217,10 +217,13 @@ class AccountControllerTest < ActionController::TestCase
 
   should 'respond to forgotten password change request' do
     change = ChangePassword.new
-    ChangePassword.expects(:new).with('login' => 'test', 'email' => 'test@localhost.localdomain').returns(change)
+    ChangePassword.expects(:new).with('login' => 'test').returns(change)
+    ChangePassword.expects(:new).with('login' => 'test@localhost.localdomain').returns(change)
     change.expects(:save!).returns(true)
 
-    post :forgot_password, :change_password => { :login => 'test', :email => 'test@localhost.localdomain' }
+    post :forgot_password, :change_password => { :login => 'test' }
+    assert_template 'password_recovery_sent'
+    post :forgot_password, :change_password => {:login => 'test@localhost.localdomain' }
     assert_template 'password_recovery_sent'
   end
 
@@ -853,7 +856,7 @@ class AccountControllerTest < ActionController::TestCase
     assert_response :redirect
 
     #Redirect on post action
-    post :forgot_password, :change_password => { :login => 'test', :email => 'test@localhost.localdomain' }
+    post :forgot_password, :change_password => { :login => 'test'}
     assert_response :redirect
   end
 
