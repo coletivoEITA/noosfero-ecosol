@@ -49,8 +49,6 @@ class SuppliersPlugin::BaseProduct < Product
   has_number_with_locale :own_margin_percentage
   has_number_with_locale :original_margin_percentage
 
-  validate :dont_distribute_own
-
   def self.default_unit
     Unit.new(:singular => I18n.t('suppliers_plugin.models.product.unit'), :plural => I18n.t('suppliers_plugin.models.product.units'))
   end
@@ -90,10 +88,6 @@ class SuppliersPlugin::BaseProduct < Product
 
   def validate_uniqueness_of_column_name?
     false
-  end
-
-  def dont_distribute_own
-    self.errors.add :base, I18n.t('suppliers_plugin.models.base_product.own_distribution_error') if self.own?
   end
 
   # reimplement after_create callback to avoid infinite loop

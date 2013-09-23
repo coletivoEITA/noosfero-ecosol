@@ -3,6 +3,7 @@ require "#{File.dirname(__FILE__)}/../../test_helper"
 class SuppliersPlugin::DistributedProductTest < ActiveSupport::TestCase
 
   def setup
+    @product_category = create(ProductCategory, :name => 'parent')
     @profile = build(Enterprise)
     @invisible_profile = build(Enterprise, :visible => false)
     @other_profile = build(Enterprise)
@@ -11,7 +12,8 @@ class SuppliersPlugin::DistributedProductTest < ActiveSupport::TestCase
     @other_supplier = build(SuppliersPlugin::Supplier, :consumer => @profile, :profile => @other_profile)
   end
 
-  attr_accessor :profile, :invisible_profile, :other_profile,
+  attr_accessor :product_category,
+    :profile, :invisible_profile, :other_profile,
     :profile, :dummy_profile, :other_profile, :self_supplier, :dummy_supplier, :other_supplier
 
   should 'return default settings considering dummy supplier' do
@@ -88,12 +90,19 @@ class SuppliersPlugin::DistributedProductTest < ActiveSupport::TestCase
   should 'return json for category hierarchy' do
     grandparent = create(ProductCategory, :name => 'grand parent')
     parent = create(ProductCategory, :name => 'parent')
-    child = create(ProductCategory, :name => 'child')
+    child = product_category
 
     product = SuppliersPlugin::DistributedProduct.new :category => parent
     hash = {:own_name => "parent", :id => "2", :subcats => [], :name => "parent",
             :hierarchy => [{:own_name => "parent", :subcats => [], :name => "parent", :id => "2"}]}
     assert_equal hash, product.json_for_category
+  end
+
+  should 'block own product distribution' do
+    product = Product.create :enterprise => @profile, :product_category => product_category
+    distributed = SuppliersPlugin::DistributedProduct.new :enterprise => @profile, :from_products => [product]
+
+    assert distributed.invalid?
   end
 
 end
