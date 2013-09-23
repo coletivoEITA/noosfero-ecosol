@@ -1,11 +1,11 @@
 class ChangePassword < Task
 
-  attr_accessor :login, :email, :password, :password_confirmation, :environment_id
+  attr_accessor :login, :password, :password_confirmation, :environment_id
 
   def self.human_attribute_name(attrib)
     case attrib.to_sym
     when :login:
-      _('Username')
+      [_('Username'), _('Email')].join(' / ')
     when :email
       _('e-mail')
     when :password
@@ -18,36 +18,34 @@ class ChangePassword < Task
   end
 
   ###################################################
-  # validations for creating a ChangePassword task 
-  
-  validates_presence_of :login, :email, :environment_id, :on => :create, :message => _('must be filled in')
+  # validations for creating a ChangePassword task
 
-  validates_format_of :email, :on => :create, :with => Noosfero::Constants::EMAIL_FORMAT, :if => (lambda { |obj| !obj.email.blank? })
+  validates_presence_of :login, :environment_id, :on => :create, :message => _('must be filled in')
 
-  validates_each :login, :on => :create do |data,attr,value|
-    unless data.login.blank? || data.email.blank?
-      user = User.find_by_login_and_environment_id(data.login, data.environment_id)
-      if user.nil? 
-        data.errors.add(:login, _('is invalid or user does not exists.'))
-      else
-        if user.email != data.email
-          data.errors.add(:email, _('does not match the username you filled in'))
-        end
-      end
-    end
-  end
+  validate :valid_login, :on => :create
 
   before_validation_on_create do |change_password|
-    change_password.requestor = Person.find_by_identifier_and_environment_id(change_password.login, change_password.environment_id)
+    user = self.user_from_login(change_password.login, change_password.environment_id)
+    change_password.requestor = user.nil? ? nil : user.person
   end
 
   ###################################################
-  # validations for updating a ChangePassword task 
+  # validations for updating a ChangePassword task
 
   # only require the new password when actually changing it.
   validates_presence_of :password, :on => :update, :if => lambda { |change| change.status != Task::Status::CANCELLED }
   validates_presence_of :password_confirmation, :on => :update, :if => lambda { |change| change.status != Task::Status::CANCELLED }
   validates_confirmation_of :password, :if => lambda { |change| change.status != Task::Status::CANCELLED }
+
+  def self.user_from_login login, environment_id
+    return nil if login.nil?
+
+    if login.include?'@'
+      user = User.find_by_email_and_environment_id(login, environment_id)
+    else
+      user = User.find_by_login_and_environment_id(login, environment_id)
+    end
+  end
 
   def title
     _("Change password")
@@ -71,7 +69,7 @@ class ChangePassword < Task
   end
 
   # overriding messages
-  
+
   def task_cancelled_message
     _('Your password change request was cancelled at %s.') % Time.now.to_s
   end
@@ -87,12 +85,23 @@ class ChangePassword < Task
     url = url_for(:host => hostname, :controller => 'account', :action => 'new_password', :code => code)
 
     lambda do
-      _("In order to change your password, please visit the following address:\n\n%s") % url 
+      _("In order to change your password, please visit the following address:\n\n%s") % url
     end
   end
 
   def environment
     self.requestor.environment
+  end
+
+  protected
+
+  def valid_login
+    unless self.login.blank?
+      user = self.class.user_from_login(self.login, self.environment_id)
+      if user.nil?
+        self.errors.add(:login, _('is invalid or user does not exists.'))
+      end
+    end
   end
 
 end
