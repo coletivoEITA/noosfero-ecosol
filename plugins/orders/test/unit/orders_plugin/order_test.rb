@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
+require "#{File.dirname(__FILE__)}/../../test_helper"
 
-class OrdersCyclePlugin::OrderTest < ActiveSupport::TestCase
+class OrdersPlugin::OrderTest < ActiveSupport::TestCase
 
   def setup
     @order = build(OrdersPlugin::Order)

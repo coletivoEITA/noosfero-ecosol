@@ -1,21 +1,19 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
+require "#{File.dirname(__FILE__)}/../../test_helper"
 
-class OrdersCyclePluginprofileTest < ActiveRecord::TestCase
+class OrdersCyclePlugin::ProfileTest < ActiveRecord::TestCase
 
   def setup
     @profile = build(Profile)
     @invisible_profile = build(Enterprise, :visible => false)
     @other_profile = build(Enterprise)
     @profile = build(OrdersCyclePlugin::profile, :profile => @profile)
-    @dummy_profile = build(OrdersCyclePlugin::profile, :profile => @invisible_profile)
-    @other_profile = build(OrdersCyclePlugin::profile, :profile => @other_profile)
     @self_supplier = build(OrdersCyclePlugin::Supplier, :consumer => @profile, :profile => @profile)
     @dummy_supplier = build(OrdersCyclePlugin::Supplier, :consumer => @profile, :profile => @dummy_profile)
     @other_supplier = build(OrdersCyclePlugin::Supplier, :consumer => @profile, :profile => @other_profile)
   end
 
   attr_accessor :profile, :invisible_profile, :other_profile,
-    :profile, :dummy_profile, :other_profile, :self_supplier, :dummy_supplier, :other_supplier
+    :self_supplier, :dummy_supplier, :other_supplier
 
   should 'respond to name methods' do
     profile.expects(:name).returns('name')
@@ -76,36 +74,6 @@ class OrdersCyclePluginprofileTest < ActiveRecord::TestCase
   end
 
   ###
-  # Roles
-  ###
-
-  should 'have role question methods' do
-    profile.role = 'consumer'
-    assert_equal true, profile.consumer?
-    profile.role = 'supplier'
-    assert_equal true, profile.supplier?
-    profile.role = 'collective'
-    assert_equal true, profile.collective?
-  end
-
-  should "should have a valid role" do
-    profile.role = 'blah'
-    profile.valid?
-    assert profile.errors.invalid?('role')
-
-    ['supplier', 'consumer', 'collective'].each do |i|
-      profile = build(OrdersCyclePlugin::profile, :profile => @profile, :role => i)
-      assert !profile.errors.invalid?('role')
-    end
-  end
-
-  should 'create necessary roles before instance creation' do
-    assert_nil OrdersCyclePlugin::profile::Roles.consumer(profile.environment)
-    profile.save!
-    assert_not_nil OrdersCyclePlugin::profile::Roles.consumer(profile.profile.environment)
-  end
-
-  ###
   # Suppliers
   ###
 
@@ -114,9 +82,7 @@ class OrdersCyclePluginprofileTest < ActiveRecord::TestCase
     @other_profile.save!
 
     assert_difference OrdersCyclePlugin::Supplier, :count do
-      assert_difference RoleAssignment, :count do
-        @profile.add_supplier @other_profile
-      end
+      @profile.add_supplier @other_profile
     end
     assert @profile.suppliers_profiles.include?(@other_profile)
     assert @other_profile.consumers_profiles.include?(@profile)

@@ -1,7 +1,7 @@
-<h1><%= h profile.name %></h1>
+<h1><%= profile.name %></h1>
 <h2><%= t('consumers_coop_plugin.views.profile.settings.settings_of_solidary_') %></h2>
 
-<div id="consumers-coop-plugin-settings">
+<div id="consumers-coop-settings">
   <% form_for :profile_data, @profile, :url => {:controller => :consumers_coop_plugin_myprofile, :action => :settings, :profile => profile.identifier}, :html => {:multipart => true} do |f| %>
 
     <% f.fields_for :consumers_coop_settings, profile.consumers_coop_settings do |f| %>

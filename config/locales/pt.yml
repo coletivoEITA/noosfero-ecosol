@@ -244,6 +244,8 @@
       myprofile: 
         supplier_created: "Fornecedor criado"
     models:
+      base_product:
+        own_distribution_error: "Não é possível distribuir um produto próprio"
       distributed_product: 
         greater: " > "
       product: 

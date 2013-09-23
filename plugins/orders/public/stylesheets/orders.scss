@@ -1,5 +1,5 @@
 @import 'base';
-@import 'orders_variables';
+@import 'orders-variables';
 
 @import 'sortable-table';
 @import 'loading-overlay';
@@ -115,6 +115,9 @@
 
 }
 
+.consumer-order {
+  @import 'field';
+}
 
 .order-products-container {
   width: $order-products-width;
@@ -149,7 +152,7 @@
     .table-header {
       @extend .container-clean;
     }
-    //ordered-product do overflow, so no overflow:hidden for its parents
+    //ordered-product do overflow, so no overflow:hidden for its parents (.table-content)
 
     .table-header {
       font-weight: bold;

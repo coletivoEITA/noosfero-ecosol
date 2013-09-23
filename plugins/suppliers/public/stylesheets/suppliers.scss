@@ -15,6 +15,10 @@
     }
   }
 
+  .supplier.supplier-inactive {
+    background-color: #faeeee;
+  }
+
   .supplier {
     border-top: $border solid black;
     border-bottom: none;
@@ -38,10 +42,6 @@
 
       .supplier-type {
         font-style: italic;
-      }
-
-      .supplier-inactive {
-        background-color: #faeeee;
       }
 
       .supplier-logo {

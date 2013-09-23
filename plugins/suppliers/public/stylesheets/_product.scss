@@ -2,8 +2,6 @@
 
 #supplier-our-products {
 
-  @import 'field';
-
   .sortable-table {
     @extend .wireframe-size;
 
@@ -38,6 +36,7 @@
       width: $module10 + $intercolumn;
       float: left;
       @extend .container-clean;
+      @import 'field';
 
       .field-secondary {
         float: left;

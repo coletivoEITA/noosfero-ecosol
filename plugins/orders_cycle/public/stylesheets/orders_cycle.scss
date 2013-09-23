@@ -1,5 +1,6 @@
 @import 'base';
-@import 'orders_variables';
+@import 'sortable-table';
+@import 'orders-variables';
 
 @import 'calendrial';
 
@@ -35,20 +36,40 @@
       @extend .box-align;
     }
 
-
     #filter {
-      width: $module06;
-      margin: auto;
+      margin-left: -$sortable-table-negative-area;
 
-      .fields div.category {
-        border-right: 0;
+      .title, .filter-box, .submit {
+        padding-left: $sortable-table-negative-area + $padding !important;
+      }
+
+      .filter-box {
+        padding-left: $padding;
+
+        &.fields {
+
+          .supplier {
+            padding-left: 0;
+          }
+          .name {
+            padding-right: 0;
+          }
+        }
       }
     }
 
+
     #cycle-products {
+
+      .table-header, .table-content {
+        margin-left: -$sortable-table-negative-area;
+      }
+      .table-header {
+        padding-left: $sortable-table-negative-area;
+      }
+
       .box-field {
         &.category {
-          border: none;
           width: $module01;
         }
         &.supplier {
@@ -92,8 +113,6 @@
         }
 
       }
-
-
 
       .box-view {
         .box-field.quantity a {
@@ -327,9 +346,6 @@
     width: 120px;
   }
 
-}
-.vertical-spacer {
-  height: $intercolumn;
 }
 
 #cycle-closed-listing {
@@ -577,4 +593,8 @@
   input {
     text-align: left;
   }
+}
+
+.consumers-coop #supplier-add {
+  display: none;
 }

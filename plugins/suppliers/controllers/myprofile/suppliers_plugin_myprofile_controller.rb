@@ -10,7 +10,7 @@ class SuppliersPluginMyprofileController < MyProfileController
   helper SuppliersPlugin::SuppliersDisplayHelper
 
   def index
-    @suppliers = profile.suppliers.except_self.by_active(params[:active]).with_name(params[:name]).paginate(:per_page => 10, :page => params[:page])
+    @suppliers = search_scope(profile.suppliers.except_self).paginate(:per_page => 10, :page => params[:page])
     @is_search = params[:name] or params[:active]
 
     respond_to do |format|
@@ -69,4 +69,9 @@ class SuppliersPluginMyprofileController < MyProfileController
     @new_profile = @new_supplier.profile
   end
 
+  def search_scope scope
+    scope = scope.by_active(params[:active]) if params[:active].present?
+    scope = scope.with_name(params[:name]) if params[:name].present?
+    scope
+  end
 end

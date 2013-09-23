@@ -6,7 +6,7 @@
     </div>
   <% end %>
 
-  <% f.fields_for "ordered_product-#{ordered_product.id}", ordered_product do |f| %>
+  <% fields_for "ordered_product-#{ordered_product.id}", ordered_product do |f| %>
     <%= f.hidden_field :id %>
 
     <div>

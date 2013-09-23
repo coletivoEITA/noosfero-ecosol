@@ -21,7 +21,7 @@
   <div id="cycle-closed-listing">
     <h3><%= t('orders_cycle_plugin.views.cycle.index.closed_cycles') %></h3>
 
-  <%= render :partial => "orders_cycle_plugin_shared/filter", :locals => {:type => :orders_cycle }%>
+    <%= render :partial => "orders_cycle_plugin_shared/filter", :locals => {:type => :orders_cycle, :wireframe_size => true} %>
 
     <div id="search-results">
       <%= render :partial => 'results' %>

@@ -5,19 +5,17 @@ loading_overlay = {
 
   show: function (selector) {
     var element = jQuery(selector);
-    var pos = {
-      width: element.outerWidth(),
-      height: element.outerHeight(),
-      top: element.position().top,
-      marginLeft: parseFloat(element.css('margin-left')),
-      marginTop: parseFloat(element.css('margin-top')),
-    };
-
     var overlay = jQuery('<div>', {
       class: 'loading-overlay',
       css: {
-        top: pos.top, left: pos.left,
-        width: pos.width, height: pos.height,
+        width: element.outerWidth(),
+        height: element.outerHeight(),
+        left: element.position().left,
+        top: element.position().top,
+        marginLeft: parseFloat(element.css('margin-left')),
+        marginTop: parseFloat(element.css('margin-top')),
+        marginRight: parseFloat(element.css('margin-right')),
+        marginBottom: parseFloat(element.css('margin-bottom')),
       },
     }).appendTo(element).get(0);
 
@@ -27,7 +25,7 @@ loading_overlay = {
 
   hide: function (selector) {
     var element = jQuery(selector);
-    var overlay = element.get(0).loading_overlay;
+    var overlay = element.find('.loading-overlay');
     overlay.remove();
   },
 
