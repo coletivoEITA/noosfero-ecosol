@@ -624,14 +624,14 @@
   padding-left: 0; }
   .cycle-view #cycle-products-for-order #filter {
     margin-left: -24px; }
-    .cycle-view #cycle-products-for-order #filter > * {
+    .cycle-view #cycle-products-for-order #filter .title, .cycle-view #cycle-products-for-order #filter .filter-box, .cycle-view #cycle-products-for-order #filter .submit {
       padding-left: 32px !important; }
     .cycle-view #cycle-products-for-order #filter .filter-box {
       padding-left: 8px; }
-      .cycle-view #cycle-products-for-order #filter .filter-box .fields .supplier {
+      .cycle-view #cycle-products-for-order #filter .filter-box.fields .supplier {
         padding-left: 0; }
-      .cycle-view #cycle-products-for-order #filter .filter-box .fields .category {
-        border-right: 0; }
+      .cycle-view #cycle-products-for-order #filter .filter-box.fields .name {
+        padding-right: 0; }
   .cycle-view #cycle-products-for-order #cycle-products .table-header, .cycle-view #cycle-products-for-order #cycle-products .table-content {
     margin-left: -24px; }
   .cycle-view #cycle-products-for-order #cycle-products .table-header {

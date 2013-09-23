@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
+require "#{File.dirname(__FILE__)}/../../test_helper"
 
-class SuppliersPluginDistributedProductTest < ActiveSupport::TestCase
+class SuppliersPlugin::DistributedProductTest < ActiveSupport::TestCase
 
   def setup
     @profile = build(Enterprise)

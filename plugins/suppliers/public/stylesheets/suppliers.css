@@ -773,6 +773,7 @@
       float: left;
       clear: none;
       padding: 8px;
+      padding-right: 7px;
       border-right: 1px solid #d6e9bc; }
       #filter .filter-box.fields .field:first-child {
         padding-left: 0; }

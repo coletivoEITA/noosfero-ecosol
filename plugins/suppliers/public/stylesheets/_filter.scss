@@ -56,6 +56,7 @@ $filter-bg: #BCDC91;
         float: left;
         clear: none; //overhide field partial
         padding: $padding;
+        padding-right: $padding - $border; 
         border-right: $border solid $filter-border-color;
 
         &:first-child {

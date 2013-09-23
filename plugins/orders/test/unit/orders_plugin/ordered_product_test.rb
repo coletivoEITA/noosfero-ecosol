@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../../../test/test_helper'
 
-class OrdersCyclePluginOrderedProductTest < ActiveSupport::TestCase
+class OrdersPlugin::OrderedProductTest < ActiveSupport::TestCase
 
   def setup
     @product = build(OrdersPlugin::OrderedProduct,

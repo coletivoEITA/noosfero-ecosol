@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
+require "#{File.dirname(__FILE__)}/../../test_helper"
 
-class OrdersCyclePluginCycleTest < ActiveSupport::TestCase
+class OrdersCyclePlugin::CycleTest < ActiveSupport::TestCase
 
   def setup
     @profile = Enterprise.create!(:name => "trocas verdes", :identifier => "trocas-verdes")

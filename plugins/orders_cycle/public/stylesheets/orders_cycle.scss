@@ -39,20 +39,20 @@
     #filter {
       margin-left: -$sortable-table-negative-area;
 
-      > * {
+      .title, .filter-box, .submit {
         padding-left: $sortable-table-negative-area + $padding !important;
       }
 
       .filter-box {
         padding-left: $padding;
 
-        .fields {
+        &.fields {
 
           .supplier {
             padding-left: 0;
           }
-          .category {
-            border-right: 0;
+          .name {
+            padding-right: 0;
           }
         }
       }
