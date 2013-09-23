@@ -22,17 +22,10 @@ class ChangePassword < Task
 
   validates_presence_of :login, :environment_id, :on => :create, :message => _('must be filled in')
 
-  validates_each :login, :on => :create do |data,attr,value|
-    unless data.login.blank?
-      user = self.user_from_login data.login, data.environment_id
-      if user.nil?
-        data.errors.add(:login, _('is invalid or user does not exists.'))
-      end
-    end
-  end
+  validate :valid_login, :on => :create
 
   before_validation_on_create do |change_password|
-    user = self.user_from_login change_password.login, change_password.environment_id
+    user = self.user_from_login(change_password.login, change_password.environment_id)
     change_password.requestor = user.nil? ? nil : user.person
   end
 
@@ -45,12 +38,13 @@ class ChangePassword < Task
   validates_confirmation_of :password, :if => lambda { |change| change.status != Task::Status::CANCELLED }
 
   def self.user_from_login login, environment_id
+    return nil if login.nil?
+
     if login.include?'@'
       user = User.find_by_email_and_environment_id(login, environment_id)
     else
       user = User.find_by_login_and_environment_id(login, environment_id)
     end
-    user
   end
 
   def title
@@ -97,6 +91,17 @@ class ChangePassword < Task
 
   def environment
     self.requestor.environment
+  end
+
+  protected
+
+  def valid_login
+    unless self.login.blank?
+      user = self.class.user_from_login(self.login, self.environment_id)
+      if user.nil?
+        self.errors.add(:login, _('is invalid or user does not exists.'))
+      end
+    end
   end
 
 end
