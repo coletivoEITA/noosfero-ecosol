@@ -20,7 +20,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     self.from_2x_products
   end
 
-  default_scope :includes => [:from_2x_products]
+  default_scope :includes => [:from_2x_products, :from_products]
 
   extend CurrencyHelper::ClassMethods
   has_number_with_locale :total_quantity_asked

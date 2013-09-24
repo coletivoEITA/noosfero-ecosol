@@ -31,15 +31,15 @@ class Product
     self.from_products.first
   end
 
-  has_many :sources_from_2x_products, :through => :sources_from_products, :source => :sources_from_products
-  has_many :sources_to_2x_products, :through => :sources_to_product, :source => :sources_to_products
+  has_many :sources_from_2x_products, :through => :sources_from_products, :source => :sources_from_products, :foreign_key => :id
+  has_many :sources_to_2x_products, :through => :sources_to_product, :source => :sources_to_products, :foreign_key => :id
   has_many :from_2x_products, :through => :sources_from_2x_products, :source => :from_product
   has_many :to_2x_products, :through => :sources_to_2x_products, :source => :to_product
 
   has_many :suppliers, :through => :sources_from_products, :order => 'id ASC'
 
   # join source_products
-  default_scope :include => [:from_products]
+  default_scope :include => [:from_2x_products, {:profile => [:domains]}]
 
   named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
   named_scope :own, :conditions => ["products.type = 'Product'"]

@@ -106,7 +106,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     end
   end
   def respond_to_with_profile? method
-    respond_to_without_profile? method or self.profile.respond_to? method
+    respond_to_without_profile? method or Profile.new.respond_to? method
   end
   alias_method_chain :respond_to?, :profile
 

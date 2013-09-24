@@ -15,7 +15,7 @@
         <div id="cycle-product-<%=offered_product.id%>" class="order-cycle-product value-row" toggleedit="orders_cycle.offered_product.order.toggle();">
           <%= render :partial => "orders_cycle_plugin_product/order_edit", :locals => {
             :product => offered_product, :order => order, :cycle => cycle,
-            :ordered_product => order.blank? ? nil : order.products.find_by_product_id(offered_product.id) } %>
+            :ordered_product => order.blank? ? nil : order.products.select{ |op| offered_product.id == op.product_id }.first } %>
         </div>
       <% end %>
     </div>
