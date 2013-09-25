@@ -10,7 +10,7 @@ class Profile
 
   # belongs_to only works with real attributes :(
   def consumers_coop_header_image
-    @consumers_coop_header_image ||= ConsumersCoopPlugin::HeaderImage.find self.consumers_coop_header_image_id
+    @consumers_coop_header_image ||= ConsumersCoopPlugin::HeaderImage.find_by_id self.consumers_coop_header_image_id
   end
   delegate :consumers_coop_header_image_id, :consumers_coop_header_image_id=, :to => :consumers_coop_settings
   def consumers_coop_header_image_builder= img
