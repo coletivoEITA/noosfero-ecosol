@@ -1,3 +1,18 @@
+<% editable = order && order.may_edit?(@admin_action) %>
+<% draft_order = cycle.orders.draft.for_consumer(user).first %>
+<% include_message = '' %>
+<% if order.nil? %>
+  <% if draft_order %>
+    <% order_id = draft_order.id %>
+    <% include_message = t('orders_cycle_plugin.views.product._order_edit.opening_order_code_fo') % {:code => draft_order.code} %>
+  <% else %>
+    <% order_id = 'new' %>
+    <% include_message = t('orders_cycle_plugin.views.product._order_edit.opening_new_order_for') %>
+  <% end %>
+<% else %>
+  <% order_id = order.id %>
+<% end %>
+
 <% if products_for_order.empty? %>
   <strong><%= t('orders_cycle_plugin.views.product._order_search.this_search_hasn_t_re') %></strong>
 <% else %>
@@ -12,12 +27,23 @@
 
     <div class="table-content">
       <% products_for_order.each do |offered_product| %>
-        <div id="cycle-product-<%=offered_product.id%>" class="order-cycle-product value-row" toggleedit="orders_cycle.offered_product.order.toggle();">
+        <% ordered_product = order.blank? ? nil : order.products.select{ |op| offered_product.id == op.product_id }.first %>
+        <% onclick = if editable then "orders_cycle.order.product.click(#{offered_product.id});" else '' end %>
+
+        <div id="cycle-product-<%=offered_product.id%>" class="order-cycle-product value-row" toggle-ignore onclick="<%= onclick %>">
           <%= render :partial => "orders_cycle_plugin_product/order_edit", :locals => {
-            :product => offered_product, :order => order, :cycle => cycle,
-            :ordered_product => order.blank? ? nil : order.products.select{ |op| offered_product.id == op.product_id }.first } %>
+            :product => offered_product, :order => order, :cycle => cycle, :editable => editable, :ordered_product => ordered_product } %>
         </div>
       <% end %>
     </div>
   </div>
 <% end %>
+
+<% javascript_tag do %>
+  orders_cycle.order.product.include_message = '<%= include_message %>';
+  orders_cycle.order.product.add_url = '<%= url_for :controller => :orders_cycle_plugin_ordered_product, :action => :new %>';
+  orders_cycle.order.product.remove_url = '<%= url_for :controller => :orders_cycle_plugin_product, :action => :remove_from_order %>';
+  orders_cycle.order.product.order_id = <%= order_id %>;
+  orders_cycle.order.product.redirect_after_include = '<%= order.nil? ? 1 : '' %>';
+<% end %>
+

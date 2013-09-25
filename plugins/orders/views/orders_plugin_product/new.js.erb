@@ -1,0 +1,8 @@
+<% if params[:redirect] == '1' %>
+  window.location = '<%= url_for :controller => :orders_plugin_consumer, :action => :edit, :id => @order.id %>';
+<% else %>
+  jQuery('#order-products').html("<%= j render(:partial => 'orders_plugin_consumer/products', :locals => {:order => @order}) %>");
+  jQuery('#order-total-<%= @order.id %>').html("<%= j render(:partial => 'orders_plugin_consumer/total', :locals => {:order => @order}) %>");
+
+  toggle_edit.value_row.reload();
+<% end %>

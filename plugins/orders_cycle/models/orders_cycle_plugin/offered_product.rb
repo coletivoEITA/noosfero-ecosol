@@ -69,10 +69,10 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   end
   def buy_unit
     #TODO: handle multiple products
-    self.supplier_product.unit || self.class.default_unit
+    unit = (self.supplier_product.unit rescue nil) || self.class.default_unit
   end
   def sell_unit
-    unit
+    self.unit || self.class.default_unit
   end
 
   # cycle products freezes properties and don't use the original

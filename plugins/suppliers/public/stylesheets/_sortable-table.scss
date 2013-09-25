@@ -1,9 +1,9 @@
 @import 'base';
 
-$bg-yellow: #FDF2A3;
-$bg-header: #70BCFA;
-$border-header: #3C729F;
-$bg-row: #F3F4EE;
+$sortable-table-bg-yellow: #FDF2A3;
+$sortable-table-bg-header: #70BCFA;
+$sortable-table-border-header: #3C729F;
+$sortable-table-bg-row: #F3F4EE;
 
 $sortable-table-negative-area: 3*$base;
 
@@ -33,10 +33,15 @@ $sortable-table-negative-area: 3*$base;
       padding: $padding;
     }
   }
+
+  > .table-header .box-field,
+  > .table-content .box-view .box-field, {
+    font-size: 10px;
+  }
   
   > .table-header {
-    background-color: $bg-header;
-    border-bottom: 2*$border solid $border-header;
+    background-color: $sortable-table-bg-header;
+    border-bottom: 2*$border solid $sortable-table-border-header;
     color: black;
     @extend .container-clean; //.table-content can't have this
 
@@ -61,7 +66,6 @@ $sortable-table-negative-area: 3*$base;
       cursor: pointer;
       text-transform: lowercase;
       font-weight: bold;
-      font-size: 10px;
     }
   }
 
@@ -71,7 +75,7 @@ $sortable-table-negative-area: 3*$base;
 
     > .value-row {
       background: white;
-      border: $border solid transparent; //avoid size change with .edit class
+      border: $border solid $sortable-table-bg-row; //avoid size change with .edit class
 
       &.edit {
         border: $border solid black;
@@ -102,7 +106,7 @@ $sortable-table-negative-area: 3*$base;
       &.hover {
         //important is used because of .with-inner selector
         .box-view {
-          background: $bg-yellow !important;
+          background: $sortable-table-bg-yellow !important;
         }
         &.edit {
           .box-view {
@@ -148,7 +152,7 @@ $sortable-table-negative-area: 3*$base;
 
         &, .box-view-inner {
           @extend .container-clean;
-          background: $bg-row;
+          background: $sortable-table-bg-row;
         }
 
         &.with-inner {
@@ -178,7 +182,7 @@ $sortable-table-negative-area: 3*$base;
 
         .internal-table {
           float: left;
-          background-color: $bg-yellow;
+          background-color: $sortable-table-bg-yellow;
           border: $border solid black;
           border-radius: 3px;
           @extend .container-clean;

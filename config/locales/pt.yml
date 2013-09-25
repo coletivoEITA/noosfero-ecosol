@@ -845,7 +845,6 @@
           other_open_cycles_lis: "Outros ciclos abertos: %{list}. Veja também %{all}"
           see_also_all: "Veja também %{all}"
         _view_products: 
-          choose_from_the_list_: "Escolha da lista abaixo os produtos que voce quer incluir no seu pedido. Clique neles para escolher a quantidade."
           the_products: "Os produtos"
         add_products: 
           add_all_missing_produ: "adicionar todos produtos que faltam ao coletivo"

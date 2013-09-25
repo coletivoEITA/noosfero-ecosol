@@ -8,7 +8,14 @@
     <%= render :partial => 'consumer_orders' %>
   </div>
 
-  <%= javascript_include_tag '/plugins/orders/waypoints.min.js' %>
+  <%= javascript_include_tag '/plugins/orders/javascripts/waypoints.min.js' %>
+  <% javascript_tag do %>
+    jQuery(document).ready(function() {
+      jQuery('.consumer-order.edit').waypoint(function(event, direction) {
+        jQuery(this).toggleClass('sticky', direction == 'down');
+      }, {});
+    });
+  <% end %>
 
   <div class="clean"></div>
 </div>

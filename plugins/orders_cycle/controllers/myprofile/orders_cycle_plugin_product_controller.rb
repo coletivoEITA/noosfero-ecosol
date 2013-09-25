@@ -30,6 +30,12 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
     @units = Unit.all
   end
 
+  def remove_from_order
+    @offered_product = OrdersCyclePlugin::OfferedProduct.find params[:id]
+    @order = OrdersPlugin::Order.find params[:order_id]
+    @ordered_product = @order.products.find_by_product_id @offered_product.id
+    @ordered_product.destroy
+  end
 
   def cycle_edit
     @product = OrdersCyclePlugin::OfferedProduct.find params[:id]

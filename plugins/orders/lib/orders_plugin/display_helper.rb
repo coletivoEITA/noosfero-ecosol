@@ -12,4 +12,8 @@ module OrdersPlugin::DisplayHelper
     content_tag 'span', excerpt(text, text.first(3), length), :title => text
   end
 
+  def j *args
+    escape_javascript *args
+  end
+
 end
