@@ -6,9 +6,9 @@ class Profile
   has_many :distributed_products, :class_name => 'SuppliersPlugin::DistributedProduct'
 
   has_many :suppliers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :consumer_id, :dependent => :destroy,
-    :include => [:profile], :order => 'name ASC'
+    :include => [{:profile => [:domains], :consumer => [:domains]}], :order => 'name ASC'
   has_many :consumers, :class_name => 'SuppliersPlugin::Consumer', :foreign_key => :profile_id, :dependent => :destroy,
-    :include => [:consumer], :order => 'name ASC'
+    :include => [{:profile => [:domains], :consumer => [:domains]}], :order => 'name ASC'
 
   def supplier_settings
     @supplier_settings ||= Noosfero::Plugin::Settings.new self, SuppliersPlugin

@@ -25,10 +25,10 @@ toggle_edit = {
   target: {
     isToggle: function (target) {
       return (jQuery(target).hasClass('box-edit-link') && !toggle_edit.isEditing()) ||
-        jQuery(target).hasClass('toggle-edit') || jQuery(target).parents().hasClass('toggle-edit');
+        jQuery(target).attr('toggle-edit') || jQuery(target).parents().attr('toggle-edit');
     },
     isToggleIgnore: function (target) {
-      return jQuery(target).hasClass('toggle-ignore') || jQuery(target).parents().hasClass('toggle-ignore');
+      return jQuery(target).attr('toggle-ignore') || jQuery(target).parents().attr('toggle-ignore');
     },
   },
 

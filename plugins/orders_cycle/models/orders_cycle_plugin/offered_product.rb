@@ -20,7 +20,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     self.from_2x_products
   end
 
-  default_scope :includes => [:from_2x_products]
+  default_scope :includes => [:from_2x_products, :from_products]
 
   extend CurrencyHelper::ClassMethods
   has_number_with_locale :total_quantity_asked
@@ -69,10 +69,10 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   end
   def buy_unit
     #TODO: handle multiple products
-    self.supplier_product.unit || self.class.default_unit
+    unit = (self.supplier_product.unit rescue nil) || self.class.default_unit
   end
   def sell_unit
-    unit
+    self.unit || self.class.default_unit
   end
 
   # cycle products freezes properties and don't use the original

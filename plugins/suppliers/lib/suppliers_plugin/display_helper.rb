@@ -6,4 +6,8 @@ module SuppliersPlugin::DisplayHelper
   include SuppliersPlugin::FieldHelper
   include SuppliersPlugin::ProductHelper
 
+  def j *args
+    escape_javascript *args
+  end
+
 end

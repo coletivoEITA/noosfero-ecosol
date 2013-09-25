@@ -8,10 +8,10 @@ orders_cycle = {
       jQuery('#cycle_start_date, #cycle_start_time, #cycle_finish_date, #cycle_finish_time').calendricalDateTimeRange(options);
       jQuery('#cycle_delivery_start_date, #cycle_delivery_start_time, #cycle_delivery_finish_date, #cycle_delivery_finish_time').calendricalDateTimeRange(options);
 
-      var saveClick = false;
+      orders_cycle.cycle.saveClick = false;
       if (destroy_url) {
         jQuery(window).bind('beforeunload', function () {
-          if (!saveClick)
+          if (!orders_cycle.cycle.saveClick)
             jQuery.ajax({type: 'POST', async: false, url: destroy_url});
         });
       }
@@ -29,11 +29,55 @@ orders_cycle = {
 
   /* ----- order ----- */
 
-  order_product: {
-    include: function (message, url) {
-      if (message)
-        alert(message);
-      return false;
+  order: {
+    product: {
+      include_message: '',
+      add_product_url: '',
+      order_id: 0,
+      redirect_after_include: '',
+
+      load: function (id, state) {
+        var product = jQuery('#cycle-product-'+id);
+        product.toggleClass('in-order', state);
+        return product;
+      },
+
+      checkbox_click: function (check_box, id) {
+        this.click(id, check_box.checked);
+        return true;
+      },
+      click: function (id, state) {
+        var product = jQuery('#cycle-product-'+id);
+
+        if (state === undefined)
+          state = !product.hasClass('in-order');
+
+        if (state == true)
+          this.add(id);
+        else
+          this.remove(id);
+        product.find('input').get(0).checked = state;
+      },
+
+      add: function (id) {
+        var product = this.load(id, true);
+
+        if (this.include_message)
+          alert(this.include_message);
+
+        loading_overlay.show(product);
+        jQuery.post(this.add_url, {order_id: this.order_id, redirect: this.redirect_after_include, offered_product_id: id}, function () {
+          loading_overlay.hide(product);
+        });
+      },
+      remove: function (id) {
+        var product = this.load(id, false);
+
+        loading_overlay.show(product);
+        jQuery.post(this.remove_url, {id: id, order_id: this.order_id}, function () {
+          loading_overlay.hide(product);
+        });
+      },
     },
   },
 
@@ -57,14 +101,6 @@ orders_cycle = {
 
     edit: function () {
       toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
-    },
-
-    order: {
-      toggle: function () {
-        toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
-        toggle_edit.editing().find('.quantity-label').toggle(!toggle_edit.isEditing());
-        toggle_edit.editing().find('.quantity-entry').toggle(toggle_edit.isEditing());
-      },
     },
   },
 

@@ -19,21 +19,21 @@ class SuppliersPlugin::BaseProduct < Product
   ]
 
   extend ActsAsHavingSettings::DefaultItem::ClassMethods
-  settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :from_product
-  settings_default_item :product_category, :type => :boolean, :default => true, :delegate_to => :from_product
-  settings_default_item :image, :type => :boolean, :default => true, :delegate_to => :from_product
-  settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :from_product
-  settings_default_item :unit, :type => :boolean, :default => true, :delegate_to => :from_product
+  settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :supplier_product
+  settings_default_item :product_category, :type => :boolean, :default => true, :delegate_to => :supplier_product
+  settings_default_item :image, :type => :boolean, :default => true, :delegate_to => :supplier_product
+  settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :supplier_product
+  settings_default_item :unit, :type => :boolean, :default => true, :delegate_to => :supplier_product
   settings_default_item :margin_percentage, :type => :boolean, :default => true, :delegate_to => :profile
 
-  default_item :price, :if => :default_margin_percentage, :delegate_to => proc{ self.from_product.price_with_discount }
-  default_item :unit_detail, :if => :default_unit, :delegate_to => :from_product
-  settings_default_item :stored, :type => :boolean, :default => true, :delegate_to => :from_product
-  settings_default_item :minimum_selleable, :type => :boolean, :default => true, :delegate_to => :from_product
+  default_item :price, :if => :default_margin_percentage, :delegate_to => proc{ self.supplier_product.price_with_discount if self.supplier_product }
+  default_item :unit_detail, :if => :default_unit, :delegate_to => :supplier_product
+  settings_default_item :stored, :type => :boolean, :default => true, :delegate_to => :supplier_product
+  settings_default_item :minimum_selleable, :type => :boolean, :default => true, :delegate_to => :supplier_product
 
-  default_item :product_category_id, :if => :default_product_category, :delegate_to => :from_product
-  default_item :image_id, :if => :default_image, :delegate_to => :from_product
-  default_item :unit_id, :if => :default_unit, :delegate_to => :from_product
+  default_item :product_category_id, :if => :default_product_category, :delegate_to => :supplier_product
+  default_item :image_id, :if => :default_image, :delegate_to => :supplier_product
+  default_item :unit_id, :if => :default_unit, :delegate_to => :supplier_product
 
   extend CurrencyHelper::ClassMethods
   has_currency :own_price
