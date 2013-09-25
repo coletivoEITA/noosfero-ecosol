@@ -18,7 +18,7 @@ class Product
   named_scope :by_profile_id, lambda { |profile_id| { :conditions => {:profile_id => profile_id} } }
 
   def self.product_categories_of products
-    ProductCategory.find products.collect(&:product_category_id).select{ |id| not id.zero? }.compact
+    ProductCategory.find products.collect(&:product_category_id).compact.select{ |id| not id.zero? }
   end
 
   # The lines above should be on the core. The following are real extensions
