@@ -16,9 +16,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
 
   # for products in cycle, these are the products of the suppliers
   # p in cycle -> p distributed -> p from supplier
-  def supplier_products
-    self.from_2x_products
-  end
+  has_many :suppliers, :through => :sources_from_2x_products, :order => 'id ASC'
 
   default_scope :includes => [:from_2x_products, :from_products]
 

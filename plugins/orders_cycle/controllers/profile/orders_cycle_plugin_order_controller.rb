@@ -148,6 +148,15 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
     render :partial => 'delivery', :layout => false, :locals => {:order => @order}
   end
 
+  def supplier_balloon
+    @supplier = SuppliersPlugin::Supplier.find params[:id]
+    render :layout => false
+  end
+  def product_balloon
+    @product = OrdersCyclePlugin::OfferedProduct.find params[:id]
+    render :layout => false
+  end
+
   protected
 
   # use superclass instead of child

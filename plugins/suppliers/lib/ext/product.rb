@@ -39,7 +39,7 @@ class Product
   has_many :suppliers, :through => :sources_from_products, :order => 'id ASC'
 
   # join source_products
-  default_scope :include => [:from_2x_products, {:profile => [:domains]}]
+  default_scope :include => [:suppliers, :from_products, {:profile => [:domains]}]
 
   named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
   named_scope :own, :conditions => ["products.type = 'Product'"]
@@ -68,14 +68,14 @@ class Product
   end
 
   def supplier
-    @supplier ||= self.supplier_product.supplier if self.supplier_product
+    @supplier ||= self.suppliers.first
     @supplier ||= self.profile.self_supplier
   end
   def supplier= value
     @supplier = value
   end
   def supplier_id
-    self.supplier.id if self.supplier
+    self.supplier.id
   end
   def supplier_id= id
     @supplier = profile.environment.profiles.find id
