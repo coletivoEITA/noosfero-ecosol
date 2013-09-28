@@ -541,7 +541,7 @@ body.consumers-coop {
     font-size: 21px; }
   #consumers-coop-settings form .pstyle-tm1 {
     font-size: 13px; }
-  #consumers-coop-settings form .pstyle-tm2 {
+  #consumers-coop-settings form .pstyle-tm2, #consumers-coop-settings form .subtitle {
     font-size: 10px; }
   #consumers-coop-settings form .profile-image {
     display: inline-block;
@@ -668,17 +668,24 @@ body.consumers-coop {
     height: 10px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     display: inline-block; }
-  #consumers-coop-settings form .color-purple, #consumers-coop-settings form #consumers-coop-plugin-header .color-purple {
-    background-color: #705496; }
-  #consumers-coop-settings form .color-yellow, #consumers-coop-settings form #consumers-coop-plugin-header .color-yellow {
-    background-color: #f5b900; }
-  #consumers-coop-settings form .color-beige, #consumers-coop-settings form #consumers-coop-plugin-header .color-beige {
-    background-color: #c4bf66; }
-  #consumers-coop-settings form .color-blue, #consumers-coop-settings form #consumers-coop-plugin-header .color-blue {
-    background-color: #0094c9; }
-  #consumers-coop-settings form .color-petro, #consumers-coop-settings form #consumers-coop-plugin-header .color-petro {
-    background-color: #036475; }
-  #consumers-coop-settings form .color-green, #consumers-coop-settings form #consumers-coop-plugin-header .color-green {
-    background-color: #4aa133; }
-  #consumers-coop-settings form .disabled {
-    background-color: gray; }
+
+#consumers-coop-settings .color-purple, #consumers-coop-plugin-header .color-purple {
+  background-color: #705496; }
+
+#consumers-coop-settings .color-yellow, #consumers-coop-plugin-header .color-yellow {
+  background-color: #f5b900; }
+
+#consumers-coop-settings .color-beige, #consumers-coop-plugin-header .color-beige {
+  background-color: #c4bf66; }
+
+#consumers-coop-settings .color-blue, #consumers-coop-plugin-header .color-blue {
+  background-color: #0094c9; }
+
+#consumers-coop-settings .color-petro, #consumers-coop-plugin-header .color-petro {
+  background-color: #036475; }
+
+#consumers-coop-settings .color-green, #consumers-coop-plugin-header .color-green {
+  background-color: #4aa133; }
+
+#consumers-coop-settings .disabled {
+  background-color: gray; }
