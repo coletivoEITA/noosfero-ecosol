@@ -669,6 +669,7 @@
     background-color: white;
     border: 1px solid black; }
     .balloon .balloon-inner .content {
+      overflow: auto;
       padding: 7px; }
   .balloon.bellow .arrow-wrap .arrow.arrow-inner {
     border-bottom-color: white;
@@ -805,8 +806,7 @@
   padding-left: 0; }
   .cycle-view #cycle-products-for-order .balloon .content {
     width: 224px;
-    max-height: 80px;
-    overflow: auto; }
+    max-height: 80px; }
   .cycle-view #cycle-products-for-order #filter {
     margin-left: -24px; }
     .cycle-view #cycle-products-for-order #filter .title, .cycle-view #cycle-products-for-order #filter .filter-box, .cycle-view #cycle-products-for-order #filter .submit {

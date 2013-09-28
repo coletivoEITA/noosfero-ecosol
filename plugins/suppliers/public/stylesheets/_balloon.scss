@@ -13,6 +13,7 @@ $balloon-arrow: 6px;
     border: $border solid $balloon-border;
 
     .content {
+      overflow: auto;
       padding: $padding - $border;
     }
   }

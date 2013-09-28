@@ -39,7 +39,8 @@ class Product
   has_many :suppliers, :through => :sources_from_products, :order => 'id ASC'
 
   # join source_products
-  default_scope :include => [:suppliers, :from_products, {:profile => [:domains]}]
+  # FIXME: can't preload :suppliers due to a rails bug
+  default_scope :include => [:from_products, {:profile => [:domains]}]
 
   named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
   named_scope :own, :conditions => ["products.type = 'Product'"]

@@ -9,6 +9,51 @@ balloon = {
 
   _cache: {},
 
+  /* Public API */
+
+  hide: function () {
+    balloon._hide();
+    balloon.target = balloon.content = jQuery();
+  },
+
+  show: function(target, content, options) {
+    balloon.target = jQuery(target);
+    balloon.content = content;
+    balloon._setOptions(options);
+    if (balloon.options.delay)
+      setTimeout(balloon._show, balloon.options.delay);
+    else
+      balloon._show();
+  },
+
+  showFromGet: function(target, url, options) {
+    if (balloon.options.cache && (data = balloon.cache.find(url)))
+      balloon.show(target, data, options);
+    else
+      jQuery.get(url, function(data) {
+        balloon.cache.add(url, data);
+        balloon.show(target, data, options);
+      });
+  },
+
+  showTitle: function (target, options) {
+    var title = jQuery(target).attr('title');
+    if (!options.delay) options.delay = 500;
+    balloon.show(target, title, options);
+  },
+
+  cache: {
+    add: function(url, data) {
+      balloon.cache[url] = data;
+    },
+
+    find: function(url) {
+      return balloon.cache[url];
+    },
+  },
+
+  /* Internal */
+
   _build: function (content) {
     balloon.element = jQuery('<div class="balloon" onclick="event.preventDefault(); return false">');
     balloon.element.inner = jQuery('<div class="balloon-inner">');
@@ -56,52 +101,10 @@ balloon = {
   _setOptions: function (options) {
     balloon.options = jQuery.extend({}, balloon.default_options, options || {});
   },
-
-  /* Public API */
-
-  hide: function () {
-    balloon._hide();
-    balloon.target = balloon.content = jQuery();
-  },
-
-  show: function(target, content, options) {
-    balloon.target = jQuery(target);
-    balloon.content = content;
-    balloon._setOptions(options);
-    if (balloon.options.delay)
-      setTimeout(balloon._show, balloon.options.delay);
-    else
-      balloon._show();
-  },
-
-  showFromGet: function(target, url, options) {
-    if (balloon.options.cache && (data = balloon.cache.find(url)))
-      balloon.show(target, data, options);
-    else
-      jQuery.get(url, function(data) {
-        balloon.cache.add(url, data);
-        balloon.show(target, data, options);
-      });
-  },
-
-  showTitle: function (target, options) {
-    var title = jQuery(target).attr('title');
-    if (!options.delay) options.delay = 500;
-    balloon.show(target, title, options);
-  },
-
-  cache: {
-    add: function(url, data) {
-      balloon.cache[url] = data;
-    },
-
-    find: function(url) {
-      return balloon.cache[url];
-    },
-  },
 };
 
 jQuery(document).click(function (event) {
   if (!balloon.target.find(event.target).length)
     balloon.hide();
 });
+
