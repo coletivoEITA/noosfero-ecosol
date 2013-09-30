@@ -1,5 +1,7 @@
 class OrdersCyclePluginCycleController < MyProfileController
 
+  protect 'edit_profile', :profile
+
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
 
