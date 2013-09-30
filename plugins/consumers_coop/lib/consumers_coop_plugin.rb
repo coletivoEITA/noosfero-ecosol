@@ -19,10 +19,6 @@ class ConsumersCoopPlugin < Noosfero::Plugin
     ['consumers_coop'].map{ |j| "javascripts/#{j}" }
   end
 
-  def profile_blocks profile
-    ConsumersCoopPlugin::OrderBlock if ConsumersCoopPlugin::OrderBlock.available_for? profile
-  end
-
   def control_panel_buttons
     profile = context.profile
     return nil unless profile.community?
