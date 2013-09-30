@@ -18,7 +18,7 @@ class ShoppingCartPluginController < PublicController
           :visible => false,
           :products => []}
       else
-        { :profile_id => cart[:profile_id],
+        { :enterprise_id => cart[:enterprise_id],
           :has_products => (cart[:items].keys.size > 0),
           :visible => visible?,
           :products => products}
@@ -95,7 +95,7 @@ class ShoppingCartPluginController < PublicController
 
   def buy
     @cart = cart
-    @enterprise = environment.enterprises.find(cart[:profile_id])
+    @enterprise = environment.enterprises.find cart[:enterprise_id]
     @settings = Noosfero::Plugin::Settings.new(@enterprise, ShoppingCartPlugin)
     render :layout => false
   end
@@ -103,7 +103,7 @@ class ShoppingCartPluginController < PublicController
   def send_request
     register_order(params[:customer], self.cart[:items])
     begin
-      enterprise = environment.enterprises.find(cart[:profile_id])
+      enterprise = environment.enterprises.find(cart[:enterprise_id])
       ShoppingCartPlugin::Mailer.deliver_customer_notification(params[:customer], enterprise, self.cart[:items], params[:delivery_option])
       ShoppingCartPlugin::Mailer.deliver_supplier_notification(params[:customer], enterprise, self.cart[:items], params[:delivery_option])
       self.cart = nil
@@ -166,7 +166,7 @@ class ShoppingCartPluginController < PublicController
   end
 
   def update_delivery_option
-    enterprise = environment.enterprises.find(cart[:profile_id])
+    enterprise = environment.enterprises.find(cart[:enterprise_id])
     settings = Noosfero::Plugin::Settings.new(enterprise, ShoppingCartPlugin)
     delivery_price = settings.delivery_options[params[:delivery_option]]
     delivery = Product.new(:name => params[:delivery_option], :price => delivery_price)
@@ -187,7 +187,7 @@ class ShoppingCartPluginController < PublicController
   private
 
   def validate_same_enterprise(product)
-    if self.cart && self.cart[:profile_id] && product.profile_id != self.cart[:profile_id]
+    if self.cart && self.cart[:enterprise_id] && product.enterprise_id != self.cart[:enterprise_id]
       render :text => {
         :ok => false,
         :error => {
@@ -266,7 +266,7 @@ class ShoppingCartPluginController < PublicController
       new_items[id] = {:quantity => quantity, :price => price, :name => product.name}
     end
     ShoppingCartPlugin::PurchaseOrder.create!(
-      :seller => Enterprise.find(cart[:profile_id]),
+      :seller => Enterprise.find(cart[:enterprise_id]),
       :customer => user,
       :status => ShoppingCartPlugin::PurchaseOrder::Status::OPENED,
       :products_list => new_items,
