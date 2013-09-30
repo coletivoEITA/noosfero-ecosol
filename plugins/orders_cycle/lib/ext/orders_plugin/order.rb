@@ -11,6 +11,10 @@ class OrdersPlugin::Order
     self.cycles = [cycle]
   end
 
+  # overhide with stronger eager load
+  has_many :products, :class_name => 'OrdersPlugin::OrderedProduct', :foreign_key => :order_id, :dependent => :destroy,
+    :include => [{:product => [:from_2x_products, {:profile => [:domains]}]}], :order => 'products.name ASC'
+
   has_many :offered_products, :through => :products, :source => :offered_product
   has_many :distributed_products, :through => :offered_products, :source => :from_products
   has_many :supplier_products, :through => :distributed_products, :source => :from_products

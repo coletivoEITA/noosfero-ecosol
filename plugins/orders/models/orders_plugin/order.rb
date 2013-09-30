@@ -4,7 +4,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   belongs_to :consumer, :class_name => 'Profile'
 
   has_many :products, :class_name => 'OrdersPlugin::OrderedProduct', :foreign_key => :order_id, :dependent => :destroy,
-    :include => [{:product => [:from_2x_products, {:profile => [:domains]}]}], :order => 'products.name ASC'
+    :include => [{:product => [{:profile => [:domains]}]}], :order => 'products.name ASC'
 
   belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::Method'
   belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::Method'

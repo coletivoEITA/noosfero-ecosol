@@ -1,7 +1,8 @@
 @import 'base';
-@import 'sortable-table';
 @import 'orders-variables';
 
+@import 'sortable-table';
+@import 'balloon';
 @import 'calendrial';
 
 .cycle-view {
@@ -34,6 +35,14 @@
 
     .title {
       @extend .box-align;
+    }
+
+    .balloon {
+
+      .content {
+        width: $module03;
+        max-height: 10*$height;
+      }
     }
 
     #filter {
@@ -93,7 +102,6 @@
 
         }
       }
-
     }
   }
 
@@ -204,7 +212,6 @@
     }
   }
 
-
   #cycle-products-header {
     div {
       width: 400px;
@@ -262,7 +269,6 @@
       width: 120px;
     }
   }
-
 }
 
 #cycle-closed-listing {

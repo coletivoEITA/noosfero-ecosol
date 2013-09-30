@@ -18,7 +18,7 @@ class Product
   named_scope :by_profile_id, lambda { |profile_id| { :conditions => {:profile_id => profile_id} } }
 
   def self.product_categories_of products
-    ProductCategory.find products.collect(&:product_category_id)
+    ProductCategory.find products.collect(&:product_category_id).compact.select{ |id| not id.zero? }
   end
 
   # The lines above should be on the core. The following are real extensions
@@ -39,7 +39,8 @@ class Product
   has_many :suppliers, :through => :sources_from_products, :order => 'id ASC'
 
   # join source_products
-  default_scope :include => [:from_2x_products, {:profile => [:domains]}]
+  # FIXME: can't preload :suppliers due to a rails bug
+  default_scope :include => [:from_products, {:profile => [:domains]}]
 
   named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
   named_scope :own, :conditions => ["products.type = 'Product'"]
@@ -68,14 +69,14 @@ class Product
   end
 
   def supplier
-    @supplier ||= self.supplier_product.supplier if self.supplier_product
+    @supplier ||= self.suppliers.first
     @supplier ||= self.profile.self_supplier
   end
   def supplier= value
     @supplier = value
   end
   def supplier_id
-    self.supplier.id if self.supplier
+    self.supplier.id
   end
   def supplier_id= id
     @supplier = profile.environment.profiles.find id

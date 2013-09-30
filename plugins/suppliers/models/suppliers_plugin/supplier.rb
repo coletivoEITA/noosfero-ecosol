@@ -70,6 +70,16 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
       self.supplier.save!
     end
   end
+  def description
+    self.attributes['description'] || self.profile.description
+  end
+  def description= value
+    self['description'] = value
+    if dummy?
+      self.supplier.description = value
+      self.supplier.save!
+    end
+  end
 
   def abbreviation_or_name
     self.name_abbreviation.blank? ? self.name : self.name_abbreviation

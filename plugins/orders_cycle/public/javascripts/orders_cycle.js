@@ -30,11 +30,14 @@ orders_cycle = {
   /* ----- order ----- */
 
   order: {
+
     product: {
       include_message: '',
-      add_product_url: '',
       order_id: 0,
       redirect_after_include: '',
+      add_url: '',
+      remove_url: '',
+      balloon_url: '',
 
       load: function (id, state) {
         var product = jQuery('#cycle-product-'+id);
@@ -46,12 +49,13 @@ orders_cycle = {
         this.click(id, check_box.checked);
         return true;
       },
-      click: function (id, state) {
+      click: function (event, id) {
+        // was this a child click?
+        if (event.target != this && event.target.onclick)
+          return;
+
         var product = jQuery('#cycle-product-'+id);
-
-        if (state === undefined)
-          state = !product.hasClass('in-order');
-
+        var state = !product.hasClass('in-order');
         if (state == true)
           this.add(id);
         else
@@ -77,6 +81,23 @@ orders_cycle = {
         jQuery.post(this.remove_url, {id: id, order_id: this.order_id}, function () {
           loading_overlay.hide(product);
         });
+      },
+
+      supplier: {
+        balloon_url: '',
+
+        balloon: function (id) {
+          var product = jQuery('#cycle-product-'+id);
+          var target = product.find('.supplier');
+          var supplier_id = product.attr('supplier-id');
+          balloon.showFromGet(target, this.balloon_url+'/'+supplier_id, {position: 'above'});
+        },
+      },
+
+      balloon: function (id) {
+        var product = jQuery('#cycle-product-'+id);
+        var target = product.find('.product');
+        balloon.showFromGet(target, this.balloon_url+'/'+id, {position: 'above'});
       },
     },
   },
