@@ -90,6 +90,7 @@ class Product
 
   # see also #distribute_supplier_products
   def distribute_to_consumers
+    return unless self.profile
     self.profile.consumers.except_people.except_self.each do |consumer|
       SuppliersPlugin::DistributedProduct.create! :profile => consumer.profile, :from_products => [self]
     end
