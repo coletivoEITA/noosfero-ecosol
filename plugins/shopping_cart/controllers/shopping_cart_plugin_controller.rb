@@ -187,7 +187,7 @@ class ShoppingCartPluginController < PublicController
   private
 
   def validate_same_enterprise(product)
-    if self.cart && self.cart[:enterprise_id] && product.enterprise_id != self.cart[:enterprise_id]
+    if self.cart && self.cart[:enterprise_id] && product.profile_id != self.cart[:enterprise_id]
       render :text => {
         :ok => false,
         :error => {
