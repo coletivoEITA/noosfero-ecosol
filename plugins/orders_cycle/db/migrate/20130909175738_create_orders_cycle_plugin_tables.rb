@@ -16,6 +16,7 @@ class CreateOrdersCyclePluginTables < ActiveRecord::Migration
     end
 
     create_table "orders_cycle_plugin_cycles" do |t|
+      t.integer  "profile_id"
       t.integer  "code"
       t.string   "name"
       t.text     "description"
@@ -30,7 +31,8 @@ class CreateOrdersCyclePluginTables < ActiveRecord::Migration
       t.datetime "updated_at"
     end
 
-    add_index "orders_cycle_plugin_cycles", ["status"]
+    add_index :orders_cycle_plugin_cycles, [:profile_id]
+    add_index :orders_cycle_plugin_cycles, [:status]
   end
 
   def self.down

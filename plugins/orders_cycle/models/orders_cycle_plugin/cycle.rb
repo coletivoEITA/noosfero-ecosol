@@ -11,7 +11,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
   has_many :cycle_products, :foreign_key => :cycle_id, :class_name => 'OrdersCyclePlugin::CycleProduct', :dependent => :destroy
   has_many :products, :through => :cycle_products, :order => 'name ASC',
-    :include => [:from_products, {:profile => [:domains]}]
+    :include => [{:from_products => [:from_products, {:sources_from_products => [{:supplier => [{:profile => [:domains]}]}]}]}, {:profile => [:domains]}]
 
   has_many :from_products, :through => :products, :order => 'name ASC'
 
