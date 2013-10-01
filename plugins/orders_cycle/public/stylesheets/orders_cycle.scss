@@ -87,7 +87,7 @@
           width: $module02;
         }
         &.price-with-unit {
-          width: $module01 - $padding;
+          width: $module01;
         }
       }
 
@@ -518,6 +518,6 @@
   }
 }
 
-.consumers-coop #supplier-add {
+.consumers-coop #supplier-add #find-enterprise{
   display: none;
 }
