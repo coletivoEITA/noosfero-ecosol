@@ -40,7 +40,7 @@ class Product
 
   # join source_products
   # FIXME: can't preload :suppliers due to a rails bug
-  default_scope :include => [:from_products, {:profile => [:domains]}]
+  default_scope :include => [:from_products, {:sources_from_products => [{:supplier => [{:profile => [:domains]}]}]}, {:profile => [:domains]}]
 
   named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
   named_scope :own, :conditions => ["products.type = 'Product'"]
@@ -69,7 +69,8 @@ class Product
   end
 
   def supplier
-    @supplier ||= self.suppliers.first
+    # FIXME: use self.suppliers when rails support for nested preload comes
+    @supplier ||= self.supplier_product.supplier rescue nil
     @supplier ||= self.profile.self_supplier
   end
   def supplier= value
