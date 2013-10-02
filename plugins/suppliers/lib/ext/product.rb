@@ -79,7 +79,7 @@ class Product
 
   def supplier
     # FIXME: use self.suppliers when rails support for nested preload comes
-    @supplier ||= self.sources_supplier_product.supplier
+    @supplier ||= self.sources_supplier_product.supplier rescue nil
     @supplier ||= self.profile.self_supplier
   end
   def supplier= value
