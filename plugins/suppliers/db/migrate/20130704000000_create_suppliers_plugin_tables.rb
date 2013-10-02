@@ -11,6 +11,8 @@ class CreateSuppliersPluginTables < ActiveRecord::Migration
       t.text     "description"
       t.timestamps
     end
+
+    add_index :suppliers_plugin_suppliers, [:consumer_id]
   end
 
   def self.down
