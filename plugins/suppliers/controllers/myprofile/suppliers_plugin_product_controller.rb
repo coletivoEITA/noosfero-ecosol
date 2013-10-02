@@ -30,7 +30,7 @@ class SuppliersPluginProductController < MyProfileController
 
   def edit
     @product = SuppliersPlugin::DistributedProduct.find params[:id]
-    @product.update_attributes params[:product]
+    @product.update_attributes params["product_#{@product.id}"]
   end
 
   def destroy

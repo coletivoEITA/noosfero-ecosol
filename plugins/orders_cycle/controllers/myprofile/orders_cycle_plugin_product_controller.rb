@@ -25,9 +25,8 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
   end
 
   def edit
-    @product = SuppliersPlugin::DistributedProduct.find params[:id]
-    @product.update_attributes params[:product]
-    @units = Unit.all
+    super
+    @units = environment.units.all
   end
 
   def remove_from_order
