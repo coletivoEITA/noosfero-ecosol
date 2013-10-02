@@ -18,7 +18,9 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   # p in cycle -> p distributed -> p from supplier
   has_many :suppliers, :through => :sources_from_2x_products, :order => 'id ASC'
   def sources_supplier_products
-    self.sources_from_2x_products
+    # FIXME: can't use sources_from_2x_products as we can't preload it due to a rails bug
+    #self.sources_from_2x_products
+    self.from_products.collect(&:sources_from_products).flatten
   end
   def supplier_products
     # FIXME: can't use from_2x_products as we can't preload it due to a rails bug
