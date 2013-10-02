@@ -87,7 +87,7 @@
           width: $module02;
         }
         &.price-with-unit {
-          width: $module01 - $padding;
+          width: $module01;
         }
       }
 
@@ -518,6 +518,17 @@
   }
 }
 
+// disable find-enterprise for now
 .consumers-coop #supplier-add {
-  display: none;
+
+  #create-dummy {
+    display: block;
+    .box-edit {
+      display: block;
+    }
+  }
+  #find-enterprise {
+    display: none
+  }
+
 }

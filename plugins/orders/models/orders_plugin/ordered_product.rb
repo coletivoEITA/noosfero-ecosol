@@ -1,3 +1,4 @@
+# FIXME: remove Ordered prefix
 class OrdersPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
 
   def self.table_name

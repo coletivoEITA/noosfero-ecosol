@@ -4,6 +4,8 @@ SuppliersPlugin::SuppliersDisplayHelper = SuppliersPlugin::DisplayHelper
 
 class SuppliersPluginProductController < MyProfileController
 
+  protect 'edit_profile', :profile
+
   no_design_blocks
 
   helper SuppliersPlugin::SuppliersDisplayHelper
@@ -28,7 +30,7 @@ class SuppliersPluginProductController < MyProfileController
 
   def edit
     @product = SuppliersPlugin::DistributedProduct.find params[:id]
-    @product.update_attributes params[:product]
+    @product.update_attributes params["product_#{@product.id}"]
   end
 
   def destroy

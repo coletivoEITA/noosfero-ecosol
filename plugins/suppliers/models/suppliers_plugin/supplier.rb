@@ -6,9 +6,6 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     self.profile
   end
 
-  has_many :products, :through => :profile
-  has_many :consumer_products, :through => :consumer, :source => :products
-
   validates_presence_of :profile
   validates_presence_of :consumer
   validates_associated :profile
@@ -82,6 +79,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   end
 
   def abbreviation_or_name
+    return self.profile.nickname || self.name if self.self?
     self.name_abbreviation.blank? ? self.name : self.name_abbreviation
   end
 
@@ -91,7 +89,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     destroy_without_dummy
   end
   def destroy_with_products
-    self.consumer_products.from_supplier_id(self.id).each do |product|
+    self.consumer.products.from_supplier_id(self.id).each do |product|
       product.update_attribute :archived, true
     end
     destroy_without_products

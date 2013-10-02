@@ -21,7 +21,7 @@
       <%= t('suppliers_plugin.views.product._search.we_don_t_have_product') %>
     <% else %>
       <% @products.each do |product| %>
-        <div id="our-product-<%=product.id%>" class="our-product value-row" toggleedit="suppliers.our_product.toggle_edit();">
+        <div id="our-product-<%=product.id%>" class="our-product value-row" toggle-edit="suppliers.our_product.toggle_edit();">
           <%= render :partial => "suppliers_plugin_product/edit_line", :locals => {:product => product} %>
         </div>
       <% end %>

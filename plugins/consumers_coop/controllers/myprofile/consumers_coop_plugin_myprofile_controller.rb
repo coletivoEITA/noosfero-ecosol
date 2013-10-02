@@ -23,7 +23,7 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
       params[:profile_data].delete(:consumers_coop_settings).each do |attr, value|
         profile.consumers_coop_settings.send "#{attr}=", value
       end
-      @profile.update_attributes! params[:profile_data]
+      profile.update_attributes! params[:profile_data]
       profile.consumers_coop_header_image_save
 
       if !was_enabled and profile.consumers_coop_settings.enabled?

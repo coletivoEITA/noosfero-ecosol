@@ -828,7 +828,7 @@
   .cycle-view #cycle-products-for-order #cycle-products .box-field.product {
     width: 144px; }
   .cycle-view #cycle-products-for-order #cycle-products .box-field.price-with-unit {
-    width: 56px; }
+    width: 64px; }
   .cycle-view #cycle-products-for-order #cycle-products .value-row {
     border: none; }
     .cycle-view #cycle-products-for-order #cycle-products .value-row.in-order .box-view {
@@ -969,7 +969,7 @@
     font-size: 21px; }
   #cycle-admin-page .pstyle-tm1 {
     font-size: 13px; }
-  #cycle-admin-page .pstyle-tm2 {
+  #cycle-admin-page .pstyle-tm2, #cycle-admin-page .subtitle {
     font-size: 10px; }
   #cycle-admin-page .profile-image {
     display: inline-block;
@@ -1297,5 +1297,9 @@
 .new-delivery-method input {
   text-align: left; }
 
-.consumers-coop #supplier-add {
+.consumers-coop #supplier-add #create-dummy {
+  display: block; }
+  .consumers-coop #supplier-add #create-dummy .box-edit {
+    display: block; }
+.consumers-coop #supplier-add #find-enterprise {
   display: none; }
