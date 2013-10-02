@@ -65,7 +65,7 @@ class SuppliersPluginMyprofileController < MyProfileController
   protected
 
   def load_new
-    @new_supplier = SuppliersPlugin::Supplier.new_dummy :consumer => user
+    @new_supplier = SuppliersPlugin::Supplier.new_dummy :consumer => profile
     @new_profile = @new_supplier.profile
   end
 
