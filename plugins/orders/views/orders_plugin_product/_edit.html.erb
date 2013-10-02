@@ -1,4 +1,4 @@
-<div id="ordered-product-<%=ordered_product.id%>" class="value-row ordered-product" toggleedit="orders.product.edit();">
+<div id="ordered-product-<%=ordered_product.id%>" class="value-row ordered-product" toggle-edit="orders.product.edit();">
 
   <% if @quantity_asked_less_than_minimum and @quantity_asked_less_than_minimum == ordered_product.id %>
     <div class=distribution-error-message>

@@ -15,7 +15,7 @@
   <% if order.products.count == 0 %>
     <div class="empty-order">
       <span class="subtitle"><%= t('orders_plugin.views.admin._edit.empty_order') %></span>
-      <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), :class => 'toggle-edit' %>
+      <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), 'toggle-edit' => '' %>
     </div>
   <% else %>
     <% form_remote_for :order, order, :url => {:action => :cycle_edit, :id => order.id} do |f| %>
@@ -41,7 +41,7 @@
 
         <div>
           <%= f.submit t('orders_plugin.views.admin._edit.save') %>
-          <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), :class => 'toggle-edit' %>
+          <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), 'toggle-edit' => '' %>
         </div>
 
         <% javascript_tag do %>

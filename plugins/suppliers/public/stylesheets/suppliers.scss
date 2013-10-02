@@ -22,7 +22,13 @@
   .supplier {
     border-top: $border solid black;
     border-bottom: none;
-    
+
+    &#supplier-add {
+      display: none;
+      &.edit {
+        display: block;
+      }
+    }
     &:last-child {
       border-bottom: $border solid black;
     }

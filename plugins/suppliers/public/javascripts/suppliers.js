@@ -4,7 +4,9 @@ suppliers = {
   add_link: function () {
     if (toggle_edit.isEditing())
       toggle_edit.value_row.toggle_edit();
-    toggle_edit.setEditing(jQuery('#supplier-add'));
+
+    var supplier_add = jQuery('#supplier-add');
+    toggle_edit.setEditing(supplier_add);
     toggle_edit.value_row.toggle_edit();
   },
 

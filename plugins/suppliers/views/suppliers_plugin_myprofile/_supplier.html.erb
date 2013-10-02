@@ -47,7 +47,7 @@
 
   <div class='supplier-actions subtitle'>
     <div><strong><%= t('suppliers_plugin.views.supplier._supplier.actions') %></strong></div>
-    <div><%= link_to_function t('suppliers_plugin.views.supplier._supplier.edit'), '', :class => 'toggle-edit' %></div>
+    <div><%= link_to_function t('suppliers_plugin.views.supplier._supplier.edit'), '', 'toggle-edit' => '' %></div>
 
     <% if supplier.active %>
       <div><%= link_to_remote t('suppliers_plugin.views.supplier._supplier.desactivate'), :url => {:action => :toggle_active, :id => supplier.id} %></div>
