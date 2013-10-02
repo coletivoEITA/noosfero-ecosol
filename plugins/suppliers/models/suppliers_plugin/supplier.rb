@@ -79,6 +79,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   end
 
   def abbreviation_or_name
+    return self.profile.nickname if self.self?
     self.name_abbreviation.blank? ? self.name : self.name_abbreviation
   end
 

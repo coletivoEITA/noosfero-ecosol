@@ -17,14 +17,18 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   # for products in cycle, these are the products of the suppliers
   # p in cycle -> p distributed -> p from supplier
   has_many :suppliers, :through => :sources_from_2x_products, :order => 'id ASC'
+  def sources_supplier_products
+    self.sources_from_2x_products
+  end
   def supplier_products
     # FIXME: can't use from_2x_products as we can't preload it due to a rails bug
     #self.from_2x_products
-    self.from_products.collect &:from_products
+    self.from_products.collect(&:from_products).flatten
   end
 
   # FIXME: can't preload from_2x_products directly due to a rails bug
-  default_scope :include => [{:from_products => [:from_products, {:sources_from_products => [{:supplier => [{:profile => [:domains]}]}]}]}, {:profile => [:domains]}]
+  default_scope :include => [{:from_products => {:from_products => {:sources_from_products => [{:supplier => [{:profile => [:domains, {:environment => :domains}]}]}] }} },
+                              {:profile => [:domains, {:environment => :domains}]}, ]
 
   extend CurrencyHelper::ClassMethods
   has_number_with_locale :total_quantity_asked

@@ -3,15 +3,10 @@ class SuppliersPlugin::BaseProduct < Product
 
   self.abstract_class = true
 
-  belongs_to :category, :class_name => 'ProductCategory'
-  belongs_to :type_category, :class_name => 'ProductCategory'
-
   settings_items :minimum_selleable, :type => Float, :default => nil
   settings_items :margin_percentage, :type => Float, :default => nil
   settings_items :stored, :type => Float, :default => nil
   settings_items :quantity, :type => Float, :default => nil
-  settings_items :category_id, :type => Integer, :default => nil
-  settings_items :type_category_id, :type => Integer, :default => nil
 
   DEFAULT_ATTRIBUTES = [
     :name, :description, :price, :unit_id, :product_category_id, :image_id,
