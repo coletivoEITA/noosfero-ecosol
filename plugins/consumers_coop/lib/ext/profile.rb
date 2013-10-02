@@ -15,7 +15,7 @@ class Profile
   delegate :consumers_coop_header_image_id, :consumers_coop_header_image_id=, :to => :consumers_coop_settings
   def consumers_coop_header_image_builder= img
     image = self.consumers_coop_header_image
-    if image && image.id == img[:id]
+    if image
       image.attributes = img
     else
       build_consumers_coop_header_image.attributes = img
@@ -69,7 +69,10 @@ class Profile
   end
 
   def consumers_coop_header_image_save
-    consumers_coop_header_image.save if consumers_coop_header_image
+    return unless consumers_coop_header_image
+    consumers_coop_header_image.save!
+    consumers_coop_header_image_id = consumers_coop_header_image.id
+    self.save!
   end
 
   protected
@@ -79,7 +82,7 @@ class Profile
   end
 
   def build_consumers_coop_header_image
-    ConsumersCoopPlugin::HeaderImage.new
+    @consumers_coop_header_image = ConsumersCoopPlugin::HeaderImage.new
   end
 
 end
