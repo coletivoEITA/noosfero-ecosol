@@ -1297,5 +1297,9 @@
 .new-delivery-method input {
   text-align: left; }
 
+.consumers-coop #supplier-add #create-dummy {
+  display: block; }
+  .consumers-coop #supplier-add #create-dummy .box-edit {
+    display: block; }
 .consumers-coop #supplier-add #find-enterprise {
   display: none; }
