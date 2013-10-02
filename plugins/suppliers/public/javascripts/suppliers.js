@@ -37,15 +37,15 @@ suppliers = {
       block.find('div[data-non-defaults]').toggle(!this.checked);
     },
 
-    load: function() {
-      jQuery('.our-product div[data-default-toggle] input').live('change', suppliers.our_product.default_change).change();
+    load: function(id) {
+      jQuery('#our-product-'+id+' div[data-default-toggle] input').change(suppliers.our_product.default_change).change();
     },
 
     pmsync: function (context, to_price) {
       var p = jQuery(context).parents('.our-product');
-      var margin_input = p.find('#product_margin_percentage');
-      var price_input = p.find('#product_price');
-      var buy_price_input = p.find('#product_base_price');
+      var margin_input = p.find('.product-margin-percentage');
+      var price_input = p.find('.product-price');
+      var buy_price_input = p.find('.product-base-price');
 
       if (to_price)
         suppliers.price.calculate(price_input, margin_input, buy_price_input);
