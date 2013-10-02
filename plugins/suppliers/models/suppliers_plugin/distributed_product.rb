@@ -8,7 +8,6 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
   named_scope :with_product_category_id, lambda { |id| { :conditions => ['products_2.product_category_id' => id] } }
 
   validates_presence_of :supplier
-  validate :dont_distribute_own
 
   def price
     supplier_price = self.supplier_product ? self.supplier_product.price : nil
@@ -18,9 +17,5 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
   end
 
   protected
-
-  def dont_distribute_own
-    self.errors.add :base, I18n.t('suppliers_plugin.models.base_product.own_distribution_error') if self.supplier.profile == self.profile
-  end
 
 end
