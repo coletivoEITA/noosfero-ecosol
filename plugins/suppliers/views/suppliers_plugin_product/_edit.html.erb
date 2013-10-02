@@ -98,7 +98,7 @@
 
     <div class="action-button-container">
       <%= f.submit t('suppliers_plugin.views.product._edit.save'), :class => 'save' %>
-      <%= link_to_function t('suppliers_plugin.views.product._edit.cancel'), :class => 'toggle-edit action-button cancel' %>
+      <%= link_to_function t('suppliers_plugin.views.product._edit.cancel'), :class => 'action-button cancel', 'toggle-edit' => '' %>
       <%= link_to_remote t('suppliers_plugin.views.product._edit.remove_product'), {
         :confirm => t('suppliers_plugin.views.product._edit.are_you_sure_you_want'),
         :loading => "loading_overlay.show('#our-product-#{product.id}')",

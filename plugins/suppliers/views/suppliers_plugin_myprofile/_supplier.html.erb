@@ -22,7 +22,7 @@
 
     <div class="subtitle"><strong><%= t('suppliers_plugin.views.supplier._supplier.this_supplier_has') %></strong></div>
     <div class='supplier-products-count subtitle'>
-      <% products = supplier.consumer_products.unarchived.distributed.from_supplier_id(supplier.id) %>
+      <% products = supplier.consumer.products.unarchived.distributed.from_supplier_id(supplier.id) %>
       <% if products.size > 0 %>
         <% msg = products.size.to_s + " " %>
         <% msg += supplier.dummy? ? t('suppliers_plugin.views.supplier._supplier.supplier_profile_product') :
@@ -47,7 +47,7 @@
 
   <div class='supplier-actions subtitle'>
     <div><strong><%= t('suppliers_plugin.views.supplier._supplier.actions') %></strong></div>
-    <div><%= link_to_function t('suppliers_plugin.views.supplier._supplier.edit'), '', :class => 'toggle-edit' %></div>
+    <div><%= link_to_function t('suppliers_plugin.views.supplier._supplier.edit'), '', 'toggle-edit' => '' %></div>
 
     <% if supplier.active %>
       <div><%= link_to_remote t('suppliers_plugin.views.supplier._supplier.desactivate'), :url => {:action => :toggle_active, :id => supplier.id} %></div>
