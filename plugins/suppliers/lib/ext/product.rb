@@ -40,8 +40,8 @@ class Product
 
   # join source_products
   # FIXME: can't preload :suppliers due to a rails bug
-  default_scope :include => [{:from_products => {:sources_from_products => [{:supplier => [{:profile => [:domains]}]}]}},
-                             {:profile => [:domains]}]
+  default_scope :include => [:from_products, {:sources_from_products => [{:supplier => [{:profile => [:domains, {:environment => :domains}]}]}]},
+                             {:profile => [:domains, {:environment => :domains}]}]
 
   named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
   named_scope :own, :conditions => ["products.type = 'Product'"]
