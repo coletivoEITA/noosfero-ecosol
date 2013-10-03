@@ -760,6 +760,8 @@
           add_method: "Add method"
           available_delivery_me: "Available delivery methods"
           cancel_changes: "cancel changes"
+          remove: "remove"
+          confirm_remove: "Are you sure you want to remove this cycle?"
           create_new_cycle: "Create new cycle"
           deliveries_interval: "Deliveries Interval"
           description: Description

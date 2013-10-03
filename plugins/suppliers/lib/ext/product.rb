@@ -57,6 +57,7 @@ class Product
   has_currency :price
 
   after_create :distribute_to_consumers
+  after_destroy :destroy_dependent
 
   def own?
     self.class == Product
@@ -103,6 +104,12 @@ class Product
     return unless self.profile
     self.profile.consumers.except_people.except_self.each do |consumer|
       SuppliersPlugin::DistributedProduct.create! :profile => consumer.profile, :from_products => [self]
+    end
+  end
+
+  def destroy_dependent
+    self.to_products.each do |to_product|
+      to_product.destroy if to_product.dependent?
     end
   end
 
