@@ -1,9 +1,10 @@
 require_dependency 'product'
 
+  # FIXME: The lines bellow should be on the core. The following are real extensions
 class Product
 
   named_scope :available, :conditions => {:available => true}
-  named_scope :inavailable, :conditions => {:available => false}
+  named_scope :unavailable, :conditions => {:available => false}
   named_scope :archived, :conditions => {:archived => true}
   named_scope :unarchived, :conditions => {:archived => false}
 
@@ -21,7 +22,9 @@ class Product
     ProductCategory.find products.collect(&:product_category_id).compact.select{ |id| not id.zero? }
   end
 
-  # FIXME: The lines above should be on the core. The following are real extensions
+end
+
+class Product
 
   has_many :sources_from_products, :foreign_key => :to_product_id, :class_name => 'SuppliersPlugin::SourceProduct', :dependent => :destroy
   has_many :sources_to_products, :foreign_key => :from_product_id, :class_name => 'SuppliersPlugin::SourceProduct', :dependent => :destroy
