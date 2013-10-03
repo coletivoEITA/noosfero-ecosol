@@ -48,6 +48,10 @@ class SuppliersPlugin::BaseProduct < Product
     Unit.new(:singular => I18n.t('suppliers_plugin.models.product.unit'), :plural => I18n.t('suppliers_plugin.models.product.units'))
   end
 
+  def dependent?
+    self.from_products.size == 1
+  end
+
   def minimum_selleable
     self['minimum_selleable'] || 0.1
   end
