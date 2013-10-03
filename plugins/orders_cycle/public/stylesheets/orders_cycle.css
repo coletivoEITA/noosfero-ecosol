@@ -1085,7 +1085,8 @@
     margin: 0; }
   #cycle-admin-page textarea {
     height: 64px;
-    padding-left: 4px; }
+    padding-left: 4px;
+    margin-bottom: 10px; }
   #cycle-admin-page #cycle-header-warning-wrap {
     width: 70%; }
     #cycle-admin-page #cycle-header-warning-wrap #cycle-header-warning {
