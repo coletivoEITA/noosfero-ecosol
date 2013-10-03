@@ -63,14 +63,14 @@ class OrdersCyclePluginCycleController < MyProfileController
   def destroy
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     @cycle.destroy
-    render :nothing => true
+    redirect_to :action => :index
   end
 
   def step
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     @cycle.step
     @cycle.save!
-    redirect_to :action => 'edit', :id => @cycle.id
+    redirect_to :action => :edit, :id => @cycle.id
   end
 
   def step_back
@@ -78,20 +78,6 @@ class OrdersCyclePluginCycleController < MyProfileController
     @cycle.step_back
     @cycle.save!
     redirect_to :action => 'edit', :id => @cycle.id
-  end
-
-  def add_products
-    @cycle = OrdersCyclePlugin::Cycle.find params[:id]
-    @missing_products = profile.products.unarchived.distributed.available - @cycle.from_products.unarchived
-    if params[:products_id]
-      params[:products_id].each do |id|
-        product = SuppliersPlugin::DistributedProduct.find id
-        OrdersCyclePlugin::OfferedProduct.create_from_distributed @cycle, product
-      end
-      render :partial => 'suppliers_plugin_shared/pagereload'
-    else
-      render :layout => false
-    end
   end
 
   def add_missing_products

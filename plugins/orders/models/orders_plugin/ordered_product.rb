@@ -1,9 +1,7 @@
 # FIXME: remove Ordered prefix
 class OrdersPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
 
-  def self.table_name
-    'orders_plugin_products'
-  end
+  set_table_name :orders_plugin_products
 
   belongs_to :order, :class_name => 'OrdersPlugin::Order', :touch => true
   belongs_to :product

@@ -245,7 +245,6 @@
         supplier_created: "Fornecedor criado"
     models:
       base_product:
-        own_distribution_error: "Não é possível distribuir um produto próprio"
       distributed_product: 
         greater: " > "
       product: 
@@ -765,7 +764,9 @@
         _edit_fields: 
           add_method: "Adicionar método"
           available_delivery_me: "Métodos de entrega disponíveis"
-          cancel_changes: "Cancelar alterações"
+          cancel_changes: "cancelar alterações"
+          remove: "remover"
+          confirm_remove: "Tem certeza de que quer remover este ciclo?"
           create_new_cycle: "Criar novo ciclo de pedidos"
           deliveries_interval: "Intervalo das Entregas"
           description: Descrição

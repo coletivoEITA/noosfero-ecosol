@@ -1,11 +1,11 @@
 class DeliveryPluginOptionController < MyProfileController
 
   no_design_blocks
-
   before_filter :load_methods
-  before_filter :load_owner, :except => [:method_new]
+  before_filter :load_owner
 
   helper OrdersPlugin::FieldHelper
+
   def select
     render :layout => false
   end

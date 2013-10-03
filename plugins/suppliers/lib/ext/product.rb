@@ -1,9 +1,10 @@
 require_dependency 'product'
 
+  # FIXME: The lines bellow should be on the core. The following are real extensions
 class Product
 
   named_scope :available, :conditions => {:available => true}
-  named_scope :inavailable, :conditions => {:available => false}
+  named_scope :unavailable, :conditions => {:available => false}
   named_scope :archived, :conditions => {:archived => true}
   named_scope :unarchived, :conditions => {:archived => false}
 
@@ -21,7 +22,9 @@ class Product
     ProductCategory.find products.collect(&:product_category_id).compact.select{ |id| not id.zero? }
   end
 
-  # The lines above should be on the core. The following are real extensions
+end
+
+class Product
 
   has_many :sources_from_products, :foreign_key => :to_product_id, :class_name => 'SuppliersPlugin::SourceProduct', :dependent => :destroy
   has_many :sources_to_products, :foreign_key => :from_product_id, :class_name => 'SuppliersPlugin::SourceProduct', :dependent => :destroy
@@ -40,8 +43,8 @@ class Product
 
   # join source_products
   # FIXME: can't preload :suppliers due to a rails bug
-  default_scope :include => [{:from_products => {:sources_from_products => [{:supplier => [{:profile => [:domains]}]}]}},
-                             {:profile => [:domains]}]
+  default_scope :include => [:from_products, {:sources_from_products => [{:supplier => [{:profile => [:domains, {:environment => :domains}]}]}]},
+                             {:profile => [:domains, {:environment => :domains}]}]
 
   named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
   named_scope :own, :conditions => ["products.type = 'Product'"]
@@ -57,6 +60,7 @@ class Product
   has_currency :price
 
   after_create :distribute_to_consumers
+  after_destroy :destroy_dependent
 
   def own?
     self.class == Product
@@ -103,6 +107,12 @@ class Product
     return unless self.profile
     self.profile.consumers.except_people.except_self.each do |consumer|
       SuppliersPlugin::DistributedProduct.create! :profile => consumer.profile, :from_products => [self]
+    end
+  end
+
+  def destroy_dependent
+    self.to_products.each do |to_product|
+      to_product.destroy if to_product.dependent?
     end
   end
 

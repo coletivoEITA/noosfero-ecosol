@@ -657,7 +657,8 @@ body.consumers-coop {
     margin: 0; }
   #consumers-coop-settings form textarea {
     height: 64px;
-    padding-left: 4px; }
+    padding-left: 4px;
+    margin-bottom: 10px; }
   #consumers-coop-settings form .field {
     width: 360px;
     margin-top: 5px; }
