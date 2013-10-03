@@ -39,12 +39,17 @@
     </div>
     <%= observe_field 'cycle-new-mail-send', :on => 'click', :function => "orders_cycle.cycle_mail_message_toggle()" %>
   </div>
-  <%= f.submit @cycle.new? ? t('orders_cycle_plugin.views.cycle._edit_fields.create_new_cycle') : t('orders_cycle_plugin.views.cycle._edit_fields.save'),
-    :onclick => 'orders_cycle.cycle.saveClick = true' %>
+
+  <%= f.submit @cycle.new? ? t('orders_cycle_plugin.views.cycle._edit_fields.create_new_cycle') : t('orders_cycle_plugin.views.cycle._edit_fields.save') %>
+  &nbsp;
   <%= link_to t('orders_cycle_plugin.views.cycle._edit_fields.cancel_changes'), @cycle.new? ? {:action => :index} : params %>
+  &nbsp;
+  <% unless @cycle.new? %>
+    <%# link_to t('orders_cycle_plugin.views.cycle._edit_fields.remove'), {:action => :destroy, :id => @cycle.id}, :confirm => t('orders_cycle_plugin.views.cycle._edit_fields.confirm_remove') %>
+  <% end %>
 <% end %>
 
 <%= javascript_include_tag '/plugins/orders_cycle/javascripts/jquery.calendrical.js' %>
 <% javascript_tag do %>
-  orders_cycle.cycle.edit('<%= url_for(:action => :destroy, :id => @cycle.id) %>');
+  orders_cycle.cycle.edit();
 <% end %>
