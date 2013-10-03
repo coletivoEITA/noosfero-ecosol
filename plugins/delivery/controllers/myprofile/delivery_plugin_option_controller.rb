@@ -24,7 +24,9 @@ class DeliveryPluginOptionController < MyProfileController
   end
 
   def method_new
-    @delivery_method = DeliveryPlugin::Method.create! params[:delivery_method].merge(:profile => profile, :delivery_type => 'pickup')
+    DeliveryPlugin::Method.create! params[:delivery_method].merge(:profile => profile, :delivery_type => 'pickup')
+    # reset form for a new method
+    @delivery_method = DeliveryPlugin::Method.new
   end
 
   def method_edit
