@@ -23,16 +23,16 @@ class Product
 
   # The lines above should be on the core. The following are real extensions
 
-  has_many :sources_from_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :to_product_id, :dependent => :destroy
-  has_many :sources_to_products, :class_name => 'SuppliersPlugin::SourceProduct', :foreign_key => :from_product_id, :dependent => :destroy
+  has_many :sources_from_products, :foreign_key => :to_product_id, :class_name => 'SuppliersPlugin::SourceProduct', :dependent => :destroy
+  has_many :sources_to_products, :foreign_key => :from_product_id, :class_name => 'SuppliersPlugin::SourceProduct', :dependent => :destroy
   has_many :to_products, :through => :sources_to_products, :order => 'id ASC'
   has_many :from_products, :through => :sources_from_products, :order => 'id ASC'
   def from_product
     self.from_products.first
   end
 
-  has_many :sources_from_2x_products, :through => :sources_from_products, :source => :sources_from_products, :foreign_key => :id
-  has_many :sources_to_2x_products, :through => :sources_to_product, :source => :sources_to_products, :foreign_key => :id
+  has_many :sources_from_2x_products, :through => :sources_from_products, :source => :sources_from_products
+  has_many :sources_to_2x_products, :through => :sources_to_product, :source => :sources_to_products
   has_many :from_2x_products, :through => :sources_from_2x_products, :source => :from_product
   has_many :to_2x_products, :through => :sources_to_2x_products, :source => :to_product
 

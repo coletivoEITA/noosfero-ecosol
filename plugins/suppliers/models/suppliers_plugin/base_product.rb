@@ -49,7 +49,7 @@ class SuppliersPlugin::BaseProduct < Product
   end
 
   def dependent?
-    self.from_products.size == 1
+    self.from_products.length == 1
   end
 
   def minimum_selleable
