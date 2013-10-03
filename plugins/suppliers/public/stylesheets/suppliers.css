@@ -770,7 +770,8 @@
       margin: 0; }
     #filter .filter-box textarea {
       height: 64px;
-      padding-left: 4px; }
+      padding-left: 4px;
+      margin-bottom: 10px; }
     #filter .filter-box.fields .field {
       float: left;
       clear: none;
@@ -1145,7 +1146,8 @@
     margin: 0; }
   #supplier-our-products .sortable-table form textarea {
     height: 64px;
-    padding-left: 4px; }
+    padding-left: 4px;
+    margin-bottom: 10px; }
   #supplier-our-products .sortable-table form .field-secondary {
     float: left; }
   #supplier-our-products .sortable-table form .internal-table .row .block {
@@ -1431,7 +1433,8 @@
         margin: 0; }
       #suppliers-page .supplier .box-edit form textarea {
         height: 64px;
-        padding-left: 4px; }
+        padding-left: 4px;
+        margin-bottom: 10px; }
       #suppliers-page .supplier .box-edit form .full-registration-check,
       #suppliers-page .supplier .box-edit form .full-data {
         display: none !important; }
