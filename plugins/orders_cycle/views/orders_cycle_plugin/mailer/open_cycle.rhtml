@@ -5,7 +5,7 @@
   </head>
   <body>
     <p>
-      <%= t('orders_cycle_plugin.views.mailer.open_cycle.hello_member_of_name') % {:name => profile.name} %>
+      <%= t('orders_cycle_plugin.views.mailer.open_cycle.hello_member_of_name') % {:name => @profile.name} %>
     </p>
 
     <p><%= t('orders_cycle_plugin.views.mailer.open_cycle.a_new_cycle_is_open_c') + @cycle.name %></p>

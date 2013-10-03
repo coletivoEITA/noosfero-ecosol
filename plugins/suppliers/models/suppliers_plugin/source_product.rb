@@ -12,8 +12,6 @@ class SuppliersPlugin::SourceProduct < Noosfero::Plugin::ActiveRecord
   has_one :supplier_profile, :through => :supplier, :source => :profile
 
   before_validation :find_supplier
-  # must be before so the from_products doesn't decrease from 2 to 1
-  before_destroy :destroy_dependent
 
   validates_presence_of :from_product
   validates_presence_of :to_product
@@ -24,10 +22,6 @@ class SuppliersPlugin::SourceProduct < Noosfero::Plugin::ActiveRecord
 
   def find_supplier
     self.supplier = SuppliersPlugin::Supplier.first :conditions => {:profile_id => self.from_product.profile_id, :consumer_id => self.to_product.profile_id}
-  end
-
-  def destroy_dependent
-    self.to_product.destroy if self.to_product.dependent?
   end
 
 end
