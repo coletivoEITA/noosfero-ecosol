@@ -21,7 +21,7 @@ class Product
     ProductCategory.find products.collect(&:product_category_id).compact.select{ |id| not id.zero? }
   end
 
-  # The lines above should be on the core. The following are real extensions
+  # FIXME: The lines above should be on the core. The following are real extensions
 
   has_many :sources_from_products, :foreign_key => :to_product_id, :class_name => 'SuppliersPlugin::SourceProduct', :dependent => :destroy
   has_many :sources_to_products, :foreign_key => :from_product_id, :class_name => 'SuppliersPlugin::SourceProduct', :dependent => :destroy
