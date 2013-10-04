@@ -188,7 +188,7 @@ class Article < ActiveRecord::Base
     pending_categorizations.clear
   end
 
-  acts_as_taggable  
+  acts_as_taggable
   N_('Tag list')
 
   acts_as_filesystem
@@ -268,7 +268,7 @@ class Article < ActiveRecord::Base
   end
 
   # returns the data of the article. Must be overriden in each subclass to
-  # provide the correct content for the article. 
+  # provide the correct content for the article.
   def data
     body
   end
@@ -605,13 +605,14 @@ class Article < ActiveRecord::Base
       (params[:year] ? "-year-#{params[:year]}" : '') +
       (params[:month] ? "-month-#{params[:month]}" : '')
   end
-  
+
   def automatic_abstract
   	return nil if self.body.nil?
   	a = strip_tags(self.body)
     automatic_abstract_img = (first_image) ? "<img src='" + first_image + "' class = 'automatic-abstract-thumb'>" : ''
   	b = a.split[0...profile.environment.automatic_abstract_length].join(' ')
-  	b = (a == b) ? b : b + " ..."
+  	c = a.split.join(' ')
+  	b = (b == c) ? b : b + " ..."
   	b = automatic_abstract_img + b
   end
 
@@ -692,7 +693,11 @@ class Article < ActiveRecord::Base
     sanitizer = HTML::FullSanitizer.new
     sanitizer.sanitize(text)
   end
-  
+
+  def strip_tags(html)
+    html.gsub(/<[^>]+>/, ' ').gsub(/\s+/, ' ')
+  end
+
   def strip_tags(html)
     html.gsub(/<[^>]+>/, ' ').gsub(/\s+/, ' ')
   end

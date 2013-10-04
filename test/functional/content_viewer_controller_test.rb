@@ -721,6 +721,10 @@ class ContentViewerControllerTest < ActionController::TestCase
   end
 
   should 'show only beginning of blog posts if visualization_format is short' do
+    env = Environment.default
+    env.automatic_abstract_length = 55
+    env.save
+
     login_as(profile.identifier)
 
     blog = Blog.create!(:name => 'A blog test', :profile => profile, :visualization_format => 'short')
@@ -730,15 +734,11 @@ class ContentViewerControllerTest < ActionController::TestCase
 	    <p>The second paragraph</p>
 	    <p>The third which <a href=\"link\">is a really biiiiiiig paragraph</a> jds ksajdhf ksdfkjhsdh fakdshf askdjhfsd lfhsdlkfa dslkfah dskjahsd faksdhfk sdfkas fkjshfk sdhjf sdkjf sdkj fkdsjhfal ksdjhflaksjdhdsghfg <br /><img src='http://this_is_an_url/this_is_an_image.png' style='this_is_a_style'>sjhfgsdjhf sdjhgf asdjf sadj fadjhs gfas dkjgf asdjhf asdjh fjkdsg fjsdgf asdjf sadjlgf jsçlkdsjhfdsa lksajsalj aldja lkja slkdjal aj dasldkjas lkjsdj kj sjdlkjsdkfjsl lkjsdkf lk jsdkfjsjflsj kjdlsfjdslfj</p>
 	")
-	b = "The first paragraph of the article. The second paragraph The third which is a really biiiiiiig paragraph jds ksajdhf ksdfkjhsdh fakdshf askdjhfsd lfhsdlkfa dslkfah dskjahsd faksdhfk sdfkas fkjshfk sdhjf sdkjf sdkj fkdsjhfal ksdjhflaksjdhdsghfg sjhfgsdjhf sdjhgf asdjf sadj fadjhs gfas dkjgf asdjhf asdjh fjkdsg fjsdgf asdjf sadjlgf jsçlkdsjhfdsa lksajsalj aldja lkja slkdjal aj dasldkjas lkjsdj kj sjdlkjsdkfjsl lkjsdkf lk jsdkfjsjflsj kjdlsfjdslfj"
-	b = (profile.environment.automatic_abstract_length >= b.split.count) ? b : b.split[0...profile.environment.automatic_abstract_length].join(' ') + " ..."
 
     get :view_page, :profile => profile.identifier, :page => blog.explode_path
-    
-	assert_tag :tag => 'img', :attributes => { :class => 'automatic-abstract-thumb', :src => 'http://this_is_an_url/this_is_an_image.png', :style => nil}
-	
-    assert_tag :tag => 'div', :attributes => { :class => 'short-post'}, :content => /#{b}/
-    
+
+    assert_tag :tag => 'img', :attributes => { :class => 'automatic-abstract-thumb', :src => 'http://this_is_an_url/this_is_an_image.png', :style => nil}
+    assert_tag :tag => 'div', :attributes => { :class => 'short-post'}, :content => /The first paragraph of the article\. The second paragraph The third which is a really biiiiiiig paragraph jds ksajdhf ksdfkjhsdh fakdshf askdjhfsd lfhsdlkfa dslkfah dskjahsd faksdhfk sdfkas fkjshfk sdhjf sdkjf sdkj fkdsjhfal ksdjhflaksjdhdsghfg sjhfgsdjhf sdjhgf asdjf sadj fadjhs gfas dkjgf asdjhf asdjh fjkdsg fjsdgf asdjf sadjlgf jsçlkdsjhfdsa lksajsalj aldja lkja slkdjal aj dasldkjas lkjsdj kj \.\.\./
   end
 
   should 'display link to edit blog for allowed' do
@@ -1262,7 +1262,7 @@ class ContentViewerControllerTest < ActionController::TestCase
 
     get 'view_page', :profile => profile.identifier, :page => article.path.split('/')
     assert_tag :tag => 'a', :attributes => { :href => "/#{profile.identifier}/#{article.path}?comment_page=2", :rel => 'next' }
-  end 
+  end
 
   should 'not escape acceptable HTML in list of blog posts' do
     login_as('testinguser')
