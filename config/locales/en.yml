@@ -919,7 +919,8 @@
        manage_control_panel_button: "Manage network's structure"
      admin:
        index:
-         title: "Networks' configurations"
+         title: "Manage networks"
+         registered_networks: "Registered networks"
          no_network: "Any registered network."
          new: "Create network"
          new_button: "Criar"

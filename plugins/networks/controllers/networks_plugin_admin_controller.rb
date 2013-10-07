@@ -1,7 +1,7 @@
 class NetworksPluginAdminController < AdminController
 
   def index
-    @networks = environment.networks
+    @networks = environment.networks.visible
     @network = NetworksPlugin::Network.new
   end
 
