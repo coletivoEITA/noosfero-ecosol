@@ -932,6 +932,7 @@
          add_enterprise: "Add enterprise"
          add_node: "Create node"
          edit: "Edit"
+         config: "Setup"
          remove: "Remove"
          nodes: "Nodes"
          enterprises: "Enterprises"

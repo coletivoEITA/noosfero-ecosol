@@ -30,7 +30,7 @@
           <%= link_to node.name, :node_id => node.id %>
         </div>
         <div class="actions">
-          <%= link_to t('networks_plugin.views.network.show_structure.edit'), :controller => :networks_plugin_node, :action => :edit, :id => node.id %>
+          <%= link_to t('networks_plugin.views.network.show_structure.config'), :controller => :networks_plugin_node, :action => :edit, :id => node.id %>
           |
           <%= link_to t('networks_plugin.views.network.show_structure.remove'), :controller => :networks_plugin_node, :action => :destroy, :id => node.id %>
         </div>

@@ -1,7 +1,7 @@
 class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
   named_scope :from_products_joins, :joins =>
-    'INNER JOIN suppliers_plugin_source_products sources_from_products_products ON ( products.id = suppliers_plugin_source_products.to_product_id ) INNER JOIN products from_products_products ON ( suppliers_plugin_source_products.from_product_id = from_products_products.id ) INNER JOIN suppliers_plugin_suppliers ON ( suppliers.id = suppliers_plugin_source_products.supplier_id )'
+    'INNER JOIN suppliers_plugin_source_products ON ( products.id = suppliers_plugin_source_products.to_product_id ) INNER JOIN products from_products_products ON ( suppliers_plugin_source_products.from_product_id = from_products_products.id ) INNER JOIN suppliers_plugin_suppliers suppliers ON ( suppliers.id = suppliers_plugin_source_products.supplier_id )'
 
   # overhide original
   named_scope :available, :conditions => ['products.available = ? AND from_products_products.available = ? AND suppliers_plugin_suppliers.active = ?', true, true, true]

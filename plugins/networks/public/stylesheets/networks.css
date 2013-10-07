@@ -149,6 +149,8 @@
   width: 31.66667%;
   float: right; }
 
-#colorbox #suppliers-page {
+.controller-networks_plugin_network #suppliers-page {
   min-height: 240px;
   min-width: 464px; }
+  .controller-networks_plugin_network #suppliers-page .supplier#supplier-add {
+    display: block; }

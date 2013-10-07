@@ -940,6 +940,7 @@
          add_enterprise: "Adicionar empreendimento"
          add_node: "Criar nó"
          edit: "Editar"
+         config: "Configurar"
          remove: "Remover"
          nodes: "Nós"
          enterprises: "Empreendimentos"
