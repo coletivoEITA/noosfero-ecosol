@@ -22,4 +22,10 @@ class NetworksPlugin < Noosfero::Plugin
     true
   end
 
+  def control_panel_buttons
+    [
+      {:title => I18n.t('networks_plugin.views.control_panel.structure'), :icon => nil, :url => {:controller => :networks_plugin_network, :action => :show_structure}}
+    ]
+  end
+
 end

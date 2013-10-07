@@ -31,9 +31,17 @@
 
 }
 
-#colorbox {
+.controller-networks_plugin_network {
+
   #suppliers-page {
     min-height: 30*$height;
     min-width: $module06;
+
+    .supplier {
+
+      &#supplier-add {
+        display: block;
+      }
+    }
   }
 }

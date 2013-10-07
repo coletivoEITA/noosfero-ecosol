@@ -15,7 +15,7 @@ class SuppliersPluginProductController < MyProfileController
 
     SuppliersPlugin::DistributedProduct.send :with_exclusive_scope do
       scope = profile.distributed_products.unarchived.from_products_joins
-      @products = search_scope(scope).paginate :per_page => 10, :page => params[:page], :order => 'products_2.name ASC'
+      @products = search_scope(scope).paginate :per_page => 10, :page => params[:page], :order => 'from_products_products.name ASC'
       @products_count = search_scope(scope).count
     end
     @product_categories = Product.product_categories_of @products

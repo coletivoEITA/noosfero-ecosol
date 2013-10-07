@@ -84,11 +84,13 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   end
 
   def destroy_with_dummy
+    return if self.self?
     # FIXME: archive instead of deleting
     self.supplier.destroy if self.supplier.dummy?
     destroy_without_dummy
   end
   def destroy_with_products
+    return if self.self?
     self.consumer.products.from_supplier_id(self.id).each do |product|
       product.update_attribute :archived, true
     end

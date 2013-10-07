@@ -17,11 +17,9 @@
   <% end %>
 
   <h2>
-    <%= t('networks_plugin.views.network.show_structure.context') % {:name => @node.name} %>
-    <% if @node.parent %>
-      <%= t('networks_plugin.views.network.show_structure.back_to_parent') % {
-        :parent => link_to(@node.parent.name, :node_id => @node.parent.id)} %>
-    <% end %>
+    <%= @node.hierarchy.map do |parent|
+      link_to parent.name, :node_id => parent.id
+    end.join(' -> ') %>
   </h2>
 
   <div class="listing">
@@ -32,7 +30,7 @@
           <%= link_to node.name, :node_id => node.id %>
         </div>
         <div class="actions">
-          <%= link_to t('networks_plugin.views.network.show_structure.edit'), :controller => :networks_plugin_node, :action => :edit, :id => node.id %>
+          <%= link_to t('networks_plugin.views.network.show_structure.config'), :controller => :networks_plugin_node, :action => :edit, :id => node.id %>
           |
           <%= link_to t('networks_plugin.views.network.show_structure.remove'), :controller => :networks_plugin_node, :action => :destroy, :id => node.id %>
         </div>
