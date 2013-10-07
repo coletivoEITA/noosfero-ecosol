@@ -913,6 +913,8 @@
        name: Networks
        description: "Create and manage networks."
    models:
+     network:
+       settings_button: "Network's informations and settings"
    controllers:
    views:
      control_panel:
@@ -929,8 +931,6 @@
          title: "Network's structure"
          add_enterprise: "Add enterprise"
          add_node: "Create node"
-         context: "Context: %{name}."
-         back_to_parent: "Back to %{parent}"
          edit: "Edit"
          remove: "Remove"
          nodes: "Nodes"

@@ -921,6 +921,8 @@
        name: Redes
        description: "Cria a gerencia redes."
    models:
+     network:
+       settings_button: "Informações e configurações da Rede"
    controllers:
    views:
      control_panel:
@@ -937,8 +939,6 @@
          title: "Estrutura da rede"
          add_enterprise: "Adicionar empreendimento"
          add_node: "Criar nó"
-         context: "Contexto: %{name}."
-         back_to_parent: "Voltar a %{parent}"
          edit: "Editar"
          remove: "Remover"
          nodes: "Nós"
