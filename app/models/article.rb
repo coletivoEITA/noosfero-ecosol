@@ -188,7 +188,7 @@ class Article < ActiveRecord::Base
     pending_categorizations.clear
   end
 
-  acts_as_taggable  
+  acts_as_taggable
   N_('Tag list')
 
   acts_as_filesystem
@@ -268,7 +268,7 @@ class Article < ActiveRecord::Base
   end
 
   # returns the data of the article. Must be overriden in each subclass to
-  # provide the correct content for the article. 
+  # provide the correct content for the article.
   def data
     body
   end
@@ -607,8 +607,8 @@ class Article < ActiveRecord::Base
   end
 
   def automatic_abstract
-  	return nil if self.body.nil?
-  	a = strip_tags(self.body)
+  	return if self.body.blank? or not self.body.is_a?(String)
+  	a = strip_tags self.body
     automatic_abstract_img = (first_image) ? "<img src='" + first_image + "' class = 'automatic-abstract-thumb'>" : ''
   	b = a.split[0...profile.environment.automatic_abstract_length].join(' ')
   	c = a.split.join(' ')
