@@ -10,9 +10,12 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   has_many :orders, :through => :ordered_products, :source => :order
 
   named_scope :sources_from_2x_products_joins, :joins =>
-    'INNER JOIN suppliers_plugin_source_products ON ( products.id = suppliers_plugin_source_products.to_product_id ) INNER JOIN products products_2 ON ( suppliers_plugin_source_products.from_product_id = products_2.id ) INNER JOIN suppliers_plugin_source_products suppliers_plugin_source_products_2 ON ( products_2.id = suppliers_plugin_source_products_2.to_product_id )'
+    'INNER JOIN suppliers_plugin_source_products sources_from_products_products ON ( products.id = sources_from_products_products.to_product_id ) ' +
+    'INNER JOIN products from_products_products ON ( sources_from_products_products.from_product_id = from_products_products.id ) ' +
+    'INNER JOIN suppliers_plugin_source_products source_from_products_from_products_products ON ( from_products_products.id = source_from_products_from_products_products.to_product_id ) ' +
+    'INNER JOIN suppliers_plugin_suppliers suppliers ON ( suppliers.id = source_from_products_from_products_products.supplier_id )'
   # overhide original. this scope depends on the above one
-  named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_source_products_2.supplier_id = ?', supplier_id] } }
+  named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers.id = ?', supplier_id] } }
 
   # for products in cycle, these are the products of the suppliers
   # p in cycle -> p distributed -> p from supplier
