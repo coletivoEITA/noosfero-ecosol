@@ -607,8 +607,8 @@ class Article < ActiveRecord::Base
   end
 
   def automatic_abstract
-  	return nil if self.body.nil?
-  	a = strip_tags(self.body)
+  	return if self.body.blank? or not self.body.is_a? String
+  	a = strip_tags self.body
     automatic_abstract_img = (first_image) ? "<img src='" + first_image + "' class = 'automatic-abstract-thumb'>" : ''
   	b = a.split[0...profile.environment.automatic_abstract_length].join(' ')
   	c = a.split.join(' ')
@@ -692,10 +692,6 @@ class Article < ActiveRecord::Base
   def sanitize_html(text)
     sanitizer = HTML::FullSanitizer.new
     sanitizer.sanitize(text)
-  end
-
-  def strip_tags(html)
-    html.gsub(/<[^>]+>/, ' ').gsub(/\s+/, ' ')
   end
 
   def strip_tags(html)
