@@ -504,7 +504,8 @@ class Profile < ActiveRecord::Base
   end
 
   def url_options
-    options = { :host => default_hostname, :profile => (own_hostname ? nil : self.identifier)}
+    options = { :host => default_hostname }
+    options[:profile] = self.identifier unless self.own_hostname
     options[:protocol] = self.default_protocol if self.default_protocol and self.default_protocol != 'http'
     options.merge(Noosfero.url_options)
   end

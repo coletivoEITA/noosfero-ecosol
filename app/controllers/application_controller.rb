@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   def default_url_options options={}
     if @domain or (@profile and @profile.default_protocol)
-      protocol = @profile ? @profile.default_protocol : @domain.protocol
+      protocol = if @profile then @profile.default_protocol else @domain.protocol end
       options.merge! :protocol => protocol if protocol != 'http'
     end
     options
@@ -120,10 +120,9 @@ class ApplicationController < ActionController::Base
       end
     else
       @environment = @domain.environment
-      @profile = @domain.profile
 
       # Check if the requested profile belongs to another domain
-      if @profile && !params[:profile].blank? && params[:profile] != @profile.identifier
+      if @domain.profile and params[:profile].present? and params[:profile] != @domain.profile.identifier
         @profile = @environment.profiles.find_by_identifier params[:profile]
         redirect_to params.merge(:host => @profile.default_hostname, :protocol => @profile.default_protocol)
       end
