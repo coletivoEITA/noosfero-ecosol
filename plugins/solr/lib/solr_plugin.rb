@@ -26,8 +26,11 @@ class SolrPlugin < Noosfero::Plugin
     return if empty_query?(query, category) && klass != Product
 
     solr_options = solr_options(class_asset(klass), category)
+    solr_options[:filter_queries] ||= []
     solr_options[:filter_queries] += scopes_to_solr_filters scope, klass
+
     solr_options.merge!(products_options(user)) if klass == Product && empty_query?(query, category)
+
     scope.find_by_contents query, paginate_options, solr_options.merge(options)
   end
 
@@ -37,7 +40,7 @@ class SolrPlugin < Noosfero::Plugin
     filter_queries = []
     klass ||= scope.base_class
     solr_fields = klass.configuration[:solr_fields].keys
-    scopes_applied = scope.scopes_applied.dup
+    scopes_applied = scope.scopes_applied.dup rescue [] #rescue association and class direct filtering
 
     scope.current_scoped_methods[:create].each do |attr, value|
       next unless solr_fields.include? attr.to_sym
