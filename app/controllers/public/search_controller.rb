@@ -216,7 +216,7 @@ class SearchController < PublicController
 
   def find_by_contents asset, scope, query, paginate_options={:page => 1}, options={}
     # only apply fitlers to empty query, sorting is engine specific
-    scope = scope.send(options[:filter]) if options[:filter] and not @empty_query
+    scope = scope.send(options[:filter]) if options[:filter] and @empty_query
 
     super asset, scope, query, paginate_options, options
   end
