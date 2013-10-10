@@ -1,5 +1,7 @@
 class NetworksPluginNodeController < MyProfileController
 
+  include NetworksPlugin::TranslationHelper
+
   def create
     @network = profile
     @node = NetworksPlugin::Node.find_by_id(params[:id]) || @network

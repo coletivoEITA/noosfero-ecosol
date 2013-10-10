@@ -4,6 +4,8 @@ SuppliersPlugin::SuppliersDisplayHelper = SuppliersPlugin::DisplayHelper
 
 class SuppliersPluginMyprofileController < MyProfileController
 
+  include SuppliersPlugin::TranslationHelper
+
   no_design_blocks
   before_filter :load_new, :only => [:index, :new]
 

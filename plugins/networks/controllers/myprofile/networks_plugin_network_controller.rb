@@ -5,6 +5,7 @@ NetworksPlugin::NetworksDisplayHelper = NetworksPlugin::DisplayHelper
 class NetworksPluginNetworkController < MyProfileController
 
   helper NetworksPlugin::NetworksDisplayHelper
+  include NetworksPlugin::TranslationHelper
 
   def index
     redirect_to :show_structure

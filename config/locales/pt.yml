@@ -239,10 +239,17 @@
         name: "Fornecedores"
         description: "Registro de fornecedores e produtos distribuídos"
       suppliers_product_helper: 
-        product_from_which_su: "Produto de que fornecedor?"
+        product_from_which_su: "Produto de que %{terms.supplier.singular}?"
+    terms:
+      consumer:
+        singular: "organização"
+        plural: "organizações"
+      supplier:
+        singular: "fornecedor"
+        plural: "fornecedores"
     controllers: 
       myprofile: 
-        supplier_created: "Fornecedor criado"
+        supplier_created: "%{terms.supplier.singular} criado"
     models:
       base_product:
       distributed_product: 
@@ -281,7 +288,7 @@
           remove_product: remover
           cancel: cancelar
           save: salvar mudanças
-          view_on_supplier_page: "Ver produto na página do fornecedor"
+          view_on_supplier_page: "Ver produto na página do %{terms.supplier.singular}"
           product_registry: "Cadastro do produto"
           selling_unit: "Unidade de venda"
           same_from_purchase: "Mesma da compra"
@@ -301,7 +308,7 @@
         _search: 
           status: Estado
           category: Categoria
-          supplier: Fornecedor
+          supplier: "%{terms.supplier.singular}"
           product: Produto
           margin: Margem
           price: Preço
@@ -310,15 +317,15 @@
           showing_pcount_produc: "Mostrando %{pcount} produtos de %{allpcount}"
           we_don_t_have_product: "Não temos produtos a mostrar."
         _select_missing: 
-          add_all_missing_produ: "Adicione todos produtos que faltam deste fornecedor."
+          add_all_missing_produ: "Adicione todos produtos que faltam deste %{terms.supplier.singular}."
           cancel: Cancelar
-          the_following_product: "Os seguintes produtos do fornecedor não são distribuídos pelo seu coletivo. Que produto voce quer adicionar?"
-          there_isn_t_any_new_p: "Não há qualquer produto deste fornecedor."
+          the_following_product: "Os seguintes produtos do %{terms.supplier.singular} não são distribuídos pelo seu coletivo. Que produto voce quer adicionar?"
+          there_isn_t_any_new_p: "Não há qualquer produto deste %{terms.supplier.singular}."
         index: 
           active: ativa
           add_product: "Adicionar produto"
           all_the_categories: "todas as categorias"
-          all_the_suppliers: "todos os fornecedores"
+          all_the_suppliers: "todos os %{terms.supplier.plural}"
           situation: "Situação de distribuição"
           anyone: anyone
           bigger_than_the_stock: "maior do que o estoque"
@@ -333,7 +340,7 @@
           no_margin_set: "Sem margem definida"
           products: Produtos
           info: "Esta é a lista de produtos com que o coletivo trabalha e é aqui que é feito o controle de estoque. Os produtos se dividem entre ativos e inativos. Os produtos ativos automaticamente são adicionados à lista de uma novo ciclo de pedidos."
-          supplier: Fornecedor
+          supplier: "%{terms.supplier.singular}"
           the_products: "Os produtos"
           name: "Nome"
           whose_qty_available_i: "cuja qtd disponível é"
@@ -349,18 +356,18 @@
           suggest_creation: "Não encontrou o empreendimento que buscava?. Você pode criar um novo empreendimento gerido pela organização."
           create_dummy: "Criar empreendimento"
         _edit: 
-          registry_help: "O registro do fornecedor será administrado pelo própria organização e será privado a ela."
+          registry_help: "O registro do %{terms.supplier.singular} será administrado pelo própria organização e será privado a ela."
           abbreviated_name: "Nome Abreviado"
-          add_supplier_managed_: "Adicionar fornecedor com registro administrado pelo coletivo"
+          add_supplier_managed_: "Adicionar %{terms.supplier.singular} com registro administrado pelo coletivo"
           additional_fields: "Campos adicionais"
           basic_data: "Informações básicas"
           cancel: Cancelar
           description: Descrição
-          edit_supplier: "Editar fornecedor"
+          edit_supplier: "Editar %{terms.supplier.singular}"
           estrategic_informatio: "Informações estratégicas"
           full_registration: "Registro completo"
           name: Nome
-          register_new_supplier: "Registrar um novo fornecedor"
+          register_new_supplier: "Registrar um novo %{terms.supplier.singular}"
           registry_form: "Formulário de registro"
           save: Salvar
         _supplier: 
@@ -369,27 +376,27 @@
           add_products: "adicionar produtos"
           among_them: ", entre eles"
           any_registered_produc: "nenhum produto registrado"
-          by_removing_this_supp: "Ao remover este fornecedor, todos os produtos ficarão indisponíveis em futuras sessões. Por favor, confirme sua opção"
+          by_removing_this_supp: "Ao remover este %{terms.supplier.singular}, todos os produtos ficarão indisponíveis em futuras sessões. Por favor, confirme sua opção"
           desactivate: desativar
           activate: ativar
           edit: editar
           products_are_active: " produtos estão ativos"
           products_distributed: " produtos distribuídos pelo coletivo"
           products: produtos
-          registered_supplier_i: "Fornecedor registrado na rede"
+          registered_supplier_i: "%{terms.supplier.singular} registrado na rede"
           remove: remover
           supplier_profile_product: "produtos registrados"
-          supplier_with_registr: "Fornecedor com registro administrado pelo coletivo"
-          this_supplier_has: "Este fornecedor tem"
+          supplier_with_registr: "%{terms.supplier.singular} com registro administrado pelo coletivo"
+          this_supplier_has: "Este %{terms.supplier.singular} tem"
         _suppliers_list: 
-          this_search_didn_t_re: "Esta busca não retornou fornecedores."
-          any_registered: "Nenhum fornecedor registrado."
+          this_search_didn_t_re: "Esta busca não retornou %{terms.supplier.plural}."
+          any_registered: "Nenhum %{terms.supplier.singular} registrado."
         index: 
-          add_supplier: "Adicionar fornecedor"
+          add_supplier: "Adicionar %{terms.supplier.singular}"
           filter: Filtro
           name: Nome
-          suppliers: Fornecedores
-          this_is_the_list_of_s: "Esta é a lista de fornecedores associados ao coletivo de consumo. É possível associá-lo a fornecedores existentes ou registrar um."
+          suppliers: "%{terms.supplier.plural}"
+          this_is_the_list_of_s: "Esta é a lista de %{terms.supplier.plural} associados ao coletivo de consumo. É possível associá-lo a %{terms.supplier.plural} existentes ou registrar um."
 
   delivery_plugin:
     lib:
@@ -473,7 +480,7 @@
           submit: 'OK'
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
         _index: 
-          supplier: "fornecedor"
+          supplier: "%{terms.supplier.singular}"
           product: "produto"
           quantity: "qtd"
           price_total: "valor (%{currency})"
@@ -523,7 +530,7 @@
           products_list: "Lista de produtos"
           qtt: QTD
           quantity_unit: "%{quantity} %{unit}"
-          supplier_product: Fornecedor/Produto
+          supplier_product: "%{terms.supplier.singular}/Produto"
           total: "TOTAL:"
 
   orders_cycle_plugin: 
@@ -561,7 +568,7 @@
         selled_total: "Total vendido"
         selled_value: "Valor vendido"
         stock_qtt: "stock qtt"
-        supplier: Fornecedor
+        supplier: "%{terms.supplier.singular}"
         total_parcel_value: "Valor total da encomenda"
         total_selled_value: "Valor total vendido"
         total_value: "total pago"
@@ -659,7 +666,7 @@
           send: Enviar
         new_to_supplier: 
           cancel: Cancelar
-          message_to_supplier_s: "Mensagem para o fornecedor \"%{supplier}\""
+          message_to_supplier_s: "Mensagem para o %{terms.supplier.singular} \"%{supplier}\""
           send: Enviar
       order: 
         _consumer_orders: 
@@ -694,7 +701,7 @@
         _filter_products: 
           active: Ativo
           all_the_categories: "todas as categorias"
-          all_the_suppliers: "todos os fornecedores"
+          all_the_suppliers: "todos os %{terms.supplier.plural}"
           and_being: "e que estejam"
           anyone: anyone
           bigger_than_the_stock: "maior do que o estoque"
@@ -702,7 +709,7 @@
           in_any_state: "Em qualquer estado"
           inactive: Inativo
           product_name: "Nome do produto"
-          supplier: Fornecedor
+          supplier: "%{terms.supplier.singular}"
           whose_qty_available_i: "cuja quantidade disponível é"
         _status: 
           code_status_message: "%{code} %{status_message}"
@@ -782,7 +789,7 @@
           cycle_editing: "Edição de ciclo"
           cycle_saved: "Ciclo salvo"
         _edition: 
-          info: "O tempo de edição acabou e o ciclo está ainda pública. Na verdade, o ciclo está em fase de chamada de fornecedores.<br/><br/> Ainda é possível editar alguns parametros do Ciclo através desta página, no entanto, esteja ciente do risco. Algumas operações têm diferentes implicações dependendo da fase em que se está, quando assim for você será avisado por uma janelinha de aviso das consequências das mudanças efetuadas."
+          info: "O tempo de edição acabou e o ciclo está ainda pública. Na verdade, o ciclo está em fase de chamada de %{terms.supplier.plural}.<br/><br/> Ainda é possível editar alguns parametros do Ciclo através desta página, no entanto, esteja ciente do risco. Algumas operações têm diferentes implicações dependendo da fase em que se está, quando assim for você será avisado por uma janelinha de aviso das consequências das mudanças efetuadas."
           add_product: "Adicionar produto"
           it_was_automatically_: "Ela foi automaticamente gerada a partir dos produtos ativos e suas respectivas margens. Verifique a lista de produtos e edite-a conforme as necessidades e particularidades deste ciclo de pedidos."
           the_following_list_of: "A seguinte lista de produtos está disponível neste ciclo."
@@ -798,7 +805,7 @@
           do_prelimary_parcel: "fazer encomenda preliminar"
           forecast_parcel: "Encomenda prevista"
           forecast_value: "Valor previsto"
-          message_to_the_suppli: "Mensagem ao fornecedor"
+          message_to_the_suppli: "Mensagem ao %{terms.supplier.singular}"
           no_product_ordered: "Sem produtos pedidos."
           product: Produto
           products_totals: "Total dos produtos"
@@ -812,7 +819,7 @@
           product: Produto
           qty_avail: "Qtd. dispon."
           showing_pcount_produc: "Mostrando %{pcount} produtos de %{allpcount}"
-          supplier: Fornecedor
+          supplier: "%{terms.supplier.singular}"
         _results: 
           no_cycles_to_show: "Sem ciclos a mostrar"
         _timeline: 
@@ -889,7 +896,7 @@
           orders_cycles: "Ciclo de pedidos"
           parcels: Encomendas
           products: Produtos
-          suppliers: Fornecedores
+          suppliers: "%{terms.supplier.plural}"
         _header: 
           collective_consumptio: "Rede de Coletivos de Consumo"
       profile:
@@ -916,36 +923,43 @@
           white: branco
 
   networks_plugin:
-   lib:
-     plugin:
-       name: Redes
-       description: "Cria a gerencia redes."
-   models:
-     network:
-       settings_button: "Informações e configurações da Rede"
-   controllers:
-   views:
-     control_panel:
-       structure: "Gerenciar estrutura da rede"
-     admin:
-       index:
-         title: "Gerenciar de Redes"
-         registered_networks: "Redes cadastradas"
-         no_network: "Nenhuma rede registrada."
-         new: "Criar rede"
-         new_button: "Criar"
-     network:
-       show_structure: 
-         title: "Estrutura da rede"
-         add_enterprise: "Adicionar empreendimento"
-         add_node: "Criar nó"
-         edit: "Editar"
-         config: "Configurar"
-         remove: "Remover"
-         nodes: "Nós"
-         enterprises: "Empreendimentos"
-     node:
-       create:
-         new_button: "Criar"
-         context: "Criar novo nó dentro de '%{name}'"
+    lib:
+      plugin:
+        name: Redes
+        description: "Cria a gerencia redes."
+    terms:
+      consumer:
+        singular: "rede"
+        plural: "redes"
+      supplier: 
+        singular: "empreendimento"
+        plural: "empreendimentos"
+    models:
+      network:
+        settings_button: "Informações e configurações da Rede"
+    controllers:
+    views:
+      control_panel:
+        structure: "Gerenciar estrutura da rede"
+      admin:
+        index:
+          title: "Gerenciar de Redes"
+          registered_networks: "Redes cadastradas"
+          no_network: "Nenhuma rede registrada."
+          new: "Criar rede"
+          new_button: "Criar"
+      network:
+        show_structure: 
+          title: "Estrutura da rede"
+          add_enterprise: "Adicionar empreendimento"
+          add_node: "Criar nó"
+          edit: "Editar"
+          config: "Configurar"
+          remove: "Remover"
+          nodes: "Nós"
+          enterprises: "Empreendimentos"
+      node:
+        create:
+          new_button: "Criar"
+          context: "Criar novo nó dentro de '%{name}'"
 

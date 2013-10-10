@@ -5,6 +5,7 @@ NetworksPlugin::NetworksDisplayHelper = NetworksPlugin::DisplayHelper
 class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
 
   include ControllerInheritance
+  include NetworksPlugin::TranslationHelper
 
   helper NetworksPlugin::NetworksDisplayHelper
 
