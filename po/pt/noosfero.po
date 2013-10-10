@@ -8856,7 +8856,7 @@ msgstr "Preço %s (%s)"
 
 #: app/views/manage_products/_edit_input.rhtml:17
 msgid "This input or raw material inpact on the final price of the product?"
-msgstr "Este produto ou matéria-prima inpacta no preço final do produto?"
+msgstr "Este produto ou matéria-prima impacta no preço final do produto?"
 
 #: app/views/manage_products/_edit_input.rhtml:26
 msgid "Is it from solidarity economy?"
