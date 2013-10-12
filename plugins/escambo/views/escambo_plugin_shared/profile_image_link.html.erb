@@ -15,7 +15,7 @@
   <div class="profile-homepage-link"><%= link_to profile.name, profile.url %></div>
 
   <div class="categories-area">
-    <%= profile.product_categories.collect(&:name).first(3).join(', ') %>
+    <%= profile.product_categories.first(3).join(', ') %>
   </div>
 
   <div class="location-area <%= 'empty' unless profile.region.present? %>">
