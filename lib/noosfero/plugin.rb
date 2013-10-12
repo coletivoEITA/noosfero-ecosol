@@ -68,6 +68,9 @@ class Noosfero::Plugin
 
       return unless plugin_dependencies_ok
 
+      # load extensions
+      Dir[File.join(dir, 'lib', 'ext', '*.rb')].each {|file| require_dependency file }
+
       # load class
       klass(plugin_name)
     end
