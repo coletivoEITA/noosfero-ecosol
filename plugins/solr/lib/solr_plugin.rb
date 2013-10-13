@@ -18,25 +18,29 @@ class SolrPlugin < Noosfero::Plugin
     true
   end
 
+  def solr_search? empty_query, klass
+    not empty_query or klass == Product
+  end
+
   def find_by_contents(asset, scope, query, paginate_options={}, options={})
     klass = asset_class(asset)
-    category = options.delete(:category)
-    filter = options.delete(:filter)
+    category = options[:category]
+    empty_query = empty_query? query, category
 
-    return if empty_query?(query, category) && klass != Product
+    return unless solr_search? empty_query, klass
 
     solr_options = solr_options(class_asset(klass), category)
     solr_options[:filter_queries] ||= []
-    solr_options[:filter_queries] += scopes_to_solr_filters scope, klass
+    solr_options[:filter_queries] += scopes_to_solr_filters scope, klass, options
+    solr_options.merge! products_options(user) if klass == Product and empty_query
+    solr_options.merge! options.except(:category, :filter)
 
-    solr_options.merge!(products_options(user)) if klass == Product && empty_query?(query, category)
-
-    scope.find_by_contents query, paginate_options, solr_options.merge(options)
+    scope.find_by_contents query, paginate_options, solr_options
   end
 
   protected
 
-  def scopes_to_solr_filters scope, klass = nil
+  def scopes_to_solr_filters scope, klass = nil, options = {}
     filter_queries = []
     klass ||= scope.base_class
     solr_fields = klass.configuration[:solr_fields].keys
@@ -52,6 +56,8 @@ class SolrPlugin < Noosfero::Plugin
     end
 
     scopes_applied.each do |name|
+      next if name.to_s == options[:filter].to_s
+
       has_value = name === Hash
       if has_value
         name, args = name.keys.first, name.values.first
