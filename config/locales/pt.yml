@@ -249,7 +249,7 @@
         plural: "fornecedores"
     controllers: 
       myprofile: 
-        supplier_created: "%{terms.supplier.singular} criado"
+        supplier_created: "%{terms.supplier.singular.capitalize} criado"
     models:
       base_product:
       distributed_product: 
@@ -308,7 +308,7 @@
         _search: 
           status: Estado
           category: Categoria
-          supplier: "%{terms.supplier.singular}"
+          supplier: "%{terms.supplier.singular.capitalize}"
           product: Produto
           margin: Margem
           price: Preço
@@ -340,7 +340,7 @@
           no_margin_set: "Sem margem definida"
           products: Produtos
           info: "Esta é a lista de produtos com que o coletivo trabalha e é aqui que é feito o controle de estoque. Os produtos se dividem entre ativos e inativos. Os produtos ativos automaticamente são adicionados à lista de uma novo ciclo de pedidos."
-          supplier: "%{terms.supplier.singular}"
+          supplier: "%{terms.supplier.singular.capitalize}"
           the_products: "Os produtos"
           name: "Nome"
           whose_qty_available_i: "cuja qtd disponível é"
@@ -383,11 +383,11 @@
           products_are_active: " produtos estão ativos"
           products_distributed: " produtos distribuídos pelo coletivo"
           products: produtos
-          registered_supplier_i: "%{terms.supplier.singular} registrado na rede"
+          registered_supplier_i: "%{terms.supplier.singular.capitalize} registrado na rede"
           remove: remover
           supplier_profile_product: "produtos registrados"
-          supplier_with_registr: "%{terms.supplier.singular} com registro administrado pelo coletivo"
-          this_supplier_has: "Este %{terms.supplier.singular} tem"
+          supplier_with_registr: "%{terms.supplier.singular.capitalize} com registro administrado pelo coletivo"
+          this_supplier_has: "Este %{terms.supplier.singular.capitalize} tem"
         _suppliers_list: 
           this_search_didn_t_re: "Esta busca não retornou %{terms.supplier.plural}."
           any_registered: "Nenhum %{terms.supplier.singular} registrado."
@@ -395,7 +395,7 @@
           add_supplier: "Adicionar %{terms.supplier.singular}"
           filter: Filtro
           name: Nome
-          suppliers: "%{terms.supplier.plural}"
+          suppliers: "%{terms.supplier.plural.capitalize}"
           this_is_the_list_of_s: "Esta é a lista de %{terms.supplier.plural} associados ao coletivo de consumo. É possível associá-lo a %{terms.supplier.plural} existentes ou registrar um."
 
   delivery_plugin:
@@ -530,7 +530,7 @@
           products_list: "Lista de produtos"
           qtt: QTD
           quantity_unit: "%{quantity} %{unit}"
-          supplier_product: "%{terms.supplier.singular}/Produto"
+          supplier_product: "%{terms.supplier.singular.capitalize}/Produto"
           total: "TOTAL:"
 
   orders_cycle_plugin: 
@@ -568,7 +568,7 @@
         selled_total: "Total vendido"
         selled_value: "Valor vendido"
         stock_qtt: "stock qtt"
-        supplier: "%{terms.supplier.singular}"
+        supplier: "%{terms.supplier.singular.capitalize}"
         total_parcel_value: "Valor total da encomenda"
         total_selled_value: "Valor total vendido"
         total_value: "total pago"
@@ -709,7 +709,7 @@
           in_any_state: "Em qualquer estado"
           inactive: Inativo
           product_name: "Nome do produto"
-          supplier: "%{terms.supplier.singular}"
+          supplier: "%{terms.supplier.singular.capitalize}"
           whose_qty_available_i: "cuja quantidade disponível é"
         _status: 
           code_status_message: "%{code} %{status_message}"
@@ -819,7 +819,7 @@
           product: Produto
           qty_avail: "Qtd. dispon."
           showing_pcount_produc: "Mostrando %{pcount} produtos de %{allpcount}"
-          supplier: "%{terms.supplier.singular}"
+          supplier: "%{terms.supplier.singular.capitalize}"
         _results: 
           no_cycles_to_show: "Sem ciclos a mostrar"
         _timeline: 
@@ -896,7 +896,7 @@
           orders_cycles: "Ciclo de pedidos"
           parcels: Encomendas
           products: Produtos
-          suppliers: "%{terms.supplier.plural}"
+          suppliers: "%{terms.supplier.plural.capitalize}"
         _header: 
           collective_consumptio: "Rede de Coletivos de Consumo"
       profile:
