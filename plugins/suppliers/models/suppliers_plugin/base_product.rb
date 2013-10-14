@@ -1,6 +1,11 @@
 # FIXME remove Base when plugin became a module
 class SuppliersPlugin::BaseProduct < Product
 
+  # join source_products
+  # FIXME: can't preload :suppliers due to a rails bug
+  default_scope :include => [:from_products, {:sources_from_products => [{:supplier => [{:profile => [:domains, {:environment => :domains}]}]}]},
+                             {:profile => [:domains, {:environment => :domains}]}]
+
   self.abstract_class = true
 
   settings_items :minimum_selleable, :type => Float, :default => nil
