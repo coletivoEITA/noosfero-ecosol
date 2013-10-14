@@ -9,7 +9,7 @@ module SuppliersPlugin::TermsHelper
 
   protected
 
-  def translated_terms keys = TermsKeys
+  def translated_terms keys = TermsKeys, transformations = TermsTransformations
     @translated_terms ||= {}
     return @translated_terms unless @translated_terms.blank?
 
@@ -18,7 +18,7 @@ module SuppliersPlugin::TermsHelper
       translation = I18n.t "#{@terms_context}.terms.#{key}"
       @translated_terms["terms.#{key}"] = translation
 
-      TermsTransformations.map do |transformation|
+      transformations.map do |transformation|
         @translated_terms["terms.#{key}.#{transformation}"] = translation.send transformation
       end
     end
