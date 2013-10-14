@@ -41,6 +41,7 @@ class Product
 
   has_many :suppliers, :through => :sources_from_products, :order => 'id ASC'
 
+  # prefer distributed_products has_many to use DistributedProduct scopes and eager loading
   named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
   named_scope :own, :conditions => ["products.type = 'Product'"]
 

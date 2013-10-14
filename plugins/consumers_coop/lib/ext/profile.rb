@@ -61,7 +61,7 @@ class Profile
   def consumers_coop_add_own_products
     return unless profile.respond_to? :products
 
-    already_supplied = self.products.unarchived.distributed.from_supplier_id(self.self_supplier.id).all
+    already_supplied = self.distributed_products.unarchived.from_supplier_id(self.self_supplier.id).all
     profile.products.map do |p|
       already_supplied.find{ |f| f.product == p } ||
         SuppliersPlugin::DistributedProduct.create!(:profile => self, :supplier => self_supplier, :product => p, :name => p.name, :description => p.description, :price => p.price, :unit => p.unit)

@@ -5,6 +5,9 @@ class Profile
   has_many :products
   has_many :distributed_products, :class_name => 'SuppliersPlugin::DistributedProduct'
 
+  has_many :from_products, :through => :products
+  has_many :to_products, :through => :products
+
   has_many :suppliers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :consumer_id, :dependent => :destroy,
     :include => [{:profile => [:domains], :consumer => [:domains]}], :order => 'name ASC'
   has_many :consumers, :class_name => 'SuppliersPlugin::Consumer', :foreign_key => :profile_id, :dependent => :destroy,
@@ -67,7 +70,7 @@ class Profile
     raise "'#{supplier.name}' is not a supplier of #{self.name}" unless self.has_supplier? supplier
     return if self.person?
 
-    already_supplied = self.products.unarchived.distributed.of_supplier supplier.all
+    already_supplied = self.distributed_products.unarchived.of_supplier supplier.all
     supplier.products.unarchived.each do |np|
       next if already_supplied.find{ |f| f.supplier_product == np }
 
@@ -79,7 +82,7 @@ class Profile
     raise "'#{supplier.name}' is not a supplier of #{self.name}" unless self.has_supplier? supplier
 
     # FIXME: only select all products if supplier is dummy
-    supplier.profile.products.unarchived.own.distributed - self.from_products.unarchived.distributed.by_profile(supplier.profile)
+    supplier.profile.products.unarchived.own - self.from_products.unarchived.by_profile(supplier.profile)
   end
 
   delegate :margin_percentage, :margin_percentage=, :to => :supplier_settings
@@ -88,7 +91,7 @@ class Profile
 
   def supplier_products_default_margins
     self.class.transaction do
-      self.products.unarchived.distributed.each do |product|
+      self.distributed_products.unarchived.each do |product|
         product.default_margin_percentage = true
         product.save!
       end
