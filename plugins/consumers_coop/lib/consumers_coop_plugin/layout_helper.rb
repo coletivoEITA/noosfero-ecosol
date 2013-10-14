@@ -1,9 +1,12 @@
 # workaround for plugin class scope problem
 require_dependency 'suppliers_plugin/product_helper'
+require_dependency 'suppliers_plugin/terms_helper'
 
 module ConsumersCoopPlugin::LayoutHelper
 
   protected
+
+  include SuppliersPlugin::TermsHelper
 
   HeaderButtons = [
     [:start, 'consumers_coop_plugin.lib.layout_helper.start', proc{ profile.url }, proc{ on_homepage? }],
