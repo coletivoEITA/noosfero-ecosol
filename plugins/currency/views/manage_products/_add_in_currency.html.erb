@@ -7,7 +7,7 @@
     } %>
   <% else %>
     <%= _('Specify %{field} in %{select}') % {
-      :field => field,
+      :field => _(field),
       :select => select_tag("available_currencies_for_#{field}",
                             options_for_select([['','']] + currencies.collect{ |c| [c.name_with_symbol, c.id] }),
                             :id => "#{field}-currency-select")

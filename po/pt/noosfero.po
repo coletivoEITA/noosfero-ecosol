@@ -755,9 +755,8 @@ msgid "sniffer plugin opportunity"
 msgstr ""
 
 #: app/models/external_feed.rb:-
-#, fuzzy
 msgid "snifferplugin::opportunity"
-msgstr "Perfil de farejador"
+msgstr "snifferplugin::opportunity"
 
 #: app/models/external_feed.rb:-
 msgid "Opportunity"
@@ -772,9 +771,8 @@ msgid "sniffer plugin profile"
 msgstr "Perfil de farejador"
 
 #: app/models/external_feed.rb:-
-#, fuzzy
 msgid "snifferplugin::profile"
-msgstr "Perfil de farejador"
+msgstr "snifferplugin::profile"
 
 #: app/models/external_feed.rb:-
 msgid "role assignment"
@@ -1214,9 +1212,8 @@ msgid "Disable contact for groups/communities"
 msgstr "Desabilitar contato para comunidades"
 
 #: app/models/environment.rb:106
-#, fuzzy
 msgid "Enable products for enterprises"
-msgstr "Desabilitar produtos para pontos de cultura"
+msgstr "Habilitar produtos para pontos de cultura"
 
 #: app/models/environment.rb:107 app/models/create_enterprise.rb:142
 #: app/views/enterprise_registration/basic_information.rhtml:3
@@ -2122,9 +2119,8 @@ msgid "Production cost"
 msgstr "Custo de produção"
 
 #: app/models/price_detail.rb:11
-#, fuzzy
 msgid "Other costs"
-msgstr "Outro custo"
+msgstr "Outros custos"
 
 #: app/models/qualifier_certifier.rb:-
 msgid "qualifier certifier"
@@ -4494,7 +4490,6 @@ msgstr "sem comentários ainda"
 
 #: app/helpers/content_viewer_helper.rb:10
 #: app/views/content_viewer/view_page.rhtml:12
-#, fuzzy
 msgid "One comment"
 msgstr "Um comentário"
 
@@ -11408,6 +11403,14 @@ msgstr "moedas aceitas"
 msgid "Specify %{field} in %{select}"
 msgstr "Especificar %{field} em %{select}"
 
+#: plugins/currency/views/manage_products/_add_in_currency.html.erb:9
+msgid "price"
+msgstr "preço"
+
+#: plugins/currency/views/manage_products/_add_in_currency.html.erb:9
+msgid "discount"
+msgstr "desconto"
+
 #: plugins/currency/views/currency_plugin_myprofile/edit.html.erb:3
 msgid "Edit currency"
 msgstr "Editar moeda social"
@@ -11909,14 +11912,12 @@ msgid "Start an exchange"
 msgstr "Fazer escambo"
 
 #: plugins/exchange/views/exchange_plugin/mailer/new_message_notification.html.erb:9
-#, fuzzy
-msgid "%{sender} sent a %{message} in your exchange."
-msgstr "%{sender} enviou uma mensagem para você."
+msgid "%{sender} sent a %{message} in the exchange."
+msgstr "%{sender} enviou uma %{message} na troca."
 
 #: plugins/exchange/views/exchange_plugin/mailer/new_message_notification.html.erb:11
-#, fuzzy
 msgid "message"
-msgstr "Mensagem"
+msgstr "mensagem"
 
 #: plugins/exchange/views/exchange_plugin/mailer/start_exchange_notification.html.erb:9
 msgid ""
@@ -11924,17 +11925,14 @@ msgid ""
 msgstr ""
 
 #: plugins/exchange/views/exchange_plugin/mailer/start_exchange_notification.html.erb:11
-#, fuzzy
 msgid "exchange"
-msgstr "trocas"
+msgstr "troca"
 
 #: plugins/exchange/views/exchange_plugin/mailer/new_proposal_notification.html.erb:9
-#, fuzzy
 msgid "%{origin} made a new %{proposal} for you."
-msgstr "{origin} fez uma nova proposta para você."
+msgstr "{origin} fez uma nova %{proposal} para você."
 
 #: plugins/exchange/views/exchange_plugin/mailer/new_proposal_notification.html.erb:11
-#, fuzzy
 msgid "proposal"
 msgstr "proposta"
 
@@ -12043,9 +12041,8 @@ msgid "Active Exchanges"
 msgstr "Trocas ativas"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:10
-#, fuzzy
 msgid "Exchange created at %{time} by %{profile}"
-msgstr "Troca criada em %{time} por %{enterprise}"
+msgstr "Troca criada em %{time} por %{profile}"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:15
 msgid "Open Exchange"
@@ -12056,12 +12053,11 @@ msgid "Closed Exchanges"
 msgstr "Trocas encerradas"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:40
-#, fuzzy
 msgid ""
 "Exchange with %{the_other} created at %{time} by %{profile} and closed at "
 "%{closed_time}"
 msgstr ""
-"Troca com %{the_other} criada em %{time} por %{enterprise} e fechada em "
+"Troca com %{the_other} criada em %{time} por %{profile} e fechada em "
 "%{closed_time}"
 
 #: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:47
@@ -12109,14 +12105,12 @@ msgstr "Qtd"
 
 #: plugins/exchange/views/exchange_plugin_element/_view.html.erb:37
 #: plugins/exchange/views/exchange_plugin_element/_view.html.erb:72
-#, fuzzy
 msgid "Comment (optional)"
-msgstr "Quantidade de comentários"
+msgstr "Comentário (opcional)"
 
 #: plugins/exchange/views/exchange_plugin_element/_view.html.erb:66
-#, fuzzy
 msgid "Unregistered item"
-msgstr "registre"
+msgstr "Produto/serviço não registrado"
 
 #: plugins/mezuro/views/mezuro_plugin_metric_configuration/_compound_metric_configuration_form.html.erb:8
 msgid "Script:"

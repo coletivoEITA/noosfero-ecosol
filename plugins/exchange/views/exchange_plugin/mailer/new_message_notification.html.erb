@@ -6,7 +6,7 @@
   <body>
 
     <p>
-      <%= _('%{sender} sent a %{message} in your exchange.') % {
+      <%= _('%{sender} sent a %{message} in the exchange.') % {
         :sender => @sender.name,
         :message => link_to(_('message'), :controller => :exchange_plugin_myprofile, :profile => @recipient.identifier, :action => :index)
       } %>
