@@ -9,9 +9,7 @@
     } %>
   </p>
 
-  <div class="evaluation-thumb">
-    <%= link_to profile_image(evaluation.evaluator, :minor), evaluation.evaluator.url %>
-  </div>
+  <%= profile_link_with_image evaluation.evaluator, :thumb %>
 
   <div class="arrow-wrap <%= my_evaluation ? 'left' : 'right' %>">
     <div class="arrow">
@@ -20,9 +18,9 @@
 
   <div class="evaluation-text">
 
-    <p class="evaluation-message">
+    <div class="evaluation-message">
       <%= evaluation.text %>
-    </p>
+    </div>
 
     <div class="evaluation-footer">
       <div class="evaluation-score">

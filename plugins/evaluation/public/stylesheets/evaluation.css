@@ -158,17 +158,14 @@
     .evaluation-star-value-wrap .value-icon.value-5 {
       width: 145px; }
 
-.evaluation-snippet.left .evaluation-thumb,
+.evaluation-snippet.left .profile-image,
 .evaluation-snippet.left .arrow-wrap,
 .evaluation-snippet.left .evaluation-text {
   float: left; }
-.evaluation-snippet.right .evaluation-thumb,
+.evaluation-snippet.right .profile-image,
 .evaluation-snippet.right .arrow-wrap,
 .evaluation-snippet.right .evaluation-text {
   float: right; }
-.evaluation-snippet .evaluation-thumb img {
-  width: 48px;
-  height: 48px; }
 .evaluation-snippet .arrow-wrap {
   margin-top: 18px;
   width: 0;

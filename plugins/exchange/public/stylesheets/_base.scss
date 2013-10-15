@@ -151,17 +151,20 @@ $color-action-button: #394E41;
 
 /* Images */
 
+$profile-thumb-size: 4*$base;
+$profile-portrait-size: 10*$base;
+
 /* profile-image that can be centered and resized with aspect ratio */
 .profile-image {
   display: inline-block;
 
   &.thumb {
-    width: 4*$base;
-    height: 4*$base;
+    width: $profile-thumb-size;
+    height: $profile-thumb-size;
   }
   &.portrait {
-    width: 10*$base;
-    height: 10*$base;
+    width: $profile-portrait-size;
+    height: $profile-portrait-size;
   }
 
   /* do not put padding in this as background size will consider it. */

@@ -7,8 +7,6 @@ $image-star-empty: "/plugins/evaluation/images/star_empty.png";
 $image-star-width: 29px;
 $image-star-height: 25px;
 
-$profile-thumb-size: 4*$base;
-
 /* Colors */
 
 $color-text-area-border: #C5AAA5;
@@ -42,25 +40,17 @@ $color-text-area-border: #C5AAA5;
 .evaluation-snippet {
 
   &.left {
-    .evaluation-thumb,
+    .profile-image,
     .arrow-wrap,
     .evaluation-text {
       float: left;
     }
   }
   &.right {
-    .evaluation-thumb,
+    .profile-image,
     .arrow-wrap,
     .evaluation-text {
       float: right;
-    }
-  }
-
-  .evaluation-thumb {
-
-    img {
-      width: $profile-thumb-size;
-      height: $profile-thumb-size;
     }
   }
 
