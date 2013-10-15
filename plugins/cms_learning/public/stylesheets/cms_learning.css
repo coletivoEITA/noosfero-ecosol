@@ -9,10 +9,11 @@
   display: block;
   /* Sets element back to block */ }
 
+/* layout base parameters */
 /* heights should only use multiples of this */
 /* base measurements */
-/* widths should only use these */
-/* paddings and margins should only use these
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
    REMEMBER to disccount the borders size from padding, as borders uses padding's space.
  */
 /* use for borders */
