@@ -1075,6 +1075,11 @@ body.action-sniffer_plugin_myprofile-search {
       .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop .escambo-plugin-profile-block {
         float: left; }
 
+/* content */
+body.controller-content_viewer .icon-new,
+body.controller-content_viewer .icon-alert {
+  display: none; }
+
 /* colors of borders/backgrounds */
 .escambo-inside-border-purple {
   border-color: #7F0085; }

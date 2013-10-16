@@ -146,6 +146,13 @@ $image-next: '/plugins/escambo/images/next.png';
   }
 }
 
+/* content */
+
+body.controller-content_viewer .icon-new,
+body.controller-content_viewer .icon-alert {
+  display: none;
+}
+
 /* colors of borders/backgrounds */
 
 .escambo-inside-border-purple {
