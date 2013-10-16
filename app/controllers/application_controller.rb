@@ -120,6 +120,7 @@ class ApplicationController < ActionController::Base
       end
     else
       @environment = @domain.environment
+      @profile = @domain.profile
 
       # Check if the requested profile belongs to another domain
       if @domain.profile and params[:profile].present? and params[:profile] != @domain.profile.identifier
