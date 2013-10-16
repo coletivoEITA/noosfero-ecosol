@@ -89,15 +89,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     self.supplier.destroy if self.supplier.dummy?
     destroy_without_dummy
   end
-  def destroy_with_products
-    return if self.self?
-    self.consumer.products.from_supplier_id(self.id).each do |product|
-      product.update_attribute :archived, true
-    end
-    destroy_without_products
-  end
   alias_method_chain :destroy, :dummy
-  alias_method_chain :destroy, :products
 
   protected
 
