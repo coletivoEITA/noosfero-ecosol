@@ -360,6 +360,16 @@ class Article < ActiveRecord::Base
     false
   end
 
+  def download? view = nil
+    (self.uploaded_file? and not self.image?) or
+      (self.image? and view.blank?) or
+      (not self.uploaded_file? and self.mime_type != 'text/html')
+  end
+
+  def download_headers
+    {}
+  end
+
   named_scope :native_translations, :conditions => { :translation_of_id => nil }
 
   def translatable?
