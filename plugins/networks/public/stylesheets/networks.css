@@ -150,7 +150,7 @@
   float: right; }
 
 .controller-networks_plugin_network #suppliers-page {
-  min-height: 240px;
-  min-width: 464px; }
+  min-height: 400px;
+  min-width: 704px; }
   .controller-networks_plugin_network #suppliers-page .supplier#supplier-add {
     display: block; }

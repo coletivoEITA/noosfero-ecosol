@@ -1,7 +1,7 @@
 <div id="find-enterprise">
-  <%= render :partial => 'suppliers_plugin_myprofile/enterprise_search' %>
+  <%= render :partial => 'suppliers_plugin_myprofile/enterprise_search', :locals => {:supplier => supplier, :profile => profile} %>
 </div>
 
 <div id="create-dummy">
-  <%= render :partial => 'suppliers_plugin_myprofile/edit', :locals => {:supplier => supplier} %>
+  <%= render :partial => 'suppliers_plugin_myprofile/edit', :locals => {:supplier => supplier, :profile => profile} %>
 </div>
