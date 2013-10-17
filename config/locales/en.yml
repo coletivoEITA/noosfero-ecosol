@@ -239,7 +239,7 @@
         plural: "suppliers"
     controllers: 
       myprofile: 
-        supplier_created: "%{terms.supplier.singular} created"
+        supplier_created: "%{terms.supplier.singular.capitalize} created"
     models:
       base_product:
       distributed_product: 
@@ -297,7 +297,7 @@
           unit_specification: "Unit specification"
         _search: 
           status: Status
-          supplier: "%{terms.supplier.singular}"
+          supplier: "%{terms.supplier.singular.capitalize}"
           category: Category
           product: Product
           margin: Margin
@@ -328,7 +328,7 @@
           margin: "%{margin} %"
           no_margin_set: "no margin set"
           products: Products
-          supplier: "%{terms.supplier.singular}"
+          supplier: "%{terms.supplier.singular.capitalize}"
           info: "This is list of all the products with which your collective works. Here it's possible to add and remove products, besides desactivating temporarily your commercialization in the Cycles' orders."
           show_products_from: "Show products from"
           the_products: "The products"
@@ -338,13 +338,13 @@
           with_the_qualifiers: "with the qualifiers"
       supplier: 
         _new:
-          title: "Find an enterprise to add"
-          query_placeholder: "Enterprise's name"
+          title: "Find an %{terms.supplier.singular} to add"
+          query_placeholder: "%{terms.supplier.singular}'s name"
           search: "Search"
-          none_found: "No enterprise found. Please revise the search text."
+          none_found: "No %{terms.supplier.singular} found. Please revise the search text."
           add: "Add"
-          suggest_creation: "Haven't found the enterprise you were searching?.\n You can create a new enterprise managed by organization."
-          create_dummy: "Create enterprise"
+          suggest_creation: "Haven't found the %{terms.supplier.singular} you were searching?.\n You can create a new %{terms.supplier.singular} managed by organization."
+          create_dummy: "Create %{terms.supplier.singular}"
         _edit: 
           registry_help: "The registry of the %{terms.supplier.singular} will be managed by the organization itself and will be private to it."
           abbreviated_name: "Abbreviated name"
@@ -376,7 +376,7 @@
           registered_supplier_i: "Registered %{terms.supplier.singular} in the network"
           remove: remove
           supplier_profile_product: " registered products"
-          supplier_with_registr: "%{terms.supplier.singular} with registry managed by the collective"
+          supplier_with_registr: "%{terms.supplier.singular.capitalize} with registry managed by the collective"
           this_supplier_has: "This %{terms.supplier.singular} has"
         _suppliers_list: 
           this_search_didn_t_re: "This search didn't return %{terms.supplier.plural}."
@@ -386,7 +386,7 @@
           filter: Filter
           filter_it: Filter
           name: Name
-          suppliers: "%{terms.supplier.plural}"
+          suppliers: "%{terms.supplier.plural.capitalize}"
           this_is_the_list_of_s: "This is the list of %{terms.supplier.plural} associated to this consumption collective. It is possible to associate with existent %{terms.supplier.plural} or register one."
 
   delivery_plugin:
@@ -522,7 +522,7 @@
           products_list: "Products list"
           qtt: QTT.
           quantity_unit: "%{quantity} %{unit}"
-          supplier_product: "%{terms.supplier.singular}/Product"
+          supplier_product: "%{terms.supplier.singular.capitalize}/Product"
           total: "TOTAL:"
 
   orders_cycle_plugin: 
@@ -562,7 +562,7 @@
         selled_total: "selled total"
         selled_value: "selled value"
         stock_qtt: "stock qtt"
-        supplier: "%{terms.supplier.singular}"
+        supplier: "%{terms.supplier.singular.capitalize}"
         total_parcel_value: "Total parcel value"
         total_selled_value: "Total selled value"
         total_value: "Total Value"
@@ -590,16 +590,6 @@
         invalid_delivery_peri: "Invalid delivery' period"
         invalid_orders_period: "Invalid orders' period"
     views: 
-      blocks: 
-        order: 
-          any_cycle_is_open_for: "Any cycle is open for orders."
-          ask_an_administrator_: "Ask an administrator to became a member of this enterprise."
-          delivery: delivery
-          join_this_community_t: "Join this community to buy from this collective."
-          meet_the_producers: "meet the producers"
-          meet_the_products: "meet the products"
-          orders: orders
-          see_all_cycles: "see all cycles"
       gadgets: 
         _cycle: 
           happening: Happening
@@ -704,7 +694,7 @@
           in_any_state: "In any state"
           inactive: inactive
           product_name: "Product Name"
-          supplier: %{terms.supplier.singular}
+          supplier: "%{terms.supplier.singular.capitalize}"
           whose_qty_available_i: "whose qty. available is"
         _status: 
           code_status_message: "%{code} %{status_message}"
@@ -811,7 +801,7 @@
           product: Product
           qty_avail: "Qty. avail."
           showing_pcount_produc: "Showing %{pcount} products of %{allpcount}"
-          supplier: "%{terms.supplier.singular}"
+          supplier: "%{terms.supplier.singular.capitalize}"
         _results: 
           no_cycles_to_show: "No cycles to show"
         _timeline: 
@@ -888,7 +878,7 @@
           orders_cycles: "Orders' Cycles"
           parcels: Parcels
           products: Products
-          suppliers: "%{terms.supplier.plural}"
+          suppliers: "%{terms.supplier.plural.capitalize}"
         _header: 
           collective_consumptio: "Network of Consumers' Coop"
       profile:
@@ -943,13 +933,13 @@
       network:
         show_structure:
           title: "Network's structure"
-          add_enterprise: "Add enterprise"
+          add_enterprise: "Add %{terms.supplier.singular}"
           add_node: "Create node"
           edit: "Edit"
           config: "Setup"
           remove: "Remove"
           nodes: "Nodes"
-          enterprises: "Enterprises"
+          enterprises: "%{terms.supplier.plural.capitalize}"
       node:
         create:
           new_button: "Create"

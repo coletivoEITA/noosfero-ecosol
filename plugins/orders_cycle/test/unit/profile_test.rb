@@ -116,7 +116,7 @@ class OrdersCyclePlugin::ProfileTest < ActiveRecord::TestCase
     @profile.add_supplier @other_profile
     @profile.remove_supplier @other_profile
     assert_equal [product], @profile.from_products
-    assert_equal 1, @profile.products.distributed.archived.count
+    assert_equal 1, @profile.distributed_products.archived.count
   end
 
   should 'create self supplier automatically' do
