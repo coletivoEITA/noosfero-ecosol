@@ -1,38 +1,32 @@
 <h2> <%= t('suppliers_plugin.views.supplier._new.title') %> </h2>
 
-<% form_remote_tag :method => :get, :url => {:action => :enterprise_search, :profile => profile.identifier} do %>
+<% form_remote_tag :method => :get, :url => {:action => :enterprise_search, :profile => profile.identifier},
+  :loading => "loading_overlay.show('#enterprises-results')", :loaded => "loading_overlay.hide('#enterprises-results');",
+  :html => {:id => 'enterprise-search-form'} do %>
+
   <%= text_field_tag 'query', nil, :placeholder => t('suppliers_plugin.views.supplier._new.query_placeholder'),
-    :onchange => 'suppliers.add.search(this)' %>
-<% end %>
+    :onkeyup => 'suppliers.add.search(this)' %>
 
-<% unless @enterprises.nil? %>
-  <% if @enterprises.empty? %>
-    <%= t('suppliers_plugin.views.supplier._new.none_found') %>
-  <% else %>
-    <table id="enterprises-results">
-      <% @enterprises.each do |enterprise| %>
-        <tr>
-          <td>
-            <%= enterprise.name %>
-          </td>
-          <td>
-            <%= link_to_remote t('suppliers_plugin.views.supplier._new.add'),
-              :loading => "loading_overlay.show('#supplier-add')",
-              :loaded => "loading_overlay.hide('#supplier-add'); suppliers.add.supplier_added();",
-              :update => "search-results",
-              :url => {:action => :add_enterprise, :profile => profile.identifier, :id => enterprise.id},
-              :class => 'action-button' %>
-          </td>
-        </tr>
-      <% end %>
-    </table>
+  <% unless @enterprises.nil? %>
+    <% if @enterprises.empty? %>
+      <%= t('suppliers_plugin.views.supplier._new.none_found') %>
+    <% else %>
+      <table id="enterprises-results">
+        <% @enterprises.each do |enterprise| %>
+          <tr>
+            <%= render 'enterprise_result', :enterprise => enterprise %>
+          </tr>
+        <% end %>
+      </table>
 
-    <div id="suggest-creation">
-      <div class="subtitle">
-        <%= t('suppliers_plugin.views.supplier._new.suggest_creation') %>
+      <div id="suggest-creation">
+        <div class="subtitle">
+          <%= t('suppliers_plugin.views.supplier._new.suggest_creation') %>
+        </div>
+
+        <%= link_to_function t('suppliers_plugin.views.supplier._new.create_dummy'), 'suppliers.add.create_dummy();' %>
       </div>
-
-      <%= link_to_function t('suppliers_plugin.views.supplier._new.create_dummy'), 'suppliers.add.create_dummy();' %>
-    </div>
+    <% end %>
   <% end %>
+
 <% end %>

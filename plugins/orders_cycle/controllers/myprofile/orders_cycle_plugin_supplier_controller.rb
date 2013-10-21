@@ -4,13 +4,12 @@ OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
 
 class OrdersCyclePluginSupplierController < SuppliersPluginMyprofileController
 
-  protect 'edit_profile', :profile
-
   include ControllerInheritance
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
 
   no_design_blocks
+  protect 'edit_profile', :profile
 
   helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
