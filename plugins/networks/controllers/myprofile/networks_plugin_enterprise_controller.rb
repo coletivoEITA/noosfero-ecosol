@@ -5,6 +5,7 @@ NetworksPlugin::NetworksDisplayHelper = NetworksPlugin::DisplayHelper
 class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
 
   include ControllerInheritance
+  replace_url_for self.superclass
   include NetworksPlugin::TranslationHelper
 
   helper NetworksPlugin::NetworksDisplayHelper
@@ -24,11 +25,5 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
   end
 
   protected
-
-  # use superclass instead of child
-  def url_for options
-    options[:controller] = :networks_plugin_enterprise if options[:controller].to_s == 'suppliers_plugin_myprofile'
-    super options
-  end
 
 end

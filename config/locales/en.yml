@@ -309,7 +309,7 @@
         _select_missing: 
           add_all_missing_produ: "add all missing products from this %{terms.supplier.singular}"
           cancel: cancel
-          the_following_product: "The following products from this %{terms.supplier.singular} are not distributed by your collective. Which product do you want to add?"
+          the_following_product: "The following products from this %{terms.supplier.singular} are not distributed by your %{terms.consumer.singular}. Which product do you want to add?"
           there_isn_t_any_new_p: "There isn't any new product from this %{terms.supplier.singular}."
         index: 
           active: active
@@ -329,7 +329,7 @@
           no_margin_set: "no margin set"
           products: Products
           supplier: "%{terms.supplier.singular.capitalize}"
-          info: "This is list of all the products with which your collective works. Here it's possible to add and remove products, besides desactivating temporarily your commercialization in the Cycles' orders."
+          info: "This is list of all the products with which your %{terms.consumer.singular} works. Here it's possible to add and remove products, besides desactivating temporarily your commercialization in the Cycles' orders."
           show_products_from: "Show products from"
           the_products: "The products"
           whose_name_contains: "whose name contains"
@@ -343,12 +343,12 @@
           search: "Search"
           none_found: "No %{terms.supplier.singular} found. Please revise the search text."
           add: "Add"
-          suggest_creation: "Haven't found the %{terms.supplier.singular} you were searching?.\n You can create a new %{terms.supplier.singular} managed by organization."
+          suggest_creation: "Haven't found the %{terms.supplier.singular} you were searching?.\n You can create a new %{terms.supplier.singular} managed by the %{terms.consumer.singular}."
           create_dummy: "Create %{terms.supplier.singular}"
         _edit: 
-          registry_help: "The registry of the %{terms.supplier.singular} will be managed by the organization itself and will be private to it."
+          registry_help: "The registry of the %{terms.supplier.singular} will be managed by the %{terms.consumer.singular} itself and will be private to it."
           abbreviated_name: "Abbreviated name"
-          add_supplier_managed_: "Add %{terms.supplier.singular} managed by the collective"
+          add_supplier_managed_: "Add %{terms.supplier.singular} managed by the %{terms.consumer.singular}"
           additional_fields: "Additional fields"
           basic_data: "Basic data"
           cancel: cancel
@@ -371,12 +371,12 @@
           activate: activate
           edit: edit
           products_are_active: " produtos estão ativos"
-          products_distributed: " distributed products by the collective"
+          products_distributed: " distributed products by the %{terms.consumer.singular}"
           products: products
           registered_supplier_i: "Registered %{terms.supplier.singular} in the network"
           remove: remove
           supplier_profile_product: " registered products"
-          supplier_with_registr: "%{terms.supplier.singular.capitalize} with registry managed by the collective"
+          supplier_with_registr: "%{terms.supplier.singular.capitalize} with registry managed by the %{terms.consumer.singular}"
           this_supplier_has: "This %{terms.supplier.singular} has"
         _suppliers_list: 
           this_search_didn_t_re: "This search didn't return %{terms.supplier.plural}."
@@ -387,7 +387,7 @@
           filter_it: Filter
           name: Name
           suppliers: "%{terms.supplier.plural.capitalize}"
-          this_is_the_list_of_s: "This is the list of %{terms.supplier.plural} associated to this consumption collective. It is possible to associate with existent %{terms.supplier.plural} or register one."
+          this_is_the_list_of_s: "This is the list of %{terms.supplier.plural} associated to this %{terms.consumer.singular}. It is possible to associate with existent %{terms.supplier.plural} or register one."
 
   delivery_plugin:
     lib:
@@ -497,7 +497,7 @@
           save: Save
           see_delivery: "see delivery"
           see_redistribution: "see redistribution"
-          the_collective_member: "The collective member will receive an email that discriminates all changes made in his/her order"
+          the_collective_member: "The %{terms.consumer.singular} member will receive an email that discriminates all changes made in his/her order"
           warn_member_of_the_ch: "Warn member of the changes in his/her order"
 
       mailer:
@@ -509,11 +509,11 @@
           order_data_confirmed: "Order data confirmed:"
           the_delivery_period_w: "The delivery period will occur %{date}."
           your_order_can_be_che: "Your order can be checked in the following link:"
-          your_order_made_on_co: "Your order made on collective %{name} in %{date} is confirmed."
+          your_order_made_on_co: "Your order made on %{terms.consumer.singular} %{name} in %{date} is confirmed."
         order_cancellation: 
           dear_name: "Dear %{name},"
           greetings: Greetings
-          your_order_made_on_co: "Your order made on collective %{name} in %{date} was successfully cancelled."
+          your_order_made_on_co: "Your order made on %{terms.consumer.singular} %{name} in %{date} was successfully cancelled."
         _complete_order: 
           order_no_code: "Order Nº: %{code}"
           price: Price
@@ -606,18 +606,18 @@
         message_to_consumer: 
           a_service_of_s: "A service of %s."
           hello_name: "Hello %{name},"
-          the_collective_profile_s: "The collective %{profile} sent a messsage to you"
+          the_collective_profile_s: "The %{terms.consumer.singular} %{profile} sent a messsage to you"
         message_to_consumer_for_order: 
           a_service_of_s: "A service of %s."
           hello_name: "Hello %{name}!"
           order: order
           quantity_unit_of_prod: "%{quantity} %{unit} of %{product}"
-          the_collective_profile_s: "The collective %{profile} sent a messsage to you regarding your %{order}"
+          the_collective_profile_s: "The %{terms.consumer.singular} %{profile} sent a messsage to you regarding your %{order}"
           the_products_in_the_o: "The products in the order"
         message_to_supplier: 
           a_service_of_s: "A service of %s."
           hello_administrators_: "Hello administrators of %{name},"
-          the_collective_profile_s: "The collective %{profile} sent a messsage to you"
+          the_collective_profile_s: "The %{terms.consumer.singular} %{profile} sent a messsage to you"
         open_cycle: 
           a_new_cycle_is_open_c: "A new cycle is open called "
           hello_member_of_name: "Hello member of %{name},"
@@ -670,7 +670,7 @@
           sign_up: "sign up"
           this_cycle_is_already: "This cycle is already closed."
           this_cycle_is_not_ope: "This cycle is not open yet."
-          to_place_an_order_you: "To place an order you need to be logged in and registered in the collective. Please %{login} or %{signup}."
+          to_place_an_order_you: "To place an order you need to be logged in and registered in the %{terms.consumer.singular}. Please %{login} or %{signup}."
           you_haven_t_placed_an: "You haven't placed any order on this cycle yet."
           you_still_can: "You still can:"
           your_order_is_confirm: "Your order is confirmed and registered. Please follow the guidelines of the delivery method below, so that it happens without problems."
@@ -768,7 +768,7 @@
           opening_message: "Opening Message"
           orders_interval: "Orders Interval"
           save: Save
-          this_message_will_be_: "This message will be sent by mail for the collective consumers"
+          this_message_will_be_: "This message will be sent by mail for the %{terms.consumer.singular} consumers"
         _edit_popin: 
           close: Close
           cycle_editing: "Cycle editing"
@@ -837,7 +837,7 @@
         _view_products: 
           the_products: "The products"
         add_products: 
-          add_all_missing_produ: "add all missing products from the collective"
+          add_all_missing_produ: "add all missing products from the %{terms.consumer.singular}"
           add_product_to_cycle_: "Add product to cycle's products"
           cancel: cancel
           close: close
@@ -865,6 +865,13 @@
         orders: Orders
         start: Start
         administration: Administration
+    terms:
+      consumer:
+        singular: "consumers' coop"
+        plural: "consumers' coop"
+      supplier: 
+        singular: "supplier"
+        plural: "suppliers"
     controllers:
       myprofile:
         distribution_settings: "Distribution settings saved."
@@ -885,7 +892,7 @@
         index: 
           dashboard: Dashboard
         settings: 
-          abbreviated_name_of_t: "Abbreviated name of the Collective"
+          abbreviated_name_of_t: "Abbreviated name of the %{terms.consumer.singular}"
           activated: Activated
           black: black
           cancel: cancel
@@ -894,14 +901,14 @@
           header_background_col: "Header background color"
           header_s_image: "Header's image"
           header_type: "Header Type"
-          image_collective_name: "Image + collective name"
+          image_collective_name: "Image + %{terms.consumer.singular} name"
           only_the_image: "Only the image"
-          image_help: "This image will be used on the Collective's page, must be 1040x90px, it will be automatically cropped to this size."
-          pure_color_collective: "pure color + collective name"
+          image_help: "This image will be used on the %{terms.consumer.singular}'s page, must be 1040x90px, it will be automatically cropped to this size."
+          pure_color_collective: "pure color + %{terms.consumer.singular} name"
           save: Save
           settings_of_solidary_: "Settings of the Consumers' Coop"
           text_color: "Text color"
-          this_name_will_be_use: "This name will be used to avoid always use the full name of the Collective. How the Collective is generally called by the people?"
+          this_name_will_be_use: "This name will be used to avoid always use the full name of the %{terms.consumer.singular}. How the %{terms.consumer.singular} is generally called by the people?"
           white: white
 
   networks_plugin:

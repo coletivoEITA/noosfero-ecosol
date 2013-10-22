@@ -13,9 +13,7 @@
     <% else %>
       <table id="enterprises-results">
         <% @enterprises.each do |enterprise| %>
-          <tr>
-            <%= render 'enterprise_result', :enterprise => enterprise %>
-          </tr>
+          <%= render 'enterprise_result', :enterprise => enterprise %>
         <% end %>
       </table>
 

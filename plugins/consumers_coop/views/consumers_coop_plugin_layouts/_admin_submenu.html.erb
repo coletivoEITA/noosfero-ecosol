@@ -1,8 +1,8 @@
 <%
   urls = [
-    [t('consumers_coop_plugin.views.layouts._admin_submenu.orders_cycles'), {:controller => :orders_cycle_plugin_cycle, :action => :index, :profile => profile.identifier}, false],
-    [t('consumers_coop_plugin.views.layouts._admin_submenu.products'), {:controller => :orders_cycle_plugin_product, :action => :index, :profile => profile.identifier}, false],
-    [t('consumers_coop_plugin.views.layouts._admin_submenu.suppliers'), {:controller => :orders_cycle_plugin_supplier, :action => :index, :profile => profile.identifier}, false],
+    [t('consumers_coop_plugin.views.layouts._admin_submenu.orders_cycles'), {:controller => :consumers_coop_plugin_cycle, :action => :index, :profile => profile.identifier}, false],
+    [t('consumers_coop_plugin.views.layouts._admin_submenu.products'), {:controller => :consumers_coop_plugin_product, :action => :index, :profile => profile.identifier}, false],
+    [t('consumers_coop_plugin.views.layouts._admin_submenu.suppliers'), {:controller => :consumers_coop_plugin_supplier, :action => :index, :profile => profile.identifier}, false],
   ]
 %>
 <div class="admin-submenu">
