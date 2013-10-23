@@ -25,14 +25,17 @@
   <div class="listing">
     <h3><%= t('networks_plugin.views.network.show_structure.nodes') %></h3>
     <% @nodes.each do |node| %>
-      <div class="row">
+
+      <div id="node-<%= node.id %>" class="row">
         <div class="name">
           <%= link_to node.name, :node_id => node.id %>
         </div>
         <div class="actions">
           <%= link_to t('networks_plugin.views.network.show_structure.config'), :controller => :networks_plugin_node, :action => :edit, :id => node.id %>
           |
-          <%= link_to t('networks_plugin.views.network.show_structure.remove'), :controller => :networks_plugin_node, :action => :destroy, :id => node.id %>
+          <%= link_to_remote t('networks_plugin.views.network.show_structure.remove'),
+            :loading => "loading_overlay.show('#node-#{node.id}')",
+            :url => {:controller => :networks_plugin_node, :action => :destroy, :id => node.id} %>
         </div>
       </div>
     <% end %>

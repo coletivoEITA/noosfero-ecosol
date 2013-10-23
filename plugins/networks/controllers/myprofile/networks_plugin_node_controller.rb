@@ -2,10 +2,9 @@ class NetworksPluginNodeController < MyProfileController
 
   include NetworksPlugin::TranslationHelper
 
-  def associate
-    @network = profile
-    @node = NetworksPlugin::Node.find_by_id(params[:id]) || @network
+  before_filter :load_node, :only => [:associate]
 
+  def associate
     @new_node = NetworksPlugin::Node.new((params[:node] || {}).merge(:environment => environment))
 
     if params[:commit]
@@ -38,12 +37,14 @@ class NetworksPluginNodeController < MyProfileController
 
   def destroy
     @node = NetworksPlugin::Node.find params[:id]
-    @parent = @node.parent
     @node.destroy
-
-    redirect_to :controller => :networks_plugin_network, :action => :show_structure, :node_id => @parent.id
   end
 
   protected
+
+  def load_node
+    @network = profile
+    @node = NetworksPlugin::Node.find_by_id(params[:id]) || @network
+  end
 
 end
