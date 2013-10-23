@@ -349,7 +349,7 @@
       supplier: 
         _new:
           title: "Buscar um %{terms.supplier.singular} a adicionar"
-          query_placeholder: "Nome do emprendimento"
+          query_placeholder: "busque um %{terms.supplier.singular}"
           search: "Buscar"
           none_found: "Nenhum %{terms.supplier.singular} foi encontrado. Por favor revise o texto da busca."
           add: "Adicionar"

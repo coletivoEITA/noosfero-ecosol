@@ -1,0 +1,13 @@
+<h2> <%= t('suppliers_plugin.views.supplier._new.title') %> </h2>
+
+<% form_remote_tag :method => :get, :url => {:action => :search, :profile => profile.identifier},
+  :loading => "loading_overlay.show('#results')", :loaded => "loading_overlay.hide('#results');",
+  :html => {:id => 'enterprise-search-form'} do %>
+
+  <%= text_field_tag 'query', nil, :placeholder => t('suppliers_plugin.views.supplier._new.query_placeholder'),
+    :onkeyup => 'suppliers.add.search(this)' %>
+
+  <div id="results">
+  </div>
+
+<% end %>

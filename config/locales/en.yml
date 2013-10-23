@@ -339,7 +339,7 @@
       supplier: 
         _new:
           title: "Find an %{terms.supplier.singular} to add"
-          query_placeholder: "%{terms.supplier.singular}'s name"
+          query_placeholder: "find an %{terms.supplier.singular}"
           search: "Search"
           none_found: "No %{terms.supplier.singular} found. Please revise the search text."
           add: "Add"

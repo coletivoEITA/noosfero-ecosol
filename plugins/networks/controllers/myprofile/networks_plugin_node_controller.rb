@@ -2,7 +2,7 @@ class NetworksPluginNodeController < MyProfileController
 
   include NetworksPlugin::TranslationHelper
 
-  def create
+  def associate
     @network = profile
     @node = NetworksPlugin::Node.find_by_id(params[:id]) || @network
 

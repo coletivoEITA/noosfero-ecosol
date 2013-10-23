@@ -2,9 +2,10 @@ class ConsumersCoopPluginProductController < OrdersCyclePluginProductController
 
   no_design_blocks
   include ControllerInheritance
-  replace_url_for self.superclass
   include ConsumersCoopPlugin::TranslationHelper
 
   protected
+
+  replace_url_for self.superclass
 
 end

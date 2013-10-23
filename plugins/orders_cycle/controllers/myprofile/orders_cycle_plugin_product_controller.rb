@@ -7,7 +7,6 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
   include ControllerInheritance
-  replace_url_for self.superclass, SuppliersPluginProductController
 
   no_design_blocks
 
@@ -55,5 +54,7 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
   end
 
   protected
+
+  replace_url_for self.superclass, SuppliersPluginProductController
 
 end

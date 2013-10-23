@@ -12,10 +12,13 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
 
   def new
     super
-    render :partial => 'suppliers_plugin_myprofile/pagereload'
   end
 
   def add
+    super
+  end
+
+  def associate
     @network = profile
     @node = NetworksPlugin::Node.find_by_id(params[:id]) || @network
 

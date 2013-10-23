@@ -19,7 +19,7 @@ suppliers = {
 
   add: {
     supplier_added: function () {
-      jQuery('#enterprises-results').html('');
+      jQuery('#results').html('');
     },
     create_dummy: function () {
       jQuery('#find-enterprise, #create-dummy, #create-dummy .box-edit').toggle();
