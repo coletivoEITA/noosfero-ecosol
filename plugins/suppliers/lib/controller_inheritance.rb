@@ -13,7 +13,7 @@ module ControllerInheritance
             path = "#{klass.controller_path}/_#{partial_path}"
             self.view_paths.find_template path, self.template_format
           rescue ::ActionView::MissingTemplate
-            raise "Can't find #{partial_path} in any #{controller.class}'s parent" unless (klass.inherit_templates rescue nil)
+            raise "Can't find '#{partial_path}' in any #{controller.class}'s parent" unless (klass.inherit_templates rescue nil)
           end
         end
       else
@@ -69,7 +69,7 @@ module ControllerInheritance
         begin
           a = self.view_paths.find_template "#{klass.controller_path}/#{action_name}", default_template_format
         rescue ::ActionView::MissingTemplate
-          raise "Can't find template #{action_name} in any #{self.class}'s parent" unless (klass.inherit_templates rescue nil)
+          raise "Can't find template '#{action_name}' in any #{self.class}'s parent" unless (klass.inherit_templates rescue nil)
         end
       end
     end

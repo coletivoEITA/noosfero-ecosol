@@ -38,15 +38,19 @@
     <% end %>
 
     <h3><%= t('networks_plugin.views.network.show_structure.enterprises') %></h3>
-    <% @enterprises.each do |enterprise| %>
-      <div class="row">
+    <% @suppliers.each do |supplier| %>
+      <% enterprise = supplier.profile %>
+
+      <div id="supplier-<%= supplier.id %>" class="row">
         <div class="name">
           <%= link_to enterprise.name, enterprise.url, :target => '_blank' %>
         </div>
         <div class="actions">
-          <%= link_to t('networks_plugin.views.network.show_structure.edit'), :controller => :networks_plugin_enterprise, :action => :edit, :id => enterprise.id %>
+          <%= link_to t('networks_plugin.views.network.show_structure.edit'), :controller => :networks_plugin_enterprise, :action => :edit, :id => supplier.id %>
           |
-          <%= link_to t('networks_plugin.views.network.show_structure.remove'), :controller => :networks_plugin_enterprise, :action => :destroy, :id => enterprise.id %>
+          <%= link_to_remote t('networks_plugin.views.network.show_structure.remove'),
+            :loading => "loading_overlay.show('#supplier-#{supplier.id}')",
+            :url => {:controller => :networks_plugin_enterprise, :action => :destroy, :node_id => @node.id, :id => supplier.id} %>
         </div>
       </div>
     <% end %>

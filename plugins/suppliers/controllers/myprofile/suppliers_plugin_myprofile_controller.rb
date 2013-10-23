@@ -32,7 +32,7 @@ class SuppliersPluginMyprofileController < MyProfileController
   end
 
   def edit
-    @supplier = SuppliersPlugin::Supplier.find params[:id]
+    @supplier = profile.suppliers.find params[:id]
     @supplier.update_attributes! params[:supplier]
   end
 
@@ -49,12 +49,12 @@ class SuppliersPluginMyprofileController < MyProfileController
   end
 
   def toggle_active
-    @supplier = SuppliersPlugin::Supplier.find params[:id]
+    @supplier = profile.suppliers.find params[:id]
     @supplier.toggle! :active
   end
 
   def destroy
-    @supplier = SuppliersPlugin::Supplier.find params[:id]
+    @supplier = profile.suppliers.find params[:id]
     @supplier.destroy
   end
 
@@ -71,8 +71,9 @@ class SuppliersPluginMyprofileController < MyProfileController
   end
 
   def search_scope scope
-    scope = scope.by_active(params[:active]) if params[:active].present?
-    scope = scope.with_name(params[:name]) if params[:name].present?
+    scope = scope.by_active params[:active] if params[:active].present?
+    scope = scope.with_name params[:name] if params[:name].present?
     scope
   end
+
 end

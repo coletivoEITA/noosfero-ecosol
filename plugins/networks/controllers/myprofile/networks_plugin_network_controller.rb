@@ -16,7 +16,7 @@ class NetworksPluginNetworkController < MyProfileController
     @node = NetworksPlugin::Node.find_by_id(params[:node_id]) || @network
 
     @nodes = @node.as_parent_relations.all.collect(&:child)
-    @enterprises = @node.suppliers.except_self.collect(&:supplier)
+    @suppliers = @node.suppliers.except_self
   end
 
   protected
