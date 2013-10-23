@@ -6,10 +6,9 @@ class NetworksPluginNodeController < MyProfileController
 
   def associate
     @new_node = NetworksPlugin::Node.new((params[:node] || {}).merge(:environment => environment))
+    @new_node.parent = @node
 
     if params[:commit]
-      @new_node.identifier = @new_node.name.to_slug
-      @new_node.parent = @node
       if @new_node.save
         render :partial => 'suppliers_plugin_shared/pagereload'
       else
