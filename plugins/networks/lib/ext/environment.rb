@@ -9,7 +9,7 @@ class Environment
     unless @network_template
       theme = if Theme.system_themes.collect(&:id).include?('networks') then 'networks' else nil end
       self.network_template = self.networks.create! :name => 'Network template', :identifier => "#{self.name.to_slug}_network_template",
-        :visible => false, :is_template => true, :theme => theme
+        :visible => false, :is_template => true, :theme => theme, :layout_template => 'leftbar'
       self.save!
     end
     @network_template

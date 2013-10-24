@@ -26,9 +26,6 @@ class NetworksPluginNodeController < MyProfileController
   def edit
     @node = NetworksPlugin::Node.find params[:id]
 
-    @profile = @node
-    @profile_data = profile
-
     if request.post?
       @node.update_attributes params[:profile_data]
     end
