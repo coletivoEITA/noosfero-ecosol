@@ -5,8 +5,7 @@ class NetworksPluginNodeController < MyProfileController
   before_filter :load_node, :only => [:associate]
 
   def associate
-    @new_node = NetworksPlugin::Node.new((params[:node] || {}).merge(:environment => environment))
-    @new_node.parent = @node
+    @new_node = NetworksPlugin::Node.new((params[:node] || {}).merge(:environment => environment, :parent => @node))
 
     if params[:commit]
       if @new_node.save
@@ -28,6 +27,8 @@ class NetworksPluginNodeController < MyProfileController
 
     if request.post?
       @node.update_attributes params[:profile_data]
+      session[:notice] = t('networks_plugin.controllers.node.edit')
+      redirect_to :controller => :networks_plugin_network, :action => :show_structure, :node_id => @node.parent.id
     end
   end
 

@@ -11,6 +11,8 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   validates_associated :profile
   validates_uniqueness_of :consumer_id, :scope => :profile_id
 
+  validates_presence_of :name, :unless => :dummy?
+
   named_scope :active, :conditions => {:active => true}
 
   named_scope :of_profile, lambda { |n| { :conditions => {:profile_id => n.id} } }

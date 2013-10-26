@@ -1,3 +1,5 @@
+<h1><%= t('networks_plugin.views.node.edit.title') % {:node => @node.name} %></h1>
+<%= button(:back, t('networks_plugin.views.node.edit.back'), :controller => :networks_plugin_network, :action => :show_structure, :node_id => @node.parent.id) %>
 
 <% form_for :profile_data, @node, :html => { :id => 'profile-data', :multipart => true } do |f| %>
 
@@ -30,10 +32,10 @@
     <%= labelled_form_field _('City'), f.text_field(:city) %>
     <%= labelled_form_field _('ZIP code'), text_field(:profile_data, :zip_code) %>
     <%= labelled_form_field _('Address (street and number)'), text_field(:profile_data, :address) %>
+
     <% button_bar do %>
       <%= button_to_function :search, _('Locate in the map'), "addressToPoint()", :title => _("Locate the address informed above in the map below (note that you'll probably need to adjust the marker to get a precise position)")  %>
       <%= submit_button 'save', _('Save') %>
-      <%= button(:back, _('Back to control panel'), :controller => 'profile_editor') %>
     <% end %>
   </div>
 

@@ -935,6 +935,8 @@
       network:
         settings_button: "Informações e configurações da Rede"
     controllers:
+      node:
+        edit: "Configurações do nó salvas"
     views:
       control_panel:
         structure: "Gerenciar estrutura da rede"
@@ -959,4 +961,7 @@
         create:
           new_button: "Criar"
           context: "Criar novo nó dentro de '%{name}'"
+        edit:
+          title: "Configurações do nó %{node}"
+          back: "Voltar para a estrutura da rede"
 

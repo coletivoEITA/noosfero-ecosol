@@ -927,6 +927,8 @@
       network:
         settings_button: "Network's informations and settings"
     controllers:
+      node:
+        edit: "Node settings saved"
     views:
       control_panel:
         manage_control_panel_button: "Manage network's structure"
@@ -951,4 +953,7 @@
         create:
           new_button: "Create"
           context: "Create new node inside '%{name}'"
+        edit:
+          title: "Settings of node %{node}"
+          back: "Back to network's structure"
 
