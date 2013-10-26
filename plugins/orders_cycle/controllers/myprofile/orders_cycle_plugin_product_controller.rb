@@ -7,6 +7,7 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
   include ControllerInheritance
+  include SuppliersPlugin::TranslationHelper
 
   no_design_blocks
 

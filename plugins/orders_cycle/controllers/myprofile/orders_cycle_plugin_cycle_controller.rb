@@ -4,6 +4,7 @@ class OrdersCyclePluginCycleController < MyProfileController
 
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
+  include SuppliersPlugin::TranslationHelper
 
   no_design_blocks
   before_filter :set_admin_action

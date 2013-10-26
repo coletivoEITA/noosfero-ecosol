@@ -10,4 +10,7 @@ module SuppliersPlugin::TranslationHelper
     base.before_filter :set_terms_context
   end
 
+  # include here to be used on controller's t calls
+  include SuppliersPlugin::TermsHelper
+
 end

@@ -3,6 +3,7 @@ class OrdersCyclePluginMessageController < OrdersPluginMessageController
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
   helper OrdersPlugin::FieldHelper
+  include SuppliersPlugin::TranslationHelper
 
   no_design_blocks
 

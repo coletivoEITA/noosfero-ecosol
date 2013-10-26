@@ -28,8 +28,7 @@ module ControllerInheritance
 
     protected
 
-    def replace_url_for controllers = []
-      controllers = controllers.to_a
+    def replace_url_for *controllers
       self.send :define_method, :url_for do |options|
         controllers.each do |klass|
           options[:controller] = self.controller_path if options[:controller].to_s == klass.controller_path

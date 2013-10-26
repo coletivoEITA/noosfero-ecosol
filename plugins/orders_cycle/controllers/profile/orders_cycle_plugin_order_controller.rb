@@ -8,6 +8,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
   include ControllerInheritance
+  include SuppliersPlugin::TranslationHelper
 
   no_design_blocks
   before_filter :login_required, :except => [:index]

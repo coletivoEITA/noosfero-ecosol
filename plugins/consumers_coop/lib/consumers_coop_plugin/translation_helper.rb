@@ -10,4 +10,6 @@ module ConsumersCoopPlugin::TranslationHelper
     base.before_filter :set_terms_context
   end
 
+  include SuppliersPlugin::TermsHelper
+
 end

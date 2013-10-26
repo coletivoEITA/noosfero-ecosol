@@ -30,6 +30,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   named_scope :except_self, { :conditions => 'profile_id <> consumer_id' }
 
   after_create :add_admins_if_dummy
+  after_create :save_dummy
 
   def self.new_dummy attributes
     profile = Enterprise.new :visible => false, :identifier => Digest::MD5.hexdigest(rand.to_s),
@@ -62,20 +63,14 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   end
   def name= value
     self['name'] = value
-    if dummy?
-      self.supplier.name = value
-      self.supplier.save!
-    end
+    self.supplier.name = value if dummy?
   end
   def description
     self.attributes['description'] || self.profile.description
   end
   def description= value
     self['description'] = value
-    if dummy?
-      self.supplier.description = value
-      self.supplier.save!
-    end
+    self.supplier.description = value if dummy?
   end
 
   def abbreviation_or_name
@@ -97,6 +92,10 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     if dummy?
       self.consumer.admins.each{ |a| self.supplier.add_admin a }
     end
+  end
+
+  def save_dummy
+    self.supplier.save! if dummy?
   end
 
   # delete missing methods to profile
