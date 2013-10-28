@@ -319,13 +319,13 @@
         _select_missing: 
           add_all_missing_produ: "Adicione todos produtos que faltam deste %{terms.supplier.singular}."
           cancel: Cancelar
-          the_following_product: "Os seguintes produtos do %{terms.supplier.singular} não são distribuídos pelo seu coletivo. Que produto voce quer adicionar?"
+          the_following_product: "Os seguintes produtos do %{terms.supplier.singular} não são distribuídos pelo seu %{terms.consumer.singular}. Que produto voce quer adicionar?"
           there_isn_t_any_new_p: "Não há qualquer produto deste %{terms.supplier.singular}."
         index: 
           active: ativa
           add_product: "Adicionar produto"
           all_the_categories: "todas as categorias"
-          all_the_suppliers: "todos os %{terms.supplier.plural}"
+          all_the_suppliers: "todos %{terms.supplier.plural.article}"
           situation: "Situação de distribuição"
           anyone: anyone
           bigger_than_the_stock: "maior do que o estoque"
@@ -339,7 +339,7 @@
           margin: "%{margin} %"
           no_margin_set: "Sem margem definida"
           products: Produtos
-          info: "Esta é a lista de produtos com que o coletivo trabalha e é aqui que é feito o controle de estoque. Os produtos se dividem entre ativos e inativos. Os produtos ativos automaticamente são adicionados à lista de uma novo ciclo de pedidos."
+          info: "Esta é a lista de produtos com que o %{terms.consumer.singular} trabalha e é aqui que é feito o controle de estoque. Os produtos se dividem entre ativos e inativos. Os produtos ativos automaticamente são adicionados à lista de uma novo ciclo de pedidos."
           supplier: "%{terms.supplier.singular.capitalize}"
           the_products: "Os produtos"
           name: "Nome"
@@ -349,16 +349,16 @@
       supplier: 
         _new:
           title: "Buscar um %{terms.supplier.singular} a adicionar"
-          query_placeholder: "Nome do emprendimento"
+          query_placeholder: "busque um %{terms.supplier.singular}"
           search: "Buscar"
           none_found: "Nenhum %{terms.supplier.singular} foi encontrado. Por favor revise o texto da busca."
           add: "Adicionar"
-          suggest_creation: "Não encontrou o %{terms.supplier.singular} que buscava?. Você pode criar um novo %{terms.supplier.singular} gerido pela organização."
+          suggest_creation: "Não encontrou o %{terms.supplier.singular} que buscava?. Você pode criar um novo %{terms.supplier.singular} gerido pela %{terms.consumer.singular}."
           create_dummy: "Criar %{terms.supplier.singular}"
         _edit: 
-          registry_help: "O registro do %{terms.supplier.singular} será administrado pelo própria organização e será privado a ela."
+          registry_help: "O registro do %{terms.supplier.singular} será administrado pelo própria %{terms.consumer.singular} e será privado a ela."
           abbreviated_name: "Nome Abreviado"
-          add_supplier_managed_: "Adicionar %{terms.supplier.singular} com registro administrado pelo coletivo"
+          add_supplier_managed_: "Adicionar %{terms.supplier.singular} com registro administrado pela %{terms.consumer.singular}"
           additional_fields: "Campos adicionais"
           basic_data: "Informações básicas"
           cancel: Cancelar
@@ -376,17 +376,17 @@
           add_products: "adicionar produtos"
           among_them: ", entre eles"
           any_registered_produc: "nenhum produto registrado"
-          by_removing_this_supp: "Ao remover este %{terms.supplier.singular}, todos os produtos ficarão indisponíveis em futuras sessões. Por favor, confirme sua opção"
+          by_removing_this_supp: "Ao remover este %{terms.supplier.singular}, todos os produtos ficarão indisponíveis em futuros ciclos. Por favor, confirme sua opção"
           desactivate: desativar
           activate: ativar
           edit: editar
           products_are_active: " produtos estão ativos"
-          products_distributed: " produtos distribuídos pelo coletivo"
+          products_distributed: " produtos distribuídos pelo %{terms.consumer.singular}"
           products: produtos
           registered_supplier_i: "%{terms.supplier.singular.capitalize} registrado na rede"
           remove: remover
           supplier_profile_product: "produtos registrados"
-          supplier_with_registr: "%{terms.supplier.singular.capitalize} com registro administrado pelo coletivo"
+          supplier_with_registr: "%{terms.supplier.singular.capitalize} com registro administrado pelo %{terms.consumer.singular}"
           this_supplier_has: "Este %{terms.supplier.singular.capitalize} tem"
         _suppliers_list: 
           this_search_didn_t_re: "Esta busca não retornou %{terms.supplier.plural}."
@@ -396,7 +396,7 @@
           filter: Filtro
           name: Nome
           suppliers: "%{terms.supplier.plural.capitalize}"
-          this_is_the_list_of_s: "Esta é a lista de %{terms.supplier.plural} associados ao coletivo de consumo. É possível associá-lo a %{terms.supplier.plural} existentes ou registrar um."
+          this_is_the_list_of_s: "Esta é a lista de %{terms.supplier.plural} associados a %{terms.consumer.singular}. É possível associá-lo a %{terms.supplier.plural} existentes ou registrar um."
 
   delivery_plugin:
     lib:
@@ -506,7 +506,7 @@
           save: Salvar
           see_delivery: "veja entrega"
           see_redistribution: "veja redistribuição"
-          the_collective_member: "O membro do coletivo receberá um email que discrimina todas as mudanças feitas em seu pedido."
+          the_collective_member: "O membro do %{terms.consumer.singular} receberá um email que discrimina todas as mudanças feitas em seu pedido."
           warn_member_of_the_ch: "Avise o membro das mudanças em seu pedido"
       mailer:
         order_confirmation: 
@@ -517,11 +517,11 @@
           order_data_confirmed: "Pedido confirmado"
           the_delivery_period_w: "O período de entrega ocorrerá em %{date}."
           your_order_can_be_che: "Seu pedido pode ser checado no seguinte link:"
-          your_order_made_on_co: "Seu pedido feito no coletivo %{name} em %{date} foi confirmado."
+          your_order_made_on_co: "Seu pedido feito no %{terms.consumer.singular} %{name} em %{date} foi confirmado."
         order_cancellation: 
           dear_name: "Olá %{name},"
           greetings: "Saudações,"
-          your_order_made_on_co: "Seu pedido feito no coletivo %{name} em %{date} foi cancelado com sucesso."
+          your_order_made_on_co: "Seu pedido feito no %{terms.consumer.singular} %{name} em %{date} foi cancelado com sucesso."
         _complete_order: 
           order_no_code: "Código do Pedido: %{code}"
           price: Preço
@@ -612,18 +612,18 @@
         message_to_consumer: 
           a_service_of_s: "Um serviço de %s."
           hello_name: "Olá %{name}!,"
-          the_collective_profile_s: "O coletivo %{profile} mandou uma mensagem para você"
+          the_collective_profile_s: "O %{terms.consumer.singular} %{profile} mandou uma mensagem para você"
         message_to_consumer_for_order: 
           a_service_of_s: "Um serviço de %s."
           hello_name: "Olá %{name}!,"
           order: Pedido
           quantity_unit_of_prod: "%{quantity} %{unit} do %{product}"
-          the_collective_profile_s: "O coletivo %{profile} mandou uma mensagem para voce relacionado a seu %{order}"
+          the_collective_profile_s: "O %{terms.consumer.singular} %{profile} mandou uma mensagem para voce relacionado a seu %{order}"
           the_products_in_the_o: "Os produtos no pedido"
         message_to_supplier: 
           a_service_of_s: "Um serviço de %s."
           hello_administrators_: "Olá administradores de %{name}!"
-          the_collective_profile_s: "O coletivo %{profile} mandou uma mensagem para você"
+          the_collective_profile_s: "O %{terms.consumer.singular} %{profile} mandou uma mensagem para você"
         open_cycle: 
           a_new_cycle_is_open_c: "Um novo ciclo de pedidos está aberto chamado "
           hello_member_of_name: "Olá membros da comunidade %{name}!"
@@ -675,7 +675,7 @@
           sign_up: registre-se
           this_cycle_is_already: "Este ciclo já foi fechado."
           this_cycle_is_not_ope: "Este ciclo não está aberto."
-          to_place_an_order_you: "Para fazer um pedido você precisa estar logado e registrado no coletivo. Por favor faça %{login} ou %{signup}."
+          to_place_an_order_you: "Para fazer um pedido você precisa estar logado e registrado no %{terms.consumer.singular}. Por favor faça %{login} ou %{signup}."
           you_haven_t_placed_an: "Você ainda não fez pedidos neste ciclo."
           you_still_can: "Você ainda pode:"
           your_order_is_confirm: "Seu pedido está confirmado e registrado. Por favor, siga as diretrizes do método de entrega abaixo para que isso aconteça sem problemas."
@@ -691,7 +691,7 @@
         _filter_products: 
           active: Ativo
           all_the_categories: "todas as categorias"
-          all_the_suppliers: "todos os %{terms.supplier.plural}"
+          all_the_suppliers: "todos %{terms.supplier.plural.article}"
           and_being: "e que estejam"
           anyone: anyone
           bigger_than_the_stock: "maior do que o estoque"
@@ -773,7 +773,7 @@
           opening_message: "Mensagem de abertura"
           orders_interval: "Intervalo dos Pedidos"
           save: Salvar
-          this_message_will_be_: "Esta mensagem será mandada por email aos consumidores do coletivo"
+          this_message_will_be_: "Esta mensagem será mandada por email aos consumidores do %{terms.consumer.singular}"
         _edit_popin: 
           close: Fechar
           cycle_editing: "Edição de ciclo"
@@ -845,7 +845,7 @@
         _view_products: 
           the_products: "Os produtos"
         add_products: 
-          add_all_missing_produ: "adicionar todos produtos que faltam ao coletivo"
+          add_all_missing_produ: "adicionar todos produtos que faltam ao %{terms.consumer.singular}"
           add_product_to_cycle_: "Adicionar produto à lista de produtos distribuídos"
           cancel: Cancelar
           close: Fechar
@@ -873,6 +873,13 @@
         start: Início
         orders: Pedidos
         administration: Administração
+    terms:
+      consumer:
+        singular: "coletivo de consumo"
+        plural: "coletivos de consumo"
+      supplier: 
+        singular: "fornecedor"
+        plural: "fornecedores"
     controllers:
       myprofile:
         distribution_settings: "Configurações salvas"
@@ -897,19 +904,19 @@
           activated: Ativado
           black: preto
           cancel: Cancelar
-          collective_consumptio: "Modo coletivo de consumo"
+          collective_consumptio: "Modo %{terms.consumer.singular} de consumo"
           disabled: Desabilitado
           header_background_col: "Cor de fundo de cabeçalho"
           header_s_image: "Imagem do cabeçalho"
           header_type: "Tipo de cabeçalho"
-          image_collective_name: "Imagem + nome do coletivo"
+          image_collective_name: "Imagem + nome do %{terms.consumer.singular}"
           only_the_image: "Apenas a imagem"
-          image_help: "Esta imagem será usada no cabeçalho da página do coletivo, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
-          pure_color_collective: "Cor pura + nome do coletivo"
+          image_help: "Esta imagem será usada no cabeçalho da página do %{terms.consumer.singular}, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
+          pure_color_collective: "Cor pura + nome do %{terms.consumer.singular}"
           save: Salvar
-          settings_of_solidary_: "Configurações do Coletivo de Consumo"
+          settings_of_solidary_: "Configurações do %{terms.consumer.singular} de Consumo"
           text_color: "Cor do texto"
-          this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso do coletivo. Como o coletivo é comumente chamado pelas pessoas?"
+          this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso do %{terms.consumer.singular}. Como o %{terms.consumer.singular} é comumente chamado pelas pessoas?"
           white: branco
 
   networks_plugin:
@@ -928,6 +935,8 @@
       network:
         settings_button: "Informações e configurações da Rede"
     controllers:
+      node:
+        edit: "Configurações do nó salvas"
     views:
       control_panel:
         structure: "Gerenciar estrutura da rede"
@@ -952,4 +961,7 @@
         create:
           new_button: "Criar"
           context: "Criar novo nó dentro de '%{name}'"
+        edit:
+          title: "Configurações do nó %{node}"
+          back: "Voltar para a estrutura da rede"
 

@@ -18,11 +18,18 @@ suppliers = {
   },
 
   add: {
-    supplier_added: function() {
-      jQuery('#enterprises-results').html('');
+    supplier_added: function () {
+      jQuery('#results').html('');
     },
-    create_dummy: function() {
+    create_dummy: function () {
       jQuery('#find-enterprise, #create-dummy, #create-dummy .box-edit').toggle();
+    },
+
+    search: function (input) {
+      query = jQuery(input).val();
+      if (query.length < 3)
+        return;
+      input.form.onsubmit();
     },
   },
 

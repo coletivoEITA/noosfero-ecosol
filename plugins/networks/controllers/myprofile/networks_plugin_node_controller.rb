@@ -2,15 +2,12 @@ class NetworksPluginNodeController < MyProfileController
 
   include NetworksPlugin::TranslationHelper
 
-  def create
-    @network = profile
-    @node = NetworksPlugin::Node.find_by_id(params[:id]) || @network
+  before_filter :load_node, :only => [:associate]
 
-    @new_node = NetworksPlugin::Node.new((params[:node] || {}).merge(:environment => environment))
+  def associate
+    @new_node = NetworksPlugin::Node.new((params[:node] || {}).merge(:environment => environment, :parent => @node))
 
     if params[:commit]
-      @new_node.identifier = @new_node.name.to_slug
-      @new_node.parent = @node
       if @new_node.save
         render :partial => 'suppliers_plugin_shared/pagereload'
       else
@@ -28,22 +25,23 @@ class NetworksPluginNodeController < MyProfileController
   def edit
     @node = NetworksPlugin::Node.find params[:id]
 
-    @profile = @node
-    @profile_data = profile
-
     if request.post?
       @node.update_attributes params[:profile_data]
+      session[:notice] = t('networks_plugin.controllers.node.edit')
+      redirect_to :controller => :networks_plugin_network, :action => :show_structure, :node_id => @node.parent.id
     end
   end
 
   def destroy
     @node = NetworksPlugin::Node.find params[:id]
-    @parent = @node.parent
     @node.destroy
-
-    redirect_to :controller => :networks_plugin_network, :action => :show_structure, :node_id => @parent.id
   end
 
   protected
+
+  def load_node
+    @network = profile
+    @node = NetworksPlugin::Node.find_by_id(params[:id]) || @network
+  end
 
 end

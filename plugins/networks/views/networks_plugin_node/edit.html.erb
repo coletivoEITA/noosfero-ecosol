@@ -1,1 +1,58 @@
-<%= render :file => "#{Rails.root}/app/views/profile_editor/edit.rhtml" %>
+<h1><%= t('networks_plugin.views.node.edit.title') % {:node => @node.name} %></h1>
+<%= button(:back, t('networks_plugin.views.node.edit.back'), :controller => :networks_plugin_network, :action => :show_structure, :node_id => @node.parent.id) %>
+
+<% form_for :profile_data, @node, :html => { :id => 'profile-data', :multipart => true } do |f| %>
+
+  <%= error_messages_for :node %>
+
+  <%= f.label :name, _('Name') %>
+  <%= f.text_field :name %>
+
+  <div>
+    <% f.fields_for :image_builder, @node.image do |fi| %>
+      <%= file_field_or_thumbnail _('Image:'), @node.image, fi %>
+      <%= _("Max size: %s (.jpg, .gif, .png)") % Image.max_size.to_humanreadable %>
+    <% end %>
+  </div>
+
+  <%= submit_button :save, _('Save') %>
+
+<% end %>
+
+<% form_for :profile_data, @node, :html => {:id => 'location-form'} do |f| %>
+
+  <h2><%= _('Location') %></h2>
+  <div class="error">
+    <%= flash[:error] %>
+  </div>
+
+  <div id='location-fields'>
+    <%= select_country _('Country'), 'profile_data', 'country', {:class => 'type-select'} %>
+    <%= labelled_form_field _('State'), f.text_field(:state) %>
+    <%= labelled_form_field _('City'), f.text_field(:city) %>
+    <%= labelled_form_field _('ZIP code'), text_field(:profile_data, :zip_code) %>
+    <%= labelled_form_field _('Address (street and number)'), text_field(:profile_data, :address) %>
+
+    <% button_bar do %>
+      <%= button_to_function :search, _('Locate in the map'), "addressToPoint()", :title => _("Locate the address informed above in the map below (note that you'll probably need to adjust the marker to get a precise position)")  %>
+      <%= submit_button 'save', _('Save') %>
+    <% end %>
+  </div>
+
+  <p><%= _('Drag the balloon to find the exact location.') %> </p>
+
+  <div style='overflow: hidden'>
+    <p><div id="location-map"></div></p>
+  </div>
+
+  <%= f.hidden_field :lat %>
+  <%= f.hidden_field :lng %>
+
+<% end %>
+
+<%= content_tag('script', '', :src => "https://maps.googleapis.com/maps/api/js?sensor=false", :type => 'text/javascript') %>
+<%= content_tag('script', '', :src => url_for(:controller => :maps, :action => :google_map), :type => 'text/javascript') %>
+
+<h2><%= _('Orders') %></h2>
+
+

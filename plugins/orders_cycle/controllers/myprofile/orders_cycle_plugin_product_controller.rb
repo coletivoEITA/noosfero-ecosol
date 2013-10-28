@@ -6,6 +6,8 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
 
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
+  include ControllerInheritance
+  include SuppliersPlugin::TranslationHelper
 
   no_design_blocks
 
@@ -54,11 +56,6 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
 
   protected
 
-  # use superclass instead of child
-  def url_for options
-    options[:controller] = :orders_cycle_plugin_product if options[:controller].to_s == 'suppliers_plugin_product'
-    options[:controller] = :orders_cycle_plugin_supplier if options[:controller].to_s == 'suppliers_plugin_myprofile'
-    super options
-  end
+  replace_url_for self.superclass, SuppliersPluginProductController
 
 end

@@ -4,9 +4,11 @@ SuppliersPlugin::SuppliersDisplayHelper = SuppliersPlugin::DisplayHelper
 
 class SuppliersPluginProductController < MyProfileController
 
-  protect 'edit_profile', :profile
   no_design_blocks
+
   include SuppliersPlugin::TranslationHelper
+
+  protect 'edit_profile', :profile
 
   helper SuppliersPlugin::SuppliersDisplayHelper
 

@@ -650,7 +650,7 @@
       font-size: 21px; }
     #filter .filter-box .pstyle-tm1 {
       font-size: 13px; }
-    #filter .filter-box .pstyle-tm2, #filter .filter-box .subtitle, #filter .filter-box #supplier-our-products .sortable-table form .subtitle, #supplier-our-products .sortable-table form #filter .filter-box .subtitle, #filter .filter-box #suppliers-page .supplier .box-edit form .subtitle, #suppliers-page .supplier .box-edit form #filter .filter-box .subtitle {
+    #filter .filter-box .pstyle-tm2, #filter .filter-box #supplier-our-products .sortable-table form .subtitle, #supplier-our-products .sortable-table form #filter .filter-box .subtitle, #filter .filter-box #suppliers-page .supplier .box-edit form .subtitle, #suppliers-page .supplier .box-edit form #filter .filter-box .subtitle {
       font-size: 10px; }
     #filter .filter-box .profile-image {
       display: inline-block;
@@ -1028,7 +1028,7 @@
     font-size: 21px; }
   #supplier-our-products .sortable-table form .pstyle-tm1 {
     font-size: 13px; }
-  #supplier-our-products .sortable-table form .pstyle-tm2, #supplier-our-products .sortable-table form .subtitle, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .subtitle, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .subtitle {
+  #supplier-our-products .sortable-table form .pstyle-tm2, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .subtitle, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .subtitle {
     font-size: 10px; }
   #supplier-our-products .sortable-table form .profile-image {
     display: inline-block;
@@ -1317,7 +1317,7 @@
         font-size: 21px; }
       #suppliers-page .supplier .box-edit form .pstyle-tm1 {
         font-size: 13px; }
-      #suppliers-page .supplier .box-edit form .pstyle-tm2, #suppliers-page .supplier .box-edit form .subtitle {
+      #suppliers-page .supplier .box-edit form .pstyle-tm2 {
         font-size: 10px; }
       #suppliers-page .supplier .box-edit form .profile-image {
         display: inline-block;

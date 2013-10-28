@@ -5,7 +5,7 @@ CSV = FasterCSV
 #OrdersCyclePlugin::Import.terramater_db Profile['rede-guandu-producao-e-consumo-responsavel'],
 #  'fornecedor.csv', 'produto.csv', 'fornecedor_produto.csv', 'usuario.csv'
 
-class OrdersCyclePlugin::Import
+class ConsumersCoopPlugin::Import
 
   protected
 

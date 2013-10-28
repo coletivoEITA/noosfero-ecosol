@@ -22,13 +22,19 @@ class SuppliersPluginMyprofileController < MyProfileController
   end
 
   def new
-    @new_supplier.update_attributes! params[:supplier] #beautiful transactional save
+    @new_supplier.update_attributes params[:supplier] #beautiful transactional save
+    @supplier = @new_supplier
     session[:notice] = t('suppliers_plugin.controllers.myprofile.supplier_created')
   end
 
+  def add
+    @enterprise = environment.enterprises.find params[:id]
+    @new_supplier = profile.suppliers.create! :profile => @enterprise
+  end
+
   def edit
-    @supplier = SuppliersPlugin::Supplier.find params[:id]
-    @supplier.update_attributes! params[:supplier]
+    @supplier = profile.suppliers.find params[:id]
+    @supplier.update_attributes params[:supplier]
   end
 
   def margin_change
@@ -44,24 +50,18 @@ class SuppliersPluginMyprofileController < MyProfileController
   end
 
   def toggle_active
-    @supplier = SuppliersPlugin::Supplier.find params[:id]
+    @supplier = profile.suppliers.find params[:id]
     @supplier.toggle! :active
   end
 
   def destroy
-    @supplier = SuppliersPlugin::Supplier.find params[:id]
+    @supplier = profile.suppliers.find params[:id]
     @supplier.destroy
   end
 
-  def enterprise_search
+  def search
     @enterprises = find_by_contents(:enterprises, environment.enterprises, params[:query])[:results]
     @enterprises -= profile.suppliers.collect(&:profile)
-  end
-
-  def add_enterprise
-    @enterprise = environment.enterprises.find params[:id]
-    profile.suppliers.create! :profile => @enterprise
-    self.index
   end
 
   protected
@@ -72,8 +72,9 @@ class SuppliersPluginMyprofileController < MyProfileController
   end
 
   def search_scope scope
-    scope = scope.by_active(params[:active]) if params[:active].present?
-    scope = scope.with_name(params[:name]) if params[:name].present?
+    scope = scope.by_active params[:active] if params[:active].present?
+    scope = scope.with_name params[:name] if params[:name].present?
     scope
   end
+
 end

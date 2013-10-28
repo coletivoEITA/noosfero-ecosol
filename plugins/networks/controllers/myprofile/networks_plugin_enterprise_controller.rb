@@ -7,28 +7,35 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
   include ControllerInheritance
   include NetworksPlugin::TranslationHelper
 
+  before_filter :load_node, :only => [:associate, :destroy]
+
   helper NetworksPlugin::NetworksDisplayHelper
 
   def new
     super
-    render :partial => 'suppliers_plugin_myprofile/pagereload'
   end
 
   def add
-    @network = profile
-    @node = NetworksPlugin::Node.find_by_id(params[:id]) || @network
+    super
+  end
 
+  def associate
     @new_supplier = SuppliersPlugin::Supplier.new_dummy :consumer => @node
-
     render :layout => false
+  end
+
+  def destroy
+    @profile = @node
+    super
   end
 
   protected
 
-  # use superclass instead of child
-  def url_for options
-    options[:controller] = :networks_plugin_enterprise if options[:controller].to_s == 'suppliers_plugin_myprofile'
-    super options
+  def load_node
+    @network = profile
+    @node = NetworksPlugin::Node.find_by_id(params[:node_id]) || @network
   end
+
+  replace_url_for self.superclass
 
 end

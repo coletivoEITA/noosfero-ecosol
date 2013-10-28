@@ -107,8 +107,8 @@ toggle_edit = {
       return true;
     },
 
-    toggle_edit: function () {
-      toggle_edit.editing().toggleClass('edit');
+    toggle_edit: function (toggle) {
+      toggle_edit.editing().toggleClass('edit', toggle);
       eval(toggle_edit.editing().attr('toggle-edit'));
       if (!toggle_edit.isEditing()) {
         if (toggle_edit._editing.length > 1)
@@ -118,7 +118,7 @@ toggle_edit = {
       }
     },
     reload: function () {
-      toggle_edit.value_row.toggle_edit();
+      toggle_edit.value_row.toggle_edit(true);
     },
   },
 };

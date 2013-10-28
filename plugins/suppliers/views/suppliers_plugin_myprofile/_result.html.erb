@@ -1,0 +1,19 @@
+<tr>
+  <td>
+    <%= profile_link_with_image enterprise, :thumb, :target => '_blank' %>
+  </td>
+  <td>
+    <div class="name">
+      <%= link_to enterprise.name, enterprise.url, :target => '_blank' %>
+    </div>
+    <div class="location">
+      <%= city_with_state enterprise.region %>
+    </div>
+  </td>
+  <td>
+    <%= link_to_remote t('suppliers_plugin.views.supplier._new.add'),
+      :url => {:action => :add, :profile => profile.identifier, :id => enterprise.id},
+      :loading => "loading_overlay.show('#supplier-add')", :loaded => "loading_overlay.hide('#supplier-add'); suppliers.add.supplier_added();",
+      :update => "search-results", :html => {:class => 'action-button'} %>
+  </td>
+</tr>

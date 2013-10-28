@@ -1,16 +1,83 @@
 module ControllerInheritance
 
-  def self.included base
+  class ActionView < ActionView::Base
 
-    base.send :define_method, :default_template_with_super do |*args|
-      begin
-        default_template_without_super *args
-      rescue ActionView::MissingTemplate => e
-        self.view_paths.find_template "#{self.class.superclass.controller_path}/#{action_name}", default_template_format
+    private
+
+    def _pick_partial_template_with_template_super partial_path
+      if partial_path.include? '/'
+        _pick_partial_template_without_template_super partial_path
+      elsif controller
+        controller.send :each_with_inherit do |klass|
+          begin
+            path = "#{klass.controller_path}/_#{partial_path}"
+            self.view_paths.find_template path, self.template_format
+          rescue ::ActionView::MissingTemplate
+            raise "Can't find '#{partial_path}' in any #{controller.class}'s parent" unless (klass.inherit_templates rescue nil)
+          end
+        end
+      else
+        _pick_partial_template_without_template_super partial_path
       end
     end
-    base.alias_method_chain :default_template, :super
+    alias_method_chain :_pick_partial_template, :template_super
 
   end
 
+  module ClassMethods
+
+    protected
+
+    def replace_url_for *controllers
+      self.send :define_method, :url_for do |options|
+        controllers.each do |klass|
+          options[:controller] = self.controller_path if options[:controller].to_s == klass.controller_path
+        end
+        super options
+      end
+    end
+
+  end
+
+  module InstanceMethods
+
+    protected
+
+    def each_with_inherit &block
+      klass = self.class
+      ret = nil
+      loop do
+        ret = yield klass
+        break if ret
+        klass = klass.superclass
+      end
+      ret
+    end
+
+  end
+
+  def self.included base
+    base.extend ClassMethods
+    base.send :include, InstanceMethods
+
+    base.cattr_accessor :inherit_templates
+    base.inherit_templates = true
+
+    base.send :define_method, :default_template do |*args|
+      self.each_with_inherit do |klass|
+        begin
+          a = self.view_paths.find_template "#{klass.controller_path}/#{action_name}", default_template_format
+        rescue ::ActionView::MissingTemplate
+          raise "Can't find template '#{action_name}' in any #{self.class}'s parent" unless (klass.inherit_templates rescue nil)
+        end
+      end
+    end
+
+    base.send :define_method, :initialize_template_class do |response|
+      response.template = ControllerInheritance::ActionView.new self.class.view_paths, {}, self
+      response.template.helpers.send :include, self.class.master_helper_module
+      response.redirected_to = nil
+      @performed_render = @performed_redirect = false
+    end
+  end
 end
