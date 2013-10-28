@@ -239,15 +239,49 @@
         name: "Fornecedores"
         description: "Registro de fornecedores e produtos distribuídos"
         distribution_tab: "Distribuição"
-      suppliers_product_helper: 
-        product_from_which_su: "Produto de que %{terms.supplier.singular}?"
     terms:
       consumer:
         singular: "organização"
         plural: "organizações"
+        it: 
+          singular: "ela"
+          plural: "elas"
+        tO_it: 
+          singular: "a ela"
+          plural: "a elas"
+        from:
+          singular: "da organização"
+        undefined_article:
+          singular: "uma organização"
+        article: 
+          plural: "as organizações"
+        by_article: 
+          singular: "pela organização"
       supplier:
         singular: "fornecedor"
         plural: "fornecedores"
+        it: 
+          singular: "ele"
+          plural: "eles"
+        tO_it: 
+          singular: "a ele"
+          plural: "a eles"
+        from: 
+          singular: "do fornecedor"
+        undefined_article:
+          singular: "um fornecedor"
+        none: 
+          singular: "nenhum fornecedor"
+        article: 
+          singular: "o fornecedor"
+        from_which_article: 
+          singular: "com que o fornecedor"
+        by_article: 
+          singular: "pelo fornecedor"
+        article: 
+          plural: "os fornecedores"
+        new_undefined_article:
+          singular: "um novo fornecedor"
     controllers: 
       myprofile: 
         supplier_created: "%{terms.supplier.singular.capitalize} criado"
@@ -289,7 +323,7 @@
           remove_product: remover
           cancel: cancelar
           save: salvar mudanças
-          view_on_supplier_page: "Ver produto na página do %{terms.supplier.singular}"
+          view_on_supplier_page: "Ver produto na página %{terms.supplier.from.singular}"
           product_registry: "Cadastro do produto"
           selling_unit: "Unidade de venda"
           same_from_purchase: "Mesma da compra"
@@ -317,16 +351,11 @@
           unit: Unidade
           showing_pcount_produc: "Mostrando %{pcount} produtos de %{allpcount}"
           we_don_t_have_product: "Não temos produtos a mostrar."
-        _select_missing: 
-          add_all_missing_produ: "Adicione todos produtos que faltam deste %{terms.supplier.singular}."
-          cancel: Cancelar
-          the_following_product: "Os seguintes produtos do %{terms.supplier.singular} não são distribuídos pelo seu %{terms.consumer.singular}. Que produto voce quer adicionar?"
-          there_isn_t_any_new_p: "Não há qualquer produto deste %{terms.supplier.singular}."
         index: 
           active: ativa
           add_product: "Adicionar produto"
           all_the_categories: "todas as categorias"
-          all_the_suppliers: "todos %{terms.supplier.plural.article}"
+          all_the_suppliers: "todos %{terms.supplier.article.plural}"
           situation: "Situação de distribuição"
           anyone: anyone
           bigger_than_the_stock: "maior do que o estoque"
@@ -340,7 +369,7 @@
           margin: "%{margin} %"
           no_margin_set: "Sem margem definida"
           products: Produtos
-          info: "Esta é a lista de produtos com que o %{terms.consumer.singular} trabalha e é aqui que é feito o controle de estoque. Os produtos se dividem entre ativos e inativos. Os produtos ativos automaticamente são adicionados à lista de uma novo ciclo de pedidos."
+          info: "Esta é a lista de produtos %{terms.consumer.from_which_article.singular} trabalha e é aqui que é feito o controle de estoque. Os produtos se dividem entre ativos e inativos. Os produtos ativos automaticamente são adicionados à lista de uma novo ciclo de pedidos."
           supplier: "%{terms.supplier.singular.capitalize}"
           the_products: "Os produtos"
           name: "Nome"
@@ -349,17 +378,17 @@
           with_the_qualifiers: "com os qualificadores"
       supplier: 
         _new:
-          title: "Buscar um %{terms.supplier.singular} a adicionar"
-          query_placeholder: "busque um %{terms.supplier.singular}"
+          title: "Buscar %{terms.supplier.undefined_article.singular} a adicionar"
+          query_placeholder: "busque %{terms.supplier.undefined_article.singular}"
           search: "Buscar"
-          none_found: "Nenhum %{terms.supplier.singular} foi encontrado. Por favor revise o texto da busca."
+          none_found: "%{terms.supplier.none.singular.capitalize} foi encontrado. Por favor revise o texto da busca."
           add: "Adicionar"
-          suggest_creation: "Não encontrou o %{terms.supplier.singular} que buscava?. Você pode criar um novo %{terms.supplier.singular} gerido pela %{terms.consumer.singular}."
+          suggest_creation: "Não encontrou %{terms.supplier.article.singular} que buscava?. Você pode criar %{terms.supplier.new_undefined_article.singular} gerido %{terms.consumer.by_article.singular}."
           create_dummy: "Criar %{terms.supplier.singular}"
         _edit: 
-          registry_help: "O registro do %{terms.supplier.singular} será administrado pelo própria %{terms.consumer.singular} e será privado a ela."
+          registry_help: "O registro %{terms.supplier.from.singular} será administrado  %{terms.consumer.by_own.singular} e será privado %{terms.consumer.to_it.singular}."
           abbreviated_name: "Nome Abreviado"
-          add_supplier_managed_: "Adicionar %{terms.supplier.singular} com registro administrado pela %{terms.consumer.singular}"
+          add_supplier_managed_: "Adicionar %{terms.supplier.singular} com registro administrado %{terms.consumer.by_article.singular}"
           additional_fields: "Campos adicionais"
           basic_data: "Informações básicas"
           cancel: Cancelar
@@ -368,7 +397,7 @@
           estrategic_informatio: "Informações estratégicas"
           full_registration: "Registro completo"
           name: Nome
-          register_new_supplier: "Registrar um novo %{terms.supplier.singular}"
+          register_new_supplier: "Registrar %{terms.supplier.new_undefined_article.singular}"
           registry_form: "Formulário de registro"
           save: Salvar
         _supplier: 
@@ -377,17 +406,17 @@
           add_products: "adicionar produtos"
           among_them: ", entre eles"
           any_registered_produc: "nenhum produto registrado"
-          by_removing_this_supp: "Ao remover este %{terms.supplier.singular}, todos os produtos ficarão indisponíveis em futuros ciclos. Por favor, confirme sua opção"
+          by_removing_this_supp: "Ao remover %{terms.supplier.article.singular}, todos os produtos ficarão indisponíveis em futuros ciclos. Por favor, confirme sua opção"
           desactivate: desativar
           activate: ativar
           edit: editar
           products_are_active: " produtos estão ativos"
-          products_distributed: " produtos distribuídos pelo %{terms.consumer.singular}"
+          products_distributed: " produtos distribuídos %{terms.consumer.by_article.singular}"
           products: produtos
           registered_supplier_i: "%{terms.supplier.singular.capitalize} registrado na rede"
           remove: remover
           supplier_profile_product: "produtos registrados"
-          supplier_with_registr: "%{terms.supplier.singular.capitalize} com registro administrado pelo %{terms.consumer.singular}"
+          supplier_with_registr: "%{terms.supplier.singular.capitalize} com registro administrado %{terms.consumer.by_article.singular}"
           this_supplier_has: "Este %{terms.supplier.singular.capitalize} tem"
         _suppliers_list: 
           this_search_didn_t_re: "Esta busca não retornou %{terms.supplier.plural}."

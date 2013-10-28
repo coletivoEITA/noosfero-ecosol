@@ -229,8 +229,6 @@
         name: "Suppliers"
         description: "Suppliers and its distributed products registry"
         distribution_tab: "Distribuição"
-      suppliers_product_helper: 
-        product_from_which_su: "Product from which %{terms.supplier.singular}?"
     terms:
       consumer:
         singular: "organization"
@@ -307,11 +305,6 @@
           unit: Unit
           showing_pcount_produc: "Showing %{pcount} products of %{allpcount}"
           we_don_t_have_product: "We don't have products to show."
-        _select_missing: 
-          add_all_missing_produ: "add all missing products %{terms.supplier.singular.from_this}"
-          cancel: cancel
-          the_following_product: "The following products from this %{terms.supplier.singular.this} are not distributed %{terms.consumer.singular.by_your}. Which product do you want to add?"
-          there_isn_t_any_new_p: "There isn't any new product from %{terms.supplier.singular.this}."
         index: 
           active: active
           add_product: "Add product"
@@ -535,8 +528,6 @@
         orders_plugin:
           order:
             cyclecode_ordercode: "%{cyclecode}.%{ordercode}"
-      distribution_product_helper: 
-        product_from_which_su: "Product from which %{terms.supplier.singular}?"
       mailer: 
         profile_subject: "[%{profile}] %{subject}"
         order_was_changed: "[%{profile}] Your order was modificado"
