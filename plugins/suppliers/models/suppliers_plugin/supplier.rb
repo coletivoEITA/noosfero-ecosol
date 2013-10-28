@@ -6,12 +6,11 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     self.profile
   end
 
+  validates_presence_of :name, :if => :dummy?
+  validates_associated :profile, :if => :dummy?
   validates_presence_of :profile
   validates_presence_of :consumer
-  validates_associated :profile
-  validates_uniqueness_of :consumer_id, :scope => :profile_id
-
-  validates_presence_of :name, :unless => :dummy?
+  validates_uniqueness_of :consumer_id, :scope => :profile_id, :if => :profile_id
 
   named_scope :active, :conditions => {:active => true}
 
@@ -31,8 +30,8 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   named_scope :except_people, { :conditions => ['profiles.type <> ?', Person.name], :joins => [:consumer] }
   named_scope :except_self, { :conditions => 'profile_id <> consumer_id' }
 
-  after_create :add_admins_if_dummy
-  after_create :save_dummy
+  after_create :add_admins, :if => :dummy?
+  after_create :save_profile, :if => :dummy?
 
   def self.new_dummy attributes
     profile = Enterprise.new :visible => false, :identifier => Digest::MD5.hexdigest(rand.to_s),
@@ -90,14 +89,13 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   protected
 
-  def add_admins_if_dummy
-    if dummy?
-      self.consumer.admins.each{ |a| self.supplier.add_admin a }
-    end
+  def add_admins
+    self.consumer.admins.each{ |a| self.supplier.add_admin a }
   end
 
-  def save_dummy
-    self.supplier.save! if dummy?
+  # sync name, description, etc
+  def save_profile
+    self.supplier.save
   end
 
   # delete missing methods to profile

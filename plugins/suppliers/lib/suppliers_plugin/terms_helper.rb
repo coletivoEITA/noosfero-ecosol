@@ -4,9 +4,14 @@ module SuppliersPlugin::TermsHelper
   # '.' ins't supported by the % format function (altought it works on some newer systems)
   TermsSeparator = '_'
   TermsVariations = [:singular, :plural]
+  TermsAuxiliars = [nil, :article, :undefined_article, :from, :this, :from_this, :by, :your, :by_your, :by_article]
   TermsTransformations = [:capitalize]
   TermsKeys = Terms.map do |term|
-    TermsVariations.map{ |variation| [term, variation].join('.') }
+    TermsVariations.map do |variation|
+      TermsAuxiliars.map do |auxiliar|
+        [term, variation, auxiliar].join('.')
+      end
+    end
   end.flatten
 
   protected
@@ -14,7 +19,6 @@ module SuppliersPlugin::TermsHelper
   def sub_separator str
     str.gsub '.', TermsSeparator
   end
-
   def sub_separator_items str
     str.gsub!(/\%\{[^\}]*\}/){ |x| sub_separator x }
     str

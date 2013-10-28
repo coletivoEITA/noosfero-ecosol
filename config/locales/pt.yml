@@ -325,7 +325,7 @@
           active: ativa
           add_product: "Adicionar produto"
           all_the_categories: "todas as categorias"
-          all_the_suppliers: "todos os %{terms.supplier.plural}"
+          all_the_suppliers: "todos %{terms.supplier.plural.article}"
           situation: "Situação de distribuição"
           anyone: anyone
           bigger_than_the_stock: "maior do que o estoque"
@@ -376,7 +376,7 @@
           add_products: "adicionar produtos"
           among_them: ", entre eles"
           any_registered_produc: "nenhum produto registrado"
-          by_removing_this_supp: "Ao remover este %{terms.supplier.singular}, todos os produtos ficarão indisponíveis em futuras sessões. Por favor, confirme sua opção"
+          by_removing_this_supp: "Ao remover este %{terms.supplier.singular}, todos os produtos ficarão indisponíveis em futuros ciclos. Por favor, confirme sua opção"
           desactivate: desativar
           activate: ativar
           edit: editar
@@ -691,7 +691,7 @@
         _filter_products: 
           active: Ativo
           all_the_categories: "todas as categorias"
-          all_the_suppliers: "todos os %{terms.supplier.plural}"
+          all_the_suppliers: "todos %{terms.supplier.plural.article}"
           and_being: "e que estejam"
           anyone: anyone
           bigger_than_the_stock: "maior do que o estoque"

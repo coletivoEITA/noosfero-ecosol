@@ -307,15 +307,15 @@
           showing_pcount_produc: "Showing %{pcount} products of %{allpcount}"
           we_don_t_have_product: "We don't have products to show."
         _select_missing: 
-          add_all_missing_produ: "add all missing products from this %{terms.supplier.singular}"
+          add_all_missing_produ: "add all missing products %{terms.supplier.singular.from_this}"
           cancel: cancel
-          the_following_product: "The following products from this %{terms.supplier.singular} are not distributed by your %{terms.consumer.singular}. Which product do you want to add?"
-          there_isn_t_any_new_p: "There isn't any new product from this %{terms.supplier.singular}."
+          the_following_product: "The following products from this %{terms.supplier.singular.this} are not distributed %{terms.consumer.singular.by_your}. Which product do you want to add?"
+          there_isn_t_any_new_p: "There isn't any new product from %{terms.supplier.singular.this}."
         index: 
           active: active
           add_product: "Add product"
           all_the_categories: "all the categories"
-          all_the_suppliers: "all the %{terms.supplier.plural}"
+          all_the_suppliers: "all %{terms.supplier.plural.article}"
           situation: "distribution situation"
           anyone: anyone
           bigger_than_the_stock: "bigger than the stock"
@@ -329,7 +329,7 @@
           no_margin_set: "no margin set"
           products: Products
           supplier: "%{terms.supplier.singular.capitalize}"
-          info: "This is list of all the products with which your %{terms.consumer.singular} works. Here it's possible to add and remove products, besides desactivating temporarily your commercialization in the Cycles' orders."
+          info: "This is list of all the products with which %{terms.consumer.singular.your} works. Here it's possible to add and remove products, besides desactivating temporarily your commercialization in the Cycles' orders."
           show_products_from: "Show products from"
           the_products: "The products"
           whose_name_contains: "whose name contains"
@@ -338,12 +338,12 @@
           with_the_qualifiers: "with the qualifiers"
       supplier: 
         _new:
-          title: "Find an %{terms.supplier.singular} to add"
-          query_placeholder: "find an %{terms.supplier.singular}"
+          title: "Find %{terms.supplier.singular.undefined_article} to add"
+          query_placeholder: "find %{terms.supplier.singular.undefined_article}"
           search: "Search"
           none_found: "No %{terms.supplier.singular} found. Please revise the search text."
           add: "Add"
-          suggest_creation: "Haven't found the %{terms.supplier.singular} you were searching?.\n You can create a new %{terms.supplier.singular} managed by the %{terms.consumer.singular}."
+          suggest_creation: "Haven't found %{terms.supplier.singular} you were searching?.\n You can create a new %{terms.supplier.singular} managed by the %{terms.consumer.singular}."
           create_dummy: "Create %{terms.supplier.singular}"
         _edit: 
           registry_help: "The registry of the %{terms.supplier.singular} will be managed by the %{terms.consumer.singular} itself and will be private to it."
