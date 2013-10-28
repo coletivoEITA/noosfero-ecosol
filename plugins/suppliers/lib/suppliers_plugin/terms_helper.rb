@@ -9,7 +9,7 @@ module SuppliersPlugin::TermsHelper
   TermsKeys = Terms.map do |term|
     TermsVariations.map do |variation|
       TermsAuxiliars.map do |auxiliar|
-        [term, variation, auxiliar].join('.')
+        [term, variation, auxiliar].compact.join('.')
       end
     end
   end.flatten

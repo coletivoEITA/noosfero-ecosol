@@ -1,8 +1,17 @@
 require_dependency 'profile'
 
+# FIXME: The lines bellow should be on the core
 class Profile
 
   has_many :products
+
+  def create_product?
+    true
+  end
+
+end
+
+class Profile
   has_many :distributed_products, :class_name => 'SuppliersPlugin::DistributedProduct'
 
   has_many :from_products, :through => :products

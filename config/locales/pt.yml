@@ -238,6 +238,7 @@
       plugin:
         name: "Fornecedores"
         description: "Registro de fornecedores e produtos distribuídos"
+        distribution_tab: "Distribuição"
       suppliers_product_helper: 
         product_from_which_su: "Produto de que %{terms.supplier.singular}?"
     terms:

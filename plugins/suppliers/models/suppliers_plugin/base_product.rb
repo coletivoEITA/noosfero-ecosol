@@ -21,9 +21,10 @@ class SuppliersPlugin::BaseProduct < Product
   extend ActsAsHavingSettings::DefaultItem::ClassMethods
   settings_default_item :name, :type => :boolean, :default => true, :delegate_to => :supplier_product
   settings_default_item :product_category, :type => :boolean, :default => true, :delegate_to => :supplier_product
-  settings_default_item :image, :type => :boolean, :default => true, :delegate_to => :supplier_product
+  settings_default_item :image, :type => :boolean, :default => true, :delegate_to => :supplier_product, :prefix => '_default'
   settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :supplier_product
   settings_default_item :unit, :type => :boolean, :default => true, :delegate_to => :supplier_product
+  settings_default_item :available, :type => :boolean, :default => true, :delegate_to => :supplier_product
   settings_default_item :margin_percentage, :type => :boolean, :default => true, :delegate_to => :profile
 
   default_item :price, :if => :default_margin_percentage, :delegate_to => proc{ self.supplier_product.price_with_discount if self.supplier_product }
@@ -32,7 +33,7 @@ class SuppliersPlugin::BaseProduct < Product
   settings_default_item :minimum_selleable, :type => :boolean, :default => true, :delegate_to => :supplier_product
 
   default_item :product_category_id, :if => :default_product_category, :delegate_to => :supplier_product
-  default_item :image_id, :if => :default_image, :delegate_to => :supplier_product
+  default_item :image_id, :if => :_default_image, :delegate_to => :supplier_product
   default_item :unit_id, :if => :default_unit, :delegate_to => :supplier_product
 
   extend CurrencyHelper::ClassMethods
@@ -51,6 +52,11 @@ class SuppliersPlugin::BaseProduct < Product
 
   def self.default_unit
     Unit.new(:singular => I18n.t('suppliers_plugin.models.product.unit'), :plural => I18n.t('suppliers_plugin.models.product.units'))
+  end
+
+  # replace available? to use the replaced default_item method
+  def available?
+    self.available
   end
 
   def dependent?
