@@ -19,7 +19,7 @@ module SuppliersPlugin::TermsHelper
     :none, :own, :new,
     :by_own, :new_undefined_article
   ]
-  Variations = [:singular, :plural]
+  Variations = [nil, :singular, :plural]
   Transformations = [:capitalize]
 
   # FORMAT: terms.term.auxiliar.variation.transformation
@@ -82,7 +82,8 @@ module SuppliersPlugin::TermsHelper
     return translated_terms if translated_terms.present?
 
     keys.each do |key|
-      translation = I18n.t! "#{terms_context}.terms.#{key}" rescue next
+      translation = I18n.t! "#{terms_context}.terms.#{key}" rescue nil
+      next unless translation.is_a? String
 
       processed_key = sub_separator key
 
