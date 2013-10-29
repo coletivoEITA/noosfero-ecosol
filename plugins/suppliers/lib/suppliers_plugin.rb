@@ -24,4 +24,12 @@ class SuppliersPlugin < Noosfero::Plugin
     ['loading-overlay', 'locale', 'toggle_edit', 'sortable-table', 'suppliers'].map{ |j| "javascripts/#{j}" }
   end
 
+  def product_tabs product
+    return unless product.distributed?
+    {
+      :title => I18n.t('suppliers_plugin.lib.plugin.distribution_tab'), :id => 'product-distribution',
+      :content => lambda{ render 'suppliers_plugin_manage_products/distribution_tab', :product => product }
+    }
+  end
+
 end

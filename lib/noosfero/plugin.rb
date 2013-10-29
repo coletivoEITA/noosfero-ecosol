@@ -201,6 +201,15 @@ class Noosfero::Plugin
     nil
   end
 
+  # -> Adds tabs to the products
+  # returns   = { :title => title, :id => id, :content => content }
+  #   title   = name that will be displayed.
+  #   id      = div id.
+  #   content = lambda block that creates html code.
+  def product_tabs product
+    nil
+  end
+
   # -> Adds content to calalog item
   # returns = lambda block that creates html code
   def catalog_item_extras(item)

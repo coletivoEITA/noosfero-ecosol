@@ -1,6 +1,6 @@
 require_dependency 'product'
 
-  # FIXME: The lines bellow should be on the core. The following are real extensions
+# FIXME: The lines bellow should be on the core
 class Product
 
   named_scope :available, :conditions => {:available => true}
@@ -60,6 +60,9 @@ class Product
 
   def own?
     self.class == Product
+  end
+  def distributed?
+    self.class == SuppliersPlugin::DistributedProduct
   end
 
   # Redefine these two methods on
