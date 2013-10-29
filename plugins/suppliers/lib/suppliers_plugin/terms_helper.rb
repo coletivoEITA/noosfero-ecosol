@@ -8,8 +8,13 @@ module SuppliersPlugin::TermsHelper
   Terms = [:consumer, :supplier]
   Auxiliars = [
     nil,
-    :it, :to, :article, :undefined_article, :which, :from, :this, :by, :your,
-    :to_it, :from_this, :from_which, :from_which_article, :by_your, :by_article,
+    #
+    :it, :one,
+    :to_it,
+    #
+    :article, :undefined_article, :at, :in, :on, :to, :from, :by, :which, :this, :your,
+    :to_article, :at_article, :from_article, :by_article,
+    :from_this, :from_which, :from_which_article, :by_your,
     # adjectives
     :none, :own, :new,
     :by_own, :new_undefined_article
@@ -43,32 +48,9 @@ module SuppliersPlugin::TermsHelper
     base.send :alias_method, :t, :translate
   end
 
-  def sub_separator str
-    str.gsub I18nSeparator, Separator
-  end
-  def sub_separator_items str
-    str.gsub!(/\%\{[^\}]*\}/){ |x| sub_separator x }
-    str
-  end
-
-  def translated_terms keys = Keys, translations = SuppliersPlugin::TermsHelper.translations, transformations = Transformations, sep = Separator
-    translated_terms ||= (translations[I18n.locale] ||= HashWithIndifferentAccess.new)
-    return translated_terms if translated_terms.present?
-
-    # may be replaced on context (e.g. controller)
-    @terms_context ||= 'suppliers_plugin'
-
-    keys.each do |key|
-      translation = I18n.t! "#{@terms_context}.terms.#{key}" rescue next
-
-      processed_key = sub_separator key
-
-      translated_terms["terms#{sep}#{processed_key}"] = translation
-      transformations.map do |transformation|
-        translated_terms["terms#{sep}#{processed_key}#{sep}#{transformation}"] = translation.send transformation
-      end
-    end
-    translated_terms
+  # may be replaced on context (e.g. controller)
+  def terms_context
+    'suppliers_plugin'
   end
 
   def translate key, options = {}
@@ -83,6 +65,33 @@ module SuppliersPlugin::TermsHelper
     return hit if hit.present?
 
     cache[key] = translate_without_cache key, options
+  end
+
+  private
+
+  def sub_separator str
+    str.gsub I18nSeparator, Separator
+  end
+  def sub_separator_items str
+    str.gsub!(/\%\{[^\}]*\}/){ |x| sub_separator x }
+    str
+  end
+
+  def translated_terms keys = Keys, translations = SuppliersPlugin::TermsHelper.translations, transformations = Transformations, sep = Separator
+    translated_terms ||= (translations[I18n.locale] ||= HashWithIndifferentAccess.new)
+    return translated_terms if translated_terms.present?
+
+    keys.each do |key|
+      translation = I18n.t! "#{terms_context}.terms.#{key}" rescue next
+
+      processed_key = sub_separator key
+
+      translated_terms["terms#{sep}#{processed_key}"] = translation
+      transformations.map do |transformation|
+        translated_terms["terms#{sep}#{processed_key}#{sep}#{transformation}"] = translation.send transformation
+      end
+    end
+    translated_terms
   end
 
 end

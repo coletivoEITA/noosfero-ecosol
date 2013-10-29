@@ -249,11 +249,22 @@
         tO_it: 
           singular: "a ela"
           plural: "a elas"
+        to_article:
+          singular: "a organização"
+        at:
+          singular: "numa organização"
+        at_article:
+          singular: "na organização"
         from:
+          singular: "de uma organização"
+        from_which_article: 
+          singular: "com que a organização"
+        from_article:
           singular: "da organização"
         undefined_article:
           singular: "uma organização"
         article: 
+          singular: "a organização"
           plural: "as organizações"
         by_article: 
           singular: "pela organização"
@@ -266,7 +277,16 @@
         tO_it: 
           singular: "a ele"
           plural: "a eles"
-        from: 
+        one: "um"
+        at:
+          singular: "no fornecedor"
+        to: 
+          singular: "a um fornecedor"
+          plural: "a fornecedores"
+        to_article:
+          singular: "ao fornecedor"
+          plural: "aos fornecedores"
+        from_article: 
           singular: "do fornecedor"
         undefined_article:
           singular: "um fornecedor"
@@ -420,13 +440,13 @@
           this_supplier_has: "Este %{terms.supplier.singular.capitalize} tem"
         _suppliers_list: 
           this_search_didn_t_re: "Esta busca não retornou %{terms.supplier.plural}."
-          any_registered: "Nenhum %{terms.supplier.singular} registrado."
+          any_registered: "%{terms.supplier.none.singular.capitalize} registrado."
         index: 
           add_supplier: "Adicionar %{terms.supplier.singular}"
           filter: Filtro
           name: Nome
           suppliers: "%{terms.supplier.plural.capitalize}"
-          this_is_the_list_of_s: "Esta é a lista de %{terms.supplier.plural} associados a %{terms.consumer.singular}. É possível associá-lo a %{terms.supplier.plural} existentes ou registrar um."
+          this_is_the_list_of_s: "Esta é a lista de %{terms.supplier.plural} associados a %{terms.consumer.singular}. É possível associar %{terms.supplier.to.plural} existentes ou registrar %{terms.supplier.one}."
 
   delivery_plugin:
     lib:
@@ -536,7 +556,7 @@
           save: Salvar
           see_delivery: "veja entrega"
           see_redistribution: "veja redistribuição"
-          the_collective_member: "O membro do %{terms.consumer.singular} receberá um email que discrimina todas as mudanças feitas em seu pedido."
+          the_collective_member: "O membro %{terms.consumer.from.singular} receberá um email que discrimina todas as mudanças feitas em seu pedido."
           warn_member_of_the_ch: "Avise o membro das mudanças em seu pedido"
       mailer:
         order_confirmation: 
@@ -547,11 +567,11 @@
           order_data_confirmed: "Pedido confirmado"
           the_delivery_period_w: "O período de entrega ocorrerá em %{date}."
           your_order_can_be_che: "Seu pedido pode ser checado no seguinte link:"
-          your_order_made_on_co: "Seu pedido feito no %{terms.consumer.singular} %{name} em %{date} foi confirmado."
+          your_order_made_on_co: "Seu pedido feito %{terms.consumer.at_article.singular} %{name} em %{date} foi confirmado."
         order_cancellation: 
           dear_name: "Olá %{name},"
           greetings: "Saudações,"
-          your_order_made_on_co: "Seu pedido feito no %{terms.consumer.singular} %{name} em %{date} foi cancelado com sucesso."
+          your_order_made_on_co: "Seu pedido feito %{terms.consumer.at.singular} %{name} em %{date} foi cancelado com sucesso."
         _complete_order: 
           order_no_code: "Código do Pedido: %{code}"
           price: Preço
@@ -642,18 +662,18 @@
         message_to_consumer: 
           a_service_of_s: "Um serviço de %s."
           hello_name: "Olá %{name}!,"
-          the_collective_profile_s: "O %{terms.consumer.singular} %{profile} mandou uma mensagem para você"
+          the_collective_profile_s: "%{terms.consumer.article.singular.capitalize} %{profile} mandou uma mensagem para você"
         message_to_consumer_for_order: 
           a_service_of_s: "Um serviço de %s."
           hello_name: "Olá %{name}!,"
           order: Pedido
           quantity_unit_of_prod: "%{quantity} %{unit} do %{product}"
-          the_collective_profile_s: "O %{terms.consumer.singular} %{profile} mandou uma mensagem para voce relacionado a seu %{order}"
+          the_collective_profile_s: "%{terms.consumer.article.singular.capitalize} %{profile} mandou uma mensagem para voce relacionado a seu %{order}"
           the_products_in_the_o: "Os produtos no pedido"
         message_to_supplier: 
           a_service_of_s: "Um serviço de %s."
           hello_administrators_: "Olá administradores de %{name}!"
-          the_collective_profile_s: "O %{terms.consumer.singular} %{profile} mandou uma mensagem para você"
+          the_collective_profile_s: "%{terms.consumer.article.singular.capitalize} %{profile} mandou uma mensagem para você"
         open_cycle: 
           a_new_cycle_is_open_c: "Um novo ciclo de pedidos está aberto chamado "
           hello_member_of_name: "Olá membros da comunidade %{name}!"
@@ -686,7 +706,7 @@
           send: Enviar
         new_to_supplier: 
           cancel: Cancelar
-          message_to_supplier_s: "Mensagem para o %{terms.supplier.singular} \"%{supplier}\""
+          message_to_supplier_s: "Mensagem para %{terms.supplier.article.singular} \"%{supplier}\""
           send: Enviar
       order: 
         _consumer_orders: 
@@ -705,7 +725,7 @@
           sign_up: registre-se
           this_cycle_is_already: "Este ciclo já foi fechado."
           this_cycle_is_not_ope: "Este ciclo não está aberto."
-          to_place_an_order_you: "Para fazer um pedido você precisa estar logado e registrado no %{terms.consumer.singular}. Por favor faça %{login} ou %{signup}."
+          to_place_an_order_you: "Para fazer um pedido você precisa estar logado e registrado %{terms.consumer.at.singular}. Por favor faça %{login} ou %{signup}."
           you_haven_t_placed_an: "Você ainda não fez pedidos neste ciclo."
           you_still_can: "Você ainda pode:"
           your_order_is_confirm: "Seu pedido está confirmado e registrado. Por favor, siga as diretrizes do método de entrega abaixo para que isso aconteça sem problemas."
@@ -721,7 +741,7 @@
         _filter_products: 
           active: Ativo
           all_the_categories: "todas as categorias"
-          all_the_suppliers: "todos %{terms.supplier.plural.article}"
+          all_the_suppliers: "todos %{terms.supplier.article.plural}"
           and_being: "e que estejam"
           anyone: anyone
           bigger_than_the_stock: "maior do que o estoque"
@@ -803,13 +823,13 @@
           opening_message: "Mensagem de abertura"
           orders_interval: "Intervalo dos Pedidos"
           save: Salvar
-          this_message_will_be_: "Esta mensagem será mandada por email aos consumidores do %{terms.consumer.singular}"
+          this_message_will_be_: "Esta mensagem será mandada por email aos consumidores %{terms.consumer.from.singular}"
         _edit_popin: 
           close: Fechar
           cycle_editing: "Edição de ciclo"
           cycle_saved: "Ciclo salvo"
         _edition: 
-          info: "O tempo de edição acabou e o ciclo está ainda pública. Na verdade, o ciclo está em fase de chamada de %{terms.supplier.plural}.<br/><br/> Ainda é possível editar alguns parametros do Ciclo através desta página, no entanto, esteja ciente do risco. Algumas operações têm diferentes implicações dependendo da fase em que se está, quando assim for você será avisado por uma janelinha de aviso das consequências das mudanças efetuadas."
+          info: "O tempo de edição acabou e o ciclo está ainda pública.<br/><br/> Ainda é possível editar alguns parametros do Ciclo através desta página, no entanto, esteja ciente do risco. Algumas operações têm diferentes implicações dependendo da fase em que se está, quando assim for você será avisado por uma janelinha de aviso das consequências das mudanças efetuadas."
           add_product: "Adicionar produto"
           it_was_automatically_: "Ela foi automaticamente gerada a partir dos produtos ativos e suas respectivas margens. Verifique a lista de produtos e edite-a conforme as necessidades e particularidades deste ciclo de pedidos."
           the_following_list_of: "A seguinte lista de produtos está disponível neste ciclo."
@@ -825,7 +845,7 @@
           do_prelimary_parcel: "fazer encomenda preliminar"
           forecast_parcel: "Encomenda prevista"
           forecast_value: "Valor previsto"
-          message_to_the_suppli: "Mensagem ao %{terms.supplier.singular}"
+          message_to_the_suppli: "Mensagem %{terms.supplier.to_article.singular}"
           no_product_ordered: "Sem produtos pedidos."
           product: Produto
           products_totals: "Total dos produtos"
@@ -875,7 +895,7 @@
         _view_products: 
           the_products: "Os produtos"
         add_products: 
-          add_all_missing_produ: "adicionar todos produtos que faltam ao %{terms.consumer.singular}"
+          add_all_missing_produ: "adicionar todos produtos que faltam %{terms.consumer.to_article.singular}"
           add_product_to_cycle_: "Adicionar produto à lista de produtos distribuídos"
           cancel: Cancelar
           close: Fechar
@@ -934,19 +954,19 @@
           activated: Ativado
           black: preto
           cancel: Cancelar
-          collective_consumptio: "Modo %{terms.consumer.singular} de consumo"
+          collective_consumptio: "Modo %{terms.consumer.singular}"
           disabled: Desabilitado
           header_background_col: "Cor de fundo de cabeçalho"
           header_s_image: "Imagem do cabeçalho"
           header_type: "Tipo de cabeçalho"
-          image_collective_name: "Imagem + nome do %{terms.consumer.singular}"
+          image_collective_name: "Imagem + nome %{terms.consumer.from.singular}"
           only_the_image: "Apenas a imagem"
-          image_help: "Esta imagem será usada no cabeçalho da página do %{terms.consumer.singular}, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
-          pure_color_collective: "Cor pura + nome do %{terms.consumer.singular}"
+          image_help: "Esta imagem será usada no cabeçalho da página %{terms.consumer.from.singular}, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
+          pure_color_collective: "Cor pura + nome %{terms.consumer.from.singular}"
           save: Salvar
-          settings_of_solidary_: "Configurações do %{terms.consumer.singular} de Consumo"
+          settings_of_solidary_: "Configurações %{terms.consumer.from.singular}"
           text_color: "Cor do texto"
-          this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso do %{terms.consumer.singular}. Como o %{terms.consumer.singular} é comumente chamado pelas pessoas?"
+          this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso %{terms.consumer.from.singular}. Como %{terms.consumer.article.singular} é comumente chamado pelas pessoas?"
           white: branco
 
   networks_plugin:

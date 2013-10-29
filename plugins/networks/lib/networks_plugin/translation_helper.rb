@@ -2,12 +2,11 @@ module NetworksPlugin::TranslationHelper
 
   protected
 
-  def set_terms_context
-    @terms_context = 'networks_plugin'
-  end
+  # included here to be used on controller's t calls
+  include SuppliersPlugin::TermsHelper
 
-  def self.included base
-    base.before_filter :set_terms_context
+  def terms_context
+    'networks_plugin'
   end
 
 end

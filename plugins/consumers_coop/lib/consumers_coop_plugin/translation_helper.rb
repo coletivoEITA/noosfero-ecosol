@@ -2,14 +2,11 @@ module ConsumersCoopPlugin::TranslationHelper
 
   protected
 
-  def set_terms_context
-    @terms_context = 'consumers_coop_plugin'
-  end
-
-  def self.included base
-    base.before_filter :set_terms_context
-  end
-
+  # included here to be used on controller's t calls
   include SuppliersPlugin::TermsHelper
+
+  def terms_context
+    'consumers_coop_plugin'
+  end
 
 end

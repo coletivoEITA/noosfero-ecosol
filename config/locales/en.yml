@@ -233,9 +233,63 @@
       consumer:
         singular: "organization"
         plural: "organizations"
-      supplier: 
-        singular: "supplier"
-        plural: "suppliers"
+        it: 
+          singular: "it"
+          plural: "them"
+        tO_it: 
+          singular: "to it"
+          plural: "to them"
+        to_article:
+          singular: "to the organization"
+        at:
+          singular: "at an organization"
+        at_article:
+          singular: "at the organization"
+        from:
+          singular: "from an organization"
+        from_article:
+          singular: "from the organization"
+        undefined_article:
+          singular: "uma organização"
+        article: 
+          singular: "a organização"
+          plural: "as organizações"
+        by_article: 
+          singular: "pela organização"
+      supplier:
+        singular: "fornecedor"
+        plural: "fornecedores"
+        it: 
+          singular: "ele"
+          plural: "eles"
+        tO_it: 
+          singular: "a ele"
+          plural: "a eles"
+        one: "um"
+        at:
+          singular: "no fornecedor"
+        to: 
+          singular: "a um fornecedor"
+          plural: "a fornecedores"
+        to_article:
+          singular: "ao fornecedor"
+          plural: "aos fornecedores"
+        from_article: 
+          singular: "do fornecedor"
+        undefined_article:
+          singular: "um fornecedor"
+        none: 
+          singular: "nenhum fornecedor"
+        article: 
+          singular: "o fornecedor"
+        from_which_article: 
+          singular: "com que o fornecedor"
+        by_article: 
+          singular: "pelo fornecedor"
+        article: 
+          plural: "os fornecedores"
+        new_undefined_article:
+          singular: "um novo fornecedor"
     controllers: 
       myprofile: 
         supplier_created: "%{terms.supplier.singular.capitalize} created"
