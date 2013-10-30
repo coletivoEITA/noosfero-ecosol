@@ -176,8 +176,8 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
   def validate_delivery_dates
     return if self.new? or delivery_start.nil? or delivery_finish.nil?
-    errors.add_to_base(I18n.t('orders_cycle_plugin.models.cycle.invalid_delivery_peri')) unless delivery_start < delivery_finish
-    errors.add_to_base(I18n.t('orders_cycle_plugin.models.cycle.delivery_period_befor')) unless finish < delivery_start
+    errors.add_to_base I18n.t('orders_cycle_plugin.models.cycle.invalid_delivery_peri') unless delivery_start < delivery_finish
+    errors.add_to_base I18n.t('orders_cycle_plugin.models.cycle.delivery_period_befor') unless finish <= delivery_start
   end
 
   def purge_defuncts
