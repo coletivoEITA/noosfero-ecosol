@@ -22,14 +22,21 @@ module ConsumersCoopPlugin::LayoutHelper
       next if if_proc and !instance_eval(&if_proc)
 
       label = t label
-      url = instance_eval(&url) if url.is_a?(Proc)
+      if url.is_a? Proc
+        url = instance_eval &url
+      else
+        # necessary for profile with own domain
+        url[:profile] = profile.identifier
+      end
+
       if key != :adm and @admin_action
         selected = false
       elsif selected_proc
-        selected = instance_eval(&selected_proc)
+        selected = instance_eval &selected_proc
       else
         selected = params[:controller].to_s == url[:controller].to_s
       end
+
       link_to label, url, :class => "menu-button #{"menu-selected" if selected}"
     end.join
   end
