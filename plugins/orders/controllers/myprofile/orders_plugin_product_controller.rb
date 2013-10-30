@@ -27,7 +27,9 @@ class OrdersPluginProductController < MyProfileController
 
   def destroy
     @ordered_product = OrdersPlugin::OrderedProduct.find params[:id]
+    @product = @ordered_product.product
     @order = @ordered_product.order
+
     @ordered_product.destroy
   end
 

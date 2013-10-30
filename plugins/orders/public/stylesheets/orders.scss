@@ -124,7 +124,7 @@
   font-size: 10px;
 
   &.empty {
-    padding: $padding;
+    padding: $padding 0;
     border-top: $border dotted black;
     text-align: center;
   }

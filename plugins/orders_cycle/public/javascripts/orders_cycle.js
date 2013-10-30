@@ -34,6 +34,7 @@ orders_cycle = {
       load: function (id, state) {
         var product = jQuery('#cycle-product-'+id);
         product.toggleClass('in-order', state);
+        product.find('input').get(0).checked = state;
         return product;
       },
 

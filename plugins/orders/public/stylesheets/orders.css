@@ -781,7 +781,7 @@
       font-size: 21px; }
     #filter .filter-box .pstyle-tm1 {
       font-size: 13px; }
-    #filter .filter-box .pstyle-tm2 {
+    #filter .filter-box .pstyle-tm2, #filter .filter-box .subtitle {
       font-size: 10px; }
     #filter .filter-box .profile-image {
       display: inline-block;
@@ -1069,7 +1069,7 @@
     font-size: 21px; }
   .consumer-order .pstyle-tm1 {
     font-size: 13px; }
-  .consumer-order .pstyle-tm2, .consumer-order #filter .filter-box .subtitle, #filter .filter-box .consumer-order .subtitle {
+  .consumer-order .pstyle-tm2, .consumer-order #filter .filter-box .subtitle, #filter .filter-box .consumer-order .subtitle, .consumer-order .subtitle {
     font-size: 10px; }
   .consumer-order .profile-image {
     display: inline-block;
@@ -1196,7 +1196,7 @@
   width: 432px;
   font-size: 10px; }
   .order-products-container.empty {
-    padding: 8px;
+    padding: 8px 0;
     border-top: 1px dotted black;
     text-align: center; }
   .order-products-container .order-total {
