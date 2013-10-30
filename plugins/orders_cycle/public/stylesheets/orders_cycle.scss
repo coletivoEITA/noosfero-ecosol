@@ -202,13 +202,14 @@
 #cycle-admin-page {
   @import 'field';
 
-  #cycle-header-warning-wrap {
-    width: 70%;
+  #cycle-header-warning {
+    @extend .box-align;
+    background-color: #FECBCA;
+    padding: 8px;
 
-    #cycle-header-warning {
-      @extend .box-align;
-      background-color: #FECBCA;
-      padding: 8px;
+    #cycle-header-warning-wrap {
+      width: 70%;
+
     }
   }
 
