@@ -5,8 +5,12 @@ OrdersPlugin::OrdersDisplayHelper = OrdersPlugin::DisplayHelper
 class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
 
   include ActionMailer::Helpers
+  helper ApplicationHelper
   helper OrdersPlugin::OrdersDisplayHelper
   helper OrdersPlugin::DateHelper
+  helper SuppliersPlugin::TranslationHelper
+
+  attr_accessor :environment
 
   def message_to_consumer_for_order profile, order, subject, message = nil
     domain = profile.hostname || profile.environment.default_hostname
@@ -40,17 +44,16 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
   def order_confirmation order, host_with_port
     profile = order.profile
     domain = profile.hostname || profile.environment.default_hostname
+    environment = profile.environment
 
     recipients    profile_recipients(order.consumer)
     from          'no-reply@' + domain
     reply_to      profile_recipients(profile)
     subject       I18n.t('orders_plugin.lib.mailer.order_was_confirmed') % {:name => profile.name}
     content_type  'text/html'
-    body :profile => profile,
-         :order => order,
-         :consumer => order.consumer,
-         :environment => profile.environment,
-         :host_with_port => host_with_port
+    assigns = {:profile => profile, :order => order, :consumer => order.consumer, :environment => profile.environment, :host_with_port => host_with_port}
+    body assigns
+    render :file => 'orders_plugin/mailer/order_confirmation', :body => assigns
   end
 
   def order_cancellation order
@@ -77,5 +80,15 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
       profile.admins.map{ |p| p.contact_email }
     end
   end
+
+  def premailer_html html
+    premailer = Premailer.new html, :with_html_string => true
+    premailer.to_inline_css
+  end
+
+  def render_with_premailer *args
+    premailer_html render_without_premailer(*args)
+  end
+  alias_method_chain :render, :premailer
 
 end

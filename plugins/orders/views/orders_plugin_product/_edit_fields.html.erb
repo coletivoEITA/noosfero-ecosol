@@ -1,0 +1,42 @@
+
+<% if f %>
+  <%= f.hidden_field :id %>
+<% end %>
+
+<div>
+  <div class="box-field supplier"><%= excerpt_ending product.supplier.abbreviation_or_name, 15 %></div>
+  <div class="box-field product"><%= product.name %></div>
+
+  <div class="box-field quantity">
+    <span><%= ordered_product.quantity_asked_as_currency_number %></span>
+    <span class="lower"><%= product.unit.singular rescue '' %></span>
+  </div>
+  <% if f and order.may_edit? %>
+    <div class="box-field quantity-edit">
+      <%= f.text_field :quantity_asked, :value => ordered_product.quantity_asked_as_currency_number, :onkeyup => 'orders.product.quantity_keyup(this, event);' %>
+      <span class="lower"><%= product.unit.singular rescue '' %></span>
+    </div>
+  <% end %>
+
+  <div id=<%="product-price-total-#{ordered_product.id.to_s}"%> class="box-field price-total">
+    <%= render :partial => "orders_plugin_product/price_total", :locals => {:product => ordered_product} %>
+  </div>
+</div>
+
+<% if f %>
+  <div class="more">
+
+    <div class="actions">
+      <%= link_to_function t('orders_plugin.views.product._edit.submit'), "orders.product.submit(this, '#{url_for(:controller => :orders_plugin_product, :action => :edit, :id => ordered_product.id)}')", :class => 'action-button' %>
+
+      <%= link_to_remote t('orders_plugin.views.product._edit.remove_from_order'), :update => "ordered-product-#{ordered_product.id}",
+        :loading => "loading_overlay.show('#ordered-product-#{ordered_product.id}')", :loaded => "loading_overlay.hide('#ordered-product-#{ordered_product.id}')",
+        :url => {:controller => 'orders_plugin_product', :action => :destroy, :id => ordered_product.id} if order.may_edit? %>
+    </div>
+
+    <div class="price-with-unit"><%= price_with_unit_span product.price_as_currency_number, product.unit %></div>
+  </div>
+<% end %>
+
+<div class="clean"></div>
+
