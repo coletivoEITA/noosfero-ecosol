@@ -35,7 +35,7 @@
         <%= link_to_function t('orders_plugin.views.product._edit.submit'), "orders.product.submit(this, '#{url_for(:controller => :orders_plugin_product, :action => :edit, :id => ordered_product.id)}')", :class => 'action-button' %>
 
         <%= link_to_remote t('orders_plugin.views.product._edit.remove_from_order'), :update => "ordered-product-#{ordered_product.id}",
-          :loading => "loading_overlay.show('#ordered-product-#{ordered_product.id}", :loaded => "loading_overlay.hide('#ordered-product-#{ordered_product.id}",
+          :loading => "loading_overlay.show('#ordered-product-#{ordered_product.id}')", :loaded => "loading_overlay.hide('#ordered-product-#{ordered_product.id}')",
           :url => {:controller => 'orders_plugin_product', :action => :destroy, :id => ordered_product.id} if order.may_edit? %>
       </div>
 
