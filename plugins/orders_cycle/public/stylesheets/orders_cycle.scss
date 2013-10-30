@@ -20,6 +20,10 @@
     .subtitle,
     #cycle-dates {
       width: 520px;
+
+      th {
+        border-bottom: 0;
+      }
     }
     .subtitle {
       display: block;
@@ -292,6 +296,7 @@
 #cycle-dates th {
   width: 80px;
   vertical-align: top;
+  border-bottom: 0;
 
   .cycle-list-item {
     @extend .box-align;
@@ -398,13 +403,16 @@
   }
   .cycle .happening {
     @extend .alignment;
+    background-color: #ffe546;
     line-height: 20px;
     text-transform: uppercase;
+    padding: 0 8px;
   }
   .cycle .info {
     @extend .alignment;
     background: #DDF2C5;
-    padding-top: 8px;
+    padding: 8px;
+    padding-right: 0;
   }
 }
 

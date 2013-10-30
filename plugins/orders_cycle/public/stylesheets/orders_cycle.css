@@ -796,6 +796,9 @@
   .cycle-view #cycle-header .subtitle,
   .cycle-view #cycle-header #cycle-dates {
     width: 520px; }
+    .cycle-view #cycle-header .subtitle th,
+    .cycle-view #cycle-header #cycle-dates th {
+      border-bottom: 0; }
   .cycle-view #cycle-header .subtitle {
     display: block;
     margin-top: 20px;
@@ -1210,11 +1213,14 @@
     float: right;
     clear: both; }
   #cycles-gadget .cycle .happening {
+    background-color: #ffe546;
     line-height: 20px;
-    text-transform: uppercase; }
+    text-transform: uppercase;
+    padding: 0 8px; }
   #cycles-gadget .cycle .info {
     background: #DDF2C5;
-    padding-top: 8px; }
+    padding: 8px;
+    padding-right: 0; }
 
 #cycle_opening_message {
   margin-bottom: 16px;
