@@ -7,14 +7,19 @@
         <div class="box-field supplier"> <%= t('orders_plugin.views.product._index.supplier') %> </div>
         <div class="box-field product"> <%= t('orders_plugin.views.product._index.product') %> </div>
         <div class="box-field quantity"> <%= t('orders_plugin.views.product._index.quantity') %> </div>
-        <div class="box-field price-total"> <%= t('orders_plugin.views.product._index.price_total') % {:currency => environment.currency_unit} %> </div>
+        <div class="box-field price-total"> <%= t('orders_plugin.views.product._index.price_total') % {:currency => @environment.currency_unit} %> </div>
       </div>
 
       <div class="table-content">
-        <% f.fields_for :products, order.products do |f| %>
+        <% if f %>
+          <% f.fields_for :products, order.products do |f| %>
+            <% order.products.each do |ordered_product| %>
+              <%= render "orders_plugin_product/#{partial}", :order => order, :ordered_product => ordered_product, :product => ordered_product.product, :f => f %>
+            <% end %>
+          <% end %>
+        <% else %>
           <% order.products.each do |ordered_product| %>
-            <%= render :partial => "orders_plugin_product/#{partial}", :locals => {:order => order,
-              :ordered_product => ordered_product, :product => ordered_product.product, :f => f} %>
+            <%= render "orders_plugin_product/#{partial}", :order => order, :ordered_product => ordered_product, :product => ordered_product.product, :f => f %>
           <% end %>
         <% end %>
       </div>

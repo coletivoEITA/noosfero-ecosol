@@ -57,7 +57,7 @@ class OrdersCyclePluginOrderedProductController < OrdersPluginProductController
 
   def destroy
     super
-    @offered_product = @ordered_product.product
+    @offered_product = @product
     @cycle = @order.cycle
   end
 
