@@ -8,7 +8,7 @@ module ControllerInheritance
       if partial_path.include? '/'
         _pick_partial_template_without_template_super partial_path
       elsif controller
-        controller.send :each_with_inherit do |klass|
+        controller.send :each_template_with_inherit do |klass|
           begin
             path = "#{klass.controller_path}/_#{partial_path}"
             self.view_paths.find_template path, self.template_format
@@ -43,7 +43,7 @@ module ControllerInheritance
 
     protected
 
-    def each_with_inherit &block
+    def each_template_with_inherit &block
       klass = self.class
       ret = nil
       loop do
@@ -65,7 +65,7 @@ module ControllerInheritance
 
     base.send :define_method, :default_template do |*args|
       template = nil
-      self.each_with_inherit do |klass|
+      self.each_template_with_inherit do |klass|
         template = self.view_paths.find_template "#{klass.controller_path}/#{action_name}", default_template_format
         break if template.present?
       end
