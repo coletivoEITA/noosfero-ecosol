@@ -35,4 +35,20 @@ orders = {
     },
   },
 
+  set_orders_container_max_height: function()
+  {
+    cirandasTopBarH = jQuery('#cirandas-top-bar').outerHeight();
+    deliveryH = jQuery('#order-column #delivery-box').outerHeight();
+    headerH = jQuery('#order-column .order-message-title.status-open').outerHeight();
+    totalH = jQuery('#order-column .order-total').last().outerHeight();
+    screenH = jQuery(window).height();
+    ordersH = screenH - deliveryH - totalH - headerH - cirandasTopBarH;
+    jQuery('.order-products-container .order-products').css('max-height', ordersH);
+  }
+
 };
+
+
+jQuery(document).ready(function() {
+  orders.set_orders_container_max_height();
+});

@@ -1219,58 +1219,62 @@
     .order-products-container .order-total .total-value {
       width: 64px;
       clear: both; }
-  .order-products-container .order-products .table-header {
-    font-weight: bold;
-    border-bottom: 1px solid black;
-    text-transform: uppercase; }
-  .order-products-container .order-products .box-field {
-    float: left;
-    padding: 4px 8px;
-    padding-right: 7px;
-    border-right: 1px solid white; }
-    .order-products-container .order-products .box-field:last-child {
-      border-right: none; }
-    .order-products-container .order-products .box-field.supplier {
-      width: 96px; }
-    .order-products-container .order-products .box-field.product {
-      width: 144px; }
-    .order-products-container .order-products .box-field.quantity, .order-products-container .order-products .box-field.quantity input, .order-products-container .order-products .box-field.quantity-edit, .order-products-container .order-products .box-field.quantity-edit input {
-      width: 64px; }
-    .order-products-container .order-products .box-field.price-total {
-      width: 64px; }
-  .order-products-container .order-products .table-content .ordered-product .more {
-    padding: 4px 8px;
-    display: none; }
-    .order-products-container .order-products .table-content .ordered-product .more .actions {
-      float: left; }
-      .order-products-container .order-products .table-content .ordered-product .more .actions a {
-        color: black; }
-    .order-products-container .order-products .table-content .ordered-product .more .price-with-unit {
-      float: right; }
-  .order-products-container .order-products .table-content .ordered-product.hover, .order-products-container .order-products .table-content .ordered-product.edit {
-    background-color: #ffe546; }
-  .order-products-container .order-products .table-content .ordered-product .quantity-edit {
-    display: none; }
-  .order-products-container .order-products .table-content .ordered-product.edit {
-    width: 436px;
-    padding-bottom: 4px;
-    margin-left: -5px;
-    padding-left: 4px;
-    border: 1px solid black;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -o-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); }
-    .order-products-container .order-products .table-content .ordered-product.edit .quantity-edit {
-      display: block; }
-    .order-products-container .order-products .table-content .ordered-product.edit .quantity {
+  .order-products-container .order-products {
+    overflow-y: auto;
+    max-height: 300px;
+    margin-right: -15px; }
+    .order-products-container .order-products .table-header {
+      font-weight: bold;
+      border-bottom: 1px solid black;
+      text-transform: uppercase; }
+    .order-products-container .order-products .box-field {
+      float: left;
+      padding: 4px 8px;
+      padding-right: 7px;
+      border-right: 1px solid white; }
+      .order-products-container .order-products .box-field:last-child {
+        border-right: none; }
+      .order-products-container .order-products .box-field.supplier {
+        width: 96px; }
+      .order-products-container .order-products .box-field.product {
+        width: 144px; }
+      .order-products-container .order-products .box-field.quantity, .order-products-container .order-products .box-field.quantity input, .order-products-container .order-products .box-field.quantity-edit, .order-products-container .order-products .box-field.quantity-edit input {
+        width: 64px; }
+      .order-products-container .order-products .box-field.price-total {
+        width: 64px; }
+    .order-products-container .order-products .table-content .ordered-product .more {
+      padding: 4px 8px;
       display: none; }
-    .order-products-container .order-products .table-content .ordered-product.edit .box-field {
-      border-right: none;
-      padding-right: 8px; }
+      .order-products-container .order-products .table-content .ordered-product .more .actions {
+        float: left; }
+        .order-products-container .order-products .table-content .ordered-product .more .actions a {
+          color: black; }
+      .order-products-container .order-products .table-content .ordered-product .more .price-with-unit {
+        float: right; }
+    .order-products-container .order-products .table-content .ordered-product.hover, .order-products-container .order-products .table-content .ordered-product.edit {
+      background-color: #ffe546; }
+    .order-products-container .order-products .table-content .ordered-product .quantity-edit {
+      display: none; }
+    .order-products-container .order-products .table-content .ordered-product.edit {
+      width: 436px;
+      padding-bottom: 4px;
+      margin-left: -5px;
+      padding-left: 4px;
+      border: 1px solid black;
+      border-radius: 5px;
+      -moz-border-radius: 5px;
+      -o-border-radius: 5px;
+      -webkit-border-radius: 5px;
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+      -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); }
+      .order-products-container .order-products .table-content .ordered-product.edit .quantity-edit {
+        display: block; }
+      .order-products-container .order-products .table-content .ordered-product.edit .quantity {
+        display: none; }
+      .order-products-container .order-products .table-content .ordered-product.edit .box-field {
+        border-right: none;
+        padding-right: 8px; }
 
 .orders-admin-index {
   margin-bottom: 20px; }
