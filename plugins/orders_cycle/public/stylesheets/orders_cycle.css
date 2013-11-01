@@ -796,6 +796,9 @@
   .cycle-view #cycle-header .subtitle,
   .cycle-view #cycle-header #cycle-dates {
     width: 520px; }
+    .cycle-view #cycle-header .subtitle th,
+    .cycle-view #cycle-header #cycle-dates th {
+      border-bottom: 0; }
   .cycle-view #cycle-header .subtitle {
     display: block;
     margin-top: 20px;
@@ -969,7 +972,7 @@
     font-size: 21px; }
   #cycle-admin-page .pstyle-tm1 {
     font-size: 13px; }
-  #cycle-admin-page .pstyle-tm2 {
+  #cycle-admin-page .pstyle-tm2, #cycle-admin-page .subtitle {
     font-size: 10px; }
   #cycle-admin-page .profile-image {
     display: inline-block;
@@ -1087,11 +1090,11 @@
     height: 64px;
     padding-left: 4px;
     margin-bottom: 10px; }
-  #cycle-admin-page #cycle-header-warning-wrap {
-    width: 70%; }
-    #cycle-admin-page #cycle-header-warning-wrap #cycle-header-warning {
-      background-color: #FECBCA;
-      padding: 8px; }
+  #cycle-admin-page #cycle-header-warning {
+    background-color: #FECBCA;
+    padding: 8px; }
+    #cycle-admin-page #cycle-header-warning #cycle-header-warning-wrap {
+      width: 70%; }
   #cycle-admin-page #cycle-products-header div {
     width: 400px; }
   #cycle-admin-page #cycle-products-header a {
@@ -1210,11 +1213,14 @@
     float: right;
     clear: both; }
   #cycles-gadget .cycle .happening {
+    background-color: #ffe546;
     line-height: 20px;
-    text-transform: uppercase; }
+    text-transform: uppercase;
+    padding: 0 8px; }
   #cycles-gadget .cycle .info {
     background: #DDF2C5;
-    padding-top: 8px; }
+    padding: 8px;
+    padding-right: 0; }
 
 #cycle_opening_message {
   margin-bottom: 16px;
