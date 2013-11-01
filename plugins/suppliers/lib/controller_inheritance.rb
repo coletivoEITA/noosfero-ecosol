@@ -65,11 +65,8 @@ module ControllerInheritance
 
     base.send :define_method, :default_template do |*args|
       self.each_with_inherit do |klass|
-        begin
-          a = self.view_paths.find_template "#{klass.controller_path}/#{action_name}", default_template_format
-        rescue ::ActionView::MissingTemplate
-          raise "Can't find template '#{action_name}' in any #{self.class}'s parent" unless (klass.inherit_templates rescue nil)
-        end
+        template = self.view_paths.find_template "#{klass.controller_path}/#{action_name}", default_template_format
+        return template if template.present?
       end
     end
 
