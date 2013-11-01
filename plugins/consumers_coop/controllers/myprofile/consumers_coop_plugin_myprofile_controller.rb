@@ -6,6 +6,7 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
 
   include ConsumersCoopPlugin::ControllerHelper
 
+  helper ConsumersCoopPlugin::TranslationHelper
   helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
   def index

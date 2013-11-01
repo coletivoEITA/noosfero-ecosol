@@ -4,6 +4,8 @@ class ConsumersCoopPluginProductController < OrdersCyclePluginProductController
   include ControllerInheritance
   include ConsumersCoopPlugin::TranslationHelper
 
+  helper ConsumersCoopPlugin::TranslationHelper
+
   protected
 
   replace_url_for self.superclass

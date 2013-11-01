@@ -4,11 +4,13 @@ SuppliersPlugin::SuppliersDisplayHelper = SuppliersPlugin::DisplayHelper
 
 class SuppliersPluginMyprofileController < MyProfileController
 
+  no_design_blocks
+
   include SuppliersPlugin::TranslationHelper
 
-  no_design_blocks
   before_filter :load_new, :only => [:index, :new]
 
+  helper SuppliersPlugin::TranslationHelper
   helper SuppliersPlugin::SuppliersDisplayHelper
 
   def index

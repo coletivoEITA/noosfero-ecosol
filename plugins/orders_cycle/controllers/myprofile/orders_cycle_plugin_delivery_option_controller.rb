@@ -5,13 +5,14 @@ require_dependency 'delivery_plugin' #necessary to load extensions
 
 class OrdersCyclePluginDeliveryOptionController < DeliveryPluginOptionController
 
+  no_design_blocks
+
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
   include ControllerInheritance
   include SuppliersPlugin::TranslationHelper
 
-  no_design_blocks
-
+  helper SuppliersPlugin::TranslationHelper
   helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
   protected
