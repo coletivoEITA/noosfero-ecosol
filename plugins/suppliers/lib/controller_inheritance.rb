@@ -64,10 +64,12 @@ module ControllerInheritance
     base.inherit_templates = true
 
     base.send :define_method, :default_template do |*args|
+      template = nil
       self.each_with_inherit do |klass|
         template = self.view_paths.find_template "#{klass.controller_path}/#{action_name}", default_template_format
-        return template if template.present?
+        break if template.present?
       end
+      template
     end
 
     base.send :define_method, :initialize_template_class do |response|
