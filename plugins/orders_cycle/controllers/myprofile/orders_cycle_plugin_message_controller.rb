@@ -1,11 +1,13 @@
 class OrdersCyclePluginMessageController < OrdersPluginMessageController
 
+  no_design_blocks
+
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
-  helper OrdersPlugin::FieldHelper
   include SuppliersPlugin::TranslationHelper
 
-  no_design_blocks
+  helper SuppliersPlugin::TranslationHelper
+  helper OrdersPlugin::FieldHelper
 
   def new_to_supplier
     @supplier = SuppliersPlugin::Supplier.find params[:supplier_id]

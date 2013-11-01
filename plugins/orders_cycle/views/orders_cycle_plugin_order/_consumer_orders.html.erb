@@ -7,7 +7,7 @@
   <% end %>
 </h3>
 
-<% if @order.consumer != user and @admin_edit %>
+<% if @order and @order.consumer != user and @admin_edit %>
   <div id="order-admin-warning" class="order-message">
     <div class="order-message-text">
       <%= t('orders_cycle_plugin.views.order._consumer_orders.caution') % {

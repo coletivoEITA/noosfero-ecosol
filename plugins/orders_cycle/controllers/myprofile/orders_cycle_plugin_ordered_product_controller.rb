@@ -4,13 +4,14 @@ OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
 
 class OrdersCyclePluginOrderedProductController < OrdersPluginProductController
 
+  no_design_blocks
+
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
   include ControllerInheritance
   include SuppliersPlugin::TranslationHelper
 
-  no_design_blocks
-
+  helper SuppliersPlugin::TranslationHelper
   helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
   def new

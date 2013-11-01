@@ -6,6 +6,7 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
 
   include ConsumersCoopPlugin::ControllerHelper
 
+  helper ConsumersCoopPlugin::TranslationHelper
   helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
   def index
@@ -18,7 +19,7 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
 
   def settings
     if params[:commit]
-      was_enabled = profile.consumers_coop_settings.enabled?
+      was_enabled = profile.consumers_coop_settings.enabled
 
       params[:profile_data].delete(:consumers_coop_settings).each do |attr, value|
         profile.consumers_coop_settings.send "#{attr}=", value
@@ -26,7 +27,7 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
       profile.update_attributes! params[:profile_data]
       profile.consumers_coop_header_image_save
 
-      if !was_enabled and profile.consumers_coop_settings.enabled?
+      if !was_enabled and profile.consumers_coop_settings.enabled
         profile.consumers_coop_enable
       elsif was_enabled
         profile.consumers_coop_disable

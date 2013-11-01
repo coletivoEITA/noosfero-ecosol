@@ -4,14 +4,16 @@ OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
 
 class OrdersCyclePluginSupplierController < SuppliersPluginMyprofileController
 
+  no_design_blocks
+
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
   include ControllerInheritance
   include SuppliersPlugin::TranslationHelper
 
-  no_design_blocks
   protect 'edit_profile', :profile
 
+  helper SuppliersPlugin::TranslationHelper
   helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
   def margin_change
