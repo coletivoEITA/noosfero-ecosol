@@ -3,6 +3,8 @@ class ConsumersCoopPluginSupplierController < OrdersCyclePluginSupplierControlle
   include ControllerInheritance
   include ConsumersCoopPlugin::TranslationHelper
 
+  helper ConsumersCoopPlugin::TranslationHelper
+
   no_design_blocks
 
   protected

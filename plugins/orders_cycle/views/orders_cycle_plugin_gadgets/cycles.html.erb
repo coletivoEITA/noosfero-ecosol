@@ -4,7 +4,7 @@
   <% end %>
 
   <div>
-    <%= link_to t('orders_cycle_plugin.views.gadgets.cycles.all_cycles'), {:controller => :orders_cycle_plugin_order}, :id => "all-cycles" %>
+    <%= link_to t('orders_cycle_plugin.views.gadgets.cycles.all_cycles'), {:controller => :orders_cycle_plugin_order, :profile => profile.identifier, :action => :index}, :id => "all-cycles" %>
     <div class='clean'></div>
   </div>
 </div>

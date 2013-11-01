@@ -1,14 +1,15 @@
 class OrdersCyclePluginCycleController < MyProfileController
 
-  protect 'edit_profile', :profile
+  no_design_blocks
 
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
   include SuppliersPlugin::TranslationHelper
 
-  no_design_blocks
+  protect 'edit_profile', :profile
   before_filter :set_admin_action
 
+  helper SuppliersPlugin::TranslationHelper
   helper OrdersCyclePlugin::CycleHelper
 
   def index

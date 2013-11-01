@@ -1,11 +1,11 @@
+raise 'I18n version 0.6.0 is needed for a good string interpolation' unless I18n::VERSION >= '0.6.0'
+
 module SuppliersPlugin::TermsHelper
 
-  # '.' ins't supported by the % format function (altought it works on some newer systems)
-  # FIXME remove when a newer ruby/system is required as it affects performance
-  Separator = '_'
   I18nSeparator = '.'
+  DefaultContext = 'suppliers_plugin'
 
-  Terms = [:consumer, :supplier]
+  Terms = [:profile, :supplier]
   Auxiliars = [
     nil,
     #
@@ -31,7 +31,7 @@ module SuppliersPlugin::TermsHelper
     end
   end.flatten
 
-  @translations = HashWithIndifferentAccess.new
+  @translations = {}
   def self.translations
     @translations
   end
@@ -48,19 +48,23 @@ module SuppliersPlugin::TermsHelper
     base.send :alias_method, :t, :translate
   end
 
+  def default_terms_context
+    DefaultContext
+  end
   # may be replaced on context (e.g. controller)
   def terms_context
-    'suppliers_plugin'
+    default_terms_context
   end
 
   def translate key, options = {}
     translation = I18n.t key, options
-    sub_separator_items translation
     translation % translated_terms
   end
 
   def translate_with_cache key, options = {}
     cache = (SuppliersPlugin::TermsHelper.cache[I18n.locale] ||= {})
+    cache = (cache[terms_context] ||= {})
+
     hit = cache[key]
     return hit if hit.present?
 
@@ -69,27 +73,20 @@ module SuppliersPlugin::TermsHelper
 
   private
 
-  def sub_separator str
-    str.gsub I18nSeparator, Separator
-  end
-  def sub_separator_items str
-    str.gsub!(/\%\{[^\}]*\}/){ |x| sub_separator x }
-    str
-  end
+  def translated_terms keys = Keys, translations = SuppliersPlugin::TermsHelper.translations, transformations = Transformations, sep = I18nSeparator
+    translated_terms = (translations[I18n.locale] ||= {})
+    translated_terms = (translated_terms[terms_context] ||= {})
 
-  def translated_terms keys = Keys, translations = SuppliersPlugin::TermsHelper.translations, transformations = Transformations, sep = Separator
-    translated_terms ||= (translations[I18n.locale] ||= HashWithIndifferentAccess.new)
     return translated_terms if translated_terms.present?
 
     keys.each do |key|
       translation = I18n.t! "#{terms_context}.terms.#{key}" rescue nil
+      translation = I18n.t! "#{default_terms_context}.terms.#{key}" rescue nil unless translation
       next unless translation.is_a? String
 
-      processed_key = sub_separator key
-
-      translated_terms["terms#{sep}#{processed_key}"] = translation
-      transformations.map do |transformation|
-        translated_terms["terms#{sep}#{processed_key}#{sep}#{transformation}"] = translation.send transformation
+      translated_terms["terms#{sep}#{key}"] = translation
+      transformations.each do |transformation|
+        translated_terms["terms#{sep}#{key}#{sep}#{transformation}"] = translation.send transformation
       end
     end
     translated_terms
