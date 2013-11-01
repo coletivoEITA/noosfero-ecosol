@@ -571,7 +571,7 @@
         order_cancellation: 
           dear_name: "Olá %{name},"
           greetings: "Saudações,"
-          your_order_made_on_co: "Seu pedido feito %{terms.consumer.at.singular} %{name} em %{date} foi cancelado com sucesso."
+          your_order_made_on_co: "Seu pedido feito %{terms.consumer.at_article.singular} %{name} em %{date} foi cancelado com sucesso."
         _complete_order: 
           order_no_code: "Código do Pedido: %{code}"
           price: Preço
@@ -725,7 +725,7 @@
           sign_up: registre-se
           this_cycle_is_already: "Este ciclo já foi fechado."
           this_cycle_is_not_ope: "Este ciclo não está aberto."
-          to_place_an_order_you: "Para fazer um pedido você precisa estar logado e registrado %{terms.consumer.at.singular}. Por favor faça %{login} ou %{signup}."
+          to_place_an_order_you: "Para fazer um pedido você precisa estar logado e registrado %{terms.consumer.at_article.singular}. Por favor faça %{login} ou %{signup}."
           you_haven_t_placed_an: "Você ainda não fez pedidos neste ciclo."
           you_still_can: "Você ainda pode:"
           your_order_is_confirm: "Seu pedido está confirmado e registrado. Por favor, siga as diretrizes do método de entrega abaixo para que isso aconteça sem problemas."
@@ -823,7 +823,7 @@
           opening_message: "Mensagem de abertura"
           orders_interval: "Intervalo dos Pedidos"
           save: Salvar
-          this_message_will_be_: "Esta mensagem será mandada por email aos consumidores %{terms.consumer.from.singular}"
+          this_message_will_be_: "Esta mensagem será mandada por email aos consumidores %{terms.consumer.from_article.singular}"
         _edit_popin: 
           close: Fechar
           cycle_editing: "Edição de ciclo"
@@ -959,7 +959,7 @@
           header_background_col: "Cor de fundo de cabeçalho"
           header_s_image: "Imagem do cabeçalho"
           header_type: "Tipo de cabeçalho"
-          image_collective_name: "Imagem + nome %{terms.consumer.from.singular}"
+          image_collective_name: "Imagem + nome %{terms.consumer.from_article.singular}"
           only_the_image: "Apenas a imagem"
           image_help: "Esta imagem será usada no cabeçalho da página %{terms.consumer.from.singular}, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
           pure_color_collective: "Cor pura + nome %{terms.consumer.from.singular}"
