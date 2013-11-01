@@ -31,6 +31,10 @@
 
   .order-products {
 
+    overflow-y: auto;
+    max-height: 300px;
+    margin-right: -15px;
+
     .table-header {
       @extend .container-clean;
     }
