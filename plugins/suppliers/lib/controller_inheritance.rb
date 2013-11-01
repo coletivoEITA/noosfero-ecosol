@@ -64,12 +64,14 @@ module ControllerInheritance
     base.inherit_templates = true
 
     base.send :define_method, :default_template do |*args|
-      template = nil
       self.each_template_with_inherit do |klass|
-        template = self.view_paths.find_template "#{klass.controller_path}/#{action_name}", default_template_format
-        break if template.present?
+        begin
+          self.view_paths.find_template "#{klass.controller_path}/#{action_name}", default_template_format
+        rescue ::ActionView::MissingTemplate => e
+          # raise the same exception as rails will rescue it
+          raise e unless (klass.inherit_templates rescue nil)
+        end
       end
-      template
     end
 
     base.send :define_method, :initialize_template_class do |response|
