@@ -24,6 +24,7 @@ gem 'mocha', '0.9.8'
 gem 'nokogiri', '1.4.0'
 gem 'rest-client', '1.6.0'
 gem 'ruby-breakpoint', '0.5.1'
+gem 'mime-types', '< 2.0'
 
 group :production do
   gem 'thin', '1.2.4'
