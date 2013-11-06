@@ -1,7 +1,7 @@
 <h3><%= t('orders_cycle_plugin.views.cycle._edit_fields.general_settings') %></h3>
 
 <% form_remote_for :cycle, @cycle, :url => {:action => @cycle.new? ? :new : :edit, :id => @cycle.id },
-  :loading => "loading_overlay.show('#cycle-admin-page form')", :loaded => "loading_overlay.hide('#cycle-admin-page form')" do |f| %>
+  :loading => "loading_overlay.show('#cycle-fields form')", :loaded => "loading_overlay.hide('#cycle-fields form')" do |f| %>
 
   <%= labelled_field(f, :name, t('orders_cycle_plugin.views.cycle._edit_fields.name'), f.text_field(:name), :class => 'cycle-field-name') %>
   <%= labelled_field(f, :description, t('orders_cycle_plugin.views.cycle._edit_fields.description'), f.text_area(:description), :class => 'cycle-field-description') %>

@@ -1,5 +1,9 @@
 class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
 
+  include ActionMailer::Helpers
+  helper ApplicationHelper
+  helper SuppliersPlugin::TranslationHelper
+
   def order_change_notification profile, order, changed, removed, message = nil
     domain = profile.hostname || profile.environment.default_hostname
 

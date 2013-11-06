@@ -7,34 +7,41 @@ class HTMLEntities
     def initialize(flavor, instructions)
       @flavor = flavor
       instructions = [:basic] if instructions.empty?
-      validate_instructions instructions
-      build_basic_entity_encoder instructions
-      build_extended_entity_encoder instructions
+      validate_instructions(instructions)
+      build_basic_entity_encoder(instructions)
+      build_extended_entity_encoder(instructions)
     end
 
     def encode(source)
-      minimize_encoding(
-        replace_extended(
-          replace_basic(
-            prepare(source))))
+      post_process(
+        prepare(source).
+          gsub(basic_entity_regexp){ |match| encode_basic(match) }.
+          gsub(extended_entity_regexp){ |match| encode_extended(match) }
+      )
     end
 
   private
 
-    def prepare(string)
-      string.to_s.encode(Encoding::UTF_8)
-    end
+    if "1.9".respond_to?(:encoding)
+      def prepare(string) #:nodoc:
+        string.to_s.encode(Encoding::UTF_8)
+      end
 
-    def minimize_encoding(string)
-      if string.encoding != Encoding::ASCII && contains_only_ascii?(string)
-        string.encode(Encoding::ASCII)
-      else
+      def post_process(string)
+        if string.encoding != Encoding::ASCII && string.match(/\A[\x01-\x7F]*\z/)
+          string.encode(Encoding::ASCII)
+        else
+          string
+        end
+      end
+    else
+      def prepare(string) #:nodoc:
+        string.to_s
+      end
+
+      def post_process(string)
         string
       end
-    end
-
-    def contains_only_ascii?(string)
-      string.match(/\A[\x01-\x7F]*\z/)
     end
 
     def basic_entity_regexp
@@ -43,30 +50,26 @@ class HTMLEntities
 
     def extended_entity_regexp
       @extended_entity_regexp ||= (
-        pattern = '[^\u{20}-\u{7E}]'
+        options = [nil]
+        if encoding_aware?
+          pattern = '[^\u{20}-\u{7E}]'
+        else
+          pattern = '[^\x20-\x7E]'
+          options << "U"
+        end
         pattern << "|'" if @flavor == 'html4'
-        Regexp.new(pattern)
+        Regexp.new(pattern, *options)
       )
-    end
-
-    def replace_basic(string)
-      string.gsub(basic_entity_regexp){ |match| encode_basic(match) }
-    end
-
-    def replace_extended(string)
-      string.gsub(extended_entity_regexp){ |match| encode_extended(match) }
     end
 
     def validate_instructions(instructions)
       unknown_instructions = instructions - INSTRUCTIONS
       if unknown_instructions.any?
-        raise InstructionError,
-          "unknown encode_entities command(s): #{unknown_instructions.inspect}"
+        raise InstructionError, "unknown encode_entities command(s): #{unknown_instructions.inspect}"
       end
 
-      if instructions.include?(:decimal) && instructions.include?(:hexadecimal)
-        raise InstructionError,
-          "hexadecimal and decimal encoding are mutually exclusive"
+      if (instructions.include?(:decimal) && instructions.include?(:hexadecimal))
+        raise InstructionError, "hexadecimal and decimal encoding are mutually exclusive"
       end
     end
 
@@ -78,24 +81,18 @@ class HTMLEntities
       elsif instructions.include?(:hexadecimal)
         method = :encode_hexadecimal
       end
-      instance_eval <<-END
-        def encode_basic(char)
-          #{method}(char)
-        end
-      END
+      instance_eval "def encode_basic(char)\n#{method}(char)\nend"
     end
 
     def build_extended_entity_encoder(instructions)
-      operations = [:named, :decimal, :hexadecimal] & instructions
-      instance_eval <<-END
-        def encode_extended(char)
-          #{operations.map{ |encoder| %{
-            encoded = encode_#{encoder}(char)
-            return encoded if encoded
-          }}.join("\n")}
-          char
-        end
-      END
+      definition = "def encode_extended(char)\n"
+      ([:named, :decimal, :hexadecimal] & instructions).each do |encoder|
+        definition << "encoded = encode_#{encoder}(char)\n"
+        definition << "return encoded if encoded\n"
+      end
+      definition << "char\n"
+      definition << "end"
+      instance_eval definition
     end
 
     def encode_named(char)
@@ -118,6 +115,10 @@ class HTMLEntities
         uniqmap = skips ? map.reject{|ent,hx| skips.include? ent} : map
         uniqmap.invert
       )
+    end
+
+    def encoding_aware?
+      "1.9".respond_to?(:encoding)
     end
   end
 end
