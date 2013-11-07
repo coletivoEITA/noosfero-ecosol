@@ -5,6 +5,7 @@ class ExchangePluginProfileController < ProfileController
   helper ExchangePlugin::ExchangeDisplayHelper
 
   def start_exchange
+       
     @exchange = ExchangePlugin::Exchange.new
     @exchange.state = "proposal"
     @exchange.save!
