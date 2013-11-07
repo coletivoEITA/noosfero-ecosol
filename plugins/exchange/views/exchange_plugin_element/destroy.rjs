@@ -1,2 +1,4 @@
 page.remove "exchange-element-#{@element.id}"
 
+page.insert_html :top, "exchange-#{@element.object_type}-list-#{params[:actor]}", :partial => 'view_list',
+ :locals => {:element => @element, :actor => params[:actor]}
