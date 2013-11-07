@@ -16,7 +16,7 @@
       </div>
 
       <div class="exchange-trash">
-        <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:controller => :exchange_plugin_element, :action => :destroy, :id => element.id} %>
+        <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', :url => {:controller => :exchange_plugin_element, :action => :destroy, :id => element.id, :actor => actor, :object_type => element.object_type} %>
       </div>
 
     <% else %>
@@ -45,8 +45,9 @@
         <%= element.comment %>
       </div>
     <% end %>
-
-  <% elsif element.object_type == "CmsLearningPlugin::Learning" %>
+  <% elsif element.object_type == "Article" %> 
+  <% #elsif element.object_type == "CmsLearningPlugin::Learning" FIXME 
+  %>
     <div class="title"><%= link_to element.object.name, element.object.url, :target => 'blank' %></div>
     <div class="desc"><%= element.object.summary %></div>
 
