@@ -414,7 +414,7 @@ ActiveRecord::Schema.define(:version => 20130918183842) do
   end
 
   create_table "products", :force => true do |t|
-    t.integer  "enterprise_id"
+    t.integer  "profile_id"
     t.integer  "product_category_id"
     t.string   "name"
     t.decimal  "price"
@@ -426,10 +426,12 @@ ActiveRecord::Schema.define(:version => 20130918183842) do
     t.boolean  "highlighted",         :default => false
     t.integer  "unit_id"
     t.integer  "image_id"
+    t.string   "type"
+    t.text     "data"
   end
 
-  add_index "products", ["enterprise_id"], :name => "index_products_on_enterprise_id"
   add_index "products", ["product_category_id"], :name => "index_products_on_product_category_id"
+  add_index "products", ["profile_id"], :name => "index_products_on_enterprise_id"
 
   create_table "profiles", :force => true do |t|
     t.string   "name"
