@@ -68,6 +68,7 @@ class ApplicationController < ActionController::Base
   include NeedsProfile
 
   attr_reader :environment
+  attr_reader :domain
 
   before_filter :load_terminology
 
