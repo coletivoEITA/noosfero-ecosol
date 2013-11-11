@@ -2,7 +2,7 @@
 #
 # Use this as the base for the locale file of your language.
 
-"en-US":
+"en":
   date:
     formats:
       default: "%Y-%m-%d"
@@ -221,3 +221,9 @@
         <<: *errors_template
       full_messages:
         format: "%{attribute} %{message}"
+
+  pjax_plugin:
+    lib:
+      plugin:
+        name: "pjax plugin"
+        description: "Use pjax for page's links"
