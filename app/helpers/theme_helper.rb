@@ -67,19 +67,19 @@ module ThemeHelper
   end
 
   def theme_site_title
-    theme_include('site_title')
+    @theme_site_title ||= theme_include 'site_title'
   end
 
   def theme_header
-    theme_include('header')
+    @theme_header ||= theme_include 'header'
   end
 
   def theme_footer
-    theme_include('footer')
+    @theme_footer ||= theme_include 'footer'
   end
 
   def theme_extra_navigation
-    theme_include('navigation')
+    @theme_extra_navigation ||= theme_include 'navigation'
   end
 
   def is_testing_theme
