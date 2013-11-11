@@ -133,7 +133,9 @@ class ApplicationController < ActionController::Base
   # plugin to the current controller being initialized.
   def init_noosfero_plugins_controller_filters
     plugins.each do |plugin|
-      filters = plugin.send(self.class.name.underscore + '_filters')
+      filters = plugin.send "application_controller_filters"
+      filters = [filters] if !filters.kind_of?(Array)
+      filters += plugin.send "#{self.class.name.underscore}_filters"
       filters = [filters] if !filters.kind_of?(Array)
       filters.each do |plugin_filter|
         self.class.send(plugin_filter[:type], plugin.class.name.underscore + '_' + plugin_filter[:method_name], (plugin_filter[:options] || {}))
