@@ -1,5 +1,7 @@
 module LayoutHelper
 
+  include ThemeHelper
+
   def body_classes
     # Identify the current controller and action for the CSS:
     " controller-#{@controller.controller_name}" +
@@ -80,8 +82,8 @@ module LayoutHelper
     'jquery.ui/' + jquery_theme + '/jquery-ui-1.8.2.custom'
   end
 
-  def theme_stylesheet_path
-    theme_path + '/style.css'
+  def layout_template
+    if profile then profile.layout_template else environment.layout_template end
   end
 
   def addthis_javascript
