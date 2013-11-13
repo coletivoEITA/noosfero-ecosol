@@ -30,6 +30,8 @@ do_start() {
   clear_cache
   environments_loop start
   ruby -S thin -C config/thin.yml start
+
+  renice 20 `cat tmp/pids/thin.50003.pid`
 }
 
 do_stop() {
