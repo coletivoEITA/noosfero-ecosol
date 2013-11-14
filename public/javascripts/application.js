@@ -590,14 +590,14 @@ function chatOnlineUsersDataCallBack(data) {
   });
 }
 
-jQuery(function($) {
-  $.ajaxSetup({cache: false});
-  $.getJSON('/account/user_data', function(data) {
-    noosfero.user_data = data;
+jQuery.ajaxSetup({cache: false});
+jQuery.getJSON('/account/user_data', function(data) {
+  noosfero.user_data = data;
+  jQuery(function($) {
     userDataCallBack(noosfero.user_data);
   });
-  $.ajaxSetup({cache: true});
 });
+jQuery.ajaxSetup({cache: true});
 
 // controls the display of contact list
 function check_contact_list(contact_list) {
