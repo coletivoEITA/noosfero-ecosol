@@ -98,7 +98,7 @@ class Enterprise < Organization
 
   def enable(owner)
     return if enabled
-    affiliate(owner, Profile::Roles.all_roles(environment.id))
+    affiliate owner, Profile::Roles.all_roles(environment.id) if owner
     update_attribute(:enabled,true)
     if environment.replace_enterprise_template_when_enable
       apply_template(template)
