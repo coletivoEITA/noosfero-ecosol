@@ -523,6 +523,8 @@ function userDataCallBack(data) {
   }
   if (data.notice) {
     display_notice(data.notice);
+    // don't show this again (e.g. on pjax user_data isn't fetched everytime)
+    data.notice = null;
   }
   // Bind this event to do more actions with the user data (for example, inside plugins)
   jQuery(window).trigger("userDataLoaded", data);
