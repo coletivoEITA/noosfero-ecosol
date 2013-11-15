@@ -1073,3 +1073,8 @@
           title: "Settings of node %{node}"
           back: "Back to network's structure"
 
+  pjax_plugin:
+    lib:
+      plugin:
+        name: "pjax plugin"
+        description: "Use pjax for page's links"
