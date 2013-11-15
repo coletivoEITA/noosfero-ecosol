@@ -35,23 +35,23 @@ class Profile
     # FIXME don't hardcode
     consumers_coop_theme = 'distribution'
     if Theme.system_themes.collect(&:id).include? consumers_coop_theme
-      self.profile.update_attribute :theme, consumers_coop_theme
+      self.update_attribute :theme, consumers_coop_theme
     end
 
-    login_block = self.profile.blocks.select{ |b| b.class.name == "LoginBlock" }.first
+    login_block = self.blocks.select{ |b| b.class.name == "LoginBlock" }.first
     if not login_block
-      box = self.profile.boxes.first :conditions => {:position => 2}
+      box = self.boxes.first :conditions => {:position => 2}
       login_block = LoginBlock.create! :box => box
       login_block.move_to_top
     end
 
-    self.profile.home_page = self.profile.blogs.first
-    self.profile.save!
+    self.home_page = self.blogs.first
+    self.save!
   end
   def consumers_coop_disable_view
-    self.profile.update_attribute :theme, nil
+    self.update_attribute :theme, nil
 
-    login_block = self.profile.blocks.select{ |b| b.class.name == "LoginBlock" }.first
+    login_block = self.blocks.select{ |b| b.class.name == "LoginBlock" }.first
     login_block.destroy if login_block
   end
 
