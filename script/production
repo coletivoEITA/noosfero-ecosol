@@ -31,6 +31,7 @@ do_start() {
   environments_loop start
   ruby -S thin -C config/thin.yml start
 
+  sleep 2
   renice 20 `cat tmp/pids/thin.50003.pid`
 }
 
