@@ -14,8 +14,9 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   named_scope :active, :conditions => {:active => true}
 
-  named_scope :of_profile, lambda { |n| { :conditions => {:profile_id => n.id} } }
+  named_scope :of_profile, lambda { |p| { :conditions => {:profile_id => p.id} } }
   named_scope :of_profile_id, lambda { |id| { :conditions => {:profile_id => id} } }
+  named_scope :of_consumer, lambda { |c| { :conditions => {:consumer => c.id} } }
   named_scope :of_consumer_id, lambda { |id| { :conditions => {:consumer_id => id} } }
 
   named_scope :from_supplier_id, lambda { |supplier_id| {
