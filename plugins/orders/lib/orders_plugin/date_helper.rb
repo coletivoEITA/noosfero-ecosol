@@ -52,10 +52,10 @@ module OrdersPlugin::DateHelper
       I18n.t('orders_plugin.lib.date_helper.start_day_from_start_') :
       I18n.t('orders_plugin.lib.date_helper.start_day_start_datet')
     ) % {
-      :start_day => start.strftime(I18n.t('orders_plugin.lib.date_helper.a')),
+      :start_day => I18n.l(start, :format => I18n.t('orders_plugin.lib.date_helper.a')).downcase,
       :start_datetime => start.strftime(I18n.t('orders_plugin.lib.date_helper.m_d_hh_m')),
       :start_time => start.strftime(I18n.t('orders_plugin.lib.date_helper.hh_m')),
-      :finish_day => finish.strftime(I18n.t('orders_plugin.lib.date_helper.a')),
+      :finish_day => I18n.l(finish, :format => I18n.t('orders_plugin.lib.date_helper.a')).downcase,
       :finish_datetime => finish.strftime(I18n.t('orders_plugin.lib.date_helper.m_d_hh_m')),
       :finish_time => finish.strftime(I18n.t('orders_plugin.lib.date_helper.hh_m')),
     }
