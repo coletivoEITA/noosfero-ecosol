@@ -278,14 +278,13 @@
           singular: "a supplier"
         none: 
           singular: "any supplier"
-        article: 
-          singular: "the supplier"
         from_which_article: 
           singular: "from which the supplier"
+        article: 
+          singular: "the supplier"
+          plural: "the suppliers"
         by_article: 
           singular: "by the supplier"
-        article: 
-          plural: "the suppliers"
         new_undefined_article:
           singular: "a new supplier"
     controllers: 
@@ -1029,14 +1028,13 @@
           singular: "a enterprise"
         none: 
           singular: "any enterprise"
-        article: 
-          singular: "the enterprise"
         from_which_article: 
           singular: "from which the enterprise"
+        article: 
+          singular: "the enterprise"
+          plural: "the enterprises"
         by_article: 
           singular: "by the enterprise"
-        article: 
-          plural: "the enterprises"
         new_undefined_article:
           singular: "a new enterprise"
     models:
@@ -1070,8 +1068,12 @@
           new_button: "Create"
           context: "Create new node inside '%{name}'"
         edit:
-          title: "Settings of node %{node}"
+          title: "Settings of the node %{node}"
           back: "Back to network's structure"
+          node_info: "Node's informations"
+      enterprise:
+        edit:
+          title: "Settings of the enterprise %{enterprise}"
 
   pjax_plugin:
     lib:

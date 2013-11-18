@@ -288,14 +288,13 @@
           singular: "um fornecedor"
         none: 
           singular: "nenhum fornecedor"
-        article: 
-          singular: "o fornecedor"
         from_which_article: 
           singular: "com que o fornecedor"
+        article: 
+          singular: "o fornecedor"
+          plural: "os fornecedores"
         by_article: 
           singular: "pelo fornecedor"
-        article: 
-          plural: "os fornecedores"
         new_undefined_article:
           singular: "um novo fornecedor"
     controllers: 
@@ -1020,7 +1019,7 @@
           singular: "a rede"
           plural: "as redes"
         by_article: 
-          singular: "pelas redes"
+          singular: "pela rede"
       supplier: 
         singular: "empreendimento"
         plural: "empreendimentos"
@@ -1043,14 +1042,13 @@
           singular: "um empreendimento"
         none: 
           singular: "nenhum empreendimento"
-        article: 
-          singular: "o empreendimento"
         from_which_article: 
           singular: "com que o empreendimento"
+        article: 
+          singular: "o empreendimento"
+          plural: "os empreendimentos"
         by_article: 
           singular: "pelo empreendimento"
-        article: 
-          plural: "os empreendimentos"
         new_undefined_article:
           singular: "um novo empreendimento"
     models:
@@ -1086,6 +1084,10 @@
         edit:
           title: "Configurações do nó %{node}"
           back: "Voltar para a estrutura da rede"
+          node_info: "Informações do nó"
+      enterprise:
+        edit:
+          title: "Configurações do empreendimento %{enterprise}"
 
   pjax_plugin:
     lib:

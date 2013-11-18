@@ -1205,11 +1205,11 @@
   display: block;
   margin-top: 48px;
   border-top: 1px solid black; }
-#suppliers-page .supplier.supplier-inactive {
-  background-color: #faeeee; }
 #suppliers-page .supplier {
   border-top: 1px solid black;
   border-bottom: none; }
+  #suppliers-page .supplier.supplier-inactive {
+    background-color: #faeeee; }
   #suppliers-page .supplier#supplier-add {
     display: none; }
     #suppliers-page .supplier#supplier-add.edit {

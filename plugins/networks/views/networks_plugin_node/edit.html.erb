@@ -1,7 +1,10 @@
 <h1><%= t('networks_plugin.views.node.edit.title') % {:node => @node.name} %></h1>
-<%= button(:back, t('networks_plugin.views.node.edit.back'), :controller => :networks_plugin_network, :action => :show_structure, :node_id => @node.parent.id) %>
+
+<%= button :back, t('networks_plugin.views.node.edit.back'), :controller => :networks_plugin_network, :action => :show_structure, :node_id => @node.parent.id %>
 
 <% form_for :profile_data, @node, :html => { :id => 'profile-data', :multipart => true } do |f| %>
+
+  <h2><%= t('networks_plugin.views.node.edit.node_info') %></h2>
 
   <%= error_messages_for :node %>
 
