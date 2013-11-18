@@ -5,5 +5,6 @@ module NetworksPlugin::DisplayHelper
 
   include SuppliersPlugin::TermsHelper
   include SuppliersPlugin::DisplayHelper
+  include NetworksPlugin::TranslationHelper
 
 end

@@ -29,6 +29,12 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
     super
   end
 
+  def edit
+    @network = profile
+    @node = NetworksPlugin::Node.find_by_id(params[:node_id]) || @network
+    @supplier = @node.suppliers.find params[:id]
+  end
+
   protected
 
   def load_node
