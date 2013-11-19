@@ -2893,13 +2893,13 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   overflow: hidden;
 }
 #product-info {
-  width: 335px;
   text-align: left;
-  min-height: 150px;
+  min-height: 35px;
   padding-bottom: 5px;
 }
 #display-product-info .field-value {
   font-weight: bold;
+  font-size:20px;
 }
 #edit-product-category {
   padding: 15px 5px 10px;
@@ -2907,6 +2907,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 #product-info .field-name {
   margin-top: 5px;
   margin-bottom: 15px;
+  font-size:20px;
 }
 .edit_product #product_price, .edit_product #product_discount {
   width: 110px;
@@ -2928,12 +2929,14 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 }
 #product-image {
   text-align: center;
-  padding: 10px;
-  width: 250px;
+  width: 450px;
   margin-right: 10px;
   margin-bottom: 5px;
   float: left;
   border: 1px solid #AAA;
+}
+.product-pic {
+  width: 450px;
 }
 #product-image p {
   font-size: 11px;
@@ -3766,6 +3769,9 @@ h1#agenda-title {
   margin: 15px 0;
   position: relative;
   border: 1px solid transparent;
+}
+.input-list .input-item {
+  margin: 0;
 }
 .msie .input-list .ui-state-highlight {
   height: 40px;
