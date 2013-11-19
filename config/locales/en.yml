@@ -433,6 +433,11 @@
           name: Name
           suppliers: "%{terms.supplier.plural.capitalize}"
           this_is_the_list_of_s: "This is the list of %{terms.supplier.plural} associated %{terms.profile.to_article.singular}. It is possible to associate with existent %{terms.supplier.plural} or register %{terms.supplier.one}."
+      manage_products:
+        distribution_tab:
+          title: "This product is distributed for the following consumers:"
+          no_consumers: "This profile isn't a suppliers of the network."
+          save: "Save"
 
   delivery_plugin:
     lib:

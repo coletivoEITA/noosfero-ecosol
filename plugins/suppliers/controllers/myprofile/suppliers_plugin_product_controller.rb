@@ -42,6 +42,22 @@ class SuppliersPluginProductController < MyProfileController
     flash[:notice] = t('suppliers_plugin.controllers.myprofile.product_controller.product_removed_succe')
   end
 
+  def distribute_to_consumers
+    params[:consumers] ||= {}
+
+    @product = profile.products.find params[:id]
+    @consumers = profile.consumers.find(params[:consumers].keys.to_a).collect &:profile
+    to_add = @consumers - @product.consumers
+    to_remove = @product.consumers - @consumers
+
+    to_add.each{ |c| @product.distribute_to_consumer c }
+
+    to_remove = to_remove.to_set
+    @product.to_products.each{ |p| p.destroy if to_remove.include? p.profile }
+
+    @product.reload
+  end
+
   protected
 
   def search_scope scope

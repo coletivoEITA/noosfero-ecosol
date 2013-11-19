@@ -9,7 +9,7 @@
     </div>
 
     <div class="supplier-name">
-      <%= link_to supplier.name, supplier.profile.url, :class => 'supplier-name', :target => 'blank' %>
+      <%= link_to supplier.name, supplier.profile.url, :class => 'supplier-name', :target => '_blank' %>
     </div>
     <% if supplier.name_abbreviation %>
       <div class="subtitle"><strong><%= t('suppliers_plugin.views.supplier._supplier.abreviated_name') + '  ' %></strong><%= supplier.name_abbreviation %></div>

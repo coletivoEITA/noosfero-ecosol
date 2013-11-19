@@ -39,7 +39,8 @@ class Product
   has_many :from_2x_products, :through => :sources_from_2x_products, :source => :from_product
   has_many :to_2x_products, :through => :sources_to_2x_products, :source => :to_product
 
-  has_many :suppliers, :through => :sources_from_products, :order => 'id ASC'
+  has_many :suppliers, :through => :sources_from_products, :uniq => true, :order => 'id ASC'
+  has_many :consumers, :through => :to_products, :source => :profile, :uniq => true, :order => 'id ASC'
 
   # prefer distributed_products has_many to use DistributedProduct scopes and eager loading
   named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
@@ -99,13 +100,18 @@ class Product
     self.supplier ? self.supplier.dummy? : self.profile.dummy?
   end
 
+  def distribute_to_consumer consumer
+    SuppliersPlugin::DistributedProduct.create! :profile => consumer, :from_products => [self]
+  end
+
   protected
 
-  # see also #distribute_supplier_products
   def distribute_to_consumers
+    # shopping_cart creates products without a profile...
     return unless self.profile
+
     self.profile.consumers.except_people.except_self.each do |consumer|
-      SuppliersPlugin::DistributedProduct.create! :profile => consumer.profile, :from_products => [self]
+      self.distribute_to_consumer consumer.profile
     end
   end
 

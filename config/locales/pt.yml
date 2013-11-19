@@ -442,6 +442,11 @@
           name: Nome
           suppliers: "%{terms.supplier.plural.capitalize}"
           this_is_the_list_of_s: "Esta é a lista de %{terms.supplier.plural} associados %{terms.profile.to_article.singular}. É possível associar %{terms.supplier.to.plural} existentes ou registrar %{terms.supplier.one}."
+      manage_products:
+        distribution_tab:
+          title: "Esse produto é distribuído para os seguintes consumidores:"
+          no_consumers: "Este perfil não é um fornecedor da rede."
+          save: "Salvar"
 
   delivery_plugin:
     lib:
