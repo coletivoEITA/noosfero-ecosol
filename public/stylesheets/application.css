@@ -2909,6 +2909,10 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   margin-bottom: 15px;
   font-size:20px;
 }
+body.template-default #product-info .field-name, body.template-default #product-info .field-value,  
+body.template-2leftbars #product-info .field-name, body.template-2leftbars #product-info .field-value {
+  font-size: 12px;
+}
 .edit_product #product_price, .edit_product #product_discount {
   width: 110px;
 }
@@ -2937,6 +2941,12 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 }
 .product-pic {
   width: 450px;
+}
+body.template-default #product-image, body.template-2leftbars #product-image {
+  width: 250px;
+}
+body.template-default #content .product-pic, body.template-2leftbars .product-pic {
+  width: 250px;
 }
 #product-image p {
   font-size: 11px;
