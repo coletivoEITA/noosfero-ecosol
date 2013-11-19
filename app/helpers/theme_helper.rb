@@ -146,7 +146,7 @@ module ThemeHelper
 
   def theme_javascript_ng
     script = theme_javascript_src
-    javascript_include_tag script if script
+    if script then javascript_include_tag script else '' end
   end
 
   def theme_stylesheet_path
