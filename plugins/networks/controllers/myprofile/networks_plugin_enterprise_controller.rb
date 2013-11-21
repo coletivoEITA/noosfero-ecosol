@@ -12,11 +12,15 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
   helper NetworksPlugin::NetworksDisplayHelper
 
   def new
+    @node = profile
     super
+    @node.as_parent_relations.create! :parent => @node, :child => @new_supplier.profile
   end
 
   def add
+    @node = profile
     super
+    @node.as_parent_relations.create! :parent => @node, :child => @enterprise
   end
 
   def associate

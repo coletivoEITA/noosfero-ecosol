@@ -26,7 +26,7 @@ class NetworksPlugin::BaseNode < Organization
   end
 
   def nodes
-    self.as_parent_relations.all.collect &:child
+    self.as_parent_relations.all(:conditions => {:child_type => 'NetworksPlugin::Node'}).collect &:child
   end
 
   def node?
