@@ -36,4 +36,8 @@ class NetworksPlugin::Node < NetworksPlugin::BaseNode
     end
   end
 
+  def default_template
+    self.parent
+  end
+
 end

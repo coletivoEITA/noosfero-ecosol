@@ -39,7 +39,8 @@ class NetworksPlugin::BaseNode < Organization
   protected
 
   def default_template
-    self.environment.enterprise_template
+    return if self.is_template
+    self.environment.network_template
   end
 
 end
