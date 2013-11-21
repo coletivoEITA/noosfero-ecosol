@@ -12,6 +12,7 @@ class Profile
 end
 
 class Profile
+
   has_many :distributed_products, :class_name => 'SuppliersPlugin::DistributedProduct'
 
   has_many :from_products, :through => :products

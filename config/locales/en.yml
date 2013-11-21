@@ -1063,9 +1063,12 @@
           title: "Network's structure"
           add_enterprise: "Add %{terms.supplier.singular}"
           add_node: "Create node"
+          confirm_node_remove: "Ao excluir este nó, %{terms.supplier.article.plural} e nós associados a ele serão associados ao nó '%{parent}'. Por favor confirme a remoção do nó '%{node}'."
+          confirm_supplier_desassociate: "Por favor confirme que quer desassociar %{terms.supplier.article.singular} '%{supplier}'."
           edit: "Edit"
           config: "Setup"
           remove: "Remove"
+          desassociate: "Desassociate"
           nodes: "Nodes"
           enterprises: "%{terms.supplier.plural.capitalize}"
       node:

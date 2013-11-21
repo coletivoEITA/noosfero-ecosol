@@ -1,4 +1,5 @@
 @import 'base';
+@import 'page-title';
 
 #networks-admin-index {
 
@@ -27,6 +28,12 @@
         float: right;
       }
     }
+  }
+}
+
+body.network-node {
+
+  #network-header {
   }
 
 }

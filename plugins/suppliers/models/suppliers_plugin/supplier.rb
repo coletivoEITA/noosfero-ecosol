@@ -2,9 +2,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'
-  def supplier
-    self.profile
-  end
+  alias_method :supplier, :profile
 
   validates_presence_of :name, :if => :dummy?
   validates_associated :profile, :if => :dummy?
@@ -34,6 +32,8 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   after_create :add_admins, :if => :dummy?
   after_create :save_profile, :if => :dummy?
   after_create :distribute_products_to_consumers
+
+  attr_accessor :dont_destroy_dummy
 
   def self.new_dummy attributes
     profile = Enterprise.new :visible => false, :identifier => Digest::MD5.hexdigest(rand.to_s),
@@ -82,9 +82,9 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   end
 
   def destroy_with_dummy
-    return if self.self?
-    # FIXME: archive instead of deleting
-    self.supplier.destroy if self.supplier.dummy?
+    if not self.self? and not self.dont_destroy_dummy and self.supplier.dummy?
+      self.supplier.destroy!
+    end
     destroy_without_dummy
   end
   alias_method_chain :destroy, :dummy

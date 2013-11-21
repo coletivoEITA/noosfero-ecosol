@@ -3,7 +3,7 @@ class NetworksPlugin::BaseNode < Organization
   self.abstract_class = true
 
   has_many :as_child_relations, :foreign_key => :child_id, :class_name => 'SubOrganizationsPlugin::Relation', :dependent => :destroy, :include => [:parent]
-  has_many :as_parent_relations, :foreign_key => :parent_id, :class_name => 'SubOrganizationsPlugin::Relation', :dependent => :destroy, :include => [:child]
+  has_many :as_parent_relations, :foreign_key => :parent_id, :class_name => 'SubOrganizationsPlugin::Relation', :include => [:child]
   def as_child_relation
     self.as_child_relations.first
   end
@@ -23,6 +23,17 @@ class NetworksPlugin::BaseNode < Organization
       item = item.parent
     end
     @hierarchy
+  end
+
+  def nodes
+    self.as_parent_relations.all.collect &:child
+  end
+
+  def node?
+    false
+  end
+  def network?
+    false
   end
 
   protected

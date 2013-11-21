@@ -136,6 +136,34 @@
   text-shadow: none;
   border-radius: 5px; }
 
+#content h1.page-title {
+  z-index: 10;
+  position: relative;
+  margin-bottom: 20px;
+  padding: 5px 0 5px 244px;
+  height: 30px;
+  display: block;
+  overflow: hidden;
+  color: white;
+  background: #1fa1d0;
+  border: none;
+  font-variant: normal;
+  font-size: 24px;
+  font-weight: lighter;
+  text-align: left; }
+  #content h1.page-title small {
+    margin-left: 15px;
+    font-size: 17px; }
+#content span.page-title {
+  font-size: 12px;
+  font-style: italic;
+  display: block;
+  position: absolute;
+  right: 10px;
+  top: 127px;
+  color: white;
+  opacity: 0.7; }
+
 #networks-admin-index #network-list {
   margin-bottom: 16px; }
 

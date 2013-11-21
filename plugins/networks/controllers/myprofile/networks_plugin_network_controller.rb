@@ -6,6 +6,8 @@ class NetworksPluginNetworkController < MyProfileController
 
   include NetworksPlugin::TranslationHelper
 
+  before_filter :load_node, :only => [:show_structure]
+
   helper NetworksPlugin::NetworksDisplayHelper
 
   def index
@@ -13,13 +15,13 @@ class NetworksPluginNetworkController < MyProfileController
   end
 
   def show_structure
-    @network = profile
-    @node = NetworksPlugin::Node.find_by_id(params[:node_id]) || @network
-
-    @nodes = @node.as_parent_relations.all.collect(&:child)
-    @suppliers = @node.suppliers.except_self
   end
 
   protected
+
+  def load_node
+    @network = profile
+    @node = NetworksPlugin::Node.find_by_id(params[:node_id]) || @network
+  end
 
 end

@@ -39,7 +39,7 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
 
   def load_node
     @network = profile
-    @node = NetworksPlugin::Node.find_by_id(params[:node_id]) || @network
+    @node = NetworksPlugin::Node.find_by_id(params[:id]) || @network
   end
 
   replace_url_for self.superclass
