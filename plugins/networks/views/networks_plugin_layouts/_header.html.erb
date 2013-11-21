@@ -1,6 +1,6 @@
 <h1 id="network-header" class="page-title">
   <% if profile.node? %>
-    <%= "%{network}: %{node}" % {:network => profile.network.name, :node => profile.name} %>
+    <%= profile.hierarchy.map(&:name).join ' :: ' %>
   <% else %>
     <%= profile.name %>
   <% end %>

@@ -19,7 +19,7 @@
   <h2>
     <%= @node.hierarchy.map do |parent|
       link_to parent.name, :node_id => parent.id
-    end.join(' -> ') %>
+    end.join ' -> ' %>
   </h2>
 
   <div class="listing">
