@@ -1093,6 +1093,7 @@
           title: "Configurações do nó %{node}"
           back: "Voltar para a estrutura da rede"
           node_info: "Informações do nó"
+          presentation_text: "Texto de apresentação:"
       enterprise:
         edit:
           title: "Configurações do empreendimento %{enterprise}"

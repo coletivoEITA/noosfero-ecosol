@@ -1,9 +1,9 @@
 class NetworksPlugin::Node < NetworksPlugin::BaseNode
 
   before_validation :generate_identifier
-
   before_destroy :assign_dependent_to_parent
 
+  # FIXME: use materialized path for performance
   def network
     network = self
     while not (network = network.parent).network? do end
@@ -37,7 +37,13 @@ class NetworksPlugin::Node < NetworksPlugin::BaseNode
   end
 
   def default_template
-    self.parent
+    self.network
+  end
+
+  # don't copy network's articles
+  def insert_default_article_set
+    self.home_page = EnterpriseHomepage.create! :profile => self, :accept_comments => false
+    self.save!
   end
 
 end

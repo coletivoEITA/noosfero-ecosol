@@ -1079,6 +1079,7 @@
           title: "Settings of the node %{node}"
           back: "Back to network's structure"
           node_info: "Node's informations"
+          presentation_text: "Presentation's text:"
       enterprise:
         edit:
           title: "Settings of the enterprise %{enterprise}"
