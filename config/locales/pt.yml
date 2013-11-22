@@ -1079,7 +1079,7 @@
           add_enterprise: "Adicionar %{terms.supplier.singular}"
           add_node: "Criar nó"
           confirm_node_remove: "Ao excluir este nó, %{terms.supplier.article.plural} e nós associados a ele serão associados ao nó '%{parent}'. Por favor confirme a remoção do nó '%{node}'."
-          confirm_supplier_desassociate: "Por favor confirme que quer desassociar %{terms.supplier.article.singular} '%{enterprise}'."
+          confirm_supplier_desassociate: "Por favor confirme que quer desassociar %{terms.supplier.article.singular} '%{supplier}'."
           edit: "Editar"
           config: "Configurar"
           remove: "Remover"

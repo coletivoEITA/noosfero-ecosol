@@ -14,13 +14,13 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
   def new
     @node = profile
     super
-    @node.as_parent_relations.create! :parent => @node, :child => @new_supplier.profile
+    @node.network_node_parent_relations.create! :parent => @node, :child => @new_supplier.profile
   end
 
   def add
     @node = profile
     super
-    @node.as_parent_relations.create! :parent => @node, :child => @enterprise
+    @node.network_node_parent_relations.create! :parent => @node, :child => @enterprise
   end
 
   def associate

@@ -13,7 +13,7 @@ class NetworksPlugin::Network < NetworksPlugin::BaseNode
   protected
 
   def destroy_dependent
-    self.as_parent_relations.each do |relation|
+    self.nodes.each do |relation|
       relation.child.destroy!
       relation.destroy!
     end

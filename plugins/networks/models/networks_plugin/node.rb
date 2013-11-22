@@ -3,13 +3,6 @@ class NetworksPlugin::Node < NetworksPlugin::BaseNode
   before_validation :generate_identifier
   before_destroy :assign_dependent_to_parent
 
-  # FIXME: use materialized path for performance
-  def network
-    network = self
-    while not (network = network.parent).network? do end
-    network
-  end
-
   def node?
     true
   end
@@ -21,7 +14,7 @@ class NetworksPlugin::Node < NetworksPlugin::BaseNode
   end
 
   def assign_dependent_to_parent
-    self.as_parent_relations.each do |relation|
+    self.network_node_parent_relations.each do |relation|
       relation.parent = self.parent
       relation.save!
     end
