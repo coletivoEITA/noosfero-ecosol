@@ -25,6 +25,9 @@ class SuppliersPlugin < Noosfero::Plugin
   end
 
   def product_tabs product
+    user = context.send :user
+    profile = context.profile
+    return unless user and user.has_permission? 'manage_products', profile
     {
       :title => I18n.t('suppliers_plugin.lib.plugin.distribution_tab'), :id => 'product-distribution',
       :content => lambda{ render 'suppliers_plugin_manage_products/distribution_tab', :product => product }
