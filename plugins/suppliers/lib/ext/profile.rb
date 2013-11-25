@@ -12,6 +12,7 @@ class Profile
 end
 
 class Profile
+
   has_many :distributed_products, :class_name => 'SuppliersPlugin::DistributedProduct'
 
   has_many :from_products, :through => :products
@@ -47,9 +48,6 @@ class Profile
     return if self.consumers.of_consumer consumer
 
     supplier = self.suppliers.create! :profile => self, :consumer => consumer
-
-    consumer.distribute_supplier_products supplier
-    supplier
   end
   def remove_consumer consumer
     supplier = self.consumers.of_consumer(consumer).first
@@ -63,19 +61,6 @@ class Profile
   end
   def remove_supplier supplier
     supplier.remove_consumer self
-  end
-
-  # see also #distribute_to_consumers
-  def distribute_supplier_products supplier
-    return if self.person?
-    raise "'#{supplier.name}' is not a supplier of #{self.name}" if self.suppliers.of_profile(supplier).blank?
-
-    already_supplied = self.distributed_products.unarchived.of_supplier(supplier).all
-    supplier.products.unarchived.each do |np|
-      next if already_supplied.find{ |f| f.supplier_product == np }
-
-      SuppliersPlugin::DistributedProduct.create! :profile => self, :from_products => [np]
-    end
   end
 
   def not_distributed_products supplier

@@ -1,4 +1,4 @@
-<h1><%= t('networks_plugin.views.node.edit.title') % {:node => @node.name} %></h1>
+<h1><%= t('networks_plugin.views.node.edit.title') % {:node => link_to(@node.name, @node.url, :target => '_blank')} %></h1>
 
 <%= button :back, t('networks_plugin.views.node.edit.back'), :controller => :networks_plugin_network, :action => :show_structure, :node_id => @node.parent.id %>
 
@@ -8,8 +8,17 @@
 
   <%= error_messages_for :node %>
 
-  <%= f.label :name, _('Name') %>
-  <%= f.text_field :name %>
+  <div>
+    <%= f.label :name, _('Name:') %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <% fields_for :home_page, @node.home_page do |f| %>
+      <%= f.label :body, t('networks_plugin.views.node.edit.presentation_text') %>
+      <%= f.text_area :body, :class => 'mceEditor' %>
+    <% end %>
+  </div>
 
   <div>
     <% f.fields_for :image_builder, @node.image do |fi| %>
@@ -53,6 +62,7 @@
 
 <% end %>
 
+<%= render :file => 'shared/tiny_mce' %>
 <%= content_tag('script', '', :src => "https://maps.googleapis.com/maps/api/js?sensor=false", :type => 'text/javascript') %>
 <%= content_tag('script', '', :src => url_for(:controller => :maps, :action => :google_map), :type => 'text/javascript') %>
 

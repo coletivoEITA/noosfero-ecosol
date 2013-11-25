@@ -2,9 +2,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'
-  def supplier
-    self.profile
-  end
+  alias_method :supplier, :profile
 
   validates_presence_of :name, :if => :dummy?
   validates_associated :profile, :if => :dummy?
@@ -25,14 +23,17 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     }
   }
 
-  named_scope :with_name, lambda { |name| name ? {:conditions => ["LOWER(suppliers_plugin_suppliers.name) LIKE ?","%#{name.downcase}%"]} : {} }
-  named_scope :by_active, lambda { |active| active ? {:conditions => {:active => active}} : {} }
+  named_scope :with_name, lambda { |name| if name then {:conditions => ["LOWER(suppliers_plugin_suppliers.name) LIKE ?","%#{name.downcase}%"]} else {} end }
+  named_scope :by_active, lambda { |active| if active then {:conditions => {:active => active}} else {} end }
 
   named_scope :except_people, { :conditions => ['profiles.type <> ?', Person.name], :joins => [:consumer] }
   named_scope :except_self, { :conditions => 'profile_id <> consumer_id' }
 
   after_create :add_admins, :if => :dummy?
   after_create :save_profile, :if => :dummy?
+  after_create :distribute_products_to_consumers
+
+  attr_accessor :dont_destroy_dummy
 
   def self.new_dummy attributes
     profile = Enterprise.new :visible => false, :identifier => Digest::MD5.hexdigest(rand.to_s),
@@ -81,9 +82,9 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   end
 
   def destroy_with_dummy
-    return if self.self?
-    # FIXME: archive instead of deleting
-    self.supplier.destroy if self.supplier.dummy?
+    if not self.self? and not self.dont_destroy_dummy and self.supplier.dummy?
+      self.supplier.destroy!
+    end
     destroy_without_dummy
   end
   alias_method_chain :destroy, :dummy
@@ -99,7 +100,19 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     self.supplier.save
   end
 
-  # delete missing methods to profile
+  def distribute_products_to_consumers
+    return if self.self? or self.consumer.person?
+
+    already_supplied = self.consumer.distributed_products.unarchived.from_supplier_id(self.id).all
+
+    self.profile.products.unarchived.each do |source_product|
+      next if already_supplied.find{ |f| f.supplier_product == source_product }
+
+      source_product.distribute_to_consumer self.consumer
+    end
+  end
+
+  # delegate missing methods to profile
   def method_missing method, *args, &block
     if self.profile.respond_to? method
       self.profile.send method, *args, &block
