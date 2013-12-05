@@ -31,6 +31,7 @@ def monitor_thin
     port = start_port + i
 
     $app.process "thin-#{port}" do |process|
+      process.group = 'thin'
       commons process
 
       pid_path = "#{config['chdir'] || RailsRoot}/#{config['pid'] || "#{PidDir}/thin.pid"}"
