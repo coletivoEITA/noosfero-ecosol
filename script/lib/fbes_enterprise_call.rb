@@ -40,6 +40,13 @@ class String
   def normalize_name
     self.normalize.capitalize
   end
+  def normalize_zipcode
+    self.normalize
+    "#{self[0..4]}-#{self[5..7]}"
+  end
+  def normalize_nickname
+    self.normalize_name[0..15]
+  end
 end
 
 require_dependency 'user'
