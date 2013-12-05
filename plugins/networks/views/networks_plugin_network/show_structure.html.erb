@@ -19,43 +19,10 @@
   <h2>
     <%= @node.hierarchy.map do |parent|
       link_to parent.name, :node_id => parent.id
-    end.join(' -> ') %>
+    end.join ' -> ' %>
   </h2>
 
   <div class="listing">
-    <h3><%= t('networks_plugin.views.network.show_structure.nodes') %></h3>
-    <% @nodes.each do |node| %>
-
-      <div id="node-<%= node.id %>" class="row">
-        <div class="name">
-          <%= link_to node.name, :node_id => node.id %>
-        </div>
-        <div class="actions">
-          <%= link_to t('networks_plugin.views.network.show_structure.config'), :controller => :networks_plugin_node, :action => :edit, :id => node.id %>
-          |
-          <%= link_to_remote t('networks_plugin.views.network.show_structure.remove'),
-            :loading => "loading_overlay.show('#node-#{node.id}')",
-            :url => {:controller => :networks_plugin_node, :action => :destroy, :id => node.id} %>
-        </div>
-      </div>
-    <% end %>
-
-    <h3><%= t('networks_plugin.views.network.show_structure.enterprises') %></h3>
-    <% @suppliers.each do |supplier| %>
-      <% enterprise = supplier.profile %>
-
-      <div id="supplier-<%= supplier.id %>" class="row">
-        <div class="name">
-          <%= link_to enterprise.name, enterprise.url, :target => '_blank' %>
-        </div>
-        <div class="actions">
-          <%= link_to t('networks_plugin.views.network.show_structure.edit'), :controller => :networks_plugin_enterprise, :action => :edit, :id => supplier.id %>
-          |
-          <%= link_to_remote t('networks_plugin.views.network.show_structure.remove'),
-            :loading => "loading_overlay.show('#supplier-#{supplier.id}')",
-            :url => {:controller => :networks_plugin_enterprise, :action => :destroy, :node_id => @node.id, :id => supplier.id} %>
-        </div>
-      </div>
-    <% end %>
+    <%= render 'structure_listing' %>
   </div>
 </div>

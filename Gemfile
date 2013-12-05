@@ -12,7 +12,7 @@ gem 'RedCloth', '4.2.2'
 gem 'will_paginate', '2.3.12'
 gem 'ruby-feedparser', '0.7'
 gem 'hpricot', '0.8.2'
-gem 'i18n', '0.4.1'
+gem 'i18n'
 gem 'daemons', '1.0.10'
 gem 'rubyzip', '< 1.0.0'
 

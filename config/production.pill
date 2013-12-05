@@ -1,0 +1,105 @@
+require 'rubygems'
+require 'bluepill'
+require 'yaml'
+
+RailsRoot = File.expand_path "#{File.dirname __FILE__}/../"
+ConfigPath = "#{RailsRoot}/config"
+LogPath = "#{RailsRoot}/log"
+PidDir = 'tmp/pids'
+PidPath = "#{RailsRoot}/#{PidDir}"
+
+def env
+  ENV['RAILS_ENV'] || 'production'
+end
+
+def cmd_wrap
+  "bundle exec"
+end
+
+def commons process
+  process.start_grace_time = 10.seconds
+  process.stop_grace_time = 10.seconds
+end
+
+def monitor_thin
+  file = "#{ConfigPath}/thin.yml"
+  config = YAML.load_file file rescue {}
+  num_servers = config["servers"] || 1
+  start_port = config['port'] || 3000
+
+  (0...num_servers).each do |i|
+    port = start_port + i
+
+    $app.process "thin-#{port}" do |process|
+      process.group = 'thin'
+      commons process
+
+      pid_path = "#{config['chdir'] || RailsRoot}/#{config['pid'] || "#{PidDir}/thin.pid"}"
+      ext = File.extname(pid_path)
+      process.pid_file pid_path.gsub(/#{ext}$/, ".#{port}#{ext}")
+
+      process.uid config['user'] if config['user']
+      process.gid config['group'] if config['group']
+
+      %w[start stop restart].each do |command|
+        process.send "#{command}_command=", "#{cmd_wrap} thin #{command} -C #{file} -o #{port}"
+      end
+
+      timeout = config['timeout']
+      process.stop_grace = (timeout * (w.stop_grace+3)).seconds if timeout > 0
+    end
+  end
+end
+
+def monitor_solr
+  file = "#{RailsRoot}/plugins/solr/config/solr.yml"
+  return puts "Solr config file doesn't exist. Ignoring solr." unless File.exists? file
+  config = YAML.load_file file
+
+  $app.process 'solr' do |process|
+    commons process
+
+    process.pid_file = "#{PidPath}/#{process.name}.#{env}.pid"
+
+    %w[start stop restart].each do |command|
+      process.send "#{command}_command=", "#{cmd_wrap} rake solr:#{command}"
+    end
+  end
+end
+
+def monitor_feed_updater
+  $app.process 'feed-updater' do |process|
+    commons process
+
+    process.pid_file = "#{PidPath}/#{process.name}.#{env}.pid"
+
+    %w[start stop].each do |command|
+      process.send "#{command}_command=", "#{cmd_wrap} script/#{process.name} -i #{env} #{command}"
+    end
+  end
+end
+
+def monitor_delayed_job
+  $app.process 'delayed_job' do |process|
+    commons process
+
+    process.pid_file = "#{PidPath}/#{process.name}.#{env}.pid"
+
+    %w[start stop].each do |command|
+      process.send "#{command}_command=", "#{cmd_wrap} script/#{process.name} -i #{env} #{command}"
+    end
+  end
+end
+
+Bluepill.application 'noosfero', :log_file => "#{LogPath}/bluepill.log" do |app|
+  $app = app
+
+  app.working_dir = RailsRoot
+  app.environment = { 'RAILS_ENV' => env }
+
+  monitor_thin
+  monitor_solr
+  monitor_feed_updater
+  monitor_delayed_job
+end
+

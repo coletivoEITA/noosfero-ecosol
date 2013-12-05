@@ -85,11 +85,11 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     }
   end
   def total_price_asked
-    self.ordered_products.sum(:price_asked)
+    self.ordered_products.sum :price_asked
   end
   def total_parcel_price
     #FIXME: wrong!
-    self.ordered_supplier_products.sum(:price)
+    self.ordered_supplier_products.sum :price
   end
 
   def step

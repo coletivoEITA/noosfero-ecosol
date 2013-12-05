@@ -7,8 +7,11 @@ class PluginsController < AdminController
 
   post_only :update
   def update
-    params[:environment][:enabled_plugins].delete('')
-    if @environment.update_attributes(params[:environment])
+    enabled_plugins = params[:environment][:enabled_plugins].to_a
+    enabled_plugins.delete ''
+    enabled_plugins += Noosfero::Plugin::DependencyCalc.deps_unmet(*enabled_plugins).map{ |p| "#{p.camelize}Plugin" }
+
+    if @environment.update_attribute :enabled_plugins, enabled_plugins
       session[:notice] = _('Plugins updated successfully.')
     else
       session[:error] = _('Plugins were not updated successfully.')

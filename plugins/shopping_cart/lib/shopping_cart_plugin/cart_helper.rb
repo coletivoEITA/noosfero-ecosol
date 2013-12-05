@@ -3,6 +3,13 @@ module ShoppingCartPlugin::CartHelper
   include ActionView::Helpers::NumberHelper
   include ActionView::Helpers::TagHelper
 
+  PaymentMethods = ActiveSupport::OrderedHash[
+    :money, proc{ _("Money") },
+    :check, proc{ s_('shopping_cart|Check') },
+    :credit_card, proc{ _('Credit card') },
+    :bank_transfer, proc{ _('Bank transfer') },
+  ]
+
   def sell_price(product)
     return 0 if product.price.nil?
     product.discount ? product.price_with_discount : product.price
@@ -89,4 +96,9 @@ module ShoppingCartPlugin::CartHelper
     result << ["#{_('Delivery')} (#{float_to_currency_cart(0, environment)})", 'delivery'] if result.empty?
     result
   end
+
+  def options_for_payment
+    options_for_select PaymentMethods.map{ |key, text| [text.call, key] }
+  end
+
 end

@@ -30,5 +30,7 @@ jQuery('#delivery_option').change(function(){
 });
 
 jQuery('#customer_payment').change(function(){
-  jQuery(this).closest('.formfieldline').next().slideToggle('fast');
+  var changeField = jQuery(this).parents('.formfieldline').next();
+  var method = jQuery(this).val() == 'money' ? 'slideDown' : 'slideUp';
+  changeField[method]('fast');
 });

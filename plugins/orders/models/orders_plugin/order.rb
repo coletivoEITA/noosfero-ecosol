@@ -60,19 +60,11 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     I18n.t STATUS_MESSAGE[current_status]
   end
 
-  def total_quantity_asked dirty = false
-    if dirty
-      products.collect(&:quantity_asked).inject(0){ |sum,q| sum+q }
-    else
-      products.sum :quantity_asked
-    end
+  def total_quantity_asked
+    self.products.collect(&:quantity_asked).inject(0){ |sum,q| sum+q }
   end
-  def total_price_asked dirty = false
-    if dirty
-      products.collect(&:price_asked).inject(0){ |sum,q| sum+q }
-    else
-      products.sum :price_asked
-    end
+  def total_price_asked
+    self.products.collect(&:price_asked).inject(0){ |sum,q| sum+q }
   end
 
   def parcel_quantity_total
@@ -85,7 +77,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
 
   def products_by_supplier
-    self.products.group_by{|p| p.supplier.abbreviation_or_name}
+    self.products.group_by{ |p| p.supplier.abbreviation_or_name }
   end
 
   extend CurrencyHelper::ClassMethods

@@ -278,14 +278,13 @@
           singular: "a supplier"
         none: 
           singular: "any supplier"
-        article: 
-          singular: "the supplier"
         from_which_article: 
           singular: "from which the supplier"
+        article: 
+          singular: "the supplier"
+          plural: "the suppliers"
         by_article: 
           singular: "by the supplier"
-        article: 
-          plural: "the suppliers"
         new_undefined_article:
           singular: "a new supplier"
     controllers: 
@@ -434,6 +433,11 @@
           name: Name
           suppliers: "%{terms.supplier.plural.capitalize}"
           this_is_the_list_of_s: "This is the list of %{terms.supplier.plural} associated %{terms.profile.to_article.singular}. It is possible to associate with existent %{terms.supplier.plural} or register %{terms.supplier.one}."
+      manage_products:
+        distribution_tab:
+          title: "This product is distributed for the following consumers:"
+          no_consumers: "This profile isn't a suppliers of the network."
+          save: "Save"
 
   delivery_plugin:
     lib:
@@ -1029,14 +1033,13 @@
           singular: "a enterprise"
         none: 
           singular: "any enterprise"
-        article: 
-          singular: "the enterprise"
         from_which_article: 
           singular: "from which the enterprise"
+        article: 
+          singular: "the enterprise"
+          plural: "the enterprises"
         by_article: 
           singular: "by the enterprise"
-        article: 
-          plural: "the enterprises"
         new_undefined_article:
           singular: "a new enterprise"
     models:
@@ -1058,11 +1061,15 @@
       network:
         show_structure:
           title: "Network's structure"
+          structure: "Structure"
           add_enterprise: "Add %{terms.supplier.singular}"
           add_node: "Create node"
+          confirm_node_remove: "By removing this node, %{terms.supplier.article.plural} and nodes associated to it will be associated to the node '%{parent}'. Please confirm the removal of the node '%{node}'."
+          confirm_supplier_desassociate: "Plese confirm that you want to desassociate %{terms.supplier.article.singular} '%{supplier}'."
           edit: "Edit"
           config: "Setup"
           remove: "Remove"
+          desassociate: "Desassociate"
           nodes: "Nodes"
           enterprises: "%{terms.supplier.plural.capitalize}"
       node:
@@ -1070,6 +1077,16 @@
           new_button: "Create"
           context: "Create new node inside '%{name}'"
         edit:
-          title: "Settings of node %{node}"
+          title: "Settings of the node %{node}"
           back: "Back to network's structure"
+          node_info: "Node's informations"
+          presentation_text: "Presentation's text:"
+      enterprise:
+        edit:
+          title: "Settings of the enterprise %{enterprise}"
 
+  pjax_plugin:
+    lib:
+      plugin:
+        name: "pjax plugin"
+        description: "Use pjax for page's links"
