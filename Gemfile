@@ -15,6 +15,7 @@ gem 'hpricot', '0.8.2'
 gem 'i18n'
 gem 'daemons', '1.0.10'
 gem 'rubyzip', '< 1.0.0'
+gem 'memcache-client'
 
 #Indirect, matching debian squeeze versions
 gem 'builder', '2.1.2'
