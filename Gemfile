@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem 'god'
+gem 'fastercsv'
 gem 'sass'
 
 gem 'rake', '0.8.7'
