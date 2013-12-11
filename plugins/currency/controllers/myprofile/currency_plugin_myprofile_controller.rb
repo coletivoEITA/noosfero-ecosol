@@ -59,7 +59,7 @@ class CurrencyPluginMyprofileController < MyProfileController
   end
 
   def enterprise_search
-    @query = params[:query]
+    @query = params[:query].to_s.downcase
     @results = environment.enterprises.visible.all :limit => 10, :conditions => ['LOWER(name) ~ ?', @query]
     @results = @results - [@profile]
     render :partial => 'enterprise_results'
@@ -77,7 +77,7 @@ class CurrencyPluginMyprofileController < MyProfileController
   end
 
   def accept_search
-    query = params[:query].strip.downcase
+    query = params[:query].to_s.strip.downcase
     options = {:limit => 10, :conditions => [
       'LOWER(name) ~ ? OR LOWER(symbol) ~ ? OR LOWER(description) ~ ?',
       query, query, query

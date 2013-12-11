@@ -19,8 +19,9 @@ class SnifferPluginMyprofileController < MyProfileController
   end
 
   def product_categories
+    @query = params[:q].to_s.downcase
     @categories = environment.categories.all :limit => 10,
-      :conditions => ["type = 'ProductCategory' and LOWER(name) LIKE ?", "%#{params[:q]}%"]
+      :conditions => ["type = 'ProductCategory' and LOWER(name) LIKE ?", "%#{@query}%"]
 
     respond_to do |format|
       format.json{ render :json => @categories.map{ |i| {:id => i.id, :name => i.name} } }
@@ -28,8 +29,9 @@ class SnifferPluginMyprofileController < MyProfileController
   end
 
   def product_category_search
+    @term = params[:term].to_s.downcase
     @categories = environment.categories.all :limit => 10,
-      :conditions => ["type = 'ProductCategory' and LOWER(name) LIKE ?", "%#{params[:term]}%"]
+      :conditions => ["type = 'ProductCategory' and LOWER(name) LIKE ?", "%#{@term}%"]
 
     respond_to do |format|
       format.json{ render :json => @categories.map{ |pc| {:value => pc.id, :label => pc.name} } }
