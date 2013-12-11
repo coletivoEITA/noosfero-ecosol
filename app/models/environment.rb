@@ -129,7 +129,8 @@ class Environment < ActiveRecord::Base
       'captcha_for_logged_users' => _('Ask captcha when a logged user comments too'),
       'skip_new_user_email_confirmation' => _('Skip e-mail confirmation for new users'),
       'send_welcome_email_to_new_users' => _('Send welcome e-mail to new users'),
-      'allow_change_of_redirection_after_login' => _('Allow users to set the page to redirect after login')
+      'allow_change_of_redirection_after_login' => _('Allow users to set the page to redirect after login'),
+      'display_my_communities_on_user_menu' => _('Display on menu the list of communities the user can manage')
     }
   end
 
@@ -170,7 +171,7 @@ class Environment < ActiveRecord::Base
 
   # One Environment can be reached by many domains
   has_many :domains, :as => :owner
-  has_many :profiles
+  has_many :profiles, :dependent => :destroy
 
   has_many :organizations
   has_many :enterprises
@@ -784,13 +785,6 @@ class Environment < ActiveRecord::Base
     self.settings[:community_template_id] = com_id
     self.settings[:person_template_id] = usr_id
     self.save!
-  end
-
-  after_destroy :destroy_templates
-  def destroy_templates
-    [enterprise_template, inactive_enterprise_template, community_template, person_template].compact.each do |template|
-      template.destroy
-    end
   end
 
   after_create :create_default_licenses
