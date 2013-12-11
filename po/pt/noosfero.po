@@ -10470,6 +10470,10 @@ msgstr ""
 msgid "Learning"
 msgstr "Saber"
 
+#: plugins/escambo/views/escambo_plugin_public/_enterprise_results.html.erb
+msgid "No enterprise found"
+msgstr "Nenhum ponto de cultura encontrado"
+
 #: plugins/cms_learning/models/cms_learning_plugin/learning.rb:33
 msgid "Share learnings to the network."
 msgstr "Compartilhe saberes para a rede"
