@@ -32,24 +32,31 @@ class EscamboPlugin < Noosfero::Plugin
 
   SearchLimit = 20
   SearchDataLoad = proc do
-    options = {:limit => SearchLimit, :conditions => ['created_at IS NOT NULL'], :order => 'created_at DESC'}
-    @interests = SnifferPlugin::Opportunity.all options
-    @products = Product.all options
-    @knowledges = CmsLearningPlugin::Learning.all options
-  end
-  SearchDataMix = proc do
+    solr_options = {}
+    paginate_options ||= {:limit => SearchLimit}
+    @query ||= ''
+    @geosearch = true if @active_organization and @active_organization.lat and @active_organization.lng
+
+    if @geosearch
+      solr_options.merge! :alternate_query => "{!boost b=recip(geodist(),#{"%e" % (1.to_f/SolrPlugin::SearchHelper::DistBoost)},1,1)}",
+        :latitude => @active_organization.lat, :longitude => @active_organization.lng
+    end
+    if @active_organization
+      solr_options.merge! :filter_queries => ["!profile_id:#{@active_organization.id}"]
+    end
+
+    @interests = SnifferPlugin::Opportunity.find_by_contents(@query, paginate_options, solr_options)[:results].results
+    @products = Product.find_by_contents(@query, paginate_options, solr_options)[:results].results
+    @knowledges = CmsLearningPlugin::Learning.find_by_contents(@query, paginate_options, solr_options)[:results].results
+
     @results = @interests + @products + @knowledges
+    @results = @results.sort_by{ rand } unless @geosearch
     @results = @results.last SearchLimit
   end
+  SearchDataMix = proc do
+  end
   SearchIndexFilter = proc do
-    if @query.empty?
-      instance_eval &SearchDataLoad
-    else
-      @interests = find_by_contents(:sniffer_plugin_opportunities, SnifferPlugin::Opportunity, @query, paginate_options)[:results].results
-      @products = find_by_contents(:products, Product, @query, paginate_options)[:results].results
-      @knowledges = find_by_contents(:cms_learning_plugin_learnings, CmsLearningPlugin::Learning, @query, paginate_options)[:results].results
-    end
-    instance_eval &SearchDataMix
+    instance_eval &SearchDataLoad
 
     # overwrite controller action
     render :action => :index
@@ -68,8 +75,6 @@ class EscamboPlugin < Noosfero::Plugin
     @enterprises = @enterprises.sort_by{ rand }
 
     instance_eval &SearchDataLoad
-    instance_eval &SearchDataMix
-    @results = @results.sort_by{ rand }
 
     # overwrite controller action
     render :action => :index

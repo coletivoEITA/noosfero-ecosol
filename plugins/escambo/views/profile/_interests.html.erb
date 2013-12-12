@@ -9,7 +9,7 @@
     <span class="see-all"><%= link_to _("See all"), {:action => :interests, :profile => profile.identifier} %></span>
   <% end %>
 
-  <% opportunities = @profile.opportunities %>
+  <% opportunities = @profile.sniffer_opportunities %>
   <% opportunities = opportunities.first(4) unless all %>
 
   <% opportunities.each do |interest| %>

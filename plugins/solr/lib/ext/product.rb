@@ -22,13 +22,17 @@ class Product
     [:enabled, 0.2, proc{ |p| p.enterprise.enabled ? 1 : 0}],
   ]
 
+  def profile_id
+    self.enterprise_id
+  end
+
   acts_as_searchable :fields => facets_fields_for_solr + [
       # searched fields
       {:name => {:type => :text, :boost => 2.0}},
       {:description => :text}, {:category_full_name => :text},
       # filtered fields
-      {:solr_plugin_public => :boolean}, {:environment_id => :integer},
-      {:enabled => :boolean}, {:solr_plugin_category_filter => :integer},
+      {:profile_id => :integer}, {:environment_id => :integer}, {:enabled => :boolean},
+      {:solr_plugin_public => :boolean}, {:solr_plugin_category_filter => :integer},
       # ordered/query-boosted fields
       {:solr_plugin_price_sortable => :decimal}, {:solr_plugin_name_sortable => :string},
       {:lat => :float}, {:lng => :float},

@@ -11602,6 +11602,10 @@ msgstr "Por favor, selecione um ponto de cultura"
 msgid "Offers, knowledges and interests"
 msgstr "Ofertas, saberes e interesses"
 
+#: plugins/escambo/views/search/_results.html.erb
+msgid "Showing results near of your enterprise '%{enterprise}'"
+msgstr "Mostrando resultados próximos de seu ponto de cultura '%{enterprise}'"
+
 #: plugins/escambo/views/search/index.html.erb:2
 #: plugins/escambo/views/home/index.html.erb:53
 msgid "search for..."
@@ -11804,15 +11808,15 @@ msgstr "procure por produtos..."
 
 #: plugins/sniffer/views/sniffer_plugin_myprofile/search.html.erb:20
 msgid "Reading"
-msgstr "Carregando... "
+msgstr "Legenda"
 
 #: plugins/sniffer/views/sniffer_plugin_myprofile/search.html.erb:21
 msgid "your enterprise"
-msgstr "seu pontos de cultura"
+msgstr "seu ponto de cultura"
 
 #: plugins/sniffer/views/sniffer_plugin_myprofile/search.html.erb:22
 msgid "suppliers"
-msgstr "Fornecedores"
+msgstr "fornecedores"
 
 #: plugins/sniffer/views/sniffer_plugin_myprofile/search.html.erb:23
 msgid "consumers"
