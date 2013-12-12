@@ -314,7 +314,7 @@ class Article < ActiveRecord::Base
   def belongs_to_blog?
     self.parent and self.parent.blog?
   end
-  
+
   def belongs_to_forum?
     self.parent and self.parent.forum?
   end
@@ -689,7 +689,7 @@ class Article < ActiveRecord::Base
     img.nil? ? '' : img.attributes['src']
   end
 
-  delegate :region, :region_id, :environment, :environment_id, :to => :profile, :allow_nil => true
+  delegate :lat, :lng, :region, :region_id, :environment, :environment_id, :to => :profile, :allow_nil => true
 
   def has_macro?
     true
