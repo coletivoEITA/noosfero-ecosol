@@ -1,4 +1,4 @@
-SnifferPlugin.send :remove_const, :Opportunity
+SnifferPlugin.send :remove_const, :Opportunity if defined? SnifferPlugin::Opportunity
 
 class SnifferPlugin::Profile < Noosfero::Plugin::ActiveRecord
   belongs_to :profile
