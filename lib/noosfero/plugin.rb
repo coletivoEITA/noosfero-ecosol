@@ -68,9 +68,6 @@ class Noosfero::Plugin
 
       return unless plugin_dependencies_ok
 
-      # load extensions
-      Dir[File.join(dir, 'lib', 'ext', '*.rb')].each {|file| require_dependency file }
-
       # load class
       klass(plugin_name)
     end
@@ -83,8 +80,13 @@ class Noosfero::Plugin
       all << subclass.to_s unless all.include?(subclass.to_s)
     end
 
+    def load_extensions
+      dir = "#{Rails.root}/plugins/#{self.public_name}"
+      Dir[File.join(dir, 'lib', 'ext', '*.rb')].each{ |file| require_dependency file }
+    end
+
     def public_name
-      self.name.underscore.gsub('_plugin','')
+      @public_name ||= self.name.underscore.gsub('_plugin','')
     end
 
     def public_path(file = '')
