@@ -1,3 +1,6 @@
+require_dependency 'bsc_plugin/ext/enterprise'
+require_dependency 'bsc_plugin/ext/product'
+
 class BscPlugin < Noosfero::Plugin
 
   Bsc

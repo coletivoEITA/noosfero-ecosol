@@ -1,3 +1,6 @@
+require_dependency 'ext/article'
+require_dependency 'ext/comment'
+
 class ToleranceTimePlugin < Noosfero::Plugin
 
   def self.plugin_name

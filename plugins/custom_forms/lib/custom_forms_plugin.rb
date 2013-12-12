@@ -1,3 +1,5 @@
+require 'ext/role_assignment_trigger'
+
 class CustomFormsPlugin < Noosfero::Plugin
 
   def self.plugin_name

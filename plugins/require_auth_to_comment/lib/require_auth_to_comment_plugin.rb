@@ -1,3 +1,5 @@
+require_dependency 'require_auth_to_comment_plugin/ext/profile'
+
 class RequireAuthToCommentPlugin < Noosfero::Plugin
 
   include ActionView::Helpers::TagHelper

@@ -94,3 +94,5 @@ class SolrPlugin < Noosfero::Plugin
   end
 
 end
+
+Dir[File.join(SolrPlugin.root_path, 'lib', 'ext', '*.rb')].each {|file| require_dependency file }

@@ -1,3 +1,6 @@
+require_dependency 'sub_organizations_plugin/ext/organization'
+require_dependency 'sub_organizations_plugin/ext/create_enterprise'
+
 class SubOrganizationsPlugin < Noosfero::Plugin
 
   def self.plugin_name
