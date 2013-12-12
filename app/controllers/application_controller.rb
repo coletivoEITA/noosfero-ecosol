@@ -140,7 +140,6 @@ class ApplicationController < ActionController::Base
 
   def init_noosfero_plugins
     plugins.each do |plugin|
-      plugin.class.load_extensions
       prepend_view_path(plugin.class.view_path)
     end
     init_noosfero_plugins_controller_filters
