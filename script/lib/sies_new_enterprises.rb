@@ -41,10 +41,10 @@ def create_enterprise data
   city = data[:city]
   state = data[:state]
 
-#  $log.info "#{$log_prefix} Criando empreendimento '%s'..." % name
+  $log.info "#{$log_prefix} Criando empreendimento '%s'..." % name
 
   identifier = nickname.normalize_slug if identifier.blank? and nickname.present?
-  identifier = name.normalize_slug if identifier.blank? and name.present?
+  identifier = name.normalize_slug if Profile::RESERVED_IDENTIFIERS.include? identifier or (identifier.blank? and name.present?)
 
   profile = Profile[identifier]
   if profile.present?
@@ -55,25 +55,27 @@ def create_enterprise data
     end
   end
   i = 1
+  orig_identifier = identifier
   while (profile = Profile[identifier]).present?
-    identifier = "#{identifier}#{i}"
+    identifier = "#{orig_identifier}#{i}"
     i += 1
   end
-#  $log.info "#{$log_prefix} Usando identificador %s" % identifier
+  $log.info "#{$log_prefix} Usando identificador %s" % identifier
 
   data[:identifier] = identifier
   enterprise = Enterprise.new data
 
-#  $log.info "#{$log_prefix} Registrando dados geográficos do empreendimento..."
+  $log.info "#{$log_prefix} Registrando dados geográficos do empreendimento..."
   if !state.blank? and !city.blank?
     enterprise.city_with_region = city.to_s
     enterprise.state_with_region = State.find_by_acronym(state).name rescue state
-#    $log.info "#{$log_prefix} registrado!"
+    $log.info "#{$log_prefix} registrado!"
   else
-#    $log.info "#{$log_prefix} falta dados para cidade!"
+    $log.info "#{$log_prefix} falta dados para cidade!"
   end
 
   enterprise.save!
+
   printf "."
   $stdout.flush
 
@@ -84,8 +86,8 @@ def create_enterprise data
   enterprise
 rescue Exception => e
   puts e.message
-#  $log.fatal "#{$log_prefix} Não foi possível criar o empreendimento devido a exceção '%s'" % e.message
-#  $log.fatal e.backtrace.join "\n"
+  $log.fatal "#{$log_prefix} Não foi possível criar o empreendimento devido a exceção '%s'" % e.message
+  $log.fatal e.backtrace.join "\n"
 
   #data[:url] = "Não foi possível registrar empreendimento"
   #data[:observations] << e.message
@@ -101,7 +103,11 @@ def export_imported enterprises
 
     enterprises.each do |data|
       enterprise = data[:record]
+      next unless enterprise
 
+      puts enterprise.id
+      enterprise.reload
+      activation_task = enterprise.tasks(true).where(:type => 'EnterpriseActivation').first
       url = "#{$environment.top_url}/#{enterprise.identifier}"
 
       csv << [
@@ -110,7 +116,7 @@ def export_imported enterprises
         url,
         enterprise.data[:state],
         enterprise.data[:city],
-        enterprise.tasks.where(:type => 'EnterpriseActivation').first.code,
+        activation_task.code,
         enterprise.data[:foundation_year],
         enterprise.data[:contact_person],
         enterprise.contact_phone,

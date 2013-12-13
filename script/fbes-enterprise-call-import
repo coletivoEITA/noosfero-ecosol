@@ -132,8 +132,9 @@ def create_enterprise data
     end
   end
   i = 1
+  orig_identifier = identifier
   while (profile = Profile[identifier]).present?
-    identifier = "#{identifier}#{i}"
+    identifier = "#{orig_identifier}#{i}"
     i += 1
   end
   $log.info "#{$log_prefix} Usando identificador %s" % identifier
@@ -197,7 +198,7 @@ def do_import
 end
 
 parse_opts
-init_log 'import'
+init_log "fbes-enterprise-call-import.log"
 load_enterprises
 
 $log.debug "#{$log_prefix} Iniciando importação. Esta operação pode demorar algum tempo..."

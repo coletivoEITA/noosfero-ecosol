@@ -8,17 +8,17 @@ task :sies_new_enterprises do
     puts "  rake sies_new_enterprises FILE=filename"
 
   else
+    init_log "sies-new-enterprises.log"
     enterprises = load_sheet ENV["FILE"]
 
     puts "Iniciando importação..."
-    Enterprise.transaction do
-      enterprises.each do |data|
-        record = create_enterprise data
-        data[:record] = record
-      end
-
-      export_imported enterprises
+    enterprises.each do |data|
+      record = create_enterprise data
+      #record = Enterprise.where(:name => data[:name]).first
+      data[:record] = record
     end
+
+    export_imported enterprises
 
     puts "Importação concluída!!"
   end

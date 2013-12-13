@@ -102,7 +102,7 @@ end
 
 def init_log name
   $log_path = "#{File.dirname(__FILE__)}/../../log"
-  $log_name = "fbes-enterprise-call-#{name}.log"
+  $log_name = name
   $log = Logger.new "#{$log_path}/#{$log_name}"
   $log.debug "Script iniciou execução em #{Time.now}"
 end
