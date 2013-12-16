@@ -4,6 +4,7 @@ Noosfero.default_locale = 'pt'
 FastGettext.locale = Noosfero.default_locale
 I18n.locale = Noosfero.default_locale
 
+require 'unicode'
 require 'fastercsv'
 CSV = FasterCSV
 
@@ -25,27 +26,27 @@ $enterprises = []
 $enterprises_not_created = []
 
 class String
+  def downcase
+    Unicode::downcase self
+  end
   def normalize_spaces
     self.gsub("\302\240", ' ').squish
   end
-  def normalize
+  def normalize_ascii
     ActiveSupport::Inflector.transliterate(self).normalize_spaces
   end
   def normalize_slug
-    self.normalize.to_slug.gsub(" ", "")
+    self.normalize_ascii.to_slug.gsub(" ", "")
   end
   def normalize_email
-    self.normalize.gsub(" ", "").downcase
+    self.normalize_ascii.gsub(" ", "").downcase
   end
   def normalize_name
-    self.normalize.capitalize
+    self.normalize_spaces.downcase.capitalize
   end
   def normalize_zipcode
-    self.normalize
+    self.normalize_ascii
     "#{self[0..4]}-#{self[5..7]}"
-  end
-  def normalize_nickname
-    self.normalize_name[0..15]
   end
 end
 
@@ -56,6 +57,31 @@ class User
     define_method :deliver_activation_code, proc{}
     define_method :delay_activation_check, proc{}
   end
+end
+
+def generate_enterprise_identifier name, nickname, city, enterprise = nil
+  identifier = nickname.normalize_slug if identifier.blank? and nickname.present?
+  identifier = name.normalize_slug if identifier.blank? or Profile::RESERVED_IDENTIFIERS.include? identifier
+
+  if enterprise.blank?
+    profile = Profile[identifier]
+    if profile.present?
+      if profile.community?
+        identifier = "ees-" + identifier
+      else
+        identifier = "#{if nickname.present? then nickname else name end} #{city}".normalize_slug
+      end
+    end
+  end
+
+  i = 1
+  orig_identifier = identifier
+  while (profile = Profile[identifier]).present?
+    identifier = "#{orig_identifier}#{i}"
+    i += 1
+  end
+
+  identifier
 end
 
 def unique_login_from_name name, suffix = ""

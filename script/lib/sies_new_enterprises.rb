@@ -25,7 +25,7 @@ def load_sheet file_path
         :contact_person => row[11]
       },
       :name => row[1].to_s.normalize_name,
-      :nickname => row[2].to_s.normalize_nickname,
+      :nickname => row[2].to_s,
       :address => extract_row_address(row),
       :contact_phone => 'tel'
     }
@@ -35,34 +35,15 @@ def load_sheet file_path
 end
 
 def create_enterprise data
-  name = data[:name]
-  nickname = data[:nickname]
-  identifier = data[:identifier]
-  city = data[:city]
   state = data[:state]
 
-  $log.info "#{$log_prefix} Criando empreendimento '%s'..." % name
+  $log.info "#{$log_prefix} Criando empreendimento '%s'..." % data[:name]
 
-  identifier = nickname.normalize_slug if identifier.blank? and nickname.present?
-  identifier = name.normalize_slug if Profile::RESERVED_IDENTIFIERS.include? identifier or (identifier.blank? and name.present?)
-
-  profile = Profile[identifier]
-  if profile.present?
-    if profile.community?
-      identifier = "ees-" + identifier
-    else
-      identifier = "#{if nickname.present? then nickname else name end} #{city}".normalize_slug
-    end
-  end
-  i = 1
-  orig_identifier = identifier
-  while (profile = Profile[identifier]).present?
-    identifier = "#{orig_identifier}#{i}"
-    i += 1
-  end
+  data[:identifier] = generate_enterprise_identifier data[:name], data[:nickname], data[:city]
   $log.info "#{$log_prefix} Usando identificador %s" % identifier
 
-  data[:identifier] = identifier
+  data[:nickname] = '' if data[:nickname].length > 15
+
   enterprise = Enterprise.new data
 
   $log.info "#{$log_prefix} Registrando dados geográficos do empreendimento..."
@@ -105,7 +86,6 @@ def export_imported enterprises
       enterprise = data[:record]
       next unless enterprise
 
-      puts enterprise.id
       enterprise.reload
       activation_task = enterprise.tasks(true).where(:type => 'EnterpriseActivation').first
       url = "#{$environment.top_url}/#{enterprise.identifier}"

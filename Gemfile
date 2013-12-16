@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gem 'fastercsv'
+gem 'unicode'
 gem 'sass'
 
 gem 'rake', '0.8.7'

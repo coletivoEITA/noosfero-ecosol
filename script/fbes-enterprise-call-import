@@ -121,22 +121,7 @@ def create_enterprise data
 
   $log.info "#{$log_prefix} Criando empreendimento '%s'..." % name
 
-  identifier = name.normalize_slug if identifier.blank? and name.present?
-
-  profile = Profile[identifier] 
-  if profile.present?
-    if profile.community?       
-      identifier = "ees-" + identifier
-    else
-      identifier = "#{name} #{city}".normalize_slug
-    end
-  end
-  i = 1
-  orig_identifier = identifier
-  while (profile = Profile[identifier]).present?
-    identifier = "#{orig_identifier}#{i}"
-    i += 1
-  end
+  identifier = generate_enterprise_identifier name, nickname, city
   $log.info "#{$log_prefix} Usando identificador %s" % identifier
 
   contact_email = nil
