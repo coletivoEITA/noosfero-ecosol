@@ -3,6 +3,9 @@
 
 RAILS_ROOT = "#{File.dirname(__FILE__)}/.." unless defined?(RAILS_ROOT)
 
+require 'rubygems'
+require 'bundler/setup'
+
 module Rails
   class << self
     def boot!

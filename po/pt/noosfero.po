@@ -11737,17 +11737,21 @@ msgstr "Por favor cheque se suas informações abaixo estão corretas:"
 msgid "Phone number"
 msgstr "Telefone"
 
-#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:20
-#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:18
 #: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:10
 msgid "Money"
 msgstr "Dinheiro"
 
-#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:20
-#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:18
-#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:10
+#: plugins/shopping_cart/views/shopping_cart_plugin/cart_helper.rb:20
 msgid "shopping_cart|Check"
 msgstr "Cheque"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin/cart_helper.rb:20
+msgid "Credit card"
+msgstr "Cartão de crédito"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin/cart_helper.rb:20
+msgid "Bank transfer"
+msgstr "Transferência bancária"
 
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:47
 msgid "Here are the products you bought:"

@@ -73,7 +73,7 @@ function check_captcha(button, confirm_action) {
   <% end %>
 
   <%= labelled_form_field(_('Title'), f.text_field(:title)) %>
-  <% text = @page.parent.is_a?(Forum) ? _('Enter your answer') : _('Enter your comment') %>
+  <% text = if @page and @page.parent and @page.parent.is_a?(Forum) then _('Enter your answer') else _('Enter your comment') end %>
   <%= required labelled_form_field(text, f.text_area(:body, :rows => 5)) %>
 
   <%= hidden_field_tag(:confirm, 'false') %>
@@ -83,7 +83,7 @@ function check_captcha(button, confirm_action) {
   <%= @plugins.dispatch(:comment_form_extra_contents, local_assigns).collect { |content| instance_eval(&content) }.join("") %>
 
   <% button_bar do %>
-    <% text = @page.parent.is_a?(Forum) ? _('Post answer') : _('Post comment') %>
+    <% text = if @page and @page.parent and @page.parent.is_a?(Forum) then _('Post answer') else _('Post comment') end %>
     <%= submit_button('add', text, :onclick => "if(check_captcha(this)) { save_comment(this) } else { check_captcha(this, save_comment)};return false;") %>
     <% if !edition_mode %>
       <%= button :cancel, _('Cancel'), '', :id => 'cancel-comment' %>

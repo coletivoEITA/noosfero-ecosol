@@ -14,7 +14,7 @@
     <%= yield :head %>
     <%=
       @plugins.dispatch(:head_ending).collect do |content|
-        content.respond_to?(:call) ? content.call : content
+        if content.respond_to?(:call) then instance_eval &content else content end
       end.join("\n")
     %>
 
@@ -27,7 +27,7 @@
 
     <%=
       @plugins.dispatch(:body_beginning).collect do |content|
-        content.respond_to?(:call) ? content.call : content
+        if content.respond_to?(:call) then instance_eval &content else content end
       end.join("\n")
     %>
 
@@ -47,10 +47,7 @@
           <div id="navigation-end"></div>
         </div><!-- end id="navigation" -->
         <div id="content">
-          <div id="content-inner">
-            <%= insert_boxes(yield) %>
-            <br style='clear: both'/>
-          </div><!-- end id="content-inner" -->
+          <%= render 'layouts/content' %>
         </div><!-- end id="content" -->
       </div><!-- end id="wrap-2" -->
     </div><!-- end id="wrap-1" -->
@@ -59,7 +56,6 @@
       <%= theme_footer %>
     </div><!-- end id="theme-footer" -->
     <%= noosfero_layout_features %>
-    <%= theme_javascript_ng %>
     <%= addthis_javascript %>
   </body>
 </html>

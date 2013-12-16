@@ -21,9 +21,15 @@ class Noosfero::Plugin
         enabled_plugins << File.join(Rails.root, 'plugins', 'foo')
       end
 
-      enabled_plugins.select do |entry|
-        File.directory?(entry)
-      end.each do |dir|
+      enabled_plugins = enabled_plugins.select{ |entry| File.directory? entry  }
+      enabled_plugins_names = enabled_plugins.map{ |d| File.basename d }
+
+      if (deps_unmet = Noosfero::Plugin::DependencyCalc.deps_unmet *enabled_plugins_names).present?
+        STDERR.puts "Plugins's dependencies aren't met, please enable the plugins: #{deps_unmet.to_a.join ', '}"
+        exit 1
+      end
+
+      enabled_plugins.each do |dir|
         load_plugin_paths dir
       end.each do |dir|
         load_plugin dir
@@ -545,6 +551,8 @@ class Noosfero::Plugin
     #   option = Filter options, like :only or :except
     #   block = Block that the filter will call
     if method.to_s =~ /^(.+)_controller_filters$/
+      []
+    elsif method.to_s == 'application_controller_filters'
       []
     # -> Removes the action button from the content
     # returns = boolean

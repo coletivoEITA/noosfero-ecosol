@@ -12,6 +12,7 @@ class EnterpriseActivation < Task
 
   def enterprise=(ent)
     self.enterprise_id = ent.id
+    self.target = ent
   end
 
   def perform

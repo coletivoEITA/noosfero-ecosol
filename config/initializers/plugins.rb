@@ -1,5 +1,6 @@
 require 'noosfero/plugin'
 require 'noosfero/plugin/hot_spot'
+require 'noosfero/plugin/dependency_calc'
 require 'noosfero/plugin/manager'
 require 'noosfero/plugin/active_record'
 require 'noosfero/plugin/mailer_base'

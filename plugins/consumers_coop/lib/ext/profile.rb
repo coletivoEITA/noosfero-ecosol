@@ -35,34 +35,34 @@ class Profile
     # FIXME don't hardcode
     consumers_coop_theme = 'distribution'
     if Theme.system_themes.collect(&:id).include? consumers_coop_theme
-      self.profile.update_attribute :theme, consumers_coop_theme
+      self.update_attribute :theme, consumers_coop_theme
     end
 
-    login_block = self.profile.blocks.select{ |b| b.class.name == "LoginBlock" }.first
+    login_block = self.blocks.select{ |b| b.class.name == "LoginBlock" }.first
     if not login_block
-      box = self.profile.boxes.first :conditions => {:position => 2}
+      box = self.boxes.first :conditions => {:position => 2}
       login_block = LoginBlock.create! :box => box
       login_block.move_to_top
     end
 
-    self.profile.home_page = self.profile.blogs.first
-    self.profile.save!
+    self.home_page = self.blogs.first
+    self.save!
   end
   def consumers_coop_disable_view
-    self.profile.update_attribute :theme, nil
+    self.update_attribute :theme, nil
 
-    login_block = self.profile.blocks.select{ |b| b.class.name == "LoginBlock" }.first
+    login_block = self.blocks.select{ |b| b.class.name == "LoginBlock" }.first
     login_block.destroy if login_block
   end
 
   def consumers_coop_add_own_members
-    profile.members.each{ |member| add_consumer member }
+    self.members.each{ |member| add_consumer member }
   end
   def consumers_coop_add_own_products
-    return unless profile.respond_to? :products
+    return unless self.respond_to? :products
 
     already_supplied = self.distributed_products.unarchived.from_supplier_id(self.self_supplier.id).all
-    profile.products.map do |p|
+    self.products.map do |p|
       already_supplied.find{ |f| f.product == p } ||
         SuppliersPlugin::DistributedProduct.create!(:profile => self, :supplier => self_supplier, :product => p, :name => p.name, :description => p.description, :price => p.price, :unit => p.unit)
     end

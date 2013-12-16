@@ -12,6 +12,7 @@ class Profile
 end
 
 class Profile
+
   has_many :distributed_products, :class_name => 'SuppliersPlugin::DistributedProduct'
 
   has_many :from_products, :through => :products
@@ -43,11 +44,16 @@ class Profile
   end
   alias_method_chain :suppliers, :self_supplier
 
-  def has_supplier? supplier
-    suppliers.include? supplier
+  def add_consumer consumer
+    return if self.consumers.of_consumer consumer
+
+    supplier = self.suppliers.create! :profile => self, :consumer => consumer
   end
-  def has_consumer? consumer
-    consumers.include? consumer
+  def remove_consumer consumer
+    supplier = self.consumers.of_consumer(consumer).first
+
+    supplier.destroy if supplier
+    supplier
   end
 
   def add_supplier supplier
@@ -57,38 +63,8 @@ class Profile
     supplier.remove_consumer self
   end
 
-  def add_consumer consumer
-    return if has_consumer? consumer
-
-    consumer.affiliate self, SuppliersPlugin::Supplier::Roles.consumer(self.environment)
-    supplier = SuppliersPlugin::Supplier.create!(:profile => self, :consumer => consumer) || suppliers.of_profile(consumer)
-
-    consumer.distribute_supplier_products supplier
-    supplier
-  end
-  def remove_consumer consumer
-    consumer.disaffiliate self, SuppliersPlugin::Supplier::Roles.consumer(self.environment)
-    supplier = consumers.find_by_consumer_id(consumer.id)
-
-    supplier.destroy if supplier
-    supplier
-  end
-
-  # see also #distribute_to_consumers
-  def distribute_supplier_products supplier
-    raise "'#{supplier.name}' is not a supplier of #{self.name}" unless self.has_supplier? supplier
-    return if self.person?
-
-    already_supplied = self.distributed_products.unarchived.of_supplier supplier.all
-    supplier.products.unarchived.each do |np|
-      next if already_supplied.find{ |f| f.supplier_product == np }
-
-      SuppliersPlugin::DistributedProduct.create! :profile => self, :from_products => [np]
-    end
-  end
-
   def not_distributed_products supplier
-    raise "'#{supplier.name}' is not a supplier of #{self.name}" unless self.has_supplier? supplier
+    raise "'#{supplier.name}' is not a supplier of #{self.name}" if self.suppliers.of_profile(supplier).blank?
 
     # FIXME: only select all products if supplier is dummy
     supplier.profile.products.unarchived.own - self.from_products.unarchived.by_profile(supplier.profile)

@@ -41,8 +41,8 @@ module ConsumersCoopPlugin::LayoutHelper
     end.join
   end
 
-  def render_header
-    return unless collective?
+  def consumers_coop_header
+    return unless consumers_coop_enabled?
     output = render :file => 'consumers_coop_plugin_layouts/default'
     if on_homepage?
       extend SuppliersPlugin::ProductHelper
@@ -52,15 +52,13 @@ module ConsumersCoopPlugin::LayoutHelper
     output
   end
 
-  protected
+  def consumers_coop_enabled?
+    profile and profile.consumers_coop_settings.enabled
+  end
 
   # FIXME: workaround to fix Profile#is_on_homepage?
   def on_homepage?
-    profile.is_on_homepage?(request.path, @page) or request.path == "/profile/#{profile.identifier}"
-  end
-
-  def collective?
-    profile and profile.consumers_coop_settings.enabled
+    profile.is_on_homepage? request.path, @page or request.path == "/profile/#{profile.identifier}"
   end
 
 end

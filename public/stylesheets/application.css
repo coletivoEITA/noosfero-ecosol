@@ -1556,7 +1556,7 @@ a.button.disabled, input.disabled {
   clear: both;
 }
 /***********************************************************
- * style for blocks 
+ * style for blocks
  ***********************************************************/
 
 #content .communities-block .profile-image {
@@ -1718,7 +1718,7 @@ a.button.disabled, input.disabled {
   margin: 3px 0;
 }
 
-/* ==> blocks/tags-block.css <<= */ 
+/* ==> blocks/tags-block.css <<= */
 
 .tags-block {
 }
@@ -1729,7 +1729,7 @@ a.button.disabled, input.disabled {
 .tags-block .tag_cloud a:hover {
   color: red;
 }
-/* ==> blocks/my-network-block.css <<= */ 
+/* ==> blocks/my-network-block.css <<= */
 
 #content .my-network-block {
   padding: 10px 0px 10px 10px;
@@ -1737,7 +1737,7 @@ a.button.disabled, input.disabled {
 .my-network-block a {
   text-decoration: none;
 }
-/* ==> blocks/link-list-block.css <<= */ 
+/* ==> blocks/link-list-block.css <<= */
 
 #edit-link-list-block table {
   width: 100%;
@@ -1796,7 +1796,7 @@ a.button.disabled, input.disabled {
   border: 1px solid black;
   background-color: #555;
 }
-/* ==> blocks/profile-list-block.css <<= */ 
+/* ==> blocks/profile-list-block.css <<= */
 
 
 #content .profile-list-block h3 {
@@ -1936,7 +1936,7 @@ a.button.disabled, input.disabled {
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
-/* ==> blocks/recent-documents-block.css <<= */ 
+/* ==> blocks/recent-documents-block.css <<= */
 
 #content .recent-documents-block {
   padding: 10px 0px 10px 10px;
@@ -1959,7 +1959,7 @@ a.button.disabled, input.disabled {
 .recent-documents-block .block-footer-content a:hover {
   text-decoration: underline;
 }
-/* ==> blocks/disabled-enterprise-message-block.css <<= */ 
+/* ==> blocks/disabled-enterprise-message-block.css <<= */
 
 
 .disabled-enterprise-message-block {
@@ -1975,12 +1975,12 @@ a.button.disabled, input.disabled {
   font-size: 80%;
   background: #ffffa9;
 }
-/* ==> blocks/article-block.css <<= */ 
+/* ==> blocks/article-block.css <<= */
 
 .article-block {
   overflow: hidden;
 }
-/* ==> blocks/main-block.css <<= */ 
+/* ==> blocks/main-block.css <<= */
 
 /*
 Use article.css for article related css
@@ -2001,7 +2001,7 @@ div#activation_enterprise {
 div#activation_enterprise label, div#activation_enterprise input, div#activation_enterprise div {
   display: inline
 }
-/* ==> blocks/slideshow-block.css <<= */ 
+/* ==> blocks/slideshow-block.css <<= */
 
 .slideshow-block .slideshow-container {
   margin-bottom: 10px;
@@ -2066,7 +2066,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   display: inline-block;
   width: 16px;
 }
-/* ==> blocks/products-block.css <<= */ 
+/* ==> blocks/products-block.css <<= */
 
 .products-block ul {
   margin: 0px;
@@ -2099,7 +2099,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 #content .products-block li a:hover {
   color: #fff;
 }
-/* ==> blocks/blog-archives-block.css <<= */ 
+/* ==> blocks/blog-archives-block.css <<= */
 
 #content .blog-archives-block {
   padding: 10px 0px 10px 10px;
@@ -2119,7 +2119,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   padding: 5px 0px 10px 10px;
   font-size: 12px;
 }
-/* ==> blocks/profile-info-block.css <<= */ 
+/* ==> blocks/profile-info-block.css <<= */
 
 
 .profile-info-block h2 {
@@ -2222,7 +2222,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   margin: 0px 0px 5px 0px;
   padding: 2px;
 }
-/* ==> blocks/location-block.css <<= */ 
+/* ==> blocks/location-block.css <<= */
 
 .location-block {
   text-align: center;
@@ -2235,7 +2235,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   background: #FFF;
   border: 1px solid #888;
 }
-/* ==> blocks/profile-image-block.css <<= */ 
+/* ==> blocks/profile-image-block.css <<= */
 
 
 .profile-image-block {
@@ -2270,7 +2270,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   list-style: none;
   margin-bottom: 8px;
 }
-/* ==> blocks/sellers-search-block.css <<= */ 
+/* ==> blocks/sellers-search-block.css <<= */
 
 
 #content .sellers-search-block {
@@ -2329,7 +2329,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   margin: 0px;
   float: none;
 }
-/* ==> blocks/feed-reader-block.css <<= */ 
+/* ==> blocks/feed-reader-block.css <<= */
 
 #content .feed-reader-block {
   padding: 10px 0px 10px 10px;
@@ -2893,13 +2893,13 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   overflow: hidden;
 }
 #product-info {
-  width: 335px;
   text-align: left;
-  min-height: 150px;
+  min-height: 35px;
   padding-bottom: 5px;
 }
 #display-product-info .field-value {
   font-weight: bold;
+  font-size:20px;
 }
 #edit-product-category {
   padding: 15px 5px 10px;
@@ -2907,6 +2907,11 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 #product-info .field-name {
   margin-top: 5px;
   margin-bottom: 15px;
+  font-size:20px;
+}
+body.template-default #product-info .field-name, body.template-default #product-info .field-value,  
+body.template-2leftbars #product-info .field-name, body.template-2leftbars #product-info .field-value {
+  font-size: 12px;
 }
 .edit_product #product_price, .edit_product #product_discount {
   width: 110px;
@@ -2928,12 +2933,20 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 }
 #product-image {
   text-align: center;
-  padding: 10px;
-  width: 250px;
+  width: 450px;
   margin-right: 10px;
   margin-bottom: 5px;
   float: left;
   border: 1px solid #AAA;
+}
+.product-pic {
+  width: 450px;
+}
+body.template-default #product-image, body.template-2leftbars #product-image {
+  width: 250px;
+}
+body.template-default #content .product-pic, body.template-2leftbars .product-pic {
+  width: 250px;
 }
 #product-image p {
   font-size: 11px;
@@ -3767,6 +3780,9 @@ h1#agenda-title {
   position: relative;
   border: 1px solid transparent;
 }
+.input-list .input-item {
+  margin: 0;
+}
 .msie .input-list .ui-state-highlight {
   height: 40px;
 }
@@ -4599,6 +4615,11 @@ h1#agenda-title {
   -webkit-border-radius: 5px;
   margin: 5px 0;
   padding: 5px;
+}
+
+/* new jquery ui break icon */
+.ui-button-icon-primary {
+  float: left;
 }
 
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
@@ -6313,7 +6334,7 @@ li.profile-activity-item.upload_image .activity-gallery-images-count-1 img {
 
 /* AutoComplete*/
 .formfield input.ui-autocomplete-loading { background: url('/images/loading-small.gif') right center no-repeat, url("../images/input-bg.gif") no-repeat left top;  }
- 
+
 .ui-autocomplete-category {
      font-weight: bold;
      padding: .2em .4em;

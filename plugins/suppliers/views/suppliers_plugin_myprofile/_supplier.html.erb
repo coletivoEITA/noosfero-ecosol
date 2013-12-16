@@ -1,19 +1,15 @@
 <div class='box-view'>
   <div class='supplier-logo'>
-    <%= profile_image supplier.profile, :minor %>
+    <%= link_to profile_image(supplier.profile, :minor), supplier.profile.url, :target => '_blank' %>
   </div>
 
   <div class='supplier-body'>
     <div class="supplier-type subtitle">
-      <%= supplier.dummy? ? t('suppliers_plugin.views.supplier._supplier.supplier_with_registr') : t('suppliers_plugin.views.supplier._supplier.registered_supplier_i') %>
+      <%= if supplier.dummy? then t('suppliers_plugin.views.supplier._supplier.supplier_with_registr') else t('suppliers_plugin.views.supplier._supplier.registered_supplier_i') end %>
     </div>
 
     <div class="supplier-name">
-      <% if supplier.dummy? %>
-        <%= supplier.name %>
-      <% else %>
-        <%= link_to_profile supplier.name, supplier.profile.identifier, :class => 'supplier-name' %>
-      <% end %>
+      <%= link_to supplier.name, supplier.profile.url, :class => 'supplier-name', :target => '_blank' %>
     </div>
     <% if supplier.name_abbreviation %>
       <div class="subtitle"><strong><%= t('suppliers_plugin.views.supplier._supplier.abreviated_name') + '  ' %></strong><%= supplier.name_abbreviation %></div>

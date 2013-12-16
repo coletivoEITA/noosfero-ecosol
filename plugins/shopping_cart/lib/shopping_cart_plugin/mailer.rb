@@ -2,6 +2,9 @@ class ShoppingCartPlugin::Mailer < Noosfero::Plugin::MailerBase
 
   include ShoppingCartPlugin::CartHelper
 
+  include ActionMailer::Helpers
+  helper ShoppingCartPlugin::CartHelper
+
   def get_contact_email(supplier)
     contact_email = []
     if supplier.enterprise?
