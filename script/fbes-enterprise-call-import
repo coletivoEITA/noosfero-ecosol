@@ -131,6 +131,7 @@ def create_enterprise data
 
   enterprise = Enterprise.new :name => name, :identifier => identifier, :enabled => false,
     :contact_email => contact_email, :environment => $environment
+  enterprise.public_profile = true
 
   $log.info "#{$log_prefix} Registrando dados geográficos do empreendimento..." 
   if !state.blank? and !city.blank?

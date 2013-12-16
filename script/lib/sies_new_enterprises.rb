@@ -27,7 +27,6 @@ def load_sheet file_path
       :name => row[1].to_s.normalize_name,
       :nickname => row[2].to_s,
       :address => extract_row_address(row),
-      :contact_phone => 'tel'
     }
   end
 
@@ -45,6 +44,7 @@ def create_enterprise data
   data[:nickname] = '' if data[:nickname].length > 15
 
   enterprise = Enterprise.new data
+  enterprise.public_profile = true
 
   $log.info "#{$log_prefix} Registrando dados geográficos do empreendimento..."
   if !state.blank? and !city.blank?

@@ -76,7 +76,7 @@ def generate_enterprise_identifier name, nickname, city, enterprise = nil
 
   i = 1
   orig_identifier = identifier
-  while (profile = Profile[identifier]).present?
+  while (profile = Profile[identifier]).present? and enterprise != profile
     identifier = "#{orig_identifier}#{i}"
     i += 1
   end
