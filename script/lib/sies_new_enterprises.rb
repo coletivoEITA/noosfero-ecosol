@@ -77,6 +77,26 @@ rescue Exception => e
   nil
 end
 
+def update_enterprise data, enterprise
+  data[:identifier] = generate_enterprise_identifier data[:name], data[:nickname], data[:city], enterprise
+  data[:nickname] = '' if data[:nickname].length > 15
+  data[:contact_phone] = ''
+
+  puts "Atualizando empreendimento '%s' com o identificador '%s'" % [enterprise.name, data[:identifier]]
+
+  begin
+    enterprise.articles.destroy_all
+    enterprise.apply_template $environment.inactive_enterprise_template
+    enterprise.update_attributes! data
+  rescue => e
+    puts "Erro '#{e.message}' ao atualizar #{enterprise.inspect}, usando identificador '#{data[:identifier]}'."
+  end
+
+  # remove references to avoid leak
+  enterprise.reload
+  GC.start
+end
+
 def export_imported enterprises
   filename = "sies_new_enterprises-imported-list.csv"
   CSV.open filename, "w" do |csv|

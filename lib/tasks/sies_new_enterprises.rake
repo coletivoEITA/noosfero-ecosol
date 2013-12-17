@@ -23,19 +23,8 @@ task :sies_new_enterprises do
       record = sies_enterprise_map[data[:data][:id_sies]]
 
       if record
-        data[:identifier] = generate_enterprise_identifier data[:name], data[:nickname], data[:city], record
-        data[:nickname] = '' if data[:nickname].length > 15
-        data[:contact_phone] = ''
-
-        puts "Atualizando empreendimento '%s' com o identificador '%s'" % [record.name, data[:identifier]]
-
-        begin
-          record.articles.destroy_all
-          record.apply_template $environment.inactive_enterprise_template
-          record.update_attributes! data
-        rescue => e
-          puts "Erro '#{e.message}' ao atualizar #{record.inspect}, usando identificador '#{data[:identifier]}'."
-        end
+        record.update_attribute :layout_template, 'leftbar'
+        #update_enterprise data, record
       else
         record = create_enterprise data
       end
