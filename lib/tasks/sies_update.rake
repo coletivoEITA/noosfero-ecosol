@@ -110,10 +110,13 @@ task :sies_update_enterprises do
   enterprises = Enterprise.find id_data_map.keys
   enterprises.each do |e|
     data = id_data_map[e.id]
-    data[:record] = e
 
-    e.data.merge! data.delete[:data]
+    puts "Atualizando empreendimento '#{e.identifier}'"
+
+    e.data.merge! data.delete(:data)
     e.update_attributes! data
+
+    data[:record] = e
   end
 
   puts "Exportando CSV com dados importados"
