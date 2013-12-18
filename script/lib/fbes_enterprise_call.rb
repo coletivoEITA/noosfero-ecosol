@@ -27,7 +27,7 @@ $enterprises_not_created = []
 
 class String
   def downcase
-    Unicode::downcase self
+    Unicode::downcase(self)
   end
   def normalize_spaces
     self.gsub("\302\240", ' ').squish
@@ -39,7 +39,7 @@ class String
     self.normalize_ascii.to_slug.gsub(" ", "")
   end
   def normalize_email
-    self.normalize_ascii.gsub(" ", "").downcase
+    self.normalize_ascii.gsub(" ", "").downcase.to_s
   end
   def normalize_name
     self.normalize_spaces.downcase.capitalize
@@ -57,6 +57,13 @@ class User
     define_method :deliver_activation_code, proc{}
     define_method :delay_activation_check, proc{}
   end
+end
+
+def init_log name
+  $log_path = "#{File.dirname(__FILE__)}/../../log"
+  $log_name = name
+  $log = Logger.new "#{$log_path}/#{$log_name}"
+  $log.debug "Script iniciou execução em #{Time.now}"
 end
 
 def generate_enterprise_identifier name, nickname, city, enterprise = nil
@@ -126,12 +133,22 @@ def load_sheet file_path
   enterprises
 end
 
-def init_log name
-  $log_path = "#{File.dirname(__FILE__)}/../../log"
-  $log_name = name
-  $log = Logger.new "#{$log_path}/#{$log_name}"
-  $log.debug "Script iniciou execução em #{Time.now}"
+def enterprise_update_address enterprise, city, state, address, address2, postal_code
+  $log.info "#{$log_prefix} Registrando dados geográficos do empreendimento..."
+  if !state.blank? and !city.blank?
+    enterprise.city_with_region = city.to_s
+    enterprise.state_with_region = State.find_by_acronym(state).name rescue state
+    $log.info "#{$log_prefix} registrado!"
+  else
+    $log.info "#{$log_prefix} falta dados para cidade!"
+  end
+
+  enterprise.address = address
+  enterprise.address += ", #{address2}" if address2.present?
+
+  enterprise.zip_code = postal_code
 end
+
 
 def find_enterprise name, identifier
   $log.info "Procurando empreendimento '%s'..." % name.normalize_name

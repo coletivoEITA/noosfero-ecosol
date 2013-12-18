@@ -46,14 +46,7 @@ def create_enterprise data
   enterprise = Enterprise.new data
   enterprise.public_profile = true
 
-  $log.info "#{$log_prefix} Registrando dados geográficos do empreendimento..."
-  if !state.blank? and !city.blank?
-    enterprise.city_with_region = city.to_s
-    enterprise.state_with_region = State.find_by_acronym(state).name rescue state
-    $log.info "#{$log_prefix} registrado!"
-  else
-    $log.info "#{$log_prefix} falta dados para cidade!"
-  end
+  enterprise_update_address enterprise, city, state, address, address2, postal_code
 
   enterprise.save!
 
@@ -106,8 +99,7 @@ def export_imported enterprises
       enterprise = data[:record]
       next unless enterprise
 
-      enterprise.reload
-      activation_task = enterprise.tasks(true).where(:type => 'EnterpriseActivation').first
+      activation_task = enterprise.tasks.where(:type => 'EnterpriseActivation').first
       url = "#{$environment.top_url}/#{enterprise.identifier}"
 
       csv << [
