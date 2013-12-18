@@ -5,6 +5,7 @@ class DeliveryPluginOptionController < MyProfileController
   before_filter :load_owner
 
   helper OrdersPlugin::FieldHelper
+  helper SuppliersPlugin::JavascriptHelper
 
   def select
     render :layout => false

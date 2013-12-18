@@ -1,5 +1,9 @@
 class NetworksPluginAdminController < AdminController
 
+  include NetworksPlugin::TranslationHelper
+
+  helper NetworksPlugin::TranslationHelper
+
   def index
     @networks = environment.networks.visible
     @network = NetworksPlugin::Network.new

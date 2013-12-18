@@ -19,6 +19,8 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
 
   def settings
     if params[:commit]
+      params[:profile_data][:consumers_coop_settings][:enabled] = params[:profile_data][:consumers_coop_settings][:enabled] == 'true' rescue
+
       was_enabled = profile.consumers_coop_settings.enabled
 
       params[:profile_data].delete(:consumers_coop_settings).each do |attr, value|

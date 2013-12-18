@@ -1,3 +1,0 @@
-page.replace_html 'cycle-delivery-options', :partial => 'index', :locals => {:owner => @owner}
-page << 'jQuery.colorbox.close()'
-

@@ -1,4 +1,5 @@
 @import 'base';
+@import 'page-title';
 
 #networks-admin-index {
 
@@ -28,6 +29,16 @@
       }
     }
   }
+}
+
+body.network-node {
+
+  #network-header {
+
+    .network-tag {
+      float: right;
+    }
+  }
 
 }
 
@@ -45,3 +56,17 @@
     }
   }
 }
+
+.controller-networks_plugin_enterprise {
+
+  #suppliers-page {
+
+    .supplier {
+
+      .box-edit {
+        display: block;
+      }
+    }
+  }
+}
+

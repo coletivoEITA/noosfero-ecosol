@@ -288,14 +288,13 @@
           singular: "um fornecedor"
         none: 
           singular: "nenhum fornecedor"
-        article: 
-          singular: "o fornecedor"
         from_which_article: 
           singular: "com que o fornecedor"
+        article: 
+          singular: "o fornecedor"
+          plural: "os fornecedores"
         by_article: 
           singular: "pelo fornecedor"
-        article: 
-          plural: "os fornecedores"
         new_undefined_article:
           singular: "um novo fornecedor"
     controllers: 
@@ -443,6 +442,11 @@
           name: Nome
           suppliers: "%{terms.supplier.plural.capitalize}"
           this_is_the_list_of_s: "Esta é a lista de %{terms.supplier.plural} associados %{terms.profile.to_article.singular}. É possível associar %{terms.supplier.to.plural} existentes ou registrar %{terms.supplier.one}."
+      manage_products:
+        distribution_tab:
+          title: "Esse produto é distribuído para os seguintes consumidores:"
+          no_consumers: "Este perfil não é um fornecedor da rede."
+          save: "Salvar"
 
   delivery_plugin:
     lib:
@@ -1020,7 +1024,7 @@
           singular: "a rede"
           plural: "as redes"
         by_article: 
-          singular: "pelas redes"
+          singular: "pela rede"
       supplier: 
         singular: "empreendimento"
         plural: "empreendimentos"
@@ -1043,14 +1047,13 @@
           singular: "um empreendimento"
         none: 
           singular: "nenhum empreendimento"
-        article: 
-          singular: "o empreendimento"
         from_which_article: 
           singular: "com que o empreendimento"
+        article: 
+          singular: "o empreendimento"
+          plural: "os empreendimentos"
         by_article: 
           singular: "pelo empreendimento"
-        article: 
-          plural: "os empreendimentos"
         new_undefined_article:
           singular: "um novo empreendimento"
     models:
@@ -1072,11 +1075,15 @@
       network:
         show_structure: 
           title: "Estrutura da rede"
+          structure: "Estrutura"
           add_enterprise: "Adicionar %{terms.supplier.singular}"
           add_node: "Criar nó"
+          confirm_node_remove: "Ao excluir este nó, %{terms.supplier.article.plural} e nós associados a ele serão associados ao nó '%{parent}'. Por favor confirme a remoção do nó '%{node}'."
+          confirm_supplier_desassociate: "Por favor confirme que quer desassociar %{terms.supplier.article.singular} '%{supplier}'."
           edit: "Editar"
           config: "Configurar"
           remove: "Remover"
+          desassociate: "Desassociar"
           nodes: "Nós"
           enterprises: "%{terms.supplier.plural.capitalize}"
       node:
@@ -1086,4 +1093,9 @@
         edit:
           title: "Configurações do nó %{node}"
           back: "Voltar para a estrutura da rede"
+          node_info: "Informações do nó"
+          presentation_text: "Texto de apresentação:"
+      enterprise:
+        edit:
+          title: "Configurações do empreendimento %{enterprise}"
 

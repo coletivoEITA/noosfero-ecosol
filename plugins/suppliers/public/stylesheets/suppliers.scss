@@ -15,13 +15,13 @@
     }
   }
 
-  .supplier.supplier-inactive {
-    background-color: #faeeee;
-  }
-
   .supplier {
     border-top: $border solid black;
     border-bottom: none;
+
+    &.supplier-inactive {
+      background-color: #faeeee;
+    }
 
     &#supplier-add {
       display: none;
