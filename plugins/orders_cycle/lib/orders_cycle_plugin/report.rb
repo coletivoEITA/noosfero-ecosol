@@ -117,12 +117,12 @@ module OrdersCyclePlugin::Report
 
           sheet.merge_cells "B#{sbs+1}:C#{sbs+1}"
 
-          sheet.add_row [t('orders_cycle_plugin.lib.report.total_value'),t('orders_cycle_plugin.lib.report.created'), t('orders_cycle_plugin.lib.report.modified'), '','', '',''], :style => bluecell
+          sheet.add_row [t('orders_cycle_plugin.lib.report.created'), t('orders_cycle_plugin.lib.report.modified'), '','', '','',''], :style => bluecell
 
           # sp = index of the start of the products list / ep = index of the end of the products list
           sp = sbs + 5
           ep = sp + order.products.count - 1
-          sheet.add_row ["=SUM(G#{sp}:G#{ep})", order.created_at, order.updated_at, '', '', '', '',''], :style => [currency,date,date]
+          sheet.add_row [order.created_at, order.updated_at, '', '', '', '','',''], :style => [date,date]
 
           sheet.add_row [t('orders_cycle_plugin.lib.report.product_cod'), t('orders_cycle_plugin.lib.report.supplier'), t('orders_cycle_plugin.lib.report.product_name'),
                          t('orders_cycle_plugin.lib.report.qty_ordered'),t('orders_cycle_plugin.lib.report.un'),t('orders_cycle_plugin.lib.report.price_un'), t('orders_cycle_plugin.lib.report.value')], :style => greencell
@@ -138,6 +138,7 @@ module OrdersCyclePlugin::Report
             sbe += 1
           end # closes order.products.each
           sheet.add_row ["", "", "", "","","",""], :style => border_top
+          sheet.add_row ['','','','','',t('orders_cycle_plugin.lib.report.total_value'),"=SUM(G#{sp}:G#{ep})"], :style => [default]*5+[bluecell,currency]
           sheet.add_row ["", "", "", "","","",""]
           sbs = sbe + 2
         end # closes ordered_products_by_supplier
