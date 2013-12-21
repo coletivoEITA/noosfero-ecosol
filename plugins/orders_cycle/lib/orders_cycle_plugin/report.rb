@@ -87,7 +87,7 @@ module OrdersCyclePlugin::Report
         puts "there are no orders to show"
         return nil
       end
-      orders = cycle.orders
+      orders = cycle.orders.confirmed
 
       tmp_dir = Dir.mktmpdir "noosfero-"
       report_file = tmp_dir + '/report.xlsx'
