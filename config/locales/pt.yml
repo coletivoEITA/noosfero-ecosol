@@ -586,8 +586,8 @@
   orders_cycle_plugin: 
     lib:
       plugin:
-        name: Orders' cycle
-        description: "Create and manage orders' cycle"
+        name: "Ciclo de pedidos"
+        description: "Criar e administrar ciclos de pedidos"
       ext:
         orders_plugin:
           order:
@@ -603,7 +603,7 @@
         closed_orders: "Pedidos fechados"
         created: criado
         member_name: "Nome do Membro"
-        min_stock: "min. stock"
+        min_stock: "estoque mín."
         mm_dd_yy_hh_mm_am_pm: "DD/MM/YY HH:MM AM/PM"
         modified: modificado
         order_code: "Código do Pedido"
@@ -617,7 +617,7 @@
         qty_ordered: "qtd pedida"
         selled_total: "Total vendido"
         selled_value: "Valor vendido"
-        stock_qtt: "stock qtt"
+        stock_qtt: "qtd estoque"
         supplier: "%{terms.supplier.singular.capitalize}"
         total_parcel_value: "Valor total da encomenda"
         total_selled_value: "Valor total vendido"
