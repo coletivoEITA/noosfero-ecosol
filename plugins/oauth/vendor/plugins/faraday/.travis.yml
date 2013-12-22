@@ -1,0 +1,30 @@
+bundler_args: --standalone --without development
+script: RUBYLIB=./bundle script/test
+
+env:
+  - SSL=no
+  - SSL=yes
+
+language: ruby
+
+matrix:
+  allow_failures:
+    # "A fatal error has been detected by the Java Runtime Environment:
+    #  Internal Error (sharedRuntime.cpp:843)"
+    - rvm: jruby-19mode
+      env: SSL=yes
+    # random crashes
+    - rvm: rbx-18mode
+    - rvm: rbx-19mode
+    - rvm: rbx-20mode
+  fast_finish: true
+
+rvm:
+  - 1.8.7
+  - 1.9.2
+  - 1.9.3
+  - 2.0.0
+  - jruby-19mode
+  - rbx-18mode
+  - rbx-19mode
+  - rbx-20mode
