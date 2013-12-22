@@ -12258,6 +12258,76 @@ msgstr "Desculpe, você não pode mais preencher esse formulário"
 msgid "Author name"
 msgstr "Nome do autor"
 
+#: plugins/oauth/lib/oauth_plugin.rb:8
+msgid "OAuth"
+msgstr "OAuth"
+
+#: plugins/oauth/lib/oauth_plugin.rb:12
+msgid ""
+"OAuth authentication to other noosfero networks and other OAuth providers"
+msgstr "Autenticação OAuth para outras redes noosfero e outros provedores OAuth"
+
+#: plugins/oauth/views/oauth_plugin_admin_apps/_index.html.erb:2
+msgid ""
+"Create IDs and secrets for applications and networks that are going to use "
+"your OAuth Provider."
+msgstr "Crie IDs e chaves para aplicações e redes que vão usar seu provedor OAuth."
+
+#: plugins/oauth/views/oauth_plugin_admin_apps/_index.html.erb:6
+msgid "New app"
+msgstr "Novo aplicativo"
+
+#: plugins/oauth/views/oauth_plugin_admin_apps/_index.html.erb:11
+msgid "Current apps"
+msgstr "Aplicativos cadastros"
+
+#: plugins/oauth/views/oauth_plugin_admin_apps/_form.html.erb:31
+msgid "Callback URI"
+msgstr "URI de retorno (callback)"
+
+#: plugins/oauth/views/oauth/_signin.html.erb:1
+msgid "Login with:"
+msgstr "Entrar com:"
+
+#: plugins/oauth/views/oauth/_signin.html.erb:11
+msgid "Developer signin"
+msgstr "Entrada para desenvolvedor"
+
+#: plugins/oauth/views/oauth_plugin_admin_providers/_index.html.erb:2
+msgid "Register providers to use OAuth authentication for login."
+msgstr "Registre provedores para usar autenticação OAuth para login."
+
+#: plugins/oauth/views/oauth_plugin_admin_providers/_index.html.erb:6
+msgid "New provider"
+msgstr "Novo provedor"
+
+#: plugins/oauth/views/oauth_plugin_admin_providers/_index.html.erb:11
+msgid "Current providers"
+msgstr "Provedores atuais"
+
+#: plugins/oauth/views/oauth_plugin_admin/index.html.erb:1
+msgid "OAuth configuration"
+msgstr "Configuração OAuth"
+
+#: plugins/oauth/views/oauth_plugin_admin/index.html.erb:5
+msgid "Providers"
+msgstr "Provedores: "
+
+#: plugins/oauth/views/oauth_plugin_admin/index.html.erb:6
+msgid "Applications and Networks"
+msgstr "Aplicações e Redes"
+
+#: plugins/oauth/views/oauth_plugin_provider/authorize.html.erb:6
+msgid ""
+"The application %{application} wants permission to read the following "
+"informations:"
+msgstr ""
+"A aplicação %{application} quer permissão para ler as seguintes informações: "
+
+#: plugins/oauth/views/oauth_plugin_provider/authorize.html.erb:16
+msgid "Allow"
+msgstr "Permitir"
+
 #: plugins/custom_forms/views/custom_forms_plugin_profile/show.html.erb:18
 msgid "Author email"
 msgstr "Email do autor"

@@ -1,0 +1,16 @@
+<% if environment.oauth_providers.present? %>
+  <%= _('Login with:') %>
+
+  <% environment.oauth_providers.each do |provider| %>
+    <% if provider.image_public_filename %>
+      <%= link_to image_tag(provider.image_public_filename, :title => provider.name, :class => 'oauth-login-icon'), "/plugin/oauth/auth/#{provider.identifier}" %>
+    <% else %>
+      <%= link_to provider.name, "/plugin/oauth/auth/#{provider.identifier}" %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% unless Rails.env.production? %>
+  <%= link_to _('Developer signin'), "#{environment.top_url}/plugin/oauth/auth/developer" %>
+<% end %>
+

@@ -1,0 +1,6 @@
+<% if @provider %>
+  jQuery('#provider-new').html("<%= escape_javascript render('form', :provider => @provider) %>")
+<% else %>
+  jQuery('#providers').html("<%= escape_javascript render('index') %>")
+<% end %>
+

@@ -1,0 +1,18 @@
+=== 0.10.2 / 2012-10-31
+
+* Stop Model::Authorization#scope being set to an empty string and returned as
+  such in Provider::Exchange responses
+
+
+=== 0.10.1 / 2012-10-29
+
+* Add uniqueness constraints to the database for various Authorization properties
+* Make Authorization.new() and Authorization.create() private
+* Disallow client_secret from being sent in a query string
+* Use SecureRandom where available to generate tokens
+
+
+=== 0.10.0 / 2012-08-27
+
+* Initial release, implements http://tools.ietf.org/html/draft-ietf-oauth-v2-10
+
