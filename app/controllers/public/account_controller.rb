@@ -96,6 +96,8 @@ class AccountController < ApplicationController
             invitation.update_attributes!({:friend => @user.person})
             invitation.finish
           end
+
+          @user.activate if session.delete(:skip_user_activation_for_email) == @user.email
           if @user.activated?
             self.current_user = @user
             redirect_to '/'
