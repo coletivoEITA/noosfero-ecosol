@@ -6346,7 +6346,7 @@ msgstr "Categorías:"
 #: app/views/comment/notifier/mail.rhtml:1
 #: app/views/user/mailer/activation_code.rhtml:1
 msgid "Hi, %{recipient}!"
-msgstr "¡Hola, %recipient}!"
+msgstr "¡Hola, %{recipient}!"
 
 #: app/views/scrap/notifier/mail.rhtml:3
 msgid "%{sender} (%{sender_link}) has left the following scrap for you:"
@@ -9459,7 +9459,7 @@ msgid ""
 "%{activation_url}"
 msgstr ""
 "¡Bienvenido a %{environment}! Para activar tu cuenta, sigue el enlace: "
-"%{activation_urñ}"
+"%{activation_url}"
 
 #: app/views/user/mailer/activation_email_notify.rhtml:3
 msgid "Your email %s was just activated."
