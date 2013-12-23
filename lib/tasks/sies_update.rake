@@ -24,16 +24,20 @@ task :sies_new_enterprises do
     record = sies_enterprise_map[data[:data][:id_sies]]
 
     if record
-      record.update_attribute :layout_template, 'leftbar'
+      record.city = record.city
+      record.region_from_city_and_state
+      pp record.region
+      record.save!
+      #record.update_attribute :layout_template, 'leftbar'
       #update_enterprise data, record
     else
-      record = create_enterprise data
+      #record = create_enterprise data
     end
     data[:record] = record
   end
 
   puts "Exportando CSV com dados importados"
-  export_imported enterprises
+  #export_imported enterprises
 
   puts "Importação concluída!"
 end
