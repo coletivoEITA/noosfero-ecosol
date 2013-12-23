@@ -59,21 +59,24 @@ task :sies_remove_enterprises do
   rows = CSV.open ENV['FILE'], 'r'
   rows.shift
   ids = rows.map{ |row| row[2] }
-  enterprises = Enterprise.find ids
+  enterprises = Enterprise.where(:id => ids)
 
-  filename = "sies_removed_enterprise_list.csv"
-  CSV.open filename, "w" do |csv|
-    csv << ['Nome do empreendimento', 'URL do empreendimento no Cirandas', 'ID do SIES', 'UF', 'Cidade']
+  #filename = "sies_removed_enterprise_list.csv"
+  #CSV.open filename, "w" do |csv|
+  #  csv << ['Nome do empreendimento', 'URL do empreendimento no Cirandas', 'ID do SIES', 'UF', 'Cidade']
 
-    enterprises.each do |e|
-      url = "#{$environment.top_url}/#{e.identifier}"
-      city = e.region
-      state = e.region.parent
-      csv << [e.name, url, e.data[:id_sies], state.name, city.name]
-    end
+  #  enterprises.each do |e|
+  #    url = "#{$environment.top_url}/#{e.identifier}"
+  #    city = e.region
+  #    state = e.region.parent
+  #    csv << [e.name, url, e.data[:id_sies], state.name, city.name]
+  #  end
+  #end
+
+  enterprises.find_each do |e|
+    next $log.error "Empreendimento #{e.inspect} já foi ativado!" if e.enabled
+    e.destroy
   end
-
-  #enterprises.each{ |e| e.destroy }
 end
 
 desc "Update disabled enterprises from the csv file - SIES Data"
