@@ -559,8 +559,18 @@ function addManageEnterprisesToOldStyleMenu(data) {
       item.find('a[href]').each(function() {
         jQuery(this).attr('href', '/myprofile/' + enterprise.identifier);
       });
-      item.html(item.html().replace('{name}', enterprise.name));
-      item.insertAfter('#manage-enterprises-link-template');
+      var html = $(this).html()
+                        .replace(/{login}/g, data.login)
+                        .replace('{avatar}', data.avatar)
+                        .replace('{month}', data.since_month)
+                        .replace('{year}', data.since_year);
+      $(this).html(html).fadeIn();
+      if (data.is_admin) {
+        $('#user .admin-link').show();
+      }
+      if (data.email_domain) {
+        $('#user .webmail-link').show();
+      }
     });
   }
 }
@@ -719,7 +729,7 @@ jQuery(function($) {
       document.location.href = this.href;
     })
   }
-  $('#manage-enterprises-link').live('click', function() {
+  $('.manage-groups > a').live('click', function() {
     toggleMenu(this);
     return false;
   });

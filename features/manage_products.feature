@@ -11,7 +11,6 @@ Feature: manage products
       | redemoinho | joaosilva | Rede Moinho | true |
     And feature "products_for_enterprises" is enabled on environment
 
-
   Scenario: display "create new product" button
     Given I am logged in as "joaosilva"
     And I am on redemoinho's control panel

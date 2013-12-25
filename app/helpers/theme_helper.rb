@@ -1,7 +1,8 @@
 module ThemeHelper
 
   def theme_path
-    if session[:theme]
+    if ( respond_to?(:session) && session[:theme] ) ||
+       ( @controller && @controller.session[:theme] )
       '/user_themes/' + current_theme
     else
       '/designs/themes/' + current_theme
@@ -11,7 +12,8 @@ module ThemeHelper
   def current_theme
     @current_theme ||=
       begin
-        if (session[:theme])
+        if ( respond_to?(:session) && session[:theme] ) ||
+           ( @controller && @controller.session[:theme] )
           session[:theme]
         else
           # utility for developers: set the theme to 'random' in development mode and
@@ -20,7 +22,7 @@ module ThemeHelper
           if ENV['RAILS_ENV'] == 'development' && environment.theme == 'random'
             @random_theme ||= Dir.glob('public/designs/themes/*').map { |f| File.basename(f) }.rand
             @random_theme
-          elsif ENV['RAILS_ENV'] == 'development' && params[:theme] && File.exists?(File.join(Rails.root, 'public/designs/themes', params[:theme]))
+          elsif ENV['RAILS_ENV'] == 'development' && respond_to?(:params) && params[:theme] && File.exists?(File.join(Rails.root, 'public/designs/themes', params[:theme]))
             params[:theme]
           else
             if profile && !profile.theme.nil?

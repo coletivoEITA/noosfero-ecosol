@@ -53,6 +53,8 @@ class ContentViewerController < ApplicationController
     # At this point the page will be showed
     @page.hit
 
+    @page = FilePresenter.for @page
+
     if @page.download? params[:view]
       headers['Content-Type'] = @page.mime_type
       headers.merge! @page.download_headers
@@ -94,7 +96,7 @@ class ContentViewerController < ApplicationController
     end
 
     if @page.folder? && @page.gallery?
-      @images = @page.images
+      @images = @page.images.select{ |a| a.display_to? user }
       @images = @images.paginate(:per_page => per_page, :page => params[:npage]) unless params[:slideshow]
     end
 
