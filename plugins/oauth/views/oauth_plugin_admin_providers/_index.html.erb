@@ -1,0 +1,13 @@
+<p>
+  <%= _('Register providers to use OAuth authentication for login.') %>
+</p>
+
+<div id="provider-new">
+  <h2> <%= _('New provider') %> </h2>
+  <%= render 'oauth_plugin_admin_providers/form', :provider => @provider || environment.oauth_providers.build %>
+</div>
+
+<div>
+  <h2> <%= _('Current providers') %> </h2>
+  <%= render 'oauth_plugin_admin_providers/list' %>
+</div>
