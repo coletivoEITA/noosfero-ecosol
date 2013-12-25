@@ -1,0 +1,18 @@
+@import 'base';
+@import 'loading-overlay';
+ 
+.controller-oauth_plugin_admin {
+
+  .ui-tabs {
+
+    .ui-tabs-panel {
+      padding: $padding;
+
+    }
+  }
+}
+
+.oauth-login-icon {
+  width: 20px;
+  height: 20px;
+}

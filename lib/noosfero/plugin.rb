@@ -53,6 +53,7 @@ class Noosfero::Plugin
       # load vendor/plugins
       Dir.glob(File.join(dir, '/vendor/plugins/*')).each do |vendor_plugin|
         [ ActiveSupport::Dependencies.load_paths, $:].each{ |path| path << "#{vendor_plugin}/lib" }
+      end.each do |vendor_plugin|
         init = "#{vendor_plugin}/init.rb"
         require init.gsub(/.rb$/, '') if File.file? init
       end
