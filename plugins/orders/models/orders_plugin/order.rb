@@ -1,3 +1,5 @@
+require "plugins/orders/lib/orders_plugin/serialize_synced_data"
+
 class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   belongs_to :profile
@@ -17,10 +19,23 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   code_numbering :code
 
   validates_presence_of :profile
-  #validates_presence_of :supplier_delivery
-  STATUSES = ['draft', 'planned', 'confirmed', 'cancelled']
+  STATUSES = ['draft', 'planned', 'confirmed', 'cancelled', 'accepted', 'shipped']
   validates_inclusion_of :status, :in => STATUSES
   before_validation :default_values
+
+  extend OrdersPlugin::SerializedSyncedData::ClassMethods
+  sync_serialized_field :consumer do |profile|
+    {:name => profile.name, :email => profile.contact_email, :contact_phone => profile.contact_phone}
+  end
+  sync_serialized_field :supplier_delivery
+  sync_serialized_field :consumer_delivery
+  serialize :payment_data, Hash
+  sync_serialized_field :products do |products|
+    hash = {}; products.each do |product|
+       hash[product.id] = {:name => product.name, :price => product.price.to_f, :quantity_asked => product.quantity_asked}
+    end
+    hash
+  end
 
   named_scope :draft, :conditions => {:status => 'draft'}
   named_scope :planned, :conditions => {:status => 'planned'}

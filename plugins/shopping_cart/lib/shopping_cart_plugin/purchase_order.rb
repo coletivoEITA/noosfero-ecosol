@@ -19,6 +19,8 @@ class ShoppingCartPlugin::PurchaseOrder < Noosfero::Plugin::ActiveRecord
   settings_items :customer_payment, :type => String
   settings_items :customer_change, :type => String
 
+
+
   before_create do |order|
     order.created_at = Time.now.utc
     order.updated_at = Time.now.utc

@@ -56,7 +56,7 @@ class OrdersPlugin::Order
 
   alias_method :supplier_delivery!, :supplier_delivery
   def supplier_delivery
-    supplier_delivery! || self.cycle.delivery_methods.first
+    supplier_delivery! || self.cycle.delivery_methods.first if self.cycle
   end
   def supplier_delivery_id
     self['supplier_delivery_id'] || self.cycle.delivery_methods.first.id
