@@ -1,16 +1,17 @@
 require 'omniauth'
-require 'omniauth-persona'
+require 'omniauth-browserid'
 require 'faraday'
 require 'multi_json'
 
 module OmniAuth
   module Strategies
-    class Persona
+    class BrowserID
       include OmniAuth::Strategy
 
       option :verify_url, 'https://verifier.login.persona.org/verify'
-      option :name, 'persona'
+      option :name, 'browser_id'
       option :audience_url, nil
+      option :client_options, {}
 
       def other_phase
         if on_path?(failure_path)
@@ -26,10 +27,10 @@ module OmniAuth
 
       def request_phase
         OmniAuth::Form.build(
-          :title => "Persona Login",
+          :title => "BrowserID Login",
           :url => callback_path,
           :header_info => <<-HTML
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
             <script src="https://login.persona.org/include.js" type="text/javascript"></script>
             <script type='text/javascript'>
               function loginViaEmail() {
@@ -52,7 +53,7 @@ module OmniAuth
             </script>
           HTML
         ) do |f|
-          f.html "<input type='hidden' name='assertion'/><p>Click 'Connect' to sign in with Persona.</p>"
+          f.html "<input type='hidden' name='assertion'/><p>Click 'Connect' to sign in with BrowserID.</p>"
         end.to_response
       end
 
@@ -76,7 +77,8 @@ module OmniAuth
       end
 
       def connection
-        Faraday.new(:url => options[:verify_url])
+        Faraday.new(options[:client_options].
+          update(:url => options[:verify_url]))
       end
     end
   end

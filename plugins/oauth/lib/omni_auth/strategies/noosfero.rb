@@ -50,6 +50,8 @@ module OmniAuth
 
         identifier = request.path.split('/').last
         @provider = environment.oauth_providers.find_by_identifier identifier
+        @provider = nil if @provider.strategy_class != self.class
+        @provider
       end
 
       def client_with_dynamic_site
