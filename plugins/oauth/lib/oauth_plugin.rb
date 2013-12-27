@@ -21,22 +21,27 @@ class OauthPlugin < Noosfero::Plugin
   StrategiesDefs = {
     'noosfero' => {
       :name => 'Noosfero Network',
+      :key_needed => true,
     },
-    'persona' => {
-      :identifier => 'persona',
-      :name => 'Persona',
+    'browser_id' => {
+      :identifier => 'browser_id',
+      :name => 'Mozilla Persona',
+      :key_needed => false,
     },
     'twitter' => {
       :identifier => 'twitter',
       :name => 'Twitter',
+      :key_needed => true,
     },
     'google_oauth2' => {
       :identifier => 'google',
       :name => 'Google',
+      :key_needed => true,
     },
     'facebook' => {
       :identifier => 'facebook',
       :name => 'Facebook',
+      :key_needed => true,
     },
   }
 
@@ -58,18 +63,18 @@ class OauthPlugin < Noosfero::Plugin
 
   SetupProc = lambda do |env|
     request = Rack::Request.new env
-    return unless request.path.starts_with? OauthPlugin::path_prefix
 
     strategy = env['omniauth.strategy']
+    return if strategy.blank?
     defs = StrategiesDefs[strategy.options.name]
-    session = env['rack.session']
-    session[:return_to] = request.referer if strategy.on_auth_path?
 
     domain = Domain.find_by_name request.host
     environment = domain.environment rescue Environment.default
     identifier = request.path.split('/').last
     provider = environment.oauth_providers.find_by_identifier identifier
     return if provider.blank?
+
+    strategy.options[:name] = provider.identifier
 
     strategy.options[:consumer_key] = provider.key
     strategy.options[:consumer_secret] = provider.secret
@@ -100,7 +105,8 @@ unless $oauth_plugin_middlewares_loaded
     end
 
     OauthPlugin::StrategiesDefs.each do |name, defs|
-      provider name, :setup => OauthPlugin::SetupProc, :path_prefix => "#{OauthPlugin.path_prefix}/auth"
+      provider name, :setup => OauthPlugin::SetupProc, :path_prefix => "#{OauthPlugin.path_prefix}/auth",
+        :callback_path => "#{OauthPlugin.path_prefix}/auth/callback/#{defs[:identifier]}"
     end
   end
 end
