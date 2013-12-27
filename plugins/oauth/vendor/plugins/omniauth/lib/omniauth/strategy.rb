@@ -178,6 +178,9 @@ module OmniAuth
 
       return mock_call!(env) if OmniAuth.config.test_mode
 
+      puts '---------------'
+      puts self.class.name
+      puts current_path
       return options_call if on_auth_path? && options_request?
       return request_call if on_request_path? && OmniAuth.config.allowed_request_methods.include?(request.request_method.downcase.to_sym)
       return callback_call if on_callback_path?

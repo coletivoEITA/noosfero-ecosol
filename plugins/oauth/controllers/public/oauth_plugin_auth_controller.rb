@@ -6,13 +6,17 @@ class OauthPluginAuthController < PublicController
     @provider = environment.oauth_providers.find_by_identifier params[:id]
     @strategy = request.env['omniauth.strategy']
     @auth = request.env['omniauth.auth']
-    @email = @auth.info.email
 
+    if params[:error]
+      raise @error
+      return
+    end
+
+    @email = @auth.info.email
     @user = environment.users.find_by_email @email
     if @user
       self.current_user = @user
-      # session[:return_to] was saved on SetupProc
-      redirect_back_or_default :controller => 'home'
+      redirect_to request.env['omniauth.origin'] || {:controller => :home}
     else
       session[:skip_user_activation_for_email] = @email
 
@@ -22,8 +26,7 @@ class OauthPluginAuthController < PublicController
   end
 
   def failure
-    @strategy = request.env['omniauth.strategy']
-    @error = request.env['omniauth.error']
+    @strategy = params[:strategy]
     @message_key = params[:message]
   end
 

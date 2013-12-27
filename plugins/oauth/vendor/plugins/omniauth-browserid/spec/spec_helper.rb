@@ -5,7 +5,7 @@ Bundler.setup :default, :test
 
 require 'rspec'
 require 'rack/test'
-require 'omniauth-persona'
+require 'omniauth-browserid'
 
 RSpec.configure do |config|
   config.include Rack::Test::Methods

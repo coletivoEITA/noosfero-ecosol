@@ -11,8 +11,11 @@ class OauthPlugin::Provider < Noosfero::Plugin::ActiveRecord
   acts_as_having_image
   after_update :save_image
 
+  def strategy_class
+    @strategy_class ||= OmniAuth::Strategies.const_get OmniAuth::Utils.camelize(self.strategy)
+  end
   def strategy_defs
-    OauthPlugin::StrategiesDefs[self.strategy] || {}
+    @strategy_defs ||= OauthPlugin::StrategiesDefs[self.strategy] || {}
   end
 
   IconDefault = "/plugins/oauth/images/%s-icon.png"
@@ -31,7 +34,7 @@ class OauthPlugin::Provider < Noosfero::Plugin::ActiveRecord
   protected
 
   def key_needed?
-    self.strategy != 'persona'
+    self.strategy_defs[:key_needed]
   end
 
   def save_image
