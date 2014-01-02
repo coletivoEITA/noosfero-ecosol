@@ -122,6 +122,9 @@ class Enterprise < Organization
       EnterpriseActivation.create!(:enterprise => self, :code_length => 7)
     end
   end
+  def activation_task
+    self.tasks.where(:type => 'EnterpriseActivation').first
+  end
 
   def default_set_of_blocks
     links = [
