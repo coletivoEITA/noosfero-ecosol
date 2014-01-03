@@ -515,11 +515,13 @@
           you_are_not_the_owner: "Você não é o proprietário desse pedido"
     models:
       order: 
-        order_cancelled: "Pedido cancelado"
-        order_confirmed: "Pedido confirmado"
-        order_in_progress: "Pedido em andamento"
-        order_not_confirmed: "Pedido não confirmado"
-        order_planned: "Pedido planejado"
+        open: "Em aberto"
+        not_confirmed: "Não confirmado"
+        planned: "Planejado"
+        confirmed: "Confirmado"
+        cancelled: "Cancelado"
+        accepted: "Aceito"
+        shipped: "Entregue"
     views:
       consumer:
         _total: 

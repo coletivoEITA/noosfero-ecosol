@@ -53,18 +53,18 @@ class ShoppingCartPluginMyprofileControllerTest < ActionController::TestCase
 
   should 'filter the reports correctly' do
     another_enterprise = fast_create(Enterprise)
-    po1 = ShoppingCartPlugin::PurchaseOrder.create!(:seller => enterprise, :status => ShoppingCartPlugin::PurchaseOrder::Status::OPENED)
-    po2 = ShoppingCartPlugin::PurchaseOrder.create!(:seller => enterprise, :status => ShoppingCartPlugin::PurchaseOrder::Status::SHIPPED)
-    po3 = ShoppingCartPlugin::PurchaseOrder.create!(:seller => enterprise, :status => ShoppingCartPlugin::PurchaseOrder::Status::OPENED)
+    po1 = OrdersPlugin::Order.create! :profile => enterprise, :status => 'confirmed'
+    po2 = OrdersPlugin::Order.create! :profile => enterprise, :status => 'shipped'
+    po3 = OrdersPlugin::Order.create! :profile => enterprise, :status => 'confirmed'
     po3.created_at = 1.year.ago
     po3.save!
-    po4 = ShoppingCartPlugin::PurchaseOrder.create!(:seller => another_enterprise, :status => ShoppingCartPlugin::PurchaseOrder::Status::OPENED)
+    po4 = OrdersPlugin::Order.create! :profile => another_enterprise, :status => 'confirmed'
 
     post :reports,
       :profile => enterprise.identifier,
       :from => (Time.now - 1.day).strftime(TIME_FORMAT),
       :to => (Time.now + 1.day).strftime(TIME_FORMAT),
-      :filter_status => ShoppingCartPlugin::PurchaseOrder::Status::OPENED
+      :filter_status => 'confirmed'
 
     assert_includes assigns(:orders), po1
     assert_not_includes assigns(:orders), po2
@@ -78,14 +78,14 @@ class ShoppingCartPluginMyprofileControllerTest < ActionController::TestCase
     p3 = fast_create(Product, :enterprise_id => enterprise.id, :price => 3)
     po1_products = {p1.id => {:quantity => 1, :price => p1.price, :name => p1.name}, p2.id => {:quantity => 2, :price => p2.price, :name => p2.name }}
     po2_products = {p2.id => {:quantity => 1, :price => p2.price, :name => p2.name }, p3.id => {:quantity => 2, :price => p3.price, :name => p3.name}}
-    po1 = ShoppingCartPlugin::PurchaseOrder.create!(:seller => enterprise, :products_list => po1_products, :status => ShoppingCartPlugin::PurchaseOrder::Status::OPENED)
-    po2 = ShoppingCartPlugin::PurchaseOrder.create!(:seller => enterprise, :products_list => po2_products, :status => ShoppingCartPlugin::PurchaseOrder::Status::OPENED)
+    po1 = OrdersPlugin::Order.create! :profile => enterprise, :products_data => po1_products, :status => 'confirmed'
+    po2 = OrdersPlugin::Order.create! :profile => enterprise, :products_data => po2_products, :status => 'confirmed'
 
     post :reports,
       :profile => enterprise.identifier,
       :from => (Time.now - 1.day).strftime(TIME_FORMAT),
       :to => (Time.now + 1.day).strftime(TIME_FORMAT),
-      :filter_status => ShoppingCartPlugin::PurchaseOrder::Status::OPENED
+      :filter_status => 'confirmed'
 
     lineitem1 = ShoppingCartPlugin::LineItem.new(p1.id, p1.name)
     lineitem1.quantity = 1
@@ -99,14 +99,14 @@ class ShoppingCartPluginMyprofileControllerTest < ActionController::TestCase
   end
 
   should 'be able to update the order status' do
-    po = ShoppingCartPlugin::PurchaseOrder.create!(:seller => enterprise, :status => ShoppingCartPlugin::PurchaseOrder::Status::OPENED)
+    po = OrdersPlugin::Order.create!(:profile => enterprise, :status => 'confirmed')
 
     post :update_order_status,
       :profile => enterprise.identifier,
       :order_id => po.id,
-      :order_status => ShoppingCartPlugin::PurchaseOrder::Status::CONFIRMED
+      :order_status => 'confirmed'
     po.reload
-    assert_equal ShoppingCartPlugin::PurchaseOrder::Status::CONFIRMED, po.status
+    assert_equal 'confirmed', po.status
   end
 
   private

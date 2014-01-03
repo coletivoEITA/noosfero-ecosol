@@ -65,11 +65,13 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
 
   STATUS_MESSAGE = {
-   'open' => 'orders_plugin.models.order.order_in_progress',
-   'forgotten' => 'orders_plugin.models.order.order_not_confirmed',
-   'planned' => 'orders_plugin.models.order.order_planned',
-   'confirmed' => 'orders_plugin.models.order.order_confirmed',
-   'cancelled' => 'orders_plugin.models.order.order_cancelled',
+   'open' => 'orders_plugin.models.order.in_progress',
+   'forgotten' => 'orders_plugin.models.order.not_confirmed',
+   'planned' => 'orders_plugin.models.order.planned',
+   'confirmed' => 'orders_plugin.models.order.confirmed',
+   'cancelled' => 'orders_plugin.models.order.cancelled',
+   'accepted' => 'orders_plugin.models.order.accepted',
+   'shipped' => 'orders_plugin.models.order.shipped',
   }
   def status_message
     I18n.t STATUS_MESSAGE[current_status]

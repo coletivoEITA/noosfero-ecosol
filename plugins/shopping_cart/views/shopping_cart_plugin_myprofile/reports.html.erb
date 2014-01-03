@@ -2,9 +2,8 @@
 
 <% extend ProfileHelper %>
 
-<% status = ShoppingCartPlugin::PurchaseOrder::Status.name; pos=-1 %>
 <% status_collection = [[nil, _('All')]] %>
-<% status_collection += status.map{|s| [pos+=1, s] } %>
+<% status_collection += OrdersPlugin::Order::STATUS_MESSAGE.map{ |id, name| [id, t(name)] } %>
 
 <% form_tag({}, {:id => 'cart-order-filter'}) do %>
   <%= labelled_text_field(_('From')+' ', :from, @from.strftime("%Y-%m-%d"), :id => 'from', :size => 9) %>

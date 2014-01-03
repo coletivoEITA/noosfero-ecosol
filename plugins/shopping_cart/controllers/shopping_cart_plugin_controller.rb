@@ -259,28 +259,27 @@ class ShoppingCartPluginController < PublicController
   end
 
   def register_order(custumer, items)
-    new_items = {}
-    items.each do |id, quantity|
+    products_hash = {}; items.each do |id, quantity|
       product = Product.find(id)
       price = product.price || 0
-      new_items[id] = {:quantity => quantity, :price => price, :name => product.name}
+      products_hash[id] = {:quantity => quantity, :price => price, :name => product.name}
     end
-    ShoppingCartPlugin::PurchaseOrder.create!(
-      :seller => Enterprise.find(cart[:profile_id]),
-      :customer => user,
-      :status => ShoppingCartPlugin::PurchaseOrder::Status::OPENED,
-      :products_list => new_items,
-      :customer_delivery_option => params[:delivery_option],
-      :customer_payment => params[:customer][:payment],
-      :customer_change => params[:customer][:change],
-      :customer_name => params[:customer][:name],
-      :customer_email => params[:customer][:email],
-      :customer_contact_phone => params[:customer][:contact_phone],
-      :customer_address => params[:customer][:address],
-      :customer_district => params[:customer][:district],
-      :customer_city => params[:customer][:city],
-      :customer_zip_code => params[:customer][:zip_code]
-    )
+
+    OrdersPlugin::Order.create! :profile => Enterprise.find(cart[:profile_id]), :consumer => user,
+      :status => 'confirmed', :products_data => products_hash,
+      :consumer_data => {
+        :name => params[:customer][:name], :email => params[:customer][:email], :contact_phone => params[:customer][:contact_phone],
+      },
+      :payment_data => {
+        :method => params[:customer][:payment], :change => params[:customer][:change],
+      },
+      :consumer_delivery_data => {
+        :name => params[:delivery_option],
+        :address_line1 => params[:customer][:address],
+        :address_line2 => params[:customer][:district],
+        :city => params[:customer][:city],
+        :postal_code => params[:customer][:zip_code],
+      }
   end
 
   protected

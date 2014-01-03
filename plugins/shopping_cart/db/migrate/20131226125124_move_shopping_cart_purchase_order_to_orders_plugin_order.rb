@@ -1,3 +1,14 @@
+class ShoppingCartPlugin::PurchaseOrder < Noosfero::Plugin::ActiveRecord
+  acts_as_having_settings :field => :data
+
+  module Status
+    OPENED = 0
+    CANCELED = 1
+    CONFIRMED = 2
+    SHIPPED = 3
+  end
+end
+
 class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
   def self.up
     ShoppingCartPlugin::PurchaseOrder.find_each do |purchase_order|
@@ -35,8 +46,6 @@ class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
       order.status = status_transform[purchase_order.status]
 
       order.save!
-      pp purchase_order
-      pp order
     end
     drop_table :shopping_cart_plugin_purchase_orders
   end

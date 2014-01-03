@@ -506,11 +506,13 @@
           you_are_not_the_owner: "You are not the owner of this order"
     models:
       order: 
-        order_cancelled: "Order cancelled"
-        order_confirmed: "Order confirmed"
-        order_in_progress: "Order in progress"
-        order_not_confirmed: "Order not confirmed"
-        order_planned: "Order planned"
+        open: "Open"
+        not_confirmed: "Not confirmed"
+        planned: "Planned"
+        confirmed: "Confirmed"
+        cancelled: "Cancelled"
+        accepted: "Accepted"
+        shipped: "Shipped"
     views:
       consumer:
         _total: 
