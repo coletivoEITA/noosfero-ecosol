@@ -1,0 +1,29 @@
+<% orders = @orders unless defined? orders %>
+
+<div class='orders-admin-index sortable-table wireframe-size'>
+  <% if orders.count == 0 %>
+    <div class="subtitle"><%= t('orders_plugin.views.admin.index.no_orders_to_show') %></div>
+  <% else %>
+    <div class='table-header'>
+      <span class='box-field code'><%= t('orders_plugin.views.admin.index.code') %></span>
+      <span class='box-field member'><%= t('orders_plugin.views.admin.index.member') %></span>
+      <span class='box-field created'><%= t('orders_plugin.views.admin.index.created') %></span>
+      <span class='box-field modified'><%= t('orders_plugin.views.admin.index.modified') %></span>
+      <span class='box-field products-count'><%= t('orders_plugin.views.admin.index.prod_qty') %></span>
+      <span class='box-field price'><%= t('orders_plugin.views.admin.index.value') %></span>
+
+      <div class="clean"></div>
+    </div>
+
+    <div class='table-content'>
+      <% orders.each do |order| %>
+        <div id="order-<%=order.id%>" class="order value-row" toggle-edit="orders.admin.toggle_edit();">
+          <%= render :partial => 'orders_plugin_admin/edit', :locals => {:order => order} %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="clean"></div>
+</div>
+

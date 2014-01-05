@@ -18,4 +18,10 @@ class OrdersPlugin < Noosfero::Plugin
     ['loading-overlay', 'locale', 'toggle_edit', 'sortable-table', 'orders'].map{ |j| "javascripts/#{j}" }
   end
 
+  def control_panel_buttons
+    [
+      { :title => I18n.t('orders_plugin.lib.plugin.panel_button'), :icon => nil, :url => {:controller => :orders_plugin_admin, :action => :index} }
+    ]
+  end
+
 end

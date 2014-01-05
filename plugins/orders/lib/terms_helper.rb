@@ -1,6 +1,6 @@
 raise 'I18n version 0.6.0 is needed for a good string interpolation' unless I18n::VERSION >= '0.6.0'
 
-module SuppliersPlugin::TermsHelper
+module TermsHelper
 
   I18nSeparator = '.'
   DefaultContext = 'suppliers_plugin'
@@ -62,7 +62,7 @@ module SuppliersPlugin::TermsHelper
   end
 
   def translate_with_cache key, options = {}
-    cache = (SuppliersPlugin::TermsHelper.cache[I18n.locale] ||= {})
+    cache = (TermsHelper.cache[I18n.locale] ||= {})
     cache = (cache[terms_context] ||= {})
 
     hit = cache[key]
@@ -73,7 +73,7 @@ module SuppliersPlugin::TermsHelper
 
   private
 
-  def translated_terms keys = Keys, translations = SuppliersPlugin::TermsHelper.translations, transformations = Transformations, sep = I18nSeparator
+  def translated_terms keys = Keys, translations = TermsHelper.translations, transformations = Transformations, sep = I18nSeparator
     translated_terms = (translations[I18n.locale] ||= {})
     translated_terms = (translated_terms[terms_context] ||= {})
 

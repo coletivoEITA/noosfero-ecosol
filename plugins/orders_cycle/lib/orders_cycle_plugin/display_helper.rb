@@ -9,8 +9,6 @@ module OrdersCyclePlugin::DisplayHelper
 
   include ::ActionView::Helpers::JavaScriptHelper # we want the original button_to_function!
   include OrdersPlugin::DisplayHelper
-  include OrdersPlugin::PriceHelper
-  include OrdersPlugin::DateHelper
   include SuppliersPlugin::DisplayHelper
 
 end

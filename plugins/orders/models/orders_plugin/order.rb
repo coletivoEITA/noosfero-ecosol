@@ -1,5 +1,3 @@
-require "plugins/orders/lib/orders_plugin/serialize_synced_data"
-
 class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   belongs_to :profile
@@ -21,18 +19,19 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   validates_presence_of :profile
   STATUSES = ['draft', 'planned', 'confirmed', 'cancelled', 'accepted', 'shipped']
   validates_inclusion_of :status, :in => STATUSES
+
   before_validation :default_values
 
   extend OrdersPlugin::SerializedSyncedData::ClassMethods
-  sync_serialized_field :consumer do |profile|
-    {:name => profile.name, :email => profile.contact_email, :contact_phone => profile.contact_phone}
+  sync_serialized_field :consumer do |consumer|
+    {:name => consumer.name, :email => consumer.contact_email, :contact_phone => consumer.contact_phone}
   end
   sync_serialized_field :supplier_delivery
   sync_serialized_field :consumer_delivery
   serialize :payment_data, Hash
   sync_serialized_field :products do |products|
     hash = {}; products.each do |product|
-       hash[product.id] = {:name => product.name, :price => product.price.to_f, :quantity_asked => product.quantity_asked}
+      hash[product.id] = {:name => product.name, :price => product.price.to_f, :quantity_asked => product.quantity_asked.to_f}
     end
     hash
   end
@@ -65,7 +64,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
 
   STATUS_MESSAGE = {
-   'open' => 'orders_plugin.models.order.in_progress',
+   'open' => 'orders_plugin.models.order.open',
    'forgotten' => 'orders_plugin.models.order.not_confirmed',
    'planned' => 'orders_plugin.models.order.planned',
    'confirmed' => 'orders_plugin.models.order.confirmed',

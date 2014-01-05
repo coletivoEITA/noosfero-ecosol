@@ -36,14 +36,21 @@ class OrdersPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
   has_currency :price_allocated
   has_currency :price_asked
 
+  def name
+    self.product.name rescue nil
+  end
+  def price
+    self.product.price rescue nil
+  end
+
   def price_asked
-    product.price * quantity_asked
+    self.price * self.quantity_asked
   end
   def price_allocated
-    product.price * quantity_allocated
+    self.price * self.quantity_allocated
   end
   def price_payed
-    product.price * quantity_payed
+    self.price * self.quantity_payed
   end
 
   protected

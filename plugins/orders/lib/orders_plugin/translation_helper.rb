@@ -1,4 +1,4 @@
-module NetworksPlugin::TranslationHelper
+module OrdersPlugin::TranslationHelper
 
   protected
 
@@ -6,7 +6,7 @@ module NetworksPlugin::TranslationHelper
   include TermsHelper
 
   def terms_context
-    'networks_plugin'
+    'orders_plugin'
   end
 
 end

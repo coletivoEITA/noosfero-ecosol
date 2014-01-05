@@ -6,7 +6,6 @@ class OrdersPluginProductController < MyProfileController
 
   no_design_blocks
 
-  helper OrdersPlugin::PriceHelper
   helper OrdersPlugin::OrdersDisplayHelper
 
   def edit

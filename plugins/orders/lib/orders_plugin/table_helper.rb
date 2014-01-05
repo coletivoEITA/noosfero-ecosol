@@ -1,4 +1,4 @@
-module SuppliersPlugin::TableHelper
+module OrdersPlugin::TableHelper
 
   protected
 
