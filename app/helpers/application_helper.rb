@@ -40,6 +40,8 @@ module ApplicationHelper
 
   include LayoutHelper
 
+  include Noosfero::Gravatar
+
   def locale
     (@page && !@page.language.blank?) ? @page.language : FastGettext.locale
   end
@@ -358,8 +360,7 @@ module ApplicationHelper
   end
 
   def theme_path
-    if ( respond_to?(:session) && session[:theme] ) ||
-       ( @controller && @controller.session[:theme] )
+    if session[:theme]
       '/user_themes/' + current_theme
     else
       '/designs/themes/' + current_theme
@@ -369,8 +370,7 @@ module ApplicationHelper
   def current_theme
     @current_theme ||=
       begin
-        if ( respond_to?(:session) && session[:theme] ) ||
-           ( @controller && @controller.session[:theme] )
+        if session[:theme]
           session[:theme]
         else
           # utility for developers: set the theme to 'random' in development mode and
@@ -401,14 +401,21 @@ module ApplicationHelper
       end
   end
 
-  def theme_include(template)
+  def theme_view_file(template)
     ['.rhtml', '.html.erb'].each do |ext|
-      file = (RAILS_ROOT + '/public' + theme_path + '/' + template  + ext)
-      if File.exists?(file)
-        return render :file => file, :use_full_path => false
-      end
+      file = (RAILS_ROOT + '/public' + theme_path + '/' + template + ext)
+      return file if File.exists?(file)
     end
     nil
+  end
+
+  def theme_include(template)
+    file = theme_view_file(template)
+    if file
+      render :file => file, :use_full_path => false
+    else
+      nil
+    end
   end
 
   def theme_favicon
@@ -573,28 +580,8 @@ module ApplicationHelper
       :class => 'vcard'), :class => 'common-profile-list-block')
   end
 
-  def gravatar_url_for(email, options = {})
-    # Ta dando erro de roteamento
-    default = theme_option['gravatar'] || NOOSFERO_CONF['gravatar'] || nil
-    url_for( { :gravatar_id => Digest::MD5.hexdigest(email.to_s),
-               :host => 'www.gravatar.com',
-               :protocol => 'http://',
-               :only_path => false,
-               :controller => 'avatar.php',
-               :d => default
-             }.merge(options) )
-  end
-
-  def str_gravatar_url_for(email, options = {})
-    default = theme_option['gravatar'] || NOOSFERO_CONF['gravatar'] || nil
-    "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.to_s)}?" + {
-      :only_path => false,
-      :d => default
-    }.merge(options).map{|k,v| '%s=%s' % [ k,v ] }.join('&')
-  end
-
-  def gravatar_profile_url(email)
-    'http://www.gravatar.com/'+ Digest::MD5.hexdigest(email.to_s)
+  def gravatar_default
+    (respond_to?(:theme_option) && theme_option.present? && theme_option['gravatar']) || NOOSFERO_CONF['gravatar']
   end
 
   attr_reader :environment
