@@ -1,0 +1,14 @@
+<% extra_content = [] %>
+<% extra_content_list = [] %>
+
+<h1><%= _('Products/Services') %></h1>
+
+<% render 'categories', :categories => @categories, :category => @category %>
+
+<% render 'products', :products => @products, :categories => @categories %>
+
+<%= pagination_links @products, :params => {:controller => :catalog, :action => :index, :profile => profile.identifier} %>
+
+<%= add_zoom_to_images %>
+
+<br style="clear:both"/>
