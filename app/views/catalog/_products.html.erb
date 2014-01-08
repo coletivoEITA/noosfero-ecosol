@@ -1,19 +1,5 @@
-<% extra_content = [] %>
-<% extra_content_list = [] %>
-
-<div id="product-catalog">
-<% if !user.nil? && ( user.is_admin?(profile.environment) || user.is_admin?(profile) ) %>
-  <div class="product-catalog-ctrl">
-    <%= button :product, _('Manage Products/Services'), :controller => 'manage_products' %>
-  </div>
-<% end %>
-
-<h1><%= _('Products/Services') %></h1>
-
-<%= breadcrumb(@category) if params[:level] %>
-
 <ul id="product-list">
-  <% @products.each do |product| %>
+  <% products.each do |product| %>
     <% extra_content = @plugins.dispatch(:catalog_item_extras, product).collect { |content| instance_eval(&content) } %>
     <% extra_content_list = @plugins.dispatch(:catalog_list_item_extras, product).collect { |content| instance_eval(&content) } %>
 
@@ -106,25 +92,19 @@
           </li>
         <% end %>
 
-        <% unless product.qualifiers.blank? %>
-          <li class="product-qualifiers">
-            <span><%= _('qualifiers') if product.product_qualifiers.count > 0 %></span>
-            <div><%= render :partial => 'shared/product/qualifiers', :locals => {:product => product} %></div>
-        <% end %>
+      <% unless product.qualifiers.blank? %>
+        <li class="product-qualifiers">
+          <span><%= _('qualifiers') if product.product_qualifiers.count > 0 %></span>
+          <div><%= render :partial => 'shared/product/qualifiers', :locals => {:product => product} %></div>
+        </li>
+      <% end %>
 
-        <% extra_content_list.map do |content| %>
-          <li class="catalog-list-item-extras"><%= content %></li>
-        <% end %>
+      <% extra_content_list.map do |content| %>
+        <li class="catalog-list-item-extras"><%= content %></li>
+      <% end %>
 
         <li class="product-unavailable"><%= _('product unavailable') unless product.available %></li>
       </ul>
     </li>
   <% end %>
-</ul><!-- end id="product-list" -->
-
-<%= pagination_links @products, :params => {:controller => :catalog, :action => :index, :profile => profile.identifier} %>
-
-<%= add_zoom_to_images %>
-
-<br style="clear:both"/>
-</div><!-- end id="product-catalog" -->
+</ul>
