@@ -8,6 +8,11 @@ class NetworksPlugin::BaseNode < Organization
     self.network_node_child_relations.build :parent => node, :child => self
   end
 
+  # is an enterprise as it has products
+  def enterprise?
+    true
+  end
+
   # FIXME: use acts_as_filesystem
   def hierarchy
     @hierarchy = []
