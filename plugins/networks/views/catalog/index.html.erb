@@ -1,9 +1,15 @@
 <% if not profile.node? %>
-  <%= render :file => "#{Rails.root}/app/views/catalog/index.rhtml" %>
+  <%= render :file => "#{Rails.root}/app/views/catalog/index.html.erb" %>
 <% else %>
-  <% profile.nodes.each do |node| %>
-    <% products = node.products.paginate(:order => 'available DESC, highlighted DESC, name ASC', :per_page => 6, :page => 1) %>
-    <h2> <%= node.name %> </h2>
-    <%= render "catalog/products", :products => products, :categories => nil %>
+  <h1><%= _('Products/Services') %></h1>
+
+  <% if profile.network_node? %>
+    <% profile.suppliers.except_self.each do |supplier| %>
+      <%= render 'catalog/node_products', :node => supplier.profile %>
+    <% end %>
+  <% else # network %>
+    <% profile.nodes.each do |node| %>
+      <%= render 'catalog/node_products', :node => node %>
+    <% end %>
   <% end %>
 <% end %>
