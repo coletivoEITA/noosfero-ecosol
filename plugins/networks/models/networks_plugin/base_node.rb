@@ -19,15 +19,9 @@ class NetworksPlugin::BaseNode < Organization
     @hierarchy
   end
 
-  def nodes
-    self.network_node_parent_relations.all(:conditions => {:child_type => 'NetworksPlugin::Node'}).collect &:child
-  end
-
-  def node?
-    false
-  end
-  def network?
-    false
+  def nodes reload=false
+    @nodes = nil if reload
+    @nodes ||= self.network_node_parent_relations.all(:conditions => {:child_type => 'NetworksPlugin::Node'}).collect &:child
   end
 
   protected

@@ -10,6 +10,9 @@ class Profile
     self.network_node_child_relations.first
   end
 
+  def node?
+    self.is_a? NetworksPlugin::BaseNode
+  end
   def network?
     self.class == NetworksPlugin::Network
   end

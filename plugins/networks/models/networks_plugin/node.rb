@@ -3,10 +3,6 @@ class NetworksPlugin::Node < NetworksPlugin::BaseNode
   before_validation :generate_identifier
   before_destroy :assign_dependent_to_parent
 
-  def node?
-    true
-  end
-
   protected
 
   def generate_identifier
