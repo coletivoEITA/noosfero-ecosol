@@ -31,6 +31,7 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
   layout :get_layout
   def get_layout
+    prepend_view_path "public/#{theme_path}"
     theme_layout = theme_option(:layout)
     if theme_layout
       theme_view_file('layouts/'+theme_layout) || theme_layout
