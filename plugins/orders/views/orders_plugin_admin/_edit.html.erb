@@ -11,7 +11,7 @@
 </div>
 
 <div class="box-edit" style="display: none">
-  <% if order.products.count == 0 %>
+  <% if order.items.count == 0 %>
     <div class="empty-order">
       <span class="subtitle"><%= t('orders_plugin.views.admin._edit.empty_order') %></span>
       <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), 'toggle-edit' => '' %>
@@ -19,7 +19,7 @@
   <% else %>
     <% form_remote_for :order, order, :url => {:action => :cycle_edit, :id => order.id} do |f| %>
 
-      <%= render :partial => 'orders_plugin_product/index', :locals => {:order => order, :f => f} %>
+      <%= render 'orders_plugin_item/index', :order => order, :f => f %>
       <div class="clean"></div>
 
       <% if order.cycle.orders? %>

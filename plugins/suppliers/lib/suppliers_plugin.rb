@@ -3,7 +3,7 @@ require_dependency "#{File.dirname __FILE__}/ext/product"
 require_dependency "#{File.dirname __FILE__}/ext/organization"
 
 if defined? OrdersPlugin
-  require_dependency "#{File.dirname __FILE__}/ext/orders_plugin/product"
+  require_dependency "#{File.dirname __FILE__}/ext/orders_plugin/item"
 end
 
 class SuppliersPlugin < Noosfero::Plugin

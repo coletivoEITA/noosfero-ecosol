@@ -538,17 +538,18 @@
       consumer:
         _total: 
           total: Total
-      product: 
+      item: 
         _edit: 
           remove_from_order: "Remover do pedido"
           submit: 'OK'
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
         _index: 
+          empty_order: "Pedido vazio"
           supplier: "%{terms.supplier.singular}"
           product: "produto"
           quantity: "qtd"
           price_total: "valor (%{currency})"
-          empty_order: "Pedido vazio"
+          status_updated: "etapa modif."
       admin:
         index: 
           no_orders_to_show: "Nenhum pedido para visualizar."
@@ -795,7 +796,7 @@
           product: Produto
           this_search_hasn_t_re: "Esta busca não retornou produtos"
         _cycle_edit: 
-          all_ordered_products_: "Todos pedidos deste produto serão removidos também; você deveria primeiro avisar os membros que pediram esse produto."
+          all_ordered_products: "Todos pedidos deste produto serão removidos também; você deveria primeiro avisar os membros que pediram esse produto."
           buy_price: "Preço de compra"
           buy_unit: "Unidade de compra"
           cancel_updates: "Cancelar atualizações"

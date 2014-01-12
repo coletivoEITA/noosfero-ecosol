@@ -2,7 +2,7 @@
 require_dependency 'orders_plugin/display_helper'
 OrdersPlugin::OrdersDisplayHelper = OrdersPlugin::DisplayHelper
 
-class OrdersPluginProductController < MyProfileController
+class OrdersPluginItemController < MyProfileController
 
   no_design_blocks
 
@@ -10,26 +10,26 @@ class OrdersPluginProductController < MyProfileController
 
   def edit
     @consumer = user
-    @ordered_product = OrdersPlugin::OrderedProduct.find params[:id]
-    @offered_product = @ordered_product.offered_product
-    @order = @ordered_product.order
+    @item = OrdersPlugin::Item.find params[:id]
+    @offered_product = @item.offered_product
+    @order = @item.order
 
     raise 'Order confirmed or cycle is closed for orders' unless @order.open?
     raise 'Please login to place an order' if @consumer.blank?
     raise 'You are not the owner of this order' if @consumer != @order.consumer
 
-    if set_quantity_asked params[:ordered_product][:quantity_asked]
-      params[:ordered_product][:quantity_asked] = @quantity_asked
-      @ordered_product.update_attributes! params[:ordered_product]
+    if set_quantity_asked params[:item][:quantity_asked]
+      params[:item][:quantity_asked] = @quantity_asked
+      @item.update_attributes! params[:item]
     end
   end
 
   def destroy
-    @ordered_product = OrdersPlugin::OrderedProduct.find params[:id]
-    @product = @ordered_product.product
-    @order = @ordered_product.order
+    @item = OrdersPlugin::Item.find params[:id]
+    @product = @item.product
+    @order = @item.order
 
-    @ordered_product.destroy
+    @item.destroy
   end
 
   protected
@@ -38,13 +38,13 @@ class OrdersPluginProductController < MyProfileController
     @quantity_asked = CurrencyHelper.parse_localized_number value
 
     if @quantity_asked > 0
-      min = @ordered_product.product.minimum_selleable rescue nil
+      min = @item.product.minimum_selleable rescue nil
       if min and @quantity_asked < min
         @quantity_asked = min
-        @quantity_asked_less_than_minimum = @ordered_product.id || true
+        @quantity_asked_less_than_minimum = @item.id || true
       end
     else
-      @ordered_product.destroy if @ordered_product
+      @item.destroy if @item
       render :action => :destroy
       @quantity_asked = nil
     end

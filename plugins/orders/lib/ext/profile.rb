@@ -17,7 +17,7 @@ class Profile
   has_many :parcels, :class_name => 'OrdersPlugin::Order', :foreign_key => :consumer_id
   alias_method :purchases, :parcels
 
-  has_many :ordered_products, :through => :orders, :source => :products, :order => 'name ASC'
+  has_many :ordered_items, :through => :orders, :source => :items, :order => 'name ASC'
 
   def self.create_orders_manager_role env
     Role.create! :environment => env,

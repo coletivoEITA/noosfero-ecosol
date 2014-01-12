@@ -12,7 +12,7 @@ class OrdersPlugin::Order
   end
 
   # overhide with stronger eager load
-  has_many :products, :class_name => 'OrdersPlugin::OrderedProduct', :foreign_key => :order_id, :dependent => :destroy,
+  has_many :items, :class_name => 'OrdersPlugin::Item', :foreign_key => :order_id, :dependent => :destroy,
     :order => 'products.name ASC',
     :include => {:product => [{:from_products => {:from_products => {:sources_from_products => [{:supplier => [{:profile => [:domains, {:environment => :domains}]}]}]}}},
                               {:profile => [:domains, {:environment => :domains}]}, ]}

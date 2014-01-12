@@ -1,8 +1,8 @@
 @import 'base';
 @import 'orders-variables';
 
-.order-products-container {
-  width: $order-products-width;
+.order-items-container {
+  width: $order-items-width;
   font-size: 10px;
 
   &.empty {
@@ -15,20 +15,20 @@
     padding: $half-padding $padding;
     @extend .container-clean;
 
-    .total-title,
-    .total-value {
+    .title,
+    .value {
       margin-left: $module04 + 2*$intercolumn + $padding; //the size of the previous colums
+      padding: 0 $padding;
       width: $module01;
       text-transform: uppercase;
     }
 
-    .total-value {
-      width: $module01;
+    .value {
       clear: both;
     }
   }
 
-  .order-products {
+  .order-items {
 
     overflow-y: auto;
     max-height: 300px;
@@ -37,7 +37,7 @@
     .table-header {
       @extend .container-clean;
     }
-    //ordered-product do overflow, so no overflow:hidden for its parents (.table-content)
+    //.item do overflow, so no overflow:hidden for its parents (.table-content)
 
     .box-field {
       float: left;
@@ -76,7 +76,7 @@
 
     .table-content {
 
-      .ordered-product {
+      .item {
 
         .more {
           padding: $half-padding $padding;
@@ -104,7 +104,7 @@
         }
 
         &.edit {
-          width: $order-products-width + $half-padding;
+          width: $order-items-width + $half-padding;
           padding-bottom: $half-padding;
           margin-left: -($half-padding + $border);
           padding-left: ($half-padding);

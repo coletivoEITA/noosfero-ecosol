@@ -3,7 +3,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'
 
-  has_many :products, :class_name => 'OrdersPlugin::OrderedProduct', :foreign_key => :order_id, :dependent => :destroy,
+  has_many :items, :class_name => 'OrdersPlugin::Item', :foreign_key => :order_id, :dependent => :destroy,
     :include => [{:product => [{:profile => [:domains]}]}], :order => 'products.name ASC'
 
   belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::Method'
@@ -30,12 +30,6 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
   sync_serialized_field :supplier_delivery
   sync_serialized_field :consumer_delivery
-  sync_serialized_field :products do |products|
-    hash = {}; products.each do |product|
-      hash[product.id] = {:name => product.name, :price => product.price.to_f, :quantity_asked => product.quantity_asked.to_f}
-    end
-    hash
-  end
   serialize :payment_data, Hash
 
   named_scope :draft, :conditions => {:status => 'draft'}
@@ -79,10 +73,10 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
 
   def total_quantity_asked
-    self.products.collect(&:quantity_asked).inject(0){ |sum,q| sum+q }
+    self.items.collect(&:quantity_asked).inject(0){ |sum,q| sum+q }
   end
   def total_price_asked
-    self.products.collect(&:price_asked).inject(0){ |sum,q| sum+q }
+    self.items.collect(&:price_asked).inject(0){ |sum,q| sum+q }
   end
 
   def parcel_quantity_total
@@ -95,7 +89,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
 
   def products_by_supplier
-    self.products.group_by{ |p| p.supplier.abbreviation_or_name }
+    self.items.group_by{ |i| i.supplier.abbreviation_or_name }
   end
 
   extend CurrencyHelper::ClassMethods

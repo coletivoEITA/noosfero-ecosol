@@ -1,0 +1,34 @@
+<div id="item-<%=item.id%>" class="value-row item" toggle-edit="orders.item.edit();">
+
+  <% f.fields_for "item-#{item.id}", item do |f| %>
+
+    <%= f.hidden_field :id %>
+
+    <div>
+      <div class="box-field supplier"><%= excerpt_ending product.supplier.abbreviation_or_name, 15 %></div>
+      <div class="box-field product"><%= product.name %></div>
+      <div class="box-field quantity-edit">
+        <%= f.text_field :quantity_asked, :value => item.quantity_asked_as_currency_number %>
+      </div>
+      <div id=<%="item-price-total-#{item.id.to_s}"%> class="box-field price-total">
+        <%= render "orders_plugin_item/price_total", :item => item %>
+      </div>
+      <% if @admin_action %>
+        <div class="box-field status-updated"> <%= t('orders_plugin.views.item._index.status_updated') %> </div>
+      <% end %>
+    </div>
+
+    <div class="more">
+
+      <div class="actions">
+        <%= link_to_function t('orders_plugin.views.item._edit.remove_from_order'), "jQuery(this).parents('.value-row').remove();" if order.may_edit?(true) %>
+      </div>
+
+      <div class="price-with-unit"><%= price_with_unit_span product.price_as_currency_number, product.unit %></div>
+
+      <div class="clean"></div>
+    </div>
+
+    <div class="clean"></div>
+  <% end %>
+</div>

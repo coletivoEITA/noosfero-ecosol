@@ -1,7 +1,7 @@
 
 orders = {
 
-  product: {
+  item: {
 
     edit: function () {
       toggle_edit.editing().find('.more').toggle(toggle_edit.isEditing());
@@ -9,8 +9,8 @@ orders = {
 
     quantity_keyup: function(context, event) {
       if (event.keyCode == 13) {
-        var product = jQuery(context).parents('.ordered-product');
-        product.find('.more .action-button').get(0).onclick();
+        var item = jQuery(context).parents('.item');
+        item.find('.more .action-button').get(0).onclick();
 
         event.preventDefault();
         return false;
@@ -18,12 +18,12 @@ orders = {
     },
 
     submit: function(context, url) {
-      var container = jQuery(context).parents('.order-products-container');
-      var product = jQuery(context).parents('.ordered-product');
-      var quantity_asked = product.find('.quantity-edit input');
+      var container = jQuery(context).parents('.order-items-container');
+      var item = jQuery(context).parents('.item');
+      var quantity_asked = item.find('.quantity-edit input');
 
       loading_overlay.show(container);
-      jQuery.post(url, {'ordered_product[quantity_asked]': quantity_asked.val()});
+      jQuery.post(url, {'item[quantity_asked]': quantity_asked.val()});
     },
   },
 
@@ -43,7 +43,7 @@ orders = {
     totalH = jQuery('#order-column .order-total').last().outerHeight();
     screenH = jQuery(window).height();
     ordersH = screenH - deliveryH - totalH - headerH - cirandasTopBarH;
-    jQuery('.order-products-container .order-products').css('max-height', ordersH);
+    jQuery('.order-items-container .order-items').css('max-height', ordersH);
   }
 
 };

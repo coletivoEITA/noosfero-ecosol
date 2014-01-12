@@ -1,7 +1,4 @@
-# FIXME: remove Ordered prefix
-class OrdersPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
-
-  set_table_name :orders_plugin_products
+class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
   belongs_to :order, :class_name => 'OrdersPlugin::Order', :touch => true
   belongs_to :product
@@ -13,7 +10,7 @@ class OrdersPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
   has_many :to_products, :through => :product
 
   named_scope :confirmed, :conditions => ['orders_plugin_orders.status = ?', 'confirmed'],
-    :joins => 'INNER JOIN orders_plugin_orders ON orders_plugin_orders.id = orders_plugin_products.order_id'
+    :joins => 'INNER JOIN orders_plugin_orders ON orders_plugin_orders.id = orders_plugin_items.order_id'
 
   default_scope :include => [:product]
 
@@ -21,26 +18,43 @@ class OrdersPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
   validates_presence_of :product
   validates_numericality_of :quantity_asked
   validates_numericality_of :quantity_allocated
-  validates_numericality_of :quantity_payed
+  validates_numericality_of :quantity_shipped
   validates_numericality_of :price_asked
   validates_numericality_of :price_allocated
-  validates_numericality_of :price_payed
+  validates_numericality_of :price_shipped
 
   before_save :calculate_prices
 
   extend CurrencyHelper::ClassMethods
   has_number_with_locale :quantity_asked
-  has_number_with_locale :quantity_allocated
-  has_number_with_locale :quantity_payed
+  has_number_with_locale :quantity_accepted
+  has_number_with_locale :quantity_shipped
   has_currency :price_asked
-  has_currency :price_allocated
-  has_currency :price_asked
+  has_currency :price_accepted
+  has_currency :price_shipped
 
   def name
-    self.product.name rescue nil
+    self['name'] || (self.product.name rescue nil)
   end
   def price
-    self.product.price rescue nil
+    self['price'] || (self.product.price rescue nil)
+  end
+
+  STATUS = ['asked', 'accepted', 'shipped']
+  ORDER_STATUS_MAP = {
+    'asked' => 'confirmed',
+    'accepted' => 'accepted',
+    'shipped' => 'shipped',
+  }
+
+  def modified_state
+    if quantity_shipped.present? then 'shipped' elsif quantity_accepted.cpresent? then 'accepted' else 'asked' end
+  end
+  def modified_order_state
+    ORDER_STATUS_MAP[self.modified_state]
+  end
+  def modified_order_state_message
+    I18n.t Order::STATUS_MESSAGE[self.modified_order_state]
   end
 
   def price_asked
@@ -49,8 +63,8 @@ class OrdersPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
   def price_allocated
     self.price * self.quantity_allocated
   end
-  def price_payed
-    self.price * self.quantity_payed
+  def price_shipped
+    self.price * self.quantity_shipped
   end
 
   protected
@@ -58,7 +72,7 @@ class OrdersPlugin::OrderedProduct < Noosfero::Plugin::ActiveRecord
   def calculate_prices
     self.price_asked = price_asked
     self.price_allocated = price_allocated
-    self.price_payed = price_payed
+    self.price_shipped = price_shipped
   end
 
 end

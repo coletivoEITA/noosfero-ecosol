@@ -2,7 +2,7 @@
 require_dependency 'orders_cycle_plugin/display_helper'
 OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
 
-class OrdersCyclePluginOrderedProductController < OrdersPluginProductController
+class OrdersCyclePluginItemController < OrdersPluginItemController
 
   no_design_blocks
 
@@ -32,10 +32,10 @@ class OrdersCyclePluginOrderedProductController < OrdersPluginProductController
     raise 'Please login to place an order' if @consumer.blank?
     raise 'You are not the owner of this order' if @consumer != @order.consumer
 
-    @ordered_product = OrdersPlugin::OrderedProduct.find_by_order_id_and_product_id @order.id, @offered_product.id
-    @ordered_product ||= OrdersPlugin::OrderedProduct.new :order => @order, :product => @offered_product
+    @item = OrdersPlugin::Item.find_by_order_id_and_product_id @order.id, @offered_product.id
+    @item ||= OrdersPlugin::Item.new :order => @order, :product => @offered_product
     if set_quantity_asked(params[:quantity_asked] || 1)
-      @ordered_product.update_attributes! :quantity_asked => @quantity_asked
+      @item.update_attributes! :quantity_asked => @quantity_asked
     end
   end
 
@@ -46,14 +46,14 @@ class OrdersCyclePluginOrderedProductController < OrdersPluginProductController
   end
 
   def admin_edit
-    @ordered_product = OrdersPlugin::OrderedProduct.find params[:id]
-    @order = @ordered_product.order
+    @item = OrdersPlugin::Item.find params[:id]
+    @order = @item.order
     @cycle = @order.cycle
 
     #update on association for total
-    @order.products.each{ |p| p.attributes = params[:ordered_product] if p.id == @ordered_product.id }
+    @order.items.each{ |i| i.attributes = params[:item] if i.id == @item.id }
 
-    @ordered_product.update_attributes = params[:ordered_product]
+    @item.update_attributes = params[:item]
   end
 
   def destroy

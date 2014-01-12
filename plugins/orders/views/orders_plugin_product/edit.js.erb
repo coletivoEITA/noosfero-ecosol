@@ -1,3 +1,0 @@
-jQuery('#order-products').html('<%= j render('orders_plugin_consumer/products', :order => @order) %>');
-jQuery("product-price-total-<%=@ordered_product.id%>").html('<%= j render('orders_plugin_product/price_total', :product => @ordered_product) %>');
-jQuery("order-total-<%=@order.id%>").html('<%= j render('orders_plugin_consumer/total', :order => @order) %>');

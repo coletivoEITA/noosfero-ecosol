@@ -30,9 +30,9 @@
         <% onclick = if editable then "orders_cycle.order.product.click(event, #{offered_product.id});" else '' end %>
         <div id="cycle-product-<%=offered_product.id%>" class="order-cycle-product value-row" toggle-ignore onclick="<%= onclick %>" supplier-id="<%= offered_product.supplier.id %>">
 
-          <% ordered_product = order.blank? ? nil : order.products.select{ |op| offered_product.id == op.product_id }.first %>
+          <% item = order.blank? ? nil : order.items.select{ |op| offered_product.id == op.product_id }.first %>
           <%= render "orders_cycle_plugin_product/order_edit",
-            :product => offered_product, :order => order, :cycle => cycle, :editable => editable, :ordered_product => ordered_product %>
+            :product => offered_product, :order => order, :cycle => cycle, :editable => editable, :item => item %>
         </div>
       <% end %>
     </div>
@@ -43,7 +43,7 @@
   orders_cycle.order.product.include_message = '<%= include_message %>';
   orders_cycle.order.product.order_id = <%= order_id %>;
   orders_cycle.order.product.redirect_after_include = '<%= order.nil? ? 1 : '' %>';
-  orders_cycle.order.product.add_url = '<%= url_for :controller => :orders_cycle_plugin_ordered_product, :action => :new %>';
+  orders_cycle.order.product.add_url = '<%= url_for :controller => :orders_cycle_plugin_item, :action => :new %>';
   orders_cycle.order.product.remove_url = '<%= url_for :controller => :orders_cycle_plugin_product, :action => :remove_from_order %>';
   orders_cycle.order.product.balloon_url = '<%= url_for :controller => :orders_cycle_plugin_order, :action => :product_balloon %>';
   orders_cycle.order.product.supplier.balloon_url = '<%= url_for :controller => :orders_cycle_plugin_order, :action => :supplier_balloon %>';

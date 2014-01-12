@@ -5,7 +5,6 @@ class AddSerializedFieldsToOrdersPluginOrder < ActiveRecord::Migration
     add_column :orders_plugin_orders, :supplier_delivery_data, :text, :default => {}.to_yaml
     add_column :orders_plugin_orders, :consumer_delivery_data, :text, :default => {}.to_yaml
     add_column :orders_plugin_orders, :payment_data, :text, :default => {}.to_yaml
-    add_column :orders_plugin_orders, :products_data, :text, :default => {}.to_yaml
     add_column :orders_plugin_orders, :data, :text, :default => {}.to_yaml
   end
 

@@ -80,7 +80,7 @@ class ShoppingCartPluginMyprofileControllerTest < ActionController::TestCase
     assert_not_includes assigns(:orders), po4
   end
 
-  should 'group filtered orders products and quantities' do
+  should 'group filtered orders items and quantities' do
     p1 = fast_create(Product, :enterprise_id => enterprise.id, :price => 1, :name => 'p1')
     p2 = fast_create(Product, :enterprise_id => enterprise.id, :price => 2, :name => 'p2')
     p3 = fast_create(Product, :enterprise_id => enterprise.id, :price => 3)

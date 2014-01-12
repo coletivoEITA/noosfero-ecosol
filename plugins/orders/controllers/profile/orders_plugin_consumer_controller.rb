@@ -9,7 +9,7 @@ class OrdersPluginConsumerController < ProfileController
   def confirm
     params[:order] ||= {}
 
-    if @order.products.size > 0
+    if @order.items.size > 0
       @order.update_attributes! params[:order].merge(:status => 'confirmed')
       OrdersPlugin::Mailer.deliver_order_confirmation @order, request.host_with_port
       session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')

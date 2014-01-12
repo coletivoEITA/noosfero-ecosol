@@ -1,6 +1,6 @@
 <h3><%= t('orders_cycle_plugin.views.cycle._orders_suppliers.products_totals') %></h3>
 
-<% sums = cycle.ordered_products_by_suppliers %>
+<% sums = cycle.items_by_suppliers %>
 <% if sums.count == 0 %>
   <span class="subtitle"><%= t('orders_cycle_plugin.views.cycle._orders_suppliers.no_product_ordered') %></span>
 <% else %>

@@ -5,7 +5,7 @@
     <% else %>
       <% options = {:disabled => "disabled"} %>
     <% end %>
-    <%= check_box_tag "products_ids[]", product.id, !ordered_product.blank?, options %>
+    <%= check_box_tag "products_ids[]", product.id, !item.blank?, options %>
   </div>
 
   <div class="box-view-inner">
@@ -17,6 +17,6 @@
 </div>
 
 <% javascript_tag do %>
-  orders_cycle.order.product.load(<%= product.id %>, <%= !ordered_product.blank? %>);
+  orders_cycle.order.product.load(<%= product.id %>, <%= !item.blank? %>);
 <% end %>
 

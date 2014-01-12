@@ -1,6 +1,6 @@
-require_dependency 'orders_plugin/ordered_product'
+require_dependency 'orders_plugin/item'
 
-class OrdersPlugin::OrderedProduct
+class OrdersPlugin::Item
 
   has_one :supplier, :through => :product
 

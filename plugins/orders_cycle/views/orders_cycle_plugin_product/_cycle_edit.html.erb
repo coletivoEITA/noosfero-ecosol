@@ -38,7 +38,7 @@
     <%= f.submit t('orders_cycle_plugin.views.product._cycle_edit.save') %>
     <%= link_to_function t('orders_cycle_plugin.views.product._cycle_edit.cancel_updates'), 'toggle-edit' => '' %>&emsp;
     <%= link_to_remote t('orders_cycle_plugin.views.product._cycle_edit.remove_from_cycle'), { :update => 'cycle-product-'+p.id.to_s,
-      :confirm => p.ordered_products.blank? ? nil : t('orders_cycle_plugin.views.product._cycle_edit.all_ordered_products_'),
+      :confirm => p.items.blank? ? nil : t('orders_cycle_plugin.views.product._cycle_edit.all_ordered_products'),
       :url => {:controller => :orders_cycle_plugin_product, :action => :cycle_destroy, :id => p.id }} %>&emsp;
     <%= link_to t('orders_cycle_plugin.views.product._cycle_edit.edit_product'), {:controller => :orders_cycle_plugin_product, :action => :index, :anchor => "our-product-#{p.from_product.id}"} %>&emsp;
   <% end %>

@@ -529,17 +529,18 @@
       consumer:
         _total: 
           total: Total
-      product: 
+      item: 
         _edit: 
           remove_from_order: "remove from order"
           submit: 'OK'
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
         _index: 
+          empty_order: "Empty order"
           supplier: "%{terms.supplier.singular}"
           product: "product"
           quantity: "qty"
           price_total: "value (%{currency})"
-          empty_order: "Empty order"
+          status_updated: "status w/ update"
       admin:
         index: 
           no_orders_to_show: "No orders to show."
@@ -788,7 +789,7 @@
           product: Product
           this_search_hasn_t_re: "This search hasn't returned any product"
         _cycle_edit: 
-          all_ordered_products_: "All ordered products from this product will also be removed; you should first warn members that ordered this products"
+          all_ordered_products: "All ordered products from this product will also be removed; you should first warn members that ordered this products"
           buy_price: "Buy price"
           buy_unit: "Buy unit"
           cancel_updates: "cancel updates"

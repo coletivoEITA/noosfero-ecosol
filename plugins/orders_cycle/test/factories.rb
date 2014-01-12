@@ -39,7 +39,7 @@ module OrdersCyclePlugin::Factory
      :consumer_delivery => build(DeliveryPlugin::Method, :profile => profile)}
   end
 
-  def defaults_for_orders_plugin_ordered_product
+  def defaults_for_orders_plugin_items
     {:order => build(OrdersPlugin::Order),
      :product => build(OrdersCyclePlugin::OfferedProduct),
      :quantity_payed => 1.0, :quantity_asked => 2.0, :quantity_allocated => 3.0,

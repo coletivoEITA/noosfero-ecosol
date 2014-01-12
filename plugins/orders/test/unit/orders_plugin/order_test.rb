@@ -87,7 +87,7 @@ class OrdersPlugin::OrderTest < ActiveSupport::TestCase
     @order.cycle.profile.save!
     product = create(SuppliersPlugin::DistributedProduct, :price => 2.0, :profile => @order.cycle.profile, :supplier => @order.cycle.profile.self_supplier)
     @order.save!
-    @order.products.create! :product => @order.cycle.products.first, :quantity_asked => 2.0
+    @order.item.create! :product => @order.cycle.products.first, :quantity_asked => 2.0
     assert_equal 2.0, @order.total_quantity_asked
     assert_equal 4.0, @order.total_price_asked
   end
