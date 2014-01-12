@@ -480,6 +480,9 @@
         name: "Orders"
         description: "Orders' management"
         panel_button: "Purchases and Sales"
+      ext:
+        profile:
+          orders_manager: "Orders' Manager"
       mailer:
         order_was_confirmed: "[%{name}] Your order was confirmmed"
         order_was_cancelled: "[%{name}] Your order was cancelled"
@@ -1059,7 +1062,7 @@
         edit: "Node settings saved"
     views:
       control_panel:
-        manage_control_panel_button: "Manage network's structure"
+        structure: "Manage network's structure"
       blocks:
         location:
           title: "Map of Enterprises from %{profile}"
@@ -1093,6 +1096,11 @@
           back: "Back to network's structure"
           node_info: "Node's informations"
           presentation_text: "Presentation's text:"
+          orders_management: "Orders' management"
+        _orders_management:
+          forward_explanation: "When an order is confirmed through the shopping basket, an email with the order's details and the instructions of how to proceed is sent to the final user (buyer), to the administrators %{terms.supplier.from.plural} and to the administrators %{terms.profile.from.singular}. You can assign representatives of this node so that they can receive the orders of your products in place of %{terms.profile.from.singular}."
+          network_forward: "send the orders %{terms.profile.to_article.singular}"
+          managers_forward: "send the orders to the representatives:"
       enterprise:
         edit:
           title: "Settings of the enterprise %{enterprise}"

@@ -489,6 +489,9 @@
         name: "Pedidos"
         description: "Gestão de pedidos"
         panel_button: "Compras e Vendas"
+      ext:
+        profile:
+          orders_manager: "Gestor de pedidos"
       mailer:
         order_was_confirmed: "[%{name}] Seu pedido foi confirmado"
         order_was_cancelled: "[%{name}] Seu pedido foi cancelado"
@@ -1107,6 +1110,11 @@
           back: "Voltar para a estrutura da rede"
           node_info: "Informações do nó"
           presentation_text: "Texto de apresentação:"
+          orders_management: "Gestão de pedidos"
+        _orders_management:
+          forward_explanation: "Quando um pedido é confirmado através do cesto de compras, um email contendo o detalhamento do pedido e as instruções de como proceder é enviado ao usuário final (comprador), aos administradores %{terms.supplier.from.plural} e aos administradores %{terms.profile.from.singular}. Você pode designar representantes desse nó para que eles recebam os pedidos de seus produtos em lugar dos administradores %{terms.profile.from.singular}."
+          network_forward: "enviar os pedidos para a rede"
+          managers_forward: "enviar os pedidos para os representantes:"
       enterprise:
         edit:
           title: "Configurações do empreendimento %{enterprise}"
