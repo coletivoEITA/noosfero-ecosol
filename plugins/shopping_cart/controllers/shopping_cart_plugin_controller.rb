@@ -96,7 +96,7 @@ class ShoppingCartPluginController < PublicController
   def buy
     if validate_cart_presence
       @cart = cart
-      @enterprise = environment.enterprises.find(cart[:enterprise_id])
+      @enterprise = environment.enterprises.find(cart[:profile_id])
       @settings = Noosfero::Plugin::Settings.new(@enterprise, ShoppingCartPlugin)
       render :layout => false
     end

@@ -33,17 +33,17 @@
           <div style="display:none">
             <ul class="customer-details">
               <% [[:name, _('Name')], [:email, _('E-mail')], [:contact_phone, _('Contact phone')],].each do |attribute, name| %>
-                <% next if (value = order.consumer_data[attribute]).blank? %>
+                <% next if (value = order.consumer_data[attribute] rescue nil).blank? %>
                 <%= content_tag 'li', content_tag('strong', name+': ') + value %>
               <% end %>
 
               <% [[:address_line1, _('Address')], [:address_line2, _('District')], [:City, _('City')], [:postal_code, _('Zip code')], [:name, _('Delivery option')],].each do |attribute, name| %>
-                <% next if (value = order.consumer_delivery_data[attribute]).blank? %>
+                <% next if (value = order.consumer_delivery_data[attribute] rescue nil).blank? %>
                 <%= content_tag 'li', content_tag('strong', name+': ') + value %>
               <% end %>
 
               <% [[:method, _('Payment')], [:change, _('shopping_cart|Change')]].each do |attribute, name| %>
-                <% next if (value = order.payment_data[attribute]).blank? %>
+                <% next if (value = order.payment_data[attribute] rescue nil).blank? %>
                 <%= content_tag 'li', content_tag('strong', name+': ') + value %>
               <% end %>
             </ul>

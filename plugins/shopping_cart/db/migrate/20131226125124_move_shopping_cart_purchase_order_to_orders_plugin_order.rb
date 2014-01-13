@@ -1,5 +1,5 @@
-OrdersPlugin.send :remove_const, :Item
-OrdersPlugin.send :remove_const, :Order
+OrdersPlugin.send :remove_const, :Item if defined? OrdersPlugin::Item
+OrdersPlugin.send :remove_const, :Order if defined? OrdersPlugin::Order
 
 class ShoppingCartPlugin::PurchaseOrder < Noosfero::Plugin::ActiveRecord
   acts_as_having_settings :field => :data
@@ -65,6 +65,8 @@ class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
       order.status = StatusTransform[purchase_order.status]
 
       order.save!
+      pp purchase_order
+      pp order
     end
     drop_table :shopping_cart_plugin_purchase_orders
   end
