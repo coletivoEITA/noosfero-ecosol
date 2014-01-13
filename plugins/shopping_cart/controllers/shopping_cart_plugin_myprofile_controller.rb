@@ -36,7 +36,7 @@ class ShoppingCartPluginMyprofileController < MyProfileController
 
     @products = {}
     @orders.each do |order|
-      order.products_data.each do |id, qp|
+      order.products_list.each do |id, qp|
         @products[id] ||= ShoppingCartPlugin::LineItem.new(id, qp[:name])
         @products[id].quantity += qp[:quantity]
       end

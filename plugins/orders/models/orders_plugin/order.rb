@@ -13,19 +13,20 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     :conditions => {:consumer_id => consumer ? consumer.id : nil} }
   }
 
-  extend CodeNumbering::ClassMethods
-  code_numbering :code
-
   STATUSES = ['draft', 'planned', 'confirmed', 'cancelled', 'accepted', 'shipped']
   validates_inclusion_of :status, :in => STATUSES
 
   before_validation :default_values
+
+  extend CodeNumbering::ClassMethods
+  code_numbering :code
 
   extend SerializedSyncedData::ClassMethods
   sync_serialized_field :profile do |profile|
     {:name => profile.name, :email => profile.contact_email}
   end
   sync_serialized_field :consumer do |consumer|
+    return {} if consumer.blank?
     {:name => consumer.name, :email => consumer.contact_email, :contact_phone => consumer.contact_phone}
   end
   sync_serialized_field :supplier_delivery
@@ -58,6 +59,19 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     self.draft? or admin_action
   end
 
+  def products_list
+    hash = {}; self.items.map do |item|
+      hash[item.product_id] = {:quantity => item.quantity_asked, :name => item.name, :price => item.price}
+    end
+    hash
+  end
+  def products_list= hash
+    self.items = hash.map do |id, data|
+      data[:product_id] = id
+      data[:quantity_asked] = data.delete(:quantity)
+      OrdersPlugin::Item.new data
+    end
+  end
 
   STATUS_MESSAGE = {
    'open' => 'orders_plugin.models.order.open',

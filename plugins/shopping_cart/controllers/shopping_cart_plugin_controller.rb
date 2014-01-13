@@ -261,14 +261,14 @@ class ShoppingCartPluginController < PublicController
   end
 
   def register_order(custumer, items)
-    products_hash = {}; items.each do |id, quantity|
+    products_list = {}; items.each do |id, quantity|
       product = Product.find(id)
       price = product.price || 0
-      products_hash[id] = {:quantity => quantity, :price => price, :name => product.name}
+      products_list[id] = {:quantity => quantity, :price => price, :name => product.name}
     end
 
     OrdersPlugin::Order.create! :profile => Enterprise.find(cart[:profile_id]), :consumer => user,
-      :status => 'confirmed', :products_data => products_hash,
+      :status => 'confirmed', :products_list => products_list,
       :consumer_data => {
         :name => params[:customer][:name], :email => params[:customer][:email], :contact_phone => params[:customer][:contact_phone],
       },

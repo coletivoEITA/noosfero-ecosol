@@ -1,3 +1,6 @@
+OrdersPlugin.send :remove_const, :Item
+OrdersPlugin.send :remove_const, :Order
+
 class ShoppingCartPlugin::PurchaseOrder < Noosfero::Plugin::ActiveRecord
   acts_as_having_settings :field => :data
 
@@ -8,6 +11,20 @@ class ShoppingCartPlugin::PurchaseOrder < Noosfero::Plugin::ActiveRecord
     SHIPPED = 3
   end
 end
+
+class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
+  belongs_to :order, :class_name => 'OrdersPlugin::Order'
+end
+class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
+  has_many :items, :class_name => 'OrdersPlugin::Item', :foreign_key => :order_id
+end
+
+StatusTransform = {
+  ShoppingCartPlugin::PurchaseOrder::Status::OPENED => 'confirmed',
+  ShoppingCartPlugin::PurchaseOrder::Status::CONFIRMED => 'accepted',
+  ShoppingCartPlugin::PurchaseOrder::Status::CANCELED => 'cancelled',
+  ShoppingCartPlugin::PurchaseOrder::Status::SHIPPED => 'shipped',
+}
 
 class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
   def self.up
@@ -31,19 +48,21 @@ class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
       }
       order.supplier_delivery_data = {}
 
-      order.products_data = data[:products_list]
+      data[:products_list].each do |id, data|
+        item = order.items.build :product_id => id, :name => data[:name], :quantity_asked => data[:quantity], :price => data[:price]
+        item.order = order
+      end
+
       order.payment_data = {
         :method         => data[:customer_payment],
         :change         => data[:customer_change]
       }
 
-      status_transform = {
-        ShoppingCartPlugin::PurchaseOrder::Status::OPENED => 'confirmed',
-        ShoppingCartPlugin::PurchaseOrder::Status::CONFIRMED => 'accepted',
-        ShoppingCartPlugin::PurchaseOrder::Status::CANCELED => 'cancelled',
-        ShoppingCartPlugin::PurchaseOrder::Status::SHIPPED => 'shipped',
-      }
-      order.status = status_transform[purchase_order.status]
+      pp order.items
+      pp order.items.first.valid?
+      pp order.items.first.errors
+
+      order.status = StatusTransform[purchase_order.status]
 
       order.save!
     end

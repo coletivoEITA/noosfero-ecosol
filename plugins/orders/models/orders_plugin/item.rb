@@ -1,5 +1,7 @@
 class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
+  serialize :data
+
   belongs_to :order, :class_name => 'OrdersPlugin::Order', :touch => true
   belongs_to :product
 
@@ -17,10 +19,10 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
   validates_presence_of :order
   validates_presence_of :product
   validates_numericality_of :quantity_asked
-  validates_numericality_of :quantity_allocated
+  validates_numericality_of :quantity_accepted
   validates_numericality_of :quantity_shipped
   validates_numericality_of :price_asked
-  validates_numericality_of :price_allocated
+  validates_numericality_of :price_accepted
   validates_numericality_of :price_shipped
 
   before_save :calculate_prices
@@ -58,21 +60,21 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
   end
 
   def price_asked
-    self.price * self.quantity_asked
+    self.price * self.quantity_asked rescue nil
   end
-  def price_allocated
-    self.price * self.quantity_allocated
+  def price_accepted
+    self.price * self.quantity_accepted rescue nil
   end
   def price_shipped
-    self.price * self.quantity_shipped
+    self.price * self.quantity_shipped rescue nil
   end
 
   protected
 
   def calculate_prices
-    self.price_asked = price_asked
-    self.price_allocated = price_allocated
-    self.price_shipped = price_shipped
+    self.price_asked = self.price_asked
+    self.price_accepted = self.price_accepted
+    self.price_shipped = self.price_shipped
   end
 
 end

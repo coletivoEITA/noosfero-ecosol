@@ -160,10 +160,10 @@ class ShoppingCartPluginControllerTest < ActionController::TestCase
 
     order = OrdersPlugin::Order.last
 
-    assert_equal 1.99, order.products_data[product1.id][:price]
-    assert_equal 1, order.products_data[product1.id][:quantity]
-    assert_equal 2.23, order.products_data[product2.id][:price]
-    assert_equal 2, order.products_data[product2.id][:quantity]
+    assert_equal 1.99, order.products_list[product1.id][:price]
+    assert_equal 1, order.products_list[product1.id][:quantity]
+    assert_equal 2.23, order.products_list[product2.id][:price]
+    assert_equal 2, order.products_list[product2.id][:quantity]
     assert_equal 'confirmed', order.status
   end
 
@@ -177,7 +177,7 @@ class ShoppingCartPluginControllerTest < ActionController::TestCase
 
     order = OrdersPlugin::Order.last
 
-    assert_equal 0, order.products_data[product1.id][:price]
+    assert_equal 0, order.products_list[product1.id][:price]
   end
 
   should 'clean the cart after placing the order' do
