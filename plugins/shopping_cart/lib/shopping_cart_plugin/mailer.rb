@@ -19,7 +19,7 @@ class ShoppingCartPlugin::Mailer < Noosfero::Plugin::MailerBase
 
   def supplier_notification(customer, supplier, items, delivery_option)
     domain = supplier.environment.default_hostname
-    recipients    supplier.contact_email
+    recipients    supplier.cart_order_supplier_notification_recipients
     from          'no-reply@' + domain
     reply_to      customer[:email]
     subject       _("[%s] You have a new buy request from %s.") % [supplier.environment.name, customer[:name]]
