@@ -3,13 +3,12 @@
 <% else %>
   <h1><%= _('Products/Services') %></h1>
 
-  <% if profile.network_node? %>
-    <% profile.suppliers.except_self.each do |supplier| %>
-      <%= render 'catalog/node_products', :node => supplier.profile %>
-    <% end %>
-  <% else # network %>
-    <% profile.nodes.each do |node| %>
-      <%= render 'catalog/node_products', :node => node %>
-    <% end %>
+  <%= render 'catalog/node_products', :node => profile %>
+
+  <% suppliers = profile.suppliers.except_self.collect &:profile %>
+  <% profile.nodes.each do |node| %>
+    <% next if suppliers.include? node %>
+    <h2> <%= node.name %> </h2>
+    <%= render 'catalog/node_products', :node => node %>
   <% end %>
 <% end %>

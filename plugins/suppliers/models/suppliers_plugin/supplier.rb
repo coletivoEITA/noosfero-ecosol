@@ -31,7 +31,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   after_create :add_admins, :if => :dummy?
   after_create :save_profile, :if => :dummy?
-  after_create :distribute_products_to_consumers
+  after_create :distribute_products_to_consumer
 
   attr_accessor :dont_destroy_dummy
 
@@ -100,11 +100,13 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     self.supplier.save
   end
 
-  def distribute_products_to_consumers
+  def distribute_products_to_consumer
     return if self.self? or self.consumer.person?
 
     already_supplied = self.consumer.distributed_products.unarchived.from_supplier_id(self.id).all
+    pp already_supplied
 
+    pp self.profile.products.unarchived
     self.profile.products.unarchived.each do |source_product|
       next if already_supplied.find{ |f| f.supplier_product == source_product }
 

@@ -35,7 +35,7 @@ class Profile
     @self_supplier ||= if new_record?
       self.suppliers_without_self_supplier.build :profile => self
     else
-      suppliers_without_self_supplier.select{ |s| s.profile_id == s.consumer_id }.first || self.suppliers_without_self_supplier.create!(:profile => self)
+      suppliers_without_self_supplier.select{ |s| s.profile_id == s.consumer_id }.first || self.suppliers_without_self_supplier.create(:profile => self)
     end
   end
   def suppliers_with_self_supplier

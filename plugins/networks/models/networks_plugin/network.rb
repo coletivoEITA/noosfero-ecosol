@@ -14,12 +14,12 @@ class NetworksPlugin::Network < NetworksPlugin::BaseNode
 
   def destroy_dependent
     self.nodes.each do |relation|
-      relation.child.destroy!
-      relation.destroy!
+      relation.child.destroy
+      relation.destroy
     end
     self.suppliers.each do |supplier|
       # also destroys the associated dummy profile
-      supplier.destroy!
+      supplier.destroy
     end
   end
 

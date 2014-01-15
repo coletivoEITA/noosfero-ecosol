@@ -1,7 +1,9 @@
 class NetworksPlugin::Node < NetworksPlugin::BaseNode
 
-  before_validation :generate_identifier
+  before_validation :generate_identifier, :if => :new_record?
   before_destroy :assign_dependent_to_parent
+
+  delegate :admins, :to => :network
 
   protected
 

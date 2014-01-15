@@ -58,15 +58,9 @@ class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
         :change         => data[:customer_change]
       }
 
-      pp order.items
-      pp order.items.first.valid?
-      pp order.items.first.errors
-
       order.status = StatusTransform[purchase_order.status]
 
       order.save!
-      pp purchase_order
-      pp order
     end
     drop_table :shopping_cart_plugin_purchase_orders
   end

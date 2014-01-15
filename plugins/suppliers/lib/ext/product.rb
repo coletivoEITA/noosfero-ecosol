@@ -4,15 +4,15 @@ require_dependency 'product'
 class Product
 
   named_scope :available, :conditions => {:available => true}
-  named_scope :unavailable, :conditions => {:available => false}
+  named_scope :unavailable, :conditions => ['archived <> true']
   named_scope :archived, :conditions => {:archived => true}
-  named_scope :unarchived, :conditions => {:archived => false}
+  named_scope :unarchived, :conditions => ['archived <> true']
 
   named_scope :with_available, lambda { |available| { :conditions => {:available => available} } }
   named_scope :with_price, :conditions => 'products.price > 0'
   named_scope :with_product_category_id, lambda { |id| { :conditions => {:product_category_id => id} } }
 
-  # FIXME: transliterate input and on db
+  # FIXME: transliterate input and name column
   named_scope :name_like, lambda { |name| { :conditions => ["LOWER(products.name) LIKE ?", "%#{name}%"] } }
 
   named_scope :by_profile, lambda { |profile| { :conditions => {:profile_id => profile.id} } }

@@ -26,8 +26,9 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     {:name => profile.name, :email => profile.contact_email}
   end
   sync_serialized_field :consumer do |consumer|
-    return {} if consumer.blank?
-    {:name => consumer.name, :email => consumer.contact_email, :contact_phone => consumer.contact_phone}
+    if consumer.blank? then {} else
+      {:name => consumer.name, :email => consumer.contact_email, :contact_phone => consumer.contact_phone}
+    end
   end
   sync_serialized_field :supplier_delivery
   sync_serialized_field :consumer_delivery
@@ -69,6 +70,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     self.items = hash.map do |id, data|
       data[:product_id] = id
       data[:quantity_asked] = data.delete(:quantity)
+      data[:order] = self
       OrdersPlugin::Item.new data
     end
   end

@@ -35,7 +35,9 @@ class Profile
   PERMISSIONS['Profile']['manage_orders'] = N_('Manage orders')
   module Roles
     def self.orders_manager env
-      find_role 'orders_manager', env
+      role = find_role 'orders_manager', env
+      role ||= Profile.create_orders_manager_role
+      role
     end
 
     class << self

@@ -74,6 +74,7 @@ module ControllerInheritance
       end
     end
 
+    # replace method just to change instance class
     base.send :define_method, :initialize_template_class do |response|
       response.template = ControllerInheritance::ActionView.new self.class.view_paths, {}, self
       response.template.helpers.send :include, self.class.master_helper_module
