@@ -44,6 +44,8 @@ module ApplicationHelper
 
   include Noosfero::Gravatar
 
+  include CatalogHelper
+
   def locale
     (@page && !@page.language.blank?) ? @page.language : FastGettext.locale
   end
