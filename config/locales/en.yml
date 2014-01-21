@@ -1065,6 +1065,8 @@
       control_panel:
         structure: "Manage network's structure"
       blocks:
+        profile_info_actions:
+            button: "My enterprise participate on this network"
         location:
           title: "Map of Enterprises from %{profile}"
       admin:

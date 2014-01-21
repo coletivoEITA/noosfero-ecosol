@@ -39,6 +39,10 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
     @supplier = @node.suppliers.find params[:id]
   end
 
+  def join
+    @network = profile
+  end
+
   protected
 
   def load_node

@@ -1079,6 +1079,8 @@
       control_panel:
         structure: "Gerenciar estrutura da rede"
       blocks:
+        profile_info_actions:
+            button: "Meu empreendimento participa desta rede"
         location:
           title: "Mapa dos Empreendimentos de %{profile}"
       admin:
