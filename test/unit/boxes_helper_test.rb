@@ -7,6 +7,7 @@ class BoxesHelperTest < ActiveSupport::TestCase
 
   def setup
     @controller = mock
+    @controller.class.stubs(:custom_design).returns({})
     @controller.stubs(:boxes_editor?).returns(false)
     @controller.stubs(:uses_design_blocks?).returns(true)
   end
@@ -112,7 +113,7 @@ class BoxesHelperTest < ActiveSupport::TestCase
     request.expects(:path).returns('/')
     expects(:request).returns(request)
     expects(:locale).returns('en')
-    box_decorator.expects(:select_blocks).with([], {:article => nil, :request_path => '/', :locale => 'en'}).returns([])
+    box_decorator.expects(:select_blocks).with(box, [], {:article => nil, :request_path => '/', :locale => 'en', :controller => @controller}).returns([])
 
     display_box_content(box, '')
   end

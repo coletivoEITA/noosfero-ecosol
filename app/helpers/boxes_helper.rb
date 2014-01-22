@@ -39,7 +39,7 @@ module BoxesHelper
   end
 
   def display_boxes(holder, main_content)
-    boxes = holder.boxes.first(holder.boxes_limit)
+    boxes = holder.boxes.first(@controller.class.custom_design[:boxes_limit] || holder.boxes_limit(@controller.class.custom_design[:layout_template]))
     content = boxes.reverse.map { |item| display_box(item, main_content) }.join("\n")
     content = main_content if (content.blank?)
 
@@ -65,11 +65,13 @@ module BoxesHelper
   end
 
   def display_box_content(box, main_content)
-    context = { :article => @page, :request_path => request.path, :locale => locale }
-    box_decorator.select_blocks(box.blocks.includes(:box), context).map { |item| display_block(item, main_content) }.join("\n") + box_decorator.block_target(box)
+    context = { :article => @page, :request_path => request.path, :locale => locale, :controller => @controller }
+    box_decorator.select_blocks(box, box.blocks.includes(:box), context).map do |item|
+      display_block item, main_content
+    end.join("\n") + box_decorator.block_target(box)
   end
 
-  def select_blocks(arr, context)
+  def select_blocks box, arr, context
     arr
   end
 
@@ -148,8 +150,17 @@ module BoxesHelper
     def self.block_edit_buttons(block)
       ''
     end
-    def self.select_blocks(arr, context)
-      arr.select { |block| block.visible?(context) }
+    def self.select_blocks box, arr, context
+      arr = arr.select{ |block| block.visible? context }
+
+      custom_design = context[:controller].class.custom_design
+      if custom_design[:insert] and box.position == custom_design[:insert][:box]
+        position, klass = custom_design[:insert][:position], custom_design[:insert][:block]
+        block = klass.new :box => box
+        arr = arr.insert position, block
+      end
+
+      arr
     end
   end
 
