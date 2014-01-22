@@ -164,10 +164,19 @@ class ThemeTest < ActiveSupport::TestCase
     t2 = Theme.new('mytheme2', :name => 'mytheme2', :owner => profile2, :public => true); t2.save
     t3 = Theme.new('mytheme3', :name => 'mytheme3', :public => false); t3.save
 
-    [Theme.find(t2.id), Theme.find(t1.id)].each do |theme|
+    [t1, t2].each do |theme|
       assert Theme.approved_themes(profile).include?(theme)
     end
-    assert ! Theme.approved_themes(profile).include?(Theme.find(t3.id))
+    assert ! Theme.approved_themes(profile).include?(t3)
+
+    community = create Community
+    t4 = Theme.new 'mytheme4', :name => 'mytheme4', :owner_type => 'Community', :public => false; t4.save
+    [t1, t3].each do |theme|
+      assert ! Theme.approved_themes(community).include?(theme)
+    end
+    [t2, t4].each do |theme|
+      assert Theme.approved_themes(community).include?(theme)
+    end
   end
 
   should 'not list non theme files or dirs inside themes dir' do

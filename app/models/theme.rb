@@ -43,11 +43,15 @@ class Theme
 
     def approved_themes(owner)
       Dir.glob(File.join(system_themes_dir, '*')).select do |item|
-        if File.exists?( File.join(item, 'theme.yml') )
-          config = YAML.load_file(File.join(item, 'theme.yml'))
-          (config['owner_type'] == owner.class.base_class.name) &&
-          (config['owner_id'] == owner.id) || config['public']
-        end
+        next unless File.exists? File.join(item, 'theme.yml')
+        config = YAML.load_file File.join(item, 'theme.yml')
+
+        approved = config['public']
+        next approved if approved
+
+        approved = config['owner_type'] == owner.class.base_class.name || config['owner_type'] == owner.class.name
+        approved &&= config['owner_id'] == owner.id if config['owner_id'].present?
+        approved
       end.map do |desc|
         new(File.basename(desc))
       end
@@ -159,6 +163,13 @@ class Theme
     config['owner_type'] = model.class.base_class.name
     config['owner_id'] = model.id
     @owner = model
+  end
+
+  def owner_type
+    config['owner_type']
+  end
+  def owner_type= owner_type
+    config['owner_type'] = owner_type
   end
 
   protected
