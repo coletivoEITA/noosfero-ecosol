@@ -11,7 +11,7 @@ class Profile
   has_many :sniffer_interested_product_categories, :through => :sniffer_opportunities, :source => :product_category, :class_name => 'ProductCategory',
     :conditions => ['sniffer_plugin_opportunities.opportunity_type = ?', 'ProductCategory']
 
-  attr_accessible :sniffer_interested_product_category_string_ids
+  attr_accessor :sniffer_interested_product_category_string_ids
   def sniffer_interested_product_category_string_ids
     ''
   end

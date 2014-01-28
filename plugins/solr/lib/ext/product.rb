@@ -22,10 +22,6 @@ class Product
     [:enabled, 0.2, proc{ |p| p.enterprise.enabled ? 1 : 0}],
   ]
 
-  def profile_id
-    self.enterprise_id
-  end
-
   acts_as_searchable :fields => facets_fields_for_solr + [
       # searched fields
       {:name => {:type => :text, :boost => 2.0}},
