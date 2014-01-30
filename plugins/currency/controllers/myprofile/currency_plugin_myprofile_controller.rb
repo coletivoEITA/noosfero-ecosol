@@ -67,11 +67,11 @@ class CurrencyPluginMyprofileController < MyProfileController
 
   def accept
     if request.post?
-      @currencies = CurrencyPlugin::Currency.find params[:id]
-      profile.accepted_currencies << @currencies
+      @currency = CurrencyPlugin::Currency.find params[:id]
+      profile.accepted_currencies << @currency
       redirect_to :action => :index
     else
-      @currencies = @profile.other_currencies.first(10)
+      @currencies = @profile.other_currencies.first 10
       render :layout => false
     end
   end
@@ -82,7 +82,7 @@ class CurrencyPluginMyprofileController < MyProfileController
       'LOWER(name) ~ ? OR LOWER(symbol) ~ ? OR LOWER(description) ~ ?',
       query, query, query
     ]}
-    @currencies = CurrencyPlugin::Currency.all(options)
+    @currencies = CurrencyPlugin::Currency.all options
     @currencies = @currencies - profile.currencies
     render :partial => 'accept_form'
   end
