@@ -195,7 +195,6 @@ class EscamboPlugin < Noosfero::Plugin
         if @user.activated?
           self.current_user = @user
           redirect_to @enterprise.url
-          return
         else
           @register_pending = true
         end
@@ -205,7 +204,6 @@ class EscamboPlugin < Noosfero::Plugin
       @person.errors.delete(:identifier)
       @person.errors.delete(:user_id)
     end
-    clear_signup_start_time
 
     # overwrite controller action
     render :action => 'signup'
