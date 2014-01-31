@@ -37,4 +37,8 @@ class ProductCategoriesBlock < Block
     box.environment.enabled?('products_for_enterprises')
   end
 
+  def cacheable?
+    false
+  end
+
 end
