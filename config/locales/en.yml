@@ -535,6 +535,7 @@
           submit: 'OK'
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
         _index: 
+          header: "Purchase %{profile.code} - %{profile} / Sale - %{consumer}"
           empty_order: "Empty order"
           supplier: "%{terms.supplier.singular}"
           product: "product"
@@ -1066,7 +1067,7 @@
         structure: "Manage network's structure"
       blocks:
         profile_info_actions:
-            button: "My enterprise participate on this network"
+          button: "My enterprise participate on this network"
         location:
           title: "Map of Enterprises from %{profile}"
       admin:

@@ -1,4 +1,4 @@
 jQuery('#order-items').html("<%= j render('orders_plugin_consumer/items', :order => @order) %>");
-jQuery('#order-total-<%= @order.id %>').html("<%= j render('orders_plugin_consumer/total', :order => @order) %>");
+jQuery("order-<%=@order.id%> .order-total").html('<%= j render('orders_plugin_consumer/total', :order => @order) %>');
 
 toggle_edit.value_row.reload();

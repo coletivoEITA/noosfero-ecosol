@@ -40,19 +40,39 @@
           text-align: center;
           margin-bottom: $padding;
         }
-        form {
-          padding: 0 16px 0 240px;
-          width: 400px;
-        }
-        textarea {
-          width: 100%;
-        }
-        input[type=checkbox] {
-          float: left;
-        }
       }
     }
   }
+}
+
+.order-box {
+  background: $order-items-bg;
+  border: $border solid black;
+  border-radius: 3px;
+  font-size: 10px;
+
+  margin: 0 $intercolumn; //for items overflow when selected and scrollbar
+  .order-items-scroll {
+    overflow-y: auto;
+    margin-left: -$intercolumn;
+    padding: 0 $intercolumn;
+  }
+
+  &, .order-items-scroll, .item {
+    width: $order-items-width;
+  }
+  &.admin {
+    &, .order-items-scroll, .item {
+      width: $order-items-admin-width;
+    }
+  }
+
+  .order-header {
+    padding: $half-padding $padding;
+    border-bottom: $border solid black;
+    text-transform: uppercase;
+  }
+
 }
 
 .consumer-order {

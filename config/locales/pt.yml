@@ -544,6 +544,7 @@
           submit: 'OK'
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
         _index: 
+          header: "Compra %{profile_code} - %{profile} / Venda - %{consumer}"
           empty_order: "Pedido vazio"
           supplier: "%{terms.supplier.singular}"
           product: "produto"
@@ -1080,7 +1081,7 @@
         structure: "Gerenciar estrutura da rede"
       blocks:
         profile_info_actions:
-            button: "Meu empreendimento participa desta rede"
+          button: "Meu empreendimento participa desta rede"
         location:
           title: "Mapa dos Empreendimentos de %{profile}"
       admin:

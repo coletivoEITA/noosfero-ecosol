@@ -41,6 +41,9 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   def draft?
     self.status == 'draft'
   end
+  def open?
+    self.draft?
+  end
   def planned?
     self.status == 'planned'
   end
@@ -51,8 +54,8 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     self.status == 'cancelled'
   end
   def current_status
-    return 'forgotten' if forgotten?
-    return 'open' if open?
+    return 'forgotten' if self.forgotten?
+    return 'open' if self.open?
     self['status']
   end
 

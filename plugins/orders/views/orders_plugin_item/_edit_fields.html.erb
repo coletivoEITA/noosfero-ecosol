@@ -1,42 +1,60 @@
+<% fields = proc do |f| %>
 
-<% if f %>
-  <%= f.hidden_field :id %>
-<% end %>
+  <%= f.hidden_field :id if f %>
 
-<div>
-  <div class="box-field supplier"><%= excerpt_ending product.supplier.abbreviation_or_name, 15 %></div>
-  <div class="box-field product"><%= product.name %></div>
+  <div class="fields">
+    <div class="box-field supplier"><%= excerpt_ending product.supplier.abbreviation_or_name, 15 %></div>
 
-  <div class="box-field quantity">
-    <span><%= item.quantity_asked_as_currency_number %></span>
-    <span class="lower"><%= product.unit.singular rescue '' %></span>
-  </div>
-  <% if f and order.may_edit? %>
-    <div class="box-field quantity-edit">
-      <%= f.text_field :quantity_asked, :value => item.quantity_asked_as_currency_number, :onkeyup => 'orders.item.quantity_keyup(this, event);' %>
-      <span class="lower"><%= product.unit.singular rescue '' %></span>
+    <div class="box-field product"><%= excerpt_ending product.name, 23 %></div>
+
+    <div class="box-field quantity">
+      <span class="value"><%= item.quantity_asked_as_currency_number %></span>
+      <span class="unit"><%= excerpt_ending product.unit.singular, 4, '.' rescue '' %></span>
     </div>
-  <% end %>
+    <div class="box-field quantity-edit">
+      <%= f.text_field :quantity_asked, :value => item.quantity_asked_as_currency_number %>
+    </div>
 
-  <div id=<%="item-price-total-#{item.id.to_s}"%> class="box-field price-total">
-    <%= render "orders_plugin_item/price_total", :item => item %>
+    <div class="box-field price-total">
+      <%= render "orders_plugin_item/price_total", :item => item %>
+    </div>
+
+    <% if @admin_action %>
+      <div class="box-field status-updated"> <%= t('orders_plugin.views.item._index.status_updated') %> </div>
+    <% end %>
   </div>
-</div>
 
-<% if f %>
   <div class="more">
 
-    <div class="actions">
-      <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(:controller => :orders_plugin_item, :action => :edit, :id => item.id)}')", :class => 'action-button' %>
+    <% if @admin_action %>
+      <div class="actions">
+        <%= link_to_function t('orders_plugin.views.item._edit.remove_from_order'), "jQuery(this).parents('.value-row').remove();" if order.may_edit?(true) %>
+      </div>
 
-      <%= link_to_remote t('orders_plugin.views.item._edit.remove_from_order'), :update => "item-#{item.id}",
-        :loading => "loading_overlay.show('#item-#{item.id}')", :loaded => "loading_overlay.hide('#item-#{item.id}')",
-        :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? %>
-    </div>
+      <div class="price-with-unit"><%= price_with_unit_span product.price_as_currency_number, product.unit %></div>
 
-    <div class="price-with-unit"><%= price_with_unit_span product.price_as_currency_number, product.unit %></div>
+      <div class="clean"></div>
+    <% elsif f %>
+      <div class="more">
+
+        <div class="actions">
+          <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(:controller => :orders_plugin_item, :action => :edit, :id => item.id)}')", :class => 'action-button' %>
+
+          <%= link_to_remote t('orders_plugin.views.item._edit.remove_from_order'), :update => "item-#{item.id}",
+            :loading => "loading_overlay.show('#item-#{item.id}')", :loaded => "loading_overlay.hide('#item-#{item.id}')",
+            :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? %>
+        </div>
+
+        <div class="price-with-unit"><%= price_with_unit_span product.price_as_currency_number, product.unit %></div>
+      </div>
+    <% end %>
   </div>
+
+  <div class="clean"></div>
 <% end %>
 
-<div class="clean"></div>
-
+<% if f %>
+  <% f.fields_for "item-#{item.id}", item, &fields %>
+<% else %>
+  <%= fields.call f %>
+<% end %>

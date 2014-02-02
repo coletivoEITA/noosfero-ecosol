@@ -13,9 +13,9 @@ module OrdersPlugin::DisplayHelper
     content_tag 'input', '', html_options.merge(:onclick => function, :type => 'submit', :value => name)
   end
 
-  def excerpt_ending text, length
+  def excerpt_ending text, length, omission = '...'
     return if text.blank?
-    content_tag 'span', excerpt(text, text.first(3), length), :title => text
+    content_tag 'span', truncate(text, :length => length+omission.length, :omission => omission), :title => text
   end
 
 end
