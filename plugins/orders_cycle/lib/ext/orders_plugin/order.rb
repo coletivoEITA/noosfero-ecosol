@@ -38,8 +38,8 @@ class OrdersPlugin::Order
     self.draft? && cycle.orders?
   end
 
-  def may_edit? admin_action = false
-    self.open? or admin_action
+  def may_edit? admin = false
+    self.open? or admin
   end
 
   extend CodeNumbering::ClassMethods

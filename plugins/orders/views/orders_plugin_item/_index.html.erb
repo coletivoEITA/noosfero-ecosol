@@ -8,7 +8,7 @@
           <div class="box-field product"> <%= t('orders_plugin.views.item._index.product') %> </div>
           <div class="box-field quantity"> <%= t('orders_plugin.views.item._index.quantity') %> </div>
           <div class="box-field price-total"> <%= t('orders_plugin.views.item._index.price_total') % {:currency => @environment.currency_unit} %> </div>
-          <% if @admin_action %>
+          <% if @admin %>
             <div class="box-field status-updated"> <%= t('orders_plugin.views.item._index.status_updated') %> </div>
           <% end %>
         </div>

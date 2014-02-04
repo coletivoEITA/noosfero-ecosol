@@ -47,23 +47,30 @@
 
 .order-box {
   background: $order-items-bg;
-  border: $border solid black;
   border-radius: 3px;
   font-size: 10px;
 
-  margin: 0 $intercolumn; //for items overflow when selected and scrollbar
   .order-items-scroll {
     overflow-y: auto;
-    margin-left: -$intercolumn;
-    padding: 0 $intercolumn;
+    padding-right: $intercolumn;
   }
-
-  &, .order-items-scroll, .item {
+  &, .order-items-scroll, .orders-item, .item {
     width: $order-items-width;
   }
+
+  margin: 0;
+  border: none;
   &.admin {
-    &, .order-items-scroll, .item {
+    margin: 0 $intercolumn; //for items overflow when selected and scrollbar
+    border: $border solid black;
+
+    &, .order-items-scroll, .orders-item, .item {
       width: $order-items-admin-width;
+    }
+
+    .order-items-scroll {
+      margin-left: -$intercolumn;
+      padding-left: $intercolumn;
     }
   }
 

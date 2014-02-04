@@ -11,11 +11,12 @@ module ConsumersCoopPlugin::LayoutHelper
     [:start, 'consumers_coop_plugin.lib.layout_helper.start', proc{ profile.url }, proc{ on_homepage? }],
     [:orders, 'consumers_coop_plugin.lib.layout_helper.orders', {:controller => :consumers_coop_plugin_order, :action => :index}],
     [:adm, 'consumers_coop_plugin.lib.layout_helper.administration', {:controller => :consumers_coop_plugin_myprofile, :action => :index},
-     proc{ @admin_action }, proc{ user and profile.has_admin? user }],
+     proc{ @admin }, proc{ user and profile.has_admin? user }],
   ]
 
   def display_header_buttons
-    @admin_action = @controller.is_a? MyProfileController
+    # FIXME: call method on controller
+    @admin = @controller.is_a? MyProfileController
 
     HeaderButtons.map do |key, label, url, selected_proc, if_proc|
       next if if_proc and !instance_eval(&if_proc)
@@ -28,7 +29,7 @@ module ConsumersCoopPlugin::LayoutHelper
         url[:profile] = profile.identifier
       end
 
-      if key != :adm and @admin_action
+      if key != :adm and @admin
         selected = false
       elsif selected_proc
         selected = instance_eval &selected_proc

@@ -11,7 +11,7 @@ class OrdersPluginAdminController < MyProfileController
   helper OrdersPlugin::OrdersDisplayHelper
 
   def index
-    @admin_action = true
+    @admin = true
   end
 
   def purchases

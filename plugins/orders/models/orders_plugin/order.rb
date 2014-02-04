@@ -59,8 +59,8 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     self['status']
   end
 
-  def may_edit? admin_action = false
-    self.draft? or admin_action
+  def may_edit? admin = false
+    self.draft? or admin
   end
 
   def products_list

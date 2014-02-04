@@ -1,4 +1,4 @@
-<% editable = order && order.may_edit?(@admin_action) %>
+<% editable = order and order.may_edit? @admin %>
 <% draft_order = cycle.orders.draft.for_consumer(user).first %>
 <% include_message = '' %>
 <% if order.nil? %>

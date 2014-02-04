@@ -7,7 +7,7 @@ class OrdersCyclePluginCycleController < MyProfileController
   include SuppliersPlugin::TranslationHelper
 
   protect 'edit_profile', :profile
-  before_filter :set_admin_action
+  before_filter :set_admin
 
   helper SuppliersPlugin::TranslationHelper
   helper OrdersCyclePlugin::CycleHelper
@@ -128,8 +128,8 @@ class OrdersCyclePluginCycleController < MyProfileController
     scope
   end
 
-  def set_admin_action
-    @admin_action = true
+  def set_admin
+    @admin = true
   end
 
 end

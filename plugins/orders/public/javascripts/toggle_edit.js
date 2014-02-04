@@ -40,8 +40,8 @@ toggle_edit = {
     var out = toggle_edit.value_row.locate(event.target).length == 0;
     if (!isToggle && out && toggle_edit.isEditing()) {
       toggle_edit.value_row.toggle_edit();
-      return false;
     }
+
     return true;
   },
 
