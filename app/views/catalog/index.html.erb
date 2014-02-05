@@ -3,9 +3,9 @@
 
 <h1><%= _('Products/Services') %></h1>
 
-<% render 'categories', :categories => @categories, :category => @category %>
+<% render 'catalog/categories', :categories => @categories, :category => @category %>
 
-<% render 'products', :products => @products, :categories => @categories %>
+<% render 'catalog/products', :products => @products, :categories => @categories %>
 
 <%= pagination_links @products, :params => {:controller => :catalog, :action => :index, :profile => profile.identifier} %>
 
