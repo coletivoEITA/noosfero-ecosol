@@ -356,7 +356,7 @@ class CmsController < MyProfileController
   end
 
   def per_page
-    10
+    20
   end
 
   def translations

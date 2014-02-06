@@ -6,6 +6,8 @@ module ApplicationHelper
 
   include PermissionNameHelper
 
+  include PaginationHelper
+
   include LightboxHelper
 
   include ThickboxHelper
@@ -941,11 +943,6 @@ module ApplicationHelper
     link_to(content_tag(:span, _('Communities menu')), '#', :onclick => "toggleSubmenu(this,'',#{links.to_json}); return false", :class => 'menu-submenu-trigger up', :id => 'submenu-communities-trigger')
   end
   alias :browse_communities_menu :search_communities_menu
-
-  def pagination_links(collection, options={})
-    options = {:previous_label => '&laquo; ' + _('Previous'), :next_label => _('Next') + ' &raquo;'}.merge(options)
-    will_paginate(collection, options)
-  end
 
   def render_environment_features(folder)
     result = ''

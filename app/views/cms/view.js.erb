@@ -1,0 +1,3 @@
+pagination.showMore("<%= escape_javascript render 'pagination' %>", function () {
+  jQuery('table.cms-articles tr:last-child').after("<%= escape_javascript render('cms/view_items') %>");
+});

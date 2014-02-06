@@ -3357,6 +3357,11 @@ div.with_media_panel .formfield input {
   text-align: center;
   clear: both;
 }
+.pagination.infinite-scroll a,
+.pagination.infinite-scroll span {
+  display: none;
+}
+
 .pagination .disabled {
   color: #888;
 }
