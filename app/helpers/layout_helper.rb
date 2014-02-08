@@ -29,7 +29,6 @@ module LayoutHelper
       'application',
       'search',
       'thickbox',
-      'lightbox',
       'colorpicker',
       'colorbox',
       pngfix_stylesheet_path,
