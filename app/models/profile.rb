@@ -179,6 +179,8 @@ class Profile < ActiveRecord::Base
   site
   ]
 
+  settings_items :products_per_catalog_page, :type => :integer, :default => 18
+
   belongs_to :user
 
   has_many :domains, :as => :owner

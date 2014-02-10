@@ -23,7 +23,6 @@ class Enterprise < Organization
   N_('Organization website'); N_('Historic and current context'); N_('Activities short description'); N_('City'); N_('State'); N_('Country'); N_('ZIP code')
 
   settings_items :organization_website, :historic_and_current_context, :activities_short_description, :zip_code, :city, :state, :country
-  settings_items :products_per_catalog_page, :type => :integer, :default => 18
 
   extend SetProfileRegionFromCityState::ClassMethods
   set_profile_region_from_city_state
