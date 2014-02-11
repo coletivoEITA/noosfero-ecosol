@@ -24,8 +24,6 @@ module LayoutHelper
     standard_stylesheets = [
       'application',
       'search',
-      'thickbox',
-      'lightbox',
       'colorbox',
       'inputosaurus',
       pngfix_stylesheet_path,
