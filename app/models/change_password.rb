@@ -1,13 +1,9 @@
 class ChangePassword < Task
 
-  attr_accessor :login, :password, :password_confirmation, :environment_id
+  attr_accessor :password, :password_confirmation
 
   def self.human_attribute_name(attrib)
     case attrib.to_sym
-    when :login:
-      [_('Username'), _('Email')].join(' / ')
-    when :email
-      _('e-mail')
     when :password
       _('Password')
     when :password_confirmation
@@ -17,17 +13,7 @@ class ChangePassword < Task
     end
   end
 
-  ###################################################
-  # validations for creating a ChangePassword task
-
-  validates_presence_of :login, :environment_id, :on => :create, :message => _('must be filled in')
-
-  validate :valid_login, :on => :create
-
-  before_validation_on_create do |change_password|
-    user = self.user_from_login(change_password.login, change_password.environment_id)
-    change_password.requestor = user.nil? ? nil : user.person
-  end
+  validates_presence_of :requestor
 
   ###################################################
   # validations for updating a ChangePassword task
@@ -37,14 +23,8 @@ class ChangePassword < Task
   validates_presence_of :password_confirmation, :on => :update, :if => lambda { |change| change.status != Task::Status::CANCELLED }
   validates_confirmation_of :password, :if => lambda { |change| change.status != Task::Status::CANCELLED }
 
-  def self.user_from_login login, environment_id
-    return nil if login.nil?
-
-    if login.include?'@'
-      user = User.find_by_email_and_environment_id(login, environment_id)
-    else
-      user = User.find_by_login_and_environment_id(login, environment_id)
-    end
+  def environment
+    requestor.environment unless requestor.nil?
   end
 
   def title
@@ -85,22 +65,7 @@ class ChangePassword < Task
     url = url_for(:host => hostname, :controller => 'account', :action => 'new_password', :code => code)
 
     lambda do
-      _("In order to change your password, please visit the following address:\n\n%s") % url
-    end
-  end
-
-  def environment
-    self.requestor.environment
-  end
-
-  protected
-
-  def valid_login
-    unless self.login.blank?
-      user = self.class.user_from_login(self.login, self.environment_id)
-      if user.nil?
-        self.errors.add(:login, _('is invalid or user does not exists.'))
-      end
+      _("In order to change your password, please visit the following address:\n\n%s\n\nIf you did not required any change to your password just desconsider this email.") % url
     end
   end
 

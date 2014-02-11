@@ -873,6 +873,12 @@ Array.min = function(array) {
   return Math.min.apply(Math, array);
 };
 
+function hideAndGetUrl(link) {
+  link.hide();
+  url = jQuery(link).attr('href');
+  jQuery.get(url);
+}
+
 jQuery(function($){
   $('.submit-with-keypress').live('keydown', function(e) {
      field = this;
@@ -895,12 +901,21 @@ jQuery(function($){
      }
    });
 
-  $('.view-all-comments').live('click', function(e) {
-     var link = this;
-     $(link).parent().find('.profile-wall-activities-comments').show();
-     $(link).hide();
+  $('#content').delegate( '.view-all-comments a', 'click', function(e) {
+     hideAndGetUrl(this);
      return false;
+   });
+
+  $('#content').delegate('.view-more-replies a', 'click', function(e) {
+    hideAndGetUrl(this);
+    return false;
   });
+
+  $('#content').delegate('.view-more-comments a', 'click', function(e) {
+    hideAndGetUrl(this);
+    return false;
+  });
+
   $('.focus-on-comment').live('click', function(e) {
      var link = this;
      $(link).parents('.profile-activity-item').find('textarea').focus();
@@ -1084,4 +1099,22 @@ jQuery(function($) {
     return false;
   });
 
+});
+
+function showHideTermsOfUse() {
+  if( jQuery("#article_has_terms_of_use").attr("checked") )
+    jQuery("#text_area_terms_of_use").show();
+  else {
+    jQuery("#text_area_terms_of_use").hide();
+    jQuery("#article_terms_of_use").val("");
+    jQuery("#article_terms_of_use_ifr").contents().find("body").html("");
+  }
+}
+
+jQuery(document).ready(function(){
+  showHideTermsOfUse();
+
+  jQuery("#article_has_terms_of_use").click(function(){
+    showHideTermsOfUse();
+  });
 });

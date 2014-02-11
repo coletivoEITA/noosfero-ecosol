@@ -50,10 +50,11 @@ module ThemeHelper
     nil
   end
 
-  def theme_include(template)
+  def theme_include(template, options = {})
     file = theme_view_file(template)
+    options.merge!({:file => file, :use_full_path => false})
     if file
-      render :file => file, :use_full_path => false
+      render options
     else
       nil
     end
