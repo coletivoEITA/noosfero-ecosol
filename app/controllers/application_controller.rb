@@ -23,6 +23,7 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
   layout :get_layout
   def get_layout
+    return nil if request.format == :js
     theme_layout = theme_option(:layout)
     if theme_layout
       theme_view_file('layouts/'+theme_layout) || theme_layout
@@ -193,7 +194,7 @@ class ApplicationController < ActionController::Base
   end
 
   def find_by_contents(asset, scope, query, paginate_options={:page => 1}, options={})
-    @plugins.dispatch_first(:find_by_contents, asset, scope, query, paginate_options, options) ||
+    plugins.dispatch_first(:find_by_contents, asset, scope, query, paginate_options, options) ||
     fallback_find_by_contents(asset, scope, query, paginate_options, options)
   end
 

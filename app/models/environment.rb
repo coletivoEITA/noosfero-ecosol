@@ -130,7 +130,8 @@ class Environment < ActiveRecord::Base
       'skip_new_user_email_confirmation' => _('Skip e-mail confirmation for new users'),
       'send_welcome_email_to_new_users' => _('Send welcome e-mail to new users'),
       'allow_change_of_redirection_after_login' => _('Allow users to set the page to redirect after login'),
-      'display_my_communities_on_user_menu' => _('Display on menu the list of communities the user can manage')
+      'display_my_communities_on_user_menu' => _('Display on menu the list of communities the user can manage'),
+      'display_my_enterprises_on_user_menu' => _('Display on menu the list of enterprises the user can manage')
     }
   end
 
@@ -186,7 +187,7 @@ class Environment < ActiveRecord::Base
   has_many :product_categories, :conditions => { :type => 'ProductCategory'}
   has_many :regions
 
-  has_many :roles
+  has_many :roles, :dependent => :destroy
 
   has_many :qualifiers
   has_many :certifiers
