@@ -28,7 +28,6 @@ module LayoutHelper
     standard_stylesheets = [
       'application',
       'search',
-      'thickbox',
       'colorpicker',
       'colorbox',
       pngfix_stylesheet_path,

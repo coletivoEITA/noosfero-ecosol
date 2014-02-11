@@ -8,8 +8,6 @@ module ApplicationHelper
 
   include PaginationHelper
 
-  include ThickboxHelper
-
   include ColorboxHelper
 
   include BoxesHelper
