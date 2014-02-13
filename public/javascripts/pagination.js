@@ -24,7 +24,10 @@ pagination = {
 
       var url = jQuery('.pagination .next_page').attr('href')
       if (url && jQuery(window).scrollTop() > (jQuery('.pagination').offset().top - jQuery(window).height() - 50)) {
-        jQuery('.pagination').text(text);
+
+        jQuery('.pagination').html(
+          jQuery('<div class=loading>').text(text)
+        );
 
         window.pagination_loading = true
         jQuery.getScript(url).always(function() {

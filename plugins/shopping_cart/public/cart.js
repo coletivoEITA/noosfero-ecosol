@@ -299,6 +299,10 @@ function Cart(config) {
     $.colorbox.close();
   }
 
+  Cart.load_add_buttons = function() {
+    $('.cart-add-item').button({ icons: { primary: 'ui-icon-cart'} })
+  };
+
   $(window).bind('beforeunload', function(){
     log('Page unload.');
     Cart.unloadingPage = true;
@@ -311,7 +315,7 @@ function Cart(config) {
       dataType: 'json',
       success: function(data) {
         new Cart(data);
-        $('.cart-add-item').button({ icons: { primary: 'ui-icon-cart'} })
+        Cart.load_add_buttons();
       },
       cache: false,
       error: function(ajax, status, errorThrown) {

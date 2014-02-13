@@ -3438,6 +3438,11 @@ div.with_media_panel .formfield input[type="checkbox"] {
 .pagination.infinite-scroll span {
   display: none;
 }
+.pagination.infinite-scroll .loading {
+  background-position: 45% 0;
+  background-size: 20px;
+  padding-left: 20px;
+}
 
 .pagination .disabled {
   color: #888;

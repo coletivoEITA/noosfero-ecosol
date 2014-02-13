@@ -12,9 +12,14 @@
 
   <%= breadcrumb(@category) if params[:level] %>
 
-  <%= render 'catalog/products', :products => @products %>
+  <ul id="product-list">
+    <%= render 'catalog/products', :products => @products %>
+  </ul>
 
-  <%= pagination_links @products, :params => {:controller => :catalog, :action => :index, :profile => profile.identifier} %>
+  <%= render 'catalog/pagination' %>
+  <% javascript_tag do %>
+    pagination.infiniteScroll(<%= _('loading...').to_json %>);
+  <% end %>
 
   <%= add_zoom_to_images %>
 
