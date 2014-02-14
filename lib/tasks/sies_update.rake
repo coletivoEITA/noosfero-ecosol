@@ -12,36 +12,92 @@ task :sies_new_enterprises do
   init_log "sies-new-enterprises.log"
   enterprises = load_sheet ENV["FILE"]
 
+  puts "Carregando empreendimentos"
   existing = Enterprise.where(['created_at > ? AND visible = true AND enabled = false', Date.today - 10.days]).order('id ASC')
   sies_enterprise_map = {}; existing.each do |e|
     id_sies = e.data[:id_sies]
-    next e.destroy if sies_enterprise_map[id_sies].present?
     sies_enterprise_map[id_sies] = e
   end
 
   puts "Iniciando importação..."
   enterprises.each do |data|
-    record = sies_enterprise_map[data[:data][:id_sies]]
+    enterprise = sies_enterprise_map[data[:data][:id_sies]]
 
-    if record
-      record.city = record.city
-      record.region_from_city_and_state
-      pp record.region
-      record.save!
-      #record.update_attribute :layout_template, 'leftbar'
-      #update_enterprise data, record
+    if enterprise
+      #enterprise.save!
     else
-      #record = create_enterprise data
+      #enterprise = create_enterprise data
     end
-    data[:record] = record
+    data[:record] = enterprise
   end
 
   puts "Exportando CSV com dados importados"
-  #export_imported enterprises
+  export_imported enterprises
 
   puts "Importação concluída!"
 end
 
+desc "Put private data"
+task :sies_put_private_data do
+  require 'script/lib/fbes_enterprise_call'
+  require 'script/lib/sies_new_enterprises'
+
+  if ENV["FILE"].blank?
+    puts "sintax:"
+    puts "  rake sies_put_private_data FILE=filename"
+    return
+  end
+
+  enterprises = []
+  rows = CSV.open ENV["FILE"], 'r'
+  rows.shift
+  rows.each do |row|
+    enterprises << {
+      :data => {
+        :id_sies => row[0].to_i,
+        :private => {
+          :contact_phone1 => row[9].to_s,
+          :contact_phone2 => row[11].to_s,
+          :contact_phone3 => row[13].to_s,
+          :contact_phone4 => row[15].to_s,
+          :contact_phone5 => row[17].to_s,
+        },
+      },
+    }
+  end
+
+  puts "Carregando empreendimentos"
+  existing = Enterprise.where(['visible = true']).order('id ASC')
+  sies_enterprise_map = {}; existing.each do |e|
+    id_sies = e.data[:id_sies]
+    sies_enterprise_map[id_sies] = e
+  end
+
+  puts "Inserindo telefones..."
+  enterprises.each do |data|
+    enterprise = sies_enterprise_map[data[:data][:id_sies]]
+
+    enterprise.data.update data[:data]
+    enterprise.save!
+  end
+end
+
+desc "Export the full list of enterprises"
+task :sies_export_all_enterprises do
+  require 'script/lib/fbes_enterprise_call'
+  require 'script/lib/sies_new_enterprises'
+
+  puts "Carregando empreendimentos"
+  enterprises = Enterprise.where(['visible = true']).order('id ASC').map do |enterprise|
+    {
+      :id_sies => enterprise.data[:id_sies],
+      :record => enterprise,
+    }
+  end
+
+  puts "Exportando CSV com dados importados"
+  export_imported enterprises
+end
 
 desc "Remove enterprises from the csv file - SIES Data"
 task :sies_remove_enterprises do
