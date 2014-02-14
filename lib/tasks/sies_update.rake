@@ -76,6 +76,7 @@ task :sies_put_private_data do
   puts "Inserindo telefones..."
   enterprises.each do |data|
     enterprise = sies_enterprise_map[data[:data][:id_sies]]
+    next puts "Não pode encontrar empreendimento com ID SIES #{data[:data][:id_sies]}" if enterprise.blank?
 
     enterprise.data.update data[:data]
     enterprise.save!
