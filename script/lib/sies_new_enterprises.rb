@@ -102,7 +102,7 @@ def export_imported enterprises
       activation_task = enterprise.tasks.where(:type => 'EnterpriseActivation').first
       url = "#{$environment.top_url}/#{enterprise.identifier}"
 
-      contact_phone = ([enterprise.data[:contact_phone]] + enterprise.data[:private].values).join ', '
+      contact_phone = ([enterprise.data[:contact_phone]] + (enterprise.data[:private] || {}).values).join ', '
 
       csv << [
         enterprise.data[:id_sies],
