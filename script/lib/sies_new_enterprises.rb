@@ -110,7 +110,7 @@ def export_imported enterprises
         url,
         enterprise.data[:state],
         enterprise.data[:city],
-        activation_task.code,
+        (activation_task.code rescue ''),
         enterprise.data[:foundation_year],
         enterprise.data[:contact_person],
         if enterprise.enabled and enterprise.created_at.year > 2012 then 'sim' else '' end,
