@@ -16,7 +16,7 @@
     <div class='table-content'>
       <% orders.each do |order| %>
         <div id="order-<%=order.id%>" class="order value-row" toggle-edit="orders.admin.toggle_edit();">
-          <%= render :partial => 'orders_plugin_admin/edit', :locals => {:order => order} %>
+          <%= render :partial => 'orders_plugin_admin/edit', :locals => {:order => order, :f => nil} %>
         </div>
       <% end %>
     </div>

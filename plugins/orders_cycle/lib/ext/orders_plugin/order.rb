@@ -17,7 +17,7 @@ class OrdersPlugin::Order
     :include => {:product => [{:from_products => {:from_products => {:sources_from_products => [{:supplier => [{:profile => [:domains, {:environment => :domains}]}]}]}}},
                               {:profile => [:domains, {:environment => :domains}]}, ]}
 
-  has_many :offered_products, :through => :products, :source => :offered_product
+  has_many :offered_products, :through => :items, :source => :offered_product
   has_many :distributed_products, :through => :offered_products, :source => :from_products
   has_many :supplier_products, :through => :distributed_products, :source => :from_products
 

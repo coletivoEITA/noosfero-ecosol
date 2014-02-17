@@ -20,6 +20,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
   has_many :ordered_suppliers, :through => :orders_confirmed, :source => :suppliers
   has_many :items, :through => :orders_confirmed, :source => :products
+
   has_many :ordered_offered_products, :through => :orders_confirmed, :source => :offered_products, :uniq => true
   has_many :ordered_distributed_products, :through => :orders_confirmed, :source => :distributed_products, :uniq => true
   has_many :ordered_supplier_products, :through => :orders_confirmed, :source => :supplier_products, :uniq => true

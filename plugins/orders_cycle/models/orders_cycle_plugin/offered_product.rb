@@ -6,7 +6,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     self.cycles.first
   end
 
-  has_many :items, :class_name => 'OrdersPlugin::Items', :foreign_key => :product_id, :dependent => :destroy
+  has_many :items, :class_name => 'OrdersPlugin::Item', :foreign_key => :product_id, :dependent => :destroy
   has_many :orders, :through => :items, :source => :order
 
   named_scope :sources_from_2x_products_joins, :joins =>
