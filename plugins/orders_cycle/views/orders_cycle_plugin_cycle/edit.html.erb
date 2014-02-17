@@ -2,7 +2,7 @@
 
   <%= render 'title', :cycle => @cycle %>
 
-  <% view = params[:view] ? params[:view] : @cycle.status.gsub(' ', '_') %>
+  <% view = if params[:view] then params[:view] else @cycle.status.gsub ' ', '_' end %>
   <div id="cycle-view-<%=view%>">
     <%= render :partial => view %>
   </div>

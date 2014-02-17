@@ -7,7 +7,7 @@
 <% end %>
 
 <div id='cycle-orders'>
-  <%= render :partial => 'orders_plugin_admin/index', :locals => {:orders => @cycle.orders} %>
+  <%= render 'orders_plugin_admin/table', :orders => @cycle.orders %>
 </div>
 
 <div id='cycle-products-sums'>
