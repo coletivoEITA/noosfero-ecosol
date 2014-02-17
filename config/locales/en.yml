@@ -391,7 +391,7 @@
           suggest_creation: "Haven't found %{terms.supplier.article.singular} you were searching?. You can create a new %{terms.supplier.new_undefined_article.singular} managed by the %{terms.profile.by_article.singular}."
           create_dummy: "Create %{terms.supplier.singular}"
         _edit: 
-          registry_help: "The registry %{terms.supplier.from.singular} will be managed by the %{terms.profile.by_own.singular} itself and will be private %{terms.profile.to_it.singular}."
+          registry_help: "The registry %{terms.supplier.from_article.singular} will be managed by the %{terms.profile.by_article.singular} itself and will be private %{terms.profile.to_it.singular}."
           abbreviated_name: "Abbreviated name"
           add_supplier_managed_: "Add %{terms.supplier.singular} managed %{terms.profile.by_article.singular}"
           additional_fields: "Additional fields"
@@ -561,7 +561,7 @@
           save: Save
           see_delivery: "see delivery"
           see_redistribution: "see redistribution"
-          the_collective_member: "The member %{terms.profile.from.singular} will receive an email that discriminates all changes made in his/her order"
+          the_collective_member: "The member %{terms.profile.from_article.singular} will receive an email that discriminates all changes made in his/her order"
           warn_member_of_the_ch: "Warn member of the changes in his/her order"
 
       mailer:
@@ -1102,7 +1102,7 @@
           presentation_text: "Presentation's text:"
           orders_management: "Orders' management"
         _orders_management:
-          forward_explanation: "When an order is confirmed through the shopping basket, an email with the order's details and the instructions of how to proceed is sent to the final user (buyer), to the administrators %{terms.supplier.from.plural} and to the administrators %{terms.profile.from.singular}. You can assign representatives of this node so that they can receive the orders of your products in place of %{terms.profile.from.singular}."
+          forward_explanation: "When an order is confirmed through the shopping basket, an email with the order's details and the instructions of how to proceed is sent to the final user (buyer), to the administrators %{terms.supplier.from_article.plural} and to the administrators %{terms.profile.from_article.singular}. You can assign representatives of this node so that they can receive the orders of your products in place of %{terms.profile.from_article.singular}."
           network_forward: "send the orders %{terms.profile.to_article.singular}"
           managers_forward: "send the orders to the representatives:"
       enterprise:

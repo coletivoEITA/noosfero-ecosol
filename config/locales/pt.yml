@@ -272,22 +272,23 @@
         it: 
           singular: "ele"
           plural: "eles"
-        tO_it: 
-          singular: "a ele"
-          plural: "a eles"
         one: "um"
         to: 
           singular: "a um fornecedor"
           plural: "a fornecedores"
+        to_it:
+          singular: "a ele"
+          plural: "a eles"
         to_article:
           singular: "ao fornecedor"
           plural: "aos fornecedores"
-        from_article: 
           singular: "do fornecedor"
         undefined_article:
           singular: "um fornecedor"
         none: 
           singular: "nenhum fornecedor"
+        from_article:
+          singular: "do fornecedor"
         from_which_article: 
           singular: "com que o fornecedor"
         article: 
@@ -338,7 +339,7 @@
           remove_product: remover
           cancel: cancelar
           save: salvar mudanças
-          view_on_supplier_page: "Ver produto na página %{terms.supplier.from.singular}"
+          view_on_supplier_page: "Ver produto na página %{terms.supplier.from_article.singular}"
           product_registry: "Cadastro do produto"
           selling_unit: "Unidade de venda"
           same_from_purchase: "Mesma da compra"
@@ -401,7 +402,7 @@
           suggest_creation: "Não encontrou %{terms.supplier.article.singular} que buscava?. Você pode criar %{terms.supplier.new_undefined_article.singular} gerido %{terms.profile.by_article.singular}."
           create_dummy: "Criar %{terms.supplier.singular}"
         _edit: 
-          registry_help: "O registro %{terms.supplier.from.singular} será administrado  %{terms.profile.by_own.singular} e será privado %{terms.profile.to_it.singular}."
+          registry_help: "O registro %{terms.supplier.from_article.singular} será administrado %{terms.profile.by_article.singular} e será privado %{terms.profile.to_it.singular}."
           abbreviated_name: "Nome Abreviado"
           add_supplier_managed_: "Adicionar %{terms.supplier.singular} com registro administrado %{terms.profile.by_article.singular}"
           additional_fields: "Campos adicionais"
@@ -570,7 +571,7 @@
           save: Salvar
           see_delivery: "veja entrega"
           see_redistribution: "veja redistribuição"
-          the_collective_member: "O membro %{terms.profile.from.singular} receberá um email que discrimina todas as mudanças feitas em seu pedido."
+          the_collective_member: "O membro %{terms.profile.from_article.singular} receberá um email que discrimina todas as mudanças feitas em seu pedido."
           warn_member_of_the_ch: "Avise o membro das mudanças em seu pedido"
       mailer:
         order_confirmation: 
@@ -937,7 +938,8 @@
         start: Início
         orders: Pedidos
         administration: Administração
-    terms:
+    terms: 
+      <<: *suppliers_terms
       profile:
         singular: "coletivo de consumo"
         plural: "coletivos de consumo"
@@ -946,7 +948,7 @@
         it: 
           singular: "ele"
           plural: "eles"
-        tO_it: 
+        to_it:
           singular: "a ele"
           plural: "a eles"
         to_article:
@@ -997,12 +999,12 @@
           header_type: "Tipo de cabeçalho"
           image_collective_name: "Imagem + nome %{terms.profile.from_article.singular}"
           only_the_image: "Apenas a imagem"
-          image_help: "Esta imagem será usada no cabeçalho da página %{terms.profile.from.singular}, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
-          pure_color_collective: "Cor pura + nome %{terms.profile.from.singular}"
+          image_help: "Esta imagem será usada no cabeçalho da página %{terms.profile.from_article.singular}, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
+          pure_color_collective: "Cor pura + nome %{terms.profile.from_article.singular}"
           save: Salvar
-          settings_of_solidary_: "Configurações %{terms.profile.from.singular}"
+          settings_of_solidary_: "Configurações %{terms.profile.from_article.singular}"
           text_color: "Cor do texto"
-          this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso %{terms.profile.from.singular}. Como %{terms.profile.article.singular} é comumente chamado pelas pessoas?"
+          this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso %{terms.profile.from_article.singular}. Como %{terms.profile.article.singular} é comumente chamado pelas pessoas?"
           white: branco
 
   networks_plugin:
@@ -1019,7 +1021,7 @@
         it: 
           singular: "ela"
           plural: "elas"
-        tO_it: 
+        to_it:
           singular: "a ela"
           plural: "a elas"
         to_article:
@@ -1045,17 +1047,17 @@
         it: 
           singular: "ele"
           plural: "eles"
-        tO_it: 
-          singular: "a ele"
-          plural: "a eles"
         one: "um"
         to: 
           singular: "a um empreendimento"
           plural: "a empreendimentos"
+        to_it:
+          singular: "a ele"
+          plural: "a eles"
         to_article:
           singular: "ao empreendimento"
           plural: "aos empreendimentos"
-        from_article: 
+        from_article:
           singular: "do empreendimento"
         undefined_article:
           singular: "um empreendimento"
@@ -1116,7 +1118,7 @@
           presentation_text: "Texto de apresentação:"
           orders_management: "Gestão de pedidos"
         _orders_management:
-          forward_explanation: "Quando um pedido é confirmado através do cesto de compras, um email contendo o detalhamento do pedido e as instruções de como proceder é enviado ao usuário final (comprador), aos administradores %{terms.supplier.from.plural} e aos administradores %{terms.profile.from.singular}. Você pode designar representantes desse nó para que eles recebam os pedidos de seus produtos em lugar dos administradores %{terms.profile.from.singular}."
+          forward_explanation: "Quando um pedido é confirmado através do cesto de compras, um email contendo o detalhamento do pedido e as instruções de como proceder é enviado ao usuário final (comprador), aos administradores %{terms.supplier.from_article.plural} e aos administradores %{terms.profile.from_article.singular}. Você pode designar representantes desse nó para que eles recebam os pedidos de seus produtos em lugar dos administradores %{terms.profile.from_article.singular}."
           network_forward: "enviar os pedidos para a rede"
           managers_forward: "enviar os pedidos para os representantes:"
       enterprise:
