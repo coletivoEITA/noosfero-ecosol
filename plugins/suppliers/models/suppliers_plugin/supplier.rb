@@ -83,7 +83,8 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   def destroy_with_dummy
     if not self.self? and not self.dont_destroy_dummy and self.supplier.dummy?
-      self.supplier.destroy!
+      raise self.supplier.inspect
+      self.supplier.destroy
     end
     destroy_without_dummy
   end
@@ -104,9 +105,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     return if self.self? or self.consumer.person?
 
     already_supplied = self.consumer.distributed_products.unarchived.from_supplier_id(self.id).all
-    pp already_supplied
 
-    pp self.profile.products.unarchived
     self.profile.products.unarchived.each do |source_product|
       next if already_supplied.find{ |f| f.supplier_product == source_product }
 

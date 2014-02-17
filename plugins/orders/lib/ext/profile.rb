@@ -36,7 +36,7 @@ class Profile
   module Roles
     def self.orders_manager env
       role = find_role 'orders_manager', env
-      role ||= Profile.create_orders_manager_role
+      role ||= Profile.create_orders_manager_role Environment.find(env)
       role
     end
 

@@ -1511,8 +1511,7 @@
   border: none; }
   .order-box .order-items-scroll {
     overflow-y: auto;
-    margin-left: -16px;
-    padding: 0 16px; }
+    padding-right: 16px; }
   .order-box, .order-box .order-items-scroll, .order-box .orders-item, .order-box .item {
     width: 384px; }
   .order-box.admin {
@@ -1520,6 +1519,9 @@
     border: 1px solid black; }
     .order-box.admin, .order-box.admin .order-items-scroll, .order-box.admin .orders-item, .order-box.admin .item {
       width: 464px; }
+    .order-box.admin .order-items-scroll {
+      margin-left: -16px;
+      padding-left: 16px; }
   .order-box .order-header {
     padding: 4px 8px;
     border-bottom: 1px solid black;

@@ -32,7 +32,6 @@ class SuppliersPluginMyprofileController < MyProfileController
   def add
     @enterprise = environment.enterprises.find params[:id]
     @new_supplier = profile.suppliers.create! :profile => @enterprise
-    render :layout => false
   end
 
   def edit
@@ -47,8 +46,6 @@ class SuppliersPluginMyprofileController < MyProfileController
       profile.supplier_products_default_margins if params[:apply_to_all]
 
       render :partial => 'suppliers_plugin_shared/pagereload'
-    else
-      render :layout => false
     end
   end
 
@@ -65,7 +62,6 @@ class SuppliersPluginMyprofileController < MyProfileController
   def search
     @enterprises = find_by_contents(:enterprises, environment.enterprises, params[:query])[:results]
     @enterprises -= profile.suppliers.collect(&:profile)
-    render :layout => false
   end
 
   protected
