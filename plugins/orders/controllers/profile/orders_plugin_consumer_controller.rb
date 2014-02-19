@@ -30,7 +30,7 @@ class OrdersPluginConsumerController < ProfileController
 
   def load_order
     @order = OrdersPlugin::Order.find_by_id params[:id]
-    render_access_denied if @order and @order.consumer != user
+    render_access_denied if @order and @order.consumer != user and not profile.has_admin? user
   end
 
   def check_access

@@ -4,7 +4,6 @@ NetworksPlugin::NetworksDisplayHelper = NetworksPlugin::DisplayHelper
 
 class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
 
-  include ControllerInheritance
   include NetworksPlugin::TranslationHelper
 
   before_filter :load_node, :only => [:associate, :destroy]
@@ -50,6 +49,7 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
     @node = NetworksPlugin::Node.find_by_id(params[:id]) || @network
   end
 
-  replace_url_for self.superclass
+  include ControllerInheritance
+  replace_url_for self.superclass => self
 
 end

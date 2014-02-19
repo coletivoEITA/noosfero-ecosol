@@ -1,14 +1,14 @@
 class NetworksPlugin::Node < NetworksPlugin::BaseNode
 
-  before_validation :generate_identifier, :if => :new_record?
-  before_destroy :assign_dependent_to_parent
+  before_validation :name_to_identifier
+  after_destroy :assign_dependent_to_parent
 
   delegate :admins, :to => :network
 
   protected
 
-  def generate_identifier
-    self.identifier = Digest::MD5.hexdigest rand.to_s
+  def name_to_identifier
+    self.identifier = "#{self.parent.identifier}.#{self.name.to_slug}"
   end
 
   def assign_dependent_to_parent
@@ -16,7 +16,7 @@ class NetworksPlugin::Node < NetworksPlugin::BaseNode
       relation.parent = self.parent
       relation.save!
     end
-    # suppliers are frozen, so create new ones
+    # 'suppliers' has_many is frozen, so create new ones
     self.suppliers.each do |supplier|
       next if supplier.self?
       supplier.dont_destroy_dummy = true

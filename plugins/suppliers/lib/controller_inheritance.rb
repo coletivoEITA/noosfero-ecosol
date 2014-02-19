@@ -28,16 +28,12 @@ module ControllerInheritance
 
     protected
 
-    def replace_url_for *controllers
+    def replace_url_for class_hash = {}
+      path_hash = {}; class_hash.each{ |source, dest| path_hash[source.controller_path] = dest.controller_path }
       self.send :define_method, :url_for do |options|
-        mapping = if controllers.last.is_a? Hash then controllers.pop else {} end
-        mapping.each do |source_klass, dest_klass|
-          options[:controller] = source_klass.controller_path if options[:controller].to_s == dest_klass.controller_path
-        end
+        dest_controller = path_hash[options[:controller].to_s]
+        options[:controller] = dest_controller if dest_controller
 
-        controllers.each do |klass|
-          options[:controller] = self.controller_path if options[:controller].to_s == klass.controller_path
-        end
         super options
       end
     end
