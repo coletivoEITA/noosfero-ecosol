@@ -422,6 +422,9 @@ function add_input_stuff() {
 function input_javascript_stuff(id) {
    jQuery(function() {
       id = 'input-' + id;
+
+      jQuery("#"+id).removeClass('small-loading');
+
       jQuery("#add-"+ id +"-details,#edit-"+id).click(function() {
         target = '#' + id + '-form';
 
@@ -464,7 +467,7 @@ function edit_input_stuff(id, currency_separator) {
          target: "#" + id,
          beforeSubmit: function(a,f,o) {
            o.loading = small_loading('edit-' + id + '-form');
-           o.loaded = loading_done(id);
+           o.loaded = loading_done('edit-' + id + '-form');
          }
       });
 
