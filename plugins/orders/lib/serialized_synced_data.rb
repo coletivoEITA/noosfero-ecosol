@@ -19,7 +19,7 @@ module SerializedSyncedData
 
       # create method for the chain
       define_method "#{field}_data" do
-        self["#{field}_data"]
+        self["#{field}_data"] || {}
       end unless self.respond_to? "#{field}_data"
 
       # return data from foreign registry if any data was synced yet
@@ -38,7 +38,7 @@ module SerializedSyncedData
           data = SerializedSyncedData.symbolize_keys source.attributes
         elsif source.is_a? Array
           data = source.map{ |source| SerializedSyncedData.symbolize_keys source.attributes }
-        end
+        end || {}
       end
 
       define_method "sync_#{field}_data" do
