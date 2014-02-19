@@ -54,7 +54,7 @@
     overflow-y: auto;
     padding-right: $intercolumn;
   }
-  &, .order-items-scroll, .orders-item, .item {
+  &, .order-items-scroll, .order-items, .item {
     width: $order-items-width;
   }
 
@@ -64,7 +64,7 @@
     margin: 0 $intercolumn; //for items overflow when selected and scrollbar
     border: $border solid black;
 
-    &, .order-items-scroll, .orders-item, .item {
+    &, .order-items-scroll, .order-items, .item {
       width: $order-items-admin-width;
     }
 
