@@ -6,7 +6,7 @@
   <body>
     <p>
       <%= t('orders_cycle_plugin.views.mailer.order_change_notification.hi_name') % {:name => @order.consumer.name} %>
-      <%= t('orders_cycle_plugin.views.mailer.order_change_notification.your_order_id_was_cha') % {:id => @order.id, :supplier => link_to(profile.name, profile.url)} %>
+      <%= t('orders_cycle_plugin.views.mailer.order_change_notification.your_order_id_was_cha') % {:id => @order.id, :supplier => link_to(@profile.name, @profile.url)} %>
     </p>
 
     <% if @message %>
@@ -44,7 +44,7 @@
     <p>
       --<br/>
       <%= t('orders_cycle_plugin.views.mailer.order_change_notification.thanks_for_buying_wit') %><br/>
-      <%= link_to profile.name, profile.url %>
+      <%= link_to @profile.name, @profile.url %>
     </p>
 
     <small style="color: #888"><%= t('orders_cycle_plugin.views.mailer.order_change_notification.a_service_of_s') % @environment.name %></small>
