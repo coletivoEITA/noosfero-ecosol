@@ -28,8 +28,8 @@ class ShoppingCartPluginController < PublicController
 
   def add
     product = find_product(params[:id])
-    if product && enterprise = validate_same_enterprise(product)
-      self.cart = { :enterprise_id => enterprise.id, :items => {} } if self.cart.blank?
+    if product && profile = validate_same_enterprise(product)
+      self.cart = { :enterprise_id => profile.id, :items => {} } if self.cart.blank?
       self.cart[:items][product.id] = 0 if self.cart[:items][product.id].nil?
       self.cart[:items][product.id] += 1
       render :text => {
@@ -105,9 +105,9 @@ class ShoppingCartPluginController < PublicController
   def send_request
     register_order(params[:customer], self.cart[:items])
     begin
-      enterprise = environment.enterprises.find(cart[:enterprise_id])
-      ShoppingCartPlugin::Mailer.deliver_customer_notification(params[:customer], enterprise, self.cart[:items], params[:delivery_option])
-      ShoppingCartPlugin::Mailer.deliver_supplier_notification(params[:customer], enterprise, self.cart[:items], params[:delivery_option])
+      profile = environment.enterprises.find(cart[:enterprise_id])
+      ShoppingCartPlugin::Mailer.deliver_customer_notification(params[:customer], profile, self.cart[:items], params[:delivery_option])
+      ShoppingCartPlugin::Mailer.deliver_supplier_notification(params[:customer], profile, self.cart[:items], params[:delivery_option])
       self.cart = nil
       render :text => {
         :ok => true,
@@ -168,8 +168,8 @@ class ShoppingCartPluginController < PublicController
   end
 
   def update_delivery_option
-    enterprise = environment.enterprises.find(cart[:enterprise_id])
-    settings = Noosfero::Plugin::Settings.new(enterprise, ShoppingCartPlugin)
+    profile = environment.enterprises.find(cart[:enterprise_id])
+    settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin)
     delivery_price = settings.delivery_options[params[:delivery_option]]
     delivery = Product.new(:name => params[:delivery_option], :price => delivery_price)
     delivery.save(false)
