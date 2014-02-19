@@ -1,4 +1,4 @@
-<ul id="product-list" class="<%="l-sidebar-left-content" if categories %>">
+<ul id="product-list">
   <% products.each do |product| %>
     <% extra_content = @plugins.dispatch(:catalog_item_extras, product).collect { |content| instance_eval(&content) } %>
     <% extra_content_list = @plugins.dispatch(:catalog_list_item_extras, product).collect { |content| instance_eval(&content) } %>
