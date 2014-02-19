@@ -39,12 +39,12 @@ orders_cycle = {
       },
 
       checkbox_click: function (check_box, id) {
-        this.click(id, check_box.checked);
+        this.click(null, id, check_box.checked);
         return true;
       },
       click: function (event, id) {
         // was this a child click?
-        if (event.target != this && event.target.onclick)
+        if (event != null && event.target != this && event.target.onclick)
           return;
 
         var product = jQuery('#cycle-product-'+id);
