@@ -45,8 +45,8 @@ class OrdersPluginItemController < MyProfileController
       end
     else
       @item.destroy if @item
-      render :action => :destroy
       @quantity_asked = nil
+      render :action => :destroy
     end
 
     @quantity_asked

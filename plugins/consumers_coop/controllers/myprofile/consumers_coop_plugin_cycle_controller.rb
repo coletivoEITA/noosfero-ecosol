@@ -8,6 +8,6 @@ class ConsumersCoopPluginCycleController < OrdersCyclePluginCycleController
 
   protected
 
-  replace_url_for self.superclass
+  replace_url_for self.superclass, OrdersPluginConsumerController => ConsumersCoopPluginOrderController
 
 end

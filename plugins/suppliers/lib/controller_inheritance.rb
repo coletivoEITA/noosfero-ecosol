@@ -30,6 +30,11 @@ module ControllerInheritance
 
     def replace_url_for *controllers
       self.send :define_method, :url_for do |options|
+        mapping = if controllers.last.is_a? Hash then controllers.pop else {} end
+        mapping.each do |source_klass, dest_klass|
+          options[:controller] = source_klass.controller_path if options[:controller].to_s == dest_klass.controller_path
+        end
+
         controllers.each do |klass|
           options[:controller] = self.controller_path if options[:controller].to_s == klass.controller_path
         end
