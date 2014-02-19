@@ -1,0 +1,147 @@
+@import 'base';
+@import 'orders-variables';
+
+.order-items-container {
+  @import 'field';
+
+  &.empty {
+    border-top: $border dotted black;
+    text-align: center;
+  }
+
+  .order-total {
+    padding: $half-padding $padding;
+    @extend .container-clean;
+
+    .title,
+    .value {
+      margin-left: $module04; //the size of the previous colums
+      padding: 0 $padding;
+      width: $module01;
+      text-transform: uppercase;
+    }
+
+    .value {
+      clear: both;
+    }
+  }
+
+  .order-items {
+    max-height: 300px;
+
+    .table-header {
+      @extend .container-clean;
+    }
+    //.item do overflow, so no overflow:hidden for its parents (.table-content)
+
+    .box-field {
+      float: left;
+      padding: $half-padding $padding;
+      padding-right: $padding - $border; border-right: $border solid white; &:last-child {
+        border-right: none;
+      }
+
+      &.supplier {
+        width: $module01 + $intercolumn;
+      }
+      &.product {
+        width: $module02 - $intercolumn/2;
+      }
+      &.quantity,
+      &.quantity-edit {
+        &, input {
+          width: $module01 - $intercolumn;
+        }
+      }
+      &.price-total {
+        width: $module01 - $intercolumn/2;
+      }
+      &.status-updated {
+        width: $module01;
+      }
+    }
+
+    .table-header, .table-content {
+      border-bottom: $border solid black;
+    }
+
+    .table-header {
+      font-weight: bold;
+      font-size: 8px;
+      text-transform: uppercase;
+    }
+
+    .table-content {
+
+      .item {
+
+        .fields {
+          @extend .container-clean;
+        }
+
+        .more {
+          padding: $half-padding $padding;
+          display: none; //default
+
+          .actions {
+            float: left;
+
+            a {
+              color: black;
+            }
+          }
+          .price-with-unit {
+            float: right;
+          }
+        }
+
+        .quantity {
+
+          .value {
+          }
+          .unit {
+            text-transform: lowercase;
+          }
+        }
+
+        &.hover,
+        &.edit {
+          background-color: $order-items-color;
+        }
+
+        .quantity-edit {
+          display: none;
+        }
+
+        &.edit {
+          margin-left: -($half-padding + $border);
+          padding: $half-padding;
+          border: $border solid black;
+
+          border-radius: $border-radius;
+          -moz-border-radius: $border-radius;
+          -o-border-radius: $border-radius;
+          -webkit-border-radius: $border-radius;
+
+          box-shadow: 0 0 3px rgba(0,0,0,.5);
+          -moz-box-shadow: 0 0 3px rgba(0,0,0,.5);
+          -webkit-box-shadow: 0 0 3px rgba(0,0,0,.5);
+
+          .quantity-edit {
+            display: block;
+          }
+          .quantity {
+            display: none;
+          }
+
+          .box-field {
+            border-right: none;
+            padding-right: $padding;
+          }
+        }
+      }
+    }
+  }
+}
+
+

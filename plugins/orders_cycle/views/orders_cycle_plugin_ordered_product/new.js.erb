@@ -1,4 +1,0 @@
-<% unless params[:redirect] == '1' %>
-  orders_cycle.order.product.load(<%= @offered_product.id %>, true);
-  <%= render :partial => 'orders_plugin_product/new' %>
-<% end %>

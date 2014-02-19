@@ -31,7 +31,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   after_create :add_admins, :if => :dummy?
   after_create :save_profile, :if => :dummy?
-  after_create :distribute_products_to_consumers
+  after_create :distribute_products_to_consumer
 
   attr_accessor :dont_destroy_dummy
 
@@ -83,7 +83,8 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   def destroy_with_dummy
     if not self.self? and not self.dont_destroy_dummy and self.supplier.dummy?
-      self.supplier.destroy!
+      raise self.supplier.inspect
+      self.supplier.destroy
     end
     destroy_without_dummy
   end
@@ -100,7 +101,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
     self.supplier.save
   end
 
-  def distribute_products_to_consumers
+  def distribute_products_to_consumer
     return if self.self? or self.consumer.person?
 
     already_supplied = self.consumer.distributed_products.unarchived.from_supplier_id(self.id).all

@@ -28,11 +28,12 @@ module ControllerInheritance
 
     protected
 
-    def replace_url_for *controllers
+    def replace_url_for class_hash = {}
+      path_hash = {}; class_hash.each{ |source, dest| path_hash[source.controller_path] = dest.controller_path }
       self.send :define_method, :url_for do |options|
-        controllers.each do |klass|
-          options[:controller] = self.controller_path if options[:controller].to_s == klass.controller_path
-        end
+        dest_controller = path_hash[options[:controller].to_s]
+        options[:controller] = dest_controller if dest_controller
+
         super options
       end
     end
@@ -74,6 +75,7 @@ module ControllerInheritance
       end
     end
 
+    # replace method just to change instance class
     base.send :define_method, :initialize_template_class do |response|
       response.template = ControllerInheritance::ActionView.new self.class.view_paths, {}, self
       response.template.helpers.send :include, self.class.master_helper_module

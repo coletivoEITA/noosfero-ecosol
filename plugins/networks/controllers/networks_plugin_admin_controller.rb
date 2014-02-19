@@ -18,6 +18,7 @@ class NetworksPluginAdminController < AdminController
       @network = NetworksPlugin::Network.new params[:network].merge(:environment => environment)
       @network.identifier = @network.name.to_slug
       if @network.save
+        @network.add_admin user
         redirect_to :action => :index
       else
         render :action => :index

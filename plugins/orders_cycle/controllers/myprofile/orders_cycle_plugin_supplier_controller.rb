@@ -8,7 +8,6 @@ class OrdersCyclePluginSupplierController < SuppliersPluginMyprofileController
 
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
-  include ControllerInheritance
   include SuppliersPlugin::TranslationHelper
 
   protect 'edit_profile', :profile
@@ -23,6 +22,7 @@ class OrdersCyclePluginSupplierController < SuppliersPluginMyprofileController
 
   protected
 
-  replace_url_for self.superclass, SuppliersPluginProductController
+  include ControllerInheritance
+  replace_url_for self.superclass => self, SuppliersPluginProductController => self
 
 end

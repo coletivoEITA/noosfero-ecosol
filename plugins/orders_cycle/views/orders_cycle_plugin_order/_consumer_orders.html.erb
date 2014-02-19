@@ -91,11 +91,11 @@
     <% end %>
 
     <div id="order-products">
-      <%= render :partial => 'orders_plugin_consumer/products', :locals => {:order => @order} %>
+      <%= render 'orders_plugin_consumer/items', :order => @order %>
     </div>
 
     <div id="delivery-box">
-      <%= render :partial => 'delivery', :locals => {:order => @order} %>
+      <%= render 'delivery', :order => @order %>
     </div>
 
     <div class="clean"></div>

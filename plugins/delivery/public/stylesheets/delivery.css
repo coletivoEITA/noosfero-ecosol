@@ -211,7 +211,7 @@
     font-size: 21px; }
   #delivery-method-edit .pstyle-tm1 {
     font-size: 13px; }
-  #delivery-method-edit .pstyle-tm2 {
+  #delivery-method-edit .pstyle-tm2, #delivery-method-edit .subtitle {
     font-size: 10px; }
   #delivery-method-edit .profile-image {
     display: inline-block;

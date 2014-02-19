@@ -1,6 +1,8 @@
 <div id="cycle-admin-page" class='admin-page'>
-  <%= render :partial => 'title', :locals => {:cycle => @cycle} %>
-  <% view = params[:view] ? params[:view] : @cycle.status.gsub(' ', '_') %>
+
+  <%= render 'title', :cycle => @cycle %>
+
+  <% view = if params[:view] then params[:view] else @cycle.status.gsub ' ', '_' end %>
   <div id="cycle-view-<%=view%>">
     <%= render :partial => view %>
   </div>

@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-products-container .order-total, .order-products-container .order-products .table-header, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .order-items .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -92,7 +92,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .consumer-order .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .order-items-container .subtitle, .consumer-order .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -119,7 +119,9 @@
 /* Buttons */
 .action-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], .consumer-order a.button.colorbox-close,
+#filter .filter-box input[type=submit], .order-items-container a.button.colorbox-close,
+.order-items-container #wrap-1 input[type=submit],
+.order-items-container input[type=submit], .consumer-order a.button.colorbox-close,
 .consumer-order #wrap-1 input[type=submit],
 .consumer-order input[type=submit] {
   display: inline-block;
@@ -144,7 +146,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-products-container .order-total, .order-products-container .order-products .table-header, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .order-items .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -234,7 +236,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .consumer-order .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .order-items-container .subtitle, .consumer-order .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -261,7 +263,9 @@
 /* Buttons */
 .action-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], .consumer-order a.button.colorbox-close,
+#filter .filter-box input[type=submit], .order-items-container a.button.colorbox-close,
+.order-items-container #wrap-1 input[type=submit],
+.order-items-container input[type=submit], .consumer-order a.button.colorbox-close,
 .consumer-order #wrap-1 input[type=submit],
 .consumer-order input[type=submit] {
   display: inline-block;
@@ -286,7 +290,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-products-container .order-total, .order-products-container .order-products .table-header, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .order-items .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -376,7 +380,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .consumer-order .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .order-items-container .subtitle, .consumer-order .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -403,7 +407,9 @@
 /* Buttons */
 .action-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], .consumer-order a.button.colorbox-close,
+#filter .filter-box input[type=submit], .order-items-container a.button.colorbox-close,
+.order-items-container #wrap-1 input[type=submit],
+.order-items-container input[type=submit], .consumer-order a.button.colorbox-close,
 .consumer-order #wrap-1 input[type=submit],
 .consumer-order input[type=submit] {
   display: inline-block;
@@ -423,6 +429,10 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.box-field {
+  float: left;
+  padding: 8px; }
 
 .sortable-table.wireframe-size > .table-header {
   width: 960px;
@@ -431,9 +441,6 @@
 .sortable-table.checkable > .table-content > .value-row {
   width: 1008px;
   margin-left: -24px; }
-.sortable-table > .table-header .box-field, .sortable-table > .table-content .box-field {
-  float: left;
-  padding: 8px; }
 .sortable-table > .table-header .box-field,
 .sortable-table > .table-content .box-view .box-field {
   font-size: 10px; }
@@ -464,6 +471,9 @@
   .sortable-table > .table-content > .value-row {
     background: white;
     border: 1px solid #f3f4ee; }
+    .sortable-table > .table-content > .value-row.hover {
+      border-color: #fdf2a3;
+      border-bottom-color: #f3f4ee; }
     .sortable-table > .table-content > .value-row.edit {
       border: 1px solid black; }
       .sortable-table > .table-content > .value-row.edit .box-view {
@@ -538,7 +548,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-products-container .order-total, .order-products-container .order-products .table-header, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .order-items .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -628,7 +638,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .consumer-order .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .order-items-container .subtitle, .consumer-order .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -655,7 +665,9 @@
 /* Buttons */
 .action-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], .consumer-order a.button.colorbox-close,
+#filter .filter-box input[type=submit], .order-items-container a.button.colorbox-close,
+.order-items-container #wrap-1 input[type=submit],
+.order-items-container input[type=submit], .consumer-order a.button.colorbox-close,
 .consumer-order #wrap-1 input[type=submit],
 .consumer-order input[type=submit] {
   display: inline-block;
@@ -729,7 +741,7 @@
     /* Buttons */ }
     #filter .filter-box .clean {
       clear: both; }
-    #filter .filter-box .container-clean, #filter .filter-box .sortable-table > .table-header, #filter .filter-box .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #filter .filter-box .box-view, #filter .filter-box .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #filter .filter-box .box-view-inner, #filter .filter-box .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #filter .filter-box .internal-table, #filter .filter-box .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #filter .filter-box .order-products-container .order-total, .order-products-container #filter .filter-box .order-total, #filter .filter-box .order-products-container .order-products .table-header, .order-products-container .order-products #filter .filter-box .table-header {
+    #filter .filter-box .container-clean, #filter .filter-box .sortable-table > .table-header, #filter .filter-box .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #filter .filter-box .box-view, #filter .filter-box .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #filter .filter-box .box-view-inner, #filter .filter-box .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #filter .filter-box .internal-table, #filter .filter-box .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #filter .filter-box .order-items-container .order-total, .order-items-container #filter .filter-box .order-total, #filter .filter-box .order-items-container .order-items .table-header, .order-items-container .order-items #filter .filter-box .table-header, #filter .filter-box .order-items-container .order-items .table-content .item .fields, .order-items-container .order-items .table-content .item #filter .filter-box .fields {
       overflow: hidden;
       display: inline-block;
       /* Necessary to trigger "hasLayout" in IE */
@@ -921,7 +933,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-products-container .order-total, .order-products-container .order-products .table-header, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .order-items .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -1011,7 +1023,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .consumer-order .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .order-items-container .subtitle, .consumer-order .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -1038,7 +1050,9 @@
 /* Buttons */
 .action-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], .consumer-order a.button.colorbox-close,
+#filter .filter-box input[type=submit], .order-items-container a.button.colorbox-close,
+.order-items-container #wrap-1 input[type=submit],
+.order-items-container input[type=submit], .consumer-order a.button.colorbox-close,
 .consumer-order #wrap-1 input[type=submit],
 .consumer-order input[type=submit] {
   display: inline-block;
@@ -1063,7 +1077,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-products-container .order-total, .order-products-container .order-products .table-header, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .order-items .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -1153,7 +1167,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .consumer-order .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, .order-items-container .subtitle, .consumer-order .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -1180,7 +1194,9 @@
 /* Buttons */
 .action-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], .consumer-order a.button.colorbox-close,
+#filter .filter-box input[type=submit], .order-items-container a.button.colorbox-close,
+.order-items-container #wrap-1 input[type=submit],
+.order-items-container input[type=submit], .consumer-order a.button.colorbox-close,
 .consumer-order #wrap-1 input[type=submit],
 .consumer-order input[type=submit] {
   display: inline-block;
@@ -1201,65 +1217,258 @@
   text-shadow: none;
   border-radius: 5px; }
 
-.order-products-container {
-  width: 432px;
-  font-size: 10px; }
-  .order-products-container.empty {
-    padding: 8px 0;
+.order-items-container {
+  /* use with @extend, CSS clear bugfix */
+  /* layout base parameters */
+  /* heights should only use multiples of this */
+  /* base measurements */
+  /* widths should only use one of these */
+  /* paddings and margins should only use one of these
+     Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+     Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+     box doesn't have a padding, then sum $intercolumn to the width.
+   */
+  /* use for borders */
+  /* use for text shadows */
+  /* Colors */
+  /* Fonts */
+  /* Paragraphs Styles (use with @extend) */
+  /* Images */
+  /* profile-image that can be centered and resized with aspect ratio */
+  /* Buttons */ }
+  .order-items-container .clean {
+    clear: both; }
+  .order-items-container .container-clean, .order-items-container .sortable-table > .table-header, .order-items-container .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .order-items-container .box-view, .order-items-container .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view .order-items-container .box-view-inner, .order-items-container .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit .order-items-container .internal-table, .order-items-container #filter .filter-box, #filter .order-items-container .filter-box, .order-items-container #filter .filter-box .field, #filter .filter-box .order-items-container .field, .order-items-container #filter .filter-box .field-secondary.with-unit, #filter .filter-box .order-items-container .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .order-items .table-content .item .fields {
+    overflow: hidden;
+    display: inline-block;
+    /* Necessary to trigger "hasLayout" in IE */
+    display: block;
+    /* Sets element back to block */ }
+  .order-items-container .pstyle-none {
+    font-size: 12px; }
+  .order-items-container .pstyle-basic {
+    font-size: 16px; }
+  .order-items-container .pstyle-button {
+    font-size: 16px; }
+  .order-items-container .pstyle-button-small {
+    font-size: 13px; }
+  .order-items-container .pstyle-title {
+    font-size: 72px; }
+  .order-items-container .pstyle-h1 {
+    font-size: 34px; }
+  .order-items-container .pstyle-h2 {
+    font-size: 26px; }
+  .order-items-container .pstyle-h3 {
+    font-size: 21px; }
+  .order-items-container .pstyle-h4 {
+    font-size: 16px; }
+  .order-items-container .pstyle-h5 {
+    font-size: 13px; }
+  .order-items-container .pstyle-title-section {
+    font-size: 92px; }
+  .order-items-container .pstyle-field {
+    font-size: 13px; }
+  .order-items-container .pstyle-menu-big-selected {
+    font-size: 21px; }
+  .order-items-container .pstyle-menu-big-unselected {
+    font-size: 21px; }
+  .order-items-container .pstyle-menu-medium-selected {
+    font-size: 16px; }
+  .order-items-container .pstyle-menu-medium-unselected {
+    font-size: 16px; }
+  .order-items-container .pstyle-menu-small-selected {
+    font-size: 13px; }
+  .order-items-container .pstyle-menu-small-unselected {
+    font-size: 13px; }
+  .order-items-container .pstyle-tp4 {
+    font-size: 42px; }
+  .order-items-container .pstyle-tp3 {
+    font-size: 34px; }
+  .order-items-container .pstyle-tp2 {
+    font-size: 26px; }
+  .order-items-container .pstyle-tp1 {
+    font-size: 21px; }
+  .order-items-container .pstyle-tm1 {
+    font-size: 13px; }
+  .order-items-container .pstyle-tm2, .order-items-container #filter .filter-box .subtitle, #filter .filter-box .order-items-container .subtitle, .order-items-container .subtitle {
+    font-size: 10px; }
+  .order-items-container .profile-image {
+    display: inline-block;
+    /* do not put padding in this as background size will consider it. */ }
+    .order-items-container .profile-image.thumb {
+      width: 32px;
+      height: 32px; }
+    .order-items-container .profile-image.portrait {
+      width: 80px;
+      height: 80px; }
+    .order-items-container .profile-image .inner {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100%;
+      background-size: contain;
+      /* css3 enabled */ }
+  .order-items-container .action-button, .order-items-container #filter .filter-box a.button.colorbox-close, #filter .filter-box .order-items-container a.button.colorbox-close,
+  .order-items-container #filter .filter-box #wrap-1 input[type=submit],
+  #filter .filter-box #wrap-1 .order-items-container input[type=submit],
+  .order-items-container #filter .filter-box input[type=submit],
+  #filter .filter-box .order-items-container input[type=submit], .order-items-container a.button.colorbox-close,
+  .order-items-container #wrap-1 input[type=submit],
+  .order-items-container input[type=submit],
+  .consumer-order #wrap-1 .order-items-container input[type=submit] {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 0;
+    /* remove submit input browser's margin */
+    height: auto;
+    width: auto;
+    background: #fbca47;
+    border: 1px solid #f4a439;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+    line-height: 16px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-shadow: none;
+    border-radius: 5px; }
+  .order-items-container .field-title {
+    text-transform: uppercase;
+    font-weight: bold; }
+  .order-items-container .field {
+    clear: both; }
+    .order-items-container .field:first-child label {
+      padding-top: 0; }
+    .order-items-container .field label {
+      display: block;
+      float: left;
+      padding-top: 4px;
+      font-weight: bold;
+      line-height: 20px; }
+    .order-items-container .field .field-box {
+      clear: both;
+      float: left;
+      width: 100%; }
+    .order-items-container .field .field-help {
+      clear: both;
+      margin-bottom: 8px;
+      font-size: 10px; }
+  .order-items-container .field-radio {
+    clear: both;
+    margin-bottom: 4px; }
+    .order-items-container .field-radio input {
+      float: left;
+      margin-left: 0; }
+    .order-items-container .field-radio label {
+      font-weight: normal;
+      line-height: 10px;
+      text-transform: lowercase;
+      margin-left: 4px; }
+  .order-items-container .field-secondary {
+    display: block; }
+    .order-items-container .field-secondary, .order-items-container .field-secondary input, .order-items-container .field-secondary select {
+      width: 128px; }
+    .order-items-container .field-secondary.with-unit input {
+      float: left;
+      width: 112px; }
+    .order-items-container .field-secondary.with-unit .field-unit {
+      float: left;
+      width: 16px;
+      line-height: 24px; }
+  .order-items-container form {
+    margin: 0;
+    /* come on browsers!? */ }
+  .order-items-container label.field-bellow {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 10px; }
+  .order-items-container select,
+  .order-items-container input[type=text], .order-items-container input[type=password],
+  .order-items-container textarea {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box; }
+  .order-items-container select,
+  .order-items-container input[type=text], .order-items-container input[type=password] {
+    height: 24px; }
+  .order-items-container select {
+    background-color: #fff;
+    border: 1px solid black;
+    padding-left: 4px; }
+  .order-items-container input.date-select, .order-items-container input.time-select {
+    width: 94px; }
+  .order-items-container input[type=text] {
+    border: 1px solid black;
+    padding: 4px;
+    margin: 0; }
+  .order-items-container input[type=checkbox] {
+    width: 12px;
+    height: 12px;
+    margin: 0; }
+  .order-items-container textarea {
+    height: 64px;
+    padding-left: 4px;
+    margin-bottom: 10px; }
+  .order-items-container.empty {
     border-top: 1px dotted black;
     text-align: center; }
-  .order-products-container .order-total {
-    padding: 4px 8px;
-    border-top: 1px solid black; }
-    .order-products-container .order-total .total-title,
-    .order-products-container .order-total .total-value {
-      float: right;
+  .order-items-container .order-total {
+    padding: 4px 8px; }
+    .order-items-container .order-total .title,
+    .order-items-container .order-total .value {
+      margin-left: 304px;
+      padding: 0 8px;
       width: 64px;
       text-transform: uppercase; }
-    .order-products-container .order-total .total-value {
-      width: 64px;
+    .order-items-container .order-total .value {
       clear: both; }
-  .order-products-container .order-products {
-    overflow-y: auto;
-    max-height: 300px;
-    margin-right: -15px; }
-    .order-products-container .order-products .table-header {
-      font-weight: bold;
-      border-bottom: 1px solid black;
-      text-transform: uppercase; }
-    .order-products-container .order-products .box-field {
+  .order-items-container .order-items {
+    max-height: 300px; }
+    .order-items-container .order-items .box-field {
       float: left;
       padding: 4px 8px;
       padding-right: 7px;
       border-right: 1px solid white; }
-      .order-products-container .order-products .box-field:last-child {
+      .order-items-container .order-items .box-field:last-child {
         border-right: none; }
-      .order-products-container .order-products .box-field.supplier {
-        width: 96px; }
-      .order-products-container .order-products .box-field.product {
-        width: 144px; }
-      .order-products-container .order-products .box-field.quantity, .order-products-container .order-products .box-field.quantity input, .order-products-container .order-products .box-field.quantity-edit, .order-products-container .order-products .box-field.quantity-edit input {
+      .order-items-container .order-items .box-field.supplier {
+        width: 80px; }
+      .order-items-container .order-items .box-field.product {
+        width: 136px; }
+      .order-items-container .order-items .box-field.quantity, .order-items-container .order-items .box-field.quantity input, .order-items-container .order-items .box-field.quantity-edit, .order-items-container .order-items .box-field.quantity-edit input {
+        width: 48px; }
+      .order-items-container .order-items .box-field.price-total {
+        width: 56px; }
+      .order-items-container .order-items .box-field.status-updated {
         width: 64px; }
-      .order-products-container .order-products .box-field.price-total {
-        width: 64px; }
-    .order-products-container .order-products .table-content .ordered-product .more {
+    .order-items-container .order-items .table-header, .order-items-container .order-items .table-content {
+      border-bottom: 1px solid black; }
+    .order-items-container .order-items .table-header {
+      font-weight: bold;
+      font-size: 8px;
+      text-transform: uppercase; }
+    .order-items-container .order-items .table-content .item .more {
       padding: 4px 8px;
       display: none; }
-      .order-products-container .order-products .table-content .ordered-product .more .actions {
+      .order-items-container .order-items .table-content .item .more .actions {
         float: left; }
-        .order-products-container .order-products .table-content .ordered-product .more .actions a {
+        .order-items-container .order-items .table-content .item .more .actions a {
           color: black; }
-      .order-products-container .order-products .table-content .ordered-product .more .price-with-unit {
+      .order-items-container .order-items .table-content .item .more .price-with-unit {
         float: right; }
-    .order-products-container .order-products .table-content .ordered-product.hover, .order-products-container .order-products .table-content .ordered-product.edit {
+    .order-items-container .order-items .table-content .item .quantity .unit {
+      text-transform: lowercase; }
+    .order-items-container .order-items .table-content .item.hover, .order-items-container .order-items .table-content .item.edit {
       background-color: #ffe546; }
-    .order-products-container .order-products .table-content .ordered-product .quantity-edit {
+    .order-items-container .order-items .table-content .item .quantity-edit {
       display: none; }
-    .order-products-container .order-products .table-content .ordered-product.edit {
-      width: 436px;
-      padding-bottom: 4px;
+    .order-items-container .order-items .table-content .item.edit {
       margin-left: -5px;
-      padding-left: 4px;
+      padding: 4px;
       border: 1px solid black;
       border-radius: 5px;
       -moz-border-radius: 5px;
@@ -1268,92 +1477,55 @@
       box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
       -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); }
-      .order-products-container .order-products .table-content .ordered-product.edit .quantity-edit {
+      .order-items-container .order-items .table-content .item.edit .quantity-edit {
         display: block; }
-      .order-products-container .order-products .table-content .ordered-product.edit .quantity {
+      .order-items-container .order-items .table-content .item.edit .quantity {
         display: none; }
-      .order-products-container .order-products .table-content .ordered-product.edit .box-field {
+      .order-items-container .order-items .table-content .item.edit .box-field {
         border-right: none;
         padding-right: 8px; }
 
-.orders-admin-index {
-  margin-bottom: 20px; }
-  .orders-admin-index .order-header {
-    background-color: #B1DFEF;
-    clear: both;
-    float: left;
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box; }
-  .orders-admin-index .order-header .order-label {
-    font-weight: bold;
-    font-size: 13px;
-    display: block;
-    float: left; }
-  .orders-admin-index .order-header .actions-circle {
-    float: right; }
-  .orders-admin-index .order-header .actions-circle .actions-arrow {
-    border-top: 7px solid black;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    margin: 8px 6px 0 5px; }
-  .orders-admin-index .order-header .actions-circle.edit .actions-arrow {
-    border-bottom: 7px solid black;
-    border-top: 6px solid transparent;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    margin: 2px 6px 0px 5px; }
-  .orders-admin-index .orders-admin-index.show .order-header .line {
-    border-bottom: 2px solid white;
-    clear: both;
-    width: 100%;
-    padding-top: 10px; }
-  .orders-admin-index .order {
-    clear: both; }
-  .orders-admin-index .order .actions-bar {
-    width: 100%;
-    margin-left: -10px;
-    margin-bottom: -10px; }
-  .orders-admin-index .order.edit {
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
-    margin-top: -1px; }
-  .orders-admin-index .order.edit,
-  .orders-admin-index .order .box-edit {
-    background-color: #fff2a3; }
-  .orders-admin-index .order .box-edit {
-    padding-top: 8px; }
-  .orders-admin-index .order .box-edit .empty-order {
+.orders-admin-index .box-field.code {
+  width: 64px; }
+.orders-admin-index .box-field.consumer {
+  width: 304px; }
+.orders-admin-index .box-field.last-update {
+  width: 144px; }
+.orders-admin-index .box-field.total {
+  width: 64px; }
+.orders-admin-index .order.edit {
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  margin-top: -1px; }
+.orders-admin-index .order.value-row .box-edit {
+  padding-top: 8px; }
+  .orders-admin-index .order.value-row .box-edit .empty-order {
     text-align: center;
     margin-bottom: 8px; }
-  .orders-admin-index .order .box-edit form {
-    padding: 0 16px 0 240px;
-    width: 400px; }
-  .orders-admin-index .order .box-edit textarea {
-    width: 100%; }
-  .orders-admin-index .order .box-edit input[type=checkbox] {
-    float: left; }
-  .orders-admin-index .order .value-row {
-    padding: 8px 10px; }
-  .orders-admin-index .actions {
-    min-height: 1px; }
-  .orders-admin-index .box-view .code {
-    font-size: 10px; }
-  .orders-admin-index .code {
-    width: 70px; }
-  .orders-admin-index .member {
-    width: 200px; }
-  .orders-admin-index .created {
-    width: 100px; }
-  .orders-admin-index .modified {
-    width: 100px; }
-  .orders-admin-index .products-count {
-    width: 80px; }
-  .orders-admin-index .price {
-    width: 70px; }
+
+.order-box {
+  background: #f8fa83;
+  border-radius: 3px;
+  font-size: 10px;
+  margin: 0;
+  border: none; }
+  .order-box .order-items-scroll {
+    overflow-y: auto;
+    padding-right: 16px; }
+  .order-box, .order-box .order-items-scroll, .order-box .order-items, .order-box .item {
+    width: 384px; }
+  .order-box.admin {
+    margin: 0 16px;
+    border: 1px solid black; }
+    .order-box.admin, .order-box.admin .order-items-scroll, .order-box.admin .order-items, .order-box.admin .item {
+      width: 464px; }
+    .order-box.admin .order-items-scroll {
+      margin-left: -16px;
+      padding-left: 16px; }
+  .order-box .order-header {
+    padding: 4px 8px;
+    border-bottom: 1px solid black;
+    text-transform: uppercase; }
 
 .consumer-order {
   /* use with @extend, CSS clear bugfix */
@@ -1376,7 +1548,7 @@
   /* Buttons */ }
   .consumer-order .clean {
     clear: both; }
-  .consumer-order .container-clean, .consumer-order .sortable-table > .table-header, .consumer-order .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .consumer-order .box-view, .consumer-order .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view .consumer-order .box-view-inner, .consumer-order .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit .consumer-order .internal-table, .consumer-order #filter .filter-box, #filter .consumer-order .filter-box, .consumer-order #filter .filter-box .field, #filter .filter-box .consumer-order .field, .consumer-order #filter .filter-box .field-secondary.with-unit, #filter .filter-box .consumer-order .field-secondary.with-unit, .consumer-order .order-products-container .order-total, .order-products-container .consumer-order .order-total, .consumer-order .order-products-container .order-products .table-header, .order-products-container .order-products .consumer-order .table-header, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+  .consumer-order .container-clean, .consumer-order .sortable-table > .table-header, .consumer-order .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .consumer-order .box-view, .consumer-order .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view .consumer-order .box-view-inner, .consumer-order .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit .consumer-order .internal-table, .consumer-order #filter .filter-box, #filter .consumer-order .filter-box, .consumer-order #filter .filter-box .field, #filter .filter-box .consumer-order .field, .consumer-order #filter .filter-box .field-secondary.with-unit, #filter .filter-box .consumer-order .field-secondary.with-unit, .consumer-order .order-items-container .order-total, .order-items-container .consumer-order .order-total, .consumer-order .order-items-container .order-items .table-header, .order-items-container .order-items .consumer-order .table-header, .consumer-order .order-items-container .order-items .table-content .item .fields, .order-items-container .order-items .table-content .item .consumer-order .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
     overflow: hidden;
     display: inline-block;
     /* Necessary to trigger "hasLayout" in IE */
@@ -1452,7 +1624,8 @@
   .consumer-order #filter .filter-box #wrap-1 input[type=submit],
   #filter .filter-box #wrap-1 .consumer-order input[type=submit],
   .consumer-order #filter .filter-box input[type=submit],
-  #filter .filter-box .consumer-order input[type=submit], .consumer-order a.button.colorbox-close,
+  #filter .filter-box .consumer-order input[type=submit],
+  .order-items-container #wrap-1 .consumer-order input[type=submit], .consumer-order a.button.colorbox-close,
   .consumer-order #wrap-1 input[type=submit],
   .consumer-order input[type=submit] {
     display: inline-block;

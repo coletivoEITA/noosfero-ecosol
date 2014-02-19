@@ -3,7 +3,7 @@ require_dependency 'suppliers_plugin/display_helper'
 
 module NetworksPlugin::DisplayHelper
 
-  include SuppliersPlugin::TermsHelper
+  include TermsHelper
   include SuppliersPlugin::DisplayHelper
   include NetworksPlugin::TranslationHelper
 

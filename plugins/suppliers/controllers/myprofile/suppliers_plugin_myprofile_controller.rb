@@ -46,8 +46,6 @@ class SuppliersPluginMyprofileController < MyProfileController
       profile.supplier_products_default_margins if params[:apply_to_all]
 
       render :partial => 'suppliers_plugin_shared/pagereload'
-    else
-      render :layout => false
     end
   end
 

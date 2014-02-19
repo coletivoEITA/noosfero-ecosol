@@ -6,8 +6,8 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     self.cycles.first
   end
 
-  has_many :ordered_products, :class_name => 'OrdersPlugin::OrderedProduct', :foreign_key => :product_id, :dependent => :destroy
-  has_many :orders, :through => :ordered_products, :source => :order
+  has_many :items, :class_name => 'OrdersPlugin::Item', :foreign_key => :product_id, :dependent => :destroy
+  has_many :orders, :through => :items, :source => :order
 
   named_scope :sources_from_2x_products_joins, :joins =>
     'INNER JOIN suppliers_plugin_source_products sources_from_products_products ON ( products.id = sources_from_products_products.to_product_id ) ' +
@@ -54,10 +54,10 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   end
 
   def total_quantity_asked
-    @total_quantity_asked ||= self.ordered_products.confirmed.sum(:quantity_asked)
+    @total_quantity_asked ||= self.items.confirmed.sum(:quantity_asked)
   end
   def total_price_asked
-    @total_price_asked ||= self.ordered_products.confirmed.sum(:price_asked)
+    @total_price_asked ||= self.items.confirmed.sum(:price_asked)
   end
   def total_parcel_quantity
     #FIXME: convert units and consider stock and availability
@@ -107,7 +107,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   after_update :sync_ordered
   def sync_ordered
     return unless self.price_changed?
-    ordered_products.each do |op|
+    self.items.each do |op|
       op.send :calculate_prices
       op.save!
     end

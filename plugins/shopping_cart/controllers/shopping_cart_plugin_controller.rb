@@ -38,7 +38,7 @@ class ShoppingCartPluginController < PublicController
         :products => [{
           :id => product.id,
           :name => product.name,
-          :price => get_price(product, enterprise.environment),
+          :price => get_price(product, profile.environment),
           :description => product.description,
           :picture => product.default_image(:minor),
           :quantity => self.cart[:items][product.id]
@@ -96,8 +96,8 @@ class ShoppingCartPluginController < PublicController
   def buy
     if validate_cart_presence
       @cart = cart
-      @enterprise = environment.enterprises.find(cart[:enterprise_id])
-      @settings = Noosfero::Plugin::Settings.new(@enterprise, ShoppingCartPlugin)
+      @profile = environment.profiles.find(cart[:enterprise_id])
+      @settings = Noosfero::Plugin::Settings.new(@profile, ShoppingCartPlugin)
       render :layout => false
     end
   end
@@ -199,7 +199,7 @@ class ShoppingCartPluginController < PublicController
       }.to_json
       return nil
     end
-    product.enterprise
+    product.profile
   end
 
   def validate_cart_presence
@@ -261,29 +261,27 @@ class ShoppingCartPluginController < PublicController
   end
 
   def register_order(custumer, items)
-    new_items = {}
-    items.each do |id, quantity|
+    products_list = {}; items.each do |id, quantity|
       product = Product.find(id)
       price = product.price || 0
-      new_items[id] = {:quantity => quantity, :price => price, :name => product.name}
+      products_list[id] = {:quantity => quantity, :price => price, :name => product.name}
     end
-    ShoppingCartPlugin::PurchaseOrder.create!(
-      :seller => Enterprise.find(cart[:enterprise_id]),
-      :customer => user,
-      :status => ShoppingCartPlugin::PurchaseOrder::Status::OPENED,
-      :products_list => new_items,
-      :customer_delivery_option => params[:delivery_option],
-      :customer_payment => params[:customer][:payment],
-      :customer_change => params[:customer][:change],
-      :customer_name => params[:customer][:name],
-      :customer_email => params[:customer][:email],
-      :customer_contact_phone => params[:customer][:contact_phone],
-      :customer_address => params[:customer][:address],
-      :customer_district => params[:customer][:district],
-      :customer_city => params[:customer][:city],
-      :customer_state => params[:customer][:state],
-      :customer_zip_code => params[:customer][:zip_code]
-    )
+
+    OrdersPlugin::Order.create! :profile => environment.profiles.find(cart[:enterprise_id]), :consumer => user,
+      :status => 'confirmed', :products_list => products_list,
+      :consumer_data => {
+        :name => params[:customer][:name], :email => params[:customer][:email], :contact_phone => params[:customer][:contact_phone],
+      },
+      :payment_data => {
+        :method => params[:customer][:payment], :change => params[:customer][:change],
+      },
+      :consumer_delivery_data => {
+        :name => params[:delivery_option],
+        :address_line1 => params[:customer][:address],
+        :address_line2 => params[:customer][:district],
+        :city => params[:customer][:city],
+        :postal_code => params[:customer][:zip_code],
+      }
   end
 
   protected
@@ -322,7 +320,7 @@ class ShoppingCartPluginController < PublicController
       if product
         { :id => product.id,
           :name => product.name,
-          :price => get_price(product, product.enterprise.environment),
+          :price => get_price(product, product.profile.environment),
           :description => product.description,
           :picture => product.default_image(:minor),
           :quantity => quantity

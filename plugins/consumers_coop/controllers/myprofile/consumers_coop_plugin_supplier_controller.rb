@@ -1,6 +1,5 @@
 class ConsumersCoopPluginSupplierController < OrdersCyclePluginSupplierController
 
-  include ControllerInheritance
   include ConsumersCoopPlugin::TranslationHelper
 
   helper ConsumersCoopPlugin::TranslationHelper
@@ -9,6 +8,7 @@ class ConsumersCoopPluginSupplierController < OrdersCyclePluginSupplierControlle
 
   protected
 
-  replace_url_for self.superclass
+  include ControllerInheritance
+  replace_url_for self.superclass => self
 
 end

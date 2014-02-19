@@ -8,7 +8,6 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
 
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
-  include ControllerInheritance
   include SuppliersPlugin::TranslationHelper
 
   helper SuppliersPlugin::TranslationHelper
@@ -35,8 +34,8 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
   def remove_from_order
     @offered_product = OrdersCyclePlugin::OfferedProduct.find params[:id]
     @order = OrdersPlugin::Order.find params[:order_id]
-    @ordered_product = @order.products.find_by_product_id @offered_product.id
-    @ordered_product.destroy
+    @item = @order.items.find_by_product_id @offered_product.id
+    @item.destroy
   end
 
   def cycle_edit
@@ -57,6 +56,7 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
 
   protected
 
-  replace_url_for self.superclass, SuppliersPluginProductController
+  include ControllerInheritance
+  replace_url_for self.superclass => self, SuppliersPluginProductController => self
 
 end

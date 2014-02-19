@@ -1,10 +1,8 @@
 <div class="box-view">
   <span class='box-field code'><%= order.code %></span>
-  <span class='box-field member box-edit-link'><%= order.consumer.name %></span>
-  <span class='box-field created'><%= month_with_time order.created_at  %></span>
-  <span class='box-field modified'><%= month_with_time order.updated_at  %></span>
-  <span class='box-field products-count'><%= order.products.count %></span>
-  <span class='box-field price'><%= price_span order.total_price_asked_as_currency_number %></span>
+  <span class='box-field consumer box-edit-link'><%= order.consumer_data[:name] %></span>
+  <span class='box-field last-update'><%= month_with_time order.updated_at %></span>
+  <span class='box-field total'><%= order.total_price_asked_as_currency_number %></span>
 
   <%= edit_arrow "#in-cycle-order-#{order.id}", true, :class => 'actions' %>
 
@@ -12,7 +10,7 @@
 </div>
 
 <div class="box-edit" style="display: none">
-  <% if order.products.count == 0 %>
+  <% if order.items.count == 0 %>
     <div class="empty-order">
       <span class="subtitle"><%= t('orders_plugin.views.admin._edit.empty_order') %></span>
       <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), 'toggle-edit' => '' %>
@@ -20,10 +18,19 @@
   <% else %>
     <% form_remote_for :order, order, :url => {:action => :cycle_edit, :id => order.id} do |f| %>
 
-      <%= render :partial => 'orders_plugin_product/index', :locals => {:order => order, :f => f} %>
-      <div class="clean"></div>
+      <div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? @admin %> <%= "admin" if @admin %>">
+        <div class="order-header">
+          <%= t('orders_plugin.views.item._index.header') % {
+            :profile_code => order.code,
+            :profile => content_tag('strong', order.profile_data[:name]),
+            :consumer => content_tag('strong', order.consumer_data[:name]),
+          } %>
+        </div>
 
-      <% if order.cycle.orders? %>
+        <%= render 'orders_plugin_item/index', :order => order, :f => f %>
+      </div>
+
+      <% if order.open? %>
 
         <div>
           <%= check_box_tag 'warn_consumer', 1, false, :onchange => "jQuery(this).parent().next().toggle(this.checked); jQuery(this).siblings('.subtitle').toggle(this.checked);" %>
@@ -52,17 +59,16 @@
     <% end %>
   <% end %>
 
-  <div class="actions-bar">
-    <%# link_to_function t('orders_plugin.views.admin._edit.remove_order'), '' if order.cycle.orders? %>
-    <%# link_to_function t('orders_plugin.views.admin._edit.add_product'), '' if order.cycle.orders? %>
-    <%# link_to_function t('orders_plugin.views.admin._edit.see_redistribution'), '' unless order.cycle.orders? %>
-    <%# link_to_function t('orders_plugin.views.admin._edit.see_delivery'), '' unless order.cycle.orders? %>
-    <%= link_to t('orders_plugin.views.admin._edit.edit_on_the_order_pag'), {:action => :edit, :id => order.id}, :target => '_blank' %>
-    <%= colorbox_link_to t('orders_plugin.views.admin._edit.message_to_member'), {:controller => :orders_plugin_message, :action => :new_to_consumer_for_order, :order_id => order.id} %>
-    <strong><%= t('orders_plugin.views.admin._edit.actions') %></strong>
+  <% if f %>
+    <div class="actions-bar">
+      <%# link_to_function t('orders_plugin.views.admin._edit.remove_order'), '' if order.cycle.orders? %>
+      <%= link_to t('orders_plugin.views.admin._edit.edit_on_the_order_pag'), {:controller => :orders_plugin_consumer, :action => :edit, :id => order.id}, :target => '_blank' %>
+      <%= colorbox_link_to t('orders_plugin.views.admin._edit.message_to_member'), {:controller => :orders_plugin_message, :action => :new_to_consumer_for_order, :order_id => order.id} %>
+      <strong><%= t('orders_plugin.views.admin._edit.actions') %></strong>
 
-    <div class="clean"></div>
-  </div>
+      <div class="clean"></div>
+    </div>
+  <% end %>
 
   <div class="clean"></div>
 </div>

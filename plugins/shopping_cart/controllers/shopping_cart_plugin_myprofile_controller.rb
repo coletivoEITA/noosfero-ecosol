@@ -1,7 +1,6 @@
-include ShoppingCartPlugin::CartHelper
-
 class ShoppingCartPluginMyprofileController < MyProfileController
-  append_view_path File.join(File.dirname(__FILE__) + '/../views')
+
+  include ShoppingCartPlugin::CartHelper
 
   def edit
     params[:settings] = treat_cart_options(params[:settings])
@@ -22,7 +21,7 @@ class ShoppingCartPluginMyprofileController < MyProfileController
     utc_string = ' 00:00:00 UTC'
     @from = params[:from] ? Time.parse(params[:from] + utc_string) : Time.now.utc.at_beginning_of_month
     @to = params[:to] ? Time.parse(params[:to] + utc_string) : Time.now.utc
-    @status = !params[:filter_status].blank? ? params[:filter_status].to_i : nil
+    @status = params[:filter_status].present? ? params[:filter_status] : nil
 
     condition = 'created_at >= ? AND created_at <= ?'
     condition_parameters = [@from, @to+1.day]
@@ -44,8 +43,8 @@ class ShoppingCartPluginMyprofileController < MyProfileController
   end
 
   def update_order_status
-    order = ShoppingCartPlugin::PurchaseOrder.find(params[:order_id].to_i)
-    order.status = params[:order_status].to_i
+    order = OrdersPlugin::Order.find(params[:order_id].to_i)
+    order.status = params[:order_status]
     order.save!
     redirect_to :action => 'reports', :from => params[:context_from], :to => params[:context_to], :filter_status => params[:context_status]
   end

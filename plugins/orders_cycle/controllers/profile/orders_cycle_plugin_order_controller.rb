@@ -7,7 +7,6 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
-  include ControllerInheritance
   include SuppliersPlugin::TranslationHelper
 
   no_design_blocks
@@ -115,9 +114,9 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
     end
 
     if @order.cycle.orders?
-      a = {}; @order.products.map{ |p| a[p.id] = p }
-      b = {}; params[:order][:products].map do |key, attrs|
-        p = OrdersPlugin::OrderedProduct.new attrs
+      a = {}; @order.items.map{ |p| a[p.id] = p }
+      b = {}; params[:order][:items].map do |key, attrs|
+        p = OrdersPlugin::Item.new attrs
         p.id = attrs[:id]
         b[p.id] = p
       end
@@ -161,6 +160,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
   protected
 
-  replace_url_for self.superclass
+  include ControllerInheritance
+  replace_url_for self.superclass => self
 
 end

@@ -1,0 +1,4 @@
+<% products = node.products.paginate :order => 'available DESC, highlighted DESC, name ASC', :per_page => 6, :page => 1 %>
+
+<%= render "catalog/products", :products => products, :categories => nil %>
+

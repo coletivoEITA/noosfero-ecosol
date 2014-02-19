@@ -302,11 +302,6 @@ body.consumers-coop {
 .consumers-coop .actions-bar strong {
   float: right; }
 
-/* ----- cycle edition ----- */
-/* ----- cycle orders  ----- */
-/* ----- ordered product  ----- */
-/* ----- cycle listing ----- */
-/* ----- delivery ----- */
 /* ----- cycle date ----- */
 .consumers-coop .orders-date td.happening {
   padding-right: 20px;
@@ -541,7 +536,7 @@ body.consumers-coop {
     font-size: 21px; }
   #consumers-coop-settings form .pstyle-tm1 {
     font-size: 13px; }
-  #consumers-coop-settings form .pstyle-tm2 {
+  #consumers-coop-settings form .pstyle-tm2, #consumers-coop-settings form .subtitle {
     font-size: 10px; }
   #consumers-coop-settings form .profile-image {
     display: inline-block;

@@ -1,0 +1,3 @@
+jQuery('#order-<%=@order.id%>').replaceWith("<%= j render('orders_plugin_consumer/items', :order => @order) %>");
+
+toggle_edit.value_row.reload();

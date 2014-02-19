@@ -239,7 +239,7 @@
         name: "Fornecedores"
         description: "Registro de fornecedores e produtos distribuídos"
         distribution_tab: "Distribuição"
-    terms:
+    terms: &suppliers_terms
       profile:
         singular: "organização"
         plural: "organizações"
@@ -272,22 +272,23 @@
         it: 
           singular: "ele"
           plural: "eles"
-        tO_it: 
-          singular: "a ele"
-          plural: "a eles"
         one: "um"
         to: 
           singular: "a um fornecedor"
           plural: "a fornecedores"
+        to_it:
+          singular: "a ele"
+          plural: "a eles"
         to_article:
           singular: "ao fornecedor"
           plural: "aos fornecedores"
-        from_article: 
           singular: "do fornecedor"
         undefined_article:
           singular: "um fornecedor"
         none: 
           singular: "nenhum fornecedor"
+        from_article:
+          singular: "do fornecedor"
         from_which_article: 
           singular: "com que o fornecedor"
         article: 
@@ -338,7 +339,7 @@
           remove_product: remover
           cancel: cancelar
           save: salvar mudanças
-          view_on_supplier_page: "Ver produto na página %{terms.supplier.from.singular}"
+          view_on_supplier_page: "Ver produto na página %{terms.supplier.from_article.singular}"
           product_registry: "Cadastro do produto"
           selling_unit: "Unidade de venda"
           same_from_purchase: "Mesma da compra"
@@ -401,7 +402,7 @@
           suggest_creation: "Não encontrou %{terms.supplier.article.singular} que buscava?. Você pode criar %{terms.supplier.new_undefined_article.singular} gerido %{terms.profile.by_article.singular}."
           create_dummy: "Criar %{terms.supplier.singular}"
         _edit: 
-          registry_help: "O registro %{terms.supplier.from.singular} será administrado  %{terms.profile.by_own.singular} e será privado %{terms.profile.to_it.singular}."
+          registry_help: "O registro %{terms.supplier.from_article.singular} será administrado %{terms.profile.by_article.singular} e será privado %{terms.profile.to_it.singular}."
           abbreviated_name: "Nome Abreviado"
           add_supplier_managed_: "Adicionar %{terms.supplier.singular} com registro administrado %{terms.profile.by_article.singular}"
           additional_fields: "Campos adicionais"
@@ -476,10 +477,22 @@
           add_a_delivery_method: "Adicionar um método de entrega ao ciclo de pedidos"
 
   orders_plugin:
+    terms:
+      <<: *suppliers_terms
+      purchase:
+        singular: "Compra"
+        plural: "Compras"
+      sale:
+        singular: "Venda"
+        plural: "Vendas"
     lib:
       plugin:
         name: "Pedidos"
         description: "Gestão de pedidos"
+        panel_button: "Compras e Vendas"
+      ext:
+        profile:
+          orders_manager: "Gestor de pedidos"
       mailer:
         order_was_confirmed: "[%{name}] Seu pedido foi confirmado"
         order_was_cancelled: "[%{name}] Seu pedido foi cancelado"
@@ -515,35 +528,37 @@
           you_are_not_the_owner: "Você não é o proprietário desse pedido"
     models:
       order: 
-        order_cancelled: "Pedido cancelado"
-        order_confirmed: "Pedido confirmado"
-        order_in_progress: "Pedido em andamento"
-        order_not_confirmed: "Pedido não confirmado"
-        order_planned: "Pedido planejado"
+        open: "Em aberto"
+        not_confirmed: "Não confirmado"
+        planned: "Planejado"
+        confirmed: "Confirmado"
+        cancelled: "Cancelado"
+        accepted: "Aceito"
+        shipped: "Entregue"
     views:
       consumer:
         _total: 
           total: Total
-      product: 
+      item: 
         _edit: 
           remove_from_order: "Remover do pedido"
           submit: 'OK'
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
         _index: 
+          header: "Compra %{profile_code} - %{profile} / Venda - %{consumer}"
+          empty_order: "Pedido vazio"
           supplier: "%{terms.supplier.singular}"
           product: "produto"
           quantity: "qtd"
           price_total: "valor (%{currency})"
-          empty_order: "Pedido vazio"
+          status_updated: "etapa modif."
       admin:
         index: 
-          code: Código
-          created: Criado
-          member: Integrante
-          modified: Modificado
-          no_orders_to_show: "Sem pedidos a mostrar"
-          prod_qty: "Qtd prod."
-          value: Valor
+          no_orders_to_show: "Nenhum pedido para visualizar."
+          code: "Código"
+          consumer: "Consumidor"
+          last_update: "Últ. atualização"
+          total: "Total (%{currency})"
         _edit: 
           actions: Ações
           add_product: "adicionar produto"
@@ -556,7 +571,7 @@
           save: Salvar
           see_delivery: "veja entrega"
           see_redistribution: "veja redistribuição"
-          the_collective_member: "O membro %{terms.profile.from.singular} receberá um email que discrimina todas as mudanças feitas em seu pedido."
+          the_collective_member: "O membro %{terms.profile.from_article.singular} receberá um email que discrimina todas as mudanças feitas em seu pedido."
           warn_member_of_the_ch: "Avise o membro das mudanças em seu pedido"
       mailer:
         order_confirmation: 
@@ -783,7 +798,7 @@
           product: Produto
           this_search_hasn_t_re: "Esta busca não retornou produtos"
         _cycle_edit: 
-          all_ordered_products_: "Todos pedidos deste produto serão removidos também; você deveria primeiro avisar os membros que pediram esse produto."
+          all_ordered_products: "Todos pedidos deste produto serão removidos também; você deveria primeiro avisar os membros que pediram esse produto."
           buy_price: "Preço de compra"
           buy_unit: "Unidade de compra"
           cancel_updates: "Cancelar atualizações"
@@ -923,7 +938,8 @@
         start: Início
         orders: Pedidos
         administration: Administração
-    terms:
+    terms: 
+      <<: *suppliers_terms
       profile:
         singular: "coletivo de consumo"
         plural: "coletivos de consumo"
@@ -932,7 +948,7 @@
         it: 
           singular: "ele"
           plural: "eles"
-        tO_it: 
+        to_it:
           singular: "a ele"
           plural: "a eles"
         to_article:
@@ -983,12 +999,12 @@
           header_type: "Tipo de cabeçalho"
           image_collective_name: "Imagem + nome %{terms.profile.from_article.singular}"
           only_the_image: "Apenas a imagem"
-          image_help: "Esta imagem será usada no cabeçalho da página %{terms.profile.from.singular}, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
-          pure_color_collective: "Cor pura + nome %{terms.profile.from.singular}"
+          image_help: "Esta imagem será usada no cabeçalho da página %{terms.profile.from_article.singular}, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
+          pure_color_collective: "Cor pura + nome %{terms.profile.from_article.singular}"
           save: Salvar
-          settings_of_solidary_: "Configurações %{terms.profile.from.singular}"
+          settings_of_solidary_: "Configurações %{terms.profile.from_article.singular}"
           text_color: "Cor do texto"
-          this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso %{terms.profile.from.singular}. Como %{terms.profile.article.singular} é comumente chamado pelas pessoas?"
+          this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso %{terms.profile.from_article.singular}. Como %{terms.profile.article.singular} é comumente chamado pelas pessoas?"
           white: branco
 
   networks_plugin:
@@ -1005,7 +1021,7 @@
         it: 
           singular: "ela"
           plural: "elas"
-        tO_it: 
+        to_it:
           singular: "a ela"
           plural: "a elas"
         to_article:
@@ -1031,17 +1047,17 @@
         it: 
           singular: "ele"
           plural: "eles"
-        tO_it: 
-          singular: "a ele"
-          plural: "a eles"
         one: "um"
         to: 
           singular: "a um empreendimento"
           plural: "a empreendimentos"
+        to_it:
+          singular: "a ele"
+          plural: "a eles"
         to_article:
           singular: "ao empreendimento"
           plural: "aos empreendimentos"
-        from_article: 
+        from_article:
           singular: "do empreendimento"
         undefined_article:
           singular: "um empreendimento"
@@ -1065,6 +1081,11 @@
     views:
       control_panel:
         structure: "Gerenciar estrutura da rede"
+      blocks:
+        profile_info_actions:
+          button: "Meu empreendimento participa desta rede"
+        location:
+          title: "Mapa dos Empreendimentos de %{profile}"
       admin:
         index:
           title: "Gerenciar de Redes"
@@ -1095,6 +1116,11 @@
           back: "Voltar para a estrutura da rede"
           node_info: "Informações do nó"
           presentation_text: "Texto de apresentação:"
+          orders_management: "Gestão de pedidos"
+        _orders_management:
+          forward_explanation: "Quando um pedido é confirmado através do cesto de compras, um email contendo o detalhamento do pedido e as instruções de como proceder é enviado ao usuário final (comprador), aos administradores %{terms.supplier.from_article.plural} e aos administradores %{terms.profile.from_article.singular}. Você pode designar representantes desse nó para que eles recebam os pedidos de seus produtos em lugar dos administradores %{terms.profile.from_article.singular}."
+          network_forward: "enviar os pedidos para a rede"
+          managers_forward: "enviar os pedidos para os representantes:"
       enterprise:
         edit:
           title: "Configurações do empreendimento %{enterprise}"

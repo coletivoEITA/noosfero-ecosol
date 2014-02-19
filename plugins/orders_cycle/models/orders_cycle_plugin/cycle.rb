@@ -19,7 +19,8 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     :conditions => ['orders_plugin_orders.status = ?', 'confirmed']
 
   has_many :ordered_suppliers, :through => :orders_confirmed, :source => :suppliers
-  has_many :ordered_products, :through => :orders_confirmed, :source => :products
+  has_many :items, :through => :orders_confirmed, :source => :products
+
   has_many :ordered_offered_products, :through => :orders_confirmed, :source => :offered_products, :uniq => true
   has_many :ordered_distributed_products, :through => :orders_confirmed, :source => :distributed_products, :uniq => true
   has_many :ordered_supplier_products, :through => :orders_confirmed, :source => :supplier_products, :uniq => true
@@ -85,7 +86,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     }
   end
   def total_price_asked
-    self.ordered_products.sum :price_asked
+    self.items.sum :price_asked
   end
   def total_parcel_price
     #FIXME: wrong!
@@ -129,7 +130,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     self.products.unarchived.with_price
   end
 
-  def ordered_products_by_suppliers
+  def items_by_suppliers
     self.ordered_offered_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
       total_price_asked = total_parcel_price = 0
       products.each do |product|

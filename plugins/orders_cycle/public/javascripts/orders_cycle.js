@@ -39,12 +39,12 @@ orders_cycle = {
       },
 
       checkbox_click: function (check_box, id) {
-        this.click(id, check_box.checked);
+        this.click(null, id, check_box.checked);
         return true;
       },
       click: function (event, id) {
         // was this a child click?
-        if (event.target != this && event.target.onclick)
+        if (event != null && event.target != this && event.target.onclick)
           return;
 
         var product = jQuery('#cycle-product-'+id);
@@ -65,7 +65,7 @@ orders_cycle = {
         loading_overlay.show(product);
         jQuery.post(this.add_url, {order_id: this.order_id, redirect: this.redirect_after_include, offered_product_id: id}, function () {
           loading_overlay.hide(product);
-        });
+        }, 'script');
       },
       remove: function (id) {
         var product = this.load(id, false);
@@ -73,7 +73,7 @@ orders_cycle = {
         loading_overlay.show(product);
         jQuery.post(this.remove_url, {id: id, order_id: this.order_id}, function () {
           loading_overlay.hide(product);
-        });
+        }, 'script');
       },
 
       supplier: {

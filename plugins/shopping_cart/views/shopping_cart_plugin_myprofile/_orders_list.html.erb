@@ -13,7 +13,7 @@
     <% @orders.each do |order|%>
       <tr>
         <td><%= order.created_at.strftime("%Y-%m-%d")%></td>
-        <td><%= order.customer_name %></td>
+        <td><%= order.consumer_data[:name] %></td>
         <td style="text-align: right"><%= float_to_currency_cart(order.products_list.sum {|id, qp| qp[:price]*qp[:quantity]}, environment) %></td>
         <td>
           <% form_tag :action => 'update_order_status' do %>
@@ -32,10 +32,19 @@
         <td class="order-info" colspan="5">
           <div style="display:none">
             <ul class="customer-details">
-              <% [['name', _('Name')], ['email', _('E-mail')], ['contact_phone', _('Contact phone')], ['address', _('Address')], ['district', _('District')], ['city', _('City')], ['zip_code', _('Zip code')], ['delivery_option', _('Delivery option')], ['payment', _('Payment')], ['change', _('shopping_cart|Change')]].each do |field| %>
-                <% attribute = field.first %>
-                <% name = field.last %>
-                <%= content_tag('li', content_tag('strong', name+': ') + order.send('customer_'+attribute)) if !order.send('customer_'+attribute).blank? %>
+              <% [[:name, _('Name')], [:email, _('E-mail')], [:contact_phone, _('Contact phone')],].each do |attribute, name| %>
+                <% next if (value = order.consumer_data[attribute] rescue nil).blank? %>
+                <%= content_tag 'li', content_tag('strong', name+': ') + value %>
+              <% end %>
+
+              <% [[:address_line1, _('Address')], [:address_line2, _('District')], [:City, _('City')], [:postal_code, _('Zip code')], [:name, _('Delivery option')],].each do |attribute, name| %>
+                <% next if (value = order.consumer_delivery_data[attribute] rescue nil).blank? %>
+                <%= content_tag 'li', content_tag('strong', name+': ') + value %>
+              <% end %>
+
+              <% [[:method, _('Payment')], [:change, _('shopping_cart|Change')]].each do |attribute, name| %>
+                <% next if (value = order.payment_data[attribute] rescue nil).blank? %>
+                <%= content_tag 'li', content_tag('strong', name+': ') + value %>
               <% end %>
             </ul>
             <ul class="order-products">

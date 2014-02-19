@@ -111,7 +111,7 @@
 
   #order-column {
     float: left;
-    width: $order-products-width;
+    width: $order-items-width;
     margin-left: 3*$intercolumn;
     padding: 0;
 
@@ -138,7 +138,7 @@
     }
     .consumer-order {
       margin-bottom: 10px;
-      width: $order-products-width;
+      width: $order-items-width;
 
       &.sticky {
         position: fixed;

@@ -1,0 +1,8 @@
+<ul>
+  <% if user and user.enterprises.present? %>
+    <li>
+      <%= button :add, t('networks_plugin.views.blocks.profile_info_actions.button'), {:controller => :networks_plugin_enterprise, :action => :join},
+        :title => t('networks_plugin.views.blocks.profile_info_actions.button'), :class => 'colorbox' %>
+    </li>
+  <% end %>
+</ul>
