@@ -14,16 +14,16 @@
         </div>
 
         <div class="table-content">
-          <% edit = proc do |f| %>
-            <% order.items.each do |item| %>
-              <%= render "orders_plugin_item/edit", :order => order, :item => item, :product => item.product, :f => f %>
-            <% end %>
-          <% end %>
-
           <% if f %>
-            <% f.fields_for :items, order.items, &edit %>
+            <% f.fields_for :items, order.items do |f| %>
+              <% order.items.each do |item| %>
+                <%= render "orders_plugin_item/edit", :order => order, :item => item, :product => item.product, :f => f %>
+              <% end %>
+            <% end %>
           <% else %>
-            <%= edit.call f %>
+            <% order.items.each do |item| %>
+              <%= render "orders_plugin_item/edit", :order => order, :item => item, :product => item.product, :f => nil %>
+            <% end %>
           <% end %>
         </div>
 

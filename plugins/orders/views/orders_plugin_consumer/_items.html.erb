@@ -1,12 +1,10 @@
 <div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? @admin %>">
 
-  <% index = proc do |f| %>
-    <%= render "orders_plugin_item/index", :order => order, :f => f %>
-  <% end %>
-
   <% if order.may_edit? @admin %>
-    <% form_remote_for :order, order, :url => {:action => :edit, :id => order.id}, &index %>
+    <% form_remote_for :order, order, :url => {:action => :edit, :id => order.id} do |f| %>
+      <%= render "orders_plugin_item/index", :order => order, :f => f %>
+    <% end %>
   <% else %>
-    <%= index.call nil %>
+    <%= render "orders_plugin_item/index", :order => order, :f => nil %>
   <% end %>
 </div>

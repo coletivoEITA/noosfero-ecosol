@@ -14,9 +14,11 @@ class OrdersPluginItemController < MyProfileController
     @offered_product = @item.offered_product
     @order = @item.order
 
-    raise 'Order confirmed or cycle is closed for orders' unless @order.open?
-    raise 'Please login to place an order' if @consumer.blank?
-    raise 'You are not the owner of this order' if @consumer != @order.consumer
+    unless profile.has_admin? user
+      raise 'Order confirmed or cycle is closed for orders' unless @order.open?
+      raise 'Please login to place an order' if @consumer.blank?
+      raise 'You are not the owner of this order' if @consumer != @order.consumer
+    end
 
     if set_quantity_asked params[:item][:quantity_asked]
       params[:item][:quantity_asked] = @quantity_asked

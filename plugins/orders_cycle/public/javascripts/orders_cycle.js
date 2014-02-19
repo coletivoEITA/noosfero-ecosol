@@ -65,7 +65,7 @@ orders_cycle = {
         loading_overlay.show(product);
         jQuery.post(this.add_url, {order_id: this.order_id, redirect: this.redirect_after_include, offered_product_id: id}, function () {
           loading_overlay.hide(product);
-        });
+        }, 'script');
       },
       remove: function (id) {
         var product = this.load(id, false);
@@ -73,7 +73,7 @@ orders_cycle = {
         loading_overlay.show(product);
         jQuery.post(this.remove_url, {id: id, order_id: this.order_id}, function () {
           loading_overlay.hide(product);
-        });
+        }, 'script');
       },
 
       supplier: {

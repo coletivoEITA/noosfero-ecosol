@@ -1,7 +1,7 @@
 <div id="cycle-admin-page" class='admin-page'>
-  <%= render :partial => 'title', :locals => {:cycle => @cycle} %>
+  <%= render 'title', :cycle => @cycle %>
 
   <div id="cycle-fields">
-    <%= render :partial => 'edit_fields' %>
+    <%= render 'edit_fields' %>
   </div>
 </div>
