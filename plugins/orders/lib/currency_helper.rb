@@ -24,7 +24,7 @@ module CurrencyHelper
 
     def has_number_with_locale attr
       define_method "#{attr}_with_locale=" do |value|
-        value = CurrencyHelper.parse_localized_number(value) if value.is_a?(String)
+        value = CurrencyHelper.parse_localized_number value if value.is_a? String
         self.send "#{attr}_without_locale=", value
       end
       alias_method_chain "#{attr}=", :locale rescue nil # rescue if method don't have a setter

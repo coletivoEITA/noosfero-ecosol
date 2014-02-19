@@ -229,7 +229,7 @@
         name: "Suppliers"
         description: "Suppliers and its distributed products registry"
         distribution_tab: "Distribuição"
-    terms:
+    terms: &suppliers_terms
       profile:
         singular: "organization"
         plural: "organizations"
@@ -467,10 +467,19 @@
           add_a_delivery_method: "Add a delivery method to the Orders' Cycle"
 
   orders_plugin:
+    terms:
+      <<: *suppliers_terms
+      purchase:
+        singular: "Purchase"
+        plural: "Purchases"
+      sale:
+        singular: "Sale"
+        plural: "Sales"
     lib:
       plugin:
         name: "Orders"
-        description: "Orders management"
+        description: "Orders' management"
+        panel_button: "Purchases and Sales"
       mailer:
         order_was_confirmed: "[%{name}] Your order was confirmmed"
         order_was_cancelled: "[%{name}] Your order was cancelled"
@@ -530,13 +539,11 @@
           empty_order: "Empty order"
       admin:
         index: 
-          code: Code
-          created: Created
-          member: Member
-          modified: Modified
-          no_orders_to_show: "No orders to show"
-          prod_qty: "Prod. Qty."
-          value: Value
+          no_orders_to_show: "No orders to show."
+          code: "Code"
+          consumer: "Consumer"
+          last_update: "Last update"
+          total: "Total (%{currency})"
         _edit: 
           actions: Actions
           add_product: "add product"
@@ -580,8 +587,8 @@
   orders_cycle_plugin: 
     lib:
       plugin:
-        name: Ciclo de pedidos
-        description: "Crie e gerencie ciclos de pedidos"
+        name: "Orders' Cycle"
+        description: "Create and manage orders' cycle"
       ext:
         orders_plugin:
           order:
@@ -1053,6 +1060,9 @@
     views:
       control_panel:
         manage_control_panel_button: "Manage network's structure"
+      blocks:
+        location:
+          title: "Map of Enterprises from %{profile}"
       admin:
         index:
           title: "Manage networks"

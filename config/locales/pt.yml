@@ -239,7 +239,7 @@
         name: "Fornecedores"
         description: "Registro de fornecedores e produtos distribuídos"
         distribution_tab: "Distribuição"
-    terms:
+    terms: &suppliers_terms
       profile:
         singular: "organização"
         plural: "organizações"
@@ -476,10 +476,19 @@
           add_a_delivery_method: "Adicionar um método de entrega ao ciclo de pedidos"
 
   orders_plugin:
+    terms:
+      <<: *suppliers_terms
+      purchase:
+        singular: "Compra"
+        plural: "Compras"
+      sale:
+        singular: "Venda"
+        plural: "Vendas"
     lib:
       plugin:
         name: "Pedidos"
         description: "Gestão de pedidos"
+        panel_button: "Compras e Vendas"
       mailer:
         order_was_confirmed: "[%{name}] Seu pedido foi confirmado"
         order_was_cancelled: "[%{name}] Seu pedido foi cancelado"
@@ -539,13 +548,11 @@
           empty_order: "Pedido vazio"
       admin:
         index: 
-          code: Código
-          created: Criado
-          member: Integrante
-          modified: Modificado
-          no_orders_to_show: "Sem pedidos a mostrar"
-          prod_qty: "Qtd prod."
-          value: Valor
+          no_orders_to_show: "Nenhum pedido para visualizar."
+          code: "Código"
+          consumer: "Consumidor"
+          last_update: "Últ. atualização"
+          total: "Total (%{currency})"
         _edit: 
           actions: Ações
           add_product: "adicionar produto"
@@ -1067,6 +1074,9 @@
     views:
       control_panel:
         structure: "Gerenciar estrutura da rede"
+      blocks:
+        location:
+          title: "Mapa dos Empreendimentos de %{profile}"
       admin:
         index:
           title: "Gerenciar de Redes"

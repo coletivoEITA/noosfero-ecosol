@@ -7,6 +7,12 @@ $sortable-table-bg-row: #F3F4EE;
 
 $sortable-table-negative-area: 3*$base;
 
+// stays out of .sortable-table so that it can be overhidden by tables insides sortable-tables
+.box-field {
+  float: left;
+  padding: $padding;
+}
+
 .sortable-table {
 
   &.wireframe-size {
@@ -23,14 +29,6 @@ $sortable-table-negative-area: 3*$base;
         width: $wireframe + 2*$sortable-table-negative-area;
         margin-left: -$sortable-table-negative-area;
       }
-    }
-  }
-
-  > .table-header, > .table-content {
-
-    .box-field {
-      float: left;
-      padding: $padding;
     }
   }
 
@@ -75,7 +73,12 @@ $sortable-table-negative-area: 3*$base;
 
     > .value-row {
       background: white;
+
       border: $border solid $sortable-table-bg-row; //avoid size change with .edit class
+      &.hover {
+        border-color: $sortable-table-bg-yellow;
+        border-bottom-color: $sortable-table-bg-row;
+      }
 
       &.edit {
         border: $border solid black;

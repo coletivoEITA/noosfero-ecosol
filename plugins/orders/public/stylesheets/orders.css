@@ -424,6 +424,10 @@
   text-shadow: none;
   border-radius: 5px; }
 
+.box-field {
+  float: left;
+  padding: 8px; }
+
 .sortable-table.wireframe-size > .table-header {
   width: 960px;
   margin-left: -40px;
@@ -431,9 +435,6 @@
 .sortable-table.checkable > .table-content > .value-row {
   width: 1008px;
   margin-left: -24px; }
-.sortable-table > .table-header .box-field, .sortable-table > .table-content .box-field {
-  float: left;
-  padding: 8px; }
 .sortable-table > .table-header .box-field,
 .sortable-table > .table-content .box-view .box-field {
   font-size: 10px; }
@@ -464,6 +465,9 @@
   .sortable-table > .table-content > .value-row {
     background: white;
     border: 1px solid #f3f4ee; }
+    .sortable-table > .table-content > .value-row.hover {
+      border-color: #fdf2a3;
+      border-bottom-color: #f3f4ee; }
     .sortable-table > .table-content > .value-row.edit {
       border: 1px solid black; }
       .sortable-table > .table-content > .value-row.edit .box-view {
@@ -1209,11 +1213,10 @@
     border-top: 1px dotted black;
     text-align: center; }
   .order-products-container .order-total {
-    padding: 4px 8px;
-    border-top: 1px solid black; }
+    padding: 4px 8px; }
     .order-products-container .order-total .total-title,
     .order-products-container .order-total .total-value {
-      float: right;
+      margin-left: 344px;
       width: 64px;
       text-transform: uppercase; }
     .order-products-container .order-total .total-value {
@@ -1223,10 +1226,6 @@
     overflow-y: auto;
     max-height: 300px;
     margin-right: -15px; }
-    .order-products-container .order-products .table-header {
-      font-weight: bold;
-      border-bottom: 1px solid black;
-      text-transform: uppercase; }
     .order-products-container .order-products .box-field {
       float: left;
       padding: 4px 8px;
@@ -1242,6 +1241,11 @@
         width: 64px; }
       .order-products-container .order-products .box-field.price-total {
         width: 64px; }
+    .order-products-container .order-products .table-header, .order-products-container .order-products .table-content {
+      border-bottom: 1px solid black; }
+    .order-products-container .order-products .table-header {
+      font-weight: bold;
+      text-transform: uppercase; }
     .order-products-container .order-products .table-content .ordered-product .more {
       padding: 4px 8px;
       display: none; }
@@ -1276,84 +1280,30 @@
         border-right: none;
         padding-right: 8px; }
 
-.orders-admin-index {
-  margin-bottom: 20px; }
-  .orders-admin-index .order-header {
-    background-color: #B1DFEF;
-    clear: both;
-    float: left;
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box; }
-  .orders-admin-index .order-header .order-label {
-    font-weight: bold;
-    font-size: 13px;
-    display: block;
-    float: left; }
-  .orders-admin-index .order-header .actions-circle {
-    float: right; }
-  .orders-admin-index .order-header .actions-circle .actions-arrow {
-    border-top: 7px solid black;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    margin: 8px 6px 0 5px; }
-  .orders-admin-index .order-header .actions-circle.edit .actions-arrow {
-    border-bottom: 7px solid black;
-    border-top: 6px solid transparent;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    margin: 2px 6px 0px 5px; }
-  .orders-admin-index .orders-admin-index.show .order-header .line {
-    border-bottom: 2px solid white;
-    clear: both;
-    width: 100%;
-    padding-top: 10px; }
-  .orders-admin-index .order {
-    clear: both; }
-  .orders-admin-index .order .actions-bar {
-    width: 100%;
-    margin-left: -10px;
-    margin-bottom: -10px; }
-  .orders-admin-index .order.edit {
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
-    margin-top: -1px; }
-  .orders-admin-index .order.edit,
-  .orders-admin-index .order .box-edit {
-    background-color: #fff2a3; }
-  .orders-admin-index .order .box-edit {
-    padding-top: 8px; }
-  .orders-admin-index .order .box-edit .empty-order {
+.orders-admin-index .box-field.code {
+  width: 64px; }
+.orders-admin-index .box-field.consumer {
+  width: 304px; }
+.orders-admin-index .box-field.last-update {
+  width: 144px; }
+.orders-admin-index .box-field.total {
+  width: 64px; }
+.orders-admin-index .order.edit {
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  margin-top: -1px; }
+.orders-admin-index .order.value-row .box-edit {
+  padding-top: 8px; }
+  .orders-admin-index .order.value-row .box-edit .empty-order {
     text-align: center;
     margin-bottom: 8px; }
-  .orders-admin-index .order .box-edit form {
+  .orders-admin-index .order.value-row .box-edit form {
     padding: 0 16px 0 240px;
     width: 400px; }
-  .orders-admin-index .order .box-edit textarea {
+  .orders-admin-index .order.value-row .box-edit textarea {
     width: 100%; }
-  .orders-admin-index .order .box-edit input[type=checkbox] {
+  .orders-admin-index .order.value-row .box-edit input[type=checkbox] {
     float: left; }
-  .orders-admin-index .order .value-row {
-    padding: 8px 10px; }
-  .orders-admin-index .actions {
-    min-height: 1px; }
-  .orders-admin-index .box-view .code {
-    font-size: 10px; }
-  .orders-admin-index .code {
-    width: 70px; }
-  .orders-admin-index .member {
-    width: 200px; }
-  .orders-admin-index .created {
-    width: 100px; }
-  .orders-admin-index .modified {
-    width: 100px; }
-  .orders-admin-index .products-count {
-    width: 80px; }
-  .orders-admin-index .price {
-    width: 70px; }
 
 .consumer-order {
   /* use with @extend, CSS clear bugfix */

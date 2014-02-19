@@ -13,12 +13,11 @@
 
   .order-total {
     padding: $half-padding $padding;
-    border-top: $border solid black;
     @extend .container-clean;
 
     .total-title,
     .total-value {
-      float: right;
+      margin-left: $module04 + 2*$intercolumn + $padding; //the size of the previous colums
       width: $module01;
       text-transform: uppercase;
     }
@@ -39,12 +38,6 @@
       @extend .container-clean;
     }
     //ordered-product do overflow, so no overflow:hidden for its parents (.table-content)
-
-    .table-header {
-      font-weight: bold;
-      border-bottom: $border solid black;
-      text-transform: uppercase;
-    }
 
     .box-field {
       float: left;
@@ -70,6 +63,15 @@
       &.price-total {
         width: $module01;
       }
+    }
+
+    .table-header, .table-content {
+      border-bottom: $border solid black;
+    }
+
+    .table-header {
+      font-weight: bold;
+      text-transform: uppercase;
     }
 
     .table-content {

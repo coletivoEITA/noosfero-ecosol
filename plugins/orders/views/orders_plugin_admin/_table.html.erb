@@ -6,11 +6,9 @@
   <% else %>
     <div class='table-header'>
       <span class='box-field code'><%= t('orders_plugin.views.admin.index.code') %></span>
-      <span class='box-field member'><%= t('orders_plugin.views.admin.index.member') %></span>
-      <span class='box-field created'><%= t('orders_plugin.views.admin.index.created') %></span>
-      <span class='box-field modified'><%= t('orders_plugin.views.admin.index.modified') %></span>
-      <span class='box-field products-count'><%= t('orders_plugin.views.admin.index.prod_qty') %></span>
-      <span class='box-field price'><%= t('orders_plugin.views.admin.index.value') %></span>
+      <span class='box-field consumer'><%= t('orders_plugin.views.admin.index.consumer') %></span>
+      <span class='box-field last-update'><%= t('orders_plugin.views.admin.index.last_update') %></span>
+      <span class='box-field total'><%= t('orders_plugin.views.admin.index.total') % {:currency => environment.currency_unit} %></span>
 
       <div class="clean"></div>
     </div>

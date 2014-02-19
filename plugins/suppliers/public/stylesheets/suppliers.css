@@ -288,6 +288,10 @@
   text-shadow: none;
   border-radius: 5px; }
 
+.box-field {
+  float: left;
+  padding: 8px; }
+
 .sortable-table.wireframe-size > .table-header, #supplier-our-products .sortable-table > .table-header {
   width: 960px;
   margin-left: -40px;
@@ -295,9 +299,6 @@
 .sortable-table.checkable > .table-content > .value-row {
   width: 1008px;
   margin-left: -24px; }
-.sortable-table > .table-header .box-field, .sortable-table > .table-content .box-field {
-  float: left;
-  padding: 8px; }
 .sortable-table > .table-header .box-field,
 .sortable-table > .table-content .box-view .box-field {
   font-size: 10px; }
@@ -328,6 +329,9 @@
   .sortable-table > .table-content > .value-row {
     background: white;
     border: 1px solid #f3f4ee; }
+    .sortable-table > .table-content > .value-row.hover {
+      border-color: #fdf2a3;
+      border-bottom-color: #f3f4ee; }
     .sortable-table > .table-content > .value-row.edit {
       border: 1px solid black; }
       .sortable-table > .table-content > .value-row.edit .box-view {
@@ -650,7 +654,7 @@
       font-size: 21px; }
     #filter .filter-box .pstyle-tm1 {
       font-size: 13px; }
-    #filter .filter-box .pstyle-tm2, #filter .filter-box #supplier-our-products .sortable-table form .subtitle, #supplier-our-products .sortable-table form #filter .filter-box .subtitle, #filter .filter-box #suppliers-page .supplier .box-edit form .subtitle, #suppliers-page .supplier .box-edit form #filter .filter-box .subtitle {
+    #filter .filter-box .pstyle-tm2, #filter .filter-box .subtitle, #filter .filter-box #supplier-our-products .sortable-table form .subtitle, #supplier-our-products .sortable-table form #filter .filter-box .subtitle, #filter .filter-box #suppliers-page .supplier .box-edit form .subtitle, #suppliers-page .supplier .box-edit form #filter .filter-box .subtitle {
       font-size: 10px; }
     #filter .filter-box .profile-image {
       display: inline-block;
@@ -1028,7 +1032,7 @@
     font-size: 21px; }
   #supplier-our-products .sortable-table form .pstyle-tm1 {
     font-size: 13px; }
-  #supplier-our-products .sortable-table form .pstyle-tm2, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .subtitle, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .subtitle {
+  #supplier-our-products .sortable-table form .pstyle-tm2, #supplier-our-products .sortable-table form .subtitle, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .subtitle, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .subtitle {
     font-size: 10px; }
   #supplier-our-products .sortable-table form .profile-image {
     display: inline-block;
@@ -1317,7 +1321,7 @@
         font-size: 21px; }
       #suppliers-page .supplier .box-edit form .pstyle-tm1 {
         font-size: 13px; }
-      #suppliers-page .supplier .box-edit form .pstyle-tm2 {
+      #suppliers-page .supplier .box-edit form .pstyle-tm2, #suppliers-page .supplier .box-edit form .subtitle {
         font-size: 10px; }
       #suppliers-page .supplier .box-edit form .profile-image {
         display: inline-block;

@@ -418,6 +418,10 @@
   text-shadow: none;
   border-radius: 5px; }
 
+.box-field {
+  float: left;
+  padding: 8px; }
+
 .sortable-table.wireframe-size > .table-header {
   width: 960px;
   margin-left: -40px;
@@ -425,9 +429,6 @@
 .sortable-table.checkable > .table-content > .value-row {
   width: 1008px;
   margin-left: -24px; }
-.sortable-table > .table-header .box-field, .sortable-table > .table-content .box-field {
-  float: left;
-  padding: 8px; }
 .sortable-table > .table-header .box-field,
 .sortable-table > .table-content .box-view .box-field {
   font-size: 10px; }
@@ -458,6 +459,9 @@
   .sortable-table > .table-content > .value-row {
     background: white;
     border: 1px solid #f3f4ee; }
+    .sortable-table > .table-content > .value-row.hover {
+      border-color: #fdf2a3;
+      border-bottom-color: #f3f4ee; }
     .sortable-table > .table-content > .value-row.edit {
       border: 1px solid black; }
       .sortable-table > .table-content > .value-row.edit .box-view {
@@ -1143,7 +1147,8 @@
 
 #cycle-dates th {
   width: 80px;
-  vertical-align: top; }
+  vertical-align: top;
+  border-bottom: 0; }
   #cycle-dates th .cycle-list-item {
     border-top: 1px dotted #ccc;
     padding: 8px; }
