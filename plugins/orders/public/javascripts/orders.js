@@ -23,7 +23,7 @@ orders = {
       var quantity_asked = item.find('.quantity-edit input');
 
       loading_overlay.show(container);
-      jQuery.post(url, {'item[quantity_asked]': quantity_asked.val()}, 'script');
+      jQuery.post(url, {'item[quantity_asked]': quantity_asked.val()}, function(){}, 'script');
     },
   },
 
