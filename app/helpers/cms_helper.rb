@@ -22,9 +22,9 @@ module CmsHelper
 
   attr_reader :environment
 
-  def options_for_article(article)
+  def options_for_article(article, tokenized_children=nil)
     article_helper = helper_for_article(article)
-    article_helper.custom_options_for_article(article)
+    article_helper.custom_options_for_article(article, tokenized_children)
   end
 
   def link_to_article(article)
@@ -33,7 +33,7 @@ module CmsHelper
       link_to article_name, {:action => 'view', :id => article.id}, :class => icon_for_article(article)
     else
       if article.image?
-         image_tag(icon_for_article(article)) + link_to(article_name, article.url)
+        image_tag(icon_for_article(article)) + link_to(article_name, article.url)
       else
         link_to article_name, article.url, :class => icon_for_article(article)
       end

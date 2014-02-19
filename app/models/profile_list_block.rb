@@ -54,7 +54,7 @@ class ProfileListBlock < Block
         list = content_tag 'ul', nl +'  '+ list + nl
       end
       block_title(title) + nl +
-      content_tag('div', nl + list + nl + content_tag('br', '', :style => 'clear:both'))
+      content_tag('div', nl + list + nl + tag('br', :style => 'clear:both'))
     end
   end
 
@@ -62,4 +62,8 @@ class ProfileListBlock < Block
     title.gsub('{#}', profile_count.to_s)
   end
 
+  # override in subclasses! See MembersBlock for example
+  def extra_option
+    {}
+  end
 end

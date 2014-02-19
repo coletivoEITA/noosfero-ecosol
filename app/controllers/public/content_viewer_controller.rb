@@ -50,11 +50,24 @@ class ContentViewerController < ApplicationController
 
     redirect_to_translation if @page.profile.redirect_l10n
 
+    if request.post?
+      if @page.forum? && @page.has_terms_of_use && params[:terms_accepted] == "true"
+        @page.add_agreed_user(user)
+      end
+    elsif !@page.parent.nil? && @page.parent.forum?
+      unless @page.parent.agrees_with_terms?(user)
+        redirect_to @page.parent.url
+      end
+    end
+
     # At this point the page will be showed
     @page.hit
 
-    unless @page.mime_type == 'text/html' || (@page.image? && params[:view])
+    @page = FilePresenter.for @page
+
+    if @page.download? params[:view]
       headers['Content-Type'] = @page.mime_type
+      headers.merge! @page.download_headers
       data = @page.data
 
       # TODO test the condition
@@ -70,7 +83,7 @@ class ContentViewerController < ApplicationController
 
     #FIXME see a better way to do this. It's not need to pass this variable anymore
     @comment = Comment.new
-    
+
     if @page.has_posts?
       posts = if params[:year] and params[:month]
         filter_date = DateTime.parse("#{params[:year]}-#{params[:month]}-01")
@@ -93,7 +106,7 @@ class ContentViewerController < ApplicationController
     end
 
     if @page.folder? && @page.gallery?
-      @images = @page.images
+      @images = @page.images.select{ |a| a.display_to? user }
       @images = @images.paginate(:per_page => per_page, :page => params[:npage]) unless params[:slideshow]
     end
 

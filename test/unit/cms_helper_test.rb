@@ -17,7 +17,7 @@ class CmsHelperTest < ActiveSupport::TestCase
 
   should 'show custom options for blog' do
     CmsHelperTest.any_instance.stubs(:controller).returns(ActionController::Base.new)
-    result = options_for_article(Blog.new)
+    result = options_for_article(Blog.new(:profile => fast_create(Profile)))
     assert_tag_in_string result, :tag => 'input', :attributes => { :name => 'article[published]' , :type => "hidden", :value => "1" }
     assert_tag_in_string result, :tag => 'input', :attributes => { :name => "article[accept_comments]", :type => "hidden", :value => "0" }
   end
@@ -41,6 +41,7 @@ class CmsHelperTest < ActiveSupport::TestCase
   should 'display image and link if article is an image' do
     profile = fast_create(Profile)
     file = UploadedFile.create!(:profile => profile, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
+    file = FilePresenter.for file
     icon = icon_for_article(file)
     expects(:image_tag).with(icon).returns('icon')
 

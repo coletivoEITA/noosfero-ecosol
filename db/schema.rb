@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130711213046) do
+ActiveRecord::Schema.define(:version => 20140108132730) do
 
   create_table "abuse_reports", :force => true do |t|
     t.integer  "reporter_id"
@@ -45,6 +45,11 @@ ActiveRecord::Schema.define(:version => 20130711213046) do
   add_index "action_tracker_notifications", ["action_tracker_id"], :name => "index_action_tracker_notifications_on_action_tracker_id"
   add_index "action_tracker_notifications", ["profile_id", "action_tracker_id"], :name => "index_action_tracker_notif_on_prof_id_act_tracker_id", :unique => true
   add_index "action_tracker_notifications", ["profile_id"], :name => "index_action_tracker_notifications_on_profile_id"
+
+  create_table "article_privacy_exceptions", :id => false, :force => true do |t|
+    t.integer "article_id"
+    t.integer "person_id"
+  end
 
   create_table "article_versions", :force => true do |t|
     t.integer  "article_id"
@@ -86,6 +91,8 @@ ActiveRecord::Schema.define(:version => 20130711213046) do
     t.string   "language"
     t.string   "source_name"
     t.integer  "license_id"
+    t.integer  "image_id"
+    t.integer  "position"
   end
 
   add_index "article_versions", ["article_id"], :name => "index_article_versions_on_article_id"
@@ -129,6 +136,8 @@ ActiveRecord::Schema.define(:version => 20130711213046) do
     t.string   "language"
     t.string   "source_name"
     t.integer  "license_id"
+    t.integer  "image_id"
+    t.integer  "position"
   end
 
   add_index "articles", ["name"], :name => "index_articles_on_name"
@@ -520,6 +529,16 @@ ActiveRecord::Schema.define(:version => 20130711213046) do
     t.integer  "context_id"
   end
 
+  create_table "sessions", :force => true do |t|
+    t.string   "session_id", :null => false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
     t.integer  "taggable_id"
@@ -547,7 +566,17 @@ ActiveRecord::Schema.define(:version => 20130711213046) do
     t.datetime "created_at"
     t.string   "target_type"
     t.integer  "image_id"
+    t.boolean  "spam",                       :default => false
   end
+
+  add_index "tasks", ["spam"], :name => "index_tasks_on_spam"
+
+  create_table "terms_forum_people", :id => false, :force => true do |t|
+    t.integer "forum_id"
+    t.integer "person_id"
+  end
+
+  add_index "terms_forum_people", ["forum_id", "person_id"], :name => "index_terms_forum_people_on_forum_id_and_person_id"
 
   create_table "thumbnails", :force => true do |t|
     t.integer "size"

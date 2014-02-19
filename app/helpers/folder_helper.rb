@@ -1,6 +1,7 @@
 module FolderHelper
 
   include ShortFilename
+  include ArticleHelper
 
   def list_articles(articles, recursive = false)
     if !articles.blank?
@@ -21,6 +22,7 @@ module FolderHelper
   end
 
   def display_article_in_listing(article, recursive = false, level = 0)
+    article = FilePresenter.for article
     article_link = if article.image?
          link_to('&nbsp;' * (level * 4) + image_tag(icon_for_article(article)) + short_filename(article.name), article.url.merge(:view => true))
        else
@@ -40,12 +42,15 @@ module FolderHelper
   end
 
   def icon_for_article(article)
-    icon = article.class.icon_name(article)
+    article = FilePresenter.for article
+    icon = article.respond_to?(:icon_name) ?
+             article.icon_name :
+             article.class.icon_name(article)
     if (icon =~ /\//)
       icon
     else
-      klasses = 'icon icon-' + icon
-      if article.kind_of?(UploadedFile)
+      klasses = 'icon ' + [icon].flatten.map{|name| 'icon-'+name}.join(' ')
+      if article.kind_of?(UploadedFile) || article.kind_of?(FilePresenter)
         klasses += ' icon-upload-file'
       end
       klasses
@@ -56,19 +61,10 @@ module FolderHelper
     "icon-new icon-new%s" % klass.icon_name
   end
 
-  def custom_options_for_article(article)
+  def custom_options_for_article(article,tokenized_children)
     @article = article
-    content_tag('h4', _('Visibility')) +
-    content_tag('div',
-      content_tag('div',
-        radio_button(:article, :published, true) +
-          content_tag('label', _('Public (visible to other people)'), :for => 'article_published_true')
-           ) +
-      content_tag('div',
-        radio_button(:article, :published, false) +
-          content_tag('label', _('Private'), :for => 'article_published_false')
-       )
-     ) +
+
+    visibility_options(article,tokenized_children) +
     content_tag('div',
       hidden_field_tag('article[accept_comments]', 0)
     )

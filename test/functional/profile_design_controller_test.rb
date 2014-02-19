@@ -300,6 +300,27 @@ class ProfileDesignControllerTest < ActionController::TestCase
     assert !@controller.instance_variable_get('@side_block_types').include?(CustomBlock8)
   end
 
+  should 'not edit main block with never option' do
+    get :edit, :profile => 'designtestuser', :id => @b4.id
+    assert_no_tag :input, :attributes => { :type => 'radio', :value => 'never'}
+  end
+
+  should 'not edit main block with home_page_only option' do
+    get :edit, :profile => 'designtestuser', :id => @b4.id
+    assert_no_tag :input, :attributes => { :type => 'radio', :value => 'home_page_only'}
+  end
+
+  should 'edit main block with always option' do
+    get :edit, :profile => 'designtestuser', :id => @b4.id
+    assert_tag :input, :attributes => { :type => 'radio', :value => 'always'}
+  end
+
+  should 'edit main block with except_home_page option' do
+    get :edit, :profile => 'designtestuser', :id => @b4.id
+    assert_tag :input, :attributes => { :type => 'radio', :value => 'except_home_page'}
+  end
+
+
   ######################################################
   # END - tests for BoxOrganizerController features
   ######################################################
@@ -395,7 +416,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
 
   should 'not allow products block if environment do not let' do
     env = Environment.default
-    env.enable('disable_products_for_enterprises')
+    env.disable('products_for_enterprises')
     env.save!
     ent = fast_create(Enterprise, :name => 'test ent', :identifier => 'test_ent', :environment_id => env.id)
     person = create_user_with_permission('test_user', 'edit_profile_design', ent)
@@ -530,6 +551,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     environment = mock
     profile.stubs(:environment).returns(environment)
     environment.stubs(:enabled?).returns(true)
+    environment.stubs(:enabled?).with('products_for_enterprises').returns(false)
     @controller.stubs(:profile).returns(profile)
     @controller.stubs(:user).returns(profile)
     Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([])
@@ -546,7 +568,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     profile.stubs(:is_admin?).with(anything).returns(false)
     environment = mock
     profile.stubs(:environment).returns(environment)
-    environment.stubs(:enabled?).returns(false)
+    environment.stubs(:enabled?).returns(true)
     @controller.stubs(:profile).returns(profile)
     @controller.stubs(:user).returns(profile)
     Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([])
