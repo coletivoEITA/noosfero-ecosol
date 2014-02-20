@@ -117,7 +117,7 @@
   <% end %>
 </div>
 
-<%= recaptcha_tags :ajax => true, :display => {:theme => 'clean'} if @block_bot %>
+<%= render 'shared/captcha' if @block_bot %>
 
 <p style="text-align: center">
   <%= submit_button('save', _('Create my account')) %>

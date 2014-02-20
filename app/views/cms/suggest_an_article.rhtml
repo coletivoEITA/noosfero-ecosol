@@ -20,7 +20,7 @@
 
   <%= hidden_field_tag('back_to', @back_to) %>
 
-  <%= recaptcha_tags(:display => { :theme => 'clean' }, :ajax => true) %>
+  <%= render 'shared/captcha' %>
 
   <% button_bar do %>
     <%= submit_button :save, _('Save') %>

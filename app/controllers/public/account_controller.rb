@@ -86,7 +86,7 @@ class AccountController < ApplicationController
           session[:may_be_a_bot] = true
         else
           if session[:may_be_a_bot]
-            return false unless verify_recaptcha :model=>@user, :message=>_('Captcha (the human test)')
+            return false unless captcha_verify :model=>@user, :message=>_('Captcha (the human test)')
           end
           @user.signup!
           owner_role = Role.find_by_name('owner')

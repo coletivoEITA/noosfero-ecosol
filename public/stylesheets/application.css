@@ -5988,6 +5988,10 @@ li.profile-activity-item.upload_image .activity-gallery-images-count-1 img {
 
 /* Captcha */
 
+.hcaptcha {
+  display: none;
+}
+
 /* Signup interface {{{ */
 
 #url-check {
