@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(:version => 20140108132730) do
   end
 
   add_index "action_tracker_notifications", ["action_tracker_id"], :name => "index_action_tracker_notifications_on_action_tracker_id"
-  add_index "action_tracker_notifications", ["profile_id", "action_tracker_id"], :name => "index_action_tracker_notif_on_prof_id_act_tracker_id", :unique => true
+  add_index "action_tracker_notifications", ["profile_id", "action_tracker_id"], :name => "index_action_tracker_notifications_on_profile_id_and_action_tra", :unique => true
   add_index "action_tracker_notifications", ["profile_id"], :name => "index_action_tracker_notifications_on_profile_id"
 
   create_table "article_privacy_exceptions", :id => false, :force => true do |t|
@@ -141,7 +141,6 @@ ActiveRecord::Schema.define(:version => 20140108132730) do
     t.integer  "position"
   end
 
-  add_index "articles", ["name"], :name => "index_articles_on_name"
   add_index "articles", ["parent_id"], :name => "index_articles_on_parent_id"
   add_index "articles", ["profile_id"], :name => "index_articles_on_profile_id"
   add_index "articles", ["slug"], :name => "index_articles_on_slug"
@@ -179,7 +178,37 @@ ActiveRecord::Schema.define(:version => 20140108132730) do
     t.integer "position"
   end
 
-  add_index "boxes", ["owner_id", "owner_type"], :name => "index_boxes_on_owner_type_and_owner_id"
+  add_index "boxes", ["owner_type", "owner_id"], :name => "index_boxes_on_owner_type_and_owner_id"
+
+  create_table "bsc_plugin_contracts", :force => true do |t|
+    t.string   "client_name"
+    t.integer  "client_type"
+    t.integer  "business_type"
+    t.string   "state"
+    t.string   "city"
+    t.integer  "status",              :default => 0
+    t.integer  "number_of_producers", :default => 0
+    t.datetime "supply_start"
+    t.datetime "supply_end"
+    t.text     "annotations"
+    t.integer  "bsc_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "bsc_plugin_contracts_enterprises", :id => false, :force => true do |t|
+    t.integer "contract_id"
+    t.integer "enterprise_id"
+  end
+
+  create_table "bsc_plugin_sales", :force => true do |t|
+    t.integer  "product_id",  :null => false
+    t.integer  "contract_id", :null => false
+    t.integer  "quantity",    :null => false
+    t.decimal  "price"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "categories", :force => true do |t|
     t.string  "name"
@@ -247,6 +276,50 @@ ActiveRecord::Schema.define(:version => 20140108132730) do
     t.datetime "updated_at"
   end
 
+  create_table "custom_forms_plugin_answers", :force => true do |t|
+    t.text    "value"
+    t.integer "field_id"
+    t.integer "submission_id"
+  end
+
+  create_table "custom_forms_plugin_fields", :force => true do |t|
+    t.string  "name"
+    t.string  "slug"
+    t.string  "type"
+    t.string  "default_value"
+    t.string  "choices"
+    t.float   "minimum"
+    t.float   "maximum"
+    t.integer "form_id"
+    t.boolean "mandatory",     :default => false
+    t.boolean "multiple"
+    t.boolean "list"
+    t.integer "position",      :default => 0
+  end
+
+  create_table "custom_forms_plugin_forms", :force => true do |t|
+    t.string   "name"
+    t.string   "slug"
+    t.text     "description"
+    t.integer  "profile_id"
+    t.datetime "begining"
+    t.datetime "ending"
+    t.boolean  "report_submissions", :default => false
+    t.boolean  "on_membership",      :default => false
+    t.string   "access"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "custom_forms_plugin_submissions", :force => true do |t|
+    t.string   "author_name"
+    t.string   "author_email"
+    t.integer  "profile_id"
+    t.integer  "form_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
     t.integer  "attempts",   :default => 0
@@ -261,6 +334,35 @@ ActiveRecord::Schema.define(:version => 20140108132730) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "delivery_plugin_methods", :force => true do |t|
+    t.integer  "profile_id"
+    t.string   "name"
+    t.text     "description"
+    t.string   "recipient"
+    t.string   "address_line1"
+    t.string   "address_line2"
+    t.string   "postal_code"
+    t.string   "state"
+    t.string   "country"
+    t.string   "delivery_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delivery_plugin_methods", ["profile_id"], :name => "index_distribution_plugin_delivery_methods_on_node_id"
+
+  create_table "delivery_plugin_options", :force => true do |t|
+    t.integer  "owner_id"
+    t.integer  "delivery_method_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "owner_type"
+  end
+
+  add_index "delivery_plugin_options", ["delivery_method_id"], :name => "distribution_plugin_delivery_options_dmid"
+  add_index "delivery_plugin_options", ["owner_id", "delivery_method_id"], :name => "distribution_plugin_delivery_options_sid_dmid"
+  add_index "delivery_plugin_options", ["owner_id"], :name => "index_distribution_plugin_delivery_options_on_session_id"
 
   create_table "domains", :force => true do |t|
     t.string  "name"
@@ -283,11 +385,12 @@ ActiveRecord::Schema.define(:version => 20140108132730) do
     t.text     "terms_of_use_acceptance_text"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "send_email_plugin_allow_to"
     t.integer  "reports_lower_bound",          :default => 0,                   :null => false
-    t.string   "redirection_after_login",      :default => "keep_on_same_page"
-    t.text     "signup_welcome_text"
     t.string   "languages"
     t.string   "default_language"
+    t.string   "redirection_after_login",      :default => "keep_on_same_page"
+    t.text     "signup_welcome_text"
   end
 
   create_table "external_feeds", :force => true do |t|
@@ -378,6 +481,28 @@ ActiveRecord::Schema.define(:version => 20140108132730) do
     t.datetime "updated_at"
   end
 
+  create_table "mezuro_plugin_metrics", :force => true do |t|
+    t.string   "name"
+    t.float    "value"
+    t.integer  "metricable_id"
+    t.string   "metricable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mezuro_plugin_projects", :force => true do |t|
+    t.string   "name"
+    t.string   "identifier"
+    t.string   "personal_webpage"
+    t.text     "description"
+    t.string   "repository_url"
+    t.string   "svn_error"
+    t.boolean  "with_tab"
+    t.integer  "profile_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "national_region_types", :force => true do |t|
     t.string "name"
   end
@@ -393,6 +518,143 @@ ActiveRecord::Schema.define(:version => 20140108132730) do
 
   add_index "national_regions", ["name"], :name => "name_index"
   add_index "national_regions", ["national_region_code"], :name => "code_index"
+
+  create_table "oauth2_authorizations", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "oauth2_resource_owner_type"
+    t.integer  "oauth2_resource_owner_id"
+    t.integer  "client_id"
+    t.string   "scope"
+    t.string   "code",                       :limit => 40
+    t.string   "access_token_hash",          :limit => 40
+    t.string   "refresh_token_hash",         :limit => 40
+    t.datetime "expires_at"
+  end
+
+  add_index "oauth2_authorizations", ["access_token_hash"], :name => "index_oauth2_authorizations_on_access_token_hash", :unique => true
+  add_index "oauth2_authorizations", ["client_id", "code"], :name => "index_oauth2_authorizations_on_client_id_and_code", :unique => true
+  add_index "oauth2_authorizations", ["client_id", "oauth2_resource_owner_type", "oauth2_resource_owner_id"], :name => "index_owner_client_pairs", :unique => true
+  add_index "oauth2_authorizations", ["client_id", "refresh_token_hash"], :name => "index_oauth2_authorizations_on_client_id_and_refresh_token_hash", :unique => true
+
+  create_table "oauth2_clients", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "oauth2_client_owner_type"
+    t.integer  "oauth2_client_owner_id"
+    t.string   "name"
+    t.string   "client_id"
+    t.string   "client_secret"
+    t.string   "redirect_uri"
+    t.integer  "image_id"
+    t.string   "site"
+  end
+
+  add_index "oauth2_clients", ["client_id"], :name => "index_oauth2_clients_on_client_id", :unique => true
+  add_index "oauth2_clients", ["name"], :name => "index_oauth2_clients_on_name", :unique => true
+
+  create_table "oauth_plugin_providers", :force => true do |t|
+    t.integer  "environment_id"
+    t.string   "type"
+    t.string   "strategy"
+    t.string   "identifier"
+    t.string   "name"
+    t.string   "site"
+    t.integer  "image_id"
+    t.string   "key"
+    t.string   "secret"
+    t.text     "scope"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "oauth_plugin_providers", ["environment_id", "identifier"], :name => "index_oauth_plugin_providers_on_environment_id_and_identifier"
+  add_index "oauth_plugin_providers", ["environment_id"], :name => "index_oauth_plugin_providers_on_environment_id"
+  add_index "oauth_plugin_providers", ["identifier"], :name => "index_oauth_plugin_providers_on_identifier"
+  add_index "oauth_plugin_providers", ["strategy"], :name => "index_oauth_plugin_providers_on_strategy"
+  add_index "oauth_plugin_providers", ["type"], :name => "index_oauth_plugin_providers_on_type"
+
+  create_table "orders_cycle_plugin_cycle_orders", :force => true do |t|
+    t.integer  "cycle_id"
+    t.integer  "order_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "orders_cycle_plugin_cycle_orders", ["cycle_id", "order_id"], :name => "index_orders_cycle_plugin_cycle_orders_on_cycle_id_and_order_id"
+  add_index "orders_cycle_plugin_cycle_orders", ["cycle_id"], :name => "index_orders_cycle_plugin_cycle_orders_on_cycle_id"
+  add_index "orders_cycle_plugin_cycle_orders", ["order_id"], :name => "index_orders_cycle_plugin_cycle_orders_on_order_id"
+
+  create_table "orders_cycle_plugin_cycle_products", :force => true do |t|
+    t.integer "cycle_id"
+    t.integer "product_id"
+  end
+
+  add_index "orders_cycle_plugin_cycle_products", ["cycle_id", "product_id"], :name => "orders_cycle_plugin_index_PhBVTRFB"
+  add_index "orders_cycle_plugin_cycle_products", ["cycle_id"], :name => "orders_cycle_plugin_index_dqaEe7Hf"
+  add_index "orders_cycle_plugin_cycle_products", ["product_id"], :name => "orders_cycle_plugin_index_f5DmQ6w5Y"
+
+  create_table "orders_cycle_plugin_cycles", :force => true do |t|
+    t.integer  "profile_id"
+    t.string   "name"
+    t.text     "description"
+    t.datetime "start"
+    t.datetime "finish"
+    t.datetime "delivery_start"
+    t.datetime "delivery_finish"
+    t.decimal  "margin_percentage"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "status"
+    t.integer  "code"
+    t.text     "opening_message"
+  end
+
+  add_index "orders_cycle_plugin_cycles", ["code"], :name => "index_orders_cycle_plugin_cycles_on_code"
+  add_index "orders_cycle_plugin_cycles", ["profile_id"], :name => "index_distribution_plugin_sessions_on_node_id"
+  add_index "orders_cycle_plugin_cycles", ["status"], :name => "index_distribution_plugin_sessions_on_status"
+
+  create_table "orders_plugin_items", :force => true do |t|
+    t.integer  "product_id"
+    t.integer  "order_id"
+    t.decimal  "quantity_asked",    :default => 0.0
+    t.decimal  "quantity_accepted", :default => 0.0
+    t.decimal  "quantity_shipped",  :default => 0.0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal  "price_asked",       :default => 0.0
+    t.decimal  "price_accepted",    :default => 0.0
+    t.decimal  "price_shipped",     :default => 0.0
+    t.text     "data",              :default => "--- {}\n\n"
+    t.string   "name"
+    t.decimal  "price"
+  end
+
+  add_index "orders_plugin_items", ["order_id"], :name => "index_distribution_plugin_ordered_products_on_order_id"
+  add_index "orders_plugin_items", ["product_id"], :name => "distribution_plugin_ordered_products_spid"
+
+  create_table "orders_plugin_orders", :force => true do |t|
+    t.integer  "profile_id"
+    t.integer  "consumer_id"
+    t.integer  "supplier_delivery_id"
+    t.integer  "consumer_delivery_id"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "code"
+    t.text     "profile_data",           :default => "--- {}\n\n"
+    t.text     "consumer_data",          :default => "--- {}\n\n"
+    t.text     "supplier_delivery_data", :default => "--- {}\n\n"
+    t.text     "consumer_delivery_data", :default => "--- {}\n\n"
+    t.text     "payment_data",           :default => "--- {}\n\n"
+    t.text     "data",                   :default => "--- {}\n\n"
+  end
+
+  add_index "orders_plugin_orders", ["consumer_delivery_id"], :name => "index_distribution_plugin_orders_on_consumer_delivery_id"
+  add_index "orders_plugin_orders", ["consumer_id"], :name => "index_distribution_plugin_orders_on_consumer_id"
+  add_index "orders_plugin_orders", ["profile_id"], :name => "index_distribution_plugin_orders_on_session_id"
+  add_index "orders_plugin_orders", ["status"], :name => "index_distribution_plugin_orders_on_status"
+  add_index "orders_plugin_orders", ["supplier_delivery_id"], :name => "index_distribution_plugin_orders_on_supplier_delivery_id"
 
   create_table "price_details", :force => true do |t|
     t.decimal  "price",              :default => 0.0
@@ -437,6 +699,7 @@ ActiveRecord::Schema.define(:version => 20140108132730) do
     t.integer  "image_id"
     t.string   "type"
     t.text     "data"
+    t.boolean  "archived",            :default => false
   end
 
   add_index "products", ["product_category_id"], :name => "index_products_on_product_category_id"
@@ -469,6 +732,8 @@ ActiveRecord::Schema.define(:version => 20140108132730) do
     t.datetime "updated_at"
     t.boolean  "visible",                               :default => true
     t.integer  "image_id"
+    t.integer  "bsc_id"
+    t.string   "company_name"
     t.boolean  "validated",                             :default => true
     t.string   "cnpj"
     t.string   "national_region_code"
@@ -523,9 +788,9 @@ ActiveRecord::Schema.define(:version => 20140108132730) do
 
   create_table "roles", :force => true do |t|
     t.string  "name"
+    t.text    "permissions"
     t.string  "key"
     t.boolean "system",         :default => false
-    t.text    "permissions"
     t.integer "environment_id"
   end
 
@@ -536,7 +801,6 @@ ActiveRecord::Schema.define(:version => 20140108132730) do
     t.integer  "scrap_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "context_id"
   end
 
   create_table "sessions", :force => true do |t|
@@ -548,6 +812,37 @@ ActiveRecord::Schema.define(:version => 20140108132730) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "suppliers_plugin_source_products", :force => true do |t|
+    t.integer  "from_product_id"
+    t.integer  "to_product_id"
+    t.decimal  "quantity",        :default => 0.0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "supplier_id"
+  end
+
+  add_index "suppliers_plugin_source_products", ["from_product_id", "to_product_id"], :name => "suppliers_plugin_index_dtBULzU3"
+  add_index "suppliers_plugin_source_products", ["from_product_id"], :name => "index_distribution_plugin_source_products_on_from_product_id"
+  add_index "suppliers_plugin_source_products", ["supplier_id", "from_product_id", "to_product_id"], :name => "suppliers_plugin_index_VBNqyeCP"
+  add_index "suppliers_plugin_source_products", ["supplier_id", "from_product_id"], :name => "suppliers_plugin_index_naHsVLS6cH"
+  add_index "suppliers_plugin_source_products", ["supplier_id"], :name => "suppliers_plugin_index_Lm5QPpV8"
+  add_index "suppliers_plugin_source_products", ["to_product_id"], :name => "index_distribution_plugin_source_products_on_to_product_id"
+
+  create_table "suppliers_plugin_suppliers", :force => true do |t|
+    t.integer  "consumer_id"
+    t.string   "name"
+    t.string   "name_abbreviation"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "profile_id"
+    t.boolean  "active",            :default => true
+  end
+
+  add_index "suppliers_plugin_suppliers", ["consumer_id"], :name => "index_distribution_plugin_suppliers_on_consumer_id"
+  add_index "suppliers_plugin_suppliers", ["profile_id", "consumer_id"], :name => "index_suppliers_plugin_suppliers_on_profile_id_and_consumer_id"
+  add_index "suppliers_plugin_suppliers", ["profile_id"], :name => "index_suppliers_plugin_suppliers_on_profile_id"
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
@@ -578,6 +873,7 @@ ActiveRecord::Schema.define(:version => 20140108132730) do
     t.datetime "created_at"
     t.string   "target_type"
     t.integer  "image_id"
+    t.integer  "bsc_id"
     t.boolean  "spam",                       :default => false
   end
 
