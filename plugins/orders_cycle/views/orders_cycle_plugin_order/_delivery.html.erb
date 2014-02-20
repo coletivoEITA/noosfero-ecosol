@@ -2,8 +2,10 @@
   <% if order.cycle.delivery_methods.count > 0 %>
     <div>
       <h3><%= t('orders_cycle_plugin.views.order._delivery.delivery_method') %></h3>
-      <strong><%= order.supplier_delivery.name %></strong>
-      <div class="subtitle"><%= order.supplier_delivery.description %></div>
+      <% if order.supplier_delivery %>
+        <strong><%= order.supplier_delivery.name %></strong>
+        <div class="subtitle"><%= order.supplier_delivery.description %></div>
+      <% end %>
     </div>
 
     <% if order.open? and order.cycle.delivery_methods.count > 1 %>

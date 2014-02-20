@@ -28,8 +28,8 @@
 
     <p>
       <p><%= t('orders_plugin.views.mailer.order_confirmation.attention_to_the_foll') %></p>
-      <b><%= @order.supplier_delivery.name %></b><br />
-      <%= @order.supplier_delivery.description %><br />
+      <b><%= @order.supplier_delivery_data[:name] %></b><br />
+      <%= @order.supplier_delivery_data[:description] %><br />
     </p>
 
     <p><%= t('orders_plugin.views.mailer.order_confirmation.order_data_confirmed') %></p>

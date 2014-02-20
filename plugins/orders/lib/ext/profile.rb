@@ -19,10 +19,11 @@ class Profile
 
   has_many :ordered_items, :through => :orders, :source => :items, :order => 'name ASC'
 
-  def self.create_orders_manager_role env
+  def self.create_orders_manager_role env_id
+    env = Environment.find env_id
     Role.create! :environment => env,
       :key => "profile_orders_manager",
-      :name => t("orders_plugin.lib.ext.profile.orders_manager"),
+      :name => I18n.t("orders_plugin.lib.ext.profile.orders_manager"),
       :permissions => [
         'manage_orders',
       ]
@@ -34,18 +35,18 @@ class Profile
 
   PERMISSIONS['Profile']['manage_orders'] = N_('Manage orders')
   module Roles
-    def self.orders_manager env
-      role = find_role 'orders_manager', env
-      role ||= Profile.create_orders_manager_role Environment.find(env)
+    def self.orders_manager env_id
+      role = find_role 'orders_manager', env_id
+      role ||= Profile.create_orders_manager_role env_id
       role
     end
 
     class << self
-      def all_roles_with_orders_manager env
-        roles = all_roles_without_orders_manager env
+      def all_roles_with_orders_manager env_id
+        roles = all_roles_without_orders_manager env_id
         if not roles.find{ |r| r.key == 'profile_orders_manager' }
-          Profile.create_orders_manager_role env
-          roles = all_roles_without_orders_manager env
+          Profile.create_orders_manager_role env_id
+          roles = all_roles_without_orders_manager env_id
         end
 
         roles

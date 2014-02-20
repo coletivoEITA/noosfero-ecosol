@@ -9,10 +9,10 @@
       <%= link_to_function t('delivery_plugin.views.delivery_option._select_content.add_new'), "delivery.view_toggle()" %>
       <%= link_to_function t('delivery_plugin.views.delivery_option._select_content.edit_this'),
         "jQuery.get('#{url_for :controller => :delivery_plugin_option, :action => :method_edit, :owner_id => @owner_id, :owner_type => @owner_type}',
-           { id: jQuery('#delivery-method-choose select').val() });" %>
+           { id: jQuery('#delivery-method-choose select').val() }, function() {}, 'script');" %>
       <%= link_to_function t('delivery_plugin.views.delivery_option._select_content.remove_method'),
         "jQuery.post('#{url_for :controller => :delivery_plugin_option, :action => :method_destroy, :owner_id => @owner_id, :owner_type => @owner_type}',
-           { id: jQuery('#delivery-method-choose select').val() });", :confirm => t('delivery_plugin.views.delivery_option._select_content.are_you_sure_you_want') %>
+           { id: jQuery('#delivery-method-choose select').val() }, function() {}, 'script');", :confirm => t('delivery_plugin.views.delivery_option._select_content.are_you_sure_you_want') %>
     </div>
 
     <div class="clean"></div>
