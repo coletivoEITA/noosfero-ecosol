@@ -23,7 +23,7 @@ class Profile
     env = Environment.find env_id
     Role.create! :environment => env,
       :key => "profile_orders_manager",
-      :name => t("orders_plugin.lib.ext.profile.orders_manager"),
+      :name => I18n.t("orders_plugin.lib.ext.profile.orders_manager"),
       :permissions => [
         'manage_orders',
       ]
