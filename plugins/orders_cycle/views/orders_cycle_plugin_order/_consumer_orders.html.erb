@@ -57,6 +57,13 @@
   </div>
 <% end %>
 
+<div id="show-cancelled-orders">
+  <%= link_to_function t('orders_cycle_plugin.views.order._consumer_orders.show_cancelled_orders'), "orders_cycle.toggleCancelledOrders()" %>
+</div>
+<div id="hide-cancelled-orders">
+  <%= link_to_function t('orders_cycle_plugin.views.order._consumer_orders.hide_cancelled_orders'), "orders_cycle.toggleCancelledOrders()", :style => 'display:none' %>
+</div>
+
 <%# prints out the referenced order %>
 <% if @order %>
   <div id="consumer-order-<%= @order.id %>" class="consumer-order edit">
@@ -101,11 +108,4 @@
     <div class="clean"></div>
   </div>
 <% end %>
-
-<div id="show-cancelled-orders">
-  <%= link_to_function t('orders_cycle_plugin.views.order._consumer_orders.show_cancelled_orders'), "orders_cycle.toggleCancelledOrders()" %>
-</div>
-<div id="hide-cancelled-orders">
-  <%= link_to_function t('orders_cycle_plugin.views.order._consumer_orders.hide_cancelled_orders'), "orders_cycle.toggleCancelledOrders()", :style => 'display:none' %>
-</div>
 
