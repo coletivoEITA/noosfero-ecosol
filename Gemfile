@@ -46,7 +46,7 @@ end
 
 group :databases do
   gem 'sqlite3-ruby', '1.2.4'
-  gem 'pg', '0.8.0'
+  gem 'pg'
 end
 
 group :test do
