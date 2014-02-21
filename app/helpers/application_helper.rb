@@ -1112,7 +1112,7 @@ module ApplicationHelper
             :profile => profile.identifier }
     url.merge!({:content_type => content.class.name, :content_id => content.id}) if content
     text = content_tag('span', _('Report abuse'))
-    klass = 'report-abuse-action'
+    klass = 'report-abuse-action colorbox'
     already_reported_message = _('You already reported this profile.')
     report_profile_message = _('Report this profile for abusive behaviour')
 
