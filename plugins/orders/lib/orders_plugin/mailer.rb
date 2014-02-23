@@ -81,14 +81,4 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
     end
   end
 
-  def premailer_html html
-    premailer = Premailer.new html, :with_html_string => true
-    premailer.to_inline_css
-  end
-
-  def render_with_premailer *args
-    premailer_html render_without_premailer(*args)
-  end
-  alias_method_chain :render, :premailer
-
 end
