@@ -181,8 +181,6 @@ label.error {
   vertical-align: top;
 }
 
-.controller-profile_editor a.control-panel-shopping-cart-purchase-report {background-image: url("/plugins/shopping_cart/images/control-panel/purchase-report.png")}
-.controller-profile_editor .msie6 a.control-panel-shopping-cart-purchase-report {background-image: url("/plugins/shopping_cart/images/control-panel/purchase-report.gif")}
 .controller-profile_editor a.control-panel-shopping-cart-icon {background-image: url("/plugins/shopping_cart/images/control-panel/icon.png")}
 .controller-profile_editor .msie6 a.control-panel-shopping-cart-icon {background-image: url("/plugins/shopping_cart/images/control-panel/icon.gif")}
 
