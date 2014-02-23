@@ -1,5 +1,9 @@
 class TaskMailer < ActionMailer::Base
 
+  layout 'mailer'
+
+  helper_method :extract_message
+
   def method_missing(name, *args)
     task = args.shift
     if task.kind_of?(Task) && task.respond_to?("#{name}_message")
@@ -10,17 +14,17 @@ class TaskMailer < ActionMailer::Base
   end
 
   def target_notification(task, message)
-    msg = extract_message(message)
-
-    recipients task.target.notification_emails
+    self.environment = task.environment
 
     url_for_tasks_list = task.target.kind_of?(Environment) ? '' : url_for(task.target.tasks_url)
 
+    recipients task.target.notification_emails
     from self.class.generate_from(task)
     subject '[%s] %s' % [task.environment.name, task.target_notification_description]
-    body :target => task.target.name,
-      :message => msg,
+    content_type 'text/html'
+    body :task => task, :target => task.target,
       :environment => task.environment.name,
+      :message => message,
       :url => generate_environment_url(task, :controller => 'home'),
       :tasks_url => url_for_tasks_list
   end

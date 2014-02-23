@@ -4860,18 +4860,8 @@ msgid "Abuse complaint (%s)"
 msgstr "Queixa de abuso (%s)"
 
 #: app/models/abuse_complaint.rb:36
-msgid "%{linked_subject} was reported due to inappropriate behavior."
-msgstr "%{linked_subject} foi denunciado devido a comportamento inadequado."
-
-#: app/models/abuse_complaint.rb:60
-msgid ""
-"Your profile was reported by the users of %s due to inappropriate behavior. "
-"The administrators of the environment are now reviewing the report. To solve "
-"this misunderstanding, please contact the administrators."
-msgstr ""
-"Seu perfil foi denunciado pelos usuarios de %s devido a comportamento "
-"inadequado. O adiministrador do ambiente esta agora analisando a denuncia. "
-"Para resolver teste mal-entendido, por favor contacte o administrador."
+msgid "%s was reported by an user"
+msgstr "%s foi denunciado por um usuário"
 
 #: app/models/abuse_complaint.rb:64
 msgid ""
@@ -4897,6 +4887,18 @@ msgstr ""
 "inadequado. A tarefa foi criada com todos as denúncias, incluindo os motivos "
 "e o conteúdo relatado por esses usuraios. Verifique a denúncia e decida se "
 "este perfil deve ser desativada ou não."
+
+#: app/views/abuse_complaint/_target_notification_message.html.erb
+msgid "An user reported the %{profile_type} %{reported} with the following reason:"
+msgstr "Um usuário reportou %{reported} (%{profile_type}) com a seguinte justificativa:"
+
+#: app/views/abuse_complaint/_target_notification_message.html.erb
+msgid "by %{reporter} at %{date}"
+msgstr "por %{reporter} em %{date}"
+
+#: app/views/abuse_complaint/_target_notification_message.html.erb
+msgid "The administrators of %{reported} are the following:"
+msgstr "Os administradores de %{reported} são as/os seguintes:"
 
 #: app/models/people_block.rb:8
 msgid "Clicking a person takes you to his/her homepage"
@@ -9332,6 +9334,10 @@ msgstr "Você não tem empreendimentos favoritos ainda."
 #: app/views/task_mailer/target_notification.rhtml:1
 msgid "Hello %s,"
 msgstr "Olá %s,"
+
+#: app/views/task_mailer/target_notification.rhtml
+msgid "Hello administrators of %{environment},"
+msgstr "Olá administratoras/es de %{environment},"
 
 #: app/views/user/mailer/activation_email_notify.rhtml:3
 msgid "Your email %s was just activated."

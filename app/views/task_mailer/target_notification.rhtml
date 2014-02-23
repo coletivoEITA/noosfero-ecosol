@@ -1,10 +1,17 @@
-<%= _('Hello %s,') % @target %>
+<p>
+  <%= if @target.is_a? Environment then _('Hello administrators of %{environment},') % {:environment => @target.name} else _('Hello %s,') % @target.name end %>
+</p>
 
-<%= word_wrap(@message) %>
+<p>
+  <%= extract_message @message %>
+</p>
 
-<%= word_wrap(_('Access your list of tasks or your control panel to see this and other pending actions that need your attention.')) %>
-<%= @tasks_url %>
+<p>
+  <%= word_wrap(_('Access your list of tasks or your control panel to see this and other pending actions that need your attention.')) %>
+  <%= @tasks_url %>
+</p>
 
+<p>
 --
-<%= _('%s team.') % @environment %>
-<%= @url %>
+<%= _('%s team.') % link_to(@environment, @url) %>
+</p>

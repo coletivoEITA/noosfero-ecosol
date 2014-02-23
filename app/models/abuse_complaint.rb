@@ -56,8 +56,12 @@ class AbuseComplaint < Task
     reported.disable
   end
 
-  def task_activated_message
-    _('Your profile was reported by the users of %s due to inappropriate behavior. The administrators of the environment are now reviewing the report. To solve this misunderstanding, please contact the administrators.') % environment.name
+  def reason
+    self.abuse_reports.last.reason
+  end
+
+  def reporter
+    self.abuse_reports.last.reporter
   end
 
   def task_finished_message
@@ -65,11 +69,14 @@ class AbuseComplaint < Task
   end
 
   def target_notification_description
-    _('%s was reported due to inappropriate behavior.') % reported.name
+    _('%s was reported by an user') % self.reported.name
   end
 
   def target_notification_message
-    _('The users of %{environment} reported %{reported} due to inappropriate behavior. A task was created with all the reports including the reasons and contents reported by these users. Please verify the reports and decide whether this profile must be disabled or not.') % {:environment => environment.name, :reported => reported.name}
+    task = self
+    lambda do
+      render :partial => 'task_mailer/abuse_complaint/target_notification_message', :locals => {:task => task}
+    end
   end
 
 end
