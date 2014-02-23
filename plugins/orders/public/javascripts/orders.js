@@ -7,6 +7,13 @@ orders = {
       toggle_edit.editing().find('.more').toggle(toggle_edit.isEditing());
     },
 
+    edit_quantity: function (item) {
+      item = jQuery(item);
+      toggle_edit.edit(item);
+      var quantity_asked = item.find('.quantity-edit input');
+      quantity_asked.focus();
+    },
+
     quantity_keyup: function(context, event) {
       if (event.keyCode == 13) {
         var item = jQuery(context).parents('.item');

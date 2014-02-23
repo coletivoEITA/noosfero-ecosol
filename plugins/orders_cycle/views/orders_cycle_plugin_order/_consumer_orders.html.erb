@@ -83,15 +83,18 @@
         </div>
         <div class="order-message-actions">
           <div><%= t('orders_cycle_plugin.views.order._consumer_orders.you_still_can') %></div>
+
           <% if @cycle.orders? %>
             <%= link_to t('orders_cycle_plugin.views.order._consumer_orders.change_order'), {:action => :reopen, :id => @order.id}  %>
             <%= t('orders_cycle_plugin.views.order._consumer_orders.before_the_closing') %>&emsp;
           <% end %>
           <br>
+
           <% unless @order.cancelled? %>
             <%= link_to t('orders_cycle_plugin.views.order._delivery.cancel_order'), {:action => :cancel, :id => @order.id} %>
             <br>
           <% end %>
+
           <%= colorbox_link_to t('orders_cycle_plugin.views.order._consumer_orders.send_message_to_the_m'), {:controller => :orders_cycle_plugin_message, :action => :new_to_admins} %>
         </div>
       </div>

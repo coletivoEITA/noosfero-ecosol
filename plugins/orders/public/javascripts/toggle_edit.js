@@ -15,6 +15,11 @@ toggle_edit = {
     return toggle_edit.editing().first().hasClass('edit');
   },
 
+  edit: function (value_row) {
+    toggle_edit.setEditing(value_row);
+    toggle_edit.value_row.toggle_edit();
+  },
+
   toggle: function() {
     toggle_edit.editing().toggle();
   },
@@ -90,8 +95,7 @@ toggle_edit = {
       if (isToggle) {
         if (isAnother)
           toggle_edit.value_row.toggle_edit();
-        toggle_edit.setEditing(value_row);
-        toggle_edit.value_row.toggle_edit();
+        toggle_edit.edit(value_row);
 
         return false;
       } else if (isAnother || !toggle_edit.isEditing()) {
