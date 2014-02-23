@@ -20,7 +20,7 @@ class OrdersPlugin < Noosfero::Plugin
 
   def control_panel_buttons
     [
-      { :title => I18n.t('orders_plugin.lib.plugin.panel_button'), :icon => nil, :url => {:controller => :orders_plugin_admin, :action => :index} }
+      { :title => I18n.t('orders_plugin.lib.plugin.panel_button'), :icon => 'orders-purchases-sales', :url => {:controller => :orders_plugin_admin, :action => :index} },
     ]
   end
 
