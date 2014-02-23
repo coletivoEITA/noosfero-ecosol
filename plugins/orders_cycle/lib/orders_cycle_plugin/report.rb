@@ -113,7 +113,7 @@ module OrdersCyclePlugin::Report
           sheet.add_row [t('orders_cycle_plugin.lib.report.order_code'), t('orders_cycle_plugin.lib.report.member_name'), '', '', '', '', ''], :style => bluecell_b_top
           sheet.merge_cells "B#{sbs}:C#{sbs}"
 
-          sheet.add_row [order.id, order.consumer.name, '','','','',''], :style => default
+          sheet.add_row [order.code, order.consumer.name, '','','','',''], :style => default
 
           sheet.merge_cells "B#{sbs+1}:C#{sbs+1}"
 
@@ -140,7 +140,7 @@ module OrdersCyclePlugin::Report
           sheet.add_row ["", "", "", "","","",""], :style => border_top
           sheet.add_row ['','','','','',t('orders_cycle_plugin.lib.report.total_value'),"=SUM(G#{sp}:G#{ep})"], :style => [default]*5+[bluecell,currency]
           sheet.add_row ["", "", "", "","","",""]
-          sbs = sbe + 2
+          sbs = sbe + 4
         end # closes items_by_supplier
         sheet.column_widths 12,30,30,9,6,8,10
       end # closes spreadsheet

@@ -730,7 +730,7 @@
           hide_cancelled_orders: "esconder pedidos cancelados"
           administration_of_thi: "Administração deste ciclo"
           before_the_closing: "(antes do fechamento)"
-          change_order: "Mudar o pedido"
+          change_order: "Reabrir o pedido"
           edit_your_orders: "Edite seus pedidos"
           login: login
           new_order: "Novo pedido"
