@@ -1021,8 +1021,6 @@
     font-weight: bold; }
   #cycle-admin-page .field {
     clear: both; }
-    #cycle-admin-page .field:first-child label {
-      padding-top: 0; }
     #cycle-admin-page .field label {
       display: block;
       float: left;
