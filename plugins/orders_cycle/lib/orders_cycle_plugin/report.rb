@@ -60,7 +60,7 @@ module OrdersCyclePlugin::Report
             sheet.add_row [
               item.id, item.name, item.total_quantity_asked, 0, 0,
               "=IF(C#{pl}-D#{pl}+E#{pl}>0, C#{pl}-D#{pl}+E#{pl},0)", "=D#{pl}-C#{pl}+F#{pl}", item.unit.singular,
-              item.price, item.total_price_asked, "=F#{pl}*I#{pl}"], :style => [default,default,default,default,default,default,default,default,currency,currency]
+              item.price, item.total_price_asked, "=F#{pl}*I#{pl}"], :style => [default,default,default,default,default,default,default,default,currency,currency,currency]
 
               pl +=1
 
