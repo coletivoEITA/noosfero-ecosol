@@ -20,14 +20,14 @@
     <%= render "orders_plugin_item/price_total", :item => item %>
   </div>
 
-  <% if order.may_edit? user %>
+  <% if @admin %>
     <div class="box-field status-updated"> <%= t('orders_plugin.views.item._index.status_updated') %> </div>
   <% end %>
 </div>
 
 <div class="more">
 
-  <% if order.may_edit? user %>
+  <% if @admin %>
     <div class="actions">
       <%= link_to_function t('orders_plugin.views.item._edit.remove_from_order'), "jQuery(this).parents('.value-row').remove();"  %>
     </div>

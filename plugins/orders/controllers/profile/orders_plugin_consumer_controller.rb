@@ -4,7 +4,7 @@ class OrdersPluginConsumerController < ProfileController
 
   before_filter :login_required, :except => [:index, :edit]
   before_filter :load_order, :except => [:new]
-  before_filter :check_access, :only => [:remove, :cancel]
+  before_filter :check_access, :only => [:confirm, :remove, :cancel]
 
   def confirm
     params[:order] ||= {}
@@ -37,6 +37,9 @@ class OrdersPluginConsumerController < ProfileController
     unless @order.may_edit? user
       session[:notice] = if user.blank? then t('orders_plugin.controllers.profile.consumer.login_first') else session[:notice] = t('orders_plugin.controllers.profile.consumer.you_are_not_the_owner') end
       redirect_to :action => :index
+      false
+    else
+      true
     end
   end
 
