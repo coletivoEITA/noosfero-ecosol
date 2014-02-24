@@ -30,18 +30,13 @@ class OrdersPluginConsumerController < ProfileController
 
   def load_order
     @order = OrdersPlugin::Order.find_by_id params[:id]
-    render_access_denied if @order and @order.consumer != user and not profile.has_admin? user
+    render_access_denied if @order.present? and not @order.may_edit? user
   end
 
   def check_access
-    if @order.consumer != user and not profile.has_admin? user
-      if user.nil?
-        session[:notice] = t('orders_plugin.controllers.profile.consumer.login_first')
-      else
-        session[:notice] = t('orders_plugin.controllers.profile.consumer.you_are_not_the_owner')
-      end
+    unless @order.may_edit? user
+      session[:notice] = if user.blank? then t('orders_plugin.controllers.profile.consumer.login_first') else session[:notice] = t('orders_plugin.controllers.profile.consumer.you_are_not_the_owner') end
       redirect_to :action => :index
-      return
     end
   end
 

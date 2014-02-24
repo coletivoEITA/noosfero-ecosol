@@ -20,16 +20,16 @@
     <%= render "orders_plugin_item/price_total", :item => item %>
   </div>
 
-  <% if @admin %>
+  <% if order.may_edit? user %>
     <div class="box-field status-updated"> <%= t('orders_plugin.views.item._index.status_updated') %> </div>
   <% end %>
 </div>
 
 <div class="more">
 
-  <% if @admin %>
+  <% if order.may_edit? user %>
     <div class="actions">
-      <%= link_to_function t('orders_plugin.views.item._edit.remove_from_order'), "jQuery(this).parents('.value-row').remove();" if order.may_edit?(true) %>
+      <%= link_to_function t('orders_plugin.views.item._edit.remove_from_order'), "jQuery(this).parents('.value-row').remove();"  %>
     </div>
 
     <div class="price-with-unit"><%= price_with_unit_span product.price_as_currency_number, product.unit %></div>
@@ -43,7 +43,7 @@
 
         <%= link_to_remote t('orders_plugin.views.item._edit.remove_from_order'), :update => "item-#{item.id}",
           :loading => "loading_overlay.show('#item-#{item.id}')", :loaded => "loading_overlay.hide('#item-#{item.id}')",
-          :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? %>
+          :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? user %>
       </div>
 
       <div class="price-with-unit"><%= price_with_unit_span product.price_as_currency_number, product.unit %></div>

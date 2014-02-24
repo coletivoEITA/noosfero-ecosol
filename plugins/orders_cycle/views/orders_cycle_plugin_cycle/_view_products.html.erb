@@ -7,7 +7,7 @@
 
   <%= javascript_include_tag '/plugins/suppliers/javascripts/balloon.js' %>
   <div id="search-results">
-    <%= render :partial => "orders_cycle_plugin_product/order_search", :locals => {
+    <%= render :partial => "orders_cycle_plugin_order/filter", :locals => {
       :cycle => cycle, :order => order,
       :products_for_order => @products,
     } %>

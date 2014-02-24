@@ -13,19 +13,6 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
   helper SuppliersPlugin::TranslationHelper
   helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
-  def cycle_filter
-    @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @order = OrdersPlugin::Order.find_by_id params[:order_id]
-
-    scope = @cycle.products_for_order
-    @products = search_scope(scope).sources_from_2x_products_joins.all
-
-    render :partial => 'order_search', :locals => {
-      :order => @order, :cycle => @cycle,
-      :products_for_order => @products,
-    }
-  end
-
   def edit
     super
     @units = environment.units.all

@@ -18,8 +18,8 @@ class SuppliersPluginProductController < MyProfileController
 
     SuppliersPlugin::DistributedProduct.send :with_exclusive_scope do
       scope = profile.distributed_products.unarchived.from_products_joins
-      @products = search_scope(scope).paginate :per_page => 10, :page => params[:page], :order => 'from_products_products.name ASC'
-      @products_count = search_scope(scope).count
+      @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate :per_page => 10, :page => params[:page], :order => 'from_products_products.name ASC'
+      @products_count = SuppliersPlugin::BaseProduct.search_scope(scope, params).count
     end
     @product_categories = Product.product_categories_of @products
     @new_product = SuppliersPlugin::DistributedProduct.new :profile => profile, :supplier => @supplier
@@ -59,13 +59,5 @@ class SuppliersPluginProductController < MyProfileController
   end
 
   protected
-
-  def search_scope scope
-    scope = scope.from_supplier_id params[:supplier_id] if params[:supplier_id].present?
-    scope = scope.with_available params[:available] if params[:available].present?
-    scope = scope.name_like params[:name] if params[:name].present?
-    scope = scope.with_product_category_id params[:category_id] if params[:category_id].present?
-    scope
-  end
 
 end

@@ -11,7 +11,7 @@ module ConsumersCoopPlugin::LayoutHelper
     [:start, 'consumers_coop_plugin.lib.layout_helper.start', proc{ profile.url }, proc{ on_homepage? }],
     [:orders, 'consumers_coop_plugin.lib.layout_helper.orders', {:controller => :consumers_coop_plugin_order, :action => :index}],
     [:adm, 'consumers_coop_plugin.lib.layout_helper.administration', {:controller => :consumers_coop_plugin_myprofile, :action => :index},
-     proc{ @admin }, proc{ user and profile.has_admin? user }],
+     proc{ @admin }, proc{ profile.has_admin? user }],
   ]
 
   def display_header_buttons
