@@ -9,7 +9,7 @@
     </p>
 
     <p><%= t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.the_collective_profile_s') %
-    { :profile=> @consumer, :order => link_to(t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.order'), {:controller => :orders_cycle_plugin_order, :action => :edit, :id => @order.id, :profile => @consumer.identifier}) } %></p>
+      { :profile=> @profile.name, :order => link_to(t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.order'), {:controller => :orders_cycle_plugin_order, :action => :edit, :id => @order.id, :profile => @consumer.identifier, :only_path => false, :host => @environment.default_hostname}) } %></p>
     <p><i><%= @message %></i></p>
 
     <p><%= t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.the_products_in_the_o') %></p>
