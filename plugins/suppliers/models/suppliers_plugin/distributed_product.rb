@@ -7,10 +7,10 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
   # overhide original
   named_scope :available, :conditions => ['products.available = ? AND from_products_products.available = ? AND suppliers_plugin_suppliers.active = ?', true, true, true]
-  named_scope :unavailable, :conditions => ['products.available <> ? OR from_products_products.available <> ? OR suppliers_plugin_suppliers.active <> ?', true, true, true]
+  named_scope :unavailable, :conditions => ['products.available <> ? AND from_products_products.available <> ? AND suppliers_plugin_suppliers.active <> ?', true, true, true]
   named_scope :with_available do |available|
     op = if available then '=' else '<>' end
-    { :conditions => ["products.available #{op} ? OR from_products_products.available #{op} ? OR suppliers_plugin_suppliers.active #{op} ?", true, true, true] }
+    { :conditions => ["products.available #{op} ? AND from_products_products.available #{op} ? AND suppliers_plugin_suppliers.active #{op} ?", true, true, true] }
   end
 
   named_scope :name_like, lambda { |name| { :conditions => ["LOWER(from_products_products.name) LIKE ?", "%#{name}%"] } }
