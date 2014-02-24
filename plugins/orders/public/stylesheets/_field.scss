@@ -13,12 +13,6 @@ $input-height: 3*$height;
   clear: both;
   @extend .container-clean;
 
-  &:first-child {
-    label {
-      padding-top: 0;
-    }
-  }
-
   label {
     display: block;
     float: left;

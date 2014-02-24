@@ -581,8 +581,6 @@ body.consumers-coop {
     font-weight: bold; }
   #consumers-coop-settings form .field {
     clear: both; }
-    #consumers-coop-settings form .field:first-child label {
-      padding-top: 0; }
     #consumers-coop-settings form .field label {
       display: block;
       float: left;
