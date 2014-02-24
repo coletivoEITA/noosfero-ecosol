@@ -27,7 +27,7 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
       @order = OrdersPlugin::Order.find params[:order_id]
       @cycle = @order.cycle
       raise 'Order confirmed or cycle is closed for orders' unless @order.open?
-      raise 'You are not the owner of this order' unless @order.may_edit @consumer
+      raise 'You are not the owner of this order' unless @order.may_edit? @consumer
     end
 
     @item = OrdersPlugin::Item.find_by_order_id_and_product_id @order.id, @offered_product.id
