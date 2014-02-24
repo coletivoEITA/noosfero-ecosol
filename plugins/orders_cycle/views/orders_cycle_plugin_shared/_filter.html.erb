@@ -6,11 +6,10 @@
     <%= t('suppliers_plugin.views.product.index.filter') %>
   </div>
 
-  <% url = {} %>
-  <% url = {:controller => :orders_cycle_plugin_product, :action => :cycle_filter} if type == :order %>
+  <% url = {:controller => :orders_cycle_plugin_order, :action => :filter} if type == :order %>
   <% form_remote_tag :update => 'search-results',
     :loading => "loading_overlay.show('#filter');", :loaded => "loading_overlay.hide('#filter');",
-    :url => url , :html => {:id => 'filter-form'}, :method => :get do %>
+    :url => url, :html => {:id => 'filter-form'}, :method => :get do %>
 
     <div class="fields filter-box">
 

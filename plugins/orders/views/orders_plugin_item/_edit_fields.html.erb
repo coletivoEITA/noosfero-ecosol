@@ -2,9 +2,9 @@
 <%= f.hidden_field :id if f %>
 
 <div class="fields">
-  <div class="box-field supplier"><%= excerpt_ending product.supplier.abbreviation_or_name, 15 %></div>
+  <div class="box-field supplier"><%= excerpt_ending product.supplier.abbreviation_or_name, 12 %></div>
 
-  <div class="box-field product"><%= excerpt_ending product.name, 23 %></div>
+  <div class="box-field product"><%= excerpt_ending product.name, 22 %></div>
 
   <div class="box-field quantity">
     <span class="value"><%= item.quantity_asked_as_currency_number %></span>
@@ -29,7 +29,7 @@
 
   <% if @admin %>
     <div class="actions">
-      <%= link_to_function t('orders_plugin.views.item._edit.remove_from_order'), "jQuery(this).parents('.value-row').remove();" if order.may_edit?(true) %>
+      <%= link_to_function t('orders_plugin.views.item._edit.remove_from_order'), "jQuery(this).parents('.value-row').remove();"  %>
     </div>
 
     <div class="price-with-unit"><%= price_with_unit_span product.price_as_currency_number, product.unit %></div>
@@ -43,7 +43,7 @@
 
         <%= link_to_remote t('orders_plugin.views.item._edit.remove_from_order'), :update => "item-#{item.id}",
           :loading => "loading_overlay.show('#item-#{item.id}')", :loaded => "loading_overlay.hide('#item-#{item.id}')",
-          :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? %>
+          :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? user %>
       </div>
 
       <div class="price-with-unit"><%= price_with_unit_span product.price_as_currency_number, product.unit %></div>

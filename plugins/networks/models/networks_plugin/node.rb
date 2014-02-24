@@ -1,5 +1,7 @@
 class NetworksPlugin::Node < NetworksPlugin::BaseNode
 
+  ParentDelimiter = '|'
+
   before_validation :name_to_identifier
   after_destroy :assign_dependent_to_parent
 
@@ -8,7 +10,7 @@ class NetworksPlugin::Node < NetworksPlugin::BaseNode
   protected
 
   def name_to_identifier
-    self.identifier = "#{self.parent.identifier}.#{self.name.to_slug}"
+    self.identifier = "#{self.parent.identifier}#{ParentDelimiter}#{self.name.to_slug}"
   end
 
   def assign_dependent_to_parent

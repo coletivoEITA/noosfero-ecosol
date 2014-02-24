@@ -59,9 +59,6 @@ class ShoppingCartPlugin < Noosfero::Plugin
     if context.profile.enterprise?
       buttons << { :title => _('Shopping basket'), :icon => 'shopping-cart-icon', :url => {:controller => 'shopping_cart_plugin_myprofile', :action => 'edit'} }
     end
-    if context.profile.enterprise? && settings.enabled
-      buttons << { :title => _('Purchase reports'), :icon => 'shopping-cart-purchase-report', :url => {:controller => 'shopping_cart_plugin_myprofile', :action => 'reports'} }
-    end
 
     buttons
   end

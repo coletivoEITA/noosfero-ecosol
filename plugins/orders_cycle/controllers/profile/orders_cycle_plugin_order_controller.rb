@@ -16,17 +16,21 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   helper SuppliersPlugin::ProductHelper
 
   def index
-    @year = (params[:year] || DateTime.now.year).to_s
+    @current_year = DateTime.now.year
+    @year = (params[:year] || @current_year).to_s
+    @years_with_cycles = profile.orders_cycles_without_order.years.collect &:year
+    @years_with_cycles.unshift @current_year unless @years_with_cycles.include? @current_year
     @cycles = profile.orders_cycles.by_year @year
     @consumer = user
   end
 
   def new
-    if user.nil?
+    if user.blank?
       session[:notice] = t('orders_plugin.controllers.profile.consumer.please_login_first')
       redirect_to :action => :index
       return
     end
+
     @consumer = user
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
     @order = OrdersPlugin::Order.create! :profile => profile, :consumer => @consumer, :cycle => @cycle
@@ -75,43 +79,22 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   end
 
   def confirm
-    if @order.consumer != user and not profile.has_admin? user
-      if user.nil?
-        session[:notice] = t('orders_cycle_plugin.controllers.profile.order_controller.login_first')
-      else
-        session[:notice] = t('orders_cycle_plugin.controllers.profile.order_controller.you_are_not_the_owner')
-      end
-      redirect_to :action => :index
-      return
-    end
-
     raise "Cycle's orders period already ended" unless @order.cycle.orders?
-
     super
   end
 
   def admin_new
-    if profile.has_admin? user
-      @consumer = user
-      @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-      @order = OrdersPlugin::Order.create! :cycle => @cycle, :consumer => @consumer
-      redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
-    else
-      redirect_to :action => :index
-    end
+    return redirect_to :action => :index unless profile.has_admin? user
+
+    @consumer = user
+    @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
+    @order = OrdersPlugin::Order.create! :cycle => @cycle, :consumer => @consumer
+    redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
   end
 
   def cycle_edit
     @order = OrdersPlugin::Order.find params[:id]
-    if @order.consumer != user and not profile.has_admin? user
-      if user.nil?
-        session[:notice] = t('orders_cycle_plugin.controllers.profile.order_controller.login_first')
-      else
-        session[:notice] = t('orders_cycle_plugin.controllers.profile.order_controller.you_are_not_the_owner')
-      end
-      redirect_to :action => :index
-      return
-    end
+    return unless check_access
 
     if @order.cycle.orders?
       a = {}; @order.items.map{ |p| a[p.id] = p }
@@ -141,6 +124,19 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
       OrdersCyclePlugin::Mailer.deliver_order_change_notification profile, @order, changed, removed, message
     end
 
+  end
+
+  def filter
+    @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
+    @order = OrdersPlugin::Order.find_by_id params[:order_id]
+
+    scope = @cycle.products_for_order
+    @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).sources_from_2x_products_joins.all
+
+    render :partial => 'filter', :locals => {
+      :order => @order, :cycle => @cycle,
+      :products_for_order => @products,
+    }
   end
 
   def render_delivery

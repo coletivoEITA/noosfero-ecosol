@@ -722,7 +722,7 @@
           hide_cancelled_orders: "hide cancelled orders"
           administration_of_thi: "Administration of this cycle"
           before_the_closing: "(before the closing)"
-          change_order: "change order"
+          change_order: "reopen order"
           edit_your_orders: "Edit your orders"
           login: login
           new_order: "New order"

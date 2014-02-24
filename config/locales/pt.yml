@@ -525,7 +525,7 @@
           order_confirmed: "Pedido confirmado"
           order_removed: "Pedido removido"
           please_login_first: "Please login first"
-          you_are_not_the_owner: "Você não é o proprietário desse pedido"
+          you_are_not_the_owner: "Você não é o autor desse pedido"
     models:
       order: 
         open: "Em aberto"
@@ -672,7 +672,7 @@
       mailer: 
         message_to_admins: 
           a_service_of_s: "Um serviço de %s."
-          hello_managers_of_nam: "Olá gestores de %{name}!"
+          hello_managers_of_nam: "Olá gestoras/es de %{name}!"
           the_member_member_sen: "O membro %{member} mandou uma mensagem para você"
         message_to_consumer: 
           a_service_of_s: "Um serviço de %s."
@@ -692,7 +692,7 @@
         open_cycle: 
           a_new_cycle_is_open_c: "Um novo ciclo de pedidos está aberto chamado "
           hello_member_of_name: "Olá membros da comunidade %{name}!"
-          the_administrator_let: "O administrador deixou uma mensagem sobre este ciclo"
+          the_administrator_let: "A/O administrador(a) deixou uma mensagem sobre este ciclo"
           the_cycle_description: "A descrição do ciclo é.."
         order_change_notification: 
           a_service_of_s: "Um serviço de %s."
@@ -730,7 +730,7 @@
           hide_cancelled_orders: "esconder pedidos cancelados"
           administration_of_thi: "Administração deste ciclo"
           before_the_closing: "(antes do fechamento)"
-          change_order: "Mudar o pedido"
+          change_order: "Reabrir o pedido"
           edit_your_orders: "Edite seus pedidos"
           login: login
           new_order: "Novo pedido"

@@ -31,21 +31,18 @@ module OrdersCyclePlugin::Report
 
         items_by_supplier.each do |supplier, items, total_price_asked, total_parcel_asked|
 
-          sheet.add_row [t('orders_cycle_plugin.lib.report.supplier'),'', t('orders_cycle_plugin.lib.report.total_selled_value'), '',t('orders_cycle_plugin.lib.report.total_parcel_value'), '','','','','',''], :style => bluecell
-
-          ["A#{sbs}:B#{sbs}","C#{sbs}:D#{sbs}", "E#{sbs}:F#{sbs}"].each {|c| sheet.merge_cells c }
+          sheet.add_row [t('orders_cycle_plugin.lib.report.supplier'),'','','','','','','','','',''], :style => bluecell
+          sheet.merge_cells "A#{sbs}:B#{sbs}"
 
           # sp = index of the start of the products list / ep = index of the end of the products list
           sp = sbs + 4
           ep = sp + items.count - 1
           sheet.add_row [
-            supplier.abbreviation_or_name, '',
-            "=SUM(j#{sp}:j#{ep})", '',
-            "=SUM(k#{sp}:k#{ep})", '', '', '', '', '', ''], :style => default
+            supplier.abbreviation_or_name, '', '', '','', '', '', '', '', '', ''], :style => default
             sbe = sbs+1
           ["A#{sbe}:B#{sbe}","C#{sbe}:D#{sbe}", "E#{sbe}:F#{sbe}"].each {|c| sheet.merge_cells c }
 
-          sheet.add_row ['', '', '', '', '', '', '', '', '', '', ''], :style => default # empty line
+          sheet.add_row [''], :style => default # empty line
 
           sheet.add_row [
             t('orders_cycle_plugin.lib.report.product_cod'), t('orders_cycle_plugin.lib.report.product_name'), t('orders_cycle_plugin.lib.report.qty_ordered'), t('orders_cycle_plugin.lib.report.stock_qtt'), t('orders_cycle_plugin.lib.report.min_stock'),
@@ -65,7 +62,14 @@ module OrdersCyclePlugin::Report
           end # closes items.each
 
           sheet.add_row [""]
-          sbs = ep + 2
+          sheet.add_row ["", '', '', '', '', '', t('orders_cycle_plugin.lib.report.total_selled_value'), '', '',t('orders_cycle_plugin.lib.report.total_parcel_value'), ''], :style =>bluecell
+          row = ep +2
+          ["G#{row}:H#{row}", "J#{row}:K#{row}"].each {|c| sheet.merge_cells c }
+          row += 1
+          ["G#{row}:H#{row}", "J#{row}:K#{row}"].each {|c| sheet.merge_cells c }
+          sheet.add_row ["", '', '', '', '', '', "=SUM(j#{sp}:j#{ep})", '', '', "=SUM(k#{sp}:k#{ep})"]
+          sheet.add_row [""]
+          sbs = ep + 5
 
         end # closes items_by_supplier
         sheet.add_row []
@@ -113,7 +117,7 @@ module OrdersCyclePlugin::Report
           sheet.add_row [t('orders_cycle_plugin.lib.report.order_code'), t('orders_cycle_plugin.lib.report.member_name'), '', '', '', '', ''], :style => bluecell_b_top
           sheet.merge_cells "B#{sbs}:C#{sbs}"
 
-          sheet.add_row [order.id, order.consumer.name, '','','','',''], :style => default
+          sheet.add_row [order.code, order.consumer.name, '','','','',''], :style => default
 
           sheet.merge_cells "B#{sbs+1}:C#{sbs+1}"
 
@@ -140,7 +144,7 @@ module OrdersCyclePlugin::Report
           sheet.add_row ["", "", "", "","","",""], :style => border_top
           sheet.add_row ['','','','','',t('orders_cycle_plugin.lib.report.total_value'),"=SUM(G#{sp}:G#{ep})"], :style => [default]*5+[bluecell,currency]
           sheet.add_row ["", "", "", "","","",""]
-          sbs = sbe + 2
+          sbs = sbe + 4
         end # closes items_by_supplier
         sheet.column_widths 12,30,30,9,6,8,10
       end # closes spreadsheet

@@ -4,6 +4,7 @@ require_dependency 'profile'
 class Profile
 
   def has_admin? person
+    return unless person
     person.has_permission? 'edit_profile', self
   end
 

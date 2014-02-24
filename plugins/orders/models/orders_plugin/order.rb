@@ -59,8 +59,9 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     self['status']
   end
 
-  def may_edit? admin = false
-    self.draft? or admin
+  # cache if done independent of user as model cache is per request
+  def may_edit? user
+    @may_edit ||= self.profile.admins.include?(user) or (self.open? and self.consumer == user)
   end
 
   def products_list
