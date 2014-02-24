@@ -79,18 +79,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   end
 
   def confirm
-    if @order.may_edit? user
-      if user.blank?
-        session[:notice] = t('orders_cycle_plugin.controllers.profile.order_controller.login_first')
-      else
-        session[:notice] = t('orders_cycle_plugin.controllers.profile.order_controller.you_are_not_the_owner')
-      end
-      redirect_to :action => :index
-      return
-    end
-
     raise "Cycle's orders period already ended" unless @order.cycle.orders?
-
     super
   end
 
@@ -105,15 +94,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
   def cycle_edit
     @order = OrdersPlugin::Order.find params[:id]
-    if @order.may_edit? user
-      if user.blank?
-        session[:notice] = t('orders_cycle_plugin.controllers.profile.order_controller.login_first')
-      else
-        session[:notice] = t('orders_cycle_plugin.controllers.profile.order_controller.you_are_not_the_owner')
-      end
-      redirect_to :action => :index
-      return
-    end
+    return unless check_access
 
     if @order.cycle.orders?
       a = {}; @order.items.map{ |p| a[p.id] = p }
