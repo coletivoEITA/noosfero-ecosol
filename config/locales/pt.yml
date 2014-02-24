@@ -525,7 +525,7 @@
           order_confirmed: "Pedido confirmado"
           order_removed: "Pedido removido"
           please_login_first: "Please login first"
-          you_are_not_the_owner: "Você não é o proprietário desse pedido"
+          you_are_not_the_owner: "Você não é o autor desse pedido"
     models:
       order: 
         open: "Em aberto"
