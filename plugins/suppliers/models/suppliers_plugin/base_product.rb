@@ -56,7 +56,7 @@ class SuppliersPlugin::BaseProduct < Product
 
   def self.search_scope scope, params
     scope = scope.from_supplier_id params[:supplier_id] if params[:supplier_id].present?
-    scope = scope.with_available params[:available] if params[:available].present?
+    scope = scope.with_available(if params[:available] == 'true' then true else false end) if params[:available].present?
     scope = scope.name_like params[:name] if params[:name].present?
     scope = scope.with_product_category_id params[:category_id] if params[:category_id].present?
     scope

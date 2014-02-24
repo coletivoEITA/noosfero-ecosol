@@ -7,8 +7,14 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
   # overhide original
   named_scope :available, :conditions => ['products.available = ? AND from_products_products.available = ? AND suppliers_plugin_suppliers.active = ?', true, true, true]
+  named_scope :unavailable, :conditions => ['products.available <> ? OR from_products_products.available <> ? OR suppliers_plugin_suppliers.active <> ?', true, true, true]
+  named_scope :with_available do |available|
+    op = if available then '=' else '<>' end
+    { :conditions => ["products.available #{op} ? OR from_products_products.available #{op} ? OR suppliers_plugin_suppliers.active #{op} ?", true, true, true] }
+  end
+
   named_scope :name_like, lambda { |name| { :conditions => ["LOWER(from_products_products.name) LIKE ?", "%#{name}%"] } }
-  named_scope :with_product_category_id, lambda { |id| { :conditions => ['from_products_products.product_category_id' => id] } }
+  named_scope :with_product_category_id, lambda { |id| { :conditions => ['from_products_products.product_category_id = ?', id] } }
 
   validates_presence_of :supplier
 

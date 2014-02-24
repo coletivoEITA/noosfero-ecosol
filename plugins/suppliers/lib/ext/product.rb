@@ -4,7 +4,7 @@ require_dependency 'product'
 class Product
 
   named_scope :available, :conditions => {:available => true}
-  named_scope :unavailable, :conditions => ['products.archived <> true']
+  named_scope :unavailable, :conditions => ['products.available <> true']
   named_scope :archived, :conditions => {:archived => true}
   named_scope :unarchived, :conditions => ['products.archived <> true']
 
