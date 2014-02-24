@@ -24,7 +24,7 @@ class SuppliersPlugin::BaseProduct < Product
   settings_default_item :image, :type => :boolean, :default => true, :delegate_to => :supplier_product, :prefix => '_default'
   settings_default_item :description, :type => :boolean, :default => true, :delegate_to => :supplier_product
   settings_default_item :unit, :type => :boolean, :default => true, :delegate_to => :supplier_product
-  settings_default_item :available, :type => :boolean, :default => true, :delegate_to => :supplier_product
+  settings_default_item :available, :type => :boolean, :default => false, :delegate_to => :supplier_product
   settings_default_item :margin_percentage, :type => :boolean, :default => true, :delegate_to => :profile
 
   default_item :price, :if => :default_margin_percentage, :delegate_to => proc{ self.supplier_product.price_with_discount if self.supplier_product }
@@ -56,7 +56,7 @@ class SuppliersPlugin::BaseProduct < Product
 
   def self.search_scope scope, params
     scope = scope.from_supplier_id params[:supplier_id] if params[:supplier_id].present?
-    scope = scope.with_available params[:available] if params[:available].present?
+    scope = scope.with_available(if params[:available] == 'true' then true else false end) if params[:available].present?
     scope = scope.name_like params[:name] if params[:name].present?
     scope = scope.with_product_category_id params[:category_id] if params[:category_id].present?
     scope
@@ -66,6 +66,11 @@ class SuppliersPlugin::BaseProduct < Product
   def available?
     self.available
   end
+
+  def available_with_supplier
+    self.available_without_supplier and self.supplier_product.available and self.supplier.active
+  end
+  alias_method_chain :available, :supplier
 
   def dependent?
     self.from_products.length == 1

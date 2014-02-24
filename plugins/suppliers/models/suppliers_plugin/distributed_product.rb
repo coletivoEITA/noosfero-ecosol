@@ -6,9 +6,16 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
     'INNER JOIN suppliers_plugin_suppliers suppliers ON ( suppliers.id = sources_from_products_products.supplier_id )'
 
   # overhide original
-  named_scope :available, :conditions => ['products.available = ? AND from_products_products.available = ? AND suppliers_plugin_suppliers.active = ?', true, true, true]
+  named_scope :available, :conditions => ['products.available = ? AND from_products_products.available = ? AND suppliers.active = ?', true, true, true]
+  named_scope :unavailable, :conditions => ['products.available <> ? OR from_products_products.available <> ? OR suppliers.active <> ?', true, true, true]
+  named_scope :with_available, lambda { |available|
+    op = if available then '=' else '<>' end
+    cond = if available then 'AND' else 'OR' end
+    { :conditions => ["products.available #{op} ? #{cond} from_products_products.available #{op} ? #{cond} suppliers.active #{op} ?", true, true, true] }
+  }
+
   named_scope :name_like, lambda { |name| { :conditions => ["LOWER(from_products_products.name) LIKE ?", "%#{name}%"] } }
-  named_scope :with_product_category_id, lambda { |id| { :conditions => ['from_products_products.product_category_id' => id] } }
+  named_scope :with_product_category_id, lambda { |id| { :conditions => ['from_products_products.product_category_id = ?', id] } }
 
   validates_presence_of :supplier
 
