@@ -37,7 +37,7 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
 
   def cycle_destroy
     @product = OrdersCyclePlugin::OfferedProduct.find params[:id]
-    @product.destroy!
+    @product.destroy
     flash[:notice] = t('orders_cycle_plugin.controllers.myprofile.product_controller.product_removed_from_')
   end
 
