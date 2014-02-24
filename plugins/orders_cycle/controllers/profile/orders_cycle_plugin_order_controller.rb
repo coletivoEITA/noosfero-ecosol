@@ -16,10 +16,12 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   helper SuppliersPlugin::ProductHelper
 
   def index
-    @current_year = DateTime.now.year
+    @current_year = DateTime.now.year.to_s
     @year = (params[:year] || @current_year).to_s
+
     @years_with_cycles = profile.orders_cycles_without_order.years.collect &:year
     @years_with_cycles.unshift @current_year unless @years_with_cycles.include? @current_year
+
     @cycles = profile.orders_cycles.by_year @year
     @consumer = user
   end
@@ -49,13 +51,13 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
       @cycle = @order.cycle
       @consumer_orders = @cycle.orders.for_consumer @consumer
 
-      render :partial => 'consumer_orders' if params[:consumer_orders]
+      render 'consumer_orders' if params[:consumer_orders]
     end
     @products = @cycle.products_for_order
     @product_categories = Product.product_categories_of @products
     @consumer_orders = @cycle.orders.for_consumer @consumer
 
-    render :partial => 'consumer_orders' if params[:consumer_orders]
+    render 'consumer_orders' if params[:consumer_orders]
   end
 
   def cancel
@@ -94,7 +96,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
   def cycle_edit
     @order = OrdersPlugin::Order.find params[:id]
-    return unless check_access
+    return unless check_access 'edit'
 
     if @order.cycle.orders?
       a = {}; @order.items.map{ |p| a[p.id] = p }

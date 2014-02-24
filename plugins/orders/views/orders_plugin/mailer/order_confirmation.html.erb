@@ -27,9 +27,11 @@
     <% end %>
 
     <p>
-      <p><%= t('orders_plugin.views.mailer.order_confirmation.attention_to_the_foll') %></p>
-      <b><%= @order.supplier_delivery_data[:name] %></b><br />
-      <%= @order.supplier_delivery_data[:description] %><br />
+      <% if @order.supplier_delivery_data.present? %>
+        <p><%= t('orders_plugin.views.mailer.order_confirmation.attention_to_the_foll') %></p>
+        <b><%= @order.supplier_delivery_data[:name] %></b><br />
+        <%= @order.supplier_delivery_data[:description] %><br />
+      <% end %>
     </p>
 
     <p><%= t('orders_plugin.views.mailer.order_confirmation.order_data_confirmed') %></p>

@@ -703,8 +703,6 @@
       font-weight: bold; }
     #filter .filter-box .field {
       clear: both; }
-      #filter .filter-box .field:first-child label {
-        padding-top: 0; }
       #filter .filter-box .field label {
         display: block;
         float: left;
@@ -1079,8 +1077,6 @@
     font-weight: bold; }
   #supplier-our-products .sortable-table form .field {
     clear: both; }
-    #supplier-our-products .sortable-table form .field:first-child label {
-      padding-top: 0; }
     #supplier-our-products .sortable-table form .field label {
       display: block;
       float: left;
@@ -1366,8 +1362,6 @@
         font-weight: bold; }
       #suppliers-page .supplier .box-edit form .field {
         clear: both; }
-        #suppliers-page .supplier .box-edit form .field:first-child label {
-          padding-top: 0; }
         #suppliers-page .supplier .box-edit form .field label {
           display: block;
           float: left;

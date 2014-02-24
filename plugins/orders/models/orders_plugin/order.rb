@@ -59,6 +59,10 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     self['status']
   end
 
+  def may_view? user
+    @may_view ||= self.profile.admins.include?(user) or (self.consumer == user)
+  end
+
   # cache if done independent of user as model cache is per request
   def may_edit? user
     @may_edit ||= self.profile.admins.include?(user) or (self.open? and self.consumer == user)

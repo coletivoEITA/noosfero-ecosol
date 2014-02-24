@@ -256,8 +256,6 @@
     font-weight: bold; }
   #delivery-method-edit .field {
     clear: both; }
-    #delivery-method-edit .field:first-child label {
-      padding-top: 0; }
     #delivery-method-edit .field label {
       display: block;
       float: left;

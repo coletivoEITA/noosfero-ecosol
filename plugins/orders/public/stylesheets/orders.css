@@ -838,8 +838,6 @@
       font-weight: bold; }
     #filter .filter-box .field {
       clear: both; }
-      #filter .filter-box .field:first-child label {
-        padding-top: 0; }
       #filter .filter-box .field label {
         display: block;
         float: left;
@@ -1340,8 +1338,6 @@
     font-weight: bold; }
   .order-items-container .field {
     clear: both; }
-    .order-items-container .field:first-child label {
-      padding-top: 0; }
     .order-items-container .field label {
       display: block;
       float: left;
@@ -1656,8 +1652,6 @@
     font-weight: bold; }
   .consumer-order .field {
     clear: both; }
-    .consumer-order .field:first-child label {
-      padding-top: 0; }
     .consumer-order .field label {
       display: block;
       float: left;
