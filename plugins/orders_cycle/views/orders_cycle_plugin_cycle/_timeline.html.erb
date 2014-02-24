@@ -36,9 +36,9 @@
     actions[:edition].unshift [ t('orders_cycle_plugin.views.cycle._timeline.finish_cycle_editing'), {:action => :step, :id => cycle.id, :method => :post},
       { :id => 'cycle-open-cycle' } ] unless cycle.passed_by?('edition')
     actions[:orders].unshift [ cycle.orders? ? t('orders_cycle_plugin.views.cycle._timeline.block_orders_period') : t('orders_cycle_plugin.views.cycle._timeline.close_orders_period'),
-      {:action => :step, :id => cycle.id, :method => :post}, { :id => 'cycle-open-cycle' , :confirm => t('orders_cycle_plugin.views.cycle._timeline.are_you_sure_you_want')} ] unless cycle.passed_by?('orders')
+      {:action => :step, :id => cycle.id, :method => :post}, { :id => 'cycle-open-cycle' , :confirm => t('orders_cycle_plugin.views.cycle._timeline.are_you_sure_you_want_to_close')} ] unless cycle.passed_by?('orders')
     actions[:closed].unshift [  t('orders_cycle_plugin.views.cycle._timeline.reopen_orders_period'),
-      {:action => :step_back, :id => cycle.id, :method => :post}, { :id => 'cycle-open-cycle' , :confirm => t('orders_cycle_plugin.views.cycle._timeline.are_you_sure_you_want')} ] if cycle.passed_by?('orders')
+      {:action => :step_back, :id => cycle.id, :method => :post}, { :id => 'cycle-open-cycle' , :confirm => t('orders_cycle_plugin.views.cycle._timeline.are_you_sure_you_want_to_reopen')} ] if cycle.passed_by?('orders')
 
   %>
 

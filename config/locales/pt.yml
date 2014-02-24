@@ -879,7 +879,8 @@
           no_cycles_to_show: "Sem ciclos a mostrar"
         _timeline: 
           actions: Ações
-          are_you_sure_you_want: "Tem certeza de que deseja reabrir o ciclo de pedidos?"
+          are_you_sure_you_want_to_reopen: "Tem certeza de que deseja reabrir o ciclo de pedidos?"
+          are_you_sure_you_want_to_close: "Tem certeza de que deseja fechar o ciclo de pedidos?"
           block_orders_period: "Finalizar período de pedidos"
           call: Call
           close: Fechar
