@@ -43,14 +43,13 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   has_currency :buy_price
 
   def self.create_from_distributed cycle, product
-    sp = self.new :profile => product.profile
-    sp.attributes = product.attributes
-    sp.type = self.name
-    sp.freeze_default_attributes product
-    sp.price = sp.price_with_margins product.price, product
-    sp.from_products << product
-    cycle.products << sp
-    sp
+    op = self.new :profile => product.profile
+    op.attributes = product.attributes
+    op.type = self.name
+    op.freeze_default_attributes product
+    op.from_products << product
+    cycle.products << op
+    op
   end
 
   def total_quantity_asked
@@ -107,9 +106,9 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   after_update :sync_ordered
   def sync_ordered
     return unless self.price_changed?
-    self.items.each do |op|
-      op.send :calculate_prices
-      op.save!
+    self.items.each do |item|
+      item.send :calculate_prices
+      item.save!
     end
   end
 
