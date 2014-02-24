@@ -18,10 +18,15 @@ module OrdersCyclePlugin::Report
       wb = p.workbook
 
       # create styles
-      greencell = wb.styles.add_style :bg_color => "00AE00", :fg_color => "ffffff", :sz => 8, :b => true, :wrap_text => true, :alignment => { :horizontal=> :left }, :border => 0
-      bluecell  = wb.styles.add_style :bg_color => "99CCFF", :fg_color => "000000", :sz => 8, :b => true, :wrap_text => true, :alignment => { :horizontal=> :left }, :border => 0
       redcell   = wb.styles.add_style :bg_color => "FF6633", :fg_color => "000000", :sz => 8, :b => true, :wrap_text => true, :alignment => { :horizontal=> :left }, :border => 0
-      default   = wb.styles.add_style :fg_color => "000000", :sz => 8, :wrap_text => true, :alignment => { :horizontal=> :left }, :border => 0
+      defaults = {:fg_color => "000000", :sz => 8, :alignment => { :horizontal=> :left, :vertical => :center, :wrap_text => false }, :border => 0}
+      greencell = wb.styles.add_style(defaults.merge({:bg_color => "00AE00", :fg_color => "ffffff", :b => true }))
+      bluecell  = wb.styles.add_style(defaults.merge({:bg_color => "99CCFF", :b => true}))
+      default   = wb.styles.add_style(defaults.merge({:border => 0}))
+      bluecell_b_top  = wb.styles.add_style(defaults.merge({:bg_color => "99CCFF", :b => true, :border => {:style => :thin, :color => "FF000000", :edges => [:top]}}))
+      date  = wb.styles.add_style(defaults.merge({:format_code => t('orders_cycle_plugin.lib.report.mm_dd_yy_hh_mm_am_pm')}))
+      currency  = wb.styles.add_style(defaults.merge({:format_code => t('number.currency.format.xlsx_currency')}))
+      border_top = wb.styles.add_style :border => {:style => :thin, :color => "FF000000", :edges => [:top]}
 
 
       # supplier block start index (shifts on the loop for each supplier)
@@ -55,7 +60,7 @@ module OrdersCyclePlugin::Report
             sheet.add_row [
               item.id, item.name, item.total_quantity_asked, 0, 0,
               "=IF(C#{pl}-D#{pl}+E#{pl}>0, C#{pl}-D#{pl}+E#{pl},0)", "=D#{pl}-C#{pl}+F#{pl}", item.unit.singular,
-              item.price, item.total_price_asked, "=F#{pl}*I#{pl}"], :style => default
+              item.price, item.total_price_asked, "=F#{pl}*I#{pl}"], :style => [default,default,default,default,default,default,default,default,currency,currency]
 
               pl +=1
 
@@ -144,7 +149,7 @@ module OrdersCyclePlugin::Report
           sheet.add_row ["", "", "", "","","",""], :style => border_top
           sheet.add_row ['','','','','',t('orders_cycle_plugin.lib.report.total_value'),"=SUM(G#{sp}:G#{ep})"], :style => [default]*5+[bluecell,currency]
           sheet.add_row ["", "", "", "","","",""]
-          sbs = sbe + 4
+          sbs = sbe + 3
         end # closes items_by_supplier
         sheet.column_widths 12,30,30,9,6,8,10
       end # closes spreadsheet
