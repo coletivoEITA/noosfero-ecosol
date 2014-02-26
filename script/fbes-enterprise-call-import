@@ -121,7 +121,7 @@ def create_enterprise data
 
   $log.info "#{$log_prefix} Criando empreendimento '%s'..." % name
 
-  identifier = generate_enterprise_identifier name, nickname, city
+  identifier = generate_enterprise_identifier name, identifier, city
   $log.info "#{$log_prefix} Usando identificador %s" % identifier
 
   contact_email = nil
