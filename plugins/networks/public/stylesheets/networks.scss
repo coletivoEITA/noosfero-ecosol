@@ -1,6 +1,10 @@
 @import 'base';
 @import 'page-title';
 
+.controller-profile_editor a.control-panel-networks-manage-network {
+  background-image: url("/plugins/networks/images/control-panel/manage-network.png")
+}
+
 #networks-admin-index {
 
   #network-list {
