@@ -9,12 +9,12 @@
     <p><%= button(:slideshow, _('View slideshow'), @page.url.merge(:slideshow => true))%></p>
   <% end %>
     <ul>
-      <% @images.each do |a| %>
-        <% content_tag('li', :title => a.title, :class => 'image-gallery-item' ) do %>
-          <%= render :partial => partial_for_class(a.class), :object => a %>
-        <% end %>
-      <% end %>
+      <%= render 'content_viewer/gallery/images' %>
     </ul>
   <br style="clear:both" />
-  <%= pagination_links @images, :param_name => 'npage' %>
+
+  <%= render 'content_viewer/gallery/pagination' %>
+  <% javascript_tag do %>
+    pagination.infiniteScroll(<%= _('loading...').to_json %>);
+  <% end %>
 </div>

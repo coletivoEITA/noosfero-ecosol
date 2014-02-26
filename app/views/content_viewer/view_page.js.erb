@@ -1,0 +1,5 @@
+<% if @page.gallery? %>
+  pagination.showMore("<%= escape_javascript render 'content_viewer/gallery/pagination' %>", function () {
+    jQuery('.image-gallery li:last-child').after("<%= escape_javascript render('content_viewer/gallery/images') %>");
+  });
+<% end %>
