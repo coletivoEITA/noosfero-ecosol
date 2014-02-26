@@ -322,7 +322,7 @@ class Article < ActiveRecord::Base
   def belongs_to_blog?
     self.parent and self.parent.blog?
   end
-  
+
   def belongs_to_forum?
     self.parent and self.parent.forum?
   end
@@ -637,7 +637,7 @@ class Article < ActiveRecord::Base
   def automatic_abstract
   	return '' if self.body.blank? or not self.body.is_a? String
   	a = strip_tags self.body
-    automatic_abstract_img = (first_image) ? "<img src='" + first_image + "' class = 'automatic-abstract-thumb'>" : ''
+    automatic_abstract_img = (first_image.present?) ? "<img src='" + first_image + "' class = 'automatic-abstract-thumb'>" : ''
   	b = a.split[0...profile.environment.automatic_abstract_length].join(' ')
   	c = a.split.join(' ')
   	b = (b == c) ? b : b + " ..."
