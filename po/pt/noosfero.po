@@ -23,6 +23,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 1.0.2\n"
 
+msgid "loading..."
+msgstr "carregando..."
+
 #: app/helpers/application_helper.rb:89 app/helpers/boxes_helper.rb:218
 #: app/models/link_list_block.rb:23
 msgid "Help"
