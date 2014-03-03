@@ -247,6 +247,12 @@
           singular: "from an organization"
         from_article:
           singular: "from the organization"
+        from_which_article: 
+          singular: "from which the organização"
+        on_your:
+          singular: "on your organização"
+        this:
+          singular: "this organization"
         with_which:
           singular: "with which the organization"
         undefined_article:
@@ -274,12 +280,14 @@
           plural: "to the suppliers"
         from_article: 
           singular: "from supplier"
+        from_which_article: 
+          singular: "from which the supplier"
         undefined_article:
           singular: "a supplier"
         none: 
           singular: "any supplier"
-        from_which_article: 
-          singular: "from which the supplier"
+        this:
+          singular: "this supplier"
         article: 
           singular: "the supplier"
           plural: "the suppliers"
@@ -383,7 +391,8 @@
           with_the_qualifiers: "with the qualifiers"
       supplier: 
         _new:
-          title: "Find %{terms.supplier.undefined_article.singular} to add"
+          title: "Add %{terms.supplier.singular} to %{profile}"
+          intro_help: "Begin to type the name %{terms.supplier.from_article.singular} that you wnat to add. We'll look if %{terms.supplier.article.singular} already exists at %{environment}. In case it doesn't exists, you'll be able to createa type of enterprise that will be visible ONLY %{terms.profile.on_your.singular}, and not at the %{environment}. If %{terms.supplier.this.singular} really wants to join the %{environment}, then it should send a message to %{contact_email} making the order."
           query_placeholder: "find %{terms.supplier.undefined_article.singular}"
           search: "Search"
           none_found: "%{terms.supplier.none.singular} found. Please revise the search text."
@@ -929,6 +938,7 @@
         start: Start
         administration: Administration
     terms:
+      <<: *suppliers_terms
       profile:
         singular: "consumers' coop"
         plural: "consumers' coop"
@@ -946,6 +956,12 @@
           singular: "from a consumers' coop"
         from_article:
           singular: "from the consumers' coop"
+        from_which_article: 
+          singular: "from which the consumers' coop"
+        on_your:
+          singular: "on your consumers' coop"
+        this:
+          singular: "this consumers' coop"
         with_which:
           singular: "with which the consumers' coop"
         undefined_article:
@@ -1000,6 +1016,7 @@
         name: Networks
         description: "Create and manage networks."
     terms:
+      <<: *suppliers_terms
       profile:
         singular: "network"
         plural: "networks"
@@ -1017,6 +1034,12 @@
           singular: "from a network"
         from_article:
           singular: "from the network"
+        from_which_article: 
+          singular: "from which the rede"
+        this:
+          singular: "this network"
+        on_your:
+          singular: "on your network"
         with_which:
           singular: "with which the network"
         undefined_article:
@@ -1044,12 +1067,14 @@
           plural: "to the enterprises"
         from_article: 
           singular: "from enterprise"
+        from_which_article: 
+          singular: "from which the enterprise"
         undefined_article:
           singular: "a enterprise"
         none: 
           singular: "any enterprise"
-        from_which_article: 
-          singular: "from which the enterprise"
+        this:
+          singular: "this enterprise"
         article: 
           singular: "the enterprise"
           plural: "the enterprises"
