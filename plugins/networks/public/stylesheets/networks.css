@@ -322,6 +322,8 @@
   width: 31.66667%;
   float: right; }
 
+body.network-node .control-panel-groups {
+  display: none; }
 body.network-node #network-header .network-tag {
   float: right; }
 

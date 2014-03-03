@@ -255,10 +255,14 @@
           singular: "na organização"
         from:
           singular: "de uma organização"
-        from_which_article: 
-          singular: "com que a organização"
         from_article:
           singular: "da organização"
+        from_which_article: 
+          singular: "com que a organização"
+        on_your:
+          singular: "na sua organização"
+        this:
+          singular: "esta organização"
         undefined_article:
           singular: "uma organização"
         article: 
@@ -287,6 +291,8 @@
           singular: "um fornecedor"
         none: 
           singular: "nenhum fornecedor"
+        this:
+          singular: "este fornecedor"
         from_article:
           singular: "do fornecedor"
         from_which_article: 
@@ -394,7 +400,8 @@
           with_the_qualifiers: "com os qualificadores"
       supplier: 
         _new:
-          title: "Buscar %{terms.supplier.undefined_article.singular} a adicionar"
+          title: "Adicionar %{terms.supplier.singular} a %{profile}"
+          intro_help: "Comece a digitar o nome %{terms.supplier.from_article.singular} que deseja adicionar. Procuraremos para ver se %{terms.supplier.article.singular} já existe no %{environment}. Caso ele não exista, você poderá criar um tipo de empreendimento que ficará visível APENAS %{terms.profile.on_your.singular}, e não no %{environment} como um todo. Se %{terms.supplier.this.singular} quiser entrar realmente no %{environment}, deve enviar uma mensagem para %{contact_email} fazendo o pedido."
           query_placeholder: "busque %{terms.supplier.undefined_article.singular}"
           search: "Buscar"
           none_found: "%{terms.supplier.none.singular} foi encontrado. Por favor revise o texto da busca."
@@ -958,10 +965,14 @@
           singular: "no coletivo de consumo"
         from:
           singular: "de um coletivo de consumo"
-        from_which_article: 
-          singular: "com que o coletivo de consumo"
         from_article:
           singular: "do coletivo de consumo"
+        from_which_article: 
+          singular: "com que o coletivo de consumo"
+        on_your:
+          singular: "em seu coletivo de consumo"
+        this:
+          singular: "este coletivo de consumo"
         undefined_article:
           singular: "um coletivo de consumo"
         article: 
@@ -1014,6 +1025,7 @@
         name: Redes
         description: "Cria a gerencia redes."
     terms:
+      <<: *suppliers_terms
       profile:
         singular: "rede"
         plural: "redes"
@@ -1031,10 +1043,14 @@
           singular: "na rede"
         from:
           singular: "de uma rede"
-        from_which_article: 
-          singular: "com que a rede"
         from_article:
           singular: "da rede"
+        from_which_article: 
+          singular: "com que a rede"
+        this:
+          singular: "esta rede"
+        on_your:
+          singular: "na sua rede"
         undefined_article:
           singular: "uma rede"
         article: 
@@ -1060,12 +1076,14 @@
           plural: "aos empreendimentos"
         from_article:
           singular: "do empreendimento"
+        from_which_article: 
+          singular: "com que o empreendimento"
         undefined_article:
           singular: "um empreendimento"
         none: 
           singular: "nenhum empreendimento"
-        from_which_article: 
-          singular: "com que o empreendimento"
+        this:
+          singular: "este empreendimento"
         article: 
           singular: "o empreendimento"
           plural: "os empreendimentos"

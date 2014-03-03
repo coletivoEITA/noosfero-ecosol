@@ -36,8 +36,8 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   attr_accessor :dont_destroy_dummy
 
   def self.new_dummy attributes
-    profile = Enterprise.new :visible => false, :identifier => Digest::MD5.hexdigest(rand.to_s),
-      :environment => attributes[:consumer].environment
+    profile = Enterprise.new :enabled => false, :visible => false, :public_profile => false,
+      :identifier => Digest::MD5.hexdigest(rand.to_s), :environment => attributes[:consumer].environment
     supplier = self.new :profile => profile
     supplier.attributes = attributes
     supplier
