@@ -1,0 +1,22 @@
+class ThemesApiPlugin < Noosfero::Plugin
+
+  ThemesPath = "#{Rails.root}/public/designs/themes"
+
+  def self.plugin_name
+    "Themes API"
+  end
+
+  def self.plugin_description
+    "Methods to fetch user's organizations info and change theirs' themes"
+  end
+
+  def stylesheet?
+    true
+  end
+
+  def js_files
+    [''].map{ |j| "javascripts/#{j}" }
+  end
+
+
+end
