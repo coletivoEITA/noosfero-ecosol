@@ -13,13 +13,13 @@ class ThemesApiPluginApiController < PublicController
 
   def create_theme
     @themes_path = ThemesApiPlugin::ThemesPath
-    @enterprise = environment.enterprises.find_by_identifier params[:enterprise]
-    return render :json => {:error => {:code => 1, :message => 'not an admin'}} unless @enterprise.admins.include? user
+    @profile = environment.profiles.find_by_identifier params[:profile]
+    return render :json => {:error => {:code => 1, :message => 'not an admin'}} unless @profile.admins.include? user
 
     @base_theme = params[:base_theme]
     return render :json => {:error => {:code => 2, :message => 'could not find base theme'}} unless File.directory? "#{@themes_path}/#{@base_theme}"
 
-    @theme_id = "enterprise-#{@enterprise.identifier}-#{@base_theme}"
+    @theme_id = "profile-#{@profile.identifier}"
 
     @base_sass_variables = ActiveSupport::OrderedHash.new
     File.read("#{@themes_path}/#{@base_theme}/stylesheets/_variables.scss").gsub(';', '').gsub(/^\$/, '').split("\n").each do |line|
@@ -32,7 +32,7 @@ class ThemesApiPluginApiController < PublicController
     @sass_variables.reverse_merge! @base_sass_variables
     @sass_variables['theme-name'] = "\"#{@theme_id}\""
 
-    ret = system "cp -fr #{@themes_path}/#{@base_theme} #{@themes_path}/#{@theme_id}"
+    ret = system "cp -frL #{@themes_path}/#{@base_theme} #{@themes_path}/#{@theme_id}"
     return render :json => {:error => {:code => 3, :message => 'could not copy theme'}} unless ret
 
     ret = File.open "#{@themes_path}/#{@theme_id}/stylesheets/_variables.scss", "w" do |file|
@@ -42,6 +42,17 @@ class ThemesApiPluginApiController < PublicController
       end.join("\n")
     end.present?
     return render :json => {:error => {:code => 4, :message => 'could not write variables'}} unless ret
+
+    File.open("#{@themes_path}/#{@theme_id}/theme.yml", 'w') do |file|
+      file << {
+        'name' => "Seu tema personalizado",
+        'layout' => "cirandas",
+        'jquery_theme' => "smoothness_mod",
+        'icon_theme' => ['default', 'pidgin'],
+        'owner_id' => @profile.id,
+        'owner_type' => @profile.type.to_s,
+      }.to_yaml
+    end
 
     @enterprise.theme = @theme_id
     @enterprise.save
