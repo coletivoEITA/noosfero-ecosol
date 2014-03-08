@@ -12,11 +12,10 @@ module TermsHelper
     :it, :one,
     :to_it,
     #
-    :article, :undefined_article, :in, :which,
+    :article, :undefined_article,
+    :in, :which, :this, :your,
     :at, :at_article,
     :to, :to_article,
-    :this,
-    :your,
     :on, :on_your,
     :by, :by_article,
     :from, :from_article, :from_this, :from_which, :from_which_article, :by_your,
