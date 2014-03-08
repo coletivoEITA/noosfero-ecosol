@@ -21,15 +21,8 @@ class ThemesApiPluginApiController < PublicController
 
     @theme_id = "profile-#{@profile.identifier}"
 
-    @base_sass_variables = ActiveSupport::OrderedHash.new
-    File.read("#{@themes_path}/#{@base_theme}/stylesheets/_variables.scss").gsub(';', '').gsub(/^\$/, '').split("\n").each do |line|
-      name,value = line.split ': '
-      @base_sass_variables[name] = value
-    end
-
     @sass_variables = ActiveSupport::OrderedHash.new
     @sass_variables.update params[:sass_variables]
-    @sass_variables.reverse_merge! @base_sass_variables
     @sass_variables['theme-name'] = "\"#{@theme_id}\""
 
     ret = system "cp -frL #{@themes_path}/#{@base_theme} #{@themes_path}/#{@theme_id}"
