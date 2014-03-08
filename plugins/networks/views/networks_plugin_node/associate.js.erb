@@ -1,2 +1,6 @@
-jQuery('#networks-node-associate').html("<%= j render('associate') %>");
+<% if @new_node.new_record? %>
+  jQuery('#networks-node-associate').html("<%= j render('associate') %>");
+<% else %>
+  networks.structure.add_node("<%= j render('networks_plugin_network/node', :node => @new_node) %>");
+<% end %>
 

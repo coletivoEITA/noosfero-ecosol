@@ -27,7 +27,8 @@ networks = {
     },
 
     add_node: function(html) {
-
+      jQuery("#network-nodes").append(html);
+      jQuery.colorbox.close();
     },
 
   }

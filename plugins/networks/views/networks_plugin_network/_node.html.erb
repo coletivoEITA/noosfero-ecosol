@@ -4,7 +4,7 @@
     <%= link_to node.name, node.url, :target => '_blank' %>
   </div>
   <div class="actions">
-    <%= link_to t('networks_plugin.views.network.show_structure.structure'), :node_id => node.id %>
+    <%= link_to t('networks_plugin.views.network.show_structure.structure'), :controller => :networks_plugin_network, :action => :show_structure, :node_id => node.id %>
     |
     <%= link_to t('networks_plugin.views.network.show_structure.config'), :controller => :networks_plugin_node, :action => :edit, :id => node.id %>
     |

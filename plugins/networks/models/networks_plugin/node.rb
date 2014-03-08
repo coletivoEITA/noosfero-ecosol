@@ -1,6 +1,6 @@
 class NetworksPlugin::Node < NetworksPlugin::BaseNode
 
-  ParentDelimiter = '|'
+  ParentDelimiter = '::'
 
   before_validation :name_to_identifier
   after_destroy :assign_dependent_to_parent
@@ -25,7 +25,8 @@ class NetworksPlugin::Node < NetworksPlugin::BaseNode
       new_supplier = self.parent.suppliers.build :profile => supplier.profile
       new_supplier.attributes = supplier.attributes
       new_supplier.consumer = self.parent
-      new_supplier.save!
+      # Avoid "can't modify frozen hash" error
+      new_supplier.send :create_without_callbacks
     end
   end
 

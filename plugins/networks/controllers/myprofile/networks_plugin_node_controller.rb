@@ -14,17 +14,9 @@ class NetworksPluginNodeController < MyProfileController
     @new_node = NetworksPlugin::Node.new((params[:node] || {}).merge(:environment => environment, :parent => @node))
 
     if params[:commit]
-      if @new_node.save
-        render :partial => 'suppliers_plugin_shared/pagereload'
-      else
-        respond_to do |format|
-          format.js
-        end
-      end
+      @new_node.save
     else
-      respond_to do |format|
-        format.html{ render :layout => false }
-      end
+      respond_to{ |format| format.html{ render :layout => false } }
     end
   end
 

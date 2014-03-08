@@ -3,13 +3,13 @@
 
 <div id="network-nodes">
   <% @node.nodes.each do |node| %>
-    <%= render 'node', :node => node %>
+    <%= render 'networks_plugin_network/node', :node => node %>
   <% end %>
 </div>
 
 <h3><%= t('networks_plugin.views.network.show_structure.enterprises') %></h3>
 <div id="network-suppliers">
   <% @node.suppliers.except_self.each do |supplier| %>
-    <%= render 'supplier', :supplier => supplier %>
+    <%= render 'networks_plugin_network/supplier', :supplier => supplier %>
   <% end %>
 </div>

@@ -66,14 +66,14 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   end
   def name= value
     self['name'] = value
-    self.supplier.name = value if dummy?
+    self.supplier.name = value if self.dummy? and not self.supplier.frozen?
   end
   def description
     self.attributes['description'] || self.profile.description
   end
   def description= value
     self['description'] = value
-    self.supplier.description = value if dummy?
+    self.supplier.description = value if self.dummy? and not self.supplier.frozen?
   end
 
   def abbreviation_or_name
@@ -83,10 +83,9 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   def destroy_with_dummy
     if not self.self? and not self.dont_destroy_dummy and self.supplier.dummy?
-      raise self.supplier.inspect
       self.supplier.destroy
     end
-    destroy_without_dummy
+    self.destroy_without_dummy
   end
   alias_method_chain :destroy, :dummy
 
