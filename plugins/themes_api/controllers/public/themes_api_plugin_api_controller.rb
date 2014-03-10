@@ -25,7 +25,7 @@ class ThemesApiPluginApiController < PublicController
     @sass_variables.update params[:sass_variables]
     @sass_variables['theme-name'] = "\"#{@theme_id}\""
 
-    ret = system "cp -frL #{@themes_path}/#{@base_theme} #{@themes_path}/#{@theme_id}"
+    ret = system "rm -fr #{@themes_path}/#{@theme_id} && cp -fr #{@themes_path}/#{@base_theme}/ #{@themes_path}/#{@theme_id}"
     return render :json => {:error => {:code => 3, :message => 'could not copy theme'}} unless ret
 
     ret = File.open "#{@themes_path}/#{@theme_id}/stylesheets/_variables.scss", "w" do |file|
