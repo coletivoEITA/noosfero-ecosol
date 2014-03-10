@@ -14,7 +14,7 @@ class ThemesApiPluginApiController < PublicController
   def create_theme
     @themes_path = ThemesApiPlugin::ThemesPath
     @profile = environment.profiles.find_by_identifier params[:profile]
-    return render :json => {:error => {:code => 1, :message => 'not an admin'}} unless @profile.admins.include? user
+    return render :json => {:error => {:code => 1, :message => 'not an admin'}} if @profile.blank? or not @profile.admins.include? user
 
     @base_theme = params[:base_theme]
     return render :json => {:error => {:code => 2, :message => 'could not find base theme'}} unless File.directory? "#{@themes_path}/#{@base_theme}"
@@ -47,8 +47,8 @@ class ThemesApiPluginApiController < PublicController
       }.to_yaml
     end
 
-    @enterprise.theme = @theme_id
-    @enterprise.save
+    @profile.theme = @theme_id
+    @profile.save
 
     render :json => {:error => {:code => 0, :message => 'success'}}
   end
