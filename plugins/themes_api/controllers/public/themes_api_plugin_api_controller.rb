@@ -19,7 +19,7 @@ class ThemesApiPluginApiController < PublicController
     @base_theme = params[:base_theme]
     return render :json => {:error => {:code => 2, :message => 'could not find base theme'}} unless File.directory? "#{@themes_path}/#{@base_theme}"
 
-    @theme_id = "profile-#{@profile.identifier}"
+    @theme_id = "#{ThemesApiPlugin::NamePrefix}-#{@profile.identifier}"
 
     @sass_variables = ActiveSupport::OrderedHash.new
     @sass_variables.update params[:sass_variables]

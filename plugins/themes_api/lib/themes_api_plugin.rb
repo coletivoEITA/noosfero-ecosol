@@ -1,5 +1,6 @@
 class ThemesApiPlugin < Noosfero::Plugin
 
+  NamePrefix = "tantascores"
   ThemesPath = "#{Rails.root}/public/designs/themes"
 
   def self.plugin_name
