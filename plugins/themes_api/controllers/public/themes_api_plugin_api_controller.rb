@@ -30,6 +30,7 @@ class ThemesApiPluginApiController < PublicController
 
     ret = system "rm -f #{@themes_path}/#{@theme_id}/stylesheets/style.css" #ensure sass compilation
     Sass::Plugin.add_template_location "#{@themes_path}/#{@theme_id}/stylesheets", "#{@themes_path}/#{@theme_id}/stylesheets"
+    Sass::Plugin.update_stylesheets
 
     ret = File.open "#{@themes_path}/#{@theme_id}/stylesheets/_variables.scss", "w" do |file|
       file << @sass_variables.map do |name, value|
