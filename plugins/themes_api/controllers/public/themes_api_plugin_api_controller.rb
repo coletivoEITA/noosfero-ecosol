@@ -26,8 +26,10 @@ class ThemesApiPluginApiController < PublicController
     @sass_variables['theme-name'] = "\"#{@theme_id}\""
 
     ret = system "rm -fr #{@themes_path}/#{@theme_id} && cp -fr #{@themes_path}/#{@base_theme}/ #{@themes_path}/#{@theme_id}"
-    ret = system "rm -f #{@themes_path}/#{@theme_id}/stylesheets/style.css" #ensure sass compilation
     return render :json => {:error => {:code => 3, :message => 'could not copy theme'}} unless ret
+
+    ret = system "rm -f #{@themes_path}/#{@theme_id}/stylesheets/style.css" #ensure sass compilation
+    Sass::Plugin.add_template_location "#{@themes_path}/#{@theme_id}/stylesheets", "#{@themes_path}/#{@theme_id}/stylesheets"
 
     ret = File.open "#{@themes_path}/#{@theme_id}/stylesheets/_variables.scss", "w" do |file|
       file << @sass_variables.map do |name, value|
