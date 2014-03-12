@@ -4536,6 +4536,14 @@ h1#agenda-title {
 .controller-themes .msie6 #css-code textarea {
   width: 500px;
 }
+
+.controller-themes #themes-private-edit form {
+  float: left;
+}
+.controller-themes #themes-private-edit #image-files-list {
+  float: left;
+}
+
 /* highlights block stuff */
 
 .highlights-block {

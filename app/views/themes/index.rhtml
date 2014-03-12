@@ -42,29 +42,28 @@
 
 <% for themes in @themes.in_groups_of(3) %>
   <div class="list-group">
-    <% for theme in themes %><%=
-      if theme
+    <% themes.each do |theme| %>
+      <% next unless theme %>
 
-        base_content = image_tag(
-          "/designs/themes/#{theme.id}/preview.png",
-          :alt => (_('The "%s" theme.') % theme.name)) +
-        '<div class="opt-info">'.html_safe +
-        content_tag('strong', theme.name, :class => 'name') +
-        ' <br/> '.html_safe
+      <div  class="theme-opt list-opt <%= "selected" if theme.id == @current_theme %>">
+        <a href="<%= url_for :action => 'set', :id => theme.id %>">
 
-        if theme.id == @current_theme  # selected
-          content_tag( 'div',
-            base_content + content_tag('big', _('(current)') ) +'</div>'.html_safe,
-            :class => 'theme-opt list-opt selected')
-        else  # Not selected
-          link_to(
-            base_content + '</div>'.html_safe,
-            { :action => 'set', :id => theme.id },
-            :class => 'theme-opt list-opt')
-        end
+          <%= image_tag "/designs/themes/#{theme.id}/preview.png", :alt => (_('The "%s" theme.') % theme.name) %>
 
-      end
-    %><% end %>
+          <div class="opt-info">
+            <strong class='name'><%= theme.name %> </strong>
+
+            <% if theme.id == @current_theme %>
+              <big> <%= _('(current)') %> </big>
+            <% end %>
+
+            <% if environment.enabled?('user_themes') %>
+              <%= link_to _('edit CSS (for designers)'), {:controller => :themes, :action => :private_edit, :id => theme.id}, :class => 'colorbox' %>
+            <% end %>
+          </div>
+        </a>
+      </div>
+    <% end %>
   </div>
 <% end %>
 

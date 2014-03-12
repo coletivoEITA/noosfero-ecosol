@@ -24,7 +24,7 @@ class ThemesController < MyProfileController
   def new
     if !request.xhr?
       id = params[:name] ? params[:name].to_slug : 'my-theme'
-      t = Theme.new(id, :name => params[:name], :owner => profile, :public => false)
+      t = Theme.new id, :name => params[:name], :owner => profile, :public => false
       t.save
       redirect_to :action => 'index'
     else
@@ -32,10 +32,24 @@ class ThemesController < MyProfileController
     end
   end
 
+  def private_edit
+    @theme = Theme.find params[:id]
+    if params[:commit]
+      @theme = @theme.private_copy profile
+      @theme.style = params[:theme][:style]
+      @theme.save
+      profile.theme = @theme.id
+      profile.save
+
+      redirect_to :action => :index
+    else
+      render :layout => false
+    end
+  end
+
   def edit
     @theme = profile.find_theme(params[:id])
     @css_files = @theme.css_files
-    @image_files = @theme.image_files
   end
 
   def add_css
@@ -64,7 +78,7 @@ class ThemesController < MyProfileController
   end
 
   def add_image
-    @theme = profile.find_theme(params[:id])
+    @theme = Theme.find params[:id]
     if request.xhr?
       render :action => 'add_image', :layout => false
     else

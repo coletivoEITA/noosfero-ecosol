@@ -1,0 +1,18 @@
+<div id="themes-private-edit">
+  <h1> <%= _('Edit theme stylesheet') %> </h1>
+
+  <% form_for @theme, :url => {:controller => :themes, :action => :private_edit, :id => @theme.id} do |f| %>
+
+    <h2>
+      <%= f.label :style, _('File %{file}') % {:file => @theme.stylesheet_file} %>
+    </h2>
+    <div>
+      <%= f.text_area :style %>
+    </div>
+
+    <div>
+      <%= f.submit _('Save') %>
+    </div>
+  <% end %>
+
+</div>

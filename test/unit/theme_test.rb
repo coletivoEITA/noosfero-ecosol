@@ -2,14 +2,15 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class ThemeTest < ActiveSupport::TestCase
 
-  TMP_THEMES_DIR = RAILS_ROOT + '/test/tmp/themes'
+  TMP_THEMES_DIR = 'test/tmp/themes'
+  TMP_THEMES_PATH = File.join Rails.root, 'public', TMP_THEMES_DIR
 
   def setup
     Theme.stubs(:user_themes_dir).returns(TMP_THEMES_DIR)
   end
 
   def teardown
-    FileUtils.rm_rf(TMP_THEMES_DIR)
+    FileUtils.rm_rf(TMP_THEMES_PATH)
   end
 
   should 'list system themes' do
@@ -55,14 +56,14 @@ class ThemeTest < ActiveSupport::TestCase
   should 'be able to add new CSS file to theme' do
     t = Theme.create('mytheme')
     t.add_css('common.css')
-    assert_equal '', File.read(TMP_THEMES_DIR + '/mytheme/stylesheets/common.css')
+    assert_equal '', File.read(TMP_THEMES_PATH + '/mytheme/stylesheets/common.css')
   end
 
   should 'be able to update CSS file' do
     t = Theme.create('mytheme')
     t.add_css('common.css')
     t.update_css('common.css', '/* only a comment */')
-    assert_equal '/* only a comment */', File.read(TMP_THEMES_DIR + '/mytheme/stylesheets/common.css')
+    assert_equal '/* only a comment */', File.read(TMP_THEMES_PATH + '/mytheme/stylesheets/common.css')
   end
 
   should 'be able to get content of CSS file' do
@@ -144,7 +145,7 @@ class ThemeTest < ActiveSupport::TestCase
     theme = Theme.create('mytheme')
     theme.add_image('test.png', 'FAKE IMAGE DATA')
 
-    assert_equal 'FAKE IMAGE DATA', File.read(TMP_THEMES_DIR + '/mytheme/images/test.png')
+    assert_equal 'FAKE IMAGE DATA', File.read(TMP_THEMES_PATH + '/mytheme/images/test.png')
   end
 
   should 'list images' do
@@ -181,9 +182,9 @@ class ThemeTest < ActiveSupport::TestCase
 
   should 'not list non theme files or dirs inside themes dir' do
     Theme.stubs(:system_themes_dir).returns(TMP_THEMES_DIR)
-    Dir.mkdir(TMP_THEMES_DIR)
-    Dir.mkdir(TMP_THEMES_DIR+'/empty-dir')
-    File.new(TMP_THEMES_DIR+'/my-logo.png', File::CREAT)
+    Dir.mkdir(TMP_THEMES_PATH)
+    Dir.mkdir(TMP_THEMES_PATH+'/empty-dir')
+    File.new(TMP_THEMES_PATH+'/my-logo.png', File::CREAT)
     assert Theme.approved_themes(Environment.default).empty?
   end
 

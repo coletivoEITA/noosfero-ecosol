@@ -7,7 +7,6 @@
   </h1>
 </form>
 
-
 <div id='css-files-list'>
   <h2><%= _('CSS files') %></h2>
   <ul>
@@ -20,17 +19,7 @@
   <% end %>
 </div>
 
-<div id='image-files-list'>
-  <h2><%= _('Images') %></h2>
-  <ul>
-    <% for image in @image_files %>
-      <li><%= image_tag("/user_themes/#{@theme.id}/images/#{image}") %></li>
-    <% end %>
-  </ul>
-  <% button_bar do %>
-    <%= colorbox_button :add, _('Add image'), :action => 'add_image', :id =>  @theme.id %>
-  <% end %>
-</div>
+<%= render 'add_image' %>
 
 <div id='css-code'>
   <center style='padding-top: 5em;'>

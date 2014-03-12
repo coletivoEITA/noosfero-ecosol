@@ -5,6 +5,9 @@ class ThemesController; def rescue_action(e) raise e end; end
 
 class ThemesControllerTest < ActionController::TestCase
 
+  TMP_THEMES_DIR = 'test/tmp/themes_controller'
+  TMP_THEMES_PATH = File.join Rails.root, 'public', TMP_THEMES_DIR
+
   def setup
     @controller = ThemesController.new
     @request    = ActionController::TestRequest.new
@@ -22,10 +25,8 @@ class ThemesControllerTest < ActionController::TestCase
   attr_reader :profile, :env
 
   def teardown
-    FileUtils.rm_rf(TMP_THEMES_DIR)
+    FileUtils.rm_rf(TMP_THEMES_PATH)
   end
-
-  TMP_THEMES_DIR = RAILS_ROOT + '/test/tmp/themes_controller'
 
   should 'display themes that can be applied' do
     env = Environment.default
@@ -57,7 +58,6 @@ class ThemesControllerTest < ActionController::TestCase
     get :index, :profile => 'testinguser'
 
     assert_tag :attributes => { :class => 'theme-opt list-opt selected' }
-    assert_no_tag :tag => 'a', :attributes => { :href => "/myprofile/testinguser/themes/set/one" }
   end
 
   should 'display list of my themes for edition' do
@@ -116,7 +116,7 @@ class ThemesControllerTest < ActionController::TestCase
 
   should 'create a new theme' do
     post :new, :profile => 'testinguser', :name => 'My theme'
-    
+
     ok('theme should be created') do
       profile.themes.first.id == 'my-theme'
     end
@@ -190,14 +190,14 @@ class ThemesControllerTest < ActionController::TestCase
 
     get :edit, :profile => 'testinguser', :id => 'mytheme'
 
-    assert_tag :tag => 'img', :attributes => { :src => '/user_themes/mytheme/images/one.png' }
-    assert_tag :tag => 'img', :attributes => { :src => '/user_themes/mytheme/images/two.png' }
+    assert_tag :tag => 'img', :attributes => { :src => "/#{TMP_THEMES_DIR}/mytheme/images/one.png" }
+    assert_tag :tag => 'img', :attributes => { :src => "/#{TMP_THEMES_DIR}/mytheme/images/two.png" }
   end
 
   should 'display "add image" button' do
     theme = Theme.create('mytheme', :owner => profile)
     get :edit, :profile => 'testinguser', :id => 'mytheme'
-    
+
     assert_tag :tag => 'a', :attributes => { :href => '/myprofile/testinguser/themes/add_image/mytheme' }
   end
 
@@ -216,7 +216,7 @@ class ThemesControllerTest < ActionController::TestCase
     post :add_image, :profile => 'testinguser', :id => 'mytheme', :image => fixture_file_upload('/files/rails.png', 'image/png', :binary)
     assert_redirected_to :action => "edit", :id => 'mytheme'
     assert theme.image_files.include?('rails.png')
-    assert(system('diff', RAILS_ROOT + '/test/fixtures/files/rails.png', TMP_THEMES_DIR + '/mytheme/images/rails.png'), 'should put the correct uploaded file in the right place')
+    assert(system('diff', RAILS_ROOT + '/test/fixtures/files/rails.png', TMP_THEMES_PATH + '/mytheme/images/rails.png'), 'should put the correct uploaded file in the right place')
   end
 
   should 'link to "test theme"' do
