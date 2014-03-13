@@ -605,6 +605,8 @@
           total: "TOTAL:"
 
   orders_cycle_plugin: 
+    terms: 
+      <<: *suppliers_terms
     lib:
       plugin:
         name: "Ciclo de pedidos"

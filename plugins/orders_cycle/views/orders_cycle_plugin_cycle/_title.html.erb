@@ -1,8 +1,8 @@
 <h2>
   <% if cycle.new? %>
-    <div class="cycle-edit-link"><%= t('orders_cycle_plugin.views.cycle._title.new_cycle') %></div>
+    <div class="cycle-edit-link"><%= t('views.cycle._title.new_cycle') %></div>
   <% else %>
-    <%= link_to t('orders_cycle_plugin.views.cycle._title.order_cycle') + cycle.name_with_code, {:action => 'edit', :id => cycle.id }, :class => "cycle-edit-link" %>
+    <%= link_to t('views.cycle._title.order_cycle') + cycle.name_with_code, {:action => 'edit', :id => cycle.id }, :class => "cycle-edit-link" %>
   <% end %>
 </h2>
 <%= render :partial => 'timeline', :locals => {:cycle => cycle} unless cycle.new? %>

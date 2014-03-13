@@ -1,14 +1,14 @@
 <div id="cycle-listing" class='admin-page'>
-  <h2><%= t('orders_cycle_plugin.views.cycle.index.orders_cycles') %></h2>
+  <h2><%= t('views.cycle.index.orders_cycles') %></h2>
 
-  <%= link_to t('orders_cycle_plugin.views.cycle.index.new_cycle'), {:action => :new}, :class => 'cycle-new' %>
+  <%= link_to t('views.cycle.index.new_cycle'), {:action => :new}, :class => 'cycle-new' %>
 
   <div id="cycle-open-listing">
-    <h3><%= t('orders_cycle_plugin.views.cycle.index.open_cycles') %></h3>
+    <h3><%= t('views.cycle.index.open_cycles') %></h3>
 
     <% cycles = @open_cycles %>
     <% if cycles.blank? %>
-      <div class="subtitle"><%= t('orders_cycle_plugin.views.cycle.index.no_cycles_to_show') %></div>
+      <div class="subtitle"><%= t('views.cycle.index.no_cycles_to_show') %></div>
     <% else %>
       <% cycles.each do |cycle| %>
         <div id="cycle-list-item-<%= cycle.id %>" class="cycle-list-item">
@@ -19,7 +19,7 @@
   </div>
 
   <div id="cycle-closed-listing">
-    <h3><%= t('orders_cycle_plugin.views.cycle.index.closed_cycles') %></h3>
+    <h3><%= t('views.cycle.index.closed_cycles') %></h3>
 
     <%= render :partial => "orders_cycle_plugin_shared/filter", :locals => {:type => :orders_cycle, :wireframe_size => true} %>
 

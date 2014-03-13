@@ -1,5 +1,5 @@
 <% if @cycle.passed_by?('edition') %>
-  <%= render :partial => 'header', :object => t('orders_cycle_plugin.views.cycle._edition.info') %>
+  <%= render :partial => 'header', :object => t('views.cycle._edition.info') %>
 <% end %>
 
 <div id="cycle-fields">
@@ -8,10 +8,10 @@
 
 <div id='cycle-products'>
   <div id="cycle-products-header">
-    <h3><%= t('orders_cycle_plugin.views.cycle._edition.the_products') %></h3>
+    <h3><%= t('views.cycle._edition.the_products') %></h3>
 
-    <div class="subtitle"><%= t('orders_cycle_plugin.views.cycle._edition.the_following_list_of') %></div>
-    <div class="subtitle"><%= t('orders_cycle_plugin.views.cycle._edition.it_was_automatically_') %></div>
+    <div class="subtitle"><%= t('views.cycle._edition.the_following_list_of') %></div>
+    <div class="subtitle"><%= t('views.cycle._edition.it_was_automatically_') %></div>
   </div>
 
   <div id="cycle-product-lines">

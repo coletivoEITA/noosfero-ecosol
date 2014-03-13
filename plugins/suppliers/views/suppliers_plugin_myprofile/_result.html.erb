@@ -11,7 +11,7 @@
     </div>
   </td>
   <td>
-    <%= link_to_remote t('suppliers_plugin.views.supplier._new.add'),
+    <%= link_to_remote t('views.supplier._new.add'),
       :url => {:action => :add, :profile => profile.identifier, :id => enterprise.id},
       :loading => "loading_overlay.show('#supplier-add')", :loaded => "loading_overlay.hide('#supplier-add'); suppliers.add.supplier_added();",
       :update => "search-results", :html => {:class => 'action-button'} %>

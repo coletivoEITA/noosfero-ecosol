@@ -1,10 +1,10 @@
 <div id="" class="consumers-coop-plugin-popin consumers-coop-plugin-message">
-  <h1><%= t('orders_cycle_plugin.views.message.new_to_supplier.message_to_supplier_s') % {:supplier => @supplier.name} %></h1>
+  <h1><%= t('views.message.new_to_supplier.message_to_supplier_s') % {:supplier => @supplier.name} %></h1>
 
   <% form_remote_tag :url => params do %>
     <%= render :partial => 'fields' %>
 
-     <%= submit_tag t('orders_cycle_plugin.views.message.new_to_supplier.send') %>
-     <%= colorbox_close_link t('orders_cycle_plugin.views.message.new_to_supplier.cancel') %>
+     <%= submit_tag t('views.message.new_to_supplier.send') %>
+     <%= colorbox_close_link t('views.message.new_to_supplier.cancel') %>
   <% end %>
 </div>

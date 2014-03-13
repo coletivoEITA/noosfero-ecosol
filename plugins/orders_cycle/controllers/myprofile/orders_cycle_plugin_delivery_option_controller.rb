@@ -9,9 +9,9 @@ class OrdersCyclePluginDeliveryOptionController < DeliveryPluginOptionController
 
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
-  include SuppliersPlugin::TranslationHelper
+  include OrdersCyclePlugin::TranslationHelper
 
-  helper SuppliersPlugin::TranslationHelper
+  helper OrdersCyclePlugin::TranslationHelper
   helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
   protected

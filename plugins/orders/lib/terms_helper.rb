@@ -2,8 +2,6 @@ raise 'I18n version 0.6.0 is needed for a good string interpolation' unless I18n
 
 module TermsHelper
 
-  include I18nAutoScope
-
   I18nSeparator = '.'
 
   Terms = [:profile, :supplier]
@@ -49,8 +47,7 @@ module TermsHelper
   protected
 
   def self.included base
-    base.send :define_method, :translate, I18n.method(:t).to_proc unless base.respond_to? :translate
-
+    base.send :include, I18nAutoScope
     base.alias_method_chain :translate, :terms
     base.alias_method_chain :translate, :terms_cache
     base.send :alias_method, :t, :translate

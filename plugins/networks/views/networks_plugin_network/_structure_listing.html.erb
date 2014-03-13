@@ -1,5 +1,5 @@
 
-<h3><%= t('networks_plugin.views.network.show_structure.nodes') %></h3>
+<h3><%= t('views.network.show_structure.nodes') %></h3>
 
 <div id="network-nodes">
   <% @node.nodes.each do |node| %>
@@ -7,7 +7,7 @@
   <% end %>
 </div>
 
-<h3><%= t('networks_plugin.views.network.show_structure.enterprises') %></h3>
+<h3><%= t('views.network.show_structure.enterprises') %></h3>
 <div id="network-suppliers">
   <% @node.suppliers.except_self.each do |supplier| %>
     <%= render 'networks_plugin_network/supplier', :supplier => supplier %>

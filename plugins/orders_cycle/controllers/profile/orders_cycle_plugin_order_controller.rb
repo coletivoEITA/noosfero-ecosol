@@ -7,13 +7,14 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
-  include SuppliersPlugin::TranslationHelper
+  include OrdersCyclePlugin::TranslationHelper
 
   no_design_blocks
   before_filter :login_required, :except => [:index]
 
   helper OrdersCyclePlugin::OrdersCycleDisplayHelper
   helper SuppliersPlugin::ProductHelper
+  helper OrdersCyclePlugin::TranslationHelper
 
   def index
     @current_year = DateTime.now.year.to_s

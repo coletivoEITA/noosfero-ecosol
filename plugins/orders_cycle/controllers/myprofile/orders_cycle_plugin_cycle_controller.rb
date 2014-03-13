@@ -4,12 +4,12 @@ class OrdersCyclePluginCycleController < MyProfileController
 
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
-  include SuppliersPlugin::TranslationHelper
+  include OrdersCyclePlugin::TranslationHelper
 
   protect 'edit_profile', :profile
   before_filter :set_admin
 
-  helper SuppliersPlugin::TranslationHelper
+  helper OrdersCyclePlugin::TranslationHelper
   helper OrdersCyclePlugin::CycleHelper
 
   def index
@@ -26,10 +26,10 @@ class OrdersCyclePluginCycleController < MyProfileController
       @cycle = OrdersCyclePlugin::Cycle.find params[:id]
       @success = @cycle.update_attributes params[:cycle]
       if @success
-        session[:notice] = t('orders_cycle_plugin.controllers.myprofile.cycle_controller.cycle_created')
+        session[:notice] = t('controllers.myprofile.cycle_controller.cycle_created')
         if params[:sendmail]
           OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).deliver_open_cycle @cycle.profile,
-            @cycle,t('orders_cycle_plugin.controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message
+            @cycle,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message
         end
         render :partial => 'new'
       else
@@ -38,7 +38,7 @@ class OrdersCyclePluginCycleController < MyProfileController
     else
       count = OrdersCyclePlugin::Cycle.count :conditions => {:profile_id => profile}
       @cycle = OrdersCyclePlugin::Cycle.create! :profile => profile, :status => 'new',
-        :name => t('orders_cycle_plugin.controllers.myprofile.cycle_controller.cycle_n_n') % {:n => count+1}
+        :name => t('controllers.myprofile.cycle_controller.cycle_n_n') % {:n => count+1}
     end
   end
 
@@ -51,7 +51,7 @@ class OrdersCyclePluginCycleController < MyProfileController
         @success = @cycle.update_attributes params[:cycle]
         if params[:sendmail]
           OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).deliver_open_cycle @cycle.profile,
-            @cycle,t('orders_cycle_plugin.controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message
+            @cycle,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message
         end
         render :partial => 'edit'
       else
@@ -97,7 +97,7 @@ class OrdersCyclePluginCycleController < MyProfileController
     end
     send_file report_file, :type => 'application/xlsx',
       :disposition => 'attachment',
-      :filename => t('orders_cycle_plugin.controllers.myprofile.cycle_controller.products_report_date_') % {
+      :filename => t('controllers.myprofile.cycle_controller.products_report_date_') % {
         :date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @cycle.code, :cycle_name => @cycle.name}
     require 'fileutils'
     #FileUtils.rm_rf tmp_dir
@@ -113,7 +113,7 @@ class OrdersCyclePluginCycleController < MyProfileController
     end
     send_file report_file, :type => 'application/xlsx',
       :disposition => 'attachment',
-      :filename => t('orders_cycle_plugin.controllers.myprofile.cycle_controller.cycle_orders_report_d') % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @cycle.code, :cycle_name => @cycle.name}
+      :filename => t('controllers.myprofile.cycle_controller.cycle_orders_report_d') % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @cycle.code, :cycle_name => @cycle.name}
     require 'fileutils'
     #FileUtils.rm_rf tmp_dir
   end

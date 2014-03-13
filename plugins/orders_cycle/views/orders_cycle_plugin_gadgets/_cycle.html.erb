@@ -1,8 +1,8 @@
 <div class="cycle">
-  <div class='happening'><%= t('orders_cycle_plugin.views.gadgets._cycle.happening') %></div>
+  <div class='happening'><%= t('views.gadgets._cycle.happening') %></div>
   <div class='info'>
     <h2>
-      <%= t('orders_cycle_plugin.views.gadgets._cycle.orders_open_b_cycle') % {:cycle => cycle.name_with_code} %>
+      <%= t('views.gadgets._cycle.orders_open_b_cycle') % {:cycle => cycle.name_with_code} %>
     </h2>
 
     <table>
@@ -15,8 +15,8 @@
           <div class="subtitle"><%= cycle.description %></div>
         </td>
         <td class='third-column'>
-          <%= button_to t('orders_cycle_plugin.views.gadgets._cycle.see_orders_cycle'), {:controller => :orders_cycle_plugin_order, :action => :edit, :cycle_id => cycle.id}, :class => "action-button" %>
-          <%# button_to t('orders_cycle_plugin.views.gadgets._cycle.place_an_order'), {:controller => :orders_cycle_plugin_order, :action => :new, :cycle_id => cycle.id} %>
+          <%= button_to t('views.gadgets._cycle.see_orders_cycle'), {:controller => :orders_cycle_plugin_order, :action => :edit, :cycle_id => cycle.id}, :class => "action-button" %>
+          <%# button_to t('views.gadgets._cycle.place_an_order'), {:controller => :orders_cycle_plugin_order, :action => :new, :cycle_id => cycle.id} %>
           <div class='clean'></div>
         </td>
       <tr>

@@ -1,16 +1,16 @@
 <div class="cycle-name-and-code">
-  <strong><%= t('orders_cycle_plugin.views.cycle._brief.code') % {:code => cycle.code} %></strong>
+  <strong><%= t('views.cycle._brief.code') % {:code => cycle.code} %></strong>
   <%= link_to cycle.name, {:action => 'edit', :id => cycle.id } %>
-  <%= t('orders_cycle_plugin.views.cycle._brief.confirmed_orders', :count => cycle.orders.confirmed.count) %>
+  <%= t('views.cycle._brief.confirmed_orders', :count => cycle.orders.confirmed.count) %>
 </div>
 
 <div class="cycle-dates">
   <div class="cycle-date">
-    <span class="field-title"><%= t('orders_cycle_plugin.views.cycle._brief.orders') %></span>&emsp;
+    <span class="field-title"><%= t('views.cycle._brief.orders') %></span>&emsp;
     <span><%= datetime_period_short(cycle.start, cycle.finish) %></span>
   </div>
   <div class="cycle-date">
-    <span class="field-title"><%= t('orders_cycle_plugin.views.cycle._brief.delivery') %></span>&emsp;
+    <span class="field-title"><%= t('views.cycle._brief.delivery') %></span>&emsp;
     <span><%= datetime_period_short(cycle.delivery_start, cycle.delivery_finish) %></span>
   </div>
 

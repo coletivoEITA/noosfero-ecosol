@@ -39,7 +39,7 @@ class SuppliersPluginProductController < MyProfileController
   def destroy
     @product = SuppliersPlugin::DistributedProduct.find params[:id]
     @product.destroy
-    flash[:notice] = t('suppliers_plugin.controllers.myprofile.product_controller.product_removed_succe')
+    flash[:notice] = t('controllers.myprofile.product_controller.product_removed_succe')
   end
 
   def distribute_to_consumers

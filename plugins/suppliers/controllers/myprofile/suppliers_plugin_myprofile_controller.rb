@@ -26,7 +26,7 @@ class SuppliersPluginMyprofileController < MyProfileController
   def new
     @new_supplier.update_attributes params[:supplier] #beautiful transactional save
     @supplier = @new_supplier
-    session[:notice] = t('suppliers_plugin.controllers.myprofile.supplier_created')
+    session[:notice] = t('controllers.myprofile.supplier_created')
   end
 
   def add
