@@ -417,7 +417,6 @@
         _supplier: 
           abreviated_name: "Abreviated Name"
           actions: Actions
-          add_products: "add products"
           among_them: ", among them"
           any_registered_produc: "any registered product"
           by_removing_this_supp: "By removing %{terms.supplier.article.singular} all its products won't be available for future cycles. Please confirm you choice"
@@ -426,7 +425,7 @@
           edit: edit
           products_are_active: " produtos estão ativos"
           products_distributed: " distributed products %{terms.profile.by_article.singular}"
-          products: products
+          products: "manage products"
           registered_supplier_i: "Registered %{terms.supplier.singular} in the network"
           remove: remove
           supplier_profile_product: " registered products"

@@ -2,8 +2,9 @@ raise 'I18n version 0.6.0 is needed for a good string interpolation' unless I18n
 
 module TermsHelper
 
+  include I18nAutoScope
+
   I18nSeparator = '.'
-  DefaultContext = 'suppliers_plugin'
 
   Terms = [:profile, :supplier]
   Auxiliars = [
@@ -48,44 +49,38 @@ module TermsHelper
   protected
 
   def self.included base
-    base.alias_method_chain :translate, :cache
+    base.send :define_method, :translate, I18n.method(:t).to_proc unless base.respond_to? :translate
+
+    base.alias_method_chain :translate, :terms
+    base.alias_method_chain :translate, :terms_cache
     base.send :alias_method, :t, :translate
   end
 
-  def default_terms_context
-    DefaultContext
-  end
-  # may be replaced on context (e.g. controller)
-  def terms_context
-    default_terms_context
-  end
-
-  def translate key, options = {}
-    translation = I18n.t key, options
+  def translate_with_terms key, options = {}
+    translation = translate_without_terms key, options
     translation % translated_terms
   end
 
-  def translate_with_cache key, options = {}
+  def translate_with_terms_cache key, options = {}
     cache = (TermsHelper.cache[I18n.locale] ||= {})
-    cache = (cache[terms_context] ||= {})
+    cache = (cache[i18n_scope] ||= {})
 
     hit = cache[key]
     return hit if hit.present?
 
-    cache[key] = translate_without_cache key, options
+    cache[key] = translate_without_terms_cache key, options
   end
 
   private
 
   def translated_terms keys = Keys, translations = TermsHelper.translations, transformations = Transformations, sep = I18nSeparator
     translated_terms = (translations[I18n.locale] ||= {})
-    translated_terms = (translated_terms[terms_context] ||= {})
+    translated_terms = (translated_terms[i18n_scope] ||= {})
 
     return translated_terms if translated_terms.present?
 
     keys.each do |key|
-      translation = I18n.t! "#{terms_context}.terms.#{key}" rescue nil
-      translation = I18n.t! "#{default_terms_context}.terms.#{key}" rescue nil unless translation
+      translation = self.translate_with_auto_scope "terms#{sep}#{key}", :raise => true rescue nil
       next unless translation.is_a? String
 
       translated_terms["terms#{sep}#{key}"] = translation

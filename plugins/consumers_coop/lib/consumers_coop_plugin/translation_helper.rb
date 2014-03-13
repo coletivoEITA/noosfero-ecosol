@@ -5,7 +5,7 @@ module ConsumersCoopPlugin::TranslationHelper
   # included here to be used on controller's t calls
   include TermsHelper
 
-  def terms_context
+  def i18n_scope
     'consumers_coop_plugin'
   end
 
