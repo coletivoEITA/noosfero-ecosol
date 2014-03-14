@@ -2,7 +2,7 @@
 <%= f.hidden_field :id if f %>
 
 <div class="fields">
-  <div class="box-field supplier"><%= excerpt_ending product.supplier.abbreviation_or_name, 12 %></div>
+  <div class="box-field supplier"><%= excerpt_ending product.supplier.abbreviation_or_name, 12 rescue '-' %></div>
 
   <div class="box-field product"><%= excerpt_ending product.name, 22 %></div>
 
