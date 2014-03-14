@@ -25,7 +25,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   before_validation :default_values
 
   extend CodeNumbering::ClassMethods
-  code_numbering :code
+  code_numbering :code, :scope => proc{ self.profile.orders }
 
   extend SerializedSyncedData::ClassMethods
   sync_serialized_field :profile do |profile|

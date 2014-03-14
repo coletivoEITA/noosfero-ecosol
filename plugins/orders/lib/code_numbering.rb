@@ -15,20 +15,18 @@ module CodeNumbering
 
   module InstanceMethods
     def create_code_numbering
-      scope = code_numbering_options[:scope]
-      if scope
-        max = case scope
-              when Symbol
-                send(scope).maximum(code_numbering_field)
-              when Proc
-                instance_eval(&scope).maximum(code_numbering_field)
-              end rescue 0
-      else
-        max = self.class.maximum(code_numbering_field)
-      end
+      scope = self.code_numbering_options[:scope]
 
-      max ||= code_numbering_options[:start] || 0
-      send "#{code_numbering_field}=", max+1
+      max = code_numbering_options[:start] || 0
+      max = case scope
+            when Symbol
+              self.send(scope).maximum self.code_numbering_field
+            when Proc
+              instance_eval(&scope).maximum self.code_numbering_field
+            end || 0 rescue nil if scope
+      max ||= self.class.maximum self.code_numbering_field
+
+      self.send "#{code_numbering_field}=", max+1
     end
   end
 end

@@ -39,7 +39,8 @@ class OrdersPlugin::Order
   end
 
   extend CodeNumbering::ClassMethods
-  code_numbering :code, :scope => Proc.new { self.cycle.orders }
+  code_numbering :code, :scope => proc{ if self.cycle then self.cycle.orders else self.profile.orders end }
+
   def code
     return super unless self.cycle
     I18n.t('orders_cycle_plugin.lib.ext.orders_plugin.order.cyclecode_ordercode') % {
