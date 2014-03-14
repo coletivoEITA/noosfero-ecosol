@@ -1,6 +1,7 @@
 <div class="box-view">
   <span class='box-field code'><%= order.code %></span>
   <span class='box-field consumer box-edit-link'><%= order.consumer_data[:name] %></span>
+  <span class='box-field order-date'><%= datetime_full order.created_at %></span>
   <span class='box-field last-update'><%= datetime_full order.updated_at %></span>
   <span class='box-field total'><%= order.total_price_asked_as_currency_number %></span>
 

@@ -1495,6 +1495,8 @@
   width: 64px; }
 .orders-admin-index .box-field.consumer {
   width: 304px; }
+.orders-admin-index .box-field.order-date {
+  width: 144px; }
 .orders-admin-index .box-field.last-update {
   width: 144px; }
 .orders-admin-index .box-field.total {

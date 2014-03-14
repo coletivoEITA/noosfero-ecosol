@@ -42,7 +42,8 @@ module SerializedSyncedData
       end
 
       define_method "sync_#{field}_data" do
-        self.send "#{field}_data=", self.send("#{field}_synced_data")
+        value = self.send "#{field}_synced_data"
+        self.send "#{field}_data=", value if value.present?
       end
 
       before_create "fill_#{field}_data"

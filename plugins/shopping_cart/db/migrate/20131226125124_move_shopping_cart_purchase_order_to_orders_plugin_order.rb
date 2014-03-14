@@ -12,11 +12,18 @@ class ShoppingCartPlugin::PurchaseOrder < Noosfero::Plugin::ActiveRecord
   end
 end
 
+class Profile
+  has_many :orders, :class_name => 'OrdersPlugin::Order', :order => 'updated_at DESC'
+end
+
 class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
   belongs_to :order, :class_name => 'OrdersPlugin::Order'
 end
 class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   has_many :items, :class_name => 'OrdersPlugin::Item', :foreign_key => :order_id
+
+  extend CodeNumbering::ClassMethods
+  code_numbering :code, :scope => proc{ self.profile.orders }
 end
 
 StatusTransform = {
@@ -28,7 +35,9 @@ StatusTransform = {
 
 class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
   def self.up
-    ShoppingCartPlugin::PurchaseOrder.find_each do |purchase_order|
+    OrdersPlugin::Order.record_timestamps = false
+
+    ShoppingCartPlugin::PurchaseOrder.all(:order => 'created_at ASC').each do |purchase_order|
       data = purchase_order.data
 
       order = OrdersPlugin::Order.new :profile_id => purchase_order.seller_id, :consumer_id => purchase_order.customer_id
@@ -60,9 +69,15 @@ class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
 
       order.status = StatusTransform[purchase_order.status]
 
+      order.updated_at = purchase_order.updated_at
+      order.created_at = purchase_order.created_at
+
       order.save!
     end
+
     drop_table :shopping_cart_plugin_purchase_orders
+
+    OrdersPlugin::Order.record_timestamps = true
   end
 
   def self.down
