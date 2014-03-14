@@ -490,8 +490,8 @@
         singular: "Compra"
         plural: "Compras"
       sale:
-        singular: "Venda"
-        plural: "Vendas"
+        singular: "Pedido"
+        plural: "Pedidos"
     lib:
       plugin:
         name: "Pedidos"
@@ -512,9 +512,9 @@
         m_d: "%d/%m"
         m_d_hh: "%d/%m - %Hh%M"
         m_d_hh_m: "%d/%m - %Hh%M"
-        m_d_y_at_hh_m: "%d/%m/%y às %H:%M"
-        m_d_y_hh_m: "%d/%m/%y às %H:%M"
-        m_y_hh_m: "%m/%y - %Hh%M"
+        m_d_y_at_hh_m: "%d/%m/%Y às %H:%M"
+        m_d_y_hh_m: "%d/%m/%Y às %H:%M"
+        m_y_hh_m: "%m/%Y - %Hh%M"
         start_day_from_start_: "%{start_day}, de %{start_time} para %{finish_time}"
         start_day_start_datet: "%{start_day}, %{start_datetime} - %{finish_day}, %{finish_datetime}"
         start_finish: "%{start} - %{finish}"
