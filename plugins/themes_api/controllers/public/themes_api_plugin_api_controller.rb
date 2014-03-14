@@ -3,7 +3,7 @@ class ThemesApiPluginApiController < PublicController
   def fetch_enterprises
     if user
       @enterprises = user.enterprises.select{ |e| e.admins.include? user }
-      @enterprises = @enterprises.map{ |e| {:name => e.nickname || e.name, :identifier => e.identifier, :logo => (e.image.public_filename(nil) rescue nil) } }
+      @enterprises = @enterprises.map{ |e| {:name => e.short_name, :identifier => e.identifier, :logo => (e.image.public_filename(nil) rescue nil) } }
 
       render :json => {:user => user.identifier, :enterprises => @enterprises}
     else
