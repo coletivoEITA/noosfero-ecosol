@@ -19,14 +19,7 @@
     <% form_remote_for :order, order, :url => {:action => :cycle_edit, :id => order.id} do |f| %>
 
       <div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? user %> <%= "admin" if @admin %>">
-        <div class="order-header">
-          <%= t('orders_plugin.views.item._index.header') % {
-            :profile_code => order.code,
-            :profile => content_tag('strong', order.profile_data[:name]),
-            :consumer => content_tag('strong', order.consumer_data[:name]),
-          } %>
-        </div>
-
+        <%= render 'header', :order => order %>
         <%= render 'orders_plugin_item/index', :order => order, :f => f %>
       </div>
 
