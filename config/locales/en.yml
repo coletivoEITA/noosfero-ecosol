@@ -230,7 +230,7 @@
         description: "Suppliers and its distributed products registry"
         distribution_tab: "Distribuição"
     terms: &suppliers_terms
-      profile:
+      profile: &suppliers_term_profile
         singular: "organization"
         plural: "organizations"
         it: 
@@ -262,6 +262,7 @@
           plural: "the organizations"
         by_article: 
           singular: "by the organization"
+      consumer: *suppliers_term_profile
       supplier:
         singular: "supplier"
         plural: "suppliers"
@@ -458,7 +459,7 @@
           add: Add
           cancel: cancel
           instructions: Instructions
-          instructions_help: "Give the member instruction for the delivery, include the address and any recommendations you find useful. This text will be available on the page of the order, and by confirming the order the person will receive a copy of the order."
+          instructions_help: "Give the consumer instructions for the delivery, include the address and any recommendations you find useful. This text will be available on the page of the order, and by confirming the order the person will receive a copy of the order."
           name: Name
           save: Save
         _select_content: 
@@ -556,7 +557,12 @@
           code: "Code"
           consumer: "Consumer"
           last_update: "Last update"
+          order_date: "Orders' date"
           total: "Total (%{currency})"
+        _filter:
+          status: "Situação"
+          code: "Código"
+          all: "Todos"
         _edit: 
           actions: Actions
           add_product: "add product"
@@ -564,13 +570,13 @@
           edit_on_the_order_pag: "edit on the order page"
           empty_order: "Empty order"
           include_message: "Include message"
-          message_to_member: "message to member"
+          message_to_member: "message to the consumer"
           remove_order: "remove order"
           save: Save
           see_delivery: "see delivery"
           see_redistribution: "see redistribution"
-          the_collective_member: "The member %{terms.profile.from_article.singular} will receive an email that discriminates all changes made in his/her order"
-          warn_member_of_the_ch: "Warn member of the changes in his/her order"
+          the_collective_member: "The consumer %{terms.profile.from_article.singular} will receive an email that discriminates all changes made in his/her order"
+          warn_member_of_the_ch: "Warn consumer of the changes in his/her order"
 
       mailer:
         order_confirmation: 
@@ -612,13 +618,13 @@
         profile_subject: "[%{profile}] %{subject}"
         order_was_changed: "[%{profile}] Your order was modificado"
       order_block: 
-        distribution_orders_c: "Distribution orders' cycles for members"
-        offer_cycles_for_you_: "Offer cycles for you members to make orders"
+        distribution_orders_c: "Distribution orders' cycles for consumers"
+        offer_cycles_for_you_: "Offer cycles for you consumers to make orders"
         orders_cycles: "Orders' cycles"
       report: 
         closed_orders: "Closed Orders"
         created: created
-        member_name: "Member name"
+        member_name: "Consumer name"
         min_stock: "min. stock"
         mm_dd_yy_hh_mm_am_pm: "MM/DD/YY HH:MM AM/PM"
         modified: modified
@@ -674,7 +680,7 @@
         message_to_admins: 
           a_service_of_s: "A service of %s."
           hello_managers_of_nam: "Hello managers of %{name},"
-          the_member_member_sen: "The member %{member} sent a messsage to you"
+          the_member_member_sen: "The consumer %{member} sent a messsage to you"
         message_to_consumer: 
           a_service_of_s: "A service of %s."
           hello_name: "Hello %{name},"
@@ -692,7 +698,7 @@
           the_collective_profile_s: "%{terms.profile.article.singular.capitalize} %{profile} sent a messsage to you"
         open_cycle: 
           a_new_cycle_is_open_c: "A new cycle is open called "
-          hello_member_of_name: "Hello member of %{name},"
+          hello_member_of_name: "Hello consumer of %{name},"
           the_administrator_let: "The administrator let a message about this cycle"
           the_cycle_description: "The cycle description is.."
         order_change_notification: 
@@ -713,12 +719,12 @@
           send: Send
         new_to_consumer: 
           cancel: cancel
-          message_to_member_con: "Message to member \"%{consumer}\""
+          message_to_member_con: "Message to consumer \"%{consumer}\""
           send: Send
         new_to_consumer_for_order: 
           cancel: cancel
           include_reference_to_: "Include reference to the order made"
-          message_to_member_con: "Message to member \"%{consumer}\""
+          message_to_member_con: "Message to consumer \"%{consumer}\""
           send: Send
         new_to_supplier: 
           cancel: cancel
@@ -736,7 +742,7 @@
           edit_your_orders: "Edit your orders"
           login: login
           new_order: "New order"
-          orders_from_another_m: "Orders from another member"
+          orders_from_another_m: "Orders from another consumer"
           orders_from_consumer_: "Orders from \"%{consumer}\" on this cycle"
           send_message_to_the_m: "send message to the managers"
           sign_up: "sign up"
@@ -800,7 +806,7 @@
           product: Product
           this_search_hasn_t_re: "This search hasn't returned any product"
         _cycle_edit: 
-          all_ordered_products: "All ordered products from this product will also be removed; you should first warn members that ordered this products"
+          all_ordered_products: "All ordered products from this product will also be removed; you should first warn consumers that ordered this products"
           buy_price: "Buy price"
           buy_unit: "Buy unit"
           cancel_updates: "cancel updates"
@@ -836,7 +842,7 @@
           description: Description
           general_settings: "General settings"
           name: Name
-          notify_members_of_ope: "Notify members of open orders"
+          notify_members_of_ope: "Notify consumer of open orders"
           opening_message: "Opening Message"
           orders_interval: "Orders Interval"
           save: Save
@@ -940,7 +946,7 @@
         administration: Administration
     terms:
       <<: *suppliers_terms
-      profile:
+      profile: &consumers_coop_term_profile
         singular: "consumers' coop"
         plural: "consumers' coop"
         it: 
@@ -972,6 +978,7 @@
           plural: "the consumers' coops"
         by_article: 
           singular: "by the consumers' coop"
+      consumer: *consumers_coop_term_profile
     controllers:
       myprofile:
         distribution_settings: "Distribution settings saved."
@@ -981,7 +988,7 @@
     views:
       layouts: 
         _admin_submenu: 
-          members: Members
+          members: Consumers
           orders_cycles: "Orders' Cycles"
           parcels: Parcels
           products: Products
@@ -1018,7 +1025,7 @@
         description: "Create and manage networks."
     terms:
       <<: *suppliers_terms
-      profile:
+      profile: &networks_term_profile
         singular: "network"
         plural: "networks"
         it: 
@@ -1050,6 +1057,7 @@
           plural: "the networks"
         by_article: 
           singular: "by the network"
+      consumer: *networks_term_profile
       supplier: 
         singular: "enterprise"
         plural: "enterprises"

@@ -68,6 +68,10 @@ module OrdersPlugin::DateHelper
     }
   end
 
+  def datetime_full time
+    time.strftime(I18n.t('orders_plugin.lib.date_helper.m_d_y_at_hh_m'))
+  end
+
   def month_with_time time
     time.strftime(I18n.t('orders_plugin.lib.date_helper.m_y_hh_m'))
   end

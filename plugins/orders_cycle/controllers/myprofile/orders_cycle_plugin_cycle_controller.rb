@@ -118,6 +118,9 @@ class OrdersCyclePluginCycleController < MyProfileController
     #FileUtils.rm_rf tmp_dir
   end
 
+  def orders_filter
+  end
+
   protected
 
   def search_scope scope

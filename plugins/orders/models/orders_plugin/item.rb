@@ -57,7 +57,7 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     ORDER_STATUS_MAP[self.modified_state]
   end
   def modified_order_state_message
-    I18n.t Order::STATUS_MESSAGE[self.modified_order_state]
+    I18n.t Order::StatusText[self.modified_order_state]
   end
 
   def price_asked

@@ -2,6 +2,12 @@ if (typeof sortable_table === 'undefined') {
 
 sortable_table = {
 
+  sort_desc: function (column_class) {
+    column = jQuery('.sortable-table .table-header .box-field.'+column_class);
+    column.get(0).ascending = false;
+    column.click();
+  },
+
   header_click: function () {
     this.ascending = !this.ascending;
     column = jQuery(this);
