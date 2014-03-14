@@ -5,8 +5,8 @@ module NetworksPlugin::TranslationHelper
   # included here to be used on controller's t calls
   include TermsHelper
 
-  def terms_context
-    'networks_plugin'
+  def i18n_scope
+    ['networks_plugin', 'suppliers_plugin', 'orders_plugin']
   end
 
 end

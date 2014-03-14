@@ -1,10 +1,10 @@
 <div id="networks-network-show-structure">
-  <h1><%= t('networks_plugin.views.network.show_structure.title') %></h1>
+  <h1><%= t('views.network.show_structure.title') %></h1>
 
   <div>
     <% button_bar do %>
-      <%= link_to t('networks_plugin.views.network.show_structure.add_enterprise'), {:controller => :networks_plugin_enterprise, :action => :associate, :id => @node.id}, :class => 'action-button colorbox' %>
-      <%= link_to t('networks_plugin.views.network.show_structure.add_node'), {:controller => :networks_plugin_node, :action => :associate, :id => @node.id}, :class => 'action-button colorbox' %>
+      <%= link_to t('views.network.show_structure.add_enterprise'), {:controller => :networks_plugin_enterprise, :action => :associate, :id => @node.id}, :class => 'action-button colorbox' %>
+      <%= link_to t('views.network.show_structure.add_node'), {:controller => :networks_plugin_node, :action => :associate, :id => @node.id}, :class => 'action-button colorbox' %>
     <% end %>
   </div>
 

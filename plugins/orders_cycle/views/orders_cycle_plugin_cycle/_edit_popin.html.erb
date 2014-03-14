@@ -1,9 +1,9 @@
 <div class="consumers-coop-plugin-popin">
-  <h1><%= t('orders_cycle_plugin.views.cycle._edit_popin.cycle_editing') %></h1>
+  <h1><%= t('views.cycle._edit_popin.cycle_editing') %></h1>
 
   <div>
     <% if cycle.valid? %>
-      <%= t('orders_cycle_plugin.views.cycle._edit_popin.cycle_saved') %>
+      <%= t('views.cycle._edit_popin.cycle_saved') %>
     <% else %>
       <% cycle.errors.each_full do |msg| %>
         <div><%= msg %></div>
@@ -12,7 +12,7 @@
   </div>
 
   <div>
-    <%= colorbox_close_button t('orders_cycle_plugin.views.cycle._edit_popin.close') %>
+    <%= colorbox_close_button t('views.cycle._edit_popin.close') %>
   </div>
 
 </div>

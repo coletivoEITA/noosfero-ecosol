@@ -1,5 +1,5 @@
 <% if @enterprises.empty? %>
-  <%= t('suppliers_plugin.views.supplier._new.none_found') %>
+  <%= t('views.supplier._new.none_found') %>
 <% else %>
   <table>
     <% @enterprises.each do |enterprise| %>
@@ -9,9 +9,9 @@
 
   <div id="suggest-creation">
     <div class="subtitle">
-      <%= t('suppliers_plugin.views.supplier._new.suggest_creation') %>
+      <%= t('views.supplier._new.suggest_creation') %>
     </div>
 
-    <%= link_to_function t('suppliers_plugin.views.supplier._new.create_dummy'), 'suppliers.add.create_dummy();' %>
+    <%= link_to_function t('views.supplier._new.create_dummy'), 'suppliers.add.create_dummy();' %>
   </div>
 <% end %>

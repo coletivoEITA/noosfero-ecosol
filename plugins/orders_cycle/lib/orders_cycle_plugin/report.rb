@@ -24,7 +24,7 @@ module OrdersCyclePlugin::Report
       bluecell  = wb.styles.add_style(defaults.merge({:bg_color => "99CCFF", :b => true}))
       default   = wb.styles.add_style(defaults.merge({:border => 0}))
       bluecell_b_top  = wb.styles.add_style(defaults.merge({:bg_color => "99CCFF", :b => true, :border => {:style => :thin, :color => "FF000000", :edges => [:top]}}))
-      date  = wb.styles.add_style(defaults.merge({:format_code => t('orders_cycle_plugin.lib.report.mm_dd_yy_hh_mm_am_pm')}))
+      date  = wb.styles.add_style(defaults.merge({:format_code => t('lib.report.mm_dd_yy_hh_mm_am_pm')}))
       currency  = wb.styles.add_style(defaults.merge({:format_code => t('number.currency.format.xlsx_currency')}))
       border_top = wb.styles.add_style :border => {:style => :thin, :color => "FF000000", :edges => [:top]}
 
@@ -32,11 +32,11 @@ module OrdersCyclePlugin::Report
       # supplier block start index (shifts on the loop for each supplier)
       sbs = 1
       # create sheet and populates
-      wb.add_worksheet(:name => t('orders_cycle_plugin.lib.report.products_report')) do |sheet|
+      wb.add_worksheet(:name => t('lib.report.products_report')) do |sheet|
 
         items_by_supplier.each do |supplier, items, total_price_asked, total_parcel_asked|
 
-          sheet.add_row [t('orders_cycle_plugin.lib.report.supplier'),'','','','','','','','','',''], :style => bluecell
+          sheet.add_row [t('lib.report.supplier'),'','','','','','','','','',''], :style => bluecell
           sheet.merge_cells "A#{sbs}:B#{sbs}"
 
           # sp = index of the start of the products list / ep = index of the end of the products list
@@ -50,8 +50,8 @@ module OrdersCyclePlugin::Report
           sheet.add_row [''], :style => default # empty line
 
           sheet.add_row [
-            t('orders_cycle_plugin.lib.report.product_cod'), t('orders_cycle_plugin.lib.report.product_name'), t('orders_cycle_plugin.lib.report.qty_ordered'), t('orders_cycle_plugin.lib.report.stock_qtt'), t('orders_cycle_plugin.lib.report.min_stock'),
-            t('orders_cycle_plugin.lib.report.qtt_to_be_parcelled'),t('orders_cycle_plugin.lib.report.projected_stock'), t('orders_cycle_plugin.lib.report.un'), t('orders_cycle_plugin.lib.report.price_un'), t('orders_cycle_plugin.lib.report.selled_value'), t('orders_cycle_plugin.lib.report.value_parcel')], :style => greencell
+            t('lib.report.min_stock'),
+            t('lib.report.value_parcel')], :style => greencell
 
           # pl = product line
           pl = sp
@@ -67,7 +67,7 @@ module OrdersCyclePlugin::Report
           end # closes items.each
 
           sheet.add_row [""]
-          sheet.add_row ["", '', '', '', '', '', t('orders_cycle_plugin.lib.report.total_selled_value'), '', '',t('orders_cycle_plugin.lib.report.total_parcel_value'), ''], :style =>bluecell
+          sheet.add_row ["", '', '', '', '', '', t('lib.report.total_parcel_value'), ''], :style =>bluecell
           row = ep +2
           ["G#{row}:H#{row}", "J#{row}:K#{row}"].each {|c| sheet.merge_cells c }
           row += 1
@@ -78,11 +78,11 @@ module OrdersCyclePlugin::Report
 
         end # closes items_by_supplier
         sheet.add_row []
-        sheet.rows.last.add_cell t('orders_cycle_plugin.lib.report.selled_total'), :style => redcell
+        sheet.rows.last.add_cell t('lib.report.selled_total'), :style => redcell
         sheet.rows.last.add_cell "=SUM(j1:j1000)", :style => default
         sheet.add_row []
 
-        sheet.rows.last.add_cell t('orders_cycle_plugin.lib.report.parcelled_total'), :style => redcell
+        sheet.rows.last.add_cell t('lib.report.parcelled_total'), :style => redcell
         sheet.rows.last.add_cell "=SUM(K1:K1000)", :style => default
         sheet.column_widths 11,25,11,8,10,10,10,8,8,10,10
 
@@ -109,32 +109,32 @@ module OrdersCyclePlugin::Report
       bluecell  = wb.styles.add_style(defaults.merge({:bg_color => "99CCFF", :b => true}))
       default   = wb.styles.add_style(defaults.merge({:border => 0}))
       bluecell_b_top  = wb.styles.add_style(defaults.merge({:bg_color => "99CCFF", :b => true, :border => {:style => :thin, :color => "FF000000", :edges => [:top]}}))
-      date  = wb.styles.add_style(defaults.merge({:format_code => t('orders_cycle_plugin.lib.report.mm_dd_yy_hh_mm_am_pm')}))
+      date  = wb.styles.add_style(defaults.merge({:format_code => t('lib.report.mm_dd_yy_hh_mm_am_pm')}))
       currency  = wb.styles.add_style(defaults.merge({:format_code => t('number.currency.format.xlsx_currency')}))
       border_top = wb.styles.add_style :border => {:style => :thin, :color => "FF000000", :edges => [:top]}
 
       # create sheet and populates
-      wb.add_worksheet(:name => t('orders_cycle_plugin.lib.report.closed_orders')) do |sheet|
+      wb.add_worksheet(:name => t('lib.report.closed_orders')) do |sheet|
         # supplier block start index (shifts on the loop for each supplier)
         sbs = 1
         orders.each do |order|
 
-          sheet.add_row [t('orders_cycle_plugin.lib.report.order_code'), t('orders_cycle_plugin.lib.report.member_name'), '', '', '', '', ''], :style => bluecell_b_top
+          sheet.add_row [t('lib.report.member_name'), '', '', '', '', ''], :style => bluecell_b_top
           sheet.merge_cells "B#{sbs}:C#{sbs}"
 
           sheet.add_row [order.code, order.consumer.name, '','','','',''], :style => default
 
           sheet.merge_cells "B#{sbs+1}:C#{sbs+1}"
 
-          sheet.add_row [t('orders_cycle_plugin.lib.report.created'), t('orders_cycle_plugin.lib.report.modified'), '','', '','',''], :style => bluecell
+          sheet.add_row [t('lib.report.modified'), '','', '','',''], :style => bluecell
 
           # sp = index of the start of the products list / ep = index of the end of the products list
           sp = sbs + 5
           ep = sp + order.items.count - 1
           sheet.add_row [order.created_at, order.updated_at, '', '', '', '','',''], :style => [date,date]
 
-          sheet.add_row [t('orders_cycle_plugin.lib.report.product_cod'), t('orders_cycle_plugin.lib.report.supplier'), t('orders_cycle_plugin.lib.report.product_name'),
-                         t('orders_cycle_plugin.lib.report.qty_ordered'),t('orders_cycle_plugin.lib.report.un'),t('orders_cycle_plugin.lib.report.price_un'), t('orders_cycle_plugin.lib.report.value')], :style => greencell
+          sheet.add_row [t('lib.report.product_name'),
+                         t('lib.report.value')], :style => greencell
 
           sbe = sp
           order.items.each do |item|
@@ -147,7 +147,7 @@ module OrdersCyclePlugin::Report
             sbe += 1
           end # closes order.products.each
           sheet.add_row ["", "", "", "","","",""], :style => border_top
-          sheet.add_row ['','','','','',t('orders_cycle_plugin.lib.report.total_value'),"=SUM(G#{sp}:G#{ep})"], :style => [default]*5+[bluecell,currency]
+          sheet.add_row ['','','','','',t('lib.report.total_value'),"=SUM(G#{sp}:G#{ep})"], :style => [default]*5+[bluecell,currency]
           sheet.add_row ["", "", "", "","","",""]
           sbs = sbe + 3
         end # closes items_by_supplier

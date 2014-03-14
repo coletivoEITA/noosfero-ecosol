@@ -5,18 +5,18 @@
   <div class="title">
     <% if supplier.new_record? %>
       <% if supplier.dummy? %>
-        <%= t('suppliers_plugin.views.supplier._edit.add_supplier_managed_') %>
+        <%= t('views.supplier._edit.add_supplier_managed_') %>
       <% else %>
-        <%= t('suppliers_plugin.views.supplier._edit.register_new_supplier') %>
+        <%= t('views.supplier._edit.register_new_supplier') %>
       <% end %>
     <% else %>
-      <%= t('suppliers_plugin.views.supplier._edit.edit_supplier') %>
+      <%= t('views.supplier._edit.edit_supplier') %>
     <% end %>
   </div>
 
   <% if supplier.dummy? %>
     <div class="subtitle">
-      <%= t('suppliers_plugin.views.supplier._edit.registry_help') %>
+      <%= t('views.supplier._edit.registry_help') %>
     </div>
 
   <% end %>
@@ -30,33 +30,33 @@
     <div class="full-registration-check">
       <%= check_box_tag :full_registration, '1', false,
         :onchange => "jQuery(this).parents('.supplier').find('.data').toggleClass('full-registration', this.checked)" %>
-      <%= label_tag :full_registration, t('suppliers_plugin.views.supplier._edit.full_registration') %>
+      <%= label_tag :full_registration, t('views.supplier._edit.full_registration') %>
     </div>
 
     <div class="data">
       <div class="basic-data">
-        <h3><%= t('suppliers_plugin.views.supplier._edit.basic_data') %></h3>
+        <h3><%= t('views.supplier._edit.basic_data') %></h3>
 
-        <%= labelled_field f, :name, t('suppliers_plugin.views.supplier._edit.name'), f.text_field(:name) %>
-        <%= labelled_field f, :name_abbreviation, t('suppliers_plugin.views.supplier._edit.abbreviated_name'), f.text_field(:name_abbreviation) %>
-        <%= labelled_field f, :description, t('suppliers_plugin.views.supplier._edit.description'), f.text_area(:description) %>
+        <%= labelled_field f, :name, t('views.supplier._edit.name'), f.text_field(:name) %>
+        <%= labelled_field f, :name_abbreviation, t('views.supplier._edit.abbreviated_name'), f.text_field(:name_abbreviation) %>
+        <%= labelled_field f, :description, t('views.supplier._edit.description'), f.text_area(:description) %>
 
       </div>
       <div class="estrategic-info full-data">
-        <h3><%= t('suppliers_plugin.views.supplier._edit.estrategic_informatio') %></h3>
+        <h3><%= t('views.supplier._edit.estrategic_informatio') %></h3>
       </div>
       <div class="full-data">
-        <h3><%= t('suppliers_plugin.views.supplier._edit.registry_form') %></h3>
+        <h3><%= t('views.supplier._edit.registry_form') %></h3>
       </div>
       <div class="additional-fields full-data">
-        <h3><%= t('suppliers_plugin.views.supplier._edit.additional_fields') %></h3>
+        <h3><%= t('views.supplier._edit.additional_fields') %></h3>
       </div>
 
       <div class="clean"></div>
     </div>
 
-    <%= f.submit t('suppliers_plugin.views.supplier._edit.save') %>
-    <%= link_to_function t('suppliers_plugin.views.supplier._edit.cancel'), '', 'toggle-edit' => '' %>
+    <%= f.submit t('views.supplier._edit.save') %>
+    <%= link_to_function t('views.supplier._edit.cancel'), '', 'toggle-edit' => '' %>
 
   <% end %>
 </div>

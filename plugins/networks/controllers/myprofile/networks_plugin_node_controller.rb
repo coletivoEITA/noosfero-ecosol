@@ -14,17 +14,9 @@ class NetworksPluginNodeController < MyProfileController
     @new_node = NetworksPlugin::Node.new((params[:node] || {}).merge(:environment => environment, :parent => @node))
 
     if params[:commit]
-      if @new_node.save
-        render :partial => 'suppliers_plugin_shared/pagereload'
-      else
-        respond_to do |format|
-          format.js
-        end
-      end
+      @new_node.save
     else
-      respond_to do |format|
-        format.html{ render :layout => false }
-      end
+      respond_to{ |format| format.html{ render :layout => false } }
     end
   end
 
@@ -34,7 +26,7 @@ class NetworksPluginNodeController < MyProfileController
     if request.post?
       @node.update_attributes params[:profile_data]
       @node.home_page.update_attributes params[:home_page]
-      session[:notice] = t('networks_plugin.controllers.node.edit')
+      session[:notice] = t('controllers.node.edit')
       redirect_to :controller => :networks_plugin_network, :action => :show_structure, :node_id => @node.parent.id
     end
   end

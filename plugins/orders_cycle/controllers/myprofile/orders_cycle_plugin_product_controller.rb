@@ -8,9 +8,9 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
 
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
-  include SuppliersPlugin::TranslationHelper
+  include OrdersCyclePlugin::TranslationHelper
 
-  helper SuppliersPlugin::TranslationHelper
+  helper OrdersCyclePlugin::TranslationHelper
   helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
   def edit
@@ -38,7 +38,7 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
   def cycle_destroy
     @product = OrdersCyclePlugin::OfferedProduct.find params[:id]
     @product.destroy
-    flash[:notice] = t('orders_cycle_plugin.controllers.myprofile.product_controller.product_removed_from_')
+    flash[:notice] = t('controllers.myprofile.product_controller.product_removed_from_')
   end
 
   protected

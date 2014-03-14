@@ -1,6 +1,15 @@
 
 suppliers = {
 
+  filter: {
+
+    submit: function(field) {
+      setTimeout(function () {
+        field.form.onsubmit();
+      }, 300);
+    },
+  },
+
   add_link: function () {
     if (toggle_edit.isEditing())
       toggle_edit.value_row.toggle_edit();

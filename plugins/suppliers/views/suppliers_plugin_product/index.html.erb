@@ -1,24 +1,24 @@
 <div id="supplier-our-products">
   <h2>
-    <%= t('suppliers_plugin.views.product.index.products') %>
+    <%= t('views.product.index.products') %>
   </h2>
 
   <div>
 
    <div class="subtitle">
-     <%= t('suppliers_plugin.views.product.index.info') %>
+     <%= t('views.product.index.info') %>
     </div>
 
-    <h3><%= t('suppliers_plugin.views.product.index.default_margin_of_com') %></h3>
+    <h3><%= t('views.product.index.default_margin_of_com') %></h3>
     <div class="subtitle">
-      <%= t('suppliers_plugin.views.product.index.default_margin_info') %>
+      <%= t('views.product.index.default_margin_info') %>
     </div>
 
     <span id="profile-margin-percentage">
       <span class="<%= profile.margin_percentage.blank? ? 'none' : 'set' %>">
-        <%= profile.margin_percentage_as_currency_number ? ( t('suppliers_plugin.views.product.index.margin') % {:margin => profile.margin_percentage_as_currency_number} ) : t('suppliers_plugin.views.product.index.no_margin_set') %>
+        <%= profile.margin_percentage_as_currency_number ? ( t('views.product.index.margin') % {:margin => profile.margin_percentage_as_currency_number} ) : t('views.product.index.no_margin_set') %>
       </span>
-      <%= colorbox_link_to t('suppliers_plugin.views.product.index.change'), {:controller => :suppliers_plugin_myprofile, :action => :margin_change} %>
+      <%= colorbox_link_to t('views.product.index.change'), {:controller => :suppliers_plugin_myprofile, :action => :margin_change} %>
     </span>
 
   </div>

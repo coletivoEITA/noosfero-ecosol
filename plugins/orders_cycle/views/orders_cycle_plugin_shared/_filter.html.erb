@@ -26,7 +26,7 @@
     </div>
 
     <div class="submit">
-      <%= submit_tag t('suppliers_plugin.views.product.index.filter_it'), :onclick => "var field = this; function name_form_submit() {field.form.onsubmit();}; setTimeout(name_form_submit, 300);" %>
+      <%= submit_tag t('suppliers_plugin.views.product.index.filter_it'), :onclick => "suppliers.filter.submit(this)" %>
     </div>
 
   <% end %>

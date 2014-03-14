@@ -7,11 +7,14 @@
   </ul>
 
   <div id='purchases'>
-    <%= render 'orders_plugin_admin/table', :orders => profile.purchases %>
+    <%= render 'orders_plugin_admin/table', :orders => profile.purchases, :wireframe_size => false %>
   </div>
 
   <div id='sales'>
-    <%= render 'orders_plugin_admin/table', :orders => profile.sales %>
+    <%= render 'orders_plugin_admin/table', :orders => profile.sales, :wireframe_size => false %>
   </div>
 </div>
 
+<% javascript_tag do %>
+  //sortable_table.sort_desc('last-update');
+<% end %>

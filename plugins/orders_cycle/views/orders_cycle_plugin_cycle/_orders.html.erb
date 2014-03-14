@@ -1,15 +1,23 @@
-<% if @cycle.orders? or @cycle.passed_by?('orders') %>
+<% if @cycle.orders? or @cycle.passed_by? 'orders' %>
   <% if @cycle.orders? %>
-    <% header = t('orders_cycle_plugin.views.cycle._orders.the_orders_period_is_') %>
-  <% elsif @cycle.passed_by?('orders') %>
-    <% header = t('orders_cycle_plugin.views.cycle._orders.already_closed') %>
+    <% header = t('views.cycle._orders.the_orders_period_is_') %>
+  <% elsif @cycle.passed_by? 'orders' %>
+    <% header = t('views.cycle._orders.already_closed') %>
   <% end %>
 <% end %>
+
+<div id='cycle-orders-filter'>
+  <%= render 'orders_filter', :actor_name => 'consumer', :actors => @cycle.consumers %>
+</div>
+
+<div id='cycle-orders-actions'>
+  <%= render 'orders_actions' %>
+</div>
 
 <div id='cycle-orders'>
   <%= render 'orders_plugin_admin/table', :orders => @cycle.orders %>
 </div>
 
 <div id='cycle-products-sums'>
-  <%= render :partial => 'orders_suppliers', :locals => {:cycle => @cycle} %>
+  <%= render 'orders_suppliers', :cycle => @cycle %>
 </div>

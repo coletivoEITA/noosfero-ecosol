@@ -1,0 +1,16 @@
+
+<div id="node-<%= node.id %>" class="node row">
+  <div class="name">
+    <%= link_to node.name, node.url, :target => '_blank' %>
+  </div>
+  <div class="actions">
+    <%= link_to t('views.network.show_structure.structure'), :controller => :networks_plugin_network, :action => :show_structure, :node_id => node.id %>
+    |
+    <%= link_to t('views.network.show_structure.config'), :controller => :networks_plugin_node, :action => :edit, :id => node.id %>
+    |
+    <%= link_to_remote t('views.network.show_structure.remove'),
+      :confirm => t('views.network.show_structure.confirm_node_remove') % {:parent => node.parent.name, :node => node.name},
+      :loading => "loading_overlay.show('.listing')", :loaded => "loading_overlay.hide('.listing')",
+      :url => {:controller => :networks_plugin_node, :action => :destroy, :id => node.id} %>
+  </div>
+</div>

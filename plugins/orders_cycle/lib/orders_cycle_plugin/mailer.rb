@@ -1,8 +1,10 @@
 class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
 
   include ActionMailer::Helpers
+  include OrdersCyclePlugin::TranslationHelper
+
   helper ApplicationHelper
-  helper SuppliersPlugin::TranslationHelper
+  helper OrdersCyclePlugin::TranslationHelper
 
   def order_change_notification profile, order, changed, removed, message = nil
     domain = profile.hostname || profile.environment.default_hostname
@@ -10,7 +12,7 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(order.consumer)
     from          'no-reply@' + domain
     reply_to      profile_recipients(profile)
-    subject       I18n.t('orders_cycle_plugin.lib.mailer.order_was_changed') % {:profile => profile}
+    subject       I18n.t('lib.mailer.order_was_changed') % {:profile => profile}
     content_type  'text/html'
     body :profile => profile,
          :order => order,
@@ -26,7 +28,7 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(supplier.profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(profile)
-    subject       I18n.t('orders_cycle_plugin.lib.mailer.profile_subject') % {:profile => profile.name, :subject => subject}
+    subject       I18n.t('lib.mailer.profile_subject') % {:profile => profile.name, :subject => subject}
     content_type  'text/html'
     body :profile => profile,
          :supplier => supplier,
@@ -40,7 +42,7 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    profile_recipients(profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(member)
-    subject       I18n.t('orders_cycle_plugin.lib.mailer.profile_subject') % {:profile => profile.name, :subject => subject}
+    subject       I18n.t('lib.mailer.profile_subject') % {:profile => profile.name, :subject => subject}
     content_type  'text/html'
     body :profile => profile,
          :member => member,
@@ -54,7 +56,7 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     recipients    organization_members(profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(profile)
-    subject       I18n.t('orders_cycle_plugin.lib.mailer.profile_subject') % {:profile => profile.name, :subject => subject}
+    subject       I18n.t('lib.mailer.profile_subject') % {:profile => profile.name, :subject => subject}
     content_type  'text/html'
     body :profile => profile,
          :cycle => cycle,

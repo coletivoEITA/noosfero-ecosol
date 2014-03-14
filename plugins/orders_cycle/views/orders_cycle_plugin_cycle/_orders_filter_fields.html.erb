@@ -1,0 +1,21 @@
+<div class="field state">
+  <label><%= t('orders_plugin.views.admin._filter.status') %></label>
+  <div>
+    <%= select_tag :status,
+      options_for_select([[t('orders_plugin.views.admin._filter.all'), ""]] + OrdersPlugin::Order::StatusText.map{ |id, name| [t(name), id] }, params[:status]) %>
+  </div>
+</div>
+
+<div class="field code">
+  <label><%= t('orders_plugin.views.admin._filter.code') %></label>
+  <div><%= text_field_tag :code, params[:code] %></div>
+</div>
+
+<div class="field <%= actor_name %>">
+  <label><%= t("terms.#{actor_name}.singular") %></label>
+  <div>
+    <%= select_tag "#{actor_name}_id",
+      options_for_select([[t('orders_plugin.views.admin._filter.all'), ""]] + actors.map{ |a| [a.name, a.id] }, params["#{actor_name}_id"]) %>
+  </div>
+</div>
+

@@ -1,0 +1,21 @@
+<div id="filter" class="wireframe-size">
+
+  <div class="title filter-box">
+    <%= t('suppliers_plugin.views.product.index.filter') %>
+  </div>
+
+  <% form_remote_tag :update => 'search-results',
+    :loading => "loading_overlay.show('#filter');", :loaded => "loading_overlay.hide('#filter');",
+    :url => {:controller => :orders_cycle_plugin_cycle, :action => :orders_filter}, :html => {:id => 'filter-form'}, :method => :get do %>
+
+    <div class="fields filter-box">
+      <%= render 'orders_filter_fields', :actor_name => actor_name, :actors => actors %>
+    </div>
+
+    <div class="submit">
+      <%= submit_tag t('suppliers_plugin.views.product.index.filter_it'), :onclick => "suppliers.filter.submit(this)" %>
+    </div>
+
+  <% end %>
+
+</div>

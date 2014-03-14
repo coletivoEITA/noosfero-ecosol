@@ -5,9 +5,10 @@ OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
 class ConsumersCoopPluginMyprofileController < MyProfileController
 
   include ConsumersCoopPlugin::ControllerHelper
+  include ConsumersCoopPlugin::TranslationHelper
 
-  helper ConsumersCoopPlugin::TranslationHelper
   helper OrdersCyclePlugin::OrdersCycleDisplayHelper
+  helper ConsumersCoopPlugin::TranslationHelper
 
   def index
     if profile.has_admin? user
@@ -35,7 +36,7 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
         profile.consumers_coop_disable
       end
 
-      session[:notice] = t('consumers_coop_plugin.controllers.myprofile.distribution_settings')
+      session[:notice] = t('controllers.myprofile.distribution_settings')
       redirect_to profile_url if profile.consumers_coop_settings.enabled?
     end
   end

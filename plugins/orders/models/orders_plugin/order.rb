@@ -9,13 +9,17 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::Method'
   belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::Method'
 
-  named_scope :for_consumer, lambda { |consumer| {
-    :conditions => {:consumer_id => consumer ? consumer.id : nil} }
+  Statuses = ['draft', 'planned', 'confirmed', 'cancelled', 'accepted', 'shipped']
+  StatusText = {
+   'open' => 'orders_plugin.models.order.open',
+   'forgotten' => 'orders_plugin.models.order.not_confirmed',
+   'planned' => 'orders_plugin.models.order.planned',
+   'confirmed' => 'orders_plugin.models.order.confirmed',
+   'cancelled' => 'orders_plugin.models.order.cancelled',
+   'accepted' => 'orders_plugin.models.order.accepted',
+   'shipped' => 'orders_plugin.models.order.shipped',
   }
-
-  STATUSES = ['draft', 'planned', 'confirmed', 'cancelled', 'accepted', 'shipped']
-  validates_inclusion_of :status, :in => STATUSES
-
+  validates_inclusion_of :status, :in => Statuses
   before_validation :default_values
 
   extend CodeNumbering::ClassMethods
@@ -38,6 +42,28 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   named_scope :planned, :conditions => {:status => 'planned'}
   named_scope :confirmed, :conditions => {:status => 'confirmed'}
   named_scope :cancelled, :conditions => {:status => 'cancelled'}
+
+  named_scope :for_consumer, lambda { |consumer| {
+    :conditions => {:consumer_id => consumer ? consumer.id : nil} }
+  }
+  named_scope :for_profile, lambda { |profile| {
+    :conditions => {:profile_id => profile ? profile.id : nil} }
+  }
+  named_scope :with_status, lambda { |status|
+    {:conditions => {:status => status}}
+  }
+  named_scope :with_code, lambda { |code|
+    {:conditions => {:code => code}}
+  }
+
+  def self.search_scope scope, params
+    scope = scope.with_status params[:status] if params[:status].present?
+    scope = scope.for_consumer params[:consumer_id] if params[:consumer_id].present?
+    scope = scope.for_profile params[:profile_id] if params[:profile_id].present?
+    scope = scope.with_code params[:code] if params[:code].present?
+    scope
+  end
+
   def draft?
     self.status == 'draft'
   end
@@ -53,10 +79,14 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   def cancelled?
     self.status == 'cancelled'
   end
+
   def current_status
     return 'forgotten' if self.forgotten?
     return 'open' if self.open?
     self['status']
+  end
+  def status_message
+    I18n.t StatusText[current_status]
   end
 
   def may_view? user
@@ -81,19 +111,6 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
       data[:order] = self
       OrdersPlugin::Item.new data
     end
-  end
-
-  STATUS_MESSAGE = {
-   'open' => 'orders_plugin.models.order.open',
-   'forgotten' => 'orders_plugin.models.order.not_confirmed',
-   'planned' => 'orders_plugin.models.order.planned',
-   'confirmed' => 'orders_plugin.models.order.confirmed',
-   'cancelled' => 'orders_plugin.models.order.cancelled',
-   'accepted' => 'orders_plugin.models.order.accepted',
-   'shipped' => 'orders_plugin.models.order.shipped',
-  }
-  def status_message
-    I18n.t STATUS_MESSAGE[current_status]
   end
 
   def total_quantity_asked

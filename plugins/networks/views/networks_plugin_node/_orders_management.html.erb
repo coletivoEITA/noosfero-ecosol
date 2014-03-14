@@ -2,17 +2,17 @@
 <% form_tag :controller => :networks_plugin_node, :action => :orders_management, :id => @node.id do %>
 
   <div>
-    <%= t('networks_plugin.views.node._orders_management.forward_explanation') %>
+    <%= t('views.node._orders_management.forward_explanation') %>
   </div>
 
   <% profile.networks_settings.orders_forward ||= 'network' %>
   <div>
     <%= radio_button_tag :orders_forward, 'network', profile.networks_settings.orders_forward == 'network' %>
-    <%= label_tag :orders_forward_network, t('networks_plugin.views.node._orders_management.network_forward') %>
+    <%= label_tag :orders_forward_network, t('views.node._orders_management.network_forward') %>
   </div>
   <div>
     <%= radio_button_tag :orders_forward, 'orders_managers', profile.networks_settings.orders_forward == 'orders_managers' %>
-    <%= label_tag :orders_forward_orders_managers, t('networks_plugin.views.node._orders_management.managers_forward') %>
+    <%= label_tag :orders_forward_orders_managers, t('views.node._orders_management.managers_forward') %>
   </div>
 
   <div id="orders-managers">

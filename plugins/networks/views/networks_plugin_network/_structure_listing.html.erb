@@ -1,40 +1,15 @@
 
-<h3><%= t('networks_plugin.views.network.show_structure.nodes') %></h3>
+<h3><%= t('views.network.show_structure.nodes') %></h3>
 
-<% @node.nodes.each do |node| %>
+<div id="network-nodes">
+  <% @node.nodes.each do |node| %>
+    <%= render 'networks_plugin_network/node', :node => node %>
+  <% end %>
+</div>
 
-  <div id="node-<%= node.id %>" class="row">
-    <div class="name">
-      <%= link_to node.name, node.url, :target => '_blank' %>
-    </div>
-    <div class="actions">
-      <%= link_to t('networks_plugin.views.network.show_structure.structure'), :node_id => node.id %>
-      |
-      <%= link_to t('networks_plugin.views.network.show_structure.config'), :controller => :networks_plugin_node, :action => :edit, :id => node.id %>
-      |
-      <%= link_to_remote t('networks_plugin.views.network.show_structure.remove'),
-        :confirm => t('networks_plugin.views.network.show_structure.confirm_node_remove') % {:parent => node.parent.name, :node => node.name},
-        :loading => "loading_overlay.show('.listing')", :loaded => "loading_overlay.hide('.listing')",
-        :url => {:controller => :networks_plugin_node, :action => :destroy, :id => node.id} %>
-    </div>
-  </div>
-<% end %>
-
-<h3><%= t('networks_plugin.views.network.show_structure.enterprises') %></h3>
-<% @node.suppliers.except_self.each do |supplier| %>
-  <% enterprise = supplier.profile %>
-
-  <div id="supplier-<%= supplier.id %>" class="row">
-    <div class="name">
-      <%= link_to enterprise.name, enterprise.url, :target => '_blank' %>
-    </div>
-    <div class="actions">
-      <%= link_to t('networks_plugin.views.network.show_structure.edit'), :controller => :networks_plugin_enterprise, :action => :edit, :id => supplier.id %>
-      |
-      <%= link_to_remote t('networks_plugin.views.network.show_structure.desassociate'),
-      :confirm => t('networks_plugin.views.network.show_structure.confirm_supplier_desassociate') % {:supplier => supplier.name},
-        :loading => "loading_overlay.show('#supplier-#{supplier.id}')",
-        :url => {:controller => :networks_plugin_enterprise, :action => :destroy, :node_id => @node.id, :id => supplier.id} %>
-    </div>
-  </div>
-<% end %>
+<h3><%= t('views.network.show_structure.enterprises') %></h3>
+<div id="network-suppliers">
+  <% @node.suppliers.except_self.each do |supplier| %>
+    <%= render 'networks_plugin_network/supplier', :supplier => supplier %>
+  <% end %>
+</div>

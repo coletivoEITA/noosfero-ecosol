@@ -270,17 +270,18 @@ class ShoppingCartPluginController < PublicController
     OrdersPlugin::Order.create! :profile => environment.profiles.find(cart[:enterprise_id]), :consumer => user,
       :status => 'confirmed', :products_list => products_list,
       :consumer_data => {
-        :name => params[:customer][:name], :email => params[:customer][:email], :contact_phone => params[:customer][:contact_phone],
+        :name => params[:name], :email => params[:email], :contact_phone => params[:contact_phone],
       },
       :payment_data => {
         :method => params[:customer][:payment], :change => params[:customer][:change],
       },
       :consumer_delivery_data => {
         :name => params[:delivery_option],
-        :address_line1 => params[:customer][:address],
-        :address_line2 => params[:customer][:district],
-        :city => params[:customer][:city],
-        :postal_code => params[:customer][:zip_code],
+        :address_line1 => params[:address],
+        :address_line2 => params[:district],
+        :reference => params[:address_reference],
+        :city => params[:city],
+        :postal_code => params[:zip_code],
       }
   end
 

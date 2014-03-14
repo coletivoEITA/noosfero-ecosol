@@ -1,10 +1,10 @@
-<h1><%= t('networks_plugin.views.node.edit.title') % {:node => link_to(@node.name, @node.url, :target => '_blank')} %></h1>
+<h1><%= t('views.node.edit.title') % {:node => link_to(@node.name, @node.url, :target => '_blank')} %></h1>
 
-<%= button :back, t('networks_plugin.views.node.edit.back'), :controller => :networks_plugin_network, :action => :show_structure, :node_id => @node.parent.id %>
+<%= button :back, t('views.node.edit.back'), :controller => :networks_plugin_network, :action => :show_structure, :node_id => @node.parent.id %>
 
 <% form_for :profile_data, @node, :html => { :id => 'profile-data', :multipart => true } do |f| %>
 
-  <h2><%= t('networks_plugin.views.node.edit.node_info') %></h2>
+  <h2><%= t('views.node.edit.node_info') %></h2>
 
   <%= error_messages_for :node %>
 
@@ -15,7 +15,7 @@
 
   <div>
     <% fields_for :home_page, @node.home_page do |f| %>
-      <%= f.label :body, t('networks_plugin.views.node.edit.presentation_text') %>
+      <%= f.label :body, t('views.node.edit.presentation_text') %>
       <%= f.text_area :body, :class => 'mceEditor' %>
     <% end %>
   </div>
@@ -31,7 +31,7 @@
 
 <% end %>
 
-<h2><%= t('networks_plugin.views.node.edit.orders_management') %></h2>
+<h2><%= t('views.node.edit.orders_management') %></h2>
 <%= render 'orders_management' %>
 
 <h2><%= _('Location') %></h2>

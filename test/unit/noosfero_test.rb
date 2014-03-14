@@ -27,6 +27,9 @@ class NoosferoTest < ActiveSupport::TestCase
     assert_match /^#{Noosfero.identifier_format}$/, 'bli-bla'
     assert_no_match /^#{Noosfero.identifier_format}$/, 'UPPER'
     assert_match /^#{Noosfero.identifier_format}$/, 'with~tilde'
+    assert_match /^#{Noosfero.identifier_format}$/, 'with|'
+    assert_match /^#{Noosfero.identifier_format}$/, 'with:'
+    assert_match /^#{Noosfero.identifier_format}$/, 'with*'
     assert_match /^#{Noosfero.identifier_format}$/, 'with.dot'
   end
 

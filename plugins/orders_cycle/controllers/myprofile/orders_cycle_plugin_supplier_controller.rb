@@ -8,11 +8,11 @@ class OrdersCyclePluginSupplierController < SuppliersPluginMyprofileController
 
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
-  include SuppliersPlugin::TranslationHelper
+  include OrdersCyclePlugin::TranslationHelper
 
   protect 'edit_profile', :profile
 
-  helper SuppliersPlugin::TranslationHelper
+  helper OrdersCyclePlugin::TranslationHelper
   helper OrdersCyclePlugin::OrdersCycleDisplayHelper
 
   def margin_change

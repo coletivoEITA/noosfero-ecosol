@@ -1,5 +1,5 @@
 <div id="orders-view" class="orders page">
-  <h2><%= t('orders_cycle_plugin.views.order.index.orders_cycles') %></h2>
+  <h2><%= t('views.order.index.orders_cycles') %></h2>
 
   <div id="years-filter">
     <% @years_with_cycles.each do |year| %>
@@ -9,13 +9,13 @@
 
   <% if @cycles.blank? %>
     <div>
-      <%= t('orders_cycle_plugin.views.order.index.there_s_no_open_sessi') %>
+      <%= t('views.order.index.there_s_no_open_sessi') %>
     </div>
   <% end %>
   <% @cycles.each do |cycle| %>
     <div class="cycle-with-consumer-orders">
       <h3>
-        <span><%= t('orders_cycle_plugin.views.order.index.code') % { :code => cycle.code } %></span>
+        <span><%= t('views.order.index.code') % { :code => cycle.code } %></span>
         <%= link_to cycle.name, {:action => :edit, :cycle_id => cycle.id} %>
       </h3>
 
@@ -24,7 +24,7 @@
       <% orders = cycle.orders.for_consumer @consumer %>
       <% if orders.count > 0 %>
         <div>
-          <strong><%= t('orders_cycle_plugin.views.order.index.your_orders') %></strong>
+          <strong><%= t('views.order.index.your_orders') %></strong>
           <div class="consumer-orders">
             <% orders.each do |order| %>
               <a href="<%= url_for :action => :edit, :id => order.id %>">
@@ -35,7 +35,7 @@
           </div>
         </div>
       <% else %>
-        <%= link_to t('orders_cycle_plugin.views.order.index.place_an_order'), {:action => :new, :cycle_id => cycle.id}, :id => 'consumer-new-order' if cycle.orders? and not @consumer.nil?%>
+        <%= link_to t('views.order.index.place_an_order'), {:action => :new, :cycle_id => cycle.id}, :id => 'consumer-new-order' if cycle.orders? and not @consumer.nil?%>
       <% end %>
 
     </div>

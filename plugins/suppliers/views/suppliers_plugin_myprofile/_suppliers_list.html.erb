@@ -2,9 +2,9 @@
 
 <% if suppliers.empty? %>
   <% if @is_search %>
-    <strong><%= t('suppliers_plugin.views.supplier._suppliers_list.this_search_didn_t_re') %></strong>
+    <strong><%= t('views.supplier._suppliers_list.this_search_didn_t_re') %></strong>
   <% else %>
-    <strong><%= t('suppliers_plugin.views.supplier._suppliers_list.any_registered') %></strong>
+    <strong><%= t('views.supplier._suppliers_list.any_registered') %></strong>
   <% end %>
 <% else %>
   <% suppliers.each do |supplier| %>
