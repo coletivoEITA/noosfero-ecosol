@@ -31,6 +31,7 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
   has_number_with_locale :quantity_asked
   has_number_with_locale :quantity_accepted
   has_number_with_locale :quantity_shipped
+  has_currency :price
   has_currency :price_asked
   has_currency :price_accepted
   has_currency :price_shipped
