@@ -4,8 +4,6 @@ require_dependency "#{File.dirname __FILE__}/ext/organization"
 
 require_dependency "#{File.dirname __FILE__}/ext/sub_organizations_plugin/relation"
 
-require_dependency "#{File.dirname __FILE__}/ext/shopping_cart_plugin/profile"
-
 class NetworksPlugin < Noosfero::Plugin
 
   def self.plugin_name

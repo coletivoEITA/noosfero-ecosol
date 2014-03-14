@@ -29,6 +29,15 @@ class NetworksPlugin::BaseNode < Organization
     @nodes ||= self.network_node_parent_relations.all(:conditions => {:child_type => 'NetworksPlugin::Node'}).collect &:child
   end
 
+  def cart_order_supplier_notification_recipients
+    if self.networks_settings.orders_forward == 'orders_managers' and self.orders_managers.present?
+      self.orders_managers.collect(&:contact_email) << self.contact_email
+    else
+      profile = if self.network_node? then self.network else self end
+      profile.admins.collect(&:contact_email) << profile.contact_email
+    end.select{ |email| email.present? }
+  end
+
   protected
 
   def default_template
