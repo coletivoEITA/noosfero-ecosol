@@ -34,6 +34,17 @@
     }
     //.item do overflow, so no overflow:hidden for its parents (.table-content)
 
+    &.self-supplier {
+      .box-field {
+        &.product {
+          width: $module03 - $intercolumn/2;
+        }
+        &.status-updated {
+          width: $module01;
+        }
+      }
+    }
+
     .box-field {
       float: left;
       padding: $half-padding $padding;
@@ -50,7 +61,7 @@
       &.quantity,
       &.quantity-edit {
         &, input {
-          width: $module01 - $intercolumn;
+          width: $module02 - $intercolumn; //2 temp while status-updated is out
         }
       }
       &.price-total {

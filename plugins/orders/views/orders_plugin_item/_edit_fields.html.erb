@@ -2,9 +2,16 @@
 <%= f.hidden_field :id if f %>
 
 <div class="fields">
-  <div class="box-field supplier"><%= excerpt_ending item.product.supplier.abbreviation_or_name, 12 rescue '-' %></div>
+  <% unless order.self_supplier? %>
+    <div class="box-field supplier">
+      <%= excerpt_ending item.product.supplier.abbreviation_or_name, 12 rescue '-' %>
+    </div>
+  <% end %>
 
-  <div class="box-field product"><%= excerpt_ending item.name, 22 %></div>
+  <div class="box-field product">
+    <%# excerpt_ending item.name, 22 %>
+    <%= item.name %>
+  </div>
 
   <div class="box-field quantity">
     <span class="value"><%= item.quantity_asked_as_currency_number %></span>
@@ -20,7 +27,8 @@
     <%= render "orders_plugin_item/price_total", :item => item %>
   </div>
 
-  <% if @admin %>
+  <%# if @admin %>
+  <% if nil %>
     <div class="box-field status-updated"> <%= t('orders_plugin.views.item._index.status_updated') %> </div>
   <% end %>
 </div>

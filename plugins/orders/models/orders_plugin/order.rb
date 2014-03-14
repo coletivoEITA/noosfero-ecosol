@@ -6,6 +6,8 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   has_many :items, :class_name => 'OrdersPlugin::Item', :foreign_key => :order_id, :dependent => :destroy,
     :include => [{:product => [{:profile => [:domains]}]}], :order => 'products.name ASC'
 
+  has_many :products, :through => :items
+
   belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::Method'
   belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::Method'
 
@@ -62,6 +64,16 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     scope = scope.for_profile params[:profile_id] if params[:profile_id].present?
     scope = scope.with_code params[:code] if params[:code].present?
     scope
+  end
+
+  # All products from the order profile?
+  def self_supplier?
+    return @single_supplier unless @single_supplier.nil?
+
+    self.products.each do |p|
+      return @single_supplier = false unless p.supplier.self?
+    end
+    @single_supplier = true
   end
 
   def draft?
