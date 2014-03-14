@@ -1,0 +1,14 @@
+<div class="order-header">
+  <% if order.self_supplier? %>
+  <%= t('orders_plugin.views.item._index.header_for_self_supplier') % {
+      :profile_code => order.code,
+      :consumer => content_tag('strong', order.consumer_data[:name]),
+    } %>
+  <% else %>
+  <%= t('orders_plugin.views.item._index.header') % {
+      :profile_code => order.code,
+      :profile => content_tag('strong', order.profile_data[:name]),
+      :consumer => content_tag('strong', order.consumer_data[:name]),
+    } %>
+  <% end %>
+</div>
