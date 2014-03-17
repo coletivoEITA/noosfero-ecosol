@@ -39,7 +39,7 @@ module BoxesHelper
   end
 
   def display_boxes(holder, main_content)
-    boxes = holder.boxes.first(@controller.class.custom_design[:boxes_limit] || holder.boxes_limit(@controller.class.custom_design[:layout_template]))
+    boxes = holder.boxes.with_position.first(@controller.class.custom_design[:boxes_limit] || holder.boxes_limit(@controller.class.custom_design[:layout_template]))
     content = boxes.reverse.map { |item| display_box(item, main_content) }.join("\n")
     content = main_content if (content.blank?)
 

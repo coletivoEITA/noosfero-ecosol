@@ -13,6 +13,10 @@ class FilePresenter
     klass.accepts?(f) ? klass.new(f) : f
   end
 
+  def self.base_class
+    Article
+  end
+
   def initialize(f)
     @file = f
   end
@@ -29,6 +33,10 @@ class FilePresenter
   def reload
     @file.reload
     self
+  end
+
+  def kind_of?(klass)
+    @file.kind_of?(klass)
   end
 
   # This method must be overridden in subclasses.
