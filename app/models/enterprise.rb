@@ -96,13 +96,20 @@ class Enterprise < Organization
     save
   end
 
+  def activation_task
+    self.tasks.where(:type => 'EnterpriseActivation').first
+  end
+
   def enable(owner)
     return if enabled
-    affiliate owner, Profile::Roles.all_roles(environment.id) if owner
-    update_attribute(:enabled,true)
-    if environment.replace_enterprise_template_when_enable
-      apply_template(template)
-    end
+
+    self.affiliate owner, Profile::Roles.all_roles(self.environment.id) if owner
+
+    self.apply_template template if self.environment.replace_enterprise_template_when_enable
+
+    self.activation_task.update_attribute :status, Task::Status::FINISHED rescue nil
+
+    self.enabled = true
     save_without_validation!
   end
 
