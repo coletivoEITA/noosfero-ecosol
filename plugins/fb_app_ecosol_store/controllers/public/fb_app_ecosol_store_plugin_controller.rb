@@ -4,6 +4,7 @@ class FbAppEcosolStorePluginController < PublicController
   end
 
   def admin
+    @current_theme = 'template'
     load_config
     @profiles = @config.profiles
     if request.post?
@@ -16,7 +17,7 @@ class FbAppEcosolStorePluginController < PublicController
   end
 
   def search
-    @profiles = Profile.find_by_contents(params[:query])[:results]
+    @profiles = Profile.find_by_contents(params[:query][:term])[:results]
     render :json => (@profiles.map do |profile|
       {:name => profile.name, :id => profile.id}
     end)
@@ -30,8 +31,10 @@ class FbAppEcosolStorePluginController < PublicController
     @config ||= FbAppEcosolStorePlugin::SignedRequestConfig.create! :signed_request => params[:signed_request]
   end
 
-  def get_layout
-    'fb_app_ecosol_store_plugin_layouts/default'
-  end
+  #def get_layout
+  #  'fb_app_ecosol_store_plugin_layouts/default'
+  #end
+
+
 
 end

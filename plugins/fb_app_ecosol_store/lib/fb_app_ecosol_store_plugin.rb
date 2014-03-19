@@ -14,7 +14,7 @@ class FbAppEcosolStorePlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['fb_app_ecosol_store_plugin'].map{ |j| "javascripts/#{j}" }
+    ['fb_app_ecosol_store_plugin.js'].map{ |j| "javascripts/#{j}" }
   end
 
 end
