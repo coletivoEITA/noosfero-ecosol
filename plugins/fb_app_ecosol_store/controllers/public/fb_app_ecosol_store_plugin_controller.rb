@@ -1,5 +1,7 @@
 class FbAppEcosolStorePluginController < PublicController
 
+  no_design_blocks
+
   def index
     load_config
 

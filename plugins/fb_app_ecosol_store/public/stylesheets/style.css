@@ -1,0 +1,7 @@
+@import url(http://dtygel.eita.org.br/lojacirandasfb/style.css);
+body.controller-fb_app_ecosol_store_plugin {
+  margin-top: 40px; }
+  body.controller-fb_app_ecosol_store_plugin .box-3, body.controller-fb_app_ecosol_store_plugin .box-2, body.controller-fb_app_ecosol_store_plugin #theme-header {
+    display: none; }
+  body.controller-fb_app_ecosol_store_plugin #wrap-1, body.controller-fb_app_ecosol_store_plugin #wrap-2 {
+    border-radius: 10px 10px 0 0; }
