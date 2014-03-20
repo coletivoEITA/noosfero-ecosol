@@ -1,7 +1,43 @@
+<span id="fb_store_admin_page"></span>
+
+<script type="text/javascript">
+  window.empreendimentos = [];
+
+  empreendimentos = [
+      {
+          name: 'Art Gravatá',
+          identifier: 'art-gravata',
+          id: 4501
+      },
+      {
+          name: 'Lelele',
+          identifier: 'lelele',
+          id: 4502
+      },
+  ]
+
+
+</script>
+
 <form>
 
-  Mostrar loja do Cirandas em sua loja no Facebook:
-  <input type="text" name="fb_store"/>
+  <h2>Vitrine de produtos do Cirandas no Facebook</h2>
+  <p>A vitrine de produtos pode ser definida por uma palavra-chave ou por uma lista de empreendimentos.</p>
+  <p>Escolha o modo de integração:</p>
+  <h3><input type="radio" name="fb_integration_type" value="query">Palavra-chave</h3>
+  <div id="fb_integration_type_query">
+    <input type="fb_keyword">
+  </div>
+  <h3><input type="radio" name="fb_integration_type" value="profiles">Empreendimento ou lista de empreedimentos</h3>
+  <div id="fb_integration_type_profiles">
+    <table>
+      <tbody id="fb_tabela_empreendimentos"></tbody>
+    </table>
+    <div>
+      <h4>Adicionar novo empreendimento: <input type="text" name="fb_store"/> <button id="fb_store_add_profile">Adicionar</button></h4>
+    </div>
+  </div>
+
   <br/>
 
   <button>Enviar</button>
