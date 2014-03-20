@@ -2,15 +2,16 @@ class FbAppEcosolStorePluginController < PublicController
 
   no_design_blocks
 
+  before_filter :change_theme
+
   def index
-    load_config
+    load_configs
 
     if params[:tabs_added]
       @signed_requests = {}; params[:tabs_added].each_with_index{ |(id, value), i| @signed_requests[i] = id }
-      render :action => 'tabs_added'
+      @signed_requests = {:signed_request => @signed_requests}
+      render :action => 'tabs_added', :layout => false
     elsif @config
-      @current_theme = 'template'
-
       if @config.profiles.present? and @profiles.size == 1
         extend CatalogHelper
         catalog_load_index
@@ -25,8 +26,7 @@ class FbAppEcosolStorePluginController < PublicController
   end
 
   def admin
-    load_config || create_config
-    @current_theme = 'template'
+    create_configs if load_configs.blank?
     @profiles = @config.profiles
     if request.post?
       @config.update_attributes! params[:config]
@@ -46,18 +46,27 @@ class FbAppEcosolStorePluginController < PublicController
 
   protected
 
-  def load_config
-    @config = FbAppEcosolStorePlugin::SignedRequestConfig.where(:signed_request => params[:signed_request]).first
+  def load_configs
+    @signed_requests = if params[:signed_requests].is_a? Hash then params[:signed_request].values else params[:signed_request].to_a end
+    @configs = FbAppEcosolStorePlugin::SignedRequestConfig.where(:signed_request => @signed_requests)
+    @config = @configs.first
     @new_request = true if @config.blank?
-    @config
+    @configs
   end
 
-  def create_config
-    @config ||= FbAppEcosolStorePlugin::SignedRequestConfig.create! :signed_request => params[:signed_request]
+  def create_configs
+    @signed_requests.each do |signed_request|
+      @configs << FbAppEcosolStorePlugin::SignedRequestConfig.create!(:signed_request => signed_request)
+    end
+    @config ||= @configs.first
   end
 
   def profile
     @profile
+  end
+
+  def change_theme
+    @current_theme = 'template'
   end
 
 end
