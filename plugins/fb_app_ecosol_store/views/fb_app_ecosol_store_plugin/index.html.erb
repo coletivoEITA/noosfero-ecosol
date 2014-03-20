@@ -1,13 +1,10 @@
-
-<div id="fb-root"></div>
-
-<script>
+<script type="text/javascript">
 
   window.fbAsyncInit = function() {
 
     FB.init({
 
-appId      : '1563617787197716',
+appId      : '231071397085577',
 
 status     : true,
 
@@ -33,13 +30,35 @@ xfbml      : true
 
  }(document, 'script', 'facebook-jssdk'));
 
-FB.ui({
+
+
+function add_app() {
+
+  FB.ui({
 
 method: 'pagetab',
 
-next: 'https://cirandas.net/plugin/fb_app_ecosol_store/admin'
+next: '<?=$app_url?>'
 
 }, function(response){});
 
+}
+
+
+
+jQuery(document).ready(function() {
+
+    jQuery('#add_app').click(functionion(){
+
+      add_app();
+
+      });
+
+    });
+
 </script>
+
+<div id="firstb-root"></div>
+
+<button id="add_app">Adicionar aplicativo</button>
 
