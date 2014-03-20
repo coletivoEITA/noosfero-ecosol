@@ -1,6 +1,6 @@
 <% javascript_tag do %>
 
-  window.opener.location.href="<%= url_for @signed_requests.merge :action => :admin %>";
+  window.opener.location.href="<%= url_for(@signed_requests.merge :action => :admin).gsub('fb_app_ecosol_store_plugin/', '') %>";
   window.close();
 
 <% end %>

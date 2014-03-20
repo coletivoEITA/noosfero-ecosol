@@ -9,8 +9,19 @@ class FbAppEcosolStorePlugin::SignedRequestConfig < Noosfero::Plugin::ActiveReco
     Profile.where(:id => self.config[:data]) if self.config[:type] = 'profiles'
   end
 
-  def profiles= value
+  def profiles= profiles
+    self.config[:type] = 'profiles'
+    self.config[:data] = profiles.map(&:id)
+  end
 
+  def query
+    self.config ||= {}
+    self.config[:data] if self.config[:type] = 'query'
+  end
+
+  def query= value
+    self.config[:type] = 'query'
+    self.config[:data] = value if self.config[:type] = 'query'
   end
 
 end
