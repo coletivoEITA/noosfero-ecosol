@@ -26,8 +26,8 @@ fb_app_ecosol_store = {
     });
   },
 
-  addJS: function(js) {
-    var script = document.createElement('script'); script.type = 'text/javascript'; script.src = 'url';
+  addJS: function(url) {
+    var script = document.createElement('script'); script.type = 'text/javascript'; script.src = url;
     document.getElementsByTagName('head')[0].appendChild(script);
   },
 
