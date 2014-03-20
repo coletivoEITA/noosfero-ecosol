@@ -1,6 +1,6 @@
 <% javascript_tag do %>
 
-  window.opener.location.href="<%= url_for params.merge @signed_requests %>";
+  window.opener.location.href="<%= url_for @signed_requests.merge :action => :admin %>";
   window.close();
 
 <% end %>
