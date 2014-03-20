@@ -1,7 +1,5 @@
 class FbAppEcosolStorePluginController < PublicController
 
-  before_filter :change_layout
-
   def index
     load_config
 
@@ -9,16 +7,15 @@ class FbAppEcosolStorePluginController < PublicController
       @signed_requests = {}; params[:tabs_added].each_with_index{ |(id, value), i| @signed_requests[i] = id }
       render :action => 'tabs_added'
     elsif @config
-      if @config.profiles.present?
-        if @profiles
+      @current_theme = 'template'
 
-        @current_theme = 'template'
+      if @config.profiles.present? and @profiles.size == 1
         extend CatalogHelper
         catalog_load_index
 
-        @change_layout = false
         render :template => 'catalog/index'
       else
+        @query = if @config.profiles.present? then @config.profiles.map(&:identifier).join(' OR ') else @config.query end
       end
     else
       redirect_to :action => 'admin'
@@ -27,6 +24,7 @@ class FbAppEcosolStorePluginController < PublicController
 
   def admin
     load_config || create_config
+    @current_theme = 'template'
     @profiles = @config.profiles
     if request.post?
       @config.update_attributes! params[:config]
@@ -38,7 +36,7 @@ class FbAppEcosolStorePluginController < PublicController
   end
 
   def search
-    @profiles = Profile.find_by_contents(params[:query])[:results]
+    @profiles = Profile.find_by_contents(params[:query][:term])[:results]
     render :json => (@profiles.map do |profile|
       {:name => profile.name, :id => profile.id}
     end)
@@ -56,23 +54,8 @@ class FbAppEcosolStorePluginController < PublicController
     @config ||= FbAppEcosolStorePlugin::SignedRequestConfig.create! :signed_request => params[:signed_request]
   end
 
-  def get_layout
-    return super unless @change_layout
-    'fb_app_ecosol_store_plugin_layouts/default'
-  end
-
-  def change_layout
-    @change_layout = true
-  end
-
   def profile
     @profile
   end
-
-  def body_classes_with_facebook
-    raise 'here'
-    "#{body_classes_without_facebook} facebook-app"
-  end
-  alias_method_chain :body_classes, :facebook
 
 end

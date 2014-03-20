@@ -1,5 +1,5 @@
-
 jQuery('document').ready(function(){
+    alert('blabla');
   jQuery('[name=fb_store]').autocomplete({
     source: function(request,response){
       jQuery.ajax('/plugin/fb_app_ecosol_store/search',{
