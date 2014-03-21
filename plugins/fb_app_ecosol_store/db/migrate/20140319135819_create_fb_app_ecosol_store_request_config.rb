@@ -10,7 +10,6 @@ class CreateFbAppEcosolStoreRequestConfig < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :fb_app_ecosol_store_plugin_signed_request_configs
-    #drop_table :fb_app_ecosol_store_plugin_page_configs
+    drop_table :fb_app_ecosol_store_plugin_page_configs
   end
 end
