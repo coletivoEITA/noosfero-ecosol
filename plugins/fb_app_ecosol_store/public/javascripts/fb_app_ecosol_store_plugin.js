@@ -171,10 +171,11 @@ fb_app_ecosol_store = {
         method: 'pagetab',
       }, function(response){
         var i=0;
-        window.location.href = fb_app_ecosol_store.base_url + "/admin?" +
-          jQuery.map(response.tabs_added, function(tab,v) {
-            return 'page_id['+(i++)+']='+tab;
-          }).join('&');
+        var url = fb_app_ecosol_store.base_url + "/admin?";
+        jQuery.each(response.tabs_added, function(tab,v) {
+          url += 'page_id['+(i++)+']='+tab+'&';
+        });
+        window.location.href = url;
       });
     },
 
