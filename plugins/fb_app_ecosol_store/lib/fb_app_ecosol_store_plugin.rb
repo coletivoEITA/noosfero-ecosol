@@ -2,11 +2,11 @@
 class FbAppEcosolStorePlugin < Noosfero::Plugin
 
   def self.plugin_name
-    'FB EcoSol Store'
+    'Loja de Economia Solidária no Facebook'
   end
 
   def self.plugin_description
-    'FB EcoSol Store'
+    'Monte uma loja virtual da economia solidária em suas páginas do facebook!'
   end
 
   def stylesheet?

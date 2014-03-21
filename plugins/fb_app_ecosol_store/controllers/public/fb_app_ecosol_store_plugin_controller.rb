@@ -12,7 +12,7 @@ class FbAppEcosolStorePluginController < PublicController
       @signed_requests = {:signed_request => @signed_requests}
       render :action => 'tabs_added', :layout => false
     elsif @config
-      if @config.profiles.present? and @profiles.size == 1
+      if @config.profiles.present? and @config.profiles.size == 1
         extend CatalogHelper
         catalog_load_index
 
