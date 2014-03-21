@@ -14,6 +14,7 @@ class FbAppEcosolStorePluginController < PublicController
     elsif @config
       if @config.profiles.present? and @config.profiles.size == 1
         @profile = @config.profiles.first
+        params[:profile] = @profile.identifier
         extend CatalogHelper
         catalog_load_index
 
