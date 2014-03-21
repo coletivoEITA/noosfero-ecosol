@@ -14,7 +14,6 @@ class FbAppEcosolStorePluginController < PublicController
     elsif @config
       if @config.profiles.present? and @config.profiles.size == 1
         @profile = @config.profiles.first
-        params[:profile] = @profile.identifier
         extend CatalogHelper
         catalog_load_index
 
@@ -61,6 +60,11 @@ class FbAppEcosolStorePluginController < PublicController
   end
 
   protected
+
+  def default_url_options options={}
+    options[:profile] = @profile.identifier if @profile
+    super
+  end
 
   def load_configs
     @signed_requests = if params[:signed_requests].is_a? Hash then params[:signed_request].values else params[:signed_request].to_a end
