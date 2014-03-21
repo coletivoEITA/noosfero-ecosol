@@ -137,7 +137,58 @@ fb_app_ecosol_store = {
           }
       });
 
-  }
+  },
+
+  fb: {
+    id: '',
+    page_tab_next: '',
+
+    init: function(id, next) {
+      this.id = id;
+      this.page_tab_next = next;
+
+      window.fbAsyncInit = function() {
+
+        FB.init({
+          appId      : id,
+          status     : true,
+          xfbml      : true
+        });
+      };
+
+      (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
+    },
+
+    add_tab: function () {
+      FB.ui({
+        method: 'pagetab',
+        next: this.page_tab_next,
+      }, function(response){});
+    },
+
+    login: function() {
+      FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') {
+          this.add_tab();
+        } else {
+          FB.login(function(response) {
+            if (response.authResponse) {
+              this.add_tab();
+            } else {
+              alert('Infelizmente, sem sua autorização não poderemos inserir a loja do cirandas no seu facebook');
+            }
+          });
+        }
+      });
+    },
+  },
 };
 
 jQuery('document').ready(function(){

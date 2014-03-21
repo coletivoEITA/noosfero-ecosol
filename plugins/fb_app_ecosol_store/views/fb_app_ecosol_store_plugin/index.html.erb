@@ -1,64 +1,10 @@
-<% javascript_tag do %>
-
-  window.fbAsyncInit = function() {
-
-    FB.init({
-
-appId      : "<%= FbAppEcosolStorePlugin.config['app']['id'] %>",
-
-status     : true,
-
-xfbml      : true
-
-});
-
-};
-
-
-
-(function(d, s, id){
-
- var js, fjs = d.getElementsByTagName(s)[0];
-
- if (d.getElementById(id)) {return;}
-
- js = d.createElement(s); js.id = id;
-
- js.src = "//connect.facebook.net/en_US/all.js";
-
- fjs.parentNode.insertBefore(js, fjs);
-
- }(document, 'script', 'facebook-jssdk'));
-
-
-
-function add_app() {
-
-  FB.ui({
-
-method: 'pagetab',
-
-next: "<%= url_for(:only_path => false, :action => :index).gsub('/fb_app_ecosol_store_plugin', '') %>",
-
-}, function(response){});
-
-}
-
-
-
-jQuery(document).ready(function() {
-
-    jQuery('#add_app').click(function(){
-
-      add_app();
-
-      });
-
-    });
-
-<% end %>
+<h1> Adicione uma loja da economia solidária no Facebook </h1>
 
 <div id="fb-root"></div>
 
-<button id="add_app">Adicionar aplicativo</button>
+<button id="add_app" onclick="fb_app_ecosol_store.fb.login()">Clique para instalar</button>
 
+<% javascript_tag do %>
+  fb_app_ecosol_store.fb.init(<%= FbAppEcosolStorePlugin.config['app']['id'].to_json %>,
+    <%= url_for(:only_path => false, :action => :index).gsub('/fb_app_ecosol_store_plugin', '').to_json %>);
+<% end %>
