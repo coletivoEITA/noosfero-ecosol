@@ -48,7 +48,7 @@ class FbAppEcosolStorePluginController < PublicController
   end
 
   def search
-    @profiles = Profile.find_by_contents(params[:query])[:results]
+    @profiles = environment.enterprises.enabled.find_by_contents(params[:query])[:results]
     render :json => (@profiles.map do |profile|
       {:name => profile.name, :id => profile.id, :identifier => profile.identifier}
     end)
