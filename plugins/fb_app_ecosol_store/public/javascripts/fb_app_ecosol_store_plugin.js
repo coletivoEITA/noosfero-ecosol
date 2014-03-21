@@ -176,11 +176,11 @@ fb_app_ecosol_store = {
     login: function() {
       FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
-          this.add_tab();
+          fb_app_ecosol_store.fb.add_tab();
         } else {
           FB.login(function(response) {
             if (response.authResponse) {
-              this.add_tab();
+              fb_app_ecosol_store.fb.add_tab();
             } else {
               alert('Infelizmente, sem sua autorização não poderemos inserir a loja do cirandas no seu facebook');
             }
