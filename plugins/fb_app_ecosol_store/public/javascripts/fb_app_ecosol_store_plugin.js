@@ -169,8 +169,13 @@ fb_app_ecosol_store = {
     add_tab: function () {
       FB.ui({
         method: 'pagetab',
-        next: this.page_tab_next,
-      }, function(response){});
+      }, function(response){
+        var i=0;
+        window.location.href = fb_app_ecosol_store.base_url + "/admin?" +
+          jQuery.map(response.tabs_added, function(tab,v) {
+            return 'page_id['+(i++)+']='+tab;
+          }).join('&');
+      });
     },
 
     login: function() {
