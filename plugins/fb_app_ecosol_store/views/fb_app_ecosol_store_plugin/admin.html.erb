@@ -2,19 +2,17 @@
 
 <script type="text/javascript">
   window.empreendimentos = [];
+  window.signed_request = <%= @signed_request.to_json.html_safe %>;
 
-  empreendimentos = [
-      {
-          name: 'Art Gravatá',
-          identifier: 'art-gravata',
-          id: 4501
-      },
-      {
-          name: 'Lelele',
-          identifier: 'lelele',
-          id: 4502
-      },
-  ]
+  <% @profiles.each do |profile| %>
+
+  empreendimentos.push({
+    name: <%= profile.name.to_json.html_safe %>,
+    id: <%= profile.id.to_json.html_safe %>,
+    identifier: <%= profile.identifier.to_json.html_safe %>
+  });
+
+  <% end %>
 
 
 </script>
@@ -26,7 +24,7 @@
   <p>Escolha o modo de integração:</p>
   <h3><input type="radio" name="fb_integration_type" value="query">Palavra-chave</h3>
   <div id="fb_integration_type_query">
-    <input type="fb_keyword">
+    <input type="text" name="fb_keyword" value="<%= @query.try(:html_safe) %>">
   </div>
   <h3><input type="radio" name="fb_integration_type" value="profiles">Empreendimento ou lista de empreedimentos</h3>
   <div id="fb_integration_type_profiles">
@@ -40,7 +38,7 @@
 
   <br/>
 
-  <button>Enviar</button>
+  <button id="fb_commit_btn">Enviar</button>
 
 
 </form>

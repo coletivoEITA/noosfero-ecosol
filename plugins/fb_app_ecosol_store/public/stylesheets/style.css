@@ -5,3 +5,18 @@ body.controller-fb_app_ecosol_store_plugin {
     display: none; }
   body.controller-fb_app_ecosol_store_plugin #wrap-1, body.controller-fb_app_ecosol_store_plugin #wrap-2 {
     border-radius: 10px 10px 0 0; }
+
+.tt-dropdown-menu {
+  text-align: left;
+  width: 100%;
+  margin-top: 12px;
+  padding: 6px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); }

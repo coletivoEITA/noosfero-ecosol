@@ -28,8 +28,17 @@ class FbAppEcosolStorePluginController < PublicController
   def admin
     create_configs if load_configs.blank?
     @profiles = @config.profiles
+    @query = @config.query
+    @signed_request = params[:signed_request]
     if request.post?
-      @config.update_attributes! params[:config]
+      case params[:integration_type]
+        when 'profiles'
+          @config.profile_ids = params[:profile_ids]
+        when 'query'
+          @config.query = params[:keyword]
+      end
+      @config.save
+      render :json => '', :status => :ok
     end
   end
 
@@ -38,9 +47,9 @@ class FbAppEcosolStorePluginController < PublicController
   end
 
   def search
-    @profiles = Profile.find_by_contents(params[:query][:term])[:results]
+    @profiles = Profile.find_by_contents(params[:query])[:results]
     render :json => (@profiles.map do |profile|
-      {:name => profile.name, :id => profile.id}
+      {:name => profile.name, :id => profile.id, :identifier => profile.identifier}
     end)
   end
 
