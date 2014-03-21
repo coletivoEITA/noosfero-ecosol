@@ -5,8 +5,8 @@ class FbAppEcosolStorePlugin::SignedRequestConfig < Noosfero::Plugin::ActiveReco
   validates_presence_of :signed_request
 
   def profiles
-    self.config ||= {}
-    Profile.where(:id => self.config[:data]) if self.config[:type] = 'profiles'
+    return nil if self.config[:type] != 'profiles'
+    Profile.where(:id => self.config[:data])
   end
 
   def profiles= profiles
@@ -24,8 +24,8 @@ class FbAppEcosolStorePlugin::SignedRequestConfig < Noosfero::Plugin::ActiveReco
   end
 
   def query
-    self.config ||= {}
-    self.config[:data] if self.config[:type] = 'query'
+    return nil if self.config[:type] != 'query'
+    self.config[:data]
   end
 
   def query= value

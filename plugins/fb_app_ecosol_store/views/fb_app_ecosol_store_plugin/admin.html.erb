@@ -4,15 +4,19 @@
   window.empreendimentos = [];
   window.signed_request = <%= @signed_request.to_json.html_safe %>;
 
-  <% @profiles.each do |profile| %>
 
-  empreendimentos.push({
-    name: <%= profile.name.to_json.html_safe %>,
-    id: <%= profile.id.to_json.html_safe %>,
-    identifier: <%= profile.identifier.to_json.html_safe %>
-  });
+  <% if @profiles.present? %>
+      <% @profiles.each do |profile| %>
 
+      empreendimentos.push({
+        name: <%= profile.name.to_json.html_safe %>,
+        id: <%= profile.id.to_json.html_safe %>,
+        identifier: <%= profile.identifier.to_json.html_safe %>
+      });
+
+      <% end %>
   <% end %>
+
 
 
 </script>
@@ -24,7 +28,7 @@
   <p>Escolha o modo de integração:</p>
   <h3><input type="radio" name="fb_integration_type" value="query">Palavra-chave</h3>
   <div id="fb_integration_type_query">
-    <input type="text" name="fb_keyword" value="<%= @query.try(:html_safe) %>">
+    <input type="text" name="fb_keyword" value="<%= @query %>">
   </div>
   <h3><input type="radio" name="fb_integration_type" value="profiles">Empreendimento ou lista de empreedimentos</h3>
   <div id="fb_integration_type_profiles">
