@@ -1,8 +1,8 @@
-class FbAppEcosolStorePlugin::SignedRequestConfig < Noosfero::Plugin::ActiveRecord
+class FbAppEcosolStorePlugin::PageConfig < Noosfero::Plugin::ActiveRecord
 
   serialize :config, Hash
 
-  validates_presence_of :signed_request
+  validates_presence_of :page_id
 
   def profiles
     return nil if self.config[:type] != 'profiles'

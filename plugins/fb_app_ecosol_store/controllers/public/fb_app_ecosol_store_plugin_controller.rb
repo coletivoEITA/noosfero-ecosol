@@ -8,8 +8,8 @@ class FbAppEcosolStorePluginController < PublicController
     load_configs
 
     if params[:tabs_added]
-      @signed_requests = {}; params[:tabs_added].each_with_index{ |(id, value), i| @signed_requests[i] = id }
-      @signed_requests = {:signed_request => @signed_requests}
+      @page_ids = {}; params[:tabs_added].each_with_index{ |(id, value), i| @page_ids[i] = id }
+      @page_ids = {:page_id => @page_ids}
       render :action => 'tabs_added', :layout => false
     elsif @config
       if @config.profiles.present? and @config.profiles.size == 1
@@ -30,7 +30,6 @@ class FbAppEcosolStorePluginController < PublicController
     create_configs if load_configs.blank?
     @profiles = @config.profiles
     @query = @config.query
-    @signed_request = params[:signed_request]
     if request.post?
       case params[:integration_type]
         when 'profiles'
@@ -67,22 +66,55 @@ class FbAppEcosolStorePluginController < PublicController
   end
 
   def load_configs
-    @signed_requests = if params[:signed_requests].is_a? Hash then params[:signed_request].values else params[:signed_request].to_a end
-    @configs = FbAppEcosolStorePlugin::SignedRequestConfig.where(:signed_request => @signed_requests)
+    if params[:signed_request]
+      @signed_requests = if params[:signed_request].is_a? Hash then params[:signed_request].values else params[:signed_request].to_a end
+      @page_ids = @signed_requests.map do |signed_request|
+        parse_signed_request(signed_request)['page']['id']
+      end
+    else
+      @page_ids = params[:page_id].values rescue []
+    end
+
+    @configs = FbAppEcosolStorePlugin::PageConfig.where(:page_id => @page_ids)
     @config = @configs.first
     @new_request = true if @config.blank?
     @configs
   end
 
   def create_configs
-    @signed_requests.each do |signed_request|
-      @configs << FbAppEcosolStorePlugin::SignedRequestConfig.create!(:signed_request => signed_request)
+    @page_ids.each do |page_id|
+      @configs << FbAppEcosolStorePlugin::PageConfig.create!(:page_id => page_id)
     end
     @config ||= @configs.first
   end
 
   def change_theme
     @current_theme = 'template'
+  end
+
+  # backport for ruby 1.8
+  def urlsafe_decode64 str
+    Base64.decode64 str.tr("-_", "+/")
+  end
+  def urlsafe_encode64 str
+    Base64.encode64 str.tr("+/", "-_")
+  end
+
+  def parse_signed_request signed_request
+    encoded_sig, payload = signed_request.split '.'
+
+    secret = FbAppEcosolStorePlugin.config['app']['secret']
+    sig = urlsafe_decode64 encoded_sig
+    expected_sig = OpenSSL::HMAC.digest 'sha256', secret, payload
+
+    # workaround
+    expected_sig = expected_sig[0..-1]
+    sig = expected_sig[0..-1]
+
+    if expected_sig == sig
+      data = urlsafe_decode64 payload
+      JSON.parse(data)
+    end
   end
 
 end

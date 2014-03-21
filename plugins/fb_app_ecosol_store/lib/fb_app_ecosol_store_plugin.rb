@@ -9,6 +9,10 @@ class FbAppEcosolStorePlugin < Noosfero::Plugin
     'Monte uma loja virtual da economia solidária em suas páginas do facebook!'
   end
 
+  def self.config
+    YAML.load File.read("#{File.dirname __FILE__}/../config.yml") rescue {}
+  end
+
   def stylesheet?
     true
   end

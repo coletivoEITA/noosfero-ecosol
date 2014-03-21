@@ -2,7 +2,7 @@
 
 <script type="text/javascript">
   window.empreendimentos = [];
-  window.signed_request = <%= @signed_request.to_json.html_safe %>;
+  window.page_id = <%= params[:page_id].to_json.html_safe %>;
 
 
   <% if @profiles.present? %>

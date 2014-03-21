@@ -121,7 +121,7 @@ fb_app_ecosol_store = {
           integration_type: jQuery( "[name=fb_integration_type]:checked" ).val(),
           keyword: jQuery('[name=fb_keyword]').val(),
           profile_ids: profile_ids,
-          signed_request: signed_request
+          page_id: window.page_id,
       }
 
       jQuery.ajax({

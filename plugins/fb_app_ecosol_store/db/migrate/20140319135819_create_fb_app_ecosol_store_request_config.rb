@@ -1,16 +1,16 @@
 class CreateFbAppEcosolStoreRequestConfig < ActiveRecord::Migration
   def self.up
-    create_table :fb_app_ecosol_store_plugin_signed_request_configs do |t|
-      t.text :signed_request
-      t.text :config
+    create_table :fb_app_ecosol_store_plugin_page_configs do |t|
+      t.string :page_id
+      t.text :config, :default => {}.to_yaml
 
       t.timestamps
     end
-    add_index :fb_app_ecosol_store_plugin_signed_request_configs, :signed_request
+    add_index :fb_app_ecosol_store_plugin_page_configs, :page_id
   end
 
   def self.down
-    drop_table :fb_app_ecosol_store_signed_request_configs
-    #drop_table :fb_app_ecosol_store_signed_plugin_request_configs
+    drop_table :fb_app_ecosol_store_plugin_signed_request_configs
+    #drop_table :fb_app_ecosol_store_plugin_page_configs
   end
 end
