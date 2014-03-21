@@ -13,6 +13,7 @@ class FbAppEcosolStorePluginController < PublicController
       render :action => 'tabs_added', :layout => false
     elsif @config
       if @config.profiles.present? and @config.profiles.size == 1
+        @profile = @config.profiles.first
         extend CatalogHelper
         catalog_load_index
 
