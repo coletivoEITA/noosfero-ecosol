@@ -44,6 +44,11 @@ class FbAppEcosolStorePluginController < PublicController
     end)
   end
 
+  # unfortunetely, this needs to be public
+  def profile
+    @profile
+  end
+
   protected
 
   def load_configs
@@ -59,10 +64,6 @@ class FbAppEcosolStorePluginController < PublicController
       @configs << FbAppEcosolStorePlugin::SignedRequestConfig.create!(:signed_request => signed_request)
     end
     @config ||= @configs.first
-  end
-
-  def profile
-    @profile
   end
 
   def change_theme
