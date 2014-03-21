@@ -22,7 +22,7 @@ class FbAppEcosolStorePluginController < PublicController
         @query = if @config.profiles.present? then @config.profiles.map(&:identifier).join(' OR ') else @config.query end
       end
     else
-      redirect_to :action => 'admin'
+      # render template
     end
   end
 
