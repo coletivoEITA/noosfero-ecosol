@@ -38,7 +38,7 @@ function add_app() {
 
 method: 'pagetab',
 
-next: '<?=$app_url?>'
+next: "<%= url_for(:only_path => false, :action => :index).gsub('/fb_app_ecosol_store_plugin', '') %>",
 
 }, function(response){});
 
@@ -48,7 +48,7 @@ next: '<?=$app_url?>'
 
 jQuery(document).ready(function() {
 
-    jQuery('#add_app').click(functionion(){
+    jQuery('#add_app').click(function(){
 
       add_app();
 
