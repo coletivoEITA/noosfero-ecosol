@@ -78,6 +78,13 @@ fb_app_ecosol_store = {
         $radio_elm.on('change',func_on_radio_change);
         $radio_elm.trigger('change');
       })
+
+      if (empreendimentos.length > 0) {
+          jQuery('[name=fb_integration_type][value=profiles]').click()
+      } else {
+          jQuery('[name=fb_integration_type][value=query]').click()
+
+      }
   },
 
   redraw_tabela_empreendimentos: function() {
