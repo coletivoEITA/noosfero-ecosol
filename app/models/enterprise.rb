@@ -102,6 +102,8 @@ class Enterprise < Organization
 
   def enable(owner)
     return if enabled
+    # must be set first for the following to work
+    self.enabled = true
 
     self.affiliate owner, Profile::Roles.all_roles(self.environment.id) if owner
 
@@ -109,7 +111,6 @@ class Enterprise < Organization
 
     self.activation_task.update_attribute :status, Task::Status::FINISHED rescue nil
 
-    self.enabled = true
     save_without_validation!
   end
 
