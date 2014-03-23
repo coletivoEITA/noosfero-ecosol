@@ -46,7 +46,7 @@ class Product
   named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
   named_scope :own, :conditions => ["products.type = 'Product'"]
 
-  named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['sources_from_products_products.supplier_id = ?', supplier_id] } }
+  named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_suppliers.id = ?', supplier_id] } }
 
   extend CurrencyHelper::ClassMethods
   has_currency :price

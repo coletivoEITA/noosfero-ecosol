@@ -1,17 +1,12 @@
 class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
-  named_scope :from_products_joins, :joins =>
-    'INNER JOIN suppliers_plugin_source_products sources_from_products_products ON ( products.id = sources_from_products_products.to_product_id ) ' +
-    'INNER JOIN products from_products_products ON ( sources_from_products_products.from_product_id = from_products_products.id ) ' +
-    'INNER JOIN suppliers_plugin_suppliers suppliers ON ( suppliers.id = sources_from_products_products.supplier_id )'
-
   # overhide original
-  named_scope :available, :conditions => ['products.available = ? AND from_products_products.available = ? AND suppliers.active = ?', true, true, true]
-  named_scope :unavailable, :conditions => ['products.available <> ? OR from_products_products.available <> ? OR suppliers.active <> ?', true, true, true]
+  named_scope :available, :conditions => ['products.available = ? AND from_products_products.available = ? AND suppliers_plugin_suppliers.active = ?', true, true, true]
+  named_scope :unavailable, :conditions => ['products.available <> ? OR from_products_products.available <> ? OR suppliers_plugin_suppliers.active <> ?', true, true, true]
   named_scope :with_available, lambda { |available|
     op = if available then '=' else '<>' end
     cond = if available then 'AND' else 'OR' end
-    { :conditions => ["products.available #{op} ? #{cond} from_products_products.available #{op} ? #{cond} suppliers.active #{op} ?", true, true, true] }
+    { :conditions => ["products.available #{op} ? #{cond} from_products_products.available #{op} ? #{cond} suppliers_plugin_suppliers.active #{op} ?", true, true, true] }
   }
 
   named_scope :name_like, lambda { |name| { :conditions => ["LOWER(from_products_products.name) LIKE ?", "%#{name}%"] } }
