@@ -15,7 +15,7 @@
 <div class="field supplier">
   <label><%=t('suppliers_plugin.views.product.index.supplier') %></label>
   <div>
-    <%= select_tag :supplier_id, options_for_select([[t('suppliers_plugin.views.product.index.all_the_suppliers'), ""]] + supplier_choices(profile), params[:supplier_id].to_i) %>
+    <%= select_tag :supplier_id, options_for_select([[t('suppliers_plugin.views.product.index.all_the_suppliers'), ""]] + supplier_choices(profile.suppliers), params[:supplier_id].to_i) %>
   </div>
 </div>
 

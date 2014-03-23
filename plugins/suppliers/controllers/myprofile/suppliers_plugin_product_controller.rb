@@ -17,7 +17,7 @@ class SuppliersPluginProductController < MyProfileController
     @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id] if params[:supplier_id].present?
 
     SuppliersPlugin::DistributedProduct.send :with_exclusive_scope do
-      scope = profile.distributed_products.unarchived.from_products_joins
+      scope = profile.distributed_products.unarchived.joins([:from_products, :suppliers])
       @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate :per_page => 10, :page => params[:page], :order => 'from_products_products.name ASC'
       @products_count = SuppliersPlugin::BaseProduct.search_scope(scope, params).count
     end
