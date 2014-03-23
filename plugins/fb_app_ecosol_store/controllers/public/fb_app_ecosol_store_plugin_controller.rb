@@ -90,6 +90,7 @@ class FbAppEcosolStorePluginController < PublicController
 
   def change_theme
     @current_theme = 'embed_810'
+    @without_pure_chat = true
   end
 
   # backport for ruby 1.8
