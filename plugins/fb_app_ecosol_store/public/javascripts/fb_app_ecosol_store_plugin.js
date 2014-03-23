@@ -130,7 +130,7 @@ fb_app_ecosol_store = {
           dataType: 'json',
           data: data,
           success: function(data) {
-            alert('OK!')
+            display_notice('Aba instalada!');
           },
           error: function() {
               alert('Erro!')
@@ -148,15 +148,11 @@ fb_app_ecosol_store = {
       this.page_tab_next = next;
 
       window.fbAsyncInit = function() {
-
         FB.init({
           appId      : id,
           status     : true,
           xfbml      : true
         });
-
-        //FB.Canvas.setAutoGrow();
-        FB.Canvas.setSize({ width: 640, height: 480 });
       };
 
       (function(d, s, id){

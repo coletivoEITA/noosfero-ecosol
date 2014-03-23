@@ -93,6 +93,11 @@ class FbAppEcosolStorePluginController < PublicController
     @without_pure_chat = true
   end
 
+  def get_layout
+    return if request.xhr?
+    super
+  end
+
   # backport for ruby 1.8
   def urlsafe_decode64 str
     str += '=' * (4 - str.length.modulo(4))
