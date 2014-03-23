@@ -94,6 +94,7 @@ class FbAppEcosolStorePluginController < PublicController
 
   # backport for ruby 1.8
   def urlsafe_decode64 str
+    str += '=' * (4 - str.length.modulo(4))
     Base64.decode64 str.tr("-_", "+/")
   end
   def urlsafe_encode64 str
@@ -106,10 +107,6 @@ class FbAppEcosolStorePluginController < PublicController
     secret = FbAppEcosolStorePlugin.config['app']['secret'] rescue ''
     sig = urlsafe_decode64 encoded_sig
     expected_sig = OpenSSL::HMAC.digest 'sha256', secret, payload
-
-    # workaround
-    sig = sig[0..-2]
-    expected_sig = expected_sig[0..-4]
 
     if expected_sig == sig
       data = urlsafe_decode64 payload
