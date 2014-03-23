@@ -92,9 +92,7 @@ class OrdersCyclePluginCycleController < MyProfileController
     extend OrdersCyclePlugin::Report::ClassMethods
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     tmp_dir, report_file = report_products_by_supplier @cycle
-    if report_file.nil?
-      return false
-    end
+
     send_file report_file, :type => 'application/xlsx',
       :disposition => 'attachment',
       :filename => t('controllers.myprofile.cycle_controller.products_report_date_') % {
@@ -107,10 +105,7 @@ class OrdersCyclePluginCycleController < MyProfileController
     extend OrdersCyclePlugin::Report::ClassMethods
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     tmp_dir, report_file = report_orders_by_consumer @cycle
-    if report_file.nil?
-      render :nothing => true, :status => :ok
-      return
-    end
+
     send_file report_file, :type => 'application/xlsx',
       :disposition => 'attachment',
       :filename => t('controllers.myprofile.cycle_controller.cycle_orders_report_d') % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @cycle.code, :cycle_name => @cycle.name}
