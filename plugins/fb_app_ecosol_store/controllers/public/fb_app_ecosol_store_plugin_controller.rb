@@ -89,7 +89,7 @@ class FbAppEcosolStorePluginController < PublicController
   end
 
   def change_theme
-    @current_theme = 'template'
+    @current_theme = 'embed_810'
   end
 
   # backport for ruby 1.8
@@ -103,13 +103,13 @@ class FbAppEcosolStorePluginController < PublicController
   def parse_signed_request signed_request
     encoded_sig, payload = signed_request.split '.'
 
-    secret = FbAppEcosolStorePlugin.config['app']['secret']
+    secret = FbAppEcosolStorePlugin.config['app']['secret'] rescue ''
     sig = urlsafe_decode64 encoded_sig
     expected_sig = OpenSSL::HMAC.digest 'sha256', secret, payload
 
     # workaround
-    expected_sig = expected_sig[0..-1]
-    sig = expected_sig[0..-1]
+    sig = sig[0..-2]
+    expected_sig = expected_sig[0..-4]
 
     if expected_sig == sig
       data = urlsafe_decode64 payload
