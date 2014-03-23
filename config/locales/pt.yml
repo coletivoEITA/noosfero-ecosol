@@ -830,7 +830,7 @@
       cycle: 
         _brief: 
           confirmed_orders:
-            zero: "(nenhum pedido)"
+            zero: "(nenhum pedido confirmado)"
             one: "(1 pedido confirmado)"
             other: "(%{count} pedidos confirmados)"
           code: "%{code}."

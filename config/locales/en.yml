@@ -824,7 +824,7 @@
       cycle: 
         _brief: 
           confirmed_orders:
-            zero: "(no order)"
+            zero: "(no confirmed orders)"
             one: "(1 confirmed order)"
             other: "(%{count} confirmed orders)"
           code: "%{code}."
