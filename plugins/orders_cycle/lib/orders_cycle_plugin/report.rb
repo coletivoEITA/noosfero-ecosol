@@ -50,8 +50,8 @@ module OrdersCyclePlugin::Report
           sheet.add_row [''], :style => default # empty line
 
           sheet.add_row [
-            t('lib.report.min_stock'),
-            t('lib.report.value_parcel')], :style => greencell
+            t('lib.report.product_cod'), t('lib.report.product_name'), t('lib.report.qty_ordered'), t('lib.report.stock_qtt'), t('lib.report.min_stock'),
+            t('lib.report.qtt_to_be_parcelled'),t('lib.report.projected_stock'), t('lib.report.un'), t('lib.report.price_un'), t('lib.report.selled_value'), t('lib.report.value_parcel')], :style => greencell
 
           # pl = product line
           pl = sp
@@ -67,7 +67,7 @@ module OrdersCyclePlugin::Report
           end # closes items.each
 
           sheet.add_row [""]
-          sheet.add_row ["", '', '', '', '', '', t('lib.report.total_parcel_value'), ''], :style =>bluecell
+          sheet.add_row ["", '', '', '', '', '', t('lib.report.total_selled_value'), '', '',t('lib.report.total_parcel_value'), ''], :style =>bluecell
           row = ep +2
           ["G#{row}:H#{row}", "J#{row}:K#{row}"].each {|c| sheet.merge_cells c }
           row += 1
@@ -119,22 +119,22 @@ module OrdersCyclePlugin::Report
         sbs = 1
         orders.each do |order|
 
-          sheet.add_row [t('lib.report.member_name'), '', '', '', '', ''], :style => bluecell_b_top
+          sheet.add_row [t('lib.report.order_code'), t('lib.report.member_name'), '', '', '', '', ''], :style => bluecell_b_top
           sheet.merge_cells "B#{sbs}:C#{sbs}"
 
           sheet.add_row [order.code, order.consumer.name, '','','','',''], :style => default
 
           sheet.merge_cells "B#{sbs+1}:C#{sbs+1}"
 
-          sheet.add_row [t('lib.report.modified'), '','', '','',''], :style => bluecell
+          sheet.add_row [t('lib.report.created'), t('lib.report.modified'), '','', '','',''], :style => bluecell
 
           # sp = index of the start of the products list / ep = index of the end of the products list
           sp = sbs + 5
           ep = sp + order.items.count - 1
           sheet.add_row [order.created_at, order.updated_at, '', '', '', '','',''], :style => [date,date]
 
-          sheet.add_row [t('lib.report.product_name'),
-                         t('lib.report.value')], :style => greencell
+          sheet.add_row [t('lib.report.product_cod'), t('lib.report.supplier'), t('lib.report.product_name'),
+                         t('lib.report.qty_ordered'),t('lib.report.un'),t('lib.report.price_un'), t('lib.report.value')], :style => greencell
 
           sbe = sp
           order.items.each do |item|
