@@ -154,6 +154,8 @@ fb_app_ecosol_store = {
           status     : true,
           xfbml      : true
         });
+
+        FB.Canvas.setAutoGrow();
       };
 
       (function(d, s, id){
