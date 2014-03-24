@@ -155,17 +155,19 @@ fb_app_ecosol_store = {
           xfbml: true
         });
 
-        sizeChangeCallback();
+        fb_app_ecosol_store.fb.size_change();
       };
 
       jQuery(document).ready(function() {
         fb_app_ecosol_store.addJS('https://connect.facebook.net/en_US/all.js');
       });
+
+      jQuery(window).resize(this.size_change);
+      jQuery(document).on('DOMNodeInserted', this.size_change);
     },
 
-    size_change: function(){
-      FB.Canvas.setSize( {height: 1600} );
-
+    size_change: function() {
+      FB.Canvas.setSize({height: jQuery('body').height()+100});
     },
 
     add_tab: function () {
@@ -203,5 +205,4 @@ jQuery('document').ready(function(){
   fb_app_ecosol_store.init_admin();
 });
 
-fb_app_ecosol_store.addJS('http://dtygel.eita.org.br/lojacirandasfb/utils.js');
 
