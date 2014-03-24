@@ -146,6 +146,26 @@ fb_app_ecosol_store = {
     init: function(id, next) {
       this.id = id;
       this.page_tab_next = next;
+
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId: id,
+          status: true,
+          cookie: true,
+          xfbml: true
+        });
+
+        sizeChangeCallback();
+      };
+
+      jQuery(document).ready(function() {
+        fb_app_ecosol_store.addJS('http://connect.facebook.net/en_US/all.js');
+      });
+    },
+
+    size_change: function(){
+      FB.Canvas.setSize( {height: 1600} );
+
     },
 
     add_tab: function () {
