@@ -159,7 +159,7 @@ fb_app_ecosol_store = {
       };
 
       jQuery(document).ready(function() {
-        fb_app_ecosol_store.addJS('http://connect.facebook.net/en_US/all.js');
+        fb_app_ecosol_store.addJS('https://connect.facebook.net/en_US/all.js');
       });
     },
 
