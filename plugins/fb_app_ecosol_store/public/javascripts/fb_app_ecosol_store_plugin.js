@@ -156,14 +156,8 @@ fb_app_ecosol_store = {
         });
 
         fb_app_ecosol_store.fb.size_change();
+        jQuery(document).on('DOMNodeInserted', fb_app_ecosol_store.fb.size_change);
       };
-
-      jQuery(document).ready(function() {
-        fb_app_ecosol_store.addJS('https://connect.facebook.net/en_US/all.js');
-      });
-
-      jQuery(window).resize(this.size_change);
-      jQuery(document).on('DOMNodeInserted', this.size_change);
     },
 
     size_change: function() {
