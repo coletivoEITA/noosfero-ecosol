@@ -17,7 +17,7 @@ class FbAppEcosolStorePluginController < PublicController
         extend CatalogHelper
         catalog_load_index
 
-        render :template => 'catalog/index'
+        render :action => 'catalog'
       else
         @query = if @config.profiles.present? then @config.profiles.map(&:identifier).join(' OR ') else @config.query end
       end
