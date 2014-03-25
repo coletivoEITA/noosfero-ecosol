@@ -185,7 +185,7 @@ fb_app_ecosol_store = {
         if (response.status === 'connected') {
           fb_app_ecosol_store.fb.add_tab();
         } else {
-          window.location.href = 'https://www.facebook.com/dialog/oauth?' + jQuery.param({client_id: fb_app_ecosol_store.fb.id, redirect_url: fb_app_ecosol_store.base_url })
+          window.location.href = 'https://www.facebook.com/dialog/oauth?' + jQuery.param({client_id: fb_app_ecosol_store.fb.id, redirect_uri: fb_app_ecosol_store.base_url })
         }
       });
     },
