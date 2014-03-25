@@ -9,7 +9,17 @@ fb_app_ecosol_store = {
       var profilesSearch = new Bloodhound({
           datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
           queryTokenizer: Bloodhound.tokenizers.whitespace,
-          remote: '/plugin/fb_app_ecosol_store/search?query=%QUERY'
+          remote: {
+              url: '/plugin/fb_app_ecosol_store/search?query=%QUERY',
+              ajax: {
+                  beforeSend: function() {
+                      jQuery('[name=fb_store]').addClass('small-loading');
+                  },
+                  complete: function() {
+                      jQuery('[name=fb_store]').removeClass('small-loading');
+                  }
+              }
+          }
       });
 
       profilesSearch.initialize();
@@ -19,18 +29,16 @@ fb_app_ecosol_store = {
       input.typeahead(null, {
           name: 'fb_search_store',
           displayKey: 'name',
-          source: profilesSearch.ttAdapter(),
+          source: profilesSearch.ttAdapter()
       });
 
       input.on('typeahead:selected typeahead:autocompleted', function(object, datum){
         self.selected_empreendimento = datum
         self.add_empreendimento()
-        input.removeClass('small-loading')
       });
 
       input.on('keydown', function() {
         self.selected_empreendimento = null
-        input.addClass('small-loading')
       });
 
       jQuery('#fb_store_add_profile').on('click',this.add_empreendimento.bind(this));
