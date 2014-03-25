@@ -9,8 +9,7 @@ class FbAppEcosolStorePluginController < PublicController
 
     if params[:tabs_added]
       @page_ids = {}; params[:tabs_added].each_with_index{ |(id, value), i| @page_ids[i] = id }
-      @page_ids = {:page_id => @page_ids}
-      redirect_to url_for(@page_ids.merge :action => :admin).gsub('/fb_app_ecosol_store_plugin', '')
+      render :action => 'tabs_added'
     elsif @config
       if @config.profiles.present? and @config.profiles.size == 1
         @profile = @config.profiles.first
@@ -23,6 +22,7 @@ class FbAppEcosolStorePluginController < PublicController
       end
     else
       # render template
+      render :action => 'index'
     end
   end
 

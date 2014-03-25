@@ -1,5 +1,12 @@
 <h1> Adicione uma loja da economia solidária no Facebook </h1>
 
-<button id="add_app" onclick="fb_app_ecosol_store.fb.login()">Clique para instalar</button>
+<div class="loading">
+</div>
 
 <%= render 'load' %>
+<div id="action">
+  <%javascript_tag do %>
+    fb_app_ecosol_store.fb.login();
+  <% end %>
+</div>
+

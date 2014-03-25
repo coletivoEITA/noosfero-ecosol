@@ -164,17 +164,14 @@ fb_app_ecosol_store = {
       FB.Canvas.setSize({height: jQuery('body').height()+100});
     },
 
-    add_tab: function () {
-      FB.ui({
-        method: 'pagetab',
-      }, function(response){
-        var i=0;
-        var url = fb_app_ecosol_store.base_url + "/admin?";
-        jQuery.each(response.tabs_added, function(tab,v) {
-          url += 'page_id['+(i++)+']='+tab+'&';
-        });
-        window.location.href = url;
+    redirect_to_tab: function(pageID) {
+      FB.api('/'+pageID, function(response) {
+        window.location.href = response.link + '/app_' + fb_app_ecosol_store.fb.id;
       });
+    },
+
+    add_tab: function () {
+      window.location.href = 'https://www.facebook.com/dialog/pagetab?' + jQuery.param({app_id: fb_app_ecosol_store.fb.id, next: fb_app_ecosol_store.base_url});
     },
 
     login: function() {
@@ -182,13 +179,7 @@ fb_app_ecosol_store = {
         if (response.status === 'connected') {
           fb_app_ecosol_store.fb.add_tab();
         } else {
-          FB.login(function(response) {
-            if (response.authResponse) {
-              fb_app_ecosol_store.fb.add_tab();
-            } else {
-              alert('Infelizmente, sem sua autorização não poderemos inserir a loja do cirandas no seu facebook');
-            }
-          });
+          window.location.href = 'https://www.facebook.com/dialog/oauth?' + jQuery.param({client_id: fb_app_ecosol_store.fb.id, redirect_url: fb_app_ecosol_store.base_url })
         }
       });
     },

@@ -18,7 +18,14 @@ class FbAppEcosolStorePlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['fb_app_ecosol_store_plugin.js','typeahead.bundle.js'].map{ |j| "javascripts/#{j}" }
+    ['fb_app_ecosol_store_plugin.js', 'typeahead.bundle.js'].map{ |j| "javascripts/#{j}" }
   end
+
+  def control_panel_buttons
+    profile = context.profile
+    return unless profile.enterprise?
+    { :title => self.class.plugin_name, :icon => 'fb-app-ecosol-store', :url => '/plugin/fb_app_ecosol_store' }
+  end
+
 
 end

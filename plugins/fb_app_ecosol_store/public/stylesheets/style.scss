@@ -11,8 +11,17 @@ body.controller-fb_app_ecosol_store_plugin {
     border-radius: 10px 10px 0 0;
   }
 
+  .loading {
+    background: white url(/plugins/fb_app_ecosol_store/images/loading.gif) no-repeat center center;
+    width: 80%;
+    height: 300px;
+    margin: auto;
+  }
 }
 
+.controller-profile_editor a.control-panel-fb-app-ecosol-store {
+  background-image: url(/plugins/fb_app_ecosol_store/images/control-panel.png);
+}
 
 .tt-hint {
   display: block;
