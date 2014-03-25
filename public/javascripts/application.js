@@ -9,6 +9,9 @@ function noosfero_init() {
   // focus_first_field(); it is moving the page view when de form is down.
 }
 
+noosfero = {
+};
+
 /* If applicable, find the first field in which the user can type and move the
  * keyboard focus to it.
  *
@@ -510,6 +513,10 @@ function new_qualifier_row(selector, select_qualifiers, delete_button) {
   jQuery(selector).append("<tr><td>" + select_qualifiers + "</td><td id='certifier-area-" + index + "'><select></select>" + delete_button + "</td></tr>");
 }
 
+// override this to take action after user_data load
+function customUserDataCallback() {
+};
+
 // controls the display of the login/logout stuff
 jQuery(function($) {
   $.ajaxSetup({
@@ -520,6 +527,8 @@ jQuery(function($) {
   });
 
   $.getJSON('/account/user_data', function userDataCallBack(data) {
+    noosfero.user_data = data;
+    customUserDataCallback();
     if (data.login) {
       // logged in
       if (data.chat_enabled) {
