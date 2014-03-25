@@ -31,18 +31,24 @@ class FbAppEcosolStorePluginController < PublicController
   end
 
   def admin
-    create_configs if load_configs.blank?
-    @profiles = @config.profiles
-    @query = @config.query
+    load_configs
+    @profiles = @config.profiles rescue []
+    @query = @config.query rescue ''
+
     if request.post?
-      case params[:integration_type]
+      create_configs if @config.blank?
+
+      case params[:fb_integration_type]
         when 'profiles'
-          @config.profile_ids = params[:profile_ids]
+          @config.profile_ids = params[:profile_ids].to_a
         when 'query'
-          @config.query = params[:keyword]
+          @config.query = params[:keyword].to_s
       end
-      @config.save
-      render :json => '', :status => :ok
+      @config.save!
+
+      respond_to{ |format| format.js{ render :action => 'admin', :layout => false } }
+    else
+      respond_to{ |format| format.html }
     end
   end
 
@@ -70,8 +76,9 @@ class FbAppEcosolStorePluginController < PublicController
   end
 
   def load_configs
-    if params[:signed_request]
-      @signed_requests = if params[:signed_request].is_a? Hash then params[:signed_request].values else params[:signed_request].to_a end
+    @signed_requests = if params[:signed_request].is_a? Hash then params[:signed_request].values else params[:signed_request].to_a end
+
+    if @signed_requests.present?
       @datas = []
       @page_ids = @signed_requests.map do |signed_request|
         @data = parse_signed_request signed_request

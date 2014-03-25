@@ -1,6 +1,9 @@
 <span id="fb_store_admin_page"></span>
 
-<form>
+<% form_tag({:action => :admin}, {:onsubmit => "jQuery(this).ajaxSubmit(); return false"}) do |f| %>
+
+  <%= hidden_field_tag 'page_id', @page_ids.first %>
+  <%= hidden_field_tag 'signed_request', @signed_requests.first %>
 
   <h2>Vitrine de produtos do Cirandas no Facebook</h2>
   <p>A vitrine de produtos pode ser definida por uma palavra-chave ou por uma lista de empreendimentos.</p>
@@ -21,10 +24,10 @@
 
   <br/>
 
-  <%= button :save, 'Salvar', '', :onclick => 'fb_app_ecosol_store.admin.close()' %>
-  <a onclick="fb_app_ecosol_store.admin.cancel()">cancelar</a>
+  <%= submit_button :save, 'Salvar'  %>
+  <a href="" onclick="fb_app_ecosol_store.admin.cancel()">cancelar</a>
 
-</form>
+<% end %>
 
 <% javascript_tag do %>
   window.empreendimentos = [];

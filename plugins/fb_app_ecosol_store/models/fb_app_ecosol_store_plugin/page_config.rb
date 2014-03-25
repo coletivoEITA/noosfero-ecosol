@@ -15,12 +15,7 @@ class FbAppEcosolStorePlugin::PageConfig < Noosfero::Plugin::ActiveRecord
   end
 
   def profile_ids= profile_ids
-    if profile_ids.is_a?(Array) and profile_ids.length > 0
-      profile_ids.map{|elm| elm.to_i}
-      self.profiles = Profile.where('id in (?)',profile_ids)
-    else
-      self.profiles = []
-    end
+    self.profiles = Profile.where('id in (?)',profile_ids.to_a).all
   end
 
   def query
