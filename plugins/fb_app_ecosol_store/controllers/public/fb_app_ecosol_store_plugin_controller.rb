@@ -68,8 +68,11 @@ class FbAppEcosolStorePluginController < PublicController
   def load_configs
     if params[:signed_request]
       @signed_requests = if params[:signed_request].is_a? Hash then params[:signed_request].values else params[:signed_request].to_a end
+      @datas = []
       @page_ids = @signed_requests.map do |signed_request|
-        parse_signed_request(signed_request)['page']['id']
+        @data = parse_signed_request signed_request
+        @datas << @data
+        @data['page']['id']
       end
     else
       @page_ids = if params[:page_id].is_a? Hash then params[:page_id].values else params[:page_id].to_a end

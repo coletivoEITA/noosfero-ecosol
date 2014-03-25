@@ -172,9 +172,7 @@ fb_app_ecosol_store = {
 
     redirect_to_tab: function(pageID) {
       FB.api('/'+pageID, function(response) {
-        alert(pageID);
-        alert(response.link);
-        window.location.href = response.link + '/app_' + fb_app_ecosol_store.fb.id;
+        window.location.href = response.link + '?sk=app_' + fb_app_ecosol_store.fb.id;
       });
     },
 
