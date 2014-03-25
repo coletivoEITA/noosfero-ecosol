@@ -8,8 +8,8 @@ class FbAppEcosolStorePluginController < PublicController
     load_configs
 
     if params[:tabs_added]
-      @page_ids = {}; params[:tabs_added].each_with_index{ |(id, value), i| @page_ids[i] = id }
-      render :action => 'tabs_added'
+      @page_ids = params[:tabs_added].map{ |id, value| id }
+      render :action => 'tabs_added', :layout => false
     elsif @config
       if @config.profiles.present? and @config.profiles.size == 1
         @profile = @config.profiles.first
