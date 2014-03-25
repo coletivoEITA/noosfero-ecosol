@@ -10,15 +10,19 @@ class FbAppEcosolStorePluginController < PublicController
     if params[:tabs_added]
       @page_ids = params[:tabs_added].map{ |id, value| id }
       render :action => 'tabs_added', :layout => false
-    elsif @config
-      if @config.profiles.present? and @config.profiles.size == 1
-        @profile = @config.profiles.first
-        extend CatalogHelper
-        catalog_load_index
+    elsif params[:signed_request] or params[:page_id]
+      if @config
+        if @config.profiles.present? and @config.profiles.size == 1
+          @profile = @config.profiles.first
+          extend CatalogHelper
+          catalog_load_index
 
-        render :action => 'catalog'
+          render :action => 'catalog'
+        else
+          @query = if @config.profiles.present? then @config.profiles.map(&:identifier).join(' OR ') else @config.query end
+        end
       else
-        @query = if @config.profiles.present? then @config.profiles.map(&:identifier).join(' OR ') else @config.query end
+        render :action => 'first_load'
       end
     else
       # render template

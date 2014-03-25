@@ -1,5 +1,7 @@
-<% if @data['page']['admin'] %>
-  <%= button :product, 'Configurar Loja', {:controller => :fb_app_ecosol_store_plugin, :action => :admin, :page_id => @page_ids}, :class => 'colorbox' %>
+<% if (@data['page']['admin'] rescue nil) %>
+  <div id="manage-fb-store-ctrl">
+    <%= button :product, 'Configurar Loja', {:controller => :fb_app_ecosol_store_plugin, :action => :admin, :page_id => @page_ids}, :class => 'colorbox' %>
+  </div>
 <% end %>
 
 <%= render :file => "#{Rails.root}/app/views/catalog/index.html.erb" %>

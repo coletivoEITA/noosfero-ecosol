@@ -1,0 +1,4 @@
+
+<% javascript_tag do %>
+  jQuery.colorbox({top: 50, href: <%= url_for(:controller => :fb_app_ecosol_store_plugin, :action => :admin, :page_id => @page_ids).to_json %>})
+<% end %>
