@@ -51,14 +51,26 @@ fb_app_ecosol_store = {
     document.getElementsByTagName('head')[0].appendChild(script);
   },
 
-  init_admin: function() {
-    if (jQuery('#fb_store_admin_page').length > 0) {
+  admin: {
+
+    init: function() {
+      if (jQuery('#fb_store_admin_page').length > 0) {
         this.init_integration_type_selection();
         this.init_autocomplete();
         this.redraw_tabela_empreendimentos();
         //init commit button
         jQuery('#fb_commit_btn').on('click',this.commit.bind(this));
-    }
+      }
+    },
+
+    close: function() {
+      jQuery.colobox.close();
+      window.location.reload();
+    },
+
+    cancel: function() {
+      jQuery.colobox.close();
+    },
   },
 
   init_integration_type_selection: function() {
@@ -191,9 +203,5 @@ fb_app_ecosol_store = {
     },
   },
 };
-
-jQuery('document').ready(function(){
-  fb_app_ecosol_store.init_admin();
-});
 
 
