@@ -1,12 +1,5 @@
-<h1> Adicione uma loja da economia solidária no Facebook </h1>
-
 <div class="loading">
 </div>
 
-<%= render 'load' %>
-<div id="action">
-  <%javascript_tag do %>
-    fb_app_ecosol_store.fb.login();
-  <% end %>
-</div>
+<%= render 'load', :callback => 'fb_app_ecosol_store.fb.login();' %>
 

@@ -1,5 +1,5 @@
-<% if @config['page']['admin'] %>
-  <%= button :product, 'Configurar Loja', :controller => :fb_app_ecosol_store_plugin, :action => :admin, :page_id => @page_ids, :class => 'colorbox'  %>
+<% if @data['page']['admin'] %>
+  <%= button :product, 'Configurar Loja', :controller => :fb_app_ecosol_store_plugin, :action => :admin, :page_id => @page_ids, :class => 'colorbox' %>
 <% end %>
 
 <%= render :file => "#{Rails.root}/app/views/catalog/index.html.erb" %>

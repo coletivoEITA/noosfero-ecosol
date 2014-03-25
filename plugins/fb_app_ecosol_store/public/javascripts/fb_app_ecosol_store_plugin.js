@@ -154,7 +154,7 @@ fb_app_ecosol_store = {
     id: '',
     page_tab_next: '',
 
-    init: function(id, next) {
+    init: function(id, next, asyncInit) {
       this.id = id;
       this.page_tab_next = next;
 
@@ -168,6 +168,9 @@ fb_app_ecosol_store = {
 
         fb_app_ecosol_store.fb.size_change();
         jQuery(document).on('DOMNodeInserted', fb_app_ecosol_store.fb.size_change);
+
+        if (asyncInit)
+          jQuery.globalEval(asyncInit)
       };
     },
 
@@ -177,7 +180,7 @@ fb_app_ecosol_store = {
 
     redirect_to_tab: function(pageID) {
       FB.api('/'+pageID, function(response) {
-        window.location.href = response.link + '/app_' + fb_app_ecosol_store.fb.id;
+        window.location.href = response.link + '?sk=app_' + fb_app_ecosol_store.fb.id;
       });
     },
 
@@ -190,7 +193,7 @@ fb_app_ecosol_store = {
         if (response.status === 'connected') {
           fb_app_ecosol_store.fb.add_tab();
         } else {
-          window.location.href = 'https://www.facebook.com/dialog/oauth?' + jQuery.param({client_id: fb_app_ecosol_store.fb.id, redirect_url: fb_app_ecosol_store.base_url })
+          window.location.href = 'https://www.facebook.com/dialog/oauth?' + jQuery.param({client_id: fb_app_ecosol_store.fb.id, redirect_uri: fb_app_ecosol_store.base_url })
         }
       });
     },

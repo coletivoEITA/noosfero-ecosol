@@ -8,8 +8,8 @@ class FbAppEcosolStorePluginController < PublicController
     load_configs
 
     if params[:tabs_added]
-      @page_ids = {}; params[:tabs_added].each_with_index{ |(id, value), i| @page_ids[i] = id }
-      render :action => 'tabs_added'
+      @page_ids = params[:tabs_added].map{ |id, value| id }
+      render :action => 'tabs_added', :layout => false
     elsif @config
       if @config.profiles.present? and @config.profiles.size == 1
         @profile = @config.profiles.first
@@ -68,8 +68,11 @@ class FbAppEcosolStorePluginController < PublicController
   def load_configs
     if params[:signed_request]
       @signed_requests = if params[:signed_request].is_a? Hash then params[:signed_request].values else params[:signed_request].to_a end
+      @datas = []
       @page_ids = @signed_requests.map do |signed_request|
-        parse_signed_request(signed_request)['page']['id']
+        @data = parse_signed_request signed_request
+        @datas << @data
+        @data['page']['id']
       end
     else
       @page_ids = if params[:page_id].is_a? Hash then params[:page_id].values else params[:page_id].to_a end
