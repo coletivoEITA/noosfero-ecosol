@@ -18,12 +18,12 @@ fb_app_ecosol_store = {
     },
 
     close: function() {
-      jQuery.colobox.close();
+      jQuery.colorbox.close();
       window.location.reload();
     },
 
     cancel: function() {
-      jQuery.colobox.close();
+      jQuery.colorbox.close();
     },
 
     selected_empreendimento: null,
