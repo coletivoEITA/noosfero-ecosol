@@ -19,15 +19,18 @@ fb_app_ecosol_store = {
       input.typeahead(null, {
           name: 'fb_search_store',
           displayKey: 'name',
-          source: profilesSearch.ttAdapter()
+          source: profilesSearch.ttAdapter(),
       });
 
       input.on('typeahead:selected typeahead:autocompleted', function(object, datum){
         self.selected_empreendimento = datum
+        self.add_empreendimento()
+        input.removeClass('small-loading')
       });
 
       input.on('keydown', function() {
-          self.selected_empreendimento = null
+        self.selected_empreendimento = null
+        input.addClass('small-loading')
       });
 
       jQuery('#fb_store_add_profile').on('click',this.add_empreendimento.bind(this));

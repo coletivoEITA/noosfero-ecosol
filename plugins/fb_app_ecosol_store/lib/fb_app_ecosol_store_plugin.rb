@@ -22,8 +22,6 @@ class FbAppEcosolStorePlugin < Noosfero::Plugin
   end
 
   def control_panel_buttons
-    profile = context.profile
-    return unless profile.enterprise?
     { :title => self.class.plugin_name, :icon => 'fb-app-ecosol-store', :url => '/plugin/fb_app_ecosol_store' }
   end
 

@@ -5,6 +5,8 @@ body.controller-fb_app_ecosol_store_plugin {
     display: none; }
   body.controller-fb_app_ecosol_store_plugin #wrap-1, body.controller-fb_app_ecosol_store_plugin #wrap-2 {
     border-radius: 10px 10px 0 0; }
+  body.controller-fb_app_ecosol_store_plugin input.small-loading {
+    background: transparent url(/images/loading-small.gif) no-repeat scroll right center; }
   body.controller-fb_app_ecosol_store_plugin .loading {
     background: white url(/plugins/fb_app_ecosol_store/images/loading.gif) no-repeat center center;
     width: 80%;

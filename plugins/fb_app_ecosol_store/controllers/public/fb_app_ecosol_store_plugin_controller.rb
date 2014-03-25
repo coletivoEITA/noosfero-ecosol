@@ -72,7 +72,7 @@ class FbAppEcosolStorePluginController < PublicController
         parse_signed_request(signed_request)['page']['id']
       end
     else
-      @page_ids = params[:page_id].values rescue []
+      @page_ids = if params[:page_id].is_a? Hash then params[:page_id].values else params[:page_id].to_a end
     end
 
     @configs = FbAppEcosolStorePlugin::PageConfig.where(:page_id => @page_ids)

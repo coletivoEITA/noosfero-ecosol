@@ -11,6 +11,10 @@ body.controller-fb_app_ecosol_store_plugin {
     border-radius: 10px 10px 0 0;
   }
 
+  input.small-loading {
+    background: transparent url(/images/loading-small.gif) no-repeat scroll right center;
+  }
+
   .loading {
     background: white url(/plugins/fb_app_ecosol_store/images/loading.gif) no-repeat center center;
     width: 80%;
