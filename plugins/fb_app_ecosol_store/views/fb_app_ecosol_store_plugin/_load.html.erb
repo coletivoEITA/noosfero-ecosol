@@ -1,8 +1,12 @@
+<% callback = '' unless defined? callback %>
+
 <div id="fb-root"></div>
 
 <%= javascript_include_tag 'https://connect.facebook.net/en_US/all.js' %>
 <% javascript_tag do %>
   fb_app_ecosol_store.base_url = '/plugin/fb_app_ecosol_store';
   fb_app_ecosol_store.fb.init(<%= (FbAppEcosolStorePlugin.config['app']['id'] rescue '').to_json %>,
-    <%= url_for(:only_path => false, :action => :index).gsub('/fb_app_ecosol_store_plugin', '').to_json %>);
+    <%= url_for(:only_path => false, :action => :index).gsub('/fb_app_ecosol_store_plugin', '').to_json %>,
+    <%= callback.to_json %>,
+  );
 <% end %>

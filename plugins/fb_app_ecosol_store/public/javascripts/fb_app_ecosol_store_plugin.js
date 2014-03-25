@@ -146,7 +146,7 @@ fb_app_ecosol_store = {
     id: '',
     page_tab_next: '',
 
-    init: function(id, next) {
+    init: function(id, next, asyncInit) {
       this.id = id;
       this.page_tab_next = next;
 
@@ -160,6 +160,9 @@ fb_app_ecosol_store = {
 
         fb_app_ecosol_store.fb.size_change();
         jQuery(document).on('DOMNodeInserted', fb_app_ecosol_store.fb.size_change);
+
+        if (asyncInit)
+          jQuery.globalEval(asyncInit)
       };
     },
 
