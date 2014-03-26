@@ -13,7 +13,7 @@ fb_app_ecosol_store = {
         this.init_autocomplete();
         this.redraw_tabela_empreendimentos();
         //init commit button
-        jQuery('#fb_commit_btn').on('click',this.commit.bind(this));
+        jQuery('#fb_ecosol_admin_save_button').on('click',this.commit.bind(this));
       }
     },
 
@@ -149,11 +149,11 @@ fb_app_ecosol_store = {
       jQuery.ajax({
         url: '/plugin/fb_app_ecosol_store/admin',
         type: 'post',
-        dataType: 'json',
+        dataType: 'script', /* json */
         data: data,
-        success: function(data) {
+        /*success: function(data) {
           display_notice('Aba instalada!');
-        },
+        }, */
         error: function() {
           alert('Erro!')
         }
