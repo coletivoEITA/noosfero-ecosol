@@ -1,6 +1,7 @@
 @import url(http://dtygel.eita.org.br/lojacirandasfb/style.css);
 body.controller-fb_app_ecosol_store_plugin {
-  margin-top: 40px; }
+  margin-top: 40px;
+  /* admin popin */ }
   body.controller-fb_app_ecosol_store_plugin .box-3, body.controller-fb_app_ecosol_store_plugin .box-2, body.controller-fb_app_ecosol_store_plugin #theme-header {
     display: none; }
   body.controller-fb_app_ecosol_store_plugin #wrap-1, body.controller-fb_app_ecosol_store_plugin #wrap-2 {
@@ -12,10 +13,19 @@ body.controller-fb_app_ecosol_store_plugin {
     width: 80%;
     height: 300px;
     margin: auto; }
+  body.controller-fb_app_ecosol_store_plugin #cboxContent {
+    overflow: auto;
+    position: initial; }
+  body.controller-fb_app_ecosol_store_plugin .twitter-typeahead {
+    position: absolute !important; }
+  body.controller-fb_app_ecosol_store_plugin #fb_store_admin_page {
+    width: 650px; }
 
+/* control panel */
 .controller-profile_editor a.control-panel-fb-app-ecosol-store {
   background-image: url(/plugins/fb_app_ecosol_store/images/control-panel.png); }
 
+/* typeahead */
 .tt-hint {
   display: block;
   width: 100%;

@@ -21,12 +21,27 @@ body.controller-fb_app_ecosol_store_plugin {
     height: 300px;
     margin: auto;
   }
+
+  /* admin popin */
+
+  #cboxContent {
+    overflow: auto;
+    position: initial;
+  }
+  .twitter-typeahead {
+    position: absolute !important;
+  }
+  #fb_store_admin_page {
+    width: 650px;
+  }
 }
 
+/* control panel */
 .controller-profile_editor a.control-panel-fb-app-ecosol-store {
   background-image: url(/plugins/fb_app_ecosol_store/images/control-panel.png);
 }
 
+/* typeahead */
 .tt-hint {
   display: block;
   width: 100%;

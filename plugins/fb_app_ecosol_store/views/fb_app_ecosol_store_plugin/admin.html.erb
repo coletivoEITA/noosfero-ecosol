@@ -1,52 +1,54 @@
-<span id="fb_store_admin_page"></span>
+<div id="fb_store_admin_page">
 
-<% form_tag({:action => :admin}, {:onsubmit => "jQuery(this).ajaxSubmit(); return false"}) do |f| %>
+  <% form_tag({:action => :admin}, {:onsubmit => "jQuery(this).ajaxSubmit(); return false"}) do |f| %>
 
-  <%= hidden_field_tag 'page_id', @page_ids.first %>
-  <%= hidden_field_tag 'signed_request', @signed_requests.first %>
+    <%= hidden_field_tag 'page_id', @page_ids.first %>
+    <%= hidden_field_tag 'signed_request', @signed_requests.first %>
 
-  <h2>Vitrine de produtos do Cirandas no Facebook</h2>
-  <p>A vitrine de produtos pode ser definida por uma palavra-chave ou por uma lista de empreendimentos.</p>
-  <p>Escolha o modo de integração:</p>
-  <h3><input type="radio" name="fb_integration_type" value="query">Palavra-chave</h3>
-  <div id="fb_integration_type_query">
-    <input type="text" name="fb_keyword" value="<%= @query %>">
-  </div>
-  <h3><input type="radio" name="fb_integration_type" value="profiles">Empreendimento ou lista de empreedimentos</h3>
-  <div id="fb_integration_type_profiles">
-    <table>
-      <tbody id="fb_tabela_empreendimentos"></tbody>
-    </table>
-    <div>
-      Adicionar novo empreendimento: <input type="text" name="fb_store" style="width:350px; margin-right:40px;"/>
+    <h2>Vitrine de produtos do Cirandas no Facebook</h2>
+    <p>A vitrine de produtos pode ser definida por uma palavra-chave ou por uma lista de empreendimentos.</p>
+    <p>Escolha o modo de integração:</p>
+    <h3><input type="radio" name="fb_integration_type" value="query">Palavra-chave</h3>
+    <div id="fb_integration_type_query">
+      <input type="text" name="fb_keyword" value="<%= @query %>">
     </div>
-  </div>
+    <h3><input type="radio" name="fb_integration_type" value="profiles">Empreendimento ou lista de empreedimentos</h3>
+    <div id="fb_integration_type_profiles">
+      <table>
+        <tbody id="fb_tabela_empreendimentos"></tbody>
+      </table>
+      <div>
+        Adicionar novo empreendimento: <input type="text" name="fb_store" style="width:350px; margin-right:40px;"/>
+      </div>
+    </div>
 
-  <br/>
+    <br/>
 
-  <%= submit_button :save, 'Salvar'  %>
-  <a href="" onclick="fb_app_ecosol_store.admin.cancel()">cancelar</a>
+    <%= submit_button :save, 'Salvar'  %>
+    <a href="" onclick="fb_app_ecosol_store.admin.cancel()">cancelar</a>
 
-<% end %>
-
-<% javascript_tag do %>
-  window.empreendimentos = [];
-  window.page_id = <%= params[:page_id].to_json.html_safe %>;
-
-  <% if @profiles.present? %>
-    <% @profiles.each do |profile| %>
-
-      empreendimentos.push({
-        name: <%= profile.name.to_json.html_safe %>,
-        id: <%= profile.id.to_json.html_safe %>,
-        identifier: <%= profile.identifier.to_json.html_safe %>
-      });
-
-    <% end %>
   <% end %>
 
-  jQuery('document').ready(function(){
-    fb_app_ecosol_store.admin.init();
-  });
+  <% javascript_tag do %>
+    window.empreendimentos = [];
+    window.page_id = <%= params[:page_id].to_json.html_safe %>;
 
-<% end %>
+    <% if @profiles.present? %>
+      <% @profiles.each do |profile| %>
+
+        empreendimentos.push({
+          name: <%= profile.name.to_json.html_safe %>,
+          id: <%= profile.id.to_json.html_safe %>,
+          identifier: <%= profile.identifier.to_json.html_safe %>
+        });
+
+      <% end %>
+    <% end %>
+
+    jQuery('document').ready(function(){
+      fb_app_ecosol_store.admin.init();
+    });
+
+  <% end %>
+
+</div>
