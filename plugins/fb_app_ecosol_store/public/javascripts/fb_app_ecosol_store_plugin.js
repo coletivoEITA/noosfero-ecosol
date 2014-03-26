@@ -140,8 +140,10 @@ fb_app_ecosol_store = {
       }
 
       var data = {
-        fb_integration_type: jQuery( "[name=fb_integration_type]:checked" ).val(),
-        keyword: jQuery('[name=fb_keyword]').val(),
+        /*fb_integration_type: jQuery( "[name=fb_integration_type]:checked" ).val(),
+         keyword: jQuery('[name=fb_keyword]').val(),
+         */
+        fb_integration_type: 'profiles',
         profile_ids: profile_ids,
         page_id: window.page_id,
       }

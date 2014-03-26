@@ -6,6 +6,8 @@
     <%= hidden_field_tag 'signed_request', @signed_requests.first %>
 
     <h2>Vitrine de produtos do Cirandas no Facebook</h2>
+    <p>A vitrine de produtos pode ser definida por uma lista de empreendimentos</p>
+    <!--
     <p>A vitrine de produtos pode ser definida por uma palavra-chave ou por uma lista de empreendimentos.</p>
     <p>Escolha o modo de integração:</p>
     <h3><input type="radio" name="fb_integration_type" value="query">Palavra-chave</h3>
@@ -13,6 +15,7 @@
       <input type="text" name="fb_keyword" value="<%= @query %>">
     </div>
     <h3><input type="radio" name="fb_integration_type" value="profiles">Empreendimento ou lista de empreedimentos</h3>
+    -->
     <div id="fb_integration_type_profiles">
       <table>
         <tbody id="fb_tabela_empreendimentos"></tbody>
