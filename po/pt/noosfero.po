@@ -3050,19 +3050,25 @@ msgstr "Estatísticas para %s"
 msgid "This block presents some statistics about your environment."
 msgstr "Este bloco apresenta suas estatísticas sobre seu ambiente."
 
-#: app/models/environment_statistics_block.rb:21
+#: app/views/environment_statistics.html.erb
 msgid "One user"
 msgid_plural "%{num} users"
 msgstr[0] "Um usuário"
 msgstr[1] "%{num} usuários"
 
-#: app/models/environment_statistics_block.rb:23
+#: app/views/environment_statistics.html.erb
 msgid "One enterprise"
 msgid_plural "%{num} enterprises"
 msgstr[0] "Um empreendimento"
 msgstr[1] "%{num} empreendimentos"
 
-#: app/models/environment_statistics_block.rb:25
+#: app/views/environment_statistics.html.erb
+msgid "One product"
+msgid_plural "%{num} products"
+msgstr[0] "Um produto"
+msgstr[1] "%{num} produtos"
+
+#: app/views/environment_statistics.html.erb
 #: app/views/blocks/my_network/person.rhtml:6
 msgid "One community"
 msgid_plural "%{num} communities"

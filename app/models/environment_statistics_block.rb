@@ -13,18 +13,18 @@ class EnvironmentStatisticsBlock < Block
   end
 
   def content(args={})
+    block = self
     users = owner.people.visible.count
-    enterprises = owner.enterprises.visible.enabled.count
     communities = owner.communities.visible.count
+    enterprises = owner.enterprises.visible.enabled.count
+    products = owner.products.enabled.public.count
 
-    info = []
-    info << (n_('One user', '%{num} users', users) % { :num => users })
-    unless owner.enabled?('disable_asset_enterprises')
-      info << (n__('One enterprise', '%{num} enterprises', enterprises) % { :num => enterprises })
+    lambda do
+      render :file => 'blocks/environment_statistics', :locals => {:block => block,
+        :users => users, :communities => communities,
+        :enterprises => enterprises, :products => products,
+      }
     end
-    info << (n__('One community', '%{num} communities', communities) % { :num => communities })
-
-    block_title(title) + content_tag('ul', info.map {|item| content_tag('li', item) }.join("\n"))
   end
 
 end

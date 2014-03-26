@@ -43,6 +43,10 @@ class Product < ActiveRecord::Base
   validates_numericality_of :price, :allow_nil => true
   validates_numericality_of :discount, :allow_nil => true
 
+  named_scope :enabled, :conditions => ['profiles.enabled = ?', true]
+  named_scope :visible, :conditions => ['profiles.visible = ?', true]
+  named_scope :public, :conditions => ['profiles.visible = ? AND profiles.public_profile = ?', true, true]
+
   named_scope :more_recent, :order => "created_at DESC"
 
   named_scope :from_category, lambda { |category|
