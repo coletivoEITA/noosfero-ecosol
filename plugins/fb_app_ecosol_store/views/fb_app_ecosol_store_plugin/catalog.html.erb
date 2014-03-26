@@ -1,8 +1,4 @@
-<% if (@data['page']['admin'] rescue true) %>
-  <div id="manage-fb-store-ctrl">
-    <%= button :product, 'Configurar Loja', {:controller => :fb_app_ecosol_store_plugin, :action => :admin, :page_id => @page_ids}, :class => 'colorbox' %>
-  </div>
-<% end %>
+<%= render 'configure' %>
 
 <%= render :file => "#{Rails.root}/app/views/catalog/index.html.erb" %>
 

@@ -12,7 +12,9 @@ class FbAppEcosolStorePluginController < PublicController
       render :action => 'tabs_added', :layout => false
     elsif params[:signed_request] or params[:page_id]
       if @config
-        if @config.profiles.present? and @config.profiles.size == 1
+        if @config.blank?
+          render :action => 'first_load'
+        elsif @config.profiles.present? and @config.profiles.size == 1
           @profile = @config.profiles.first
           extend CatalogHelper
           catalog_load_index
@@ -20,6 +22,17 @@ class FbAppEcosolStorePluginController < PublicController
           render :action => 'catalog'
         else
           @query = if @config.profiles.present? then @config.profiles.map(&:identifier).join(' OR ') else @config.query end
+          @empty_query = @category.nil? && @query.blank?
+
+          page = (params[:page] || '1').to_i
+          @asset = :products
+          @order ||= [@asset]
+          @names = {}
+          @scope = @environment.products
+          @searches ||= {}
+          @searches[@asset] = @scope.find_by_contents @query, {:page => page}
+
+          render :action => 'search'
         end
       else
         render :action => 'first_load'

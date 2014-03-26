@@ -4,6 +4,12 @@ class FbAppEcosolStorePlugin::PageConfig < Noosfero::Plugin::ActiveRecord
 
   validates_presence_of :page_id
 
+  validates_uniqueness_of :page_id
+
+  def blank?
+    self.profiles.blank? and self.query.blank?
+  end
+
   def profiles
     return nil if self.config[:type] != 'profiles'
     Profile.where(:id => self.config[:data])

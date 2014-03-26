@@ -19,7 +19,8 @@ body.controller-fb_app_ecosol_store_plugin {
   body.controller-fb_app_ecosol_store_plugin .twitter-typeahead {
     position: absolute !important; }
   body.controller-fb_app_ecosol_store_plugin #fb_store_admin_page {
-    width: 650px; }
+    width: 650px;
+    width: 400px; }
 
 /* control panel */
 .controller-profile_editor a.control-panel-fb-app-ecosol-store {
