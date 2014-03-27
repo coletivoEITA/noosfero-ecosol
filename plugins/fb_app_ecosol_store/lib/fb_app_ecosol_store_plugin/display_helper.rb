@@ -4,7 +4,14 @@ module FbAppEcosolStorePlugin::DisplayHelper
 
   def self.included base
     base.send :include, ActionView::Helpers::UrlHelper
-    base.alias_method_chain :link_to, :target_blank
+    #base.alias_method_chain :link_to, :target_blank
+    base.alias_method_chain :link_to_product, :iframe
+  end
+
+  def link_to_product_with_iframe product, options={}
+    link_to content_tag('span', product.name),
+            params.merge(:product_id => product.id),
+            options
   end
 
   def link_to_with_target_blank name = nil, options = nil, html_options = nil, &block

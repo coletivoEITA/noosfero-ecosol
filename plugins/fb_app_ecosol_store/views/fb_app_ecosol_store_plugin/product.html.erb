@@ -1,0 +1,5 @@
+<% extend ManageProductsHelper %>
+
+<%= button :back, 'Voltar a loja', params.except(:product_id) %>
+<%= render :file => "#{Rails.root}/app/views/manage_products/show.rhtml" %>
+

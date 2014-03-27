@@ -1,6 +1,7 @@
 <% if (@data['page']['admin'] rescue true) %>
   <div id="manage-fb-store-ctrl">
-    <%= button :edit, 'Configurar Loja', {:controller => :fb_app_ecosol_store_plugin, :action => :admin, :page_id => @page_ids}, :class => 'colorbox' %>
+    <%= button :edit, 'Configurar Loja', {:controller => :fb_app_ecosol_store_plugin, :action => :admin, :page_id => @page_ids},
+      :onclick => "jQuery.colorbox({top: 50, href: this.href}); return false;"  %>
   </div>
 <% end %>
 

@@ -20,6 +20,13 @@ class FbAppEcosolStorePluginController < PublicController
       if @config
         if @config.blank?
           render :action => 'first_load'
+        elsif product_id = params[:product_id]
+          @product = environment.products.find product_id
+          @profile = @product.profile
+          @inputs = @product.inputs
+          @allowed_user = user && user.has_permission?('manage_products', profile)
+
+          render :action => 'product'
         elsif @config.profiles.present? and @config.profiles.size == 1
           @profile = @config.profiles.first
           extend CatalogHelper
