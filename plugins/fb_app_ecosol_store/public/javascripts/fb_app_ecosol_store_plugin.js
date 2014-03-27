@@ -13,11 +13,13 @@ fb_app_ecosol_store = {
         this.init_autocomplete();
         this.redraw_tabela_empreendimentos();
         //init commit button
-        jQuery('#fb_ecosol_admin_save_button').on('click',this.commit.bind(this));
+          jQuery('#fb_ecosol_admin_save_button').on('click',this.commit.bind(this));
+          jQuery('#fb_ecosol_close_button').on('click',this.close.bind(this));
       }
     },
 
-    close: function() {
+    close: function(evt) {
+     if (evt != null && evt != void 0) { evt.preventDefault(); evt.stopPropagation();}
       jQuery.colorbox.close();
       window.location.reload();
     },
