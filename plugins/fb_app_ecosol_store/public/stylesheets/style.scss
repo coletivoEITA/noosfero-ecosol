@@ -36,8 +36,13 @@ body.controller-fb_app_ecosol_store_plugin {
   }
   #fb_store_admin_page {
     width: 650px;
-    width: 400px;
+    height: 500px;
   }
+
+  #fb_integration_type_profiles table {
+    margin: 20px;
+  }
+
 }
 
 /* control panel */

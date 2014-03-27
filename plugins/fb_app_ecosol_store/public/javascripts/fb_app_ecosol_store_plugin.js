@@ -21,7 +21,7 @@ fb_app_ecosol_store = {
     close: function(evt) {
      if (evt != null && evt != void 0) { evt.preventDefault(); evt.stopPropagation();}
       jQuery.colorbox.close();
-      window.location.href = window.location.pathname + window.location.search
+      window.location.href = window.location.protocol +'//'+ window.location.host + window.location.pathname;
     },
 
     cancel: function() {
