@@ -2729,10 +2729,17 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 #product-list li.product .expand-box .float-box {
   display: none;
   position: absolute;
-  left: -220px;
-  top: -11px;
   z-index: 10;
 }
+#product-list li.product .expand-box .float-box.left {
+  left: -220px;
+  top: -11px;
+}
+#product-list li.product .expand-box .float-box.up {
+  left: 0px;
+  top: 9px;
+}
+
 #product-list li.product .expand-box.open .float-box {
   display: block;
 }
@@ -2752,11 +2759,21 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   text-align: left;
 }
 #product-list li.product .expand-box .arrow {
-  border-left: 6px solid #1EB46D;
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  margin-top: 13px;
+  background-color: transparent;
+  border-color: transparent;
+  border-width: 6px;
+  border-style: solid;
+  width: 0;
+  height: 0;
+}
+#product-list li.product .expand-box .left .arrow {
+  border-left-color: #1eb46d;
   float: right;
+  margin-top: 13px;
+}
+#product-list li.product .expand-box .up .arrow {
+  border-bottom-color: #1eb46d;
+  margin-left: 3px;
 }
 
 #product-list li.product.not-available .expand-box {

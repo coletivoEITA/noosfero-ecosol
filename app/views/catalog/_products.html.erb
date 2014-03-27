@@ -1,3 +1,5 @@
+<% float_box_position ||= 'left' %>
+
 <ul id="product-list">
   <% products.each do |product| %>
     <% extra_content = @plugins.dispatch(:catalog_item_extras, product).collect { |content| instance_eval(&content) } %>
@@ -45,7 +47,7 @@
         <% if product.description %>
           <li class="product-description expand-box">
             <span class="product-description-button"><%= _('description') %></span>
-            <div class="float-box">
+            <div class="float-box <%=float_box_position%>">
               <div class="arrow"></div>
               <div class="content"><%= product.description %></div>
             </div>
@@ -55,7 +57,7 @@
         <% if product.price_described? %>
           <li class="product-price-composition expand-box">
             <span class="product-price-composition-button"><%= _('price composition') %></span>
-            <div class="float-box">
+            <div class="float-box <%=float_box_position%>">
               <div class="arrow"></div>
               <div class="content">
                 <% product.inputs.relevant_to_price.each do |i| %>
@@ -78,7 +80,7 @@
         <% if product.inputs.count > 0 %>
           <li class="product-inputs expand-box">
             <span id="inputs-button"><%= _('inputs and raw materials') %></span>
-            <div class="float-box">
+            <div class="float-box <%=float_box_position%>">
               <div class="arrow"></div>
               <div class="content">
                 <% product.inputs.each do |i| %>
