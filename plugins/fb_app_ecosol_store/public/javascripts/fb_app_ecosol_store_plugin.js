@@ -77,6 +77,7 @@ fb_app_ecosol_store = {
         this.selected_empreendimento = null;
         jQuery('[name=fb_store]').val('');
         this.redraw_tabela_empreendimentos();
+        this.commit();
       }
     },
 
@@ -121,15 +122,20 @@ fb_app_ecosol_store = {
         tr_html += '</tr>';
         tr = jQuery(tr_html);
         tbody.append(tr);
-        remove_button = jQuery('<button data-profile-pos="'+i+'">Remover</button>');
+        remove_button = jQuery('<input type="button" data-profile-pos="'+i+'" class="button with-text icon-remove" value="Remover"/>');
         remove_button.on('click',function(evt) {
+          evt.preventDefault();
+          evt.stopPropagation();
           var pos = parseInt(jQuery(evt.target).data('profile-pos'));
           empreendimentos.splice(pos,1);
           self.redraw_tabela_empreendimentos();
+          self.commit();
         });
         tr.find('.remove-btn-holder').append(remove_button);
       }
     },
+
+
 
     commit: function(evt) {
       if (evt != null && evt != void 0) { evt.preventDefault(); evt.stopPropagation();}
@@ -140,22 +146,21 @@ fb_app_ecosol_store = {
       }
 
       var data = {
-        /*fb_integration_type: jQuery( "[name=fb_integration_type]:checked" ).val(),
-         keyword: jQuery('[name=fb_keyword]').val(),
-         */
-        fb_integration_type: 'profiles',
+        fb_integration_type: jQuery( "[name=fb_integration_type]:checked" ).val(),
+        keyword: jQuery('[name=fb_keyword]').val(),
         profile_ids: profile_ids,
         page_id: window.page_id,
+        operation: 'replace'
       }
 
       jQuery.ajax({
         url: '/plugin/fb_app_ecosol_store/admin',
         type: 'post',
-        dataType: 'script', /* json */
+        dataType: 'json', /* json */
         data: data,
-        /*success: function(data) {
-          display_notice('Aba instalada!');
-        }, */
+        success: function(data) {
+          //display_notice('Aba instalada!');
+        },
         error: function() {
           alert('Erro!')
         }
