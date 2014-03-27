@@ -1,8 +1,14 @@
+# workaround for plugins' scope problem
+require_dependency 'fb_app_ecosol_store_plugin/display_helper'
+FbAppEcosolStorePlugin::FbAppEcosolStoreDisplayHelper = FbAppEcosolStorePlugin::DisplayHelper
+
 class FbAppEcosolStorePluginController < PublicController
 
   no_design_blocks
 
   before_filter :change_theme
+
+  helper FbAppEcosolStorePlugin::FbAppEcosolStoreDisplayHelper
 
   def index
     load_configs
