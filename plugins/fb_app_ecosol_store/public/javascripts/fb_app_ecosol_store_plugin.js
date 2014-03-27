@@ -13,9 +13,7 @@ fb_app_ecosol_store = {
         this.init_integration_type_selection();
         this.init_autocomplete();
         this.redraw_tabela_empreendimentos();
-        //init commit button
-          jQuery('#fb_ecosol_admin_save_button').on('click',this.commit.bind(this));
-          jQuery('#fb_ecosol_close_button').on('click',this.close.bind(this));
+        jQuery('#fb_ecosol_close_button').on('click',this.close.bind(this));
       }
     },
 
