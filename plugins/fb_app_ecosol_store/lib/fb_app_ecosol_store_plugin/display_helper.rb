@@ -10,7 +10,7 @@ module FbAppEcosolStorePlugin::DisplayHelper
 
   def link_to_product_with_iframe product, options={}
     link_to content_tag('span', product.name),
-            params.merge(:product_id => product.id),
+            params.merge(:controller => :fb_app_ecosol_store_plugin, :product_id => product.id),
             options
   end
 

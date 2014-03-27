@@ -22,7 +22,12 @@ body.controller-fb_app_ecosol_store_plugin {
     display: none; }
   body.controller-fb_app_ecosol_store_plugin #fb_store_admin_page {
     width: 650px;
-    width: 400px; }
+    height: 500px; }
+  body.controller-fb_app_ecosol_store_plugin #fb_integration_type_profiles table {
+    margin: 0 0 20px 20px;
+    width: 90%; }
+  body.controller-fb_app_ecosol_store_plugin a.see-more {
+    display: none; }
 
 /* control panel */
 .controller-profile_editor a.control-panel-fb-app-ecosol-store {

@@ -1,4 +1,5 @@
 fb_app_ecosol_store = {
+  current_url: '',
 
   addJS: function(url) {
     var script = document.createElement('script'); script.type = 'text/javascript'; script.src = url;
@@ -21,7 +22,7 @@ fb_app_ecosol_store = {
     close: function(evt) {
      if (evt != null && evt != void 0) { evt.preventDefault(); evt.stopPropagation();}
       jQuery.colorbox.close();
-      window.location.href = window.location.protocol +'//'+ window.location.host + window.location.pathname;
+      window.location.href = this.current_url;
     },
 
     cancel: function() {
@@ -79,7 +80,6 @@ fb_app_ecosol_store = {
         this.selected_empreendimento = null;
         jQuery('[name=fb_store]').val('');
         this.redraw_tabela_empreendimentos();
-        this.commit();
       }
     },
 
@@ -131,43 +131,9 @@ fb_app_ecosol_store = {
           var pos = parseInt(jQuery(evt.target).data('profile-pos'));
           empreendimentos.splice(pos,1);
           self.redraw_tabela_empreendimentos();
-          self.commit();
         });
         tr.find('.remove-btn-holder').append(remove_button);
       }
-    },
-
-
-
-    commit: function(evt) {
-      if (evt != null && evt != void 0) { evt.preventDefault(); evt.stopPropagation();}
-
-      var profile_ids = []
-      for (var i=0;i<empreendimentos.length;i++) {
-        profile_ids.push(empreendimentos[i].id)
-      }
-
-      var data = {
-        fb_integration_type: jQuery( "[name=fb_integration_type]:checked" ).val(),
-        keyword: jQuery('[name=fb_keyword]').val(),
-        profile_ids: profile_ids,
-        page_id: window.page_id,
-        operation: 'replace'
-      }
-
-      jQuery.ajax({
-        url: '/plugin/fb_app_ecosol_store/admin',
-        type: 'post',
-        dataType: 'json', /* json */
-        data: data,
-        success: function(data) {
-          //display_notice('Aba instalada!');
-        },
-        error: function() {
-          alert('Erro!')
-        }
-      });
-
     },
 
   },

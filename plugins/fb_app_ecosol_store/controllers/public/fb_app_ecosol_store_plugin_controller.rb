@@ -24,7 +24,7 @@ class FbAppEcosolStorePluginController < PublicController
           @product = environment.products.find product_id
           @profile = @product.profile
           @inputs = @product.inputs
-          @allowed_user = user && user.has_permission?('manage_products', profile)
+          @allowed_user = false
 
           render :action => 'product'
         elsif @config.profiles.present? and @config.profiles.size == 1
@@ -75,7 +75,7 @@ class FbAppEcosolStorePluginController < PublicController
               @config.profile_ids = params[:profile_ids].to_a
           end
         when 'query'
-          @config.query = params[:keyword].to_s
+          @config.query = params[:fb_keyword].to_s
       end
       @config.save!
 
