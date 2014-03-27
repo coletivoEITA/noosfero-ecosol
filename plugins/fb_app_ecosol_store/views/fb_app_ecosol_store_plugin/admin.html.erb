@@ -11,7 +11,8 @@
     <p>Escolha o modo de integração:</p>
     <h3><input type="radio" name="fb_integration_type" value="query">Palavra-chave</h3>
     <div id="fb_integration_type_query">
-      <input type="text" name="fb_keyword" value="<%= @query %>">
+      <input type="text" name="fb_keyword" value="<%= @query %>">  <%= submit_button :save, 'Salvar' , :id => 'fb_ecosol_admin_save_button' %>
+
     </div>
     <h3><input type="radio" name="fb_integration_type" value="profiles">Empreendimento ou lista de empreedimentos</h3>
 
@@ -25,6 +26,9 @@
     </div>
 
     <br/>
+
+    <%= submit_button :close, 'Fechar' , :id => 'fb_ecosol_close_button' %>
+
 <!--
     <%= submit_button :save, 'Salvar', :id => 'fb_ecosol_admin_save_button'  %>
     <a href="" onclick="fb_app_ecosol_store.admin.cancel()">cancelar</a>
