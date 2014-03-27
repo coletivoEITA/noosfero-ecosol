@@ -49,17 +49,25 @@ class FbAppEcosolStorePluginController < PublicController
     @query = @config.query rescue ''
 
     if request.post?
-      create_configs if @config.blank?
+      create_configs if @config.nil?
 
       case params[:fb_integration_type]
         when 'profiles'
-          @config.profile_ids = params[:profile_ids].to_a
+          case params[:operation]
+            when 'add'
+              @config.profile_ids = (@config.profile_ids || []) + params[:profile_ids].to_a
+            when 'remove'
+              @config.profile_ids = (@config.profile_ids || []) - params[:profile_ids].to_a
+            when 'replace'
+              @config.profile_ids = params[:profile_ids].to_a
+          end
         when 'query'
           @config.query = params[:keyword].to_s
       end
       @config.save!
 
-      respond_to{ |format| format.js{ render :action => 'admin', :layout => false } }
+      #respond_to{ |format| format.js{ render :action => 'admin', :layout => false } }
+      respond_to{ |format| format.js{ render :json => []}}
     else
       respond_to{ |format| format.html }
     end
