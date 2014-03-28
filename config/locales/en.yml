@@ -648,6 +648,8 @@
         un: un.
         value: value
         value_parcel: "value parcel"
+        phone: 'Telephone'
+        mail: 'Email'
     controllers: 
       myprofile: 
         message_controller: 

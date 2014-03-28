@@ -36,14 +36,14 @@ module OrdersCyclePlugin::Report
 
         items_by_supplier.each do |supplier, items, total_price_asked, total_parcel_asked|
 
-          sheet.add_row [t('lib.report.supplier'),'','','','','','','','','',''], :style => bluecell
+          sheet.add_row [t('lib.report.supplier'),'',t('lib.report.phone'),'',t('lib.report.mail'),'','','','','',''], :style => bluecell
           sheet.merge_cells "A#{sbs}:B#{sbs}"
 
           # sp = index of the start of the products list / ep = index of the end of the products list
           sp = sbs + 4
           ep = sp + items.count - 1
           sheet.add_row [
-            supplier.abbreviation_or_name, '', '', '','', '', '', '', '', '', ''], :style => default
+            supplier.abbreviation_or_name, '', supplier.profile.contact_phone, '',supplier.profile.contact_email, '', '', '', '', '', ''], :style => default
             sbe = sbs+1
           ["A#{sbe}:B#{sbe}","C#{sbe}:D#{sbe}", "E#{sbe}:F#{sbe}"].each {|c| sheet.merge_cells c }
 
@@ -119,12 +119,12 @@ module OrdersCyclePlugin::Report
         sbs = 1
         orders.each do |order|
 
-          sheet.add_row [t('lib.report.order_code'), t('lib.report.member_name'), '', '', '', '', ''], :style => bluecell_b_top
-          sheet.merge_cells "B#{sbs}:C#{sbs}"
+          sheet.add_row [t('lib.report.order_code'), t('lib.report.member_name'), '', t('lib.report.phone'), '', t('lib.report.mail'), ''], :style => bluecell_b_top
+          ["B#{sbs}:C#{sbs}","D#{sbs}:E#{sbs}", "F#{sbs}:G#{sbs}"].each {|c| sheet.merge_cells c }
 
-          sheet.add_row [order.code, order.consumer.name, '','','','',''], :style => default
+          sheet.add_row [order.code, order.consumer.name, '',order.consumer.contact_phone,'',order.consumer.contact_email,''], :style => default
 
-          sheet.merge_cells "B#{sbs+1}:C#{sbs+1}"
+          ["B#{sbs+1}:C#{sbs+1}","D#{sbs+1}:E#{sbs+1}", "F#{sbs+1}:G#{sbs+1}"].each {|c| sheet.merge_cells c }
 
           sheet.add_row [t('lib.report.created'), t('lib.report.modified'), '','', '','',''], :style => bluecell
 

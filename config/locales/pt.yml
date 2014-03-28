@@ -655,6 +655,8 @@
         un: un.
         value: Valor
         value_parcel: "Valor da encomenda"
+        phone: 'Telefone'
+        mail: 'Email'
     controllers: 
       myprofile: 
         message_controller: 
