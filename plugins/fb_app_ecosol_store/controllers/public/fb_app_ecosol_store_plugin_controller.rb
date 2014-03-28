@@ -83,8 +83,9 @@ class FbAppEcosolStorePluginController < PublicController
   end
 
   def search
-    @query = params[:query]
-    @profiles = environment.enterprises.enabled.public.all :limit => 12, :conditions => ['name !~ ? OR identifier !~ ?', @query, @query], :order => 'name ASC'
+    @query = params[:query].downcase
+    @profiles = environment.enterprises.enabled.public.all :limit => 12, :order => 'name ASC',
+      :conditions => ['LOWER(name) LIKE ? OR LOWER(name) LIKE ? OR identifier LIKE ?', "#{@query}%", "% #{@query}%", "#{@query}%"]
     render :json => (@profiles.map do |profile|
       {:name => profile.name, :id => profile.id, :identifier => profile.identifier}
     end)
