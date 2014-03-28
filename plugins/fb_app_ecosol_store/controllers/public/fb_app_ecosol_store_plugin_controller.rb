@@ -41,9 +41,9 @@ class FbAppEcosolStorePluginController < PublicController
           @asset = :products
           @order ||= [@asset]
           @names = {}
-          @scope = @environment.products
+          @scope = @environment.products.enabled.public
           @searches ||= {}
-          @searches[@asset] = @scope.find_by_contents @query, {:page => page}
+          @searches[@asset] = @scope.find_by_contents @query, {:page => page, :per_page => 20}
 
           render :action => 'search'
         end
@@ -66,21 +66,13 @@ class FbAppEcosolStorePluginController < PublicController
 
       case params[:fb_integration_type]
         when 'profiles'
-          case params[:operation]
-            when 'add'
-              @config.profile_ids = (@config.profile_ids || []) + params[:profile_ids].to_a
-            when 'remove'
-              @config.profile_ids = (@config.profile_ids || []) - params[:profile_ids].to_a
-            when 'replace'
-              @config.profile_ids = params[:profile_ids].to_a
-          end
+          @config.profile_ids = params[:profile_ids].to_a
         when 'query'
           @config.query = params[:fb_keyword].to_s
       end
       @config.save!
 
-      #respond_to{ |format| format.js{ render :action => 'admin', :layout => false } }
-      respond_to{ |format| format.js{ render :json => []}}
+      respond_to{ |format| format.js{ render :action => 'admin', :layout => false } }
     else
       respond_to{ |format| format.html }
     end
@@ -91,7 +83,8 @@ class FbAppEcosolStorePluginController < PublicController
   end
 
   def search
-    @profiles = environment.enterprises.enabled.find_by_contents(params[:query])[:results]
+    @query = params[:query]
+    @profiles = environment.enterprises.enabled.public.all :limit => 12, :conditions => ['name !~ ? OR identifier !~ ?', @query, @query], :order => 'name ASC'
     render :json => (@profiles.map do |profile|
       {:name => profile.name, :id => profile.id, :identifier => profile.identifier}
     end)

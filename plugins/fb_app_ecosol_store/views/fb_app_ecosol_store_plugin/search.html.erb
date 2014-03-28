@@ -1,6 +1,6 @@
 <%= render 'configure' %>
 
-<%= _('%d products') % search[:results].total_entries %>
+<%= _('%d products') % @searches[@asset][:results].total_entries %>
 
 <% extend SearchHelper %>
 <% params[:controller] = 'search' # for partial_for_class to work %>

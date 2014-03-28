@@ -28,6 +28,8 @@ body.controller-fb_app_ecosol_store_plugin {
     width: 90%; }
   body.controller-fb_app_ecosol_store_plugin a.see-more {
     display: none; }
+  body.controller-fb_app_ecosol_store_plugin .button-bar .icon-back {
+    display: none; }
 
 /* control panel */
 .controller-profile_editor a.control-panel-fb-app-ecosol-store {
@@ -60,9 +62,9 @@ body.controller-fb_app_ecosol_store_plugin {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); }
 
 .tt-suggestion {
-  padding: 6px 12px;
-  font-size: 12px;
-  line-height: 1.428571429; }
+  padding: 0 12px;
+  font-size: 11px;
+  line-height: 100%; }
 
 .tt-suggestion:hover {
   color: #fff;

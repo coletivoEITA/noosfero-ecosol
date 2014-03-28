@@ -13,14 +13,13 @@ fb_app_ecosol_store = {
         this.init_integration_type_selection();
         this.init_autocomplete();
         this.redraw_tabela_empreendimentos();
-        jQuery('#fb_ecosol_close_button').on('click',this.close.bind(this));
       }
     },
 
     close: function(evt) {
      if (evt != null && evt != void 0) { evt.preventDefault(); evt.stopPropagation();}
       jQuery.colorbox.close();
-      window.location.href = this.current_url;
+      window.location.href = fb_app_ecosol_store.current_url;
     },
 
     cancel: function() {
@@ -56,6 +55,7 @@ fb_app_ecosol_store = {
       input.typeahead(null, {
         name: 'fb_search_store',
         displayKey: 'name',
+        limit: 12,
         source: profilesSearch.ttAdapter()
       });
 
@@ -119,6 +119,7 @@ fb_app_ecosol_store = {
         tr_html  = '<tr>';
         tr_html += '<td>'+empreendimentos[i].name+'</td>';
         tr_html += '<td class="remove-btn-holder"></td>';
+        tr_html += '<input type="hidden" name="profile_ids[]" value="'+empreendimentos[i].id+'"/>';
         tr_html += '</tr>';
         tr = jQuery(tr_html);
         tbody.append(tr);
