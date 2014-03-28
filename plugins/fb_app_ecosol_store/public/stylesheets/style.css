@@ -63,8 +63,11 @@ body.controller-fb_app_ecosol_store_plugin {
 
 .tt-suggestion {
   padding: 0 12px;
-  font-size: 11px;
-  line-height: 100%; }
+  font-size: 11px; }
+  .tt-suggestion p {
+    line-height: 120%;
+    margin: 0;
+    padding: 3px 0; }
 
 .tt-suggestion:hover {
   color: #fff;

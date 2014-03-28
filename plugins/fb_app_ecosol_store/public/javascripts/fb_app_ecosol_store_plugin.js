@@ -6,6 +6,14 @@ fb_app_ecosol_store = {
     document.getElementsByTagName('head')[0].appendChild(script);
   },
 
+  products: {
+    fix_popins: {
+      jQuery('.zoomify-image').removeClass('.zoomify-image').attr({
+        onclick: 'jQuery.colorbox({top: jQuery(this).offset().top-30, href: this.href}); return false',
+      })
+    },
+  },
+
   admin: {
 
     init: function() {
@@ -19,6 +27,7 @@ fb_app_ecosol_store = {
     close: function(evt) {
      if (evt != null && evt != void 0) { evt.preventDefault(); evt.stopPropagation();}
       jQuery.colorbox.close();
+      jQuery('#content').html('').addClass('loading')
       window.location.href = fb_app_ecosol_store.current_url;
     },
 
