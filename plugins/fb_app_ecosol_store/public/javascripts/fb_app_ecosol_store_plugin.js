@@ -7,7 +7,7 @@ fb_app_ecosol_store = {
   },
 
   products: {
-    fix_popins: {
+    fix_popins: function() {
       jQuery('.zoomify-image').removeClass('.zoomify-image').attr({
         onclick: 'jQuery.colorbox({top: jQuery(this).offset().top-30, href: this.href}); return false',
       })
