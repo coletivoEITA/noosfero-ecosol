@@ -195,7 +195,6 @@ class EscamboPlugin < Noosfero::Plugin
         if @user.activated?
           self.current_user = @user
           redirect_to @enterprise.url
-          break
         else
           @register_pending = true
         end
