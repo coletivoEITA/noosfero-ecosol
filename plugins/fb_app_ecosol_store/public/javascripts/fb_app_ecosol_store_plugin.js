@@ -35,6 +35,7 @@ fb_app_ecosol_store = {
       var profilesSearch = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
+        limit: 12,
         remote: {
           url: '/plugin/fb_app_ecosol_store/search?query=%QUERY',
           ajax: {
@@ -55,7 +56,6 @@ fb_app_ecosol_store = {
       input.typeahead(null, {
         name: 'fb_search_store',
         displayKey: 'name',
-        limit: 12,
         source: profilesSearch.ttAdapter()
       });
 
