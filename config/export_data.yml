@@ -1,0 +1,15 @@
+options:
+  embed_files: true
+
+sources:
+  - type: Environment
+    id: 4
+    associations:
+      - profiles:
+        - articles
+        - products:
+          - image
+      - users
+      - categories
+      - qualifiers
+      - certifiers
