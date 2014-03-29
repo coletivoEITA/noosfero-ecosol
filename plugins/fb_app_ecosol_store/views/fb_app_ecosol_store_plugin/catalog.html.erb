@@ -1,6 +1,14 @@
 <%= render 'configure' %>
 
-<%= render :file => "#{Rails.root}/app/views/catalog/index.html.erb", :locals => {:float_box_position => 'up'} %>
+<div id="product-catalog">
+  <ul id="product-list">
+    <%= render 'catalog/products', :products => @products, :float_box_position => (float_box_position rescue nil) %>
+  </ul>
+
+  <%= pagination_links @products %>
+
+  <%= add_zoom_to_images %>
+</div>
 
 <%= render 'load' %>
 

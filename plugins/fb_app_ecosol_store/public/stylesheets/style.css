@@ -30,6 +30,8 @@ body.controller-fb_app_ecosol_store_plugin {
     display: none; }
   body.controller-fb_app_ecosol_store_plugin .button-bar .icon-back {
     display: none; }
+  body.controller-fb_app_ecosol_store_plugin .search-results-total {
+    padding-top: 6px; }
 
 /* control panel */
 .controller-profile_editor a.control-panel-fb-app-ecosol-store {
