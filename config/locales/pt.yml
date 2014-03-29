@@ -503,6 +503,7 @@
         profile:
           orders_manager: "Gestor de pedidos"
       mailer:
+        profile_subject: "[%{profile}] %{subject}"
         order_was_confirmed: "[%{name}] Seu pedido foi confirmado"
         order_was_cancelled: "[%{name}] Seu pedido foi cancelado"
       date_helper:
@@ -625,7 +626,6 @@
           order:
             cyclecode_ordercode: "%{cyclecode}.%{ordercode}"
       mailer: 
-        profile_subject: "[%{profile}] %{subject}"
         order_was_changed: "[%{profile}] Seu pedido foi modificado"
       order_block: 
         distribution_orders_c: "Ciclos de pedidos para os(as) consumidores(as)"
