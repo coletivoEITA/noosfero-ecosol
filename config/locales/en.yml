@@ -262,7 +262,9 @@
           plural: "the organizations"
         by_article: 
           singular: "by the organization"
-      consumer: *suppliers_term_profile
+      consumer: 
+        singular: "consumer"
+        plural: "consumers"
       supplier:
         singular: "supplier"
         plural: "suppliers"
@@ -981,7 +983,6 @@
           plural: "the consumers' coops"
         by_article: 
           singular: "by the consumers' coop"
-      consumer: *consumers_coop_term_profile
     controllers:
       myprofile:
         distribution_settings: "Distribution settings saved."
@@ -1060,7 +1061,6 @@
           plural: "the networks"
         by_article: 
           singular: "by the network"
-      consumer: *networks_term_profile
       supplier: 
         singular: "enterprise"
         plural: "enterprises"

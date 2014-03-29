@@ -270,7 +270,9 @@
           plural: "as organizações"
         by_article: 
           singular: "pela organização"
-      consumer: *suppliers_term_profile
+      consumer: 
+        singular: "consumidor"
+        plural: "consumidores"
       supplier:
         singular: "fornecedor"
         plural: "fornecedores"
@@ -990,7 +992,6 @@
           plural: "os coletivos de consumo"
         by_article: 
           singular: "pelo coletivo de consumo"
-      consumer: *consumers_coop_term_profile
     controllers:
       myprofile:
         distribution_settings: "Configurações salvas"
@@ -1069,7 +1070,6 @@
           plural: "as redes"
         by_article: 
           singular: "pela rede"
-      consumer: *networks_term_profile
       supplier: 
         singular: "empreendimento"
         plural: "empreendimentos"

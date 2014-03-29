@@ -39,6 +39,12 @@
         &.product {
           width: $module03 - $intercolumn/2;
         }
+        &.quantity,
+        &.quantity-edit {
+          &, input {
+            width: $module02 - $intercolumn;
+          }
+        }
         &.status-updated {
           width: $module01;
         }
@@ -61,7 +67,7 @@
       &.quantity,
       &.quantity-edit {
         &, input {
-          width: $module02 - $intercolumn; //2 temp while status-updated is out
+          width: $module01 - $intercolumn;
         }
       }
       &.price-total {
