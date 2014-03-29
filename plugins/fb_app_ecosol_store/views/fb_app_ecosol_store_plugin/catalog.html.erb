@@ -5,7 +5,7 @@
     <%= render 'catalog/products', :products => @products, :float_box_position => (float_box_position rescue nil) %>
   </ul>
 
-  <%= pagination_links @products %>
+  <%= pagination_links @products, :params => params, :renderer => 'FbAppEcosolStorePlugin::LinkRenderer' %>
 
   <%= add_zoom_to_images %>
 </div>
