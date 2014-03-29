@@ -48,17 +48,25 @@ module TermsHelper
 
   def self.included base
     base.send :include, I18nAutoScope
-    base.alias_method_chain :translate, :terms
+    base.alias_method_chain :translate, :transformation
     base.alias_method_chain :translate, :terms_cache
+    base.alias_method_chain :translate, :terms
     base.send :alias_method, :t, :translate
   end
 
-  def translate_with_terms key, options = {}
-    translation = translate_without_terms key, options
-    translation % translated_terms
+  def translate_with_transformation key, options = {}
+    translation = translate_without_transformation key, options
+
+    transformation = options[:transformation]
+    translation = translation.send transformation if transformation
+
+    translation
   end
 
   def translate_with_terms_cache key, options = {}
+    # we don't support cache with custom options
+    return translate_without_terms_cache key, options if options.present?
+
     cache = (TermsHelper.cache[I18n.locale] ||= {})
     cache = (cache[i18n_scope] ||= {})
 
@@ -66,6 +74,11 @@ module TermsHelper
     return hit if hit.present?
 
     cache[key] = translate_without_terms_cache key, options
+  end
+
+  def translate_with_terms key, options = {}
+    translation = translate_without_terms key, options
+    translation % translated_terms
   end
 
   private

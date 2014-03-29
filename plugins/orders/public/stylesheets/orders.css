@@ -1426,6 +1426,8 @@
     max-height: 300px; }
     .order-items-container .order-items.self-supplier .box-field.product {
       width: 216px; }
+    .order-items-container .order-items.self-supplier .box-field.quantity, .order-items-container .order-items.self-supplier .box-field.quantity input, .order-items-container .order-items.self-supplier .box-field.quantity-edit, .order-items-container .order-items.self-supplier .box-field.quantity-edit input {
+      width: 128px; }
     .order-items-container .order-items.self-supplier .box-field.status-updated {
       width: 64px; }
     .order-items-container .order-items .box-field {
@@ -1440,7 +1442,7 @@
       .order-items-container .order-items .box-field.product {
         width: 136px; }
       .order-items-container .order-items .box-field.quantity, .order-items-container .order-items .box-field.quantity input, .order-items-container .order-items .box-field.quantity-edit, .order-items-container .order-items .box-field.quantity-edit input {
-        width: 128px; }
+        width: 48px; }
       .order-items-container .order-items .box-field.price-total {
         width: 56px; }
       .order-items-container .order-items .box-field.status-updated {

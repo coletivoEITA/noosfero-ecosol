@@ -24,7 +24,7 @@
         <% msg += supplier.dummy? ? t('views.supplier._supplier.supplier_profile_product') :
           t('views.supplier._supplier.products') %>
 
-        <%= link_to msg, {:controller => :suppliers_plugin_product, :action => :index, :supplier_id => supplier.id} %>
+        <%= link_to msg, {:controller => :manage_products, :action => :index, :profile => supplier.identifier}, :target => '_blank' %>
 
         <%= t('views.supplier._supplier.among_them') %>
 
@@ -34,7 +34,7 @@
         <% else %>
           <% msg = products.size.to_s + t('views.supplier._supplier.products_distributed') %>
         <% end %>
-        <%= link_to msg, {:controller => :suppliers_plugin_product, :action => :index, :supplier_id => supplier.id, :available => 'true'}, :class => 'supplier-distributed-products-count' %>
+        <%= link_to msg, {:controller => :manage_products, :action => :index, :profile => supplier.identifier}, :target => '_blank', :class => 'supplier-distributed-products-count' %>
       <% else %>
         <%= t('views.supplier._supplier.any_registered_produc') %>
       <% end %>
@@ -45,11 +45,8 @@
     <div><strong><%= t('views.supplier._supplier.actions') %></strong></div>
     <div><%= link_to_function t('views.supplier._supplier.edit'), '', 'toggle-edit' => '' %></div>
 
-    <% if supplier.active %>
-      <div><%= link_to_remote t('views.supplier._supplier.desactivate'), :url => {:action => :toggle_active, :id => supplier.id} %></div>
-    <% else %>
-      <div><%= link_to_remote t('views.supplier._supplier.activate'), :url => {:action => :toggle_active, :id => supplier.id} %></div>
-    <% end %>
+      <div class='desactivate <%= 'hidden' unless supplier.active %>'><%= link_to_remote t('views.supplier._supplier.desactivate'), :url => {:action => :toggle_active, :id => supplier.id} %></div>
+      <div class='activate <%= 'hidden' if supplier.active %>'><%= link_to_remote t('views.supplier._supplier.activate'), :url => {:action => :toggle_active, :id => supplier.id} %></div>
 
     <div><%# link_to t('views.supplier._supplier.desactivate'), :url => {:action => :desactivate, :id => supplier.id} %></div>
     <div><%= link_to_remote t('views.supplier._supplier.remove'), :url => {:action => :destroy, :id => supplier.id},
