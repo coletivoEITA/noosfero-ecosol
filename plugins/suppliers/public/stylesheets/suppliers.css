@@ -1238,6 +1238,8 @@
       float: right;
       width: 140px;
       text-align: right; }
+      #suppliers-page .supplier .box-view .supplier-actions .hidden {
+        display: none; }
   #suppliers-page .supplier .box-edit {
     display: none;
     padding: 8px;
