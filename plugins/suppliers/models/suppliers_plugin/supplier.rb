@@ -33,11 +33,14 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   after_create :save_profile, :if => :dummy?
   after_create :distribute_products_to_consumer
 
-  attr_accessor :dont_destroy_dummy
+  attr_accessor :dont_destroy_dummy, :identifier_from_name
+
+  before_save :set_identifier, :if => :dummy?
 
   def self.new_dummy attributes
-    profile = Enterprise.new :enabled => false, :visible => false, :public_profile => false,
-      :identifier => Digest::MD5.hexdigest(rand.to_s), :environment => attributes[:consumer].environment
+    environment = attributes[:consumer].environment
+    profile = Enterprise.new :enabled => false, :visible => false, :public_profile => false, :environment => environment
+
     supplier = self.new :profile => profile
     supplier.attributes = attributes
     supplier
@@ -90,6 +93,16 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   alias_method_chain :destroy, :dummy
 
   protected
+
+  def set_dummy_identifier
+    if self.identifier_from_name
+      identifier = self.profile.identifier = attributes[:name].to_slug
+      i = 0
+      self.profile.identifier = "#{identifier}#{i += 1}" while Profile[self.profile.identifier].present?
+    else
+      self.profile.identifier = Digest::MD5.hexdigest rand.to_s
+    end
+  end
 
   def add_admins
     self.consumer.admins.each{ |a| self.supplier.add_admin a }

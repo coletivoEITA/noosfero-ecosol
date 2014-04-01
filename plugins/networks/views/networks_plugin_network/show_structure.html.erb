@@ -17,6 +17,7 @@
   <% end %>
 
   <h2>
+    <%= t('views.network.show_structure.pathway') %>
     <%= @node.hierarchy.map do |parent|
       link_to parent.name, :node_id => parent.id
     end.join ' -> ' %>

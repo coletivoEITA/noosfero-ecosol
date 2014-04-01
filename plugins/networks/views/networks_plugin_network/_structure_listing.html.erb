@@ -2,14 +2,22 @@
 <h3><%= t('views.network.show_structure.nodes') %></h3>
 
 <div id="network-nodes">
-  <% @node.nodes.each do |node| %>
-    <%= render 'networks_plugin_network/node', :node => node %>
+  <% if @node.nodes.empty? %>
+    <%= _ t('views.network.show_structure.none') %>
+  <% else %>
+    <% @node.nodes.each do |node| %>
+      <%= render 'networks_plugin_network/node', :node => node %>
+    <% end %>
   <% end %>
 </div>
 
 <h3><%= t('views.network.show_structure.enterprises') %></h3>
 <div id="network-suppliers">
-  <% @node.suppliers.except_self.each do |supplier| %>
-    <%= render 'networks_plugin_network/supplier', :supplier => supplier %>
+  <% if @node.suppliers.empty? %>
+    <%= _ t('views.network.show_structure.none') %>
+  <% else %>
+    <% @node.suppliers.except_self.each do |supplier| %>
+      <%= render 'networks_plugin_network/supplier', :supplier => supplier %>
+    <% end %>
   <% end %>
 </div>
