@@ -10,6 +10,11 @@ class NetworksPlugin::Network < NetworksPlugin::BaseNode
     true
   end
 
+  # FIXME: make it recursive
+  def network_suppliers
+    self.nodes.map{ |n| n.suppliers.except_self }.flatten
+  end
+
   protected
 
   def destroy_dependent

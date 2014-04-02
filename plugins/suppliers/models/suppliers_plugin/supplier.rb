@@ -35,7 +35,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   attr_accessor :dont_destroy_dummy, :identifier_from_name
 
-  before_save :set_identifier, :if => :dummy?
+  before_validation :set_identifier, :if => :dummy?
 
   def self.new_dummy attributes
     environment = attributes[:consumer].environment
@@ -94,9 +94,9 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   protected
 
-  def set_dummy_identifier
+  def set_identifier
     if self.identifier_from_name
-      identifier = self.profile.identifier = attributes[:name].to_slug
+      identifier = self.profile.identifier = self.profile.name.to_slug
       i = 0
       self.profile.identifier = "#{identifier}#{i += 1}" while Profile[self.profile.identifier].present?
     else

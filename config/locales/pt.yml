@@ -437,7 +437,8 @@
           edit: editar
           products_are_active: " produtos estão ativos"
           products_distributed: " produtos distribuídos %{terms.profile.by_article.singular}"
-          products: "gerenciar produtos"
+          products: "produtos"
+          manage_products: "gerenciar produtos"
           registered_supplier_i: "%{terms.supplier.singular.capitalize} registrado na rede"
           remove: remover
           supplier_profile_product: "produtos registrados"

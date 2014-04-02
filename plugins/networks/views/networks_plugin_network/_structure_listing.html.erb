@@ -13,7 +13,7 @@
 
 <h3><%= t('views.network.show_structure.enterprises') %></h3>
 <div id="network-suppliers">
-  <% if @node.suppliers.empty? %>
+  <% if @node.suppliers.except_self.empty? %>
     <%= _ t('views.network.show_structure.none') %>
   <% else %>
     <% @node.suppliers.except_self.each do |supplier| %>
