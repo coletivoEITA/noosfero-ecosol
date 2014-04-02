@@ -82,6 +82,11 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     self.unit || self.class.default_unit
   end
 
+  # reimplement to don't destroy this, keeping history in cycles
+  def dependent?
+    false
+  end
+
   # cycle products freezes properties and don't use the original
   DEFAULT_ATTRIBUTES.each do |a|
     define_method "default_#{a}" do

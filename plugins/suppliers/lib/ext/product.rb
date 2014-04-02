@@ -46,6 +46,7 @@ class Product
   named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
   named_scope :own, :conditions => ["products.type = 'Product'"]
 
+  named_scope :from_supplier, lambda { |supplier| { :conditions => ['suppliers_plugin_suppliers.id = ?', supplier.id] } }
   named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_suppliers.id = ?', supplier_id] } }
 
   extend CurrencyHelper::ClassMethods
@@ -110,10 +111,16 @@ class Product
     end
   end
 
+  # to_products doesn't work when triggered from supplier.destroy. delay workaround that
   def destroy_dependent
     self.to_products.each do |to_product|
       to_product.destroy if to_product.dependent?
     end
   end
+
+  def destroy_dependent_with_delay
+    self.delay.destroy_dependent_without_delay
+  end
+  alias_method_chain :destroy_dependent, :delay
 
 end

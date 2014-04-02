@@ -27,8 +27,9 @@ class NetworksPlugin < Noosfero::Plugin
   end
 
   ProfileEditorFilter = proc do
-    return unless profile.network_node?
-    redirect_to :controller => :networks_plugin_node, :profile => profile.network.identifier, :action => :edit, :id => profile.id
+    if profile.network_node?
+      redirect_to :controller => :networks_plugin_node, :profile => profile.network.identifier, :action => :edit, :id => profile.id
+    end
   end
   def profile_editor_controller_filters
     [
