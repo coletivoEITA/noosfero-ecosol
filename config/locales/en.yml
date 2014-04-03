@@ -428,10 +428,13 @@
           edit: edit
           products_are_active: " produtos estão ativos"
           products_distributed: " distributed products %{terms.profile.by_article.singular}"
-          products: "products"
+          products: 
+            zero: "no products"
+            one: "1 product"
+            other: "%{count} products"
           manage_products: "manage products"
           registered_supplier_i: "Registered %{terms.supplier.singular} in the network"
-          remove: remove
+          disassociate: disassociate
           supplier_profile_product: " registered products"
           supplier_with_registr: "%{terms.supplier.singular.capitalize} with registry managed by the %{terms.profile.by_article.singular}"
           this_supplier_has: "This %{terms.supplier.singular} has"
@@ -1116,6 +1119,9 @@
           no_network: "Any registered network."
           new: "Create network"
           new_button: "Criar"
+      supplier:
+        _supplier:
+          by_removing_this_supp: "By removing %{terms.supplier.article.singular} all its products won't be available. Please confirm you choice"
       network:
         show_structure:
           pathway: "You're at: "

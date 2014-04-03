@@ -437,10 +437,13 @@
           edit: editar
           products_are_active: " produtos estão ativos"
           products_distributed: " produtos distribuídos %{terms.profile.by_article.singular}"
-          products: "produtos"
+          products: 
+            zero: "nenhum produto"
+            one: "1 produto"
+            other: "%{count} produtos"
           manage_products: "gerenciar produtos"
           registered_supplier_i: "%{terms.supplier.singular.capitalize} registrado na rede"
-          remove: remover
+          disassociate: disassociar
           supplier_profile_product: "produtos registrados"
           supplier_with_registr: "%{terms.supplier.singular.capitalize} com registro administrado %{terms.profile.by_article.singular}"
           this_supplier_has: "Este %{terms.supplier.singular} tem"
@@ -1125,6 +1128,9 @@
           no_network: "Nenhuma rede registrada."
           new: "Criar rede"
           new_button: "Criar"
+      supplier:
+        _supplier:
+          by_removing_this_supp: "Ao remover %{terms.supplier.article.singular}, todos os seus produtos ficarão indisponíveis. Por favor, confirme sua opção"
       network:
         show_structure: 
           pathway: "Você está em: "
