@@ -409,7 +409,7 @@
           search: "Buscar"
           none_found: "%{terms.supplier.none.singular} foi encontrado. Por favor revise o texto da busca."
           add: "Adicionar"
-          suggest_creation: "Não encontrou %{terms.supplier.article.singular} que buscava?. Você pode criar %{terms.supplier.new_undefined_article.singular} gerido %{terms.profile.by_article.singular}."
+          suggest_creation: "Se você não encontrar %{terms.supplier.article.singular},  pode criar %{terms.supplier.new_undefined_article.singular} que será gerenciado %{terms.profile.by_article.singular}. Mas procure bem para evitar duplicatas!"
           create_dummy: "Criar %{terms.supplier.singular}"
         _edit: 
           registry_help: "O registro %{terms.supplier.from_article.singular} será administrado %{terms.profile.by_article.singular} e será privado %{terms.profile.to_it.singular}."
@@ -432,7 +432,7 @@
           among_them: ", entre eles"
           any_registered_produc: "nenhum produto registrado"
           by_removing_this_supp: "Ao remover %{terms.supplier.article.singular}, todos os produtos ficarão indisponíveis em futuros ciclos. Por favor, confirme sua opção"
-          desactivate: desativar
+          deactivate: "esconder %{terms.profile.from_article.singular}"
           activate: ativar
           edit: editar
           products_are_active: " produtos estão ativos"
@@ -443,7 +443,7 @@
             other: "%{count} produtos"
           manage_products: "gerenciar produtos"
           registered_supplier_i: "%{terms.supplier.singular.capitalize} registrado na rede"
-          disassociate: disassociar
+          disassociate: "disassociar %{terms.profile.from_article.singular}"
           supplier_profile_product: "produtos registrados"
           supplier_with_registr: "%{terms.supplier.singular.capitalize} com registro administrado %{terms.profile.by_article.singular}"
           this_supplier_has: "Este %{terms.supplier.singular} tem"

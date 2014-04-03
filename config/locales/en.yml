@@ -400,7 +400,7 @@
           search: "Search"
           none_found: "%{terms.supplier.none.singular} found. Please revise the search text."
           add: "Add"
-          suggest_creation: "Haven't found %{terms.supplier.article.singular} you were searching?. You can create a new %{terms.supplier.new_undefined_article.singular} managed by the %{terms.profile.by_article.singular}."
+          suggest_creation: "If you don't find %{terms.supplier.article.singular} you can create %{terms.supplier.new_undefined_article.singular} that will be managed %{terms.profile.by_article.singular}. But please find carefully to avoid duplicates!"
           create_dummy: "Create %{terms.supplier.singular}"
         _edit: 
           registry_help: "The registry %{terms.supplier.from_article.singular} will be managed by the %{terms.profile.by_article.singular} itself and will be private %{terms.profile.to_it.singular}."
@@ -423,7 +423,7 @@
           among_them: ", among them"
           any_registered_produc: "any registered product"
           by_removing_this_supp: "By removing %{terms.supplier.article.singular} all its products won't be available for future cycles. Please confirm you choice"
-          desactivate: desactivate
+          deactivate: "hide %{terms.profile.from_article.singular}"
           activate: activate
           edit: edit
           products_are_active: " produtos estão ativos"
@@ -434,7 +434,7 @@
             other: "%{count} products"
           manage_products: "manage products"
           registered_supplier_i: "Registered %{terms.supplier.singular} in the network"
-          disassociate: disassociate
+          disassociate: "disassociate %{terms.profile.from_article.singular}"
           supplier_profile_product: " registered products"
           supplier_with_registr: "%{terms.supplier.singular.capitalize} with registry managed by the %{terms.profile.by_article.singular}"
           this_supplier_has: "This %{terms.supplier.singular} has"

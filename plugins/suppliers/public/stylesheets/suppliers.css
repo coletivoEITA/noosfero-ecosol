@@ -1201,258 +1201,262 @@
   #suppliers-page .supplier .box-edit form #supplier-our-products .links input[type=submit] {
     margin-bottom: 8px; }
 
-#suppliers-page #search-results > strong {
-  display: block;
-  margin-top: 48px;
-  border-top: 1px solid black; }
-#suppliers-page .supplier {
-  border-top: 1px solid black;
-  border-bottom: none; }
-  #suppliers-page .supplier.supplier-inactive {
-    background-color: #faeeee; }
-  #suppliers-page .supplier#supplier-add {
-    display: none; }
-    #suppliers-page .supplier#supplier-add.edit {
-      display: block; }
-  #suppliers-page .supplier:last-child {
-    border-bottom: 1px solid black; }
-  #suppliers-page .supplier .supplier-add-link {
-    margin: 20px 0; }
-  #suppliers-page .supplier #create-dummy {
-    display: none; }
-  #suppliers-page .supplier .box-view {
-    padding: 8px;
-    padding-right: 0; }
-    #suppliers-page .supplier .box-view .supplier-type {
-      font-style: italic; }
-    #suppliers-page .supplier .box-view .supplier-logo {
-      float: left;
-      width: 60px;
-      min-height: 60px; }
-    #suppliers-page .supplier .box-view .supplier-body {
-      width: 400px;
-      float: left; }
-    #suppliers-page .supplier .box-view .supplier-name {
-      text-transform: uppercase; }
-    #suppliers-page .supplier .box-view .supplier-actions {
-      float: right;
-      width: 140px;
-      text-align: right; }
-      #suppliers-page .supplier .box-view .supplier-actions .hidden {
-        display: none; }
-  #suppliers-page .supplier .box-edit {
-    display: none;
-    padding: 8px;
-    background-color: #FDF2A3; }
-    #suppliers-page .supplier .box-edit form {
-      width: 640px;
-      /* use with @extend, CSS clear bugfix */
-      /* layout base parameters */
-      /* heights should only use multiples of this */
-      /* base measurements */
-      /* widths should only use one of these */
-      /* paddings and margins should only use one of these
-         Ps. 1: disccount the borders size from padding, as borders uses padding's space.
-         Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
-         box doesn't have a padding, then sum $intercolumn to the width.
-       */
-      /* use for borders */
-      /* use for text shadows */
-      /* Colors */
-      /* Fonts */
-      /* Paragraphs Styles (use with @extend) */
-      /* Images */
-      /* profile-image that can be centered and resized with aspect ratio */
-      /* Buttons */ }
-      #suppliers-page .supplier .box-edit form .clean {
-        clear: both; }
-      #suppliers-page .supplier .box-edit form .container-clean, #suppliers-page .supplier .box-edit form .sortable-table > .table-header, #suppliers-page .supplier .box-edit form .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #suppliers-page .supplier .box-edit form .box-view-inner, #suppliers-page .supplier .sortable-table > .table-content > .value-row .box-edit form .internal-table, .sortable-table > .table-content > .value-row #suppliers-page .supplier .box-edit form .internal-table, #suppliers-page .supplier .box-edit form #filter .filter-box, #filter #suppliers-page .supplier .box-edit form .filter-box, #suppliers-page .supplier .box-edit form #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form form, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .internal-table .row, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .internal-table .row, #suppliers-page .supplier .box-edit form .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
-      #suppliers-page .supplier .box-edit form .data .full-data {
-        overflow: hidden;
-        display: inline-block;
-        /* Necessary to trigger "hasLayout" in IE */
-        display: block;
-        /* Sets element back to block */ }
-      #suppliers-page .supplier .box-edit form .pstyle-none {
-        font-size: 12px; }
-      #suppliers-page .supplier .box-edit form .pstyle-basic {
-        font-size: 16px; }
-      #suppliers-page .supplier .box-edit form .pstyle-button {
-        font-size: 16px; }
-      #suppliers-page .supplier .box-edit form .pstyle-button-small {
-        font-size: 13px; }
-      #suppliers-page .supplier .box-edit form .pstyle-title {
-        font-size: 72px; }
-      #suppliers-page .supplier .box-edit form .pstyle-h1 {
-        font-size: 34px; }
-      #suppliers-page .supplier .box-edit form .pstyle-h2 {
-        font-size: 26px; }
-      #suppliers-page .supplier .box-edit form .pstyle-h3 {
-        font-size: 21px; }
-      #suppliers-page .supplier .box-edit form .pstyle-h4 {
-        font-size: 16px; }
-      #suppliers-page .supplier .box-edit form .pstyle-h5 {
-        font-size: 13px; }
-      #suppliers-page .supplier .box-edit form .pstyle-title-section {
-        font-size: 92px; }
-      #suppliers-page .supplier .box-edit form .pstyle-field {
-        font-size: 13px; }
-      #suppliers-page .supplier .box-edit form .pstyle-menu-big-selected {
-        font-size: 21px; }
-      #suppliers-page .supplier .box-edit form .pstyle-menu-big-unselected {
-        font-size: 21px; }
-      #suppliers-page .supplier .box-edit form .pstyle-menu-medium-selected {
-        font-size: 16px; }
-      #suppliers-page .supplier .box-edit form .pstyle-menu-medium-unselected {
-        font-size: 16px; }
-      #suppliers-page .supplier .box-edit form .pstyle-menu-small-selected {
-        font-size: 13px; }
-      #suppliers-page .supplier .box-edit form .pstyle-menu-small-unselected {
-        font-size: 13px; }
-      #suppliers-page .supplier .box-edit form .pstyle-tp4 {
-        font-size: 42px; }
-      #suppliers-page .supplier .box-edit form .pstyle-tp3 {
-        font-size: 34px; }
-      #suppliers-page .supplier .box-edit form .pstyle-tp2 {
-        font-size: 26px; }
-      #suppliers-page .supplier .box-edit form .pstyle-tp1 {
-        font-size: 21px; }
-      #suppliers-page .supplier .box-edit form .pstyle-tm1 {
-        font-size: 13px; }
-      #suppliers-page .supplier .box-edit form .pstyle-tm2, #suppliers-page .supplier .box-edit form .subtitle {
-        font-size: 10px; }
-      #suppliers-page .supplier .box-edit form .profile-image {
-        display: inline-block;
-        /* do not put padding in this as background size will consider it. */ }
-        #suppliers-page .supplier .box-edit form .profile-image.thumb {
-          width: 32px;
-          height: 32px; }
-        #suppliers-page .supplier .box-edit form .profile-image.portrait {
-          width: 80px;
-          height: 80px; }
-        #suppliers-page .supplier .box-edit form .profile-image .inner {
-          display: block;
-          width: 100%;
-          height: 100%;
-          background-repeat: no-repeat;
-          background-position: center;
-          background-size: 100%;
-          background-size: contain;
-          /* css3 enabled */ }
-      #suppliers-page .supplier .box-edit form .action-button, #suppliers-page .supplier .box-edit form a.button.colorbox-close,
-      #suppliers-page .supplier .box-edit form #wrap-1 input[type=submit],
-      #suppliers-page .supplier .box-edit form input[type=submit] {
-        display: inline-block;
-        padding: 4px 8px;
-        margin: 0;
-        /* remove submit input browser's margin */
-        height: auto;
-        width: auto;
-        background: #fbca47;
-        border: 1px solid #f4a439;
-        cursor: pointer;
-        color: black;
-        font-weight: bold;
-        line-height: 16px;
-        text-align: center;
-        text-decoration: none;
-        text-transform: uppercase;
-        text-shadow: none;
-        border-radius: 5px; }
-      #suppliers-page .supplier .box-edit form .field-title {
-        text-transform: uppercase;
-        font-weight: bold; }
-      #suppliers-page .supplier .box-edit form .field {
-        clear: both; }
-        #suppliers-page .supplier .box-edit form .field label {
-          display: block;
-          float: left;
-          padding-top: 4px;
-          font-weight: bold;
-          line-height: 20px; }
-        #suppliers-page .supplier .box-edit form .field .field-box {
-          clear: both;
-          float: left;
-          width: 100%; }
-        #suppliers-page .supplier .box-edit form .field .field-help {
-          clear: both;
-          margin-bottom: 8px;
-          font-size: 10px; }
-      #suppliers-page .supplier .box-edit form .field-radio {
-        clear: both;
-        margin-bottom: 4px; }
-        #suppliers-page .supplier .box-edit form .field-radio input {
-          float: left;
-          margin-left: 0; }
-        #suppliers-page .supplier .box-edit form .field-radio label {
-          font-weight: normal;
-          line-height: 10px;
-          text-transform: lowercase;
-          margin-left: 4px; }
-      #suppliers-page .supplier .box-edit form .field-secondary {
+#suppliers-page {
+  /* should be moved to core */ }
+  #suppliers-page input.small-loading {
+    background: transparent url(/images/loading-small.gif) no-repeat scroll right center; }
+  #suppliers-page #search-results > strong {
+    display: block;
+    margin-top: 48px;
+    border-top: 1px solid black; }
+  #suppliers-page .supplier {
+    border-top: 1px solid black;
+    border-bottom: none; }
+    #suppliers-page .supplier.supplier-inactive {
+      background-color: #faeeee; }
+    #suppliers-page .supplier#supplier-add {
+      display: none; }
+      #suppliers-page .supplier#supplier-add.edit {
         display: block; }
-        #suppliers-page .supplier .box-edit form .field-secondary, #suppliers-page .supplier .box-edit form .field-secondary input, #suppliers-page .supplier .box-edit form .field-secondary select {
-          width: 128px; }
-        #suppliers-page .supplier .box-edit form .field-secondary.with-unit input {
-          float: left;
-          width: 112px; }
-        #suppliers-page .supplier .box-edit form .field-secondary.with-unit .field-unit {
-          float: left;
-          width: 16px;
-          line-height: 24px; }
-      #suppliers-page .supplier .box-edit form form {
-        margin: 0;
-        /* come on browsers!? */ }
-      #suppliers-page .supplier .box-edit form label.field-bellow {
-        display: block;
-        margin-bottom: 4px;
-        font-size: 10px; }
-      #suppliers-page .supplier .box-edit form select,
-      #suppliers-page .supplier .box-edit form input[type=text], #suppliers-page .supplier .box-edit form input[type=password],
-      #suppliers-page .supplier .box-edit form textarea {
-        box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        -ms-box-sizing: border-box; }
-      #suppliers-page .supplier .box-edit form select,
-      #suppliers-page .supplier .box-edit form input[type=text], #suppliers-page .supplier .box-edit form input[type=password] {
-        height: 24px; }
-      #suppliers-page .supplier .box-edit form select {
-        background-color: #fff;
-        border: 1px solid black;
-        padding-left: 4px; }
-      #suppliers-page .supplier .box-edit form input.date-select, #suppliers-page .supplier .box-edit form input.time-select {
-        width: 94px; }
-      #suppliers-page .supplier .box-edit form input[type=text] {
-        border: 1px solid black;
-        padding: 4px;
-        margin: 0; }
-      #suppliers-page .supplier .box-edit form input[type=checkbox] {
-        width: 12px;
-        height: 12px;
-        margin: 0; }
-      #suppliers-page .supplier .box-edit form textarea {
-        height: 64px;
-        padding-left: 4px;
-        margin-bottom: 10px; }
-      #suppliers-page .supplier .box-edit form .full-registration-check,
-      #suppliers-page .supplier .box-edit form .full-data {
-        display: none !important; }
-      #suppliers-page .supplier .box-edit form .data textarea,
-      #suppliers-page .supplier .box-edit form .data input {
-        width: 100%; }
-      #suppliers-page .supplier .box-edit form .data .basic-data,
-      #suppliers-page .supplier .box-edit form .data .full-data {
+    #suppliers-page .supplier:last-child {
+      border-bottom: 1px solid black; }
+    #suppliers-page .supplier .supplier-add-link {
+      margin: 20px 0; }
+    #suppliers-page .supplier #create-dummy {
+      display: none; }
+    #suppliers-page .supplier .box-view {
+      padding: 8px;
+      padding-right: 0; }
+      #suppliers-page .supplier .box-view .supplier-type {
+        font-style: italic; }
+      #suppliers-page .supplier .box-view .supplier-logo {
         float: left;
-        width: 290px;
-        margin-right: 40px; }
-      #suppliers-page .supplier .box-edit form .data .full-data.estrategic-info {
-        float: right; }
-      #suppliers-page .supplier .box-edit form .data .full-data.additional-fields {
-        width: 100%; }
-      #suppliers-page .supplier .box-edit form input[type=submit] {
-        margin-top: 8px;
-        margin-right: 8px; }
-#suppliers-page .filter-box .box-field, #suppliers-page .filter-box .box-field input {
-  width: 100%;
-  margin-left: 0; }
+        width: 60px;
+        min-height: 60px; }
+      #suppliers-page .supplier .box-view .supplier-body {
+        width: 304px;
+        float: left; }
+      #suppliers-page .supplier .box-view .supplier-name {
+        text-transform: uppercase; }
+      #suppliers-page .supplier .box-view .supplier-actions {
+        float: right;
+        width: 224px;
+        text-align: right; }
+        #suppliers-page .supplier .box-view .supplier-actions .hidden {
+          display: none; }
+    #suppliers-page .supplier .box-edit {
+      display: none;
+      padding: 8px;
+      background-color: #FDF2A3; }
+      #suppliers-page .supplier .box-edit form {
+        width: 640px;
+        /* use with @extend, CSS clear bugfix */
+        /* layout base parameters */
+        /* heights should only use multiples of this */
+        /* base measurements */
+        /* widths should only use one of these */
+        /* paddings and margins should only use one of these
+           Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+           Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+           box doesn't have a padding, then sum $intercolumn to the width.
+         */
+        /* use for borders */
+        /* use for text shadows */
+        /* Colors */
+        /* Fonts */
+        /* Paragraphs Styles (use with @extend) */
+        /* Images */
+        /* profile-image that can be centered and resized with aspect ratio */
+        /* Buttons */ }
+        #suppliers-page .supplier .box-edit form .clean {
+          clear: both; }
+        #suppliers-page .supplier .box-edit form .container-clean, #suppliers-page .supplier .box-edit form .sortable-table > .table-header, #suppliers-page .supplier .box-edit form .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #suppliers-page .supplier .box-edit form .box-view-inner, #suppliers-page .supplier .sortable-table > .table-content > .value-row .box-edit form .internal-table, .sortable-table > .table-content > .value-row #suppliers-page .supplier .box-edit form .internal-table, #suppliers-page .supplier .box-edit form #filter .filter-box, #filter #suppliers-page .supplier .box-edit form .filter-box, #suppliers-page .supplier .box-edit form #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form form, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .internal-table .row, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .internal-table .row, #suppliers-page .supplier .box-edit form .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
+        #suppliers-page .supplier .box-edit form .data .full-data {
+          overflow: hidden;
+          display: inline-block;
+          /* Necessary to trigger "hasLayout" in IE */
+          display: block;
+          /* Sets element back to block */ }
+        #suppliers-page .supplier .box-edit form .pstyle-none {
+          font-size: 12px; }
+        #suppliers-page .supplier .box-edit form .pstyle-basic {
+          font-size: 16px; }
+        #suppliers-page .supplier .box-edit form .pstyle-button {
+          font-size: 16px; }
+        #suppliers-page .supplier .box-edit form .pstyle-button-small {
+          font-size: 13px; }
+        #suppliers-page .supplier .box-edit form .pstyle-title {
+          font-size: 72px; }
+        #suppliers-page .supplier .box-edit form .pstyle-h1 {
+          font-size: 34px; }
+        #suppliers-page .supplier .box-edit form .pstyle-h2 {
+          font-size: 26px; }
+        #suppliers-page .supplier .box-edit form .pstyle-h3 {
+          font-size: 21px; }
+        #suppliers-page .supplier .box-edit form .pstyle-h4 {
+          font-size: 16px; }
+        #suppliers-page .supplier .box-edit form .pstyle-h5 {
+          font-size: 13px; }
+        #suppliers-page .supplier .box-edit form .pstyle-title-section {
+          font-size: 92px; }
+        #suppliers-page .supplier .box-edit form .pstyle-field {
+          font-size: 13px; }
+        #suppliers-page .supplier .box-edit form .pstyle-menu-big-selected {
+          font-size: 21px; }
+        #suppliers-page .supplier .box-edit form .pstyle-menu-big-unselected {
+          font-size: 21px; }
+        #suppliers-page .supplier .box-edit form .pstyle-menu-medium-selected {
+          font-size: 16px; }
+        #suppliers-page .supplier .box-edit form .pstyle-menu-medium-unselected {
+          font-size: 16px; }
+        #suppliers-page .supplier .box-edit form .pstyle-menu-small-selected {
+          font-size: 13px; }
+        #suppliers-page .supplier .box-edit form .pstyle-menu-small-unselected {
+          font-size: 13px; }
+        #suppliers-page .supplier .box-edit form .pstyle-tp4 {
+          font-size: 42px; }
+        #suppliers-page .supplier .box-edit form .pstyle-tp3 {
+          font-size: 34px; }
+        #suppliers-page .supplier .box-edit form .pstyle-tp2 {
+          font-size: 26px; }
+        #suppliers-page .supplier .box-edit form .pstyle-tp1 {
+          font-size: 21px; }
+        #suppliers-page .supplier .box-edit form .pstyle-tm1 {
+          font-size: 13px; }
+        #suppliers-page .supplier .box-edit form .pstyle-tm2, #suppliers-page .supplier .box-edit form .subtitle {
+          font-size: 10px; }
+        #suppliers-page .supplier .box-edit form .profile-image {
+          display: inline-block;
+          /* do not put padding in this as background size will consider it. */ }
+          #suppliers-page .supplier .box-edit form .profile-image.thumb {
+            width: 32px;
+            height: 32px; }
+          #suppliers-page .supplier .box-edit form .profile-image.portrait {
+            width: 80px;
+            height: 80px; }
+          #suppliers-page .supplier .box-edit form .profile-image .inner {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+            background-size: contain;
+            /* css3 enabled */ }
+        #suppliers-page .supplier .box-edit form .action-button, #suppliers-page .supplier .box-edit form a.button.colorbox-close,
+        #suppliers-page .supplier .box-edit form #wrap-1 input[type=submit],
+        #suppliers-page .supplier .box-edit form input[type=submit] {
+          display: inline-block;
+          padding: 4px 8px;
+          margin: 0;
+          /* remove submit input browser's margin */
+          height: auto;
+          width: auto;
+          background: #fbca47;
+          border: 1px solid #f4a439;
+          cursor: pointer;
+          color: black;
+          font-weight: bold;
+          line-height: 16px;
+          text-align: center;
+          text-decoration: none;
+          text-transform: uppercase;
+          text-shadow: none;
+          border-radius: 5px; }
+        #suppliers-page .supplier .box-edit form .field-title {
+          text-transform: uppercase;
+          font-weight: bold; }
+        #suppliers-page .supplier .box-edit form .field {
+          clear: both; }
+          #suppliers-page .supplier .box-edit form .field label {
+            display: block;
+            float: left;
+            padding-top: 4px;
+            font-weight: bold;
+            line-height: 20px; }
+          #suppliers-page .supplier .box-edit form .field .field-box {
+            clear: both;
+            float: left;
+            width: 100%; }
+          #suppliers-page .supplier .box-edit form .field .field-help {
+            clear: both;
+            margin-bottom: 8px;
+            font-size: 10px; }
+        #suppliers-page .supplier .box-edit form .field-radio {
+          clear: both;
+          margin-bottom: 4px; }
+          #suppliers-page .supplier .box-edit form .field-radio input {
+            float: left;
+            margin-left: 0; }
+          #suppliers-page .supplier .box-edit form .field-radio label {
+            font-weight: normal;
+            line-height: 10px;
+            text-transform: lowercase;
+            margin-left: 4px; }
+        #suppliers-page .supplier .box-edit form .field-secondary {
+          display: block; }
+          #suppliers-page .supplier .box-edit form .field-secondary, #suppliers-page .supplier .box-edit form .field-secondary input, #suppliers-page .supplier .box-edit form .field-secondary select {
+            width: 128px; }
+          #suppliers-page .supplier .box-edit form .field-secondary.with-unit input {
+            float: left;
+            width: 112px; }
+          #suppliers-page .supplier .box-edit form .field-secondary.with-unit .field-unit {
+            float: left;
+            width: 16px;
+            line-height: 24px; }
+        #suppliers-page .supplier .box-edit form form {
+          margin: 0;
+          /* come on browsers!? */ }
+        #suppliers-page .supplier .box-edit form label.field-bellow {
+          display: block;
+          margin-bottom: 4px;
+          font-size: 10px; }
+        #suppliers-page .supplier .box-edit form select,
+        #suppliers-page .supplier .box-edit form input[type=text], #suppliers-page .supplier .box-edit form input[type=password],
+        #suppliers-page .supplier .box-edit form textarea {
+          box-sizing: border-box;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          -ms-box-sizing: border-box; }
+        #suppliers-page .supplier .box-edit form select,
+        #suppliers-page .supplier .box-edit form input[type=text], #suppliers-page .supplier .box-edit form input[type=password] {
+          height: 24px; }
+        #suppliers-page .supplier .box-edit form select {
+          background-color: #fff;
+          border: 1px solid black;
+          padding-left: 4px; }
+        #suppliers-page .supplier .box-edit form input.date-select, #suppliers-page .supplier .box-edit form input.time-select {
+          width: 94px; }
+        #suppliers-page .supplier .box-edit form input[type=text] {
+          border: 1px solid black;
+          padding: 4px;
+          margin: 0; }
+        #suppliers-page .supplier .box-edit form input[type=checkbox] {
+          width: 12px;
+          height: 12px;
+          margin: 0; }
+        #suppliers-page .supplier .box-edit form textarea {
+          height: 64px;
+          padding-left: 4px;
+          margin-bottom: 10px; }
+        #suppliers-page .supplier .box-edit form .full-registration-check,
+        #suppliers-page .supplier .box-edit form .full-data {
+          display: none !important; }
+        #suppliers-page .supplier .box-edit form .data textarea,
+        #suppliers-page .supplier .box-edit form .data input {
+          width: 100%; }
+        #suppliers-page .supplier .box-edit form .data .basic-data,
+        #suppliers-page .supplier .box-edit form .data .full-data {
+          float: left;
+          width: 290px;
+          margin-right: 40px; }
+        #suppliers-page .supplier .box-edit form .data .full-data.estrategic-info {
+          float: right; }
+        #suppliers-page .supplier .box-edit form .data .full-data.additional-fields {
+          width: 100%; }
+        #suppliers-page .supplier .box-edit form input[type=submit] {
+          margin-top: 8px;
+          margin-right: 8px; }
+  #suppliers-page .filter-box .box-field, #suppliers-page .filter-box .box-field input {
+    width: 100%;
+    margin-left: 0; }
