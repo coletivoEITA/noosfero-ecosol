@@ -42,7 +42,7 @@
     <div><strong><%= t('views.supplier._supplier.actions') %></strong></div>
     <div><%= link_to_function t('views.supplier._supplier.edit'), '', 'toggle-edit' => '' %></div>
 
-    <div class='desactivate <%= 'hidden' unless supplier.active %>'><%= link_to_remote t('views.supplier._supplier.desactivate'), :url => {:action => :toggle_active, :id => supplier.id} %></div>
+    <div class='deactivate <%= 'hidden' unless supplier.active %>'><%= link_to_remote t('views.supplier._supplier.deactivate'), :url => {:action => :toggle_active, :id => supplier.id} %></div>
     <div class='activate <%= 'hidden' if supplier.active %>'><%= link_to_remote t('views.supplier._supplier.activate'), :url => {:action => :toggle_active, :id => supplier.id} %></div>
 
     <div><%= link_to_remote t('views.supplier._supplier.disassociate'), :url => {:action => :destroy, :id => supplier.id},

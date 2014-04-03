@@ -62,7 +62,7 @@
       }
 
       .supplier-body {
-        width: 400px;
+        width: $module04;
         float: left;
       }
 
@@ -72,7 +72,7 @@
 
       .supplier-actions {
         float: right;
-        width: 140px;
+        width: $module03;
         text-align: right;
         .hidden {
           display: none;
