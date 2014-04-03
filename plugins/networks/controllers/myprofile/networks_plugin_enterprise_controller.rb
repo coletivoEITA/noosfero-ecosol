@@ -11,6 +11,7 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
   helper NetworksPlugin::NetworksDisplayHelper
 
   def new
+    @new_supplier.identifier_from_name = true
     @node = profile
     super
     @node.network_node_parent_relations.create! :parent => @node, :child => @new_supplier.profile

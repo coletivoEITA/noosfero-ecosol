@@ -33,6 +33,7 @@ class Profile
   end
   def network
     node = self.network_node_child_relation
+    return node if node.nil?
     while not (node = node.parent).network? do end
     node
   end

@@ -6,6 +6,11 @@
 
 #suppliers-page {
 
+  /* should be moved to core */
+  input.small-loading {
+    background: transparent url(/images/loading-small.gif) no-repeat scroll right center;
+  }
+
   #search-results {
 
     > strong {

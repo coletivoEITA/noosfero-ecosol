@@ -21,15 +21,6 @@ networks = {
   },
 
   structure: {
-    add_supplier: function(html) {
-      jQuery("#network-suppliers").append(html);
-      jQuery.colorbox.close();
-    },
-
-    add_node: function(html) {
-      jQuery("#network-nodes").append(html);
-      jQuery.colorbox.close();
-    },
 
   }
 };

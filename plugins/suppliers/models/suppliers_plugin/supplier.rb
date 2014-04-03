@@ -17,11 +17,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   named_scope :of_consumer, lambda { |c| { :conditions => {:consumer => c.id} } }
   named_scope :of_consumer_id, lambda { |id| { :conditions => {:consumer_id => id} } }
 
-  named_scope :from_supplier_id, lambda { |supplier_id| {
-      :conditions => ['suppliers_plugin_source_products.supplier_id = ?', supplier_id],
-      :joins => 'INNER JOIN suppliers_plugin_source_products ON products.id = suppliers_plugin_source_products.to_product_id'
-    }
-  }
+  named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_suppliers.id = ?', supplier_id] } }
 
   named_scope :with_name, lambda { |name| if name then {:conditions => ["LOWER(suppliers_plugin_suppliers.name) LIKE ?","%#{name.downcase}%"]} else {} end }
   named_scope :by_active, lambda { |active| if active then {:conditions => {:active => active}} else {} end }
@@ -33,11 +29,15 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   after_create :save_profile, :if => :dummy?
   after_create :distribute_products_to_consumer
 
-  attr_accessor :dont_destroy_dummy
+  attr_accessor :dont_destroy_dummy, :identifier_from_name
+
+  before_validation :set_identifier, :if => :dummy?
+  before_destroy :destroy_consumer_products
 
   def self.new_dummy attributes
-    profile = Enterprise.new :enabled => false, :visible => false, :public_profile => false,
-      :identifier => Digest::MD5.hexdigest(rand.to_s), :environment => attributes[:consumer].environment
+    environment = attributes[:consumer].environment
+    profile = Enterprise.new :enabled => false, :visible => false, :public_profile => false, :environment => environment
+
     supplier = self.new :profile => profile
     supplier.attributes = attributes
     supplier
@@ -91,6 +91,16 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   protected
 
+  def set_identifier
+    if self.identifier_from_name
+      identifier = self.profile.identifier = self.profile.name.to_slug
+      i = 0
+      self.profile.identifier = "#{identifier}#{i += 1}" while Profile[self.profile.identifier].present?
+    else
+      self.profile.identifier = Digest::MD5.hexdigest rand.to_s
+    end
+  end
+
   def add_admins
     self.consumer.admins.each{ |a| self.supplier.add_admin a }
   end
@@ -110,6 +120,10 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
       source_product.distribute_to_consumer self.consumer
     end
+  end
+
+  def destroy_consumer_products
+    self.consumer.products.joins(:suppliers).from_supplier(self).destroy_all
   end
 
   # delegate missing methods to profile

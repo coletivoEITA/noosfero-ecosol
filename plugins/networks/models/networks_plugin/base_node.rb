@@ -8,6 +8,11 @@ class NetworksPlugin::BaseNode < Organization
     self.network_node_child_relations.build :parent => node, :child => self
   end
 
+  # replace on subclasses
+  def network_suppliers
+    self.suppliers.except_self
+  end
+
   # is an enterprise as it has products
   def enterprise?
     true

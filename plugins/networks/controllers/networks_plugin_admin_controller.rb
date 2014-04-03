@@ -4,8 +4,9 @@ class NetworksPluginAdminController < AdminController
 
   helper NetworksPlugin::TranslationHelper
 
+  before_filter :load_networks, :only => [:index, :create]
+
   def index
-    @networks = environment.networks.visible
     @network = NetworksPlugin::Network.new
   end
 
@@ -24,6 +25,12 @@ class NetworksPluginAdminController < AdminController
         render :action => :index
       end
     end
+  end
+
+  protected
+
+  def load_networks
+    @networks = environment.networks.visible
   end
 
 end

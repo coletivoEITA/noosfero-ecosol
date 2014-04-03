@@ -428,9 +428,13 @@
           edit: edit
           products_are_active: " produtos estão ativos"
           products_distributed: " distributed products %{terms.profile.by_article.singular}"
-          products: "manage products"
+          products: 
+            zero: "no products"
+            one: "1 product"
+            other: "%{count} products"
+          manage_products: "manage products"
           registered_supplier_i: "Registered %{terms.supplier.singular} in the network"
-          remove: remove
+          disassociate: disassociate
           supplier_profile_product: " registered products"
           supplier_with_registr: "%{terms.supplier.singular.capitalize} with registry managed by the %{terms.profile.by_article.singular}"
           this_supplier_has: "This %{terms.supplier.singular} has"
@@ -1115,11 +1119,16 @@
           no_network: "Any registered network."
           new: "Create network"
           new_button: "Criar"
+      supplier:
+        _supplier:
+          by_removing_this_supp: "By removing %{terms.supplier.article.singular} all its products won't be available. Please confirm you choice"
       network:
         show_structure:
+          pathway: "You're at: "
+          none: "None"
           title: "Network's structure"
           structure: "Structure"
-          add_enterprise: "Add %{terms.supplier.singular}"
+          add_enterprise: "Add %{terms.supplier.singular} %{terms.profile.to_article.singular}"
           add_node: "Create node"
           confirm_node_remove: "By removing this node, %{terms.supplier.article.plural} and nodes associated to it will be associated to the node '%{parent}'. Please confirm the removal of the node '%{node}'."
           confirm_supplier_desassociate: "Plese confirm that you want to desassociate %{terms.supplier.article.singular} '%{supplier}'."

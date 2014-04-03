@@ -1,6 +1,6 @@
 <h1 id="network-header" class="page-title">
   <% if profile.network_node? %>
-    <%= profile.hierarchy.map(&:name).join ' :: ' %>
+    <%= profile.network.name %>
 
   <% elsif profile.network? %>
     <%= profile.name %>

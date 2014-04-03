@@ -24,7 +24,7 @@ class SuppliersPluginMyprofileController < MyProfileController
   end
 
   def new
-    @new_supplier.update_attributes params[:supplier] #beautiful transactional save
+    @new_supplier.update_attributes! params[:supplier]
     @supplier = @new_supplier
     session[:notice] = t('controllers.myprofile.supplier_created')
   end
@@ -60,7 +60,9 @@ class SuppliersPluginMyprofileController < MyProfileController
   end
 
   def search
-    @enterprises = find_by_contents(:enterprises, environment.enterprises, params[:query])[:results]
+    @query = params[:query].downcase
+    @enterprises = environment.enterprises.enabled.public.all :limit => 12, :order => 'name ASC',
+      :conditions => ['LOWER(name) LIKE ? OR LOWER(name) LIKE ? OR identifier LIKE ?', "#{@query}%", "% #{@query}%", "#{@query}%"]
     @enterprises -= profile.suppliers.collect(&:profile)
   end
 
