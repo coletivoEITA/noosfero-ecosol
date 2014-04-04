@@ -1,7 +1,11 @@
 @import 'base';
+@import 'popin';
 @import 'sortable-table';
 @import 'loading-overlay';
+
 @import 'filter';
+@import 'actions';
+
 @import 'product';
 
 #suppliers-page {
@@ -135,6 +139,19 @@
         width: 100%;
         margin-left: 0;
       }
+    }
+  }
+}
+
+#suppliers-products-import {
+  padding: 
+
+  table, th, td {
+    border: $border solid black;
+  }
+  table {
+    th {
+      font-weight: bold;
     }
   }
 }

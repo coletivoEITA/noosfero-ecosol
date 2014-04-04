@@ -5,6 +5,7 @@ module SuppliersPlugin::DisplayHelper
   include SearchHelper
 
   include TermsHelper
+
   include SuppliersPlugin::TableHelper
   include SuppliersPlugin::FieldHelper
   include SuppliersPlugin::ProductHelper

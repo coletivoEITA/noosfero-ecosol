@@ -6,7 +6,7 @@ module ConsumersCoopPlugin::TranslationHelper
   include TermsHelper
 
   def i18n_scope
-    ['consumers_coop_plugin', 'suppliers_plugin', 'orders_cycle_plugin']
+    ['consumers_coop_plugin', 'suppliers_plugin', 'orders_cycle_plugin', 'orders_plugin']
   end
 
 end

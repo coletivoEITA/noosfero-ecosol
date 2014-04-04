@@ -9,19 +9,6 @@ body.consumers-coop {
   text-align: left;
 }
 
-.consumers-coop th,td {
-  border: none;
-  padding: 0;
-  height: auto;
-  font-size: inherit;
-  border-collapse: initial;
-  font-weight: initial;
-  text-align: left;
-}
-.consumers-coop tr:hover td {
-  background-color: initial;
-}
-
 /* ----- layout ----- */
 
 .consumers-coop-enabled .profile-image-block,
@@ -346,44 +333,6 @@ body.consumers-coop {
 
 
 /* ----- popin ----- */
-
-.consumers-coop #cboxTopLeft,
-.consumers-coop #cboxTopCenter,
-.consumers-coop #cboxTopRight,
-.consumers-coop #cboxMiddleLeft,
-.consumers-coop #cboxMiddleRight,
-.consumers-coop #cboxBottomLeft,
-.consumers-coop #cboxBottomCenter,
-.consumers-coop #cboxBottomRight {
-  display: none;
-}
-.consumers-coop #cboxOverlay {
-  background: black;
-  opacity: 0.45 !important;
-  filter: alpha(opacity=45);
-}
-.consumers-coop #cboxContent {
-  margin: 10px;
-  box-shadow: 0 0 10px black;
-  -webkit-box-shadow: 0 0 10px black;
-  -moz-box-shadow: 0 0 10px black;
-}
-
-.consumers-coop-plugin-popin {
-  line-height: 20px;
-}
-.consumers-coop-plugin-popin h1 {
-  margin: 0;
-  margin-bottom: 20px;
-  padding: 15px 30px;
-  background-color: #B1DFEF;
-  font-size: 13px;
-  font-weight: normal;
-  text-transform: uppercase;
-}
-.consumers-coop-plugin-popin > * {
-  padding: 0 30px;
-}
 
 /* ----- message ----- */
 

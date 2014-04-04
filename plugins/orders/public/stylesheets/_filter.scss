@@ -3,6 +3,13 @@
 $filter-border-color: #d6e9bc;
 $filter-bg: #BCDC91;
 
+#filter-with-actions {
+
+  #filter {
+    margin-bottom: 0;
+  }
+}
+
 #filter {
   background-color: $filter-bg;
   padding: 0;

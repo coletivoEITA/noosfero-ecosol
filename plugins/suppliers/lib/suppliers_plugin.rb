@@ -25,6 +25,7 @@ class SuppliersPlugin < Noosfero::Plugin
   end
 
   def product_tabs product
+    return if product.profile.consumers.except_self.blank?
     {
       :title => I18n.t('suppliers_plugin.lib.plugin.distribution_tab'), :id => 'product-distribution',
       :content => lambda{ render 'suppliers_plugin_manage_products/distribution_tab', :product => product }
