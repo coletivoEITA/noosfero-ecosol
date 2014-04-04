@@ -117,7 +117,7 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #consumers-coop-settings form a.button.colorbox-close,
+.action-button, .selection-button, #consumers-coop-settings form .selection-button, #consumers-coop-settings form a.button.colorbox-close,
 #consumers-coop-settings form #wrap-1 input[type=submit],
 #consumers-coop-settings form input[type=submit] {
   display: inline-block;
@@ -137,6 +137,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 /* ----- override some noosfero's css  ----- */
 body.consumers-coop {
@@ -508,7 +511,7 @@ body.consumers-coop {
       background-size: 100%;
       background-size: contain;
       /* css3 enabled */ }
-  #consumers-coop-settings form .action-button, #consumers-coop-settings form a.button.colorbox-close,
+  #consumers-coop-settings form .action-button, #consumers-coop-settings form .selection-button, #consumers-coop-settings form a.button.colorbox-close,
   #consumers-coop-settings form #wrap-1 input[type=submit],
   #consumers-coop-settings form input[type=submit] {
     display: inline-block;
@@ -528,6 +531,8 @@ body.consumers-coop {
     text-transform: uppercase;
     text-shadow: none;
     border-radius: 5px; }
+  #consumers-coop-settings form .selection-button {
+    background: white; }
   #consumers-coop-settings form .field-title {
     text-transform: uppercase;
     font-weight: bold; }

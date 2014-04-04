@@ -328,9 +328,16 @@
           redistribution_situation: "Product distribution"
           name: "Name"
       product:
+        _actions:
+          all: "all"
+          none: "none"
+          select: "select"
+          with_selection: "with selected"
+          activate: "activate"
+          deactivate: "deactivate"
         import:
           action: "Import spreadsheet"
-          help: "Format you spreadsheet to have exactly the fields abaixo. Then, save it choosing the CSV file type (.csv extension)."
+          help: "Format you spreadsheet to have exactly the fields bellow. Then, save it choosing the CSV file type (.csv extension)."
           field_supplier_name: "Supplier's name"
           field_product_name: "Product's name"
           field_product_unit: "Unit"

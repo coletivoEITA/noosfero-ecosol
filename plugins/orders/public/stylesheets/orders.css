@@ -117,11 +117,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #filter .filter-box a.button.colorbox-close,
+.action-button, .selection-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], .order-items-container a.button.colorbox-close,
+#filter .filter-box input[type=submit], .order-items-container .selection-button, .order-items-container a.button.colorbox-close,
 .order-items-container #wrap-1 input[type=submit],
-.order-items-container input[type=submit], .consumer-order a.button.colorbox-close,
+.order-items-container input[type=submit], .consumer-order .selection-button, .consumer-order a.button.colorbox-close,
 .consumer-order #wrap-1 input[type=submit],
 .consumer-order input[type=submit] {
   display: inline-block;
@@ -141,6 +141,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 /* use with @extend, CSS clear bugfix */
 .clean {
@@ -261,11 +264,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #filter .filter-box a.button.colorbox-close,
+.action-button, .selection-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], .order-items-container a.button.colorbox-close,
+#filter .filter-box input[type=submit], .order-items-container .selection-button, .order-items-container a.button.colorbox-close,
 .order-items-container #wrap-1 input[type=submit],
-.order-items-container input[type=submit], .consumer-order a.button.colorbox-close,
+.order-items-container input[type=submit], .consumer-order .selection-button, .consumer-order a.button.colorbox-close,
 .consumer-order #wrap-1 input[type=submit],
 .consumer-order input[type=submit] {
   display: inline-block;
@@ -285,6 +288,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 /* use with @extend, CSS clear bugfix */
 .clean {
@@ -405,11 +411,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #filter .filter-box a.button.colorbox-close,
+.action-button, .selection-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], .order-items-container a.button.colorbox-close,
+#filter .filter-box input[type=submit], .order-items-container .selection-button, .order-items-container a.button.colorbox-close,
 .order-items-container #wrap-1 input[type=submit],
-.order-items-container input[type=submit], .consumer-order a.button.colorbox-close,
+.order-items-container input[type=submit], .consumer-order .selection-button, .consumer-order a.button.colorbox-close,
 .consumer-order #wrap-1 input[type=submit],
 .consumer-order input[type=submit] {
   display: inline-block;
@@ -429,6 +435,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 .box-field {
   float: left;
@@ -663,11 +672,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #filter .filter-box a.button.colorbox-close,
+.action-button, .selection-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], .order-items-container a.button.colorbox-close,
+#filter .filter-box input[type=submit], .order-items-container .selection-button, .order-items-container a.button.colorbox-close,
 .order-items-container #wrap-1 input[type=submit],
-.order-items-container input[type=submit], .consumer-order a.button.colorbox-close,
+.order-items-container input[type=submit], .consumer-order .selection-button, .consumer-order a.button.colorbox-close,
 .consumer-order #wrap-1 input[type=submit],
 .consumer-order input[type=submit] {
   display: inline-block;
@@ -687,6 +696,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 #filter-with-actions #filter {
   margin-bottom: 0; }
@@ -816,7 +828,7 @@
         background-size: 100%;
         background-size: contain;
         /* css3 enabled */ }
-    #filter .filter-box .action-button, #filter .filter-box a.button.colorbox-close,
+    #filter .filter-box .action-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
     #filter .filter-box #wrap-1 input[type=submit],
     #filter .filter-box input[type=submit] {
       display: inline-block;
@@ -836,6 +848,8 @@
       text-transform: uppercase;
       text-shadow: none;
       border-radius: 5px; }
+    #filter .filter-box .selection-button {
+      background: white; }
     #filter .filter-box .field-title {
       text-transform: uppercase;
       font-weight: bold; }
@@ -1049,11 +1063,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #filter .filter-box a.button.colorbox-close,
+.action-button, .selection-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], .order-items-container a.button.colorbox-close,
+#filter .filter-box input[type=submit], .order-items-container .selection-button, .order-items-container a.button.colorbox-close,
 .order-items-container #wrap-1 input[type=submit],
-.order-items-container input[type=submit], .consumer-order a.button.colorbox-close,
+.order-items-container input[type=submit], .consumer-order .selection-button, .consumer-order a.button.colorbox-close,
 .consumer-order #wrap-1 input[type=submit],
 .consumer-order input[type=submit] {
   display: inline-block;
@@ -1073,6 +1087,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 /* use with @extend, CSS clear bugfix */
 .clean {
@@ -1193,11 +1210,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #filter .filter-box a.button.colorbox-close,
+.action-button, .selection-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], .order-items-container a.button.colorbox-close,
+#filter .filter-box input[type=submit], .order-items-container .selection-button, .order-items-container a.button.colorbox-close,
 .order-items-container #wrap-1 input[type=submit],
-.order-items-container input[type=submit], .consumer-order a.button.colorbox-close,
+.order-items-container input[type=submit], .consumer-order .selection-button, .consumer-order a.button.colorbox-close,
 .consumer-order #wrap-1 input[type=submit],
 .consumer-order input[type=submit] {
   display: inline-block;
@@ -1217,6 +1234,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 .order-items-container {
   /* use with @extend, CSS clear bugfix */
@@ -1311,11 +1331,11 @@
       background-size: 100%;
       background-size: contain;
       /* css3 enabled */ }
-  .order-items-container .action-button, .order-items-container #filter .filter-box a.button.colorbox-close, #filter .filter-box .order-items-container a.button.colorbox-close,
+  .order-items-container .action-button, .order-items-container #filter .filter-box .selection-button, #filter .filter-box .order-items-container .selection-button, .order-items-container #filter .filter-box a.button.colorbox-close, #filter .filter-box .order-items-container a.button.colorbox-close,
   .order-items-container #filter .filter-box #wrap-1 input[type=submit],
   #filter .filter-box #wrap-1 .order-items-container input[type=submit],
   .order-items-container #filter .filter-box input[type=submit],
-  #filter .filter-box .order-items-container input[type=submit], .order-items-container a.button.colorbox-close,
+  #filter .filter-box .order-items-container input[type=submit], .order-items-container .selection-button, .order-items-container a.button.colorbox-close,
   .order-items-container #wrap-1 input[type=submit],
   .order-items-container input[type=submit],
   .consumer-order #wrap-1 .order-items-container input[type=submit] {
@@ -1336,6 +1356,8 @@
     text-transform: uppercase;
     text-shadow: none;
     border-radius: 5px; }
+  .order-items-container .selection-button {
+    background: white; }
   .order-items-container .field-title {
     text-transform: uppercase;
     font-weight: bold; }
@@ -1633,12 +1655,12 @@
       background-size: 100%;
       background-size: contain;
       /* css3 enabled */ }
-  .consumer-order .action-button, .consumer-order #filter .filter-box a.button.colorbox-close, #filter .filter-box .consumer-order a.button.colorbox-close,
+  .consumer-order .action-button, .consumer-order #filter .filter-box .selection-button, #filter .filter-box .consumer-order .selection-button, .consumer-order #filter .filter-box a.button.colorbox-close, #filter .filter-box .consumer-order a.button.colorbox-close,
   .consumer-order #filter .filter-box #wrap-1 input[type=submit],
   #filter .filter-box #wrap-1 .consumer-order input[type=submit],
   .consumer-order #filter .filter-box input[type=submit],
   #filter .filter-box .consumer-order input[type=submit],
-  .order-items-container #wrap-1 .consumer-order input[type=submit], .consumer-order a.button.colorbox-close,
+  .order-items-container #wrap-1 .consumer-order input[type=submit], .consumer-order .selection-button, .consumer-order a.button.colorbox-close,
   .consumer-order #wrap-1 input[type=submit],
   .consumer-order input[type=submit] {
     display: inline-block;
@@ -1658,6 +1680,8 @@
     text-transform: uppercase;
     text-shadow: none;
     border-radius: 5px; }
+  .consumer-order .selection-button {
+    background: white; }
   .consumer-order .field-title {
     text-transform: uppercase;
     font-weight: bold; }

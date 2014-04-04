@@ -74,6 +74,7 @@ $shadow: 2px;
 
 $border-action-button: #F4A439;
 $bg-action-button: #FBCA47;
+$bg-selection-button: white;
 
 /* Fonts */
 
@@ -205,5 +206,10 @@ $profile-portrait-size: 10*$base;
   text-transform: uppercase;
   text-shadow: none;
   border-radius: $border-radius;
+}
+
+.selection-button {
+  @extend .action-button;
+  background: $bg-selection-button;
 }
 

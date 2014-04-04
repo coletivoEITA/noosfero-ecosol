@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #actions-box .labels, #actions-box .buttons, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
 #suppliers-page .supplier .box-edit form .data .full-data {
   overflow: hidden;
   display: inline-block;
@@ -118,11 +118,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #filter .filter-box a.button.colorbox-close,
+.action-button, .selection-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form a.button.colorbox-close,
+#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form .selection-button, #supplier-our-products .sortable-table form a.button.colorbox-close,
 #supplier-our-products .sortable-table form #wrap-1 input[type=submit],
-#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form a.button.colorbox-close,
+#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form .selection-button, #suppliers-page .supplier .box-edit form a.button.colorbox-close,
 #suppliers-page .supplier .box-edit form #wrap-1 input[type=submit],
 #suppliers-page .supplier .box-edit form input[type=submit] {
   display: inline-block;
@@ -142,6 +142,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 /* add class via colorbox's className parameter */
 .consumers-coop #cboxTopLeft,
@@ -180,7 +183,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #actions-box .labels, #actions-box .buttons, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
 #suppliers-page .supplier .box-edit form .data .full-data {
   overflow: hidden;
   display: inline-block;
@@ -296,11 +299,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #filter .filter-box a.button.colorbox-close,
+.action-button, .selection-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form a.button.colorbox-close,
+#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form .selection-button, #supplier-our-products .sortable-table form a.button.colorbox-close,
 #supplier-our-products .sortable-table form #wrap-1 input[type=submit],
-#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form a.button.colorbox-close,
+#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form .selection-button, #suppliers-page .supplier .box-edit form a.button.colorbox-close,
 #suppliers-page .supplier .box-edit form #wrap-1 input[type=submit],
 #suppliers-page .supplier .box-edit form input[type=submit] {
   display: inline-block;
@@ -320,6 +323,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 .box-field {
   float: left;
@@ -439,7 +445,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #actions-box .labels, #actions-box .buttons, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
 #suppliers-page .supplier .box-edit form .data .full-data {
   overflow: hidden;
   display: inline-block;
@@ -555,11 +561,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #filter .filter-box a.button.colorbox-close,
+.action-button, .selection-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form a.button.colorbox-close,
+#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form .selection-button, #supplier-our-products .sortable-table form a.button.colorbox-close,
 #supplier-our-products .sortable-table form #wrap-1 input[type=submit],
-#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form a.button.colorbox-close,
+#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form .selection-button, #suppliers-page .supplier .box-edit form a.button.colorbox-close,
 #suppliers-page .supplier .box-edit form #wrap-1 input[type=submit],
 #suppliers-page .supplier .box-edit form input[type=submit] {
   display: inline-block;
@@ -579,6 +585,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 #filter-with-actions #filter {
   margin-bottom: 0; }
@@ -636,7 +645,7 @@
     /* Buttons */ }
     #filter .filter-box .clean {
       clear: both; }
-    #filter .filter-box .container-clean, #filter .filter-box .sortable-table > .table-header, #filter .filter-box .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #filter .filter-box .box-view, #filter .filter-box .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #filter .filter-box .box-view-inner, #filter .filter-box .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #filter .filter-box .internal-table, #filter .filter-box .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #filter .filter-box #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table #filter .filter-box form, #filter .filter-box #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form #filter .filter-box .field, #filter .filter-box #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form #filter .filter-box .field-secondary.with-unit, #filter .filter-box #supplier-our-products .sortable-table form .internal-table .row, #supplier-our-products .sortable-table form .internal-table #filter .filter-box .row, #filter .filter-box #suppliers-page .supplier .box-view, #suppliers-page .supplier #filter .filter-box .box-view, #filter .filter-box #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form #filter .filter-box .field, #filter .filter-box #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form #filter .filter-box .field-secondary.with-unit, #filter .filter-box #suppliers-page .supplier .box-edit form .data .basic-data, #suppliers-page .supplier .box-edit form .data #filter .filter-box .basic-data,
+    #filter .filter-box .container-clean, #filter .filter-box .sortable-table > .table-header, #filter .filter-box .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #filter .filter-box .box-view, #filter .filter-box .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #filter .filter-box .box-view-inner, #filter .filter-box .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #filter .filter-box .internal-table, #filter .filter-box .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #filter .filter-box #actions-box .labels, #actions-box #filter .filter-box .labels, #filter .filter-box #actions-box .buttons, #actions-box #filter .filter-box .buttons, #filter .filter-box #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table #filter .filter-box form, #filter .filter-box #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form #filter .filter-box .field, #filter .filter-box #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form #filter .filter-box .field-secondary.with-unit, #filter .filter-box #supplier-our-products .sortable-table form .internal-table .row, #supplier-our-products .sortable-table form .internal-table #filter .filter-box .row, #filter .filter-box #suppliers-page .supplier .box-view, #suppliers-page .supplier #filter .filter-box .box-view, #filter .filter-box #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form #filter .filter-box .field, #filter .filter-box #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form #filter .filter-box .field-secondary.with-unit, #filter .filter-box #suppliers-page .supplier .box-edit form .data .basic-data, #suppliers-page .supplier .box-edit form .data #filter .filter-box .basic-data,
     #filter .filter-box #suppliers-page .supplier .box-edit form .data .full-data,
     #suppliers-page .supplier .box-edit form .data #filter .filter-box .full-data {
       overflow: hidden;
@@ -710,11 +719,11 @@
         background-size: 100%;
         background-size: contain;
         /* css3 enabled */ }
-    #filter .filter-box .action-button, #filter .filter-box a.button.colorbox-close,
+    #filter .filter-box .action-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
     #filter .filter-box #wrap-1 input[type=submit],
-    #filter .filter-box input[type=submit], #filter .filter-box #supplier-our-products .sortable-table form a.button.colorbox-close, #supplier-our-products .sortable-table form #filter .filter-box a.button.colorbox-close,
+    #filter .filter-box input[type=submit], #filter .filter-box #supplier-our-products .sortable-table form .selection-button, #supplier-our-products .sortable-table form #filter .filter-box .selection-button, #filter .filter-box #supplier-our-products .sortable-table form a.button.colorbox-close, #supplier-our-products .sortable-table form #filter .filter-box a.button.colorbox-close,
     #filter .filter-box #supplier-our-products .sortable-table form input[type=submit],
-    #supplier-our-products .sortable-table form #filter .filter-box input[type=submit], #filter .filter-box #suppliers-page .supplier .box-edit form a.button.colorbox-close, #suppliers-page .supplier .box-edit form #filter .filter-box a.button.colorbox-close,
+    #supplier-our-products .sortable-table form #filter .filter-box input[type=submit], #filter .filter-box #suppliers-page .supplier .box-edit form .selection-button, #suppliers-page .supplier .box-edit form #filter .filter-box .selection-button, #filter .filter-box #suppliers-page .supplier .box-edit form a.button.colorbox-close, #suppliers-page .supplier .box-edit form #filter .filter-box a.button.colorbox-close,
     #filter .filter-box #suppliers-page .supplier .box-edit form input[type=submit],
     #suppliers-page .supplier .box-edit form #filter .filter-box input[type=submit] {
       display: inline-block;
@@ -734,6 +743,8 @@
       text-transform: uppercase;
       text-shadow: none;
       border-radius: 5px; }
+    #filter .filter-box .selection-button {
+      background: white; }
     #filter .filter-box .field-title {
       text-transform: uppercase;
       font-weight: bold; }
@@ -832,7 +843,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #actions-box .labels, #actions-box .buttons, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
 #suppliers-page .supplier .box-edit form .data .full-data {
   overflow: hidden;
   display: inline-block;
@@ -948,11 +959,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #filter .filter-box a.button.colorbox-close,
+.action-button, .selection-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form a.button.colorbox-close,
+#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form .selection-button, #supplier-our-products .sortable-table form a.button.colorbox-close,
 #supplier-our-products .sortable-table form #wrap-1 input[type=submit],
-#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form a.button.colorbox-close,
+#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form .selection-button, #suppliers-page .supplier .box-edit form a.button.colorbox-close,
 #suppliers-page .supplier .box-edit form #wrap-1 input[type=submit],
 #suppliers-page .supplier .box-edit form input[type=submit] {
   display: inline-block;
@@ -972,6 +983,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 #actions-box {
   background: #d7ffb9; }
@@ -979,12 +993,21 @@
     margin-left: -40px;
     margin-right: -40px;
     padding: 8px 48px; }
+  #actions-box .select {
+    float: left;
+    width: 224px; }
+  #actions-box .with-selection {
+    float: left;
+    width: 464px; }
+  #actions-box .other {
+    float: right;
+    width: 224px; }
 
 /* use with @extend, CSS clear bugfix */
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #actions-box .labels, #actions-box .buttons, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
 #suppliers-page .supplier .box-edit form .data .full-data {
   overflow: hidden;
   display: inline-block;
@@ -1100,11 +1123,11 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #filter .filter-box a.button.colorbox-close,
+.action-button, .selection-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form a.button.colorbox-close,
+#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form .selection-button, #supplier-our-products .sortable-table form a.button.colorbox-close,
 #supplier-our-products .sortable-table form #wrap-1 input[type=submit],
-#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form a.button.colorbox-close,
+#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form .selection-button, #suppliers-page .supplier .box-edit form a.button.colorbox-close,
 #suppliers-page .supplier .box-edit form #wrap-1 input[type=submit],
 #suppliers-page .supplier .box-edit form input[type=submit] {
   display: inline-block;
@@ -1124,6 +1147,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 #supplier-our-products .sortable-table .box-field.status {
   width: 64px; }
@@ -1164,7 +1190,7 @@
   /* Buttons */ }
   #supplier-our-products .sortable-table form .clean {
     clear: both; }
-  #supplier-our-products .sortable-table form .container-clean, #supplier-our-products .sortable-table form .sortable-table > .table-header, #supplier-our-products .sortable-table > .table-content > .value-row form .box-view, #supplier-our-products .sortable-table > .table-content > .value-row form .box-view .box-view-inner, #supplier-our-products .sortable-table > .table-content > .value-row .box-view form .box-view-inner, #supplier-our-products .sortable-table > .table-content > .value-row form .box-edit .internal-table, #supplier-our-products .sortable-table > .table-content > .value-row .box-edit form .internal-table, #supplier-our-products .sortable-table form #filter .filter-box, #filter #supplier-our-products .sortable-table form .filter-box, #supplier-our-products .sortable-table form form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #supplier-our-products .sortable-table form #suppliers-page .supplier .box-view, #suppliers-page .supplier #supplier-our-products .sortable-table form .box-view, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .data .basic-data, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .data .basic-data,
+  #supplier-our-products .sortable-table form .container-clean, #supplier-our-products .sortable-table form .sortable-table > .table-header, #supplier-our-products .sortable-table > .table-content > .value-row form .box-view, #supplier-our-products .sortable-table > .table-content > .value-row form .box-view .box-view-inner, #supplier-our-products .sortable-table > .table-content > .value-row .box-view form .box-view-inner, #supplier-our-products .sortable-table > .table-content > .value-row form .box-edit .internal-table, #supplier-our-products .sortable-table > .table-content > .value-row .box-edit form .internal-table, #supplier-our-products .sortable-table form #filter .filter-box, #filter #supplier-our-products .sortable-table form .filter-box, #supplier-our-products .sortable-table form #actions-box .labels, #actions-box #supplier-our-products .sortable-table form .labels, #supplier-our-products .sortable-table form #actions-box .buttons, #actions-box #supplier-our-products .sortable-table form .buttons, #supplier-our-products .sortable-table form form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #supplier-our-products .sortable-table form #suppliers-page .supplier .box-view, #suppliers-page .supplier #supplier-our-products .sortable-table form .box-view, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .data .basic-data, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .data .basic-data,
   #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .data .full-data,
   #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .data .full-data {
     overflow: hidden;
@@ -1238,9 +1264,9 @@
       background-size: 100%;
       background-size: contain;
       /* css3 enabled */ }
-  #supplier-our-products .sortable-table form .action-button, #supplier-our-products .sortable-table form a.button.colorbox-close,
+  #supplier-our-products .sortable-table form .action-button, #supplier-our-products .sortable-table form .selection-button, #supplier-our-products .sortable-table form a.button.colorbox-close,
   #supplier-our-products .sortable-table form #wrap-1 input[type=submit],
-  #supplier-our-products .sortable-table form input[type=submit], #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form a.button.colorbox-close, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form a.button.colorbox-close,
+  #supplier-our-products .sortable-table form input[type=submit], #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .selection-button, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .selection-button, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form a.button.colorbox-close, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form a.button.colorbox-close,
   #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form input[type=submit],
   #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form input[type=submit] {
     display: inline-block;
@@ -1260,6 +1286,8 @@
     text-transform: uppercase;
     text-shadow: none;
     border-radius: 5px; }
+  #supplier-our-products .sortable-table form .selection-button {
+    background: white; }
   #supplier-our-products .sortable-table form .field-title {
     text-transform: uppercase;
     font-weight: bold; }
@@ -1361,15 +1389,15 @@
     float: left;
     width: 800px;
     margin-top: 8px; }
-    #supplier-our-products .sortable-table form .action-button-container .action-button.save, #supplier-our-products .sortable-table form .action-button-container a.save.button.colorbox-close,
+    #supplier-our-products .sortable-table form .action-button-container .action-button.save, #supplier-our-products .sortable-table form .action-button-container .save.selection-button, #supplier-our-products .sortable-table form .action-button-container a.save.button.colorbox-close,
     #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.save[type=submit],
     #supplier-our-products .sortable-table form #wrap-1 .action-button-container input.save[type=submit],
     #supplier-our-products .sortable-table form .action-button-container input.save[type=submit] {
       float: right; }
-    #supplier-our-products .sortable-table form .action-button-container .action-button.remove, #supplier-our-products .sortable-table form .action-button-container a.remove.button.colorbox-close,
+    #supplier-our-products .sortable-table form .action-button-container .action-button.remove, #supplier-our-products .sortable-table form .action-button-container .remove.selection-button, #supplier-our-products .sortable-table form .action-button-container a.remove.button.colorbox-close,
     #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.remove[type=submit],
     #supplier-our-products .sortable-table form #wrap-1 .action-button-container input.remove[type=submit],
-    #supplier-our-products .sortable-table form .action-button-container input.remove[type=submit], #supplier-our-products .sortable-table form .action-button-container .action-button.cancel, #supplier-our-products .sortable-table form .action-button-container a.cancel.button.colorbox-close,
+    #supplier-our-products .sortable-table form .action-button-container input.remove[type=submit], #supplier-our-products .sortable-table form .action-button-container .action-button.cancel, #supplier-our-products .sortable-table form .action-button-container .cancel.selection-button, #supplier-our-products .sortable-table form .action-button-container a.cancel.button.colorbox-close,
     #supplier-our-products .sortable-table form .action-button-container #wrap-1 input.cancel[type=submit],
     #supplier-our-products .sortable-table form #wrap-1 .action-button-container input.cancel[type=submit],
     #supplier-our-products .sortable-table form .action-button-container input.cancel[type=submit] {
@@ -1378,13 +1406,13 @@
 #supplier-our-products .links {
   float: right;
   width: 144px; }
-  #supplier-our-products .links .action-button, #supplier-our-products .links #filter .filter-box a.button.colorbox-close, #filter .filter-box #supplier-our-products .links a.button.colorbox-close,
+  #supplier-our-products .links .action-button, #supplier-our-products .links .selection-button, #supplier-our-products .links #filter .filter-box a.button.colorbox-close, #filter .filter-box #supplier-our-products .links a.button.colorbox-close,
   #supplier-our-products .links #filter .filter-box input[type=submit],
-  #filter .filter-box #supplier-our-products .links input[type=submit], #supplier-our-products .links .sortable-table form a.button.colorbox-close, #supplier-our-products .sortable-table form .links a.button.colorbox-close,
+  #filter .filter-box #supplier-our-products .links input[type=submit], #supplier-our-products .links .sortable-table form .selection-button, #supplier-our-products .sortable-table form .links .selection-button, #supplier-our-products .links .sortable-table form a.button.colorbox-close, #supplier-our-products .sortable-table form .links a.button.colorbox-close,
   #supplier-our-products .links .sortable-table form #wrap-1 input[type=submit],
   #supplier-our-products .sortable-table form #wrap-1 .links input[type=submit],
   #supplier-our-products .links .sortable-table form input[type=submit],
-  #supplier-our-products .sortable-table form .links input[type=submit], #supplier-our-products .links #suppliers-page .supplier .box-edit form a.button.colorbox-close, #suppliers-page .supplier .box-edit form #supplier-our-products .links a.button.colorbox-close,
+  #supplier-our-products .sortable-table form .links input[type=submit], #supplier-our-products .links #suppliers-page .supplier .box-edit form .selection-button, #suppliers-page .supplier .box-edit form #supplier-our-products .links .selection-button, #supplier-our-products .links #suppliers-page .supplier .box-edit form a.button.colorbox-close, #suppliers-page .supplier .box-edit form #supplier-our-products .links a.button.colorbox-close,
   #supplier-our-products .links #suppliers-page .supplier .box-edit form input[type=submit],
   #suppliers-page .supplier .box-edit form #supplier-our-products .links input[type=submit] {
     margin-bottom: 8px; }
@@ -1458,7 +1486,7 @@
         /* Buttons */ }
         #suppliers-page .supplier .box-edit form .clean {
           clear: both; }
-        #suppliers-page .supplier .box-edit form .container-clean, #suppliers-page .supplier .box-edit form .sortable-table > .table-header, #suppliers-page .supplier .box-edit form .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #suppliers-page .supplier .box-edit form .box-view-inner, #suppliers-page .supplier .sortable-table > .table-content > .value-row .box-edit form .internal-table, .sortable-table > .table-content > .value-row #suppliers-page .supplier .box-edit form .internal-table, #suppliers-page .supplier .box-edit form #filter .filter-box, #filter #suppliers-page .supplier .box-edit form .filter-box, #suppliers-page .supplier .box-edit form #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form form, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .internal-table .row, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .internal-table .row, #suppliers-page .supplier .box-edit form .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
+        #suppliers-page .supplier .box-edit form .container-clean, #suppliers-page .supplier .box-edit form .sortable-table > .table-header, #suppliers-page .supplier .box-edit form .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #suppliers-page .supplier .box-edit form .box-view-inner, #suppliers-page .supplier .sortable-table > .table-content > .value-row .box-edit form .internal-table, .sortable-table > .table-content > .value-row #suppliers-page .supplier .box-edit form .internal-table, #suppliers-page .supplier .box-edit form #filter .filter-box, #filter #suppliers-page .supplier .box-edit form .filter-box, #suppliers-page .supplier .box-edit form #actions-box .labels, #actions-box #suppliers-page .supplier .box-edit form .labels, #suppliers-page .supplier .box-edit form #actions-box .buttons, #actions-box #suppliers-page .supplier .box-edit form .buttons, #suppliers-page .supplier .box-edit form #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form form, #suppliers-page .supplier .box-edit #supplier-our-products .sortable-table form .internal-table .row, #supplier-our-products .sortable-table #suppliers-page .supplier .box-edit form .internal-table .row, #suppliers-page .supplier .box-edit form .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
         #suppliers-page .supplier .box-edit form .data .full-data {
           overflow: hidden;
           display: inline-block;
@@ -1531,7 +1559,7 @@
             background-size: 100%;
             background-size: contain;
             /* css3 enabled */ }
-        #suppliers-page .supplier .box-edit form .action-button, #suppliers-page .supplier .box-edit form a.button.colorbox-close,
+        #suppliers-page .supplier .box-edit form .action-button, #suppliers-page .supplier .box-edit form .selection-button, #suppliers-page .supplier .box-edit form a.button.colorbox-close,
         #suppliers-page .supplier .box-edit form #wrap-1 input[type=submit],
         #suppliers-page .supplier .box-edit form input[type=submit] {
           display: inline-block;
@@ -1551,6 +1579,8 @@
           text-transform: uppercase;
           text-shadow: none;
           border-radius: 5px; }
+        #suppliers-page .supplier .box-edit form .selection-button {
+          background: white; }
         #suppliers-page .supplier .box-edit form .field-title {
           text-transform: uppercase;
           font-weight: bold; }
