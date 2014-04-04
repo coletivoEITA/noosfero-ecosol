@@ -34,7 +34,7 @@ class NetworksPlugin < Noosfero::Plugin
   def profile_editor_controller_filters
     [
       {:type => 'before_filter', :method_name => 'networks_profile_editor',
-       :options => {}, :block => ProfileEditorFilter},
+       :options => {:only => [:edit]}, :block => ProfileEditorFilter},
     ]
   end
 
