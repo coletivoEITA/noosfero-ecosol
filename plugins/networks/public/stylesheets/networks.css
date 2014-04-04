@@ -117,7 +117,7 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button {
+.action-button, .selection-button {
   display: inline-block;
   padding: 4px 8px;
   margin: 0;
@@ -135,6 +135,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 /* use with @extend, CSS clear bugfix */
 .clean {
@@ -255,7 +258,7 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button {
+.action-button, .selection-button {
   display: inline-block;
   padding: 4px 8px;
   margin: 0;

@@ -117,7 +117,7 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #cycle-admin-page a.button.colorbox-close,
+.action-button, .selection-button, #cycle-admin-page .selection-button, #cycle-admin-page a.button.colorbox-close,
 #cycle-admin-page #wrap-1 input[type=submit],
 #cycle-admin-page input[type=submit] {
   display: inline-block;
@@ -137,6 +137,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 /* use with @extend, CSS clear bugfix */
 .clean {
@@ -257,7 +260,7 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #cycle-admin-page a.button.colorbox-close,
+.action-button, .selection-button, #cycle-admin-page .selection-button, #cycle-admin-page a.button.colorbox-close,
 #cycle-admin-page #wrap-1 input[type=submit],
 #cycle-admin-page input[type=submit] {
   display: inline-block;
@@ -277,6 +280,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 /* use with @extend, CSS clear bugfix */
 .clean {
@@ -397,7 +403,7 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #cycle-admin-page a.button.colorbox-close,
+.action-button, .selection-button, #cycle-admin-page .selection-button, #cycle-admin-page a.button.colorbox-close,
 #cycle-admin-page #wrap-1 input[type=submit],
 #cycle-admin-page input[type=submit] {
   display: inline-block;
@@ -417,6 +423,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 .box-field {
   float: left;
@@ -645,7 +654,7 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #cycle-admin-page a.button.colorbox-close,
+.action-button, .selection-button, #cycle-admin-page .selection-button, #cycle-admin-page a.button.colorbox-close,
 #cycle-admin-page #wrap-1 input[type=submit],
 #cycle-admin-page input[type=submit] {
   display: inline-block;
@@ -665,6 +674,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 .balloon {
   position: absolute;
@@ -996,7 +1008,7 @@
       background-size: 100%;
       background-size: contain;
       /* css3 enabled */ }
-  #cycle-admin-page .action-button, #cycle-admin-page a.button.colorbox-close,
+  #cycle-admin-page .action-button, #cycle-admin-page .selection-button, #cycle-admin-page a.button.colorbox-close,
   #cycle-admin-page #wrap-1 input[type=submit],
   #cycle-admin-page input[type=submit] {
     display: inline-block;
@@ -1016,6 +1028,8 @@
     text-transform: uppercase;
     text-shadow: none;
     border-radius: 5px; }
+  #cycle-admin-page .selection-button {
+    background: white; }
   #cycle-admin-page .field-title {
     text-transform: uppercase;
     font-weight: bold; }

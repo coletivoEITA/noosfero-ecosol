@@ -1,6 +1,29 @@
 
 <div id="actions-box" class="wireframe-size">
 
-  <%= link_to t('views.product.import.action'), {:controller => :suppliers_plugin_product, :action => :import}, :class => 'action-button colorbox' %>
+  <div class="labels">
+    <span class="select">
+      <%= t('views.product._actions.select') %>
+    </span>
+    <span class="with-selection">
+      <%= t('views.product._actions.with_selection') %>
+    </span>
+  </div>
+
+  <div class="buttons">
+    <div class="select">
+      <%= link_to_function t('views.product._actions.all'), 'suppliers.our_product.select.all()', :class => 'selection-button' %>
+      <%= link_to_function t('views.product._actions.none'), 'suppliers.our_product.select.none()', :class => 'selection-button' %>
+    </div>
+
+    <div class="with-selection">
+      <%= link_to_function t('views.product._actions.activate'), 'suppliers.our_product.select.activate(true)', :class => 'action-button' %>
+      <%= link_to_function t('views.product._actions.deactivate'), 'suppliers.our_product.select.activate(false)', :class => 'action-button' %>
+    </div>
+
+    <div class="other">
+      <%= link_to t('views.product.import.action'), {:controller => :suppliers_plugin_product, :action => :import}, :class => 'action-button colorbox' %>
+    </div>
+  </div>
 
 </div>

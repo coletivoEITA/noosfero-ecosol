@@ -5,7 +5,7 @@
     <% else %>
       <% options = {:disabled => "disabled"} %>
     <% end %>
-    <%= check_box_tag "products_ids[]", product.id, !item.blank?, options %>
+    <%= check_box_tag "product_ids[]", product.id, !item.blank?, options %>
   </div>
 
   <div class="box-view-inner">

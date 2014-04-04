@@ -117,7 +117,7 @@
     /* css3 enabled */ }
 
 /* Buttons */
-.action-button, #delivery-method-edit a.button.colorbox-close,
+.action-button, .selection-button, #delivery-method-edit .selection-button, #delivery-method-edit a.button.colorbox-close,
 #delivery-method-edit #wrap-1 input[type=submit],
 #delivery-method-edit input[type=submit] {
   display: inline-block;
@@ -137,6 +137,9 @@
   text-transform: uppercase;
   text-shadow: none;
   border-radius: 5px; }
+
+.selection-button {
+  background: white; }
 
 #delivery-method-edit {
   /* use with @extend, CSS clear bugfix */
@@ -231,7 +234,7 @@
       background-size: 100%;
       background-size: contain;
       /* css3 enabled */ }
-  #delivery-method-edit .action-button, #delivery-method-edit a.button.colorbox-close,
+  #delivery-method-edit .action-button, #delivery-method-edit .selection-button, #delivery-method-edit a.button.colorbox-close,
   #delivery-method-edit #wrap-1 input[type=submit],
   #delivery-method-edit input[type=submit] {
     display: inline-block;
@@ -251,6 +254,8 @@
     text-transform: uppercase;
     text-shadow: none;
     border-radius: 5px; }
+  #delivery-method-edit .selection-button {
+    background: white; }
   #delivery-method-edit .field-title {
     text-transform: uppercase;
     font-weight: bold; }

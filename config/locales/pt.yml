@@ -337,6 +337,13 @@
           redistribution_situation: "Distribuição dos produtos"
           name: "Nome"
       product:
+        _actions:
+          all: "todos"
+          none: "nenhum"
+          select: "selecionar"
+          with_selection: "com selecionados"
+          activate: "ativar"
+          deactivate: "desativar"
         import:
           action: "Importar planilha"
           help: "Formate sua planilha para que tenha exatamente os campos abaixo. Depois, salve-a escolhendo o tipo de arquivo CSV (extensão .csv)."

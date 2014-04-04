@@ -68,6 +68,22 @@ suppliers = {
       else
         suppliers.margin.calculate(margin_input, price_input, buy_price_input);
     },
+
+    select: {
+      all: function() {
+        jQuery('.our-product #product_ids_').attr('checked', true)
+      },
+      none: function() {
+        jQuery('.our-product #product_ids_').attr('checked', false)
+      },
+
+      activate: function(state) {
+        jQuery('.our-product .available input[type=checkbox]').each(function() {
+          this.checked = state
+          jQuery(this.form).submit()
+        });
+      },
+    },
   },
 
   price: {
