@@ -15,6 +15,10 @@ $actions-bg: #D7FFB9;
     @extend .container-clean;
   }
 
+  .labels {
+    font-weight: bold;
+  }
+
   .select {
     float: left;
     width: $module03;

@@ -993,6 +993,8 @@
     margin-left: -40px;
     margin-right: -40px;
     padding: 8px 48px; }
+  #actions-box .labels {
+    font-weight: bold; }
   #actions-box .select {
     float: left;
     width: 224px; }

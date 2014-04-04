@@ -78,7 +78,8 @@ suppliers = {
       },
 
       activate: function(state) {
-        jQuery('.our-product .available input[type=checkbox]').each(function() {
+        var selection = jQuery('.our-product #product_ids_:checked').parents('.our-product')
+        selection.find('.available input[type=checkbox]').each(function() {
           this.checked = state
           jQuery(this.form).submit()
         });

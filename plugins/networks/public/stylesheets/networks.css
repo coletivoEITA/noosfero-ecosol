@@ -277,6 +277,9 @@
   text-shadow: none;
   border-radius: 5px; }
 
+.selection-button {
+  background: white; }
+
 #content h1.page-title {
   z-index: 10;
   position: relative;
