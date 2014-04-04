@@ -390,6 +390,7 @@
           default_margin_of_com: "Default margin of commercialization"
           default_margin_info: "This margin is automatically applied in all the products, but it is possible to stabilish specific margins for certain products."
           filter: Filter
+          filter_it: Filter
           in_any_state: "In any state"
           inactive: inactive
           margin: "%{margin} %"
@@ -397,9 +398,8 @@
           products: Products
           supplier: "%{terms.supplier.singular.capitalize}"
           info: "This is list of all the products %{terms.profile.with_which.singular} works. Here it's possible to add and remove products, besides desactivating temporarily your commercialization in the Cycles' orders."
-          show_products_from: "Show products from"
           the_products: "The products"
-          whose_name_contains: "whose name contains"
+          name: "Nome"
           whose_qty_available_i: "whose qty. available is"
           category: "Category"
           with_the_qualifiers: "with the qualifiers"
