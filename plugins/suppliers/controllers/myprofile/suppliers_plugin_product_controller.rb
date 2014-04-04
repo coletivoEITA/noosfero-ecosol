@@ -36,6 +36,17 @@ class SuppliersPluginProductController < MyProfileController
     @product.update_attributes params["product_#{@product.id}"]
   end
 
+  def import
+    if params[:csv].present?
+      SuppliersPlugin::Import.delay.products profile, params[:csv].read
+
+      @notice = t('controllers.product.import_in_progress')
+      respond_to{ |format| format.js{ render :layout => false } }
+    else
+      respond_to{ |format| format.html{ render :layout => false } }
+    end
+  end
+
   def destroy
     @product = SuppliersPlugin::DistributedProduct.find params[:id]
     @product.destroy

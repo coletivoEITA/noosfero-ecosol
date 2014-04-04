@@ -688,6 +688,9 @@
   text-shadow: none;
   border-radius: 5px; }
 
+#filter-with-actions #filter {
+  margin-bottom: 0; }
+
 #filter {
   background-color: #bcdc91;
   padding: 0;

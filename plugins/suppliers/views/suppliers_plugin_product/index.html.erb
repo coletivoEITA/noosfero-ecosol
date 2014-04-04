@@ -23,7 +23,10 @@
 
   </div>
 
-  <%= render :partial => 'suppliers_plugin_shared/filter', :locals => { :type => :product } %>
+  <div id="filter-with-actions">
+    <%= render 'suppliers_plugin_shared/filter', :type => :product %>
+    <%= render 'suppliers_plugin_product/actions' %>
+  </div>
 
   <div id="search-results">
     <%= render :partial => 'suppliers_plugin_product/search' %>

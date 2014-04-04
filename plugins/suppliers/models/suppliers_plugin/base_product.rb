@@ -113,7 +113,7 @@ class SuppliersPlugin::BaseProduct < Product
     false
   end
 
-  # reimplement after_create callback to avoid infinite loop
+  # overhide Product's after_create callback to avoid infinite loop
   def distribute_to_consumers
   end
 

@@ -301,6 +301,8 @@
     controllers: 
       myprofile: 
         supplier_created: "%{terms.supplier.singular.capitalize} created"
+      product: 
+        import_in_progress: "The products are being imported. Wait a while and reload the page to view them."
     models:
       base_product:
       distributed_product: 
@@ -326,6 +328,15 @@
           redistribution_situation: "Product distribution"
           name: "Name"
       product:
+        import:
+          action: "Import spreadsheet"
+          help: "Format you spreadsheet to have exactly the fields abaixo. Then, save it choosing the CSV file type (.csv extension)."
+          field_supplier_name: "Supplier's name"
+          field_product_name: "Product's name"
+          field_product_unit: "Unit"
+          field_product_price: "Price per unit"
+          unit_help: "Use as <b>unit</b> one of the following (put the name equal): %{units}" 
+          send: "Send" 
         _edit: 
           distribution_setts: "Product's distribution settings"
           margin_price: "Margin / price"

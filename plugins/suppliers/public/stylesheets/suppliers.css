@@ -143,6 +143,39 @@
   text-shadow: none;
   border-radius: 5px; }
 
+/* add class via colorbox's className parameter */
+.consumers-coop #cboxTopLeft,
+.consumers-coop #cboxTopCenter,
+.consumers-coop #cboxTopRight,
+.consumers-coop #cboxMiddleLeft,
+.consumers-coop #cboxMiddleRight,
+.consumers-coop #cboxBottomLeft,
+.consumers-coop #cboxBottomCenter,
+.consumers-coop #cboxBottomRight {
+  display: none; }
+.consumers-coop #cboxOverlay {
+  background: black;
+  opacity: 0.45 !important;
+  filter: alpha(opacity=45); }
+.consumers-coop #cboxContent {
+  margin: 10px;
+  box-shadow: 0 0 10px black;
+  -webkit-box-shadow: 0 0 10px black;
+  -moz-box-shadow: 0 0 10px black; }
+
+.popin {
+  line-height: 20px; }
+  .popin h1 {
+    margin: 0;
+    margin-bottom: 20px;
+    padding: 15px 30px;
+    background-color: #B1DFEF;
+    font-size: 13px;
+    font-weight: normal;
+    text-transform: uppercase; }
+  .popin > * {
+    padding: 0 30px; }
+
 /* use with @extend, CSS clear bugfix */
 .clean {
   clear: both; }
@@ -547,6 +580,9 @@
   text-shadow: none;
   border-radius: 5px; }
 
+#filter-with-actions #filter {
+  margin-bottom: 0; }
+
 #filter {
   background-color: #bcdc91;
   padding: 0;
@@ -791,6 +827,158 @@
         width: 144px; }
       #filter .filter-box.fields .field .name input {
         width: 304px; }
+
+/* use with @extend, CSS clear bugfix */
+.clean {
+  clear: both; }
+
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #supplier-our-products .sortable-table form, #supplier-our-products .sortable-table form .field, #supplier-our-products .sortable-table form .field-secondary.with-unit, #supplier-our-products .sortable-table form .internal-table .row, #suppliers-page .supplier .box-view, #suppliers-page .supplier .box-edit form .field, #suppliers-page .supplier .box-edit form .field-secondary.with-unit, #suppliers-page .supplier .box-edit form .data .basic-data,
+#suppliers-page .supplier .box-edit form .data .full-data {
+  overflow: hidden;
+  display: inline-block;
+  /* Necessary to trigger "hasLayout" in IE */
+  display: block;
+  /* Sets element back to block */ }
+
+/* layout base parameters */
+/* heights should only use multiples of this */
+/* base measurements */
+/* widths should only use one of these */
+/* paddings and margins should only use one of these
+   Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+   Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+   box doesn't have a padding, then sum $intercolumn to the width.
+ */
+/* use for borders */
+/* use for text shadows */
+/* Colors */
+/* Fonts */
+/* Paragraphs Styles (use with @extend) */
+.pstyle-none {
+  font-size: 12px; }
+
+.pstyle-basic {
+  font-size: 16px; }
+
+.pstyle-button {
+  font-size: 16px; }
+
+.pstyle-button-small {
+  font-size: 13px; }
+
+.pstyle-title {
+  font-size: 72px; }
+
+.pstyle-h1 {
+  font-size: 34px; }
+
+.pstyle-h2 {
+  font-size: 26px; }
+
+.pstyle-h3 {
+  font-size: 21px; }
+
+.pstyle-h4 {
+  font-size: 16px; }
+
+.pstyle-h5 {
+  font-size: 13px; }
+
+.pstyle-title-section {
+  font-size: 92px; }
+
+.pstyle-field {
+  font-size: 13px; }
+
+.pstyle-menu-big-selected {
+  font-size: 21px; }
+
+.pstyle-menu-big-unselected {
+  font-size: 21px; }
+
+.pstyle-menu-medium-selected {
+  font-size: 16px; }
+
+.pstyle-menu-medium-unselected {
+  font-size: 16px; }
+
+.pstyle-menu-small-selected {
+  font-size: 13px; }
+
+.pstyle-menu-small-unselected {
+  font-size: 13px; }
+
+.pstyle-tp4 {
+  font-size: 42px; }
+
+.pstyle-tp3 {
+  font-size: 34px; }
+
+.pstyle-tp2 {
+  font-size: 26px; }
+
+.pstyle-tp1 {
+  font-size: 21px; }
+
+.pstyle-tm1 {
+  font-size: 13px; }
+
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, #supplier-our-products .sortable-table form .subtitle, #suppliers-page .supplier .box-edit form .subtitle {
+  font-size: 10px; }
+
+/* Images */
+/* profile-image that can be centered and resized with aspect ratio */
+.profile-image {
+  display: inline-block;
+  /* do not put padding in this as background size will consider it. */ }
+  .profile-image.thumb {
+    width: 32px;
+    height: 32px; }
+  .profile-image.portrait {
+    width: 80px;
+    height: 80px; }
+  .profile-image .inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    /* css3 enabled */ }
+
+/* Buttons */
+.action-button, #filter .filter-box a.button.colorbox-close,
+#filter .filter-box #wrap-1 input[type=submit],
+#filter .filter-box input[type=submit], #supplier-our-products .sortable-table form a.button.colorbox-close,
+#supplier-our-products .sortable-table form #wrap-1 input[type=submit],
+#supplier-our-products .sortable-table form input[type=submit], #suppliers-page .supplier .box-edit form a.button.colorbox-close,
+#suppliers-page .supplier .box-edit form #wrap-1 input[type=submit],
+#suppliers-page .supplier .box-edit form input[type=submit] {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0;
+  /* remove submit input browser's margin */
+  height: auto;
+  width: auto;
+  background: #fbca47;
+  border: 1px solid #f4a439;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: none;
+  border-radius: 5px; }
+
+#actions-box {
+  background: #d7ffb9; }
+  #actions-box.wireframe-size, #supplier-our-products #actions-box.sortable-table {
+    margin-left: -40px;
+    margin-right: -40px;
+    padding: 8px 48px; }
 
 /* use with @extend, CSS clear bugfix */
 .clean {
@@ -1460,3 +1648,9 @@
   #suppliers-page .filter-box .box-field, #suppliers-page .filter-box .box-field input {
     width: 100%;
     margin-left: 0; }
+
+#suppliers-products-import {
+  padding: table, th, td;
+    padding-border: 1px solid black; }
+  #suppliers-products-import table th {
+    font-weight: bold; }
