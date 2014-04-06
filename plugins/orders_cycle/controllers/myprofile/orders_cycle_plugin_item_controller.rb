@@ -24,10 +24,10 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
       raise 'Cycle closed for orders' unless @cycle.orders? and not profile.has_admin? user
       @order = OrdersPlugin::Sale.create! :cycle => @cycle, :consumer => consumer
     else
-      @order = OrdersPlugin::Order.find params[:order_id]
+      @order = OrdersPlugin::Sale.find params[:order_id]
       @cycle = @order.cycle
       raise 'Order confirmed or cycle is closed for orders' unless @order.open?
-      raise 'You are not the owner of this order' unless @order.may_edit? @consumer
+      raise 'You are not the owner of this order' unless @order.may_edit? @consumer, @admin
     end
 
     @item = OrdersPlugin::Item.find_by_order_id_and_product_id @order.id, @offered_product.id

@@ -3,6 +3,9 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
   serialize :data
 
   belongs_to :order, :class_name => 'OrdersPlugin::Order', :touch => true
+  belongs_to :sale, :class_name => 'OrdersPlugin::Sale', :foreign_key => :order_id
+  belongs_to :purchase, :class_name => 'OrdersPlugin::Purchase', :foreign_key => :order_id
+
   belongs_to :product
 
   has_one :profile, :through => :order
@@ -11,8 +14,8 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
   has_many :from_products, :through => :product
   has_many :to_products, :through => :product
 
-  named_scope :confirmed, :conditions => ['orders_plugin_orders.status = ?', 'confirmed'],
-    :joins => 'INNER JOIN orders_plugin_orders ON orders_plugin_orders.id = orders_plugin_items.order_id'
+  named_scope :confirmed, :conditions => ['orders_plugin_orders.status = ?', 'confirmed'], :joins => [:order]
+  named_scope :for_product, lambda{ |product| {:conditions => {:product_id => product.id}} }
 
   default_scope :include => [:product]
 

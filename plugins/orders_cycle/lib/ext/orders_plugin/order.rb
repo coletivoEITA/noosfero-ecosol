@@ -2,9 +2,6 @@ require_dependency 'orders_plugin/order'
 
 class OrdersPlugin::Order
 
-  has_many :cycle_orders, :class_name => 'OrdersCyclePlugin::CycleOrder', :dependent => :destroy
-  has_many :cycles, :through => :cycle_orders, :source => :cycle
-
   def cycle
     self.cycles.first
   end
@@ -18,9 +15,9 @@ class OrdersPlugin::Order
     :include => {:product => [{:from_products => {:from_products => {:sources_from_products => [{:supplier => [{:profile => [:domains, {:environment => :domains}]}]}]}}},
                               {:profile => [:domains, {:environment => :domains}]}, ]}
 
-  has_many :offered_products, :through => :items, :source => :offered_product
-  has_many :distributed_products, :through => :offered_products, :source => :from_products
-  has_many :supplier_products, :through => :distributed_products, :source => :from_products
+  has_many :offered_products, :through => :items, :source => :offered_product, :uniq => true
+  has_many :distributed_products, :through => :offered_products, :source => :from_products, :uniq => true
+  has_many :supplier_products, :through => :distributed_products, :source => :from_products, :uniq => true
 
   has_many :suppliers, :through => :supplier_products, :uniq => true
 

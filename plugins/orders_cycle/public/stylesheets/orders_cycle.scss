@@ -9,14 +9,15 @@
 
   #cycle-others,
   #cycle-header {
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    margin-left: -2px;
-    padding-right: 2px;
+    padding-bottom: $padding;
+    margin-bottom: $half-margin;
+    margin-left: -2*$border;
+    padding-right: 2*$border;
   }
   #cycle-header {
-    border-bottom: 2px solid #ddd;
+    border-bottom: 2*$border solid #ddd;
     margin-bottom: 0;
+
     .subtitle,
     #cycle-dates {
       width: 520px;
@@ -153,11 +154,11 @@
     }
 
     #order-admin-warning {
-      margin-bottom: 10px;
+      margin-bottom: $margin;
     }
 
     .order-message {
-      padding: 8px;
+      padding: $padding;
     }
 
     .order-message-text {
@@ -165,7 +166,7 @@
       font-style: italic;
     }
     .order-message-actions {
-      margin-top: 10px;
+      margin-top: $half-margin;
       font-size: 10px;
     }
 
@@ -541,3 +542,9 @@
   }
 
 }
+
+#cycle-orders {
+  margin-top: $margin;
+
+}
+

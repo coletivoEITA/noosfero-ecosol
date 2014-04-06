@@ -19,7 +19,7 @@
   </div>
   <% if f %>
     <div class="box-field quantity-edit">
-      <%= f.text_field :quantity_asked, :value => item.quantity_asked_as_currency_number %>
+      <%= f.text_field :quantity_asked, :value => item.quantity_asked_as_currency_number, :onkeyup => 'orders.item.quantity_keyup(this, event)' %>
     </div>
   <% end %>
 
@@ -51,7 +51,7 @@
 
         <%= link_to_remote t('orders_plugin.views.item._edit.remove_from_order'), :update => "item-#{item.id}",
           :loading => "loading_overlay.show('#item-#{item.id}')", :loaded => "loading_overlay.hide('#item-#{item.id}')",
-          :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? user %>
+          :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? user, @admin %>
       </div>
 
       <div class="price-with-unit"><%= price_with_unit_span item.price_as_currency_number, item.product.unit rescue item.price_as_currency_number %></div>

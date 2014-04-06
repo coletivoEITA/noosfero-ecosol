@@ -23,7 +23,7 @@
   <% else %>
     <% form_remote_for :order, order, :url => {:action => :cycle_edit, :id => order.id} do |f| %>
 
-      <div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? user %> <%= "admin" if @admin %>">
+      <div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? user, @admin %> <%= "admin" if @admin %>">
         <%= render 'orders_plugin_admin/header', :order => order %>
         <%= render 'orders_plugin_item/index', :order => order, :f => f %>
       </div>

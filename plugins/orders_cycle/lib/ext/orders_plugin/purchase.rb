@@ -2,9 +2,9 @@ require_dependency 'orders_plugin/purchase'
 
 class OrdersPlugin::Purchase
 
-  def purchase_cycle
-    @purchase_cycle ||= self.cycles.select{ |c| c.profile == self.consumer }.first
-  end
-  alias_method :cycle, :purchase_cycle
+  has_many :cycle_orders, :class_name => 'OrdersCyclePlugin::CycleOrder', :foreign_key => :purchase_id, :dependent => :destroy
+  has_many :cycles, :through => :cycle_orders, :source => :cycle
+
+  named_scope :for_cycle, lambda{ |cycle| {:conditions => ['orders_cycle_plugin_cycles.id = ?', cycle.id], :joins => [:cycles]} }
 
 end

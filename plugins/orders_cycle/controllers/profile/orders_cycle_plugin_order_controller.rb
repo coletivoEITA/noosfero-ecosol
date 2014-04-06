@@ -72,7 +72,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   end
 
   def reopen
-    @order = OrdersPlugin::Order.find params[:id]
+    @order = OrdersPlugin::Sale.find params[:id]
     if @order.consumer == user
       raise "Cycle's orders period already ended" unless @order.cycle.orders?
       @order.update_attributes! :status => 'draft'
@@ -96,7 +96,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   end
 
   def cycle_edit
-    @order = OrdersPlugin::Order.find params[:id]
+    @order = OrdersPlugin::Sale.find params[:id]
     return unless check_access 'edit'
 
     if @order.cycle.orders?
@@ -131,7 +131,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
   def filter
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @order = OrdersPlugin::Order.find_by_id params[:order_id]
+    @order = OrdersPlugin::Sale.find_by_id params[:order_id]
 
     scope = @cycle.products_for_order
     @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).all
@@ -143,7 +143,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   end
 
   def render_delivery
-    @order = OrdersPlugin::Order.find params[:id]
+    @order = OrdersPlugin::Sale.find params[:id]
     @order.attributes = params[:order]
     render :partial => 'delivery', :layout => false, :locals => {:order => @order}
   end

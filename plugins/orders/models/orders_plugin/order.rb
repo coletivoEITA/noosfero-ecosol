@@ -119,8 +119,8 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
 
   # cache if done independent of user as model cache is per request
-  def may_edit? user
-    @may_edit ||= self.profile.admins.include?(user) or (self.open? and self.consumer == user)
+  def may_edit? user, admin_action = false
+    @may_edit ||= (admin_action and self.profile.admins.include?(user)) or (self.open? and self.consumer == user)
   end
 
   # ShoppingCart format

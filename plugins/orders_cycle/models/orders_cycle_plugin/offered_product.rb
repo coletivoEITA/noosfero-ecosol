@@ -6,12 +6,6 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     self.cycles.first
   end
 
-  has_many :items, :class_name => 'OrdersPlugin::Item', :foreign_key => :product_id, :dependent => :destroy
-  has_many :orders, :through => :items, :source => :order
-
-  # overhide original. this scope depends on the above one
-  named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_suppliers.id = ?', supplier_id] } }
-
   # for products in cycle, these are the products of the suppliers
   # p in cycle -> p distributed -> p from supplier
   has_many :suppliers, :through => :sources_from_2x_products, :order => 'id ASC'

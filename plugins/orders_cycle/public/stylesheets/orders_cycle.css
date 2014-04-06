@@ -802,12 +802,12 @@
 
 .cycle-view #cycle-others,
 .cycle-view #cycle-header {
-  padding-bottom: 10px;
-  margin-bottom: 10px;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
   margin-left: -2px;
   padding-right: 2px; }
 .cycle-view #cycle-header {
-  border-bottom: 2px solid #ddd;
+  border-bottom: 2px solid #dddddd;
   margin-bottom: 0; }
   .cycle-view #cycle-header .subtitle,
   .cycle-view #cycle-header #cycle-dates {
@@ -885,14 +885,14 @@
   .cycle-view #order-column #order-admin-warning {
     background-color: #FECBCA; }
   .cycle-view #order-column #order-admin-warning {
-    margin-bottom: 10px; }
+    margin-bottom: 16px; }
   .cycle-view #order-column .order-message {
     padding: 8px; }
   .cycle-view #order-column .order-message-text {
     font-size: 10px;
     font-style: italic; }
   .cycle-view #order-column .order-message-actions {
-    margin-top: 10px;
+    margin-top: 8px;
     font-size: 10px; }
   .cycle-view #order-column .order-message-actions a {
     font-weight: bold; }
@@ -1327,3 +1327,6 @@
     display: block; }
 .consumers-coop #supplier-add #find-enterprise {
   display: none; }
+
+#cycle-orders {
+  margin-top: 16px; }
