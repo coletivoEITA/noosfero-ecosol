@@ -92,11 +92,11 @@ module OrdersCyclePlugin::Report
     end # closes def
 
     def report_orders_by_consumer(cycle)
-      if cycle.blank? or cycle.orders.blank?
+      if cycle.blank? or cycle.sales.blank?
         puts "there are no orders to show"
         return nil
       end
-      orders = cycle.orders.confirmed
+      orders = cycle.sales.confirmed
 
       tmp_dir = Dir.mktmpdir "noosfero-"
       report_file = tmp_dir + '/report.xlsx'

@@ -929,7 +929,7 @@
           edition: Edição
           finish_cycle_editing: "Abrir pedidos do ciclo"
           orders: Pedidos
-          parcels: Compras
+          purchases: Compras
           redistribution: Redistribuição
           reopen_orders_period: "Reabrir ciclo de pedidos"
           spreadsheet_with_prod: "Planilha com a listagem de produtos"
@@ -1024,7 +1024,6 @@
         _admin_submenu: 
           members: Integrantes
           orders_cycles: "Ciclo de pedidos"
-          parcels: Encomendas
           products: Produtos
           suppliers: "%{terms.supplier.plural.capitalize}"
         _header: 

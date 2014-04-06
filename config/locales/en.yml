@@ -921,7 +921,7 @@
           edition: Edition
           finish_cycle_editing: "Open orders for cycle"
           orders: Orders
-          parcels: Parcels
+          purchases: Purchases
           redistribution: Redistribution
           reopen_orders_period: "Reopen orders period"
           spreadsheet_with_prod: "Spreadsheet with product listing"
@@ -1016,7 +1016,6 @@
         _admin_submenu: 
           members: Consumers
           orders_cycles: "Orders' Cycles"
-          parcels: Parcels
           products: Products
           suppliers: "%{terms.supplier.plural.capitalize}"
         _header: 

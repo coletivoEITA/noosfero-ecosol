@@ -1,5 +1,5 @@
 <% editable = order.present? && order.may_edit?(user) %>
-<% draft_order = cycle.orders.draft.for_consumer(user).first %>
+<% draft_order = cycle.sales.draft.for_consumer(user).first %>
 <% include_message = '' %>
 <% if order.nil? %>
   <% if draft_order %>

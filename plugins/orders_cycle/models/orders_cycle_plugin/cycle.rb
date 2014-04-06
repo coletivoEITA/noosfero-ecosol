@@ -7,20 +7,20 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 
   has_many :cycle_orders, :class_name => 'OrdersCyclePlugin::CycleOrder', :foreign_key => :cycle_id, :dependent => :destroy, :order => 'id ASC'
-  has_many :orders, :through => :cycle_orders, :source => :order, :order => 'id ASC'
+  has_many :sales, :through => :cycle_orders, :source => :sale, :order => 'id ASC'
   has_many :purchases, :through => :cycle_orders, :source => :purchase, :order => 'id ASC'
 
   has_many :cycle_products, :foreign_key => :cycle_id, :class_name => 'OrdersCyclePlugin::CycleProduct', :dependent => :destroy
   has_many :products, :through => :cycle_products, :order => 'products.name ASC',
     :include => [{:from_products => [:from_products, {:sources_from_products => [{:supplier => [{:profile => [:domains]}]}]}]}, {:profile => [:domains]}]
 
-  has_many :consumers, :through => :orders, :source => :consumer, :order => 'name ASC'
+  has_many :consumers, :through => :sales, :source => :consumer, :order => 'name ASC'
   has_many :suppliers, :through => :products, :order => 'suppliers_plugin_suppliers.name ASC', :uniq => true
-  has_many :orders_suppliers, :through => :orders, :source => :profile, :order => 'name ASC'
+  has_many :orders_suppliers, :through => :sales, :source => :profile, :order => 'name ASC'
 
   has_many :from_products, :through => :products, :order => 'name ASC'
 
-  has_many :orders_confirmed, :through => :cycle_orders, :source => :order, :order => 'id ASC',
+  has_many :orders_confirmed, :through => :cycle_orders, :source => :sale, :order => 'id ASC',
     :conditions => ['orders_plugin_orders.status = ?', 'confirmed']
 
   has_many :ordered_suppliers, :through => :orders_confirmed, :source => :suppliers

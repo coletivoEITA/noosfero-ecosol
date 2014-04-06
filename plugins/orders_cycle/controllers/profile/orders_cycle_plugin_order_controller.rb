@@ -50,13 +50,13 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
       @admin_edit = user and user != @consumer
       @consumer = @order.consumer
       @cycle = @order.cycle
-      @consumer_orders = @cycle.orders.for_consumer @consumer
+      @consumer_orders = @cycle.sales.for_consumer @consumer
 
       render 'consumer_orders' if params[:consumer_orders]
     end
     @products = @cycle.products_for_order
     @product_categories = Product.product_categories_of @products
-    @consumer_orders = @cycle.orders.for_consumer @consumer
+    @consumer_orders = @cycle.sales.for_consumer @consumer
 
     render 'consumer_orders' if params[:consumer_orders]
   end
