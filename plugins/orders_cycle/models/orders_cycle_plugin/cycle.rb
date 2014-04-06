@@ -146,16 +146,6 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     end
   end
 
-  def add_distributed_products
-    already_in = self.products.unarchived.all
-    ActiveRecord::Base.transaction do
-      self.profile.distributed_products.unarchived.available.each do |product|
-        p = already_in.find{ |f| f.from_product == product }
-        p = OrdersCyclePlugin::OfferedProduct.create_from_distributed self, product unless p
-      end
-    end
-  end
-
   def generate_purchases
     return self.purchases if self.purchases.present?
 
@@ -168,6 +158,16 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     end
 
     self.purchases
+  end
+
+  def add_distributed_products
+    already_in = self.products.unarchived.all
+    ActiveRecord::Base.transaction do
+      self.profile.distributed_products.unarchived.available.each do |product|
+        p = already_in.find{ |f| f.from_product == product }
+        p = OrdersCyclePlugin::OfferedProduct.create_from_distributed self, product unless p
+      end
+    end
   end
 
   protected
