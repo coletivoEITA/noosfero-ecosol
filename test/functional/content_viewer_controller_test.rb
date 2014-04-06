@@ -72,9 +72,7 @@ class ContentViewerControllerTest < ActionController::TestCase
     get :view_page, :profile => 'someone', :page => [ '500.html' ]
 
     assert_response :success
-    assert_match /^text\/html/, @response.headers['Content-Type']
-    assert @response.headers['Content-Disposition'].present?
-    assert_match /attachment/, @response.headers['Content-Disposition']
+    assert_match /#{html.public_filename}/, @response.body
   end
 
   should 'produce a download-link when article is not text/html' do
@@ -548,14 +546,6 @@ class ContentViewerControllerTest < ActionController::TestCase
     assert_template 'view_page'
   end
 
-  should 'download data for image when not view' do
-    file = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :profile => profile)
-    get :view_page, :profile => profile.identifier, :page => file.explode_path
-
-    assert_response :success
-    assert_template nil
-  end
-
   should "display 'Upload files' when create children of image gallery" do
     login_as(profile.identifier)
     f = Gallery.create!(:name => 'gallery', :profile => profile)
@@ -706,16 +696,6 @@ class ContentViewerControllerTest < ActionController::TestCase
     login_as(profile.identifier)
     folder = fast_create(Gallery, :profile_id => profile.id)
     file = UploadedFile.create!(:title => 'my img title', :profile => profile, :parent => folder, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
-
-    get :view_page, :profile => profile.identifier, :page => folder.explode_path
-
-    assert_tag :tag => 'li', :attributes => {:title => 'my img title', :class => 'image-gallery-item'}, :child => {:tag => 'span', :content => 'my img title'}
-  end
-
-  should 'not allow html on title of the images' do
-    login_as(profile.identifier)
-    folder = fast_create(Gallery, :profile_id => profile.id)
-    file = UploadedFile.create!(:title => '<b>my img title</b>', :profile => profile, :parent => folder, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
 
     get :view_page, :profile => profile.identifier, :page => folder.explode_path
 
@@ -1309,8 +1289,23 @@ class ContentViewerControllerTest < ActionController::TestCase
 
   should 'display link to download of non-recognized file types on its page' do
     file = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/test.txt', 'bin/unknown'), :profile => profile)
-    get :view_page, file.url.merge(:view=>:true)
-    assert_match /this is a sample text file/, @response.body
+    get :view_page, file.url
+    assert_match /#{file.public_filename}/, @response.body
+  end
+
+  should 'not count hit from bots' do
+    article = fast_create(Article, :profile_id => profile.id)
+    assert_no_difference article, :hits do
+      @request.env['HTTP_USER_AGENT'] = 'bot'
+      get 'view_page', :profile => profile.identifier, :page => article.path.split('/')
+      @request.env['HTTP_USER_AGENT'] = 'spider'
+      get 'view_page', :profile => profile.identifier, :page => article.path.split('/')
+      @request.env['HTTP_USER_AGENT'] = 'crawler'
+      get 'view_page', :profile => profile.identifier, :page => article.path.split('/')
+      @request.env['HTTP_USER_AGENT'] = '(http://some-crawler.com)'
+      get 'view_page', :profile => profile.identifier, :page => article.path.split('/')
+      article.reload
+    end
   end
 
 end
