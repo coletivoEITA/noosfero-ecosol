@@ -51,7 +51,10 @@ class Theme
 
         approved = config['public']
         unless approved
-          approved = config['owner_type'] == owner.class.base_class.name || config['owner_type'] == owner.class.name
+          begin
+            approved = owner.kind_of?(config['owner_type'].constantize)
+          rescue
+          end
           approved &&= config['owner_id'] == owner.id if config['owner_id'].present?
         end
 
@@ -60,7 +63,6 @@ class Theme
         self.new id, config
       end
     end
-
   end
 
   class DuplicatedIdentifier < Exception; end

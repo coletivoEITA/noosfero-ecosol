@@ -363,7 +363,7 @@ class ProfileTest < ActiveSupport::TestCase
     t2 = c.tasks.build; t2.save!; t2.finish
     t3 = c.tasks.build; t3.save!; t3.finish
 
-    assert_equal [t2, t3], c.tasks.finished
+    assert_equivalent [t2, t3], c.tasks.finished
   end
 
   should 'responds to categories' do
@@ -1694,6 +1694,7 @@ class ProfileTest < ActiveSupport::TestCase
     person = fast_create(Person)
     community = fast_create(Community)
     community.add_member(person)
+    community.reload
 
     assert_equal 1, community.members_count
   end
@@ -1807,11 +1808,12 @@ class ProfileTest < ActiveSupport::TestCase
     original_community.add_member(original_member)
     community1.add_member(plugin1_member)
     community2.add_member(plugin2_member)
+    original_community.reload
 
     assert_includes original_community.members, original_member
     assert_includes original_community.members, plugin1_member
     assert_includes original_community.members, plugin2_member
-    assert 3, original_community.members.count
+    assert 3, original_community.members_count
   end
 
   private

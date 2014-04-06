@@ -31,6 +31,13 @@ class UploadedFileTest < ActiveSupport::TestCase
     assert_equal 'test.txt', file.name
   end
 
+  should 'not set filename on name if name is already set' do
+    file = UploadedFile.new
+    file.name = "Some name"
+    file.filename = 'test.txt'
+    assert_equal 'Some name', file.name
+  end
+
   should 'provide file content as data' do
     file = UploadedFile.new
     file.expects(:full_filename).returns('myfilename')
@@ -315,8 +322,8 @@ class UploadedFileTest < ActiveSupport::TestCase
   end
 
   should 'group trackers activity of image\'s upload' do
+    ActionTracker::Record.delete_all
     gallery = fast_create(Gallery, :profile_id => profile.id)
-
     image1 = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :parent => gallery, :profile => profile)
     assert_equal 1, ActionTracker::Record.find_all_by_verb('upload_image').count
 

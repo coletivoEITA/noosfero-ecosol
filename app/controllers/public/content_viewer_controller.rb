@@ -61,7 +61,7 @@ class ContentViewerController < ApplicationController
     end
 
     # At this point the page will be showed
-    @page.hit
+    @page.hit unless user_is_a_bot?
 
     @page = FilePresenter.for @page
 
@@ -157,5 +157,14 @@ class ContentViewerController < ApplicationController
     logged_in? && !environment.enabled?('captcha_for_logged_users')
   end
   helper_method :pass_without_comment_captcha?
+
+  def user_is_a_bot?
+    user_agent= request.env["HTTP_USER_AGENT"]
+    user_agent.blank? ||
+    user_agent.match(/bot/) ||
+    user_agent.match(/spider/) ||
+    user_agent.match(/crawler/) ||
+    user_agent.match(/\(.*https?:\/\/.*\)/)
+  end
 
 end
