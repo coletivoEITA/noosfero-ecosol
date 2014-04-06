@@ -561,7 +561,7 @@
     models:
       order: 
         open: "Em aberto"
-        not_confirmed: "Não confirmado"
+        forgotten: "Não confirmado"
         planned: "Planejado"
         confirmed: "Confirmado"
         cancelled: "Cancelado"
@@ -589,7 +589,6 @@
         index: 
           no_orders_to_show: "Nenhum pedido para visualizar."
           code: "Código"
-          consumer: "Consumidor"
           last_update: "Últ. atualização"
           order_date: "Data do pedido"
           total: "Total (%{currency})"
@@ -930,8 +929,8 @@
           edition: Edição
           finish_cycle_editing: "Abrir pedidos do ciclo"
           orders: Pedidos
-          parcels: Parcels
-          redistribution: Redistribution
+          parcels: Compras
+          redistribution: Redistribuição
           reopen_orders_period: "Reabrir ciclo de pedidos"
           spreadsheet_with_prod: "Planilha com a listagem de produtos"
           spreadsheet_with_the_: "Planilha com os pedidos"

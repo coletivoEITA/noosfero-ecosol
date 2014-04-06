@@ -552,7 +552,7 @@
     models:
       order: 
         open: "Open"
-        not_confirmed: "Not confirmed"
+        forgotten: "Not confirmed"
         planned: "Planned"
         confirmed: "Confirmed"
         cancelled: "Cancelled"

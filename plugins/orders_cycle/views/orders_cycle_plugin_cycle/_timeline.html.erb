@@ -1,24 +1,12 @@
 <div class="cycle-timeline">
-  <% urls = [
-      [t('views.cycle._timeline.edition'), 'edition'],
-      #[t('views.cycle._timeline.call'), 'call'],
-      [t('views.cycle._timeline.orders'), 'orders'],
-      #[t('views.cycle._timeline.parcels'), 'parcels'],
-      #[t('views.cycle._timeline.redistribution'), 'redistribution'],
-      #[t('views.cycle._timeline.delivery'), 'delivery'],
-      #[t('views.cycle._timeline.close'), 'close'],
-    ]
-  %>
   <% view = params[:view] || cycle.status %>
 
   <div>
-    <% urls.each do |name, status| %>
-      <% klass = "cycle-timeline-item #{timeline_class(cycle, status, view)}" %>
-      <% if cycle.passed_by?(status) or cycle.status == status %>
-        <%= link_to name, params.merge(:action => :edit, :id => cycle.id, :view => status), :class => klass %>
-      <% else %>
-        <span class="<%=klass%>"><%= name %></span>
-      <% end %>
+    <% OrdersCyclePlugin::Cycle::UserStatuses.each do |status| %>
+      <% klass = "cycle-timeline-item #{timeline_class cycle, status, view}" %>
+      <% name = t("views.cycle._timeline.#{status}") %>
+
+      <%= link_to name, params.merge(:action => :edit, :id => cycle.id, :view => status), :class => klass %>
     <% end %>
   </div>
 

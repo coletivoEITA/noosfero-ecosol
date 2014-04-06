@@ -1,13 +1,13 @@
 <% orders = @orders unless defined? orders %>
-<% wireframe_size = true unless defined? wireframe_size %>
+<% wireframe_size = true unless wireframe_size %>
 
-<div class='orders-admin-index sortable-table <%= "wireframe-size" if wireframe_size %>'>
+<div class='orders-admin-index sortable-table checkable <%= "wireframe-size" if wireframe_size %>'>
   <% if orders.count == 0 %>
     <div class="subtitle"><%= t('orders_plugin.views.admin.index.no_orders_to_show') %></div>
   <% else %>
     <div class='table-header'>
       <span class='box-field code'><%= t('orders_plugin.views.admin.index.code') %></span>
-      <span class='box-field consumer'><%= t('orders_plugin.views.admin.index.consumer') %></span>
+      <span class='box-field actor-name'><%= t("terms.#{actor_name}.singular") %></span>
       <span class='box-field order-date'><%= t('orders_plugin.views.admin.index.order_date') %></span>
       <span class='box-field last-update'><%= t('orders_plugin.views.admin.index.last_update') %></span>
       <span class='box-field total'><%= t('orders_plugin.views.admin.index.total') % {:currency => environment.currency_unit} %></span>
@@ -18,7 +18,7 @@
     <div class='table-content'>
       <% orders.each do |order| %>
         <div id="order-<%=order.id%>" class="order value-row" toggle-edit="orders.admin.toggle_edit();">
-          <%= render :partial => 'orders_plugin_admin/edit', :locals => {:order => order, :f => nil} %>
+          <%= render 'orders_plugin_admin/edit', :actor_name => actor_name, :order => order, :f => nil %>
         </div>
       <% end %>
     </div>

@@ -1,5 +1,9 @@
 class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
+  set_table_name :orders_plugin_orders
+
+  self.abstract_class = true
+
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'
 
@@ -11,18 +15,19 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::Method'
   belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::Method'
 
-  Statuses = ['draft', 'planned', 'confirmed', 'cancelled', 'accepted', 'shipped']
-  StatusText = {
-   'open' => 'orders_plugin.models.order.open',
-   'forgotten' => 'orders_plugin.models.order.not_confirmed',
-   'planned' => 'orders_plugin.models.order.planned',
-   'confirmed' => 'orders_plugin.models.order.confirmed',
-   'cancelled' => 'orders_plugin.models.order.cancelled',
-   'accepted' => 'orders_plugin.models.order.accepted',
-   'shipped' => 'orders_plugin.models.order.shipped',
-  }
-  validates_inclusion_of :status, :in => Statuses
+  DbStatuses = %w[draft planned confirmed cancelled accepted shipped]
+  UserStatuses = %w[open forgotten planned confirmed cancelled accepted shipped]
+  StatusText = {}; UserStatuses.map do |status|
+    StatusText[status] = "orders_plugin.models.order.#{status}"
+  end
+
+  validates_presence_of :profile
+  validates_inclusion_of :status, :in => DbStatuses
   before_validation :default_values
+
+  def orders_name
+    raise 'undefined'
+  end
 
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => proc{ self.profile.orders }
@@ -39,6 +44,14 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   sync_serialized_field :supplier_delivery
   sync_serialized_field :consumer_delivery
   serialize :payment_data, Hash
+
+  extend CurrencyHelper::ClassMethods
+  has_number_with_locale :total_quantity_asked
+  has_currency :total_price_asked
+
+  # Alias need for terms
+  alias_method :supplier, :profile
+  alias_method :supplier_data, :profile_data
 
   named_scope :draft, :conditions => {:status => 'draft'}
   named_scope :planned, :conditions => {:status => 'planned'}
@@ -67,6 +80,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
 
   # All products from the order profile?
+  # FIXME reimplement to be generic for consumer/supplier
   def self_supplier?
     return @single_supplier unless @single_supplier.nil?
 
@@ -93,7 +107,6 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
 
   def current_status
-    return 'forgotten' if self.forgotten?
     return 'open' if self.open?
     self['status']
   end
@@ -110,6 +123,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     @may_edit ||= self.profile.admins.include?(user) or (self.open? and self.consumer == user)
   end
 
+  # ShoppingCart format
   def products_list
     hash = {}; self.items.map do |item|
       hash[item.product_id] = {:quantity => item.quantity_asked, :name => item.name, :price => item.price}
@@ -131,25 +145,6 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   def total_price_asked
     self.items.collect(&:price_asked).inject(0){ |sum,q| sum+q }
   end
-
-  def parcel_quantity_total
-    #TODO
-    total_quantity_asked
-  end
-  def parcel_price_total
-    #TODO
-    total_price_asked
-  end
-
-  def products_by_supplier
-    self.items.group_by{ |i| i.supplier.abbreviation_or_name }
-  end
-
-  extend CurrencyHelper::ClassMethods
-  has_number_with_locale :total_quantity_asked
-  has_number_with_locale :parcel_quantity_total
-  has_currency :total_price_asked
-  has_currency :parcel_price_total
 
   protected
 

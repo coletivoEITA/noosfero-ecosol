@@ -32,9 +32,9 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
 
   extend CurrencyHelper::ClassMethods
   has_number_with_locale :total_quantity_asked
-  has_number_with_locale :total_parcel_quantity
+  has_number_with_locale :total_purchase_quantity
   has_currency :total_price_asked
-  has_currency :total_parcel_price
+  has_currency :total_purchase_price
   has_currency :buy_price
 
   def self.create_from_distributed cycle, product
@@ -53,12 +53,12 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   def total_price_asked
     @total_price_asked ||= self.items.confirmed.sum(:price_asked)
   end
-  def total_parcel_quantity
+  def total_purchase_quantity
     #FIXME: convert units and consider stock and availability
     total_quantity_asked
   end
-  def total_parcel_price
-    buy_price * total_parcel_quantity if buy_price and total_parcel_quantity
+  def total_purchase_price
+    buy_price * total_purchase_quantity if buy_price and total_purchase_quantity
   end
 
   # always recalculate in case something has changed

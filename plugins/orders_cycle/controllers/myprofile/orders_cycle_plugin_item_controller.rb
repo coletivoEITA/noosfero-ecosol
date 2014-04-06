@@ -22,7 +22,7 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
     if params[:order_id] == 'new'
       @cycle = @offered_product.cycle
       raise 'Cycle closed for orders' unless @cycle.orders? and not profile.has_admin? user
-      @order = OrdersPlugin::Order.create! :cycle => @cycle, :consumer => consumer
+      @order = OrdersPlugin::Sale.create! :cycle => @cycle, :consumer => consumer
     else
       @order = OrdersPlugin::Order.find params[:order_id]
       @cycle = @order.cycle

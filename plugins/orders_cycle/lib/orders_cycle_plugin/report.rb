@@ -34,7 +34,7 @@ module OrdersCyclePlugin::Report
       # create sheet and populates
       wb.add_worksheet(:name => t('lib.report.products_report')) do |sheet|
 
-        items_by_supplier.each do |supplier, items, total_price_asked, total_parcel_asked|
+        items_by_supplier.each do |supplier, items, total_price_asked, total_purchase_asked|
 
           sheet.add_row [t('lib.report.supplier'),'',t('lib.report.phone'),'',t('lib.report.mail'),'','','','','',''], :style => bluecell
           sheet.merge_cells "A#{sbs}:B#{sbs}"

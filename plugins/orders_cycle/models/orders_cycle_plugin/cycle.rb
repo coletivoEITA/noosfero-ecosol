@@ -8,6 +8,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
   has_many :cycle_orders, :class_name => 'OrdersCyclePlugin::CycleOrder', :foreign_key => :cycle_id, :dependent => :destroy, :order => 'id ASC'
   has_many :orders, :through => :cycle_orders, :source => :order, :order => 'id ASC'
+  has_many :purchases, :through => :cycle_orders, :source => :purchase, :order => 'id ASC'
 
   has_many :cycle_products, :foreign_key => :cycle_id, :class_name => 'OrdersCyclePlugin::CycleProduct', :dependent => :destroy
   has_many :products, :through => :cycle_products, :order => 'products.name ASC',
@@ -60,16 +61,15 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   named_scope :status_open, :conditions => ["status <> 'closed'"]
   named_scope :status_closed, :conditions => ["status = 'closed'"]
 
-  STATUS_SEQUENCE = [
-    'new', 'edition', 'orders', 'closed'
-  ]
+  DbStatuses = %w[new edition orders purchases closed]
+  UserStatuses = %w[edition orders purchases]
 
   validates_presence_of :profile
   validates_presence_of :name, :if => :not_new?
   validates_presence_of :start, :if => :not_new?
   #FIXME only ,
   #validates_presence_of :delivery_options, :unless => :new_or_edition?
-  validates_inclusion_of :status, :in => STATUS_SEQUENCE, :if => :not_new?
+  validates_inclusion_of :status, :in => DbStatuses, :if => :not_new?
   validates_numericality_of :margin_percentage, :allow_nil => true, :if => :not_new?
   validate :validate_orders_dates, :if => :not_new?
   validate :validate_delivery_dates, :if => :not_new?
@@ -92,19 +92,19 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   def total_price_asked
     self.items.sum :price_asked
   end
-  def total_parcel_price
+  def total_purchase_price
     #FIXME: wrong!
     self.ordered_supplier_products.sum :price
   end
 
   def step
-    self.status = STATUS_SEQUENCE[STATUS_SEQUENCE.index(self.status)+1]
+    self.status = DbStatuses[DbStatuses.index(self.status)+1]
   end
   def step_back
-    self.status = STATUS_SEQUENCE[STATUS_SEQUENCE.index(self.status)-1]
+    self.status = DbStatuses[DbStatuses.index(self.status)-1]
   end
-  def passed_by?(status)
-    STATUS_SEQUENCE.index(self.status) > STATUS_SEQUENCE.index(status)
+  def passed_by? status
+    DbStatuses.index(self.status) > DbStatuses.index(status)
   end
   def new?
     status == 'new'
@@ -136,13 +136,13 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
   def items_by_suppliers
     self.ordered_offered_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
-      total_price_asked = total_parcel_price = 0
+      total_price_asked = total_purchase_price = 0
       products.each do |product|
         total_price_asked += product.total_price_asked if product.total_price_asked
-        total_parcel_price += product.total_parcel_price if product.total_parcel_price
+        total_purchase_price += product.total_purchase_price if product.total_purchase_price
       end
 
-      [supplier, products, total_price_asked, total_parcel_price]
+      [supplier, products, total_price_asked, total_purchase_price]
     end
   end
 
@@ -154,6 +154,20 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
         p = OrdersCyclePlugin::OfferedProduct.create_from_distributed self, product unless p
       end
     end
+  end
+
+  def generate_purchases
+    return self.purchases if self.purchases.present?
+
+    self.ordered_offered_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
+      purchase = self.purchases.create! :cycle => self, :consumer => self.profile, :profile => supplier.profile
+      products.each do |product|
+        purchase.items.create! :order => purchase, :product => product.supplier_product,
+          :quantity_asked => product.total_quantity_asked, :price_asked => product.total_price_asked
+      end
+    end
+
+    self.purchases
   end
 
   protected

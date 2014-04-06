@@ -1,9 +1,13 @@
-<div class="box-view">
-  <span class='box-field code'><%= order.code %></span>
-  <span class='box-field consumer box-edit-link'><%= order.consumer_data[:name] %></span>
-  <span class='box-field order-date'><%= datetime_full order.created_at %></span>
-  <span class='box-field last-update'><%= datetime_full order.updated_at %></span>
-  <span class='box-field total'><%= order.total_price_asked_as_currency_number %></span>
+<div class="box-view with-inner">
+  <div class="box-field select" toggle-ignore><%= check_box_tag "order_ids[]", order.id %></div>
+
+  <div class="box-view-inner">
+    <span class='box-field code'><%= order.code %></span>
+    <span class='box-field actor-name box-edit-link'><%= order.send("#{actor_name}_data")[:name] %></span>
+    <span class='box-field order-date'><%= datetime_full order.created_at %></span>
+    <span class='box-field last-update'><%= datetime_full order.updated_at %></span>
+    <span class='box-field total'><%= order.total_price_asked_as_currency_number %></span>
+  </div>
 
   <%= edit_arrow "#in-cycle-order-#{order.id}", true, :class => 'actions' %>
 
@@ -20,11 +24,11 @@
     <% form_remote_for :order, order, :url => {:action => :cycle_edit, :id => order.id} do |f| %>
 
       <div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? user %> <%= "admin" if @admin %>">
-        <%= render 'header', :order => order %>
+        <%= render 'orders_plugin_admin/header', :order => order %>
         <%= render 'orders_plugin_item/index', :order => order, :f => f %>
       </div>
 
-      <% if order.open? %>
+      <% if actor_name == :consumer and order.open? %>
 
         <div>
           <%= check_box_tag 'warn_consumer', 1, false, :onchange => "jQuery(this).parent().next().toggle(this.checked); jQuery(this).siblings('.subtitle').toggle(this.checked);" %>

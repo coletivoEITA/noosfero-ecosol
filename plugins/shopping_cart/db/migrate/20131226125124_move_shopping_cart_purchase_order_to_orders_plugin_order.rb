@@ -35,12 +35,12 @@ StatusTransform = {
 
 class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
   def self.up
-    OrdersPlugin::Order.record_timestamps = false
+    OrdersPlugin::Sale.record_timestamps = false
 
     ShoppingCartPlugin::PurchaseOrder.all(:order => 'created_at ASC').each do |purchase_order|
       data = purchase_order.data
 
-      order = OrdersPlugin::Order.new :profile_id => purchase_order.seller_id, :consumer_id => purchase_order.customer_id
+      order = OrdersPlugin::Sale.new :profile_id => purchase_order.seller_id, :consumer_id => purchase_order.customer_id
 
       order.consumer_data = {}
       ['contact_phone','name','email'].each do |prop|
@@ -77,7 +77,7 @@ class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
 
     drop_table :shopping_cart_plugin_purchase_orders
 
-    OrdersPlugin::Order.record_timestamps = true
+    OrdersPlugin::Sale.record_timestamps = true
   end
 
   def self.down

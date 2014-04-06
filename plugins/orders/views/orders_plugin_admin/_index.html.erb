@@ -14,13 +14,13 @@
 
   <% if profile.purchases.present? %>
     <div id='purchases'>
-      <%= render 'orders_plugin_admin/table', :orders => profile.purchases, :wireframe_size => false %>
+      <%= render 'orders_plugin_admin/table', :actor_name => :supplier, :orders => profile.purchases, :wireframe_size => false %>
     </div>
   <% end %>
 
   <% if profile.sales.present? %>
     <div id='sales'>
-      <%= render 'orders_plugin_admin/table', :orders => profile.sales, :wireframe_size => false %>
+      <%= render 'orders_plugin_admin/table', :actor_name => :consumer, :orders => profile.sales, :wireframe_size => false %>
     </div>
   <% end %>
 </div>

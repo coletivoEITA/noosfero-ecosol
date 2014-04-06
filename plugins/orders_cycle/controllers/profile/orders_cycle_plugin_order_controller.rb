@@ -36,7 +36,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
     @consumer = user
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @order = OrdersPlugin::Order.create! :profile => profile, :consumer => @consumer, :cycle => @cycle
+    @order = OrdersPlugin::Sale.create! :profile => profile, :consumer => @consumer, :cycle => @cycle
     redirect_to params.merge(:action => :edit, :id => @order.id)
   end
 
@@ -91,7 +91,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
     @consumer = user
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @order = OrdersPlugin::Order.create! :cycle => @cycle, :consumer => @consumer
+    @order = OrdersPlugin::Sale.create! :cycle => @cycle, :consumer => @consumer
     redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
   end
 

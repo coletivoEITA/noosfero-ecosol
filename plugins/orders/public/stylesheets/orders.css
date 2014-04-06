@@ -700,15 +700,14 @@
 .selection-button {
   background: white; }
 
-#filter-with-actions #filter {
-  margin-bottom: 0; }
-
 #filter {
   background-color: #bcdc91;
   padding: 0;
   margin-top: 16px;
   margin-bottom: 16px;
   font-size: 9px; }
+  #filter.with-actions {
+    margin-bottom: 0; }
   #filter.wireframe-size {
     margin-left: -40px;
     margin-right: -40px; }
@@ -1520,7 +1519,7 @@
 
 .orders-admin-index .box-field.code {
   width: 64px; }
-.orders-admin-index .box-field.consumer {
+.orders-admin-index .box-field.actor-name {
   width: 304px; }
 .orders-admin-index .box-field.order-date {
   width: 144px; }
