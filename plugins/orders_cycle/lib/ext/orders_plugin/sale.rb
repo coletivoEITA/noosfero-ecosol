@@ -51,14 +51,17 @@ class OrdersPlugin::Sale
 
   def cycle_add_purchases_items
     self.offered_products.unarchived.each do |product|
-      supplier_product = product.supplier_product
-      purchase = supplier_product.purchases.for_cycle(self.cycle).first
-      purchase ||= OrdersPlugin::Purchase.create! :cycle => self.cycle, :consumer => self.profile, :profile => product.supplier.profile
+      next unless supplier_product = product.supplier_product
+      next unless supplier = supplier_product.profile
+
+      purchase = self.cycle.purchases.for_profile(supplier).first
+      purchase ||= OrdersPlugin::Purchase.create! :cycle => self.cycle, :consumer => self.profile, :profile => supplier
+
       item = purchase.items.for_product(supplier_product).first
       item ||= purchase.items.build :order => self, :product => supplier_product
       item.quantity_asked = product.total_quantity_asked
       item.price_asked = product.total_price_asked
-      item.send :update_without_callbacks # dont touch which cause an infinite loop
+      item.send :create_or_update_without_callbacks # dont touch which cause an infinite loop
     end
   end
 
@@ -66,6 +69,7 @@ class OrdersPlugin::Sale
     self.items.each do |item|
       next unless supplier_product = item.product.supplier_product
       next unless purchase = supplier_product.purchases.for_cycle(self.cycle).first
+
       purchased_item = purchase.items.for_product(supplier_product).first
       purchased_item.quantity_asked -= item.quantity_asked
       purchased_item.price_asked -= item.quantity_asked

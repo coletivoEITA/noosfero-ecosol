@@ -12,6 +12,9 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   has_many :products, :through => :items
 
+  named_scope :for_profile, lambda{ |profile| {:conditions => {:profile_id => profile.id}} }
+  named_scope :for_consumer, lambda{ |consumer| {:conditions => {:consumer_id => consumer.id}} }
+
   belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::Method'
   belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::Method'
 
