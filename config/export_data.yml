@@ -2,14 +2,46 @@ options:
   embed_files: true
 
 sources:
-  - type: Environment
-    id: 4
+  - type: Enterprise
+    id: 5
     associations:
-      - profiles:
-        - articles
-        - products:
-          - image
-      - users
-      - categories
-      - qualifiers
-      - certifiers
+      - orders
+      - articles
+      - products:
+        - images
+        - product_category
+
+# replace attributes' value (oldid: newid and other: id) and set parent association
+targets:
+  ProductCategory:
+    15: 16281
+    other: 16281
+    belongs_to: profile
+  Enterprise:
+    environment_id:
+      1: 2
+    identifier:
+      redemoinho: rede-moinho2
+    theme:
+      rede-moinho2: rede-moinho
+  Article:
+    last_changed_by_id:
+      other: 87
+    belongs_to: profile
+  Product:
+    belongs_to: profile
+  Image:
+    belongs_to: parent
+
+models_options:
+  Article:
+    #save_without_callbacks: true
+
+# before save, find records by the old id and put them on the specified association
+renews:
+  Article:
+    parent_id: 
+      association: parent
+      base_type: Article
+
+
