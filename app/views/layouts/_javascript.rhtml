@@ -4,7 +4,7 @@
   'jquery-ui.min', 'jquery.scrollTo', 'jquery.form.js', 'jquery-validation/jquery.validate',
   'jquery.cookie', 'jquery.ba-bbq.min.js', 'reflection', 'jquery.tokeninput',
   'add-and-join', 'report-abuse', 'catalog', 'manage-products', 'pagination',
-  'jquery-ui-timepicker-addon', :cache => 'cache-general' %>
+  'jquery-ui-timepicker-addon', :cache => ('cache-general' if NOOSFERO_CONF['cache_javascripts']) %>
 
 <% language = FastGettext.locale %>
 <% %w{messages methods}.each do |type| %>

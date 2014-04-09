@@ -13,3 +13,5 @@ development:
 test:
 
 production:
+  cache_javascripts: true
+  cache_stylesheets: true
