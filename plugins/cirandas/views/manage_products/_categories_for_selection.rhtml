@@ -2,9 +2,10 @@
 
 <% javascript_tag do %>
   jQuery(document).ready(function() {
-
-    jQuery('html, body').animate({
-      scrollTop: jQuery('#new_product_title').offset().top + jQuery('#cirandas-top-bar').height() -20
-    }, 500);
+    setTimeout(function() {
+      jQuery('html, body').animate({
+        scrollTop: jQuery('#new_product_title').offset().top - jQuery('#cirandas-top-bar').height() - 10
+      }, 500);
+    }, 100);
   });
 <% end %>
