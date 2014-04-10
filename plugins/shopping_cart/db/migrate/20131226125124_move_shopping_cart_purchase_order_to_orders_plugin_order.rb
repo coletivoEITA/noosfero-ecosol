@@ -75,7 +75,8 @@ class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
       order.save!
     end
 
-    drop_table :shopping_cart_plugin_purchase_orders
+    # Let table for registry
+    #drop_table :shopping_cart_plugin_purchase_orders
 
     OrdersPlugin::Sale.record_timestamps = true
   end
