@@ -5,6 +5,8 @@ sources:
   - type: Enterprise
     id: 5
     associations:
+      - boxes
+        - blocks
       - orders
       - articles
       - products:
@@ -27,7 +29,6 @@ targets:
     12: 3521
     11: 87
     other: 16281
-    belongs_to: profile
   Enterprise:
     environment_id:
       1: 2
@@ -42,7 +43,12 @@ targets:
   Product:
     belongs_to: profile
   Image:
-    belongs_to: parent
+    parent_id:
+      other: ---
+  ShoppingCartPlugin::PurchaseOrder:
+    belongs_to: seller
+    customer_id:
+      other: ---
 
 models_options:
   Article:
@@ -54,13 +60,14 @@ renews:
     parent_id: 
       association: parent
       base_type: Article
-  Profile:
-    home_page_id: 
-      association: home_page
-      base_type: Article
+#  Profile:
+#    home_page_id: 
+#      association: home_page
+#      base_type: Article
   Product:
     product_category_id:
       association: product_category
       base_type: Category
+
 
 

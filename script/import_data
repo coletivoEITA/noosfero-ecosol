@@ -93,7 +93,7 @@ class ActiveRecord::Base
         if renew_association = renew_attr['association']
           vdup = value.dup rescue value #why can't value be used?
           $mutations[record] << (proc do
-            association = $id_records[renew_base_type][vdup]
+            association = $id_records[renew_base_type][vdup] rescue nil
             record.send "#{renew_association}=", association rescue nil
           end)
         end
@@ -130,7 +130,7 @@ class ActiveRecord::Base
 
     begin
       self.send method
-    rescue
+    rescue Exception => e
       puts "Could not save: #{self.inspect}"
       raise
     end
@@ -166,19 +166,18 @@ def run
 
     # save others
     $record_ids.keys.each do |record|
-      next unless record.new_record?
+      next if not record.new_record?
       record.call_save
       pp record
     end
 
-    #raise 'test before!'
-  end
+    # delete temporary dump on Rails.root
+    $temp_files.each do |filename|
+      File.delete filename rescue nil
+    end
 
-  # delete temporary dump on Rails.root
-  $temp_files.each do |filename|
-    File.delete filename rescue nil
+    raise 'test before!'
   end
-
 end
 
 run
