@@ -1,7 +1,7 @@
 class CatalogController < PublicController
 
   needs_profile
-  use_custom_design :boxes_limit => 2, :insert => {:box => 2, :position => 0, :block => ProductCategoriesBlock}
+  use_custom_design :boxes_limit => 2, :layout_template => 'leftbar', :insert => {:box => 2, :position => 0, :block => ProductCategoriesBlock}
 
   before_filter :check_enterprise_and_environment
 
