@@ -154,7 +154,7 @@ def run
   ActiveRecord::Base.transaction do
     YAML.load STDIN.read
 
-    # renew ids
+    # renew ids with associated records
     apply_renews
 
     # save top sources
