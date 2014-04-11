@@ -5,13 +5,18 @@ sources:
   - type: Enterprise
     id: 5
     associations:
+      - image
       - boxes:
         - blocks
       - orders
       - articles
       - products:
-        - image
         - product_category
+        - image
+        - unit
+        - product_qualifiers
+        - qualifiers
+        - certifiers
 
 # replace attributes' value (oldid: newid and other: id) and set parent association
 targets:
@@ -32,10 +37,16 @@ targets:
   Enterprise:
     environment_id:
       1: 2
+    home_page_id:
+      other: ---
+    image_id:
+      other: ---
     identifier:
       redemoinho: rede-moinho2
     theme:
-      rede-moinho2: rede-moinho
+      other: rede-moinho
+    visible:
+      other: true
   Product:
     belongs_to: profile
   Article:
@@ -47,8 +58,6 @@ targets:
   Image:
     thumbnails_processed:
       other: false
-    parent_id:
-      other: ---
   ShoppingCartPlugin::PurchaseOrder:
     belongs_to: seller
     customer_id:
@@ -57,10 +66,13 @@ targets:
     belongs_to: owner
   Block:
     belongs_to: box
+  Qualifier:
+  Certifier:
 
 models_options:
-  Article:
-    #save_without_callbacks: true
+  Profile:
+    # do not apply template
+    save_without_callbacks: true
 
 # before save, find records using the old id and put them on the specified association
 renews:
@@ -76,6 +88,19 @@ renews:
     product_category_id:
       association: product_category
       base_type: Category
+    image_id:
+      association: image
+      base_type: Image
+  ProductQualifier:
+    product_id:
+      association: product
+      base_type: Product
+    qualifier_id:
+      association: product
+      base_type: Product
+    certifier_id:
+      association: qualifier
+      base_type: Certifier
 
 
 

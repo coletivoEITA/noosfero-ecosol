@@ -78,9 +78,9 @@ class ActiveRecord::Base
     attributes.each do |attr, value|
       # target
       if target_attr = target_type[attr] || $targets[attr]
-        if new_value = target_attr[value]
+        if not (new_value = target_attr[value]).nil?
           value = new_value
-        elsif other_value = target_attr['other']
+        elsif not (other_value = target_attr['other']).nil?
           value = other_value
         end
       end
@@ -126,7 +126,7 @@ class ActiveRecord::Base
   end
 
   def call_save
-    method = if ($models_options[self.class.base_class.name]['save_without_callbacks'] rescue nil) then 'create_or_update_without_callbacks' else 'save!' end
+    method = if ($models_options[self.class.base_class.name]['save_without_callbacks'] rescue nil) then 'create_without_callbacks' else 'save!' end
 
     begin
       self.send method
