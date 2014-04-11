@@ -12,9 +12,7 @@
 
   <%= breadcrumb(@category) if params[:level] %>
 
-  <ul id="product-list">
-    <%= render 'catalog/products', :products => @products, :float_box_position => (float_box_position rescue nil) %>
-  </ul>
+  <%= render 'catalog/products', :products => @products, :float_box_position => (float_box_position rescue nil) %>
 
   <%= render 'catalog/pagination' %>
   <% javascript_tag do %>
