@@ -5,12 +5,12 @@ sources:
   - type: Enterprise
     id: 5
     associations:
-      - boxes
+      - boxes:
         - blocks
       - orders
       - articles
       - products:
-        - images
+        - image
         - product_category
 
 # replace attributes' value (oldid: newid and other: id) and set parent association
@@ -36,19 +36,27 @@ targets:
       redemoinho: rede-moinho2
     theme:
       rede-moinho2: rede-moinho
+  Product:
+    belongs_to: profile
   Article:
+    thumbnails_processed:
+      other: false
     last_changed_by_id:
       other: 87
     belongs_to: profile
-  Product:
-    belongs_to: profile
   Image:
+    thumbnails_processed:
+      other: false
     parent_id:
       other: ---
   ShoppingCartPlugin::PurchaseOrder:
     belongs_to: seller
     customer_id:
       other: ---
+  Box:
+    belongs_to: owner
+  Block:
+    belongs_to: box
 
 models_options:
   Article:

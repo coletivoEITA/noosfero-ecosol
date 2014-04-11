@@ -9,6 +9,10 @@ def parse_opts
   $config = YAML.load File.read($config_file)
 end
 
+class ActiveRecord::Base
+  yaml_as "tag:ruby.yaml.org,2002:ActiveRecord"
+end
+
 class Object
 
   attr_accessor :embeded_file
