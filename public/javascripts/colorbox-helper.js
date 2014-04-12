@@ -8,7 +8,6 @@ colorbox_helpers = {
           maxWidth:   $(window).width()-50,
           height:     $(window).height()-50,
           open:       true,
-          fixed:      true,
           close:      'Cancel',
           onComplete: function(bt) {
             var opt = {}, maxH = $(window).height()-50;
