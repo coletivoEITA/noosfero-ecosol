@@ -9,7 +9,7 @@
     <span class='box-field total'><%= order.total_price_asked_as_currency_number %></span>
   </div>
 
-  <%= edit_arrow "#in-cycle-order-#{order.id}", true, :class => 'actions' %>
+  <%= edit_arrow "#order-#{order.id}", true, :class => 'actions' %>
 
   <div class="clean"></div>
 </div>
@@ -21,7 +21,7 @@
       <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), 'toggle-edit' => '' %>
     </div>
   <% else %>
-    <% form_remote_for :order, order, :url => {:action => :cycle_edit, :id => order.id} do |f| %>
+    <% form_remote_for :order, order, :url => {:controller => :orders_plugin_admin, :action => :edit, :id => order.id} do |f| %>
 
       <div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? user, @admin %> <%= "admin" if @admin %>">
         <%= render 'orders_plugin_admin/header', :order => order %>
@@ -50,7 +50,7 @@
         </div>
 
         <% javascript_tag do %>
-          jQuery('#in-cycle-order-<%=order.id%> input[type=checkbox]').change();
+          jQuery('#order-<%=order.id%> input[type=checkbox]').change();
         <% end %>
 
       <% end %>

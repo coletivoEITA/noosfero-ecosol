@@ -585,9 +585,11 @@
           order_date: "Orders' date"
           total: "Total (%{currency})"
         _filter:
-          status: "Situação"
-          code: "Código"
-          all: "Todos"
+          status: "Status"
+          code: "Code"
+          all: "All"
+          month: "Month"
+          year: "Year"
         _edit: 
           actions: Actions
           add_product: "add product"

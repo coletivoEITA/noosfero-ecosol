@@ -94,41 +94,6 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
     @order = OrdersPlugin::Sale.create! :cycle => @cycle, :consumer => @consumer
     redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
   end
-
-  def cycle_edit
-    @order = OrdersPlugin::Sale.find params[:id]
-    return unless check_access 'edit'
-
-    if @order.cycle.orders?
-      a = {}; @order.items.map{ |p| a[p.id] = p }
-      b = {}; params[:order][:items].map do |key, attrs|
-        p = OrdersPlugin::Item.new attrs
-        p.id = attrs[:id]
-        b[p.id] = p
-      end
-
-      removed = a.values.map do |p|
-        p if b[p.id].nil?
-      end.compact
-      changed = b.values.map do |p|
-        pa = a[p.id]
-        if pa and p.quantity_asked != pa.quantity_asked
-          pa.quantity_asked = p.quantity_asked
-          pa
-        end
-      end.compact
-
-      changed.each{ |p| p.save! }
-      removed.each{ |p| p.destroy }
-    end
-
-    if params[:warn_consumer]
-      message = (params[:include_message] and !params[:message].blank?) ? params[:message] : nil
-      OrdersCyclePlugin::Mailer.deliver_order_change_notification profile, @order, changed, removed, message
-    end
-
-  end
-
   def filter
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
     @order = OrdersPlugin::Sale.find_by_id params[:order_id]

@@ -4,23 +4,23 @@
 
 <div class='ui-tabs'>
   <ul>
-    <% if profile.purchases.present? %>
+    <% if @purchases.present? %>
       <li class='tab'><a href='#purchases'><%= t('orders_plugin.terms.purchase.plural') %></a></li>
     <% end %>
-    <% if profile.sales.present? %>
+    <% if @sales.present? %>
       <li class='tab'><a href='#sales'><%= t('orders_plugin.terms.sale.plural') %></a></li>
     <% end %>
   </ul>
 
-  <% if profile.purchases.present? %>
+  <% if @purchases.present? %>
     <div id='purchases'>
-      <%= render 'orders_plugin_admin/table', :actor_name => :supplier, :orders => profile.purchases, :wireframe_size => false %>
+      <%= render 'orders_plugin_admin/purchases', :actors => profile.suppliers.except_self, :orders_context => :profile, :orders => @purchases, :month => @purchases_month, :year => @purchases_year %>
     </div>
   <% end %>
 
-  <% if profile.sales.present? %>
+  <% if @sales.present? %>
     <div id='sales'>
-      <%= render 'orders_plugin_admin/table', :actor_name => :consumer, :orders => profile.sales, :wireframe_size => false %>
+      <%= render 'orders_plugin_admin/sales', :actors => profile.consumers.except_self, :orders_context => :profile, :orders => @sales, :month => @sales_month, :year => @purchases_year %>
     </div>
   <% end %>
 </div>

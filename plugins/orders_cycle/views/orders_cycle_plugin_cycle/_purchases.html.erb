@@ -1,6 +1,2 @@
-<%= render 'orders_filter', :actor_name => :supplier, :actors => @cycle.suppliers %>
-<%= render 'orders_actions' %>
+<%= render 'orders_plugin_admin/purchases', :actors => @cycle.suppliers, :orders_context => :cycle, :context_id => @cycle.id, :orders => @cycle.purchases %>
 
-<div id='cycle-orders'>
-  <%= render 'orders_plugin_admin/table', :actor_name => :supplier, :orders => @cycle.purchases %>
-</div>

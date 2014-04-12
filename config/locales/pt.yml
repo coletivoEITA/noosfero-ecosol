@@ -596,6 +596,8 @@
           status: "Situação"
           code: "Código"
           all: "Todos"
+          month: "Mês"
+          year: "Ano"
         _edit: 
           actions: Ações
           add_product: "adicionar produto"

@@ -1,3 +1,6 @@
+<% month ||= params[:date][:month] rescue nil %>
+<% year ||= params[:date][:year] rescue nil %>
+
 <div class="field state">
   <label><%= t('orders_plugin.views.admin._filter.status') %></label>
   <div>
@@ -18,4 +21,20 @@
       options_for_select([[t('orders_plugin.views.admin._filter.all'), ""]] + actors.map{ |a| [a.name, a.id] }, params["#{actor_name}_id"]) %>
   </div>
 </div>
+
+<% if orders_context == :profile %>
+  <div class="field month">
+    <label><%= t('orders_plugin.views.admin._filter.month') %></label>
+    <div>
+      <%= select_month month || Date.today %>
+    </div>
+  </div>
+
+  <div class="field year">
+    <label><%= t('orders_plugin.views.admin._filter.year') %></label>
+    <div>
+      <%= select_year year || Date.today %>
+    </div>
+  </div>
+<% end %>
 

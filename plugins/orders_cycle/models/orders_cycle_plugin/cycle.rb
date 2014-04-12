@@ -7,8 +7,10 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 
   has_many :cycle_orders, :class_name => 'OrdersCyclePlugin::CycleOrder', :foreign_key => :cycle_id, :dependent => :destroy, :order => 'id ASC'
-  has_many :sales, :through => :cycle_orders, :source => :sale, :order => 'id ASC'
-  has_many :purchases, :through => :cycle_orders, :source => :purchase, :order => 'id ASC'
+
+  # cannot use :order because of months/years named_scope
+  has_many :sales, :through => :cycle_orders, :source => :sale
+  has_many :purchases, :through => :cycle_orders, :source => :purchase
 
   has_many :cycle_products, :foreign_key => :cycle_id, :class_name => 'OrdersCyclePlugin::CycleProduct', :dependent => :destroy
   has_many :products, :through => :cycle_products, :order => 'products.name ASC',
@@ -33,9 +35,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.profile.orders_cycles }
 
-  named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year DESC'
   named_scope :defuncts, :conditions => ["status = 'new' AND created_at < ?", 2.days.ago]
-
   named_scope :not_new, :conditions => ["status <> 'new'"]
   named_scope :open, lambda {
     {:conditions => ["status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) )",
@@ -45,6 +45,10 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     {:conditions => ["NOT ( ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) AND status = 'orders' )",
       {:now => DateTime.now}]}
   }
+
+  named_scope :months, :select => 'DISTINCT(EXTRACT(months FROM start)) as month', :order => 'month DESC'
+  named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year DESC'
+
   named_scope :by_month, lambda { |month| {
     :conditions => [ 'EXTRACT(month FROM start) <= :month AND EXTRACT(month FROM finish) >= :month', { :month => month } ]}
   }

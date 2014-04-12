@@ -6,9 +6,5 @@
   <% end %>
 <% end %>
 
-<%= render 'orders_filter', :actor_name => :consumer, :actors => @cycle.consumers %>
-<%= render 'orders_actions' %>
+<%= render 'orders_plugin_admin/sales', :actors => @cycle.consumers, :orders_context => :cycle, :context_id => @cycle.id, :orders => @cycle.sales %>
 
-<div id='cycle-orders'>
-  <%= render 'orders_plugin_admin/table', :actor_name => :consumer, :orders => @cycle.sales %>
-</div>

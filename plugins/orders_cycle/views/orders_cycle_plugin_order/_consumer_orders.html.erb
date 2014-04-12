@@ -19,6 +19,7 @@
       <%= link_to t('views.order._consumer_orders.administration_of_thi'), {:controller => :orders_cycle_plugin_cycle, :action => :edit, :id => @cycle.id} %>&emsp;
     </div>
   </div>
+
   <div id="order-place-new" class="admin">
     <%= link_to t('views.order._consumer_orders.new_order'), {:action => :admin_new, :consumer_id => @order.consumer.id, :cycle_id => @cycle.id} if @cycle.orders? %>
   </div>

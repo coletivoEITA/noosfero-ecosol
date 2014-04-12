@@ -13,7 +13,7 @@ class ShoppingCartPlugin::PurchaseOrder < Noosfero::Plugin::ActiveRecord
 end
 
 class Profile
-  has_many :orders, :class_name => 'OrdersPlugin::Order', :order => 'updated_at DESC'
+  has_many :orders, :class_name => 'OrdersPlugin::Order'
 end
 
 class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
