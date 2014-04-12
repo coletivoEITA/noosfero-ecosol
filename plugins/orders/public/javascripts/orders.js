@@ -40,6 +40,20 @@ orders = {
       toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
       sortable_table.edit_arrow_toggle(toggle_edit.editing(), toggle_edit.isEditing());
     },
+
+    select: {
+      all: function() {
+        jQuery('.order #order_ids_').attr('checked', true)
+      },
+      none: function() {
+        jQuery('.order #order_ids_').attr('checked', false)
+      },
+
+      selection: function() {
+        var selection = jQuery('.order #order_ids_:checked').parents('.order')
+      },
+
+    },
   },
 
   set_orders_container_max_height: function()

@@ -14,12 +14,12 @@ class OrdersPluginAdminController < MyProfileController
     @admin = true
 
     @purchases_month = profile.purchases.latest.first.created_at.month rescue Date.today.month
-    @sales_month = profile.sales.latest.first.created_at.month rescue Date.today.month
     @purchases_year = profile.purchases.latest.first.created_at.year rescue Date.today.year
+    @sales_month = profile.sales.latest.first.created_at.month rescue Date.today.month
     @sales_year = profile.sales.latest.first.created_at.year rescue Date.today.year
 
-    @purchases = profile.purchases.latest.by_month(@purchases_month)
-    @sales = profile.sales.latest.by_month(@sales_month)
+    @purchases = profile.purchases.latest.by_month(@purchases_month).by_year(@purchases_year)
+    @sales = profile.sales.latest.by_month(@sales_month).by_year(@sales_year)
   end
 
   def filter
@@ -28,8 +28,9 @@ class OrdersPluginAdminController < MyProfileController
 
     @actor_name = params[:actor_name]
 
+    # default value may be override
     @scope ||= profile
-    @scope = @scope.send(@method)
+    @scope = @scope.send @method
     @orders = OrdersPlugin::Order.search_scope @scope, params
 
     render :layout => false
@@ -70,10 +71,6 @@ class OrdersPluginAdminController < MyProfileController
   end
 
   protected
-
-  def filter_context
-    'profile'
-  end
 
   def filter_methods
     ['sales', 'purchases']

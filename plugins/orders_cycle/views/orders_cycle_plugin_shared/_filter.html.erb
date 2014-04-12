@@ -3,7 +3,7 @@
 <div id="filter" class="<%= 'wireframe-size' if wireframe_size %>">
 
   <div class="title filter-box">
-    <%= t('suppliers_plugin.views.product.index.filter') %>
+    <%= t('views.filter.filter') %>
   </div>
 
   <% url = {:controller => :orders_cycle_plugin_order, :action => :filter} if type == :order %>
@@ -26,7 +26,7 @@
     </div>
 
     <div class="submit">
-      <%= submit_tag t('suppliers_plugin.views.product.index.filter_it'), :onclick => "suppliers.filter.submit(this)" %>
+      <%= submit_tag t('views.filter.filter_it'), :onclick => "suppliers.filter.submit(this)" %>
     </div>
 
   <% end %>

@@ -3,19 +3,20 @@
 
   <div class="labels">
     <span class="select">
+      <%= t('views.actions.select') %>
     </span>
     <span class="with-selection">
-    </span>
+      <%= t('views.actions.with_selection') %>
   </div>
 
   <div class="buttons">
     <div class="select">
-      <%= link_to_function t('views.product._actions.all'), 'orders.admin.select.all()', :class => 'selection-button' %>
-      <%= link_to_function t('views.product._actions.none'), 'orders.admin.select.none()', :class => 'selection-button' %>
+      <%= link_to_function t('views.actions.all'), 'orders.admin.select.all()', :class => 'selection-button' %>
+      <%= link_to_function t('views.actions.none'), 'orders.admin.select.none()', :class => 'selection-button' %>
     </div>
 
     <div class="with-selection">
-      <%# link_to_function t('views.product._actions.activate'), 'suppliers.our_product.select.activate(true)', :class => 'action-button' %>
+      <%# link_to_function t('views.actions.activate'), 'suppliers.our_product.select.activate(true)', :class => 'action-button' %>
     </div>
 
     <div class="other">

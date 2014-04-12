@@ -138,8 +138,4 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
     @admin = true
   end
 
-  def filter_context
-    'cycle'
-  end
-
 end

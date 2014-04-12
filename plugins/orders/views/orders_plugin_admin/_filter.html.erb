@@ -1,7 +1,7 @@
 <div id="filter" class="with-actions wireframe-size">
 
   <div class="title filter-box">
-    <%= t('suppliers_plugin.views.product.index.filter') %>
+    <%= t('views.filter.filter') %>
   </div>
 
   <% form_tag({:controller => :orders_plugin_admin, :action => :filter}, :id => 'filter-form',
@@ -17,7 +17,7 @@
     </div>
 
     <div class="submit">
-      <%= submit_tag t('suppliers_plugin.views.product.index.filter_it') %>
+      <%= submit_tag t('views.filter.filter_it') %>
     </div>
 
   <% end %>

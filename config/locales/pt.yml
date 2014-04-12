@@ -322,6 +322,10 @@
       profile: 
         consumer: Consumidor
     views:
+      filter:
+        <<: *orders_plugin_filter
+      actions: 
+        <<: *orders_plugin_actions
       myprofile:
         margin_change: 
           ? "%"
@@ -337,13 +341,6 @@
           redistribution_situation: "Distribuição dos produtos"
           name: "Nome"
       product:
-        _actions:
-          all: "todos"
-          none: "nenhum"
-          select: "selecionar"
-          with_selection: "com selecionados"
-          activate: "ativar"
-          deactivate: "desativar"
         import:
           action: "Importar planilha"
           help: "Formate sua planilha para que tenha exatamente os campos abaixo. Depois, salve-a escolhendo o tipo de arquivo CSV (extensão .csv)."
@@ -405,8 +402,6 @@
           change: mudar
           default_margin_of_com: "Margem padrão de comercialização"
           default_margin_info: "Esta margem é automaticamente aplicada em todos os produtos, mas é possível estabelecer margens específicas para certos produtos."
-          filter: Filtro
-          filter_it: Filtrar
           in_any_state: "Em qualquer estado"
           inactive: inativa
           margin: "%{margin} %"
@@ -568,6 +563,22 @@
         accepted: "Aceito"
         shipped: "Entregue"
     views:
+      filter: &orders_plugin_filter
+        filter: Filtro
+        filter_it: Filtrar
+        status: "Situação"
+        code: "Código"
+        all: "Todos"
+        month: "Mês"
+        year: "Ano"
+      actions: &orders_plugin_actions
+        all: "todos"
+        none: "nenhum"
+        select: "selecionar"
+        with_selection: "com selecionados"
+        activate: "ativar"
+        deactivate: "desativar"
+
       consumer:
         _total: 
           total: Total
@@ -592,12 +603,6 @@
           last_update: "Últ. atualização"
           order_date: "Data do pedido"
           total: "Total (%{currency})"
-        _filter:
-          status: "Situação"
-          code: "Código"
-          all: "Todos"
-          month: "Mês"
-          year: "Ano"
         _edit: 
           actions: Ações
           add_product: "adicionar produto"

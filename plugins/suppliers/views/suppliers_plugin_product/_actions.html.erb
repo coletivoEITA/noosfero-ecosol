@@ -3,22 +3,22 @@
 
   <div class="labels">
     <span class="select">
-      <%= t('views.product._actions.select') %>
+      <%= t('views.actions.select') %>
     </span>
     <span class="with-selection">
-      <%= t('views.product._actions.with_selection') %>
+      <%= t('views.ith_selection') %>
     </span>
   </div>
 
   <div class="buttons">
     <div class="select">
-      <%= link_to_function t('views.product._actions.all'), 'suppliers.our_product.select.all()', :class => 'selection-button' %>
-      <%= link_to_function t('views.product._actions.none'), 'suppliers.our_product.select.none()', :class => 'selection-button' %>
+      <%= link_to_function t('views.actions.all'), 'suppliers.our_product.select.all()', :class => 'selection-button' %>
+      <%= link_to_function t('views.actions.none'), 'suppliers.our_product.select.none()', :class => 'selection-button' %>
     </div>
 
     <div class="with-selection">
-      <%= link_to_function t('views.product._actions.activate'), 'suppliers.our_product.select.activate(true)', :class => 'action-button' %>
-      <%= link_to_function t('views.product._actions.deactivate'), 'suppliers.our_product.select.activate(false)', :class => 'action-button' %>
+      <%= link_to_function t('views.actions.activate'), 'suppliers.our_product.select.activate(true)', :class => 'action-button' %>
+      <%= link_to_function t('views.actions.deactivate'), 'suppliers.our_product.select.activate(false)', :class => 'action-button' %>
     </div>
 
     <div class="other">
