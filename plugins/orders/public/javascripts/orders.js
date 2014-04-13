@@ -58,14 +58,14 @@ orders = {
   set_orders_container_max_height: function()
   {
     ordersH = jQuery(window).height();
-    ordersH -= jQuery('#cirandas-top-bar').outerHeight();
-    ordersH -= jQuery('#order-column #delivery-box').outerHeight();
-    ordersH -= jQuery('#order-column .order-message-title').outerHeight();
-    ordersH -= jQuery('#order-status-message').outerHeight();
-    ordersH -= jQuery('#order-column .order-message-text').outerHeight();
-    ordersH -= jQuery('#order-column .order-message-actions').outerHeight();
-    ordersH -= jQuery('#order-column .order-total').last().outerHeight();
-    jQuery('.order-items-container .order-items').css('max-height', ordersH);
+    ordersH -= 100
+    ordersH -= jQuery('#order-column #delivery-box').outerHeight()
+    ordersH -= jQuery('#order-column .order-message-title').outerHeight()
+    ordersH -= jQuery('#order-status-message').outerHeight()
+    ordersH -= jQuery('#order-column .order-message-text').outerHeight()
+    ordersH -= jQuery('#order-column .order-message-actions').outerHeight()
+    ordersH -= jQuery('#order-column .order-total').last().outerHeight()
+    jQuery('.order-items-container .order-items-scroll').css('max-height', ordersH);
   }
 
 };

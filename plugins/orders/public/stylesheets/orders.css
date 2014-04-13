@@ -1475,40 +1475,38 @@
     font-weight: bold;
     font-size: 8px;
     text-transform: uppercase; }
-  .order-items-container .table-content .item {
+  .order-items-container .table-content .item .fields {
     display: table; }
-    .order-items-container .table-content .item .fields {
-      display: table-row; }
-      .order-items-container .table-content .item .fields .box-field {
-        float: none;
-        display: table-cell; }
-      .order-items-container .table-content .item .fields .quantity-price-table {
-        padding: 0; }
-        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row {
-          display: table-row; }
-          .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity input {
-            display: none; }
-          .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity .unit {
-            text-transform: lowercase; }
-    .order-items-container .table-content .item.hover, .order-items-container .table-content .item.edit {
-      background-color: #ffe546; }
-    .order-items-container .table-content .item.edit .fields .box-field {
-      border-right: none;
-      padding-right: 8px; }
-    .order-items-container .table-content .item.edit .fields .quantity input {
-      display: block; }
-    .order-items-container .table-content .item.edit .more {
-      display: block; }
-    .order-items-container .table-content .item .more {
-      display: none;
-      width: 464px; }
-      .order-items-container .table-content .item .more .actions {
-        float: left; }
-        .order-items-container .table-content .item .more .actions a {
-          color: black; }
-      .order-items-container .table-content .item .more .price-with-unit {
-        float: right;
-        width: 64px; }
+    .order-items-container .table-content .item .fields .box-field {
+      float: none;
+      display: table-cell; }
+    .order-items-container .table-content .item .fields .quantity-price-table {
+      padding: 0; }
+      .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row {
+        display: table-row; }
+        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity input {
+          display: none; }
+        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity .unit {
+          text-transform: lowercase; }
+  .order-items-container .table-content .item.hover, .order-items-container .table-content .item.edit {
+    background-color: #ffe546; }
+  .order-items-container .table-content .item.edit .fields .box-field {
+    border-right: none;
+    padding-right: 8px; }
+  .order-items-container .table-content .item.edit .fields .quantity input {
+    display: block; }
+  .order-items-container .table-content .item.edit .more {
+    display: block; }
+  .order-items-container .table-content .item .more {
+    display: none;
+    width: 464px; }
+    .order-items-container .table-content .item .more .actions {
+      float: left; }
+      .order-items-container .table-content .item .more .actions a {
+        color: black; }
+    .order-items-container .table-content .item .more .price-with-unit {
+      float: right;
+      width: 64px; }
 
 .controller-profile_editor a.control-panel-orders-purchases-sales {
   background-image: url("/plugins/orders/images/control-panel/purchases-sales.png"); }

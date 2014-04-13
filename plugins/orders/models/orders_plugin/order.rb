@@ -122,7 +122,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   alias_method :confirmed?, :ordered?
 
   def status_on? status
-    UserStatuses.index(self.current_status) >= UserStatuses.index(status) - 1
+    UserStatuses.index(self.current_status) >= UserStatuses.index(status)
   end
 
   def current_status

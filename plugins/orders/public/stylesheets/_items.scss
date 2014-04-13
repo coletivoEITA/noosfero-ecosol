@@ -93,10 +93,9 @@
   .table-content {
 
     .item {
-      display: table;
 
       .fields {
-        display: table-row;
+        display: table;
         @extend .container-clean;
 
         .box-field {
