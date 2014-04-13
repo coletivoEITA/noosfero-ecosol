@@ -34,7 +34,7 @@ module OrdersCyclePlugin::Report
       # create sheet and populates
       wb.add_worksheet(:name => t('lib.report.products_report')) do |sheet|
 
-        items_by_supplier.each do |supplier, items, total_price_asked, total_purchase_asked|
+        items_by_supplier.each do |supplier, items, total_price_consumer_asked, total_purchase_asked|
 
           sheet.add_row [t('lib.report.supplier'),'',t('lib.report.phone'),'',t('lib.report.mail'),'','','','','',''], :style => bluecell
           sheet.merge_cells "A#{sbs}:B#{sbs}"
@@ -58,9 +58,9 @@ module OrdersCyclePlugin::Report
           items.each do |item|
 
             sheet.add_row [
-              item.id, item.name, item.total_quantity_asked, 0, 0,
+              item.id, item.name, item.total_quantity_consumer_asked, 0, 0,
               "=IF(C#{pl}-D#{pl}+E#{pl}>0, C#{pl}-D#{pl}+E#{pl},0)", "=D#{pl}-C#{pl}+F#{pl}", item.unit.singular,
-              item.price, item.total_price_asked, "=F#{pl}*I#{pl}"], :style => [default,default,default,default,default,default,default,default,currency,currency,currency]
+              item.price, item.total_price_consumer_asked, "=F#{pl}*I#{pl}"], :style => [default,default,default,default,default,default,default,default,currency,currency,currency]
 
               pl +=1
 
@@ -140,7 +140,7 @@ module OrdersCyclePlugin::Report
           order.items.each do |item|
 
             sheet.add_row [item.product.id, item.product.supplier.abbreviation_or_name,
-                           item.product.name, item.quantity_asked,
+                           item.product.name, item.quantity_consumer_asked,
                            item.product.unit.singular, item.product.price,
                            "=F#{sbe}*D#{sbe}"], :style => [default,default,default,default,default,currency,currency]
 

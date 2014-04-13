@@ -30,7 +30,6 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   named_scope :latest, :order => 'created_at DESC'
 
-
   belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::Method'
   belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::Method'
 
@@ -63,10 +62,6 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   sync_serialized_field :supplier_delivery
   sync_serialized_field :consumer_delivery
   serialize :payment_data, Hash
-
-  extend CurrencyHelper::ClassMethods
-  has_number_with_locale :total_quantity_asked
-  has_currency :total_price_asked
 
   # Alias need for terms
   alias_method :supplier, :profile
@@ -147,25 +142,21 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   # ShoppingCart format
   def products_list
     hash = {}; self.items.map do |item|
-      hash[item.product_id] = {:quantity => item.quantity_asked, :name => item.name, :price => item.price}
+      hash[item.product_id] = {:quantity => item.quantity_consumer_asked, :name => item.name, :price => item.price}
     end
     hash
   end
   def products_list= hash
     self.items = hash.map do |id, data|
       data[:product_id] = id
-      data[:quantity_asked] = data.delete(:quantity)
+      data[:quantity_consumer_asked] = data.delete(:quantity)
       data[:order] = self
       OrdersPlugin::Item.new data
     end
   end
 
-  def total_quantity_asked
-    self.items.collect(&:quantity_asked).inject(0){ |sum,q| sum+q }
-  end
-  def total_price_asked
-    self.items.collect(&:price_asked).inject(0){ |sum,q| sum+q }
-  end
+  extend CurrencyHelper::ClassMethods
+  instance_exec &OrdersPlugin::Item::DefineTotals
 
   protected
 

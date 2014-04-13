@@ -21,23 +21,47 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
   validates_presence_of :order
   validates_presence_of :product
-  validates_numericality_of :quantity_asked
-  validates_numericality_of :quantity_accepted
-  validates_numericality_of :quantity_shipped
-  validates_numericality_of :price_asked
-  validates_numericality_of :price_accepted
-  validates_numericality_of :price_shipped
 
   before_save :calculate_prices
+  before_create :sync_fields
+
+  StatusAccessMap = {
+    :asked => :consumer,
+    :accepted => :supplier,
+    :separated => :supplier,
+    :delivered => :supplier,
+    :received => :consumer,
+  }
+
+  DefineTotals = proc do
+    StatusAccessMap.each do |status, access|
+      quantity = "quantity_#{access}_#{status}".to_sym
+      price = "price_#{access}_#{status}".to_sym
+
+      self.send :define_method, "total_#{quantity}" do
+        self.items.collect(&quantity).inject(0){ |sum,q| sum+q }
+      end
+      self.send :define_method, "total_#{price}" do
+        self.items.collect(&price).inject(0){ |sum,q| sum+q }
+      end
+
+      has_number_with_locale "total_#{quantity}"
+      has_currency "total_#{price}"
+    end
+  end
 
   extend CurrencyHelper::ClassMethods
-  has_number_with_locale :quantity_asked
-  has_number_with_locale :quantity_accepted
-  has_number_with_locale :quantity_shipped
   has_currency :price
-  has_currency :price_asked
-  has_currency :price_accepted
-  has_currency :price_shipped
+  StatusAccessMap.each do |status, access|
+    quantity = "quantity_#{access}_#{status}"
+    price = "price_#{access}_#{status}"
+
+    has_number_with_locale quantity
+    has_currency price
+
+    validates_numericality_of quantity
+    validates_numericality_of price
+  end
 
   def name
     self['name'] || (self.product.name rescue nil)
@@ -46,39 +70,23 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     self['price'] || (self.product.price rescue nil)
   end
 
-  STATUS = ['asked', 'accepted', 'shipped']
-  ORDER_STATUS_MAP = {
-    'asked' => 'confirmed',
-    'accepted' => 'accepted',
-    'shipped' => 'shipped',
-  }
-
-  def modified_state
-    if quantity_shipped.present? then 'shipped' elsif quantity_accepted.cpresent? then 'accepted' else 'asked' end
-  end
-  def modified_order_state
-    ORDER_STATUS_MAP[self.modified_state]
-  end
-  def modified_order_state_message
-    I18n.t Order::StatusText[self.modified_order_state]
+  def status
+    self.order.status
   end
 
-  def price_asked
-    self.price * self.quantity_asked rescue nil
-  end
-  def price_accepted
-    self.price * self.quantity_accepted rescue nil
-  end
-  def price_shipped
-    self.price * self.quantity_shipped rescue nil
+  def price_consumer_asked
+    self.price * self.quantity_consumer_asked rescue nil
   end
 
   protected
 
   def calculate_prices
-    self.price_asked = self.price_asked
-    self.price_accepted = self.price_accepted
-    self.price_shipped = self.price_shipped
+    self.price_consumer_asked = self.price_consumer_asked
+  end
+
+  def sync_fields
+    self.name = self.product.name
+    self.price = self.product.price
   end
 
 end

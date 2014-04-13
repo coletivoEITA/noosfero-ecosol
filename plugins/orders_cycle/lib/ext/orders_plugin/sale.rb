@@ -59,8 +59,8 @@ class OrdersPlugin::Sale
 
       item = purchase.items.for_product(supplier_product).first
       item ||= purchase.items.build :order => self, :product => supplier_product
-      item.quantity_asked = product.total_quantity_asked
-      item.price_asked = product.total_price_asked
+      item.quantity_consumer_asked = product.total_quantity_consumer_asked
+      item.price_consumer_asked = product.total_price_consumer_asked
       item.send :create_or_update_without_callbacks # dont touch which cause an infinite loop
     end
   end
@@ -71,11 +71,11 @@ class OrdersPlugin::Sale
       next unless purchase = supplier_product.purchases.for_cycle(self.cycle).first
 
       purchased_item = purchase.items.for_product(supplier_product).first
-      purchased_item.quantity_asked -= item.quantity_asked
-      purchased_item.price_asked -= item.quantity_asked
+      purchased_item.quantity_consumer_asked -= item.quantity_consumer_asked
+      purchased_item.price_consumer_asked -= item.quantity_consumer_asked
       purchased_item.save!
 
-      purchased_item.destroy if purchased_item.quantity_asked.zero?
+      purchased_item.destroy if purchased_item.quantity_consumer_asked.zero?
       purchase.destroy if purchase.items(true).blank?
     end
   end

@@ -45,6 +45,9 @@
             width: $module02 - $intercolumn;
           }
         }
+        &.price-total {
+          width: $module01;
+        }
         &.status-updated {
           width: $module01;
         }
@@ -54,7 +57,10 @@
     .box-field {
       float: left;
       padding: $half-padding $padding;
-      padding-right: $padding - $border; border-right: $border solid white; &:last-child {
+      padding-right: $padding - $border;
+      border-right: $border solid white;
+
+      &:last-child {
         border-right: none;
       }
 

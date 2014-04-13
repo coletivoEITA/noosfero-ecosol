@@ -1,8 +1,9 @@
-<div class="order-items-container <%= "empty" if order.items.count == 0 %>">
+<div class="order-items-container <%= "empty" if order.items.count == 0 %> <%= "admin" if @admin %>">
 
   <% if order.items.count > 0 %>
     <div class="order-items-scroll">
       <div class="order-items <%= "self-supplier" if order.self_supplier? %>">
+
         <div class="table-header">
           <% unless order.self_supplier? %>
             <div class="box-field supplier"> <%= t('orders_plugin.views.item._index.supplier') %> </div>
@@ -10,10 +11,6 @@
           <div class="box-field product"> <%= t('orders_plugin.views.item._index.product') %> </div>
           <div class="box-field quantity"> <%= t('orders_plugin.views.item._index.quantity') %> </div>
           <div class="box-field price-total"> <%= t('orders_plugin.views.item._index.price_total') % {:currency => @environment.currency_unit} %> </div>
-          <%# if @admin %>
-          <% if nil %>
-            <div class="box-field status-updated"> <%= t('orders_plugin.views.item._index.status_updated') %> </div>
-          <% end %>
         </div>
 
         <div class="table-content">

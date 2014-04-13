@@ -10,8 +10,8 @@ orders = {
     edit_quantity: function (item) {
       item = jQuery(item);
       toggle_edit.edit(item);
-      var quantity_asked = item.find('.quantity-edit input');
-      quantity_asked.focus();
+      var quantity_consumer_asked = item.find('.quantity-edit input');
+      quantity_consumer_asked.focus();
     },
 
     quantity_keyup: function(context, event) {
@@ -27,10 +27,10 @@ orders = {
     submit: function(context, url) {
       var container = jQuery(context).parents('.order-items-container');
       var item = jQuery(context).parents('.item');
-      var quantity_asked = item.find('.quantity-edit input');
+      var quantity_consumer_asked = item.find('.quantity-edit input');
 
       loading_overlay.show(container);
-      jQuery.post(url, {'item[quantity_asked]': quantity_asked.val()}, function(){}, 'script');
+      jQuery.post(url, {'item[quantity_consumer_asked]': quantity_consumer_asked.val()}, function(){}, 'script');
     },
   },
 

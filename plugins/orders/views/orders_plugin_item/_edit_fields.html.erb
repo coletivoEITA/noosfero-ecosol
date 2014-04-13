@@ -14,17 +14,17 @@
   </div>
 
   <div class="box-field quantity">
-    <span class="value"><%= item.quantity_asked_as_currency_number %></span>
+    <span class="value"><%= item.quantity_consumer_asked_as_currency_number %></span>
     <span class="unit"><%= excerpt_ending item.product.unit.singular, 4, '.' rescue '' %></span>
   </div>
   <% if f %>
     <div class="box-field quantity-edit">
-      <%= f.text_field :quantity_asked, :value => item.quantity_asked_as_currency_number, :onkeyup => 'orders.item.quantity_keyup(this, event)' %>
+      <%= f.text_field :quantity_consumer_asked, :value => item.quantity_consumer_asked_as_currency_number, :onkeyup => 'orders.item.quantity_keyup(this, event)' %>
     </div>
   <% end %>
 
   <div class="box-field price-total">
-    <%= render "orders_plugin_item/price_total", :item => item %>
+    <%= price_span item.price_consumer_asked_as_currency_number %>
   </div>
 
   <%# if @admin %>
@@ -40,7 +40,7 @@
       <%= link_to_function t('orders_plugin.views.item._edit.remove_from_order'), "jQuery(this).parents('.value-row').remove();"  %>
     </div>
 
-    <div class="price-with-unit"><%= price_with_unit_span item.price_as_currency_number, item.product.unit rescue item.price_as_currency_number %></div>
+    <div class="price-with-unit"><%= price_with_unit_span item.price_consumer_asked_as_currency_number, item.product.unit rescue item.price_consumer_asked_as_currency_number %></div>
 
     <div class="clean"></div>
   <% elsif f %>
@@ -54,7 +54,7 @@
           :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? user, @admin %>
       </div>
 
-      <div class="price-with-unit"><%= price_with_unit_span item.price_as_currency_number, item.product.unit rescue item.price_as_currency_number %></div>
+      <div class="price-with-unit"><%= price_with_unit_span item.price_consumer_as_currency_number, item.product.unit rescue item.price_consumer_as_currency_number %></div>
     </div>
   <% end %>
 </div>

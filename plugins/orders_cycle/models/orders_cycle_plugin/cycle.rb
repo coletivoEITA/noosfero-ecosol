@@ -93,8 +93,8 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
       :code => code, :name => name
     }
   end
-  def total_price_asked
-    self.items.sum :price_asked
+  def total_price_consumer_asked
+    self.items.sum :price_consumer_asked
   end
   def total_purchase_price
     #FIXME: wrong!
@@ -140,13 +140,13 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
   def items_by_suppliers
     self.ordered_offered_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
-      total_price_asked = total_purchase_price = 0
+      total_price_consumer_asked = total_purchase_price = 0
       products.each do |product|
-        total_price_asked += product.total_price_asked if product.total_price_asked
+        total_price_consumer_asked += product.total_price_consumer_asked if product.total_price_consumer_asked
         total_purchase_price += product.total_purchase_price if product.total_purchase_price
       end
 
-      [supplier, products, total_price_asked, total_purchase_price]
+      [supplier, products, total_price_consumer_asked, total_purchase_price]
     end
   end
 
@@ -158,7 +158,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
       purchase = OrdersPlugin::Purchase.create! :cycle => self, :consumer => self.profile, :profile => supplier.profile
       products.each do |product|
         purchase.items.create! :order => purchase, :product => product.supplier_product,
-          :quantity_asked => product.total_quantity_asked, :price_asked => product.total_price_asked
+          :quantity_consumer_asked => product.total_quantity_consumer_asked, :price_consumer_asked => product.total_price_consumer_asked
       end
     end
 

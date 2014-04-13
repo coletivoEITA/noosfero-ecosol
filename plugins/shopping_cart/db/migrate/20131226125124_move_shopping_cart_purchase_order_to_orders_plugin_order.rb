@@ -58,7 +58,7 @@ class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
       order.supplier_delivery_data = {}
 
       data[:products_list].each do |id, data|
-        item = order.items.build :product_id => id, :name => data[:name], :quantity_asked => data[:quantity], :price => data[:price]
+        item = order.items.build :product_id => id, :name => data[:name], :quantity_consumer_asked => data[:quantity], :price => data[:price]
         item.order = order
       end
 

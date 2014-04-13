@@ -70,19 +70,19 @@
 
   margin: 0;
   border: none;
-  &.admin {
-    margin: 0 $intercolumn; //for items overflow when selected and scrollbar
-    border: $border solid black;
+  //&.admin {
+  //  margin: 0 $intercolumn; //for items overflow when selected and scrollbar
+  //  border: $border solid black;
 
-    &, .order-items-scroll, .order-items, .item {
-      width: $order-items-admin-width;
-    }
+  //  &, .order-items-scroll, .order-items, .item {
+  //    width: $order-items-admin-width;
+  //  }
 
-    .order-items-scroll {
-      margin-left: -$intercolumn;
-      padding-left: $intercolumn;
-    }
-  }
+  //  .order-items-scroll {
+  //    margin-left: -$intercolumn;
+  //    padding-left: $intercolumn;
+  //  }
+  //}
 
   .order-header {
     padding: $half-padding $padding;
