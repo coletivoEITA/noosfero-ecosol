@@ -2,7 +2,7 @@
 
   <% if @quantity_consumer_ordered_less_than_minimum and @quantity_consumer_ordered_less_than_minimum == item.id %>
     <div class=distribution-error-message>
-      <%= t('orders_plugin.views.item._edit.this_product_requires') % {:value => product.minimum_selleable_as_currency_number} %>
+      <%= t('orders_plugin.views.item._edit.this_product_requires') % {:value => product.minimum_selleable_localized} %>
     </div>
   <% end %>
 

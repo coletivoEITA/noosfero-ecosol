@@ -18,7 +18,7 @@
 
       <div class="quantity-price-row">
         <% data = OrdersPlugin::Item::StatusDataMap[status] %>
-        <% quantity = item.send "quantity_#{data}_as_currency_number" %>
+        <% quantity = item.send "quantity_#{data}_localized" %>
         <% price = item.send "price_#{data}_as_currency_number" %>
 
         <div class="box-field quantity <%=status%>">

@@ -16,7 +16,7 @@
 
     <span id="profile-margin-percentage">
       <span class="<%= profile.margin_percentage.blank? ? 'none' : 'set' %>">
-        <%= profile.margin_percentage_as_currency_number ? ( t('views.product.index.margin') % {:margin => profile.margin_percentage_as_currency_number} ) : t('views.product.index.no_margin_set') %>
+        <%= if profile.margin_percentage_localized then t('views.product.index.margin') % {:margin => profile.margin_percentage_localized} else t('views.product.index.no_margin_set') end %>
       </span>
       <%= colorbox_link_to t('views.product.index.change'), {:controller => :suppliers_plugin_myprofile, :action => :margin_change} %>
     </span>

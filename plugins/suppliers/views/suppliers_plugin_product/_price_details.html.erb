@@ -11,7 +11,7 @@
   <%= labelled_field f, :unit_id, t('views.product._price_details.unit'),
     f.select(:unit_id, Unit.all.map{ |u| [u.singular, u.id] }, {}, options.merge(:oldvalue => product.own_unit_id)) %>
   <%= labelled_field f, :minimum_selleable, t('views.product._price_details.minimum_order'),
-    f.text_field(:minimum_selleable, options.merge(:value => product.minimum_selleable_as_currency_number, :oldvalue => product.own_minimum_selleable_as_currency_number)), :class => 'left-column' %>
+    f.text_field(:minimum_selleable, options.merge(:value => product.minimum_selleable_localized, :oldvalue => product.own_minimum_selleable_localized)), :class => 'left-column' %>
   <%= labelled_field f, :unit_detail, t('views.product._price_details.unit_specification'),
     f.text_field(:unit_detail, options.merge(:oldvalue => product.own_unit_detail)) %>
 
