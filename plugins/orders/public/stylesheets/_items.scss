@@ -149,10 +149,14 @@
             padding-right: $padding;
           }
 
-          .quantity {
+          .quantity-price-table {
+            .quantity-price-row {
+              .quantity {
 
-            input {
-              display: block;
+                input {
+                  display: block;
+                }
+              }
             }
           }
         }
