@@ -1,0 +1,38 @@
+/*
+Syntax error: Invalid CSS after "    }": expected selector or at-rule, was "}"
+        on line 167 of /home/braulio/Projects/noosfero-ecosol/distribution/plugins/orders/public/stylesheets/_items.scss
+
+162:             padding-right: $padding;
+163:           }
+164:         }
+165:       }
+166:     }
+167:   }
+168: }
+
+Backtrace:
+/home/braulio/Projects/noosfero-ecosol/distribution/plugins/orders/public/stylesheets/_items.scss:167
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/scss/parser.rb:1149:in `expected'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/scss/parser.rb:1085:in `expected'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/scss/parser.rb:28:in `parse'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/engine.rb:342:in `_to_tree'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/engine.rb:315:in `_render'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/engine.rb:262:in `render'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/plugin/compiler.rb:362:in `update_stylesheet'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/plugin/compiler.rb:203:in `update_stylesheets'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/plugin/compiler.rb:201:in `each'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/plugin/compiler.rb:201:in `update_stylesheets'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/plugin.rb:81:in `update_stylesheets'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/exec.rb:443:in `watch_or_update'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/exec.rb:326:in `process_result'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/exec.rb:41:in `parse'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/../lib/sass/../sass/exec.rb:21:in `parse!'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/gems/sass-3.2.13/bin/sass:13
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/bin/sass:19:in `load'
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@cirandas/bin/sass:19
+/home/braulio/.rvm/gems/ree-1.8.7-2012.02@global/bin/ruby_noexec_wrapper:14
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Syntax error: Invalid CSS after \"    }\": expected selector or at-rule, was \"}\"\A         on line 167 of /home/braulio/Projects/noosfero-ecosol/distribution/plugins/orders/public/stylesheets/_items.scss\A \A 162:             padding-right: $padding;\A 163:           }\A 164:         }\A 165:       }\A 166:     }\A 167:   }\A 168: }"; }

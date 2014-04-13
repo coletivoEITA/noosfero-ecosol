@@ -43,7 +43,7 @@ class ShoppingCartPluginMyprofileController < MyProfileController
   end
 
   def update_order_status
-    order = OrdersPlugin::Order.find(params[:order_id].to_i)
+    order = OrdersPlugin::Sale.find(params[:order_id].to_i)
     order.status = params[:order_status]
     order.save!
     redirect_to :action => 'reports', :from => params[:context_from], :to => params[:context_to], :filter_status => params[:context_status]

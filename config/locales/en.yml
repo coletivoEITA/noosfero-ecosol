@@ -313,6 +313,10 @@
       profile: 
         consumer: Consumer
     views:
+      filter:
+        <<: *orders_plugin_filter
+      actions: 
+        <<: *orders_plugin_actions
       myprofile:
         margin_change:
           ? "%"
@@ -328,13 +332,6 @@
           redistribution_situation: "Product distribution"
           name: "Name"
       product:
-        _actions:
-          all: "all"
-          none: "none"
-          select: "select"
-          with_selection: "with selected"
-          activate: "activate"
-          deactivate: "deactivate"
         import:
           action: "Import spreadsheet"
           help: "Format you spreadsheet to have exactly the fields bellow. Then, save it choosing the CSV file type (.csv extension)."
@@ -396,8 +393,6 @@
           change: change
           default_margin_of_com: "Default margin of commercialization"
           default_margin_info: "This margin is automatically applied in all the products, but it is possible to stabilish specific margins for certain products."
-          filter: Filter
-          filter_it: Filter
           in_any_state: "In any state"
           inactive: inactive
           margin: "%{margin} %"
@@ -551,14 +546,34 @@
           you_are_not_the_owner: "You are not the owner of this order"
     models:
       order: 
-        open: "Open"
-        not_confirmed: "Not confirmed"
-        planned: "Planned"
-        confirmed: "Confirmed"
-        cancelled: "Cancelled"
-        accepted: "Accepted"
-        shipped: "Shipped"
+        statuses:
+          open: "Open"
+          forgotten: "Not confirmed"
+          planned: "Planned"
+          cancelled: "Cancelled"
+          confirmed: "Confirmed"
+          ordered: "Ordered"
+          accepted: "Accepted"
+          separated: "Separated"
+          delivered: "Delivered"
+          received: "Received"
     views:
+      filter: &orders_plugin_filter
+        filter: Filter
+        filter_it: Filter
+        status: "Status"
+        code: "Code"
+        all: "All"
+        month: "Month"
+        year: "Year"
+      actions: &orders_plugin_actions
+        all: "all"
+        none: "none"
+        select: "select"
+        with_selection: "with selected"
+        activate: "activate"
+        deactivate: "deactivate"
+
       consumer:
         _total: 
           total: Total
@@ -584,10 +599,6 @@
           last_update: "Last update"
           order_date: "Orders' date"
           total: "Total (%{currency})"
-        _filter:
-          status: "Situação"
-          code: "Código"
-          all: "Todos"
         _edit: 
           actions: Actions
           add_product: "add product"
@@ -921,7 +932,7 @@
           edition: Edition
           finish_cycle_editing: "Open orders for cycle"
           orders: Orders
-          parcels: Parcels
+          purchases: Purchases
           redistribution: Redistribution
           reopen_orders_period: "Reopen orders period"
           spreadsheet_with_prod: "Spreadsheet with product listing"
@@ -1016,7 +1027,6 @@
         _admin_submenu: 
           members: Consumers
           orders_cycles: "Orders' Cycles"
-          parcels: Parcels
           products: Products
           suppliers: "%{terms.supplier.plural.capitalize}"
         _header: 

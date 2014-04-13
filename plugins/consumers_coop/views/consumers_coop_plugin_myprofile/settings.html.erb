@@ -13,7 +13,7 @@
         {:help => t('views.profile.settings.this_name_will_be_use')} %>
 
       <% radios = ''; profile.consumers_coop_settings.header_type ||= 'image_+_name' %>
-      <% {'pure_color' => t('views.profile.settings.only_the_image')}.each do |key,header_text| %>
+      <% {'pure_color' => t('views.profile.settings.pure_color_collective'), 'image_+_name' => t('views.profile.settings.image_collective_name'), 'only_image' => t('views.profile.settings.only_the_image')}.each do |key,header_text| %>
         <% radios = labelled_radio(ff,:header_type, header_text, key) + radios%>
       <% end %>
       <%= labelled_field ff, :header, t('views.profile.settings.header_type'), radios %>

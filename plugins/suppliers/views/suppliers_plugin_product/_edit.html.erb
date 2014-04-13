@@ -24,7 +24,7 @@
           <div data-non-defaults>
             <span class="field-secondary with-unit">
               <%= f.text_field :margin_percentage, :class => 'product-margin-percentage',
-                :value => product.margin_percentage_as_currency_number,
+                :value => product.margin_percentage_localized,
                 :onkeyup => 'suppliers.our_product.pmsync(this, true);' %>
               <span class="field-unit"> <%= '%' %> </span>
             </span>

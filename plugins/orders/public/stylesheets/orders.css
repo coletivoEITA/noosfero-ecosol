@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .order-items .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .order-items-container .table-content .item .more, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -149,7 +149,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .order-items .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .order-items-container .table-content .item .more, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -296,7 +296,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .order-items .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .order-items-container .table-content .item .more, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -557,7 +557,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .order-items .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .order-items-container .table-content .item .more, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -700,15 +700,14 @@
 .selection-button {
   background: white; }
 
-#filter-with-actions #filter {
-  margin-bottom: 0; }
-
 #filter {
   background-color: #bcdc91;
   padding: 0;
   margin-top: 16px;
   margin-bottom: 16px;
   font-size: 9px; }
+  #filter.with-actions {
+    margin-bottom: 0; }
   #filter.wireframe-size {
     margin-left: -40px;
     margin-right: -40px; }
@@ -756,7 +755,7 @@
     /* Buttons */ }
     #filter .filter-box .clean {
       clear: both; }
-    #filter .filter-box .container-clean, #filter .filter-box .sortable-table > .table-header, #filter .filter-box .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #filter .filter-box .box-view, #filter .filter-box .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #filter .filter-box .box-view-inner, #filter .filter-box .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #filter .filter-box .internal-table, #filter .filter-box .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #filter .filter-box .order-items-container .order-total, .order-items-container #filter .filter-box .order-total, #filter .filter-box .order-items-container .order-items .table-header, .order-items-container .order-items #filter .filter-box .table-header, #filter .filter-box .order-items-container .order-items .table-content .item .fields, .order-items-container .order-items .table-content .item #filter .filter-box .fields {
+    #filter .filter-box .container-clean, #filter .filter-box .sortable-table > .table-header, #filter .filter-box .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #filter .filter-box .box-view, #filter .filter-box .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #filter .filter-box .box-view-inner, #filter .filter-box .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #filter .filter-box .internal-table, #filter .filter-box .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #filter .filter-box .order-items-container .order-total, .order-items-container #filter .filter-box .order-total, #filter .filter-box .order-items-container .order-items .table-header, .order-items-container .order-items #filter .filter-box .table-header, #filter .filter-box .order-items-container .table-content .item .fields, .order-items-container .table-content .item #filter .filter-box .fields, #filter .filter-box .order-items-container .table-content .item .more, .order-items-container .table-content .item #filter .filter-box .more {
       overflow: hidden;
       display: inline-block;
       /* Necessary to trigger "hasLayout" in IE */
@@ -948,7 +947,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .order-items .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .order-items-container .table-content .item .more, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -1095,7 +1094,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .order-items .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .order-items-container .table-content .item .more, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -1259,7 +1258,7 @@
   /* Buttons */ }
   .order-items-container .clean {
     clear: both; }
-  .order-items-container .container-clean, .order-items-container .sortable-table > .table-header, .order-items-container .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .order-items-container .box-view, .order-items-container .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view .order-items-container .box-view-inner, .order-items-container .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit .order-items-container .internal-table, .order-items-container #filter .filter-box, #filter .order-items-container .filter-box, .order-items-container #filter .filter-box .field, #filter .filter-box .order-items-container .field, .order-items-container #filter .filter-box .field-secondary.with-unit, #filter .filter-box .order-items-container .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .order-items .table-content .item .fields {
+  .order-items-container .container-clean, .order-items-container .sortable-table > .table-header, .order-items-container .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .order-items-container .box-view, .order-items-container .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view .order-items-container .box-view-inner, .order-items-container .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit .order-items-container .internal-table, .order-items-container #filter .filter-box, #filter .order-items-container .filter-box, .order-items-container #filter .filter-box .field, #filter .filter-box .order-items-container .field, .order-items-container #filter .filter-box .field-secondary.with-unit, #filter .filter-box .order-items-container .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .order-items-container .table-content .item .more {
     overflow: hidden;
     display: inline-block;
     /* Necessary to trigger "hasLayout" in IE */
@@ -1450,10 +1449,10 @@
   .order-items-container .order-items {
     max-height: 300px; }
     .order-items-container .order-items.self-supplier .box-field.product {
-      width: 216px; }
-    .order-items-container .order-items.self-supplier .box-field.quantity, .order-items-container .order-items.self-supplier .box-field.quantity input, .order-items-container .order-items.self-supplier .box-field.quantity-edit, .order-items-container .order-items.self-supplier .box-field.quantity-edit input {
-      width: 128px; }
-    .order-items-container .order-items.self-supplier .box-field.status-updated {
+      width: 208px; }
+    .order-items-container .order-items.self-supplier .box-field.quantity, .order-items-container .order-items.self-supplier .box-field.quantity input {
+      width: 144px; }
+    .order-items-container .order-items.self-supplier .box-field.price-total {
       width: 64px; }
     .order-items-container .order-items .box-field {
       float: left;
@@ -1463,54 +1462,51 @@
       .order-items-container .order-items .box-field:last-child {
         border-right: none; }
       .order-items-container .order-items .box-field.supplier {
-        width: 80px; }
+        width: 136px; }
       .order-items-container .order-items .box-field.product {
         width: 136px; }
-      .order-items-container .order-items .box-field.quantity, .order-items-container .order-items .box-field.quantity input, .order-items-container .order-items .box-field.quantity-edit, .order-items-container .order-items .box-field.quantity-edit input {
-        width: 48px; }
-      .order-items-container .order-items .box-field.price-total {
-        width: 56px; }
-      .order-items-container .order-items .box-field.status-updated {
+      .order-items-container .order-items .box-field.quantity, .order-items-container .order-items .box-field.quantity input {
         width: 64px; }
-    .order-items-container .order-items .table-header, .order-items-container .order-items .table-content {
-      border-bottom: 1px solid black; }
-    .order-items-container .order-items .table-header {
-      font-weight: bold;
-      font-size: 8px;
-      text-transform: uppercase; }
-    .order-items-container .order-items .table-content .item .more {
-      padding: 4px 8px;
-      display: none; }
-      .order-items-container .order-items .table-content .item .more .actions {
-        float: left; }
-        .order-items-container .order-items .table-content .item .more .actions a {
-          color: black; }
-      .order-items-container .order-items .table-content .item .more .price-with-unit {
-        float: right; }
-    .order-items-container .order-items .table-content .item .quantity .unit {
-      text-transform: lowercase; }
-    .order-items-container .order-items .table-content .item.hover, .order-items-container .order-items .table-content .item.edit {
-      background-color: #ffe546; }
-    .order-items-container .order-items .table-content .item .quantity-edit {
-      display: none; }
-    .order-items-container .order-items .table-content .item.edit {
-      margin-left: -5px;
-      padding: 4px;
-      border: 1px solid black;
-      border-radius: 5px;
-      -moz-border-radius: 5px;
-      -o-border-radius: 5px;
-      -webkit-border-radius: 5px;
-      box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-      -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); }
-      .order-items-container .order-items .table-content .item.edit .quantity-edit {
-        display: block; }
-      .order-items-container .order-items .table-content .item.edit .quantity {
-        display: none; }
-      .order-items-container .order-items .table-content .item.edit .box-field {
-        border-right: none;
-        padding-right: 8px; }
+      .order-items-container .order-items .box-field .price-total {
+        width: 64px; }
+  .order-items-container .table-header, .order-items-container .table-content {
+    border-bottom: 1px solid black; }
+  .order-items-container .table-header {
+    font-weight: bold;
+    font-size: 8px;
+    text-transform: uppercase; }
+  .order-items-container .table-content .item .fields {
+    display: table; }
+    .order-items-container .table-content .item .fields .box-field {
+      float: none;
+      display: table-cell; }
+    .order-items-container .table-content .item .fields .quantity-price-table {
+      padding: 0; }
+      .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row {
+        display: table-row; }
+        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity input {
+          display: none; }
+        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity .unit {
+          text-transform: lowercase; }
+  .order-items-container .table-content .item.hover, .order-items-container .table-content .item.edit {
+    background-color: #ffe546; }
+  .order-items-container .table-content .item.edit .fields .box-field {
+    border-right: none;
+    padding-right: 8px; }
+  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row .quantity input {
+    display: block; }
+  .order-items-container .table-content .item.edit .more {
+    display: block; }
+  .order-items-container .table-content .item .more {
+    display: none;
+    width: 464px; }
+    .order-items-container .table-content .item .more .actions {
+      float: left; }
+      .order-items-container .table-content .item .more .actions a {
+        color: black; }
+    .order-items-container .table-content .item .more .price-with-unit {
+      float: right;
+      width: 64px; }
 
 .controller-profile_editor a.control-panel-orders-purchases-sales {
   background-image: url("/plugins/orders/images/control-panel/purchases-sales.png"); }
@@ -1520,7 +1516,7 @@
 
 .orders-admin-index .box-field.code {
   width: 64px; }
-.orders-admin-index .box-field.consumer {
+.orders-admin-index .box-field.actor-name {
   width: 304px; }
 .orders-admin-index .box-field.order-date {
   width: 144px; }
@@ -1548,15 +1544,7 @@
     overflow-y: auto;
     padding-right: 16px; }
   .order-box, .order-box .order-items-scroll, .order-box .order-items, .order-box .item {
-    width: 384px; }
-  .order-box.admin {
-    margin: 0 16px;
-    border: 1px solid black; }
-    .order-box.admin, .order-box.admin .order-items-scroll, .order-box.admin .order-items, .order-box.admin .item {
-      width: 464px; }
-    .order-box.admin .order-items-scroll {
-      margin-left: -16px;
-      padding-left: 16px; }
+    width: 464px; }
   .order-box .order-header {
     padding: 4px 8px;
     border-bottom: 1px solid black;
@@ -1583,7 +1571,7 @@
   /* Buttons */ }
   .consumer-order .clean {
     clear: both; }
-  .consumer-order .container-clean, .consumer-order .sortable-table > .table-header, .consumer-order .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .consumer-order .box-view, .consumer-order .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view .consumer-order .box-view-inner, .consumer-order .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit .consumer-order .internal-table, .consumer-order #filter .filter-box, #filter .consumer-order .filter-box, .consumer-order #filter .filter-box .field, #filter .filter-box .consumer-order .field, .consumer-order #filter .filter-box .field-secondary.with-unit, #filter .filter-box .consumer-order .field-secondary.with-unit, .consumer-order .order-items-container .order-total, .order-items-container .consumer-order .order-total, .consumer-order .order-items-container .order-items .table-header, .order-items-container .order-items .consumer-order .table-header, .consumer-order .order-items-container .order-items .table-content .item .fields, .order-items-container .order-items .table-content .item .consumer-order .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+  .consumer-order .container-clean, .consumer-order .sortable-table > .table-header, .consumer-order .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .consumer-order .box-view, .consumer-order .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view .consumer-order .box-view-inner, .consumer-order .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit .consumer-order .internal-table, .consumer-order #filter .filter-box, #filter .consumer-order .filter-box, .consumer-order #filter .filter-box .field, #filter .filter-box .consumer-order .field, .consumer-order #filter .filter-box .field-secondary.with-unit, #filter .filter-box .consumer-order .field-secondary.with-unit, .consumer-order .order-items-container .order-total, .order-items-container .consumer-order .order-total, .consumer-order .order-items-container .order-items .table-header, .order-items-container .order-items .consumer-order .table-header, .consumer-order .order-items-container .table-content .item .fields, .order-items-container .table-content .item .consumer-order .fields, .consumer-order .order-items-container .table-content .item .more, .order-items-container .table-content .item .consumer-order .more, .consumer-order .field, .consumer-order .field-secondary.with-unit {
     overflow: hidden;
     display: inline-block;
     /* Necessary to trigger "hasLayout" in IE */

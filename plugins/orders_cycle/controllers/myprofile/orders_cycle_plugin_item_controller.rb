@@ -22,18 +22,18 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
     if params[:order_id] == 'new'
       @cycle = @offered_product.cycle
       raise 'Cycle closed for orders' unless @cycle.orders? and not profile.has_admin? user
-      @order = OrdersPlugin::Order.create! :cycle => @cycle, :consumer => consumer
+      @order = OrdersPlugin::Sale.create! :cycle => @cycle, :consumer => consumer
     else
-      @order = OrdersPlugin::Order.find params[:order_id]
+      @order = OrdersPlugin::Sale.find params[:order_id]
       @cycle = @order.cycle
       raise 'Order confirmed or cycle is closed for orders' unless @order.open?
-      raise 'You are not the owner of this order' unless @order.may_edit? @consumer
+      raise 'You are not the owner of this order' unless @order.may_edit? @consumer, @admin
     end
 
     @item = OrdersPlugin::Item.find_by_order_id_and_product_id @order.id, @offered_product.id
     @item ||= OrdersPlugin::Item.new :order => @order, :product => @offered_product
-    if set_quantity_asked(params[:quantity_asked] || 1)
-      @item.update_attributes! :quantity_asked => @quantity_asked
+    if set_quantity_consumer_ordered(params[:quantity_consumer_ordered] || 1)
+      @item.update_attributes! :quantity_consumer_ordered => @quantity_consumer_ordered
     end
   end
 

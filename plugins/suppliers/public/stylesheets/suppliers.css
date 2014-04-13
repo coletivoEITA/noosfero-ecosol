@@ -331,7 +331,7 @@
   float: left;
   padding: 8px; }
 
-.sortable-table.wireframe-size > .table-header, #supplier-our-products .sortable-table > .table-header {
+.sortable-table.wireframe-size > .table-header {
   width: 960px;
   margin-left: -40px;
   padding: 0 40px; }
@@ -589,19 +589,18 @@
 .selection-button {
   background: white; }
 
-#filter-with-actions #filter {
-  margin-bottom: 0; }
-
 #filter {
   background-color: #bcdc91;
   padding: 0;
   margin-top: 16px;
   margin-bottom: 16px;
   font-size: 9px; }
-  #filter.wireframe-size, #supplier-our-products #filter.sortable-table {
+  #filter.with-actions {
+    margin-bottom: 0; }
+  #filter.wireframe-size {
     margin-left: -40px;
     margin-right: -40px; }
-    #filter.wireframe-size .title, #supplier-our-products #filter.sortable-table .title, #filter.wireframe-size .filter-box, #supplier-our-products #filter.sortable-table .filter-box, #filter.wireframe-size .submit, #supplier-our-products #filter.sortable-table .submit {
+    #filter.wireframe-size .title, #filter.wireframe-size .filter-box, #filter.wireframe-size .submit {
       padding-left: 48px;
       padding-right: 48px; }
   #filter .title {
@@ -989,7 +988,7 @@
 
 #actions-box {
   background: #d7ffb9; }
-  #actions-box.wireframe-size, #supplier-our-products #actions-box.sortable-table {
+  #actions-box.wireframe-size {
     margin-left: -40px;
     margin-right: -40px;
     padding: 8px 48px; }

@@ -322,6 +322,10 @@
       profile: 
         consumer: Consumidor
     views:
+      filter:
+        <<: *orders_plugin_filter
+      actions: 
+        <<: *orders_plugin_actions
       myprofile:
         margin_change: 
           ? "%"
@@ -337,13 +341,6 @@
           redistribution_situation: "Distribuição dos produtos"
           name: "Nome"
       product:
-        _actions:
-          all: "todos"
-          none: "nenhum"
-          select: "selecionar"
-          with_selection: "com selecionados"
-          activate: "ativar"
-          deactivate: "desativar"
         import:
           action: "Importar planilha"
           help: "Formate sua planilha para que tenha exatamente os campos abaixo. Depois, salve-a escolhendo o tipo de arquivo CSV (extensão .csv)."
@@ -405,8 +402,6 @@
           change: mudar
           default_margin_of_com: "Margem padrão de comercialização"
           default_margin_info: "Esta margem é automaticamente aplicada em todos os produtos, mas é possível estabelecer margens específicas para certos produtos."
-          filter: Filtro
-          filter_it: Filtrar
           in_any_state: "Em qualquer estado"
           inactive: inativa
           margin: "%{margin} %"
@@ -560,14 +555,34 @@
           you_are_not_the_owner: "Você não é o autor desse pedido"
     models:
       order: 
-        open: "Em aberto"
-        not_confirmed: "Não confirmado"
-        planned: "Planejado"
-        confirmed: "Confirmado"
-        cancelled: "Cancelado"
-        accepted: "Aceito"
-        shipped: "Entregue"
+        statuses:
+          open: "Em aberto"
+          forgotten: "Não confirmado"
+          planned: "Planejado"
+          cancelled: "Cancelado"
+          confirmed: "Confirmado"
+          ordered: "Pedido"
+          accepted: "Aceito"
+          separated: "Separado"
+          delivered: "Entregue"
+          received: "Recebido"
     views:
+      filter: &orders_plugin_filter
+        filter: Filtro
+        filter_it: Filtrar
+        status: "Situação"
+        code: "Código"
+        all: "Todos"
+        month: "Mês"
+        year: "Ano"
+      actions: &orders_plugin_actions
+        all: "todos"
+        none: "nenhum"
+        select: "selecionar"
+        with_selection: "com selecionados"
+        activate: "ativar"
+        deactivate: "desativar"
+
       consumer:
         _total: 
           total: Total
@@ -589,14 +604,9 @@
         index: 
           no_orders_to_show: "Nenhum pedido para visualizar."
           code: "Código"
-          consumer: "Consumidor"
           last_update: "Últ. atualização"
           order_date: "Data do pedido"
           total: "Total (%{currency})"
-        _filter:
-          status: "Situação"
-          code: "Código"
-          all: "Todos"
         _edit: 
           actions: Ações
           add_product: "adicionar produto"
@@ -930,8 +940,8 @@
           edition: Edição
           finish_cycle_editing: "Abrir pedidos do ciclo"
           orders: Pedidos
-          parcels: Parcels
-          redistribution: Redistribution
+          purchases: Compras
+          redistribution: Redistribuição
           reopen_orders_period: "Reabrir ciclo de pedidos"
           spreadsheet_with_prod: "Planilha com a listagem de produtos"
           spreadsheet_with_the_: "Planilha com os pedidos"
@@ -1025,7 +1035,6 @@
         _admin_submenu: 
           members: Integrantes
           orders_cycles: "Ciclo de pedidos"
-          parcels: Encomendas
           products: Produtos
           suppliers: "%{terms.supplier.plural.capitalize}"
         _header: 

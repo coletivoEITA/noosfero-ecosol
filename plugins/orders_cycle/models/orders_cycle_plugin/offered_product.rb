@@ -6,12 +6,6 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     self.cycles.first
   end
 
-  has_many :items, :class_name => 'OrdersPlugin::Item', :foreign_key => :product_id, :dependent => :destroy
-  has_many :orders, :through => :items, :source => :order
-
-  # overhide original. this scope depends on the above one
-  named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_suppliers.id = ?', supplier_id] } }
-
   # for products in cycle, these are the products of the suppliers
   # p in cycle -> p distributed -> p from supplier
   has_many :suppliers, :through => :sources_from_2x_products, :order => 'id ASC'
@@ -31,11 +25,10 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
                               {:profile => [:domains, {:environment => :domains}]}, ]
 
   extend CurrencyHelper::ClassMethods
-  has_number_with_locale :total_quantity_asked
-  has_number_with_locale :total_parcel_quantity
-  has_currency :total_price_asked
-  has_currency :total_parcel_price
   has_currency :buy_price
+  has_number_with_locale :total_purchase_quantity
+  has_currency :total_purchase_price
+  instance_exec &OrdersPlugin::Item::DefineTotals
 
   def self.create_from_distributed cycle, product
     op = self.new :profile => product.profile
@@ -47,18 +40,12 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     op
   end
 
-  def total_quantity_asked
-    @total_quantity_asked ||= self.items.confirmed.sum(:quantity_asked)
-  end
-  def total_price_asked
-    @total_price_asked ||= self.items.confirmed.sum(:price_asked)
-  end
-  def total_parcel_quantity
+  def total_purchase_quantity
     #FIXME: convert units and consider stock and availability
-    total_quantity_asked
+    total_quantity_consumer_ordered
   end
-  def total_parcel_price
-    buy_price * total_parcel_quantity if buy_price and total_parcel_quantity
+  def total_purchase_price
+    buy_price * total_purchase_quantity if buy_price and total_purchase_quantity
   end
 
   # always recalculate in case something has changed

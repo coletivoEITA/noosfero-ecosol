@@ -1,11 +1,15 @@
-<div class="box-view">
-  <span class='box-field code'><%= order.code %></span>
-  <span class='box-field consumer box-edit-link'><%= order.consumer_data[:name] %></span>
-  <span class='box-field order-date'><%= datetime_full order.created_at %></span>
-  <span class='box-field last-update'><%= datetime_full order.updated_at %></span>
-  <span class='box-field total'><%= order.total_price_asked_as_currency_number %></span>
+<div class="box-view with-inner">
+  <div class="box-field select" toggle-ignore><%= check_box_tag "order_ids[]", order.id %></div>
 
-  <%= edit_arrow "#in-cycle-order-#{order.id}", true, :class => 'actions' %>
+  <div class="box-view-inner">
+    <span class='box-field code'><%= order.code %></span>
+    <span class='box-field actor-name box-edit-link'><%= order.send("#{actor_name}_data")[:name] %></span>
+    <span class='box-field order-date'><%= datetime_full order.created_at %></span>
+    <span class='box-field last-update'><%= datetime_full order.updated_at %></span>
+    <span class='box-field total'><%= order.total_price_consumer_ordered_as_currency_number %></span>
+  </div>
+
+  <%= edit_arrow "#order-#{order.id}", true, :class => 'actions' %>
 
   <div class="clean"></div>
 </div>
@@ -17,14 +21,14 @@
       <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), 'toggle-edit' => '' %>
     </div>
   <% else %>
-    <% form_remote_for :order, order, :url => {:action => :cycle_edit, :id => order.id} do |f| %>
+    <% form_remote_for :order, order, :url => {:controller => :orders_plugin_admin, :action => :edit, :id => order.id} do |f| %>
 
-      <div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? user %> <%= "admin" if @admin %>">
-        <%= render 'header', :order => order %>
-        <%= render 'orders_plugin_item/index', :order => order, :f => f %>
+      <div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? user, @admin %> <%= "admin" if @admin %>">
+        <%= render 'orders_plugin_admin/header', :order => order %>
+        <%= render 'orders_plugin_item/index', :order => order, :f => f, :actor_name => actor_name %>
       </div>
 
-      <% if order.open? %>
+      <% if actor_name == :consumer and order.open? %>
 
         <div>
           <%= check_box_tag 'warn_consumer', 1, false, :onchange => "jQuery(this).parent().next().toggle(this.checked); jQuery(this).siblings('.subtitle').toggle(this.checked);" %>
@@ -46,7 +50,7 @@
         </div>
 
         <% javascript_tag do %>
-          jQuery('#in-cycle-order-<%=order.id%> input[type=checkbox]').change();
+          jQuery('#order-<%=order.id%> input[type=checkbox]').change();
         <% end %>
 
       <% end %>

@@ -1,0 +1,26 @@
+<div id="filter" class="with-actions wireframe-size">
+
+  <div class="title filter-box">
+    <%= t('views.filter.filter') %>
+  </div>
+
+  <% form_tag({:controller => :orders_plugin_admin, :action => :filter}, :id => 'filter-form',
+              :onsubmit => "loading_overlay.show('#filter'); jQuery(this).ajaxSubmit({success: function() { loading_overlay.hide('#filter'); }}); return false;") do %>
+
+    <%= hidden_field_tag 'actor_name', actor_name %>
+    <%= hidden_field_tag 'orders_method', orders_method %>
+    <%= hidden_field_tag 'orders_context', orders_context %>
+    <%= hidden_field_tag 'context_id', context_id %>
+
+    <div class="fields filter-box">
+      <%= render 'orders_plugin_admin/filter_fields', :actor_name => actor_name, :actors => actors, :orders_context => orders_context, :year => year, :month => month %>
+    </div>
+
+    <div class="submit">
+      <%= submit_tag t('views.filter.filter_it') %>
+    </div>
+
+  <% end %>
+
+</div>
+

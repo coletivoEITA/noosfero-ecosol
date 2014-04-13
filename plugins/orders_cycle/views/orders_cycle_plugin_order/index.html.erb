@@ -21,7 +21,7 @@
 
       <%= render :partial => 'orders_cycle_plugin_cycle/view_dates', :locals => {:cycle => cycle} %>
 
-      <% orders = cycle.orders.for_consumer @consumer %>
+      <% orders = cycle.sales.for_consumer @consumer %>
       <% if orders.count > 0 %>
         <div>
           <strong><%= t('views.order.index.your_orders') %></strong>

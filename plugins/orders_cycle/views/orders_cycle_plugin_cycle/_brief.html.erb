@@ -1,7 +1,7 @@
 <div class="cycle-name-and-code">
   <strong><%= t('views.cycle._brief.code') % {:code => cycle.code} %></strong>
   <%= link_to cycle.name, {:action => 'edit', :id => cycle.id } %>
-  <%= t('views.cycle._brief.confirmed_orders', :count => cycle.orders.confirmed.count) %>
+  <%= t('views.cycle._brief.confirmed_orders', :count => cycle.sales.ordered.count) %>
 </div>
 
 <div class="cycle-dates">

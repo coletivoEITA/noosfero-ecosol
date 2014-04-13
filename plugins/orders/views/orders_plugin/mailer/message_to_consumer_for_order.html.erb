@@ -15,7 +15,7 @@
     <p><%= t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.the_products_in_the_o') %></p>
     <ul>
       <% @order.items.each do |i| %>
-        <li><%= t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.quantity_unit_of_prod') % {:quantity => i.quantity_asked_as_currency_number, :unit => i.product.unit.plural, :product => i.product.name} %></li>
+        <li><%= t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.quantity_unit_of_prod') % {:quantity => i.quantity_consumer_ordered_localized, :unit => i.product.unit.plural, :product => i.product.name} %></li>
       <% end %>
     </ul>
 

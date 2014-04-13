@@ -61,12 +61,12 @@ class ShoppingCartPluginMyprofileControllerTest < ActionController::TestCase
 
   should 'filter the reports correctly' do
     another_profile = fast_create(Enterprise)
-    po1 = OrdersPlugin::Order.create! :profile => profile, :status => 'confirmed'
-    po2 = OrdersPlugin::Order.create! :profile => profile, :status => 'shipped'
-    po3 = OrdersPlugin::Order.create! :profile => profile, :status => 'confirmed'
+    po1 = OrdersPlugin::Sale.create! :profile => profile, :status => 'confirmed'
+    po2 = OrdersPlugin::Sale.create! :profile => profile, :status => 'shipped'
+    po3 = OrdersPlugin::Sale.create! :profile => profile, :status => 'confirmed'
     po3.created_at = 1.year.ago
     po3.save!
-    po4 = OrdersPlugin::Order.create! :profile => another_profile, :status => 'confirmed'
+    po4 = OrdersPlugin::Sale.create! :profile => another_profile, :status => 'confirmed'
 
     post :reports,
       :profile => profile.identifier,
@@ -86,8 +86,8 @@ class ShoppingCartPluginMyprofileControllerTest < ActionController::TestCase
     p3 = fast_create(Product, :profile_id => profile.id, :price => 3)
     po1_products = {p1.id => {:quantity => 1, :price => p1.price, :name => p1.name}, p2.id => {:quantity => 2, :price => p2.price, :name => p2.name }}
     po2_products = {p2.id => {:quantity => 1, :price => p2.price, :name => p2.name }, p3.id => {:quantity => 2, :price => p3.price, :name => p3.name}}
-    po1 = OrdersPlugin::Order.create! :profile => profile, :products_list => po1_products, :status => 'confirmed'
-    po2 = OrdersPlugin::Order.create! :profile => profile, :products_list => po2_products, :status => 'confirmed'
+    po1 = OrdersPlugin::Sale.create! :profile => profile, :products_list => po1_products, :status => 'confirmed'
+    po2 = OrdersPlugin::Sale.create! :profile => profile, :products_list => po2_products, :status => 'confirmed'
 
     post :reports,
       :profile => profile.identifier,
@@ -107,7 +107,7 @@ class ShoppingCartPluginMyprofileControllerTest < ActionController::TestCase
   end
 
   should 'be able to update the order status' do
-    po = OrdersPlugin::Order.create!(:profile => profile, :status => 'confirmed')
+    po = OrdersPlugin::Sale.create!(:profile => profile, :status => 'confirmed')
 
     post :update_order_status,
       :profile => profile.identifier,

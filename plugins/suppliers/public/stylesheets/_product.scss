@@ -3,7 +3,6 @@
 #supplier-our-products {
 
   .sortable-table {
-    @extend .wireframe-size;
 
     .box-field {
       &.status {

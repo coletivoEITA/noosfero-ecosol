@@ -1,0 +1,20 @@
+<div class="quantity-price-row">
+  <% data = OrdersPlugin::Item::StatusDataMap[status] %>
+  <% quantity = item.send "quantity_#{data}_localized" %>
+  <% price = item.send "price_#{data}_as_currency_number" %>
+
+  <div class="box-field quantity <%=status%>">
+    <% if not edit_only %>
+      <span class="value"><%= quantity %></span>
+      <span class="unit"><%= excerpt_ending item.product.unit.singular, 4, '.' rescue '' %></span>
+    <% else %>
+      <% if f and OrdersPlugin::Item::StatusAccessMap[status] == actor_name %>
+        <%= f.text_field "quantity_#{data}", :value => quantity, :onkeyup => 'orders.item.quantity_keyup(this, event)' %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="box-field price-total">
+    <%= price_span price %>
+  </div>
+</div>

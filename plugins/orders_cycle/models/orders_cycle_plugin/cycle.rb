@@ -7,20 +7,23 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 
   has_many :cycle_orders, :class_name => 'OrdersCyclePlugin::CycleOrder', :foreign_key => :cycle_id, :dependent => :destroy, :order => 'id ASC'
-  has_many :orders, :through => :cycle_orders, :source => :order, :order => 'id ASC'
+
+  # cannot use :order because of months/years named_scope
+  has_many :sales, :through => :cycle_orders, :source => :sale
+  has_many :purchases, :through => :cycle_orders, :source => :purchase
 
   has_many :cycle_products, :foreign_key => :cycle_id, :class_name => 'OrdersCyclePlugin::CycleProduct', :dependent => :destroy
   has_many :products, :through => :cycle_products, :order => 'products.name ASC',
     :include => [{:from_products => [:from_products, {:sources_from_products => [{:supplier => [{:profile => [:domains]}]}]}]}, {:profile => [:domains]}]
 
-  has_many :consumers, :through => :orders, :source => :consumer, :order => 'name ASC'
+  has_many :consumers, :through => :sales, :source => :consumer, :order => 'name ASC'
   has_many :suppliers, :through => :products, :order => 'suppliers_plugin_suppliers.name ASC', :uniq => true
-  has_many :orders_suppliers, :through => :orders, :source => :profile, :order => 'name ASC'
+  has_many :orders_suppliers, :through => :sales, :source => :profile, :order => 'name ASC'
 
   has_many :from_products, :through => :products, :order => 'name ASC'
 
-  has_many :orders_confirmed, :through => :cycle_orders, :source => :order, :order => 'id ASC',
-    :conditions => ['orders_plugin_orders.status = ?', 'confirmed']
+  has_many :orders_confirmed, :through => :cycle_orders, :source => :sale, :order => 'id ASC',
+    :conditions => ['orders_plugin_orders.ordered_at IS NOT NULL']
 
   has_many :ordered_suppliers, :through => :orders_confirmed, :source => :suppliers
   has_many :items, :through => :orders_confirmed, :source => :products
@@ -32,9 +35,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.profile.orders_cycles }
 
-  named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year DESC'
   named_scope :defuncts, :conditions => ["status = 'new' AND created_at < ?", 2.days.ago]
-
   named_scope :not_new, :conditions => ["status <> 'new'"]
   named_scope :open, lambda {
     {:conditions => ["status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) )",
@@ -44,6 +45,10 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     {:conditions => ["NOT ( ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) AND status = 'orders' )",
       {:now => DateTime.now}]}
   }
+
+  named_scope :months, :select => 'DISTINCT(EXTRACT(months FROM start)) as month', :order => 'month DESC'
+  named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year DESC'
+
   named_scope :by_month, lambda { |month| {
     :conditions => [ 'EXTRACT(month FROM start) <= :month AND EXTRACT(month FROM finish) >= :month', { :month => month } ]}
   }
@@ -60,16 +65,14 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   named_scope :status_open, :conditions => ["status <> 'closed'"]
   named_scope :status_closed, :conditions => ["status = 'closed'"]
 
-  STATUS_SEQUENCE = [
-    'new', 'edition', 'orders', 'closed'
-  ]
+  DbStatuses = %w[new edition orders purchases closed]
+  UserStatuses = %w[edition orders purchases]
 
   validates_presence_of :profile
   validates_presence_of :name, :if => :not_new?
   validates_presence_of :start, :if => :not_new?
-  #FIXME only ,
   #validates_presence_of :delivery_options, :unless => :new_or_edition?
-  validates_inclusion_of :status, :in => STATUS_SEQUENCE, :if => :not_new?
+  validates_inclusion_of :status, :in => DbStatuses, :if => :not_new?
   validates_numericality_of :margin_percentage, :allow_nil => true, :if => :not_new?
   validate :validate_orders_dates, :if => :not_new?
   validate :validate_delivery_dates, :if => :not_new?
@@ -89,22 +92,22 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
       :code => code, :name => name
     }
   end
-  def total_price_asked
-    self.items.sum :price_asked
+  def total_price_consumer_ordered
+    self.items.sum :price_consumer_ordered
   end
-  def total_parcel_price
+  def total_purchase_price
     #FIXME: wrong!
     self.ordered_supplier_products.sum :price
   end
 
   def step
-    self.status = STATUS_SEQUENCE[STATUS_SEQUENCE.index(self.status)+1]
+    self.status = DbStatuses[DbStatuses.index(self.status)+1]
   end
   def step_back
-    self.status = STATUS_SEQUENCE[STATUS_SEQUENCE.index(self.status)-1]
+    self.status = DbStatuses[DbStatuses.index(self.status)-1]
   end
-  def passed_by?(status)
-    STATUS_SEQUENCE.index(self.status) > STATUS_SEQUENCE.index(status)
+  def passed_by? status
+    DbStatuses.index(self.status) > DbStatuses.index(status)
   end
   def new?
     status == 'new'
@@ -136,14 +139,29 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
   def items_by_suppliers
     self.ordered_offered_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
-      total_price_asked = total_parcel_price = 0
+      total_price_consumer_ordered = total_purchase_price = 0
       products.each do |product|
-        total_price_asked += product.total_price_asked if product.total_price_asked
-        total_parcel_price += product.total_parcel_price if product.total_parcel_price
+        total_price_consumer_ordered += product.total_price_consumer_ordered if product.total_price_consumer_ordered
+        total_purchase_price += product.total_purchase_price if product.total_purchase_price
       end
 
-      [supplier, products, total_price_asked, total_parcel_price]
+      [supplier, products, total_price_consumer_ordered, total_purchase_price]
     end
+  end
+
+  def generate_purchases
+    return self.purchases if self.purchases.present?
+
+    self.ordered_offered_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
+      # can't be created using self.purchases.create!, as if :cycle is set (needed for code numbering), then double CycleOrder will be created
+      purchase = OrdersPlugin::Purchase.create! :cycle => self, :consumer => self.profile, :profile => supplier.profile
+      products.each do |product|
+        purchase.items.create! :order => purchase, :product => product.supplier_product,
+          :quantity_consumer_ordered => product.total_quantity_consumer_ordered, :price_consumer_ordered => product.total_price_consumer_ordered
+      end
+    end
+
+    self.purchases true
   end
 
   def add_distributed_products

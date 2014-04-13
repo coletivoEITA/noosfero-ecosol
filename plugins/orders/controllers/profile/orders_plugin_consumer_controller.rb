@@ -10,7 +10,7 @@ class OrdersPluginConsumerController < ProfileController
     params[:order] ||= {}
 
     if @order.items.size > 0
-      @order.update_attributes! params[:order].merge(:status => 'confirmed')
+      @order.update_attributes! params[:order].merge(:status => 'ordered')
       OrdersPlugin::Mailer.deliver_order_confirmation @order, request.host_with_port
       session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
     else
@@ -29,7 +29,7 @@ class OrdersPluginConsumerController < ProfileController
   protected
 
   def load_order
-    @order = OrdersPlugin::Order.find_by_id params[:id]
+    @order = OrdersPlugin::Sale.find_by_id params[:id]
     render_access_denied if @order.present? and not @order.may_view? user
   end
 

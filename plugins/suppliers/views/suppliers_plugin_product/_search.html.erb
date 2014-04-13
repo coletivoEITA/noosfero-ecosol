@@ -22,7 +22,7 @@
     <% else %>
       <% @products.each do |product| %>
         <div id="our-product-<%=product.id%>" class="our-product value-row" toggle-edit="suppliers.our_product.toggle_edit();">
-          <%= render :partial => "suppliers_plugin_product/edit_line", :locals => {:product => product} %>
+          <%= render "suppliers_plugin_product/edit_line", :product => product %>
         </div>
       <% end %>
     <% end %>

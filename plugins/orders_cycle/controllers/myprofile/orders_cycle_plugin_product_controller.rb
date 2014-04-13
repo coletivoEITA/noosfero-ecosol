@@ -20,7 +20,7 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
 
   def remove_from_order
     @offered_product = OrdersCyclePlugin::OfferedProduct.find params[:id]
-    @order = OrdersPlugin::Order.find params[:order_id]
+    @order = OrdersPlugin::Sale.find params[:order_id]
     @item = @order.items.find_by_product_id @offered_product.id
     @item.destroy
   end

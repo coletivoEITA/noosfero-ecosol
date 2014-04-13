@@ -1,4 +1,4 @@
-class OrdersCyclePluginCycleController < MyProfileController
+class OrdersCyclePluginCycleController < OrdersPluginAdminController
 
   no_design_blocks
 
@@ -113,10 +113,18 @@ class OrdersCyclePluginCycleController < MyProfileController
     #FileUtils.rm_rf tmp_dir
   end
 
-  def orders_filter
+  def filter
+    @cycle = profile.orders_cycles.find params[:context_id]
+    @scope = @cycle
+    super
   end
 
   protected
+
+  attr_accessor :cycle
+
+  include ControllerInheritance
+  replace_url_for self.superclass => self
 
   def search_scope scope
     params[:date] ||= {}

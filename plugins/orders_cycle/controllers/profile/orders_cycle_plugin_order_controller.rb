@@ -36,7 +36,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
     @consumer = user
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @order = OrdersPlugin::Order.create! :profile => profile, :consumer => @consumer, :cycle => @cycle
+    @order = OrdersPlugin::Sale.create! :profile => profile, :consumer => @consumer, :cycle => @cycle
     redirect_to params.merge(:action => :edit, :id => @order.id)
   end
 
@@ -50,13 +50,13 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
       @admin_edit = user and user != @consumer
       @consumer = @order.consumer
       @cycle = @order.cycle
-      @consumer_orders = @cycle.orders.for_consumer @consumer
+      @consumer_orders = @cycle.sales.for_consumer @consumer
 
       render 'consumer_orders' if params[:consumer_orders]
     end
     @products = @cycle.products_for_order
     @product_categories = Product.product_categories_of @products
-    @consumer_orders = @cycle.orders.for_consumer @consumer
+    @consumer_orders = @cycle.sales.for_consumer @consumer
 
     render 'consumer_orders' if params[:consumer_orders]
   end
@@ -72,7 +72,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   end
 
   def reopen
-    @order = OrdersPlugin::Order.find params[:id]
+    @order = OrdersPlugin::Sale.find params[:id]
     if @order.consumer == user
       raise "Cycle's orders period already ended" unless @order.cycle.orders?
       @order.update_attributes! :status => 'draft'
@@ -91,47 +91,12 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
 
     @consumer = user
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @order = OrdersPlugin::Order.create! :cycle => @cycle, :consumer => @consumer
+    @order = OrdersPlugin::Sale.create! :cycle => @cycle, :consumer => @consumer
     redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
   end
-
-  def cycle_edit
-    @order = OrdersPlugin::Order.find params[:id]
-    return unless check_access 'edit'
-
-    if @order.cycle.orders?
-      a = {}; @order.items.map{ |p| a[p.id] = p }
-      b = {}; params[:order][:items].map do |key, attrs|
-        p = OrdersPlugin::Item.new attrs
-        p.id = attrs[:id]
-        b[p.id] = p
-      end
-
-      removed = a.values.map do |p|
-        p if b[p.id].nil?
-      end.compact
-      changed = b.values.map do |p|
-        pa = a[p.id]
-        if pa and p.quantity_asked != pa.quantity_asked
-          pa.quantity_asked = p.quantity_asked
-          pa
-        end
-      end.compact
-
-      changed.each{ |p| p.save! }
-      removed.each{ |p| p.destroy }
-    end
-
-    if params[:warn_consumer]
-      message = (params[:include_message] and !params[:message].blank?) ? params[:message] : nil
-      OrdersCyclePlugin::Mailer.deliver_order_change_notification profile, @order, changed, removed, message
-    end
-
-  end
-
   def filter
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @order = OrdersPlugin::Order.find_by_id params[:order_id]
+    @order = OrdersPlugin::Sale.find_by_id params[:order_id]
 
     scope = @cycle.products_for_order
     @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).all
@@ -143,7 +108,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   end
 
   def render_delivery
-    @order = OrdersPlugin::Order.find params[:id]
+    @order = OrdersPlugin::Sale.find params[:id]
     @order.attributes = params[:order]
     render :partial => 'delivery', :layout => false, :locals => {:order => @order}
   end

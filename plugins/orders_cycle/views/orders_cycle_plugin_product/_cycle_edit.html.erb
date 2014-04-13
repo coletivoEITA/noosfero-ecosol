@@ -3,7 +3,7 @@
   <span class='box-field supplier'><%= p.supplier.abbreviation_or_name %></span>
   <span class='box-field name box-edit-link'><%= p.name %></span>
   <span class="box-field price"><%= price_span p.price_as_currency_number %></span>
-  <span class="box-field quantity-available"><%= p.quantity_as_currency_number || '∞' %></span>
+  <span class="box-field quantity-available"><%= p.quantity_localized || '∞' %></span>
 
   <%= edit_arrow "", false, :onclick => 'return false;', :class => "box-field cycle-product-actions" %>
 </div>
@@ -13,16 +13,16 @@
 
     <div class="cycle-product-line">
       <%= labelled_field f, :price, t('views.product._cycle_edit.sell_price'), f.text_field(:price, :value => p.price_as_currency_number, :onkeyup => 'orders_cycle.offered_product.pmsync(this, false);') %>
-      <%= labelled_field f, :margin_percentage, t('views.product._cycle_edit.margin'), f.text_field(:margin_percentage, :value => p.margin_percentage_as_currency_number, :onkeyup => "orders_cycle.offered_product.pmsync(this, true);") %>
-      <%# labelled_field f, :quantity, t('views.product._cycle_edit.qty_offered'), f.text_field(:quantity, :value => p.quantity_as_currency_number) %>
+      <%= labelled_field f, :margin_percentage, t('views.product._cycle_edit.margin'), f.text_field(:margin_percentage, :value => p.margin_percentage_localized, :onkeyup => "orders_cycle.offered_product.pmsync(this, true);") %>
+      <%# labelled_field f, :quantity, t('views.product._cycle_edit.qty_offered'), f.text_field(:quantity, :value => p.quantity_localized) %>
 
       <div class="clean"></div>
     </div>
 
     <div class="cycle-product-line">
       <%= labelled_field f, :original_price, t('views.product._cycle_edit.default_sell_price'), f.text_field(:original_price, :value => p.original_price_as_currency_number, :disabled => '') %>
-      <%= labelled_field f, :original_margin, t('views.product._cycle_edit.default_margin'), f.text_field(:original_margin_percentage, :value => p.original_margin_percentage_as_currency_number, :disabled => '') %>
-      <%# labelled_field f, :original_stored, t('views.product._cycle_edit.qty_in_stock'), f.text_field(:original_stored, :value => p.original_stored_as_currency_number, :disabled => '') %>
+      <%= labelled_field f, :original_margin, t('views.product._cycle_edit.default_margin'), f.text_field(:original_margin_percentage, :value => p.original_margin_percentage_localized, :disabled => '') %>
+      <%# labelled_field f, :original_stored, t('views.product._cycle_edit.qty_in_stock'), f.text_field(:original_stored, :value => p.original_stored_localized, :disabled => '') %>
 
       <div class="clean"></div>
     </div>
@@ -40,7 +40,9 @@
     <%= link_to_remote t('views.product._cycle_edit.remove_from_cycle'), { :update => 'cycle-product-'+p.id.to_s,
       :confirm => p.items.blank? ? nil : t('views.product._cycle_edit.all_ordered_products'),
       :url => {:controller => :orders_cycle_plugin_product, :action => :cycle_destroy, :id => p.id }} %>&emsp;
-    <%= link_to t('views.product._cycle_edit.edit_product'), {:controller => :orders_cycle_plugin_product, :action => :index, :anchor => "our-product-#{p.from_product.id}"} %>&emsp;
+    <% if p.from_product %>
+      <%= link_to t('views.product._cycle_edit.edit_product'), {:controller => :orders_cycle_plugin_product, :action => :index, :anchor => "our-product-#{p.from_product.id}"} %>&emsp;
+    <% end %>
   <% end %>
 
   <div class="clean"></div>

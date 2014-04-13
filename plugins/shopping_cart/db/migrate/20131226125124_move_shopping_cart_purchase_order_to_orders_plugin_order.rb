@@ -13,7 +13,7 @@ class ShoppingCartPlugin::PurchaseOrder < Noosfero::Plugin::ActiveRecord
 end
 
 class Profile
-  has_many :orders, :class_name => 'OrdersPlugin::Order', :order => 'updated_at DESC'
+  has_many :orders, :class_name => 'OrdersPlugin::Order'
 end
 
 class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
@@ -35,12 +35,12 @@ StatusTransform = {
 
 class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
   def self.up
-    OrdersPlugin::Order.record_timestamps = false
+    OrdersPlugin::Sale.record_timestamps = false
 
     ShoppingCartPlugin::PurchaseOrder.all(:order => 'created_at ASC').each do |purchase_order|
       data = purchase_order.data
 
-      order = OrdersPlugin::Order.new :profile_id => purchase_order.seller_id, :consumer_id => purchase_order.customer_id
+      order = OrdersPlugin::Sale.new :profile_id => purchase_order.seller_id, :consumer_id => purchase_order.customer_id
 
       order.consumer_data = {}
       ['contact_phone','name','email'].each do |prop|
@@ -58,7 +58,7 @@ class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
       order.supplier_delivery_data = {}
 
       data[:products_list].each do |id, data|
-        item = order.items.build :product_id => id, :name => data[:name], :quantity_asked => data[:quantity], :price => data[:price]
+        item = order.items.build :product_id => id, :name => data[:name], :quantity_consumer_ordered => data[:quantity], :price => data[:price]
         item.order = order
       end
 
@@ -75,10 +75,10 @@ class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
       order.save!
     end
 
-    # Let table for registry
+    # Leave table for registry
     #drop_table :shopping_cart_plugin_purchase_orders
 
-    OrdersPlugin::Order.record_timestamps = true
+    OrdersPlugin::Sale.record_timestamps = true
   end
 
   def self.down

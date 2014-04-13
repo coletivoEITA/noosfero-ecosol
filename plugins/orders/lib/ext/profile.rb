@@ -12,11 +12,10 @@ end
 
 class Profile
 
-  has_many :orders, :class_name => 'OrdersPlugin::Order', :order => 'updated_at DESC'
-  alias_method :sales, :orders
-
-  has_many :parcels, :class_name => 'OrdersPlugin::Order', :foreign_key => :consumer_id, :order => 'updated_at DESC'
-  alias_method :purchases, :parcels
+  # cannot use :order because of months/years named_scope
+  has_many :orders, :class_name => 'OrdersPlugin::Sale', :foreign_key => :profile_id
+  has_many :sales, :class_name => 'OrdersPlugin::Sale', :foreign_key => :profile_id
+  has_many :purchases, :class_name => 'OrdersPlugin::Purchase', :foreign_key => :consumer_id
 
   has_many :ordered_items, :through => :orders, :source => :items, :order => 'name ASC'
 

@@ -1,17 +1,17 @@
 <div id="item-<%=item.id%>" class="value-row item" toggle-edit="orders.item.edit();">
 
-  <% if @quantity_asked_less_than_minimum and @quantity_asked_less_than_minimum == item.id %>
+  <% if @quantity_consumer_ordered_less_than_minimum and @quantity_consumer_ordered_less_than_minimum == item.id %>
     <div class=distribution-error-message>
-      <%= t('orders_plugin.views.item._edit.this_product_requires') % {:value => product.minimum_selleable_as_currency_number} %>
+      <%= t('orders_plugin.views.item._edit.this_product_requires') % {:value => product.minimum_selleable_localized} %>
     </div>
   <% end %>
 
   <% if f %>
     <% fields_for "item-#{item.id}", item do |f| %>
-      <%= render "orders_plugin_item/edit_fields", :order => order, :item => item, :product => product, :f => f %>
+      <%= render "orders_plugin_item/edit_fields", :order => order, :item => item, :product => product, :f => f, :actor_name => actor_name %>
     <% end %>
   <% else %>
-    <%= render "orders_plugin_item/edit_fields", :order => order, :item => item, :product => product, :f => f %>
+    <%= render "orders_plugin_item/edit_fields", :order => order, :item => item, :product => product, :f => f, :actor_name => actor_name %>
   <% end %>
 
 </div>

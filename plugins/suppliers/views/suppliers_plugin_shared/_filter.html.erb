@@ -1,7 +1,7 @@
-<div id="filter" class="wireframe-size">
+<div id="filter" class="wireframe-size <%= 'with-actions' if type == :product %>">
 
   <div class="title filter-box">
-    <%= t('suppliers_plugin.views.product.index.filter') %>
+    <%= t('views.filter.filter') %>
   </div>
 
   <% form_remote_tag :update => 'search-results',
@@ -19,7 +19,7 @@
     </div>
 
     <div class="submit">
-      <%= submit_tag t('suppliers_plugin.views.product.index.filter_it'), :onclick => "var field = this; function name_form_submit() {field.form.onsubmit();}; setTimeout(name_form_submit, 300);" %>
+      <%= submit_tag t('views.filter.filter_it'), :onclick => "var field = this; function name_form_submit() {field.form.onsubmit();}; setTimeout(name_form_submit, 300);" %>
     </div>
 
   <% end %>

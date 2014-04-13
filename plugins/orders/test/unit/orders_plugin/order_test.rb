@@ -25,7 +25,7 @@ class OrdersPlugin::OrderTest < ActiveSupport::TestCase
     @order.valid?
     assert @order.errors.invalid?('status')
 
-    ['draft', 'planned', 'confirmed', 'cancelled'].each do |i|
+    ['draft', 'planned', 'ordered', 'cancelled'].each do |i|
       @order.status = i
       @order.valid?
       assert !@order.errors.invalid?('status')
@@ -33,7 +33,7 @@ class OrdersPlugin::OrderTest < ActiveSupport::TestCase
   end
 
   should 'define status question methods' do
-    ['draft', 'planned', 'confirmed', 'cancelled'].each do |i|
+    ['draft', 'planned', 'ordered', 'cancelled'].each do |i|
       @order.status = i
       assert @order.send("#{@order.status}?")
     end
@@ -87,9 +87,9 @@ class OrdersPlugin::OrderTest < ActiveSupport::TestCase
     @order.cycle.profile.save!
     product = create(SuppliersPlugin::DistributedProduct, :price => 2.0, :profile => @order.cycle.profile, :supplier => @order.cycle.profile.self_supplier)
     @order.save!
-    @order.item.create! :product => @order.cycle.products.first, :quantity_asked => 2.0
-    assert_equal 2.0, @order.total_quantity_asked
-    assert_equal 4.0, @order.total_price_asked
+    @order.item.create! :product => @order.cycle.products.first, :quantity_consumer_ordered => 2.0
+    assert_equal 2.0, @order.total_quantity_consumer_ordered
+    assert_equal 4.0, @order.total_price_consumer_ordered
   end
 
 end
