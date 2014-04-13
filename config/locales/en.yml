@@ -546,13 +546,17 @@
           you_are_not_the_owner: "You are not the owner of this order"
     models:
       order: 
-        open: "Open"
-        forgotten: "Not confirmed"
-        planned: "Planned"
-        confirmed: "Confirmed"
-        cancelled: "Cancelled"
-        accepted: "Accepted"
-        shipped: "Shipped"
+        statuses:
+          open: "Open"
+          forgotten: "Not confirmed"
+          planned: "Planned"
+          cancelled: "Cancelled"
+          confirmed: "Confirmed"
+          ordered: "Ordered"
+          accepted: "Accepted"
+          separated: "Separated"
+          delivered: "Delivered"
+          received: "Received"
     views:
       filter: &orders_plugin_filter
         filter: Filter

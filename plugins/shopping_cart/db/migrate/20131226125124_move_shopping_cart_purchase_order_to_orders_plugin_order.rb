@@ -58,7 +58,7 @@ class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
       order.supplier_delivery_data = {}
 
       data[:products_list].each do |id, data|
-        item = order.items.build :product_id => id, :name => data[:name], :quantity_consumer_asked => data[:quantity], :price => data[:price]
+        item = order.items.build :product_id => id, :name => data[:name], :quantity_consumer_ordered => data[:quantity], :price => data[:price]
         item.order = order
       end
 
@@ -75,7 +75,7 @@ class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
       order.save!
     end
 
-    # Let table for registry
+    # Leave table for registry
     #drop_table :shopping_cart_plugin_purchase_orders
 
     OrdersPlugin::Sale.record_timestamps = true

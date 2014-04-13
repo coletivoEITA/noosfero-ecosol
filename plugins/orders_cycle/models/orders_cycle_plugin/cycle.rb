@@ -23,7 +23,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   has_many :from_products, :through => :products, :order => 'name ASC'
 
   has_many :orders_confirmed, :through => :cycle_orders, :source => :sale, :order => 'id ASC',
-    :conditions => ['orders_plugin_orders.status = ?', 'confirmed']
+    :conditions => ['orders_plugin_orders.ordered_at IS NOT NULL']
 
   has_many :ordered_suppliers, :through => :orders_confirmed, :source => :suppliers
   has_many :items, :through => :orders_confirmed, :source => :products
@@ -71,7 +71,6 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   validates_presence_of :profile
   validates_presence_of :name, :if => :not_new?
   validates_presence_of :start, :if => :not_new?
-  #FIXME only ,
   #validates_presence_of :delivery_options, :unless => :new_or_edition?
   validates_inclusion_of :status, :in => DbStatuses, :if => :not_new?
   validates_numericality_of :margin_percentage, :allow_nil => true, :if => :not_new?
@@ -93,8 +92,8 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
       :code => code, :name => name
     }
   end
-  def total_price_consumer_asked
-    self.items.sum :price_consumer_asked
+  def total_price_consumer_ordered
+    self.items.sum :price_consumer_ordered
   end
   def total_purchase_price
     #FIXME: wrong!
@@ -140,13 +139,13 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
   def items_by_suppliers
     self.ordered_offered_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
-      total_price_consumer_asked = total_purchase_price = 0
+      total_price_consumer_ordered = total_purchase_price = 0
       products.each do |product|
-        total_price_consumer_asked += product.total_price_consumer_asked if product.total_price_consumer_asked
+        total_price_consumer_ordered += product.total_price_consumer_ordered if product.total_price_consumer_ordered
         total_purchase_price += product.total_purchase_price if product.total_purchase_price
       end
 
-      [supplier, products, total_price_consumer_asked, total_purchase_price]
+      [supplier, products, total_price_consumer_ordered, total_purchase_price]
     end
   end
 
@@ -158,7 +157,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
       purchase = OrdersPlugin::Purchase.create! :cycle => self, :consumer => self.profile, :profile => supplier.profile
       products.each do |product|
         purchase.items.create! :order => purchase, :product => product.supplier_product,
-          :quantity_consumer_asked => product.total_quantity_consumer_asked, :price_consumer_asked => product.total_price_consumer_asked
+          :quantity_consumer_ordered => product.total_quantity_consumer_ordered, :price_consumer_ordered => product.total_price_consumer_ordered
       end
     end
 

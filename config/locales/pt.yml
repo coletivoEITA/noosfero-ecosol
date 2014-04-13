@@ -555,13 +555,17 @@
           you_are_not_the_owner: "Você não é o autor desse pedido"
     models:
       order: 
-        open: "Em aberto"
-        forgotten: "Não confirmado"
-        planned: "Planejado"
-        confirmed: "Confirmado"
-        cancelled: "Cancelado"
-        accepted: "Aceito"
-        shipped: "Entregue"
+        statuses:
+          open: "Em aberto"
+          forgotten: "Não confirmado"
+          planned: "Planejado"
+          cancelled: "Cancelado"
+          confirmed: "Confirmado"
+          ordered: "Pedido"
+          accepted: "Aceito"
+          separated: "Separado"
+          delivered: "Entregue"
+          received: "Recebido"
     views:
       filter: &orders_plugin_filter
         filter: Filtro

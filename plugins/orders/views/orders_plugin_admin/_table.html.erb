@@ -18,7 +18,7 @@
     <div class='table-content'>
       <% orders.each do |order| %>
         <div id="order-<%=order.id%>" class="order value-row" toggle-edit="orders.admin.toggle_edit();">
-          <%= render 'orders_plugin_admin/edit', :actor_name => actor_name, :order => order, :f => nil %>
+          <%= render 'orders_plugin_admin/edit', :actor_name => actor_name, :order => order, :f => nil, :actor_name => actor_name %>
         </div>
       <% end %>
     </div>

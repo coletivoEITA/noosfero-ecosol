@@ -17,12 +17,12 @@
           <% if f %>
             <% f.fields_for :items, order.items do |f| %>
               <% order.items.each do |item| %>
-                <%= render "orders_plugin_item/edit", :order => order, :item => item, :product => item.product, :f => f %>
+                <%= render "orders_plugin_item/edit", :order => order, :item => item, :product => item.product, :f => f, :actor_name => actor_name %>
               <% end %>
             <% end %>
           <% else %>
             <% order.items.each do |item| %>
-              <%= render "orders_plugin_item/edit", :order => order, :item => item, :product => item.product, :f => nil %>
+              <%= render "orders_plugin_item/edit", :order => order, :item => item, :product => item.product, :f => nil, :actor_name => actor_name %>
             <% end %>
           <% end %>
         </div>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="order-total">
-      <%= render :partial => 'orders_plugin_consumer/total', :locals => {:order => order} %>
+      <%= render 'orders_plugin_consumer/total', :order => order %>
     </div>
   <% else %>
     <%= t('orders_plugin.views.item._index.empty_order') %>

@@ -20,8 +20,8 @@ class OrdersPluginItemController < MyProfileController
       raise 'You are not the owner of this order' if @consumer != @order.consumer
     end
 
-    if set_quantity_consumer_asked params[:item][:quantity_consumer_asked]
-      params[:item][:quantity_consumer_asked] = @quantity_consumer_asked
+    if set_quantity_consumer_ordered params[:item][:quantity_consumer_ordered]
+      params[:item][:quantity_consumer_ordered] = @quantity_consumer_ordered
       @item.update_attributes! params[:item]
     end
   end
@@ -36,22 +36,22 @@ class OrdersPluginItemController < MyProfileController
 
   protected
 
-  def set_quantity_consumer_asked value
-    @quantity_consumer_asked = CurrencyHelper.parse_localized_number value
+  def set_quantity_consumer_ordered value
+    @quantity_consumer_ordered = CurrencyHelper.parse_localized_number value
 
-    if @quantity_consumer_asked > 0
+    if @quantity_consumer_ordered > 0
       min = @item.product.minimum_selleable rescue nil
-      if min and @quantity_consumer_asked < min
-        @quantity_consumer_asked = min
-        @quantity_consumer_asked_less_than_minimum = @item.id || true
+      if min and @quantity_consumer_ordered < min
+        @quantity_consumer_ordered = min
+        @quantity_consumer_ordered_less_than_minimum = @item.id || true
       end
     else
       @item.destroy if @item
-      @quantity_consumer_asked = nil
+      @quantity_consumer_ordered = nil
       render :action => :destroy
     end
 
-    @quantity_consumer_asked
+    @quantity_consumer_ordered
   end
 
 end

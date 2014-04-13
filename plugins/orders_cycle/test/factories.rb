@@ -32,7 +32,7 @@ module OrdersCyclePlugin::Factory
 
   def defaults_for_orders_plugin_order attrs = {}
     profile = attrs[:profile] || build(OrdersCyclePlugin::Profile)
-    {:status => 'confirmed',
+    {:status => 'ordered',
      :cycle => build(OrdersCyclePlugin::Cycle, :profile => profile),
      :consumer => build(OrdersCyclePlugin::Profile),
      :supplier_delivery => build(DeliveryPlugin::Method, :profile => profile),
@@ -42,8 +42,8 @@ module OrdersCyclePlugin::Factory
   def defaults_for_orders_plugin_items
     {:order => build(OrdersPlugin::Order),
      :product => build(OrdersCyclePlugin::OfferedProduct),
-     :quantity_shipped => 1.0, :quantity_asked => 2.0, :quantity_accepted => 3.0,
-     :price_shipped => 10.0, :price_asked => 20.0, :price_accepted => 30.0}
+     :quantity_shipped => 1.0, :quantity_ordered => 2.0, :quantity_accepted => 3.0,
+     :price_shipped => 10.0, :price_ordered => 20.0, :price_accepted => 30.0}
   end
 
   def defaults_for_orders_cycle_plugin_cycle

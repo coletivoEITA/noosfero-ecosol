@@ -53,8 +53,8 @@ class OrdersPluginAdminController < MyProfileController
       end.compact
       changed = b.values.map do |p|
         pa = a[p.id]
-        if pa and p.quantity_consumer_asked != pa.quantity_consumer_asked
-          pa.quantity_consumer_asked = p.quantity_consumer_asked
+        if pa and p.quantity_consumer_ordered != pa.quantity_consumer_ordered
+          pa.quantity_consumer_ordered = p.quantity_consumer_ordered
           pa
         end
       end.compact

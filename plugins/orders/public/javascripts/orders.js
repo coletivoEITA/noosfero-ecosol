@@ -4,14 +4,13 @@ orders = {
   item: {
 
     edit: function () {
-      toggle_edit.editing().find('.more').toggle(toggle_edit.isEditing());
     },
 
     edit_quantity: function (item) {
       item = jQuery(item);
       toggle_edit.edit(item);
-      var quantity_consumer_asked = item.find('.quantity-edit input');
-      quantity_consumer_asked.focus();
+      var quantity_consumer_ordered = item.find('.quantity-edit input');
+      quantity_consumer_ordered.focus();
     },
 
     quantity_keyup: function(context, event) {
@@ -27,10 +26,10 @@ orders = {
     submit: function(context, url) {
       var container = jQuery(context).parents('.order-items-container');
       var item = jQuery(context).parents('.item');
-      var quantity_consumer_asked = item.find('.quantity-edit input');
+      var quantity_consumer_ordered = item.find('.quantity-edit input');
 
       loading_overlay.show(container);
-      jQuery.post(url, {'item[quantity_consumer_asked]': quantity_consumer_asked.val()}, function(){}, 'script');
+      jQuery.post(url, {'item[quantity_consumer_ordered]': quantity_consumer_ordered.val()}, function(){}, 'script');
     },
   },
 

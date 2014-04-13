@@ -1,5 +1,12 @@
 class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
+  Statuses = %w[ordered accepted separated delivered received]
+  DbStatuses = %w[draft planned cancelled] + Statuses
+  UserStatuses = %w[open forgotten planned cancelled] + Statuses
+  StatusText = {}; UserStatuses.map do |status|
+    StatusText[status] = "orders_plugin.models.order.statuses.#{status}"
+  end
+
   set_table_name :orders_plugin_orders
 
   self.abstract_class = true
@@ -8,8 +15,22 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   belongs_to :consumer, :class_name => 'Profile'
 
   has_many :items, :class_name => 'OrdersPlugin::Item', :foreign_key => :order_id, :dependent => :destroy, :order => 'name ASC'
-
   has_many :products, :through => :items
+
+  belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::Method'
+  belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::Method'
+
+  named_scope :latest, :order => 'created_at DESC'
+
+  named_scope :draft,     :conditions => {:status => 'draft'}
+  named_scope :planned,   :conditions => {:status => 'planned'}
+  named_scope :cancelled, :conditions => {:status => 'cancelled'}
+  named_scope :ordered,   :conditions => ['ordered_at IS NOT NULL']
+  named_scope :confirmed, :conditions => ['ordered_at IS NOT NULL']
+  named_scope :accepted,  :conditions => ['accepted_at IS NOT NULL']
+  named_scope :separated, :conditions => ['separated_at IS NOT NULL']
+  named_scope :delivered, :conditions => ['delivered_at IS NOT NULL']
+  named_scope :received,  :conditions => ['received_at IS NOT NULL']
 
   named_scope :for_profile, lambda{ |profile| {:conditions => {:profile_id => profile.id}} }
   named_scope :for_profile_id, lambda{ |profile_id| {:conditions => {:profile_id => profile_id}} }
@@ -28,20 +49,17 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     :conditions => [ 'EXTRACT(year FROM created_at) <= :year AND EXTRACT(year FROM created_at) >= :year', { :year => year } ]}
   }
 
-  named_scope :latest, :order => 'created_at DESC'
-
-  belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::Method'
-  belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::Method'
-
-  DbStatuses = %w[draft planned confirmed cancelled accepted shipped]
-  UserStatuses = %w[open forgotten planned confirmed cancelled accepted shipped]
-  StatusText = {}; UserStatuses.map do |status|
-    StatusText[status] = "orders_plugin.models.order.#{status}"
-  end
+  named_scope :with_status, lambda { |status|
+    {:conditions => {:status => status}}
+  }
+  named_scope :with_code, lambda { |code|
+    {:conditions => {:code => code}}
+  }
 
   validates_presence_of :profile
   validates_inclusion_of :status, :in => DbStatuses
-  before_validation :default_values
+  before_validation :fill_default_values
+  before_validation :check_status
 
   def orders_name
     raise 'undefined'
@@ -63,27 +81,9 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   sync_serialized_field :consumer_delivery
   serialize :payment_data, Hash
 
-  # Alias need for terms
+  # Aliases needed for terms use
   alias_method :supplier, :profile
   alias_method :supplier_data, :profile_data
-
-  named_scope :draft, :conditions => {:status => 'draft'}
-  named_scope :planned, :conditions => {:status => 'planned'}
-  named_scope :confirmed, :conditions => {:status => 'confirmed'}
-  named_scope :cancelled, :conditions => {:status => 'cancelled'}
-
-  named_scope :for_consumer, lambda { |consumer| {
-    :conditions => {:consumer_id => consumer ? consumer.id : nil} }
-  }
-  named_scope :for_profile, lambda { |profile| {
-    :conditions => {:profile_id => profile ? profile.id : nil} }
-  }
-  named_scope :with_status, lambda { |status|
-    {:conditions => {:status => status}}
-  }
-  named_scope :with_code, lambda { |code|
-    {:conditions => {:code => code}}
-  }
 
   def self.search_scope scope, params
     scope = scope.with_status params[:status] if params[:status].present?
@@ -109,17 +109,20 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   def draft?
     self.status == 'draft'
   end
-  def open?
-    self.draft?
-  end
+  alias_method :open?, :draft?
   def planned?
     self.status == 'planned'
   end
-  def confirmed?
-    self.status == 'confirmed'
-  end
   def cancelled?
     self.status == 'cancelled'
+  end
+  def ordered?
+    self.ordered_at.present?
+  end
+  alias_method :confirmed?, :ordered?
+
+  def status_on? status
+    UserStatuses.index(self.current_status) >= UserStatuses.index(status) - 1
   end
 
   def current_status
@@ -142,14 +145,14 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   # ShoppingCart format
   def products_list
     hash = {}; self.items.map do |item|
-      hash[item.product_id] = {:quantity => item.quantity_consumer_asked, :name => item.name, :price => item.price}
+      hash[item.product_id] = {:quantity => item.quantity_consumer_ordered, :name => item.name, :price => item.price}
     end
     hash
   end
   def products_list= hash
     self.items = hash.map do |id, data|
       data[:product_id] = id
-      data[:quantity_consumer_asked] = data.delete(:quantity)
+      data[:quantity_consumer_ordered] = data.delete(:quantity)
       data[:order] = self
       OrdersPlugin::Item.new data
     end
@@ -160,8 +163,24 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   protected
 
-  def default_values
+  def fill_default_values
     self.status ||= 'draft'
+  end
+
+  def check_status
+    # backwards compatibility
+    self.status = 'ordered' if self.status == 'confirmed'
+
+    if self.status_on? 'ordered'
+      Statuses.each do |status|
+        self.send "#{status}_at=", Time.now if self.status_was != status and self.status == status
+      end
+    else
+      # for draft, planned, forgotten, cancelled, etc
+      Statuses.each do |status|
+        self.send "#{status}_at=", nil
+      end
+    end
   end
 
 end

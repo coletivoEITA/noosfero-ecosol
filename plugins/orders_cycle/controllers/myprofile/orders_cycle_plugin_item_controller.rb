@@ -32,8 +32,8 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
 
     @item = OrdersPlugin::Item.find_by_order_id_and_product_id @order.id, @offered_product.id
     @item ||= OrdersPlugin::Item.new :order => @order, :product => @offered_product
-    if set_quantity_consumer_asked(params[:quantity_consumer_asked] || 1)
-      @item.update_attributes! :quantity_consumer_asked => @quantity_consumer_asked
+    if set_quantity_consumer_ordered(params[:quantity_consumer_ordered] || 1)
+      @item.update_attributes! :quantity_consumer_ordered => @quantity_consumer_ordered
     end
   end
 

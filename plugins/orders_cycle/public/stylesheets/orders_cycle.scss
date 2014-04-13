@@ -113,7 +113,7 @@
   #order-column {
     float: left;
     width: $order-items-width;
-    margin-left: 3*$intercolumn;
+    margin-left: $margin;
     padding: 0;
 
     > h3 {

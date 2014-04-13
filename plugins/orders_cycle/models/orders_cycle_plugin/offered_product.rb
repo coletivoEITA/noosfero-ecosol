@@ -42,7 +42,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
 
   def total_purchase_quantity
     #FIXME: convert units and consider stock and availability
-    total_quantity_consumer_asked
+    total_quantity_consumer_ordered
   end
   def total_purchase_price
     buy_price * total_purchase_quantity if buy_price and total_purchase_quantity

@@ -297,10 +297,10 @@ body.consumers-coop {
 .consumers-coop .orders .status-open {
   background-color: #FFF2A3;
 }
-.consumers-coop .orders .status-confirmed {
+.consumers-coop .orders .status-ordered {
   background-color: #E1F5C4;
 }
-.consumers-coop .orders .status-confirmed.order-message-title div {
+.consumers-coop .orders .status-ordered.order-message-title div {
   background: url(/plugins/orders_cycle/images/order-statuses.png) left -2px no-repeat;
   padding-left: 24px;
 }
@@ -319,7 +319,7 @@ body.consumers-coop {
 .consumers-coop #orders-view .order-message-title a.open {
   display: none;
 }
-.consumers-coop #orders-view .status-confirmed.order-message-title div {
+.consumers-coop #orders-view .status-ordered.order-message-title div {
   padding-left: 20px;
   background-position: 0px 3px;
 }

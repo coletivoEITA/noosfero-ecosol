@@ -854,8 +854,8 @@
       background-color: #fdf2a3; }
 .cycle-view #order-column {
   float: left;
-  width: 384px;
-  margin-left: 48px;
+  width: 464px;
+  margin-left: 16px;
   padding: 0; }
   .cycle-view #order-column > h3 {
     padding: 0 8px; }
@@ -876,7 +876,7 @@
     background-color: #fdf2a3; }
   .cycle-view #order-column .consumer-order {
     margin-bottom: 10px;
-    width: 384px; }
+    width: 464px; }
     .cycle-view #order-column .consumer-order.sticky {
       position: fixed;
       top: 0;

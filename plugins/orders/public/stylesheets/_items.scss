@@ -37,20 +37,18 @@
     &.self-supplier {
       .box-field {
         &.product {
-          width: $module03 - $intercolumn/2;
+          width: $module03 - $intercolumn;
         }
-        &.quantity,
-        &.quantity-edit {
+
+        &.quantity {
           &, input {
-            width: $module02 - $intercolumn;
+            width: $module02;
           }
         }
         &.price-total {
           width: $module01;
         }
-        &.status-updated {
-          width: $module01;
-        }
+
       }
     }
 
@@ -65,106 +63,122 @@
       }
 
       &.supplier {
-        width: $module01 + $intercolumn;
-      }
-      &.product {
         width: $module02 - $intercolumn/2;
       }
-      &.quantity,
-      &.quantity-edit {
+      &.product {
+        width: $module02 - $intercolumn/2
+      }
+
+      &.quantity {
         &, input {
-          width: $module01 - $intercolumn;
+          width: $module01;
         }
       }
-      &.price-total {
-        width: $module01 - $intercolumn/2;
-      }
-      &.status-updated {
+      .price-total {
         width: $module01;
       }
     }
+  }
 
-    .table-header, .table-content {
-      border-bottom: $border solid black;
-    }
+  .table-header, .table-content {
+    border-bottom: $border solid black;
+  }
 
-    .table-header {
-      font-weight: bold;
-      font-size: 8px;
-      text-transform: uppercase;
-    }
+  .table-header {
+    font-weight: bold;
+    font-size: 8px;
+    text-transform: uppercase;
+  }
 
-    .table-content {
+  .table-content {
 
-      .item {
+    .item {
+      display: table;
 
-        .fields {
-          @extend .container-clean;
+      .fields {
+        display: table-row;
+        @extend .container-clean;
+
+        .box-field {
+          float: none;
+          display: table-cell;
         }
 
-        .more {
-          padding: $half-padding $padding;
-          display: none; //default
+        .quantity-price-table {
+          padding: 0;
 
-          .actions {
-            float: left;
+          .quantity-price-row {
+            display: table-row;
 
-            a {
-              color: black;
+            .quantity {
+              input {
+                display: none;
+              }
+
+              .unit {
+                text-transform: lowercase;
+              }
             }
           }
-          .price-with-unit {
-            float: right;
-          }
         }
 
-        .quantity {
+      }
 
-          .value {
-          }
-          .unit {
-            text-transform: lowercase;
-          }
-        }
+      &.hover,
+      &.edit {
+        background-color: $order-items-color;
+      }
 
-        &.hover,
-        &.edit {
-          background-color: $order-items-color;
-        }
+      &.edit {
+        // not working with scrollbars' overflow
+        //margin-left: -($half-padding + $border);
+        //padding: $half-padding;
+        //border: $border solid black;
 
-        .quantity-edit {
-          display: none;
-        }
+        //border-radius: $border-radius;
+        //-moz-border-radius: $border-radius;
+        //-o-border-radius: $border-radius;
+        //-webkit-border-radius: $border-radius;
 
-        &.edit {
-          margin-left: -($half-padding + $border);
-          padding: $half-padding;
-          border: $border solid black;
+        //box-shadow: 0 0 3px rgba(0,0,0,.5);
+        //-moz-box-shadow: 0 0 3px rgba(0,0,0,.5);
+        //-webkit-box-shadow: 0 0 3px rgba(0,0,0,.5);
 
-          border-radius: $border-radius;
-          -moz-border-radius: $border-radius;
-          -o-border-radius: $border-radius;
-          -webkit-border-radius: $border-radius;
-
-          box-shadow: 0 0 3px rgba(0,0,0,.5);
-          -moz-box-shadow: 0 0 3px rgba(0,0,0,.5);
-          -webkit-box-shadow: 0 0 3px rgba(0,0,0,.5);
-
-          .quantity-edit {
-            display: block;
-          }
-          .quantity {
-            display: none;
-          }
-
+        .fields {
           .box-field {
             border-right: none;
             padding-right: $padding;
           }
+
+          .quantity {
+
+            input {
+              display: block;
+            }
+          }
+        }
+        .more {
+          display: block;
+        }
+      }
+
+      .more {
+        display: none;
+        @extend .container-clean;
+        width: $order-items-width;
+
+        .actions {
+          float: left;
+
+          a {
+            color: black;
+          }
+        }
+        .price-with-unit {
+          float: right;
+          width: $module01;
         }
       }
     }
   }
 }
-
-
