@@ -268,29 +268,32 @@
       supplier:
         singular: "supplier"
         plural: "suppliers"
+        one: "one"
         it: 
           singular: "it"
           plural: "them"
-        tO_it: 
-          singular: "to it"
-          plural: "to them"
-        one: "one"
         to: 
           singular: "to a supplier"
           plural: "to suppliers"
+        tO_it: 
+          singular: "to it"
+          plural: "to them"
         to_article:
           singular: "to the supplier"
           plural: "to the suppliers"
+        none: 
+          singular: "any supplier"
+        this:
+          singular: "this supplier"
+        your: 
+          singular: "your supplier"
+          plural: "your suppliers"
         from_article: 
           singular: "from supplier"
         from_which_article: 
           singular: "from which the supplier"
         undefined_article:
           singular: "a supplier"
-        none: 
-          singular: "any supplier"
-        this:
-          singular: "this supplier"
         article: 
           singular: "the supplier"
           plural: "the suppliers"
@@ -1109,6 +1112,9 @@
         to_article:
           singular: "to the enterprise"
           plural: "to the enterprises"
+        your: 
+          singular: "your enterprise"
+          plural: "your enterprises"
         from_article: 
           singular: "from enterprise"
         from_which_article: 
@@ -1135,6 +1141,11 @@
     views:
       control_panel:
         structure: "Manage network's structure"
+      profile_editor:
+        networks_i_participate: "%{terms.profile.plural.capitalize} I participate"
+        none: "None"
+        disassociate: "Disassociate"
+        disassociate_confirm: "By disassociating %{terms.supplier.your.singular} %{terms.profile.from_article.singular}, your distributed products %{terms.profile.to_it.singular} will be deleted and you won't distributed more products %{terms.profile.to_it.singular}. Please confirm your choice."
       blocks:
         profile_info_actions:
           button: "My enterprise participate on this network"
@@ -1156,7 +1167,8 @@
           none: "None"
           title: "Network's structure"
           structure: "Structure"
-          add_enterprise: "Add %{terms.supplier.singular} %{terms.profile.to_article.singular}"
+          add_enterprise_to_network: "Add %{terms.supplier.singular} %{terms.profile.to_article.singular}"
+          add_enterprise_to_node: "Add %{terms.supplier.singular} to this node"
           add_node: "Create node"
           confirm_node_remove: "By removing this node, %{terms.supplier.article.plural} and nodes associated to it will be associated to the node '%{parent}'. Please confirm the removal of the node '%{node}'."
           confirm_supplier_desassociate: "Plese confirm that you want to desassociate %{terms.supplier.article.singular} '%{supplier}'."

@@ -22,5 +22,15 @@ networks = {
 
   structure: {
 
-  }
+  },
+
+  participation: {
+    disassociate: function(context, url, confirm_message) {
+      if (confirm(confirm_message)) {
+        loading_overlay.show('#networks-participation')
+        jQuery.getScript(url)
+        loading_overlay.hide('#networks-participation')
+      }
+    }
+  },
 };

@@ -3,7 +3,8 @@
 
   <div>
     <% button_bar do %>
-      <%= link_to t('views.network.show_structure.add_enterprise'), {:controller => :networks_plugin_enterprise, :action => :associate, :id => @node.id}, :class => 'action-button colorbox' %>
+      <% add_enterprise_text = t("views.network.show_structure.add_enterprise_to_#{if @node.network? then 'network' else 'node' end}") %>
+      <%= link_to add_enterprise_text, {:controller => :networks_plugin_enterprise, :action => :associate, :id => @node.id}, :class => 'action-button colorbox' %>
       <%= link_to t('views.network.show_structure.add_node'), {:controller => :networks_plugin_node, :action => :associate, :id => @node.id}, :class => 'action-button colorbox' %>
     <% end %>
   </div>

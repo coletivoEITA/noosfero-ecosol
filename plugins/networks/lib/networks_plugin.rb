@@ -38,4 +38,15 @@ class NetworksPlugin < Noosfero::Plugin
     ]
   end
 
+  def profile_editor_extras
+    profile = context.profile
+    return unless profile.enterprise?
+    lambda do
+      extend NetworksPlugin::TranslationHelper
+      render 'networks_plugin_profile_editor/network_participation'
+    end
+  end
+
+  protected
+
 end
