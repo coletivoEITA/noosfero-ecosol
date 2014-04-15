@@ -167,7 +167,7 @@
 
       .more {
         display: none;
-        @extend .container-clean;
+        overflow: hidden;
         width: $order-items-width;
 
         .actions {
