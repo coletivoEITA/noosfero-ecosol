@@ -49,4 +49,9 @@ class NetworksPlugin < Noosfero::Plugin
 
   protected
 
+  SearchFilter = proc do
+    return unless params[:action] == 'networks'
+  end
+
 end
+
