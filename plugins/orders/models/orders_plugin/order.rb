@@ -36,7 +36,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   named_scope :for_profile_id, lambda{ |profile_id| {:conditions => {:profile_id => profile_id}} }
   named_scope :for_supplier, lambda{ |profile| {:conditions => {:profile_id => profile.id}} }
   named_scope :for_supplier_id, lambda{ |profile_id| {:conditions => {:profile_id => profile_id}} }
-  named_scope :for_consumer, lambda{ |consumer| {:conditions => {:consumer_id => consumer.id}} }
+  named_scope :for_consumer, lambda{ |consumer| {:conditions => {:consumer_id => (consumer.id rescue nil)}} }
   named_scope :for_consumer_id, lambda{ |consumer_id| {:conditions => {:consumer_id => consumer_id}} }
 
   named_scope :months, :select => 'DISTINCT(EXTRACT(months FROM created_at)) as month', :order => 'month DESC'
