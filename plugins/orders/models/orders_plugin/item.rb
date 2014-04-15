@@ -63,8 +63,8 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     has_number_with_locale quantity
     has_currency price
 
-    validates_numericality_of quantity
-    validates_numericality_of price
+    validates_numericality_of quantity, :allow_nil => true
+    validates_numericality_of price, :allow_nil => true
   end
 
   def name
