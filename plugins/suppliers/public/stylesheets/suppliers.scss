@@ -8,6 +8,10 @@
 
 @import 'product';
 
+.controller-profile_editor a.control-panel-suppliers-manage-suppliers {
+  background-image: url("/plugins/suppliers/images/control-panel/manage-suppliers.png")
+}
+
 #suppliers-page {
 
   /* should be moved to core */

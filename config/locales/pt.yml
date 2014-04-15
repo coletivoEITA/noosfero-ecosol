@@ -325,10 +325,25 @@
       profile: 
         consumer: Consumidor
     views:
-      filter:
-        <<: *orders_plugin_filter
-      actions: 
-        <<: *orders_plugin_actions
+      filter: &suppliers_plugin_filter
+        filter: Filtro
+        filter_it: Filtrar
+        status: "Situação"
+        code: "Código"
+        all: "Todos"
+        month: "Mês"
+        year: "Ano"
+      actions: &suppliers_plugin_actions
+        all: "todos"
+        none: "nenhum"
+        select: "selecionar"
+        with_selection: "com selecionados"
+        activate: "ativar"
+        deactivate: "desativar"
+
+      control_panel:
+        suppliers: "Gerenciar fornecedores"
+        products: "Gerenciar produtos distribuídos"
       myprofile:
         margin_change: 
           ? "%"
@@ -411,7 +426,7 @@
           no_margin_set: "Sem margem definida"
           products: Produtos
           supplier: "%{terms.supplier.singular.capitalize}"
-          info: "Esta é a lista de produtos %{terms.profile.from_which_article.singular} trabalha e é aqui que é feito o controle de estoque. Os produtos se dividem entre ativos e inativos. Os produtos ativos automaticamente são adicionados à lista de uma novo ciclo de pedidos."
+          info: "Esta é a lista de produtos %{terms.profile.from_which_article.singular} distribuí. Os produtos se dividem entre ativos e inativos."
           the_products: "Os produtos"
           name: "Nome"
           whose_qty_available_i: "cuja qtd disponível é"
@@ -570,21 +585,10 @@
           delivered: "Entregue"
           received: "Recebido"
     views:
-      filter: &orders_plugin_filter
-        filter: Filtro
-        filter_it: Filtrar
-        status: "Situação"
-        code: "Código"
-        all: "Todos"
-        month: "Mês"
-        year: "Ano"
-      actions: &orders_plugin_actions
-        all: "todos"
-        none: "nenhum"
-        select: "selecionar"
-        with_selection: "com selecionados"
-        activate: "ativar"
-        deactivate: "desativar"
+      filter:
+        <<: *suppliers_plugin_filter
+      actions: 
+        <<: *suppliers_plugin_actions
 
       consumer:
         _total: 

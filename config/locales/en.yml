@@ -316,10 +316,25 @@
       profile: 
         consumer: Consumer
     views:
-      filter:
-        <<: *orders_plugin_filter
-      actions: 
-        <<: *orders_plugin_actions
+      filter: &suppliers_plugin_filter
+        filter: Filter
+        filter_it: Filter
+        status: "Status"
+        code: "Code"
+        all: "All"
+        month: "Month"
+        year: "Year"
+      actions: &suppliers_plugin_actions
+        all: "all"
+        none: "none"
+        select: "select"
+        with_selection: "with selected"
+        activate: "activate"
+        deactivate: "deactivate"
+
+      control_panel:
+        suppliers: "Manage suppliers"
+        products: "Manage distributed products"
       myprofile:
         margin_change:
           ? "%"
@@ -402,7 +417,7 @@
           no_margin_set: "no margin set"
           products: Products
           supplier: "%{terms.supplier.singular.capitalize}"
-          info: "This is list of all the products %{terms.profile.with_which.singular} works. Here it's possible to add and remove products, besides desactivating temporarily your commercialization in the Cycles' orders."
+          info: "This is list of all the products %{terms.profile.with_which.singular} distribute. The products are divided between active and inactive."
           the_products: "The products"
           name: "Nome"
           whose_qty_available_i: "whose qty. available is"
@@ -561,21 +576,10 @@
           delivered: "Delivered"
           received: "Received"
     views:
-      filter: &orders_plugin_filter
-        filter: Filter
-        filter_it: Filter
-        status: "Status"
-        code: "Code"
-        all: "All"
-        month: "Month"
-        year: "Year"
-      actions: &orders_plugin_actions
-        all: "all"
-        none: "none"
-        select: "select"
-        with_selection: "with selected"
-        activate: "activate"
-        deactivate: "deactivate"
+      filter:
+        <<: *suppliers_plugin_filter
+      actions: 
+        <<: *suppliers_plugin_actions
 
       consumer:
         _total: 

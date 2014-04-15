@@ -6,7 +6,7 @@ module SuppliersPlugin::TranslationHelper
   include TermsHelper
 
   def i18n_scope
-    'suppliers_plugin'
+    ['suppliers_plugin']
   end
 
 end
