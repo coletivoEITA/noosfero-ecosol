@@ -23,14 +23,26 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
     @node.network_node_parent_relations.create! :parent => @node, :child => @enterprise
   end
 
-  def associate
-    @new_supplier = SuppliersPlugin::Supplier.new_dummy :consumer => @node
-    render :layout => false
+  def destroy
+    @supplier = @node.suppliers.find params[:id]
+    @enterprise = @supplier.profile
+    @relation = @enterprise.network_node_child_relations.where(:parent_id => @node.id).first
+
+    ActiveRecord::Base.transaction do
+      @supplier.destroy
+      @relation.destroy
+    end
   end
 
-  def destroy
-    @profile = @node
-    super
+  def associate
+    @new_supplier = SuppliersPlugin::Supplier.new_dummy :consumer => @node
+  end
+
+  def disassociate
+    @enterprise = profile
+    @network = environment.networks.find params[:id]
+    @enterprise.network_disassociate @network
+    @enterprise.reload
   end
 
   def edit

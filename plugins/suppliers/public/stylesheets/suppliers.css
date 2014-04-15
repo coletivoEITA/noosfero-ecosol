@@ -1418,6 +1418,9 @@
   #suppliers-page .supplier .box-edit form #supplier-our-products .links input[type=submit] {
     margin-bottom: 8px; }
 
+.controller-profile_editor a.control-panel-suppliers-manage-suppliers {
+  background-image: url("/plugins/suppliers/images/control-panel/manage-suppliers.png"); }
+
 #suppliers-page {
   /* should be moved to core */ }
   #suppliers-page input.small-loading {

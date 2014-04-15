@@ -24,6 +24,18 @@ class Profile
     self.class == NetworksPlugin::Node
   end
 
+  def network_disassociate network
+    ActiveRecord::Base.transaction do
+      self.network_node_child_relations.each do |relation|
+        node = relation.parent
+        if (node.network? and node == network) or (node.network_node? and node.network == network)
+          self.consumers.of_consumer(node).first.destroy
+          relation.destroy
+        end
+      end
+    end
+  end
+
   # FIXME: use materialized path for performance
   def networks
     self.network_node_child_relations.map do |node|

@@ -276,10 +276,10 @@
       supplier:
         singular: "fornecedor"
         plural: "fornecedores"
+        one: "um"
         it: 
           singular: "ele"
           plural: "eles"
-        one: "um"
         to: 
           singular: "a um fornecedor"
           plural: "a fornecedores"
@@ -296,6 +296,9 @@
           singular: "nenhum fornecedor"
         this:
           singular: "este fornecedor"
+        your: 
+          singular: "seu fornecedor"
+          plural: "seus fornecedores"
         from_article:
           singular: "do fornecedor"
         from_which_article: 
@@ -322,10 +325,25 @@
       profile: 
         consumer: Consumidor
     views:
-      filter:
-        <<: *orders_plugin_filter
-      actions: 
-        <<: *orders_plugin_actions
+      filter: &suppliers_plugin_filter
+        filter: Filtro
+        filter_it: Filtrar
+        status: "Situação"
+        code: "Código"
+        all: "Todos"
+        month: "Mês"
+        year: "Ano"
+      actions: &suppliers_plugin_actions
+        all: "todos"
+        none: "nenhum"
+        select: "selecionar"
+        with_selection: "com selecionados"
+        activate: "ativar"
+        deactivate: "desativar"
+
+      control_panel:
+        suppliers: "Gerenciar fornecedores"
+        products: "Gerenciar produtos distribuídos"
       myprofile:
         margin_change: 
           ? "%"
@@ -408,7 +426,7 @@
           no_margin_set: "Sem margem definida"
           products: Produtos
           supplier: "%{terms.supplier.singular.capitalize}"
-          info: "Esta é a lista de produtos %{terms.profile.from_which_article.singular} trabalha e é aqui que é feito o controle de estoque. Os produtos se dividem entre ativos e inativos. Os produtos ativos automaticamente são adicionados à lista de uma novo ciclo de pedidos."
+          info: "Esta é a lista de produtos %{terms.profile.from_which_article.singular} distribuí. Os produtos se dividem entre ativos e inativos."
           the_products: "Os produtos"
           name: "Nome"
           whose_qty_available_i: "cuja qtd disponível é"
@@ -567,21 +585,10 @@
           delivered: "Entregue"
           received: "Recebido"
     views:
-      filter: &orders_plugin_filter
-        filter: Filtro
-        filter_it: Filtrar
-        status: "Situação"
-        code: "Código"
-        all: "Todos"
-        month: "Mês"
-        year: "Ano"
-      actions: &orders_plugin_actions
-        all: "todos"
-        none: "nenhum"
-        select: "selecionar"
-        with_selection: "com selecionados"
-        activate: "ativar"
-        deactivate: "desativar"
+      filter:
+        <<: *suppliers_plugin_filter
+      actions: 
+        <<: *suppliers_plugin_actions
 
       consumer:
         _total: 
@@ -1104,10 +1111,10 @@
       supplier: 
         singular: "empreendimento"
         plural: "empreendimentos"
+        one: "um"
         it: 
           singular: "ele"
           plural: "eles"
-        one: "um"
         to: 
           singular: "a um empreendimento"
           plural: "a empreendimentos"
@@ -1117,16 +1124,19 @@
         to_article:
           singular: "ao empreendimento"
           plural: "aos empreendimentos"
+        none: 
+          singular: "nenhum empreendimento"
+        this:
+          singular: "este empreendimento"
+        your: 
+          singular: "seu empreendimento"
+          plural: "seus empreendimentos"
         from_article:
           singular: "do empreendimento"
         from_which_article: 
           singular: "com que o empreendimento"
         undefined_article:
           singular: "um empreendimento"
-        none: 
-          singular: "nenhum empreendimento"
-        this:
-          singular: "este empreendimento"
         article: 
           singular: "o empreendimento"
           plural: "os empreendimentos"
@@ -1143,6 +1153,11 @@
     views:
       control_panel:
         structure: "Gerenciar estrutura da rede"
+      profile_editor:
+        networks_i_participate: "%{terms.profile.plural.capitalize} de que faço parte"
+        none: "Nenhuma"
+        disassociate: "Desassociar"
+        disassociate_confirm: "Ao desassociar %{terms.supplier.your.singular} %{terms.profile.from_article.singular}, os seus produtos distribuídos %{terms.profile.to_it.singular} serão excluídos e você não distribuirá produtos %{terms.profile.to_it.singular}. Por favor confirme sua escolha."
       blocks:
         profile_info_actions:
           button: "Meu empreendimento participa desta rede"
@@ -1150,7 +1165,7 @@
           title: "Mapa dos Empreendimentos de %{profile}"
       admin:
         index:
-          title: "Gerenciar de Redes"
+          title: "Gerenciar Redes"
           registered_networks: "Redes cadastradas"
           no_network: "Nenhuma rede registrada."
           new: "Criar rede"
@@ -1164,7 +1179,8 @@
           none: "Nenhum"
           title: "Estrutura da rede"
           structure: "Estrutura"
-          add_enterprise: "Adicionar %{terms.supplier.singular} à %{terms.profile.singular}"
+          add_enterprise_to_network: "Adicionar %{terms.supplier.singular} à %{terms.profile.singular}"
+          add_enterprise_to_node: "Adicionar %{terms.supplier.singular} a este nó"
           add_node: "Criar nó"
           confirm_node_remove: "Ao excluir este nó, %{terms.supplier.article.plural} e nós associados a ele serão associados ao nó '%{parent}'. Por favor confirme a remoção do nó '%{node}'."
           confirm_supplier_desassociate: "Por favor confirme que quer desassociar %{terms.supplier.article.singular} '%{supplier}'."
