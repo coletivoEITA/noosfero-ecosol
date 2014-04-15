@@ -153,6 +153,8 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     return self.purchases if self.purchases.present?
 
     self.ordered_offered_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
+      next unless supplier_product = product.supplier_product
+
       # can't be created using self.purchases.create!, as if :cycle is set (needed for code numbering), then double CycleOrder will be created
       purchase = OrdersPlugin::Purchase.create! :cycle => self, :consumer => self.profile, :profile => supplier.profile
       products.each do |product|
