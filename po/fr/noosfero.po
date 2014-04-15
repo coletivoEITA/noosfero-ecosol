@@ -471,7 +471,7 @@ msgid "The content here is available to %s's friends only."
 msgstr ""
 
 #: app/helpers/application_helper.rb:1367
-msgid "The contents in this community is available to members only."
+msgid "The contents in this profile is available to members only."
 msgstr ""
 
 #: app/helpers/catalog_helper.rb:16

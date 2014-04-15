@@ -453,7 +453,8 @@ msgid "The content here is available to %s's friends only."
 msgstr "%s ограничивает доступ к данной информации только кругом друзей."
 
 #: app/helpers/application_helper.rb:1367
-msgid "The contents in this community is available to members only."
+#, fuzzy
+msgid "The contents in thie perfil is available to members only."
 msgstr "Ктонтент єтого сообщества доступен только его членам."
 
 #: app/helpers/catalog_helper.rb:16
