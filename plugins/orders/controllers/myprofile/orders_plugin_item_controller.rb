@@ -12,7 +12,7 @@ class OrdersPluginItemController < MyProfileController
     @consumer = user
     @item = OrdersPlugin::Item.find params[:id]
     @offered_product = @item.offered_product
-    @order = @item.order
+    @order = @item.send self.order_method
 
     unless @order.may_edit? @consumer
       raise 'Order confirmed or cycle is closed for orders' unless @order.open?
@@ -29,7 +29,7 @@ class OrdersPluginItemController < MyProfileController
   def destroy
     @item = OrdersPlugin::Item.find params[:id]
     @product = @item.product
-    @order = @item.order
+    @order = @item.send self.order_method
 
     @item.destroy
   end
@@ -52,6 +52,10 @@ class OrdersPluginItemController < MyProfileController
     end
 
     @quantity_consumer_ordered
+  end
+
+  def order_method
+    'sale'
   end
 
 end

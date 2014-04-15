@@ -22,7 +22,7 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
     @offered_product = OrdersCyclePlugin::OfferedProduct.find params[:id]
     @order = OrdersPlugin::Sale.find params[:order_id]
     @item = @order.items.find_by_product_id @offered_product.id
-    @item.destroy
+    @item.destroy rescue render :nothing => true
   end
 
   def cycle_edit
@@ -44,6 +44,6 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
   protected
 
   include ControllerInheritance
-  replace_url_for self.superclass => self, SuppliersPluginProductController => self
+  replace_url_for self.superclass => self, SuppliersPluginProductController => self, OrdersPluginItemController => OrdersCyclePluginItemController
 
 end
