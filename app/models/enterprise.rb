@@ -17,12 +17,13 @@ class Enterprise < Organization
   has_and_belongs_to_many :fans, :class_name => 'Person', :join_table => 'favorite_enteprises_people'
 
   def product_categories
-    products.includes(:product_category).map{|p| p.category_full_name}.compact
+    ProductCategory.by_enterprise(self)
   end
 
   N_('Organization website'); N_('Historic and current context'); N_('Activities short description'); N_('City'); N_('State'); N_('Country'); N_('ZIP code')
 
   settings_items :organization_website, :historic_and_current_context, :activities_short_description, :zip_code, :city, :state, :country
+  settings_items :products_per_catalog_page, :type => :integer, :default => 6
 
   extend SetProfileRegionFromCityState::ClassMethods
   set_profile_region_from_city_state
@@ -104,14 +105,10 @@ class Enterprise < Organization
     return if enabled
     # must be set first for the following to work
     self.enabled = true
-
     self.affiliate owner, Profile::Roles.all_roles(self.environment.id) if owner
-
     self.apply_template template if self.environment.replace_enterprise_template_when_enable
-
     self.activation_task.update_attribute :status, Task::Status::FINISHED rescue nil
-
-    save_without_validation!
+    self.save_without_validation!
   end
 
   def question

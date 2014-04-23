@@ -12,13 +12,13 @@ class ShoppingCartPluginController < PublicController
 
   def get
     config =
-      if cart.blank?
-        { :enterprise_id => nil,
+      if cart.nil?
+        { :profile_id => nil,
           :has_products => false,
           :visible => false,
           :products => []}
       else
-        { :enterprise_id => cart[:enterprise_id],
+        { :profile_id => cart[:profile_id],
           :has_products => (cart[:items].keys.size > 0),
           :visible => visible?,
           :products => products}
@@ -28,8 +28,8 @@ class ShoppingCartPluginController < PublicController
 
   def add
     product = find_product(params[:id])
-    if product && profile = validate_same_enterprise(product)
-      self.cart = { :enterprise_id => profile.id, :items => {} } if self.cart.blank?
+    if product && profile = validate_same_profile(product)
+      self.cart = { :profile_id => profile.id, :items => {} } if self.cart.nil?
       self.cart[:items][product.id] = 0 if self.cart[:items][product.id].nil?
       self.cart[:items][product.id] += 1
       render :text => {
@@ -96,7 +96,7 @@ class ShoppingCartPluginController < PublicController
   def buy
     if validate_cart_presence
       @cart = cart
-      @profile = environment.profiles.find(cart[:enterprise_id])
+      @profile = environment.profiles.find(cart[:profile_id])
       @settings = Noosfero::Plugin::Settings.new(@profile, ShoppingCartPlugin)
       render :layout => false
     end
@@ -105,7 +105,7 @@ class ShoppingCartPluginController < PublicController
   def send_request
     register_order(params[:customer], self.cart[:items])
     begin
-      profile = environment.enterprises.find(cart[:enterprise_id])
+      profile = environment.profiles.find(cart[:profile_id])
       ShoppingCartPlugin::Mailer.deliver_customer_notification(params[:customer], profile, self.cart[:items], params[:delivery_option])
       ShoppingCartPlugin::Mailer.deliver_supplier_notification(params[:customer], profile, self.cart[:items], params[:delivery_option])
       self.cart = nil
@@ -168,7 +168,7 @@ class ShoppingCartPluginController < PublicController
   end
 
   def update_delivery_option
-    profile = environment.enterprises.find(cart[:enterprise_id])
+    profile = environment.profiles.find(cart[:profile_id])
     settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin)
     delivery_price = settings.delivery_options[params[:delivery_option]]
     delivery = Product.new(:name => params[:delivery_option], :price => delivery_price)
@@ -188,8 +188,8 @@ class ShoppingCartPluginController < PublicController
 
   private
 
-  def validate_same_enterprise(product)
-    if self.cart && self.cart[:enterprise_id] && product.profile_id != self.cart[:enterprise_id]
+  def validate_same_profile product
+    if self.cart && self.cart[:profile_id] && product.profile_id != self.cart[:profile_id]
       render :text => {
         :ok => false,
         :error => {
@@ -267,7 +267,7 @@ class ShoppingCartPluginController < PublicController
       products_list[id] = {:quantity => quantity, :price => price, :name => product.name}
     end
 
-    OrdersPlugin::Order.create! :profile => environment.profiles.find(cart[:enterprise_id]), :consumer => user,
+    OrdersPlugin::Order.create! :profile => environment.profiles.find(cart[:profile_id]), :consumer => user,
       :status => 'ordered', :products_list => products_list,
       :consumer_data => {
         :name => params[:name], :email => params[:email], :contact_phone => params[:contact_phone],
