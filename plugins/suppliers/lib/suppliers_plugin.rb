@@ -36,6 +36,9 @@ class SuppliersPlugin < Noosfero::Plugin
   end
 
   def control_panel_buttons
+    # FIXME: disable for now
+    return
+
     profile = context.profile
     return unless profile.enterprise?
     [
