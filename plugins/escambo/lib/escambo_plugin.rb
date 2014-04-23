@@ -206,7 +206,7 @@ class EscamboPlugin < Noosfero::Plugin
     end
 
     # overwrite controller action
-    render :action => 'signup' unless @performed_render
+    render :action => 'signup' unless @performed_render or @performed_redirect
   end
   def account_controller_filters
     [
