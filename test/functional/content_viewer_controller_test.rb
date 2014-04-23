@@ -72,9 +72,7 @@ class ContentViewerControllerTest < ActionController::TestCase
     get :view_page, :profile => 'someone', :page => [ '500.html' ]
 
     assert_response :success
-    assert_match /^text\/html/, @response.headers['Content-Type']
-    assert @response.headers['Content-Disposition'].present?
-    assert_match /attachment/, @response.headers['Content-Disposition']
+    assert_match /#{html.public_filename}/, @response.body
   end
 
   should 'produce a download-link when article is not text/html' do
@@ -369,6 +367,43 @@ class ContentViewerControllerTest < ActionController::TestCase
     assert_redirected_to :host => p.default_hostname, :controller => 'content_viewer', :action => 'view_page', :profile => p.identifier, :page => a2.explode_path
   end
 
+  should "display current article's versions" do
+    page = TextArticle.create!(:name => 'myarticle', :body => 'test article', :display_versions => true, :profile => profile)
+    page.body = 'test article edited'; page.save
+
+    get :article_versions, :profile => profile.identifier, :page => [ 'myarticle' ]
+    assert_select "ul#article-versions a[href=http://#{profile.environment.default_hostname}/#{profile.identifier}/#{page.path}?version=1]"
+  end
+
+  should "fetch correct article version" do
+    page = TextArticle.create!(:name => 'myarticle', :body => 'original article', :display_versions => true, :profile => profile)
+    page.body = 'edited article'; page.save
+
+    get :view_page, :profile => profile.identifier, :page => [ 'myarticle' ], :version => 1
+
+    assert_tag :tag => 'div', :attributes => { :class => /article-body/ }, :content => /original article/
+  end
+
+  should "display current article if version does not exist" do
+    page = TextArticle.create!(:name => 'myarticle', :body => 'original article', :display_versions => true, :profile => profile)
+    page.body = 'edited article'; page.save
+
+    get :view_page, :profile => profile.identifier, :page => [ 'myarticle' ], :version => 'bli'
+
+    assert_tag :tag => 'div', :attributes => { :class => /article-body/ }, :content => /edited article/
+  end
+
+  should "display differences between article's versions" do
+    page = TextArticle.create!(:name => 'myarticle', :body => 'original article', :display_versions => true, :profile => profile)
+    page.body = 'edited article'; page.save
+
+    get :versions_diff, :profile => profile.identifier, :page => [ 'myarticle' ], :v1 => 1, :v2 => 2;
+
+    assert_tag :tag => 'li', :attributes => { :class => /del/ }, :content => /original/
+    assert_tag :tag => 'li', :attributes => { :class => /ins/ }, :content => /edited/
+    assert_response :success
+  end
+
   should 'not return an article of a different user' do
     p1 = create_user('test_user').person
     a = p1.articles.create!(:name => 'old-name')
@@ -548,14 +583,6 @@ class ContentViewerControllerTest < ActionController::TestCase
     assert_template 'view_page'
   end
 
-  should 'download data for image when not view' do
-    file = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :profile => profile)
-    get :view_page, :profile => profile.identifier, :page => file.explode_path
-
-    assert_response :success
-    assert_template nil
-  end
-
   should "display 'Upload files' when create children of image gallery" do
     login_as(profile.identifier)
     f = Gallery.create!(:name => 'gallery', :profile => profile)
@@ -706,16 +733,6 @@ class ContentViewerControllerTest < ActionController::TestCase
     login_as(profile.identifier)
     folder = fast_create(Gallery, :profile_id => profile.id)
     file = UploadedFile.create!(:title => 'my img title', :profile => profile, :parent => folder, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
-
-    get :view_page, :profile => profile.identifier, :page => folder.explode_path
-
-    assert_tag :tag => 'li', :attributes => {:title => 'my img title', :class => 'image-gallery-item'}, :child => {:tag => 'span', :content => 'my img title'}
-  end
-
-  should 'not allow html on title of the images' do
-    login_as(profile.identifier)
-    folder = fast_create(Gallery, :profile_id => profile.id)
-    file = UploadedFile.create!(:title => '<b>my img title</b>', :profile => profile, :parent => folder, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
 
     get :view_page, :profile => profile.identifier, :page => folder.explode_path
 
@@ -1306,11 +1323,77 @@ class ContentViewerControllerTest < ActionController::TestCase
     get :view_page, :profile => profile.identifier, :page => [blog.path]
     assert_tag :tag => 'strong', :content => /bold/
   end
+  
+  should 'add extra content on article header from plugins' do
+    class Plugin1 < Noosfero::Plugin
+      def article_header_extra_contents(args)
+        lambda {
+          content_tag('div', '', :class => 'plugin1')
+         }
+      end
+    end
+    class Plugin2 < Noosfero::Plugin
+      def article_header_extra_contents(args)
+        lambda {
+          content_tag('div', '', :class => 'plugin2')
+         }
+      end
+    end
+
+    Environment.default.enable_plugin(Plugin1.name)
+    Environment.default.enable_plugin(Plugin2.name)
+
+    page = profile.articles.create!(:name => 'myarticle', :body => 'the body of the text')
+
+    xhr :get, :view_page, :profile => profile.identifier, :page => [ 'myarticle' ], :toolbar => true
+
+    assert_tag :tag => 'div', :attributes => {:class => 'plugin1'}
+    assert_tag :tag => 'div', :attributes => {:class => 'plugin2'}
+  end
 
   should 'display link to download of non-recognized file types on its page' do
     file = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/test.txt', 'bin/unknown'), :profile => profile)
-    get :view_page, file.url.merge(:view=>:true)
-    assert_match /this is a sample text file/, @response.body
+    get :view_page, file.url
+    assert_match /#{file.public_filename}/, @response.body
+  end
+
+  should 'not count hit from bots' do
+    article = fast_create(Article, :profile_id => profile.id)
+    assert_no_difference article, :hits do
+      @request.env['HTTP_USER_AGENT'] = 'bot'
+      get 'view_page', :profile => profile.identifier, :page => article.path.split('/')
+      @request.env['HTTP_USER_AGENT'] = 'spider'
+      get 'view_page', :profile => profile.identifier, :page => article.path.split('/')
+      @request.env['HTTP_USER_AGENT'] = 'crawler'
+      get 'view_page', :profile => profile.identifier, :page => article.path.split('/')
+      @request.env['HTTP_USER_AGENT'] = '(http://some-crawler.com)'
+      get 'view_page', :profile => profile.identifier, :page => article.path.split('/')
+      article.reload
+    end
+  end
+
+  should 'add meta tags with article info' do
+    a = TinyMceArticle.create(:name => 'Article to be shared', :body => 'This article should be shared with all social networks', :profile => profile)
+
+    get :view_page, :profile => profile.identifier, :page => [ a.name.to_slug ]
+
+    assert_tag :tag => 'meta', :attributes => { :name => 'twitter:title', :content => /#{a.name} - #{a.profile.name}/ }
+    assert_tag :tag => 'meta', :attributes => { :name => 'twitter:description', :content => a.body }
+    assert_no_tag :tag => 'meta', :attributes => { :name => 'twitter:image' }
+    assert_tag :tag => 'meta', :attributes => { :property => 'og:type', :content => 'article' }
+    assert_tag :tag => 'meta', :attributes => { :property => 'og:url', :content => /\/#{profile.identifier}\/#{a.name.to_slug}/ }
+    assert_tag :tag => 'meta', :attributes => { :property => 'og:title', :content => /#{a.name} - #{a.profile.name}/ }
+    assert_tag :tag => 'meta', :attributes => { :property => 'og:site_name', :content => a.profile.name }
+    assert_tag :tag => 'meta', :attributes => { :property => 'og:description', :content => a.body }
+    assert_no_tag :tag => 'meta', :attributes => { :property => 'og:image' }
+  end
+
+  should 'add meta tags with article images' do
+    a = TinyMceArticle.create(:name => 'Article to be shared with images', :body => 'This article should be shared with all social networks <img src="/images/x.png" />', :profile => profile)
+
+    get :view_page, :profile => profile.identifier, :page => [ a.name.to_slug ]
+    assert_tag :tag => 'meta', :attributes => { :name => 'twitter:image', :content => /\/images\/x.png/ }
+    assert_tag :tag => 'meta', :attributes => { :property => 'og:image', :content => /\/images\/x.png/  }
   end
 
 end

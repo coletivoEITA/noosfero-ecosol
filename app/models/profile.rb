@@ -84,11 +84,12 @@ class Profile < ActiveRecord::Base
   def members
     scopes = plugins.dispatch_scopes(:organization_members, self)
     scopes << Person.members_of(self)
-    scopes.size == 1 ? scopes.first : Person.or_scope(scopes)
+    return scopes.first if scopes.size == 1
+    ScopeTool.union *scopes
   end
 
-  def members_count
-    members.count
+  def members_by_name
+    members.order(:name)
   end
 
   class << self
@@ -113,10 +114,11 @@ class Profile < ActiveRecord::Base
 
   named_scope :visible, :conditions => { :visible => true }
   named_scope :public, :conditions => { :visible => true, :public_profile => true }
-  # Subclasses must override these methods
-  named_scope :more_popular
-  named_scope :more_active
 
+  # Subclasses must override this method
+  named_scope :more_popular
+
+  named_scope :more_active,  :order => 'activities_count DESC'
   named_scope :more_recent, :order => "created_at DESC"
 
   acts_as_trackable :dependent => :destroy
@@ -611,10 +613,10 @@ private :generate_url, :url_options
   # Adds a person as member of this Profile.
   def add_member(person)
     if self.has_members?
-      if self.closed? && members_count > 0
+      if self.closed? && members.count > 0
         AddMember.create!(:person => person, :organization => self) unless self.already_request_membership?(person)
       else
-        self.affiliate(person, Profile::Roles.admin(environment.id)) if members_count == 0
+        self.affiliate(person, Profile::Roles.admin(environment.id)) if members.count == 0
         self.affiliate(person, Profile::Roles.member(environment.id))
       end
     else

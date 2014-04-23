@@ -13,7 +13,8 @@ class BoxesHelperTest < ActiveSupport::TestCase
 
   should 'include profile-specific header' do
     holder = mock
-    holder.stubs(:boxes).returns([])
+    holder.stubs(:boxes).returns(boxes = [])
+    boxes.stubs(:with_position).returns([])
     holder.stubs(:boxes_limit).returns(0)
     holder.stubs(:custom_header_expanded).returns('my custom header')
     @controller.stubs(:boxes_holder).returns(holder)
@@ -23,7 +24,8 @@ class BoxesHelperTest < ActiveSupport::TestCase
 
   should 'include profile-specific footer' do
     holder = mock
-    holder.stubs(:boxes).returns([])
+    holder.stubs(:boxes).returns(boxes = [])
+    boxes.stubs(:with_position).returns([])
     holder.stubs(:boxes_limit).returns(0)
     holder.stubs(:custom_footer_expanded).returns('my custom footer')
     @controller.stubs(:boxes_holder).returns(holder)
@@ -41,6 +43,7 @@ class BoxesHelperTest < ActiveSupport::TestCase
     p = create_user_with_blocks
     request = mock()
     request.expects(:path).returns(nil)
+    request.expects(:params).returns({})
 
 
     b = p.blocks.select{|bk| !bk.kind_of?(MainBlock) }[0]
@@ -49,7 +52,7 @@ class BoxesHelperTest < ActiveSupport::TestCase
     box.blocks = [b]
     box.save!
     expects(:display_block).with(b, '')
-    expects(:request).returns(request)
+    stubs(:request).returns(request)
     stubs(:block_target).returns('')
     expects(:locale).returns('en')
     with_box_decorator self do
@@ -61,6 +64,7 @@ class BoxesHelperTest < ActiveSupport::TestCase
     p = create_user_with_blocks
     request = mock()
     request.expects(:path).returns(nil)
+    request.expects(:params).returns({})
 
     b = p.blocks.select{|bk| !bk.kind_of?(MainBlock) }[0]
     b.display = 'never'; b.save!
@@ -68,7 +72,7 @@ class BoxesHelperTest < ActiveSupport::TestCase
     box.blocks = [b]
     box.save!
     expects(:display_block).with(b, '').never
-    expects(:request).returns(request)
+    stubs(:request).returns(request)
     stubs(:block_target).returns('')
     expects(:locale).returns('en')
     display_box_content(box, '')
@@ -105,9 +109,10 @@ class BoxesHelperTest < ActiveSupport::TestCase
     request = mock()
     box = Box.create!(:owner => fast_create(Profile))
     request.expects(:path).returns('/')
-    expects(:request).returns(request)
+    request.expects(:params).returns({})
+    stubs(:request).returns(request)
     expects(:locale).returns('en')
-    box_decorator.expects(:select_blocks).with([], {:article => nil, :request_path => '/', :locale => 'en'}).returns([])
+    box_decorator.expects(:select_blocks).with([], {:article => nil, :request_path => '/', :locale => 'en', :params => {}}).returns([])
 
     display_box_content(box, '')
   end
