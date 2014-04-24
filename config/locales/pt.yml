@@ -564,7 +564,7 @@
     controllers:
       profile:
         consumer: 
-          can_not_confirm_your_: "Não foi possível confirmar. Sua lista de pedido está vazia"
+          can_not_confirm_your_: "Não foi possível confirmar. Seu pedido está vazio"
           login_first: "Faça login primeiro"
           order_cancelled: "Pedido cancelado"
           order_confirmed: "Pedido confirmado"

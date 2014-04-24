@@ -1,4 +1,6 @@
-<div id="filter" class="with-actions wireframe-size">
+<% wireframe_size = true if wireframe_size.nil? %>
+
+<div id="filter" class="with-actions <%= "wireframe-size" if wireframe_size %>">
 
   <div class="title filter-box">
     <%= t('views.filter.filter') %>
