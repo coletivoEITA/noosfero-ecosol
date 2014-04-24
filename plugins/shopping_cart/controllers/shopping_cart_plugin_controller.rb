@@ -12,7 +12,7 @@ class ShoppingCartPluginController < PublicController
 
   def get
     config =
-      if cart.nil?
+      if cart.blank?
         { :profile_id => nil,
           :has_products => false,
           :visible => false,
@@ -29,7 +29,7 @@ class ShoppingCartPluginController < PublicController
   def add
     product = find_product(params[:id])
     if product && profile = validate_same_profile(product)
-      self.cart = { :profile_id => profile.id, :items => {} } if self.cart.nil?
+      self.cart = { :profile_id => profile.id, :items => {} } if self.cart.blank?
       self.cart[:items][product.id] = 0 if self.cart[:items][product.id].nil?
       self.cart[:items][product.id] += 1
       render :text => {
@@ -289,6 +289,9 @@ class ShoppingCartPluginController < PublicController
 
   def cart
     @cart ||= (cookies[cookie_key] && YAML.load(Base64.decode64(cookies[cookie_key]))) || {}
+    # migration from old variable name
+    @cart[:profile_id] ||= @cart[:enterprise_id] if @cart[:enterprise_id].present?
+    @cart
   end
 
   def cart=(data)
