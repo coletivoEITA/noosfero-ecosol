@@ -25,6 +25,7 @@ class Enterprise < Organization
   settings_items :organization_website, :historic_and_current_context, :activities_short_description, :zip_code, :city, :state, :country
 
   settings_items :products_per_catalog_page, :type => :integer, :default => 6
+  alias_method :products_per_catalog_page_before_type_cast, :products_per_catalog_page
   validates_numericality_of :products_per_catalog_page, :allow_nil => true, :greater_than => 0
 
   extend SetProfileRegionFromCityState::ClassMethods
