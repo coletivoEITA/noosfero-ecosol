@@ -14,7 +14,7 @@ class SuppliersPluginMyprofileController < MyProfileController
   helper SuppliersPlugin::SuppliersDisplayHelper
 
   def index
-    @suppliers = search_scope(profile.suppliers.except_self).paginate(:per_page => 10, :page => params[:page])
+    @suppliers = search_scope(profile.suppliers.except_self).paginate(:per_page => 30, :page => params[:page])
     @is_search = params[:name] or params[:active]
 
     respond_to do |format|

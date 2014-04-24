@@ -18,8 +18,8 @@ class OrdersPluginAdminController < MyProfileController
     @sales_month = profile.sales.latest.first.created_at.month rescue Date.today.month
     @sales_year = profile.sales.latest.first.created_at.year rescue Date.today.year
 
-    @purchases = profile.purchases.latest.by_month(@purchases_month).by_year(@purchases_year)
-    @sales = profile.sales.latest.by_month(@sales_month).by_year(@sales_year)
+    @purchases = profile.purchases.latest.by_month(@purchases_month).by_year(@purchases_year).paginate(:per_page => 30, :page => params[:page])
+    @sales = profile.sales.latest.by_month(@sales_month).by_year(@sales_year).paginate(:per_page => 30, :page => params[:page])
   end
 
   def filter

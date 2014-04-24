@@ -555,7 +555,7 @@
     controllers:
       profile:
         consumer: 
-          can_not_confirm_your_: "Can not confirm. Your order list is empty"
+          can_not_confirm_your_: "Can not confirm. Your order is empty"
           login_first: "Login first"
           order_cancelled: "Order cancelled"
           order_confirmed: "Order confirmed"

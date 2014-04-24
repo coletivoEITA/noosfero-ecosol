@@ -1,5 +1,5 @@
 <% orders = @orders unless defined? orders %>
-<% wireframe_size = true unless wireframe_size %>
+<% wireframe_size = true if wireframe_size.nil? %>
 
 <div class='orders-admin-index sortable-table checkable <%= "wireframe-size" if wireframe_size %>'>
   <% if orders.count == 0 %>
