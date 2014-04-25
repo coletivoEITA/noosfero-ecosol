@@ -267,7 +267,7 @@ class ShoppingCartPluginController < PublicController
       products_list[id] = {:quantity => quantity, :price => price, :name => product.name}
     end
 
-    OrdersPlugin::Order.create! :profile => environment.profiles.find(cart[:profile_id]), :consumer => user,
+    OrdersPlugin::Sale.create! :profile => environment.profiles.find(cart[:profile_id]), :consumer => user,
       :status => 'ordered', :products_list => products_list,
       :consumer_data => {
         :name => params[:name], :email => params[:email], :contact_phone => params[:contact_phone],
@@ -292,8 +292,8 @@ class ShoppingCartPluginController < PublicController
       begin
         cookies[cookie_key] && YAML.load(Base64.decode64(cookies[cookie_key])) || nil
       end
-    # migration from old variable name
-    @cart[:profile_id] ||= @cart[:enterprise_id] if @cart[:enterprise_id].present?
+    # migrate from old attribute
+    @cart[:profile_id] ||= @cart.delete(:enterprise_id) if @cart[:enterprise_id].present?
     @cart
   end
 

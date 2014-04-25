@@ -81,9 +81,9 @@ class ShoppingCartPluginMyprofileControllerTest < ActionController::TestCase
   end
 
   should 'group filtered orders products and quantities' do
-    p1 = fast_create(Product, :profile_id => enterprise.id, :price => 1, :name => 'p1')
-    p2 = fast_create(Product, :profile_id => enterprise.id, :price => 2, :name => 'p2')
-    p3 = fast_create(Product, :profile_id => enterprise.id, :price => 3)
+    p1 = fast_create(Product, :profile_id => profile.id, :price => 1, :name => 'p1')
+    p2 = fast_create(Product, :profile_id => profile.id, :price => 2, :name => 'p2')
+    p3 = fast_create(Product, :profile_id => profile.id, :price => 3)
     po1_products = {p1.id => {:quantity => 1, :price => p1.price, :name => p1.name}, p2.id => {:quantity => 2, :price => p2.price, :name => p2.name }}
     po2_products = {p2.id => {:quantity => 1, :price => p2.price, :name => p2.name }, p3.id => {:quantity => 2, :price => p3.price, :name => p3.name}}
     po1 = OrdersPlugin::Sale.create! :profile => profile, :products_list => po1_products, :status => 'confirmed'
