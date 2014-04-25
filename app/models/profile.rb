@@ -107,6 +107,7 @@ class Profile < ActiveRecord::Base
     Profile.column_names.map{|n| [Profile.table_name, n].join('.')}.join(',')
   end
 
+  named_scope :enabled, :conditions => { :enabled => true }
   named_scope :visible, :conditions => { :visible => true }
   named_scope :public, :conditions => { :visible => true, :public_profile => true }
 
@@ -759,7 +760,7 @@ private :generate_url, :url_options
   end
 
   include Noosfero::Plugin::HotSpot
-  
+
   def folder_types
     types = Article.folder_types
     plugins.dispatch(:content_types).each {|type|
