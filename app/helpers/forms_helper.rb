@@ -14,9 +14,10 @@ module FormsHelper
 
   def labelled_check_box( human_name, name, value = "1", checked = false, options = {} )
     options[:id] ||= 'checkbox-' + FormsHelper.next_id_number
-    hidden_field_tag(name, '0') +
+    content_tag 'div',
+      hidden_field_tag(name, '0', options ) +
       check_box_tag( name, value, checked, options ) +
-      content_tag( 'label', human_name, :for => options[:id] )
+      content_tag( 'label', human_name, options.merge(:for => options[:id]) )
   end
 
   def labelled_text_field( human_name, name, value=nil, options={} )
@@ -56,14 +57,14 @@ module FormsHelper
 
   def select_city( simple=false )
     states = State.find(:all, :order => 'name')
-    
+
     state_id = 'state-' + FormsHelper.next_id_number
     city_id = 'city-' + FormsHelper.next_id_number
 
     if states.length < 1
       return
     end
-    
+
     if simple
       states = [State.new(:name => _('Select the State'))] + states
       cities = [City.new(:name => _('Select the City'))]
@@ -87,7 +88,7 @@ module FormsHelper
       states = [State.new(:name => '---')] + states
       cities = [City.new(:name => '---')]
 
-      html = 
+      html =
       content_tag( 'div',
                    labelled_select( _('State:'), 'state', :id, :name, nil, states, :id => state_id ),
                    :class => 'select_state_for_origin' ) +
@@ -95,7 +96,7 @@ module FormsHelper
                    labelled_select( _('City:'), 'city', :id, :name, nil, cities, :id => city_id ),
                    :class => 'select_city_for_origin' )
     end
-    
+
     html +
     observe_field( state_id, :update => city_id, :function => "new Ajax.Updater(#{city_id.inspect}, #{url_for(:controller => 'search', :action => 'cities').inspect}, {asynchronous:true, evalScripts:true, parameters:'state_id=' + value}); $(#{city_id.inspect}).innerHTML = '<option>#{_('Loading...')}</option>'", :with => 'state_id')
   end

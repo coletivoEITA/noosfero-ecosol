@@ -239,8 +239,8 @@ module ApplicationHelper
   end
 
   def button_to_function(type, label, js_code, html_options = {}, &block)
-    html_options[:class] = "button with-text" unless html_options[:class]
-    html_options[:class] << " icon-#{type}"
+    html_options[:class] = "" unless html_options[:class]
+    html_options[:class] << " button with-text icon-#{type}"
     link_to_function(label, js_code, html_options, &block)
   end
 
@@ -525,9 +525,9 @@ module ApplicationHelper
     end
 
     @object = instance_variable_get("@#{object_name}")
-    @categories = environment.top_level_categories
+    @categories = environment.top_level_categories.alphabetical
 
-    @current_categories = environment.top_level_categories.select{|i| !i.children.empty?}
+    @current_categories = environment.top_level_categories.alphabetical.select{|i| !i.children.empty?}
     render :partial => 'shared/select_categories_top', :locals => {:object_name => object_name, :title => title, :title_size => title_size, :multiple => true, :categories_selected => @object.categories }, :layout => false
   end
 

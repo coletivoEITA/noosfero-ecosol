@@ -210,7 +210,7 @@ class Profile < ActiveRecord::Base
   end
 
   has_many :profile_categorizations, :conditions => [ 'categories_profiles.virtual = ?', false ]
-  has_many :categories, :through => :profile_categorizations
+  has_many :categories, :through => :profile_categorizations, :conditions => ['categories.visible_for_profiles = ?', true]
 
   has_many :profile_categorizations_including_virtual, :class_name => 'ProfileCategorization'
   has_many :categories_including_virtual, :through => :profile_categorizations_including_virtual, :source => :category
@@ -676,8 +676,7 @@ private :generate_url, :url_options
   end
 
   def accept_category?(cat)
-    forbidden = [ ProductCategory, Region ]
-    !forbidden.include?(cat.class)
+    cat.visible_for_profiles
   end
 
   include ActionView::Helpers::TextHelper

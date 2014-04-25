@@ -9662,6 +9662,18 @@ msgstr "Nova categoria"
 msgid "Display in the menu"
 msgstr "Mostrar no menu"
 
+#: app/views/categories/_form.rhtml
+msgid "Visible in profile categorization"
+msgstr "Visível na categorização de perfis"
+
+#: app/views/categories/_form.rhtml
+msgid "Visible in article categorization"
+msgstr "Visível na categorização de artigos"
+
+#: app/views/categories/_form.rhtml
+msgid "Is allowed to be a final category (if it's not allowed, the user will have to choose a subcategory)"
+msgstr "Pode ser categoria final (se não for categoria final, o usuário será obrigado a escolher uma categoria filha)"
+
 #: app/views/categories/_category.rhtml:7
 msgid "Show"
 msgstr "Mostrar"

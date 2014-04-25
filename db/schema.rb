@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140408172149) do
+ActiveRecord::Schema.define(:version => 20140425215033) do
 
   create_table "abuse_reports", :force => true do |t|
     t.integer  "reporter_id"
@@ -217,20 +217,23 @@ ActiveRecord::Schema.define(:version => 20140408172149) do
   create_table "categories", :force => true do |t|
     t.string  "name"
     t.string  "slug"
-    t.text    "path",            :default => ""
+    t.text    "path",                 :default => ""
     t.integer "display_color"
     t.integer "environment_id"
     t.integer "parent_id"
     t.string  "type"
     t.float   "lat"
     t.float   "lng"
-    t.boolean "display_in_menu", :default => false
-    t.integer "children_count",  :default => 0
-    t.boolean "accept_products", :default => true
+    t.boolean "display_in_menu",      :default => false
+    t.integer "children_count",       :default => 0
+    t.boolean "accept_products",      :default => true
     t.integer "image_id"
     t.string  "acronym"
     t.string  "abbreviation"
     t.text    "ancestry"
+    t.boolean "visible_for_articles", :default => true
+    t.boolean "visible_for_profiles", :default => true
+    t.boolean "choosable",            :default => true
   end
 
   add_index "categories", ["parent_id"], :name => "index_categories_on_parent_id"

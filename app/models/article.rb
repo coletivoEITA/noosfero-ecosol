@@ -57,7 +57,7 @@ class Article < ActiveRecord::Base
   has_many :comments, :class_name => 'Comment', :foreign_key => 'source_id', :dependent => :destroy, :order => 'created_at asc'
 
   has_many :article_categorizations, :conditions => [ 'articles_categories.virtual = ?', false ]
-  has_many :categories, :through => :article_categorizations
+  has_many :categories, :through => :article_categorizations, :conditions => ['categories.visible_for_articles = ?', true]
 
   has_many :article_categorizations_including_virtual, :class_name => 'ArticleCategorization'
   has_many :categories_including_virtual, :through => :article_categorizations_including_virtual, :source => :category
@@ -520,7 +520,7 @@ class Article < ActiveRecord::Base
   end
 
   def accept_category?(cat)
-    !cat.is_a?(ProductCategory)
+    cat.visible_for_articles
   end
 
   def public?

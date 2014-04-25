@@ -230,7 +230,7 @@ class CmsController < MyProfileController
     @categories = @toplevel_categories = environment.top_level_categories
     if params[:category_id]
       @current_category = Category.find(params[:category_id])
-      @categories = @current_category.children
+      @categories = @current_category.children.alphabetical
     end
     render :partial => 'shared/select_categories', :locals => {:object_name => 'article', :multiple => true}, :layout => false
   end

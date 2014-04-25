@@ -610,12 +610,10 @@ class ProfileTest < ActiveSupport::TestCase
     assert_includes profile.categories_including_virtual(true), pcat
   end
 
-  should 'not accept product category as category' do
-    assert !Profile.new.accept_category?(ProductCategory.new)
-  end
-
-  should 'not accept region as a category' do
-    assert !Profile.new.accept_category?(Region.new)
+  should 'accept only visible categories' do
+    cat = ProductCategory.new
+    cat.visible_for_profiles = false
+    assert !Profile.new.accept_category?(cat)
   end
 
   should 'query region for location' do

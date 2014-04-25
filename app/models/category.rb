@@ -15,10 +15,12 @@ class Category < ActiveRecord::Base
   validates_inclusion_of :display_color, :in => 1..15, :allow_nil => true
   validates_uniqueness_of :display_color, :scope => :environment_id, :if => (lambda { |cat| ! cat.display_color.nil? }), :message => N_('{fn} was already assigned to another category.').fix_i18n
 
-  # Finds all top level categories for a given environment. 
+  # Finds all top level categories for a given environment.
   named_scope :top_level_for, lambda { |environment|
     {:conditions => ['parent_id is null and environment_id = ?', environment.id ]}
   }
+
+  named_scope :alphabetical, :order => 'name ASC'
 
   named_scope :on_level, lambda { |parent| {:conditions => {:parent_id => parent}} }
 
@@ -45,6 +47,8 @@ class Category < ActiveRecord::Base
       { :conditions => { :type => types } } :
       { :conditions => [ "type IN (?) OR type IS NULL", types.reject{ |t| t.blank? } ] }
   }
+
+  after_save :change_children_choosable
 
   def recent_people(limit = 10)
     self.people.paginate(:order => 'created_at DESC, id DESC', :page => 1, :per_page => limit)
@@ -82,6 +86,10 @@ class Category < ActiveRecord::Base
     display_in_menu
   end
 
+  def may_change_choosable?
+    self.children.present? and (self.parent.blank? or not self.parent.choosable)
+  end
+
   def children_for_menu
     results = []
     pending = children.find(:all, :conditions => { :display_in_menu => true})
@@ -97,6 +105,16 @@ class Category < ActiveRecord::Base
   def is_leaf_displayable_in_menu?
     return false if self.display_in_menu == false
     self.children.find(:all, :conditions => {:display_in_menu => true}).empty?
+  end
+
+  protected
+
+  def change_children_choosable
+    if not self.choosable_was and self.choosable
+      self.children.each do |child|
+        child.update_attribute :choosable, true
+      end
+    end
   end
 
 end

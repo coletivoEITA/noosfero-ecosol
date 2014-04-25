@@ -453,8 +453,10 @@ class ArticleTest < ActiveSupport::TestCase
     assert_includes categories_including_virtual, c3
   end
 
-  should 'not accept Product category as category' do
-    assert !Article.new.accept_category?(ProductCategory.new)
+  should 'accept only visible categories' do
+    cat = ProductCategory.new
+    cat.visible_for_articles = false
+    assert !Article.new.accept_category?(cat)
   end
 
   should 'accept published attribute' do
