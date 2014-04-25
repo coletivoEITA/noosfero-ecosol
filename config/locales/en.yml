@@ -329,6 +329,7 @@
         none: "none"
         select: "select"
         with_selection: "with selected"
+        with_filter: "with search"
         activate: "activate"
         deactivate: "deactivate"
 
