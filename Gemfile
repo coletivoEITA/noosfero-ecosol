@@ -28,6 +28,8 @@ gem 'mime-types', '< 2.0'
 gem 'locale', '2.0.9'
 
 group :production do
+  gem 'unicorn'
+  gem 'unicorn-worker-killer'
   gem 'thin', '1.2.4'
   gem 'exception_notification', '1.0.20090728'
   gem 'system_timer'
