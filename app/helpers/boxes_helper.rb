@@ -158,8 +158,10 @@ module BoxesHelper
       custom_design = context[:controller].class.custom_design
       if custom_design[:insert] and box.position == custom_design[:insert][:box]
         position, klass = custom_design[:insert][:position], custom_design[:insert][:block]
-        block = klass.new :box => box
-        arr = arr.insert position, block
+        if not box.blocks.map(&:class).include? klass
+          block = klass.new :box => box
+          arr = arr.insert position, block
+        end
       end
 
       arr
