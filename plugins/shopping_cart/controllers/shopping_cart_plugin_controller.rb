@@ -293,7 +293,7 @@ class ShoppingCartPluginController < PublicController
         cookies[cookie_key] && YAML.load(Base64.decode64(cookies[cookie_key])) || nil
       end
     # migrate from old attribute
-    @cart[:profile_id] ||= @cart.delete(:enterprise_id) if @cart[:enterprise_id].present?
+    @cart[:profile_id] ||= @cart.delete(:enterprise_id) if @cart and @cart[:enterprise_id].present?
     @cart
   end
 
