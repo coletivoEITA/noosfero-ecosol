@@ -4,7 +4,7 @@ port = 50000
 
 working_directory rails_root
 
-worker_processes 1
+worker_processes 12
 timeout 30
 
 #stderr_path "#{rails_root}/log/unicorn.stderr.log"
