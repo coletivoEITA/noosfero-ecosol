@@ -338,6 +338,7 @@
         none: "nenhum"
         select: "selecionar"
         with_selection: "com selecionados"
+        with_filter: "com a busca"
         activate: "ativar"
         deactivate: "desativar"
 
