@@ -65,7 +65,7 @@ module BoxesHelper
   end
 
   def display_box_content(box, main_content)
-    context = { :article => @page, :request_path => request.path, :locale => locale, :params => request.params }
+    context = { :article => @page, :request_path => request.path, :locale => locale, :params => request.params, :controller => @controller }
     box_decorator.select_blocks(box, box.blocks.includes(:box), context).map do |item|
       display_block item, main_content
     end.join("\n") + box_decorator.block_target(box)
