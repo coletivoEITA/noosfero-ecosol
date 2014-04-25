@@ -53,6 +53,13 @@ class EnvironmentTest < ActiveSupport::TestCase
     assert !v.enabled?('feature1') && !v.enabled?('feature2') && !v.enabled?('feature3')
   end
 
+  def test_default_enabled_features_are_enabled
+    environment = Environment.create(:name => 'Testing')
+    Environment::DEFAULT_FEATURES.each do |features|
+      assert environment.enabled?(features)
+    end
+  end
+
   def test_name_is_mandatory
     v = Environment.new
     v.valid?
@@ -500,15 +507,15 @@ class EnvironmentTest < ActiveSupport::TestCase
   should 'set templates' do
     e = fast_create(Environment)
 
-    comm = fast_create(Community)
+    comm = fast_create(Community, :is_template => true)
     e.community_template = comm
     assert_equal comm, e.community_template
 
-    person = fast_create(Person)
+    person = fast_create(Person, :is_template => true)
     e.person_template = person
     assert_equal person, e.person_template
 
-    enterprise = fast_create(Enterprise)
+    enterprise = fast_create(Enterprise, :is_template => true)
     e.enterprise_template = enterprise
     assert_equal enterprise, e.enterprise_template
   end
@@ -1217,6 +1224,27 @@ class EnvironmentTest < ActiveSupport::TestCase
       environment.redirection_after_login = redirection
       environment.save
       assert !environment.errors.invalid?(:redirection_after_login)
+    end
+  end
+
+  should 'return a Hash on signup redirection options' do
+    assert_kind_of Hash, Environment.signup_redirection_options
+  end
+
+  should 'respond to redirection after signup' do
+    assert_respond_to Environment.new, :redirection_after_signup
+  end
+
+  should 'allow only environment signup redirection options' do
+    environment = fast_create(Environment)
+    environment.redirection_after_signup = 'invalid_option'
+    environment.save
+    assert environment.errors.invalid?(:redirection_after_signup)
+
+    Environment.signup_redirection_options.keys.each do |redirection|
+      environment.redirection_after_signup = redirection
+      environment.save
+      assert !environment.errors.invalid?(:redirection_after_signup)
     end
   end
 

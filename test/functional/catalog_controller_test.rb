@@ -47,7 +47,7 @@ class CatalogControllerTest < ActionController::TestCase
 
     assert_equal 12, @enterprise.products.count
     get :index, :profile => @enterprise.identifier
-    assert_equal 9, assigns(:products).count
+    assert_equal 6, assigns(:products).count
     assert_tag :a, :attributes => {:class => 'next_page'}
   end
 
@@ -170,25 +170,6 @@ class CatalogControllerTest < ActionController::TestCase
     assert_tag :tag => 'img', :attributes => { :class => 'star', :src => /star.png/ }
   end
 
-  should 'display categories and sub-categories link' do
-    pc1 = ProductCategory.create!(:name => "PC1", :environment => @enterprise.environment)
-    pc2 = ProductCategory.create!(:name => "PC2", :environment => @enterprise.environment, :parent_id => pc1.id)
-    pc3 = ProductCategory.create!(:name => "PC3", :environment => @enterprise.environment, :parent_id => pc1.id)
-    pc4 = ProductCategory.create!(:name => "PC4", :environment => @enterprise.environment, :parent_id => pc2.id)
-    p1 = fast_create(Product, :product_category_id => pc1.id, :profile_id => @enterprise.id)
-    p2 = fast_create(Product, :product_category_id => pc2.id, :profile_id => @enterprise.id)
-    p3 = fast_create(Product, :product_category_id => pc3.id, :profile_id => @enterprise.id)
-    p4 = fast_create(Product, :product_category_id => pc4.id, :profile_id => @enterprise.id)
-
-    get :index, :profile => @enterprise.identifier
-
-    assert_tag :tag => 'a', :attributes => {:href => /level=#{pc1.id}/}
-    assert_tag :tag => 'a', :attributes => {:href => /level=#{pc2.id}/}
-    assert_tag :tag => 'a', :attributes => {:href => /level=#{pc3.id}/}
-    assert_no_tag :tag => 'a', :attributes => {:href => /level=#{pc4.id}/}
-  end
-
-
   should 'display categories on breadcrumb' do
     pc1 = ProductCategory.create!(:name => "PC1", :environment => @enterprise.environment)
     pc2 = ProductCategory.create!(:name => "PC2", :environment => @enterprise.environment, :parent_id => pc1.id)
@@ -236,8 +217,8 @@ class CatalogControllerTest < ActionController::TestCase
   end
 
   should 'use price_detail name instead of production_cost name straight' do
-    p1 = fast_create(Product, :product_category_id => @product_category.id, :enterprise_id => @enterprise.id)
-    p2 = fast_create(Product, :product_category_id => @product_category.id, :enterprise_id => @enterprise.id)
+    p1 = fast_create(Product, :product_category_id => @product_category.id, :profile_id => @enterprise.id)
+    p2 = fast_create(Product, :product_category_id => @product_category.id, :profile_id => @enterprise.id)
     Product.any_instance.stubs(:price_described?).returns(true)
     production_cost = fast_create(ProductionCost)
     pd1 = PriceDetail.create!(:product => p1, :production_cost => production_cost)
