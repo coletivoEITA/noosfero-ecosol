@@ -3,7 +3,7 @@
 
 <div class="fields">
   <% unless order.self_supplier? %>
-    <div class="box-field actor-name">
+    <div class="box-field supplier">
       <%= item.product.supplier.abbreviation_or_name %>
     </div>
   <% end %>
@@ -14,7 +14,7 @@
 
   <div class="box-field quantity-price-table">
     <%# render 'orders_plugin_item/quantity_price', :item => item, :status => 'ordered', :edit_only => false, :f => f, :actor_name => actor_name %>
-    <% OrdersPlugin::Order::Statuses.each_with_index do |status, i| %>
+    <% OrdersPlugin::Order::Statuses.each do |status| %>
       <%= render 'orders_plugin_item/quantity_price', :item => item, :status => status, :edit_only => false, :f => f, :actor_name => actor_name %>
       <% break unless item.order.status_on? status %>
     <% end %>
@@ -26,16 +26,15 @@
 
   <div class="actions">
 
-    <% if @admin %>
-      <%= link_to_function t('orders_plugin.views.item._edit.remove_from_order'), "jQuery(this).parents('.value-row').remove();"  %>
-
-    <% elsif f %>
-
+    <% if f %>
       <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(:controller => :orders_plugin_item, :action => :edit, :id => item.id)}')", :class => 'action-button' %>
 
-      <%= link_to_remote t('orders_plugin.views.item._edit.remove_from_order'), :update => "item-#{item.id}",
-        :loading => "loading_overlay.show('#item-#{item.id}')", :loaded => "loading_overlay.hide('#item-#{item.id}')",
-        :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? user, @admin %>
+      <% if @admin %>
+      <% else %>
+        <%= link_to_remote t('orders_plugin.views.item._edit.remove_from_order'), :update => "item-#{item.id}",
+          :loading => "loading_overlay.show('#item-#{item.id}')", :loaded => "loading_overlay.hide('#item-#{item.id}')",
+          :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? user, @admin %>
+      <% end %>
 
     <% end %>
   </div>

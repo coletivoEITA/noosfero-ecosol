@@ -602,11 +602,12 @@
       admin:
         index: 
           no_orders_to_show: "No orders to show."
-          code: "Code"
-          consumer: "Consumer"
-          last_update: "Last update"
-          order_date: "Orders' date"
-          total: "Total (%{currency})"
+          code: "code"
+          consumer: "consumer"
+          last_update: "last update"
+          order_date: "orders' date"
+          total: "total (%{currency})"
+          situation: "situation"
         _edit: 
           actions: Actions
           add_product: "add product"
