@@ -832,6 +832,7 @@
           code: "%{code}."
           orders_cycles: "Ciclos de pedidos"
           place_an_order: "Faça um pedido"
+          place_another_order: "Faça um outro pedido"
           there_s_no_open_sessi: "Nã há ciclos abertos"
           your_orders: "Seus pedidos:"
       product: 

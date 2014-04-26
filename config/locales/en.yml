@@ -827,6 +827,7 @@
           code: "%{code}."
           orders_cycles: "Orders' cycles"
           place_an_order: "Place an order"
+          place_another_order: "Place another order"
           there_s_no_open_sessi: "There's no open cycle"
           your_orders: "Your orders:"
       product: 
