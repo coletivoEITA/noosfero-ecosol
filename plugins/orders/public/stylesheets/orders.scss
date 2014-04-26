@@ -16,21 +16,31 @@
 
 .orders-admin-index {
 
-  .box-field {
-    &.code {
-      width: $module01;
+  &.sortable-table {
+
+    & > .table-header .box-field {
+      text-transform: none;
     }
-    &.actor-name {
-      width: $module04;
-    }
-    &.order-date {
-      width: $module02;
-    }
-    &.last-update {
-      width: $module02;
-    }
-    &.total {
-      width: $module01;
+
+    .box-field {
+      &.code {
+        width: $module01;
+      }
+      &.actor-name {
+        width: $module04;
+      }
+      &.order-date {
+        width: $module02;
+      }
+      &.last-update {
+        width: $module02;
+      }
+      &.total {
+        width: $module01;
+      }
+      &.situation {
+        width: $module02;
+      }
     }
   }
 
@@ -49,6 +59,21 @@
         .empty-order {
           text-align: center;
           margin-bottom: $padding;
+        }
+      }
+    }
+
+    &.draft, &.cancelled {
+      .box-view {
+        .box-field {
+          color: #999;
+        }
+      }
+    }
+    &.cancelled {
+      .box-view {
+        .box-field {
+          text-decoration: line-through;
         }
       }
     }

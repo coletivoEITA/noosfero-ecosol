@@ -602,11 +602,12 @@
       admin:
         index: 
           no_orders_to_show: "No orders to show."
-          code: "Code"
-          consumer: "Consumer"
-          last_update: "Last update"
-          order_date: "Orders' date"
-          total: "Total (%{currency})"
+          code: "code"
+          consumer: "consumer"
+          last_update: "last update"
+          order_date: "orders' date"
+          total: "total (%{currency})"
+          situation: "situation"
         _edit: 
           actions: Actions
           add_product: "add product"
@@ -827,6 +828,7 @@
           code: "%{code}."
           orders_cycles: "Orders' cycles"
           place_an_order: "Place an order"
+          place_another_order: "Place another order"
           there_s_no_open_sessi: "There's no open cycle"
           your_orders: "Your orders:"
       product: 

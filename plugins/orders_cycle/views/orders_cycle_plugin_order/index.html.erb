@@ -21,7 +21,7 @@
 
       <%= render :partial => 'orders_cycle_plugin_cycle/view_dates', :locals => {:cycle => cycle} %>
 
-      <% orders = cycle.sales.for_consumer @consumer %>
+      <% orders = cycle.sales.not_cancelled.for_consumer @consumer %>
       <% if orders.count > 0 %>
         <div>
           <strong><%= t('views.order.index.your_orders') %></strong>
@@ -34,6 +34,7 @@
             <div class="clean"></div>
           </div>
         </div>
+        <%= link_to t('views.order.index.place_another_order'), {:action => :new, :cycle_id => cycle.id}, :id => 'consumer-new-order' if cycle.orders? and not @consumer.nil?%>
       <% else %>
         <%= link_to t('views.order.index.place_an_order'), {:action => :new, :cycle_id => cycle.id}, :id => 'consumer-new-order' if cycle.orders? and not @consumer.nil?%>
       <% end %>

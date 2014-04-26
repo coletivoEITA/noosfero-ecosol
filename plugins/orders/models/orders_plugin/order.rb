@@ -25,6 +25,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   named_scope :draft,     :conditions => {:status => 'draft'}
   named_scope :planned,   :conditions => {:status => 'planned'}
   named_scope :cancelled, :conditions => {:status => 'cancelled'}
+  named_scope :not_cancelled, :conditions => ["status <> 'cancelled'"]
   named_scope :ordered,   :conditions => ['ordered_at IS NOT NULL']
   named_scope :confirmed, :conditions => ['ordered_at IS NOT NULL']
   named_scope :accepted,  :conditions => ['accepted_at IS NOT NULL']
@@ -131,6 +132,17 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
   def status_message
     I18n.t StatusText[current_status]
+  end
+
+  def situation
+    current_index = UserStatuses.index self.current_status
+    statuses = []
+    UserStatuses.each_with_index do |status, i|
+      statuses << status if Statuses.include? status
+      break if i >= current_index
+    end
+    statuses << Statuses.first if statuses.empty?
+    statuses
   end
 
   def may_view? user
