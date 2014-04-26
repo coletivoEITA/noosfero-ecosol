@@ -43,8 +43,7 @@ end
 
 group :development do
   gem 'rdoc'
-  gem 'mongrel', '1.1.5'
-  gem 'mongrel_cluster', '1.0.5'
+  gem 'active_reload'
 end
 
 group :databases do
