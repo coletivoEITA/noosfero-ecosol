@@ -1,4 +1,5 @@
 <% wireframe_size = true if wireframe_size.nil? %>
+<% other_actor_name = if actor_name == :supplier then :consumer else actor_name end %>
 
 <div id="filter" class="with-actions <%= "wireframe-size" if wireframe_size %>">
 
@@ -15,7 +16,7 @@
     <%= hidden_field_tag 'context_id', context_id %>
 
     <div class="fields filter-box">
-      <%= render 'orders_plugin_admin/filter_fields', :actor_name => actor_name, :actors => actors, :orders_context => orders_context, :year => year, :month => month %>
+      <%= render 'orders_plugin_admin/filter_fields', :actor_name => other_actor_name, :actors => actors, :orders_context => orders_context, :year => year, :month => month %>
     </div>
 
     <div class="submit">

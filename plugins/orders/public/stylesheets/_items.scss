@@ -27,14 +27,13 @@
   }
 
   .order-items {
-    max-height: 300px;
 
     .table-header {
       @extend .container-clean;
     }
     //.item do overflow, so no overflow:hidden for its parents (.table-content)
 
-    &.self-supplier {
+    &.self-actor-name {
       .box-field {
         &.product {
           width: $module03 - $intercolumn;
@@ -62,7 +61,7 @@
         border-right: none;
       }
 
-      &.supplier {
+      &.actor-name {
         width: $module02 - $intercolumn/2;
       }
       &.product {
@@ -74,7 +73,10 @@
           width: $module01;
         }
       }
-      .price-total {
+      &.price-total {
+        width: $module01;
+      }
+      &.status {
         width: $module01;
       }
     }
@@ -92,6 +94,9 @@
 
   .table-content {
 
+    .order-items-scroll {
+      max-height: 350px;
+    }
     .item {
 
       .fields {

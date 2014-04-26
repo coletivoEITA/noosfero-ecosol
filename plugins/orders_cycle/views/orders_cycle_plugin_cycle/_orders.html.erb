@@ -6,5 +6,6 @@
   <% end %>
 <% end %>
 
-<%= render 'orders_plugin_admin/sales', :actors => @cycle.consumers, :orders_context => :cycle, :context_id => @cycle.id, :orders => @cycle.sales %>
+<% sales = @cycle.sales.paginate(:per_page => 30, :page => params[:page]) %>
+<%= render 'orders_plugin_admin/sales', :actors => @cycle.consumers, :orders_context => :cycle, :context_id => @cycle.id, :orders => sales %>
 

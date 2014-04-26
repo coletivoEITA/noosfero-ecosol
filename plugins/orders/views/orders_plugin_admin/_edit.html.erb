@@ -1,9 +1,11 @@
+<% other_actor_name = if actor_name == :supplier then :consumer else actor_name end %>
+
 <div class="box-view with-inner">
   <div class="box-field select" toggle-ignore><%= check_box_tag "order_ids[]", order.id %></div>
 
   <div class="box-view-inner">
     <span class='box-field code'><%= order.code %></span>
-    <span class='box-field actor-name box-edit-link'><%= order.send("#{actor_name}_data")[:name] %></span>
+    <span class='box-field actor-name box-edit-link'><%= order.send("#{other_actor_name}_data")[:name] %></span>
     <span class='box-field order-date'><%= datetime_full order.created_at %></span>
     <span class='box-field last-update'><%= datetime_full order.updated_at %></span>
     <span class='box-field total'><%= order.total_price_consumer_ordered_as_currency_number %></span>
@@ -28,7 +30,7 @@
         <%= render 'orders_plugin_item/index', :order => order, :f => f, :actor_name => actor_name %>
       </div>
 
-      <% if actor_name == :consumer and order.open? %>
+      <% if actor_name == :supplier and order.open? %>
 
         <div>
           <%= check_box_tag 'warn_consumer', 1, false, :onchange => "jQuery(this).parent().next().toggle(this.checked); jQuery(this).siblings('.subtitle').toggle(this.checked);" %>
@@ -57,16 +59,14 @@
     <% end %>
   <% end %>
 
-  <% if f %>
-    <div class="actions-bar">
-      <%# link_to_function t('orders_plugin.views.admin._edit.remove_order'), '' if order.cycle.orders? %>
-      <%# link_to t('orders_plugin.views.admin._edit.edit_on_the_order_pag'), {:controller => :orders_plugin_consumer, :action => :edit, :id => order.id}, :target => '_blank' %>
-      <%= colorbox_link_to t('orders_plugin.views.admin._edit.message_to_member'), {:controller => :orders_plugin_message, :action => :new_to_consumer_for_order, :order_id => order.id} %>
-      <strong><%= t('orders_plugin.views.admin._edit.actions') %></strong>
+  <div class="actions-bar">
+    <%# link_to_function t('orders_plugin.views.admin._edit.remove_order'), '' if order.cycle.orders? %>
+    <%# link_to t('orders_plugin.views.admin._edit.edit_on_the_order_pag'), {:controller => :orders_plugin_consumer, :action => :edit, :id => order.id}, :target => '_blank' %>
+    <%= colorbox_link_to t('orders_plugin.views.admin._edit.message_to_member'), {:controller => :orders_plugin_message, :action => :new_to_consumer_for_order, :order_id => order.id} %>
+    <strong><%= t('orders_plugin.views.admin._edit.actions') %></strong>
 
-      <div class="clean"></div>
-    </div>
-  <% end %>
+    <div class="clean"></div>
+  </div>
 
   <div class="clean"></div>
 </div>

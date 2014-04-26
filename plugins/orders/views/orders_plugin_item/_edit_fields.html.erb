@@ -3,7 +3,7 @@
 
 <div class="fields">
   <% unless order.self_supplier? %>
-    <div class="box-field supplier">
+    <div class="box-field actor-name">
       <%= item.product.supplier.abbreviation_or_name %>
     </div>
   <% end %>
@@ -13,16 +13,11 @@
   </div>
 
   <div class="box-field quantity-price-table">
-    <%= render 'orders_plugin_item/quantity_price', :item => item, :status => 'ordered', :edit_only => false, :f => f, :actor_name => actor_name %>
-    <%# OrdersPlugin::Order::Statuses.each_with_index do |status, i| %>
-      <%# if item.order.status_on? status %>
-        <%# render 'orders_plugin_item/quantity_price', :item => item, :status => status, :edit_only => false, :f => f, :actor_name => actor_name %>
-      <%# elsif f and OrdersPlugin::Item::StatusAccessMap[status] == actor_name %>
-        <%# render 'orders_plugin_item/quantity_price', :item => item, :status => status, :edit_only => true, :f => f, :actor_name => actor_name %>
-        <%# break %>
-      <%# end %>
-
-    <%# end %>
+    <%# render 'orders_plugin_item/quantity_price', :item => item, :status => 'ordered', :edit_only => false, :f => f, :actor_name => actor_name %>
+    <% OrdersPlugin::Order::Statuses.each_with_index do |status, i| %>
+      <%= render 'orders_plugin_item/quantity_price', :item => item, :status => status, :edit_only => false, :f => f, :actor_name => actor_name %>
+      <% break unless item.order.status_on? status %>
+    <% end %>
   </div>
 
 </div>
