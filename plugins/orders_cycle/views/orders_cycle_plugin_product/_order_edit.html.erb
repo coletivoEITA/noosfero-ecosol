@@ -1,7 +1,7 @@
 <div class="box-view with-inner">
   <div class="box-field select">
     <% if editable %>
-      <% options = {:onclick => 'return true', :onchange => "return orders_cycle.order.product.checkbox_click(this, #{product.id})"} %>
+      <% options = {} %>
     <% else %>
       <% options = {:disabled => "disabled"} %>
     <% end %>

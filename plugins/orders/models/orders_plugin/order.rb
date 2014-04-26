@@ -25,6 +25,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   named_scope :draft,     :conditions => {:status => 'draft'}
   named_scope :planned,   :conditions => {:status => 'planned'}
   named_scope :cancelled, :conditions => {:status => 'cancelled'}
+  named_scope :not_cancelled, :conditions => ["status <> 'cancelled'"]
   named_scope :ordered,   :conditions => ['ordered_at IS NOT NULL']
   named_scope :confirmed, :conditions => ['ordered_at IS NOT NULL']
   named_scope :accepted,  :conditions => ['accepted_at IS NOT NULL']
