@@ -607,7 +607,7 @@
           product: "produto"
           quantity: "qtd"
           price_total: "valor (%{currency})"
-          status_updated: "etapa modif."
+          status: "etapa"
       admin:
         index: 
           no_orders_to_show: "Nenhum pedido para visualizar."

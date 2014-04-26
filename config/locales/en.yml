@@ -598,7 +598,7 @@
           product: "product"
           quantity: "qty"
           price_total: "value (%{currency})"
-          status_updated: "status w/ update"
+          status: "status"
       admin:
         index: 
           no_orders_to_show: "No orders to show."

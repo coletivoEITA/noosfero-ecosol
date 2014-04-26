@@ -14,13 +14,15 @@
 
   <% if @purchases.present? %>
     <div id='purchases'>
-      <%= render 'orders_plugin_admin/purchases', :actors => profile.suppliers.except_self, :orders_context => :profile, :orders => @purchases, :month => @purchases_month, :year => @purchases_year %>
+      <%= render 'orders_plugin_admin/purchases', :actors => profile.suppliers.except_self, :orders_context => :profile, :orders => @purchases,
+        :month => @purchases_month, :year => @purchases_year, :wireframe_size => false %>
     </div>
   <% end %>
 
   <% if @sales.present? %>
     <div id='sales'>
-      <%= render 'orders_plugin_admin/sales', :actors => profile.consumers.except_self, :orders_context => :profile, :orders => @sales, :month => @sales_month, :year => @purchases_year %>
+      <%= render 'orders_plugin_admin/sales', :actors => profile.consumers.except_self, :orders_context => :profile, :orders => @sales,
+        :month => @sales_month, :year => @purchases_year, :wireframe_size => false %>
     </div>
   <% end %>
 </div>

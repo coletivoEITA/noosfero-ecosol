@@ -1446,35 +1446,37 @@
       text-transform: uppercase; }
     .order-items-container .order-total .value {
       clear: both; }
-  .order-items-container .order-items {
-    max-height: 300px; }
-    .order-items-container .order-items.self-supplier .box-field.product {
-      width: 208px; }
-    .order-items-container .order-items.self-supplier .box-field.quantity, .order-items-container .order-items.self-supplier .box-field.quantity input {
-      width: 144px; }
-    .order-items-container .order-items.self-supplier .box-field.price-total {
+  .order-items-container .order-items.self-actor-name .box-field.product {
+    width: 208px; }
+  .order-items-container .order-items.self-actor-name .box-field.quantity, .order-items-container .order-items.self-actor-name .box-field.quantity input {
+    width: 144px; }
+  .order-items-container .order-items.self-actor-name .box-field.price-total {
+    width: 64px; }
+  .order-items-container .order-items .box-field {
+    float: left;
+    padding: 4px 8px;
+    padding-right: 7px;
+    border-right: 1px solid white; }
+    .order-items-container .order-items .box-field:last-child {
+      border-right: none; }
+    .order-items-container .order-items .box-field.actor-name {
+      width: 136px; }
+    .order-items-container .order-items .box-field.product {
+      width: 136px; }
+    .order-items-container .order-items .box-field.quantity, .order-items-container .order-items .box-field.quantity input {
       width: 64px; }
-    .order-items-container .order-items .box-field {
-      float: left;
-      padding: 4px 8px;
-      padding-right: 7px;
-      border-right: 1px solid white; }
-      .order-items-container .order-items .box-field:last-child {
-        border-right: none; }
-      .order-items-container .order-items .box-field.supplier {
-        width: 136px; }
-      .order-items-container .order-items .box-field.product {
-        width: 136px; }
-      .order-items-container .order-items .box-field.quantity, .order-items-container .order-items .box-field.quantity input {
-        width: 64px; }
-      .order-items-container .order-items .box-field .price-total {
-        width: 64px; }
+    .order-items-container .order-items .box-field.price-total {
+      width: 64px; }
+    .order-items-container .order-items .box-field.status {
+      width: 64px; }
   .order-items-container .table-header, .order-items-container .table-content {
     border-bottom: 1px solid black; }
   .order-items-container .table-header {
     font-weight: bold;
     font-size: 8px;
     text-transform: uppercase; }
+  .order-items-container .table-content .order-items-scroll {
+    max-height: 350px; }
   .order-items-container .table-content .item .fields {
     display: table; }
     .order-items-container .table-content .item .fields .box-field {
@@ -1546,6 +1548,10 @@
     padding-right: 16px; }
   .order-box, .order-box .order-items-scroll, .order-box .order-items, .order-box .item {
     width: 464px; }
+  .order-box.admin {
+    border: 1px solid black; }
+    .order-box.admin, .order-box.admin .order-items-scroll, .order-box.admin .order-items, .order-box.admin .item {
+      width: 544px; }
   .order-box .order-header {
     padding: 4px 8px;
     border-bottom: 1px solid black;

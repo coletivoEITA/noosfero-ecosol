@@ -1,3 +1,6 @@
+# WORKAROUND
+require_dependency 'noosfero/plugin/active_record'
+
 class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
   serialize :data
