@@ -611,10 +611,11 @@
       admin:
         index: 
           no_orders_to_show: "Nenhum pedido para visualizar."
-          code: "Código"
-          last_update: "Últ. atualização"
-          order_date: "Data do pedido"
-          total: "Total (%{currency})"
+          code: "código"
+          last_update: "últ. atualização"
+          order_date: "data do pedido"
+          total: "total (%{currency})"
+          situation: "situação"
         _edit: 
           actions: Ações
           add_product: "adicionar produto"

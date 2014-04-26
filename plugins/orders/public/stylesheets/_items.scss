@@ -33,7 +33,7 @@
     }
     //.item do overflow, so no overflow:hidden for its parents (.table-content)
 
-    &.self-actor-name {
+    &.self-supplier {
       .box-field {
         &.product {
           width: $module03 - $intercolumn;
@@ -61,7 +61,7 @@
         border-right: none;
       }
 
-      &.actor-name {
+      &.supplier {
         width: $module02 - $intercolumn/2;
       }
       &.product {

@@ -134,6 +134,17 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     I18n.t StatusText[current_status]
   end
 
+  def situation
+    current_index = UserStatuses.index self.current_status
+    statuses = []
+    UserStatuses.each_with_index do |status, i|
+      statuses << status if Statuses.include? status
+      break if i >= current_index
+    end
+    statuses << Statuses.first if statuses.empty?
+    statuses
+  end
+
   def may_view? user
     @may_view ||= self.profile.admins.include?(user) or (self.consumer == user)
   end

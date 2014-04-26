@@ -12,13 +12,14 @@
       <span class='box-field order-date'><%= t('orders_plugin.views.admin.index.order_date') %></span>
       <span class='box-field last-update'><%= t('orders_plugin.views.admin.index.last_update') %></span>
       <span class='box-field total'><%= t('orders_plugin.views.admin.index.total') % {:currency => environment.currency_unit} %></span>
+      <span class='box-field situation'><%= t('orders_plugin.views.admin.index.situation') %></span>
 
       <div class="clean"></div>
     </div>
 
     <div class='table-content'>
       <% orders.each do |order| %>
-        <div id="order-<%=order.id%>" class="order value-row" toggle-edit="orders.admin.toggle_edit();">
+        <div id="order-<%=order.id%>" class="order value-row <%=order.status%>" toggle-edit="orders.admin.toggle_edit();">
           <%= render 'orders_plugin_admin/edit', :actor_name => actor_name, :order => order, :actor_name => actor_name %>
         </div>
       <% end %>
