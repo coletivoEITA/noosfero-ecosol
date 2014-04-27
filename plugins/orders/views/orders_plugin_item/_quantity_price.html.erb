@@ -1,4 +1,4 @@
-<div class="quantity-price-row <%=status%> <%= "last" if previous_status and last %>">
+<div class="quantity-price-row <%=status%> <%= "last" if last %> <%= 'admin' if @admin %>">
 
   <% data = OrdersPlugin::Item::StatusDataMap[status] %>
   <% if last and item.send("quantity_#{data}").blank? %>

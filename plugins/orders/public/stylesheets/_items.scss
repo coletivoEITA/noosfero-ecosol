@@ -117,7 +117,15 @@
             display: table-row;
 
             &.last {
-              display: none;
+              &.admin {
+                display: none;
+              }
+
+              .quantity {
+                .value {
+                  display: block;
+                }
+              }
             }
 
             .quantity {
@@ -164,7 +172,10 @@
             .quantity-price-row {
 
               &.last {
-                display: block;
+
+                &.admin {
+                  display: block;
+                }
 
                 .value {
                   display: none;
