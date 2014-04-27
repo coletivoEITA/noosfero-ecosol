@@ -1488,8 +1488,10 @@
       padding: 0; }
       .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row {
         display: table-row; }
-        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.last {
+        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.last.admin {
           display: none; }
+        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.last .quantity .value {
+          display: block; }
         .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity input {
           display: none; }
         .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity .unit {
@@ -1499,10 +1501,10 @@
   .order-items-container .table-content .item.edit .fields .box-field {
     border-right: none;
     padding-right: 8px; }
-  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.last {
+  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.last.admin {
     display: block; }
-    .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.last .value {
-      display: none; }
+  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.last .value {
+    display: none; }
   .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row .quantity input {
     display: block; }
   .order-items-container .table-content .item.edit .more {

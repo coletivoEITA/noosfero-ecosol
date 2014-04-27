@@ -748,14 +748,6 @@
           hello_member_of_name: "Hello consumer of %{name},"
           the_administrator_let: "The administrator let a message about this cycle"
           the_cycle_description: "The cycle description is.."
-        order_change_notification: 
-          a_service_of_s: "A service of %s."
-          hi_name: "Hi %{name},"
-          name_from_quantity_wa: "%{name}, from %{quantity_was} to %{quantity}"
-          thanks_for_buying_wit: "Thanks for buying with us!"
-          the_administrator_lef: "The administrator left a message for this change"
-          the_following_product: "The following products had their quantity changed:"
-          your_order_id_was_cha: "Your order %{id} was changed by an %{supplier}'s administrator."
       message: 
         _fields: 
           message: Message
