@@ -10,8 +10,8 @@ orders = {
       item = jQuery(item);
       toggle_edit.edit(item);
 
-      var quantity_consumer_ordered = item.find('.quantity input');
-      quantity_consumer_ordered.focus();
+      var quantity = item.find('.quantity input');
+      quantity.focus();
     },
 
     quantity_keyup: function(context, event) {
@@ -27,17 +27,18 @@ orders = {
     submit: function(context, url) {
       var container = jQuery(context).parents('.order-items-container');
       var item = jQuery(context).parents('.item');
-      var quantity_consumer_ordered = item.find('.quantity input');
+      var quantity = item.find('.quantity input');
+      var data = {}
+      data[quantity[0].name] = quantity.val()
 
       loading_overlay.show(container);
-      jQuery.post(url, {'item[quantity_consumer_ordered]': quantity_consumer_ordered.val()}, function(){}, 'script');
+      jQuery.post(url, data, function(){}, 'script');
     },
   },
 
   admin: {
 
     toggle_edit: function () {
-      toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
       sortable_table.edit_arrow_toggle(toggle_edit.editing(), toggle_edit.isEditing());
     },
 

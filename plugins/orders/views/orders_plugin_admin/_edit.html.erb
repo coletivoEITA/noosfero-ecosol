@@ -17,7 +17,7 @@
   <div class="clean"></div>
 </div>
 
-<div class="box-edit" style="display: none">
+<div class="box-edit">
   <% if order.items.count == 0 %>
     <div class="empty-order">
       <span class="subtitle"><%= t('orders_plugin.views.admin._edit.empty_order') %></span>
@@ -28,7 +28,7 @@
 
       <div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? user, @admin %> <%= "admin" if @admin %>">
         <%= render 'orders_plugin_admin/header', :order => order %>
-        <%= render 'orders_plugin_item/index', :order => order, :f => f, :actor_name => actor_name %>
+        <%= render 'orders_plugin_item/index', :order => order, :actor_name => actor_name %>
       </div>
 
       <% if actor_name == :supplier and order.open? %>

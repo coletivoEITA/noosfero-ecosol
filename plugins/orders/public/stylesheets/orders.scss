@@ -46,12 +46,6 @@
 
   .order {
 
-    &.edit {
-      border-top: 2px solid black;
-      border-bottom: 2px solid black;
-      margin-top: -$border;
-    }
-
     &.value-row {
 
       .box-edit {
@@ -59,6 +53,16 @@
         .empty-order {
           text-align: center;
           margin-bottom: $padding;
+        }
+      }
+
+      &.edit {
+        border-top: 2px solid black;
+        border-bottom: 2px solid black;
+        margin-top: -$border;
+
+        .box-edit {
+          display: block;
         }
       }
     }

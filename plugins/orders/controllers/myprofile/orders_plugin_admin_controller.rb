@@ -7,12 +7,11 @@ class OrdersPluginAdminController < MyProfileController
   include OrdersPlugin::TranslationHelper
 
   no_design_blocks
+  before_filter :set_admin
 
   helper OrdersPlugin::OrdersDisplayHelper
 
   def index
-    @admin = true
-
     @purchases_month = profile.purchases.latest.first.created_at.month rescue Date.today.month
     @purchases_year = profile.purchases.latest.first.created_at.year rescue Date.today.year
     @sales_month = profile.sales.latest.first.created_at.month rescue Date.today.month
@@ -36,44 +35,14 @@ class OrdersPluginAdminController < MyProfileController
     render :layout => false
   end
 
-  def edit
-    @order = OrdersPlugin::Order.find params[:id]
-    #return unless check_access 'edit'
-
-    if @order.cycle.orders?
-      a = {}; @order.items.map{ |p| a[p.id] = p }
-      b = {}; params[:order][:items].map do |key, attrs|
-        p = OrdersPlugin::Item.new attrs
-        p.id = attrs[:id]
-        b[p.id] = p
-      end
-
-      removed = a.values.map do |p|
-        p if b[p.id].nil?
-      end.compact
-      changed = b.values.map do |p|
-        pa = a[p.id]
-        if pa and p.quantity_consumer_ordered != pa.quantity_consumer_ordered
-          pa.quantity_consumer_ordered = p.quantity_consumer_ordered
-          pa
-        end
-      end.compact
-
-      changed.each{ |p| p.save! }
-      removed.each{ |p| p.destroy }
-    end
-
-    if params[:warn_consumer]
-      message = (params[:include_message] and !params[:message].blank?) ? params[:message] : nil
-      OrdersCyclePlugin::Mailer.deliver_order_change_notification profile, @order, changed, removed, message
-    end
-
-  end
-
   protected
 
   def filter_methods
     ['sales', 'purchases']
+  end
+
+  def set_admin
+    @admin = true
   end
 
 end

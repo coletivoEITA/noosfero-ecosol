@@ -6,12 +6,6 @@
     </div>
   <% end %>
 
-  <% if f %>
-    <% fields_for "item-#{item.id}", item do |f| %>
-      <%= render "orders_plugin_item/edit_fields", :order => order, :item => item, :product => product, :f => f, :actor_name => actor_name %>
-    <% end %>
-  <% else %>
-    <%= render "orders_plugin_item/edit_fields", :order => order, :item => item, :product => product, :f => f, :actor_name => actor_name %>
-  <% end %>
+  <%= render "orders_plugin_item/edit_fields", :order => order, :item => item, :product => product, :actor_name => actor_name %>
 
 </div>

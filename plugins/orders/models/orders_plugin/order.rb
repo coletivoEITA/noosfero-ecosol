@@ -59,7 +59,6 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   validates_presence_of :profile
   validates_inclusion_of :status, :in => DbStatuses
-  before_validation :fill_default_values
   before_validation :check_status
 
   def orders_name
@@ -174,10 +173,6 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   instance_exec &OrdersPlugin::Item::DefineTotals
 
   protected
-
-  def fill_default_values
-    self.status ||= 'draft'
-  end
 
   def check_status
     # backwards compatibility

@@ -6,22 +6,6 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
   helper ApplicationHelper
   helper OrdersCyclePlugin::TranslationHelper
 
-  def order_change_notification profile, order, changed, removed, message = nil
-    domain = profile.hostname || profile.environment.default_hostname
-
-    recipients    profile_recipients(order.consumer)
-    from          'no-reply@' + domain
-    reply_to      profile_recipients(profile)
-    subject       t('lib.mailer.order_was_changed') % {:profile => profile}
-    content_type  'text/html'
-    body :profile => profile,
-         :order => order,
-         :changed => changed,
-         :removed => removed,
-         :message => message,
-         :environment => profile.environment
-  end
-
   def message_to_supplier profile, supplier, subject, message
     domain = profile.hostname || profile.environment.default_hostname
 

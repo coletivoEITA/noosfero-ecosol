@@ -78,6 +78,7 @@
       }
       &.status {
         width: $module01;
+        text-transform: uppercase;
       }
     }
   }
@@ -106,6 +107,7 @@
         .box-field {
           float: none;
           display: table-cell;
+          vertical-align: top;
         }
 
         .quantity-price-table {
@@ -113,6 +115,10 @@
 
           .quantity-price-row {
             display: table-row;
+
+            &.last {
+              display: none;
+            }
 
             .quantity {
               input {
@@ -156,6 +162,15 @@
 
           .quantity-price-table {
             .quantity-price-row {
+
+              &.last {
+                display: block;
+
+                .value {
+                  display: none;
+                }
+              }
+
               .quantity {
 
                 input {

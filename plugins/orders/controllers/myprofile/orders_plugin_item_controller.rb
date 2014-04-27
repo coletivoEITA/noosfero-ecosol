@@ -11,7 +11,7 @@ class OrdersPluginItemController < MyProfileController
   def edit
     @consumer = user
     @item = OrdersPlugin::Item.find params[:id]
-    @offered_product = @item.offered_product
+    @product = @item.product
     @order = @item.send self.order_method
 
     unless @order.may_edit? @consumer
