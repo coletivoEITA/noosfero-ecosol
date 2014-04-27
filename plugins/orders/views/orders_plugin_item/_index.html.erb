@@ -18,16 +18,8 @@
 
       <div class="table-content">
         <div class="order-items-scroll">
-          <% if f %>
-            <% f.fields_for :items, order.items do |f| %>
-              <% order.items.each do |item| %>
-                <%= render "orders_plugin_item/edit", :order => order, :item => item, :product => item.product, :f => f, :actor_name => actor_name %>
-              <% end %>
-            <% end %>
-          <% else %>
-            <% order.items.each do |item| %>
-              <%= render "orders_plugin_item/edit", :order => order, :item => item, :product => item.product, :f => nil, :actor_name => actor_name %>
-            <% end %>
+          <% order.items.each do |item| %>
+            <%= render "orders_plugin_item/edit", :order => order, :item => item, :product => item.product, :actor_name => actor_name %>
           <% end %>
         </div>
       </div>

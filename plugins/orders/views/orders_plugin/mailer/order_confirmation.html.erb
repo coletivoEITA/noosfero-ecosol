@@ -37,7 +37,7 @@
     <p><%= t('orders_plugin.views.mailer.order_confirmation.order_data_confirmed') %></p>
 
     <div id="order-<%=@order.id%>" class="order-box">
-      <%= render "orders_plugin_item/index", :order => @order, :f => nil, :actor_name => :consumer %>
+      <%= render "orders_plugin_item/index", :order => @order, :actor_name => :consumer %>
     </div>
 
     <p>

@@ -1468,7 +1468,8 @@
     .order-items-container .order-items .box-field.price-total {
       width: 64px; }
     .order-items-container .order-items .box-field.status {
-      width: 64px; }
+      width: 64px;
+      text-transform: uppercase; }
   .order-items-container .table-header, .order-items-container .table-content {
     border-bottom: 1px solid black; }
   .order-items-container .table-header {
@@ -1481,11 +1482,14 @@
     display: table; }
     .order-items-container .table-content .item .fields .box-field {
       float: none;
-      display: table-cell; }
+      display: table-cell;
+      vertical-align: top; }
     .order-items-container .table-content .item .fields .quantity-price-table {
       padding: 0; }
       .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row {
         display: table-row; }
+        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.last {
+          display: none; }
         .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity input {
           display: none; }
         .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity .unit {
@@ -1495,6 +1499,10 @@
   .order-items-container .table-content .item.edit .fields .box-field {
     border-right: none;
     padding-right: 8px; }
+  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.last {
+    display: block; }
+    .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.last .value {
+      display: none; }
   .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row .quantity input {
     display: block; }
   .order-items-container .table-content .item.edit .more {
@@ -1531,15 +1539,17 @@
   width: 64px; }
 .orders-admin-index.sortable-table .box-field.situation {
   width: 144px; }
-.orders-admin-index .order.edit {
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
-  margin-top: -1px; }
 .orders-admin-index .order.value-row .box-edit {
   padding-top: 8px; }
   .orders-admin-index .order.value-row .box-edit .empty-order {
     text-align: center;
     margin-bottom: 8px; }
+.orders-admin-index .order.value-row.edit {
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  margin-top: -1px; }
+  .orders-admin-index .order.value-row.edit .box-edit {
+    display: block; }
 .orders-admin-index .order.draft .box-view .box-field, .orders-admin-index .order.cancelled .box-view .box-field {
   color: #999; }
 .orders-admin-index .order.cancelled .box-view .box-field {

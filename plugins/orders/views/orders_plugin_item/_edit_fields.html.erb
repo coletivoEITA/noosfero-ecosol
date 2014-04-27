@@ -1,6 +1,4 @@
 
-<%= f.hidden_field :id if f %>
-
 <div class="fields">
   <% unless order.self_supplier? %>
     <div class="box-field supplier">
@@ -13,10 +11,14 @@
   </div>
 
   <div class="box-field quantity-price-table">
-    <%# render 'orders_plugin_item/quantity_price', :item => item, :status => 'ordered', :edit_only => false, :f => f, :actor_name => actor_name %>
+    <% previous_status = nil %>
     <% OrdersPlugin::Order::Statuses.each do |status| %>
-      <%= render 'orders_plugin_item/quantity_price', :item => item, :status => status, :edit_only => false, :f => f, :actor_name => actor_name %>
-      <% break unless item.order.status_on? status %>
+      <% last = ! order.status_on?(status) %>
+      <%= render 'orders_plugin_item/quantity_price', :item => item, :status => status, :previous_status => previous_status, :last => last,
+          :actor_name => actor_name %>
+
+      <% break if last %>
+      <% previous_status = status %>
     <% end %>
   </div>
 
@@ -26,14 +28,19 @@
 
   <div class="actions">
 
-    <% if f %>
-      <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(:controller => :orders_plugin_item, :action => :edit, :id => item.id)}')", :class => 'action-button' %>
-
+    <% if order.may_edit? user, @admin %>
       <% if @admin %>
+        <%# FIXME: add remove button that do not destroy, but put zero %>
+
+        <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(:controller => :orders_plugin_admin_item, :action => :edit, :id => item.id, :actor_name => actor_name)}')", :class => 'action-button' %>
+
       <% else %>
         <%= link_to_remote t('orders_plugin.views.item._edit.remove_from_order'), :update => "item-#{item.id}",
           :loading => "loading_overlay.show('#item-#{item.id}')", :loaded => "loading_overlay.hide('#item-#{item.id}')",
           :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? user, @admin %>
+
+        <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(:controller => :orders_plugin_item, :action => :edit, :id => item.id)}')", :class => 'action-button' %>
+
       <% end %>
 
     <% end %>
