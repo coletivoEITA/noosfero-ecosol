@@ -8,7 +8,7 @@ module OrdersPlugin::PriceHelper
     detail = " (#{detail})" unless detail.blank?
     I18n.t('orders_plugin.lib.price_helper.price_unit') % {
       :price => price_span(price),
-      :unit => content_tag('span', (excerpt_ending( item.product.unit.singular, 4, '.') rescue '') + detail.to_s, :class => 'price-unit'),
+      :unit => content_tag('span', (excerpt_ending( unit.singular, 4, '.') ) + detail.to_s, :class => 'price-unit'),
     }
   end
 
