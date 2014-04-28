@@ -2,6 +2,8 @@
 # same interface, but also to make `FilePresenter.for(file)` to work.
 class FilePresenter
 
+  attr_reader :file
+
   # Will return a encapsulated `UploadedFile` or the same object if no
   # one accepts it. That behave allow to give any model to this class,
   # like a Article and have no trouble with that.
