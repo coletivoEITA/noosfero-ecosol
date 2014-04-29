@@ -1,4 +1,4 @@
-class NetworksPlugin::BaseNode < Organization
+class NetworksPlugin::BaseNode < Enterprise
 
   self.abstract_class = true
 
