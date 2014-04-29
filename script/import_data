@@ -35,8 +35,6 @@ end
 class ActiveRecord::Base
   yaml_as "tag:ruby.yaml.org,2002:ActiveRecord"
 
-  self.record_timestamps = false
-  
   def self.yaml_new klass, tag, val
     attributes = val.delete 'attributes'
     attributes = YAML.load attributes
@@ -128,8 +126,9 @@ class ActiveRecord::Base
   end
 
   def call_save
-    method = if ($models_options[self.class.base_class.name]['save_without_callbacks'] rescue nil) then 'create_without_callbacks' else 'save!' end
+    self.class.record_timestamps = false
 
+    method = if ($models_options[self.class.base_class.name]['save_without_callbacks'] rescue nil) then 'create_without_callbacks' else 'create_without_timestamps' end
     begin
       self.send method
     rescue Exception => e
