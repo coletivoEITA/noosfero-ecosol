@@ -54,7 +54,6 @@ end
 group :test do
   gem 'tidy'
   gem 'rcov'
-  gem 'system_timer'
   gem 'rspec', '1.2.9'
   gem 'rspec-rails', '1.2.9'
 end
