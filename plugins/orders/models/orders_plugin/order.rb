@@ -134,7 +134,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
 
   def situation
-    current_index = UserStatuses.index self.current_status
+    current_index = UserStatuses.index self.current_status || 0
     statuses = []
     UserStatuses.each_with_index do |status, i|
       statuses << status if Statuses.include? status
