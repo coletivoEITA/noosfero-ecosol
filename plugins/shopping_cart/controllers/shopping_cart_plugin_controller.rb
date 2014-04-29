@@ -270,7 +270,7 @@ class ShoppingCartPluginController < PublicController
     OrdersPlugin::Sale.create! :profile => environment.profiles.find(cart[:profile_id]), :consumer => user,
       :status => 'ordered', :products_list => products_list,
       :consumer_data => {
-        :name => params[:name], :email => params[:email], :contact_phone => params[:contact_phone],
+        :name => params[:customer][:name], :email => params[:customer][:email], :contact_phone => params[:customer][:contact_phone],
       },
       :payment_data => {
         :method => params[:customer][:payment], :change => params[:customer][:change],
