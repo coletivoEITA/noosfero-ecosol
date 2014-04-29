@@ -27,10 +27,10 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 end
 
 StatusTransform = {
-  ShoppingCartPlugin::PurchaseOrder::Status::OPENED => 'confirmed',
+  ShoppingCartPlugin::PurchaseOrder::Status::OPENED => 'ordered',
   ShoppingCartPlugin::PurchaseOrder::Status::CONFIRMED => 'accepted',
   ShoppingCartPlugin::PurchaseOrder::Status::CANCELED => 'cancelled',
-  ShoppingCartPlugin::PurchaseOrder::Status::SHIPPED => 'shipped',
+  ShoppingCartPlugin::PurchaseOrder::Status::SHIPPED => 'delivered',
 }
 
 class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
