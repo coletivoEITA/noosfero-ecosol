@@ -63,38 +63,41 @@ after_fork do |server, worker|
   middleware = ActionController::Dispatcher.middleware
 
   require 'unicorn/worker_killer'
-  # Max requests per worker
-  max_request_min = KillByRequests.begin
-  max_request_max = KillByRequests.end
-  middleware.use Unicorn::WorkerKiller::MaxRequests, max_request_min, max_request_max
-  # Max memory size (RSS) per worker
-  oom_min = KillByMemory.begin * (1024**2)
-  oom_max = KillByMemory.end * (1024**2)
-  middleware.use Unicorn::WorkerKiller::Oom, oom_min, oom_max
+  if KillByRequests
+    # Max requests per worker
+    max_request_min = KillByRequests.begin
+    max_request_max = KillByRequests.end
+    middleware.use Unicorn::WorkerKiller::MaxRequests, max_request_min, max_request_max
+  end
+  if KillByMemory
+    # Max memory size (RSS) per worker
+    oom_min = KillByMemory.begin * (1024**2)
+    oom_max = KillByMemory.end * (1024**2)
+    middleware.use Unicorn::WorkerKiller::Oom, oom_min, oom_max
+  end
+
+  if GcFrequency
+    require_dependency 'unicorn/oob_gc'
+    # Don't run GC during requests
+    # FIXME: this makes the worker too big and activate Unicorn::WorkerKiller::Oom
+    #GC.disable
+    middleware.use Unicorn::OobGC, GcFrequency
+  end
 
   # say to the kernel to kill very big workers first than other processes
   File.open("/proc/#{Process.pid}/oom_adj", "w"){ |f| f << '12' }
 
-  require_dependency 'unicorn/oob_gc'
-  # Don't run GC during requests
-  # FIXME: this makes the worker too big and activate Unicorn::WorkerKiller::Oom
-  #GC.disable
-  middleware.use Unicorn::OobGC, GcFrequency
-
   if WarmUpUrl
     # make a request warming up this new worker
-    Thread.new do
-      require 'rack/test'
-      request = Rack::MockRequest.new server.app
-      request.get "http://#{ListenAddress}:#{ListenPort}#{WarmUpUrl}"
-    end
+    require 'rack/test'
+    request = Rack::MockRequest.new server.app
+    request.get "http://#{ListenAddress}:#{ListenPort}#{WarmUpUrl}"
   end
 
   if WorkerListen
     # per-process listener ports for debugging/admin/migrations
     server.listen "#{ListenAddress}:#{ListenPort + worker.nr}", :tries => -1, :delay => 5
   end
-
   if WorkerPidFile
     child_pid_file = server.config[:pid].sub '.pid', ".#{worker.nr}.pid"
     system "echo #{Process.pid} > #{child_pid_file}"
