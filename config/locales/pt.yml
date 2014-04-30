@@ -562,6 +562,34 @@
       price_helper: 
         /: /
         price_unit: "%{price}/%{unit}"
+      report: 
+        closed_orders: "Pedidos fechados"
+        created: criado
+        member_name: "Nome do Membro"
+        min_stock: "estoque mín."
+        mm_dd_yy_hh_mm_am_pm: "DD/MM/YY HH:MM AM/PM"
+        modified: modificado
+        order_code: "Código do Pedido"
+        parcelled_total: "Total parcelado"
+        price_un: preço/un
+        product_cod: "Cód. produto"
+        product_name: "nome do produto"
+        products_report: "products report"
+        projected_stock: "estoque projetado"
+        qtt_to_be_parcelled: "qtd a ser encomendada"
+        qty_ordered: "qtd pedida"
+        selled_total: "Total vendido"
+        selled_value: "Valor vendido"
+        stock_qtt: "qtd estoque"
+        supplier: "%{terms.supplier.singular.capitalize}"
+        total_parcel_value: "Valor total da encomenda"
+        total_selled_value: "Valor total vendido"
+        total_value: "total pago"
+        un: un.
+        value: Valor
+        value_parcel: "Valor da encomenda"
+        phone: 'Telefone'
+        mail: 'Email'
     controllers:
       profile:
         consumer: 
@@ -572,6 +600,10 @@
           order_removed: "Pedido removido"
           please_login_first: "Please login first"
           you_are_not_the_owner: "Você não é o autor desse pedido"
+      myprofile:
+        admin:
+          orders_report: "Relatório de pedidos - %{date} - %{profile_identifier} - %{name}.xlsx"
+          products_report: "Relatório de produtos - %{date} - %{profile_identifier} - %{name}.xlsx"
     models:
       order: 
         statuses:
@@ -609,6 +641,9 @@
           price_total: "valor (%{currency})"
           status: "etapa"
       admin:
+        reports:
+          products_spreadsheet: "Planilha com a listagem de produtos"
+          orders_spreadsheet: "Planilha com os pedidos"
         index: 
           no_orders_to_show: "Nenhum pedido para visualizar."
           code: "código"
@@ -672,34 +707,6 @@
         distribution_orders_c: "Ciclos de pedidos para os(as) consumidores(as)"
         offer_cycles_for_you_: "Ciclo de oferta para os(as) consumidores(as) fazerem pedidos"
         orders_cycles: "Ciclos de pedidos"
-      report: 
-        closed_orders: "Pedidos fechados"
-        created: criado
-        member_name: "Nome do Membro"
-        min_stock: "estoque mín."
-        mm_dd_yy_hh_mm_am_pm: "DD/MM/YY HH:MM AM/PM"
-        modified: modificado
-        order_code: "Código do Pedido"
-        parcelled_total: "Total parcelado"
-        price_un: preço/un
-        product_cod: "Cód. produto"
-        product_name: "nome do produto"
-        products_report: "products report"
-        projected_stock: "estoque projetado"
-        qtt_to_be_parcelled: "qtd a ser encomendada"
-        qty_ordered: "qtd pedida"
-        selled_total: "Total vendido"
-        selled_value: "Valor vendido"
-        stock_qtt: "qtd estoque"
-        supplier: "%{terms.supplier.singular.capitalize}"
-        total_parcel_value: "Valor total da encomenda"
-        total_selled_value: "Valor total vendido"
-        total_value: "total pago"
-        un: un.
-        value: Valor
-        value_parcel: "Valor da encomenda"
-        phone: 'Telefone'
-        mail: 'Email'
     controllers: 
       myprofile: 
         message_controller: 
@@ -711,9 +718,7 @@
         cycle_controller: 
           cycle_created: "Ciclo criado"
           cycle_n_n: "Ciclo n.%{n}"
-          cycle_orders_report_d: "Relatório de pedidos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
           new_open_cycle: "Novo ciclo aberto"
-          products_report_date_: "Relatório de produtos - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
     models: 
       cycle: 
         code_name: "%{code}. %{name}"
@@ -945,8 +950,6 @@
           purchases: Compras
           redistribution: Redistribuição
           reopen_orders_period: "Reabrir ciclo de pedidos"
-          spreadsheet_with_prod: "Planilha com a listagem de produtos"
-          spreadsheet_with_the_: "Planilha com os pedidos"
         _title: 
           new_cycle: "Novo ciclo"
           order_cycle: "Ciclo de pedidos: "

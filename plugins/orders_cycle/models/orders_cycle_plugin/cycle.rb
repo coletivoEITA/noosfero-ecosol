@@ -95,10 +95,6 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   def total_price_consumer_ordered
     self.items.sum :price_consumer_ordered
   end
-  def total_purchase_price
-    #FIXME: wrong!
-    self.ordered_supplier_products.sum :price
-  end
 
   def step
     self.status = DbStatuses[DbStatuses.index(self.status)+1]
@@ -137,15 +133,14 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     self.products.unarchived.with_price
   end
 
-  def items_by_suppliers
+  def products_by_suppliers
     self.ordered_offered_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
-      total_price_consumer_ordered = total_purchase_price = 0
+      total_price_consumer_ordered = 0
       products.each do |product|
         total_price_consumer_ordered += product.total_price_consumer_ordered if product.total_price_consumer_ordered
-        total_purchase_price += product.total_purchase_price if product.total_purchase_price
       end
 
-      [supplier, products, total_price_consumer_ordered, total_purchase_price]
+      [supplier, products, total_price_consumer_ordered]
     end
   end
 

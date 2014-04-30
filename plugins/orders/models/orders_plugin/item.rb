@@ -45,11 +45,13 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
       quantity = "quantity_#{data}".to_sym
       price = "price_#{data}".to_sym
 
-      self.send :define_method, "total_#{quantity}" do
-        self.items.collect(&quantity).inject(0){ |sum,q| sum+q }
+      self.send :define_method, "total_#{quantity}" do |items|
+        items ||= (self.ordered_items rescue nil) || self.items
+        items.collect(&quantity).inject(0){ |sum,q| sum+q }
       end
-      self.send :define_method, "total_#{price}" do
-        self.items.collect(&price).inject(0){ |sum,q| sum+q }
+      self.send :define_method, "total_#{price}" do |items|
+        items ||= (self.ordered_items rescue nil) || self.items
+        items.collect(&price).inject(0){ |sum,q| sum+q }
       end
 
       has_number_with_locale "total_#{quantity}"
@@ -70,11 +72,33 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     validates_numericality_of price, :allow_nil => true
   end
 
+  def self.products_by_suppliers items
+    items.group_by(&:supplier).map do |supplier, items|
+      products = []
+      total_price_consumer_ordered = 0
+
+      items.group_by(&:product).each do |product, items|
+        products << product
+        product.ordered_items = items
+        total_price_consumer_ordered += product.total_price_consumer_ordered items
+      end
+
+      [supplier, products, total_price_consumer_ordered]
+    end
+  end
+
   def name
     self['name'] || (self.product.name rescue nil)
   end
+  # FIXME: alias to price_consumer_ordered
   def price
     self['price'] || (self.product.price rescue nil)
+  end
+  def unit
+    self.product.unit
+  end
+  def supplier
+    self.product.supplier rescue self.order.profile.self_supplier
   end
 
   def status

@@ -553,6 +553,34 @@
       price_helper: 
         /: /
         price_unit: "%{price}/%{unit}"
+      report: 
+        closed_orders: "Closed Orders"
+        created: created
+        member_name: "Consumer name"
+        min_stock: "min. stock"
+        mm_dd_yy_hh_mm_am_pm: "MM/DD/YY HH:MM AM/PM"
+        modified: modified
+        order_code: "Order code"
+        parcelled_total: "Parcelled total"
+        price_un: price/un.
+        product_cod: "product cod."
+        product_name: "product name"
+        products_report: "products report"
+        projected_stock: "projected stock"
+        qtt_to_be_parcelled: "qtt to be parcelled"
+        qty_ordered: "qty ordered"
+        selled_total: "selled total"
+        selled_value: "selled value"
+        stock_qtt: "stock qtt"
+        supplier: "%{terms.supplier.singular.capitalize}"
+        total_parcel_value: "Total parcel value"
+        total_selled_value: "Total selled value"
+        total_value: "Total Value"
+        un: un.
+        value: value
+        value_parcel: "value parcel"
+        phone: 'Telephone'
+        mail: 'Email'
     controllers:
       profile:
         consumer: 
@@ -563,6 +591,10 @@
           order_removed: "Order removed"
           please_login_first: "Please login first"
           you_are_not_the_owner: "You are not the owner of this order"
+      myprofile:
+        admin:
+          orders_report: "Orders' Report - %{date} - %{profile_identifier} - %{name}.xlsx"
+          products_report: "Products' Report - %{date} - %{profile_identifier} - %{name}.xlsx"
     models:
       order: 
         statuses:
@@ -600,6 +632,9 @@
           price_total: "value (%{currency})"
           status: "status"
       admin:
+        reports:
+          products_spreadsheet: "Planilha com a listagem de produtos"
+          orders_spreadsheet: "Planilha com os pedidos"
         index: 
           no_orders_to_show: "No orders to show."
           code: "code"
@@ -666,34 +701,6 @@
         distribution_orders_c: "Distribution orders' cycles for consumers"
         offer_cycles_for_you_: "Offer cycles for you consumers to make orders"
         orders_cycles: "Orders' cycles"
-      report: 
-        closed_orders: "Closed Orders"
-        created: created
-        member_name: "Consumer name"
-        min_stock: "min. stock"
-        mm_dd_yy_hh_mm_am_pm: "MM/DD/YY HH:MM AM/PM"
-        modified: modified
-        order_code: "Order code"
-        parcelled_total: "Parcelled total"
-        price_un: price/un.
-        product_cod: "product cod."
-        product_name: "product name"
-        products_report: "products report"
-        projected_stock: "projected stock"
-        qtt_to_be_parcelled: "qtt to be parcelled"
-        qty_ordered: "qty ordered"
-        selled_total: "selled total"
-        selled_value: "selled value"
-        stock_qtt: "stock qtt"
-        supplier: "%{terms.supplier.singular.capitalize}"
-        total_parcel_value: "Total parcel value"
-        total_selled_value: "Total selled value"
-        total_value: "Total Value"
-        un: un.
-        value: value
-        value_parcel: "value parcel"
-        phone: 'Telephone'
-        mail: 'Email'
     controllers: 
       myprofile: 
         message_controller: 
@@ -705,9 +712,7 @@
         cycle_controller: 
           cycle_created: "Cycle created"
           cycle_n_n: "Cycle n.%{n}"
-          cycle_orders_report_d: "Cycle Orders Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
           new_open_cycle: "New open cycle: "
-          products_report_date_: "Products Report - %{date} - %{profile_identifier} - %{cycle_number} - %{cycle_name}.xlsx"
     models: 
       cycle: 
         code_name: "%{code}. %{name}"
@@ -937,8 +942,8 @@
           purchases: Purchases
           redistribution: Redistribution
           reopen_orders_period: "Reopen orders period"
-          spreadsheet_with_prod: "Spreadsheet with product listing"
-          spreadsheet_with_the_: "Spreadsheet with the orders"
+          products_spreadsheet: "Spreadsheet with product listing"
+          orders_spreadsheet: "Spreadsheet with the orders"
         _title: 
           new_cycle: "New cycle"
           order_cycle: "Order Cycle: "

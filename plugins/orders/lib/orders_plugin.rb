@@ -1,5 +1,5 @@
 require_dependency "#{File.dirname __FILE__}/ext/profile"
-require_dependency "#{File.dirname __FILE__}/ext/product"
+# extensions continue in the end
 
 class OrdersPlugin < Noosfero::Plugin
 
@@ -26,3 +26,7 @@ class OrdersPlugin < Noosfero::Plugin
   end
 
 end
+
+# these need OrdersPlugin class defined
+require_dependency "#{File.dirname __FILE__}/ext/product"
+

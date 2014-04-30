@@ -51,7 +51,12 @@ orders = {
       },
 
       selection: function() {
-        var selection = jQuery('.order #order_ids_:checked').parents('.order')
+        return jQuery('.order #order_ids_:checked').parents('.order')
+      },
+
+      report: function(url) {
+        var codes = this.selection().find('.code').map(function (i, el) { return el.innerHTML }).toArray();
+        window.location.href = url + '&' + jQuery.param({codes: codes})
       },
 
     },
