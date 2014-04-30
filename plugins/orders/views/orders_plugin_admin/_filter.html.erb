@@ -1,5 +1,5 @@
 <% wireframe_size = true if wireframe_size.nil? %>
-<% other_actor_name = if actor_name == :supplier then :consumer else actor_name end %>
+<% other_actor_name = if actor_name == :supplier then :consumer else :supplier end %>
 
 <div id="filter" class="with-actions <%= "wireframe-size" if wireframe_size %>">
 

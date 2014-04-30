@@ -95,6 +95,10 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     scope
   end
 
+  def self.products_by_suppliers orders
+    OrdersPlugin::Item.products_by_suppliers orders.collect(&:items).flatten
+  end
+
   # All products from the order profile?
   # FIXME reimplement to be generic for consumer/supplier
   def self_supplier?

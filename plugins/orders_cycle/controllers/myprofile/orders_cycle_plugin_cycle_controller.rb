@@ -89,28 +89,22 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def report_products
-    extend OrdersCyclePlugin::Report::ClassMethods
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
-    tmp_dir, report_file = report_products_by_supplier @cycle
+    tmp_dir, report_file = report_products_by_supplier @cycle.products_by_suppliers
 
     send_file report_file, :type => 'application/xlsx',
       :disposition => 'attachment',
-      :filename => t('controllers.myprofile.cycle_controller.products_report_date_') % {
-        :date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @cycle.code, :cycle_name => @cycle.name}
-    require 'fileutils'
-    #FileUtils.rm_rf tmp_dir
+      :filename => t('controllers.myprofile.admin.products_report') % {
+        :date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :name => @cycle.name_with_code}
   end
 
   def report_orders
-    extend OrdersCyclePlugin::Report::ClassMethods
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
-    tmp_dir, report_file = report_orders_by_consumer @cycle
+    tmp_dir, report_file = report_orders_by_consumer @cycle.sales.ordered
 
     send_file report_file, :type => 'application/xlsx',
       :disposition => 'attachment',
-      :filename => t('controllers.myprofile.cycle_controller.cycle_orders_report_d') % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :cycle_number => @cycle.code, :cycle_name => @cycle.name}
-    require 'fileutils'
-    #FileUtils.rm_rf tmp_dir
+      :filename => t('controllers.myprofile.admin.orders_report') % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :name => @cycle.name_with_code}
   end
 
   def filter

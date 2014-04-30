@@ -18,7 +18,10 @@
     </div>
 
     <div class="with-selection">
-      <%# link_to_function t('views.actions.activate'), 'suppliers.our_product.select.activate(true)', :class => 'action-button' %>
+      <%= link_to_function t('views.admin.reports.orders_spreadsheet'), "orders.admin.select.report('#{url_for :action => :report_orders, :orders_method => orders_method}')",
+        :class => 'action-button' %>
+      <%= link_to_function t('views.admin.reports.products_spreadsheet'), "orders.admin.select.report('#{url_for :action => :report_products, :orders_method => orders_method}')",
+        :class => 'action-button' %>
     </div>
 
     <div class="other">

@@ -25,10 +25,8 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
                               {:profile => [:domains, {:environment => :domains}]}, ]
 
   extend CurrencyHelper::ClassMethods
-  has_currency :buy_price
-  has_number_with_locale :total_purchase_quantity
-  has_currency :total_purchase_price
   instance_exec &OrdersPlugin::Item::DefineTotals
+  has_currency :buy_price
 
   def self.create_from_distributed cycle, product
     op = self.new :profile => product.profile
@@ -38,14 +36,6 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     op.from_products << product
     cycle.products << op
     op
-  end
-
-  def total_purchase_quantity
-    #FIXME: convert units and consider stock and availability
-    total_quantity_consumer_ordered
-  end
-  def total_purchase_price
-    buy_price * total_purchase_quantity if buy_price and total_purchase_quantity
   end
 
   # always recalculate in case something has changed

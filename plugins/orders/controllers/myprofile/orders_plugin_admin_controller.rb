@@ -4,11 +4,13 @@ OrdersPlugin::OrdersDisplayHelper = OrdersPlugin::DisplayHelper
 
 class OrdersPluginAdminController < MyProfileController
 
+  include OrdersPlugin::Report
   include OrdersPlugin::TranslationHelper
 
   no_design_blocks
   before_filter :set_admin
 
+  helper OrdersPlugin::TranslationHelper
   helper OrdersPlugin::OrdersDisplayHelper
 
   def index
@@ -27,12 +29,38 @@ class OrdersPluginAdminController < MyProfileController
 
     @actor_name = params[:actor_name]
 
-    # default value may be override
     @scope ||= profile
     @scope = @scope.send @method
     @orders = OrdersPlugin::Order.search_scope @scope, params
 
     render :layout => false
+  end
+
+  def report_products
+    @method = params[:orders_method]
+    raise unless self.filter_methods.include? @method
+    @scope ||= profile
+    @scope = @scope.send @method
+    @orders = @scope.where(:code => params[:codes])
+    tmp_dir, report_file = report_products_by_supplier OrdersPlugin::Order.products_by_suppliers @orders
+
+    send_file report_file, :type => 'application/xlsx',
+      :disposition => 'attachment',
+      :filename => t('controllers.myprofile.admin.products_report') % {
+        :date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :name => ''}
+  end
+
+  def report_orders
+    @method = params[:orders_method]
+    raise unless self.filter_methods.include? @method
+    @scope ||= profile
+    @scope = @scope.send @method
+    @orders = @scope.where(:code => params[:codes])
+    tmp_dir, report_file = report_orders_by_consumer @orders
+
+    send_file report_file, :type => 'application/xlsx',
+      :disposition => 'attachment',
+      :filename => t('controllers.myprofile.admin.orders_report') % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :name => ''}
   end
 
   protected
