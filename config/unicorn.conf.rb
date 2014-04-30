@@ -7,6 +7,7 @@ Timeout = 30
 Backlog = 2048
 
 WarmUpUrl = '/'
+WarmUpTime = 5
 
 KillByRequests = 500..600
 KillByMemory = 160..256
@@ -88,6 +89,9 @@ after_fork do |server, worker|
   File.open("/proc/#{Process.pid}/oom_adj", "w"){ |f| f << '12' }
 
   if WarmUpUrl
+    # don't warm up all workers at once
+    sleep worker.nr * WarmUpTime
+
     # make a request warming up this new worker
     require 'rack/test'
     request = Rack::MockRequest.new server.app
