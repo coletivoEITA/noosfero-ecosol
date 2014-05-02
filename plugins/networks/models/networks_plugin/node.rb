@@ -5,7 +5,12 @@ class NetworksPlugin::Node < NetworksPlugin::BaseNode
   before_validation :name_to_identifier
   after_destroy :assign_dependent_to_parent
 
-  delegate :admins, :to => :network
+  delegate :admins, :to => :network, :allow_nil => true
+
+  def default_template
+    return if self.is_template
+    self.network.node_template
+  end
 
   protected
 
@@ -28,10 +33,6 @@ class NetworksPlugin::Node < NetworksPlugin::BaseNode
       # Avoid "can't modify frozen hash" error
       new_supplier.send :create_without_callbacks
     end
-  end
-
-  def default_template
-    self.network
   end
 
   # don't copy network's articles

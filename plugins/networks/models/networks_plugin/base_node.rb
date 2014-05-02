@@ -1,5 +1,7 @@
 class NetworksPlugin::BaseNode < Enterprise
 
+  has_many :nodes, :through => :network_node_parent_relations, :source => :child_np, :class_name => 'NetworksPlugin::Node'
+
   self.abstract_class = true
 
   delegate :parent, :to => :network_node_child_relation, :allow_nil => true
@@ -29,11 +31,6 @@ class NetworksPlugin::BaseNode < Enterprise
     @hierarchy
   end
 
-  def nodes reload=false
-    @nodes = nil if reload
-    @nodes ||= self.network_node_parent_relations.all(:conditions => {:child_type => 'NetworksPlugin::Node'}).collect &:child
-  end
-
   def cart_order_supplier_notification_recipients
     if self.networks_settings.orders_forward == 'orders_managers' and self.orders_managers.present?
       self.orders_managers.collect(&:contact_email) << self.contact_email
@@ -43,11 +40,14 @@ class NetworksPlugin::BaseNode < Enterprise
     end.select{ |email| email.present? }
   end
 
-  protected
-
   def default_template
-    return if self.is_template
-    self.environment.network_template
+    raise 'implemented in subclasses'
   end
+
+  def template
+    self.default_template
+  end
+
+  protected
 
 end

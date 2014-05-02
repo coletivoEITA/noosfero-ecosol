@@ -36,7 +36,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   def self.new_dummy attributes
     environment = attributes[:consumer].environment
-    profile = Enterprise.new :enabled => false, :visible => false, :public_profile => false, :environment => environment
+    profile = environment.enterprises.build :enabled => false, :visible => false, :public_profile => false
 
     supplier = self.new :profile => profile
     supplier.attributes = attributes
@@ -102,7 +102,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   end
 
   def add_admins
-    self.consumer.admins.each{ |a| self.supplier.add_admin a }
+    self.consumer.admins.to_a.each{ |a| self.supplier.add_admin a }
   end
 
   # sync name, description, etc

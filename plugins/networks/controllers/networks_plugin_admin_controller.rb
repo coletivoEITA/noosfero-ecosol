@@ -16,8 +16,9 @@ class NetworksPluginAdminController < AdminController
 
   def create
     if request.post?
-      @network = NetworksPlugin::Network.new params[:network].merge(:environment => environment)
+      @network = self.environment.networks.build params[:network]
       @network.identifier = @network.name.to_slug
+      @network.enabled = true
       if @network.save
         @network.add_admin user
         redirect_to :action => :index
