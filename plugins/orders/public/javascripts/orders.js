@@ -42,6 +42,14 @@ orders = {
       sortable_table.edit_arrow_toggle(toggle_edit.editing(), toggle_edit.isEditing());
     },
 
+    load_edit: function(order, url) {
+      var edit = jQuery(order).find('.box-edit')
+      edit.load(url, function() {
+        edit.removeClass('loading')
+      });
+      jQuery(order).attr('onclick', '')
+    },
+
     select: {
       all: function() {
         jQuery('.order #order_ids_').attr('checked', true)

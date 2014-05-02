@@ -40,14 +40,14 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   named_scope :for_consumer, lambda{ |consumer| {:conditions => {:consumer_id => (consumer.id rescue nil)}} }
   named_scope :for_consumer_id, lambda{ |consumer_id| {:conditions => {:consumer_id => consumer_id}} }
 
-  named_scope :months, :select => 'DISTINCT(EXTRACT(months FROM created_at)) as month', :order => 'month DESC'
-  named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM created_at)) as year', :order => 'year DESC'
+  named_scope :months, :select => 'DISTINCT(EXTRACT(months FROM orders_plugin_orders.created_at)) as month', :order => 'month DESC'
+  named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM orders_plugin_orders.created_at)) as year', :order => 'year DESC'
 
   named_scope :by_month, lambda { |month| {
-    :conditions => [ 'EXTRACT(month FROM created_at) <= :month AND EXTRACT(month FROM created_at) >= :month', { :month => month } ]}
+    :conditions => [ 'EXTRACT(month FROM orders_plugin_orders.created_at) <= :month AND EXTRACT(month FROM orders_plugin_orders.created_at) >= :month', { :month => month } ]}
   }
   named_scope :by_year, lambda { |year| {
-    :conditions => [ 'EXTRACT(year FROM created_at) <= :year AND EXTRACT(year FROM created_at) >= :year', { :year => year } ]}
+    :conditions => [ 'EXTRACT(year FROM orders_plugin_orders.created_at) <= :year AND EXTRACT(year FROM orders_plugin_orders.created_at) >= :year', { :year => year } ]}
   }
 
   named_scope :with_status, lambda { |status|
@@ -102,12 +102,12 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   # All products from the order profile?
   # FIXME reimplement to be generic for consumer/supplier
   def self_supplier?
-    return @single_supplier unless @single_supplier.nil?
+    return @self_supplier if @self_supplier
 
-    self.products.each do |p|
-      return @single_supplier = false unless p.supplier.self?
+    self.items.each do |item|
+      return @self_supplier = false unless (item.product.profile == self.profile rescue true)
     end
-    @single_supplier = true
+    @self_supplier = true
   end
 
   def draft?
@@ -130,8 +130,9 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
 
   def current_status
-    return 'open' if self.open?
-    self['status']
+    return @current_status if @current_status
+    return @current_status = 'open' if self.open?
+    @current_status = self['status']
   end
   def status_message
     I18n.t StatusText[current_status]
@@ -152,7 +153,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     @may_view ||= self.profile.admins.include?(user) or (self.consumer == user)
   end
 
-  # cache if done independent of user as model cache is per request
+  # cache is done independent of user as model cache is per request
   def may_edit? user, admin_action = false
     @may_edit ||= (admin_action and self.profile.admins.include?(user)) or (self.open? and self.consumer == user)
   end

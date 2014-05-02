@@ -1,6 +1,6 @@
-<div class="order-items-container <%= "empty" if order.items.count == 0 %> <%= "admin" if @admin %>">
+<div class="order-items-container <%= "empty" if order.items.size == 0 %> <%= "admin" if @admin %>">
 
-  <% if order.items.count > 0 %>
+  <% if order.items.size > 0 %>
     <div class="order-items <%= "self-actor-name" if order.self_supplier? %>">
 
       <div class="table-header">

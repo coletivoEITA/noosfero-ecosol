@@ -642,8 +642,8 @@
           status: "etapa"
       admin:
         reports:
-          products_spreadsheet: "Planilha com a listagem de produtos"
-          orders_spreadsheet: "Planilha com os pedidos"
+          products_spreadsheet: "Planilha de produtos"
+          orders_spreadsheet: "Planilha de pedidos"
         index: 
           no_orders_to_show: "Nenhum pedido para visualizar."
           code: "código"

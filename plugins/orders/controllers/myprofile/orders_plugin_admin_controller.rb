@@ -36,6 +36,13 @@ class OrdersPluginAdminController < MyProfileController
     render :layout => false
   end
 
+  def edit
+    @actor_name = params[:actor_name].to_sym
+    @orders_method = if @actor_name == :supplier then :sales else :purchases end
+    @order = profile.send(@orders_method).find params[:id]
+    render :partial => 'orders_plugin_admin/edit', :locals => {:order => @order, :actor_name => @actor_name}
+  end
+
   def report_products
     @method = params[:orders_method]
     raise unless self.filter_methods.include? @method
