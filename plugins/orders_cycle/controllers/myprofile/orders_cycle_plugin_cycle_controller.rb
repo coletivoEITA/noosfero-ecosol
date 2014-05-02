@@ -43,6 +43,8 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def edit
+    return super if params[:actor_name]
+
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     @products = (@cycle.products.unarchived.paginate(:per_page => 15, :page => params["page"]))
 
