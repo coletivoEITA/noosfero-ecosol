@@ -1,14 +1,16 @@
 <div class="quantity-price-row <%=status%> <%= "last" if last %> <%= 'admin' if @admin %>">
 
-  <% data = OrdersPlugin::Item::StatusDataMap[status] %>
-  <% if last and item.send("quantity_#{data}").blank? %>
-    <% data = OrdersPlugin::Item::StatusDataMap[previous_status] %>
-    <% quantity = item.send "quantity_#{data}_localized" %>
-    <% price = item.send "price_#{data}_as_currency_number" %>
-  <% else %>
-    <% quantity = item.send "quantity_#{data}_localized" %>
-    <% price = item.send "price_#{data}_as_currency_number" %>
-  <% end %>
+  <%
+    data = OrdersPlugin::Item::StatusDataMap[status]
+    if last and item.send("quantity_#{data}").blank?
+      previous_data = OrdersPlugin::Item::StatusDataMap[previous_status]
+      quantity = item.send "quantity_#{previous_data}_localized"
+      price = item.send "price_#{previous_data}_as_currency_number"
+    else
+      quantity = item.send "quantity_#{data}_localized"
+      price = item.send "price_#{data}_as_currency_number"
+    end
+  %>
 
   <% if not @admin or (quantity and price) %>
 
@@ -16,7 +18,7 @@
       <span class="value"><%= quantity %></span>
 
       <% if @admin %>
-        <% if (last or item.order.current_status == status) and OrdersPlugin::Item::StatusAccessMap[status] == actor_name %>
+        <% if (last or order.current_status == status) and OrdersPlugin::Item::StatusAccessMap[status] == actor_name %>
           <%= text_field_tag "item[quantity_#{data}]", quantity, :onkeyup => 'orders.item.quantity_keyup(this, event)' %>
         <% end %>
       <% else %>

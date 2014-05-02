@@ -633,8 +633,8 @@
           status: "status"
       admin:
         reports:
-          products_spreadsheet: "Planilha com a listagem de produtos"
-          orders_spreadsheet: "Planilha com os pedidos"
+          products_spreadsheet: "Products' spreadsheet"
+          orders_spreadsheet: "Orders' spreadsheet"
         index: 
           no_orders_to_show: "No orders to show."
           code: "code"
@@ -942,8 +942,6 @@
           purchases: Purchases
           redistribution: Redistribution
           reopen_orders_period: "Reopen orders period"
-          products_spreadsheet: "Spreadsheet with product listing"
-          orders_spreadsheet: "Spreadsheet with the orders"
         _title: 
           new_cycle: "New cycle"
           order_cycle: "Order Cycle: "

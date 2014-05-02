@@ -19,8 +19,8 @@
 
     <div class='table-content'>
       <% orders.each do |order| %>
-        <div id="order-<%=order.id%>" class="order value-row <%=order.status%>" toggle-edit="orders.admin.toggle_edit();">
-          <%= render 'orders_plugin_admin/edit', :order => order, :actor_name => actor_name %>
+        <div id="order-<%=order.id%>" class="order value-row <%=order.status%>" onclick="orders.admin.load_edit(this, '<%= url_for :action => :edit, :id => order.id, :actor_name => actor_name %>')" toggle-edit="orders.admin.toggle_edit();">
+          <%= render 'orders_plugin_admin/order', :order => order, :actor_name => actor_name, :edit => false %>
         </div>
       <% end %>
     </div>

@@ -1,73 +1,50 @@
-<% other_actor_name = if actor_name == :supplier then :consumer else :supplier end %>
-
-<div class="box-view with-inner">
-  <div class="box-field select" toggle-ignore><%= check_box_tag "order_ids[]", order.id %></div>
-
-  <div class="box-view-inner">
-    <span class='box-field code'><%= order.code %></span>
-    <span class='box-field actor-name'><%= order.send("#{other_actor_name}_data")[:name] %></span>
-    <span class='box-field order-date'><%= datetime_full order.created_at %></span>
-    <span class='box-field last-update'><%= datetime_full order.updated_at %></span>
-    <span class='box-field total'><%= order.total_price_consumer_ordered_as_currency_number %></span>
-    <span class='box-field situation'><%= order_situation order %></span>
+<% if order.items.size == 0 %>
+  <div class="empty-order">
+    <span class="subtitle"><%= t('orders_plugin.views.admin._edit.empty_order') %></span>
+    <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), 'toggle-edit' => '' %>
   </div>
+<% else %>
+  <% form_remote_for :order, order, :url => {:controller => :orders_plugin_admin, :action => :edit, :id => order.id} do |f| %>
 
-  <%= edit_arrow "#order-#{order.id}", true, :class => 'actions' %>
-
-  <div class="clean"></div>
-</div>
-
-<div class="box-edit">
-  <% if order.items.count == 0 %>
-    <div class="empty-order">
-      <span class="subtitle"><%= t('orders_plugin.views.admin._edit.empty_order') %></span>
-      <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), 'toggle-edit' => '' %>
+    <div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? user, @admin %> <%= "admin" if @admin %>">
+      <%= render 'orders_plugin_admin/header', :order => order %>
+      <%= render 'orders_plugin_item/index', :order => order, :actor_name => actor_name %>
     </div>
-  <% else %>
-    <% form_remote_for :order, order, :url => {:controller => :orders_plugin_admin, :action => :edit, :id => order.id} do |f| %>
 
-      <div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? user, @admin %> <%= "admin" if @admin %>">
-        <%= render 'orders_plugin_admin/header', :order => order %>
-        <%= render 'orders_plugin_item/index', :order => order, :actor_name => actor_name %>
+    <% if actor_name == :supplier and order.open? %>
+
+      <div>
+        <%= check_box_tag 'warn_consumer', 1, false, :onchange => "jQuery(this).parent().next().toggle(this.checked); jQuery(this).siblings('.subtitle').toggle(this.checked);" %>
+        <%= label_tag 'warn_consumer', t('orders_plugin.views.admin._edit.warn_member_of_the_ch'), :class => 'line-label' %>
+        <div class="clean"></div>
+        <div class="subtitle"><%= t('orders_plugin.views.admin._edit.the_collective_member') %></div>
       </div>
 
-      <% if actor_name == :supplier and order.open? %>
+      <div>
+        <%= check_box_tag 'include_message', 1, false, :onchange => "jQuery(this).parent().find('textarea').toggle(this.checked)" %>
+        <%= label_tag 'include_message', t('orders_plugin.views.admin._edit.include_message'), :class => 'line-label' %>
+        <div class="clean"></div>
+        <div><%= text_area_tag 'message' %></div>
+      </div>
 
-        <div>
-          <%= check_box_tag 'warn_consumer', 1, false, :onchange => "jQuery(this).parent().next().toggle(this.checked); jQuery(this).siblings('.subtitle').toggle(this.checked);" %>
-          <%= label_tag 'warn_consumer', t('orders_plugin.views.admin._edit.warn_member_of_the_ch'), :class => 'line-label' %>
-          <div class="clean"></div>
-          <div class="subtitle"><%= t('orders_plugin.views.admin._edit.the_collective_member') %></div>
-        </div>
+      <div>
+        <%= f.submit t('orders_plugin.views.admin._edit.save') %>
+        <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), 'toggle-edit' => '' %>
+      </div>
 
-        <div>
-          <%= check_box_tag 'include_message', 1, false, :onchange => "jQuery(this).parent().find('textarea').toggle(this.checked)" %>
-          <%= label_tag 'include_message', t('orders_plugin.views.admin._edit.include_message'), :class => 'line-label' %>
-          <div class="clean"></div>
-          <div><%= text_area_tag 'message' %></div>
-        </div>
-
-        <div>
-          <%= f.submit t('orders_plugin.views.admin._edit.save') %>
-          <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), 'toggle-edit' => '' %>
-        </div>
-
-        <% javascript_tag do %>
-          jQuery('#order-<%=order.id%> input[type=checkbox]').change();
-        <% end %>
-
+      <% javascript_tag do %>
+        jQuery('#order-<%=order.id%> input[type=checkbox]').change();
       <% end %>
+
     <% end %>
   <% end %>
+<% end %>
 
-  <div class="actions-bar">
-    <%# link_to_function t('orders_plugin.views.admin._edit.remove_order'), '' if order.cycle.orders? %>
-    <%# link_to t('orders_plugin.views.admin._edit.edit_on_the_order_pag'), {:controller => :orders_plugin_consumer, :action => :edit, :id => order.id}, :target => '_blank' %>
-    <%= colorbox_link_to t('orders_plugin.views.admin._edit.message_to_member'), {:controller => :orders_plugin_message, :action => :new_to_consumer_for_order, :order_id => order.id} %>
-    <strong><%= t('orders_plugin.views.admin._edit.actions') %></strong>
-
-    <div class="clean"></div>
-  </div>
+<div class="actions-bar">
+  <%# link_to_function t('orders_plugin.views.admin._edit.remove_order'), '' if order.cycle.orders? %>
+  <%# link_to t('orders_plugin.views.admin._edit.edit_on_the_order_pag'), {:controller => :orders_plugin_consumer, :action => :edit, :id => order.id}, :target => '_blank' %>
+  <%= colorbox_link_to t('orders_plugin.views.admin._edit.message_to_member'), {:controller => :orders_plugin_message, :action => :new_to_consumer_for_order, :order_id => order.id} %>
+  <strong><%= t('orders_plugin.views.admin._edit.actions') %></strong>
 
   <div class="clean"></div>
 </div>

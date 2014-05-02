@@ -2,7 +2,7 @@
 <div class="fields">
   <% unless order.self_supplier? %>
     <div class="box-field supplier">
-      <%= item.product.supplier.abbreviation_or_name %>
+      <%= item.product.supplier.abbreviation_or_name rescue self.profile.short_name %>
     </div>
   <% end %>
 
@@ -14,7 +14,7 @@
     <% previous_status = nil %>
     <% OrdersPlugin::Order::Statuses.each do |status| %>
       <% last = ! order.status_on?(status) %>
-      <%= render 'orders_plugin_item/quantity_price', :item => item, :status => status, :previous_status => previous_status, :last => last,
+      <%= render 'orders_plugin_item/quantity_price', :item => item, :order => order, :status => status, :previous_status => previous_status, :last => last,
           :actor_name => actor_name %>
 
       <% break if last %>
