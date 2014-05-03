@@ -631,6 +631,14 @@
           quantity: "qty"
           price_total: "value (%{currency})"
           status: "status"
+      order:
+        _show: 
+          cancel_order: "cancel order"
+          confirm_order: "Confirm order"
+          confirming_this_order: "Confirming this order you are responsible for paying it. Do you want to continue?"
+        _supplier_delivery: 
+          delivery_method: "Delivery Method"
+          choose_another: "Choose another:"
       admin:
         reports:
           products_spreadsheet: "Products' spreadsheet"
@@ -799,12 +807,6 @@
           your_order_was_cancel: "Your order was cancelled."
           your_order_wasn_t_con: "Your order wasn't confirmed and the cycle orders period already ended."
           your_orders_on_this_c: "Your orders on this cycle"
-        _delivery: 
-          cancel_order: "cancel order"
-          choose_another: "Choose another:"
-          confirm_order: "Confirm order"
-          confirming_this_order: "Confirming this order you are responsible for paying it. Do you want to continue?"
-          delivery_method: "Delivery Method"
         _filter_products: 
           active: active
           all_the_categories: "all the categories"

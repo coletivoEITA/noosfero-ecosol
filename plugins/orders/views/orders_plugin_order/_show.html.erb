@@ -1,0 +1,25 @@
+<div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? user, @admin rescue false %> <%= "admin" if @admin %>">
+
+  <% form_for :order, order, :url => {:controller => :orders_plugin_order, :action => :edit, :id => order.id},
+    :html => {:onsubmit => 'return orders.order.submit(this)'} do |f| %>
+
+    <%= yield :order_header %>
+
+    <%= render "orders_plugin_item/index", :order => order, :actor_name => actor_name %>
+
+    <%= render 'orders_plugin_order/supplier_delivery', :order => order %>
+
+    <% if @admin %>
+    <% else %>
+      <% if order.open? %>
+        <div>
+          <%= hidden_field_tag "order[status]", 'ordered' %>
+          <%= f.submit t('views.order._show.confirm_order'), :confirm => t('views.order._show.confirming_this_order') %>&emsp;
+
+          <%= link_to t('views.order._show.cancel_order'), {:action => :cancel, :id => order.id} %>
+        <% end %>
+      </div>
+    <% end %>
+
+  <% end %>
+</div>

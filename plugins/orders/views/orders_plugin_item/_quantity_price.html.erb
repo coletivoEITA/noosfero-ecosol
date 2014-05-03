@@ -17,12 +17,14 @@
     <div class="box-field quantity">
       <span class="value"><%= quantity %></span>
 
-      <% if @admin %>
-        <% if (last or order.current_status == status) and OrdersPlugin::Item::StatusAccessMap[status] == actor_name %>
+      <% unless @simple %>
+        <% if @admin %>
+          <% if (last or order.current_status == status) and OrdersPlugin::Item::StatusAccessMap[status] == actor_name %>
+            <%= text_field_tag "item[quantity_#{data}]", quantity, :onkeyup => 'orders.item.quantity_keyup(this, event)' %>
+          <% end %>
+        <% else %>
           <%= text_field_tag "item[quantity_#{data}]", quantity, :onkeyup => 'orders.item.quantity_keyup(this, event)' %>
         <% end %>
-      <% else %>
-        <%= text_field_tag "item[quantity_#{data}]", quantity, :onkeyup => 'orders.item.quantity_keyup(this, event)' %>
       <% end %>
 
       <span class="unit"><%= excerpt_ending item.product.unit.singular, 4, '.' rescue '' %></span>

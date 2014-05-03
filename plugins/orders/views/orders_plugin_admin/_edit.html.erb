@@ -6,10 +6,10 @@
 <% else %>
   <% form_remote_for :order, order, :url => {:controller => :orders_plugin_admin, :action => :edit, :id => order.id} do |f| %>
 
-    <div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? user, @admin %> <%= "admin" if @admin %>">
+    <% content_for :order_header do %>
       <%= render 'orders_plugin_admin/header', :order => order %>
-      <%= render 'orders_plugin_item/index', :order => order, :actor_name => actor_name %>
-    </div>
+    <% end %>
+    <%= render 'orders_plugin_order/show', :order => order, :actor_name => actor_name %>
 
     <% if actor_name == :supplier and order.open? %>
 
@@ -42,7 +42,7 @@
 
 <div class="actions-bar">
   <%# link_to_function t('orders_plugin.views.admin._edit.remove_order'), '' if order.cycle.orders? %>
-  <%# link_to t('orders_plugin.views.admin._edit.edit_on_the_order_pag'), {:controller => :orders_plugin_consumer, :action => :edit, :id => order.id}, :target => '_blank' %>
+  <%# link_to t('orders_plugin.views.admin._edit.edit_on_the_order_pag'), {:controller => :orders_plugin_order, :action => :edit, :id => order.id}, :target => '_blank' %>
   <%= colorbox_link_to t('orders_plugin.views.admin._edit.message_to_member'), {:controller => :orders_plugin_message, :action => :new_to_consumer_for_order, :order_id => order.id} %>
   <strong><%= t('orders_plugin.views.admin._edit.actions') %></strong>
 

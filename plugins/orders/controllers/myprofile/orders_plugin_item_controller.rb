@@ -6,6 +6,10 @@ class OrdersPluginItemController < MyProfileController
 
   no_design_blocks
 
+  include OrdersPlugin::TranslationHelper
+
+  before_filter :set_actor_name
+
   helper OrdersPlugin::OrdersDisplayHelper
 
   def edit
@@ -56,6 +60,11 @@ class OrdersPluginItemController < MyProfileController
 
   def order_method
     'sale'
+  end
+
+  # default value, may be overwriten
+  def set_actor_name
+    @actor_name = :consumer
   end
 
 end

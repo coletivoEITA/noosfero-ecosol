@@ -1,0 +1,5 @@
+<div id="order-<%=order.id%>" class="order-box">
+  <% @simple = true %>
+  <%= render "orders_plugin_item/index", :order => @order, :actor_name => :consumer %>
+  <%= render 'orders_plugin_order/supplier_delivery', :order => @order %>
+</div>

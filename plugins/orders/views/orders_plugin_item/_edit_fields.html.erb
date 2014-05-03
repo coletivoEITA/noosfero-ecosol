@@ -17,8 +17,11 @@
       <%= render 'orders_plugin_item/quantity_price', :item => item, :order => order, :status => status, :previous_status => previous_status, :last => last,
           :actor_name => actor_name %>
 
-      <% break if last %>
-      <% previous_status = status %>
+      <%
+        break if not @admin and status == 'ordered'
+        break if last
+        previous_status = status
+      %>
     <% end %>
   </div>
 
@@ -28,7 +31,7 @@
 
   <div class="actions">
 
-    <% if order.may_edit? user, @admin %>
+    <% if (order.may_edit? user, @admin rescue false) %>
       <% if @admin %>
         <%# FIXME: add remove button that do not destroy, but put zero %>
 
@@ -37,7 +40,7 @@
       <% else %>
         <%= link_to_remote t('orders_plugin.views.item._edit.remove_from_order'), :update => "item-#{item.id}",
           :loading => "loading_overlay.show('#item-#{item.id}')", :loaded => "loading_overlay.hide('#item-#{item.id}')",
-          :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? user, @admin %>
+          :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? user, @admin rescue false %>
 
         <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(:controller => :orders_plugin_item, :action => :edit, :id => item.id)}')", :class => 'action-button' %>
 

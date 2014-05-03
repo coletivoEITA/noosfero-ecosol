@@ -39,7 +39,7 @@ orders_cycle = {
       },
 
       checkbox_click: function (check_box, id) {
-        this.click(null, id, check_box.checked);
+        this.click(null, id);
         return true;
       },
       click: function (event, id) {
@@ -48,12 +48,23 @@ orders_cycle = {
           return;
 
         var product = jQuery('#cycle-product-'+id);
+        if (! product.hasClass('editable'))
+          return;
+
         var state = !product.hasClass('in-order');
         if (state == true)
           this.add(id);
         else
           this.remove(id);
         product.find('input').get(0).checked = state;
+      },
+
+      setEditable: function (editable) {
+        jQuery('.order-cycle-product').toggleClass('editable', editable)
+        if (editable)
+          jQuery('.order-cycle-product #product_ids_').removeAttr('disabled')
+        else
+          jQuery('.order-cycle-product #product_ids_').attr('disabled', 'disabled')
       },
 
       add: function (id) {

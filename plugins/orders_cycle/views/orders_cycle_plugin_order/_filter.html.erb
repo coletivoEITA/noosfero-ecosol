@@ -27,8 +27,7 @@
 
     <div class="table-content">
       <% products_for_order.each do |offered_product| %>
-        <% onclick = if editable then "orders_cycle.order.product.click(event, #{offered_product.id});" else '' end %>
-        <div id="cycle-product-<%=offered_product.id%>" class="order-cycle-product value-row" toggle-ignore onclick="<%= onclick %>" supplier-id="<%= offered_product.supplier.id %>">
+        <div id="cycle-product-<%=offered_product.id%>" class="order-cycle-product value-row <%= 'editable' if editable %>" toggle-ignore onclick="orders_cycle.order.product.click(event, <%=offered_product.id.to_json%>);" supplier-id="<%= offered_product.supplier.id %>">
 
           <% item = order.blank? ? nil : order.items.select{ |op| offered_product.id == op.product_id }.first %>
           <%= render "orders_cycle_plugin_product/order_edit",

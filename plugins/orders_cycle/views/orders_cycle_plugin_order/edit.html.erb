@@ -1,11 +1,11 @@
 <div id="order-page" class="orders page cycle-view">
 
-  <%= render :partial => 'orders_cycle_plugin_cycle/view_header', :locals => {:cycle => @cycle} %>
+  <%= render 'orders_cycle_plugin_cycle/view_header', :cycle => @cycle %>
 
-  <%= render :partial => 'orders_cycle_plugin_cycle/view_products', :locals => {:cycle => @cycle, :order => @order} %>
+  <%= render 'orders_cycle_plugin_cycle/view_products', :cycle => @cycle, :order => @order %>
 
   <div id="order-column">
-    <%= render :partial => 'consumer_orders' %>
+    <%= render 'consumer_orders' %>
   </div>
 
   <%= javascript_include_tag '/plugins/orders/javascripts/waypoints.min.js' %>

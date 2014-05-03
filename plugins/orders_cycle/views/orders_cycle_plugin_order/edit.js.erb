@@ -1,0 +1,6 @@
+jQuery('#order-<%=@order.id%>').replaceWith("<%= j render('orders_cycle_plugin_order/active_order', :order => @order, :actor_name => @actor_name) %>");
+
+orders_cycle.order.product.setEditable(<%=@order.may_edit?(user, @admin).to_json%>)
+
+display_notice(<%= session.delete(:notice).to_json %>)
+

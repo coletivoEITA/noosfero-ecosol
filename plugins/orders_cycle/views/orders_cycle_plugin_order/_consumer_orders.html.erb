@@ -68,48 +68,7 @@
 <%# prints out the referenced order %>
 <% if @order %>
   <div id="consumer-order-<%= @order.id %>" class="consumer-order edit">
-
-    <%= render :partial => 'status', :locals => {:order => @order} %>
-
-    <% unless @order.open? %>
-      <div id="order-status-message" class="order-message status-<%= @order.current_status %>">
-        <div class="order-message-text">
-          <% if @order.confirmed? %>
-            <%= t('views.order._consumer_orders.your_order_is_confirm') %>
-          <% elsif @order.cancelled? %>
-            <%= t('views.order._consumer_orders.your_order_was_cancel') %>
-          <% else %>
-            <%= t('views.order._consumer_orders.your_order_wasn_t_con') %>
-          <% end %>
-        </div>
-        <div class="order-message-actions">
-          <div><%= t('views.order._consumer_orders.you_still_can') %></div>
-
-          <% if @cycle.orders? %>
-            <%= link_to t('views.order._consumer_orders.change_order'), {:action => :reopen, :id => @order.id}  %>
-            <%= t('views.order._consumer_orders.before_the_closing') %>&emsp;
-          <% end %>
-          <br>
-
-          <% unless @order.cancelled? %>
-            <%= link_to t('views.order._delivery.cancel_order'), {:action => :cancel, :id => @order.id} %>
-            <br>
-          <% end %>
-
-          <%= colorbox_link_to t('views.order._consumer_orders.send_message_to_the_m'), {:controller => :orders_cycle_plugin_message, :action => :new_to_admins} %>
-        </div>
-      </div>
-    <% end %>
-
-    <div id="order-products">
-      <%= render 'orders_plugin_consumer/items', :order => @order %>
-    </div>
-
-    <div id="delivery-box">
-      <%= render 'delivery', :order => @order %>
-    </div>
-
-    <div class="clean"></div>
+    <%= render 'orders_cycle_plugin_order/active_order' %>
   </div>
 <% end %>
 

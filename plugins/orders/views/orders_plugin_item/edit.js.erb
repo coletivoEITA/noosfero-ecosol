@@ -1,1 +1,2 @@
-jQuery('#order-<%=@order.id%>').html('<%= j render('orders_plugin_consumer/items', :order => @order) %>');
+jQuery('#order-<%=@order.id%>').html('<%= j render('orders_plugin_order/show', :order => @order, :actor_name => @actor_name) %>');
+

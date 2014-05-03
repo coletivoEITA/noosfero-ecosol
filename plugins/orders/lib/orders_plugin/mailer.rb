@@ -43,7 +43,7 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
          :environment => profile.environment
   end
 
-  def order_confirmation order, host_with_port
+  def order_confirmation order
     profile = order.profile
     domain = profile.hostname || profile.environment.default_hostname
     environment = profile.environment
@@ -53,7 +53,7 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
     reply_to      profile_recipients(profile)
     subject       t('lib.mailer.order_was_confirmed') % {:name => profile.name}
     content_type  'text/html'
-    assigns = {:profile => profile, :order => order, :consumer => order.consumer, :environment => profile.environment, :host_with_port => host_with_port}
+    assigns = {:profile => profile, :order => order, :consumer => order.consumer, :environment => profile.environment}
     body assigns
     render :file => 'orders_plugin/mailer/order_confirmation', :body => assigns
   end

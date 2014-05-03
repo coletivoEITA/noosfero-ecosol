@@ -1,6 +1,30 @@
 
 orders = {
 
+  order: {
+
+    get: function(context, url) {
+      var order = jQuery(context).parents('.order-box')
+
+      loading_overlay.show(order)
+      jQuery.getScript(url, function () {
+        loading_overlay.hide(order)
+      })
+    },
+
+    submit: function(form) {
+      var order = jQuery(form).parents('.order-box')
+
+      jQuery(form).ajaxSubmit({dataType: 'script',
+        beforeSubmit: function(){ loading_overlay.show(order) },
+        success: function(){ loading_overlay.hide(order) },
+      })
+
+      return false
+    },
+
+  },
+
   item: {
 
     edit: function () {

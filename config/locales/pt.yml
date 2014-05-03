@@ -640,6 +640,14 @@
           quantity: "qtd"
           price_total: "valor (%{currency})"
           status: "etapa"
+      order:
+        _show:
+          cancel_order: "Cancelar pedido"
+          confirm_order: "Confirmar pedido"
+          confirming_this_order: "Ao confirmar este pedido, você está responsável por pagá-lo. Você quer continuar?"
+        _supplier_delivery: 
+          delivery_method: "Método de entrega"
+          choose_another: "Escolha outro método:"
       admin:
         reports:
           products_spreadsheet: "Planilha de produtos"
@@ -804,12 +812,6 @@
           your_order_was_cancel: "Seu pedido foi cancelado"
           your_order_wasn_t_con: "Seu pedido não foi confirmado e o período de pedidos terminou."
           your_orders_on_this_c: "Seus pedidos neste ciclo"
-        _delivery: 
-          cancel_order: "Cancelar pedido"
-          choose_another: "Escolha outro método:"
-          confirm_order: "Confirmar pedido"
-          confirming_this_order: "Ao confirmar este pedido, você está responsável por pagá-lo. Você quer continuar?"
-          delivery_method: "Método de entrega"
         _filter_products: 
           active: Ativo
           all_the_categories: "todas as categorias"
