@@ -9,14 +9,15 @@ Backlog = 2048
 Workers = 10
 Timeout = 30
 
-WarmUpUrl = '/'
-WarmUpTime = 3
+WorkerWarmUp = true
+WorkerWarmUpTime = 4
+WorkerWarmUpUrl = '/'
 
-KillByRequests = 500..600
-KillByMemory = 128..256
+WorkerKillByRequests = 500..600
+WorkerKillByMemory = 144..192
 
 # FIXME: this makes the worker too big and activate Unicorn::WorkerKiller::Oom
-OutOfBandGcFrequency = nil
+WorkerOutOfBandGcFrequency = nil
 
 WorkerListen = true
 WorkerPidFile = true
@@ -46,17 +47,23 @@ before_fork do |server, worker|
   # a .oldbin file exists if unicorn was gracefully restarted with a USR2 signal
   # we should terminate the old process now that we're up and running
   Thread.new do
-    sleep Timeout*2
-    old_pid = "#{PidsDir}/unicorn.pid.oldbin"
-    if File.exists? old_pid
+    old_pid_file = "#{PidsDir}/unicorn.pid.oldbin"
+    if File.exists? old_pid_file
+      old_pid = File.read(old_pid_file).to_i
+
+      Workers.times.each do |worker_nr|
+        sleep WorkerWarmUpTime
+        Process.kill "TTOU", old_pid
+      end if WorkerWarmUp
+
       begin
-        Process.kill "QUIT", File.read(old_pid).to_i
-        File.delete old_pid
+        Process.kill "QUIT", old_pid
+        File.delete old_pid_file
       rescue Errno::ENOENT, Errno::ESRCH
         # someone else did our job for us
       end
     end
-  end
+  end if worker.nr == 0 # only execute once
 end
 
 after_fork do |server, worker|
@@ -69,28 +76,28 @@ after_fork do |server, worker|
   middleware = ActionController::Dispatcher.middleware
 
   if (require 'unicorn/worker_killer' rescue nil)
-    middleware.use Unicorn::WorkerKiller::MaxRequests, KillByRequests.begin, KillByRequests.end if KillByRequests
-    middleware.use Unicorn::WorkerKiller::Oom, KillByMemory.begin * (1024**2), KillByMemory.end * (1024**2) if KillByMemory
+    middleware.use Unicorn::WorkerKiller::MaxRequests, WorkerKillByRequests.begin, WorkerKillByRequests.end if WorkerKillByRequests
+    middleware.use Unicorn::WorkerKiller::Oom, WorkerKillByMemory.begin * (1024**2), WorkerKillByMemory.end * (1024**2) if WorkerKillByMemory
   end
 
-  if OutOfBandGcFrequency
+  if WorkerOutOfBandGcFrequency
     require_dependency 'unicorn/oob_gc'
     GC.disable
-    middleware.use Unicorn::OobGC, OutOfBandGcFrequency
+    middleware.use Unicorn::OobGC, WorkerOutOfBandGcFrequency
   end
 
   # say to the kernel to kill very big workers first than other processes
   File.open("/proc/#{Process.pid}/oom_adj", "w"){ |f| f << '12' }
 
-  if WarmUpUrl
+  if WorkerWarmUp
     # Don't warm up all workers at once, to allow old workers to use CPU.
     # Also, worker is only considered ready on after_fork complete, so the new worker worker is ready only after warm up.
-    sleep worker.nr * WarmUpTime
+    sleep worker.nr * WorkerWarmUpTime
 
     # make a request warming up this new worker
     require 'rack/test'
     request = Rack::MockRequest.new server.app
-    request.get "http://#{ListenAddress}:#{ListenPort}#{WarmUpUrl}"
+    request.get "http://#{ListenAddress}:#{ListenPort}#{WorkerWarmUpUrl}"
   end
 
   if WorkerListen
