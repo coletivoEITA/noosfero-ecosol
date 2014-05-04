@@ -107,7 +107,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     return @self_supplier if @self_supplier
 
     self.items.each do |item|
-      return @self_supplier = false unless (item.product.supplier.profile == order.profile rescue true)
+      return @self_supplier = false unless (item.product.supplier.self? rescue true)
     end
     @self_supplier = true
   end
