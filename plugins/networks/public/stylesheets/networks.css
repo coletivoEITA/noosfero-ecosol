@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, #networks-network-show-structure .listing .row {
+.container-clean, #networks-network-show-structure .listing .header, #networks-network-show-structure .listing .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -143,7 +143,7 @@
 .clean {
   clear: both; }
 
-.container-clean, #networks-network-show-structure .listing .row {
+.container-clean, #networks-network-show-structure .listing .header, #networks-network-show-structure .listing .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -321,6 +321,12 @@
 #networks-node-create {
   height: 160px; }
 
+#networks-network-show-structure .listing .header h3, #networks-network-show-structure .listing .header .action-button, #networks-network-show-structure .listing .header .selection-button {
+  margin-top: 8px;
+  float: left; }
+#networks-network-show-structure .listing .header .action-button, #networks-network-show-structure .listing .header .selection-button {
+  margin-left: 8px;
+  margin-top: 4px; }
 #networks-network-show-structure .listing .row .name {
   float: left;
   width: 65%; }

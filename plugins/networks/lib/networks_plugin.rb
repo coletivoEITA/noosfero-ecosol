@@ -23,7 +23,9 @@ class NetworksPlugin < Noosfero::Plugin
   end
 
   def control_panel_buttons
-    {:title => I18n.t('networks_plugin.views.control_panel.structure'), :icon => 'networks-manage-network', :url => {:controller => :networks_plugin_network, :action => :show_structure}} if context.profile.node?
+    if context.profile.node?
+      {:title => I18n.t('networks_plugin.views.control_panel.structure'), :icon => 'networks-manage-network', :url => {:controller => :networks_plugin_network, :action => :show_structure}}
+    end
   end
 
   ProfileEditorFilter = proc do

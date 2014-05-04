@@ -26,25 +26,14 @@
       </p>
     <% end %>
 
-    <p>
-      <% if @order.supplier_delivery_data.present? %>
-        <p><%= t('orders_plugin.views.mailer.order_confirmation.attention_to_the_foll') %></p>
-        <b><%= @order.supplier_delivery_data[:name] %></b><br />
-        <%= @order.supplier_delivery_data[:description] %><br />
-      <% end %>
-    </p>
-
     <p><%= t('orders_plugin.views.mailer.order_confirmation.order_data_confirmed') %></p>
 
-    <div id="order-<%=@order.id%>" class="order-box">
-      <%= render "orders_plugin_item/index", :order => @order, :actor_name => :consumer %>
-    </div>
+    <%= render "orders_plugin_order/show_simple", :order => @order, :actor_name => :consumer %>
 
     <p>
       <%= t('orders_plugin.views.mailer.order_confirmation.your_order_can_be_che') %><br />
      <%= link_to t('orders_plugin.views.mailer.order_confirmation.order_code_of_profile') % {:code => @order.code, :name => @profile.name },
-        "http://" + @host_with_port + url_for(:controller => :orders_cycle_plugin_order,
-                                              :action => :edit, :profile => @profile.identifier, :id => @order.id) %>
+       {:controller => :orders_cycle_plugin_order, :action => :edit, :profile => @profile.identifier, :id => @order.id} %>
     </p>
 
     <p>

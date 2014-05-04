@@ -64,7 +64,9 @@ module ControllerInheritance
     base.cattr_accessor :inherit_templates
     base.inherit_templates = true
 
-    base.send :define_method, :default_template do |*args|
+    base.send :define_method, :default_template do |action_name|
+      action_name ||= self.action_name
+
       self.each_template_with_inherit do |klass|
         begin
           self.view_paths.find_template "#{klass.controller_path}/#{action_name}", default_template_format

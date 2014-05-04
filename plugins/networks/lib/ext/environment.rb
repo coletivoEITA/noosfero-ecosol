@@ -3,28 +3,55 @@ require_dependency 'environment'
 class Environment
 
   has_many :networks, :class_name => 'NetworksPlugin::Network'
+  has_many :network_nodes, :class_name => 'NetworksPlugin::Node'
+
+  settings_items :network_template_id
+  settings_items :network_node_template_id
 
   def network_template
-    @network_template ||= NetworksPlugin::Network.find_by_id settings[:network_template_id]
+    @network_template ||= self.networks.find_by_id self.network_template_id
+
     unless @network_template
       theme = if Theme.system_themes.collect(&:id).include?('networks') then 'networks' else nil end
-      @network_template = self.networks.create! :name => 'Network template', :identifier => "#{self.name.to_slug}_network_template", :visible => false, :is_template => true
-      @network_template.apply_template self.enterprise_template
-      @network_template.attributes = {:theme => theme, :layout_template => 'leftbar'}
-      @network_template.save!
 
-      @network_template.home_page.type = 'EnterpriseHomepage'
-      @network_template.home_page.save
+      template = self.networks.build :name => 'Network template', :identifier => "#{self.name.to_slug}_network_template", :visible => false, :is_template => true
+      template.theme = theme
+      template.layout_template = 'leftbar'
+      template.home_page = EnterpriseHomepage.new :profile => template
+      template.home_page.save
+      template.save!
 
-      self.network_template = @network_template
-      self.save
+      self.network_template = template
+      self.save!
     end
+
     @network_template
   end
-
   def network_template= template
-    settings[:network_template_id] = template.id
+    self.network_template_id = template.id
     @network_template = template
+  end
+
+  def network_node_template
+    @network_node_template ||= self.network_nodes.find_by_id self.network_node_template_id
+
+    unless @network_node_template
+      template = self.network_nodes.build :name => 'Network Node template', :visible => false, :is_template => true
+      template.parent = self.network_template
+      template.save!
+
+      template.articles.destroy_all
+      template.apply_template self.network_template
+
+      self.network_node_template = template
+      self.save
+    end
+
+    @network_node_template
+  end
+  def network_node_template= template
+    self.network_node_template_id = template.id
+    @network_node_template = template
   end
 
 end

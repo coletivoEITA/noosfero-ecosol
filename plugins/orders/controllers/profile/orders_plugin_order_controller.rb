@@ -1,29 +1,40 @@
-class OrdersPluginConsumerController < ProfileController
+class OrdersPluginOrderController < ProfileController
 
   no_design_blocks
 
   before_filter :login_required, :except => [:index, :edit]
   before_filter :load_order, :except => [:new]
   before_filter :check_access, :only => [:confirm, :remove, :cancel]
+  before_filter :set_actor_name
 
-  def confirm
-    params[:order] ||= {}
-
-    if @order.items.size > 0
-      @order.update_attributes! params[:order].merge(:status => 'ordered')
-      OrdersPlugin::Mailer.deliver_order_confirmation @order, request.host_with_port
-      session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
+  def edit
+    status = params[:order][:status]
+    if @admin
     else
-      session[:notice] = t('orders_plugin.controllers.profile.consumer.can_not_confirm_your_')
+      if status == 'ordered'
+        if @order.items.size > 0
+          @order.update_attributes! :status => status
+          session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
+        else
+          session[:notice] = t('orders_plugin.controllers.profile.consumer.can_not_confirm_your_')
+        end
+      end
     end
 
-    redirect_to :action => :edit, :id => @order.id
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def reopen
+    @order.update_attributes! :status => 'draft'
+    render :action => :edit
   end
 
   def cancel
     @order.update_attributes! :status => 'cancelled'
-    OrdersPlugin::Mailer.deliver_order_cancellation @order
     session[:notice] = t('orders_plugin.controllers.profile.consumer.order_cancelled')
+    render :action => :edit
   end
 
   protected
@@ -41,6 +52,11 @@ class OrdersPluginConsumerController < ProfileController
     else
       true
     end
+  end
+
+  # default value, may be overwriten
+  def set_actor_name
+    @actor_name = :consumer
   end
 
 end

@@ -99,6 +99,10 @@
       .value-row {
         border: none;
 
+        #product_ids_[disabled] {
+          display: none;
+        }
+
         &.in-order {
 
           .box-view {

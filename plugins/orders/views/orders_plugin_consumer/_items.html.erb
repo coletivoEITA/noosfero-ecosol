@@ -1,6 +1,0 @@
-<div id="order-<%=order.id%>" class="order-box <%= "editable" if order.may_edit? user %>">
-
-  <% form_remote_for :order, order, :url => {:action => :edit, :id => order.id} do |f| %>
-    <%= render "orders_plugin_item/index", :order => order, :actor_name => :consumer %>
-  <% end %>
-</div>

@@ -59,7 +59,9 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   validates_presence_of :profile
   validates_inclusion_of :status, :in => DbStatuses
+
   before_validation :check_status
+  after_save :send_notifications
 
   def orders_name
     raise 'undefined'
@@ -105,7 +107,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     return @self_supplier if @self_supplier
 
     self.items.each do |item|
-      return @self_supplier = false unless (item.product.profile == self.profile rescue true)
+      return @self_supplier = false unless (item.product.supplier.self? rescue true)
     end
     @self_supplier = true
   end
@@ -180,6 +182,8 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   protected
 
   def check_status
+    self.status ||= 'draft'
+
     # backwards compatibility
     self.status = 'ordered' if self.status == 'confirmed'
 
@@ -192,6 +196,14 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
       Statuses.each do |status|
         self.send "#{status}_at=", nil
       end
+    end
+  end
+
+  def send_notifications
+    if self.status == 'ordered' and self.status_was != 'ordered'
+      OrdersPlugin::Mailer.deliver_order_confirmation self
+    elsif self.status == 'cancelled' and self.status_was != 'cancelled'
+      OrdersPlugin::Mailer.deliver_order_cancellation self
     end
   end
 

@@ -3,7 +3,7 @@ require_dependency 'orders_cycle_plugin/display_helper'
 OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
 require_dependency 'suppliers_plugin/product_helper'
 
-class OrdersCyclePluginOrderController < OrdersPluginConsumerController
+class OrdersCyclePluginOrderController < OrdersPluginOrderController
 
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
@@ -41,6 +41,8 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   end
 
   def edit
+    return super if request.xhr?
+
     if cycle_id = params[:cycle_id]
       @cycle = OrdersCyclePlugin::Cycle.find_by_id cycle_id
       return render_not_found unless @cycle
@@ -51,14 +53,10 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
       @consumer = @order.consumer
       @cycle = @order.cycle
       @consumer_orders = @cycle.sales.for_consumer @consumer
-
-      render 'consumer_orders' if params[:consumer_orders]
     end
     @products = @cycle.products_for_order
     @product_categories = Product.product_categories_of @products
     @consumer_orders = @cycle.sales.for_consumer @consumer
-
-    render 'consumer_orders' if params[:consumer_orders]
   end
 
   def cancel
@@ -69,21 +67,6 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   def remove
     super
     redirect_to :action => :index, :cycle_id => @order.cycle.id
-  end
-
-  def reopen
-    @order = OrdersPlugin::Sale.find params[:id]
-    if @order.consumer == user
-      raise "Cycle's orders period already ended" unless @order.cycle.orders?
-      @order.update_attributes! :status => 'draft'
-    end
-
-    redirect_to :action => :edit, :id => @order.id
-  end
-
-  def confirm
-    raise "Cycle's orders period already ended" unless @order.cycle.orders?
-    super
   end
 
   def admin_new
@@ -110,7 +93,7 @@ class OrdersCyclePluginOrderController < OrdersPluginConsumerController
   def render_delivery
     @order = OrdersPlugin::Sale.find params[:id]
     @order.attributes = params[:order]
-    render :partial => 'delivery', :layout => false, :locals => {:order => @order}
+    render :partial => 'orders_plugin_order/supplier_delivery', :locals => {:order => @order}
   end
 
   def supplier_balloon

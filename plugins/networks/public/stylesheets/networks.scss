@@ -20,6 +20,19 @@
 
   .listing {
 
+    .header {
+      @extend .container-clean;
+
+      h3, .action-button {
+        margin-top: $half-margin;
+        float: left;
+      }
+      .action-button {
+        margin-left: $half-margin;
+        margin-top: $half-margin - $half-padding;
+      }
+    }
+
     .row {
       @extend .container-clean;
 

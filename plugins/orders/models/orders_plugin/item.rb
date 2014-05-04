@@ -90,7 +90,6 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
   def name
     self['name'] || (self.product.name rescue nil)
   end
-  # FIXME: alias to price_consumer_ordered
   def price
     self['price'] || (self.product.price rescue nil)
   end

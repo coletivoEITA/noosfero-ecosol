@@ -1,6 +1,30 @@
 
 orders = {
 
+  order: {
+
+    get: function(context, url) {
+      var order = jQuery(context).parents('.order-box')
+
+      loading_overlay.show(order)
+      jQuery.getScript(url, function () {
+        loading_overlay.hide(order)
+      })
+    },
+
+    submit: function(form) {
+      var order = jQuery(form).parents('.order-box')
+
+      jQuery(form).ajaxSubmit({dataType: 'script',
+        beforeSubmit: function(){ loading_overlay.show(order) },
+        success: function(){ loading_overlay.hide(order) },
+      })
+
+      return false
+    },
+
+  },
+
   item: {
 
     edit: function () {
@@ -14,7 +38,8 @@ orders = {
       quantity.focus();
     },
 
-    quantity_keyup: function(context, event) {
+    // keydown prevents form submit, keyup don't
+    quantity_keydown: function(context, event) {
       if (event.keyCode == 13) {
         var item = jQuery(context).parents('.item');
         item.find('.more .action-button').get(0).onclick();

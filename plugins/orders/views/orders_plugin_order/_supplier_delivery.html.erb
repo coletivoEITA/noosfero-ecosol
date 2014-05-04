@@ -1,0 +1,21 @@
+<div id="delivery-box">
+  <% delivery_methods = if order.cycle then order.cycle.delivery_methods else profile.delivery_methods end %>
+
+  <% if delivery_methods.size > 0 %>
+    <div>
+      <h3><%= t('views.order._supplier_delivery.delivery_method') %></h3>
+      <% if order.supplier_delivery %>
+        <strong><%= order.supplier_delivery.name %></strong>
+        <div class="subtitle"><%= order.supplier_delivery.description %></div>
+      <% end %>
+    </div>
+
+    <% if order.open? and delivery_methods.size > 1 %>
+      <%= labelled_field f, :supplier_delivery_id, t('views.order._supplier_delivery.choose_another'),
+        f.select(:supplier_delivery_id, delivery_methods.collect{ |d| [d.name, d.id] }, {},
+                 :onchange => "jQuery('#delivery-box').load('#{url_for(:action => :render_delivery, :id => order.id)}', jQuery(this).parents('form').serialize());"),
+        :class => 'subtitle' %>
+    <% end %>
+  <% end %>
+
+</div>
