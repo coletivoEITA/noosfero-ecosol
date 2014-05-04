@@ -1,17 +1,22 @@
 RailsRoot = File.expand_path "#{File.dirname __FILE__}/.."
 PidsDir = "#{RailsRoot}/tmp/pids"
+
 ListenAddress = "127.0.0.1"
 ListenPort = 50000
-Workers = 10
-Timeout = 30
+UnixListen = "tmp/unicorn.sock"
 Backlog = 2048
 
+Workers = 10
+Timeout = 30
+
 WarmUpUrl = '/'
-WarmUpTime = 5
+WarmUpTime = 3
 
 KillByRequests = 500..600
-KillByMemory = 160..256
-GcFrequency = 20
+KillByMemory = 128..256
+
+# FIXME: this makes the worker too big and activate Unicorn::WorkerKiller::Oom
+OutOfBandGcFrequency = nil
 
 WorkerListen = true
 WorkerPidFile = true
@@ -26,7 +31,7 @@ timeout Timeout
 #stdout_path "#{RailsRoot}/log/unicorn.stdout.log"
 pid "#{PidsDir}/unicorn.pid"
 
-listen "#{RailsRoot}/tmp/unicorn.sock", :backlog => Backlog
+listen "#{RailsRoot}/#{UnixListen}", :backlog => Backlog
 listen "#{ListenAddress}:#{ListenPort}", :tcp_nopush => true
 
 # combine Ruby 2 or REE with "preload_app true" for memory savings
@@ -63,33 +68,23 @@ after_fork do |server, worker|
 
   middleware = ActionController::Dispatcher.middleware
 
-  require 'unicorn/worker_killer'
-  if KillByRequests
-    # Max requests per worker
-    max_request_min = KillByRequests.begin
-    max_request_max = KillByRequests.end
-    middleware.use Unicorn::WorkerKiller::MaxRequests, max_request_min, max_request_max
-  end
-  if KillByMemory
-    # Max memory size (RSS) per worker
-    oom_min = KillByMemory.begin * (1024**2)
-    oom_max = KillByMemory.end * (1024**2)
-    middleware.use Unicorn::WorkerKiller::Oom, oom_min, oom_max
+  if (require 'unicorn/worker_killer' rescue nil)
+    middleware.use Unicorn::WorkerKiller::MaxRequests, KillByRequests.begin, KillByRequests.end if KillByRequests
+    middleware.use Unicorn::WorkerKiller::Oom, KillByMemory.begin * (1024**2), KillByMemory.end * (1024**2) if KillByMemory
   end
 
-  if GcFrequency
+  if OutOfBandGcFrequency
     require_dependency 'unicorn/oob_gc'
-    # Don't run GC during requests
-    # FIXME: this makes the worker too big and activate Unicorn::WorkerKiller::Oom
-    #GC.disable
-    middleware.use Unicorn::OobGC, GcFrequency
+    GC.disable
+    middleware.use Unicorn::OobGC, OutOfBandGcFrequency
   end
 
   # say to the kernel to kill very big workers first than other processes
   File.open("/proc/#{Process.pid}/oom_adj", "w"){ |f| f << '12' }
 
   if WarmUpUrl
-    # don't warm up all workers at once
+    # Don't warm up all workers at once, to allow old workers to use CPU.
+    # Also, worker is only considered ready on after_fork complete, so the new worker worker is ready only after warm up.
     sleep worker.nr * WarmUpTime
 
     # make a request warming up this new worker
