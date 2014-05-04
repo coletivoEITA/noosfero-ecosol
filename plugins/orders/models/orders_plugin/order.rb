@@ -131,6 +131,11 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     UserStatuses.index(self.current_status) >= UserStatuses.index(status) rescue false
   end
 
+  def next_status
+    current_index = Statuses.index(self.status) || 0
+    Statuses[current_index + 1]
+  end
+
   def current_status
     return @current_status if @current_status
     return @current_status = 'open' if self.open?

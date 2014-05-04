@@ -1209,6 +1209,15 @@
     background-position: 103% 0; }
   .cycle-timeline .cycle-timeline .actions-bar a {
     font-weight: bold; }
+  .cycle-timeline .actions-bar {
+    background-color: #FEC64D;
+    padding: 6px 8px;
+    clear: both; }
+    .cycle-timeline .actions-bar a {
+      float: left;
+      margin-right: 10px; }
+    .cycle-timeline .actions-bar strong {
+      float: right; }
 
 .cycle-product-line *[disabled] {
   background-color: transparent; }

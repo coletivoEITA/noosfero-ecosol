@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .order-view .actions, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -149,7 +149,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .order-view .actions, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -296,7 +296,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .order-view .actions, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -557,7 +557,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .order-view .actions, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -755,7 +755,7 @@
     /* Buttons */ }
     #filter .filter-box .clean {
       clear: both; }
-    #filter .filter-box .container-clean, #filter .filter-box .sortable-table > .table-header, #filter .filter-box .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #filter .filter-box .box-view, #filter .filter-box .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #filter .filter-box .box-view-inner, #filter .filter-box .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #filter .filter-box .internal-table, #filter .filter-box .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #filter .filter-box .order-items-container .order-total, .order-items-container #filter .filter-box .order-total, #filter .filter-box .order-items-container .order-items .table-header, .order-items-container .order-items #filter .filter-box .table-header, #filter .filter-box .order-items-container .table-content .item .fields, .order-items-container .table-content .item #filter .filter-box .fields {
+    #filter .filter-box .container-clean, #filter .filter-box .sortable-table > .table-header, #filter .filter-box .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #filter .filter-box .box-view, #filter .filter-box .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #filter .filter-box .box-view-inner, #filter .filter-box .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #filter .filter-box .internal-table, #filter .filter-box .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #filter .filter-box .order-items-container .order-total, .order-items-container #filter .filter-box .order-total, #filter .filter-box .order-items-container .order-items .table-header, .order-items-container .order-items #filter .filter-box .table-header, #filter .filter-box .order-items-container .table-content .item .fields, .order-items-container .table-content .item #filter .filter-box .fields, #filter .filter-box .order-view .actions, .order-view #filter .filter-box .actions {
       overflow: hidden;
       display: inline-block;
       /* Necessary to trigger "hasLayout" in IE */
@@ -947,7 +947,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .order-view .actions, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -1094,7 +1094,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .order-view .actions, .consumer-order .field, .consumer-order .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -1258,7 +1258,7 @@
   /* Buttons */ }
   .order-items-container .clean {
     clear: both; }
-  .order-items-container .container-clean, .order-items-container .sortable-table > .table-header, .order-items-container .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .order-items-container .box-view, .order-items-container .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view .order-items-container .box-view-inner, .order-items-container .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit .order-items-container .internal-table, .order-items-container #filter .filter-box, #filter .order-items-container .filter-box, .order-items-container #filter .filter-box .field, #filter .filter-box .order-items-container .field, .order-items-container #filter .filter-box .field-secondary.with-unit, #filter .filter-box .order-items-container .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields {
+  .order-items-container .container-clean, .order-items-container .sortable-table > .table-header, .order-items-container .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .order-items-container .box-view, .order-items-container .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view .order-items-container .box-view-inner, .order-items-container .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit .order-items-container .internal-table, .order-items-container #filter .filter-box, #filter .order-items-container .filter-box, .order-items-container #filter .filter-box .field, #filter .filter-box .order-items-container .field, .order-items-container #filter .filter-box .field-secondary.with-unit, #filter .filter-box .order-items-container .field-secondary.with-unit, .order-items-container .field, .order-items-container .field-secondary.with-unit, .order-items-container .order-total, .order-items-container .order-items .table-header, .order-items-container .table-content .item .fields, .order-items-container .order-view .actions, .order-view .order-items-container .actions {
     overflow: hidden;
     display: inline-block;
     /* Necessary to trigger "hasLayout" in IE */
@@ -1557,22 +1557,28 @@
 .orders-admin-index .order.cancelled .box-view .box-field {
   text-decoration: line-through; }
 
-.order-box {
+.order-view, .order-view .order-items-scroll, .order-view .order-items, .order-view .item {
+  width: 464px; }
+.order-view.admin, .order-view.admin .order-items-scroll, .order-view.admin .order-items, .order-view.admin .item {
+  width: 544px; }
+.order-view .actions {
+  margin-top: 16px; }
+  .order-view .actions a {
+    float: left; }
+  .order-view .actions input {
+    float: right; }
+.order-view .order-data {
   background: #f8fa83;
   border-radius: 3px;
   font-size: 10px;
   margin: 0;
   border: none; }
-  .order-box .order-items-scroll {
+  .order-view .order-data.admin {
+    border: 1px solid black; }
+  .order-view .order-data .order-items-scroll {
     overflow-y: auto;
     padding-right: 16px; }
-  .order-box, .order-box .order-items-scroll, .order-box .order-items, .order-box .item {
-    width: 464px; }
-  .order-box.admin {
-    border: 1px solid black; }
-    .order-box.admin, .order-box.admin .order-items-scroll, .order-box.admin .order-items, .order-box.admin .item {
-      width: 544px; }
-  .order-box .order-header {
+  .order-view .order-data .order-header {
     padding: 4px 8px;
     border-bottom: 1px solid black;
     text-transform: uppercase; }
@@ -1598,7 +1604,7 @@
   /* Buttons */ }
   .consumer-order .clean {
     clear: both; }
-  .consumer-order .container-clean, .consumer-order .sortable-table > .table-header, .consumer-order .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .consumer-order .box-view, .consumer-order .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view .consumer-order .box-view-inner, .consumer-order .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit .consumer-order .internal-table, .consumer-order #filter .filter-box, #filter .consumer-order .filter-box, .consumer-order #filter .filter-box .field, #filter .filter-box .consumer-order .field, .consumer-order #filter .filter-box .field-secondary.with-unit, #filter .filter-box .consumer-order .field-secondary.with-unit, .consumer-order .order-items-container .order-total, .order-items-container .consumer-order .order-total, .consumer-order .order-items-container .order-items .table-header, .order-items-container .order-items .consumer-order .table-header, .consumer-order .order-items-container .table-content .item .fields, .order-items-container .table-content .item .consumer-order .fields, .consumer-order .field, .consumer-order .field-secondary.with-unit {
+  .consumer-order .container-clean, .consumer-order .sortable-table > .table-header, .consumer-order .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .consumer-order .box-view, .consumer-order .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view .consumer-order .box-view-inner, .consumer-order .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit .consumer-order .internal-table, .consumer-order #filter .filter-box, #filter .consumer-order .filter-box, .consumer-order #filter .filter-box .field, #filter .filter-box .consumer-order .field, .consumer-order #filter .filter-box .field-secondary.with-unit, #filter .filter-box .consumer-order .field-secondary.with-unit, .consumer-order .order-items-container .order-total, .order-items-container .consumer-order .order-total, .consumer-order .order-items-container .order-items .table-header, .order-items-container .order-items .consumer-order .table-header, .consumer-order .order-items-container .table-content .item .fields, .order-items-container .table-content .item .consumer-order .fields, .consumer-order .order-view .actions, .order-view .consumer-order .actions, .consumer-order .field, .consumer-order .field-secondary.with-unit {
     overflow: hidden;
     display: inline-block;
     /* Necessary to trigger "hasLayout" in IE */

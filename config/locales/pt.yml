@@ -617,6 +617,12 @@
           separated: "Separado"
           delivered: "Entregue"
           received: "Recebido"
+        statuses_verbs:
+          ordered: "Confirmar"
+          accepted: "Aceitar"
+          separated: "Separar"
+          delivered: "Entregar"
+          received: "Receber"
     views:
       filter:
         <<: *suppliers_plugin_filter
@@ -660,7 +666,6 @@
           total: "total (%{currency})"
           situation: "situação"
         _edit: 
-          actions: Ações
           add_product: "adicionar produto"
           cancel: Cancelar
           edit_on_the_order_pag: "Editar na página de pedidos"
