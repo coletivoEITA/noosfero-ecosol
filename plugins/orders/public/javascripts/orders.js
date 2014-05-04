@@ -38,7 +38,8 @@ orders = {
       quantity.focus();
     },
 
-    quantity_keyup: function(context, event) {
+    // keydown prevents form submit, keyup don't
+    quantity_keydown: function(context, event) {
       if (event.keyCode == 13) {
         var item = jQuery(context).parents('.item');
         item.find('.more .action-button').get(0).onclick();

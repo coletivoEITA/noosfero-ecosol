@@ -20,10 +20,10 @@
       <% unless @simple %>
         <% if @admin %>
           <% if (last or order.current_status == status) and OrdersPlugin::Item::StatusAccessMap[status] == actor_name %>
-            <%= text_field_tag "item[quantity_#{data}]", quantity, :onkeyup => 'orders.item.quantity_keyup(this, event)' %>
+            <%= text_field_tag "item[quantity_#{data}]", quantity, :onkeydown => 'orders.item.quantity_keydown(this, event)' %>
           <% end %>
         <% else %>
-          <%= text_field_tag "item[quantity_#{data}]", quantity, :onkeyup => 'orders.item.quantity_keyup(this, event)' %>
+          <%= text_field_tag "item[quantity_#{data}]", quantity, :onkeydown => 'orders.item.quantity_keydown(this, event)' %>
         <% end %>
       <% end %>
 
