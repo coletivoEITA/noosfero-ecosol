@@ -32,7 +32,7 @@ do_start() {
   ruby -S thin -C config/thin.yml start
 
   sleep 2
-  renice 20 `cat tmp/pids/thin.50000.pid`
+  renice 20 `cat tmp/pids/thin.51000.pid`
 }
 
 do_stop() {
