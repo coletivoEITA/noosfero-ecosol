@@ -1,4 +1,6 @@
 jQuery('#order-<%=@order.id%>').replaceWith("<%= j render('orders_plugin_order/show', :order => @order, :actor_name => @actor_name) %>");
 
-display_notice(<%= session.delete(:notice).to_json %>)
+<% if notice = session.delete(:notice) %>
+  display_notice(<%= notice.to_json %>)
+<% end %>
 
