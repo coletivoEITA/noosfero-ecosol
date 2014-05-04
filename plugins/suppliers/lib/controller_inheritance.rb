@@ -1,42 +1,57 @@
 module ControllerInheritance
 
+  module ClassMethods
+
+    def hmvc context
+      cattr_accessor :hmvc_context
+      cattr_accessor :inherit_templates
+      cattr_accessor :hmvc_paths
+
+      self.before_filter :set_hmvc_context
+
+      self.inherit_templates = true
+      self.hmvc_context = context
+      self.hmvc_paths ||= {}
+      self.hmvc_paths[self.hmvc_context] ||= {} if self.hmvc_context
+
+      # initialize other context's controllers paths
+      controllers = [self] + context.controllers.map{ |controller| controller.constantize }
+
+      controllers.each do |klass|
+        self.hmvc_paths[self.hmvc_context][klass.superclass.controller_path] = klass.controller_path
+      end
+
+      include InstanceMethods
+    end
+
+    def hmvc_controller_path hmvc_context = self.hmvc_context
+      self.hmvc_paths[hmvc_context][self.controller_path] || self.controller_path
+    end
+
+    protected
+
+  end
+
   class ActionView < ActionView::Base
 
     private
 
-    def _pick_partial_template_with_template_super partial_path
+    def _pick_partial_template_with_hmvc partial_path
       if partial_path.include? '/'
-        _pick_partial_template_without_template_super partial_path
+        _pick_partial_template_without_hmvc partial_path
       elsif controller
-        controller.send :each_template_with_inherit do |klass|
+        controller.send :each_template_with_hmvc do |klass|
           begin
-            path = "#{klass.controller_path}/_#{partial_path}"
-            self.view_paths.find_template path, self.template_format
+            self.view_paths.find_template "#{klass.controller_path}/_#{partial_path}", self.template_format
           rescue ::ActionView::MissingTemplate
             raise "Can't find '#{partial_path}' in any #{controller.class}'s parent" unless (klass.inherit_templates rescue nil)
           end
         end
       else
-        _pick_partial_template_without_template_super partial_path
+        _pick_partial_template_without_hmvc partial_path
       end
     end
-    alias_method_chain :_pick_partial_template, :template_super
-
-  end
-
-  module ClassMethods
-
-    protected
-
-    def replace_url_for class_hash = {}
-      path_hash = {}; class_hash.each{ |source, dest| path_hash[source.controller_path] = dest.controller_path }
-      self.send :define_method, :url_for do |options|
-        dest_controller = path_hash[options[:controller].to_s]
-        options[:controller] = dest_controller if dest_controller
-
-        super options
-      end
-    end
+    alias_method_chain :_pick_partial_template, :hmvc
 
   end
 
@@ -44,7 +59,40 @@ module ControllerInheritance
 
     protected
 
-    def each_template_with_inherit &block
+    def set_hmvc_context
+      @hmvc_context = self.class.hmvc_context
+    end
+
+    # replace method just to change instance class
+    def initialize_template_class response
+      response.template = ControllerInheritance::ActionView.new self.class.view_paths, {}, self
+      response.template.helpers.send :include, self.class.master_helper_module
+      response.redirected_to = nil
+      @performed_render = @performed_redirect = false
+    end
+
+    def default_template action_name = self.action_name
+      self.each_template_with_hmvc do |klass|
+        begin
+          self.view_paths.find_template "#{klass.controller_path}/#{action_name}", default_template_format
+        rescue ::ActionView::MissingTemplate => e
+          # raise the same exception as rails will rescue it
+          raise e unless (klass.inherit_templates rescue nil)
+        end
+      end
+    end
+
+    def url_for options = {}
+      controller = options[:controller]
+      controller ||= controller_path
+      controller = controller.to_s
+      dest_controller = self.class.hmvc_paths[@hmvc_context][controller]
+
+      options[:controller] = dest_controller if dest_controller
+      super options
+    end
+
+    def each_template_with_hmvc &block
       klass = self.class
       ret = nil
       loop do
@@ -57,32 +105,4 @@ module ControllerInheritance
 
   end
 
-  def self.included base
-    base.extend ClassMethods
-    base.send :include, InstanceMethods
-
-    base.cattr_accessor :inherit_templates
-    base.inherit_templates = true
-
-    base.send :define_method, :default_template do |action_name|
-      action_name ||= self.action_name
-
-      self.each_template_with_inherit do |klass|
-        begin
-          self.view_paths.find_template "#{klass.controller_path}/#{action_name}", default_template_format
-        rescue ::ActionView::MissingTemplate => e
-          # raise the same exception as rails will rescue it
-          raise e unless (klass.inherit_templates rescue nil)
-        end
-      end
-    end
-
-    # replace method just to change instance class
-    base.send :define_method, :initialize_template_class do |response|
-      response.template = ControllerInheritance::ActionView.new self.class.view_paths, {}, self
-      response.template.helpers.send :include, self.class.master_helper_module
-      response.redirected_to = nil
-      @performed_render = @performed_redirect = false
-    end
-  end
 end

@@ -20,7 +20,7 @@ class NetworksPluginSearchController < SearchController
 
   protected
 
-  include ControllerInheritance
-  replace_url_for self.superclass => self
+  extend ControllerInheritance::ClassMethods
+  hmvc NetworksPlugin
 
 end

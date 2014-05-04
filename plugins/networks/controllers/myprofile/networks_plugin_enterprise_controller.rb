@@ -62,7 +62,7 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
     @node = NetworksPlugin::Node.find_by_id(params[:id]) || @network
   end
 
-  include ControllerInheritance
-  replace_url_for self.superclass => self
+  extend ControllerInheritance::ClassMethods
+  hmvc NetworksPlugin
 
 end

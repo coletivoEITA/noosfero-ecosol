@@ -25,7 +25,7 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
   validates_presence_of :order
   validates_presence_of :product
 
-  before_save :calculate_prices
+  before_save :save_calculated_prices
   before_create :sync_fields
 
   StatusAccessMap = {
@@ -87,6 +87,7 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     end
   end
 
+  # Attributes cached from product
   def name
     self['name'] || (self.product.name rescue nil)
   end
@@ -104,14 +105,22 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     self.order.status
   end
 
-  def price_consumer_ordered
-    self.price * self.quantity_consumer_ordered rescue nil
+  StatusDataMap.each do |status, data|
+    quantity = "quantity_#{data}".to_sym
+    price = "price_#{data}".to_sym
+
+    self.send :define_method, "calculated_#{price}" do |items|
+      self.price * self.send(quantity) rescue nil
+    end
   end
 
   protected
 
-  def calculate_prices
-    self.price_consumer_ordered = self.price_consumer_ordered
+  def save_calculated_prices
+    StatusDataMap.each do |status, data|
+      price = "price_#{data}".to_sym
+      self.send "#{price}=", self.send("calculated_#{price}")
+    end
   end
 
   def sync_fields

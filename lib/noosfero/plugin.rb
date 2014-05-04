@@ -111,6 +111,13 @@ class Noosfero::Plugin
       File.join(root_path,'views')
     end
 
+    def controllers
+      @controllers ||= Dir.glob("#{self.root_path}/controllers/*/*").map do |controller_file|
+        next unless controller_file =~ /_controller.rb$/
+        controller = File.basename(controller_file).gsub(/.rb$/, '').camelize
+      end.compact
+    end
+
     # Here the developer should specify the meta-informations that the plugin can
     # inform.
     def plugin_name

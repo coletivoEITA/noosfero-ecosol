@@ -107,7 +107,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
 
   protected
 
-  include ControllerInheritance
-  replace_url_for self.superclass => self
+  extend ControllerInheritance::ClassMethods
+  hmvc OrdersCyclePlugin
 
 end

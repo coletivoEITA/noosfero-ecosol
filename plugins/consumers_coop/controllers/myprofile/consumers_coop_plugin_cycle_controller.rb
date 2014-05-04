@@ -7,7 +7,7 @@ class ConsumersCoopPluginCycleController < OrdersCyclePluginCycleController
 
   protected
 
-  include ControllerInheritance
-  replace_url_for self.superclass => self, OrdersPluginOrderController => ConsumersCoopPluginOrderController
+  extend ControllerInheritance::ClassMethods
+  hmvc ConsumersCoopPlugin
 
 end
