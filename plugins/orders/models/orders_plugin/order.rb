@@ -182,6 +182,8 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   protected
 
   def check_status
+    self.status ||= 'draft'
+
     # backwards compatibility
     self.status = 'ordered' if self.status == 'confirmed'
 
