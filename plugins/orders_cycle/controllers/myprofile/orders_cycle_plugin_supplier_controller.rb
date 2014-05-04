@@ -22,7 +22,7 @@ class OrdersCyclePluginSupplierController < SuppliersPluginMyprofileController
 
   protected
 
-  include ControllerInheritance
-  replace_url_for self.superclass => self, SuppliersPluginProductController => self
+  extend ControllerInheritance::ClassMethods
+  hmvc OrdersCyclePlugin
 
 end

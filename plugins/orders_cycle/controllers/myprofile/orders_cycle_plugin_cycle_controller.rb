@@ -119,8 +119,8 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
 
   attr_accessor :cycle
 
-  include ControllerInheritance
-  replace_url_for self.superclass => self
+  extend ControllerInheritance::ClassMethods
+  hmvc OrdersCyclePlugin
 
   def search_scope scope
     params[:date] ||= {}

@@ -43,7 +43,7 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
 
   protected
 
-  include ControllerInheritance
-  replace_url_for self.superclass => self, SuppliersPluginProductController => self, OrdersPluginItemController => OrdersCyclePluginItemController
+  extend ControllerInheritance::ClassMethods
+  hmvc OrdersCyclePlugin
 
 end
