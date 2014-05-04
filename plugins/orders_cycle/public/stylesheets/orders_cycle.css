@@ -850,6 +850,8 @@
     width: 64px; }
   .cycle-view #cycle-products-for-order #cycle-products .value-row {
     border: none; }
+    .cycle-view #cycle-products-for-order #cycle-products .value-row #product_ids_[disabled] {
+      display: none; }
     .cycle-view #cycle-products-for-order #cycle-products .value-row.in-order .box-view {
       background-color: #fdf2a3; }
 .cycle-view #order-column {

@@ -2,5 +2,7 @@ jQuery('#order-<%=@order.id%>').replaceWith("<%= j render('orders_cycle_plugin_o
 
 orders_cycle.order.product.setEditable(<%=@order.may_edit?(user, @admin).to_json%>)
 
-display_notice(<%= session.delete(:notice).to_json %>)
+<% if notice = session.delete(:notice) %>
+  display_notice(<%= notice.to_json %>)
+<% end %>
 
