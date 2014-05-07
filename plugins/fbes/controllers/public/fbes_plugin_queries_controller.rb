@@ -9,7 +9,7 @@ class FbesPluginQueriesController < PublicController
       format = params[:format]
       request.format = format.to_sym if format.present?
 
-      query = "#{query} offset #{page*per_page} limit #{per_page}"
+      query = "#{query} offset #{(page-1)*per_page} limit #{per_page}"
       result = ActiveRecord::Base.transaction do
         ActiveRecord::Base.connection.execute query
       end
