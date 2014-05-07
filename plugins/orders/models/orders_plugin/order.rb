@@ -70,6 +70,8 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => proc{ self.profile.orders }
 
+  serialize :data
+
   extend SerializedSyncedData::ClassMethods
   sync_serialized_field :profile do |profile|
     {:name => profile.name, :email => profile.contact_email}
@@ -205,11 +207,12 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
 
   def send_notifications
-    #if self.status == 'ordered' and self.status_was != 'ordered'
-      #OrdersPlugin::Mailer.deliver_order_confirmation self
-    #elsif self.status == 'cancelled' and self.status_was != 'cancelled'
-      #OrdersPlugin::Mailer.deliver_order_cancellation self
-    #end
+    return if source == 'shopping_cart_plugin'
+    if self.status == 'ordered' and self.status_was != 'ordered'
+      OrdersPlugin::Mailer.deliver_order_confirmation self
+    elsif self.status == 'cancelled' and self.status_was != 'cancelled'
+      OrdersPlugin::Mailer.deliver_order_cancellation self
+    end
   end
 
 end

@@ -267,7 +267,7 @@ class ShoppingCartPluginController < PublicController
       products_list[id] = {:quantity => quantity, :price => price, :name => product.name}
     end
 
-    OrdersPlugin::Sale.create! :profile => environment.profiles.find(cart[:profile_id]), :consumer => user,
+    OrdersPlugin::Sale.create! :profile => environment.profiles.find(cart[:profile_id]), :consumer => user, :source => 'shopping_cart_plugin',
       :status => 'ordered', :products_list => products_list,
       :consumer_data => {
         :name => params[:customer][:name], :email => params[:customer][:email], :contact_phone => params[:customer][:contact_phone],
