@@ -205,11 +205,11 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
 
   def send_notifications
-    if self.status == 'ordered' and self.status_was != 'ordered'
-      OrdersPlugin::Mailer.deliver_order_confirmation self
-    elsif self.status == 'cancelled' and self.status_was != 'cancelled'
-      OrdersPlugin::Mailer.deliver_order_cancellation self
-    end
+    #if self.status == 'ordered' and self.status_was != 'ordered'
+      #OrdersPlugin::Mailer.deliver_order_confirmation self
+    #elsif self.status == 'cancelled' and self.status_was != 'cancelled'
+      #OrdersPlugin::Mailer.deliver_order_cancellation self
+    #end
   end
 
 end
