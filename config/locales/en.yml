@@ -608,6 +608,12 @@
           separated: "Separated"
           delivered: "Delivered"
           received: "Received"
+        statuses_verbs:
+          ordered: "Confirm"
+          accepted: "Accept"
+          separated: "Separate"
+          delivered: "Deliver"
+          received: "Receive"
     views:
       filter:
         <<: *suppliers_plugin_filter
@@ -652,7 +658,6 @@
           total: "total (%{currency})"
           situation: "situation"
         _edit: 
-          actions: Actions
           add_product: "add product"
           cancel: cancel
           edit_on_the_order_pag: "edit on the order page"

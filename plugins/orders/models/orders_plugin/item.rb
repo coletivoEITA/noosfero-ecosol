@@ -47,11 +47,11 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
       self.send :define_method, "total_#{quantity}" do |items|
         items ||= (self.ordered_items rescue nil) || self.items
-        items.collect(&quantity).inject(0){ |sum,q| sum+q }
+        items.collect(&quantity).inject(0){ |sum,q| sum + q.to_f }
       end
       self.send :define_method, "total_#{price}" do |items|
         items ||= (self.ordered_items rescue nil) || self.items
-        items.collect(&price).inject(0){ |sum,q| sum+q }
+        items.collect(&price).inject(0){ |sum,q| sum + q.to_f }
       end
 
       has_number_with_locale "total_#{quantity}"

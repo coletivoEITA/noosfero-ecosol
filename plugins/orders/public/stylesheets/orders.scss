@@ -84,35 +84,52 @@
   }
 }
 
-.order-box {
-  background: $order-items-bg;
-  border-radius: 3px;
-  font-size: 10px;
+.order-view {
 
-  .order-items-scroll {
-    overflow-y: auto;
-    padding-right: $intercolumn;
-  }
   &, .order-items-scroll, .order-items, .item {
     width: $order-items-width;
   }
-
-  margin: 0;
-  border: none;
   &.admin {
-    border: $border solid black;
-
     &, .order-items-scroll, .order-items, .item {
       width: $order-items-admin-width;
     }
   }
 
-  .order-header {
-    padding: $half-padding $padding;
-    border-bottom: $border solid black;
-    text-transform: uppercase;
+  .actions {
+    margin-top: $margin;
+    @extend .container-clean;
+
+    a {
+      float: left;
+    }
+    input {
+      float: right;
+    }
   }
 
+  .order-data {
+    background: $order-items-bg;
+    border-radius: 3px;
+    font-size: 10px;
+
+    margin: 0;
+    border: none;
+    &.admin {
+      border: $border solid black;
+    }
+
+    .order-items-scroll {
+      overflow-y: auto;
+      padding-right: $intercolumn;
+    }
+
+    .order-header {
+      padding: $half-padding $padding;
+      border-bottom: $border solid black;
+      text-transform: uppercase;
+    }
+
+  }
 }
 
 .consumer-order {

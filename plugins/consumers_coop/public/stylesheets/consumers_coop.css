@@ -281,18 +281,6 @@ body.consumers-coop {
   clear: both;
   margin-bottom: 8px; }
 
-.consumers-coop .actions-bar {
-  background-color: #FEC64D;
-  padding: 6px 8px;
-  clear: both; }
-
-.consumers-coop .actions-bar a {
-  float: left;
-  margin-right: 10px; }
-
-.consumers-coop .actions-bar strong {
-  float: right; }
-
 /* ----- cycle date ----- */
 .consumers-coop .orders-date td.happening {
   padding-right: 20px;
