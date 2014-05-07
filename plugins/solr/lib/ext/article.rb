@@ -46,20 +46,6 @@ class Article
     solr_save
   end
 
-  def add_category_with_solr_save(c, reload=false)
-    add_category_without_solr_save(c, reload)
-    if !new_record?
-      self.solr_save
-    end
-  end
-  alias_method_chain :add_category, :solr_save
-
-  def create_pending_categorizations_with_solr_save
-    create_pending_categorizations_without_solr_save
-    self.solr_save
-  end
-  alias_method_chain :create_pending_categorizations, :solr_save
-
   private
 
   def self.solr_plugin_f_type_proc(klass)
