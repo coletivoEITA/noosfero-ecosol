@@ -2,7 +2,12 @@ module NeedsProfile
 
   module ClassMethods
     def needs_profile
+      @needs_profile = true
       before_filter :load_profile
+    end
+
+    def needs_profile?
+      @needs_profile
     end
   end
 

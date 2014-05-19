@@ -23,4 +23,8 @@ class Image < ActiveRecord::Base
 
   postgresql_attachment_fu
 
+  def public_filename *args
+    "http://cirandas.net#{super *args}"
+  end
+
 end
