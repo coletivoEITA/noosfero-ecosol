@@ -2,12 +2,9 @@ module NeedsProfile
 
   module ClassMethods
     def needs_profile
-      @needs_profile = true
+      self.cattr_accessor :needs_profile
+      self.needs_profile = true
       before_filter :load_profile
-    end
-
-    def needs_profile?
-      @needs_profile
     end
   end
 

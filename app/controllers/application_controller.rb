@@ -20,8 +20,7 @@ class ApplicationController < ActionController::Base
     # This avoids redirects and multiple URLs for one specific resource
     if controller_path = options[:controller] || self.class.controller_path
       controller = (self.class.controller_path_class[controller_path] ||= "#{controller_path}_controller".camelize.constantize rescue nil)
-      #raise controller.inspect if options[:action] == 'login'
-      if controller and not (controller.needs_profile? rescue true) and not controller == AccountController
+      if controller and not (controller.needs_profile rescue true) and not controller == AccountController
         options.merge! :host => environment.default_hostname, :only_path => false
       end
     end
