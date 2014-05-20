@@ -130,7 +130,7 @@ def create_enterprise data
   end 
 
   enterprise = Enterprise.new :name => name, :identifier => identifier, :enabled => false,
-    :contact_email => contact_email, :environment => $environment
+    :contact_email => contact_email, :environment => $environment, :referer => 'FBES'
   enterprise.public_profile = true
 
   $log.info "#{$log_prefix} Registrando dados geográficos do empreendimento..." 
