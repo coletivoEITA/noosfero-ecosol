@@ -102,6 +102,12 @@ Rails::Initializer.run do |config|
     config.controller_paths << item
   end
 
+  require 'rack/cache'
+  config.middleware.use Rack::Cache,
+    :verbose => true,
+    :metastore   => 'memcached://localhost:11211/',
+    :entitystore => "file://#{Rails.root}/tmp/rack.cache"
+
   require 'sass/plugin/rack'
   config.middleware.use Sass::Plugin::Rack
   locations = Dir.glob("#{RAILS_ROOT}/public/designs/themes/*{,/stylesheets}") +
