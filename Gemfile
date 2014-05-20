@@ -13,6 +13,9 @@ gem 'i18n'
 gem 'daemons', '1.0.10'
 gem 'rubyzip', '< 1.0.0'
 
+gem 'dalli'
+gem 'rack-cache'
+
 #Indirect, matching debian squeeze versions
 gem 'builder', '2.1.2'
 gem 'cmdparse', '2.0.2'
