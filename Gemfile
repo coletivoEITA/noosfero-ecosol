@@ -24,11 +24,11 @@ gem 'eventmachine', '0.12.10'
 gem 'log4r', '1.0.6'
 gem 'mmap', '0.2.6'
 gem 'mocha', '0.9.8'
-gem 'nokogiri', '1.4.0'
+gem 'nokogiri', '1.4.7'
 gem 'rest-client', '1.6.0'
 gem 'ruby-breakpoint', '0.5.1'
 gem 'mime-types', '< 2.0'
-gem 'locale', '2.0.9'
+gem 'locale', '<= 2.0.9'
 
 group :production do
   gem 'unicorn'
