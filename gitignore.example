@@ -1,6 +1,5 @@
 .gitignore
 .rbenv-*
-Gemfile.lock
 vendor/rails
 doc/api
 doc/noosfero/plugins
