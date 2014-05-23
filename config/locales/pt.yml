@@ -1171,10 +1171,12 @@
       admin:
         index:
           title: "Gerenciar Redes"
-          registered_networks: "Redes cadastradas"
-          no_network: "Nenhuma rede registrada."
+          network_template: "Editar modelo de Redes"
+          network_node_template: "Editar modelo de Nós"
           new: "Criar rede"
           new_button: "Criar"
+          registered_networks: "Redes cadastradas"
+          no_network: "Nenhuma rede registrada."
       supplier:
         _supplier:
           by_removing_this_supp: "Ao remover %{terms.supplier.article.singular}, todos os seus produtos ficarão indisponíveis. Por favor, confirme sua opção"

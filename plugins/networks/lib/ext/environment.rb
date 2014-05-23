@@ -14,7 +14,8 @@ class Environment
     unless @network_template
       theme = if Theme.system_themes.collect(&:id).include?('networks') then 'networks' else nil end
 
-      template = self.networks.build :name => 'Network template', :identifier => "#{self.name.to_slug}_network_template", :visible => false, :is_template => true
+      template = self.networks.create! :name => 'Network template', :identifier => "#{self.name.to_slug}_network_template", :visible => false, :is_template => true
+
       template.theme = theme
       template.layout_template = 'leftbar'
       #template.home_page = EnterpriseHomepage.create! :profile => template
@@ -35,9 +36,7 @@ class Environment
     @network_node_template ||= self.network_nodes.find_by_id self.network_node_template_id
 
     unless @network_node_template
-      template = self.network_nodes.build :name => 'Network Node template', :visible => false, :is_template => true
-      template.parent = self.network_template
-      template.save!
+      template = self.network_nodes.create! :parent => self.network_template, :name => 'Network Node template', :visible => false, :is_template => true
 
       self.network_node_template = template
       self.save

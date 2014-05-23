@@ -5,9 +5,7 @@
 
   <%= render 'catalog/node_products', :node => profile %>
 
-  <% suppliers = profile.suppliers.except_self.collect &:profile %>
   <% profile.nodes.each do |node| %>
-    <% next if suppliers.include? node %>
     <h2> <%= link_to node.name, node.url %> </h2>
     <%= render 'catalog/node_products', :node => node %>
   <% end %>
