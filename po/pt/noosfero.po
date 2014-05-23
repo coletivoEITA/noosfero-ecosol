@@ -1604,6 +1604,10 @@ msgstr "Este campo precisa ser público"
 msgid "Username"
 msgstr "Nome de usuário"
 
+#: app/helpers/forgot_password_helper.rb
+msgid "or"
+msgstr "ou"
+
 #: app/helpers/forgot_password_helper.rb:21 app/models/comment.rb:-
 #: app/models/contact.rb:- app/models/user.rb:18
 #: app/views/contact/sender/mail.rhtml:12
