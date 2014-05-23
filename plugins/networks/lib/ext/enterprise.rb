@@ -1,6 +1,6 @@
-require_dependency 'profile'
+require_dependency 'enterprise'
 
-class Profile
+class Enterprise
 
   has_many :network_node_child_relations, :foreign_key => :child_id, :class_name => 'SubOrganizationsPlugin::Relation', :dependent => :destroy, :include => [:parent],
     :conditions => ["parent_type = 'NetworksPlugin::Node' OR parent_type = 'NetworksPlugin::Network'"]
