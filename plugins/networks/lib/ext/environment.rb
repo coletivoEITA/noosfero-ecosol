@@ -17,8 +17,7 @@ class Environment
       template = self.networks.build :name => 'Network template', :identifier => "#{self.name.to_slug}_network_template", :visible => false, :is_template => true
       template.theme = theme
       template.layout_template = 'leftbar'
-      template.home_page = EnterpriseHomepage.new :profile => template
-      template.home_page.save
+      #template.home_page = EnterpriseHomepage.create! :profile => template
       template.save!
 
       self.network_template = template
@@ -39,9 +38,6 @@ class Environment
       template = self.network_nodes.build :name => 'Network Node template', :visible => false, :is_template => true
       template.parent = self.network_template
       template.save!
-
-      template.articles.destroy_all
-      template.apply_template self.network_template
 
       self.network_node_template = template
       self.save

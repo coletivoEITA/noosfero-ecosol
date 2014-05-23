@@ -8,7 +8,7 @@ class NetworksPlugin::Node < NetworksPlugin::BaseNode
   delegate :admins, :to => :network, :allow_nil => true
 
   def default_template
-    return if self.is_template
+    return self.environment.network_template if self.is_template
     self.network.node_template
   end
 

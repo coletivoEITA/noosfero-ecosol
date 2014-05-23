@@ -40,7 +40,7 @@ class NetworksPlugin::Network < NetworksPlugin::BaseNode
   end
 
   def default_template
-    return if self.is_template
+    return self.environment.enterprise_template if self.is_template
     self.environment.network_template
   end
 
