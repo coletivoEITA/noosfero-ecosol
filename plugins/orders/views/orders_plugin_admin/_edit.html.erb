@@ -26,11 +26,6 @@
         <div><%= text_area_tag 'message' %></div>
       </div>
 
-      <div>
-        <%= f.submit t('orders_plugin.views.admin._edit.save') %>
-        <%= link_to_function t('orders_plugin.views.admin._edit.cancel'), 'toggle-edit' => '' %>
-      </div>
-
       <% javascript_tag do %>
         jQuery('#order-<%=order.id%> input[type=checkbox]').change();
       <% end %>

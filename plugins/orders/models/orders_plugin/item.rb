@@ -108,8 +108,12 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
   def quantity_price_data actor_name = :consumer, admin = false
     data = ActiveSupport::OrderedHash.new
     statuses = OrdersPlugin::Order::Statuses
-    current = statuses.index self.order.status
-    current ||= 0
+
+    order_status = self.order.status
+    current = statuses.index(status) || 0
+    order_next_status = statuses[current + 1]
+
+    goto_next = actor_name == OrdersPlugin::Item::StatusAccessMap[order_next_status]
 
     statuses.each_with_index do |status, i|
       data_field = OrdersPlugin::Item::StatusDataMap[status]
@@ -129,14 +133,12 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
         data[status][:flags][:empty] = true
       end
 
-      # break on the next status
-      break if i > current
+      break if (if goto_next then i > current else i == current end)
     end
 
-    statuses.each_index do |i|
-      status = statuses[i]
+    statuses.each_with_index do |status, i|
       prev_status = statuses[i-1] unless i.zero?
-      next_status = statuses[i+1] if i < statuses.size
+      next_status = statuses[i+1] if (if goto_next then i <= current else i < current end)
 
       data[status][:flags][:overwritten] = true if next_status and data[next_status][:quantity].present?
 
@@ -147,7 +149,7 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
         end
 
         data[status][:flags][:current] = true
-        data[next_status][:flags][:next] = true
+        data[next_status][:flags][:next] = true if next_status
         break
       end
     end

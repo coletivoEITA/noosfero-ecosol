@@ -190,6 +190,9 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   extend CurrencyHelper::ClassMethods
   instance_exec &OrdersPlugin::Item::DefineTotals
+  # total_price considering last state
+  def total_price
+  end
 
   protected
 
