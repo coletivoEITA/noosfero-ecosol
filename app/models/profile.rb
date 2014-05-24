@@ -113,6 +113,7 @@ class Profile < ActiveRecord::Base
   end
 
   named_scope :visible, :conditions => { :visible => true }
+  named_scope :invisible, :conditions => ['profiles.visible <> ?', true]
   named_scope :enabled, :conditions => { :enabled => true }
   named_scope :public, :conditions => { :visible => true, :public_profile => true }
 
