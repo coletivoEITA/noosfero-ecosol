@@ -105,7 +105,7 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     self.order.status
   end
 
-  def quantity_price_data
+  def quantity_price_data actor_name = :consumer, admin = false
     data = ActiveSupport::OrderedHash.new
     statuses = OrdersPlugin::Order::Statuses
     current = statuses.index self.order.status
@@ -113,10 +113,12 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
     statuses.each_with_index do |status, i|
       data_field = OrdersPlugin::Item::StatusDataMap[status]
+      access = OrdersPlugin::Item::StatusAccessMap[status]
 
       data[status] = {
         :flags => {},
         :field => data_field,
+        :access => access,
       }
 
       if self.send("quantity_#{data_field}").present?
@@ -148,6 +150,10 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
         data[next_status][:flags][:next] = true
         break
       end
+    end
+
+    data.each do |status, status_data|
+      status_data[:flags][:editable] = status_data[:access] == actor_name and (if admin then status_data[:flags][:next] else self.order.open? end)
     end
 
     data

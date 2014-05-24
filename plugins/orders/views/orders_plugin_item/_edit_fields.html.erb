@@ -11,10 +11,8 @@
   </div>
 
   <div class="box-field quantity-price-table">
-    <% item.quantity_price_data.each do |status, data| %>
+    <% item.quantity_price_data(actor_name, @admin).each do |status, data| %>
       <%= render 'orders_plugin_item/quantity_price', :item => item, :order => order, :status => status, :data => data, :actor_name => actor_name %>
-
-      <% break if not @admin and status == 'ordered' %>
     <% end %>
   </div>
 

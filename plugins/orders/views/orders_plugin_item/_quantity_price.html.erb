@@ -3,14 +3,8 @@
   <div class="box-field quantity">
     <span class="value"><%= data[:quantity] %></span>
 
-    <% unless @simple %>
-      <% if @admin %>
-        <% if (data[:flags][:next] or data[:flags][:current]) and OrdersPlugin::Item::StatusAccessMap[status] == actor_name %>
-          <%= text_field_tag "item[quantity_#{data[:field]}]", data[:quantity], :onkeydown => 'orders.item.quantity_keydown(this, event)' %>
-        <% end %>
-      <% else %>
-        <%= text_field_tag "item[quantity_#{data[:field]}]", data[:quantity], :onkeydown => 'orders.item.quantity_keydown(this, event)' %>
-      <% end %>
+    <% if not @simple and data[:flags][:editable] %>
+      <%= text_field_tag "item[quantity_#{data[:field]}]", data[:quantity], :onkeydown => 'orders.item.quantity_keydown(this, event)' %>
     <% end %>
 
     <span class="unit"><%= excerpt_ending item.product.unit.singular, 4, '.' rescue '' %></span>

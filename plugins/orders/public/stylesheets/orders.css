@@ -1493,10 +1493,10 @@
         .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.overwritten .quantity, .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.overwritten .price-total, .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.overwritten .status {
           text-decoration: line-through;
           color: #999; }
+        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.editable .value {
+          display: initial; }
         .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity input {
           display: none; }
-        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity .value {
-          display: block; }
         .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity .unit {
           text-transform: lowercase; }
   .order-items-container .table-content .item.hover, .order-items-container .table-content .item.edit {
@@ -1506,10 +1506,10 @@
     padding-right: 8px; }
   .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.empty.admin {
     display: block; }
-  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row .quantity .value {
+  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.editable .value {
     display: none; }
   .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row .quantity input {
-    display: block; }
+    display: initial; }
   .order-items-container .table-content .item.edit .more {
     display: block; }
   .order-items-container .table-content .item .more {

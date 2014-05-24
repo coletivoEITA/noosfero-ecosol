@@ -127,12 +127,14 @@
               }
             }
 
+            &.editable {
+              .value {
+                display: initial;
+              }
+            }
             .quantity {
               input {
                 display: none;
-              }
-              .value {
-                display: initial;
               }
 
               .unit {
@@ -180,10 +182,12 @@
                 }
               }
 
-              .quantity {
+              &.editable {
                 .value {
                   display: none;
                 }
+              }
+              .quantity {
                 input {
                   display: initial;
                 }

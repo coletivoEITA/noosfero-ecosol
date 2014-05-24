@@ -147,6 +147,11 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     I18n.t StatusText[current_status]
   end
 
+  def admin_status
+    statuses = Statuses
+    statuses[statuses.index(self.current_status) + 1]
+  end
+
   def situation
     current_index = UserStatuses.index self.current_status || 0
     statuses = []
