@@ -105,6 +105,54 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     self.order.status
   end
 
+  def quantity_price_data
+    data = ActiveSupport::OrderedHash.new
+    statuses = OrdersPlugin::Order::Statuses
+    current = statuses.index self.order.status
+    current ||= 0
+
+    statuses.each_with_index do |status, i|
+      data_field = OrdersPlugin::Item::StatusDataMap[status]
+
+      data[status] = {
+        :flags => {},
+        :field => data_field,
+      }
+
+      if self.send("quantity_#{data_field}").present?
+        data[status][:quantity] = self.send "quantity_#{data_field}_localized"
+        data[status][:price] = self.send "price_#{data_field}_as_currency_number"
+        data[status][:flags][:filled] = true
+      else
+        data[status][:flags][:empty] = true
+      end
+
+      # break on the next status
+      break if i > current
+    end
+
+    statuses.each_index do |i|
+      status = statuses[i]
+      prev_status = statuses[i-1] unless i.zero?
+      next_status = statuses[i+1] if i < statuses.size
+
+      data[status][:flags][:overwritten] = true if next_status and data[next_status][:quantity].present?
+
+      if i == current
+        if prev_status and data[status][:quantity].blank?
+          data[status][:quantity] = data[prev_status][:quantity]
+          data[status][:price] = data[prev_status][:price]
+        end
+
+        data[status][:flags][:current] = true
+        data[next_status][:flags][:next] = true
+        break
+      end
+    end
+
+    data
+  end
+
   StatusDataMap.each do |status, data|
     quantity = "quantity_#{data}".to_sym
     price = "price_#{data}".to_sym

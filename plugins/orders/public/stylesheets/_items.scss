@@ -65,7 +65,7 @@
         width: $module02 - $intercolumn/2;
       }
       &.product {
-        width: $module02 - $intercolumn/2
+        width: $module02 - $intercolumn/2;
       }
 
       &.quantity {
@@ -116,21 +116,23 @@
           .quantity-price-row {
             display: table-row;
 
-            &.last {
-              &.admin {
-                display: none;
-              }
+            &.empty {
+              display: none;
+            }
 
-              .quantity {
-                .value {
-                  display: block;
-                }
+            &.overwritten {
+              .quantity, .price-total, .status {
+                text-decoration: line-through;
+                color: #999;
               }
             }
 
             .quantity {
               input {
                 display: none;
+              }
+              .value {
+                display: initial;
               }
 
               .unit {
@@ -171,21 +173,19 @@
           .quantity-price-table {
             .quantity-price-row {
 
-              &.last {
+              &.empty {
 
                 &.admin {
                   display: block;
                 }
-
-                .value {
-                  display: none;
-                }
               }
 
               .quantity {
-
+                .value {
+                  display: none;
+                }
                 input {
-                  display: block;
+                  display: initial;
                 }
               }
             }

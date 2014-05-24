@@ -11,17 +11,10 @@
   </div>
 
   <div class="box-field quantity-price-table">
-    <% previous_status = nil %>
-    <% OrdersPlugin::Order::Statuses.each do |status| %>
-      <% last = ! order.status_on?(status) %>
-      <%= render 'orders_plugin_item/quantity_price', :item => item, :order => order, :status => status, :previous_status => previous_status, :last => last,
-          :actor_name => actor_name %>
+    <% item.quantity_price_data.each do |status, data| %>
+      <%= render 'orders_plugin_item/quantity_price', :item => item, :order => order, :status => status, :data => data, :actor_name => actor_name %>
 
-      <%
-        break if not @admin and status == 'ordered'
-        break if last
-        previous_status = status
-      %>
+      <% break if not @admin and status == 'ordered' %>
     <% end %>
   </div>
 
