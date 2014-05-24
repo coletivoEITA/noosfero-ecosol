@@ -112,8 +112,9 @@ class Profile < ActiveRecord::Base
     Profile.column_names.map{|n| [Profile.table_name, n].join('.')}.join(',')
   end
 
-  named_scope :enabled, :conditions => { :enabled => true }
   named_scope :visible, :conditions => { :visible => true }
+  named_scope :invisible, :conditions => ['profiles.visible <> ?', true]
+  named_scope :enabled, :conditions => { :enabled => true }
   named_scope :public, :conditions => { :visible => true, :public_profile => true }
 
   # Subclasses must override this method
