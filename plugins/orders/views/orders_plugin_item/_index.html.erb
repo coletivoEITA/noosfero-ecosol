@@ -1,4 +1,4 @@
-<div class="order-items-container <%= "empty" if order.items.size == 0 %> <%= "admin" if @admin %>">
+<div class="order-items-container <%= "empty" if order.items.size == 0 %> <%= "admin" if @admin %> <%= 'self-supplier' if order.self_supplier? %>">
 
   <% if order.items.size > 0 %>
     <div class="order-items <%= "self-actor-name" if order.self_supplier? %>">

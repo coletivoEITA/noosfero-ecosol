@@ -12,6 +12,7 @@ module OrdersPlugin::AdminHelper
       else
         text = text.chars.first
       end
+      text += ' '
 
       content_tag 'span', text, :class => classes
     end

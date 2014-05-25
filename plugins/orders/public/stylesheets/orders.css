@@ -1436,10 +1436,11 @@
   .order-items-container.empty {
     border-top: 1px dotted black;
     text-align: center; }
+  .order-items-container.self-supplier .order-total .title, .order-items-container.self-supplier .order-total .value {
+    margin-left: 224px; }
   .order-items-container .order-total {
     padding: 4px 8px; }
-    .order-items-container .order-total .title,
-    .order-items-container .order-total .value {
+    .order-items-container .order-total .title, .order-items-container .order-total .value {
       margin-left: 376px;
       padding: 0 8px;
       width: 64px;

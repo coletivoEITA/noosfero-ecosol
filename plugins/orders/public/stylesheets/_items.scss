@@ -9,12 +9,20 @@
     text-align: center;
   }
 
+  &.self-supplier {
+    .order-total {
+
+      .title, .value {
+        margin-left: $module03; //the size of the previous colums
+      }
+    }
+  }
+
   .order-total {
     padding: $half-padding $padding;
     @extend .container-clean;
 
-    .title,
-    .value {
+    .title, .value {
       margin-left: $module05 - $padding; //the size of the previous colums
       padding: 0 $padding;
       width: $module01;

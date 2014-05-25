@@ -187,6 +187,13 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   instance_exec &OrdersPlugin::Item::DefineTotals
   # total_price considering last state
   def total_price admin = false
+    status = Statuses[self.status]
+    data = StatusDataMap[status]
+
+    self.items.inject 0 do |sum, item|
+
+      sum + q.to_f
+    end
   end
 
   def fill_items_data from_status, to_status, save = false
