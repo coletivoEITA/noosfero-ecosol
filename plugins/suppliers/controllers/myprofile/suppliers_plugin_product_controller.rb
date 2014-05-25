@@ -71,4 +71,7 @@ class SuppliersPluginProductController < MyProfileController
 
   protected
 
+  extend ControllerInheritance::ClassMethods
+  hmvc OrdersPlugin
+
 end

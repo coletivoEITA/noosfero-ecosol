@@ -67,4 +67,7 @@ class OrdersPluginItemController < MyProfileController
     @actor_name = :consumer
   end
 
+  extend ControllerInheritance::ClassMethods
+  hmvc OrdersPlugin
+
 end
