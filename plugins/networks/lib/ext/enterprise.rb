@@ -14,16 +14,6 @@ class Enterprise
     @networks_settings ||= Noosfero::Plugin::Settings.new self, NetworksPlugin
   end
 
-  def node?
-    self.is_a? NetworksPlugin::BaseNode
-  end
-  def network?
-    self.class == NetworksPlugin::Network
-  end
-  def network_node?
-    self.class == NetworksPlugin::Node
-  end
-
   def network_disassociate network
     ActiveRecord::Base.transaction do
       self.network_node_child_relations.each do |relation|
