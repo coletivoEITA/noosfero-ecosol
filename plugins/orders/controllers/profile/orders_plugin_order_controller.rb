@@ -1,5 +1,7 @@
 class OrdersPluginOrderController < ProfileController
 
+  include OrdersPlugin::TranslationHelper
+
   no_design_blocks
 
   before_filter :login_required, :except => [:index, :edit]
@@ -7,22 +9,18 @@ class OrdersPluginOrderController < ProfileController
   before_filter :check_access, :only => [:confirm, :remove, :cancel]
   before_filter :set_actor_name
 
+  helper OrdersPlugin::TranslationHelper
+  helper OrdersPlugin::OrdersDisplayHelper
+
   def edit
     status = params[:order][:status]
-    if @admin
-    else
-      if status == 'ordered'
-        if @order.items.size > 0
-          @order.update_attributes! :status => status
-          session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
-        else
-          session[:notice] = t('orders_plugin.controllers.profile.consumer.can_not_confirm_your_')
-        end
+    if status == 'ordered'
+      if @order.items.size > 0
+        @order.update_attributes! :status => status
+        session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
+      else
+        session[:notice] = t('orders_plugin.controllers.profile.consumer.can_not_confirm_your_')
       end
-    end
-
-    respond_to do |format|
-      format.js
     end
   end
 

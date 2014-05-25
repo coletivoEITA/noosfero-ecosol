@@ -1,44 +1,23 @@
-<div class="quantity-price-row <%=status%> <%= "last" if last %> <%= 'admin' if @admin %>">
+<div class="quantity-price-row <%= status %> <%= data[:flags].keys.join ' ' %>">
 
-  <%
-    data = OrdersPlugin::Item::StatusDataMap[status]
-    if last and item.send("quantity_#{data}").blank?
-      previous_data = OrdersPlugin::Item::StatusDataMap[previous_status]
-      quantity = item.send "quantity_#{previous_data}_localized"
-      price = item.send "price_#{previous_data}_as_currency_number"
-    else
-      quantity = item.send "quantity_#{data}_localized"
-      price = item.send "price_#{data}_as_currency_number"
-    end
-  %>
+  <div class="box-field quantity">
+    <span class="value"><%= data[:quantity] %></span>
 
-  <% if not @admin or (quantity and price) %>
-
-    <div class="box-field quantity">
-      <span class="value"><%= quantity %></span>
-
-      <% unless @simple %>
-        <% if @admin %>
-          <% if (last or order.current_status == status) and OrdersPlugin::Item::StatusAccessMap[status] == actor_name %>
-            <%= text_field_tag "item[quantity_#{data}]", quantity, :onkeydown => 'orders.item.quantity_keydown(this, event)' %>
-          <% end %>
-        <% else %>
-          <%= text_field_tag "item[quantity_#{data}]", quantity, :onkeydown => 'orders.item.quantity_keydown(this, event)' %>
-        <% end %>
-      <% end %>
-
-      <span class="unit"><%= excerpt_ending item.product.unit.singular, 4, '.' rescue '' %></span>
-    </div>
-
-    <div class="box-field price-total">
-      <%= price_span price %>
-    </div>
-
-    <% if @admin %>
-      <div class="box-field status">
-        <%= t(OrdersPlugin::Order::StatusText[status]) %>
-      </div>
+    <% if not @simple and data[:flags][:editable] %>
+      <%= text_field_tag "item[quantity_#{data[:field]}]", data[:quantity], :onkeydown => 'orders.item.quantity_keydown(this, event)' %>
     <% end %>
 
+    <span class="unit"><%= item.product.unit.singular rescue '' %></span>
+  </div>
+
+  <div class="box-field price-total">
+    <%= price_span data[:price] %>
+  </div>
+
+  <% if @admin %>
+    <div class="box-field status">
+      <%= t(OrdersPlugin::Order::StatusText[status]) %>
+    </div>
   <% end %>
+
 </div>

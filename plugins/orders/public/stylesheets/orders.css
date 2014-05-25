@@ -1447,11 +1447,11 @@
     .order-items-container .order-total .value {
       clear: both; }
   .order-items-container .order-items.self-supplier .box-field.product {
-    width: 208px; }
+    width: 208px;
+    max-width: 208px; }
   .order-items-container .order-items.self-supplier .box-field.quantity, .order-items-container .order-items.self-supplier .box-field.quantity input {
-    width: 144px; }
-  .order-items-container .order-items.self-supplier .box-field.price-total {
-    width: 64px; }
+    width: 144px;
+    max-width: 144px; }
   .order-items-container .order-items .box-field {
     float: left;
     padding: 4px 8px;
@@ -1459,14 +1459,22 @@
     border-right: 1px solid white; }
     .order-items-container .order-items .box-field:last-child {
       border-right: none; }
+    .order-items-container .order-items .box-field.supplier, .order-items-container .order-items .box-field.product, .order-items-container .order-items .box-field .unit {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap; }
     .order-items-container .order-items .box-field.supplier {
-      width: 136px; }
+      width: 136px;
+      max-width: 136px; }
     .order-items-container .order-items .box-field.product {
-      width: 136px; }
+      width: 136px;
+      max-width: 136px; }
     .order-items-container .order-items .box-field.quantity, .order-items-container .order-items .box-field.quantity input {
-      width: 64px; }
+      width: 64px;
+      max-width: 64px; }
     .order-items-container .order-items .box-field.price-total {
-      width: 64px; }
+      width: 64px;
+      max-width: 64px; }
     .order-items-container .order-items .box-field.status {
       width: 64px;
       text-transform: uppercase; }
@@ -1488,10 +1496,13 @@
       padding: 0; }
       .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row {
         display: table-row; }
-        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.last.admin {
+        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.empty {
           display: none; }
-        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.last .quantity .value {
-          display: block; }
+        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.overwritten .quantity, .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.overwritten .price-total, .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.overwritten .status {
+          text-decoration: line-through;
+          color: #999; }
+        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.editable .value {
+          display: initial; }
         .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity input {
           display: none; }
         .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity .unit {
@@ -1501,12 +1512,12 @@
   .order-items-container .table-content .item.edit .fields .box-field {
     border-right: none;
     padding-right: 8px; }
-  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.last.admin {
+  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.empty.admin {
     display: block; }
-  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.last .value {
+  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.editable .value {
     display: none; }
   .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row .quantity input {
-    display: block; }
+    display: initial; }
   .order-items-container .table-content .item.edit .more {
     display: block; }
   .order-items-container .table-content .item .more {
@@ -1779,3 +1790,8 @@
     height: 64px;
     padding-left: 4px;
     margin-bottom: 10px; }
+
+.orders-price-with-unit {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap; }

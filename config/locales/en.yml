@@ -1163,10 +1163,12 @@
       admin:
         index:
           title: "Manage networks"
-          registered_networks: "Registered networks"
-          no_network: "Any registered network."
+          network_template: "Edit Networks' template"
+          network_node_template: "Edit Nodes' template"
           new: "Create network"
           new_button: "Criar"
+          registered_networks: "Registered networks"
+          no_network: "Any registered network."
       supplier:
         _supplier:
           by_removing_this_supp: "By removing %{terms.supplier.article.singular} all its products won't be available. Please confirm you choice"

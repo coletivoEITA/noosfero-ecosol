@@ -133,11 +133,6 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     UserStatuses.index(self.current_status) >= UserStatuses.index(status) rescue false
   end
 
-  def next_status
-    current_index = Statuses.index(self.status) || 0
-    Statuses[current_index + 1]
-  end
-
   def current_status
     return @current_status if @current_status
     return @current_status = 'open' if self.open?
@@ -145,6 +140,11 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
   def status_message
     I18n.t StatusText[current_status]
+  end
+
+  def next_status
+    current_index = Statuses.index(self.status) || 0
+    Statuses[current_index + 1]
   end
 
   def situation
@@ -185,18 +185,37 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   extend CurrencyHelper::ClassMethods
   instance_exec &OrdersPlugin::Item::DefineTotals
+  # total_price considering last state
+  def total_price admin = false
+  end
+
+  def fill_items_data from_status, to_status, save = false
+    return if (Statuses.index(to_status) <= DbStatuses.index(from_status) rescue false)
+
+    from_data = OrdersPlugin::Item::StatusDataMap[from_status]
+    to_data = OrdersPlugin::Item::StatusDataMap[to_status]
+    return unless from_data.present? and to_data.present?
+
+    self.items.each do |item|
+      next if (quantity = item.send("quantity_#{from_data}")).present?
+      item.send "quantity_#{to_data}=", quantity
+      item.send "price_#{to_data}=", item.send("price_#{from_data}")
+      item.save if save
+    end
+  end
 
   protected
 
   def check_status
     self.status ||= 'draft'
-
     # backwards compatibility
     self.status = 'ordered' if self.status == 'confirmed'
 
+    self.fill_items_data self.status_was, self.status, true if self.status_was and self.status_was != self.status
+
     if self.status_on? 'ordered'
       Statuses.each do |status|
-        self.send "#{status}_at=", Time.now if self.status_was != status and self.status == status
+        self.send "#{self.status}_at=", Time.now if self.status_was != status and self.status == status
       end
     else
       # for draft, planned, forgotten, cancelled, etc
@@ -208,6 +227,8 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   def send_notifications
     return if source == 'shopping_cart_plugin'
+    return if (Statuses.index(self.status) <= Statuses.index(self.status_was) rescue false)
+
     if self.status == 'ordered' and self.status_was != 'ordered'
       OrdersPlugin::Mailer.deliver_order_confirmation self
     elsif self.status == 'cancelled' and self.status_was != 'cancelled'

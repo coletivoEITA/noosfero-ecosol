@@ -114,6 +114,81 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     end
   end
 
+  def quantity_price_data actor_name = :consumer, admin = false
+    data = ActiveSupport::OrderedHash.new
+    statuses = OrdersPlugin::Order::Statuses
+
+    order_status = self.order.status
+    current = statuses.index(status) || 0
+    order_next_status = statuses[current + 1]
+
+    goto_next = actor_name == OrdersPlugin::Item::StatusAccessMap[order_next_status]
+
+    # Fetch data
+    statuses.each_with_index do |status, i|
+      data_field = OrdersPlugin::Item::StatusDataMap[status]
+      access = OrdersPlugin::Item::StatusAccessMap[status]
+
+      status_data = data[status] = {
+        :flags => {},
+        :field => data_field,
+        :access => access,
+      }
+
+      if self.send("quantity_#{data_field}").present?
+        status_data[:quantity] = self.send "quantity_#{data_field}_localized"
+        status_data[:price] = self.send "price_#{data_field}_as_currency_number"
+        status_data[:flags][:filled] = true
+      else
+        status_data[:flags][:empty] = true
+      end
+
+      if i == current
+        status_data[:flags][:current] = true
+      elsif i > current
+        status_data[:flags][:admin] = true
+      end
+
+      break if (if goto_next then i > current else i == current end)
+    end
+
+    # Set flags according to past/future data
+    # Present flags are used as classes
+    data.each_with_index do |(status, status_data), i|
+      prev_status_data = data[statuses[i-1]] unless i.zero?
+      next_status_data = data[statuses[i+1]]
+
+      if prev_status_data
+        if status_data[:quantity] == prev_status_data[:quantity]
+          status_data[:flags][:not_modified] = true
+        elsif status_data[:flags][:empty]
+          # fill with previous status data
+          status_data[:quantity] = prev_status_data[:quantity]
+          status_data[:price] = prev_status_data[:price]
+
+          # status to admin comes prefilled but is considered empty
+          if not status_data[:flags][:admin]
+            status_data[:flags][:filled] = status_data[:flags].delete :empty
+            status_data[:flags][:not_modified] = true
+          end
+        end
+      end
+
+      if next_status_data
+        if next_status_data[:flags][:filled] and status_data[:quantity] != next_status_data[:quantity]
+          status_data[:flags][:overwritten] = true
+        end
+      end
+    end
+
+    # Set access
+    data.each_with_index do |(status, status_data), i|
+      status_data[:flags][:editable] = true if status_data[:access] == actor_name and (if admin then status_data[:flags][:admin] else self.order.open? end)
+    end
+
+    data
+  end
+
   protected
 
   def save_calculated_prices

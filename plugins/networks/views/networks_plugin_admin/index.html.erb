@@ -2,6 +2,9 @@
 
   <h1><%= t('views.admin.index.title') %></h1>
 
+  <%= link_to t('views.admin.index.network_template'), environment.network_template.url %>
+  <%= link_to t('views.admin.index.network_node_template'), environment.network_node_template.url %>
+
   <h2><%= t('views.admin.index.new') %></h2>
   <div>
     <% form_for :network, @network, :url => {:action => :create} do |f| %>

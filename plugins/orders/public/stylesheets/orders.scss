@@ -136,3 +136,8 @@
   @import 'field';
 }
 
+.orders-price-with-unit {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

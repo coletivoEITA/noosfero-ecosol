@@ -37,17 +37,15 @@
       .box-field {
         &.product {
           width: $module03 - $intercolumn;
+          max-width: $module03 - $intercolumn;
         }
 
         &.quantity {
           &, input {
             width: $module02;
+            max-width: $module02;
           }
         }
-        &.price-total {
-          width: $module01;
-        }
-
       }
     }
 
@@ -61,20 +59,30 @@
         border-right: none;
       }
 
+      &.supplier, &.product, .unit {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
       &.supplier {
         width: $module02 - $intercolumn/2;
+        max-width: $module02 - $intercolumn/2;
       }
       &.product {
-        width: $module02 - $intercolumn/2
+        width: $module02 - $intercolumn/2;
+        max-width: $module02 - $intercolumn/2;
       }
 
       &.quantity {
         &, input {
           width: $module01;
+          max-width: $module01;
         }
       }
       &.price-total {
         width: $module01;
+        max-width: $module01;
       }
       &.status {
         width: $module01;
@@ -116,18 +124,22 @@
           .quantity-price-row {
             display: table-row;
 
-            &.last {
-              &.admin {
-                display: none;
-              }
+            &.empty {
+              display: none;
+            }
 
-              .quantity {
-                .value {
-                  display: block;
-                }
+            &.overwritten {
+              .quantity, .price-total, .status {
+                text-decoration: line-through;
+                color: #999;
               }
             }
 
+            &.editable {
+              .value {
+                display: initial;
+              }
+            }
             .quantity {
               input {
                 display: none;
@@ -171,21 +183,21 @@
           .quantity-price-table {
             .quantity-price-row {
 
-              &.last {
+              &.empty {
 
                 &.admin {
                   display: block;
                 }
+              }
 
+              &.editable {
                 .value {
                   display: none;
                 }
               }
-
               .quantity {
-
                 input {
-                  display: block;
+                  display: initial;
                 }
               }
             }

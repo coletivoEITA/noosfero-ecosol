@@ -2,14 +2,18 @@ module OrdersPlugin::PriceHelper
 
   protected
 
-  def price_with_unit_span price, unit, detail=nil
+  def price_with_unit_span price, unit, detail=nil, options = {}
     return nil if price.blank?
     detail ||= ''
     detail = " (#{detail})" unless detail.blank?
-    I18n.t('orders_plugin.lib.price_helper.price_unit') % {
+    # the scoped class is styled globally
+    options[:class] = "orders-price-with-unit price-with-unit #{options[:class]}"
+    text = I18n.t('orders_plugin.lib.price_helper.price_unit') % {
       :price => price_span(price),
-      :unit => content_tag('span', (excerpt_ending( unit.singular, 4, '.') ) + detail.to_s, :class => 'price-unit'),
+      :unit => content_tag('div', unit.singular + detail, :class => 'price-unit'),
     }
+
+    content_tag 'div', text, options.merge(:title => text)
   end
 
 end
