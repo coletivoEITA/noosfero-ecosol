@@ -1459,7 +1459,7 @@
     border-right: 1px solid white; }
     .order-items-container .order-items .box-field:last-child {
       border-right: none; }
-    .order-items-container .order-items .box-field.supplier, .order-items-container .order-items .box-field.product {
+    .order-items-container .order-items .box-field.supplier, .order-items-container .order-items .box-field.product, .order-items-container .order-items .box-field .unit {
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap; }
@@ -1790,3 +1790,8 @@
     height: 64px;
     padding-left: 4px;
     margin-bottom: 10px; }
+
+.orders-price-with-unit {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap; }

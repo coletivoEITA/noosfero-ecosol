@@ -59,7 +59,7 @@
         border-right: none;
       }
 
-      &.supplier, &.product {
+      &.supplier, &.product, .unit {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
