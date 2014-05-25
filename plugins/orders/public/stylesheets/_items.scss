@@ -15,7 +15,7 @@
 
     .title,
     .value {
-      margin-left: $module04; //the size of the previous colums
+      margin-left: $module05 - $padding; //the size of the previous colums
       padding: 0 $padding;
       width: $module01;
       text-transform: uppercase;
