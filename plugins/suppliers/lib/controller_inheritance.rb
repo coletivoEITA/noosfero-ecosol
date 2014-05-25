@@ -86,7 +86,7 @@ module ControllerInheritance
       controller = options[:controller]
       controller ||= controller_path
       controller = controller.to_s
-      dest_controller = self.class.hmvc_paths[@hmvc_context][controller]
+      dest_controller = self.class.hmvc_paths[@hmvc_context][controller] rescue self.controller_path
 
       options[:controller] = dest_controller if dest_controller
       super options

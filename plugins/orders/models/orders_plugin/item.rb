@@ -105,6 +105,15 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     self.order.status
   end
 
+  StatusDataMap.each do |status, data|
+    quantity = "quantity_#{data}".to_sym
+    price = "price_#{data}".to_sym
+
+    self.send :define_method, "calculated_#{price}" do |items|
+      self.price * self.send(quantity) rescue nil
+    end
+  end
+
   def quantity_price_data actor_name = :consumer, admin = false
     data = ActiveSupport::OrderedHash.new
     statuses = OrdersPlugin::Order::Statuses
@@ -115,59 +124,69 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
     goto_next = actor_name == OrdersPlugin::Item::StatusAccessMap[order_next_status]
 
+    # Fetch data
     statuses.each_with_index do |status, i|
       data_field = OrdersPlugin::Item::StatusDataMap[status]
       access = OrdersPlugin::Item::StatusAccessMap[status]
 
-      data[status] = {
+      status_data = data[status] = {
         :flags => {},
         :field => data_field,
         :access => access,
       }
 
       if self.send("quantity_#{data_field}").present?
-        data[status][:quantity] = self.send "quantity_#{data_field}_localized"
-        data[status][:price] = self.send "price_#{data_field}_as_currency_number"
-        data[status][:flags][:filled] = true
+        status_data[:quantity] = self.send "quantity_#{data_field}_localized"
+        status_data[:price] = self.send "price_#{data_field}_as_currency_number"
+        status_data[:flags][:filled] = true
       else
-        data[status][:flags][:empty] = true
+        status_data[:flags][:empty] = true
+      end
+
+      if i == current
+        status_data[:flags][:current] = true
+      elsif i > current
+        status_data[:flags][:admin] = true
       end
 
       break if (if goto_next then i > current else i == current end)
     end
 
-    statuses.each_with_index do |status, i|
-      prev_status = statuses[i-1] unless i.zero?
-      next_status = statuses[i+1] if (if goto_next then i <= current else i < current end)
+    # Set flags according to past/future data
+    # Present flags are used as classes
+    data.each_with_index do |(status, status_data), i|
+      prev_status_data = data[statuses[i-1]] unless i.zero?
+      next_status_data = data[statuses[i+1]]
 
-      data[status][:flags][:overwritten] = true if next_status and data[next_status][:quantity].present?
+      if prev_status_data
+        if status_data[:quantity] == prev_status_data[:quantity]
+          status_data[:flags][:not_modified] = true
+        elsif status_data[:flags][:empty]
+          # fill with previous status data
+          status_data[:quantity] = prev_status_data[:quantity]
+          status_data[:price] = prev_status_data[:price]
 
-      if i == current
-        if prev_status and data[status][:quantity].blank?
-          data[status][:quantity] = data[prev_status][:quantity]
-          data[status][:price] = data[prev_status][:price]
+          # status to admin comes prefilled but is considered empty
+          if not status_data[:flags][:admin]
+            status_data[:flags][:filled] = status_data[:flags].delete :empty
+            status_data[:flags][:not_modified] = true
+          end
         end
+      end
 
-        data[status][:flags][:current] = true
-        data[next_status][:flags][:next] = true if next_status
-        break
+      if next_status_data
+        if next_status_data[:flags][:filled] and status_data[:quantity] != next_status_data[:quantity]
+          status_data[:flags][:overwritten] = true
+        end
       end
     end
 
-    data.each do |status, status_data|
-      status_data[:flags][:editable] = status_data[:access] == actor_name and (if admin then status_data[:flags][:next] else self.order.open? end)
+    # Set access
+    data.each_with_index do |(status, status_data), i|
+      status_data[:flags][:editable] = true if status_data[:access] == actor_name and (if admin then status_data[:flags][:admin] else self.order.open? end)
     end
 
     data
-  end
-
-  StatusDataMap.each do |status, data|
-    quantity = "quantity_#{data}".to_sym
-    price = "price_#{data}".to_sym
-
-    self.send :define_method, "calculated_#{price}" do |items|
-      self.price * self.send(quantity) rescue nil
-    end
   end
 
   protected

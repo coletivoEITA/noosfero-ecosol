@@ -1,17 +1,16 @@
 
 <div class="fields">
   <% unless order.self_supplier? %>
-    <div class="box-field supplier">
-      <%= item.product.supplier.abbreviation_or_name rescue self.profile.short_name %>
-    </div>
+    <% supplier = item.product.supplier.abbreviation_or_name rescue self.profile.short_name %>
+    <div class="box-field supplier" title="<%= supplier %>"> <%= supplier %> </div>
   <% end %>
 
-  <div class="box-field product">
-    <%= item.name %>
-  </div>
+  <% product = item.name %>
+  <div class="box-field product" title="<%= product %>"> <%= product %> </div>
 
   <div class="box-field quantity-price-table">
     <% item.quantity_price_data(actor_name, @admin).each do |status, data| %>
+      <% next if data[:flags][:not_modified] %>
       <%= render 'orders_plugin_item/quantity_price', :item => item, :order => order, :status => status, :data => data, :actor_name => actor_name %>
     <% end %>
   </div>

@@ -37,17 +37,15 @@
       .box-field {
         &.product {
           width: $module03 - $intercolumn;
+          max-width: $module03 - $intercolumn;
         }
 
         &.quantity {
           &, input {
             width: $module02;
+            max-width: $module02;
           }
         }
-        &.price-total {
-          width: $module01;
-        }
-
       }
     }
 
@@ -61,20 +59,30 @@
         border-right: none;
       }
 
+      &.supplier, &.product {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
       &.supplier {
         width: $module02 - $intercolumn/2;
+        max-width: $module02 - $intercolumn/2;
       }
       &.product {
         width: $module02 - $intercolumn/2;
+        max-width: $module02 - $intercolumn/2;
       }
 
       &.quantity {
         &, input {
           width: $module01;
+          max-width: $module01;
         }
       }
       &.price-total {
         width: $module01;
+        max-width: $module01;
       }
       &.status {
         width: $module01;

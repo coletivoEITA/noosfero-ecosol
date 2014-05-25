@@ -4,7 +4,7 @@ orders = {
   order: {
 
     get: function(context, url) {
-      var order = jQuery(context).parents('.order-box')
+      var order = jQuery(context).parents('.order-view')
 
       loading_overlay.show(order)
       jQuery.getScript(url, function () {
@@ -13,7 +13,7 @@ orders = {
     },
 
     submit: function(form) {
-      var order = jQuery(form).parents('.order-box')
+      var order = jQuery(form).parents('.order-view')
 
       jQuery(form).ajaxSubmit({dataType: 'script',
         beforeSubmit: function(){ loading_overlay.show(order) },
@@ -21,6 +21,10 @@ orders = {
       })
 
       return false
+    },
+
+    truncate: function(order) {
+      order.find('.item .supplier, .item .product').smartTruncation();
     },
 
   },
