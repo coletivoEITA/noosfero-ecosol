@@ -1436,8 +1436,6 @@
   .order-items-container.empty {
     border-top: 1px dotted black;
     text-align: center; }
-  .order-items-container.self-supplier .order-total .title, .order-items-container.self-supplier .order-total .value {
-    margin-left: 224px; }
   .order-items-container .order-total {
     padding: 4px 8px; }
     .order-items-container .order-total .title, .order-items-container .order-total .value {
@@ -1448,8 +1446,8 @@
     .order-items-container .order-total .value {
       clear: both; }
   .order-items-container .order-items.self-supplier .box-field.product {
-    width: 208px;
-    max-width: 208px; }
+    width: 376px;
+    max-width: 376px; }
   .order-items-container .order-items.self-supplier .box-field.quantity, .order-items-container .order-items.self-supplier .box-field.quantity input {
     width: 144px;
     max-width: 144px; }

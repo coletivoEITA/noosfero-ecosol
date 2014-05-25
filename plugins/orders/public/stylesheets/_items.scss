@@ -9,15 +9,6 @@
     text-align: center;
   }
 
-  &.self-supplier {
-    .order-total {
-
-      .title, .value {
-        margin-left: $module03; //the size of the previous colums
-      }
-    }
-  }
-
   .order-total {
     padding: $half-padding $padding;
     @extend .container-clean;
@@ -44,8 +35,8 @@
     &.self-supplier {
       .box-field {
         &.product {
-          width: $module03 - $intercolumn;
-          max-width: $module03 - $intercolumn;
+          width: $module05 - $padding;
+          max-width: $module05 - $padding;
         }
 
         &.quantity {
@@ -74,12 +65,12 @@
       }
 
       &.supplier {
-        width: $module02 - $intercolumn/2;
-        max-width: $module02 - $intercolumn/2;
+        width: $module02 - $padding;
+        max-width: $module02 - $padding;
       }
       &.product {
-        width: $module02 - $intercolumn/2;
-        max-width: $module02 - $intercolumn/2;
+        width: $module02 - $padding;
+        max-width: $module02 - $padding;
       }
 
       &.quantity {

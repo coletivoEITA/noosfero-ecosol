@@ -185,16 +185,24 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   extend CurrencyHelper::ClassMethods
   instance_exec &OrdersPlugin::Item::DefineTotals
+
   # total_price considering last state
   def total_price admin = false
-    status = Statuses[self.status]
-    data = StatusDataMap[status]
-
-    self.items.inject 0 do |sum, item|
-
-      sum + q.to_f
+    if admin
+      if status = self.next_status
+        self.fill_items_data self.status, self.next_status
+      end
+    else
+      status = self.status
     end
+
+    data = OrdersPlugin::Item::StatusDataMap[status]
+    price = "price_#{data}".to_sym
+
+    items ||= (self.ordered_items rescue nil) || self.items
+    items.collect(&price).inject(0){ |sum,q| sum + p.to_f }
   end
+  has_currency :total_price
 
   def fill_items_data from_status, to_status, save = false
     return if (Statuses.index(to_status) <= DbStatuses.index(from_status) rescue false)

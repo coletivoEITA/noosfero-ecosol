@@ -37,7 +37,12 @@ class OrdersPluginAdminController < MyProfileController
     @orders_method = if @actor_name == :supplier then :sales else :purchases end
     @order = profile.send(@orders_method).find params[:id]
     @order.update_attributes params[:order]
-    render :partial => 'orders_plugin_admin/edit', :locals => {:order => @order, :actor_name => @actor_name}
+
+    respond_to do |format|
+      format.js{ @template_html_fallback = false }
+      format.html{ render :partial => 'orders_plugin_admin/edit', :locals => {:order => @order, :actor_name => @actor_name} }
+    end
+
   end
 
   def report_products
