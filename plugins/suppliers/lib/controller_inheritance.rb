@@ -3,13 +3,15 @@ module ControllerInheritance
   module ClassMethods
 
     def hmvc context
-      cattr_accessor :hmvc_context
       cattr_accessor :inherit_templates
+      cattr_accessor :hmvc_inheritable
+      cattr_accessor :hmvc_context
       cattr_accessor :hmvc_paths
 
       self.before_filter :set_hmvc_context
 
       self.inherit_templates = true
+      self.hmvc_inheritable = true
       self.hmvc_context = context
       self.hmvc_paths ||= {}
       self.hmvc_paths[self.hmvc_context] ||= {} if self.hmvc_context
@@ -18,7 +20,10 @@ module ControllerInheritance
       controllers = [self] + context.controllers.map{ |controller| controller.constantize }
 
       controllers.each do |klass|
-        self.hmvc_paths[self.hmvc_context][klass.superclass.controller_path] = klass.controller_path
+        context_klass = klass
+        while ((klass = klass.superclass).hmvc_inheritable rescue false)
+          self.hmvc_paths[self.hmvc_context][klass.controller_path] = context_klass.controller_path
+        end
       end
 
       include InstanceMethods
@@ -86,9 +91,11 @@ module ControllerInheritance
       controller = options[:controller]
       controller ||= controller_path
       controller = controller.to_s
-      dest_controller = self.class.hmvc_paths[@hmvc_context][controller] || self.controller_path rescue self.controller_path
 
-      options[:controller] = dest_controller if dest_controller
+      dest_controller = self.class.hmvc_paths[@hmvc_context][controller] rescue nil
+      dest_controller ||= options[:controller] || self.controller_path
+      options[:controller] = dest_controller
+
       super options
     end
 

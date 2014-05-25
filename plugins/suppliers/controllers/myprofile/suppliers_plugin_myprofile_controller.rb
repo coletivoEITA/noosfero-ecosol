@@ -79,4 +79,7 @@ class SuppliersPluginMyprofileController < MyProfileController
     scope
   end
 
+  extend ControllerInheritance::ClassMethods
+  hmvc OrdersPlugin
+
 end

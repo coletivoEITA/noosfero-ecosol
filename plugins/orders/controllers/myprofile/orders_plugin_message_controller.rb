@@ -28,4 +28,7 @@ class OrdersPluginMessageController < MyProfileController
     end
   end
 
+  extend ControllerInheritance::ClassMethods
+  hmvc OrdersPlugin
+
 end
