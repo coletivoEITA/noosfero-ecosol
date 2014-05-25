@@ -190,7 +190,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
 
   def fill_items_data from_status, to_status, save = false
-    return if DbStatuses.index(to_status) <= DbStatuses.index(from_status)
+    return if (Statuses.index(to_status) <= DbStatuses.index(from_status) rescue false)
 
     from_data = OrdersPlugin::Item::StatusDataMap[from_status]
     to_data = OrdersPlugin::Item::StatusDataMap[to_status]
@@ -211,7 +211,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     # backwards compatibility
     self.status = 'ordered' if self.status == 'confirmed'
 
-    self.fill_items_data self.status_was, self.status, true if self.status_was != self.status
+    self.fill_items_data self.status_was, self.status, true if self.status_was and self.status_was != self.status
 
     if self.status_on? 'ordered'
       Statuses.each do |status|
@@ -227,7 +227,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   def send_notifications
     return if source == 'shopping_cart_plugin'
-    return if DbStatuses.index(self.status) <= DbStatuses.index(self.status_was)
+    return if (Statuses.index(self.status) <= Statuses.index(self.status_was) rescue false)
 
     if self.status == 'ordered' and self.status_was != 'ordered'
       OrdersPlugin::Mailer.deliver_order_confirmation self
