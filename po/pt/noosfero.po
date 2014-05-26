@@ -3516,12 +3516,12 @@ msgid "Homepage"
 msgstr "Página inicial"
 
 #: app/models/enterprise_homepage.rb:8
-msgid "Enterprise homepage"
-msgstr "Página do Empreendimento"
+msgid "Presentation and enterprise's catalog"
+msgstr "Apresentação e vitrine do empreendimento"
 
 #: app/models/enterprise_homepage.rb:12
-msgid "Display the summary of profile."
-msgstr "Apresenta o resumo do perfil"
+msgid "Put a text and show the enterprise's catalog below."
+msgstr "Coloque uma texto e exiba a vitrine do empreendimento logo abaixo."
 
 #: app/models/add_member.rb:21
 msgid "New member"
