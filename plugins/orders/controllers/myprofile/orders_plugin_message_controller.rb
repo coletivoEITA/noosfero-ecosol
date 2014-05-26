@@ -2,6 +2,8 @@ class OrdersPluginMessageController < MyProfileController
 
   no_design_blocks
 
+  #protect 'edit_profile', :profile
+
   helper OrdersPlugin::FieldHelper
 
   def new_to_consumer_for_order

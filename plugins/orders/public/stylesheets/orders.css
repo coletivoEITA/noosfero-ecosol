@@ -1438,17 +1438,16 @@
     text-align: center; }
   .order-items-container .order-total {
     padding: 4px 8px; }
-    .order-items-container .order-total .title,
-    .order-items-container .order-total .value {
-      margin-left: 304px;
+    .order-items-container .order-total .title, .order-items-container .order-total .value {
+      margin-left: 376px;
       padding: 0 8px;
       width: 64px;
       text-transform: uppercase; }
     .order-items-container .order-total .value {
       clear: both; }
   .order-items-container .order-items.self-supplier .box-field.product {
-    width: 208px;
-    max-width: 208px; }
+    width: 376px;
+    max-width: 376px; }
   .order-items-container .order-items.self-supplier .box-field.quantity, .order-items-container .order-items.self-supplier .box-field.quantity input {
     width: 144px;
     max-width: 144px; }
@@ -1496,11 +1495,11 @@
       padding: 0; }
       .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row {
         display: table-row; }
-        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.empty {
-          display: none; }
         .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.overwritten .quantity, .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.overwritten .price-total, .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.overwritten .status {
           text-decoration: line-through;
           color: #999; }
+        .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.not_modified, .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.empty {
+          display: none; }
         .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row.editable .value {
           display: initial; }
         .order-items-container .table-content .item .fields .quantity-price-table .quantity-price-row .quantity input {
@@ -1512,8 +1511,8 @@
   .order-items-container .table-content .item.edit .fields .box-field {
     border-right: none;
     padding-right: 8px; }
-  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.empty.admin {
-    display: block; }
+  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.not_modified, .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.empty {
+    display: initial; }
   .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.editable .value {
     display: none; }
   .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row .quantity input {

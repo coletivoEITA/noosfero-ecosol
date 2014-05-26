@@ -13,9 +13,8 @@
     padding: $half-padding $padding;
     @extend .container-clean;
 
-    .title,
-    .value {
-      margin-left: $module04; //the size of the previous colums
+    .title, .value {
+      margin-left: $module05 - $padding; //the size of the previous colums
       padding: 0 $padding;
       width: $module01;
       text-transform: uppercase;
@@ -36,8 +35,8 @@
     &.self-supplier {
       .box-field {
         &.product {
-          width: $module03 - $intercolumn;
-          max-width: $module03 - $intercolumn;
+          width: $module05 - $padding;
+          max-width: $module05 - $padding;
         }
 
         &.quantity {
@@ -66,12 +65,12 @@
       }
 
       &.supplier {
-        width: $module02 - $intercolumn/2;
-        max-width: $module02 - $intercolumn/2;
+        width: $module02 - $padding;
+        max-width: $module02 - $padding;
       }
       &.product {
-        width: $module02 - $intercolumn/2;
-        max-width: $module02 - $intercolumn/2;
+        width: $module02 - $padding;
+        max-width: $module02 - $padding;
       }
 
       &.quantity {
@@ -124,15 +123,15 @@
           .quantity-price-row {
             display: table-row;
 
-            &.empty {
-              display: none;
-            }
-
             &.overwritten {
               .quantity, .price-total, .status {
                 text-decoration: line-through;
                 color: #999;
               }
+            }
+
+            &.not_modified, &.empty {
+              display: none;
             }
 
             &.editable {
@@ -183,11 +182,8 @@
           .quantity-price-table {
             .quantity-price-row {
 
-              &.empty {
-
-                &.admin {
-                  display: block;
-                }
+              &.not_modified, &.empty {
+                display: initial;
               }
 
               &.editable {

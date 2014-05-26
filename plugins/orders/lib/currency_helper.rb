@@ -42,7 +42,7 @@ module CurrencyHelper
       alias_method_chain "#{attr}=", :locale rescue nil # rescue if method don't have a setter
 
       self.send :define_method, "#{attr}_localized" do |*args, &block|
-        number = send attr, *args, &block
+        number = self.send attr, *args, &block
         CurrencyHelper.localized_number number
       end
     end
@@ -51,11 +51,11 @@ module CurrencyHelper
       self.has_number_with_locale attr
 
       self.send :define_method, "#{attr}_as_currency" do |*args, &block|
-        number = send attr, *args, &block
+        number = self.send attr, *args, &block
         CurrencyHelper.number_as_currency number
       end
       self.send :define_method, "#{attr}_as_currency_number" do |*args, &block|
-        number = send attr, *args, &block
+        number = self.send attr, *args, &block
         CurrencyHelper.number_as_currency_number number
       end
     end

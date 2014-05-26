@@ -77,12 +77,13 @@ module ControllerInheritance
     end
 
     def default_template action_name = self.action_name
+      @template_html_fallback = request.format == :html if @template_html_fallback.nil?
       self.each_template_with_hmvc do |klass|
         begin
-          self.view_paths.find_template "#{klass.controller_path}/#{action_name}", default_template_format
+          self.view_paths.find_template "#{klass.controller_path}/#{action_name}", default_template_format, @template_html_fallback
         rescue ::ActionView::MissingTemplate => e
           # raise the same exception as rails will rescue it
-          raise e unless (klass.inherit_templates rescue nil)
+          raise e unless (klass.inherit_templates rescue false)
         end
       end
     end
@@ -101,13 +102,12 @@ module ControllerInheritance
 
     def each_template_with_hmvc &block
       klass = self.class
-      ret = nil
-      loop do
+      begin
+        next if @hmvc_skip_templates_for.to_a.include? klass
+
         ret = yield klass
-        break if ret
-        klass = klass.superclass
-      end
-      ret
+        return ret if ret
+      end while klass = klass.superclass
     end
 
   end

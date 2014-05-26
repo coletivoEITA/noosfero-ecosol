@@ -10,7 +10,7 @@ module OrdersPlugin::PriceHelper
     options[:class] = "orders-price-with-unit price-with-unit #{options[:class]}"
     text = I18n.t('orders_plugin.lib.price_helper.price_unit') % {
       :price => price_span(price),
-      :unit => content_tag('div', unit.singular + detail, :class => 'price-unit'),
+      :unit => content_tag('div', (unit.singular rescue '') + detail, :class => 'price-unit'),
     }
 
     content_tag 'div', text, options.merge(:title => text)

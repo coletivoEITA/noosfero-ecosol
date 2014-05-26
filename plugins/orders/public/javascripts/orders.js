@@ -23,10 +23,6 @@ orders = {
       return false
     },
 
-    truncate: function(order) {
-      order.find('.item .supplier, .item .product').smartTruncation();
-    },
-
   },
 
   item: {

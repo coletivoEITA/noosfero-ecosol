@@ -4,10 +4,11 @@ OrdersPlugin::OrdersDisplayHelper = OrdersPlugin::DisplayHelper
 
 class OrdersPluginItemController < MyProfileController
 
-  no_design_blocks
-
   include OrdersPlugin::TranslationHelper
 
+  no_design_blocks
+
+  #protect 'edit_profile', :profile
   before_filter :set_actor_name
 
   helper OrdersPlugin::OrdersDisplayHelper

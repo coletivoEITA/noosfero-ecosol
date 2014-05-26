@@ -47,11 +47,11 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
       self.send :define_method, "total_#{quantity}" do |items|
         items ||= (self.ordered_items rescue nil) || self.items
-        items.collect(&quantity).inject(0){ |sum,q| sum + q.to_f }
+        items.collect(&quantity).inject(0){ |sum, q| sum + q.to_f }
       end
       self.send :define_method, "total_#{price}" do |items|
         items ||= (self.ordered_items rescue nil) || self.items
-        items.collect(&price).inject(0){ |sum,q| sum + q.to_f }
+        items.collect(&price).inject(0){ |sum, p| sum + p.to_f }
       end
 
       has_number_with_locale "total_#{quantity}"
@@ -165,12 +165,8 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
           # fill with previous status data
           status_data[:quantity] = prev_status_data[:quantity]
           status_data[:price] = prev_status_data[:price]
-
-          # status to admin comes prefilled but is considered empty
-          if not status_data[:flags][:admin]
-            status_data[:flags][:filled] = status_data[:flags].delete :empty
-            status_data[:flags][:not_modified] = true
-          end
+          status_data[:flags][:filled] = status_data[:flags].delete :empty
+          status_data[:flags][:not_modified] = true
         end
       end
 

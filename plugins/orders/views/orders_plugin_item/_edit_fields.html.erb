@@ -10,7 +10,7 @@
 
   <div class="box-field quantity-price-table">
     <% item.quantity_price_data(actor_name, @admin).each do |status, data| %>
-      <% next if data[:flags][:not_modified] %>
+      <% next if data[:flags][:not_modified] and not data[:flags][:admin] %>
       <%= render 'orders_plugin_item/quantity_price', :item => item, :order => order, :status => status, :data => data, :actor_name => actor_name %>
     <% end %>
   </div>
