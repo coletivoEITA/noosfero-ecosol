@@ -4,6 +4,8 @@ class OrdersPluginAdminController < MyProfileController
   include OrdersPlugin::TranslationHelper
 
   no_design_blocks
+
+  protect 'edit_profile', :profile
   before_filter :set_admin
 
   helper OrdersPlugin::TranslationHelper

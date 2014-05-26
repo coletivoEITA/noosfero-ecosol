@@ -165,12 +165,8 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
           # fill with previous status data
           status_data[:quantity] = prev_status_data[:quantity]
           status_data[:price] = prev_status_data[:price]
-
-          # status to admin comes prefilled but is considered empty
-          if not status_data[:flags][:admin]
-            status_data[:flags][:filled] = status_data[:flags].delete :empty
-            status_data[:flags][:not_modified] = true
-          end
+          status_data[:flags][:filled] = status_data[:flags].delete :empty
+          status_data[:flags][:not_modified] = true
         end
       end
 

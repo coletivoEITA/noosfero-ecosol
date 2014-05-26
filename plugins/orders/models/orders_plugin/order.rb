@@ -188,10 +188,8 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   # total_price considering last state
   def total_price admin = false
-    if admin
-      if status = self.next_status
-        self.fill_items_data self.status, self.next_status
-      end
+    if admin and status = self.next_status
+      self.fill_items_data self.status, status
     else
       status = self.status
     end
@@ -200,19 +198,20 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     price = "price_#{data}".to_sym
 
     items ||= (self.ordered_items rescue nil) || self.items
-    items.collect(&price).inject(0){ |sum,q| sum + p.to_f }
+    items.collect(&price).inject(0){ |sum, p| sum + p.to_f }
   end
   has_currency :total_price
 
   def fill_items_data from_status, to_status, save = false
-    return if (Statuses.index(to_status) <= DbStatuses.index(from_status) rescue false)
+    return if (Statuses.index(to_status) <= Statuses.index(from_status) rescue true)
 
     from_data = OrdersPlugin::Item::StatusDataMap[from_status]
     to_data = OrdersPlugin::Item::StatusDataMap[to_status]
     return unless from_data.present? and to_data.present?
 
     self.items.each do |item|
-      next if (quantity = item.send("quantity_#{from_data}")).present?
+      # already filled?
+      next if (quantity = item.send("quantity_#{to_data}")).present?
       item.send "quantity_#{to_data}=", quantity
       item.send "price_#{to_data}=", item.send("price_#{from_data}")
       item.save if save
@@ -226,7 +225,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     # backwards compatibility
     self.status = 'ordered' if self.status == 'confirmed'
 
-    self.fill_items_data self.status_was, self.status, true if self.status_was and self.status_was != self.status
+    self.fill_items_data self.status_was, self.status, true
 
     if self.status_on? 'ordered'
       Statuses.each do |status|

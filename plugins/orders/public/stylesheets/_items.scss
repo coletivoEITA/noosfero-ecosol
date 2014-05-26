@@ -123,15 +123,15 @@
           .quantity-price-row {
             display: table-row;
 
-            &.empty {
-              display: none;
-            }
-
             &.overwritten {
               .quantity, .price-total, .status {
                 text-decoration: line-through;
                 color: #999;
               }
+            }
+
+            &.not_modified, &.empty {
+              display: none;
             }
 
             &.editable {
@@ -182,11 +182,8 @@
           .quantity-price-table {
             .quantity-price-row {
 
-              &.empty {
-
-                &.admin {
-                  display: block;
-                }
+              &.not_modified, &.empty {
+                display: initial;
               }
 
               &.editable {
