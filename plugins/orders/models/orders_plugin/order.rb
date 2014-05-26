@@ -194,7 +194,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
       status = self.status
     end
 
-    data = OrdersPlugin::Item::StatusDataMap[status]
+    data = OrdersPlugin::Item::StatusDataMap[status] || Statuses.first
     price = "price_#{data}".to_sym
 
     items ||= (self.ordered_items rescue nil) || self.items
