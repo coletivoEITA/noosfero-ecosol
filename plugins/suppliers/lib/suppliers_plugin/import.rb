@@ -37,7 +37,7 @@ class SuppliersPlugin::Import
       supplier ||= SuppliersPlugin::Supplier.create_dummy :consumer => consumer, :name => supplier_name
 
       products.each do |attributes|
-        product = supplier.profile.products.find_by_name attributes[:name]
+        product = supplier.profile.products.find_by_name attributes[:name].gsub('"', '&quot;')
         product ||= supplier.profile.products.build attributes
         product.update_attributes! attributes
       end
