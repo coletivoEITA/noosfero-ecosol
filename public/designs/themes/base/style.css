@@ -1095,8 +1095,8 @@ hr.pre-posts, hr.sep-posts {
   text-decoration: none;
 }
 
-#content .automatic-abstract-thumb, 
-#content #boxes .box-1 .article-block img.automatic-abstract-thumb, 
+#content .automatic-abstract-thumb,
+#content #boxes .box-1 .article-block img.automatic-abstract-thumb,
 #content #article .article-body img.automatic-abstract-thumb {
   float:left;
   max-width:100px;
@@ -1439,3 +1439,17 @@ table.profile th {
 table#recaptcha_table tr:hover td {
   background-color: #fff;
 }
+
+/* product cateogories */
+#categories-container #product_category_id {
+  font-size: 18px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+#categories-container #product_category_id:focus {
+  outline: none;
+  border-color: green;
+  box-shadow: 0 0 10px green;
+  color:#333;
+}
+

@@ -9207,6 +9207,10 @@ msgstr "Selecione a categoria de seu novo produto ou serviço"
 msgid "Back to the product listing"
 msgstr "Voltar para lista de produtos"
 
+#: app/views/manage_products/_categories_autocomplete.html.erb
+msgid "type a category for the product"
+msgstr "digite a categoria para o produto"
+
 #: app/views/manage_products/new.rhtml:21
 #: app/views/manage_products/_add_input.rhtml:17
 #: app/views/manage_products/edit_category.rhtml:27
