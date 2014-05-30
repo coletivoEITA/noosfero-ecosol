@@ -2246,6 +2246,7 @@ msgstr ""
 "Seu pedido para publicar o artigo \"%{article}\" foi aprovado. Aqui está o "
 "comentário enviado pelo administrador que aprovou seu artigo:\n"
 "\n"
+"%{comment} "
 
 #: app/models/approve_article.rb:114
 msgid "Your request for publishing the article \"%{article}\" was approved."
@@ -8806,6 +8807,10 @@ msgstr "Ver os detalhes"
 msgid "Classify your new friend:"
 msgstr "Classifique seu(sua) novo(a) amigo(a):"
 
+#: app/views/manage_products/_categories_autocomplete.html.erb
+msgid "type a category for the product"
+msgstr "digite a categoria para o produto"
+
 #: app/views/tasks/_invite_friend_accept_details.rhtml:7
 #: app/views/tasks/_add_friend_accept_details.rhtml:7
 msgid "Suggestions: %s"
@@ -10673,10 +10678,6 @@ msgstr "Saberes do Perfil"
 #: plugins/cms_learning/lib/cms_learning_plugin/learnings_block.rb:16
 msgid "This block show learnings of your profile"
 msgstr "Este bloco apresenta a lista de saberes de seu perfil"
-
-#: plugins/solr/lib/solr_plugin.rb:14
-msgid "Uses Solr as search engine."
-msgstr "Usa Solr como motor de busca."
 
 #: plugins/solr/lib/solr_plugin/search_helper.rb:12
 #: plugins/solr/lib/solr_plugin/search_helper.rb:19
