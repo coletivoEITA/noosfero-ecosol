@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, .cycle .cycle-timeline {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -145,7 +145,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, .cycle .cycle-timeline {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -288,7 +288,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, .cycle .cycle-timeline {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -539,7 +539,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, .cycle .cycle-timeline {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -938,7 +938,7 @@
   /* Buttons */ }
   #cycle-admin-page .clean {
     clear: both; }
-  #cycle-admin-page .container-clean, #cycle-admin-page .sortable-table > .table-header, #cycle-admin-page .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #cycle-admin-page .box-view, #cycle-admin-page .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #cycle-admin-page .box-view-inner, #cycle-admin-page .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #cycle-admin-page .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit {
+  #cycle-admin-page .container-clean, #cycle-admin-page .sortable-table > .table-header, #cycle-admin-page .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #cycle-admin-page .box-view, #cycle-admin-page .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #cycle-admin-page .box-view-inner, #cycle-admin-page .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #cycle-admin-page .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, #cycle-admin-page .cycle .cycle-timeline, .cycle #cycle-admin-page .cycle-timeline {
     overflow: hidden;
     display: inline-block;
     /* Necessary to trigger "hasLayout" in IE */
@@ -1120,7 +1120,7 @@
   #cycle-admin-page #cycle-product-line .field {
     width: 120px; }
   #cycle-admin-page #cycle-products {
-    margin-top: 40px; }
+    margin-top: 16px; }
     #cycle-admin-page #cycle-products .cycle-products-table {
       margin-top: 30px; }
     #cycle-admin-page #cycle-products .value-row.edit .price,
@@ -1159,65 +1159,47 @@
 #cycle-new-mail .mail-message {
   margin-top: 10px; }
 
-#cycle-dates th {
-  width: 80px;
-  vertical-align: top;
-  border-bottom: 0; }
-  #cycle-dates th .cycle-list-item {
-    border-top: 1px dotted #ccc;
-    padding: 8px; }
-  #cycle-dates th .cycle-list-item:last-child {
-    border-bottom: 1px dotted #ccc; }
-  #cycle-dates th .cycle-name-and-code {
+.cycle .h2 {
+  margin-bottom: 0; }
+.cycle .cycle-timeline {
+  border: 2px solid #cbcbcb;
+  margin-bottom: 16px;
+  width: 956px;
+  margin-left: -40px;
+  padding: 0 40px; }
+  .cycle .cycle-timeline,
+  .cycle .cycle-timeline .cycle-timeline-passed-item,
+  .cycle .cycle-timeline .cycle-timeline-current-item {
+    background: url(/plugins/orders_cycle/images/progressbar.png) left top no-repeat; }
+  .cycle .cycle-timeline {
+    background-size: 40px 80px; }
+  .cycle .cycle-timeline .cycle-timeline-item {
+    float: left;
+    padding: 8px;
     font-weight: bold; }
-  #cycle-dates th .cycle-timeline {
-    border: none;
-    font-size: 10px;
-    margin-left: 0;
-    margin-bottom: 0; }
-    #cycle-dates th .cycle-timeline .actions-bar {
-      display: none; }
-    #cycle-dates th .cycle-timeline .cycle-timeline-item {
-      padding: 1px 10px; }
-    #cycle-dates th .cycle-timeline .cycle-timeline-citem {
-      display: none; }
-    #cycle-dates th .cycle-timeline .cycle-timeline-selected-item {
-      text-decoration: underline; }
-  #cycle-dates th .cycle-date {
-    float: left;
-    width: 270px;
-    font-size: 10px;
-    line-height: 23px; }
-
-.cycle-timeline {
-  border: 1px solid #FEC64D;
-  margin-bottom: 20px;
-  padding-left: 0; }
-  .cycle-timeline .cycle-timeline-item {
-    float: left;
-    padding: 8px 10px; }
-  .cycle-timeline .cycle-timeline-citem {
+    .cycle .cycle-timeline .cycle-timeline-item:first-child {
+      padding-left: 0; }
+  .cycle .cycle-timeline .cycle-timeline-citem {
     display: none; }
-  .cycle-timeline .cycle-timeline-selected-item {
+  .cycle .cycle-timeline .cycle-timeline-selected-item {
     color: black;
     text-decoration: none;
     font-weight: bold; }
-  .cycle-timeline .cycle-timeline-passed-item,
-  .cycle-timeline .cycle-timeline-current-item {
-    background: url(/plugins/orders_cycle/images/progressbar.png) left top no-repeat; }
-  .cycle-timeline .cycle-timeline-current-item {
-    background-position: 103% 0; }
-  .cycle-timeline .cycle-timeline .actions-bar a {
+  .cycle .cycle-timeline .cycle-timeline-current-item {
+    background-position: 105% 0; }
+  .cycle .cycle-timeline .cycle-timeline .actions-bar a {
     font-weight: bold; }
-  .cycle-timeline .actions-bar {
-    background-color: #FEC64D;
-    padding: 6px 8px;
-    clear: both; }
-    .cycle-timeline .actions-bar a {
-      float: left;
-      margin-right: 10px; }
-    .cycle-timeline .actions-bar strong {
-      float: right; }
+.cycle .dates-brief {
+  margin-bottom: 32px; }
+.cycle .actions-bar {
+  background-color: #FEC64D;
+  padding: 6px 8px;
+  clear: both; }
+  .cycle .actions-bar a {
+    float: left;
+    margin-right: 10px; }
+  .cycle .actions-bar strong {
+    float: right; }
 
 .cycle-product-line *[disabled] {
   background-color: transparent; }

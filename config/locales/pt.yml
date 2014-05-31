@@ -989,7 +989,7 @@
           filter: Filtro
           new_cycle: "Novo ciclo"
           no_cycles_to_show: "Sem ciclos a mostrar"
-          open_cycles: "Pedidos Abertos"
+          open_cycles: "Ciclos de pedidos Abertos"
           orders_cycles: "Ciclo de pedidos"
           show_cycles_from_year: "Mostre os ciclos do ano"
 

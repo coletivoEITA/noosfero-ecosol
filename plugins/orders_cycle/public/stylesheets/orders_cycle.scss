@@ -26,6 +26,7 @@
         border-bottom: 0;
       }
     }
+
     .subtitle {
       display: block;
       margin-top: 20px;
@@ -236,7 +237,7 @@
   }
 
   #cycle-products {
-    margin-top: 40px;
+    margin-top: $margin;
 
     .cycle-products-table {
       @extend .box-align;
@@ -298,79 +299,58 @@
 }
 
 
-#cycle-dates th {
-  width: 80px;
-  vertical-align: top;
-  border-bottom: 0;
+.cycle {
 
-  .cycle-list-item {
-    @extend .box-align;
-    border-top: 1px dotted #ccc;
-    padding: 8px;
-  }
-  .cycle-list-item:last-child {
-    border-bottom: 1px dotted #ccc;
-  }
-  .cycle-name-and-code {
-    font-weight: bold;
+  .h2 {
+    margin-bottom: 0;
   }
 
   .cycle-timeline {
-    @extend .box-align;
-    border: none;
-    font-size: 10px;
-    margin-left: 0;
-    margin-bottom: 0;
+    border: 2*$border solid #CBCBCB;
+    margin-bottom: $margin;
+    @extend .container-clean;
 
-    .actions-bar {
-      display: none;
+    //wireframe size
+    width: $wireframe - 2*(2*$border);
+    margin-left: -$wireframe-padding;
+    padding: 0 $wireframe-padding;
+
+    &,
+    .cycle-timeline-passed-item,
+    .cycle-timeline-current-item {
+      background: url(/plugins/orders_cycle/images/progressbar.png) left top no-repeat;
     }
+    & {
+      background-size: $wireframe-padding $wireframe-padding*2; //height is arbitrary big to fit
+    }
+
     .cycle-timeline-item {
-      padding: 1px 10px;
+      float: left;
+      padding: $padding;
+      font-weight: bold;
+
+      &:first-child {
+        padding-left: 0;
+      }
     }
     .cycle-timeline-citem {
       display: none;
     }
     .cycle-timeline-selected-item {
-      text-decoration: underline;
+      color: black;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .cycle-timeline-current-item {
+      background-position: 105% 0;
+    }
+    .cycle-timeline .actions-bar a {
+      font-weight: bold;
     }
   }
 
-  .cycle-date {
-    float: left;
-    width: 270px;
-    font-size: 10px;
-    line-height: 23px;
-  }
-
-}
-
-.cycle-timeline {
-  border: 1px solid #FEC64D;
-  margin-bottom: 20px;
-  padding-left: 0;
-
-  .cycle-timeline-item {
-    float: left;
-    padding: 8px 10px;
-  }
-  .cycle-timeline-citem {
-    display: none;
-  }
-  .cycle-timeline-selected-item {
-    color: black;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  .cycle-timeline-passed-item,
-  .cycle-timeline-current-item {
-    background: url(/plugins/orders_cycle/images/progressbar.png) left top no-repeat;
-  }
-  .cycle-timeline-current-item {
-    background-position: 103% 0;
-  }
-  .cycle-timeline .actions-bar a {
-    font-weight: bold;
+  .dates-brief {
+    margin-bottom: 2*$margin;
   }
 
   .actions-bar {
@@ -386,8 +366,8 @@
       float: right;
     }
   }
-
 }
+
 
 .cycle-product-line *[disabled] {
   background-color: transparent;

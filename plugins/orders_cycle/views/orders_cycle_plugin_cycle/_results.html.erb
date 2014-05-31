@@ -3,7 +3,7 @@
 <% else %>
   <% @closed_cycles.each do |cycle| %>
     <div id="cycle-list-item-<%= cycle.id %>" class="cycle-list-item">
-      <%= render :partial => 'brief', :locals => {:cycle => cycle, :timeline => false} %>
+      <%= render 'header', :cycle => cycle, :timeline => true, :actions => false, :listing => true %>
     </div>
   <% end %>
 <% end %>

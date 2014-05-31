@@ -1,45 +1,40 @@
+<%
+  actions = true if actions.nil? and @admin
+  listing = false if listing.nil?
+  view = params[:view] || cycle.status
+%>
+
 <div class="cycle-timeline">
-  <% view = params[:view] || cycle.status %>
+  <% OrdersCyclePlugin::Cycle::UserStatuses.each do |status| %>
+    <%
+      klass = "cycle-timeline-item #{timeline_class cycle, status, view}"
+      name = t("views.cycle._timeline.#{status}")
+    %>
 
-  <div>
-    <% OrdersCyclePlugin::Cycle::UserStatuses.each do |status| %>
-      <% klass = "cycle-timeline-item #{timeline_class cycle, status, view}" %>
-      <% name = t("views.cycle._timeline.#{status}") %>
-
-      <%= link_to name, params.merge(:action => :edit, :id => cycle.id, :view => status), :class => klass %>
-    <% end %>
-  </div>
-
-  <%
-    actions = {
-      :edition => [
-      ],
-      :orders => [
-        [ t('views.admin.reports.orders_spreadsheet'), {:action => :report_orders, :id => cycle.id} ],
-        [ t('views.admin.reports.products_spreadsheet'), {:action => :report_products, :id => cycle.id} ],
-      ],
-      :closed => [
-      ]
-    }
-    actions[:edition].unshift [ t('views.cycle._timeline.finish_cycle_editing'), {:action => :step, :id => cycle.id, :method => :post},
-      { :id => 'cycle-open-cycle' } ] unless cycle.passed_by?('edition')
-    actions[:orders].unshift [ cycle.orders? ? t('views.cycle._timeline.block_orders_period') : t('views.cycle._timeline.close_orders_period'),
-      {:action => :step, :id => cycle.id, :method => :post}, { :id => 'cycle-open-cycle' , :confirm => t('views.cycle._timeline.are_you_sure_you_want_to_close')} ] unless cycle.passed_by?('orders')
-    actions[:closed].unshift [  t('views.cycle._timeline.reopen_orders_period'),
-      {:action => :step_back, :id => cycle.id, :method => :post}, { :id => 'cycle-open-cycle' , :confirm => t('views.cycle._timeline.are_you_sure_you_want_to_reopen')} ] if cycle.passed_by?('orders')
-
-  %>
-
-  <% unless actions[view.to_sym].blank? %>
-    <div class="actions-bar">
-      <% actions[view.to_sym].each do |args| %>
-        <%= link_to *args %>
-      <% end %>
-      <strong><%= t('views.cycle._timeline.actions') %></strong>
-
-      <div class="clean"></div>
-    </div>
+    <%= link_to name, params.merge(:action => :edit, :id => cycle.id, :view => status), :class => klass %>
   <% end %>
-
-  <div class="clean"></div>
 </div>
+
+<% if listing %>
+  <div class="dates-brief">
+    <div class="date">
+      <span class="field-title"><%= t('views.cycle._brief.orders') %></span>&emsp;
+      <span><%= datetime_period_short(cycle.start, cycle.finish) %></span>
+    </div>
+    <div class="date">
+      <span class="field-title"><%= t('views.cycle._brief.delivery') %></span>&emsp;
+      <span><%= datetime_period_short(cycle.delivery_start, cycle.delivery_finish) %></span>
+    </div>
+  </div>
+<% end %>
+
+<% if actions %>
+  <div class="actions-bar">
+    <%= render "orders_cycle_plugin_cycle/actions/#{view}", :cycle => cycle %>
+
+    <strong><%= t('views.cycle._timeline.actions') %></strong>
+
+    <div class="clean"></div>
+  </div>
+<% end %>
+

@@ -1,0 +1,8 @@
+<%= link_to t('views.admin.reports.orders_spreadsheet'), {:action => :report_orders, :id => cycle.id} %>
+<%= link_to t('views.admin.reports.products_spreadsheet'), {:action => :report_products, :id => cycle.id} %>
+
+<% unless cycle.passed_by? 'orders' %>
+  <%= link_to (if cycle.orders? then t('views.cycle._timeline.block_orders_period') else t('views.cycle._timeline.close_orders_period') end),
+  {:action => :step, :id => cycle.id, :method => :post},
+  {:id => 'cycle-open-cycle' , :confirm => t('views.cycle._timeline.are_you_sure_you_want_to_close')}   %>
+<% end %>
