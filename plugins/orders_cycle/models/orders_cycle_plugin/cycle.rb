@@ -65,8 +65,9 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   named_scope :status_open, :conditions => ["status <> 'closed'"]
   named_scope :status_closed, :conditions => ["status = 'closed'"]
 
-  DbStatuses = %w[new edition orders purchases closed]
-  UserStatuses = %w[edition orders purchases]
+  Statuses = %w[edition orders purchases receipts separation delivery closing]
+  DbStatuses = %w[new] + Statuses
+  UserStatuses = Statuses
 
   validates_presence_of :profile
   validates_presence_of :name, :if => :not_new?
@@ -96,15 +97,22 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     self.items.sum :price_consumer_ordered
   end
 
+  def status
+    self['status'] = 'closing' if self['status'] == 'closed'
+    self['status']
+  end
+
   def step
     self.status = DbStatuses[DbStatuses.index(self.status)+1]
   end
   def step_back
     self.status = DbStatuses[DbStatuses.index(self.status)-1]
   end
+
   def passed_by? status
-    DbStatuses.index(self.status) > DbStatuses.index(status)
+    DbStatuses.index(self.status) > DbStatuses.index(status) rescue false
   end
+
   def new?
     status == 'new'
   end

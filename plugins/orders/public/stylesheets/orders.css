@@ -1446,11 +1446,11 @@
     .order-items-container .order-total .value {
       clear: both; }
   .order-items-container .order-items.self-supplier .box-field.product {
-    width: 376px;
-    max-width: 376px; }
+    width: 216px;
+    max-width: 216px; }
   .order-items-container .order-items.self-supplier .box-field.quantity, .order-items-container .order-items.self-supplier .box-field.quantity input {
-    width: 144px;
-    max-width: 144px; }
+    width: 136px;
+    max-width: 136px; }
   .order-items-container .order-items .box-field {
     float: left;
     padding: 4px 8px;
@@ -1475,7 +1475,7 @@
       width: 64px;
       max-width: 64px; }
     .order-items-container .order-items .box-field.status {
-      width: 64px;
+      width: 63px;
       text-transform: uppercase; }
   .order-items-container .table-header, .order-items-container .table-content {
     border-bottom: 1px solid black; }
@@ -1569,8 +1569,10 @@
 
 .order-view, .order-view .order-items-scroll, .order-view .order-items, .order-view .item {
   width: 464px; }
-.order-view.admin, .order-view.admin .order-items-scroll, .order-view.admin .order-items, .order-view.admin .item {
+.order-view.admin {
   width: 544px; }
+  .order-view.admin .order-items-scroll, .order-view.admin .order-items, .order-view.admin .item {
+    width: 542px; }
 .order-view .actions {
   margin-top: 16px; }
   .order-view .actions a {

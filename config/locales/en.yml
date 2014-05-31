@@ -732,6 +732,14 @@
         delivery_period_befor: "Delivery' period before orders' period"
         invalid_delivery_peri: "Invalid delivery' period"
         invalid_orders_period: "Invalid orders' period"
+        statuses:
+          edition: Edition
+          orders: Orders
+          purchases: Purchases
+          receipts: Receipts
+          separation: Separation
+          delivery: Delivery
+          closing: Closing
     views: 
       gadgets: 
         _cycle: 
@@ -938,16 +946,11 @@
           actions: Actions
           are_you_sure_you_want_to_reopen: "Are you sure you want to reopen the orders cycle?"
           are_you_sure_you_want_to_close: "Are you sure you want to close the orders cycle?"
-          block_orders_period: "Block orders period"
           call: Call
           close: Close
+          block_orders_period: "Block orders period"
           close_orders_period: "Close orders period"
-          delivery: Delivery
-          edition: Edition
           finish_cycle_editing: "Open orders for cycle"
-          orders: Orders
-          purchases: Purchases
-          redistribution: Redistribution
           reopen_orders_period: "Reopen orders period"
         _title: 
           new_cycle: "New cycle"

@@ -8,7 +8,7 @@
   <% OrdersCyclePlugin::Cycle::UserStatuses.each do |status| %>
     <%
       klass = "cycle-timeline-item #{timeline_class cycle, status, view}"
-      name = t("views.cycle._timeline.#{status}")
+      name = t("models.cycle.statuses.#{status}")
     %>
 
     <%= link_to name, params.merge(:action => :edit, :id => cycle.id, :view => status), :class => klass %>

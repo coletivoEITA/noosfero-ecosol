@@ -1179,14 +1179,14 @@
     font-weight: bold; }
     .cycle .cycle-timeline .cycle-timeline-item:first-child {
       padding-left: 0; }
-  .cycle .cycle-timeline .cycle-timeline-citem {
-    display: none; }
+  .cycle .cycle-timeline .cycle-timeline-current-item {
+    background-position: 105% 0; }
+  .cycle .cycle-timeline .cycle-timeline-next-item {
+    color: #BABABA; }
   .cycle .cycle-timeline .cycle-timeline-selected-item {
     color: black;
     text-decoration: none;
     font-weight: bold; }
-  .cycle .cycle-timeline .cycle-timeline-current-item {
-    background-position: 105% 0; }
   .cycle .cycle-timeline .cycle-timeline .actions-bar a {
     font-weight: bold; }
 .cycle .dates-brief {

@@ -333,17 +333,19 @@
         padding-left: 0;
       }
     }
-    .cycle-timeline-citem {
-      display: none;
+
+    .cycle-timeline-current-item {
+      background-position: 105% 0;
+    }
+    .cycle-timeline-next-item {
+      color: #BABABA;
     }
     .cycle-timeline-selected-item {
       color: black;
       text-decoration: none;
       font-weight: bold;
     }
-    .cycle-timeline-current-item {
-      background-position: 105% 0;
-    }
+
     .cycle-timeline .actions-bar a {
       font-weight: bold;
     }

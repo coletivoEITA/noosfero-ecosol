@@ -63,10 +63,6 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   before_validation :check_status
   after_save :send_notifications
 
-  def orders_name
-    raise 'undefined'
-  end
-
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => proc{ self.profile.orders }
 
@@ -103,6 +99,14 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     OrdersPlugin::Item.products_by_suppliers orders.collect(&:items).flatten
   end
 
+  def orders_name
+    raise 'undefined'
+  end
+
+  def delivery_methods
+    self.profile.delivery_methods
+  end
+
   # All products from the order profile?
   # FIXME reimplement to be generic for consumer/supplier
   def self_supplier?
@@ -127,6 +131,9 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   def ordered?
     self.ordered_at.present?
   end
+  def pre_order?
+    not self.ordered?
+  end
   alias_method :confirmed?, :ordered?
 
   def status_on? status
@@ -143,7 +150,8 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
 
   def next_status
-    current_index = Statuses.index(self.status) || 0
+    # if no status was found go to the first (-1 to 0)
+    current_index = Statuses.index(self.status) || -1
     Statuses[current_index + 1]
   end
 
@@ -188,7 +196,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   # total_price considering last state
   def total_price admin = false
-    if admin and status = self.next_status
+    if not self.pre_order? and admin and status = self.next_status
       self.fill_items_data self.status, status
     else
       status = self.status

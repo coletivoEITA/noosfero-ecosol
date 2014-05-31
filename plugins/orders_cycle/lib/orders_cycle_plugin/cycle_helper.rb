@@ -9,8 +9,13 @@ module OrdersCyclePlugin::CycleHelper
 
   def timeline_class cycle, status, selected
     klass = ""
-    klass += " cycle-timeline-passed-item" if cycle.passed_by? status
-    klass += " cycle-timeline-current-item" if cycle.status == status
+    if cycle.status == status
+      klass += " cycle-timeline-current-item"
+    elsif cycle.passed_by? status
+      klass += " cycle-timeline-passed-item"
+    else
+      klass += " cycle-timeline-next-item"
+    end
     klass += " cycle-timeline-selected-item" if selected == status
     klass
   end

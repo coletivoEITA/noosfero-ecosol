@@ -738,6 +738,14 @@
         delivery_period_befor: "Período de entrega antes do período de pedidos"
         invalid_delivery_peri: "Período de entrega inválido"
         invalid_orders_period: "Período de pedidos inválido"
+        statuses:
+          edition: Edição
+          orders: Pedidos
+          purchases: Compras
+          receipts: Recebimentos
+          separation: Separação
+          delivery: Entrega
+          closing: Fechamento
     views: 
       gadgets: 
         _cycle: 
@@ -946,16 +954,11 @@
           actions: Ações
           are_you_sure_you_want_to_reopen: "Tem certeza de que deseja reabrir o ciclo de pedidos?"
           are_you_sure_you_want_to_close: "Tem certeza de que deseja fechar o ciclo de pedidos?"
-          block_orders_period: "Finalizar período de pedidos"
           call: Call
           close: Fechar
+          block_orders_period: "Finalizar período de pedidos"
           close_orders_period: "Fechar ciclo de pedidos"
-          delivery: Entrega
-          edition: Edição
           finish_cycle_editing: "Abrir pedidos do ciclo"
-          orders: Pedidos
-          purchases: Compras
-          redistribution: Redistribuição
           reopen_orders_period: "Reabrir ciclo de pedidos"
         _title: 
           new_cycle: "Novo ciclo"
