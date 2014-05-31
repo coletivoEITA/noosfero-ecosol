@@ -21,7 +21,7 @@
 
   <div class="box-edit <%= 'loading' if not edit %>">
     <% if edit %>
-      <%= render 'orders_plugin_admin/edit', :order => order, :actor_name => actor_name %>
+      <%= render 'orders_plugin_admin/edit', :order => order, :actor_name => actor_name, :other_actor_name => other_actor_name %>
     <% end %>
   </div>
 

@@ -1,5 +1,9 @@
 class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
+  Statuses = %w[edition orders purchases receipts separation delivery closing]
+  DbStatuses = %w[new] + Statuses
+  UserStatuses = Statuses
+
   belongs_to :profile
 
   has_many :delivery_options, :class_name => 'DeliveryPlugin::Option', :dependent => :destroy,
@@ -64,10 +68,6 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
   named_scope :status_open, :conditions => ["status <> 'closed'"]
   named_scope :status_closed, :conditions => ["status = 'closed'"]
-
-  Statuses = %w[edition orders purchases receipts separation delivery closing]
-  DbStatuses = %w[new] + Statuses
-  UserStatuses = Statuses
 
   validates_presence_of :profile
   validates_presence_of :name, :if => :not_new?

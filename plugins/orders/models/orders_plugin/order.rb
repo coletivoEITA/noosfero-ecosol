@@ -233,7 +233,7 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     self.items.each do |item|
       # already filled?
       next if (quantity = item.send("quantity_#{to_data}")).present?
-      item.send "quantity_#{to_data}=", quantity
+      item.send "quantity_#{to_data}=", item.send("quantity_#{from_data}")
       item.send "price_#{to_data}=", item.send("price_#{from_data}")
       item.save if save
     end

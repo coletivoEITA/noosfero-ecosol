@@ -180,7 +180,7 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
     # Set access
     data.each_with_index do |(status, status_data), i|
-      status_data[:flags][:editable] = true if status_data[:access] == actor_name and (if status_data[:flags][:admin] then true else self.order.open? end)
+      status_data[:flags][:editable] = true if status_data[:access] == actor_name and (status_data[:flags][:admin] or self.order.open?)
     end
 
     data

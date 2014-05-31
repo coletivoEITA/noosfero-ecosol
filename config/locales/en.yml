@@ -630,7 +630,6 @@
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
         _index: 
           header: "Purchase %{profile.code} - %{profile} / Sale - %{consumer}"
-          header_for_self_supplier: "Code: %{profile_code} / Consumer - %{consumer}"
           empty_order: "Empty order"
           supplier: "%{terms.supplier.singular}"
           product: "product"
