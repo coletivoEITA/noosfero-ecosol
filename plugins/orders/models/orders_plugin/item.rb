@@ -29,13 +29,13 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
   before_create :sync_fields
 
   # should be Order, but the can't reference it here so it would create a cyclic reference
-  StatusAccessMap = {
-    'ordered' => :consumer,
-    'accepted' => :supplier,
-    'separated' => :supplier,
-    'delivered' => :supplier,
-    'received' => :consumer,
-  }
+  StatusAccessMap = ActiveSupport::OrderedHash[
+    'ordered', :consumer,
+    'accepted', :supplier,
+    'separated', :supplier,
+    'delivered', :supplier,
+    'received', :consumer,
+  ]
   StatusDataMap = {}; StatusAccessMap.each do |status, access|
     StatusDataMap[status] = "#{access}_#{status}"
   end
