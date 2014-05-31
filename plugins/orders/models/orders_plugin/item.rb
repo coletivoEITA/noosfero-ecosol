@@ -119,11 +119,10 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     data = ActiveSupport::OrderedHash.new
     statuses = OrdersPlugin::Order::Statuses
 
-    order_status = self.order.status
-    current = statuses.index(status) || 0
-    order_next_status = self.order.next_status actor_name
-
-    goto_next = actor_name == StatusAccessMap[order_next_status]
+    current = statuses.index(self.order.status) || 0
+    next_status = self.order.next_status actor_name
+    next_index = statuses.index(next_status) || current + 1
+    goto_next = actor_name == StatusAccessMap[next_status]
 
     # Fetch data
     statuses.each_with_index do |status, i|
@@ -146,11 +145,11 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
       if i == current
         status_data[:flags][:current] = true
-      elsif i > current
+      elsif i == next_index and goto_next
         status_data[:flags][:admin] = true
       end
 
-      break if (if goto_next then i > current else i == current end)
+      break if (if goto_next then i == next_index else i < next_index end)
     end
 
     # Set flags according to past/future data
