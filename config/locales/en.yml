@@ -1041,6 +1041,7 @@
           orders_cycles: "Orders' Cycles"
           products: Products
           suppliers: "%{terms.supplier.plural.capitalize}"
+          settings: "Settings"
         _header: 
           collective_consumptio: "Network of Consumers' Coop"
       profile:
