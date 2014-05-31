@@ -180,6 +180,8 @@
           }
 
           .quantity-price-table {
+            padding-right: 0;
+
             .quantity-price-row {
 
               &.not_modified, &.empty {

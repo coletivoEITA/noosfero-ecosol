@@ -28,6 +28,7 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
   before_save :save_calculated_prices
   before_create :sync_fields
 
+  # should be Order, but the can't reference it here so it would create a cyclic reference
   StatusAccessMap = {
     'ordered' => :consumer,
     'accepted' => :supplier,
@@ -114,20 +115,20 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     end
   end
 
-  def quantity_price_data actor_name = :consumer, admin = false
+  def quantity_price_data actor_name
     data = ActiveSupport::OrderedHash.new
     statuses = OrdersPlugin::Order::Statuses
 
     order_status = self.order.status
     current = statuses.index(status) || 0
-    order_next_status = statuses[current + 1]
+    order_next_status = self.order.next_status actor_name
 
-    goto_next = actor_name == OrdersPlugin::Item::StatusAccessMap[order_next_status]
+    goto_next = actor_name == StatusAccessMap[order_next_status]
 
     # Fetch data
     statuses.each_with_index do |status, i|
-      data_field = OrdersPlugin::Item::StatusDataMap[status]
-      access = OrdersPlugin::Item::StatusAccessMap[status]
+      data_field = StatusDataMap[status]
+      access = StatusAccessMap[status]
 
       status_data = data[status] = {
         :flags => {},
@@ -179,7 +180,7 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
     # Set access
     data.each_with_index do |(status, status_data), i|
-      status_data[:flags][:editable] = true if status_data[:access] == actor_name and (if admin then status_data[:flags][:admin] else self.order.open? end)
+      status_data[:flags][:editable] = true if status_data[:access] == actor_name and (if status_data[:flags][:admin] then true else self.order.open? end)
     end
 
     data

@@ -37,7 +37,9 @@ class OrdersPluginAdminController < MyProfileController
   def edit
     @actor_name = params[:actor_name].to_sym
     @orders_method = if @actor_name == :supplier then :sales else :purchases end
+
     @order = profile.send(@orders_method).find params[:id]
+    return render_access_denied unless @order.verify_actor? profile, @actor_name
     @order.update_attributes params[:order]
 
     respond_to do |format|

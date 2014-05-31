@@ -561,7 +561,7 @@
         to: para
       price_helper: 
         /: /
-        price_unit: "%{price}/%{unit}"
+        price_unit: "%{price}%{unit}"
       report: 
         closed_orders: "Pedidos fechados"
         created: criado
@@ -671,7 +671,7 @@
           edit_on_the_order_pag: "Editar na página de pedidos"
           empty_order: "Pedido vazio"
           include_message: "Incluir uma mensagem"
-          message_to_member: "Mensagem para o(a) consumidor(a)"
+          message_to_actor: "Mensagem para o(a) %{actor}(a)"
           remove_order: "remover pedido"
           save: Salvar
           see_delivery: "veja entrega"

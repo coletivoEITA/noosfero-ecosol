@@ -552,7 +552,7 @@
         to: to
       price_helper: 
         /: /
-        price_unit: "%{price}/%{unit}"
+        price_unit: "%{price}%{unit}"
       report: 
         closed_orders: "Closed Orders"
         created: created
@@ -663,7 +663,7 @@
           edit_on_the_order_pag: "edit on the order page"
           empty_order: "Empty order"
           include_message: "Include message"
-          message_to_member: "message to the consumer"
+          message_to_actor: "message to the %{actor}"
           remove_order: "remove order"
           save: Save
           see_delivery: "see delivery"

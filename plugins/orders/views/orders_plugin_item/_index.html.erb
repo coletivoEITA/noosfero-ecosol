@@ -27,7 +27,8 @@
     </div>
 
     <div class="order-total">
-      <%= render 'orders_plugin_order/total', :order => order %>
+      <div class="title"><%= t('orders_plugin.views.consumer._total.total') %></div>
+      <div class="value"><%= price_span order.total_price_as_currency_number actor_name %></div>
     </div>
   <% else %>
     <%= t('orders_plugin.views.item._index.empty_order') %>
