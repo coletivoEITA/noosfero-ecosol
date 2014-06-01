@@ -1,7 +1,3 @@
-# workaround for plugins' class scope problem
-require_dependency 'orders_cycle_plugin/display_helper'
-OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
-
 class OrdersCyclePluginItemController < OrdersPluginItemController
 
   no_design_blocks

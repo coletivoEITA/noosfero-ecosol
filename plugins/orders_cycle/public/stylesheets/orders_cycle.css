@@ -1233,11 +1233,11 @@
       color: black; }
 #orders-view .consumer-orders .order-message-title {
   float: left; }
-#orders-view .cycle-with-consumer-orders:last-child {
-  border-bottom: 2px dotted #aaa; }
 #orders-view .cycle-with-consumer-orders {
   padding-bottom: 10px;
   border-top: 2px dotted #aaa; }
+  #orders-view .cycle-with-consumer-orders:last-child {
+    border-bottom: 2px dotted #aaa; }
 #orders-view .consumer-orders > a {
   float: left; }
 #orders-view .consumer-orders a {

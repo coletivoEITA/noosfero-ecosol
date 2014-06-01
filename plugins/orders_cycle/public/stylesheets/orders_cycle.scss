@@ -428,23 +428,27 @@
     }
   }
 
-  .cycle-with-consumer-orders:last-child {
-    border-bottom: 2px dotted #aaa;
-  }
   .cycle-with-consumer-orders {
     padding-bottom: 10px;
     border-top: 2px dotted #aaa;
+
+    &:last-child {
+      border-bottom: 2px dotted #aaa;
+    }
   }
 
-  .consumer-orders > a {
-    float: left;
-  }
-  .consumer-orders a {
-    text-decoration: none;
-  }
-  .consumer-orders a div {
-    font-size: 10px;
-    color: black;
+  .consumer-orders {
+
+    > a {
+      float: left;
+    }
+    a {
+      text-decoration: none;
+    }
+    a div {
+      font-size: 10px;
+      color: black;
+    }
   }
 }
 

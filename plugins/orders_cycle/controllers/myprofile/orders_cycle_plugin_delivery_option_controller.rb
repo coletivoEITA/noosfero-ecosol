@@ -1,7 +1,5 @@
-# workaround for plugins' class scope problem
-OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
-
-require_dependency 'delivery_plugin' #necessary to load extensions
+# workaround: necessary to load extensions
+require_dependency 'delivery_plugin'
 
 class OrdersCyclePluginDeliveryOptionController < DeliveryPluginOptionController
 

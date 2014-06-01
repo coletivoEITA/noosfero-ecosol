@@ -1,7 +1,3 @@
-# workaround for plugin class scope problem
-require_dependency 'orders_plugin/display_helper'
-OrdersPlugin::OrdersDisplayHelper = OrdersPlugin::DisplayHelper
-
 class OrdersPluginItemController < MyProfileController
 
   include OrdersPlugin::TranslationHelper

@@ -58,3 +58,9 @@ class NetworksPlugin < Noosfero::Plugin
 
 end
 
+# workaround for plugins classes scope problem
+require 'networks_plugin/display_helper'
+NetworksPlugin::NetworksDisplayHelper = NetworksPlugin::DisplayHelper
+require 'networks_plugin/search_helper'
+NetworksPlugin::NetworksSearchHelper = NetworksPlugin::SearchHelper
+

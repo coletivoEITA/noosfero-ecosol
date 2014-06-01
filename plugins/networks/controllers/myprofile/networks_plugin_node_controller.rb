@@ -1,7 +1,3 @@
-# workaround for plugins classes scope problem
-require_dependency 'networks_plugin/display_helper'
-NetworksPlugin::NetworksDisplayHelper = NetworksPlugin::DisplayHelper
-
 class NetworksPluginNodeController < MyProfileController
 
   include NetworksPlugin::TranslationHelper

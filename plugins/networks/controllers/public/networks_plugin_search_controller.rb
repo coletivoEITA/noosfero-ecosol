@@ -1,7 +1,3 @@
-# workaround for plugins' scope problem
-require 'networks_plugin/search_helper'
-NetworksPlugin::NetworksSearchHelper = NetworksPlugin::SearchHelper
-
 class NetworksPluginSearchController < SearchController
 
   # FIXME: should be necessary again

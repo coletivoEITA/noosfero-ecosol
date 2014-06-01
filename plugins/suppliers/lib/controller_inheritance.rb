@@ -48,7 +48,7 @@ module ControllerInheritance
         controller.send :each_template_with_hmvc do |klass|
           begin
             self.view_paths.find_template "#{klass.controller_path}/_#{partial_path}", self.template_format
-          rescue ::ActionView::MissingTemplate
+          rescue ::ActionView::MissingTemplate => e
             raise "Can't find '#{partial_path}' partial in any #{controller.class}'s parent" unless (klass.inherit_templates rescue nil)
           end
         end
