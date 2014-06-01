@@ -160,8 +160,9 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
 
   def next_status actor_name
     # if no status was found go to the first (-1 to 0)
-    current_index = StatusesByActor[actor_name].index(self.status) || -1
-    StatusesByActor[actor_name][current_index + 1]
+    current_index = Statuses.index(self.status) || -1
+    next_status = Statuses[current_index + 1]
+    next_status if StatusesByActor[actor_name].index next_status
   end
 
   def step actor_name
