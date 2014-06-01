@@ -19,7 +19,7 @@
         <%= link_to cycle.name, {:action => :edit, :cycle_id => cycle.id} %>
       </h3>
 
-      <%= render :partial => 'orders_cycle_plugin_cycle/view_dates', :locals => {:cycle => cycle} %>
+      <%= render 'orders_cycle_plugin_cycle/view_dates', :cycle => cycle %>
 
       <% orders = cycle.sales.not_cancelled.for_consumer @consumer %>
       <% if orders.count > 0 %>
@@ -28,7 +28,7 @@
           <div class="consumer-orders">
             <% orders.each do |order| %>
               <a href="<%= url_for :action => :edit, :id => order.id %>">
-                <%= render :partial => 'status', :locals => {:order => order} %>
+                <%= render 'status', :order => order %>
               </a>
             <% end %>
             <div class="clean"></div>
