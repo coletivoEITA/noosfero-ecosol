@@ -251,6 +251,7 @@
           plural: "a elas"
         to_article:
           singular: "a organização"
+          plural: "às organizações"
         at_article:
           singular: "na organização"
         from:
@@ -273,6 +274,9 @@
       consumer: 
         singular: "consumidor"
         plural: "consumidores"
+        to_article:
+          singular: "ao(à) consumidor(a)"
+          plural: "aos(às) consumidores(as)"
         from_article: 
           singular: "do(a) consumidor(a)"
           plural: "dos(as) consumidores(as)"
@@ -933,7 +937,13 @@
           the_orders_period_is_: "O período de pedidos está ainda aberto, tome cuidado ao editar os pedidos abertos. Isso pode confundir os usuários."
           already_closed: "O período de pedidos já foi fechado, Não é possível editar os pedidos originais. Na fase de redistribuição é possível editar o pedido, e também antes da entrega."
         _purchases:
-          header_help: "Nesta etapa são recebidos os pedidos %{terms.consumer.from_article.plural}, e é possível supervisioná-los se por acaso existe algum erro mais grave."
+          header_help: "Nesta etapa, com base nos pedidos recebidos, são feitas as compras de cada um dos fornecedores para suprir a demanda de todos os pedidos."
+        _receipts:
+          header_help: "Nesta etapa são registradas os recebimentos das compras e são editadas quaisquer discrepâncias que possam existir."
+        _separation:
+          header_help: "Nesta etapa cada pedido é separado de acordo com a disponibilidade dos produtos encomendados que chegaram."
+        _delivery:
+          header_help: "Nesta etapa são registradas as entregas %{terms.consumer.to_article.plural}. Este é o momento de registrar as mudanças em relação ao que foi separado."
         _product_lines: 
           category: Categoria
           price: Preço
@@ -945,11 +955,10 @@
           no_cycles_to_show: "Sem ciclos a mostrar"
         _timeline: 
           are_you_sure_you_want_to_reopen: "Tem certeza de que deseja reabrir o ciclo de pedidos?"
-          are_you_sure_you_want_to_close: "Tem certeza de que deseja fechar o ciclo de pedidos?"
+          are_you_sure_you_want_to_close: "Tem certeza de que deseja encerrar a etapa %{status}?"
           call: Call
           close: Fechar
-          block_orders_period: "Finalizar período de pedidos"
-          close_orders_period: "Fechar ciclo de pedidos"
+          close_status: "Encerrar %{status}"
           finish_cycle_editing: "Abrir pedidos do ciclo"
           reopen_orders_period: "Reabrir ciclo de pedidos"
         _title: 

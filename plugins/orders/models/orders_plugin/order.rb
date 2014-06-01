@@ -164,6 +164,14 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     StatusesByActor[actor_name][current_index + 1]
   end
 
+  def step actor_name
+    new_status = self.next_status actor_name
+    self.status = new_status if new_status
+  end
+  def step! actor_name
+    self.save! if self.step actor_name
+  end
+
   def situation
     current_index = UserStatuses.index self.current_status || 0
     statuses = []

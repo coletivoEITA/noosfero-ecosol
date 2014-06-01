@@ -81,7 +81,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     @cycle.step_back
     @cycle.save!
-    redirect_to :action => 'edit', :id => @cycle.id
+    redirect_to :action => :edit, :id => @cycle.id
   end
 
   def add_missing_products

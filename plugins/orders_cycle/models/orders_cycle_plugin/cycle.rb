@@ -4,6 +4,23 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   DbStatuses = %w[new] + Statuses
   UserStatuses = Statuses
 
+  StatusActorMap = ActiveSupport::OrderedHash[
+    'edition', :supplier,
+    'orders', :supplier,
+    'purchases', :consumer,
+    'receipts', :consumer,
+    'separation', :supplier,
+    'delivery', :supplier,
+    'closing', :supplier,
+  ]
+  OrderStatusMap = ActiveSupport::OrderedHash[
+    'orders', :ordered,
+    'purchases', :draft,
+    'receipts', :ordered,
+    'separation', :accepted,
+    'delivery', :separated,
+  ]
+
   belongs_to :profile
 
   has_many :delivery_options, :class_name => 'DeliveryPlugin::Option', :dependent => :destroy,
@@ -79,6 +96,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   validate :validate_delivery_dates, :if => :not_new?
 
   before_validation :step_new
+  before_validation :check_status
   after_save :add_products_on_edition_state
   before_create :delay_purge_defuncts
 
@@ -191,6 +209,19 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
       @was_new = true
       self.step
     end
+  end
+
+  def check_status
+    # done at #step_new
+    return if self.new?
+
+    # step orders to next_status on status change
+    return if self.status_was.blank?
+    return unless order_status = OrderStatusMap[self.status_was]
+    actor_name = StatusActorMap[self.status_was]
+    orders_method = if actor_name == :supplier then :sales else :purchases end
+    orders = self.send(orders_method).where(:status => order_status.to_s)
+    orders.each{ |order| order.step! actor_name }
   end
 
   def not_new?

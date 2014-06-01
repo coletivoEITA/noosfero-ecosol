@@ -3,6 +3,18 @@ require_dependency 'noosfero/plugin/active_record'
 
 class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
+  # should be Order, but can't reference it here so it would create a cyclic reference
+  StatusAccessMap = ActiveSupport::OrderedHash[
+    'ordered', :consumer,
+    'accepted', :supplier,
+    'separated', :supplier,
+    'delivered', :supplier,
+    'received', :consumer,
+  ]
+  StatusDataMap = {}; StatusAccessMap.each do |status, access|
+    StatusDataMap[status] = "#{access}_#{status}"
+  end
+
   serialize :data
 
   belongs_to :order, :class_name => 'OrdersPlugin::Order', :touch => true
@@ -27,18 +39,6 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
   before_save :save_calculated_prices
   before_create :sync_fields
-
-  # should be Order, but the can't reference it here so it would create a cyclic reference
-  StatusAccessMap = ActiveSupport::OrderedHash[
-    'ordered', :consumer,
-    'accepted', :supplier,
-    'separated', :supplier,
-    'delivered', :supplier,
-    'received', :consumer,
-  ]
-  StatusDataMap = {}; StatusAccessMap.each do |status, access|
-    StatusDataMap[status] = "#{access}_#{status}"
-  end
 
   # utility for other classes
   DefineTotals = proc do

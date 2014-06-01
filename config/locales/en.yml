@@ -241,6 +241,7 @@
           plural: "to them"
         to_article:
           singular: "to the organization"
+          plural: "to the organizations"
         at_article:
           singular: "at the organization"
         from:
@@ -265,6 +266,9 @@
       consumer: 
         singular: "consumer"
         plural: "consumers"
+        to_article:
+          singular: "to the consumer"
+          plural: "to the consumers"
         from_article: 
           singular: "from consumer"
           plural: "from consumers"
@@ -928,7 +932,13 @@
           the_orders_period_is_: "The orders period is still on, take care to edit the orders already open, it may confuse the users"
           already_closed: "The orders period was already closed, It's not possible to edit the originals orders. In the redistribution phase it is possible to edit the order, before the delivery it also possible to edit this order."
         _purchases:
-          header_help: "In this phase the orders %{terms.consumer.from_article.plural} are received, and it is possible supervise them if by chance there is some more severe error."
+          header_help: "In this phase, using the received orders, the purchases for each supplier are done to supply the demand of all orders."
+        _receipts:
+          header_help: "In this phase are registered the receipts of the purchases e are edited any errors that may exist."
+        _separation:
+          header_help: "In this phase each order é separated acording to the availability of the products purchased that arrived."
+        _delivery:
+          header_help: "In this phase are registered the deliveries %{terms.consumer.to_article.plural}. This is the moment to register the changes in relation to what was separated."
         _product_lines: 
           category: Category
           price: Price
@@ -943,8 +953,7 @@
           are_you_sure_you_want_to_close: "Are you sure you want to close the orders cycle?"
           call: Call
           close: Close
-          block_orders_period: "Block orders period"
-          close_orders_period: "Close orders period"
+          close_status: "Close %{status}"
           finish_cycle_editing: "Open orders for cycle"
           reopen_orders_period: "Reopen orders period"
         _title: 
