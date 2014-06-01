@@ -48,8 +48,8 @@ module ControllerInheritance
         controller.send :each_template_with_hmvc do |klass|
           begin
             self.view_paths.find_template "#{klass.controller_path}/_#{partial_path}", self.template_format
-          rescue ::ActionView::MissingTemplate
-            raise "Can't find '#{partial_path}' in any #{controller.class}'s parent" unless (klass.inherit_templates rescue nil)
+          rescue ::ActionView::MissingTemplate => e
+            raise "Can't find '#{partial_path}' partial in any #{controller.class}'s parent" unless (klass.inherit_templates rescue nil)
           end
         end
       else
@@ -77,7 +77,8 @@ module ControllerInheritance
     end
 
     def default_template action_name = self.action_name
-      @template_html_fallback = request.format == :html if @template_html_fallback.nil?
+      @template_html_fallback = request.format == :all or request.format == :html if @template_html_fallback.nil?
+
       self.each_template_with_hmvc do |klass|
         begin
           self.view_paths.find_template "#{klass.controller_path}/#{action_name}", default_template_format, @template_html_fallback

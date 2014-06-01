@@ -26,6 +26,7 @@
         border-bottom: 0;
       }
     }
+
     .subtitle {
       display: block;
       margin-top: 20px;
@@ -236,7 +237,7 @@
   }
 
   #cycle-products {
-    margin-top: 40px;
+    margin-top: $margin;
 
     .cycle-products-table {
       @extend .box-align;
@@ -298,6 +299,69 @@
 }
 
 
+.cycle {
+
+  .h2 {
+    margin-bottom: 0;
+  }
+
+  .cycle-timeline {
+    border: 2*$border solid #CBCBCB;
+    margin-bottom: $margin;
+    @extend .container-clean;
+
+    //wireframe size
+    width: $wireframe - 2*(2*$border);
+    margin-left: -$wireframe-padding;
+    padding: 0 $wireframe-padding;
+
+    &,
+    .cycle-timeline-passed-item,
+    .cycle-timeline-current-item {
+      background: url(/plugins/orders_cycle/images/progressbar.png) left top no-repeat;
+    }
+    & {
+      background-size: $wireframe-padding $wireframe-padding*2; //height is arbitrary big to fit
+    }
+
+    .cycle-timeline-item {
+      float: left;
+      padding: $padding;
+      font-weight: bold;
+
+      &:first-child {
+        padding-left: 0;
+      }
+    }
+
+    .cycle-timeline-current-item {
+      background-position: 105% 0;
+    }
+    .cycle-timeline-next-item {
+      color: #BABABA;
+    }
+    .cycle-timeline-selected-item {
+      color: black;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+  }
+
+  .dates-brief {
+    margin-bottom: 2*$margin;
+  }
+
+  .actions-bar {
+    clear: both;
+  }
+}
+
+
+.cycle-product-line *[disabled] {
+  background-color: transparent;
+}
+
 #cycle-dates th {
   width: 80px;
   vertical-align: top;
@@ -314,85 +378,125 @@
   .cycle-name-and-code {
     font-weight: bold;
   }
-
-  .cycle-timeline {
-    @extend .box-align;
-    border: none;
-    font-size: 10px;
-    margin-left: 0;
-    margin-bottom: 0;
-
-    .actions-bar {
-      display: none;
-    }
-    .cycle-timeline-item {
-      padding: 1px 10px;
-    }
-    .cycle-timeline-citem {
-      display: none;
-    }
-    .cycle-timeline-selected-item {
-      text-decoration: underline;
-    }
-  }
-
-  .cycle-date {
-    float: left;
-    width: 270px;
-    font-size: 10px;
-    line-height: 23px;
-  }
-
 }
 
-.cycle-timeline {
-  border: 1px solid #FEC64D;
-  margin-bottom: 20px;
-  padding-left: 0;
+#orders-view {
 
-  .cycle-timeline-item {
-    float: left;
-    padding: 8px 10px;
+  h2 {
+    margin-top: 20px;
   }
-  .cycle-timeline-citem {
+
+  .consumer-orders {
+
+    #cycle-others {
+      border-bottom: 2px dotted #aaa;
+    }
+    #consumer-new-order {
+      font-weight: bold;
+    }
+
+    #order-place-new {
+      font-size: 10px;
+      border: $border solid #FFF0AD;
+      padding: $padding;
+      margin-bottom: 10px;
+
+      &.admin {
+        font-size: 12px;
+        border: none;
+        float: right;
+        padding: $padding 0;
+        text-transform: lower;
+      }
+    }
+
+    #years-filter {
+      margin-bottom: $margin;
+
+      a {
+        font-weight: bold;
+
+        &.current {
+          text-decoration: none;
+          color: black;
+        }
+      }
+    }
+
+    .order-message-title {
+      float: left;
+    }
+  }
+
+  .cycle-with-consumer-orders {
+    padding-bottom: 10px;
+    border-top: 2px dotted #aaa;
+
+    &:last-child {
+      border-bottom: 2px dotted #aaa;
+    }
+  }
+
+  .consumer-orders {
+
+    > a {
+      float: left;
+    }
+    a {
+      text-decoration: none;
+    }
+    a div {
+      font-size: 10px;
+      color: black;
+    }
+  }
+}
+
+.order-message-title {
+  padding: $half-padding $padding;
+  margin-right: $half-margin;
+  font-size: 13px;
+  font-weight: bold;
+  @extend .container-clean;
+
+  div {
+    float: left;
+    background-size: 11px 30px;
+  }
+
+  a.open {
+    display: none;
+    float: right;
+    font-weight: normal;
+  }
+
+  &.open {
+    background-color: #FFF2A3;
+    div {
+      padding-left: 20px;
+      background: url(/plugins/orders_cycle/images/order-statuses.png) 0px -25px no-repeat;
+      padding-left: 24px;
+      margin-bottom: 0;
+    }
+  }
+
+  &.ordered {
+    background-color: #E1F5C4;
+    div {
+      background: url(/plugins/orders_cycle/images/order-statuses.png) left -2px no-repeat;
+      padding-left: 24px;
+    }
+  }
+
+  &.cancelled {
     display: none;
   }
-  .cycle-timeline-selected-item {
-    color: black;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  .cycle-timeline-passed-item,
-  .cycle-timeline-current-item {
-    background: url(/plugins/orders_cycle/images/progressbar.png) left top no-repeat;
-  }
-  .cycle-timeline-current-item {
-    background-position: 103% 0;
-  }
-  .cycle-timeline .actions-bar a {
-    font-weight: bold;
-  }
 
-  .actions-bar {
-    background-color: #FEC64D;
-    padding: 6px 8px;
-    clear: both;
-
-    a {
-      float: left;
-      margin-right: 10px;
-    }
-    strong {
-      float: right;
-    }
+  &.cancelled,
+  &.forgotten {
+    background-color: #FECBCA;
   }
-
 }
-
-.cycle-product-line *[disabled] {
-  background-color: transparent;
-}
-
 
 #cycles-gadget {
   margin-bottom: 30px;
@@ -494,7 +598,7 @@
 }
 
 #consumers-coop-plugin-add-delivery {
-  
+
   select {
     height: 130px;
     padding: 0;
@@ -545,21 +649,6 @@
   input {
     text-align: left;
   }
-}
-
-// disable find-enterprise for now
-.consumers-coop #supplier-add {
-
-  #create-dummy {
-    display: block;
-    .box-edit {
-      display: block;
-    }
-  }
-  #find-enterprise {
-    display: none
-  }
-
 }
 
 #cycle-orders {

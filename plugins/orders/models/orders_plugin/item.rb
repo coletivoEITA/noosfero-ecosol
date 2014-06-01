@@ -3,6 +3,18 @@ require_dependency 'noosfero/plugin/active_record'
 
 class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
+  # should be Order, but can't reference it here so it would create a cyclic reference
+  StatusAccessMap = ActiveSupport::OrderedHash[
+    'ordered', :consumer,
+    'accepted', :supplier,
+    'separated', :supplier,
+    'delivered', :supplier,
+    'received', :consumer,
+  ]
+  StatusDataMap = {}; StatusAccessMap.each do |status, access|
+    StatusDataMap[status] = "#{access}_#{status}"
+  end
+
   serialize :data
 
   belongs_to :order, :class_name => 'OrdersPlugin::Order', :touch => true
@@ -27,17 +39,6 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
   before_save :save_calculated_prices
   before_create :sync_fields
-
-  StatusAccessMap = {
-    'ordered' => :consumer,
-    'accepted' => :supplier,
-    'separated' => :supplier,
-    'delivered' => :supplier,
-    'received' => :consumer,
-  }
-  StatusDataMap = {}; StatusAccessMap.each do |status, access|
-    StatusDataMap[status] = "#{access}_#{status}"
-  end
 
   # utility for other classes
   DefineTotals = proc do
@@ -114,20 +115,19 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     end
   end
 
-  def quantity_price_data actor_name = :consumer, admin = false
+  def quantity_price_data actor_name
     data = ActiveSupport::OrderedHash.new
     statuses = OrdersPlugin::Order::Statuses
 
-    order_status = self.order.status
-    current = statuses.index(status) || 0
-    order_next_status = statuses[current + 1]
-
-    goto_next = actor_name == OrdersPlugin::Item::StatusAccessMap[order_next_status]
+    current = statuses.index(self.order.status) || 0
+    next_status = self.order.next_status actor_name
+    next_index = statuses.index(next_status) || current + 1
+    goto_next = actor_name == StatusAccessMap[next_status]
 
     # Fetch data
     statuses.each_with_index do |status, i|
-      data_field = OrdersPlugin::Item::StatusDataMap[status]
-      access = OrdersPlugin::Item::StatusAccessMap[status]
+      data_field = StatusDataMap[status]
+      access = StatusAccessMap[status]
 
       status_data = data[status] = {
         :flags => {},
@@ -145,11 +145,11 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
       if i == current
         status_data[:flags][:current] = true
-      elsif i > current
+      elsif i == next_index and goto_next
         status_data[:flags][:admin] = true
       end
 
-      break if (if goto_next then i > current else i == current end)
+      break if (if goto_next then i == next_index else i < next_index end)
     end
 
     # Set flags according to past/future data
@@ -179,7 +179,7 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
     # Set access
     data.each_with_index do |(status, status_data), i|
-      status_data[:flags][:editable] = true if status_data[:access] == actor_name and (if admin then status_data[:flags][:admin] else self.order.open? end)
+      status_data[:flags][:editable] = true if status_data[:access] == actor_name and (status_data[:flags][:admin] or self.order.open?)
     end
 
     data

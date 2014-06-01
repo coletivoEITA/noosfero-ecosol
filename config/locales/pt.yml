@@ -251,6 +251,7 @@
           plural: "a elas"
         to_article:
           singular: "a organização"
+          plural: "às organizações"
         at_article:
           singular: "na organização"
         from:
@@ -273,6 +274,12 @@
       consumer: 
         singular: "consumidor"
         plural: "consumidores"
+        to_article:
+          singular: "ao(à) consumidor(a)"
+          plural: "aos(às) consumidores(as)"
+        from_article: 
+          singular: "do(a) consumidor(a)"
+          plural: "dos(as) consumidores(as)"
       supplier:
         singular: "fornecedor"
         plural: "fornecedores"
@@ -561,7 +568,7 @@
         to: para
       price_helper: 
         /: /
-        price_unit: "%{price}/%{unit}"
+        price_unit: "%{price}%{unit}"
       report: 
         closed_orders: "Pedidos fechados"
         created: criado
@@ -623,6 +630,10 @@
           separated: "Separar"
           delivered: "Entregar"
           received: "Receber"
+    helpers:
+      help:
+        hide: "esconder ajuda"
+        show: "mostrar ajuda"
     views:
       filter:
         <<: *suppliers_plugin_filter
@@ -638,8 +649,7 @@
           submit: 'OK'
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
         _index: 
-          header: "Compra %{profile_code} - %{profile} / Venda - %{consumer}"
-          header_for_self_supplier: "Código: %{profile_code} / Consumidor(a) - %{consumer}"
+          header: "Compra %{profile_code} - %{profile} / Venda %{consumer}"
           empty_order: "Pedido vazio"
           supplier: "%{terms.supplier.singular}"
           product: "produto"
@@ -671,7 +681,7 @@
           edit_on_the_order_pag: "Editar na página de pedidos"
           empty_order: "Pedido vazio"
           include_message: "Incluir uma mensagem"
-          message_to_member: "Mensagem para o(a) consumidor(a)"
+          message_to_actor: "Mensagem para o(a) %{actor}(a)"
           remove_order: "remover pedido"
           save: Salvar
           see_delivery: "veja entrega"
@@ -738,6 +748,14 @@
         delivery_period_befor: "Período de entrega antes do período de pedidos"
         invalid_delivery_peri: "Período de entrega inválido"
         invalid_orders_period: "Período de pedidos inválido"
+        statuses:
+          edition: Edição
+          orders: Pedidos
+          purchases: Compras
+          receipts: Recebimentos
+          separation: Separação
+          delivery: Entrega
+          closing: Fechamento
     views: 
       gadgets: 
         _cycle: 
@@ -903,6 +921,7 @@
           opening_message: "Mensagem de abertura"
           orders_interval: "Intervalo dos Pedidos"
           save: Salvar
+          save_and_open_orders: Salvar e abrir pedidos
           this_message_will_be_: "Esta mensagem será mandada por email aos(às) consumidores(as) %{terms.profile.from_article.singular}"
         _edit_popin: 
           close: Fechar
@@ -915,24 +934,17 @@
           the_following_list_of: "A seguinte lista de produtos está disponível neste ciclo."
           the_products: "Os produtos"
         _orders: 
-          cancelled_orders_coun: "Pedidos cancelados (%{count})"
-          closed_orders_count: "Pedidos fechados (%{count})"
-          open_orders_count: "Pedidos abertos (%{count})"
+          header_help: "Nesta etapa são recebidos os pedidos %{terms.consumer.from_article.plural}, e é possível supervisioná-los se por acaso existe algum erro mais grave."
           the_orders_period_is_: "O período de pedidos está ainda aberto, tome cuidado ao editar os pedidos abertos. Isso pode confundir os usuários."
           already_closed: "O período de pedidos já foi fechado, Não é possível editar os pedidos originais. Na fase de redistribuição é possível editar o pedido, e também antes da entrega."
-        _orders_suppliers: 
-          actions: Ações
-          do_prelimary_parcel: "fazer encomenda preliminar"
-          forecast_parcel: "Encomenda prevista"
-          forecast_value: "Valor previsto"
-          message_to_the_suppli: "Mensagem %{terms.supplier.to_article.singular}"
-          no_product_ordered: "Sem produtos pedidos."
-          product: Produto
-          products_totals: "Total dos produtos"
-          sell_value: "Valor vendido"
-          total_asked: "Total pago"
-          totals: Totals
-          unit: Unidade
+        _purchases:
+          header_help: "Nesta etapa, com base nos pedidos recebidos, são feitas as compras de cada um dos fornecedores para suprir a demanda de todos os pedidos."
+        _receipts:
+          header_help: "Nesta etapa são registradas os recebimentos das compras e são editadas quaisquer discrepâncias que possam existir."
+        _separation:
+          header_help: "Nesta etapa cada pedido é separado de acordo com a disponibilidade dos produtos encomendados que chegaram."
+        _delivery:
+          header_help: "Nesta etapa são registradas as entregas %{terms.consumer.to_article.plural}. Este é o momento de registrar as mudanças em relação ao que foi separado."
         _product_lines: 
           category: Categoria
           price: Preço
@@ -943,19 +955,12 @@
         _results: 
           no_cycles_to_show: "Sem ciclos a mostrar"
         _timeline: 
-          actions: Ações
           are_you_sure_you_want_to_reopen: "Tem certeza de que deseja reabrir o ciclo de pedidos?"
-          are_you_sure_you_want_to_close: "Tem certeza de que deseja fechar o ciclo de pedidos?"
-          block_orders_period: "Finalizar período de pedidos"
+          are_you_sure_you_want_to_close: "Tem certeza de que deseja encerrar a etapa %{status}?"
           call: Call
           close: Fechar
-          close_orders_period: "Fechar ciclo de pedidos"
-          delivery: Entrega
-          edition: Edição
+          close_status: "Encerrar %{status}"
           finish_cycle_editing: "Abrir pedidos do ciclo"
-          orders: Pedidos
-          purchases: Compras
-          redistribution: Redistribuição
           reopen_orders_period: "Reabrir ciclo de pedidos"
         _title: 
           new_cycle: "Novo ciclo"
@@ -989,7 +994,7 @@
           filter: Filtro
           new_cycle: "Novo ciclo"
           no_cycles_to_show: "Sem ciclos a mostrar"
-          open_cycles: "Pedidos Abertos"
+          open_cycles: "Ciclos de pedidos Abertos"
           orders_cycles: "Ciclo de pedidos"
           show_cycles_from_year: "Mostre os ciclos do ano"
 
@@ -1049,6 +1054,7 @@
           orders_cycles: "Ciclo de pedidos"
           products: Produtos
           suppliers: "%{terms.supplier.plural.capitalize}"
+          settings: "Configuração"
         _header: 
           collective_consumptio: "Rede de Grupos de Consumo Responsável"
       profile:

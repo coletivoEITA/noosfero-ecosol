@@ -1446,11 +1446,11 @@
     .order-items-container .order-total .value {
       clear: both; }
   .order-items-container .order-items.self-supplier .box-field.product {
-    width: 376px;
-    max-width: 376px; }
+    width: 216px;
+    max-width: 216px; }
   .order-items-container .order-items.self-supplier .box-field.quantity, .order-items-container .order-items.self-supplier .box-field.quantity input {
-    width: 144px;
-    max-width: 144px; }
+    width: 136px;
+    max-width: 136px; }
   .order-items-container .order-items .box-field {
     float: left;
     padding: 4px 8px;
@@ -1475,7 +1475,7 @@
       width: 64px;
       max-width: 64px; }
     .order-items-container .order-items .box-field.status {
-      width: 64px;
+      width: 63px;
       text-transform: uppercase; }
   .order-items-container .table-header, .order-items-container .table-content {
     border-bottom: 1px solid black; }
@@ -1511,12 +1511,14 @@
   .order-items-container .table-content .item.edit .fields .box-field {
     border-right: none;
     padding-right: 8px; }
-  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.not_modified, .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.empty {
-    display: initial; }
-  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.editable .value {
-    display: none; }
-  .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row .quantity input {
-    display: initial; }
+  .order-items-container .table-content .item.edit .fields .quantity-price-table {
+    padding-right: 0; }
+    .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.not_modified, .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.empty {
+      display: initial; }
+    .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row.editable .value {
+      display: none; }
+    .order-items-container .table-content .item.edit .fields .quantity-price-table .quantity-price-row .quantity input {
+      display: initial; }
   .order-items-container .table-content .item.edit .more {
     display: block; }
   .order-items-container .table-content .item .more {
@@ -1537,40 +1539,44 @@
 .controller-profile_editor .msie6 a.control-panel-orders-purchases-sales {
   background-image: url("/plugins/orders/images/control-panel/purchases-sales.gif"); }
 
-.orders-admin-index.sortable-table > .table-header .box-field {
-  text-transform: none; }
-.orders-admin-index.sortable-table .box-field.code {
-  width: 64px; }
-.orders-admin-index.sortable-table .box-field.actor-name {
-  width: 304px; }
-.orders-admin-index.sortable-table .box-field.order-date {
-  width: 144px; }
-.orders-admin-index.sortable-table .box-field.last-update {
-  width: 144px; }
-.orders-admin-index.sortable-table .box-field.total {
-  width: 64px; }
-.orders-admin-index.sortable-table .box-field.situation {
-  width: 144px; }
-.orders-admin-index .order.value-row .box-edit {
-  padding-top: 8px; }
-  .orders-admin-index .order.value-row .box-edit .empty-order {
-    text-align: center;
-    margin-bottom: 8px; }
-.orders-admin-index .order.value-row.edit {
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
-  margin-top: -1px; }
-  .orders-admin-index .order.value-row.edit .box-edit {
-    display: block; }
-.orders-admin-index .order.draft .box-view .box-field, .orders-admin-index .order.cancelled .box-view .box-field {
-  color: #999; }
-.orders-admin-index .order.cancelled .box-view .box-field {
-  text-decoration: line-through; }
+.orders-admin-index {
+  margin-top: 16px; }
+  .orders-admin-index.sortable-table > .table-header .box-field {
+    text-transform: none; }
+  .orders-admin-index.sortable-table .box-field.code {
+    width: 64px; }
+  .orders-admin-index.sortable-table .box-field.actor-name {
+    width: 304px; }
+  .orders-admin-index.sortable-table .box-field.order-date {
+    width: 144px; }
+  .orders-admin-index.sortable-table .box-field.last-update {
+    width: 144px; }
+  .orders-admin-index.sortable-table .box-field.total {
+    width: 64px; }
+  .orders-admin-index.sortable-table .box-field.situation {
+    width: 144px; }
+  .orders-admin-index .order.value-row .box-edit {
+    padding-top: 8px; }
+    .orders-admin-index .order.value-row .box-edit .empty-order {
+      text-align: center;
+      margin-bottom: 8px; }
+  .orders-admin-index .order.value-row.edit {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    margin-top: -1px; }
+    .orders-admin-index .order.value-row.edit .box-edit {
+      display: block; }
+  .orders-admin-index .order.draft .box-view .box-field, .orders-admin-index .order.cancelled .box-view .box-field {
+    color: #999; }
+  .orders-admin-index .order.cancelled .box-view .box-field {
+    text-decoration: line-through; }
 
 .order-view, .order-view .order-items-scroll, .order-view .order-items, .order-view .item {
   width: 464px; }
-.order-view.admin, .order-view.admin .order-items-scroll, .order-view.admin .order-items, .order-view.admin .item {
+.order-view.admin {
   width: 544px; }
+  .order-view.admin .order-items-scroll, .order-view.admin .order-items, .order-view.admin .item {
+    width: 542px; }
 .order-view .actions {
   margin-top: 16px; }
   .order-view .actions a {

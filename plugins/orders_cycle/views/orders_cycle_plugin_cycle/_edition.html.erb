@@ -1,5 +1,5 @@
-<% if @cycle.passed_by?('edition') %>
-  <%= render :partial => 'header', :object => t('views.cycle._edition.info') %>
+<% if @cycle.passed_by? 'edition' %>
+  <%= render 'title', :title => t('views.cycle._edition.info') %>
 <% end %>
 
 <div id="cycle-fields">

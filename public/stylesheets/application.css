@@ -316,7 +316,7 @@ div.pending-tasks {
   background-color: transparent;
   text-decoration: underline;
 }
-.agenda-item a, a:visited{
+.agenda-item a {
  font-weight: bold;
  color: black;
 }

@@ -1,6 +1,8 @@
-<% orders = @orders unless defined? orders %>
-<% wireframe_size = true if wireframe_size.nil? %>
-<% other_actor_name = if actor_name == :supplier then :consumer else :supplier end %>
+<%
+  orders = @orders unless defined? orders
+  wireframe_size = true if wireframe_size.nil?
+  other_actor_name = if actor_name == :supplier then :consumer else :supplier end
+%>
 
 <div class='orders-admin-index sortable-table checkable <%= "wireframe-size" if wireframe_size %>'>
   <% if orders.count == 0 %>
@@ -19,9 +21,7 @@
 
     <div class='table-content'>
       <% orders.each do |order| %>
-        <div id="order-row-<%=order.id%>" class="order value-row <%=order.status%>" onclick="orders.admin.load_edit(this, '<%= url_for :action => :edit, :id => order.id, :actor_name => actor_name %>')" toggle-edit="orders.admin.toggle_edit();">
-          <%= render 'orders_plugin_admin/order', :order => order, :actor_name => actor_name, :edit => false %>
-        </div>
+        <%= render 'orders_plugin_admin/order', :order => order, :actor_name => actor_name, :edit => false %>
       <% end %>
     </div>
   <% end %>

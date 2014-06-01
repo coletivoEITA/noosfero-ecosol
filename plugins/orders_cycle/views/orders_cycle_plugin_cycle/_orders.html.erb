@@ -1,3 +1,7 @@
+<div class="subtitle">
+  <%= hideable_help_text t('views.cycle._orders.header_help') %>
+</div>
+
 <% if @cycle.orders? or @cycle.passed_by? 'orders' %>
   <% if @cycle.orders? %>
     <% header = t('views.cycle._orders.the_orders_period_is_') %>
@@ -6,6 +10,5 @@
   <% end %>
 <% end %>
 
-<% sales = @cycle.sales.paginate(:per_page => 30, :page => params[:page]) %>
-<%= render 'orders_plugin_admin/sales', :actors => @cycle.consumers, :orders_context => :cycle, :context_id => @cycle.id, :orders => sales %>
+<%= render 'orders_cycle_plugin_cycle/cycle_sales' %>
 

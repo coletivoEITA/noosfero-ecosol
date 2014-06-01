@@ -1,5 +1,26 @@
 class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
+  Statuses = %w[edition orders purchases receipts separation delivery closing]
+  DbStatuses = %w[new] + Statuses
+  UserStatuses = Statuses
+
+  StatusActorMap = ActiveSupport::OrderedHash[
+    'edition', :supplier,
+    'orders', :supplier,
+    'purchases', :consumer,
+    'receipts', :consumer,
+    'separation', :supplier,
+    'delivery', :supplier,
+    'closing', :supplier,
+  ]
+  OrderStatusMap = ActiveSupport::OrderedHash[
+    'orders', :ordered,
+    'purchases', :draft,
+    'receipts', :ordered,
+    'separation', :accepted,
+    'delivery', :separated,
+  ]
+
   belongs_to :profile
 
   has_many :delivery_options, :class_name => 'DeliveryPlugin::Option', :dependent => :destroy,
@@ -35,6 +56,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.profile.orders_cycles }
 
+  # status scopes
   named_scope :defuncts, :conditions => ["status = 'new' AND created_at < ?", 2.days.ago]
   named_scope :not_new, :conditions => ["status <> 'new'"]
   named_scope :open, lambda {
@@ -45,6 +67,9 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     {:conditions => ["NOT ( ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) AND status = 'orders' )",
       {:now => DateTime.now}]}
   }
+  named_scope :by_status, lambda { |status| { :conditions => {:status => status} } }
+  named_scope :open, :conditions => ["status <> 'new' AND status <> 'closing'"]
+  named_scope :closing, :conditions => ["status = 'closing'"]
 
   named_scope :months, :select => 'DISTINCT(EXTRACT(months FROM start)) as month', :order => 'month DESC'
   named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year DESC'
@@ -60,13 +85,6 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
       { :start => range.first, :finish => range.last }
     ]}
   }
-  named_scope :by_status, lambda { |status| { :conditions => {:status => status} } }
-
-  named_scope :status_open, :conditions => ["status <> 'closed'"]
-  named_scope :status_closed, :conditions => ["status = 'closed'"]
-
-  DbStatuses = %w[new edition orders purchases closed]
-  UserStatuses = %w[edition orders purchases]
 
   validates_presence_of :profile
   validates_presence_of :name, :if => :not_new?
@@ -78,6 +96,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   validate :validate_delivery_dates, :if => :not_new?
 
   before_validation :step_new
+  before_validation :check_status
   after_save :add_products_on_edition_state
   before_create :delay_purge_defuncts
 
@@ -96,29 +115,39 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     self.items.sum :price_consumer_ordered
   end
 
+  def status
+    self['status'] = 'closing' if self['status'] == 'closed'
+    self['status']
+  end
+
   def step
     self.status = DbStatuses[DbStatuses.index(self.status)+1]
   end
   def step_back
     self.status = DbStatuses[DbStatuses.index(self.status)-1]
   end
+
   def passed_by? status
-    DbStatuses.index(self.status) > DbStatuses.index(status)
+    DbStatuses.index(self.status) > DbStatuses.index(status) rescue false
   end
+
   def new?
-    status == 'new'
+    self.status == 'new'
+  end
+  def not_new?
+    self.status != 'new'
   end
   def open?
-    !closed?
+    !self.closing?
   end
-  def closed?
-    status == 'closed'
+  def closing?
+    self.status == 'closing'
   end
   def edition?
-    status == 'edition'
+    self.status == 'edition'
   end
   def new_or_edition?
-    status == 'new' or status == 'edition'
+    self.status == 'new' or self.status == 'edition'
   end
   def orders?
     now = DateTime.now
@@ -185,8 +214,17 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     end
   end
 
-  def not_new?
-    status != 'new'
+  def check_status
+    # done at #step_new
+    return if self.new?
+
+    # step orders to next_status on status change
+    return if self.status_was.blank?
+    return unless order_status = OrderStatusMap[self.status_was]
+    actor_name = StatusActorMap[self.status_was]
+    orders_method = if actor_name == :supplier then :sales else :purchases end
+    orders = self.send(orders_method).where(:status => order_status.to_s)
+    orders.each{ |order| order.step! actor_name }
   end
 
   def validate_orders_dates

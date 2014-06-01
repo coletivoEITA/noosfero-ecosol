@@ -241,6 +241,7 @@
           plural: "to them"
         to_article:
           singular: "to the organization"
+          plural: "to the organizations"
         at_article:
           singular: "at the organization"
         from:
@@ -265,6 +266,12 @@
       consumer: 
         singular: "consumer"
         plural: "consumers"
+        to_article:
+          singular: "to the consumer"
+          plural: "to the consumers"
+        from_article: 
+          singular: "from consumer"
+          plural: "from consumers"
       supplier:
         singular: "supplier"
         plural: "suppliers"
@@ -552,7 +559,7 @@
         to: to
       price_helper: 
         /: /
-        price_unit: "%{price}/%{unit}"
+        price_unit: "%{price}%{unit}"
       report: 
         closed_orders: "Closed Orders"
         created: created
@@ -614,6 +621,10 @@
           separated: "Separate"
           delivered: "Deliver"
           received: "Receive"
+    helpers:
+      help:
+        hide: "hide help"
+        show: "show help"
     views:
       filter:
         <<: *suppliers_plugin_filter
@@ -630,7 +641,6 @@
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
         _index: 
           header: "Purchase %{profile.code} - %{profile} / Sale - %{consumer}"
-          header_for_self_supplier: "Code: %{profile_code} / Consumer - %{consumer}"
           empty_order: "Empty order"
           supplier: "%{terms.supplier.singular}"
           product: "product"
@@ -663,7 +673,7 @@
           edit_on_the_order_pag: "edit on the order page"
           empty_order: "Empty order"
           include_message: "Include message"
-          message_to_member: "message to the consumer"
+          message_to_actor: "message to the %{actor}"
           remove_order: "remove order"
           save: Save
           see_delivery: "see delivery"
@@ -732,6 +742,14 @@
         delivery_period_befor: "Delivery' period before orders' period"
         invalid_delivery_peri: "Invalid delivery' period"
         invalid_orders_period: "Invalid orders' period"
+        statuses:
+          edition: Edition
+          orders: Orders
+          purchases: Purchases
+          receipts: Receipts
+          separation: Separation
+          delivery: Delivery
+          closing: Closing
     views: 
       gadgets: 
         _cycle: 
@@ -898,6 +916,7 @@
           opening_message: "Opening Message"
           orders_interval: "Orders Interval"
           save: Save
+          save_and_open_orders: Save and open orders
           this_message_will_be_: "This message will be sent by mail for the consumers %{terms.profile.from_article.singular} "
         _edit_popin: 
           close: Close
@@ -910,21 +929,17 @@
           the_following_list_of: "The following list of products are available in this cycle."
           the_products: "The products"
         _orders: 
+          header_help: "In this phase the orders %{terms.consumer.from_article.plural} are received, and it is possible supervise them if by chance there is some more severe error."
           the_orders_period_is_: "The orders period is still on, take care to edit the orders already open, it may confuse the users"
           already_closed: "The orders period was already closed, It's not possible to edit the originals orders. In the redistribution phase it is possible to edit the order, before the delivery it also possible to edit this order."
-        _orders_suppliers: 
-          actions: Actions
-          do_prelimary_parcel: "do prelimary parcel"
-          forecast_parcel: "Forecast parcel"
-          forecast_value: "Forecast value"
-          message_to_the_suppli: "message %{terms.supplier.to_article.singular}"
-          no_product_ordered: "No product ordered"
-          product: Product
-          products_totals: "Products' totals"
-          sell_value: "Sell value"
-          total_asked: "Total asked"
-          totals: Totals
-          unit: Unit
+        _purchases:
+          header_help: "In this phase, using the received orders, the purchases for each supplier are done to supply the demand of all orders."
+        _receipts:
+          header_help: "In this phase are registered the receipts of the purchases e are edited any errors that may exist."
+        _separation:
+          header_help: "In this phase each order é separated acording to the availability of the products purchased that arrived."
+        _delivery:
+          header_help: "In this phase are registered the deliveries %{terms.consumer.to_article.plural}. This is the moment to register the changes in relation to what was separated."
         _product_lines: 
           category: Category
           price: Price
@@ -935,19 +950,12 @@
         _results: 
           no_cycles_to_show: "No cycles to show"
         _timeline: 
-          actions: Actions
           are_you_sure_you_want_to_reopen: "Are you sure you want to reopen the orders cycle?"
           are_you_sure_you_want_to_close: "Are you sure you want to close the orders cycle?"
-          block_orders_period: "Block orders period"
           call: Call
           close: Close
-          close_orders_period: "Close orders period"
-          delivery: Delivery
-          edition: Edition
+          close_status: "Close %{status}"
           finish_cycle_editing: "Open orders for cycle"
-          orders: Orders
-          purchases: Purchases
-          redistribution: Redistribution
           reopen_orders_period: "Reopen orders period"
         _title: 
           new_cycle: "New cycle"
@@ -1041,6 +1049,7 @@
           orders_cycles: "Orders' Cycles"
           products: Products
           suppliers: "%{terms.supplier.plural.capitalize}"
+          settings: "Settings"
         _header: 
           collective_consumptio: "Network of Consumers' Coop"
       profile:

@@ -110,7 +110,7 @@ orders = {
 
 };
 
-
 jQuery(document).ready(function() {
   orders.set_orders_container_max_height();
 });
+

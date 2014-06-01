@@ -13,11 +13,11 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   helper OrdersCyclePlugin::CycleHelper
 
   def index
-    @closed_cycles = search_scope(profile.orders_cycles.status_closed).all
+    @closed_cycles = search_scope(profile.orders_cycles.closing).all
     if request.xhr?
       render :partial => 'results'
     else
-      @open_cycles = profile.orders_cycles.status_open
+      @open_cycles = profile.orders_cycles.open
     end
   end
 
@@ -50,15 +50,12 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
 
     if request.xhr?
       if params[:commit]
+        params[:cycle][:status] = 'orders' if @open = params[:open] == '1'
         @success = @cycle.update_attributes params[:cycle]
+
         if params[:sendmail]
           OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).deliver_open_cycle @cycle.profile,
             @cycle,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message
-        end
-        render :partial => 'edit'
-      else
-        render :update do |page|
-          page.replace_html "cycle-product-lines", :partial => "product_lines"
         end
       end
     end
@@ -81,7 +78,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     @cycle.step_back
     @cycle.save!
-    redirect_to :action => 'edit', :id => @cycle.id
+    redirect_to :action => :edit, :id => @cycle.id
   end
 
   def add_missing_products

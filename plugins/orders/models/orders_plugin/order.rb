@@ -7,6 +7,15 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     StatusText[status] = "orders_plugin.models.order.statuses.#{status}"
   end
 
+  # copy, for easiness. can't be declared to here to avoid cyclic reference
+  StatusDataMap = OrdersPlugin::Item::StatusDataMap
+  StatusAccessMap = OrdersPlugin::Item::StatusAccessMap
+
+  StatusesByActor = {
+    :consumer => StatusAccessMap.map{ |s, a| s if a == :consumer }.compact,
+    :supplier => StatusAccessMap.map{ |s, a| s if a == :supplier }.compact,
+  }
+
   set_table_name :orders_plugin_orders
 
   self.abstract_class = true
@@ -63,10 +72,6 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   before_validation :check_status
   after_save :send_notifications
 
-  def orders_name
-    raise 'undefined'
-  end
-
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => proc{ self.profile.orders }
 
@@ -103,6 +108,14 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     OrdersPlugin::Item.products_by_suppliers orders.collect(&:items).flatten
   end
 
+  def orders_name
+    raise 'undefined'
+  end
+
+  def delivery_methods
+    self.profile.delivery_methods
+  end
+
   # All products from the order profile?
   # FIXME reimplement to be generic for consumer/supplier
   def self_supplier?
@@ -127,6 +140,9 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   def ordered?
     self.ordered_at.present?
   end
+  def pre_order?
+    not self.ordered?
+  end
   alias_method :confirmed?, :ordered?
 
   def status_on? status
@@ -142,9 +158,19 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     I18n.t StatusText[current_status]
   end
 
-  def next_status
-    current_index = Statuses.index(self.status) || 0
-    Statuses[current_index + 1]
+  def next_status actor_name
+    # if no status was found go to the first (-1 to 0)
+    current_index = Statuses.index(self.status) || -1
+    next_status = Statuses[current_index + 1]
+    next_status if StatusesByActor[actor_name].index next_status
+  end
+
+  def step actor_name
+    new_status = self.next_status actor_name
+    self.status = new_status if new_status
+  end
+  def step! actor_name
+    self.save! if self.step actor_name
   end
 
   def situation
@@ -167,6 +193,10 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     @may_edit ||= (admin_action and self.profile.admins.include?(user)) or (self.open? and self.consumer == user)
   end
 
+  def verify_actor? profile, actor_name
+    (actor_name == :supplier and self.profile == profile) or (actor_name == :consumer and self.consumer == profile)
+  end
+
   # ShoppingCart format
   def products_list
     hash = {}; self.items.map do |item|
@@ -187,14 +217,14 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   instance_exec &OrdersPlugin::Item::DefineTotals
 
   # total_price considering last state
-  def total_price admin = false
-    if admin and status = self.next_status
+  def total_price actor_name, admin = false
+    if not self.pre_order? and admin and status = self.next_status(actor_name)
       self.fill_items_data self.status, status
     else
       status = self.status
     end
 
-    data = OrdersPlugin::Item::StatusDataMap[status] || OrdersPlugin::Item::StatusDataMap[Statuses.first]
+    data = StatusDataMap[status] || StatusDataMap[Statuses.first]
     price = "price_#{data}".to_sym
 
     items ||= (self.ordered_items rescue nil) || self.items
@@ -205,14 +235,14 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   def fill_items_data from_status, to_status, save = false
     return if (Statuses.index(to_status) <= Statuses.index(from_status) rescue true)
 
-    from_data = OrdersPlugin::Item::StatusDataMap[from_status]
-    to_data = OrdersPlugin::Item::StatusDataMap[to_status]
+    from_data = StatusDataMap[from_status]
+    to_data = StatusDataMap[to_status]
     return unless from_data.present? and to_data.present?
 
     self.items.each do |item|
       # already filled?
       next if (quantity = item.send("quantity_#{to_data}")).present?
-      item.send "quantity_#{to_data}=", quantity
+      item.send "quantity_#{to_data}=", item.send("quantity_#{from_data}")
       item.send "price_#{to_data}=", item.send("price_#{from_data}")
       item.save if save
     end

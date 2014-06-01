@@ -1,7 +1,3 @@
-# workaround for plugins' scope problem
-require_dependency 'suppliers_plugin/display_helper'
-SuppliersPlugin::SuppliersDisplayHelper = SuppliersPlugin::DisplayHelper
-
 class SuppliersPluginProductController < MyProfileController
 
   include SuppliersPlugin::TranslationHelper

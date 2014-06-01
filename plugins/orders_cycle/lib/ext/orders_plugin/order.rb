@@ -30,6 +30,11 @@ class OrdersPlugin::Order
     }
   end
 
+  def delivery_methods_with_cycle
+    if self.cycle then self.cycle.delivery_methods else self.delivery_methods_without_cycle end
+  end
+  alias_method_chain :delivery_methods, :cycle
+
   protected
 
 end

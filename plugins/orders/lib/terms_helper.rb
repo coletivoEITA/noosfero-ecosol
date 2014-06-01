@@ -4,7 +4,7 @@ module TermsHelper
 
   I18nSeparator = '.'
 
-  Terms = [:profile, :supplier]
+  Terms = [:profile, :supplier, :consumer]
   Auxiliars = [
     nil,
     #
@@ -78,6 +78,7 @@ module TermsHelper
 
   def translate_with_terms key, options = {}
     translation = translate_without_terms key, options
+    raise key if translation.nil?
     translation % translated_terms
   end
 

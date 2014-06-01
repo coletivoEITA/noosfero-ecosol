@@ -15,6 +15,7 @@
 }
 
 .orders-admin-index {
+  margin-top: $margin;
 
   &.sortable-table {
 
@@ -90,8 +91,10 @@
     width: $order-items-width;
   }
   &.admin {
-    &, .order-items-scroll, .order-items, .item {
-      width: $order-items-admin-width;
+    width: $order-items-admin-width;
+
+    .order-items-scroll, .order-items, .item {
+      width: $order-items-admin-width - 2*$border;
     }
   }
 
