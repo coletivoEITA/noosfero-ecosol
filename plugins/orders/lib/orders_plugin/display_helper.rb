@@ -8,6 +8,7 @@ module OrdersPlugin::DisplayHelper
   include OrdersPlugin::TableHelper
   include OrdersPlugin::AdminHelper
   include OrdersPlugin::JavascriptHelper
+  include OrdersPlugin::HelpHelper
 
   # come on, you can't replace a rails api method (button_to_function was)!
   def submit_to_function name, function, html_options={}

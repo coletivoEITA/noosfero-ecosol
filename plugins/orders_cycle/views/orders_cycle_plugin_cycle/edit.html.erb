@@ -3,7 +3,7 @@
   <div id="cycle-<%= @cycle.id %>" class="cycle">
     <%= render 'header', :cycle => @cycle, :timeline => true, :actions => true, :listing => false %>
 
-    <% view = if params[:view] then params[:view] else @cycle.status.gsub ' ', '_' end %>
+    <% view = if params[:view] then params[:view] else @cycle.status end %>
     <div>
       <%= render view %>
     </div>

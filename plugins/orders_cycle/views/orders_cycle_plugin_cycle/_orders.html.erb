@@ -1,3 +1,7 @@
+<div class="subtitle">
+  <%= hideable_help_text t('views.cycle._orders.header_help') %>
+</div>
+
 <% if @cycle.orders? or @cycle.passed_by? 'orders' %>
   <% if @cycle.orders? %>
     <% header = t('views.cycle._orders.the_orders_period_is_') %>

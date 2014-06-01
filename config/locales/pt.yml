@@ -273,6 +273,9 @@
       consumer: 
         singular: "consumidor"
         plural: "consumidores"
+        from_article: 
+          singular: "do(a) consumidor(a)"
+          plural: "dos(as) consumidores(as)"
       supplier:
         singular: "fornecedor"
         plural: "fornecedores"
@@ -623,6 +626,10 @@
           separated: "Separar"
           delivered: "Entregar"
           received: "Receber"
+    helpers:
+      help:
+        hide: "esconder ajuda"
+        show: "mostrar ajuda"
     views:
       filter:
         <<: *suppliers_plugin_filter
@@ -922,24 +929,11 @@
           the_following_list_of: "A seguinte lista de produtos está disponível neste ciclo."
           the_products: "Os produtos"
         _orders: 
-          cancelled_orders_coun: "Pedidos cancelados (%{count})"
-          closed_orders_count: "Pedidos fechados (%{count})"
-          open_orders_count: "Pedidos abertos (%{count})"
+          header_help: "Nesta etapa são recebidos os pedidos %{terms.consumer.from_article.plural}, e é possível supervisioná-los se por acaso existe algum erro mais grave."
           the_orders_period_is_: "O período de pedidos está ainda aberto, tome cuidado ao editar os pedidos abertos. Isso pode confundir os usuários."
           already_closed: "O período de pedidos já foi fechado, Não é possível editar os pedidos originais. Na fase de redistribuição é possível editar o pedido, e também antes da entrega."
-        _orders_suppliers: 
-          actions: Ações
-          do_prelimary_parcel: "fazer encomenda preliminar"
-          forecast_parcel: "Encomenda prevista"
-          forecast_value: "Valor previsto"
-          message_to_the_suppli: "Mensagem %{terms.supplier.to_article.singular}"
-          no_product_ordered: "Sem produtos pedidos."
-          product: Produto
-          products_totals: "Total dos produtos"
-          sell_value: "Valor vendido"
-          total_asked: "Total pago"
-          totals: Totals
-          unit: Unidade
+        _purchases:
+          header_help: "Nesta etapa são recebidos os pedidos %{terms.consumer.from_article.plural}, e é possível supervisioná-los se por acaso existe algum erro mais grave."
         _product_lines: 
           category: Categoria
           price: Preço
@@ -950,7 +944,6 @@
         _results: 
           no_cycles_to_show: "Sem ciclos a mostrar"
         _timeline: 
-          actions: Ações
           are_you_sure_you_want_to_reopen: "Tem certeza de que deseja reabrir o ciclo de pedidos?"
           are_you_sure_you_want_to_close: "Tem certeza de que deseja fechar o ciclo de pedidos?"
           call: Call

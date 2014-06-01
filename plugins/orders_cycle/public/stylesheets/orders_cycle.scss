@@ -346,9 +346,6 @@
       font-weight: bold;
     }
 
-    .cycle-timeline .actions-bar a {
-      font-weight: bold;
-    }
   }
 
   .dates-brief {
@@ -356,17 +353,7 @@
   }
 
   .actions-bar {
-    background-color: #FEC64D;
-    padding: 6px 8px;
     clear: both;
-
-    a {
-      float: left;
-      margin-right: 10px;
-    }
-    strong {
-      float: right;
-    }
   }
 }
 
