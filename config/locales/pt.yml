@@ -921,6 +921,7 @@
           opening_message: "Mensagem de abertura"
           orders_interval: "Intervalo dos Pedidos"
           save: Salvar
+          save_and_open_orders: Salvar e abrir pedidos
           this_message_will_be_: "Esta mensagem será mandada por email aos(às) consumidores(as) %{terms.profile.from_article.singular}"
         _edit_popin: 
           close: Fechar

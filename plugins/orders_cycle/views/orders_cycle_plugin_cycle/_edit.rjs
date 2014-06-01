@@ -1,1 +1,0 @@
-page << "orders_cycle.colorbox({html:'#{escape_javascript render(:partial => 'edit_popin', :locals => {:cycle => @cycle})}'})"

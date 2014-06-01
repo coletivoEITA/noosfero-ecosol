@@ -50,15 +50,12 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
 
     if request.xhr?
       if params[:commit]
+        params[:cycle][:status] = 'orders' if @open = params[:open] == '1'
         @success = @cycle.update_attributes params[:cycle]
+
         if params[:sendmail]
           OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).deliver_open_cycle @cycle.profile,
             @cycle,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message
-        end
-        render :partial => 'edit'
-      else
-        render :update do |page|
-          page.replace_html "cycle-product-lines", :partial => "product_lines"
         end
       end
     end
