@@ -13,11 +13,11 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   helper OrdersCyclePlugin::CycleHelper
 
   def index
-    @closed_cycles = search_scope(profile.orders_cycles.status_closed).all
+    @closed_cycles = search_scope(profile.orders_cycles.closing).all
     if request.xhr?
       render :partial => 'results'
     else
-      @open_cycles = profile.orders_cycles.status_open
+      @open_cycles = profile.orders_cycles.open
     end
   end
 

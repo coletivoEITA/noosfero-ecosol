@@ -31,7 +31,7 @@
 
 <% if actions %>
   <div class="actions-bar">
-    <% if cycle.status == view_status %>
+    <% if cycle.status == view_status and cycle.status != 'closing' %>
       <%= link_to t('views.cycle._timeline.close_status') % {:status => status_text},
         {:action => :step, :id => cycle.id, :method => :post},
         {:confirm => t('views.cycle._timeline.are_you_sure_you_want_to_close') % {:status => status_text}, :class => 'action-button'} %>

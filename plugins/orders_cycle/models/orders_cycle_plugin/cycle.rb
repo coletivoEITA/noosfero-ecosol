@@ -56,6 +56,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.profile.orders_cycles }
 
+  # status scopes
   named_scope :defuncts, :conditions => ["status = 'new' AND created_at < ?", 2.days.ago]
   named_scope :not_new, :conditions => ["status <> 'new'"]
   named_scope :open, lambda {
@@ -66,6 +67,9 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     {:conditions => ["NOT ( ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) AND status = 'orders' )",
       {:now => DateTime.now}]}
   }
+  named_scope :by_status, lambda { |status| { :conditions => {:status => status} } }
+  named_scope :open, :conditions => ["status <> 'new' AND status <> 'closing'"]
+  named_scope :closing, :conditions => ["status = 'closing'"]
 
   named_scope :months, :select => 'DISTINCT(EXTRACT(months FROM start)) as month', :order => 'month DESC'
   named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year DESC'
@@ -81,10 +85,6 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
       { :start => range.first, :finish => range.last }
     ]}
   }
-  named_scope :by_status, lambda { |status| { :conditions => {:status => status} } }
-
-  named_scope :status_open, :conditions => ["status <> 'closed'"]
-  named_scope :status_closed, :conditions => ["status = 'closed'"]
 
   validates_presence_of :profile
   validates_presence_of :name, :if => :not_new?
@@ -132,19 +132,22 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   end
 
   def new?
-    status == 'new'
+    self.status == 'new'
+  end
+  def not_new?
+    self.status != 'new'
   end
   def open?
-    !closed?
+    !self.closing?
   end
-  def closed?
-    status == 'closed'
+  def closing?
+    self.status == 'closing'
   end
   def edition?
-    status == 'edition'
+    self.status == 'edition'
   end
   def new_or_edition?
-    status == 'new' or status == 'edition'
+    self.status == 'new' or self.status == 'edition'
   end
   def orders?
     now = DateTime.now
@@ -222,10 +225,6 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     orders_method = if actor_name == :supplier then :sales else :purchases end
     orders = self.send(orders_method).where(:status => order_status.to_s)
     orders.each{ |order| order.step! actor_name }
-  end
-
-  def not_new?
-    status != 'new'
   end
 
   def validate_orders_dates
