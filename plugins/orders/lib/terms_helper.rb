@@ -4,7 +4,7 @@ module TermsHelper
 
   I18nSeparator = '.'
 
-  Terms = [:profile, :supplier]
+  Terms = [:profile, :supplier, :consumer]
   Auxiliars = [
     nil,
     #
