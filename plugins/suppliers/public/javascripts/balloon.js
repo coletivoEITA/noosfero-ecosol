@@ -13,12 +13,15 @@ balloon = {
 
   hide: function () {
     balloon._hide();
+    balloon.target.removeClass('balloon-target')
     balloon.target = balloon.content = jQuery();
   },
 
   show: function(target, content, options) {
     balloon.target = jQuery(target);
     balloon.content = content;
+    balloon.target.addClass('balloon-target')
+
     balloon._setOptions(options);
     if (balloon.options.delay)
       setTimeout(balloon._show, balloon.options.delay);
@@ -67,6 +70,7 @@ balloon = {
     balloon.target.append(balloon.element);
     balloon._position();
   },
+
   _position: function () {
     balloon.element.addClass(balloon.options.position);
 
@@ -89,6 +93,7 @@ balloon = {
       marginBottom: parseFloat(balloon.target.css('margin-bottom')),
     });
   },
+
   _show: function () {
     balloon._hide();
     balloon._build(balloon.content);
@@ -98,13 +103,14 @@ balloon = {
     balloon.element.remove();
     balloon.element = jQuery();
   },
+
   _setOptions: function (options) {
     balloon.options = jQuery.extend({}, balloon.default_options, options || {});
   },
 };
 
 jQuery(document).click(function (event) {
-  if (!balloon.target.find(event.target).length)
+  if (event.target != balloon.target.get(0) && !jQuery(event.target).parents('.balloon-target').length)
     balloon.hide();
 });
 

@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, .cycle .cycle-timeline, .order-message-title {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, .balloon-content.orders-cycle, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, .cycle .cycle-timeline, .order-message-title {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -145,7 +145,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, .cycle .cycle-timeline, .order-message-title {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, .balloon-content.orders-cycle, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, .cycle .cycle-timeline, .order-message-title {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -288,7 +288,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, .cycle .cycle-timeline, .order-message-title {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, .balloon-content.orders-cycle, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, .cycle .cycle-timeline, .order-message-title {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -539,7 +539,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, .cycle .cycle-timeline, .order-message-title {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, .balloon-content.orders-cycle, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, .cycle .cycle-timeline, .order-message-title {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -800,6 +800,14 @@
 .calendricalEndTimePopup {
   width: 160px; }
 
+.balloon-content.orders-cycle .left-column {
+  width: 64px;
+  margin-right: 8px;
+  float: left; }
+.balloon-content.orders-cycle .right-column {
+  width: 144px;
+  float: right; }
+
 .cycle-view #cycle-others,
 .cycle-view #cycle-header {
   padding-bottom: 8px;
@@ -824,7 +832,7 @@
   float: left;
   padding-left: 0; }
   .cycle-view #cycle-products-for-order .balloon .content {
-    width: 224px;
+    width: 240px;
     max-height: 80px; }
   .cycle-view #cycle-products-for-order #filter {
     margin-left: -24px; }
@@ -938,7 +946,7 @@
   /* Buttons */ }
   #cycle-admin-page .clean {
     clear: both; }
-  #cycle-admin-page .container-clean, #cycle-admin-page .sortable-table > .table-header, #cycle-admin-page .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #cycle-admin-page .box-view, #cycle-admin-page .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #cycle-admin-page .box-view-inner, #cycle-admin-page .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #cycle-admin-page .internal-table, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, #cycle-admin-page .cycle .cycle-timeline, .cycle #cycle-admin-page .cycle-timeline, #cycle-admin-page .order-message-title {
+  #cycle-admin-page .container-clean, #cycle-admin-page .sortable-table > .table-header, #cycle-admin-page .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #cycle-admin-page .box-view, #cycle-admin-page .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #cycle-admin-page .box-view-inner, #cycle-admin-page .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #cycle-admin-page .internal-table, #cycle-admin-page .balloon-content.orders-cycle, #cycle-admin-page .field, #cycle-admin-page .field-secondary.with-unit, #cycle-admin-page .cycle .cycle-timeline, .cycle #cycle-admin-page .cycle-timeline, #cycle-admin-page .order-message-title {
     overflow: hidden;
     display: inline-block;
     /* Necessary to trigger "hasLayout" in IE */
