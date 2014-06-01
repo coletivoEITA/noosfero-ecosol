@@ -5,6 +5,22 @@
 @import 'balloon';
 @import 'calendrial';
 
+.balloon-content.orders-cycle {
+  @extend .container-clean;
+  // the size is defined on .balloon .content (see above)
+
+  .left-column {
+    width: $module01;
+    margin-right: $half-margin;
+    float: left;
+  }
+  .right-column {
+    width: $module02;
+    float: right;
+  }
+
+}
+
 .cycle-view {
 
   #cycle-others,
@@ -46,7 +62,7 @@
     .balloon {
 
       .content {
-        width: $module03;
+        width: $module03 + $intercolumn; //$intercolumn for scrollbars
         max-height: 10*$height;
       }
     }
