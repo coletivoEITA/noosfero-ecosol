@@ -117,10 +117,6 @@ class Product
       to_product.destroy if to_product.dependent?
     end
   end
-
-  def destroy_dependent_with_delay
-    self.delay.destroy_dependent_without_delay
-  end
-  alias_method_chain :destroy_dependent, :delay
+  handle_asynchronously :destroy_dependent
 
 end
