@@ -30,6 +30,6 @@ class OrdersCyclePlugin < Noosfero::Plugin
 end
 
 # workaround for plugin class scope problem
-require 'orders_cycle_plugin/display_helper'
+require_dependency 'orders_cycle_plugin/display_helper'
 OrdersCyclePlugin::OrdersCycleDisplayHelper = OrdersCyclePlugin::DisplayHelper
 
