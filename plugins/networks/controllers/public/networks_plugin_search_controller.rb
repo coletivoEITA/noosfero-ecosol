@@ -1,6 +1,6 @@
 class NetworksPluginSearchController < SearchController
 
-  # FIXME: should be necessary again
+  # FIXME: should be necessary again, as done on superclass
   no_design_blocks
 
   include NetworksPlugin::TranslationHelper
@@ -8,10 +8,8 @@ class NetworksPluginSearchController < SearchController
   helper NetworksPlugin::TranslationHelper
   helper NetworksPlugin::NetworksSearchHelper
 
-  def networks
-    @titles[:networks] = _('Networks')
-    @scope = @environment.networks.public
-    full_text_search
+  def index
+    redirect_to :controller => :search, :action => :enterprises, :facet => {:solr_plugin_f_profile_type => NetworksPlugin::Network.to_s}
   end
 
   protected
