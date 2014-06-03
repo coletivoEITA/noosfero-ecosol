@@ -77,7 +77,7 @@ module ControllerInheritance
     end
 
     def default_template action_name = self.action_name
-      @template_html_fallback = request.format == :all or request.format == :html if @template_html_fallback.nil?
+      @template_html_fallback = (request.format == :all or request.format == :html) if @template_html_fallback.nil?
 
       self.each_template_with_hmvc do |klass|
         begin
