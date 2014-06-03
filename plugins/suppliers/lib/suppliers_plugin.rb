@@ -50,6 +50,6 @@ class SuppliersPlugin < Noosfero::Plugin
 end
 
 # workaround for plugins' scope problem
-require 'suppliers_plugin/display_helper'
+require_dependency 'suppliers_plugin/display_helper'
 SuppliersPlugin::SuppliersDisplayHelper = SuppliersPlugin::DisplayHelper
 
