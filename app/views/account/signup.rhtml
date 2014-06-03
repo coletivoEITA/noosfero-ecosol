@@ -14,5 +14,10 @@
 </div>
 <% else %>
   <h1><%= _('Sign up for %s!') % environment.name %></h1>
+
+  <div id='signup-intro'>
+    <%= environment.signup_intro %>
+  </div>
+
   <%= render :partial => 'signup_form' %>
 <% end %>

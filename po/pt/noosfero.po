@@ -2376,6 +2376,10 @@ msgstr "Redirecionamento após login"
 msgid "Signup welcome text"
 msgstr "Texto de boas vindas no registro"
 
+#: app/views/admin_panel/site_info.rhtml:13
+msgid "Signup introduction text"
+msgstr "Texto de introdução no registro"
+
 #: app/models/article_categorization.rb:-
 #: app/views/admin_panel/_site_info.rhtml:7
 msgid "Default language"
@@ -5759,6 +5763,10 @@ msgid ""
 msgstr ""
 "Este texto será envado para os novos usuários se a funcionalidade \"Enviar e-"
 "mail de boas vindas para novos usuários\" estiver habilitada no ambiente"
+
+#: app/views/admin_panel/_signup_intro.html.erb
+msgid "This text will be shown to the user on the top of the sign up form."
+msgstr "Este texto será motrado ao usuário no topo do formulário de registro."
 
 #: app/views/admin_panel/_signup_welcome_text.rhtml:3
 msgid ""
