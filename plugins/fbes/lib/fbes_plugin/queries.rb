@@ -1,5 +1,12 @@
 class FbesPlugin::Queries
 
+  def self.all environment
+    hostname = environment.top_url
+    Hash.map do |key, query|
+      "http://#{hostname}/plugin/fbes/queries/#{key}?page=1&per_page=20"
+    end
+  end
+
   Hash = {
     :orders_by_month => <<EOQ,
 select to_char(created_at,'YYYY-MM') mes, count(*)
