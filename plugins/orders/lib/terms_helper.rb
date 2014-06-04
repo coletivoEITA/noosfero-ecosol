@@ -15,9 +15,10 @@ module TermsHelper
     :in, :which, :this, :your,
     :at, :at_article,
     :to, :to_article,
-    :on, :on_your,
-    :by, :by_article,
-    :from, :from_article, :from_this, :from_which, :from_which_article, :by_your,
+    :on, :on_your, :on_undefined_article,
+    :of, :of_this,
+    :by, :by_article, :by_your,
+    :from, :from_article, :from_this, :from_which, :from_which_article,
     # adjectives
     :none, :own, :new,
     :by_own, :new_undefined_article

@@ -10,4 +10,12 @@
     <% end %>
   <% end %>
 
+  <div>
+    <i>
+      <%= t('views.profile_editor.help') % {
+        :search => link_to(t('views.profile_editor.search'), :controller => :networks_plugin_search, :action => :index),
+      } %>
+    </i>
+  </div>
+
 </div>

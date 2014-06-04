@@ -246,6 +246,13 @@
         it: 
           singular: "ela"
           plural: "elas"
+        article: 
+          singular: "a organização"
+          plural: "as organizações"
+        undefined_article:
+          singular: "uma organização"
+        by_article: 
+          singular: "pela organização"
         tO_it: 
           singular: "a ela"
           plural: "a elas"
@@ -260,17 +267,15 @@
           singular: "da organização"
         from_which_article: 
           singular: "com que a organização"
+        your: 
+          singular: "seu fornecedor"
+          plural: "seus fornecedores"
         on_your:
           singular: "na sua organização"
+        on_undefined_article:
+          singular: "em uma organização"
         this:
           singular: "esta organização"
-        undefined_article:
-          singular: "uma organização"
-        article: 
-          singular: "a organização"
-          plural: "as organizações"
-        by_article: 
-          singular: "pela organização"
       consumer: 
         singular: "consumidor"
         plural: "consumidores"
@@ -303,13 +308,12 @@
           singular: "nenhum fornecedor"
         this:
           singular: "este fornecedor"
-        your: 
-          singular: "seu fornecedor"
-          plural: "seus fornecedores"
         from_article:
           singular: "do fornecedor"
         from_which_article: 
           singular: "com que o fornecedor"
+        of_this:
+          singular: "deste fornecedor"
         article: 
           singular: "o fornecedor"
           plural: "os fornecedores"
@@ -1012,11 +1016,16 @@
       profile: &consumers_coop_term_profile
         singular: "coletivo de consumo"
         plural: "coletivos de consumo"
-        to_article:
-          singular: "ao coletivo de consumo"
         it: 
           singular: "ele"
           plural: "eles"
+        article: 
+          singular: "o coletivo de consumo"
+          plural: "os coletivos de consumo"
+        undefined_article:
+          singular: "um coletivo de consumo"
+        by_article: 
+          singular: "pelo coletivo de consumo"
         to_it:
           singular: "a ele"
           plural: "a eles"
@@ -1030,17 +1039,12 @@
           singular: "do coletivo de consumo"
         from_which_article: 
           singular: "com que o coletivo de consumo"
+        of_this:
+          singular: "deste coletivo de consumo"
         on_your:
           singular: "em seu coletivo de consumo"
         this:
           singular: "este coletivo de consumo"
-        undefined_article:
-          singular: "um coletivo de consumo"
-        article: 
-          singular: "o coletivo de consumo"
-          plural: "os coletivos de consumo"
-        by_article: 
-          singular: "pelo coletivo de consumo"
     controllers:
       myprofile:
         distribution_settings: "Configurações salvas"
@@ -1090,14 +1094,17 @@
       profile: &networks_term_profile
         singular: "rede"
         plural: "redes"
-        to_article:
-          singular: "a rede"
         it: 
           singular: "ela"
           plural: "elas"
         to_it:
           singular: "a ela"
           plural: "a elas"
+        article: 
+          singular: "a rede"
+          plural: "as redes"
+        undefined_article:
+          singular: "uma rede"
         to_article:
           singular: "a rede"
         at_article:
@@ -1108,17 +1115,12 @@
           singular: "da rede"
         from_which_article: 
           singular: "com que a rede"
+        of_this:
+          singular: "desta rede"
         this:
           singular: "esta rede"
         on_your:
           singular: "na sua rede"
-        undefined_article:
-          singular: "uma rede"
-        article: 
-          singular: "a rede"
-          plural: "as redes"
-        by_article: 
-          singular: "pela rede"
       supplier: 
         singular: "empreendimento"
         plural: "empreendimentos"
@@ -1129,6 +1131,15 @@
         to: 
           singular: "a um empreendimento"
           plural: "a empreendimentos"
+        article: 
+          singular: "o empreendimento"
+          plural: "os empreendimentos"
+        by_article: 
+          singular: "pelo empreendimento"
+        undefined_article:
+          singular: "um empreendimento"
+        new_undefined_article:
+          singular: "um novo empreendimento"
         to_it:
           singular: "a ele"
           plural: "a eles"
@@ -1146,15 +1157,8 @@
           singular: "do empreendimento"
         from_which_article: 
           singular: "com que o empreendimento"
-        undefined_article:
-          singular: "um empreendimento"
-        article: 
-          singular: "o empreendimento"
-          plural: "os empreendimentos"
-        by_article: 
-          singular: "pelo empreendimento"
-        new_undefined_article:
-          singular: "um novo empreendimento"
+        of_this:
+          singular: "deste empreendimento"
     models:
       network:
         settings_button: "Informações e configurações da Rede"
@@ -1165,13 +1169,15 @@
       control_panel:
         structure: "Gerenciar estrutura da rede"
       profile_editor:
+        help: "Se %{terms.supplier.your.singular} participa %{terms.profile.from.singular}, %{search}, acesse %{terms.profile.article.singular}, e solicite a entrada clicando no botão 'Fazemos parte %{terms.profile.of_this.singular}'."
+        search: "procure a rede"
         networks_i_participate: "%{terms.profile.plural.capitalize} de que faço parte"
         none: "Nenhuma"
         disassociate: "Desassociar"
         disassociate_confirm: "Ao desassociar %{terms.supplier.your.singular} %{terms.profile.from_article.singular}, os seus produtos distribuídos %{terms.profile.to_it.singular} serão excluídos e você não distribuirá produtos %{terms.profile.to_it.singular}. Por favor confirme sua escolha."
       blocks:
         profile_info_actions:
-          button: "Meu empreendimento participa desta rede"
+          button: "Fazemos parte %{terms.profile.of_this.singular}"
         location:
           title: "Mapa dos Empreendimentos de %{profile}"
       admin:

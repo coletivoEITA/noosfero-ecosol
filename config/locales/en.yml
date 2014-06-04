@@ -236,6 +236,13 @@
         it: 
           singular: "it"
           plural: "them"
+        article: 
+          singular: "the organization"
+          plural: "the organizations"
+        undefined_article:
+          singular: "a organization"
+        by_article: 
+          singular: "by the organization"
         tO_it: 
           singular: "to it"
           plural: "to them"
@@ -250,19 +257,12 @@
           singular: "from the organization"
         from_which_article: 
           singular: "from which the organização"
-        on_your:
-          singular: "on your organização"
+        of_this:
+          singular: "from this organization"
         this:
           singular: "this organization"
         with_which:
           singular: "with which the organization"
-        undefined_article:
-          singular: "a organization"
-        article: 
-          singular: "the organization"
-          plural: "the organizations"
-        by_article: 
-          singular: "by the organization"
       consumer: 
         singular: "consumer"
         plural: "consumers"
@@ -279,6 +279,15 @@
         it: 
           singular: "it"
           plural: "them"
+        article: 
+          singular: "the supplier"
+          plural: "the suppliers"
+        undefined_article:
+          singular: "a supplier"
+        by_article: 
+          singular: "by the supplier"
+        new_undefined_article:
+          singular: "a new supplier"
         to: 
           singular: "to a supplier"
           plural: "to suppliers"
@@ -292,22 +301,21 @@
           singular: "any supplier"
         this:
           singular: "this supplier"
-        your: 
-          singular: "your supplier"
-          plural: "your suppliers"
         from_article: 
           singular: "from supplier"
         from_which_article: 
           singular: "from which the supplier"
-        undefined_article:
-          singular: "a supplier"
-        article: 
-          singular: "the supplier"
-          plural: "the suppliers"
-        by_article: 
-          singular: "by the supplier"
-        new_undefined_article:
-          singular: "a new supplier"
+        of_this: 
+          singular: "from this supplier"
+        your: 
+          singular: "your supplier"
+          plural: "your suppliers"
+        on_your:
+          singular: "on your organization"
+        on_article:
+          singular: "on your organization"
+        on_undefined_article:
+          singular: "on an organization"
     controllers: 
       myprofile: 
         supplier_created: "%{terms.supplier.singular.capitalize} created"
@@ -1010,6 +1018,13 @@
         it: 
           singular: "it"
           plural: "them"
+        article: 
+          singular: "the consumers' coop"
+          plural: "the consumers' coops"
+        undefined_article:
+          singular: "a consumers' coop"
+        by_article: 
+          singular: "by the consumers' coop"
         tO_it: 
           singular: "to it"
           plural: "to them"
@@ -1023,19 +1038,14 @@
           singular: "from the consumers' coop"
         from_which_article: 
           singular: "from which the consumers' coop"
+        of_this:
+          singular: "from this consumers' coop"
         on_your:
           singular: "on your consumers' coop"
         this:
           singular: "this consumers' coop"
         with_which:
           singular: "with which the consumers' coop"
-        undefined_article:
-          singular: "a consumers' coop"
-        article: 
-          singular: "the consumers' coop"
-          plural: "the consumers' coops"
-        by_article: 
-          singular: "by the consumers' coop"
     controllers:
       myprofile:
         distribution_settings: "Distribution settings saved."
@@ -1088,6 +1098,13 @@
         it: 
           singular: "it"
           plural: "them"
+        article: 
+          singular: "the network"
+          plural: "the networks"
+        undefined_article:
+          singular: "a network"
+        by_article: 
+          singular: "by the network"
         tO_it: 
           singular: "to it"
           plural: "to them"
@@ -1101,29 +1118,33 @@
           singular: "from the network"
         from_which_article: 
           singular: "from which the rede"
+        of_this:
+          singular: "from this network"
         this:
           singular: "this network"
         on_your:
           singular: "on your network"
         with_which:
           singular: "with which the network"
-        undefined_article:
-          singular: "a network"
-        article: 
-          singular: "the network"
-          plural: "the networks"
-        by_article: 
-          singular: "by the network"
       supplier: 
         singular: "enterprise"
         plural: "enterprises"
+        one: "one"
         it: 
           singular: "it"
           plural: "them"
+        article: 
+          singular: "the enterprise"
+          plural: "the enterprises"
+        undefined_article:
+          singular: "a enterprise"
+        by_article: 
+          singular: "by the enterprise"
+        new_undefined_article:
+          singular: "a new enterprise"
         tO_it: 
           singular: "to it"
           plural: "to them"
-        one: "one"
         to: 
           singular: "to a enterprise"
           plural: "to enterprises"
@@ -1137,19 +1158,12 @@
           singular: "from enterprise"
         from_which_article: 
           singular: "from which the enterprise"
-        undefined_article:
-          singular: "a enterprise"
+        of_this: 
+          singular: "from this enterprise"
         none: 
           singular: "any enterprise"
         this:
           singular: "this enterprise"
-        article: 
-          singular: "the enterprise"
-          plural: "the enterprises"
-        by_article: 
-          singular: "by the enterprise"
-        new_undefined_article:
-          singular: "a new enterprise"
     models:
       network:
         settings_button: "Network's informations and settings"
@@ -1160,13 +1174,15 @@
       control_panel:
         structure: "Manage network's structure"
       profile_editor:
+        help: "If %{terms.supplier.your.singular} participate %{terms.profile.on_undefined_article.singular}, %{search}, access %{terms.profile.article.singular}, and ask to join by clicking the button 'We are part %{terms.profile.of_this.singular}"
+        search: "procure a rede"
         networks_i_participate: "%{terms.profile.plural.capitalize} I participate"
         none: "None"
         disassociate: "Disassociate"
         disassociate_confirm: "By disassociating %{terms.supplier.your.singular} %{terms.profile.from_article.singular}, your distributed products %{terms.profile.to_it.singular} will be deleted and you won't distributed more products %{terms.profile.to_it.singular}. Please confirm your choice."
       blocks:
         profile_info_actions:
-          button: "My enterprise participate on this network"
+          button: "We are part %{terms.profile.of_this.singular}"
         location:
           title: "Map of Enterprises from %{profile}"
       admin:
