@@ -72,7 +72,7 @@ select t.mes, t.profile_id, b.name, b.url, t.qtde, t.total_pedidos
             group by mes, profile_id
         ) t
     join tmp b on b.profile_id=t.profile_id and b.order_id=t.m
-    order by t.mes desc, t.qtde desc",
+    order by t.mes desc, t.qtde desc
 EOQ
 
     :enterprises_quantity_with_orders_by_month => <<EOQ,
@@ -111,7 +111,7 @@ select to_char(created_at, 'YYYY-MM') mes, count(*) qtde
   from comments
   where spam is not true and source_type='Article'
   group by mes
-  order by mes desc",
+  order by mes desc
 EOQ
 
     :communities => <<EOQ,
