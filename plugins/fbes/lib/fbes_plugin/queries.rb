@@ -23,6 +23,10 @@ EOQ
 select a.id, case when a.nickname!='' then a.name||' - '||a.nickname else a.name end nome, 'http://cirandas.net/'||a.identifier site, a.address "endereco", a.contact_phone tel, to_char(a.updated_at, 'dd/mm/yyyy') as "Ultima atualizacao", array_to_string(ARRAY (select b.name from products as b where b.profile_id=a.id), ', ') as produtos from profiles as a where a.type='Enterprise' and a.active is true and a.visible is true and a.enabled is true order by a.updated_at desc
 EOQ
 
+    :enterprises_members => <<EOQ,
+SELECT a.id, case when a.nickname!='' then a.name||' - '||a.nickname else a.name end nome, substr( substr(a.data, strpos(a.data, ':contact_email:')+16, 100), 0, strpos(substr(a.data, strpos(a.data, ':contact_email:')+16, 100), ':') ) as "e_mail de contato",  'http://cirandas.net/'||a.identifier site, array_to_string(ARRAY (SELECT DISTINCT b.email FROM profiles p, users b, role_assignments d WHERE p.type='Person' and p.user_id=b.id and d.accessor_id=p.id and d.resource_id=a.id and d.accessor_type!='DistributionPluginNode'), ', ') as emails_integrantes FROM profiles a WHERE a.type='Enterprise' and a.active is true and a.visible is true and a.enabled is true
+EOQ
+
     :enterprises_updated_products => <<EOQ,
 create temporary table tmp as
   select profile_id, to_char(updated_at,'YYYY-MM') mes, count(*) qtde
