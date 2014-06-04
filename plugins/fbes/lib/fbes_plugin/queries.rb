@@ -15,11 +15,11 @@ select to_char(created_at,'YYYY-MM') mes, count(*)
   order by mes desc
 EOQ
 
-    :enterprises_with_products => <<EOQ,
+    :enterprises => <<EOQ,
 select a.id, a.enabled as "ativado?", case when a.nickname!='' then a.name||' - '||a.nickname else a.name end nome, 'http://cirandas.net/'||a.identifier site, a.address "endereco", a.contact_phone tel, to_char(a.updated_at, 'dd/mm/yyyy') as "Ultima atualizacaoo", array_to_string(ARRAY (select b.name from products as b where b.profile_id=a.id), ', ') as produtos from profiles as a where a.type='Enterprise' and a.active is true and a.visible is true order by a.updated_at desc
 EOQ
 
-    :enterprises_enabled_with_products => <<EOQ,
+    :enterprises_enabled => <<EOQ,
 select a.id, case when a.nickname!='' then a.name||' - '||a.nickname else a.name end nome, 'http://cirandas.net/'||a.identifier site, a.address "endereco", a.contact_phone tel, to_char(a.updated_at, 'dd/mm/yyyy') as "Ultima atualizacao", array_to_string(ARRAY (select b.name from products as b where b.profile_id=a.id), ', ') as produtos from profiles as a where a.type='Enterprise' and a.active is true and a.visible is true and a.enabled is true order by a.updated_at desc
 EOQ
 
