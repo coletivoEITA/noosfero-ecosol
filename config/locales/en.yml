@@ -1306,5 +1306,7 @@
         any: "Any product registered, %{manage_products}."
         click_to_manage_products: "click to manage products"
         product: "Product"
-        allocations: "Place(s) and quantity"
+        allocations: "Places and quantities"
+        _place:
+          none: "none"
 

@@ -120,6 +120,14 @@ input {
     height: 12px;
     margin: 0;
   }
+
+  &.highlight-on-focus {
+    border: $border solid transparent;
+
+    &:hover, &:focus {
+      border: $border solid #aaa;
+    }
+  }
 }
 
 textarea {

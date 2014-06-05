@@ -1303,5 +1303,7 @@
         any: "Nenhum produto cadastrado, %{manage_products}."
         click_to_manage_products: "clique para gerenciar produtos"
         product: "Produto"
-        allocations: "Lugar(es) e quantidade"
+        allocations: "Lugares e quantidades"
+        _place:
+          none: "nenhum"
 

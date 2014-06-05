@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #stock-products .field, #stock-products .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -92,7 +92,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle, #filter .filter-box .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, #stock-products .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -119,7 +119,9 @@
 /* Buttons */
 .action-button, .selection-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit] {
+#filter .filter-box input[type=submit], #stock-products .selection-button, #stock-products a.button.colorbox-close,
+#stock-products #wrap-1 input[type=submit],
+#stock-products input[type=submit] {
   display: inline-block;
   padding: 4px 8px;
   margin: 0;
@@ -178,7 +180,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #stock-products .field, #stock-products .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -268,7 +270,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle, #filter .filter-box .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, #stock-products .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -295,7 +297,9 @@
 /* Buttons */
 .action-button, .selection-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit] {
+#filter .filter-box input[type=submit], #stock-products .selection-button, #stock-products a.button.colorbox-close,
+#stock-products #wrap-1 input[type=submit],
+#stock-products input[type=submit] {
   display: inline-block;
   padding: 4px 8px;
   margin: 0;
@@ -435,7 +439,7 @@
 .clean {
   clear: both; }
 
-.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit {
+.container-clean, .sortable-table > .table-header, .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-edit .internal-table, #filter .filter-box, #filter .filter-box .field, #filter .filter-box .field-secondary.with-unit, #stock-products .field, #stock-products .field-secondary.with-unit {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -525,7 +529,7 @@
 .pstyle-tm1 {
   font-size: 13px; }
 
-.pstyle-tm2, .subtitle, #filter .filter-box .subtitle {
+.pstyle-tm2, .subtitle, #filter .filter-box .subtitle, #stock-products .subtitle {
   font-size: 10px; }
 
 /* Images */
@@ -552,7 +556,9 @@
 /* Buttons */
 .action-button, .selection-button, #filter .filter-box .selection-button, #filter .filter-box a.button.colorbox-close,
 #filter .filter-box #wrap-1 input[type=submit],
-#filter .filter-box input[type=submit] {
+#filter .filter-box input[type=submit], #stock-products .selection-button, #stock-products a.button.colorbox-close,
+#stock-products #wrap-1 input[type=submit],
+#stock-products input[type=submit] {
   display: inline-block;
   padding: 4px 8px;
   margin: 0;
@@ -795,6 +801,10 @@
       width: 12px;
       height: 12px;
       margin: 0; }
+    #filter .filter-box input.highlight-on-focus {
+      border: 1px solid transparent; }
+      #filter .filter-box input.highlight-on-focus:hover, #filter .filter-box input.highlight-on-focus:focus {
+        border: 1px solid #aaaaaa; }
     #filter .filter-box textarea {
       height: 64px;
       padding-left: 4px;
@@ -825,7 +835,211 @@
   #stock-manage #new.open {
     display: block; }
 
-#stock-products .box-field.product {
-  width: 304px; }
-#stock-products .box-field.allocations {
-  width: 624px; }
+#stock-products {
+  /* use with @extend, CSS clear bugfix */
+  /* layout base parameters */
+  /* heights should only use multiples of this */
+  /* base measurements */
+  /* widths should only use one of these */
+  /* paddings and margins should only use one of these
+     Ps. 1: disccount the borders size from padding, as borders uses padding's space.
+     Ps. 2: because of W3C's content-box default box sizing, padding sums to width size. If your
+     box doesn't have a padding, then sum $intercolumn to the width.
+   */
+  /* use for borders */
+  /* use for text shadows */
+  /* Colors */
+  /* Fonts */
+  /* Paragraphs Styles (use with @extend) */
+  /* Images */
+  /* profile-image that can be centered and resized with aspect ratio */
+  /* Buttons */ }
+  #stock-products .clean {
+    clear: both; }
+  #stock-products .container-clean, #stock-products .sortable-table > .table-header, #stock-products .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row #stock-products .box-view, #stock-products .sortable-table > .table-content > .value-row .box-view .box-view-inner, .sortable-table > .table-content > .value-row .box-view #stock-products .box-view-inner, #stock-products .sortable-table > .table-content > .value-row .box-edit .internal-table, .sortable-table > .table-content > .value-row .box-edit #stock-products .internal-table, #stock-products #filter .filter-box, #filter #stock-products .filter-box, #stock-products #filter .filter-box .field, #filter .filter-box #stock-products .field, #stock-products #filter .filter-box .field-secondary.with-unit, #filter .filter-box #stock-products .field-secondary.with-unit, #stock-products .field, #stock-products .field-secondary.with-unit {
+    overflow: hidden;
+    display: inline-block;
+    /* Necessary to trigger "hasLayout" in IE */
+    display: block;
+    /* Sets element back to block */ }
+  #stock-products .pstyle-none {
+    font-size: 12px; }
+  #stock-products .pstyle-basic {
+    font-size: 16px; }
+  #stock-products .pstyle-button {
+    font-size: 16px; }
+  #stock-products .pstyle-button-small {
+    font-size: 13px; }
+  #stock-products .pstyle-title {
+    font-size: 72px; }
+  #stock-products .pstyle-h1 {
+    font-size: 34px; }
+  #stock-products .pstyle-h2 {
+    font-size: 26px; }
+  #stock-products .pstyle-h3 {
+    font-size: 21px; }
+  #stock-products .pstyle-h4 {
+    font-size: 16px; }
+  #stock-products .pstyle-h5 {
+    font-size: 13px; }
+  #stock-products .pstyle-title-section {
+    font-size: 92px; }
+  #stock-products .pstyle-field {
+    font-size: 13px; }
+  #stock-products .pstyle-menu-big-selected {
+    font-size: 21px; }
+  #stock-products .pstyle-menu-big-unselected {
+    font-size: 21px; }
+  #stock-products .pstyle-menu-medium-selected {
+    font-size: 16px; }
+  #stock-products .pstyle-menu-medium-unselected {
+    font-size: 16px; }
+  #stock-products .pstyle-menu-small-selected {
+    font-size: 13px; }
+  #stock-products .pstyle-menu-small-unselected {
+    font-size: 13px; }
+  #stock-products .pstyle-tp4 {
+    font-size: 42px; }
+  #stock-products .pstyle-tp3 {
+    font-size: 34px; }
+  #stock-products .pstyle-tp2 {
+    font-size: 26px; }
+  #stock-products .pstyle-tp1 {
+    font-size: 21px; }
+  #stock-products .pstyle-tm1 {
+    font-size: 13px; }
+  #stock-products .pstyle-tm2, #stock-products #filter .filter-box .subtitle, #filter .filter-box #stock-products .subtitle, #stock-products .subtitle {
+    font-size: 10px; }
+  #stock-products .profile-image {
+    display: inline-block;
+    /* do not put padding in this as background size will consider it. */ }
+    #stock-products .profile-image.thumb {
+      width: 32px;
+      height: 32px; }
+    #stock-products .profile-image.portrait {
+      width: 80px;
+      height: 80px; }
+    #stock-products .profile-image .inner {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100%;
+      background-size: contain;
+      /* css3 enabled */ }
+  #stock-products .action-button, #stock-products #filter .filter-box .selection-button, #filter .filter-box #stock-products .selection-button, #stock-products #filter .filter-box a.button.colorbox-close, #filter .filter-box #stock-products a.button.colorbox-close,
+  #stock-products #filter .filter-box input[type=submit],
+  #filter .filter-box #stock-products input[type=submit], #stock-products .selection-button, #stock-products a.button.colorbox-close,
+  #stock-products #wrap-1 input[type=submit],
+  #stock-products input[type=submit] {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 0;
+    /* remove submit input browser's margin */
+    height: auto;
+    width: auto;
+    background: #fbca47;
+    border: 1px solid #f4a439;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+    line-height: 16px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-shadow: none;
+    border-radius: 5px; }
+  #stock-products .selection-button {
+    background: white; }
+  #stock-products .field-title {
+    text-transform: uppercase;
+    font-weight: bold; }
+  #stock-products .field {
+    clear: both; }
+    #stock-products .field label {
+      display: block;
+      float: left;
+      padding-top: 4px;
+      font-weight: bold;
+      line-height: 20px; }
+    #stock-products .field .field-box {
+      clear: both;
+      float: left;
+      width: 100%; }
+    #stock-products .field .field-help {
+      clear: both;
+      margin-bottom: 8px;
+      font-size: 10px; }
+  #stock-products .field-radio {
+    clear: both;
+    margin-bottom: 4px; }
+    #stock-products .field-radio input {
+      float: left;
+      margin-left: 0; }
+    #stock-products .field-radio label {
+      font-weight: normal;
+      line-height: 10px;
+      text-transform: lowercase;
+      margin-left: 4px; }
+  #stock-products .field-secondary {
+    display: block; }
+    #stock-products .field-secondary, #stock-products .field-secondary input, #stock-products .field-secondary select {
+      width: 128px; }
+    #stock-products .field-secondary.with-unit input {
+      float: left;
+      width: 112px; }
+    #stock-products .field-secondary.with-unit .field-unit {
+      float: left;
+      width: 16px;
+      line-height: 24px; }
+  #stock-products form {
+    margin: 0;
+    /* come on browsers!? */ }
+  #stock-products label.field-bellow {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 10px; }
+  #stock-products select,
+  #stock-products input[type=text], #stock-products input[type=password],
+  #stock-products textarea {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box; }
+  #stock-products select,
+  #stock-products input[type=text], #stock-products input[type=password] {
+    height: 24px; }
+  #stock-products select {
+    background-color: #fff;
+    border: 1px solid black;
+    padding-left: 4px; }
+  #stock-products input.date-select, #stock-products input.time-select {
+    width: 94px; }
+  #stock-products input[type=text] {
+    border: 1px solid black;
+    padding: 4px;
+    margin: 0; }
+  #stock-products input[type=checkbox] {
+    width: 12px;
+    height: 12px;
+    margin: 0; }
+  #stock-products input.highlight-on-focus {
+    border: 1px solid transparent; }
+    #stock-products input.highlight-on-focus:hover, #stock-products input.highlight-on-focus:focus {
+      border: 1px solid #aaaaaa; }
+  #stock-products textarea {
+    height: 64px;
+    padding-left: 4px;
+    margin-bottom: 10px; }
+  #stock-products .box-field.product {
+    width: 304px; }
+  #stock-products .box-field.allocations {
+    width: 544px; }
+  #stock-products .stock-product-allocations .product-place {
+    display: inline-block; }
+
+.stock-product-allocations .product-place form {
+  display: inline; }
+  .stock-product-allocations .product-place form input {
+    width: 64px; }

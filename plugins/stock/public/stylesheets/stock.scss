@@ -27,15 +27,38 @@
 }
 
 #stock-products {
+  @import 'field';
 
   .box-field {
     &.product {
       width: $module04;
     }
     &.allocations {
-      width: $module08;
+      width: $module07;
     }
   }
+
+  .stock-product-allocations {
+
+    .product-place {
+      display: inline-block;
+    }
+  }
+
+}
+
+.stock-product-allocations {
+
+  .product-place {
+    form {
+      display: inline;
+
+      input {
+        width: $module01;
+      }
+    }
+  }
+
 
 }
 
