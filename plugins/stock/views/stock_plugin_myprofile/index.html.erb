@@ -10,16 +10,17 @@
 
   <div>
     <% if first %>
-      <%= t('views.myprofile.index.first_place') %>
+      <h2>
+        <%= t('views.myprofile.index.first_place') %>
+      </h2>
+      <div id="new" class="<%= 'open' if first %>">
+        <%= render 'edit', :new => true %>
+      </div>
     <% else %>
       <% profile.stock_places.each do |place| %>
-        <%= render 'show', :place => place %>
+        <%= render 'edit', :place => place %>
       <% end %>
     <% end %>
-  </div>
-
-  <div id="new" class="<%= 'open' if first %>">
-    <%= render 'edit', :new => true %>
   </div>
 
   <%= render 'stock_plugin_products/index', :products => profile.products %>
