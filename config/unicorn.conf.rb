@@ -7,7 +7,7 @@ UnixListen = "tmp/unicorn.sock"
 Backlog = 2048
 
 Workers = 10
-Timeout = 30
+Timeout = 20 * 60
 
 WorkerWarmUp = true
 WorkerWarmUpTime = 4
