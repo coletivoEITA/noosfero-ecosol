@@ -48,6 +48,7 @@ class OrdersPlugin::Sale
       self.cycle_remove_purchases_items
     end
   end
+  handle_asynchronously :cycle_change_purchases
 
   def cycle_add_purchases_items
     self.offered_products.unarchived.each do |product|

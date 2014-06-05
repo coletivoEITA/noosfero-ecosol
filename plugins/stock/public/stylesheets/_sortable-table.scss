@@ -36,7 +36,7 @@ $sortable-table-negative-area: 3*$base;
   > .table-content .box-view .box-field, {
     font-size: 10px;
   }
-
+  
   > .table-header {
     background-color: $sortable-table-bg-header;
     border-bottom: 2*$border solid $sortable-table-border-header;
@@ -73,7 +73,6 @@ $sortable-table-negative-area: 3*$base;
 
     > .value-row {
       background: white;
-      cursor: pointer;
 
       border: $border solid $sortable-table-bg-row; //avoid size change with .edit class
       &.hover {

@@ -479,6 +479,7 @@
   margin-bottom: 16px; }
   .sortable-table > .table-content > .value-row {
     background: white;
+    cursor: pointer;
     border: 1px solid #f3f4ee; }
     .sortable-table > .table-content > .value-row.hover {
       border-color: #fdf2a3;

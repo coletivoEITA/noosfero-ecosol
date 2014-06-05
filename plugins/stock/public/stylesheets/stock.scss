@@ -1,0 +1,41 @@
+@import 'base';
+@import 'popin';
+@import 'sortable-table';
+@import 'loading-overlay';
+
+@import 'filter';
+
+.controller-profile_editor a.control-panel-stock-manage {
+  background-image: url("/plugins/suppliers/images/control-panel/manage-suppliers.png")
+}
+
+#stock-manage {
+
+  #new {
+    display: none;
+
+    &.open {
+      display: block;
+    }
+  }
+
+  .place {
+
+
+  }
+
+}
+
+#stock-products {
+
+  .box-field {
+    &.product {
+      width: $module04;
+    }
+    &.place {
+      width: $module08;
+    }
+  }
+
+}
+

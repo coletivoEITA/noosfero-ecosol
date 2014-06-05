@@ -16,8 +16,8 @@ module TermsHelper
     :at, :at_article,
     :to, :to_article,
     :on, :on_your, :on_undefined_article,
-    :of, :of_this,
     :by, :by_article, :by_your,
+    :of, :of_article, :of_this, :of_another,
     :from, :from_article, :from_this, :from_which, :from_which_article,
     # adjectives
     :none, :own, :new,
@@ -79,7 +79,7 @@ module TermsHelper
 
   def translate_with_terms key, options = {}
     translation = translate_without_terms key, options
-    raise key if translation.nil?
+    raise "Invalid or empty value for #{key}" if translation.nil? or not translation.is_a? String
     translation % translated_terms
   end
 
