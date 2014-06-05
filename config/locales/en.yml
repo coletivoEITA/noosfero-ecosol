@@ -257,8 +257,16 @@
           singular: "from the organization"
         from_which_article: 
           singular: "from which the organização"
+        of:
+          singular: "of organization"
+          plural: "of organizations"
+        of_article:
+          singular: "of the organization"
+          plural: "of the organizations"
         of_this:
-          singular: "from this organization"
+          singular: "of this organization"
+        of_another:
+          singular: "of another organization"
         this:
           singular: "this organization"
         with_which:
@@ -305,8 +313,16 @@
           singular: "from supplier"
         from_which_article: 
           singular: "from which the supplier"
+        of: 
+          singular: "of supplier"
+          plural: "of suppliers"
+        of_article: 
+          singular: "of the supplier"
+          plural: "of the suppliers"
         of_this: 
-          singular: "from this supplier"
+          singular: "of this supplier"
+        of_another: 
+          singular: "of another supplier"
         your: 
           singular: "your supplier"
           plural: "your suppliers"
@@ -1038,8 +1054,16 @@
           singular: "from the consumers' coop"
         from_which_article: 
           singular: "from which the consumers' coop"
+        of:
+          singular: "of consumers' coop"
+          plural: "of consumers' coops"
+        of_article:
+          singular: "of the consumers' coop"
+          plural: "of the consumers' coops"
         of_this:
-          singular: "from this consumers' coop"
+          singular: "of this consumers' coop"
+        of_another:
+          singular: "of another consumers' coop"
         on_your:
           singular: "on your consumers' coop"
         this:
@@ -1118,8 +1142,16 @@
           singular: "from the network"
         from_which_article: 
           singular: "from which the rede"
+        of:
+          singular: "of the network"
+          plural: "of the networks"
+        of_article:
+          singular: "of the network"
+          plural: "of the networks"
         of_this:
-          singular: "from this network"
+          singular: "of this network"
+        of_another:
+          singular: "of another network"
         this:
           singular: "this network"
         on_your:
@@ -1158,8 +1190,16 @@
           singular: "from enterprise"
         from_which_article: 
           singular: "from which the enterprise"
+        of: 
+          singular: "of enterprise"
+          plural: "of enterprises"
+        of_article: 
+          singular: "of the enterprise"
+          plural: "of the enterprises"
         of_this: 
-          singular: "from this enterprise"
+          singular: "of this enterprise"
+        of_another: 
+          singular: "of another enterprise"
         none: 
           singular: "any enterprise"
         this:
@@ -1167,6 +1207,9 @@
     models:
       network:
         settings_button: "Network's informations and settings"
+      associate_enterprise:
+        title: "Association request %{terms.supplier.from.singular}"
+        information: "%{requestor} said it is part of the network %{linked_subject}."
     controllers:
       node:
         edit: "Node settings saved"
@@ -1174,7 +1217,7 @@
       control_panel:
         structure: "Manage network's structure"
       profile_editor:
-        help: "If %{terms.supplier.your.singular} participate %{terms.profile.on_undefined_article.singular}, %{search}, access %{terms.profile.article.singular}, and ask to join by clicking the button 'We are part %{terms.profile.of_this.singular}"
+        help: "If %{terms.supplier.your.singular} participate %{terms.profile.of_another.singular}, %{search}, access %{terms.profile.article.singular}, and ask to join by clicking the button 'We are part %{terms.profile.of_this.singular}"
         search: "procure a rede"
         networks_i_participate: "%{terms.profile.plural.capitalize} I participate"
         none: "None"
@@ -1198,6 +1241,12 @@
         _supplier:
           by_removing_this_supp: "By removing %{terms.supplier.article.singular} all its products won't be available. Please confirm you choice"
       network:
+        join:
+          request_sent: "%{terms.profile.article.singular.capitalize} will receive a message to approve your association request."
+          confirm: "%{terms.supplier.article.singular.capitalize} %{enterprise} is part %{terms.profile.of_article.singular} %{network}?"
+          yes: "Yes"
+          no: "No"
+          choose: "Which %{terms.supplier.of_article.plural} bellow are parte of %{terms.profile.of_article.singular} %{network}?"
         show_structure:
           pathway: "You're at: "
           none: "None"
@@ -1232,4 +1281,30 @@
       enterprise:
         edit:
           title: "Settings of the enterprise %{enterprise}"
+
+  stock_plugin:
+    lib:
+      plugin:
+        name: "Products' Stock"
+        description: "Manage stocks of products"
+        control_panel:
+          manage: "Manage Stock"
+        manage_products: 
+          stock_tab: "Stock"
+    models:
+      place:
+        name: "Place's name"
+        description: "Description"
+    views:
+      myprofile:
+        index:
+          help: "Here you can put your products on the stock and places you have. The stock is automatically connected to the payment of the orders."
+          first_place: "Create your first place for stock"
+        edit:
+          save: "Save"
+      products:
+        any: "Any product registered, %{manage_products}."
+        click_to_manage_products: "click to manage products"
+        product: "Product"
+        allocations: "Place(s) and quantity"
 
