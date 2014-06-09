@@ -277,6 +277,12 @@
           singular: "desta organização"
         of_another:
           singular: "de outra organização"
+        with:
+          singular: "com organização"
+          plural: "com organizações"
+        with_article:
+          singular: "com a organização"
+          plural: "com as organizações"
         your: 
           singular: "seu fornecedor"
           plural: "seus fornecedores"
@@ -311,7 +317,6 @@
         to_article:
           singular: "ao fornecedor"
           plural: "aos fornecedores"
-          singular: "do fornecedor"
         undefined_article:
           singular: "um fornecedor"
         none: 
@@ -332,6 +337,12 @@
           singular: "deste fornecedor"
         of_another:
           singular: "de outro fornecedor"
+        with:
+          singular: "com fornecedor"
+          plural: "com fornecedores"
+        with_article:
+          singular: "com o fornecedor"
+          plural: "com o fornecedores"
         article: 
           singular: "o fornecedor"
           plural: "os fornecedores"
@@ -1067,6 +1078,12 @@
           singular: "deste coletivo de consumo"
         of_another:
           singular: "de outro coletivo de consumo"
+        with:
+          singular: "com coletivo de consumo"
+          plural: "com coletivos de consumo"
+        with_article:
+          singular: "com o coletivo de consumo"
+          plural: "com os coletivos de consumo"
         on_your:
           singular: "em seu coletivo de consumo"
         this:
@@ -1151,6 +1168,12 @@
           singular: "desta rede"
         of_another:
           singular: "de outra rede"
+        with:
+          singular: "com rede"
+          plural: "com redes"
+        with_article:
+          singular: "com a rede"
+          plural: "com a organizações"
         this:
           singular: "esta rede"
         on_your:
@@ -1165,6 +1188,12 @@
         to: 
           singular: "a um empreendimento"
           plural: "a empreendimentos"
+        to_it:
+          singular: "a ele"
+          plural: "a eles"
+        to_article: 
+          singular: "ao empreendimento"
+          plural: "aos empreendimentos"
         article: 
           singular: "o empreendimento"
           plural: "os empreendimentos"
@@ -1201,6 +1230,12 @@
           singular: "deste empreendimento"
         of_another:
           singular: "de outro empreendimento"
+        with:
+          singular: "com empreendimento"
+          plural: "com empreendimentos"
+        with_article:
+          singular: "com o empreendimento"
+          plural: "com os empreendimentos"
     models:
       network:
         settings_button: "Informações e configurações da Rede"
@@ -1292,10 +1327,15 @@
       place:
         name: "Nome do lugar"
         description: "Descrição"
+      associate_enterprise:
+        title: "Associação %{terms.supplier.of.singular} %{terms.profile.singular.capitalize}"
+        task_finished_message: "%{enterprise} aceitou seu pedido para se associar com %{network}."
+        task_cancelled_message: "%{enterprise} rejeitou seu pedido para se associar com %{network}."
+        task_notification_message: "%{enterprise} quer se associar a %{network}."
     views:
       myprofile:
         index:
-          help: "Aqui você pode colocar seus produtos nos estoques e lugares que você possui. O estoque é automaticamente conectado ao pagamento dos pedidos."
+          help: "Aqui você pode colocar seus produtos nos lugares que você possui. O estoque é automaticamente conectado ao pagamento dos pedidos."
           first_place: "Crie o seu primeiro lugar de estoque"
         edit:
           save: "Salvar"

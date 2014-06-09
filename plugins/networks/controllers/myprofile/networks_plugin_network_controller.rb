@@ -13,6 +13,20 @@ class NetworksPluginNetworkController < MyProfileController
   def show_structure
   end
 
+  def join
+    @enterprises = user.enterprises.visible.select{ |e| e.network != profile }
+
+    if params[:enterprise_id]
+      @enterprise = environment.enterprises.find params[:enterprise_id]
+      if params[:commit]
+        NetworksPlugin::AssociateEnterprise.create! :network => profile, :enterprise => @enterprise
+        @request_sent = true
+      end
+    elsif @enterprises.size == 1
+      @enterprise = @enterprises.first
+    end
+  end
+
   protected
 
   def load_node

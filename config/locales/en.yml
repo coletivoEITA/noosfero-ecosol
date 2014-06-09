@@ -1174,12 +1174,12 @@
           singular: "by the enterprise"
         new_undefined_article:
           singular: "a new enterprise"
-        tO_it: 
-          singular: "to it"
-          plural: "to them"
         to: 
           singular: "to a enterprise"
           plural: "to enterprises"
+        tO_it: 
+          singular: "to it"
+          plural: "to them"
         to_article:
           singular: "to the enterprise"
           plural: "to the enterprises"
@@ -1295,10 +1295,15 @@
       place:
         name: "Place's name"
         description: "Description"
+      associate_enterprise:
+        title: "Association %{terms.supplier.of.singular} %{terms.profile.singular.capitalize}"
+        task_finished_message: "%{enterprise} accepted your request to associate it with %{network}."
+        task_cancelled_message: "%{enterprise} rejected your request to associate it with %{network}."
+        task_notification_message: "%{enterprise} wants to associate with %{network}."
     views:
       myprofile:
         index:
-          help: "Here you can put your products on the stock and places you have. The stock is automatically connected to the payment of the orders."
+          help: "Here you can put your products on the places you have. The stock is automatically connected to the payment of the orders."
           first_place: "Create your first place for stock"
         edit:
           save: "Save"
