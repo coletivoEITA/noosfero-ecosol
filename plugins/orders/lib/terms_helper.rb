@@ -19,6 +19,7 @@ module TermsHelper
     :by, :by_article, :by_your,
     :of, :of_article, :of_this, :of_another,
     :from, :from_article, :from_this, :from_which, :from_which_article,
+    :with, :with_article, :with_which,
     # adjectives
     :none, :own, :new,
     :by_own, :new_undefined_article
@@ -43,6 +44,31 @@ module TermsHelper
   @cache = {}
   def self.cache
     @cache
+  end
+
+  # FIXME: move from here
+  def self.hash_diff h1, h2, inverse = true, path = [], &block
+    block ||= proc{ |v1, v2| v1 == v2 }
+
+    h1.each do |k1, v1|
+      v2 = h2[k1] rescue nil
+      new_path = path + [k1]
+      next self.hash_diff v1, v2, inverse, new_path, &block if v1.is_a? Hash and v2.present?
+
+      next if block.call v1, v2
+      puts "[#{new_path.map(&:inspect).join ']['}]"
+      puts "+ #{v1.inspect}"
+      puts "- #{v2.inspect}"
+    end
+
+    self.hash_diff h2, h1, false, [], &block if inverse
+  end
+  def self.compare_locales l1, l2
+    I18n.backend.send :init_translations
+    trs = I18n.backend.send :translations
+    self.hash_diff trs[l1], trs[l2], false do |v1, v2|
+      ! (v1.present? and v2.blank?)
+    end
   end
 
   protected
