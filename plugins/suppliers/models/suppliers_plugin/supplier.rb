@@ -121,6 +121,7 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
       source_product.distribute_to_consumer self.consumer
     end
   end
+  handle_asynchronously :distribute_products_to_consumer
 
   def destroy_consumer_products
     self.consumer.products.joins(:suppliers).from_supplier(self).destroy_all

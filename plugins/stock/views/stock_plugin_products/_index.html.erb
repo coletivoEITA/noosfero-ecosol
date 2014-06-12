@@ -1,0 +1,27 @@
+<%
+  wireframe_size = true if wireframe_size.nil?
+%>
+
+<div id="stock-products" class='sortable-table <%= "wireframe-size" if wireframe_size %>'>
+
+  <div class='table-header'>
+    <span class='box-field product'><%= t('views.products.product') %></span>
+    <span class='box-field allocations'><%= t('views.products.allocations') %></span>
+
+    <div class="clean"></div>
+  </div>
+
+  <div class='table-content'>
+    <% if products.size.zero? %>
+      <div class="subtitle"><%= t('views.products.any') % {
+        :manage_products => link_to(t('views.products.click_to_manage_products'), :controller => :manage_products),
+
+      } %>
+      </div>
+    <% else %>
+      <% products.each do |product| %>
+        <%= render 'stock_plugin_products/row', :product => product %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -4,6 +4,11 @@ class NetworksPlugin::Network < NetworksPlugin::BaseNode
 
   before_destroy :destroy_dependent
 
+  # used for solr's plugin facets
+  def self.type_name
+    _('Network')
+  end
+
   def control_panel_settings_button
     {:title => I18n.t('networks_plugin.models.network.settings_button'), :icon => 'edit-profile-enterprise'}
   end

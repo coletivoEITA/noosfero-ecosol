@@ -1,0 +1,14 @@
+<%
+  missing = product.profile.stock_places - product.stock_places
+%>
+
+<div class='stock-product-allocations product-allocations'>
+  <% product.stock_allocations.each do |allocation| %>
+    <%= render 'stock_plugin_products/place', :product => product, :place => allocation.place, :allocation => allocation %>
+  <% end %>
+
+  <% missing.each do |place| %>
+    <%= render 'stock_plugin_products/place', :product => product, :place => place, :allocation => nil %>
+  <% end %>
+</div>
+

@@ -15,9 +15,11 @@ class NetworksPlugin::BaseNode < Enterprise
     self.suppliers.except_self
   end
 
-  # is an enterprise as it has products
-  def enterprise?
-    true
+  def add_enterprise enterprise
+    self.class.transaction do
+      self.network_node_parent_relations.create! :parent => self, :child => enterprise
+      self.suppliers.create! :profile => enterprise
+    end
   end
 
   # FIXME: use acts_as_filesystem

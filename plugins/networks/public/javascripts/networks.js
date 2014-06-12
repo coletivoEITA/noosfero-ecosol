@@ -24,6 +24,16 @@ networks = {
 
   },
 
+  join: {
+    url: '',
+
+    choose: function(item) {
+      var item = jQuery(item)
+      jQuery('#network-join').load(this.url, {enterprise_id: item.attr('data-id')});
+    },
+
+  },
+
   participation: {
     disassociate: function(context, url, confirm_message) {
       if (confirm(confirm_message)) {

@@ -1,0 +1,145 @@
+@import 'base';
+
+//use with sass nested import
+
+$input-height: 3*$height;
+
+.field-title {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.field {
+  clear: both;
+  @extend .container-clean;
+
+  label {
+    display: block;
+    float: left;
+    padding-top: $half-padding;
+    font-weight: bold;
+    line-height: 20px;
+  }
+  .field-box {
+    clear: both;
+    float: left;
+    width: 100%;
+  }
+  .field-help {
+    clear: both;
+    margin-bottom: $half-margin;
+    font-size: 10px;
+  }
+}
+
+.field-radio {
+  clear: both;
+  margin-bottom: $half-padding;
+
+  input {
+    float: left;
+    margin-left: 0;
+  }
+  label {
+    font-weight: normal;
+    line-height: 10px;
+    text-transform: lowercase;
+    margin-left: $half-padding;
+  }
+}
+
+.field-secondary {
+  display: block;
+
+  &, input, select {
+    width: $module02 - $intercolumn;
+  }
+
+  &.with-unit {
+    @extend .container-clean;
+
+    input {
+      float: left;
+      width: $module02 - 2*$intercolumn;
+    }
+    .field-unit {
+      float: left;
+      width: $intercolumn;
+      line-height: $input-height;
+    }
+  }
+}
+
+form {
+  margin: 0; /* come on browsers!? */
+}
+
+label {
+
+  &.field-bellow {
+    display: block;
+    margin-bottom: $half-padding;
+    font-size: 10px;
+  }
+}
+
+select,
+input[type=text], input[type=password],
+textarea {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+
+select,
+input[type=text], input[type=password] {
+  height: $input-height;
+}
+
+select {
+  background-color: #fff;
+  border: $border solid black;
+  padding-left: $half-padding;
+}
+
+input {
+  &.date-select,
+  &.time-select {
+    width: 94px;
+  }
+
+  &[type=text] {
+    border: $border solid black;
+    padding: $half-padding;
+    margin: 0;
+  }
+
+  &[type=checkbox] {
+    width: 12px;
+    height: 12px;
+    margin: 0;
+  }
+
+  &.highlight-on-focus {
+    border: $border solid transparent;
+
+    &:hover, &:focus {
+      border: $border solid #aaa;
+    }
+  }
+}
+
+textarea {
+  height: 8*$height;
+  padding-left: $half-padding;
+  margin-bottom: 10px;
+}
+
+a.button.colorbox-close,
+#wrap-1 input[type=submit],
+input[type=submit] {
+  @extend .action-button;
+
+}
+

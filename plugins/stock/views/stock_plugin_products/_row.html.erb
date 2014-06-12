@@ -1,0 +1,12 @@
+<div id="product-row-<%=product.id%>" class="product-row value-row <%= 'available' if product.available%>">
+
+  <div class="box-field product">
+    <%= product.name %>
+  </div>
+
+  <div class="box-field allocations">
+    <%= render 'stock_plugin_products/allocations', :product => product %>
+  </div>
+
+
+</div>

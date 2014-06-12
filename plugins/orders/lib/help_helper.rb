@@ -1,4 +1,4 @@
-module OrdersPlugin::HelpHelper
+module HelpHelper
 
   Klass = 'hideable-help'
 

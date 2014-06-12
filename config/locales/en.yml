@@ -236,6 +236,13 @@
         it: 
           singular: "it"
           plural: "them"
+        article: 
+          singular: "the organization"
+          plural: "the organizations"
+        undefined_article:
+          singular: "a organization"
+        by_article: 
+          singular: "by the organization"
         tO_it: 
           singular: "to it"
           plural: "to them"
@@ -250,19 +257,20 @@
           singular: "from the organization"
         from_which_article: 
           singular: "from which the organização"
-        on_your:
-          singular: "on your organização"
+        of:
+          singular: "of organization"
+          plural: "of organizations"
+        of_article:
+          singular: "of the organization"
+          plural: "of the organizations"
+        of_this:
+          singular: "of this organization"
+        of_another:
+          singular: "of another organization"
         this:
           singular: "this organization"
         with_which:
           singular: "with which the organization"
-        undefined_article:
-          singular: "a organization"
-        article: 
-          singular: "the organization"
-          plural: "the organizations"
-        by_article: 
-          singular: "by the organization"
       consumer: 
         singular: "consumer"
         plural: "consumers"
@@ -279,6 +287,15 @@
         it: 
           singular: "it"
           plural: "them"
+        article: 
+          singular: "the supplier"
+          plural: "the suppliers"
+        undefined_article:
+          singular: "a supplier"
+        by_article: 
+          singular: "by the supplier"
+        new_undefined_article:
+          singular: "a new supplier"
         to: 
           singular: "to a supplier"
           plural: "to suppliers"
@@ -292,22 +309,29 @@
           singular: "any supplier"
         this:
           singular: "this supplier"
-        your: 
-          singular: "your supplier"
-          plural: "your suppliers"
         from_article: 
           singular: "from supplier"
         from_which_article: 
           singular: "from which the supplier"
-        undefined_article:
-          singular: "a supplier"
-        article: 
-          singular: "the supplier"
-          plural: "the suppliers"
-        by_article: 
-          singular: "by the supplier"
-        new_undefined_article:
-          singular: "a new supplier"
+        of: 
+          singular: "of supplier"
+          plural: "of suppliers"
+        of_article: 
+          singular: "of the supplier"
+          plural: "of the suppliers"
+        of_this: 
+          singular: "of this supplier"
+        of_another: 
+          singular: "of another supplier"
+        your: 
+          singular: "your supplier"
+          plural: "your suppliers"
+        on_your:
+          singular: "on your organization"
+        on_article:
+          singular: "on your organization"
+        on_undefined_article:
+          singular: "on an organization"
     controllers: 
       myprofile: 
         supplier_created: "%{terms.supplier.singular.capitalize} created"
@@ -1010,6 +1034,13 @@
         it: 
           singular: "it"
           plural: "them"
+        article: 
+          singular: "the consumers' coop"
+          plural: "the consumers' coops"
+        undefined_article:
+          singular: "a consumers' coop"
+        by_article: 
+          singular: "by the consumers' coop"
         tO_it: 
           singular: "to it"
           plural: "to them"
@@ -1023,19 +1054,22 @@
           singular: "from the consumers' coop"
         from_which_article: 
           singular: "from which the consumers' coop"
+        of:
+          singular: "of consumers' coop"
+          plural: "of consumers' coops"
+        of_article:
+          singular: "of the consumers' coop"
+          plural: "of the consumers' coops"
+        of_this:
+          singular: "of this consumers' coop"
+        of_another:
+          singular: "of another consumers' coop"
         on_your:
           singular: "on your consumers' coop"
         this:
           singular: "this consumers' coop"
         with_which:
           singular: "with which the consumers' coop"
-        undefined_article:
-          singular: "a consumers' coop"
-        article: 
-          singular: "the consumers' coop"
-          plural: "the consumers' coops"
-        by_article: 
-          singular: "by the consumers' coop"
     controllers:
       myprofile:
         distribution_settings: "Distribution settings saved."
@@ -1088,6 +1122,13 @@
         it: 
           singular: "it"
           plural: "them"
+        article: 
+          singular: "the network"
+          plural: "the networks"
+        undefined_article:
+          singular: "a network"
+        by_article: 
+          singular: "by the network"
         tO_it: 
           singular: "to it"
           plural: "to them"
@@ -1101,32 +1142,44 @@
           singular: "from the network"
         from_which_article: 
           singular: "from which the rede"
+        of:
+          singular: "of the network"
+          plural: "of the networks"
+        of_article:
+          singular: "of the network"
+          plural: "of the networks"
+        of_this:
+          singular: "of this network"
+        of_another:
+          singular: "of another network"
         this:
           singular: "this network"
         on_your:
           singular: "on your network"
         with_which:
           singular: "with which the network"
-        undefined_article:
-          singular: "a network"
-        article: 
-          singular: "the network"
-          plural: "the networks"
-        by_article: 
-          singular: "by the network"
       supplier: 
         singular: "enterprise"
         plural: "enterprises"
+        one: "one"
         it: 
           singular: "it"
           plural: "them"
-        tO_it: 
-          singular: "to it"
-          plural: "to them"
-        one: "one"
+        article: 
+          singular: "the enterprise"
+          plural: "the enterprises"
+        undefined_article:
+          singular: "a enterprise"
+        by_article: 
+          singular: "by the enterprise"
+        new_undefined_article:
+          singular: "a new enterprise"
         to: 
           singular: "to a enterprise"
           plural: "to enterprises"
+        tO_it: 
+          singular: "to it"
+          plural: "to them"
         to_article:
           singular: "to the enterprise"
           plural: "to the enterprises"
@@ -1137,22 +1190,26 @@
           singular: "from enterprise"
         from_which_article: 
           singular: "from which the enterprise"
-        undefined_article:
-          singular: "a enterprise"
+        of: 
+          singular: "of enterprise"
+          plural: "of enterprises"
+        of_article: 
+          singular: "of the enterprise"
+          plural: "of the enterprises"
+        of_this: 
+          singular: "of this enterprise"
+        of_another: 
+          singular: "of another enterprise"
         none: 
           singular: "any enterprise"
         this:
           singular: "this enterprise"
-        article: 
-          singular: "the enterprise"
-          plural: "the enterprises"
-        by_article: 
-          singular: "by the enterprise"
-        new_undefined_article:
-          singular: "a new enterprise"
     models:
       network:
         settings_button: "Network's informations and settings"
+      associate_enterprise:
+        title: "Association request %{terms.supplier.from.singular}"
+        information: "%{requestor} said it is part of the network %{linked_subject}."
     controllers:
       node:
         edit: "Node settings saved"
@@ -1160,13 +1217,15 @@
       control_panel:
         structure: "Manage network's structure"
       profile_editor:
+        help: "If %{terms.supplier.your.singular} participate %{terms.profile.of_another.singular}, %{search}, access %{terms.profile.article.singular}, and ask to join by clicking the button 'We are part %{terms.profile.of_this.singular}"
+        search: "procure a rede"
         networks_i_participate: "%{terms.profile.plural.capitalize} I participate"
         none: "None"
         disassociate: "Disassociate"
         disassociate_confirm: "By disassociating %{terms.supplier.your.singular} %{terms.profile.from_article.singular}, your distributed products %{terms.profile.to_it.singular} will be deleted and you won't distributed more products %{terms.profile.to_it.singular}. Please confirm your choice."
       blocks:
         profile_info_actions:
-          button: "My enterprise participate on this network"
+          button: "We are part %{terms.profile.of_this.singular}"
         location:
           title: "Map of Enterprises from %{profile}"
       admin:
@@ -1182,6 +1241,12 @@
         _supplier:
           by_removing_this_supp: "By removing %{terms.supplier.article.singular} all its products won't be available. Please confirm you choice"
       network:
+        join:
+          request_sent: "%{terms.profile.article.singular.capitalize} will receive a message to approve your association request."
+          confirm: "%{terms.supplier.article.singular.capitalize} %{enterprise} is part %{terms.profile.of_article.singular} %{network}?"
+          yes: "Yes"
+          no: "No"
+          choose: "Which %{terms.supplier.of_article.plural} bellow are parte of %{terms.profile.of_article.singular} %{network}?"
         show_structure:
           pathway: "You're at: "
           none: "None"
@@ -1222,3 +1287,37 @@
       plugin:
         name: "pjax plugin"
         description: "Use pjax for page's links"
+
+  stock_plugin:
+    lib:
+      plugin:
+        name: "Products' Stock"
+        description: "Manage stocks of products"
+        control_panel:
+          manage: "Manage Stock"
+        manage_products: 
+          stock_tab: "Stock"
+    models:
+      place:
+        name: "Place's name"
+        description: "Description"
+      associate_enterprise:
+        title: "Association %{terms.supplier.of.singular} %{terms.profile.singular.capitalize}"
+        task_finished_message: "%{enterprise} accepted your request to associate it with %{network}."
+        task_cancelled_message: "%{enterprise} rejected your request to associate it with %{network}."
+        task_notification_message: "%{enterprise} wants to associate with %{network}."
+    views:
+      myprofile:
+        index:
+          help: "Here you can put your products on the places you have. The stock is automatically connected to the payment of the orders."
+          first_place: "Create your first place for stock"
+        edit:
+          save: "Save"
+      products:
+        any: "Any product registered, %{manage_products}."
+        click_to_manage_products: "click to manage products"
+        product: "Product"
+        allocations: "Places and quantities"
+        _place:
+          none: "none"
+

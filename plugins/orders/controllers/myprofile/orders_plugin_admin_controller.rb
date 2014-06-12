@@ -25,7 +25,7 @@ class OrdersPluginAdminController < MyProfileController
     @method = params[:orders_method]
     raise unless self.filter_methods.include? @method
 
-    @actor_name = params[:actor_name]
+    @actor_name = params[:actor_name].to_sym
 
     @scope ||= profile
     @scope = @scope.send @method

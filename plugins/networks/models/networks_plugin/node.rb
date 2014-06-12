@@ -7,6 +7,11 @@ class NetworksPlugin::Node < NetworksPlugin::BaseNode
 
   delegate :admins, :to => :network, :allow_nil => true
 
+  # used for solr's plugin facets
+  def self.type_name
+    _('Node')
+  end
+
   def default_template
     return self.environment.network_template if self.is_template
     self.network.node_template

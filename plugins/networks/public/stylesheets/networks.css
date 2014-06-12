@@ -345,5 +345,8 @@ body.network-node #network-header .network-tag {
   .controller-networks_plugin_network #suppliers-page .supplier#supplier-add {
     display: block; }
 
+#network-info-actions a.icon-add {
+  display: inline-block; }
+
 .controller-networks_plugin_enterprise #suppliers-page .supplier .box-edit {
   display: block; }

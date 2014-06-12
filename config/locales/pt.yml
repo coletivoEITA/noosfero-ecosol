@@ -246,6 +246,13 @@
         it: 
           singular: "ela"
           plural: "elas"
+        article: 
+          singular: "a organização"
+          plural: "as organizações"
+        undefined_article:
+          singular: "uma organização"
+        by_article: 
+          singular: "pela organização"
         tO_it: 
           singular: "a ela"
           plural: "a elas"
@@ -260,17 +267,31 @@
           singular: "da organização"
         from_which_article: 
           singular: "com que a organização"
+        of:
+          singular: "de organização"
+          plural: "de organizações"
+        of_article:
+          singular: "da organização"
+          plural: "das organizações"
+        of_this:
+          singular: "desta organização"
+        of_another:
+          singular: "de outra organização"
+        with:
+          singular: "com organização"
+          plural: "com organizações"
+        with_article:
+          singular: "com a organização"
+          plural: "com as organizações"
+        your: 
+          singular: "seu fornecedor"
+          plural: "seus fornecedores"
         on_your:
           singular: "na sua organização"
+        on_undefined_article:
+          singular: "em uma organização"
         this:
           singular: "esta organização"
-        undefined_article:
-          singular: "uma organização"
-        article: 
-          singular: "a organização"
-          plural: "as organizações"
-        by_article: 
-          singular: "pela organização"
       consumer: 
         singular: "consumidor"
         plural: "consumidores"
@@ -296,20 +317,32 @@
         to_article:
           singular: "ao fornecedor"
           plural: "aos fornecedores"
-          singular: "do fornecedor"
         undefined_article:
           singular: "um fornecedor"
         none: 
           singular: "nenhum fornecedor"
         this:
           singular: "este fornecedor"
-        your: 
-          singular: "seu fornecedor"
-          plural: "seus fornecedores"
         from_article:
           singular: "do fornecedor"
         from_which_article: 
           singular: "com que o fornecedor"
+        of:
+          singular: "de fornecedor"
+          plural: "de fornecedores"
+        of_article:
+          singular: "do fornecedor"
+          plural: "dos fornecedor"
+        of_this:
+          singular: "deste fornecedor"
+        of_another:
+          singular: "de outro fornecedor"
+        with:
+          singular: "com fornecedor"
+          plural: "com fornecedores"
+        with_article:
+          singular: "com o fornecedor"
+          plural: "com o fornecedores"
         article: 
           singular: "o fornecedor"
           plural: "os fornecedores"
@@ -938,7 +971,7 @@
           the_orders_period_is_: "O período de pedidos está ainda aberto, tome cuidado ao editar os pedidos abertos. Isso pode confundir os usuários."
           already_closed: "O período de pedidos já foi fechado, Não é possível editar os pedidos originais. Na fase de redistribuição é possível editar o pedido, e também antes da entrega."
         _purchases:
-          header_help: "Nesta etapa, com base nos pedidos recebidos, são feitas as compras de cada um dos fornecedores para suprir a demanda de todos os pedidos."
+          header_help: "Nesta etapa, com base nos pedidos recebidos, são feitas as compras de cada um %{terms.supplier.of_article.plural} para suprir a demanda de todos os pedidos."
         _receipts:
           header_help: "Nesta etapa são registradas os recebimentos das compras e são editadas quaisquer discrepâncias que possam existir."
         _separation:
@@ -1012,11 +1045,16 @@
       profile: &consumers_coop_term_profile
         singular: "coletivo de consumo"
         plural: "coletivos de consumo"
-        to_article:
-          singular: "ao coletivo de consumo"
         it: 
           singular: "ele"
           plural: "eles"
+        article: 
+          singular: "o coletivo de consumo"
+          plural: "os coletivos de consumo"
+        undefined_article:
+          singular: "um coletivo de consumo"
+        by_article: 
+          singular: "pelo coletivo de consumo"
         to_it:
           singular: "a ele"
           plural: "a eles"
@@ -1030,17 +1068,26 @@
           singular: "do coletivo de consumo"
         from_which_article: 
           singular: "com que o coletivo de consumo"
+        of:
+          singular: "de coletivo de consumo"
+          plural: "de coletivos de consumo"
+        of_article:
+          singular: "do coletivo de consumo"
+          plural: "dos coletivos de consumo"
+        of_this:
+          singular: "deste coletivo de consumo"
+        of_another:
+          singular: "de outro coletivo de consumo"
+        with:
+          singular: "com coletivo de consumo"
+          plural: "com coletivos de consumo"
+        with_article:
+          singular: "com o coletivo de consumo"
+          plural: "com os coletivos de consumo"
         on_your:
           singular: "em seu coletivo de consumo"
         this:
           singular: "este coletivo de consumo"
-        undefined_article:
-          singular: "um coletivo de consumo"
-        article: 
-          singular: "o coletivo de consumo"
-          plural: "os coletivos de consumo"
-        by_article: 
-          singular: "pelo coletivo de consumo"
     controllers:
       myprofile:
         distribution_settings: "Configurações salvas"
@@ -1090,14 +1137,17 @@
       profile: &networks_term_profile
         singular: "rede"
         plural: "redes"
-        to_article:
-          singular: "a rede"
         it: 
           singular: "ela"
           plural: "elas"
         to_it:
           singular: "a ela"
           plural: "a elas"
+        article: 
+          singular: "a rede"
+          plural: "as redes"
+        undefined_article:
+          singular: "uma rede"
         to_article:
           singular: "a rede"
         at_article:
@@ -1108,17 +1158,26 @@
           singular: "da rede"
         from_which_article: 
           singular: "com que a rede"
+        of:
+          singular: "de rede"
+          plural: "de redes"
+        of_article:
+          singular: "da rede"
+          plural: "das redes"
+        of_this:
+          singular: "desta rede"
+        of_another:
+          singular: "de outra rede"
+        with:
+          singular: "com rede"
+          plural: "com redes"
+        with_article:
+          singular: "com a rede"
+          plural: "com a organizações"
         this:
           singular: "esta rede"
         on_your:
           singular: "na sua rede"
-        undefined_article:
-          singular: "uma rede"
-        article: 
-          singular: "a rede"
-          plural: "as redes"
-        by_article: 
-          singular: "pela rede"
       supplier: 
         singular: "empreendimento"
         plural: "empreendimentos"
@@ -1129,6 +1188,21 @@
         to: 
           singular: "a um empreendimento"
           plural: "a empreendimentos"
+        to_it:
+          singular: "a ele"
+          plural: "a eles"
+        to_article: 
+          singular: "ao empreendimento"
+          plural: "aos empreendimentos"
+        article: 
+          singular: "o empreendimento"
+          plural: "os empreendimentos"
+        by_article: 
+          singular: "pelo empreendimento"
+        undefined_article:
+          singular: "um empreendimento"
+        new_undefined_article:
+          singular: "um novo empreendimento"
         to_it:
           singular: "a ele"
           plural: "a eles"
@@ -1146,18 +1220,28 @@
           singular: "do empreendimento"
         from_which_article: 
           singular: "com que o empreendimento"
-        undefined_article:
-          singular: "um empreendimento"
-        article: 
-          singular: "o empreendimento"
-          plural: "os empreendimentos"
-        by_article: 
-          singular: "pelo empreendimento"
-        new_undefined_article:
-          singular: "um novo empreendimento"
+        of:
+          singular: "de empreendimento"
+          plural: "de empreendimentos"
+        of_article:
+          singular: "do empreendimento"
+          plural: "dos empreendimentos"
+        of_this:
+          singular: "deste empreendimento"
+        of_another:
+          singular: "de outro empreendimento"
+        with:
+          singular: "com empreendimento"
+          plural: "com empreendimentos"
+        with_article:
+          singular: "com o empreendimento"
+          plural: "com os empreendimentos"
     models:
       network:
         settings_button: "Informações e configurações da Rede"
+      associate_enterprise:
+        title: "Pedido de associação %{terms.supplier.from.singular}"
+        information: "%{requestor} disse que faz parte da rede %{linked_subject}."
     controllers:
       node:
         edit: "Configurações do nó salvas"
@@ -1165,13 +1249,15 @@
       control_panel:
         structure: "Gerenciar estrutura da rede"
       profile_editor:
+        help: "Se %{terms.supplier.your.singular} participa %{terms.profile.of_another.singular}, %{search}, acesse %{terms.profile.article.singular}, e solicite a entrada clicando no botão 'Fazemos parte %{terms.profile.of_this.singular}'."
+        search: "procure a rede"
         networks_i_participate: "%{terms.profile.plural.capitalize} de que faço parte"
         none: "Nenhuma"
         disassociate: "Desassociar"
         disassociate_confirm: "Ao desassociar %{terms.supplier.your.singular} %{terms.profile.from_article.singular}, os seus produtos distribuídos %{terms.profile.to_it.singular} serão excluídos e você não distribuirá produtos %{terms.profile.to_it.singular}. Por favor confirme sua escolha."
       blocks:
         profile_info_actions:
-          button: "Meu empreendimento participa desta rede"
+          button: "Fazemos parte %{terms.profile.of_this.singular}"
         location:
           title: "Mapa dos Empreendimentos de %{profile}"
       admin:
@@ -1187,6 +1273,12 @@
         _supplier:
           by_removing_this_supp: "Ao remover %{terms.supplier.article.singular}, todos os seus produtos ficarão indisponíveis. Por favor, confirme sua opção"
       network:
+        join:
+          request_sent: "%{terms.profile.article.singular.capitalize} irá receber uma mensagem para aprovar seu pedido de associação."
+          confirm: "%{terms.supplier.article.singular.capitalize} %{enterprise} faz parte %{terms.profile.of_article.singular} %{network}?"
+          submit_yes: "Sim"
+          submit_no: "Não"
+          choose: "Qual %{terms.supplier.of_article.plural} abaixo faz parte %{terms.profile.of_article.singular} %{network}?"
         show_structure: 
           pathway: "Você está em: "
           none: "Nenhum"
@@ -1227,3 +1319,37 @@
       plugin:
         name: "pjax plugin"
         description: "Usa o pjax para os links da página"
+
+  stock_plugin:
+    lib:
+      plugin:
+        name: "Estoque de produtos"
+        description: "Faça a gestão de estoques de produtos"
+        control_panel:
+          manage: "Gerenciar Estoque"
+        manage_products: 
+          stock_tab: "Estoque"
+    models:
+      place:
+        name: "Nome do lugar"
+        description: "Descrição"
+      associate_enterprise:
+        title: "Associação %{terms.supplier.of.singular} %{terms.profile.singular.capitalize}"
+        task_finished_message: "%{enterprise} aceitou seu pedido para se associar com %{network}."
+        task_cancelled_message: "%{enterprise} rejeitou seu pedido para se associar com %{network}."
+        task_notification_message: "%{enterprise} quer se associar a %{network}."
+    views:
+      myprofile:
+        index:
+          help: "Aqui você pode colocar seus produtos nos lugares que você possui. O estoque é automaticamente conectado ao pagamento dos pedidos."
+          first_place: "Crie o seu primeiro lugar de estoque"
+        edit:
+          save: "Salvar"
+      products:
+        any: "Nenhum produto cadastrado, %{manage_products}."
+        click_to_manage_products: "clique para gerenciar produtos"
+        product: "Produto"
+        allocations: "Lugares e quantidades"
+        _place:
+          none: "nenhum"
+
