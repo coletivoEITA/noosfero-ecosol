@@ -1,6 +1,7 @@
 <h1> <%= _('Purchase Reports') %> </h1>
 
 <% extend ProfileHelper %>
+<% extend ShoppingCartPlugin::CartHelper %>
 
 <% status_collection = [[nil, _('All')]] %>
 <% status_collection += OrdersPlugin::Order::StatusText.map{ |id, name| [id, t(name)] } %>

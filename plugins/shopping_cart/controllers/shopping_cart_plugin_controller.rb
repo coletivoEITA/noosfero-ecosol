@@ -188,7 +188,7 @@ class ShoppingCartPluginController < PublicController
 
   private
 
-  def validate_same_profile product
+  def validate_same_profile(product)
     if self.cart && self.cart[:profile_id] && product.profile_id != self.cart[:profile_id]
       render :text => {
         :ok => false,

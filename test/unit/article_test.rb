@@ -1666,6 +1666,18 @@ class ArticleTest < ActiveSupport::TestCase
     a.allow_members_to_edit = true
     assert !a.allow_edit?(nil)
   end
+ 
+  should 'allow author to edit topic' do
+    community = fast_create(Community)
+    admin = fast_create(Person)
+    community.add_member(admin)
+    author = fast_create(Person)
+    community.add_member(author)
+    forum = Forum.create(:profile => community, :name => 'Forum test', :body => 'Forum test')
+    post = fast_create(TextileArticle, :name => 'First post', :profile_id => community.id, :parent_id => forum.id, :last_changed_by_id => author.id)
+
+    assert post.allow_edit?(author)
+  end
 
   should 'has a empty list of followers by default' do
     a = Article.new
