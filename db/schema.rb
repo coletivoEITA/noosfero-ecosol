@@ -1,4 +1,4 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file,
+# This file is auto-generated from the current state of the database. Instead of editing this file, 
 # please use the migrations feature of Active Record to incrementally modify your database, and
 # then regenerate this schema definition.
 #
@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140505131703) do
+ActiveRecord::Schema.define(:version => 20140616133424) do
 
   create_table "abuse_reports", :force => true do |t|
     t.integer  "reporter_id"
@@ -144,7 +144,6 @@ ActiveRecord::Schema.define(:version => 20140505131703) do
   add_index "articles", ["comments_count"], :name => "index_articles_on_comments_count"
   add_index "articles", ["created_at"], :name => "index_articles_on_created_at"
   add_index "articles", ["hits"], :name => "index_articles_on_hits"
-  add_index "articles", ["name"], :name => "index_articles_on_name"
   add_index "articles", ["parent_id"], :name => "index_articles_on_parent_id"
   add_index "articles", ["profile_id"], :name => "index_articles_on_profile_id"
   add_index "articles", ["slug"], :name => "index_articles_on_slug"
@@ -283,6 +282,13 @@ ActiveRecord::Schema.define(:version => 20140505131703) do
     t.datetime "updated_at"
   end
 
+  create_table "custom_forms_plugin_alternatives", :force => true do |t|
+    t.string  "label"
+    t.integer "field_id"
+    t.boolean "selected_by_default", :default => false, :null => false
+    t.integer "position",            :default => 0
+  end
+
   create_table "custom_forms_plugin_answers", :force => true do |t|
     t.text    "value"
     t.integer "field_id"
@@ -294,14 +300,12 @@ ActiveRecord::Schema.define(:version => 20140505131703) do
     t.string  "slug"
     t.string  "type"
     t.string  "default_value"
-    t.string  "choices"
     t.float   "minimum"
     t.float   "maximum"
     t.integer "form_id"
     t.boolean "mandatory",     :default => false
-    t.boolean "multiple"
-    t.boolean "list"
     t.integer "position",      :default => 0
+    t.string  "show_as"
   end
 
   create_table "custom_forms_plugin_forms", :force => true do |t|
@@ -316,6 +320,7 @@ ActiveRecord::Schema.define(:version => 20140505131703) do
     t.string   "access"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "for_admission",      :default => false
   end
 
   create_table "custom_forms_plugin_submissions", :force => true do |t|
@@ -338,6 +343,7 @@ ActiveRecord::Schema.define(:version => 20140505131703) do
     t.string   "locked_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "queue"
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
@@ -423,6 +429,15 @@ ActiveRecord::Schema.define(:version => 20140505131703) do
     t.integer "person_id"
     t.integer "enterprise_id"
   end
+
+  create_table "fb_app_ecosol_store_plugin_page_configs", :force => true do |t|
+    t.string   "page_id"
+    t.text     "config",     :default => "--- {}\n\n"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "fb_app_ecosol_store_plugin_page_configs", ["page_id"], :name => "index_fb_app_ecosol_store_plugin_page_configs_on_page_id"
 
   create_table "friendships", :force => true do |t|
     t.integer  "person_id"
@@ -585,14 +600,18 @@ ActiveRecord::Schema.define(:version => 20140505131703) do
 
   create_table "orders_cycle_plugin_cycle_orders", :force => true do |t|
     t.integer  "cycle_id"
-    t.integer  "order_id"
+    t.integer  "sale_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "purchase_id"
   end
 
-  add_index "orders_cycle_plugin_cycle_orders", ["cycle_id", "order_id"], :name => "index_orders_cycle_plugin_cycle_orders_on_cycle_id_and_order_id"
+  add_index "orders_cycle_plugin_cycle_orders", ["cycle_id", "sale_id"], :name => "index_orders_cycle_plugin_cycle_orders_on_cycle_id_and_order_id"
+  add_index "orders_cycle_plugin_cycle_orders", ["cycle_id", "sale_id"], :name => "index_orders_cycle_plugin_cycle_orders_on_cycle_id_and_sale_id"
   add_index "orders_cycle_plugin_cycle_orders", ["cycle_id"], :name => "index_orders_cycle_plugin_cycle_orders_on_cycle_id"
-  add_index "orders_cycle_plugin_cycle_orders", ["order_id"], :name => "index_orders_cycle_plugin_cycle_orders_on_order_id"
+  add_index "orders_cycle_plugin_cycle_orders", ["purchase_id"], :name => "index_orders_cycle_plugin_cycle_orders_on_purchase_id"
+  add_index "orders_cycle_plugin_cycle_orders", ["sale_id"], :name => "index_orders_cycle_plugin_cycle_orders_on_order_id"
+  add_index "orders_cycle_plugin_cycle_orders", ["sale_id"], :name => "index_orders_cycle_plugin_cycle_orders_on_sale_id"
 
   create_table "orders_cycle_plugin_cycle_products", :force => true do |t|
     t.integer "cycle_id"
@@ -626,17 +645,27 @@ ActiveRecord::Schema.define(:version => 20140505131703) do
   create_table "orders_plugin_items", :force => true do |t|
     t.integer  "product_id"
     t.integer  "order_id"
-    t.decimal  "quantity_asked",    :default => 0.0
-    t.decimal  "quantity_accepted", :default => 0.0
-    t.decimal  "quantity_shipped",  :default => 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "price_asked",       :default => 0.0
-    t.decimal  "price_accepted",    :default => 0.0
-    t.decimal  "price_shipped",     :default => 0.0
-    t.text     "data",              :default => "--- {}\n\n"
+    t.text     "data",                        :default => "--- {}\n\n"
     t.string   "name"
     t.decimal  "price"
+    t.boolean  "draft"
+    t.decimal  "quantity_consumer_ordered"
+    t.decimal  "quantity_supplier_accepted"
+    t.decimal  "quantity_supplier_separated"
+    t.decimal  "quantity_supplier_delivered"
+    t.decimal  "quantity_consumer_received"
+    t.decimal  "price_consumer_ordered"
+    t.decimal  "price_supplier_accepted"
+    t.decimal  "price_supplier_separated"
+    t.decimal  "price_supplier_delivered"
+    t.decimal  "price_consumer_received"
+    t.integer  "unit_id_consumer_ordered"
+    t.integer  "unit_id_supplier_accepted"
+    t.integer  "unit_id_supplier_separated"
+    t.integer  "unit_id_supplier_delivered"
+    t.integer  "unit_id_consumer_received"
   end
 
   add_index "orders_plugin_items", ["order_id"], :name => "index_distribution_plugin_ordered_products_on_order_id"
@@ -657,6 +686,12 @@ ActiveRecord::Schema.define(:version => 20140505131703) do
     t.text     "consumer_delivery_data", :default => "--- {}\n\n"
     t.text     "payment_data",           :default => "--- {}\n\n"
     t.text     "data",                   :default => "--- {}\n\n"
+    t.datetime "ordered_at"
+    t.datetime "accepted_at"
+    t.datetime "separated_at"
+    t.datetime "delivered_at"
+    t.datetime "received_at"
+    t.string   "source"
   end
 
   add_index "orders_plugin_orders", ["consumer_delivery_id"], :name => "index_distribution_plugin_orders_on_consumer_delivery_id"
@@ -713,7 +748,7 @@ ActiveRecord::Schema.define(:version => 20140505131703) do
 
   add_index "products", ["created_at"], :name => "index_products_on_created_at"
   add_index "products", ["product_category_id"], :name => "index_products_on_product_category_id"
-  add_index "products", ["profile_id"], :name => "index_products_on_profile_id"
+  add_index "products", ["profile_id"], :name => "index_products_on_enterprise_id"
 
   create_table "profiles", :force => true do |t|
     t.string   "name"
@@ -832,6 +867,52 @@ ActiveRecord::Schema.define(:version => 20140505131703) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
+  create_table "shopping_cart_plugin_purchase_orders", :force => true do |t|
+    t.integer  "customer_id"
+    t.integer  "seller_id"
+    t.text     "data"
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "stock_plugin_allocations", :force => true do |t|
+    t.integer  "place_id"
+    t.integer  "product_id"
+    t.decimal  "quantity"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "stock_plugin_allocations", ["place_id", "product_id"], :name => "index_stock_plugin_allocations_on_place_id_and_product_id"
+  add_index "stock_plugin_allocations", ["place_id"], :name => "index_stock_plugin_allocations_on_place_id"
+  add_index "stock_plugin_allocations", ["product_id"], :name => "index_stock_plugin_allocations_on_product_id"
+
+  create_table "stock_plugin_places", :force => true do |t|
+    t.integer  "profile_id"
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "stock_plugin_places", ["profile_id"], :name => "index_stock_plugin_places_on_profile_id"
+
+  create_table "sub_organizations_plugin_approve_paternity_relations", :force => true do |t|
+    t.integer "task_id"
+    t.integer "parent_id"
+    t.string  "parent_type"
+    t.integer "child_id"
+    t.string  "child_type"
+  end
+
+  create_table "sub_organizations_plugin_relations", :force => true do |t|
+    t.integer "parent_id"
+    t.string  "parent_type"
+    t.integer "child_id"
+    t.string  "child_type"
+  end
+
   create_table "suppliers_plugin_source_products", :force => true do |t|
     t.integer  "from_product_id"
     t.integer  "to_product_id"
@@ -868,9 +949,12 @@ ActiveRecord::Schema.define(:version => 20140505131703) do
     t.integer  "taggable_id"
     t.string   "taggable_type"
     t.datetime "created_at"
+    t.integer  "tagger_id"
+    t.string   "tagger_type"
+    t.string   "context",       :limit => 128
   end
 
-  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], :name => "taggings_idx", :unique => true
   add_index "taggings", ["taggable_id", "taggable_type"], :name => "index_taggings_on_taggable_id_and_taggable_type"
 
   create_table "tags", :force => true do |t|
@@ -879,6 +963,7 @@ ActiveRecord::Schema.define(:version => 20140505131703) do
     t.boolean "pending",   :default => false
   end
 
+  add_index "tags", ["name"], :name => "index_tags_on_name", :unique => true
   add_index "tags", ["parent_id"], :name => "index_tags_on_parent_id"
 
   create_table "tasks", :force => true do |t|
@@ -949,6 +1034,7 @@ ActiveRecord::Schema.define(:version => 20140505131703) do
     t.string   "activation_code",           :limit => 40
     t.datetime "activated_at"
     t.string   "return_to"
+    t.datetime "last_login_at"
   end
 
   create_table "validation_infos", :force => true do |t|
