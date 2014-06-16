@@ -1,7 +1,4 @@
 class ShoppingCartPluginMyprofileController < MyProfileController
-
-  include ShoppingCartPlugin::CartHelper
-
   def edit
     params[:settings] = treat_cart_options(params[:settings])
 
