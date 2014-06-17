@@ -56,10 +56,10 @@ class ContentViewerController < ApplicationController
 
     @page = FilePresenter.for @page
 
-    if @page.is_a? FilePresenter::Generic and @page.file.download? params[:view]
-      headers['Content-Type'] = @page.file.mime_type
-      headers.merge! @page.file.download_headers
-      data = @page.file.data
+    if @page.download? params[:view]
+      headers['Content-Type'] = @page.mime_type
+      headers.merge! @page.download_headers
+      data = @page.data
 
       # TODO test the condition
       raise "No data for file" if data.nil?
