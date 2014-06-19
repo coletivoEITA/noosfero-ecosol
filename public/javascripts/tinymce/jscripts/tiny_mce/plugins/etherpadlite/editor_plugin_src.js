@@ -9,18 +9,21 @@
  */
 
 (function() {
-	tinymce.PluginManager.requireLangPack('etherpadlite');
+  var supportedLanguages = ['en', 'pt']
+  if (supportedLanguages.indexOf(tinymce.settings.language) >= 0)
+    tinymce.PluginManager.requireLangPack('etherpadlite');
+
 	tinymce.create('tinymce.plugins.EtherPadLitePlugin', {
 		init : function(ed, url) {
 			var t = this;
 
 			t.editor = ed;
-			
+
 			//If the person who activated the plugin didn't put a Pad Server URL, the plugin will be disabled
 			if (!ed.getParam("plugin_etherpadlite_padServerUrl") || ed.getParam("plugin_etherpadlite_padServerUrl")=="") {
 				return null;
 			}
-			
+
 			var padUrl = ed.getParam("plugin_etherpadlite_padServerUrl");
 			var padPrefix = (ed.getParam("plugin_etherpadlite_padNamesPrefix"))
 				? ed.getParam("plugin_etherpadlite_padNamesPrefix")
@@ -51,7 +54,7 @@
 			};
 		}
 	});
-	
+
 	function randomPadName() {
 		var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 		var string_length = 10;
