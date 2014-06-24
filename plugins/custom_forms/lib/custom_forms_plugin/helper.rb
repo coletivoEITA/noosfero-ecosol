@@ -65,9 +65,7 @@ module CustomFormsPlugin::Helper
   end
 
   def type_for_options(type)
-    type = type.to_s.split(':').last.underscore
-    type = 'text_field' if type == 'field'
-    type
+    type.to_s.split(':').last.underscore
   end
 
   def display_custom_field(field, submission, form)
