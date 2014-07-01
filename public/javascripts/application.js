@@ -545,7 +545,7 @@ function loggedInDataCallBack(data) {
       jQuery(this).attr('href', new_href);
     });
     var html = jQuery(this).html().replace(/{login}/g, data.login).replace('{month}', data.since_month).replace('{year}', data.since_year);
-    jQuery(this).html(html).fadeIn();
+    jQuery(this).html(html).hide().fadeIn();
     if (data.is_admin) {
       jQuery('#user .admin-link').show();
     }
