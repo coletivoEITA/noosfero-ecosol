@@ -323,6 +323,8 @@
           singular: "nenhum fornecedor"
         this:
           singular: "este fornecedor"
+        from:
+          singular: "de fornecedor"
         from_article:
           singular: "do fornecedor"
         from_which_article: 
@@ -1216,6 +1218,8 @@
         your: 
           singular: "seu empreendimento"
           plural: "seus empreendimentos"
+        from:
+          singular: "de empreendimento"
         from_article:
           singular: "do empreendimento"
         from_which_article: 
@@ -1242,6 +1246,9 @@
       associate_enterprise:
         title: "Pedido de associação %{terms.supplier.from.singular}"
         information: "%{requestor} disse que faz parte da rede %{linked_subject}."
+        task_notification_message: "%{enterprise} disse que faz parte da rede %{linked_subject}."
+        task_cancelled_message: "%{network} não aceitou o pedido de associação do %{terms.supplier.of_article.singular} %{enterprise}."
+        task_finished_message: "%{network} confirmou a associação %{terms.supplier.of_article.singular} %{enterprise}!"
     controllers:
       node:
         edit: "Configurações do nó salvas"
