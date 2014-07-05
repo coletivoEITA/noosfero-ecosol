@@ -1,4 +1,7 @@
-<% other_actor_name = if actor_name == :supplier then :consumer else :supplier end if other_actor_name.nil? %>
+<%
+  actor_name ||= :supplier
+  other_actor_name = if actor_name == :supplier then :consumer else :supplier end if other_actor_name.nil?
+%>
 
 <% if order.items.size == 0 %>
   <div class="empty-order">

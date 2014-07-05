@@ -27,9 +27,14 @@ networks = {
   join: {
     url: '',
 
+    confirm: function(form) {
+      jQuery(form).ajaxSubmit({dataType: 'script'})
+      return false
+    },
+
     choose: function(item) {
-      var item = jQuery(item)
-      jQuery('#network-join').load(this.url, {enterprise_id: item.attr('data-id')});
+      item = jQuery(item)
+      jQuery('#network-join').load(this.url, {enterprise_id: item.attr('data-id')})
     },
 
   },

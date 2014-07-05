@@ -9,6 +9,8 @@ class NetworksPlugin::AssociateEnterprise < Task
   validates_presence_of :network
   validates_presence_of :enterprise
 
+  before_save :workaround_target_type
+
   include NetworksPlugin::TranslationHelper
 
   def title
@@ -39,6 +41,12 @@ class NetworksPlugin::AssociateEnterprise < Task
     self.network.add_enterprise self.enterprise
   end
 
+  def target_notification_message
+    t('models.associate_enterprise.task_notification_message') % {
+      :enterprise => self.enterprise.short_name, :network => self.network.short_name
+    }
+  end
+
   def task_finished_message
     t('models.associate_enterprise.task_finished_message') % {
       :enterprise => self.enterprise.short_name, :network => self.network.short_name
@@ -53,10 +61,10 @@ class NetworksPlugin::AssociateEnterprise < Task
     message += " " + _("Here is the reject explanation left by the administrator:\n\n%{reject_explanation}") % {:reject_explanation => self.reject_explanation}
   end
 
-  def target_notification_message
-    t('models.associate_enterprise.task_notification_message') % {
-      :enterprise => self.enterprise.short_name, :network => self.network.short_name
-    }
+  protected
+
+  def workaround_target_type
+    self['target_type'] = 'Profile'
   end
 
 end

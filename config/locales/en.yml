@@ -309,8 +309,10 @@
           singular: "any supplier"
         this:
           singular: "this supplier"
-        from_article: 
+        from: 
           singular: "from supplier"
+        from_article: 
+          singular: "from the supplier"
         from_which_article: 
           singular: "from which the supplier"
         of: 
@@ -1186,8 +1188,10 @@
         your: 
           singular: "your enterprise"
           plural: "your enterprises"
-        from_article: 
+        from: 
           singular: "from enterprise"
+        from_article: 
+          singular: "from the enterprise"
         from_which_article: 
           singular: "from which the enterprise"
         of: 
@@ -1210,6 +1214,9 @@
       associate_enterprise:
         title: "Association request %{terms.supplier.from.singular}"
         information: "%{requestor} said it is part of the network %{linked_subject}."
+        task_notification_message: "%{enterprise} said it is part of the network %{linked_subject}."
+        task_cancelled_message: "%{network} didn't accept the association request of the %{terms.supplier.of_article.singular} %{enterprise}."
+        task_finished_message: "%{network} confirmed the association %{terms.supplier.of_article.singular} %{enterprise}!"
     controllers:
       node:
         edit: "Node settings saved"
