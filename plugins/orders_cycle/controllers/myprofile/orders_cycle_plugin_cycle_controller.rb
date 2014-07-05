@@ -31,9 +31,8 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
           OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).deliver_open_cycle @cycle.profile,
             @cycle,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message
         end
-        render :partial => 'new'
       else
-        render :partial => 'edit'
+        render :action => :edit
       end
     else
       count = OrdersCyclePlugin::Cycle.count :conditions => {:profile_id => profile}
