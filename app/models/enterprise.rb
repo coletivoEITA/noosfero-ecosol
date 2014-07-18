@@ -124,11 +124,10 @@ class Enterprise < Organization
     end
   end
 
-  after_create :create_activation_task
+  # Use to create an enterprise manually (via console) that is not enabled
   def create_activation_task
-    if !self.enabled
-      EnterpriseActivation.create!(:enterprise => self, :code_length => 7)
-    end
+    return if self.enabled
+    EnterpriseActivation.create! :enterprise => self, :code_length => 7
   end
   def activation_task
     self.tasks.where(:type => 'EnterpriseActivation').first
