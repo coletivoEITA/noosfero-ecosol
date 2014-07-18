@@ -34,22 +34,20 @@ class ProfileEditorController < MyProfileController
   end
 
   def enable
-    @to_enable = profile
     if request.post? && params[:confirmation]
-      unless @to_enable.update_attribute('enabled', true)
-        session[:notice] = _('%s was not enabled.') % @to_enable.name
+      unless profile.enable user
+        session[:notice] = _('%s was not enabled.') % profile.name
       end
-      redirect_to :action => 'index'
+      redirect_to :action => :index
     end
   end
 
   def disable
-    @to_disable = profile
     if request.post? && params[:confirmation]
-      unless @to_disable.update_attribute('enabled', false)
-        session[:notice] = _('%s was not disabled.') % @to_disable.name
+      unless profile.update_attribute :enabled, false
+        session[:notice] = _('%s was not disabled.') % profile.name
       end
-      redirect_to :action => 'index'
+      redirect_to :action => :index
     end
   end
 
