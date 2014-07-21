@@ -13,10 +13,10 @@ module OrdersPlugin::PriceHelper
     unit = "#{t('lib.price_helper./')} #{unit.singular}" rescue ''
     text = t('lib.price_helper.price_unit') % {
       :price => price_span(price),
-      :unit => content_tag('div', unit + detail, :class => 'price-unit'),
+      :unit => content_tag('div', unit + detail, :class => 'price-unit', :title => (unit + detail)),
     }
 
-    content_tag 'div', text, options.merge(:title => text)
+    content_tag 'div', text, options
   end
 
 end

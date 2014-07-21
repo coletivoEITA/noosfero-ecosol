@@ -56,7 +56,6 @@
     padding-left: 0;
 
     .title {
-      @extend .box-align;
     }
 
     .balloon {
@@ -99,6 +98,12 @@
       }
 
       .box-field {
+        &, * {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+
         &.category {
           width: $module01;
         }
@@ -229,7 +234,6 @@
   @import 'field';
 
   #cycle-header-warning {
-    @extend .box-align;
     background-color: #FECBCA;
     padding: 8px;
 
@@ -256,7 +260,6 @@
     margin-top: $margin;
 
     .cycle-products-table {
-      @extend .box-align;
       margin-top: 30px;
     }
     .value-row.edit .price,
@@ -384,7 +387,6 @@
   border-bottom: 0;
 
   .cycle-list-item {
-    @extend .box-align;
     border-top: 1px dotted #ccc;
     padding: 8px;
   }
@@ -542,14 +544,12 @@
     clear: both;
   }
   .cycle .happening {
-    @extend .alignment;
     background-color: #ffe546;
     line-height: 20px;
     text-transform: uppercase;
     padding: 0 8px;
   }
   .cycle .info {
-    @extend .alignment;
     background: #DDF2C5;
     padding: 8px;
     padding-right: 0;
