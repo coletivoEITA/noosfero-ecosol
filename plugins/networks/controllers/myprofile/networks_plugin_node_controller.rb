@@ -23,7 +23,7 @@ class NetworksPluginNodeController < MyProfileController
       @node.update_attributes params[:profile_data]
       @node.home_page.update_attributes params[:home_page]
       session[:notice] = t('controllers.node.edit')
-      redirect_to :controller => :networks_plugin_network, :action => :show_structure, :node_id => @node.parent.id
+      redirect_to :controller => :networks_plugin_network, :action => :structure, :node_id => @node.parent.id
     end
   end
 

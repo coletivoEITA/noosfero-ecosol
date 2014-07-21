@@ -1192,7 +1192,7 @@ ca:
         _supplier:
           by_removing_this_supp: "Ao remover %{terms.supplier.article.singular}, todos os seus produtos ficarão indisponíveis. Por favor, confirme sua opção"
       network:
-        show_structure: 
+        structure: 
           pathway: "Você está em: "
           none: "Nenhum"
           title: "Estrutura da rede"

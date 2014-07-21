@@ -5,10 +5,10 @@
     <%= link_to enterprise.name, enterprise.url, :target => '_blank' %>
   </div>
   <div class="actions">
-    <%= link_to t('views.network.show_structure.edit'), :controller => :networks_plugin_enterprise, :action => :edit, :id => supplier.id %>
+    <%= link_to t('views.network.structure.edit'), :controller => :networks_plugin_enterprise, :action => :edit, :id => supplier.id %>
     |
-    <%= link_to_remote t('views.network.show_structure.desassociate'),
-      :confirm => t('views.network.show_structure.confirm_supplier_desassociate') % {:supplier => supplier.name},
+    <%= link_to_remote t('views.network.structure.desassociate'),
+      :confirm => t('views.network.structure.confirm_supplier_desassociate') % {:supplier => supplier.name},
       :loading => "loading_overlay.show('#supplier-#{supplier.id}')",
       :url => {:controller => :networks_plugin_enterprise, :action => :destroy, :node_id => @node.id, :id => supplier.id} %>
   </div>

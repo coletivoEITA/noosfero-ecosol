@@ -25,7 +25,7 @@ class NetworksPlugin < Noosfero::Plugin
 
   def control_panel_buttons
     if context.profile.node?
-      {:title => I18n.t('networks_plugin.views.control_panel.structure'), :icon => 'networks-manage-network', :url => {:controller => :networks_plugin_network, :action => :show_structure}}
+      {:title => I18n.t('networks_plugin.views.control_panel.structure'), :icon => 'networks-manage-structure', :url => {:controller => :networks_plugin_network, :action => :structure}}
     end
   end
 
@@ -47,6 +47,14 @@ class NetworksPlugin < Noosfero::Plugin
     lambda do
       extend NetworksPlugin::TranslationHelper
       render 'networks_plugin_profile_editor/network_participation'
+    end
+  end
+
+  def article_toolbar_actions article
+    return unless article.profile.network?
+    lambda do
+      extend NetworksPlugin::TranslationHelper
+      render 'networks_plugin_content_viewer/toolbar_actions', :article => article
     end
   end
 

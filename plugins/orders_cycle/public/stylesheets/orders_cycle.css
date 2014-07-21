@@ -849,6 +849,10 @@
     margin-left: -24px; }
   .cycle-view #cycle-products-for-order #cycle-products .table-header {
     padding-left: 24px; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-field, .cycle-view #cycle-products-for-order #cycle-products .box-field * {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; }
   .cycle-view #cycle-products-for-order #cycle-products .box-field.category {
     width: 64px; }
   .cycle-view #cycle-products-for-order #cycle-products .box-field.supplier {

@@ -382,7 +382,13 @@ class Noosfero::Plugin
     []
   end
 
-  # -> Adds adicional content to article
+  # -> Adds aditional actions to article
+  # returns = lambda block that creates html code
+  def article_toolbar_actions article
+    nil
+  end
+
+  # -> Adds aditional content to article
   # returns = lambda block that creates html code
   def article_extra_contents(article)
     nil

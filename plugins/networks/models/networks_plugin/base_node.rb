@@ -1,6 +1,7 @@
 class NetworksPlugin::BaseNode < Enterprise
 
-  has_many :nodes, :through => :network_node_parent_relations, :source => :child_np, :class_name => 'NetworksPlugin::Node'
+  has_many :nodes, :through => :network_node_parent_relations, :source => :child_np, :class_name => 'NetworksPlugin::Node',
+    :conditions => 'profiles.visible = true'
 
   self.abstract_class = true
 

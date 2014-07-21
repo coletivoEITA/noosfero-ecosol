@@ -1286,7 +1286,7 @@
           submit_yes: "Sim"
           submit_no: "Não"
           choose: "Qual %{terms.supplier.of_article.plural} abaixo faz parte %{terms.profile.of_article.singular} %{network}?"
-        show_structure: 
+        structure: 
           pathway: "Você está em: "
           none: "Nenhum"
           title: "Estrutura da rede"
@@ -1294,7 +1294,7 @@
           add_enterprise_to_network: "Adicionar %{terms.supplier.singular} à %{terms.profile.singular}"
           add_enterprise_to_node: "Adicionar %{terms.supplier.singular} a este nó"
           add_node: "Criar nó"
-          edit_node_template: "Editar modelo dos nós"
+          edit_node_template: "Editar tema visual dos nós"
           confirm_node_remove: "Ao excluir este nó, %{terms.supplier.article.plural} e nós associados a ele serão associados ao nó '%{parent}'. Por favor confirme a remoção do nó '%{node}'."
           confirm_supplier_desassociate: "Por favor confirme que quer desassociar %{terms.supplier.article.singular} '%{supplier}'."
           edit: "Editar"
