@@ -1,0 +1,4 @@
+<% if user.is_admin? profile or user.is_admin? environment %>
+  <%= button 'networks-manage-structure', t('networks_plugin.views.control_panel.structure'), :controller => :networks_plugin_network, :action => :structure %>
+<% end %>
+

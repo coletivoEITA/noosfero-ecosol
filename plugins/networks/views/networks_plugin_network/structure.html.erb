@@ -1,5 +1,5 @@
-<div id="networks-network-show-structure">
-  <h1><%= t('views.network.show_structure.title') %></h1>
+<div id="networks-network-structure">
+  <h1><%= t('views.network.structure.title') %></h1>
 
   <% if flash[:error] %>
     <div class="error"><%= flash[:error] %></div>
@@ -10,7 +10,7 @@
   <% end %>
 
   <h2>
-    <%= t('views.network.show_structure.pathway') %>
+    <%= t('views.network.structure.pathway') %>
     <%= @node.hierarchy.map do |parent|
       link_to parent.name, :node_id => parent.id
     end.join ' -> ' %>

@@ -1286,7 +1286,7 @@
           submit_yes: "Sim"
           submit_no: "Não"
           choose: "Qual %{terms.supplier.of_article.plural} abaixo faz parte %{terms.profile.of_article.singular} %{network}?"
-        show_structure: 
+        structure: 
           pathway: "Você está em: "
           none: "Nenhum"
           title: "Estrutura da rede"

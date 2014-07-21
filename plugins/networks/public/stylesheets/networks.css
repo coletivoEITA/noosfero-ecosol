@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, #networks-network-show-structure .listing .header, #networks-network-show-structure .listing .row {
+.container-clean, #networks-network-structure .listing .header, #networks-network-structure .listing .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -143,7 +143,7 @@
 .clean {
   clear: both; }
 
-.container-clean, #networks-network-show-structure .listing .header, #networks-network-show-structure .listing .row {
+.container-clean, #networks-network-structure .listing .header, #networks-network-structure .listing .row {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -312,8 +312,12 @@
       vertical-align: middle;
       margin-right: 4px; }
 
-.controller-profile_editor a.control-panel-networks-manage-network {
+.controller-profile_editor a.control-panel-networks-manage-structure {
   background-image: url("/plugins/networks/images/control-panel/manage-network.png"); }
+
+.icon-networks-manage-structure {
+  background-image: url("/plugins/networks/images/control-panel/manage-network.png");
+  background-size: 16px 16px; }
 
 #networks-admin-index #network-list {
   margin-bottom: 16px; }
@@ -321,16 +325,16 @@
 #networks-node-create {
   height: 160px; }
 
-#networks-network-show-structure .listing .header h3, #networks-network-show-structure .listing .header .action-button, #networks-network-show-structure .listing .header .selection-button {
+#networks-network-structure .listing .header h3, #networks-network-structure .listing .header .action-button, #networks-network-structure .listing .header .selection-button {
   margin-top: 8px;
   float: left; }
-#networks-network-show-structure .listing .header .action-button, #networks-network-show-structure .listing .header .selection-button {
+#networks-network-structure .listing .header .action-button, #networks-network-structure .listing .header .selection-button {
   margin-left: 8px;
   margin-top: 4px; }
-#networks-network-show-structure .listing .row .name {
+#networks-network-structure .listing .row .name {
   float: left;
   width: 65%; }
-#networks-network-show-structure .listing .row .actions {
+#networks-network-structure .listing .row .actions {
   width: 31.66667%;
   float: right; }
 

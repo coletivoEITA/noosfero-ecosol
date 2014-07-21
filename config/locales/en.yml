@@ -1254,7 +1254,7 @@
           yes: "Yes"
           no: "No"
           choose: "Which %{terms.supplier.of_article.plural} bellow are parte of %{terms.profile.of_article.singular} %{network}?"
-        show_structure:
+        structure:
           pathway: "You're at: "
           none: "None"
           title: "Network's structure"

@@ -2,15 +2,15 @@ class NetworksPluginNetworkController < MyProfileController
 
   include NetworksPlugin::TranslationHelper
 
-  before_filter :load_node, :only => [:show_structure]
+  before_filter :load_node, :only => [:structure]
 
   helper NetworksPlugin::NetworksDisplayHelper
 
   def index
-    redirect_to :show_structure
+    redirect_to :structure
   end
 
-  def show_structure
+  def structure
   end
 
   def join

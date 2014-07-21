@@ -1,8 +1,13 @@
 @import 'base';
 @import 'page-title';
 
-.controller-profile_editor a.control-panel-networks-manage-network {
-  background-image: url("/plugins/networks/images/control-panel/manage-network.png")
+.controller-profile_editor a.control-panel-networks-manage-structure {
+  background-image: url("/plugins/networks/images/control-panel/manage-network.png");
+}
+
+.icon-networks-manage-structure {
+  background-image: url("/plugins/networks/images/control-panel/manage-network.png");
+  background-size: 16px 16px;
 }
 
 #networks-admin-index {
@@ -16,7 +21,7 @@
   height: 20*$height;
 }
 
-#networks-network-show-structure {
+#networks-network-structure {
 
   .listing {
 
