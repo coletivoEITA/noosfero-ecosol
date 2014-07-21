@@ -1262,7 +1262,7 @@
           add_enterprise_to_network: "Add %{terms.supplier.singular} %{terms.profile.to_article.singular}"
           add_enterprise_to_node: "Add %{terms.supplier.singular} to this node"
           add_node: "Create node"
-          edit_node_template: "Edit nodes' template"
+          edit_node_template: "Edit nodes' visual theme"
           confirm_node_remove: "By removing this node, %{terms.supplier.article.plural} and nodes associated to it will be associated to the node '%{parent}'. Please confirm the removal of the node '%{node}'."
           confirm_supplier_desassociate: "Plese confirm that you want to desassociate %{terms.supplier.article.singular} '%{supplier}'."
           edit: "Edit"

@@ -1294,7 +1294,7 @@
           add_enterprise_to_network: "Adicionar %{terms.supplier.singular} à %{terms.profile.singular}"
           add_enterprise_to_node: "Adicionar %{terms.supplier.singular} a este nó"
           add_node: "Criar nó"
-          edit_node_template: "Editar modelo dos nós"
+          edit_node_template: "Editar tema visual dos nós"
           confirm_node_remove: "Ao excluir este nó, %{terms.supplier.article.plural} e nós associados a ele serão associados ao nó '%{parent}'. Por favor confirme a remoção do nó '%{node}'."
           confirm_supplier_desassociate: "Por favor confirme que quer desassociar %{terms.supplier.article.singular} '%{supplier}'."
           edit: "Editar"
