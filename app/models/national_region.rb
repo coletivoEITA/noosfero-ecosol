@@ -12,7 +12,7 @@ class NationalRegion < ActiveRecord::Base
     adtional_contions = "";
 
     if like
-     operator  = "like"
+     operator  = "ilike"
      find_return = :all
     end
 
