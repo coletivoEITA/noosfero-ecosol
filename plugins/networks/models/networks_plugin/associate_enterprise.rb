@@ -41,6 +41,12 @@ class NetworksPlugin::AssociateEnterprise < Task
     self.network.add_enterprise self.enterprise
   end
 
+  def target_created_message
+    t('models.associate_enterprise.task_notification_message') % {
+      :enterprise => self.enterprise.short_name, :network => self.network.short_name
+    }
+  end
+
   def target_notification_message
     t('models.associate_enterprise.task_notification_message') % {
       :enterprise => self.enterprise.short_name, :network => self.network.short_name
