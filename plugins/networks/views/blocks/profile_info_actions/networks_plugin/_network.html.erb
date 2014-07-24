@@ -1,7 +1,7 @@
 <% extend NetworksPlugin::TranslationHelper %>
 
 <ul id='network-info-actions'>
-  <% if user and user.enterprises.visible.present? and user.enterprises.visible.select{ |e| e.network != profile }.present? %>
+  <% if user and user.may_join_network? profile %>
     <li>
       <%= button :add, t('networks_plugin.views.blocks.profile_info_actions.button'), {:controller => :networks_plugin_network, :action => :join},
         :title => t('networks_plugin.views.blocks.profile_info_actions.button'), :class => 'colorbox' %>

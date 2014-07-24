@@ -41,11 +41,17 @@ class NetworksPlugin::AssociateEnterprise < Task
     self.network.add_enterprise self.enterprise
   end
 
-  def target_created_message
+  def target_notification_description
     t('models.associate_enterprise.task_notification_message') % {
       :enterprise => self.enterprise.short_name, :network => self.network.short_name,
-      :linked_subject => self.linked_subject,
     }
+  end
+
+  def task_created_message
+    task = self
+    lambda do
+      render :partial => 'tasks/networks_plugin/associate_enterprise/task_created', :locals => {:task => task}
+    end
   end
 
   def target_notification_message

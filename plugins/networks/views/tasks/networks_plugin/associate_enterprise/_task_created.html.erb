@@ -1,0 +1,6 @@
+<% extend NetworksPlugin::TranslationHelper %>
+
+<%= t('models.associate_enterprise.task_notification_message') % {
+    :enterprise => link_to(task.enterprise.short_name, task.network.url),
+    :network => link_to(task.network.short_name, task.network.url),
+} %>

@@ -1,4 +1,5 @@
 <% if @request_sent %>
-  display_notice(<%= t('views.network.join.request_sent').to_json %>)
   jQuery.colorbox.close()
+  display_notice(<%= t('views.network.join.request_sent').to_json %>)
+  jQuery('#network-info-actions .icon-add').remove()
 <% end %>
