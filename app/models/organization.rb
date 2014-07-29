@@ -3,8 +3,8 @@ class Organization < Profile
 
   SEARCH_FILTERS += %w[
     more_popular
-    more_active
   ]
+    #more_active
 
   settings_items :closed, :type => :boolean, :default => false
   def closed?

@@ -16,7 +16,7 @@ module SearchHelper
 
   FILTER_TRANSLATION = {
     'more_popular' => _('More popular'),
-    'more_active' => _('More active'),
+    #'more_active' => _('More active'),
     'more_recent' => _('More recent'),
     'more_comments' => _('More comments')
   }
@@ -94,7 +94,7 @@ module SearchHelper
       compact_link = display?(asset, :compact) ? (display == 'compact' ? _('Compact') : link_to(_('Compact'), params.merge(:display => 'compact'))) : nil
       map_link = display?(asset, :map) ? (display == 'map' ? _('Map') : link_to(_('Map'), params.merge(:display => 'map'))) : nil
       full_link = display?(asset, :full) ? (display == 'full' ? _('Full') : link_to(_('Full'), params.merge(:display => 'full'))) : nil
-      content_tag('div', 
+      content_tag('div',
         content_tag('strong', _('Display')) + ': ' + [compact_link, map_link, full_link].compact.join(' | ').html_safe,
         :class => 'search-customize-options'
       )
@@ -121,13 +121,13 @@ module SearchHelper
       'articles_more_popular' => _('More viewed contents from network'),
       'articles_more_comments' => _('Most commented contents from network'),
       'people_more_recent' => _('More recent people from network'),
-      'people_more_active' => _('More active people from network'),
+      #'people_more_active' => _('More active people from network'),
       'people_more_popular' => _('More popular people from network'),
       'communities_more_recent' => _('More recent communities from network'),
-      'communities_more_active' => _('More active communities from network'),
+      #'communities_more_active' => _('More active communities from network'),
       'communities_more_popular' => _('More popular communities from network'),
       'enterprises_more_recent' => _('More recent enterprises from network'),
-      'enterprises_more_active' => _('More active enterprises from network'),
+      #'enterprises_more_active' => _('More active enterprises from network'),
       'enterprises_more_popular' => _('More popular enterprises from network'),
       'products_more_recent' => _('Highlights'),
     }[asset.to_s + '_' + filter].to_s

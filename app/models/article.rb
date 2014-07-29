@@ -14,9 +14,9 @@ class Article < ActiveRecord::Base
 
   SEARCH_FILTERS = %w[
     more_recent
-    more_popular
     more_comments
   ]
+    #more_popular
 
   SEARCH_DISPLAYS = %w[full]
 

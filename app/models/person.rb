@@ -3,8 +3,8 @@ class Person < Profile
 
   SEARCH_FILTERS += %w[
     more_popular
-    more_active
   ]
+    #more_active
 
   def self.type_name
     _('Person')
