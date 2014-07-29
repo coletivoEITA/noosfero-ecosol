@@ -53,13 +53,13 @@ class Profile
     self.solr_plugin_extra_index_methods.push(block) if block_given?
   end
 
-  def add_category_with_solr_save(c, reload=false)
-    add_category_without_solr_save(c, reload)
-    if !new_record?
-      self.solr_save
-    end
-  end
-  alias_method_chain :add_category, :solr_save
+  #def add_category_with_solr_save(c, reload=false)
+  #  add_category_without_solr_save(c, reload)
+  #  if !new_record?
+  #    self.solr_save
+  #  end
+  #end
+  #alias_method_chain :add_category, :solr_save
 
   private
 
