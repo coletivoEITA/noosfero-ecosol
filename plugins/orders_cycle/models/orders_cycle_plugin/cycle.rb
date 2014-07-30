@@ -64,12 +64,11 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
       {:now => DateTime.now}]}
   }
   named_scope :not_open, lambda {
-    {:conditions => ["NOT ( ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) AND status = 'orders' )",
+    {:conditions => ["NOT (status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) )",
       {:now => DateTime.now}]}
   }
-  named_scope :by_status, lambda { |status| { :conditions => {:status => status} } }
-  named_scope :open, :conditions => ["status <> 'new' AND status <> 'closing'"]
   named_scope :closing, :conditions => ["status = 'closing'"]
+  named_scope :by_status, lambda { |status| { :conditions => {:status => status} } }
 
   named_scope :months, :select => 'DISTINCT(EXTRACT(months FROM start)) as month', :order => 'month DESC'
   named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year DESC'
@@ -155,7 +154,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   end
   def delivery?
     now = DateTime.now
-    status == 'orders' && ( (self.delivery_start <= now && self.delivery_finish.nil?) || (self.delivery_start <= now && self.delivery_finish >= now) )
+    status == 'delivery' && ( (self.delivery_start <= now && self.delivery_finish.nil?) || (self.delivery_start <= now && self.delivery_finish >= now) )
   end
 
   def products_for_order
