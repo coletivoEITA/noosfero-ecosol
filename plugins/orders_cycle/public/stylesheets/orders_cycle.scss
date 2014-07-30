@@ -178,6 +178,16 @@
         margin: 0;
         margin-top: 40px; //top bar margin, move style to theme
       }
+
+      &.unactive {
+        .order-message-title {
+          float: left;
+        }
+        .actions {
+          float: right;
+          padding: $half-padding $padding;
+        }
+      }
     }
 
     #order-admin-warning {
@@ -477,7 +487,6 @@
 
 .order-message-title {
   padding: $half-padding $padding;
-  margin-right: $half-margin;
   font-size: 13px;
   font-weight: bold;
   @extend .container-clean;

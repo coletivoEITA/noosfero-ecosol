@@ -900,6 +900,11 @@
       top: 0;
       margin: 0;
       margin-top: 40px; }
+    .cycle-view #order-column .consumer-order.unactive .order-message-title {
+      float: left; }
+    .cycle-view #order-column .consumer-order.unactive .actions {
+      float: right;
+      padding: 4px 8px; }
   .cycle-view #order-column #order-admin-warning {
     background-color: #FECBCA; }
   .cycle-view #order-column #order-admin-warning {
@@ -1264,7 +1269,6 @@
 
 .order-message-title {
   padding: 4px 8px;
-  margin-right: 8px;
   font-size: 13px;
   font-weight: bold; }
   .order-message-title div {

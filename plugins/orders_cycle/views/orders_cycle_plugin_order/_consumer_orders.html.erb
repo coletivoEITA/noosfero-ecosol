@@ -51,10 +51,14 @@
 
 <% @consumer_orders.each do |order| %>
   <% next if @order == order %>
-  <div id="consumer-order-<%= order.id %>" class="consumer-order">
 
-    <%= render :partial => 'status', :locals => {:order => order} %>
+  <div id="consumer-order-<%= order.id %>" class="consumer-order unactive">
+    <%= render 'status', :order => order %>
+    <div class="actions">
+      <%= link_to t('views.order._show.open'), {:action => :edit, :id => order.id} %>
+    </div>
 
+    <div class="clean"> </div>
   </div>
 <% end %>
 

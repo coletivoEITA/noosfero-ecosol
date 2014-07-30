@@ -203,7 +203,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   protected
 
   def add_products_on_edition_state
-    self.add_distributed_products if @was_new
+    self.add_distributed_products if self.status_was.nil? or self.status_was == 'new'
   end
 
   def step_new
