@@ -10,12 +10,12 @@
 
   <%= javascript_include_tag '/plugins/orders/javascripts/waypoints.min.js' %>
   <% javascript_tag do %>
-    jQuery(document).ready(function() {
-      jQuery('.consumer-order.edit').waypoint(function(event, direction) {
-        jQuery(this).toggleClass('sticky', direction == 'down');
-      }, {});
+    jQuery(document).ready(function() { jQuery('.consumer-order.edit').waypoint(
+      function(event, direction) {
+        jQuery(this).toggleClass('sticky', direction == 'down'); },
+        { offset: function() { return jQuery('#cirandas-top-bar').height(); } });
     });
   <% end %>
 
   <div class="clean"></div>
-</div>
+
