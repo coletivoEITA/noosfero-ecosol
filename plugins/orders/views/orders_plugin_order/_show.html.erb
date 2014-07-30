@@ -27,6 +27,8 @@
           <%= f.hidden_field :status, :value => order.next_status(actor_name) %>
           <%= f.submit t("models.order.statuses_verbs.#{order.next_status actor_name}") %>&emsp;
         <% end %>
+
+        <%= link_to t('views.order._show.cancel_order'), {:action => :edit, :id => order.id} %>
       <% else %>
         <% if order.open? %>
           <div>

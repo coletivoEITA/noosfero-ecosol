@@ -24,7 +24,10 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   def new
     if request.post?
       @cycle = OrdersCyclePlugin::Cycle.find params[:id]
+
+      params[:cycle][:status] = 'orders' if @open = params[:open] == '1'
       @success = @cycle.update_attributes params[:cycle]
+
       if @success
         session[:notice] = t('controllers.myprofile.cycle_controller.cycle_created')
         if params[:sendmail]

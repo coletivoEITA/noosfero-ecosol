@@ -10,7 +10,7 @@ class Profile
   has_many :offered_products, :class_name => 'OrdersCyclePlugin::OfferedProduct', :order => 'products.name ASC'
 
   def orders_cycles_closed_date_range
-    list = self.orders_cycles.not_open.all :order => 'start ASC'
+    list = self.orders_cycles.closing.all :order => 'start ASC'
     return DateTime.now..DateTime.now if list.blank?
     list.first.start.to_date..list.last.finish.to_date
   end

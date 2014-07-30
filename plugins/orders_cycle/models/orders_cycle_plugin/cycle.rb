@@ -59,14 +59,15 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   # status scopes
   named_scope :defuncts, :conditions => ["status = 'new' AND created_at < ?", 2.days.ago]
   named_scope :not_new, :conditions => ["status <> 'new'"]
-  named_scope :open, lambda {
+  named_scope :on_orders, lambda {
     {:conditions => ["status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) )",
       {:now => DateTime.now}]}
   }
-  named_scope :not_open, lambda {
+  named_scope :not_on_orders, lambda {
     {:conditions => ["NOT (status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) )",
       {:now => DateTime.now}]}
   }
+  named_scope :open, :conditions => ["status <> 'new' AND status <> 'closing'"]
   named_scope :closing, :conditions => ["status = 'closing'"]
   named_scope :by_status, lambda { |status| { :conditions => {:status => status} } }
 
