@@ -5,16 +5,19 @@ class ActionMailer::Base
   # Monkey patch to:
   # 1) Allow multiple render calls, by keeping the body assigns into an instance variable
   # 2) Don't render layout for partials
-  def render opts
+  def render opts={}
     @assigns ||= opts.delete(:body)
     if opts[:file] && (opts[:file] !~ /\// && !opts[:file].respond_to?(:render))
       opts[:file] = "#{mailer_name}/#{opts[:file]}"
     end
 
     begin
-      old_template, @template = @template, initialize_template_class(@assigns)
-      layout = respond_to?(:pick_layout, true) ? pick_layout(opts) : false unless opts[:partial]
-      @template.render(opts.merge(:layout => layout))
+      old_template, @template = @template, initialize_template_class(@assigns || {})
+      unless opts[:partial]
+        layout = respond_to?(:pick_layout, true) ? pick_layout(opts) : false
+        opts.merge! :layout => layout
+      end
+      @template.render opts
     ensure
       @template = old_template
     end
@@ -28,7 +31,7 @@ class ActionMailer::Base
   alias_method_chain :url_for, :host
 
   def premailer_html html
-    premailer = Premailer.new html, :with_html_string => true
+    premailer = Premailer.new html.to_s, :with_html_string => true
     premailer.to_inline_css
   end
 

@@ -30,11 +30,12 @@ class TaskMailer < ActionMailer::Base
   end
 
   def invitation_notification(task)
+    self.environment = task.environment
     msg = task.expanded_message
     msg = msg.gsub /<url>/, generate_environment_url(task, :controller => 'account', :action => 'signup', :invitation_code => task.code)
 
+    content_type 'text/html'
     recipients task.friend_email
-
     from self.class.generate_from(task)
     subject '[%s] %s' % [ task.requestor.environment.name, task.target_notification_description ]
     body :message => msg
@@ -51,9 +52,10 @@ class TaskMailer < ActionMailer::Base
   end
 
   def send_message(task, message)
-
+    self.environment = task.environment
     text = extract_message(message)
 
+    content_type 'text/html'
     recipients task.requestor.notification_emails
     from self.class.generate_from(task)
     subject '[%s] %s' % [task.requestor.environment.name, task.target_notification_description]

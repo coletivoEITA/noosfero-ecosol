@@ -25,6 +25,10 @@ class NetworksPluginNetworkController < MyProfileController
     elsif @enterprises.size == 1
       @enterprise = @enterprises.first
     end
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   protected

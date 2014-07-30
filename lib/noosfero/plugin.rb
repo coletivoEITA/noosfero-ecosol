@@ -52,6 +52,7 @@ class Noosfero::Plugin
 
       # add view path
       ActionController::Base.view_paths.unshift(File.join(dir, 'views'))
+      ActionMailer::Base.view_paths.unshift(File.join(dir, 'views'))
 
       # load vendor/plugins
       Dir.glob(File.join(dir, '/vendor/plugins/*')).each do |vendor_plugin|

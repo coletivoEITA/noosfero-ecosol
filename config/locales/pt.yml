@@ -1245,8 +1245,8 @@
         settings_button: "Informações e configurações da Rede"
       associate_enterprise:
         title: "Pedido de associação %{terms.supplier.from.singular}"
-        information: "%{requestor} disse que faz parte da rede %{linked_subject}."
-        task_notification_message: "%{enterprise} disse que faz parte da rede %{linked_subject}."
+        information: "%{enterprise} disse que faz parte da rede %{linked_subject}."
+        task_notification_message: "%{enterprise} disse que faz parte da rede %{network}."
         task_cancelled_message: "%{network} não aceitou o pedido de associação do %{terms.supplier.of_article.singular} %{enterprise}."
         task_finished_message: "%{network} confirmou a associação %{terms.supplier.of_article.singular} %{enterprise}!"
     controllers:

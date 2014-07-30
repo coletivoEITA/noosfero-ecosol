@@ -23,8 +23,8 @@
       <% end %>
     </ul>
   <% end %>
-
-  <% javascript_tag do %>
-    networks.join.url = <%= url_for(params).to_json %>
-  <% end %>
 </div>
+
+<% javascript_tag do %>
+  networks.join.url = <%= url_for(params).to_json %>
+<% end %>

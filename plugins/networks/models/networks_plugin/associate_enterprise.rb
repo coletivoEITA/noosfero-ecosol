@@ -41,21 +41,37 @@ class NetworksPlugin::AssociateEnterprise < Task
     self.network.add_enterprise self.enterprise
   end
 
+  def target_notification_description
+    t('models.associate_enterprise.task_notification_message') % {
+      :enterprise => self.enterprise.short_name, :network => self.network.short_name,
+    }
+  end
+
+  def task_created_message
+    task = self
+    lambda do
+      render :partial => 'tasks/networks_plugin/associate_enterprise/task_created', :locals => {:task => task}
+    end
+  end
+
   def target_notification_message
     t('models.associate_enterprise.task_notification_message') % {
-      :enterprise => self.enterprise.short_name, :network => self.network.short_name
+      :enterprise => self.enterprise.short_name, :network => self.network.short_name,
+      :linked_subject => self.linked_subject,
     }
   end
 
   def task_finished_message
     t('models.associate_enterprise.task_finished_message') % {
-      :enterprise => self.enterprise.short_name, :network => self.network.short_name
+      :enterprise => self.enterprise.short_name, :network => self.network.short_name,
+      :linked_subject => self.linked_subject,
     }
   end
 
   def task_cancelled_message
     message = t('models.associate_enterprise.task_cancelled_message') % {
-      :enterprise => self.enterprise.short_name, :network => self.network.short_name
+      :enterprise => self.enterprise.short_name, :network => self.network.short_name,
+      :linked_subject => self.linked_subject,
     }
     return if reject_explanation.blank?
     message += " " + _("Here is the reject explanation left by the administrator:\n\n%{reject_explanation}") % {:reject_explanation => self.reject_explanation}
