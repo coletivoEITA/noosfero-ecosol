@@ -39,7 +39,7 @@
     <% end %>
   </div>
 
-  <%= price_with_unit_span item.price_as_currency_number, (item.product.unit rescue item.price_as_currency_number), nil, :class => 'box-field' %>
+  <%= price_with_unit_span item.price_as_currency_number, (item.product.unit rescue item.price_as_currency_number), nil, :class => 'box-field' unless @simple %>
 
 </div>
 
