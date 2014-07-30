@@ -103,6 +103,10 @@
           overflow: hidden;
           white-space: nowrap;
         }
+        * {
+          width: auto; //override .product-pic
+          height: auto; //override .product-pic
+        }
 
         &.category {
           width: $module01;
