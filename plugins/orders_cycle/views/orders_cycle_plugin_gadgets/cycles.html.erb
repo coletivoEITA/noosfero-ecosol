@@ -1,7 +1,7 @@
 <% extend OrdersCyclePlugin::TranslationHelper %>
 
 <div id="cycles-gadget">
-  <% profile.orders_cycles.open.each do |cycle| %>
+  <% profile.orders_cycles.on_orders.each do |cycle| %>
     <%= render :partial => 'orders_cycle_plugin_gadgets/cycle', :locals => {:cycle => cycle} %>
   <% end %>
 

@@ -103,9 +103,10 @@
           overflow: hidden;
           white-space: nowrap;
         }
+        //override .product-pic from application.css
         .product-pic {
-          width: auto; //override .product-pic
-          height: auto; //override .product-pic
+          width: auto;
+          height: auto;
         }
 
         &.category {

@@ -43,10 +43,11 @@
   <% submit_text = if @cycle.new? then t('views.cycle._edit_fields.create_new_cycle') else t('views.cycle._edit_fields.save') end %>
   <%= f.submit submit_text %>
 
-  <% unless @cycle.new? and @cycle.passed_by? 'orders' %>
+  <% unless @cycle.passed_by? 'orders' %>
     &nbsp;
     <%= hidden_field_tag 'open', nil %>
-    <%= f.submit t('views.cycle._edit_fields.save_and_open_orders'), :onclick => "this.form.elements['open'].value = '1'" %>
+    <% text = t("views.cycle._edit_fields.#{if @cycle.new? then 'create' else 'save' end}_and_open_orders") %>
+    <%= f.submit text, :onclick => "this.form.elements['open'].value = '1'" %>
   <% end %>
 
   &nbsp;

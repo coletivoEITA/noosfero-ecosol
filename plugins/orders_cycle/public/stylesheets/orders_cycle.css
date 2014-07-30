@@ -853,6 +853,9 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap; }
+  .cycle-view #cycle-products-for-order #cycle-products .box-field .product-pic {
+    width: auto;
+    height: auto; }
   .cycle-view #cycle-products-for-order #cycle-products .box-field.category {
     width: 64px; }
   .cycle-view #cycle-products-for-order #cycle-products .box-field.supplier {
