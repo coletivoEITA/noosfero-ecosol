@@ -693,6 +693,7 @@
           status: "etapa"
       order:
         _show:
+          open: "Abrir"
           cancel_order: "Cancelar pedido"
           confirm_order: "Confirmar pedido"
           confirming_this_order: "Ao confirmar este pedido, você está responsável por pagá-lo. Você quer continuar?"

@@ -675,6 +675,7 @@
           status: "status"
       order:
         _show: 
+          open: "Open"
           cancel_order: "cancel order"
           confirm_order: "Confirm order"
           confirming_this_order: "Confirming this order you are responsible for paying it. Do you want to continue?"
@@ -943,7 +944,7 @@
           orders_interval: "Orders Interval"
           save: Save
           save_and_open_orders: Save and open orders
-          create_and_open_orders: Criar and open orders
+          create_and_open_orders: Create and open orders
           this_message_will_be_: "This message will be sent by mail for the consumers %{terms.profile.from_article.singular} "
         _edit_popin: 
           close: Close
