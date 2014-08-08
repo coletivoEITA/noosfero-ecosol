@@ -68,7 +68,7 @@ class SuppliersPlugin::BaseProduct < Product
   end
 
   def available_with_supplier
-    self.available_without_supplier and self.supplier_product.available and self.supplier.active
+    self.available_without_supplier and self.supplier_product and self.supplier_product.available and self.supplier.active
   end
   alias_method_chain :available, :supplier
 
