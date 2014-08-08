@@ -1,4 +1,4 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file, 
+# This file is auto-generated from the current state of the database. Instead of editing this file,
 # please use the migrations feature of Active Record to incrementally modify your database, and
 # then regenerate this schema definition.
 #
@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140616133424) do
+ActiveRecord::Schema.define(:version => 20140709224246) do
 
   create_table "abuse_reports", :force => true do |t|
     t.integer  "reporter_id"
@@ -93,6 +93,8 @@ ActiveRecord::Schema.define(:version => 20140616133424) do
     t.integer  "license_id"
     t.integer  "image_id"
     t.integer  "position"
+    t.integer  "spam_comments_count",  :default => 0
+    t.integer  "author_id"
   end
 
   add_index "article_versions", ["article_id"], :name => "index_article_versions_on_article_id"
@@ -139,6 +141,8 @@ ActiveRecord::Schema.define(:version => 20140616133424) do
     t.integer  "license_id"
     t.integer  "image_id"
     t.integer  "position"
+    t.integer  "spam_comments_count",  :default => 0
+    t.integer  "author_id"
   end
 
   add_index "articles", ["comments_count"], :name => "index_articles_on_comments_count"
