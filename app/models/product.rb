@@ -239,7 +239,7 @@ class Product < ActiveRecord::Base
         end
   end
 
-  delegate :enabled, :region, :region_id, :environment, :environment_id, :to => :enterprise
+  delegate :enabled, :region, :region_id, :environment, :environment_id, :to => :enterprise, :allow_nil => true
 
   protected
 

@@ -19,7 +19,7 @@ class Product
     [:price, 0.35, proc{ |p| (!p.price.nil? and p.price > 0) ? 1 : 0}],
     [:new_product, 0.35, proc{ |p| (p.updated_at.to_i - p.created_at.to_i) < 24*3600 ? 1 : 0}],
     [:description, 0.3, proc{ |p| !p.description.blank? ? 1 : 0}],
-    [:enabled, 0.2, proc{ |p| p.enterprise.enabled ? 1 : 0}],
+    [:enabled, 0.2, proc{ |p| (p.enterprise and p.enterprise.enabled) ? 1 : 0}],
   ]
 
   acts_as_searchable :fields => facets_fields_for_solr + [
@@ -40,7 +40,7 @@ class Product
       {:qualifiers => {:fields => [:name]}},
       {:certifiers => {:fields => [:name]}},
     ], :facets => facets_option_for_solr,
-    :boost => proc{ |p| boost = 1; SolrPlugin::Boosts.each{ |b| boost = boost * (1 - ((1 - b[2].call(p)) * b[1])) }; boost}
+    :boost => proc{ |p| boost = 1; SolrPlugin::Boosts.each{ |b| boost = boost * (1 - ((1 - b[2].call(p)) * b[1])) } rescue nil; boost}
 
   handle_asynchronously :solr_save
   handle_asynchronously :solr_destroy
