@@ -2,16 +2,20 @@ class SnifferPluginMyprofileController < MyProfileController
 
   helper CmsHelper
   helper_method :profile_hash
+  helper_method :load_sniffer_profile, :only => [:edit, :destroy]
 
   def edit
     if request.post?
       begin
         profile.update_attributes params[:sniffer]
         session[:notice] = _('Consumer interests updated')
-      rescue Exception => exception
+      rescue Exception
         flash[:error] = _('Could not save consumer interests')
       end
     end
+  end
+
+  def destroy
   end
 
   def product_categories
@@ -80,6 +84,9 @@ class SnifferPluginMyprofileController < MyProfileController
   end
 
   protected
+
+  def load_sniffer_profile
+  end
 
   def profile_hash profile
     methods = [:id, :name, :lat, :lng, :distance]

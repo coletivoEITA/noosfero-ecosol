@@ -25,6 +25,8 @@
     <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile, :object_id => knowledge.id, :object_type => "CmsLearningPlugin::Learning"} %>
   <% else %>
     <%= link_to _("Edit"), {:controller => :cms, :action => :edit, :profile => profile.identifier, :id => knowledge.id}, :class => 'exchange' %>
+    <%= link_to _("Remove"), {:controller => :cms, :action => :destroy, :profile => profile.identifier, :id => knowledge.id}, :class => 'exchange',
+      :confirm => _("Are you sure that you want to remove this knowledge?") %>
   <% end %>
   </div>
 

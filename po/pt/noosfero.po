@@ -10475,6 +10475,14 @@ msgstr ""
 msgid "Learning"
 msgstr "Saber"
 
+#: plugins/escambo/views/snippets/_sniffer_plugin_opportunity.html.erb
+msgid "Are you sure that you want to remove this interest?"
+msgstr "Tem certeza que quer excluir este interesse?"
+
+#: plugins/escambo/views/snippets/_cms_learning_plugin_learning.html.erb
+msgid "Are you sure that you want to remove this knowledge?"
+msgstr "Tem certeza que quer excluir este saber?"
+
 #: plugins/escambo/views/escambo_plugin_public/_enterprise_results.html.erb
 msgid "No enterprise found"
 msgstr "Nenhum ponto de cultura encontrado"

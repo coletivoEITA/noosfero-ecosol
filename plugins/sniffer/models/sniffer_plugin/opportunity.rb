@@ -32,4 +32,17 @@ class SnifferPlugin::Opportunity < Noosfero::Plugin::ActiveRecord
     handle_asynchronously :solr_save
   end
 
+  # delegate missing methods to opportunity
+  def method_missing method, *args, &block
+    if self.opportunity.respond_to? method
+      self.opportunity.send method, *args, &block
+    else
+      super method, *args, &block
+    end
+  end
+  def respond_to_with_profile? method
+    respond_to_without_profile? method or self.opportunity.class.new.respond_to? method
+  end
+  alias_method_chain :respond_to?, :profile
+
 end
