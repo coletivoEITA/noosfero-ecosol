@@ -103,7 +103,7 @@ class Article < ActiveRecord::Base
 
   named_scope :by_range, lambda { |range| {
     :conditions => [
-      'published_at BETWEEN :start_date AND :end_date', { :start_date => range.first, :end_date => range.last }
+      'articles.published_at BETWEEN :start_date AND :end_date', { :start_date => range.first, :end_date => range.last }
     ]
   }}
 
