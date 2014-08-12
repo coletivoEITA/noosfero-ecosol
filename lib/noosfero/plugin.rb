@@ -516,7 +516,14 @@ class Noosfero::Plugin
   # returns = {:results => [a, b, c, ...], ...}
   # P.S.: The plugin might add other informations on the return hash for its
   # own use in specific views
-  def find_by_contents(asset, scope, query, paginate_options={}, options={})
+  def find_by_contents asset, scope, query, paginate_options={:page => 1}, options={}
+  end
+
+  # -> Auto complete search
+  # returns = {:results => [a, b, c, ...], ...}
+  # P.S.: The plugin might add other informations on the return hash for its
+  # own use in specific views
+  def auto_complete asset, scope, query, paginate_options={:page => 1}, options={:field => 'name'}
   end
 
   # -> Adds aditional fields for change_password
