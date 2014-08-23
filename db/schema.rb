@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140408172149) do
+ActiveRecord::Schema.define(:version => 20140709224246) do
 
   create_table "abuse_reports", :force => true do |t|
     t.integer  "reporter_id"
@@ -93,6 +93,8 @@ ActiveRecord::Schema.define(:version => 20140408172149) do
     t.integer  "license_id"
     t.integer  "image_id"
     t.integer  "position"
+    t.integer  "spam_comments_count",  :default => 0
+    t.integer  "author_id"
   end
 
   add_index "article_versions", ["article_id"], :name => "index_article_versions_on_article_id"
@@ -138,6 +140,8 @@ ActiveRecord::Schema.define(:version => 20140408172149) do
     t.integer  "license_id"
     t.integer  "image_id"
     t.integer  "position"
+    t.integer  "spam_comments_count",  :default => 0
+    t.integer  "author_id"
   end
 
   add_index "articles", ["comments_count"], :name => "index_articles_on_comments_count"
@@ -587,7 +591,12 @@ ActiveRecord::Schema.define(:version => 20140408172149) do
     t.boolean  "spam",                       :default => false
   end
 
+  add_index "tasks", ["requestor_id"], :name => "index_tasks_on_requestor_id"
   add_index "tasks", ["spam"], :name => "index_tasks_on_spam"
+  add_index "tasks", ["status"], :name => "index_tasks_on_status"
+  add_index "tasks", ["target_id", "target_type"], :name => "index_tasks_on_target_id_and_target_type"
+  add_index "tasks", ["target_id"], :name => "index_tasks_on_target_id"
+  add_index "tasks", ["target_type"], :name => "index_tasks_on_target_type"
 
   create_table "terms_forum_people", :id => false, :force => true do |t|
     t.integer "forum_id"

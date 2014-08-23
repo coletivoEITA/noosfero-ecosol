@@ -12293,3 +12293,1440 @@ msgstr ""
 #: plugins/custom_forms/views/custom_forms_plugin_myprofile/_form.html.erb:36
 msgid "Add a new field"
 msgstr ""
+
+#: app/helpers/application_helper.rb:527
+msgid "Principal Product Categories"
+msgstr ""
+
+#: app/helpers/application_helper.rb:1333
+msgid "The contents in this profile is available to members only."
+msgstr ""
+
+#: app/helpers/events_helper.rb:9
+msgid "No events for this month"
+msgstr ""
+
+#: app/helpers/events_helper.rb:20
+msgid "Place: "
+msgstr ""
+
+#: app/helpers/boxes_helper.rb:215
+msgid "Clone"
+msgstr ""
+
+#: app/helpers/dates_helper.rb:40
+msgid "%{month}/%{year}"
+msgstr ""
+
+#: app/helpers/dates_helper.rb:43
+msgid "%{month_name}, %{year}"
+msgstr ""
+
+#: app/helpers/dates_helper.rb:43
+msgid "%{month_name}"
+msgstr ""
+
+#: app/helpers/dates_helper.rb:114
+msgid "%{month}"
+msgstr ""
+
+#: app/helpers/article_helper.rb:51
+msgid "I want this article to display a link to older versions"
+msgstr ""
+
+#: app/helpers/article_helper.rb:58
+msgid "Allow members to create topics"
+msgstr ""
+
+#: app/helpers/article_helper.rb:75
+msgid "Fill in the search field to add the exception users to see this content"
+msgstr ""
+
+#: app/helpers/article_helper.rb:77
+msgid "Type in a search term for a user"
+msgstr ""
+
+#: app/helpers/categories_helper.rb:10
+msgid "Dark Green"
+msgstr ""
+
+#: app/helpers/categories_helper.rb:11
+msgid "Blue Oil"
+msgstr ""
+
+#: app/helpers/categories_helper.rb:12
+msgid "Blue"
+msgstr ""
+
+#: app/helpers/categories_helper.rb:13
+msgid "Brown"
+msgstr ""
+
+#: app/helpers/categories_helper.rb:14
+msgid "Light Green"
+msgstr ""
+
+#: app/helpers/categories_helper.rb:15
+msgid "Light Blue"
+msgstr ""
+
+#: app/helpers/categories_helper.rb:16
+msgid "Dark Blue"
+msgstr ""
+
+#: app/helpers/categories_helper.rb:17
+msgid "Blue Pool"
+msgstr ""
+
+#: app/helpers/categories_helper.rb:18
+msgid "Beige"
+msgstr ""
+
+#: app/helpers/categories_helper.rb:19
+msgid "Yellow"
+msgstr ""
+
+#: app/helpers/categories_helper.rb:20
+msgid "Light Brown"
+msgstr ""
+
+#: app/helpers/profile_helper.rb:24
+msgid "Personal website:"
+msgstr ""
+
+#: app/helpers/profile_helper.rb:25
+msgid "Jabber:"
+msgstr ""
+
+#: app/helpers/users_helper.rb:4
+msgid "All users"
+msgstr ""
+
+#: app/helpers/users_helper.rb:5
+msgid "Admin users"
+msgstr ""
+
+#: app/helpers/users_helper.rb:6
+msgid "Activated users"
+msgstr ""
+
+#: app/helpers/users_helper.rb:7
+msgid "Deativated users"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "vote"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "Vote"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "Voteable"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "Voteable type"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "Voter"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "Voter type"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "communityblock"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "Friends count"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "Members count"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "Activities count"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+#: app/views/profile_editor/_person_form.rhtml:17
+msgid "Personal website"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+#: app/views/profile_editor/_person_form.rhtml:16
+msgid "Jabber"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "Noreply email"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "Redirection after signup"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "person"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "videoblock"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "statisticsblock"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "profilelistblock"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "relatedorganizationsblock"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "recentcontentblock"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "displaycontentblock"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "createenterprise"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "comment classification plugin label"
+msgstr ""
+
+#: app/models/article_categorization.rb:-
+msgid "commentclassificationplugin::label"
+msgstr ""
+
+#: app/models/comment.rb:30
+msgid "{fn} can only be informed for unauthenticated authors"
+msgstr ""
+
+#: app/models/enterprise_activation.rb:27
+msgid "Pending activation of enterprise %{linked_subject}."
+msgstr ""
+
+#: app/models/enterprise_activation.rb:43
+msgid "Pending activation of enterprise %{enterprise}."
+msgstr ""
+
+#: app/models/environment_statistics_block.rb:7
+msgid "Environment stastistics (DEPRECATED)"
+msgstr ""
+
+#: app/models/add_member.rb:25 app/models/add_member.rb:41
+msgid "%{requestor} wants to be a member of this community."
+msgstr ""
+
+#: app/models/product_categories_block.rb:4
+msgid "Product category menu"
+msgstr ""
+
+#: app/models/product_categories_block.rb:9
+msgid "Catalog"
+msgstr ""
+
+#: app/models/product_categories_block.rb:13
+msgid "Helps to filter the products catalog."
+msgstr ""
+
+#: app/models/product_categories_block.rb:36
+msgid "Only on the catalog"
+msgstr ""
+
+#: app/models/image.rb:20
+msgid "{fn} of uploaded file was larger than the maximum size of 5.0 MB"
+msgstr ""
+
+#: app/models/layout_template.rb:19
+msgid "name"
+msgstr ""
+
+#: app/models/layout_template.rb:23
+msgid "title"
+msgstr ""
+
+#: app/models/product.rb:-
+msgid "Archived"
+msgstr ""
+
+#: app/models/change_password.rb:68
+msgid ""
+"In order to change your password, please visit the following address:\n"
+"\n"
+"%s\n"
+"\n"
+"If you did not required any change to your password just desconsider this "
+"email."
+msgstr ""
+
+#: app/models/domain.rb:13
+msgid ""
+"{fn} must be composed of sequences of lowercase letters (a to z), numbers (0 "
+"to 9), \"_\" and \"-\", separated by dots."
+msgstr ""
+
+#: app/models/domain.rb:20
+msgid "{fn} must not start with www."
+msgstr ""
+
+#: app/models/members_block.rb:31
+msgid "Show join leave button"
+msgstr ""
+
+#: app/models/create_enterprise.rb:43
+msgid "{fn} is not a validator for the chosen region"
+msgstr ""
+
+#: app/models/create_enterprise.rb:48
+msgid ""
+"{fn} is already being as identifier by another enterprise, organization or "
+"person."
+msgstr ""
+
+#: app/models/link_list_block.rb:37
+msgid "Same page"
+msgstr ""
+
+#: app/models/link_list_block.rb:38
+msgid "New tab"
+msgstr ""
+
+#: app/models/link_list_block.rb:39
+msgid "New window"
+msgstr ""
+
+#: app/models/person_notifier.rb:81
+msgid "[%s] Network Activity"
+msgstr ""
+
+#: app/models/scrap.rb:-
+msgid "Context"
+msgstr ""
+
+#: app/models/person.rb:250
+msgid "{fn} is already used by other user"
+msgstr ""
+
+#: app/models/environment.rb:132
+msgid "Display on menu the list of communities the user can manage"
+msgstr ""
+
+#: app/models/environment.rb:133
+msgid "Display on menu the list of enterprises the user can manage"
+msgstr ""
+
+#: app/models/environment.rb:150
+msgid "Stays on the same page the user was before signup."
+msgstr ""
+
+#: app/models/event.rb:28
+msgid "{fn} cannot come before end date."
+msgstr ""
+
+#: app/models/user.rb:-
+msgid "Return to"
+msgstr ""
+
+#: app/models/user.rb:118
+msgid "{fn} must be checked in order to signup."
+msgstr ""
+
+#: app/models/user.rb:257
+msgid "does not match."
+msgstr ""
+
+#: app/models/category.rb:10
+msgid "{fn} cannot be like that."
+msgstr ""
+
+#: app/models/category.rb:12
+msgid "{fn} is already being used by another category."
+msgstr ""
+
+#: app/models/category.rb:16
+msgid "{fn} was already assigned to another category."
+msgstr ""
+
+#: app/models/uploaded_file.rb:68
+msgid "{fn} of uploaded file was larger than the maximum size of %{size}"
+msgstr ""
+
+#: app/presenters/image.rb:12
+msgid "Image (%s)"
+msgstr ""
+
+#: app/controllers/my_profile/cms_controller.rb:174
+msgid "Homepage reseted."
+msgstr ""
+
+#: app/controllers/my_profile/cms_controller.rb:176
+msgid "\"%s\" configured as homepage."
+msgstr ""
+
+#: app/controllers/admin/users_controller.rb:55
+msgid "Could not remove profile"
+msgstr ""
+
+#: app/controllers/public/account_controller.rb:165
+msgid "Can not recover user password with blank value."
+msgstr ""
+
+#: app/controllers/public/account_controller.rb:167
+msgid "Could not find any user with %s equal to \"%s\"."
+msgstr ""
+
+#: app/controllers/public/account_controller.rb:170
+msgid "Could not perform password recovery for the user."
+msgstr ""
+
+#: app/views/spam/_task.rhtml:13
+msgid "Are you sure you want to remove this article suggestion?"
+msgstr ""
+
+#: app/views/spam/index.rhtml:7
+msgid "There are no spams to review."
+msgstr ""
+
+#: app/views/spam/index.rhtml:16
+msgid "Comment Spam"
+msgstr ""
+
+#: app/views/spam/index.rhtml:18
+msgid "Task Spam"
+msgstr ""
+
+#: app/views/admin_panel/_site_info.rhtml:3
+msgid "No reply email"
+msgstr ""
+
+#: app/views/admin_panel/index.rhtml:9
+msgid "Appearance"
+msgstr ""
+
+#: app/views/person_notifier/mailer/_create_article.rhtml:9
+#: app/views/profile/_create_article.rhtml:7
+msgid "has published on community %s"
+msgstr ""
+
+#: app/views/content_viewer/article_versions.rhtml:2
+msgid "Go back to latest version"
+msgstr ""
+
+#: app/views/content_viewer/article_versions.rhtml:7
+msgid ""
+"This is the list of all versions of this content. Select a version to see it "
+"and then revert to it."
+msgstr ""
+
+#: app/views/content_viewer/article_versions.rhtml:17
+msgid "by %{author}"
+msgstr ""
+
+#: app/views/content_viewer/article_versions.rhtml:56
+msgid "Show differences between selected versions"
+msgstr ""
+
+#: app/views/content_viewer/versioned_article.rhtml:2
+#: app/views/content_viewer/versions_diff.html.erb:2
+msgid "Back to the versions"
+msgstr ""
+
+#: app/views/content_viewer/versioned_article.rhtml:8
+#: app/views/content_viewer/_article_toolbar.rhtml:52
+msgid "All versions"
+msgstr ""
+
+#: app/views/content_viewer/versioned_article.rhtml:11
+msgid "Revert to this version"
+msgstr ""
+
+#: app/views/content_viewer/versioned_article.rhtml:16
+msgid "Go to latest version"
+msgstr ""
+
+#: app/views/content_viewer/versioned_article.rhtml:20
+msgid "Version %{version} - %{author} on %{date}"
+msgstr ""
+
+#: app/views/content_viewer/versioned_article.rhtml:24
+msgid "This is not the latest version of this content."
+msgstr ""
+
+#: app/views/profile_editor/_person.rhtml:23
+msgid "Notification options"
+msgstr ""
+
+#: app/views/profile_editor/_person.rhtml:25
+msgid "Disabled"
+msgstr ""
+
+#: app/views/profile_editor/_person.rhtml:25
+msgid "Hourly"
+msgstr ""
+
+#: app/views/profile_editor/_person.rhtml:25
+msgid "Half Day"
+msgstr ""
+
+#: app/views/profile_editor/_person.rhtml:25
+msgid "Daily"
+msgstr ""
+
+#: app/views/profile_editor/_organization.rhtml:70
+msgid "Products/Services catalog"
+msgstr ""
+
+#: app/views/profile_editor/_organization.rhtml:71
+msgid "Number of products/services displayed per page on catalog"
+msgstr ""
+
+#: app/views/profile_editor/index.rhtml:48 app/views/catalog/index.rhtml:7
+msgid "Manage Products/Services"
+msgstr ""
+
+#: app/views/users/_index_buttons.rhtml:2
+msgid "User list as [CSV]"
+msgstr ""
+
+#: app/views/users/_index_buttons.rhtml:3
+msgid "User list as [XML]"
+msgstr ""
+
+#: app/views/users/_index_buttons.rhtml:4
+msgid "Send e-mail to all users"
+msgstr ""
+
+#: app/views/users/_users_search_form.rhtml:3
+msgid "Find users"
+msgstr ""
+
+#: app/views/users/_users_list.rhtml:22
+msgid "Reset admin role"
+msgstr ""
+
+#: app/views/users/_users_list.rhtml:22
+msgid "Do you want to reset this user as administrator?"
+msgstr ""
+
+#: app/views/users/_users_list.rhtml:24
+msgid "Set admin role"
+msgstr ""
+
+#: app/views/users/_users_list.rhtml:24
+msgid "Do you want to set this user as administrator?"
+msgstr ""
+
+#: app/views/users/_users_list.rhtml:27
+msgid "Activate user"
+msgstr ""
+
+#: app/views/users/_users_list.rhtml:27
+msgid "Do you want to activate this user?"
+msgstr ""
+
+#: app/views/users/_users_list.rhtml:29
+msgid "Deactivate user"
+msgstr ""
+
+#: app/views/users/_users_list.rhtml:29
+msgid "Do you want to deactivate this user?"
+msgstr ""
+
+#: app/views/users/_users_list.rhtml:31
+msgid "Do you want to remove this user?"
+msgstr ""
+
+#: app/views/shared/_select_categories_top.rhtml:13
+msgid "Selected categories:"
+msgstr ""
+
+#: app/views/shared/_select_subcategories.rhtml:3
+msgid "Click to select a category"
+msgstr ""
+
+#: app/views/features/manage_fields.rhtml:1
+msgid "Manage fields displayed for profiles"
+msgstr ""
+
+#: app/views/features/manage_fields.rhtml:4
+msgid "Person's fields"
+msgstr ""
+
+#: app/views/features/manage_fields.rhtml:6
+msgid "Community's fields"
+msgstr ""
+
+#: app/views/features/manage_fields.rhtml:9
+msgid "Enterprise's fields"
+msgstr ""
+
+#: app/views/features/_manage_community_fields.rhtml:13
+#: app/views/features/_manage_person_fields.rhtml:13
+#: app/views/features/_manage_enterprise_fields.rhtml:13
+msgid "Check/Uncheck All"
+msgstr ""
+
+#: app/views/features/index.rhtml:29
+msgid "Page to redirect after signup"
+msgstr ""
+
+#: app/views/cms/_forum.rhtml:15
+msgid "Has terms of use:"
+msgstr ""
+
+#: app/views/cms/_forum.rhtml:18
+msgid "Terms of use:"
+msgstr ""
+
+#: app/views/cms/view.rhtml:7
+msgid "Profile homepage:"
+msgstr ""
+
+#: app/views/cms/view.rhtml:10 app/views/cms/view.rhtml:74
+msgid "Reset homepage"
+msgstr ""
+
+#: app/views/cms/view.rhtml:12
+msgid "Profile Information"
+msgstr ""
+
+#: app/views/cms/_blog.rhtml:58
+msgid "Cover image:"
+msgstr ""
+
+#: app/views/cms/_blog.rhtml:63
+msgid "Remove cover image"
+msgstr ""
+
+#: app/views/profile/_more_comments.rhtml:2
+#: app/views/profile/_more_replies.rhtml:2
+#: plugins/community_track/views/blocks/_track_list_more.rhtml:9
+msgid "More"
+msgstr ""
+
+#: app/views/profile/_profile_scraps.rhtml:26
+#: app/views/profile/_profile_comments.rhtml:8
+msgid "View comment"
+msgid_plural "View all %s comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/views/memberships/index.rhtml:20
+msgid "No groups to list"
+msgstr ""
+
+#: app/views/spam/_suggest_article.html.erb:3
+msgid "Show details"
+msgstr ""
+
+#: app/views/spam/_suggest_article.html.erb:8
+msgid "Sent by"
+msgstr ""
+
+#: app/views/spam/_suggest_article.html.erb:12
+msgid "Folder|none"
+msgstr ""
+
+#: app/views/spam/_suggest_article.html.erb:13
+msgid "Abstract|empty"
+msgstr ""
+
+#: app/views/content_viewer/versions_diff.html.erb:5
+msgid "Changes on \"%s\""
+msgstr ""
+
+#: app/views/content_viewer/versions_diff.html.erb:7
+msgid "Changes from %s &rarr; %s"
+msgstr ""
+
+#: app/views/content_viewer/versions_diff.html.erb:12
+msgid "These versions range have no differences."
+msgstr ""
+
+#: app/views/shared/_manage_link.html.erb:2
+msgid "My %s"
+msgstr ""
+
+#: lib/file_presenter.rb:63
+msgid "File (%s)"
+msgstr ""
+
+#: plugins/community_track/controllers/public/community_track_plugin_public_controller.rb:40
+msgid "Select one community to proceed"
+msgstr ""
+
+#: plugins/container_block/controllers/container_block_plugin_controller.rb:14
+msgid "Block successfully saved."
+msgstr ""
+
+#: plugins/comment_classification/controllers/admin/comment_classification_plugin_status_controller.rb:15
+msgid "Status created"
+msgstr ""
+
+#: plugins/comment_classification/controllers/admin/comment_classification_plugin_status_controller.rb:18
+msgid "Status could not be created"
+msgstr ""
+
+#: plugins/comment_classification/controllers/admin/comment_classification_plugin_status_controller.rb:29
+msgid "Status updated"
+msgstr ""
+
+#: plugins/comment_classification/controllers/admin/comment_classification_plugin_status_controller.rb:32
+msgid "Failed to edit status"
+msgstr ""
+
+#: plugins/comment_classification/controllers/admin/comment_classification_plugin_status_controller.rb:43
+msgid "Status removed"
+msgstr ""
+
+#: plugins/comment_classification/controllers/admin/comment_classification_plugin_status_controller.rb:45
+#: plugins/comment_classification/controllers/admin/comment_classification_plugin_status_controller.rb:48
+msgid "Status could not be removed"
+msgstr ""
+
+#: plugins/comment_classification/controllers/admin/comment_classification_plugin_labels_controller.rb:16
+msgid "Label created"
+msgstr ""
+
+#: plugins/comment_classification/controllers/admin/comment_classification_plugin_labels_controller.rb:19
+msgid "Label could not be created"
+msgstr ""
+
+#: plugins/comment_classification/controllers/admin/comment_classification_plugin_labels_controller.rb:31
+msgid "Label updated"
+msgstr ""
+
+#: plugins/comment_classification/controllers/admin/comment_classification_plugin_labels_controller.rb:34
+msgid "Failed to edit label"
+msgstr ""
+
+#: plugins/comment_classification/controllers/admin/comment_classification_plugin_labels_controller.rb:45
+msgid "Label removed"
+msgstr ""
+
+#: plugins/comment_classification/controllers/admin/comment_classification_plugin_labels_controller.rb:47
+#: plugins/comment_classification/controllers/admin/comment_classification_plugin_labels_controller.rb:50
+msgid "Label could not be removed"
+msgstr ""
+
+#: plugins/html5_video/lib/file_presenter/video.rb:8
+msgid "Video (%s)"
+msgstr ""
+
+#: plugins/html5_video/lib/html5_video_plugin.rb:10
+msgid "A plugin to enable the video suport, with auto conversion for the web."
+msgstr ""
+
+#: plugins/community_block/lib/community_block.rb:4
+msgid "Community block"
+msgstr ""
+
+#: plugins/community_block/lib/community_block.rb:8
+msgid "Help for Community Description Block."
+msgstr ""
+
+#: plugins/community_block/lib/community_block_plugin.rb:10
+msgid "A plugin that adds a block to show community description"
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/helper.rb:58
+msgid "Text field"
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/helper.rb:59
+msgid "Select field"
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/helper.rb:98
+msgid "Hold down Ctrl to select options"
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/field.rb:-
+msgid "custom forms plugin field"
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/field.rb:-
+msgid "customformsplugin::field"
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/field.rb:-
+msgid "Minimum"
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/field.rb:-
+msgid "Maximum"
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/field.rb:-
+msgid "Form"
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/field.rb:-
+msgid "Select field type"
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/admission_survey.rb:9
+msgid "Admission survey"
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/admission_survey.rb:13
+msgid "%{requestor} wants you to fill in some information before joining."
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/admission_survey.rb:17
+msgid ""
+"Before joining %{requestor}, the administrators of this organization\n"
+"      wants you to fill in some further information."
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/admission_survey.rb:22
+msgid "%{requestor} wants you to fill in some further information."
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/form.rb:85
+msgid "The time range selected is invalid."
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/alternative.rb:-
+msgid "custom forms plugin alternative"
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/alternative.rb:-
+msgid "customformsplugin::alternative"
+msgstr ""
+
+#: plugins/custom_forms/lib/custom_forms_plugin/alternative.rb:-
+msgid "Selected by default"
+msgstr ""
+
+#: plugins/stoa/lib/stoa_plugin/usp_user.rb:-
+msgid "usp user"
+msgstr ""
+
+#: plugins/stoa/lib/stoa_plugin/usp_user.rb:-
+msgid "stoaplugin::uspuser"
+msgstr ""
+
+#: plugins/stoa/lib/stoa_plugin.rb:124
+msgid "USP Number"
+msgstr ""
+
+#: plugins/video/lib/video_plugin.rb:10
+msgid ""
+"A plugin that adds a block where you can add videos from youtube, vimeo and "
+"html5."
+msgstr ""
+
+#: plugins/video/lib/video_block.rb:28
+msgid "Display a Video"
+msgstr ""
+
+#: plugins/video/lib/video_block.rb:32
+msgid ""
+"This block presents a video from youtube, vimeo and some video formats (mp4, "
+"ogg, ogv and webm)"
+msgstr ""
+
+#: plugins/anti_spam/lib/anti_spam_plugin.rb:8
+msgid ""
+"Tests comments and suggested articles against a spam checking service "
+"compatible with the Akismet API"
+msgstr ""
+
+#: plugins/context_content/lib/context_content_plugin.rb:8
+msgid "A plugin that display content based on page context."
+msgstr ""
+
+#: plugins/context_content/lib/context_content_plugin/context_content_block.rb:14
+msgid "Display context content"
+msgstr ""
+
+#: plugins/context_content/lib/context_content_plugin/context_content_block.rb:18
+msgid "This block displays content based on context."
+msgstr ""
+
+#: plugins/community_track/lib/community_track_plugin.rb:8
+msgid "New kind of content for communities."
+msgstr ""
+
+#: plugins/community_track/lib/community_track_plugin/track.rb:9
+msgid "should not be blank."
+msgstr ""
+
+#: plugins/community_track/lib/community_track_plugin/track.rb:17
+msgid "Track"
+msgstr ""
+
+#: plugins/community_track/lib/community_track_plugin/track.rb:21
+msgid "Defines a track."
+msgstr ""
+
+#: plugins/community_track/lib/community_track_plugin/track_card_list_block.rb:4
+msgid "Track Card List"
+msgstr ""
+
+#: plugins/community_track/lib/community_track_plugin/track_card_list_block.rb:8
+msgid "This block displays a list of most relevant tracks as cards."
+msgstr ""
+
+#: plugins/community_track/lib/community_track_plugin/step.rb:11
+msgid "Step not allowed at this parent."
+msgstr ""
+
+#: plugins/community_track/lib/community_track_plugin/step.rb:45
+msgid "must be equal or after start date."
+msgstr ""
+
+#: plugins/community_track/lib/community_track_plugin/step.rb:50
+msgid "Step"
+msgstr ""
+
+#: plugins/community_track/lib/community_track_plugin/step.rb:54
+msgid "Defines a step."
+msgstr ""
+
+#: plugins/community_track/lib/community_track_plugin/step_helper.rb:4
+msgid "Join!"
+msgstr ""
+
+#: plugins/community_track/lib/community_track_plugin/step_helper.rb:4
+msgid "Soon"
+msgstr ""
+
+#: plugins/community_track/lib/community_track_plugin/track_list_block.rb:10
+msgid "Track List"
+msgstr ""
+
+#: plugins/community_track/lib/community_track_plugin/track_list_block.rb:14
+msgid "This block displays a list of most relevant tracks."
+msgstr ""
+
+#: plugins/send_email/lib/send_email_plugin/mail.rb:-
+msgid "mail"
+msgstr ""
+
+#: plugins/send_email/lib/send_email_plugin/mail.rb:-
+msgid "sendemailplugin::mail"
+msgstr ""
+
+#: plugins/statistics/lib/statistics_block.rb:43
+msgid "This block presents some statistics about your context."
+msgstr ""
+
+#: plugins/statistics/lib/statistics_plugin.rb:10
+msgid ""
+"A plugin that adds a block where you can see statistics of it's context."
+msgstr ""
+
+#: plugins/container_block/lib/container_block_plugin.rb:8
+msgid "A plugin that add a container block."
+msgstr ""
+
+#: plugins/container_block/lib/container_block_plugin/container_block.rb:21
+msgid "Container"
+msgstr ""
+
+#: plugins/container_block/lib/container_block_plugin/container_block.rb:25
+msgid "This block acts as a container for another blocks"
+msgstr ""
+
+#: plugins/recent_content/lib/recent_content_plugin.rb:10
+msgid ""
+"A plugin that adds a block where you can display the content of any of your "
+"blogs."
+msgstr ""
+
+#: plugins/recent_content/lib/recent_content_block.rb:15
+msgid ""
+"This block displays all articles inside the blog you choose. You can edit "
+"the block to select which of your blogs is going to be displayed in the "
+"block."
+msgstr ""
+
+#: plugins/mark_comment_as_read/lib/mark_comment_as_read_plugin.rb:10
+msgid "Provide a button to mark a comment as read."
+msgstr ""
+
+#: plugins/mark_comment_as_read/lib/mark_comment_as_read_plugin.rb:23
+msgid "Mark as not read"
+msgstr ""
+
+#: plugins/mark_comment_as_read/lib/mark_comment_as_read_plugin.rb:24
+msgid "Mark as read"
+msgstr ""
+
+#: plugins/display_content/lib/display_content_block.rb:21
+msgid "Publish date"
+msgstr ""
+
+#: plugins/comment_classification/lib/comment_classification_plugin.rb:11
+msgid "A plugin that allow classification of comments."
+msgstr ""
+
+#: plugins/vote/lib/vote_plugin.rb:8
+msgid "Provide buttons to like/dislike a articles and comments."
+msgstr ""
+
+#: plugins/breadcrumbs/lib/breadcrumbs_plugin/content_breadcrumbs_block.rb:7
+msgid "Content Breadcrumbs"
+msgstr ""
+
+#: plugins/breadcrumbs/lib/breadcrumbs_plugin/content_breadcrumbs_block.rb:11
+msgid "This block displays breadcrumb trail."
+msgstr ""
+
+#: plugins/breadcrumbs/lib/breadcrumbs_plugin/content_breadcrumbs_block.rb:54
+msgid "Upload Files"
+msgstr ""
+
+#: plugins/breadcrumbs/lib/breadcrumbs_plugin.rb:8
+msgid "A plugin that add a block to display breadcrumbs."
+msgstr ""
+
+#: plugins/video/views/video_block.rhtml:18
+msgid "Register a valid url (Vimeo, Youtube, video files)"
+msgstr ""
+
+#: plugins/context_content/views/box_organizer/context_content_plugin/_context_content_block.rhtml:3
+msgid "Show content name"
+msgstr ""
+
+#: plugins/context_content/views/box_organizer/context_content_plugin/_context_content_block.rhtml:4
+msgid "Show content image"
+msgstr ""
+
+#: plugins/context_content/views/box_organizer/context_content_plugin/_context_content_block.rhtml:5
+msgid "Show parent content when children is empty"
+msgstr ""
+
+#: plugins/context_content/views/box_organizer/context_content_plugin/_context_content_block.rhtml:8
+msgid "Display content types:"
+msgstr ""
+
+#: plugins/context_content/views/box_organizer/context_content_plugin/_context_content_block.rhtml:14
+msgid "more"
+msgstr ""
+
+#: plugins/community_track/views/community_track_plugin_public/all_tracks.rhtml:1
+msgid "Tracks"
+msgstr ""
+
+#: plugins/community_track/views/community_track_plugin_public/select_community.rhtml:3
+msgid "Select Community"
+msgstr ""
+
+#: plugins/community_track/views/community_track_plugin_public/select_community.rhtml:39
+msgid "New Track"
+msgstr ""
+
+#: plugins/community_track/views/content_viewer/step.rhtml:13
+#: plugins/community_track/views/content_viewer/step.rhtml:19
+msgid "Tool"
+msgstr ""
+
+#: plugins/community_track/views/content_viewer/step.rhtml:15
+#: plugins/community_track/views/content_viewer/_step_item.rhtml:23
+msgid "Create %s"
+msgstr ""
+
+#: plugins/community_track/views/content_viewer/track.rhtml:9
+#: plugins/community_track/views/blocks/_track.rhtml:12
+msgid "Steps"
+msgstr ""
+
+#: plugins/community_track/views/content_viewer/track.rhtml:16
+msgid "Reorder Steps"
+msgstr ""
+
+#: plugins/community_track/views/content_viewer/track.rhtml:17
+msgid "Save Order"
+msgstr ""
+
+#: plugins/community_track/views/content_viewer/track.rhtml:35
+msgid "Hidden Steps"
+msgstr ""
+
+#: plugins/community_track/views/content_viewer/_step_item.rhtml:16
+msgid "Tool: "
+msgstr ""
+
+#: plugins/community_track/views/content_viewer/_step_item.rhtml:32
+msgid "View"
+msgstr ""
+
+#: plugins/community_track/views/blocks/_track_card.rhtml:25
+#: plugins/statistics/views/statistics_block.rhtml:25
+msgid "hits"
+msgstr ""
+
+#: plugins/community_track/views/blocks/_track_list_more.rhtml:5
+#: plugins/recent_content/views/blocks/recent_content_block.rhtml:39
+msgid "View All"
+msgstr ""
+
+#: plugins/community_track/views/box_organizer/community_track_plugin/_track_list_block.rhtml:3
+msgid "Show more at another page"
+msgstr ""
+
+#: plugins/community_track/views/box_organizer/community_track_plugin/_track_list_block.rhtml:4
+msgid "Select Categories"
+msgstr ""
+
+#: plugins/community_track/views/cms/community_track_plugin/_step.rhtml:15
+msgid "Tool type"
+msgstr ""
+
+#: plugins/community_track/views/cms/community_track_plugin/_step.rhtml:19
+msgid "Hidden Step"
+msgstr ""
+
+#: plugins/community_track/views/cms/community_track_plugin/_track.rhtml:13
+msgid "Goals:"
+msgstr ""
+
+#: plugins/community_track/views/cms/community_track_plugin/_track.rhtml:14
+msgid "Expected Results:"
+msgstr ""
+
+#: plugins/statistics/views/box_organizer/_statistics_block.rhtml:1
+msgid "Show user counter"
+msgstr ""
+
+#: plugins/statistics/views/box_organizer/_statistics_block.rhtml:4
+msgid "Show community counter"
+msgstr ""
+
+#: plugins/statistics/views/box_organizer/_statistics_block.rhtml:8
+msgid "Show enterprise counter"
+msgstr ""
+
+#: plugins/statistics/views/box_organizer/_statistics_block.rhtml:12
+msgid "Show category counter"
+msgstr ""
+
+#: plugins/statistics/views/box_organizer/_statistics_block.rhtml:16
+msgid "Show tag counter"
+msgstr ""
+
+#: plugins/statistics/views/box_organizer/_statistics_block.rhtml:20
+msgid "Show comment counter"
+msgstr ""
+
+#: plugins/statistics/views/box_organizer/_statistics_block.rhtml:24
+msgid "Show hit counter"
+msgstr ""
+
+#: plugins/statistics/views/box_organizer/_statistics_block.rhtml:30
+msgid "Show counter for communities with template %s"
+msgstr ""
+
+#: plugins/statistics/views/statistics_block.rhtml:7
+msgid "users"
+msgstr ""
+
+#: plugins/statistics/views/statistics_block.rhtml:10
+msgid "enterprises"
+msgstr ""
+
+#: plugins/statistics/views/statistics_block.rhtml:13
+msgid "communities"
+msgstr ""
+
+#: plugins/statistics/views/statistics_block.rhtml:16
+msgid "categories"
+msgstr ""
+
+#: plugins/sub_organizations/views/box_organizer/_related_organizations_block.rhtml:2
+msgid "Type of organizations to be displayed"
+msgstr ""
+
+#: plugins/sub_organizations/views/box_organizer/_related_organizations_block.rhtml:3
+msgid "Both"
+msgstr ""
+
+#: plugins/recent_content/views/blocks/recent_content_block.rhtml:43
+msgid ""
+"This is the recent content block. Please edit it to show the content you "
+"want."
+msgstr ""
+
+#: plugins/recent_content/views/box_organizer/_recent_content_block.rhtml:3
+msgid "No blogs found. Please add a blog in order to configure this block."
+msgstr ""
+
+#: plugins/recent_content/views/box_organizer/_recent_content_block.rhtml:6
+msgid "Choose which blog should be displayed"
+msgstr ""
+
+#: plugins/recent_content/views/box_organizer/_recent_content_block.rhtml:14
+msgid "Choose how the content should be displayed"
+msgstr ""
+
+#: plugins/recent_content/views/box_organizer/_recent_content_block.rhtml:19
+msgid "Title only"
+msgstr ""
+
+#: plugins/recent_content/views/box_organizer/_recent_content_block.rhtml:20
+msgid "Title and abstract"
+msgstr ""
+
+#: plugins/recent_content/views/box_organizer/_recent_content_block.rhtml:21
+msgid "Full content"
+msgstr ""
+
+#: plugins/recent_content/views/box_organizer/_recent_content_block.rhtml:28
+msgid "Choose how many items will be displayed"
+msgstr ""
+
+#: plugins/recent_content/views/box_organizer/_recent_content_block.rhtml:33
+msgid "Display blog cover image"
+msgstr ""
+
+#: plugins/display_content/views/box_organizer/_display_content_block.rhtml:3
+msgid "Choose which attributes should be displayed and drag to reorder them:"
+msgstr ""
+
+#: plugins/display_content/views/box_organizer/_display_content_block.rhtml:21
+msgid "Dinamically load children of selected folders"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_admin/index.rhtml:1
+msgid "Comments classification options"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_admin/index.rhtml:4
+msgid "Manage Labels"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_admin/index.rhtml:5
+msgid "Manage Status"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_status/create.rhtml:1
+#: plugins/comment_classification/views/comment_classification_plugin_status/index.rhtml:29
+#: plugins/comment_classification/views/comment_classification_plugin_myprofile/add_status.html.erb:24
+msgid "Add a new status"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_status/_form.rhtml:7
+msgid "Enable this status?"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_status/edit.rhtml:1
+msgid "Editing status %s"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_status/index.rhtml:1
+msgid "Manage comments status"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_status/index.rhtml:5
+msgid "(no status registered yet)"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_status/index.rhtml:11
+msgid "Reason enabled?"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_status/index.rhtml:21
+msgid "Are you sure you want to remove this status?"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_labels/create.rhtml:1
+#: plugins/comment_classification/views/comment_classification_plugin_labels/index.rhtml:29
+msgid "Add a new label"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_labels/_form.rhtml:7
+#: plugins/comment_classification/views/comment_classification_plugin_labels/index.rhtml:10
+msgid "Color"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_labels/_form.rhtml:8
+msgid "Enable this label?"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_labels/edit.rhtml:1
+msgid "Editing label %s"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_labels/index.rhtml:1
+msgid "Manage comments labels"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_labels/index.rhtml:5
+msgid "(no label registered yet)"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_labels/index.rhtml:21
+msgid "Are you sure you want to  remove this label?"
+msgstr ""
+
+#: plugins/vote/views/vote_plugin_admin/index.rhtml:1
+msgid "Vote settings"
+msgstr ""
+
+#: plugins/vote/views/vote_plugin_admin/index.rhtml:6
+msgid "Enable on %s:"
+msgstr ""
+
+#: plugins/vote/views/vote_plugin_admin/index.rhtml:7
+msgid "Like"
+msgstr ""
+
+#: plugins/vote/views/vote_plugin_admin/index.rhtml:8
+msgid "Dislike"
+msgstr ""
+
+#: plugins/vote/views/vote_plugin_admin/index.rhtml:13
+msgid "Limit of voters to display:"
+msgstr ""
+
+#: plugins/breadcrumbs/views/box_organizer/breadcrumbs_plugin/_content_breadcrumbs_block.rhtml:2
+msgid "Show cms action"
+msgstr ""
+
+#: plugins/breadcrumbs/views/box_organizer/breadcrumbs_plugin/_content_breadcrumbs_block.rhtml:3
+msgid "Show profile"
+msgstr ""
+
+#: plugins/spaminator/views/spaminator_plugin_admin/reports.html.erb:24
+msgid ""
+"People who signed up more than one month ago, have no network / number of "
+"people verified"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_profile/show.html.erb:7
+#: plugins/custom_forms/views/tasks/custom_forms_plugin/_membership_survey_accept_details.html.erb:8
+msgid "Sorry, you can't fill this form yet"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_profile/show.html.erb:9
+#: plugins/custom_forms/views/tasks/custom_forms_plugin/_membership_survey_accept_details.html.erb:10
+msgid "Sorry, you can't fill this form anymore"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/submissions.html.erb:9
+msgid "Download all form responses as"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/custom_forms_plugin/_select_field.html.erb:5
+msgid "Radio"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/custom_forms_plugin/_select_field.html.erb:7
+msgid "Checkbox"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/custom_forms_plugin/_select_field.html.erb:9
+msgid "Drop down"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/custom_forms_plugin/_select_field.html.erb:11
+msgid "Multiple Select"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/custom_forms_plugin/_select_field.html.erb:17
+msgid "Alternative"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/custom_forms_plugin/_select_field.html.erb:18
+msgid "Preselected"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/custom_forms_plugin/_select_field.html.erb:25
+msgid "Add a new alternative"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/custom_forms_plugin/_alternative.html.erb:10
+msgid "Remove alternative"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/custom_forms_plugin/_text_field.html.erb:3
+msgid "Default text:"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/_field.html.erb:15
+msgid "Remove field"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/_form.html.erb:6
+msgid "What is the time limit for this form to be filled?"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/_form.html.erb:16
+msgid "Triggered on membership request as requirement for approval"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/_form.html.erb:18
+msgid "Triggered after membership"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/_form.html.erb:34
+msgid "Add a new text field"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/_form.html.erb:35
+msgid "Add a new select field"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/pending.html.erb:3
+msgid "Pending submissions for %s"
+msgstr ""
+
+#: plugins/custom_forms/views/custom_forms_plugin_myprofile/pending.html.erb:6
+msgid "There are no pending submissions for this form."
+msgstr ""
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:4
+msgid "Enable shopping basket"
+msgstr ""
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:5
+msgid "Enable delivery fields on orders"
+msgstr ""
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:36
+msgid "Order's minimum price for free delivery:"
+msgstr ""
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:37
+msgid "Leave empty to always charge the delivery."
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_myprofile/add_status.html.erb:1
+msgid "Status for comment"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_myprofile/add_status.html.erb:16
+msgid ""
+"<i>%{user}</i> added the status <i>%{status_name}</i> at <i>%{created_at}</"
+"i>."
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_myprofile/add_status.html.erb:18
+msgid "<i>Reason:</i> %s"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_myprofile/_status_form.html.erb:7
+msgid "Reason:"
+msgstr ""
+
+#: plugins/comment_classification/views/comment_classification_plugin_myprofile/index.html.erb:1
+msgid "Manage comment classification"
+msgstr ""
