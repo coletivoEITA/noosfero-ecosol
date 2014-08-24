@@ -3,7 +3,7 @@
     <%= t('views.order._consumer_orders.orders_from_consumer_') % {:consumer => @consumer.name} %>
   <% elsif @consumer %>
     <%= t('views.order._consumer_orders.your_orders_on_this_c') %>
-    <%= link_to t('views.order._consumer_orders.new_order'), {:action => :new, :cycle_id => @cycle.id} if !@admin_edit and @cycle.orders? %>
+    <%= link_to t('views.order._consumer_orders.new_order'), {:action => :new, :cycle_id => @cycle.id} if !@admin_edit and @cycle.orders? and @cycle.profile.members.include? user %>
   <% end %>
 </h3>
 

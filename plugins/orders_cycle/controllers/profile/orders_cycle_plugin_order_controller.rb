@@ -32,10 +32,14 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       return
     end
 
-    @consumer = user
-    @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @order = OrdersPlugin::Sale.create! :profile => profile, :consumer => @consumer, :cycle => @cycle
-    redirect_to params.merge(:action => :edit, :id => @order.id)
+    if not profile.members.include? user
+      render_access_denied
+    else
+      @consumer = user
+      @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
+      @order = OrdersPlugin::Sale.create! :profile => profile, :consumer => @consumer, :cycle => @cycle
+      redirect_to params.merge(:action => :edit, :id => @order.id)
+    end
   end
 
   def edit

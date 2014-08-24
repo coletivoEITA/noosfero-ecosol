@@ -200,6 +200,10 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     end
   end
 
+  def can_order? user
+    profile.members.include? user
+  end
+
   protected
 
   def add_products_on_edition_state

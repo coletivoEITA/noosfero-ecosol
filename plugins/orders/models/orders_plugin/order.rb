@@ -185,12 +185,12 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
 
   def may_view? user
-    @may_view ||= self.profile.admins.include?(user) or (self.consumer == user)
+    @may_view ||= self.profile.admins.include?(user) or ((self.consumer == user)) and self.profile.members.include? user
   end
 
   # cache is done independent of user as model cache is per request
   def may_edit? user, admin_action = false
-    @may_edit ||= (admin_action and self.profile.admins.include?(user)) or (self.open? and self.consumer == user)
+    @may_edit ||= (admin_action and self.profile.admins.include?(user)) or (self.open? and self.consumer == user and self.profile.members.include? user)
   end
 
   def verify_actor? profile, actor_name
