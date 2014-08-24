@@ -37,7 +37,8 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
   def open_cycle profile, cycle, subject, message
     domain = profile.hostname || profile.environment.default_hostname
 
-    recipients    organization_members(profile)
+    recipients    'undisclosed-recipients'
+    bcc           organization_members(profile)
     from          'no-reply@' + domain
     reply_to      profile_recipients(profile)
     subject       t('lib.mailer.profile_subject') % {:profile => profile.name, :subject => subject}
