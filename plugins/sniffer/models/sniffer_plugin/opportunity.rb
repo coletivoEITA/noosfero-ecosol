@@ -1,3 +1,6 @@
+# strange WORKAROUND
+require_dependency 'noosfero/plugin/active_record' if not ActionController::Base.perform_caching
+
 class SnifferPlugin::Opportunity < Noosfero::Plugin::ActiveRecord
 
   belongs_to :profile

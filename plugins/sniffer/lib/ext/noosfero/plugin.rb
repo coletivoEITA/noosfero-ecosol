@@ -1,4 +1,4 @@
-require_dependency "#{Rails.root}/lib/noosfero/plugin"
+require_dependency "noosfero/plugin"
 
 class Noosfero::Plugin
 

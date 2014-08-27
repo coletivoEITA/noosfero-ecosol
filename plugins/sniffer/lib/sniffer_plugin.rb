@@ -1,17 +1,7 @@
 # WORKAROUND: plugin class don't scope subclasses causing core classes conflict
 class SnifferPlugin < Noosfero::Plugin; end
 
-require_dependency "#{File.dirname __FILE__}/ext/enterprise"
-require_dependency "#{File.dirname __FILE__}/ext/product"
-require_dependency "#{File.dirname __FILE__}/ext/product_category"
-require_dependency "#{File.dirname __FILE__}/ext/profile"
-require_dependency "#{File.dirname __FILE__}/ext/article"
 require_dependency "#{File.dirname __FILE__}/ext/noosfero/plugin"
-
-# solr indexed models needs to be loaded
-if defined? SolrPlugin and ActiveRecord::Base.connection.table_exists? "sniffer_plugin_opportunities"
-  require "#{File.dirname __FILE__}/../models/sniffer_plugin/opportunity"
-end
 
 class SnifferPlugin < Noosfero::Plugin
 
@@ -45,5 +35,10 @@ class SnifferPlugin < Noosfero::Plugin
     SnifferPlugin::InterestsBlock
   end
 
+end
+
+# solr indexed models needs to be loaded
+if $0 =~ /rake$/ and defined? SolrPlugin and ActiveRecord::Base.connection.table_exists? "sniffer_plugin_opportunities"
+  require_dependency "#{File.dirname __FILE__}/../models/sniffer_plugin/opportunity"
 end
 
