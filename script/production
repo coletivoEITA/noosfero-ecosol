@@ -41,7 +41,7 @@ do_stop() {
   ruby -S thin -C config/thin.yml stop ||
     stop_via_pid_file tmp/pids/thin.*.pid
 
-  environments_loop stop ||
+  #environments_loop stop ||
     stop_via_pid_file tmp/pids/delayed_job.pid tmp/pids/delayed_job.*.pid tmp/pids/feed-updater.*.pid
 }
 
