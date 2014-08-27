@@ -74,7 +74,7 @@ $image-next: '/plugins/escambo/images/next.png';
           margin-top: 1.5*$margin;
           width: 34*$base;
 
-          #sign-up, #login { 
+          #sign-up, #login {
             display: inline-block;
             padding: $padding 1.5*$padding;
             margin-right: $margin;
@@ -348,7 +348,7 @@ body.controller-content_viewer .icon-alert {
 /* New enterprise page */
 
 #escambo-new-enterprise {
-  
+
   form {
 
     input[type=submit] {
@@ -395,11 +395,11 @@ body.controller-content_viewer .icon-alert {
 }
 #escambo-enterprise-info {
   float: left;
-  
+
   h3 {
     visibility: hidden;
   }
-  .sidebar { 
+  .sidebar {
     width: $module03;
     padding: $padding - $border;
     border: $border solid $color-profile-info-border;
@@ -456,20 +456,20 @@ body.controller-content_viewer .icon-alert {
 
     .currencies {
       position: relative;
-      
+
       .currency-item {
 
         .symbol, .name {
           padding: $half-padding/2 $padding;
           padding-left: 0;
-        } 
+        }
         .symbol {
           a {
             text-decoration: none;
           }
         }
         .name {
-        } 
+        }
         .popin {
 
           .currency-popin {
@@ -489,7 +489,7 @@ body.controller-content_viewer .icon-alert {
 
 /* Members */
 .escambo-profile-member {
-  @extend .container-clear;
+  @extend .container-clean;
   background: $color-user-bg;
   height: 8*$base;
   border: $border solid $color-user-border;
@@ -518,6 +518,17 @@ body.controller-content_viewer .icon-alert {
       left: $padding;
       bottom: $padding - $border;
     }
+  }
+}
+
+#escambo-members {
+  h3 {
+    display: inline-block;
+  }
+}
+#escambo-add-member {
+  .icon-cancel {
+    display: none;
   }
 }
 
@@ -608,9 +619,9 @@ body.controller-content_viewer .icon-alert {
   h1 {
     padding-left: $padding;
   }
-  
+
   #escambo-search-form {
-    @extend .search-box;
+    @extend .sniffer-search-box;
     margin: -$padding;
     margin-top: $margin;
     margin-bottom: $margin;
@@ -618,10 +629,10 @@ body.controller-content_viewer .icon-alert {
     form {
       .search-field {
         #search-input {
-          @extend .search-input;
+          @extend .sniffer-search-input;
         }
         input[type=submit] {
-          @extend .search-submit;
+          @extend .sniffer-search-submit;
         }
       }
     }

@@ -11610,6 +11610,10 @@ msgstr "Aceitar essa moeda social"
 msgid "Offers from this enterprise"
 msgstr "Ofertas deste Ponto de Cultura"
 
+#: plugins/escambo/views/profile/members.html.erb:2
+msgid "Members from this enterprise"
+msgstr "Integrantes deste Ponto de Cultura"
+
 #: plugins/escambo/views/profile/_products.html.erb:9
 #: plugins/escambo/views/profile/_interests.html.erb:9
 #: plugins/escambo/views/profile/_knowledges.html.erb:9

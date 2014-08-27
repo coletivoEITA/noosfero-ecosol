@@ -16,4 +16,8 @@ class EscamboPluginMyprofileController < MyProfileController
     end
   end
 
+  def add_member
+    @roles = environment.roles.where(:key => 'profile_admin')
+  end
+
 end

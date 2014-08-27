@@ -2,7 +2,7 @@
 .clean {
   clear: both; }
 
-.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-proposal-part .exchange-button-wrapper, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-proposal-part .exchange-button-wrapper, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop, .escambo-profile-member {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -54,7 +54,7 @@
 .pstyle-title-section {
   font-size: 92px; }
 
-.pstyle-field, .sniffer-search-field .sniffer-search-input {
+.pstyle-field, .sniffer-search-field .sniffer-search-input, .sniffer-search-field .controller-search #escambo-search-form form .search-field #search-input, .controller-search #escambo-search-form form .search-field .sniffer-search-field #search-input {
   font-size: 13px; }
 
 .pstyle-menu-big-selected {
@@ -137,7 +137,7 @@
 .clean {
   clear: both; }
 
-.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-proposal-part .exchange-button-wrapper, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-proposal-part .exchange-button-wrapper, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop, .escambo-profile-member {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -189,7 +189,7 @@
 .pstyle-title-section {
   font-size: 92px; }
 
-.pstyle-field, .sniffer-search-field .sniffer-search-input {
+.pstyle-field, .sniffer-search-field .sniffer-search-input, .sniffer-search-field .controller-search #escambo-search-form form .search-field #search-input, .controller-search #escambo-search-form form .search-field .sniffer-search-field #search-input {
   font-size: 13px; }
 
 .pstyle-menu-big-selected {
@@ -648,7 +648,7 @@ body.controller-exchange_plugin_myprofile {
 .clean {
   clear: both; }
 
-.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-proposal-part .exchange-button-wrapper, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop {
+.container-clean, #exchange-exchange-wrapper #exchange-evaluation-wrap #exchange-evaluation, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-header-buttons, #exchange-exchange-wrapper .exchange-proposal-wrap .exchange-proposal .exchange-proposal-messages .exchange-messages .exchange-message, #exchange-states, .exchange-proposal-part .exchange-button-wrapper, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control, .exchange-proposal-part .exchange-elements-list .exchange-element .exchange-element-control .exchange-qty, .exchange-index, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-header, #sniffer-search-wrap .infoBox #sniffer-balloon #balloon-offers, .controller-home #enterprises-area #enterprises-crop-wrap #enterprises-crop, .escambo-profile-member {
   overflow: hidden;
   display: inline-block;
   /* Necessary to trigger "hasLayout" in IE */
@@ -700,7 +700,7 @@ body.controller-exchange_plugin_myprofile {
 .pstyle-title-section {
   font-size: 92px; }
 
-.pstyle-field, .sniffer-search-field .sniffer-search-input {
+.pstyle-field, .sniffer-search-field .sniffer-search-input, .sniffer-search-field .controller-search #escambo-search-form form .search-field #search-input, .controller-search #escambo-search-form form .search-field .sniffer-search-field #search-input {
   font-size: 13px; }
 
 .pstyle-menu-big-selected {
@@ -782,7 +782,7 @@ body.controller-exchange_plugin_myprofile {
 /* Colors */
 /* Images */
 /* Search input */
-.sniffer-search-box {
+.sniffer-search-box, .controller-search #escambo-search-form {
   background: #faf7dc;
   padding: 11px;
   border-radius: 3px;
@@ -794,7 +794,7 @@ body.controller-exchange_plugin_myprofile {
   box-shadow: 1px 1px 1px 0px #aaa;
   height: 36px;
   clear: both; }
-  .sniffer-search-field .sniffer-search-input {
+  .sniffer-search-field .sniffer-search-input, .sniffer-search-field .controller-search #escambo-search-form form .search-field #search-input, .controller-search #escambo-search-form form .search-field .sniffer-search-field #search-input {
     float: left;
     height: 24px;
     width: 80%;
@@ -807,9 +807,9 @@ body.controller-exchange_plugin_myprofile {
     border: none;
     font-style: normal;
     color: #81867B; }
-    .sniffer-search-field .sniffer-search-input:focus {
+    .sniffer-search-field .sniffer-search-input:focus, .sniffer-search-field .controller-search #escambo-search-form form .search-field #search-input:focus, .controller-search #escambo-search-form form .search-field .sniffer-search-field #search-input:focus {
       color: black; }
-  .sniffer-search-field .sniffer-search-submit {
+  .sniffer-search-field .sniffer-search-submit, .sniffer-search-field .controller-search #escambo-search-form form .search-field input[type=submit], .controller-search #escambo-search-form form .search-field .sniffer-search-field input[type=submit] {
     float: right;
     cursor: pointer;
     background: transparent url("/plugins/sniffer/images/lupa.png") no-repeat left 8px;
@@ -1293,6 +1293,12 @@ body.controller-content_viewer .icon-alert {
       position: absolute;
       left: 12px;
       bottom: 11px; }
+
+#escambo-members h3 {
+  display: inline-block; }
+
+#escambo-add-member .icon-cancel {
+  display: none; }
 
 /* Snippets */
 .product-snippet {
