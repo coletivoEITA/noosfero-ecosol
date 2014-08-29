@@ -185,9 +185,9 @@ class ApplicationController < ActionController::Base
     fallback_find_by_contents(asset, scope, query, paginate_options, options)
   end
 
-  def auto_complete asset, scope, query, paginate_options={:page => 1}, options={:field => 'name'}
-    plugins.dispatch_first(:auto_complete, asset, scope, query, paginate_options, options) ||
-    fallback_auto_complete(asset, scope, query, paginate_options, options)
+  def autocomplete asset, scope, query, paginate_options={:page => 1}, options={:field => 'name'}
+    plugins.dispatch_first(:autocomplete, asset, scope, query, paginate_options, options) ||
+    fallback_autocomplete(asset, scope, query, paginate_options, options)
   end
 
   private
@@ -198,7 +198,7 @@ class ApplicationController < ActionController::Base
     {:results => scope.paginate(paginate_options)}
   end
 
-  def fallback_auto_complete asset, scope, query, paginate_options, options
+  def fallback_autocomplete asset, scope, query, paginate_options, options
     field = options[:field]
     query = query.downcase
     scope.where([

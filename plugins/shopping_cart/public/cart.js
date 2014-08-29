@@ -1,25 +1,30 @@
 function Cart(config) {
   var $ = jQuery;
+  config.minimized = Cart.minimized;
   Cart.instance = this; // this may be a list on the future;
-  this.cartElem = $("#cart1")[0];
+  this.cartElem = $("#cart1");
   this.cartElem.cartObj = this;
-  this.contentBox = $("#cart1 .cart-content");
+  this.contentBox = (config.minimized) ? $("#cart1 .cart-inner") : $("#cart1 .cart-inner .cart-content");
   this.itemsBox = $("#cart1 .cart-items");
   this.items = {};
   this.empty = !config.has_products;
   this.visible = false;
+  this.itemTemplate = _.template(jQuery('#cart-item-template').html());
   $(".cart-buy", this.cartElem).button({ icons: { primary: 'ui-icon-cart'} });
   if (!this.empty) {
-    $(this.cartElem).show();
-    this.visible = config.visible;
+    if (!config.minimized) {
+      $(this.cartElem).show();
+      this.visible = config.visible;
+    }
     this.addToList(config.products, true)
+  } else if (config.minimized) {
+    $('.cart-qtty').text('0');
   }
 }
 
 (function($){
-
   // Forbidding the user to request more the one action on the cart
-  // simultaneously because the cart in the cookie doesn't supports it.
+  // simultaneously because the cart in the cookie doesn't support it.
   Cart.prototype.ajax = function(config){
     var me = this;
     this.disabled = true;
@@ -38,17 +43,12 @@ function Cart(config) {
     for( var item,i=0; item=products[i]; i++ ) {
       this.items[item.id] = { price:item.price, quantity:item.quantity };
       this.updateTotal();
-      var liId = "cart-item-"+item.id;
-      var li = $("#"+liId);
-      if( !li[0] ) li = $('<li id="'+liId+'"></li>\n').appendTo(this.itemsBox);
-      li.empty();
-      $('<div class="picture" style="background-image:url('+item.picture+')"></div>' +
-        '<span class="item-name">'+ item.name +'</span>' +
-        '<div class="item-price">' +
-        '<input size="1" value="'+item.quantity+'" />'+ (item.price ? '&times; '+ item.price : '') +'</div>' +
-        ' <a href="remove:'+item.name+'" onclick="Cart.removeItem('+item.id+'); return false"' +
-        ' class="button icon-remove"><span>remove</span></a>'
-       ).appendTo(li);
+      item.priceTxt = (item.price) ? '&times;' + item.price : '';
+      
+      jQuery('#cart-item-'+item.id).remove()
+      var li = jQuery(this.itemTemplate({item: item}))
+      li.appendTo(this.itemsBox);
+      
       var input = $("input", li)[0];
       input.lastValue = input.value;
       input.productId = item.id;
@@ -67,16 +67,25 @@ function Cart(config) {
       li.animate({ backgroundColor: liBg }, 1000);
     }
 
-    if (!clear && this.empty) $(this.cartElem).show();
-    if((!clear && this.empty) || (this.visible && clear)) {
-      this.contentBox.hide();
-      this.show(!clear);
+    if (!Cart.minimized) {
+      if (!clear && this.empty) $(this.cartElem).show();
+      if((!clear && this.empty) || (this.visible && clear)) {
+        this.contentBox.hide();
+        this.show(!clear);
+      }
+    } else {
+      if (!clear) {
+        $( ".cart-applet .cart-applet-indicator" ).addClass( 'cart-highlight' );
+        $( ".cart-applet" ).effect('bounce', 300, function(){
+          $( ".cart-applet .cart-applet-indicator" ).removeClass( 'cart-highlight' );
+        });
+      }
     }
     this.empty = false;
   }
 
   Cart.prototype.updateQuantity = function(input, itemId, quantity) {
-    if(this.disabled) return alert(shoppingCartPluginL10n.waitLastRequest);
+    if(this.disabled) return alert(Cart.l10n.waitLastRequest);
     quantity = parseInt(quantity);
     input.disabled = true;
     var originalBg = input.style.backgroundImage;
@@ -117,11 +126,11 @@ function Cart(config) {
   }
 
   Cart.addItem = function(itemId, link) {
-    if(this.instance.disabled) return alert(shoppingCartPluginL10n.waitLastRequest);
+    if(this.instance.disabled) return alert(Cart.l10n.waitLastRequest);
     if ( this.productsLength > 100 ) {
       // This limit protect the user from losing data on cookie limit.
       // This is NOT limiting to 100 products, is limiting to 100 kinds of products.
-      alert(shoppingCartPluginL10n.maxNumberOfItens);
+      alert(Cart.l10n.maxNumberOfItens);
       return false;
     }
     link.intervalId = setInterval(function() {
@@ -145,7 +154,12 @@ function Cart(config) {
       url: '/plugin/shopping_cart/add/'+ itemId,
       dataType: 'json',
       success: function(data, status, ajax){
-        if ( !data.ok ) log.error('Shopping cart data failure', data.error);
+        if ( !data.ok ) {
+          if (typeof data.error.message != "undefined")
+            alert(data.error.message)
+          else
+            log.error('Shopping cart data failure', data.error);
+        }
         else me.addToList(data.products);
       },
       cache: false,
@@ -157,8 +171,8 @@ function Cart(config) {
   }
 
   Cart.removeItem = function(itemId) {
-    if(this.instance.disabled) return alert(shoppingCartPluginL10n.waitLastRequest);
-    if( confirm(shoppingCartPluginL10n.removeItem) ) this.instance.removeItem(itemId);
+    if(this.instance.disabled) return alert(Cart.l10n.waitLastRequest);
+    if( confirm(Cart.l10n.removeItem) ) this.instance.removeItem(itemId);
   }
 
   Cart.prototype.removeItem = function(itemId) {
@@ -179,10 +193,11 @@ function Cart(config) {
   }
 
   Cart.toggle = function(link) {
-    if(this.instance.disabled) return alert(shoppingCartPluginL10n.waitLastRequest);
+    if(this.instance.disabled) return alert(Cart.l10n.waitLastRequest);
     link.parentNode.parentNode.cartObj.toggle();
   }
   Cart.prototype.toggle = function() {
+    console.log(this);
     this.visible ? this.hide(true) : this.show(true);
   }
 
@@ -221,7 +236,7 @@ function Cart(config) {
   }
 
   Cart.prototype.updateTotal = function() {
-    var total = 0;
+    var total = qtty = 0;
     var currency, sep = "";
     for( var itemId in this.items ) {
       var item = this.items[itemId];
@@ -230,15 +245,17 @@ function Cart(config) {
         sep = item.price.charAt(item.price.length-3);
         var price = item.price.replace(/[^0-9]/g,"");
         total += item.quantity * parseFloat(price);
+        qtty += item.quantity;
       }
     }
     total = Math.round(total).toString().replace(/(..)$/, sep+"$1")
     $(".cart-total b", this.cartElem).text( ( (total!=0) ? currency+" "+total : "---" ) );
+    $(".cart-qtty", this.cartElem).text( qtty );
   }
 
   Cart.clean = function(link) {
-    if(this.instance.disabled) return alert(shoppingCartPluginL10n.waitLastRequest);
-    if( confirm(shoppingCartPluginL10n.cleanCart) ) link.parentNode.parentNode.parentNode.cartObj.clean();
+    if(this.instance.disabled) return alert(Cart.l10n.waitLastRequest);
+    if( confirm(Cart.l10n.cleanCart) ) link.parentNode.parentNode.parentNode.cartObj.clean();
   }
 
   Cart.prototype.clean = function() {
@@ -250,9 +267,9 @@ function Cart(config) {
         if ( !data.ok ) log.error(data.error);
         else{
           me.items = {};
-          $(me.cartElem).slideUp(500, function() {
+          $(me.contentBox).slideUp(500, function() {
             $(me.itemsBox).empty();
-            me.hide();
+            //me.hide();
             me.updateTotal();
             me.empty = true;
           });
@@ -305,13 +322,11 @@ function Cart(config) {
   });
 
   $(function(){
-
     $.ajax({
       url: "/plugin/shopping_cart/get",
       dataType: 'json',
       success: function(data) {
-        new Cart(data);
-        $('.cart-add-item').button({ icons: { primary: 'ui-icon-cart'} })
+        cart = new Cart(data);
       },
       cache: false,
       error: function(ajax, status, errorThrown) {
@@ -322,7 +337,7 @@ function Cart(config) {
             log('Page unload before cart load.');
           } else {
             log.error('Error getting shopping cart - HTTP '+status, errorThrown);
-            if ( confirm(shoppingCartPluginL10n.getProblemConfirmReload) ) {
+            if ( confirm(Cart.l10n.getProblemConfirmReload) ) {
               document.location.reload();
             }
           }

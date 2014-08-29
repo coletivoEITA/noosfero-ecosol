@@ -1,0 +1,9 @@
+<%= javascript_include_tag 'isotope.pkgd.min.js' %>
+<%= javascript_include_tag 'typeahead.bundle.js' %>
+<%= javascript_include_tag 'catalog.js' %>
+
+<script type="text/javascript">
+  catalog.search.autocomplete.url = <%= url_for(:controller => :catalog, :profile => profile.identifier, :action => :search_autocomplete).to_json %>;
+  catalog.search.init();
+  catalog.search.pagination.infiniteScroll(<%= _('loading...').to_json %>);
+</script>

@@ -12,9 +12,11 @@
 
   <%= breadcrumb(@category) if params[:level] %>
 
-  <%= render 'catalog/products', :products => @products %>
-
-  <%= pagination_links @products, :params => {:controller => :catalog, :action => :index, :profile => profile.identifier} %>
+  <%= content_for :product_page do %>
+    <%= render 'catalog/results' %>
+  <% end %>
+  <%= render 'search' %>
+  <%= render 'catalog/javascripts' %>
 
   <%= add_zoom_to_images %>
 

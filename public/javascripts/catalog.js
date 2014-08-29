@@ -1,29 +1,277 @@
-(function($) {
+catalog = {
 
-  function toggle_expandbox(element, open) {
-    element.clicked = open;
-    $(element).toggleClass('open', open);
-  }
+  form: {
+    element: function () {
+      return jQuery('#catalog-search')
+    },
+    queryEl: function() {
+      return this.element().get(0).elements.query
+    },
+    query: function() {
+      return this.queryEl().value.trim()
+    },
+    category: function() {
+      try{ return this.element().get(0).elements.category.value.trim() } catch(e){ }
+    },
+    qualifier: function() {
+      try{ return this.element().get(0).elements.qualifier.value.trim() } catch(e){ }
+    },
+  },
+  product: {
+    list: function() {
+      return jQuery('#product-page ul#product-list')
+    },
+    toggle_expandbox: function (element, open) {
+      element.clicked = open;
+      jQuery(element).toggleClass('open', open);
+    },
+  },
 
-  $('#product-list .expand-box').live('click', function () {
-    var me = this;
-    $('.expand-box').each(function(index, element){
-      if ( element != me ) toggle_expandbox(element, false);
+  categories: {
+    select: function() {
+    	jQuery(catalog.form.element().get(0).elements.qualifier).val('')
+      catalog.search.run()
+    },
+  } ,
+  qualifiers: {
+    select: function() {
+    	jQuery(catalog.form.element().get(0).elements.category).val('')
+      catalog.search.run()
+    },
+  },
+
+  search: {
+    init: function() {
+      this.animation.init();
+      this.autocomplete.init();
+      this.pagination.init();
+      catalog.base_url_path = window.location.pathname + '?'
+    },
+
+    result: function (html) {
+      catalog.search.replace(html)
+      catalog.search.finishLoading()
+    },
+
+    run: function(options) {
+      options = jQuery.extend({}, {animate: true}, options)
+
+      jQuery(catalog.form.element()).ajaxSubmit({
+        beforeSubmit: catalog.search.startLoading,
+        success: function(html) {
+          if (options.animate)
+            jQuery('html,body').animate({ scrollTop: 0 }, 400, function() {
+              catalog.search.result(html)
+            })
+          else
+            catalog.search.result(html)
+        },
+      })
+
+      var url = catalog.base_url_path + jQuery(catalog.form.element()).serialize()
+      window.history.pushState(url, null, url)
+
+      catalog.form.queryEl().focus()
+    },
+
+    submit: function() {
+      this.run();
+      return false;
+    },
+
+    startLoading: function () {
+      loading_overlay.show('#product-page')
+    },
+    finishLoading: function () {
+      loading_overlay.hide('#product-page')
+      pagination.loading = false
+    },
+
+    waitEnter: function() {
+      catalog.product.list().addClass('waiting')
+    },
+    seeResults: function() {
+      catalog.product.list().removeClass('waiting')
+    },
+
+    pagination: {
+      init: function() {
+      },
+
+      goTo: function (page) {
+        var form = catalog.form.element().get(0)
+        form.elements.page.value = page
+        catalog.search.run({animate: false})
+        catalog.search.pagination.reset()
+      },
+
+      load: function (url) {
+        var page = /page=([^&$]+)\&?/.exec(url)[1]
+        catalog.search.pagination.goTo(page)
+      },
+
+      infiniteScroll: function (text) {
+        pagination.infiniteScroll(text, {load: this.load});
+      },
+
+      reset: function() {
+        catalog.form.element().get(0).elements.page.value = ''
+      },
+
+    },
+
+    replace: function(results_html) {
+      results_html = jQuery(results_html)
+      var content = jQuery('#product-page')
+
+      // filter dropdown updates
+      content.find('.catalog-filter-categories').empty()
+        .append(results_html.find('.catalog-filter-categories .catalog-options-select'))
+      content.find('.catalog-filter-qualifiers').empty()
+        .append(results_html.find('.catalog-filter-qualifiers .catalog-options-select'))
+
+      // check if the list was loaded or if it is the first search (came from manage_products#show)
+      if (content.find('#catalog-results').length) {
+        //products
+        results_html.find('.product').each(function(index, product) {
+          product = jQuery(product)
+          var old_product = content.find('#'+product.attr('id'))
+          if (old_product.length) {
+            old_product.attr('data-score', product.attr('data-score'))
+            old_product.attr('data-term', product.attr('data-term'))
+          } else
+            catalog.search.animation.container().append(product).isotope('appended', product)
+        })
+
+        //pagination
+        content.find('.pagination').remove();
+        content.find('#catalog-results').append(results_html.find('.pagination'))
+      } else
+        content.empty().append(results_html.filter('#catalog-results'))
+
+      this.animation.run();
+    },
+
+    autocomplete: {
+      url: null,
+      source: null,
+
+      init: function() {
+        var input = jQuery(catalog.form.queryEl())
+        this.source = new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          remote: this.url+'?query=%QUERY',
+        })
+        this.source.initialize()
+
+        input.typeahead({
+            minLength: 1,
+            highlight: true,
+          }, {
+            displayKey: 'html',
+            source: this.source.ttAdapter(),
+          }
+        ).on('typeahead:opened', function(e) {
+          catalog.search.waitEnter()
+        }).on('typeahead:closed', function(e) {
+          catalog.search.seeResults()
+        }).on('typeahead:selected', function(e, item) {
+          input.val('');
+        }).on('keyup', function(e) {
+          if (e.keyCode == 13) {
+            catalog.form.element().find('select').val('')
+            catalog.search.run()
+            input.typeahead('close')
+          }
+        })
+        input.data('tt-typeahead')._selectOld = input.data('tt-typeahead')._select
+        input.data('tt-typeahead')._select = function(datum) {
+          window.location.href = datum.raw.url
+          this._selectOld(datum)
+        }
+      },
+    },
+
+    animation: {
+      container: function () {
+        return catalog.product.list()
+      },
+      init: function() {
+        this.container().isotope({
+          itemSelector: '.product',
+          layoutMode: 'fitRows',
+          getSortData: {
+            name: '.name',
+            price: '.price',
+            score: '[data-score]',
+          },
+        });
+      },
+
+      filter: function(e){
+        var el = jQuery(e)
+        return (!catalog.form.category() || el.attr('data-category-name') == catalog.form.category()) &&
+          (!catalog.form.qualifier() || (el.attr('data-qualifiers-ids') || '').indexOf(catalog.form.qualifier()) > -1) &&
+          el.attr('data-term') == catalog.form.query()
+      },
+
+      run: function(){
+        this.container().isotope({
+          isJQueryFiltering: false,
+          filter: catalog.search.animation.filter,
+          sortBy: '[data-score]',
+        })
+      },
+    },
+  },
+};
+
+jQuery(document).click(function (event) {
+  if (jQuery(event.target).parents('.expand-box').length === 0) {
+    jQuery('ul#product-list .expand-box').each(function(index, element){
+      catalog.product.toggle_expandbox(element, false);
     });
-    toggle_expandbox(me, !me.clicked);
-    return false;
+  }
+});
+jQuery('ul#product-list .expand-box').live('click', function () {
+  var me = this;
+  jQuery('.expand-box').each(function(index, element){
+    if ( element != me ) catalog.product.toggle_expandbox(element, false);
   });
+  catalog.product.toggle_expandbox(me, !me.clicked);
+  return false;
+});
+jQuery('ul#product-list .float-box').live('click', function () {
+  return false;
+});
 
-  $('#product-list .float-box').live('click', function () {
-    return false;
+// This is to fix the catalog options bar in a way that the user can scroll down the catalog
+// and still see the filters, search input and basket applet (if the shopping cart plugin is active)
+jQuery(document).ready(function() {
+  var catalog_w = jQuery(window);
+  var catalog_catOptions = jQuery("#catalog-options");
+  var catalog_originalTop = catalog_catOptions.offset().top + catalog_catOptions.height();
+  var catalog_originalWidth = catalog_catOptions.width() / catalog_w.width();
+  var catalog_originalLeft = catalog_catOptions.offset().left / catalog_w.width();
+  jQuery(window).bind("scroll", function() {
+    var catalog_originalRight = 1 - (catalog_originalLeft + catalog_originalWidth);
+    var top = jQuery(window).scrollTop();
+    var above_top = (top >= catalog_originalTop);
+    if (above_top) {
+      catalog_catOptions
+        .addClass("catalog-fixed")
+        .css({'padding-left': 100*catalog_originalLeft + '%',
+          'padding-right': 100*catalog_originalRight + '%',
+          'width': 100*catalog_originalWidth + '%'
+        });
+    } else {
+      catalog_catOptions
+        .removeClass("catalog-fixed")
+        .css({'padding-left': '0',
+          'padding-right': '0',
+          'width': '100%'
+        });
+    }
   });
-
-  $(document).click(function (event) {
-     if ($(event.target).parents('.expand-box').length == 0) {
-       $('#product-list .expand-box').each(function(index, element){
-         toggle_expandbox(element, false);
-       });
-     }
-  });
-
-})(jQuery);
+});

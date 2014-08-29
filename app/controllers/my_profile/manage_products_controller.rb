@@ -1,5 +1,8 @@
 class ManageProductsController < ApplicationController
+
   needs_profile
+
+  include CatalogHelper
 
   protect 'manage_products', :profile, :except => [:show]
   before_filter :check_environment_feature
@@ -29,6 +32,7 @@ class ManageProductsController < ApplicationController
   end
 
   def show
+    catalog_load_index
     @product = @profile.products.find(params[:id])
     @inputs = @product.inputs
     @allowed_user = user && user.has_permission?('manage_products', profile)

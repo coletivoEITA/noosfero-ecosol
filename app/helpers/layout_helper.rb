@@ -27,6 +27,7 @@ module LayoutHelper
       'thickbox',
       'lightbox',
       'colorbox',
+      'loading-overlay',
       'inputosaurus',
       pngfix_stylesheet_path,
     ] + tokeninput_stylesheets

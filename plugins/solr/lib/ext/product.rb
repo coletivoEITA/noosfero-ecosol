@@ -11,17 +11,25 @@ class Product
     :order => [:solr_plugin_f_category, :solr_plugin_f_region, :solr_plugin_f_qualifier]
 
   SolrPlugin::Boosts = [
-    [:image, 0.55, proc{ |p| p.image ? 1 : 0}],
-    [:qualifiers, 0.45, proc{ |p| p.product_qualifiers.count > 0 ? 1 : 0}],
-    [:open_price, 0.45, proc{ |p| p.price_described? ? 1 : 0}],
+    [:highlighted, 1, proc{ |p| if p.highlighted and p.available then 1 else 0 end }],
+    [:available, 0.55, proc{ |p| if p.available then 1 else 0 end }],
+    [:image, 0.55, proc{ |p| if p.image then 1 else 0 end }],
+    [:qualifiers, 0.45, proc{ |p| if p.product_qualifiers.count > 0 then 1 else 0 end }],
+    [:open_price, 0.45, proc{ |p| if p.price_described? then 1 else 0 end }],
     [:solidarity, 0.45, proc{ |p| p.percentage_from_solidarity_economy[0].to_f/100 }],
-    [:available, 0.35, proc{ |p| p.available ? 1 : 0}],
-    [:price, 0.35, proc{ |p| (!p.price.nil? and p.price > 0) ? 1 : 0}],
-    [:new_product, 0.35, proc{ |p| (p.updated_at.to_i - p.created_at.to_i) < 24*3600 ? 1 : 0}],
-    [:description, 0.3, proc{ |p| !p.description.blank? ? 1 : 0}],
-    [:enabled, 0.2, proc{ |p| p.enterprise.enabled ? 1 : 0}],
+    [:price, 0.35, proc{ |p| if (!p.price.nil? and p.price > 0) then 1 else 0 end }],
+    [:new_product, 0.35, proc{ |p| if (p.updated_at.to_i - p.created_at.to_i) < 24*3600 then 1 else 0 end }],
+    [:description, 0.3, proc{ |p| if !p.description.blank? then 1 else 0 end }],
+    [:enabled, 0.2, proc{ |p| if p.enterprise.enabled then 1 else 0 end }],
   ]
 
+  def solr_plugin_boost
+    boost = 1;
+    SolrPlugin::Boosts.each do |b|
+      boost = boost * (1 - ((1 - b[2].call(self)) * b[1]))
+    end
+    boost
+  end
   acts_as_searchable :fields => facets_fields_for_solr + [
       # searched fields
       {:name => {:type => :text, :boost => 2.0}},
@@ -30,6 +38,9 @@ class Product
       {:solr_plugin_public => :boolean},
       {:environment_id => :integer}, {:profile_id => :integer},
       {:enabled => :boolean}, {:solr_plugin_category_filter => :integer},
+      # fields for autocompletion
+      {:solr_plugin_ac_name => :ngram_text},
+      {:solr_plugin_ac_category => :ngram_text},
       # ordered/query-boosted fields
       {:solr_plugin_price_sortable => :decimal}, {:solr_plugin_name_sortable => :string},
       {:lat => :float}, {:lng => :float},
@@ -41,12 +52,15 @@ class Product
       {:qualifiers => {:fields => [:name]}},
       {:certifiers => {:fields => [:name]}},
     ], :facets => facets_option_for_solr,
-    :boost => proc{ |p| boost = 1; SolrPlugin::Boosts.each{ |b| boost = boost * (1 - ((1 - b[2].call(p)) * b[1])) }; boost}
+    :boost => proc{ |p| p.solr_plugin_boost }
 
   handle_asynchronously :solr_save
   handle_asynchronously :solr_destroy
 
   private
+
+  alias_method :solr_plugin_ac_name, :name
+  alias_method :solr_plugin_ac_category, :category_name
 
   def solr_plugin_f_category
     self.product_category.name
