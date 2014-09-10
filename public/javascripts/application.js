@@ -1,8 +1,6 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
-noosfero = {};
-
 function noosfero_init() {
   // focus_first_field(); it is moving the page view when de form is down.
 }
@@ -512,55 +510,37 @@ function new_qualifier_row(selector, select_qualifiers, delete_button) {
 }
 
 // controls the display of the login/logout stuff
-function userDataCallBack(data) {
-  if (data.login) {
-    // logged in
-    loggedInDataCallBack(data);
-    addManageEnterprisesToOldStyleMenu(data);
-    if (data.chat_enabled) {
-      setInterval(function(){ jQuery.getJSON('/account/user_data', chatOnlineUsersDataCallBack)}, 10000);
-    }
-  } else {
-    // not logged in
-    jQuery('#user .not-logged-in, .login-block .not-logged-user').fadeIn();
-  }
-  if (data.notice) {
-    display_notice(data.notice);
-    // don't show this again (e.g. on pjax user_data isn't fetched everytime)
-    data.notice = null;
-  }
-  // Bind this event to do more actions with the user data (for example, inside plugins)
-  jQuery(window).trigger("userDataLoaded", data);
-}
-
-function loggedInDataCallBack(data) {
-  // logged in
-  jQuery('body').addClass('logged-in');
-  jQuery('#user .logged-in, .login-block .logged-user-info').each(function() {
-    jQuery(this).find('a[href]').each(function() {
-      var new_href = jQuery(this).attr('href').replace('{login}', data.login);
-      if (data.email_domain) {
-        new_href = new_href.replace('{email_domain}', data.email_domain);
+jQuery(function($) {
+  $.ajaxSetup({cache: false});
+  $.getJSON('/account/user_data', function userDataCallBack(data) {
+    if (data.login) {
+      // logged in
+      loggedInDataCallBack(data);
+      addManageEnterprisesToOldStyleMenu(data);
+      if (data.chat_enabled) {
+        setInterval(function(){ $.getJSON('/account/user_data', chatOnlineUsersDataCallBack)}, 10000);
       }
-      jQuery(this).attr('href', new_href);
-    });
-    var html = jQuery(this).html().replace(/{login}/g, data.login).replace('{month}', data.since_month).replace('{year}', data.since_year);
-    jQuery(this).html(html).hide().fadeIn();
-    if (data.is_admin) {
-      jQuery('#user .admin-link').show();
+    } else {
+      // not logged in
+      $('#user .not-logged-in, .login-block .not-logged-user').fadeIn();
     }
-    if (data.email_domain) {
-      jQuery('#user .webmail-link').show();
+    if (data.notice) {
+      display_notice(data.notice);
     }
+    // Bind this event to do more actions with the user data (for example, inside plugins)
+    $(window).trigger("userDataLoaded", data);
   });
-}
 
-function addManageEnterprisesToOldStyleMenu(data) {
-  if (jQuery('#manage-enterprises-link-template').length > 0) {
-    jQuery.each(data.enterprises, function(index, enterprise) {
-      var item = jQuery('<li>' + jQuery('#manage-enterprises-link-template').html() + '</li>');
-      item.find('a[href]').each(function() {
-        jQuery(this).attr('href', '/myprofile/' + enterprise.identifier);
+  function loggedInDataCallBack(data) {
+    // logged in
+    $('body').addClass('logged-in');
+    $('#user .logged-in, .login-block .logged-user-info').each(function() {
+      $(this).find('a[href]').each(function() {
+        var new_href = $(this).attr('href').replace('{login}', data.login);
+        if (data.email_domain) {
+          new_href = new_href.replace('{email_domain}', data.email_domain);
+        }
+        $(this).attr('href', new_href);
       });
       var html = $(this).html()
                         .replace(/{login}/g, data.login)
@@ -576,43 +556,47 @@ function addManageEnterprisesToOldStyleMenu(data) {
       }
     });
   }
-}
 
-function chatOnlineUsersDataCallBack(data) {
-  if (jQuery('#chat-online-users').length == 0) {
-    return;
+  function addManageEnterprisesToOldStyleMenu(data) {
+    if ($('#manage-enterprises-link-template').length > 0) {
+      $.each(data.enterprises, function(index, enterprise) {
+        var item = $('<li>' + $('#manage-enterprises-link-template').html() + '</li>');
+        item.find('a[href]').each(function() {
+          $(this).attr('href', '/myprofile/' + enterprise.identifier);
+        });
+        item.html(item.html().replace('{name}', enterprise.name));
+        item.insertAfter('#manage-enterprises-link-template');
+      });
+    }
   }
-  var content = '';
-  jQuery('#chat-online-users .amount_of_friends').html(data['amount_of_friends']);
-  jQuery('#chat-online-users').fadeIn();
-  for (var user in data['friends_list']) {
-    var name = "<span class='friend_name'>%{name}</span>";
-    var avatar = data['friends_list'][user]['avatar'];
-    var jid = data['friends_list'][user]['jid'];
-    var status_name = data['friends_list'][user]['status'] || 'offline';
-    avatar = avatar ? '<img src="' + avatar + '" />' : ''
-    name = name.replace('%{name}',data['friends_list'][user]['name']);
-    open_chat_link = "onclick='open_chat_window(this, \"#" + jid + "\")'";
-    var status_icon = "<div class='chat-online-user-status icon-menu-"+ status_name + "-11'><span>" + status_name + '</span></div>';
-    content += "<li><a href='#' class='chat-online-user' " + open_chat_link + "><div class='chat-online-user-avatar'>" + avatar + '</div>' + name + status_icon + '</a></li>';
-  }
-  content ? jQuery('#chat-online-users-hidden-content ul').html(content) : jQuery('#anyone-online').show();
-  jQuery('#chat-online-users-title').click(function(){
-    if(jQuery('#chat-online-users-content').is(':visible'))
-      jQuery('#chat-online-users-content').hide();
-    else
-      jQuery('#chat-online-users-content').show();
-  });
-}
 
-jQuery.ajaxSetup({cache: false});
-jQuery.getJSON('/account/user_data', function(data) {
-  noosfero.user_data = data;
-  jQuery(function($) {
-    userDataCallBack(noosfero.user_data);
-  });
+  function chatOnlineUsersDataCallBack(data) {
+    if ($('#chat-online-users').length == 0) {
+      return;
+    }
+    var content = '';
+    $('#chat-online-users .amount_of_friends').html(data['amount_of_friends']);
+    $('#chat-online-users').fadeIn();
+    for (var user in data['friends_list']) {
+      var name = "<span class='friend_name'>%{name}</span>";
+      var avatar = data['friends_list'][user]['avatar'];
+      var jid = data['friends_list'][user]['jid'];
+      var status_name = data['friends_list'][user]['status'] || 'offline';
+      avatar = avatar ? '<img src="' + avatar + '" />' : ''
+        name = name.replace('%{name}',data['friends_list'][user]['name']);
+      open_chat_link = "onclick='open_chat_window(this, \"#" + jid + "\")'";
+      var status_icon = "<div class='chat-online-user-status icon-menu-"+ status_name + "-11'><span>" + status_name + '</span></div>';
+      content += "<li><a href='#' class='chat-online-user' " + open_chat_link + "><div class='chat-online-user-avatar'>" + avatar + '</div>' + name + status_icon + '</a></li>';
+    }
+    content ? $('#chat-online-users-hidden-content ul').html(content) : $('#anyone-online').show();
+    $('#chat-online-users-title').click(function(){
+      if($('#chat-online-users-content').is(':visible'))
+      $('#chat-online-users-content').hide();
+      else
+      $('#chat-online-users-content').show();
+    });
+  }
 });
-jQuery.ajaxSetup({cache: true});
 
 // controls the display of contact list
 function check_contact_list(contact_list) {

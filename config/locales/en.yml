@@ -1291,12 +1291,6 @@
         edit:
           title: "Settings of the enterprise %{enterprise}"
 
-  pjax_plugin:
-    lib:
-      plugin:
-        name: "pjax plugin"
-        description: "Use pjax for page's links"
-
   stock_plugin:
     lib:
       plugin:

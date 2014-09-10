@@ -591,8 +591,6 @@ class Noosfero::Plugin
     #   block = Block that the filter will call
     if method.to_s =~ /^(.+)_controller_filters$/
       []
-    elsif method.to_s == 'application_controller_filters'
-      []
     # -> Removes the action button from the content
     # returns = boolean
     elsif method.to_s =~ /^content_remove_(#{content_actions.join('|')})$/

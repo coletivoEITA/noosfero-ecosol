@@ -52,12 +52,6 @@ tinymce.create('tinymce.plugins.MacrosPlugin', {
 // Register plugin with a short name
 tinymce.PluginManager.add('macrosPlugin', tinymce.plugins.MacrosPlugin);
 
-// Support tinyMCE load through jquery's ajax (like getScript), without a script tag
-if (document.readyState === 'complete') {
-  tinyMCE.baseURL = <%= "#{environment.top_url}/javascripts/tinymce/jscripts/tiny_mce".to_json %>;
-  tinyMCE.dom.Event.domLoaded = true;
-}
-
 tinyMCE.init({
   mode : "textareas",
   editor_selector : "mceEditor",

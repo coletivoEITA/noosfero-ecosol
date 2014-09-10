@@ -1,7 +1,5 @@
 module LayoutHelper
 
-  include ThemeHelper
-
   def body_classes
     # Identify the current controller and action for the CSS:
     " controller-#{@controller.controller_name}" +
@@ -19,8 +17,6 @@ module LayoutHelper
     unless plugins_javascripts.empty?
       output += javascript_include_tag plugins_javascripts, :cache => ("cache/plugins-#{Digest::MD5.hexdigest plugins_javascripts.to_s}" if NOOSFERO_CONF['cache_javascripts'])
     end
-    output += theme_javascript_ng
-
     output
   end
 
@@ -82,8 +78,8 @@ module LayoutHelper
     'jquery.ui/' + jquery_theme + '/jquery-ui-1.8.2.custom'
   end
 
-  def layout_template
-    if profile then profile.layout_template else environment.layout_template end
+  def theme_stylesheet_path
+    theme_path + '/style.css'
   end
 
   def addthis_javascript

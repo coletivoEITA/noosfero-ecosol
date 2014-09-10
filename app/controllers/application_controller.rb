@@ -91,7 +91,6 @@ class ApplicationController < ActionController::Base
   include NeedsProfile
 
   attr_reader :environment
-  attr_reader :domain
 
   before_filter :load_terminology
 
@@ -151,9 +150,7 @@ class ApplicationController < ActionController::Base
   # plugin to the current controller being initialized.
   def init_noosfero_plugins_controller_filters
     plugins.each do |plugin|
-      filters = plugin.send "application_controller_filters"
-      filters = [filters] if !filters.kind_of?(Array)
-      filters += plugin.send "#{self.class.name.underscore}_filters"
+      filters = plugin.send(self.class.name.underscore + '_filters')
       filters = [filters] if !filters.kind_of?(Array)
       controller_filters = self.class.filter_chain.map {|c| c.method }
       filters.each do |plugin_filter|
