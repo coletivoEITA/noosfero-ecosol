@@ -79,7 +79,7 @@ module LayoutHelper
   end
 
   def jquery_ui_theme_stylesheet_path
-    'jquery.ui/' + jquery_theme + '/jquery-ui-1.10.3.custom'
+    'jquery.ui/' + jquery_theme + '/jquery-ui-1.8.2.custom'
   end
 
   def layout_template
