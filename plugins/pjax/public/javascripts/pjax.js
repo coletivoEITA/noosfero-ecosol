@@ -72,7 +72,7 @@ pjax = {
     userDataCallBack(noosfero.user_data);
 
     // theme's update dependent on content. must be last thing to run
-    jQuery.globalEval(state.theme_update_js);
+    jQuery.globalEval(state.theme.update_js);
 
     pjax.current_state = state;
   },
