@@ -98,7 +98,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   before_validation :step_new
   before_validation :check_status
   after_save :add_products_on_edition_state
-  before_create :delay_purge_defuncts
+  before_create :delay_purge_profile_defuncts
 
   extend SplitDatetime::SplitMethods
   split_datetime :start
@@ -241,11 +241,12 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     errors.add_to_base I18n.t('orders_cycle_plugin.models.cycle.delivery_period_befor') unless finish <= delivery_start
   end
 
-  def purge_defuncts
-    self.defuncts.each{ |s| s.destroy }
+  def purge_profile_defuncts
+    self.class.where(:profile_id => self.profile_id).defuncts.destroy_all
   end
-  def delay_purge_defuncts
-    self.delay.purge_defuncts
+
+  def delay_purge_profile_defuncts
+    self.delay.purge_profile_defuncts
   end
 
 end
