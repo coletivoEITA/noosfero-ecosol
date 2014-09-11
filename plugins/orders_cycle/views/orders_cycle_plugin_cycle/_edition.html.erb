@@ -3,19 +3,23 @@
 <% end %>
 
 <div id="cycle-fields">
-  <%= render :partial => 'edit_fields' %>
+  <%= render 'edit_fields' %>
 </div>
 
 <div id='cycle-products'>
-  <div id="cycle-products-header">
+  <div class="header">
     <h3><%= t('views.cycle._edition.the_products') %></h3>
 
     <div class="subtitle"><%= t('views.cycle._edition.the_following_list_of') %></div>
     <div class="subtitle"><%= t('views.cycle._edition.it_was_automatically_') %></div>
   </div>
 
-  <div id="cycle-product-lines">
-    <%= render :partial => 'product_lines', :locals => {:p => p} %>
+  <div class="table">
+    <% if @cycle.add_products_job %>
+      <%= render 'products_loading' %>
+    <% else %>
+      <%= render 'product_lines' %>
+    <% end %>
   </div>
 
 </div>

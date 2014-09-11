@@ -21,7 +21,9 @@
       </div>
     <% end %>
     <% javascript_tag do %>
-      jQuery(document).ready(function() {orders_cycle.ajaxifyPagination("cycle-product-lines");});
+      jQuery(document).ready(function() {
+        orders_cycle.ajaxifyPagination("#cycle-products .table")
+      })
     <% end %>
   </div>
 </div>

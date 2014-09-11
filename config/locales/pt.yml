@@ -970,6 +970,7 @@
           it_was_automatically_: "Ela foi automaticamente gerada a partir dos produtos ativos e suas respectivas margens. Verifique a lista de produtos e edite-a conforme as necessidades e particularidades deste ciclo de pedidos."
           the_following_list_of: "A seguinte lista de produtos está disponível neste ciclo."
           the_products: "Os produtos"
+        _products_loading: "Os produtos estão sendo carregados no ciclo."
         _orders: 
           header_help: "Nesta etapa são recebidos os pedidos %{terms.consumer.from_article.plural}, e é possível supervisioná-los se por acaso existe algum erro mais grave."
           the_orders_period_is_: "O período de pedidos está ainda aberto, tome cuidado ao editar os pedidos abertos. Isso pode confundir os usuários."
