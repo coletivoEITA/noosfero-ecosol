@@ -191,11 +191,10 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   end
 
   def add_distributed_products
-    already_in = self.products.unarchived.all
+    return if self.products.count > 0
     ActiveRecord::Base.transaction do
-      self.profile.distributed_products.unarchived.available.each do |product|
-        p = already_in.find{ |f| f.from_product == product }
-        p = OrdersCyclePlugin::OfferedProduct.create_from_distributed self, product unless p
+      self.profile.distributed_products.unarchived.available.find_each do |product|
+        OrdersCyclePlugin::OfferedProduct.create_from_distributed self, product
       end
     end
   end
@@ -207,7 +206,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   protected
 
   def add_products_on_edition_state
-    self.add_distributed_products if self.status_was.nil? or self.status_was == 'new'
+    self.add_distributed_products if self.status_was == 'new'
   end
 
   def step_new
