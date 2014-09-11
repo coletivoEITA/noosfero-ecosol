@@ -956,6 +956,7 @@
           it_was_automatically_: "It was automatically created from the active products. See the list below and check for needed changes."
           the_following_list_of: "The following list of products are available in this cycle."
           the_products: "The products"
+        _products_loading: "The products are being loaded into the cycle."
         _orders: 
           header_help: "In this phase the orders %{terms.consumer.from_article.plural} are received, and it is possible supervise them if by chance there is some more severe error."
           the_orders_period_is_: "The orders period is still on, take care to edit the orders already open, it may confuse the users"

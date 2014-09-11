@@ -8,6 +8,19 @@ orders_cycle = {
       jQuery('#cycle_start_date, #cycle_start_time, #cycle_finish_date, #cycle_finish_time').calendricalDateTimeRange(options);
       jQuery('#cycle_delivery_start_date, #cycle_delivery_start_time, #cycle_delivery_finish_date, #cycle_delivery_finish_time').calendricalDateTimeRange(options);
     },
+
+    products: {
+      load_url: null,
+
+      load: function () {
+        jQuery.get(orders_cycle.cycle.products.load_url, function(data) {
+          if (data.length > 10)
+            jQuery('#cycle-products .table').html(data)
+          else
+            setTimeout(orders_cycle.cycle.products.load, 5*1000);
+        });
+      },
+    },
   },
 
   /* ----- cycle ----- */
@@ -146,8 +159,8 @@ orders_cycle = {
     jQuery.colorbox(options);
   },
 
-  ajaxifyPagination: function(elementId) {
-    jQuery(".pagination a").click(function() {
+  ajaxifyPagination: function(selector) {
+    jQuery(selector).find(".pagination a").click(function() {
       loading_overlay.show('#'+elementId);
       jQuery.ajax({
         type: "GET",

@@ -259,21 +259,28 @@
     }
   }
 
-  #cycle-products-header {
-    div {
-      width: 400px;
-    }
-    a {
-      line-height: 30px;
-    }
-  }
-
   #cycle-product-line .field {
     width: 120px;
   }
 
   #cycle-products {
     margin-top: $margin;
+
+    .header {
+      div {
+        width: 400px;
+      }
+      a {
+        line-height: 30px;
+      }
+    }
+
+    .table {
+      .small-loading {
+        background-position: 0;
+        padding-left: 20px;
+      }
+    }
 
     .cycle-products-table {
       margin-top: 30px;

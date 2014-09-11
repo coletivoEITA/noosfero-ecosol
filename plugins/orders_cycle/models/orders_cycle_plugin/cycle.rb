@@ -97,7 +97,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
   before_validation :step_new
   before_validation :check_status
-  after_save :add_products_on_edition_state
+  before_save :add_products_on_edition_state
   before_create :delay_purge_profile_defuncts
 
   extend SplitDatetime::SplitMethods
@@ -105,6 +105,8 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   split_datetime :finish
   split_datetime :delivery_start
   split_datetime :delivery_finish
+
+  serialize :data, Hash
 
   def name_with_code
     I18n.t('orders_cycle_plugin.models.cycle.code_name') % {
@@ -203,10 +205,16 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     profile.members.include? user
   end
 
+  def add_products_job
+    @add_products_job ||= Delayed::Job.find_by_id self.data[:add_products_job_id]
+  end
+
   protected
 
   def add_products_on_edition_state
-    self.add_distributed_products if self.status_was == 'new'
+    return unless self.status_was == 'new'
+    job = self.delay.add_distributed_products
+    self.data[:add_products_job_id] = job.id
   end
 
   def step_new

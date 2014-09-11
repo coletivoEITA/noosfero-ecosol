@@ -5,5 +5,5 @@
     orders_cycle.colorbox({html: '<%= escape_javascript render('edit_popin', :cycle => @cycle) %>'})
   <% end %>
 <% else %>
-  jQuery("#cycle-product-lines").replaceWith('<%= escape_javascript render('product_lines') %>')
+  jQuery("#cycle-products .table").replaceWith('<%= escape_javascript render('product_lines') %>')
 <% end %>

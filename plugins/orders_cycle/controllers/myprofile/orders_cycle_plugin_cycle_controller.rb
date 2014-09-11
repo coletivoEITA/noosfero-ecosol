@@ -48,7 +48,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
     return super if params[:actor_name]
 
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
-    @products = (@cycle.products.unarchived.paginate(:per_page => 15, :page => params["page"]))
+    @products = products
 
     if request.xhr?
       if params[:commit]
@@ -60,6 +60,17 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
             @cycle,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message
         end
       end
+    end
+  end
+
+  def products_load
+    @cycle = OrdersCyclePlugin::Cycle.find params[:id]
+    @products = products
+
+    if @cycle.add_products_job
+      render :nothing => true
+    else
+      render :partial => 'product_lines'
     end
   end
 
@@ -131,6 +142,10 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
 
   def set_admin
     @admin = true
+  end
+
+  def products
+    @cycle.products.unarchived.paginate :per_page => 15, :page => params["page"]
   end
 
 end
