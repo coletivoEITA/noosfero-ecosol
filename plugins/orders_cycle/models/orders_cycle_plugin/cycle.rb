@@ -195,7 +195,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   def add_distributed_products
     return if self.products.count > 0
     ActiveRecord::Base.transaction do
-      self.profile.distributed_products.unarchived.available.find_each do |product|
+      self.profile.distributed_products.unarchived.available.find_each(:batch_size => 20) do |product|
         OrdersCyclePlugin::OfferedProduct.create_from_distributed self, product
       end
     end
