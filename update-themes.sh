@@ -10,5 +10,5 @@ cd ../../../..
 git commit public/designs -m 'Update themes'
 
 # push all
-g pssm
+git push --recurse-submodules=on-demand
 

@@ -304,7 +304,7 @@ class Profile < ActiveRecord::Base
   validates_format_of :identifier, :with => IDENTIFIER_FORMAT, :if => lambda { |profile| !profile.identifier.blank? }
   validates_exclusion_of :identifier, :in => RESERVED_IDENTIFIERS
   validates_uniqueness_of :identifier, :scope => :environment_id
-  validates_length_of :nickname, :maximum => 16, :allow_nil => true
+  validates_length_of :nickname, :maximum => 40, :allow_nil => true
   validate :valid_template
 
   def valid_template
