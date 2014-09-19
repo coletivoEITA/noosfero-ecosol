@@ -1453,3 +1453,7 @@ table#recaptcha_table tr:hover td {
   color:#333;
 }
 
+/* Provisory: hide the yellow activation box in the person control panel: */
+#activation_enterprise {
+  display: none;
+}
