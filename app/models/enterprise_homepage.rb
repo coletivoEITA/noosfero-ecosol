@@ -5,7 +5,7 @@ class EnterpriseHomepage < Article
   end
 
   def self.short_description
-    __('Enterprise homepage')
+    _('Enterprise homepage')
   end
 
   def self.description
@@ -18,7 +18,7 @@ class EnterpriseHomepage < Article
 
   def to_html(options = {})
     enterprise_homepage = self
-    lambda do
+    proc do
       extend EnterpriseHomepageHelper
       extend CatalogHelper
       catalog_load_index :page => 1, :show_categories => false

@@ -1,8 +1,11 @@
 class ProductsBlock < Block
 
+  attr_accessible :product_ids
+
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::UrlHelper
-  include ActionController::UrlWriter
+  include ActionView::Helpers
+  include Rails.application.routes.url_helpers
 
   def self.description
     _('Products')
@@ -28,7 +31,7 @@ class ProductsBlock < Block
                  ),
           :class => 'product'
         )
-      }
+      }.join
     )
   end
 

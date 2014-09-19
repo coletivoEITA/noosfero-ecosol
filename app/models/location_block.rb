@@ -1,5 +1,7 @@
 class LocationBlock < Block
 
+  attr_accessible :zoom, :map_type
+
   settings_items :zoom, :type => :integer, :default => 4
   settings_items :map_type, :type => :string, :default => 'roadmap'
 
@@ -14,7 +16,7 @@ class LocationBlock < Block
   def content(args={})
     block = self
     profile = self.owner
-    lambda do
+    proc do
       render :file => 'blocks/location', :locals => {:block => block, :profile => profile}
     end
   end

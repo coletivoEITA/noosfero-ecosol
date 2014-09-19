@@ -5,8 +5,16 @@ require 'acts_as_having_boxes'
 require 'acts_as_having_image'
 require 'acts_as_having_posts'
 require 'route_if'
+require 'maybe_add_http'
+require 'set_profile_region_from_city_state'
+require 'authenticated_system'
+require 'needs_profile'
+require 'white_list_filter'
+
+# ruby exts
+require 'super_proxy'
 
 # third-party libraries
 require 'will_paginate'
-require 'super_proxy'
-
+require 'will_paginate/array'
+require 'nokogiri'

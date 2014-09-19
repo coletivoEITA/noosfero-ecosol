@@ -1,0 +1,15 @@
+<%= block_title(title) %>
+
+<%= render_profile_actions owner.class %>
+
+<ul>
+  <li><%= link_to(_('Homepage'), owner.url, :class => 'url') %></li>
+  <li><%= link_to(_('View profile'), owner.public_profile_url) %></li>
+  <% if !user.nil? and owner.organization? and user.has_permission?('edit_profile', profile) %>
+    <li><%= link_to _('Control panel'), :controller => 'profile_editor', :profile => profile.identifier %></li>
+  <% end %>
+</ul>
+
+<div class="my-network-actions">
+  <%= render 'blocks/profile_info_actions/' + owner.class.name.underscore %>
+</div>

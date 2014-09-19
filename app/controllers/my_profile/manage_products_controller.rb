@@ -86,7 +86,7 @@ class ManageProductsController < ApplicationController
     @edit = true
     @level = @category.level
     if request.post?
-      if @product.update_attributes(:product_category_id => params[:selected_category_id])
+      if @product.update_attributes({:product_category_id => params[:selected_category_id]}, :without_protection => true)
         render :partial => 'shared/redirect_via_javascript',
           :locals => { :url => url_for(:controller => 'manage_products', :action => 'show', :id => @product) }
       else
@@ -208,7 +208,7 @@ class ManageProductsController < ApplicationController
                       }.to_json
     else
       render :text => {:ok => false,
-                       :error_msg => _(cost.errors['name']) % {:fn => _('Name')}
+                       :error_msg => _(cost.errors['name'].join('\n')) % {:fn => _('Name')}
                       }.to_json
     end
   end

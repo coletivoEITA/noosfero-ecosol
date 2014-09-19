@@ -7,7 +7,7 @@ class CategoriesMenuTest < ActionController::IntegrationTest
     SearchController.any_instance.stubs(:get_layout).returns('application')
 
     Category.delete_all
-    @cat1 = Category.create!(:display_in_menu => true, :name => 'Food', :environment => Environment.default, :display_color => 1)
+    @cat1 = Category.create!(:display_in_menu => true, :name => 'Food', :environment => Environment.default, :display_color => '#888a85')
     @cat2 = Category.create!(:display_in_menu => true, :name => 'Vegetables', :environment => Environment.default, :parent => @cat1)
 
     # all categories must be shown for these tests 
@@ -32,8 +32,10 @@ class CategoriesMenuTest < ActionController::IntegrationTest
   end
 
   should 'cache the categories menu' do
-    ActionView::Base.any_instance.expects(:cache).with(Environment.default.id.to_s + "_categories_menu")
+    ActionController::Base.perform_caching = true
+    HomeController.any_instance.stubs(:fragment_cache_key).with(Environment.default.id.to_s + "_categories_menu").returns('dir')
     get '/'
+    ActionController::Base.perform_caching = false
   end
 
 end

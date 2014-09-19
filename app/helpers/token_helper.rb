@@ -18,6 +18,7 @@ module TokenHelper
     options[:on_add] ||= 'null'
     options[:on_delete] ||= 'null'
     options[:on_ready] ||= 'null'
+    options[:query_param] ||= 'q'
 
     result = text_field_tag(name, nil, text_field_options.merge(html_options.merge({:id => element_id})))
     result += javascript_tag("jQuery('##{element_id}')
@@ -27,10 +28,10 @@ module TokenHelper
         hintText: #{options[:hint_text].to_json},
         noResultsText: #{options[:no_results_text].to_json},
         searchingText: #{options[:searching_text].to_json},
-        searchDelay: #{options[:serach_delay].to_json},
+        searchDelay: #{options[:search_delay].to_json},
         preventDuplicates: #{options[:prevent_duplicates].to_json},
         backspaceDeleteItem: #{options[:backspace_delete_item].to_json},
-        queryParam: #{name.to_json},
+        queryParam: #{options[:query_param].to_json},
         tokenLimit: #{options[:token_limit].to_json},
         onResult: #{options[:on_result]},
         onAdd: #{options[:on_add]},

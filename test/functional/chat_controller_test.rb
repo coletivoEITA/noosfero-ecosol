@@ -26,8 +26,7 @@ class ChatControllerTest < ActionController::TestCase
 
     get :avatar, :id => 'testuser'
 
-    assert_equal 'image/png', @response.content_type
-    assert_match /PNG/, @response.body
+    assert_response :redirect
   end
 
   should 'get avatar from community' do
@@ -37,7 +36,7 @@ class ChatControllerTest < ActionController::TestCase
     get :avatar, :id => community.identifier
 
     assert_equal 'image/png', @response.content_type
-    assert_match /PNG/, @response.body
+    assert @response.body.index('PNG')
   end
 
   should 'auto connect if last presence status is blank' do
@@ -91,7 +90,7 @@ class ChatControllerTest < ActionController::TestCase
     get :index
 
     assert_response 404
-    assert_template 'not_found.rhtml'
+    assert_template 'not_found'
   end
 
   should 'not update presence status from non-ajax requests' do

@@ -1,12 +1,24 @@
 <% extra_content = [] %>
 <% extra_content_list = [] %>
 
-<h1><%= _('Products/Services') %></h1>
+<div id="product-catalog">
 
-<%= render 'catalog/products', :products => @products, :categories => @categories %>
+  <% if !user.nil? && ( user.is_admin?(profile.environment) || user.is_admin?(profile) ) %>
+    <div class="product-catalog-ctrl">
+      <%= button :product, _('manage products/services'), :controller => 'manage_products' %>
+    </div>
+  <% end %>
 
-<%= pagination_links @products, :params => {:controller => :catalog, :action => :index, :profile => profile.identifier} %>
+  <h1><%= _('products/services') %></h1>
 
-<%= add_zoom_to_images %>
+  <%= breadcrumb(@category) if params[:level] %>
 
-<br style="clear:both"/>
+  <%= render 'catalog/products', :products => @products, :categories => @categories %>
+
+  <%= pagination_links @products, :params => {:controller => :catalog, :action => :index, :profile => profile.identifier} %>
+
+  <%= add_zoom_to_images %>
+
+  <br style="clear:both"/>
+
+</div>

@@ -94,6 +94,7 @@ class ShoppingCartPluginController < PublicController
   end
 
   def buy
+    @customer = user || Person.new
     if validate_cart_presence
       @cart = cart
       @profile = environment.profiles.find(cart[:profile_id])
@@ -106,8 +107,8 @@ class ShoppingCartPluginController < PublicController
     register_order(params[:customer], self.cart[:items])
     begin
       profile = environment.profiles.find(cart[:profile_id])
-      ShoppingCartPlugin::Mailer.deliver_customer_notification(params[:customer], profile, self.cart[:items], params[:delivery_option])
-      ShoppingCartPlugin::Mailer.deliver_supplier_notification(params[:customer], profile, self.cart[:items], params[:delivery_option])
+      ShoppingCartPlugin::Mailer.customer_notification(params[:customer], profile, self.cart[:items], params[:delivery_option]).deliver
+      ShoppingCartPlugin::Mailer.supplier_notification(params[:customer], profile, self.cart[:items], params[:delivery_option]).deliver
       self.cart = nil
       render :text => {
         :ok => true,
@@ -267,22 +268,27 @@ class ShoppingCartPluginController < PublicController
       products_list[id] = {:quantity => quantity, :price => price, :name => product.name}
     end
 
-    OrdersPlugin::Sale.create! :profile => environment.profiles.find(cart[:profile_id]), :consumer => user, :source => 'shopping_cart_plugin',
-      :status => 'ordered', :products_list => products_list,
-      :consumer_data => {
-        :name => params[:customer][:name], :email => params[:customer][:email], :contact_phone => params[:customer][:contact_phone],
-      },
-      :payment_data => {
-        :method => params[:customer][:payment], :change => params[:customer][:change],
-      },
-      :consumer_delivery_data => {
-        :name => params[:delivery_option],
-        :address_line1 => params[:address],
-        :address_line2 => params[:district],
-        :reference => params[:address_reference],
-        :city => params[:city],
-        :postal_code => params[:zip_code],
-      }
+    order = OrdersPlugin::Sale.new
+    order.profile = environment.profiles.find(cart[:profile_id])
+    order.consumer = user
+    order.source = 'shopping_cart_plugin'
+    order.status = 'ordered'
+    order.products_list = products_list
+    order.consumer_data = {
+      :name => params[:customer][:name], :email => params[:customer][:email], :contact_phone => params[:customer][:contact_phone],
+    }
+    order.payment_data = {
+      :method => params[:customer][:payment], :change => params[:customer][:change],
+    }
+    order.consumer_delivery_data = {
+      :name => params[:delivery_option],
+      :address_line1 => params[:address],
+      :address_line2 => params[:district],
+      :reference => params[:address_reference],
+      :city => params[:city],
+      :postal_code => params[:zip_code],
+    }
+    order.save!
   end
 
   protected
