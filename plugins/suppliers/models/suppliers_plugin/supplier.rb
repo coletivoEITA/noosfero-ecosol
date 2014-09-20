@@ -10,20 +10,20 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
   validates_presence_of :consumer
   validates_uniqueness_of :consumer_id, :scope => :profile_id, :if => :profile_id
 
-  named_scope :active, :conditions => {:active => true}
+  scope :active, :conditions => {:active => true}
 
-  named_scope :of_profile, lambda { |p| { :conditions => {:profile_id => p.id} } }
-  named_scope :of_profile_id, lambda { |id| { :conditions => {:profile_id => id} } }
-  named_scope :of_consumer, lambda { |c| { :conditions => {:consumer_id => c.id} } }
-  named_scope :of_consumer_id, lambda { |id| { :conditions => {:consumer_id => id} } }
+  scope :of_profile, lambda { |p| { :conditions => {:profile_id => p.id} } }
+  scope :of_profile_id, lambda { |id| { :conditions => {:profile_id => id} } }
+  scope :of_consumer, lambda { |c| { :conditions => {:consumer_id => c.id} } }
+  scope :of_consumer_id, lambda { |id| { :conditions => {:consumer_id => id} } }
 
-  named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_suppliers.id = ?', supplier_id] } }
+  scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_suppliers.id = ?', supplier_id] } }
 
-  named_scope :with_name, lambda { |name| if name then {:conditions => ["LOWER(suppliers_plugin_suppliers.name) LIKE ?","%#{name.downcase}%"]} else {} end }
-  named_scope :by_active, lambda { |active| if active then {:conditions => {:active => active}} else {} end }
+  scope :with_name, lambda { |name| if name then {:conditions => ["LOWER(suppliers_plugin_suppliers.name) LIKE ?","%#{name.downcase}%"]} else {} end }
+  scope :by_active, lambda { |active| if active then {:conditions => {:active => active}} else {} end }
 
-  named_scope :except_people, { :conditions => ['profiles.type <> ?', Person.name], :joins => [:consumer] }
-  named_scope :except_self, { :conditions => 'profile_id <> consumer_id' }
+  scope :except_people, { :conditions => ['profiles.type <> ?', Person.name], :joins => [:consumer] }
+  scope :except_self, { :conditions => 'profile_id <> consumer_id' }
 
   after_create :add_admins, :if => :dummy?
   after_create :save_profile, :if => :dummy?

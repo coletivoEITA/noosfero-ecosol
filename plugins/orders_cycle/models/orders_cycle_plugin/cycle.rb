@@ -57,30 +57,30 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   code_numbering :code, :scope => Proc.new { self.profile.orders_cycles }
 
   # status scopes
-  named_scope :defuncts, :conditions => ["status = 'new' AND created_at < ?", 2.days.ago]
-  named_scope :not_new, :conditions => ["status <> 'new'"]
-  named_scope :on_orders, lambda {
+  scope :defuncts, :conditions => ["status = 'new' AND created_at < ?", 2.days.ago]
+  scope :not_new, :conditions => ["status <> 'new'"]
+  scope :on_orders, lambda {
     {:conditions => ["status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) )",
       {:now => DateTime.now}]}
   }
-  named_scope :not_on_orders, lambda {
+  scope :not_on_orders, lambda {
     {:conditions => ["NOT (status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) )",
       {:now => DateTime.now}]}
   }
-  named_scope :open, :conditions => ["status <> 'new' AND status <> 'closing'"]
-  named_scope :closing, :conditions => ["status = 'closing'"]
-  named_scope :by_status, lambda { |status| { :conditions => {:status => status} } }
+  scope :open, :conditions => ["status <> 'new' AND status <> 'closing'"]
+  scope :closing, :conditions => ["status = 'closing'"]
+  scope :by_status, lambda { |status| { :conditions => {:status => status} } }
 
-  named_scope :months, :select => 'DISTINCT(EXTRACT(months FROM start)) as month', :order => 'month DESC'
-  named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year DESC'
+  scope :months, :select => 'DISTINCT(EXTRACT(months FROM start)) as month', :order => 'month DESC'
+  scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year DESC'
 
-  named_scope :by_month, lambda { |month| {
+  scope :by_month, lambda { |month| {
     :conditions => [ 'EXTRACT(month FROM start) <= :month AND EXTRACT(month FROM finish) >= :month', { :month => month } ]}
   }
-  named_scope :by_year, lambda { |year| {
+  scope :by_year, lambda { |year| {
     :conditions => [ 'EXTRACT(year FROM start) <= :year AND EXTRACT(year FROM finish) >= :year', { :year => year } ]}
   }
-  named_scope :by_range, lambda { |range| {
+  scope :by_range, lambda { |range| {
     :conditions => [ 'start BETWEEN :start AND :finish OR finish BETWEEN :start AND :finish',
       { :start => range.first, :finish => range.last }
     ]}

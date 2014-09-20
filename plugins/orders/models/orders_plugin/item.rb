@@ -29,8 +29,8 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
   has_many :from_products, :through => :product
   has_many :to_products, :through => :product
 
-  named_scope :ordered, :conditions => ['orders_plugin_orders.status = ?', 'ordered'], :joins => [:order]
-  named_scope :for_product, lambda{ |product| {:conditions => {:product_id => product.id}} }
+  scope :ordered, :conditions => ['orders_plugin_orders.status = ?', 'ordered'], :joins => [:order]
+  scope :for_product, lambda{ |product| {:conditions => {:product_id => product.id}} }
 
   default_scope :include => [:product]
 

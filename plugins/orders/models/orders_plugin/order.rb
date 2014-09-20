@@ -29,40 +29,40 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::Method'
   belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::Method'
 
-  named_scope :latest, :order => 'created_at DESC'
+  scope :latest, :order => 'created_at DESC'
 
-  named_scope :draft,     :conditions => {:status => 'draft'}
-  named_scope :planned,   :conditions => {:status => 'planned'}
-  named_scope :cancelled, :conditions => {:status => 'cancelled'}
-  named_scope :not_cancelled, :conditions => ["status <> 'cancelled'"]
-  named_scope :ordered,   :conditions => ['ordered_at IS NOT NULL']
-  named_scope :confirmed, :conditions => ['ordered_at IS NOT NULL']
-  named_scope :accepted,  :conditions => ['accepted_at IS NOT NULL']
-  named_scope :separated, :conditions => ['separated_at IS NOT NULL']
-  named_scope :delivered, :conditions => ['delivered_at IS NOT NULL']
-  named_scope :received,  :conditions => ['received_at IS NOT NULL']
+  scope :draft,     :conditions => {:status => 'draft'}
+  scope :planned,   :conditions => {:status => 'planned'}
+  scope :cancelled, :conditions => {:status => 'cancelled'}
+  scope :not_cancelled, :conditions => ["status <> 'cancelled'"]
+  scope :ordered,   :conditions => ['ordered_at IS NOT NULL']
+  scope :confirmed, :conditions => ['ordered_at IS NOT NULL']
+  scope :accepted,  :conditions => ['accepted_at IS NOT NULL']
+  scope :separated, :conditions => ['separated_at IS NOT NULL']
+  scope :delivered, :conditions => ['delivered_at IS NOT NULL']
+  scope :received,  :conditions => ['received_at IS NOT NULL']
 
-  named_scope :for_profile, lambda{ |profile| {:conditions => {:profile_id => profile.id}} }
-  named_scope :for_profile_id, lambda{ |profile_id| {:conditions => {:profile_id => profile_id}} }
-  named_scope :for_supplier, lambda{ |profile| {:conditions => {:profile_id => profile.id}} }
-  named_scope :for_supplier_id, lambda{ |profile_id| {:conditions => {:profile_id => profile_id}} }
-  named_scope :for_consumer, lambda{ |consumer| {:conditions => {:consumer_id => (consumer.id rescue nil)}} }
-  named_scope :for_consumer_id, lambda{ |consumer_id| {:conditions => {:consumer_id => consumer_id}} }
+  scope :for_profile, lambda{ |profile| {:conditions => {:profile_id => profile.id}} }
+  scope :for_profile_id, lambda{ |profile_id| {:conditions => {:profile_id => profile_id}} }
+  scope :for_supplier, lambda{ |profile| {:conditions => {:profile_id => profile.id}} }
+  scope :for_supplier_id, lambda{ |profile_id| {:conditions => {:profile_id => profile_id}} }
+  scope :for_consumer, lambda{ |consumer| {:conditions => {:consumer_id => (consumer.id rescue nil)}} }
+  scope :for_consumer_id, lambda{ |consumer_id| {:conditions => {:consumer_id => consumer_id}} }
 
-  named_scope :months, :select => 'DISTINCT(EXTRACT(months FROM orders_plugin_orders.created_at)) as month', :order => 'month DESC'
-  named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM orders_plugin_orders.created_at)) as year', :order => 'year DESC'
+  scope :months, :select => 'DISTINCT(EXTRACT(months FROM orders_plugin_orders.created_at)) as month', :order => 'month DESC'
+  scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM orders_plugin_orders.created_at)) as year', :order => 'year DESC'
 
-  named_scope :by_month, lambda { |month| {
+  scope :by_month, lambda { |month| {
     :conditions => [ 'EXTRACT(month FROM orders_plugin_orders.created_at) <= :month AND EXTRACT(month FROM orders_plugin_orders.created_at) >= :month', { :month => month } ]}
   }
-  named_scope :by_year, lambda { |year| {
+  scope :by_year, lambda { |year| {
     :conditions => [ 'EXTRACT(year FROM orders_plugin_orders.created_at) <= :year AND EXTRACT(year FROM orders_plugin_orders.created_at) >= :year', { :year => year } ]}
   }
 
-  named_scope :with_status, lambda { |status|
+  scope :with_status, lambda { |status|
     {:conditions => {:status => status}}
   }
-  named_scope :with_code, lambda { |code|
+  scope :with_code, lambda { |code|
     {:conditions => {:code => code}}
   }
 

@@ -8,7 +8,7 @@ class OrdersPlugin::Sale
   after_save :cycle_change_purchases, :if => :cycle
   before_destroy :cycle_remove_purchases_items, :if => :cycle
 
-  named_scope :for_cycle, lambda{ |cycle| {:conditions => ['orders_cycle_plugin_cycles.id = ?', cycle.id], :joins => [:cycles]} }
+  scope :for_cycle, lambda{ |cycle| {:conditions => ['orders_cycle_plugin_cycles.id = ?', cycle.id], :joins => [:cycles]} }
 
   def current_status_with_cycle
     return 'forgotten' if self.forgotten?
