@@ -1,7 +1,7 @@
 # workaround for plugin class scope problem
-require_dependency 'orders_plugin/display_helper'
-require_dependency 'orders_plugin/date_helper'
-require_dependency 'suppliers_plugin/display_helper'
+require 'orders_plugin/display_helper'
+require 'orders_plugin/date_helper'
+require 'suppliers_plugin/display_helper'
 
 module OrdersCyclePlugin::DisplayHelper
 

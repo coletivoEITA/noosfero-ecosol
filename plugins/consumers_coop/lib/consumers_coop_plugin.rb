@@ -28,6 +28,6 @@ class ConsumersCoopPlugin < Noosfero::Plugin
 end
 
 # workaround for plugin class scope problem
-require_dependency 'consumers_coop_plugin/layout_helper'
+require 'consumers_coop_plugin/layout_helper'
 
 

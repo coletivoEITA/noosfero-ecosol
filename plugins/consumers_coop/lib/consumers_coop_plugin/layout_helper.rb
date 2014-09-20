@@ -1,5 +1,5 @@
 # workaround for plugin class scope problem
-require_dependency 'suppliers_plugin/product_helper'
+require 'suppliers_plugin/product_helper'
 
 module ConsumersCoopPlugin::LayoutHelper
 

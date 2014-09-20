@@ -21,5 +21,5 @@ class DeliveryPlugin < Noosfero::Plugin
 end
 
 # workaround for plugin class scope problem
-require_dependency 'delivery_plugin/method'
+require 'delivery_plugin/method'
 

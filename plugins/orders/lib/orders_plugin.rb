@@ -28,9 +28,9 @@ class OrdersPlugin < Noosfero::Plugin
 end
 
 # these need OrdersPlugin class defined
-require_dependency "#{File.dirname __FILE__}/ext/product"
+require "#{File.dirname __FILE__}/ext/product"
 
 # workaround for plugin class scope problem
-require_dependency 'orders_plugin/display_helper'
+require 'orders_plugin/display_helper'
 OrdersPlugin::OrdersDisplayHelper = OrdersPlugin::DisplayHelper
 

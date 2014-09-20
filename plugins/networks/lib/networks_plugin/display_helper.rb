@@ -1,5 +1,5 @@
 # workaround for plugins classes scope problem
-require_dependency 'suppliers_plugin/display_helper'
+require 'suppliers_plugin/display_helper'
 
 module NetworksPlugin::DisplayHelper
 
