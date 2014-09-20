@@ -24,11 +24,10 @@ class ActionMailer::Base
   end
 
   # Set default host automatically if environment is set
-  def url_for_with_host options = nil
+  def url_for options = {}
     options[:host] ||= environment.default_hostname if self.environment
-    url_for_without_host options
+    super
   end
-  alias_method_chain :url_for, :host
 
   def premailer_html html
     premailer = Premailer.new html.to_s, :with_html_string => true
