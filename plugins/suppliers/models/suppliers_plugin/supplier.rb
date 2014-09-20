@@ -36,9 +36,14 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
 
   def self.new_dummy attributes
     environment = attributes[:consumer].environment
-    profile = environment.enterprises.build :enabled => false, :visible => false, :public_profile => false
+    profile = environment.enterprises.build
+    profile.enabled = false
+    profile.visible = false
+    profile.public_profile = false
 
-    supplier = self.new :profile => profile
+    supplier = self.new
+    supplier.profile = profile
+    supplier.consumer = attributes.delete :consumer
     supplier.attributes = attributes
     supplier
   end
@@ -135,8 +140,8 @@ class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
       super method, *args, &block
     end
   end
-  def respond_to_with_profile? method
-    respond_to_without_profile? method or Profile.new.respond_to? method
+  def respond_to_with_profile? method, include_private=false
+    respond_to_without_profile? method, include_private or Profile.new.respond_to? method, include_private
   end
   alias_method_chain :respond_to?, :profile
 
