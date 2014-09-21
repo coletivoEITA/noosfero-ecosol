@@ -1,4 +1,4 @@
-class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
+class SuppliersPlugin::Supplier < ActiveRecord::Base
 end
 
 class AddActiveToSuppliersPluginSupplier < ActiveRecord::Migration

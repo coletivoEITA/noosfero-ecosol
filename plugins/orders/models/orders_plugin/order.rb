@@ -1,4 +1,4 @@
-class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
+class OrdersPlugin::Order < ActiveRecord::Base
 
   Statuses = %w[ordered accepted separated delivered received]
   DbStatuses = %w[draft planned cancelled] + Statuses

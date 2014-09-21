@@ -1,7 +1,4 @@
-# WORKAROUND
-require_dependency 'noosfero/plugin/active_record'
-
-class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
+class OrdersPlugin::Item < ActiveRecord::Base
 
   # should be Order, but can't reference it here so it would create a cyclic reference
   StatusAccessMap = ActiveSupport::OrderedHash[

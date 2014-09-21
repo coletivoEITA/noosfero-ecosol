@@ -1,4 +1,4 @@
-class DeliveryPlugin::Method < Noosfero::Plugin::ActiveRecord
+class DeliveryPlugin::Method < ActiveRecord::Base
 
   belongs_to :profile
 

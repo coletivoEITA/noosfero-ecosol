@@ -1,4 +1,4 @@
-class OrdersCyclePlugin::CycleOrder < Noosfero::Plugin::ActiveRecord
+class OrdersCyclePlugin::CycleOrder < ActiveRecord::Base
 
   belongs_to :cycle, :class_name => 'OrdersCyclePlugin::Cycle'
   belongs_to :sale, :class_name => 'OrdersPlugin::Sale', :foreign_key => :sale_id, :dependent => :destroy

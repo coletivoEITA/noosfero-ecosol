@@ -1,4 +1,4 @@
-class SuppliersPlugin::SourceProduct < Noosfero::Plugin::ActiveRecord
+class SuppliersPlugin::SourceProduct < ActiveRecord::Base
 
   default_scope :include => [:from_product, :to_product]
 

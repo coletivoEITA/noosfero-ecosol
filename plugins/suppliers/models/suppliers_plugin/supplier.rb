@@ -1,4 +1,4 @@
-class SuppliersPlugin::Supplier < Noosfero::Plugin::ActiveRecord
+class SuppliersPlugin::Supplier < ActiveRecord::Base
 
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'

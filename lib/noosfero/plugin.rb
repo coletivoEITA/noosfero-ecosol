@@ -10,6 +10,10 @@ class Noosfero::Plugin
 
   class << self
 
+    def table_name_prefix
+      @table_name_prefix ||= "#{name.to_s.underscore}_"
+    end
+
     attr_writer :should_load
 
     def should_load
