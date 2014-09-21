@@ -1,6 +1,7 @@
 # FIXME remove Base when plugin became a module
 class SuppliersPlugin::BaseProduct < Product
 
+  attr_accessible :default_margin_percentage, :margin_percentage, :default_stored, :stored, :default_unit, :unit_detail
   # join source_products
   # FIXME: can't preload :suppliers due to a rails bug
   default_scope :include => [:from_products, {:sources_from_products => [{:supplier => [{:profile => [:domains, {:environment => :domains}]}]}]},

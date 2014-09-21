@@ -1,7 +1,6 @@
 <h2> <%= t('views.node.create.context') % {:name => @node.name} %> </h2>
 
-<% form_remote_for :node, @new_node, :url => {:action => :associate},
-  :loading => "loading_overlay.show('#networks-node-associate')", :loaded => "loading_overlay.hide('#networks-node-associate')" do |f| %>
+<%= form_for @new_node, remote: true, :url => {:action => :associate}, html: {data: {loading: '#networks-node-associate'}} do |f| %>
   <%= error_messages_for :new_node %>
 
   <%= hidden_field_tag :id, @node.id %>

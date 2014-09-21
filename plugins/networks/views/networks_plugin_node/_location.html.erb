@@ -1,4 +1,4 @@
-<% form_for :profile_data, @node, :html => {:id => 'location-form'} do |f| %>
+<%= form_for @node, as: :profile_data , :html => {:id => 'location-form'} do |f| %>
 
   <div class="error">
     <%= flash[:error] %>

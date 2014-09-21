@@ -2,7 +2,7 @@
 <h2><%= t('views.profile.settings.settings_of_solidary_') %></h2>
 
 <div id="consumers-coop-settings">
-  <% form_for :profile_data, @profile, :url => {:controller => :consumers_coop_plugin_myprofile, :action => :settings, :profile => profile.identifier}, :html => {:multipart => true} do |f| %>
+  <%= form_for @profile, as: :profile_data, :url => {:controller => :consumers_coop_plugin_myprofile, :action => :settings, :profile => profile.identifier}, :html => {:multipart => true} do |f| %>
 
     <% f.fields_for :consumers_coop_settings, profile.consumers_coop_settings do |ff| %>
       <%= labelled_field ff, :enabled, t('views.profile.settings.collective_consumptio'),

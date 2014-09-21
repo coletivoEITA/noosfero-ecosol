@@ -28,8 +28,8 @@
         <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(:controller => :orders_plugin_admin_item, :action => :edit, :id => item.id, :actor_name => actor_name)}')", :class => 'action-button' %>
 
       <% else %>
-        <%= link_to_remote t('orders_plugin.views.item._edit.remove_from_order'), :update => "item-#{item.id}",
-          :loading => "loading_overlay.show('#item-#{item.id}')", :loaded => "loading_overlay.hide('#item-#{item.id}')",
+        <%= link_to t('orders_plugin.views.item._edit.remove_from_order'), :update => "item-#{item.id}", remote: true,
+          html: {data: {loading: "#item-#{item.id}"}},
           :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? user, @admin rescue false %>
 
         <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(:controller => :orders_plugin_item, :action => :edit, :id => item.id)}')", :class => 'action-button' %>

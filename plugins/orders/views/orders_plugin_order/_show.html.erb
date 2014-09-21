@@ -2,7 +2,7 @@
 
 <div id="order-<%=order.id%>" class="order-view <%= "editable" if order.may_edit? user, @admin rescue false %> <%= "admin" if @admin %>">
 
-  <% form_for :order, order,
+  <%= form_for order, as: :order,
     :url => {:controller => (if @admin then :orders_plugin_admin else :orders_plugin_order end), :action => :edit, :id => order.id, :actor_name => actor_name},
     :html => {:onsubmit => 'return orders.order.submit(this)'} do |f| %>
 

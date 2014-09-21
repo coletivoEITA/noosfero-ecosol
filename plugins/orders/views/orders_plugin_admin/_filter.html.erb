@@ -7,7 +7,7 @@
     <%= t('views.filter.filter') %>
   </div>
 
-  <% form_tag({:controller => :orders_plugin_admin, :action => :filter}, :id => 'filter-form',
+  <%= form_tag({:controller => :orders_plugin_admin, :action => :filter}, :id => 'filter-form',
               :onsubmit => "loading_overlay.show('#filter'); jQuery(this).ajaxSubmit({success: function() { loading_overlay.hide('#filter'); }}); return false;") do %>
 
     <%= hidden_field_tag 'actor_name', actor_name %>

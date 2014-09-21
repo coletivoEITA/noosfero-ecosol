@@ -1,7 +1,7 @@
 <div id="" class="popin consumers-coop-plugin-message">
   <h1><%= t('views.message.new_to_admins.message_to_managers_o') % {:profile => profile.name} %></h1>
 
-  <% form_remote_tag :url => params do %>
+  <%= form_tag remote: true,:url => params do %>
     <%= render :partial => 'fields' %>
 
      <%= submit_tag t('views.message.new_to_admins.send') %>

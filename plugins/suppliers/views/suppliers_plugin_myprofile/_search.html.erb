@@ -2,9 +2,8 @@
 
 <p> <%= t('views.supplier._new.intro_help') % {:environment => environment.name, :contact_email => environment.contact_email} %> </p>
 
-<% form_remote_tag :method => :get, :url => {:action => :search, :profile => profile.identifier},
-  :loading => "loading_overlay.show('#results')", :loaded => "loading_overlay.hide('#results');",
-  :html => {:id => 'enterprise-search-form'} do %>
+<%= form_tag remote: true, :method => :get, :url => {:action => :search, :profile => profile.identifier},
+  :html => {:id => 'enterprise-search-form', data: {loading: '#results'}} do %>
 
   <%= text_field_tag 'query', nil, :placeholder => t('views.supplier._new.query_placeholder'),
     :onkeyup => 'suppliers.add.search(this)', :autocomplete => 'off', :autofill => 'off' %>

@@ -2,7 +2,7 @@
 
 <%= button :back, t('views.node.edit.back'), :controller => :networks_plugin_network, :action => :structure, :node_id => @node.parent.id %>
 
-<% form_for :profile_data, @node, :html => { :id => 'profile-data', :multipart => true } do |f| %>
+<%= form_for @node,as: :profile_data,  :html => { :id => 'profile-data', :multipart => true } do |f| %>
 
   <h2><%= t('views.node.edit.node_info') %></h2>
 

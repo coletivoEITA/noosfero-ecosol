@@ -1,7 +1,6 @@
 <h3><%= t('views.cycle._edit_fields.general_settings') %></h3>
 
-<% form_remote_for :cycle, @cycle, :url => {:action => @cycle.new? ? :new : :edit, :id => @cycle.id },
-  :loading => "loading_overlay.show('#cycle-fields form')", :loaded => "loading_overlay.hide('#cycle-fields form')" do |f| %>
+<%= form_for @cycle, as: :cycle , remote: true, :url => {:action => @cycle.new? ? :new : :edit, :id => @cycle.id }, html: {data: {loading: '#cycle-fields form'}} do |f| %>
 
   <%= labelled_field(f, :name, t('views.cycle._edit_fields.name'), f.text_field(:name), :class => 'cycle-field-name') %>
   <%= labelled_field(f, :description, t('views.cycle._edit_fields.description'), f.text_area(:description), :class => 'cycle-field-description') %>
@@ -60,6 +59,6 @@
 <% end %>
 
 <%= javascript_include_tag '/plugins/orders_cycle/javascripts/jquery.calendrical.js' %>
-<% javascript_tag do %>
+<%= javascript_tag do %>
   orders_cycle.cycle.edit();
 <% end %>
