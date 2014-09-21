@@ -17,16 +17,16 @@ module ControllerInheritance
       self.hmvc_paths[self.hmvc_context] ||= {} if self.hmvc_context
 
       # initialize other context's controllers paths
-      #controllers = [self] + context.controllers.map{ |controller| controller.constantize }
+      controllers = [self] + context.controllers.map{ |controller| controller.constantize }
 
-      #controllers.each do |klass|
-      #  context_klass = klass
-      #  while ((klass = klass.superclass).hmvc_inheritable rescue false)
-      #    self.hmvc_paths[self.hmvc_context][klass.controller_path] = context_klass.controller_path
-      #  end
-      #end
+      controllers.each do |klass|
+        context_klass = klass
+        while ((klass = klass.superclass).hmvc_inheritable rescue false)
+          self.hmvc_paths[self.hmvc_context][klass.controller_path] = context_klass.controller_path
+        end
+      end
 
-      #include InstanceMethods
+      include InstanceMethods
     end
 
     def hmvc_controller_path hmvc_context = self.hmvc_context
@@ -35,6 +35,20 @@ module ControllerInheritance
 
     protected
 
+  end
+
+  module InstanceMethods
+    def url_for options = {}
+      controller = options[:controller]
+      controller ||= controller_path
+      controller = controller.to_s
+
+      dest_controller = self.class.hmvc_paths[@hmvc_context][controller] rescue nil
+      dest_controller ||= options[:controller] || self.controller_path
+      options[:controller] = dest_controller
+
+      super options
+    end
   end
 
 end
