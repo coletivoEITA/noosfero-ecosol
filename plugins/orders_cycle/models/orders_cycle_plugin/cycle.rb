@@ -24,7 +24,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   belongs_to :profile
 
   has_many :delivery_options, :class_name => 'DeliveryPlugin::Option', :dependent => :destroy,
-    :foreign_key => :owner_id, :conditions => ["delivery_plugin_options.owner_type = 'OrdersCyclePlugin::Cycle'"]
+    :as => :owner, :conditions => ["delivery_plugin_options.owner_type = 'OrdersCyclePlugin::Cycle'"]
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 
   has_many :cycle_orders, :class_name => 'OrdersCyclePlugin::CycleOrder', :foreign_key => :cycle_id, :dependent => :destroy, :order => 'id ASC'
@@ -67,7 +67,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
     {:conditions => ["NOT (status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) )",
       {:now => DateTime.now}]}
   }
-  scope :open, :conditions => ["status <> 'new' AND status <> 'closing'"]
+  scope :opened, :conditions => ["status <> 'new' AND status <> 'closing'"]
   scope :closing, :conditions => ["status = 'closing'"]
   scope :by_status, lambda { |status| { :conditions => {:status => status} } }
 
@@ -98,7 +98,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   before_validation :step_new
   before_validation :check_status
   before_save :add_products_on_edition_state
-  before_create :delay_purge_profile_defuncts
+  after_create :delay_purge_profile_defuncts
 
   extend SplitDatetime::SplitMethods
   split_datetime :start

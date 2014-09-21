@@ -17,7 +17,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
     if request.xhr?
       render :partial => 'results'
     else
-      @open_cycles = profile.orders_cycles.open
+      @open_cycles = profile.orders_cycles.opened
     end
   end
 
@@ -39,8 +39,11 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
       end
     else
       count = OrdersCyclePlugin::Cycle.count :conditions => {:profile_id => profile}
-      @cycle = OrdersCyclePlugin::Cycle.create! :profile => profile, :status => 'new',
-        :name => t('controllers.myprofile.cycle_controller.cycle_n_n') % {:n => count+1}
+      @cycle = OrdersCyclePlugin::Cycle.new
+      @cycle.profile =profile
+      @cycle.status = 'new'
+      @cycle.name = t('controllers.myprofile.cycle_controller.cycle_n_n') % {:n => count+1}
+      @cycle.save!
     end
   end
 
