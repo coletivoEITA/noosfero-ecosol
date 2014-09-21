@@ -22,7 +22,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def new
-    if request.post?
+    if request.xhr?
       @cycle = OrdersCyclePlugin::Cycle.find params[:id]
 
       params[:cycle][:status] = 'orders' if @open = params[:open] == '1'
@@ -39,11 +39,8 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
       end
     else
       count = OrdersCyclePlugin::Cycle.count :conditions => {:profile_id => profile}
-      @cycle = OrdersCyclePlugin::Cycle.new
-      @cycle.profile =profile
-      @cycle.status = 'new'
-      @cycle.name = t('controllers.myprofile.cycle_controller.cycle_n_n') % {:n => count+1}
-      @cycle.save!
+      @cycle = OrdersCyclePlugin::Cycle.create! :profile => profile, :status => 'new',
+        :name => t('controllers.myprofile.cycle_controller.cycle_n_n') % {:n => count+1}
     end
   end
 

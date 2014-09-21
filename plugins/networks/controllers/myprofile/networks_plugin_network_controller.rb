@@ -18,7 +18,7 @@ class NetworksPluginNetworkController < MyProfileController
 
     if params[:enterprise_id]
       @enterprise = environment.enterprises.find params[:enterprise_id]
-      if request.post?
+      if request.xhr?
         NetworksPlugin::AssociateEnterprise.create! :network => profile, :enterprise => @enterprise
         @request_sent = true
       end
