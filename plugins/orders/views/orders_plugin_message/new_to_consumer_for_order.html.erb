@@ -1,7 +1,7 @@
 <div id="" class="distribution-plugin-popin distribution-plugin-message">
   <h1><%= t('orders_cycle_plugin.views.message.new_to_consumer_for_order.message_to_member_con') % {:consumer => @consumer.name} %></h1>
 
-  <%= form_remote_tag :url => params do %>
+  <%= form_tag remote: true, :url => params do %>
     <%= render :partial => 'fields' %>
 
     <div>
