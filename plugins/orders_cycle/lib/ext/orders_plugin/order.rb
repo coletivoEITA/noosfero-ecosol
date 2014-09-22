@@ -23,12 +23,13 @@ class OrdersPlugin::Order
     if self.cycle then self.cycle.send(self.orders_name) else self.profile.orders end
   end)
 
-  def code
-    return super unless self.cycle
+  def code_with_cycle
+    return self.code_without_cycle unless self.cycle
     I18n.t('orders_cycle_plugin.lib.ext.orders_plugin.order.cyclecode_ordercode') % {
       :cyclecode => self.cycle.code, :ordercode => self['code']
     }
   end
+  alias_method_chain :code, :cycle
 
   def delivery_methods_with_cycle
     if self.cycle then self.cycle.delivery_methods else self.delivery_methods_without_cycle end

@@ -1,6 +1,6 @@
 module CodeNumbering
   module ClassMethods
-    def code_numbering(field, options = {})
+    def code_numbering field, options = {}
       cattr_accessor :code_numbering_field
       cattr_accessor :code_numbering_options
 
@@ -14,6 +14,10 @@ module CodeNumbering
   end
 
   module InstanceMethods
+    def code
+      self.attributes[self.code_numbering_field.to_s]
+    end
+
     def create_code_numbering
       scope = self.code_numbering_options[:scope]
 
