@@ -22,25 +22,97 @@ class SolrPlugin < Noosfero::Plugin
     not empty_query or klass == Product
   end
 
-  def find_by_contents(asset, scope, query, paginate_options={}, options={})
-    klass = asset_class(asset)
-    category = options[:category]
-    empty_query = empty_query? query, category
+  def catalog_asset asset, scope, query, paginate_options={}, options={}
+  	klass = Product
 
+  	# Search for products -> considers the query and the filters:
+    params[:facet] = {}
+    params[:facet][:solr_plugin_f_category] = params[:category] if params[:category].present?
+    params[:facet][:solr_plugin_f_qualifier] = params[:qualifier] if params[:qualifier].present?
+    solr_options = build_solr_options asset, klass, scope, nil
+    solr_options[:all_facets] = false
+    result = scope.find_by_contents query, paginate_options, solr_options
+
+    # Preparing the filters -> they must always contain all filters for the specific query:
+    solr_options = build_solr_options asset, klass, scope, nil, ignore_filters: true
+    result_facets = scope.find_by_contents query, paginate_options, solr_options
+    facets = result_facets[:facets]['facet_fields'] || {}
+
+    result[:categories] = facets['solr_plugin_f_category_facet'].to_a.map{ |name,count| ["#{name} (#{count})", name] }
+    result[:categories].sort!{ |a,b| a[0] <=> b[0] }
+    result[:qualifiers] = facets['solr_plugin_f_qualifier_facet'].to_a
+    result[:qualifiers].map!{ |ids, count| [Product.solr_plugin_f_qualifier_proc(ids), count, ids] }
+    result[:qualifiers].map!{ |name, count, id| ["#{name} (#{count})", id] }
+    result[:qualifiers].sort!{ |a,b| a[0] <=> b[0] }
+
+    result
+  end
+
+  def find_by_contents(asset, scope, query, paginate_options={}, options={})
+  	# The query in the catalog top bar is too specific and therefore must e treated differently:
+    return catalog_asset asset, scope, query, paginate_options, options if asset == :catalog
+
+  	# General queries:
+  	category = options[:category]
+  	empty_query = empty_query? query, category
+  	klass = asset_class asset
+
+  	solr_options = build_solr_options asset, klass, scope, category
+    solr_options.merge! products_options(user) if empty_query and klass == Product
     unless solr_search? empty_query, klass
       return options[:filter] ?  {:results => scope.send(options[:filter]).paginate(paginate_options)} : nil
     end
-
-    solr_options = solr_options(class_asset(klass), category)
-    solr_options[:filter_queries] ||= []
-    solr_options[:filter_queries] += scopes_to_solr_options scope, klass, options
-    solr_options.merge! products_options(user) if asset == :products and empty_query
     solr_options.merge! options.except(:category, :filter)
 
     scope.find_by_contents query, paginate_options, solr_options
   end
 
+  def autocomplete asset, scope, query, paginate_options={}, options={}
+    solr_options = {}
+    solr_options.merge! paginate_options
+
+    case asset
+    when :catalog
+      solr_options[:query_fields] = %w[solr_plugin_ac_name^100 solr_plugin_ac_category^1000]
+      solr_options[:highlight] = {:fields => 'name'}
+    when :products, :catalog
+      solr_options.merge! products_options(user)
+    end
+    solr_options[:default_field] = 'ngramText'
+
+    result = {:results => scope.find_by_solr(query, solr_options).results}
+    result
+  end
+
   protected
+
+  def build_solr_options asset, klass, scope, category, options = {}
+    solr_options = {}
+
+    selected_facets = if options[:ignore_filters] then {} else params[:facet] end
+    if klass.respond_to? :facets
+      solr_options.merge! klass.facets_find_options selected_facets
+      solr_options[:all_facets] = true
+    end
+
+    solr_options[:filter_queries] ||= []
+    solr_options[:filter_queries] += filters(asset)
+    solr_options[:filter_queries] << "environment_id:#{environment.id}"
+    solr_options[:filter_queries] << klass.facet_category_query.call(category) if category
+    solr_options[:filter_queries] += scopes_to_solr_options scope, klass, options
+
+    solr_options[:boost_functions] ||= []
+    params[:order_by] = nil if params[:order_by] == 'none'
+    if params[:order_by]
+      order = SortOptions[asset][params[:order_by].to_sym]
+      raise "Unknown order by" if order.nil?
+      order[:solr_opts].each do |opt, value|
+        solr_options[opt] = value.is_a?(Proc) ? instance_eval(&value) : value
+      end
+    end
+
+    solr_options
+  end
 
   def scopes_to_solr_options scope, klass = nil, options = {}
     filter_queries = []

@@ -1,11 +1,23 @@
 class CatalogController < PublicController
+
   needs_profile
+
+  include CatalogHelper
 
   before_filter :check_enterprise_and_environment
 
   def index
-    extend CatalogHelper
     catalog_load_index
+    render :partial => 'catalog/results' if request.xhr?
+  end
+
+  def search_autocomplete
+    @query = params[:query].to_s
+    @scope = profile.products
+    @products = autocomplete(:catalog, @scope, @query, {:per_page => 5}, {})[:results]
+    respond_to do |format|
+      format.json
+    end
   end
 
   protected

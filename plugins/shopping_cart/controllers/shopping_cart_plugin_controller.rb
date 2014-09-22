@@ -28,22 +28,22 @@ class ShoppingCartPluginController < PublicController
 
   def add
     product = find_product(params[:id])
-    if product && profile = validate_same_profile(product)
-      self.cart = { :profile_id => profile.id, :items => {} } if self.cart.nil?
-      self.cart[:items][product.id] = 0 if self.cart[:items][product.id].nil?
-      self.cart[:items][product.id] += 1
-      render :text => {
-        :ok => true,
-        :error => {:code => 0},
-        :products => [{
-          :id => product.id,
-          :name => product.name,
-          :price => get_price(product, profile.environment),
-          :description => product.description,
-          :picture => product.default_image(:minor),
-          :quantity => self.cart[:items][product.id]
-        }]
-      }.to_json
+    if product && (profile = validate_same_profile(product))
+        self.cart = { :profile_id => profile.id, :items => {} } if self.cart.nil?
+        self.cart[:items][product.id] = 0 if self.cart[:items][product.id].nil?
+        self.cart[:items][product.id] += 1
+        render :text => {
+          :ok => true,
+          :error => {:code => 0},
+          :products => [{
+            :id => product.id,
+            :name => product.name,
+            :price => get_price(product, profile.environment),
+            :description => product.description,
+            :picture => product.default_image(:minor),
+            :quantity => self.cart[:items][product.id]
+          }]
+        }.to_json
     end
   end
 
@@ -195,7 +195,7 @@ class ShoppingCartPluginController < PublicController
         :ok => false,
         :error => {
         :code => 1,
-        :message => _("Can't join items from different enterprises.")
+        :message => _("Your basket contains items from other SSE enterprise. Please empty it or checkout before adding items from this enterprise.")
       }
       }.to_json
       return nil

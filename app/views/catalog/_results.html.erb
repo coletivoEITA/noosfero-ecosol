@@ -1,0 +1,16 @@
+<%= render 'catalog/form' %>
+
+<div id="catalog-results">
+  <span class="catalog-results">
+    <%= @not_searched ?
+      _('<b>Total:</b> %{number} products') % {number: @products.total_entries}
+      : _('Your search returned %{number} products') % {number: @products.total_entries} 
+    %>
+  </span>
+  
+  <ul id="product-list">
+    <%= render 'catalog/products', :products => @products %>
+  </ul>
+
+  <%= render 'catalog/pagination' %>
+</div>

@@ -278,6 +278,24 @@ class Noosfero::Plugin
     nil
   end
 
+  # -> Allows to add content to the beginning of the catalog top bar
+  # returns = lambda block that creates html code
+  def catalog_search_extras_begin
+    nil
+  end
+  
+  # -> Allows to add content to the endof the catalog top bar
+  # returns = lambda block that creates html code
+  def catalog_search_extras_end
+    nil
+  end
+
+  # -> Adds content to add to each autocompleted item on search
+  # returns = lambda block that creates html code
+  def catalog_autocomplete_item_extras product
+    nil
+  end
+
   # -> Adds content to profile editor info and settings
   # returns = lambda block that creates html code or raw rhtml/html.erb
   def profile_editor_extras
@@ -555,7 +573,14 @@ class Noosfero::Plugin
   # returns = {:results => [a, b, c, ...], ...}
   # P.S.: The plugin might add other informations on the return hash for its
   # own use in specific views
-  def find_by_contents(asset, scope, query, paginate_options={}, options={})
+  def find_by_contents asset, scope, query, paginate_options={:page => 1}, options={}
+  end
+
+  # -> Auto complete search
+  # returns = {:results => [a, b, c, ...], ...}
+  # P.S.: The plugin might add other informations on the return hash for its
+  # own use in specific views
+  def autocomplete asset, scope, query, paginate_options={:page => 1}, options={:field => 'name'}
   end
 
   # -> Adds aditional fields for change_password
