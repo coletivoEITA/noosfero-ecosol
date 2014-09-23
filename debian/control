@@ -35,7 +35,6 @@ Depends:
  rails3 (>= 3.2.6-1~),
  ruby (>= 1:1.9.3),
  rake,
- libzip-ruby1.9.1,
  ruby-dalli,
  ruby-exception-notification,
  ruby-gettext,
