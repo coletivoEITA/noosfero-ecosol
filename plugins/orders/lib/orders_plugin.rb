@@ -16,7 +16,7 @@ class OrdersPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['loading-overlay', 'locale', 'toggle_edit', 'sortable-table', 'help', 'orders'].map{ |j| "javascripts/#{j}" }
+    ['locale', 'toggle_edit', 'sortable-table', 'help', 'orders'].map{ |j| "javascripts/#{j}" }
   end
 
   def control_panel_buttons

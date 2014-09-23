@@ -126,8 +126,8 @@
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  background: #fbca47;
-  border: 1px solid #f4a439;
+  background: #FBCA47;
+  border: 1px solid #F4A439;
   cursor: pointer;
   color: black;
   font-weight: bold;
@@ -243,8 +243,8 @@
     /* remove submit input browser's margin */
     height: auto;
     width: auto;
-    background: #fbca47;
-    border: 1px solid #f4a439;
+    background: #FBCA47;
+    border: 1px solid #F4A439;
     cursor: pointer;
     color: black;
     font-weight: bold;

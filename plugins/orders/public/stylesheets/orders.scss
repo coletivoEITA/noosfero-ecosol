@@ -2,7 +2,6 @@
 @import 'orders-variables';
 
 @import 'sortable-table';
-@import 'loading-overlay';
 @import 'filter';
 
 @import 'items';
@@ -15,6 +14,7 @@
 }
 
 .orders-admin-index {
+  border: none;
   margin-top: $margin;
 
   &.sortable-table {

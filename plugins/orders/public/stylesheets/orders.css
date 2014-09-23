@@ -130,8 +130,8 @@
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  background: #fbca47;
-  border: 1px solid #f4a439;
+  background: #FBCA47;
+  border: 1px solid #F4A439;
   cursor: pointer;
   color: black;
   font-weight: bold;
@@ -277,8 +277,8 @@
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  background: #fbca47;
-  border: 1px solid #f4a439;
+  background: #FBCA47;
+  border: 1px solid #F4A439;
   cursor: pointer;
   color: black;
   font-weight: bold;
@@ -424,8 +424,8 @@
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  background: #fbca47;
-  border: 1px solid #f4a439;
+  background: #FBCA47;
+  border: 1px solid #F4A439;
   cursor: pointer;
   color: black;
   font-weight: bold;
@@ -454,8 +454,8 @@
 .sortable-table > .table-content .box-view .box-field {
   font-size: 10px; }
 .sortable-table > .table-header {
-  background-color: #70bcfa;
-  border-bottom: 2px solid #3c729f;
+  background-color: #70BCFA;
+  border-bottom: 2px solid #3C729F;
   color: black; }
   .sortable-table > .table-header .sort-arrow {
     border-top: 6px solid black;
@@ -480,10 +480,10 @@
   .sortable-table > .table-content > .value-row {
     background: white;
     cursor: pointer;
-    border: 1px solid #f3f4ee; }
+    border: 1px solid #F3F4EE; }
     .sortable-table > .table-content > .value-row.hover {
-      border-color: #fdf2a3;
-      border-bottom-color: #f3f4ee; }
+      border-color: #FDF2A3;
+      border-bottom-color: #F3F4EE; }
     .sortable-table > .table-content > .value-row.edit {
       border: 1px solid black; }
       .sortable-table > .table-content > .value-row.edit .box-view {
@@ -497,7 +497,7 @@
       .sortable-table > .table-content > .value-row.edit .box-field.actions .actions-circle .action-show {
         display: none; }
     .sortable-table > .table-content > .value-row.hover .box-view {
-      background: #fdf2a3 !important; }
+      background: #FDF2A3 !important; }
     .sortable-table > .table-content > .value-row.hover.edit .box-view {
       background: white !important; }
     .sortable-table > .table-content > .value-row .box-field.select, .sortable-table > .table-content > .value-row .box-field.actions {
@@ -520,9 +520,9 @@
         width: 16px;
         height: 16px; }
     .sortable-table > .table-content > .value-row .box-view {
-      border-bottom: 2px dotted #cccccc; }
+      border-bottom: 2px dotted #ccc; }
       .sortable-table > .table-content > .value-row .box-view, .sortable-table > .table-content > .value-row .box-view .box-view-inner {
-        background: #f3f4ee; }
+        background: #F3F4EE; }
       .sortable-table > .table-content > .value-row .box-view.with-inner {
         background: white; }
         .sortable-table > .table-content > .value-row .box-view.with-inner .box-view-inner {
@@ -539,7 +539,7 @@
       display: none; }
       .sortable-table > .table-content > .value-row .box-edit .internal-table {
         float: left;
-        background-color: #fdf2a3;
+        background-color: #FDF2A3;
         border: 1px solid black;
         border-radius: 3px; }
         .sortable-table > .table-content > .value-row .box-edit .internal-table .title {
@@ -547,12 +547,6 @@
           padding: 4px 7px;
           text-transform: uppercase;
           font-weight: normal; }
-
-.loading-overlay {
-  position: absolute;
-  background-image: url(/images/loading-overlay.gif);
-  opacity: 0.90;
-  z-index: 10; }
 
 /* use with @extend, CSS clear bugfix */
 .clean {
@@ -686,8 +680,8 @@
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  background: #fbca47;
-  border: 1px solid #f4a439;
+  background: #FBCA47;
+  border: 1px solid #F4A439;
   cursor: pointer;
   color: black;
   font-weight: bold;
@@ -702,7 +696,7 @@
   background: white; }
 
 #filter {
-  background-color: #bcdc91;
+  background-color: #BCDC91;
   padding: 0;
   margin-top: 16px;
   margin-bottom: 16px;
@@ -837,8 +831,8 @@
       /* remove submit input browser's margin */
       height: auto;
       width: auto;
-      background: #fbca47;
-      border: 1px solid #f4a439;
+      background: #FBCA47;
+      border: 1px solid #F4A439;
       cursor: pointer;
       color: black;
       font-weight: bold;
@@ -1076,8 +1070,8 @@
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  background: #fbca47;
-  border: 1px solid #f4a439;
+  background: #FBCA47;
+  border: 1px solid #F4A439;
   cursor: pointer;
   color: black;
   font-weight: bold;
@@ -1223,8 +1217,8 @@
   /* remove submit input browser's margin */
   height: auto;
   width: auto;
-  background: #fbca47;
-  border: 1px solid #f4a439;
+  background: #FBCA47;
+  border: 1px solid #F4A439;
   cursor: pointer;
   color: black;
   font-weight: bold;
@@ -1345,8 +1339,8 @@
     /* remove submit input browser's margin */
     height: auto;
     width: auto;
-    background: #fbca47;
-    border: 1px solid #f4a439;
+    background: #FBCA47;
+    border: 1px solid #F4A439;
     cursor: pointer;
     color: black;
     font-weight: bold;
@@ -1541,6 +1535,7 @@
   background-image: url("/plugins/orders/images/control-panel/purchases-sales.gif"); }
 
 .orders-admin-index {
+  border: none;
   margin-top: 16px; }
   .orders-admin-index.sortable-table > .table-header .box-field {
     text-transform: none; }
@@ -1585,7 +1580,7 @@
   .order-view .actions input {
     float: right; }
 .order-view .order-data {
-  background: #f8fa83;
+  background: #F8FA83;
   border-radius: 3px;
   font-size: 10px;
   margin: 0;
@@ -1707,8 +1702,8 @@
     /* remove submit input browser's margin */
     height: auto;
     width: auto;
-    background: #fbca47;
-    border: 1px solid #f4a439;
+    background: #FBCA47;
+    border: 1px solid #F4A439;
     cursor: pointer;
     color: black;
     font-weight: bold;

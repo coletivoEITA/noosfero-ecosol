@@ -21,7 +21,7 @@ class SuppliersPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['loading-overlay', 'locale', 'toggle_edit', 'sortable-table', 'suppliers'].map{ |j| "javascripts/#{j}" }
+    ['locale', 'toggle_edit', 'sortable-table', 'suppliers'].map{ |j| "javascripts/#{j}" }
   end
 
   def product_tabs product
