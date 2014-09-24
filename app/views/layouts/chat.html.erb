@@ -8,7 +8,7 @@
     <%= noosfero_javascript %>
     <%= javascript_include_tag 'prototype', 'jquery.scrollabletab', 'strophejs-1.0.1/strophe', 'jquery.emoticon', '../designs/icons/pidgin/emoticons.js', 'ba-linkify', 'jquery.ba-hashchange', 'jquery.sound', 'chat', :cache => 'cache/chat' %>
     <%= noosfero_stylesheets %>
-    <%= stylesheet_link_tag icon_theme_stylesheet_path %>
+    <%= stylesheet_link_tag *icon_theme_stylesheet_path %>
     <%= stylesheet_link_tag theme_stylesheet_path %>
     <%= stylesheet_link_tag jquery_ui_theme_stylesheet_path %>
     <script type='text/javascript'>

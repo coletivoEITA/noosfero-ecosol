@@ -15,7 +15,7 @@ module LayoutHelper
     output += render :file =>  'layouts/_javascript'
     output += javascript_tag 'render_all_jquery_ui_widgets()'
     unless plugins_javascripts.empty?
-      output += javascript_include_tag plugins_javascripts, :cache => "cache/plugins-#{Digest::MD5.hexdigest plugins_javascripts.to_s}"
+      output += javascript_include_tag *plugins_javascripts, :cache => "cache/plugins-#{Digest::MD5.hexdigest plugins_javascripts.to_s}"
     end
     output
   end
@@ -34,12 +34,13 @@ module LayoutHelper
     plugins_stylesheets = @plugins.select(&:stylesheet?).map { |plugin| plugin.class.public_path('style.css') }
 
     output = ''
-    output += stylesheet_link_tag standard_stylesheets, :cache => 'cache/application'
+    output += stylesheet_link_tag *standard_stylesheets, :cache => 'cache/application'
     output += stylesheet_link_tag template_stylesheet_path
-    output += stylesheet_link_tag icon_theme_stylesheet_path
+    output += stylesheet_link_tag *icon_theme_stylesheet_path
     output += stylesheet_link_tag jquery_ui_theme_stylesheet_path
     unless plugins_stylesheets.empty?
-      output += stylesheet_link_tag plugins_stylesheets, :cache => "cache/plugins-#{Digest::MD5.hexdigest plugins_stylesheets.to_s}"
+      # FIXME cache is breaking assets
+      output += stylesheet_link_tag *plugins_stylesheets#, :cache => "cache/plugins-#{Digest::MD5.hexdigest plugins_stylesheets.to_s}"
     end
     output += stylesheet_link_tag theme_stylesheet_path
     output

@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-gem 'rails'
+gem 'rails', '~> 3.2'
 gem 'fast_gettext'
 gem 'acts-as-taggable-on'
 gem 'prototype-rails'
@@ -23,6 +23,13 @@ gem 'premailer'
 
 # FIXME list here all actual dependencies (i.e. the ones in debian/control),
 # with their GEM names (not the Debian package names)
+
+group :assets do
+  gem 'therubyracer', :platforms => :ruby
+  gem 'uglifier', '>= 1.0.3'
+
+  gem 'sass-rails'
+end
 
 group :production do
   gem 'dalli'

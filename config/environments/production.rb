@@ -20,6 +20,9 @@ Noosfero::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true
 
+  # pre-compile every asset
+  config.assets.precompile = Dir.glob('**/*.{js,css,s[ac]ss}')
+
   # Defaults to nil and saved in location specified by config.assets.prefix
   # config.assets.manifest = YOUR_PATH
 

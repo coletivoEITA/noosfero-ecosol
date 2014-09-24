@@ -74,6 +74,7 @@ GEM
     exception_notification (4.0.1)
       actionmailer (>= 3.0.4)
       activesupport (>= 3.0.4)
+    execjs (2.2.1)
     fast_gettext (0.9.0)
     ffi (1.9.3)
     gettext (3.1.4)
@@ -87,6 +88,7 @@ GEM
     i18n (0.6.11)
     journey (1.0.4)
     json (1.8.1)
+    libv8 (3.16.14.7)
     locale (2.1.0)
     magic (0.2.8)
       ffi (>= 0.6.3)
@@ -137,6 +139,7 @@ GEM
     rake (10.3.2)
     rdoc (3.12.2)
       json (~> 1.4)
+    ref (1.0.5)
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
@@ -164,6 +167,11 @@ GEM
     ruby-feedparser (0.9.3)
       magic
     rubyzip (1.0.0)
+    sass (3.4.5)
+    sass-rails (3.2.6)
+      railties (~> 3.2.0)
+      sass (>= 3.1.10)
+      tilt (~> 1.3)
     selenium-webdriver (2.43.0)
       childprocess (~> 0.5)
       multi_json (~> 1.0)
@@ -175,6 +183,9 @@ GEM
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
     text (1.3.0)
+    therubyracer (0.12.1)
+      libv8 (~> 3.16.14.0)
+      ref
     thin (1.6.2)
       daemons (>= 1.0.9)
       eventmachine (>= 1.0.0)
@@ -269,6 +280,9 @@ GEM
       polyglot (>= 0.3.1)
       polyglot (>= 0.3.1)
     tzinfo (0.3.41)
+    uglifier (2.5.3)
+      execjs (>= 0.3.0)
+      json (>= 1.8.0)
     websocket (1.2.1)
     will_paginate (3.0.7)
     xpath (2.0.0)
@@ -298,7 +312,7 @@ DEPENDENCIES
   premailer
   prototype-rails
   prototype_legacy_helper (= 0.0.0)!
-  rails
+  rails (~> 3.2)
   rails_autolink
   rake
   rest-client
@@ -306,7 +320,10 @@ DEPENDENCIES
   rspec
   rspec-rails
   ruby-feedparser
+  sass-rails
   selenium-webdriver
+  therubyracer
   thin
+  uglifier (>= 1.0.3)
   will_paginate
   zip
