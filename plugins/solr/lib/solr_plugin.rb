@@ -35,6 +35,7 @@ class SolrPlugin < Noosfero::Plugin
 
     # Preparing the filters -> they must always contain all filters for the specific query:
     solr_options = build_solr_options asset, klass, scope, nil, ignore_filters: true
+    query = "" if result[:results].total_entries == 0
     result_facets = scope.find_by_contents query, paginate_options, solr_options
     facets = result_facets[:facets]['facet_fields'] || {}
 

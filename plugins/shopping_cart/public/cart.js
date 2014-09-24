@@ -10,6 +10,7 @@ function Cart(config) {
   this.empty = !config.has_products;
   this.visible = false;
   this.itemTemplate = _.template(jQuery('#cart-item-template').html());
+  $("#cart-profile-name").text(config.profile_short_name);
   $(".cart-buy", this.cartElem).button({ icons: { primary: 'ui-icon-cart'} });
   if (!this.empty) {
     if (!config.minimized) {
@@ -133,17 +134,9 @@ function Cart(config) {
       alert(Cart.l10n.maxNumberOfItens);
       return false;
     }
-    link.intervalId = setInterval(function() {
-      $(link).addClass('loading');
-      steps = ['w', 'n', 'e', 's'];
-      if( !link.step || link.step==3 ) link.step = 0;
-      link.step++;
-      $(link).button({ icons: { primary: 'ui-icon-arrowrefresh-1-'+steps[link.step]}})
-    }, 100);
+    $(link).addClass('small-loading');
     var stopBtLoading = function() {
-      clearInterval(link.intervalId);
-      $(link).removeClass('loading');
-      $(link).button({ icons: { primary: 'ui-icon-cart'}});
+      $(link).removeClass('small-loading');
     };
     this.instance.addItem(itemId, stopBtLoading);
   }

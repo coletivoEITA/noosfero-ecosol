@@ -5,9 +5,6 @@ class ShoppingCartPluginController < PublicController
   include ShoppingCartPlugin::CartHelper
   helper ShoppingCartPlugin::CartHelper
 
-  append_view_path File.join(File.dirname(__FILE__) + '/../views')
-  before_filter :login_required, :only => []
-
   before_filter :login_required, :only => []
 
   def get
@@ -18,10 +15,13 @@ class ShoppingCartPluginController < PublicController
           :visible => false,
           :products => []}
       else
-        { :profile_id => cart[:profile_id],
+        {
+        	:profile_id => cart[:profile_id],
+          :profile_short_name => cart_profile.short_name,
           :has_products => (cart[:items].keys.size > 0),
           :visible => visible?,
-          :products => products}
+          :products => products,
+        }
       end
     render :text => config.to_json
   end
@@ -97,7 +97,7 @@ class ShoppingCartPluginController < PublicController
     @customer = user || Person.new
     if validate_cart_presence
       @cart = cart
-      @profile = environment.profiles.find(cart[:profile_id])
+      @profile = cart_profile
       @settings = Noosfero::Plugin::Settings.new(@profile, ShoppingCartPlugin)
       render :layout => false
     end
@@ -106,7 +106,7 @@ class ShoppingCartPluginController < PublicController
   def send_request
     register_order(params[:customer], self.cart[:items])
     begin
-      profile = environment.profiles.find(cart[:profile_id])
+      profile = cart_profile
       ShoppingCartPlugin::Mailer.customer_notification(params[:customer], profile, self.cart[:items], params[:delivery_option]).deliver
       ShoppingCartPlugin::Mailer.supplier_notification(params[:customer], profile, self.cart[:items], params[:delivery_option]).deliver
       self.cart = nil
@@ -169,7 +169,7 @@ class ShoppingCartPluginController < PublicController
   end
 
   def update_delivery_option
-    profile = environment.profiles.find(cart[:profile_id])
+    profile = cart_profile
     settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin)
     delivery_price = settings.delivery_options[params[:delivery_option]]
     delivery = Product.new(:name => params[:delivery_option], :price => delivery_price)
@@ -194,9 +194,9 @@ class ShoppingCartPluginController < PublicController
       render :text => {
         :ok => false,
         :error => {
-        :code => 1,
-        :message => _("Your basket contains items from other SSE enterprise. Please empty it or checkout before adding items from this enterprise.")
-      }
+          :code => 1,
+          :message => _("Your basket contains items from '%{profile_name}'. Please empty the basket or checkout before adding items from here.") % {profile_name: cart_profile.short_name}
+        }
       }.to_json
       return nil
     end
@@ -301,6 +301,10 @@ class ShoppingCartPluginController < PublicController
     # migrate from old attribute
     @cart[:profile_id] ||= @cart.delete(:enterprise_id) if @cart and @cart[:enterprise_id].present?
     @cart
+  end
+
+  def cart_profile
+    @cart_profile ||= environment.profiles.find cart[:profile_id]
   end
 
   def cart=(data)

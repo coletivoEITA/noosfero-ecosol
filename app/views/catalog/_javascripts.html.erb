@@ -4,6 +4,7 @@
 
 <script type="text/javascript">
   catalog.search.autocomplete.url = <%= url_for(:controller => :catalog, :profile => profile.identifier, :action => :search_autocomplete).to_json %>;
+  catalog.base_url_path = <%= url_for(:controller => :catalog, :profile => profile.identifier).to_json %> + '?'
   catalog.search.init();
   catalog.search.pagination.infiniteScroll(<%= _('loading...').to_json %>);
 </script>

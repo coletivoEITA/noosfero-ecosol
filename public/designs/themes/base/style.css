@@ -751,9 +751,13 @@ div#notice {
     background-image: none;
     -webkit-appearance: none;
 }
-
 .catalog-options-select select:focus {
     outline: none;
+}
+#catalog-result-qtty-wrap {
+  font-size: 80%;
+  font-style: italic;
+  color: #036276;
 }
 
 

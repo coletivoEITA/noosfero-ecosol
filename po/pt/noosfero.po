@@ -4873,6 +4873,26 @@ msgstr "qualificadores"
 msgid "product unavailable"
 msgstr "produto indisponível"
 
+#: /app/views/catalog/_form.html.erb:119
+msgid "All categories"
+msgstr "Todas as categorias"
+
+#: /app/views/catalog/_form.html.erb:119
+msgid "All qualifiers"
+msgstr "Todos os qualificadores"
+
+#: /app/views/catalog/_form.html.erb:119
+msgid "type your search..."
+msgstr "buscar..."
+
+#: app/views/catalog/_results.html.erb:119
+msgid "<b>Total:</b> %{number} products"
+msgstr "<b>Total:</b> %{number} produtos"
+
+#: app/views/catalog/_results.html.erb:119
+msgid "Your search returned %{number} products"
+msgstr "Sua busca resultou em %{number} produtos"
+
 #: app/views/content_viewer/forum_page.html.erb:11
 #: app/views/content_viewer/blog_page.html.erb:21
 msgid "(no posts)"

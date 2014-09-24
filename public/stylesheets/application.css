@@ -2758,7 +2758,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 /* * * Products catalog * * * * * * * * * * * * */
 
 #product-catalog {
-  text-align: center;
+  /*text-align: center;*/
 }
 .product-catalog-ctrl {
   float: right;
@@ -2793,7 +2793,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   padding: 0px 0px 0px 10px;
 }
 #catalog-options {
-  margin: 5px 0 0 0;
+  margin: 5px 0 2px 0;
   text-align: left;
   width: 100%;
 }
@@ -2826,6 +2826,9 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 }
 #catalog-options ul li .tt-dropdown-menu {
   margin-top: 0;
+}
+#catalog-result-qtty-wrap {
+  padding-left: 6px;
 }
 #product-list {
   display: block;

@@ -3,6 +3,10 @@
 .icon-cart {
   background: url("/plugins/shopping_cart/images/button-icon.png") no-repeat scroll left center transparent;
 }
+.cart-add-item.small-loading {
+  background-image: url(/images/loading-small.gif);
+}
+
 a.button.with-text.icon-cart,
 a.button.with-text.icon-cart:visited,
 body.noosfero a.button.with-text.icon-cart,
@@ -26,6 +30,7 @@ input.button.with-text.icon-cart
   position: fixed;
   right: 20px;
   top: 0px;
+  z-index: 100;
 }
 .cart-minimized {
   float: right;
@@ -67,9 +72,16 @@ input.button.with-text.icon-cart
   font-weight: bold;
 }
 #cart1 h3 {
-  color: #000;
+  color: #036276;
   margin: 0px 0px 0px 5px;
-  font-weight: normal;
+  font-weight: lighter;
+}
+#cart-profile-name {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin: 0px 5px;
+  color: #000;
 }
 .cart-clean {
   color: #AAA;
@@ -85,7 +97,8 @@ input.button.with-text.icon-cart
   margin: 0px;
   padding: 0px;
   max-height: 328px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 #catalog-options .cart-items {
   padding: 0;
@@ -103,6 +116,7 @@ input.button.with-text.icon-cart
   position: relative;
   border-radius: 5px;
   font-size: 85%;
+  min-height: 50px;
 }
 .cart-items .picture {
   float: left;

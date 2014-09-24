@@ -8,7 +8,7 @@ module ShoppingCartPlugin::CartHelper
   	button_to_function 'cart', label, "Cart.addItem(#{item.id}, this)",
       :class => 'cart-add-item'
   end
-  
+
   def cart_applet
     button_to_function 'cart', '&nbsp;<span class="cart-qtty"></span>', "cart.toggle()", :class => 'cart-applet-indicator'
   end
@@ -56,7 +56,7 @@ module ShoppingCartPlugin::CartHelper
       else
         delivery = Product.new(:name => delivery_option || _('Delivery'), :price => settings.delivery_options[delivery_option])
       end
-      delivery.save(false)
+      delivery.save(:validate => false)
       items << [delivery.id, '']
     end
 

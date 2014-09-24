@@ -7,25 +7,25 @@
 
       <%= plugins_catalog_search_extras_begin %>
 
-      <% if @categories.length > 0 %>
-        <li class="catalog-filter-categories">
+      <li class="catalog-filter-categories">
+	      <% if @categories.length > 0 %>
           <div class="catalog-options-select">
-            <%= select_tag :category, options_for_select([[_('Categories'), '']] + @categories, params[:category]),
+            <%= select_tag :category, options_for_select([[_('All categories'), '']] + @categories, params[:category]),
               :onkeydown => 'catalog.categories.select()', :onchange => 'catalog.categories.select()'  %>
           </div>
-        </li>
-      <% end %>
-      <% if @qualifiers.length > 0 %>
-        <li class="catalog-filter-qualifiers">
+	      <% end %>
+      </li>
+      <li class="catalog-filter-qualifiers">
+	      <% if @qualifiers.length > 0 %>
           <div class="catalog-options-select">
-            <%= select_tag :qualifier, options_for_select([[_('Qualifiers'), '']] + @qualifiers, params[:qualifier]),
+            <%= select_tag :qualifier, options_for_select([[_('All qualifiers'), '']] + @qualifiers, params[:qualifier]),
               :onkeydown => 'catalog.qualifiers.select()', :onchange => 'catalog.qualifiers.select()'  %>
           </div>
-        </li>
-      <% end %>
+	      <% end %>
+      </li>
 
       <li class="catalog-search">
-        <%= text_field_tag :query, '', :placeholder => _('type your search'), :id => 'catalog-search-input' %>
+        <%= text_field_tag :query, params[:query], :placeholder => _('type your search...'), :id => 'catalog-search-input' %>
       </li>
 
       <%= plugins_catalog_search_extras_end %>

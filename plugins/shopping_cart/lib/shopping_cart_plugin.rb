@@ -61,9 +61,10 @@ class ShoppingCartPlugin < Noosfero::Plugin
   alias :catalog_item_extras :add_to_cart_button
   alias :asset_product_extras :add_to_cart_button
 
-  def catalog_autocomplete_item_extras product
-    add_to_cart_button product, with_text: false
-  end
+  # We now think that it's not a good idea to have the basket in the same time.
+  #def catalog_autocomplete_item_extras product
+  #  add_to_cart_button product, with_text: false
+  #end
 
   def catalog_search_extras_begin
   	lambda do

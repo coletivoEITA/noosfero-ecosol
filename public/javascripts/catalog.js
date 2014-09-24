@@ -45,7 +45,6 @@ catalog = {
       this.animation.init();
       this.autocomplete.init();
       this.pagination.init();
-      catalog.base_url_path = window.location.pathname + '?'
     },
 
     result: function (html) {
@@ -68,6 +67,8 @@ catalog = {
         },
       })
 
+      catalog.search.pagination.reset()
+      
       var url = catalog.base_url_path + jQuery(catalog.form.element()).serialize()
       window.history.pushState(url, null, url)
 
@@ -102,7 +103,6 @@ catalog = {
         var form = catalog.form.element().get(0)
         form.elements.page.value = page
         catalog.search.run({animate: false})
-        catalog.search.pagination.reset()
       },
 
       load: function (url) {
@@ -124,13 +124,15 @@ catalog = {
       results_html = jQuery(results_html)
       var content = jQuery('#product-page')
 
-      // filter dropdown updates
+      // Update filter dropdowns and number of results
       content.find('.catalog-filter-categories').empty()
         .append(results_html.find('.catalog-filter-categories .catalog-options-select'))
       content.find('.catalog-filter-qualifiers').empty()
         .append(results_html.find('.catalog-filter-qualifiers .catalog-options-select'))
+      content.find('#catalog-result-qtty-wrap')
+        .replaceWith(results_html.find('#catalog-result-qtty-wrap'))
 
-      // check if the list was loaded or if it is the first search (came from manage_products#show)
+      // Check if the list was loaded or if it is the first search (came from manage_products#show)
       if (content.find('#catalog-results').length) {
         //products
         results_html.find('.product').each(function(index, product) {
@@ -178,6 +180,8 @@ catalog = {
           catalog.search.seeResults()
         }).on('typeahead:selected', function(e, item) {
           input.val('');
+        }).on('typeahead:cursorchanged', function(e, item) {
+          
         }).on('keyup', function(e) {
           if (e.keyCode == 13) {
             catalog.form.element().find('select').val('')
@@ -189,6 +193,10 @@ catalog = {
         input.data('tt-typeahead')._select = function(datum) {
           window.location.href = datum.raw.url
           this._selectOld(datum)
+        }            
+        input.data('tt-typeahead')._onCursorMoved = function () {
+          var datum = this.dropdown.getDatumForCursor()
+          this.eventBus.trigger("cursorchanged", datum.raw, datum.datasetName);
         }
       },
     },
