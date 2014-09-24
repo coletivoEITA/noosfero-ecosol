@@ -206,10 +206,11 @@ class OrdersPlugin::Order < ActiveRecord::Base
   end
   def products_list= hash
     self.items = hash.map do |id, data|
-      data[:product_id] = id
       data[:quantity_consumer_ordered] = data.delete(:quantity)
-      data[:order] = self
-      OrdersPlugin::Item.new data
+      i = OrdersPlugin::Item.new data
+      i.product_id = id
+      i.order = self
+      i
     end
   end
 

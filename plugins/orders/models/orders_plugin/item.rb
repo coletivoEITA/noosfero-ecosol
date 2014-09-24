@@ -1,5 +1,7 @@
 class OrdersPlugin::Item < ActiveRecord::Base
 
+  attr_accessible :price, :name, :quantity_consumer_ordered
+
   # should be Order, but can't reference it here so it would create a cyclic reference
   StatusAccessMap = ActiveSupport::OrderedHash[
     'ordered', :consumer,
@@ -107,7 +109,7 @@ class OrdersPlugin::Item < ActiveRecord::Base
     quantity = "quantity_#{data}".to_sym
     price = "price_#{data}".to_sym
 
-    self.send :define_method, "calculated_#{price}" do |items|
+    define_method "calculated_#{price}" do |items=[]|
       self.price * self.send(quantity) rescue nil
     end
   end
