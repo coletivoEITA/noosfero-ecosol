@@ -283,7 +283,7 @@ class Noosfero::Plugin
   def catalog_search_extras_begin
     nil
   end
-  
+
   # -> Allows to add content to the endof the catalog top bar
   # returns = lambda block that creates html code
   def catalog_search_extras_end
@@ -668,6 +668,8 @@ class Noosfero::Plugin
     # returns = string with reason of expiration
     elsif method.to_s =~ /^content_expire_(#{content_actions.join('|')})$/
       nil
+    elsif self.context.respond_to? method
+      self.context.send method, *args, &block
     else
       super
     end
