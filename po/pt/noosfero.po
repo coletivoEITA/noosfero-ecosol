@@ -11349,6 +11349,10 @@ msgstr "Limpar cesto"
 msgid "Shopping checkout"
 msgstr "Finalizar pedido"
 
+#: plugins/shopping_cart/views/cart.html.erb:8
+msgid "haven't finished yet: back to shopping"
+msgstr "ainda não concluí: voltar às compras"
+
 #: plugins/shopping_cart/views/cart.html.erb:11
 msgid "Show basket"
 msgstr "Mostrar cesto"

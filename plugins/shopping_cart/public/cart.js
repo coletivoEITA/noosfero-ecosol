@@ -17,7 +17,6 @@ function Cart(config) {
   if (!this.empty) {
     if (!config.minimized) {
       $(this.cartElem).show();
-      this.visible = config.visible;
     }
     this.addToList(config.products, true)
   } else if (config.minimized) {
@@ -74,7 +73,6 @@ function Cart(config) {
       if (!clear && this.empty) $(this.cartElem).show();
       if((!clear && this.empty) || (this.visible && clear)) {
         this.contentBox.hide();
-        this.show(!clear);
       }
     } else {
       if (!clear) {
@@ -204,7 +202,6 @@ function Cart(config) {
       url: '/plugin/shopping_cart/repeat/'+order_id,
       success: function(data) {
         cart.addToList(data.products, true)
-        $.colorbox.close()
         $('.cart-buy').click();
       },
       type: 'POST', dataType: 'json', cache: false

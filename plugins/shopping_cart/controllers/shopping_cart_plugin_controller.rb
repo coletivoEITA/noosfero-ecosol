@@ -99,7 +99,7 @@ class ShoppingCartPluginController < OrdersPluginController
       @order = OrdersPlugin::Order.find params[:id]
       self.cart = { profile_id: @order.profile_id, items: {} }
       self.cart[:items] = {}; @order.items.each do |item|
-        self.cart[:items][item.id] = item.quantity_consumer_ordered
+        self.cart[:items][item.product_id] = item.quantity_consumer_ordered.to_i
       end
 
       render json: {

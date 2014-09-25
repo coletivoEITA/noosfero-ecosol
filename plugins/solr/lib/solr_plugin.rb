@@ -158,12 +158,4 @@ class SolrPlugin < Noosfero::Plugin
     filter_queries
   end
 
-  def method_missing method, *args, &block
-    if self.context.respond_to? method
-      self.context.send method, *args, &block
-    else
-      super method, *args, &block
-    end
-  end
-
 end

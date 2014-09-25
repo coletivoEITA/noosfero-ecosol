@@ -164,8 +164,12 @@ input.button.with-text.icon-cart
 .str-hide {
   display: none;
 }
+
 #cart-request-box {
   width: 690px;
+}
+#cart-request-box a {
+  font-size: smaller;
 }
 #cart-request-form {
   width: 274px;
@@ -182,7 +186,6 @@ input.button.with-text.icon-cart
 
 #cart-form-main {
   border: 2px solid #FFF;
-  padding: 0px 10px;
 }
 
 #cart-request-form fieldset {
