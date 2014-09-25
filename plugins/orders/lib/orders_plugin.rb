@@ -20,8 +20,9 @@ class OrdersPlugin < Noosfero::Plugin
   end
 
   def control_panel_buttons
+    label = I18n.t("orders_plugin.lib.plugin.#{'person_' if profile.person?}panel_button")
     [
-      { :title => I18n.t('orders_plugin.lib.plugin.panel_button'), :icon => 'orders-purchases-sales', :url => {:controller => :orders_plugin_admin, :action => :index} },
+      { :title => label, :icon => 'orders-purchases-sales', :url => {:controller => :orders_plugin_admin, :action => :index} },
     ]
   end
 

@@ -4,7 +4,7 @@ module ToggleEdit
 
     def edit_arrow anchor, toggle = true, options = {}
       content_tag 'div',
-        edit_arrow_cicle(anchor, toggle, options),
+        edit_arrow_circle(anchor, toggle, options),
         class: 'box-field actions'
     end
 

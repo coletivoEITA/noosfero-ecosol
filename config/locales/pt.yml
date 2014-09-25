@@ -577,6 +577,8 @@
         name: "Pedidos"
         description: "Gestão de pedidos"
         panel_button: "Compras e Vendas"
+        person_panel_button: "Compras realizadas"
+
       ext:
         profile:
           orders_manager: "Gestor de pedidos"

@@ -560,6 +560,8 @@
         name: "Orders"
         description: "Orders' management"
         panel_button: "Purchases and Sales"
+        person_panel_button: "Purchases made"
+
       ext:
         profile:
           orders_manager: "Orders' Manager"
