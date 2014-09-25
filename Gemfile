@@ -17,7 +17,8 @@ gem 'nokogiri'
 gem 'rake', :require => false
 gem 'rest-client'
 gem 'exception_notification'
-gem 'gettext', :require => false, :group => :development
+gem 'locale', '2.0.9' # 2.1.0 has a problem with memoizable
+gem 'gettext', '< 3.0', require: false, group: :development
 
 gem 'premailer'
 

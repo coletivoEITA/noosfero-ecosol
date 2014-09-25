@@ -38,7 +38,7 @@ task :symlinkmo do
       origin = "/usr/share/locale/#{orig_lang}/LC_MESSAGES/#{domain}.mo"
       target = Rails.root.join('locale', "#{lang}", 'LC_MESSAGES', "#{domain}.mo")
       if !File.symlink?(target)
-        ln_s origin, target
+        ln_sf origin, target
       end
     end
   end
