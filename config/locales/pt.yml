@@ -675,9 +675,18 @@
       actions: 
         <<: *suppliers_plugin_actions
 
+      public:
+        repeat: 
+          heading: "Repetir pedido anterior"
+          help: "Escolha qual dos pedidos anteriores deseja realizar. Observe nos detalhes se algum produto está em falta e se há alteração nos valores."
+          date: "Data"
+          ordered_itens: "Itens pedidos"
+          choose: "escolher este pedido"
+
       consumer:
         _total: 
           total: Total
+
       item: 
         _edit: 
           remove_from_order: "Remover do pedido"

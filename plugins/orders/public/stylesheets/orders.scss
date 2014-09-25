@@ -3,6 +3,7 @@
 
 @import 'sortable-table';
 @import 'filter';
+@import 'popin';
 
 @import 'items';
 
@@ -81,6 +82,43 @@
           text-decoration: line-through;
         }
       }
+    }
+  }
+}
+
+#orders-repeat {
+  // $intercolumn is added because of popin scrollbars
+  width: $module08 + $intercolumn;
+  // enough for 5 orders, without scrollbars
+  min-height: 500px;
+
+  .sortable-table {
+    width: $module07 + $margin;
+
+    .box-field {
+      &.actions {
+        width: $module02;
+        border-left: none;
+
+        .actions-circle {
+          float: left;
+          margin-right: $half-margin;
+        }
+        .action-button {
+          text-transform: lowercase;
+          font-size: 8px;
+        }
+      }
+      &.date {
+        width: $module01;
+      }
+      &.items {
+        width: $module03;
+      }
+      &.value {
+        width: $module01;
+      }
+
     }
   }
 }

@@ -7,7 +7,9 @@ function Cart(config) {
   this.contentBox = (config.minimized) ? $("#cart1 .cart-inner") : $("#cart1 .cart-inner .cart-content");
   this.itemsBox = $("#cart1 .cart-items");
   this.items = {};
+  this.has = {};
   this.empty = !config.has_products;
+  this.hasPreviousOrders = config.has_previous_orders;
   this.visible = false;
   this.itemTemplate = _.template(jQuery('#cart-item-template').html());
   $("#cart-profile-name").text(config.profile_short_name);
@@ -19,7 +21,7 @@ function Cart(config) {
     }
     this.addToList(config.products, true)
   } else if (config.minimized) {
-    $('.cart-qtty').text('0');
+    this.setQuantity(0)
   }
 }
 
@@ -45,11 +47,11 @@ function Cart(config) {
       this.items[item.id] = { price:item.price, quantity:item.quantity };
       this.updateTotal();
       item.priceTxt = (item.price) ? '&times;' + item.price : '';
-      
+
       jQuery('#cart-item-'+item.id).remove()
       var li = jQuery(this.itemTemplate({item: item}))
       li.appendTo(this.itemsBox);
-      
+
       var input = $("input", li)[0];
       input.lastValue = input.value;
       input.productId = item.id;
@@ -190,8 +192,24 @@ function Cart(config) {
     link.parentNode.parentNode.cartObj.toggle();
   }
   Cart.prototype.toggle = function() {
-    console.log(this);
-    this.visible ? this.hide(true) : this.show(true);
+    if (this.empty && this.hasPreviousOrders)
+      jQuery.colorbox({href: '/plugin/shopping_cart/repeat'})
+    else
+      this.visible ? this.hide(true) : this.show(true)
+  }
+
+  Cart.prototype.repeat = function(button) {
+    var order_id = jQuery(button).attr('data-order-id')
+    this.ajax({
+      url: '/plugin/shopping_cart/repeat/'+order_id,
+      success: function(data) {
+        cart.addToList(data.products, true)
+        $.colorbox.close()
+        $('.cart-buy').click();
+      },
+      type: 'POST', dataType: 'json', cache: false
+    })
+    return false;
   }
 
   Cart.prototype.show = function(register) {
@@ -243,7 +261,14 @@ function Cart(config) {
     }
     total = Math.round(total).toString().replace(/(..)$/, sep+"$1")
     $(".cart-total b", this.cartElem).text( ( (total!=0) ? currency+" "+total : "---" ) );
-    $(".cart-qtty", this.cartElem).text( qtty );
+    this.setQuantity(qtty)
+  }
+
+  Cart.prototype.setQuantity = function(qtty) {
+    if (qtty === 0 && this.hasPreviousOrders)
+      $(".cart-qtty", this.cartElem).text( Cart.l10n.repeatOrder )
+    else
+      $(".cart-qtty", this.cartElem).text( qtty )
   }
 
   Cart.clean = function(link) {

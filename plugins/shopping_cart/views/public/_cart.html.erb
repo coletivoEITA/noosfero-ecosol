@@ -45,7 +45,8 @@
       ).to_json %>,
       waitLastRequest: <%= _('Oops, you must wait your last request to finish first!').to_json %>,
       removeItem: <%= _('Are you sure you want to remove this item?').to_json %>,
-      cleanCart: <%= _('Are you sure you want to clean your basket?').to_json %>
+      cleanCart: <%= _('Are you sure you want to clean your basket?').to_json %>,
+      repeatOrder: <%= _('repeat order').to_json %>,
     }
     // boolean configuration that defines if the behaviour of the cart is "minimized" or "full"
     Cart.minimized = <%= cart_minimized.to_json %>

@@ -1,11 +1,9 @@
 require 'base64'
 
-class ShoppingCartPluginController < PublicController
+class ShoppingCartPluginController < OrdersPluginController
 
   include ShoppingCartPlugin::CartHelper
   helper ShoppingCartPlugin::CartHelper
-
-  before_filter :login_required, :only => []
 
   def get
     config =
@@ -23,6 +21,7 @@ class ShoppingCartPluginController < PublicController
           :products => products,
         }
       end
+    config[:has_previous_orders] = previous_orders.first.present?
     render :text => config.to_json
   end
 
@@ -91,6 +90,22 @@ class ShoppingCartPluginController < PublicController
       :ok => true,
       :error => {:code => 0}
     }.to_json
+  end
+
+  def repeat
+    unless request.post?
+      @orders = previous_orders.last(5).reverse
+    else
+      @order = OrdersPlugin::Order.find params[:id]
+      self.cart = { profile_id: @order.profile_id, items: {} }
+      self.cart[:items] = {}; @order.items.each do |item|
+        self.cart[:items][item.id] = item.quantity_consumer_ordered
+      end
+
+      render json: {
+        products: products
+      }
+    end
   end
 
   def buy
@@ -270,6 +285,7 @@ class ShoppingCartPluginController < PublicController
 
     order = OrdersPlugin::Sale.new
     order.profile = environment.profiles.find(cart[:profile_id])
+    order.session_id = noosfero_session_cookie
     order.consumer = user
     order.source = 'shopping_cart_plugin'
     order.status = 'ordered'
@@ -325,6 +341,14 @@ class ShoppingCartPluginController < PublicController
 
   def cookie_key
     :_noosfero_plugin_shopping_cart
+  end
+
+  def noosfero_session_cookie
+    cookies[Noosfero::Application.config.action_dispatch.session[:key]]
+  end
+
+  def previous_orders
+    OrdersPlugin::Order.from noosfero_session_cookie, (user.id rescue nil)
   end
 
   def visible?

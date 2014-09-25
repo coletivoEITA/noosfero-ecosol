@@ -2,6 +2,10 @@ require_dependency 'orders_plugin/order'
 
 class OrdersPlugin::Order
 
+  def cycles
+    []
+  end
+
   def cycle
     self.cycles.first
   end

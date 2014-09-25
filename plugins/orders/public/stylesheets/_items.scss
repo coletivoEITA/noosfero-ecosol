@@ -35,14 +35,14 @@
     &.self-supplier {
       .box-field {
         &.product {
-          width: $module03 - $padding;
-          max-width: $module03 - $padding;
+          width: $module04 - $padding;
+          max-width: $module04 - $padding;
         }
 
         &.quantity {
           &, input {
-            width: $module02 - $padding;
-            max-width: $module02 - $padding;
+            width: $module01 - $padding;
+            max-width: $module01 - $padding;
           }
         }
       }
@@ -85,7 +85,7 @@
       }
       &.status {
         width: $module01 - $border; //FIXME why (- $border)?
-        text-transform: uppercase; 
+        text-transform: uppercase;
       }
     }
   }

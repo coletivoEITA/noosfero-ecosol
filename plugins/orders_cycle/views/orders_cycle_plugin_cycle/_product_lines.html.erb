@@ -17,7 +17,7 @@
   <div class='table-content'>
     <% @products.each do |p| %>
       <div id="cycle-product-<%=p.id%>" class='cycle-product value-row' toggle-edit="orders_cycle.offered_product.edit();">
-        <%= render :partial => 'orders_cycle_plugin_product/cycle_edit', :locals => {:p => p} %>
+        <%= render 'orders_cycle_plugin_product/cycle_edit', :p => p %>
       </div>
     <% end %>
     <% javascript_tag do %>

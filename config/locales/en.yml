@@ -657,9 +657,18 @@
       actions: 
         <<: *suppliers_plugin_actions
 
+      public:
+        repeat: 
+          heading: "Repetir pedido anterior"
+          help: "Choose which of the previous orders you wish to make. Observe the details if there are products missing or with updated values."
+          date: "Date"
+          ordered_itens: "Ordered items"
+          choose: "choose this order"
+
       consumer:
         _total: 
           total: Total
+
       item: 
         _edit: 
           remove_from_order: "remove from order"

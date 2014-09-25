@@ -23,11 +23,21 @@ class OrdersPlugin::Order < ActiveRecord::Base
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'
 
+  belongs_to :session, primary_key: :session_id, foreign_key: :session_id, class_name: 'ActiveRecord::SessionStore::Session'
+
   has_many :items, :class_name => 'OrdersPlugin::Item', :foreign_key => :order_id, :dependent => :destroy, :order => 'name ASC'
   has_many :products, :through => :items
 
   belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::Method'
   belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::Method'
+
+  scope :of_session, -> session_id { where session_id: session_id }
+  scope :from, -> session_id, consumer_id=nil do
+    orders = OrdersPlugin::Order.arel_table
+    cond = orders[:session_id].eq(session_id)
+    cond = cond.or orders[:consumer_id].eq(consumer_id) if consumer_id
+    where cond
+  end
 
   scope :latest, :order => 'created_at DESC'
 
@@ -212,6 +222,10 @@ class OrdersPlugin::Order < ActiveRecord::Base
       i.order = self
       i
     end
+  end
+
+  def items_summary
+    self.items.map{ |item| "#{item.name} (#{item.quantity_consumer_ordered})" }.join ', '
   end
 
   extend CurrencyHelper::ClassMethods

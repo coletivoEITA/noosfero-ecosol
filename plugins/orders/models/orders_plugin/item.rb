@@ -45,11 +45,11 @@ class OrdersPlugin::Item < ActiveRecord::Base
       quantity = "quantity_#{data}".to_sym
       price = "price_#{data}".to_sym
 
-      self.send :define_method, "total_#{quantity}" do |items|
+      self.send :define_method, "total_#{quantity}" do |items=nil|
         items ||= (self.ordered_items rescue nil) || self.items
         items.collect(&quantity).inject(0){ |sum, q| sum + q.to_f }
       end
-      self.send :define_method, "total_#{price}" do |items|
+      self.send :define_method, "total_#{price}" do |items=nil|
         items ||= (self.ordered_items rescue nil) || self.items
         items.collect(&price).inject(0){ |sum, p| sum + p.to_f }
       end

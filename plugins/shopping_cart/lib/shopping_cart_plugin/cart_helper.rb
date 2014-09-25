@@ -17,6 +17,10 @@ module ShoppingCartPlugin::CartHelper
     @cart_minimized ||= ['catalog', 'manage_products'].include? params[:controller]
   end
 
+  def repeat_order_button order
+    link_to_function t('views.public.repeat.choose'), 'return cart.repeat(this)', class: 'action-button', 'data-order-id' => order.id
+  end
+
   def sell_price(product)
     return 0 if product.price.nil?
     product.discount ? product.price_with_discount : product.price
