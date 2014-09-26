@@ -9,7 +9,7 @@
   <li id="product-<%= product.id %>" class="product <%= status.join ' ' %>"
     data-category-name="<%= product.product_category.name rescue nil %>"
     data-qualifiers-ids="<%= product.qualifiers.map(&:id).join ' ' %>"
-    data-term="<%= @query %>" data-order="<%= @order %>" data-score="<%= i %>">
+    data-term="<%= @query %>" data-order="<%= @order %>" data-score="<%= @offset + i %>">
 
     <ul>
       <li class="product-image-link">

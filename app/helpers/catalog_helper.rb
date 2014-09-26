@@ -11,6 +11,7 @@ module CatalogHelper
     solr_options = {:all_facets => @query.blank?}
     paginate_options = {:per_page => profile.products_per_catalog_page, :page => options[:page]}
     paginate_options[:page] = '1' if paginate_options[:page].blank?
+    @offset = (paginate_options[:page].to_i-1) * paginate_options[:per_page].to_i
 
     result = find_by_contents :catalog, @scope, @query, paginate_options, solr_options
     @products = result[:results]
