@@ -8,6 +8,14 @@ module SolrPlugin::SearchHelper
   DistFilt = 200
   DistBoost = 50
 
+  CatalogSortOptions = {
+    relevance: {option: ['Relevance', ''], solr: ''},
+    name: {option: ['Name', 'name'], solr: 'solr_plugin_name_sortable asc'},
+    price: {option: ['Lowest price', 'price'], solr: 'solr_plugin_name_sortable asc'},
+    newest: {option: ['Newest', 'newest'], solr: 'created_at desc'},
+    updated: {option: ['Updated', 'updated'], solr: 'updated_at desc'},
+  }
+
   SortOptions = {
     :products => ActiveSupport::OrderedHash[ :none, {:label => _('Relevance')},
       :more_recent, {:label => _('More recent'), :solr_opts => {:sort => 'updated_at desc, score desc'}},
@@ -74,8 +82,6 @@ module SolrPlugin::SearchHelper
       options.merge({:boost_functions => ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']})
     end
   end
-
- 
 
   def asset_class(asset)
     asset.to_s.singularize.camelize.constantize

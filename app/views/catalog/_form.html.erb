@@ -11,7 +11,7 @@
 	      <% if @categories.length > 0 %>
           <div class="catalog-options-select">
             <%= select_tag :category, options_for_select([[_('All categories'), '']] + @categories, params[:category]),
-              :onkeydown => 'catalog.categories.select()', :onchange => 'catalog.categories.select()'  %>
+              :onkeydown => 'catalog.categories.select()', :onchange => 'catalog.categories.select()' %>
           </div>
 	      <% end %>
       </li>
@@ -19,7 +19,7 @@
 	      <% if @qualifiers.length > 0 %>
           <div class="catalog-options-select">
             <%= select_tag :qualifier, options_for_select([[_('All qualifiers'), '']] + @qualifiers, params[:qualifier]),
-              :onkeydown => 'catalog.qualifiers.select()', :onchange => 'catalog.qualifiers.select()'  %>
+              :onkeydown => 'catalog.qualifiers.select()', :onchange => 'catalog.qualifiers.select()' %>
           </div>
 	      <% end %>
       </li>
@@ -31,4 +31,16 @@
       <%= plugins_catalog_search_extras_end %>
     </ul>
   </div>
+
+  <span id="catalog-result-qtty-wrap">
+    <%= @not_searched ?
+      _('<b>Total:</b> %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'}
+      : _('Your search returned %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'}
+    %>
+  </span>
+  <span id="catalog-order">
+    <%= select_tag :order, options_for_select(@ordering[:select_options], params[:order]),
+      :onkeydown => 'catalog.order.select()', :onchange => 'catalog.order.select()' %>
+  </span>
+
 <% end %>

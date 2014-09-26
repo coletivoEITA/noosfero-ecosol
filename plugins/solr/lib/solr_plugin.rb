@@ -22,7 +22,19 @@ class SolrPlugin < Noosfero::Plugin
     not empty_query or klass == Product
   end
 
-  def catalog_asset asset, scope, query, paginate_options={}, options={}
+  def search_order asset
+    case asset
+    when :catalog
+      {
+        :select_options => CatalogSortOptions.map do |key, options|
+          option = options[:option]
+          [_(option[0]), option[1]]
+        end,
+      }
+    end
+  end
+
+  def catalog_find_by_contents asset, scope, query, paginate_options={}, options={}
   	klass = Product
 
   	# Search for products -> considers the query and the filters:
@@ -35,6 +47,9 @@ class SolrPlugin < Noosfero::Plugin
 
     # Preparing the filters -> they must always contain all filters for the specific query:
     solr_options = build_solr_options asset, klass, scope, nil, ignore_filters: true
+    if sort = CatalogSortOptions[params[:order].to_sym] rescue nil
+      solr_options[:sort] = sort[:solr]
+    end
     query = "" if result[:results].total_entries == 0
     result_facets = scope.find_by_contents query, paginate_options, solr_options
     facets = result_facets[:facets]['facet_fields'] || {}
@@ -49,9 +64,9 @@ class SolrPlugin < Noosfero::Plugin
     result
   end
 
-  def find_by_contents(asset, scope, query, paginate_options={}, options={})
-  	# The query in the catalog top bar is too specific and therefore must e treated differently:
-    return catalog_asset asset, scope, query, paginate_options, options if asset == :catalog
+  def find_by_contents asset, scope, query, paginate_options={}, options={}
+  	# The query in the catalog top bar is too specific and therefore must be treated differently
+    return catalog_find_by_contents asset, scope, query, paginate_options, options if asset == :catalog
 
   	# General queries:
   	category = options[:category]

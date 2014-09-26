@@ -9,14 +9,16 @@ ActionView::AssetPaths.class_eval do
     # and the same for stylesheets.
     # 2) For local absolute files, serve them as assets, so they can
     # have js/css compiled too. This applies mainly for themes.
-    if source[0] == '/'
-      source = source[1..-1]
-    else
-      case options[:ext]
-      when 'js'
-        source = "javascripts/#{source}"
-      when 'css'
-        source = "stylesheets/#{source}"
+    if ['js', 'css'].include? options[:ext]
+      if source[0] == '/'
+        source = source[1..-1]
+      else
+        case options[:ext]
+        when 'js'
+          source = "javascripts/#{source}"
+        when 'css'
+          source = "stylesheets/#{source}"
+        end
       end
     end
 

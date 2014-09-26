@@ -28,4 +28,8 @@ module PluginsHelper
     end.join
   end
 
+  def plugins_search_order asset
+    @plugins.dispatch_first :search_order, asset
+  end
+
 end

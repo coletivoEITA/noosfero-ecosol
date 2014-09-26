@@ -1,13 +1,7 @@
 <%= render 'catalog/form' %>
 
 <div id="catalog-results">
-  <span id="catalog-result-qtty-wrap">
-    <%= @not_searched ?
-      _('<b>Total:</b> %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'}
-      : _('Your search returned %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'} 
-    %>
-  </span>
-  
+
   <ul id="product-list">
     <%= render 'catalog/products', :products => @products %>
   </ul>

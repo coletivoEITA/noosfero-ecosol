@@ -2830,6 +2830,9 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 #catalog-result-qtty-wrap {
   padding-left: 6px;
 }
+#catalog-order {
+  float: right;
+}
 #product-list {
   display: block;
   text-align: left;

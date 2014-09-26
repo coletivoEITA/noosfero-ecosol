@@ -32,10 +32,15 @@ catalog = {
     	jQuery(catalog.form.element().get(0).elements.qualifier).val('')
       catalog.search.run()
     },
-  } ,
+  },
   qualifiers: {
     select: function() {
     	jQuery(catalog.form.element().get(0).elements.category).val('')
+      catalog.search.run()
+    },
+  },
+  order: {
+    select: function() {
       catalog.search.run()
     },
   },
@@ -68,7 +73,7 @@ catalog = {
       })
 
       catalog.search.pagination.reset()
-      
+
       var url = catalog.base_url_path + jQuery(catalog.form.element()).serialize()
       window.history.pushState(url, null, url)
 
@@ -181,7 +186,7 @@ catalog = {
         }).on('typeahead:selected', function(e, item) {
           input.val('');
         }).on('typeahead:cursorchanged', function(e, item) {
-          
+
         }).on('keyup', function(e) {
           if (e.keyCode == 13) {
             catalog.form.element().find('select').val('')
@@ -193,7 +198,7 @@ catalog = {
         input.data('tt-typeahead')._select = function(datum) {
           window.location.href = datum.raw.url
           this._selectOld(datum)
-        }            
+        }
         input.data('tt-typeahead')._onCursorMoved = function () {
           var datum = this.dropdown.getDatumForCursor()
           this.eventBus.trigger("cursorchanged", datum.raw, datum.datasetName);

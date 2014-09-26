@@ -17,9 +17,10 @@ module CatalogHelper
     # FIXME: the categories and qualifiers filters are currently only work with solr plugin, because they depend on facets.
     @categories = result[:categories].to_a
     @qualifiers = result[:qualifiers].to_a
-    
+    @ordering = plugins_search_order :catalog
+
     @not_searched = @query.blank? && params[:category].blank? && params[:qualifier].blank?
-    
+
   end
 
   def breadcrumb(category)

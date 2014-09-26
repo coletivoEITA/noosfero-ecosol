@@ -583,6 +583,12 @@ class Noosfero::Plugin
   def autocomplete asset, scope, query, paginate_options={:page => 1}, options={:field => 'name'}
   end
 
+  # -> Specify order options for the search engine
+  # returns = { select_options: [['Name', 'key'], ['Name2', 'key2']] }
+  def search_order asset
+    nil
+  end
+
   # -> Adds aditional fields for change_password
   # returns = [{:field => 'field1', :name => 'field 1 name', :model => 'person'}, {...}]
   def change_password_fields
