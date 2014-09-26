@@ -744,7 +744,7 @@ div#notice {
 }
 .catalog-options-select select {
     padding: 5px 13% 5px 0;
-    width: 106%;
+    width: 110%;
     border: none;
     box-shadow: none;
     background: transparent;
@@ -759,7 +759,13 @@ div#notice {
   font-style: italic;
   color: #036276;
 }
-
+#catalog-orderby {
+  font-size: 80%;
+}
+#catalog-orderby select {
+  font-size: 11px;
+  background: transparent;
+}
 
 /********************* Product Categories Block **********************/
 

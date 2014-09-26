@@ -43,13 +43,14 @@ class SolrPlugin < Noosfero::Plugin
     params[:facet][:solr_plugin_f_qualifier] = params[:qualifier] if params[:qualifier].present?
     solr_options = build_solr_options asset, klass, scope, nil
     solr_options[:all_facets] = false
+    if sort = CatalogSortOptions[params[:order].to_sym] rescue nil
+      solr_options[:sort] = sort[:solr]
+    end
     result = scope.find_by_contents query, paginate_options, solr_options
 
     # Preparing the filters -> they must always contain all filters for the specific query:
     solr_options = build_solr_options asset, klass, scope, nil, ignore_filters: true
-    if sort = CatalogSortOptions[params[:order].to_sym] rescue nil
-      solr_options[:sort] = sort[:solr]
-    end
+    solr_options[:all_facets] = false
     query = "" if result[:results].total_entries == 0
     result_facets = scope.find_by_contents query, paginate_options, solr_options
     facets = result_facets[:facets]['facet_fields'] || {}

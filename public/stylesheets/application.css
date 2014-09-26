@@ -2804,7 +2804,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   width: 100%;
   padding: 0;
   margin: 0;
-  z-index: 10000;
+  z-index: 1000;
 }
 #catalog-options ul {
   margin: 0;
@@ -2813,13 +2813,13 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 #catalog-options > ul {
   height: 31px;
 }
+#catalog-options > ul > li {
+  max-width: 25%;
+}
 #catalog-options ul li {
   display: inline-block;
   list-style: none outside none;
   margin-right: 10px;
-}
-#catalog-options > ul > li {
-  max-width: 30%;
 }
 #catalog-options ul li .tt-hint {
   display: none;
@@ -2828,10 +2828,12 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   margin-top: 0;
 }
 #catalog-result-qtty-wrap {
+  float: left;
   padding-left: 6px;
 }
-#catalog-order {
-  float: right;
+#catalog-orderby {
+  width: 100%;
+  text-align: right;
 }
 #product-list {
   display: block;

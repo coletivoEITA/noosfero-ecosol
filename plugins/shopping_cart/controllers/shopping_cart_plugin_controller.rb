@@ -8,7 +8,7 @@ class ShoppingCartPluginController < OrdersPluginController
   def get
     config =
       if cart.nil?
-        { :profile_id => nil,
+        { :profile_id => params[:profile_id],
           :has_products => false,
           :visible => false,
           :products => []}
@@ -21,7 +21,7 @@ class ShoppingCartPluginController < OrdersPluginController
           :products => products,
         }
       end
-    config[:has_previous_orders] = previous_orders.first.present?
+    config[:has_previous_orders] = if cart_profile then previous_orders.first.present? else false end
     render :text => config.to_json
   end
 
@@ -96,8 +96,8 @@ class ShoppingCartPluginController < OrdersPluginController
     unless request.post?
       @orders = previous_orders.last(5).reverse
     else
-      @order = OrdersPlugin::Order.find params[:id]
-      self.cart = { profile_id: @order.profile_id, items: {} }
+      @order = cart_profile.orders.find params[:id]
+      self.cart = { profile_id: cart_profile.id, items: {} }
       self.cart[:items] = {}; @order.items.each do |item|
         self.cart[:items][item.product_id] = item.quantity_consumer_ordered.to_i
       end
@@ -285,7 +285,7 @@ class ShoppingCartPluginController < OrdersPluginController
 
     order = OrdersPlugin::Sale.new
     order.profile = environment.profiles.find(cart[:profile_id])
-    order.session_id = noosfero_session_cookie
+    order.session_id = session_id
     order.consumer = user
     order.source = 'shopping_cart_plugin'
     order.status = 'ordered'
@@ -320,7 +320,7 @@ class ShoppingCartPluginController < OrdersPluginController
   end
 
   def cart_profile
-    @cart_profile ||= environment.profiles.find cart[:profile_id]
+    @cart_profile ||= environment.profiles.find(params[:profile_id] || cart[:profile_id]) rescue nil
   end
 
   def cart=(data)
@@ -343,12 +343,12 @@ class ShoppingCartPluginController < OrdersPluginController
     :_noosfero_plugin_shopping_cart
   end
 
-  def noosfero_session_cookie
-    cookies[Noosfero::Application.config.action_dispatch.session[:key]]
+  def session_id
+    session['session_id']
   end
 
   def previous_orders
-    OrdersPlugin::Order.from noosfero_session_cookie, (user.id rescue nil)
+    cart_profile.orders.of_user session_id, (user.id rescue nil)
   end
 
   def visible?

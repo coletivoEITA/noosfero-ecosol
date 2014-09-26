@@ -32,7 +32,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::Method'
 
   scope :of_session, -> session_id { where session_id: session_id }
-  scope :from, -> session_id, consumer_id=nil do
+  scope :of_user, -> session_id, consumer_id=nil do
     orders = OrdersPlugin::Order.arel_table
     cond = orders[:session_id].eq(session_id)
     cond = cond.or orders[:consumer_id].eq(consumer_id) if consumer_id

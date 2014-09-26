@@ -25,7 +25,7 @@
 
             <span class='box-field date'><%= l order.created_at, format: :short %></span>
             <span class='box-field items'><%= order.items_summary %></span>
-            <span class='box-field value'><%= order.total_price_consumer_ordered %></span>
+            <span class='box-field value'><%= order.total_price_consumer_ordered_as_currency_number %></span>
           </div>
           <div class='box-edit' style="display: none">
             <%= render 'orders_plugin_order/show_simple', order: order %>

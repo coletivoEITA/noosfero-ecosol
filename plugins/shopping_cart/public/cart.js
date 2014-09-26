@@ -6,8 +6,8 @@ function Cart(config) {
   this.cartElem.cartObj = this;
   this.contentBox = (config.minimized) ? $("#cart1 .cart-inner") : $("#cart1 .cart-inner .cart-content");
   this.itemsBox = $("#cart1 .cart-items");
+  this.profileId = config.profile_id;
   this.items = {};
-  this.has = {};
   this.empty = !config.has_products;
   this.hasPreviousOrders = config.has_previous_orders;
   this.visible = false;
@@ -191,7 +191,7 @@ function Cart(config) {
   }
   Cart.prototype.toggle = function() {
     if (this.empty && this.hasPreviousOrders)
-      jQuery.colorbox({href: '/plugin/shopping_cart/repeat'})
+      jQuery.colorbox({href: '/plugin/shopping_cart/repeat?profile_id='+cart.profileId})
     else
       this.visible ? this.hide(true) : this.show(true)
   }
@@ -199,7 +199,7 @@ function Cart(config) {
   Cart.prototype.repeat = function(button) {
     var order_id = jQuery(button).attr('data-order-id')
     this.ajax({
-      url: '/plugin/shopping_cart/repeat/'+order_id,
+      url: '/plugin/shopping_cart/repeat/'+order_id+'?profile_id='+cart.profileId,
       success: function(data) {
         cart.addToList(data.products, true)
         $('.cart-buy').click();
@@ -336,29 +336,5 @@ function Cart(config) {
     Cart.unloadingPage = true;
   });
 
-  $(function(){
-    $.ajax({
-      url: "/plugin/shopping_cart/get",
-      dataType: 'json',
-      success: function(data) {
-        cart = new Cart(data);
-      },
-      cache: false,
-      error: function(ajax, status, errorThrown) {
-        // Give some time to register page unload.
-        setTimeout(function() {
-          // page unload is not our problem.
-          if (Cart.unloadingPage) {
-            log('Page unload before cart load.');
-          } else {
-            log.error('Error getting shopping cart - HTTP '+status, errorThrown);
-            if ( confirm(Cart.l10n.getProblemConfirmReload) ) {
-              document.location.reload();
-            }
-          }
-        }, 100);
-      }
-    });
-  });
 
 })(jQuery);

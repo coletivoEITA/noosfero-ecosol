@@ -674,12 +674,17 @@ class Noosfero::Plugin
     # returns = string with reason of expiration
     elsif method.to_s =~ /^content_expire_(#{content_actions.join('|')})$/
       nil
-    elsif self.context.respond_to? method
+    elsif self.context.respond_to? method, true
       self.context.send method, *args, &block
     else
       super
     end
   end
+
+  def respond_to_with_context? method, include_private=true
+    respond_to_without_context? method, include_private or self.context.respond_to? method, include_private
+  end
+  alias_method_chain :respond_to?, :context
 
   private
 
