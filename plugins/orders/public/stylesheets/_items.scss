@@ -107,6 +107,12 @@
     }
     .item {
 
+      &.product-unavailable {
+        .product, .quantity, .price-total {
+          text-decoration: line-through;
+        }
+      }
+
       .fields {
         display: table;
         @extend .container-clean;
@@ -127,6 +133,15 @@
               .quantity, .price-total, .status {
                 text-decoration: line-through;
                 color: #999;
+              }
+            }
+
+            .price-total {
+              .outdated {
+                text-decoration: line-through;
+              }
+              .new-price {
+                font-weight: bold;
               }
             }
 

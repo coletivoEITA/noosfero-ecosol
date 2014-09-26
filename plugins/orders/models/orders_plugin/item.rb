@@ -2,6 +2,9 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
   attr_accessible :price, :name, :quantity_consumer_ordered
 
+  # flag used by items to compare them with products
+  attr_accessor :product_diff
+
   # should be Order, but can't reference it here so it would create a cyclic reference
   StatusAccessMap = ActiveSupport::OrderedHash[
     'ordered', :consumer,
@@ -115,28 +118,41 @@ class OrdersPlugin::Item < ActiveRecord::Base
   end
 
   def quantity_price_data actor_name
-    data = ActiveSupport::OrderedHash.new
+    data = {flags: {}}
     statuses = OrdersPlugin::Order::Statuses
+    statuses_data = data[:statuses] = {}
 
     current = statuses.index(self.order.status) || 0
     next_status = self.order.next_status actor_name
     next_index = statuses.index(next_status) || current + 1
     goto_next = actor_name == StatusAccessMap[next_status]
 
+    new_price = nil
+    # compare with product
+    if self.product_diff and self.product
+      if self.price != self.product.price
+        new_price = self.product.price
+        data[:new_price] = self.product.price_as_currency_number
+      end
+      data[:flags][:unavailable] = true if not self.product.available
+    end
+
     # Fetch data
     statuses.each_with_index do |status, i|
       data_field = StatusDataMap[status]
       access = StatusAccessMap[status]
 
-      status_data = data[status] = {
+      status_data = statuses_data[status] = {
         :flags => {},
         :field => data_field,
         :access => access,
       }
 
-      if self.send("quantity_#{data_field}").present?
+      quantity = self.send "quantity_#{data_field}"
+      if quantity.present?
         status_data[:quantity] = self.send "quantity_#{data_field}_localized"
         status_data[:price] = self.send "price_#{data_field}_as_currency_number"
+        status_data[:new_price] = quantity * new_price if new_price
         status_data[:flags][:filled] = true
       else
         status_data[:flags][:empty] = true
@@ -153,9 +169,9 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
     # Set flags according to past/future data
     # Present flags are used as classes
-    data.each_with_index do |(status, status_data), i|
-      prev_status_data = data[statuses[i-1]] unless i.zero?
-      next_status_data = data[statuses[i+1]]
+    statuses_data.each_with_index do |(status, status_data), i|
+      prev_status_data = statuses_data[statuses[i-1]] unless i.zero?
+      next_status_data = statuses_data[statuses[i+1]]
 
       if prev_status_data
         if status_data[:quantity] == prev_status_data[:quantity]
@@ -177,7 +193,7 @@ class OrdersPlugin::Item < ActiveRecord::Base
     end
 
     # Set access
-    data.each_with_index do |(status, status_data), i|
+    statuses_data.each_with_index do |(status, status_data), i|
       status_data[:flags][:editable] = true if status_data[:access] == actor_name and (status_data[:flags][:admin] or self.order.open?)
     end
 

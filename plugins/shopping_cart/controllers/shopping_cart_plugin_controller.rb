@@ -95,6 +95,7 @@ class ShoppingCartPluginController < OrdersPluginController
   def repeat
     unless request.post?
       @orders = previous_orders.last(5).reverse
+      @orders.each{ |o| o.enable_product_diff  }
     else
       @order = cart_profile.orders.find params[:id]
       self.cart = { profile_id: cart_profile.id, items: {} }

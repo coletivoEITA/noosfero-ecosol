@@ -9,9 +9,9 @@
   <div class="box-field product" title="<%= product %>"> <%= product %> </div>
 
   <div class="box-field quantity-price-table">
-    <% item.quantity_price_data(actor_name).each do |status, data| %>
-      <% next if data[:flags][:not_modified] and not data[:flags][:admin] %>
-      <%= render 'orders_plugin_item/quantity_price', :item => item, :order => order, :status => status, :data => data, :actor_name => actor_name %>
+    <% item_data[:statuses].each do |status, status_data| %>
+      <% next if status_data[:flags][:not_modified] and not status_data[:flags][:admin] %>
+      <%= render 'orders_plugin_item/quantity_price', item: item, order: order, status: status, data: item_data, status_data: status_data, actor_name: actor_name %>
     <% end %>
   </div>
 

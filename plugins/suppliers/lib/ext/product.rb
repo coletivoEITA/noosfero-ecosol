@@ -3,6 +3,10 @@ require_dependency 'product'
 # FIXME: The lines bellow should be on the core
 class Product
 
+  extend CurrencyHelper::ClassMethods
+  has_currency :price
+  has_currency :discount
+
   scope :available, :conditions => {:available => true}
   scope :unavailable, :conditions => ['products.available <> true']
   scope :archived, :conditions => {:archived => true}
@@ -48,9 +52,6 @@ class Product
 
   scope :from_supplier, lambda { |supplier| { :conditions => ['suppliers_plugin_suppliers.id = ?', supplier.id] } }
   scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_suppliers.id = ?', supplier_id] } }
-
-  extend CurrencyHelper::ClassMethods
-  has_currency :price
 
   after_create :distribute_to_consumers
   after_destroy :destroy_dependent

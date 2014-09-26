@@ -16,8 +16,8 @@ class OrdersPlugin::Order < ActiveRecord::Base
     :supplier => StatusAccessMap.map{ |s, a| s if a == :supplier }.compact,
   }
 
+  # workaround for STI
   set_table_name :orders_plugin_orders
-
   self.abstract_class = true
 
   belongs_to :profile
@@ -261,6 +261,10 @@ class OrdersPlugin::Order < ActiveRecord::Base
       item.send "price_#{to_data}=", item.send("price_#{from_data}")
       item.save if save
     end
+  end
+
+  def enable_product_diff
+    self.items.each{ |i| i.product_diff = true }
   end
 
   protected
