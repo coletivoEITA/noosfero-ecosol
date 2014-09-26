@@ -16,6 +16,9 @@ catalog = {
     qualifier: function() {
       try{ return this.element().get(0).elements.qualifier.value.trim() } catch(e){ }
     },
+    order: function() {
+      try{ return this.element().get(0).elements.order.value.trim() } catch(e){ }
+    },
   },
   product: {
     list: function() {
@@ -144,6 +147,7 @@ catalog = {
           product = jQuery(product)
           var old_product = content.find('#'+product.attr('id'))
           if (old_product.length) {
+            old_product.attr('data-order', product.attr('data-order'))
             old_product.attr('data-score', product.attr('data-score'))
             old_product.attr('data-term', product.attr('data-term'))
           } else
@@ -215,8 +219,6 @@ catalog = {
           itemSelector: '.product',
           layoutMode: 'fitRows',
           getSortData: {
-            name: '.name',
-            price: '.price',
             score: '[data-score]',
           },
         });
@@ -224,7 +226,8 @@ catalog = {
 
       filter: function(e){
         var el = jQuery(e)
-        return (!catalog.form.category() || el.attr('data-category-name') == catalog.form.category()) &&
+        return (catalog.form.order() == el.attr('data-order')) &&
+          (!catalog.form.category() || el.attr('data-category-name') == catalog.form.category()) &&
           (!catalog.form.qualifier() || (el.attr('data-qualifiers-ids') || '').indexOf(catalog.form.qualifier()) > -1) &&
           el.attr('data-term') == catalog.form.query()
       },
