@@ -37,7 +37,11 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     else
       @consumer = user
       @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-      @order = OrdersPlugin::Sale.create! :profile => profile, :consumer => @consumer, :cycle => @cycle
+      @order = OrdersPlugin::Sale.new
+      @order.profile = profile
+      @order.consumer = @consumer
+      @order.cycle = @cycle
+      @order.save!
       redirect_to params.merge(:action => :edit, :id => @order.id)
     end
   end
