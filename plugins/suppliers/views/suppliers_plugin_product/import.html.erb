@@ -4,7 +4,7 @@
     <%= t('views.product.import.action') %>
   </h1>
 
-  <% form_tag({:controller => :suppliers_plugin_product, :action => :import}, :onsubmit => 'jQuery(this).ajaxSubmit(); return false') do %>
+  <%= form_tag({:controller => :suppliers_plugin_product, :action => :import}, :onsubmit => 'jQuery(this).ajaxSubmit(); return false') do %>
 
     <p>
       <%= t('views.product.import.help') %>

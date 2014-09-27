@@ -21,7 +21,7 @@
 
   <% end %>
 
-  <%= form_for supplier, :supplier, :url => {:action => supplier.new_record? ? :new : :edit, :id => supplier.id},
+  <%= form_for supplier, as: :supplier, :url => {:action => supplier.new_record? ? :new : :edit, :id => supplier.id},
     :html => {data: {loading: '#supplier-#{supplier_label}'}, :class => 'full-registration'} do |f| %>
 
     <%= error_messages_for :supplier %>

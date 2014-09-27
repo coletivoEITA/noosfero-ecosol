@@ -4,7 +4,7 @@
     <%= t('views.filter.filter') %>
   </div>
 
-  <% form_tag remote: true, :update => 'search-results', html: {data: {loading: '#filter'}},
+  <%= form_tag remote: true, :update => 'search-results', html: {data: {loading: '#filter'}},
     :url => {:action => :index}, :html => {:id => 'filter-form'}, :method => :get do %>
 
     <div class="fields filter-box">
