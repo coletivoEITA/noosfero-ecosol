@@ -20,7 +20,7 @@
         <%= render 'orders_cycle_plugin_product/cycle_edit', :p => p %>
       </div>
     <% end %>
-    <% javascript_tag do %>
+    <%= javascript_tag do %>
       jQuery(document).ready(function() {
         orders_cycle.ajaxifyPagination("#cycle-products .table")
       })
