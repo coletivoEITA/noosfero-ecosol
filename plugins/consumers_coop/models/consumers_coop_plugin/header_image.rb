@@ -1,6 +1,8 @@
 class ConsumersCoopPlugin::HeaderImage < ActiveRecord::Base
 
-  set_table_name 'images'
+  self.table_name = :images
+
+  attr_accessible :uploaded_data
 
   has_attachment :content_type => :image,
                  :storage => :file_system,
@@ -20,7 +22,7 @@ class ConsumersCoopPlugin::HeaderImage < ActiveRecord::Base
       img.crop_resized!($1.to_i, $2.to_i, Magick::CenterGravity)
       # We need to save the resized image in the same way the
       # orignal does.
-      self.temp_path = write_to_temp_file(img.to_blob)
+      temp_paths << write_to_temp_file(img.to_blob)
     else
       super # Otherwise let attachment_fu handle it
     end

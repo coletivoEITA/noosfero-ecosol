@@ -2,6 +2,8 @@ require_dependency 'profile'
 
 class Profile
 
+  attr_accessible :consumers_coop_header_image_builder
+
   has_many :offered_products, :class_name => 'OrdersCyclePlugin::OfferedProduct', :dependent => :destroy, :order => 'products.name ASC'
 
   def consumers_coop_settings
@@ -15,6 +17,7 @@ class Profile
   delegate :consumers_coop_header_image_id, :consumers_coop_header_image_id=, :to => :consumers_coop_settings
   def consumers_coop_header_image_builder= img
     image = self.consumers_coop_header_image
+
     if image
       image.attributes = img
     else
@@ -68,9 +71,9 @@ class Profile
   end
 
   def consumers_coop_header_image_save
-    return unless consumers_coop_header_image
-    consumers_coop_header_image.save!
-    consumers_coop_header_image_id = consumers_coop_header_image.id
+    return unless self.consumers_coop_header_image
+    self.consumers_coop_header_image.save!
+    self.consumers_coop_header_image_id = self.consumers_coop_header_image.id
     self.save!
   end
 

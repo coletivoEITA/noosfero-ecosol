@@ -4,7 +4,7 @@
 <div id="consumers-coop-settings">
   <%= form_for @profile, as: :profile_data, :url => {:controller => :consumers_coop_plugin_myprofile, :action => :settings, :profile => profile.identifier}, :html => {:multipart => true} do |f| %>
 
-    <% f.fields_for :consumers_coop_settings, profile.consumers_coop_settings do |ff| %>
+    <%= f.fields_for :consumers_coop_settings, profile.consumers_coop_settings do |ff| %>
       <%= labelled_field ff, :enabled, t('views.profile.settings.collective_consumptio'),
         labelled_radio(ff, :enabled, t('views.profile.settings.disabled'), false) +
         labelled_radio(ff, :enabled, t('views.profile.settings.activated'), true) %>
@@ -19,12 +19,12 @@
       <%= labelled_field ff, :header, t('views.profile.settings.header_type'), radios %>
     <% end %>
 
-    <% f.fields_for :consumers_coop_header_image_builder, profile.consumers_coop_header_image do |fi| %>
+    <%= f.fields_for :consumers_coop_header_image_builder, profile.consumers_coop_header_image do |fi| %>
       <%= labelled_field fi, :uploaded_data, t('views.profile.settings.header_s_image'), fi.file_field(:uploaded_data, { :size => 10 }),
         {:help => t('views.profile.settings.image_help')} %>
     <% end %>
 
-    <% f.fields_for :consumers_coop_settings, profile.consumers_coop_settings do |ff| %>
+    <%= f.fields_for :consumers_coop_settings, profile.consumers_coop_settings do |ff| %>
       <div id=consumers-coop-header-bg-color>
         <% radios = ''; profile.consumers_coop_settings.header_bg_color ||= 'purple' %>
         <% ['purple', 'yellow', 'beige', 'blue', 'petro', 'green'].each do |color| %>
@@ -45,7 +45,7 @@
   <% end %>
 </div>
 
-<% javascript_tag do %>
+<%= javascript_tag do %>
   jQuery('input[name=profile_data\\[consumers_coop_settings\\]\\[header_type\\]]').click(function() {
     consumers_coop.toggle_header_color_area($(this));
   });
