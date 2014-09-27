@@ -1,7 +1,7 @@
 <h1><%= _('Validate enterprises') %></h1>
 
-<% form_tag :action => 'save_validations' do %>
-  <%= token_input_field_tag(:q, 'search-enterprises', {:action => 'search_enterprise'}, 
+<%= form_tag :action => 'save_validations' do %>
+  <%= token_input_field_tag(:q, 'search-enterprises', {:action => 'search_enterprise'},
                               { :hint_text => _('Type in a search term for enterprise'),
                                 :focus => true }) %>
 
