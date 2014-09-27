@@ -34,6 +34,6 @@ end
 require "#{File.dirname __FILE__}/ext/product"
 
 # workaround for plugin class scope problem
-require 'orders_plugin/display_helper'
+require_dependency 'orders_plugin/display_helper'
 OrdersPlugin::OrdersDisplayHelper = OrdersPlugin::DisplayHelper
 

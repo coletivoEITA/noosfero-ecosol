@@ -5,6 +5,7 @@ module OrdersPlugin::DisplayHelper
   include OrdersPlugin::TranslationHelper
   include OrdersPlugin::PriceHelper
   include OrdersPlugin::DateHelper
+  include OrdersPlugin::FieldHelper
   include OrdersPlugin::TableHelper
   include OrdersPlugin::AdminHelper
   include OrdersPlugin::JavascriptHelper
