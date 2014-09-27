@@ -20,7 +20,7 @@ gem 'exception_notification'
 gem 'locale', '2.0.9' # 2.1.0 has a problem with memoizable
 gem 'gettext', '< 3.0', require: false, group: :development
 
-gem 'premailer'
+gem 'premailer-rails'
 
 # FIXME list here all actual dependencies (i.e. the ones in debian/control),
 # with their GEM names (not the Debian package names)

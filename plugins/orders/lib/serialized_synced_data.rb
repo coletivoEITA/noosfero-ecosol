@@ -1,8 +1,7 @@
 module SerializedSyncedData
 
-  def self.symbolize_keys hash
-    hash = hash.dup; hash.each do |key, value|
-      hash.delete key
+  def self.symbolize_keys _hash
+    hash = {}; _hash.each do |key, value|
       hash[key.to_sym] = value
     end
     hash

@@ -17,8 +17,10 @@ class OrdersPlugin::Order < ActiveRecord::Base
   }
 
   # workaround for STI
-  set_table_name :orders_plugin_orders
+  self.table_name = :orders_plugin_orders
   self.abstract_class = true
+
+  attr_accessible :status
 
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'
@@ -293,9 +295,9 @@ class OrdersPlugin::Order < ActiveRecord::Base
     return if (Statuses.index(self.status) <= Statuses.index(self.status_was) rescue false)
 
     if self.status == 'ordered' and self.status_was != 'ordered'
-      OrdersPlugin::Mailer.deliver_order_confirmation self
+      OrdersPlugin::Mailer.order_confirmation(self).deliver
     elsif self.status == 'cancelled' and self.status_was != 'cancelled'
-      OrdersPlugin::Mailer.deliver_order_cancellation self
+      OrdersPlugin::Mailer.order_cancellation(self).deliver
     end
   end
 
