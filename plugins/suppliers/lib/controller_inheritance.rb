@@ -8,8 +8,6 @@ module ControllerInheritance
       class_attribute :hmvc_inheritable
       class_attribute :hmvc_context
 
-      #self.before_filter :set_hmvc_context
-
       self.inherit_templates = true
       self.hmvc_inheritable = true
       self.hmvc_context = context
@@ -27,6 +25,7 @@ module ControllerInheritance
       end
 
       include InstanceMethods
+      helper ViewHelper
     end
 
     def hmvc_controller_path hmvc_context = self.hmvc_context
@@ -38,17 +37,24 @@ module ControllerInheritance
   end
 
   module InstanceMethods
+  end
+
+  module ViewHelper
+
     def url_for options = {}
+      return super unless options.is_a? Hash
+
       controller = options[:controller]
       controller ||= controller_path
       controller = controller.to_s
 
-      dest_controller = self.class.hmvc_paths[@hmvc_context][controller] rescue nil
+      dest_controller = self.controller.hmvc_paths[self.controller.hmvc_context][controller]
       dest_controller ||= options[:controller] || self.controller_path
       options[:controller] = dest_controller
 
-      super options
+      super
     end
+
   end
 
 end
