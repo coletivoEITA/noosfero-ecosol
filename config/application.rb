@@ -17,14 +17,6 @@ end
 module Noosfero
   class Application < Rails::Application
 
-    def load_tasks_with_plugins
-      self.load_tasks_without_plugins
-      plugins_tasks = Dir.glob("config/plugins/*/{tasks,lib/tasks,rails/tasks}/**/*.rake").sort +
-        Dir.glob("config/plugins/*/vendor/plugins/*/{tasks,lib/tasks,rails/tasks}/**/*.rake").sort
-      plugins_tasks.each{ |ext| load ext }
-    end
-    alias_method_chain :load_tasks, :plugins
-
     require 'noosfero/plugin'
 
     # Adds custom attributes to the Set of allowed html attributes for the #sanitize helper
