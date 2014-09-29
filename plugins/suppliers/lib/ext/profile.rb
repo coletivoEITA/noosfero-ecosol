@@ -13,15 +13,15 @@ end
 
 class Profile
 
-  has_many :distributed_products, :class_name => 'SuppliersPlugin::DistributedProduct'
+  has_many :distributed_products, class_name: 'SuppliersPlugin::DistributedProduct'
 
-  has_many :from_products, :through => :products
-  has_many :to_products, :through => :products
+  has_many :from_products, through: :products
+  has_many :to_products, through: :products
 
-  has_many :suppliers, :class_name => 'SuppliersPlugin::Supplier', :foreign_key => :consumer_id, :dependent => :destroy,
-    :include => [{:profile => [:domains], :consumer => [:domains]}], :order => 'name ASC'
-  has_many :consumers, :class_name => 'SuppliersPlugin::Consumer', :foreign_key => :profile_id, :dependent => :destroy,
-    :include => [{:profile => [:domains], :consumer => [:domains]}], :order => 'name ASC'
+  has_many :suppliers, class_name: 'SuppliersPlugin::Supplier', foreign_key: :consumer_id, dependent: :destroy,
+    include: [{profile: [:domains], consumer: [:domains]}], order: 'name ASC'
+  has_many :consumers, class_name: 'SuppliersPlugin::Consumer', foreign_key: :profile_id, dependent: :destroy,
+    include: [{profile: [:domains], consumer: [:domains]}], order: 'name ASC'
 
   def supplier_settings
     @supplier_settings ||= Noosfero::Plugin::Settings.new self, SuppliersPlugin
@@ -33,9 +33,9 @@ class Profile
 
   def self_supplier
     @self_supplier ||= if new_record?
-      self.suppliers_without_self_supplier.build :profile => self
+      self.suppliers_without_self_supplier.build profile: self
     else
-      suppliers_without_self_supplier.select{ |s| s.profile_id == s.consumer_id }.first || self.suppliers_without_self_supplier.create(:profile => self)
+      suppliers_without_self_supplier.select{ |s| s.profile_id == s.consumer_id }.first || self.suppliers_without_self_supplier.create(profile: self)
     end
   end
   def suppliers_with_self_supplier
@@ -47,7 +47,7 @@ class Profile
   def add_consumer consumer
     return if self.consumers.of_consumer consumer
 
-    supplier = self.suppliers.create! :profile => self, :consumer => consumer
+    supplier = self.suppliers.create! profile: self, consumer: consumer
   end
   def remove_consumer consumer
     supplier = self.consumers.of_consumer(consumer).first
@@ -70,7 +70,7 @@ class Profile
     supplier.profile.products.unarchived.own - self.from_products.unarchived.by_profile(supplier.profile)
   end
 
-  delegate :margin_percentage, :margin_percentage=, :to => :supplier_settings
+  delegate :margin_percentage, :margin_percentage=, to: :supplier_settings
   extend CurrencyHelper::ClassMethods
   has_number_with_locale :margin_percentage
 

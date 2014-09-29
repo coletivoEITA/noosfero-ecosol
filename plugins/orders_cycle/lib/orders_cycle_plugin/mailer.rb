@@ -11,9 +11,9 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     @supplier = supplier
     @message = message
 
-    mail to: profile_recipients(order.consumer),
+    mail to: profile_recipients(@supplier),
       from: environment.noreply_email,
-      reply_to: profile_recipients(profile),
+      reply_to: profile_recipients(@profile),
       subject: t('lib.mailer.profile_subject') % {profile: profile.name, subject: subject}
   end
 
@@ -23,9 +23,9 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     @member = member
     @message = message
 
-    mail to: profile_recipients(order.consumer),
+    mail to: profile_recipients(@member),
       from: environment.noreply_email,
-      reply_to: profile_recipients(profile),
+      reply_to: profile_recipients(@profile),
       subject: t('lib.mailer.profile_subject') % {profile: profile.name, subject: subject}
   end
 
@@ -35,9 +35,9 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     @cycle = cycle
     @message = message
 
-    mail bcc: organization_members(profile),
+    mail bcc: organization_members(@profile),
       from: environment.noreply_email,
-      reply_to: profile_recipients(profile),
+      reply_to: profile_recipients(@profile),
       subject: t('lib.mailer.profile_subject') % {profile: profile.name, subject: subject}
   end
 

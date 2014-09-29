@@ -1,5 +1,7 @@
 class SuppliersPlugin::Supplier < ActiveRecord::Base
 
+  attr_accessible :name, :name_abbreviation, :description
+
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'
   alias_method :supplier, :profile
