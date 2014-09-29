@@ -7,8 +7,7 @@
   </div>
 
   <% url = {:controller => :orders_cycle_plugin_order, :action => :filter} if type == :order %>
-  <%= form_tag remote: true, :update => 'search-results', :url => url,
-    :html => {:id => 'filter-form', data: {loading: "#filter"}}, :method => :get do %>
+  <%= form_tag url, remote: true, :id => 'filter-form', data: {loading: "#filter", :update => '#search-results'}, :method => :get do %>
 
     <div class="fields filter-box">
 

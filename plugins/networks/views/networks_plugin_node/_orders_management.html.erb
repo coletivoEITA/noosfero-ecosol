@@ -1,5 +1,5 @@
 
-<%= form_tag :controller => :networks_plugin_node, :action => :orders_management, :id => @node.id do %>
+<%= form_tag({controller: :networks_plugin_node, action: :orders_management}, id: @node.id) do %>
 
   <div>
     <%= t('views.node._orders_management.forward_explanation') %>
@@ -19,7 +19,7 @@
     <% orders_managers = @node.orders_managers %>
     <% profile.members.each do |profile| %>
       <div>
-        <%= check_box_tag "orders_managers[]", profile.id, orders_managers.find{ |p| p == profile }, :id => "orders_managers_#{profile.id}" %>
+        <%= check_box_tag "orders_managers[]", profile.id, orders_managers.find{ |p| p == profile }, id: "orders_managers_#{profile.id}" %>
         <%= label_tag "orders_managers_#{profile.id}", profile.name %>
       </div>
     <% end %>

@@ -14,7 +14,7 @@
   </div>
 
   <div>
-    <% fields_for :home_page, @node.home_page do |f| %>
+    <%= fields_for :home_page, @node.home_page do |f| %>
       <%= f.label :body, t('views.node.edit.presentation_text') %>
       <%= f.text_area :body, :class => 'mceEditor' %>
     <% end %>
