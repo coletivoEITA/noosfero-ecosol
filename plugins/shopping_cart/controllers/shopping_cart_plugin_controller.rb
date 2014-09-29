@@ -95,11 +95,12 @@ class ShoppingCartPluginController < OrdersPluginController
   def repeat
     unless request.post?
       @orders = previous_orders.last(5).reverse
-      @orders.each{ |o| o.enable_product_diff  }
+      @orders.each{ |o| o.enable_product_diff }
     else
       @order = cart_profile.orders.find params[:id]
       self.cart = { profile_id: cart_profile.id, items: {} }
       self.cart[:items] = {}; @order.items.each do |item|
+        next unless item.product.available
         self.cart[:items][item.product_id] = item.quantity_consumer_ordered.to_i
       end
 
@@ -349,6 +350,7 @@ class ShoppingCartPluginController < OrdersPluginController
   end
 
   def previous_orders
+    pp cart_profile
     cart_profile.orders.of_user session_id, (user.id rescue nil)
   end
 
