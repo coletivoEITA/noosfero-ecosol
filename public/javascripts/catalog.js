@@ -219,7 +219,7 @@ catalog = {
           itemSelector: '.product',
           layoutMode: 'fitRows',
           getSortData: {
-            score: '[data-score]',
+            score: '[data-score] parseInt',
           },
         });
       },
@@ -233,10 +233,11 @@ catalog = {
       },
 
       run: function(){
+        this.container().isotope('updateSortData').isotope();
         this.container().isotope({
           isJQueryFiltering: false,
           filter: catalog.search.animation.filter,
-          sortBy: '[data-score]',
+          sortBy: 'score',
         })
       },
     },
