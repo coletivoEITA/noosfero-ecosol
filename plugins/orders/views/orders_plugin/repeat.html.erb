@@ -36,6 +36,10 @@
         <% end %>
       </div>
     </table>
-  <% end %>
 
+    <% unless user %>
+      <%= button 'remove', t('views.public.repeat.clear_orders_session'), {action: :clear_orders_session, profile_id: params[:profile_id]}, remote: true %>
+    <% end %>
+
+  <% end %>
 </div>

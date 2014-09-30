@@ -19,6 +19,9 @@ catalog = {
     order: function() {
       try{ return this.element().get(0).elements.order.value.trim() } catch(e){ }
     },
+    pageEl: function() {
+      try{ return this.element().get(0).elements.page } catch(e){ }
+    },
   },
   product: {
     list: function() {
@@ -49,6 +52,8 @@ catalog = {
   },
 
   search: {
+  	external: false,
+
     init: function() {
       this.animation.init();
       this.autocomplete.init();
@@ -60,14 +65,31 @@ catalog = {
       catalog.search.finishLoading()
     },
 
+    url: function() {
+      var pageEl = catalog.form.pageEl()
+      var page = pageEl.value
+
+      pageEl.value = null
+      var url = catalog.base_url_path + jQuery(catalog.form.element()).serialize()
+      pageEl.value = page
+
+      return url;
+    },
+
     run: function(options) {
       options = jQuery.extend({}, {animate: true}, options)
+
+      var url = this.url()
+      if (this.external) {
+        window.location.href = url;
+        return;
+      }
 
       jQuery(catalog.form.element()).ajaxSubmit({
         beforeSubmit: catalog.search.startLoading,
         success: function(html) {
           if (options.animate)
-            jQuery('html,body').animate({ scrollTop: 0 }, 400, function() {
+            jQuery('html,body').animate({ scrollTop: jQuery("#product-catalog").offset().top }, 400, function() {
               catalog.search.result(html)
             })
           else
@@ -75,12 +97,9 @@ catalog = {
         },
       })
 
-      catalog.search.pagination.reset()
-
-      var url = catalog.base_url_path + jQuery(catalog.form.element()).serialize()
       window.history.pushState(url, null, url)
-
       catalog.form.queryEl().focus()
+      catalog.search.pagination.reset()
     },
 
     submit: function() {

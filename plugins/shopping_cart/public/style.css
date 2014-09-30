@@ -183,6 +183,10 @@ input.button.with-text.icon-cart
   height: 16px;
   background-repeat: no-repeat;
 }
+#cart-request-box .cart-popin-close {
+  float: right;
+  text-transform: none;
+}
 
 #cart-form-main {
   border: 2px solid #FFF;

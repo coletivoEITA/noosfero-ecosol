@@ -129,7 +129,7 @@ class ShoppingCartPluginController < OrdersPluginController
       self.cart = nil
       render :text => {
         :ok => true,
-        :message => _('Request sent successfully. Check your email.'),
+        :message => _('Your order has been sent successfully! You will receive a confirmation e-mail shortly.'),
         :error => {:code => 0}
       }.to_json
     rescue ActiveRecord::ActiveRecordError
@@ -287,7 +287,7 @@ class ShoppingCartPluginController < OrdersPluginController
 
     order = OrdersPlugin::Sale.new
     order.profile = environment.profiles.find(cart[:profile_id])
-    order.session_id = session_id
+    order.session_id = session_id unless user
     order.consumer = user
     order.source = 'shopping_cart_plugin'
     order.status = 'ordered'
@@ -325,6 +325,11 @@ class ShoppingCartPluginController < OrdersPluginController
     @cart_profile ||= environment.profiles.find(params[:profile_id] || cart[:profile_id]) rescue nil
   end
 
+  # from OrdersPluginController
+  def supplier
+    cart_profile
+  end
+
   def cart=(data)
     @cart = data
   end
@@ -343,15 +348,6 @@ class ShoppingCartPluginController < OrdersPluginController
 
   def cookie_key
     :_noosfero_plugin_shopping_cart
-  end
-
-  def session_id
-    session['session_id']
-  end
-
-  def previous_orders
-    pp cart_profile
-    cart_profile.orders.of_user session_id, (user.id rescue nil)
   end
 
   def visible?

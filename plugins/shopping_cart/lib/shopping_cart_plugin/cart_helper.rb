@@ -18,7 +18,7 @@ module ShoppingCartPlugin::CartHelper
   end
 
   def repeat_order_button order
-    link_to_function t('views.public.repeat.choose'), 'return cart.repeat(this)', class: 'action-button', 'data-order-id' => order.id
+    link_to_function t('views.public.repeat.choose'), 'cart.repeat(this); event.stopPropagation()', class: 'action-button', 'data-order-id' => order.id
   end
 
   def sell_price(product)

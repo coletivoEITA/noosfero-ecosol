@@ -684,6 +684,7 @@
           date: "Data"
           ordered_itens: "Itens pedidos"
           choose: "escolher este pedido"
+          clear_orders_session: "limpar histórico de pedidos deste computador"
 
       consumer:
         _total: 

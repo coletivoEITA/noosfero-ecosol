@@ -11,9 +11,12 @@ module ActsAsSolr #:nodoc:
         :offset, :per_page, :limit, :page,
         :query_fields, :default_field,
       ]
-      query_options = {}
+      # defaults
       options[:results_format] ||= :objects
       options[:default_field] ||= 'text'
+
+      query_options = {}
+      query_options[:default_field] = options[:default_field]
 
       return if query.nil?
       raise "Query should be a string" unless query.is_a?(String)

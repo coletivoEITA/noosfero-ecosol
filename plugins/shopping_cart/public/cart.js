@@ -209,6 +209,12 @@ function Cart(config) {
     return false;
   }
 
+  Cart.prototype.clearOrdersSession = function() {
+    jQuery.colorbox.close()
+    cart.hasPreviousOrders = false;
+    cart.setQuantity(0)
+  }
+
   Cart.prototype.show = function(register) {
     if(register) {
       this.ajax({

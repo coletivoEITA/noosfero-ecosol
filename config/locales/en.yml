@@ -666,6 +666,7 @@
           date: "Date"
           ordered_itens: "Ordered items"
           choose: "choose this order"
+          clear_orders_session: "clear orders' history from this computer"
 
       consumer:
         _total: 
