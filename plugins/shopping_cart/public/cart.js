@@ -204,7 +204,8 @@ function Cart(config) {
         cart.addToList(data.products, true)
         $('.cart-buy').click();
       },
-      type: 'POST', dataType: 'json', cache: false
+      // can't do POST because of firefox cookie reset bug
+      type: 'GET', dataType: 'json', cache: false
     })
     return false;
   }

@@ -2369,6 +2369,26 @@ msgstr "Tem certeza que quer visitar este web site?"
 msgid "Start"
 msgstr "Início"
 
+#:
+msgid "order by"
+msgstr "ordenar por"
+
+#:
+msgid "Lowest price"
+msgstr "Menor preço"
+
+#:
+msgid "Newest"
+msgstr "Mais recentes"
+
+#:
+msgid "Last updated"
+msgstr "Últimas atualizações"
+
+#:
+msgid "repeat order"
+msgstr "repetir pedido"
+
 #: app/helpers/categories_helper.rb:4
 msgid "General Category"
 msgstr "Categoria geral"

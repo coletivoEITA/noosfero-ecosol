@@ -88,12 +88,12 @@ class SolrPlugin < Noosfero::Plugin
     solr_options = {}
     solr_options.merge! paginate_options
 
-    solr_options[:filter_queries] = scopes_to_solr_options scope, klass, options
     case asset
     when :catalog
       klass = Product
       solr_options[:query_fields] = %w[solr_plugin_ac_name^100 solr_plugin_ac_category^1000]
       solr_options[:highlight] = {:fields => 'name'}
+      solr_options[:filter_queries] = scopes_to_solr_options scope, klass, options
     when :products
       solr_options.merge! products_options(user)
     end

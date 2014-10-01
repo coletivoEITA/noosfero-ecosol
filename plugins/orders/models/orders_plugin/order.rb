@@ -227,7 +227,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   end
 
   def items_summary
-    self.items.map{ |item| "#{item.name} (#{item.quantity_consumer_ordered})" }.join ', '
+    self.items.map{ |item| "#{item.name} (#{item.quantity_consumer_ordered_localized})" }.join ', '
   end
 
   extend CurrencyHelper::ClassMethods

@@ -93,19 +93,19 @@ class ShoppingCartPluginController < OrdersPluginController
   end
 
   def repeat
-    unless request.post?
+    unless params[:id].present?
       @orders = previous_orders.last(5).reverse
       @orders.each{ |o| o.enable_product_diff }
     else
       @order = cart_profile.orders.find params[:id]
       self.cart = { profile_id: cart_profile.id, items: {} }
-      self.cart[:items] = {}; @order.items.each do |item|
+      @order.items.each do |item|
         next unless item.product.available
         self.cart[:items][item.product_id] = item.quantity_consumer_ordered.to_i
       end
 
       render json: {
-        products: products
+        products: products,
       }
     end
   end
