@@ -2,7 +2,6 @@
 noosfero.tinymce = {
 
   defaultOptions: {
-    mode: "textareas", //necessary for compat3x
     theme: "modern",
     relative_urls: false,
     remove_script_host: false,
@@ -15,13 +14,6 @@ noosfero.tinymce = {
 
   init: function(_options) {
     var options = jQuery.extend({}, this.defaultOptions, _options)
-    tinymce.init(options);
     jQuery('.mceEditor').tinymce(options);
-
-    jQuery('form').bind('form-pre-serialize', function(e) {
-      for (var ed in tinymce.editors)
-        ed.save()
-    });
-
   },
 };
