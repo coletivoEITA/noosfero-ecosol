@@ -14,6 +14,9 @@ noosfero.tinymce = {
 
   init: function(_options) {
     var options = jQuery.extend({}, this.defaultOptions, _options)
+    // just init. initing this is necessary to add some buttons to the toolbar
+    tinymce.init(options)
+    // apply to selector
     jQuery('.mceEditor').tinymce(options);
   },
 };
