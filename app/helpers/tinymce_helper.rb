@@ -20,7 +20,7 @@ module TinymceHelper
       :language => tinymce_language
 
     options[:toolbar1] = "insertfile undo redo | copy paste | styleselect | bold italic underline | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
-    if options.delete(:mode) == 'simple'
+    if options[:mode] == 'simple'
       options[:menubar] = false
     else
       options[:menubar] = 'edit insert view tools'
@@ -44,10 +44,14 @@ module TinymceHelper
 
     apply_etherpadlite_options options
 
+    #cleanup non tinymce options
+    options = options.except :mode
+
     "noosfero.tinymce.init(#{options.to_json})"
   end
 
   def apply_etherpadlite_options options
+    return if options[:mode] == 'simple'
     return unless environment.tinymce_plugin_etherpadlite_padServerUrl.present?
     options.merge! :plugin_etherpadlite_padServerUrl => environment.tinymce_plugin_etherpadlite_padServerUrl,
       :plugin_etherpadlite_padNamesPrefix => environment.default_hostname,
