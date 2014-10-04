@@ -665,6 +665,19 @@
           separated: "Separar"
           delivered: "Entregar"
           received: "Receber"
+        actor_data:
+          name: "Nome"
+          email: "Email"
+          contact_phone: "Telefone"
+        delivery_data:
+          name: "Nome"
+          description: "Descrição"
+          address_line1: "Endereço"
+          address_line2: ""
+          reference: "Referência"
+          city: "Cidade" 
+          state: "Estado"
+          postal_code: "Código postal"
     helpers:
       help:
         hide: "esconder ajuda"
@@ -697,9 +710,13 @@
           cancel_order: "Cancelar pedido"
           confirm_order: "Confirmar pedido"
           confirming_this_order: "Ao confirmar este pedido, você está responsável por pagá-lo. Você quer continuar?"
-        _supplier_delivery: 
-          delivery_method: "Método de entrega"
+        _delivery: 
+          consumer_heading: "Método de recebimento"
+          supplier_heading: "Método de entrega"
           choose_another: "Escolha outro método:"
+        _actor_data: 
+          consumer_heading: "Dados %{terms.consumer.from_article.singular}"
+          supplier_heading: "Dados %{terms.supplier.from_article.singular}"
       admin:
         reports:
           products_spreadsheet: "Planilha de produtos"

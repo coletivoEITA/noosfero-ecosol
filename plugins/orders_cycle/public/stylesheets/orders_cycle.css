@@ -924,18 +924,6 @@
   .cycle-view #order-column #desist-order {
     margin-top: 30px;
     margin-bottom: 8px; }
-  .cycle-view #order-column #delivery-box {
-    border-top: 2px solid black;
-    width: auto;
-    padding: 8px; }
-  .cycle-view #order-column #delivery-box h3 {
-    margin-top: 0; }
-  .cycle-view #order-column #delivery-box select {
-    text-size: 10px; }
-  .cycle-view #order-column #delivery-box div {
-    margin-bottom: 10px; }
-  .cycle-view #order-column #delivery-box input[type=submit] {
-    min-width: 160px; }
   .cycle-view #order-column .quantity-entry input {
     width: 76px; }
 

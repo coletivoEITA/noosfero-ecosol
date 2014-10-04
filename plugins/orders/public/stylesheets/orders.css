@@ -1599,6 +1599,18 @@
     padding: 4px 8px;
     border-bottom: 1px solid black;
     text-transform: uppercase; }
+.order-view .order-section {
+  border-top: 2px solid black;
+  width: auto;
+  padding: 8px; }
+  .order-view .order-section h3 {
+    margin-top: 0 !important;
+    text-transform: uppercase;
+    font-size: 12px !important; }
+  .order-view .order-section select {
+    text-size: 10px; }
+  .order-view .order-section div {
+    margin-bottom: 10px; }
 
 .consumer-order {
   /* use with @extend, CSS clear bugfix */
