@@ -649,6 +649,19 @@
           separated: "Separate"
           delivered: "Deliver"
           received: "Receive"
+        actor_data:
+          name: "Name"
+          email: "Email"
+          contact_phone: "Phone"
+        delivery_data:
+          name: "Name"
+          description: "Description"
+          address_line1: "Address"
+          address_line2: ""
+          reference: "Reference"
+          city: "City" 
+          state: "State"
+          postal_code: "Postal code"
     helpers:
       help:
         hide: "hide help"
@@ -691,9 +704,13 @@
           cancel_order: "cancel order"
           confirm_order: "Confirm order"
           confirming_this_order: "Confirming this order you are responsible for paying it. Do you want to continue?"
-        _supplier_delivery: 
-          delivery_method: "Delivery Method"
+        _delivery: 
+          consumer_heading: "Receipt Method"
+          supplier_heading: "Delivery Method"
           choose_another: "Choose another:"
+        _actor_data: 
+          consumer_heading: "Data %{terms.consumer.from_article.singular}"
+          supplier_heading: "Data %{terms.supplier.from_article.singular}"
       admin:
         reports:
           products_spreadsheet: "Products' spreadsheet"

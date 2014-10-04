@@ -7,6 +7,17 @@ class OrdersPlugin::Order < ActiveRecord::Base
     StatusText[status] = "orders_plugin.models.order.statuses.#{status}"
   end
 
+  # remember to translate on changes
+  ActorData = [
+    :name, :email, :contact_phone,
+  ]
+  DeliveryData = [
+    :name, :description,
+    :address_line1, :address_line2, :reference,
+    :city, :state,
+    :postal_code,
+  ]
+
   # copy, for easiness. can't be declared to here to avoid cyclic reference
   StatusDataMap = OrdersPlugin::Item::StatusDataMap
   StatusAccessMap = OrdersPlugin::Item::StatusAccessMap
@@ -126,6 +137,21 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   def delivery_methods
     self.profile.delivery_methods
+  end
+
+  def actor_data actor_name
+    data = self.send("#{actor_name}_data").select do |k,v|
+      OrdersPlugin::Order::ActorData.include? k and v.present?
+    end rescue {}
+    data = Hash[data]
+    data = {} if data.size == 1 and data[:name].present?
+    data
+  end
+
+  def delivery_data actor_name
+    self.send("#{actor_name}_delivery_data").select do |k,v|
+      OrdersPlugin::Order::DeliveryData.include? k and v.present?
+    end rescue {}
   end
 
   # All products from the order profile?
