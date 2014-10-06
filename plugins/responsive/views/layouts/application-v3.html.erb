@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="<%= html_language %>">
+  <head>
+    <title><%= h page_title %></title>
+    <%= yield(:feeds) %>
+    <!--<meta http-equiv="refresh" content="1"/>-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="description" content="<%= @environment.name %>" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" value="summary">
+    <meta name="twitter:title" content="<%= h page_title %>">
+    <meta name="twitter:description" content="<%= meta_description_tag(@page) %>">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="<%= @page ? 'article' : 'website' %>">
+    <meta property="og:url" content="<%= @page ? url_for(@page.url) : @environment.top_url %>">
+    <meta property="og:title" content="<%= h page_title %>">
+    <meta property="og:site_name" content="<%= profile ? profile.name : @environment.name %>">
+    <meta property="og:description" content="<%= @page ? truncate(strip_tags(@page.body.to_s), :length => 200) : @environment.name %>">
+
+    <!-- Twitter Bootstrap -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <% if @page %>
+      <meta property="article:published_time" content="<%= show_date(@page.published_at) %>">
+      <% @page.body_images_paths.each do |img| %>
+        <meta name="twitter:image" content="<%= img.to_s %>">
+        <meta property="og:image" content="<%= img.to_s %>">
+      <% end %>
+    <% end %>
+
+    <link rel="shortcut icon" href="<%= image_path(theme_favicon) %>" type="image/x-icon" />
+    <%= noosfero_javascript %>
+    <%= noosfero_stylesheets %>
+
+    <%# Add custom tags/styles/etc via content_for %>
+    <%= yield :head %>
+    <%=
+      @plugins.dispatch(:head_ending).map do |content|
+        if content.respond_to?(:call) then instance_exec(&content).html_safe else content.html_safe end
+      end.join("\n")
+    %>
+
+    <script type='text/javascript'>
+      DEFAULT_LOADING_MESSAGE = <%="'#{ _('loading...') }'" %>;
+    </script>
+
+  </head>
+  <body class="<%= h body_classes %>">
+    <a href="#content" id="link-go-content"><span><%= _("Go to the content") %></span></a>
+
+    <%=
+      @plugins.dispatch(:body_beginning).map do |content|
+        if content.respond_to?(:call) then instance_exec(&content).html_safe else content.html_safe end
+      end.join("\n")
+    %>
+
+    <%= render :partial => 'layouts/menu_responsive' %>
+
+    <div id="wrap-1" class="container">
+      <div id='theme-header'>
+        <%= theme_header %>
+      </div>
+      <%= insert_boxes(yield) %>
+
+<% #uncomment to see previous design for comparison
+=begin
+%>
+      <div id="wrap-2">
+        <div id="content" class="content">
+          <div id="content-inner">
+            <%= insert_boxes(yield) %>
+            <br style='clear: both'/>
+          </div><!-- end id="content-inner" -->
+        </div><!-- end id="content" -->
+      </div><!-- end id="wrap-2" -->
+<%
+=end
+%>
+
+
+    </div><!-- end id="wrap-1" -->
+    <%= render_environment_features(:logged_in) %>
+    <div id="theme-footer">
+      <%= theme_footer %>
+    </div><!-- end id="theme-footer" -->
+    <%= noosfero_layout_features %>
+    <%= theme_javascript_ng %>
+    <%= addthis_javascript %>
+    <%=
+      @plugins.dispatch(:body_ending).map do |content|
+        if content.respond_to?(:call) then instance_exec(&content).html_safe else content.html_safe end
+      end.join("\n")
+    %>
+
+    <!-- Modal -->
+    <div class="modal fade" id="noosferoModal" tabindex="-1" role="dialog" aria-labelledby="Noosfero" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content" id="noosferoModalContent">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><%= _('Close') %></span></button>
+            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
