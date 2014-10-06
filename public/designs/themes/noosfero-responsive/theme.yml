@@ -1,0 +1,4 @@
+name: "Noosfero Responsive"
+layout: "application-v3"
+jquery_theme: "smoothness"
+icon_theme: [awesome, pidgin]

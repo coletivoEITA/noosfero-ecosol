@@ -46,6 +46,7 @@ module BoxesHelper
     content_tag('div', content, :class => 'boxes', :id => 'boxes' )
   end
 
+
   def maybe_display_custom_element(holder, element, options = {})
     if holder.respond_to?(element)
       content_tag('div', holder.send(element), options)
@@ -247,6 +248,5 @@ module BoxesHelper
     classes += ' invisible-block' if block.display == 'never'
     classes
   end
-
 
 end
