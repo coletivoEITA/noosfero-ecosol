@@ -26,14 +26,8 @@
       <%= link_to_profile profile_image(friend) + '<br/>' + friend.short_name,
                           friend.identifier, :class => 'profile-link' %>
       <div class="controll">
-        <%= link_to content_tag('span',_('remove')),
-            { :action => 'remove', :id => friend.id },
-              :class => 'button icon-remove',
-              :title => _('remove') %>
-        <%= link_to content_tag('span',_('contact')),
-              friend.url.merge(:controller => 'contact', :action => 'new', :profile => friend.identifier),
-              :class => 'button icon-menu-mail',
-              :title => _('contact') %>
+        <%= button(:remove, _('remove'), { :action => 'remove', :id => friend.id }, :title => _('remove')) %>
+        <%= button(:'menu-mail', _('contact'), friend.url.merge(:controller => 'contact', :action => 'new', :profile => friend.identifier), :title => _('contact')) %>
       </div><!-- end class="controll" -->
       </li>
     <% end %>

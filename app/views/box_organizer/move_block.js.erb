@@ -1,0 +1,11 @@
+<%
+  from = "box-#{@source_box.id}"
+  to = "box-#{@target_box.id}"
+%>
+
+jQuery('#<%=from%>').html('<%=escape_javascript display_updated_box(@source_box)%>')
+jQuery('#<%=to%>').html('<%=escape_javascript display_updated_box(@target_box)%>')
+
+//page.visual_effect(:highlight, from)
+//page.visual_effect(:highlight, to) unless (from == to)
+

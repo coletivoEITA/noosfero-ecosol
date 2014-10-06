@@ -12,11 +12,11 @@ module LayoutHelper
     plugins_javascripts = @plugins.map { |plugin| [plugin.js_files].flatten.map { |js| plugin.class.public_path(js) } }.flatten
 
     output = ''
-    output += render :file =>  'layouts/_javascript'
-    output += javascript_tag 'render_all_jquery_ui_widgets()'
+    output += render 'layouts/javascript'
     unless plugins_javascripts.empty?
       output += javascript_include_tag plugins_javascripts, :cache => "cache/plugins-#{Digest::MD5.hexdigest plugins_javascripts.to_s}"
     end
+    output += javascript_tag 'render_all_jquery_ui_widgets()'
     output
   end
 
@@ -63,6 +63,7 @@ module LayoutHelper
       "/designs/templates/#{profile.layout_template}/stylesheets/style.css"
     end
   end
+
 
   def icon_theme_stylesheet_path
     icon_themes = []
