@@ -110,14 +110,6 @@ div#profile-disabled .unlock-button {
 a img {
   border: none;
 }
-.tooltip {
-  padding: 8px;
-  border: 1px solid #FF8000;
-  background-color: #FFFF66;
-  z-index: 100;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-}
 /*********************************************************/
 
 
@@ -6100,85 +6092,6 @@ li.profile-activity-item.upload_image .activity-gallery-images-count-1 img {
 
 .action-account-signup #content {
   text-align: center;
-}
-
-#signup-domain {
-  float: left;
-  display: inline-block;
-  vertical-align: middle;
-  background: #EEE;
-  border: 1px solid #CFCFCF;
-  line-height: 36px;
-  padding: 0px 7px;
-  color: #4A4A4A;
-  font-size: 20px;
-  text-transform: lowercase;
-  min-width: 190px;
-}
-
-#signup-form #signup-form-header #user_login {
-  margin: 0;
-  padding-right: 30px;
-  width: 150px;
-}
-
-#signup-login-field {
-  float: left;
-}
-
-#signup-form #signup-login {
-  display: inline-block;
-}
-
-#signup-form #signup-password,
-#signup-form #signup-password-confirmation,
-#signup-form #signup-email,
-#signup-form #signup-name,
-#signup-form #signup-login {
-  position: relative;
-}
-
-#signup-form small#signup-balloon,
-#signup-form small#password-balloon,
-#signup-form small#password-confirmation-balloon,
-#signup-form small#email-balloon,
-#signup-form small#name-balloon {
-  display: none;
-  width: 142px;
-  height: 69px;
-  color: #FFFFFF;
-  font-weight: bold;
-  font-size: 11px;
-  padding: 5px 10px 45px 10px;
-  margin: 0;
-  line-height: 1.5em;
-  background: transparent url(/images/gray-balloon.png) bottom center no-repeat;
-  position: absolute;
-  z-index: 2;
-  right: -150px;
-}
-
-#signup-form small#signup-balloon {
-  top: -110px;
-}
-
-#signup-form small#password-balloon,
-#signup-form small#password-confirmation-balloon,
-#signup-form small#email-balloon,
-#signup-form small#name-balloon {
-  top: -80px;
-}
-
-#signup-form .required-field label,
-#signup-form .formlabel {
-  color: #4A4A4A;
-  font-size: 20px;
-  font-weight: normal;
-  text-align: left;
-}
-
-#signup-form .required-field label::after {
-  content: '';
 }
 
 .action-account-signup #wrap-1 div.fieldWithErrors {

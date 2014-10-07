@@ -1,3 +1,6 @@
+<%= javascript_include_tag "plugins/responsive/javascripts/signup_form_v3" %>
+
+
 <% if @block_bot %>
   <div class="atention" style="font-size: 150%;">
     <strong><%=_('Are you a robot?')%></strong> <br />
@@ -7,48 +10,108 @@
 
 <% @profile_data = @person %>
 
-<%= javascript_include_tag('sign_up_password_rate') %>
-
 <%= error_messages_for :user, :person, :header_message => _('The account could not be created') %>
 
-<%= labelled_form_for :user, :html => { :multipart => true, :id => 'signup-form', :honeypot => true } do |f| %>
+<%= labelled_form_for :user, :html => { :multipart => true, :id => 'signup-form', :honeypot => true }, :horizontal => true do |f| %>
 
-<input type="hidden" id="signup_time_key" name="signup_time_key" />
-<script type="text/javascript">
-  jQuery.ajax({
-    type: "POST",
-    url: "<%= url_for :controller=>'account', :action=>'signup_time' %>",
-    dataType: 'json',
-    success: function(data) {
-      if (data.ok) jQuery('#signup_time_key').val(data.key);
-    }
-  });
-</script>
+    <input type="hidden" id="signup_time_key" name="signup_time_key" />
+    <script type="text/javascript">
+      jQuery.ajax({
+        type: "POST",
+        url: "<%= url_for :controller=>'account', :action=>'signup_time' %>",
+        dataType: 'json',
+        success: function(data) {
+          if (data.ok) jQuery('#signup_time_key').val(data.key);
+        }
+      });
+    </script>
 
 <%= hidden_field_tag :invitation_code, @invitation_code %>
 
-<div id='signup-form-header'>
-
-  <div id='signup-formfield-group'>
-    <%= label(:user, :login, _('Username'), {:class => 'formlabel'}) %>
-    <div id='signup-login'>
-      <div id='signup-login-field'>
-        <div class="input-group">
-        <span class="input-group-addon"><%= environment.default_hostname %>/</span>
-        <%= text_field(:user, :login, :id => 'user_login',
-                                :onchange => 'this.value = convToValidUsername(this.value);', :class => 'form-control') %>
+  <div id="user_login_group" class="form-group has-feedback">
+        <%= label(:user, :login, _('Username'), {:class => 'control-label col-sm-3 col-md-2 col-lg-2'}) %>
+        <div class=" col-sm-9 col-md-6 col-lg-6">
+            <div class="input-group">
+            <span class="input-group-addon"><%= environment.default_hostname %>/</span>
+            <%= text_field(:user, :login,
+                           :id => 'user_login_v3',
+                           :onchange => 'this.value = convToValidUsername(this.value);',
+                           :class => 'form-control',
+                           :'data-toggle' => "tooltip",
+                           :'data-placement' => "right",
+                           :'data-trigger' => 'focus',
+                           :title => _('Choose your login name carefully! It will be your network access and you will not be able to change it later.')
+                ) %>
+              <span id="user_login_alert" class="form-control-feedback"></span>
+            </div>
+            <p id="user_login_help_message" class="help-block"><%=   _('Checking availability of login name...') %></p>
         </div>
-        <div id='url-check'><p>&nbsp;</p></div>
+  </div>
+    <!--
+        <p id='url-check' class="help-block"></p>
         <span id='checking-message' class='checking' style='display:none'><%= _('Checking availability of login name...') %></span>
       </div>
-      <%= content_tag(:small, _('Choose your login name carefully! It will be your network access and you will not be able to change it later.'), :id => 'signup-balloon') %>
+
       <br style="clear: both;" />
     </div>
   </div>
+  -->
+
+  <div class="form-group">
+    <%= label(:user, :password, _('Password'), {:class => 'control-label col-sm-3 col-md-2 col-lg-2'}) %>
+    <div class=" col-sm-9 col-md-6 col-lg-6">
+        <%= password_field(:user,:password, :id => 'user_pw',
+                           :class => 'form-control',
+                           :'data-toggle' => "tooltip",
+                           :'data-placement' => "right",
+                           :'data-trigger' => 'focus',
+                           :title => _('Choose a password that you can remember easily. It must have at least 4 characters.')) %>
+      <p class="help-block"><%=  _('Choose a password that you can remember easily. It must have at least 4 characters.') %></p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= label(:user, :password_confirmation, _('Password confirmation'), {:class => 'control-label col-sm-3 col-md-2 col-lg-2'}) %>
+    <div class=" col-sm-9 col-md-6 col-lg-6">
+        <%= password_field(:user, :password_confirmation,
+                            :class => 'form-control',
+                            :'data-toggle' => "tooltip",
+                            :'data-placement' => "right",
+                            :'data-trigger' => 'focus',
+                            :title => _('We need to be sure that you filled in your password correctly. Confirm you password.')) %>
+      <p class="help-block"><%=  _('We need to be sure that you filled in your password correctly. Confirm you password.') %></p>
+    </div>
+  </div>
+
+    <div class="form-group">
+      <%= label(:user, :email, _('e-Mail'), {:class => 'control-label col-sm-3 col-md-2 col-lg-2'}) %>
+      <div class=" col-sm-9 col-md-6 col-lg-6">
+        <%= text_field(:user, :email,
+                           :class => 'form-control',
+                           :'data-toggle' => "tooltip",
+                           :'data-placement' => "right",
+                           :'data-trigger' => 'focus',
+                           :title => _('This e-mail address will be used to contact you.')) %>
+        <p class="help-block"><%=  _('We need to be sure that you filled in your password correctly. Confirm you password.') %></p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= label(:profile_data, :name, _('Full name'), {:class => 'control-label col-sm-3 col-md-2 col-lg-2'}) %>
+      <div class=" col-sm-9 col-md-6 col-lg-6">
+        <%= text_field(:profile_data, :name,
+                       :class => 'form-control',
+                       :'data-toggle' => "tooltip",
+                       :'data-placement' => "right",
+                       :'data-trigger' => 'focus',
+                       :title => _('Tell us your name, it will be used to identify yourself.')) %>
+      </div>
+    </div>
+
+
+
   <%= javascript_include_tag "signup_form" %>
   <div id='signup-password'>
-    <%= required f.password_field(:password, :id => 'user_pw') %>
-    <%= content_tag(:small,_('Choose a password that you can remember easily. It must have at least 4 characters.'), :id => 'password-balloon') %>
     <div id='password-rate'>
       <p><span class="invalid hidden" id='result-short'>
         <%=_('Short') %>
@@ -65,8 +128,8 @@
     </div>
   </div>
 
+
   <div id='signup-password-confirmation'>
-    <%= required f.password_field(:password_confirmation) %>
     <%= content_tag(:small,_('We need to be sure that you filled in your password correctly. Confirm you password.'), :id => 'password-confirmation-balloon') %>
     <div id='password-check'><p>&nbsp;</p></div>
   </div>
