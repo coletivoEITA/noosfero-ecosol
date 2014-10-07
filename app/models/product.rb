@@ -11,7 +11,8 @@ class Product < ActiveRecord::Base
 
   SEARCH_DISPLAYS = %w[map full]
 
-  attr_accessible :name, :product_category, :highlighted, :price, :enterprise, :image_builder, :description, :available, :qualifiers, :unit_id, :discount, :inputs
+  attr_accessible :name, :highlighted, :price, :discount, :image_builder, :description, :available, :qualifiers_list,
+    :unit_id, :enterprise, :qualifiers, :inputs, :product_category
 
   def self.default_search_display
     'full'
@@ -167,13 +168,12 @@ class Product < ActiveRecord::Base
   def qualifiers_list=(qualifiers)
     self.product_qualifiers.destroy_all
     qualifiers.each do |qualifier_id, certifier_id|
-      if qualifier_id != 'nil'
-        product_qualifier = ProductQualifier.new
-        product_qualifier.product = self
-        product_qualifier.qualifier_id = qualifier_id
-        product_qualifier.certifier_id = certifier_id
-        product_qualifier.save!
-      end
+      next if qualifier_id == 'nil'
+      product_qualifier = self.product_qualifiers.build
+      product_qualifier.product = self
+      product_qualifier.qualifier_id = qualifier_id
+      product_qualifier.certifier_id = certifier_id
+      product_qualifier.save!
     end
   end
 
