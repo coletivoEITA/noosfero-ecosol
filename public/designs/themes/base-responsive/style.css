@@ -1349,3 +1349,15 @@ table#recaptcha_table tr:hover td {
 .link-list-block a.btn {
     display: inline !important;
 }
+
+p.help-block {
+    text-align: left;
+}
+
+div.tooltip-inner {
+    width: 350px;
+}
+
+.form-horizontal .has-feedback .form-control-feedback {
+    right: 0 !important;
+}
