@@ -44,10 +44,8 @@
       </tr>
       <% end %>
     </table>
-    <%= button_to_function(
-      :add,
-      _('Add new qualifier'),
-      "new_qualifier_row('#product-qualifiers-list', '#{escape_javascript(select_qualifiers(@product))}', '#{escape_javascript(remove_qualifier_button)}')"
+    <%= button_to_function( :add, _('Add new qualifier'),
+      "new_qualifier_row('#product-qualifiers-list')"
     ) %>
     <%= hidden_field_tag "product[qualifiers_list][nil]" %>
   <% end %>
@@ -59,5 +57,15 @@
     <%= cancel_edit_product_link(@product, 'info') %>
   <% end %>
 <% end %>
+
+<div id="new-qualifier-select" style="display: none">
+  <%= select_qualifiers @product %>
+</div>
+<div id="new-qualifier-certifier" style="display: none">
+  <%= select_tag :certifier %>
+</div>
+<div id="new-qualifier-remove" style="display: none">
+  <%= remove_qualifier_button %>
+</div>
 
 <%= render :partial => 'shared/numbers_only_javascript' %>

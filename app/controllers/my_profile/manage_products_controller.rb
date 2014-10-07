@@ -69,9 +69,9 @@ class ManageProductsController < ApplicationController
     field = params[:field]
     if request.post?
       begin
-        @product.update_attributes!(params[:product])
+        @product.update_attributes! params[:product]
         render :partial => "display_#{field}", :locals => {:product => @product}
-      rescue Exception => e
+      rescue Exception
         render :partial => "edit_#{field}", :locals => {:product => @product, :errors => true}
       end
     else
