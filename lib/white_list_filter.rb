@@ -9,7 +9,7 @@ module WhiteListFilter
     doc = Nokogiri::HTML::DocumentFragment.parse content
     doc.css('iframe').each do |iframe|
       src = URI.parse iframe.attr('src') rescue nil
-      iframe.remove unless src and trusted_sites.include? src.host
+      iframe.remove if src and not trusted_sites.include? src.host
     end
     doc.to_html
   end
