@@ -237,3 +237,29 @@ img, video, audio {
         color: rgba(255,255,255,0) !important;
     }
 }
+
+.box-container-1, .box-container-2, .box-container-3 {
+    padding-right: 0px;
+}
+
+.container > #content {
+    margin-right: 0px;
+}
+
+body {
+    background-color: #eeeeee;
+}
+
+.block, .no-boxes {
+    position: relative;
+    padding: 10px;
+    margin: 0px 0px 20px 0px;
+    float: none;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.3);/*#d8d8d8;*/
+    background-color: white;
+}
+
+.no-boxes {
+    margin-left: 15px;
+}
