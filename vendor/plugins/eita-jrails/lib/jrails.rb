@@ -38,5 +38,5 @@ module JRails
 end
 
 require 'jrails/engine'
-require 'jrails/jquery_selector_assertions' if Rails.env.test?
+require 'jrails/selector_assertions' if Rails.env.test?
 
