@@ -1,9 +1,10 @@
 <%= javascript_include_tag 'jquery-2.1.1.min', 'jquery-migrate-1.2.1', 'jrails.js',
-'jquery.cycle.all.min.js', 'colorbox',
-'jquery-ui-1.10.4/js/jquery-ui-1.10.4.min', 'jquery.scrollTo', 'jquery.form.js', 'jquery-validation/jquery.validate',
-'jquery.cookie', 'jquery.ba-bbq.min.js', 'reflection', 'jquery.tokeninput',
-'add-and-join', 'report-abuse', 'catalog', 'manage-products', 'autogrow',
-'jquery-timepicker-addon/dist/jquery-ui-timepicker-addon', 'application.js', 'rails.js', 'inputosaurus.js', :cache => 'cache/application' %>
+  'jquery.cycle.all.min.js',
+  'jquery.colorbox-min', 'colorbox-helpers',
+  'jquery-ui-1.10.4/js/jquery-ui-1.10.4.min', 'jquery.scrollTo', 'jquery.form.js', 'jquery-validation/jquery.validate',
+  'jquery.cookie', 'jquery.ba-bbq.min.js', 'reflection', 'jquery.tokeninput',
+  'add-and-join', 'report-abuse', 'catalog', 'manage-products', 'autogrow',
+  'jquery-timepicker-addon/dist/jquery-ui-timepicker-addon', 'application.js', 'rails.js', 'inputosaurus.js', :cache => 'cache/application' %>
 
 <% language = FastGettext.locale %>
 <% %w{messages methods}.each do |type| %>
