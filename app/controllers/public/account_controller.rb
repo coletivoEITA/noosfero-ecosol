@@ -288,8 +288,6 @@ class AccountController < ApplicationController
       @status = _('This field can\'t be blank')
     end
 
-    a = {:bunda =>1}
-
     respond_to do |format|
       format.html { render :partial => 'identifier_status' }
       format.json { render :json => {
