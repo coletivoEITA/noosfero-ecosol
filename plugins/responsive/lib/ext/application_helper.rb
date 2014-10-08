@@ -94,7 +94,7 @@ module ApplicationHelper
         {s_('people|More popular') => {:href => url_for({:controller => 'search', :action => 'contents', :filter => 'more_popular'})}}
     ]
     if logged_in?
-      links.push(_('New content') => colorbox_options({:href => url_for({:controller => 'cms', :action => 'new', :profile => current_user.login, :cms => true})}))
+      links.push(_('New content') => modal_options({:href => url_for({:controller => 'cms', :action => 'new', :profile => current_user.login, :cms => true})}))
     end
 
     links.each do |link|

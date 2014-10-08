@@ -876,21 +876,6 @@ log.error = function() {
   window.log.apply(window, jQuery.merge(['error'], arguments));
 }
 
-jQuery(function($) {
-  $('.colorbox,a.thickbox').live('click', function() {
-    $('#noosferoModalContent').empty().load($(this).attr('href'));
-    $('#noosferoModal').modal();
-
-    return false;
-  });
-
-  $('.colorbox-close').live('click', function() {
-    $('#noosferoModal').modal('hide');
-    return false;
-  });
-
-});
-
 function showHideTermsOfUse() {
   if( jQuery("#article_has_terms_of_use").attr("checked") )
     jQuery("#text_area_terms_of_use").show();

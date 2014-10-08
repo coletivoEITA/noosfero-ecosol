@@ -13,7 +13,7 @@ class ResponsivePlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['bootstrap.js', 'application_v3.js', 'responsive-noosfero.js'].map{ |j| "javascripts/#{j}" }
+    %w[bootstrap.js application_v3.js modal.js responsive-noosfero.js].map{ |j| "javascripts/#{j}" }
   end
 
 end
