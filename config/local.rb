@@ -4,4 +4,5 @@ FastGettext.default_locale = Noosfero.default_locale
 I18n.locale = Noosfero.default_locale
 I18n.default_locale = Noosfero.default_locale
 
-Time.zone = 'America/Sao_Paulo'
+# don't work with delayed job
+#Time.zone = 'America/Sao_Paulo'
