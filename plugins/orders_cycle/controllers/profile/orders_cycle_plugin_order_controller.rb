@@ -83,6 +83,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     @order = OrdersPlugin::Sale.create! :cycle => @cycle, :consumer => @consumer
     redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
   end
+
   def filter
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
     @order = OrdersPlugin::Sale.find_by_id params[:order_id]

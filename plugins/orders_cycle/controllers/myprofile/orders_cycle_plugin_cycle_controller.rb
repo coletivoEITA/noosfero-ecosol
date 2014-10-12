@@ -103,6 +103,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def report_products
+    return super unless params[:id].present?
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     tmp_dir, report_file = report_products_by_supplier @cycle.products_by_suppliers
 
@@ -113,6 +114,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def report_orders
+    return super unless params[:id].present?
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     tmp_dir, report_file = report_orders_by_consumer @cycle.sales.ordered
 
@@ -124,6 +126,8 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   def filter
     @cycle = profile.orders_cycles.find params[:context_id]
     @scope = @cycle
+
+    params[:code].gsub!(/^#{@cycle.code}\./, '') if params[:code].present?
     super
   end
 
