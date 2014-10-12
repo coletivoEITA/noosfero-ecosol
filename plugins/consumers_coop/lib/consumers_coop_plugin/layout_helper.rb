@@ -10,6 +10,7 @@ module ConsumersCoopPlugin::LayoutHelper
   HeaderButtons = [
     [:start, 'consumers_coop_plugin.lib.layout_helper.start', proc{ profile.url }, proc{ on_homepage? }],
     [:orders, 'consumers_coop_plugin.lib.layout_helper.orders', {:controller => :consumers_coop_plugin_order, :action => :index}],
+    [:volunteering, 'consumers_coop_plugin.lib.layout_helper.volunteering', {:controller => :consumers_coop_plugin_volunteering, :action => :index}],
     [:adm, 'consumers_coop_plugin.lib.layout_helper.administration', {:controller => :consumers_coop_plugin_myprofile, :action => :index},
      proc{ @admin }, proc{ profile.has_admin? user }],
   ]

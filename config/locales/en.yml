@@ -1060,6 +1060,7 @@
         orders: Orders
         start: Start
         administration: Administration
+        volunteering: Volunteering
     terms:
       <<: *suppliers_terms
       profile: &consumers_coop_term_profile
@@ -1130,6 +1131,10 @@
           cancel: cancel
           collective_consumptio: "Collective Consumption Mode"
           disabled: Disabled
+          general: "General"
+          header: "Header"
+          volunteers: "Volunteers"
+          volunteers_enabled: "Manage volunteers' period"
           header_background_col: "Header background color"
           header_s_image: "Header's image"
           header_type: "Header Type"
@@ -1138,7 +1143,6 @@
           image_help: "This image will be used on the %{terms.profile.singular}'s page, must be 1040x90px, it will be automatically cropped to this size."
           pure_color_collective: "pure color + %{terms.profile.singular} name"
           save: Save
-          settings_of_solidary_: "Settings of the Consumers' Coop"
           text_color: "Text color"
           this_name_will_be_use: "This name will be used to avoid always use the full name of the %{terms.profile.singular}. How the %{terms.profile.singular} is generally called by the people?"
           white: white
