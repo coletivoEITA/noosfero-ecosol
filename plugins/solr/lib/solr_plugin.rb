@@ -147,6 +147,7 @@ class SolrPlugin < Noosfero::Plugin
     scopes_applied = scope.scopes_applied.dup rescue [] #rescue association and class direct filtering
 
     scope.scope_attributes.each do |attr, value|
+      next if attr == 'type'
       raise "Non-indexed attribute '#{attr}' speficied in scope_attributes" unless solr_fields.include? attr.to_sym
 
       # if the filter is present here, then prefer it
