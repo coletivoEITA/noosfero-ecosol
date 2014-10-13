@@ -2,7 +2,7 @@
 <% extra_properties = @plugins.dispatch(:asset_product_properties, product)%>
 
 <li class="search-product-item <%= 'highlighted' if product.highlighted? %>">
-
+  <%= link_to_product product, :class => 'search-result-title' %>
   <div class="search-product-item-first-column">
     <%= render :partial => 'search/image', :object => product %>
 
@@ -18,23 +18,25 @@
             <span class="search-product-unit">&nbsp;<%= _('/') %>&nbsp;<%= product.unit.name %></span>
           <% end %>
         <% end %>
-        <div class="search-product-inputs-info">
-          <% if p = product.percentage_from_solidarity_economy %>
-            <div class="search-product-percentage-from-solidarity-economy search-product-ecosol-percentage-icon-<%= p[0].to_s %>"
-              title="<%=_('Percentage of inputs from solidarity economy')%>">
-              <%= p[1] %>
-            </div>
-          <% end %>
+        <% if (p = product.percentage_from_solidarity_economy)[0] > 0 || product.price_described? %>
+          <div class="search-product-inputs-info">
+            <% if p[0] > 0 %>
+              <div class="search-product-percentage-from-solidarity-economy search-product-ecosol-percentage-icon-<%= p[0].to_s %>"
+                title="<%=_('Percentage of inputs from solidarity economy')%>">
+                <%= p[1] %>
+              </div>
+            <% end %>
 
-          <% if product.price_described? %>
-            <% title = (product.inputs.relevant_to_price + product.price_details).map{ |i|
-              '<div class="search-product-input-dots-to-price">' +
-                '<div class="search-product-input-name">' + i.name + '</div>' +
-                price_span(i.price, :class => 'search-product-input-price') +
-              '</div>' }.join('') %>
-            <%= link_to_function _("Open Price"), '', :title => title, :class => "search-product-price-details" %>
-          <% end %>
-        </div>
+            <% if product.price_described? %>
+              <% title = (product.inputs.relevant_to_price + product.price_details).map{ |i|
+                '<div class="search-product-input-dots-to-price">' +
+                  '<div class="search-product-input-name">' + i.name + '</div>' +
+                  price_span(i.price, :class => 'search-product-input-price') +
+                '</div>' }.join('') %>
+              <%= link_to_function _("Open Price"), '', :title => escape_once(title), :class => "search-product-price-details" %>
+            <% end %>
+          </div>
+        <% end %>
       <% end %>
     <% else %>
       <span class="product-not-available"><%= _('Not available') %></div>
@@ -42,7 +44,6 @@
 
   </div>
   <div class="search-product-item-second-column">
-    <%= link_to_product product, :class => 'search-result-title' %>
     <div class="search-product-supplier">
       <span class="search-field-label"><%= _('Supplier') %>  </span><%= link_to_homepage(product.enterprise.name, product.enterprise.identifier) %>
     </div>
@@ -57,7 +58,7 @@
     <div class="search-product-region">
       <% if product.enterprise.region %>
         <span class="search-field-label"><%= _('City') %></span>
-        <br /><%= city_with_state(product.enterprise.region) %>
+        <%= city_with_state(product.enterprise.region) %>
       <% end %>
     </div>
     <div class="search-product-qualifiers">

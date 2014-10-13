@@ -18,11 +18,11 @@
         <% end %>
       <% end %>
     <% elsif ['pdf'].include? extension %>
-      <%= link_to '', image.view_url, :class => 'search-image-pic icon-application-pdf' %>
+      <%= link_to '', image.view_url, :class => 'icon-application-pdf' %>
     <% elsif ['doc', 'docx', 'odt', 'rtf', 'txt', 'html', 'htm'].include? extension %>
-      <%= link_to '', image.view_url, :class => 'search-image-pic icon-application-vnd-oasis-opendocument-text' %>
+      <%= link_to '', image.view_url, :class => 'icon-application-vnd-oasis-opendocument-text' %>
     <% elsif ['xls', 'xlsx', 'ods', 'csv', 'tsv', 'tab'].include? extension %>
-      <%= link_to '', image.view_url, :class => 'search-image-pic icon-application-vnd-oasis-opendocument-spreadsheet' %>
+      <%= link_to '', image.view_url, :class => 'icon-application-vnd-oasis-opendocument-spreadsheet' %>
     <% end %>
   <% elsif image.is_a? Gallery %>
     <div class="search-gallery-items">
