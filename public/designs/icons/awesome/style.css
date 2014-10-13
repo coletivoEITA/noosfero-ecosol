@@ -271,6 +271,7 @@
     content: "\f014";
 }
 .icon-home:before,
+.icon-content-enterprise-homepage:before,
 .icon-menu-home:before,
 .fa-home:before {
     content: "\f015";
@@ -419,6 +420,7 @@
 }
 .fa-edit:before,
 .icon-blog:before,
+.icon-content-blog:before,
 .icon-menu-articles:before,
 .icon-newblog:before,
 .fa-pencil-square-o:before {
@@ -586,6 +588,7 @@
 }
 .icon-event:before,
 .icon-menu-events:before,
+.icon-content-event:before,
 .icon-newevent:before,
 .fa-calendar:before {
     content: "\f073";
@@ -613,6 +616,7 @@
     content: "\f07a";
 }
 .icon-folder:before,
+.icon-content-folder:before,
 .image-gallery-item.folder:before,
 .fa-folder:before {
     content: "\f07b";
@@ -648,6 +652,7 @@
 }
 .icon-chat:before,
 .icon-forum:before,
+.icon-content-forum:before,
 .icon-newforum:before,
 .fa-comments:before {
     content: "\f086";
@@ -954,6 +959,9 @@
 }
 .icon-application-vnd-oasis-opendocument-text:before,
 .icon-text-html:before,
+.icon-content-textile-article:before,
+.icon-content-tiny-mce-article:before,
+.icon-content-text-article:before,
 .fa-file-text-o:before {
     content: "\f0f6";
 }
