@@ -51,7 +51,9 @@ function verifyLoginAjaxV3(value) {
 
 jQuery(document).ready(function(){
 
-  window.checking_login_name_message = jQuery('#user_login_help_message').html();
+  var user_login_help_message = jQuery('#user_login_help_message');
+  window.checking_login_name_message = user_login_help_message.html();
+  user_login_help_message.html('');
 
   jQuery("#user_login_v3").blur(function(evt){
     evt.stopPropagation();

@@ -1,4 +1,5 @@
 <%= javascript_include_tag "plugins/responsive/javascripts/signup_form_v3" %>
+<%= javascript_include_tag "/plugins/responsive/javascripts/sign_up_password_rate_v3" %>
 
 
 <% if @block_bot %>
@@ -57,28 +58,42 @@
   </div>
   -->
 
-  <div class="form-group">
+  <div id="user_pw_group" class="form-group">
     <%= label(:user, :password, _('Password'), {:class => 'control-label col-sm-3 col-md-2 col-lg-2'}) %>
     <div class=" col-sm-9 col-md-6 col-lg-6">
-        <%= password_field(:user,:password, :id => 'user_pw',
+        <%= password_field(:user,:password, :id => 'user_pw_v3',
                            :class => 'form-control',
                            :'data-toggle' => "tooltip",
                            :'data-placement' => "right",
                            :'data-trigger' => 'focus',
                            :title => _('Choose a password that you can remember easily. It must have at least 4 characters.')) %>
-      <p class="help-block"><%=  _('Choose a password that you can remember easily. It must have at least 4 characters.') %></p>
+      <span id="user_pw_alert" class="form-control-feedback"></span>
+
+      <p id="user_pw_help_message" class="help-block"></p>
     </div>
   </div>
+    <script type="text/javascript">
+        window.password_states = <%= {
+        :blank   => _('Blank'),
+        :short   => _('Short'),
+        :bad     => _('Bad'),
+        :good    => _('Good'),
+        :strong  => _('Strong')
+      }.to_json %>
+    </script>
 
-  <div class="form-group">
+  <div id="user_pw_confirm_group" class="form-group">
     <%= label(:user, :password_confirmation, _('Password confirmation'), {:class => 'control-label col-sm-3 col-md-2 col-lg-2'}) %>
     <div class=" col-sm-9 col-md-6 col-lg-6">
         <%= password_field(:user, :password_confirmation,
+                            :id => 'user_pw_confirm',
                             :class => 'form-control',
                             :'data-toggle' => "tooltip",
                             :'data-placement' => "right",
                             :'data-trigger' => 'focus',
                             :title => _('We need to be sure that you filled in your password correctly. Confirm you password.')) %>
+      <span id="user_pw_confirm_alert" class="form-control-feedback"></span>
+      <p id="user_pw_confirm_help_message" class="help-block"></p>
       <p class="help-block"><%=  _('We need to be sure that you filled in your password correctly. Confirm you password.') %></p>
     </div>
   </div>
@@ -127,6 +142,38 @@
       </span></p>
     </div>
   </div>
+
+
+
+    <div class="form-group">
+      <%= label(:user, :email, _('e-Mail'), {:class => 'control-label col-sm-3 col-md-2 col-lg-2'}) %>
+      <div class=" col-sm-9 col-md-6 col-lg-6">
+        <%= text_field(:user, :email,
+                           :class => 'form-control',
+                           :'data-toggle' => "tooltip",
+                           :'data-placement' => "right",
+                           :'data-trigger' => 'focus',
+                           :title => _('This e-mail address will be used to contact you.')) %>
+        <p class="help-block"><%=  _('We need to be sure that you filled in your password correctly. Confirm you password.') %></p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= label(:profile_data, :name, _('Full name'), {:class => 'control-label col-sm-3 col-md-2 col-lg-2'}) %>
+      <div class=" col-sm-9 col-md-6 col-lg-6">
+        <%= text_field(:profile_data, :name,
+                       :class => 'form-control',
+                       :'data-toggle' => "tooltip",
+                       :'data-placement' => "right",
+                       :'data-trigger' => 'focus',
+                       :title => _('Tell us your name, it will be used to identify yourself.')) %>
+      </div>
+    </div>
+
+
+
+
+
 
 
   <div id='signup-password-confirmation'>
