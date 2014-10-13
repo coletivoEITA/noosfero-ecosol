@@ -2,8 +2,8 @@ require_dependency 'application_helper'
 
 module ApplicationHelper
 
-  def button_without_text(type, label, url, html_options = {})
-    the_class = "btn btn-xs btn-default icon-#{type}"
+  def button_without_text(type, label, url, html_options = {}, button_type='default')
+    the_class = "btn btn-xs btn-#{button_type} icon-#{type}"
     if html_options.has_key?(:class)
       the_class << ' ' << html_options[:class]
     end
@@ -15,40 +15,40 @@ module ApplicationHelper
     end
   end
 
-  def button_to_function(type, label, js_code, html_options = {}, &block)
-    html_options[:class] = "btn btn-xs btn-default with-text" unless html_options[:class]
+  def button_to_function(type, label, js_code, html_options = {}, button_type='default', &block)
+    html_options[:class] = "btn btn-xs btn-#{button_type} with-text #{html_options[:class]}"
     html_options[:class] << " icon-#{type}"
     link_to_function(label, js_code, html_options, &block)
   end
 
-  def button_to_function_without_text(type, label, js_code, html_options = {}, &block)
+  def button_to_function_without_text(type, label, js_code, html_options = {}, button_type='default', &block)
     html_options[:class] = "" unless html_options[:class]
-    html_options[:class] << " btn btn-xs btn-default icon-#{type}"
+    html_options[:class] << " btn btn-xs btn-#{button_type} icon-#{type}"
     link_to_function(content_tag('span', label), js_code, html_options, &block)
   end
 
-  def button_to_remote(type, label, options, html_options = {})
-    html_options[:class] = "btn btn-xs btn-default with-text" unless html_options[:class]
+  def button_to_remote(type, label, options, html_options = {}, button_type='default')
+    html_options[:class] = "btn btn-xs btn-#{button_type} with-text" unless html_options[:class]
     html_options[:class] << " icon-#{type}"
     link_to_remote(label, options, html_options)
   end
 
-  def button_to_remote_without_text(type, label, options, html_options = {})
+  def button_to_remote_without_text(type, label, options, html_options = {}, button_type='default')
     html_options[:class] = "" unless html_options[:class]
-    html_options[:class] << " btn btn-xs btn-default icon-#{type}"
+    html_options[:class] << " btn btn-xs btn-#{button_type} icon-#{type}"
     link_to_remote(content_tag('span', label), options, html_options.merge(:title => label))
   end
 
-  def icon(icon_name, html_options = {})
-    the_class = "btn btn-xs btn-default #{icon_name}"
+  def icon(icon_name, html_options = {}, button_type='default')
+    the_class = "btn btn-xs btn-#{button_type} #{icon_name}"
     if html_options.has_key?(:class)
       the_class << ' ' << html_options[:class]
     end
     content_tag('div', '', html_options.merge(:class => the_class))
   end
 
-  def icon_button(type, text, url, html_options = {})
-    the_class = "btn btn-xs btn-default icon-button icon-#{type}"
+  def icon_button(type, text, url, html_options = {}, button_type='default')
+    the_class = "btn btn-xs btn-#{button_type} icon-button icon-#{type}"
     if html_options.has_key?(:class)
       the_class << ' ' << html_options[:class]
     end
@@ -72,8 +72,8 @@ module ApplicationHelper
   end
 
 
-  def expirable_button(content, action, text, url, options = {})
-    options[:class] = ["btn btn-xs btn-default with-text icon-#{action.to_s}", options[:class]].compact.join(' ')
+  def expirable_button(content, action, text, url, options = {}, button_type='default')
+    options[:class] = ["btn btn-xs btn-#{button_type} with-text icon-#{action.to_s}", options[:class]].compact.join(' ')
     expirable_content_reference content, action, text, url, options
   end
 
@@ -207,7 +207,7 @@ module ApplicationHelper
     output
   end
 
-  def popover_menu(title,menu_title,links,html_options={})
+  def popover_menu(title,menu_title,links,html_options={}, button_type='default')
     menu_content = ""
     first = true
     links.each do |link|
@@ -224,7 +224,7 @@ module ApplicationHelper
       end
     end
 
-    '<button class="btn btn-xs btn-default btn-popover-menu icon-parent-folder" data-toggle="popover" data-html="true" data-placement="top" data-trigger="focus" data-content="'+CGI::escapeHTML(menu_content)+'" data-title="'+menu_title+'"></button>'
+    '<button class="btn btn-xs btn-#{button_type} btn-popover-menu icon-parent-folder" data-toggle="popover" data-html="true" data-placement="top" data-trigger="focus" data-content="'+CGI::escapeHTML(menu_content)+'" data-title="'+menu_title+'"></button>'
   end
 
 

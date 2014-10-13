@@ -38,7 +38,7 @@
     <%= yield :head %>
     <%=
       @plugins.dispatch(:head_ending).map do |content|
-        if content.respond_to?(:call) then instance_exec(&content).html_safe else content.html_safe end
+        if content.respond_to?(:call) then instance_exec(&content).to_s.html_safe else content.html_safe end
       end.join("\n")
     %>
 
@@ -52,7 +52,7 @@
 
     <%=
       @plugins.dispatch(:body_beginning).map do |content|
-        if content.respond_to?(:call) then instance_exec(&content).html_safe else content.html_safe end
+        if content.respond_to?(:call) then instance_exec(&content).to_s.html_safe else content.html_safe end
       end.join("\n")
     %>
 
@@ -62,7 +62,10 @@
       <div id='theme-header'>
         <%= theme_header %>
       </div>
-      <%= insert_boxes(yield) %>
+      <div id="content">
+        <%= render 'layouts/profile_title' if profile %>
+        <%= insert_boxes yield %>
+      </div>
     </div>
 
     <%= render_environment_features(:logged_in) %>
