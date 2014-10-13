@@ -1,6 +1,41 @@
 @import url(../base-responsive/style.css);
 @import url('bootstrap.css');
 
+/* News in front page */
+
+@media (max-width: 359px) {
+  .news-area {
+    width: 100%;
+  }
+  .news-area ul {
+    overflow: inherit;
+    height: auto;
+  }
+}
+
+@media (min-width: 360px) {
+  #content .news-area h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+#content .news-area a.news-see-more {
+  position: static;
+  float: right;
+}
+
+/* End of News in front page */
+
+/* Search results */
+.controller-search #content .search-results-type-article li {
+  padding: 10px;
+}
+[class*='icon-content'] {
+  font-size: 64px;
+}
+/* End of Search results */
+
 #site-title img {
   left:-22px;
   position:absolute;
