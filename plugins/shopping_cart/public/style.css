@@ -1,7 +1,9 @@
 .cart-add-item .ui-icon-cart,
 .cart-buy .ui-icon-cart,
-.icon-cart {
-  background: url("/plugins/shopping_cart/images/button-icon.png") no-repeat scroll left center transparent;
+.icon-cart, .btn.icon-cart {
+  background-image: url("/plugins/shopping_cart/images/button-icon.png");
+  background-repeat: no-repeat;
+  background-position: 5px center;
 }
 .cart-add-item.small-loading {
   background-image: url(/images/loading-small.gif);
@@ -11,9 +13,9 @@ a.button.with-text.icon-cart,
 a.button.with-text.icon-cart:visited,
 body.noosfero a.button.with-text.icon-cart,
 body.noosfero a.button.with-text.icon-cart:visited,
-input.button.with-text.icon-cart
-.icon-cart {
-  padding-left: 26px;
+input.button.with-text.icon-cart,
+.icon-cart, .btn.icon-cart {
+  padding-left: 30px;
 }
 .catalog-autocomplete .cart-add-item {
   display: block;
