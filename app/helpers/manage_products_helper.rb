@@ -194,7 +194,8 @@ module ManageProductsHelper
         certifier_name = certifier.link.blank? ? certifier.name : link_to(certifier.name, certifier.link)
         certified_by = _('certified by %s') % certifier_name
       else
-        certified_by = _('(Self declared)')
+        #certified_by = _('(Self declared)') - We are assuming that no text beside the qualifier means that it is self declared
+        certified_by = ''
       end
       data << content_tag('li', "✔ #{pq.qualifier.name} #{certified_by}", :class => 'product-qualifiers-item')
     end

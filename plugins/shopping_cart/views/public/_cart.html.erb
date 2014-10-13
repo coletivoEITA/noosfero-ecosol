@@ -2,6 +2,11 @@
   <% if cart_minimized %>
     <div class="cart-applet">
       <%= cart_applet %>
+
+      <%= link_to _('Shopping checkout'), "/plugin/shopping_cart/buy", :class => 'cart-applet-checkout colorbox' %>
+      <span class="cart-applet-checkout-disabled">
+        <%= _('Basket is empty') %>
+      </span>
     </div>
   <% end %>
   <div class="cart-inner">
