@@ -1074,6 +1074,7 @@
         start: Início
         orders: Pedidos
         administration: Administração
+        volunteering: Voluntariado
     terms: 
       <<: *suppliers_terms
       profile: &consumers_coop_term_profile
@@ -1148,6 +1149,10 @@
           cancel: Cancelar
           collective_consumptio: "Modo %{terms.profile.singular}"
           disabled: Desabilitado
+          general: "Geral"
+          header: "Cabeçalho"
+          volunteers: "Voluntários"
+          volunteers_enabled: "Gerir turnos de voluntários"
           header_background_col: "Cor de fundo de cabeçalho"
           header_s_image: "Imagem do cabeçalho"
           header_type: "Tipo de cabeçalho"
@@ -1156,7 +1161,6 @@
           image_help: "Esta imagem será usada no cabeçalho da página %{terms.profile.from_article.singular}, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
           pure_color_collective: "Cor pura + nome %{terms.profile.from_article.singular}"
           save: Salvar
-          settings_of_solidary_: "Configurações %{terms.profile.from_article.singular}"
           text_color: "Cor do texto"
           this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso %{terms.profile.from_article.singular}. Como %{terms.profile.article.singular} é comumente chamado pelas pessoas?"
           white: branco
