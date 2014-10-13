@@ -56,17 +56,14 @@ class LinkListBlock < Block
   end
 
   def content(args={})
-    block_title(title) +
-    content_tag('ul',
-      links.select{|i| !i[:name].blank? and !i[:address].blank?}.map{|i| content_tag('li', link_html(i))}.join
-    )
+    block = self
+    list = links.select{ |i| i[:name].present? and i[:address].present? }
+    lambda do |context|
+      render file: 'blocks/link_list_block', locals: {block: block, links: list}
+    end
   end
 
   def link_html(link)
-    klass = 'icon-' + link[:icon] if link[:icon]
-    sanitize_link(
-      link_to(link[:name], expand_address(link[:address]), :target => link[:target], :class => klass, :title => link[:title])
-    )
   end
 
   def expand_address(address)
@@ -95,11 +92,11 @@ class LinkListBlock < Block
     end
   end
 
-  private
-
-  def sanitize_link(text)
+  def sanitize_link html
     sanitizer = HTML::WhiteListSanitizer.new
-    sanitizer.sanitize(text)
+    sanitizer.sanitize html
   end
+
+  private
 
 end
