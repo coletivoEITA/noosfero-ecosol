@@ -1350,6 +1350,11 @@ div.tooltip-inner {
     width: 350px;
 }
 
+.form-control-feedback {
+    top: 0px !important;
+    right: 15px !important;
+}
+
 .form-horizontal .has-feedback .form-control-feedback {
     right: 0 !important;
 }
