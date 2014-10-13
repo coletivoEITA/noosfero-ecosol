@@ -525,16 +525,14 @@ module ApplicationHelper
         category_title = filtered_category.split(/[-_\s,.;'"]+/).map(&:capitalize).join(' ')
         category_name = category_title.gsub(' ', '_' )
         category_icon = "/images/icons-cat/#{category_name}.png"
-        if ! File.exists?(Rails.root.join('public', category_icon))
-          category_icon = '/images/icons-cat/undefined.png'
-        end
+        next unless File.exists?(Rails.root.join('public', category_icon))
         content_tag('span',
           content_tag( 'span', category_title ),
           :title => category_title,
           :class => 'product-cat-icon cat_icon_' + category_name,
           :style => "background-image:url(#{category_icon})"
         )
-      end.join("\n").html_safe
+      end.compact.join("\n").html_safe
       content_tag('div',
         content_tag( 'span', _('Principal Product Categories'), :class => 'header' ) +"\n"+ icons,
         :class => 'product-category-icons'
