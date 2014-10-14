@@ -130,19 +130,22 @@ function setupPasswordField() {
 }
 
 function setupPasswordConfirmation() {
-    jQuery('#user_pw_confirm').keyup(function(elm) {
-        password = jQuery('#user_pw_v3').val();
+    jQuery('#user_pw_confirm').blur(function(evt) {
+        var password = jQuery('#user_pw_v3').val();
+        var confirmed_password = jQuery('#user_pw_confirm').val();
 
         var help_message = jQuery('#user_pw_confirm_help_message');
         var pw_alert = jQuery('#user_pw_confirm_alert');
         var pw_group = jQuery('#user_pw_confirm_group');
 
-        if (password != elm.value) {
+        if (password != confirmed_password) {
             pw_alert.removeClass('fa fa-warning').removeClass('fa fa-check').addClass('fa fa-warning');
             pw_group.removeClass('has-error').removeClass('has-success').addClass('has-error');
+            help_message.html(window.password_confirm_msg.error)
         } else {
             pw_alert.removeClass('fa fa-warning').removeClass('fa fa-check').addClass('fa fa-check');
-            pw_group.removeClass('has-error').removeClass('has-success').addClass('has-error');
+            pw_group.removeClass('has-error').removeClass('has-success').addClass('has-success');
+            help_message.html('');
         }
     });
 

@@ -80,6 +80,9 @@
         :good    => _('Good'),
         :strong  => _('Strong')
       }.to_json %>
+        window.password_confirm_msg = <%= {
+        :error   => _('Passwords do not match')
+        }.to_json %>
     </script>
 
   <div id="user_pw_confirm_group" class="form-group">
@@ -94,20 +97,23 @@
                             :title => _('We need to be sure that you filled in your password correctly. Confirm you password.')) %>
       <span id="user_pw_confirm_alert" class="form-control-feedback"></span>
       <p id="user_pw_confirm_help_message" class="help-block"></p>
-      <p class="help-block"><%=  _('We need to be sure that you filled in your password correctly. Confirm you password.') %></p>
+
     </div>
   </div>
 
-    <div class="form-group">
+    <div id="user_email_group" class="form-group">
       <%= label(:user, :email, _('e-Mail'), {:class => 'control-label col-sm-3 col-md-2 col-lg-2'}) %>
       <div class=" col-sm-9 col-md-6 col-lg-6">
         <%= text_field(:user, :email,
+                           :id => 'user_email',
                            :class => 'form-control',
                            :'data-toggle' => "tooltip",
                            :'data-placement' => "right",
                            :'data-trigger' => 'focus',
                            :title => _('This e-mail address will be used to contact you.')) %>
-        <p class="help-block"><%=  _('We need to be sure that you filled in your password correctly. Confirm you password.') %></p>
+        <span id="user_email_alert" class="form-control-feedback"></span>
+
+        <p id="user_email_help_message" class="help-block"></p>
       </div>
     </div>
 
@@ -124,94 +130,6 @@
     </div>
 
 
-
-  <%= javascript_include_tag "signup_form" %>
-  <div id='signup-password'>
-    <div id='password-rate'>
-      <p><span class="invalid hidden" id='result-short'>
-        <%=_('Short') %>
-      </span></p>
-      <p><span class="invalid hidden" id='result-bad'>
-        <%=_('Bad') %>
-      </span></p>
-      <p><span class="invalid hidden" id='result-good'>
-        <%=_('Good') %>
-      </span></p>
-      <p><span class="invalid hidden" id='result-strong'>
-        <%=_('Strong') %>
-      </span></p>
-    </div>
-  </div>
-
-
-
-    <div class="form-group">
-      <%= label(:user, :email, _('e-Mail'), {:class => 'control-label col-sm-3 col-md-2 col-lg-2'}) %>
-      <div class=" col-sm-9 col-md-6 col-lg-6">
-        <%= text_field(:user, :email,
-                           :class => 'form-control',
-                           :'data-toggle' => "tooltip",
-                           :'data-placement' => "right",
-                           :'data-trigger' => 'focus',
-                           :title => _('This e-mail address will be used to contact you.')) %>
-        <p class="help-block"><%=  _('We need to be sure that you filled in your password correctly. Confirm you password.') %></p>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= label(:profile_data, :name, _('Full name'), {:class => 'control-label col-sm-3 col-md-2 col-lg-2'}) %>
-      <div class=" col-sm-9 col-md-6 col-lg-6">
-        <%= text_field(:profile_data, :name,
-                       :class => 'form-control',
-                       :'data-toggle' => "tooltip",
-                       :'data-placement' => "right",
-                       :'data-trigger' => 'focus',
-                       :title => _('Tell us your name, it will be used to identify yourself.')) %>
-      </div>
-    </div>
-
-
-
-
-
-
-
-  <div id='signup-password-confirmation'>
-    <%= content_tag(:small,_('We need to be sure that you filled in your password correctly. Confirm you password.'), :id => 'password-confirmation-balloon') %>
-    <div id='password-check'><p>&nbsp;</p></div>
-  </div>
-
-  <div id='signup-email'>
-    <%= required f.text_field(:email) %>
-    <%= content_tag(:small,_('This e-mail address will be used to contact you.'), :id => 'email-balloon') %>
-    <div id='email-check'><p>&nbsp;</p></div>
-  </div>
-  <%= observe_field "user_email",
-        :url      => { :action => "check_email" },
-        :with     => "address",
-        :update   => "email-check",
-        :loading  => "jQuery('#user_email').removeClass('#{validation_classes}').addClass('checking');
-                      jQuery('#email-check').html('<p><span class=\"checking\">#{checking_message(:email)}</span></p>');",
-        :complete => "jQuery('#user_email').removeClass('checking')",
-        :before   => "var field = jQuery('#user_email');
-                      if (field.val()=='') {
-                        field.removeClass('#{validation_classes}');
-                        jQuery('#email-check').html('<p>&nbsp;</p>');
-                        return false;
-                      }
-                      if (!( field.valid() )) {
-                        field.removeClass('#{validation_classes}').addClass('invalid');
-                        jQuery('#email-check').html('<p><span class=\"invalid\">#{_('This e-mail address is not valid')}</span></p>');
-                        return false;
-                      }"
-  %>
-
-  <div id='signup-name'>
-    <%= labelled_form_field(_('Full name'), text_field(:profile_data, :name)) %>
-    <%= content_tag(:small,_('Tell us your name, it will be used to identify yourself.'), :id => 'name-balloon') %>
-  </div>
-
-</div>
 
 <div id="signup-form-profile">
 
@@ -245,64 +163,3 @@
 
 <% end -%>
 
-<script type="text/javascript">
-jQuery(function($) {
-
-  $('#signup-form input[type=text], #signup-form textarea').each(function() {
-    $(this).bind('blur', function() {
-      if ($(this).val() == '') {
-        $(this).removeClass('filled-in');
-      }
-      else $(this).addClass('filled-in');
-    });
-  });
-
-  $('#user_pw').focus(function() {
-    $('#password-balloon').fadeIn('slow');
-  });
-  $('#user_password_confirmation').focus(function() {
-    $('#password-confirmation-balloon').fadeIn('slow');
-  });
-  $('#user_password_confirmation, #user_pw').blur(function() {
-    if ($('#user_password_confirmation').val() != '') {
-      if ($('#user_password_confirmation').val() == $('#user_pw').val()) {
-        $('#user_password_confirmation').addClass('validated').removeClass('invalid');
-        $('#user_pw').removeClass('invalid_input').addClass('valid_input');
-        $('#password-check').html("<p>&nbsp;</p>");
-      } else if ($('#user_password_confirmation').val() != $('#user_pw').val()) {
-        $('#user_password_confirmation').removeClass('validated').addClass('invalid');
-        $('#user_pw').addClass('invalid_input').removeClass('valid_input');
-        $('#password-check').html("<p><span class='invalid'><%= _('Passwords don\'t match') %></span></p>");
-      }
-    }
-    $('#password-balloon').fadeOut('slow');
-    $('#password-confirmation-balloon').fadeOut('slow');
-  });
-  $('#user_login').focus(function() {
-    $('#signup-balloon').fadeIn('slow');
-  });
-  $('#user_login').blur(function() { $('#signup-balloon').fadeOut('slow'); });
-  $('#signup-form').validate({ rules: { 'user[email]': { email: true } }, messages: { 'user[email]' : '' } });
-  $('#user_email').focus(function() {
-    $('#email-balloon').fadeIn('slow');
-  });
-  $('#user_email').blur(function() {
-    $('#email-balloon').fadeOut('slow');
-  });
-  $('#profile_data_name').focus(function() {
-    $('#name-balloon').fadeIn('slow');
-  });
-  $('#profile_data_name').blur(function() {
-    $('#name-balloon').fadeOut('slow');
-    if ($(this).val() == '') {
-      $(this).removeClass('validated');
-    }
-    else $(this).addClass('validated');
-  });
-});
-
-function fill_username(element){
-  jQuery('#url-check').html("<p><span class='checking'><%= _('This login name is available') %></span></p>")
-  jQuery('#user_login').val(element).addClass('validated').removeClass('invalid')
-}
-</script>
