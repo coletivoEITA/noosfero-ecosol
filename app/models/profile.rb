@@ -234,7 +234,7 @@ class Profile < ActiveRecord::Base
 
   belongs_to :region
 
-  LOCATION_FIELDS = %w[address district city state country_name zip_code]
+  LOCATION_FIELDS = %w[address address_line2 district city state country_name zip_code]
 
   def location(separator = ' - ')
     myregion = self.region

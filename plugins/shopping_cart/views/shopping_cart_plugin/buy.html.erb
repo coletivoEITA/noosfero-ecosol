@@ -15,6 +15,7 @@
     <% if @settings.delivery %>
       <fieldset><legend><%=_('Delivery Address')%></legend>
         <%= labelled_form_field(_('Address (street and number)'), f.text_field(:address)) %>
+        <%= labelled_form_field(_('Address completion'), f.text_field(:address_line2)) %>
         <%= labelled_form_field(_('Address reference'), f.text_field(:address_reference)) %>
         <%= labelled_form_field(_('District'), f.text_field(:district)) %>
         <%= labelled_form_field( _("City"), f.text_field(:city)) %>
