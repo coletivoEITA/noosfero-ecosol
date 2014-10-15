@@ -6616,6 +6616,10 @@ msgstr "Telefone residencial"
 msgid "Address (street and number)"
 msgstr "Endereço (rua e número)"
 
+#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:15
+msgid "Address completion"
+msgstr "Complemento (p.ex. apto)"
+
 #: app/views/profile_editor/_person_form.rhtml:52
 msgid "Custom formation"
 msgstr "Outra formação"

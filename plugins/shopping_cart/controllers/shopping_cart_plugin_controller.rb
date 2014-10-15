@@ -278,8 +278,9 @@ class ShoppingCartPluginController < PublicController
       :consumer_delivery_data => {
         :name => params[:customer][:delivery_option],
         :address_line1 => params[:customer][:address],
-        :address_line2 => params[:customer][:district],
+        :address_line2 => params[:customer][:address_line2],
         :reference => params[:customer][:address_reference],
+        :district => params[:customer][:district],
         :city => params[:customer][:city],
         :state => params[:customer][:state],
         :postal_code => params[:customer][:zip_code],

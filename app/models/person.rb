@@ -147,6 +147,7 @@ class Person < Profile
   district
   zip_code
   address
+  address_line2
   address_reference
   cell_phone
   comercial_phone
@@ -216,8 +217,8 @@ class Person < Profile
   N_('Education'); N_('Custom education'); N_('Custom area of study');
   settings_items :formation, :custom_formation, :custom_area_of_study
 
-  N_('Contact information'); N_('City'); N_('State'); N_('Country'); N_('Sex'); N_('Zip code'); N_('District'); N_('Address reference')
-  settings_items :photo, :contact_information, :sex, :city, :state, :country, :zip_code, :district, :address_reference
+  N_('Contact information'); N_('City'); N_('State'); N_('Country'); N_('Sex'); N_('Zip code'); N_('District'); N_('Address completion'); N_('Address reference')
+  settings_items :photo, :contact_information, :sex, :city, :state, :country, :zip_code, :district, :address_line2, :address_reference
 
   extend SetProfileRegionFromCityState::ClassMethods
   set_profile_region_from_city_state
