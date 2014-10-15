@@ -678,7 +678,8 @@
           help: "Choose which of the previous orders you wish to make. Observe the details if there are products missing or with updated values."
           date: "Date"
           ordered_itens: "Ordered items"
-          choose: "choose this order"
+          make: "make this order"
+          choose: "choose and edit"
           clear_orders_session: "clear orders' history from this computer"
 
       consumer:

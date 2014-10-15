@@ -22,7 +22,8 @@
             <div class="box-view">
               <span class="box-field actions">
                 <%= edit_arrow_circle "", false, :onclick => 'return false;'  %>
-                <%= repeat_order_button order %>
+                <%= repeat_make_order_button order %>
+                <%= repeat_choose_order_button order %>
               </span>
 
               <span class='box-field date'><%= l order.created_at, format: :short %></span>
