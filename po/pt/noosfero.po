@@ -11370,6 +11370,10 @@ msgid "Clean basket"
 msgstr "Limpar cesto"
 
 #: plugins/shopping_cart/views/cart.html.erb:8
+msgid "Basket is empty"
+msgstr "Cesto vazio"
+
+#: plugins/shopping_cart/views/cart.html.erb:8
 msgid "Shopping checkout"
 msgstr "Finalizar pedido"
 

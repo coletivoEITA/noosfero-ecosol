@@ -38,7 +38,7 @@ input.button.with-text.icon-cart
 }
 #catalog-options ul .catalog-cart {
   float: right;
-  margin: 5px 0 0 0;
+  margin: 0;
 }
 #cart1 .cart-inner {
   width: 200px;
@@ -64,9 +64,21 @@ input.button.with-text.icon-cart
 }
 .cart-minimized .cart-applet {
   float: right;
+  text-align: center;
 }
 #content .cart-minimized .cart-applet .cart-highlight {
   background-color: yellow;
+}
+.cart-minimized .cart-applet-checkout, .cart-minimized .cart-applet-checkout-disabled {
+  display: block;
+  font-size: 80%;
+  margin-top: 3px;
+}
+.cart-minimized .cart-applet-checkout-disabled {
+  pointer-events: none;
+  cursor: default;
+  color: #CCC;
+  text-decoration: none;
 }
 .cart-qtty {
   font-weight: bold;

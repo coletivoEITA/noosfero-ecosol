@@ -8,20 +8,15 @@ function Cart(config) {
   this.itemsBox = $("#cart1 .cart-items");
   this.profileId = config.profile_id;
   this.items = {};
+  this.products = config.products;
   this.empty = !config.has_products;
+  this.minimized = config.minimized;
   this.hasPreviousOrders = config.has_previous_orders;
   this.visible = false;
   this.itemTemplate = _.template(jQuery('#cart-item-template').html());
   $("#cart-profile-name").text(config.profile_short_name);
   $(".cart-buy", this.cartElem).button({ icons: { primary: 'ui-icon-cart'} });
-  if (!this.empty) {
-    if (!config.minimized) {
-      $(this.cartElem).show();
-    }
-    this.addToList(config.products, true)
-  } else if (config.minimized) {
-    this.setQuantity(0)
-  }
+  this.load()
 }
 
 (function($){
@@ -36,6 +31,17 @@ function Cart(config) {
       if (completeCallback) completeCallback();
     };
     $.ajax(config);
+  }
+
+  Cart.prototype.load = function(){
+    if (!this.empty) {
+      if (!this.minimized) {
+        $(this.cartElem).show();
+      }
+      this.addToList(this.products, true)
+    } else if (this.minimized) {
+      this.setQuantity(0)
+    }
   }
 
   Cart.prototype.addToList = function(products, clear) {
@@ -269,6 +275,9 @@ function Cart(config) {
   }
 
   Cart.prototype.setQuantity = function(qtty) {
+    this.cartElem.find('.cart-applet-checkout').toggle(qtty > 0)
+    this.cartElem.find('.cart-applet-checkout-disabled').toggle(qtty === 0)
+      
     if (qtty === 0 && this.hasPreviousOrders)
       $(".cart-qtty", this.cartElem).text( Cart.l10n.repeatOrder )
     else
