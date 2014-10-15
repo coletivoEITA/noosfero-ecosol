@@ -14,7 +14,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   DeliveryData = [
     :name, :description,
     :address_line1, :address_line2, :reference,
-    :city, :state,
+    :district, :city, :state,
     :postal_code,
   ]
 

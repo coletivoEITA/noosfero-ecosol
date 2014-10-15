@@ -299,12 +299,14 @@ class ShoppingCartPluginController < OrdersPluginController
       :method => params[:customer][:payment], :change => params[:customer][:change],
     }
     order.consumer_delivery_data = {
-      :name => params[:delivery_option],
-      :address_line1 => params[:address],
-      :address_line2 => params[:district],
-      :reference => params[:address_reference],
-      :city => params[:city],
-      :postal_code => params[:zip_code],
+      :name => params[:customer][:delivery_option],
+      :address_line1 => params[:customer][:address],
+      :address_line2 => params[:customer][:address_line2],
+      :reference => params[:customer][:address_reference],
+      :district => params[:customer][:district],
+      :city => params[:customer][:city],
+      :state => params[:customer][:state],
+      :postal_code => params[:customer][:zip_code],
     }
     order.save!
   end
