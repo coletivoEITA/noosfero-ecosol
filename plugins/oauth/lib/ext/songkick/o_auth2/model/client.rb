@@ -1,4 +1,4 @@
-require_dependency 'songkick/o_auth2/model/client'
+require_dependency 'songkick/oauth2/model/client'
 
 class Songkick::OAuth2::Model::Client
 
