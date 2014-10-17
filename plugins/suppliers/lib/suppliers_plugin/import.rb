@@ -1,4 +1,3 @@
-require 'fastercsv'
 require 'iconv'
 require 'rchardet'
 
@@ -14,7 +13,7 @@ class SuppliersPlugin::Import
     header = []
     rows = []
     [",", ";", "\t"].each do |sep|
-      rows = FasterCSV.parse csv, :col_sep => sep
+      rows = CSV.parse csv, :col_sep => sep
       header = rows.shift
       break if header.size == 4
     end
