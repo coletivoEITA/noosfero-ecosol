@@ -1134,7 +1134,7 @@
           general: "General"
           header: "Header"
           volunteers: "Volunteers"
-          volunteers_enabled: "Manage volunteers' period"
+          volunteers_enabled: "Manage volunteers' period on orders' cycles"
           header_background_col: "Header background color"
           header_s_image: "Header's image"
           header_type: "Header Type"

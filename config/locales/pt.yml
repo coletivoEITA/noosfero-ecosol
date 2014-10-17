@@ -602,7 +602,7 @@
         start_day_start_datet: "%{start_day}, %{start_datetime} - %{finish_day}, %{finish_datetime}"
         start_finish: "%{start} - %{finish}"
         start_to_finish: "%{start} para %{finish}"
-        to: para
+        to: até
       price_helper: 
         /: /
         price_unit: "%{price}%{unit}"
@@ -1152,7 +1152,7 @@
           general: "Geral"
           header: "Cabeçalho"
           volunteers: "Voluntários"
-          volunteers_enabled: "Gerir turnos de voluntários"
+          volunteers_enabled: "Gerir turnos de voluntários em ciclo de pedidos"
           header_background_col: "Cor de fundo de cabeçalho"
           header_s_image: "Imagem do cabeçalho"
           header_type: "Tipo de cabeçalho"

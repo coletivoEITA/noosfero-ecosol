@@ -16,7 +16,7 @@
 
   <div class="cycle-fields-block">
     <div id='cycle-delivery' class="field">
-      <%= f.label(:delivery_methods, t('views.cycle._edit_fields.available_delivery_me')) %>
+      <%= f.label :delivery_methods, t('views.cycle._edit_fields.available_delivery_me') %>
 
       <div>
         <div id='cycle-delivery-options' class="subtitle">
@@ -29,7 +29,9 @@
     </div>
   </div>
 
-  <%= render 'volunteering_plugin_myprofile/edit_periods', owner: @cycle, f: f if defined? VolunteersPlugin %>
+  <% if profile.volunteers_settings.cycle_volunteers_enabled %>
+    <%= render 'volunteers_plugin_myprofile/edit_periods', owner: @cycle, f: f %>
+  <% end %>
 
   <div id="cycle-new-mail">
     <%= check_box_tag('sendmail', 'yes', false, :id => 'cycle-new-mail-send') %>
