@@ -48,3 +48,4 @@ debian/noosfero-apache/
 features/plugins/*
 plugins/solr/config/solr.yml
 /solr
+/Gemfile.lock
