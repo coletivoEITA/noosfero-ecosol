@@ -1,9 +1,11 @@
 module DesignHelper
 
-  def self.included base
-    base.send :extend, ClassMethods
-    base.send :include, InstanceMethods
-    base.before_filter :load_custom_design
+  extend ActiveSupport::Concern
+
+  included do
+    extend ClassMethods
+    include InstanceMethods
+    before_filter :load_custom_design
   end
 
   module ClassMethods
@@ -27,6 +29,10 @@ module DesignHelper
   end
 
   module InstanceMethods
+
+    def custom_design
+      self.class.custom_design
+    end
 
     protected
 

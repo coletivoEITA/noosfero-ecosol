@@ -4,7 +4,7 @@
 %>
 
 <div id="place-<%=place.id%>" class="place">
-  <% form_for :place, place,
+  <%= form_for place, as: :place,
     :url => {:controller => :stock_plugin_myprofile, :action => if new then :create else :edit end, :id => place.id} do |f| %>
     <%#:html => {:onsubmit => 'jQuery(this).ajaxSubmit(); return false;'} do |f| %>
 

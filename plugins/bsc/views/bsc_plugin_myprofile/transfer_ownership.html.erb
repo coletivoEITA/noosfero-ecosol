@@ -14,11 +14,11 @@
 <% end %>
 
 
-<% form_tag do %>
+<%= form_tag do %>
   <% @roles.each do |role|%>
     <%= content_tag('b', _('Administrator:')) %>
     <% search_action = {:controller => 'profile_members', :action => 'search_user', :role => role.id, :profile => profile.identifier} %>
-    <%= token_input_field_tag('q_'+role.key, 'search_'+role.key, search_action, 
+    <%= token_input_field_tag('q_'+role.key, 'search_'+role.key, search_action,
                               { :hint_text => _('Type in a search term for the new administrator'),
                                 :focus => true,
                                 :token_limit => 1}) %>

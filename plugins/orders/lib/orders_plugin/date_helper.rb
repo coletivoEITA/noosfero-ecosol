@@ -5,7 +5,7 @@ module OrdersPlugin::DateHelper
   include OrdersPlugin::FieldHelper
 
   def labelled_period_field form, start_field, end_field, label, options = {}
-    labelled_field form, label.to_sym, label, form.text_field("#{start_field}_date", :class => 'date-select') +
+    labelled_field form, label, label, form.text_field("#{start_field}_date", :class => 'date-select') +
                    form.text_field("#{start_field}_time", :class => 'time-select') +
                    content_tag('span', I18n.t('orders_plugin.lib.date_helper.to') + ' ', :class => "date-to") +
                    form.text_field("#{end_field}_date", :class => 'date-select') +

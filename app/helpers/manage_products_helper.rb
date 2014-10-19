@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module ManageProductsHelper
 
   def remote_function_to_update_categories_selection(container_id, options = {})
@@ -147,7 +149,7 @@ module ManageProductsHelper
   def cancel_edit_product_link(product, field, html_options = {})
     return '' unless (user && user.has_permission?('manage_products', profile))
     button_to_function(:cancel, _('Cancel'), nil, html_options) do |page|
-      page.replace_html "product-#{field}", :partial => "display_#{field}", :locals => {:product => product}
+      page.replace_html "product-#{field}", CGI::escapeHTML(render :partial => "display_#{field}", :locals => {:product => product})
     end
   end
 
@@ -195,7 +197,8 @@ module ManageProductsHelper
         certifier_name = certifier.link.blank? ? certifier.name : link_to(certifier.name, certifier.link)
         certified_by = _('certified by %s') % certifier_name
       else
-        certified_by = _('(Self declared)')
+        #certified_by = _('(Self declared)') - We are assuming that no text beside the qualifier means that it is self declared
+        certified_by = ''
       end
       data << content_tag('li', "✔ #{pq.qualifier.name} #{certified_by}", :class => 'product-qualifiers-item')
     end

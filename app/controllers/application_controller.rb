@@ -1,9 +1,24 @@
+require 'noosfero/multi_tenancy'
+
 class ApplicationController < ActionController::Base
+  protect_from_forgery
 
   before_filter :setup_multitenancy
   before_filter :detect_stuff_by_domain
-  before_filter :init_noosfero_plugins_controller_filters
+  before_filter :init_noosfero_plugins
   before_filter :allow_cross_domain_access
+  before_filter :login_required, :if => :private_environment?
+  before_filter :verify_members_whitelist, :if => [:private_environment?, :user]
+
+  def verify_members_whitelist
+    render_access_denied unless user.is_admin? || environment.in_whitelist?(user)
+  end
+
+  after_filter :set_csrf_cookie
+
+  def set_csrf_cookie
+    cookies['_noosfero_.XSRF-TOKEN'] = form_authenticity_token if protect_against_forgery? && logged_in?
+  end
 
   protected
 
@@ -20,7 +35,8 @@ class ApplicationController < ActionController::Base
     # This avoids redirects and multiple URLs for one specific resource
     if controller_path = options[:controller] || self.class.controller_path
       controller = (self.class.controller_path_class[controller_path] ||= "#{controller_path}_controller".camelize.constantize rescue nil)
-      if controller and not (controller.profile_needed rescue false) and not controller == AccountController
+      profile_needed = controller.profile_needed rescue false
+      if controller and not profile_needed and not controller == AccountController
         options.merge! :host => environment.default_hostname, :only_path => false
       end
     end
@@ -49,17 +65,15 @@ class ApplicationController < ActionController::Base
 
     theme_layout = theme_option(:layout)
     if theme_layout
-      theme_view_file('layouts/'+theme_layout) || theme_layout
+      (theme_view_file('layouts/'+theme_layout) || theme_layout).to_s
     else
      'application'
     end
   end
 
-  filter_parameter_logging :password
-
   def log_processing
     super
-    return unless ENV['RAILS_ENV'] == 'production'
+    return unless Rails.env == 'production'
     if logger && logger.info?
       logger.info("  HTTP Referer: #{request.referer}")
       logger.info("  User Agent: #{request.user_agent}")
@@ -92,17 +106,23 @@ class ApplicationController < ActionController::Base
 
   attr_reader :environment
 
-  before_filter :load_terminology
-
   # declares that the given <tt>actions</tt> cannot be accessed by other HTTP
   # method besides POST.
   def self.post_only(actions, redirect = { :action => 'index'})
-    verify :method => :post, :only => actions, :redirect_to => redirect
+    before_filter(:only => actions) do |controller|
+      if !controller.request.post?
+        controller.redirect_to redirect
+      end
+    end
   end
 
   helper_method :current_person, :current_person
 
   protected
+
+  def verified_request?
+    super || form_authenticity_token == request.headers['X-XSRF-TOKEN']
+  end
 
   def setup_multitenancy
     Noosfero::MultiTenancy.setup!(request.host)
@@ -129,7 +149,10 @@ class ApplicationController < ActionController::Base
       @environment = Environment.default
       if @environment.nil? && Rails.env.development?
         # This should only happen in development ...
-        @environment = Environment.create!(:name => "Noosfero", :is_default => true)
+        @environment = Environment.new
+        @environment.name = "Noosfero"
+        @environment.is_default = true
+        @environment.save!
       end
     else
       @environment = @domain.environment
@@ -146,36 +169,15 @@ class ApplicationController < ActionController::Base
 
   include Noosfero::Plugin::HotSpot
 
-  # This is a generic method that initialize any possible filter defined by a
-  # plugin to the current controller being initialized.
-  def init_noosfero_plugins_controller_filters
-    plugins.each do |plugin|
-      filters = plugin.send(self.class.name.underscore + '_filters')
-      filters = [filters] if !filters.kind_of?(Array)
-      controller_filters = self.class.filter_chain.map {|c| c.method }
-      filters.each do |plugin_filter|
-        filter_method = plugin.class.name.underscore.gsub('/','_') + '_' + plugin_filter[:method_name]
-        unless controller_filters.include?(filter_method)
-          self.class.send(plugin_filter[:type], filter_method, (plugin_filter[:options] || {}))
-          self.class.send(:define_method, filter_method) do
-            instance_eval(&plugin_filter[:block]) if environment.plugin_enabled?(plugin.class)
-          end
-        end
-      end
-    end
-  end
-
-  def load_terminology
-    # cache terminology for performance
-    @@terminology_cache ||= {}
-    @@terminology_cache[environment.id] ||= environment.terminology
-    Noosfero.terminology = @@terminology_cache[environment.id]
+  # FIXME this filter just loads @plugins to children controllers and helpers
+  def init_noosfero_plugins
+    plugins
   end
 
   def render_not_found(path = nil)
     @no_design_blocks = true
     @path ||= request.path
-    render :template => 'shared/not_found.rhtml', :status => 404, :layout => get_layout
+    render :template => 'shared/not_found.html.erb', :status => 404, :layout => get_layout
   end
   alias :render_404 :render_not_found
 
@@ -183,12 +185,12 @@ class ApplicationController < ActionController::Base
     @no_design_blocks = true
     @message = message
     @title = title
-    render :template => 'shared/access_denied.rhtml', :status => 403
+    render :template => 'shared/access_denied.html.erb', :status => 403
   end
 
   def load_category
     unless params[:category_path].blank?
-      path = params[:category_path].join('/')
+      path = params[:category_path]
       @category = environment.categories.find_by_path(path)
       if @category.nil?
         render_not_found(path)
@@ -201,12 +203,30 @@ class ApplicationController < ActionController::Base
     fallback_find_by_contents(asset, scope, query, paginate_options, options)
   end
 
+  def autocomplete asset, scope, query, paginate_options={:page => 1}, options={:field => 'name'}
+    plugins.dispatch_first(:autocomplete, asset, scope, query, paginate_options, options) ||
+    fallback_autocomplete(asset, scope, query, paginate_options, options)
+  end
+
   private
 
   def fallback_find_by_contents(asset, scope, query, paginate_options, options)
     scope = scope.like_search(query) unless query.blank?
     scope = scope.send(options[:filter]) unless options[:filter].blank?
     {:results => scope.paginate(paginate_options)}
+  end
+
+  def fallback_autocomplete asset, scope, query, paginate_options, options
+    field = options[:field]
+    query = query.downcase
+    scope.where([
+      "LOWER(#{field}) ILIKE ? OR #{field}) ILIKE ?", "#{query}%", "% #{query}%"
+    ])
+    {:results => scope.paginate(paginate_options)}
+  end
+
+  def private_environment?
+    @environment.enabled?(:restrict_to_members)
   end
 
 end

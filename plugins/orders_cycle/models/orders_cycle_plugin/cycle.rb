@@ -1,4 +1,8 @@
-class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
+class OrdersCyclePlugin::Cycle < ActiveRecord::Base
+
+  attr_accessible :profile, :status, :name, :start_date, :start_time,:finish_date,
+    :finish_time, :description, :delivery_start_date, :delivery_start_time,
+    :delivery_finish_date, :delivery_finish_time, :opening_message
 
   Statuses = %w[edition orders purchases receipts separation delivery closing]
   DbStatuses = %w[new] + Statuses
@@ -24,7 +28,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   belongs_to :profile
 
   has_many :delivery_options, :class_name => 'DeliveryPlugin::Option', :dependent => :destroy,
-    :foreign_key => :owner_id, :conditions => ["delivery_plugin_options.owner_type = 'OrdersCyclePlugin::Cycle'"]
+    :as => :owner, :conditions => ["delivery_plugin_options.owner_type = 'OrdersCyclePlugin::Cycle'"]
   has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
 
   has_many :cycle_orders, :class_name => 'OrdersCyclePlugin::CycleOrder', :foreign_key => :cycle_id, :dependent => :destroy, :order => 'id ASC'
@@ -53,34 +57,39 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   has_many :ordered_distributed_products, :through => :orders_confirmed, :source => :distributed_products, :uniq => true
   has_many :ordered_supplier_products, :through => :orders_confirmed, :source => :supplier_products, :uniq => true
 
+  if defined? VolunteersPlugin
+    has_many :volunteers_periods, class_name: 'VolunteersPlugin::Period', as: :owner
+    has_many :volunteers, through: :volunteers_periods, source: :profile
+  end
+
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.profile.orders_cycles }
 
   # status scopes
-  named_scope :defuncts, :conditions => ["status = 'new' AND created_at < ?", 2.days.ago]
-  named_scope :not_new, :conditions => ["status <> 'new'"]
-  named_scope :on_orders, lambda {
+  scope :defuncts, :conditions => ["status = 'new' AND created_at < ?", 2.days.ago]
+  scope :not_new, :conditions => ["status <> 'new'"]
+  scope :on_orders, lambda {
     {:conditions => ["status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) )",
       {:now => DateTime.now}]}
   }
-  named_scope :not_on_orders, lambda {
+  scope :not_on_orders, lambda {
     {:conditions => ["NOT (status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) )",
       {:now => DateTime.now}]}
   }
-  named_scope :open, :conditions => ["status <> 'new' AND status <> 'closing'"]
-  named_scope :closing, :conditions => ["status = 'closing'"]
-  named_scope :by_status, lambda { |status| { :conditions => {:status => status} } }
+  scope :opened, :conditions => ["status <> 'new' AND status <> 'closing'"]
+  scope :closing, :conditions => ["status = 'closing'"]
+  scope :by_status, lambda { |status| { :conditions => {:status => status} } }
 
-  named_scope :months, :select => 'DISTINCT(EXTRACT(months FROM start)) as month', :order => 'month DESC'
-  named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year DESC'
+  scope :months, :select => 'DISTINCT(EXTRACT(months FROM start)) as month', :order => 'month DESC'
+  scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year DESC'
 
-  named_scope :by_month, lambda { |month| {
+  scope :by_month, lambda { |month| {
     :conditions => [ 'EXTRACT(month FROM start) <= :month AND EXTRACT(month FROM finish) >= :month', { :month => month } ]}
   }
-  named_scope :by_year, lambda { |year| {
+  scope :by_year, lambda { |year| {
     :conditions => [ 'EXTRACT(year FROM start) <= :year AND EXTRACT(year FROM finish) >= :year', { :year => year } ]}
   }
-  named_scope :by_range, lambda { |range| {
+  scope :by_range, lambda { |range| {
     :conditions => [ 'start BETWEEN :start AND :finish OR finish BETWEEN :start AND :finish',
       { :start => range.first, :finish => range.last }
     ]}
@@ -89,7 +98,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   validates_presence_of :profile
   validates_presence_of :name, :if => :not_new?
   validates_presence_of :start, :if => :not_new?
-  #validates_presence_of :delivery_options, :unless => :new_or_edition?
+  validates_presence_of :delivery_options, :unless => :new_or_edition?
   validates_inclusion_of :status, :in => DbStatuses, :if => :not_new?
   validates_numericality_of :margin_percentage, :allow_nil => true, :if => :not_new?
   validate :validate_orders_dates, :if => :not_new?
@@ -98,7 +107,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
   before_validation :step_new
   before_validation :check_status
   before_save :add_products_on_edition_state
-  before_create :delay_purge_profile_defuncts
+  after_create :delay_purge_profile_defuncts
 
   extend SplitDatetime::SplitMethods
   split_datetime :start
@@ -184,7 +193,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
       # can't be created using self.purchases.create!, as if :cycle is set (needed for code numbering), then double CycleOrder will be created
       purchase = OrdersPlugin::Purchase.create! :cycle => self, :consumer => self.profile, :profile => supplier.profile
       products.each do |product|
-        purchase.items.create! :order => purchase, :product => product.supplier_product,
+        purchase.items.create! :order => purchase, :product => supplier_product,
           :quantity_consumer_ordered => product.total_quantity_consumer_ordered, :price_consumer_ordered => product.total_price_consumer_ordered
       end
     end
@@ -219,10 +228,7 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
   def step_new
     return if new_record?
-    if self.new?
-      @was_new = true
-      self.step
-    end
+    self.step if self.new?
   end
 
   def check_status
@@ -240,13 +246,13 @@ class OrdersCyclePlugin::Cycle < Noosfero::Plugin::ActiveRecord
 
   def validate_orders_dates
     return if self.new? or self.finish.nil?
-    errors.add_to_base(I18n.t('orders_cycle_plugin.models.cycle.invalid_orders_period')) unless self.start < self.finish
+    errors.add :base, (I18n.t('orders_cycle_plugin.models.cycle.invalid_orders_period')) unless self.start < self.finish
   end
 
   def validate_delivery_dates
     return if self.new? or delivery_start.nil? or delivery_finish.nil?
-    errors.add_to_base I18n.t('orders_cycle_plugin.models.cycle.invalid_delivery_peri') unless delivery_start < delivery_finish
-    errors.add_to_base I18n.t('orders_cycle_plugin.models.cycle.delivery_period_befor') unless finish <= delivery_start
+    errors.add :base, I18n.t('orders_cycle_plugin.models.cycle.invalid_delivery_peri') unless delivery_start < delivery_finish
+    errors.add :base, I18n.t('orders_cycle_plugin.models.cycle.delivery_period_befor') unless finish <= delivery_start
   end
 
   def purge_profile_defuncts

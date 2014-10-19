@@ -1,7 +1,11 @@
-<% person = user.nil? ? Person.new : user %>
-<div id='cart-request-box'>
-  <% form_for(:customer, person, :url => {:action => 'send_request'},
-              :html => {:onsubmit => "return Cart.send_request(this)", :id => 'cart-request-form' }) do |f| %>
+<div id='cart-request-box' class="popin">
+  <h1>
+    <%= _('Shopping checkout') %>
+    <%= button_to_function 'back', _("haven't finished yet: back to shopping"), 'cart.hide(); jQuery.colorbox.close()', :class => 'cart-popin-close'  %>
+  </h1>
+
+  <%= form_for(:customer, :url => {:action => 'send_request'},
+              :html => {:onsubmit => "return Cart.send_request(this)", :id => 'cart-request-form'}) do |f| %>
     <div id="cart-form-main">
       <%= labelled_form_field('* ' + _("Name"), f.text_field(:name, :class => 'required') ) %>
       <%= labelled_form_field('* ' +  _("Email"), f.text_field(:email, :class => 'required email') ) %>

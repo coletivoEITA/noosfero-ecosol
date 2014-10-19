@@ -1,19 +1,29 @@
 module CatalogHelper
 
+  protected
+
   include DisplayHelper
   include ManageProductsHelper
 
   def catalog_load_index options = {:page => params[:page], :show_categories => true}
-    if options[:show_categories]
-      @category = params[:level] ? ProductCategory.find(params[:level]) : nil
-      @categories = ProductCategory.on_level(params[:level]).order(:name)
-    end
+    @query = params[:query].to_s
+    @scope = profile.products
 
-    @products = profile.products.from_category(@category).paginate(
-      :order => 'available desc, highlighted desc, name asc',
-      :per_page => @profile.products_per_catalog_page,
-      :page => options[:page]
-    )
+    solr_options = {:all_facets => @query.blank?}
+    paginate_options = {:per_page => profile.products_per_catalog_page, :page => options[:page]}
+    paginate_options[:page] = '1' if paginate_options[:page].blank?
+    @offset = (paginate_options[:page].to_i-1) * paginate_options[:per_page].to_i
+    result = find_by_contents :catalog, @scope, @query, paginate_options, solr_options
+
+    @products = result[:results]
+    # FIXME: the categories and qualifiers filters currently only work with solr plugin, because they depend on facets.
+    @categories = result[:categories].to_a
+    @qualifiers = result[:qualifiers].to_a
+    @order = params[:order]
+    @ordering = plugins_search_order :catalog
+
+    @not_searched = @query.blank? && params[:category].blank? && params[:qualifier].blank?
+
   end
 
   def breadcrumb(category)
@@ -41,7 +51,7 @@ module CatalogHelper
       cat_link = category_link sub_category
       sub_categories << content_tag('li', cat_link) unless cat_link.nil?
     end
-    content_tag('ul', sub_categories) if sub_categories.size > 0
+    content_tag('ul', sub_categories.join) if sub_categories.size > 0
   end
 
 end

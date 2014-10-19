@@ -38,7 +38,7 @@
   </div>
 <% end %>
 
-<% javascript_tag do %>
+<%= javascript_tag do %>
   orders_cycle.order.product.include_message = '<%= include_message %>';
   orders_cycle.order.product.order_id = <%= order_id.to_json %>;
   orders_cycle.order.product.redirect_after_include = '<%= order.nil? ? 1 : '' %>';

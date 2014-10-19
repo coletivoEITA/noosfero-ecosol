@@ -1,8 +1,11 @@
-# -*- coding: utf-8 -*-
+# encoding: utf-8
+
 require 'fast_gettext'
 module Noosfero
-  PROJECT = 'noosfero'
-  VERSION = '0.47.4'
+
+  def self.root(default = nil)
+    ENV.fetch('RAILS_RELATIVE_URL_ROOT', default)
+  end
 
   def self.pattern_for_controllers_in_directory(dir)
     disjunction = controllers_in_directory(dir).join('|')
@@ -51,7 +54,7 @@ module Noosfero
   end
 
   def self.identifier_format
-    '[a-z0-9][a-z0-9~.]*([_-][a-z0-9~.|:*]+)*'
+    '[a-z0-9][a-z0-9~.]*([_\-][a-z0-9~.|:*]+)*'
   end
 
   def self.default_hostname
@@ -61,7 +64,7 @@ module Noosfero
   private
 
   def self.controllers_in_directory(dir)
-    app_controller_path = Dir.glob(File.join(RAILS_ROOT, 'app', 'controllers', dir, '*_controller.rb'))
+    app_controller_path = Dir.glob(Rails.root.join('app', 'controllers', dir, '*_controller.rb'))
     app_controller_path.map do |item|
       item.gsub(/^.*\/([^\/]+)_controller.rb$/, '\1')
     end
@@ -78,7 +81,7 @@ module Noosfero
   end
 
   def self.url_options
-    case ENV['RAILS_ENV']
+    case Rails.env
     when 'development'
       development_url_options
     when 'cucumber'
@@ -94,5 +97,6 @@ module Noosfero
 
 end
 
+require 'noosfero/version'
 require 'noosfero/constants'
 require 'noosfero/core_ext'

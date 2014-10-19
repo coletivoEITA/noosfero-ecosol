@@ -94,7 +94,7 @@ module AuthenticatedSystem
     # Store the URI of the current request in the session.
     #
     # We can return to this location by calling #redirect_back_or_default.
-    def store_location(location = request.request_uri)
+    def store_location(location = request.url)
       session[:return_to] = location
     end
 

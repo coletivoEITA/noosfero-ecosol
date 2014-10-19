@@ -8,6 +8,14 @@ module SolrPlugin::SearchHelper
   DistFilt = 200
   DistBoost = 50
 
+  CatalogSortOptions = {
+    relevance: {option: ['Relevance', ''], solr: ''},
+    name: {option: ['Name', 'name'], solr: 'solr_plugin_name_sortable asc'},
+    price: {option: ['Lowest price', 'price'], solr: 'solr_plugin_price_sortable asc'},
+    newest: {option: ['Newest', 'newest'], solr: 'created_at desc'},
+    updated: {option: ['Last updated', 'updated'], solr: 'updated_at desc'},
+  }
+
   SortOptions = {
     :products => ActiveSupport::OrderedHash[ :none, {:label => _('Relevance')},
       :more_recent, {:label => _('More recent'), :solr_opts => {:sort => 'updated_at desc, score desc'}},
@@ -53,10 +61,6 @@ module SolrPlugin::SearchHelper
     end
   end
 
-  def results_only?
-    params[:action] == 'index'
-  end
-
   def empty_query?(query, category)
     category.nil? && query.blank?
   end
@@ -77,32 +81,6 @@ module SolrPlugin::SearchHelper
     else
       options.merge({:boost_functions => ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']})
     end
-  end
-
-  def solr_options(asset, category)
-    asset_class = asset_class(asset)
-    solr_options = {}
-    if !multiple_search?
-      if !results_only? and asset_class.respond_to? :facets
-        solr_options.merge! asset_class.facets_find_options(params[:facet])
-        solr_options[:all_facets] = true
-      end
-      solr_options[:filter_queries] ||= []
-      solr_options[:filter_queries] += filters(asset)
-      solr_options[:filter_queries] << "environment_id:#{environment.id}"
-      solr_options[:filter_queries] << asset_class.facet_category_query.call(category) if category
-
-      solr_options[:boost_functions] ||= []
-      params[:order_by] = nil if params[:order_by] == 'none'
-      if params[:order_by]
-        order = SortOptions[asset][params[:order_by].to_sym]
-        raise "Unknown order by" if order.nil?
-        order[:solr_opts].each do |opt, value|
-          solr_options[opt] = value.is_a?(Proc) ? instance_eval(&value) : value
-        end
-      end
-    end
-    solr_options
   end
 
   def asset_class(asset)

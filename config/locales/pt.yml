@@ -60,9 +60,9 @@
 
   time:
     formats:
-      default: "%A, %d de %B de %Y, %H:%M h"
-      short: "%d/%m, %H:%M h"
-      long: "%A, %d de %B de %Y, %H:%M h"
+      default: "%A, %d de %B de %Y, %H:%M"
+      short: "%d/%m, %Hh%M"
+      long: "%A, %d de %B de %Y, %Hh%M"
     am: ''
     pm: ''
 
@@ -577,6 +577,8 @@
         name: "Pedidos"
         description: "Gestão de pedidos"
         panel_button: "Compras e Vendas"
+        person_panel_button: "Compras realizadas"
+
       ext:
         profile:
           orders_manager: "Gestor de pedidos"
@@ -600,7 +602,7 @@
         start_day_start_datet: "%{start_day}, %{start_datetime} - %{finish_day}, %{finish_datetime}"
         start_finish: "%{start} - %{finish}"
         start_to_finish: "%{start} para %{finish}"
-        to: para
+        to: até
       price_helper: 
         /: /
         price_unit: "%{price}%{unit}"
@@ -688,9 +690,19 @@
       actions: 
         <<: *suppliers_plugin_actions
 
+      public:
+        repeat: 
+          heading: "Repetir pedido anterior"
+          help: "Escolha qual dos pedidos anteriores deseja realizar. Observe nos detalhes se algum produto está em falta e se há alteração nos valores."
+          date: "Data"
+          ordered_itens: "Itens pedidos"
+          choose: "escolher este pedido"
+          clear_orders_session: "limpar histórico de pedidos deste computador"
+
       consumer:
         _total: 
           total: Total
+
       item: 
         _edit: 
           remove_from_order: "Remover do pedido"
@@ -1062,6 +1074,7 @@
         start: Início
         orders: Pedidos
         administration: Administração
+        volunteering: Voluntariado
     terms: 
       <<: *suppliers_terms
       profile: &consumers_coop_term_profile
@@ -1136,6 +1149,10 @@
           cancel: Cancelar
           collective_consumptio: "Modo %{terms.profile.singular}"
           disabled: Desabilitado
+          general: "Geral"
+          header: "Cabeçalho"
+          volunteers: "Voluntários"
+          volunteers_enabled: "Gerir turnos de voluntários em ciclo de pedidos"
           header_background_col: "Cor de fundo de cabeçalho"
           header_s_image: "Imagem do cabeçalho"
           header_type: "Tipo de cabeçalho"
@@ -1144,7 +1161,6 @@
           image_help: "Esta imagem será usada no cabeçalho da página %{terms.profile.from_article.singular}, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
           pure_color_collective: "Cor pura + nome %{terms.profile.from_article.singular}"
           save: Salvar
-          settings_of_solidary_: "Configurações %{terms.profile.from_article.singular}"
           text_color: "Cor do texto"
           this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso %{terms.profile.from_article.singular}. Como %{terms.profile.article.singular} é comumente chamado pelas pessoas?"
           white: branco

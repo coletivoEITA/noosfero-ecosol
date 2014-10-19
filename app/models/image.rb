@@ -23,8 +23,9 @@ class Image < ActiveRecord::Base
 
   postgresql_attachment_fu
 
-  def public_filename *args
-    "http://cirandas.net#{super *args}"
-  end
+  attr_accessible :uploaded_data
 
+  def current_data
+    File.file?(full_filename) ? File.read(full_filename) : nil
+  end
 end

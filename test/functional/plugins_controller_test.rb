@@ -16,14 +16,6 @@ class PluginsControllerTest < ActionController::TestCase
   end
   attr_reader :environment
 
-  def test_local_files_reference
-    assert_local_files_reference
-  end
-
-  def test_valid_xhtml
-    assert_valid_xhtml
-  end
-
   should 'list system active plugins' do
     class Plugin1 < Noosfero::Plugin
       class << self
@@ -47,7 +39,7 @@ class PluginsControllerTest < ActionController::TestCase
       end
     end
 
-    Noosfero::Plugin.stubs(:all).returns([Plugin1.to_s,Plugin2.to_s])
+    Noosfero::Plugin.stubs(:all).returns([Plugin1.to_s, Plugin2.to_s])
 
     get :index
 

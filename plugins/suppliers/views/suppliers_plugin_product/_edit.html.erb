@@ -1,8 +1,6 @@
 <div class="box-edit">
 
-  <% form_remote_for "product_#{product.id}", product,
-    :loading => "loading_overlay.show('#our-product-#{product.id}')",
-    :loaded => "loading_overlay.hide('#our-product-#{product.id}')",
+  <%= form_for product, as: "product_#{product.id}", remote: true, html: {data: {loading: true}},
     :url => {:controller => :suppliers_plugin_product, :action => :edit, :id => product ? product.id : nil} do |f| %>
 
     <div class="internal-table">
@@ -99,12 +97,9 @@
     <div class="action-button-container">
       <%= f.submit t('views.product._edit.save'), :class => 'save' %>
       <%= link_to_function t('views.product._edit.cancel'), :class => 'action-button cancel', 'toggle-edit' => '' %>
-      <%= link_to_remote t('views.product._edit.remove_product'), {
-        :confirm => t('views.product._edit.are_you_sure_you_want'),
-        :loading => "loading_overlay.show('#our-product-#{product.id}')",
-        :loaded => "loading_overlay.hide('#our-product-#{product.id}')",
-        :url => {:controller => :suppliers_plugin_product, :action => 'destroy', :id => product.id }
-      }, :class => 'action-button remove' %>
+      <%= link_to t('views.product._edit.remove_product'), remote: true, :confirm => t('views.product._edit.are_you_sure_you_want'),
+        :url => {:controller => :suppliers_plugin_product, :action => 'destroy', :id => product.id }, :class => 'action-button remove',
+        html: {data: {loading: '#our-product-#{product.id}'}} %>
     </div>
   <% end %>
 
@@ -126,7 +121,7 @@
 
 </div>
 
-<% javascript_tag do %>
+<%= javascript_tag do %>
   suppliers.our_product.load(<%= product.id %>);
 <% end %>
 

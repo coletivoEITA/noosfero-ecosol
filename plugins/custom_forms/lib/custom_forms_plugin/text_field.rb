@@ -6,4 +6,6 @@ class CustomFormsPlugin::TextField < CustomFormsPlugin::Field
   def show_as
     self['show_as'] || 'input'
   end
+
+  attr_accessible :name
 end

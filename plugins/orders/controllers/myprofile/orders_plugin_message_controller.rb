@@ -11,9 +11,9 @@ class OrdersPluginMessageController < MyProfileController
     @consumer = @order.consumer
     if params[:commit]
       if params[:include_order]
-        OrdersPlugin::Mailer.deliver_message_to_consumer_for_order profile, @order, params[:email][:subject], params[:email][:message]
+        OrdersPlugin::Mailer.message_to_consumer_for_order(profile, @order, params[:email][:subject], params[:email][:message]).deliver
       else
-        OrdersPlugin::Mailer.deliver_message_to_consumer profile, @consumer, params[:email][:subject], params[:email][:message]
+        OrdersPlugin::Mailer.message_to_consumer(profile, @consumer, params[:email][:subject], params[:email][:message]).deliver
       end
       page_reload
     else

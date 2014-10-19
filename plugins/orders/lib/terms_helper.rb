@@ -2,6 +2,16 @@ raise 'I18n version 0.6.0 is needed for a good string interpolation' unless I18n
 
 module TermsHelper
 
+  extend ActiveSupport::Concern
+
+  included do
+    include I18nAutoScope
+    alias_method_chain :translate, :transformation
+    alias_method_chain :translate, :terms_cache
+    alias_method_chain :translate, :terms
+    alias_method :t, :translate
+  end
+
   I18nSeparator = '.'
 
   Terms = [:profile, :supplier, :consumer]
@@ -73,14 +83,6 @@ module TermsHelper
 
   protected
 
-  def self.included base
-    base.send :include, I18nAutoScope
-    base.alias_method_chain :translate, :transformation
-    base.alias_method_chain :translate, :terms_cache
-    base.alias_method_chain :translate, :terms
-    base.send :alias_method, :t, :translate
-  end
-
   def translate_with_transformation key, options = {}
     translation = translate_without_transformation key, options
 
@@ -118,12 +120,12 @@ module TermsHelper
     return translated_terms if translated_terms.present?
 
     keys.each do |key|
-      translation = self.translate_with_auto_scope "terms#{sep}#{key}", :raise => true rescue nil
+      translation = self.translate_with_auto_scope "terms#{sep}#{key}", raise: true rescue nil
       next unless translation.is_a? String
 
-      translated_terms["terms#{sep}#{key}"] = translation
+      translated_terms["terms#{sep}#{key}".to_sym] = translation
       transformations.each do |transformation|
-        translated_terms["terms#{sep}#{key}#{sep}#{transformation}"] = translation.send transformation
+        translated_terms["terms#{sep}#{key}#{sep}#{transformation}".to_sym] = translation.send transformation
       end
     end
     translated_terms

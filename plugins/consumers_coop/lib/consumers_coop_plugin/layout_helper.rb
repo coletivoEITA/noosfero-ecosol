@@ -1,5 +1,5 @@
 # workaround for plugin class scope problem
-require_dependency 'suppliers_plugin/product_helper'
+require 'suppliers_plugin/product_helper'
 
 module ConsumersCoopPlugin::LayoutHelper
 
@@ -10,6 +10,7 @@ module ConsumersCoopPlugin::LayoutHelper
   HeaderButtons = [
     [:start, 'consumers_coop_plugin.lib.layout_helper.start', proc{ profile.url }, proc{ on_homepage? }],
     [:orders, 'consumers_coop_plugin.lib.layout_helper.orders', {:controller => :consumers_coop_plugin_order, :action => :index}],
+    [:volunteering, 'consumers_coop_plugin.lib.layout_helper.volunteering', {:controller => :consumers_coop_plugin_volunteering, :action => :index}, nil, proc{ profile.volunteers_settings.cycle_volunteers_enabled }],
     [:adm, 'consumers_coop_plugin.lib.layout_helper.administration', {:controller => :consumers_coop_plugin_myprofile, :action => :index},
      proc{ @admin }, proc{ profile.has_admin? user }],
   ]
@@ -19,11 +20,11 @@ module ConsumersCoopPlugin::LayoutHelper
     @admin = @controller.is_a? MyProfileController
 
     HeaderButtons.map do |key, label, url, selected_proc, if_proc|
-      next if if_proc and !instance_eval(&if_proc)
+      next if if_proc and not instance_exec(&if_proc)
 
       label = t label
       if url.is_a? Proc
-        url = instance_eval &url
+        url = instance_exec &url
       else
         # necessary for profile with own domain
         url[:profile] = profile.identifier
@@ -32,7 +33,7 @@ module ConsumersCoopPlugin::LayoutHelper
       if key != :adm and @admin
         selected = false
       elsif selected_proc
-        selected = instance_eval &selected_proc
+        selected = instance_exec &selected_proc
       else
         selected = params[:controller].to_s == url[:controller].to_s
       end

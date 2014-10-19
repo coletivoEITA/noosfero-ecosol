@@ -24,6 +24,9 @@ class OrdersPluginOrderController < ProfileController
     end
   end
 
+  def repeat
+  end
+
   def reopen
     @order.update_attributes! :status => 'draft'
     render :action => :edit

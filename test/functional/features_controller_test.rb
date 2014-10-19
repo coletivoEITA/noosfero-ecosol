@@ -14,14 +14,6 @@ class FeaturesControllerTest < ActionController::TestCase
     login_as(create_admin_user(Environment.find(2)))
   end
   
-  def test_local_files_reference
-    assert_local_files_reference
-  end
-  
-  def test_valid_xhtml
-    assert_valid_xhtml
-  end
-  
   def test_listing_features
     uses_host 'anhetegua.net'
     get :index
@@ -152,6 +144,22 @@ class FeaturesControllerTest < ActionController::TestCase
     e.reload
     assert_equal true, e.custom_community_fields['contact_person']['active']
     assert_equal true, e.custom_community_fields['contact_person']['required']
+  end
+
+  should 'search members by name' do
+    uses_host 'anhetegua.net'
+    person = fast_create(Person, :environment_id => Environment.find(2).id)
+    xhr :get, :search_members, :q => person.name[0..2]
+    json_response = ActiveSupport::JSON.decode(@response.body)
+    assert_includes json_response, {"id"=>person.id, "name"=>person.name}
+  end
+
+  should 'search members by identifier' do
+    uses_host 'anhetegua.net'
+    person = fast_create(Person, :name => 'Some Name', :identifier => 'person-identifier', :environment_id => Environment.find(2).id)
+    xhr :get, :search_members, :q => person.identifier
+    json_response = ActiveSupport::JSON.decode(@response.body)
+    assert_includes json_response, {"id"=>person.id, "name"=>person.name}
   end
 
 end

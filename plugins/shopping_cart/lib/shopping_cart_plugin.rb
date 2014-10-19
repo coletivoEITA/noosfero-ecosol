@@ -24,23 +24,6 @@ class ShoppingCartPlugin < Noosfero::Plugin
     end
   end
 
-  def add_to_cart_button(item)
-    profile = item.profile
-    settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin)
-    if settings.enabled && item.available
-       lambda {
-         link_to(_('Add to basket'), "add:#{item.name}",
-           :class => 'cart-add-item',
-           :onclick => "Cart.addItem(#{item.id}, this); return false"
-         )
-       }
-    end
-  end
-
-  alias :product_info_extras :add_to_cart_button
-  alias :catalog_item_extras :add_to_cart_button
-  alias :asset_product_extras :add_to_cart_button
-
   def stylesheet?
     true
   end
@@ -50,7 +33,10 @@ class ShoppingCartPlugin < Noosfero::Plugin
   end
 
   def body_beginning
-    expanded_template('cart.html.erb')
+    lambda do
+    	extend ShoppingCartPlugin::CartHelper
+      render 'public/cart' unless cart_minimized
+    end
   end
 
   def control_panel_buttons
@@ -62,4 +48,31 @@ class ShoppingCartPlugin < Noosfero::Plugin
 
     buttons
   end
+
+  def add_to_cart_button item, options = {}
+    profile = item.profile
+    settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin)
+    return unless settings.enabled and item.available
+    lambda do
+      extend ShoppingCartPlugin::CartHelper
+      add_to_cart_button item, options
+    end
+  end
+
+  alias :product_info_extras :add_to_cart_button
+  alias :catalog_item_extras :add_to_cart_button
+  alias :asset_product_extras :add_to_cart_button
+
+  # We now think that it's not a good idea to have the basket in the same time.
+  #def catalog_autocomplete_item_extras product
+  #  add_to_cart_button product, with_text: false
+  #end
+
+  def catalog_search_extras_begin
+  	lambda do
+    	extend ShoppingCartPlugin::CartHelper
+    	content_tag 'li', render('public/cart'), :class => 'catalog-cart'
+    end
+  end
+
 end

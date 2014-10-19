@@ -17,12 +17,12 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
     if request.xhr?
       render :partial => 'results'
     else
-      @open_cycles = profile.orders_cycles.open
+      @open_cycles = profile.orders_cycles.opened
     end
   end
 
   def new
-    if request.post?
+    if request.xhr?
       @cycle = OrdersCyclePlugin::Cycle.find params[:id]
 
       params[:cycle][:status] = 'orders' if @open = params[:open] == '1'
@@ -31,8 +31,9 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
       if @success
         session[:notice] = t('controllers.myprofile.cycle_controller.cycle_created')
         if params[:sendmail]
-          OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).deliver_open_cycle @cycle.profile,
-            @cycle,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message
+          OrdersCyclePlugin::Mailer.open_cycle(
+            @cycle.profile, @cycle ,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message)
+            .delay(:run_at => @cycle.start).deliver
         end
       else
         render :action => :edit
@@ -56,8 +57,9 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
         @success = @cycle.update_attributes params[:cycle]
 
         if params[:sendmail]
-          OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).deliver_open_cycle @cycle.profile,
-            @cycle,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message
+          OrdersCyclePlugin::Mailer.open_cycle(@cycle.profile,
+            @cycle, t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message)
+            .delay(:run_at => @cycle.start).deliver
         end
       end
     end

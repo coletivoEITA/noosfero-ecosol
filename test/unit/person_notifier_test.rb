@@ -8,7 +8,7 @@ class PersonNotifierTest < ActiveSupport::TestCase
     ActionMailer::Base.delivery_method = :test
     ActionMailer::Base.perform_deliveries = true
     ActionMailer::Base.deliveries = []
-    Person.destroy_all
+    Person.delete_all
     @admin = create_user('adminuser').person
     @member = create_user('member').person
     @admin.notification_time = 24
@@ -27,21 +27,21 @@ class PersonNotifierTest < ActiveSupport::TestCase
     @community.add_member(@member)
     process_delayed_job_queue
     notify
-    sent = ActionMailer::Base.deliveries.first
+    sent = ActionMailer::Base.deliveries.last
     assert_equal [@member.email], sent.to
   end
 
   should 'do not send mail if do not have notifications' do
     @community.add_member(@member)
     ActionTracker::Record.delete_all
-    assert_no_difference ActionMailer::Base.deliveries, :count do
+    assert_no_difference 'ActionMailer::Base.deliveries.count' do
       notify
     end
   end
 
   should 'do not send mail to people not joined to community' do
     Comment.create!(:author => @admin, :title => 'test comment 2', :body => 'body 2!', :source => @article)
-    assert_no_difference ActionMailer::Base.deliveries, :count do
+    assert_no_difference 'ActionMailer::Base.deliveries.count' do
       notify
     end
   end
@@ -52,7 +52,7 @@ class PersonNotifierTest < ActiveSupport::TestCase
     process_delayed_job_queue
     notify
     sent = ActionMailer::Base.deliveries.last
-    assert_match /#{@admin.name}/, sent.body
+    assert_match /#{@admin.name}/, sent.body.to_s
   end
 
   should 'do not include comment created before last notification' do
@@ -60,7 +60,7 @@ class PersonNotifierTest < ActiveSupport::TestCase
     ActionTracker::Record.delete_all
     comment = Comment.create!(:author => @admin, :title => 'test comment', :body => 'body!', :source => @article )
     @member.last_notification = DateTime.now + 1.day
-    assert_no_difference ActionMailer::Base.deliveries, :count do
+    assert_no_difference 'ActionMailer::Base.deliveries.count' do
       notify
     end
   end
@@ -85,7 +85,7 @@ class PersonNotifierTest < ActiveSupport::TestCase
     @member.notification_time = 12
     time = Time.now
     @member.notifier.schedule_next_notification_mail
-    job = Delayed::Job.where("handler like '%PersonNotifier::NotifyJob%'").last
+    job = Delayed::Job.handler_like(PersonNotifier::NotifyJob.name).last
     assert job.run_at >= time + @member.notification_time.hours
     assert job.run_at < time + (@member.notification_time+1).hours
   end
@@ -93,14 +93,14 @@ class PersonNotifierTest < ActiveSupport::TestCase
   should 'do not schedule duplicated notification mail' do
     @member.notification_time = 12
     @member.notifier.schedule_next_notification_mail
-    assert_no_difference Delayed::Job, :count do
+    assert_no_difference 'job_count(PersonNotifier::NotifyJob)' do
       @member.notifier.schedule_next_notification_mail
     end
   end
 
   should 'do not schedule next mail if notification time is zero' do
     @member.notification_time = 0
-    assert_no_difference Delayed::Job, :count do
+    assert_no_difference 'job_count(PersonNotifier::NotifyJob)' do
       @member.notifier.schedule_next_notification_mail
     end
   end
@@ -118,17 +118,17 @@ class PersonNotifierTest < ActiveSupport::TestCase
 
   should 'do not create duplicated job' do
     PersonNotifier.schedule_all_next_notification_mail
-    assert_no_difference Delayed::Job, :count do
+    assert_no_difference 'job_count(PersonNotifier::NotifyJob)' do
       PersonNotifier.schedule_all_next_notification_mail
     end
   end
 
   should 'schedule after update and set a valid notification time' do
-    assert_no_difference Delayed::Job, :count do
+    assert_no_difference 'job_count(PersonNotifier::NotifyJob)' do
       @member.notification_time = 0
       @member.save!
     end
-    assert_difference Delayed::Job, :count, 1 do
+    assert_difference 'job_count(PersonNotifier::NotifyJob)', 1 do
       @member.notification_time = 12
       @member.save!
     end
@@ -136,16 +136,16 @@ class PersonNotifierTest < ActiveSupport::TestCase
 
   should 'reschedule with changed notification time' do
     time = Time.now
-    assert_difference Delayed::Job, :count, 1 do
+    assert_difference 'job_count(PersonNotifier::NotifyJob)', 1 do
       @member.notification_time = 2
       @member.save!
     end
-    assert_no_difference Delayed::Job, :count do
+    assert_no_difference 'job_count(PersonNotifier::NotifyJob)' do
       @member.notification_time = 12
       @member.save!
     end
     @member.notifier.schedule_next_notification_mail
-    job = Delayed::Job.where("handler like '%PersonNotifier::NotifyJob%'").last
+    job = Delayed::Job.handler_like(PersonNotifier::NotifyJob.name).last
     assert job.run_at >= time + @member.notification_time.hours
     assert job.run_at < time + (@member.notification_time+1).hours
   end
@@ -157,7 +157,7 @@ class PersonNotifierTest < ActiveSupport::TestCase
     process_delayed_job_queue
     notify
     sent = ActionMailer::Base.deliveries.last
-    assert_match /cannot render notification for some_invalid_verb/, sent.body
+    assert_match /cannot render notification for some_invalid_verb/, sent.body.to_s
   end
 
   ActionTrackerConfig.verb_names.each do |verb|
@@ -178,7 +178,7 @@ class PersonNotifierTest < ActiveSupport::TestCase
 
       notify
       sent = ActionMailer::Base.deliveries.last
-      assert_no_match /cannot render notification for #{verb}/, sent.body
+      assert_no_match /cannot render notification for #{verb}/, sent.body.to_s
     end
   end
 
@@ -197,7 +197,7 @@ class PersonNotifierTest < ActiveSupport::TestCase
   end
 
   should 'perform create NotifyJob for all users with notification_time' do
-    assert_difference Delayed::Job, :count, 2 do
+    assert_difference 'job_count(PersonNotifier::NotifyJob)', 2 do
       Delayed::Job.enqueue(PersonNotifier::NotifyAllJob.new)
       process_delayed_job_queue
     end
@@ -214,20 +214,25 @@ class PersonNotifierTest < ActiveSupport::TestCase
     assert_equal 1, Delayed::Job.count
   end
 
-  should 'NotifyJob failed jobs create a new NotifyJob on permanent failure' do
+  should 'NotifyJob failed jobs create a new NotifyJob on failure' do
+    Delayed::Worker.max_attempts = 1
     Delayed::Job.enqueue(PersonNotifier::NotifyJob.new(@member.id))
 
     PersonNotifier.any_instance.stubs(:notify).raises('error')
 
     process_delayed_job_queue
-    jobs = Delayed::Job.all
-
-    assert 1, jobs.select{|j| j.failed?}.size
-    assert 1, jobs.select{|j| !j.failed?}.size
+    jobs = PersonNotifier::NotifyJob.find(@member.id)
+    assert !jobs.select {|j| !j.failed? && j.last_error.nil? }.empty?
   end
+
+  private
 
   def notify
     @member.notifier.notify
+  end
+
+  def job_count(job)
+    Delayed::Job.handler_like(job.name).count
   end
 
 end

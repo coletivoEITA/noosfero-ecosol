@@ -10,13 +10,9 @@ class ProfileInfoBlock < Block
 
   def content(args={})
     block = self
-    lambda do
+    lambda do |_|
       render :file => 'blocks/profile_info', :locals => { :block => block }
     end
-  end
-
-  def editable?
-    false
   end
 
   def cacheable?

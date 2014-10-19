@@ -5,7 +5,7 @@
     <% if cycle.valid? %>
       <%= t('views.cycle._edit_popin.cycle_saved') %>
     <% else %>
-      <% cycle.errors.each_full do |msg| %>
+      <% cycle.errors.full_messages.each do |msg| %>
         <div><%= msg %></div>
       <% end %>
     <% end %>

@@ -1,5 +1,10 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
+//= require javascripts/rails-extended
+
+_.templateSettings = {
+  interpolate: /\{\{(.+?)\}\}/g,
+};
 
 // scope for noosfero stuff
 noosfero = {
@@ -7,6 +12,14 @@ noosfero = {
 
 function noosfero_init() {
   // focus_first_field(); it is moving the page view when de form is down.
+}
+
+var __noosfero_root = null;
+function noosfero_root() {
+  if (__noosfero_root == null) {
+    __noosfero_root = jQuery('meta[property="noosfero:root"]').attr("content") || '';
+  }
+  return __noosfero_root;
 }
 
 /* If applicable, find the first field in which the user can type and move the
@@ -171,7 +184,7 @@ function loading_done(element_id) {
    jQuery(element_id).removeClass('small-loading-dark');
 }
 function open_loading(message) {
-   jQuery('body').prepend("<div id='overlay_loading' class='ui-widget-overlay' style='display: none'/><div id='overlay_loading_modal' style='display: none'><p>"+message+"</p><img src='/images/loading-dark.gif'/></div>");
+   jQuery('body').prepend("<div id='overlay_loading' class='ui-widget-overlay' style='display: none'/><div id='overlay_loading_modal' style='display: none'><p>"+message+"</p><img src='" + noosfero_root() + "/images/loading-dark.gif'/></div>");
    jQuery('#overlay_loading').show();
    jQuery('#overlay_loading_modal').center();
    jQuery('#overlay_loading_modal').fadeIn('slow');
@@ -513,20 +526,30 @@ function new_qualifier_row(selector, select_qualifiers, delete_button) {
   jQuery(selector).append("<tr><td>" + select_qualifiers + "</td><td id='certifier-area-" + index + "'><select></select>" + delete_button + "</td></tr>");
 }
 
+// override this to take action after user_data load
+function customUserDataCallback() {
+};
+
 // controls the display of the login/logout stuff
 jQuery(function($) {
-  $.ajaxSetup({cache: false});
-  $.getJSON('/account/user_data', function userDataCallBack(data) {
+  $.ajaxSetup({
+    cache: false,
+    headers: {
+      'X-CSRF-Token': $.cookie("_noosfero_.XSRF-TOKEN")
+    }
+  });
+
+  var user_data = noosfero_root() + '/account/user_data';
+  $.getJSON(user_data, function userDataCallBack(data) {
+    noosfero.user_data = data;
+    customUserDataCallback();
     if (data.login) {
       // logged in
-      loggedInDataCallBack(data);
-      addManageEnterprisesToOldStyleMenu(data);
       if (data.chat_enabled) {
-        setInterval(function(){ $.getJSON('/account/user_data', chatOnlineUsersDataCallBack)}, 10000);
+        setInterval(function(){ $.getJSON(user_data, chatOnlineUsersDataCallBack)}, 10000);
       }
-    } else {
-      // not logged in
-      $('#user .not-logged-in, .login-block .not-logged-user').fadeIn();
+      $('head').append('<meta content="authenticity_token" name="csrf-param" />');
+      $('head').append('<meta content="'+$.cookie("_noosfero_.XSRF-TOKEN")+'" name="csrf-token" />');
     }
     if (data.notice) {
       display_notice(data.notice);
@@ -534,45 +557,6 @@ jQuery(function($) {
     // Bind this event to do more actions with the user data (for example, inside plugins)
     $(window).trigger("userDataLoaded", data);
   });
-
-  function loggedInDataCallBack(data) {
-    // logged in
-    $('body').addClass('logged-in');
-    $('#user .logged-in, .login-block .logged-user-info').each(function() {
-      $(this).find('a[href]').each(function() {
-        var new_href = $(this).attr('href').replace('{login}', data.login);
-        if (data.email_domain) {
-          new_href = new_href.replace('{email_domain}', data.email_domain);
-        }
-        $(this).attr('href', new_href);
-      });
-      var html = $(this).html()
-                        .replace(/{login}/g, data.login)
-                        .replace('{avatar}', data.avatar)
-                        .replace('{month}', data.since_month)
-                        .replace('{year}', data.since_year);
-      $(this).html(html).fadeIn();
-      if (data.is_admin) {
-        $('#user .admin-link').show();
-      }
-      if (data.email_domain) {
-        $('#user .webmail-link').show();
-      }
-    });
-  }
-
-  function addManageEnterprisesToOldStyleMenu(data) {
-    if ($('#manage-enterprises-link-template').length > 0) {
-      $.each(data.enterprises, function(index, enterprise) {
-        var item = $('<li>' + $('#manage-enterprises-link-template').html() + '</li>');
-        item.find('a[href]').each(function() {
-          $(this).attr('href', '/myprofile/' + enterprise.identifier);
-        });
-        item.html(item.html().replace('{name}', enterprise.name));
-        item.insertAfter('#manage-enterprises-link-template');
-      });
-    }
-  }
 
   function chatOnlineUsersDataCallBack(data) {
     if ($('#chat-online-users').length == 0) {
@@ -643,7 +627,7 @@ function display_notice(message) {
 
 function open_chat_window(self_link, anchor) {
    anchor = anchor || '#';
-   var noosfero_chat_window = window.open('/chat' + anchor,'noosfero_chat','width=900,height=500');
+   var noosfero_chat_window = window.open(noosfero_root() + '/chat' + anchor,'noosfero_chat','width=900,height=500');
    noosfero_chat_window.focus();
    return false;
 }
@@ -682,8 +666,6 @@ function hide_and_show(hide_elements, show_elements) {
 
 function limited_text_area(textid, limit) {
   var text = jQuery('#' + textid).val();
-  // FIXME This will be fixed by: http://noosfero.org/Development/ActionItem3136
-  //grow_text_area(textid);
   var textlength = text.length;
   jQuery('#' + textid + '_left span').html(limit - textlength);
   if (textlength > limit) {
@@ -698,14 +680,9 @@ function limited_text_area(textid, limit) {
   }
 }
 
-function grow_text_area(textid) {
-  var height = jQuery('#' + textid).attr('scrollHeight');
-  if (jQuery.browser.webkit) {
-    height -= parseInt(jQuery('#' + textid).css('padding-top')) +
-              parseInt(jQuery('#' + textid).css('padding-bottom'));
-  }
-  jQuery('#' + textid).css('height', height + 'px');
-}
+jQuery(function($) {
+  $('.autogrow').autogrow();
+});
 
 jQuery(function($) {
   $('a').each(function() {
@@ -1108,3 +1085,4 @@ function apply_zoom_to_images(zoom_text) {
     });
   });
 }
+

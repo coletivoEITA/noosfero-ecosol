@@ -20,14 +20,16 @@ module MacrosHelper
         jQuery('<div>'+#{macro_configuration_dialog(macro).to_json}+'</div>').dialog({
           title: #{macro_title(macro).to_json},
           modal: true,
-          buttons: [
-            {text: #{_('Ok').to_json}, click: function(){
+          buttons: {
+            #{_('Ok').to_json}: function(){
               tinyMCE.activeEditor.execCommand('mceInsertContent', false,
               (function(dialog){ #{macro_generator(macro)} })(this));
               jQuery(this).dialog('close');
-            }},
-            {text: #{_('Cancel').to_json}, click: function(){jQuery(this).dialog('close');}}
-          ]
+            },
+            #{_('Cancel').to_json}: function(){
+              jQuery(this).dialog('close');
+            }
+          }
         });
       }"
     end
@@ -37,7 +39,7 @@ module MacrosHelper
     plugins_javascripts = []
     @plugins.dispatch(:macros).map do |macro|
       if macro.configuration[:js_files]
-        macro.configuration[:js_files].map { |js| plugins_javascripts << macro.plugin.public_path(js) }
+        [macro.configuration[:js_files]].flatten.map { |js| plugins_javascripts << macro.plugin.public_path(js) }
       end
     end
     unless plugins_javascripts.empty?
@@ -49,7 +51,7 @@ module MacrosHelper
     plugins_css = []
     @plugins.dispatch(:macros).map do |macro|
       if macro.configuration[:css_files]
-        macro.configuration[:css_files].map { |css| plugins_css << macro.plugin.public_path(css) }
+        [macro.configuration[:css_files]].flatten.map { |css| plugins_css << macro.plugin.public_path(css) }
       end
     end
     plugins_css.join(',')
@@ -59,7 +61,11 @@ module MacrosHelper
 
   def macro_generator(macro)
     if macro.configuration[:generator]
-      macro.configuration[:generator]
+      if macro.configuration[:generator].respond_to?(:call)
+        macro.configuration[:generator].call(macro)
+      else
+        macro.configuration[:generator]
+      end
     else
       macro_default_generator(macro)
     end
@@ -68,8 +74,7 @@ module MacrosHelper
 
   def macro_default_generator(macro)
     code = "var params = {};"
-    configuration = macro_configuration(macro)
-    configuration[:params].map do |field|
+    macro.configuration[:params].map do |field|
       code += "params.#{field[:name]} = jQuery('*[name=#{field[:name]}]', dialog).val();"
     end
     code + "

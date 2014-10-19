@@ -1,6 +1,7 @@
+# encoding: UTF-8
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ApplicationHelperTest < ActiveSupport::TestCase
+class ApplicationHelperTest < ActionView::TestCase
 
   include ApplicationHelper
 
@@ -15,26 +16,14 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     @controller.stubs(:view_paths).returns([p1,p2])
 
     self.stubs(:params).returns({:controller => 'test'})
+    File.stubs(:exists?).returns(false)
 
-    File.expects(:exists?).with(p1+"test/_integer.rhtml").returns(true)
-
-    File.expects(:exists?).with(p1+"test/_float.rhtml").returns(false)
-    File.expects(:exists?).with(p1+"test/_float.html.erb").returns(false)
-    File.expects(:exists?).with(p2+"test/_float.rhtml").returns(false)
-    File.expects(:exists?).with(p2+"test/_float.html.erb").returns(false)
-    File.expects(:exists?).with(p1+"test/_numeric.rhtml").returns(false)
-    File.expects(:exists?).with(p1+"test/_object.rhtml").returns(false)
-    File.expects(:exists?).with(p1+"test/_object.html.erb").returns(false)
-    File.expects(:exists?).with(p1+"test/_numeric.html.erb").returns(false)
-    File.expects(:exists?).with(p2+"test/_numeric.rhtml").returns(true)
-
-    File.expects(:exists?).with(p1+"test/_object.rhtml").returns(false)
-    File.expects(:exists?).with(p1+"test/_object.html.erb").returns(false)
-    File.expects(:exists?).with(p2+"test/_object.rhtml").returns(false)
-    File.expects(:exists?).with(p2+"test/_object.html.erb").returns(false)
-
+    File.expects(:exists?).with(p1+"test/_integer.html.erb").returns(true)
     assert_equal 'integer', partial_for_class(Integer)
+
+    File.expects(:exists?).with(p1+"test/_numeric.html.erb").returns(true)
     assert_equal 'numeric', partial_for_class(Float)
+
     assert_raises ArgumentError do
       partial_for_class(Object)
     end
@@ -48,7 +37,8 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
     class School; class Project; end; end
 
-    File.expects(:exists?).with(p+"test/application_helper_test/school/_project.rhtml").returns(true)
+    File.stubs(:exists?).returns(false)
+    File.expects(:exists?).with(p+"test/application_helper_test/school/_project.html.erb").returns(true)
 
     assert_equal 'test/application_helper_test/school/project', partial_for_class(School::Project)
   end
@@ -59,14 +49,29 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     end
   end
 
+  should 'plugins path take precedence over core path' do
+    core_path = 'core/'
+    plugin_path = 'path/'
+    @controller = mock()
+    @controller.stubs(:view_paths).returns([plugin_path, core_path])
+    self.stubs(:params).returns({:controller => 'test'})
+
+    File.stubs(:exists?).returns(false)
+    File.stubs(:exists?).with(core_path+"test/_block.html.erb").returns(true)
+    File.stubs(:exists?).with(plugin_path+"test/_raw_html_block.html.erb").returns(true)
+
+    assert_equal 'raw_html_block', partial_for_class(RawHTMLBlock)
+  end
+
   should 'generate link to stylesheet' do
-    File.expects(:exists?).with(File.join(RAILS_ROOT, 'public', 'stylesheets', 'something.css')).returns(true)
+    File.stubs(:exists?).returns(false)
+    File.expects(:exists?).with(Rails.root.join('public', 'stylesheets', 'something.css')).returns(true)
     expects(:filename_for_stylesheet).with('something', nil).returns('/stylesheets/something.css')
     assert_match '@import url(/stylesheets/something.css)', stylesheet_import('something')
   end
 
   should 'not generate link to unexisting stylesheet' do
-    File.expects(:exists?).with(File.join(RAILS_ROOT, 'public', 'stylesheets', 'something.css')).returns(false)
+    File.expects(:exists?).with(Rails.root.join('public', 'stylesheets', 'something.css')).returns(false)
     expects(:filename_for_stylesheet).with('something', nil).returns('/stylesheets/something.css')
     assert_no_match %r{@import url(/stylesheets/something.css)}, stylesheet_import('something')
   end
@@ -177,7 +182,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
   should 'render theme footer' do
     stubs(:theme_path).returns('/user_themes/mytheme')
-    footer_path = RAILS_ROOT + '/public/user_themes/mytheme/footer.rhtml'
+    footer_path = Rails.root.join('public', 'user_themes', 'mytheme', 'footer.html.erb')
 
     File.expects(:exists?).with(footer_path).returns(true)
     expects(:render).with(:file => footer_path, :use_full_path => false).returns("BLI")
@@ -187,11 +192,9 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
   should 'ignore unexisting theme footer' do
     stubs(:theme_path).returns('/user_themes/mytheme')
-    footer_path = RAILS_ROOT + '/public/user_themes/mytheme/footer.rhtml'
-    alternate_footer_path = RAILS_ROOT + '/public/user_themes/mytheme/footer.html.erb'
+    footer_path = Rails.root.join('public', 'user_themes', 'mytheme', 'footer.html.erb')
 
     File.expects(:exists?).with(footer_path).returns(false)
-    File.expects(:exists?).with(alternate_footer_path).returns(false)
     expects(:render).with(:file => footer).never
 
     assert_nil theme_footer
@@ -199,7 +202,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
   should 'render theme site title' do
     stubs(:theme_path).returns('/user_themes/mytheme')
-    site_title_path = RAILS_ROOT + '/public/user_themes/mytheme/site_title.rhtml'
+    site_title_path = Rails.root.join('public', 'user_themes', 'mytheme', 'site_title.html.erb')
 
     File.expects(:exists?).with(site_title_path).returns(true)
     expects(:render).with(:file => site_title_path, :use_full_path => false).returns("Site title")
@@ -209,11 +212,9 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
   should 'ignore unexisting theme site title' do
     stubs(:theme_path).returns('/user_themes/mytheme')
-    site_title_path = RAILS_ROOT + '/public/user_themes/mytheme/site_title.rhtml'
-    alternate_site_title_path = RAILS_ROOT + '/public/user_themes/mytheme/site_title.html.erb'
+    site_title_path = Rails.root.join('public', 'user_themes', 'mytheme', 'site_title.html.erb')
 
     File.expects(:exists?).with(site_title_path).returns(false)
-    File.expects(:exists?).with(alternate_site_title_path).returns(false)
     expects(:render).with(:file => site_title_path).never
 
     assert_nil theme_site_title
@@ -233,6 +234,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
   should 'use environment´s template when there is no profile' do
     stubs(:profile).returns(nil)
+    self.stubs(:environment).returns(Environment.default)
     environment.expects(:layout_template).returns('sometemplate')
     assert_equal "/designs/templates/sometemplate/stylesheets/style.css", template_stylesheet_path
   end
@@ -265,21 +267,21 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     stubs(:environment).returns(Environment.default)
     expects(:content_tag).with(anything, 'male').returns('MALE!!')
     expects(:content_tag).with(anything, 'MALE!!', is_a(Hash)).returns("FINAL")
-    assert_equal "FINAL", profile_sex_icon(Person.new(:sex => 'male'))
+    assert_equal "FINAL", profile_sex_icon(build(Person, :sex => 'male'))
   end
 
   should 'provide sex icon for females' do
     stubs(:environment).returns(Environment.default)
     expects(:content_tag).with(anything, 'female').returns('FEMALE!!')
     expects(:content_tag).with(anything, 'FEMALE!!', is_a(Hash)).returns("FINAL")
-    assert_equal "FINAL", profile_sex_icon(Person.new(:sex => 'female'))
+    assert_equal "FINAL", profile_sex_icon(build(Person, :sex => 'female'))
   end
 
   should 'provide undef sex icon' do
     stubs(:environment).returns(Environment.default)
     expects(:content_tag).with(anything, 'undef').returns('UNDEF!!')
     expects(:content_tag).with(anything, 'UNDEF!!', is_a(Hash)).returns("FINAL")
-    assert_equal "FINAL", profile_sex_icon(Person.new(:sex => nil))
+    assert_equal "FINAL", profile_sex_icon(build(Person, :sex => nil))
   end
 
   should 'not draw sex icon for non-person profiles' do
@@ -290,11 +292,11 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     env = fast_create(Environment, :name => 'env test')
     env.expects(:enabled?).with('disable_gender_icon').returns(true)
     stubs(:environment).returns(env)
-    assert_equal '', profile_sex_icon(Person.new(:sex => 'male'))
+    assert_equal '', profile_sex_icon(build(Person, :sex => 'male'))
   end
 
   should 'display field on person signup' do
-    env = Environment.create!(:name => 'env test')
+    env = create(Environment, :name => 'env test')
     stubs(:environment).returns(env)
 
     controller = mock
@@ -307,7 +309,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
   end
 
   should 'display field on enterprise registration' do
-    env = Environment.create!(:name => 'env test')
+    env = create(Environment, :name => 'env test')
     stubs(:environment).returns(env)
 
     controller = mock
@@ -321,7 +323,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
   end
 
   should 'display field on community creation' do
-    env = Environment.create!(:name => 'env test')
+    env = create(Environment, :name => 'env test')
     stubs(:environment).returns(env)
 
     controller = mock
@@ -347,7 +349,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
   end
 
   should 'not display field on enterprise registration' do
-    env = Environment.create!(:name => 'env test')
+    env = create(Environment, :name => 'env test')
     stubs(:environment).returns(env)
 
     controller = mock
@@ -361,7 +363,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
   end
 
   should 'not display field on community creation' do
-    env = Environment.create!(:name => 'env test')
+    env = create(Environment, :name => 'env test')
     stubs(:environment).returns(env)
 
     controller = mock
@@ -477,27 +479,27 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     profile = mock
     profile.stubs(:theme).returns('some-theme')
     stubs(:profile).returns(profile)
-    with_constants :NOOSFERO_CONF => {'gravatar' => 'crazyvatar'} do
-      assert_equal gravatar_default, 'crazyvatar'
-    end
+
+    NOOSFERO_CONF.stubs(:[]).with('gravatar').returns('crazyvatar')
+    assert_equal gravatar_default, 'crazyvatar'
+
     stubs(:theme_option).returns('gravatar' => 'nicevatar')
-    with_constants :NOOSFERO_CONF => {'gravatar' => 'crazyvatar'} do
-      assert_equal gravatar_default, 'nicevatar'
-    end
+    NOOSFERO_CONF.stubs(:[]).with('gravatar').returns('nicevatar')
+    assert_equal gravatar_default, 'nicevatar'
   end
 
   should 'use theme passed via param when in development mode' do
-    stubs(:environment).returns(Environment.new(:theme => 'environment-theme'))
-    ENV.stubs(:[]).with('RAILS_ENV').returns('development')
+    stubs(:environment).returns(build(Environment, :theme => 'environment-theme'))
+    Rails.env.stubs(:development?).returns(true)
     self.stubs(:params).returns({:theme => 'skyblue'})
     assert_equal 'skyblue', current_theme
   end
 
   should 'not use theme passed via param when in production mode' do
-    stubs(:environment).returns(Environment.new(:theme => 'environment-theme'))
+    stubs(:environment).returns(build(Environment, :theme => 'environment-theme'))
     ENV.stubs(:[]).with('RAILS_ENV').returns('production')
     self.stubs(:params).returns({:theme => 'skyblue'})
-    stubs(:profile).returns(Profile.new(:theme => 'profile-theme'))
+    stubs(:profile).returns(build(Profile, :theme => 'profile-theme'))
     assert_equal 'profile-theme', current_theme
   end
 
@@ -576,15 +578,15 @@ class ApplicationHelperTest < ActiveSupport::TestCase
   should 'use favicon from profile theme if the profile has theme' do
     stubs(:environment).returns(fast_create(Environment, :theme => 'new-theme'))
     stubs(:profile).returns(fast_create(Profile, :theme => 'profile-theme'))
-    File.expects(:exists?).with(File.join(RAILS_ROOT, 'public', '/designs/themes/profile-theme', 'favicon.ico')).returns(true)
+    File.expects(:exists?).with(Rails.root.join('public', '/designs/themes/profile-theme', 'favicon.ico')).returns(true)
     assert_equal '/designs/themes/profile-theme/favicon.ico', theme_favicon
   end
 
   should 'use favicon from profile articles if the profile theme does not have' do
     stubs(:environment).returns(fast_create(Environment, :theme => 'new-theme'))
     stubs(:profile).returns(fast_create(Profile, :theme => 'profile-theme'))
-    file = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/favicon.ico', 'image/x-ico'), :profile => profile)
-    File.expects(:exists?).with(File.join(RAILS_ROOT, 'public', theme_path, 'favicon.ico')).returns(false)
+    file = create(UploadedFile, :uploaded_data => fixture_file_upload('/files/favicon.ico', 'image/x-ico'), :profile => profile)
+    File.expects(:exists?).with(Rails.root.join('public', theme_path, 'favicon.ico')).returns(false)
 
     assert_match /favicon.ico/, theme_favicon
   end
@@ -592,7 +594,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
   should 'use favicon from environment if the profile theme and profile articles do not have' do
     stubs(:environment).returns(fast_create(Environment, :theme => 'new-theme'))
     stubs(:profile).returns(fast_create(Profile, :theme => 'profile-theme'))
-    File.expects(:exists?).with(File.join(RAILS_ROOT, 'public', theme_path, 'favicon.ico')).returns(false)
+    File.expects(:exists?).with(Rails.root.join('public', theme_path, 'favicon.ico')).returns(false)
     assert_equal '/designs/themes/new-theme/favicon.ico', theme_favicon
   end
 
@@ -602,13 +604,29 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     stubs(:environment).returns(env)
 
     @controller = ApplicationController.new
-    path = File.join(RAILS_ROOT, 'app', 'views')
+    path = Rails.root.join('app', 'views')
     @controller.stubs(:view_paths).returns([path])
 
-    file = path + '/shared/usermenu/xmpp_chat.rhtml'
+    file = path.join('shared','usermenu', 'xmpp_chat.html.erb')
     expects(:render).with(:file => file, :use_full_path => false).returns('Open chat')
 
     assert_equal 'Open chat', render_environment_features(:usermenu)
+  end
+
+  should 'not inlude administration link if user is not an environment administrator' do
+    user = mock()
+    stubs(:environment).returns(Environment.default)
+    user.stubs(:is_admin?).with(environment).returns(false)
+    stubs(:user).returns(user)
+    assert admin_link.blank?
+  end
+
+  should 'inlude administration link if user is an environment administrator' do
+    user = mock()
+    stubs(:environment).returns(Environment.default)
+    user.stubs(:is_admin?).with(environment).returns(true)
+    stubs(:user).returns(user)
+    assert admin_link.present?
   end
 
   should 'not return mime type of profile icon if not requested' do
@@ -641,7 +659,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
   should 'show task information with the requestor' do
     person = create_user('usertest').person
-    task = Task.create(:requestor => person)
+    task = create(Task, :requestor => person)
     assert_match person.name, task_information(task)
   end
 
@@ -667,6 +685,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
   should 'parse macros' do
     class Plugin1 < Noosfero::Plugin
     end
+    Noosfero::Plugin.stubs(:all).returns(['ApplicationHelperTest::Plugin1'])
 
     class Plugin1::Macro1 < Noosfero::Plugin::Macro
       def parse(params, inner_html, source)
@@ -734,7 +753,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
   should 'reference to article, in a profile with domain' do
     c = fast_create(Community)
-    c.domains << Domain.new(:name=>'domain.xyz')
+    c.domains << build(Domain, :name=>'domain.xyz')
     b = fast_create(Blog, :profile_id => c.id)
     a = fast_create(TinyMceArticle, :profile_id => c.id, :parent_id => b.id)
     a.save!
@@ -793,8 +812,9 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     result = button_bar :id=>'bt1' do
       '<b>foo</b>'
     end
-    assert_equal '<div class="button-bar" id="bt1"><b>foo</b>'+
-                 '<br style=\'clear: left;\' /></div>', result
+    assert_tag_in_string result, :tag =>'div', :attributes => {:class => 'button-bar', :id => 'bt1'}
+    assert_tag_in_string result, :tag =>'b', :content => 'foo', :parent => {:tag => 'div', :attributes => {:id => 'bt1'}}
+    assert_tag_in_string result, :tag =>'br', :parent => {:tag => 'div', :attributes => {:id => 'bt1'}}
   end
 
   should 'not filter html if source does not have macros' do
@@ -855,7 +875,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
     stubs(:user).returns(nil)
     expects(:manage_link).with(profile.enterprises, :enterprises, _('My enterprises')).never
-    assert_nil manage_enterprises
+    assert_equal '', manage_enterprises
   end
 
   should 'display enterprises if logged and enabled on environment' do
@@ -879,7 +899,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
     stubs(:user).returns(profile)
     expects(:manage_link).with(profile.enterprises, :enterprises, _('My enterprises')).never
-    assert_nil manage_enterprises
+    assert_equal '', manage_enterprises
   end
 
   should 'not display communities if not logged' do
@@ -891,7 +911,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
     stubs(:user).returns(nil)
     expects(:manage_link).with(profile.communities, :communities, _('My communities')).never
-    assert_nil manage_communities
+    assert_equal '', manage_communities
   end
 
   should 'display communities if logged and enabled on environment' do
@@ -915,7 +935,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
     stubs(:user).returns(profile)
     expects(:manage_link).with(profile.communities, :communities, _('My communities')).never
-    assert_nil manage_communities
+    assert_equal '', manage_communities
   end
 
   protected

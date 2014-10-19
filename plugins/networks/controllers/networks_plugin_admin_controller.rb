@@ -15,7 +15,7 @@ class NetworksPluginAdminController < AdminController
   end
 
   def create
-    if request.post?
+    if request.xhr?
       @network = self.environment.networks.build params[:network]
       @network.identifier = @network.name.to_slug
       @network.enabled = true

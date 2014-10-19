@@ -1,6 +1,6 @@
 <div id="network-join">
   <% if @enterprise.present? %>
-    <% form_tag params.merge(:enterprise_id => @enterprise), :onsubmit => 'return networks.join.confirm(this)' do %>
+    <%= form_tag params.merge(:enterprise_id => @enterprise), :onsubmit => 'return networks.join.confirm(this)' do %>
       <%= t('views.network.join.confirm') % {
         :enterprise => content_tag('strong', @enterprise.short_name),
         :network => content_tag('strong', profile.short_name),
@@ -25,6 +25,6 @@
   <% end %>
 </div>
 
-<% javascript_tag do %>
+<%= javascript_tag do %>
   networks.join.url = <%= url_for(params).to_json %>
 <% end %>

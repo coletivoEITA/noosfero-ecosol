@@ -1,7 +1,6 @@
 @import 'base';
 @import 'popin';
 @import 'sortable-table';
-@import 'loading-overlay';
 
 @import 'filter';
 @import 'actions';
@@ -148,7 +147,7 @@
 }
 
 #suppliers-products-import {
-  padding: 
+  padding:
 
   table, th, td {
     border: $border solid black;

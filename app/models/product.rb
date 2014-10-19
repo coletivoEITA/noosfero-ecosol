@@ -11,6 +11,8 @@ class Product < ActiveRecord::Base
 
   SEARCH_DISPLAYS = %w[map full]
 
+  attr_accessible :name, :product_category, :highlighted, :price, :enterprise, :image_builder, :description, :available, :qualifiers, :unit_id, :discount, :inputs
+
   def self.default_search_display
     'full'
   end
@@ -43,13 +45,13 @@ class Product < ActiveRecord::Base
   validates_numericality_of :price, :allow_nil => true
   validates_numericality_of :discount, :allow_nil => true
 
-  named_scope :enabled, :conditions => ['profiles.enabled = ?', true]
-  named_scope :visible, :conditions => ['profiles.visible = ?', true]
-  named_scope :public, :conditions => ['profiles.visible = ? AND profiles.public_profile = ?', true, true]
+  scope :enabled, :conditions => ['profiles.enabled = ?', true]
+  scope :visible, :conditions => ['profiles.visible = ?', true]
+  scope :public, :conditions => ['profiles.visible = ? AND profiles.public_profile = ?', true, true]
 
-  named_scope :more_recent, :order => "created_at DESC"
+  scope :more_recent, :order => "created_at DESC"
 
-  named_scope :from_category, lambda { |category|
+  scope :from_category, lambda { |category|
     {:joins => :product_category, :conditions => ['categories.path LIKE ?', "%#{category.slug}%"]} if category
   }
 
@@ -70,7 +72,11 @@ class Product < ActiveRecord::Base
   include FloatHelper
 
   include WhiteListFilter
-  filter_iframes :description, :whitelist => lambda { enterprise && enterprise.environment && enterprise.environment.trusted_sites_for_iframe }
+  filter_iframes :description
+
+  def iframe_whitelist
+    enterprise && enterprise.environment && enterprise.environment.trusted_sites_for_iframe
+  end
 
   def name
     self[:name].blank? ? category_name : self[:name]
@@ -165,13 +171,21 @@ class Product < ActiveRecord::Base
   def qualifiers_list=(qualifiers)
     self.product_qualifiers.destroy_all
     qualifiers.each do |qualifier_id, certifier_id|
-      self.product_qualifiers.create(:qualifier_id => qualifier_id, :certifier_id => certifier_id) if qualifier_id != 'nil'
+      if qualifier_id != 'nil'
+        product_qualifier = ProductQualifier.new
+        product_qualifier.product = self
+        product_qualifier.qualifier_id = qualifier_id
+        product_qualifier.certifier_id = certifier_id
+        product_qualifier.save!
+      end
     end
   end
 
   def order_inputs!(order = [])
     order.each_with_index do |input_id, array_index|
-      self.inputs.find(input_id).update_attributes(:position => array_index + 1)
+      input = self.inputs.find(input_id)
+      input.position = array_index + 1
+      input.save!
     end
   end
 
@@ -216,7 +230,7 @@ class Product < ActiveRecord::Base
     self.enterprise.environment.production_costs + self.enterprise.production_costs
   end
 
-  include ActionController::UrlWriter
+  include Rails.application.routes.url_helpers
   def price_composition_bar_display_url
     url_for({:host => enterprise.default_hostname, :controller => 'manage_products', :action => 'display_price_composition_bar', :profile => enterprise.identifier, :id => self.id }.merge(Noosfero.url_options))
   end
@@ -239,7 +253,7 @@ class Product < ActiveRecord::Base
         end
   end
 
-  delegate :enabled, :region, :region_id, :environment, :environment_id, :to => :enterprise, :allow_nil => true
+  delegate :enabled, :region, :region_id, :environment, :environment_id, :to => :enterprise, allow_nil: true
 
   protected
 

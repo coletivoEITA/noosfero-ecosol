@@ -1,4 +1,4 @@
-class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
+class OrdersPlugin::Order < ActiveRecord::Base
 
   Statuses = %w[ordered accepted separated delivered received]
   DbStatuses = %w[draft planned cancelled] + Statuses
@@ -27,12 +27,16 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     :supplier => StatusAccessMap.map{ |s, a| s if a == :supplier }.compact,
   }
 
-  set_table_name :orders_plugin_orders
-
+  # workaround for STI
+  self.table_name = :orders_plugin_orders
   self.abstract_class = true
+
+  attr_accessible :status
 
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'
+
+  belongs_to :session, primary_key: :session_id, foreign_key: :session_id, class_name: 'ActiveRecord::SessionStore::Session'
 
   has_many :items, :class_name => 'OrdersPlugin::Item', :foreign_key => :order_id, :dependent => :destroy, :order => 'name ASC'
   has_many :products, :through => :items
@@ -40,40 +44,48 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::Method'
   belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::Method'
 
-  named_scope :latest, :order => 'created_at DESC'
+  scope :of_session, -> session_id { where session_id: session_id }
+  scope :of_user, -> session_id, consumer_id=nil do
+    orders = OrdersPlugin::Order.arel_table
+    cond = orders[:session_id].eq(session_id)
+    cond = cond.or orders[:consumer_id].eq(consumer_id) if consumer_id
+    where cond
+  end
 
-  named_scope :draft,     :conditions => {:status => 'draft'}
-  named_scope :planned,   :conditions => {:status => 'planned'}
-  named_scope :cancelled, :conditions => {:status => 'cancelled'}
-  named_scope :not_cancelled, :conditions => ["status <> 'cancelled'"]
-  named_scope :ordered,   :conditions => ['ordered_at IS NOT NULL']
-  named_scope :confirmed, :conditions => ['ordered_at IS NOT NULL']
-  named_scope :accepted,  :conditions => ['accepted_at IS NOT NULL']
-  named_scope :separated, :conditions => ['separated_at IS NOT NULL']
-  named_scope :delivered, :conditions => ['delivered_at IS NOT NULL']
-  named_scope :received,  :conditions => ['received_at IS NOT NULL']
+  scope :latest, :order => 'created_at DESC'
 
-  named_scope :for_profile, lambda{ |profile| {:conditions => {:profile_id => profile.id}} }
-  named_scope :for_profile_id, lambda{ |profile_id| {:conditions => {:profile_id => profile_id}} }
-  named_scope :for_supplier, lambda{ |profile| {:conditions => {:profile_id => profile.id}} }
-  named_scope :for_supplier_id, lambda{ |profile_id| {:conditions => {:profile_id => profile_id}} }
-  named_scope :for_consumer, lambda{ |consumer| {:conditions => {:consumer_id => (consumer.id rescue nil)}} }
-  named_scope :for_consumer_id, lambda{ |consumer_id| {:conditions => {:consumer_id => consumer_id}} }
+  scope :draft,     :conditions => {:status => 'draft'}
+  scope :planned,   :conditions => {:status => 'planned'}
+  scope :cancelled, :conditions => {:status => 'cancelled'}
+  scope :not_cancelled, :conditions => ["status <> 'cancelled'"]
+  scope :ordered,   :conditions => ['ordered_at IS NOT NULL']
+  scope :confirmed, :conditions => ['ordered_at IS NOT NULL']
+  scope :accepted,  :conditions => ['accepted_at IS NOT NULL']
+  scope :separated, :conditions => ['separated_at IS NOT NULL']
+  scope :delivered, :conditions => ['delivered_at IS NOT NULL']
+  scope :received,  :conditions => ['received_at IS NOT NULL']
 
-  named_scope :months, :select => 'DISTINCT(EXTRACT(months FROM orders_plugin_orders.created_at)) as month', :order => 'month DESC'
-  named_scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM orders_plugin_orders.created_at)) as year', :order => 'year DESC'
+  scope :for_profile, lambda{ |profile| {:conditions => {:profile_id => profile.id}} }
+  scope :for_profile_id, lambda{ |profile_id| {:conditions => {:profile_id => profile_id}} }
+  scope :for_supplier, lambda{ |profile| {:conditions => {:profile_id => profile.id}} }
+  scope :for_supplier_id, lambda{ |profile_id| {:conditions => {:profile_id => profile_id}} }
+  scope :for_consumer, lambda{ |consumer| {:conditions => {:consumer_id => (consumer.id rescue nil)}} }
+  scope :for_consumer_id, lambda{ |consumer_id| {:conditions => {:consumer_id => consumer_id}} }
 
-  named_scope :by_month, lambda { |month| {
+  scope :months, :select => 'DISTINCT(EXTRACT(months FROM orders_plugin_orders.created_at)) as month', :order => 'month DESC'
+  scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM orders_plugin_orders.created_at)) as year', :order => 'year DESC'
+
+  scope :by_month, lambda { |month| {
     :conditions => [ 'EXTRACT(month FROM orders_plugin_orders.created_at) <= :month AND EXTRACT(month FROM orders_plugin_orders.created_at) >= :month', { :month => month } ]}
   }
-  named_scope :by_year, lambda { |year| {
+  scope :by_year, lambda { |year| {
     :conditions => [ 'EXTRACT(year FROM orders_plugin_orders.created_at) <= :year AND EXTRACT(year FROM orders_plugin_orders.created_at) >= :year', { :year => year } ]}
   }
 
-  named_scope :with_status, lambda { |status|
+  scope :with_status, lambda { |status|
     {:conditions => {:status => status}}
   }
-  named_scope :with_code, lambda { |code|
+  scope :with_code, lambda { |code|
     {:conditions => {:code => code}}
   }
 
@@ -232,11 +244,16 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
   end
   def products_list= hash
     self.items = hash.map do |id, data|
-      data[:product_id] = id
       data[:quantity_consumer_ordered] = data.delete(:quantity)
-      data[:order] = self
-      OrdersPlugin::Item.new data
+      i = OrdersPlugin::Item.new data
+      i.product_id = id
+      i.order = self
+      i
     end
+  end
+
+  def items_summary
+    self.items.map{ |item| "#{item.name} (#{item.quantity_consumer_ordered_localized})" }.join ', '
   end
 
   extend CurrencyHelper::ClassMethods
@@ -274,6 +291,10 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     end
   end
 
+  def enable_product_diff
+    self.items.each{ |i| i.product_diff = true }
+  end
+
   protected
 
   def check_status
@@ -300,9 +321,9 @@ class OrdersPlugin::Order < Noosfero::Plugin::ActiveRecord
     return if (Statuses.index(self.status) <= Statuses.index(self.status_was) rescue false)
 
     if self.status == 'ordered' and self.status_was != 'ordered'
-      OrdersPlugin::Mailer.deliver_order_confirmation self
+      OrdersPlugin::Mailer.order_confirmation(self).deliver
     elsif self.status == 'cancelled' and self.status_was != 'cancelled'
-      OrdersPlugin::Mailer.deliver_order_cancellation self
+      OrdersPlugin::Mailer.order_cancellation(self).deliver
     end
   end
 

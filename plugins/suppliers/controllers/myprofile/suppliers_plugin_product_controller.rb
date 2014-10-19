@@ -18,7 +18,9 @@ class SuppliersPluginProductController < MyProfileController
       @products_count = SuppliersPlugin::BaseProduct.search_scope(scope, params).count
     end
     @product_categories = Product.product_categories_of @products
-    @new_product = SuppliersPlugin::DistributedProduct.new :profile => profile, :supplier => @supplier
+    @new_product = SuppliersPlugin::DistributedProduct.new
+    @new_product.profile = profile
+    @new_product.supplier = @supplier
     @units = Unit.all
 
     respond_to do |format|

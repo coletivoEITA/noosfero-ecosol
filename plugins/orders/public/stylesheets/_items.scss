@@ -35,14 +35,14 @@
     &.self-supplier {
       .box-field {
         &.product {
-          width: $module03 - $padding;
-          max-width: $module03 - $padding;
+          width: $module04 - $padding;
+          max-width: $module04 - $padding;
         }
 
         &.quantity {
           &, input {
-            width: $module02 - $padding;
-            max-width: $module02 - $padding;
+            width: $module01 - $padding;
+            max-width: $module01 - $padding;
           }
         }
       }
@@ -85,7 +85,7 @@
       }
       &.status {
         width: $module01 - $border; //FIXME why (- $border)?
-        text-transform: uppercase; 
+        text-transform: uppercase;
       }
     }
   }
@@ -107,6 +107,12 @@
     }
     .item {
 
+      &.product-unavailable {
+        .product, .quantity, .price-total {
+          text-decoration: line-through;
+        }
+      }
+
       .fields {
         display: table;
         @extend .container-clean;
@@ -127,6 +133,15 @@
               .quantity, .price-total, .status {
                 text-decoration: line-through;
                 color: #999;
+              }
+            }
+
+            .price-total {
+              .outdated {
+                text-decoration: line-through;
+              }
+              .new-price {
+                font-weight: bold;
               }
             }
 

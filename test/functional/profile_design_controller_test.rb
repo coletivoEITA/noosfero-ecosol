@@ -6,8 +6,7 @@ class ProfileDesignController; def rescue_action(e) raise e end; end
 class ProfileDesignControllerTest < ActionController::TestCase
 
   COMMOM_BLOCKS = [ ArticleBlock, TagsBlock, RecentDocumentsBlock, ProfileInfoBlock, LinkListBlock, MyNetworkBlock, FeedReaderBlock, ProfileImageBlock, LocationBlock, SlideshowBlock, ProfileSearchBlock, HighlightsBlock ]
-  PERSON_BLOCKS = COMMOM_BLOCKS + [FriendsBlock, FavoriteEnterprisesBlock, CommunitiesBlock, EnterprisesBlock ]
-  PERSON_BLOCKS_WITH_MEMBERS = PERSON_BLOCKS + [MembersBlock]
+  PERSON_BLOCKS = COMMOM_BLOCKS + [ FavoriteEnterprisesBlock, CommunitiesBlock, EnterprisesBlock ]
   PERSON_BLOCKS_WITH_BLOG = PERSON_BLOCKS + [BlogArchivesBlock]
 
   ENTERPRISE_BLOCKS = COMMOM_BLOCKS + [DisabledEnterpriseMessageBlock, FeaturedProductsBlock, FansBlock, ProductCategoriesBlock]
@@ -75,14 +74,6 @@ class ProfileDesignControllerTest < ActionController::TestCase
     @product_category = fast_create(ProductCategory)
   end
   attr_reader :profile
-
-  def test_local_files_reference
-    assert_local_files_reference :get, :index, :profile => 'designtestuser'
-  end
-
-  def test_valid_xhtml
-    assert_valid_xhtml
-  end
 
   ######################################################
   # BEGIN - tests for BoxOrganizerController features
@@ -163,7 +154,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
   end
 
   def test_should_remove_block
-    assert_difference Block, :count, -1 do
+    assert_difference 'Block.count', -1 do
       post :remove, :profile => 'designtestuser', :id => @b2.id
       assert_response :redirect
       assert_redirected_to :action => 'index'
@@ -173,7 +164,8 @@ class ProfileDesignControllerTest < ActionController::TestCase
   should 'have options to display blocks' do
     get :edit, :profile => 'designtestuser', :id => @b1.id
     %w[always home_page_only except_home_page never].each do |option|
-      assert_tag :input, :attributes => { :type => 'radio', :value => option}
+      assert_tag :select, :attributes => {:name => 'block[display]'},
+       :descendant => {:tag => 'option', :attributes => {:value => option}}
     end
   end
 
@@ -302,24 +294,42 @@ class ProfileDesignControllerTest < ActionController::TestCase
 
   should 'not edit main block with never option' do
     get :edit, :profile => 'designtestuser', :id => @b4.id
-    assert_no_tag :input, :attributes => { :type => 'radio', :value => 'never'}
+    assert_no_tag :select, :attributes => {:name => 'block[display]'},
+      :descendant => {:tag => 'option', :attributes => {:value => 'never'}}
   end
 
   should 'not edit main block with home_page_only option' do
     get :edit, :profile => 'designtestuser', :id => @b4.id
-    assert_no_tag :input, :attributes => { :type => 'radio', :value => 'home_page_only'}
+    assert_no_tag :select, :attributes => {:name => 'block[display]'},
+     :descendant => {:tag => 'option', :attributes => {:value => 'home_page_only'}}
   end
 
   should 'edit main block with always option' do
     get :edit, :profile => 'designtestuser', :id => @b4.id
-    assert_tag :input, :attributes => { :type => 'radio', :value => 'always'}
+    assert_tag :select, :attributes => {:name => 'block[display]'},
+     :descendant => {:tag => 'option', :attributes => {:value => 'always'}}
   end
 
   should 'edit main block with except_home_page option' do
     get :edit, :profile => 'designtestuser', :id => @b4.id
-    assert_tag :input, :attributes => { :type => 'radio', :value => 'except_home_page'}
+    assert_tag :select, :attributes => {:name=> 'block[display]'},
+     :descendant => {:tag => 'option', :attributes => {:value => 'except_home_page'}}
   end
 
+  should 'return a list of paths related to the words used in the query search' do
+    article1 = fast_create(Article, :profile_id => @profile.id, :name => "Some thing")
+    article2 = fast_create(Article, :profile_id => @profile.id, :name => "Some article")
+    article3 = fast_create(Article, :profile_id => @profile.id, :name => "Not an article")
+
+    xhr :get, :search_autocomplete, :profile => 'designtestuser' , :query => 'Some'
+
+    json_response = ActiveSupport::JSON.decode(@response.body)
+
+    assert_response :success
+    assert_equal json_response.include?("/{profile}/"+article1.path), true
+    assert_equal json_response.include?("/{profile}/"+article2.path), true
+    assert_equal json_response.include?("/{profile}/"+article3.path), false
+  end
 
   ######################################################
   # END - tests for BoxOrganizerController features
@@ -336,14 +346,14 @@ class ProfileDesignControllerTest < ActionController::TestCase
   end
 
   should 'actually add a new block' do
-    assert_difference Block, :count do
+    assert_difference 'Block.count' do
       post :add_block, :profile => 'designtestuser', :box_id => @box1.id, :type => RecentDocumentsBlock.name
       assert_redirected_to :action => 'index'
     end
   end
 
   should 'not allow to create unknown types' do
-    assert_no_difference Block, :count do
+    assert_no_difference 'Block.count' do
       assert_raise ArgumentError do
         post :add_block, :profile => 'designtestuser', :box_id => @box1.id, :type => "PleaseLetMeCrackYourSite"
       end
@@ -504,23 +514,6 @@ class ProfileDesignControllerTest < ActionController::TestCase
     @controller.stubs(:user).returns(profile)
     Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([])
     assert_equal PERSON_BLOCKS, @controller.available_blocks
-  end
-
-  should 'the person with members blocks are all available' do
-    profile = mock
-    profile.stubs(:has_members?).returns(true)
-    profile.stubs(:person?).returns(true)
-    profile.stubs(:community?).returns(true)
-    profile.stubs(:enterprise?).returns(false)
-    profile.stubs(:has_blog?).returns(false)
-    profile.stubs(:is_admin?).with(anything).returns(false)
-    environment = mock
-    profile.stubs(:environment).returns(environment)
-    environment.stubs(:enabled?).returns(false)
-    @controller.stubs(:profile).returns(profile)
-    @controller.stubs(:user).returns(profile)
-    Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([])
-    assert_equal [], @controller.available_blocks - PERSON_BLOCKS_WITH_MEMBERS
   end
 
   should 'the person with blog blocks are all available' do
@@ -737,9 +730,9 @@ class ProfileDesignControllerTest < ActionController::TestCase
   end
 
   should 'clone a block' do
-    block = ProfileImageBlock.create!(:box => profile.boxes.first)
-    assert_difference ProfileImageBlock, :count, 1 do
-      post :clone, :id => block.id, :profile => profile.identifier
+    block = create(ProfileImageBlock, :box => profile.boxes.first)
+    assert_difference 'ProfileImageBlock.count', 1 do
+      post :clone_block, :id => block.id, :profile => profile.identifier
       assert_response :redirect
     end
   end

@@ -1,49 +1,48 @@
 require 'base64'
 
-class ShoppingCartPluginController < PublicController
+class ShoppingCartPluginController < OrdersPluginController
 
   include ShoppingCartPlugin::CartHelper
   helper ShoppingCartPlugin::CartHelper
 
-  append_view_path File.join(File.dirname(__FILE__) + '/../views')
-  before_filter :login_required, :only => []
-
-  before_filter :login_required, :only => []
-
   def get
     config =
       if cart.nil?
-        { :profile_id => nil,
+        { :profile_id => params[:profile_id],
           :has_products => false,
           :visible => false,
           :products => []}
       else
-        { :profile_id => cart[:profile_id],
+        {
+        	:profile_id => cart[:profile_id],
+          :profile_short_name => cart_profile.short_name,
           :has_products => (cart[:items].keys.size > 0),
           :visible => visible?,
-          :products => products}
+          :products => products,
+        }
       end
+    config[:has_previous_orders] = if cart_profile then previous_orders.first.present? else false end
     render :text => config.to_json
   end
 
   def add
     product = find_product(params[:id])
-    if product && profile = validate_same_profile(product)
-      self.cart = { :profile_id => profile.id, :items => {} } if self.cart.nil?
-      self.cart[:items][product.id] = 0 if self.cart[:items][product.id].nil?
-      self.cart[:items][product.id] += 1
-      render :text => {
-        :ok => true,
-        :error => {:code => 0},
-        :products => [{
-          :id => product.id,
-          :name => product.name,
-          :price => get_price(product, profile.environment),
-          :description => product.description,
-          :picture => product.default_image(:minor),
-          :quantity => self.cart[:items][product.id]
-        }]
-      }.to_json
+    if product && (profile = validate_same_profile(product))
+        self.cart = { :profile_id => profile.id, :items => {} } if self.cart.nil?
+        self.cart[:items][product.id] = 0 if self.cart[:items][product.id].nil?
+        self.cart[:items][product.id] += 1
+        render :text => {
+          :ok => true,
+          :error => {:code => 0},
+          :products => [{
+            :id => product.id,
+            :name => product.name,
+            :price => get_price(product, profile.environment),
+            :description => product.description,
+            :picture => product.default_image(:minor),
+            :quantity => self.cart[:items][product.id]
+          }]
+        }.to_json
     end
   end
 
@@ -93,10 +92,29 @@ class ShoppingCartPluginController < PublicController
     }.to_json
   end
 
+  def repeat
+    unless params[:id].present?
+      @orders = previous_orders.last(5).reverse
+      @orders.each{ |o| o.enable_product_diff }
+    else
+      @order = cart_profile.orders.find params[:id]
+      self.cart = { profile_id: cart_profile.id, items: {} }
+      @order.items.each do |item|
+        next unless item.product.available
+        self.cart[:items][item.product_id] = item.quantity_consumer_ordered.to_i
+      end
+
+      render json: {
+        products: products,
+      }
+    end
+  end
+
   def buy
+    @customer = user || Person.new
     if validate_cart_presence
       @cart = cart
-      @profile = environment.profiles.find(cart[:profile_id])
+      @profile = cart_profile
       @settings = Noosfero::Plugin::Settings.new(@profile, ShoppingCartPlugin)
       render :layout => false
     end
@@ -105,13 +123,13 @@ class ShoppingCartPluginController < PublicController
   def send_request
     register_order(params[:customer], self.cart[:items])
     begin
-      profile = environment.profiles.find(cart[:profile_id])
-      ShoppingCartPlugin::Mailer.deliver_customer_notification(params[:customer], profile, self.cart[:items], params[:delivery_option])
-      ShoppingCartPlugin::Mailer.deliver_supplier_notification(params[:customer], profile, self.cart[:items], params[:delivery_option])
+      profile = cart_profile
+      ShoppingCartPlugin::Mailer.customer_notification(params[:customer], profile, self.cart[:items], params[:delivery_option]).deliver
+      ShoppingCartPlugin::Mailer.supplier_notification(params[:customer], profile, self.cart[:items], params[:delivery_option]).deliver
       self.cart = nil
       render :text => {
         :ok => true,
-        :message => _('Request sent successfully. Check your email.'),
+        :message => _('Your order has been sent successfully! You will receive a confirmation e-mail shortly.'),
         :error => {:code => 0}
       }.to_json
     rescue ActiveRecord::ActiveRecordError
@@ -168,7 +186,7 @@ class ShoppingCartPluginController < PublicController
   end
 
   def update_delivery_option
-    profile = environment.profiles.find(cart[:profile_id])
+    profile = cart_profile
     settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin)
     delivery_price = settings.delivery_options[params[:delivery_option]]
     delivery = Product.new(:name => params[:delivery_option], :price => delivery_price)
@@ -193,9 +211,9 @@ class ShoppingCartPluginController < PublicController
       render :text => {
         :ok => false,
         :error => {
-        :code => 1,
-        :message => _("Can't join items from different enterprises.")
-      }
+          :code => 1,
+          :message => _("Your basket contains items from '%{profile_name}'. Please empty the basket or checkout before adding items from here.") % {profile_name: cart_profile.short_name}
+        }
       }.to_json
       return nil
     end
@@ -267,24 +285,30 @@ class ShoppingCartPluginController < PublicController
       products_list[id] = {:quantity => quantity, :price => price, :name => product.name}
     end
 
-    OrdersPlugin::Sale.create! :profile => environment.profiles.find(cart[:profile_id]), :consumer => user, :source => 'shopping_cart_plugin',
-      :status => 'ordered', :products_list => products_list,
-      :consumer_data => {
-        :name => params[:customer][:name], :email => params[:customer][:email], :contact_phone => params[:customer][:contact_phone],
-      },
-      :payment_data => {
-        :method => params[:customer][:payment], :change => params[:customer][:change],
-      },
-      :consumer_delivery_data => {
-        :name => params[:customer][:delivery_option],
-        :address_line1 => params[:customer][:address],
-        :address_line2 => params[:customer][:address_line2],
-        :reference => params[:customer][:address_reference],
-        :district => params[:customer][:district],
-        :city => params[:customer][:city],
-        :state => params[:customer][:state],
-        :postal_code => params[:customer][:zip_code],
-      }
+    order = OrdersPlugin::Sale.new
+    order.profile = environment.profiles.find(cart[:profile_id])
+    order.session_id = session_id unless user
+    order.consumer = user
+    order.source = 'shopping_cart_plugin'
+    order.status = 'ordered'
+    order.products_list = products_list
+    order.consumer_data = {
+      :name => params[:customer][:name], :email => params[:customer][:email], :contact_phone => params[:customer][:contact_phone],
+    }
+    order.payment_data = {
+      :method => params[:customer][:payment], :change => params[:customer][:change],
+    }
+    order.consumer_delivery_data = {
+      :name => params[:customer][:delivery_option],
+      :address_line1 => params[:customer][:address],
+      :address_line2 => params[:customer][:address_line2],
+      :reference => params[:customer][:address_reference],
+      :district => params[:customer][:district],
+      :city => params[:customer][:city],
+      :state => params[:customer][:state],
+      :postal_code => params[:customer][:zip_code],
+    }
+    order.save!
   end
 
   protected
@@ -297,6 +321,15 @@ class ShoppingCartPluginController < PublicController
     # migrate from old attribute
     @cart[:profile_id] ||= @cart.delete(:enterprise_id) if @cart and @cart[:enterprise_id].present?
     @cart
+  end
+
+  def cart_profile
+    @cart_profile ||= environment.profiles.find(params[:profile_id] || cart[:profile_id]) rescue nil
+  end
+
+  # from OrdersPluginController
+  def supplier
+    cart_profile
   end
 
   def cart=(data)

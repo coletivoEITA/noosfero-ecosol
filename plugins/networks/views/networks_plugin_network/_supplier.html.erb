@@ -7,9 +7,8 @@
   <div class="actions">
     <%= link_to t('views.network.structure.edit'), :controller => :networks_plugin_enterprise, :action => :edit, :id => supplier.id %>
     |
-    <%= link_to_remote t('views.network.structure.desassociate'),
+    <%= link_to t('views.network.structure.desassociate'), html: {data: {loading: "loading_overlay.show('#supplier-#{supplier.id}')"}},
       :confirm => t('views.network.structure.confirm_supplier_desassociate') % {:supplier => supplier.name},
-      :loading => "loading_overlay.show('#supplier-#{supplier.id}')",
       :url => {:controller => :networks_plugin_enterprise, :action => :destroy, :node_id => @node.id, :id => supplier.id} %>
   </div>
 </div>
