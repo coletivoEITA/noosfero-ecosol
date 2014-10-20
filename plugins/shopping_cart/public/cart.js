@@ -338,14 +338,11 @@ function Cart(config) {
         log.error('Send request - HTTP '+status, errorThrown);
       },
       complete: function() {
-        $.colorbox.close();
+        noosfero.modal.close();
       }
     });
   }
 
-  Cart.colorbox_close = function() {
-    $.colorbox.close();
-  }
 
   Cart.load_add_buttons = function() {
     $('.cart-add-item').button({ icons: { primary: 'ui-icon-cart'} })

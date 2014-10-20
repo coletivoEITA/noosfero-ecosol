@@ -2,13 +2,15 @@
 'lodash.compat.min.js',
 'jquery-2.1.1.min', 'jquery-migrate-1.2.1',
 'jquery.colorbox-min', 'colorbox-helper',
-'jquery.noconflict.js', 'jquery.cycle.all.min.js',
+'jquery.cycle.all.min.js',
 'jquery-ui-1.10.4/js/jquery-ui-1.10.4.min', 'jquery.scrollTo', 'jquery.form.js', 'jquery-validation/jquery.validate',
 'jquery.cookie', 'jquery.ba-bbq.min.js', 'reflection', 'jquery.tokeninput',
 'jquery-timepicker-addon/dist/jquery-ui-timepicker-addon', 'inputosaurus.js',
 'add-and-join', 'report-abuse', 'manage-products', 'autogrow',
 'pagination', 'loading-overlay',
-  'application.js', cache: ('cache/application' if NOOSFERO_CONF['cache_javascripts']) %>
+'application.js',
+'modal', # need application.js
+ cache: ('cache/application' if NOOSFERO_CONF['cache_javascripts']) %>
 
 <% language = FastGettext.locale %>
 <% %w{messages methods}.each do |type| %>

@@ -1,0 +1,265 @@
+@import url(../base-responsive/style.css);
+@import url('bootstrap.css');
+
+#site-title img {
+  left:-22px;
+  position:absolute;
+  top:-30px;
+}
+
+#title-bar {
+  background-color: gray;
+}
+#buddy-list .toolbar {
+  background-color: gray;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+}
+#title-bar h1 {
+  color: white;
+}
+#chat-window {
+  background: white;
+}
+#buddy-list #environment-logo {
+  background-color: #BBB;
+}
+
+.navbar-toggle-icon {
+    color:white;
+}
+
+img.menu-user-gravatar {
+    width:20px;
+    height: 20px;
+    border: 1px solid rgba(255,255,255,0.4);
+    margin-right: 8px;
+}
+
+.noosfero-responsive-top-logo {
+    background:url(/designs/themes/noosfero-responsive/images/logo-noosfero-raw.png);
+    width:60px;
+    height:60px;
+    margin-right:10px;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: -10px;
+}
+
+.navbar-collapse:before, .navbar-collapse:after{display:inline; content:"";}
+
+a.button.with-text, a.button.with-text:visited, body.noosfero a.button.with-text, body.noosfero a.button.with-text:visited, input.button.with-text {
+    padding: 3px 2px 3px 2px !important;
+}
+
+#agenda .agenda-calendar .button.icon-next.with-text {
+    padding-right: 1px;
+}
+
+.link-list-block a {
+    padding-left: 0px;
+}
+
+#link-to-doc {
+    padding-left: 0px;
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+
+    .menu-navigation > li > a {
+        font-size: 0px;
+        color: rgba(255,255,255,0) !important;
+        padding-top: 15.5px;
+        padding-bottom: 15.5px;
+    }
+    .menu-navigation > li > a:hover:before {
+        color: #18bc9c;
+    }
+    .menu-navigation > li > a:before {
+        font-size: 22px;
+        color:white;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    #navbar-search-collapse {
+        display:none !important;
+    }
+}
+
+@media (max-width: 767px) {
+    #search-dropdown-menu {
+        display: none;
+    }
+    #top-search {
+        margin-top: -1px !important;
+        margin-bottom: -1px !important;
+    }
+}
+
+
+@media (min-width: 992px) {
+    #search-dropdown-menu {
+        display: none;
+    }
+}
+
+.select-article-type {
+    width: 100%;
+}
+
+.article-types li {
+    height: 100%;
+}
+
+a {
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+}
+
+input.button.with-text, #content a.button.with-text {
+    line-height: 1em !important;
+    height: 22px;
+}
+
+img, video, audio {
+    max-width: 100%;
+    height: auto;
+}
+
+.common-profile-list-block .vcard a, .comment-actions .vcard a {
+    height: 100%;
+    padding-top: 0px;
+}
+
+.popover-title {
+    margin:0px !important;
+}
+
+.vcard .btn-popover-menu {
+    position:absolute;
+    z-index: 2;
+}
+
+@media screen and (min-width: 768px) {
+    .vcard .btn-popover-menu {
+        display:none;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .vcard .btn-popover-menu {
+        display:block;
+    }
+}
+
+
+.btn-popover-menu:before {
+    width:1em;
+}
+
+.btn-popover-menu {
+    margin:0 ;
+}
+
+.vcard:hover .btn-popover-menu {
+    display:block;
+}
+
+
+#content .communities-block .profile-image {
+    float: none;
+    padding-left: 0px;
+    max-width: none;
+}
+
+.communities-block .vcard a .org {
+    overflow: hidden;
+}
+
+.box-container-2 .common-profile-list-block span,
+.box-container-2 .common-profile-list-block .profile-image,
+.box-container-3 .common-profile-list-block span,
+.box-container-3 .common-profile-list-block .profile-image
+{
+    width: 50px;
+}
+
+.box-container-2 .common-profile-list-block .vcard,
+.box-container-3 .common-profile-list-block .vcard
+{
+    height: 101px;
+/*    overflow: hidden;*/
+}
+
+.no-boxes .common-profile-list-block .vcard .fn,
+.no-boxes .common-profile-list-block .vcard .fn
+{
+    white-space:  nowrap;
+}
+
+.popover-content {
+    margin-bottom: 18px; /* Did not work fine by default, dont know why */
+}
+
+.popover-content ul {
+    -webkit-padding-start: 0px;
+}
+
+.popover-content li {
+    list-style: none;
+    display:block;
+}
+
+.search-profile-item {
+
+}
+
+.common-profile-list-block .vcard a:hover {
+    border: 2px solid transparent;
+    background: none;
+}
+
+.popover.top > .arrow {
+    top:100% !important;
+}
+
+.modal-content > .login-box {
+    padding: 3px 20px 8px 20px;
+}
+
+@media screen and (max-width: 359px) {
+    a.navbar-brand {
+        font-size: 0px;
+        color: rgba(255,255,255,0) !important;
+    }
+}
+
+.box-container-1, .box-container-2, .box-container-3 {
+    padding-right: 0px;
+}
+
+.container > #content {
+    margin-right: 0px;
+}
+
+body {
+    background-color: #eeeeee;
+}
+
+.block, .no-boxes {
+    position: relative;
+    padding: 10px;
+    margin: 0px 0px 20px 0px;
+    float: none;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.3);/*#d8d8d8;*/
+    background-color: white;
+}
+
+.no-boxes {
+    margin-left: 15px;
+}

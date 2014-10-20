@@ -288,7 +288,16 @@ class AccountController < ApplicationController
       @status_class = 'invalid'
       @status = _('This field can\'t be blank')
     end
-    render :partial => 'identifier_status'
+
+    respond_to do |format|
+      format.html { render :partial => 'identifier_status' }
+      format.json { render :json => {
+          :status => @status,
+          :status_class => @status_class,
+          :suggested_usernames => @suggested_usernames
+      }  }
+    end
+
   end
 
   def check_email
