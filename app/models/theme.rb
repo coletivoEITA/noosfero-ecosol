@@ -8,19 +8,11 @@ class Theme
     end
 
     def user_themes_dir
-<<<<<<< .merge_file_whuWbp
-      @user_themes_dir ||= File.join 'user_themes'
-    end
-
-    def system_themes_dir
-      @system_themes_dir ||= File.join 'designs', 'themes'
-=======
       Rails.root.join('public', 'user_themes')
     end
 
     def system_themes_dir
       Rails.root.join('public', 'designs', 'themes')
->>>>>>> .merge_file_qXjFUp
     end
 
     def create(id, attributes = {})

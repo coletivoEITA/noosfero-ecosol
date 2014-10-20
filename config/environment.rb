@@ -9,10 +9,6 @@ require 'thread'
 # you don't control web/app server and can't set it the proper way
 #ENV['RAILS_ENV'] ||= 'production'
 
-# extra directories for controllers organization
-extra_controller_dirs = %w[
-].map {|item| Rails.root.join(item) }
-
 # Add new inflection rules using the following format
 # (all these examples are active by default):
 # Inflector.inflections do |inflect|

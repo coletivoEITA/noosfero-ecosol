@@ -10,6 +10,10 @@ _.templateSettings = {
 noosfero = {
 };
 
+// scope for noosfero stuff
+noosfero = {
+};
+
 function noosfero_init() {
   // focus_first_field(); it is moving the page view when de form is down.
 }

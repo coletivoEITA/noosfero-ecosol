@@ -81,6 +81,7 @@ module ActsAsSolr #:nodoc:
     def parse_sort query_options, options
       query_options[:sort] = replace_types([*options[:sort]], '')[0] if options[:sort]
     end
+<<<<<<< HEAD
 
     def parse_location query_options, options
       if options[:radius]
@@ -102,6 +103,29 @@ module ActsAsSolr #:nodoc:
       end
     end
 
+=======
+
+    def parse_location query_options, options
+      if options[:radius]
+        query_options[:radius] = options[:radius]
+        query_options[:filter_queries] << '{!geofilt}'
+      end
+      query_options[:latitude] = options[:latitude]
+      query_options[:longitude] = options[:longitude]
+    end
+
+    def parse_highlight query_options, options
+      if options[:highlight]
+        query_options[:highlighting] = {}
+        query_options[:highlighting][:field_list] = replace_types([*options[:highlight][:fields]], '') if options[:highlight][:fields]
+        query_options[:highlighting][:require_field_match] =  options[:highlight][:require_field_match] if options[:highlight][:require_field_match]
+        query_options[:highlighting][:max_snippets] = options[:highlight][:max_snippets] if options[:highlight][:max_snippets]
+        query_options[:highlighting][:prefix] = options[:highlight][:prefix] if options[:highlight][:prefix]
+        query_options[:highlighting][:suffix] = options[:highlight][:suffix] if options[:highlight][:suffix]
+      end
+    end
+
+>>>>>>> oauth
     def parse_facets query_options, options
       # first steps on the facet parameter processing
       if options[:facets]

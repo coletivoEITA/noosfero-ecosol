@@ -28,7 +28,7 @@
                          :disabled => if @category.may_change_choosable? then nil else 'disabled' end,
                          :class => "#{if @category.may_change_choosable? then nil else 'disabled' end}") %>
 
-                       <%= labelled_colorpicker_field(_('Pick a color'), :category, 'display_color' ) unless environment.enabled?('disable_categories_menu')%>
+  <%= labelled_colorpicker_field(_('Pick a color'), :category, 'display_color' ) unless environment.enabled?('disable_categories_menu')%>
   <span id="color_preview" class = "color_marker" style="<%= category_color_style(@category) %>" ></span>
 
   <%= f.fields_for :image_builder, @category.image do |i| %>

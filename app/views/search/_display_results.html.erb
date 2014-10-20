@@ -19,7 +19,7 @@
             <% search[:results].each do |hit| %>
               <% partial = partial_for_class(hit.class, display) %>
               <% variable_name = partial.gsub("#{display}_", '').to_sym %>
-              <%= render :partial => "search/#{partial}", :locals => {variable_name => hit} %>
+              <%= render :partial => partial, :locals => {variable_name => hit} %>
             <% end %>
           </ul>
         </div>

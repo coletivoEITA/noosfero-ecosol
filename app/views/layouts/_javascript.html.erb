@@ -1,14 +1,14 @@
-<%= javascript_include_tag 'prototype.js', 'effects.js', 'dragdrop.js', 'controls.js',
+<%= javascript_include_tag 'rails.js',
 'lodash.compat.min.js',
 'jquery-2.1.1.min', 'jquery-migrate-1.2.1',
 'jquery.colorbox-min', 'colorbox-helper',
 'jquery.noconflict.js', 'jquery.cycle.all.min.js',
 'jquery-ui-1.10.4/js/jquery-ui-1.10.4.min', 'jquery.scrollTo', 'jquery.form.js', 'jquery-validation/jquery.validate',
 'jquery.cookie', 'jquery.ba-bbq.min.js', 'reflection', 'jquery.tokeninput',
-'lodash.compat.min.js',
+'jquery-timepicker-addon/dist/jquery-ui-timepicker-addon', 'inputosaurus.js',
 'add-and-join', 'report-abuse', 'manage-products', 'autogrow',
 'pagination', 'loading-overlay',
-'jquery-timepicker-addon/dist/jquery-ui-timepicker-addon', 'application.js', 'rails.js', 'inputosaurus.js', :cache => 'cache/application' %>
+  'application.js', cache: ('cache/application' if NOOSFERO_CONF['cache_javascripts']) %>
 
 <% language = FastGettext.locale %>
 <% %w{messages methods}.each do |type| %>

@@ -1,6 +1,6 @@
 <% app_id = "app-#{app.id || 'new'}" %>
 
-<% form_for :app, app,
+<%= form_for :app,
   :url => {:controller => :oauth_plugin_admin_apps, :action => (if app.new_record? then :new else :edit end), :id => app.id},
   :html => {:multipart => true, :onsubmit => "return oauth.form.submit(this, '##{app_id}')"} do |f| %>
 
@@ -18,7 +18,7 @@
     </tr>
 
     <tr>
-      <% f.fields_for :image_builder, app.image do |fi| %>
+      <%= f.fields_for :image_builder, app.image do |fi| %>
         <td> <%= fi.label :uploaded_data, _('Icon') %> </td>
         <td>
           <%= image_tag app.image_public_filename, :title => app.name, :class => 'oauth-login-icon' if app.image_public_filename %>

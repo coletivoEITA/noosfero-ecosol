@@ -9,6 +9,7 @@
     <p><%= button(:slideshow, _('View slideshow'), @page.url.merge(:slideshow => true))%></p>
   <% end %>
     <ul>
+      <%= render 'content_viewer/gallery/images' %>
     </ul>
   <br style="clear:both" />
 

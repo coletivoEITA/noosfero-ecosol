@@ -9,6 +9,8 @@ class SubOrganizationsPlugin::Relation < Noosfero::Plugin::ActiveRecord
 
   attr_accessible :parent, :child
 
+  attr_accessible :parent, :child
+
   def no_self_reference
     errors.add(:child, _('self-reference is not allowed.')) if parent == child
   end

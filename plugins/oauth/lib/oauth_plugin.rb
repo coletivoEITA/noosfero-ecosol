@@ -93,7 +93,7 @@ end
 unless $oauth_plugin_middlewares_loaded
   $oauth_plugin_middlewares_loaded = true
 
-  ActionController::Dispatcher.middleware.use OmniAuth::Builder do
+  Noosfero::Application.middleware.use OmniAuth::Builder do
     require_dependency "#{File.dirname __FILE__}/omni_auth/strategies/noosfero"
 
     configure do |config|
