@@ -57,7 +57,7 @@ jQuery(function($) {
   Cart.minimized = <%= cart_minimized.to_json %>
 
   $.ajax({
-    url: "/plugin/shopping_cart/get?profile_id="+<%= profile.id.to_json rescue '' %>,
+    url: "/plugin/shopping_cart/get?profile_id="+<%= profile.id.to_json rescue ''.to_json %>,
     dataType: 'json',
     success: function(data) {
       cart = new Cart(data);
