@@ -93,8 +93,7 @@ module Noosfero
     # Straight support for assets from a rails 2 pattern
     # See also config/initializers/assets.rb
     config.assets.paths =
-      Dir.glob("{base,config/}plugins/*/assets/{,javascripts,stylesheets}") +
-      Dir.glob("{base,config/}plugins/*/public/{,javascripts,stylesheets}") +
+      Dir.glob("{base,config/}plugins/*/{assets,public}/{,javascripts,stylesheets}") +
       Dir.glob("public/{,javascripts,stylesheets}") +
       # no precedence over core
       Dir.glob("public/{designs/themes,user_themes}/*/{,javascripts,stylesheets}")
