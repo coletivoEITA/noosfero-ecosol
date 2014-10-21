@@ -1,6 +1,164 @@
 @import url(../base-responsive/style.css);
 @import url('bootstrap.css');
 
+/* News in front page */
+
+@media (max-width: 359px) {
+  .news-area {
+    width: 100%;
+  }
+  .news-area ul {
+    overflow: inherit;
+    height: auto;
+  }
+}
+
+@media (min-width: 360px) {
+  #content .news-area h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+#content .news-area a.news-see-more {
+  position: static;
+  float: right;
+}
+/* End of News in front page */
+
+/* Search results */
+.search-results-type-article ul {
+  overflow: hidden;
+}
+.controller-search #search-column-left {
+  overflow: hidden;
+}
+.controller-search #content .search-results-type-article li {
+  padding: 10px;
+}
+.search-product-item-first-column,
+.search-content-first-column {
+  width: auto;
+  min-height: 0;
+}
+.search-field-label {
+  width: auto;
+  white-space: nowrap;
+  margin-right: 10px;
+  font-size: 12px;
+}
+.search-product-item-second-column .search-result-title {
+  margin: 0;
+}
+.search-product-item .search-result-title {
+  font-size: 15px;
+  display: block;
+}
+@media (max-width: 767px) {
+  .search-no-image {
+    display: none;
+  }
+  .search-content-first-column [class*='icon-'] {
+    font-size: 24px;
+  }
+  .search-result-title {
+    font-size: 13px;
+  }
+  .search-content-second-column {
+    margin: 0;
+    width: 100%;
+  }
+  .search-product-item-first-column,
+  .search-product-item-second-column,
+  .search-product-item-third-column {
+    margin: 0;
+    width: 100%;
+  }
+  .search-article-description,
+  .search-product-description {
+    display: none;
+  }
+  .search-article-author-changes {
+    font-size: 12px;
+  }
+}
+@media (min-width: 768px) {
+  .search-no-image {
+    width: 130px;
+  }
+  .controller-search #content .search-results-type-product li {
+    font-size: 13px;
+    padding: 10px;
+  }
+  .search-content-first-column [class*='icon-'] {
+    font-size: 64px;
+  }
+}
+/* End of Search results */
+
+/********************* Product Catalog **********************/
+
+#catalog-options > ul {
+    height: auto;
+}
+#catalog-options {
+  color: #000;
+  background-color: #FBFBFB;
+  filter: none;
+  background-image: -moz-linear-gradient(center top , #FFF, #F1F1F1);
+  box-shadow: 0px 2px 1px 0px rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid #CCC;
+  border-radius: 5px;
+}
+#catalog-search-input {
+  border: 1px solid #E5E5E5;
+  background: #FFF !important;
+  outline: 0;
+  -webkit-box-shadow: inset 1px 1px 2px rgba(238, 238, 238, 0.2);
+  box-shadow: inset 1px 1px 2px rgba(238, 238, 238, 0.2);
+}
+#catalog-search-input:focus {
+  box-shadow: 0px 0px 5px #999;
+  background-color: #F00;
+}
+#catalog-options .twitter-typeahead {
+  background-color: #fff;
+}
+.catalog-options-select {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fafafa url("data:image/png;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==") no-repeat 98% 50%;
+    width: 100%;
+}
+.catalog-options-select select {
+    padding: 5px 13% 5px 0;
+    width: 110%;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+}
+.catalog-options-select select:focus {
+    outline: none;
+}
+#catalog-result-qtty-wrap {
+  font-size: 80%;
+  font-style: italic;
+  color: #036276;
+}
+#catalog-orderby {
+  font-size: 80%;
+}
+#catalog-orderby select {
+  font-size: 11px;
+  background: transparent;
+}
+
+/********************* End of Product Catalog **********************/
+
+
 #site-title img {
   left:-22px;
   position:absolute;
@@ -174,6 +332,7 @@ img, video, audio {
     float: none;
     padding-left: 0px;
     max-width: none;
+    height: 50px;
 }
 
 .communities-block .vcard a .org {
@@ -218,6 +377,17 @@ img, video, audio {
 
 }
 
+#profile-title a, #profile-title a:visited {
+  font-weight: bold;
+  font-size: 200%;
+  text-decoration: none;
+  color: #2C3E50;
+}
+#profile-title a:hover {
+  text-decoration: underline;
+  color: #18BC9C;
+}
+
 .common-profile-list-block .vcard a:hover {
     border: 2px solid transparent;
     background: none;
@@ -253,13 +423,23 @@ body {
 .block, .no-boxes {
     position: relative;
     padding: 10px;
-    margin: 0px 0px 20px 0px;
+    margin-bottom: 20px;
+    /* margin: 0px 0px 20px 0px; */
     float: none;
     border-radius: 3px;
-    border: 1px solid rgba(0,0,0,0.3);/*#d8d8d8;*/
+    border: 1px solid rgba(0,0,0,0.2);/*#d8d8d8;*/
     background-color: white;
 }
 
 .no-boxes {
     margin-left: 15px;
+}
+
+#content .box-container-1 .link-list-block li {
+    display: inline-block;
+}
+
+#content .box-container-1 .link-list-block li a {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
 }

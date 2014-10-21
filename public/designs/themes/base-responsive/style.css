@@ -556,10 +556,6 @@ div#notice {
   display: none;
 }
 
-#content .link-list-block {
-  margin: 0px;
-}
-
 #content .link-list-block li {
   background: #FFF;
   padding: 0px;
@@ -926,9 +922,9 @@ div#notice {
   top: 5px;
 }
 
-.controller-search a {
+/*.controller-search a {
   color: #555753;
-}
+}*/
 
 #search-results h3 {
   color: #555753; /*6A0*/
@@ -1350,6 +1346,15 @@ div.tooltip-inner {
     width: 350px;
 }
 
+.form-control-feedback {
+    top: 0px !important;
+    right: 15px !important;
+}
+
 .form-horizontal .has-feedback .form-control-feedback {
     right: 0 !important;
+}
+
+.profile-ul {
+    padding-left: 0px;
 }

@@ -308,7 +308,13 @@ class AccountController < ApplicationController
       @status = _('This e-mail address is taken')
       @status_class = 'invalid'
     end
-    render :partial => 'email_status'
+    respond_to do |format|
+      format.html { render :partial => 'email_status' }
+      format.json { render :json => {
+          :status => @status,
+          :status_class => @status_class
+      }  }
+    end
   end
 
   def user_data

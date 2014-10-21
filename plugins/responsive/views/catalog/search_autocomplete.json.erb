@@ -1,0 +1,7 @@
+<%=
+self.formats = [:html]
+
+@products.map do |p|
+  {:value => p.id, :url => url_for(p.url), :html => render('ac_product', product: p)}
+end.to_json
+%>
