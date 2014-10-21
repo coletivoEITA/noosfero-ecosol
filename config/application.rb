@@ -88,10 +88,22 @@ module Noosfero
     config.active_record.whitelist_attributes = true
 
     # Enable the asset pipeline
-    config.assets.enabled = false
+    config.assets.enabled = true
+
+    # Straight support for assets from a rails 2 pattern
+    # See also config/initializers/assets.rb
+    config.assets.paths =
+      Dir.glob("public/{designs/themes,user_themes}/*/{,javascripts,stylesheets}") +
+      Dir.glob("{base,config/}plugins/*/assets/{,javascripts,stylesheets}") +
+      Dir.glob("{base,config/}plugins/*/public/{,javascripts,stylesheets}") +
+      Dir.glob("public/{,javascripts,stylesheets}")
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    config.sass.preferred_syntax = :scss
+    config.sass.cache = true
+    config.sass.line_comments = false
 
     def noosfero_session_secret
       require 'fileutils'
