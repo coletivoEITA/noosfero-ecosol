@@ -43,7 +43,7 @@ module MacrosHelper
       end
     end
     unless plugins_javascripts.empty?
-      javascript_include_tag plugins_javascripts
+      javascript_include_tag *plugins_javascripts
     end
   end
 
