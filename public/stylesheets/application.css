@@ -1653,6 +1653,18 @@ a.button.disabled, input.disabled {
 }
 .map-or-list-search-results {
 }
+/* SAC 171 */
+#search-results.multiple-results-boxes .zoomable-image {
+  width: 100%;
+}
+/* SAC 171 */
+#search-results.multiple-results-boxes .search-product-item .clear {
+  clear: none;
+}
+/* SAC 171 */
+#search-results.multiple-results-boxes .search-product-item a.search-image-pic {
+  width: 100%;
+}
 #map {
   height: 500px;
 }
