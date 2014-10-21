@@ -21,19 +21,13 @@ gem 'gettext',                  '~> 2.2.1', :require => false, :group => :develo
 gem 'eita-jrails', path: 'vendor/plugins/eita-jrails'
 
 gem 'unicode'
-gem 'sass'
 
 gem 'premailer-rails'
 
-# FIXME list here all actual dependencies (i.e. the ones in debian/control),
-# with their GEM names (not the Debian package names)
-
-group :assets do
-  gem 'therubyracer', :platforms => :ruby
-  gem 'uglifier', '>= 1.0.3'
-
-  gem 'sass-rails'
-end
+gem 'therubyracer', :platforms => :ruby
+gem 'uglifier', '>= 1.0.3'
+gem 'sass'
+gem 'sass-rails'
 
 group :production do
   gem 'dalli', '~> 2.7.0'
