@@ -105,12 +105,12 @@ jQuery.fn.center = function () {
 }
 
 function show_warning(field, message) {
-   new Effect.Highlight(field, {duration:3});
-   $(message).show();
+  jQuery('#'+field).effect('highlight');
+  jQuery('#'+message).show();
 }
 
 function hide_warning(field) {
-   $(field).hide();
+   jQuery('#'+field).hide();
 }
 
 function enable_button(button) {
