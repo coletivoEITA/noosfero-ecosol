@@ -4,22 +4,10 @@ ActionView::AssetPaths.class_eval do
     source = source.to_s
     return source if is_uri?(source)
 
-    # This is the added code block when compared to the original.
-    # 1) Do as javascript_path prepending javascripts directory
-    # and the same for stylesheets.
-    # 2) For local absolute files, serve them as assets, so they can
+    # For local absolute files, serve them as assets, so they can
     # have js/css compiled too. This applies mainly for themes.
-    if ['js', 'css'].include? options[:ext]
-      if source[0] == '/'
-        source = source[1..-1]
-      else
-        case options[:ext]
-        when 'js'
-          source = "javascripts/#{source}"
-        when 'css'
-          source = "stylesheets/#{source}"
-        end
-      end
+    if ['js', 'css'].include? options[:ext] and source[0] == '/'
+      source = source[1..-1]
     end
 
     source = rewrite_extension(source, dir, options[:ext]) if options[:ext]

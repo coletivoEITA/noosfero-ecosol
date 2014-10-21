@@ -1,6 +1,33 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
-//= require javascripts/rails-extended
+/*
+* third party libraries
+*= require lodash.compat.min.js
+*= require jquery-2.1.1.min.js
+*= require jquery-migrate-1.2.1.js
+*= require colorbox.js
+*= require jquery.cycle.all.min.js
+*= require jquery-ui-1.10.4/js/jquery-ui-1.10.4.min.js
+*= require jquery.scrollTo.js
+*= require jquery.form.js
+*= require jquery-validation/jquery.validate.js
+*= require jquery.cookie.js
+*= require jquery.ba-bbq.min.js
+*= require reflection.js
+*= require jquery.tokeninput.js
+*= require jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
+*= require inputosaurus.js
+*= require rails.js
+*= require_self
+* noosfero libraries
+*= require pagination.js
+*= require loading-overlay.js
+* views speficics
+*= require add-and-join.js
+*= require report-abuse.js
+*= require manage-products.js
+*= require autogrow.js
+*/
 
 _.templateSettings = {
   interpolate: /\{\{(.+?)\}\}/g,
