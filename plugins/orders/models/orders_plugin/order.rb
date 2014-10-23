@@ -17,6 +17,9 @@ class OrdersPlugin::Order < ActiveRecord::Base
     :district, :city, :state,
     :postal_code,
   ]
+  PaymentData = [
+    :method, :change,
+  ]
 
   # copy, for easiness. can't be declared to here to avoid cyclic reference
   StatusDataMap = OrdersPlugin::Item::StatusDataMap

@@ -44,6 +44,7 @@
 .icon-help32on  { background-image: url(Tango/32x32/apps/gnome-help.png) }
 .icon-help32off { background-image: url(mod/32x32/apps/gnome-help-red.png) }
 .icon-spread    { background-image: url(mod/16x16/actions/spread.png) }
+.icon-check    { background-image: url(mod/16x16/actions/spread.png) }
 .icon-todo            { background-image: url(Tango/16x16/actions/stock_paste.png) }
 .icon-eyes            { background-image: url(Tango/16x16/actions/find.png) }
 /*.icon-menu-         { background-image: url(menu-without-ico-HC.gif) }*/

@@ -1,6 +1,7 @@
 <%= form_tag({:controller => :catalog, :action => :index}, :onsubmit => 'return catalog.search.submit()', :method => 'get', :id => 'catalog-search') do %>
 
-  <%= hidden_field_tag :page, '' %>
+  <%= hidden_field_tag :page, @pg_page %>
+  <%= hidden_field_tag :rank, @rank %>
 
   <div id="catalog-options">
     <ul>

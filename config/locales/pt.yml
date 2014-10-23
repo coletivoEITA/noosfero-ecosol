@@ -675,11 +675,15 @@
           name: "Nome"
           description: "Descrição"
           address_line1: "Endereço"
-          address_line2: ""
+          address_line2: "Complemento"
           reference: "Referência"
+          district: "Bairro"
           city: "Cidade" 
           state: "Estado"
           postal_code: "Código postal"
+        payment_data:
+          method: "Método"
+          change: "Troco"
     helpers:
       help:
         hide: "esconder ajuda"
@@ -696,7 +700,7 @@
           help: "Escolha qual dos pedidos anteriores deseja realizar. Observe nos detalhes se algum produto está em falta e se há alteração nos valores."
           date: "Data"
           ordered_itens: "Itens pedidos"
-          make: "fazer este pedido"
+          checkout: "refazer pedido"
           choose: "escolher e alterar"
           clear_orders_session: "limpar histórico de pedidos deste computador"
 
@@ -727,6 +731,8 @@
           consumer_heading: "Método de recebimento"
           supplier_heading: "Método de entrega"
           choose_another: "Escolha outro método:"
+        _payment:
+          heading: "Método de pagamento"
         _actor_data: 
           consumer_heading: "Dados %{terms.consumer.from_article.singular}"
           supplier_heading: "Dados %{terms.supplier.from_article.singular}"

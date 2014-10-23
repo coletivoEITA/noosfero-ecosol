@@ -657,11 +657,15 @@
           name: "Name"
           description: "Description"
           address_line1: "Address"
-          address_line2: ""
+          address_line2: "Address completion"
+          district: "District"
           reference: "Reference"
           city: "City" 
           state: "State"
           postal_code: "Postal code"
+        payment_data:
+          method: "Method"
+          change: "Change"
     helpers:
       help:
         hide: "hide help"
@@ -678,7 +682,7 @@
           help: "Choose which of the previous orders you wish to make. Observe the details if there are products missing or with updated values."
           date: "Date"
           ordered_itens: "Ordered items"
-          make: "make this order"
+          checkout: "checkout"
           choose: "choose and edit"
           clear_orders_session: "clear orders' history from this computer"
 
@@ -709,6 +713,8 @@
           consumer_heading: "Receipt Method"
           supplier_heading: "Delivery Method"
           choose_another: "Choose another:"
+        _payment:
+          heading: "Payment method"
         _actor_data: 
           consumer_heading: "Data %{terms.consumer.from_article.singular}"
           supplier_heading: "Data %{terms.supplier.from_article.singular}"

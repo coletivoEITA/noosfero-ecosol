@@ -2,7 +2,8 @@ module DisplayHelper
 
   def link_to_product(product, opts={})
     return _('No product') unless product
-    target = product_path(product)
+    url_opts = opts.delete(:url_options) || {}
+    target = product_path product, url_opts
     link_to content_tag( 'span', product.name ),
             target,
             opts
@@ -30,8 +31,8 @@ module DisplayHelper
       options
   end
 
-  def product_path(product)
-    product.enterprise.enabled? ? product.enterprise.public_profile_url.merge(:controller => 'manage_products', :action => 'show', :id => product) : product.enterprise.url
+  def product_path(product, options={})
+    if product.enterprise.enabled? then product.enterprise.public_profile_url.merge(options).merge(controller: :manage_products, action: :show, :id => product) else product.enterprise.url end
   end
 
   def link_to_tag(tag, html_options = {})

@@ -282,3 +282,10 @@ th {
 td {
   text-align: left;
 }
+/* Repeat orders */
+a.button.repeat-checkout-order, a.button.repeat-choose-order {
+  display: block;
+  margin: 0 5px 5px 40px;
+  font-size: 80%;
+  background-color: #ffc64c;
+}

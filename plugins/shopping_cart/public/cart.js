@@ -214,7 +214,7 @@ function Cart(config) {
     })
   }
 
-  Cart.prototype.repeatMake = function(event, button) {
+  Cart.prototype.repeatCheckout = function(event, button) {
     var order_id = jQuery(button).attr('data-order-id')
     this.repeat(order_id, function(data) {
       $('.cart-buy').click();

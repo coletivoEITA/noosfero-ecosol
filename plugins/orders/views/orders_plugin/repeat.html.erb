@@ -22,7 +22,7 @@
             <div class="box-view">
               <span class="box-field actions">
                 <%= edit_arrow_circle "", false, :onclick => 'return false;'  %>
-                <%= repeat_make_order_button order %>
+                <%= repeat_checkout_order_button order %>
                 <%= repeat_choose_order_button order %>
               </span>
 
@@ -39,7 +39,7 @@
     </table>
 
     <% unless user %>
-      <%= button 'remove', t('views.public.repeat.clear_orders_session'), {action: :clear_orders_session, profile_id: params[:profile_id]}, remote: true %>
+      <%= button 'remove', t('views.public.repeat.clear_orders_session'), {action: :clear_orders_session, profile_id: params[:profile_id]}, remote: true, :class => 'clear-orders-session' %>
     <% end %>
 
   <% end %>
