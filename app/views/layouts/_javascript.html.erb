@@ -1,15 +1,4 @@
-<%= javascript_include_tag 'jquery-2.1.1.min', 'jquery-migrate-1.2.1', 'jrails.js', 'rails.js',
-  'lodash.compat.min.js',
-  'jquery.cycle.all.min.js',
-  'jquery.colorbox-min',
-  'jquery-ui-1.10.4/js/jquery-ui-1.10.4.min', 'jquery.scrollTo', 'jquery.form.js', 'jquery-validation/jquery.validate',
-  'jquery.cookie', 'jquery.ba-bbq.min.js', 'reflection', 'jquery.tokeninput',
-  'jquery-timepicker-addon/dist/jquery-ui-timepicker-addon',
-  'inputosaurus.js',
-  'application.js', 'modal',
-  'add-and-join', 'report-abuse','manage-products', 'autogrow',
-  'pagination', 'loading-overlay',
-  :cache => 'cache/application' %>
+<%= javascript_include_tag 'application.js' %>
 
 <% language = FastGettext.locale %>
 <% %w{messages methods}.each do |type| %>
