@@ -1,7 +1,7 @@
 class CatalogController < PublicController
 
   needs_profile
-  use_custom_design :boxes_limit => 2, :layout_template => 'leftbar', :insert => {:box => 2, :position => 0, :block => ProductCategoriesBlock}
+  use_custom_design :boxes_limit => 2
 
   include CatalogHelper
 
@@ -9,7 +9,7 @@ class CatalogController < PublicController
 
   def index
     catalog_load_index
-    render :partial => 'catalog/results' if request.xhr?
+    render partial: 'catalog/results' if request.xhr?
   end
 
   def search_autocomplete
