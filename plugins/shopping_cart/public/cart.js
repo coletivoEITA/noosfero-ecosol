@@ -202,17 +202,34 @@ function Cart(config) {
       this.visible ? this.hide(true) : this.show(true)
   }
 
-  Cart.prototype.repeat = function(button) {
-    var order_id = jQuery(button).attr('data-order-id')
+  Cart.prototype.repeat = function(order_id, callback) {
     this.ajax({
       url: '/plugin/shopping_cart/repeat/'+order_id+'?profile_id='+cart.profileId,
       success: function(data) {
         cart.addToList(data.products, true)
-        $('.cart-buy').click();
+        callback(data)
       },
       // can't do POST because of firefox cookie reset bug
       type: 'GET', dataType: 'json', cache: false
     })
+  }
+
+  Cart.prototype.repeatCheckout = function(event, button) {
+    var order_id = jQuery(button).attr('data-order-id')
+    this.repeat(order_id, function(data) {
+      $('.cart-buy').click();
+    })
+    event.stopPropagation()
+    return false;
+  }
+
+  Cart.prototype.repeatChoose = function(event, button) {
+    var order_id = jQuery(button).attr('data-order-id')
+    this.repeat(order_id, function(data) {
+      jQuery.colorbox.close()
+      cart.show(true);
+    })
+    event.stopPropagation()
     return false;
   }
 

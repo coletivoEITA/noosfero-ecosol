@@ -50,6 +50,8 @@ module ApplicationHelper
 
   include PluginsHelper
 
+  include PluginsHelper
+
   def locale
     (@page && !@page.language.blank?) ? @page.language : FastGettext.locale
   end
@@ -239,8 +241,7 @@ module ApplicationHelper
   end
 
   def button_to_function(type, label, js_code, html_options = {}, &block)
-    html_options[:class] = "" unless html_options[:class]
-    html_options[:class] << " button with-text icon-#{type}"
+    html_options[:class] = "button with-text icon-#{type} #{html_options[:class]}"
     link_to_function(label, js_code, html_options, &block)
   end
 

@@ -29,6 +29,13 @@ gem 'uglifier', '>= 1.0.3'
 gem 'sass'
 gem 'sass-rails'
 
+group :assets do
+  gem 'therubyracer', :platforms => :ruby
+  gem 'uglifier', '>= 1.0.3'
+
+  gem 'sass-rails'
+end
+
 group :production do
   gem 'dalli', '~> 2.7.0'
   gem 'unicorn'

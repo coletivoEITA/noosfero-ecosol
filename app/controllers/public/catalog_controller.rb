@@ -5,6 +5,8 @@ class CatalogController < PublicController
 
   include CatalogHelper
 
+  include CatalogHelper
+
   before_filter :check_enterprise_and_environment
 
   def index

@@ -1,4 +1,7 @@
-<% actor_name ||= :consumer %>
+<%
+actor_name ||= :consumer
+other_actor_name = if actor_name == :supplier then :consumer else :supplier end
+%>
 <div id="order-<%=order.id%>" class="order-view">
   <% @simple = true %>
   <div class="order-data">

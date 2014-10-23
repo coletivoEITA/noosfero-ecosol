@@ -411,6 +411,10 @@ function loading_for_button(selector) {
 function customUserDataCallback() {
 };
 
+// override this to take action after user_data load
+function customUserDataCallback() {
+};
+
 // controls the display of the login/logout stuff
 jQuery(function($) {
   $.ajaxSetup({
