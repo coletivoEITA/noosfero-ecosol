@@ -42,9 +42,9 @@
     <% end %>
 
     <h2><%= t('views.profile.settings.volunteers') %></h2>
-    <%= f.fields_for :consumers_coop_settings, profile.consumers_coop_settings do |ff| %>
-      <%= labelled_field ff, :volunteers_enabled, t('views.profile.settings.volunteers_enabled'),
-        ff.check_box(:volunteers_enabled) %>
+    <%= f.fields_for :volunteers_settings, profile.volunteers_settings do |ff| %>
+      <%= labelled_field ff, :cycle_volunteers_enabled, t('views.profile.settings.volunteers_enabled'),
+        ff.check_box(:cycle_volunteers_enabled) %>
     <% end %>
 
     <%= f.submit t('views.profile.settings.save') %>

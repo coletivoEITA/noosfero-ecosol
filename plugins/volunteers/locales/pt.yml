@@ -7,4 +7,8 @@
       plugin:
         name: "Períodos de trabalhos e voluntários"
         description: "Faz a gestão dos períodos de trabalho voluntário"
+    views:
+      myprofile:
+        volunteers_periods: "Turnos de voluntários"
+        add_period: "Adicionar"
 

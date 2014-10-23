@@ -660,6 +660,7 @@ class Environment < ActiveRecord::Base
     url = 'http://'
     url << (Noosfero.url_options.key?(:host) ? Noosfero.url_options[:host] : default_hostname)
     url << ':' << Noosfero.url_options[:port].to_s if Noosfero.url_options.key?(:port)
+    url << Noosfero.root('')
     url
   end
 
@@ -804,7 +805,7 @@ class Environment < ActiveRecord::Base
   end
 
   def notification_emails
-    [noreply_email.blank? ? nil : noreply_email].compact + admins.map(&:email)
+    [contact_email].select(&:present?) + admins.map(&:email)
   end
 
   after_create :create_templates

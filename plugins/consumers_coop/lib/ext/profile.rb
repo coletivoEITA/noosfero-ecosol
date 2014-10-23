@@ -1,13 +1,23 @@
 require_dependency 'profile'
 
-class Profile
+Profile.subclasses.each do |subclass|
+  subclass.class_eval do
+    attr_accessible :consumers_coop_header_image_builder
+    attr_accessible :consumers_coop_settings
+  end
+end
 
-  attr_accessible :consumers_coop_header_image_builder
+class Profile
 
   has_many :offered_products, :class_name => 'OrdersCyclePlugin::OfferedProduct', :dependent => :destroy, :order => 'products.name ASC'
 
   def consumers_coop_settings
     @consumers_coop_settings ||= Noosfero::Plugin::Settings.new self, ConsumersCoopPlugin
+  end
+  def consumers_coop_settings= hash
+    hash.each do |attr, value|
+      self.consumers_coop_settings.send "#{attr}=", value
+    end
   end
 
   # belongs_to only works with real attributes :(
