@@ -39,7 +39,7 @@ module ShoppingCartPlugin::CartHelper
 
     quantity_opts = { :class => 'cart-table-quantity' }
     quantity_opts.merge!({:align => 'center'}) if by_mail
-    price_opts = {:class => 'cart-table-price', :unit => ''}
+    price_opts = {:class => 'cart-table-price'}
     price_opts.merge!({:align => 'right'}) if by_mail
     items.sort! {|a, b| Product.find(a.first).name <=> Product.find(b.first).name}
 
@@ -59,7 +59,7 @@ module ShoppingCartPlugin::CartHelper
     content_tag('tr',
       content_tag('th', _('Item name')) +
       content_tag('th', by_mail ? '&nbsp;#&nbsp;' : '#') +
-      content_tag('th', _('Price') + " (#{environment.currency_unit}")
+      content_tag('th', _('Price') + " (#{environment.currency_unit})")
     ) +
     items.map do |id, quantity|
       product = Product.find(id)
@@ -72,7 +72,7 @@ module ShoppingCartPlugin::CartHelper
       content_tag('tr',
         content_tag('td', product.name, name_opts) +
         content_tag('td', quantity, quantity_opts ) +
-        content_tag('td', get_price(product, environment, quantity), price_opts)
+        content_tag('td', get_price(product, environment, quantity, :unit => ''), price_opts)
       )
     end.join("\n")
 
