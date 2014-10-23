@@ -17,3 +17,4 @@ class ResponsivePlugin < Noosfero::Plugin
   end
 
 end
+
