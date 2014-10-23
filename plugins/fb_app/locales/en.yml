@@ -1,0 +1,13 @@
+
+'en':
+
+  fb_app_plugin:
+    lib:
+      plugin:
+        name: 'Loja de Economia Solidária no Facebook'
+        description: 'Monte uma loja virtual da economia solidária em suas páginas do facebook!'
+    views:
+      myprofile:
+        timeline:
+          add: 'Salvar configuração de postagens na timeline' 
+
