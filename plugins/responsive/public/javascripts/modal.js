@@ -10,8 +10,8 @@ noosfero.modal = {
   watchClass: function() {
     jQuery(function($) {
       $(document).delegate('.modal-toggle', 'click', function() {
-        noosfero.modal.content().empty().load($(this).attr('href'));
-        noosfero.modal.el().modal();
+        var url = $(this).attr('href')
+        noosfero.modal.url(url)
 
         return false;
       });
@@ -22,6 +22,11 @@ noosfero.modal = {
       });
       return false;
     });
+  },
+
+  url: function (url) {
+    noosfero.modal.content().empty().load(url);
+    noosfero.modal.el().modal();
   },
 
   inline: function(href, options) {

@@ -12,11 +12,11 @@ module ShoppingCartPlugin::CartHelper
 
   def add_to_cart_button item, options = {}
   	label = if options[:with_text].nil? or options[:with_text] then _('Add to basket') else '' end
-  	button_to_function 'cart', label, "Cart.addItem(#{item.id}, this)", {:class => 'cart-add-item'}, "primary"
+  	button_to_function 'cart', label, "Cart.addItem(#{item.id}, this)", class: 'cart-add-item', type: 'primary'
   end
 
   def cart_applet
-    button_to_function 'cart', '&nbsp;<span class="cart-qtty"></span>', "cart.toggle()", {:class => 'cart-applet-indicator'}, 'primary'
+    button_to_function 'cart', '&nbsp;<span class="cart-qtty"></span>', "cart.toggle()", class: 'cart-applet-indicator', type: 'primary'
   end
 
   def cart_minimized
