@@ -324,7 +324,8 @@ class ShoppingCartPluginController < OrdersPluginController
   end
 
   def cart_profile
-    @cart_profile ||= environment.profiles.find(params[:profile_id] || cart[:profile_id]) rescue nil
+    profile_id = if params[:profile_id].present? then params[:profile_id] else cart[:profile_id] end
+    @cart_profile ||= environment.profiles.find profile_id rescue nil
   end
 
   # from OrdersPluginController
