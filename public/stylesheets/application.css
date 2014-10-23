@@ -2,6 +2,7 @@
  * thidparty libraries
  *= require colorbox
  *= require inputosaurus
+ *= require typeahead
  *= require token-input
  *= require token-input-facebook
  *= require token-input-mac

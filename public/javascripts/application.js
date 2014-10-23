@@ -13,6 +13,7 @@
 *= require jquery-validation/jquery.validate.js
 *= require jquery.cookie.js
 *= require jquery.ba-bbq.min.js
+*= require typeahead.bundle.js
 *= require reflection.js
 *= require jquery.tokeninput.js
 *= require jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
