@@ -15,8 +15,8 @@ module ShoppingCartPlugin::CartHelper
     product.discount ? product.price_with_discount : product.price
   end
 
-  def get_price(product, environment, quantity=1)
-    float_to_currency_cart(price_with_quantity(product,quantity), environment)
+  def get_price product, environment, quantity=1, options = {}
+    float_to_currency_cart price_with_quantity(product,quantity), environment, options
   end
 
   def price_with_quantity(product, quantity=1)
@@ -39,7 +39,7 @@ module ShoppingCartPlugin::CartHelper
 
     quantity_opts = { :class => 'cart-table-quantity' }
     quantity_opts.merge!({:align => 'center'}) if by_mail
-    price_opts = {:class => 'cart-table-price'}
+    price_opts = {:class => 'cart-table-price', :unit => ''}
     price_opts.merge!({:align => 'right'}) if by_mail
     items.sort! {|a, b| Product.find(a.first).name <=> Product.find(b.first).name}
 
@@ -59,7 +59,7 @@ module ShoppingCartPlugin::CartHelper
     content_tag('tr',
       content_tag('th', _('Item name')) +
       content_tag('th', by_mail ? '&nbsp;#&nbsp;' : '#') +
-      content_tag('th', _('Price'))
+      content_tag('th', _('Price') + " (#{environment.currency_unit}")
     ) +
     items.map do |id, quantity|
       product = Product.find(id)
@@ -85,8 +85,10 @@ module ShoppingCartPlugin::CartHelper
     '</table>'
   end
 
-  def float_to_currency_cart(value, environment)
-    number_to_currency(value, :unit => environment.currency_unit, :separator => environment.currency_separator, :delimiter => environment.currency_delimiter, :precision => 2, :format => "%u%n")
+  def float_to_currency_cart value, environment, _options = {}
+    options = {:unit => environment.currency_unit, :separator => environment.currency_separator, :delimiter => environment.currency_delimiter, :precision => 2, :format => "%u%n"}
+    options.merge! _options
+    number_to_currency value, options
   end
 
   def select_delivery_options(options, environment)
