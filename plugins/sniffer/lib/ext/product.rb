@@ -15,8 +15,8 @@ class Product
     :joins => "INNER JOIN inputs ON ( products.id = inputs.product_id )
       INNER JOIN categories ON ( inputs.product_category_id = categories.id )
       INNER JOIN products products_2 ON ( categories.id = products_2.product_category_id )
-      INNER JOIN profiles ON ( profiles.id = products_2.enterprise_id )",
-    :conditions => "products.enterprise_id = #{enterprise.id}
+      INNER JOIN profiles ON ( profiles.id = products_2.profile_id )",
+    :conditions => "products.profile_id = #{enterprise.id}
       AND profiles.public_profile = true AND profiles.visible = true
       AND profiles.id <> #{enterprise.id}"
     }
@@ -33,8 +33,8 @@ class Product
     :joins => "INNER JOIN inputs ON ( products.id = inputs.product_id )
       INNER JOIN categories ON ( inputs.product_category_id = categories.id )
       INNER JOIN products products_2 ON ( categories.id = products_2.product_category_id )
-      INNER JOIN profiles ON ( profiles.id = products.enterprise_id )",
-    :conditions => "products_2.enterprise_id = #{enterprise.id}
+      INNER JOIN profiles ON ( profiles.id = products.profile_id )",
+    :conditions => "products_2.profile_id = #{enterprise.id}
       AND profiles.public_profile = true AND profiles.visible = true
       AND profiles.id <> #{enterprise.id}"
     }
@@ -52,8 +52,8 @@ class Product
     :joins => "INNER JOIN sniffer_plugin_opportunities AS op ON ( sniffer.id = op.profile_id AND op.opportunity_type = 'ProductCategory' )
       INNER JOIN categories ON ( op.opportunity_id = categories.id )
       INNER JOIN products ON ( products.product_category_id = categories.id )
-      INNER JOIN profiles ON ( products.enterprise_id = profiles.id )",
-    :conditions => "sniffer.id = #{profile.id} AND products.enterprise_id <> #{profile.id}
+      INNER JOIN profiles ON ( products.profile_id = profiles.id )",
+    :conditions => "sniffer.id = #{profile.id} AND products.profile_id <> #{profile.id}
       AND profiles.public_profile = true AND profiles.visible = true
       AND profiles.id <> #{profile.id}"
     }
@@ -70,7 +70,7 @@ class Product
     :joins => "INNER JOIN categories ON ( categories.id = products.product_category_id )
       INNER JOIN sniffer_plugin_opportunities as op ON ( categories.id = op.opportunity_id AND op.opportunity_type = 'ProductCategory' )
       INNER JOIN profiles ON ( op.profile_id = profiles.id )",
-    :conditions => "products.enterprise_id = #{profile.id}
+    :conditions => "products.profile_id = #{profile.id}
       AND profiles.public_profile = true AND profiles.visible = true
       AND profiles.id <> #{profile.id}"
     }
@@ -83,16 +83,16 @@ class Product
       profiles.id as profile_id, profiles.identifier as profile_identifier, profiles.name as profile_name, profiles.lat as profile_lat, profiles.lng as profile_lng,
       inputs.product_category_id,
       articles.name as knowledge_name, articles.id AS knowledge_id, article_resources.resource_id AS knowledge_category,
-      products.enterprise_id AS consumer_id,
+      products.profile_id AS consumer_id,
       'knowledge_consumer_input' as view,
       SQRT( POW((#{KM_LAT} * (#{profile.lat} - profiles.lat)), 2) + POW((#{KM_LNG} * (#{profile.lng} - profiles.lng)), 2)) AS profile_distance",
     :joins => "INNER JOIN inputs ON ( products.id = inputs.product_id )
       INNER JOIN article_resources ON (article_resources.resource_id = inputs.product_category_id AND article_resources.resource_type = 'ProductCategory')
       INNER JOIN articles ON (article_resources.article_id = articles.id)
-      INNER JOIN profiles ON ( products.enterprise_id = profiles.id )",
+      INNER JOIN profiles ON ( products.profile_id = profiles.id )",
     :conditions => "articles.type = 'CmsLearningPlugin::Learning'
       AND articles.profile_id = #{profile.id}
-      AND products.enterprise_id <> #{profile.id}"
+      AND products.profile_id <> #{profile.id}"
     }
   }
 
@@ -111,7 +111,7 @@ class Product
       INNER JOIN profiles ON ( articles.profile_id = profiles.id )",
     :conditions => "articles.type = 'CmsLearningPlugin::Learning'
       AND articles.profile_id <> #{profile.id}
-      AND products.enterprise_id = #{profile.id}"
+      AND products.profile_id = #{profile.id}"
     }
   }
 
@@ -164,8 +164,8 @@ class Product
       :joins => " INNER JOIN inputs ON (products.id = inputs.product_id)
                   INNER JOIN categories ON (inputs.product_category_id = categories.id)
                   INNER JOIN products AS products_supplier ON (categories.id = products_supplier.product_category_id)",
-      :conditions => "products.enterprise_id = #{producer.id}
-                  AND products_supplier.enterprise_id = #{supplier.id}"
+      :conditions => "products.profile_id = #{producer.id}
+                  AND products_supplier.profile_id = #{supplier.id}"
     }
   }
 
@@ -178,7 +178,7 @@ class Product
     :joins => "INNER JOIN categories ON ( categories.id = products.product_category_id )
       INNER JOIN sniffer_plugin_opportunities as op ON ( categories.id = op.opportunity_id AND op.opportunity_type = 'ProductCategory' )
       INNER JOIN profiles ON ( op.profile_id = profiles.id )",
-    :conditions => "products.enterprise_id = #{producer.id}
+    :conditions => "products.profile_id = #{producer.id}
       AND profiles.public_profile = true AND profiles.visible = true
       AND profiles.id = #{interested.id}"
     }
@@ -195,7 +195,7 @@ class Product
                INNER JOIN articles ON (article_resources.article_id = articles.id)",
       :conditions => "articles.type = 'CmsLearningPlugin::Learning'
                     AND articles.profile_id = #{wise.id}
-                    AND products.enterprise_id = #{producer.id}"
+                    AND products.profile_id = #{producer.id}"
    }
   }
 
