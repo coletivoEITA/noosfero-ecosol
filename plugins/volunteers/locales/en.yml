@@ -1,0 +1,14 @@
+# encoding: UTF-8
+
+"en":
+
+  volunteers_plugin:
+    lib:
+      plugin:
+        name: "Work periods and volunteers"
+        description: "Do management of periods of voluteers work"
+    views:
+      myprofile:
+        volunteers_periods: "Volunteers' period"
+        add_period: "Add"
+

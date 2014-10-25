@@ -13,7 +13,7 @@ module SolrPlugin::SearchHelper
     name: {option: ['Name', 'name'], solr: 'solr_plugin_name_sortable asc'},
     price: {option: ['Lowest price', 'price'], solr: 'solr_plugin_price_sortable asc'},
     newest: {option: ['Newest', 'newest'], solr: 'created_at desc'},
-    updated: {option: ['Updated', 'updated'], solr: 'updated_at desc'},
+    updated: {option: ['Last updated', 'updated'], solr: 'updated_at desc'},
   }
 
   SortOptions = {

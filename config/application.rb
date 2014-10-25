@@ -91,7 +91,11 @@ module Noosfero
 
     # Straight support for assets from a rails 2 pattern
     # See also config/initializers/assets.rb
-    config.assets.paths = ['public']
+    config.assets.paths =
+      Dir.glob("public/{designs/themes,user_themes}/*/{,javascripts,stylesheets}") +
+      Dir.glob("{base,config/}plugins/*/assets/{,javascripts,stylesheets}") +
+      Dir.glob("{base,config/}plugins/*/public/{,javascripts,stylesheets}") +
+      Dir.glob("public/{,javascripts,stylesheets}")
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
@@ -99,9 +103,6 @@ module Noosfero
     config.sass.preferred_syntax = :scss
     config.sass.cache = true
     config.sass.line_comments = false
-    config.sass.load_paths = Dir.glob("public/stylesheets") +
-      Dir.glob("{,base}plugins/*/public/{,stylesheets}") +
-      Dir.glob("public/designs/themes/*/{,stylesheets}")
 
     def noosfero_session_secret
       require 'fileutils'
@@ -125,6 +126,8 @@ module Noosfero
     config.action_dispatch.session = {
       :key    => '_noosfero_session',
     }
+
+    config.i18n.load_path += Dir.glob "#{Rails.root}/{baseplugins,config/plugins/*}/locales/*.{rb,yml}"
 
     Noosfero::Plugin.setup(config)
 

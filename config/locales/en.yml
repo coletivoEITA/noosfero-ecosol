@@ -649,6 +649,23 @@
           separated: "Separate"
           delivered: "Deliver"
           received: "Receive"
+        actor_data:
+          name: "Name"
+          email: "Email"
+          contact_phone: "Phone"
+        delivery_data:
+          name: "Name"
+          description: "Description"
+          address_line1: "Address"
+          address_line2: "Address completion"
+          reference: "Reference"
+          district: "District"
+          city: "City" 
+          state: "State"
+          postal_code: "Postal code"
+        payment_data:
+          method: "Method"
+          change: "Change"
     helpers:
       help:
         hide: "hide help"
@@ -665,7 +682,9 @@
           help: "Choose which of the previous orders you wish to make. Observe the details if there are products missing or with updated values."
           date: "Date"
           ordered_itens: "Ordered items"
-          choose: "choose this order"
+          checkout: "checkout"
+          choose: "choose and edit"
+          clear_orders_session: "clear orders' history from this computer"
 
       consumer:
         _total: 
@@ -690,9 +709,15 @@
           cancel_order: "cancel order"
           confirm_order: "Confirm order"
           confirming_this_order: "Confirming this order you are responsible for paying it. Do you want to continue?"
-        _supplier_delivery: 
-          delivery_method: "Delivery Method"
+        _delivery: 
+          consumer_heading: "Receipt Method"
+          supplier_heading: "Delivery Method"
           choose_another: "Choose another:"
+        _payment:
+          heading: "Payment method"
+        _actor_data: 
+          consumer_heading: "Data %{terms.consumer.from_article.singular}"
+          supplier_heading: "Data %{terms.supplier.from_article.singular}"
       admin:
         reports:
           products_spreadsheet: "Products' spreadsheet"
@@ -1042,6 +1067,7 @@
         orders: Orders
         start: Start
         administration: Administration
+        volunteering: Volunteering
     terms:
       <<: *suppliers_terms
       profile: &consumers_coop_term_profile
@@ -1112,6 +1138,10 @@
           cancel: cancel
           collective_consumptio: "Collective Consumption Mode"
           disabled: Disabled
+          general: "General"
+          header: "Header"
+          volunteers: "Volunteers"
+          volunteers_enabled: "Manage volunteers' period on orders' cycles"
           header_background_col: "Header background color"
           header_s_image: "Header's image"
           header_type: "Header Type"
@@ -1120,7 +1150,6 @@
           image_help: "This image will be used on the %{terms.profile.singular}'s page, must be 1040x90px, it will be automatically cropped to this size."
           pure_color_collective: "pure color + %{terms.profile.singular} name"
           save: Save
-          settings_of_solidary_: "Settings of the Consumers' Coop"
           text_color: "Text color"
           this_name_will_be_use: "This name will be used to avoid always use the full name of the %{terms.profile.singular}. How the %{terms.profile.singular} is generally called by the people?"
           white: white

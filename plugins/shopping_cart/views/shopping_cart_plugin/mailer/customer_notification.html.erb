@@ -27,6 +27,12 @@
       <% if !@customer[:address].blank? %>
         <%= @customer[:address] %><br \>
       <% end %>
+      <% if !@customer[:address_line2].blank? %>
+        <%= @customer[:address_line2] %><br \>
+      <% end %>
+      <% if !@customer[:address_reference].blank? %>
+        <%= @customer[:address_reference] %><br \>
+      <% end %>
       <% if !@customer[:district].blank? %>
         <%= @customer[:district] %><br \>
       <% end %>
@@ -35,9 +41,6 @@
       <% end %>
       <% if !@customer[:zip_code].blank? %>
         <%= @customer[:zip_code] %>
-      <% end %>
-      <% if !@customer[:address_reference].blank? %>
-        <%= @customer[:address_reference] %><br \>
       <% end %>
       <% if !@customer[:address].blank? || !@customer[:city].blank? || !@customer[:zip_code].blank? || !@customer[:district].blank? || !@customer[:address_reference].blank? %>
         </li>

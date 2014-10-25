@@ -8,20 +8,15 @@ function Cart(config) {
   this.itemsBox = $("#cart1 .cart-items");
   this.profileId = config.profile_id;
   this.items = {};
+  this.products = config.products;
   this.empty = !config.has_products;
+  this.minimized = config.minimized;
   this.hasPreviousOrders = config.has_previous_orders;
   this.visible = false;
   this.itemTemplate = _.template(jQuery('#cart-item-template').html());
   $("#cart-profile-name").text(config.profile_short_name);
   $(".cart-buy", this.cartElem).button({ icons: { primary: 'ui-icon-cart'} });
-  if (!this.empty) {
-    if (!config.minimized) {
-      $(this.cartElem).show();
-    }
-    this.addToList(config.products, true)
-  } else if (config.minimized) {
-    this.setQuantity(0)
-  }
+  this.load()
 }
 
 (function($){
@@ -36,6 +31,17 @@ function Cart(config) {
       if (completeCallback) completeCallback();
     };
     $.ajax(config);
+  }
+
+  Cart.prototype.load = function(){
+    if (!this.empty) {
+      if (!this.minimized) {
+        $(this.cartElem).show();
+      }
+      this.addToList(this.products, true)
+    } else if (this.minimized) {
+      this.setQuantity(0)
+    }
   }
 
   Cart.prototype.addToList = function(products, clear) {
@@ -196,17 +202,41 @@ function Cart(config) {
       this.visible ? this.hide(true) : this.show(true)
   }
 
-  Cart.prototype.repeat = function(button) {
-    var order_id = jQuery(button).attr('data-order-id')
+  Cart.prototype.repeat = function(order_id, callback) {
     this.ajax({
       url: '/plugin/shopping_cart/repeat/'+order_id+'?profile_id='+cart.profileId,
       success: function(data) {
         cart.addToList(data.products, true)
-        $('.cart-buy').click();
+        callback(data)
       },
-      type: 'POST', dataType: 'json', cache: false
+      // can't do POST because of firefox cookie reset bug
+      type: 'GET', dataType: 'json', cache: false
     })
+  }
+
+  Cart.prototype.repeatCheckout = function(event, button) {
+    var order_id = jQuery(button).attr('data-order-id')
+    this.repeat(order_id, function(data) {
+      $('.cart-buy').click();
+    })
+    event.stopPropagation()
     return false;
+  }
+
+  Cart.prototype.repeatChoose = function(event, button) {
+    var order_id = jQuery(button).attr('data-order-id')
+    this.repeat(order_id, function(data) {
+      jQuery.colorbox.close()
+      cart.show(true);
+    })
+    event.stopPropagation()
+    return false;
+  }
+
+  Cart.prototype.clearOrdersSession = function() {
+    jQuery.colorbox.close()
+    cart.hasPreviousOrders = false;
+    cart.setQuantity(0)
   }
 
   Cart.prototype.show = function(register) {
@@ -262,6 +292,9 @@ function Cart(config) {
   }
 
   Cart.prototype.setQuantity = function(qtty) {
+    this.cartElem.find('.cart-applet-checkout').toggle(qtty > 0)
+    this.cartElem.find('.cart-applet-checkout-disabled').toggle(qtty === 0)
+
     if (qtty === 0 && this.hasPreviousOrders)
       $(".cart-qtty", this.cartElem).text( Cart.l10n.repeatOrder )
     else

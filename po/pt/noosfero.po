@@ -2369,6 +2369,26 @@ msgstr "Tem certeza que quer visitar este web site?"
 msgid "Start"
 msgstr "Início"
 
+#:
+msgid "order by"
+msgstr "ordenar por"
+
+#:
+msgid "Lowest price"
+msgstr "Menor preço"
+
+#:
+msgid "Newest"
+msgstr "Mais recentes"
+
+#:
+msgid "Last updated"
+msgstr "Últimas atualizações"
+
+#:
+msgid "repeat order"
+msgstr "repetir pedido"
+
 #: app/helpers/categories_helper.rb:4
 msgid "General Category"
 msgstr "Categoria geral"
@@ -5995,6 +6015,10 @@ msgstr "Data de nascimento"
 #: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:14
 msgid "Address (street and number)"
 msgstr "Endereço (rua e número)"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:15
+msgid "Address completion"
+msgstr "Complemento (p.ex. apto)"
 
 #: app/views/profile_editor/_person_form.html.erb:53
 msgid "Custom formation"
@@ -9957,8 +9981,8 @@ msgid "Status could not be removed"
 msgstr "Status não pôde ser removido"
 
 #: plugins/shopping_cart/controllers/shopping_cart_plugin_controller.rb:115
-msgid "Request sent successfully. Check your email."
-msgstr "Requisição enviada com sucesso. Cheque seu email."
+msgid "Your order has been sent successfully! You will receive a confirmation e-mail shortly."
+msgstr "Seu pedido foi feito com sucesso! Você receberá um e-mail em breve."
 
 #: plugins/shopping_cart/controllers/shopping_cart_plugin_controller.rb:138
 msgid "Basket displayed."
@@ -11346,6 +11370,10 @@ msgid "Clean basket"
 msgstr "Limpar cesto"
 
 #: plugins/shopping_cart/views/cart.html.erb:8
+msgid "Basket is empty"
+msgstr "Cesto vazio"
+
+#: plugins/shopping_cart/views/cart.html.erb:8
 msgid "Shopping checkout"
 msgstr "Finalizar pedido"
 
@@ -12221,6 +12249,10 @@ msgstr "Mostrar conteúdo do pai quando os filhos estão vazios"
 #: plugins/google_cse/views/google_cse_plugin/results.html.erb:2
 msgid "Loading"
 msgstr "Carregando... "
+
+#: 
+msgid "loading..."
+msgstr "carregando... "
 
 #: plugins/anti_spam/views/anti_spam_plugin_admin/index.html.erb:1
 msgid "AntiSpam settings"

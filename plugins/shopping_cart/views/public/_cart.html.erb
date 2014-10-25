@@ -2,6 +2,11 @@
   <% if cart_minimized %>
     <div class="cart-applet">
       <%= cart_applet %>
+
+      <%= link_to _('Shopping checkout'), "/plugin/shopping_cart/buy", :class => 'cart-applet-checkout colorbox' %>
+      <span class="cart-applet-checkout-disabled">
+        <%= _('Basket is empty') %>
+      </span>
     </div>
   <% end %>
   <div class="cart-inner">
@@ -52,7 +57,7 @@ jQuery(function($) {
   Cart.minimized = <%= cart_minimized.to_json %>
 
   $.ajax({
-    url: "/plugin/shopping_cart/get?profile_id="+<%= profile.id.to_json rescue '' %>,
+    url: "/plugin/shopping_cart/get?profile_id="+<%= profile.id.to_json rescue ''.to_json %>,
     dataType: 'json',
     success: function(data) {
       cart = new Cart(data);

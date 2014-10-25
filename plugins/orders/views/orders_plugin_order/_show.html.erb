@@ -1,4 +1,6 @@
-<% other_actor_name = if actor_name == :supplier then :consumer else :supplier end %>
+<%
+  other_actor_name = if actor_name == :supplier then :consumer else :supplier end
+%>
 
 <div id="order-<%=order.id%>" class="order-view <%= "editable" if order.may_edit? user, @admin rescue false %> <%= "admin" if @admin %>">
 
@@ -9,9 +11,7 @@
     <div class="order-data <%= "admin" if @admin %>">
       <%= yield :order_header %>
 
-      <%= render "orders_plugin_item/index", :order => order, :actor_name => actor_name, :f => f %>
-
-      <%= render 'orders_plugin_order/supplier_delivery', :order => order, :f => f %>
+      <%= render "orders_plugin_order/data", order: order, actor_name: actor_name, other_actor_name: other_actor_name, f: f %>
     </div>
 
     <%= yield :order_footer %>

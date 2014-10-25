@@ -93,18 +93,19 @@ class ShoppingCartPluginController < OrdersPluginController
   end
 
   def repeat
-    unless request.post?
+    unless params[:id].present?
       @orders = previous_orders.last(5).reverse
-      @orders.each{ |o| o.enable_product_diff  }
+      @orders.each{ |o| o.enable_product_diff }
     else
       @order = cart_profile.orders.find params[:id]
       self.cart = { profile_id: cart_profile.id, items: {} }
-      self.cart[:items] = {}; @order.items.each do |item|
+      @order.items.each do |item|
+        next unless item.product.available
         self.cart[:items][item.product_id] = item.quantity_consumer_ordered.to_i
       end
 
       render json: {
-        products: products
+        products: products,
       }
     end
   end
@@ -128,7 +129,7 @@ class ShoppingCartPluginController < OrdersPluginController
       self.cart = nil
       render :text => {
         :ok => true,
-        :message => _('Request sent successfully. Check your email.'),
+        :message => _('Your order has been sent successfully! You will receive a confirmation e-mail shortly.'),
         :error => {:code => 0}
       }.to_json
     rescue ActiveRecord::ActiveRecordError
@@ -286,7 +287,7 @@ class ShoppingCartPluginController < OrdersPluginController
 
     order = OrdersPlugin::Sale.new
     order.profile = environment.profiles.find(cart[:profile_id])
-    order.session_id = session_id
+    order.session_id = session_id unless user
     order.consumer = user
     order.source = 'shopping_cart_plugin'
     order.status = 'ordered'
@@ -298,12 +299,14 @@ class ShoppingCartPluginController < OrdersPluginController
       :method => params[:customer][:payment], :change => params[:customer][:change],
     }
     order.consumer_delivery_data = {
-      :name => params[:delivery_option],
-      :address_line1 => params[:address],
-      :address_line2 => params[:district],
-      :reference => params[:address_reference],
-      :city => params[:city],
-      :postal_code => params[:zip_code],
+      :name => params[:customer][:delivery_option],
+      :address_line1 => params[:customer][:address],
+      :address_line2 => params[:customer][:address_line2],
+      :reference => params[:customer][:address_reference],
+      :district => params[:customer][:district],
+      :city => params[:customer][:city],
+      :state => params[:customer][:state],
+      :postal_code => params[:customer][:zip_code],
     }
     order.save!
   end
@@ -321,7 +324,13 @@ class ShoppingCartPluginController < OrdersPluginController
   end
 
   def cart_profile
-    @cart_profile ||= environment.profiles.find(params[:profile_id] || cart[:profile_id]) rescue nil
+    profile_id = if params[:profile_id].present? then params[:profile_id] else cart[:profile_id] end
+    @cart_profile ||= environment.profiles.find profile_id rescue nil
+  end
+
+  # from OrdersPluginController
+  def supplier
+    cart_profile
   end
 
   def cart=(data)
@@ -342,14 +351,6 @@ class ShoppingCartPluginController < OrdersPluginController
 
   def cookie_key
     :_noosfero_plugin_shopping_cart
-  end
-
-  def session_id
-    session['session_id']
-  end
-
-  def previous_orders
-    cart_profile.orders.of_user session_id, (user.id rescue nil)
   end
 
   def visible?

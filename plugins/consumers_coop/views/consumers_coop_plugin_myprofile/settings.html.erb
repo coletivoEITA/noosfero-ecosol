@@ -1,9 +1,9 @@
 <h1><%= profile.name %></h1>
-<h2><%= t('views.profile.settings.settings_of_solidary_') %></h2>
 
 <div id="consumers-coop-settings">
   <%= form_for @profile, as: :profile_data, :url => {:controller => :consumers_coop_plugin_myprofile, :action => :settings, :profile => profile.identifier}, :html => {:multipart => true} do |f| %>
 
+    <h2><%= t('views.profile.settings.general') %></h2>
     <%= f.fields_for :consumers_coop_settings, profile.consumers_coop_settings do |ff| %>
       <%= labelled_field ff, :enabled, t('views.profile.settings.collective_consumptio'),
         labelled_radio(ff, :enabled, t('views.profile.settings.disabled'), false) +
@@ -19,6 +19,7 @@
       <%= labelled_field ff, :header, t('views.profile.settings.header_type'), radios %>
     <% end %>
 
+    <h2><%= t('views.profile.settings.header') %></h2>
     <%= f.fields_for :consumers_coop_header_image_builder, profile.consumers_coop_header_image do |fi| %>
       <%= labelled_field fi, :uploaded_data, t('views.profile.settings.header_s_image'), fi.file_field(:uploaded_data, { :size => 10 }),
         {:help => t('views.profile.settings.image_help')} %>
@@ -40,8 +41,15 @@
         labelled_radio(ff, :header_fg_color, t('views.profile.settings.black'), 'black') %>
     <% end %>
 
+    <h2><%= t('views.profile.settings.volunteers') %></h2>
+    <%= f.fields_for :volunteers_settings, profile.volunteers_settings do |ff| %>
+      <%= labelled_field ff, :cycle_volunteers_enabled, t('views.profile.settings.volunteers_enabled'),
+        ff.check_box(:cycle_volunteers_enabled) %>
+    <% end %>
+
     <%= f.submit t('views.profile.settings.save') %>
     <%= link_to t('views.profile.settings.cancel'), {:controller => :profile_editor, :profile => profile.identifier} %>
+
   <% end %>
 </div>
 

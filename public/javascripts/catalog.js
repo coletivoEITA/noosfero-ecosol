@@ -19,6 +19,12 @@ catalog = {
     order: function() {
       try{ return this.element().get(0).elements.order.value.trim() } catch(e){ }
     },
+    pageEl: function() {
+      try{ return this.element().get(0).elements.page } catch(e){ }
+    },
+    rankEl: function() {
+      try{ return this.element().get(0).elements.rank } catch(e){ }
+    },
   },
   product: {
     list: function() {
@@ -27,6 +33,10 @@ catalog = {
     toggle_expandbox: function (element, open) {
       element.clicked = open;
       jQuery(element).toggleClass('open', open);
+    },
+    back: function (rank) {
+      catalog.form.rankEl().value = rank
+      catalog.search.run()
     },
   },
 
@@ -49,6 +59,8 @@ catalog = {
   },
 
   search: {
+  	external: false,
+
     init: function() {
       this.animation.init();
       this.autocomplete.init();
@@ -60,14 +72,30 @@ catalog = {
       catalog.search.finishLoading()
     },
 
+    url: function() {
+      var pageEl = catalog.form.pageEl()
+      var page = pageEl.value
+      
+      pageEl.value = null
+      var url = catalog.base_url_path + jQuery(catalog.form.element()).serialize()
+      pageEl.value = page
+
+      return url;
+    },
+
     run: function(options) {
       options = jQuery.extend({}, {animate: true}, options)
 
+      var url = this.url()
+      if (this.external) {
+        window.location.href = url;
+        return;
+      }
       jQuery(catalog.form.element()).ajaxSubmit({
         beforeSubmit: catalog.search.startLoading,
         success: function(html) {
           if (options.animate)
-            jQuery('html,body').animate({ scrollTop: 0 }, 400, function() {
+            catalog.search.scroll.toTop(function() {
               catalog.search.result(html)
             })
           else
@@ -75,12 +103,9 @@ catalog = {
         },
       })
 
-      catalog.search.pagination.reset()
-
-      var url = catalog.base_url_path + jQuery(catalog.form.element()).serialize()
       window.history.pushState(url, null, url)
-
       catalog.form.queryEl().focus()
+      catalog.search.pagination.reset()
     },
 
     submit: function() {
@@ -101,6 +126,21 @@ catalog = {
     },
     seeResults: function() {
       catalog.product.list().removeClass('waiting')
+    },
+
+    scroll: {
+      delay: 400,
+
+      toRank: function(rank) {
+        if (rank >= 0)
+          jQuery(function() {
+            // gives a margin for eventual fixed top bars and offset() doesn't consider margin, padding and borders sizes
+            jQuery('html,body').animate({ scrollTop: jQuery('.product[data-rank='+rank+']').offset().top-100 }, this.delay)
+          });
+      },
+      toTop: function(callback) {
+        jQuery('html,body').animate({ scrollTop: jQuery("#product-catalog").offset().top }, this.delay, callback)
+      },
     },
 
     pagination: {
@@ -148,7 +188,7 @@ catalog = {
           var old_product = content.find('#'+product.attr('id'))
           if (old_product.length) {
             old_product.attr('data-order', product.attr('data-order'))
-            old_product.attr('data-score', product.attr('data-score'))
+            old_product.attr('data-rank', product.attr('data-rank'))
             old_product.attr('data-term', product.attr('data-term'))
           } else
             catalog.search.animation.container().append(product).isotope('appended', product)
@@ -219,7 +259,7 @@ catalog = {
           itemSelector: '.product',
           layoutMode: 'fitRows',
           getSortData: {
-            score: '[data-score]',
+            rank: '[data-rank] parseInt',
           },
         });
       },
@@ -233,10 +273,11 @@ catalog = {
       },
 
       run: function(){
+        this.container().isotope('updateSortData').isotope();
         this.container().isotope({
           isJQueryFiltering: false,
           filter: catalog.search.animation.filter,
-          sortBy: '[data-score]',
+          sortBy: 'rank',
         })
       },
     },

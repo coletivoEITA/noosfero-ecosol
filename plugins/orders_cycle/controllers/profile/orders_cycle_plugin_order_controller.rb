@@ -100,7 +100,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   def render_delivery
     @order = OrdersPlugin::Sale.find params[:id]
     @order.attributes = params[:order]
-    render :partial => 'orders_plugin_order/supplier_delivery', :locals => {:order => @order}
+    render partial: 'orders_plugin_order/delivery', :order => order, :actor_name => :supplier
   end
 
   def supplier_balloon

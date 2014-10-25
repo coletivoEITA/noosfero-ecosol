@@ -20,7 +20,7 @@ class Product
     [:price, 0.35, proc{ |p| if (!p.price.nil? and p.price > 0) then 1 else 0 end }],
     [:new_product, 0.35, proc{ |p| if (p.updated_at.to_i - p.created_at.to_i) < 24*3600 then 1 else 0 end }],
     [:description, 0.3, proc{ |p| if !p.description.blank? then 1 else 0 end }],
-    [:enabled, 0.2, proc{ |p| if p.enterprise.enabled then 1 else 0 end }],
+    [:enabled, 0.2, proc{ |p| if p.enterprise and p.enterprise.enabled then 1 else 0 end }],
   ]
 
   def solr_plugin_boost

@@ -16,6 +16,12 @@ class Noosfero::Plugin
 
     attr_writer :should_load
 
+    # Called for each ActiveRecord class with parents
+    # See http://apidock.com/rails/ActiveRecord/ModelSchema/ClassMethods/full_table_name_prefix
+    def table_name_prefix
+      @table_name_prefix ||= "#{name.to_s.underscore}_"
+    end
+
     def should_load
       @should_load.nil? && true || @boot
     end
@@ -138,8 +144,8 @@ class Noosfero::Plugin
       self.name.underscore.gsub('_plugin','')
     end
 
-    def public_path(file = '')
-      File.join('/plugins', public_name, file)
+    def public_path file = '', relative=false
+      File.join "#{if relative then '' else  '/' end}plugins", public_name, file
     end
 
     def root_path

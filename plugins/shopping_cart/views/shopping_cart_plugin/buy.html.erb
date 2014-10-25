@@ -1,7 +1,7 @@
 <div id='cart-request-box' class="popin">
   <h1>
     <%= _('Shopping checkout') %>
-    <%= link_to_function _("haven't finished yet: back to shopping"), onclick: 'jQuery.colorbox.close()'  %>
+    <%= button_to_function 'back', _("haven't finished yet: back to shopping"), 'cart.hide(); jQuery.colorbox.close()', :class => 'cart-popin-close'  %>
   </h1>
 
   <%= form_for(:customer, :url => {:action => 'send_request'},
@@ -17,6 +17,7 @@
     <% if @settings.delivery %>
       <fieldset><legend><%=_('Delivery Address')%></legend>
         <%= labelled_form_field(_('Address (street and number)'), f.text_field(:address)) %>
+        <%= labelled_form_field(_('Address completion'), f.text_field(:address_line2)) %>
         <%= labelled_form_field(_('Address reference'), f.text_field(:address_reference)) %>
         <%= labelled_form_field(_('District'), f.text_field(:district)) %>
         <%= labelled_form_field( _("City"), f.text_field(:city)) %>

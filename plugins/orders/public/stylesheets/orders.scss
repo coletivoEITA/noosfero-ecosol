@@ -169,7 +169,24 @@
       border-bottom: $border solid black;
       text-transform: uppercase;
     }
+  }
 
+  .order-section {
+    border-top: 2*$border solid black;
+    width: auto;
+    padding: $padding;
+
+    h3 {
+      margin-top: 0 !important;
+      text-transform: uppercase;
+      font-size: 12px !important;
+    }
+    select {
+      text-size: 10px;
+    }
+    div {
+      margin-bottom: 10px;
+    }
   }
 }
 
@@ -181,4 +198,9 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.clear-orders-session {
+  margin-top: 30px;
+  float: right;
 }

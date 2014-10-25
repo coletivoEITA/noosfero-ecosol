@@ -1,3 +1,5 @@
+<%= javascript_include_tag '/plugins/orders_cycle/javascripts/jquery.calendrical.js' %>
+
 <h3><%= t('views.cycle._edit_fields.general_settings') %></h3>
 
 <%= form_for @cycle, as: :cycle , remote: true, :url => {:action => @cycle.new? ? :new : :edit, :id => @cycle.id }, html: {data: {loading: '#cycle-fields form'}} do |f| %>
@@ -6,15 +8,15 @@
   <%= labelled_field(f, :description, t('views.cycle._edit_fields.description'), f.text_area(:description), :class => 'cycle-field-description') %>
 
   <div class="cycle-fields-block">
-    <%= labelled_period_field(f, :start, :finish, t('views.cycle._edit_fields.orders_interval'), :class => 'cycle-orders-period') %>
+    <%= labelled_period_field f, :start, :finish, t('views.cycle._edit_fields.orders_interval'), :class => 'cycle-orders-period' %>
   </div>
   <div class="cycle-fields-block">
-    <%= labelled_period_field(f, :delivery_start, :delivery_finish, t('views.cycle._edit_fields.deliveries_interval'), :class => 'cycle-orders-period') %>
+    <%= labelled_period_field f, :delivery_start, :delivery_finish, t('views.cycle._edit_fields.deliveries_interval'), :class => 'cycle-orders-period' %>
   </div>
 
   <div class="cycle-fields-block">
     <div id='cycle-delivery' class="field">
-      <%= f.label(:delivery_methods, t('views.cycle._edit_fields.available_delivery_me')) %>
+      <%= f.label :delivery_methods, t('views.cycle._edit_fields.available_delivery_me') %>
 
       <div>
         <div id='cycle-delivery-options' class="subtitle">
@@ -26,6 +28,10 @@
       <div class="clean"></div>
     </div>
   </div>
+
+  <% if profile.volunteers_settings.cycle_volunteers_enabled %>
+    <%= render 'volunteers_plugin_myprofile/edit_periods', owner: @cycle, f: f %>
+  <% end %>
 
   <div id="cycle-new-mail">
     <%= check_box_tag('sendmail', 'yes', false, :id => 'cycle-new-mail-send') %>
@@ -58,7 +64,6 @@
   <% end %>
 <% end %>
 
-<%= javascript_include_tag '/plugins/orders_cycle/javascripts/jquery.calendrical.js' %>
 <%= javascript_tag do %>
   orders_cycle.cycle.edit();
 <% end %>
