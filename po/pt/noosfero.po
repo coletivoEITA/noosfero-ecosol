@@ -7053,10 +7053,6 @@ msgstr "Digite sua resposta"
 msgid "Post answer"
 msgstr "Enviar resposta"
 
-#: app/views/comment/_comment_form.rhtml:85
-msgid "Post comment"
-msgstr "Enviar comentário"
-
 #: app/models/comment.rb:95
 msgid "a comuninity which you are listed as contact email or you are an admin of its page"
 msgstr "uma comunidade que você está listado como um e-mail de contato ou você é um dos administradores da página"
@@ -7066,13 +7062,9 @@ msgid "an enterprise which you are listed as contact email or you are an admin o
 msgstr "um empreendimento que você está listado como um e-mail de contato ou você é um dos administradores da página"
 
 #: app/views/comment/notifier/mail.rhtml:3
-msgid "%{sender} (%{sender_link}) created a new comment on the article "%{article_title}" posted on %{notification_rule_msg}."
-msgstr "%{sender} (%{sender_link}) criou um novo comentário no artigo "%{article_title}" postado em %{notification_rule_msg}."
+msgid "%{sender} (%{sender_link}) created a new comment on the article \"%{article_title}\" posted on %{notification_rule_msg}."
+msgstr "%{sender} (%{sender_link}) criou um novo comentário no artigo \"%{article_title}\" postado em %{notification_rule_msg}."
 
-#: app/views/comment/notifier/mail.rhtml:5
-#: app/views/comment/notifier/mail_to_followers.rhtml:5
-msgid "Title: %s"
-msgstr "Título: %s"
 #: app/views/enterprise_registration/creation.rhtml:8
 msgid "You can manage your enterprise now."
 msgstr "Você pode gerenciar seu empreendimento agora."
@@ -7398,12 +7390,6 @@ msgstr "Nenhum dos seus amigos está online no momento"
 #: app/views/shared/logged_in/xmpp_chat.rhtml:9
 msgid "Friends in chat (<span class='amount_of_friends'>%{amount}</span>)"
 msgstr "Amigos no chat (<span class='amount_of_friends'>(%{amount})</span>)"
-
-#: app/views/shared/_lead_and_body.rhtml:17
-#: app/views/box_organizer/_article_block.rhtml:27
-#: app/views/spam/_suggest_article.html.erb:13
-msgid "Lead"
-msgstr "Prévia"
 
 #: app/views/shared/_lead_and_body.rhtml:18
 msgid "Used when a short version of your text is needed."
@@ -9528,10 +9514,6 @@ msgstr ""
 "O custo de produção do seu produto está totalmente descrito e será exibido "
 "na página do seu produto"
 
-#: app/views/manage_products/_edit_input.rhtml:17
-msgid "This input or raw material inpact on the final price of the product?"
-msgstr "Este produto ou matéria-prima impacta no preço final do produto?"
-
 #: app/views/manage_products/_price_composition_bar.rhtml:20
 msgid "Congratulations! Now the price is open to the public"
 msgstr "Parabéns! Agora o preço está aberto para o público"
@@ -11157,10 +11139,6 @@ msgstr ""
 #: plugins/oauth/views/oauth_plugin_provider/authorize.html.erb:16
 msgid "Allow"
 msgstr "Permitir"
-
-#: plugins/solr/lib/solr_plugin.rb:14
-msgid "Uses Solr as search engine."
-msgstr "Usa Solr como motor de busca."
 
 #: plugins/require_auth_to_comment/lib/require_auth_to_comment_plugin.rb:12
 msgid "Requires users to authenticate in order to post comments."
@@ -13289,14 +13267,6 @@ msgstr "Lista de pedidos"
 msgid "No results."
 msgstr "Sem resultados."
 
-#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:10
-msgid "Money"
-msgstr "Dinheiro"
-
-#: plugins/shopping_cart/views/shopping_cart_plugin/cart_helper.rb:20
-msgid "shopping_cart|Check"
-msgstr "Cheque"
-
 #: plugins/shopping_cart/views/shopping_cart_plugin/cart_helper.rb:20
 msgid "Credit card"
 msgstr "Cartão de crédito"
@@ -13304,10 +13274,6 @@ msgstr "Cartão de crédito"
 #: plugins/shopping_cart/views/shopping_cart_plugin/cart_helper.rb:20
 msgid "Bank transfer"
 msgstr "Transferência bancária"
-
-#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:47
-msgid "Here are the products you bought:"
-msgstr "Aqui estão os produtos que você pediu:"
 
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:7
 msgid "Customer"
