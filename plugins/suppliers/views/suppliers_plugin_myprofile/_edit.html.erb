@@ -21,14 +21,14 @@
 
   <% end %>
 
-  <%= form_for supplier, as: :supplier, :url => {:action => supplier.new_record? ? :new : :edit, :id => supplier.id},
-    :html => {data: {loading: '#supplier-#{supplier_label}'}, :class => 'full-registration'} do |f| %>
+  <%= form_for supplier, as: :supplier, url: {action: supplier.new_record? ? :new : :edit, id: supplier.id}, remote: true,
+    html: {data: {loading: "#supplier-#{supplier_label}"}, class: 'full-registration'} do |f| %>
 
     <%= error_messages_for :supplier %>
 
     <div class="full-registration-check">
       <%= check_box_tag :full_registration, '1', false,
-        :onchange => "jQuery(this).parents('.supplier').find('.data').toggleClass('full-registration', this.checked)" %>
+        onchange: "jQuery(this).parents('.supplier').find('.data').toggleClass('full-registration', this.checked)" %>
       <%= label_tag :full_registration, t('views.supplier._edit.full_registration') %>
     </div>
 

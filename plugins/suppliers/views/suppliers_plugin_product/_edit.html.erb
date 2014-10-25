@@ -99,7 +99,7 @@
       <%= link_to_function t('views.product._edit.cancel'), :class => 'action-button cancel', 'toggle-edit' => '' %>
       <%= link_to t('views.product._edit.remove_product'), remote: true, :confirm => t('views.product._edit.are_you_sure_you_want'),
         :url => {:controller => :suppliers_plugin_product, :action => 'destroy', :id => product.id }, :class => 'action-button remove',
-        html: {data: {loading: '#our-product-#{product.id}'}} %>
+        html: {data: {loading: "#our-product-#{product.id}"}} %>
     </div>
   <% end %>
 

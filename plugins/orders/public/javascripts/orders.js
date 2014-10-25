@@ -88,8 +88,8 @@ orders = {
       },
 
       report: function(url) {
-        var codes = this.selection().find('.code').map(function (i, el) { return el.innerHTML }).toArray();
-        window.location.href = url + '&' + jQuery.param({codes: codes})
+        var ids = this.selection().map(function (i, el) { return jQuery(el).attr('data-id') }).toArray();
+        window.location.href = url + '&' + jQuery.param({ids: ids})
       },
 
     },

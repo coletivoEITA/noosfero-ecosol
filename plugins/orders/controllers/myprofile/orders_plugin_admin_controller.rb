@@ -54,7 +54,7 @@ class OrdersPluginAdminController < MyProfileController
     raise unless self.filter_methods.include? @method
     @scope ||= profile
     @scope = @scope.send @method
-    @orders = @scope.where(:code => params[:codes])
+    @orders = @scope.where(:id => params[:ids])
     tmp_dir, report_file = report_products_by_supplier OrdersPlugin::Order.products_by_suppliers @orders
 
     send_file report_file, :type => 'application/xlsx',
@@ -68,7 +68,7 @@ class OrdersPluginAdminController < MyProfileController
     raise unless self.filter_methods.include? @method
     @scope ||= profile
     @scope = @scope.send @method
-    @orders = @scope.where(:code => params[:codes])
+    @orders = @scope.where(:id => params[:ids])
     tmp_dir, report_file = report_orders_by_consumer @orders
 
     send_file report_file, :type => 'application/xlsx',
