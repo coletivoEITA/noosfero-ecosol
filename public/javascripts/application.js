@@ -8,6 +8,7 @@
 *= require controls.js
 *= require lodash.compat.min.js
 *= require jquery-2.1.1.min.js
+*= require jquery.noconflict.js
 *= require jquery-migrate-1.2.1.js
 *= require colorbox.js
 *= require jquery.cycle.all.min.js
@@ -23,8 +24,8 @@
 *= require inputosaurus.js
 *= require rails.js
 *= require rails-extended.js
-*= require_self
 * noosfero libraries
+*= require_self
 *= require pagination.js
 *= require loading-overlay.js
 * views speficics
