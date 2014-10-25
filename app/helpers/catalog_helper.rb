@@ -9,7 +9,7 @@ module CatalogHelper
     @query = params[:query].to_s
     @scope = profile.products
     solr_options = {:all_facets => @query.blank?}
-    
+
     @rank = params[:rank].to_i
     @pg_page = if options[:page].present? then options[:page].to_i else 1 end
     if (@rank > profile.products_per_catalog_page)
@@ -35,7 +35,7 @@ module CatalogHelper
     @categories = result[:categories].to_a
     @qualifiers = result[:qualifiers].to_a
     @order = params[:order]
-    @ordering = plugins_search_order :catalog
+    @ordering = plugins_search_order(:catalog) || {select_options: []}
 
     @not_searched = @query.blank? && params[:category].blank? && params[:qualifier].blank?
 
