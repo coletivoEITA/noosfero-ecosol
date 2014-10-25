@@ -2,6 +2,10 @@
 // This file is automatically included by javascript_include_tag :defaults
 /*
 * third party libraries
+*= require prototype.js
+*= require effects.js
+*= require dragdrop.js
+*= require controls.js
 *= require lodash.compat.min.js
 *= require jquery-2.1.1.min.js
 *= require jquery-migrate-1.2.1.js
@@ -18,6 +22,7 @@
 *= require jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
 *= require inputosaurus.js
 *= require rails.js
+*= require rails-extended.js
 *= require_self
 * noosfero libraries
 *= require pagination.js
