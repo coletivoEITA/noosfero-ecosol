@@ -1,3 +1,20 @@
+/*
+ * thidparty libraries
+ *= require colorbox
+ *= require lightbox
+ *= require thickbox
+ *= require inputosaurus
+ *= require token-input
+ *= require token-input-facebook
+ *= require token-input-mac
+ *= require token-input-facet
+ * noosfero libraries
+ *= require_self
+ *= require iepngfix/iepngfix
+ * views specifics
+ *= require search
+ */
+
 /* browser fixes */
 
 img:-moz-broken {

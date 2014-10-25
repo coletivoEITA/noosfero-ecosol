@@ -1,5 +1,38 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
+/*
+* third party libraries
+*= require prototype.js
+*= require effects.js
+*= require dragdrop.js
+*= require controls.js
+*= require jquery-2.1.1.min.js
+*= require jquery-migrate-1.2.1.js
+*= require jquery.noconflict.js
+*= require colorbox.js
+*= require lightbox.js
+*= require thickbox.js
+*= require jquery.cycle.all.min.js
+*= require jquery-ui-1.10.4/js/jquery-ui-1.10.4.min.js
+*= require jquery.scrollTo.js
+*= require jquery.form.js
+*= require jquery-validation/jquery.validate.js
+*= require jquery.cookie.js
+*= require jquery.ba-bbq.min.js
+*= require jquery.tokeninput.js
+*= require jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
+*= require inputosaurus.js
+*= require reflection.js
+*= require rails.js
+*= require_self
+* noosfero libraries
+* views speficics
+*= require add-and-join.js
+*= require report-abuse.js
+*= require manage-products.js
+*= require catalog.js
+*= require autogrow.js
+*/
 
 // scope for noosfero stuff
 noosfero = {

@@ -9,47 +9,30 @@ module LayoutHelper
   end
 
   def noosfero_javascript
-    plugins_javascripts = @plugins.map { |plugin| [plugin.js_files].flatten.map { |js| plugin.class.public_path(js) } }.flatten
+    plugins_javascripts = @plugins.map { |plugin| [plugin.js_files].flatten.map { |js| plugin.class.public_path(js, true) } }.flatten
 
     output = ''
     output += render :file =>  'layouts/_javascript'
     output += javascript_tag 'render_all_jquery_ui_widgets()'
     unless plugins_javascripts.empty?
-      output += javascript_include_tag plugins_javascripts, :cache => "cache/plugins-#{Digest::MD5.hexdigest plugins_javascripts.to_s}"
+      output += javascript_include_tag *plugins_javascripts
     end
     output
   end
 
   def noosfero_stylesheets
-    standard_stylesheets = [
-      'application',
-      'search',
-      'thickbox',
-      'lightbox',
-      'colorbox',
-      'inputosaurus',
-      pngfix_stylesheet_path,
-    ] + tokeninput_stylesheets
-    plugins_stylesheets = @plugins.select(&:stylesheet?).map { |plugin| plugin.class.public_path('style.css') }
+    plugins_stylesheets = @plugins.select(&:stylesheet?).map { |plugin| plugin.class.public_path('style.css', true) }
 
     output = ''
-    output += stylesheet_link_tag standard_stylesheets, :cache => 'cache/application'
+    output += stylesheet_link_tag 'application'
     output += stylesheet_link_tag template_stylesheet_path
-    output += stylesheet_link_tag icon_theme_stylesheet_path
+    output += stylesheet_link_tag *icon_theme_stylesheet_path
     output += stylesheet_link_tag jquery_ui_theme_stylesheet_path
     unless plugins_stylesheets.empty?
-      output += stylesheet_link_tag plugins_stylesheets, :cache => "cache/plugins-#{Digest::MD5.hexdigest plugins_stylesheets.to_s}"
+      output += stylesheet_link_tag *plugins_stylesheets
     end
     output += stylesheet_link_tag theme_stylesheet_path
     output
-  end
-
-  def pngfix_stylesheet_path
-    'iepngfix/iepngfix.css'
-  end
-
-  def tokeninput_stylesheets
-    ['token-input', 'token-input-facebook', 'token-input-mac', 'token-input-facet']
   end
 
   def noosfero_layout_features
