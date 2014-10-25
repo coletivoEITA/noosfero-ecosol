@@ -1,5 +1,4 @@
 
 gem 'axlsx'
-#gem 'rubyzip', require: 'zip/zip'
-gem 'zip'
+gem 'rubyzip'
 
