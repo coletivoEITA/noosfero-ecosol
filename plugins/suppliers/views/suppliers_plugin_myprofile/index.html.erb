@@ -5,17 +5,17 @@
     <%= t('views.supplier.index.this_is_the_list_of_s') %>
   </div>
 
-  <div class="subtitle supplier-add-link" toggle-ignore><%= link_to t('views.supplier.index.add_supplier'), '#supplier-add', :onclick => 'suppliers.add_link();' %></div>
+  <div class="subtitle supplier-add-link" toggle-ignore><%= link_to_function t('views.supplier.index.add_supplier'), onclick: 'suppliers.add_link();' %></div>
 
-  <%= render :partial => 'suppliers_plugin_shared/filter', :locals => { :type => :supplier } %>
+  <%= render 'suppliers_plugin_shared/filter', type: :supplier %>
 
   <div class="supplier-listing">
     <div id="supplier-add" class="supplier value-row" toggle-edit='suppliers.toggle_edit();' >
-      <%= render :partial => 'suppliers_plugin_myprofile/new', :locals => {:supplier => @new_supplier} %>
+      <%= render 'suppliers_plugin_myprofile/new', supplier: @new_supplier %>
     </div>
 
     <div id="search-results">
-      <%= render :partial => 'suppliers_plugin_myprofile/suppliers_list', :locals => { :suppliers => @suppliers} %>
+      <%= render 'suppliers_plugin_myprofile/suppliers_list', suppliers: @suppliers %>
     </div>
   </div>
 </div>
