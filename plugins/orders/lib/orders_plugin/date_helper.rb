@@ -4,13 +4,16 @@ module OrdersPlugin::DateHelper
 
   include OrdersPlugin::FieldHelper
 
+  def labelled_period_fields form, start_field, end_field, options = {}
+    form.text_field("#{start_field}_date", class: 'date-select') +
+    form.text_field("#{start_field}_time", class: 'time-select') +
+    content_tag('span', '&nbsp' + I18n.t('orders_plugin.lib.date_helper.to') + '&nbsp', class: "date-to") +
+    form.text_field("#{end_field}_date", class: 'date-select') +
+    form.text_field("#{end_field}_time", class: 'time-select')
+  end
+
   def labelled_period_field form, start_field, end_field, label, options = {}
-    labelled_field form, label, label,
-      form.text_field("#{start_field}_date", class: 'date-select') +
-      form.text_field("#{start_field}_time", class: 'time-select') +
-      content_tag('span', I18n.t('orders_plugin.lib.date_helper.to') + ' ', class: "date-to") +
-      form.text_field("#{end_field}_date", class: 'date-select') +
-      form.text_field("#{end_field}_time", class: 'time-select')
+    labelled_field form, label, label, labelled_period_fields(form, start_field, end_field, options)
   end
 
   def datetime_period start, finish

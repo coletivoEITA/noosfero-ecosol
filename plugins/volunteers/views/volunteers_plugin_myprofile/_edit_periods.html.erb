@@ -16,7 +16,7 @@
 
   <div id="volunteers-periods-template" style="display: none">
     <% period = VolunteersPlugin::Period.new %>
-    <%= f.fields_for :volunteers_periods, period, child_index: period.object_id do |ff| %>
+    <%= f.fields_for :volunteers_periods, period, child_index: '_new_' do |ff| %>
       <div id="period-new" class="period">
         <%= render 'volunteers_plugin_myprofile/period', f: ff, period: period, owner: owner %>
       </div>

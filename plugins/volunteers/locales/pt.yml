@@ -9,6 +9,7 @@
         description: "Faz a gestão dos períodos de trabalho voluntário"
     attributes:
       period:
+        name: 'Nome'
         start_date: 'Dia de início'
         start_time: 'Horário de início'
         end_date: 'Dia de fim'

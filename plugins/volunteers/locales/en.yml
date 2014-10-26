@@ -9,6 +9,7 @@
         description: "Do management of periods of voluteers work"
     models:
       period:
+        name: 'Nome'
         start_date: 'Start day'
         start_time: 'Time of start'
         end_date: 'End day'

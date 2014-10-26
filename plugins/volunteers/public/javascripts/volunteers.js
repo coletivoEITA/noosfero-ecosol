@@ -10,6 +10,7 @@ volunteers = {
 
     new: function() {
       var period = jQuery('#volunteers-periods-template').html()
+      period = period.replace(/_new_/g, new Date().getTime())
       period = jQuery(period)
       period.find('input').prop('disabled', false)
       this.applyCalendrial(period)
