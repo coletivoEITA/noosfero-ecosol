@@ -15,7 +15,7 @@ module OrdersPlugin::AdminHelper
       text += ' '
 
       content_tag 'span', text, :class => classes
-    end
+    end.join ' '
   end
 
 end

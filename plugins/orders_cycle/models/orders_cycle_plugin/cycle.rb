@@ -57,10 +57,10 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   has_many :ordered_distributed_products, :through => :orders_confirmed, :source => :distributed_products, :uniq => true
   has_many :ordered_supplier_products, :through => :orders_confirmed, :source => :supplier_products, :uniq => true
 
-  if defined? VolunteersPlugin
-    has_many :volunteers_periods, class_name: 'VolunteersPlugin::Period', as: :owner
-    has_many :volunteers, through: :volunteers_periods, source: :profile
-  end
+  has_many :volunteers_periods, class_name: 'VolunteersPlugin::Period', as: :owner
+  has_many :volunteers, through: :volunteers_periods, source: :profile
+  attr_accessible :volunteers_periods_attributes
+  accepts_nested_attributes_for :volunteers_periods, allow_destroy: true
 
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.profile.orders_cycles }
