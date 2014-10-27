@@ -8,7 +8,7 @@ class CreateVolunteersPluginAssignments < ActiveRecord::Migration
     end
     add_index :volunteers_plugin_assignments, [:period_id]
     add_index :volunteers_plugin_assignments, [:profile_id]
-    add_index :volunteers_plugin_assignments,assignmentsprofile_id, :period_id]
+    add_index :volunteers_plugin_assignments, [:profile_id, :period_id]
   end
 
   def down

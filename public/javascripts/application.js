@@ -19,9 +19,10 @@
 *= require jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
 *= require inputosaurus.js
 *= require rails.js
+*= require rails-extended.js
 *= require jrails.js
-*= require_self
 * noosfero libraries
+*= require_self
 *= require modal.js
 *= require pagination.js
 *= require loading-overlay.js

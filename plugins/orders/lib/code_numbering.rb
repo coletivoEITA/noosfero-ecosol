@@ -26,7 +26,7 @@ module CodeNumbering
             when Symbol
               self.send(scope).maximum self.code_numbering_field
             when Proc
-              instance_eval(&scope).maximum self.code_numbering_field
+              instance_exec(&scope).maximum self.code_numbering_field
             end || 0 rescue nil if scope
       max ||= self.class.maximum self.code_numbering_field
 
