@@ -62,6 +62,8 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   attr_accessible :volunteers_periods_attributes
   accepts_nested_attributes_for :volunteers_periods, allow_destroy: true
 
+  scope :has_volunteers_periods, -> {uniq.joins [:volunteers_periods]}
+
   extend CodeNumbering::ClassMethods
   code_numbering :code, :scope => Proc.new { self.profile.orders_cycles }
 

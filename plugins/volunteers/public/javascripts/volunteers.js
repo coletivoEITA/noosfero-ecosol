@@ -35,4 +35,14 @@ volunteers = {
 
   },
 
+  assignments: {
+    toggle: function(period) {
+      period = jQuery(period)
+      jQuery.get(period.attr('data-toggle-url'), function(data) {
+        jQuery(period).replaceWith(data)
+      })
+    },
+
+  },
+
 };

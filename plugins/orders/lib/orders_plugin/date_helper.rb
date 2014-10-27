@@ -42,9 +42,11 @@ module OrdersPlugin::DateHelper
   end
 
   def day_time_period start, finish
-    start.strftime(I18n.t('orders_plugin.lib.date_helper.b_d_from_time_start_t') % {
-      time_start: start.strftime(I18n.t('orders_plugin.lib.date_helper.hh_m')), time_finish: finish.strftime(I18n.t('orders_plugin.lib.date_helper.hh_m'))
-    })
+    start.strftime I18n.t('orders_plugin.lib.date_helper.b_d_from_time_start_t') % {
+      default_format: start.strftime(I18n.t 'date.formats.default'),
+      time_start: start.strftime(I18n.t 'orders_plugin.lib.date_helper.hh_m'),
+      time_finish: finish.strftime(I18n.t 'orders_plugin.lib.date_helper.hh_m'),
+    }
   end
 
   def day_time_short time

@@ -1,4 +1,4 @@
-class ConsumersCoopPluginVolunteeringController < VolunteersPluginMyprofileController
+class ConsumersCoopPluginVolunteersController < OrdersCyclePluginVolunteersController
 
   no_design_blocks
   include ConsumersCoopPlugin::TranslationHelper

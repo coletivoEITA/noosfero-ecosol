@@ -10,8 +10,10 @@ class VolunteersPlugin::Period < ActiveRecord::Base
 
   belongs_to :owner, polymorphic: true
 
+  has_many :assignments, class_name: 'VolunteersPlugin::Assignment', foreign_key: :period_id, include: [:profile]
+
   validates_presence_of :owner
-  #validates_presence_of :name
+  validates_presence_of :name
   validates_presence_of :start_date, :start_time, :end_date, :end_time
 
 end
