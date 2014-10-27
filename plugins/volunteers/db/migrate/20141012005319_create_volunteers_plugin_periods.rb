@@ -2,7 +2,7 @@ class CreateVolunteersPluginPeriods < ActiveRecord::Migration
   def up
     create_table :volunteers_plugin_periods do |t|
       t.integer :owner_id
-      t.integer :owner_type
+      t.string :owner_type
       t.text :name
       t.datetime :start
       t.datetime :end
@@ -11,6 +11,7 @@ class CreateVolunteersPluginPeriods < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :volunteers_plugin_periods, [:owner_type]
     add_index :volunteers_plugin_periods, [:owner_id, :owner_type]
   end
 

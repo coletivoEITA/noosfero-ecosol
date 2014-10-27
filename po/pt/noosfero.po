@@ -7799,7 +7799,7 @@ msgstr "Selecione as categorias de seu interesse"
 #: app/views/box_organizer/_article_block.html.erb:27
 #: app/views/shared/_lead_and_body.html.erb:17
 msgid "Lead"
-msgstr "Prévia (primeiras linhas do artigo)\n"
+msgstr "Prévia (primeiras linhas do artigo)"
 
 #: app/views/profile_editor/edit.rhtml:69
 #: app/views/profile_editor/edit.html.erb:69

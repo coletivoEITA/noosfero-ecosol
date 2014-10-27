@@ -589,7 +589,7 @@
       date_helper:
         a: "%A"
         b_d_at_hh_m: "%d/%m/%y às %H:%M"
-        b_d_from_time_start_t: "%d/%m/%y, de %{time_start} para %{time_finish}"
+        b_d_from_time_start_t: "%{default_format}, de %{time_start} para %{time_finish}"
         from_start_to_finish: "de %{start} para %{finish}"
         hh_m: "%Hh%M"
         m_d: "%d/%m"

@@ -9,6 +9,9 @@ end
 
 class Profile
 
+  attr_accessible :consumers_coop_header_image_builder
+  attr_accessible :consumers_coop_settings
+
   has_many :offered_products, :class_name => 'OrdersCyclePlugin::OfferedProduct', :dependent => :destroy, :order => 'products.name ASC'
 
   def consumers_coop_settings

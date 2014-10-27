@@ -18,7 +18,7 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
 
     mail to: profile_recipients(order.consumer),
       from: environment.noreply_email,
-      reply_to: file_recipients(profile),
+      reply_to: profile_recipients(profile),
       subject: t('lib.mailer.profile_subject') % {profile: profile.name, subject: subject}
   end
 

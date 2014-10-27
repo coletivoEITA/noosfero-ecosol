@@ -1,0 +1,17 @@
+@import 'base';
+
+.volunteer-to-period {
+  width: $module03;
+  height: $module03;
+  margin-right: $margin;
+  float: left;
+  cursor: pointer;
+
+  background: yellow;
+  text-align: center;
+
+  &:hover {
+    background: lighten(yellow, 20%);
+  }
+
+}

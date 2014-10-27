@@ -7,8 +7,18 @@
       plugin:
         name: "Work periods and volunteers"
         description: "Do management of periods of voluteers work"
+    models:
+      period:
+        name: 'Nome'
+        start_date: 'Start day'
+        start_time: 'Time of start'
+        end_date: 'End day'
+        end_time: 'Time of end'
     views:
       myprofile:
         volunteers_periods: "Volunteers' period"
         add_period: "Add"
+        period:
+          label: 'Turno'
+          remove: 'Remove'
 

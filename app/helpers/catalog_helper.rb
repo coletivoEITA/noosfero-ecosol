@@ -35,7 +35,7 @@ module CatalogHelper
     @categories = result[:categories].to_a
     @qualifiers = result[:qualifiers].to_a
     @order = params[:order]
-    @ordering = plugins_search_order :catalog
+    @ordering = plugins_search_order(:catalog) || {select_options: []}
 
     @not_searched = @query.blank? && params[:category].blank? && params[:qualifier].blank?
 

@@ -8,6 +8,8 @@ end
 
 class Profile
 
+  attr_accessible :volunteers_settings
+
   def volunteers_settings
     @volunteers_settings ||= Noosfero::Plugin::Settings.new self, VolunteersPlugin
   end
