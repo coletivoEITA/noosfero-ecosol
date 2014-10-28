@@ -1,6 +1,6 @@
 require_dependency "#{File.dirname __FILE__}/ext/environment"
 require_dependency "#{File.dirname __FILE__}/ext/user"
-require_dependency "#{File.dirname __FILE__}/ext/songkick/o_auth2/model/client"
+require_dependency "#{File.dirname __FILE__}/ext/songkick/oauth2/model/client"
 
 class OauthPlugin < Noosfero::Plugin
 
