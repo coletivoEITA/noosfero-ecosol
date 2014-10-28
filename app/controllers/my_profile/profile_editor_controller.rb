@@ -35,6 +35,7 @@ class ProfileEditorController < MyProfileController
 
   def enable
     if request.post? && params[:confirmation]
+      @to_enable = profile
       unless profile.enable user
         session[:notice] = _('%s was not enabled.') % profile.name
       end
