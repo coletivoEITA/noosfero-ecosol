@@ -3,15 +3,13 @@ require_dependency 'forms_helper'
 module FormsHelper
   def labelled_radio_button( human_name, name, value, checked = false, options = {} )
     options[:id] ||= 'radio-' + FormsHelper.next_id_number
-    radio_button_tag( name, value, checked, options ) +
-    content_tag( 'label', human_name, :for => options[:id] )
+    content_tag('label',radio_button_tag( name, value, checked, options ) + ' ' + human_name, :class => 'radio_inline')
   end
 
   def labelled_check_box( human_name, name, value = "1", checked = false, options = {} )
     options[:id] ||= 'checkbox-' + FormsHelper.next_id_number
     hidden_field_tag(name, '0') +
-      check_box_tag( name, value, checked, options ) +
-      content_tag( 'label', human_name, :for => options[:id] )
+      content_tag('label',check_box_tag( name, value, checked, options ) + ' ' + human_name, :class => 'checkbox-inline')
   end
 
   def labelled_text_field( human_name, name, value=nil, options={} )

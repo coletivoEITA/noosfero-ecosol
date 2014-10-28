@@ -351,10 +351,6 @@ body, th, td, input {
   margin-bottom: 1em;
 }
 
-div.no_media_panel {
-  margin: 0px;
-}
-
 div#notice {
   right: 50%;
   margin-right: -470px;
@@ -1357,4 +1353,17 @@ div.tooltip-inner {
 
 .profile-ul {
     padding-left: 0px;
+}
+
+#content .search-results-box .vcard {
+    height: 112px;
+    overflow: hidden;
+}
+
+@media (min-width: 1200px) {
+    .search-results-type-article > ul > li {
+        width: 49%;
+        border: 1px solid #CCC;
+        float: left;
+    }
 }

@@ -1686,3 +1686,32 @@ table#recaptcha_table tr:hover td {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
+
+
+/* Text editors sidebar */
+
+.controller-cms div.with_media_panel {
+    float: left;
+    width: 500px;
+}
+div.with_media_panel .formfield input {
+    width: 100%;
+}
+div.with_media_panel .formfield input[type="checkbox"] {
+    width: auto;
+}
+
+
+.text-editor-sidebar {
+    position: absolute;
+    width: 380px;
+    right: 20px;
+    top: 70px;
+}
+
+#product-name h2 {
+    display: inline;
+}
+#product_name {
+    width: 60%;
+}
