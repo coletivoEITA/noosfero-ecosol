@@ -113,13 +113,13 @@ module ApplicationHelper
       button_without_text type, label, url, html_options.merge(class: the_class)
     end
 
-    def expirable_button(content, action, text, url, options = {})
+    def expirable_button(content, action, text, url, html_options = {})
       return super unless theme_responsive?
 
-      option = options.delete(:option) || 'default'
+      option = html_options.delete(:option) || 'default'
       size = html_options.delete(:size) || 'xs'
-      options[:class] = ["btn btn-#{size} btn-#{option} with-text icon-#{action.to_s}", options[:class]].compact.join(' ')
-      expirable_content_reference content, action, text, url, options
+      html_options[:class] = ["btn btn-#{size} btn-#{option} with-text icon-#{action.to_s}", html_options[:class]].compact.join(' ')
+      expirable_content_reference content, action, text, url, html_options
     end
 
     def search_contents_menu
