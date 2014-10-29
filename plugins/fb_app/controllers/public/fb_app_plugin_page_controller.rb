@@ -1,4 +1,4 @@
-class FbAppPluginPageController < PublicController
+class FbAppPluginPageController < FbAppPluginController
 
   no_design_blocks
 

@@ -1,0 +1,4 @@
+name: fb_app
+dependencies:
+  - metadata
+  - oauth

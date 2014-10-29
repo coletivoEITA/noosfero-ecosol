@@ -1,5 +1,5 @@
 
-'en':
+"en-US": &en-US
 
   fb_app_plugin:
     lib:
@@ -10,4 +10,12 @@
       myprofile:
         timeline:
           add: 'Salvar configuração de postagens na timeline' 
+        checking_auth: 'Checking authorization' 
+        authorized: 'Connected' 
+        not_authorized: 'Reconnect' 
+
+'en_US':
+  <<: *en-US
+'en':
+  <<: *en-US
 

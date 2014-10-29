@@ -1,4 +1,6 @@
-<%= render 'fb_app_plugin/load' %>
+<%= render 'load', callback: 'fb_app.fb.submitLoginStatus()' %>
 
-<%= button_to_function :add, t('fb_app_plugin.views.myprofile.timeline.add'), 'fb_app.fb.login()' %>
+<div class="fb-timeline">
+  <%= button_to_function :add, t('fb_app_plugin.views.myprofile.checking_authorization'), 'fb_app.app.connect()' %>
+</div>
 

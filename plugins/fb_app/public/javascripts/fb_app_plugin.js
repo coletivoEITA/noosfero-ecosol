@@ -1,5 +1,6 @@
 fb_app = {
   current_url: '',
+  save_auth_url: '',
 
   addJS: function(url) {
     var script = document.createElement('script'); script.type = 'text/javascript'; script.src = url
@@ -12,6 +13,10 @@ fb_app = {
         onclick: 'jQuery.colorbox({top: jQuery(this).offset().top-30, href: this.href}); return false',
       })
     },
+  },
+
+  locales: {
+
   },
 
   admin: {
@@ -146,6 +151,13 @@ fb_app = {
 
   },
 
+  state: {
+    authorized: function() {
+    },
+    notAuthorized: function() {
+    }
+  },
+
   fb: {
     id: '',
     page_tab_next: '',
@@ -184,8 +196,24 @@ fb_app = {
       window.location.href = 'https://www.facebook.com/dialog/pagetab?' + jQuery.param({app_id: fb_app.fb.id, next: fb_app.base_url})
     },
 
-    login: function() {
+    connect: function() {
+    },
+
+    submitLoginStatus: function() {
       FB.getLoginStatus(function(response) {
+        var auth = fb_app.fb.authResponse = response.authResponse;
+        jQuery.post(fb_app.save_auth_url, {auth: {
+          expires_in: auth.expiresIn, access_token: auth.accessToken, signed_request: auth.signedRequest, user_id: auth.userID
+        }})
+        if (response.status === 'connected')
+          fb_app.state.authorized()
+        else
+          fb.app.state.notAuthorized()
+      })
+    },
+
+    login: function() {
+      this.getLoginStatus(function(response) {
         if (response.status === 'connected') {
           fb_app.fb.add_tab()
         } else {

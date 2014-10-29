@@ -7,9 +7,9 @@ class CreateFbAppTimelineConfig < ActiveRecord::Migration
 
     add_index :fb_app_plugin_timeline_configs, :profile_id
 
-    rename_table :fb_app_ecosol_store_plugin_page_configs, :fb_app_plugin_page_configs
-    add_column :fb_app_plugin_page_configs, :profile_id
-    add_index :fb_app_plugin_page_configs, :profile_id
+    rename_table :fb_app_ecosol_store_plugin_page_configs, :fb_app_plugin_page_tab_configs
+    add_column :fb_app_plugin_page_tab_configs, :profile_id, :integer
+    add_index :fb_app_plugin_page_tab_configs, [:profile_id]
   end
 
   def down

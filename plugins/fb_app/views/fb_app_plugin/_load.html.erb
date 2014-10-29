@@ -7,7 +7,7 @@
   fb_app.current_url = <%= url_for(params).to_json %>;
   fb_app.base_url = 'https://<%= environment.default_hostname %>/plugin/fb_app';
   fb_app.fb.init(<%= (FbAppPlugin.config['app']['id'] rescue '').to_json %>,
-    <%= url_for(:only_path => false, :action => :index).gsub('/fb_app_plugin', '').to_json %>,
+    <%= url_for(only_path: false, action: :index).gsub('/fb_app_plugin', '').to_json %>,
     <%= callback.to_json %>
   );
 <% end %>
