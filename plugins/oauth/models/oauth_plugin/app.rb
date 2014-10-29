@@ -1,2 +1,2 @@
-OauthPlugin::App = Songkick::OAuth2::Model::Client
+OauthPlugin::App = OauthPlugin::Client
 
