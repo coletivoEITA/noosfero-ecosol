@@ -2,16 +2,19 @@
   <div class="name">
     <%= period.name %>
   </div>
-  <div class="period">
-    <%= day_time_period period.start, period.end %>
-  </div>
-  <div class="assignments">
-    <% period.assignments.each do |assig| %>
-      <div class="volunteer">
-        <%= profile_image assig.profile, :icon %>
-        <%= assig.profile.short_name %>
-      </div>
-    <% end %>
+  <div class=body>
+    <div class="period">
+      <%= day_time_period period.start, period.end %>
+    </div>
+    <div class="assignments">
+      <% period.assignments.each do |assig| %>
+        <div class="volunteer">
+          <%= profile_image assig.profile, :icon %>
+          <%= assig.profile.short_name %>
+        </div>
+      <% end %>
+      <%= link_to t('volunteers_plugin.views.index.volunteer'), url: '' %>
+    </div>
   </div>
 
 </div>

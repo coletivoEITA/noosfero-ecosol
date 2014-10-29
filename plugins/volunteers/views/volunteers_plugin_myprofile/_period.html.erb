@@ -3,8 +3,10 @@
 
 <div class="field">
   <%= f.text_field :name, placeholder: t('volunteers_plugin.attributes.period.name') %>
-  <%= labelled_period_fields f, :start, :end %>
+  <div class=body>
+    <%= labelled_period_fields f, :start, :end %>
 
-  <%= link_to_function t('volunteers_plugin.views.myprofile.period.remove'), 'volunteers.periods.remove(this)' %>
+    <%= link_to_function t('volunteers_plugin.views.myprofile.period.remove'), 'volunteers.periods.remove(this)' %>
+  </div>
 </div>
 
