@@ -128,7 +128,7 @@ module Noosfero
     }
 
     config.time_zone = File.read('/etc/timezone').split("\n").first
-    config.active_record.default_timezone = config.time_zone
+    config.active_record.default_timezone = :local
 
     config.paths['db/migrate'] += Dir.glob "#{Rails.root}/{baseplugins,config/plugins/*}/db/migrate"
     config.i18n.load_path += Dir.glob "#{Rails.root}/{baseplugins,config/plugins/*}/locales/*.{rb,yml}"
