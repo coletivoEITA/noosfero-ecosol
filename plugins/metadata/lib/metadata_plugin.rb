@@ -1,3 +1,7 @@
+begin
+  require 'fb_app_plugin'
+rescue LoadError
+end
 
 class MetadataPlugin < Noosfero::Plugin
 
@@ -21,11 +25,11 @@ class MetadataPlugin < Noosfero::Plugin
       return unless object = instance_variable_get(options[:variable])
       return unless metadata = object.class.const_get(:Metadata)
       metadata.map do |property, contents|
-        contents = contents.call object if contents.is_a? Proc
+        contents = contents.call object rescue nil if contents.is_a? Proc
         next unless contents
 
         Array(contents).map do |content|
-          content = content.call object if content.is_a? Proc
+          content = content.call object rescue nil if content.is_a? Proc
           next unless content
           tag 'meta', property: property, content: content
         end.join
