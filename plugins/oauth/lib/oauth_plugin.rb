@@ -54,11 +54,13 @@ class OauthPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['loading-overlay', 'oauth'].map{ |j| "javascripts/#{j}" }
+    ['oauth'].map{ |j| "javascripts/#{j}" }
   end
 
   def login_extra_contents
-    lambda{ render 'oauth/signin' }
+    lambda do
+      render 'oauth/signin'
+    end
   end
 
   SetupProc = lambda do |env|

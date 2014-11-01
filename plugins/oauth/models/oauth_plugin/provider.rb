@@ -1,5 +1,7 @@
 class OauthPlugin::Provider < Noosfero::Plugin::ActiveRecord
 
+  attr_accessible :strategy, :identifier, :name, :site, :key, :secret, :environment_id
+
   belongs_to :environment
 
   validates_inclusion_of :strategy, in: OauthPlugin::StrategiesDefs.keys
