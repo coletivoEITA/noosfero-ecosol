@@ -11,6 +11,14 @@ class User < ActiveRecord::Base
   N_('Password confirmation')
   N_('Terms accepted')
 
+  # see http://stackoverflow.com/a/2513456/670229
+  def self.current
+    Thread.current[:current_user]
+  end
+  def self.current=(user)
+    Thread.current[:current_user] = user
+  end
+
   def self.[](login)
     self.find_by_login(login)
   end
@@ -50,7 +58,7 @@ class User < ActiveRecord::Base
 
       user.person = p
     end
-    if user.environment.enabled?('skip_new_user_email_confirmation') 
+    if user.environment.enabled?('skip_new_user_email_confirmation')
       if user.environment.enabled?('admin_must_approve_new_users')
         create_moderate_task
       else
