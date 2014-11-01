@@ -16,15 +16,15 @@ module Noosfero
   class << self
     def locales
       @locales ||= {
-        'en' => 'English',
-        'pt' => 'Português',
-        'fr' => 'Français',
-        'hy' => 'հայերեն լեզու',
-        'de' => 'Deutsch',
-        'ru' => 'русский язык',
-        'es' => 'Español',
+        'en_US' => 'English',
+        'pt_BR' => 'Português',
+        'fr_FR' => 'Français',
+        'hy_AM' => 'հայերեն լեզու',
+        'de_DE' => 'Deutsch',
+        'ru_RU' => 'русский язык',
+        'es_ES' => 'Español',
         'eo' => 'Esperanto',
-        'it' => 'Italiano'
+        'it_IT' => 'Italiano'
       }
     end
     attr_writer :locales
