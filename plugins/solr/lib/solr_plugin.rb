@@ -2,13 +2,6 @@ class SolrPlugin < Noosfero::Plugin; end;
 
 require_dependency 'solr_plugin/search_helper'
 
-if Rails.env.development?
-  # workaround for development
-  Dir.glob("#{File.dirname __FILE__}/ext/*").each do |file|
-    require_dependency file
-  end
-end
-
 class SolrPlugin < Noosfero::Plugin
 
   include SolrPlugin::SearchHelper
