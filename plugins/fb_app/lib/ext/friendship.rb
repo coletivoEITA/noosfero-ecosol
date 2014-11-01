@@ -1,6 +1,6 @@
-require 'scrap'
+require_dependency 'friendship'
 
-class Scrap
+class Friendship
 
   extend FbAppPlugin::AttachStories::ClassMethods
   fb_app_attach_stories

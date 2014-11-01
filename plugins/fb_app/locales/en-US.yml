@@ -11,8 +11,9 @@
         timeline:
           add: 'Salvar configuração de postagens na timeline' 
         checking_auth: 'Checking authorization' 
-        authorized: 'Connected' 
-        not_authorized: 'Reconnect' 
+        connect: 'Connect' 
+        disconnect: 'Disconnect' 
+        reconnect: 'Reconnect' 
 
 'en_US':
   <<: *en-US

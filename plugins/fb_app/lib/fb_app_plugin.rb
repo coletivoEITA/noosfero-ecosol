@@ -14,22 +14,21 @@ class FbAppPlugin < Noosfero::Plugin
     @config ||= YAML.load File.read("#{File.dirname __FILE__}/../config.yml") rescue {}
   end
 
-  def self.oauth_client_for owner
-    @oauth_clients ||= {}
-    @oauth_clients["#{owner.class.name}##{owner.id}"] ||= begin
+  def self.oauth_provider_for environment
+    @oauth_providers ||= {}
+    @oauth_providers[environment] ||= begin
       app_id = config['app']['id']
       app_secret = config['app']['secret']
-      client = OauthPlugin::Client.where(client_id: app_id, oauth2_client_owner_id: owner.id, oauth2_client_owner_type: owner.class.name).first
-      pp client
-      client ||= OauthPlugin::Client.new client_id: app_id
+
+      client = OauthPlugin::Provider.where(environment_id: environment.id, key: app_id).first
+      client ||= OauthPlugin::Provider.new
+
       client.attributes = {
-        name: "fb_app_plugin #{app_id}", site: 'https://facebook.com',
-        redirect_uri: 'https://anyfornow.net/none',
-        client_id: app_id, client_secret: app_secret,
-        oauth2_client_owner_id: owner.id, oauth2_client_owner_type: owner.class.name,
+        strategy: 'facebook', identifier: "fb_app_plugin_#{app_id}",
+        name: 'FB App', site: 'https://facebook.com',
+        key: app_id, secret: app_secret,
+        environment_id: environment.id
       }
-      pp client.changed_attributes
-      pp client.changed?
       client.save! if client.changed?
       client
     end

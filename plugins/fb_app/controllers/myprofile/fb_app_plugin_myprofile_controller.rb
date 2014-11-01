@@ -3,17 +3,25 @@ class FbAppPluginMyprofileController < MyProfileController
   no_design_blocks
 
   def index
-
   end
 
   def save_auth
-    @client = FbAppPlugin.oauth_client_for environment
-    @auth = FbAppPlugin::Auth.where(profile_id: user.id, client_id: @client.id).first
-    @auth ||= FbAppPlugin::Auth.new profile_id: user.id, client_id: @client.id
-    @auth.attributes = params[:auth]
-    @auth.save! if @auth.changed?
+    @provider = FbAppPlugin.oauth_provider_for environment
+    @auth = FbAppPlugin::Auth.where(profile_id: user.id, provider_id: @provider.id).first
 
-    render nothing: true
+    @status = params[:auth].delete :status
+    if @status == 'not_authorized'
+      if @auth
+        @auth.destroy
+        @auth = nil
+      end
+    elsif @status == 'connected'
+      @auth ||= FbAppPlugin::Auth.new profile_id: user.id, provider_id: @provider.id
+      @auth.attributes = params[:auth]
+      @auth.save! if @auth.changed?
+    end
+
+    render partial: 'auth'
   end
 
   protected

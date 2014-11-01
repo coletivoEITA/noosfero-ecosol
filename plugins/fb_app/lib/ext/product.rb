@@ -1,6 +1,8 @@
-require 'scrap'
+require_dependency 'product'
 
-class Scrap
+UserStampSweeper.observe Product
+
+class Product
 
   extend FbAppPlugin::AttachStories::ClassMethods
   fb_app_attach_stories

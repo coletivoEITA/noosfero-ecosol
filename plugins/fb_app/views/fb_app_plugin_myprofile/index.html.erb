@@ -1,6 +1,11 @@
-<%= render 'load', callback: 'fb_app.fb.submitLoginStatus()' %>
+<%= render 'load', callback: 'fb_app.fb.checkLoginStatus()' %>
 
-<div class="fb-timeline">
-  <%= button_to_function :add, t('fb_app_plugin.views.myprofile.checking_authorization'), 'fb_app.app.connect()' %>
+<div id="fb-app-auth">
+  <%= button_to_function '', t('fb_app_plugin.views.myprofile.checking_auth'), 'fb_app.app.connect()' %>
 </div>
-
+<div id="fb-app-timeline">
+  <%= render 'timeline' %>
+</div>
+<div id="fb-app-catalog">
+  <%= render 'catalog' %>
+</div>

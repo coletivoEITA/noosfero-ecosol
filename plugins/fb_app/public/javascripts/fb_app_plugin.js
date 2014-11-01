@@ -151,16 +151,27 @@ fb_app = {
 
   },
 
-  state: {
-    authorized: function() {
+  auth: {
+    load: function (html) {
+      jQuery('#fb-app-auth').html(html)
     },
-    notAuthorized: function() {
-    }
+
+    save: function(authResponse) {
+      jQuery.post(fb_app.save_auth_url, {auth: {
+        status: authResponse.status,
+        access_token: authResponse.accessToken,
+        expires_in: authResponse.expiresIn,
+        signed_request: authResponse.signedRequest,
+        user_id: authResponse.userID,
+      }}, this.load)
+    },
   },
+
 
   fb: {
     id: '',
     page_tab_next: '',
+    scope: 'publish_actions',
 
     init: function(id, next, asyncInit) {
       this.id = id
@@ -197,21 +208,29 @@ fb_app = {
     },
 
     connect: function() {
+      FB.login(function(response) {
+        fb_app.fb.receiveAuth(response)
+      }, {scope: fb_app.fb.scope})
     },
-
-    submitLoginStatus: function() {
-      FB.getLoginStatus(function(response) {
-        var auth = fb_app.fb.authResponse = response.authResponse;
-        jQuery.post(fb_app.save_auth_url, {auth: {
-          expires_in: auth.expiresIn, access_token: auth.accessToken, signed_request: auth.signedRequest, user_id: auth.userID
-        }})
-        if (response.status === 'connected')
-          fb_app.state.authorized()
-        else
-          fb.app.state.notAuthorized()
+    disconnect: function() {
+      FB.api("/me/permissions", "DELETE", function(response) {
+        fb_app.fb.receiveAuth({status: 'not_authorized'})
       })
     },
 
+    receiveAuth: function(response) {
+      var auth = fb_app.fb.authResponse = response.authResponse || {}
+      auth.status = response.status
+      fb_app.auth.save(auth)
+    },
+
+    checkLoginStatus: function() {
+      FB.getLoginStatus(function(response) {
+        fb_app.fb.receiveAuth(response)
+      })
+    },
+
+    // DEPRECATED: remove ASAP
     login: function() {
       this.getLoginStatus(function(response) {
         if (response.status === 'connected') {
@@ -219,8 +238,9 @@ fb_app = {
         } else {
           //window.location.href = 'https://www.facebook.com/dialog/oauth?' + jQuery.param({client_id: fb_app.fb.id, redirect_uri: fb_app.base_url })
           //TODO check if person and timeline
-          FB.login('publish_action', function(response) {
-          })
+          FB.login(function(response) {
+            fb_app.fb.receiveAuth(response)
+          }, {scope: fb_app.fb.scope})
         }
       })
     },

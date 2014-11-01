@@ -1,0 +1,10 @@
+<% if @auth.blank? %>
+  <%= button_to_function '', t('fb_app_plugin.views.myprofile.connect'), 'fb_app.fb.connect()' %>
+<% elsif @auth.expired? %>
+  <%= button_to_function '', t('fb_app_plugin.views.myprofile.reconnect'), 'fb_app.fb.connect()' %>
+<% else %>
+  <%= image_tag @auth.user.picture %>
+  <%= @auth.user.name %>
+  <%= button_to_function '', t('fb_app_plugin.views.myprofile.disconnect'), 'fb_app.fb.disconnect()' %>
+<% end %>
+

@@ -105,7 +105,7 @@ class FbAppPluginPageController < FbAppPluginController
     if @signed_requests.present?
       @datas = []
       @page_ids = @signed_requests.map do |signed_request|
-        @data = parse_signed_request signed_request
+        @data = FbAppPlugin::Auth.parse_signed_request signed_request
         @datas << @data
         @data['page']['id']
       end
@@ -134,28 +134,6 @@ class FbAppPluginPageController < FbAppPluginController
   def get_layout
     return if request.xhr?
     super
-  end
-
-  # backport for ruby 1.8
-  def urlsafe_decode64 str
-    str += '=' * (4 - str.length.modulo(4))
-    Base64.decode64 str.tr("-_", "+/")
-  end
-  def urlsafe_encode64 str
-    Base64.encode64 str.tr("+/", "-_")
-  end
-
-  def parse_signed_request signed_request
-    encoded_sig, payload = signed_request.split '.'
-
-    secret = FbAppPlugin.config['app']['secret'] rescue ''
-    sig = urlsafe_decode64 encoded_sig
-    expected_sig = OpenSSL::HMAC.digest 'sha256', secret, payload
-
-    if expected_sig == sig
-      data = urlsafe_decode64 payload
-      JSON.parse(data)
-    end
   end
 
 end

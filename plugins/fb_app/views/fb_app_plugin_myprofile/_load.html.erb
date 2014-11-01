@@ -2,9 +2,6 @@
 <%= render 'fb_app_plugin/load', callback: callback %>
 
 <%= javascript_tag do %>
-  fb_app.locales.checking_authorization = <%= t('fb_app_plugin.views.myprofile.checking_auth').to_json %>
-  fb_app.locales.authorized = <%= t('fb_app_plugin.views.myprofile.authorized').to_json %>
-  fb_app.locales.not_authorized = <%= t('fb_app_plugin.views.myprofile.not_authorized').to_json %>
   fb_app.save_auth_url = <%= url_for(action: :save_auth).to_json %>
 <% end %>
 
