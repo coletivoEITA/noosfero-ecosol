@@ -22,7 +22,7 @@ class OauthPlugin::ProviderAuth < ActiveRecord::Base
   end
 
   def not_expired?
-    Time.now <= self.expires_at
+    Time.now <= self.expires_at rescue false
   end
   def expired?
     not self.not_expired?
