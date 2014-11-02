@@ -14,7 +14,8 @@ module ApplicationHelper
       return super unless theme_responsive?
 
       option = html_options.delete(:option) || 'default'
-      the_class = "btn btn-xs btn-#{option} btn-#{type}"
+      size = html_options.delete(:size) || 'xs'
+      the_class = "btn btn-#{size} btn-#{option} btn-#{type}"
       if html_options.has_key?(:class)
         the_class << ' ' << html_options[:class]
       end
@@ -30,7 +31,8 @@ module ApplicationHelper
       return super unless theme_responsive?
 
       option = html_options.delete(:option) || 'default'
-      html_options[:class] = "btn btn-xs btn-#{option} with-text #{html_options[:class]}"
+      size = html_options.delete(:size) || 'xs'
+      html_options[:class] = "btn btn-#{size} btn-#{option} with-text #{html_options[:class]}"
       html_options[:class] << " icon-#{type}"
       link_to_function(label, js_code, html_options, &block)
     end
@@ -39,8 +41,9 @@ module ApplicationHelper
       return super unless theme_responsive?
 
       option = html_options.delete(:option) || 'default'
+      size = html_options.delete(:size) || 'xs'
       html_options[:class] = "" unless html_options[:class]
-      html_options[:class] << " btn btn-xs btn-#{option} icon-#{type}"
+      html_options[:class] << " btn btn-#{size} btn-#{option} icon-#{type}"
       link_to_function(content_tag('span', label), js_code, html_options, &block)
     end
 
@@ -48,7 +51,8 @@ module ApplicationHelper
       return super unless theme_responsive?
 
       option = html_options.delete(:option) || 'default'
-      html_options[:class] = "btn btn-xs btn-#{option} with-text" unless html_options[:class]
+      size = html_options.delete(:size) || 'xs'
+      html_options[:class] = "btn btn-#{size} btn-#{option} with-text" unless html_options[:class]
       html_options[:class] << " icon-#{type}"
       link_to_remote(label, options, html_options)
     end
@@ -57,8 +61,9 @@ module ApplicationHelper
       return super unless theme_responsive?
 
       option = html_options.delete(:option) || 'default'
+      size = html_options.delete(:size) || 'xs'
       html_options[:class] = "" unless html_options[:class]
-      html_options[:class] << " btn btn-xs btn-#{option} icon-#{type}"
+      html_options[:class] << " btn btn-#{size} btn-#{option} icon-#{type}"
       link_to_remote(content_tag('span', label), options, html_options.merge(title: label))
     end
 
@@ -66,7 +71,8 @@ module ApplicationHelper
       return super unless theme_responsive?
 
       option = html_options.delete(:option) || 'default'
-      the_class = "btn btn-xs btn-#{option} #{icon_name}"
+      size = html_options.delete(:size) || 'xs'
+      the_class = "btn btn-#{size} btn-#{option} #{icon_name}"
       if html_options.has_key?(:class)
         the_class << ' ' << html_options[:class]
       end
@@ -77,7 +83,8 @@ module ApplicationHelper
       return super unless theme_responsive?
 
       option = html_options.delete(:option) || 'default'
-      the_class = "btn btn-xs btn-#{option} icon-button icon-#{type}"
+      size = html_options.delete(:size) || 'xs'
+      the_class = "btn btn-#{size} btn-#{option} icon-button icon-#{type}"
       if html_options.has_key?(:class)
         the_class << ' ' << html_options[:class]
       end
@@ -98,7 +105,8 @@ module ApplicationHelper
       return super unless theme_responsive?
 
       option = html_options.delete(:option) || 'default'
-      the_class = "btn btn-xs btn-#{option} with-text"
+      size = html_options.delete(:size) || 'xs'
+      the_class = "btn btn-#{size} btn-#{option} with-text"
       if html_options.has_key?(:class)
         the_class << ' ' << html_options[:class]
       end
@@ -109,7 +117,8 @@ module ApplicationHelper
       return super unless theme_responsive?
 
       option = options.delete(:option) || 'default'
-      options[:class] = ["btn btn-xs btn-#{option} with-text icon-#{action.to_s}", options[:class]].compact.join(' ')
+      size = html_options.delete(:size) || 'xs'
+      options[:class] = ["btn btn-#{size} btn-#{option} with-text icon-#{action.to_s}", options[:class]].compact.join(' ')
       expirable_content_reference content, action, text, url, options
     end
 
@@ -267,7 +276,8 @@ module ApplicationHelper
       end
 
       option = html_options.delete(:option) || 'default'
-      "<button class='btn btn-xs btn-#{option} btn-popover-menu icon-parent-folder' data-toggle='popover' data-html='true' data-placement='top' data-trigger='focus' data-content=\""+CGI::escapeHTML(menu_content)+'" data-title="'+menu_title+'"></button>'
+      size = html_options.delete(:size) || 'xs'
+      "<button class='btn btn-#{size} btn-#{option} btn-popover-menu icon-parent-folder' data-toggle='popover' data-html='true' data-placement='top' data-trigger='focus' data-content=\""+CGI::escapeHTML(menu_content)+'" data-title="'+menu_title+'"></button>'
     end
 
 
