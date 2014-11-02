@@ -1,7 +1,3 @@
-begin
-  require 'fb_app_plugin'
-rescue LoadError
-end
 
 class MetadataPlugin < Noosfero::Plugin
 
@@ -14,7 +10,6 @@ class MetadataPlugin < Noosfero::Plugin
   end
 
   class_attribute :og_type_namespace
-  self.og_type_namespace = FbAppPlugin.config['app']['namespace'] if defined? FbAppPlugin
 
   def head_ending
     lambda do
@@ -41,4 +36,5 @@ class MetadataPlugin < Noosfero::Plugin
 
 end
 
+ActiveSupport.run_load_hooks :metadata_plugin, MetadataPlugin
 
