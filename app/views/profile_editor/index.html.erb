@@ -74,18 +74,4 @@
 
 <% end %>
 
-  <% if profile.person? && environment.enabled?('enterprise_activation') %>
-
-      <div id='activation_enterprise'>
-      <%= form_tag({:controller => 'account', :action => 'activation_question'}, {:method => 'get'}) do %>
-        <p><strong><%= _('Activate your enterprise') %></strong></p>
-	<p><%= _("If you received a letter with information about your enterprise activation, add here the activation code that was sent.") %></p>
-	<p><%= environment.help_message_to_add_enterprise %> </p>
-        <%= labelled_form_field(_('Enterprise activation code') + ': ', text_field_tag('enterprise_code')) %>
-        <%= submit_button(:ok, _('Activate')) %>
-      <% end %>
-    </div>
-
-  <% end %>
-
 </div>
