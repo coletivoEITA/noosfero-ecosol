@@ -1,5 +1,6 @@
 
+gem 'facebook-signed-request'
 gem 'fb_graph'
 
-gem 'facebook-signed-request'
+gem 'auto_build'
 

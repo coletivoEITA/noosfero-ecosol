@@ -1,11 +1,7 @@
 fb_app = {
   current_url: '',
   save_auth_url: '',
-
-  addJS: function(url) {
-    var script = document.createElement('script'); script.type = 'text/javascript'; script.src = url
-    document.getElementsByTagName('head')[0].appendChild(script)
-  },
+  show_login_url: '',
 
   products: {
     fix_popins: function() {
@@ -152,18 +148,45 @@ fb_app = {
   },
 
   auth: {
+    status: 'not_authorized',
+
     load: function (html) {
-      jQuery('#fb-app-auth').html(html)
+      jQuery('#fb-app-settings').html(html)
+    },
+    loadLogin: function (html) {
+      if (this.status == 'not_authorized')
+        jQuery('#fb-app-connect').html(html).removeClass('loading')
+      else
+        jQuery('#fb-app-login').html(html)
     },
 
-    save: function(authResponse) {
-      jQuery.post(fb_app.save_auth_url, {auth: {
-        status: authResponse.status,
-        access_token: authResponse.accessToken,
-        expires_in: authResponse.expiresIn,
-        signed_request: authResponse.signedRequest,
-        user_id: authResponse.userID,
-      }}, this.load)
+    receive: function(response) {
+      fb_app.fb.authResponse = response
+      fb_app.auth.save(response)
+    },
+
+    transformParams: function(response) {
+      var authResponse = response.authResponse
+      if (!authResponse)
+        return {auth: {status: response.status}}
+      else
+        return {
+          auth: {
+            status: response.status,
+            access_token: authResponse.accessToken,
+            expires_in: authResponse.expiresIn,
+            signed_request: authResponse.signedRequest,
+            provider_user_id: authResponse.userID,
+          }
+        }
+    },
+
+    showLogin: function(response) {
+      jQuery.get(fb_app.show_login_url, this.transformParams(response), this.loadLogin)
+    },
+
+    save: function(response) {
+      jQuery.post(fb_app.save_auth_url, this.transformParams(response), this.load)
     },
   },
 
@@ -209,24 +232,29 @@ fb_app = {
 
     connect: function() {
       FB.login(function(response) {
-        fb_app.fb.receiveAuth(response)
+        fb_app.auth.receive(response)
       }, {scope: fb_app.fb.scope})
     },
-    disconnect: function() {
-      FB.api("/me/permissions", "DELETE", function(response) {
-        fb_app.fb.receiveAuth({status: 'not_authorized'})
+    disconnect: function(callback) {
+      FB.logout(function(response) {
+        fb_app.auth.receive(response)
+        if (callback) callback(response)
       })
     },
+    connect_to_another: function() {
+      this.disconnect(this.connect)
+    },
 
-    receiveAuth: function(response) {
-      var auth = fb_app.fb.authResponse = response.authResponse || {}
-      auth.status = response.status
-      fb_app.auth.save(auth)
+    // not to be used
+    delete: function() {
+      FB.api("/me/permissions", "DELETE", function(response) {
+        fb_app.auth.receive({status: 'not_authorized'})
+      })
     },
 
     checkLoginStatus: function() {
       FB.getLoginStatus(function(response) {
-        fb_app.fb.receiveAuth(response)
+        fb_app.auth.showLogin(response)
       })
     },
 
@@ -239,7 +267,7 @@ fb_app = {
           //window.location.href = 'https://www.facebook.com/dialog/oauth?' + jQuery.param({client_id: fb_app.fb.id, redirect_uri: fb_app.base_url })
           //TODO check if person and timeline
           FB.login(function(response) {
-            fb_app.fb.receiveAuth(response)
+            fb_app.auth.receive(response)
           }, {scope: fb_app.fb.scope})
         }
       })

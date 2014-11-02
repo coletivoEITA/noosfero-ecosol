@@ -113,7 +113,7 @@ class FbAppPluginPageController < FbAppPluginController
       @page_ids = if params[:page_id].is_a? Hash then params[:page_id].values else params[:page_id].to_a end
     end
 
-    @configs = FbAppPlugin::PageConfig.where page_id: @page_ids
+    @configs = FbAppPlugin::PageTabConfig.where page_id: @page_ids
     @config = @configs.first
     @new_request = true if @config.blank?
     @configs
@@ -121,7 +121,7 @@ class FbAppPluginPageController < FbAppPluginController
 
   def create_configs
     @page_ids.each do |page_id|
-      @configs << FbAppPlugin::PageConfig.create!(page_id: page_id)
+      @configs << FbAppPlugin::PageTabConfig.create!(page_id: page_id)
     end
     @config ||= @configs.first
   end

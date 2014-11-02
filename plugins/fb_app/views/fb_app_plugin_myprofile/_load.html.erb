@@ -3,5 +3,6 @@
 
 <%= javascript_tag do %>
   fb_app.save_auth_url = <%= url_for(action: :save_auth).to_json %>
+  fb_app.show_login_url = <%= url_for(action: :show_login).to_json %>
 <% end %>
 

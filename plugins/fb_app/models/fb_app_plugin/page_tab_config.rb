@@ -1,6 +1,8 @@
-class FbAppPlugin::PageConfig < Noosfero::Plugin::ActiveRecord
+class FbAppPlugin::PageTabConfig < ActiveRecord::Base
 
-  serialize :config, Hash
+  belongs_to :profile
+
+  acts_as_having_settings field: config
 
   validates_presence_of :page_id
   validates_uniqueness_of :page_id

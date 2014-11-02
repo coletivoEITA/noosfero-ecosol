@@ -1,5 +1,3 @@
-require 'oauth_plugin'
-
 class FbAppPlugin < Noosfero::Plugin
 
   def self.plugin_name
@@ -11,7 +9,7 @@ class FbAppPlugin < Noosfero::Plugin
   end
 
   def self.config
-    @config ||= YAML.load File.read("#{File.dirname __FILE__}/../config.yml") rescue {}
+    @config ||= HashWithIndifferentAccess.new(YAML.load File.read("#{File.dirname __FILE__}/../config.yml")) rescue {}
   end
 
   def self.oauth_provider_for environment
@@ -32,6 +30,14 @@ class FbAppPlugin < Noosfero::Plugin
       client.save! if client.changed?
       client
     end
+  end
+
+  ActiveSupport.on_load :open_graph_plugin do
+    OpenGraphPlugin::Stories.register_publisher actions: OpenGraph::Actions,
+      objects: OpenGraph::Objects, &OpenGraph::PublishProc
+  end
+  ActiveSupport.on_load :metadata_plugin do
+    MetadataPlugin.og_type_namespace = FbAppPlugin.config['app']['namespace']
   end
 
   def stylesheet?

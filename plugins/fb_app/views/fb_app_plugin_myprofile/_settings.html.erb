@@ -1,0 +1,16 @@
+<div id="fb-app-connect">
+  <%= render 'intro' if @auth.not_authorized? %>
+
+  <div id="fb-app-auth">
+    <%= render 'auth' %>
+  </div>
+</div>
+
+<% if @auth.connected? %>
+  <div id="fb-app-timeline">
+    <%= render 'timeline' %>
+  </div>
+  <div id="fb-app-catalog">
+    <%= render 'catalog' %>
+  </div>
+<% end %>

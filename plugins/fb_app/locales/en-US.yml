@@ -8,12 +8,20 @@
         description: 'Monte uma loja virtual da economia solidária em suas páginas do facebook!'
     views:
       myprofile:
-        timeline:
-          add: 'Salvar configuração de postagens na timeline' 
         checking_auth: 'Checking authorization' 
-        connect: 'Connect' 
-        disconnect: 'Disconnect' 
-        reconnect: 'Reconnect' 
+        different_login: 'But you are logged in on facebook as:' 
+        current_login: 'You are logged in on facebook as:' 
+        connect: 'I want to install Cirandas at Face App' 
+        logged_connect: 'Query conectar esta conta do Facebook com meu usuário %{profile} no Cirandas' 
+        disconnect: 'Disconnect'
+        connect_to_another: 'Conectar to another Facebook account' 
+        reconnect: 'Reconnect'
+
+        timeline:
+          heading: 'Timeline posting'
+          add: 'Save timeline post settings' 
+        catalog:
+          heading: 'Vitrine Cirandas'
 
 'en_US':
   <<: *en-US

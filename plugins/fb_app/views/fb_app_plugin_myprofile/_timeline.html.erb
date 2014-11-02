@@ -1,0 +1,14 @@
+<h2>
+  <%= t('fb_app_plugin.views.myprofile.timeline.heading') %>
+</h2>
+
+<%= form_for profile.fb_app_timeline_config, as: :timeline_config, remote: true, url: {action: :timeline_config} do |f| %>
+  <% FbAppPlugin::TimelineConfig::Syncs.each do |group, data| %>
+    <%= f.fields_for "synced_#{group}" do |ff| %>
+      <%= render "timeline_#{group}", f: ff, data: data %>
+    <% end %>
+  <% end %>
+
+  <%= f.submit _('Save') %>
+<% end %>
+

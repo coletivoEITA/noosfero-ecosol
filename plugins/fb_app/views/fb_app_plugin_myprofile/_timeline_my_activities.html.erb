@@ -1,0 +1,6 @@
+<% data[:objects].each do |object| %>
+  <% name = "#{f.object_name}[objects[]]" %>
+  <%= check_box_tag name, 'enable' %>
+  <%= label_tag name, t("open_graph_plugin.lib.syncs.spec.my_activities.#{object}") %>
+<% end %>
+
