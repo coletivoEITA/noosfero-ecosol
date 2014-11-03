@@ -351,10 +351,6 @@ body, th, td, input {
   margin-bottom: 1em;
 }
 
-div.no_media_panel {
-  margin: 0px;
-}
-
 div#notice {
   right: 50%;
   margin-right: -470px;
@@ -1357,4 +1353,14 @@ div.tooltip-inner {
 
 .profile-ul {
     padding-left: 0px;
+}
+
+#content .search-results-box .vcard {
+    height: 112px;
+    overflow: hidden;
+}
+
+.image-gallery-item {
+    margin: auto;
+    display: inline-block;
 }

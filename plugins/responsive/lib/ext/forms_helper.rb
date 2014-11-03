@@ -2,7 +2,6 @@ require_dependency 'forms_helper'
 require_relative 'application_helper'
 
 module FormsHelper
-
   extend ActiveSupport::Concern
   protected
 
@@ -11,8 +10,8 @@ module FormsHelper
       return super unless theme_responsive?
 
       options[:id] ||= 'radio-' + next_id_number
-      radio_button_tag( name, value, checked, options ) +
-      content_tag( 'label', human_name, for: options[:id] )
+      content_tag( 'label', radio_button_tag( name, value, checked, options ) + '  ' +
+ human_name, for: options[:id], class: 'radio-inline' )
     end
 
     def labelled_check_box( human_name, name, value = "1", checked = false, options = {} )
@@ -20,8 +19,7 @@ module FormsHelper
 
       options[:id] ||= 'checkbox-' + next_id_number
       hidden_field_tag(name, '0') +
-        check_box_tag( name, value, checked, options ) +
-        content_tag( 'label', human_name, for: options[:id] )
+        content_tag( 'label', check_box_tag( name, value, checked, options ) + '  ' + human_name, for: options[:id], class: 'checkbox-inline')
     end
 
     def labelled_text_field( human_name, name, value=nil, options={} )

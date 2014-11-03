@@ -113,13 +113,13 @@ module ApplicationHelper
       button_without_text type, label, url, html_options.merge(class: the_class)
     end
 
-    def expirable_button(content, action, text, url, options = {})
+    def expirable_button(content, action, text, url, html_options = {})
       return super unless theme_responsive?
 
-      option = options.delete(:option) || 'default'
+      option = html_options.delete(:option) || 'default'
       size = html_options.delete(:size) || 'xs'
-      options[:class] = ["btn btn-#{size} btn-#{option} with-text icon-#{action.to_s}", options[:class]].compact.join(' ')
-      expirable_content_reference content, action, text, url, options
+      html_options[:class] = ["btn btn-#{size} btn-#{option} with-text icon-#{action.to_s}", html_options[:class]].compact.join(' ')
+      expirable_content_reference content, action, text, url, html_options
     end
 
     def search_contents_menu
@@ -219,7 +219,7 @@ module ApplicationHelper
       pending_tasks_count = ''
       count = user ? Task.to(user).pending.count : -1
       if count > 0
-        pending_tasks_count = link_to(count.to_s, user.tasks_url, id: 'pending-tasks-count', title: _("Manage your pending tasks"))
+        pending_tasks_count = "<span class=\"badge\" onclick=\"document.location='#{url_for(user.tasks_url)}'\" title=\"#{_("Manage your pending tasks")}\">" + count.to_s + '</span>'
       end
 
       output += link_to("<img class=\"menu-user-gravatar\" src=\"#{user.profile_custom_icon(gravatar_default)}\"><strong>#{user.identifier}</strong> #{pending_tasks_count}", '#', id: "homepage-link", title: _('Go to your homepage'), :class=>"dropdown-toggle", :'data-toggle'=>"dropdown", :'data-target'=>"", :'data-hover'=>"dropdown")
@@ -237,6 +237,9 @@ module ApplicationHelper
       admin_link_str = admin_link
       output += admin_link_str.present? ? '<li>' + admin_link_str + '</li>' : ''
 
+      #control_panel link
+      output += '<li>' + link_to('<i class="icon-menu-ctrl-panel"></i><strong>' + _('Control panel') + '</strong>', user.admin_url, class: 'ctrl-panel', title: _("Configure your personal account and content")) + '</li>'
+
       #manage_enterprises
       manage_enterprises_str = manage_enterprises
       output += manage_enterprises_str.present? ? '<li>' + manage_enterprises_str + '</li>' : ''
@@ -244,9 +247,6 @@ module ApplicationHelper
       #manage_communities
       manage_communities_str = manage_communities
       output += manage_communities_str.present? ? '<li>' + manage_communities_str + '</li>' : ''
-
-      #control_panel link
-      output += '<li>' + link_to('<i class="icon-menu-ctrl-panel"></i><strong>' + _('Control panel') + '</strong>', user.admin_url, class: 'ctrl-panel', title: _("Configure your personal account and content")) + '</li>'
 
       output += '<li class="divider"></li>'
 
@@ -256,7 +256,25 @@ module ApplicationHelper
       output
     end
 
-    def popover_menu(title,menu_title,links,html_options={})
+    def manage_link(list, kind, title)
+      return super unless theme_responsive?
+
+      if list.present?
+        link_to_all = nil
+        if list.count > 5
+          list = list.first(5)
+          link_to_all = link_to(content_tag('strong', _('See all')), :controller => 'memberships', :profile => user.identifier)
+        end
+        link = list.map do |element|
+          link_to(content_tag('strong', element.short_name(25)), element.admin_url, :class => "icon-menu-"+element.class.identification.underscore, :title => _('Manage %s') % element.short_name)
+        end
+        if link_to_all
+          link << link_to_all
+        end
+        render :partial => "shared/manage_link", :locals => {:link => link, :kind => kind.to_s, :title => title}
+      end
+
+    def popover_menu(title,menu_title,links,html_options={}, button_type='default')
       return super unless theme_responsive?
 
       menu_content = ""

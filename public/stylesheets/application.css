@@ -10,7 +10,6 @@
  * noosfero libraries
  *= require_self
  *= require iepngfix/iepngfix
- *= require loading-overlay
  * views specifics
  *= require search
  */
@@ -3119,12 +3118,6 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   padding-bottom: 10px;
   position: relative;
 }
-#product-name h2 {
-  display: inline;
-}
-#product_name {
-  width: 60%;
-}
 #edit-product-name {
   margin-top: 10px;
 }
@@ -3495,26 +3488,6 @@ table.cms-articles .icon:hover {
   display: block;
 }
 
-/* Text editors sidebar */
-
-.controller-cms div.with_media_panel {
-  float: left;
-  width: 500px;
-}
-div.with_media_panel .formfield input {
-  width: 100%;
-}
-div.with_media_panel .formfield input[type="checkbox"] {
-  width: auto;
-}
-
-.text-editor-sidebar {
-  position: absolute;
-  width: 380px;
-  right: 20px;
-  top: 70px;
-}
-
 .text-editor-sidebar-box  {
   background: #fcfcf9;
   border: 1px solid #d3d7cf;
@@ -3651,17 +3624,14 @@ div.with_media_panel .formfield input[type="checkbox"] {
   text-align: center;
 }
 .image-gallery ul {
-  padding: 0px;
-  text-align: center;
-  width: 486px;
-  margin: auto;
+    padding: 0px;
+    text-align: center;
+    margin: auto;
 }
 .image-gallery-item {
   width: 142px;
   height: 170px;
   list-style: none;
-  margin: 10px;
-  float: left;
   overflow: hidden;
   background-repeat: no-repeat;
 }
