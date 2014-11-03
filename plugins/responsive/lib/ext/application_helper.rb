@@ -108,7 +108,7 @@ module ApplicationHelper
     def expirable_button(content, action, text, url, options = {})
       return super unless theme_responsive?
 
-      option = html_options.delete(:option) || 'default'
+      option = options.delete(:option) || 'default'
       options[:class] = ["btn btn-xs btn-#{option} with-text icon-#{action.to_s}", options[:class]].compact.join(' ')
       expirable_content_reference content, action, text, url, options
     end
@@ -267,7 +267,7 @@ module ApplicationHelper
     end
 
     def popover_menu(title,menu_title,links,html_options={}, button_type='default')
-      return super unless theme_responsive?
+      return super(title, menu_title,links,html_options) unless theme_responsive?
 
       menu_content = ""
       first = true

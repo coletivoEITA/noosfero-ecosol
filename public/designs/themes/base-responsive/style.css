@@ -1360,10 +1360,7 @@ div.tooltip-inner {
     overflow: hidden;
 }
 
-@media (min-width: 1200px) {
-    .search-results-type-article > ul > li {
-        width: 49%;
-        border: 1px solid #CCC;
-        float: left;
-    }
+.image-gallery-item {
+    margin: auto;
+    display: inline-block;
 }

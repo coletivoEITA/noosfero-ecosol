@@ -3498,17 +3498,14 @@ table.cms-articles .icon:hover {
   text-align: center;
 }
 .image-gallery ul {
-  padding: 0px;
-  text-align: center;
-  width: 486px;
-  margin: auto;
+    padding: 0px;
+    text-align: center;
+    margin: auto;
 }
 .image-gallery-item {
   width: 142px;
   height: 170px;
   list-style: none;
-  margin: 10px;
-  float: left;
   overflow: hidden;
   background-repeat: no-repeat;
 }
