@@ -32,14 +32,6 @@ class FbAppPlugin < Noosfero::Plugin
     end
   end
 
-  ActiveSupport.on_load :open_graph_plugin do
-    OpenGraphPlugin::Stories.register_publisher actions: OpenGraph::Actions,
-      objects: OpenGraph::Objects, &OpenGraph::PublishProc
-  end
-  ActiveSupport.on_load :metadata_plugin do
-    MetadataPlugin.og_type_namespace = FbAppPlugin.config['app']['namespace']
-  end
-
   def stylesheet?
     true
   end
@@ -58,6 +50,14 @@ class FbAppPlugin < Noosfero::Plugin
     { title: self.class.plugin_name, icon: 'fb-app', url: {controller: :fb_app_plugin_myprofile} }
   end
 
+end
+
+ActiveSupport.on_load :open_graph_plugin do
+  OpenGraphPlugin::Stories.register_publisher actions: FbAppPlugin::OpenGraph::Actions,
+    objects: FbAppPlugin::OpenGraph::Objects, &FbAppPlugin::OpenGraph::PublishProc
+end
+ActiveSupport.on_load :metadata_plugin do
+  MetadataPlugin.og_type_namespace = FbAppPlugin.config['app']['namespace']
 end
 
 # workaround for plugins' scope problem

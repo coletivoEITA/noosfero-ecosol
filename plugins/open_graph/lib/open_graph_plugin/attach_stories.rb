@@ -5,17 +5,18 @@ module OpenGraphPlugin::AttachStories
   module ClassMethods
 
     def open_graph_attach_stories
-      events = OpenGraphPlugin::Stories::Spec[self.name.to_sym]
+      klass = self.name
+      events = OpenGraphPlugin::Stories::Spec[klass.to_sym]
       return if events.blank?
       events.each do |on, handler|
+        story_method = "on_#{klass.underscore}_#{on}"
         # subclasses may overide this, but the callback is called only once
         method = "open_graph_after_#{on}"
 
-        send "after_#{on}", method
-        define_method method do |record|
+        self.send "after_#{on}", method
+        self.send :define_method, method do
           actor = User.current.person rescue nil
-          # TODO: do via delayed_job
-          handler.call record, actor if actor
+          OpenGraphPlugin::Stories.delay.call_hooks self, actor, story_method if actor
         end
       end
     end

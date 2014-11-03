@@ -33,6 +33,9 @@ class FbAppPluginMyprofileController < MyProfileController
 
   def timeline_config
     @timeline_config = profile.fb_app_timeline_config
+    if request.post?
+      @timeline_config.update_attributes!
+    end
   end
 
   protected

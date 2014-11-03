@@ -2,10 +2,21 @@
   <%= t('fb_app_plugin.views.myprofile.timeline.heading') %>
 </h2>
 
-<%= form_for profile.fb_app_timeline_config, as: :timeline_config, remote: true, url: {action: :timeline_config} do |f| %>
+<%= form_for profile.fb_app_timeline_config, as: :timeline_config, remote: true, url: {action: :timeline_config},
+  html: {id: 'timeline-config', class: 'accordion'} do |f| %>
+
   <% FbAppPlugin::TimelineConfig::Syncs.each do |group, data| %>
     <%= f.fields_for "synced_#{group}" do |ff| %>
-      <%= render "timeline_#{group}", f: ff, data: data %>
+
+      <div class="accordion-group">
+        <div class="accordion-heading">
+          <%= link_to t("open_graph_plugin.lib.syncs.spec.#{group}.label"), "#group-#{group}", data: {toggle: 'collapse', parent: '#timeline-config'} %>
+        </div>
+        <div id="group-<%=group%>" class="accordion-body collapse-in">
+          <%= render "timeline_#{group}", f: ff, data: data %>
+        </div>
+      </div>
+
     <% end %>
   <% end %>
 
