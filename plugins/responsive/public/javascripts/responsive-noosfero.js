@@ -10,6 +10,17 @@ jQuery('[data-toggle=popover]').live('click',function(evt){
 });
 
 
+jQuery('.navbar-collapse').live('show.bs.collapse',function(evt) {
+    $target = jQuery(evt.target)
+    $target.addClass('xpto').siblings('.navbar-collapse').each(function(index,elm){
+        $elm = jQuery(elm);
+        if (!$elm.hasClass('xpto') && $elm.hasClass('in')) {
+            $elm.collapse('hide');
+        }
+    });
+    $target.removeClass('xpto');
+})
+
 /* dropdown hover */
 
 /**
