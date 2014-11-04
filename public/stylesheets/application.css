@@ -3152,9 +3152,7 @@ body.template-2leftbars #product-info .field-name, body.template-2leftbars #prod
 .edit_product #product_price, .edit_product #product_discount {
   width: 110px;
 }
-#product-info #product-qualifiers-list select {
-  width: 140px;
-}
+
 #product_unit {
   width: 100px;
 }

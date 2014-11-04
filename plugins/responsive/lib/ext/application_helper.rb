@@ -273,6 +273,7 @@ module ApplicationHelper
         end
         render :partial => "shared/manage_link", :locals => {:link => link, :kind => kind.to_s, :title => title}
       end
+    end
 
     def popover_menu(title,menu_title,links,html_options={}, button_type='default')
       return super unless theme_responsive?

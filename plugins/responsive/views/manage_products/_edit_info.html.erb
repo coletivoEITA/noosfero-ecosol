@@ -41,6 +41,7 @@
       <tr>
         <th><%= _('Qualifier') %></th>
         <th><%= _('Certifier') %></th>
+        <th></th>
       </tr>
       <% @product.qualifiers.each_with_index do |qualifier, index| %>
       <tr>
@@ -48,7 +49,10 @@
           <%= select_qualifiers(@product, qualifier.id) %>
         </td>
         <td id='certifier-area-<%= index %>'>
-          <%= select_certifiers(qualifier, @product) + remove_qualifier_button %>
+          <%= select_certifiers(qualifier, @product) %>
+        </td>
+        <td>
+          <%= remove_qualifier_button %>
         </td>
       </tr>
       <% end %>
