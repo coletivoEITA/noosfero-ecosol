@@ -271,11 +271,13 @@ module ApplicationHelper
         if link_to_all
           link << link_to_all
         end
-        render :partial => "shared/manage_link", :locals => {:link => link, :kind => kind.to_s, :title => title}
+        content_tag 'li', nil, class: 'divider'
+        content_tag 'li', title, class: 'dropdown-header'
+        link.map{ |l| content_tag 'li', l }.join
       end
     end
 
-    def popover_menu(title,menu_title,links,html_options={}, button_type='default')
+    def popover_menu title,menu_title,links,html_options={}
       return super unless theme_responsive?
 
       menu_content = ""
