@@ -4,6 +4,7 @@ class FbAppPluginMyprofileController < MyProfileController
 
   before_filter :load_provider
   before_filter :load_auth
+  before_filter :load_timeline_config, only: [:index, :timeline_config]
 
   def index
   end
@@ -14,7 +15,9 @@ class FbAppPluginMyprofileController < MyProfileController
 
     @logged_auth.fetch_user
     if @auth.connected?
-      render 'show_login'
+      render partial: 'identity', locals: {auth: @logged_auth}
+    else
+      render nothing: true
     end
   end
 
@@ -32,10 +35,12 @@ class FbAppPluginMyprofileController < MyProfileController
   end
 
   def timeline_config
-    @timeline_config = profile.fb_app_timeline_config
-    if request.post?
-      @timeline_config.update_attributes!
-    end
+    @timeline_config.update_attributes! params[:timeline_config]
+    render nothing: true
+  end
+
+  def enterprise_search
+
   end
 
   protected
@@ -47,6 +52,11 @@ class FbAppPluginMyprofileController < MyProfileController
   def load_auth
     @auth = FbAppPlugin::Auth.where(profile_id: user.id, provider_id: @provider.id).first
     @auth ||= new_auth
+  end
+
+  def load_timeline_config
+    @timeline_config = profile.fb_app_timeline_config
+    @timeline_config ||= profile.build_fb_app_timeline_config
   end
 
   def new_auth

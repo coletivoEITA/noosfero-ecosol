@@ -1,7 +1,5 @@
 fb_app = {
   current_url: '',
-  save_auth_url: '',
-  show_login_url: '',
 
   products: {
     fix_popins: function() {
@@ -12,6 +10,46 @@ fb_app = {
   },
 
   locales: {
+
+  },
+
+  config: {
+    url_prefix: '',
+    save_auth_url: '',
+    show_login_url: '',
+
+    init: function() {
+
+    },
+
+    timeline: {
+
+      init: function() {
+        this.autocomplete.init('enterprise_search', '#select-enterprises')
+        this.autocomplete.init('community_search', '#select-communities')
+      },
+
+      autocomplete: {
+        init: function(action, selector) {
+          var engine = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: fb_app.config.url_prefix+action+'?query=%QUERY',
+          })
+          engine.initialize()
+          $(selector).tokenfield({
+            typeahead: [null, { source: engine.ttAdapter() }]
+          });
+        },
+      },
+    },
+
+    catalog: {
+
+      init: function() {
+
+      },
+    },
 
   },
 
@@ -182,11 +220,11 @@ fb_app = {
     },
 
     showLogin: function(response) {
-      jQuery.get(fb_app.show_login_url, this.transformParams(response), this.loadLogin)
+      jQuery.get(fb_app.config.show_login_url, this.transformParams(response), this.loadLogin)
     },
 
     save: function(response) {
-      jQuery.post(fb_app.save_auth_url, this.transformParams(response), this.load)
+      jQuery.post(fb_app.config.save_auth_url, this.transformParams(response), this.load)
     },
   },
 

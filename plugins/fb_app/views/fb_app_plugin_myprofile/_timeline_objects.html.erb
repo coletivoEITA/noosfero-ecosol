@@ -1,0 +1,8 @@
+<% objects.each do |object, value| %>
+  <% name = "#{f.object_name}[objects[#{object}]]" %>
+
+  <%= hidden_field_tag name, '' %>
+  <%= check_box_tag name, 'true', value == 'true' %>
+  <%= label_tag name, t("open_graph_plugin.lib.syncs.spec.#{group}.objects.#{object}") %>
+<% end %>
+

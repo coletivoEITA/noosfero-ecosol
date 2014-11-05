@@ -1,6 +1,2 @@
-<% data[:objects].each do |object| %>
-  <% name = "#{f.object_name}[objects[#{object}]]" %>
-  <%= check_box_tag name, 'enable' %>
-  <%= label_tag name, t("open_graph_plugin.lib.syncs.spec.my_activities.#{object}") %>
-<% end %>
+<%= render 'timeline_objects', f: f, group: group, objects: data[:objects] %>
 

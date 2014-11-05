@@ -10,12 +10,17 @@
         spec:
           my_activities:
             label: 'As minhas atividades: novas fotos em meus albuns, postagens em blogs e outros conteúdos'
-            blog_post: 'Postagens nos blogs'
-            friendship: 'Novas amizades'
-            gallery_image: 'Novas imagens nos meus albuns'
-            uploaded_file: 'Arquivos enviados'
+            objects:
+              blog_post: 'Postagens nos blogs'
+              friendship: 'Novas amizades'
+              gallery_image: 'Novas imagens nos meus albuns'
+              uploaded_file: 'Arquivos enviados'
           my_enterprises:
             label: "Novidades dos empreendimentos dos quais sou integrante: quando um produto é alterado ou cadastrado, quando uma página é alterada, etc"
+          my_friends:
+            label: "Amigos"
+          my_communities:
+            label: "Comunidades"
 
 'pt_BR':
   <<: *pt-BR
