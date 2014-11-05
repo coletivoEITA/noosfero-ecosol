@@ -1,3 +1,7 @@
+<% unless theme_responsive? %>
+  <%= render file: "#{Rails.root}/app/#{__FILE__[__FILE__.index('views/')..-1]}" %>
+<% else %>
+
 <div class="row">
   <div class="col-lg-8 col-md-8 col-sm-6 text-left"><%= filter_title(@asset, @filter) %></div>
   <div class="col-lg-4 col-md-4 col-sm-6">

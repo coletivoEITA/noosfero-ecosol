@@ -271,8 +271,8 @@ module ApplicationHelper
         if link_to_all
           link << link_to_all
         end
-        content_tag 'li', nil, class: 'divider'
-        content_tag 'li', title, class: 'dropdown-header'
+        content_tag('li', nil, class: 'divider') +
+        content_tag('li', title, class: 'dropdown-header') +
         link.map{ |l| content_tag 'li', l }.join
       end
     end

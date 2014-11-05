@@ -21,14 +21,6 @@ jQuery('.navbar-collapse').live('show.bs.collapse',function(evt) {
     $target.removeClass('xpto');
 })
 
-function new_qualifier_row(selector, select_qualifiers, delete_button) {
-    index = jQuery(selector + ' tr').size() - 1;
-    jQuery(selector).append("<tr><td>" + jQuery('#new-qualifier-select').html() +
-    "</td><td id='certifier-area-" + index + "'>" + jQuery('#new-qualifier-certifier').html()+ '</td><td>' +
-    jQuery('#new-qualifier-remove').html() + "</td></tr>");
-}
-
-
 /* dropdown hover */
 
 /**

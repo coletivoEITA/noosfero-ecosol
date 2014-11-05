@@ -1,4 +1,0 @@
-<% if @products.current_page < @products.total_pages %>
-  <%= pagination_links @products, :params => {:controller => :catalog, :action => :index, :profile => profile.identifier} %>
-<% end %>
-

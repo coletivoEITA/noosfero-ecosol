@@ -1,3 +1,7 @@
+<% unless theme_responsive? %>
+  <%= render file: "#{Rails.root}/app/#{__FILE__[__FILE__.index('views/')..-1]}" %>
+<% else %>
+
 <div class='search-form'>
 
   <%= form_tag( { :controller => 'search', :action => @asset ? @asset : 'index', :asset => nil, :category_path => ( @category ? @category.path : nil ) },
@@ -28,3 +32,5 @@
 
   <div style="clear: both"></div>
 </div>
+
+<% end %>

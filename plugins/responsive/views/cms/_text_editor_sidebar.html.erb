@@ -1,3 +1,7 @@
+<% unless theme_responsive? %>
+  <%= render file: "#{Rails.root}/app/#{__FILE__[__FILE__.index('views/')..-1]}" %>
+<% else %>
+
 <div class='text-editor-sidebar col-lg-4 col-md-6 col-sm-6'>
   <span class='button-add' data-value='<%= _('Add to the text') %>'></span>
   <span class='button-zoom' data-value='<%= _('Zoom in') %>'></span>
