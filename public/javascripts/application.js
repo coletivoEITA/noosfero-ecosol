@@ -2,6 +2,7 @@
 // This file is automatically included by javascript_include_tag :defaults
 /*
 * third party libraries
+*= require lodash.compat.min.js
 *= require jquery-2.1.1.min.js
 *= require jquery-migrate-1.2.1.js
 *= require jquery.colorbox-min.js
