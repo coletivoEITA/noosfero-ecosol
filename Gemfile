@@ -17,7 +17,7 @@ gem 'rest-client',              '~> 1.6.7'
 gem 'exception_notification',   '~> 4.0.1'
 gem 'locale',                   '2.0.9' # 2.1.0 has a problem with memoizable
 gem 'gettext',                  '~> 2.2.1', :require => false, :group => :development
-gem 'sass-rails'
+
 gem 'eita-jrails', path: 'vendor/plugins/eita-jrails'
 
 gem 'unicode'
