@@ -10,16 +10,23 @@ jQuery('[data-toggle=popover]').live('click',function(evt){
 });
 
 
+/* Main-menu behavior for small screens */
 jQuery('.navbar-collapse').live('show.bs.collapse',function(evt) {
-    $target = jQuery(evt.target)
-    $target.addClass('xpto').siblings('.navbar-collapse').each(function(index,elm){
+    $target = jQuery(evt.target);
+    $target.addClass('nav-transition').siblings('.navbar-collapse').each(function(index,elm){
         $elm = jQuery(elm);
-        if (!$elm.hasClass('xpto') && $elm.hasClass('in')) {
+        if (!$elm.hasClass('nav-transition') && $elm.hasClass('in')) {
             $elm.collapse('hide');
         }
     });
-    $target.removeClass('xpto');
-})
+    $target.removeClass('nav-transition');
+});
+
+jQuery('#navbar-user-collapse').live('shown.bs.collapse',function(evt) {
+    jQuery('#homepage-link').dropdown('toggle');
+});
+
+
 
 /* dropdown hover */
 

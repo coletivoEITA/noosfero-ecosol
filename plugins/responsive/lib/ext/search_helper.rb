@@ -5,6 +5,8 @@ require_dependency 'search_helper'
 module SearchHelper
 
   def display_selector(asset, display, float = 'right')
+    return super unless theme_responsive?
+
     display = nil if display.blank?
     display ||= asset_class(asset).default_search_display
     if [display?(asset, :map), display?(asset, :compact), display?(asset, :full)].select {|option| option}.count > 1
@@ -12,13 +14,15 @@ module SearchHelper
       map_link = display?(asset, :map) ? (display == 'map' ? _('Map') : link_to(_('Map'), params.merge(:display => 'map'))) : nil
       full_link = display?(asset, :full) ? (display == 'full' ? _('Full') : link_to(_('Full'), params.merge(:display => 'full'))) : nil
       content_tag('div', 
-        content_tag('div', _('Display') + ' A') + ': ' + [compact_link, map_link, full_link].compact.join(' | ').html_safe,
-        :class => 'search-customize-options'
+        content_tag('label', _('Display') + ': ', :class => 'col-lg-4 col-md-4 col-sm-4 control-label text-right') + content_tag('div',[compact_link, map_link, full_link].compact.join(' | ').html_safe,:class => 'col-lg-8 col-md-8 col-sm-8'),
+        :class => 'row'
       )
     end
   end
 
   def filter_selector(asset, filter, float = 'right')
+    return super unless theme_responsive?
+
     klass = asset_class(asset)
     if klass::SEARCH_FILTERS.count > 1
       options = options_for_select(klass::SEARCH_FILTERS.map {|f| [FILTER_TRANSLATION[f], f]}, filter)

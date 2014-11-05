@@ -250,8 +250,8 @@ a.button.with-text, a.button.with-text:visited, body.noosfero a.button.with-text
         display: none;
     }
     #top-search {
-        margin-top: -1px !important;
-        margin-bottom: -1px !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
     }
 }
 
