@@ -1,6 +1,3 @@
-# workaround for plugin class scope problem
-require 'suppliers_plugin/product_helper'
-
 module ConsumersCoopPlugin::LayoutHelper
 
   protected
