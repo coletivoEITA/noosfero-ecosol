@@ -12,7 +12,7 @@ class PermissionCheckTest < Test::Unit::TestCase
   def test_access_denied
     get :index
     assert_response 403
-    assert_template 'access_denied.rhtml'
+    assert_template 'access_denied.html.erb'
   end
 
   def test_specific_permission_granted
@@ -28,8 +28,8 @@ class PermissionCheckTest < Test::Unit::TestCase
   end
 
   def test_try_render_shared_access_denied_view
-    File.expects(:exists?).with(File.join(Rails.root, 'app', 'views', 'access_control', 'access_denied.rhtml'))
-    File.expects(:exists?).with(File.join(Rails.root, 'app', 'views', 'shared', 'access_denied.rhtml'))
+    File.expects(:exists?).with(File.join(Rails.root, 'app', 'views', 'access_control', 'access_denied.html.erb'))
+    File.expects(:exists?).with(File.join(Rails.root, 'app', 'views', 'shared', 'access_denied.html.erb'))
     AccessControlTestController.access_denied_template_path
   end
 
