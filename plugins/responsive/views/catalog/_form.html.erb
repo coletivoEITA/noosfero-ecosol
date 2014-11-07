@@ -1,0 +1,62 @@
+<% unless theme_responsive? %>
+    <%= render file: "#{Rails.root}/app/#{__FILE__[__FILE__.index('views/')..-1]}" %>
+<% else %>
+
+<%= form_tag({:controller => :catalog, :action => :index}, :onsubmit => 'return catalog.search.submit()', :method => 'get', :id => 'catalog-search') do %>
+
+  <%= hidden_field_tag :page, @pg_page %>
+  <%= hidden_field_tag :rank, @rank %>
+
+  <div id="catalog-options">
+    <ul>
+
+      <%= plugins_catalog_search_extras_begin %>
+
+      <li class="catalog-filter-categories">
+	      <% if @categories.length > 0 %>
+          <div class="catalog-options-select">
+            <%= select_tag :category, options_for_select([[_('All categories'), '']] + @categories, params[:category]),
+              :onkeydown => 'catalog.categories.select()', :onchange => 'catalog.categories.select()' %>
+          </div>
+	      <% end %>
+      </li>
+      <li class="catalog-filter-qualifiers">
+	      <% if @qualifiers.length > 0 %>
+          <div class="catalog-options-select">
+            <%= select_tag :qualifier, options_for_select([[_('All qualifiers'), '']] + @qualifiers, params[:qualifier]),
+              :onkeydown => 'catalog.qualifiers.select()', :onchange => 'catalog.qualifiers.select()' %>
+          </div>
+	      <% end %>
+      </li>
+
+      <li class="catalog-search">
+        <%= text_field_tag :query, params[:query], :placeholder => _('type your search...'), :id => 'catalog-search-input' %>
+      </li>
+
+      <%= plugins_catalog_search_extras_end %>
+    </ul>
+  </div>
+
+  <% if controller.is_a? CatalogController %>
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-6 form-control-static">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+          <%= @not_searched ?
+            _('<b>Total:</b> %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'}
+            : _('Your search returned %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'}
+          %>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6">
+        <label class="control-label col-lg-4 col-md-4 col-sm-4 form-control-static"><%= _('order by') %>:</label>
+        <div class="col-lg-8 col-md-8 col-sm-8">
+          <%= select_tag :order, options_for_select(@ordering[:select_options], params[:order]),
+            :onkeydown => 'catalog.order.select()', :onchange => 'catalog.order.select()' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+<% end %>
+
+<% end %>

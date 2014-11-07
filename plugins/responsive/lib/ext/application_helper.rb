@@ -15,7 +15,7 @@ module ApplicationHelper
 
       option = html_options.delete(:option) || 'default'
       size = html_options.delete(:size) || 'xs'
-      the_class = "btn btn-#{size} btn-#{option} btn-#{type}"
+      the_class = "btn btn-#{size} btn-#{option} icon-#{type}"
       if html_options.has_key?(:class)
         the_class << ' ' << html_options[:class]
       end

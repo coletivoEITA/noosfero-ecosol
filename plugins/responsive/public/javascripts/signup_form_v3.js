@@ -1,5 +1,12 @@
 jQuery(document).ready(function(){
-    jQuery('[data-toggle=tooltip]').tooltip();
+    jQuery('[data-toggle=tooltip]').tooltip({
+      placement: function() {
+        if (window.screen.width < 992) {
+          return 'bottom';
+        }
+        return 'right';
+      }
+    });
 });
 
 

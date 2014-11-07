@@ -571,8 +571,11 @@ div#notice {
   border-radius: 4px;
 }
 
+#content .link-list-block li a[class*='icon-']  {
+  padding-left: 0;
+}
 #content .link-list-block li a {
-  padding-left: 0px;
+  padding-left: 24px;
   padding-right: 10px;
   margin-right: 5px;
   background-position: 5px 50%;
@@ -1357,10 +1360,68 @@ div.tooltip-inner {
 
 #content .search-results-box .vcard {
     height: 112px;
-    overflow: hidden;
+/*    overflow: hidden; */
 }
 
 .image-gallery-item {
     margin: auto;
     display: inline-block;
 }
+
+.controller-profile_editor .control-panel a {
+    width: 140px;
+}
+
+@media (max-width: 366px) {
+  .controller-profile_editor .control-panel a {
+      width: 100%;
+  }
+}
+
+.categories_container {
+  min-width: 100px;
+}
+
+@media (max-width: 991px) {
+ .categories_container {
+   width: 100%;
+ }
+}
+
+/* overwrite awesome styles */
+.icon-selector {
+  padding: 0;
+}
+.icon-selector span {
+  line-height: 1px;
+  padding-left: 3px;
+  text-align: left;
+}
+.icon-selector span:before {
+  text-align: left;
+}
+.icon-selector span:after {
+  text-align: left;
+}
+
+#product-list .product-image-link {
+  width: 100%;
+}
+
+#product-list .product-big {
+  width: 160px;
+}
+
+#product-list .expand-box {
+  width: 172px;
+}
+
+@media (max-width: 991px) {
+  .current-page, .total-pages-found {
+    float: none;
+    display:block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
