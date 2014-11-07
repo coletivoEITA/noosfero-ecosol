@@ -25,8 +25,6 @@ fb_app = {
     timeline: {
 
       init: function() {
-        this.autocomplete.init('enterprise_search', '#select-enterprises')
-        this.autocomplete.init('community_search', '#select-communities')
       },
 
       autocomplete: {

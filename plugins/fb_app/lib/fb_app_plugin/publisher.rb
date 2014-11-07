@@ -1,9 +1,18 @@
 
-module FbAppPlugin::OpenGraph
+class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
 
-  PublishProc = proc do |actor, action, object, url|
+  Actions = FbAppPlugin.config['app']['actions']
+  Objects = FbAppPlugin.config['app']['objects']
+
+  def initialize attributes = {}
+    super
+    self.actions = Actions
+    self.objects = Objects
+  end
+
+  def publish actor, action, object, url
     auth = actor.fb_app_auth
-    break if auth.blank? or auth.expired?
+    return if auth.blank? or auth.expired?
 
     namespace = FbAppPlugin.config['app']['namespace']
     url = Noosfero::Application.routes.url_helpers.url_for url.except(:port) unless url.is_a? String
@@ -17,8 +26,5 @@ module FbAppPlugin::OpenGraph
       puts e.message
     end
   end
-
-  Actions = FbAppPlugin.config['app']['actions']
-  Objects = FbAppPlugin.config['app']['objects']
 
 end

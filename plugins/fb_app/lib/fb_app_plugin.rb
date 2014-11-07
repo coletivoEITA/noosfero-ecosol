@@ -53,8 +53,8 @@ class FbAppPlugin < Noosfero::Plugin
 end
 
 ActiveSupport.on_load :open_graph_plugin do
-  OpenGraphPlugin::Stories.register_publisher actions: FbAppPlugin::OpenGraph::Actions,
-    objects: FbAppPlugin::OpenGraph::Objects, &FbAppPlugin::OpenGraph::PublishProc
+  publisher = FbAppPlugin::Publisher.new
+  OpenGraphPlugin::Stories.register_publisher publisher
 end
 ActiveSupport.on_load :metadata_plugin do
   MetadataPlugin.og_type_namespace = FbAppPlugin.config['app']['namespace']

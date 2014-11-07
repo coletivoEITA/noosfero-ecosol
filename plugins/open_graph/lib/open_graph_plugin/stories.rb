@@ -30,10 +30,10 @@ class OpenGraphPlugin::Stories
   DefaultActions = ValidActionList.inject({}){ |h, a| h[a] = a; h }
   DefaultObjects = ValidObjectList.inject({}){ |h, o| h[o] = o; h }
 
-  def self.register_publisher actions: DefaultActions, objects: DefaultObjects, &block
-    self.publishers << OpenGraphPlugin::Publisher.new(actions: actions, objects: objects, method: block)
+  def self.register_publisher publisher
+    self.publishers << publisher
   end
-  
+
   def self.call_hooks record, actor, story_method
     self.publishers.each do |publisher|
       publisher.call_hooks record, actor, story_method
