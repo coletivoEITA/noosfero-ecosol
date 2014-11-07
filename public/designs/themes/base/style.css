@@ -3402,3 +3402,28 @@ div.with_media_panel .formfield input[type="checkbox"] {
     margin: 10px;
     float: left;
 }
+
+.controller-profile_editor .control-panel a {
+    width: 140px;
+}
+
+
+.categories_container {
+  min-width: 100px;
+}
+
+
+#product-list .product-image-link {
+  width: 200px;
+}
+
+#product-list .product-big {
+  width: 200px;
+}
+
+#product-list .expand-box {
+  width: 202px;
+}
+
+
+

@@ -2858,7 +2858,6 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   -moz-border-radius: 10px 0px 0px 10px;
   -webkit-border-radius: 10px 0px 0px 10px;
   border-radius: 10px 0px 0px 10px;
-  width: 202px;
   position: relative;
 }
 #product-list .expand-box > span {
@@ -3022,7 +3021,6 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   background-repeat: no-repeat;
   background-position: 50% 50%;
   display: block;
-  width: 200px;
   height: 160px;
 }
 #product-list .ui-button {
@@ -3038,7 +3036,6 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 }
 #product-list .product-image-link {
   position: relative;
-  width: 200px;
   height: 160px;
   border: 1px solid #BFBFBF;
   position: relative; /* work arround msie bug */
@@ -3948,7 +3945,6 @@ h1#agenda-title {
 }
 .categories_container {
   min-height: 176px;
-  min-width: 100px;
   display: inline-block;
   position: relative;
 }
@@ -4200,7 +4196,6 @@ h1#agenda-title {
 .controller-profile_editor .control-panel a {
   display: block;
   float: left;
-  width: 140px;
   background-repeat: no-repeat;
   background-position: 0px 50%;
   height: 48px;
