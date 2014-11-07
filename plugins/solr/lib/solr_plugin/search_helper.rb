@@ -100,13 +100,27 @@ module SolrPlugin::SearchHelper
       [_(options[:label]), name.to_s]
     end.compact
 
+    if theme_responsive?
+
+    content_tag('div',
+      content_tag('label',_('Sort results by ') + ':', :class => 'col-lg-4 col-md-4 col-sm-4 col-xs-6 control-label form-control-static') +
+      content_tag('div',select_tag(asset.to_s + '[order]', options_for_select(options, params[:order_by] || 'none'),
+        {:onchange => "window.location = jQuery.param.querystring(window.location.href, { 'order_by' : this.options[this.selectedIndex].value})"}
+      ),:class => 'col-lg-8 col-md-8 col-sm-8 col-xs-6'),
+      :class => "row"
+    )
+
+    else
+
     content_tag('div', _('Sort results by ') +
       select_tag(asset.to_s + '[order]', options_for_select(options, params[:order_by] || 'none'),
         {:onchange => "window.location = jQuery.param.querystring(window.location.href, { 'order_by' : this.options[this.selectedIndex].value})"}
       ),
       :class => "search-ordering"
     )
-  end
+
+    end
+ end
 
   def label_total_found(asset, total_found)
     labels = {

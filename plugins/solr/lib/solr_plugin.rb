@@ -169,8 +169,10 @@ class SolrPlugin < Noosfero::Plugin
           filter_queries << klass.send("solr_filter_#{name}", *args)
         end
       else
-        raise "Undeclared solr field for scope #{name}" if related_field.nil?
-        filter_queries << "#{related_field}:true"
+        #raise "Undeclared solr field for scope #{name}" if related_field.nil?
+        if related_field
+          filter_queries << "#{related_field}:true"
+        end
       end
     end
 
