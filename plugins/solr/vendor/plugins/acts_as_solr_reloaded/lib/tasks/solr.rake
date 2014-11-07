@@ -158,7 +158,6 @@ namespace :solr do
 
     logger = ActiveRecord::Base.logger = Logger.new(STDOUT)
     logger.level = ActiveSupport::BufferedLogger::INFO unless debug_output
-    Dir["#{Rails.root}/app/models/*.rb"].each{ |file| require file }
 
     if start_server
       puts "Starting Solr server..."
@@ -174,6 +173,7 @@ namespace :solr do
     end
 
     models = $solr_indexed_models unless models.count > 0
+    puts "Reindexing #{models.join ', '}..."
     models.each do |model|
       if clear_first
         puts "Clearing index for #{model}..."
