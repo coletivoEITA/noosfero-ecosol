@@ -54,7 +54,7 @@ class Forum < Folder
 
   def first_paragraph
     return '' if body.blank?
-    paragraphs = Hpricot(body).search('p')
+    paragraphs = Nokogiri::HTML.fragment(body).search('p')
     paragraphs.empty? ? '' : paragraphs.first.to_html
   end
 

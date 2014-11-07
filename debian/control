@@ -48,7 +48,6 @@ Depends:
  ruby-daemons,
  thin,
  tango-icon-theme,
- ruby-hpricot,
  ruby-nokogiri,
  ruby-acts-as-taggable-on,
  ruby-prototype-rails,

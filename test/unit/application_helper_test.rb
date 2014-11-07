@@ -711,8 +711,8 @@ class ApplicationHelperTest < ActionView::TestCase
       <div class='macro nonEdit' data-macro='unexistent' data-macro-param='987'></div>
     "
     parsed_html = convert_macro(html, mock())
-    parsed_divs = Hpricot(parsed_html).search('div')
-    expected_divs = Hpricot("
+    parsed_divs = Nokogiri::HTML.fragment(parsed_html).search('div')
+    expected_divs = Nokogiri::HTML.fragment("
       <div data-macro='#{macro1_name}' class='parsed-macro #{macro1_name}'>Test1</div>
       <div data-macro='#{macro2_name}' class='parsed-macro #{macro2_name}'>Test2</div>
       <div data-macro='unexistent' class='failed-macro unexistent'>Unsupported macro unexistent!</div>
