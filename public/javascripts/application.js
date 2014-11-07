@@ -28,6 +28,8 @@
 *= require add-and-join.js
 *= require report-abuse.js
 *= require manage-products.js
+*= require pagination.js
+*= require loading-overlay.js
 *= require autogrow.js
 */
 
