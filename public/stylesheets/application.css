@@ -2155,7 +2155,7 @@ a.button.disabled, input.disabled {
 .recent-documents-block .block-footer-content a:hover {
   text-decoration: underline;
 }
-/* ==> blocks/disabled-enterprise-message-block.css <<= */ 
+/* ==> blocks/disabled-enterprise-message-block.css <<= */
 
 
 .disabled-enterprise-message-block {
@@ -2171,12 +2171,12 @@ a.button.disabled, input.disabled {
   font-size: 80%;
   background: #ffffa9;
 }
-/* ==> blocks/article-block.css <<= */ 
+/* ==> blocks/article-block.css <<= */
 
 .article-block {
   overflow: hidden;
 }
-/* ==> blocks/main-block.css <<= */ 
+/* ==> blocks/main-block.css <<= */
 
 /*
 Use article.css for article related css
@@ -2197,7 +2197,7 @@ div#activation_enterprise {
 div#activation_enterprise label, div#activation_enterprise input, div#activation_enterprise div {
   display: inline
 }
-/* ==> blocks/slideshow-block.css <<= */ 
+/* ==> blocks/slideshow-block.css <<= */
 
 .slideshow-block .slideshow-container {
   margin-bottom: 10px;
@@ -2262,7 +2262,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   display: inline-block;
   width: 16px;
 }
-/* ==> blocks/products-block.css <<= */ 
+/* ==> blocks/products-block.css <<= */
 
 .products-block ul {
   margin: 0px;
@@ -2295,7 +2295,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 #content .products-block li a:hover {
   color: #fff;
 }
-/* ==> blocks/blog-archives-block.css <<= */ 
+/* ==> blocks/blog-archives-block.css <<= */
 
 #content .blog-archives-block {
   padding: 10px 0px 10px 10px;
@@ -2315,7 +2315,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   padding: 5px 0px 10px 10px;
   font-size: 12px;
 }
-/* ==> blocks/profile-info-block.css <<= */ 
+/* ==> blocks/profile-info-block.css <<= */
 
 
 .profile-info-block h2 {
@@ -2418,7 +2418,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   margin: 0px 0px 5px 0px;
   padding: 2px;
 }
-/* ==> blocks/location-block.css <<= */ 
+/* ==> blocks/location-block.css <<= */
 
 .location-block {
   text-align: center;
@@ -2431,7 +2431,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   background: #FFF;
   border: 1px solid #888;
 }
-/* ==> blocks/profile-image-block.css <<= */ 
+/* ==> blocks/profile-image-block.css <<= */
 
 
 .profile-image-block {
@@ -2466,7 +2466,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   list-style: none;
   margin-bottom: 8px;
 }
-/* ==> blocks/sellers-search-block.css <<= */ 
+/* ==> blocks/sellers-search-block.css <<= */
 
 
 #content .sellers-search-block {
@@ -2525,7 +2525,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   margin: 0px;
   float: none;
 }
-/* ==> blocks/feed-reader-block.css <<= */ 
+/* ==> blocks/feed-reader-block.css <<= */
 
 #content .feed-reader-block {
   padding: 10px 0px 10px 10px;
@@ -4033,7 +4033,8 @@ h1#agenda-title {
 #groups-list li {
   display: block;
   list-style: none;
-  margin-bottom: 20px background-color: #B8CFE7;
+  margin-bottom: 20px;
+  background-color: #B8CFE7;
 }
 
 #groups-list li .vcard {
@@ -6564,7 +6565,7 @@ li.profile-activity-item.upload_image .activity-gallery-images-count-1 img {
 
 /* AutoComplete*/
 .formfield input.ui-autocomplete-loading { background: url('/images/loading-small.gif') right center no-repeat, url("../images/input-bg.gif") no-repeat left top;  }
- 
+
 .ui-autocomplete-category {
      font-weight: bold;
      padding: .2em .4em;
