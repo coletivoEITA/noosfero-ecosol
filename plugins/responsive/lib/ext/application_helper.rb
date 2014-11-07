@@ -10,6 +10,8 @@ module ApplicationHelper
   end
 
   module ResponsiveMethods
+    FORM_CONTROL_CLASS = "form-control"
+
     def button_without_text(type, label, url, html_options = {})
       return super unless theme_responsive?
 
@@ -302,105 +304,50 @@ module ApplicationHelper
     end
 
 
-    module BootstrapExtension
-      FORM_CONTROL_CLASS = "form-control"
+    def tag(name, options = nil, open = false, escape = true)
+      return super unless theme_responsive?
 
-      def tag(name, options = nil, open = false, escape = true)
-        return super unless theme_responsive?
+      # Call the original tag method to do the real work
+      field_html = super
 
-        # Call the original tag method to do the real work
-        field_html = super
+      field_html =~ /\A[^>]* type=['"]([^'"]*)['"]/
+      field_html =~ /\A<(\w*)/ unless $1
+      field_type = $1
 
-        field_html =~ /\A[^>]* type=['"]([^'"]*)['"]/
-        field_html =~ /\A<(\w*)/ unless $1
-        field_type = $1
-
-        if %w(text email number password select textarea url).include? field_type
-          field_html =~ /\A[^>]* class=['"]([^'"]*)['"]/
-          if $1
-            field_html = field_html.sub $1, $1+' form-control'
-          else
-            field_html =~ /\A(<\w*)/
-            field_html = field_html.sub $1, $1+' class="form-control" '
-          end
+      if %w(text email number password select textarea url).include? field_type
+        field_html =~ /\A[^>]* class=['"]([^'"]*)['"]/
+        if $1
+          field_html = field_html.sub $1, $1+" #{FORM_CONTROL_CLASS}"
+        else
+          field_html =~ /\A(<\w*)/
+          field_html = field_html.sub $1, $1+" class='#{FORM_CONTROL_CLASS}' "
         end
-
-        field_html
       end
 
-      def content_tag(name, content_or_options_with_block = nil, options = nil, escape = true, &block)
-        return super unless theme_responsive?
-
-        # Call the original tag method to do the real work
-        field_html = super
-
-        field_html =~ /\A[^>]* type=['"]([^'"]*)['"]/
-        field_html =~ /\A<(\w*)/ unless $1
-        field_type = $1
-
-        if %w(text email number password select textarea url).include? field_type
-          field_html =~ /\A[^>]* class=['"]([^'"]*)['"]/
-          if $1
-            field_html = field_html.sub $1, $1+' form-control'
-          else
-            field_html =~ /\A(<\w*)/
-            field_html = field_html.sub $1, $1+' class="form-control" '
-          end
-        end
-
-        field_html
-      end
-
+      field_html
     end
 
-    include BootstrapExtension
+    def content_tag(name, content_or_options_with_block = nil, options = nil, escape = true, &block)
+      return super unless theme_responsive?
 
-    # Should be on the forms_helper file but when its there the translation of labels doesn't work
-    class ResponsiveNoosferoFormBuilder < ActionView::Helpers::FormBuilder
-      extend ActionView::Helpers::TagHelper
+      # Call the original tag method to do the real work
+      field_html = super
 
-      def self.output_field(text, field_html, field_id = nil, options={})
-        # try to guess an id if none given
-        if field_id.nil?
-          field_html =~ /\A[^>]* id=['"]([^'"]*)['"]/
-          field_id = $1
-        end
-        field_html =~ /\A[^>]* type=['"]([^'"]*)['"]/
-        field_html =~ /\A<(\w*)/ unless $1
-        field_type = $1
+      field_html =~ /\A[^>]* type=['"]([^'"]*)['"]/
+      field_html =~ /\A<(\w*)/ unless $1
+      field_type = $1
 
-        if %w(text email number password select textarea url).include? field_type
-          field_html =~ /\A[^>]* class=['"]([^'"]*)['"]/
-          if $1
-            field_html = field_html.sub $1, $1+' form-control'
-          else
-            field_html =~ /\A(<\w*)/
-            field_html = field_html.sub $1, $1+' class="form-control" '
-          end
-        end
-        if options[:horizontal]
-          label_html = content_tag('label', gettext(text), class: 'control-label col-sm-3 col-md-2 col-lg-2', for: field_id)
-          result = content_tag('div', label_html + content_tag('div',field_html, class: 'col-sm-9 col-md-6 col-lg-6'), class: 'form-group' )
+      if %w(text email number password select textarea url).include? field_type
+        field_html =~ /\A[^>]* class=['"]([^'"]*)['"]/
+        if $1
+          field_html = field_html.sub $1, $1+" #{FORM_CONTROL_CLASS}"
         else
-          label_html = content_tag('label', gettext(text), class: 'control-label', for: field_id)
-          result = content_tag('div', label_html + field_html, class: 'form-group' )
+          field_html =~ /\A(<\w*)/
+          field_html = field_html.sub $1, $1+" class='#{FORM_CONTROL_CLASS}' "
         end
-        result
       end
 
-      (field_helpers - %w(hidden_field)).each do |selector|
-        src = <<-END_SRC
-          def #{selector}(field, *args, &proc)
-            begin
-              object ||= @template.instance_variable_get("@"+object_name.to_s)
-            rescue
-            end
-            text = object.class.respond_to?(:human_attribute_name) && object.class.human_attribute_name(field.to_s) || field.to_s.humanize
-            ResponsiveNoosferoFormBuilder::output_field(text, super, nil, @options)
-          end
-        END_SRC
-        class_eval src, __FILE__, __LINE__
-      end
+      field_html
     end
 
     def labelled_form_for(name, options = {}, &proc)
@@ -411,13 +358,48 @@ module ApplicationHelper
         options[:html][:class] = "" unless options[:html][:class]
         options[:html][:class] << " form-horizontal"
       end
-      form_for(name, { builder: ResponsiveNoosferoFormBuilder }.merge(options), &proc)
+      form_for(name, { builder: NoosferoFormBuilder }.merge(options), &proc)
     end
   end
 
   include ResponsiveChecks
   included do
     include ResponsiveMethods
+  end
+
+  # TODO: apply theme_responsive? condition
+  class NoosferoFormBuilder
+
+    def self.output_field text, field_html, field_id = nil, options={}
+      # try to guess an id if none given
+      if field_id.nil?
+        field_html =~ /\A[^>]* id=['"]([^'"]*)['"]/
+        field_id = $1
+      end
+      field_html =~ /\A[^>]* type=['"]([^'"]*)['"]/
+      field_html =~ /\A<(\w*)/ unless $1
+      field_type = $1
+
+      if %w(text email number password select textarea url).include? field_type
+        field_html =~ /\A[^>]* class=['"]([^'"]*)['"]/
+        if $1
+          field_html = field_html.sub $1, $1+" #{ApplicationHelper::ResponsiveMethods::FORM_CONTROL_CLASS}"
+        else
+          field_html =~ /\A(<\w*)/
+          field_html = field_html.sub $1, $1+" class='#{ApplicationHelper::ResponsiveMethods::FORM_CONTROL_CLASS}' "
+        end
+      end
+
+      if options[:horizontal]
+        label_html = content_tag('label', gettext(text), class: 'control-label col-sm-3 col-md-2 col-lg-2', for: field_id)
+        result = content_tag('div', label_html + content_tag('div',field_html, class: 'col-sm-9 col-md-6 col-lg-6'), class: 'form-group' )
+      else
+        label_html = content_tag('label', gettext(text), class: 'control-label', for: field_id)
+        result = content_tag('div', label_html + field_html, class: 'form-group' )
+      end
+
+      result
+    end
   end
 
 end
