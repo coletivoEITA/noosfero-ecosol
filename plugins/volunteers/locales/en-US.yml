@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-"en":
+"en-US": &en-US
 
   volunteers_plugin:
     lib:
@@ -21,4 +21,9 @@
         period:
           label: 'Turno'
           remove: 'Remove'
+
+'en_US':
+  <<: *en-US
+'en':
+  <<: *en-US
 

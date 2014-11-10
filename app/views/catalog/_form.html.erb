@@ -33,16 +33,18 @@
     </ul>
   </div>
 
-  <div id="catalog-result-qtty-wrap">
-    <%= @not_searched ?
-      _('<b>Total:</b> %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'}
-      : _('Your search returned %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'}
-    %>
-  </div>
-  <div id="catalog-orderby">
-    <%= _('order by') %>:
-    <%= select_tag :order, options_for_select(@ordering[:select_options], params[:order]),
-      :onkeydown => 'catalog.order.select()', :onchange => 'catalog.order.select()' %>
-  </div>
+  <% if controller.is_a? CatalogController %>
+    <div id="catalog-result-qtty-wrap">
+      <%= @not_searched ?
+        _('<b>Total:</b> %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'}
+        : _('Your search returned %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'}
+      %>
+    </div>
+    <div id="catalog-orderby">
+      <%= _('order by') %>:
+      <%= select_tag :order, options_for_select(@ordering[:select_options], params[:order]),
+        :onkeydown => 'catalog.order.select()', :onchange => 'catalog.order.select()' %>
+    </div>
+  <% end %>
 
 <% end %>

@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-"pt":
+"pt-BR": &pt-BR
 
   volunteers_plugin:
     lib:
@@ -21,4 +21,9 @@
         period:
           label: 'Turno'
           remove: 'Remover'
+
+'pt_BR':
+  <<: *pt-BR
+'pt':
+  <<: *pt-BR
 

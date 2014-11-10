@@ -320,7 +320,7 @@ jQuery(document).ready(function() {
         .addClass("catalog-fixed")
         .css({'padding-left': 100*catalog_originalLeft + '%',
           'padding-right': 100*catalog_originalRight + '%',
-          'width': 100*catalog_originalWidth + '%'
+          'width': 'auto'
         });
     } else {
       catalog_catOptions
