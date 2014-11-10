@@ -1,6 +1,8 @@
 /*
  * thidparty libraries
  *= require colorbox
+ *= require lightbox
+ *= require thickbox
  *= require inputosaurus
  *= require token-input
  *= require token-input-facebook

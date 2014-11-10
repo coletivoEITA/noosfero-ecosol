@@ -1,0 +1,1 @@
+../../../public/javascripts/add-and-join.js

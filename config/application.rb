@@ -92,10 +92,10 @@ module Noosfero
     # Straight support for assets from a rails 2 pattern
     # See also config/initializers/assets.rb
     config.assets.paths =
-      Dir.glob("{base,config/}plugins/*/{assets,public}/{,javascripts,stylesheets}") +
-      Dir.glob("public/{,javascripts,stylesheets}") +
+      Dir.glob("app/assets/plugins/*") +
+      Dir.glob("app/assets") +
       # no precedence over core
-      Dir.glob("public/{designs/themes,user_themes}/*/{,javascripts,stylesheets}")
+      Dir.glob("app/assets/{themes,user_themes}/*/assets")
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
@@ -130,8 +130,8 @@ module Noosfero
     config.time_zone = File.read('/etc/timezone').split("\n").first
     config.active_record.default_timezone = :local
 
-    config.paths['db/migrate'] += Dir.glob "#{Rails.root}/{baseplugins,config/plugins/*}/db/migrate"
-    config.i18n.load_path += Dir.glob "#{Rails.root}/{baseplugins,config/plugins/*}/locales/*.{rb,yml}"
+    config.paths['db/migrate'] += Dir.glob "#{Rails.root}/{baseplugins,config/plugins}/*/db/migrate"
+    config.i18n.load_path += Dir.glob "#{Rails.root}/{baseplugins,config/plugins}/*/locales/*.{rb,yml}"
 
     Noosfero::Plugin.setup(config)
 

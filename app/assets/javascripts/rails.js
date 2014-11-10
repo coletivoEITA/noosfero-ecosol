@@ -1,0 +1,1 @@
+../../../public/javascripts/rails.js

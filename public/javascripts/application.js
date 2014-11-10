@@ -8,9 +8,11 @@
 *= require controls.js
 *= require lodash.compat.min.js
 *= require jquery-2.1.1.min.js
-*= require jquery.noconflict.js
 *= require jquery-migrate-1.2.1.js
+*= require jquery.noconflict.js
 *= require colorbox.js
+*= require lightbox.js
+*= require thickbox.js
 *= require jquery.cycle.all.min.js
 *= require jquery-ui-1.10.4/js/jquery-ui-1.10.4.min.js
 *= require jquery.scrollTo.js
@@ -18,17 +20,17 @@
 *= require jquery-validation/jquery.validate.js
 *= require jquery.cookie.js
 *= require jquery.ba-bbq.min.js
-*= require reflection.js
 *= require jquery.tokeninput.js
 *= require jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
 *= require inputosaurus.js
+*= require reflection.js
 *= require rails.js
 *= require rails-extended.js
 * noosfero libraries
 *= require_self
+* views speficics
 *= require pagination.js
 *= require loading-overlay.js
-* views speficics
 *= require add-and-join.js
 *= require report-abuse.js
 *= require manage-products.js
