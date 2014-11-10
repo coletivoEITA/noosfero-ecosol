@@ -14,10 +14,10 @@
 *= require jquery.cookie.js
 *= require jquery.ba-bbq.min.js
 *= require typeahead.bundle.js
-*= require reflection.js
 *= require jquery.tokeninput.js
 *= require jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
 *= require inputosaurus.js
+*= require reflection.js
 *= require rails.js
 *= require rails-extended.js
 *= require jrails.js
@@ -28,9 +28,9 @@
 *= require add-and-join.js
 *= require report-abuse.js
 *= require manage-products.js
+*= require autogrow.js
 *= require pagination.js
 *= require loading-overlay.js
-*= require autogrow.js
 */
 
 _.templateSettings = {
