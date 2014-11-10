@@ -2,16 +2,32 @@
 
 .volunteer-to-period {
   width: $module03;
-  height: $module03;
   margin-right: $margin;
   float: left;
   cursor: pointer;
 
-  background: yellow;
-  text-align: center;
+  background: #F8FA83;
+  text-align: left;
 
   &:hover {
     background: lighten(yellow, 20%);
   }
 
+  .name {
+    background-color: #E1F5C4;
+    width: 100%;
+    line-height: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: capitalize;
+    padding: $padding;
+    box-sizing: border-box;
+  }
+  .body {
+    padding: $padding;
+
+    .period {
+      margin-bottom: $margin;
+    }
+  }
 }

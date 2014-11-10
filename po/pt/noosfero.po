@@ -5943,6 +5943,11 @@ msgstr "Data de nascimento"
 msgid "Address (street and number)"
 msgstr "Endereço (rua e número)"
 
+#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:15
+msgid "Address completion"
+msgstr "Complemento (p.ex. apto)"
+
+#: app/views/profile_editor/_person_form.html.erb:53
 #: app/views/profile_editor/_person_form.html.erb:54
 msgid "Custom formation"
 msgstr "Outra formação"
@@ -12415,10 +12420,6 @@ msgstr "Enviar um e-mail para administração da página deste empreendimento"
 #: app/views/contact/new.rhtml:6
 msgid "The e-mail will be sent to the people who administers the page of '%s'"
 msgstr "O e-mail será enviado para as pessoas que administram a página de '%s'"
-
-#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:15
-msgid "Address completion"
-msgstr "Complemento (p.ex. apto)"
 
 #: app/views/comment/_comment_form.rhtml:44
 msgid "Answer"
