@@ -233,6 +233,3 @@
       full_messages:
         format: "%{attribute} %{message}"
 
-<<<<<<< HEAD
-=======
->>>>>>> a041c9e... Move distribution locales to plugin
