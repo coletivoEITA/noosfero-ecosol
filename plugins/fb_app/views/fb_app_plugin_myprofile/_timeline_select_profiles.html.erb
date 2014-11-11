@@ -1,5 +1,5 @@
 <% name = "#{f.object_name}[profiles[]]" %>
-<%= text_field_tag name, '', id:  %>
+<%= text_field_tag name, '', id: "select-#{group}" %>
 
 <%= javascript_tag do %>
   fb_app.config.timeline.autocomplete.init('<%=group%>_search', '#select-<%=group%>')

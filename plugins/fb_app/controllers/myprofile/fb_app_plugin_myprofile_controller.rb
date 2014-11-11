@@ -39,8 +39,12 @@ class FbAppPluginMyprofileController < MyProfileController
     render nothing: true
   end
 
-  def enterprise_search
-
+  def my_enterprises_search
+    @query = params[:query]
+    @highlighted = user.enterprises + user.favorite_enterprises
+    @profiles = environment.enterprises.
+      where(['name ILIKE ? OR name ILIKE ? OR identifier LIKE ?', "#{@query}%", "% #{@query}%", "#{@query}%"])
+    render 'profile_search'
   end
 
   protected

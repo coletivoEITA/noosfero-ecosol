@@ -32,11 +32,17 @@ fb_app = {
           var engine = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
-            remote: fb_app.config.url_prefix+action+'?query=%QUERY',
+            remote: fb_app.config.url_prefix+'/'+action+'?query=%QUERY',
           })
           engine.initialize()
           $(selector).tokenfield({
-            typeahead: [null, { source: engine.ttAdapter() }]
+            typeahead: [{
+              minLength: 1,
+              highlight: true,
+            }, {
+              displayKey: 'html',
+              source: engine.ttAdapter(),
+            }],
           });
         },
       },

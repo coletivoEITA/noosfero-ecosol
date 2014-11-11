@@ -79,9 +79,9 @@ class FbAppPluginPageController < FbAppPluginController
   end
 
   def search
-    @query = params[:query].downcase
+    @query = params[:query]
     @profiles = environment.enterprises.enabled.public.all :limit => 12, :order => 'name ASC',
-      :conditions => ['LOWER(name) LIKE ? OR LOWER(name) LIKE ? OR identifier LIKE ?', "#{@query}%", "% #{@query}%", "#{@query}%"]
+      :conditions => ['name ILIKE ? OR name ILIKE ? OR identifier LIKE ?', "#{@query}%", "% #{@query}%", "#{@query}%"]
     render :json => (@profiles.map do |profile|
       {:name => profile.name, :id => profile.id, :identifier => profile.identifier}
     end)

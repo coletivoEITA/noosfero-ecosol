@@ -2,4 +2,5 @@
 gem 'fb_graph'
 gem 'facebook-signed-request'
 
+gem 'jsonify-rails'
 
