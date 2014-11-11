@@ -45,3 +45,4 @@ features/plugins
 solr.yml
 /solr
 
+plugins/fb_app/config.yml
