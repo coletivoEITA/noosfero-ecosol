@@ -67,7 +67,7 @@ module LayoutHelper
   end
 
   def theme_stylesheet_path
-    theme_path + '/style.css'
+    "/assets#{theme_path}/style.css"
   end
 
   def addthis_javascript
