@@ -1,0 +1,14 @@
+<%
+  association = "open_graph_#{track}_tracks"
+  tracks = profile.send association
+  profiles = tracks.map(&:object_data)
+  ids = profiles.map(&:id).join(',')
+%>
+<%= text_field_tag "#{f.object_name}[open_graph_#{track}_profiles_ids]", '', id: "select-#{track}" %>
+
+<%= javascript_tag do %>
+  fb_app.config.timeline.autocomplete.init(
+    '<%=track%>_search', '#select-<%=track%>',
+    <%= profiles.map{ |p| {value: p.id, label: render('ac_profile', profile: p), } }.to_json %>
+  )
+<% end %>

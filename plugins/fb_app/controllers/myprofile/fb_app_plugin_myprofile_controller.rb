@@ -33,11 +33,6 @@ class FbAppPluginMyprofileController < OpenGraphPluginMyprofileController
     render partial: 'settings'
   end
 
-  def timeline_config
-    @timeline_config.update_attributes! params[:timeline_config]
-    render nothing: true
-  end
-
   protected
 
   def load_provider

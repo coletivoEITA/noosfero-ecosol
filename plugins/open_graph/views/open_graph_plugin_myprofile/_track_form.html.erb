@@ -1,0 +1,20 @@
+<%= form_for profile, as: :profile_data, remote: true, url: {action: :track_config},
+  html: {id: 'track-config', data: {update: '#track-form', type: 'html'}} do |f| %>
+
+  <div class="panel panel-primary">
+    <% OpenGraphPlugin::Track::Config.each do |track, klass| %>
+      <% klass = "OpenGraphPlugin::#{klass}".constantize %>
+
+      <div class="panel-heading">
+        <%= link_to t("open_graph_plugin.lib.track.config.#{track}.label"), "#track-#{track}", data: {toggle: 'collapse', parent: '#track-config'} %>
+      </div>
+      <div id="group-<%=track%>" class="panel-body collapse-in">
+        <%= render "track_#{track}", f: f, track: track, klass: klass %>
+      </div>
+
+    <% end %>
+  </div>
+
+  <%= f.submit _('Save') %>
+<% end %>
+

@@ -1,5 +1,14 @@
+<%
+  association = "open_graph_#{track}_tracks"
+  tracks = profile.send association
+%>
 <% objects.each do |object| %>
-  <%= f.check_box :object_type %>
-  <%= f.label t("open_graph_plugin.lib.track.config.#{track}.objects.#{object}") %>
+  <% track_record = tracks.find{ |t| t.object_type == object } || profile.send(association).build %>
+  <%= f.fields_for association, track_record do |ff| %>
+    <%= ff.hidden_field :id %>
+    <%= ff.hidden_field :tracker_id %>
+    <%= ff.check_box :object_type, {}, object, '' %>
+    <%= ff.label t("open_graph_plugin.lib.track.config.#{track}.objects.#{object}") %>
+  <% end %>
 <% end %>
 

@@ -37,7 +37,7 @@ class FbAppPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['fb_app_plugin.js'].map{ |j| "javascripts/#{j}" }
+    ['fb_app.js'].map{ |j| "javascripts/#{j}" }
   end
 
   def head_ending

@@ -28,13 +28,14 @@ fb_app = {
       },
 
       autocomplete: {
-        init: function(action, selector) {
+        init: function(action, selector, data) {
           var engine = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             remote: fb_app.config.url_prefix+'/'+action+'?query=%QUERY',
           })
           engine.initialize()
+
           $(selector).tokenfield({
             typeahead: [{
               minLength: 1,
@@ -44,6 +45,8 @@ fb_app = {
               source: engine.ttAdapter(),
             }],
           });
+
+          $(selector).tokenfield('setTokens', data);
         },
       },
     },

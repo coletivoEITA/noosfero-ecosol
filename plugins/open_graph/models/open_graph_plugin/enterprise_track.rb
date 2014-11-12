@@ -1,11 +1,6 @@
 class OpenGraphPlugin::EnterpriseTrack < OpenGraphPlugin::Track
 
-  def self.objects
-    [
-      :product,
-    ]
-  end
-
-  validates_inclusion_of :object, in: self.objects
+  # workaround for STI bug
+  self.table_name = :open_graph_plugin_tracks
 
 end

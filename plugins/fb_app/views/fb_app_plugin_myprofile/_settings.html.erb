@@ -8,7 +8,13 @@
 
 <% if @auth.connected? %>
   <div id="fb-app-timeline">
-    <%= render 'track' %>
+    <h2>
+      <%= t('fb_app_plugin.views.myprofile.timeline.heading') %>
+    </h2>
+
+    <div id="track-form">
+      <%= render 'track_form' %>
+    </div>
   </div>
   <div id="fb-app-catalog">
     <%= render 'catalog' %>
