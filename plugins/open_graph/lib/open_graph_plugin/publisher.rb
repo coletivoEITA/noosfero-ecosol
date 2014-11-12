@@ -10,7 +10,7 @@ class OpenGraphPlugin::Publisher
       self.send "#{attr}=", value
     end
   end
-  
+
   def publish actor, action, object, url
     self.method.call actor, action, object, url
   end
@@ -26,7 +26,7 @@ class OpenGraphPlugin::Publisher
     publish fs.person, actions[:make_friendship], objects[:friend], fs.friend.url
     publish fs.friend, actions[:make_friendship], objects[:friend], fs.person.url
   end
-  
+
   def on_product_create product, actor
     # Story [for the SSE initiative members]: "I added a new SSE product in Cirandas"
     # Story [for the users who favorited the SSE initiative]: "I announce a new SSE product in Cirandas"
@@ -38,37 +38,37 @@ class OpenGraphPlugin::Publisher
     # Story [for the users who favorited the SSE initiative]: "I announce the update of a SSE product in Cirandas"
     publish actor, actions[:update], objects[:product], product.url
   end
-  
+
   def on_article_create article, actor
     parent = article.parent
-    return unless post.published? and parent.published and parent.published?
+    return unless article.published? and parent.published and parent.published?
     #return unless actor.fb_app_timeline_config.synced_my_activities[:blog_posts]
     case parent
-      when Forum
-        # Story [for the author]: "I created a new article in Cirandas"
-        # Story [for the users who follow the actor]: "I announce news from a {Friend, Community, SSE Initiative} in Cirandas"
-        publish actor, actions[:add], objects[:blog_post], article.url
-      else
-        # Story [for the author]: "I started a new discussion in Cirandas"
-        # Story [for the users who follow the actor]: "I announce news from a {Friend, Community, SSE Initiative} in Cirandas"
-        publish actor, actions[:add], objects[:blog_post], article.url
-      end
+    when Forum, Blog
+      # Story [for the author]: "I created a new article in Cirandas"
+      # Story [for the users who follow the actor]: "I announce news from a {Friend, Community, SSE Initiative} in Cirandas"
+      publish actor, actions[:create], objects[:blog_post], article.url
+    else
+      # Story [for the author]: "I started a new discussion in Cirandas"
+      # Story [for the users who follow the actor]: "I announce news from a {Friend, Community, SSE Initiative} in Cirandas"
+      publish actor, actions[:create], objects[:forum], article.url
+    end
   end
-  
+
   def on_uploadedfile_create uploaded_file, actor
     # Story [for the SSE initiative members]: "I uploaded a new document in Cirandas"
     # Story [for the users who favorited the SSE initiative]: "I announce news from a {Friend, Community, SSE Initiative} in Cirandas"
     return unless uploaded_file.published?
     publish actor, actions[:add], objects[:uploaded_file], uploaded_file.url
   end
-  
+
   def on_image_create image, actor
     # Story [for the SSE initiative members]: "I added a new image in Cirandas"
     # Story [for the users who favorited the SSE initiative]: "I announce news from a {Friend, Community, SSE Initiative} in Cirandas"
     return unless image.parent.is_a? Gallery
     publish actor, actions[:add], objects[:image], image.url
   end
-  
+
   def on_comment_create comment, actor
     source = comment.source
     return if source.respond_to? :published? and not source.published?
@@ -81,6 +81,6 @@ class OpenGraphPlugin::Publisher
     end
   end
   # Definition of the stories - END
-  
+
 end
 

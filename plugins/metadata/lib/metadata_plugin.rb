@@ -9,7 +9,16 @@ class MetadataPlugin < Noosfero::Plugin
     I18n.t 'metadata_plugin.lib.plugin.description'
   end
 
-  class_attribute :og_type_namespace
+  def self.config
+    @config ||= HashWithIndifferentAccess.new(YAML.load File.read("#{File.dirname __FILE__}/../config.yml")) rescue {}
+  end
+
+  def self.og_type_namespace
+    @og_type_namespace ||= self.config[:open_graph][:type_namespace]
+  end
+  def self.og_types
+    @og_types ||= self.config[:open_graph][:types]
+  end
 
   def head_ending
     lambda do

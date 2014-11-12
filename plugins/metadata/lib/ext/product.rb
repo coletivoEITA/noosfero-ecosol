@@ -3,7 +3,7 @@ require_dependency 'product'
 class Product
 
   Metadata = {
-    'og:type' => "#{MetadataPlugin.og_type_namespace}:sse_product",
+    'og:type' => "#{MetadataPlugin.og_type_namespace}:#{MetadataPlugin.og_types[:product]}",
     'og:url' => proc{ |p| Noosfero::Application.routes.url_helpers.url_for p.url.except(:port) },
     'og:title' => proc{ |p| p.name },
     'og:description' => proc{ |p| ActionView::Base.full_sanitizer.sanitize p.description },

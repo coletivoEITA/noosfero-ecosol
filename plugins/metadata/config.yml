@@ -1,0 +1,7 @@
+open_graph:
+  type_namespace: app_cirandas_test
+  types:
+    article: cirandas_article
+    product: sse_product
+    profile: profile
+

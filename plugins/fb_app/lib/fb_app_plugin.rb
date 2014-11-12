@@ -56,9 +56,6 @@ ActiveSupport.on_load :open_graph_plugin do
   publisher = FbAppPlugin::Publisher.new
   OpenGraphPlugin::Stories.register_publisher publisher
 end
-ActiveSupport.on_load :metadata_plugin do
-  MetadataPlugin.og_type_namespace = FbAppPlugin.config['app']['namespace']
-end
 
 # workaround for plugins' scope problem
 require_dependency 'fb_app_plugin/display_helper'

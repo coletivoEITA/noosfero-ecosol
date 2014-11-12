@@ -1,13 +1,16 @@
 <% if @auth.connected? %>
-  <div class="noosfero-identity">
+  <div id="noosfero-identity">
     <%= profile_image profile %>
     <%= profile.name %>
   </div>
-  <%= render 'identity', auth: @auth %>
+  <span id="fb-connected" class="fa fa-arrows-h"></span>
+  <div id="fb-identity">
+    <%= render 'identity', auth: @auth %>
+  </div>
   <%= button_to_function '', t('fb_app_plugin.views.myprofile.disconnect'), 'fb_app.fb.disconnect()' %>
   <%= button_to_function '', t('fb_app_plugin.views.myprofile.connect_to_another'), 'fb_app.fb.connect_to_another()' %>
 <% elsif @auth.not_authorized? %>
-  <%= button_to_function '', t('fb_app_plugin.views.myprofile.connect'), 'fb_app.fb.connect()', size: '', type: 'primary' %>
+  <%= button_to_function '', t('fb_app_plugin.views.myprofile.connect'), 'fb_app.fb.connect()', size: '', option: 'primary' %>
 <% elsif @auth.expired? %>
   <%= button_to_function '', t('fb_app_plugin.views.myprofile.reconnect'), 'fb_app.fb.connect()' %>
 <% end %>

@@ -14,6 +14,7 @@ class OpenGraphPlugin::Stories
   ]
   ValidActionList = [
     :add,
+    :create,
     :update,
     :make_friendship,
     :comment,

@@ -61,3 +61,27 @@ body.controller-fb_app_plugin {
   //background-image: url(/plugins/fb_app/images/control-panel.png);
 }
 
+#fb-app-intro {
+  margin: 0 40px 20px 40px;
+}
+#fb-app-connect-status {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  margin-bottom: 30px;
+}
+#fb-app-auth {
+  text-align: center;
+  margin-bottom: 50px;
+}
+#noosfero-identity {
+  float: left;
+}
+#fb-connected {
+  font-size: 36px;
+  float:left;
+  margin: 0 30px;
+  color: #99f;
+}
+#fb-identity {
+  float: left;
+}

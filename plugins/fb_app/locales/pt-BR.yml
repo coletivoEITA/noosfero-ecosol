@@ -4,8 +4,8 @@
   fb_app_plugin:
     lib:
       plugin:
-        name: 'Loja de Economia Solidária no Facebook'
-        description: 'Monte uma loja virtual da economia solidária em suas páginas do facebook!'
+        name: 'App Cirandas no Facebook'
+        description: 'Divulgue suas ações no cirandas e a economia solidária no Facebook!'
     views:
       myprofile:
         checking_auth: 'Verificando autorização de acesso' 
