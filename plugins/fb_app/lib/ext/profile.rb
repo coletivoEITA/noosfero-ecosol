@@ -2,7 +2,6 @@ require_dependency 'profile'
 
 class Profile
 
-  has_one :fb_app_timeline_config, class_name: 'FbAppPlugin::TimelineConfig'
   has_many :fb_app_page_tag_configs, class_name: 'FbAppPlugin::PageTabConfig'
 
   def fb_app_auth

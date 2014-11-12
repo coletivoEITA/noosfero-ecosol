@@ -40,7 +40,7 @@ fb_app = {
               minLength: 1,
               highlight: true,
             }, {
-              displayKey: 'html',
+              displayKey: 'label',
               source: engine.ttAdapter(),
             }],
           });

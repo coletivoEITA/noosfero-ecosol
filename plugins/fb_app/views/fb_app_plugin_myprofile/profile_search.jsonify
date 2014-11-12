@@ -1,8 +1,0 @@
-self.formats = [:html]
-@profiles.each do |p|
-  json << {
-    value: p.id, html: render('ac_profile', profile: p),
-    highlighted: (if @highlighted.include?(p) then true else false end),
-  }
-end
-

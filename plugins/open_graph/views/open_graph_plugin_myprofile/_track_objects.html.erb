@@ -1,0 +1,5 @@
+<% objects.each do |object| %>
+  <%= f.check_box :object_type %>
+  <%= f.label t("open_graph_plugin.lib.track.config.#{track}.objects.#{object}") %>
+<% end %>
+

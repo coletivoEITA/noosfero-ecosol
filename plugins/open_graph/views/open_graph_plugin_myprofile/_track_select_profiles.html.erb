@@ -1,0 +1,5 @@
+<%= f.text_field :object_data_id, id: "select-#{track}" %>
+
+<%= javascript_tag do %>
+  fb_app.config.timeline.autocomplete.init('<%=track%>_search', '#select-<%=track%>')
+<% end %>

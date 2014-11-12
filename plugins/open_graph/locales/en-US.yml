@@ -6,20 +6,20 @@
       plugin:
         name: 'OpenGraph'
         description: 'OpenGraph'
-      syncs:
-        spec:
-          my_activities:
+      track:
+        config:
+          activity:
             label: "My activities: new photos on my albuns, blogs's posts and other contents"
             objects:
               blog_post: "Blogs' posts"
               friendship: 'New friendships'
               gallery_image: 'New images on my albuns'
               uploaded_file: 'Files sent'
-          my_enterprises:
+          enterprise:
             label: "News from enterprises from which I'm a member: when a product is modified or registered, when a page is updated, etc"
-          my_friends:
+          friend:
             label: "Friends"
-          my_communities:
+          community:
             label: "Communities"
 
 'en_US':
