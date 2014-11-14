@@ -28,7 +28,7 @@ module CatalogHelper
     paginate_options = {per_page: @per_page, page: @pg_page}
     @offset = (@pg_page-1) * @per_page
 
-    result = find_by_contents :catalog, @scope, @query, paginate_options, solr_options
+    result = controller.send :find_by_contents, :catalog, @scope, @query, paginate_options, solr_options
 
     @products = result[:results]
     # FIXME: the categories and qualifiers filters currently only work with solr plugin, because they depend on facets.

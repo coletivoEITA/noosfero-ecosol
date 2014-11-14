@@ -18,7 +18,7 @@ class EnterpriseHomepage < Article
 
   def to_html(options = {})
     enterprise_homepage = self
-    proc do
+    lambda do
       extend EnterpriseHomepageHelper
       extend CatalogHelper
       catalog_load_index :page => 1, :show_categories => false
