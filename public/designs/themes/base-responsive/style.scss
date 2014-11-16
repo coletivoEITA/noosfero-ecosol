@@ -1214,9 +1214,14 @@ hr.pre-posts, hr.sep-posts {
 /******** controller-friends action-friends-index ********/
 
 #content .common-profile-list-block li, #content .comment-actions li {
+  margin: -3px !important;
+  padding: 0px;
+  list-style: none;
+  position: relative;
+ /*
   width: auto;
   min-height: 52px;
-  max-height: 100px;
+  max-height: 100px; */
 }
 .common-profile-list-block .profile_link {
   width: 52px;
@@ -1226,6 +1231,7 @@ hr.pre-posts, hr.sep-posts {
   border: 1px solid #FFF !important;
 }
 .common-profile-list-block .vcard a, .comment-actions .vcard a {
+  width: 92px;
 }
 #content .enterprises-block .profile-image,
 #content .communities-block .profile-image,
@@ -1256,6 +1262,7 @@ hr.pre-posts, hr.sep-posts {
 .action-friends-index .profile-list li,
 .common-profile-list-block .vcard {
   border: 1px solid transparent;
+  width: 98px;
 }
 .box-container-2 .common-profile-list-block .vcard,
 .box-container-3 .common-profile-list-block .vcard {
