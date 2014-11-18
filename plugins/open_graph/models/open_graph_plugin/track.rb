@@ -7,7 +7,7 @@ class OpenGraphPlugin::Track < ActiveRecord::Base
     community: 'CommunityTrack',
   }
 
-  scope :trackers_of, lambda do |profile, exclude_actor=nil|
+  scope :profile_trackers, lambda do |profile, exclude_actor=nil|
     scope = where object_data_id: profile.id, object_data_type: profile['type']
     scope = scope.where actor_id: exclude_actor.id if exclude_actor
     scope

@@ -43,6 +43,8 @@ class OpenGraphPlugin::Publisher
     parent = article.parent
     return unless article.published? and parent.published and parent.published?
 
+    OpenGraphPlugin::Track.profile_trackers(actor)
+
 
     case parent
     when Forum, Blog
