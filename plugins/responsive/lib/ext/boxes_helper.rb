@@ -28,7 +28,9 @@ module BoxesHelper
                                  class: 'row',
                                  id: 'content')
         end +
-        maybe_display_custom_element(controller.boxes_holder, :custom_footer_expanded, id: 'profile-footer')
+        content_tag('div',
+          maybe_display_custom_element(controller.boxes_holder, :custom_footer_expanded, id: 'profile-footer'),
+          :class => 'row')
       end
     end
 
@@ -42,6 +44,22 @@ module BoxesHelper
 
       render partial: "templates/boxes_#{template}", locals: {boxes: boxes, main_content: main_content}, use_cache: use_cache?
     end
+  end
+
+  def display_topbox_content(box, main_content)
+    context = {article: @page, request_path: request.path, locale: locale, params: request.params, controller: controller}
+    box_decorator.select_blocks(box, box.blocks.includes(:box), context).map do |item|
+      if item.class.name == 'LinkListBlock'
+        render_linklist_navbar(item)
+      else
+        display_block item, main_content
+      end
+    end.join("\n") + box_decorator.block_target(box)
+  end
+
+  def render_linklist_navbar link_list
+    list = link_list.links.select{ |i| i[:name].present? and i[:address].present? }
+    render file: 'blocks/link_list_navbar', locals: {block: link_list, links: list}
   end
 
   include ResponsiveChecks
