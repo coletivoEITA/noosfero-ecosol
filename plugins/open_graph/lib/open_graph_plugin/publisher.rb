@@ -42,7 +42,10 @@ class OpenGraphPlugin::Publisher
   def on_article_create article, actor
     parent = article.parent
     return unless article.published? and parent.published and parent.published?
-    #return unless actor.fb_app_timeline_config.synced_my_activities[:blog_posts]
+
+    OpenGraphPlugin::Track.profile_trackers(actor)
+
+
     case parent
     when Forum, Blog
       # Story [for the author]: "I created a new article in Cirandas"
