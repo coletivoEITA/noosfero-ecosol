@@ -10,13 +10,15 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
     self.objects = Objects
   end
 
-  def publish actor, action, object, url
+  def publish actor, story_defs, object_data_url
     auth = actor.fb_app_auth
     return if auth.blank? or auth.expired?
 
+    object_type = story_defs[:object_type]
+    object_data_url = story_defs[:object_data_url]
+
     namespace = FbAppPlugin.config['app']['namespace']
-    url = Noosfero::Application.routes.url_helpers.url_for url.except(:port) unless url.is_a? String
-    params = {object => url}
+    params = {object_type => object_data_url}
 
     me = FbGraph::User.me auth.access_token
     params['fb:explicitly_shared'] = 'true'
