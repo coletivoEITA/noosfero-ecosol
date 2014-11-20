@@ -22,6 +22,7 @@ class OrdersPluginOrderController < ProfileController
         session[:notice] = t('orders_plugin.controllers.profile.consumer.can_not_confirm_your_')
       end
     end
+    render 'orders_plugin_order/edit'
   end
 
   def repeat
