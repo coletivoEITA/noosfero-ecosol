@@ -37,16 +37,16 @@ class OpenGraphPlugin::Stories
     self.publishers << publisher
   end
 
-  def self.publish record, actor, stories
+  def self.publish record, on, actor, stories
     self.publishers.each do |publisher|
-      publisher.publish_stories record, actor, stories
+      publisher.publish_stories record, on, actor, stories
     end
   end
 
   Definitions = {
     add_a_document: {
       action: :add,
-      object: :uploaded_file,
+      object_type: :uploaded_file,
       models: :UploadedFile,
       on: :create,
       publish_if: proc do |uploaded_file|
@@ -55,13 +55,13 @@ class OpenGraphPlugin::Stories
     },
     add_a_sse_product: {
       action: :create,
-      object: :product,
+      object_type: :product,
       on: :create,
       models: :Product,
     },
     add_an_image: {
       action: :create,
-      object: :gallery_image,
+      object_type: :gallery_image,
       on: :create,
       models: :Image,
       criteria: proc do |image|
@@ -70,7 +70,7 @@ class OpenGraphPlugin::Stories
     },
     comment_a_discussion: {
       action: :comment,
-      object: :forum,
+      object_type: :forum,
       on: :create,
       models: :Comment,
       criteria: proc do |comment|
@@ -83,7 +83,7 @@ class OpenGraphPlugin::Stories
     },
     comment_an_article: {
       action: :comment,
-      object: :blog_post,
+      object_type: :blog_post,
       on: :create,
       models: :Comment,
       criteria: proc do |comment|
@@ -96,7 +96,7 @@ class OpenGraphPlugin::Stories
     },
     create_an_article: {
       action: :create,
-      object: :blog_post,
+      object_type: :blog_post,
       on: :create,
       models: :Article,
       criteria: proc do |article|
@@ -108,7 +108,7 @@ class OpenGraphPlugin::Stories
     },
     create_an_event: {
       action: :create,
-      object: :event,
+      object_type: :event,
       on: :create,
       models: :Event,
       publish_if: proc do |event|
@@ -117,7 +117,7 @@ class OpenGraphPlugin::Stories
     },
     favorite_an_sse_enterprise: {
       action: :create,
-      object: :event,
+      object_type: :event,
       on: :create,
       models: :Event,
       publish_if: proc do |event|
@@ -126,7 +126,7 @@ class OpenGraphPlugin::Stories
     },
     make_friendship_with: {
       action: :make_friendship,
-      object: :friend,
+      object_type: :friend,
       models: :Friendship,
       publish: proc do |fs|
         publish fs.person, actions[:make_friendship], objects[:friend], fs.friend.url
@@ -135,7 +135,7 @@ class OpenGraphPlugin::Stories
     },
     start_a_discussion: {
       action: :start,
-      object: :forum,
+      object_type: :forum,
       on: :create,
       criteria: proc do |article|
         article.parent.is_a? Forum
@@ -146,13 +146,13 @@ class OpenGraphPlugin::Stories
     },
     update_a_sse_product: {
       action: :update,
-      object: :product,
+      object_type: :product,
       on: :update,
       models: :Product,
     },
     update_a_sse_enterprise: {
       action: :update,
-      object: :enterprise,
+      object_type: :enterprise,
       on: :update,
       models: :Enterprise,
     },
@@ -160,31 +160,37 @@ class OpenGraphPlugin::Stories
     # PASSIVE STORIES
     announce_a_new_sse_product: {
       action: :announce_new,
-      object: :product,
+      object_type: :product,
       on: :create,
       models: :Product,
       tracker: true,
     },
     announce_an_update_of_sse_product: {
       action: :announce_update,
-      object: :product,
+      object_type: :product,
       on: :update,
       models: :Product,
       tracker: true,
     },
     announce_news_from_a_community: {
       action: :announce_update,
-      object: :product,
-      on: :update,
+      object_type: :product,
+      on: [:create, :update],
       models: :Article,
       tracker: true,
+      criteria: proc do |article|
+        article.profile.community?
+      end
     }
   }
 
   ModelStories = {}; Definitions.each do |story, data|
     Array[data[:models]].each do |model|
-      ModelStories[model] ||= []
-      ModelStories[model] << story
+      ModelStories[model] ||= {}
+      Array(data[:on]).each do |on|
+        ModelStories[model][on] ||= []
+        ModelStories[model][on] << story
+      end
     end
   end
 

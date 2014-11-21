@@ -5,6 +5,8 @@ class Product
   Metadata = {
     'og:type' => "#{MetadataPlugin.og_type_namespace}:#{MetadataPlugin.og_types[:product]}",
     'og:url' => proc{ |p| Noosfero::Application.routes.url_helpers.url_for p.url.except(:port) },
+    'og:gr_hascurrencyvalue' => proc{ |p| p.price.to_f },
+    'og:gr_hascurrency' => proc{ |p| p.environment.currency_unit },
     'og:title' => proc{ |p| p.name },
     'og:description' => proc{ |p| ActionView::Base.full_sanitizer.sanitize p.description },
     'og:image' => proc{ |p| p.image.public_filename if p.image },
