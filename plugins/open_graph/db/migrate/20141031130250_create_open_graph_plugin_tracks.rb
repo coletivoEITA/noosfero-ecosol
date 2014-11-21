@@ -15,6 +15,8 @@ class CreateOpenGraphPluginTracks < ActiveRecord::Migration
       t.integer :object_data_id
       t.string :object_data_type
 
+      t.boolean :enabled, default: true
+
       t.timestamps
     end
 
@@ -24,6 +26,7 @@ class CreateOpenGraphPluginTracks < ActiveRecord::Migration
     add_index :open_graph_plugin_tracks, [:actor_id]
     add_index :open_graph_plugin_tracks, [:action]
     add_index :open_graph_plugin_tracks, [:object_type]
+    add_index :open_graph_plugin_tracks, [:enabled]
     add_index :open_graph_plugin_tracks, [:object_data_url]
     add_index :open_graph_plugin_tracks, [:object_data_id, :object_data_type], name: 'index_open_graph_plugin_tracks_object_data_id_type'
   end
