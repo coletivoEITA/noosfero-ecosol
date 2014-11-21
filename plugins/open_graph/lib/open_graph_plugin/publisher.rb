@@ -3,7 +3,6 @@ class OpenGraphPlugin::Publisher
 
   attr_accessor :actions
   attr_accessor :objects
-  attr_accessor :method
 
   def initialize attributes = {}
     attributes.each do |attr, value|
@@ -11,79 +10,33 @@ class OpenGraphPlugin::Publisher
     end
   end
 
-  def publish actor, action, object, url
-    self.method.call actor, action, object, url
+  def publish on, actor, story_defs, object_data_url
+    raise 'abstract method called'
   end
 
-  def call_hooks record, actor, story_method
-    self.send story_method, record, actor
-  end
+  def publish_stories object_data, on, actor, stories
+    stories.each do |story|
+      defs = OpenGraphPlugin::Stories::Definitions[story]
 
-  # Definition of the stories - BEGIN
-  def on_friendship_create fs, actor
-    # Story: "Me and another user became friends in Cirandas"
-    # actor is person or friend
-    publish fs.person, actions[:make_friendship], objects[:friend], fs.friend.url
-    publish fs.friend, actions[:make_friendship], objects[:friend], fs.person.url
-  end
+      match_criteria = if defs[:criteria] then defs[:criteria].call(object_data) else true end
+      next unless match_criteria
+      match_condition = if defs[:publish_if] then defs[:publish_if].call(object_data) else true end
+      next unless match_condition
 
-  def on_product_create product, actor
-    # Story [for the SSE initiative members]: "I added a new SSE product in Cirandas"
-    # Story [for the users who favorited the SSE initiative]: "I announce a new SSE product in Cirandas"
-    publish actor, actions[:add], objects[:product], product.url
-  end
+      object_data_url = object_data.url
+      object_data_url = Noosfero::Application.routes.url_helpers.url_for object_data_url.except(:port) unless object_data_url.is_a? String
 
-  def on_product_update product, actor
-    # Story [for the SSE initiative members]: "I updated a SSE product in Cirandas"
-    # Story [for the users who favorited the SSE initiative]: "I announce the update of a SSE product in Cirandas"
-    publish actor, actions[:update], objects[:product], product.url
-  end
-
-  def on_article_create article, actor
-    parent = article.parent
-    return unless article.published? and parent.published and parent.published?
-
-    OpenGraphPlugin::Track.profile_trackers(actor)
-
-
-    case parent
-    when Forum, Blog
-      # Story [for the author]: "I created a new article in Cirandas"
-      # Story [for the users who follow the actor]: "I announce news from a {Friend, Community, SSE Initiative} in Cirandas"
-      publish actor, actions[:create], objects[:blog_post], article.url
-    else
-      # Story [for the author]: "I started a new discussion in Cirandas"
-      # Story [for the users who follow the actor]: "I announce news from a {Friend, Community, SSE Initiative} in Cirandas"
-      publish actor, actions[:create], objects[:forum], article.url
-    end
-  end
-
-  def on_uploadedfile_create uploaded_file, actor
-    # Story [for the SSE initiative members]: "I uploaded a new document in Cirandas"
-    # Story [for the users who favorited the SSE initiative]: "I announce news from a {Friend, Community, SSE Initiative} in Cirandas"
-    return unless uploaded_file.published?
-    publish actor, actions[:add], objects[:uploaded_file], uploaded_file.url
-  end
-
-  def on_image_create image, actor
-    # Story [for the SSE initiative members]: "I added a new image in Cirandas"
-    # Story [for the users who favorited the SSE initiative]: "I announce news from a {Friend, Community, SSE Initiative} in Cirandas"
-    return unless image.parent.is_a? Gallery
-    publish actor, actions[:add], objects[:image], image.url
-  end
-
-  def on_comment_create comment, actor
-    source = comment.source
-    return if source.respond_to? :published? and not source.published?
-    case source
-      when Forum
-        publish actor, actions[:comment], objects[:article], comment.url
-      when Article
-        publish actor, actions[:comment], objects[:article], comment.url
+      if defs[:tracker]
+        exclude_actor = actor
+        trackers = OpenGraphPlugin::Track.profile_trackers object_data, exclude_actor
+        trackers.each do |tracker|
+          publish on, tracker.tracker, defs, object_data_url
+        end
       else
+        publish on, actor, defs, object_data_url
+      end
     end
   end
-  # Definition of the stories - END
 
 end
 

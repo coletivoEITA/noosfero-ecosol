@@ -1,20 +1,27 @@
 class OrdersPlugin::Item < ActiveRecord::Base
 
-  attr_accessible :price, :name, :quantity_consumer_ordered
+  attr_accessible :price, :name
 
   # flag used by items to compare them with products
   attr_accessor :product_diff
 
   # should be Order, but can't reference it here so it would create a cyclic reference
-  StatusAccessMap = ActiveSupport::OrderedHash[
-    'ordered', :consumer,
-    'accepted', :supplier,
-    'separated', :supplier,
-    'delivered', :supplier,
-    'received', :consumer,
-  ]
+  StatusAccessMap = {
+    'ordered' => :consumer,
+    'accepted' => :supplier,
+    'separated' => :supplier,
+    'delivered' => :supplier,
+    'received' => :consumer,
+  }
   StatusDataMap = {}; StatusAccessMap.each do |status, access|
     StatusDataMap[status] = "#{access}_#{status}"
+  end
+  StatusDataMap.each do |status, data|
+    quantity = "quantity_#{data}".to_sym
+    price = "price_#{data}".to_sym
+
+    attr_accessible quantity
+    attr_accessible price
   end
 
   serialize :data

@@ -46,6 +46,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def edit
+    # editing an order
     return super if params[:actor_name]
 
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]

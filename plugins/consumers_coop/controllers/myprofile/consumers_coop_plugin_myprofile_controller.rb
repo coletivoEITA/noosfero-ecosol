@@ -8,9 +8,9 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
 
   def index
     if profile.has_admin? user
-      redirect_to :controller => :consumers_coop_plugin_cycle, :action => :index
+      redirect_to controller: :consumers_coop_plugin_cycle, action: :index
     else
-      redirect_to :controller => :consumers_coop_plugin_order, :action => :index
+      redirect_to controller: :consumers_coop_plugin_order, action: :index
     end
   end
 

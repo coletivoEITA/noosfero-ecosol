@@ -23,7 +23,7 @@ module Noosfero
         'de_DE' => 'Deutsch',
         'ru_RU' => 'русский язык',
         'es_ES' => 'Español',
-        'eo' => 'Esperanto',
+        #'eo' => 'Esperanto',
         'it_IT' => 'Italiano'
       }
     end
