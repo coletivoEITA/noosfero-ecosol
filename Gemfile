@@ -29,10 +29,6 @@ end
 platform :jruby do
   gem 'activerecord-jdbcpostgresql-adapter'
   gem 'rmagick4j'
-
-  group :production do
-    gem 'puma'
-  end
 end
 
 gem 'eita-jrails', path: 'vendor/plugins/eita-jrails'
@@ -45,6 +41,7 @@ gem 'sass'
 gem 'sass-rails'
 
 group :production do
+  gem 'puma'
   gem 'dalli', '~> 2.7.0'
   gem 'rack-cache'
 end
