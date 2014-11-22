@@ -39,9 +39,10 @@ class ThemesApiPluginApiController < PublicController
     File.open("#{@themes_path}/#{@theme_id}/theme.yml", 'w') do |file|
       file << {
         'name' => "Seu tema personalizado",
-        'layout' => "cirandas",
-        'jquery_theme' => "smoothness_mod",
-        'icon_theme' => ['default', 'pidgin'],
+        'layout' => "cirandas-responsive",
+        'jquery_theme' => "smoothness",
+        'icon_theme' => ['awesome', 'pidgin'],
+        'responsive' => true,
         'owner_id' => @profile.id,
         'owner_type' => @profile.type.to_s,
       }.to_yaml
