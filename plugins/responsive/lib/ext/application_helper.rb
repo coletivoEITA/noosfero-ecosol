@@ -5,10 +5,6 @@ module ApplicationHelper
   extend ActiveSupport::Concern
   protected
 
-  def theme_site_logo
-    theme_include('site_logo')
-  end
-
   module ResponsiveMethods
     FORM_CONTROL_CLASS = "form-control"
 
