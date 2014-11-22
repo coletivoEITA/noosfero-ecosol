@@ -72,7 +72,7 @@
 
 <div class="comments" id="comments_list">
 
-  <% if @page.accept_comments? || @comments_count > 0 %>
+  <% if @comments and @page.accept_comments? || @comments_count > 0 %>
     <h3 <%= 'class="no-comments-yet"' if @comments_count == 0 %>>
       <%= display_number_of_comments(@comments_count) %>
     </h3>
