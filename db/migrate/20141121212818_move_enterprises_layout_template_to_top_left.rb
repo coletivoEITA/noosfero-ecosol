@@ -12,6 +12,7 @@ class MoveEnterprisesLayoutTemplateToTopLeft < ActiveRecord::Migration
         main_box = boxes.find{ |b| b.position == 1 }
         left_box = boxes.find{ |b| b.position == 2 }
         top_box = boxes.find{ |b| b.position == 3 }
+        top_box.blocks.destroy_all
 
         links_block = main_box.blocks.find{ |b| b.is_a? LinkListBlock }
         unless links_block
