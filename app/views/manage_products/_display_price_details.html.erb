@@ -8,11 +8,14 @@
         <span><%= float_to_currency(@product.inputs_cost) %></span>
       </div>
     </li>
-    <% @product.price_details.each do |price_detail| %>
-      <li>
-        <div class='price-detail-name'><%= "%s:" % price_detail.name %></div>
-        <div class='price-detail-price'><%= float_to_currency(price_detail.price) %></div>
-      </li>
-    <% end %>
+      <% @product.price_details.each do |price_detail| %>
+        <li property="essglobal:hasOtherCost" typeof="essglobal:OtherCosts">
+          <div class='price-detail-name'><span property='dcterms:description'><%= price_detail.name %></span>:</div>
+          <div class='price-detail-price'>
+            <span class='price-detail-price-currency' property='gr:hasCurrency' content='<%= environment.currency_iso_unit %>'><%= environment.currency_unit %></span>
+            <span class='price-detail-price-value' property='gr:hasCurrencyValue'><%= float_to_currency(price_detail.price, unit: '') %></span>
+          </div>
+        </li>
+      <% end %>
   </ul>
 </div>

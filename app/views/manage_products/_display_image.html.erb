@@ -4,8 +4,7 @@
 
 <% if @product.image %>
   <%= link_to content_tag(:span, _('Zoom in')), @product.image.public_filename,
-    :class => 'zoomify-image' %>
+    :class => 'zoomify-image', :rel => 'foaf:depiction' %>
 <% end %>
-<%= add_zoom_to_images %>
 
 <%= edit_product_link_to_remote(@product, 'image', _('Change image')) %>
