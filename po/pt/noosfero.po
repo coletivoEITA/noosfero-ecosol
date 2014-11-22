@@ -6596,6 +6596,10 @@ msgstr "Informações gerais"
 msgid "WARNING!"
 msgstr "ATENÇÃO!"
 
+#: app/views/profile_editor/_organization.html.erb
+msgid "Internet Address (URL)"
+msgstr "Endereço na internet"
+
 #: app/views/profile_editor/_organization.rhtml:49
 msgid ""
 "You are about to change the address, and this will break external links to "
