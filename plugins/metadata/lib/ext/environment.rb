@@ -7,7 +7,7 @@ class Environment
     'og:description' => proc{ |e| e.name },
     'og:url' => proc{ |e| e.top_url },
     'og:locale:locale' => proc{ |e| e.default_language },
-    'og:locale:alternate' => proc{ |e| e.languages - [e.default_language] },
+    'og:locale:alternate' => proc{ |e| e.languages - [e.default_language] }
   }
 
 end

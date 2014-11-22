@@ -30,11 +30,11 @@ class MetadataPlugin < Noosfero::Plugin
       return unless metadata = object.class.const_get(:Metadata)
       metadata.map do |property, contents|
         contents = contents.call object rescue nil if contents.is_a? Proc
-        next unless contents
+        next if contents.blank?
 
         Array(contents).map do |content|
           content = content.call object rescue nil if content.is_a? Proc
-          next unless content
+          next if content.blank?
           tag 'meta', property: property, content: content
         end.join
       end.join
