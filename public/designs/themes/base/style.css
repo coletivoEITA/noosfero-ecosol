@@ -3425,5 +3425,7 @@ div.with_media_panel .formfield input[type="checkbox"] {
   width: 202px;
 }
 
-
+#content .common-profile-list-block li, #content .comment-actions li {
+  margin: 0px !important;
+}
 
