@@ -51,7 +51,7 @@ class OpenGraphPlugin::Stories
       on: :create,
       publish_if: proc do |uploaded_file|
         uploaded_file.published?
-      end
+      end,
     },
     add_a_sse_product: {
       action: :create,
@@ -79,7 +79,7 @@ class OpenGraphPlugin::Stories
       end,
       publish_if: proc do |comment|
         comment.source.parent.published?
-      end
+      end,
     },
     comment_an_article: {
       action: :comment,
@@ -92,7 +92,7 @@ class OpenGraphPlugin::Stories
       end,
       publish_if: proc do |comment|
         comment.source.parent.published?
-      end
+      end,
     },
     create_an_article: {
       action: :create,
@@ -104,7 +104,7 @@ class OpenGraphPlugin::Stories
       end,
       publish_if: proc do |article|
         article.published?
-      end
+      end,
     },
     create_an_event: {
       action: :create,
@@ -113,7 +113,7 @@ class OpenGraphPlugin::Stories
       models: :Event,
       publish_if: proc do |event|
         event.published?
-      end
+      end,
     },
     favorite_an_sse_enterprise: {
       action: :create,
@@ -122,7 +122,7 @@ class OpenGraphPlugin::Stories
       models: :Event,
       publish_if: proc do |event|
         event.published?
-      end
+      end,
     },
     make_friendship_with: {
       action: :make_friendship,
@@ -131,7 +131,7 @@ class OpenGraphPlugin::Stories
       publish: proc do |fs|
         publish fs.person, actions[:make_friendship], objects[:friend], fs.friend.url
         publish fs.friend, actions[:make_friendship], objects[:friend], fs.person.url
-      end
+      end,
     },
     start_a_discussion: {
       action: :start,
@@ -142,7 +142,7 @@ class OpenGraphPlugin::Stories
       end,
       publish_if: proc do |article|
         article.published?
-      end
+      end,
     },
     update_a_sse_product: {
       action: :update,
@@ -176,11 +176,19 @@ class OpenGraphPlugin::Stories
       action: :announce_update,
       object_type: :product,
       on: [:create, :update],
-      models: :Article,
+      models: [:Article, :Image],
       tracker: true,
       criteria: proc do |article|
         article.profile.community?
-      end
+      end,
+      publish_if: proc do |object|
+        case object
+        when Article
+          object.published?
+        when Image
+          object.parent.is_a? Gallery
+        end
+      end,
     }
   }
 

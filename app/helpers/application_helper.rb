@@ -998,8 +998,8 @@ module ApplicationHelper
     content_tag('div', ui_icon('ui-icon-info') + message, :class => 'alert fg-state-highlight ui-state-highlight')
   end
 
-  def float_to_currency(value)
-    number_to_currency(value, :unit => environment.currency_unit, :separator => environment.currency_separator, :delimiter => environment.currency_delimiter, :format => "%u %n")
+  def float_to_currency value, options = {unit: environment.currency_unit}
+    number_to_currency(value, unit: options[:unit], :separator => environment.currency_separator, :delimiter => environment.currency_delimiter, :format => "%u %n")
   end
 
   def collapsed_item_icon

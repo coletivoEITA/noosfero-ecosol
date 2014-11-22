@@ -1,6 +1,10 @@
 <div id='display-product-info'>
-  <%= display_value(@product) %>
-  <%= display_availability(@product) %>
+  <div property="essglobal:hasSaleOption" typeof="essglobal:SaleOption">
+    <div rel="gr:hasPriceSpecification">
+      <%= display_value(@product) %>
+    </div>
+    <%= display_availability(@product) %>
+  </div>
   <%= display_qualifiers(@product) %>
 
   <% if @product.has_basic_info? %>

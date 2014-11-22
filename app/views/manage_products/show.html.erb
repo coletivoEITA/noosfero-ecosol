@@ -1,9 +1,20 @@
 <%= content_for :product_page do %>
-<div id="product-category">
-  <%= render :partial => 'manage_products/display_category' %>
-</div>
 
-<div id="show_product">
+<!-- BEGIN PRODUCT -->
+<div id="show_product"
+  prefix="
+    rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+    dct:http:/purl.org/dc/terms/
+    foaf:http://xmlns.xom/foaf/0.1/
+    gr:http://purl.org/goodrelations/v1#
+    xsd: http://www.w3.org/2001/XMLSchema#
+    essglobal: http://purl.org/essglobal/vocab/v1.0/
+  "
+  typeof="essglobal:ProductOrService">
+
+  <div id="product-category">
+    <%= render :partial => 'manage_products/display_category' %>
+  </div>
 
   <div id='product-name'>
     <%= render :partial => 'manage_products/display_name' %>
@@ -46,15 +57,17 @@
       <div id='product-description'>
         <%= render :partial => 'manage_products/display_description' %>
       </div>
-      <div id='product-inputs'>
-        <%= render :partial => 'manage_products/display_inputs' %>
-      </div>
-      <% if @product.price_described? || @allowed_user %>
-        <div id='product-price-details'>
-          <%= render :partial => 'manage_products/display_price_details' %>
-          <%= render :partial => 'manage_products/price_details_button' %>
+      <div property="essglobal:isComposedBy" typeof="essglobal:CostComposition">
+        <div id='product-inputs'>
+          <%= render :partial => 'manage_products/display_inputs' %>
         </div>
-      <% end %>
+        <% if @product.price_described? || @allowed_user %>
+          <div id='product-price-details'>
+            <%= render :partial => 'manage_products/display_price_details' %>
+            <%= render :partial => 'manage_products/price_details_button' %>
+          </div>
+        <% end %>
+      </div>
 
       <% plugins_tabs.each do |tab| %>
         <div id='<%=tab[:id]%>'><%= raw tab[:content] %></div>
@@ -63,6 +76,8 @@
   <% end %>
 
 </div>
+<!-- END PRODUCT -->
+<%= add_zoom_to_images %>
 
 <% button_bar do %>
   <%= button_to_function :back, _('Back to the product listing'), "catalog.product.back(#{params[:rank]})" %>
