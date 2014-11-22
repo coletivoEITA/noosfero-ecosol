@@ -17,6 +17,14 @@ platform :ruby do
   gem 'pg',                     '~> 0.13.2'
   gem 'rmagick',                '~> 2.13.1'
   gem 'thin'
+
+  gem 'unicode'
+
+  group :production do
+    gem 'unicorn'
+    gem 'rainbows'
+    gem 'unicorn-worker-killer'
+  end
 end
 platform :jruby do
   gem 'activerecord-jdbcpostgresql-adapter'
@@ -24,8 +32,6 @@ platform :jruby do
 end
 
 gem 'eita-jrails', path: 'vendor/plugins/eita-jrails'
-
-gem 'unicode'
 
 gem 'premailer-rails'
 
@@ -35,9 +41,8 @@ gem 'sass'
 gem 'sass-rails'
 
 group :production do
+  gem 'puma'
   gem 'dalli', '~> 2.7.0'
-  gem 'unicorn'
-  gem 'unicorn-worker-killer'
   gem 'rack-cache'
 end
 
