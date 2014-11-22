@@ -13,6 +13,8 @@ gem 'exception_notification',   '~> 4.0.1'
 gem 'gettext',                  '~> 2.2.1', :require => false, :group => :development
 gem 'locale',                   '~> 2.0.5'
 
+gem 'assets_live_compile'
+
 platform :ruby do
   gem 'pg',                     '~> 0.13.2'
   gem 'rmagick',                '~> 2.13.1'
