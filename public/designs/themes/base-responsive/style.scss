@@ -371,7 +371,7 @@ div#notice {
 /*************************** Login block *****************************/
 
 .login-box {
-  padding: 0px;
+  padding: 15px;
 }
 
 .login-box-content {
@@ -1916,4 +1916,13 @@ body {
 .nav > li > a {
   padding-left: 7px;
   padding-right: 7px;
+}
+
+#content .automatic-abstract-thumb, 
+#content #boxes .container-1 .article-block img.automatic-abstract-thumb, 
+#content #article .article-body img.automatic-abstract-thumb {
+  float: left;
+  max-width: 100px;
+  max-height: 100px;
+  margin: 5px 5px 5px 0px;
 }
