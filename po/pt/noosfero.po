@@ -4742,7 +4742,7 @@ msgstr "<span class='or'>ou</span> <span class='signup'>%s</span>"
 
 #: app/views/layouts/_user.html.erb:18
 msgid "Sign up"
-msgstr "Registre-se"
+msgstr "Criar conta"
 
 #: app/views/layouts/_user.html.erb:24
 msgid "Press <strong>Enter</strong> to send the search query."
@@ -7882,7 +7882,7 @@ msgstr ""
 
 #: app/views/account/index_anonymous.html.erb:10
 msgid "Sign up."
-msgstr "Registre-se."
+msgstr "Criar conta."
 
 #: app/views/account/index_anonymous.html.erb:11
 msgid ""
@@ -12523,12 +12523,12 @@ msgid "Callback URI"
 msgstr "URI de retorno (callback)"
 
 #: plugins/oauth/views/oauth/_signin.html.erb:1
-msgid "Login with:"
-msgstr "Entrar com:"
+msgid "...or login with:"
+msgstr "...ou entrar com:"
 
 #: plugins/oauth/views/oauth/_signin.html.erb:11
 msgid "Developer signin"
-msgstr "Entrada para desenvolvedor"
+msgstr "Login de testes oauth"
 
 #: plugins/oauth/views/oauth_plugin_admin_providers/_index.html.erb:2
 msgid "Register providers to use OAuth authentication for login."
@@ -14042,7 +14042,7 @@ msgstr "Transferência bancária"
 #~ msgstr "Destruir"
 
 #~ msgid "Signup"
-#~ msgstr "Registre-se"
+#~ msgstr "Criar conta"
 
 #~ msgid "Go to the homepage"
 #~ msgstr "Ir para a página inicial do site."
