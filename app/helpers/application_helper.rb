@@ -467,7 +467,6 @@ module ApplicationHelper
   def profile_image(profile, size=:portrait, opt={})
     return '' if profile.nil?
     opt[:alt]   ||= profile.name()
-    opt[:title] ||= ''
     opt[:class] ||= ''
     opt[:class] += ( profile.class == Person ? ' photo' : ' logo' )
     image_tag(profile_icon(profile, size), opt )
