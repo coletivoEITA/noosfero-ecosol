@@ -18,7 +18,8 @@ noosfero.modal = {
 
   resize: function(){
     var width = $('#noosferoModalContent').children().outerWidth(true);
-    $('#noosferoModal .modal-dialog').css('width', width)
+    if (width > 500)
+      $('#noosferoModal .modal-dialog').css('width', width)
   },
 
   watchClass: function() {
