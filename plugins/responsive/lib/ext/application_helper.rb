@@ -356,6 +356,11 @@ module ApplicationHelper
       end
       form_for(name, { builder: NoosferoFormBuilder }.merge(options), &proc)
     end
+  
+  # TODO: Make optional fields compliant to horizontal form
+  #  def optional_field profile, name, field_html = nil, only_required = false, &block
+  #  end
+  
   end
 
   include ResponsiveChecks
