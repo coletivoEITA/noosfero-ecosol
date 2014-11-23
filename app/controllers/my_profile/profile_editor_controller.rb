@@ -38,6 +38,7 @@ class ProfileEditorController < MyProfileController
   end
 
   def disable
+    @to_disable = profile
     if request.post? && params[:confirmation]
       unless profile.update_attribute :enabled, false
         session[:notice] = _('%s was not disabled.') % profile.name
