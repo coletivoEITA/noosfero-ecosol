@@ -7,26 +7,40 @@ noosfero.modal = {
     return jQuery('#noosferoModalContent')
   },
 
-  watchClass: function() {
-    jQuery(function($) {
-      $(document).delegate('.modal-toggle', 'click', function() {
-        var url = $(this).attr('href')
-        noosfero.modal.url(url)
-
-        return false;
-      });
-
-      $(document).delegate('.modal-close', 'click', function() {
-        noosfero.modal.close();
-        return false;
-      });
-      return false;
-    });
+  init: function() {
+    noosfero.modal.watchClass();
   },
 
-  url: function (url) {
-    noosfero.modal.content().empty().load(url);
-    noosfero.modal.el().modal();
+  show: function(options) {
+    noosfero.modal.el().modal(options);
+    noosfero.modal.resize();
+  },
+
+  resize: function(){
+    var width = $('#noosferoModalContent').children().outerWidth(true);
+    $('#noosferoModal .modal-dialog').css('width', width)
+  },
+
+  watchClass: function() {
+    $(document).delegate('.modal-toggle', 'click', function() {
+      var url = $(this).attr('href')
+      noosfero.modal.url(url)
+
+      return false;
+    });
+
+    $(document).delegate('.modal-close', 'click', function() {
+      noosfero.modal.close();
+      return false;
+    });
+    return false;
+  },
+
+  url: function (url, options) {
+    noosfero.modal.content().empty().load(url, function() {
+      noosfero.modal.resize();
+    });
+    noosfero.modal.show(options);
   },
 
   inline: function(href, options) {
@@ -37,7 +51,7 @@ noosfero.modal = {
 
   html: function(html, options) {
     noosfero.modal.content().html(html)
-    noosfero.modal.el().modal(options)
+    noosfero.modal.show(options);
   },
 
   close: function(){
@@ -46,5 +60,7 @@ noosfero.modal = {
 
 };
 
-noosfero.modal.watchClass();
+jQuery(function($) {
+  noosfero.modal.init();
+})
 

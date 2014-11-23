@@ -181,6 +181,7 @@ input.button.with-text.icon-cart,
 
 #cart-request-box {
   width: 690px;
+  overflow: hidden;
 }
 #cart-request-box a {
   font-size: smaller;
@@ -230,7 +231,7 @@ input.button.with-text.icon-cart,
 
 #cart-items-table {
   margin-left: 285px;
-  width: 400px
+  width: auto;
 }
 
 .cart-table-quantity {
