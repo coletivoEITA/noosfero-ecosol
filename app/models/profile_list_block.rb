@@ -48,7 +48,7 @@ class ProfileListBlock < Block
       count=0
       list = profiles.map {|item|
                count+=1
-               send(:profile_image_link, item, :minor )
+               send(:profile_image_link, item, :thumb )
              }.join("\n  ")
       if list.empty?
         list = content_tag 'div', _('None'), :class => 'common-profile-list-block-none'
