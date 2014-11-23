@@ -148,3 +148,9 @@
 .oauth-login-icon {
   width: 20px;
   height: 20px; }
+
+#oauth-login-options {
+  float: right;
+  font-size: 10px;
+  font-style: italic; 
+}
