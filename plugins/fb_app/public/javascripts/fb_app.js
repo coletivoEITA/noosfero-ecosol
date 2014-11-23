@@ -4,7 +4,7 @@ fb_app = {
   products: {
     fix_popins: function() {
       jQuery('.zoomify-image').removeClass('.zoomify-image').attr({
-        onclick: 'jQuery.colorbox({top: jQuery(this).offset().top-30, href: this.href}); return false',
+        onclick: 'noosfero.modal.inline(this.href); return false',
       })
     },
   },
@@ -72,13 +72,13 @@ fb_app = {
 
     close: function(evt) {
      if (evt != null && evt != void 0) { evt.preventDefault(); evt.stopPropagation();}
-      jQuery.colorbox.close()
+      noosfero.modal.close()
       jQuery('#content').html('').addClass('loading')
       window.location.href = fb_app.current_url
     },
 
     cancel: function() {
-      jQuery.colorbox.close()
+      noosfero.modal.close()
     },
 
     selected_empreendimento: null,

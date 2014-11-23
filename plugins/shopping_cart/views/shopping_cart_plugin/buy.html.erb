@@ -1,7 +1,7 @@
 <div id='cart-request-box' class="popin">
   <h1>
     <%= _('Shopping checkout') %>
-    <%= button_to_function 'back', _("haven't finished yet: back to shopping"), 'cart.hide(); jQuery.colorbox.close()', :class => 'cart-popin-close'  %>
+    <%= button_to_function 'back', _("haven't finished yet: back to shopping"), 'cart.hide(); noosfero.modal.close()', :class => 'cart-popin-close'  %>
   </h1>
 
   <%= form_for(:customer, :url => {:action => 'send_request'},

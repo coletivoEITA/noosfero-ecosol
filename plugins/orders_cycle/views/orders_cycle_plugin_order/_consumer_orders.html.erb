@@ -26,7 +26,7 @@
 <% else %>
   <% if @consumer.nil? %>
     <% message = t('views.order._consumer_orders.to_place_an_order_you') % {
-      :login => colorbox_link_to(t('views.order._consumer_orders.login'), login_url, :id => 'link_login'),
+      :login => modal_link_to(t('views.order._consumer_orders.login'), login_url, :id => 'link_login'),
       :signup => link_to(t('views.order._consumer_orders.sign_up'), :controller => 'account', :action => 'signup'),
     } %>
   <% else %>

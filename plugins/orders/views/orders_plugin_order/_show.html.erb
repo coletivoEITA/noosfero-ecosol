@@ -20,7 +20,7 @@
       <% if @admin %>
         <%# link_to t('orders_plugin.views.admin._edit.edit_on_the_order_pag'), {:controller => :orders_plugin_order, :action => :edit, :id => order.id}, :target => '_blank', :class => 'action-button' %>
 
-        <%= colorbox_link_to t('orders_plugin.views.admin._edit.message_to_actor') % {:actor => t("terms.#{other_actor_name}.singular")},
+        <%= modal_link_to t('orders_plugin.views.admin._edit.message_to_actor') % {:actor => t("terms.#{other_actor_name}.singular")},
           {:controller => :orders_plugin_message, :action => :new_to_consumer_for_order, :order_id => order.id}, :class => 'action-button' %>
 
         <% if order.next_status actor_name %>

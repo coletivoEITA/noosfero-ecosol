@@ -154,11 +154,6 @@ orders_cycle = {
     }
   },
 
-  colorbox: function (options) {
-    options.innerWidth = 500;
-    jQuery.colorbox(options);
-  },
-
   ajaxifyPagination: function(selector) {
     jQuery(selector).find(".pagination a").click(function() {
       loading_overlay.show(selector);

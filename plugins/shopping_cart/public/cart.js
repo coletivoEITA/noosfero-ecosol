@@ -197,7 +197,7 @@ function Cart(config) {
   }
   Cart.prototype.toggle = function() {
     if (this.empty && this.hasPreviousOrders)
-      jQuery.colorbox({href: '/plugin/shopping_cart/repeat?profile_id='+cart.profileId})
+      noosfero.modal.url('/plugin/shopping_cart/repeat?profile_id='+cart.profileId)
     else
       this.visible ? this.hide(true) : this.show(true)
   }
@@ -226,7 +226,7 @@ function Cart(config) {
   Cart.prototype.repeatChoose = function(event, button) {
     var order_id = jQuery(button).attr('data-order-id')
     this.repeat(order_id, function(data) {
-      jQuery.colorbox.close()
+      noosfero.modal.close()
       cart.show(true);
     })
     event.stopPropagation()
@@ -234,7 +234,7 @@ function Cart(config) {
   }
 
   Cart.prototype.clearOrdersSession = function() {
-    jQuery.colorbox.close()
+    noosfero.modal.close()
     cart.hasPreviousOrders = false;
     cart.setQuantity(0)
   }

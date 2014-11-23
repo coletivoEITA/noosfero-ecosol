@@ -20,7 +20,7 @@
         <div id='cycle-delivery-options' class="subtitle">
           <%= render :partial => 'delivery_plugin_option/index', :locals => {:owner => @cycle} %>
         </div>
-        <%= colorbox_link_to t('views.cycle._edit_fields.add_method'), { :controller => :orders_cycle_plugin_delivery_option, :action => :select, :owner_id => @cycle.id, :owner_type => @cycle.class.name }, :class => 'cycle-add-delivery-option subtitle'  %>
+        <%= modal_link_to t('views.cycle._edit_fields.add_method'), { :controller => :orders_cycle_plugin_delivery_option, :action => :select, :owner_id => @cycle.id, :owner_type => @cycle.class.name }, :class => 'cycle-add-delivery-option subtitle'  %>
       </div>
 
       <div class="clean"></div>
