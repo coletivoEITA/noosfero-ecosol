@@ -10647,9 +10647,8 @@ msgstr "Pessoas aleatórias"
 
 #: plugins/people_block/lib/people_block_base.rb:17
 #: plugins/people_block/lib/people_block.rb:12
-#, fuzzy
 msgid "{#} People"
-msgstr "Pessoas"
+msgstr "{#} Pessoas"
 
 #: plugins/people_block/lib/members_block.rb:11
 #, fuzzy
