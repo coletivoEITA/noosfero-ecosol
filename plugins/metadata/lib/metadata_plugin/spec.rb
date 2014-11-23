@@ -6,7 +6,9 @@ class MetadataPlugin::Spec
       variable: :@product,
     },
     content_viewer: {
-      variable: :@page,
+      variable: proc do
+        if profile and profile.home_page == @page then @profile else @page end
+      end,
     },
     # fallback
     profile: {

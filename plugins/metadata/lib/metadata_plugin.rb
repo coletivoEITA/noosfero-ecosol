@@ -26,7 +26,10 @@ class MetadataPlugin < Noosfero::Plugin
       options ||= MetadataPlugin::Spec::Controllers[:profile] if controller.is_a? ProfileController
       options ||= MetadataPlugin::Spec::Controllers[:environment]
       return unless options
-      return unless object = instance_variable_get(options[:variable])
+      return unless object = case variable = options[:variable]
+        when Proc then instance_exec(&variable) rescue nil
+        else instance_variable_get variable
+        end
       return unless metadata = object.class.const_get(:Metadata)
       metadata.map do |property, contents|
         contents = contents.call object rescue nil if contents.is_a? Proc
