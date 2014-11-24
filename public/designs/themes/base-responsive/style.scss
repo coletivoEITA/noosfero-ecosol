@@ -1934,3 +1934,7 @@ body {
   max-height: 100px;
   margin: 5px 5px 5px 0px;
 }
+
+input.ui-autocomplete-input {
+  width: 100% !important;
+}
