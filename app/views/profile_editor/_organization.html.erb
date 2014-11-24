@@ -41,7 +41,7 @@
     <div id="profile-identifier-formitem">
       <%= required labelled_form_field( _('Internet Address (URL)'),
             content_tag('code',
-              url_for(profile.url).gsub(/#{profile.identifier}$/, '') +
+              url_for(profile.url).gsub(/#{profile.identifier}\/$/, '') +
               text_field(:profile_data, :identifier, :onchange => "warn_value_change()", :size => 25)
             ) +
             content_tag('div',
