@@ -26,7 +26,10 @@ jQuery('#navbar-user-collapse').live('shown.bs.collapse',function(evt) {
     jQuery('#homepage-link').dropdown('toggle');
 });
 
-
+jQuery(document).on('typeahead:opened', function(event, datum) {
+  var width = $(event.target).outerWidth();
+  $('.tt-dropdown-menu').width(width);
+});
 
 /* dropdown hover */
 
