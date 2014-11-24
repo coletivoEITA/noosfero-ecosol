@@ -2780,7 +2780,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   top: inherit !important;
 }
 #catalog-search-input {
-  max-width: 100%;
+  width: 150px;
   color: #555;
   height: 28px;
   padding: 0px 0px 0px 10px;
