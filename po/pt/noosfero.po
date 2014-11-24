@@ -2364,6 +2364,27 @@ msgstr "Tem certeza que quer visitar este web site?"
 msgid "Start"
 msgstr "Início"
 
+#:
+msgid "order by"
+msgstr "ordenar por"
+
+#:
+msgid "Lowest price"
+msgstr "Menor preço"
+
+#:
+msgid "Newest"
+msgstr "Mais recentes"
+
+#:
+msgid "Last updated"
+msgstr "Últimas atualizações"
+
+#:
+msgid "repeat order"
+msgstr "repetir pedido"
+
+
 #: app/helpers/categories_helper.rb:4
 msgid "General Category"
 msgstr "Categoria geral"
@@ -4846,6 +4867,27 @@ msgstr "qualificadores"
 msgid "product unavailable"
 msgstr "produto indisponível"
 
+#: /app/views/catalog/_form.html.erb:119
+msgid "All categories"
+msgstr "Todas as categorias"
+
+#: /app/views/catalog/_form.html.erb:119
+msgid "All qualifiers"
+msgstr "Todos os qualificadores"
+
+#: /app/views/catalog/_form.html.erb:119
+msgid "type your search..."
+msgstr "buscar..."
+
+#: app/views/catalog/_results.html.erb:119
+msgid "<b>Total:</b> %{number} products"
+msgstr "<b>Total:</b> %{number} produtos"
+
+#: app/views/catalog/_results.html.erb:119
+msgid "Your search returned %{number} products"
+msgstr "Sua busca resultou em %{number} produtos"
+
+
 #: app/views/content_viewer/forum_page.html.erb:11
 #: app/views/content_viewer/blog_page.html.erb:21
 msgid "(no posts)"
@@ -7022,8 +7064,8 @@ msgid "Remove member"
 msgstr "Remover membro"
 
 #: app/views/events/events.html.erb:1
-msgid "%s's events"
-msgstr "Eventos de %s"
+msgid "Events at %s"
+msgstr "Eventos em %s"
 
 #: app/views/events/events.html.erb:4
 msgid "Back to %s"
@@ -11244,6 +11286,125 @@ msgid "Clean basket"
 msgstr "Limpar cesto"
 
 #: plugins/shopping_cart/views/cart.html.erb:8
+msgid "Basket is empty"
+msgstr "Cesto vazio"
+
+#: plugins/shopping_cart/views/cart.html.erb:8
+msgid "Shopping checkout"
+msgstr "Finalizar pedido"
+
+#: plugins/shopping_cart/views/cart.html.erb:8
+msgid "haven't finished yet: back to shopping"
+msgstr "ainda não concluí: voltar às compras"
+
+#: plugins/shopping_cart/views/cart.html.erb:11
+msgid "Show basket"
+msgstr "Mostrar cesto"
+
+#: plugins/shopping_cart/views/cart.html.erb:12
+msgid "Hide basket"
+msgstr "Esconder cesto"
+
+#: plugins/shopping_cart/views/cart.html.erb:19
+msgid "Ups... I had a problem to load the basket list."
+msgstr "Opa... Eu achei um problem ao carregar o cesto de compras."
+
+#: plugins/shopping_cart/views/cart.html.erb:21
+msgid "Did you want to reload this page?"
+msgstr "Você quer recarregar essa página?"
+
+#: plugins/shopping_cart/views/cart.html.erb:24
+msgid "Sorry, you can't have more then 100 kinds of items on this basket."
+msgstr "Desculpe, você não pode ter mais de 100 tipos de itens no cesto."
+
+#: plugins/shopping_cart/views/cart.html.erb:26
+msgid "Oops, you must wait your last request to finish first!"
+msgstr "Opa, você deve esperar a sua última requisição finalizar primeiro!"
+
+#: plugins/shopping_cart/views/cart.html.erb:27
+msgid "Are you sure you want to remove this item?"
+msgstr "Tem certeza de que quer excluir este ítem?"
+
+#: plugins/shopping_cart/views/cart.html.erb:28
+msgid "Are you sure you want to clean your basket?"
+msgstr "Tem certeza que quer limpar seu cesto?"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin/send_request.html.erb:1
+msgid "Request sent successfully check your email."
+msgstr "Requisição enviada com sucesso. Cheque seu email."
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:35
+#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:22
+#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:20
+#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:10
+msgid "shopping_cart|Change"
+msgstr "Troco"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_products_list.html.erb:7
+#: plugins/bsc/views/bsc_plugin_myprofile/_contract_form.html.erb:23
+#: plugins/bsc/views/bsc_plugin_myprofile/view_contract.html.erb:27
+msgid "Quantity"
+msgstr "Quantidade"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:1
+msgid "Basket options"
+msgstr "Opções do cesto"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:4
+msgid "Enable shopping basket"
+msgstr "Habilitar cesto de compras"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:5
+msgid "Enable delivery fields on orders"
+msgstr "Ativar campos de entrega para pedidos"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:10
+msgid "Option"
+msgstr "Opção"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:18
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:24
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:32
+msgid "Remove option"
+msgstr "Remover opção"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:27
+msgid "ADD NEW OPTION"
+msgstr "ADCIONAR NOVA OPÇÂO"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:36
+msgid "Order's minimum price for free delivery:"
+msgstr "Preço mínimo do pedido para entrega grátis:"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:37
+msgid "Leave empty to always charge the delivery."
+msgstr "Deixe vazio para sempre cobrar a entrega."
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/reports.html.erb:1
+msgid "Purchase Reports"
+msgstr "Relatórios de Compra"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/reports.html.erb:12
+msgid "to"
+msgstr "para"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/reports.html.erb:19
+msgid "Products list"
+msgstr "Lista de produtos"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/reports.html.erb:20
+msgid "Orders list"
+msgstr "Lista de pedidos"
+
+#: plugins/shopping_cart/views/cart.html.erb:4
+msgid "Basket"
+msgstr "Cesto"
+
+#: plugins/shopping_cart/views/cart.html.erb:5
+msgid "Clean basket"
+msgstr "Limpar cesto"
+
+#: plugins/shopping_cart/views/cart.html.erb:8
 msgid "Shopping checkout"
 msgstr "Finalizar pedido"
 
@@ -14392,272 +14553,4 @@ msgstr "Transferência bancária"
 #~ msgstr "{#} Pessoas ou Grupos"
 
 #, fuzzy
-#~ msgid "Communities more recent"
-#~ msgstr "Comunidades"
-
-#, fuzzy
-#~ msgid "Communities more popular"
-#~ msgstr "Comunidades"
-
-#~ msgid "Favorite enterprises"
-#~ msgstr "Empreendimentos favoritos"
-
-#~ msgid "%s's favorite enteprises"
-#~ msgstr "Empreendimentos favoritos de %s"
-
-#~ msgid "%s environment system"
-#~ msgstr "Sistema do ambiente %s"
-
-#~ msgid "Register a new Enterprise"
-#~ msgstr "Registrar novo Empreendimento"
-
-#~ msgid "Is it relevant to product's price?"
-#~ msgstr "É relevante para o preço do produto?"
-
-#~ msgid "consumption"
-#~ msgstr "consumo"
-
-#~ msgid "Aditional specifications"
-#~ msgstr "Especificações adicionais"
-
-#~ msgid "%s's products/services listing"
-#~ msgstr "Lista de produtos/serviços de %s"
-
-#~ msgid "Raw material succesfully created"
-#~ msgstr "Matéria-prima criada com sucesso."
-
-#~ msgid "Raw material succesfully removed"
-#~ msgstr "Matéria-prime removida com sucesso"
-
-#~ msgid "Could not remove the raw material"
-#~ msgstr "Não foi possível remover a matéria-prime"
-
-#~ msgid "Raw material succesfully updated"
-#~ msgstr "Matéria-prima alterada com sucesso"
-
-#~ msgid "Could not update the raw material"
-#~ msgstr "Não pôde modificar a matéria-prima"
-
-#~ msgid "A short name by which the organization is know."
-#~ msgstr "Um nome curto pelo qual a organização é conhecida"
-
-#~ msgid "Separate tags with commas."
-#~ msgstr "Separe os marcadores com vírgulas."
-
-#~ msgid ""
-#~ "Tags are important to new users, they'll be able to find your new "
-#~ "community more easily."
-#~ msgstr ""
-#~ "Tags são importantes para novos usuários, ele encontrarão a sua "
-#~ "comunidade mais facilmente."
-
-#~ msgid "Listing raw materials"
-#~ msgstr "Listando matérias-primas"
-
-#~ msgid "Raw material"
-#~ msgstr "Matéria-prima"
-
-#~ msgid "Are you sure, you want to remove this raw material from your list"
-#~ msgstr "Tem certeza que quer remover esta matéria-prima da sua lista"
-
-#~ msgid "back"
-#~ msgstr "voltar"
-
-#~ msgid "destroy"
-#~ msgstr "destruir"
-
-#~ msgid "edit"
-#~ msgstr "editar"
-
-#~ msgid "Raw material:"
-#~ msgstr "Matéria-prima:"
-
-#~ msgid "Aditional specifications:"
-#~ msgstr "Especificações adicionais:"
-
-#~ msgid "Select a subcategory:"
-#~ msgstr "Selecione uma subcategoria"
-
-#~ msgid "Use as description in RSS Feed:"
-#~ msgstr "Usar como descrição no feed RSS:"
-
-#~ msgid "About:"
-#~ msgstr "Sobre:"
-
-#~ msgid "%s wants to connect to you as a friend."
-#~ msgstr "%s quer se conectar com você como amigo."
-
-#~ msgid "Identifier:"
-#~ msgstr "Identificador: "
-
-#~ msgid "Acronym:"
-#~ msgstr "Sigla:"
-
-#~ msgid "Foundation year:"
-#~ msgstr "Ano de fundação:"
-
-#~ msgid "Change the information about the enterprise"
-#~ msgstr "Altera a informação sobre o empreendimento"
-
-#~ msgid "Remove the enterprise from the system"
-#~ msgstr "Excluir o empreendimento do sistema"
-
-#~ msgid "Activate an approved enterprise"
-#~ msgstr "Ativa um empreendimento aprovado"
-
-#~ msgid "Validation Entity"
-#~ msgstr "Entidade de Validação"
-
-#~ msgid "Edit enterprise informations"
-#~ msgstr "Editar informações do empreendimento"
-
-#~ msgid "Update"
-#~ msgstr "Atualizar"
-
-#~ msgid "This menu gives you access to your personal functionalities."
-#~ msgstr "Este menu te dá acesso às suas funcionalidades pessoais."
-
-#~ msgid "Go to your home page."
-#~ msgstr "Ir para sua página inicial."
-
-#~ msgid ""
-#~ "Control panel: change your picture, edit your personal information, "
-#~ "create content or change the way your home page looks."
-#~ msgstr ""
-#~ "Painel de controle: altere sua foto, edite suas informações pessoais, "
-#~ "crie conteúdo ou altere o visual da sua página."
-
-#~ msgid ""
-#~ "This link takes you out of the system. You should logout if other people "
-#~ "are willing to use the same computer after you."
-#~ msgstr ""
-#~ "Este link te leva pra fora do sistema. Você deve sair se outras pessoas "
-#~ "vão usar o mesmo computador depois de você."
-
-#~ msgid "Clicking on this button will remove your friend relation with %s."
-#~ msgstr "Clicando neste botão removerá sua relação de amizade com %s."
-
-#~ msgid "How to proceed"
-#~ msgstr "Como proceder"
-
-#~ msgid "Clicking on this button will let you send a message to %s."
-#~ msgstr "Clicar neste botão permite mandar uma mensagem para %s."
-
-#~ msgid ""
-#~ "You can type the first letters of an existing group and have the system "
-#~ "present you the available options, or you can type the name of a new "
-#~ "group if you want."
-#~ msgstr ""
-#~ "Você pode digitar as primeiras letras de um grupo que já existe e deixar "
-#~ "o sistema te apresentar as opções disponíveis, ou então digitar o nome de "
-#~ "um novo grupo de você quiser."
-
-#~ msgid "We need to be sure that this is your enterprise"
-#~ msgstr "Nós precisamos ter certeza que este empreendimento é seu"
-
-#~ msgid ""
-#~ "If you are a registered user, enter your username and password to be "
-#~ "authenticated."
-#~ msgstr ""
-#~ "Se você é um usuário registrado, informe seu login e senha para ser "
-#~ "autenticado."
-
-#~ msgid ""
-#~ "To join on this environment, click on \"<b>I want to be an user!</b>\"."
-#~ msgstr ""
-#~ "Para entrar neste ambiente, clique em \"<b>Quero ser um usuário!</b>\"."
-
-#~ msgid ""
-#~ "If you forgot your password, click on \"<b>I forgot my password!</b>\" "
-#~ "link."
-#~ msgstr ""
-#~ "Se você esqueceu sua senha, clique no link \"<b>Eu esqueci a minha senha!"
-#~ "</b>\"."
-
-#~ msgid ""
-#~ "To change your password, please fill the form on this screen using your "
-#~ "username and your e-mail. You will receive a message at that e-mail "
-#~ "address with a web address you can access to create a new password."
-#~ msgstr ""
-#~ "Para mudar sua senha, por favor preencha o formulário nesta tela usando o "
-#~ "seu username e o seu e-mail. Você receberá uma mensagem nesse endereço de "
-#~ "e-mail com um endereço web que você pode acessar para criar uma nova "
-#~ "senha."
-
-#~ msgid "Send change password procedure by e-mail"
-#~ msgstr "Mande a mudança da senha pelo e-mail"
-
-#~ msgid ""
-#~ "Fill all these fields to join in this environment. <p/> If you forgot "
-#~ "your password, do not create a new account, click on the \"<b>I forgot my "
-#~ "password!</b>\" link. ;-)"
-#~ msgstr ""
-#~ "Preencha todos os campos para entrar neste ambiente.<p/> Se você esqueceu "
-#~ "sua senha, não crie uma nova conta, clique no link \"<b>Eu esqueci minha "
-#~ "senha!</b>\". ;-)"
-
-#~ msgid "Here goes the nickname that you give on the registration."
-#~ msgstr "Aqui vai o apelido que você informou no registro."
-
-#~ msgid "your password is personal, protect it."
-#~ msgstr "sua senha é pessoal, proteja-a."
-
-#~ msgid ""
-#~ "Click here to enter your username and password and be recognized by the "
-#~ "system."
-#~ msgstr ""
-#~ "Clique aqui para informar seu nome de usuário e senha e ser reconhecido "
-#~ "pelo sistema."
-
-#~ msgid "Here are all <b>%s</b>'s friends."
-#~ msgstr "Aqui estão todos os amigos de <b>%s</b>."
-
-#~ msgid "Back to the page where you come from."
-#~ msgstr "De volta à página de onde você veio."
-
-#~ msgid "Here are all <b>%s</b>'s favorite enterprises."
-#~ msgstr "Aqui estão todos os empreendimentos favoritos de <b>%s</b>"
-
-#~ msgid "Here are all <b>%s</b>'s members."
-#~ msgstr "Aqui estão todos os integrantes de <b>%s</b>."
-
-#~ msgid "Here are all <b>%s</b>'s communities."
-#~ msgstr "Aqui estão todas a comunidades de <b>%s</b>"
-
-#~ msgid "Here are all <b>%s</b>'s enterprises."
-#~ msgstr "Aqui estão todos os empreendimentos de <b>%s</b>"
-
-#~ msgid ""
-#~ "Validation info is the information the enterprises will see about how "
-#~ "your organization processes the enterprises validations it receives: "
-#~ "validation methodology, restrictions to the types of enterprises the "
-#~ "organization validates etc."
-#~ msgstr ""
-#~ "Informações de validação são as informações que os empreendimentos verão "
-#~ "sobre como sua organização processa as validações de empreendimento que "
-#~ "ela recebe: metodologia de validação, restrição de tipos de "
-#~ "empreendimentos que a organização valida etc."
-
-#~ msgid "Custom form #{@form.name} was successfully created."
-#~ msgstr "O formulário #{@form.name} foi criado com sucesso."
-
-#~ msgid "Custom form #{@form.name} was successfully updated."
-#~ msgstr "O formulário #{@form.name} foi atualizado com sucesso."
-
-#~ msgid "textilearticle"
-#~ msgstr "textilearticle"
-
-#~ msgid "Not informed"
-#~ msgstr "Não informado"
-
-#~ msgid "Thanks for signing up!"
-#~ msgstr "Obrigado por se registrar!"
-
-#~ msgid "%s was removed."
-#~ msgstr "%s foi removido."
-
-#~ msgid "Available:"
-#~ msgstr "Disponível:"
-
-#~ msgid "Category: %s "
-#~ msgstr "Categoria: %s"
+#~ msgid "Communities more 
