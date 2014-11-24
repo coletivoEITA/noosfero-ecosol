@@ -3773,6 +3773,10 @@ msgstr "Ciência Política"
 msgid "Accounting and Actuarial Science"
 msgstr "Ciências Contábeis e Atuariais"
 
+#: app/models/tiny_mce_article.rb:8
+msgid "Add a new text article."
+msgstr "Adicione um novo artigo de texto."
+
 #: app/helpers/profile_editor_helper.rb:20
 msgid "Morphologic Sciences"
 msgstr "Ciências Morfológicas"
@@ -3951,6 +3955,14 @@ msgstr "Petrologia"
 #: app/helpers/profile_editor_helper.rb:64
 msgid "Production"
 msgstr "Produção"
+
+#: app/models/textile_article.rb:4
+msgid "Text article for people with visual impairement"
+msgstr "Artigo para pessoas com deficiência visual"
+
+#: app/models/textile_article.rb:8
+msgid "With special editor for visually impaired users."
+msgstr "Com editor especial para pessoas com deficiência visual."
 
 #: app/helpers/profile_editor_helper.rb:65
 msgid "Psychology"

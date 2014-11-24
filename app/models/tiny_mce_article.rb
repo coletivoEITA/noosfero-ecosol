@@ -3,11 +3,11 @@ require 'white_list_filter'
 class TinyMceArticle < TextArticle
 
   def self.short_description
-    _('Text article with visual editor')
+    _('Article')
   end
 
   def self.description
-    _('Not accessible for visually impaired users.')
+    _('Add a new text article.')
   end
   
   xss_terminate :only => [  ]
