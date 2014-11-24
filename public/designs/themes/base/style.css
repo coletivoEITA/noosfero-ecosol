@@ -735,6 +735,9 @@ div#notice {
 #catalog-options .twitter-typeahead {
   background-color: #fff;
 }
+#catalog-options > ul {
+    height: auto;
+}
 .catalog-options-select {
     border: 1px solid #ccc;
     border-radius: 3px;
