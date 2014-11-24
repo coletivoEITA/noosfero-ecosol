@@ -19,7 +19,12 @@ class MoveEnterprisesLayoutTemplateToTopLeft < ActiveRecord::Migration
           links_block = left_box.blocks.find{ |b| b.is_a? LinkListBlock }
         end
 
-        enterprise.theme = 'ees' if enterprise.theme == 'cirandas-green'
+        if enterprise.theme == 'cirandas-green'
+          enterprise.theme = 'ees'
+          enterprise.custom_header ||= ''
+          enterprise.custom_header += '<img src="/designs/themes/ees/images/paisagem.jpg"/>'
+        end
+
         enterprise.layout_template = 'topleft'
         enterprise.save!
         unless links_block
