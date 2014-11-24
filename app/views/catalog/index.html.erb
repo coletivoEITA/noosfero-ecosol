@@ -10,8 +10,6 @@
 
   <h1><%= _('Products/Services') %></h1>
 
-  <%= breadcrumb(@category) if params[:level] %>
-
   <%= content_for :product_page do %>
     <%= render 'catalog/results' %>
   <% end %>
