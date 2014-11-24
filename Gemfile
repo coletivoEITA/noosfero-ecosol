@@ -45,6 +45,7 @@ gem 'sass-rails'
 group :production do
   gem 'puma'
   gem 'dalli', '~> 2.7.0'
+  gem 'redis-rails'
   gem 'rack-cache'
 end
 
