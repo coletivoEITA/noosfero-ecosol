@@ -3130,9 +3130,17 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   min-height: 35px;
   padding-bottom: 5px;
 }
-#display-product-info .field-value {
+#display-product-info .field-value,
+#display-product-info .on-sale-price
+{
   font-weight: bold;
   font-size:20px;
+}
+#display-product-info .on-sale .field-value
+{
+  font-weight: normal;
+  font-size:16px;
+  text-decoration: line-through;
 }
 #edit-product-category {
   padding: 15px 5px 10px;
