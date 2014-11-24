@@ -2617,6 +2617,18 @@ msgstr "Conteúdos"
 msgid "Contents menu"
 msgstr "Menu de conteúdos"
 
+#: app/helpers/application_helper.rb
+msgid "All people"
+msgstr "Todas e todos"
+
+#: app/helpers/application_helper.rb
+msgid "All contents"
+msgstr "Todos os conteúdos"
+
+#: app/helpers/application_helper.rb
+msgid "All communities"
+msgstr "Todas as comunidades"
+
 #: app/helpers/application_helper.rb:1057
 msgid "people|More recent"
 msgstr "Mais recentes"
