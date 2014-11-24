@@ -7131,7 +7131,11 @@ msgstr "Apenas artigos filhos do mesmo artigo que o feed"
 msgid "My Blog"
 msgstr "Meu Blog"
 
-#: app/views/cms/_blog.html.erb:42
+#: app/views/profile_editor/_organization.html.erb
+msgid "Internet Address (URL)"
+msgstr "Endereço na internet"
+
+#: app/views/profile_editor/_organization.rhtml:49
 msgid ""
 "You are about to change the address, and this will break external links to "
 "this blog or to posts inside it. Do you really want to change?"

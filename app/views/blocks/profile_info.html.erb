@@ -1,15 +1,17 @@
 <div class="vcard">
 
-<h2 class="<%= profile.class == Person ? 'fn' : 'org' %>"><%= h block.owner.short_name %></h2>
+<h2 class="<%= profile.class == Person ? 'fn' : 'org' %>"><a href="<%= url_for(block.owner.url) %>"><%= h block.owner.short_name(nil) %></a></h2>
 
 <div class="profile-info-picture">
   <div class="profile-info-picture-inner1">
     <span class="profile-info-picture-inner2">
-      <%=
-        profile_image(block.owner, :thumb) +"\n"+
-        profile_sex_icon( profile ) +
-        profile_cat_icons( profile )
-      %>
+      <a href="<%= url_for(block.owner.url) %>">
+        <%=
+          profile_image(block.owner, :thumb) +"\n"+
+          profile_sex_icon( profile ) +
+          profile_cat_icons( profile )
+        %>
+      </a>
     </span>
   </div>
 </div>
