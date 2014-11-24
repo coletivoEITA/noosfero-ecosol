@@ -30,7 +30,7 @@ class MetadataPlugin < Noosfero::Plugin
         when Proc then instance_exec(&variable) rescue nil
         else instance_variable_get variable
         end
-      return unless metadata = object.class.const_get(:Metadata)
+      return unless metadata = (object.class.const_get(:Metadata) rescue nil)
       metadata.map do |property, contents|
         contents = contents.call object rescue nil if contents.is_a? Proc
         next if contents.blank?
