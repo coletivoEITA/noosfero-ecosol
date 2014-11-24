@@ -1,5 +1,6 @@
 .gitignore
 .rbenv-*
+.vagrant
 vendor/rails
 doc/api
 doc/noosfero/plugins
@@ -22,8 +23,13 @@ public/user_themes
 public/designs/themes/default
 public/designs/themes/*
 public/designs/icons/default
+
+public/assets
+
+.sass-cache
 public/javascripts/cache*
 public/stylesheets/cache*
+
 public/plugins
 db/development.db
 db/production.db
@@ -40,9 +46,9 @@ debian/*.debhelper
 debian/files
 debian/noosfero/
 debian/noosfero-apache/
-
-features/plugins
-solr.yml
+features/plugins/*
+plugins/solr/config/solr.yml
 /solr
+/Gemfile.lock
 
 plugins/fb_app/config.yml
