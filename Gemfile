@@ -15,7 +15,7 @@ gem 'locale',                   '~> 2.0.5'
 
 gem 'assets_live_compile'
 
-gem 'new_relic'
+gem 'newrelic_rpm'
 
 platform :ruby do
   gem 'pg',                     '~> 0.13.2'
