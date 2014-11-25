@@ -1,12 +1,7 @@
-require 'iconv'
-require 'rchardet'
-
 class SuppliersPlugin::Import
 
   def self.products consumer, csv
-    encoding = CharDet.detect(csv)['encoding']
     #i = Iconv.new 'UTF-8//IGNORE', 'UTF-8'
-    i = Iconv.new 'UTF-8', encoding
     product_category = consumer.environment.product_categories.find_by_name 'Produtos'
 
     data = {}
@@ -20,10 +15,10 @@ class SuppliersPlugin::Import
     raise 'invalid number of columns' unless header.size == 4
 
     rows.each do |row|
-      supplier_name = i.iconv row[0].to_s.squish
-      product_name = i.iconv row[1].to_s.squish
-      product_unit = i.iconv row[2].to_s.squish
-      product_price = i.iconv row[3].to_s.squish
+      supplier_name = row[0].to_s.squish.encode!('utf-8')
+      product_name = row[1].to_s.squish.encode!('utf-8')
+      product_unit = row[2].to_s.squish.encode!('utf-8')
+      product_price = row[3].to_s.squish.encode!('utf-8')
 
       product_unit = consumer.environment.units.find_by_singular product_unit
 
