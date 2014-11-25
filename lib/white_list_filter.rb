@@ -18,7 +18,6 @@ module WhiteListFilter
       end
       result
     end
-    doc.to_html
   end
 
   module ClassMethods
