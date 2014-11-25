@@ -7,7 +7,7 @@ class MetadataPlugin::Spec
     },
     content_viewer: {
       variable: proc do
-        if profile and profile.home_page == @page then @profile else @page end
+        if profile and profile.home_page_id == @page.id then @profile else @page end
       end,
     },
     # fallback
