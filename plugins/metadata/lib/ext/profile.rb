@@ -6,7 +6,7 @@ class Profile
     'og:type' => "#{MetadataPlugin.og_type_namespace}:#{MetadataPlugin.og_types[:profile]}",
     'og:image' => proc{ |p, c| "#{p.environment.top_url}#{p.image.public_filename}" if p.image },
 	  'og:title' => proc{ |p, c| p.short_name nil },
-    'og:url' => proc{ |p, c| c.url_for p.url },
+    'og:url' => proc{ |p, c| c.og_url_for p.url },
 	  'og:description' => "",
 	  'og:site_name' => "",
 	  'og:updated_time' => proc{ |p, c| p.updated_at.iso8601 },
