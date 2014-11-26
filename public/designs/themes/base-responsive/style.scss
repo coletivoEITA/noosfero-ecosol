@@ -1428,10 +1428,12 @@ div.tooltip-inner {
 }
 
 .controller-profile_editor .control-panel a {
-    width: 180px;
+    width: 190px;
+    font-weight: normal;
+    height: 64px;
 }
 
-@media (max-width: 366px) {
+@media (max-width: 465px) {
   .controller-profile_editor .control-panel a {
       width: 100%;
   }
