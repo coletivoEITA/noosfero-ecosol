@@ -1273,7 +1273,6 @@ hr.pre-posts, hr.sep-posts {
 .box-container-3 .common-profile-list-block .vcard {
   height: 80px;
   width: 64px;
-  overflow: hidden;
 
   a.profile_link {
     width: 58px;
@@ -1946,4 +1945,9 @@ body {
 
 input.ui-autocomplete-input {
   width: 100% !important;
+}
+
+.common-profile-list-block .vcard a, .comment-actions .vcard a {
+  margin: 0px;
+  border-radius: 5px;
 }
