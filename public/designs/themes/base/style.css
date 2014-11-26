@@ -3432,3 +3432,9 @@ div.with_media_panel .formfield input[type="checkbox"] {
   margin: 0px !important;
 }
 
+#catalog-search-input {
+  width: 150px;
+  color: #555;
+  height: 28px;
+  padding: 0px 0px 0px 10px;
+}

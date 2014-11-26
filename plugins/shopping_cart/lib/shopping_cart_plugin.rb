@@ -71,9 +71,9 @@ class ShoppingCartPlugin < Noosfero::Plugin
   def catalog_search_extras_begin
     settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin)
     return unless settings.enabled
-  	lambda do
-    	extend ShoppingCartPlugin::CartHelper
-    	content_tag 'li', render('public/cart'), :class => 'catalog-cart'
+    lambda do
+      extend ShoppingCartPlugin::CartHelper
+      content_tag 'li', render('public/cart'), :class => 'catalog-cart'
     end
   end
 

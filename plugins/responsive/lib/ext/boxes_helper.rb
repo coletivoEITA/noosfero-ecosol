@@ -49,7 +49,7 @@ module BoxesHelper
   def display_topbox_content(box, main_content)
     context = {article: @page, request_path: request.path, locale: locale, params: request.params, controller: controller}
     box_decorator.select_blocks(box, box.blocks.includes(:box), context).map do |item|
-      if item.class.name == 'LinkListBlock'
+      if item.class.name == 'LinkListBlock' and request.params[:controller] != 'profile_design'
         render_linklist_navbar(item)
       else
         display_block item, main_content
