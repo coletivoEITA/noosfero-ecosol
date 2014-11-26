@@ -7,13 +7,13 @@ module ApplicationHelper
 
   module ResponsiveMethods
     FORM_CONTROL_CLASS = "form-control"
-    
+
     def button(type, label, url, html_options = {})
       return super unless theme_responsive?
-      
+
       option = html_options.delete(:option) || 'default'
       size = html_options.delete(:size) || 'xs'
-      the_class = 'with-text btn btn-#{size} btn-#{option} icon-#{type}'
+      the_class = "with-text btn btn-#{size} btn-#{option} icon-#{type}"
       if html_options.has_key?(:class)
         the_class << ' ' << html_options[:class]
       end
@@ -374,11 +374,11 @@ module ApplicationHelper
       end
       form_for(name, { builder: NoosferoFormBuilder }.merge(options), &proc)
     end
-  
+
   # TODO: Make optional fields compliant to horizontal form
   #  def optional_field profile, name, field_html = nil, only_required = false, &block
   #  end
-  
+
   end
 
   include ResponsiveChecks
