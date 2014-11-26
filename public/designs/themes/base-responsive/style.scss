@@ -354,8 +354,11 @@ body, th, td, input {
 }
 
 div#notice {
+  /*Vini, I've removed these styles to fit in small screens, ok?
   right: 50%;
-  margin-right: -470px;
+  margin-right: -470px;*/
+  width: 270px;
+  top: 50px;
 }
 
 /* ==> blocks.css <== */
