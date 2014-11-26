@@ -2225,6 +2225,8 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   height: 130px;
   background-position: 50% 50%;
   background-repeat: no-repeat;
+  width: 100%;
+  background-size: cover;
 }
 .slideshow-block .with-descriptions {
   border: 1px solid #ddd;
