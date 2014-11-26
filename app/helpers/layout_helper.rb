@@ -72,7 +72,7 @@ module LayoutHelper
 
   def addthis_javascript
     if NOOSFERO_CONF['addthis_enabled']
-      '<script src="https://s7.addthis.com/js/152/addthis_widget.js"></script>'
+      "<script src='//s7.addthis.com/js/300/addthis_widget.js#pubid=#{NOOSFERO_CONF['addthis_pub']}'></script>"
     end
   end
 
