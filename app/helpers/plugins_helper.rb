@@ -18,7 +18,7 @@ module PluginsHelper
 
   def plugins_catalog_search_extras_end
     @plugins.dispatch(:catalog_search_extras_end).map do |content|
-       instance_exec(&content)
+      instance_exec(&content)
     end.join
   end
 
