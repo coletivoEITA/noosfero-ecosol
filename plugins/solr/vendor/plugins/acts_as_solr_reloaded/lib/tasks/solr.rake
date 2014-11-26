@@ -59,7 +59,7 @@ namespace :solr do
   task :start do
     if !solr_downloaded?
       puts "ERROR: Can't find Solr on the source code! Please run 'rake solr:download'."
-      break
+      abort
     end
 
     require File.expand_path(File.dirname(__FILE__) + '/../../config/solr_environment')
