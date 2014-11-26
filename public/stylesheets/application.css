@@ -2212,6 +2212,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 
 .slideshow-block .slideshow-container {
   margin-bottom: 10px;
+  width: 100%;
 }
 .slideshow-block .slideshow-container a {
   width: 100%;
