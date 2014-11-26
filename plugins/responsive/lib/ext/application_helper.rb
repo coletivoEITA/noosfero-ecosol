@@ -19,9 +19,9 @@ module ApplicationHelper
       end
       the_title = html_options[:title] || label
       if html_options[:disabled]
-        content_tag('a', '&nbsp;'+content_tag('span', label), html_options.merge(class: the_class, title: the_title))
+        content_tag('a', '', html_options.merge(class: the_class, title: the_title))
       else
-        link_to('&nbsp;'+content_tag('span', label), url, html_options.merge(class: the_class, title: the_title))
+        link_to('', url, html_options.merge(class: the_class, title: the_title))
       end
     end
 
@@ -37,17 +37,16 @@ module ApplicationHelper
 
     def button_to_function_without_text(type, label, js_code, html_options = {}, &block)
       return super unless theme_responsive?
-
+      html_options[:title] ||= label
       option = html_options.delete(:option) || 'default'
       size = html_options.delete(:size) || 'xs'
       html_options[:class] = "" unless html_options[:class]
       html_options[:class] << " btn btn-#{size} btn-#{option} icon-#{type}"
-      link_to_function(content_tag('span', label), js_code, html_options, &block)
+      link_to_function('', js_code, html_options, &block)
     end
 
     def button_to_remote(type, label, options, html_options = {})
       return super unless theme_responsive?
-
       option = html_options.delete(:option) || 'default'
       size = html_options.delete(:size) || 'xs'
       html_options[:class] = "btn btn-#{size} btn-#{option} with-text" unless html_options[:class]
@@ -58,6 +57,7 @@ module ApplicationHelper
     def button_to_remote_without_text(type, label, options, html_options = {})
       return super unless theme_responsive?
 
+      html_options[:title] ||= label
       option = html_options.delete(:option) || 'default'
       size = html_options.delete(:size) || 'xs'
       html_options[:class] = "" unless html_options[:class]
