@@ -25,6 +25,9 @@ module NeedsProfile
   def load_profile
     @profile ||= environment.profiles.find_by_identifier(params[:profile])
     if @profile
+      # this is needed for facebook applications that can only have one domain
+      return
+
       profile_hostname = @profile.hostname
       if profile_hostname and request.host == @environment.default_hostname
         redirect_to params.merge(@profile.send :url_options)
