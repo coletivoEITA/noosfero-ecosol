@@ -6037,8 +6037,7 @@ msgid ""
 "PNG format."
 msgstr ""
 "No cabeçalho, você pode incluir um banner personalizado primeiro adicionando "
-"em \"Gerenciar conteúdo\", e depois referenciando-o aqui. Um bom formato é "
-"468 x 60 pixels, formato PNG."
+"em \"Gerenciar conteúdo\", e depois referenciando-o aqui."
 
 #: app/views/profile_editor/header_footer.html.erb:12
 msgid "On footer, you can include a slogan and your contact information etc."
