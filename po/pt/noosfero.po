@@ -11463,6 +11463,12 @@ msgstr "Tem certeza de que quer excluir este ítem?"
 msgid "Are you sure you want to clean your basket?"
 msgstr "Tem certeza que quer limpar seu cesto?"
 
+#: plugins/shopping_cart/controllers/shopping_cart_plugin_controller.rb
+msgid "Your basket contains items from '%{profile_name}'. Please empty the basket or checkout before adding items from here."
+msgstr "Seu cesto já tem produtos de '%{profile_name}'. Por favor, esvazie o cesto ou finalize o pedido antes de adicionar novos itens deste outro empreendimento."
+
+
+
 #: plugins/shopping_cart/views/shopping_cart_plugin/send_request.html.erb:1
 msgid "Request sent successfully check your email."
 msgstr "Requisição enviada com sucesso. Cheque seu email."
