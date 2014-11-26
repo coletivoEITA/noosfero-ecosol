@@ -5,14 +5,14 @@ class Enterprise
 
   Metadata = Metadata.merge({
     'og:type' => "#{MetadataPlugin.og_type_namespace}:#{MetadataPlugin.og_types[:enterprise]}",
-	  'business:contact_data:email' => proc{ |e| e.contact_email },
-	  'business:contact_data:phone_number' => proc{ |e| e.contact_phone },
-	  'business:contact_data:street_address' => proc{ |e| e.address },
-	  'business:contact_data:locality' => proc{ |e| e.city },
-	  'business:contact_data:region' => proc{ |e| e.state },
-	  'business:contact_data:postal_code' => proc{ |e| e.zip_code },
+	  'business:contact_data:email' => proc{ |e, c| e.contact_email },
+	  'business:contact_data:phone_number' => proc{ |e, c| e.contact_phone },
+	  'business:contact_data:street_address' => proc{ |e, c| e.address },
+	  'business:contact_data:locality' => proc{ |e, c| e.city },
+	  'business:contact_data:region' => proc{ |e, c| e.state },
+	  'business:contact_data:postal_code' => proc{ |e, c| e.zip_code },
 	  'business:contact_data:country_name' => proc{ |e| e.country },
-	  'place:location:latitude' => proc{ |p| p.lat },
-	  'place:location:longitude' => proc{ |p| p.lng },
+	  'place:location:latitude' => proc{ |e, c| p.lat },
+	  'place:location:longitude' => proc{ |e, c| p.lng },
   })
 end
