@@ -6,35 +6,37 @@
 
   <%= hidden_field_tag :page, @pg_page %>
   <%= hidden_field_tag :rank, @rank %>
-
-  <div id="catalog-options">
-    <ul>
-
-      <%= plugins_catalog_search_extras_begin %>
-
-      <li class="catalog-filter-categories">
-	      <% if @categories.length > 0 %>
-          <div class="catalog-options-select">
-            <%= select_tag :category, options_for_select([[_('All categories'), '']] + @categories, params[:category]),
-              :onkeydown => 'catalog.categories.select()', :onchange => 'catalog.categories.select()' %>
-          </div>
-	      <% end %>
-      </li>
-      <li class="catalog-filter-qualifiers">
-	      <% if @qualifiers.length > 0 %>
-          <div class="catalog-options-select">
-            <%= select_tag :qualifier, options_for_select([[_('All qualifiers'), '']] + @qualifiers, params[:qualifier]),
-              :onkeydown => 'catalog.qualifiers.select()', :onchange => 'catalog.qualifiers.select()' %>
-          </div>
-	      <% end %>
-      </li>
-
-      <li class="catalog-search">
+  <br/>
+  <div class="well well-sm">
+    <div class="row">
+      <%
+         extras_begin = plugins_catalog_search_extras_begin
+         extras_end = plugins_catalog_search_extras_end
+      %>
+      <% if extras_begin or extras_end %>
+      <div class="col-lg-3 col-md-3 col-sm-3 pull-right">
+        <ul>
+          <%= extras_begin %>
+          <%= extras_end %>
+        </ul>
+      </div>
+      <% end %>
+      <div class="col-lg-3 col-md-3 col-sm-3 pull-right">
         <%= text_field_tag :query, params[:query], :placeholder => _('type your search...'), :id => 'catalog-search-input' %>
-      </li>
-
-      <%= plugins_catalog_search_extras_end %>
-    </ul>
+      </div>
+      <% if @qualifiers.length > 0 %>
+          <div class="col-lg-3 col-md-3 col-sm-3 pull-right">
+            <%= select_tag :qualifier, options_for_select([[_('All qualifiers'), '']] + @qualifiers, params[:qualifier]),
+                           :onkeydown => 'catalog.qualifiers.select()', :onchange => 'catalog.qualifiers.select()' %>
+          </div>
+      <% end %>
+      <% if @categories.length > 0 %>
+        <div class="col-lg-3 col-md-3 col-sm-3 pull-right">
+          <%= select_tag :category, options_for_select([[_('All categories'), '']] + @categories, params[:category]),
+                         :onkeydown => 'catalog.categories.select()', :onchange => 'catalog.categories.select()' %>
+        </div>
+      <% end %>
+    </div>
   </div>
 
   <% if controller.is_a? CatalogController %>
