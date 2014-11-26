@@ -117,18 +117,6 @@ module ApplicationHelper
       concat(content_tag('div', capture(&block).to_s + tag('br', style: 'clear: left;'), options))
     end
 
-    def button(type, label, url, html_options = {})
-      return super unless theme_responsive?
-
-      option = html_options.delete(:option) || 'default'
-      size = html_options.delete(:size) || 'xs'
-      the_class = "btn btn-#{size} btn-#{option} with-text"
-      if html_options.has_key?(:class)
-        the_class << ' ' << html_options[:class]
-      end
-      button_without_text type, label, url, html_options.merge(class: the_class)
-    end
-
     def expirable_button(content, action, text, url, html_options = {})
       return super unless theme_responsive?
 
