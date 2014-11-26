@@ -1,5 +1,7 @@
 class Block < ActiveRecord::Base
 
+  attr_accessible :title, :display, :limit, :box_id, :posts_per_page, :visualization_format, :language, :display_user, :box
+
   # to be able to generate HTML
   include ActionView::Helpers::UrlHelper
   include ActionView::Helpers::TagHelper
@@ -14,7 +16,28 @@ class Block < ActiveRecord::Base
 
   acts_as_having_settings
 
-  named_scope :enabled, :conditions => { :enabled => true }
+  scope :enabled, :conditions => { :enabled => true }
+
+  def embedable?
+    false
+  end
+
+  def get_limit
+    [0,limit.to_i].max
+  end
+
+  def embed_code
+    me = self
+    proc do
+      content_tag('iframe', '',
+        :src => url_for(:controller => 'embed', :action => 'block', :id => me.id, :only_path => false),
+        :frameborder => 0,
+        :width => 1024,
+        :height => 768,
+        :class => "embed block #{me.class.name.to_css_class}"
+      )
+    end
+  end
 
   # Determines whether a given block must be visible. Optionally a
   # <tt>context</tt> must be specified. <tt>context</tt> must be a hash, and
@@ -22,11 +45,13 @@ class Block < ActiveRecord::Base
   #
   # * <tt>:article</tt>: the article being viewed currently
   # * <tt>:language</tt>: in which language the block will be displayed
+  # * <tt>:user</tt>: the logged user
   def visible?(context = nil)
     return false if display == 'never'
 
     if context
       return false if language != 'all' && language != context[:locale]
+      return false unless display_to_user?(context[:user])
 
       begin
         return self.send("display_#{display}", context)
@@ -36,6 +61,10 @@ class Block < ActiveRecord::Base
     end
 
     true
+  end
+
+  def display_to_user?(user)
+    display_user == 'all' || (user.nil? && display_user == 'not_logged') || (user && display_user == 'logged')
   end
 
   def display_always(context)
@@ -68,6 +97,14 @@ class Block < ActiveRecord::Base
   #   the homepage of its owner.
   settings_items :display, :type => :string, :default => 'always'
 
+
+  # The condition for displaying a block to users. It can assume the following values:
+  #
+  # * <tt>'all'</tt>: the block is always displayed
+  # * <tt>'logged'</tt>: the block is displayed to logged users only
+  # * <tt>'not_logged'</tt>: the block is displayed only to not logged users
+  settings_items :display_user, :type => :string, :default => 'all'
+
   # The block can be configured to be displayed in all languages or in just one language. It can assume any locale of the environment:
   #
   # * <tt>'all'</tt>: the block is always displayed
@@ -77,7 +114,7 @@ class Block < ActiveRecord::Base
   # blocks to choose one to include in the design.
   #
   # Must be redefined in subclasses to match the description of each block
-  # type. 
+  # type.
   def self.description
     '(dummy)'
   end
@@ -87,13 +124,13 @@ class Block < ActiveRecord::Base
   # This method can return several types of objects:
   #
   # * <tt>String</tt>: if the string starts with <tt>http://</tt> or <tt>https://</tt>, then it is assumed to be address of an IFRAME. Otherwise it's is used as regular HTML.
-  # * <tt>Hash</tt>: the hash is used to build an URL that is used as the address for a IFRAME. 
+  # * <tt>Hash</tt>: the hash is used to build an URL that is used as the address for a IFRAME.
   # * <tt>Proc</tt>: the Proc is evaluated in the scope of BoxesHelper. The
   # block can then use <tt>render</tt>, <tt>link_to</tt>, etc.
   #
   # The method can also return <tt>nil</tt>, which means "no content".
   #
-  # See BoxesHelper#extract_block_content for implementation details. 
+  # See BoxesHelper#extract_block_content for implementation details.
   def content(args={})
     "This is block number %d" % self.id
   end
@@ -155,7 +192,7 @@ class Block < ActiveRecord::Base
 
   # Override in your subclasses.
   # Define which events and context should cause the block cache to expire
-  # Possible events are: :article, :profile, :friendship, :category
+  # Possible events are: :article, :profile, :friendship, :category, :role_assignment
   # Possible contexts are: :profile, :environment
   def self.expire_on
     {
@@ -165,28 +202,41 @@ class Block < ActiveRecord::Base
   end
 
   DISPLAY_OPTIONS = {
-    'always'           => __('In all pages'),
-    'home_page_only'   => __('Only in the homepage'),
-    'except_home_page' => __('In all pages, except in the homepage'),
-    'never'            => __('Don\'t display'),
+    'always'           => _('In all pages'),
+    'home_page_only'   => _('Only in the homepage'),
+    'except_home_page' => _('In all pages, except in the homepage'),
+    'never'            => _('Don\'t display'),
   }
 
-  def display_options
+  def display_options_available
     DISPLAY_OPTIONS.keys
   end
 
-  def display_option_label(option)
-    DISPLAY_OPTIONS[option]
+  def display_options
+    DISPLAY_OPTIONS.slice(*display_options_available)
+  end
+
+  def display_user_options
+    @display_user_options ||= {
+      'all'            => _('All users'),
+      'logged'         => _('Logged'),
+      'not_logged'     => _('Not logged'),
+    }
   end
 
   def duplicate
-    duplicated_block = self.clone
+    duplicated_block = self.dup
     duplicated_block.display = 'never'
     duplicated_block.created_at = nil
     duplicated_block.updated_at = nil
     duplicated_block.save!
     duplicated_block.insert_at(self.position + 1)
     duplicated_block
+  end
+
+  def copy_from(block)
+    self.settings = block.settings
+    self.position = block.position
   end
 
 end

@@ -1,51 +1,44 @@
 class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
 
-  include ActionMailer::Helpers
   include OrdersCyclePlugin::TranslationHelper
 
   helper ApplicationHelper
   helper OrdersCyclePlugin::TranslationHelper
 
   def message_to_supplier profile, supplier, subject, message
-    domain = profile.hostname || profile.environment.default_hostname
+    self.environment = profile.environment
+    @profile = profile
+    @supplier = supplier
+    @message = message
 
-    recipients    profile_recipients(supplier.profile)
-    from          'no-reply@' + domain
-    reply_to      profile_recipients(profile)
-    subject       t('lib.mailer.profile_subject') % {:profile => profile.name, :subject => subject}
-    content_type  'text/html'
-    body :profile => profile,
-         :supplier => supplier,
-         :message => message,
-         :environment => profile.environment
+    mail to: profile_recipients(@supplier),
+      from: environment.noreply_email,
+      reply_to: profile_recipients(@profile),
+      subject: t('lib.mailer.profile_subject') % {profile: profile.name, subject: subject}
   end
 
   def message_to_admins profile, member, subject, message
-    domain = profile.hostname || profile.environment.default_hostname
+    self.environment = profile.environment
+    @profile = profile
+    @member = member
+    @message = message
 
-    recipients    profile_recipients(profile)
-    from          'no-reply@' + domain
-    reply_to      profile_recipients(member)
-    subject       t('lib.mailer.profile_subject') % {:profile => profile.name, :subject => subject}
-    content_type  'text/html'
-    body :profile => profile,
-         :member => member,
-         :message => message,
-         :environment => profile.environment
+    mail to: profile_recipients(@member),
+      from: environment.noreply_email,
+      reply_to: profile_recipients(@profile),
+      subject: t('lib.mailer.profile_subject') % {profile: profile.name, subject: subject}
   end
 
   def open_cycle profile, cycle, subject, message
-    domain = profile.hostname || profile.environment.default_hostname
+    self.environment = profile.environment
+    @profile = profile
+    @cycle = cycle
+    @message = message
 
-    bcc           organization_members(profile)
-    from          'no-reply@' + domain
-    reply_to      profile_recipients(profile)
-    subject       t('lib.mailer.profile_subject') % {:profile => profile.name, :subject => subject}
-    content_type  'text/html'
-    body :profile => profile,
-         :cycle => cycle,
-         :message => message,
-         :environment => profile.environment
+    mail bcc: organization_members(@profile),
+      from: environment.noreply_email,
+      reply_to: profile_recipients(@profile),
+      subject: t('lib.mailer.profile_subject') % {profile: profile.name, subject: subject}
   end
 
   protected

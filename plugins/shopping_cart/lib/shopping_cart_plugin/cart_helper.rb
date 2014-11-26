@@ -3,12 +3,33 @@ module ShoppingCartPlugin::CartHelper
   include ActionView::Helpers::NumberHelper
   include ActionView::Helpers::TagHelper
 
-  PaymentMethods = ActiveSupport::OrderedHash[
-    :money, proc{ _("Money") },
-    :check, proc{ s_('shopping_cart|Check') },
-    :credit_card, proc{ _('Credit card') },
-    :bank_transfer, proc{ _('Bank transfer') },
-  ]
+  PaymentMethods = {
+    money: proc{ _("Money") },
+    check: proc{ s_('shopping_cart|Check') },
+    credit_card: proc{ _('Credit card') },
+    bank_transfer: proc{ _('Bank transfer') },
+  }
+
+  def add_to_cart_button item, options = {}
+  	label = if options[:with_text].nil? or options[:with_text] then _('Add to basket') else '' end
+  	button_to_function 'cart', label, "Cart.addItem(#{item.id}, this)", class: 'cart-add-item', type: 'primary'
+  end
+
+  def cart_applet
+    button_to_function 'cart', '&nbsp;<span class="cart-qtty"></span>', "cart.toggle()", class: 'cart-applet-indicator', type: 'primary'
+  end
+
+  def cart_minimized
+    @cart_minimized ||= ['catalog', 'manage_products'].include?(params[:controller]) || @page.is_a?(EnterpriseHomepage)
+  end
+
+  def repeat_checkout_order_button order
+    button_to_function 'check', t('views.public.repeat.checkout'), 'cart.repeatCheckout(event, this)', 'data-order-id' => order.id, :class => 'repeat-checkout-order'
+  end
+
+  def repeat_choose_order_button order
+    button_to_function 'edit', t('views.public.repeat.choose'), 'cart.repeatChoose(event, this)', 'data-order-id' => order.id, :class => 'repeat-choose-order'
+  end
 
   def sell_price(product)
     return 0 if product.price.nil?
@@ -49,7 +70,7 @@ module ShoppingCartPlugin::CartHelper
       else
         delivery = Product.new(:name => delivery_option || _('Delivery'), :price => settings.delivery_options[delivery_option])
       end
-      delivery.save(false)
+      delivery.save(:validate => false)
       items << [delivery.id, '']
     end
 

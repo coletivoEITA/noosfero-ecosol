@@ -6,13 +6,9 @@ class ProfileSearchBlock < Block
 
   def content(args={})
     title = self.title
-    lambda do
+    lambda do |_|
       render :file => 'blocks/profile_search', :locals => { :title => title }
     end
-  end
-
-  def editable?
-    true
   end
 
 end

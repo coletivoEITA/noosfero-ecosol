@@ -2,7 +2,7 @@
   <div>
     <strong><%= t('suppliers_plugin.views.product._form_errors.errors_found') %></strong>
     <ul>
-      <% form_errors.errors.each do |attr,message| %>
+      <%= form_errors.errors.each do |attr,message| %>
         <li><%= "#{_(attr.humanize)} #{message}" %></li>
       <% end %>
     </ul>

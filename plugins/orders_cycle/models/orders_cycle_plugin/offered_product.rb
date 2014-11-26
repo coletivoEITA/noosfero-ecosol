@@ -29,8 +29,9 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   has_currency :buy_price
 
   def self.create_from_distributed cycle, product
-    op = self.new :profile => product.profile
-    op.attributes = product.attributes
+    op = self.new
+    product.attributes.except('id').each{ |a,v| op.send "#{a}=", v }
+    op.profile = product.profile
     op.type = self.name
     op.freeze_default_attributes product
     op.from_products << product

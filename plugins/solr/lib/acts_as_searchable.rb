@@ -48,6 +48,7 @@ module ActsAsSearchable
         options[:filter_queries] << "schema_name:\"#{schema_name}\"" unless schema_name.blank?
         all_facets_enabled = options.delete(:all_facets)
         options[:per_page] = options.delete(:extra_limit) if options[:extra_limit]
+        options[:facets] ||= {}
         results = []
         facets = all_facets = {}
 

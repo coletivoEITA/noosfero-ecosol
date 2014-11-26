@@ -1,0 +1,12 @@
+<%= f.hidden_field :id %>
+<%= f.hidden_field :_destroy %>
+
+<div class="field">
+  <%= f.text_field :name, placeholder: t('volunteers_plugin.attributes.period.name') %>
+  <div class=body>
+    <%= labelled_period_fields f, :start, :end %>
+
+    <%= link_to_function t('volunteers_plugin.views.myprofile.period.remove'), 'volunteers.periods.remove(this)' %>
+  </div>
+</div>
+

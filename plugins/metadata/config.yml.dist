@@ -1,0 +1,6 @@
+open_graph:
+  types:
+    article: article
+    product: product
+    profile: profile
+

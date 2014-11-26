@@ -1,0 +1,28 @@
+<%= javascript_include_tag "edit-link-list.js" %>
+
+<strong><%= _('Links') %></strong>
+<div id='edit-link-list-block'>
+  <table>
+    <thead>
+      <tr class='link-list-header'>
+        <th class='link-list-icon'><%= _('Icon') %></th>
+        <th class='link-list-name'><%= _('Name') %></th>
+        <th class='link-list-address'><%= _('Address') %></th>
+        <th class='link-list-target'><%= _('Target') %></th>
+      </tr>
+    </thead>
+    <tbody id="dropable-link-list">
+      <% for link in @block.links do %>
+        <%= render :partial => 'link_list_item', :locals => {:link => link} %>
+      <% end %>
+    </tbody>
+  </table>
+  <input type="hidden" id="page_url" value="<%=url_for(:action=>'search_autocomplete')%>" />
+
+  <table id="new-template">
+    <% template_link = {'icon' => 'ok'} %>
+    <%= render :partial => 'link_list_item', :locals => {:link => template_link} %>
+  </table>
+</div>
+
+<%= button_to_function(:add, _('New link'),'add_new_link();' ) %>

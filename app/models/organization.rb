@@ -1,6 +1,8 @@
 # Represents any organization of the system
 class Organization < Profile
 
+  attr_accessible :moderated_articles, :foundation_year, :contact_person, :acronym, :legal_form, :economic_activity, :management_information, :cnpj, :display_name, :enable_contact_us
+
   SEARCH_FILTERS += %w[
     more_popular
   ]
@@ -26,7 +28,17 @@ class Organization < Profile
 
   has_many :mailings, :class_name => 'OrganizationMailing', :foreign_key => :source_id, :as => 'source'
 
-  named_scope :more_popular, :order => 'members_count DESC'
+  scope :more_popular, :order => 'members_count DESC'
+
+  validate :presence_of_required_fieds, :unless => :is_template
+
+  def presence_of_required_fieds
+    self.required_fields.each do |field|
+      if self.send(field).blank?
+        self.errors.add_on_blank(field)
+      end
+    end
+  end
 
   def validation_methodology
     self.validation_info ? self.validation_info.validation_methodology : nil
@@ -96,6 +108,8 @@ class Organization < Profile
   N_('Display name'); N_('Description'); N_('Contact person'); N_('Contact email'); N_('Acronym'); N_('Foundation year'); N_('Legal form'); N_('Economic activity'); N_('Management information'); N_('Tag list'); N_('District'); N_('Address completion'); N_('Address reference')
   settings_items :display_name, :description, :contact_person, :contact_email, :acronym, :foundation_year, :legal_form, :economic_activity, :management_information, :district, :address_line2, :address_reference
 
+  settings_items :zip_code, :city, :state, :country
+
   validates_format_of :foundation_year, :with => Noosfero::Constants::INTEGER_FORMAT
   validates_format_of :contact_email, :with => Noosfero::Constants::EMAIL_FORMAT, :if => (lambda { |org| !org.contact_email.blank? })
   validates_as_cnpj :cnpj
@@ -120,7 +134,7 @@ class Organization < Profile
     [
       [MainBlock.new],
       [ProfileImageBlock.new, LinkListBlock.new(:links => links)],
-      [MembersBlock.new, RecentDocumentsBlock.new]
+      [RecentDocumentsBlock.new]
     ]
   end
 
@@ -132,7 +146,11 @@ class Organization < Profile
   end
 
   def notification_emails
-    [contact_email.blank? ? nil : contact_email].compact + admins.map(&:email)
+    emails = [contact_email].select(&:present?) + admins.map(&:email)
+    if emails.empty?
+      emails << environment.contact_email
+    end
+    emails
   end
 
   def already_request_membership?(person)

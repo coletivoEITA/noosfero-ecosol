@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module ManageProductsHelper
 
   def remote_function_to_update_categories_selection(container_id, options = {})
@@ -32,6 +34,7 @@ module ManageProductsHelper
         hierarchy << hierarchy_category_item(category, options[:make_links])
       end
     end
+    hierarchy.shift if options[:remove_last_category]
     hierarchy.reverse.join(options[:separator] || ' &rarr; ')
   end
 
@@ -138,7 +141,7 @@ module ManageProductsHelper
     ui_button_to_remote(label,
                    {:update => "product-#{field}",
                    :url => { :controller => 'manage_products', :action => "edit", :id => product.id, :field => field },
-                   :complete => "$('edit-product-button-ui-#{field}').hide()",
+                   :complete => "jQuery('#edit-product-button-ui-#{field}').hide()",
                    :method => :get,
                    :loading => "loading_for_button('##{id}')"},
                    options)
@@ -147,7 +150,7 @@ module ManageProductsHelper
   def cancel_edit_product_link(product, field, html_options = {})
     return '' unless (user && user.has_permission?('manage_products', profile))
     button_to_function(:cancel, _('Cancel'), nil, html_options) do |page|
-      page.replace_html "product-#{field}", :partial => "display_#{field}", :locals => {:product => product}
+      page.replace_html "product-#{field}", CGI::escapeHTML(render :partial => "display_#{field}", :locals => {:product => product})
     end
   end
 
@@ -168,22 +171,28 @@ module ManageProductsHelper
     end
     content_tag('span', content_tag('span', result, :class => 'product-price'), :class => "#{product.available? ? '' : 'un'}available-product")
   end
-
+ 
   def display_availability(product)
+    ret = content_tag('span', '', :property => 'essglobal:isAvailable', :content => product.available?)
     if !product.available?
-      ui_highlight(_('Product not available!'))
+      ret + ui_highlight(_('Product not available!'))
+    else
+      ret
     end
   end
 
   def display_price(label, price)
     content_tag('span', label, :class => 'field-name') +
-    content_tag('span', float_to_currency(price), :class => 'field-value')
+    content_tag('span', environment.currency_unit, :property => 'gr:hasCurrency', :content => environment.currency_iso_unit) +
+    content_tag('span', float_to_currency(price, unit: ''), :property => 'gr:hasCurrencyValue', :class => 'field-value')
   end
 
   def display_price_with_discount(price, price_with_discount)
-    original_value = content_tag('span', display_price(_('List price: '), price), :class => 'list-price')
-    discount_value = content_tag('span', display_price(_('On sale: '), price_with_discount), :class => 'on-sale-price')
-    original_value + tag('br') + discount_value
+    original_value = content_tag('span', display_price(_('List price: '), price), :class => 'list-price on-sale')
+    #discount_value = content_tag('span', display_price(_('On sale: '), price_with_discount), :class => 'on-sale-price')
+    discount_value = content_tag('span', environment.currency_unit, :property => 'gr:hasCurrency', :content => environment.currency_iso_unit) +
+    content_tag('span', float_to_currency(price_with_discount, unit: ''), :property => 'gr:hasCurrencyValue', :class => 'on-sale-price')
+    original_value + tag('br') + content_tag('span', _('On sale: ') + discount_value, :class => 'price-with-discount')
   end
 
   def display_qualifiers(product)
@@ -195,9 +204,10 @@ module ManageProductsHelper
         certifier_name = certifier.link.blank? ? certifier.name : link_to(certifier.name, certifier.link)
         certified_by = _('certified by %s') % certifier_name
       else
-        certified_by = _('(Self declared)')
+        #certified_by = _('(Self declared)') - We are assuming that no text beside the qualifier means that it is self declared
+        certified_by = ''
       end
-      data << content_tag('li', "✔ #{pq.qualifier.name} #{certified_by}", :class => 'product-qualifiers-item')
+      data << content_tag('li', "✔ " + content_tag('span', "#{pq.qualifier.name}", :property => 'essglobal:qualifier') + "#{certified_by}", :class => 'product-qualifiers-item')
     end
     content_tag('ul', data, :id => 'product-qualifiers')
   end
@@ -256,10 +266,14 @@ module ManageProductsHelper
     end
   end
 
-  def display_unit(input)
-    input_amount_used = content_tag('span', input.formatted_amount, :class => 'input-amount-used')
-    return input_amount_used if input.unit.blank?
-    n_('1 %{singular_unit}', '%{num} %{plural_unit}', input.amount_used.to_f) % { :num => input_amount_used, :singular_unit => content_tag('span', input.unit.singular, :class => 'input-unit'), :plural_unit => content_tag('span', input.unit.plural, :class => 'input-unit') }
+  def display_input_compact(input)
+    price_per_unit = content_tag('span', '', :property => 'essglobal:costPerUnit', :content => input.price_per_unit)
+    has_impact_on_cost = content_tag('span', '', :property => 'essglobal:hasImpactOnCost', :content => input.relevant_to_price)
+    input_amount_used = content_tag('span', input.formatted_amount, :class => 'input-amount-used', :property => 'essglobal:quantityPerProductOrServiceUnit')
+    
+    return price_per_unit + has_impact_on_cost + input_amount_used if input.unit.blank?
+    input_unit = (input.amount_used > 1) ? input.unit.plural : input.unit.singular
+    price_per_unit + has_impact_on_cost + input_amount_used + ' ' + content_tag('span', input_unit, :class => 'input-unit', :property => 'essglobal:unit')
   end
 
   def select_production_cost(product,selected=nil)

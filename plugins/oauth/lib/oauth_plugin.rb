@@ -1,6 +1,6 @@
 require_dependency "#{File.dirname __FILE__}/ext/environment"
 require_dependency "#{File.dirname __FILE__}/ext/user"
-require_dependency "#{File.dirname __FILE__}/ext/songkick/o_auth2/model/client"
+require_dependency "#{File.dirname __FILE__}/ext/songkick/oauth2/model/client"
 
 class OauthPlugin < Noosfero::Plugin
 
@@ -54,11 +54,13 @@ class OauthPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['loading-overlay', 'oauth'].map{ |j| "javascripts/#{j}" }
+    ['oauth'].map{ |j| "javascripts/#{j}" }
   end
 
   def login_extra_contents
-    lambda{ render 'oauth/signin' }
+    lambda do
+      render 'oauth/signin'
+    end
   end
 
   SetupProc = lambda do |env|
@@ -93,7 +95,7 @@ end
 unless $oauth_plugin_middlewares_loaded
   $oauth_plugin_middlewares_loaded = true
 
-  ActionController::Dispatcher.middleware.use OmniAuth::Builder do
+  Noosfero::Application.middleware.use OmniAuth::Builder do
     require_dependency "#{File.dirname __FILE__}/omni_auth/strategies/noosfero"
 
     configure do |config|

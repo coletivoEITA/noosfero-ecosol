@@ -8,9 +8,8 @@
     |
     <%= link_to t('views.network.structure.config'), :controller => :networks_plugin_node, :action => :edit, :id => node.id %>
     |
-    <%= link_to_remote t('views.network.structure.remove'),
-      :confirm => t('views.network.structure.confirm_node_remove') % {:parent => node.parent.name, :node => node.name},
-      :loading => "loading_overlay.show('.listing')", :loaded => "loading_overlay.hide('.listing')",
+    <%= link_to t('views.network.structure.remove'), remote: true, html: {data: {loading: '.listing'}},
+      confirm: t('views.network.structure.confirm_node_remove') % {:parent => node.parent.name, :node => node.name},
       :url => {:controller => :networks_plugin_node, :action => :destroy, :id => node.id} %>
   </div>
 </div>

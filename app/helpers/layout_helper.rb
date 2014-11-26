@@ -2,54 +2,39 @@ module LayoutHelper
 
   def body_classes
     # Identify the current controller and action for the CSS:
-    " controller-#{@controller.controller_name}" +
-    " action-#{@controller.controller_name}-#{@controller.action_name}" +
+    " controller-#{controller.controller_name}" +
+    " action-#{controller.controller_name}-#{controller.action_name}" +
     " template-#{@layout_template || if profile.blank? then 'default' else profile.layout_template end}" +
     (!profile.nil? && profile.is_on_homepage?(request.path,@page) ? " profile-homepage" : "")
   end
 
   def noosfero_javascript
-    plugins_javascripts = @plugins.map { |plugin| plugin.js_files.to_a.map { |js| plugin.class.public_path(js) } }.flatten
+    plugins_javascripts = @plugins.map { |plugin| [plugin.js_files].flatten.map { |js| plugin.class.public_path(js, true) } }.flatten
 
     output = ''
-    output += render :file =>  'layouts/_javascript'
-    output += javascript_tag 'render_all_jquery_ui_widgets()'
+    output += render 'layouts/javascript'
     unless plugins_javascripts.empty?
-      output += javascript_include_tag plugins_javascripts, :cache => ("cache/plugins-#{Digest::MD5.hexdigest plugins_javascripts.to_s}" if NOOSFERO_CONF['cache_javascripts'])
+      output += javascript_include_tag *plugins_javascripts
     end
     output += theme_javascript_ng.to_s
 
+    output += javascript_tag 'render_all_jquery_ui_widgets()'
     output
   end
 
   def noosfero_stylesheets
-    standard_stylesheets = [
-      'application',
-      'search',
-      'colorpicker',
-      'colorbox',
-      pngfix_stylesheet_path,
-    ] + tokeninput_stylesheets
-    plugins_stylesheets = @plugins.select(&:stylesheet?).map { |plugin| plugin.class.public_path('style.css') }
+    plugins_stylesheets = @plugins.select(&:stylesheet?).map { |plugin| plugin.class.public_path('style.css', true) }
 
     output = ''
-    output += stylesheet_link_tag standard_stylesheets, :cache => ('cache' if NOOSFERO_CONF['cache_stylesheets'])
+    output += stylesheet_link_tag 'application'
     output += stylesheet_link_tag template_stylesheet_path
-    output += stylesheet_link_tag icon_theme_stylesheet_path
+    output += stylesheet_link_tag *icon_theme_stylesheet_path
     output += stylesheet_link_tag jquery_ui_theme_stylesheet_path
     unless plugins_stylesheets.empty?
-      output += stylesheet_link_tag plugins_stylesheets, :cache => ("cache/plugins-#{Digest::MD5.hexdigest plugins_stylesheets.to_s}" if NOOSFERO_CONF['cache_stylesheets'])
+      output += stylesheet_link_tag *plugins_stylesheets
     end
     output += stylesheet_link_tag theme_stylesheet_path
     output
-  end
-
-  def pngfix_stylesheet_path
-    'iepngfix/iepngfix.css'
-  end
-
-  def tokeninput_stylesheets
-    ['token-input', 'token-input-facebook', 'token-input-mac', 'token-input-facet']
   end
 
   def noosfero_layout_features
@@ -64,12 +49,13 @@ module LayoutHelper
     end
   end
 
+
   def icon_theme_stylesheet_path
     icon_themes = []
     theme_icon_themes = theme_option(:icon_theme) || []
     for icon_theme in theme_icon_themes do
       theme_path = "/designs/icons/#{icon_theme}/style.css"
-      if File.exists?(File.join(RAILS_ROOT, 'public', theme_path))
+      if File.exists?(Rails.root.join('public', theme_path))
         icon_themes << theme_path
       end
     end
@@ -77,11 +63,11 @@ module LayoutHelper
   end
 
   def jquery_ui_theme_stylesheet_path
-    'jquery.ui/' + jquery_theme + '/jquery-ui-1.8.2.custom'
+    "https://code.jquery.com/ui/1.10.4/themes/#{jquery_theme}/jquery-ui.css"
   end
 
   def theme_stylesheet_path
-    theme_path + '/style.css'
+    "#{theme_path[1..-1]}/style.css"
   end
 
   def addthis_javascript
@@ -93,5 +79,6 @@ module LayoutHelper
   def meta_description_tag(article=nil)
     article ? truncate(strip_tags(article.body.to_s), :length => 200) : environment.name
   end
+
 end
 

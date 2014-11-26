@@ -6,13 +6,19 @@ class Object
   alias :ngettext :n_
 end
 
+
+custom_locale_dir = Rails.root.join('custom_locales', Rails.env)
+repos = []
+if File.exists?(custom_locale_dir)
+  repos << FastGettext::TranslationRepository.build('environment', :type => 'po', :path => custom_locale_dir)
+end
+
 # translations in place?
 locale_dir = Rails.root.join('locale')
-repos = []
 if File.exists?(locale_dir)
   repos << FastGettext::TranslationRepository.build('noosfero', :type => 'mo', :path => locale_dir)
   repos << FastGettext::TranslationRepository.build('iso_3166', :type => 'mo', :path => locale_dir)
 end
 
-FastGettext.add_text_domain 'noosferofull', :type => :chain, :chain => repos
-FastGettext.default_text_domain = 'noosferofull'
+FastGettext.add_text_domain 'noosfero', :type => :chain, :chain => repos
+FastGettext.default_text_domain = 'noosfero'

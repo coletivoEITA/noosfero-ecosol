@@ -1,6 +1,6 @@
 <% provider_id = "provider-#{provider.id || 'new'}" %>
 
-<% form_for :provider, provider,
+<%= form_for :provider,
   :url => {:controller => :oauth_plugin_admin_providers, :action => (if provider.new_record? then :new else :edit end), :id => provider.id},
   :html => {:multipart => true, :onsubmit => "return oauth.form.submit(this, '##{provider_id}')"} do |f| %>
 
@@ -28,7 +28,7 @@
     </tr>
 
     <tr>
-      <% f.fields_for :image_builder, provider.image do |fi| %>
+      <%= f.fields_for :image_builder, provider.image do |fi| %>
         <td> <%= fi.label :uploaded_data, _('Icon') %> </td>
         <td>
           <%= image_tag provider.image_public_filename, :title => provider.name, :class => 'oauth-login-icon' if provider.image_public_filename %>

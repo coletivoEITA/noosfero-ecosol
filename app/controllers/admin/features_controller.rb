@@ -34,9 +34,9 @@ class FeaturesController < AdminController
   def manage_enterprise_fields
     environment.custom_enterprise_fields = params[:enterprise_fields]
     if environment.save!
-      session[:notice] = __('Enterprise fields updated successfully.')
+      session[:notice] = _('Enterprise fields updated successfully.')
     else
-      flash[:error] = __('Enterprise fields not updated successfully.')
+      flash[:error] = _('Enterprise fields not updated successfully.')
     end
     redirect_to :action => 'manage_fields'
   end
@@ -49,6 +49,12 @@ class FeaturesController < AdminController
       flash[:error] = _('Community fields not updated successfully.')
     end
     redirect_to :action => 'manage_fields'
+  end
+
+  def search_members
+    arg = params[:q].downcase
+    result = environment.people.find(:all, :conditions => ['LOWER(name) LIKE ? OR identifier LIKE ?', "%#{arg}%", "%#{arg}%"])
+    render :text => prepare_to_token_input(result).to_json
   end
 
 end

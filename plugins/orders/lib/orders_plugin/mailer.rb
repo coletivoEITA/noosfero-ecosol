@@ -1,6 +1,5 @@
 class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
 
-  include ActionMailer::Helpers
   include OrdersPlugin::TranslationHelper
 
   helper ApplicationHelper
@@ -11,62 +10,54 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
   attr_accessor :environment
 
   def message_to_consumer_for_order profile, order, subject, message = nil
-    domain = profile.hostname || profile.environment.default_hostname
+    self.environment = profile.environment
+    @profile = profile
+    @order = order
+    @consumer = order.consumer
+    @message = message
 
-    recipients    profile_recipients(order.consumer)
-    from          'no-reply@' + domain
-    reply_to      profile_recipients(profile)
-    subject       t('lib.mailer.profile_subject') % {:profile => profile.name, :subject => subject}
-    content_type  'text/html'
-    body :profile => profile,
-         :order => order,
-         :consumer => order.consumer,
-         :message => message,
-         :environment => profile.environment
+    mail to: profile_recipients(order.consumer),
+      from: environment.noreply_email,
+      reply_to: profile_recipients(profile),
+      subject: t('lib.mailer.profile_subject') % {profile: profile.name, subject: subject}
   end
 
   def message_to_consumer profile, consumer, subject, message
-    domain = profile.hostname || profile.environment.default_hostname
+    self.environment = profile.environment
+    @profile = profile
+    @consumer = consumer
+    @message = message
+    @environment = profile.environment
 
-    recipients    profile_recipients(consumer)
-    from          'no-reply@' + domain
-    reply_to      profile_recipients(profile)
-    subject       t('lib.mailer.profile_subject') % {:profile => name, :subject => subject}
-    content_type  'text/html'
-    body :profile => profile,
-         :consumer => consumer,
-         :message => message,
-         :environment => profile.environment
+    mail to: profile_recipients(consumer),
+      from: environment.noreply_email,
+      reply_to: profile_recipients(profile),
+      subject: t('lib.mailer.profile_subject') % {profile: name, subject: subject}
   end
 
   def order_confirmation order
-    profile = order.profile
-    domain = profile.hostname || profile.environment.default_hostname
-    environment = profile.environment
+    profile = @profile = order.profile
+    self.environment = profile.environment
+    @order = order
+    @consumer = order.consumer
 
-    recipients    profile_recipients(order.consumer)
-    from          'no-reply@' + domain
-    reply_to      profile_recipients(profile)
-    subject       t('lib.mailer.order_was_confirmed') % {:name => profile.name}
-    content_type  'text/html'
-    assigns = {:profile => profile, :order => order, :consumer => order.consumer, :environment => profile.environment}
-    body assigns
-    render :file => 'orders_plugin/mailer/order_confirmation', :body => assigns
+    mail to: profile_recipients(order.consumer),
+      from: environment.noreply_email,
+      reply_to: profile_recipients(profile),
+      subject: t('lib.mailer.order_was_confirmed') % {name: profile.name}
   end
 
   def order_cancellation order
-    profile = order.profile
-    domain = profile.hostname || profile.environment.default_hostname
+    profile = @profile = order.profile
+    self.environment = profile.environment
+    @order = order
+    @consumer = order.consumer
+    @environment = profile.environment
 
-    recipients    profile_recipients(order.consumer)
-    from          'no-reply@' + domain
-    reply_to      profile_recipients(profile)
-    subject       t('lib.mailer.order_was_cancelled') % {:name => profile.name}
-    content_type  'text/html'
-    body :profile => profile,
-         :order => order,
-         :consumer => order.consumer,
-         :environment => profile.environment
+    mail to: profile_recipients(order.consumer),
+      from: environment.noreply_email,
+      reply_to: profile_recipients(profile),
+      subject: t('lib.mailer.order_was_cancelled') % {name: profile.name}
   end
 
   protected

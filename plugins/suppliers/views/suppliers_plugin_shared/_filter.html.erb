@@ -4,22 +4,21 @@
     <%= t('views.filter.filter') %>
   </div>
 
-  <% form_remote_tag :update => 'search-results',
-    :loading => "loading_overlay.show('#filter');", :loaded => "loading_overlay.hide('#filter');",
-    :url => {:action => :index}, :html => {:id => 'filter-form'}, :method => :get do %>
+  <%= form_tag({action: :index}, remote: true, id: 'filter-form', data: {loading: '#filter', update: '#search-results', type: "html"},
+    method: :get) do %>
 
     <div class="fields filter-box">
 
       <% if type == :supplier %>
-        <%= render :partial => 'suppliers_plugin_myprofile/filter_fields' %>
+        <%= render partial: 'suppliers_plugin_myprofile/filter_fields' %>
       <% elsif type == :product %>
-        <%= render :partial => 'suppliers_plugin_product/filter_fields' %>
+        <%= render partial: 'suppliers_plugin_product/filter_fields' %>
       <% end %>
 
     </div>
 
     <div class="submit">
-      <%= submit_tag t('views.filter.filter_it'), :onclick => "var field = this; function name_form_submit() {field.form.onsubmit();}; setTimeout(name_form_submit, 300);" %>
+      <%= submit_tag t('views.filter.filter_it'), class: "filter-submit" %>
     </div>
 
   <% end %>

@@ -1,15 +1,17 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file,
-# please use the migrations feature of Active Record to incrementally modify your database, and
-# then regenerate this schema definition.
+# encoding: UTF-8
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your database schema. If you need
-# to create the application database on another system, you should be using db:schema:load, not running
-# all the migrations from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140709224246) do
+ActiveRecord::Schema.define(:version => 20140911210514) do
 
   create_table "abuse_reports", :force => true do |t|
     t.integer  "reporter_id"
@@ -95,12 +97,15 @@ ActiveRecord::Schema.define(:version => 20140709224246) do
     t.integer  "position"
     t.integer  "spam_comments_count",  :default => 0
     t.integer  "author_id"
+    t.integer  "created_by_id"
   end
 
   add_index "article_versions", ["article_id"], :name => "index_article_versions_on_article_id"
   add_index "article_versions", ["parent_id"], :name => "index_article_versions_on_parent_id"
   add_index "article_versions", ["path", "profile_id"], :name => "index_article_versions_on_path_and_profile_id"
   add_index "article_versions", ["path"], :name => "index_article_versions_on_path"
+  add_index "article_versions", ["published_at", "id"], :name => "index_article_versions_on_published_at_and_id"
+  add_index "article_versions", ["parent_id"], :name => "index_article_versions_on_parent_id"
 
   create_table "articles", :force => true do |t|
     t.string   "name"
@@ -145,6 +150,7 @@ ActiveRecord::Schema.define(:version => 20140709224246) do
     t.integer  "position"
     t.integer  "spam_comments_count",  :default => 0
     t.integer  "author_id"
+    t.integer  "created_by_id"
   end
 
   add_index "articles", ["comments_count"], :name => "index_articles_on_comments_count"
@@ -154,6 +160,7 @@ ActiveRecord::Schema.define(:version => 20140709224246) do
   add_index "articles", ["path", "profile_id"], :name => "index_articles_on_path_and_profile_id"
   add_index "articles", ["path"], :name => "index_articles_on_path"
   add_index "articles", ["profile_id"], :name => "index_articles_on_profile_id"
+  add_index "articles", ["published_at", "id"], :name => "index_articles_on_published_at_and_id"
   add_index "articles", ["slug"], :name => "index_articles_on_slug"
   add_index "articles", ["translation_of_id"], :name => "index_articles_on_translation_of_id"
   add_index "articles", ["type", "parent_id"], :name => "index_articles_on_type_and_parent_id"
@@ -227,19 +234,19 @@ ActiveRecord::Schema.define(:version => 20140709224246) do
   create_table "categories", :force => true do |t|
     t.string  "name"
     t.string  "slug"
-    t.text    "path",                 :default => ""
-    t.integer "display_color"
+    t.text    "path",                              :default => ""
     t.integer "environment_id"
     t.integer "parent_id"
     t.string  "type"
     t.float   "lat"
     t.float   "lng"
-    t.boolean "display_in_menu",      :default => false
-    t.integer "children_count",       :default => 0
-    t.boolean "accept_products",      :default => true
+    t.boolean "display_in_menu",                   :default => false
+    t.integer "children_count",                    :default => 0
+    t.boolean "accept_products",                   :default => true
     t.integer "image_id"
     t.string  "acronym"
     t.string  "abbreviation"
+    t.string  "display_color",   :limit => 6
     t.text    "ancestry"
     t.boolean "visible_for_articles", :default => true
     t.boolean "visible_for_profiles", :default => true
@@ -262,6 +269,43 @@ ActiveRecord::Schema.define(:version => 20140709224246) do
     t.text     "description"
     t.string   "link"
     t.integer  "environment_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "comment_classification_plugin_comment_label_user", :force => true do |t|
+    t.integer  "profile_id"
+    t.integer  "comment_id"
+    t.integer  "label_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "comment_classification_plugin_comment_status_user", :force => true do |t|
+    t.integer  "profile_id"
+    t.integer  "comment_id"
+    t.integer  "status_id"
+    t.text     "reason"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "comment_classification_plugin_labels", :force => true do |t|
+    t.string   "name"
+    t.string   "color"
+    t.boolean  "enabled",    :default => true
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "comment_classification_plugin_statuses", :force => true do |t|
+    t.string   "name"
+    t.boolean  "enabled",       :default => true
+    t.boolean  "enable_reason", :default => true
+    t.integer  "owner_id"
+    t.string   "owner_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -652,6 +696,7 @@ ActiveRecord::Schema.define(:version => 20140709224246) do
     t.string   "status"
     t.integer  "code"
     t.text     "opening_message"
+    t.text     "data",              :default => "--- {}\n\n"
   end
 
   add_index "orders_cycle_plugin_cycles", ["code"], :name => "index_orders_cycle_plugin_cycles_on_code"
@@ -806,15 +851,20 @@ ActiveRecord::Schema.define(:version => 20140709224246) do
     t.integer  "activities_count",                      :default => 0,     :null => false
     t.string   "personal_website"
     t.string   "jabber_id"
+    t.string   "usp_id"
   end
 
   add_index "profiles", ["activities_count"], :name => "index_profiles_on_activities_count"
   add_index "profiles", ["created_at"], :name => "index_profiles_on_created_at"
+  add_index "profiles", ["enabled"], :name => "index_profiles_on_enabled"
   add_index "profiles", ["environment_id"], :name => "index_profiles_on_environment_id"
   add_index "profiles", ["friends_count"], :name => "index_profiles_on_friends_count"
   add_index "profiles", ["identifier"], :name => "index_profiles_on_identifier"
   add_index "profiles", ["members_count"], :name => "index_profiles_on_members_count"
   add_index "profiles", ["region_id"], :name => "index_profiles_on_region_id"
+  add_index "profiles", ["type"], :name => "index_profiles_on_type"
+  add_index "profiles", ["validated"], :name => "index_profiles_on_validated"
+  add_index "profiles", ["visible"], :name => "index_profiles_on_visible"
 
   create_table "qualifier_certifiers", :force => true do |t|
     t.integer "qualifier_id"
@@ -855,6 +905,9 @@ ActiveRecord::Schema.define(:version => 20140709224246) do
     t.integer "role_id",       :null => false
     t.boolean "is_global"
   end
+
+  add_index "role_assignments", ["accessor_id", "accessor_type"], :name => "index_role_assignments_on_accessor_id_and_accessor_type"
+  add_index "role_assignments", ["resource_id", "resource_type"], :name => "index_role_assignments_on_resource_id_and_resource_type"
 
   create_table "roles", :force => true do |t|
     t.string  "name"

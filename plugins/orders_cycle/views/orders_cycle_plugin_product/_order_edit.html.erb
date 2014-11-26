@@ -16,7 +16,7 @@
   </div>
 </div>
 
-<% javascript_tag do %>
+<%= javascript_tag do %>
   orders_cycle.order.product.load(<%= product.id %>, <%= !item.blank? %>);
 <% end %>
 

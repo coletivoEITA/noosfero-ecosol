@@ -19,7 +19,7 @@ class NetworksPluginNodeController < MyProfileController
   def edit
     @node = NetworksPlugin::Node.find params[:id]
 
-    if request.post?
+    if request.xhr?
       @node.update_attributes params[:profile_data]
       @node.home_page.update_attributes params[:home_page]
       session[:notice] = t('controllers.node.edit')

@@ -1,0 +1,29 @@
+
+"en-US": &en-US
+
+  open_graph_plugin:
+    lib:
+      plugin:
+        name: 'OpenGraph'
+        description: 'OpenGraph'
+      track:
+        config:
+          activity:
+            label: "My activities: new photos on my albuns, blogs's posts and other contents"
+            objects:
+              blog_post: "Blogs' posts"
+              friendship: 'New friendships'
+              gallery_image: 'New images on my albuns'
+              uploaded_file: 'Files sent'
+          enterprise:
+            label: "News from enterprises from which I'm a member: when a product is modified or registered, when a page is updated, etc"
+          friend:
+            label: "Friends"
+          community:
+            label: "Communities"
+
+'en_US':
+  <<: *en-US
+'en':
+  <<: *en-US
+

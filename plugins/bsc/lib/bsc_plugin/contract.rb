@@ -7,8 +7,8 @@ class BscPlugin::Contract < Noosfero::Plugin::ActiveRecord
 
   belongs_to :bsc, :class_name => 'BscPlugin::Bsc'
 
-  named_scope :status, lambda { |status_list| status_list.blank? ? {} : {:conditions => ['status in (?)', status_list]} }
-  named_scope :sorted_by, lambda { |sorter, direction| {:order => "#{sorter} #{direction}"} }
+  scope :status, lambda { |status_list| status_list.blank? ? {} : {:conditions => ['status in (?)', status_list]} }
+  scope :sorted_by, lambda { |sorter, direction| {:order => "#{sorter} #{direction}"} }
 
   before_create do |contract|
     contract.created_at ||= Time.now.utc

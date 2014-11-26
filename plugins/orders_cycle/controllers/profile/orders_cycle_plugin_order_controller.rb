@@ -1,5 +1,5 @@
 # workaround for plugin class scope problem
-require_dependency 'suppliers_plugin/product_helper'
+require 'suppliers_plugin/product_helper'
 
 class OrdersCyclePluginOrderController < OrdersPluginOrderController
 
@@ -37,7 +37,11 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     else
       @consumer = user
       @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-      @order = OrdersPlugin::Sale.create! :profile => profile, :consumer => @consumer, :cycle => @cycle
+      @order = OrdersPlugin::Sale.new
+      @order.profile = profile
+      @order.consumer = @consumer
+      @order.cycle = @cycle
+      @order.save!
       redirect_to params.merge(:action => :edit, :id => @order.id)
     end
   end
@@ -79,6 +83,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     @order = OrdersPlugin::Sale.create! :cycle => @cycle, :consumer => @consumer
     redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
   end
+
   def filter
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
     @order = OrdersPlugin::Sale.find_by_id params[:order_id]
@@ -95,7 +100,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   def render_delivery
     @order = OrdersPlugin::Sale.find params[:id]
     @order.attributes = params[:order]
-    render :partial => 'orders_plugin_order/supplier_delivery', :locals => {:order => @order}
+    render partial: 'orders_plugin_order/delivery', :order => order, :actor_name => :supplier
   end
 
   def supplier_balloon

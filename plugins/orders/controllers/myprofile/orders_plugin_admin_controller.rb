@@ -17,8 +17,8 @@ class OrdersPluginAdminController < MyProfileController
     @sales_month = profile.sales.latest.first.created_at.month rescue Date.today.month
     @sales_year = profile.sales.latest.first.created_at.year rescue Date.today.year
 
-    @purchases = profile.purchases.latest.by_month(@purchases_month).by_year(@purchases_year).paginate(:per_page => 30, :page => params[:page])
-    @sales = profile.sales.latest.by_month(@sales_month).by_year(@sales_year).paginate(:per_page => 30, :page => params[:page])
+    @purchases = profile.purchases.latest.by_month(@purchases_month).by_year(@purchases_year).paginate(per_page: 30, page: params[:page])
+    @sales = profile.sales.latest.by_month(@sales_month).by_year(@sales_year).paginate(per_page: 30, page: params[:page])
   end
 
   def filter
@@ -31,7 +31,7 @@ class OrdersPluginAdminController < MyProfileController
     @scope = @scope.send @method
     @orders = OrdersPlugin::Order.search_scope @scope, params
 
-    render :layout => false
+    render layout: false
   end
 
   def edit
@@ -43,10 +43,9 @@ class OrdersPluginAdminController < MyProfileController
     @order.update_attributes params[:order]
 
     respond_to do |format|
-      format.js{ @template_html_fallback = false }
-      format.html{ render :partial => 'orders_plugin_admin/edit', :locals => {:order => @order, :actor_name => @actor_name} }
+      format.js{ render 'orders_plugin_admin/edit' }
+      format.html{ render partial: 'orders_plugin_admin/edit', locals: {order: @order, actor_name: @actor_name} }
     end
-
   end
 
   def report_products
@@ -54,13 +53,13 @@ class OrdersPluginAdminController < MyProfileController
     raise unless self.filter_methods.include? @method
     @scope ||= profile
     @scope = @scope.send @method
-    @orders = @scope.where(:code => params[:codes])
+    @orders = @scope.where(id: params[:ids])
     tmp_dir, report_file = report_products_by_supplier OrdersPlugin::Order.products_by_suppliers @orders
 
-    send_file report_file, :type => 'application/xlsx',
-      :disposition => 'attachment',
-      :filename => t('controllers.myprofile.admin.products_report') % {
-        :date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :name => ''}
+    send_file report_file, type: 'application/xlsx',
+      disposition: 'attachment',
+      filename: t('controllers.myprofile.admin.products_report') % {
+        date: DateTime.now.strftime("%Y-%m-%d"), profile_identifier: profile.identifier, name: ''}
   end
 
   def report_orders
@@ -68,12 +67,12 @@ class OrdersPluginAdminController < MyProfileController
     raise unless self.filter_methods.include? @method
     @scope ||= profile
     @scope = @scope.send @method
-    @orders = @scope.where(:code => params[:codes])
+    @orders = @scope.where(id: params[:ids])
     tmp_dir, report_file = report_orders_by_consumer @orders
 
-    send_file report_file, :type => 'application/xlsx',
-      :disposition => 'attachment',
-      :filename => t('controllers.myprofile.admin.orders_report') % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :name => ''}
+    send_file report_file, type: 'application/xlsx',
+      disposition: 'attachment',
+      filename: t('controllers.myprofile.admin.orders_report') % {date: DateTime.now.strftime("%Y-%m-%d"), profile_identifier: profile.identifier, name: ''}
   end
 
   protected

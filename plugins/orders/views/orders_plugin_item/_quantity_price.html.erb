@@ -1,17 +1,24 @@
-<div class="quantity-price-row <%= status %> <%= data[:flags].keys.join ' ' %>">
+<div class="quantity-price-row <%= status %> <%= status_data[:flags].keys.join ' ' %>">
 
   <div class="box-field quantity">
-    <span class="value"><%= data[:quantity] %></span>
+    <span class="value"><%= status_data[:quantity] %></span>
 
-    <% if not @simple and data[:flags][:editable] %>
-      <%= text_field_tag "item[quantity_#{data[:field]}]", data[:quantity], :onkeydown => 'orders.item.quantity_keydown(this, event)' %>
+    <% if not @simple and status_data[:flags][:editable] %>
+      <%= text_field_tag "item[quantity_#{status_data[:field]}]", status_data[:quantity], :onkeydown => 'orders.item.quantity_keydown(this, event)' %>
     <% end %>
 
     <span class="unit"><%= item.product.unit.singular rescue '' %></span>
   </div>
 
   <div class="box-field price-total">
-    <%= price_span data[:price] %>
+    <span class="<%= 'outdated' if status_data[:new_price] %>">
+      <%= status_data[:price] %>
+    </span>
+    <% if status_data[:new_price] %>
+      <span class="new-price">
+        <%= status_data[:new_price] %>
+      </span>
+    <% end %>
   </div>
 
   <% if @admin %>

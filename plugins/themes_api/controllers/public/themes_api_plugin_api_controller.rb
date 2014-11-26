@@ -39,17 +39,16 @@ class ThemesApiPluginApiController < PublicController
     File.open("#{@themes_path}/#{@theme_id}/theme.yml", 'w') do |file|
       file << {
         'name' => "Seu tema personalizado",
-        'layout' => "cirandas",
-        'jquery_theme' => "smoothness_mod",
-        'icon_theme' => ['default', 'pidgin'],
+        'layout' => "cirandas-responsive",
+        'jquery_theme' => "smoothness",
+        'icon_theme' => ['awesome', 'pidgin'],
+        'responsive' => true,
         'owner_id' => @profile.id,
         'owner_type' => @profile.type.to_s,
       }.to_yaml
     end
 
-    ret = system "rm -f #{@themes_path}/#{@theme_id}/stylesheets/style.css" #ensure sass compilation
-    Sass::Plugin.add_template_location "#{@themes_path}/#{@theme_id}/stylesheets", "#{@themes_path}/#{@theme_id}/stylesheets"
-    Sass::Plugin.update_stylesheets
+    ret = system "rm -f public/assets/designs/themes/#{@theme_id}/stylesheets/style*.css" #ensure sass compilation
 
     @profile.theme = @theme_id
     @profile.save

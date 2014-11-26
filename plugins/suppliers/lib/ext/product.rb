@@ -3,20 +3,24 @@ require_dependency 'product'
 # FIXME: The lines bellow should be on the core
 class Product
 
-  named_scope :available, :conditions => {:available => true}
-  named_scope :unavailable, :conditions => ['products.available <> true']
-  named_scope :archived, :conditions => {:archived => true}
-  named_scope :unarchived, :conditions => ['products.archived <> true']
+  extend CurrencyHelper::ClassMethods
+  has_currency :price
+  has_currency :discount
 
-  named_scope :with_available, lambda { |available| { :conditions => {:available => available} } }
-  named_scope :with_price, :conditions => 'products.price > 0'
-  named_scope :with_product_category_id, lambda { |id| { :conditions => {:product_category_id => id} } }
+  scope :available, :conditions => {:available => true}
+  scope :unavailable, :conditions => ['products.available <> true']
+  scope :archived, :conditions => {:archived => true}
+  scope :unarchived, :conditions => ['products.archived <> true']
+
+  scope :with_available, lambda { |available| { :conditions => {:available => available} } }
+  scope :with_price, :conditions => 'products.price > 0'
+  scope :with_product_category_id, lambda { |id| { :conditions => {:product_category_id => id} } }
 
   # FIXME: transliterate input and name column
-  named_scope :name_like, lambda { |name| { :conditions => ["LOWER(products.name) LIKE ?", "%#{name}%"] } }
+  scope :name_like, lambda { |name| { :conditions => ["LOWER(products.name) LIKE ?", "%#{name}%"] } }
 
-  named_scope :by_profile, lambda { |profile| { :conditions => {:profile_id => profile.id} } }
-  named_scope :by_profile_id, lambda { |profile_id| { :conditions => {:profile_id => profile_id} } }
+  scope :by_profile, lambda { |profile| { :conditions => {:profile_id => profile.id} } }
+  scope :by_profile_id, lambda { |profile_id| { :conditions => {:profile_id => profile_id} } }
 
   def self.product_categories_of products
     ProductCategory.find products.collect(&:product_category_id).compact.select{ |id| not id.zero? }
@@ -43,14 +47,11 @@ class Product
   has_many :consumers, :through => :to_products, :source => :profile, :uniq => true, :order => 'id ASC'
 
   # prefer distributed_products has_many to use DistributedProduct scopes and eager loading
-  named_scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
-  named_scope :own, :conditions => ["products.type = 'Product'"]
+  scope :distributed, :conditions => ["products.type = 'SuppliersPlugin::DistributedProduct'"]
+  scope :own, :conditions => ["products.type = 'Product'"]
 
-  named_scope :from_supplier, lambda { |supplier| { :conditions => ['suppliers_plugin_suppliers.id = ?', supplier.id] } }
-  named_scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_suppliers.id = ?', supplier_id] } }
-
-  extend CurrencyHelper::ClassMethods
-  has_currency :price
+  scope :from_supplier, lambda { |supplier| { :conditions => ['suppliers_plugin_suppliers.id = ?', supplier.id] } }
+  scope :from_supplier_id, lambda { |supplier_id| { :conditions => ['suppliers_plugin_suppliers.id = ?', supplier_id] } }
 
   after_create :distribute_to_consumers
   after_destroy :destroy_dependent
@@ -80,7 +81,7 @@ class Product
   def supplier
     # FIXME: use self.suppliers when rails support for nested preload comes
     @supplier ||= self.sources_supplier_product.supplier rescue nil
-    @supplier ||= self.profile.self_supplier
+    @supplier ||= self.profile.self_supplier rescue nil
   end
   def supplier= value
     @supplier = value

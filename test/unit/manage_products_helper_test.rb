@@ -1,6 +1,7 @@
+# encoding: UTF-8
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ManageProductsHelperTest < ActiveSupport::TestCase
+class ManageProductsHelperTest < ActionView::TestCase
 
   include ManageProductsHelper
   include ContentViewerHelper
@@ -121,13 +122,13 @@ class ManageProductsHelperTest < ActiveSupport::TestCase
   end
 
   should 'show unit on label of amount selection' do
-    input = Input.new()
-    input.expects(:product).returns(Product.new(:unit => Unit.new(:singular => 'Meter')))
+    input = build(Input)
+    input.expects(:product).returns(build(Product, :unit => Unit.new(:singular => 'Meter')))
     assert_equal 'Amount used by meter of this product or service', label_amount_used(input)
   end
 
   should 'not show unit on label of amount selection if product has no unit selected' do
-    input = Input.new()
+    input = build(Input)
     input.expects(:product).returns(Product.new)
     assert_equal 'Amount used in this product or service', label_amount_used(input)
   end
@@ -143,8 +144,8 @@ class ManageProductsHelperTest < ActiveSupport::TestCase
     qualifier = fast_create(Qualifier, :name => 'Organic')
     fbes = fast_create(Certifier, :name => 'FBES')
     colivre = fast_create(Certifier, :name => 'Colivre')
-    QualifierCertifier.create!(:qualifier => qualifier, :certifier => colivre)
-    QualifierCertifier.create!(:qualifier => qualifier, :certifier => fbes)
+    create(QualifierCertifier, :qualifier => qualifier, :certifier => colivre)
+    create(QualifierCertifier, :qualifier => qualifier, :certifier => fbes)
 
     result = certifiers_for_select(qualifier)
     assert_equal ["Self declared", "Colivre", "FBES"], result.map{|i| i[0]}
@@ -154,7 +155,7 @@ class ManageProductsHelperTest < ActiveSupport::TestCase
     product = fast_create(Product)
     qualifier = fast_create(Qualifier)
     certifier = fast_create(Certifier)
-    ProductQualifier.create!(:product => product, :qualifier => qualifier, :certifier => certifier)
+    create(ProductQualifier, :product => product, :qualifier => qualifier, :certifier => certifier)
     assert_match /✔ Qualifier \d+ certified by Certifier \d+/, display_qualifiers(product)
   end
 
@@ -162,7 +163,7 @@ class ManageProductsHelperTest < ActiveSupport::TestCase
     product = fast_create(Product)
     qualifier = fast_create(Qualifier)
     certifier = fast_create(Certifier)
-    ProductQualifier.create!(:product => product, :qualifier => qualifier, :certifier => certifier)
+    create(ProductQualifier, :product => product, :qualifier => qualifier, :certifier => certifier)
     qualifier.destroy
     assert_nothing_raised do
       assert_no_match /✔ Qualifier \d+ certified by Certifier \d+/, display_qualifiers(product)
@@ -173,7 +174,7 @@ class ManageProductsHelperTest < ActiveSupport::TestCase
     product = fast_create(Product)
     qualifier = fast_create(Qualifier)
     certifier = fast_create(Certifier)
-    ProductQualifier.create!(:product => product, :qualifier => qualifier, :certifier => certifier)
+    create(ProductQualifier, :product => product, :qualifier => qualifier, :certifier => certifier)
     certifier.destroy
     assert_nothing_raised do
       result = display_qualifiers(product)

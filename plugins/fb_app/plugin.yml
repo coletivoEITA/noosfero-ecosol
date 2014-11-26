@@ -1,0 +1,5 @@
+name: fb_app
+dependencies:
+  - metadata
+  - oauth
+  - open_graph

@@ -6,18 +6,24 @@ module WhiteListFilter
     if content.blank? || !content.include?('iframe')
       return content
     end
-    doc = Nokogiri::HTML::DocumentFragment.parse content
-    doc.css('iframe').each do |iframe|
-      src = URI.parse iframe.attr('src') rescue nil
-      iframe.remove if src and not trusted_sites.include? src.host
+    content.gsub!(/<iframe[^>]*>\s*<\/iframe>/i) do |iframe|
+      result = ''
+      unless iframe =~ /src=['"].*src=['"]/
+        trusted_sites.each do |trusted_site|
+          re_dom = trusted_site.gsub('.', '\.')
+          if iframe =~ /src=["'](https?:)?\/\/(www\.)?#{re_dom}\//
+            result = iframe
+          end
+        end
+      end
+      result
     end
-    doc.to_html
   end
 
   module ClassMethods
     def filter_iframes(*opts)
-      options = opts.pop
-      white_list_method = options[:whitelist]
+      options = opts.last.is_a?(Hash) && opts.pop || {}
+      white_list_method = options[:whitelist] || :iframe_whitelist
       opts.each do |field|
         before_validation do |obj|
           content = obj.send field

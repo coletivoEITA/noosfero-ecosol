@@ -58,10 +58,7 @@ body.consumers-coop {
 /* ----- header ----- */
 
 #consumers-coop-plugin-header {
-  margin-left: -$wireframe-padding;
-  margin-top: 2*$margin;
   margin-bottom: $margin;
-  width: $wireframe + 2*$wireframe-padding;
 
   #menu-title {
     color: black;
@@ -197,7 +194,7 @@ body.consumers-coop {
 /* ----- suppliers ----- */
 
 // disable find-enterprise for now
-.consumers-coop #supplier-add {
+.consumers-coop #supplier-add.supplier {
 
   #create-dummy {
     display: block;
@@ -212,9 +209,6 @@ body.consumers-coop {
 }
 
 /* ----- order edit ----- */
-
-
-/* ----- popin ----- */
 
 /* ----- message ----- */
 

@@ -1,18 +1,20 @@
 class OauthPlugin::Provider < Noosfero::Plugin::ActiveRecord
 
+  attr_accessible :strategy, :identifier, :name, :site, :key, :secret, :environment_id
+
   belongs_to :environment
 
-  validates_inclusion_of :strategy, :in => OauthPlugin::StrategiesDefs.keys
+  validates_inclusion_of :strategy, in: OauthPlugin::StrategiesDefs.keys
   validates_presence_of :identifier
   validates_presence_of :name
-  validates_uniqueness_of :identifier, :scope => :environment_id
-  validates_presence_of :key, :secret, :if => :key_needed?
+  validates_uniqueness_of :identifier, scope: :environment_id
+  validates_presence_of :key, :secret, if: :key_needed?
 
   acts_as_having_image
   after_update :save_image
 
   def strategy_class
-    @strategy_class ||= OmniAuth::Strategies.const_get OmniAuth::Utils.camelize(self.strategy)
+    @strategy_class ||= OmniAuth::Strategies.const_get OmniAuth::Utils.camelize self.strategy
   end
   def strategy_defs
     @strategy_defs ||= OauthPlugin::StrategiesDefs[self.strategy] || {}

@@ -15,9 +15,8 @@ class SuppliersPluginMyprofileController < MyProfileController
     @suppliers = search_scope(profile.suppliers.except_self).paginate(:per_page => 30, :page => params[:page])
     @is_search = params[:name] or params[:active]
 
-    respond_to do |format|
-      format.html
-      format.js { render :partial => 'suppliers_plugin_myprofile/suppliers_list', :locals => {:suppliers => @suppliers}}
+    if request.xhr?
+      render partial: 'suppliers_plugin_myprofile/suppliers_list', locals: {suppliers: @suppliers}
     end
   end
 

@@ -11,7 +11,7 @@ class FriendsController < MyProfileController
   def remove
     @friend = profile.friends.find(params[:id])
     if request.post? && params[:confirmation]
-      profile.remove_friend(@friend)
+      Friendship.remove_friendship(profile, @friend)
       redirect_to :action => 'index'
     end
   end
@@ -20,7 +20,7 @@ class FriendsController < MyProfileController
 
   class << self
     def per_page
-      10
+      12
     end
   end
   def per_page

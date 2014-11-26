@@ -26,11 +26,7 @@ Feature: categories_block
     And I am logged in as admin
     And I go to /admin/environment_design
 
-  # Note that this @ignore-hidden-elements only works for seeing hidden
-  # elements. It actually doesn't work for following hidden link or pressing
-  # hidden buttons. That's why it's necessary to use this display hack to show
-  # the link.
-  @selenium @ignore-hidden-elements
+  @selenium
   Scenario: List just product categories
     Given display ".button-bar"
     And I follow "Edit" within ".categories-block"

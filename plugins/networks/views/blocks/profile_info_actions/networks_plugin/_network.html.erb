@@ -4,7 +4,7 @@
   <% if user and user.may_join_network? profile %>
     <li>
       <%= button :add, t('networks_plugin.views.blocks.profile_info_actions.button'), {:controller => :networks_plugin_network, :action => :join},
-        :title => t('networks_plugin.views.blocks.profile_info_actions.button'), :class => 'colorbox' %>
+        :title => t('networks_plugin.views.blocks.profile_info_actions.button'), :class => 'modal-toggle' %>
     </li>
   <% end %>
 </ul>

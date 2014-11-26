@@ -1,0 +1,5 @@
+app:
+  id: 'your-app-id'
+  secret: 'your-app-secret'
+  namespace: 'your-app-namespace'
+

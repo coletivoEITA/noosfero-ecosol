@@ -18,6 +18,20 @@ class SearchController < PublicController
 
   no_design_blocks
 
+  def facets_browse
+    @asset = params[:asset_key].to_sym
+    @asset_class = asset_class(@asset)
+
+    @facets_only = true
+    send(@asset)
+    set_facets_variables
+
+    @facet = @asset_class.map_facets_for(environment).find { |facet| facet[:id] == params[:facet_id] }
+    raise 'Facet not found' if @facet.nil?
+
+    render :layout => false
+  end
+
   def index
     @searches = {}
     @order = []
@@ -29,7 +43,7 @@ class SearchController < PublicController
       @asset = key
       send(key)
       @order << key
-      @names[key] = getterm(description)
+      @names[key] = _(description)
     end
     @asset = nil
 
@@ -90,10 +104,14 @@ class SearchController < PublicController
   end
 
   def events
-    year = (params[:year] ? params[:year].to_i : Date.today.year)
-    month = (params[:month] ? params[:month].to_i : Date.today.month)
-    day = (params[:day] ? params[:day].to_i : Date.today.day)
-    @date = build_date(year, month, day)
+    if params[:year].blank? && params[:year].blank? && params[:day].blank?
+      @date = Date.today
+    else
+      year = (params[:year] ? params[:year].to_i : Date.today.year)
+      month = (params[:month] ? params[:month].to_i : Date.today.month)
+      day = (params[:day] ? params[:day].to_i : 1)
+      @date = build_date(year, month, day)
+    end
     date_range = (@date - 1.month).at_beginning_of_month..(@date + 1.month).at_end_of_month
 
     @events = []
@@ -133,7 +151,7 @@ class SearchController < PublicController
     @tag = params[:tag]
     @tag_cache_key = "tag_#{CGI.escape(@tag.to_s)}_env_#{environment.id.to_s}_page_#{params[:npage]}"
     if is_cache_expired?(@tag_cache_key)
-      @searches[@asset] = {:results => environment.articles.find_tagged_with(@tag).paginate(paginate_options)}
+      @searches[@asset] = {:results => environment.articles.tagged_with(@tag).paginate(paginate_options)}
     end
   end
 
@@ -159,7 +177,7 @@ class SearchController < PublicController
     if params[:category_path].blank?
       render_not_found if params[:action] == 'category_index'
     else
-      path = params[:category_path].join('/')
+      path = params[:category_path]
       @category = environment.categories.find_by_path(path)
       if @category.nil?
         render_not_found(path)

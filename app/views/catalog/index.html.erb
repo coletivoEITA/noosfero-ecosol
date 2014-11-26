@@ -10,14 +10,11 @@
 
   <h1><%= _('Products/Services') %></h1>
 
-  <%= breadcrumb(@category) if params[:level] %>
-
-  <%= render 'catalog/products', :products => @products, :float_box_position => (float_box_position rescue nil) %>
-
-  <%= render 'catalog/pagination' %>
-  <% javascript_tag do %>
-    pagination.infiniteScroll(<%= _('loading...').to_json %>);
+  <%= content_for :product_page do %>
+    <%= render 'catalog/results' %>
   <% end %>
+  <%= render 'catalog/search' %>
+  <%= render 'catalog/javascripts', external: false %>
 
   <%= add_zoom_to_images %>
 

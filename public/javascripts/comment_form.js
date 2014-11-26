@@ -3,7 +3,7 @@ jQuery('.display-comment-form').click(function(){
   var $button = jQuery(this);
   toggleBox($button.parents('.post_comment_box'));
   jQuery($button).hide();
-  $button.closest('.page-comment-form').find('input').first().focus();
+  $button.closest('.page-comment-form').find('input[type="text"]:visible,textarea').first().focus();
   return false;
 });
 
@@ -53,7 +53,7 @@ function save_comment(button) {
       //Comment of reply
       $('#'+ data.render_target).replaceWith(data.html);
       $('#' + data.render_target).effect("highlight", {}, 3000);
-      $.colorbox.close();
+      noosfero.modal.close();
       increment_comment_count(comment_div);
     } else {
       //New comment of article
@@ -64,7 +64,7 @@ function save_comment(button) {
       });
 
       page_comment_form.find('.errorExplanation').remove();
-      $.colorbox.close();
+      noosfero.modal.close();
       increment_comment_count(comment_div);
     }
 

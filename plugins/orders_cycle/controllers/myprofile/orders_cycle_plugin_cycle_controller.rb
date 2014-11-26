@@ -17,12 +17,12 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
     if request.xhr?
       render :partial => 'results'
     else
-      @open_cycles = profile.orders_cycles.open
+      @open_cycles = profile.orders_cycles.opened
     end
   end
 
   def new
-    if request.post?
+    if request.xhr?
       @cycle = OrdersCyclePlugin::Cycle.find params[:id]
 
       params[:cycle][:status] = 'orders' if @open = params[:open] == '1'
@@ -31,8 +31,9 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
       if @success
         session[:notice] = t('controllers.myprofile.cycle_controller.cycle_created')
         if params[:sendmail]
-          OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).deliver_open_cycle @cycle.profile,
-            @cycle,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message
+          OrdersCyclePlugin::Mailer.open_cycle(
+            @cycle.profile, @cycle ,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message)
+            .delay(:run_at => @cycle.start).deliver
         end
       else
         render :action => :edit
@@ -45,6 +46,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def edit
+    # editing an order
     return super if params[:actor_name]
 
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
@@ -56,8 +58,9 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
         @success = @cycle.update_attributes params[:cycle]
 
         if params[:sendmail]
-          OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).deliver_open_cycle @cycle.profile,
-            @cycle,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message
+          OrdersCyclePlugin::Mailer.open_cycle(@cycle.profile,
+            @cycle, t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message)
+            .delay(:run_at => @cycle.start).deliver
         end
       end
     end
@@ -101,6 +104,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def report_products
+    return super unless params[:id].present?
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     tmp_dir, report_file = report_products_by_supplier @cycle.products_by_suppliers
 
@@ -111,6 +115,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def report_orders
+    return super unless params[:id].present?
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     tmp_dir, report_file = report_orders_by_consumer @cycle.sales.ordered
 
@@ -122,6 +127,8 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   def filter
     @cycle = profile.orders_cycles.find params[:context_id]
     @scope = @cycle
+
+    params[:code].gsub!(/^#{@cycle.code}\./, '') if params[:code].present?
     super
   end
 

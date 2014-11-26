@@ -1,4 +1,4 @@
-class DeliveryPlugin::Method < Noosfero::Plugin::ActiveRecord
+class DeliveryPlugin::Method < ActiveRecord::Base
 
   belongs_to :profile
 
@@ -8,8 +8,8 @@ class DeliveryPlugin::Method < Noosfero::Plugin::ActiveRecord
   validates_presence_of :name
   validates_inclusion_of :delivery_type, :in => ['pickup', 'deliver']
 
-  named_scope :pickup, :conditions => {:delivery_type => 'pickup'}
-  named_scope :delivery, :conditions => {:delivery_type => 'deliver'}
+  scope :pickup, :conditions => {:delivery_type => 'pickup'}
+  scope :delivery, :conditions => {:delivery_type => 'deliver'}
 
   def pickup?
     delivery_type == 'pickup'

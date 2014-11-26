@@ -1,0 +1,11 @@
+<% unless @action %>
+  <% cache_timeout(profile.cache_key + '-profile-general-info', 4.hours) do %>
+    <%= display_content %>
+
+    <% if !environment.enabled?('disable_categories') && !profile.interests.empty? %>
+      <%= display_interests %>
+    <% end %>
+
+    <%= display_general %>
+  <% end %>
+<% end %>

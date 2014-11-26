@@ -2,6 +2,6 @@
   jQuery('#networks-node-associate').html("<%= j render('associate') %>");
 <% else %>
   jQuery(".listing").html('<%= j render('networks_plugin_network/structure_listing') %>');
-  jQuery.colorbox.close();
+  noosfero.modal.close();
 <% end %>
 

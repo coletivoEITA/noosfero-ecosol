@@ -18,10 +18,7 @@ module SweeperHelper
       expire_timeout_fragment(profile.manage_friends_cache_key(:npage => i.to_s))
     end
 
-    #not tested yet
-    # friends blocks
-    blocks = profile.blocks.select{|b| b.kind_of?(FriendsBlock)}
-    expire_profile_blocks(blocks)
+    expire_blocks_cache(profile, [:profile])
   end
 
   def expire_communities(profile)
@@ -70,12 +67,12 @@ module SweeperHelper
     if profile
       profile.blocks.each {|block|
         conditions = block.class.expire_on
-        blocks_to_expire << block unless (conditions[:profile] & causes).empty?
+        blocks_to_expire << block unless (conditions[:profile] & causes).blank?
       }
     end
     environment.blocks.each {|block|
       conditions = block.class.expire_on
-      blocks_to_expire << block unless (conditions[:environment] & causes).empty?
+      blocks_to_expire << block unless (conditions[:environment] & causes).blank?
     }
 
     blocks_to_expire.uniq!

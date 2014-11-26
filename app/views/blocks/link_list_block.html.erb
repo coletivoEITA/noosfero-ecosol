@@ -1,0 +1,9 @@
+<%= block_title block.title %>
+<ul>
+
+  <% links.each do |link| %>
+    <li>
+      <%= block.sanitize_link(link_to link[:name], block.expand_address(link[:address]), target: link[:target], class: "#{'icon-' + link[:icon] if link[:icon]}", title: link[:title]) %>
+    </li>
+  <% end %>
+</ul>

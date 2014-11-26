@@ -4,7 +4,7 @@
 %>
 
 <% if data.present? or other_supplier_methods %>
-  <div id="delivery-box" class="order-section">
+  <div class="delivery-box order-section">
 
     <h3><%= t("views.order._delivery.#{actor_name}_heading") %></h3>
 
@@ -20,7 +20,7 @@
     <% if other_supplier_methods %>
       <%= labelled_field f, :supplier_delivery_id, t('views.order._delivery.choose_another'),
         f.select(:supplier_delivery_id, order.delivery_methods.collect{ |d| [d.name, d.id] }, {},
-                 :onchange => "jQuery('#delivery-box').load('#{url_for(:action => :render_delivery, :id => order.id)}', jQuery(this).parents('form').serialize());"),
+                 :onchange => "jQuery('.delivery-box').load('#{url_for(:action => :render_delivery, :id => order.id)}', jQuery(this).parents('form').serialize());"),
         :class => 'subtitle' %>
     <% end %>
 

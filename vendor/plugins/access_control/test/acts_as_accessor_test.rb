@@ -2,6 +2,11 @@ require 'test/unit'
 require File.dirname(__FILE__) + '/test_helper'
 
 class ActAsAccessorTest < Test::Unit::TestCase
+
+  def setup
+    RoleAssignment.attr_accessible :accessor
+  end
+
   def test_can_have_role_in_respect_to_an_resource
     res = AccessControlTestResource.create!(:name => 'bla')
     a = AccessControlTestAccessor.create!(:name => 'ze')
@@ -25,15 +30,15 @@ class ActAsAccessorTest < Test::Unit::TestCase
     assert a.add_role(role, res)
     assert a.role_assignments.map{|ra|[ra.role, ra.accessor, ra.resource]}.include?([role, a, res])
   end
-  
+
   def test_remove_role
     res = AccessControlTestResource.create!(:name => 'bla')
     a = AccessControlTestAccessor.create!(:name => 'ze')
     role = Role.create!(:name => 'just_an_author', :permissions => ['bli'])
-    ra = RoleAssignment.create!(:accessor => a, :role => role, :resource => res)
+    ra = RoleAssignment.create!(:accessor => a, :role_id => role.id, :resource_id => res.id)
 
     assert a.role_assignments.include?(ra)
-    assert a.remove_role(role, res)
+    a.remove_role(role, res)
     a.reload
     assert !a.role_assignments.map{|ra|[ra.role, ra.accessor, ra.resource]}.include?([role, a, res])
   end
@@ -54,14 +59,6 @@ class ActAsAccessorTest < Test::Unit::TestCase
 
     assert !a.role_assignments.map{|ra|[ra.role, ra.accessor, ra.resource]}.include?([role, a, res]) 
     assert !a.remove_role(role, res)
-  end
-
-  def test_get_members_by_role
-    res = AccessControlTestResource.create!(:name => 'bla')
-    a = AccessControlTestAccessor.create!(:name => 'ze')
-    role = Role.create!(:name => 'another_content_author', :permissions => ['bli'])
-    assert a.add_role(role, res)
-    assert_equal [a], a.members_by_role(role)
   end
 
 end

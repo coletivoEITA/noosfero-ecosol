@@ -1,0 +1,84 @@
+<% if errors %>
+  <%= render_dialog_error_messages 'product' %>
+<% end %>
+
+<%= remote_form_for(@product,
+                   :loading => "small_loading('product-info-form')",
+                   :update => 'product-info',
+                   :url => {:controller => 'manage_products', :action => 'edit', :id => @product, :field => 'info'},
+                   :html => {:id => 'product-info-form', :method => 'post', :class => 'form-horizontal'}) do |f| %>
+
+    <div class="form-group">
+      <%= f.label :price, _('Price (%s)') % environment.currency_unit, :class => 'control-label col-lg-3 col-md-3 col-sm-4' %>
+      <div class="col-lg-9 col-md-9 col-sm-8">
+        <%= f.text_field(:price, :value => @product.formatted_value(:price), :class => 'numbers-only form-control') %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :discount, _('Discount (%s)') % environment.currency_unit, :class => 'control-label col-lg-3 col-md-3 col-sm-4' %>
+      <div class="col-lg-9 col-md-9 col-sm-8">
+        <%= f.text_field(:discount, :value => @product.formatted_value(:discount), :class => 'numbers-only form-control', :title => _('If your product is on sale, fill this field with the discount value')) %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :available, _('Available'), :class => 'control-label col-lg-3 col-md-3 col-sm-4' %>
+      <div class="col-lg-9 col-md-9 col-sm-8">
+        <%= labelled_radio_button( _('Yes'), 'product[available]', true, @product.available, :id => 'product_available') + labelled_radio_button( _('No'), 'product[available]', false, !@product.available) %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :highlighted, _('Highlight this product?'), :class => 'control-label col-lg-3 col-md-3 col-sm-4' %>
+      <div class="col-lg-9 col-md-9 col-sm-8">
+        <%= f.check_box(:highlighted) %>
+      </div>
+    </div>
+
+  <% if !environment.qualifiers.empty? %>
+    <table id='product-qualifiers-list'>
+      <tr>
+        <th><%= _('Qualifier') %></th>
+        <th><%= _('Certifier') %></th>
+        <th></th>
+      </tr>
+      <% @product.qualifiers.each_with_index do |qualifier, index| %>
+      <tr>
+        <td>
+          <%= select_qualifiers(@product, qualifier.id) %>
+        </td>
+        <td id='certifier-area-<%= index %>'>
+          <%= select_certifiers(qualifier, @product) %>
+        </td>
+        <td>
+          <%= remove_qualifier_button %>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+    <%= button_to_function( :add, _('Add new qualifier'),
+      "new_qualifier_row('#product-qualifiers-list')"
+    ) %>
+    <%= hidden_field_tag "product[qualifiers_list][nil]" %>
+  <% end %>
+
+  <%= hidden_field_tag 'info-bar-update-url', @product.price_composition_bar_display_url, :class => 'bar-update-url' %>
+
+  <% button_bar do %>
+    <%= submit_button :save, _('Save') %>
+    <%= cancel_edit_product_link(@product, 'info') %>
+  <% end %>
+<% end %>
+
+<div id="new-qualifier-select" style="display: none">
+  <%= select_qualifiers @product %>
+</div>
+<div id="new-qualifier-certifier" style="display: none">
+  <%= select_tag :certifier %>
+</div>
+<div id="new-qualifier-remove" style="display: none">
+  <%= remove_qualifier_button %>
+</div>
+
+<%= render :partial => 'shared/numbers_only_javascript' %>

@@ -14,7 +14,7 @@
     <% end %>
   </ul>
 
-  <% form_tag :action => :allow do %>
+  <%= form_tag :action => :allow do %>
     <%= submit_tag _('Allow') %>
     <%= link_to _('cancel'), @auth.client.site %>
   <% end %>

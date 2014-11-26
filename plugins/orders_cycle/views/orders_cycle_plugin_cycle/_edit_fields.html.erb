@@ -1,32 +1,35 @@
 <h3><%= t('views.cycle._edit_fields.general_settings') %></h3>
 
-<% form_remote_for :cycle, @cycle, :url => {:action => @cycle.new? ? :new : :edit, :id => @cycle.id },
-  :loading => "loading_overlay.show('#cycle-fields form')", :loaded => "loading_overlay.hide('#cycle-fields form')" do |f| %>
+<%= form_for @cycle, as: :cycle , remote: true, :url => {:action => @cycle.new? ? :new : :edit, :id => @cycle.id }, html: {data: {loading: '#cycle-fields form'}} do |f| %>
 
   <%= labelled_field(f, :name, t('views.cycle._edit_fields.name'), f.text_field(:name), :class => 'cycle-field-name') %>
   <%= labelled_field(f, :description, t('views.cycle._edit_fields.description'), f.text_area(:description), :class => 'cycle-field-description') %>
 
   <div class="cycle-fields-block">
-    <%= labelled_period_field(f, :start, :finish, t('views.cycle._edit_fields.orders_interval'), :class => 'cycle-orders-period') %>
+    <%= labelled_period_field f, :start, :finish, t('views.cycle._edit_fields.orders_interval'), :class => 'cycle-orders-period' %>
   </div>
   <div class="cycle-fields-block">
-    <%= labelled_period_field(f, :delivery_start, :delivery_finish, t('views.cycle._edit_fields.deliveries_interval'), :class => 'cycle-orders-period') %>
+    <%= labelled_period_field f, :delivery_start, :delivery_finish, t('views.cycle._edit_fields.deliveries_interval'), :class => 'cycle-orders-period' %>
   </div>
 
   <div class="cycle-fields-block">
     <div id='cycle-delivery' class="field">
-      <%= f.label(:delivery_methods, t('views.cycle._edit_fields.available_delivery_me')) %>
+      <%= f.label :delivery_methods, t('views.cycle._edit_fields.available_delivery_me') %>
 
       <div>
         <div id='cycle-delivery-options' class="subtitle">
           <%= render :partial => 'delivery_plugin_option/index', :locals => {:owner => @cycle} %>
         </div>
-        <%= colorbox_link_to t('views.cycle._edit_fields.add_method'), { :controller => :orders_cycle_plugin_delivery_option, :action => :select, :owner_id => @cycle.id, :owner_type => @cycle.class.name }, :class => 'cycle-add-delivery-option subtitle'  %>
+        <%= modal_link_to t('views.cycle._edit_fields.add_method'), { :controller => :orders_cycle_plugin_delivery_option, :action => :select, :owner_id => @cycle.id, :owner_type => @cycle.class.name }, :class => 'cycle-add-delivery-option subtitle'  %>
       </div>
 
       <div class="clean"></div>
     </div>
   </div>
+
+  <% if profile.volunteers_settings.cycle_volunteers_enabled %>
+    <%= render 'volunteers_plugin_myprofile/edit_periods', owner: @cycle, f: f %>
+  <% end %>
 
   <div id="cycle-new-mail">
     <%= check_box_tag('sendmail', 'yes', false, :id => 'cycle-new-mail-send') %>
@@ -59,7 +62,6 @@
   <% end %>
 <% end %>
 
-<%= javascript_include_tag '/plugins/orders_cycle/javascripts/jquery.calendrical.js' %>
-<% javascript_tag do %>
+<%= javascript_tag do %>
   orders_cycle.cycle.edit();
 <% end %>

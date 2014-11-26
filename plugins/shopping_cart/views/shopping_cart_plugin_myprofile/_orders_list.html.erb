@@ -16,7 +16,7 @@
         <td><%= order.consumer_data[:name] %></td>
         <td style="text-align: right"><%= float_to_currency_cart(order.products_list.sum {|id, qp| qp[:price]*qp[:quantity]}, environment) %></td>
         <td>
-          <% form_tag :action => 'update_order_status' do %>
+          <%= form_tag :action => 'update_order_status' do %>
             <%= hidden_field_tag(:order_id, order.id) +
               hidden_field_tag(:context_from, @from) +
               hidden_field_tag(:context_to, @to) +

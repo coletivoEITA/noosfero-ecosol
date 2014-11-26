@@ -1,0 +1,5 @@
+
+gem 'axlsx'
+gem 'rubyzip'
+# axlsx depends on rubyzip but works zip gem. 
+gem 'zip'

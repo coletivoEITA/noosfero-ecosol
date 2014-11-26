@@ -7,7 +7,7 @@
 
   <h2><%= t('views.admin.index.new') %></h2>
   <div>
-    <% form_for :network, @network, :url => {:action => :create} do |f| %>
+    <%= form_for @network, as: :network, :url => {:action => :create} do |f| %>
       <%= error_messages_for :network %>
 
       <%= f.label :name %>

@@ -17,7 +17,7 @@ class Profile
 
   def orders_cycles_products_default_margins
     self.class.transaction do
-      self.orders_cycles.open.each do |cycle|
+      self.orders_cycles.opened.each do |cycle|
         cycle.products.each do |product|
           product.margin_percentage = margin_percentage
           product.save!

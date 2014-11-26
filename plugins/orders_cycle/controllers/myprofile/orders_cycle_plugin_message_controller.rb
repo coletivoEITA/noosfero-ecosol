@@ -12,7 +12,7 @@ class OrdersCyclePluginMessageController < OrdersPluginMessageController
   def new_to_supplier
     @supplier = SuppliersPlugin::Supplier.find params[:supplier_id]
     if params[:commit]
-      OrdersCyclePlugin::Mailer.deliver_message_to_supplier profile, @supplier, params[:email][:subject], params[:email][:message]
+      OrdersCyclePlugin::Mailer.message_to_supplier(profile, @supplier, params[:email][:subject], params[:email][:message]).deliver
       page_reload
     else
       render :layout => false
@@ -22,7 +22,7 @@ class OrdersCyclePluginMessageController < OrdersPluginMessageController
   def new_to_admins
     @member = user
     if params[:commit]
-      OrdersCyclePlugin::Mailer.deliver_message_to_admins profile, @member, params[:email][:subject], params[:email][:message]
+      OrdersCyclePlugin::Mailer.message_to_admins(profile, @member, params[:email][:subject], params[:email][:message]).deliver
       page_reload
     else
       render :layout => false

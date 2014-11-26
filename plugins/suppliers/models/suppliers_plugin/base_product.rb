@@ -1,6 +1,7 @@
 # FIXME remove Base when plugin became a module
 class SuppliersPlugin::BaseProduct < Product
 
+  attr_accessible :default_margin_percentage, :margin_percentage, :default_stored, :stored, :default_unit, :unit_detail
   # join source_products
   # FIXME: can't preload :suppliers due to a rails bug
   default_scope :include => [:from_products, {:sources_from_products => [{:supplier => [{:profile => [:domains, {:environment => :domains}]}]}]},
@@ -68,7 +69,7 @@ class SuppliersPlugin::BaseProduct < Product
   end
 
   def available_with_supplier
-    self.available_without_supplier and self.supplier_product and self.supplier_product.available and self.supplier.active
+    self.available_without_supplier and self.supplier_product and self.supplier_product.available and self.supplier.active rescue false
   end
   alias_method_chain :available, :supplier
 
@@ -88,7 +89,7 @@ class SuppliersPlugin::BaseProduct < Product
 
     if margin_source.margin_percentage
       ret += (margin_source.margin_percentage.to_f / 100) * ret
-    elsif self.profile.margin_percentage
+    elsif self.profile and self.profile.margin_percentage
       ret += (self.profile.margin_percentage.to_f / 100) * ret
     end
 

@@ -1,7 +1,11 @@
-<% person = user.nil? ? Person.new : user %>
-<div id='cart-request-box'>
-  <% form_for(:customer, person, :url => {:action => 'send_request'},
-              :html => {:onsubmit => "return Cart.send_request(this)", :id => 'cart-request-form' }) do |f| %>
+<div id='cart-request-box' class="popin">
+  <h1>
+    <%= _('Shopping checkout') %>
+    <%= button_to_function 'back', _("haven't finished yet: back to shopping"), 'cart.hide(); noosfero.modal.close()', :class => 'cart-popin-close'  %>
+  </h1>
+
+  <%= form_for(:customer, :url => {:action => 'send_request'},
+              :html => {:onsubmit => "return Cart.send_request(this)", :id => 'cart-request-form'}) do |f| %>
     <div id="cart-form-main">
       <%= labelled_form_field('* ' + _("Name"), f.text_field(:name, :class => 'required') ) %>
       <%= labelled_form_field('* ' +  _("Email"), f.text_field(:email, :class => 'required email') ) %>
@@ -29,7 +33,7 @@
   <% end %>
   <% delivery_option = @settings.delivery_options.first && @settings.delivery_options.first.first %>
   <%= items_table(@cart[:items], @profile, delivery_option) %>
-  <%= link_to '', '#', :onclick => "Cart.colorbox_close(this);", :class => 'cart-box-close icon-cancel' %>
+  <%= link_to_function '', "noosfero.modal.close();", :class => 'cart-box-close icon-cancel' %>
 </div>
 
 <%= javascript_include_tag '../plugins/shopping_cart/buy' %>

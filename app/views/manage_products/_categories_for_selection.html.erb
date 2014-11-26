@@ -1,0 +1,10 @@
+<%= select_for_categories(categories, level) %>
+
+<%= javascript_tag do %>
+  jQuery(document).ready(function() {
+  jQuery('#categories_container_wrapper').scrollTo('#categories_container_level<%= level %>', 1000)
+    jQuery('#selected_category_id').val(<%= @category.id rescue nil %>)
+    jQuery('#hierarchy_navigation').html(<%= hierarchy_category_navigation(@category, :make_links => true).to_json %>)
+    toggleDisabled(<%= (!!(@category && @category.accept_products?)).to_json %>, jQuery('#save_and_continue'))
+  });
+<% end %>

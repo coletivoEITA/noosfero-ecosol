@@ -12,14 +12,16 @@ pagination = {
   },
 
   // inspired by http://stackoverflow.com/questions/13555101/infinite-scroll-and-will-paginate-appending-the-next-page-of-items-multiple-ti
-  infiniteScroll: function(text) {
+  infiniteScroll: function(text, options) {
+    options = options || {};
+
     jQuery(function() {
       jQuery('.pagination').addClass('infinite-scroll');
     });
 
     jQuery(window).scroll(function () {
       // Bail out right away if we're busy loading the next chunk.
-      if (window.pagination_loading)
+      if (pagination.loading)
         return;
 
       var url = jQuery('.pagination .next_page').attr('href')
@@ -29,10 +31,14 @@ pagination = {
           jQuery('<div class=loading>').text(text)
         );
 
-        window.pagination_loading = true
-        jQuery.getScript(url).always(function() {
-          window.pagination_loading = false
-        });
+        pagination.loading = true
+
+        if (options.load)
+          options.load(url)
+        else
+          jQuery.getScript(url).always(function() {
+            pagination.loading = false
+          });
       }
     });
   },

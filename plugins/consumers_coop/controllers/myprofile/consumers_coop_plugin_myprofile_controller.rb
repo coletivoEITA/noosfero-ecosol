@@ -8,9 +8,9 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
 
   def index
     if profile.has_admin? user
-      redirect_to :controller => :consumers_coop_plugin_cycle, :action => :index
+      redirect_to controller: :consumers_coop_plugin_cycle, action: :index
     else
-      redirect_to :controller => :consumers_coop_plugin_order, :action => :index
+      redirect_to controller: :consumers_coop_plugin_order, action: :index
     end
   end
 
@@ -20,9 +20,6 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
 
       was_enabled = profile.consumers_coop_settings.enabled
 
-      params[:profile_data].delete(:consumers_coop_settings).each do |attr, value|
-        profile.consumers_coop_settings.send "#{attr}=", value
-      end
       profile.update_attributes! params[:profile_data]
       profile.consumers_coop_header_image_save
 

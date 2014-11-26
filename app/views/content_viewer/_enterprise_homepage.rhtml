@@ -1,4 +1,0 @@
-<%= display_profile_info enterprise unless enterprise.enabled %>
-
-<div><%= enterprise_homepage.body %></div>
-<%= render :file => 'catalog/index' if enterprise.environment.enabled?('products_for_enterprises') %>

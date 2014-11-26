@@ -31,7 +31,7 @@
         <div><%= text_area_tag 'message' %></div>
       </div>
 
-      <% javascript_tag do %>
+      <%= javascript_tag do %>
         jQuery('#order-<%=order.id%> input[type=checkbox]').change();
       <% end %>
 

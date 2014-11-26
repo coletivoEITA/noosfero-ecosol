@@ -1,0 +1,87 @@
+
+body.controller-fb_app_plugin {
+  margin-top: 40px;
+
+  .box-3, .box-2, #theme-header {
+    display: none;
+  }
+
+  #wrap-1, #wrap-2 {
+    border-radius: 10px 10px 0 0;
+  }
+
+  input.small-loading {
+    background: transparent url(/images/loading-small.gif) no-repeat scroll right center;
+  }
+
+  .loading {
+    background: white url(/plugins/fb_app/images/loading.gif) no-repeat center center;
+    width: 80%;
+    height: 300px;
+    margin: auto;
+  }
+
+  /* admin popin */
+
+  #cboxContent {
+    overflow: auto;
+    position: initial;
+  }
+  .twitter-typeahead {
+    position: absolute !important;
+  }
+  #cboxClose {
+    display: none;
+  }
+  #fb_store_admin_page {
+    width: 650px;
+    height: 500px;
+  }
+
+  #fb_integration_type_profiles table {
+    margin: 0 0 20px 20px;
+    width: 90%;
+  }
+
+  a.see-more {
+    display: none;
+  }
+
+  .button-bar .icon-back {
+    display: none;
+  }
+
+  .search-results-total {
+    padding-top: 6px;
+  }
+}
+
+/* control panel */
+.controller-profile_editor a.control-panel-fb-app {
+  //background-image: url(/plugins/fb_app/images/control-panel.png);
+}
+
+#fb-app-intro {
+  margin: 0 40px 20px 40px;
+}
+#fb-app-connect-status {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  margin-bottom: 30px;
+}
+#fb-app-auth {
+  text-align: center;
+  margin-bottom: 50px;
+}
+#noosfero-identity {
+  float: left;
+}
+#fb-connected {
+  font-size: 36px;
+  float:left;
+  margin: 0 30px;
+  color: #99f;
+}
+#fb-identity {
+  float: left;
+}

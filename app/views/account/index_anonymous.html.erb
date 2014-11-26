@@ -1,0 +1,12 @@
+<h1><%= _('Identify yourself') %></h1>
+
+<p>
+<%= modal_link_to _('Login.'), { :controller => 'account', :action => 'login_popup' } %>
+
+<%= _('You need to login to be able to use all the features in this environment.') %>
+</p>
+
+<p>
+<%= link_to _('Sign up.'), :action => 'signup' %>
+<%= _('If you are not an user already, you can register now to become a member of this environment.') %>
+</p>

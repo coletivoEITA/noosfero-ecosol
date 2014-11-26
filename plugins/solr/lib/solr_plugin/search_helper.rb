@@ -8,6 +8,14 @@ module SolrPlugin::SearchHelper
   DistFilt = 200
   DistBoost = 50
 
+  CatalogSortOptions = {
+    relevance: {option: ['Relevance', ''], solr: ''},
+    name: {option: ['Name', 'name'], solr: 'solr_plugin_name_sortable asc'},
+    price: {option: ['Lowest price', 'price'], solr: 'solr_plugin_price_sortable asc'},
+    newest: {option: ['Newest', 'newest'], solr: 'created_at desc'},
+    updated: {option: ['Last updated', 'updated'], solr: 'updated_at desc'},
+  }
+
   SortOptions = {
     :products => ActiveSupport::OrderedHash[ :none, {:label => _('Relevance')},
       :more_recent, {:label => _('More recent'), :solr_opts => {:sort => 'updated_at desc, score desc'}},
@@ -53,10 +61,6 @@ module SolrPlugin::SearchHelper
     end
   end
 
-  def results_only?
-    params[:action] == 'index'
-  end
-
   def empty_query?(query, category)
     category.nil? && query.blank?
   end
@@ -79,32 +83,6 @@ module SolrPlugin::SearchHelper
     end
   end
 
-  def solr_options(asset, category)
-    asset_class = asset_class(asset)
-    solr_options = {}
-    if !multiple_search?
-      if !results_only? and asset_class.respond_to? :facets
-        solr_options.merge! asset_class.facets_find_options(params[:facet])
-        solr_options[:all_facets] = true
-      end
-      solr_options[:filter_queries] ||= []
-      solr_options[:filter_queries] += filters(asset)
-      solr_options[:filter_queries] << "environment_id:#{environment.id}"
-      solr_options[:filter_queries] << asset_class.facet_category_query.call(category) if category
-
-      solr_options[:boost_functions] ||= []
-      params[:order_by] = nil if params[:order_by] == 'none'
-      if params[:order_by]
-        order = SortOptions[asset][params[:order_by].to_sym]
-        raise "Unknown order by" if order.nil?
-        order[:solr_opts].each do |opt, value|
-          solr_options[opt] = value.is_a?(Proc) ? instance_eval(&value) : value
-        end
-      end
-    end
-    solr_options
-  end
-
   def asset_class(asset)
     asset.to_s.singularize.camelize.constantize
   rescue
@@ -122,13 +100,27 @@ module SolrPlugin::SearchHelper
       [_(options[:label]), name.to_s]
     end.compact
 
+    if theme_responsive?
+
+    content_tag('div',
+      content_tag('label',_('Sort results by ') + ':', :class => 'col-lg-4 col-md-4 col-sm-4 col-xs-6 control-label form-control-static') +
+      content_tag('div',select_tag(asset.to_s + '[order]', options_for_select(options, params[:order_by] || 'none'),
+        {:onchange => "window.location = jQuery.param.querystring(window.location.href, { 'order_by' : this.options[this.selectedIndex].value})"}
+      ),:class => 'col-lg-8 col-md-8 col-sm-8 col-xs-6'),
+      :class => "row"
+    )
+
+    else
+
     content_tag('div', _('Sort results by ') +
       select_tag(asset.to_s + '[order]', options_for_select(options, params[:order_by] || 'none'),
         {:onchange => "window.location = jQuery.param.querystring(window.location.href, { 'order_by' : this.options[this.selectedIndex].value})"}
       ),
       :class => "search-ordering"
     )
-  end
+
+    end
+ end
 
   def label_total_found(asset, total_found)
     labels = {

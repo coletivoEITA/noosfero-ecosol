@@ -1,18 +1,27 @@
-# WORKAROUND
-require_dependency 'noosfero/plugin/active_record'
+class OrdersPlugin::Item < ActiveRecord::Base
 
-class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
+  attr_accessible :price, :name
+
+  # flag used by items to compare them with products
+  attr_accessor :product_diff
 
   # should be Order, but can't reference it here so it would create a cyclic reference
-  StatusAccessMap = ActiveSupport::OrderedHash[
-    'ordered', :consumer,
-    'accepted', :supplier,
-    'separated', :supplier,
-    'delivered', :supplier,
-    'received', :consumer,
-  ]
+  StatusAccessMap = {
+    'ordered' => :consumer,
+    'accepted' => :supplier,
+    'separated' => :supplier,
+    'delivered' => :supplier,
+    'received' => :consumer,
+  }
   StatusDataMap = {}; StatusAccessMap.each do |status, access|
     StatusDataMap[status] = "#{access}_#{status}"
+  end
+  StatusDataMap.each do |status, data|
+    quantity = "quantity_#{data}".to_sym
+    price = "price_#{data}".to_sym
+
+    attr_accessible quantity
+    attr_accessible price
   end
 
   serialize :data
@@ -29,8 +38,8 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
   has_many :from_products, :through => :product
   has_many :to_products, :through => :product
 
-  named_scope :ordered, :conditions => ['orders_plugin_orders.status = ?', 'ordered'], :joins => [:order]
-  named_scope :for_product, lambda{ |product| {:conditions => {:product_id => product.id}} }
+  scope :ordered, :conditions => ['orders_plugin_orders.status = ?', 'ordered'], :joins => [:order]
+  scope :for_product, lambda{ |product| {:conditions => {:product_id => product.id}} }
 
   default_scope :include => [:product]
 
@@ -46,11 +55,11 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
       quantity = "quantity_#{data}".to_sym
       price = "price_#{data}".to_sym
 
-      self.send :define_method, "total_#{quantity}" do |items|
+      self.send :define_method, "total_#{quantity}" do |items=nil|
         items ||= (self.ordered_items rescue nil) || self.items
         items.collect(&quantity).inject(0){ |sum, q| sum + q.to_f }
       end
-      self.send :define_method, "total_#{price}" do |items|
+      self.send :define_method, "total_#{price}" do |items=nil|
         items ||= (self.ordered_items rescue nil) || self.items
         items.collect(&price).inject(0){ |sum, p| sum + p.to_f }
       end
@@ -110,34 +119,47 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     quantity = "quantity_#{data}".to_sym
     price = "price_#{data}".to_sym
 
-    self.send :define_method, "calculated_#{price}" do |items|
+    define_method "calculated_#{price}" do |items=[]|
       self.price * self.send(quantity) rescue nil
     end
   end
 
   def quantity_price_data actor_name
-    data = ActiveSupport::OrderedHash.new
+    data = {flags: {}}
     statuses = OrdersPlugin::Order::Statuses
+    statuses_data = data[:statuses] = {}
 
     current = statuses.index(self.order.status) || 0
     next_status = self.order.next_status actor_name
     next_index = statuses.index(next_status) || current + 1
     goto_next = actor_name == StatusAccessMap[next_status]
 
+    new_price = nil
+    # compare with product
+    if self.product_diff and self.product
+      if self.price != self.product.price
+        new_price = self.product.price
+        data[:new_price] = self.product.price_as_currency_number
+      end
+      data[:flags][:unavailable] = true if not self.product.available
+    end
+
     # Fetch data
     statuses.each_with_index do |status, i|
       data_field = StatusDataMap[status]
       access = StatusAccessMap[status]
 
-      status_data = data[status] = {
+      status_data = statuses_data[status] = {
         :flags => {},
         :field => data_field,
         :access => access,
       }
 
-      if self.send("quantity_#{data_field}").present?
+      quantity = self.send "quantity_#{data_field}"
+      if quantity.present?
         status_data[:quantity] = self.send "quantity_#{data_field}_localized"
         status_data[:price] = self.send "price_#{data_field}_as_currency_number"
+        status_data[:new_price] = quantity * new_price if new_price
         status_data[:flags][:filled] = true
       else
         status_data[:flags][:empty] = true
@@ -154,9 +176,9 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
 
     # Set flags according to past/future data
     # Present flags are used as classes
-    data.each_with_index do |(status, status_data), i|
-      prev_status_data = data[statuses[i-1]] unless i.zero?
-      next_status_data = data[statuses[i+1]]
+    statuses_data.each_with_index do |(status, status_data), i|
+      prev_status_data = statuses_data[statuses[i-1]] unless i.zero?
+      next_status_data = statuses_data[statuses[i+1]]
 
       if prev_status_data
         if status_data[:quantity] == prev_status_data[:quantity]
@@ -178,7 +200,7 @@ class OrdersPlugin::Item < Noosfero::Plugin::ActiveRecord
     end
 
     # Set access
-    data.each_with_index do |(status, status_data), i|
+    statuses_data.each_with_index do |(status, status_data), i|
       status_data[:flags][:editable] = true if status_data[:access] == actor_name and (status_data[:flags][:admin] or self.order.open?)
     end
 
