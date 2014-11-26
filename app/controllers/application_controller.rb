@@ -158,7 +158,6 @@ class ApplicationController < ActionController::Base
       @environment = @domain.environment
       @profile = @domain.profile
 
-      # disable check to allow environment domain to be used as base
       # this is needed for facebook applications that can only have one domain
       return
 
