@@ -62,7 +62,7 @@ class SuppliersPlugin::Supplier < ActiveRecord::Base
     self.consumer.person?
   end
   def dummy?
-    !self.supplier.visible
+    !self.supplier.visible rescue false
   end
   def active?
     self.active
