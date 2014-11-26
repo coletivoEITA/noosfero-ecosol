@@ -21,6 +21,7 @@ class MetadataPlugin < Noosfero::Plugin
   end
 
   def head_ending
+    plugin = self
     lambda do
       options = MetadataPlugin::Spec::Controllers[controller.controller_path.to_sym]
       options ||= MetadataPlugin::Spec::Controllers[:profile] if controller.is_a? ProfileController
@@ -34,11 +35,11 @@ class MetadataPlugin < Noosfero::Plugin
       return unless metadata = (object.class.const_get(:Metadata) rescue nil)
 
       metadata.map do |property, contents|
-        contents = contents.call(object, self) rescue nil if contents.is_a? Proc
+        contents = contents.call(object, plugin) rescue nil if contents.is_a? Proc
         next if contents.blank?
 
         Array(contents).map do |content|
-          content = content.call(object, self) rescue nil if content.is_a? Proc
+          content = content.call(object, plugin) rescue nil if content.is_a? Proc
           next if content.blank?
           tag 'meta', property: property, content: content
         end.join
