@@ -1,5 +1,5 @@
 # encoding: UTF-8
-
+=begin
 require_dependency 'plugins_helper'
 
 module PluginsHelper
@@ -23,3 +23,4 @@ module PluginsHelper
   end
 
 end
+=end

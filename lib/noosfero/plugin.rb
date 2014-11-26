@@ -287,13 +287,13 @@ class Noosfero::Plugin
   # -> Allows to add content to the beginning of the catalog top bar
   # returns = lambda block that creates array of html codes
   def catalog_search_extras_begin
-    []
+    nil
   end
 
   # -> Allows to add content to the endof the catalog top bar
   # returns = lambda block that creates array of html codes
   def catalog_search_extras_end
-    []
+    nil
   end
 
   # -> Adds content to add to each autocompleted item on search
