@@ -39,6 +39,10 @@ input.button.with-text {
   text-decoration: none;
 }
 
+.cms-homepage a:hover {
+  background-color: rgba(146, 31, 31, 1);
+}
+
 /* ==> layout.css <== */
 
 body {
@@ -354,8 +358,11 @@ body, th, td, input {
 }
 
 div#notice {
+  /*Vini, I've removed these styles to fit in small screens, ok?
   right: 50%;
-  margin-right: -470px;
+  margin-right: -470px;*/
+  width: 270px;
+  top: 50px;
 }
 
 /* ==> blocks.css <== */
@@ -1428,10 +1435,12 @@ div.tooltip-inner {
 }
 
 .controller-profile_editor .control-panel a {
-    width: 180px;
+    width: 190px;
+    font-weight: normal;
+    height: 64px;
 }
 
-@media (max-width: 366px) {
+@media (max-width: 465px) {
   .controller-profile_editor .control-panel a {
       width: 100%;
   }

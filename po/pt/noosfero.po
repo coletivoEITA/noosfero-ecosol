@@ -6037,8 +6037,7 @@ msgid ""
 "PNG format."
 msgstr ""
 "No cabeçalho, você pode incluir um banner personalizado primeiro adicionando "
-"em \"Gerenciar conteúdo\", e depois referenciando-o aqui. Um bom formato é "
-"468 x 60 pixels, formato PNG."
+"em \"Gerenciar conteúdo\", e depois referenciando-o aqui."
 
 #: app/views/profile_editor/header_footer.html.erb:12
 msgid "On footer, you can include a slogan and your contact information etc."
@@ -11463,6 +11462,12 @@ msgstr "Tem certeza de que quer excluir este ítem?"
 #: plugins/shopping_cart/views/cart.html.erb:28
 msgid "Are you sure you want to clean your basket?"
 msgstr "Tem certeza que quer limpar seu cesto?"
+
+#: plugins/shopping_cart/controllers/shopping_cart_plugin_controller.rb
+msgid "Your basket contains items from '%{profile_name}'. Please empty the basket or checkout before adding items from here."
+msgstr "Seu cesto já tem produtos de '%{profile_name}'. Por favor, esvazie o cesto ou finalize o pedido antes de adicionar novos itens deste outro empreendimento."
+
+
 
 #: plugins/shopping_cart/views/shopping_cart_plugin/send_request.html.erb:1
 msgid "Request sent successfully check your email."

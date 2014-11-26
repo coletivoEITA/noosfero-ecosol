@@ -158,6 +158,9 @@ class ApplicationController < ActionController::Base
       @environment = @domain.environment
       @profile = @domain.profile
 
+      # this is needed for facebook applications that can only have one domain
+      return
+
       # Check if the requested profile belongs to another domain
       if @domain.profile and params[:profile].present? and params[:profile] != @domain.profile.identifier
         @profile = @environment.profiles.find_by_identifier params[:profile]

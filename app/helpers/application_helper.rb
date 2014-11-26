@@ -224,7 +224,15 @@ module ApplicationHelper
     if html_options.has_key?(:class)
       the_class << ' ' << html_options[:class]
     end
-    button_without_text type, label, url, html_options.merge(:class => the_class)
+    
+    #button_without_text type, label, url, html_options.merge(:class => the_class)
+    
+    the_title = html_options[:title] || label
+    if html_options[:disabled]
+      content_tag('a', content_tag('span', label), html_options.merge(class: the_class, title: the_title))
+    else
+      link_to(content_tag('span', label), url, html_options.merge(class: the_class, title: the_title))
+    end
   end
 
   def button_without_text(type, label, url, html_options = {})

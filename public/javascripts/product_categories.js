@@ -8,7 +8,7 @@ product_categories = {
       elem = jQuery(elem)
 
       elem.autocomplete({
-        minLength: 3,
+        minLength: 1,
         selectFirst: true,
 
         //define callback to retrieve results

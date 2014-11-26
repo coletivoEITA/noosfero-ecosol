@@ -5,7 +5,7 @@
     <div class='slideshow-container'>
       <% images.each do |img| %>
         <a href="<%= url_for(img.external_link.blank? ? img.view_url: img.external_link) %>">
-          <%= content_tag('div', '', :style => "background-image: url(#{block.public_filename_for(img)})", :title => (img.abstract.blank? ? '' : img.abstract)) %>
+          <%= content_tag('div', '', :style => "background-image: url(#{block.public_filename_for(img)})", :title => (img.abstract.blank? ? '' : img.abstract), :class => 'slideshow-img') %>
           <% if !img.abstract.blank? %>
             <span class='image-description'><%= img.abstract %></span>
           <% end %>
@@ -24,7 +24,7 @@
   </div>
   <script type="text/javascript">
     (function($) {
-     var options = {fx: 'fade', pause: 1, fastOnEvent: 1, timeout: <%= block.interval * 1000 %>};
+     var options = {fx: 'fade', pause: 1, fastOnEvent: 1, timeout: <%= block.interval * 1000 %>, slideResize: false};
      <% if block.navigation %>
        options.prev = '#block-<%= block.id %> .icon-media-prev';
        options.next = '#block-<%= block.id %> .icon-media-next';

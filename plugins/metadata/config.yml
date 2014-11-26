@@ -1,4 +1,5 @@
 open_graph:
+  domain: cirandas.net
   type_namespace: app_cirandas_test
   types:
     article: cirandas_article

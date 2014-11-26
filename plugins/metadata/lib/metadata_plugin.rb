@@ -21,27 +21,37 @@ class MetadataPlugin < Noosfero::Plugin
   end
 
   def head_ending
+    plugin = self
     lambda do
       options = MetadataPlugin::Spec::Controllers[controller.controller_path.to_sym]
       options ||= MetadataPlugin::Spec::Controllers[:profile] if controller.is_a? ProfileController
       options ||= MetadataPlugin::Spec::Controllers[:environment]
       return unless options
+
       return unless object = case variable = options[:variable]
         when Proc then instance_exec(&variable) rescue nil
         else instance_variable_get variable
         end
       return unless metadata = (object.class.const_get(:Metadata) rescue nil)
+
       metadata.map do |property, contents|
-        contents = contents.call object rescue nil if contents.is_a? Proc
+        contents = contents.call(object, plugin) rescue nil if contents.is_a? Proc
         next if contents.blank?
 
         Array(contents).map do |content|
-          content = content.call object rescue nil if content.is_a? Proc
+          content = content.call(object, plugin) rescue nil if content.is_a? Proc
           next if content.blank?
           tag 'meta', property: property, content: content
         end.join
       end.join
     end
+  end
+
+  # context HELPERS
+  def og_url_for options
+    options.delete :port
+    options[:host] = self.class.config[:open_graph][:domain]
+    Noosfero::Application.routes.url_helpers.url_for options
   end
 
   protected

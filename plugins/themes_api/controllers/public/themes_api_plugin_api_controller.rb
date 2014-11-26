@@ -48,9 +48,7 @@ class ThemesApiPluginApiController < PublicController
       }.to_yaml
     end
 
-    ret = system "rm -f #{@themes_path}/#{@theme_id}/stylesheets/style.css" #ensure sass compilation
-    Sass::Plugin.add_template_location "#{@themes_path}/#{@theme_id}/stylesheets", "#{@themes_path}/#{@theme_id}/stylesheets"
-    Sass::Plugin.update_stylesheets
+    ret = system "rm -f public/assets/designs/themes/#{@theme_id}/stylesheets/style*.css" #ensure sass compilation
 
     @profile.theme = @theme_id
     @profile.save
