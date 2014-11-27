@@ -141,10 +141,10 @@ class Event < Article
   end
 
   def lead
+    event = self
     lambda do
-      content_tag('div', show_period(self.start_date, self.end_date),
-        :class => 'event-dates'
-      ) + super
+      content_tag('div', show_period(event.start_date, event.end_date), class: 'event-dates') +
+        event.abstract.blank? ? event.automatic_abstract : event.abstract.html_safe
     end
   end
 
