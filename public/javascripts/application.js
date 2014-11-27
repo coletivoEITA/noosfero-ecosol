@@ -33,6 +33,8 @@
 *= require loading-overlay.js
 */
 
+$ = jQuery;
+
 _.templateSettings = {
   interpolate: /\{\{(.+?)\}\}/g,
 };
