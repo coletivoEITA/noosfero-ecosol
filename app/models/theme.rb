@@ -45,6 +45,7 @@ class Theme
 
     def approved_themes(owner)
       Dir.glob(File.join(Rails.root, 'public', self.system_themes_dir, '*')).map do |item|
+        next if File.symlink? item
         next unless File.exists? File.join(item, 'theme.yml')
         id = File.basename item
         config = YAML.load_file File.join(item, 'theme.yml')
@@ -138,7 +139,7 @@ class Theme
   end
 
   def ==(other)
-    other.is_a?(self.class) && (other.id == self.id)
+    other.id == self.id
   end
 
   def private_copy profile
