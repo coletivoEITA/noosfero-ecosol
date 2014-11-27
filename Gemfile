@@ -13,6 +13,7 @@ gem 'exception_notification',   '~> 4.0.1'
 gem 'gettext',                  '~> 2.2.1', :require => false, :group => :development
 gem 'locale',                   '~> 2.0.5'
 gem 'will-paginate-i18n'
+gem 'utf8-cleaner'
 
 gem 'assets_live_compile'
 
