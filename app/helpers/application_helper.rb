@@ -1056,7 +1056,7 @@ module ApplicationHelper
       links.push(_('New content') => modal_options({:href => url_for({:controller => 'cms', :action => 'new', :profile => current_user.login, :cms => true})}))
     end
 
-    link_to(content_tag(:span, _('Contents'), :class => 'icon-menu-articles'), {:controller => "search", :action => 'contents', :category_path => nil}, :id => 'submenu-contents') +
+    link_to(content_tag(:span, _('Contents'), :class => 'icon-menu-articles'), {host: host, :controller => "search", :action => 'contents', :category_path => nil}, :id => 'submenu-contents') +
     popover_menu(_('Contents menu'),'',links,:class => 'up', :id => 'submenu-contents-trigger')
   end
   alias :browse_contents_menu :search_contents_menu
@@ -1073,7 +1073,7 @@ module ApplicationHelper
        links.push(_('Invite friends') => {:href => url_for({:profile => current_user.login, :controller => 'invite', :action => 'friends'})})
      end
 
-    link_to(content_tag(:span, _('People'), :class => 'icon-menu-people'), {:controller => "search", :action => 'people', :category_path => ''}, :id => 'submenu-people') +
+    link_to(content_tag(:span, _('People'), :class => 'icon-menu-people'), {host: host, :controller => "search", :action => 'people', :category_path => ''}, :id => 'submenu-people') +
     popover_menu(_('People menu'),'',links,:class => 'up', :id => 'submenu-people-trigger')
   end
   alias :browse_people_menu :search_people_menu
@@ -1090,7 +1090,7 @@ module ApplicationHelper
        links.push(_('New community') => {:href => url_for({:profile => current_user.login, :controller => 'memberships', :action => 'new_community'})})
      end
 
-    link_to(content_tag(:span, _('Communities'), :class => 'icon-menu-community'), {:controller => "search", :action => 'communities'}, :id => 'submenu-communities') +
+    link_to(content_tag(:span, _('Communities'), :class => 'icon-menu-community'), {host: host, :controller => "search", :action => 'communities'}, :id => 'submenu-communities') +
     popover_menu(_('Communities menu'),'',links,:class => 'up', :id => 'submenu-communities-trigger')
   end
   alias :browse_communities_menu :search_communities_menu
