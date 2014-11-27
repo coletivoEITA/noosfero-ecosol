@@ -99,7 +99,9 @@ class Event < Article
   end
 
   def to_html(options = {})
+    event = self
     lambda do
+      extend DatesHelper
 
       result = ''
       html = ::Builder::XmlMarkup.new(:target => result)
@@ -108,29 +110,29 @@ class Event < Article
         html.ul(:class => 'event-data' ) {
           html.li(:class => 'event-dates' ) {
             html.span _('When:')
-            html.text! show_period(start_date, end_date)
-          } if start_date.present? || end_date.present?
+            html.text! show_period(event.start_date, event.end_date)
+          } if event.start_date.present? || event.end_date.present?
           html.li {
             html.span _('URL:')
-            html.a(self.link || "", 'href' => self.link || "")
-          } if self.link.present?
+            html.a(event.link || "", 'href' => event.link || "")
+          } if event.link.present?
           html.li {
             html.span _('Address:')
-            html.text! self.address || ""
-          } if self.address.present?
+            html.text! event.address || ""
+          } if event.address.present?
         }
 
         # TODO: some good soul, please clean this ugly hack:
-        if self.body
+        if event.body
           html.div('_____XXXX_DESCRIPTION_GOES_HERE_XXXX_____', :class => 'event-description')
         end
       }
 
-      if self.body
+      if event.body
         if options[:format] == 'short'
-          result.sub!('_____XXXX_DESCRIPTION_GOES_HERE_XXXX_____', display_short_format(self))
+          result.sub!('_____XXXX_DESCRIPTION_GOES_HERE_XXXX_____', display_short_format(event))
         else
-          result.sub!('_____XXXX_DESCRIPTION_GOES_HERE_XXXX_____', self.body)
+          result.sub!('_____XXXX_DESCRIPTION_GOES_HERE_XXXX_____', event.body)
         end
       end
 
