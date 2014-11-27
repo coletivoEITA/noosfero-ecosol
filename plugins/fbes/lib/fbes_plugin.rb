@@ -9,7 +9,7 @@ class FbesPlugin < Noosfero::Plugin
   end
 
   def stylesheet?
-    true
+    false
   end
 
   def js_files

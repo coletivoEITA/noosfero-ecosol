@@ -12,11 +12,11 @@ class ThemesApiPlugin < Noosfero::Plugin
   end
 
   def stylesheet?
-    true
+    false
   end
 
   def js_files
-    [''].map{ |j| "javascripts/#{j}" }
+    [].map{ |j| "javascripts/#{j}" }
   end
 
 
