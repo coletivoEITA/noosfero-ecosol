@@ -140,9 +140,11 @@ class Event < Article
     end
   end
 
+  include ActionView::Helpers::TagHelper
+  include ApplicationHelper
+  include DatesHelper
   def lead
-    content_tag('div',
-      show_period(start_date, end_date),
+    content_tag('div', show_period(self.start_date, self.end_date),
       :class => 'event-dates'
     ) + super
   end
