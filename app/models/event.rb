@@ -144,7 +144,7 @@ class Event < Article
     event = self
     lambda do
       content_tag('div', show_period(event.start_date, event.end_date), class: 'event-dates') +
-        event.abstract.blank? ? event.automatic_abstract : event.abstract.html_safe
+        (event.abstract.blank? ? event.automatic_abstract : event.abstract).to_s.html_safe
     end
   end
 
