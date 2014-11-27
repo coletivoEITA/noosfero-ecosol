@@ -393,7 +393,9 @@ module ApplicationHelper
           field_html = field_html.sub $1, $1+" #{ApplicationHelper::ResponsiveMethods::FORM_CONTROL_CLASS}"
         else
           field_html =~ /\A(<\w*)/
-          field_html = field_html.sub $1, $1+" class='#{ApplicationHelper::ResponsiveMethods::FORM_CONTROL_CLASS}' "
+          if $1
+            field_html = field_html.sub $1, $1+" class='#{ApplicationHelper::ResponsiveMethods::FORM_CONTROL_CLASS}' "
+          end
         end
       end
 
