@@ -961,8 +961,9 @@ module ApplicationHelper
   def display_short_format(article, options={})
     options[:comments_link] ||= true
     options[:read_more_link] ||= true
+    lead = if article.lead.respond_to?(:call) then instance_exec(&article.lead).to_s.html_safe else article.lead.to_s.html_safe end
     html = content_tag('div',
-             article.lead +
+             lead +
              content_tag('div',
                (options[:comments_link] ? link_to_comments(article) : '') +
                (options[:read_more_link] ? reference_to_article( _('Read more'), article) : ''),
