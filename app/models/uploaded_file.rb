@@ -116,7 +116,7 @@ class UploadedFile < Article
   end
 
   def data
-    File.read(self.full_filename)
+    File.read(self.full_filename) rescue nil
   end
 
   def to_html(options = {})

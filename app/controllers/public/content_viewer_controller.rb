@@ -200,12 +200,12 @@ class ContentViewerController < ApplicationController
       headers.merge! @page.download_headers
       data = @page.data
 
-      # TODO test the condition
       if data.nil?
-        raise "No data for file"
+        render_not_found
+      else
+        render text: data, layout: false
       end
 
-      render :text => data, :layout => false
       return true
     end
 
