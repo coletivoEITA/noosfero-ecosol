@@ -46,8 +46,10 @@ class Theme
     def approved_themes(owner)
       Dir.glob(File.join(Rails.root, 'public', self.system_themes_dir, '*')).map do |item|
         next unless File.exists? File.join(item, 'theme.yml')
-        source_id = File.basename(File.readlink item) rescue nil
-        id = source_id || File.basename(item)
+
+        item = "#{File.dirname item}/#{File.readlink(item).gsub(/\/$/, '')}" while File.symlink? item
+        id = File.basename item
+
         config = YAML.load_file File.join(item, 'theme.yml')
 
         approved = config['public']
