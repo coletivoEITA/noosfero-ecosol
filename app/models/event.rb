@@ -102,6 +102,7 @@ class Event < Article
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::UrlHelper
   include DatesHelper
+  include ApplicationHelper
 
   def to_html(options = {})
 
