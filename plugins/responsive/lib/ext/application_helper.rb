@@ -129,16 +129,18 @@ module ApplicationHelper
     def search_contents_menu
       return super unless theme_responsive?
 
+      host = environment.default_hostname
+
       output = '<li class="dropdown">'
       output += link_to(_('Contents'), '#', :class=>"dropdown-toggle icon-menu-articles", title: _('Contents'), :'data-toggle'=>"dropdown", :'data-hover'=>"dropdown")
       output += '<ul class="dropdown-menu" role="menu">'
 
-      output += '<li>' + link_to(_('All contents'), {controller: "search", action: 'contents', category_path: ''}) + '</li>'
+      output += '<li>' + link_to(_('All contents'), {host: host, controller: "search", action: 'contents', category_path: ''}) + '</li>'
 
       links = [
-          {s_('people|More recent') => {href: url_for({controller: 'search', action: 'contents', filter: 'more_recent'})}},
-          {s_('people|More active') => {href: url_for({controller: 'search', action: 'contents', filter: 'more_active'})}},
-          {s_('people|More popular') => {href: url_for({controller: 'search', action: 'contents', filter: 'more_popular'})}}
+        {s_('contents|More recent') => {:href => url_for({host: host, :controller => 'search', :action => 'contents', :filter => 'more_recent'})}},
+        {s_('contents|More viewed') => {:href => url_for({host: host, :controller => 'search', :action => 'contents', :filter => 'more_popular'})}},
+        {s_('contents|Most commented') => {:href => url_for({host: host, :controller => 'search', :action => 'contents', :filter => 'more_comments'})}}
       ]
       if logged_in?
         links.push(_('New content') => modal_options({href: url_for({controller: 'cms', action: 'new', profile: current_user.login, cms: true})}))
@@ -158,16 +160,18 @@ module ApplicationHelper
     def search_people_menu
       return super unless theme_responsive?
 
+      host = environment.default_hostname
+
       output = '<li class="dropdown">'
       output += link_to(_('People'), '#', :class=>"dropdown-toggle icon-menu-people", title: _('People'), :'data-toggle'=>"dropdown", :'data-hover'=>"dropdown")
       output += '<ul class="dropdown-menu" role="menu">'
 
-      output += '<li>' + link_to(_('All people'), {controller: "search", action: 'people', category_path: ''}) + '</li>'
+      output += '<li>' + link_to(_('All people'), {host: host, controller: "search", action: 'people', category_path: ''}) + '</li>'
 
       links = [
-          {s_('people|More recent') => {href: url_for({controller: 'search', action: 'people', filter: 'more_recent'})}},
-          {s_('people|More active') => {href: url_for({controller: 'search', action: 'people', filter: 'more_active'})}},
-          {s_('people|More popular') => {href: url_for({controller: 'search', action: 'people', filter: 'more_popular'})}}
+        {s_('people|More recent') => {:href => url_for({host: host, :controller => 'search', :action => 'people', :filter => 'more_recent'})}},
+        {s_('people|More active') => {:href => url_for({host: host, :controller => 'search', :action => 'people', :filter => 'more_active'})}},
+        {s_('people|More popular') => {:href => url_for({host: host, :controller => 'search', :action => 'people', :filter => 'more_popular'})}}
       ]
       if logged_in?
         links.push(_('My friends') => {href: url_for({profile: current_user.login, controller: 'friends'})})
@@ -188,16 +192,18 @@ module ApplicationHelper
     def search_communities_menu
       return super unless theme_responsive?
 
+      host = environment.default_hostname
+
       output = '<li class="dropdown">'
       output += link_to(_('Communities'), '#', :class=>"dropdown-toggle icon-menu-community", title: _('Communities'), :'data-toggle'=>"dropdown", :'data-hover'=>"dropdown")
       output += '<ul class="dropdown-menu" role="menu">'
 
-      output += '<li>' + link_to(_('All communities'), {controller: "search", action: 'communities', category_path: ''}) + '</li>'
+      output += '<li>' + link_to(_('All communities'), {host: host, controller: "search", action: 'communities', category_path: ''}) + '</li>'
 
       links = [
-          {s_('people|More recent') => {href: url_for({controller: 'search', action: 'communities', filter: 'more_recent'})}},
-          {s_('people|More active') => {href: url_for({controller: 'search', action: 'communities', filter: 'more_active'})}},
-          {s_('people|More popular') => {href: url_for({controller: 'search', action: 'communities', filter: 'more_popular'})}}
+        {s_('communities|More recent') => {:href => url_for({host: host, :controller => 'search', :action => 'communities', :filter => 'more_recent'})}},
+        {s_('communities|More active') => {:href => url_for({host: host, :controller => 'search', :action => 'communities', :filter => 'more_active'})}},
+        {s_('communities|More popular') => {:href => url_for({host: host, :controller => 'search', :action => 'communities', :filter => 'more_popular'})}}
       ]
       if logged_in?
         links.push(_('My communities') => {href: url_for({profile: current_user.login, controller: 'memberships'})})
