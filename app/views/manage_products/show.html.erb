@@ -20,6 +20,10 @@
     <%= render :partial => 'manage_products/display_name' %>
   </div>
 
+  <% if NOOSFERO_CONF['addthis_enabled'] %>
+    <%= render :partial => 'content_viewer/addthis' %>
+  <% end %>
+
   <div id='product-details'>
     <div id='product-image' class="zoomable-image">
       <%= render :partial => 'manage_products/display_image' %>
