@@ -11,6 +11,7 @@ class UploadedFile
     'og:url' => proc{ |u, c| c.og_url_for u.url.merge(view: true) },
     'og:title' => proc{ |u, c| u.title },
     'og:image' => proc{ |u, c| "#{u.environment.top_url}#{u.public_filename}" if u.image? },
+    'og:description' => proc{ |u, c| u.body || u.title },
   }
 
 end
