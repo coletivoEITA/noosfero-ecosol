@@ -1793,6 +1793,9 @@ img, video, audio {
     .vcard .btn-popover-menu {
         display:none;
     }
+    .comment-actions .vcard .btn-popover-menu {
+    	display:block;
+    }
 }
 
 @media screen and (max-width: 767px) {
