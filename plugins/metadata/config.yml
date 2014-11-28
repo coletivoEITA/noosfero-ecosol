@@ -4,6 +4,10 @@ open_graph:
   types:
     article: cirandas_article
     product: sse_product
+    uploaded_file: document
+    image: image
     profile: profile
+    person: user
+    community: community
     enterprise: sse_initiative
 

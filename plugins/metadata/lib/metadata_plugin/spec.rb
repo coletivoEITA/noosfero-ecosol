@@ -7,7 +7,13 @@ class MetadataPlugin::Spec
     },
     content_viewer: {
       variable: proc do
-        if profile and profile.home_page_id == @page.id then @profile else @page end
+        if profile and profile.home_page_id == @page.id
+          @profile
+        elsif @page.respond_to? :encapsulated_file
+          @page.encapsulated_file
+        else
+          @page
+        end
       end,
     },
     # fallback
