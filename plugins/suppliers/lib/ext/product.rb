@@ -30,6 +30,8 @@ end
 
 class Product
 
+  attr_accessible :from_products, :supplier_id, :supplier
+
   has_many :sources_from_products, :foreign_key => :to_product_id, :class_name => 'SuppliersPlugin::SourceProduct', :dependent => :destroy
   has_many :sources_to_products, :foreign_key => :from_product_id, :class_name => 'SuppliersPlugin::SourceProduct', :dependent => :destroy
   has_many :to_products, :through => :sources_to_products, :order => 'id ASC'
