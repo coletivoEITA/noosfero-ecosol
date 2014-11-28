@@ -5,7 +5,7 @@ open_graph:
     article: cirandas_article
     product: sse_product
     uploaded_file: document
-    image: image
+    image: picture
     profile: profile
     person: user
     community: community
