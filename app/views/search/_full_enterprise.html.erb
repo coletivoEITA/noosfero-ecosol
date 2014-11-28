@@ -23,6 +23,7 @@
 
       <div class="search-enterprise-categorization">
         <% enterprise.top_level_categorization.each do |parent, children| %>
+          <% next unless parent %>
           <div class="search-enterprise-category-<%=parent.id%> search-enterprise-category">
             <span class="search-enterprise-categorization-parent"><%= parent.name %></span>
             <span class="search-enterprise-categorization-children">
