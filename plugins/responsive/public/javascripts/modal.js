@@ -61,7 +61,7 @@ noosfero.modal = {
 
 };
 
-jQuery(function($) {
+$(function() {
   noosfero.modal.init();
 })
 
