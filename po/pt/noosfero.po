@@ -13657,23 +13657,26 @@ msgstr "Transferência bancária"
 #~ msgid "open"
 #~ msgstr "aberto"
 
-#~ msgid "Left Bar"
-#~ msgstr "Uma barra à esquerda"
+msgid "Left Bar"
+msgstr "Uma barra à esquerda"
 
-#~ msgid "2 Left Bars"
-#~ msgstr "Duas barras à esquerda"
+msgid "2 Left Bars"
+msgstr "Duas barras à esquerda"
 
-#~ msgid "Left and Bottom Bar"
-#~ msgstr "Uma barra à esquerda e outra ao final"
+msgid "Left and Bottom Bar"
+msgstr "Uma barra à esquerda e outra ao final"
 
-#~ msgid "Right Bar"
-#~ msgstr "Uma barra à direita"
+msgid "Top and Left Bar"
+msgstr "Uma barra superior e uma à esquerda"
 
-#~ msgid "Default"
-#~ msgstr "Padrão"
+msgid "Right Bar"
+msgstr "Uma barra à direita"
 
-#~ msgid "No Sidebars"
-#~ msgstr "Nenhuma barra lateral"
+msgid "Default"
+msgstr "Padrão"
+
+msgid "No Sidebars"
+msgstr "Nenhuma barra lateral"
 
 #~ msgid "Profile information could not be loaded"
 #~ msgstr "As informações do perfil não puderam ser carregadas"
