@@ -4533,7 +4533,7 @@ h1#agenda-title {
   padding-top: 20px;
 }
 .list-options {
-  width: 800px;
+  width: 100%;
   margin: auto;
   clear: left;
   padding-top: 20px;
@@ -4547,7 +4547,7 @@ h1#agenda-title {
   display: block;
   width: 200px;
   padding: 5px 2px 4px 5px;
-  margin: 0px 35px 0px 20px;
+  margin: 0px 35px 20px 20px;
   float: left;
   color: #000;
   text-decoration: none;
