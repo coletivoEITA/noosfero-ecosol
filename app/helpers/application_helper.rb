@@ -917,6 +917,7 @@ module ApplicationHelper
     (@page ? @page.title + ' - ' : '') +
     (@topic ? @topic.title + ' - ' : '') +
     (@section ? @section.title + ' - ' : '') +
+    (@product ? @product.name + ' - ' : '') +
     (@toc ? _('Online Manual') + ' - ' : '') +
     (controller.controller_name == 'chat' ? _('Chat') + ' - ' : '') +
     (profile ? profile.short_name : environment.name) +
