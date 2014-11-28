@@ -1,5 +1,5 @@
 <div id='display-product-image'>
-  <%= image_tag (@product.reload.default_image('big')), :class => 'product-pic' %>
+  <%= image_tag (@product.reload.default_image(nil)), :class => 'product-pic' %>
 </div>
 
 <% if @product.image %>
