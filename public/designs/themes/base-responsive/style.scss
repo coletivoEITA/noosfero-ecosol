@@ -1183,35 +1183,34 @@ hr.pre-posts, hr.sep-posts {
 .comment-from-owner .comment-wrapper-8 {
   background: url(/images/comment-owner-bg-NO.png)   0%   0% no-repeat;
 }
-
 .comment-created-at {
   position: relative;
   padding-right: 9px;
 }
-
 .comment-order {
   float: right;
   display: block;
 }
-
 .comment-from-owner .comment-created-at {
   color: #333;
 }
-
 .article-comment .button-bar {
   position: relative;
   top: 9px;
   right: 8px;
   z-index: 10px;
 }
-
 .article-comment .button-bar a {
   position: relative;
 }
-
 .comment-details {
   margin: 0px;
   padding: 7px 12px 3px 26px;
+}
+@media (max-width: 465px) {
+  #article .article-comments-list ul {
+      margin-top: 40px;
+  }
 }
 
 /* ==> controllers.css <== */
@@ -1442,6 +1441,9 @@ div.tooltip-inner {
 @media (max-width: 465px) {
   .controller-profile_editor .control-panel a {
       width: 100%;
+  }
+  #article .article-comments-list ul {
+      margin-top: 40px;
   }
 }
 
