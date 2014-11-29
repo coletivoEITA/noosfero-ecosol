@@ -1117,22 +1117,18 @@ hr.pre-posts, hr.sep-posts {
   text-align: left;
   border-bottom: 2px solid #888a85;
 }
-
 .article-comment {
   border: none;
   background: #FFF;
 }
-
 .comment-logged-out h4 {
   color: #888;
 }
-
 #content .comment-picture {
   text-align: left;
   text-decoration: none;
   position: relative;
 }
-
 .comment-wrapper-1 {
   margin-left: 60px;
   background: url(imgs/comment-bg-N.png)    0%   0% repeat-x;
@@ -1158,7 +1154,6 @@ hr.pre-posts, hr.sep-posts {
 .comment-wrapper-8 {
   background: url(imgs/comment-bg-NO.png)   0%   0% no-repeat;
 }
-
 .comment-from-owner .comment-wrapper-1 {
   background: #fbf7b5 url(/images/comment-owner-bg-N.png) repeat-x;
 }
@@ -1207,10 +1202,9 @@ hr.pre-posts, hr.sep-posts {
   margin: 0px;
   padding: 7px 12px 3px 26px;
 }
-@media (max-width: 465px) {
-  #article .article-comments-list ul {
-      margin-top: 40px;
-  }
+#article ul.article-comments-list {
+   clear: both;
+   margin-top: 60px;
 }
 
 /* ==> controllers.css <== */
@@ -1617,6 +1611,21 @@ div.tooltip-inner {
 #catalog-options .twitter-typeahead {
   background-color: #fff;
 }
+.catalog-search .icon-search {
+  font-size: 24px;
+  position: relative;
+  top: 5px;
+  margin-right: 15px;
+  display:none;
+}
+@media (max-width: 990px) {
+  .catalog-search .icon-search {
+    display: inline;
+  }
+  #catalog-search-input {
+    display: none;
+  }
+}
 .catalog-options-select {
     border: 1px solid #ccc;
     border-radius: 3px;
@@ -1754,11 +1763,12 @@ a.button.with-text, a.button.with-text:visited, body.noosfero a.button.with-text
 .select-article-type {
     width: 100%;
 }
-
 .article-types li {
-    height: 100%;
+    height: 90px;
 }
-
+.select-article-type .icon-close {
+    margin-top: 25px;
+}
 a {
     -webkit-transition: all .2s ease;
     -moz-transition: all .2s ease;
@@ -1955,4 +1965,33 @@ input.ui-autocomplete-input {
 .common-profile-list-block .vcard a, .comment-actions .vcard a {
   margin: 0px;
   border-radius: 5px;
+}
+
+/* CMS management */
+.article-controls .btn,
+table.cms-articles a.icon, 
+table.cms-articles a.icon-parent-folder,
+.cms-homepage a.icon {
+  padding: 0;
+}
+table.cms-articles .article-mime, 
+table.cms-articles .last-update,
+table.cms-articles .article-name {
+  font-size: 12px;
+}
+@media (max-width: 767px) {
+  .last-update {
+    display: none;
+  }
+}
+@media (max-width: 465px) {
+  .article-mime {
+    display: none;
+  }
+  .article-controls .btn,
+  table.cms-articles a.icon, 
+  table.cms-articles a.icon-parent-folder,
+  .cms-homepage a.icon {
+    padding: 1px 3px;
+  }
 }

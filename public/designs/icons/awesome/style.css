@@ -198,6 +198,12 @@
 }
 /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
    readers do not read off random characters that represent icons */
+.icon-add:before,
+.icon-more:before,
+.icon-new:before,
+.fa-plus:before {
+    content: "\f067";
+}
 .fa-glass:before {
     content: "\f000";
 }
@@ -545,12 +551,6 @@
 .fa-compress:before {
     content: "\f066";
 }
-.icon-add:before,
-.icon-more:before,
-.icon-new:before,
-.fa-plus:before {
-    content: "\f067";
-}
 .fa-minus:before {
     content: "\f068";
 }
@@ -727,6 +727,8 @@
     content: "\f09d";
 }
 .icon-feed:before,
+.icon-newrss-feed:before,
+.icon-rss-feed:before, 
 .icon-rss:before,
 .fa-rss:before {
     content: "\f09e";

@@ -5,7 +5,7 @@ class TextileArticle < TextArticle
   end
 
   def self.description
-    _('For visually impaired users.')
+    _('Textile format.')
   end
 
   def to_html(options ={})

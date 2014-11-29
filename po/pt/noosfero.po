@@ -223,11 +223,11 @@ msgstr "{fn} do arquivo enviado é maior que o máximo permitido de %{size}"
 
 #: app/models/uploaded_file.rb:99
 msgid "Uploaded file"
-msgstr "Arquivo enviado"
+msgstr "Enviar imagem ou documento"
 
 #: app/models/uploaded_file.rb:103
 msgid "Upload any kind of file you want."
-msgstr "Envie qualquer tipo de arquivo que você queira."
+msgstr "Qualquer arquivo pode ser enviado."
 
 #: app/models/invite_friend.rb:11
 msgid "Friend invitation"
@@ -583,7 +583,7 @@ msgstr "Pasta"
 
 #: app/models/folder.rb:28
 msgid "A folder, inside which you can put other articles."
-msgstr "Uma pasta, dentro dela você pode colocar outros artigos."
+msgstr "Serve para você organizar seus conteúdos e arquivos."
 
 #: app/models/event.rb:9 app/models/event.rb:67
 #: app/models/link_list_block.rb:30
@@ -622,8 +622,7 @@ msgstr "Fórum"
 msgid ""
 "An internet forum, also called message board, where discussions can be held."
 msgstr ""
-"Um fórum online, também chamado de quadro de mensagens, onde discussões "
-"podem ser feitas"
+"Um fórum online para debater ou organizar reuniões"
 
 #: app/models/enterprises_block.rb:4
 msgid "{#} enterprise"
@@ -1565,7 +1564,7 @@ msgstr "Este bloco apresenta o conteúdo principal das suas páginas."
 
 #: app/models/gallery.rb:12
 msgid "A gallery, inside which you can put images."
-msgstr "Uma galeria, dentro da qual você pode inserir imagens."
+msgstr "Organize suas fotos e imagens!"
 
 #: app/models/profile_search_block.rb:4
 msgid "Display a form to search the profile"
@@ -1812,7 +1811,7 @@ msgstr "Feed RSS"
 
 #: app/models/rss_feed.rb:97
 msgid "Provides a news feed of your more recent articles."
-msgstr "Fornece um feed RSS dos seus artigos mais recentes."
+msgstr "Fornece um feed RSS dos seus conteúdos."
 
 #: app/models/raw_html_article.rb:4
 msgid "HTML"
@@ -1820,11 +1819,11 @@ msgstr "HTML"
 
 #: app/models/raw_html_article.rb:8
 msgid "Raw HTML text article"
-msgstr "Artigo de texto com HTML puro"
+msgstr "Artigo com HTML puro"
 
 #: app/models/raw_html_article.rb:12
 msgid "Allows HTML without filter (only for admins)."
-msgstr "Permite HTML sem filtros (somente para administradores)."
+msgstr "Para administradores - use com cautela!"
 
 #: app/models/product_categories_block.rb:4
 msgid "Product category menu"
@@ -2279,11 +2278,11 @@ msgstr "Cidade inválida ou nome do estado"
 
 #: app/models/blog.rb:24
 msgid "A blog, inside which you can put other articles."
-msgstr "Um blog, dentro dele você pode colocar outros artigos."
+msgstr "Um blog onde você pode postar conteúdos."
 
 #: app/models/text_article.rb:9
 msgid "Article"
-msgstr "Artigos"
+msgstr "Artigo"
 
 #: app/models/ticket.rb:5
 msgid "Ticket"
@@ -3973,8 +3972,8 @@ msgid "Text article for people with visual impairement"
 msgstr "Artigo para pessoas com deficiência visual"
 
 #: app/models/textile_article.rb:8
-msgid "With special editor for visually impaired users."
-msgstr "Com editor especial para pessoas com deficiência visual."
+msgid "Textile format."
+msgstr "Formato textile."
 
 #: app/helpers/profile_editor_helper.rb:65
 msgid "Psychology"

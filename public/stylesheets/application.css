@@ -3327,17 +3327,16 @@ table.cms-articles {
   width: 100%;
 }
 
-table.cms-articles td:first-child,
-table.cms-articles th:first-child {
+table.cms-articles .article-name {
   width: 50%;
 }
 
-table.cms-articles td:nth-child(2) {
+table.cms-articles .article-mime,
+table.cms-articles .last-update, {
   font-size: 10px;
 }
 
-table.cms-articles td:last-child,
-table.cms-articles th:last-child {
+table.cms-articles .article-controls {
   width: 121px;
 }
 
@@ -3407,9 +3406,6 @@ table.cms-articles .icon:hover {
 .article-types .description {
   color: #888a85;
   font-size: smaller;
-}
-.article-types .icon-newrss-feed, #content .icon-rss-feed {
-  background-image: url(../images/icons-mime/rss-feed-16.png);
 }
 .article-types a {
   text-decoration: none;
