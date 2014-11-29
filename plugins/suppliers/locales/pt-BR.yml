@@ -379,10 +379,10 @@
         closed_orders: "Pedidos fechados"
         created: criado
         member_name: "Nome do Membro"
-        min_stock: "estoque mín."
-        mm_dd_yy_hh_mm_am_pm: "DD/MM/YY HH:MM AM/PM"
-        modified: modificado
         order_code: "Código do Pedido"
+        min_stock: "estoque mín."
+        mm_dd_yy_hh_mm_am_pm: "DD/MM/YY"
+        modified: modificado
         parcelled_total: "Total parcelado"
         price_un: preço/un
         product_cod: "Cód. produto"
