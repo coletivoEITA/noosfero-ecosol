@@ -160,7 +160,7 @@
         margin_change: 
           ? "%"
           : "%"
-          notice: "Ao mudar a margem padrão de comercialização, os produtos que são marcados como \"use a margem padrão\" automaticamente terão sua margem atualizada. Os ciclos abertos não serão afetados."
+          notice: "Ao mudar a margem padrão de comercialização, os produtos que são marcados como \"use a margem padrão\" automaticamente terão sua margem atualizada."
           cancel: Cancelar
           change_default_margin: "Mudar a margem padrão de comercialização"
           confirm: Confirmar

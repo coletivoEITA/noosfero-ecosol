@@ -78,6 +78,7 @@ class Profile
     self.class.transaction do
       self.distributed_products.unarchived.each do |product|
         product.default_margin_percentage = true
+        pp product
         product.save!
       end
     end
