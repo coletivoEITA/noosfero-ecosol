@@ -2,7 +2,7 @@
   <%= javascript_include_tag '/plugins/volunteers/javascripts/jquery.calendrical.js' %>
 
   <%= f.label :volunteers_periods, t('volunteers_plugin.views.myprofile.volunteers_periods') %>
-  <%= link_to_function t('volunteers_plugin.views.myprofile.add_period'), 'volunteers.periods.add()', class: 'action-button' %>
+  <div class=clear></div>
 
   <div class="periods">
     <% owner.volunteers_periods.each do |period| %>
@@ -22,6 +22,7 @@
       </div>
     <% end %>
   </div>
+  <%= link_to_function t('volunteers_plugin.views.myprofile.add_period'), 'volunteers.periods.add()', class: 'action-button' %>
 
   <%= javascript_tag do %>
     volunteers.periods.load();
