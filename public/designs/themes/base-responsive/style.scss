@@ -1748,11 +1748,12 @@ a.button.with-text, a.button.with-text:visited, body.noosfero a.button.with-text
 .select-article-type {
     width: 100%;
 }
-
 .article-types li {
-    height: 110px;
+    height: 90px;
 }
-
+.select-article-type .icon-close {
+    margin-top: 25px;
+}
 a {
     -webkit-transition: all .2s ease;
     -moz-transition: all .2s ease;
