@@ -1611,6 +1611,21 @@ div.tooltip-inner {
 #catalog-options .twitter-typeahead {
   background-color: #fff;
 }
+.catalog-search .icon-search {
+  font-size: 24px;
+  position: relative;
+  top: 5px;
+  margin-right: 15px;
+  display:none;
+}
+@media (max-width: 990px) {
+  .catalog-search .icon-search {
+    display: inline;
+  }
+  #catalog-search-input {
+    display: none;
+  }
+}
 .catalog-options-select {
     border: 1px solid #ccc;
     border-radius: 3px;
