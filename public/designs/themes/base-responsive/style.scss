@@ -1117,22 +1117,18 @@ hr.pre-posts, hr.sep-posts {
   text-align: left;
   border-bottom: 2px solid #888a85;
 }
-
 .article-comment {
   border: none;
   background: #FFF;
 }
-
 .comment-logged-out h4 {
   color: #888;
 }
-
 #content .comment-picture {
   text-align: left;
   text-decoration: none;
   position: relative;
 }
-
 .comment-wrapper-1 {
   margin-left: 60px;
   background: url(imgs/comment-bg-N.png)    0%   0% repeat-x;
@@ -1158,7 +1154,6 @@ hr.pre-posts, hr.sep-posts {
 .comment-wrapper-8 {
   background: url(imgs/comment-bg-NO.png)   0%   0% no-repeat;
 }
-
 .comment-from-owner .comment-wrapper-1 {
   background: #fbf7b5 url(/images/comment-owner-bg-N.png) repeat-x;
 }
@@ -1207,10 +1202,9 @@ hr.pre-posts, hr.sep-posts {
   margin: 0px;
   padding: 7px 12px 3px 26px;
 }
-@media (max-width: 465px) {
-  #article .article-comments-list ul {
-      margin-top: 40px;
-  }
+#article ul.article-comments-list {
+   clear: both;
+   margin-top: 60px;
 }
 
 /* ==> controllers.css <== */
