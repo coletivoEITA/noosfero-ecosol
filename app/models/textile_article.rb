@@ -5,7 +5,7 @@ class TextileArticle < TextArticle
   end
 
   def self.description
-    _('Formato textile.')
+    _('Textile format.')
   end
 
   def to_html(options ={})
