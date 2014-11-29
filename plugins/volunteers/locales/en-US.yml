@@ -14,13 +14,19 @@
         start_time: 'Time of start'
         end_date: 'End day'
         end_time: 'Time of end'
+        minimum_assigments: 'Minimum number required'
     views:
+      index:
+        volunteer: "volunteer"
       myprofile:
         volunteers_periods: "Volunteers' period"
         add_period: "Add"
         period:
           label: 'Turno'
           remove: 'Remove'
+          minimum: 'have minimum?'
+          maximum: 'have maximum?'
+          no: 'No'
 
 'en_US':
   <<: *en-US

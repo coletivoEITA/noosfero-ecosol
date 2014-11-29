@@ -31,3 +31,31 @@
     }
   }
 }
+
+#cycle-admin-page #volunteers-periods {
+  margin-bottom: $margin*2;
+
+  input[type=text], select {
+    margin-top: $half-margin/2;
+  }
+  .body {
+    margin-bottom: $half-margin;
+  }
+  input.minimum {
+    display: block;
+  }
+  input.time-select {
+    width: 50px;
+  }
+  select.minimum {
+    float: left;
+    margin-right: 20px;
+  }
+  select.maximum {
+  }
+  a.remove {
+    clear: both;
+    display: block;
+    margin-bottom: $margin;
+  }
+}

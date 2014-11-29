@@ -207,6 +207,11 @@ class OrdersPlugin::Item < ActiveRecord::Base
     data
   end
 
+  def calculate_prices price
+    self.price = price
+    self.save_calculated_prices
+  end
+
   protected
 
   def save_calculated_prices
@@ -215,6 +220,7 @@ class OrdersPlugin::Item < ActiveRecord::Base
       self.send "#{price}=", self.send("calculated_#{price}")
     end
   end
+
 
   def sync_fields
     self.name = self.product.name

@@ -8,7 +8,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   include OrdersCyclePlugin::TranslationHelper
 
   no_design_blocks
-  before_filter :login_required, :except => [:index]
+  before_filter :login_required, except: [:index]
 
   helper OrdersCyclePlugin::OrdersCycleDisplayHelper
   helper SuppliersPlugin::ProductHelper
@@ -28,7 +28,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   def new
     if user.blank?
       session[:notice] = t('orders_plugin.controllers.profile.consumer.please_login_first')
-      redirect_to :action => :index
+      redirect_to action: :index
       return
     end
 
@@ -42,7 +42,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       @order.consumer = @consumer
       @order.cycle = @cycle
       @order.save!
-      redirect_to params.merge(:action => :edit, :id => @order.id)
+      redirect_to params.merge(action: :edit, id: @order.id)
     end
   end
 
@@ -67,21 +67,21 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
 
   def cancel
     super
-    redirect_to :action => :index, :cycle_id => @order.cycle.id
+    redirect_to action: :index, cycle_id: @order.cycle.id
   end
 
   def remove
     super
-    redirect_to :action => :index, :cycle_id => @order.cycle.id
+    redirect_to action: :index, cycle_id: @order.cycle.id
   end
 
   def admin_new
-    return redirect_to :action => :index unless profile.has_admin? user
+    return redirect_to action: :index unless profile.has_admin? user
 
     @consumer = user
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @order = OrdersPlugin::Sale.create! :cycle => @cycle, :consumer => @consumer
-    redirect_to :action => :edit, :id => @order.id, :profile => profile.identifier
+    @order = OrdersPlugin::Sale.create! cycle: @cycle, consumer: @consumer
+    redirect_to action: :edit, id: @order.id, profile: profile.identifier
   end
 
   def filter
@@ -91,25 +91,25 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     scope = @cycle.products_for_order
     @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).all
 
-    render :partial => 'filter', :locals => {
-      :order => @order, :cycle => @cycle,
-      :products_for_order => @products,
+    render partial: 'filter', locals: {
+      order: @order, cycle: @cycle,
+      products_for_order: @products,
     }
   end
 
   def render_delivery
     @order = OrdersPlugin::Sale.find params[:id]
     @order.attributes = params[:order]
-    render partial: 'orders_plugin_order/delivery', :order => order, :actor_name => :supplier
+    render partial: 'orders_plugin_order/delivery', order: order, actor_name: :supplier
   end
 
   def supplier_balloon
     @supplier = SuppliersPlugin::Supplier.find params[:id]
-    render :layout => false
+    render layout: false
   end
   def product_balloon
     @product = OrdersCyclePlugin::OfferedProduct.find params[:id]
-    render :layout => false
+    render layout: false
   end
 
   protected

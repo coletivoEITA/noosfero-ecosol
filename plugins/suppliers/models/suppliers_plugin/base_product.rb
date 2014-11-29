@@ -52,6 +52,9 @@ class SuppliersPlugin::BaseProduct < Product
   has_number_with_locale :own_margin_percentage
   has_number_with_locale :original_margin_percentage
 
+  def self.default_product_category environment
+    ProductCategory.top_level_for(environment).order('name ASC').first
+  end
   def self.default_unit
     Unit.new(:singular => I18n.t('suppliers_plugin.models.product.unit'), :plural => I18n.t('suppliers_plugin.models.product.units'))
   end
@@ -97,6 +100,11 @@ class SuppliersPlugin::BaseProduct < Product
     ret
   end
 
+  # just in case the from_products is nil
+  def product_category_with_default
+    product_category_without_default || self.class.default_product_category(self.environment)
+  end
+  alias_method_chain :product_category, :default
   def unit_with_default
     unit_without_default || self.class.default_unit
   end

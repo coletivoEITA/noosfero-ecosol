@@ -36,9 +36,13 @@
             </div>
           </div>
         <% end %>
-        <%= link_to t('views.order.index.place_another_order'), {:action => :new, :cycle_id => cycle.id}, :id => 'consumer-new-order' if cycle.orders? and not @consumer.nil? and cycle.can_order? user %>
-      <% else %>
-        <%= link_to t('views.order.index.place_an_order'), {:action => :new, :cycle_id => cycle.id}, :id => 'consumer-new-order' if cycle.orders? and not @consumer.nil? and cycle.can_order? user%>
+        <% if cycle.orders? and not @consumer.nil? and cycle.can_order? user %>
+          <% if orders.empty? %>
+            <%= link_to t('views.order.index.place_an_order'     ), {:action => :new, :cycle_id => cycle.id}, :id => 'consumer-new-order' %>
+          <% else %>
+            <%= link_to t('views.order.index.place_another_order'), {:action => :new, :cycle_id => cycle.id}, :id => 'consumer-new-order'%>
+          <% end %>
+        <% end %>
       <% end %>
 
     </div>

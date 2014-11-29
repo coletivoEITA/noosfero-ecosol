@@ -191,7 +191,6 @@ $profile-portrait-size: 10*$base;
 .action-button {
   display: inline-block;
   padding: $half-padding $padding;
-  margin: 0; /* remove submit input browser's margin */
   height: auto;
   width: auto;
   //&:visited, &:active, &:hover { color: white; }

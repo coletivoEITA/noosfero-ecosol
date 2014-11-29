@@ -40,7 +40,7 @@ class Product < ActiveRecord::Base
 
   validates_uniqueness_of :name, :scope => :profile_id, :allow_nil => true, :if => :validate_uniqueness_of_column_name?
 
-  validates_presence_of :product_category_id
+  validates_presence_of :product_category
   validates_associated :product_category
 
   validates_numericality_of :price, :allow_nil => true

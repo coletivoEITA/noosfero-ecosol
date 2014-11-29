@@ -152,7 +152,7 @@
         margin_change:
           ? "%"
           : "%"
-          notice: "By changing the default margin of commercialization, the products that are \"use the default margin\" marked will automatically have their margin updated. The open cycles won't be affected."
+          notice: "By changing the default margin of commercialization, the products that are \"use the default margin\" marked will automatically have their margin updated."
           cancel: cancel
           change_default_margin: "Change default margin of commercialization"
           confirm: Confirm
