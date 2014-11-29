@@ -26,7 +26,7 @@
       </li>
 
       <li class="catalog-search">
-        <%= content_tag('span', '', :class => 'icon-search') %>
+        <%= button_to_function_without_text('icon-search', _('type your search...'), 'console.log("search")') %>
         <%= text_field_tag :query, params[:query], :placeholder => _('type your search...'), :id => 'catalog-search-input' %>
       </li>
 
