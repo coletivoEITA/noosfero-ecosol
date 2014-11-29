@@ -1,3 +1,5 @@
+<%= javascript_include_tag '/plugins/volunteers/javascripts/jquery.calendrical.js' %>
+
 <h3><%= t('views.cycle._edit_fields.general_settings') %></h3>
 
 <%= form_for @cycle, as: :cycle , remote: true, :url => {:action => @cycle.new? ? :new : :edit, :id => @cycle.id }, html: {data: {loading: '#cycle-fields form'}} do |f| %>
