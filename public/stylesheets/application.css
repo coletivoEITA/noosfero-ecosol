@@ -1224,8 +1224,6 @@ a.comment-picture {
 
 #article .comment-footer {
   font-size: 10px;
-  text-decoration: none;
-  color: #000;
 }
 
 #profile-activity .profile-activity-send-message a:hover, #profile-network .profile-network-send-message a:hover, #profile-wall .profile-wall-send-message a:hover,
@@ -2019,12 +2017,11 @@ a.button.disabled, input.disabled {
 }
 #content .comment-header .comment-actions-reply {
   float: right;
-  background-image: url(../designs/icons/tango/Tango/16x16/actions/go-jump.png);
-  height: 12px;
+  margin-right: 10px;
 }
 #content .comment-header ul {
   float: right;
-  margin: 1px 0px 14px 0px;
+  margin: 2px 0 0 0;
 }
 #content .comment-actions .menu-submenu-header, #content .comment-actions .menu-submenu-footer, #content .comment-actions .menu-submenu h4 {
   display: none;
@@ -2035,6 +2032,9 @@ a.button.disabled, input.disabled {
   padding-right: 2px;
   height: auto;
   display: block;
+}
+#content .comment-actions .icon-parent-folder {
+  font-size: 11px;
 }
 #content .common-profile-list-block li, #content .comment-actions li {
   padding: 0px;
@@ -4952,7 +4952,7 @@ h1#agenda-title {
   float: left;
 }
 #content .comment-actions .vcard {
-  padding-right: 20px;
+  padding-right: 30px;
 }
 #content .comment-actions .vcard .menu-submenu-trigger {
   display: block;
