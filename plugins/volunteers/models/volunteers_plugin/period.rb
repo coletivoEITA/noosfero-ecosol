@@ -7,6 +7,8 @@ class VolunteersPlugin::Period < ActiveRecord::Base
   attr_accessible :name
   attr_accessible :start_date, :start_time, :end_date, :end_time
   attr_accessible :owner_type
+  attr_accessible :minimum_assigments
+  attr_accessible :maximum_assigments
 
   belongs_to :owner, polymorphic: true
 

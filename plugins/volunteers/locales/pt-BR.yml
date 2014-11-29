@@ -14,13 +14,19 @@
         start_time: 'Horário de início'
         end_date: 'Dia de fim'
         end_time: 'Horário de fim'
+        minimum_assigments: 'Número mínimo requerido'
     views:
+      index:
+        volunteer: "voluntariar"
       myprofile:
         volunteers_periods: "Turnos de voluntários"
-        add_period: "Adicionar"
+        add_period: "Adicionar turno"
         period:
           label: 'Turno'
           remove: 'Remover'
+          minimum: 'tem mínimo?'
+          noo: 'Não'
+          maximum: 'tem maximo?'
 
 'pt_BR':
   <<: *pt-BR

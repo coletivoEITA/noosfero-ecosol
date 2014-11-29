@@ -12,10 +12,10 @@ module OrdersPlugin::Report
     greencell = wb.styles.add_style(defaults.merge({:bg_color => "00AE00", :fg_color => "ffffff", :b => true }))
     bluecell  = wb.styles.add_style(defaults.merge({:bg_color => "99CCFF", :b => true}))
     default   = wb.styles.add_style(defaults.merge({:border => 0}))
-    bluecell_b_top  = wb.styles.add_style(defaults.merge({:bg_color => "99CCFF", :b => true, :border => {:style => :thin, :color => "FF000000", :edges => [:top]}}))
-    date  = wb.styles.add_style(defaults.merge({:format_code => t('lib.report.mm_dd_yy_hh_mm_am_pm')}))
+    #bluecell_b_top  = wb.styles.add_style(defaults.merge({:bg_color => "99CCFF", :b => true, :border => {:style => :thin, :color => "FF000000", :edges => [:top]}}))
+    #date  = wb.styles.add_style(defaults.merge({:format_code => t('lib.report.mm_dd_yy_hh_mm_am_pm')}))
     currency  = wb.styles.add_style(defaults.merge({:format_code => t('number.currency.format.xlsx_currency')}))
-    border_top = wb.styles.add_style :border => {:style => :thin, :color => "FF000000", :edges => [:top]}
+    #border_top = wb.styles.add_style :border => {:style => :thin, :color => "FF000000", :edges => [:top]}
 
 
     # supplier block start index (shifts on the loop for each supplier)
@@ -61,7 +61,7 @@ module OrdersPlugin::Report
             ["G#{row}:H#{row}", "J#{row}:K#{row}"].each {|c| sheet.merge_cells c }
             row += 1
             ["G#{row}:H#{row}", "J#{row}:K#{row}"].each {|c| sheet.merge_cells c }
-            sheet.add_row ["", '', '', '', '', '', "=SUM(j#{sp}:j#{ep})", '', '', "=SUM(k#{sp}:k#{ep})"]
+            sheet.add_row ["", '', '', '', '', '', "=SUM(J#{sp}:J#{ep})", '', '', "=SUM(k#{sp}:k#{ep})"]
             sheet.add_row [""]
             sbs = ep + 5
 
@@ -137,7 +137,7 @@ module OrdersPlugin::Report
         sbs = sbe + 3
       end
 
-      sheet.column_widths 12,30,30,9,6,8,10
+      sheet.column_widths 15,30,30,9,6,8,10
     end # closes spreadsheet
 
     tmp_dir = Dir.mktmpdir "noosfero-"

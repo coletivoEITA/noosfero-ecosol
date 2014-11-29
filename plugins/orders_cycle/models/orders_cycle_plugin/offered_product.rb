@@ -85,7 +85,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   def sync_ordered
     return unless self.price_changed?
     self.items.each do |item|
-      item.send :calculate_prices
+      item.calculate_prices self.price
       item.save!
     end
   end
