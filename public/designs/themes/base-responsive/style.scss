@@ -1950,3 +1950,24 @@ input.ui-autocomplete-input {
   margin: 0px;
   border-radius: 5px;
 }
+
+/* CMS management */
+.article-controls .btn,
+table.cms-articles a.icon, 
+table.cms-articles a.icon-parent-folder,
+.cms-homepage a.icon {
+  padding: 0;
+}
+@media (max-width: 767px) {
+  .last-update {
+    display: none;
+  }
+}
+@media (max-width: 465px) {
+  .article-mime {
+    display: none;
+  }
+}
+table.cms-articles .article-controls {
+  width: auto;
+}
