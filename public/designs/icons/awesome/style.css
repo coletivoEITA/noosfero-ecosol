@@ -727,6 +727,8 @@
     content: "\f09d";
 }
 .icon-feed:before,
+.icon-newrss-feed:before,
+.icon-rss-feed:before, 
 .icon-rss:before,
 .fa-rss:before {
     content: "\f09e";
