@@ -275,7 +275,7 @@
           among_them: ", entre eles"
           any_registered_produc: "nenhum produto registrado"
           by_removing_this_supp: "Ao remover %{terms.supplier.article.singular}, todos os produtos ficarão indisponíveis em futuros ciclos. Por favor, confirme sua opção"
-          deactivate: "esconder %{terms.profile.from_article.singular}"
+          deactivate: "desativar"
           activate: ativar
           edit: editar
           products_are_active: " produtos estão ativos"
@@ -286,7 +286,7 @@
             other: "%{count} produtos"
           manage_products: "gerenciar produtos"
           registered_supplier_i: "%{terms.supplier.singular.capitalize} registrado na rede"
-          disassociate: "disassociar %{terms.profile.from_article.singular}"
+          disassociate: "disassociar"
           supplier_profile_product: "produtos registrados"
           supplier_with_registr: "%{terms.supplier.singular.capitalize} com registro administrado %{terms.profile.by_article.singular}"
           this_supplier_has: "Este %{terms.supplier.singular} tem"
@@ -732,7 +732,7 @@
           margin: Margem
           qty_in_stock: "Qtd em estoque"
           qty_offered: "Qtd oferecida"
-          remove_from_cycle: "Remover do pedido"
+          remove_from_cycle: "Remover do ciclo"
           save: Salvar
           sell_price: "Preço de venda:"
           sell_unit: "Unidade de venda"
