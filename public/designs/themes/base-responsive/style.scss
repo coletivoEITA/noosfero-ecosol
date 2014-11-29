@@ -1958,6 +1958,11 @@ table.cms-articles a.icon-parent-folder,
 .cms-homepage a.icon {
   padding: 0;
 }
+table.cms-articles .article-mime, 
+table.cms-articles .last-update,
+table.cms-articles .article-name {
+  font-size: 12px;
+}
 @media (max-width: 767px) {
   .last-update {
     display: none;
