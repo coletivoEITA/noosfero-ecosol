@@ -2,7 +2,7 @@ open_graph:
   domain: cirandas.net
   type_namespace: app_cirandas_test
   types:
-    article: cirandas_article
+    article: article
     product: sse_product
     uploaded_file: document
     image: picture
