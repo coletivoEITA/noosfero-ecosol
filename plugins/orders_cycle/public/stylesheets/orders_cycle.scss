@@ -231,6 +231,9 @@
 #cycle-admin-page {
   @import 'field';
 
+  a.action-button {
+    margin-top: 10px;
+  }
   #cycle-header-warning {
     background-color: #FECBCA;
     padding: 8px;
