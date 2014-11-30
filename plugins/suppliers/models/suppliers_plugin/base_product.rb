@@ -3,8 +3,10 @@ class SuppliersPlugin::BaseProduct < Product
 
   attr_accessible :default_margin_percentage, :margin_percentage, :default_stored, :stored, :default_unit, :unit_detail
 
-  # FIXME: move use cases to a scope called 'includes_for_links'
   default_scope include: [
+    # from_products is required for products.available
+    :from_products,
+    # FIXME: move use cases to a scope called 'includes_for_links'
     {
       suppliers: [{ profile: [:domains, {environment: :domains}] }]
     },

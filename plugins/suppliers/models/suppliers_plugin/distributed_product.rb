@@ -1,7 +1,7 @@
 class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
   # overhide original
-  scope :available, :conditions => ['products.available = ? AND from_products_products.available = ? AND suppliers_plugin_suppliers.active = ?', true, true, true]
+  scope :available, :conditions => ['products.available = ? AND hrom_products_products.available = ? AND suppliers_plugin_suppliers.active = ?', true, true, true]
   scope :unavailable, :conditions => ['products.available <> ? OR from_products_products.available <> ? OR suppliers_plugin_suppliers.active <> ?', true, true, true]
   scope :with_available, lambda { |available|
     op = if available then '=' else '<>' end
