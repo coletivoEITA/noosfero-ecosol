@@ -58,7 +58,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       @cycle = @order.cycle
 
       @consumer = @order.consumer
-      @admin_edit = user and user != @consumer
+      @admin_edit = (user and user != @consumer)
       return render_access_denied if @admin_edit and not profile.admins.include? @consumer
 
       @consumer_orders = @cycle.sales.for_consumer @consumer
