@@ -55,9 +55,12 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       @consumer = user
     else
       return render_not_found unless @order
-      @admin_edit = user and user != @consumer
-      @consumer = @order.consumer
       @cycle = @order.cycle
+
+      @consumer = @order.consumer
+      @admin_edit = user and user != @consumer
+      return render_access_denied if @admin_edit and not profile.admins.include? @consumer
+
       @consumer_orders = @cycle.sales.for_consumer @consumer
     end
     @products = @cycle.products_for_order

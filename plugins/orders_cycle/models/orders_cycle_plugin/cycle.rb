@@ -27,35 +27,35 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
 
   belongs_to :profile
 
-  has_many :delivery_options, :class_name => 'DeliveryPlugin::Option', :dependent => :destroy,
-    :as => :owner, :conditions => ["delivery_plugin_options.owner_type = 'OrdersCyclePlugin::Cycle'"]
-  has_many :delivery_methods, :through => :delivery_options, :source => :delivery_method
+  has_many :delivery_options, class_name: 'DeliveryPlugin::Option', dependent: :destroy,
+    as: :owner, conditions: ["delivery_plugin_options.owner_type = 'OrdersCyclePlugin::Cycle'"]
+  has_many :delivery_methods, through: :delivery_options, source: :delivery_method
 
-  has_many :cycle_orders, :class_name => 'OrdersCyclePlugin::CycleOrder', :foreign_key => :cycle_id, :dependent => :destroy, :order => 'id ASC'
+  has_many :cycle_orders, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :cycle_id, dependent: :destroy, order: 'id ASC'
 
   # cannot use :order because of months/years named_scope
-  has_many :sales, :through => :cycle_orders, :source => :sale
-  has_many :purchases, :through => :cycle_orders, :source => :purchase
+  has_many :sales, through: :cycle_orders, source: :sale
+  has_many :purchases, through: :cycle_orders, source: :purchase
 
-  has_many :cycle_products, :foreign_key => :cycle_id, :class_name => 'OrdersCyclePlugin::CycleProduct', :dependent => :destroy
-  has_many :products, :through => :cycle_products, :order => 'products.name ASC',
-    :include => [{:from_products => [:from_products, {:sources_from_products => [{:supplier => [{:profile => [:domains]}]}]}]}, {:profile => [:domains]}]
+  has_many :cycle_products, foreign_key: :cycle_id, class_name: 'OrdersCyclePlugin::CycleProduct', dependent: :destroy
+  has_many :products, through: :cycle_products, order: 'products.name ASC',
+    include: [{from_products: [:from_products, {sources_from_products: [{supplier: [{profile: [:domains]}]}]}]}, {profile: [:domains]}]
 
-  has_many :consumers, :through => :sales, :source => :consumer, :order => 'name ASC'
-  has_many :suppliers, :through => :products, :order => 'suppliers_plugin_suppliers.name ASC', :uniq => true
-  has_many :orders_suppliers, :through => :sales, :source => :profile, :order => 'name ASC'
+  has_many :consumers, through: :sales, source: :consumer, order: 'name ASC'
+  has_many :suppliers, through: :products, order: 'suppliers_plugin_suppliers.name ASC', uniq: true
+  has_many :orders_suppliers, through: :sales, source: :profile, order: 'name ASC'
 
-  has_many :from_products, :through => :products, :order => 'name ASC'
+  has_many :from_products, through: :products, order: 'name ASC'
 
-  has_many :orders_confirmed, :through => :cycle_orders, :source => :sale, :order => 'id ASC',
-    :conditions => ['orders_plugin_orders.ordered_at IS NOT NULL']
+  has_many :orders_confirmed, through: :cycle_orders, source: :sale, order: 'id ASC',
+    conditions: ['orders_plugin_orders.ordered_at IS NOT NULL']
 
-  has_many :ordered_suppliers, :through => :orders_confirmed, :source => :suppliers
-  has_many :items, :through => :orders_confirmed, :source => :products
+  has_many :ordered_suppliers, through: :orders_confirmed, source: :suppliers
+  has_many :items, through: :orders_confirmed, source: :products
 
-  has_many :ordered_offered_products, :through => :orders_confirmed, :source => :offered_products, :uniq => true
-  has_many :ordered_distributed_products, :through => :orders_confirmed, :source => :distributed_products, :uniq => true
-  has_many :ordered_supplier_products, :through => :orders_confirmed, :source => :supplier_products, :uniq => true
+  has_many :ordered_offered_products, through: :orders_confirmed, source: :offered_products, uniq: true
+  has_many :ordered_distributed_products, through: :orders_confirmed, source: :distributed_products, uniq: true
+  has_many :ordered_supplier_products, through: :orders_confirmed, source: :supplier_products, uniq: true
 
   has_many :volunteers_periods, class_name: 'VolunteersPlugin::Period', as: :owner
   has_many :volunteers, through: :volunteers_periods, source: :profile
@@ -65,46 +65,46 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   scope :has_volunteers_periods, -> {uniq.joins [:volunteers_periods]}
 
   extend CodeNumbering::ClassMethods
-  code_numbering :code, :scope => Proc.new { self.profile.orders_cycles }
+  code_numbering :code, scope: Proc.new { self.profile.orders_cycles }
 
   # status scopes
-  scope :defuncts, :conditions => ["status = 'new' AND created_at < ?", 2.days.ago]
-  scope :not_new, :conditions => ["status <> 'new'"]
+  scope :defuncts, conditions: ["status = 'new' AND created_at < ?", 2.days.ago]
+  scope :not_new, conditions: ["status <> 'new'"]
   scope :on_orders, lambda {
-    {:conditions => ["status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) )",
-      {:now => DateTime.now}]}
+    {conditions: ["status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) )",
+      {now: DateTime.now}]}
   }
   scope :not_on_orders, lambda {
-    {:conditions => ["NOT (status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) )",
-      {:now => DateTime.now}]}
+    {conditions: ["NOT (status = 'orders' AND ( (start <= :now AND finish IS NULL) OR (start <= :now AND finish >= :now) ) )",
+      {now: DateTime.now}]}
   }
-  scope :opened, :conditions => ["status <> 'new' AND status <> 'closing'"]
-  scope :closing, :conditions => ["status = 'closing'"]
-  scope :by_status, lambda { |status| { :conditions => {:status => status} } }
+  scope :opened, conditions: ["status <> 'new' AND status <> 'closing'"]
+  scope :closing, conditions: ["status = 'closing'"]
+  scope :by_status, lambda { |status| { conditions: {status: status} } }
 
-  scope :months, :select => 'DISTINCT(EXTRACT(months FROM start)) as month', :order => 'month DESC'
-  scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM start)) as year', :order => 'year DESC'
+  scope :months, select: 'DISTINCT(EXTRACT(months FROM start)) as month', order: 'month DESC'
+  scope :years, select: 'DISTINCT(EXTRACT(YEAR FROM start)) as year', order: 'year DESC'
 
   scope :by_month, lambda { |month| {
-    :conditions => [ 'EXTRACT(month FROM start) <= :month AND EXTRACT(month FROM finish) >= :month', { :month => month } ]}
+    conditions: [ 'EXTRACT(month FROM start) <= :month AND EXTRACT(month FROM finish) >= :month', { month: month } ]}
   }
   scope :by_year, lambda { |year| {
-    :conditions => [ 'EXTRACT(year FROM start) <= :year AND EXTRACT(year FROM finish) >= :year', { :year => year } ]}
+    conditions: [ 'EXTRACT(year FROM start) <= :year AND EXTRACT(year FROM finish) >= :year', { year: year } ]}
   }
   scope :by_range, lambda { |range| {
-    :conditions => [ 'start BETWEEN :start AND :finish OR finish BETWEEN :start AND :finish',
-      { :start => range.first, :finish => range.last }
+    conditions: [ 'start BETWEEN :start AND :finish OR finish BETWEEN :start AND :finish',
+      { start: range.first, finish: range.last }
     ]}
   }
 
   validates_presence_of :profile
-  validates_presence_of :name, :if => :not_new?
-  validates_presence_of :start, :if => :not_new?
-  validates_presence_of :delivery_options, :unless => :new_or_edition?
-  validates_inclusion_of :status, :in => DbStatuses, :if => :not_new?
-  validates_numericality_of :margin_percentage, :allow_nil => true, :if => :not_new?
-  validate :validate_orders_dates, :if => :not_new?
-  validate :validate_delivery_dates, :if => :not_new?
+  validates_presence_of :name, if: :not_new?
+  validates_presence_of :start, if: :not_new?
+  validates_presence_of :delivery_options, unless: :new_or_edition?
+  validates_inclusion_of :status, in: DbStatuses, if: :not_new?
+  validates_numericality_of :margin_percentage, allow_nil: true, if: :not_new?
+  validate :validate_orders_dates, if: :not_new?
+  validate :validate_delivery_dates, if: :not_new?
 
   before_validation :step_new
   before_validation :check_status
@@ -121,7 +121,7 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
 
   def name_with_code
     I18n.t('orders_cycle_plugin.models.cycle.code_name') % {
-      :code => code, :name => name
+      code: code, name: name
     }
   end
   def total_price_consumer_ordered
@@ -193,10 +193,10 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
       next unless supplier_product = product.supplier_product
 
       # can't be created using self.purchases.create!, as if :cycle is set (needed for code numbering), then double CycleOrder will be created
-      purchase = OrdersPlugin::Purchase.create! :cycle => self, :consumer => self.profile, :profile => supplier.profile
+      purchase = OrdersPlugin::Purchase.create! cycle: self, consumer: self.profile, profile: supplier.profile
       products.each do |product|
-        purchase.items.create! :order => purchase, :product => supplier_product,
-          :quantity_consumer_ordered => product.total_quantity_consumer_ordered, :price_consumer_ordered => product.total_price_consumer_ordered
+        purchase.items.create! order: purchase, product: supplier_product,
+          quantity_consumer_ordered: product.total_quantity_consumer_ordered, price_consumer_ordered: product.total_price_consumer_ordered
       end
     end
 
@@ -206,7 +206,7 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   def add_distributed_products
     return if self.products.count > 0
     ActiveRecord::Base.transaction do
-      self.profile.distributed_products.unarchived.available.find_each(:batch_size => 20) do |product|
+      self.profile.distributed_products.unarchived.available.find_each(batch_size: 20) do |product|
         OrdersCyclePlugin::OfferedProduct.create_from_distributed self, product
       end
     end
@@ -242,7 +242,7 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
     return unless order_status = OrderStatusMap[self.status_was]
     actor_name = StatusActorMap[self.status_was]
     orders_method = if actor_name == :supplier then :sales else :purchases end
-    orders = self.send(orders_method).where(:status => order_status.to_s)
+    orders = self.send(orders_method).where(status: order_status.to_s)
     orders.each{ |order| order.step! actor_name }
   end
 
@@ -258,7 +258,7 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   end
 
   def purge_profile_defuncts
-    self.class.where(:profile_id => self.profile_id).defuncts.destroy_all
+    self.class.where(profile_id: self.profile_id).defuncts.destroy_all
   end
 
   def delay_purge_profile_defuncts

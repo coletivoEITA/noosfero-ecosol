@@ -26,22 +26,22 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
   serialize :data
 
-  belongs_to :order, :class_name => 'OrdersPlugin::Order', :touch => true
-  belongs_to :sale, :class_name => 'OrdersPlugin::Sale', :foreign_key => :order_id
-  belongs_to :purchase, :class_name => 'OrdersPlugin::Purchase', :foreign_key => :order_id
+  belongs_to :order, class_name: 'OrdersPlugin::Order', touch: true
+  belongs_to :sale, class_name: 'OrdersPlugin::Sale', foreign_key: :order_id
+  belongs_to :purchase, class_name: 'OrdersPlugin::Purchase', foreign_key: :order_id
 
   belongs_to :product
 
-  has_one :profile, :through => :order
-  has_one :consumer, :through => :order
+  has_one :profile, through: :order
+  has_one :consumer, through: :order
 
-  has_many :from_products, :through => :product
-  has_many :to_products, :through => :product
+  has_many :from_products, through: :product
+  has_many :to_products, through: :product
 
-  scope :ordered, :conditions => ['orders_plugin_orders.status = ?', 'ordered'], :joins => [:order]
-  scope :for_product, lambda{ |product| {:conditions => {:product_id => product.id}} }
+  scope :ordered, conditions: ['orders_plugin_orders.status = ?', 'ordered'], joins: [:order]
+  scope :for_product, lambda{ |product| {conditions: {product_id: product.id}} }
 
-  default_scope :include => [:product]
+  default_scope include: [:product]
 
   validates_presence_of :order
   validates_presence_of :product
@@ -78,8 +78,8 @@ class OrdersPlugin::Item < ActiveRecord::Base
     has_number_with_locale quantity
     has_currency price
 
-    validates_numericality_of quantity, :allow_nil => true
-    validates_numericality_of price, :allow_nil => true
+    validates_numericality_of quantity, allow_nil: true
+    validates_numericality_of price, allow_nil: true
   end
 
   def self.products_by_suppliers items
@@ -150,9 +150,9 @@ class OrdersPlugin::Item < ActiveRecord::Base
       access = StatusAccessMap[status]
 
       status_data = statuses_data[status] = {
-        :flags => {},
-        :field => data_field,
-        :access => access,
+        flags: {},
+        field: data_field,
+        access: access,
       }
 
       quantity = self.send "quantity_#{data_field}"
