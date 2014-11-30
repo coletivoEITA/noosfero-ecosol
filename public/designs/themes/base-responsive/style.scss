@@ -1839,7 +1839,9 @@ img, video, audio {
 {
     white-space:  nowrap;
 }
-
+.popover {
+    min-width: 150px;
+}
 .popover-content {
     margin-bottom: 18px; /* Did not work fine by default, dont know why */
 }
