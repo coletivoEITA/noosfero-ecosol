@@ -54,9 +54,9 @@
 </div>
 
 <%= javascript_tag do %>
-  jQuery('input[name=profile_data\\[consumers_coop_settings\\]\\[header_type\\]]').click(function() {
+  jQuery('input[name="profile_data[consumers_coop_settings][header_type]"]').click(function() {
     consumers_coop.toggle_header_color_area($(this));
   });
-  consumers_coop.toggle_header_color_area(jQuery('input[name=profile_data\\[consumers_coop_settings\\]\\[header_type\\]]:checked')[0]);
+  consumers_coop.toggle_header_color_area(jQuery('input[name="profile_data[consumers_coop_settings][header_type]"]:checked').eq(0));
 <% end %>
 
