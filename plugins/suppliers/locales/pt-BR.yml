@@ -103,7 +103,7 @@
           plural: "de fornecedores"
         of_article:
           singular: "do fornecedor"
-          plural: "dos fornecedor"
+          plural: "dos fornecedores"
         of_this:
           singular: "deste fornecedor"
         of_another:
