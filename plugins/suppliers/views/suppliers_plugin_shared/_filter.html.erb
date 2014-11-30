@@ -4,7 +4,9 @@
     <%= t('views.filter.filter') %>
   </div>
 
-  <%= form_tag({action: :index}, remote: true, id: 'filter-form', data: {loading: '#filter', update: '#search-results', type: "html"},
+  <% action = {action: :index} %>
+  <% action = {action: :search} if type == :product %>
+  <%= form_tag(action, remote: true, id: 'filter-form', data: {loading: '#filter', update: '#search-results', type: "html"},
     method: :get) do %>
 
     <div class="fields filter-box">
