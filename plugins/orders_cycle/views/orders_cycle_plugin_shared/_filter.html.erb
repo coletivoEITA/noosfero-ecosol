@@ -16,7 +16,7 @@
       <% elsif type == :product %>
         <%= render :partial => 'suppliers_plugin_product/filter_fields' %>
       <% elsif type == :order %>
-        <%= render :partial => 'filter_fields', :locals => {:cycle => cycle, :order => order} %>
+        <%= render :partial => 'filter_fields', :locals => {actor: cycle.suppliers, :cycle => cycle, :order => order} %>
       <% else %>
         <%= render :partial => 'filter_fields' %>
       <% end %>

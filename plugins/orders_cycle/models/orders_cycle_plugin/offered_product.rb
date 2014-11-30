@@ -1,28 +1,27 @@
 class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
 
-  has_many :cycle_products, :foreign_key => :product_id, :class_name => 'OrdersCyclePlugin::CycleProduct'
-  has_many :cycles, :through => :cycle_products, :order => 'name ASC'
+  # FIXME: WORKAROUND for https://github.com/rails/rails/issues/6663
+  # OrdersPlugin::Sale.find(3697).cycle.suppliers returns empty without this
+  def self.finder_needs_type_condition?
+    false
+  end
+
+  has_many :cycle_products, foreign_key: :product_id, class_name: 'OrdersCyclePlugin::CycleProduct'
+  has_many :cycles, through: :cycle_products, order: 'name ASC'
   def cycle
     self.cycles.first
   end
 
+  # OVERRIDE suppliers/lib/ext/product.rb
   # for products in cycle, these are the products of the suppliers
   # p in cycle -> p distributed -> p from supplier
-  has_many :suppliers, :through => :sources_from_2x_products, :order => 'id ASC'
+  has_many :suppliers, through: :sources_from_2x_products, order: 'id ASC'
   def sources_supplier_products
-    # FIXME: can't use sources_from_2x_products as we can't preload it due to a rails bug
-    #self.sources_from_2x_products
-    self.from_products.collect(&:sources_from_products).flatten
+    self.sources_from_2x_products
   end
   def supplier_products
-    # FIXME: can't use from_2x_products as we can't preload it due to a rails bug
-    #self.from_2x_products
-    self.from_products.collect(&:from_products).flatten
+    self.from_2x_products
   end
-
-  # FIXME: can't preload from_2x_products directly due to a rails bug
-  default_scope :include => [{:from_products => {:from_products => {:sources_from_products => [{:supplier => [{:profile => [:domains, {:environment => :domains}]}]}] }} },
-                              {:profile => [:domains, {:environment => :domains}]}, ]
 
   extend CurrencyHelper::ClassMethods
   instance_exec &OrdersPlugin::Item::DefineTotals
