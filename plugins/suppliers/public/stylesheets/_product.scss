@@ -6,10 +6,10 @@
 
     .box-field {
       &.status {
-        width: $module01;
+        width: $module01 - $base;
       }
       &.category {
-        width: $module01;
+        width: $module02 - $base;
       }
       &.supplier {
         width: $module02;
@@ -24,10 +24,10 @@
         width: $module01;
       }
       &.stock {
-        width: $module01;
+        width: $module01 - $base;
       }
       &.unit {
-        width: $module01;
+        width: $module01 + 2*$base;
       }
     }
 
@@ -85,7 +85,7 @@
 
       .action-button-container {
         float: left;
-        width: $module10 + $intercolumn;
+        width: $module10 - 2*$intercolumn;
         margin-top: $half-margin;
 
         .action-button {

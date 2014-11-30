@@ -286,16 +286,16 @@
     .box-view .box-field {
     }
     .box-field.category {
-      width: 80px;
+      width: 90px;
     }
     .box-field.supplier {
-      width: 110px;
+      width: 120px;
     }
     .box-field.name {
       width: 190px;
     }
     .box-field.price {
-      width: 150px;
+      width: 160px;
     }
     .box-field.quantity-available {
       width: 80px;
@@ -338,7 +338,7 @@
     @extend .container-clean;
 
     //wireframe size
-    width: $wireframe - 2*(2*$border);
+    width: $wireframe  + 2*$wireframe-padding;
     margin-left: -$wireframe-padding;
     padding: 0 $wireframe-padding;
 

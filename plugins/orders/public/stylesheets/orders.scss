@@ -38,7 +38,7 @@
         width: $module02;
       }
       &.total {
-        width: $module01;
+        width: $module01 + 2*$base;
       }
       &.situation {
         width: $module02;
