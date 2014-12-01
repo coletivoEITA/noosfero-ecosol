@@ -4,6 +4,7 @@ module Noosfero
 
       # Set default host automatically if environment is set
       def url_for options = {}
+        return super unless options.is_a? Hash
         options[:host] ||= environment.default_hostname if environment
         super options
       end
