@@ -1,4 +1,15 @@
+require 'csv'
+
 class SuppliersPlugin::Import
+
+  def self.to_utf8 string
+    if string.encoding == Encoding::ASCII_8BIT
+      string.force_encoding 'utf-8'
+    else
+      string.encode!('utf-8')
+    end
+    string
+  end
 
   def self.products consumer, csv
     #i = Iconv.new 'UTF-8//IGNORE', 'UTF-8'
@@ -15,10 +26,10 @@ class SuppliersPlugin::Import
     raise 'invalid number of columns' unless header.size == 4
 
     rows.each do |row|
-      supplier_name = row[0].to_s.squish.encode!('utf-8')
-      product_name = row[1].to_s.squish.encode!('utf-8')
-      product_unit = row[2].to_s.squish.encode!('utf-8')
-      product_price = row[3].to_s.squish.encode!('utf-8')
+      supplier_name = to_utf8 row[0].to_s.squish
+      product_name = to_utf8 row[1].to_s.squish
+      product_unit = to_utf8 row[2].to_s.squish
+      product_price = to_utf8 row[3].to_s.squish
 
       product_unit = consumer.environment.units.find_by_singular product_unit
 

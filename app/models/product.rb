@@ -12,7 +12,7 @@ class Product < ActiveRecord::Base
   SEARCH_DISPLAYS = %w[map full]
 
   attr_accessible :name, :highlighted, :price, :discount, :image_builder, :description, :available, :qualifiers_list,
-    :unit_id, :enterprise, :profile, :qualifiers, :inputs, :product_category
+    :unit_id, :unit, :enterprise, :profile, :qualifiers, :inputs, :product_category
 
   def self.default_search_display
     'full'
