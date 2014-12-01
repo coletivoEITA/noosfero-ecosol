@@ -65,7 +65,7 @@ group :cucumber do
 end
 
 group :development do
-  gem 'byebug'
+  #gem 'byebug'
 end
 # include gemfiles from enabled plugins
 # plugins in baseplugins/ are not included on purpose. They should not have any
