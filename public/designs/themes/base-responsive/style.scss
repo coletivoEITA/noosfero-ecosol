@@ -1839,9 +1839,13 @@ img, video, audio {
 {
     white-space:  nowrap;
 }
-
+.popover {
+    min-width: 150px;
+    text-align: left;
+}
 .popover-content {
     margin-bottom: 18px; /* Did not work fine by default, dont know why */
+    text-align: left;
 }
 
 .popover-content ul {
