@@ -8,5 +8,5 @@ open_graph:
     profile: app_cirandas_test:profile
     person: app_cirandas_test:user
     community: app_cirandas_test:community
-    enterprise: sse_app_cirandas_test:initiative
+    enterprise: app_cirandas_test:sse_initiative
 
