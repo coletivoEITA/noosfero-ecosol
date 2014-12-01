@@ -34,7 +34,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   self.table_name = :orders_plugin_orders
   self.abstract_class = true
 
-  attr_accessible :status
+  attr_accessible :status, :consumer, :profile
 
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'
