@@ -38,10 +38,12 @@ class Product
       {solr_plugin_public: :boolean},
       {environment_id: :integer}, {profile_id: :integer},
       {enabled: :boolean}, {solr_plugin_category_filter: :integer},
+      {available: :boolean}, {highlighted: :boolean},
       # fields for autocompletion
       {solr_plugin_ac_name: :ngram_text},
       {solr_plugin_ac_category: :ngram_text},
       # ordered/query-boosted fields
+      {solr_plugin_available_sortable: :string}, {solr_plugin_highlighted_sortable: :string},
       {solr_plugin_price_sortable: :decimal}, {solr_plugin_name_sortable: :string},
       {lat: :float}, {lng: :float},
       :updated_at, :created_at,
@@ -105,6 +107,14 @@ class Product
 
   def solr_plugin_public
     self.public?
+  end
+
+  def solr_plugin_available_sortable
+    if self.available then '1' else '0' end
+  end
+
+  def solr_plugin_highlighted_sortable
+    if self.highlighted then '1' else '0' end
   end
 
   def solr_plugin_name_sortable # give a different name for solr

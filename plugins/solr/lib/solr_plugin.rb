@@ -43,8 +43,11 @@ class SolrPlugin < Noosfero::Plugin
     params[:facet][:solr_plugin_f_qualifier] = params[:qualifier] if params[:qualifier].present?
     solr_options = build_solr_options asset, klass, scope, nil
     solr_options[:all_facets] = false
-    if sort = CatalogSortOptions[params[:order].to_sym] rescue nil
-      solr_options[:sort] = sort[:solr]
+
+    order = params[:order]
+    order = if order.blank? then :relevance else order.to_sym end
+    if sort = CatalogSortOptions[order] rescue nil
+      solr_options[:sort] = if query.blank? and sort[:empty_solr] then sort[:empty_solr] else sort[:solr] end
     end
     result = scope.find_by_contents query, paginate_options, solr_options
 

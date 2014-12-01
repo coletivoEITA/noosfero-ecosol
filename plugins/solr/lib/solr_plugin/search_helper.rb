@@ -9,36 +9,36 @@ module SolrPlugin::SearchHelper
   DistBoost = 50
 
   CatalogSortOptions = {
-    relevance: {option: ['Relevance', ''], solr: ''},
-    name: {option: ['Name', 'name'], solr: 'solr_plugin_name_sortable asc'},
-    price: {option: ['Lowest price', 'price'], solr: 'solr_plugin_price_sortable asc'},
-    newest: {option: ['Newest', 'newest'], solr: 'created_at desc'},
-    updated: {option: ['Last updated', 'updated'], solr: 'updated_at desc'},
+    relevance: {option: ['Relevance', ''], solr: '', empty_solr: 'solr_plugin_available_sortable desc, solr_plugin_highlighted_sortable desc, solr_plugin_name_sortable asc'},
+    name: {option: ['Name', 'name'], solr: 'solr_plugin_available_sortable desc, solr_plugin_name_sortable asc'},
+    price: {option: ['Lowest price', 'price'], solr: 'solr_plugin_available_sortable desc, solr_plugin_price_sortable asc'},
+    newest: {option: ['Newest', 'newest'], solr: 'solr_plugin_available_sortable desc, created_at desc'},
+    updated: {option: ['Last updated', 'updated'], solr: 'solr_plugin_available_sortable desc, updated_at desc'},
   }
 
   SortOptions = {
-    :products => ActiveSupport::OrderedHash[ :none, {:label => _('Relevance')},
-      :more_recent, {:label => _('More recent'), :solr_opts => {:sort => 'updated_at desc, score desc'}},
-      :name, {:label => _('Name'), :solr_opts => {:sort => 'solr_plugin_name_sortable asc'}},
-      :closest, {:label => _('Closest to me'), :if => proc{ logged_in? && (profile=current_user.person).lat && profile.lng },
-        :solr_opts => {:sort => "geodist() asc",
-          :latitude => proc{ current_user.person.lat }, :longitude => proc{ current_user.person.lng }}},
+    products: ActiveSupport::OrderedHash[ :none, {label: _('Relevance')},
+      :more_recent, {label: _('More recent'), solr_opts: {sort: 'updated_at desc, score desc'}},
+      :name, {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
+      :closest, {label: _('Closest to me'), if: proc{ logged_in? && (profile=current_user.person).lat && profile.lng },
+        solr_opts: {sort: "geodist() asc",
+          latitude: proc{ current_user.person.lat }, longitude: proc{ current_user.person.lng }}},
     ],
-    :events => ActiveSupport::OrderedHash[ :none, {:label => _('Relevance')},
-      :name, {:label => _('Name'), :solr_opts => {:sort => 'solr_plugin_name_sortable asc'}},
+    events: ActiveSupport::OrderedHash[ :none, {label: _('Relevance')},
+      :name, {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
     ],
-    :articles => ActiveSupport::OrderedHash[ :none, {:label => _('Relevance')},
-      :name, {:label => _('Name'), :solr_opts => {:sort => 'solr_plugin_name_sortable asc'}},
-      :more_recent, {:label => _('More recent'), :solr_opts => {:sort => 'updated_at desc, score desc'}},
+    articles: ActiveSupport::OrderedHash[ :none, {label: _('Relevance')},
+      :name, {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
+      :more_recent, {label: _('More recent'), solr_opts: {sort: 'updated_at desc, score desc'}},
     ],
-    :enterprises => ActiveSupport::OrderedHash[ :none, {:label => _('Relevance')},
-      :name, {:label => _('Name'), :solr_opts => {:sort => 'solr_plugin_name_sortable asc'}},
+    enterprises: ActiveSupport::OrderedHash[ :none, {label: _('Relevance')},
+      :name, {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
     ],
-    :people => ActiveSupport::OrderedHash[ :none, {:label => _('Relevance')},
-      :name, {:label => _('Name'), :solr_opts => {:sort => 'solr_plugin_name_sortable asc'}},
+    people: ActiveSupport::OrderedHash[ :none, {label: _('Relevance')},
+      :name, {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
     ],
-    :communities => ActiveSupport::OrderedHash[ :none, {:label => _('Relevance')},
-      :name, {:label => _('Name'), :solr_opts => {:sort => 'solr_plugin_name_sortable asc'}},
+    communities: ActiveSupport::OrderedHash[ :none, {label: _('Relevance')},
+      :name, {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
     ],
   }
 
@@ -69,17 +69,17 @@ module SolrPlugin::SearchHelper
     geosearch = person && person.lat && person.lng
 
     extra_limit = LIST_SEARCH_LIMIT*5
-    sql_options = {:limit => LIST_SEARCH_LIMIT, :order => 'random()'}
-    options =   {:sql_options => sql_options, :extra_limit => extra_limit}
+    sql_options = {limit: LIST_SEARCH_LIMIT, order: 'random()'}
+    options =   {sql_options: sql_options, extra_limit: extra_limit}
 
     if geosearch
       options.merge({
-        :alternate_query => "{!boost b=recip(geodist(),#{"%e" % (1.to_f/DistBoost)},1,1)}",
-        :radius => DistFilt,
-        :latitude => person.lat,
-        :longitude => person.lng })
+        alternate_query: "{!boost b=recip(geodist(),#{"%e" % (1.to_f/DistBoost)},1,1)}",
+        radius: DistFilt,
+        latitude: person.lat,
+        longitude: person.lng })
     else
-      options.merge({:boost_functions => ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']})
+      options.merge({boost_functions: ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']})
     end
   end
 
@@ -103,20 +103,20 @@ module SolrPlugin::SearchHelper
     if theme_responsive?
 
     content_tag('div',
-      content_tag('label',_('Sort results by ') + ':', :class => 'col-lg-4 col-md-4 col-sm-4 col-xs-6 control-label form-control-static') +
+      content_tag('label',_('Sort results by ') + ':', class: 'col-lg-4 col-md-4 col-sm-4 col-xs-6 control-label form-control-static') +
       content_tag('div',select_tag(asset.to_s + '[order]', options_for_select(options, params[:order_by] || 'none'),
-        {:onchange => "window.location = jQuery.param.querystring(window.location.href, { 'order_by' : this.options[this.selectedIndex].value})"}
-      ),:class => 'col-lg-8 col-md-8 col-sm-8 col-xs-6'),
-      :class => "row"
+        {onchange: "window.location = jQuery.param.querystring(window.location.href, { 'order_by' : this.options[this.selectedIndex].value})"}
+      ),class: 'col-lg-8 col-md-8 col-sm-8 col-xs-6'),
+      class: "row"
     )
 
     else
 
     content_tag('div', _('Sort results by ') +
       select_tag(asset.to_s + '[order]', options_for_select(options, params[:order_by] || 'none'),
-        {:onchange => "window.location = jQuery.param.querystring(window.location.href, { 'order_by' : this.options[this.selectedIndex].value})"}
+        {onchange: "window.location = jQuery.param.querystring(window.location.href, { 'order_by' : this.options[this.selectedIndex].value})"}
       ),
-      :class => "search-ordering"
+      class: "search-ordering"
     )
 
     end
@@ -124,26 +124,26 @@ module SolrPlugin::SearchHelper
 
   def label_total_found(asset, total_found)
     labels = {
-      :products => _("%s products offers found"),
-      :articles => _("%s articles found"),
-      :events => _("%s events found"),
-      :people => _("%s people found"),
-      :enterprises => _("%s enterprises found"),
-      :communities => _("%s communities found"),
+      products: _("%s products offers found"),
+      articles: _("%s articles found"),
+      events: _("%s events found"),
+      people: _("%s people found"),
+      enterprises: _("%s enterprises found"),
+      communities: _("%s communities found"),
     }
     content_tag('span', labels[asset] % total_found,
-      :class => "total-pages-found") if labels[asset]
+      class: "total-pages-found") if labels[asset]
   end
 
   def facets_menu(asset, _facets)
     @asset_class = asset_class(asset)
     @facets = _facets
-    render(:partial => 'facets_menu')
+    render(partial: 'facets_menu')
   end
 
   def facets_unselect_menu(asset)
     @asset_class = asset_class(asset)
-    render(:partial => 'facets_unselect_menu')
+    render(partial: 'facets_unselect_menu')
   end
 
   def facet_selecteds_html_for(environment, klass, params)
@@ -165,19 +165,19 @@ module SolrPlugin::SearchHelper
           facet[:label] = label_hash[label_id]
           value.to_a.each do |value|
             ret << [facet[:label], name_with_extra(klass, facet, value),
-              params.merge(:facet => params[:facet].merge(id => params[:facet][id].merge(label_id => params[:facet][id][label_id].to_a.reject{ |v| v == value })))]
+              params.merge(facet: params[facet].merge(id: params[facet][id].merge(label_id: params[:facet][id][label_id].to_a.reject{ |v| v == value })))]
           end
         end
       else
         ret << [klass.facet_label(facet), name_with_extra(klass, facet, value),
-          params.merge(:facet => params[:facet].reject{ |k,v| k == id })]
+          params.merge(facet: params[:facet].reject{ |k,v| k == id })]
       end
     end
 
     ret.map do |label, name, url|
-      content_tag('div', content_tag('span', label, :class => 'facet-selected-label') +
-        content_tag('span', name, :class => 'facet-selected-name') +
-        link_to('', url, :class => 'facet-selected-remove', :title => 'remove facet'), :class => 'facet-selected')
+      content_tag('div', content_tag('span', label, class: 'facet-selected-label') +
+        content_tag('span', name, class: 'facet-selected-name') +
+        link_to('', url, class: 'facet-selected-remove', title: 'remove facet'), class: 'facet-selected')
     end.join
   end
 
@@ -193,26 +193,26 @@ module SolrPlugin::SearchHelper
     selected = facet[:label_id].nil? ? params[:facet][id] == value : params[:facet][id][facet[:label_id]].to_a.include?(value)
 
     if count > 0
-      url = params.merge(:facet => params[:facet].merge(
-        id => facet[:label_id].nil? ? value : params[:facet][id].merge( facet[:label_id] => params[:facet][id][facet[:label_id]].to_a | [value] )
+      url = params.merge(facet: params[:facet].merge(
+        id: if facet[:label_id].nil? then value else params[:facet][id].merge( facet[label_id] => params[:facet][id][facet[:label_id]].to_a | [value] ) end,
       ))
     else
       # preserve others filters and change this filter
-      url = params.merge(:facet => params[:facet].merge(
-        id => facet[:label_id].nil? ? value : { facet[:label_id] => value }
+      url = params.merge(facet: params[:facet].merge(
+        id: if facet[:label_id].nil? then value else { facet[label_id] => value } end,
       ))
     end
 
-    content_tag 'div', link_to(link_label, url, :class => 'facet-result-link-label') +
-        content_tag('span', (has_extra ? label[1] : ''), :class => 'facet-result-extra-label') +
-        (count > 0 ? content_tag('span', " (#{count})", :class => 'facet-result-count') : ''),
-      :class => 'facet-menu-item' + (selected ? ' facet-result-link-selected' : '')
+    content_tag 'div', link_to(link_label, url, class: 'facet-result-link-label') +
+        content_tag('span', (has_extra ? label[1] : ''), class: 'facet-result-extra-label') +
+        (count > 0 ? content_tag('span', " (#{count})", class: 'facet-result-count') : ''),
+      class: 'facet-menu-item' + (selected ? ' facet-result-link-selected' : '')
   end
 
   def facet_javascript(input_id, facet, array)
     array = [] if array.nil?
     hintText = _('Type in an option')
-    text_field_tag('facet['+input_id+']', '', :id => input_id) +
+    text_field_tag('facet['+input_id+']', '', id: input_id) +
       javascript_tag("jQuery.TokenList(jQuery('##{input_id}'), #{array.to_json},
         {searchDelay: 0, permanentDropdown: true, theme: 'facet', dontAdd: true, preventDuplicates: true,
         #{jquery_token_input_messages_json(hintText)}});")
