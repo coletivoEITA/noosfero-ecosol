@@ -13,9 +13,6 @@ class MetadataPlugin < Noosfero::Plugin
     @config ||= HashWithIndifferentAccess.new(YAML.load File.read("#{File.dirname __FILE__}/../config.yml")) rescue {}
   end
 
-  def self.og_type_namespace
-    @og_type_namespace ||= self.config[:open_graph][:type_namespace]
-  end
   def self.og_types
     @og_types ||= self.config[:open_graph][:types]
   end

@@ -1,13 +1,12 @@
 open_graph:
   domain: cirandas.net
-  type_namespace: app_cirandas_test
   types:
     article: article
-    product: sse_product
-    uploaded_file: document
-    image: picture
-    profile: profile
-    person: user
-    community: community
-    enterprise: sse_initiative
+    product: app_cirandas_test:sse_product
+    uploaded_file: app_cirandas_test:document
+    image: app_cirandas_test:picture
+    profile: app_cirandas_test:profile
+    person: app_cirandas_test:user
+    community: app_cirandas_test:community
+    enterprise: sse_app_cirandas_test:initiative
 

@@ -3,7 +3,7 @@ require_dependency 'profile'
 class Profile
 
   Metadata = {
-    'og:type' => "#{MetadataPlugin.og_type_namespace}:#{MetadataPlugin.og_types[:profile]}",
+    'og:type' => MetadataPlugin.og_types[:profile],
     'og:image' => proc{ |p, c| "#{p.environment.top_url}#{p.image.public_filename}" if p.image },
 	  'og:title' => proc{ |p, c| p.short_name nil },
     'og:url' => proc do |p, c|

@@ -6,7 +6,7 @@ class UploadedFile
   Metadata = {
     'og:type' => proc do |u, c|
       type = if u.image? then :image else :uploaded_file end
-      "#{MetadataPlugin.og_type_namespace}:#{MetadataPlugin.og_types[type]}"
+      MetadataPlugin.og_types[type]
     end,
     'og:url' => proc{ |u, c| c.og_url_for u.url.merge(view: true) },
     'og:title' => proc{ |u, c| u.title },

@@ -3,7 +3,7 @@ require_dependency 'product'
 class Product
 
   Metadata = {
-    'og:type' => "#{MetadataPlugin.og_type_namespace}:#{MetadataPlugin.og_types[:product]}",
+    'og:type' => MetadataPlugin.og_types[:product],
     'og:url' => proc{ |p, c| c.og_url_for p.url },
     'og:gr_hascurrencyvalue' => proc{ |p, c| p.price.to_f },
     'og:gr_hascurrency' => proc{ |p, c| p.environment.currency_unit },

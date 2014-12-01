@@ -3,7 +3,7 @@ require_dependency 'article'
 class Article
 
   Metadata = {
-    'og:type' => "#{MetadataPlugin.og_type_namespace}:#{MetadataPlugin.og_types[:article]}",
+    'og:type' => MetadataPlugin.og_types[:article],
     'og:url' => proc{ |a, c| c.og_url_for a.url },
     'og:title' => proc{ |a, c| a.title },
     'og:image' => proc{ |a, c| a.body_images_paths },
