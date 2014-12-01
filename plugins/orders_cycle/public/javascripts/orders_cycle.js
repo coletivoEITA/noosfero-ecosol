@@ -145,7 +145,7 @@ orders_cycle = {
   /* ----- toggle edit ----- */
 
   cycle_mail_message_toggle: function () {
-    if ($('cycle-new-mail-send').checked) {
+    if ($('#cycle-new-mail-send').prop('checked')) {
       jQuery('#cycle-new-mail').removeClass('disabled');
       jQuery('#cycle-new-mail textarea').removeAttr('disabled');
     } else {
