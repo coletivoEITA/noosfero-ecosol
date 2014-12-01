@@ -58,6 +58,11 @@ class Product
   handle_asynchronously :solr_save
   handle_asynchronously :solr_destroy
 
+  # overwrite on subclasses
+  def solr_index?
+    true
+  end
+
   private
 
   alias_method :solr_plugin_ac_name, :name
@@ -100,11 +105,6 @@ class Product
 
   def solr_plugin_public
     self.public?
-  end
-
-  # overwrite on subclasses
-  def solr_index?
-    true
   end
 
   def solr_plugin_name_sortable # give a different name for solr
