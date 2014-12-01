@@ -24,7 +24,7 @@ module OrdersPlugin::Report
     wb.add_worksheet(:name => t('lib.report.products_report')) do |sheet|
 
       products_by_suppliers.each do |supplier, products, total_price_consumer_ordered|
-
+        next if supplier.blank?
         sheet.add_row [t('lib.report.supplier'),'',t('lib.report.phone'),'',t('lib.report.mail'),'','','','','',''], :style => bluecell
         sheet.merge_cells "A#{sbs}:B#{sbs}"
 
@@ -57,7 +57,7 @@ module OrdersPlugin::Report
 
             sheet.add_row [""]
             sheet.add_row ["", '', '', '', '', '', t('lib.report.total_selled_value'), '', '',t('lib.report.total_parcel_value'), ''], :style =>bluecell
-            row = ep +2
+            row = ep + 2
             ["G#{row}:H#{row}", "J#{row}:K#{row}"].each {|c| sheet.merge_cells c }
             row += 1
             ["G#{row}:H#{row}", "J#{row}:K#{row}"].each {|c| sheet.merge_cells c }
@@ -68,7 +68,7 @@ module OrdersPlugin::Report
       end # closes products_by_suppliers
       sheet.add_row []
       sheet.rows.last.add_cell t('lib.report.selled_total'), :style => redcell
-      sheet.rows.last.add_cell "=SUM(j1:j1000)", :style => default
+      sheet.rows.last.add_cell "=SUM(J1:J1000)", :style => default
       sheet.add_row []
 
       sheet.rows.last.add_cell t('lib.report.parcelled_total'), :style => redcell

@@ -17,8 +17,6 @@ gem 'utf8-cleaner'
 
 gem 'assets_live_compile'
 
-gem 'newrelic_rpm'
-
 platform :ruby do
   gem 'pg',                     '~> 0.13.2'
   gem 'rmagick',                '~> 2.13.1'
@@ -47,6 +45,7 @@ gem 'sass'
 gem 'sass-rails'
 
 group :production do
+  gem 'newrelic_rpm'
   gem 'redis-rails'
   gem 'rack-cache'
 end
@@ -65,6 +64,9 @@ group :cucumber do
   gem 'selenium-webdriver',     '~> 2.39.0'
 end
 
+group :development do
+  gem 'byebug'
+end
 # include gemfiles from enabled plugins
 # plugins in baseplugins/ are not included on purpose. They should not have any
 # dependencies.

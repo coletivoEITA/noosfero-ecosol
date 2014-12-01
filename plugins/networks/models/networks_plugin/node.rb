@@ -36,7 +36,7 @@ class NetworksPlugin::Node < NetworksPlugin::BaseNode
       new_supplier.attributes = supplier.attributes
       new_supplier.consumer = self.parent
       # Avoid "can't modify frozen hash" error
-      new_supplier.send :create_without_callbacks
+      new_supplier.save run_callbacks: false
     end
   end
 
