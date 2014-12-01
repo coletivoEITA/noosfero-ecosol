@@ -14,7 +14,7 @@ class SuppliersPluginProductController < MyProfileController
 
     SuppliersPlugin::DistributedProduct.send :with_exclusive_scope do
       scope = profile.distributed_products.unarchived.joins([:from_products, :suppliers])
-      @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate :per_page => 10, :page => params[:page], :order => 'from_products_products.name ASC'
+      @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate per_page: 10, page: params[:page], order: 'from_products_products.name ASC'
       @products_count = SuppliersPlugin::BaseProduct.search_scope(scope, params).count
     end
     @product_categories = Product.product_categories_of @products
@@ -25,8 +25,24 @@ class SuppliersPluginProductController < MyProfileController
 
     respond_to do |format|
       format.html
-      format.js { render :partial => 'suppliers_plugin_product/search' }
+      format.js { render partial: 'suppliers_plugin_product/search' }
     end
+  end
+
+  def search
+    @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id] if params[:supplier_id].present?
+
+    SuppliersPlugin::DistributedProduct.send :with_exclusive_scope do
+      scope = profile.distributed_products.unarchived.joins([:from_products, :suppliers])
+      @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate per_page: 10, page: params[:page], order: 'from_products_products.name ASC'
+      @products_count = SuppliersPlugin::BaseProduct.search_scope(scope, params).count
+    end
+    @product_categories = Product.product_categories_of @products
+    @new_product = SuppliersPlugin::DistributedProduct.new
+    @new_product.profile = profile
+    @new_product.supplier = @supplier
+    @units = Unit.all
+    render partial: 'suppliers_plugin_product/search'
   end
 
   def edit
@@ -39,9 +55,9 @@ class SuppliersPluginProductController < MyProfileController
       SuppliersPlugin::Import.delay.products profile, params[:csv].read
 
       @notice = t('controllers.product.import_in_progress')
-      respond_to{ |format| format.js{ render :layout => false } }
+      respond_to{ |format| format.js{ render layout: false } }
     else
-      respond_to{ |format| format.html{ render :layout => false } }
+      respond_to{ |format| format.html{ render layout: false } }
     end
   end
 

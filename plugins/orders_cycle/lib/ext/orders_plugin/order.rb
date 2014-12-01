@@ -2,6 +2,8 @@ require_dependency 'orders_plugin/order'
 
 class OrdersPlugin::Order
 
+  attr_accessible :cycle
+
   def cycles
     []
   end

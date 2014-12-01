@@ -4,7 +4,7 @@ class AddSourceToOrdersPluginOrder < ActiveRecord::Migration
     OrdersPlugin::Order.find_each do |order|
       next unless order.consumer_delivery_data.present? or order.payment_data.present?
       order.source = 'shopping_cart_plugin'
-      order.send :update_without_callbacks
+      order.save run_callbacks: false
     end
   end
 

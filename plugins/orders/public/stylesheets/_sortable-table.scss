@@ -17,7 +17,7 @@ $sortable-table-negative-area: 3*$base;
 
   &.wireframe-size {
     > .table-header {
-      width: $wireframe;
+      width: $wireframe + 2*$wireframe-padding;
       margin-left: -$wireframe-padding;
       padding: 0 $wireframe-padding;
     }
@@ -122,7 +122,7 @@ $sortable-table-negative-area: 3*$base;
 
       .box-field {
         &.select, &.actions {
-          width: 2*$base;
+          width: 3*$base;
           padding: $base $base/2;
         }
 
@@ -185,6 +185,10 @@ $sortable-table-negative-area: 3*$base;
         overflow: hidden; //from .container-clean, but without display: block
         display: none; //default
 
+        .row {
+          margin-left: 0;
+          margin-right: 0;
+        }
         .internal-table {
           float: left;
           background-color: $sortable-table-bg-yellow;

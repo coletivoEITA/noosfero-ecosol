@@ -28,7 +28,7 @@ class RefactorOrdersPluginStatuses < ActiveRecord::Migration
       order.price_consumer_ordered = order.price_asked
       order.price_supplier_accepted = order.price_accepted
       order.price_supplier_delivered = order.price_shipped
-      order.send :update_without_callbacks
+      order.save run_callbacks: false
     end
 
     add_column :orders_plugin_orders, :ordered_at, :datetime
@@ -41,7 +41,7 @@ class RefactorOrdersPluginStatuses < ActiveRecord::Migration
     OrdersPlugin::Order.update_all ["status = 'ordered'"], ["status = 'confirmed'"]
     OrdersPlugin::Order.find_each do |order|
       order.ordered_at = order.updated_at if order.status == 'ordered'
-      order.send :update_without_callbacks
+      order.save run_callbacks: false
     end
 
     remove_column :orders_plugin_items, :quantity_asked

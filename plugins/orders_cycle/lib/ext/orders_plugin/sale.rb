@@ -2,13 +2,13 @@ require_dependency 'orders_plugin/sale'
 
 class OrdersPlugin::Sale
 
-  has_many :cycle_orders, :class_name => 'OrdersCyclePlugin::CycleOrder', :foreign_key => :sale_id, :dependent => :destroy
-  has_many :cycles, :through => :cycle_orders, :source => :cycle
+  has_many :cycle_orders, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id, dependent: :destroy
+  has_many :cycles, through: :cycle_orders, source: :cycle
 
-  after_save :cycle_change_purchases, :if => :cycle
-  before_destroy :cycle_remove_purchases_items, :if => :cycle
+  after_save :cycle_change_purchases, if: :cycle
+  before_destroy :cycle_remove_purchases_items, if: :cycle
 
-  scope :for_cycle, lambda{ |cycle| {:conditions => ['orders_cycle_plugin_cycles.id = ?', cycle.id], :joins => [:cycles]} }
+  scope :for_cycle, lambda{ |cycle| {conditions: ['orders_cycle_plugin_cycles.id = ?', cycle.id], joins: [:cycles]} }
 
   def current_status_with_cycle
     return 'forgotten' if self.forgotten?
@@ -48,7 +48,7 @@ class OrdersPlugin::Sale
       self.cycle_remove_purchases_items
     end
   end
-  handle_asynchronously :cycle_change_purchases
+  #handle_asynchronously :cycle_change_purchases
 
   def cycle_add_purchases_items
     self.offered_products.unarchived.each do |product|
@@ -56,13 +56,13 @@ class OrdersPlugin::Sale
       next unless supplier = supplier_product.profile
 
       purchase = self.cycle.purchases.for_profile(supplier).first
-      purchase ||= OrdersPlugin::Purchase.create! :cycle => self.cycle, :consumer => self.profile, :profile => supplier
+      purchase ||= OrdersPlugin::Purchase.create! cycle: self.cycle, consumer: self.profile, profile: supplier
 
       item = purchase.items.for_product(supplier_product).first
-      item ||= purchase.items.build :order => self, :product => supplier_product
+      item ||= purchase.items.build order: self, product: supplier_product
       item.quantity_consumer_ordered = product.total_quantity_consumer_ordered
       item.price_consumer_ordered = product.total_price_consumer_ordered
-      item.send :create_or_update_without_callbacks # dont touch which cause an infinite loop
+      item.save run_callbacks: false # dont touch which cause an infinite loop
     end
   end
 

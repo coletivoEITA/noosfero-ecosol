@@ -7,8 +7,7 @@ class OrdersPluginMessageController < MyProfileController
   helper OrdersPlugin::FieldHelper
 
   def new_to_consumer_for_order
-    @order = OrdersPlugin::Sale.find params[:order_id]
-    @consumer = @order.consumer
+    @order = profile.orders.find params[:order_id]
     if params[:commit]
       if params[:include_order]
         OrdersPlugin::Mailer.message_to_consumer_for_order(profile, @order, params[:email][:subject], params[:email][:message]).deliver

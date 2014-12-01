@@ -1,6 +1,6 @@
 class OrdersPlugin::Item < ActiveRecord::Base
 
-  attr_accessible :price, :name
+  attr_accessible :price, :name, :order, :product
 
   # flag used by items to compare them with products
   attr_accessor :product_diff
