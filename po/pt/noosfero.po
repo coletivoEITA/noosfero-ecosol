@@ -227,7 +227,7 @@ msgstr "Enviar imagem ou documento"
 
 #: app/models/uploaded_file.rb:103
 msgid "Upload any kind of file you want."
-msgstr "Qualquer arquivo pode ser enviado."
+msgstr "Qualquer arquivo."
 
 #: app/models/invite_friend.rb:11
 msgid "Friend invitation"
