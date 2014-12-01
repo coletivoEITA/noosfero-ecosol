@@ -48,7 +48,7 @@ class OrdersPlugin::Sale
       self.cycle_remove_purchases_items
     end
   end
-  #handle_asynchronously :cycle_change_purchases
+  handle_asynchronously :cycle_change_purchases
 
   def cycle_add_purchases_items
     self.offered_products.unarchived.each do |product|
@@ -59,7 +59,7 @@ class OrdersPlugin::Sale
       purchase ||= OrdersPlugin::Purchase.create! cycle: self.cycle, consumer: self.profile, profile: supplier
 
       item = purchase.items.for_product(supplier_product).first
-      item ||= purchase.items.build order: self, product: supplier_product
+      item ||= purchase.items.build order: purchase, product: supplier_product
       item.quantity_consumer_ordered = product.total_quantity_consumer_ordered
       item.price_consumer_ordered = product.total_price_consumer_ordered
       item.save run_callbacks: false # dont touch which cause an infinite loop
