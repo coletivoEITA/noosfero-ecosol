@@ -2,7 +2,7 @@
 
 jQuery(document).delegate('form[data-update]', 'ajax:success', function(event, data, status, xhr) {
   var element = jQuery(jQuery(this).data('update'));
-  if (element.length > 0 && jQuery(this).data('type') == 'html') element.html(data);
+  if (element.length > 0) element.html(data);
 });
 
 jQuery(document).delegate('form[data-loading]', 'ajax:before', function() {

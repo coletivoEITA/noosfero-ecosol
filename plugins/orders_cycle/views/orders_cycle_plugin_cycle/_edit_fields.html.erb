@@ -2,16 +2,16 @@
 
 <h3><%= t('views.cycle._edit_fields.general_settings') %></h3>
 
-<%= form_for @cycle, as: :cycle , remote: true, :url => {:action => @cycle.new? ? :new : :edit, :id => @cycle.id }, html: {data: {loading: '#cycle-fields form'}} do |f| %>
+<%= form_for @cycle, as: :cycle , remote: true, url: {action: @cycle.new? ? :new : :edit, id: @cycle.id }, html: {data: {loading: '#cycle-fields form'}} do |f| %>
 
-  <%= labelled_field(f, :name, t('views.cycle._edit_fields.name'), f.text_field(:name), :class => 'cycle-field-name') %>
-  <%= labelled_field(f, :description, t('views.cycle._edit_fields.description'), f.text_area(:description), :class => 'cycle-field-description') %>
+  <%= labelled_field(f, :name, t('views.cycle._edit_fields.name'), f.text_field(:name), class: 'cycle-field-name') %>
+  <%= labelled_field(f, :description, t('views.cycle._edit_fields.description'), f.text_area(:description), class: 'cycle-field-description') %>
 
   <div class="cycle-fields-block">
-    <%= labelled_period_field f, :start, :finish, t('views.cycle._edit_fields.orders_interval'), :class => 'cycle-orders-period' %>
+    <%= labelled_period_field f, :start, :finish, t('views.cycle._edit_fields.orders_interval'), class: 'cycle-orders-period' %>
   </div>
   <div class="cycle-fields-block">
-    <%= labelled_period_field f, :delivery_start, :delivery_finish, t('views.cycle._edit_fields.deliveries_interval'), :class => 'cycle-orders-period' %>
+    <%= labelled_period_field f, :delivery_start, :delivery_finish, t('views.cycle._edit_fields.deliveries_interval'), class: 'cycle-orders-period' %>
   </div>
 
   <div class="cycle-fields-block">
@@ -20,9 +20,9 @@
 
       <div>
         <div id='cycle-delivery-options' class="subtitle">
-          <%= render :partial => 'delivery_plugin_option/index', :locals => {:owner => @cycle} %>
+          <%= render partial: 'delivery_plugin_option/index', locals: {owner: @cycle} %>
         </div>
-        <%= modal_link_to t('views.cycle._edit_fields.add_method'), { :controller => :orders_cycle_plugin_delivery_option, :action => :select, :owner_id => @cycle.id, :owner_type => @cycle.class.name }, :class => 'cycle-add-delivery-option subtitle'  %>
+        <%= modal_link_to t('views.cycle._edit_fields.add_method'), { controller: :orders_cycle_plugin_delivery_option, action: :select, owner_id: @cycle.id, owner_type: @cycle.class.name }, class: 'cycle-add-delivery-option subtitle'  %>
       </div>
 
       <div class="clean"></div>
@@ -34,15 +34,15 @@
   <% end %>
 
   <div id="cycle-new-mail">
-    <%= check_box_tag('sendmail', 'yes', false, :id => 'cycle-new-mail-send') %>
-    <%= content_tag('label', t('views.cycle._edit_fields.notify_members_of_ope'), :for => 'sendmail') %>
+    <%= check_box_tag('sendmail', 'yes', false, id: 'cycle-new-mail-send') %>
+    <%= content_tag('label', t('views.cycle._edit_fields.notify_members_of_ope'), for: 'sendmail') %>
 
     <div class='mail-message'>
       <%= f.label(:sendmail, t('views.cycle._edit_fields.opening_message')) %>
       <div><%=t('views.cycle._edit_fields.this_message_will_be_') %></div>
       <%= f.text_area(:opening_message) %>
     </div>
-    <%= observe_field 'cycle-new-mail-send', :on => 'click', :function => "orders_cycle.cycle_mail_message_toggle()" %>
+    <%= observe_field 'cycle-new-mail-send', on: 'click', function: "orders_cycle.cycle_mail_message_toggle()" %>
   </div>
 
   <% submit_text = if @cycle.new? then t('views.cycle._edit_fields.create_new_cycle') else t('views.cycle._edit_fields.save') end %>
@@ -52,15 +52,15 @@
     &nbsp;
     <%= hidden_field_tag 'open', nil %>
     <% text = t("views.cycle._edit_fields.#{if @cycle.new? then 'create' else 'save' end}_and_open_orders") %>
-    <%= f.submit text, :onclick => "this.form.elements['open'].value = '1'" %>
+    <%= f.submit text, onclick: "this.form.elements['open'].value = '1'" %>
   <% end %>
 
   &nbsp;
-  <%= link_to t('views.cycle._edit_fields.cancel_changes'), @cycle.new? ? {:action => :index} : params %>
+  <%= link_to t('views.cycle._edit_fields.cancel_changes'), @cycle.new? ? {action: :index} : params %>
 
   <% unless @cycle.new? %>
     &nbsp;
-    <%= link_to t('views.cycle._edit_fields.remove'), {:action => :destroy, :id => @cycle.id}, :confirm => t('views.cycle._edit_fields.confirm_remove') %>
+    <%= link_to t('views.cycle._edit_fields.remove'), {action: :destroy, id: @cycle.id}, confirm: t('views.cycle._edit_fields.confirm_remove') %>
   <% end %>
 <% end %>
 

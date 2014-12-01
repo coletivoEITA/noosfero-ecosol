@@ -1,7 +1,7 @@
 
 <div class="fields">
   <% unless order.self_supplier? %>
-    <% supplier = item.product.supplier.abbreviation_or_name rescue self.profile.short_name %>
+    <% supplier = item.product.supplier.abbreviation_or_name rescue profile.short_name %>
     <div class="box-field supplier" title="<%= supplier %>"> <%= supplier %> </div>
   <% end %>
 
@@ -25,21 +25,20 @@
       <% if @admin %>
         <%# FIXME: add remove button that do not destroy, but put zero %>
 
-        <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(:controller => :orders_plugin_admin_item, :action => :edit, :id => item.id, :actor_name => actor_name)}')", :class => 'action-button' %>
+        <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(controller: :orders_plugin_admin_item, action: :edit, id: item.id, actor_name: actor_name)}')", class: 'action-button' %>
 
       <% else %>
-        <%= link_to t('orders_plugin.views.item._edit.remove_from_order'), :update => "item-#{item.id}", remote: true,
-          html: {data: {loading: "#item-#{item.id}"}},
-          :url => {:controller => :orders_plugin_item, :action => :destroy, :id => item.id} if order.may_edit? user, @admin rescue false %>
+        <%= link_to t('orders_plugin.views.item._edit.remove_from_order'), {controller: :orders_plugin_item, action: :destroy, id: item.id},
+          remote: true, data: {loading: "#item-#{item.id}", update: "#item-#{item.id}"} if order.may_edit? user, @admin rescue false %>
 
-        <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(:controller => :orders_plugin_item, :action => :edit, :id => item.id)}')", :class => 'action-button' %>
+        <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(controller: :orders_plugin_item, action: :edit, id: item.id)}')", class: 'action-button' %>
 
       <% end %>
 
     <% end %>
   </div>
 
-  <%= price_with_unit_span item.price_as_currency_number, (item.product.unit rescue item.price_as_currency_number), nil, :class => 'box-field' unless @simple %>
+  <%= price_with_unit_span item.price_as_currency_number, (item.product.unit rescue item.price_as_currency_number), nil, class: 'box-field' unless @simple %>
 
 </div>
 
