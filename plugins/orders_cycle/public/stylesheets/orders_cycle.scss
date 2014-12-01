@@ -110,7 +110,7 @@
         }
 
         &.category {
-          width: $module01;
+          width: $module02 - 3*$base;
         }
         &.supplier {
           width: $module02;
