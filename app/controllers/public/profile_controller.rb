@@ -80,6 +80,7 @@ class ProfileController < PublicController
   end
 
   def favorite_enterprises
+    return redirect_to action: :index unless profile.enterprise?
     @favorite_enterprises = profile.favorite_enterprises.includes(relations_to_include)
   end
 
