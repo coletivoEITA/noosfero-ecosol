@@ -15,6 +15,10 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
+if defined? NewRelic
+  GC::Profiler.enable
+end
+
 module Noosfero
   class Application < Rails::Application
 
