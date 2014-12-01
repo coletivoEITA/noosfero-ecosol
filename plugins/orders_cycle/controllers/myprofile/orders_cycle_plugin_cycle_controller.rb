@@ -33,7 +33,6 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
         if params[:sendmail]
           OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).open_cycle(
             @cycle.profile, @cycle ,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message)
-            .deliver
         end
       else
         render :action => :edit
@@ -60,7 +59,6 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
         if params[:sendmail]
           OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).open_cycle(@cycle.profile,
             @cycle, t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message)
-            .deliver
         end
       end
     end
