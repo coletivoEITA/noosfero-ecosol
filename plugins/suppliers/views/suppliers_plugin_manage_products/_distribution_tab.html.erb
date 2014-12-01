@@ -4,7 +4,7 @@
 <% if consumers.present? %>
   <%= t('suppliers_plugin.views.manage_products.distribution_tab.title') %>
 
-  <%= form_for :consumers, remote: true, :url => {:controller => :suppliers_plugin_product, :action => :distribute_to_consumers, :id => @product.id},
+  <%= form_for :consumers, remote: true, url: {controller: :suppliers_plugin_product, action: :distribute_to_consumers, id: @product.id},
     html: {data: {loading: "#product-distribution"}} do |f| %>
     <% consumers.each do |consumer| %>
       <div>
