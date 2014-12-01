@@ -3,6 +3,7 @@ module ControllerInheritance
   module ClassMethods
 
     def hmvc context
+      # FIXME use class_attribute but calculate using all paths
       cattr_accessor :hmvc_paths
       class_attribute :inherit_templates
       class_attribute :hmvc_inheritable
