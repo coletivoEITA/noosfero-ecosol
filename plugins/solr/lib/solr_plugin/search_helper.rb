@@ -54,6 +54,8 @@ module SolrPlugin::SearchHelper
     case asset
     when :products
       ['solr_plugin_public:true', 'enabled:true']
+    when :catalog
+      []
     when :events
       []
     else
