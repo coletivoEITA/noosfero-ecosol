@@ -3,7 +3,7 @@ module ControllerInheritance
   module ClassMethods
 
     def hmvc context
-      cattr_accessor :hmvc_paths
+      class_attribute :hmvc_paths
       class_attribute :inherit_templates
       class_attribute :hmvc_inheritable
       class_attribute :hmvc_context
