@@ -11,8 +11,8 @@ class Product
     :order => [:solr_plugin_f_category, :solr_plugin_f_region, :solr_plugin_f_qualifier]
 
   SolrPlugin::Boosts = [
-    [:highlighted, 1, proc{ |p| if p.highlighted and p.available then 1 else 0 end }],
-    [:available, 0.55, proc{ |p| if p.available then 1 else 0 end }],
+    [:highlighted, 0.9, proc{ |p| if p.highlighted and p.available then 1 else 0 end }],
+    [:available, 0.9, proc{ |p| if p.available then 1 else 0 end }],
     [:image, 0.55, proc{ |p| if p.image then 1 else 0 end }],
     [:qualifiers, 0.45, proc{ |p| if p.product_qualifiers.count > 0 then 1 else 0 end }],
     [:open_price, 0.45, proc{ |p| if p.price_described? then 1 else 0 end }],

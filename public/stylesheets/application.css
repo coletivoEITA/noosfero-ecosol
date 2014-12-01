@@ -2776,6 +2776,9 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 .catalog-search {
   float: right;
 }
+.catalog-search .icon-search {
+  display: none;
+}
 .twitter-typeahead {
   display: inline !important;
 }
