@@ -1,14 +1,14 @@
 require_dependency 'product'
 
 class Product
-  after_save_reindex [:enterprise], :with => :delayed_job
+  after_save_reindex [:enterprise], with: :delayed_job
 
-  acts_as_faceted :fields => {
-      :solr_plugin_f_category => {:label => _('Related products')},
-      :solr_plugin_f_region => {:label => _('City'), :proc => proc { |id| solr_plugin_f_region_proc(id) }},
-      :solr_plugin_f_qualifier => {:label => _('Qualifiers'), :proc => proc { |id| solr_plugin_f_qualifier_proc(id) }},
-    }, :category_query => proc { |c| "solr_plugin_category_filter:#{c.id}" },
-    :order => [:solr_plugin_f_category, :solr_plugin_f_region, :solr_plugin_f_qualifier]
+  acts_as_faceted fields: {
+      solr_plugin_f_category: {label: _('Related products')},
+      solr_plugin_f_region: {label: _('City'), proc: proc { |id| solr_plugin_f_region_proc(id) }},
+      solr_plugin_f_qualifier: {label: _('Qualifiers'), proc: proc { |id| solr_plugin_f_qualifier_proc(id) }},
+    }, category_query: proc { |c| "solr_plugin_category_filter:#{c.id}" },
+    order: [:solr_plugin_f_category, :solr_plugin_f_region, :solr_plugin_f_qualifier]
 
   SolrPlugin::Boosts = [
     [:highlighted, 0.9, proc{ |p| if p.highlighted and p.available then 1 else 0 end }],
@@ -30,29 +30,30 @@ class Product
     end
     boost
   end
-  acts_as_searchable :fields => facets_fields_for_solr + [
+  acts_as_searchable fields: facets_fields_for_solr + [
       # searched fields
-      {:name => {:type => :text, :boost => 2.0}},
-      {:description => :text}, {:category_full_name => :text},
+      {name: {type: :text, boost: 2.0}},
+      {description: :text}, {category_full_name: :text},
       # filtered fields
-      {:solr_plugin_public => :boolean},
-      {:environment_id => :integer}, {:profile_id => :integer},
-      {:enabled => :boolean}, {:solr_plugin_category_filter => :integer},
+      {solr_plugin_public: :boolean},
+      {environment_id: :integer}, {profile_id: :integer},
+      {enabled: :boolean}, {solr_plugin_category_filter: :integer},
       # fields for autocompletion
-      {:solr_plugin_ac_name => :ngram_text},
-      {:solr_plugin_ac_category => :ngram_text},
+      {solr_plugin_ac_name: :ngram_text},
+      {solr_plugin_ac_category: :ngram_text},
       # ordered/query-boosted fields
-      {:solr_plugin_price_sortable => :decimal}, {:solr_plugin_name_sortable => :string},
-      {:lat => :float}, {:lng => :float},
+      {solr_plugin_price_sortable: :decimal}, {solr_plugin_name_sortable: :string},
+      {lat: :float}, {lng: :float},
       :updated_at, :created_at,
-    ], :include => [
-      {:product_category => {:fields => [:name, :path, :slug, :lat, :lng, :acronym, :abbreviation]}},
-      {:region => {:fields => [:name, :path, :slug, :lat, :lng]}},
-      {:enterprise => {:fields => [:name, :identifier, :address, :nickname, :lat, :lng]}},
-      {:qualifiers => {:fields => [:name]}},
-      {:certifiers => {:fields => [:name]}},
-    ], :facets => facets_option_for_solr,
-    :boost => proc{ |p| p.solr_plugin_boost }
+    ], include: [
+      {product_category: {fields: [:name, :path, :slug, :lat, :lng, :acronym, :abbreviation]}},
+      {region: {fields: [:name, :path, :slug, :lat, :lng]}},
+      {enterprise: {fields: [:name, :identifier, :address, :nickname, :lat, :lng]}},
+      {qualifiers: {fields: [:name]}},
+      {certifiers: {fields: [:name]}},
+    ], facets: facets_option_for_solr,
+    boost: proc{ |p| p.solr_plugin_boost },
+    if: proc{ |p| p.solr_index? }
 
   handle_asynchronously :solr_save
   handle_asynchronously :solr_destroy
@@ -99,6 +100,11 @@ class Product
 
   def solr_plugin_public
     self.public?
+  end
+
+  # overwrite on subclasses
+  def solr_index?
+    true
   end
 
   def solr_plugin_name_sortable # give a different name for solr

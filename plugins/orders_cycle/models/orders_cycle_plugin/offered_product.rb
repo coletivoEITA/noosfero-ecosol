@@ -15,7 +15,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   # OVERRIDE suppliers/lib/ext/product.rb
   # for products in cycle, these are the products of the suppliers
   # p in cycle -> p distributed -> p from supplier
-  has_many :suppliers, through: :sources_from_2x_products, order: 'id ASC'
+  has_many :suppliers, through: :sources_from_2x_products, order: 'id ASC', uniq: true
   def sources_supplier_products
     self.sources_from_2x_products
   end
@@ -23,8 +23,8 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     self.from_2x_products
   end
 
-  extend CurrencyHelper::ClassMethods
   instance_exec &OrdersPlugin::Item::DefineTotals
+  extend CurrencyHelper::ClassMethods
   has_currency :buy_price
 
   def self.create_from_distributed cycle, product
@@ -76,6 +76,10 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     FROOZEN_DEFAULT_ATTRIBUTES.each do |a|
       self[a.to_s] = from_product.send a
     end
+  end
+
+  def solr_index?
+    false
   end
 
   protected
