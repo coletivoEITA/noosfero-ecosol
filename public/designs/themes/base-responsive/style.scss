@@ -1999,3 +1999,11 @@ table.cms-articles .article-name {
     padding: 1px 3px;
   }
 }
+
+.popover {
+  min-width: 120px;
+}
+
+.popover-content > a {
+  text-align: left !important;
+} 
