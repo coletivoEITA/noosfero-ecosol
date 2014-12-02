@@ -14,3 +14,5 @@ module Delayed
     end
   end
 end
+
+ActionMailer::Base.send(:extend, Delayed::DelayMail)
