@@ -16,7 +16,7 @@ class OrdersPluginOrderController < ProfileController
     status = params[:order][:status]
     if status == 'ordered'
       if @order.items.size > 0
-        @order.update_attributes! status: status
+        @order.update_attributes! params[:order]
         session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
       else
         session[:notice] = t('orders_plugin.controllers.profile.consumer.can_not_confirm_your_')

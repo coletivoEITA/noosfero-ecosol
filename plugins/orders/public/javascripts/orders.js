@@ -23,6 +23,19 @@ orders = {
       return false
     },
 
+    delivery: {
+
+      select: function(element, url) {
+        element = $(element)
+        params = {order: {supplier_delivery_id: element.val()}}
+        deliveryBox = element.parents('.delivery-box')
+        $.get(url, params, function(data) {
+          deliveryBox.replaceWith(data)
+        })
+      }
+
+    },
+
   },
 
   item: {

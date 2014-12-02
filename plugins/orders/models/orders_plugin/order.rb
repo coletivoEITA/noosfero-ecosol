@@ -26,26 +26,26 @@ class OrdersPlugin::Order < ActiveRecord::Base
   StatusAccessMap = OrdersPlugin::Item::StatusAccessMap
 
   StatusesByActor = {
-    :consumer => StatusAccessMap.map{ |s, a| s if a == :consumer }.compact,
-    :supplier => StatusAccessMap.map{ |s, a| s if a == :supplier }.compact,
+    consumer: StatusAccessMap.map{ |s, a| s if a == :consumer }.compact,
+    supplier: StatusAccessMap.map{ |s, a| s if a == :supplier }.compact,
   }
 
   # workaround for STI
   self.table_name = :orders_plugin_orders
   self.abstract_class = true
 
-  attr_accessible :status, :consumer, :profile
+  attr_accessible :status, :consumer, :profile, :supplier_delivery_id, :consumer_delivery_id
 
   belongs_to :profile
-  belongs_to :consumer, :class_name => 'Profile'
+  belongs_to :consumer, class_name: 'Profile'
 
   belongs_to :session, primary_key: :session_id, foreign_key: :session_id, class_name: 'ActiveRecord::SessionStore::Session'
 
-  has_many :items, :class_name => 'OrdersPlugin::Item', :foreign_key => :order_id, :dependent => :destroy, :order => 'name ASC'
-  has_many :products, :through => :items
+  has_many :items, class_name: 'OrdersPlugin::Item', foreign_key: :order_id, dependent: :destroy, order: 'name ASC'
+  has_many :products, through: :items
 
-  belongs_to :supplier_delivery, :class_name => 'DeliveryPlugin::Method'
-  belongs_to :consumer_delivery, :class_name => 'DeliveryPlugin::Method'
+  belongs_to :supplier_delivery, class_name: 'DeliveryPlugin::Method'
+  belongs_to :consumer_delivery, class_name: 'DeliveryPlugin::Method'
 
   scope :of_session, -> session_id { where session_id: session_id }
   scope :of_user, -> session_id, consumer_id=nil do
@@ -55,61 +55,61 @@ class OrdersPlugin::Order < ActiveRecord::Base
     where cond
   end
 
-  scope :latest, :order => 'created_at DESC'
+  scope :latest, order: 'created_at DESC'
 
-  scope :draft,     :conditions => {:status => 'draft'}
-  scope :planned,   :conditions => {:status => 'planned'}
-  scope :cancelled, :conditions => {:status => 'cancelled'}
-  scope :not_cancelled, :conditions => ["status <> 'cancelled'"]
-  scope :ordered,   :conditions => ['ordered_at IS NOT NULL']
-  scope :confirmed, :conditions => ['ordered_at IS NOT NULL']
-  scope :accepted,  :conditions => ['accepted_at IS NOT NULL']
-  scope :separated, :conditions => ['separated_at IS NOT NULL']
-  scope :delivered, :conditions => ['delivered_at IS NOT NULL']
-  scope :received,  :conditions => ['received_at IS NOT NULL']
+  scope :draft,     conditions: {status: 'draft'}
+  scope :planned,   conditions: {status: 'planned'}
+  scope :cancelled, conditions: {status: 'cancelled'}
+  scope :not_cancelled, conditions: ["status <> 'cancelled'"]
+  scope :ordered,   conditions: ['ordered_at IS NOT NULL']
+  scope :confirmed, conditions: ['ordered_at IS NOT NULL']
+  scope :accepted,  conditions: ['accepted_at IS NOT NULL']
+  scope :separated, conditions: ['separated_at IS NOT NULL']
+  scope :delivered, conditions: ['delivered_at IS NOT NULL']
+  scope :received,  conditions: ['received_at IS NOT NULL']
 
-  scope :for_profile, lambda{ |profile| {:conditions => {:profile_id => profile.id}} }
-  scope :for_profile_id, lambda{ |profile_id| {:conditions => {:profile_id => profile_id}} }
-  scope :for_supplier, lambda{ |profile| {:conditions => {:profile_id => profile.id}} }
-  scope :for_supplier_id, lambda{ |profile_id| {:conditions => {:profile_id => profile_id}} }
-  scope :for_consumer, lambda{ |consumer| {:conditions => {:consumer_id => (consumer.id rescue nil)}} }
-  scope :for_consumer_id, lambda{ |consumer_id| {:conditions => {:consumer_id => consumer_id}} }
+  scope :for_profile, lambda{ |profile| {conditions: {profile_id: profile.id}} }
+  scope :for_profile_id, lambda{ |profile_id| {conditions: {profile_id: profile_id}} }
+  scope :for_supplier, lambda{ |profile| {conditions: {profile_id: profile.id}} }
+  scope :for_supplier_id, lambda{ |profile_id| {conditions: {profile_id: profile_id}} }
+  scope :for_consumer, lambda{ |consumer| {conditions: {consumer_id: (consumer.id rescue nil)}} }
+  scope :for_consumer_id, lambda{ |consumer_id| {conditions: {consumer_id: consumer_id}} }
 
-  scope :months, :select => 'DISTINCT(EXTRACT(months FROM orders_plugin_orders.created_at)) as month', :order => 'month DESC'
-  scope :years, :select => 'DISTINCT(EXTRACT(YEAR FROM orders_plugin_orders.created_at)) as year', :order => 'year DESC'
+  scope :months, select: 'DISTINCT(EXTRACT(months FROM orders_plugin_orders.created_at)) as month', order: 'month DESC'
+  scope :years, select: 'DISTINCT(EXTRACT(YEAR FROM orders_plugin_orders.created_at)) as year', order: 'year DESC'
 
   scope :by_month, lambda { |month| {
-    :conditions => [ 'EXTRACT(month FROM orders_plugin_orders.created_at) <= :month AND EXTRACT(month FROM orders_plugin_orders.created_at) >= :month', { :month => month } ]}
+    conditions: [ 'EXTRACT(month FROM orders_plugin_orders.created_at) <= :month AND EXTRACT(month FROM orders_plugin_orders.created_at) >= :month', { month: month } ]}
   }
   scope :by_year, lambda { |year| {
-    :conditions => [ 'EXTRACT(year FROM orders_plugin_orders.created_at) <= :year AND EXTRACT(year FROM orders_plugin_orders.created_at) >= :year', { :year => year } ]}
+    conditions: [ 'EXTRACT(year FROM orders_plugin_orders.created_at) <= :year AND EXTRACT(year FROM orders_plugin_orders.created_at) >= :year', { year: year } ]}
   }
 
   scope :with_status, lambda { |status|
-    {:conditions => {:status => status}}
+    {conditions: {status: status}}
   }
   scope :with_code, lambda { |code|
-    {:conditions => {:code => code}}
+    {conditions: {code: code}}
   }
 
   validates_presence_of :profile
-  validates_inclusion_of :status, :in => DbStatuses
+  validates_inclusion_of :status, in: DbStatuses
 
   before_validation :check_status
   after_save :send_notifications
 
   extend CodeNumbering::ClassMethods
-  code_numbering :code, :scope => proc{ self.profile.orders }
+  code_numbering :code, scope: proc{ self.profile.orders }
 
   serialize :data
 
   extend SerializedSyncedData::ClassMethods
   sync_serialized_field :profile do |profile|
-    {:name => profile.name, :email => profile.contact_email}
+    {name: profile.name, email: profile.contact_email}
   end
   sync_serialized_field :consumer do |consumer|
     if consumer.blank? then {} else
-      {:name => consumer.name, :email => consumer.contact_email, :contact_phone => consumer.contact_phone}
+      {name: consumer.name, email: consumer.contact_email, contact_phone: consumer.contact_phone}
     end
   end
   sync_serialized_field :supplier_delivery
@@ -241,7 +241,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   # ShoppingCart format
   def products_list
     hash = {}; self.items.map do |item|
-      hash[item.product_id] = {:quantity => item.quantity_consumer_ordered, :name => item.name, :price => item.price}
+      hash[item.product_id] = {quantity: item.quantity_consumer_ordered, name: item.name, price: item.price}
     end
     hash
   end
@@ -287,7 +287,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
     self.items.each do |item|
       # already filled?
-      next if (quantity = item.send("quantity_#{to_data}")).present?
+      next if (quantity = item.send "quantity_#{to_data}").present?
       item.send "quantity_#{to_data}=", item.send("quantity_#{from_data}")
       item.send "price_#{to_data}=", item.send("price_#{from_data}")
       item.save if save
@@ -306,6 +306,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
     self.status = 'ordered' if self.status == 'confirmed'
 
     self.fill_items_data self.status_was, self.status, true
+    self.sync_serialized_data if self.status_changed?
 
     if self.status_on? 'ordered'
       Statuses.each do |status|
