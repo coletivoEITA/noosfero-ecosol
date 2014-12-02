@@ -26,18 +26,6 @@
     <div class="collapse navbar-collapse" id="navbar-navigation-collapse">
       <ul class="nav navbar-nav menu-navigation">
         <%= theme_extra_navigation %>
-        <li class="dropdown" id="search-dropdown-menu">
-          <a href="#" class="dropdown-toggle icon-search" data-hover="dropdown" data-toggle="dropdown" title="Search">Search</a>
-          <ul class="dropdown-menu" role="menu">
-            <li>
-              <form action="/search" id="top-search" method="get" role="search">
-                <div class="form-group col-lg-12 col-md-12 col-sm-12">
-                  <input name="query" title="<%=_('Search...')%>" placeholder="<%=_('Search...')%>" type="text" class="form-control input-sm"/>
-                </div>
-              </form>
-            </li>
-          </ul>
-        </li>
       </ul>
     </div>
     <div class="collapse navbar-collapse" id="navbar-search-collapse">

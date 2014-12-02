@@ -1737,26 +1737,10 @@ a.button.with-text, a.button.with-text:visited, body.noosfero a.button.with-text
     }
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
-    #navbar-search-collapse {
-        display:none !important;
-    }
-}
-
 @media (max-width: 767px) {
-    #search-dropdown-menu {
-        display: none;
-    }
     #top-search {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
-    }
-}
-
-
-@media (min-width: 992px) {
-    #search-dropdown-menu {
-        display: none;
     }
 }
 
@@ -2006,4 +1990,4 @@ table.cms-articles .article-name {
 
 .popover-content > a {
   text-align: left !important;
-} 
+}
