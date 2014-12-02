@@ -7,11 +7,11 @@ end
 
 def __split_to_time datetime
   datetime = __split_nil_time if datetime.blank?
-  datetime.to_time.to_formatted_s(:time)
+  datetime.to_formatted_s :time
 end
 def __split_to_date datetime
   datetime = __split_nil_date if datetime.blank?
-  datetime.to_date.strftime '%d/%m/%Y'
+  datetime.strftime '%d/%m/%Y'
 end
 def __split_set_time datetime, value
   value = if value.blank?
