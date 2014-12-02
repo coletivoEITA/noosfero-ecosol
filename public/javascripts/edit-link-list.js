@@ -30,7 +30,7 @@ function new_link_action(){
 }
 
 function add_new_link() {
-  var new_link = jQuery(jQuery('#edit-link-list-block #new-template tr').html());
+  var new_link = jQuery(jQuery('#edit-link-list-block #new-template tbody').html());
   new_link.show();
   jQuery('#dropable-link-list').append(new_link);
   new_link_action();
