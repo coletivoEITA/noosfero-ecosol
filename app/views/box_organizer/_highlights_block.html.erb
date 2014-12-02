@@ -15,7 +15,7 @@
   </tbody>
 </table>
 
-<%= button(:add, _('New highlight'), '#') %>
+<%= button(:add, _('New highlight'), '#', class: 'new-highlight-button') %>
 
 <%= labelled_form_field _('Image transition:'), select('block', 'interval', [[_('No automatic transition'), 0]] + [1, 2, 3, 4, 5, 10, 20, 30, 60].map {|item| [n_('Every 1 second', 'Every %d seconds', item) % item, item]}) %>
 
