@@ -10,7 +10,8 @@
 
 <script type="text/javascript">
   function submit_button(index) {
-     return jQuery("#article_slug")[0].form.select("input.submit")[index];
+    var form = $($("#article_slug")[0].form)
+     return form.find("input[type=submit]")[index];
   }
   function warn_value_change() {
      show_warning('article-formitem', "slug-change-confirmation");
