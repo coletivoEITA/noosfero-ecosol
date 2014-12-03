@@ -603,22 +603,22 @@
           all_cycles: "all cycles"
       mailer: 
         message_to_admins: 
-          a_service_of_s: "A service of %s."
+          a_service_of_s: "A service of %{environment}."
           hello_managers_of_nam: "Hello managers of %{name},"
           the_member_member_sen: "The consumer %{member} sent a messsage to you"
         message_to_consumer: 
-          a_service_of_s: "A service of %s."
+          a_service_of_s: "A service of %{environment}."
           hello_name: "Hello %{name},"
           the_collective_profile_s: "%{terms.profile.article.singular.capitalize} %{profile} sent a messsage to you"
         message_to_consumer_for_order: 
-          a_service_of_s: "A service of %s."
+          a_service_of_s: "A service of %{environment}."
           hello_name: "Hello %{name}!"
           order: order
           quantity_unit_of_prod: "%{quantity} %{unit} of %{product}"
           the_collective_profile_s: "%{terms.profile.article.singular.capitalize} %{profile} sent a messsage to you regarding your %{order}"
           the_products_in_the_o: "The products in the order"
         message_to_supplier: 
-          a_service_of_s: "A service of %s."
+          a_service_of_s: "A service of %{environment}."
           hello_administrators_: "Hello administrators of %{name},"
           the_collective_profile_s: "%{terms.profile.article.singular.capitalize} %{profile} sent a messsage to you"
         open_cycle: 
@@ -650,7 +650,7 @@
       profile: 
       order: 
         _consumer_orders: 
-          caution: "<strong>Caution</strong>, you are editing the orders of \"%{consumer}\". It is preferable to make small editions through the cycle's administration, this way the person will be properly warned of the updates. We recommend using this page only if you're doing the order for the person"
+          caution: "<strong>Caution</strong>, you are editing the orders of \"%{consumer}\". It is preferable to make small editions through the cycle's administration, this way the person will be properly warned of the updates. We recommend using this page only if you're doing the order for another person."
           show_cancelled_orders: "show cancelled orders"
           hide_cancelled_orders: "hide cancelled orders"
           administration_of_thi: "Administration of this cycle"

@@ -23,7 +23,7 @@
       --<br/>
     </p>
 
-    <small style="color: #888"><%= t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.a_service_of_s') % @environment.name %></small>
+    <small style="color: #888"><%= t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.a_service_of_s') % {environment: @environment.name} %></small>
   </body>
 </html>
 

@@ -15,6 +15,6 @@
       --<br/>
     </p>
 
-    <small style="color: #888"><%= t('views.mailer.message_to_supplier.a_service_of_s') % @environment.name %></small>
+    <small style="color: #888"><%= t('views.mailer.message_to_supplier.a_service_of_s') % {environment: @environment.name} %></small>
   </body>
 </html>

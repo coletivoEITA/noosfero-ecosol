@@ -3,7 +3,7 @@ orders = {
 
   order: {
 
-    get: function(context, url) {
+    reload: function(context, url) {
       var order = jQuery(context).parents('.order-view')
 
       loading_overlay.show(order)
@@ -111,19 +111,18 @@ orders = {
   set_orders_container_max_height: function()
   {
     ordersH = jQuery(window).height();
-    ordersH -= 100
-    ordersH -= jQuery('#order-column #delivery-box').outerHeight()
-    ordersH -= jQuery('#order-column .order-message-title').outerHeight()
-    ordersH -= jQuery('#order-status-message').outerHeight()
+    ordersH -= 130
+    ordersH -= jQuery('#cirandas-top-bar').outerHeight()
+    ordersH -= jQuery('.order-status-message-title').outerHeight()
+    ordersH -= jQuery('#order-column .order-total').last().outerHeight()
+    ordersH -= jQuery('#order-column .delivery-box').outerHeight()
     ordersH -= jQuery('#order-column .order-message-text').outerHeight()
     ordersH -= jQuery('#order-column .order-message-actions').outerHeight()
-    ordersH -= jQuery('#order-column .order-total').last().outerHeight()
     jQuery('.order-items-container .order-items-scroll').css('max-height', ordersH);
   }
 
 };
 
-jQuery(document).ready(function() {
-  orders.set_orders_container_max_height();
-});
+jQuery(document).ready(orders.set_orders_container_max_height);
+jQuery(window).resize(orders.set_orders_container_max_height);
 

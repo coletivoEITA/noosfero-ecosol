@@ -177,7 +177,7 @@ orders_cycle = {
   toggleCancelledOrders: function () {
     jQuery('.consumers-coop #show-cancelled-orders a').toggle();
     jQuery('.consumers-coop #hide-cancelled-orders a').toggle();
-    jQuery('.consumers-coop .consumer-order:not(.edit) .status-cancelled').toggle();
+    jQuery('.consumers-coop .consumer-order.cancelled').not('.comsumer-order.active-order').toggle();
   },
 
 };

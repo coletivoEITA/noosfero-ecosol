@@ -191,7 +191,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   end
 
   def current_status
-    return @current_status if @current_status
+    return @current_status if @current_status #cache
     return @current_status = 'open' if self.open?
     @current_status = self['status']
   end

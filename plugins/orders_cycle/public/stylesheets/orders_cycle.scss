@@ -188,6 +188,9 @@
           float: right;
           padding: $half-padding $padding;
         }
+        &.cancelled {
+          display: none;
+        }
       }
     }
 
@@ -479,6 +482,9 @@
   }
 }
 
+.order-data .order-message-title.cancelled {
+  display: block;
+}
 .order-message-title {
   padding: $half-padding $padding;
   font-size: 13px;
@@ -515,7 +521,6 @@
   }
 
   &.cancelled {
-    display: none;
   }
 
   &.cancelled,

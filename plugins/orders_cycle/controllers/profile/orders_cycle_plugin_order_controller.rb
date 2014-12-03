@@ -70,11 +70,6 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     @consumer_orders = @cycle.sales.for_consumer @consumer
   end
 
-  def cancel
-    super
-    redirect_to action: :index, cycle_id: @order.cycle.id
-  end
-
   def remove
     super
     redirect_to action: :index, cycle_id: @order.cycle.id

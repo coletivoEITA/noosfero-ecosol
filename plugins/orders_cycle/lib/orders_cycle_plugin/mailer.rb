@@ -5,6 +5,9 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
   helper ApplicationHelper
   helper OrdersCyclePlugin::TranslationHelper
 
+  attr_accessor :environment
+  attr_accessor :profile
+
   def message_to_supplier profile, supplier, subject, message
     self.environment = profile.environment
     @profile = profile

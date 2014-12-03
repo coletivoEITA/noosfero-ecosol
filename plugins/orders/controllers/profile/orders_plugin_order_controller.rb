@@ -30,12 +30,13 @@ class OrdersPluginOrderController < ProfileController
 
   def reopen
     @order.update_attributes! status: 'draft'
-    render action: :edit
+    render 'orders_plugin_order/edit'
   end
 
   def cancel
     @order.update_attributes! status: 'cancelled'
     session[:notice] = t('orders_plugin.controllers.profile.consumer.order_cancelled')
+    render 'orders_plugin_order/edit'
   end
 
   protected
