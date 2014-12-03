@@ -27,7 +27,7 @@
       <ul class="nav navbar-nav menu-navigation">
         <%= theme_extra_navigation %>
         <li class="dropdown" id="search-dropdown-menu">
-          <a href="#" class="dropdown-toggle icon-search" data-hover="dropdown" data-toggle="dropdown" title="Search"><span>_('Search')</span></a>
+          <a href="#" class="dropdown-toggle icon-search" data-hover="dropdown" data-toggle="dropdown" title="<%= _('Search') %>"><span><%= _('Search') %></span></a>
           <ul class="dropdown-menu" role="menu">
             <li>
               <form action="/search" id="top-search" method="get" role="search">
