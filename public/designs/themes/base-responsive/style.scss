@@ -1743,12 +1743,6 @@ a.button.with-text, a.button.with-text:visited, body.noosfero a.button.with-text
     }
 }
 
-@media (min-width: 1200px) {
-    #navbar-search-collapse {
-        display:none !important;
-    }
-}
-
 @media (max-width: 767px) {
     #search-dropdown-menu {
         display: none;
@@ -1760,7 +1754,7 @@ a.button.with-text, a.button.with-text:visited, body.noosfero a.button.with-text
 }
 
 
-@media (min-width: 992px) and (max-width: 1199px) {
+@media (min-width: 992px) {
     #search-dropdown-menu {
         display: none;
     }
