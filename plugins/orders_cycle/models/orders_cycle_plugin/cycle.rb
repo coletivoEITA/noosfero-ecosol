@@ -173,7 +173,7 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   end
 
   def products_for_order
-    self.products.unarchived.with_price
+    self.products.unarchived.with_price.order('name ASC')
   end
 
   def products_by_suppliers

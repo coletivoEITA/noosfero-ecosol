@@ -129,7 +129,9 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
 
   def load_products_for_order
     scope = @cycle.products_for_order
-    @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate page: params[:page], per_page: 20
+    page, per_page = params[:page].to_i, 20
+    page = 1 if page < 1
+    @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate page: page, per_page: per_page
   end
 
   extend ControllerInheritance::ClassMethods
