@@ -609,22 +609,22 @@
           all_cycles: "todos ciclos"
       mailer: 
         message_to_admins: 
-          a_service_of_s: "Um serviço de %s."
+          a_service_of_s: "Um serviço de %{environment}."
           hello_managers_of_nam: "Olá gestoras/es de %{name}!"
           the_member_member_sen: "O membro %{member} mandou uma mensagem para você"
         message_to_consumer: 
-          a_service_of_s: "Um serviço de %s."
+          a_service_of_s: "Um serviço de %{environment}."
           hello_name: "Olá %{name}!,"
           the_collective_profile_s: "%{terms.profile.article.singular.capitalize} %{profile} mandou uma mensagem para você"
         message_to_consumer_for_order: 
-          a_service_of_s: "Um serviço de %s."
+          a_service_of_s: "Um serviço de %{environment}."
           hello_name: "Olá %{name}!,"
           order: Pedido
           quantity_unit_of_prod: "%{quantity} %{unit} do %{product}"
           the_collective_profile_s: "%{terms.profile.article.singular.capitalize} %{profile} mandou uma mensagem para voce relacionado a seu %{order}"
           the_products_in_the_o: "Os produtos no pedido"
         message_to_supplier: 
-          a_service_of_s: "Um serviço de %s."
+          a_service_of_s: "Um serviço de %{environment}."
           hello_administrators_: "Olá administradores de %{name}!"
           the_collective_profile_s: "%{terms.profile.article.singular.capitalize} %{profile} mandou uma mensagem para você"
         open_cycle: 
@@ -655,7 +655,7 @@
           send: Enviar
       order: 
         _consumer_orders: 
-          caution: "<strong>Cuidado</strong>, voce está editando os pedidos de \"%{consumer}\". É preferível fazer pequenas edições pela administração do ciclo. Desta forma, a pessoa será propriamente avisada das mudanças. Nós recomendamos que esta página seja usada somente se você está fazendo o pedido pra pessoa."
+          caution: "<strong>Cuidado</strong>, voce está editando os pedidos de \"%{consumer}\". É preferível fazer pequenas edições pela administração do ciclo. Desta forma, a pessoa será propriamente avisada das mudanças. Nós recomendamos que esta página seja usada somente se você está fazendo o pedido para outra pessoa."
           show_cancelled_orders: "mostrar pedidos cancelados"
           hide_cancelled_orders: "esconder pedidos cancelados"
           administration_of_thi: "Administração deste ciclo"
