@@ -1984,10 +1984,10 @@ a.button.disabled, input.disabled {
   position: absolute;
   z-index: 100;
 }
-.icon {
+.icon-selector-wrapper {
   border:1px solid #EEE;
 }
-.icon:hover {
+.icon-selector-wrapper:hover {
   border: 1px solid black;
   cursor: pointer;
   background-color: #555;
