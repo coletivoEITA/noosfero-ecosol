@@ -1,0 +1,30 @@
+
+.pagination {
+  text-align: center;
+  clear: both;
+
+  &.infinite-scroll {
+
+    a, span, em {
+      display: none;
+    }
+    .loading {
+      background-position: 45% 0;
+      background-size: 20px;
+      padding-left: 20px;
+    }
+  }
+}
+
+.pagination .disabled {
+  color: #888;
+}
+.pagination .current {
+  font-weight: bold;
+}
+.pagination a {
+  text-decoration: none;
+}
+.pagination a:hover {
+  color: #2e3436;
+}

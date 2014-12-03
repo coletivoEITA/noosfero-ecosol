@@ -9,6 +9,7 @@
  *= require token-input-facet
  * noosfero libraries
  *= require_self
+ *= require pagination
  *= require iepngfix/iepngfix
  *= require loading-overlay
  * views specifics
@@ -3583,33 +3584,6 @@ table.cms-articles .icon:hover {
 }
 /* ==> public/stylesheets/controller_content_viewer.css <== */
 
-/* ==> @import url('pagination.css'); <== */
-.pagination {
-  text-align: center;
-  clear: both;
-}
-.pagination.infinite-scroll a,
-.pagination.infinite-scroll span {
-  display: none;
-}
-.pagination.infinite-scroll .loading {
-  background-position: 45% 0;
-  background-size: 20px;
-  padding-left: 20px;
-}
-
-.pagination .disabled {
-  color: #888;
-}
-.pagination .current {
-  font-weight: bold;
-}
-.pagination a {
-  text-decoration: none;
-}
-.pagination a:hover {
-  color: #2e3436;
-}
 
 /* Folders */
 

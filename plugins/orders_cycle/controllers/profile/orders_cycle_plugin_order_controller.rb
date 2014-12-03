@@ -47,6 +47,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   end
 
   def edit
+    return show_more if params[:page].present?
     return super if request.xhr?
 
     if cycle_id = params[:cycle_id]
@@ -63,7 +64,8 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
 
       @consumer_orders = @cycle.sales.for_consumer @consumer
     end
-    @products = @cycle.products_for_order
+
+    load_products_for_order
     @product_categories = Product.product_categories_of @products
     @consumer_orders = @cycle.sales.for_consumer @consumer
   end
@@ -88,16 +90,23 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   end
 
   def filter
-    @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @order = OrdersPlugin::Sale.find_by_id params[:order_id]
-
-    scope = @cycle.products_for_order
-    @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).all
+    if id = params[:id]
+      @order = OrdersPlugin::Sale.find id rescue nil
+      @cycle = @order.cycle
+    else
+      @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
+      @order = OrdersPlugin::Sale.find params[:order_id] rescue nil
+    end
+    load_products_for_order
 
     render partial: 'filter', locals: {
       order: @order, cycle: @cycle,
       products_for_order: @products,
     }
+  end
+
+  def show_more
+    filter
   end
 
   def render_delivery
@@ -117,6 +126,11 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   end
 
   protected
+
+  def load_products_for_order
+    scope = @cycle.products_for_order
+    @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate page: params[:page], per_page: 20
+  end
 
   extend ControllerInheritance::ClassMethods
   hmvc OrdersCyclePlugin

@@ -1,17 +1,19 @@
-<% editable = order.present? && order.may_edit?(user, @admin) %>
-<% draft_order = cycle.sales.draft.for_consumer(user).first %>
-<% include_message = '' %>
-<% if order.nil? %>
-  <% if draft_order %>
-    <% order_id = draft_order.id %>
-    <% include_message = t('orders_cycle_plugin.views.product._order_edit.opening_order_code_fo') % {:code => draft_order.code} %>
-  <% else %>
-    <% order_id = 'new' %>
-    <% include_message = t('orders_cycle_plugin.views.product._order_edit.opening_new_order_for') %>
-  <% end %>
-<% else %>
-  <% order_id = order.id %>
-<% end %>
+<%
+  editable = order.present? && order.may_edit?(user, @admin)
+  draft_order = cycle.sales.draft.for_consumer(user).first
+  include_message = ''
+  if order.nil?
+    if draft_order
+      order_id = draft_order.id
+      include_message = t('orders_cycle_plugin.views.product._order_edit.opening_order_code_fo') % {code: draft_order.code}
+    else
+      order_id = 'new'
+      include_message = t('orders_cycle_plugin.views.product._order_edit.opening_new_order_for')
+    end
+  else
+    order_id = order.id
+  end
+%>
 
 <% if products_for_order.empty? %>
   <strong><%= t('orders_cycle_plugin.views.product._order_search.this_search_hasn_t_re') %></strong>
@@ -29,11 +31,13 @@
       <% products_for_order.each do |offered_product| %>
         <div id="cycle-product-<%=offered_product.id%>" class="order-cycle-product value-row <%= 'editable' if editable %>" toggle-ignore onclick="orders_cycle.order.product.click(event, <%=offered_product.id.to_json%>);" supplier-id="<%= offered_product.supplier.id %>">
 
-          <% item = order.blank? ? nil : order.items.select{ |op| offered_product.id == op.product_id }.first %>
+          <% item = if order.blank? then nil else order.items.find{ |op| offered_product.id == op.product_id } end %>
           <%= render "orders_cycle_plugin_product/order_edit",
-            :product => offered_product, :order => order, :cycle => cycle, :editable => editable, :item => item %>
+            product: offered_product, order: order, cycle: cycle, editable: editable, item: item %>
         </div>
       <% end %>
+
+      <%= pagination_links products_for_order, class: 'pagination infinite-scroll' %>
     </div>
   </div>
 <% end %>
@@ -42,9 +46,10 @@
   orders_cycle.order.product.include_message = '<%= include_message %>';
   orders_cycle.order.product.order_id = <%= order_id.to_json %>;
   orders_cycle.order.product.redirect_after_include = '<%= order.nil? ? 1 : '' %>';
-  orders_cycle.order.product.add_url = '<%= url_for :controller => :orders_cycle_plugin_item, :action => :new %>';
-  orders_cycle.order.product.remove_url = '<%= url_for :controller => :orders_cycle_plugin_product, :action => :remove_from_order %>';
-  orders_cycle.order.product.balloon_url = '<%= url_for :controller => :orders_cycle_plugin_order, :action => :product_balloon %>';
-  orders_cycle.order.product.supplier.balloon_url = '<%= url_for :controller => :orders_cycle_plugin_order, :action => :supplier_balloon %>';
+  orders_cycle.order.product.add_url = '<%= url_for controller: :orders_cycle_plugin_item, action: :new %>';
+  orders_cycle.order.product.remove_url = '<%= url_for controller: :orders_cycle_plugin_product, action: :remove_from_order %>';
+  orders_cycle.order.product.balloon_url = '<%= url_for controller: :orders_cycle_plugin_order, action: :product_balloon %>';
+  orders_cycle.order.product.supplier.balloon_url = '<%= url_for controller: :orders_cycle_plugin_order, action: :supplier_balloon %>';
+  pagination.infiniteScroll(<%= _('loading...').to_json %>, {load: orders_cycle.order.product.showMore});
 <% end %>
 

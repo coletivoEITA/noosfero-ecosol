@@ -1,5 +1,7 @@
 
 pagination = {
+  enabled: false,
+  loading: false,
 
   showMore: function(newPagination, appendFunction) {
     if (newPagination) {
@@ -19,6 +21,10 @@ pagination = {
       jQuery('.pagination').addClass('infinite-scroll');
     });
 
+    if (pagination.enabled)
+      return
+
+    pagination.enabled = true;
     jQuery(window).scroll(function () {
       // Bail out right away if we're busy loading the next chunk.
       if (pagination.loading)
@@ -34,6 +40,7 @@ pagination = {
         pagination.loading = true
 
         if (options.load)
+          // don't forget to set pagination.loading to false!
           options.load(url)
         else
           jQuery.getScript(url).always(function() {

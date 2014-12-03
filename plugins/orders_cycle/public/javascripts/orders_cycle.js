@@ -51,6 +51,14 @@ orders_cycle = {
         return product;
       },
 
+      showMore: function (url) {
+        jQuery.get(url, function (data) {
+          var newProducts = jQuery(data).filter('#cycle-products').find('.table-content').children()
+          jQuery('.pagination').replaceWith(newProducts)
+          pagination.loading = false
+        })
+      },
+
       checkbox_click: function (check_box, id) {
         this.click(null, id);
         return true;
