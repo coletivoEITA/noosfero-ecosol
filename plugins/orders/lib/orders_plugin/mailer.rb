@@ -8,6 +8,7 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
   helper OrdersPlugin::TranslationHelper
 
   attr_accessor :environment
+  attr_accessor :profile
 
   def message_to_consumer_for_order profile, order, subject, message = nil
     self.environment = profile.environment
