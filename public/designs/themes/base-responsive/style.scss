@@ -1473,21 +1473,18 @@ div.tooltip-inner {
 .icon-selector-wrapper {
   padding: 0;
 }
-.icon-selector span {
+.icon-selector span,
+.icon-selector-wrapper span {
   line-height: 1px;
-  padding-left: 3px;
-  text-align: left;
-}
-.icon-selector-wrapper {
-  line-height: 1px;
+  padding-left: 2px;
   text-align: left;
 }
 .icon-selector span:before,
-.icon-selector-wrapper:before {
+.icon-selector-wrapper span:before {
   text-align: left;
 }
 .icon-selector span:after,
-.icon-selector-wrapper:after {
+.icon-selector-wrapper span:after {
   text-align: left;
 }
 
