@@ -4,6 +4,7 @@ FastGettext.default_locale = Noosfero.default_locale
 I18n.locale = Noosfero.default_locale
 I18n.default_locale = Noosfero.default_locale
 
-# don't work with delayed job
-#Time.zone = 'America/Sao_Paulo'
+if Rails.env.development?
+  ActionMailer::Base.delivery_method = :file
+end
 
