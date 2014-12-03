@@ -24,8 +24,12 @@ platform :ruby do
 
   gem 'unicode'
 
-  group :production do
+  group :performance do
+    gem 'fast_blank', require: 'fast_blank'
     gem 'gctools'
+  end
+
+  group :production do
     gem 'unicorn'
     gem 'rainbows'
     gem 'unicorn-worker-killer'

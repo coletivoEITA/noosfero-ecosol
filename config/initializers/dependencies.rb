@@ -18,3 +18,5 @@ require 'super_proxy'
 require 'will_paginate'
 require 'will_paginate/array'
 require 'nokogiri'
+
+require 'fast_blank'
