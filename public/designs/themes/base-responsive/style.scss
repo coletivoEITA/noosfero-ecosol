@@ -1473,10 +1473,13 @@ div.tooltip-inner {
 .icon-selector-wrapper {
   padding: 0;
 }
-.icon-selector span,
-.icon-selector-wrapper {
+.icon-selector span {
   line-height: 1px;
   padding-left: 3px;
+  text-align: left;
+}
+.icon-selector-wrapper {
+  line-height: 1px;
   text-align: left;
 }
 .icon-selector span:before,
