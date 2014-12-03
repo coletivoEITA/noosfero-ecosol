@@ -1,6 +1,6 @@
-if !request.xhr?
-  page.replace_html 'delivery-method-edit', :partial => 'method_edit', :locals => {:delivery_method => @delivery_method} 
+unless params[:commit]
+  page.replace_html 'delivery-method-edit', partial: 'method_edit', locals: {delivery_method: @delivery_method} 
   page << 'delivery.view_toggle()'
 else
-  page.replace_html 'select-content', :partial => 'select_content'
+  page.replace_html 'select-content', partial: 'select_content'
 end

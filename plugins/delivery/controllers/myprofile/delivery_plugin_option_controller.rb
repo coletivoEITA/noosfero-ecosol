@@ -32,7 +32,7 @@ class DeliveryPluginOptionController < MyProfileController
 
   def method_edit
     @delivery_method = profile.delivery_methods.find_by_id params[:id]
-    if request.xhr?
+    if params[:commit]
       @delivery_method.update_attributes! params[:delivery_method].merge(:profile => profile, :delivery_type => 'pickup')
       # reset form for a new method
       @delivery_method = DeliveryPlugin::Method.new
@@ -40,8 +40,10 @@ class DeliveryPluginOptionController < MyProfileController
   end
 
   def method_destroy
-    @delivery_method = profile.delivery_methods.find params[:id]
-    @delivery_method.destroy
+    @delivery_methods = profile.delivery_methods.find params[:id]
+    @delivery_methods.each{ |dm| dm.destroy }
+    # render again
+    @delivery_method = DeliveryPlugin::Method.new
   end
 
   protected
