@@ -1469,20 +1469,25 @@ div.tooltip-inner {
 }
 
 /* overwrite awesome styles */
-.icon-selector {
+.icon-selector,
+.icon-selector-wrapper {
   padding: 0;
 }
-.icon-selector span {
+.icon-selector span,
+.icon-selector-wrapper {
   line-height: 1px;
   padding-left: 3px;
   text-align: left;
 }
-.icon-selector span:before {
+.icon-selector span:before,
+.icon-selector-wrapper:before {
   text-align: left;
 }
-.icon-selector span:after {
+.icon-selector span:after,
+.icon-selector-wrapper:after {
   text-align: left;
 }
+
 
 #product-list .product-image-link {
   width: 100%;
