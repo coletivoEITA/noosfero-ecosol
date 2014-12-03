@@ -15,7 +15,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   def index
     @closed_cycles = search_scope(profile.orders_cycles.closing).all
     if request.xhr?
-      render :partial => 'results'
+      render partial: 'results'
     else
       @open_cycles = profile.orders_cycles.opened
     end
@@ -31,16 +31,16 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
       if @success
         session[:notice] = t('controllers.myprofile.cycle_controller.cycle_created')
         if params[:sendmail]
-          OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).open_cycle(
+          OrdersCyclePlugin:Mailer.delay(run_at: @cycle.start).open_cycle(
             @cycle.profile, @cycle ,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message)
         end
       else
-        render :action => :edit
+        render action: :edit
       end
     else
-      count = OrdersCyclePlugin::Cycle.count :conditions => {:profile_id => profile}
-      @cycle = OrdersCyclePlugin::Cycle.create! :profile => profile, :status => 'new',
-        :name => t('controllers.myprofile.cycle_controller.cycle_n_n') % {:n => count+1}
+      count = OrdersCyclePlugin::Cycle.count conditions: {profile_id: profile}
+      @cycle = OrdersCyclePlugin::Cycle.create! profile: profile, status: 'new',
+        name: t('controllers.myprofile.cycle_controller.cycle_n_n') % {n: count+1}
     end
   end
 
@@ -57,7 +57,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
         @success = @cycle.update_attributes params[:cycle]
 
         if params[:sendmail]
-          OrdersCyclePlugin::Mailer.delay(:run_at => @cycle.start).open_cycle(@cycle.profile,
+          OrdersCyclePlugin:Mailer.delay(run_at: @cycle.start).open_cycle(@cycle.profile,
             @cycle, t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message)
         end
       end
@@ -69,36 +69,36 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
     @products = products
 
     if @cycle.add_products_job
-      render :nothing => true
+      render nothing: true
     else
-      render :partial => 'product_lines'
+      render partial: 'product_lines'
     end
   end
 
   def destroy
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     @cycle.destroy
-    redirect_to :action => :index
+    redirect_to action: :index
   end
 
   def step
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     @cycle.step
     @cycle.save!
-    redirect_to :action => :edit, :id => @cycle.id
+    redirect_to action: :edit, id: @cycle.id
   end
 
   def step_back
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     @cycle.step_back
     @cycle.save!
-    redirect_to :action => :edit, :id => @cycle.id
+    redirect_to action: :edit, id: @cycle.id
   end
 
   def add_missing_products
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     @cycle.add_distributed_products
-    render :partial => 'suppliers_plugin_shared/pagereload'
+    render partial: 'suppliers_plugin_shared/pagereload'
   end
 
   def report_products
@@ -106,10 +106,10 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     tmp_dir, report_file = report_products_by_supplier @cycle.products_by_suppliers
 
-    send_file report_file, :type => 'application/xlsx',
-      :disposition => 'attachment',
-      :filename => t('controllers.myprofile.admin.products_report') % {
-        :date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :name => @cycle.name_with_code}
+    send_file report_file, type: 'application/xlsx',
+      disposition: 'attachment',
+      filename: t('controllers.myprofile.admin.products_report') % {
+        date: DateTime.now.strftime("%Y-%m-%d"), profile_identifier: profile.identifier, name: @cycle.name_with_code}
   end
 
   def report_orders
@@ -117,9 +117,9 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     tmp_dir, report_file = report_orders_by_consumer @cycle.sales.ordered
 
-    send_file report_file, :type => 'application/xlsx',
-      :disposition => 'attachment',
-      :filename => t('controllers.myprofile.admin.orders_report') % {:date => DateTime.now.strftime("%Y-%m-%d"), :profile_identifier => profile.identifier, :name => @cycle.name_with_code}
+    send_file report_file, type: 'application/xlsx',
+      disposition: 'attachment',
+      filename: t('controllers.myprofile.admin.orders_report') % {date: DateTime.now.strftime("%Y-%m-%d"), profile_identifier: profile.identifier, name: @cycle.name_with_code}
   end
 
   def filter
@@ -150,7 +150,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def products
-    @cycle.products.unarchived.paginate :per_page => 15, :page => params["page"]
+    @cycle.products.unarchived.paginate per_page: 15, page: params["page"]
   end
 
 end

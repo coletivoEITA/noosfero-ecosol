@@ -16,13 +16,13 @@
         <div><%= t('views.order._consumer_orders.you_still_can') %></div>
 
         <% if @order.cycle.orders? %>
-          <%= link_to_function t('views.order._consumer_orders.change_order'), "orders.order.get(this, '#{url_for :action => :reopen, :id => @order.id}')" %>
+          <%= link_to_function t('views.order._consumer_orders.change_order'), "orders.order.reload(this, '#{url_for :action => :reopen, :id => @order.id}')" %>
           <%= t('views.order._consumer_orders.before_the_closing') %>&emsp;
         <% end %>
         <br>
 
         <% unless @order.cancelled? %>
-          <%= link_to t('views.order._show.cancel_order'), "orders.order.get(this, '#{url_for :action => :cancel, :id => @order.id}')" %>
+          <%= link_to_function t('views.order._show.cancel_order'), "orders.order.reload(this, '#{url_for :action => :cancel, :id => @order.id}')" %>
           <br>
         <% end %>
 
