@@ -25,6 +25,7 @@ platform :ruby do
   gem 'unicode'
 
   group :production do
+    gem 'gctools'
     gem 'unicorn'
     gem 'rainbows'
     gem 'unicorn-worker-killer'
