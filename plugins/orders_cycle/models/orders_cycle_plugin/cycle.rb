@@ -45,7 +45,8 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   has_many :suppliers, through: :products, order: 'suppliers_plugin_suppliers.name ASC', uniq: true
   has_many :orders_suppliers, through: :sales, source: :profile, order: 'name ASC'
 
-  has_many :from_products, through: :products, order: 'name ASC'
+  has_many :from_products, through: :products, order: 'name ASC', uniq: true
+  has_many :product_categories, through: :products, order: 'name ASC', uniq: true
 
   has_many :orders_confirmed, through: :cycle_orders, source: :sale, order: 'id ASC',
     conditions: ['orders_plugin_orders.ordered_at IS NOT NULL']

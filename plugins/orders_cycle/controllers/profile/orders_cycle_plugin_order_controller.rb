@@ -66,7 +66,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     end
 
     load_products_for_order
-    @product_categories = Product.product_categories_of @products
+    @product_categories = @cycle.product_categories
     @consumer_orders = @cycle.sales.for_consumer @consumer
   end
 
