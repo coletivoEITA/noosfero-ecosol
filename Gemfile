@@ -70,7 +70,8 @@ group :cucumber do
   gem 'capybara',               '~> 2.1.0'
   gem 'cucumber',               '~> 1.0.6'
   gem 'database_cleaner',       '~> 1.2.0'
-  gem 'selenium-webdriver',     '~> 2.39.0'
+  # FIXME: conflicts with axlsx version 2, that requires rubyzip 1.0.0 and selenium-webdriver requires rubyzip 1.1.6
+  #gem 'selenium-webdriver',     '~> 2.39.0'
 end
 
 group :development do
