@@ -104,7 +104,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   def report_products
     return super unless params[:id].present?
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
-    tmp_dir, report_file = report_products_by_supplier @cycle.products_by_suppliers
+    report_file = report_products_by_supplier @cycle.products_by_suppliers
 
     send_file report_file, type: 'application/xlsx',
       disposition: 'attachment',
@@ -115,7 +115,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   def report_orders
     return super unless params[:id].present?
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
-    tmp_dir, report_file = report_orders_by_consumer @cycle.sales.ordered
+    report_file = report_orders_by_consumer @cycle.sales.ordered
 
     send_file report_file, type: 'application/xlsx',
       disposition: 'attachment',

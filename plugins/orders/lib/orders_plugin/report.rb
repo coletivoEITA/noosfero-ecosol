@@ -81,8 +81,8 @@ module OrdersPlugin::Report
     report_file = tmp_dir + '/report.xlsx'
 
     p.serialize report_file
-    [tmp_dir, report_file]
-  end # closes def
+    report_file
+  end
 
   def report_orders_by_consumer orders
     p = Axlsx::Package.new
@@ -143,7 +143,7 @@ module OrdersPlugin::Report
     tmp_dir = Dir.mktmpdir "noosfero-"
     report_file = tmp_dir + '/report.xlsx'
     p.serialize report_file
-    [tmp_dir, report_file]
+    report_file
   end # closes def
 
 end
