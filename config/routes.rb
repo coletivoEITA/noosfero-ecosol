@@ -15,6 +15,10 @@ Noosfero::Application.routes.draw do
   ## Public controllers
   ######################################################
 
+  if defined? Peek
+    mount Peek::Railtie => '/peek'
+  end
+
   match 'test/:controller(/:action(/:id))'  , :controller => /.*test.*/
 
   # -- just remember to delete public/index.html.
