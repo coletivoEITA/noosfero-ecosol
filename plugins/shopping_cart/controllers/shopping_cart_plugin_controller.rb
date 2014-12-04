@@ -190,7 +190,7 @@ class ShoppingCartPluginController < OrdersPluginController
     settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin)
     delivery_price = settings.delivery_options[params[:delivery_option]]
     delivery = Product.new(:name => params[:delivery_option], :price => delivery_price)
-    delivery.save run_callbacks: false
+    delivery.save run_callbacks: false, validate: false
     items = self.cart[:items].clone
     items[delivery.id] = 1
     total_price = get_total_on_currency(items, environment)
