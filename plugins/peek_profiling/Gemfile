@@ -3,6 +3,7 @@ gem 'peek'
 gem 'peek-git'
 
 gem 'peek-rblineprof'
+gem 'pygments.rb'#, require: false
 gem 'peek-gc'
 
 gem 'peek-pg'

@@ -24,7 +24,7 @@ class PeekProfilingPlugin < Noosfero::Plugin
   end
 
   def js_files
-    ['locale', 'toggle_edit', 'sortable-table', 'suppliers'].map{ |j| "javascripts/#{j}" }
+    [].map{ |j| "javascripts/#{j}" }
   end
 
   def body_beginning
@@ -36,7 +36,7 @@ class PeekProfilingPlugin < Noosfero::Plugin
   def head_ending
     lambda do
       javascript_include_tag 'peek', 'peek/views/rblineprof'
-      stylesheet_link_tag 'peek', 'peek/views/rblineprof'
+      stylesheet_link_tag 'peek', 'peek/views/rblineprof', 'peek/views/rblineprof/pygments'
     end
 
   end
