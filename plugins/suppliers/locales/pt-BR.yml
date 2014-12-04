@@ -403,6 +403,7 @@
         value_parcel: "Valor da encomenda"
         phone: 'Telefone'
         mail: 'Email'
+        alert_formulas: "Atenção! Se você estiver utilizando o Libreoffice (BrOffice), será necessário atualizar as fórmulas desta planilha com o comando CTRL + SHIFT + F9"
     controllers:
       profile:
         consumer: 
