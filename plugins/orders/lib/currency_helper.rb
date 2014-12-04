@@ -3,7 +3,7 @@ module CurrencyHelper
   extend ActionView::Helpers::NumberHelper
 
   def self.parse_localized_number number
-    return number if number.blank?
+    return 0 if number.blank?
     number = number.to_s
     number.gsub(I18n.t("number.currency.format.unit"), '')
       .gsub(I18n.t("number.currency.format.delimiter"), '')
