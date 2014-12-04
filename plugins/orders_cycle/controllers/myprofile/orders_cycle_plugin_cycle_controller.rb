@@ -22,7 +22,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def new
-    if request.xhr?
+    if request.post?
       @cycle = OrdersCyclePlugin::Cycle.find params[:id]
 
       params[:cycle][:status] = 'orders' if @open = params[:open] == '1'

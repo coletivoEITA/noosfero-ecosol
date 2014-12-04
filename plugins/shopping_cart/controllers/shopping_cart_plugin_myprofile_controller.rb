@@ -3,11 +3,11 @@ class ShoppingCartPluginMyprofileController < MyProfileController
     params[:settings] = treat_cart_options(params[:settings])
 
     @settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin, params[:settings])
-    if request.xhr?
+    if request.post?
       begin
         @settings.save!
         session[:notice] = _('Option updated successfully.')
-      rescue Exception
+      rescue Exception => exception
         session[:notice] = _('Option wasn\'t updated successfully.')
       end
       redirect_to :action => 'edit'
