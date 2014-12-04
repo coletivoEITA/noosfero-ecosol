@@ -173,7 +173,9 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   end
 
   def products_for_order
-    self.products.unarchived.with_price.order('products.name ASC')
+    # FIXME name alias conflict
+    #self.products.unarchived.with_price.order('products.name ASC')
+    self.products.unarchived.with_price
   end
 
   def products_by_suppliers
