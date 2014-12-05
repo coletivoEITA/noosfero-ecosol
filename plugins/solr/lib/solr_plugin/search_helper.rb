@@ -196,12 +196,12 @@ module SolrPlugin::SearchHelper
 
     if count > 0
       url = params.merge(facet: params[:facet].merge(
-        id: if facet[:label_id].nil? then value else params[:facet][id].merge( facet[label_id] => params[:facet][id][facet[:label_id]].to_a | [value] ) end,
+        id => if facet[:label_id].nil? then value else params[:facet][id].merge( facet[label_id] => params[:facet][id][facet[:label_id]].to_a | [value] ) end,
       ))
     else
       # preserve others filters and change this filter
       url = params.merge(facet: params[:facet].merge(
-        id: if facet[:label_id].nil? then value else { facet[label_id] => value } end,
+        id => if facet[:label_id].nil? then value else { facet[label_id] => value } end,
       ))
     end
 
