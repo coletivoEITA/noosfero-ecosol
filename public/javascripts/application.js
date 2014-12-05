@@ -732,7 +732,7 @@ Array.min = function(array) {
 function hideAndGetUrl(link) {
   link.hide();
   url = jQuery(link).attr('href');
-  jQuery.get(url);
+  jQuery.getScript(url);
 }
 
 jQuery(function($){
