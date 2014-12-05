@@ -8924,6 +8924,10 @@ msgid "Price composition"
 msgstr "Composição de preço"
 
 #: app/views/manage_products/show.html.erb:58
+msgid "Add product or service"
+msgstr "Adicionar produto ou serviço"
+
+#: app/views/manage_products/show.html.erb:58
 msgid "Remove product or service"
 msgstr "Remover produto ou serviço"
 
