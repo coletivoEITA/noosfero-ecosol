@@ -12,8 +12,8 @@ class MembersBlock < PeopleBlockBase
   end
 
   def default_title
-    title = role ? role.name : _('members')
-    _('{#} %s') % title
+    title = role ? _(role.name) : _('members')
+    '{#} %s' % title
   end
 
   def profiles
