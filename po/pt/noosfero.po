@@ -1755,6 +1755,14 @@ msgstr "um integrante"
 msgid "%s members"
 msgstr "%s integrantes"
 
+#: plugins/people_block/lib/members_block.rb
+msgid "members"
+msgstr "integrantes"
+
+#: plugins/people_block/lib/members_block.rb
+msgid "Members"
+msgstr "Integrantes"
+
 #: app/models/profile.rb:942
 msgid "Profile Info and settings"
 msgstr "Informações e Configurações do Perfil"
