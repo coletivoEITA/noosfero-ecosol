@@ -395,6 +395,7 @@
         value_parcel: "value parcel"
         phone: 'Telephone'
         mail: 'Email'
+        alert_formulas: "Atention! If you are using LibreOffice (BrOffice) you will need to update the formulas with the command CTRL + SHIFT + F9"
     controllers:
       profile:
         consumer: 
