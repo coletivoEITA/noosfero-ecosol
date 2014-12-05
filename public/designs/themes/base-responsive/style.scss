@@ -316,6 +316,11 @@ body, th, td, input {
 #profile-header {
   max-height: none;
 }
+@media (max-width: 767px) {
+  #profile-header {
+    display: none;
+  }
+}
 
 /***************************** footer ********************************/
 
