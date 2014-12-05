@@ -4,7 +4,7 @@
 <div id="product-catalog">
   <% if !user.nil? && ( user.is_admin?(profile.environment) || user.is_admin?(profile) ) %>
     <div class="product-catalog-ctrl">
-      <%= button :product, _('Manage Products/Services'), :controller => :manage_products, :profile => profile.identifier %>
+      <%= button :add, _('Add product or service'), controller: :manage_products, action: :new, profile: profile.identifier %>
     </div>
   <% end %>
 

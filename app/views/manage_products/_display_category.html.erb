@@ -7,6 +7,8 @@
     %>
      &rarr; <span property="gr:category"><%= @product.product_category.name %></span>
   </p>
-  
+
   <%= edit_link( _('Change category'), { :action => 'edit_category', :id => @product.id}, :id => 'link-edit-product-category') %>
 </div>
+
+

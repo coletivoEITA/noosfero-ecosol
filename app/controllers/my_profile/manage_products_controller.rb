@@ -27,6 +27,7 @@ class ManageProductsController < ApplicationController
 
   public
 
+  # DEPRECATED: this was replaced by the catalog
   def index
     @products = @profile.products.paginate(:per_page => 10, :page => params[:page])
   end
@@ -164,7 +165,7 @@ class ManageProductsController < ApplicationController
     @product = @profile.products.find(params[:id])
     if @product.destroy
       session[:notice] = _('Product succesfully removed')
-      redirect_back_or_default :action => 'index'
+      redirect_back_or_default controller: :catalog
     else
       session[:notice] = _('Could not remove the product')
       redirect_back_or_default :action => 'show', :id => @product
