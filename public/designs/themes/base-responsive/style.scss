@@ -578,20 +578,16 @@ div#notice {
   display: none;
 }
 #content .link-list-block li {
-  background: #FFF;
   padding: 0px;
-  margin: 5px 0px;
-}
-#content .link-list-block li {
+  margin: 0;
   display: block;
 }
 #content .link-list-block li a {
   font-size: 14px;
-  line-height: 24px;
+  line-height: 220%;
   color: #000;
   background-color: #EEE;
-  background-position: 4px 50%;
-  border-radius: 4px;
+  box-shadow: 0 1px 0 #9EDAEF;
 }
 #content .link-list-block li a[class*='icon-'],
 .link-list-block a {
@@ -600,18 +596,13 @@ div#notice {
 #content .link-list-block li a {
   padding-left: 24px;
   padding-right: 10px;
-  margin-right: 5px;
-  background-position: 5px 50%;
 }
 #content .link-list-block li a.link-this-page {
-  border-radius-topright: 0px;
-  border-radius-bottomright: 0px;
   background-color: #cecece;
 }
 #content .link-list-block li a.link-this-page {
   width: auto;
   border: none;
-  border-radius: 4px;
 }
 #content .link-list-block li a:hover {
   background-color: #555753;
