@@ -171,7 +171,7 @@ module ManageProductsHelper
     end
     content_tag('span', content_tag('span', result, :class => 'product-price'), :class => "#{product.available? ? '' : 'un'}available-product")
   end
- 
+
   def display_availability(product)
     ret = content_tag('span', '', :property => 'essglobal:isAvailable', :content => product.available?)
     if !product.available?
@@ -242,7 +242,7 @@ module ManageProductsHelper
   end
 
   def select_unit(object)
-    collection_select(object.class.name.downcase, :unit_id, environment.units, :id, :singular, {:include_blank => _('Select the unit')})
+    collection_select(object.class.name.downcase, :unit_id, environment.units, :id, :singular, {:include_blank => _('Select the unit')}, {:class => 'form-control'})
   end
 
   def input_icon(input)
@@ -270,7 +270,7 @@ module ManageProductsHelper
     price_per_unit = content_tag('span', '', :property => 'essglobal:costPerUnit', :content => input.price_per_unit)
     has_impact_on_cost = content_tag('span', '', :property => 'essglobal:hasImpactOnCost', :content => input.relevant_to_price)
     input_amount_used = content_tag('span', input.formatted_amount, :class => 'input-amount-used', :property => 'essglobal:quantityPerProductOrServiceUnit')
-    
+
     return price_per_unit + has_impact_on_cost + input_amount_used if input.unit.blank?
     input_unit = (input.amount_used > 1) ? input.unit.plural : input.unit.singular
     price_per_unit + has_impact_on_cost + input_amount_used + ' ' + content_tag('span', input_unit, :class => 'input-unit', :property => 'essglobal:unit')
