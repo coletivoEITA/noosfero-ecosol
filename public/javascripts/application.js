@@ -115,17 +115,17 @@ function convToValidEmail( str ) {
 }
 
 function updateUrlField(name_field, id) {
-   url_field = $(id);
-   old_url_value = url_field.value;
-   new_url_value = convToValidIdentifier(name_field.value, "-");
+  name_field = jQuery(name_field)
+  var old_name_value = name_field.get(0).defaultValue
+  var url_field = $(id);
 
-   url_field.value = new_url_value;
+  var old_url_value = url_field.val()
+  var new_url_value = convToValidIdentifier(name_field.val(), "-")
+  url_field.val(new_url_value)
 
-   if (!/^\s*$/.test(old_url_value)
-       && old_url_value != new_url_value
-       ) {
-     warn_value_change(url_field);
-   }
+  if (old_name_value && !/^\s*$/.test(old_url_value) && old_url_value != new_url_value) {
+    warn_value_change(url_field);
+  }
 }
 
 
