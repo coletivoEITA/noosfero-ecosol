@@ -109,7 +109,7 @@ module Psych
           begin
             klass.unscoped.find(id)
           rescue ActiveRecord::RecordNotFound
-            raise Delayed::DeserializationError
+
           end
         when /^!ruby\/Mongoid:(.+)$/
           klass = resolve_class($1)
