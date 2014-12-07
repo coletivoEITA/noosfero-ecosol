@@ -1,12 +1,84 @@
 require_dependency 'product'
 
 class Product
+
   after_save_reindex [:enterprise], with: :delayed_job
+
+  # overwrite on subclasses
+  def solr_index?
+    true
+  end
+
+  protected
+
+  alias_method :solr_plugin_ac_name, :name
+  alias_method :solr_plugin_ac_category, :category_name
+
+  def solr_plugin_f_category
+    self.product_category.name
+  end
+
+  def solr_plugin_f_region
+    self.enterprise.region_id.to_s
+  end
+
+  def self.solr_plugin_f_region_proc *args
+    Profile.solr_plugin_f_region_proc *args
+  end
+
+  def self.solr_plugin_f_qualifier_proc facet, id_count_arr
+    ids, qualis_hash, certs_hash = {}, {}, {}
+    id_count_arr.each do |id, count|
+      array = id.split ' '
+      ids[array[0]] = array[1]
+    end
+    Qualifier.find(ids.keys).each{ |q| qualis_hash[q.id.to_s] = q.name }
+    Certifier.find(ids.values.compact).each{ |c| certs_hash[c.id.to_s] = c.name }
+
+    count_hash = Hash[id_count_arr]
+    ids.map do |qid, cid|
+      id = "#{qid} #{cid}"
+      qualifier = qualis_hash[qid]
+      certifier = certs_hash[cid]
+      name = certifier ? [qualifier, _(' cert. ') + certifier] : qualifier
+      [id, name, count_hash[id]]
+    end
+  end
+
+  def solr_plugin_f_qualifier
+    product_qualifiers.map do |pq|
+      "#{pq.qualifier_id} #{pq.certifier_id}"
+    end
+  end
+
+  def solr_plugin_category_filter
+    enterprise.categories_including_virtual_ids << product_category_id
+  end
+
+  def solr_plugin_public
+    self.public?
+  end
+
+  def solr_plugin_available_sortable
+    if self.available then '1' else '0' end
+  end
+
+  def solr_plugin_highlighted_sortable
+    if self.highlighted then '1' else '0' end
+  end
+
+  def solr_plugin_name_sortable # give a different name for solr
+    name
+  end
+
+  def solr_plugin_price_sortable
+    (price.nil? or price.zero?) ? nil : price
+  end
 
   acts_as_faceted fields: {
       solr_plugin_f_category: {label: _('Related products')},
-      solr_plugin_f_region: {label: _('City'), proc: proc { |id| solr_plugin_f_region_proc(id) }},
-      solr_plugin_f_qualifier: {label: _('Qualifiers'), proc: proc { |id| solr_plugin_f_qualifier_proc(id) }},
+      solr_plugin_f_region: {label: _('City'), proc: method(:solr_plugin_f_region_proc).to_proc},
+      solr_plugin_f_qualifier: {label: _('Qualifiers'), proc: method(:solr_plugin_f_qualifier_proc).to_proc},
     }, category_query: proc { |c| "solr_plugin_category_filter:#{c.id}" },
     order: [:solr_plugin_f_category, :solr_plugin_f_region, :solr_plugin_f_qualifier]
 
@@ -60,68 +132,4 @@ class Product
   handle_asynchronously :solr_save
   handle_asynchronously :solr_destroy
 
-  # overwrite on subclasses
-  def solr_index?
-    true
-  end
-
-  private
-
-  alias_method :solr_plugin_ac_name, :name
-  alias_method :solr_plugin_ac_category, :category_name
-
-  def solr_plugin_f_category
-    self.product_category.name
-  end
-
-  def solr_plugin_f_region
-    self.enterprise.region.id if self.enterprise.region
-  end
-
-  def self.solr_plugin_f_region_proc(id)
-    c = Region.find(id)
-    s = c.parent
-    if c and c.kind_of?(City) and s and s.kind_of?(State) and s.acronym
-      [c.name, ', ' + s.acronym]
-    else
-      c.name
-    end
-  end
-
-  def self.solr_plugin_f_qualifier_proc(ids)
-    array = ids.split
-    qualifier = Qualifier.find_by_id array[0]
-    certifier = Certifier.find_by_id array[1]
-    certifier ? [qualifier.name, _(' cert. ') + certifier.name] : qualifier.name
-  end
-
-  def solr_plugin_f_qualifier
-    product_qualifiers.map do |pq|
-      "#{pq.qualifier_id} #{pq.certifier_id}"
-    end
-  end
-
-  def solr_plugin_category_filter
-    enterprise.categories_including_virtual_ids << product_category_id
-  end
-
-  def solr_plugin_public
-    self.public?
-  end
-
-  def solr_plugin_available_sortable
-    if self.available then '1' else '0' end
-  end
-
-  def solr_plugin_highlighted_sortable
-    if self.highlighted then '1' else '0' end
-  end
-
-  def solr_plugin_name_sortable # give a different name for solr
-    name
-  end
-
-  def solr_plugin_price_sortable
-    (price.nil? or price.zero?) ? nil : price
-  end
 end

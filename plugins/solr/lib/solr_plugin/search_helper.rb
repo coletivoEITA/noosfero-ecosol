@@ -1,8 +1,6 @@
-require_dependency 'search_helper'
-
 module SolrPlugin::SearchHelper
 
-  include SearchHelper
+  protected
 
   LIST_SEARCH_LIMIT = 20
   DistFilt = 200
@@ -42,14 +40,6 @@ module SolrPlugin::SearchHelper
     ],
   }
 
-  def class_asset(klass)
-    klass.name.underscore.pluralize.to_sym
-  end
-
-  def asset_table(asset)
-    asset_class(asset).table_name
-  end
-
   def filters(asset)
     case asset
     when :products
@@ -67,33 +57,10 @@ module SolrPlugin::SearchHelper
     category.nil? && query.blank?
   end
 
-  def products_options(person)
-    geosearch = person && person.lat && person.lng
-
-    extra_limit = LIST_SEARCH_LIMIT*5
-    sql_options = {limit: LIST_SEARCH_LIMIT, order: 'random()'}
-    options =   {sql_options: sql_options, extra_limit: extra_limit}
-
-    if geosearch
-      options.merge({
-        alternate_query: "{!boost b=recip(geodist(),#{"%e" % (1.to_f/DistBoost)},1,1)}",
-        radius: DistFilt,
-        latitude: person.lat,
-        longitude: person.lng })
-    else
-      options.merge({boost_functions: ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']})
-    end
-  end
-
   def asset_class(asset)
     asset.to_s.singularize.camelize.constantize
   rescue
     asset.to_s.singularize.camelize.gsub('Plugin', 'Plugin::').constantize
-  end
-
-  def set_facets_variables
-    @facets = @searches[@asset][:facets]
-    @all_facets = @searches[@asset][:all_facets]
   end
 
   def order_by(asset)
@@ -102,8 +69,6 @@ module SolrPlugin::SearchHelper
       [_(options[:label]), name.to_s]
     end.compact
 
-    if theme_responsive?
-
     content_tag('div',
       content_tag('label',_('Sort results by ') + ':', class: 'col-lg-4 col-md-4 col-sm-4 col-xs-6 control-label form-control-static') +
       content_tag('div',select_tag(asset.to_s + '[order]', options_for_select(options, params[:order_by] || 'none'),
@@ -111,17 +76,6 @@ module SolrPlugin::SearchHelper
       ),class: 'col-lg-8 col-md-8 col-sm-8 col-xs-6'),
       class: "row"
     )
-
-    else
-
-    content_tag('div', _('Sort results by ') +
-      select_tag(asset.to_s + '[order]', options_for_select(options, params[:order_by] || 'none'),
-        {onchange: "window.location = jQuery.param.querystring(window.location.href, { 'order_by' : this.options[this.selectedIndex].value})"}
-      ),
-      class: "search-ordering"
-    )
-
-    end
  end
 
   def label_total_found(asset, total_found)
@@ -137,29 +91,35 @@ module SolrPlugin::SearchHelper
       class: "total-pages-found") if labels[asset]
   end
 
-  def facets_menu(asset, _facets)
-    @asset_class = asset_class(asset)
-    @facets = _facets
-    render(partial: 'facets_menu')
+  def load_facets
+    @facets = @searches[@asset][:facets]
+    @all_facets = @searches[@asset][:all_facets]
+  end
+
+  def facets_menu asset
+    @asset_class = asset_class asset
+    load_facets
+    render 'facets_menu'
   end
 
   def facets_unselect_menu(asset)
     @asset_class = asset_class(asset)
-    render(partial: 'facets_unselect_menu')
+    render 'facets_unselect_menu'
   end
 
-  def facet_selecteds_html_for(environment, klass, params)
+  def facet_selecteds_html_for environment, klass, params
     def name_with_extra(klass, facet, value)
-      name = klass.facet_result_name(facet, value)
-      name = name[0] + name[1] if name.kind_of?(Array)
+      name = klass.facet_result_name(facet, [[value, 0]])[0][0]
+      name = name[0] + name[1] if name.is_a?(Array)
       name
     end
 
     ret = []
     params = params.dup
     params[:facet].each do |id, value|
-      facet = klass.facet_by_id(id.to_sym)
-      next unless facet
+      next if value.blank?
+      facet = klass.facet_by_id id.to_sym
+      next if facet.blank?
       if value.kind_of?(Hash)
         label_hash = facet[:label].call(environment)
         value.each do |label_id, value|
@@ -167,12 +127,12 @@ module SolrPlugin::SearchHelper
           facet[:label] = label_hash[label_id]
           value.to_a.each do |value|
             ret << [facet[:label], name_with_extra(klass, facet, value),
-              params.merge(facet: params[facet].merge(id: params[facet][id].merge(label_id: params[:facet][id][label_id].to_a.reject{ |v| v == value })))]
+              params.merge(:facet => params[:facet].merge(id => params[:facet][id].merge(label_id => params[:facet][id][label_id].to_a.reject{ |v| v == value })))]
           end
         end
       else
         ret << [klass.facet_label(facet), name_with_extra(klass, facet, value),
-          params.merge(facet: params[:facet].reject{ |k,v| k == id })]
+          params.merge(:facet => params[:facet].reject{ |k,v| k == id })]
       end
     end
 
@@ -211,12 +171,4 @@ module SolrPlugin::SearchHelper
       class: 'facet-menu-item' + (selected ? ' facet-result-link-selected' : '')
   end
 
-  def facet_javascript(input_id, facet, array)
-    array = [] if array.nil?
-    hintText = _('Type in an option')
-    text_field_tag('facet['+input_id+']', '', id: input_id) +
-      javascript_tag("jQuery.TokenList(jQuery('##{input_id}'), #{array.to_json},
-        {searchDelay: 0, permanentDropdown: true, theme: 'facet', dontAdd: true, preventDuplicates: true,
-        #{jquery_token_input_messages_json(hintText)}});")
-  end
 end

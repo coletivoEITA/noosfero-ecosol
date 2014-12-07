@@ -27,8 +27,13 @@ class ProductTest < ActiveSupport::TestCase
     pq = p.product_qualifiers.create!(:qualifier => fast_create(Qualifier, :name => 'qualifier'),
                                       :certifier => fast_create(Certifier, :name => 'certifier'))
     assert_equal 'Related products', Product.facet_by_id(:solr_plugin_f_category)[:label]
-    assert_equal ['Tabajara', ', XZ'], Product.facet_by_id(:solr_plugin_f_region)[:proc].call(p.send(:solr_plugin_f_region))
-    assert_equal ['qualifier', ' cert. certifier'], Product.facet_by_id(:solr_plugin_f_qualifier)[:proc].call(p.send(:solr_plugin_f_qualifier).last)
+
+    facet = Product.facet_by_id(:solr_plugin_f_region)
+    assert_equal [[p.region.id.to_s, 'Tabajara, XZ', 1]], facet[:proc].call(facet, [[p.send(:solr_plugin_f_region), 1]])
+    facet = Product.facet_by_id(:solr_plugin_f_qualifier)
+    assert_equal [["#{pq.qualifier.id} #{pq.certifier.id}", ["qualifier", " cert. certifier"], 1]],
+                 facet[:proc].call(facet, [[p.send(:solr_plugin_f_qualifier).last, 1]])
+
     assert_equal 'hardcore', p.send(:solr_plugin_f_category)
     assert_equal "solr_plugin_category_filter:#{cat.id}", Product.facet_category_query.call(cat)
   end

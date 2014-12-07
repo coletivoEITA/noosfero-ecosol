@@ -7,10 +7,10 @@ module ActsAsSearchable
       return if !ACTS_AS_SEARCHABLE_ENABLED
 
       if options[:fields]
-        options[:fields] << {:schema_name => :string}
+        options[:fields] << {schema_name: :string}
       else
         options[:additional_fields] ||= []
-        options[:additional_fields] << {:schema_name => :string}
+        options[:additional_fields] << {schema_name: :string}
       end
 
       acts_as_solr options
@@ -55,7 +55,7 @@ module ActsAsSearchable
         solr_result = find_by_solr(query, options)
         if all_facets_enabled
           options[:facets][:browse] = nil
-          all_facets = find_by_solr(query, options.merge(:per_page => 0)).facets
+          all_facets = find_by_solr(query, options.merge(per_page: 0, results_format: :none)).facets
         end
 
         if !solr_result.nil?
@@ -79,7 +79,7 @@ module ActsAsSearchable
           end
         end
 
-        {:results => results, :facets => facets, :all_facets => all_facets}
+        {results: results, facets: facets, all_facets: all_facets}
       end
     end
   end
