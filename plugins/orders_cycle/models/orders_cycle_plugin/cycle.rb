@@ -101,7 +101,8 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   validates_presence_of :profile
   validates_presence_of :name, if: :not_new?
   validates_presence_of :start, if: :not_new?
-  validates_presence_of :delivery_options, unless: :new_or_edition?
+  # FIXME: The user frequenqly forget about this, and this will crash the app in some places, so don't enable this
+  #validates_presence_of :delivery_options, unless: :new_or_edition?
   validates_inclusion_of :status, in: DbStatuses, if: :not_new?
   validates_numericality_of :margin_percentage, allow_nil: true, if: :not_new?
   validate :validate_orders_dates, if: :not_new?
