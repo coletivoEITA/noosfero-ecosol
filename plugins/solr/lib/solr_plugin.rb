@@ -64,8 +64,8 @@ class SolrPlugin
     result[:categories] = facets['solr_plugin_f_category_facet'].to_a.map{ |name,count| ["#{name} (#{count})", name] }
     result[:categories].sort!{ |a,b| a[0] <=> b[0] }
     result[:qualifiers] = facets['solr_plugin_f_qualifier_facet'].to_a
-    result[:qualifiers].map!{ |ids, count| [Product.solr_plugin_f_qualifier_proc(ids), count, ids] }
-    result[:qualifiers].map!{ |name, count, id| ["#{name} (#{count})", id] }
+    result[:qualifiers] = Product.solr_plugin_f_qualifier_proc nil, result[:qualifiers]
+    result[:qualifiers].map!{ |id, name, count| ["#{name} (#{count})", id] }
     result[:qualifiers].sort!{ |a,b| a[0] <=> b[0] }
 
     result
