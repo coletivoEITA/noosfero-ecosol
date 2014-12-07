@@ -44,7 +44,9 @@ class Profile
     ids = id_count_arr.map{ |id, count| id }
     cats, r = [], Category.find(ids)
     ids.each{ |id| cats << r.detect{ |c| c.id == id.to_i} }
-    cats.reject!{ |c| !(c.top_ancestor.id == facet[:label_id].to_i || facet[:label_id] == 0) }
+    cats.reject! do |c|
+      !(c.top_ancestor.id == facet[:label_id].to_i || facet[:label_id] == 0) rescue nil
+    end
 
     count_hash = Hash[id_count_arr]
     cats.map do |cat|
