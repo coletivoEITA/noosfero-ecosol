@@ -884,19 +884,6 @@ function altShow(e) {
 // jQuery('image[alt]').live('click', altHide);
 
 
-function facet_options_toggle(id, url) {
-  jQuery('#facet-menu-'+id+' .facet-menu-options').toggle('fast' , function () {
-    more = jQuery('#facet-menu-'+id+' .facet-menu-more-options');
-    console.log(more);
-    if (more.is(':visible') && more.children().length == 0) {
-      more.addClass('small-loading');
-      more.load(url, function () {
-        more.removeClass('small-loading');
-      });
-    }
-  });
-}
-
 if ( !console ) console = {};
 if ( !console.log ) console.log = function(){};
 
