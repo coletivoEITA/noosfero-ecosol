@@ -35,14 +35,14 @@ class Profile
 
   def self.solr_plugin_f_categories_label_proc environment
     ids = environment.solr_plugin_top_level_category_as_facet_ids
-    map, r = {}, Category.find(ids)
+    map, r = {}, Category.where(id: ids)
     ids.map{ |id| map[id.to_s] = r.detect{|c| c.id == id}.name }
     map
   end
 
   def self.solr_plugin_f_categories_proc facet, id_count_arr
     ids = id_count_arr.map{ |id, count| id }
-    cats, r = [], Category.find(ids)
+    cats, r = [], Category.where(id: ids)
     ids.each{ |id| cats << r.detect{ |c| c.id == id.to_i} }
     cats.reject! do |c|
       !(c.top_ancestor.id == facet[:label_id].to_i || facet[:label_id] == 0) rescue nil
@@ -64,8 +64,11 @@ class Profile
 
   def self.solr_plugin_f_region_proc facet, id_count_arr
     ids = id_count_arr.map{ |id, count| id }
-    regs, r = [], Region.find(ids, include: :parent)
-    ids.each{ |id| regs << r.detect{ |c| c.id == id.to_i} }
+    regs, r = [], Region.where(id: ids).includes(:parent)
+    ids.each do |id|
+      c = r.detect{ |c| c.id == id.to_i}
+      regs << c if c
+    end
 
     count_hash = Hash[id_count_arr]
     extend SearchHelper
