@@ -1,9 +1,14 @@
 require_dependency 'profile'
 
-Profile.subclasses.each do |subclass|
-  subclass.class_eval do
-    attr_accessible :consumers_coop_header_image_builder
-    attr_accessible :consumers_coop_settings
+if Rails.env.development?
+  require_dependency 'community'
+  require_dependency 'enterprise'
+
+  Organization.subclasses.each do |subclass|
+    subclass.class_eval do
+      attr_accessible :consumers_coop_header_image_builder
+      attr_accessible :consumers_coop_settings
+    end
   end
 end
 
