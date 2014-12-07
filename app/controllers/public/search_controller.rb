@@ -61,7 +61,9 @@ class SearchController < PublicController
   end
 
   def articles
-    @scope = @environment.articles.public
+    @scope = @environment.articles.public.includes(
+      :last_changed_by, :parent, :tags, {:profile => [:domains]}
+    )
     full_text_search
   end
 
@@ -75,7 +77,12 @@ class SearchController < PublicController
   end
 
   def products
-    @scope = @environment.products
+    @scope = @environment.products.includes(
+      :product_category, :unit, :region, :image, {inputs: [:product_category]},
+      {product_qualifiers: [:qualifier, :certifier]},
+      {price_details: [:production_cost]},
+      {profile: [:domains]},
+    )
     full_text_search
   end
 

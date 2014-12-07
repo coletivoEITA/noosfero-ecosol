@@ -13,7 +13,7 @@ class Enterprise < Organization
   N_('Enterprise')
 
   has_many :products, :foreign_key => :profile_id, :dependent => :destroy
-  has_many :product_categories, :through => :products, :uniq => true
+  has_many :product_categories, :through => :products
   has_many :inputs, :through => :products
   has_many :production_costs, :as => :owner
 
