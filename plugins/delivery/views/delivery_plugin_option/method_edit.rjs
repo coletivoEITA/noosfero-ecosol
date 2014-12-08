@@ -1,4 +1,4 @@
-if !request.post?
+if !request.put?
   page.replace_html 'delivery-method-edit', partial: 'method_edit', locals: {delivery_method: @delivery_method} 
   page << 'delivery.view_toggle()'
 else

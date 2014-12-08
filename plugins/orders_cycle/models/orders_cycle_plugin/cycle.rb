@@ -233,6 +233,9 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   end
 
   def step_new
+    pp self.new_record?
+    pp self.status
+    pp self.new?
     return if new_record?
     self.step if self.new?
   end
