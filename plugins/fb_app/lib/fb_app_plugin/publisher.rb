@@ -36,7 +36,7 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
     activity = OpenGraphPlugin::Activity.create! activity_params
 
     namespace = FbAppPlugin.config['app']['namespace']
-    params = {object_type => object_data_url}
+    params = {object: object_data_url}
     me = FbGraph::User.me auth.access_token
     params['fb:explicitly_shared'] = 'true' unless story_defs[:tracker]
     me.og_action! "#{namespace}:#{action}", params
