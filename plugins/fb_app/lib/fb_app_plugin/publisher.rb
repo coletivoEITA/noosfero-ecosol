@@ -25,21 +25,23 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
 
     action = self.actions[story_defs[:action]]
     object_type = self.objects[story_defs[:object_type]]
+    raise "Invalid action or object. Story: #{story_defs.inspect}; actions: #{self.actions.inspect}; object: #{self.objects.inspect}" if action.blank? or object_type.blank?
 
-    # always update the object to expires facebook cache
+    # always update the object to expire facebook cache
     scrape object_data_url unless on == :create
 
     activity_params = {actor_id: actor.id, action: action, object_type: object_type, object_data_url: object_data_url}
     activity = OpenGraphPlugin::Activity.where(activity_params).first
-    # only scrape recent objects
+    # only scrape recent objects to avoid multiple publications
     return if activity and activity.created_at <= (Time.now + UpdateDelay)
-    activity = OpenGraphPlugin::Activity.create! activity_params
 
     namespace = FbAppPlugin.config['app']['namespace']
-    params = {object: object_data_url}
-    me = FbGraph::User.me auth.access_token
+    params = {object_type => object_data_url}
     params['fb:explicitly_shared'] = 'true' unless story_defs[:tracker]
+    me = FbGraph::User.me auth.access_token
     me.og_action! "#{namespace}:#{action}", params
+
+    activity = OpenGraphPlugin::Activity.create! activity_params
   end
 
 end
