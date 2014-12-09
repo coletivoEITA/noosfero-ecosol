@@ -2,7 +2,7 @@ class FbAppPlugin::PageTabConfig < ActiveRecord::Base
 
   belongs_to :profile
 
-  acts_as_having_settings field: config
+  acts_as_having_settings field: :config
 
   validates_presence_of :page_id
   validates_uniqueness_of :page_id
