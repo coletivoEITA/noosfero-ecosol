@@ -47,7 +47,7 @@ class FbAppPlugin < Noosfero::Plugin
   end
 
   def control_panel_buttons
-    return unless %w[brauliobo dtygel rosanak facebook_tester].include? user.identifier
+    return unless %w[brauliobo dtygel rosanak viniciuscb facebook_tester].include? user.identifier
     { title: self.class.plugin_name, icon: 'fb-app', url: {controller: :fb_app_plugin_myprofile} }
   end
 
