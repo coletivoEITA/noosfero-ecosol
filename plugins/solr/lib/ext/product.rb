@@ -9,6 +9,14 @@ class Product
     true
   end
 
+  def solr_plugin_boost
+    boost = 1;
+    SolrPlugin::Boosts.each do |b|
+      boost = boost * (1 - ((1 - b[2].call(self)) * b[1]))
+    end
+    boost
+  end
+
   protected
 
   alias_method :solr_plugin_ac_name, :name
@@ -95,13 +103,6 @@ class Product
     [:enabled, 0.2, proc{ |p| if p.enterprise and p.enterprise.enabled then 1 else 0 end }],
   ]
 
-  def solr_plugin_boost
-    boost = 1;
-    SolrPlugin::Boosts.each do |b|
-      boost = boost * (1 - ((1 - b[2].call(self)) * b[1]))
-    end
-    boost
-  end
   acts_as_searchable fields: facets_fields_for_solr + [
       # searched fields
       {name: {type: :text, boost: 2.0}},
