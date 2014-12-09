@@ -107,7 +107,9 @@ class FbAppPluginPageController < FbAppPluginController
       @page_ids = @signed_requests.map do |signed_request|
         @data = FbAppPlugin::Auth.parse_signed_request signed_request
         @datas << @data
-        @data['page']['id']
+        page_id = @data['page']['id'] rescue nil
+        return render_access_denied if page_id.blank?
+        page_id
       end
     else
       @page_ids = if params[:page_id].is_a? Hash then params[:page_id].values else Array(params[:page_id]) end

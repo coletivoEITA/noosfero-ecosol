@@ -2,8 +2,8 @@ require 'net/http'
 
 class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
 
-  Actions = FbAppPlugin.config['app']['actions']
-  Objects = FbAppPlugin.config['app']['objects']
+  Actions = FbAppPlugin.open_graph_config[:actions]
+  Objects = FbAppPlugin.open_graph_config[:objects]
 
   UpdateDelay = 1.day
 
@@ -35,7 +35,7 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
     # only scrape recent objects to avoid multiple publications
     return if activity and activity.created_at <= (Time.now + UpdateDelay)
 
-    namespace = FbAppPlugin.config['app']['namespace']
+    namespace = FbAppPlugin.open_graph_config[:namespace]
     params = {object_type => object_data_url}
     params['fb:explicitly_shared'] = 'true' unless story_defs[:tracker]
     me = FbGraph::User.me auth.access_token

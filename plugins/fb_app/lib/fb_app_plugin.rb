@@ -13,12 +13,12 @@ class FbAppPlugin < Noosfero::Plugin
   end
 
   def self.oauth_provider_for environment
-    return unless config.present?
+    return unless self.config.present?
 
     @oauth_providers ||= {}
     @oauth_providers[environment] ||= begin
-      app_id = config['app']['id']
-      app_secret = config['app']['secret']
+      app_id = self.timeline_app_credentials[:id]
+      app_secret = self.timeline_app_credentials[:secret]
 
       client = OauthPlugin::Provider.where(environment_id: environment.id, key: app_id).first
       client ||= OauthPlugin::Provider.new
@@ -34,6 +34,31 @@ class FbAppPlugin < Noosfero::Plugin
     end
   end
 
+  def self.open_graph_config
+    @open_graph_config ||= begin
+      key = if self.config[:timeline][:use_test_app] then :test_app else :app end
+      self.config[key][:open_graph]
+    end
+  end
+
+  def self.credentials app = :app
+    {id: self.config[app][:id], secret: self.config[app][:secret]}
+  end
+
+  def self.timeline_app_credentials
+    @timeline_app_credentials ||= begin
+      key = if self.config[:timeline][:use_test_app] then :test_app else :app end
+      self.credentials key
+    end
+  end
+
+  def self.page_tab_app_credentials
+    @page_tab_app_credentials ||= begin
+      key = if self.config[:page_tab][:use_test_app] then :test_app else :app end
+      self.credentials key
+    end
+  end
+
   def stylesheet?
     true
   end
@@ -45,7 +70,7 @@ class FbAppPlugin < Noosfero::Plugin
   def head_ending
     return unless FbAppPlugin.config.present?
     lambda do
-      tag 'meta', property: 'fb:app_id', content: FbAppPlugin.config['app']['id']
+      tag 'meta', property: 'fb:app_id', content: FbAppPlugin.config[:app][:id]
     end
   end
 
