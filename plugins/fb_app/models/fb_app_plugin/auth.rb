@@ -16,7 +16,7 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
   validates_presence_of :provider_user_id
   validates_uniqueness_of :provider_user_id, scope: :profile_id
 
-  def self.parse_signed_request signed_request, credentials = FbAppPlugin.page_tag_app_credentials
+  def self.parse_signed_request signed_request, credentials = FbAppPlugin.page_tab_app_credentials
     secret = credentials[:secret] rescue ''
     request = Facebook::SignedRequest.new signed_request, secret: secret
     request.data
