@@ -9,6 +9,10 @@ class OpenGraphPlugin::ActivityTrack < OpenGraphPlugin::Track
       'friendship',
       'gallery_image',
       'uploaded_file',
+      'product',
+      'forum',
+      'event',
+      'enterprise',
     ]
   end
 

@@ -17,8 +17,8 @@ class FbAppPlugin < Noosfero::Plugin
 
     @oauth_providers ||= {}
     @oauth_providers[environment] ||= begin
-      app_id = self.timeline_app_credentials[:id]
-      app_secret = self.timeline_app_credentials[:secret]
+      app_id = self.timeline_app_credentials[:id].to_s
+      app_secret = self.timeline_app_credentials[:secret].to_s
 
       client = OauthPlugin::Provider.where(environment_id: environment.id, key: app_id).first
       client ||= OauthPlugin::Provider.new
