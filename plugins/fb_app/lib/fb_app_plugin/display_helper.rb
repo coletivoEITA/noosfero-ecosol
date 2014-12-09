@@ -10,8 +10,8 @@ module FbAppPlugin::DisplayHelper
 
   def link_to_product_with_iframe product, options = {}
     link_to content_tag('span', product.name),
-            params.merge(controller: :fb_app_plugin, product_id: product.id),
-            options.merge(target: '')
+      params.merge(controller: :fb_app_plugin, product_id: product.id),
+      options.merge(target: '')
   end
 
   def link_to_with_target_blank name = nil, options = nil, html_options = nil, &block
