@@ -5,7 +5,7 @@
   </div>
 </div>
 
-<% if @auth.connected? %>
+<% if @auth.connected? or Rails.env.development? %>
   <div id="fb-app-timeline">
     <h2>
       <%= t('fb_app_plugin.views.myprofile.timeline.heading') %>

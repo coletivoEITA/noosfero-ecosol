@@ -62,7 +62,7 @@ class FbAppPluginPageController < FbAppPluginController
 
       case params[:fb_integration_type]
         when 'profiles'
-          @config.profile_ids = params[:profile_ids].to_a
+          @config.profile_ids = Array(params[:profile_ids])
         when 'query'
           @config.query = params[:fb_keyword].to_s
       end
@@ -100,7 +100,7 @@ class FbAppPluginPageController < FbAppPluginController
   end
 
   def load_configs
-    @signed_requests = if params[:signed_request].is_a? Hash then params[:signed_request].values else params[:signed_request].to_a end
+    @signed_requests = if params[:signed_request].is_a? Hash then params[:signed_request].values else Array(params[:signed_request]) end
 
     if @signed_requests.present?
       @datas = []
@@ -110,7 +110,7 @@ class FbAppPluginPageController < FbAppPluginController
         @data['page']['id']
       end
     else
-      @page_ids = if params[:page_id].is_a? Hash then params[:page_id].values else params[:page_id].to_a end
+      @page_ids = if params[:page_id].is_a? Hash then params[:page_id].values else Array(params[:page_id]) end
     end
 
     @configs = FbAppPlugin::PageTabConfig.where page_id: @page_ids

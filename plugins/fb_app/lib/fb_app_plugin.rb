@@ -13,6 +13,8 @@ class FbAppPlugin < Noosfero::Plugin
   end
 
   def self.oauth_provider_for environment
+    return unless config.present?
+
     @oauth_providers ||= {}
     @oauth_providers[environment] ||= begin
       app_id = config['app']['id']
@@ -41,12 +43,14 @@ class FbAppPlugin < Noosfero::Plugin
   end
 
   def head_ending
+    return unless FbAppPlugin.config.present?
     lambda do
       tag 'meta', property: 'fb:app_id', content: FbAppPlugin.config['app']['id']
     end
   end
 
   def control_panel_buttons
+    return unless FbAppPlugin.config.present?
     return unless %w[brauliobo dtygel rosanak viniciuscb facebook_tester].include? user.identifier
     { title: self.class.plugin_name, icon: 'fb-app', url: {controller: :fb_app_plugin_myprofile} }
   end
