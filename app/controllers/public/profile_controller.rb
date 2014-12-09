@@ -64,6 +64,7 @@ class ProfileController < PublicController
   end
 
   def friends
+    return redirect_to action: :index unless profile.person?
     if is_cache_expired?(profile.friends_cache_key(params))
       @friends = profile.friends.includes(relations_to_include).paginate(:per_page => per_page, :page => params[:npage])
     end
