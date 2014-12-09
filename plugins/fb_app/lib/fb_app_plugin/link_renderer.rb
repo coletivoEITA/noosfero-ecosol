@@ -8,7 +8,7 @@ class FbAppPlugin::LinkRenderer < WillPaginate::ViewHelpers::LinkRenderer
   protected
 
   def link text, target, attributes = {}
-    self.template.link_to text, self.template.url_for(target), attributes.merge(target: '')
+    @template.link_to text, @template.url_for(target), attributes.merge(target: '')
   end
 
 end
