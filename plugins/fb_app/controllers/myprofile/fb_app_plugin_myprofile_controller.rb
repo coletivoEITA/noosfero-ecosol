@@ -21,7 +21,7 @@ class FbAppPluginMyprofileController < OpenGraphPluginMyprofileController
   end
 
   def save_auth
-    @status = params[:auth].delete :status
+    @status = params[:auth].delete :status rescue FbAppPlugin::Auth::Status::Unknown
     if @status == FbAppPlugin::Auth::Status::Connected
       @auth.attributes = params[:auth]
       @auth.save! if @auth.changed?

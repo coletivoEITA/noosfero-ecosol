@@ -134,8 +134,10 @@ catalog = {
       toRank: function(rank) {
         if (rank >= 0)
           jQuery(function() {
-            // gives a margin for eventual fixed top bars and offset() doesn't consider margin, padding and borders sizes
-            jQuery('html,body').animate({ scrollTop: jQuery('.product[data-rank='+rank+']').offset().top-100 }, this.delay)
+            var product = jQuery('.product[data-rank='+rank+']')
+            if (product.length)
+              // gives a margin for eventual fixed top bars and offset() doesn't consider margin, padding and borders sizes
+              jQuery('html,body').animate({ scrollTop: product.offset().top-100 }, this.delay)
           });
       },
       toTop: function(callback) {
