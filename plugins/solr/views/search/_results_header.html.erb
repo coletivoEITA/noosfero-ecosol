@@ -22,11 +22,13 @@
 
   </div>
 
-  <div class="row">
-    <div class="col-lg-8 col-md-8 col-sm-6 text-left"><h2><%= filter_title(@asset, @filter) %></h2></div>
-    <div class="col-lg-4 col-md-4 col-sm-6">
-      <%= display_selector @asset, params[:display] %>
-      <%= filter_selector @asset, @filter %>
+  <% if @empty_query %>
+    <div class="row">
+      <div class="col-lg-8 col-md-8 col-sm-6 text-left"><h2><%= filter_title(@asset, @filter) %></h2></div>
+      <div class="col-lg-4 col-md-4 col-sm-6">
+        <%= display_selector @asset, params[:display] %>
+        <%= filter_selector @asset, @filter %>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>
