@@ -313,7 +313,7 @@
                    triggering a new commit. 
       -->
        <autoCommit> 
-         <maxDocs>50</maxDocs>
+         <maxDocs>1</maxDocs>
          <maxTime>1800</maxTime> 
        </autoCommit>
 
