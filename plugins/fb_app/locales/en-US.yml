@@ -4,17 +4,17 @@
   fb_app_plugin:
     lib:
       plugin:
-        name: 'Loja de Economia Solidária no Facebook'
-        description: 'Monte uma loja virtual da economia solidária em suas páginas do facebook!'
+        name: 'Facebook integration'
+        description: 'Use the Cirandas app for Facebook!'
     views:
       myprofile:
         checking_auth: 'Checking authorization' 
         different_login: 'But you are logged in on facebook as:' 
         current_login: 'You are logged in on facebook as:' 
-        connect: 'I want to install Cirandas at Face App' 
-        logged_connect: 'Query conectar esta conta do Facebook com meu usuário %{profile} no Cirandas' 
+        connect: 'I want to install the Cirandas app for Facebook' 
+        logged_connect: 'Connect this Facebook account with my user %{profile} at Cirandas' 
         disconnect: 'Disconnect'
-        connect_to_another: 'Conectar to another Facebook account' 
+        connect_to_another: 'Conect to another Facebook account' 
         reconnect: 'Reconnect'
 
         timeline:
