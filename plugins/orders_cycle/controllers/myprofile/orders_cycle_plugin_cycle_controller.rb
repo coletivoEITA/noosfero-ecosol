@@ -31,7 +31,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
       if @success
         session[:notice] = t('controllers.myprofile.cycle_controller.cycle_created')
         if params[:sendmail]
-          OrdersCyclePlugin:Mailer.delay(run_at: @cycle.start).open_cycle(
+          OrdersCyclePlugin::Mailer.delay(run_at: @cycle.start).open_cycle(
             @cycle.profile, @cycle ,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message)
         end
       else
@@ -57,7 +57,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
         @success = @cycle.update_attributes params[:cycle]
 
         if params[:sendmail]
-          OrdersCyclePlugin:Mailer.delay(run_at: @cycle.start).open_cycle(@cycle.profile,
+          OrdersCyclePlugin::Mailer.delay(run_at: @cycle.start).open_cycle(@cycle.profile,
             @cycle, t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message)
         end
       end
