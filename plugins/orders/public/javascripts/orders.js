@@ -1,6 +1,10 @@
 
 orders = {
 
+  locales: {
+    noneSelected: '',
+  },
+
   order: {
 
     reload: function(context, url) {
@@ -102,6 +106,10 @@ orders = {
 
       report: function(url) {
         var ids = this.selection().map(function (i, el) { return jQuery(el).attr('data-id') }).toArray();
+        if (ids.length === 0) {
+          alert(orders.locales.noneSelected)
+          return
+        }
         window.location.href = url + '&' + jQuery.param({ids: ids})
       },
 

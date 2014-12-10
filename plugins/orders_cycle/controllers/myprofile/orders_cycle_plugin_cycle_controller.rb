@@ -102,7 +102,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def report_products
-    return super unless params[:id].present?
+    return super if params[:ids].present?
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     report_file = report_products_by_supplier @cycle.products_by_suppliers
 
@@ -113,7 +113,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def report_orders
-    return super unless params[:id].present?
+    return super if params[:ids].present?
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
     report_file = report_orders_by_consumer @cycle.sales.ordered
 

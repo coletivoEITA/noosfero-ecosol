@@ -2,6 +2,11 @@
 
 "pt-BR": &pt-BR
 
+  number:
+    currency:
+      format:
+        xlsx_currency: "[$R$-416]* #,##0.00;[RED]-[$R$-416]* #,##0.00"
+
   suppliers_plugin:
     lib:
       plugin:
@@ -517,6 +522,7 @@
           order_date: "data do pedido"
           total: "total (%{currency})"
           situation: "situação"
+          none_selected: "Nenhum pedido selecionado"
         _edit: 
           add_product: "adicionar produto"
           cancel: Cancelar
