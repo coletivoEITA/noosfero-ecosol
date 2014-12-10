@@ -35,6 +35,8 @@ class FbAppPlugin < Noosfero::Plugin
   end
 
   def self.open_graph_config
+    return unless self.config.present?
+
     @open_graph_config ||= begin
       key = if self.config[:timeline][:use_test_app] then :test_app else :app end
       self.config[key][:open_graph]
@@ -42,10 +44,12 @@ class FbAppPlugin < Noosfero::Plugin
   end
 
   def self.credentials app = :app
+    return unless self.config.present?
     {id: self.config[app][:id], secret: self.config[app][:secret]}
   end
 
   def self.timeline_app_credentials
+    return unless self.config.present?
     @timeline_app_credentials ||= begin
       key = if self.config[:timeline][:use_test_app] then :test_app else :app end
       self.credentials key
@@ -53,6 +57,7 @@ class FbAppPlugin < Noosfero::Plugin
   end
 
   def self.page_tab_app_credentials
+    return unless self.config.present?
     @page_tab_app_credentials ||= begin
       key = if self.config[:page_tab][:use_test_app] then :test_app else :app end
       self.credentials key
