@@ -3,12 +3,16 @@
 
     <% OpenGraphPlugin::Track::Config.each do |track, klass| %>
       <div class="panel panel-primary">
-        <% klass = "OpenGraphPlugin::#{klass}".constantize %>
+        <%
+          klass = "OpenGraphPlugin::#{klass}".constantize
+        %>
 
         <div class="panel-heading">
           <%= check_box_tag "config-#{track}", '1', true, onchange: 'open_graph.track.config.toggle(this)' %>
-          <%= link_to t("open_graph_plugin.lib.track.config.#{track}.label"), "#track-#{track}", data: {toggle: 'collapse', parent: '#track-config'} %>
+
+          <%= link_to t("open_graph_plugin.views.track.config.#{track}.label"), "#track-#{track}", data: {toggle: 'collapse', parent: '#track-config'} %>
         </div>
+
         <div id="group-<%=track%>" class="panel-body collapse-in">
           <%= render "track_#{track}", f: f, track: track, klass: klass %>
         </div>
@@ -19,3 +23,6 @@
   <%= f.submit _('Save') %>
 <% end %>
 
+<%= javascript_tag do %>
+  open_graph.track.config.init()
+<% end %>

@@ -117,18 +117,18 @@ class OpenGraphPlugin::Stories
     },
     favorite_an_sse_enterprise: {
       action: :create,
-      object_type: :event,
+      object_type: :favorite_enterprise_person,
       on: :create,
-      models: :Event,
-      publish_if: proc do |event|
-        event.published?
-      end,
+      models: :FavoriteEnterprisePerson,
+      publish: proc do |actor, fe|
+        publish actor, actions[:favorite], objects[:enterprise], fe.enterprise.url
+      end
     },
     make_friendship_with: {
       action: :make_friendship,
       object_type: :friend,
       models: :Friendship,
-      publish: proc do |fs|
+      publish: proc do |actor, fs|
         publish fs.person, actions[:make_friendship], objects[:friend], fs.friend.url
         publish fs.friend, actions[:make_friendship], objects[:friend], fs.person.url
       end,
