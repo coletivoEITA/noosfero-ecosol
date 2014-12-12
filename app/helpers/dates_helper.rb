@@ -35,13 +35,17 @@ module DatesHelper
     end
   end
 
-  def show_date_month(date, use_numbers = false, year=true)
+  def show_date_month(date, use_numbers = false, year=true, use_day = nil)
     if date && use_numbers
       date_format = year ? _('%{month}/%{year}') : _('%{month}/%{day}')
       date_format % { :month => date.month, :year => date.year }
     elsif date
-      date_format = year ? _('%{month_name}, %{year}') : _('%{month_name}')
-      date_format % { :month_name => month_name(date.month), :year => date.year }
+      if use_day
+        date_format = year ? _('%{month_name} %{day}, %{year}') : _('%{month_name} %{day}')
+      else
+        date_format = year ? _('%{month_name}, %{year}') : _('%{month_name}')
+      end
+      date_format % { :day => date.day, :month_name => month_name(date.month), :year => date.year }
     else
       ''
     end
