@@ -35,5 +35,43 @@ open_graph = {
     },
   },
 
+  autocomplete: {
+    bloodhoundOptions: {
+      datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      ajax: {
+        beforeSend: function() {
+          input.addClass('small-loading')
+        },
+        complete: function() {
+          input.removeClass('small-loading')
+        },
+      },
+    },
+    tokenfieldOptions: {
+
+    },
+    typeaheadOptions: {
+      minLength: 1,
+      highlight: true,
+    },
+
+    init: function(url, selector, data, options) {
+      options = options || {}
+      var bloodhoundOptions = jQuery.extend({}, this.bloodhoundOptions, options.bloodhound || {});
+      var typeaheadOptions = jQuery.extend({}, this.typeaheadOptions, options.typeahead || {});
+      var tokenfieldOptions = jQuery.extend({}, this.tokenfieldOptions, options.tokenfield || {});
+
+      var input = $(selector)
+      bloodhoundOptions.remote = url+'?query=%QUERY'
+      var engine = new Bloodhound(bloodhoundOptions)
+      engine.initialize()
+
+      tokenfieldOptions.typeahead = [typeaheadOptions, { displayKey: 'label', source: engine.ttAdapter() }]
+
+      input.tokenfield(tokenfieldOptions)
+      input.tokenfield('setTokens', data);
+    },
+  },
 }
 

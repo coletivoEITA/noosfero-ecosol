@@ -4,7 +4,7 @@
   <%= javascript_include_tag '/plugins/fb_app/javascripts/bootstrap-tokenfield.js' %>
 <% end %>
 
-<%= render 'load', callback: 'fb_app.fb.checkLoginStatus()' %>
+<%= render 'load' %>
 <%= javascript_tag do %>
   fb_app.auth.status = <%= (@auth.status rescue FbAppPlugin::Auth::Status::NotAuthorized).to_json %>
 <% end %>

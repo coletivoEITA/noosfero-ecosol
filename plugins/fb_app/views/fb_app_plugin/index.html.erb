@@ -8,5 +8,8 @@
     <li><%= _('Now you can connect and configure the app!') %></li>
   </ol>
 </div>
-<% #render 'load', callback: 'fb_app.fb.login();' %>
 
+<%# render 'load' %>
+<%= javascript_tag do %>
+  fb_app.page_tab.next_url = <%= url_for(only_path: false, action: :index).gsub('/fb_app_plugin', '').to_json %>,
+<% end %>

@@ -3,6 +3,10 @@ page_tab:
 timeline:
   use_test_app: true
 
+test_users:
+  - brauliobo
+  - dtygel
+
 app:
   id: xxx
   secret:  xxx

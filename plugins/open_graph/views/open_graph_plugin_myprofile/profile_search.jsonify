@@ -1,7 +1,0 @@
-self.formats = [:html]
-@profiles.each do |p|
-  json << {
-    value: p.id, label: render('ac_profile', profile: p),
-  }
-end
-

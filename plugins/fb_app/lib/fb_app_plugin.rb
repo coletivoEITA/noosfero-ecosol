@@ -12,6 +12,17 @@ class FbAppPlugin < Noosfero::Plugin
     @config ||= HashWithIndifferentAccess.new(YAML.load File.read("#{File.dirname __FILE__}/../config.yml")) rescue {}
   end
 
+  def self.test_users
+    @test_users = self.config[:test_users]
+  end
+  def self.test_user? user
+    self.test_users.blank? or self.test_users.include? user.identifier
+  end
+
+  def self.scope user
+    if self.test_user? user then 'publish_actions' else '' end
+  end
+
   def self.oauth_provider_for environment
     return unless self.config.present?
 
@@ -79,9 +90,10 @@ class FbAppPlugin < Noosfero::Plugin
     end
   end
 
+
   def control_panel_buttons
     return unless FbAppPlugin.config.present?
-    return unless %w[brauliobo dtygel rosanak viniciuscb facebook_tester].include? user.identifier
+    return unless FbAppPlugin.test_user? user
     { title: self.class.plugin_name, icon: 'fb-app', url: {controller: :fb_app_plugin_myprofile} }
   end
 

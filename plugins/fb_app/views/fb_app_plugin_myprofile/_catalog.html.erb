@@ -1,4 +1,10 @@
-<h2>
-  <%= t('fb_app_plugin.views.myprofile.catalog.heading') %>
-</h2>
+<div id="page-tab-<%= page_tab.id || 'new' %>" class='page-tab'>
 
+  <% if page_tab.page_id %>
+    <%= button nil, t('fb_app_plugin.views.myprofile.catalog'), "https://facebook.com/#{page_tab.page_id}"  %>
+  <% else %>
+  <% end %>
+
+  <%= render 'fb_app_plugin_page_tab/configure_form', page_tab: page_tab, signed_request: nil %>
+
+</div>
