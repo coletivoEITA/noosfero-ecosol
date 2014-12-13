@@ -1,9 +1,9 @@
 
-<%= text_field_tag :profile_ids, nil, "data-placeholder" => t('fb_app_plugin.views.page_tab.profile.placeholder'), onchange: 'fb_app.page_tab.profile.onchange($(this))' %>
+<%= f.text_field :profile_ids, "data-placeholder" => t('fb_app_plugin.views.page_tab.profile.placeholder'), onchange: 'fb_app.page_tab.profile.onchange($(this))' %>
 
 <%= javascript_tag do %>
   jQuery(document).ready(function() {
-    var selector = '#config-type-profile #profile_ids'
+    var selector = '#page-tab-<%= page_tab.id || 'new' %> #config-type-profile #page_tab_profile_ids'
 
     fb_app.page_tab.profile.onchange($(selector))
 

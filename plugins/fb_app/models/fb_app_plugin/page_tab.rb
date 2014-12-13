@@ -3,7 +3,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
   # FIXME: rename table to match model
   self.table_name = :fb_app_plugin_page_tab_configs
 
-  attr_accessible :profile, :profile_id, :page_id
+  attr_accessible :profile, :profile_id, :page_id, :config_type, :profile_ids, :query
 
   belongs_to :profile
 
@@ -15,8 +15,25 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
   validates_uniqueness_of :page_id
   validates_inclusion_of :config_type, in: ConfigTypes
 
+  def self.page_ids_from_tabs_added tabs_added
+    tabs_added.map{ |id, value| id }
+  end
+
+  def self.create_from_page_ids page_ids, attrs = {}
+    page_ids.map do |page_id|
+      FbAppPlugin::PageTab.create! attrs.merge(page_id: page_id)
+    end
+  end
+  def self.create_from_tabs_added tabs_added, attrs = {}
+    page_ids = self.page_ids_from_tabs_added tabs_added
+    self.create_from_page_ids page_ids, attrs
+  end
+
   def config_type
     self.config[:type] || :profile
+  end
+  def config_type= value
+    # ignored, set by specific methods belows
   end
 
   def value
@@ -27,7 +44,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
   end
 
   def profiles
-    Profile.where(id: self.config[:data])
+    Profile.where(id: self.config[:profile_ids])
   end
   def profile
     self.profiles.first
@@ -38,6 +55,12 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
 
   def query
     self.config[:query]
+  end
+
+  def profile_ids= ids
+    ids = ids.split(',')
+    self.config[:type] = if ids.size == 1 then :profile else :profiles end
+    self.config[:profile_ids] = ids
   end
 
   def profiles= profiles

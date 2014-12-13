@@ -29,6 +29,7 @@
 
         catalogs:
           heading: 'Vitrine Cirandas'
+          new: 'New catalog'
         catalog:
           see_page: 'See page on Facebook'
 

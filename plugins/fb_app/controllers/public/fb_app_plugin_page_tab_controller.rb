@@ -10,7 +10,7 @@ class FbAppPluginPageTabController < FbAppPluginController
     load_page_tabs
 
     if params[:tabs_added]
-      @page_ids = params[:tabs_added].map{ |id, value| id }
+      @page_ids = FbAppPlugin::Profile.page_ids_from_tabs_added params[:tabs_added]
       render action: 'tabs_added', layout: false
     elsif params[:signed_request] or params[:page_id]
       if @page_tab
@@ -128,9 +128,7 @@ class FbAppPluginPageTabController < FbAppPluginController
   end
 
   def create_page_tabs
-    @page_ids.each do |page_id|
-      @page_tabs << FbAppPlugin::PageTab.create!(page_id: page_id)
-    end
+    @page_tabs = FbAppPlugin::PageTab.create_from_page_ids @page_ids
     @page_tab ||= @page_tabs.first
   end
 

@@ -34,7 +34,7 @@ fb_app = {
     next_url: '',
 
     init: function() {
-      this.change_type($('select#config_type'))
+      this.change_type($('select#page_tab_config_type'))
     },
 
     close: function(evt) {
@@ -44,8 +44,9 @@ fb_app = {
       window.location.href = fb_app.current_url
     },
 
-    add: function () {
-      window.location.href = fb_app.fb.add_tab_url(this.app_id, this.next_url)
+    add: function (form) {
+      var next_url = this.next_url + '?' + form.serialize()
+      window.location.href = fb_app.fb.add_tab_url(this.app_id, next_url)
       return false
     },
 

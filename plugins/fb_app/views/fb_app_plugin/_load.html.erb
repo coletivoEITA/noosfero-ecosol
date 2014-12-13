@@ -11,6 +11,7 @@
 
   fb_app.page_tab.app_id = <%= FbAppPlugin.page_tab_app_credentials[:id].to_json %>,
   fb_app.timeline.app_id = <%= FbAppPlugin.timeline_app_credentials[:id].to_json %>,
+  fb_app.page_tab.next_url = <%= url_for(only_path: false).to_json %>
 
   fb_app.fb.init(
     <%= callback.to_json %>
