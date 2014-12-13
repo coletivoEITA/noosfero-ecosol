@@ -1,4 +1,4 @@
-<% if (@data[:page][:admin] rescue false) or (logged_in? and (user.is_admin? environment or (profile and user.is_admin? profile) %>
+<% if (@data[:page][:admin] rescue false) or (logged_in? and (user.is_admin? environment or (profile and user.is_admin? profile))) %>
   <div id="manage-fb-store-ctrl">
     <%= button :edit, 'Configurar Loja', {controller: :fb_app_plugin_page_tab, action: :admin, page_id: @page_ids},
       onclick: "noosfero.modal.url(this.href); return false;"  %>
