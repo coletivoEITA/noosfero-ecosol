@@ -24,7 +24,7 @@ class FbAppPluginPageTabController < FbAppPluginController
 
           render action: 'product'
         elsif @page_tab.profiles.present? and @page_tab.profiles.size == 1
-          @profile = @page_tab.profiles.first
+          @profile = @page_tab.profile
           extend CatalogHelper
           catalog_load_index
 
