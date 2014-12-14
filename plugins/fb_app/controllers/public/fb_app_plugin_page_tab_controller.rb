@@ -1,4 +1,4 @@
-class FbAppPluginPageController < FbAppPluginController
+class FbAppPluginPageTabController < FbAppPluginController
 
   no_design_blocks
 
@@ -7,14 +7,14 @@ class FbAppPluginPageController < FbAppPluginController
   helper FbAppPlugin::FbAppDisplayHelper
 
   def index
-    load_configs
+    load_page_tabs
 
     if params[:tabs_added]
-      @page_ids = params[:tabs_added].map{ |id, value| id }
+      @page_ids = FbAppPlugin::Profile.page_ids_from_tabs_added params[:tabs_added]
       render action: 'tabs_added', layout: false
     elsif params[:signed_request] or params[:page_id]
-      if @config
-        if @config.blank?
+      if @page_tab
+        if @page_tab.blank?
           render action: 'first_load'
         elsif product_id = params[:product_id]
           @product = environment.products.find product_id
@@ -23,14 +23,14 @@ class FbAppPluginPageController < FbAppPluginController
           @allowed_user = false
 
           render action: 'product'
-        elsif @config.profiles.present? and @config.profiles.size == 1
-          @profile = @config.profiles.first
+        elsif @page_tab.profiles.present? and @page_tab.profiles.size == 1
+          @profile = @page_tab.profile
           extend CatalogHelper
           catalog_load_index
 
           render action: 'catalog'
         else
-          @query = if @config.profiles.present? then @config.profiles.map(&:identifier).join(' OR ') else @config.query end
+          @query = if @page_tab.profiles.present? then @page_tab.profiles.map(&:identifier).join(' OR ') else @page_tab.query end
           @empty_query = @category.nil? && @query.blank?
 
           page = (params[:page] || '1').to_i
@@ -53,20 +53,20 @@ class FbAppPluginPageController < FbAppPluginController
   end
 
   def admin
-    load_configs
-    @profiles = @config.profiles rescue []
-    @query = @config.query rescue ''
+    load_page_tabs
 
-    if request.post?
-      create_configs if @config.nil?
+    if request.post? and @page_id.present?
+      create_page_tabs if @page_tab.nil?
 
-      case params[:fb_integration_type]
+      case params[:config_type]
+        when 'profile'
+          @page_tab.profile = Profile.where(id: Array(params[:profile_ids])).first
         when 'profiles'
-          @config.profile_ids = Array(params[:profile_ids])
+          @page_tab.profiles = Profile.where(id: Array(params[:profile_ids]))
         when 'query'
-          @config.query = params[:fb_keyword].to_s
+          @page_tab.query = params[:fb_keyword].to_s
       end
-      @config.save!
+      @page_tab.save!
 
       respond_to{ |format| format.js{ render action: 'admin', layout: false } }
     else
@@ -78,13 +78,12 @@ class FbAppPluginPageController < FbAppPluginController
     render text: params.to_yaml
   end
 
-  def search
+  def enterprise_search
+    scope = environment.enterprises.enabled.public
     @query = params[:query]
-    @profiles = environment.enterprises.enabled.public.all limit: 12, order: 'name ASC',
-      conditions: ['name ILIKE ? OR name ILIKE ? OR identifier LIKE ?', "#{@query}%", "% #{@query}%", "#{@query}%"]
-    render json: (@profiles.map do |profile|
-      {name: profile.name, id: profile.id, identifier: profile.identifier}
-    end)
+    @profiles = scope.limit(10).order('name ASC').
+      where(['name ILIKE ? OR name ILIKE ? OR identifier LIKE ?', "#{@query}%", "% #{@query}%", "#{@query}%"])
+    render partial: 'open_graph_plugin_myprofile/profile_search', locals: {profiles: @profiles}
   end
 
   # unfortunetely, this needs to be public
@@ -99,7 +98,7 @@ class FbAppPluginPageController < FbAppPluginController
     super
   end
 
-  def load_configs
+  def load_page_tabs
     @signed_requests = if params[:signed_request].is_a? Hash then params[:signed_request].values else Array(params[:signed_request]) end
 
     if @signed_requests.present?
@@ -118,17 +117,19 @@ class FbAppPluginPageController < FbAppPluginController
       @page_ids = if params[:page_id].is_a? Hash then params[:page_id].values else Array(params[:page_id]) end
     end
 
-    @configs = FbAppPlugin::PageTabConfig.where page_id: @page_ids
-    @config = @configs.first
-    @new_request = true if @config.blank?
-    @configs
+    @page_tabs = FbAppPlugin::PageTab.where page_id: @page_ids
+
+    @signed_request = @signed_requests.first
+    @page_id = @page_ids.first
+    @page_tab = @page_tabs.first
+    @new_request = true if @page_tab.blank?
+
+    @page_tabs
   end
 
-  def create_configs
-    @page_ids.each do |page_id|
-      @configs << FbAppPlugin::PageTabConfig.create!(page_id: page_id)
-    end
-    @config ||= @configs.first
+  def create_page_tabs
+    @page_tabs = FbAppPlugin::PageTab.create_from_page_ids @page_ids
+    @page_tab ||= @page_tabs.first
   end
 
   def change_theme

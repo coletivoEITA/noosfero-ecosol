@@ -6,6 +6,9 @@ class FbAppPluginMyprofileController < OpenGraphPluginMyprofileController
   before_filter :load_auth
 
   def index
+    if params[:tabs_added]
+      FbAppPlugin::PageTab.create_from_tabs_added params[:tabs_added], params[:page_tab]
+    end
   end
 
   def show_login

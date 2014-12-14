@@ -1,0 +1,14 @@
+<%= render 'configure_button' %>
+
+<div id="product-catalog">
+  <ul id="product-list">
+    <%= render 'catalog/products', products: @products, float_box_position: (float_box_position rescue nil) %>
+  </ul>
+
+  <%= pagination_links @products, params: params, renderer: 'FbAppPlugin::LinkRenderer' %>
+
+  <%= add_zoom_to_images %>
+</div>
+
+<%= render 'load' %>
+

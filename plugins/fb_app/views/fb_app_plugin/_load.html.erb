@@ -1,4 +1,6 @@
-<% callback = '' unless defined? callback %>
+<%
+  callback = '' unless defined? callback
+%>
 
 <div id="fb-root"></div>
 
@@ -6,8 +8,12 @@
 <%= javascript_tag do %>
   fb_app.current_url = <%= url_for(params).to_json %>;
   fb_app.base_url = 'https://<%= environment.default_hostname %>/plugin/fb_app';
-  fb_app.fb.init(<%= (FbAppPlugin.timeline_app_credentials[:id] rescue '').to_json %>,
-    <%= url_for(only_path: false, action: :index).gsub('/fb_app_plugin', '').to_json %>,
+
+  fb_app.page_tab.app_id = <%= FbAppPlugin.page_tab_app_credentials[:id].to_json %>,
+  fb_app.timeline.app_id = <%= FbAppPlugin.timeline_app_credentials[:id].to_json %>,
+  fb_app.page_tab.next_url = <%= url_for(only_path: false).to_json %>
+
+  fb_app.fb.init(
     <%= callback.to_json %>
   );
 <% end %>

@@ -1,7 +1,0 @@
-<% if (@data[:page][:admin] rescue true) %>
-  <div id="manage-fb-store-ctrl">
-    <%= button :edit, 'Configurar Loja', {controller: :fb_app_plugin_page, action: :admin, page_id: @page_ids},
-      onclick: "noosfero.modal.url(this.href); return false;"  %>
-  </div>
-<% end %>
-

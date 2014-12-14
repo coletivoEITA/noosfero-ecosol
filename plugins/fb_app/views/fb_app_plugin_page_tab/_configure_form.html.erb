@@ -1,0 +1,30 @@
+
+<%= form_for :page_tab, url: {controller: :fb_app_plugin_page_tab, action: :admin}, html: {onsubmit: "return fb_app.page_tab.save($(this))"} do |f| %>
+
+  <%= hidden_field_tag 'signed_request', signed_request %>
+  <%= f.hidden_field :profile_id, value: page_tab.profile_id %>
+  <%= f.hidden_field :page_id %>
+
+  <%= f.select :config_type,
+    FbAppPlugin::PageTab::ConfigTypes.map{ |type| [t("fb_app_plugin.models.page_tab.types.#{type}"), type] },
+    {}, onchange: 'fb_app.page_tab.change_type($(this))', class: 'form-control' %>
+
+  <% FbAppPlugin::PageTab::ConfigTypes.each do |type| %>
+    <div id="config-type-<%= type %>" class="config-type">
+      <%= render "fb_app_plugin_page_tab/configure_#{type}", f: f, page_tab: page_tab %>
+    </div>
+  <% end %>
+
+  <% if page_tab.new_record? %>
+    <%= submit_button :add, t('fb_app_plugin.views.page_tab.add'), onclick: 'return fb_app.page_tab.add($(this.form))' %>
+  <% else %>
+    <%= submit_button :save, t('fb_app_plugin.views.page_tab.save') %>
+  <% end %>
+
+<% end %>
+
+<%= javascript_tag do %>
+  jQuery('document').ready(function(){
+    fb_app.page_tab.init();
+  });
+<% end %>

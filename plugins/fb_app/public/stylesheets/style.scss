@@ -1,3 +1,4 @@
+@import 'base';
 
 body.controller-fb_app_plugin {
   margin-top: 40px;
@@ -93,3 +94,17 @@ body.controller-fb_app_plugin {
   font-size: 39px;
   margin-bottom: 50px;
 }
+
+@media (min-width: 768px) {
+  #fb-app-timeline, #fb-app-catalogs {
+    width: 50%-$marginp;
+    float: left;
+  }
+  #fb-app-settings {
+    overflow: hidden;
+  }
+  #fb-app-timeline {
+    margin-right: $marginp;
+  }
+}
+

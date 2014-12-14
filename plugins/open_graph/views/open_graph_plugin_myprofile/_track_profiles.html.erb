@@ -8,8 +8,9 @@
 
 <%= javascript_tag do %>
   $(document).ready(function () {
-    fb_app.config.timeline.autocomplete.init(
-      '<%=track%>_search', '#select-<%=track%>',
+    open_graph.autocomplete.init(
+      <%= url_for(action: "#{track}_search").to_json %>,
+      '#select-<%=track%>',
       <%= profiles.map{ |p| {value: p.id, label: render('ac_profile', profile: p), } }.to_json %>
     )
   })

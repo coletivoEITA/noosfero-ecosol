@@ -6,6 +6,12 @@
       plugin:
         name: 'Facebook integration'
         description: 'Use the Cirandas app for Facebook!'
+    models:
+      page_tab:
+        types:
+          profile: 'Catalog one enterprise'
+          profiles: 'Catalog of the following enterprises'
+          query: 'Catalog enterprises choosen by search or filter'
     views:
       myprofile:
         checking_auth: 'Checking authorization' 
@@ -20,8 +26,23 @@
         timeline:
           heading: 'Timeline posting'
           add: 'Save timeline post settings' 
-        catalog:
+
+        catalogs:
           heading: 'Vitrine Cirandas'
+          new: 'New catalog'
+        catalog:
+          see_page: 'See page on Facebook'
+
+      page_tab:
+        add: 'Associate to my page on Facebook'
+        save: 'Save'
+        profile:
+          placeholder: "select an enterprise"
+        profiles:
+          placeholder: "select the enterprises"
+        query:
+          placeholder: "type the search terms"
+
 
 'en_US':
   <<: *en-US
