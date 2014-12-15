@@ -1582,6 +1582,10 @@ msgstr "título"
 msgid "description"
 msgstr "descrição"
 
+#: app/views/catalog/_pagination.html.erb
+msgid "Show more"
+msgstr "Ver mais produtos"
+
 #: app/models/create_community.rb:38 app/helpers/application_helper.rb:1079
 msgid "New community"
 msgstr "Nova comunidade"
