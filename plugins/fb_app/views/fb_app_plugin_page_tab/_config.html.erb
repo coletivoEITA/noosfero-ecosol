@@ -3,7 +3,8 @@
   <h3>
     <% if page_tab.page_id %>
       <%# button nil, t('fb_app_plugin.views.myprofile.catalog.see_page'), "https://facebook.com/#{page_tab.page_id}/app_#{FbAppPlugin.page_tab_app_credentials[:id]}"  %>
-      <%= button nil, t('fb_app_plugin.views.myprofile.catalog.see_page'), "https://facebook.com/#{page_tab.page_id}"  %>
+      <%# button nil, t('fb_app_plugin.views.myprofile.catalog.see_page'), "https://facebook.com/#{page_tab.page_id}"  %>
+      <%= page_tab.name %>
     <% else %>
       <%= t('fb_app_plugin.views.myprofile.catalogs.new') %>
     <% end %>
