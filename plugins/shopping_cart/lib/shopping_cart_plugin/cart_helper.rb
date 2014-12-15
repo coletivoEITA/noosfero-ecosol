@@ -55,7 +55,7 @@ module ShoppingCartPlugin::CartHelper
 
   def items_table(items, profile, delivery_option = nil, by_mail = false)
     environment = profile.environment
-    settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin)
+    settings = profile.shopping_cart_settings
     items = items.to_a
 
     quantity_opts = { :class => 'cart-table-quantity' }

@@ -115,7 +115,7 @@ class ShoppingCartPluginController < OrdersPluginController
     if validate_cart_presence
       @cart = cart
       @profile = cart_profile
-      @settings = Noosfero::Plugin::Settings.new(@profile, ShoppingCartPlugin)
+      @settings = cart_profile.shopping_cart_settings
       render :layout => false
     end
   end
@@ -187,7 +187,7 @@ class ShoppingCartPluginController < OrdersPluginController
 
   def update_delivery_option
     profile = cart_profile
-    settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin)
+    settings = profile.shopping_cart_settings
     delivery_price = settings.delivery_options[params[:delivery_option]]
     delivery = Product.new(:name => params[:delivery_option], :price => delivery_price)
     delivery.save run_callbacks: false, validate: false

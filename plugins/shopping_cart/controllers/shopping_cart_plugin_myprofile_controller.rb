@@ -2,7 +2,7 @@ class ShoppingCartPluginMyprofileController < MyProfileController
   def edit
     params[:settings] = treat_cart_options(params[:settings])
 
-    @settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin, params[:settings])
+    @settings = profile.shopping_cart_settings params[:settings]
     if request.post?
       begin
         @settings.save!

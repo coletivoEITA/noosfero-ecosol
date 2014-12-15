@@ -34,6 +34,7 @@ class FbAppPluginPageTabController < FbAppPluginController
         else
           # fake profile for catalog controller
           @profile = environment.enterprise_template
+          @profile.shopping_cart_settings.enabled = true
 
           base_query = if @page_tab.profiles.present? then @page_tab.profiles.map(&:identifier).join(' OR ') else @page_tab.query end
           params[:base_query] = base_query
