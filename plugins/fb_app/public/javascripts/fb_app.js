@@ -72,17 +72,8 @@ fb_app = {
         jQuery('#content').html('').addClass('loading')
         window.location.href = fb_app.current_url
       },
-
-      add: function (form) {
-        // this check if the user is using FB as a page and offer a switch
-        FB.login(function(response) {
-          var next_url = fb_app.page_tab.next_url + '?' + form.serialize()
-          window.location.href = fb_app.fb.add_tab_url(fb_app.page_tab.app_id, next_url)
-        })
-        return false
-      },
-
-      save: function(form) {
+      
+      validate_catalog_submission(form) {
         if (form.find('#page_tab_name').val().trim()=='') {
           //jQuery("#fb-app-error").text('cadê o nome?')
           noosfero.modal.html('<div id="fb-app-error">cadê o nome?</div>')
@@ -95,6 +86,23 @@ fb_app = {
             return false
           }
         }
+        return true
+      },
+
+      add: function (form) {
+        if (!validate_catalog_submission(form))
+          return false
+        // this checks if the user is using FB as a page and offer a switch
+        FB.login(function(response) {
+          var next_url = fb_app.page_tab.next_url + '?' + form.serialize()
+          window.location.href = fb_app.fb.add_tab_url(fb_app.page_tab.app_id, next_url)
+        })
+        return false
+      },
+
+      save: function(form) {
+        if (!validate_catalog_submission(form))
+          return false
         jQuery(form).ajaxSubmit()
         return false
       },
