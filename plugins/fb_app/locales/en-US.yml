@@ -38,6 +38,8 @@
           edit_button: "Edit catalog '%{catalog_name}'"
           remove_button: "Remove catalog '%{catalog_name}'"
           confirm_removal: "Are you sure you want to remove the catalog"
+          cancel_button: 'Cancel'
+          confirm_removal_button: 'Yes, I want to delete this catalog'
           
         catalog:
           see_page: 'See page on Facebook'
