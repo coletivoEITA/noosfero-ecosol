@@ -61,7 +61,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
     self.config[:query]
   end
 
-  def name value
+  def name
     self.config[:name]
   end
   def name= value
