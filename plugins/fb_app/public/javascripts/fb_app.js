@@ -39,6 +39,16 @@ fb_app = {
       //fb_app.fb.init(this.app_id, 'fb_app.fb.connect()')
       fb_app.fb.connect()
     },
+
+    disconnect: function() {
+      this.loading();
+      fb_app.fb.disconnect()
+    },
+
+    connect_to_another: function() {
+      this.loading();
+      fb_app.fb.connect_to_another()
+    },
   },
 
   page_tab: {
