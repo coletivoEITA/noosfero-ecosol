@@ -62,6 +62,7 @@ class FbAppPluginPageTabController < FbAppPluginController
         when 'query'
           @page_tab.query = params[:page_tab][:query].to_s
       end
+      @page_tab.name = params[:page_tab][:name]
       @page_tab.save!
 
       respond_to{ |format| format.js{ render action: 'admin', layout: false } }
