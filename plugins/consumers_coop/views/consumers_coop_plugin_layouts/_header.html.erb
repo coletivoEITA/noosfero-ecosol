@@ -1,6 +1,6 @@
 <div class="menu-header"><%= t('consumers_coop_plugin.views.layouts._header.collective_consumptio') %></div>
 
-<% style = (profile.consumers_coop_header_image and profile.consumers_coop_settings.header_type != 'pure_color') ? "style=\"background: url('" + profile.consumers_coop_header_image.public_filename + "') no-repeat;\" " : ""  %>
+<% style = (profile.consumers_coop_header_image and profile.consumers_coop_settings.header_type != 'pure_color') ? "style=\"background-image: url('" + profile.consumers_coop_header_image.public_filename + "');\" " : ""  %>
 <% color = profile.consumers_coop_settings.header_bg_color ? "color-"+profile.consumers_coop_settings.header_bg_color.to_s : " " %>
 
 <div class="menu-logo <%=  color + '" ' + style %>">
