@@ -9,7 +9,8 @@ test_users:
 
 app:
   id: xxx
-  secret:  xxx
+  secret: xxx
+  domain: domainconfigured.net
 
 test_app: 
   test_id:  xxx
