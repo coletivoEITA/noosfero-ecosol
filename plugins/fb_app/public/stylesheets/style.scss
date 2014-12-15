@@ -105,8 +105,10 @@ body.controller-fb_app_plugin_myprofile {
 }
 
 /* Control panel - catalog settings */
-.edit-page-tab {
+#page-tab-new h3, .edit-page-tab {
   display: none;
+}
+.edit-page-tab {
   background-color: #eee;
   padding: 15px;
   border-radius: 8px;
