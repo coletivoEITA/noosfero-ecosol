@@ -1,7 +1,7 @@
 @import 'base';
 
 body.controller-fb_app_plugin_page_tab {
-
+  
   /* Catalog Tab in Facebook */
   background: #fff;
 
@@ -18,25 +18,19 @@ body.controller-fb_app_plugin_page_tab {
     padding: 0;
     width: 100%;
   }
-  #product-list {
-    li.product {
-      width: 190px;
-      padding: 10px;
-    }
-    #product-list
-    .product-big {
-      width: 160px;
-    }
-    #product-list
-    .product-image-link {
-      height: 170px;
-    }
-    #product-list
-    .expand-box {
-      width: 162px;
-    }
+  #product-list li.product {
+    width: 190px;
+    padding: 10px;
   }
-
+  #product-list .product-big {
+    width: 160px;
+  }
+  #product-list .product-image-link {
+    height: 170px;
+  }
+  #product-list .expand-box {
+    width: 162px;
+  }
   #theme-footer {
     border: none;
   }
@@ -53,29 +47,26 @@ body.controller-fb_app_plugin_page_tab {
     float: none;
   }
 
+  input.small-loading {
+    background: transparent url(/images/loading-small.gif) no-repeat scroll right center;
+  }
+  
 }
 
 body.controller-fb_app_plugin_page_tab,
 body.controller-fb_app_plugin_myprofile {
-
-  input.small-loading {
-    background: transparent url(/images/loading-small.gif) no-repeat scroll right center;
-  }
-
   .loading {
     background: white url(/plugins/fb_app/images/loading.gif) no-repeat center center;
     width: 80%;
     height: 300px;
     margin: auto;
   }
-
 }
 
-/* control panel */
+/* control panel - general */
 .controller-profile_editor a.control-panel-fb-app {
   background-image: url(/plugins/fb_app/images/control-panel.png);
 }
-
 #fb-app-intro {
   margin: 0 40px 20px 40px;
 }
@@ -108,6 +99,30 @@ body.controller-fb_app_plugin_myprofile {
 #fb-app-wrapper h1 {
   font-size: 39px;
   margin-bottom: 50px;
+}
+
+/* Control panel - catalog settings */
+.page-tab h3 {
+  font-size: 120%;
+  font-color: inherit;
+  border-bottom: 1px solid #ccc;
+  margin-top: 20px;
+}
+#fb-app-catalogs label {
+  margin-top: 20px;
+}
+.fb-app-submit-page-tab-options, .fb-app-final-back-button {
+  margin-top: 30px;
+  clear: both;
+}
+
+/* Control panel - timeline settings */
+/* We will temporarily disable these settings: */
+#fb-app-timeline {
+  display: none;
+}
+#fb-app-timeline #track-form a, #fb-app-timeline #track-form a:visited {
+  color: #fff;
 }
 
 @media (min-width: 768px) {
