@@ -73,7 +73,7 @@ body.controller-fb_app_plugin_myprofile {
 #fb-app-connect-status {
   background-color: #eee;
   border: 1px solid #ccc;
-  margin-bottom: 30px;
+  margin: 30px 0;
   padding: 30px;
 }
 #fb-app-auth {
@@ -104,16 +104,18 @@ body.controller-fb_app_plugin_myprofile {
 /* Control panel - catalog settings */
 .page-tab h3 {
   font-size: 120%;
-  font-color: inherit;
+  color: inherit;
   border-bottom: 1px solid #ccc;
   margin-top: 20px;
 }
 #fb-app-catalogs label {
   margin-top: 20px;
 }
-.fb-app-submit-page-tab-options, .fb-app-final-back-button {
-  margin-top: 30px;
-  clear: both;
+.fb-app-submit-page-tab-options {
+  margin-top: 20px;
+}
+.fb-app-final-back-button {
+  margin-top: 70px;
 }
 
 /* Control panel - timeline settings */
