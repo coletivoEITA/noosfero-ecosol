@@ -220,7 +220,7 @@ catalog = {
         this.source = new Bloodhound({
           datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
           queryTokenizer: Bloodhound.tokenizers.whitespace,
-          remote: this.url+'?query=%QUERY',
+          remote: this.url+'&query=%QUERY',
         })
         this.source.initialize()
 

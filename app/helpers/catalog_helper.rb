@@ -5,15 +5,19 @@ module CatalogHelper
   include DisplayHelper
   include ManageProductsHelper
 
+  def load_query_and_scope
+    @base_query = params[:base_query].to_s
+    @query = params[:query].to_s
+    @final_query = "#{@base_query} #{@query}"
+    @scope = params[:scope].to_s
+    @ar_scope = if @scope == 'all' then environment.products.enabled.public else profile.products end
+  end
+
   def catalog_load_index options = {:page => params[:page], :show_categories => true}
     @catalog_bar = true
     @use_show_more = params[:use_show_more] == '1'
 
-    @base_query = params[:base_query].to_s
-    @query = params[:query].to_s
-    @final_query = "#{@base_query} #{@query}"
-    @scope = params[:scope]
-    scope = if @scope == 'all' then environment.products.enabled.public else profile.products end
+    load_query_and_scope
     solr_options = {:all_facets => @query.blank?}
 
     base_per_page = profile.products_per_catalog_page rescue 24
@@ -36,11 +40,11 @@ module CatalogHelper
     paginate_options = {per_page: @per_page, page: @pg_page}
     @offset = (@pg_page-1) * @per_page
 
-    # FIXME
+    # FIXME the way to call is different on enterprisehomepage (block) and on catalog (controller)
     if self.respond_to? :controller
-      result = controller.send :find_by_contents, :catalog, scope, @final_query, paginate_options, solr_options
+      result = controller.send :find_by_contents, :catalog, @ar_scope, @final_query, paginate_options, solr_options
     else
-      result = find_by_contents :catalog, scope, @final_query, paginate_options, solr_options
+      result = find_by_contents :catalog, @ar_scope, @final_query, paginate_options, solr_options
     end
 
     @products = result[:results]
