@@ -87,14 +87,12 @@ fb_app = {
       
       validate_catalog_submission: function(form) {
         if (form.find('#page_tab_name').val().trim()=='') {
-          //jQuery("#fb-app-error").text('cadê o nome?')
-          noosfero.modal.html('<div id="fb-app-error">cadê o nome?</div>')
+          noosfero.modal.html('<div id="fb-app-error">'+fb_app.locales.error_empty_name+'</div>')
           return false
         } else {
           selected_type = form.find('#page_tab_config_type').val()
           if (form.find('#config-type-'+selected_type+' input').val().trim()=='') {
-            //jQuery("#fb-app-error").text('cadê sua seleção?')
-            noosfero.modal.html('<div id="fb-app-error">cadê a seleção?</div>')
+            noosfero.modal.html('<div id="fb-app-error">'+fb_app.locales.error_empty_settings+'</div>')
             return false
           }
         }
