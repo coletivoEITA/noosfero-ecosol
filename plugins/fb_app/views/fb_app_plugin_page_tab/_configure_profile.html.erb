@@ -1,11 +1,11 @@
 
-<%= f.text_field :profile_ids, "data-placeholder" => t('fb_app_plugin.views.page_tab.profile.placeholder'), onchange: 'fb_app.page_tab.profile.onchange($(this))' %>
+<%= f.text_field :profile_ids, "data-placeholder" => t('fb_app_plugin.views.page_tab.profile.placeholder'), onchange: 'fb_app.page_tab.config.profile.onchange($(this))' %>
 
 <%= javascript_tag do %>
   jQuery(document).ready(function() {
     var selector = '#page-tab-<%= page_tab.id || 'new' %> #config-type-profile #page_tab_profile_ids'
 
-    fb_app.page_tab.profile.onchange($(selector))
+    fb_app.page_tab.config.profile.onchange($(selector))
 
     open_graph.autocomplete.init(
       <%= url_for(controller: :fb_app_plugin_page_tab, action: :enterprise_search).to_json %>,

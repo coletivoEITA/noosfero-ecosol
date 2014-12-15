@@ -46,44 +46,52 @@ fb_app = {
     next_url: '',
 
     init: function() {
-      this.change_type($('select#page_tab_config_type'))
+      fb_app.modal.patchFancybox()
     },
 
-    close: function(evt) {
-     if (evt != null && evt != void 0) { evt.preventDefault(); evt.stopPropagation();}
-      noosfero.modal.close()
-      jQuery('#content').html('').addClass('loading')
-      window.location.href = fb_app.current_url
-    },
+    config: {
 
-    add: function (form) {
-      var next_url = this.next_url + '?' + form.serialize()
-      window.location.href = fb_app.fb.add_tab_url(this.app_id, next_url)
-      return false
-    },
+      init: function() {
+        this.change_type($('select#page_tab_config_type'))
 
-    save: function(form) {
-      jQuery(form).ajaxSubmit()
-      return false
-    },
+      },
 
-    change_type: function(select) {
-      select = jQuery(select)
-      var selectedId = '#config-type-'+select.val()
+      close: function(evt) {
+       if (evt != null && evt != void 0) { evt.preventDefault(); evt.stopPropagation();}
+        noosfero.modal.close()
+        jQuery('#content').html('').addClass('loading')
+        window.location.href = fb_app.current_url
+      },
 
-      jQuery(selectedId).show().
-        find('input').prop('disabled', false)
-      jQuery('.config-type:not('+selectedId+')').hide().
-        find('input').prop('disabled', true)
-    },
+      add: function (form) {
+        var next_url = this.next_url + '?' + form.serialize()
+        window.location.href = fb_app.fb.add_tab_url(this.app_id, next_url)
+        return false
+      },
 
-    profile: {
+      save: function(form) {
+        jQuery(form).ajaxSubmit()
+        return false
+      },
 
-      onchange: function(input) {
-        if (input.val())
-          input.removeAttr('placeholder')
-        else
-          input.attr('placeholder', input.attr('data-placeholder'))
+      change_type: function(select) {
+        select = jQuery(select)
+        var selectedId = '#config-type-'+select.val()
+
+        jQuery(selectedId).show().
+          find('input').prop('disabled', false)
+        jQuery('.config-type:not('+selectedId+')').hide().
+          find('input').prop('disabled', true)
+      },
+
+      profile: {
+
+        onchange: function(input) {
+          if (input.val())
+            input.removeAttr('placeholder')
+          else
+            input.attr('placeholder', input.attr('data-placeholder'))
+        },
       },
     },
 
@@ -198,6 +206,41 @@ fb_app = {
       })
     },
 
+  },
+
+  modal: {
+    patchFancybox: function() {
+      window.apply_zoom_to_images = function(zoom_text) {
+        jQuery(function($) {
+          $(window).load( function() {
+            $('#article .article-body img').each( function(index) {
+              var original = original_image_dimensions($(this).attr('src'));
+              if ($(this).width() < original['width'] || $(this).height() < original['height']) {
+                $(this).wrap('<div class="zoomable-image" />');
+                $(this).parent('.zoomable-image')
+                .attr({style: $(this).attr('style')})
+                .addClass(this.className)
+                .css({
+                  width: $(this).width(),
+                  height: $(this).height(),
+                });
+                $(this).attr('style', '');
+                $(this).after('<a href="' + $(this).attr('src') + '" class="zoomify-image"><span class="zoomify-text">'+zoom_text+'</span></a>');
+              }
+            });
+            $('.zoomify-image').fancybox({
+              autoCenter: false,
+              beforeShow: function() {
+                var position = this.element.position();
+                $.fancybox._getPosition = function() {
+                  return position;
+                }
+              }
+            })
+          });
+        });
+      }
+    },
   },
 }
 

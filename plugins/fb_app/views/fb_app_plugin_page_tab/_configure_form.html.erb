@@ -1,5 +1,5 @@
 
-<%= form_for :page_tab, url: {controller: :fb_app_plugin_page_tab, action: :admin}, html: {onsubmit: "return fb_app.page_tab.save($(this))"} do |f| %>
+<%= form_for :page_tab, url: {controller: :fb_app_plugin_page_tab, action: :admin}, html: {onsubmit: "return fb_app.page_tab.config.save($(this))"} do |f| %>
 
   <%= hidden_field_tag :signed_request, signed_request %>
   <%= hidden_field_tag :page_id, page_tab.page_id %>
@@ -8,7 +8,7 @@
 
   <%= f.select :config_type,
     FbAppPlugin::PageTab::ConfigTypes.map{ |type| [t("fb_app_plugin.models.page_tab.types.#{type}"), type] },
-    {}, onchange: 'fb_app.page_tab.change_type($(this))', class: 'form-control' %>
+    {}, onchange: 'fb_app.page_tab.config.change_type($(this))', class: 'form-control' %>
 
   <% FbAppPlugin::PageTab::ConfigTypes.each do |type| %>
     <div id="config-type-<%= type %>" class="config-type">
@@ -17,7 +17,7 @@
   <% end %>
 
   <% if page_tab.new_record? %>
-    <%= submit_button :add, t('fb_app_plugin.views.page_tab.add'), onclick: 'return fb_app.page_tab.add($(this.form))' %>
+    <%= submit_button :add, t('fb_app_plugin.views.page_tab.add'), onclick: 'return fb_app.page_tab.config.add($(this.form))' %>
   <% else %>
     <%= submit_button :save, t('fb_app_plugin.views.page_tab.save') %>
   <% end %>
@@ -26,6 +26,6 @@
 
 <%= javascript_tag do %>
   jQuery('document').ready(function(){
-    fb_app.page_tab.init();
+    fb_app.page_tab.config.init();
   });
 <% end %>

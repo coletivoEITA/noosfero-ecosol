@@ -1,3 +1,4 @@
+<%= render 'load' %>
 <%= render 'configure_button' %>
 
 <div id="product-catalog">
@@ -16,5 +17,7 @@
   <%= add_zoom_to_images %>
 </div>
 
-<%= render 'load' %>
+<%= javascript_tag do %>
+  catalog.base_url_path = <%= url_for(controller: :fb_app_plugin_page_tab, action: :index, page_id: params[:page_id], signed_request: params[:signed_request]).to_json %> + '&'
+<% end %>
 
