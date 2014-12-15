@@ -3,3 +3,4 @@ dependencies:
   - metadata
   - oauth
   - open_graph
+  - solr

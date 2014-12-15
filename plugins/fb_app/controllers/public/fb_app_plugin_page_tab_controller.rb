@@ -31,18 +31,13 @@ class FbAppPluginPageTabController < FbAppPluginController
 
           render action: 'catalog'
         else
+          # fake profile for catalog controller
+          @profile = environment.enterprise_template
           @query = if @page_tab.profiles.present? then @page_tab.profiles.map(&:identifier).join(' OR ') else @page_tab.query end
-          @empty_query = @category.nil? && @query.blank?
-
-          page = (params[:page] || '1').to_i
-          @asset = :products
-          @order ||= [@asset]
-          @names = {}
           @scope = @environment.products.enabled.public
-          @searches ||= {}
-          @searches[@asset] = @scope.find_by_contents @query, {page: page, per_page: 20}
+          load_catalog scope: @scope, base_query: @query
 
-          render action: 'search'
+          render action: 'catalog'
         end
       else
         render action: 'first_load'
@@ -139,9 +134,9 @@ class FbAppPluginPageTabController < FbAppPluginController
     @disable_cache_theme_navigation = true
   end
 
-  def load_catalog
+  def load_catalog options = {}
     extend CatalogHelper
-    catalog_load_index
+    catalog_load_index options
     @use_show_more = true
   end
 
