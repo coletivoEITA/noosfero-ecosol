@@ -83,6 +83,16 @@ fb_app = {
       },
 
       save: function(form) {
+        if (!form.find('page_tab_name').val()) {
+          jQuery("#fb-app-error").text('cadê o nome?')
+          return false
+        } else {
+          selected_type = form.find('#page_tab_config_type').val()
+          if (!form.find('#config-type-'+selected_type+' input').val()) {
+            jQuery("#fb-app-error").text('cadê sua seleção?')
+            return false
+          }
+        }
         jQuery(form).ajaxSubmit()
         return false
       },
