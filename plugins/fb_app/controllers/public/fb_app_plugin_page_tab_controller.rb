@@ -70,6 +70,13 @@ class FbAppPluginPageTabController < FbAppPluginController
     end
   end
 
+  def destroy
+    @page_tab = FbAppPlugin::PageTab.find params[:id]
+    return unless user.is_admin?(environment) or user.is_admin? @page_tab.profile
+    @page_tab.destroy
+    render nothing: true
+  end
+
   def uninstall
     render text: params.to_yaml
   end

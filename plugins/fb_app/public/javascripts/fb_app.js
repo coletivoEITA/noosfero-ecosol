@@ -66,6 +66,18 @@ fb_app = {
 
       },
 
+      edit: function(button) {
+        var page_tab = button.parents('.page-tab')
+        page_tab.find('form').toggle(400)
+      },
+
+      remove: function(button, url) {
+        var page_tab = button.parents('.page-tab')
+        jQuery.post(url, function() {
+          page_tab.remove()
+        })
+      },
+
       close: function(evt) {
        if (evt != null && evt != void 0) { evt.preventDefault(); evt.stopPropagation();}
         noosfero.modal.close()
