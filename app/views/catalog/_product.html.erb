@@ -33,6 +33,12 @@
 
     <li class="product-link"><%= link_to_product_from_catalog product, url_options: catalog_params %></li>
 
+    <% if show_supplier %>
+      <li class="product-supplier">
+        <span><%= _('By') %>: <%= product.profile.short_name %>
+      </li>
+    <% end %>
+
     <li class="product-price-line">
       <% unless product.discount.blank? or product.discount == 0 %>
         <span class="product-discount">

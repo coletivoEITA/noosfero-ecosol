@@ -9,7 +9,7 @@
   <% end %>
 
   <%= content_for :product_page do %>
-    <%= render 'catalog/results' %>
+    <%= render 'catalog/results', show_supplier: @scope == 'all' %>
   <% end %>
   <%= render 'catalog/search' %>
   <%= render 'catalog/javascripts', external: false %>

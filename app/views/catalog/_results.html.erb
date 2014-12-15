@@ -1,10 +1,14 @@
+<%
+  show_supplier = false unless defined? show_supplier
+%>
+
 <% if @products.present? %>
   <%= render 'catalog/form' %>
 
   <div id="catalog-results">
 
     <ul id="product-list">
-      <%= render 'catalog/products', :products => @products %>
+      <%= render 'catalog/products', :products => @products, show_supplier: show_supplier  %>
     </ul>
 
     <%= render 'catalog/pagination' %>
