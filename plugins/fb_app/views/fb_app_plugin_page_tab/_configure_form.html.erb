@@ -1,8 +1,8 @@
 <% form_id = (page_tab.id) ? ("edit_tab_"+page_tab.id.to_s) : "add_tab" %>
-<% if !page_tab.id %>
-  <h3><%= t('fb_app_plugin.views.myprofile.catalogs.new') %></h3>
-<% end %>
 <%= form_for page_tab, as: :page_tab, url: {controller: :fb_app_plugin_page_tab, action: :admin}, html: {id: form_id, class:"edit-page-tab", onsubmit: "return fb_app.page_tab.config.save($(this))"} do |f| %>
+  <% if !page_tab.id %>
+    <h3><%= t('fb_app_plugin.views.myprofile.catalogs.new') %></h3>
+  <% end %>
 
   <%= hidden_field_tag :signed_request, signed_request %>
   <%= hidden_field_tag :page_id, page_tab.page_id %>
