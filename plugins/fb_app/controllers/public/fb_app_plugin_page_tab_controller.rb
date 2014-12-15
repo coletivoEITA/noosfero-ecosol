@@ -24,7 +24,7 @@ class FbAppPluginPageTabController < FbAppPluginController
 
           render action: 'product'
         elsif @page_tab.profiles.present? and @page_tab.profiles.size == 1
-          @profile = @page_tab.profile
+          @profile = @page_tab.profiles.first
           extend CatalogHelper
           catalog_load_index
 
@@ -133,7 +133,7 @@ class FbAppPluginPageTabController < FbAppPluginController
   end
 
   def change_theme
-    @current_theme = 'embed_810'
+    @current_theme = 'ees' unless theme_responsive?
     @without_pure_chat = true
   end
 

@@ -8,10 +8,12 @@ module FbAppPlugin::DisplayHelper
     base.alias_method_chain :link_to_product, :iframe
   end
 
-  def link_to_product_with_iframe product, options = {}
-    link_to content_tag('span', product.name),
-      params.merge(controller: :fb_app_plugin, product_id: product.id),
-      options.merge(target: '')
+  def link_to_product_with_iframe product, opts = {}
+    url_opts = opts.delete(:url_options) || {}
+    url_opts.merge controller: :fb_app_plugin, product_id: product.id
+    url = params.merge url_opts
+    link_to content_tag('span', product.name), url,
+      opts.merge(target: '')
   end
 
   def link_to_with_target_blank name = nil, options = nil, html_options = nil, &block

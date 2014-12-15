@@ -1,14 +1,17 @@
 @import 'base';
 
-body.controller-fb_app_plugin {
+body.controller-fb_app_plugin_page_tab {
   margin-top: 40px;
 
-  .box-3, .box-2, #theme-header {
+  #profile-title,
+  #profile-header,
+  #profile-footer,
+  #theme-header {
     display: none;
   }
 
-  #wrap-1, #wrap-2 {
-    border-radius: 10px 10px 0 0;
+  .product-catalog-ctrl {
+    float: none;
   }
 
   input.small-loading {
@@ -22,39 +25,6 @@ body.controller-fb_app_plugin {
     margin: auto;
   }
 
-  /* admin popin */
-
-  #cboxContent {
-    overflow: auto;
-    position: initial;
-  }
-  .twitter-typeahead {
-    position: absolute !important;
-  }
-  #cboxClose {
-    display: none;
-  }
-  #fb_store_admin_page {
-    width: 650px;
-    height: 500px;
-  }
-
-  #fb_integration_type_profiles table {
-    margin: 0 0 20px 20px;
-    width: 90%;
-  }
-
-  a.see-more {
-    display: none;
-  }
-
-  .button-bar .icon-back {
-    display: none;
-  }
-
-  .search-results-total {
-    padding-top: 6px;
-  }
 }
 
 /* control panel */

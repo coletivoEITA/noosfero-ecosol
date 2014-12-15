@@ -20,7 +20,7 @@ module ShoppingCartPlugin::CartHelper
   end
 
   def cart_minimized
-    @cart_minimized ||= ['catalog', 'manage_products'].include?(params[:controller]) || @page.is_a?(EnterpriseHomepage)
+    @catalog_bar
   end
 
   def repeat_checkout_order_button order

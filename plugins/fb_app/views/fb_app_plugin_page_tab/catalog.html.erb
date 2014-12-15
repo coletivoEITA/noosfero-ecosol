@@ -1,11 +1,17 @@
 <%= render 'configure_button' %>
 
 <div id="product-catalog">
-  <ul id="product-list">
-    <%= render 'catalog/products', products: @products, float_box_position: (float_box_position rescue nil) %>
-  </ul>
+  <% if user.present? and (user.is_admin?(profile.environment) or user.is_admin?(profile)) %>
+    <div class="product-catalog-ctrl">
+      <%= button :add, _('Add product or service'), controller: :manage_products, action: :new, profile: profile.identifier %>
+    </div>
+  <% end %>
 
-  <%= pagination_links @products, params: params, renderer: 'FbAppPlugin::LinkRenderer' %>
+  <%= content_for :product_page do %>
+    <%= render 'catalog/results' %>
+  <% end %>
+  <%= render 'catalog/search' %>
+  <%= render 'catalog/javascripts', external: false %>
 
   <%= add_zoom_to_images %>
 </div>
