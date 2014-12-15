@@ -10,8 +10,8 @@
       page_tab:
         types:
           profile: 'Vitrine de um empreendimento'
-          profiles: 'Vitrine dos seguintes empreendimentos'
-          query: 'Vitrine dos empreendimentos escolhidos por busca ou filtro'
+          profiles: 'Vitrine de empreendimentos escolhidos por você'
+          query: 'Vitrine de produtos ou serviços escolhidos por categoria ou busca'
     views:
       myprofile:
         checking_auth: 'Verificando autorização de acesso' 
@@ -34,14 +34,14 @@
           see_page: 'Ver página no facebook'
 
       page_tab:
-        add: 'Associar a página no Facebook'
+        add: 'Criar vitrine em uma página sua no Facebook'
         save: 'Salvar'
         profile:
           placeholder: "selecione um empreendimento"
         profiles:
           placeholder: "selecione os empreendimentos"
         query:
-          placeholder: "digite os termos de busca"
+          placeholder: "escolha os produtos e serviços por filtro ou por busca"
 
 'pt_BR':
   <<: *pt-BR
