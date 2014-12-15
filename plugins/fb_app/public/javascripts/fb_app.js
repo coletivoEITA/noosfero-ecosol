@@ -1,13 +1,13 @@
 fb_app = {
   current_url: '',
 
-  products: {
+  /*products: {
     fix_popins: function() {
       jQuery('.zoomify-image').removeClass('.zoomify-image').attr({
         onclick: 'noosfero.modal.inline(this.href); return false',
       })
     },
-  },
+  },*/
 
   locales: {
 
