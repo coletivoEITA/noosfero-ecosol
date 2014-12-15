@@ -71,9 +71,14 @@ body.controller-fb_app_plugin_myprofile {
 }
 
 /* control panel - general */
-#fb-app-error {
+#fb-app-modal-wrap {
+  display: none;
+}
+#fb-app-error, #fb-app-modal {
   padding: 70px 30px;
   font-size: 120%;
+}
+#fb-app-error {
   color: #E44444;
   font-style: italic;
 }
