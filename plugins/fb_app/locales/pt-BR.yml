@@ -51,6 +51,7 @@
           empty_settings: 'Por favor, selecione os empreendimentos solidários, o filtro ou os termos de busca para sua vitrine.'
 
       page_tab:
+        edit_catalog: 'Editar vitrine'
         add: 'Criar vitrine em uma página sua no Facebook'
         save: 'Salvar'
         added_notice: 'Parabéns: você acaba de publicar uma nova vitrine da Economia Solidária no Facebook!'
