@@ -30,7 +30,7 @@
         catalogs:
           heading: 'Vitrine Cirandas'
           new: 'Criar nova vitrine'
-          catalog_name_label: 'Name'
+          catalog_name_label: 'Nome'
           catalog_type_chooser_label: 'Tipo'
           profile_chooser_label: 'Empreendimento'
           profiles_chooser_label: 'Empreendimentos'
