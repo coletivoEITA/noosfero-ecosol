@@ -24,8 +24,10 @@
         reconnect: 'Reconnect'
 
         timeline:
-          heading: 'Timeline posting'
-          add: 'Save timeline post settings' 
+          heading: 'Cirandas publishing in your facebook'
+          add: 'Save timeline post settings'
+          explanation_title: 'Soon!'
+          explanation_text: 'In a short time, your actions in Cirandas will become new posts in your Facebook timeline!'
 
         catalogs:
           heading: 'Solidarity Economy Catalog'
