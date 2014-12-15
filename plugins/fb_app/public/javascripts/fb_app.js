@@ -26,7 +26,14 @@ fb_app = {
 
   timeline: {
     app_id: '',
-    app_scope: 'publish_actions',
+    //app_scope: 'publish_actions',
+    app_scope: '',
+
+    connect: function(){
+      fb_app.fb.scope = this.app_scope
+      //fb_app.fb.init(this.app_id, 'fb_app.fb.connect()')
+      fb_app.fb.connect()
+    },
   },
 
   page_tab: {
