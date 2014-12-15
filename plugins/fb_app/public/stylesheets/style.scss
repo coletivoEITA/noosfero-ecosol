@@ -105,8 +105,17 @@ body.controller-fb_app_plugin_myprofile {
 }
 
 /* Control panel - catalog settings */
-.edit-page-tab {
+#page-tab-new h3, .edit-page-tab {
   display: none;
+}
+.edit-page-tab {
+  background-color: #eee;
+  padding: 15px;
+  border-radius: 8px;
+}
+.edit-tab-button {
+  float: right;
+  margin-left: 10px;
 }
 #fb-app-timeline, #fb-app-catalogs {
   border: 1px solid #999;
@@ -116,7 +125,6 @@ body.controller-fb_app_plugin_myprofile {
 #content #fb-app-catalogs h3 {
   font-size: 120%;
   color: inherit;
-  border-bottom: 1px solid #ccc;
   margin-top: 20px;
 }
 #fb-app-catalogs label {
