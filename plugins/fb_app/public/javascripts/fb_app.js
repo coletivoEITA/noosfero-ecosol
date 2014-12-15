@@ -73,15 +73,18 @@ fb_app = {
 
       remove: function(button, url) {
         var page_tab = button.parents('.page-tab')
-        var name = page_tab.find('#page_tab_name').attr('name')
+        var name = page_tab.find('#page_tab_name').val()
         jQuery('.modal-button-yes')
           .attr('target_url',url)
-          .attr('target_name',name)
+          .attr('target_id','#'+page_tab.attr('id'))
+        jQuery('#fb-app-modal-catalog-name').text(name)
         noosfero.modal.html(jQuery('#fb-app-modal-wrap').html())
       },
-      
+
       remove_confirmed: function(el) {
-        jQuery.post(jQuery(el).attr('target_url')), function() {
+        el = jQuery(el)
+        jQuery.post(el.attr('target_url'), function() {
+          var page_tab = jQuery(el.attr('target_id'))
           page_tab.remove()
         })
       },
@@ -92,7 +95,7 @@ fb_app = {
         jQuery('#content').html('').addClass('loading')
         window.location.href = fb_app.current_url
       },
-      
+
       validate_catalog_submission: function(form) {
         if (form.find('#page_tab_name').val().trim()=='') {
           noosfero.modal.html('<div id="fb-app-error">'+fb_app.locales.error_empty_name+'</div>')
