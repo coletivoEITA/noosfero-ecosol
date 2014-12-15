@@ -30,6 +30,11 @@
         catalogs:
           heading: 'Vitrine Cirandas'
           new: 'Criar nova vitrine'
+          catalog_type_chooser_label: 'Escolha o tipo de vitrine'
+          profile_chooser_label: 'Escolha o empreendimento'
+          profiles_chooser_label: 'Escolha os empreendimentos'
+          query_label: "Critérios para exibição dos produtos na vitrine"
+
         catalog:
           see_page: 'Ver página no facebook'
 
