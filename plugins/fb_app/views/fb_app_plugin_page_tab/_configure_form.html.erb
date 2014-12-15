@@ -6,6 +6,9 @@
   <%= f.hidden_field :profile_id, value: profile.id %>
   <%= f.hidden_field :page_id %>
 
+  <%= f.label t("fb_app_plugin.views.myprofile.catalogs.catalog_name_label") %>
+  <%= f.text_field :name %>
+  
   <%= f.label t("fb_app_plugin.views.myprofile.catalogs.catalog_type_chooser_label") %>
     <%= f.select :config_type,
     FbAppPlugin::PageTab::ConfigTypes.map{ |type| [t("fb_app_plugin.models.page_tab.types.#{type}"), type] },
