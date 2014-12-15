@@ -30,6 +30,10 @@
         catalogs:
           heading: 'Solidarity Economy Catalog'
           new: 'Add new catalog'
+          catalog_type_chooser_label: 'Choose the catalog type'
+          profile_chooser_label: 'Choose the enterprise'
+          profiles_chooser_label: 'Choose the enterprises'
+          query_label: 'Criteria for the catalog\'s products'
         catalog:
           see_page: 'See page on Facebook'
 
