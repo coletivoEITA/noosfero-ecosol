@@ -1,6 +1,33 @@
 @import 'base';
 
 body.controller-fb_app_plugin_page_tab {
+  
+  /* Catalog Tab in Facebook */
+  body {
+    background: #fff;
+  }
+  #theme-footer {
+    border: none;
+  }
+  #wrap-1 {
+    box-shadow: none;
+  }
+  .container {
+    width: 100%;
+  }
+  #content .no-boxes {
+    padding: 0;
+  }
+  #product-list li.product {
+    width: 180px;
+  }
+  #product-list .product-big {
+    width: 140px;
+  }
+  #product-list .expand-box {
+    width: 162px;
+  }
+  /* End of Catalog Tab in Facebook */
 
   #profile-title,
   #profile-header,
