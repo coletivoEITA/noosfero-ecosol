@@ -90,7 +90,7 @@ fb_app = {
       },
 
       add: function (form) {
-        if (!validate_catalog_submission(form))
+        if (!this.validate_catalog_submission(form))
           return false
         // this checks if the user is using FB as a page and offer a switch
         FB.login(function(response) {
@@ -101,7 +101,7 @@ fb_app = {
       },
 
       save: function(form) {
-        if (!validate_catalog_submission(form))
+        if (!this.validate_catalog_submission(form))
           return false
         jQuery(form).ajaxSubmit()
         return false
