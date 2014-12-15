@@ -35,7 +35,7 @@
 
     <% if show_supplier %>
       <li class="product-supplier">
-        <span><%= _('By') %>: <%= product.profile.short_name %>
+        <span><%= _('By') %>:</span> <%= link_to product.profile.short_name, product.profile.url %>
       </li>
     <% end %>
 

@@ -3077,12 +3077,15 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 .msie #product-list h3 {
   margin-top: -15px;
 }
-
 #product-list .highlighted img.star {
   position: absolute;
   top: 2px;
   right: 2px;
   z-index: 1;
+}
+.product-supplier {
+  font-size: 80%;
+  margin-bottom: 5px;
 }
 
 /* * * Show Product * * * * * * * * * * * * */
