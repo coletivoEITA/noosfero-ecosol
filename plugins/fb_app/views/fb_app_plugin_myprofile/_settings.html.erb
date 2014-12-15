@@ -10,21 +10,27 @@
 </div>
 
 <% if @auth.connected? or Rails.env.development? %>
-<% if FbAppPlugin.test_user? user %>
+  <div id="fb-app-catalogs">
+    <%= render 'catalogs' %>
+  </div>
+  
   <div id="fb-app-timeline">
     <h2>
       <%= t('fb_app_plugin.views.myprofile.timeline.heading') %>
     </h2>
-
+    <h3>
+      <%= t('fb_app_plugin.views.myprofile.timeline.explanation_title') %>
+    </h3>
+    <p>
+      <%= t('fb_app_plugin.views.myprofile.timeline.explanation_text') %>
+    </p>
+<% if FbAppPlugin.test_user? user %>
     <div id="track-form">
       <%= render 'track_form' %>
     </div>
   </div>
 <% end %>
-
-  <div id="fb-app-catalogs">
-    <%= render 'catalogs' %>
-  </div>
+  
 <% end %>
 
 <div class='clean'></div>
