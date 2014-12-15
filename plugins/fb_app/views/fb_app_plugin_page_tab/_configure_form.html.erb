@@ -18,9 +18,9 @@
   <% end %>
 
   <% if page_tab.new_record? %>
-    <%= submit_button :add, t('fb_app_plugin.views.page_tab.add'), onclick: 'return fb_app.page_tab.config.add($(this.form))' %>
+    <%= submit_button :add, t('fb_app_plugin.views.page_tab.add'), onclick: 'return fb_app.page_tab.config.add($(this.form))', class: 'fb-app-submit-page-tab-options' %>
   <% else %>
-    <%= submit_button :save, t('fb_app_plugin.views.page_tab.save') %>
+    <%= submit_button :save, t('fb_app_plugin.views.page_tab.save'), class: 'fb-app-submit-page-tab-options' %>
   <% end %>
 
 <% end %>
