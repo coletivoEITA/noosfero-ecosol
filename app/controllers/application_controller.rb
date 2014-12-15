@@ -26,10 +26,11 @@ class ApplicationController < ActionController::Base
   self.controller_path_class = {}
 
   def default_url_options options={}
-    if @domain or (@profile and @profile.default_protocol)
-      protocol = if @profile then @profile.default_protocol else @domain.protocol end
-      options.merge! :protocol => protocol if protocol != 'http'
-    end
+    #if @domain or (@profile and @profile.default_protocol)
+      #protocol = if @profile then @profile.default_protocol else @domain.protocol end
+      #options.merge! :protocol => protocol if protocol != 'http'
+    #end
+    options[:protocol] ||= '//'
 
     # Only use profile's custom domains for the profiles and the account controllers.
     # This avoids redirects and multiple URLs for one specific resource
