@@ -292,7 +292,7 @@ fb_app = {
               beforeShow: function() {
                 var position = this.element.position();
                 console.log(this.element)
-                console.log(this.element.position)
+                console.log(this.element.position())
                 $.fancybox._getPosition = function() {
                   return position;
                 }
