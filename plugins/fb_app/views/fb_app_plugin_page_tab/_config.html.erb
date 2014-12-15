@@ -3,7 +3,8 @@
   <% if page_tab.page_id %>
     <h3>
       <%= page_tab.name %>
-      <%= button_to_function_without_text 'edit', t('fb_app_plugin.views.myprofile.catalog.see_page'), "jQuery('#edit_tab_"+page_tab.id.to_s+"').toggle()"  %>
+      <%= button_to_function_without_text 'edit', t('fb_app_plugin.views.myprofile.catalog.see_page'), "jQuery('#edit_tab_"+page_tab.id.to_s+"').toggle()", class: 'edit-tab-button'  %>
+      <%= button_to_function_without_text 'remove', t('fb_app_plugin.views.myprofile.catalog.see_page'), "", class: 'edit-tab-button'  %>
       <%# button nil, t('fb_app_plugin.views.myprofile.catalog.see_page'), "https://facebook.com/#{page_tab.page_id}/app_#{FbAppPlugin.page_tab_app_credentials[:id]}", target: '_blank'  %>
       <%# button nil, t('fb_app_plugin.views.myprofile.catalog.see_page'), "https://facebook.com/#{page_tab.page_id}", target: '_blank'  %>
     </h3>
