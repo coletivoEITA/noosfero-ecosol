@@ -101,6 +101,9 @@ end
 ActiveSupport.on_load :open_graph_plugin do
   publisher = FbAppPlugin::Publisher.new
   OpenGraphPlugin::Stories.register_publisher publisher
+  MetadataPlugin::Spec::Controllers[:fb_app_plugin_page_tab] = {
+    variable: :@product,
+  }
 end
 
 # workaround for plugins' scope problem
