@@ -37,8 +37,13 @@
           query_label: "Criteria for the catalog's products"
           edit_button: "Edit catalog '%{catalog_name}'"
           remove_button: "Remove catalog '%{catalog_name}'"
+          
         catalog:
           see_page: 'See page on Facebook'
+          
+        error:
+          empty_name: 'Please add a name to your catalog.'
+          empty_settings: 'Please choose SSE enterprises or search terms or filters for your catalog.'
 
       page_tab:
         add: 'Add catalog to one of my pages on Facebook'
