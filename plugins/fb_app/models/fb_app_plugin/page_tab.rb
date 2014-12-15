@@ -61,6 +61,13 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
     self.config[:query]
   end
 
+  def name value
+    self.config[:name]
+  end
+  def name= value
+    self.config[:name] = value
+  end
+
   def profile_ids= ids
     ids = ids.split(',')
     self.config[:type] = if ids.size == 1 then :profile else :profiles end
