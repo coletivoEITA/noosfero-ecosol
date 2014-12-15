@@ -1,7 +1,8 @@
 
 <%= form_for :page_tab, url: {controller: :fb_app_plugin_page_tab, action: :admin}, html: {onsubmit: "return fb_app.page_tab.save($(this))"} do |f| %>
 
-  <%= hidden_field_tag 'signed_request', signed_request %>
+  <%= hidden_field_tag :signed_request, signed_request %>
+  <%= hidden_field_tag :page_id, page_tab.page_id %>
   <%= f.hidden_field :profile_id, value: page_tab.profile_id %>
   <%= f.hidden_field :page_id %>
 

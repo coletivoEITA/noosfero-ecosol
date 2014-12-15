@@ -8,7 +8,7 @@ class FbAppPluginPageTabController < FbAppPluginController
   helper FbAppPlugin::FbAppDisplayHelper
 
   def index
-    load_page_tabs
+    return unless load_page_tabs
 
     if params[:tabs_added]
       @page_ids = FbAppPlugin::Profile.page_ids_from_tabs_added params[:tabs_added]
@@ -54,7 +54,7 @@ class FbAppPluginPageTabController < FbAppPluginController
   end
 
   def admin
-    load_page_tabs
+    return unless load_page_tabs
 
     if request.post? and @page_id.present?
       create_page_tabs if @page_tab.nil?
@@ -70,8 +70,6 @@ class FbAppPluginPageTabController < FbAppPluginController
       @page_tab.save!
 
       respond_to{ |format| format.js{ render action: 'admin', layout: false } }
-    else
-      respond_to{ |format| format.html }
     end
   end
 
@@ -100,8 +98,7 @@ class FbAppPluginPageTabController < FbAppPluginController
   end
 
   def load_page_tabs
-    @signed_requests = if params[:signed_request].is_a? Hash then params[:signed_request].values else Array(params[:signed_request]) end
-
+    @signed_requests = read_param params[:signed_request]
     if @signed_requests.present?
       @datas = []
       @page_ids = @signed_requests.map do |signed_request|
@@ -115,7 +112,7 @@ class FbAppPluginPageTabController < FbAppPluginController
         page_id
       end
     else
-      @page_ids = if params[:page_id].is_a? Hash then params[:page_id].values else Array(params[:page_id]) end
+      @page_ids = read_param params[:page_id]
     end
 
     @page_tabs = FbAppPlugin::PageTab.where page_id: @page_ids
@@ -125,7 +122,7 @@ class FbAppPluginPageTabController < FbAppPluginController
     @page_tab = @page_tabs.first
     @new_request = true if @page_tab.blank?
 
-    @page_tabs
+    true
   end
 
   def create_page_tabs
@@ -146,6 +143,14 @@ class FbAppPluginPageTabController < FbAppPluginController
     extend CatalogHelper
     catalog_load_index
     @use_show_more = true
+  end
+
+  def read_param param
+    if param.is_a? Hash
+      param.values
+    else
+      Array(param).select{ |p| p.present? }
+    end
   end
 
 end
