@@ -1,7 +1,7 @@
 @import 'base';
 
 body.controller-fb_app_plugin_page_tab {
-  
+
   /* Catalog Tab in Facebook */
   background: #fff;
 
@@ -18,19 +18,25 @@ body.controller-fb_app_plugin_page_tab {
     padding: 0;
     width: 100%;
   }
-  #product-list li.product {
-    width: 190px;
-    padding: 10px;
+  #product-list {
+    li.product {
+      width: 190px;
+      padding: 10px;
+    }
+    #product-list
+    .product-big {
+      width: 160px;
+    }
+    #product-list
+    .product-image-link {
+      height: 170px;
+    }
+    #product-list
+    .expand-box {
+      width: 162px;
+    }
   }
-  #product-list .product-big {
-    width: 160px;
-  }
-  #product-list .product-image-link {
-    height: 170px;
-  }
-  #product-list .expand-box {
-    width: 162px;
-  }
+
   #theme-footer {
     border: none;
   }
@@ -46,6 +52,11 @@ body.controller-fb_app_plugin_page_tab {
   .product-catalog-ctrl {
     float: none;
   }
+
+}
+
+body.controller-fb_app_plugin_page_tab,
+body.controller-fb_app_plugin_myprofile {
 
   input.small-loading {
     background: transparent url(/images/loading-small.gif) no-repeat scroll right center;

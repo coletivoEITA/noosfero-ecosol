@@ -29,7 +29,12 @@ fb_app = {
     //app_scope: 'publish_actions',
     app_scope: '',
 
-    connect: function(){
+    loading: function() {
+      jQuery('#fb-app-connect-status').empty().addClass('loading').height(150)
+    },
+
+    connect: function() {
+      this.loading();
       fb_app.fb.scope = this.app_scope
       //fb_app.fb.init(this.app_id, 'fb_app.fb.connect()')
       fb_app.fb.connect()
