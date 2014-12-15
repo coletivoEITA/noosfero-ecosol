@@ -107,9 +107,13 @@ body.controller-fb_app_plugin_myprofile {
 /* Control panel - catalog settings */
 .edit-page-tab {
   display: none;
+  background-color: #eee;
+  padding: 15px;
+  border-radius: 8px;
 }
 .edit-tab-button {
   float: right;
+  margin-left: 10px;
 }
 #fb-app-timeline, #fb-app-catalogs {
   border: 1px solid #999;
