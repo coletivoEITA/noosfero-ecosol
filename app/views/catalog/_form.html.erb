@@ -3,6 +3,8 @@
   <%= hidden_field_tag :use_show_more, if @use_show_more then '1' else '0' end %>
   <%= hidden_field_tag :page, @pg_page %>
   <%= hidden_field_tag :rank, @rank %>
+  <%= hidden_field_tag :base_query, @base_query %>
+  <%= hidden_field_tag :scope, @scope %>
 
   <div id="catalog-options">
     <ul>

@@ -9,10 +9,11 @@ module CatalogHelper
     @catalog_bar = true
     @use_show_more = params[:use_show_more] == '1'
 
-    @base_query = options[:base_query].to_s
+    @base_query = params[:base_query].to_s
     @query = params[:query].to_s
     @final_query = "#{@base_query} #{@query}"
-    @scope = options[:scope] || profile.products
+    @scope = params[:scope]
+    scope = if @scope == 'all' then environment.products.enabled.public else profile.products end
     solr_options = {:all_facets => @query.blank?}
 
     base_per_page = profile.products_per_catalog_page rescue 24
@@ -37,9 +38,9 @@ module CatalogHelper
 
     # FIXME
     if self.respond_to? :controller
-      result = controller.send :find_by_contents, :catalog, @scope, @final_query, paginate_options, solr_options
+      result = controller.send :find_by_contents, :catalog, scope, @final_query, paginate_options, solr_options
     else
-      result = find_by_contents :catalog, @scope, @final_query, paginate_options, solr_options
+      result = find_by_contents :catalog, scope, @final_query, paginate_options, solr_options
     end
 
     @products = result[:results]

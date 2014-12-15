@@ -34,9 +34,12 @@ class FbAppPluginPageTabController < FbAppPluginController
         else
           # fake profile for catalog controller
           @profile = environment.enterprise_template
-          @query = if @page_tab.profiles.present? then @page_tab.profiles.map(&:identifier).join(' OR ') else @page_tab.query end
-          @scope = @environment.products.enabled.public
-          load_catalog scope: @scope, base_query: @query
+
+          base_query = if @page_tab.profiles.present? then @page_tab.profiles.map(&:identifier).join(' OR ') else @page_tab.query end
+          params[:base_query] = base_query
+          params[:scope] = 'all'
+
+          load_catalog
 
           render action: 'catalog'
         end
