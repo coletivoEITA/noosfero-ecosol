@@ -4,9 +4,9 @@ body.controller-fb_app_plugin_page_tab {
   
   /* Catalog Tab in Facebook */
   background: #fff;
-  
-  #theme-footer {
-    border: none;
+
+  .navbar-static-top {
+    border-radius: 4px;
   }
   #wrap-1 {
     box-shadow: none;
@@ -29,6 +29,9 @@ body.controller-fb_app_plugin_page_tab {
   }
   #product-list .expand-box {
     width: 162px;
+  }
+  #theme-footer {
+    border: none;
   }
   /* End of Catalog Tab in Facebook */
 
