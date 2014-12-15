@@ -9,7 +9,7 @@
       <%# button nil, t('fb_app_plugin.views.myprofile.catalog.see_page'), "https://facebook.com/#{page_tab.page_id}", target: '_blank'  %>
     </h3>
   <% else %>
-    <%= button_to_function 'add', t('fb_app_plugin.views.myprofile.catalogs.new'), "jQuery(this).toggle();jQuery('#add_tab').toggle()" %>
+    <%= button_to_function 'add', t('fb_app_plugin.views.myprofile.catalogs.new'), "jQuery(this).toggle();jQuery('#page-tab-new h3, #add_tab').toggle()" %>
   <% end %>
 
   <%= render 'fb_app_plugin_page_tab/configure_form', page_tab: page_tab, signed_request: nil %>
