@@ -71,6 +71,12 @@ body.controller-fb_app_plugin_myprofile {
 }
 
 /* control panel - general */
+#fb-app-error {
+  padding: 0 30px 30px 30px;
+  font-size: 120%;
+  color: #E44444;
+  font-style: italic;
+}
 .controller-profile_editor a.control-panel-fb-app {
   background-image: url(/plugins/fb_app/images/control-panel.png);
 }
