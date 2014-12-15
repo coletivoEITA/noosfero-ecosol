@@ -21,7 +21,11 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
 
   def self.create_from_page_ids page_ids, attrs = {}
     page_ids.map do |page_id|
-      FbAppPlugin::PageTab.create! attrs.merge(page_id: page_id)
+      page_tab = FbAppPlugin::PageTab.where(page_id: page_id).first
+      page_tab = FbAppPlugin::PageTab.build page_id: page_id
+      page_tab.attributes = attrs
+      page_tab.save!
+      page_tab
     end
   end
   def self.create_from_tabs_added tabs_added, attrs = {}
