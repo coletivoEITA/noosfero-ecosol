@@ -111,6 +111,13 @@ body.controller-fb_app_plugin_myprofile {
 }
 
 /* Control panel - catalog settings */
+#page-tab-new {
+  margin-top: 30px;
+}
+#page-tab-new h3 {
+  border-top: 2px solid #ddd;
+  padding-top: 10px;
+}
 #page-tab-new h3, .edit-page-tab {
   display: none;
 }
