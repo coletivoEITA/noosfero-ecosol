@@ -102,7 +102,12 @@ body.controller-fb_app_plugin_myprofile {
 }
 
 /* Control panel - catalog settings */
-.page-tab h3 {
+#fb-app-timeline, #fb-app-catalogs {
+  border: 1px solid #999;
+  border-radius: 8px;
+  padding: 10px;
+} 
+#content #fb-app-catalogs h3 {
   font-size: 120%;
   color: inherit;
   border-bottom: 1px solid #ccc;
