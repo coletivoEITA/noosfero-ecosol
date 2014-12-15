@@ -5,7 +5,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
 
   attr_accessible :profile, :profile_id, :page_id, :config_type, :profile_ids, :query
 
-  belongs_to :profile
+  belongs_to :owner_profile, foreign_key: :profile_id
 
   acts_as_having_settings field: :config
 
@@ -70,7 +70,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
 
   def profile= profile
     self.config[:type] = :profile
-    self.config[:profile_ids] = [profile]
+    self.config[:profile_ids] = [profile.id]
   end
 
   def query= value
