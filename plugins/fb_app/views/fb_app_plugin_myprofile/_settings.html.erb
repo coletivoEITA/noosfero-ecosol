@@ -1,3 +1,7 @@
+<h1><%= t('fb_app_plugin.lib.plugin.name') %></h1>
+
+<%= button(:back, _('Back to control panel'), :controller => 'profile_editor') %>
+
 <div id="fb-app-connect-status">
   <%= render 'intro' if @auth.not_authorized? %>
   <div id="fb-app-auth">
@@ -22,3 +26,5 @@
     <%= render 'catalogs' %>
   </div>
 <% end %>
+
+<%= button(:back, _('Back to control panel'), :controller => 'profile_editor') %>
