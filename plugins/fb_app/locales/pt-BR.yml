@@ -38,6 +38,8 @@
           edit_button: "Editar vitrine '%{catalog_name}'"
           remove_button: "Remover vitrine '%{catalog_name}'"
           confirm_removal: "Você tem certeza que quer remover a vitrine"
+          cancel_button: 'Cancelar'
+          confirm_removal_button: 'Sim, quero remover esta vitrine'
 
         catalog:
           see_page: 'Ver página no facebook'
