@@ -73,7 +73,15 @@ fb_app = {
 
       remove: function(button, url) {
         var page_tab = button.parents('.page-tab')
-        jQuery.post(url, function() {
+        var name = page_tab.find('#page_tab_name').attr('name')
+        jQuery('.modal-button-yes')
+          .attr('target_url',url)
+          .attr('target_name',name)
+        noosfero.modal.html(jQuery('#fb-app-modal-wrap').html())
+      },
+      
+      remove_confirmed: function(el) {
+        jQuery.post(jQuery(el).attr('target_url')), function() {
           page_tab.remove()
         })
       },
