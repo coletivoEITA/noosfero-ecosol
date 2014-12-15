@@ -35,6 +35,8 @@
           profile_chooser_label: 'Empreendimento'
           profiles_chooser_label: 'Empreendimentos'
           query_label: "Critérios para os produtos/serviços da vitrine"
+          edit_button: "Editar vitrine '%{catalog_name}'"
+          remove_button: "Remover vitrine '%{catalog_name}'"
 
         catalog:
           see_page: 'Ver página no facebook'
@@ -42,6 +44,7 @@
       page_tab:
         add: 'Criar vitrine em uma página sua no Facebook'
         save: 'Salvar'
+        added_notice: 'Parabéns: você acaba de publicar uma nova vitrine da Economia Solidária no Facebook!'
         profile:
           placeholder: "selecione um empreendimento"
         profiles:
