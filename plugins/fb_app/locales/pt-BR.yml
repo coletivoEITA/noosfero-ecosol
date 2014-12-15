@@ -40,6 +40,10 @@
 
         catalog:
           see_page: 'Ver página no facebook'
+        
+        error:
+          empty_name: 'Por favor, coloque um nome para a sua vitrine.'
+          empty_settings: 'Por favor, selecione os empreendimentos solidários, o filtro ou os termos de busca para sua vitrine.'
 
       page_tab:
         add: 'Criar vitrine em uma página sua no Facebook'
