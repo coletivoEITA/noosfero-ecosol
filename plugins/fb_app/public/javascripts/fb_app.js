@@ -1,14 +1,6 @@
 fb_app = {
   current_url: '',
 
-  /*products: {
-    fix_popins: function() {
-      jQuery('.zoomify-image').removeClass('.zoomify-image').attr({
-        onclick: 'noosfero.modal.inline(this.href); return false',
-      })
-    },
-  },*/
-
   locales: {
 
   },
@@ -56,7 +48,6 @@ fb_app = {
     next_url: '',
 
     init: function() {
-      fb_app.modal.patchFancybox()
     },
 
     config: {
@@ -267,42 +258,6 @@ fb_app = {
 
   },
 
-  modal: {
-    patchFancybox: function() {
-      window.apply_zoom_to_images = function(zoom_text) {
-        jQuery(function($) {
-          $(window).load( function() {
-            $('#article .article-body img').each( function(index) {
-              var original = original_image_dimensions($(this).attr('src'));
-              if ($(this).width() < original['width'] || $(this).height() < original['height']) {
-                $(this).wrap('<div class="zoomable-image" />');
-                $(this).parent('.zoomable-image')
-                .attr({style: $(this).attr('style')})
-                .addClass(this.className)
-                .css({
-                  width: $(this).width(),
-                  height: $(this).height(),
-                });
-                $(this).attr('style', '');
-                $(this).after('<a href="' + $(this).attr('src') + '" class="zoomify-image"><span class="zoomify-text">'+zoom_text+'</span></a>');
-              }
-            });
-            $('.zoomify-image').fancybox({
-              autoCenter: false,
-              beforeShow: function() {
-                var position = this.element.position();
-                console.log(this.element)
-                console.log(this.element.position())
-                $.fancybox._getPosition = function() {
-                  return position;
-                }
-              }
-            })
-          });
-        });
-      }
-    },
-  },
 }
 
 
