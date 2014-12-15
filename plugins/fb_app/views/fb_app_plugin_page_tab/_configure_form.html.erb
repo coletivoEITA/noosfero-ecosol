@@ -1,5 +1,5 @@
 
-<%= form_for page_tab, as: :page_tab, url: {controller: :fb_app_plugin_page_tab, action: :admin}, html: {id: "edit_tab_"+page_tab.id.to_s, onsubmit: "return fb_app.page_tab.config.save($(this))"} do |f| %>
+<%= form_for page_tab, as: :page_tab, url: {controller: :fb_app_plugin_page_tab, action: :admin}, html: {id: "edit_tab_"+page_tab.id.to_s, class:"edit-page-tab", onsubmit: "return fb_app.page_tab.config.save($(this))"} do |f| %>
 
   <%= hidden_field_tag :signed_request, signed_request %>
   <%= hidden_field_tag :page_id, page_tab.page_id %>
