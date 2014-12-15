@@ -3,6 +3,7 @@ class FbAppPluginPageTabController < FbAppPluginController
   no_design_blocks
 
   before_filter :change_theme
+  before_filter :disable_cache
 
   helper FbAppPlugin::FbAppDisplayHelper
 
@@ -138,9 +139,8 @@ class FbAppPluginPageTabController < FbAppPluginController
     @without_pure_chat = true
   end
 
-  def get_layout
-    return if request.xhr?
-    super
+  def disable_cache
+    @disable_cache_theme_navigation = true
   end
 
 end
