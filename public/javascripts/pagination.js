@@ -12,6 +12,17 @@ pagination = {
     appendFunction();
   },
 
+  click: function(callback) {
+    jQuery(document).on('click', '.pagination a', function(e) {
+      e.preventDefault();
+      if (callback)
+        callback(e, this)
+      else {
+        // what to have as default?
+      }
+    });
+  },
+
   // inspired by http://stackoverflow.com/questions/13555101/infinite-scroll-and-will-paginate-appending-the-next-page-of-items-multiple-ti
   infiniteScroll: function(text, options) {
     options = options || {};

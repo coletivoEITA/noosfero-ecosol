@@ -27,6 +27,7 @@ class FbAppPluginPageTabController < FbAppPluginController
           @profile = @page_tab.profiles.first
           extend CatalogHelper
           catalog_load_index
+          @use_show_more = true
 
           render action: 'catalog'
         else
