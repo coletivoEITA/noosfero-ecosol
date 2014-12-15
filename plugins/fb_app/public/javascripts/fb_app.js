@@ -85,13 +85,13 @@ fb_app = {
       save: function(form) {
         if (form.find('#page_tab_name').val().trim()=='') {
           //jQuery("#fb-app-error").text('cadê o nome?')
-          alert('cadê o nome?')
+          noosfero.modal.html('<div id="fb-app-error">cadê o nome?</div>')
           return false
         } else {
           selected_type = form.find('#page_tab_config_type').val()
           if (form.find('#config-type-'+selected_type+' input').val().trim()=='') {
             //jQuery("#fb-app-error").text('cadê sua seleção?')
-            alert('cadê o nome?')
+            noosfero.modal.html('<div id="fb-app-error">cadê a seleção?</div>')
             return false
           }
         }
