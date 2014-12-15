@@ -16,7 +16,7 @@ module FbAppPlugin::DisplayHelper
 
   def link_to name = nil, options = nil, html_options = nil, &block
     html_options ||= {}
-    options[:protocol] = '//'
+    options[:protocol] = '//' if options.is_a? Hash
     html_options[:target] ||= '_parent'
     super
   end
