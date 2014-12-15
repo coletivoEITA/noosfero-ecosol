@@ -4851,6 +4851,11 @@ msgstr "Ir para o conteúdo"
 msgid "Manage Products/Services"
 msgstr "Gerenciar Produtos/Serviços"
 
+#: app/views/catalog/_product.html.erb
+msgid "By"
+msgstr "Por"
+
+
 #: app/views/catalog/index.html.erb:28
 msgid "Highlighted product"
 msgstr "Produto destacado"
