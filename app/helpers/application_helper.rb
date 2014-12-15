@@ -1282,6 +1282,19 @@ module ApplicationHelper
     cache(key, { :expires_in => timeout }, &block)
   end
 
+  # Backport from rails 4
+  def cache_if condition, name = {}, options = nil, &block
+    if condition
+      cache name, options, &block
+    else
+      yield
+    end
+    nil
+  end
+  def cache_unless condition, name = {}, options = nil, &block
+    cache_if !condition, name, options, &block
+  end
+
   def is_cache_expired?(key)
     !cache_store.fetch(ActiveSupport::Cache.expand_cache_key(key, :controller))
   end

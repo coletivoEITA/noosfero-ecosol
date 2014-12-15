@@ -6,6 +6,8 @@ module CatalogHelper
   include ManageProductsHelper
 
   def catalog_load_index options = {:page => params[:page], :show_categories => true}
+    @catalog_bar = true
+    @use_show_more = params[:use_show_more] == '1'
     @query = params[:query].to_s
     @scope = profile.products
     solr_options = {:all_facets => @query.blank?}

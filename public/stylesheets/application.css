@@ -2757,6 +2757,13 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
 #product-catalog {
   /*text-align: center;*/
 }
+/* only show inside the catalog */
+#catalog-results-tools {
+  display: none;
+}
+#product-catalog #catalog-results-tools {
+  display: block;
+}
 .product-catalog-ctrl {
   float: right;
 }

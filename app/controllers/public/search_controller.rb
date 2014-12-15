@@ -151,6 +151,7 @@ class SearchController < PublicController
   def events_by_day
     @date = build_date(params[:year], params[:month], params[:day])
     @events = environment.events.by_day(@date).paginate(:per_page => per_page, :page => params[:page])
+    @title_use_day = params[:day].blank? ? false : true
     render :partial => 'events/events'
   end
 

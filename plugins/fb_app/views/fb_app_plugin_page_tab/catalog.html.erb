@@ -1,5 +1,5 @@
-<% extra_content = [] %>
-<% extra_content_list = [] %>
+<%= render 'load' %>
+<%= render 'configure_button' %>
 
 <div id="product-catalog">
   <% if user.present? and (user.is_admin?(profile.environment) or user.is_admin?(profile)) %>
@@ -8,8 +8,6 @@
     </div>
   <% end %>
 
-  <h1><%= _('Products/Services') %></h1>
-
   <%= content_for :product_page do %>
     <%= render 'catalog/results' %>
   <% end %>
@@ -17,6 +15,9 @@
   <%= render 'catalog/javascripts', external: false %>
 
   <%= add_zoom_to_images %>
-
-  <br style="clear:both"/>
 </div>
+
+<%= javascript_tag do %>
+  catalog.base_url_path = <%= url_for(controller: :fb_app_plugin_page_tab, action: :index, page_id: params[:page_id], signed_request: params[:signed_request]).to_json %> + '&'
+<% end %>
+

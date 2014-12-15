@@ -1,0 +1,7 @@
+<%= javascript_include_tag '/plugins/fb_app/javascripts/fb_app.js' %>
+<%= render 'load' %>
+<% if @page_ids.size == 1 %>
+  <%= javascript_tag do %>
+    fb_app.fb.redirect_to_tab(<%= @page_ids.first.to_json %>);
+  <% end %>
+<% end %>

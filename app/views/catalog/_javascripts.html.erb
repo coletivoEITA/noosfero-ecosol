@@ -7,12 +7,16 @@
 external = true if external.nil?
 %>
 
-<script type="text/javascript">
+<%= javascript_tag do %>
   catalog.search.external = <%= external.to_json %>
   catalog.profile = {id: <%= profile.id.to_json %>}
-  catalog.search.autocomplete.url = <%= url_for(:controller => :catalog, :profile => profile.identifier, :action => :search_autocomplete).to_json %>;
-  catalog.base_url_path = <%= url_for(:controller => :catalog, :profile => profile.identifier).to_json %> + '?'
+  catalog.search.autocomplete.url = <%= url_for(controller: :catalog, profile: profile.identifier, action: :search_autocomplete).to_json %>;
+  catalog.base_url_path = <%= url_for(controller: :catalog, profile: profile.identifier).to_json %> + '?'
   catalog.search.init();
+  <% if @use_show_more %>
+  catalog.search.pagination.seeMore(<%= _('loading...').to_json %>);
+  <% else %>
   catalog.search.pagination.infiniteScroll(<%= _('loading...').to_json %>);
+  <% end %>
   catalog.search.scroll.toRank(<%=params[:rank]%>)
-</script>
+<% end %>

@@ -328,6 +328,10 @@ class ShoppingCartPluginController < OrdersPluginController
     @cart_profile ||= environment.profiles.find profile_id rescue nil
   end
 
+  def profile
+    cart_profile
+  end
+
   # from OrdersPluginController
   def supplier
     cart_profile

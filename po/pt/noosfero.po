@@ -1582,6 +1582,10 @@ msgstr "título"
 msgid "description"
 msgstr "descrição"
 
+#: app/views/catalog/_pagination.html.erb
+msgid "Show more"
+msgstr "Ver mais produtos"
+
 #: app/models/create_community.rb:38 app/helpers/application_helper.rb:1079
 msgid "New community"
 msgstr "Nova comunidade"
@@ -13508,17 +13512,17 @@ msgstr "Transferência bancária"
 #~ msgid "Events:"
 #~ msgstr "Eventos:"
 
-#~ msgid "Tags:"
-#~ msgstr "Marcadores:"
+msgid "Tags:"
+msgstr "Marcadores:"
 
 #~ msgid "Interests"
 #~ msgstr "Interesses"
 
-#~ msgid "Administrators:"
-#~ msgstr "Administradores:"
+msgid "Administrators:"
+msgstr "Administradores:"
 
-#~ msgid "Personalize invitation mail"
-#~ msgstr "Personalize a mensagem de convite"
+msgid "Personalize invitation mail"
+msgstr "Personalize a mensagem de convite"
 
 #~ msgid "advertise"
 #~ msgstr "propaganda"

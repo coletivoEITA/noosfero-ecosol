@@ -160,6 +160,12 @@ catalog = {
         catalog.search.pagination.goTo(page)
       },
 
+      seeMore: function(text) {
+        pagination.click(function(e, link) {
+          catalog.search.pagination.load(link.href)
+        })
+      },
+
       infiniteScroll: function (text) {
         pagination.infiniteScroll(text, {load: this.load});
       },

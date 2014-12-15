@@ -6,6 +6,12 @@
       plugin:
         name: 'App Cirandas no Facebook'
         description: 'Divulgue suas ações no cirandas e a economia solidária no Facebook!'
+    models:
+      page_tab:
+        types:
+          profile: 'Vitrine de um empreendimento'
+          profiles: 'Vitrine de empreendimentos escolhidos por você'
+          query: 'Vitrine de produtos ou serviços escolhidos por categoria ou busca'
     views:
       myprofile:
         checking_auth: 'Verificando autorização de acesso' 
@@ -20,8 +26,28 @@
         timeline:
           heading: 'Postagem na linha do tempo'
           add: 'Salvar configuração de postagens na timeline' 
-        catalog:
+
+        catalogs:
           heading: 'Vitrine Cirandas'
+          new: 'Criar nova vitrine'
+          catalog_name_label: 'Nome'
+          catalog_type_chooser_label: 'Tipo'
+          profile_chooser_label: 'Empreendimento'
+          profiles_chooser_label: 'Empreendimentos'
+          query_label: "Critérios para os produtos/serviços da vitrine"
+
+        catalog:
+          see_page: 'Ver página no facebook'
+
+      page_tab:
+        add: 'Criar vitrine em uma página sua no Facebook'
+        save: 'Salvar'
+        profile:
+          placeholder: "selecione um empreendimento"
+        profiles:
+          placeholder: "selecione os empreendimentos"
+        query:
+          placeholder: "escolha os produtos e serviços por filtro ou por busca"
 
 'pt_BR':
   <<: *pt-BR

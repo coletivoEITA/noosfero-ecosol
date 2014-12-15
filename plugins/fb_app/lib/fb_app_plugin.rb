@@ -12,6 +12,17 @@ class FbAppPlugin < Noosfero::Plugin
     @config ||= HashWithIndifferentAccess.new(YAML.load File.read("#{File.dirname __FILE__}/../config.yml")) rescue {}
   end
 
+  def self.test_users
+    @test_users = self.config[:test_users]
+  end
+  def self.test_user? user
+    self.test_users.blank? or self.test_users.include? user.identifier
+  end
+
+  def self.scope user
+    if self.test_user? user then 'publish_actions' else '' end
+  end
+
   def self.oauth_provider_for environment
     return unless self.config.present?
 
@@ -35,6 +46,8 @@ class FbAppPlugin < Noosfero::Plugin
   end
 
   def self.open_graph_config
+    return unless self.config.present?
+
     @open_graph_config ||= begin
       key = if self.config[:timeline][:use_test_app] then :test_app else :app end
       self.config[key][:open_graph]
@@ -42,10 +55,12 @@ class FbAppPlugin < Noosfero::Plugin
   end
 
   def self.credentials app = :app
+    return unless self.config.present?
     {id: self.config[app][:id], secret: self.config[app][:secret]}
   end
 
   def self.timeline_app_credentials
+    return unless self.config.present?
     @timeline_app_credentials ||= begin
       key = if self.config[:timeline][:use_test_app] then :test_app else :app end
       self.credentials key
@@ -53,6 +68,7 @@ class FbAppPlugin < Noosfero::Plugin
   end
 
   def self.page_tab_app_credentials
+    return unless self.config.present?
     @page_tab_app_credentials ||= begin
       key = if self.config[:page_tab][:use_test_app] then :test_app else :app end
       self.credentials key
@@ -74,9 +90,9 @@ class FbAppPlugin < Noosfero::Plugin
     end
   end
 
+
   def control_panel_buttons
     return unless FbAppPlugin.config.present?
-    return unless %w[brauliobo dtygel rosanak viniciuscb facebook_tester].include? user.identifier
     { title: self.class.plugin_name, icon: 'fb-app', url: {controller: :fb_app_plugin_myprofile} }
   end
 

@@ -1,14 +1,62 @@
+@import 'base';
 
-body.controller-fb_app_plugin {
-  margin-top: 40px;
+body.controller-fb_app_plugin_page_tab {
 
-  .box-3, .box-2, #theme-header {
+  /* Catalog Tab in Facebook */
+  background: #fff;
+
+  .navbar-static-top {
+    border-radius: 4px;
+  }
+  #wrap-1 {
+    box-shadow: none;
+  }
+  .container {
+    width: 100%;
+  }
+  #content .no-boxes {
+    padding: 0;
+    width: 100%;
+  }
+  #product-list li.product {
+    width: 190px;
+    padding: 10px;
+  }
+  #product-list .product-big {
+    width: 160px;
+  }
+  #product-list .product-image-link {
+    height: 170px;
+  }
+  #product-list .expand-box {
+    width: 162px;
+  }
+  #theme-footer {
+    border: none;
+  }
+  /* End of Catalog Tab in Facebook */
+
+  #profile-title,
+  #profile-header,
+  #profile-footer,
+  #theme-header {
     display: none;
   }
 
-  #wrap-1, #wrap-2 {
-    border-radius: 10px 10px 0 0;
+  .product-catalog-ctrl {
+    float: none;
   }
+
+  .modal-content {
+    #fb-app-page-tab-admin {
+      height: 400px;
+    }
+  }
+
+}
+
+body.controller-fb_app_plugin_page_tab,
+body.controller-fb_app_plugin_myprofile {
 
   input.small-loading {
     background: transparent url(/images/loading-small.gif) no-repeat scroll right center;
@@ -20,68 +68,109 @@ body.controller-fb_app_plugin {
     height: 300px;
     margin: auto;
   }
-
-  /* admin popin */
-
-  #cboxContent {
-    overflow: auto;
-    position: initial;
-  }
-  .twitter-typeahead {
-    position: absolute !important;
-  }
-  #cboxClose {
-    display: none;
-  }
-  #fb_store_admin_page {
-    width: 650px;
-    height: 500px;
-  }
-
-  #fb_integration_type_profiles table {
-    margin: 0 0 20px 20px;
-    width: 90%;
-  }
-
-  a.see-more {
-    display: none;
-  }
-
-  .button-bar .icon-back {
-    display: none;
-  }
-
-  .search-results-total {
-    padding-top: 6px;
-  }
 }
 
-/* control panel */
+/* control panel - general */
 .controller-profile_editor a.control-panel-fb-app {
   background-image: url(/plugins/fb_app/images/control-panel.png);
 }
-
 #fb-app-intro {
   margin: 0 40px 20px 40px;
 }
 #fb-app-connect-status {
   background-color: #eee;
   border: 1px solid #ccc;
-  margin-bottom: 30px;
+  margin: 30px 0;
+  padding: 30px;
+}
+.fb-app-connection-button {
+  margin-top: 15px;
 }
 #fb-app-auth {
   text-align: center;
-  margin-bottom: 50px;
-}
-#noosfero-identity {
-  float: left;
+  min-height: 60px;
 }
 #fb-connected {
   font-size: 36px;
-  float:left;
   margin: 0 30px;
   color: #99f;
 }
-#fb-identity {
-  float: left;
+#fb-app-wrapper {
+  padding: 40px;
+  font-size: 20px;
 }
+#fb-app-wrapper h1 {
+  font-size: 39px;
+  margin-bottom: 50px;
+}
+
+/* Control panel - catalog settings */
+#page-tab-new h3, .edit-page-tab {
+  display: none;
+}
+.edit-page-tab {
+  background-color: #eee;
+  padding: 15px;
+  border-radius: 8px;
+}
+.edit-tab-button {
+  float: right;
+  margin-left: 10px;
+}
+#fb-app-timeline, #fb-app-catalogs {
+  border: 1px solid #999;
+  border-radius: 8px;
+  padding: 10px;
+}
+#content #fb-app-catalogs h3 {
+  font-size: 120%;
+  color: inherit;
+  margin-top: 20px;
+}
+#fb-app-catalogs label {
+  margin-top: 20px;
+}
+.fb-app-submit-page-tab-options {
+  margin-top: 20px;
+}
+.fb-app-final-back-button {
+  margin-top: 70px;
+}
+.tokenfield .token {
+  height: auto !important;
+}
+
+/* Control panel - timeline settings */
+/* We will temporarily disable these settings: */
+#fb-app-timeline {
+  display: none;
+}
+#fb-app-timeline #track-form a, #fb-app-timeline #track-form a:visited {
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  #noosfero-identity {
+    float: left;
+  }
+  #fb-connected {
+    font-size: 36px;
+    float:left;
+    margin: 0 30px;
+    color: #99f;
+  }
+  #fb-identity {
+    float: left;
+  }
+  #fb-app-timeline, #fb-app-catalogs {
+    width: 50%-$marginp;
+    float: left;
+  }
+  #fb-app-settings {
+    overflow: hidden;
+  }
+  #fb-app-timeline {
+    margin-right: $marginp;
+  }
+}
+
