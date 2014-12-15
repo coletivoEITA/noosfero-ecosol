@@ -291,6 +291,7 @@ fb_app = {
               autoCenter: false,
               beforeShow: function() {
                 var position = this.element.position();
+                console.log(this.element)
                 $.fancybox._getPosition = function() {
                   return position;
                 }
