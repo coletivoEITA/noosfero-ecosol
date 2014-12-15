@@ -64,8 +64,8 @@ fb_app = {
       },
 
       add: function (form) {
-        var next_url = this.next_url + '?' + form.serialize()
-        window.location.href = fb_app.fb.add_tab_url(this.app_id, next_url)
+        var next_url = fb_app.page_tab.next_url + '?' + form.serialize()
+        window.location.href = fb_app.fb.add_tab_url(fb_app.page_tab.app_id, next_url)
         return false
       },
 
