@@ -49,6 +49,7 @@ class ShoppingCartPlugin < Noosfero::Plugin
   end
 
   def add_to_cart_button item, options = {}
+    profile = item.profile
     return unless profile.shopping_cart_enabled and item.available
     lambda do
       extend ShoppingCartPlugin::CartHelper
