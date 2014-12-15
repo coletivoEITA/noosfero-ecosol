@@ -3,7 +3,7 @@
 
 <%= javascript_tag do %>
   jQuery(document).ready(function() {
-    var selector = '#page-tab-<%= page_tab.id || 'new' %> #config-type-profile #page_tab_profile_ids'
+    var selector = '#page-tab-<%= page_tab.id || 'new' %> .config-type-profile #page_tab_profile_ids'
 
     fb_app.page_tab.config.profile.onchange($(selector))
 

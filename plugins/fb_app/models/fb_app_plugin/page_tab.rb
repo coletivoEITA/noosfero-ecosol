@@ -5,7 +5,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
 
   attr_accessible :profile, :profile_id, :page_id, :config_type, :profile_ids, :query
 
-  belongs_to :owner_profile, foreign_key: :profile_id
+  belongs_to :owner_profile, foreign_key: :profile_id, class_name: 'Profile'
 
   acts_as_having_settings field: :config
 

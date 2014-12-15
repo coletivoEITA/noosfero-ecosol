@@ -56,16 +56,16 @@ class FbAppPluginPageTabController < FbAppPluginController
   def admin
     return unless load_page_tabs
 
-    if request.post? and @page_id.present?
+    if request.put? and @page_id.present?
       create_page_tabs if @page_tab.nil?
 
-      case params[:config_type]
+      case params[:page_tab][:config_type]
         when 'profile'
-          @page_tab.profile = Profile.where(id: Array(params[:profile_ids])).first
+          @page_tab.profile = Profile.where(id: Array(params[:page_tab][:profile_ids])).first
         when 'profiles'
-          @page_tab.profiles = Profile.where(id: Array(params[:profile_ids]))
+          @page_tab.profiles = Profile.where(id: Array(params[:page_tab][:profile_ids]))
         when 'query'
-          @page_tab.query = params[:fb_keyword].to_s
+          @page_tab.query = params[:page_tab][:query].to_s
       end
       @page_tab.save!
 

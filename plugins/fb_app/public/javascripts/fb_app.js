@@ -76,11 +76,16 @@ fb_app = {
 
       change_type: function(select) {
         select = jQuery(select)
-        var selectedId = '#config-type-'+select.val()
+        var page_tab = select.parents('.page-tab')
+        var config_selector = '.config-type-'+select.val()
+        var config = page_tab.find(config_selector)
+        var to_show = config
+        var to_hide = page_tab.find('.config-type:not('+config_selector+')')
 
-        jQuery(selectedId).show().
+        to_show.show().
           find('input').prop('disabled', false)
-        jQuery('.config-type:not('+selectedId+')').hide().
+        to_show.find('.tokenfield').removeClass('disabled')
+        to_hide.hide().
           find('input').prop('disabled', true)
       },
 

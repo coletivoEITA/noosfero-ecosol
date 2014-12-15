@@ -1,9 +1,9 @@
 
-<%= form_for :page_tab, url: {controller: :fb_app_plugin_page_tab, action: :admin}, html: {onsubmit: "return fb_app.page_tab.config.save($(this))"} do |f| %>
+<%= form_for page_tab, as: :page_tab, url: {controller: :fb_app_plugin_page_tab, action: :admin}, html: {onsubmit: "return fb_app.page_tab.config.save($(this))"} do |f| %>
 
   <%= hidden_field_tag :signed_request, signed_request %>
   <%= hidden_field_tag :page_id, page_tab.page_id %>
-  <%= f.hidden_field :profile_id, value: page_tab.profile_id %>
+  <%= f.hidden_field :profile_id, value: profile.id %>
   <%= f.hidden_field :page_id %>
 
   <%= f.label t("fb_app_plugin.views.myprofile.catalogs.catalog_type_chooser_label") %>
@@ -12,7 +12,7 @@
     {}, onchange: 'fb_app.page_tab.config.change_type($(this))', class: 'form-control' %>
 
   <% FbAppPlugin::PageTab::ConfigTypes.each do |type| %>
-    <div id="config-type-<%= type %>" class="config-type">
+    <div class="config-type config-type-<%= type %>">
       <%= render "fb_app_plugin_page_tab/configure_#{type}", f: f, page_tab: page_tab %>
     </div>
   <% end %>
