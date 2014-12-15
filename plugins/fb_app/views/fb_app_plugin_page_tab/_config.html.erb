@@ -1,11 +1,13 @@
 <div id="page-tab-<%= page_tab.id || 'new' %>" class='page-tab'>
 
-  <% if page_tab.page_id %>
-    <%# button nil, t('fb_app_plugin.views.myprofile.catalog.see_page'), "https://facebook.com/#{page_tab.page_id}/app_#{FbAppPlugin.page_tab_app_credentials[:id]}"  %>
-    <%= button nil, t('fb_app_plugin.views.myprofile.catalog.see_page'), "https://facebook.com/#{page_tab.page_id}"  %>
-  <% else %>
-    <%= t('fb_app_plugin.views.myprofile.catalogs.new') %>
-  <% end %>
+  <h3>
+    <% if page_tab.page_id %>
+      <%# button nil, t('fb_app_plugin.views.myprofile.catalog.see_page'), "https://facebook.com/#{page_tab.page_id}/app_#{FbAppPlugin.page_tab_app_credentials[:id]}"  %>
+      <%= button nil, t('fb_app_plugin.views.myprofile.catalog.see_page'), "https://facebook.com/#{page_tab.page_id}"  %>
+    <% else %>
+      <%= t('fb_app_plugin.views.myprofile.catalogs.new') %>
+    <% end %>
+  </h3>
 
   <%= render 'fb_app_plugin_page_tab/configure_form', page_tab: page_tab, signed_request: nil %>
 

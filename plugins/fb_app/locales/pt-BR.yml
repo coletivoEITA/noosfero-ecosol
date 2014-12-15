@@ -29,7 +29,7 @@
 
         catalogs:
           heading: 'Vitrine Cirandas'
-          new: 'Nova vitrine'
+          new: 'Criar nova vitrine'
         catalog:
           see_page: 'Ver página no facebook'
 

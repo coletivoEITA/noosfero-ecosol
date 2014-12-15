@@ -29,7 +29,7 @@
 
         catalogs:
           heading: 'Solidarity Economy Catalog'
-          new: 'New catalog'
+          new: 'Add new catalog'
         catalog:
           see_page: 'See page on Facebook'
 
