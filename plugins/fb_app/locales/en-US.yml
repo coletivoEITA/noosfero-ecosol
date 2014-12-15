@@ -9,9 +9,9 @@
     models:
       page_tab:
         types:
-          profile: 'Catalog one enterprise'
-          profiles: 'Catalog of the following enterprises'
-          query: 'Catalog enterprises choosen by search or filter'
+          profile: 'Catalog of one SSE enterprise'
+          profiles: 'Catalog of manually selected SSE enterprises'
+          query: 'Catalog of products choosen by filter or free search'
     views:
       myprofile:
         checking_auth: 'Checking authorization' 
@@ -28,20 +28,20 @@
           add: 'Save timeline post settings' 
 
         catalogs:
-          heading: 'Vitrine Cirandas'
+          heading: 'Solidarity Economy Catalog'
           new: 'New catalog'
         catalog:
           see_page: 'See page on Facebook'
 
       page_tab:
-        add: 'Associate to my page on Facebook'
+        add: 'Add catalog to one of my pages on Facebook'
         save: 'Save'
         profile:
           placeholder: "select an enterprise"
         profiles:
           placeholder: "select the enterprises"
         query:
-          placeholder: "type the search terms"
+          placeholder: "select the category or type the search terms"
 
 
 'en_US':
