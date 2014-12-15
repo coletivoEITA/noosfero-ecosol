@@ -160,7 +160,7 @@ body.controller-fb_app_plugin_myprofile {
 
 /* Control panel - timeline settings */
 /* We will temporarily disable these settings: */
-#fb-app-timeline {
+#fb-app-timeline #track-form {
   display: none;
 }
 #fb-app-timeline #track-form a, #fb-app-timeline #track-form a:visited {
@@ -187,7 +187,7 @@ body.controller-fb_app_plugin_myprofile {
   #fb-app-settings {
     overflow: hidden;
   }
-  #fb-app-timeline {
+  #fb-app-catalogs {
     margin-right: $marginp;
   }
 }
