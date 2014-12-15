@@ -29,7 +29,7 @@ class FbAppPluginMyprofileController < OpenGraphPluginMyprofileController
       @auth.attributes = params[:auth]
       @auth.save! if @auth.changed?
     else
-      @auth.destroy if @auth
+      @auth.destroy if @auth and @auth.persisted?
       @auth = new_auth
     end
 
