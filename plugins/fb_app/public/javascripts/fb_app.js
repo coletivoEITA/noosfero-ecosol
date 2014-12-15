@@ -74,8 +74,11 @@ fb_app = {
       },
 
       add: function (form) {
-        var next_url = fb_app.page_tab.next_url + '?' + form.serialize()
-        window.location.href = fb_app.fb.add_tab_url(fb_app.page_tab.app_id, next_url)
+        // this check if the user is using FB as a page and offer a switch
+        FB.login(function(response) {
+          var next_url = fb_app.page_tab.next_url + '?' + form.serialize()
+          window.location.href = fb_app.fb.add_tab_url(fb_app.page_tab.app_id, next_url)
+        })
         return false
       },
 
