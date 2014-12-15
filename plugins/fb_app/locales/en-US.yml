@@ -35,12 +35,15 @@
           profile_chooser_label: 'Enterprise'
           profiles_chooser_label: 'Enterprises'
           query_label: "Criteria for the catalog's products"
+          edit_button: "Edit catalog '%{catalog_name}'"
+          remove_button: "Remove catalog '%{catalog_name}'"
         catalog:
           see_page: 'See page on Facebook'
 
       page_tab:
         add: 'Add catalog to one of my pages on Facebook'
         save: 'Save'
+        added_notice: "Congratulations: You've just published a new SSE catalog in Facebook!"
         profile:
           placeholder: "select an enterprise"
         profiles:
