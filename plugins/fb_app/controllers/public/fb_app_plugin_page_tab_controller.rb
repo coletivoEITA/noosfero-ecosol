@@ -22,13 +22,12 @@ class FbAppPluginPageTabController < FbAppPluginController
           @profile = @product.profile
           @inputs = @product.inputs
           @allowed_user = false
+          load_catalog
 
           render action: 'product'
         elsif @page_tab.profiles.present? and @page_tab.profiles.size == 1
           @profile = @page_tab.profiles.first
-          extend CatalogHelper
-          catalog_load_index
-          @use_show_more = true
+          load_catalog
 
           render action: 'catalog'
         else
@@ -141,6 +140,12 @@ class FbAppPluginPageTabController < FbAppPluginController
 
   def disable_cache
     @disable_cache_theme_navigation = true
+  end
+
+  def load_catalog
+    extend CatalogHelper
+    catalog_load_index
+    @use_show_more = true
   end
 
 end
