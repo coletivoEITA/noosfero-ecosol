@@ -32,6 +32,9 @@ class ApplicationController < ActionController::Base
     #end
     options[:protocol] ||= '//'
 
+    # so that :profile is not necessary on profiles with custom domains
+    options[:profile] = profile.identifier if profile
+
     # Only use profile's custom domains for the profiles and the account controllers.
     # This avoids redirects and multiple URLs for one specific resource
     if controller_path = options[:controller] || self.class.controller_path
