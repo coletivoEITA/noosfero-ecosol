@@ -14,11 +14,9 @@ class FbAppPluginPageTabController < FbAppPluginController
       @page_ids = FbAppPlugin::Profile.page_ids_from_tabs_added params[:tabs_added]
       session[:notice] = t('fb_app_plugin.views.page_tab.added_notice')
       render action: 'tabs_added', layout: false
-    elsif params[:signed_request] or params[:page_id]
-      if @page_tab
-        if @page_tab.blank?
-          render action: 'first_load'
-        elsif product_id = params[:product_id]
+    elsif @signed_request or @page_id
+      if @page_tab.present?
+        if product_id = params[:product_id]
           @product = environment.products.find product_id
           @profile = @product.profile
           @inputs = @product.inputs
@@ -28,8 +26,8 @@ class FbAppPluginPageTabController < FbAppPluginController
           render action: 'product'
         elsif @page_tab.profiles.present? and @page_tab.profiles.size == 1
           @profile = @page_tab.profiles.first
-          load_catalog
 
+          catalog_load_index
           render action: 'catalog'
         else
           # fake profile for catalog controller
@@ -40,8 +38,7 @@ class FbAppPluginPageTabController < FbAppPluginController
           params[:base_query] = base_query
           params[:scope] = 'all'
 
-          load_catalog
-
+          catalog_load_index
           render action: 'catalog'
         end
       else
@@ -50,6 +47,14 @@ class FbAppPluginPageTabController < FbAppPluginController
     else
       # render template
       render action: 'index'
+    end
+  end
+
+  def search_autocomplete
+    load_page_tabs
+    load_search_autocomplete
+    respond_to do |format|
+      format.json{ render 'catalog/search_autocomplete' }
     end
   end
 
@@ -139,8 +144,17 @@ class FbAppPluginPageTabController < FbAppPluginController
   end
 
   def change_theme
-    @current_theme = 'ees' unless theme_responsive?
+    # move to config
+    unless theme_responsive?
+      @current_theme = 'ees'
+      @theme_responsive = true
+    end
     @without_pure_chat = true
+  end
+  def get_layout
+    return nil if request.format == :js or request.xhr?
+
+    return "#{Rails.root}/public/designs/themes/cirandas-responsive/layouts/cirandas-responsive"
   end
 
   def disable_cache

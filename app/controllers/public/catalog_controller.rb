@@ -11,8 +11,7 @@ class CatalogController < PublicController
   end
 
   def search_autocomplete
-    load_query_and_scope
-    @products = autocomplete(:catalog, @ar_scope, @final_query, {per_page: 5}, {})[:results]
+    load_search_autocomplete
     respond_to do |format|
       format.json
     end

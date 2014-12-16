@@ -55,7 +55,11 @@ module CatalogHelper
     @ordering = plugins_search_order(:catalog) || {select_options: []}
 
     @not_searched = @query.blank? && params[:category].blank? && params[:qualifier].blank?
+  end
 
+  def load_search_autocomplete
+    load_query_and_scope
+    @products = autocomplete(:catalog, @ar_scope, @final_query, {per_page: 5}, {})[:results]
   end
 
   def link_to_product_from_catalog product, options = {}
