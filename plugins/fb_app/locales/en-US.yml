@@ -51,6 +51,7 @@
           empty_settings: 'Please choose SSE enterprises or search terms or filters for your catalog.'
 
       page_tab:
+        edit_catalog: 'Edit catalog'
         add: 'Add catalog to one of my pages on Facebook'
         save: 'Save'
         added_notice: "Congratulations: You've just published a new SSE catalog in Facebook!"
