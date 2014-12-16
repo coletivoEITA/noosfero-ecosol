@@ -10,7 +10,8 @@ module CatalogHelper
     @query = params[:query].to_s
     @final_query = "#{@base_query} #{@query}"
     @scope = params[:scope].to_s
-    @ar_scope = if @scope == 'all' then environment.products.enabled.public else profile.products end
+    all_scope = environment.products.enabled.public
+    @ar_scope = if @scope == 'all' then all_scope else profile.products rescue all_scope end
   end
 
   def catalog_load_index options = {:page => params[:page], :show_categories => true}
