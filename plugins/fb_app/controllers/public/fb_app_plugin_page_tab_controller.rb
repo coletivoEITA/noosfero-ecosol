@@ -81,7 +81,7 @@ class FbAppPluginPageTabController < FbAppPluginController
 
   def destroy
     @page_tab = FbAppPlugin::PageTab.find params[:id]
-    return unless user.is_admin?(environment) or user.is_admin? @page_tab.profile
+    return render_access_denied unless user.present? and (user.is_admin?(environment) or user.is_admin? @page_tab.profile)
     @page_tab.destroy
     render nothing: true
   end
