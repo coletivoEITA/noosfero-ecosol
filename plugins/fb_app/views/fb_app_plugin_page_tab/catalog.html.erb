@@ -1,5 +1,4 @@
 <%= render 'load' %>
-<%= render 'configure_button' %>
 
 <h1><%= @page_tab.title %></h1>
 <% if (@page_tab.subtitle) %>
@@ -11,6 +10,7 @@
       <%= button :add, _('Add product or service'), controller: :manage_products, action: :new, profile: profile.identifier %>
     </div>
   <% end %>
+  <%= render 'configure_button' %>
 
   <%= content_for :product_page do %>
     <%= render 'catalog/results', show_supplier: @scope == 'all' %>
