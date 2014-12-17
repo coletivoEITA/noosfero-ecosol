@@ -34,7 +34,7 @@ fb_app = {
 
     disconnect: function() {
       this.loading();
-      fb_app.fb.disconnect()
+      fb_app.auth.receive({status: 'not_authorized'})
     },
 
     connect_to_another: function() {
@@ -233,22 +233,14 @@ fb_app = {
       }, {scope: fb_app.fb.scope})
     },
 
-    disconnect: function(callback) {
-      try {
-        FB.logout(function(response) {
-          fb_app.fb.disconnect_response(response, callback)
-        })
-      } catch (e) {
-        fb_app.fb.disconnect_response({status: 'not_authorized'}, callback)
-      }
-    },
-    disconnect_response: function(response, callback) {
-      fb_app.auth.receive(response)
-      if (callback) callback(response)
+    connect_to_another: function() {
+      this.logout(this.connect)
     },
 
-    connect_to_another: function() {
-      this.disconnect(this.connect)
+    logout: function(callback) {
+      FB.logout(function(response) {
+        if (callback) callback(response)
+      })
     },
 
     // not to be used
