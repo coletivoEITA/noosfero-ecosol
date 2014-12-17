@@ -15,4 +15,10 @@ class FbAppPluginController < PublicController
 
   protected
 
+  # prevent session reset because X-CSRF not being passed by FB
+  # see also https://gist.github.com/toretore/911886
+  def handle_unverified_request
+  end
+
 end
+
