@@ -36,8 +36,12 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
     self.create_from_page_ids page_ids, attrs
   end
 
+  def self.facebook_url page_id
+    "https://facebook.com/#{page_id}?sk=app_#{FbAppPlugin.page_tab_app_credentials[:id]}"
+  end
+
   def facebook_url
-    "https://facebook.com/#{self.page_id}?sk=app_#{FbAppPlugin.page_tab_app_credentials[:id]}"
+    self.class self.page_id
   end
 
   def types

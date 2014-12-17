@@ -14,8 +14,7 @@ class FbAppPluginPageTabController < FbAppPluginController
 
     if params[:tabs_added]
       @page_ids = FbAppPlugin::Profile.page_ids_from_tabs_added params[:tabs_added]
-      session[:notice] = t('fb_app_plugin.views.page_tab.added_notice')
-      render action: 'tabs_added', layout: false
+      redirect_to FbAppPlugin::PageTab.facebook_url @page_ids.first
     elsif @signed_request or @page_id
       if @page_tab.present?
         if product_id = params[:product_id]
