@@ -5,7 +5,7 @@
 <div id='fb-app-modal-wrap' style='display:none'>
 
   <div id='fb-app-modal'>
-    <p><%= t('fb_app_plugin.views.myprofile.catalogs.confirm_removal') %> '<span id='fb-app-modal-catalog-name'></span>'?</p>
+    <%= t('fb_app_plugin.views.myprofile.catalogs.confirm_removal') %>
     <%= button_to_function 'cancel', t('fb_app_plugin.views.myprofile.catalogs.cancel_button'), "noosfero.modal.close()", class: 'modal-button-no' %>
     <%= button_to_function 'ok', t('fb_app_plugin.views.myprofile.catalogs.confirm_removal_button'), "fb_app.page_tab.config.remove_confirmed(this);noosfero.modal.close()", class: 'modal-button-yes' %>
   </div>

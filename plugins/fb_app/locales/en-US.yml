@@ -42,7 +42,7 @@
           query_label: "Criteria for the catalog's products"
           edit_button: "Edit catalog '%{catalog_title}'"
           remove_button: "Remove catalog '%{catalog_title}'"
-          confirm_removal: "Are you sure you want to remove the catalog"
+          confirm_removal: "<p>Warning: To really remove a catalog, you must go to the facebook page where it is, click at '<u>add or remove tabs</u>' and then remove the tab.</p><p>After that, you can come here and remove the catalog from our settings.</p><p>Are you sure you want to remove this catalog?</p>"
           cancel_button: 'Cancel'
           confirm_removal_button: 'Yes, I want to delete this catalog'
           
