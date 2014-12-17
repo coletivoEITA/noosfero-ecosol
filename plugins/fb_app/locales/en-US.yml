@@ -8,13 +8,10 @@
         description: 'Use the Cirandas app for Facebook!'
     models:
       page_tab:
-        enterprise_types:
-          own_profile: 'Catalog from this enterprise'
-          profile: 'Catalog from other SSE enterprise'
-          profiles: 'Catalog of manually selected SSE enterprises'
-          query: 'Catalog of products chosen by filter or free search'
         types:
+          own_profile: 'Catalog from this enterprise'
           profile: 'Catalog from a single SSE enterprise'
+          other_profile: 'Catalog from other SSE enterprise'
           profiles: 'Catalog from more than one SSE enterprise'
           query: 'Catalog of products chosen by filter or free search'
     views:
