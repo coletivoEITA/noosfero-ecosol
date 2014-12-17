@@ -1,13 +1,9 @@
 require_dependency 'profile'
 
-if Rails.env.development?
-  require_dependency 'community'
-  require_dependency 'enterprise'
-
-  Organization.subclasses.each do |subclass|
-    subclass.class_eval do
-      attr_accessible :volunteers_settings
-    end
+# subclass problem on development and production
+Profile.descendants.each do |subclass|
+  subclass.class_eval do
+    attr_accessible :volunteers_settings
   end
 end
 

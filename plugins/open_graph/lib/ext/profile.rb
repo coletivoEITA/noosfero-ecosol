@@ -1,17 +1,15 @@
 require_dependency 'profile'
 
-# STI workaround
-if Rails.env.development?
-  Profile.subclasses.each do |subclass|
-    subclass.class_eval do
-      OpenGraphPlugin::Track::Config.each do |track, klass|
-        klass = "OpenGraphPlugin::#{klass}".constantize
-        attributes = "#{klass.association}_attributes"
-        profile_ids = "open_graph_#{track}_profiles_ids"
+# subclass problem on development and production
+Profile.descendants.each do |subclass|
+  subclass.class_eval do
+    OpenGraphPlugin::Track::Config.each do |track, klass|
+      klass = "OpenGraphPlugin::#{klass}".constantize
+      attributes = "#{klass.association}_attributes"
+      profile_ids = "open_graph_#{track}_profiles_ids"
 
-        attr_accessible attributes
-        attr_accessible profile_ids
-      end
+      attr_accessible attributes
+      attr_accessible profile_ids
     end
   end
 end
