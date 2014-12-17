@@ -89,14 +89,20 @@ fb_app = {
         window.location.href = fb_app.current_url
       },
 
-      validate_catalog_submission: function(form) {
+      validate: function(form) {
+        for (var i=0; tinymce.editors[i]; i++) {
+          var editor = tinymce.editors[i]
+          var textarea = editor.getElement()
+          textarea.value = editor.getContent()
+        }
+
         if (form.find('#page_tab_title').val().trim()=='') {
           noosfero.modal.html('<div id="fb-app-error">'+fb_app.locales.error_empty_title+'</div>')
           return false
         } else {
           var selected_type = form.find('#page_tab_config_type').val()
           var sub_option = form.find('.config-type-'+selected_type+' input')
-          if (sub_option.length>0 && sub_option.val().trim()=='') {
+          if (sub_option.length > 0 && sub_option.val().trim()=='') {
             noosfero.modal.html('<div id="fb-app-error">'+fb_app.locales.error_empty_settings+'</div>')
             return false
           }
@@ -105,7 +111,7 @@ fb_app = {
       },
 
       add: function (form) {
-        if (!this.validate_catalog_submission(form))
+        if (!this.validate(form))
           return false
         // this checks if the user is using FB as a page and offer a switch
         FB.login(function(response) {
@@ -117,12 +123,7 @@ fb_app = {
       },
 
       save: function(form) {
-        for (var i=0; tinymce.editors[i]; i++) {
-          var editor = tinymce.editors[i]
-          editor.save()
-        }
-
-        if (!this.validate_catalog_submission(form))
+        if (!this.validate(form))
           return false
         jQuery(form).ajaxSubmit({
           dataType: 'script',

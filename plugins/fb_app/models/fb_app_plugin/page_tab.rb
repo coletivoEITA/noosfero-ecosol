@@ -45,7 +45,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
     self.config[:type] || (self.owner_profile ? :own_profile : :profile)
   end
   def config_type= value
-    # ignored, set by specific methods belows
+    self.config[:type] = value.to_sym
   end
 
   def value

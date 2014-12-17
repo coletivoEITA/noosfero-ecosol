@@ -21,14 +21,13 @@
   <%= f.hidden_field :profile_id, value: profile.id %>
   <%= f.hidden_field :page_id %>
 
-  <%= f.label t("fb_app_plugin.views.myprofile.catalogs.catalog_title_label") %>
+  <%= f.label :title, t("fb_app_plugin.views.myprofile.catalogs.catalog_title_label") %>
   <%= f.text_field :title, class: 'form-control' %>
 
-  <%= f.label t("fb_app_plugin.views.myprofile.catalogs.catalog_subtitle_label") %>
-  <%= render file: 'shared/tiny_mce', locals: {mode: 'simple'} %>
-  <%= f.text_area :subtitle, class: 'form-control mceEditor' %>
+  <%= f.label :subtitle, t("fb_app_plugin.views.myprofile.catalogs.catalog_subtitle_label") %>
+  <%= f.text_area :subtitle, class: 'form-control mceEditor', id: "page-tab-subtitle-#{page_tab.id}" # different id needed for tinyce %>
 
-  <%= f.label t("fb_app_plugin.views.myprofile.catalogs.catalog_type_chooser_label") %>
+  <%= f.label :config_type, t("fb_app_plugin.views.myprofile.catalogs.catalog_type_chooser_label") %>
     <%= f.select :config_type,
       page_tab.types.map{ |type| [t("fb_app_plugin.models.page_tab.types.#{if profile.enterprise? and type == :profile then :other_profile else type end}"), type] },
       {}, onchange: 'fb_app.page_tab.config.change_type($(this))', class: 'form-control' %>

@@ -66,6 +66,7 @@ class FbAppPluginPageTabController < FbAppPluginController
     if request.put? and @page_id.present?
       create_page_tabs if @page_tab.nil?
 
+      raise params[:page_tab].inspect
       @page_tab.update_attributes! params[:page_tab]
 
       respond_to do |format|

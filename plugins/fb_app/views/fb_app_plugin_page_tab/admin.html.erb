@@ -6,5 +6,6 @@
   <p>Escolha o modo de integração:</p>
 
   <%= render 'config', page_tab: @page_tab, page_id: @page_id, signed_request: @signed_request %>
+  <%= render file: 'shared/tiny_mce', locals: {mode: 'simple'} %>
 
 </div>
