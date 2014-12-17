@@ -24,10 +24,10 @@
         reconnect: 'Reconectar' 
 
         timeline:
-          heading: 'Cirandas postando no seu facebook'
+          heading: 'Postar seu conteúdo do Cirandas no face...'
           add: 'Salvar configuração de postagens na timeline' 
-          explanation_title: 'Em breve!'
-          explanation_text: 'Dentro de pouco tempo, suas ações no cirandas vão se converter automaticamente em postagens na sua linha do tempo do Facebook! Aguarde!'
+          explanation_title: 'Aguarde!'
+          explanation_text: 'Em breve, suas ações no cirandas vão se converter automaticamente em postagens na sua linha do tempo do Facebook! Aguarde!'
 
         catalogs:
           heading: 'Vitrine Cirandas'
