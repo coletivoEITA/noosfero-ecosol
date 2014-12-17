@@ -37,8 +37,8 @@
           profile_chooser_label: 'Empreendimento'
           profiles_chooser_label: 'Empreendimentos'
           query_label: "Critérios para os produtos/serviços da vitrine"
-          edit_button: "Editar vitrine '%{catalog_name}'"
-          remove_button: "Remover vitrine '%{catalog_name}'"
+          edit_button: "Editar vitrine '%{catalog_title}'"
+          remove_button: "Remover vitrine '%{catalog_title}'"
           confirm_removal: "Você tem certeza que quer remover a vitrine"
           cancel_button: 'Cancelar'
           confirm_removal_button: 'Sim, quero remover esta vitrine'
