@@ -2,9 +2,9 @@
 <%= render 'configure_button' %>
 
 <h1><%= @page_tab.title %></h1>
-<% if (@page_tab.subtitle) { %>
+<% if (@page_tab.subtitle) %>
   <p class="description"><%= @page_tab.subtitle %></p>
-<% } %>
+<% end %>
 <div id="product-catalog">
   <% if profile and user.present? and (user.is_admin?(environment) or user.is_admin?(profile)) %>
     <div class="product-catalog-ctrl">
