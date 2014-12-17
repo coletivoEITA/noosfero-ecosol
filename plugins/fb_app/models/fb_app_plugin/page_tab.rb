@@ -3,7 +3,8 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
   # FIXME: rename table to match model
   self.table_name = :fb_app_plugin_page_tab_configs
 
-  attr_accessible :owner_profile, :title, :subtitle, :own_profile, :profile, :profile_id, :page_id, :config_type, :profile_ids, :query
+  attr_accessible :owner_profile, :owner_profile_id, :config_type,
+    :title, :subtitle, :own_profile, :profile, :profile_id, :page_id, :profile_ids, :query
 
   belongs_to :owner_profile, foreign_key: :profile_id, class_name: 'Profile'
 
@@ -59,12 +60,21 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
   def query
     self.config[:query]
   end
+
   def title
     self.config[:title]
   end
   def title= value
     self.config[:title] = value
   end
+
+  def subtitle
+    self.config[:subtitle]
+  end
+  def subtitle= value
+    self.config[:subtitle] = value
+  end
+
   def profile_ids= ids
     ids = ids.split(',')
     self.config[:type] = if ids.size == 1 then :profile else :profiles end
