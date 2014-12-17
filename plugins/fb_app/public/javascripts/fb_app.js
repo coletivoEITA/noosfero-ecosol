@@ -90,8 +90,8 @@ fb_app = {
       },
 
       validate_catalog_submission: function(form) {
-        if (form.find('#page_tab_name').val().trim()=='') {
-          noosfero.modal.html('<div id="fb-app-error">'+fb_app.locales.error_empty_name+'</div>')
+        if (form.find('#page_tab_title').val().trim()=='') {
+          noosfero.modal.html('<div id="fb-app-error">'+fb_app.locales.error_empty_title+'</div>')
           return false
         } else {
           var selected_type = form.find('#page_tab_config_type').val()
