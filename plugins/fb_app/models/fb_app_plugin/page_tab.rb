@@ -41,7 +41,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
   end
 
   def facebook_url
-    self.class self.page_id
+    self.class.facebook_url self.page_id
   end
 
   def types
