@@ -38,7 +38,7 @@ fb_app = {
     },
 
     connect_to_another: function() {
-      this.loading();
+      this.disconnect();
       fb_app.fb.connect_to_another()
     },
   },
@@ -227,19 +227,23 @@ fb_app = {
       return 'https://www.facebook.com/dialog/pagetab?' + jQuery.param({app_id: app_id, next: next_url})
     },
 
-    connect: function() {
+    connect: function(callback) {
       FB.login(function(response) {
         fb_app.auth.receive(response)
+        if (callback) callback(response)
       }, {scope: fb_app.fb.scope})
     },
 
-    connect_to_another: function() {
-      this.logout(this.connect)
+    connect_to_another: function(callback) {
+      this.logout(this.connect(callback))
     },
 
     logout: function(callback) {
-      FB.logout(function(response) {
-        if (callback) callback(response)
+      // this checks if the user is using FB as a page and offer a switch
+      FB.login(function(response) {
+        FB.logout(function(response) {
+          if (callback) callback(response)
+        })
       })
     },
 
