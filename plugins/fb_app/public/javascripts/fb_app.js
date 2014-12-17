@@ -115,8 +115,10 @@ fb_app = {
       },
 
       save: function(form) {
-        for (var editor in tinymce.editors)
+        for (var i=0; tinymce.editors[i]; i++) {
+          var editor = tinymce.editors[i]
           editor.save()
+        }
 
         if (!this.validate_catalog_submission(form))
           return false
