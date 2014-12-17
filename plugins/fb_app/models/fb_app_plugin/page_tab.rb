@@ -12,7 +12,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
   acts_as_having_settings field: :config
 
   ConfigTypes = [:profile, :profiles, :query]
-  EnterpriseConfigTypes = [:own_profile, :other_profile, :profiles, :query]
+  EnterpriseConfigTypes = [:own_profile] + ConfigTypes
 
   validates_presence_of :page_id
   validates_uniqueness_of :page_id

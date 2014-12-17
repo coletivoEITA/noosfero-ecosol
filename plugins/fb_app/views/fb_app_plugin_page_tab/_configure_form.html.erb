@@ -30,8 +30,8 @@
 
   <%= f.label t("fb_app_plugin.views.myprofile.catalogs.catalog_type_chooser_label") %>
     <%= f.select :config_type,
-    page_tab.types.map{ |type| [t("fb_app_plugin.models.page_tab.types.#{type}"), type] },
-    {}, onchange: 'fb_app.page_tab.config.change_type($(this))', class: 'form-control' %>
+      page_tab.types.map{ |type| [t("fb_app_plugin.models.page_tab.types.#{if profile.enterprise? and type == :profile then :other_profile else type end}"), type] },
+      {}, onchange: 'fb_app.page_tab.config.change_type($(this))', class: 'form-control' %>
 
   <% page_tab.types.each do |type| %>
     <div class="config-type config-type-<%= type %>">
