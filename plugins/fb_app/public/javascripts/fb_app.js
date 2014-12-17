@@ -95,7 +95,8 @@ fb_app = {
           return false
         } else {
           var selected_type = form.find('#page_tab_config_type').val()
-          if (form.find('.config-type-'+selected_type+' input').val().trim()=='') {
+          var sub_option = form.find('.config-type-'+selected_type+' input')
+          if (sub_option.length>0 && sub_option.val().trim()=='') {
             noosfero.modal.html('<div id="fb-app-error">'+fb_app.locales.error_empty_settings+'</div>')
             return false
           }
