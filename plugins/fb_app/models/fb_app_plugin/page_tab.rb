@@ -3,13 +3,13 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
   # FIXME: rename table to match model
   self.table_name = :fb_app_plugin_page_tab_configs
 
-  attr_accessible :owner_profile, :name, :profile, :profile_id, :page_id, :config_type, :profile_ids, :query
+  attr_accessible :owner_profile, :title, :subtitle, :own_profile, :profile, :profile_id, :page_id, :config_type, :profile_ids, :query
 
   belongs_to :owner_profile, foreign_key: :profile_id, class_name: 'Profile'
 
   acts_as_having_settings field: :config
 
-  ConfigTypes = [:profile, :profiles, :query]
+  ConfigTypes = [:own_profile, :profile, :profiles, :query]
 
   validates_presence_of :page_id
   validates_uniqueness_of :page_id
@@ -34,7 +34,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
   end
 
   def config_type
-    self.config[:type] || :profile
+    self.config[:type] || (self.owner_profile ? :own_profile : :profile)
   end
   def config_type= value
     # ignored, set by specific methods belows
@@ -56,18 +56,15 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
   def profile_ids
     self.profiles.map(&:id)
   end
-
   def query
     self.config[:query]
   end
-
-  def name
-    self.config[:name]
+  def title
+    self.config[:title]
   end
-  def name= value
-    self.config[:name] = value
+  def title= value
+    self.config[:title] = value
   end
-
   def profile_ids= ids
     ids = ids.split(',')
     self.config[:type] = if ids.size == 1 then :profile else :profiles end
