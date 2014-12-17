@@ -29,7 +29,9 @@ fb_app = {
       this.loading();
       fb_app.fb.scope = this.app_scope
       //fb_app.fb.init(this.app_id, 'fb_app.fb.connect()')
-      fb_app.fb.connect()
+      fb_app.fb.connect(function (response) {
+        fb_app.auth.receive(response)
+      });
     },
 
     disconnect: function() {
@@ -39,7 +41,7 @@ fb_app = {
 
     connect_to_another: function() {
       this.disconnect();
-      fb_app.fb.connect_to_another()
+      fb_app.fb.connect_to_another(this.connect)
     },
   },
 
@@ -229,7 +231,6 @@ fb_app = {
 
     connect: function(callback) {
       FB.login(function(response) {
-        fb_app.auth.receive(response)
         if (callback) callback(response)
       }, {scope: fb_app.fb.scope})
     },
@@ -248,9 +249,9 @@ fb_app = {
     },
 
     // not to be used
-    delete: function() {
+    delete: function(callback) {
       FB.api("/me/permissions", "DELETE", function(response) {
-        fb_app.auth.receive({status: 'not_authorized'})
+        if (callback) callback(response)
       })
     },
 
