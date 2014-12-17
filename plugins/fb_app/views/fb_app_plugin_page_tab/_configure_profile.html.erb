@@ -13,5 +13,15 @@
       <%= [page_tab.profile].compact.map{ |p| {value: p.id, label: render('open_graph_plugin_myprofile/ac_profile', profile: p), } }.to_json %>,
       {tokenfield: {limit: 1}}
     )
+    
+    jQuery(selector)
+      .on('tokenfield:createdtoken', function (e) {
+        alert('ai');
+      })
+      .on('tokenfield:removedtoken', function (e) {
+        alert('ui');
+      })
+    console.log(selector)
+    console.log(jQuery(selector))
   })
 <% end %>
