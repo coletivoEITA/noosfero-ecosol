@@ -36,10 +36,13 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
     self.create_from_page_ids page_ids, attrs
   end
 
+  def facebook_url
+    "https://facebook.com/#{FbAppPlugin.page_tab_app_credentials[:id]}?sk=app_#{self.page_id}"
+  end
+
   def types
     if self.owner_profile.present? and self.owner_profile.enterprise? then EnterpriseConfigTypes else ConfigTypes end
   end
-
 
   def config_type
     self.config[:type] || (self.owner_profile ? :own_profile : :profile)
