@@ -42,7 +42,7 @@
           query_label: "Critérios para os produtos/serviços da vitrine"
           edit_button: "Editar vitrine '%{catalog_title}'"
           remove_button: "Remover vitrine '%{catalog_title}'"
-          confirm_removal: "Você tem certeza que quer remover a vitrine"
+          confirm_removal: "<p>Atenção: Para realmente apagar uma vitrine, você deve primeiro ir para a página do facebook onde está a sua vitrine, clicar em '<u>gerenciar guias</u>' (onde está o menu 'mais', do lado das outras abas), e então clicar em '<u>adicionar ou remover guias</u>' e remover a aba da página.</p><p>Depois disso, você pode vir aqui e pedir para remover a vitrine.</p><p>Você tem certeza que quer remover a vitrine?</p>"
           cancel_button: 'Cancelar'
           confirm_removal_button: 'Sim, quero remover esta vitrine'
 
