@@ -37,8 +37,8 @@
           profile_chooser_label: 'Enterprise'
           profiles_chooser_label: 'Enterprises'
           query_label: "Criteria for the catalog's products"
-          edit_button: "Edit catalog '%{catalog_name}'"
-          remove_button: "Remove catalog '%{catalog_name}'"
+          edit_button: "Edit catalog '%{catalog_title}'"
+          remove_button: "Remove catalog '%{catalog_title}'"
           confirm_removal: "Are you sure you want to remove the catalog"
           cancel_button: 'Cancel'
           confirm_removal_button: 'Yes, I want to delete this catalog'
