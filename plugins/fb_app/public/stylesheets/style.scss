@@ -4,6 +4,10 @@ body.controller-fb_app_plugin_page_tab {
 
   /* Catalog Tab in Facebook */
   background: #fff;
+  
+  #top-bar {
+    display: none;
+  }
 
   .navbar-static-top {
     border-radius: 4px;
