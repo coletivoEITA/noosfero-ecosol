@@ -8,7 +8,7 @@ class FbAppPluginMyprofileController < OpenGraphPluginMyprofileController
   def index
     if params[:tabs_added]
       @page_tabs = FbAppPlugin::PageTab.create_from_tabs_added params[:tabs_added], params[:page_tab]
-      @page_tab = @page_tab.first
+      @page_tab = @page_tabs.first
       redirect_to @page_tab.facebook_url
     end
   end

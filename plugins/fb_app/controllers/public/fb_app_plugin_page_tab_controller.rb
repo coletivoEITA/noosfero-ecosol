@@ -14,7 +14,7 @@ class FbAppPluginPageTabController < FbAppPluginController
 
     if params[:tabs_added]
       @page_tabs = FbAppPlugin::PageTab.create_from_tabs_added params[:tabs_added]
-      @page_tab = @page_tab.first
+      @page_tab = @page_tabs.first
       redirect_to @page_tab.facebook_url
     elsif @signed_request or @page_id
       if @page_tab.present?
