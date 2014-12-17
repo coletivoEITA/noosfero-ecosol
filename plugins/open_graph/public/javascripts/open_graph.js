@@ -63,7 +63,12 @@ open_graph = {
       var tokenfieldOptions = jQuery.extend({}, this.tokenfieldOptions, options.tokenfield || {});
 
       var input = $(selector)
-      bloodhoundOptions.remote = jQuery.param.querystring(url, {query:'%QUERY'});
+      bloodhoundOptions.remote = {
+        url: url,
+        replace: function(url, uriEncodedQuery) {
+          return jQuery.param.querystring(url, {query:uriEncodedQuery});
+        },
+      }
       var engine = new Bloodhound(bloodhoundOptions)
       engine.initialize()
 
