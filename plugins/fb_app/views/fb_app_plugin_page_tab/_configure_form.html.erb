@@ -19,7 +19,7 @@
   <%= f.text_field :title, class: 'form-control' %>
 
   <%= f.label t("fb_app_plugin.views.myprofile.catalogs.catalog_subtitle_label") %>
-  <%= render :file => 'shared/tiny_mce' %>
+  <%= render :file => 'shared/tiny_mce', :locals => {:mode => 'simple'} %>
   <%= f.text_area :subtitle, class: 'form-control mceEditor' %>
 
   <%= f.label t("fb_app_plugin.views.myprofile.catalogs.catalog_type_chooser_label") %>
