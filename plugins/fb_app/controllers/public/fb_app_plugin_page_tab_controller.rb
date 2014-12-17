@@ -64,13 +64,14 @@ class FbAppPluginPageTabController < FbAppPluginController
     if request.put? and @page_id.present?
       create_page_tabs if @page_tab.nil?
 
+      profile_ids = params[:page_tab][:profile_ids].to_s.split ','
       case params[:page_tab][:config_type]
-        when 'profile'
-          @page_tab.profile = Profile.where(id: Array(params[:page_tab][:profile_ids])).first
-        when 'profiles'
-          @page_tab.profiles = Profile.where(id: Array(params[:page_tab][:profile_ids]))
-        when 'query'
-          @page_tab.query = params[:page_tab][:query].to_s
+      when 'profile'
+        @page_tab.profile = Profile.where(id: profile_ids).first
+      when 'profiles'
+        @page_tab.profiles = Profile.where(id: profile_ids)
+      when 'query'
+        @page_tab.query = params[:page_tab][:query].to_s
       end
       @page_tab.name = params[:page_tab][:name]
       @page_tab.save!
