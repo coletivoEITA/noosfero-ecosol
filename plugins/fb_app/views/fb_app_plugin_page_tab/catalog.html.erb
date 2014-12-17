@@ -1,8 +1,10 @@
 <%= render 'load' %>
 <%= render 'configure_button' %>
 
-<h1>Vitrine da Economia Solidária</h1>
-<p class="description">O Seminário resulta de atividades promovidas durante do processo de formação que vem desenvolvido na região Nordeste desde 2009, onde os coletivos estaduais buscam construir sua autonomia, principalmente no que se refere a sistematização de experiências. </p>
+<h1><%= @page_tab.title %></h1>
+<% if (@page_tab.subtitle) { %>
+  <p class="description"><%= @page_tab.subtitle %></p>
+<% } %>
 <div id="product-catalog">
   <% if profile and user.present? and (user.is_admin?(environment) or user.is_admin?(profile)) %>
     <div class="product-catalog-ctrl">
