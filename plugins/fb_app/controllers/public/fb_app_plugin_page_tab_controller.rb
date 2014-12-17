@@ -26,8 +26,8 @@ class FbAppPluginPageTabController < FbAppPluginController
           load_catalog
 
           render action: 'product'
-        elsif @page_tab.profiles.present? and @page_tab.profiles.size == 1
-          @profile = @page_tab.profiles.first
+        elsif @page_tab.config_type.in? [:profile, :own_profile]
+          @profile = @page_tab.value
 
           load_catalog
           render action: 'catalog'
@@ -36,7 +36,7 @@ class FbAppPluginPageTabController < FbAppPluginController
           @profile = environment.enterprise_template
           @profile.shopping_cart_settings.enabled = true
 
-          base_query = if @page_tab.profiles.present? then @page_tab.profiles.map(&:identifier).join(' OR ') else @page_tab.query end
+          base_query = @page_tab.value
           params[:base_query] = base_query
           params[:scope] = 'all'
 

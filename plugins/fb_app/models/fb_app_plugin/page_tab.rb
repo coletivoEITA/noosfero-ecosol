@@ -5,7 +5,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
 
   attr_accessible :owner_profile, :profile_id, :page_id,
     :config_type, :profile_ids, :query,
-    :title, :subtitle, :own_profile
+    :title, :subtitle
 
   belongs_to :owner_profile, foreign_key: :profile_id, class_name: 'Profile'
 
@@ -49,12 +49,20 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
   end
 
   def value
-    self.send self.config_type rescue nil
+    case self.config_type
+    when :profiles
+      self.profiles.map(&:identifier).join(' OR ')
+    else
+      self.send self.config_type
+    end
   end
   def blank?
     self.value.blank? rescue true
   end
 
+  def own_profile
+    self.owner_profile
+  end
   def profiles
     Profile.where(id: self.config[:profile_ids])
   end
@@ -86,16 +94,6 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
     ids = ids.to_s.split(',')
     self.config[:type] = if ids.size == 1 then :profile else :profiles end
     self.config[:profile_ids] = ids
-  end
-
-  def profiles= profiles
-    self.config[:type] = :profiles
-    self.config[:profile_ids] = profiles.map(&:id)
-  end
-
-  def profile= profile
-    self.config[:type] = :profile
-    self.config[:profile_ids] = [profile.id]
   end
 
   def query= value
