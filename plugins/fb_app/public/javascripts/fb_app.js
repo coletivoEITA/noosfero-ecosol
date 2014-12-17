@@ -234,11 +234,19 @@ fb_app = {
     },
 
     disconnect: function(callback) {
-      FB.logout(function(response) {
-        fb_app.auth.receive(response)
-        if (callback) callback(response)
-      })
+      try {
+        FB.logout(function(response) {
+          fb_app.fb.disconnect_response(response, callback)
+        })
+      } catch (e) {
+        fb_app.fb.disconnect_response({status: 'not_authorized'}, callback)
+      }
     },
+    disconnect_response: function(response, callback) {
+      fb_app.auth.receive(response)
+      if (callback) callback(response)
+    },
+
     connect_to_another: function() {
       this.disconnect(this.connect)
     },
