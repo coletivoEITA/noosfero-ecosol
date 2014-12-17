@@ -19,11 +19,13 @@ module TinymceHelper
         emoticons template paste textcolor colorpicker textpattern],
       :language => tinymce_language
 
-    options[:toolbar1] = "insertfile undo redo | copy paste | bold italic underline | styleselect fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+    
     if options[:mode] == 'simple'
       options[:menubar] = false
+      options[:toolbar1] = "bold italic underline forecolor backcolor | alignleft aligncenter alignright | bullist numlist | link image"
     else
       options[:menubar] = 'edit insert view tools'
+      options[:toolbar1] = "insertfile undo redo | copy paste | bold italic underline | styleselect fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
       options[:toolbar2] = 'print preview code media | table'
 
       options[:toolbar2] += ' | macros'
