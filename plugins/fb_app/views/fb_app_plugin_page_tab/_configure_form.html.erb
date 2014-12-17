@@ -1,14 +1,20 @@
+<%
+  form_id = (page_tab.id) ? ("edit_tab_"+page_tab.id.to_s) : "add_tab"
+%>
+
 <div id='fb-app-modal-wrap' style='display:none'>
+
   <div id='fb-app-modal'>
     <p><%= t('fb_app_plugin.views.myprofile.catalogs.confirm_removal') %> '<span id='fb-app-modal-catalog-name'></span>'?</p>
     <%= button_to_function 'cancel', t('fb_app_plugin.views.myprofile.catalogs.cancel_button'), "noosfero.modal.close()", class: 'modal-button-no' %>
     <%= button_to_function 'ok', t('fb_app_plugin.views.myprofile.catalogs.confirm_removal_button'), "fb_app.page_tab.config.remove_confirmed(this);noosfero.modal.close()", class: 'modal-button-yes' %>
   </div>
 </div>
-<% form_id = (page_tab.id) ? ("edit_tab_"+page_tab.id.to_s) : "add_tab" %>
+
 <% if !page_tab.id %>
   <h3><%= t('fb_app_plugin.views.myprofile.catalogs.new') %></h3>
 <% end %>
+
 <%= form_for page_tab, as: :page_tab, url: {controller: :fb_app_plugin_page_tab, action: :admin}, html: {id: form_id, class:"edit-page-tab", onsubmit: "return fb_app.page_tab.config.save($(this))"} do |f| %>
   <%= hidden_field_tag :signed_request, signed_request %>
   <%= hidden_field_tag :page_id, page_tab.page_id %>
@@ -19,15 +25,15 @@
   <%= f.text_field :title, class: 'form-control' %>
 
   <%= f.label t("fb_app_plugin.views.myprofile.catalogs.catalog_subtitle_label") %>
-  <%= render :file => 'shared/tiny_mce', :locals => {:mode => 'simple'} %>
+  <%= render file: 'shared/tiny_mce', locals: {mode: 'simple'} %>
   <%= f.text_area :subtitle, class: 'form-control mceEditor' %>
 
   <%= f.label t("fb_app_plugin.views.myprofile.catalogs.catalog_type_chooser_label") %>
     <%= f.select :config_type,
-    FbAppPlugin::PageTab::ConfigTypes.map{ |type| [t("fb_app_plugin.models.page_tab.types.#{type}"), type] },
+    page_tab.types.map{ |type| [t("fb_app_plugin.models.page_tab.types.#{type}"), type] },
     {}, onchange: 'fb_app.page_tab.config.change_type($(this))', class: 'form-control' %>
 
-  <% FbAppPlugin::PageTab::ConfigTypes.each do |type| %>
+  <% page_tab.types.each do |type| %>
     <div class="config-type config-type-<%= type %>">
       <%= render "fb_app_plugin_page_tab/configure_#{type}", f: f, page_tab: page_tab %>
     </div>

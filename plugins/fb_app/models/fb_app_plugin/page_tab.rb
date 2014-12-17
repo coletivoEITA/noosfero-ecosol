@@ -3,18 +3,20 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
   # FIXME: rename table to match model
   self.table_name = :fb_app_plugin_page_tab_configs
 
-  attr_accessible :owner_profile, :profile_id, :config_type,
-    :title, :subtitle, :own_profile, :profile, :page_id, :profile_ids, :query
+  attr_accessible :owner_profile, :profile_id, :page_id,
+    :config_type, :profile_ids, :query,
+    :title, :subtitle, :own_profile
 
   belongs_to :owner_profile, foreign_key: :profile_id, class_name: 'Profile'
 
   acts_as_having_settings field: :config
 
-  ConfigTypes = [:own_profile, :profile, :profiles, :query]
+  ConfigTypes = [:profile, :profiles, :query]
+  EnterpriseConfigTypes = [:own_profile, :other_profile, :profiles, :query]
 
   validates_presence_of :page_id
   validates_uniqueness_of :page_id
-  validates_inclusion_of :config_type, in: ConfigTypes
+  validates_inclusion_of :config_type, in: ConfigTypes + EnterpriseConfigTypes
 
   def self.page_ids_from_tabs_added tabs_added
     tabs_added.map{ |id, value| id }
@@ -33,6 +35,11 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
     page_ids = self.page_ids_from_tabs_added tabs_added
     self.create_from_page_ids page_ids, attrs
   end
+
+  def types
+    if self.owner_profile.present? and self.owner_profile.enterprise? then EnterpriseConfigTypes else ConfigTypes end
+  end
+
 
   def config_type
     self.config[:type] || (self.owner_profile ? :own_profile : :profile)
@@ -76,7 +83,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
   end
 
   def profile_ids= ids
-    ids = ids.split(',')
+    ids = ids.to_s.split(',')
     self.config[:type] = if ids.size == 1 then :profile else :profiles end
     self.config[:profile_ids] = ids
   end

@@ -66,11 +66,11 @@ class FbAppPluginPageTabController < FbAppPluginController
     if request.put? and @page_id.present?
       create_page_tabs if @page_tab.nil?
 
-      attrs = params[:page_tab]
-      attrs[:profile_ids] = attrs[:profile_ids].to_s.split ','
-      @page_tab.update_attributes! attrs
+      @page_tab.update_attributes! params[:page_tab]
 
-      respond_to{ |format| format.js{ render action: 'admin', layout: false } }
+      respond_to do |format|
+        format.js{ render action: 'admin' }
+      end
     end
   end
 

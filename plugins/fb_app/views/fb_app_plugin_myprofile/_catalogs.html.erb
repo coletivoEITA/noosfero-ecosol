@@ -7,6 +7,6 @@
 <% end %>
 
 <div id="new-catalog">
-  <%= render 'fb_app_plugin_page_tab/config', page_tab: profile.fb_app_page_tabs.build(profile_id: profile.id) %>
+  <%= render 'fb_app_plugin_page_tab/config', page_tab: profile.fb_app_page_tabs.build(owner_profile: profile) %>
 </div>
 

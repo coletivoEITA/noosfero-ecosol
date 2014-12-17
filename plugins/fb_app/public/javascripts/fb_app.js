@@ -115,9 +115,14 @@ fb_app = {
       },
 
       save: function(form) {
+        for (var editor in tinymce.editors)
+          editor.save()
+
         if (!this.validate_catalog_submission(form))
           return false
-        jQuery(form).ajaxSubmit()
+        jQuery(form).ajaxSubmit({
+          dataType: 'script',
+        })
         return false
       },
 
