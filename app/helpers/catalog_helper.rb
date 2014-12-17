@@ -16,7 +16,7 @@ module CatalogHelper
 
   def catalog_load_index options = {:page => params[:page], :show_categories => true}
     @catalog_bar = true
-    @use_show_more = params[:use_show_more] == '1'
+    @use_show_more = params[:use_show_more] == '1' if @use_show_more.nil?
 
     load_query_and_scope
     solr_options = {:all_facets => @query.blank?}

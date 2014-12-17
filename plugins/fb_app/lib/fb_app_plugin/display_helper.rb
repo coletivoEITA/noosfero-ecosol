@@ -28,8 +28,8 @@ module FbAppPlugin::DisplayHelper
     end
     options
   end
-  def product_path product
-    url = url_for product_url_options(product)
+  def product_path product, options = {}
+    url = url_for product_url_options(product, options = {})
     url
   end
 

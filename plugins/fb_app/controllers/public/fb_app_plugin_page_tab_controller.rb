@@ -5,6 +5,8 @@ class FbAppPluginPageTabController < FbAppPluginController
   before_filter :change_theme
   before_filter :disable_cache
 
+  include CatalogHelper
+
   helper FbAppPlugin::FbAppDisplayHelper
 
   def index
@@ -27,7 +29,7 @@ class FbAppPluginPageTabController < FbAppPluginController
         elsif @page_tab.profiles.present? and @page_tab.profiles.size == 1
           @profile = @page_tab.profiles.first
 
-          catalog_load_index
+          load_catalog
           render action: 'catalog'
         else
           # fake profile for catalog controller
@@ -38,7 +40,7 @@ class FbAppPluginPageTabController < FbAppPluginController
           params[:base_query] = base_query
           params[:scope] = 'all'
 
-          catalog_load_index
+          load_catalog
           render action: 'catalog'
         end
       else
@@ -163,9 +165,8 @@ class FbAppPluginPageTabController < FbAppPluginController
   end
 
   def load_catalog options = {}
-    extend CatalogHelper
-    catalog_load_index options
     @use_show_more = true
+    catalog_load_index options
   end
 
   def read_param param
