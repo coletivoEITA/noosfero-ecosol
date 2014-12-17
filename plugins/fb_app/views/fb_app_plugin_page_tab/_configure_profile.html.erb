@@ -16,10 +16,10 @@
     
     jQuery(selector)
       .on('tokenfield:createdtoken', function (e) {
-        alert('ai');
+        jQuery(selector+'-tokenfield').toggle();
       })
       .on('tokenfield:removedtoken', function (e) {
-        alert('ui');
+        jQuery(selector+'-tokenfield').toggle();
       })
     console.log(selector)
     console.log(jQuery(selector))
