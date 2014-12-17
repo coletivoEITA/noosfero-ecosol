@@ -32,7 +32,8 @@
         catalogs:
           heading: 'Solidarity Economy Catalog'
           new: 'Add new catalog'
-          catalog_name_label: 'Name'
+          catalog_title_label: 'Title'
+          catalog_subtitle_label: 'Subtitle'
           catalog_type_chooser_label: 'Type'
           profile_chooser_label: 'Enterprise'
           profiles_chooser_label: 'Enterprises'
@@ -47,7 +48,7 @@
           see_page: 'See page on Facebook'
           
         error:
-          empty_name: 'Please add a name to your catalog.'
+          empty_title: 'Please add a title to your catalog.'
           empty_settings: 'Please choose SSE enterprises or search terms or filters for your catalog.'
 
       page_tab:
