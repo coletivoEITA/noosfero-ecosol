@@ -8,9 +8,14 @@
         description: 'Divulgue suas ações no cirandas e a economia solidária no Facebook!'
     models:
       page_tab:
+        enterprise_types:
+          own_profile: 'Vitrine deste empreendimento'
+          profile: 'Vitrine de outro empreendimento'
+          profiles: 'Vitrine de empreendimentos escolhidos manualmente'
+          query: 'Vitrine de produtos ou serviços escolhidos por categoria ou busca'
         types:
-          profile: 'Vitrine de um empreendimento'
-          profiles: 'Vitrine de empreendimentos escolhidos por você'
+          profile: 'Vitrine de um único empreendimento'
+          profiles: 'Vitrine de mais de um empreendimento'
           query: 'Vitrine de produtos ou serviços escolhidos por categoria ou busca'
     views:
       myprofile:
