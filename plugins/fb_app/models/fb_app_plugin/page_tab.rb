@@ -37,7 +37,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
   end
 
   def facebook_url
-    "https://facebook.com/#{FbAppPlugin.page_tab_app_credentials[:id]}?sk=app_#{self.page_id}"
+    "https://facebook.com/#{self.page_id}?sk=app_#{FbAppPlugin.page_tab_app_credentials[:id]}"
   end
 
   def types
