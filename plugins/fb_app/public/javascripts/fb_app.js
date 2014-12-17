@@ -70,7 +70,7 @@ fb_app = {
         jQuery('.modal-button-yes')
           .attr('target_url',url)
           .attr('target_id','#'+page_tab.attr('id'))
-        jQuery('#fb-app-modal-catalog-name').text(name)
+        //jQuery('#fb-app-modal-catalog-name').text(name)
         noosfero.modal.html(jQuery('#fb-app-modal-wrap').html())
       },
 
