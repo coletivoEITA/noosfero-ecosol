@@ -252,7 +252,7 @@ fb_app = {
 
     checkLoginStatus: function() {
       FB.getLoginStatus(function(response) {
-        fb_app.auth.showLogin(response)
+        // don't do nothing, this is just to fetch auth after init
       })
     },
 
