@@ -43,12 +43,12 @@ class FbAppPluginMyprofileController < OpenGraphPluginMyprofileController
   end
 
   def load_auth
-    @auth = FbAppPlugin::Auth.where(profile_id: user.id, provider_id: @provider.id).first
+    @auth = FbAppPlugin::Auth.where(profile_id: profile.id, provider_id: @provider.id).first
     @auth ||= new_auth
   end
 
   def new_auth
-    FbAppPlugin::Auth.new profile_id: user.id, provider_id: @provider.id
+    FbAppPlugin::Auth.new profile_id: profile.id, provider_id: @provider.id
   end
 
 end
