@@ -22,7 +22,7 @@ module TinymceHelper
     
     if options[:mode] == 'simple'
       options[:menubar] = false
-      options[:toolbar1] = "bold italic underline forecolor backcolor | alignleft aligncenter alignright | bullist numlist | link image"
+      options[:toolbar1] = "bold italic underline forecolor backcolor alignleft aligncenter bullist numlist link"
     else
       options[:menubar] = 'edit insert view tools'
       options[:toolbar1] = "insertfile undo redo | copy paste | bold italic underline | styleselect fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
