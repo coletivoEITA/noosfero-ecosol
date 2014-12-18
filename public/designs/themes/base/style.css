@@ -3440,3 +3440,6 @@ div.with_media_panel .formfield input[type="checkbox"] {
   height: 28px;
   padding: 0px 0px 0px 10px;
 }
+
+//PROVISORY!
+#product-owner { display:none; }
