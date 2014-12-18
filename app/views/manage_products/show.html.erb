@@ -19,6 +19,11 @@
   <div id='product-name'>
     <%= render :partial => 'manage_products/display_name' %>
   </div>
+  
+  <%# TODO: Make an option to show or not to show the SSE initiative of the product! %>
+  <div id='product-owner'>
+    <%= _('Nome do Produto') %>
+  </div>
 
   <% if NOOSFERO_CONF['addthis_enabled'] %>
     <%= render :partial => 'content_viewer/addthis' %>
