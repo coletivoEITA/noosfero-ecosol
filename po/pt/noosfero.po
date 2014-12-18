@@ -1214,6 +1214,10 @@ msgstr "Nome de exibição"
 msgid "Description"
 msgstr "Descrição"
 
+app/views/manage_products/show.html.erb
+msgid "Offered by"
+msgstr "Produzido ou oferecido por"
+
 #: app/models/organization.rb:107 app/models/create_enterprise.rb:7
 msgid "Contact person"
 msgstr "Pessoa de contato"
