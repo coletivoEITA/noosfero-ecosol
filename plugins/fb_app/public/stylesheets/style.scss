@@ -5,10 +5,9 @@ body.controller-fb_app_plugin_page_tab {
   /* Catalog Tab in Facebook */
   background: #fff;
   
-  #top-bar {
+  #top-bar, #theme-footer {
     display: none;
   }
-
   .navbar-static-top {
     border-radius: 4px;
   }
@@ -47,11 +46,16 @@ body.controller-fb_app_plugin_page_tab {
   #theme-header {
     display: none;
   }
-
   .product-catalog-ctrl {
-    float: none;
+    float: right;
+    margin-left: 10px;
   }
-
+  #product-catalog-actions {
+    text-align: right;
+  }
+  #manage-fb-store-ctrl {
+    margin-bottom: 15px;
+  }
   .modal-content {
     #fb-app-page-tab-admin {
       height: 400px;
