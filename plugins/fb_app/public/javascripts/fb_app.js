@@ -50,6 +50,7 @@ fb_app = {
     next_url: '',
 
     init: function() {
+      jQuery('html').scrollTop();
     },
 
     config: {
