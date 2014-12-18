@@ -50,7 +50,7 @@ fb_app = {
     next_url: '',
 
     init: function() {
-      FB.Canvas.scrollTo(0,160);
+      FB.Canvas.scrollTo(0,140);
     },
 
     config: {
