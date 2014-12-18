@@ -21,8 +21,11 @@ body.controller-fb_app_plugin_page_tab {
     padding: 0;
     width: 100%;
   }
+  #content-inner {
+    padding-top: 0;
+  }
   #content h1 {
-    margin-bottom: 0;
+    margin: 0;
   }
   #page-tab-subtitle {
     margin-bottom: 15px; 
