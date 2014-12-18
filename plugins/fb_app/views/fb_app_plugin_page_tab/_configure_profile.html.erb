@@ -16,10 +16,10 @@
     
     jQuery(selector)
       .on('tokenfield:createdtoken', function (e) {
-        jQuery(selector+'-tokenfield').toggle();
+        jQuery(selector+'-tokenfield').hide();
       })
       .on('tokenfield:removedtoken', function (e) {
-        jQuery(selector+'-tokenfield').toggle();
+        jQuery(selector+'-tokenfield').show();
       })
     console.log(selector)
     console.log(jQuery(selector))
