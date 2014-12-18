@@ -64,6 +64,7 @@
           placeholder: "selecione os empreendimentos"
         query:
           placeholder: "escolha os produtos e serviços por filtro ou por busca"
+        back_to_catalog: 'Voltar à vitrine'
 
 'pt_BR':
   <<: *pt-BR
