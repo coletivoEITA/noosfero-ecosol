@@ -64,6 +64,7 @@
           placeholder: "select the enterprises"
         query:
           placeholder: "select the category or type the search terms"
+        back_to_catalog: 'Back to catalog'
 
 
 'en_US':
