@@ -21,6 +21,18 @@ body.controller-fb_app_plugin_page_tab {
     padding: 0;
     width: 100%;
   }
+  #page-tab-subtitle {
+    margin-bottom: 15px; 
+    background-color: rgb(241, 255, 107); 
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0px 0px 6px 6px; 
+    font-style: italic; 
+    padding: 10px 10px 0px;
+  }
+  #page-tab-subtitle p {
+    margin-bottom: 10px;
+  }
   #product-owner { 
     display:block;
     font-size: 120%;
