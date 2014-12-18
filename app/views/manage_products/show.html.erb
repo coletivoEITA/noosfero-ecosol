@@ -19,11 +19,12 @@
   <div id='product-name'>
     <%= render :partial => 'manage_products/display_name' %>
   </div>
-  
-  <%# TODO: Make an option to show or not to show the SSE initiative of the product! %>
-  <div id='product-owner'>
-    <%= _('Offered by') %>: <span id='product-owner-name'><a target="_parent" href="#I NEED THE URL!"><%= @product.enterprise.short_name %></a></span>
-  </div>
+
+  <% if show_supplier %>  
+    <div id='product-owner'>
+      <%= _('Offered by') %>: <span id='product-owner-name'><%= link_to @product.profile.short_name, @product.profile.url %></span>
+    </div>
+  <% end %>
 
   <% if NOOSFERO_CONF['addthis_enabled'] %>
     <%= render :partial => 'content_viewer/addthis' %>
