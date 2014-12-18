@@ -1,9 +1,7 @@
 <%= render 'load' %>
 
-<h1><%= @page_tab.title %></h1>
-<% if (!@page_tab.subtitle.empty?) %>
-  <div id="page-tab-subtitle"><%= @page_tab.subtitle %></div>
-<% end %>
+<%= render 'title_and_subtitle' %>
+
 <div id="product-catalog">
   <div id="product-catalog-actions">
     <% if profile and user.present? and (user.is_admin?(environment) or user.is_admin?(profile)) %>
@@ -21,14 +19,7 @@
   <%= render 'catalog/javascripts', external: false %>
 </div>
 
-<div id="page-tab-footer">
-  <div id="page-tab-footer1">
-    <%= t('fb_app_plugin.views.page_tab.footer1') %>
-  </div>
-  <div id="page-tab-footer2">
-    <%= t('fb_app_plugin.views.page_tab.footer1') %>
-  </div>
-</div>
+<%= render 'footer' %>
 
 <%= javascript_tag do %>
   catalog.base_url_path = <%= url_for(controller: :fb_app_plugin_page_tab, action: :index, page_id: params[:page_id], signed_request: params[:signed_request]).to_json %> + '&'
