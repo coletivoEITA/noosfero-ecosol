@@ -1,6 +1,10 @@
 <%= f.label t("fb_app_plugin.views.myprofile.catalogs.profile_chooser_label") %>
 <%= f.text_field :profile_ids, "data-limit" => "1", "data-placeholder" => t('fb_app_plugin.views.page_tab.profile.placeholder'), onchange: 'fb_app.page_tab.config.profile.onchange($(this))' %>
-<%= 'oi'+page_tab.profile %>
+<% if page_tab.profile %>
+  <h1>Ai!</h1>
+<% else %>
+  <h2>Ui!</h2>
+<% end %>
 <%= javascript_tag do %>
   jQuery(document).ready(function() {
     var selector = '#page-tab-<%= page_tab.id || 'new' %> .config-type-profile #page_tab_profile_ids'
