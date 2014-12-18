@@ -61,6 +61,18 @@ body.controller-fb_app_plugin_page_tab {
   #theme-footer {
     border: none;
   }
+  #page-tab-footer {
+    font-size: 11px; 
+    border-top: 3px solid rgb(241, 255, 107); 
+    margin-top: 70px; 
+    padding-top: 5px;
+  }
+  #page-tab-footer1 {
+    background: url("/designs/themes/cirandas-responsive/images/cirandas-logo-110.png") no-repeat;
+    background-size: 50px;
+    padding-left: 50px;
+  }
+  
   /* End of Catalog Tab in Facebook */
 
   #profile-title,
