@@ -1,7 +1,7 @@
 <% extend ManageProductsHelper %>
 
 <h1><%= @page_tab.title %></h1>
-<% if (@page_tab.subtitle) %>
+<% if (!@page_tab.subtitle.empty?) %>
   <div id="page-tab-subtitle"><%= @page_tab.subtitle %></div>
 <% end %>
 
