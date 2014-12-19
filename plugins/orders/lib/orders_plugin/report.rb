@@ -83,18 +83,18 @@ module OrdersPlugin::Report
         total_selled_sum += selled_sum
         total_parcelled_sum += parcelled_sum
 
-        sheet.add_row ['', '', '', '',
-                       t('lib.report.total_selled_value'), '', "=SUM(J#{sp}:J#{ep})",
-                       t('lib.report.total_parcel_value'), '', "=SUM(k#{sp}:k#{ep})"],
-          formula_values: [nil,nil,nil, nil,
-                           nil,nil, selled_sum,
-                           nil,nil, parcelled_sum],
-            style: [default,default,default, default,
+        sheet.add_row [t('lib.report.total_selled_value'), '', "=SUM(J#{sp}:J#{ep})",
+                       t('lib.report.total_parcel_value'), '', "=SUM(k#{sp}:k#{ep})",
+                       '', '', '', ''],
+          formula_values: [nil,nil, selled_sum,
+                           nil,nil, parcelled_sum,
+                           nil,nil,nil, nil],
+            style: [redcell,redcell,currency,
                     redcell,redcell,currency,
-                    redcell,redcell,currency]
+                    default,default,default, default]
 
         row = ep+1
-        ["E#{row}:F#{row}", "H#{row}:I#{row}"].each{ |c| sheet.merge_cells c }
+        ["A#{row}:B#{row}", "D#{row}::#{row}"].each{ |c| sheet.merge_cells c }
 
         sheet.add_row ['']
 
@@ -130,7 +130,7 @@ module OrdersPlugin::Report
     date  = wb.styles.add_style(defaults.merge({format_code: t('lib.report.mm_dd_yy_hh_mm_am_pm')}))
     currency  = wb.styles.add_style(defaults.merge({format_code: t('number.currency.format.xlsx_currency')}))
     #border_top = wb.styles.add_style border: {style: :thin, color: "FF000000", edges: [:top]}
-    redcell   = wb.styles.add_style bg_color: "E8D0DC", fg_color: "000000", sz: 8, b: true, wrap_text: true, alignment: { :horizontal=> :left }, border: 0
+    #redcell   = wb.styles.add_style bg_color: "E8D0DC", fg_color: "000000", sz: 8, b: true, wrap_text: true, alignment: { :horizontal=> :left }, border: 0
     yellowcell   = wb.styles.add_style bg_color: "FCE943", fg_color: "000000", sz: 9, b: true, wrap_text: true, alignment: { :horizontal=> :left }, border: 0
 
     # create sheet and populates
