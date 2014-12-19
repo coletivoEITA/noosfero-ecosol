@@ -31,18 +31,16 @@ module CurrencyHelper
 
   module ClassMethods
 
-    def has_number_with_locale attr, define_setter = true, define_getter = true
-      # FIXME: make respond_to? work
+    def has_number_with_locale attr
       # Rails doesn't define getters and setters for attributes
-      # define_method param is used because respond_to is not working
       define_method attr do
         self[attr]
-      end if define_getter
+      end if attr.to_s.in? self.column_names and not method_defined? attr
       define_method "#{attr}=" do |value|
         self[attr] = value
-      end if define_setter
+      end if attr.to_s.in? self.column_names and not method_defined? "#{attr}="
 
-      if define_setter
+      if method_defined? "#{attr}="
         define_method "#{attr}_with_locale=" do |value|
           value = CurrencyHelper.parse_localized_number value if value.is_a? String
           self.send "#{attr}_without_locale=", value
@@ -56,8 +54,8 @@ module CurrencyHelper
       end
     end
 
-    def has_currency attr, define_setter = true, define_getter = true
-      self.has_number_with_locale attr, define_setter, define_getter
+    def has_currency attr
+      self.has_number_with_locale attr
 
       define_method "#{attr}_as_currency" do |*args, &block|
         number = self.send attr, *args, &block
