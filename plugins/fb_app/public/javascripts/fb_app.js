@@ -36,7 +36,7 @@ fb_app = {
 
     disconnect: function() {
       this.loading();
-      # 'not_authorized' is used to disconnect from facebook
+      /*'not_authorized' is used to disconnect from facebook*/
       jQuery('#fb-app-modal-wrap #fb-app-modal-intro').html(
           fb_app_plugin.views.myprofile.catalogs.confirm_disconnect
         )
