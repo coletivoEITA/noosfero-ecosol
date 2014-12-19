@@ -35,7 +35,6 @@ fb_app = {
     },
 
     disconnect: function() {
-      this.loading();
       // 'not_authorized' is used to disconnect from facebook
       jQuery('#fb-app-modal-wrap #fb-app-modal-intro').html(
           fb_app.locales.confirm_disconnect
@@ -50,6 +49,7 @@ fb_app = {
     },
     
     disconnect_confirmed: function() {
+      this.loading();
       fb_app.auth.receive({status: 'not_authorized'})
     },
 
