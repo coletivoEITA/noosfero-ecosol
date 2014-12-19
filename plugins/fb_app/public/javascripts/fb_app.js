@@ -65,6 +65,7 @@ fb_app = {
 
     init: function() {
       FB.Canvas.scrollTo(0,140);
+      // While Braulio doesnt make the catalog-options-bar work in a product page, I'll hide it. User will have to go back to the catalog to see this bar, provisorily...
       jQuery('#product-page').prev('form').hide();
     },
 
