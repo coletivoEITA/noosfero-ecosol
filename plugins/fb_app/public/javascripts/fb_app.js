@@ -35,21 +35,21 @@ fb_app = {
     },
 
     disconnect: function() {
-      this.loading();
       // 'not_authorized' is used to disconnect from facebook
       jQuery('#fb-app-modal-wrap #fb-app-modal-intro').html(
           fb_app.locales.confirm_disconnect
         )
       jQuery('#fb-app-modal-wrap .modal-button-no')
         .html(fb_app.locales.cancel_button)
-        .attr('onClick', 'noosfero.modal.close()')
+        .attr('onClick', 'noosfero.modal.close(); return false')
       jQuery('#fb-app-modal-wrap .modal-button-yes')
         .html(fb_app.locales.confirm_disconnect_button)
-        .attr('onClick', 'fb_app.page_tab.config.disconnect_confirmed(this);noosfero.modal.close()')
+        .attr('onClick', 'fb_app.timeline.disconnect_confirmed();noosfero.modal.close(); return false')
       noosfero.modal.html(jQuery('#fb-app-modal-wrap').html())
     },
     
     disconnect_confirmed: function() {
+      this.loading();
       fb_app.auth.receive({status: 'not_authorized'})
     },
 
@@ -88,10 +88,10 @@ fb_app = {
         )
         jQuery('#fb-app-modal-wrap .modal-button-no')
           .html(fb_app.locales.cancel_button)
-          .attr('onClick', 'noosfero.modal.close()')
+          .attr('onClick', 'noosfero.modal.close(); return false')
         jQuery('#fb-app-modal-wrap .modal-button-yes')
           .html(fb_app.locales.confirm_removal_button)
-          .attr('onClick', 'fb_app.page_tab.config.remove_confirmed(this);noosfero.modal.close()')
+          .attr('onClick', 'fb_app.page_tab.config.remove_confirmed(this);noosfero.modal.close(); return false')
           .attr('target_url',url)
           .attr('target_id','#'+page_tab.attr('id'))
         noosfero.modal.html(jQuery('#fb-app-modal-wrap').html())
