@@ -2,15 +2,6 @@
   form_id = (page_tab.id) ? ("edit_tab_"+page_tab.id.to_s) : "add_tab"
 %>
 
-<div id='fb-app-modal-wrap' style='display:none'>
-
-  <div id='fb-app-modal'>
-    <%= t('fb_app_plugin.views.myprofile.catalogs.confirm_removal') %>
-    <%= button_to_function 'cancel', t('fb_app_plugin.views.myprofile.catalogs.cancel_button'), "noosfero.modal.close()", class: 'modal-button-no' %>
-    <%= button_to_function 'ok', t('fb_app_plugin.views.myprofile.catalogs.confirm_removal_button'), "fb_app.page_tab.config.remove_confirmed(this);noosfero.modal.close()", class: 'modal-button-yes' %>
-  </div>
-</div>
-
 <% if !page_tab.id %>
   <h3><%= t('fb_app_plugin.views.myprofile.catalogs.new') %></h3>
 <% end %>
