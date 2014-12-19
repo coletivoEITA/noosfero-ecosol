@@ -12,7 +12,9 @@
 
 <div id='fb-app-modal-wrap' style='display:none'>
   <div id='fb-app-modal'>
-    
+    <div id='fb-app-modal-intro'></div>
+    <%= button_to_function 'cancel', '', "ff()", class: 'modal-button-no' %>
+    <%= button_to_function 'ok', '', "ff()", class: 'modal-button-yes' %>
   </div>
 </div>
 
