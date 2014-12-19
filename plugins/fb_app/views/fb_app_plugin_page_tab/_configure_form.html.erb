@@ -40,6 +40,11 @@
 <%= javascript_tag do %>
   fb_app.locales.error_empty_title = <%= t('fb_app_plugin.views.myprofile.error.empty_title').to_json %>
   fb_app.locales.error_empty_settings = <%= t('fb_app_plugin.views.myprofile.error.empty_settings').to_json %>
+  fb_app_plugin.views.myprofile.catalogs.cancel_button = <%= t('fb_app_plugin.views.myprofile.catalogs.cancel_button').to_json %>
+  fb_app_plugin.views.myprofile.catalogs.confirm_removal = <%= t('fb_app_plugin.views.myprofile.catalogs.confirm_removal').to_json %>
+  fb_app_plugin.views.myprofile.catalogs.confirm_removal_button = <%= t('fb_app_plugin.views.myprofile.catalogs.confirm_removal_button').to_json %>
+  fb_app_plugin.views.myprofile.catalogs.confirm_disconnect = <%= t('fb_app_plugin.views.myprofile.catalogs.confirm_disconnect').to_json %>
+  fb_app_plugin.views.myprofile.catalogs.confirm_disconnect_button = <%= t('fb_app_plugin.views.myprofile.catalogs.confirm_disconnect_button').to_json %>
   jQuery('document').ready(function(){
     fb_app.page_tab.config.init();
   });
