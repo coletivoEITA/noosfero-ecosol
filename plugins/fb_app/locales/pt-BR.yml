@@ -40,13 +40,14 @@
           profile_chooser_label: 'Empreendimento'
           profiles_chooser_label: 'Empreendimentos'
           query_label: "Critérios para os produtos/serviços da vitrine"
+          query_help: "Escreva as palavras separadas por espaço, e clique no botão abaixo para salvar."
           edit_button: "Editar vitrine '%{catalog_title}'"
           remove_button: "Remover vitrine '%{catalog_title}'"
           cancel_button: 'Cancelar'
           confirm_removal: "<p>Atenção: Para realmente apagar uma vitrine, você deve primeiro ir para a página do facebook onde está a sua vitrine, clicar em '<u>gerenciar guias</u>' (onde está o menu 'mais', do lado das outras abas), e então clicar em '<u>adicionar ou remover guias</u>' e remover a aba da página.</p><p>Depois disso, você pode vir aqui e pedir para remover a vitrine.</p><p>Você tem certeza que quer remover a vitrine?</p>"
           confirm_removal_button: 'Sim, quero remover esta vitrine'
-          confirm_disconnect: "<p>Atenção: Se você desconectar sua conta do Cirandas com o atual perfil do Facebook, todas as suas vitrines também serão removidas, se você tiver criado alguma.</p><p>Aí, para realmente remover estas vitrines (se elas foram criadas), você precisará ir na página do Facebook onde elas estão, clicar em '<u>adicionar ou remover guias</u>' e então remover a aba.</p><p>Depois disso, você pode vir aqui e desconectar.</p><p>Tem certeza que quer desconectar sua conta do Cirandas com este perfil do Facebook?</p>"
-          confirm_disconnect_button: 'Sim, eu quero desconectar minha conta do Cirandas com este perfil do Facebook'
+          confirm_disconnect: "<p><b>Atenção:</b> Para realmente apagar uma vitrine, você deve primeiro ir para a página do Facebook onde está a sua vitrine e seguir este roteiro:</p><ul><li>Clique em Mais na barra da página, depois em 'Gerenciar guias', após em  'Adicionar ou remover guias'.</li><li>Aparecerá a opção Cirandas -Aplicativo para a Economia Solidária no FaceBook: clique no X para remover.</li></ul><p>Depois disso, você pode vir aqui e pedir para remover a vitrine.</p><p>Se você já removeu lá no Facebook, tem certeza que quer remover esta vitrine?</p>"
+          confirm_disconnect_button: 'Sim, quero desconectar'
 
         catalog:
           see_page: 'Ver página no facebook'
