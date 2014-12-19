@@ -31,27 +31,39 @@ module CurrencyHelper
 
   module ClassMethods
 
-    def has_number_with_locale attr
-      self.send :define_method, "#{attr}_with_locale=" do |value|
-        value = CurrencyHelper.parse_localized_number value if value.is_a? String
-        self.send "#{attr}_without_locale=", value
-      end
-      alias_method_chain "#{attr}=", :locale rescue nil # rescue if method don't have a setter
+    def has_number_with_locale attr, define_setter = true, define_getter = true
+      # FIXME: make respond_to? work
+      # Rails doesn't define getters and setters for attributes
+      # define_method param is used because respond_to is not working
+      define_method attr do
+        self[attr]
+      end if define_getter
+      define_method "#{attr}=" do |value|
+        self[attr] = value
+      end if define_setter
 
-      self.send :define_method, "#{attr}_localized" do |*args, &block|
+      if define_setter
+        define_method "#{attr}_with_locale=" do |value|
+          value = CurrencyHelper.parse_localized_number value if value.is_a? String
+          self.send "#{attr}_without_locale=", value
+        end
+        alias_method_chain "#{attr}=", :locale
+      end
+
+      define_method "#{attr}_localized" do |*args, &block|
         number = self.send attr, *args, &block
         CurrencyHelper.localized_number number
       end
     end
 
-    def has_currency attr
-      self.has_number_with_locale attr
+    def has_currency attr, define_setter = true, define_getter = true
+      self.has_number_with_locale attr, define_setter, define_getter
 
-      self.send :define_method, "#{attr}_as_currency" do |*args, &block|
+      define_method "#{attr}_as_currency" do |*args, &block|
         number = self.send attr, *args, &block
         CurrencyHelper.number_as_currency number
       end
-      self.send :define_method, "#{attr}_as_currency_number" do |*args, &block|
+      define_method "#{attr}_as_currency_number" do |*args, &block|
         number = self.send attr, *args, &block
         CurrencyHelper.number_as_currency_number number
       end
