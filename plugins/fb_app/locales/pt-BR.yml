@@ -66,7 +66,7 @@
         profiles:
           placeholder: "selecione os empreendimentos"
         query:
-          placeholder: "escolha os produtos e serviços por filtro ou por busca"
+          placeholder: "escolha os produtos e serviços por palavras livres"
         back_to_catalog: 'Voltar à vitrine'
         footer1: "Vitrine gerada pelo aplicativo <a href='http://cirandas.net/cirandasnoface'>#CirandasNoFace</a> a partir da rede <a href='http://cirandas.net'>Cirandas.net</a>. Instale você também e apóie a economia solidária!"
         footer2: "Desenvolvido pela EITA. Este app é iniciativa do <a href='http://fbes.org.br'>FBES</a> e da <a href='http://eita.org.br'>EITA</a>. Financiado colaborativamente por <a href='http://cirandas.net/fbes/apoios-ao-cirandas'>centenas de pessoas e instituições de todo o Brasil</a>."
