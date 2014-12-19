@@ -12,6 +12,7 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
 
   before_create :update_user
   before_create :exchange_token
+  after_destroy :destroy_page_tabs
 
   validates_presence_of :provider_user_id
   validates_uniqueness_of :provider_user_id, scope: :profile_id
@@ -56,6 +57,10 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
   end
 
   protected
+
+  def destroy_page_tabs
+    self.user.fb_app_page_tabs.destroy_all
+  end
 
 end
 
