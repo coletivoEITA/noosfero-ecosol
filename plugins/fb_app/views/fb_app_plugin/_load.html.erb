@@ -20,6 +20,16 @@
 
 <%= javascript_include_tag 'https://connect.facebook.net/en_US/all.js' %>
 <%= javascript_tag do %>
+  // Adding locales:
+  fb_app.locales.error_empty_title = <%= t('fb_app_plugin.views.myprofile.error.empty_title').to_json %>
+  fb_app.locales.error_empty_settings = <%= t('fb_app_plugin.views.myprofile.error.empty_settings').to_json %>
+  fb_app.locales.cancel_button = <%= t('fb_app_plugin.views.myprofile.catalogs.cancel_button').to_json %>
+  fb_app.locales.confirm_removal = <%= t('fb_app_plugin.views.myprofile.catalogs.confirm_removal').to_json %>
+  fb_app.locales.confirm_removal_button = <%= t('fb_app_plugin.views.myprofile.catalogs.confirm_removal_button').to_json %>
+  fb_app.locales.confirm_disconnect = <%= t('fb_app_plugin.views.myprofile.catalogs.confirm_disconnect').to_json %>
+  fb_app.locales.confirm_disconnect_button = <%= t('fb_app_plugin.views.myprofile.catalogs.confirm_disconnect_button').to_json %>
+
+  // General settings:
   fb_app.current_url = <%= url_for(params).to_json %>;
   fb_app.base_url = 'https://<%= environment.default_hostname %>/plugin/fb_app';
 
