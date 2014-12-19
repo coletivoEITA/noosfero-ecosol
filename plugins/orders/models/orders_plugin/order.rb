@@ -130,8 +130,8 @@ class OrdersPlugin::Order < ActiveRecord::Base
     scope
   end
 
-  def self.products_by_suppliers orders
-    OrdersPlugin::Item.products_by_suppliers orders.collect(&:items).flatten
+  def self.items_by_suppliers orders
+    OrdersPlugin::Item.items_by_suppliers orders.map(&:items).flatten
   end
 
   def orders_name
