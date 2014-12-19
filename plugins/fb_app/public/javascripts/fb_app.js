@@ -36,8 +36,22 @@ fb_app = {
 
     disconnect: function() {
       this.loading();
-      fb_app.auth.receive({status: 'not_authorized'})
+      # 'not_authorized' is used to disconnect from facebook
+      jQuery('#fb-app-modal-wrap #fb-app-modal-intro').html(
+          fb_app_plugin.views.myprofile.catalogs.confirm_disconnect
+        )
+        jQuery('#fb-app-modal-wrap .modal-button-no')
+          .html(fb_app_plugin.views.myprofile.catalogs.cancel_button)
+          .attr('onClick', 'noosfero.modal.close()')
+        jQuery('#fb-app-modal-wrap .modal-button-yes')
+          .html(fb_app_plugin.views.myprofile.catalogs.confirm_disconnect_button)
+          .attr('onClick', 'fb_app.page_tab.config.disconnect_confirmed(this);noosfero.modal.close()')
+        noosfero.modal.html(jQuery('#fb-app-modal-wrap').html())
     },
+    
+    disconnect_confirmed: function() {
+      fb_app.auth.receive({status: 'not_authorized'})
+    }
 
     connect_to_another: function() {
       this.disconnect();
@@ -68,10 +82,18 @@ fb_app = {
       remove: function(button, url) {
         var page_tab = button.parents('.page-tab')
         var name = page_tab.find('#page_tab_name').val()
-        jQuery('.modal-button-yes')
+        //jQuery('#fb-app-modal-catalog-name').text(name)
+        jQuery('#fb-app-modal-wrap #fb-app-modal-intro').html(
+          fb_app_plugin.views.myprofile.catalogs.confirm_removal
+        )
+        jQuery('#fb-app-modal-wrap .modal-button-no')
+          .html(fb_app_plugin.views.myprofile.catalogs.cancel_button)
+          .attr('onClick', 'noosfero.modal.close()')
+        jQuery('#fb-app-modal-wrap .modal-button-yes')
+          .html(fb_app_plugin.views.myprofile.catalogs.confirm_removal_button)
+          .attr('onClick', 'fb_app.page_tab.config.remove_confirmed(this);noosfero.modal.close()')
           .attr('target_url',url)
           .attr('target_id','#'+page_tab.attr('id'))
-        //jQuery('#fb-app-modal-catalog-name').text(name)
         noosfero.modal.html(jQuery('#fb-app-modal-wrap').html())
       },
 
