@@ -276,7 +276,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
     items ||= (self.ordered_items rescue nil) || self.items
     items.collect(&price).inject(0){ |sum, p| sum + p.to_f }
   end
-  has_currency :total_price
+  has_currency :total_price, false, false
 
   def fill_items_data from_status, to_status, save = false
     return if (Statuses.index(to_status) <= Statuses.index(from_status) rescue true)
