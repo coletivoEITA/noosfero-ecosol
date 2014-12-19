@@ -40,6 +40,7 @@
           profile_chooser_label: 'Enterprise'
           profiles_chooser_label: 'Enterprises'
           query_label: "Criteria for the catalog's products"
+          query_help: "Write the words separated by space, and click at the button below to save."
           edit_button: "Edit catalog '%{catalog_title}'"
           remove_button: "Remove catalog '%{catalog_title}'"
           cancel_button: 'Cancel'
