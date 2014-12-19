@@ -59,7 +59,7 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
   protected
 
   def destroy_page_tabs
-    self.user.fb_app_page_tabs.destroy_all
+    self.profile.fb_app_page_tabs.destroy_all
   end
 
 end
