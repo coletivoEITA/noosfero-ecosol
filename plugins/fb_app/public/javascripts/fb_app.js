@@ -65,6 +65,7 @@ fb_app = {
 
     init: function() {
       FB.Canvas.scrollTo(0,140);
+      jQuery('#product-page').parent('form').hide();
     },
 
     config: {
