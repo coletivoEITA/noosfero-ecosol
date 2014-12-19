@@ -44,7 +44,7 @@ fb_app = {
         .attr('onClick', 'noosfero.modal.close(); return false')
       jQuery('#fb-app-modal-wrap .modal-button-yes')
         .html(fb_app.locales.confirm_disconnect_button)
-        .attr('onClick', 'fb_app.page_tab.config.disconnect_confirmed(this);noosfero.modal.close(); return false')
+        .attr('onClick', 'fb_app.timeline.disconnect_confirmed();noosfero.modal.close(); return false')
       noosfero.modal.html(jQuery('#fb-app-modal-wrap').html())
     },
     
