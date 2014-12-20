@@ -1,3 +1,7 @@
+<%
+  callback = '' unless defined? callback
+%>
+
 <%= render 'fb_app_plugin/load', callback: callback %>
 
 <%= javascript_tag do %>
