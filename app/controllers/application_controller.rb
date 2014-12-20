@@ -165,7 +165,7 @@ class ApplicationController < ActionController::Base
       # do this conditionally to allow organizations to show theirs users inside their domains
       @profile = @domain.profile if params[:profile].blank?
 
-      # this is needed for facebook applications that can only have one domain
+      # do no redirect to as facebook applications that can only have one domain
       return
 
       # Check if the requested profile belongs to another domain
