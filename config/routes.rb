@@ -104,9 +104,8 @@ Noosfero::Application.routes.draw do
   ## Controllers that are profile-specific (for profile admins )
   ######################################################
   # profile customization - "My profile"
-  match 'myprofile(/:profile)', :controller => 'profile_editor', :action => 'index', :profile => /#{Noosfero.identifier_format}/
   match 'myprofile(/:profile)/:controller(/:action(/:id))', :controller => Noosfero.pattern_for_controllers_in_directory('my_profile'), :profile => /#{Noosfero.identifier_format}/, :as => :myprofile
-
+  match 'myprofile(/:profile)', :controller => 'profile_editor', :action => 'index', :profile => /#{Noosfero.identifier_format}/
 
   ######################################################
   ## Controllers that are used by environment admin
