@@ -1019,6 +1019,10 @@ hr.pre-posts, hr.sep-posts {
 #addThis {
   text-align: right;
 }
+/* avoid extra whitespace coming from addthis iframe */
+#_atssh {
+  display: none;
+}
 
 #content .blog-post .title {
   border-bottom-color: #CCC;
