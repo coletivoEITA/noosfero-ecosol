@@ -253,8 +253,8 @@ fb_app = {
       FB.Canvas.setSize({height: jQuery('body').height()+100})
     },
 
-    redirect_to_tab: function(pageID) {
-      window.location.href = 'https://facebook.com/' + pageId  + '?sk=app_' + fb_app.fb.id
+    redirect_to_tab: function(pageId) {
+      window.location.href = 'https://facebook.com/' + pageId + '?sk=app_' + fb_app.fb.id
     },
 
     add_tab_url: function (app_id, next_url) {
