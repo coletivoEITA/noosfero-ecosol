@@ -157,7 +157,6 @@ class FbAppPluginPageTabController < FbAppPluginController
   def load_catalog options = {}
     @use_show_more = true
     catalog_load_index options
-    raise params[]
     render action: 'catalog' unless performed?
   end
 
