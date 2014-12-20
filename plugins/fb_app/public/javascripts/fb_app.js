@@ -108,7 +108,6 @@ fb_app = {
       },
 
       close: function(pageId) {
-       if (evt != null && evt != void 0) { evt.preventDefault(); evt.stopPropagation();}
         noosfero.modal.close()
         jQuery('#content').html('').addClass('loading')
         fb_app.fb.redirect_to_tab(pageId)
