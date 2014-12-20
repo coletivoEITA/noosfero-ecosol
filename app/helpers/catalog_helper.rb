@@ -56,6 +56,8 @@ module CatalogHelper
     @ordering = plugins_search_order(:catalog) || {select_options: []}
 
     @not_searched = @query.blank? && params[:category].blank? && params[:qualifier].blank?
+
+    render partial: 'catalog/results' if request.xhr?
   end
 
   def load_search_autocomplete

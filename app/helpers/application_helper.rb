@@ -6,6 +6,8 @@ require 'redcloth'
 # application.
 module ApplicationHelper
 
+  include UrlHelper
+
   include PermissionNameHelper
 
   include PaginationHelper

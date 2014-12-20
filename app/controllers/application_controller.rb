@@ -32,11 +32,6 @@ class ApplicationController < ActionController::Base
     #end
     options[:protocol] ||= '//'
 
-    # keep profile parameter when not using a custom domain
-    if (!@domain or @domain.profile.blank?) and params[:profile].present?
-      options[:profile] = @profile.identifier
-    end
-
     # Only use profile's custom domains for the profiles and the account controllers.
     # This avoids redirects and multiple URLs for one specific resource
     if controller_path = options[:controller] || self.class.controller_path
@@ -49,6 +44,8 @@ class ApplicationController < ActionController::Base
 
     options
   end
+
+  include UrlHelper
 
   def allow_cross_domain_access
     origin = request.headers['Origin']
