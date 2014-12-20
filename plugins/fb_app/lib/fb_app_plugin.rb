@@ -96,7 +96,7 @@ class FbAppPlugin < Noosfero::Plugin
   def control_panel_buttons
     return unless FbAppPlugin.config.present?
     return unless FbAppPlugin.test_user? user
-    { title: self.class.plugin_name, icon: 'fb-app', url: {controller: :fb_app_plugin_myprofile} }
+    { title: self.class.plugin_name, icon: 'fb-app', url: {host: 'https://cirandas.net', controller: :fb_app_plugin_myprofile} }
   end
 
 end
