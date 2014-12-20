@@ -32,6 +32,11 @@ class ApplicationController < ActionController::Base
     #end
     options[:protocol] ||= '//'
 
+    # keep profile parameter when not using a custom domain
+    if (!@domain or @domain.profile.blank?) and params[:profile].present?
+      options[:profile] = @profile.identifier
+    end
+
     # Only use profile's custom domains for the profiles and the account controllers.
     # This avoids redirects and multiple URLs for one specific resource
     if controller_path = options[:controller] || self.class.controller_path
@@ -157,9 +162,8 @@ class ApplicationController < ActionController::Base
       end
     else
       @environment = @domain.environment
-      if params[:profile].blank?
-        @profile = @domain.profile
-      end
+      # do this conditionally to allow organizations to show theirs users inside their domains
+      @profile = @domain.profile if params[:profile].blank?
 
       # this is needed for facebook applications that can only have one domain
       return
