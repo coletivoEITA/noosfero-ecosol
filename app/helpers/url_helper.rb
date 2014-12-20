@@ -7,10 +7,10 @@ module UrlHelper
     if (!@domain or @domain.owner_type == 'Environment')
       # keep profile parameter when not using a custom domain
       # this is necessary as :profile parameter is optional in config/routes.rb
-      if params[:profile].present?
+      if @profile and params[:profile].present?
         options[:profile] = @profile.identifier
       end
-    elsif @domain.profile.identifier == options[:profile]
+    elsif @domain.profile and @domain.profile.identifier == options[:profile]
       # remove profile parameter for better URLs in custom domains
       options.delete :profile
     end
