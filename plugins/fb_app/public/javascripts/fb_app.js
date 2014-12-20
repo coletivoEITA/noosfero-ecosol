@@ -110,7 +110,7 @@ fb_app = {
       close: function(pageId) {
         noosfero.modal.close()
         jQuery('#content').html('').addClass('loading')
-        fb_app.fb.redirect_to_tab(pageId)
+        fb_app.fb.redirect_to_tab(pageId, fb_app.page_tab.app_id)
       },
 
       validate: function(form) {
@@ -253,8 +253,8 @@ fb_app = {
       FB.Canvas.setSize({height: jQuery('body').height()+100})
     },
 
-    redirect_to_tab: function(pageId) {
-      window.location.href = 'https://facebook.com/' + pageId + '?sk=app_' + fb_app.fb.id
+    redirect_to_tab: function(pageId, app_id) {
+      window.location.href = 'https://facebook.com/' + pageId + '?sk=app_' + app_id
     },
 
     add_tab_url: function (app_id, next_url) {
