@@ -60,39 +60,39 @@ Noosfero::Application.routes.draw do
   match 'search(/:action(/*category_path))', :controller => 'search'
 
   # events
-  match 'profile/:profile/events_by_day', :controller => 'events', :action => 'events_by_day', :profile => /#{Noosfero.identifier_format}/
-  match 'profile/:profile/events_by_month', :controller => 'events', :action => 'events_by_month', :profile => /#{Noosfero.identifier_format}/
-  match 'profile/:profile/events/:year/:month/:day', :controller => 'events', :action => 'events', :year => /\d*/, :month => /\d*/, :day => /\d*/, :profile => /#{Noosfero.identifier_format}/
-  match 'profile/:profile/events/:year/:month', :controller => 'events', :action => 'events', :year => /\d*/, :month => /\d*/, :profile => /#{Noosfero.identifier_format}/
-  match 'profile/:profile/events', :controller => 'events', :action => 'events', :profile => /#{Noosfero.identifier_format}/
+  match 'profile(/:profile)/events_by_day', :controller => 'events', :action => 'events_by_day', :profile => /#{Noosfero.identifier_format}/
+  match 'profile(/:profile)/events_by_month', :controller => 'events', :action => 'events_by_month', :profile => /#{Noosfero.identifier_format}/
+  match 'profile(/:profile)/events/:year/:month/:day', :controller => 'events', :action => 'events', :year => /\d*/, :month => /\d*/, :day => /\d*/, :profile => /#{Noosfero.identifier_format}/
+  match 'profile(/:profile)/events/:year/:month', :controller => 'events', :action => 'events', :year => /\d*/, :month => /\d*/, :profile => /#{Noosfero.identifier_format}/
+  match 'profile(/:profile)/events', :controller => 'events', :action => 'events', :profile => /#{Noosfero.identifier_format}/
 
   # catalog
+  match 'profile(/:profile)/catalog(/:action(/:id))', :controller => :catalog, :profile => /#{Noosfero.identifier_format}/, :as => :catalog
   # DEPRECATED
-  match 'catalog/:profile', :controller => :catalog, :action => :index, :profile => /#{Noosfero.identifier_format}/, :as => :catalog
-  match 'profile/:profile/catalog(/:action(/:id))', :controller => :catalog, :profile => /#{Noosfero.identifier_format}/, :as => :catalog
+  match 'catalog(/:profile)', :controller => :catalog, :action => :index, :profile => /#{Noosfero.identifier_format}/, :as => :catalog
 
   # invite
-  match 'profile/:profile/invite/friends', :controller => 'invite', :action => 'select_address_book', :profile => /#{Noosfero.identifier_format}/
-  match 'profile/:profile/invite/:action', :controller => 'invite', :profile => /#{Noosfero.identifier_format}/
+  match 'profile(/:profile)/invite/friends', :controller => 'invite', :action => 'select_address_book', :profile => /#{Noosfero.identifier_format}/
+  match 'profile(/:profile)/invite/:action', :controller => 'invite', :profile => /#{Noosfero.identifier_format}/
 
   # feeds per tag
-  match 'profile/:profile/tags/:id/feed', :controller => 'profile', :action =>'tag_feed', :id => /.+/, :profile => /#{Noosfero.identifier_format}/, :as => :tag_feed
+  match 'profile(/:profile)/tags/:id/feed', :controller => 'profile', :action =>'tag_feed', :id => /.+/, :profile => /#{Noosfero.identifier_format}/, :as => :tag_feed
 
   # profile tags
-  match 'profile/:profile/tags/:id', :controller => 'profile', :action => 'content_tagged', :id => /.+/, :profile => /#{Noosfero.identifier_format}/
-  match 'profile/:profile/tags(/:id)', :controller => 'profile', :action => 'tags', :profile => /#{Noosfero.identifier_format}/
+  match 'profile(/:profile)/tags/:id', :controller => 'profile', :action => 'content_tagged', :id => /.+/, :profile => /#{Noosfero.identifier_format}/
+  match 'profile(/:profile)/tags(/:id)', :controller => 'profile', :action => 'tags', :profile => /#{Noosfero.identifier_format}/
 
   # profile search
-  match 'profile/:profile/search', :controller => 'profile_search', :action => 'index', :profile => /#{Noosfero.identifier_format}/
+  match 'profile(/:profile)/search', :controller => 'profile_search', :action => 'index', :profile => /#{Noosfero.identifier_format}/
 
   # comments
-  match 'profile/:profile/comment/:action/:id', :controller => 'comment', :profile => /#{Noosfero.identifier_format}/
+  match 'profile(/:profile)/comment/:action/:id', :controller => 'comment', :profile => /#{Noosfero.identifier_format}/
 
   # public profile information
-  match 'profile/:profile(/:action(/:id))', :controller => 'profile', :action => 'index', :id => /[^\/]*/, :profile => /#{Noosfero.identifier_format}/, :as => :profile
+  match 'profile(/:profile)(/:action(/:id))', :controller => 'profile', :action => 'index', :id => /[^\/]*/, :profile => /#{Noosfero.identifier_format}/, :as => :profile
 
   # contact
-  match 'contact/:profile/:action(/:id)', :controller => 'contact', :action => 'index', :id => /.*/, :profile => /#{Noosfero.identifier_format}/
+  match 'contact(/:profile)/:action(/:id)', :controller => 'contact', :action => 'index', :id => /.*/, :profile => /#{Noosfero.identifier_format}/
 
   # map balloon
   match 'map_balloon/:action/:id', :controller => 'map_balloon', :id => /.*/
@@ -104,8 +104,8 @@ Noosfero::Application.routes.draw do
   ## Controllers that are profile-specific (for profile admins )
   ######################################################
   # profile customization - "My profile"
-  match 'myprofile/:profile', :controller => 'profile_editor', :action => 'index', :profile => /#{Noosfero.identifier_format}/
-  match 'myprofile/:profile/:controller(/:action(/:id))', :controller => Noosfero.pattern_for_controllers_in_directory('my_profile'), :profile => /#{Noosfero.identifier_format}/, :as => :myprofile
+  match 'myprofile(/:profile)', :controller => 'profile_editor', :action => 'index', :profile => /#{Noosfero.identifier_format}/
+  match 'myprofile(/:profile)/:controller(/:action(/:id))', :controller => Noosfero.pattern_for_controllers_in_directory('my_profile'), :profile => /#{Noosfero.identifier_format}/, :as => :myprofile
 
 
   ######################################################

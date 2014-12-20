@@ -157,7 +157,9 @@ class ApplicationController < ActionController::Base
       end
     else
       @environment = @domain.environment
-      @profile = @domain.profile
+      if params[:profile].blank?
+        @profile = @domain.profile
+      end
 
       # this is needed for facebook applications that can only have one domain
       return
