@@ -42,43 +42,51 @@ class OrdersPlugin::Sale
   # See also: OrdersCyclePlugin::Cycle#generate_purchases
   def cycle_change_purchases
     return unless self.status_was.present?
-    if self.status_was != 'ordered' and self.status == 'ordered'
+    if self.ordered_at_was.nil? and self.ordered_at.present?
       self.cycle_add_purchases_items
-    elsif self.status_was == 'ordered' and self.status != 'ordered'
+    elsif self.ordered_at_was.present? and self.ordered_at.nil?
       self.cycle_remove_purchases_items
     end
   end
-  handle_asynchronously :cycle_change_purchases
 
   def cycle_add_purchases_items
-    self.offered_products.unarchived.each do |product|
-      next unless supplier_product = product.supplier_product
-      next unless supplier = supplier_product.profile
+    ActiveRecord::Base.transaction do
+      self.items.each do |item|
+        next unless supplier_product = item.product.supplier_product
+        next unless supplier = supplier_product.profile
 
-      purchase = self.cycle.purchases.for_profile(supplier).first
-      purchase ||= OrdersPlugin::Purchase.create! cycle: self.cycle, consumer: self.profile, profile: supplier
+        purchase = self.cycle.purchases.for_profile(supplier).first
+        purchase ||= OrdersPlugin::Purchase.create! cycle: self.cycle, consumer: self.profile, profile: supplier
 
-      item = purchase.items.for_product(supplier_product).first
-      item ||= purchase.items.build order: purchase, product: supplier_product
-      item.quantity_consumer_ordered = product.total_quantity_consumer_ordered
-      item.price_consumer_ordered = product.total_price_consumer_ordered
-      item.save run_callbacks: false # dont touch which cause an infinite loop
+        purchased_item = purchase.items.for_product(supplier_product).first
+        purchased_item ||= purchase.items.build order: purchase, product: supplier_product
+        purchased_item.quantity_consumer_ordered ||= 0
+        purchased_item.quantity_consumer_ordered += item.quantity_consumer_ordered
+        purchased_item.price_consumer_ordered ||= 0
+        purchased_item.price_consumer_ordered += item.price_consumer_ordered
+        purchased_item.save run_callbacks: false # dont touch which cause an infinite loop
+      end
     end
   end
 
   def cycle_remove_purchases_items
-    self.items.each do |item|
-      next unless supplier_product = item.product.supplier_product
-      next unless purchase = supplier_product.purchases.for_cycle(self.cycle).first
+    ActiveRecord::Base.transaction do
+      self.items.each do |item|
+        next unless supplier_product = item.product.supplier_product
+        next unless purchase = supplier_product.purchases.for_cycle(self.cycle).first
 
-      purchased_item = purchase.items.for_product(supplier_product).first
-      purchased_item.quantity_consumer_ordered -= item.quantity_consumer_ordered
-      purchased_item.price_consumer_ordered -= item.quantity_consumer_ordered
-      purchased_item.save!
+        purchased_item = purchase.items.for_product(supplier_product).first
+        purchased_item.quantity_consumer_ordered -= item.quantity_consumer_ordered
+        purchased_item.price_consumer_ordered -= item.price_consumer_ordered
+        purchased_item.save!
 
-      purchased_item.destroy if purchased_item.quantity_consumer_ordered.zero?
-      purchase.destroy if purchase.items(true).blank?
+        purchased_item.destroy if purchased_item.quantity_consumer_ordered.zero?
+        purchase.destroy if purchase.items(true).blank?
+      end
     end
   end
+
+  handle_asynchronously :cycle_add_purchases_items
+  handle_asynchronously :cycle_remove_purchases_items
 
 end

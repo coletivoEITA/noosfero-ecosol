@@ -1,9 +1,6 @@
 <%
   data = order.delivery_data actor_name
   other_supplier_methods = actor_name == :supplier && order.open? && order.delivery_methods.size > 1
-  pp actor_name
-  pp order.open?
-  pp order.delivery_methods
 %>
 
 <% if data.present? or other_supplier_methods %>
