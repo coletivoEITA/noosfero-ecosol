@@ -2,7 +2,7 @@
 
 <%= render 'title_and_subtitle' %>
 
-<div id="product-catalog">
+<div id="product-catalog" class="<%= 'fb-app-standalone' if @signed_request.blank? %>">
   <div id="product-catalog-actions">
     <% if profile and user.present? and (user.is_admin?(environment) or user.is_admin?(profile)) %>
       <div class="product-catalog-ctrl">
