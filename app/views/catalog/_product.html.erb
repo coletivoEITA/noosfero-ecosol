@@ -21,10 +21,7 @@
         <%= link_to image_tag(themed_path('/images/star.png'), :class => 'star', :alt => _('Highlighted product')), product_path(product, catalog_params) %>
       <% end %>
       <% if product.image %>
-        <div class="zoomable-image">
-          <%= link_to_product_from_catalog product, url_options: catalog_params, class: 'product-big', style: "background-image: url(#{product.default_image(:big)})" %>
-          <%= link_to content_tag(:span, _('Zoom in')), product.default_image(:big).gsub('_big',''), :class => 'zoomify-image' %>
-        </div>
+        <%= link_to_product_from_catalog product, url_options: catalog_params, class: 'product-big', style: "background-image: url(#{product.default_image(:big)})" %>
       <% else %>
         <div class="no-image"><%= _('No image') %></div>
       <% end %>
