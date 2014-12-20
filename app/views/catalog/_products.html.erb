@@ -1,8 +1,4 @@
-<%
-  show_supplier = false unless defined? show_supplier
-%>
-
 <% products.each_with_index do |product, i| %>
-  <%= render 'catalog/product', product: product, i: i, show_supplier: show_supplier %>
+  <%= render 'catalog/product', product: product, i: i %>
 <% end %>
 

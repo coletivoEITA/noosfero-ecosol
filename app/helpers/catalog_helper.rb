@@ -8,7 +8,14 @@ module CatalogHelper
   def load_query_and_scope
     @base_query = params[:base_query].to_s
     @query = params[:query].to_s
-    @final_query = "#{@base_query} #{@query}"
+    @final_query = if @base_query.empty?
+                     @query
+                   elsif @query.blank?
+                     @base_query
+                   else
+                     "(#{@base_query}) AND #{@query}"
+                   end
+
     @scope = params[:scope].to_s
     all_scope = environment.products.enabled.public
     @ar_scope = if @scope == 'all' then all_scope else profile.products rescue all_scope end

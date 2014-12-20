@@ -7,6 +7,7 @@ class FbAppPluginPageTabController < FbAppPluginController
 
   include CatalogHelper
 
+  helper ManageProductsHelper
   helper FbAppPlugin::FbAppDisplayHelper
 
   def index

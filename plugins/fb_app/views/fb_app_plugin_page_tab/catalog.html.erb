@@ -15,7 +15,7 @@
     </div>
 
     <%= content_for :product_page do %>
-      <%= render 'catalog/results', show_supplier: @scope == 'all' %>
+      <%= render 'catalog/results' %>
     <% end %>
     <%= render 'catalog/search' %>
     <%= render 'catalog/javascripts', external: false %>
