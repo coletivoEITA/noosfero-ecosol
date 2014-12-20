@@ -14,7 +14,10 @@ module CatalogHelper
     @ar_scope = if @scope == 'all' then all_scope else profile.products rescue all_scope end
   end
 
-  def catalog_load_index options = {:page => params[:page], :show_categories => true}
+  def catalog_load_index options = {}
+    options ||= {}
+    options[:page] ||= params[:page]
+
     @catalog_bar = true
     @use_show_more = params[:use_show_more] == '1' if @use_show_more.nil?
 
@@ -25,7 +28,7 @@ module CatalogHelper
 
     @rank = params[:rank].to_i
     @pg_page = if options[:page].present? then options[:page].to_i else 1 end
-    if (@rank > base_per_page)
+    if @rank > base_per_page
       page_offset = (@rank/base_per_page)+1
       if (@pg_page==1)
         @per_page = page_offset*base_per_page
