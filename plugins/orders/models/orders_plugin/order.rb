@@ -322,6 +322,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   def send_notifications
     return if source == 'shopping_cart_plugin'
+    # ignore when status are being rewinded
     return if (Statuses.index(self.status) <= Statuses.index(self.status_was) rescue false)
 
     if self.status == 'ordered' and self.status_was != 'ordered'
