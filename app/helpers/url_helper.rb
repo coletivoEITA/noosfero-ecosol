@@ -1,8 +1,8 @@
 module UrlHelper
 
   def url_for options = {}
-    # for actionmailer
-    return unless defined? params
+    # for action mailer
+    return super unless (params rescue nil)
     return super unless options.is_a? Hash
 
     # @domain.owner_type check avoids an early fetch of @domain.profile
