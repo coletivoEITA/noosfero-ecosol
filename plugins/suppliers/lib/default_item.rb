@@ -4,15 +4,13 @@ module DefaultItem
 
     def default_item field, options = {}
 
-      # in case them doesn't exist
-      class_eval <<-CODE
-        def #{field}
-          self["#{field}"]
-        end unless self.new.respond_to? "#{field}"
-        def #{field}= value
-          self["#{field}"] = value
-        end unless self.new.respond_to? "#{field}="
-      CODE
+      # Rails doesn't define getters for attributes
+      define_method field do
+        self[field]
+      end if field.to_s.in? self.column_names and not method_defined? field
+      define_method "#{field}=" do |value|
+        self[field] = value
+      end if field.to_s.in? self.column_names and not method_defined? "#{field}="
 
       define_method "delegated_#{field}" do
         delegate_to = options[:delegate_to]

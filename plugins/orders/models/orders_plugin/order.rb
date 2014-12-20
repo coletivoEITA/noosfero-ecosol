@@ -276,7 +276,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
     items ||= (self.ordered_items rescue nil) || self.items
     items.collect(&price).inject(0){ |sum, p| sum + p.to_f }
   end
-  has_currency :total_price, false, false
+  has_currency :total_price
 
   def fill_items_data from_status, to_status, save = false
     return if (Statuses.index(to_status) <= Statuses.index(from_status) rescue true)
@@ -322,6 +322,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   def send_notifications
     return if source == 'shopping_cart_plugin'
+    # ignore when status are being rewinded
     return if (Statuses.index(self.status) <= Statuses.index(self.status_was) rescue false)
 
     if self.status == 'ordered' and self.status_was != 'ordered'

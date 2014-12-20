@@ -13,20 +13,28 @@ module SerializedSyncedData
       cattr_accessor :serialized_synced_fields
       self.serialized_synced_fields ||= []
       self.serialized_synced_fields << field
+      field_data = "#{field}_data".to_sym
 
-      serialize "#{field}_data"
+      serialize field_data
 
-      # create method for the chain
-      define_method "#{field}_data" do
-        self["#{field}_data"] || {}
-      end unless self.respond_to? "#{field}_data"
+      # Rails doesn't define getters for attributes
+      if field_data.to_s.in? self.column_names and not method_defined? field_data
+        define_method field_data do
+          self[field_data] || {}
+        end
+      else
+        define_method "#{field_data}_with_default" do
+          self.send("#{field_data}_without_default") || {}
+        end
+        alias_method_chain field_data, :default
+      end
 
       # return data from foreign registry if any data was synced yet
-      define_method "#{field}_data_with_sync" do
-        current_data = self.send "#{field}_data_without_sync"
+      define_method "#{field_data}_with_sync" do
+        current_data = self.send "#{field_data}_without_sync"
         if current_data.present? then current_data else self.send("#{field}_synced_data") end
       end
-      alias_method_chain "#{field}_data", :sync
+      alias_method_chain field_data, :sync
 
       # get the data to sync as defined
       define_method "#{field}_synced_data" do
@@ -40,17 +48,17 @@ module SerializedSyncedData
         end || {}
       end
 
-      define_method "sync_#{field}_data" do
+      define_method "sync_#{field_data}" do
         value = self.send "#{field}_synced_data"
-        self.send "#{field}_data=", value if value.present?
+        self.send "#{field_data}=", value if value.present?
       end
 
-      before_create "fill_#{field}_data"
-      define_method "fill_#{field}_data" do
-        self.send "sync_#{field}_data" if self.send("#{field}_data").blank?
+      before_create "fill_#{field_data}"
+      define_method "fill_#{field_data}" do
+        self.send "sync_#{field_data}" if self.send(field_data).blank?
       end
 
-      before_update "sync_#{field}_data"
+      before_update "sync_#{field_data}"
 
       include InstanceMethods
     end
