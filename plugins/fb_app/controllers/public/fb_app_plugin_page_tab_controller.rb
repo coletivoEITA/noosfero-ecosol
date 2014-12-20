@@ -30,7 +30,6 @@ class FbAppPluginPageTabController < FbAppPluginController
           @profile = @page_tab.value
 
           load_catalog
-          render action: 'catalog'
         else
           # fake profile for catalog controller
           @profile = environment.enterprise_template
@@ -41,7 +40,6 @@ class FbAppPluginPageTabController < FbAppPluginController
           params[:scope] = 'all'
 
           load_catalog
-          render action: 'catalog'
         end
       else
         render action: 'first_load'
@@ -128,7 +126,7 @@ class FbAppPluginPageTabController < FbAppPluginController
     @signed_request = @signed_requests.first
     @page_id = @page_ids.first
     @page_tab = @page_tabs.first
-    @new_request = true if @page_tab.blank?
+    @new_request = @page_tab.blank?
 
     true
   end
@@ -159,6 +157,8 @@ class FbAppPluginPageTabController < FbAppPluginController
   def load_catalog options = {}
     @use_show_more = true
     catalog_load_index options
+    raise params[]
+    render action: 'catalog' unless performed?
   end
 
   def read_param param

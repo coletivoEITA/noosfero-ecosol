@@ -47,7 +47,7 @@ fb_app = {
         .attr('onClick', 'fb_app.timeline.disconnect_confirmed();noosfero.modal.close(); return false')
       noosfero.modal.html(jQuery('#fb-app-modal-wrap').html())
     },
-    
+
     disconnect_confirmed: function() {
       this.loading();
       fb_app.auth.receive({status: 'not_authorized'})
@@ -111,7 +111,7 @@ fb_app = {
        if (evt != null && evt != void 0) { evt.preventDefault(); evt.stopPropagation();}
         noosfero.modal.close()
         jQuery('#content').html('').addClass('loading')
-        window.location.href = fb_app.current_url
+        window.location.href = fb_app.fb.redirect_to_tab(this.page_id)
       },
 
       validate: function(form) {
@@ -255,9 +255,7 @@ fb_app = {
     },
 
     redirect_to_tab: function(pageID) {
-      FB.api('/'+pageID, function(response) {
-        window.location.href = response.link + '?sk=app_' + fb_app.fb.id
-      })
+      window.location.href = 'https://facebook.com/' + pageId  + '?sk=app_' + fb_app.fb.id
     },
 
     add_tab_url: function (app_id, next_url) {
