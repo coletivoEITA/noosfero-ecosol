@@ -25,7 +25,7 @@ show_supplier = false unless defined? show_supplier
 
   <% if show_supplier %>  
     <div id='product-owner'>
-      <%= _('Oferecido por') %>: <span id='product-owner-name'><%= link_to @product.profile.short_name, @product.profile.url %></span>
+      <%= _('Offered by') %>: <span id='product-owner-name'><%= link_to @product.profile.short_name, @product.profile.url %></span>
     </div>
   <% end %>
 
