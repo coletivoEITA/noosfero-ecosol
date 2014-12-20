@@ -7,7 +7,6 @@ class CatalogController < PublicController
 
   def index
     catalog_load_index
-    render partial: 'catalog/results' if request.xhr?
   end
 
   def search_autocomplete
