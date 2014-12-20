@@ -10,7 +10,7 @@ module UrlHelper
       if params[:profile].present?
         options[:profile] = params[:profile]
       end
-    elsif @domain.profile and @domain.profile.identifier == options[:profile]
+    elsif options[:host].blank? and @domain.profile and @domain.profile.identifier == options[:profile]
       # remove profile parameter for better URLs in custom domains
       options.delete :profile
     end
