@@ -107,11 +107,11 @@ fb_app = {
         })
       },
 
-      close: function(evt) {
+      close: function(pageId) {
        if (evt != null && evt != void 0) { evt.preventDefault(); evt.stopPropagation();}
         noosfero.modal.close()
         jQuery('#content').html('').addClass('loading')
-        window.location.href = fb_app.fb.redirect_to_tab(this.page_id)
+        fb_app.fb.redirect_to_tab(pageId)
       },
 
       validate: function(form) {

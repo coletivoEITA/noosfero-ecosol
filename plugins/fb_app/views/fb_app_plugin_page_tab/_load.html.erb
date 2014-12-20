@@ -1,7 +1,6 @@
-<%= render 'fb_app_plugin/load' %>
+<%= render 'fb_app_plugin/load', callback: callback %>
 
 <%= javascript_tag do %>
   fb_app.page_tab.init();
-  fb_app.page_tab.page_id = <%= @page_id.to_json %>
 <% end %>
 
