@@ -7,7 +7,7 @@
     </tr>
     <% @fbes_plugin_result.each do |line| %>
       <tr>
-        <% line.each do |value| %>
+        <% line.each do |field, value| %>
           <td><%= value %></td>
         <% end %>
       </tr>
