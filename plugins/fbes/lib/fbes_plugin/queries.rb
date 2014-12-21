@@ -136,7 +136,7 @@ select t.source_id, a.name, a.type, a.created_at, t.qtde_comentarios
   order by qtde_comentarios desc
 EOQ
 
-    :fb_app_plugin => <<EOQ,
+    :fb_app_plugin_query => <<EOQ,
 select a.page_id, a.created_at, a.updated_at, b.identifier 
   from fb_app_plugin_page_tab_configs a, profiles b 
   where a.profile_id=b.id 
