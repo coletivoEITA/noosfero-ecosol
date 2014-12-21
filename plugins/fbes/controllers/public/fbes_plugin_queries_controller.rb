@@ -1,4 +1,4 @@
-require 'fastercsv'
+#require 'fastercsv'
 
 class FbesPluginQueriesController < PublicController
 
@@ -26,17 +26,22 @@ class FbesPluginQueriesController < PublicController
         new_record
       end
       result = new_result
+      @fbes_plugin_result = result
+      @fbes_plugin_queries = FbesPlugin::Queries::Hash
 
       respond_to do |format|
         format.json do
           render :json => result.to_json
         end
         format.csv do
-          csv = FasterCSV.generate do |csv|
-            csv << result.first.keys
-            result.each{ |r| csv << r.values }
-          end
-          send_csv csv
+          #csv = FasterCSV.generate do |csv|
+          #  csv << result.first.keys
+          #  result.each{ |r| csv << r.values }
+          #end
+          #send_csv csv
+        end
+        format.html do
+          render 'show_html'
         end
       end
     end
