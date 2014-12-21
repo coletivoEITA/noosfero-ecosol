@@ -8,7 +8,9 @@
     <% @fbes_plugin_result.each do |line| %>
       <tr>
         <% line.each do |value| %>
-          <td><%= value[1] %></td>
+          <td>
+            <%= (value[0]=='url') ? link_to(value[1], value[1]) : value[1] %>
+          </td>
         <% end %>
       </tr>
     <% end %>
