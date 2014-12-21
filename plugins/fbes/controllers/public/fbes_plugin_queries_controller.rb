@@ -27,6 +27,7 @@ class FbesPluginQueriesController < PublicController
       end
       result = new_result
       @fbes_plugin_result = result
+      @fbes_plugin_queries = FbesPlugin::Queries::Hash
 
       respond_to do |format|
         format.json do
