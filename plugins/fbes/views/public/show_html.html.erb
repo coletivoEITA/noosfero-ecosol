@@ -1,10 +1,16 @@
 <div>
   <table>
     <tr>
-      <%= @fbes_plugin_result.first.keys.each do |header| %>
+      <% @fbes_plugin_result.first.keys.each do |header| %>
         <th><%= header %></th>
       <% end %>
-<%# result.each{ |r| csv << r.values } %>
     </tr>
+    <% @fbes_plugin_result.each do |line| %>
+      <tr>
+        <% line.each do |value| %>
+          <td><%= value %></td>
+        <%end>
+      </tr>
+    <% end %>
   </table>
 </div>
