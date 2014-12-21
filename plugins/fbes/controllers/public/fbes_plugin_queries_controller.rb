@@ -32,11 +32,11 @@ class FbesPluginQueriesController < PublicController
           render :json => result.to_json
         end
         format.csv do
-          csv = FasterCSV.generate do |csv|
-            csv << result.first.keys
-            result.each{ |r| csv << r.values }
-          end
-          send_csv csv
+          #csv = FasterCSV.generate do |csv|
+          #  csv << result.first.keys
+          #  result.each{ |r| csv << r.values }
+          #end
+          #send_csv csv
         end
         format.html do
           render 'show_html'
