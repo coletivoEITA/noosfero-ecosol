@@ -26,6 +26,7 @@ class FbesPluginQueriesController < PublicController
         new_record
       end
       result = new_result
+      @fbes_plugin_result = result
 
       respond_to do |format|
         format.json do
@@ -39,7 +40,7 @@ class FbesPluginQueriesController < PublicController
           #send_csv csv
         end
         format.html do
-          render 'show_html', :result => result
+          render 'show_html'
         end
       end
     end
