@@ -38,6 +38,9 @@ class FbesPluginQueriesController < PublicController
           end
           send_csv csv
         end
+        format.html do
+          render 'show_html'
+        end
       end
     end
   end
