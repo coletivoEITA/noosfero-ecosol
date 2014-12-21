@@ -2,7 +2,9 @@
   <table class='table'>
     <tr>
       <% @fbes_plugin_result.first.keys.each do |header| %>
-        <th><%= header %></th>
+        <% if header!='profile_id' %>
+          <th><%= header %></th>
+        <% end %>
       <% end %>
     </tr>
     <% @fbes_plugin_result.each do |line| %>
