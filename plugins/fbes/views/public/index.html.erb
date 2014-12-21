@@ -2,9 +2,9 @@
   <%= t('fbes_plugin.global_title') %>
 </h1>
 <ul>
-  <% @fbes_plugin_queries.map do |action, query| %>
+  <% FbesPlugin::Queries::Hash.each do |name, query| %>
     <li>
-      <%= action %>
+      <a href="http://cirandas.net/plugin/fbes/queries/<%= name %>"><%= name %></a>
     </li>
   <% end %>
 </ul>
