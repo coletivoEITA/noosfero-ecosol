@@ -13,7 +13,7 @@
               when 'url'
                 link_to(value[1], value[1])
               when 'mes'
-                value[1].strftime("%M/%Y")
+                Date.parse(value[1]).strftime("%M/%Y")
               else
                 value[1]
               end %>
