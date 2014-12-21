@@ -1,5 +1,5 @@
 <h1><%= t(params[:action]) %></h1>
-  <table>
+  <table class='table'>
     <tr>
       <% @fbes_plugin_result.first.keys.each do |header| %>
         <th><%= header %></th>
@@ -9,7 +9,14 @@
       <tr>
         <% line.each do |value| %>
           <td>
-            <%= (value[0]=='url') ? link_to(value[1], value[1]) : value[1] %>
+            <%= case value[0]
+              when 'url'
+                link_to(value[1], value[1])
+              when 'mes'
+                value[1]
+              else
+                value[1]
+              end %>
           </td>
         <% end %>
       </tr>
