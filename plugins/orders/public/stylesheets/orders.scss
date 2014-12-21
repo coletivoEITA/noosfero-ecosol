@@ -162,6 +162,7 @@
     .order-items-scroll {
       overflow-y: auto;
       padding-right: $intercolumn;
+      box-sizing: content-box;
     }
 
     .order-header {
