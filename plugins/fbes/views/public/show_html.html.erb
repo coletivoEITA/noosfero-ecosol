@@ -8,16 +8,18 @@
     <% @fbes_plugin_result.each do |line| %>
       <tr>
         <% line.each do |value| %>
-          <td>
-            <%= case value[0]
-              when 'url'
-                link_to(value[1], value[1])
-              when 'mes'
-                Date.parse(value[1]+'-01').strftime("%b/%Y")
-              else
-                value[1]
-              end %>
-          </td>
+          <% if value[0]!='profile_id' %>
+            <td>
+              <%= case value[0]
+                when 'url'
+                  link_to(value[1], value[1])
+                when 'mes'
+                  Date.parse(value[1]+'-01').strftime("%b/%Y")
+                else
+                  value[1]
+                end %>
+            </td>
+          <% end %>
         <% end %>
       </tr>
     <% end %>
