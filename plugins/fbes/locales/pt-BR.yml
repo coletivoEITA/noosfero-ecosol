@@ -1,6 +1,8 @@
+
 "pt-BR": &pt-BR
-  fb_app_plugin:
-    orders_by_month: "Pedidos por mês"
+
+	fbes_plugin:
+		orders_by_month: "Pedidos por mês"
 		enterprises: "Empreendimentos"
 		enterprises_enabled: "Empreendimentos ativados"
 		enterprises_members: "Integrantes de empreendimentos"
@@ -15,8 +17,9 @@
 		communities: "Comunidades"
 		people: "Pessoas"
 		contents_most_commented: "Conteúdos mais comentados"
-		
+
 'pt_BR':
-<<: *pt-BR
+  <<: *pt-BR
 'pt':
-<<: *pt-BR
+  <<: *pt-BR
+
