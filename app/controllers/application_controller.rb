@@ -168,7 +168,7 @@ class ApplicationController < ActionController::Base
       # Check if the requested profile belongs to another domain
       if @domain.profile and params[:profile].present? and params[:profile] != @domain.profile.identifier
         @profile = @environment.profiles.find_by_identifier params[:profile]
-        render_not_found if @profile.blank?
+        return render_not_found if @profile.blank?
         redirect_to params.merge(:host => @profile.default_hostname, :protocol => @profile.default_protocol)
       end
     end

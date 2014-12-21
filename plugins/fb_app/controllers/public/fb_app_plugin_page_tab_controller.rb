@@ -115,7 +115,7 @@ class FbAppPluginPageTabController < FbAppPluginController
         @datas << @data
         page_id = @data[:page][:id] rescue nil
         if page_id.blank?
-          render_access_denied
+          render_not_found
           return false
         end
         page_id
