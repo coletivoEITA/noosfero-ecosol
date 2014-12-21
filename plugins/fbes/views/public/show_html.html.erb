@@ -3,7 +3,7 @@
   <table class='table'>
     <tr>
       <% @fbes_plugin_result.first.keys.each do |header| %>
-        <% if ['profile_id', 'id'].not_include?(header) %>
+        <% if !['profile_id', 'id'].include?(header) %>
           <th><%= header %></th>
         <% end %>
       <% end %>
@@ -11,7 +11,7 @@
     <% @fbes_plugin_result.each do |line| %>
       <tr>
         <% line.each do |value| %>
-          <% if ['profile_id', 'id'].not_include?(value[0]) %>
+          <% if !['profile_id', 'id'].include?(value[0]) %>
             <td>
               <%= case value[0]
                 when 'url', 'site'
