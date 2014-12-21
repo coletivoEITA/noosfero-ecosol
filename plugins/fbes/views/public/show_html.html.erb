@@ -1,7 +1,7 @@
 <div>
   <table>
     <tr>
-      <%= @fbes_plugin_result.first.keys.each |header| %>
+      <%= @fbes_plugin_result.first.keys.each do |header| %>
         <th><%= header %></th>
       <% end %>
 <%# result.each{ |r| csv << r.values } %>
