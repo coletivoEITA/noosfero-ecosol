@@ -1,4 +1,4 @@
-require 'fastercsv'
+#require 'fastercsv'
 
 class FbesPluginQueriesController < PublicController
 
