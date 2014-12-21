@@ -4,7 +4,7 @@
 <ul>
   <% FbesPlugin::Queries::Hash.each do |name, query| %>
     <li>
-      <a href="http://cirandas.net/plugin/fbes/queries/<%= name %>"><%= name %></a>
+      <a href="http://cirandas.net/plugin/fbes/queries/<%= name %>"><%= t(name) %></a>
     </li>
   <% end %>
 </ul>
