@@ -3,7 +3,7 @@
   <table class='table'>
     <tr>
       <% @fbes_plugin_result.first.keys.each do |header| %>
-        <% if header!='profile_id' %>
+        <% if ['profile_id', 'id'].include?(header) %>
           <th><%= header %></th>
         <% end %>
       <% end %>
@@ -11,10 +11,10 @@
     <% @fbes_plugin_result.each do |line| %>
       <tr>
         <% line.each do |value| %>
-          <% if value[0]!='profile_id' %>
+          <% if ['profile_id', 'id'].include?(value[0]) %>
             <td>
               <%= case value[0]
-                when 'url'
+                when 'url', 'site'
                   link_to(value[1], value[1])
                 when 'mes'
                   Date.parse(value[1]+'-01').strftime("%b/%Y")
