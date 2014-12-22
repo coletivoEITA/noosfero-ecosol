@@ -191,7 +191,7 @@ select t.source_id, a.name, a.type, a.created_at, t.qtde_comentarios, count(*) O
 EOQ
 
     :fb_app_plugin_query => <<EOQ,
-select a.page_id 'página no facebook', a.created_at 'criação', a.updated_at 'atualização', b.identifier 'usuário cirandas', count(*) OVER() AS full_count
+select a.page_id "pagina_no_facebook", a.created_at "criada em", a.updated_at "atualizada em", b.identifier "perfil_cirandas", count(*) OVER() AS full_count
   from fb_app_plugin_page_tab_configs a, profiles b 
   where a.profile_id=b.id 
   order by a.created_at desc
