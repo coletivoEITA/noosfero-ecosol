@@ -1,5 +1,6 @@
 <h1><%= t(params[:action]) %></h1>
-<%= button(:back, 'Voltar à lista de comandos', 'http://cirandas.net/plugin/fbes/queries') %>
+<%= button(:back, 'Voltar à lista de estatísticas', 'http://cirandas.net/plugin/fbes/queries') %>
+<br class="clean" /><br />
   <table class='table'>
     <tr>
       <% @fbes_plugin_result.first.keys.each do |header| %>
@@ -15,13 +16,13 @@
             <td>
               <%= case value[0]
                 when 'url', 'site'
-                  link_to(value[1], value[1])
+                  link_to(value[1], value[1], :target => "_blank")
                 when 'mes'
                   Date.parse(value[1]+'-01').strftime("%b/%Y")
                 when 'total_pedidos'
                   number_to_currency(value[1], {locale: :pt_BR, precision: 2, separator: ',', delimiter: '.'})
                 when 'page_id'
-                  link_to(value[1], "https://www.facebook.com/pages/_/#{value[1]}?sk=app_231071397085577", :target => "_parent")
+                  link_to(value[1], "https://www.facebook.com/pages/_/#{value[1]}?sk=app_231071397085577", :target => "_blank")
                 else
                   value[1]
                 end %>
