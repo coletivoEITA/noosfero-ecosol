@@ -7,6 +7,21 @@
     models:
     views:
       queries:
+          orders_by_month: "Pedidos por mês"
+          enterprises: "Empreendimentos"
+          enterprises_enabled: "Empreendimentos ativados"
+          enterprises_members: "Integrantes de empreendimentos"
+          enterprises_updated_products: "Produtos atualizados"
+          enterprises_products_ranking: "Ranking de produtos pedidos"
+          enterprises_orders_ranking: "Ranking de pedidos"
+          enterprises_orders_quantity_by_month: "Quantidade de pedidos por mês"
+          enterprises_quantity_with_orders_by_month: "Quantidade de empreendimentos com pedidos por mês"
+          users_created_by_month: "Usuários criados por mês"
+          communities_created_by_month: "Comunidades criadas por mês"
+          comments_created_by_month: "Comentários criados por mês"
+          communities: "Comunidades"
+          people: "Pessoas"
+          contents_most_commented: "Conteúdos mais comentados"
 
 
 'pt_BR':
