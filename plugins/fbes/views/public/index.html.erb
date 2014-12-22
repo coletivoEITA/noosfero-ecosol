@@ -3,6 +3,8 @@
   <% FbesPlugin::Queries::Hash.each do |name, query| %>
     <li>
       <a href="http://cirandas.net/plugin/fbes/queries/<%= name %>"><%= t("fbes_plugin.views.queries.#{name}") %></a>
+      &nbsp;
+      <%= button_without_text(:save, 'Exportar dados para planilha', 'http://cirandas.net/plugin/fbes/queries/#{name}?per_page=all&format=csv') %>
     </li>
   <% end %>
 </ul>
