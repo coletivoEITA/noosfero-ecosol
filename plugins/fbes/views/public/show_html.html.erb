@@ -28,6 +28,13 @@
                 number_to_currency(value[1], {locale: :pt_BR, precision: 2, separator: ',', delimiter: '.'})
               when 'page_id'
                 link_to(value[1], "https://www.facebook.com/pages/_/#{value[1]}?sk=app_231071397085577", :target => "_blank")
+              when 'produtos'
+              %>
+                <%= button_to_function_without_text 'eyes', "Ver produtos", "jQuery(this).next().toggle(300);" %>
+                <div style="display:none">
+                  <%= value[1] %>
+                </div>
+              <%
               else
                 value[1]
               end %>
