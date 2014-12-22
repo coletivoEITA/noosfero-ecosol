@@ -51,6 +51,7 @@ SELECT
 EOQ
 
     :enterprises_updated_products => <<EOQ,
+DROP TABLE tmp IF EXISTS;
 create temporary table tmp as
   select profile_id, to_char(updated_at,'YYYY-MM') mes, count(*) qtde
     from products
@@ -64,6 +65,7 @@ create temporary table tmp as
 EOQ
 
     :enterprises_products_ranking => <<EOQ,
+DROP TABLE tmp IF EXISTS;
 create temporary table tmp as
     select profile_id, count(*) qtde from products group by profile_id order by qtde desc;
 
@@ -73,6 +75,7 @@ select a.profile_id, b.name, 'http://cirandas.net/'||b.identifier url, a.qtde fr
 EOQ
 
     :enterprises_orders_ranking => <<EOQ,
+DROP TABLE tmp IF EXISTS;
 create temporary table tmp as
     select a.id order_id, a.profile_id, b.name, 'http://cirandas.net/'||b.identifier url, (select sum(i.price) from orders_plugin_items i where i.order_id=a.id) valor_dos_pedidos
         from orders_plugin_orders a, profiles b
@@ -88,6 +91,7 @@ select t.profile_id, b.name, b.url, t.qtde, t.total_pedidos, count(*) OVER() AS 
 EOQ
 
     :enterprises_orders_quantity_by_month => <<EOQ,
+DROP TABLE tmp IF EXISTS;
 create temporary table tmp as
     select a.id order_id, a.profile_id, a.created_at, b.name, 'http://cirandas.net/'||b.identifier url, (select sum(i.price) from orders_plugin_items i where i.order_id=a.id) valor_dos_pedidos
         from orders_plugin_orders a, profiles b
@@ -103,6 +107,7 @@ select t.mes, t.profile_id, b.name, b.url, t.qtde, t.total_pedidos, count(*) OVE
 EOQ
 
     :enterprises_quantity_with_orders_by_month => <<EOQ,
+DROP TABLE tmp IF EXISTS;
 create temporary table tmp as
     select a.id order_id, a.profile_id, a.created_at, b.name, 'http://cirandas.net/'||b.identifier url, (select sum(i.price) from orders_plugin_items i where i.order_id=a.id) valor_dos_pedidos
         from orders_plugin_orders a, profiles b
