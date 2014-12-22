@@ -2,6 +2,8 @@
 <p>Total de <%= @fbes_plugin_result_full_count %> resultados. Página <%= @fbes_plugin_page %> de <%= @fbes_plugin_result_pages %>.</p>
 <br />
 <%= button(:back, 'Voltar à lista de estatísticas', 'http://cirandas.net/plugin/fbes/queries') %>
+&nbsp;
+<%= button(:save, 'Exportar dados para planilha', 'http://cirandas.net/plugin/fbes/queries/#{params[:action]}?per_page=all&format=csv') %>
 <br class="clean" /><br />
 <%= render 'pagination' %>
 <table class='table'>
