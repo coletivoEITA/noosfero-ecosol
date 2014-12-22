@@ -21,7 +21,7 @@
                 when 'total_pedidos'
                   number_to_currency(value[1], {locale: :pt_BR, precision: 2, separator: ',', delimiter: '.'})
                 when 'page_id'
-                  link_to("https://www.facebook.com/pages/_/#{value[1]}?sk=app_231071397085577", value[1])
+                  link_to(value[1], "https://www.facebook.com/pages/_/#{value[1]}?sk=app_231071397085577")
                 else
                   value[1]
                 end %>
