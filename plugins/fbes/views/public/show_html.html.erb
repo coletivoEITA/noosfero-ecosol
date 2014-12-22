@@ -29,10 +29,12 @@
               <% when 'page_id' %>
                 <%= link_to(value[1], "https://www.facebook.com/pages/_/#{value[1]}?sk=app_231071397085577", :target => "_blank") %>
               <% when 'produtos' %>
-                <%= button_to_function_without_text 'eyes', "Ver produtos", "jQuery(this).next('div').toggle(500)" %>
-                <div style="display:none">
-                  <%= value[1] %>
-                </div>
+                <% if (value[1]) %>
+                  <%= button_to_function_without_text 'eyes', "Ver produtos", "jQuery(this).next('div').toggle(500)" %>
+                  <div style="display:none">
+                    <%= value[1] %>
+                  </div>
+                <% end %>
               <% else %>
                 <%= value[1] %>
               <% end %>
