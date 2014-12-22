@@ -2,8 +2,8 @@
 <table>
   <% FbesPlugin::Queries::Hash.each do |name, query| %>
     <tr style="vertical-align:middle">
-      <td style="padding: 10px 0;font-size: 22px;">
-        <%= link_to(t("fbes_plugin.views.queries.#{name}"), "http://cirandas.net/plugin/fbes/queries/#{name}", {:style => "display: block"}) %>
+      <td style="font-size: 22px;">
+        <%= link_to(t("fbes_plugin.views.queries.#{name}"), "http://cirandas.net/plugin/fbes/queries/#{name}", {:style => "display: block;padding: 10px 0"}) %>
       </td>
       <td>
         <%= button_without_text(:eyes, 'Visualizar online', "http://cirandas.net/plugin/fbes/queries/#{name}", option: 'primary') %>
