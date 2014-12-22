@@ -3,6 +3,12 @@
 <br />
 <%= button(:back, 'Voltar à lista de estatísticas', 'http://cirandas.net/plugin/fbes/queries') %>
 <br class="clean" /><br />
+  <%=
+    for i in 1..@fbes_plugin_result_pages
+      (i == @fbes_plugin_page) ? i : link_to(i, "http://cirandas.net/plugin/fbes/queries/#{params[:action]}?page=#{i}&per_page=#{@fbes_plugin_per_page}")
+      '&nbsp;'
+    end
+  %>
   <table class='table'>
     <tr>
       <% @fbes_plugin_result.first.keys.each do |header| %>
