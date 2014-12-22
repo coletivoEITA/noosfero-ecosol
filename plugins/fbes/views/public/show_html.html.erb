@@ -6,7 +6,7 @@
 <%= button(:save, 'Exportar dados para planilha', "http://cirandas.net/plugin/fbes/queries/#{params[:action]}?per_page=all&format=csv", option: 'primary') %>
 <br class="clean" /><br />
 <%= render 'pagination' %>
-<!--<div id="fbes-plugin-results-table" class="table-responsive">-->
+<div id="fbes-plugin-results-table" class="table-responsive">
   <table class='table table-striped'>
     <thead>
       <tr>
@@ -49,12 +49,12 @@
       <% end %>
     </tbody>
   </table>
-<!-- </div> -->
+</div>
 <style>
   @-moz-document url-prefix() {
     fieldset { display: table-cell; }
   }
-  /*#fbes-plugin-results-table {*/
+  /*#fbes-plugin-results-table {
     table {
       width: 100%;
     }
@@ -80,6 +80,6 @@
       width: 19.2%;
       float: left;
     }
-  /* } */
+  } */
 </style>
 <%= render 'pagination' %>
