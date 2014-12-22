@@ -1,0 +1,16 @@
+
+"en-US": &en-US
+
+  fbes_plugin:
+    lib:
+      plugin:
+    models:
+    views:
+      queries:
+
+
+'en_US':
+  <<: *en-US
+'en':
+  <<: *en-US
+

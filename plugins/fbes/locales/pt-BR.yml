@@ -1,0 +1,16 @@
+
+"pt-BR": &pt-BR
+
+  fbes_plugin:
+    lib:
+      plugin:
+    models:
+    views:
+      queries:
+
+
+'pt_BR':
+  <<: *pt-BR
+'pt':
+  <<: *pt-BR
+
