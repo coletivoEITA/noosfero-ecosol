@@ -78,9 +78,10 @@ DROP TABLE IF EXISTS tmp;
 create temporary table tmp as
     select profile_id, count(*) qtde from products group by profile_id order by qtde desc;
 
-select a.profile_id, b.name, 'http://cirandas.net/'||b.identifier url, a.qtde from tmp a, profiles b, count(*) OVER() AS full_count
-    where a.profile_id=b.id and b.type='Enterprise' and visible=true and active=true
-    order by qtde desc
+select a.profile_id, b.name, 'http://cirandas.net/'||b.identifier url, a.qtde, count(*) OVER() AS full_count
+  from tmp a, profiles b
+  where a.profile_id=b.id and b.type='Enterprise' and visible=true and active=true
+  order by qtde desc
 EOQ
 
     :enterprises_orders_ranking => <<EOQ,
