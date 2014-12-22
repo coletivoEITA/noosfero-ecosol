@@ -3,7 +3,7 @@
 <br />
 <%= button(:back, 'Voltar à lista de estatísticas', 'http://cirandas.net/plugin/fbes/queries') %>
 &nbsp;
-<%= button(:save, 'Exportar dados para planilha', "http://cirandas.net/plugin/fbes/queries/#{params[:action]}?per_page=all&format=csv") %>
+<%= button(:save, 'Exportar dados para planilha', "http://cirandas.net/plugin/fbes/queries/#{params[:action]}?per_page=all&format=csv", option: 'primary') %>
 <br class="clean" /><br />
 <%= render 'pagination' %>
 <table class='table'>
