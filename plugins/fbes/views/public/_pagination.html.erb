@@ -3,8 +3,8 @@
     <% j=0 %>
     <% for i in 1..@fbes_plugin_result_pages %>
       <% j=j+1 %>
-      <% if j>=10 && i<@fbes_plugin_result_pages %>
-        <% if j==10 %>
+      <% if j>=(10+i) && i<@fbes_plugin_result_pages %>
+        <% if j==(10+i) %>
           &hellip;&nbsp;
         <% end %>
       <% else %>
