@@ -71,9 +71,6 @@ Noosfero::Application.routes.draw do
   # DEPRECATED
   match 'catalog(/:profile)', :controller => :catalog, :action => :index, :profile => /#{Noosfero.identifier_format}/, :as => :catalog
 
-  # contact
-  map.contact 'contact/:profile/:action/:id', :controller => 'contact', :action => 'index', :id => /.*/, :profile => /#{Noosfero.identifier_format}/
-
   # invite
   match 'profile(/:profile)/invite/friends', :controller => 'invite', :action => 'select_address_book', :profile => /#{Noosfero.identifier_format}/
   match 'profile(/:profile)/invite/:action', :controller => 'invite', :profile => /#{Noosfero.identifier_format}/
@@ -118,12 +115,19 @@ Noosfero::Application.routes.draw do
   match 'admin/:controller(/:action((.:format)/:id))', :controller => Noosfero.pattern_for_controllers_in_directory('admin')
   match 'admin/:controller(/:action(/:id))', :controller => Noosfero.pattern_for_controllers_in_directory('admin')
 
+
   ######################################################
   ## Controllers that are used by system admin
   ######################################################
   # administrative tasks for a environment
   match 'system', :controller => 'system'
   match 'system/:controller(/:action(/:id))', :controller => Noosfero.pattern_for_controllers_in_directory('system')
+
+  ######################################################
+  # plugin routes
+  ######################################################
+  plugins_routes = File.join(File.dirname(__FILE__) + '/../lib/noosfero/plugin/routes.rb')
+  eval(IO.read(plugins_routes), binding, plugins_routes)
 
   # cache stuff - hack
   match 'public/:action/:id', :controller => 'public'
