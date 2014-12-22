@@ -9,7 +9,7 @@ class FbesPlugin::Queries
 
   Hash = {
     :orders_by_month => <<EOQ,
-select to_char(created_at,'YYYY-MM') mes, count(*)
+select to_char(created_at,'YYYY-MM') mes, count(*), count(*) OVER() AS full_count
   from orders_plugin_orders
   group by mes
   order by mes desc
