@@ -5,7 +5,7 @@
       <% j=j+1 %>
       <% if j>=10 && i<@fbes_plugin_result_pages %>
         <% if j==10 %>
-          &nbsp;&hellip;&nbsp;
+          &hellip;&nbsp;
         <% end %>
       <% else %>
         <%= (i == @fbes_plugin_page) ? i : link_to(i, "http://cirandas.net/plugin/fbes/queries/#{params[:action]}?page=#{i}&per_page=#{@fbes_plugin_per_page}") %>
