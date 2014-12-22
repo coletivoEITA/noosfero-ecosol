@@ -17,7 +17,7 @@ class FbesPluginQueriesController < PublicController
       end
 
       @fbes_plugin_result = result
-      @fbes_plugin_queries = FbesPlugin::Queries::Hash
+      @fbes_plugin_result_full_count = result.first['full_count']
 
       respond_to do |format|
         format.json do
