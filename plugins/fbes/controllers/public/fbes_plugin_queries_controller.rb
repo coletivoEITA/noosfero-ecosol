@@ -16,15 +16,6 @@ class FbesPluginQueriesController < PublicController
         ActiveRecord::Base.connection.execute query_with_pagination
       end
 
-      # make ordered hashes. FIXME: remove with ruby > 1.9
-      new_result = result.map do |record|
-        new_record = ActiveSupport::OrderedHash.new
-        result.fields.each do |key|
-          new_record[key] = record[key]
-        end
-        new_record
-      end
-      result = new_result
       @fbes_plugin_result = result
       @fbes_plugin_queries = FbesPlugin::Queries::Hash
 
