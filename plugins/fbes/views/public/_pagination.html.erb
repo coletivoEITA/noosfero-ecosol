@@ -1,7 +1,15 @@
-<% if @fbes_plugin_result_pages.to_i>1 %>
+<% if @fbes_plugin_result_pages>1 %>
   <div id='pages' style='text-align:right'>
-    <% for i in 1..@fbes_plugin_result_pages.to_i %>
-      <%= (i == @fbes_plugin_page) ? i : link_to(i, "http://cirandas.net/plugin/fbes/queries/#{params[:action]}?page=#{i}&per_page=#{@fbes_plugin_per_page}") %>
+    <% j=0 %>
+    <% for i in 1..@fbes_plugin_result_pages %>
+      <% j++ %>
+      <% if j>=20 && i<@fbes_plugin_result_pages %>
+        <% if j==10 %>
+          &nbsp;&hellip;
+        <% end %>
+      <% else %>
+        <%= (i == @fbes_plugin_page) ? i : link_to(i, "http://cirandas.net/plugin/fbes/queries/#{params[:action]}?page=#{i}&per_page=#{@fbes_plugin_per_page}") %>
+      <% end %>
       &nbsp;
     <% end %>
   </div>
