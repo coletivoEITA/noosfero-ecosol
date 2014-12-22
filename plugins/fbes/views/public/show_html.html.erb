@@ -3,39 +3,36 @@
 <br />
 <%= button(:back, 'Voltar à lista de estatísticas', 'http://cirandas.net/plugin/fbes/queries') %>
 <br class="clean" /><br />
-  <% for i in 1..@fbes_plugin_result_pages.to_i %>
-    <%= (i == @fbes_plugin_page) ? i : link_to(i, "http://cirandas.net/plugin/fbes/queries/#{params[:action]}?page=#{i}&per_page=#{@fbes_plugin_per_page}") %>
-    &nbsp;
-  <% end %>
-  %>
-  <table class='table'>
+<%= render 'pagination' %>
+<table class='table'>
+  <tr>
+    <% @fbes_plugin_result.first.keys.each do |header| %>
+      <% if !['profile_id', 'id', 'full_count'].include?(header) %>
+        <th><%= header %></th>
+      <% end %>
+    <% end %>
+  </tr>
+  <% @fbes_plugin_result.each do |line| %>
     <tr>
-      <% @fbes_plugin_result.first.keys.each do |header| %>
-        <% if !['profile_id', 'id', 'full_count'].include?(header) %>
-          <th><%= header %></th>
+      <% line.each do |value| %>
+        <% if !['profile_id', 'id', 'full_count'].include?(value[0]) %>
+          <td>
+            <%= case value[0]
+              when 'url', 'site'
+                link_to(value[1], value[1], :target => "_blank")
+              when 'mes'
+                Date.parse(value[1]+'-01').strftime("%b/%Y")
+              when 'total_pedidos'
+                number_to_currency(value[1], {locale: :pt_BR, precision: 2, separator: ',', delimiter: '.'})
+              when 'page_id'
+                link_to(value[1], "https://www.facebook.com/pages/_/#{value[1]}?sk=app_231071397085577", :target => "_blank")
+              else
+                value[1]
+              end %>
+          </td>
         <% end %>
       <% end %>
     </tr>
-    <% @fbes_plugin_result.each do |line| %>
-      <tr>
-        <% line.each do |value| %>
-          <% if !['profile_id', 'id', 'full_count'].include?(value[0]) %>
-            <td>
-              <%= case value[0]
-                when 'url', 'site'
-                  link_to(value[1], value[1], :target => "_blank")
-                when 'mes'
-                  Date.parse(value[1]+'-01').strftime("%b/%Y")
-                when 'total_pedidos'
-                  number_to_currency(value[1], {locale: :pt_BR, precision: 2, separator: ',', delimiter: '.'})
-                when 'page_id'
-                  link_to(value[1], "https://www.facebook.com/pages/_/#{value[1]}?sk=app_231071397085577", :target => "_blank")
-                else
-                  value[1]
-                end %>
-            </td>
-          <% end %>
-        <% end %>
-      </tr>
-    <% end %>
-  </table>
+  <% end %>
+</table>
+<%= render 'pagination' %>
