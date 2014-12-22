@@ -1,5 +1,5 @@
 <h1><%= t("fbes_plugin.views.queries.#{params[:action]}") %></h1>
-<p>Total de <%= @fbes_plugin_result_full_count %> resultados</p>
+<p>Total de <%= @fbes_plugin_result_full_count %> resultados. Página <%= @fbes_plugin_result_page %> de <%= @fbes_plugin_result_pages %>.</p>
 <br />
 <%= button(:back, 'Voltar à lista de estatísticas', 'http://cirandas.net/plugin/fbes/queries') %>
 <br class="clean" /><br />
