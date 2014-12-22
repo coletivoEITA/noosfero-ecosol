@@ -67,9 +67,9 @@ EOQ
 
     :products_updated => <<EOQ,
 select to_char(updated_at,'YYYY-MM') mes, count(*) qtde, count(*) OVER() AS full_count
-    from products a
+    from products
     group by mes
-    order by mes desc;
+    order by mes desc
 EOQ
 
     :enterprises_products_ranking => <<EOQ,
