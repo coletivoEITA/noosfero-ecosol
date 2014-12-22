@@ -1,5 +1,5 @@
 <div id="manage-fb-store-ctrl">
-  <% if @page_tab.owner_profile? %>
+  <% if @page_tab.owner_profile %>
     <% if logged_in? and (user.is_admin? environment or user.is_admin? @page_tab.owner_profile) %>
       <%= button :edit, t('fb_app_plugin.views.page_tab.edit_catalog'), {controller: :fb_app_plugin_myprofile, profile: @page_tab.owner_profile.identifier},
         target: '_parent' %>
