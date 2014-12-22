@@ -2,7 +2,7 @@
   <div id='pages' style='text-align:right'>
     <% j=0 %>
     <% for i in 1..@fbes_plugin_result_pages %>
-      <% j++ %>
+      <% j=j+1 %>
       <% if j>=20 && i<@fbes_plugin_result_pages %>
         <% if j==10 %>
           &nbsp;&hellip;
