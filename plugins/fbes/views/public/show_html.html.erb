@@ -26,11 +26,13 @@
                 <% case value[0] %>
                   <% when 'url', 'site' %>
                     <%= link_to(value[1], value[1], :target => "_blank") %>
+                  <% when 'perfil_cirandas' %>
+                    <%= link_to(value[1], "http://cirandas.net/#{value[1]}", :target => "_blank") %>
                   <% when 'mes' %>
                     <%= Date.parse(value[1]+'-01').strftime("%b/%Y") %>
                   <% when 'total_pedidos', 'valor_total_pedidos' %>
                     <%= number_to_currency(value[1], {locale: :pt_BR, precision: 2, separator: ',', delimiter: '.'}) %>
-                  <% when 'page_id' %>
+                  <% when 'pagina_no_facebook' %>
                     <%= link_to(value[1], "https://www.facebook.com/pages/_/#{value[1]}?sk=app_231071397085577", :target => "_blank") %>
                   <% when 'produtos' %>
                     <% if (!value[1].empty?) %>
