@@ -52,20 +52,22 @@ EOQ
 
     :enterprises_updated_products => <<EOQ,
 DROP TABLE tmp IF EXISTS;
+
 create temporary table tmp as
   select profile_id, to_char(updated_at,'YYYY-MM') mes, count(*) qtde
     from products
     group by mes, profile_id
     order by mes desc, profile_id;
 
-  select a.mes, a.profile_id, b.name, 'http://cirandas.net/'||b.identifier url, a.qtde, count(*) OVER() AS full_count
-    from tmp a, profiles b
-    where a.profile_id=b.id and b.type='Enterprise' and visible=true and active=true
-    order by a.mes desc, a.qtde desc
+select a.mes, a.profile_id, b.name, 'http://cirandas.net/'||b.identifier url, a.qtde, count(*) OVER() AS full_count
+  from tmp a, profiles b
+  where a.profile_id=b.id and b.type='Enterprise' and visible=true and active=true
+  order by a.mes desc, a.qtde desc
 EOQ
 
     :enterprises_products_ranking => <<EOQ,
 DROP TABLE tmp IF EXISTS;
+
 create temporary table tmp as
     select profile_id, count(*) qtde from products group by profile_id order by qtde desc;
 
@@ -76,6 +78,7 @@ EOQ
 
     :enterprises_orders_ranking => <<EOQ,
 DROP TABLE tmp IF EXISTS;
+
 create temporary table tmp as
     select a.id order_id, a.profile_id, b.name, 'http://cirandas.net/'||b.identifier url, (select sum(i.price) from orders_plugin_items i where i.order_id=a.id) valor_dos_pedidos
         from orders_plugin_orders a, profiles b
@@ -92,6 +95,7 @@ EOQ
 
     :enterprises_orders_quantity_by_month => <<EOQ,
 DROP TABLE tmp IF EXISTS;
+
 create temporary table tmp as
     select a.id order_id, a.profile_id, a.created_at, b.name, 'http://cirandas.net/'||b.identifier url, (select sum(i.price) from orders_plugin_items i where i.order_id=a.id) valor_dos_pedidos
         from orders_plugin_orders a, profiles b
@@ -108,6 +112,7 @@ EOQ
 
     :enterprises_quantity_with_orders_by_month => <<EOQ,
 DROP TABLE tmp IF EXISTS;
+
 create temporary table tmp as
     select a.id order_id, a.profile_id, a.created_at, b.name, 'http://cirandas.net/'||b.identifier url, (select sum(i.price) from orders_plugin_items i where i.order_id=a.id) valor_dos_pedidos
         from orders_plugin_orders a, profiles b
