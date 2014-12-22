@@ -173,9 +173,8 @@ select t.source_id, a.name, a.type, a.created_at, t.qtde_comentarios, count(*) O
 EOQ
 
     :fb_app_plugin_query => <<EOQ,
-select a.page_id, a.created_at, a.updated_at, b.identifier, count(*) OVER() AS full_count
-  from fb_app_plugin_page_tab_configs a, profiles b 
-  where a.profile_id=b.id 
+select a.page_id, a.created_at, a.updated_at, count(*) OVER() AS full_count
+  from fb_app_plugin_page_tab_configs a
   order by a.created_at desc
 EOQ
   }
