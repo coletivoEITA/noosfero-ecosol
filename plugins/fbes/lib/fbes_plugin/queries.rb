@@ -50,7 +50,7 @@ SELECT
   WHERE a.type='Enterprise' and a.active is true and a.visible is true and a.enabled is true
 EOQ
 
-    :enterprises_updated_products => <<EOQ,
+    :products_updated_by_enterprise => <<EOQ,
 DROP TABLE IF EXISTS tmp;
 
 create temporary table tmp as
@@ -63,6 +63,13 @@ select a.mes, a.profile_id, b.name, 'http://cirandas.net/'||b.identifier url, a.
   from tmp a, profiles b
   where a.profile_id=b.id and b.type='Enterprise' and visible=true and active=true
   order by a.mes desc, a.qtde desc
+EOQ
+
+    :products_updated => <<EOQ,
+select to_char(updated_at,'YYYY-MM') mes, count(*) qtde, count(*) OVER() AS full_count
+    from products a
+    group by mes
+    order by mes desc;
 EOQ
 
     :enterprises_products_ranking => <<EOQ,
