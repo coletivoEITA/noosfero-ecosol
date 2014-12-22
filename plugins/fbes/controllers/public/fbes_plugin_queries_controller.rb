@@ -18,7 +18,7 @@ class FbesPluginQueriesController < PublicController
 
       @fbes_plugin_result = result
       @fbes_plugin_result_full_count = result.first['full_count']
-      @fbes_plugin_result_pages = (@fbes_plugin_result_full_count.to_f / @fbes_plugin_result_per_page.to_f).ceil
+      @fbes_plugin_result_pages = (@fbes_plugin_result_full_count.to_f / @fbes_plugin_per_page.to_f).ceil
 
       respond_to do |format|
         format.json do
