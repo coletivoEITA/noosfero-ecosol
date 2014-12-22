@@ -1,10 +1,12 @@
 <h1><%= t("fbes_plugin.views.queries.#{params[:action]}") %></h1>
+<p>Total de <%= @fbes_plugin_result_full_count %> resultados</p>
+<br />
 <%= button(:back, 'Voltar à lista de estatísticas', 'http://cirandas.net/plugin/fbes/queries') %>
 <br class="clean" /><br />
   <table class='table'>
     <tr>
       <% @fbes_plugin_result.first.keys.each do |header| %>
-        <% if !['profile_id', 'id'].include?(header) %>
+        <% if !['profile_id', 'id', 'full_count'].include?(header) %>
           <th><%= header %></th>
         <% end %>
       <% end %>
@@ -12,7 +14,7 @@
     <% @fbes_plugin_result.each do |line| %>
       <tr>
         <% line.each do |value| %>
-          <% if !['profile_id', 'id'].include?(value[0]) %>
+          <% if !['profile_id', 'id', 'full_count'].include?(value[0]) %>
             <td>
               <%= case value[0]
                 when 'url', 'site'
