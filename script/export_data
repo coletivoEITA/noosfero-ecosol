@@ -1,0 +1,138 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require "#{File.dirname(__FILE__)}/../config/environment"
+
+def parse_opts
+  puts "please provide the yaml configuration file" if ARGV.blank?
+  $config_file = ARGV[0]
+  $config = YAML.load File.read($config_file)
+end
+
+class ActiveRecord::Base
+  yaml_as "tag:ruby.yaml.org,2002:ActiveRecord"
+end
+
+class Object
+
+  attr_accessor :embeded_file
+
+end
+
+def patch_to_yaml
+  Object.class_eval do
+    attr_accessor :export_methods
+
+    def to_yaml opts = {}
+      YAML::quick_emit self, opts do |out|
+        out.map taguri, to_yaml_style do |map|
+          self.export_methods.each do |m|
+            map.add m, self.send(m).to_yaml
+          end
+        end
+      end
+    end
+  end
+end
+
+def export_association sources, associations = [], options = {}
+  sources.to_a.each do |source|
+    source.export_methods = ['attributes']
+    if options[:embed_files] and source.respond_to? :public_filename
+      source.embeded_file = File.read "public#{source.public_filename}"
+      source.export_methods << 'embeded_file'
+    end
+
+    associations.to_a.each do |association|
+      if association.is_a? Hash
+        association.each do |association, associations| 
+          source.export_methods << association
+          export_association source.send(association), associations, options
+        end
+      else
+        source.export_methods << association
+        export_association source.send(association), [], options
+      end
+    end
+  end
+end
+
+def export_config config
+  patch_to_yaml
+  config = HashWithIndifferentAccess.new config
+  options = config[:options]
+
+  data = config[:sources].to_a.map do |source_config|
+    source = source_config[:type].constantize.find source_config[:id]
+
+    export_association source, source_config[:associations].to_a, options
+  end
+
+  STDOUT << data.to_yaml
+end
+
+module ScriptTest
+  class TestUploadedFile
+    attr_accessor :path, :content_type, :size
+    def original_filename
+      File.basename self.path
+    end
+  end
+
+  class << self
+    def create_test_data
+      environment = Environment.create! :name => 'env'
+      product_category = ProductCategory.create! :environment => environment, :name => 'prod cat'
+      enterprise = environment.enterprises.first
+      product = enterprise.products.create! :product_category => product_category
+
+      image_data = TestUploadedFile.new
+      image_data.path = 'test/fixtures/files/noosfero-network.png'
+      image_data.content_type = 'text/plain'
+      image_data.size = 30
+      product.image = Image.create! :parent_id => product, :uploaded_data => image_data
+      product.save
+
+      environment
+    end
+
+    def test_config id
+      {
+        "options" => {
+          "embed_files"=>true
+        },
+        "sources"=> [
+          {
+            "id"=>id,
+            "type"=>"Environment",
+            "associations"=> [
+              {
+                "products"=> [
+                  {"image"=>["thumbnails"]}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    end
+  end
+end
+
+def run
+  parse_opts
+  export_config $config
+end
+
+def test
+  environment = ScriptTest.create_test_data
+  $config = ScriptTest.test_config environment.id
+  export_config $config
+
+  # FIXME: can't destroy with modified to_yaml
+  #environment.destroy
+end
+
+run
+#test
+

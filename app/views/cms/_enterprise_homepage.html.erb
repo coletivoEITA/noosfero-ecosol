@@ -1,0 +1,10 @@
+<%= render :file => 'shared/tiny_mce' %>
+
+<div>
+  <%= required labelled_form_field(_('Title'), text_field(:article, 'name', :size => '64', :maxlength => 150)) %>
+
+  <%= render :partial => 'general_fields' %>
+  <%= render :partial => 'translatable' %>
+
+  <%= labelled_form_field(_('Text'), text_area(:article, 'body', :cols => 40, :style => 'width:99%', :class => 'mceEditor')) %>
+</div>

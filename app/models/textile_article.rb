@@ -1,11 +1,11 @@
 class TextileArticle < TextArticle
 
   def self.short_description
-    _('Text article with Textile markup language')
+    _('Text article for people with visual impairement')
   end
 
   def self.description
-    _('Accessible alternative for visually impaired users.')
+    _('Textile format.')
   end
 
   def to_html(options ={})

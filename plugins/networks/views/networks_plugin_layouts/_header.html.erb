@@ -1,0 +1,18 @@
+<h1 id="network-header" class="page-title">
+  <% if profile.network_node? %>
+    <%= profile.network.name %>
+
+  <% elsif profile.network? %>
+    <%= profile.name %>
+
+  <% elsif profile.enterprise? %>
+    <span class='solidarity-economy'>Empreendimento de Economia Solidária</span>
+    <%= profile.short_name 40 %>
+
+    <% profile.networks.each do |network| %>
+      <span class="network-tag">
+        <%= link_to profile_image(network, :icon) + network.name, network.url %>
+      </span>
+    <% end %>
+  <% end %>
+</h1>

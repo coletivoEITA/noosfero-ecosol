@@ -1,5 +1,7 @@
 class Category < ActiveRecord::Base
 
+  attr_accessible :name, :parent_id, :display_color, :display_in_menu, :image_builder, :environment, :parent
+
   SEARCHABLE_FIELDS = {
     :name => 10,
     :acronym => 5,
@@ -12,15 +14,14 @@ class Category < ActiveRecord::Base
   validates_uniqueness_of :slug,:scope => [ :environment_id, :parent_id ], :message => N_('{fn} is already being used by another category.').fix_i18n
   belongs_to :environment
 
-  validates_inclusion_of :display_color, :in => 1..15, :allow_nil => true
-  validates_uniqueness_of :display_color, :scope => :environment_id, :if => (lambda { |cat| ! cat.display_color.nil? }), :message => N_('{fn} was already assigned to another category.').fix_i18n
+  scope :alphabetical, :order => 'name ASC'
 
-  # Finds all top level categories for a given environment. 
-  named_scope :top_level_for, lambda { |environment|
+  # Finds all top level categories for a given environment.
+  scope :top_level_for, lambda { |environment|
     {:conditions => ['parent_id is null and environment_id = ?', environment.id ]}
   }
 
-  named_scope :on_level, lambda { |parent| {:conditions => {:parent_id => parent}} }
+  scope :on_level, lambda { |parent| {:conditions => {:parent_id => parent}} }
 
   acts_as_filesystem
 
@@ -40,11 +41,20 @@ class Category < ActiveRecord::Base
 
   acts_as_having_image
 
-  named_scope :from_types, lambda { |types|
+  before_save :normalize_display_color
+
+  def normalize_display_color
+    display_color.gsub!('#', '') if display_color
+    display_color = nil if display_color.blank?
+  end
+
+  scope :from_types, lambda { |types|
     types.select{ |t| t.blank? }.empty? ?
       { :conditions => { :type => types } } :
       { :conditions => [ "type IN (?) OR type IS NULL", types.reject{ |t| t.blank? } ] }
   }
+
+  after_save :change_children_choosable
 
   def recent_people(limit = 10)
     self.people.paginate(:order => 'created_at DESC, id DESC', :page => 1, :per_page => limit)
@@ -67,7 +77,7 @@ class Category < ActiveRecord::Base
   end
 
   def recent_comments(limit = 10)
-    comments.paginate(:all, :order => 'created_at DESC, comments.id DESC', :page => 1, :per_page => limit)
+    comments.paginate(:order => 'created_at DESC, comments.id DESC', :page => 1, :per_page => limit)
   end
 
   def most_commented_articles(limit = 10)
@@ -82,21 +92,25 @@ class Category < ActiveRecord::Base
     display_in_menu
   end
 
-  def children_for_menu
-    results = []
-    pending = children.find(:all, :conditions => { :display_in_menu => true})
-    while !pending.empty?
-      cat = pending.shift
-      results << cat
-      pending += cat.children.find(:all, :conditions => { :display_in_menu => true} )
-    end
+  def may_change_choosable?
+    self.children.present? and (self.parent.blank? or not self.parent.choosable)
+  end
 
-    results
+  def children_for_menu
+    self.descendents.all :conditions => {:display_in_menu => true}, :order => 'path asc'
   end
 
   def is_leaf_displayable_in_menu?
     return false if self.display_in_menu == false
     self.children.find(:all, :conditions => {:display_in_menu => true}).empty?
+  end
+
+  def with_color
+    if display_color.blank?
+      parent.nil? ? nil : parent.with_color
+    else
+      self
+    end
   end
 
 end

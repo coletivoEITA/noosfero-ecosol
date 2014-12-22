@@ -1,0 +1,34 @@
+
+<div id="network-nodes">
+
+  <div class="header">
+    <h3><%= t('views.network.structure.nodes') %></h3>
+    <%= link_to t('views.network.structure.add_node'), {:controller => :networks_plugin_node, :action => :associate, :id => @node.id}, :class => 'action-button modal-toggle' %>
+    <%= link_to t('views.network.structure.edit_node_template'), {:controller => :profile_design, :profile => @network.node_template.identifier}, :class => 'action-button' %>
+  </div>
+
+  <% if @node.nodes.visible.empty? %>
+    <%= _ t('views.network.structure.none') %>
+  <% else %>
+    <% @node.nodes.visible.each do |node| %>
+      <%= render 'networks_plugin_network/node', :node => node %>
+    <% end %>
+  <% end %>
+</div>
+
+<div id="network-suppliers">
+
+  <div class="header">
+    <h3><%= t('views.network.structure.enterprises') %></h3>
+    <% add_enterprise_text = t("views.network.structure.add_enterprise_to_#{if @node.network? then 'network' else 'node' end}") %>
+    <%= link_to add_enterprise_text, {:controller => :networks_plugin_enterprise, :action => :associate, :id => @node.id}, :class => 'action-button modal-toggle' %>
+  </div>
+
+  <% if @node.suppliers.except_self.empty? %>
+    <%= _ t('views.network.structure.none') %>
+  <% else %>
+    <% @node.suppliers.except_self.each do |supplier| %>
+      <%= render 'networks_plugin_network/supplier', :supplier => supplier %>
+    <% end %>
+  <% end %>
+</div>

@@ -1,0 +1,31 @@
+<% wireframe_size = true if wireframe_size.nil? %>
+<% other_actor_name = if actor_name == :supplier then :consumer else :supplier end %>
+
+<div id="filter" class="with-actions <%= "wireframe-size" if wireframe_size %>">
+
+  <div class="title filter-box">
+    <%= t('views.filter.filter') %>
+  </div>
+
+  <%= form_tag({controller: :orders_plugin_admin, action: :filter}, id: 'filter-form', remote: true, data: {loading: '#filter'}) do %>
+
+    <%= hidden_field_tag 'actor_name', actor_name %>
+    <%= hidden_field_tag 'orders_method', orders_method %>
+    <%= hidden_field_tag 'orders_context', orders_context %>
+    <%= hidden_field_tag 'context_id', context_id %>
+
+    <div class="fields filter-box">
+      <%= render 'orders_plugin_admin/filter_fields', actor_name: other_actor_name, actors: actors, orders_context: orders_context, year: year, month: month %>
+    </div>
+
+    <div class="submit">
+      <%= submit_tag t('views.filter.filter_it') %>
+    </div>
+
+  <% end %>
+
+</div>
+
+<%= javascript_tag do %>
+  orders.locales.noneSelected = <%= t('views.admin.index.none_selected').to_json %>
+<% end %>

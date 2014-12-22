@@ -3,3 +3,6 @@
 <% @form.fields.each do |field| %>
   <%= display_custom_field(field, @submission, f.object_name) %>
 <% end %>
+
+<%= render :file => 'shared/tiny_mce' %>
+

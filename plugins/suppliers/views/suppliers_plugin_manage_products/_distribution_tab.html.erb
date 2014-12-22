@@ -1,0 +1,23 @@
+<% consumers = profile.consumers.except_people.except_self %>
+<% distributed_consumers = @product.consumers.all.to_set %>
+
+<% if consumers.present? %>
+  <%= t('suppliers_plugin.views.manage_products.distribution_tab.title') %>
+
+  <%= form_for :consumers, remote: true, url: {controller: :suppliers_plugin_product, action: :distribute_to_consumers, id: @product.id},
+    html: {data: {loading: "#product-distribution"}} do |f| %>
+    <% consumers.each do |consumer| %>
+      <div>
+        <%= check_box_tag "consumers[#{consumer.id}]", '1', distributed_consumers.include?(consumer.profile) %>
+        <%= label_tag "consumers[#{consumer.id}]", consumer.name %>
+      </div>
+    <% end %>
+
+    <% button_bar do %>
+      <%= submit_button :save, _('Save') %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= t('suppliers_plugin.views.manage_products.distribution_tab.no_consumers') %>
+<% end %>
+

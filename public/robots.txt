@@ -3,5 +3,7 @@
 
 User-agent: *
 # block searches' queries
+Disallow: /search
+Disallow: /assets
 Disallow: /search*query=*
 Disallow: /cat/*

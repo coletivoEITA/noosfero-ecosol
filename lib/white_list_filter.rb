@@ -1,3 +1,5 @@
+require 'nokogiri'
+
 module WhiteListFilter
 
   def check_iframe_on_content(content, trusted_sites)
@@ -9,23 +11,24 @@ module WhiteListFilter
       unless iframe =~ /src=['"].*src=['"]/
         trusted_sites.each do |trusted_site|
           re_dom = trusted_site.gsub('.', '\.')
-          if iframe =~ /src=["']https?:\/\/(www\.)?#{re_dom}\//
+          if iframe =~ /src=["'](https?:)?\/\/(www\.)?#{re_dom}\//
             result = iframe
           end
         end
       end
       result
     end
-    content
   end
 
   module ClassMethods
     def filter_iframes(*opts)
-      options = opts.pop
-      white_list_method = options[:whitelist]
+      options = opts.last.is_a?(Hash) && opts.pop || {}
+      white_list_method = options[:whitelist] || :iframe_whitelist
       opts.each do |field|
         before_validation do |obj|
-          obj.check_iframe_on_content(obj.send(field), obj.instance_eval(&white_list_method))
+          content = obj.send field
+          content = obj.check_iframe_on_content content, obj.instance_eval(&white_list_method)
+          obj[field.to_s] = content
         end
       end
     end

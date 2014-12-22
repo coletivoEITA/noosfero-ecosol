@@ -1,5 +1,7 @@
 class ProfileListBlock < Block
 
+  attr_accessible :prioritize_profiles_with_image
+
   settings_items :limit, :type => :integer, :default => 6
   settings_items :prioritize_profiles_with_image, :type => :boolean, :default => true
 
@@ -16,17 +18,17 @@ class ProfileListBlock < Block
     result = nil
     visible_profiles = profiles.visible.includes([:image,:domains,:preferred_domain,:environment])
     if !prioritize_profiles_with_image
-      result = visible_profiles.all(:limit => limit, :order => 'updated_at DESC').sort_by{ rand }
-    elsif visible_profiles.with_image.count >= limit
-      result = visible_profiles.with_image.all(:limit => limit * 5, :order => 'updated_at DESC').sort_by{ rand }
+      result = visible_profiles.all(:limit => get_limit, :order => 'profiles.updated_at DESC').sort_by{ rand }
+    elsif profiles.visible.with_image.count >= get_limit
+      result = visible_profiles.with_image.all(:limit => get_limit * 5, :order => 'profiles.updated_at DESC').sort_by{ rand }
     else
-      result = visible_profiles.with_image.sort_by{ rand } + visible_profiles.without_image.all(:limit => limit * 5, :order => 'updated_at DESC').sort_by{ rand }
+      result = visible_profiles.with_image.sort_by{ rand } + visible_profiles.without_image.all(:limit => get_limit * 5, :order => 'profiles.updated_at DESC').sort_by{ rand }
     end
-    result.slice(0..limit-1)
+    result.slice(0..get_limit-1)
   end
 
   def profile_count
-    profiles.visible.count
+    profiles.visible.length
   end
 
   # the title of the block. Probably will be overriden in subclasses.
@@ -42,11 +44,11 @@ class ProfileListBlock < Block
     profiles = self.profile_list
     title = self.view_title
     nl = "\n"
-    lambda do
+    proc do |context|
       count=0
       list = profiles.map {|item|
                count+=1
-               send(:profile_image_link, item, :minor )
+               send(:profile_image_link, item, :thumb )
              }.join("\n  ")
       if list.empty?
         list = content_tag 'div', _('None'), :class => 'common-profile-list-block-none'

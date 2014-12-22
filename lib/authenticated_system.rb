@@ -1,6 +1,20 @@
 module AuthenticatedSystem
 
   protected
+
+    # See impl. from http://stackoverflow.com/a/2513456/670229
+    def self.included? base
+      base.around_filter do
+        begin
+          User.current = current_user
+          yield
+        ensure
+          # to address the thread variable leak issues in Puma/Thin webserver
+          User.current = nil
+        end
+      end
+    end
+
     # Returns true or false if the user is logged in.
     # Preloads @current_user with the user model if they're logged in.
     def logged_in?
@@ -9,7 +23,9 @@ module AuthenticatedSystem
 
     # Accesses the current user from the session.
     def current_user
-      @current_user ||= (session[:user] && User.find_by_id(session[:user])) || nil
+      @current_user ||= begin
+        User.current = (session[:user] && User.find_by_id(session[:user])) || nil
+      end
     end
 
     # Store the given user in the session.
@@ -18,8 +34,9 @@ module AuthenticatedSystem
         session.delete(:user)
       else
         session[:user] = new_user.id
+        new_user.register_login
       end
-      @current_user = new_user
+      @current_user = User.current = new_user
     end
 
     # Check if the user is authorized.
@@ -94,18 +111,25 @@ module AuthenticatedSystem
     # Store the URI of the current request in the session.
     #
     # We can return to this location by calling #redirect_back_or_default.
-    def store_location(location = request.request_uri)
+    def store_location(location = request.url)
       session[:return_to] = location
     end
 
     # Redirect to the URI stored by the most recent store_location call or
     # to the passed default.
     def redirect_back_or_default(default)
-      if session[:return_to]
-        redirect_to(session.delete(:return_to))
-      else
-        redirect_to(default)
+      uri = session.delete(:return_to) || default
+      # break cache after login
+      if uri.is_a? String
+        uri = URI.parse uri
+        new_query_ar = URI.decode_www_form(uri.query || '') << ["_", Time.now.to_i.to_s]
+        uri.query = URI.encode_www_form new_query_ar
+        uri = uri.to_s
+      elsif uri.is_a? Hash
+        uri.merge! _: Time.now.to_i
       end
+
+      redirect_to uri
     end
 
     # Inclusion hook to make #current_user and #logged_in?

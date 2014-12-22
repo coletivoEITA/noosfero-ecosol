@@ -1,0 +1,5 @@
+<% if @request_sent %>
+  noosfero.modal.close()
+  display_notice(<%= t('views.network.join.request_sent').to_json %>)
+  jQuery('#network-info-actions .icon-add').remove()
+<% end %>

@@ -23,7 +23,7 @@ class CustomFormsPluginMyprofileController < MyProfileController
 
     respond_to do |format|
       if @form.save
-        flash[:notice] = _("Custom form #{@form.name} was successfully created.")
+        flash[:notice] = _("Custom form %s was successfully created.") % @form.name
         format.html { redirect_to(:action=>'index') }
       else
         format.html { render :action => 'new' }
@@ -43,7 +43,7 @@ class CustomFormsPluginMyprofileController < MyProfileController
 
     respond_to do |format|
       if @form.save
-        flash[:notice] = _("Custom form #{@form.name} was successfully updated.")
+        flash[:notice] = _("Custom form %s was successfully updated.") % @form.name
         format.html { redirect_to(:action=>'index') }
       else
         session['notice'] = _('Form could not be updated')
@@ -65,23 +65,22 @@ class CustomFormsPluginMyprofileController < MyProfileController
 
   def submissions
     @form = CustomFormsPlugin::Form.find(params[:id])
-    @submissions = @form.submissions
-
-    @sort_by = params[:sort_by]
-    @submissions = @submissions.sort_by { |s| s.profile.present? ? s.profile.name : s.author_name } if @sort_by == 'author'
+    @sort_by = params[:sort_by] == 'author_name' ? 'author_name' : 'created_at'
+    @submissions = @form.submissions.order(@sort_by)
 
     respond_to do |format|
       format.html
       format.csv do
         # CSV contains form fields, timestamp, user name and user email
         columns = @form.fields.count + 3
-        csv_content = CSV.generate_line(['Timestamp', 'Name', 'Email'] + @form.fields.map(&:name)) + "\n"
+        csv_content = CSV.generate_line(['Timestamp', 'Name', 'Email'] + @form.fields.map(&:name))
         @submissions.each do |s|
           fields = [s.updated_at.strftime('%Y/%m/%d %T %Z'), s.profile.present? ? s.profile.name : s.author_name, s.profile.present? ? s.profile.email : s.author_email]
           @form.fields.each do |f|
             fields << s.answers.select{|a| a.field == f}.map{|answer| answer.to_s}
           end
-          CSV.generate_row(fields, columns, csv_content)
+          fields = fields.flatten
+          csv_content << CSV.generate_line(fields + (columns - fields.size).times.map{""})
         end
         send_data csv_content, :type => 'text/csv', :filename => "#{@form.name}.csv"
       end

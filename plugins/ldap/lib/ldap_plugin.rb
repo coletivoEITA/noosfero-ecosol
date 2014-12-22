@@ -72,7 +72,7 @@ class LdapPlugin < Noosfero::Plugin
   end
 
   def login_extra_contents
-    lambda do
+    proc do
       @person = Person.new(:environment => @environment)
       @profile_data = @person
       labelled_fields_for :profile_data, @person do |f|

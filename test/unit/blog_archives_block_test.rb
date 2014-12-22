@@ -18,7 +18,7 @@ class BlogArchivesBlockTest < ActiveSupport::TestCase
   end
 
   should 'list amount posts by year' do
-    date = DateTime.parse('2008-01-01')
+    date = DateTime.parse('2008-01-10')
     blog = profile.blog
     for i in 1..10 do
       post = fast_create(TextileArticle, :name => "post #{i} test", :profile_id => profile.id, :parent_id => blog.id)
@@ -30,7 +30,7 @@ class BlogArchivesBlockTest < ActiveSupport::TestCase
   end
 
   should 'list amount posts by month' do
-    date = DateTime.parse('2008-01-01')
+    date = DateTime.parse('2008-01-10')
     blog = profile.blog
     for i in 1..10 do
       post = fast_create(TextileArticle, :name => "post #{i} test", :profile_id => profile.id, :parent_id => blog.id)
@@ -59,7 +59,7 @@ class BlogArchivesBlockTest < ActiveSupport::TestCase
   should 'order years' do
     blog = profile.blog
     for year in 2005..2009
-      post = TextileArticle.create!(:name => "post #{year}", :profile => profile, :parent => blog, :published_at => Date.new(year, 1, 1))
+      post = create(TextileArticle, :name => "post #{year}", :profile => profile, :parent => blog, :published_at => Date.new(year, 1, 1))
     end
     block = BlogArchivesBlock.new
     block.stubs(:owner).returns(profile)
@@ -69,7 +69,7 @@ class BlogArchivesBlockTest < ActiveSupport::TestCase
   should 'order months from later to former' do
     blog = profile.blog
     for month in 1..3
-      post = TextileArticle.create!(:name => "post #{month}", :profile => profile, :parent => blog, :published_at => Date.new(2009, month, 1))
+      post = create(TextileArticle, :name => "post #{month}", :profile => profile, :parent => blog, :published_at => Date.new(2009, month, 1))
     end
     block = BlogArchivesBlock.new
     block.stubs(:owner).returns(profile)
@@ -103,7 +103,7 @@ class BlogArchivesBlockTest < ActiveSupport::TestCase
   end
 
   should 'list amount native posts by year' do
-    date = DateTime.parse('2008-01-01')
+    date = DateTime.parse('2008-01-10')
     blog = profile.blog
     2.times do |i|
       post = fast_create(TextileArticle, :name => "post #{i} test", :profile_id => profile.id,
@@ -119,7 +119,7 @@ class BlogArchivesBlockTest < ActiveSupport::TestCase
   end
 
   should 'list amount native posts by month' do
-    date = DateTime.parse('2008-01-01')
+    date = DateTime.parse('2008-01-10')
     blog = profile.blog
     2.times do |i|
       post = fast_create(TextileArticle, :name => "post #{i} test", :profile_id => profile.id,

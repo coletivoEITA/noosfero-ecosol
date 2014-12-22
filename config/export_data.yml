@@ -1,0 +1,106 @@
+options:
+  embed_files: true
+
+sources:
+  - type: Enterprise
+    id: 5
+    associations:
+      - image
+      - boxes:
+        - blocks
+      - orders
+      - articles
+      - products:
+        - product_category
+        - image
+        - unit
+        - product_qualifiers
+        - qualifiers
+        - certifiers
+
+# replace attributes' value (oldid: newid and other: id) and set parent association
+targets:
+  ProductCategory:
+    8: 16268
+    18: 3443
+    15: 4136
+    9: 1746
+    22: 3821
+    10: 4230
+    1: 16254
+    14: 3594
+    17: 3534
+    2: 16259
+    12: 3521
+    11: 87
+    other: 16281
+  Enterprise:
+    environment_id:
+      1: 2
+    home_page_id:
+      other: ---
+    image_id:
+      other: ---
+    identifier:
+      redemoinho: rede-moinho2
+    theme:
+      other: rede-moinho
+    visible:
+      other: true
+  Product:
+    belongs_to: profile
+  Article:
+    thumbnails_processed:
+      other: false
+    last_changed_by_id:
+      other: 87
+    belongs_to: profile
+  Image:
+    thumbnails_processed:
+      other: false
+  ShoppingCartPlugin::PurchaseOrder:
+    belongs_to: seller
+    customer_id:
+      other: ---
+  Box:
+    belongs_to: owner
+  Block:
+    belongs_to: box
+  Qualifier:
+  Certifier:
+
+models_options:
+  Profile:
+    # do not apply template
+    save_without_callbacks: true
+
+# before save, find records using the old id and put them on the specified association
+renews:
+  Article:
+    parent_id: 
+      association: parent
+      base_type: Article
+#  Profile:
+#    home_page_id: 
+#      association: home_page
+#      base_type: Article
+  Product:
+    product_category_id:
+      association: product_category
+      base_type: Category
+    image_id:
+      association: image
+      base_type: Image
+  ProductQualifier:
+    product_id:
+      association: product
+      base_type: Product
+    qualifier_id:
+      association: product
+      base_type: Product
+    certifier_id:
+      association: qualifier
+      base_type: Certifier
+
+
+

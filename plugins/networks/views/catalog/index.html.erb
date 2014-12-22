@@ -1,0 +1,12 @@
+<% if not profile.node? %>
+  <%= render :file => "#{Rails.root}/app/views/catalog/index.html.erb" %>
+<% else %>
+  <h1><%= _('Products/Services') %></h1>
+
+  <%= render 'catalog/node_products', :node => profile %>
+
+  <% profile.nodes.each do |node| %>
+    <h2> <%= link_to node.name, node.url %> </h2>
+    <%= render 'catalog/node_products', :node => node %>
+  <% end %>
+<% end %>

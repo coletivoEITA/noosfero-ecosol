@@ -1,0 +1,39 @@
+<h1><%= t('views.node.edit.title') % {:node => link_to(@node.name, @node.url, :target => '_blank')} %></h1>
+
+<%= button :back, t('views.node.edit.back'), :controller => :networks_plugin_network, :action => :structure, :node_id => @node.parent.id %>
+
+<%= form_for @node,as: :profile_data,  :html => { :id => 'profile-data', :multipart => true } do |f| %>
+
+  <h2><%= t('views.node.edit.node_info') %></h2>
+
+  <%= error_messages_for :node %>
+
+  <div>
+    <%= f.label :name, _('Name:') %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= fields_for :home_page, @node.home_page do |f| %>
+      <%= f.label :body, t('views.node.edit.presentation_text') %>
+      <%= f.text_area :body, :class => 'mceEditor' %>
+    <% end %>
+  </div>
+
+  <div>
+    <% f.fields_for :image_builder, @node.image do |fi| %>
+      <%= file_field_or_thumbnail _('Image:'), @node.image, fi %>
+      <%= _("Max size: %s (.jpg, .gif, .png)") % Image.max_size.to_humanreadable %>
+    <% end %>
+  </div>
+
+  <%= submit_button :save, _('Save') %>
+
+<% end %>
+
+<h2><%= t('views.node.edit.orders_management') %></h2>
+<%= render 'orders_management' %>
+
+<h2><%= _('Location') %></h2>
+<%= render 'location' %>
+

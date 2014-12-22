@@ -1,0 +1,30 @@
+<h2><%= _('Add admins to %s') % profile.name %></h2>
+
+<%= form_remote_tag :url => {:action => 'find_users', :profile => profile.identifier, :scope => 'new_admins'}, :update => 'users-list', :loading => 'jQuery("#users-list").addClass("loading")', :complete => 'jQuery("#users-list").removeClass("loading")' do %>
+  <%= text_field_tag('query', '', :autocomplete => 'off') %>
+  <%= submit_tag(_('Search')) %>
+<% end %>
+
+<%= observe_field('query', :url => {:action => 'find_users', :profile => profile.identifier, :scope => 'new_admins'}, :update => 'users-list', :frequency => 1, :with => 'query', :condition => 'jQuery("#query").val().length > 2', :loading => 'jQuery("#users-list").addClass("loading")', :complete => 'jQuery("#users-list").removeClass("loading")') %>
+<%= observe_field('query', :frequency => 1, :condition => 'jQuery("#query").val().length <= 2', :function => 'jQuery("#users-list").html(jQuery("#empty-query").html())') %>
+
+<div id="users-list">
+  <%= render :partial => 'find_users' %>
+</div>
+
+<div id='empty-query' style='display: none'>
+  <%= render :partial => 'find_users' %>
+</div>
+
+<div id="members-list" class="add-members">
+  <%= render :partial => 'members_list' %>
+</div>
+<%= drop_receiving_element('members-list',
+                           :url => {:action => 'add_admin', :profile => profile.identifier, :leaving_admin => @person},
+                           :before => 'jQuery("#tr-" + element.id).hide()',
+                           :loading => 'jQuery("#members-list").addClass("loading")',
+                           :update => 'members-list',
+                           :success => 'jQuery("#tr-" + element.id).hide(); jQuery("#"+element.id).show();',
+                           :complete => 'jQuery("#members-list").removeClass("loading")') %>
+
+<br style="clear:both" />

@@ -1,0 +1,20 @@
+<%= block_title block.title %>
+
+<ul>
+  <li>
+    <%= n_('One user', '%{num} users', users) % { :num => users } %>
+  </li>
+
+  <% unless block.owner.enabled?('disable_asset_enterprises') %>
+    <li>
+      <%= n_('One enterprise', '%{num} enterprises', enterprises) % { :num => enterprises } %>
+    </li>
+    <li>
+      <%= n_('One product', '%{num} products', products) % { :num => products } %>
+    </li>
+  <% end %>
+
+  <li>
+    <%= n_('One community', '%{num} communities', communities) % { :num => communities } %>
+  </li>
+</ul>

@@ -1,0 +1,13 @@
+gem 'omniauth'
+gem 'omniauth-oauth'
+gem 'omniauth-oauth2'
+
+gem 'omniauth-browserid', github: 'coletivoEITA/omniauth-browserid', branch: 'master'
+gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-twitter'
+
+gem 'oauth'
+gem 'oauth2', github: 'coletivoEITA/oauth2', branch: '0-5-stable'
+gem 'songkick-oauth2-provider', github: 'coletivoEITA/oauth2-provider', branch: 'master'
+

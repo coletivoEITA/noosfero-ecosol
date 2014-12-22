@@ -1,0 +1,15 @@
+<div id="" class="distribution-plugin-popin distribution-plugin-message">
+  <h1><%= t('orders_cycle_plugin.views.message.new_to_consumer_for_order.message_to_member_con') % {consumer: @order.consumer_data[:name]} %></h1>
+
+  <%= form_tag params, remote: true do %>
+    <%= render partial: 'fields' %>
+
+    <div>
+      <%= check_box_tag :include_order, 1, true, style: 'float: left'  %>
+      <%= label_tag :include_order, t('orders_cycle_plugin.views.message.new_to_consumer_for_order.include_reference_to_'), class: 'line-label' %>
+    </div>
+
+     <%= submit_tag t('orders_cycle_plugin.views.message.new_to_consumer_for_order.send') %>
+     <%= modal_close_link t('orders_cycle_plugin.views.message.new_to_consumer_for_order.cancel') %>
+  <% end %>
+</div>

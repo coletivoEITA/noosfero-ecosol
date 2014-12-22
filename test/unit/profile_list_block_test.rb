@@ -152,9 +152,9 @@ class ProfileListBlockTest < ActiveSupport::TestCase
 
   should 'prioritize profiles with image if this option is turned on' do
     env = fast_create(Environment)
-    img1 = Image.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
+    img1 = create(Image, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
     p1 = fast_create(Person, :environment_id => env.id, :image_id => img1.id)
-    img2 = Image.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
+    img2 = create(Image, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
     p2 = fast_create(Person, :environment_id => env.id, :image_id => img2.id)
 
     p_without_image = fast_create(Person, :environment_id => env.id)
@@ -168,9 +168,9 @@ class ProfileListBlockTest < ActiveSupport::TestCase
 
   should 'list profiles without image only if profiles with image arent enought' do
     env = fast_create(Environment)
-    img1 = Image.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
+    img1 = create(Image, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
     p1 = fast_create(Person, :environment_id => env.id, :image_id => img1.id)
-    img2 = Image.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
+    img2 = create(Image, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
     p2 = fast_create(Person, :environment_id => env.id, :image_id => img2.id)
     p_without_image = fast_create(Person, :environment_id => env.id)
     block = ProfileListBlock.new
@@ -189,7 +189,7 @@ class ProfileListBlockTest < ActiveSupport::TestCase
     5.times do |n|
       fast_create(Person, :environment_id => env.id)
     end
-    img = Image.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
+    img = create(Image, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
     with_image = fast_create(Person, :environment_id => env.id, :image_id => img.id)
     block = ProfileListBlock.new(:limit => 3)
     block.stubs(:prioritize_profiles_with_image).returns(true)
@@ -199,7 +199,7 @@ class ProfileListBlockTest < ActiveSupport::TestCase
 
   should 'not prioritize profiles with image if this option is turned off' do
     env = fast_create(Environment)
-    img = Image.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
+    img = create(Image, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
     with_image = fast_create(Person, :environment_id => env.id, :updated_at => DateTime.now, :image_id => img.id)
     5.times do |n|
       fast_create(Person, :environment_id => env.id, :updated_at => DateTime.now + 1.day)
@@ -216,4 +216,14 @@ class ProfileListBlockTest < ActiveSupport::TestCase
     assert ProfileListBlock.new.prioritize_profiles_with_image
   end
 
+  should 'return the max value in the range between zero and limit' do
+    block = ProfileListBlock.new
+    assert_equal 6, block.get_limit
+  end
+
+  should 'return 0 if limit of the block is negative' do
+    block = ProfileListBlock.new
+    block.limit = -5
+    assert_equal 0, block.get_limit
+  end
 end

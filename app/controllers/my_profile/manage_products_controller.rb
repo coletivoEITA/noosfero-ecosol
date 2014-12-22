@@ -1,5 +1,8 @@
 class ManageProductsController < ApplicationController
+
   needs_profile
+
+  include CatalogHelper
 
   protect 'manage_products', :profile, :except => [:show]
   before_filter :check_environment_feature
@@ -24,11 +27,13 @@ class ManageProductsController < ApplicationController
 
   public
 
+  # DEPRECATED: this was replaced by the catalog
   def index
     @products = @profile.products.paginate(:per_page => 10, :page => params[:page])
   end
 
   def show
+    catalog_load_index
     @product = @profile.products.find(params[:id])
     @inputs = @product.inputs
     @allowed_user = user && user.has_permission?('manage_products', profile)
@@ -69,9 +74,9 @@ class ManageProductsController < ApplicationController
     field = params[:field]
     if request.post?
       begin
-        @product.update_attributes!(params[:product])
+        @product.update_attributes! params[:product]
         render :partial => "display_#{field}", :locals => {:product => @product}
-      rescue Exception => e
+      rescue Exception
         render :partial => "edit_#{field}", :locals => {:product => @product, :errors => true}
       end
     else
@@ -86,7 +91,7 @@ class ManageProductsController < ApplicationController
     @edit = true
     @level = @category.level
     if request.post?
-      if @product.update_attributes(:product_category_id => params[:selected_category_id])
+      if @product.update_attributes({:product_category_id => params[:selected_category_id]}, :without_protection => true)
         render :partial => 'shared/redirect_via_javascript',
           :locals => { :url => url_for(:controller => 'manage_products', :action => 'show', :id => @product) }
       else
@@ -160,7 +165,7 @@ class ManageProductsController < ApplicationController
     @product = @profile.products.find(params[:id])
     if @product.destroy
       session[:notice] = _('Product succesfully removed')
-      redirect_back_or_default :action => 'index'
+      redirect_back_or_default controller: :catalog
     else
       session[:notice] = _('Could not remove the product')
       redirect_back_or_default :action => 'show', :id => @product
@@ -222,7 +227,7 @@ class ManageProductsController < ApplicationController
                       }.to_json
     else
       render :text => {:ok => false,
-                       :error_msg => _(cost.errors['name']) % {:fn => _('Name')}
+                       :error_msg => _(cost.errors['name'].join('\n')) % {:fn => _('Name')}
                       }.to_json
     end
   end

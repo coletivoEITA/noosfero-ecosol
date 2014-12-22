@@ -5,15 +5,15 @@ class EnterpriseHomepage < Article
   end
 
   def self.short_description
-    __('Enterprise homepage')
+    _("Presentation and enterprise's catalog")
   end
 
   def self.description
-    _('Display the summary of profile.')
+    _("Put a text and show the enterprise's catalog below.")
   end
 
   def name
-    profile.nil? ? _('Homepage') : profile.name
+    if self['name'].blank? then _('Homepage') else self['name'] end
   end
 
   def to_html(options = {})
@@ -22,7 +22,7 @@ class EnterpriseHomepage < Article
       extend EnterpriseHomepageHelper
       extend CatalogHelper
       catalog_load_index :page => 1, :show_categories => false
-      render :partial => 'content_viewer/enterprise_homepage', :object => enterprise_homepage
+      render 'content_viewer/enterprise_homepage', :enterprise_homepage => enterprise_homepage, :enterprise => enterprise_homepage.profile
     end
   end
 

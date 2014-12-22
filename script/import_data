@@ -1,0 +1,184 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require "#{File.dirname(__FILE__)}/../config/environment"
+
+def parse_opts
+  puts "please provide the yaml configuration file" if ARGV.blank?
+  $config_file = ARGV[0]
+  $config = YAML.load File.read($config_file)
+
+  $options = $config['options']
+  $models_options = $config['models_options']
+
+  $sources = $config['sources']
+
+  $targets = $config['targets']
+
+  $mutations = {}
+
+  $renews = $config['renews']
+
+  $record_ids = {}
+  $id_records = {}
+
+  $temp_files = []
+end
+
+class UploadedData
+  attr_accessor :path, :content_type, :size
+  def original_filename
+    File.basename self.path
+  end
+end
+
+class ActiveRecord::Base
+  yaml_as "tag:ruby.yaml.org,2002:ActiveRecord"
+
+  def self.yaml_new klass, tag, val
+    attributes = val.delete 'attributes'
+    attributes = YAML.load attributes
+    id = attributes.delete 'id'
+    type = klass.name
+    base_type = klass.base_class.name
+
+    # target
+    target_type = $targets[type] || $targets[base_type] || {}
+    if target_id = target_type[id]
+      record = klass.find target_id
+    elsif target_other = target_type['other']
+      record = klass.find target_other
+    else
+      record = klass.new
+    end
+
+    # renew
+    renew_type = $renews[base_type] || {}
+
+    # id <-> record
+    $record_ids[record] = id
+    $id_records[type] ||= {}
+    $id_records[base_type] ||= {}
+    $id_records[type][id] = record
+    $id_records[base_type][id] = record
+
+    # embeded_file
+    embeded_file = val.delete 'embeded_file'
+    if $options['embed_files'] and embeded_file
+      embeded_file = YAML.load embeded_file 
+
+      u = UploadedData.new; u.size = attributes['size']; u.path = attributes['filename']; u.content_type = attributes['content_type']
+      File.open(u.path, "wb"){ |file| file.write embeded_file }
+      record.uploaded_data = u
+
+      $temp_files << u.path
+    end
+
+    # attributes
+    attributes.each do |attr, value|
+      # target
+      if target_attr = target_type[attr] || $targets[attr]
+        if not (new_value = target_attr[value]).nil?
+          value = new_value
+        elsif not (other_value = target_attr['other']).nil?
+          value = other_value
+        end
+      end
+
+      # renew
+      if renew_attr = renew_type[attr]
+        $mutations[record] ||= []
+
+        renew_base_type = renew_attr['base_type']
+        if renew_association = renew_attr['association']
+          vdup = value.dup rescue value #why can't value be used?
+          $mutations[record] << (proc do
+            association = $id_records[renew_base_type][vdup] rescue nil
+            record.send "#{renew_association}=", association rescue nil
+          end)
+        end
+
+        value = nil
+      end
+
+      record[attr] = value
+    end
+
+    val.each do |method, value|
+      # RECURSION
+      value = YAML.load value
+      val[method] = value
+
+      # Fill parent
+      value.to_a.each do |value|
+        klass = value.class
+        type = klass.name
+        base_type = klass.base_class.name
+        target_type = $targets[type] || $targets[base_type] || {}
+
+        if belongs_to_association = target_type['belongs_to']
+          value.send "#{belongs_to_association}=", record
+        end
+      end
+    end
+
+    record
+  end
+
+  def call_save
+    self.class.record_timestamps = false
+
+    method = if ($models_options[self.class.base_class.name]['save_without_callbacks'] rescue nil) then 'create_without_callbacks' else 'create_without_timestamps' end
+    begin
+      self.send method
+    rescue Exception => e
+      puts "Could not save: #{self.inspect}"
+      raise
+    end
+
+    if $options['embed_files'] and self.respond_to? :full_filename
+      raise "Could not save data of: #{self.inspect}" unless File.exists? self.full_filename
+    end
+  end
+
+end
+
+def apply_renews
+  $mutations.each do |record, mutations|
+    mutations.each{ |mutation| mutation.call }
+  end
+end
+
+def run
+  parse_opts
+
+  ActiveRecord::Base.transaction do
+    YAML.load STDIN.read
+
+    # renew ids with associated records
+    apply_renews
+
+    # save top sources
+    $sources.to_a.each do |source|
+      record = $id_records[source['type']][source['id']]
+      record.call_save
+      pp record
+    end
+
+    # save others
+    $record_ids.keys.each do |record|
+      next if not record.new_record?
+      record.call_save
+      pp record
+    end
+
+    # delete temporary dump on Rails.root
+    $temp_files.each do |filename|
+      File.delete filename rescue nil
+    end
+
+    #raise 'test before!'
+  end
+end
+
+run

@@ -1,0 +1,4 @@
+name: stock
+dependencies:
+  - orders
+

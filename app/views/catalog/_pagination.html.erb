@@ -1,0 +1,12 @@
+<%
+  options = {params: {controller: :catalog, action: :index, profile: profile.identifier}}
+  if @use_show_more
+    options[:previous_label] = ''
+    options[:next_label] = _('Show more')+'&hellip;'
+    options[:page_links] = false
+  end
+%>
+<% if @products.current_page < @products.total_pages %>
+  <%= pagination_links @products, options %>
+<% end %>
+

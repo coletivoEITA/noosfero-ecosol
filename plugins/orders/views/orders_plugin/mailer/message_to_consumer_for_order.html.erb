@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <p>
+      <%= t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.hello_name') % {name: @consumer.name} %>
+    </p>
+
+    <p>
+      <%= t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.the_collective_profile_s') % {
+        profile: @profile.name, order: link_to(t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.order'), {controller: :orders_cycle_plugin_order, action: :edit, id: @order.id, profile: @consumer.identifier, only_path: false, host: @environment.default_hostname})
+      } %>
+    </p>
+    <p><i><%= @message %></i></p>
+
+    <p><%= t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.the_products_in_the_o') %></p>
+    <ul>
+      <% @order.items.each do |i| %>
+        <li>
+          <%= t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.quantity_unit_of_prod') % {
+            quantity: i.quantity_consumer_ordered_localized, unit: (i.product.unit.plural rescue ''), product: i.name
+          } %>
+        </li>
+      <% end %>
+    </ul>
+
+    <p>
+      --<br/>
+    </p>
+
+    <small style="color: #888"><%= t('orders_cycle_plugin.views.mailer.message_to_consumer_for_order.a_service_of_s') % {environment: @environment.name} %></small>
+  </body>
+</html>
+

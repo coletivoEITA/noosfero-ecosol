@@ -1,0 +1,29 @@
+
+<div id="actions-box" class="wireframe-size">
+
+  <div class="labels">
+    <span class="select">
+      <%= t('views.actions.select') %>
+    </span>
+    <span class="with-selection">
+      <%= t('views.actions.with_selection') %>
+    </span>
+  </div>
+
+  <div class="buttons">
+    <div class="select">
+      <%= link_to_function t('views.actions.all'), 'suppliers.our_product.select.all()', :class => 'selection-button' %>
+      <%= link_to_function t('views.actions.none'), 'suppliers.our_product.select.none()', :class => 'selection-button' %>
+    </div>
+
+    <div class="with-selection">
+      <%= link_to_function t('views.actions.activate'), 'suppliers.our_product.select.activate(true)', :class => 'action-button' %>
+      <%= link_to_function t('views.actions.deactivate'), 'suppliers.our_product.select.activate(false)', :class => 'action-button' %>
+    </div>
+
+    <div class="other">
+      <%= link_to t('views.product.import.action'), {:controller => :suppliers_plugin_product, :action => :import}, :class => 'action-button modal-toggle' %>
+    </div>
+  </div>
+
+</div>

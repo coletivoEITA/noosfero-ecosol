@@ -1,0 +1,22 @@
+<div id="networks-network-structure">
+  <h1><%= t('views.network.structure.title') %></h1>
+
+  <% if flash[:error] %>
+    <div class="error"><%= flash[:error] %></div>
+  <% end %>
+
+  <% if flash[:notice] %>
+    <div class="notice"><%= flash[:notice] %></div>
+  <% end %>
+
+  <h2>
+    <%= t('views.network.structure.pathway') %>
+    <%= @node.hierarchy.map do |parent|
+      link_to parent.name, :node_id => parent.id
+    end.join ' -> ' %>
+  </h2>
+
+  <div class="listing">
+    <%= render 'structure_listing' %>
+  </div>
+</div>

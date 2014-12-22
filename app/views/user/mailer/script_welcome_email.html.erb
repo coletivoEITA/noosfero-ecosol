@@ -1,0 +1,109 @@
+<% @cirandas_url = 'http://cirandas.net/' %>
+<p> <%="Olá %s," % @name %> </p>
+
+<p> <%="Esta é a mensagem oficial de entrada do empreendimento %s no  Cirandas. Caso tenha recebido uma mensagem  anterior sobre Cirandas, pedimos que a desconsidere e que nos desculpe qualquer transtorno." % @enterprise.name  %> </p>
+<% if !@community.blank? %>
+<% @community_url = @cirandas_url + '%s' % [ @community.identifier ]  %>
+  <p> <%="A comunidade %s, foi mantida e criamos um empreendimento de economia solidária para %s. Sinta-se a vontade para usar ambos espaços, mas lembre-se apenas na página do empreendimento é possível adicionar produtos, exibí-los na vitrine e comercializá-los." % [ @community.name, @enterprise.name ] %> </p>
+<% end %>
+
+<% @enterprise_url = @cirandas_url + '%s' % [ @enterprise.identifier ]  %>
+<p> <%="O empreendimento %s a partir de agora está no Cirandas.net: <a href='%s' target='_blank'>%s</a>" % [ @enterprise.name, @enterprise_url, @enterprise_url ] %> </p>
+
+<p> <%="Para começar a usar a página do empreendimento, siga os passos abaixo:" %> </p>
+
+<ul>
+  <li>
+  <p style="margin-bottom:0cm">Acesse <a href="http://cirandas.net" target="_blank">cirandas.net</a> </p>
+  </li>
+  <li>
+    <% if @password.blank? %>
+      <p style="margin-bottom:0cm">
+        <%="Veja que na esquerda tem um quadro azul claro para ENTRAR no Cirandas." %>
+      </p>
+      <p style="margin-bottom:0cm">
+        <%= "O e-mail %s já está associado a um CIRANDEIRA/O, tente efeturar login com seu usario e senha anteriores. Caso não se recorde sua senha clique <a href='%s' target='_blank'>%s</a> para alterá-la, será solicitado login e e-mail! Caso este e-mail não pertença a você, entre em contato com o SAAC (cirandas@fbes.org.br)!" % [ @email, @change_pass_link, @change_pass_link ] %>
+      </p>
+    <% else %>
+      <p style="margin-bottom:0cm">
+        <%="Veja que na esquerda tem um quadro azul claro para ENTRAR no Cirandas. Preencha com os seguintes dados:" %>
+      </p>
+      <p style="margin-bottom:0cm">  <%="Nome do usuáro: %s " % [ @login ] %>  </p>
+      <p style="margin-bottom:0cm">  <%="Senha: %s " % [ @password ] %>  </p>
+    <% end %>
+  </li>
+</ul>
+<p> <%="Depois de preencher, clique no botão preto Entrar." %> </p>
+<ul>
+  <li>
+  <p style="margin-bottom:0cm">
+  <%="Agora você estará no seu blog pessoal no Cirandas, que ainda não é o site do empreendimento. Com o tempo, você poderá colocar informações pessoais neste blog." %>
+  </p>
+  </li>
+  <li>
+  <p style="margin-bottom:0cm">
+  <%="Para entrar na página do empreendimento, vá no canto direito superior e passe o mouse sobre as palavras Entrar ou Registre-se. Veja que aparecerá Gerenciar %s: clique aí em cima."  % [ @enterprise.name ]%>
+  </p>
+  </li>
+  <li>
+  <p style="margin-bottom:0cm">
+  <%="Agora você está na página do empreendimento %s! Certamente, há muita coisa que vocês querem mostrar nesta página." % [@enterprise.name] %>
+  <%=" Então, veja nestes links alguns vídeos com dicas:" %>
+  <ul>
+    <li>
+    <strong>Como fazer as primeiras configurações do seu empreendimento solidário (foto, endereço, nome, etc):</strong>
+    <a href="http://e.eita.org.br/1f" target="_blank">http://e.eita.org.br/1f</a></li>
+  </ul>
+  <ul>
+    <li>
+    <strong>Como definir a localização do seu empreendimento solidário no mapa:</strong>
+    <a href="http://e.eita.org.br/22" target="_blank">http://e.eita.org.br/22</a></li>
+  </ul>
+  <ul>
+    <li>
+    <strong>Como inserir vídeos na página do empreendimento solidário:</strong>
+    <a href="http://e.eita.org.br/1a" target="_blank">http://e.eita.org.br/1a</a></li>
+  </ul>
+  <ul>
+    <li>
+    <strong>Como adicionar e editar um produto ou serviço: </strong>
+    <a href="http://e.eita.org.br/11" target="_blank">http://e.eita.org.br/11</a></li>
+  </ul>
+  <ul>
+    <li>
+    <strong>Como colocar foto, preço e descrição de seu produto ou serviço:</strong>
+    <a href="http://e.eita.org.br/12" target="_blank">http://e.eita.org.br/12</a></li>
+  </ul>
+  <ul>
+    <li>
+    <strong>Como editar sua vitrine de produtos e serviços:</strong>
+    <a href="http://e.eita.org.br/13" target="_blank">http://e.eita.org.br/13</a></li>
+  </ul>
+  <ul>
+    <li>
+    <strong>Como ativar o cesto de compras:</strong>
+    <a href="http://e.eita.org.br/14" target="_blank">http://e.eita.org.br/14</a></li>
+  </ul>
+  <ul>
+    <li>
+    <strong>Como desativar um empreendimento: </strong>
+    <a href="http://www.iteia.org.br/videos/tutorial-em-video-como-desativar-um-empreendimento"
+      target="_blank">http://www.iteia.org.br/videos/tutorial-em-video-como-desativar-um-empreendimento</a></li>
+  </ul>
+
+  <%="É muito importante ver os vídeos que são bem pequenos e simples!" %>
+  </p>
+  </li>
+</ul>
+
+<p> <%= "Ressaltamos que o Cirandas.net é uma iniciativa do <a href='%s' target='_blank'>%s</a> - que tem como objetivo oferecer ferramentas na internet para promover a articulação econômica, social e política de quem vive da Economia Solidária ou a apoia." % [ @fbes[:link], @fbes[:name] ] %> </p>
+
+<p> <%= "Para cada vez ter um Cirandas.net melhor, contamos que seu empreendimento use muito a página e nos envie sugestões." %> </p>
+
+<p> <%= "Qualquer coisa, estamos à disposição, nos escreva! E, tem muita informação na COMUNIDADE DA AJUDA: %s" % [ @help[:index] ] %> </p>
+
+<p> <%= "Solidariamente," %> </p>
+
+--
+<p> <%= "SACC - Serviço de Atendimento a Cirandeiras e Cirandeiros" %> </p>
+<p> <%= "Cooperativa EITA - Educação, Informação e Tecnologia para Autogestão" %> </p>

@@ -1,0 +1,8 @@
+<% unless params[:redirect] == '1' %>
+  orders_cycle.order.product.load(<%= @offered_product.id %>, true);
+
+  <%= render 'orders_plugin_item/new' %>
+
+  var item = jQuery('#item-<%=@item.id%>');
+  orders.item.edit_quantity(item);
+<% end %>

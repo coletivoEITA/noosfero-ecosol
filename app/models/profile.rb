@@ -3,6 +3,14 @@
 # which by default is the one returned by Environment:default.
 class Profile < ActiveRecord::Base
 
+  attr_accessible :name, :identifier, :public_profile, :nickname, :custom_footer, :custom_header, :address, :zip_code, :contact_phone, :image_builder, :description, :closed, :template_id, :environment, :lat, :lng, :is_template, :fields_privacy, :preferred_domain_id, :category_ids, :country, :city, :state, :national_region_code, :email, :contact_email, :redirect_l10n, :notification_time, :redirection_after_login
+
+  # use for internationalizable human type names in search facets
+  # reimplement on subclasses
+  def self.type_name
+    _('Profile')
+  end
+
   SEARCHABLE_FIELDS = {
     :name => 10,
     :identifier => 5,
@@ -74,12 +82,12 @@ class Profile < ActiveRecord::Base
 
   include Noosfero::Plugin::HotSpot
 
-  named_scope :memberships_of, lambda { |person| { :select => 'DISTINCT profiles.*', :joins => :role_assignments, :conditions => ['role_assignments.accessor_type = ? AND role_assignments.accessor_id = ?', person.class.base_class.name, person.id ] } }
+  scope :memberships_of, lambda { |person| { :select => 'DISTINCT profiles.*', :joins => :role_assignments, :conditions => ['role_assignments.accessor_type = ? AND role_assignments.accessor_id = ?', person.class.base_class.name, person.id ] } }
   #FIXME: these will work only if the subclass is already loaded
-  named_scope :enterprises, lambda { {:conditions => (Enterprise.send(:subclasses).map(&:name) << 'Enterprise').map { |klass| "profiles.type = '#{klass}'"}.join(" OR ")} }
-  named_scope :communities, lambda { {:conditions => (Community.send(:subclasses).map(&:name) << 'Community').map { |klass| "profiles.type = '#{klass}'"}.join(" OR ")} }
-  named_scope :templates, {:conditions => {:is_template => true}}
-  named_scope :no_templates, {:conditions => {:is_template => false}}
+  scope :enterprises, lambda { {:conditions => (Enterprise.send(:subclasses).map(&:name) << 'Enterprise').map { |klass| "profiles.type = '#{klass}'"}.join(" OR ")} }
+  scope :communities, lambda { {:conditions => (Community.send(:subclasses).map(&:name) << 'Community').map { |klass| "profiles.type = '#{klass}'"}.join(" OR ")} }
+  scope :templates, {:conditions => {:is_template => true}}
+  scope :no_templates, {:conditions => {:is_template => false}}
 
   def members
     scopes = plugins.dispatch_scopes(:organization_members, self)
@@ -112,14 +120,17 @@ class Profile < ActiveRecord::Base
     Profile.column_names.map{|n| [Profile.table_name, n].join('.')}.join(',')
   end
 
-  named_scope :visible, :conditions => { :visible => true }
-  named_scope :public, :conditions => { :visible => true, :public_profile => true }
+  scope :public, :conditions => { :visible => true, :public_profile => true }
+  scope :visible, :conditions => { :visible => true }
+  scope :invisible, :conditions => ['profiles.visible <> ?', true]
+  scope :enabled, :conditions => { :enabled => true }
+  scope :disabled, :conditions => ['profiles.enabled <> ?', true]
 
   # Subclasses must override this method
-  named_scope :more_popular
+  scope :more_popular
 
-  named_scope :more_active,  :order => 'activities_count DESC'
-  named_scope :more_recent, :order => "created_at DESC"
+  scope :more_active,  :order => 'activities_count DESC'
+  scope :more_recent, :order => "created_at DESC"
 
   acts_as_trackable :dependent => :destroy
 
@@ -129,11 +140,6 @@ class Profile < ActiveRecord::Base
   belongs_to :template, :class_name => 'Profile', :foreign_key => 'template_id'
 
   has_many :comments_received, :class_name => 'Comment', :through => :articles, :source => :comments
-
-  # FIXME ugly workaround
-  def self.human_attribute_name(attrib)
-      _(self.superclass.human_attribute_name(attrib))
-  end
 
   def scraps(scrap=nil)
     scrap = scrap.is_a?(Scrap) ? scrap.id : scrap
@@ -181,6 +187,8 @@ class Profile < ActiveRecord::Base
   site
   ]
 
+  settings_items :products_per_catalog_page, :type => :integer, :default => 18
+
   belongs_to :user
 
   has_many :domains, :as => :owner
@@ -207,7 +215,7 @@ class Profile < ActiveRecord::Base
   end
 
   has_many :profile_categorizations, :conditions => [ 'categories_profiles.virtual = ?', false ]
-  has_many :categories, :through => :profile_categorizations
+  has_many :categories, :through => :profile_categorizations, :conditions => ['categories.visible_for_profiles = ?', true]
 
   has_many :profile_categorizations_including_virtual, :class_name => 'ProfileCategorization'
   has_many :categories_including_virtual, :through => :profile_categorizations_including_virtual, :source => :category
@@ -216,9 +224,9 @@ class Profile < ActiveRecord::Base
 
   def top_level_categorization
     ret = {}
-    self.profile_categorizations.each do |c|
-      p = c.category.top_ancestor
-      ret[p] = (ret[p] || []) + [c.category]
+    self.categories.each do |c|
+      p = c.top_ancestor
+      ret[p] = (ret[p] || []) + [c]
     end
     ret
   end
@@ -229,7 +237,7 @@ class Profile < ActiveRecord::Base
 
   belongs_to :region
 
-  LOCATION_FIELDS = %w[address district city state country_name zip_code]
+  LOCATION_FIELDS = %w[address address_line2 district city state country_name zip_code]
 
   def location(separator = ' - ')
     myregion = self.region
@@ -252,7 +260,7 @@ class Profile < ActiveRecord::Base
   end
 
   def country_name
-    CountriesHelper.instance.lookup(country) if respond_to?(:country)
+    CountriesHelper::Object.instance.lookup(country) if respond_to?(:country)
   end
 
   def pending_categorizations
@@ -299,7 +307,7 @@ class Profile < ActiveRecord::Base
   validates_format_of :identifier, :with => IDENTIFIER_FORMAT, :if => lambda { |profile| !profile.identifier.blank? }
   validates_exclusion_of :identifier, :in => RESERVED_IDENTIFIERS
   validates_uniqueness_of :identifier, :scope => :environment_id
-  validates_length_of :nickname, :maximum => 16, :allow_nil => true
+  validates_length_of :nickname, :maximum => 40, :allow_nil => true
   validate :valid_template
 
   def valid_template
@@ -343,11 +351,17 @@ class Profile < ActiveRecord::Base
   end
 
   def copy_blocks_from(profile)
+    template_boxes = profile.boxes.select{|box| box.position}
     self.boxes.destroy_all
-    profile.boxes.each do |box|
-      self.boxes << Box.new(:position => box.position)
+    self.boxes = template_boxes.size.times.map { Box.new }
+
+    template_boxes.each_with_index do |box, i|
+      new_box = self.boxes[i]
+      new_box.position = box.position
       box.blocks.each do |block|
-        self.boxes[-1].blocks << block.class.new(:title => block[:title], :settings => block.settings, :position => block.position)
+        new_block = block.class.new(:title => block[:title])
+        new_block.copy_from(block)
+        new_box.blocks << new_block
       end
     end
   end
@@ -375,7 +389,7 @@ class Profile < ActiveRecord::Base
     self.public_profile = template.public_profile
 
     # flush
-    self.save_without_validation!
+    self.save(:validate => false)
   end
 
   def apply_type_specific_template(template)
@@ -385,8 +399,10 @@ class Profile < ActiveRecord::Base
   xss_terminate :only => [ :custom_footer, :custom_header ], :with => 'white_list', :on => 'validation'
 
   include WhiteListFilter
-  filter_iframes :custom_header, :custom_footer, :whitelist => lambda { environment && environment.trusted_sites_for_iframe }
-
+  filter_iframes :custom_header, :custom_footer
+  def iframe_whitelist
+    environment && environment.trusted_sites_for_iframe
+  end
 
   # returns the contact email for this profile.
   #
@@ -506,31 +522,36 @@ class Profile < ActiveRecord::Base
   end
 
   def url_options
-    options = { :host => default_hostname, :profile => (own_hostname ? nil : self.identifier) }
+    options = { :host => default_hostname }
+    options[:profile] = self.identifier unless self.own_hostname
+    options[:protocol] = self.default_protocol if self.default_protocol and self.default_protocol != 'http'
     options.merge(Noosfero.url_options)
   end
 
 private :generate_url, :url_options
 
-  def default_hostname
-    @default_hostname ||= (hostname || environment.default_hostname)
+  def default_domain
+    @default_domain ||= self.domains.sort_by{ |d| d.is_default ? 0 : 1 }.first
+  end
+
+  def default_protocol
+    default_domain.protocol if default_domain
   end
 
   def hostname
-    if preferred_domain
-      return preferred_domain.name
-    else
-      own_hostname
-    end
+    preferred_domain ? preferred_domain.name : own_hostname
+  end
+
+  def default_hostname
+    @default_hostname ||= self.hostname || self.environment.default_hostname
   end
 
   def own_hostname
-    domain = self.domains.first
-    domain ? domain.name : nil
+    default_domain ? default_domain.name : nil
   end
 
   def possible_domains
-    environment.domains + domains
+    environment.domains + self.domains
   end
 
   def article_tags
@@ -540,8 +561,8 @@ private :generate_url, :url_options
     end
   end
 
-  def find_tagged_with(tag)
-    self.articles.find_tagged_with(tag)
+  def tagged_with(tag)
+    self.articles.tagged_with(tag)
   end
 
   # Tells whether a specified profile has members or nor.
@@ -668,14 +689,17 @@ private :generate_url, :url_options
   end
 
   def accept_category?(cat)
-    forbidden = [ ProductCategory, Region ]
-    !forbidden.include?(cat.class)
+    cat.visible_for_profiles
   end
 
   include ActionView::Helpers::TextHelper
   def short_name(chars = 40)
     if self[:nickname].blank?
-      truncate self.name, :length => chars, :omission => '...'
+      if chars
+        truncate self.name, :length => chars, :omission => '...'
+      else
+        self.name
+      end
     else
       self[:nickname]
     end
@@ -764,7 +788,7 @@ private :generate_url, :url_options
   end
 
   include Noosfero::Plugin::HotSpot
-  
+
   def folder_types
     types = Article.folder_types
     plugins.dispatch(:content_types).each {|type|
@@ -791,7 +815,9 @@ private :generate_url, :url_options
     []
   end
 
-  def validate
+  validate :image_valid
+
+  def image_valid
     unless self.image.nil?
       self.image.valid?
       self.image.errors.delete(:empty) # dont validate here if exists uploaded data
@@ -814,7 +840,7 @@ private :generate_url, :url_options
   def update_header_and_footer(header, footer)
     self.custom_header = header
     self.custom_footer = footer
-    self.save(false)
+    self.save(:validate => false)
   end
 
   def update_theme(theme)

@@ -1,0 +1,30 @@
+
+<p>
+  <%= _('An user reported the %{profile_type} %{reported} with the following reason:') % {
+    :profile_type => _(@task.reported.type).downcase,
+    :reported => link_to(@task.reported.name, @task.reported.url),
+  } %>
+</p>
+
+<i><%= @task.reason %></i>
+<%= _('by %{reporter} at %{date}') % {
+  :reporter => link_to(@task.reporter.name, @task.reporter.url),
+  :date => @task.created_at.to_s
+} %>
+
+<% if @task.reported.is_a? Organization %>
+  <p>
+    <%= _('The administrators of %{reported} are the following:') % {
+      :reported => link_to(@task.reported.name, @task.reported.url)
+    } %>
+
+    <ul>
+      <% @task.reported.admins.each do |admin| %>
+        <li>
+          <%= link_to admin.name, admin.url %>
+        </li>
+      <% end %>
+    </ul>
+  </p>
+<% end %>
+

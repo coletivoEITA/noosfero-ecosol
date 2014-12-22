@@ -1,0 +1,24 @@
+<%= javascript_include_tag "highlight_block" %>
+
+<strong><%= _('Highlights') %></strong>
+
+<table class="noborder"><tbody id="highlights-data-table">
+  <tr><th><%= _('Image') %></th><th><%= _('Address') %></th><th><%= _('Position') %></th></tr>
+  <% @block.images.each_with_index do |image, index| %>
+    <%= highlights_block_config_image_fields @block, image, index %>
+  <% end %>
+</tbody></table>
+
+<table class="hidden highlight-table-row">
+  <tbody>
+    <%= highlights_block_config_image_fields(@block) %>
+  </tbody>
+</table>
+
+<%= button(:add, _('New highlight'), '#', class: 'new-highlight-button') %>
+
+<%= labelled_form_field _('Image transition:'), select('block', 'interval', [[_('No automatic transition'), 0]] + [1, 2, 3, 4, 5, 10, 20, 30, 60].map {|item| [n_('Every 1 second', 'Every %d seconds', item) % item, item]}) %>
+
+<%= labelled_form_field check_box(:block, :shuffle) + _('Show images in random order'), '' %>
+
+<%= labelled_form_field check_box(:block, :navigation) + _('Display navigation buttons'), '' %>

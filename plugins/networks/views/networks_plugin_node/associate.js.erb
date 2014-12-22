@@ -1,0 +1,7 @@
+<% if @new_node.new_record? %>
+  jQuery('#networks-node-associate').html("<%= j render('associate') %>");
+<% else %>
+  jQuery(".listing").html('<%= j render('networks_plugin_network/structure_listing') %>');
+  noosfero.modal.close();
+<% end %>
+

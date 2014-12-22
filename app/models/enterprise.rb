@@ -2,6 +2,8 @@
 # only enterprises can offer products and services.
 class Enterprise < Organization
 
+  attr_accessible :business_name, :address_reference, :district, :tag_list, :organization_website, :historic_and_current_context, :activities_short_description, :products_per_catalog_page
+
   SEARCH_DISPLAYS += %w[map full]
 
   def self.type_name
@@ -10,19 +12,17 @@ class Enterprise < Organization
 
   N_('Enterprise')
 
-  has_many :products, :foreign_key => :profile_id, :dependent => :destroy, :order => 'name ASC'
+  has_many :products, :foreign_key => :profile_id, :dependent => :destroy
+  has_many :product_categories, :through => :products
   has_many :inputs, :through => :products
   has_many :production_costs, :as => :owner
 
-  has_and_belongs_to_many :fans, :class_name => 'Person', :join_table => 'favorite_enteprises_people'
-
-  def product_categories
-    ProductCategory.by_enterprise(self)
-  end
+  has_many :favorite_enterprise_people
+  has_many :fans, through: :favorite_enterprise_people, source: :person
 
   N_('Organization website'); N_('Historic and current context'); N_('Activities short description'); N_('City'); N_('State'); N_('Country'); N_('ZIP code')
 
-  settings_items :organization_website, :historic_and_current_context, :activities_short_description, :zip_code, :city, :state, :country
+  settings_items :organization_website, :historic_and_current_context, :activities_short_description
 
   settings_items :products_per_catalog_page, :type => :integer, :default => 6
   alias_method :products_per_catalog_page_before_type_cast, :products_per_catalog_page
@@ -55,15 +55,6 @@ class Enterprise < Organization
 
   def self.fields
     super + FIELDS
-  end
-
-  def validate
-    super
-    self.required_fields.each do |field|
-      if self.send(field).blank?
-        self.errors.add_on_blank(field)
-      end
-    end
   end
 
   def active_fields
@@ -111,7 +102,7 @@ class Enterprise < Organization
     self.affiliate owner, Profile::Roles.all_roles(self.environment.id) if owner
     self.apply_template template if self.environment.replace_enterprise_template_when_enable
     self.activation_task.update_attribute :status, Task::Status::FINISHED rescue nil
-    self.save_without_validation!
+    self.save(:validate => false)
   end
 
   def question
@@ -124,11 +115,13 @@ class Enterprise < Organization
     end
   end
 
-  after_create :create_activation_task
+  # Use to create an enterprise manually (via console) that is not enabled
   def create_activation_task
-    if !self.enabled
-      EnterpriseActivation.create!(:enterprise => self, :code_length => 7)
-    end
+    return if self.enabled
+    EnterpriseActivation.create! :enterprise => self, :code_length => 7
+  end
+  def activation_task
+    self.tasks.where(:type => 'EnterpriseActivation').first
   end
 
   def default_set_of_blocks
@@ -175,7 +168,7 @@ class Enterprise < Organization
   alias_method_chain :template, :inactive_enterprise
 
   def control_panel_settings_button
-    {:title => __('Enterprise Info and settings'), :icon => 'edit-profile-enterprise'}
+    {:title => _('Enterprise Info and settings'), :icon => 'edit-profile-enterprise'}
   end
 
   settings_items :enable_contact_us, :type => :boolean, :default => true
@@ -185,7 +178,7 @@ class Enterprise < Organization
   end
 
   def control_panel_settings_button
-    {:title => __('Enterprise Info and settings'), :icon => 'edit-profile-enterprise'}
+    {:title => _('Enterprise Info and settings'), :icon => 'edit-profile-enterprise'}
   end
 
   def create_product?

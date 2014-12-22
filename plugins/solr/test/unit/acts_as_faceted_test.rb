@@ -1,22 +1,21 @@
 require File.dirname(__FILE__) + '/../test_helper'
-require "#{File.dirname(__FILE__)}/../../lib/acts_as_faceted"
-
 
 class TestModel < ActiveRecord::Base
-  def self.f_type_proc(klass)
-    klass.constantize 
-    h = {
-      'UploadedFile' => "Uploaded File", 
-      'TextArticle' => "Text",
-      'Folder' => "Folder",
-      'Event' => "Event",
-      'EnterpriseHomepage' => "Homepage",
-      'Gallery' => "Gallery",
-    }
-    h[klass]
+  def self.f_type_proc(facet, id_count_arr)
+    id_count_arr.map do |type, count|
+      h = {
+        'UploadedFile' => "Uploaded File",
+        'TextArticle' => "Text",
+        'Folder' => "Folder",
+        'Event' => "Event",
+        'EnterpriseHomepage' => "Homepage",
+        'Gallery' => "Gallery",
+      }
+      [type, h[type], count]
+    end
   end
   acts_as_faceted :fields => {
-      :f_type => {:label => 'Type', :proc => proc{|klass| f_type_proc(klass)}},
+      :f_type => {:label => 'Type', :proc => method(:f_type_proc).to_proc},
       :f_published_at => {:type => :date, :label => 'Published date', :queries =>
         {'[* TO NOW-1YEARS/DAY]' => "Older than one year", '[NOW-1YEARS TO NOW/DAY]' => "Last year"}},
     }, :order => [:f_type, :f_published_at]
@@ -92,7 +91,7 @@ class ActsAsFacetedTest < ActiveSupport::TestCase
     assert_equivalent [["[* TO NOW-1YEARS/DAY]", "Older than one year", 10], ["[NOW-1YEARS TO NOW/DAY]", "Last year", 19]], r
   end
 
-  should 'return facet hash in map_facets_for' do 
+  should 'return facet hash in map_facets_for' do
     r = TestModel.map_facets_for(Environment.default)
     assert r.count, 2
 
@@ -147,7 +146,7 @@ class ActsAsFacetedTest < ActiveSupport::TestCase
     facets = TestModel.map_facets_for(Environment.default)
     facet = facets.select{ |f| f[:id] == 'f_type' }.first
     facet_data = TestModel.map_facet_results facet, @facet_params, @facets, @all_facets, {}
-    sorted = TestModel.facet_result_sort(facet, facet_data, :alphabetically) 
+    sorted = TestModel.facet_result_sort(facet, facet_data, :alphabetically)
     assert_equal sorted,
       [["Folder", "Folder", 3], ["Gallery", "Gallery", 1], ["TextArticle", 'Text', 15], ["UploadedFile", "Uploaded File", 6]]
   end
@@ -156,7 +155,7 @@ class ActsAsFacetedTest < ActiveSupport::TestCase
     facets = TestModel.map_facets_for(Environment.default)
     facet = facets.select{ |f| f[:id] == 'f_type' }.first
     facet_data = TestModel.map_facet_results facet, @facet_params, @facets, @all_facets, {}
-    sorted = TestModel.facet_result_sort(facet, facet_data, :count) 
+    sorted = TestModel.facet_result_sort(facet, facet_data, :count)
     assert_equal sorted,
       [["TextArticle", "Text", 15], ["UploadedFile", "Uploaded File", 6], ["Folder", "Folder", 3], ["Gallery", "Gallery", 1]]
   end

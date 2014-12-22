@@ -15,20 +15,14 @@ class ProfileEditorController < MyProfileController
     @possible_domains = profile.possible_domains
     if request.post?
       params[:profile_data][:fields_privacy] ||= {} if profile.person? && params[:profile_data].is_a?(Hash)
-      begin
-        Profile.transaction do
-        Image.transaction do
-          if profile.update_attributes!(params[:profile_data])
-            redirect_to :action => 'index', :profile => profile.identifier
-          end
+      Profile.transaction do
+      Image.transaction do
+        if @profile_data.update_attributes(params[:profile_data])
+          redirect_to :action => 'index', :profile => profile.identifier
+        else
+          profile.identifier = params[:profile] if profile.identifier.blank?
         end
-        end
-      rescue Exception => ex
-        if profile.identifier.blank?
-          profile.identifier = params[:profile]
-        end
-        session[:notice] = _('Cannot update profile')
-        logger.error ex.to_s
+      end
       end
     end
   end
@@ -36,20 +30,20 @@ class ProfileEditorController < MyProfileController
   def enable
     @to_enable = profile
     if request.post? && params[:confirmation]
-      unless @to_enable.update_attribute('enabled', true)
-        session[:notice] = _('%s was not enabled.') % @to_enable.name
+      unless profile.enable user
+        session[:notice] = _('%s was not enabled.') % profile.name
       end
-      redirect_to :action => 'index'
+      redirect_to :action => :index
     end
   end
 
   def disable
     @to_disable = profile
     if request.post? && params[:confirmation]
-      unless @to_disable.update_attribute('enabled', false)
-        session[:notice] = _('%s was not disabled.') % @to_disable.name
+      unless profile.update_attribute :enabled, false
+        session[:notice] = _('%s was not disabled.') % profile.name
       end
-      redirect_to :action => 'index'
+      redirect_to :action => :index
     end
   end
 
@@ -58,9 +52,9 @@ class ProfileEditorController < MyProfileController
     @categories = @toplevel_categories = environment.top_level_categories
     if params[:category_id]
       @current_category = Category.find(params[:category_id])
-      @categories = @current_category.children
+      @categories = @current_category.children.alphabetical
     end
-    render :partial => 'shared/select_categories', :locals => {:object_name => 'profile_data', :multiple => true}, :layout => false
+    render :template => 'shared/update_categories', :locals => { :category => @current_category, :object_name => 'profile_data' }
   end
 
   def header_footer

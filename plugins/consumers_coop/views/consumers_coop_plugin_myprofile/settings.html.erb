@@ -1,0 +1,62 @@
+<h1><%= profile.name %></h1>
+
+<div id="consumers-coop-settings">
+  <%= form_for @profile, as: :profile_data, :url => {:controller => :consumers_coop_plugin_myprofile, :action => :settings, :profile => profile.identifier}, :html => {:multipart => true} do |f| %>
+
+    <h2><%= t('views.profile.settings.general') %></h2>
+    <%= f.fields_for :consumers_coop_settings, profile.consumers_coop_settings do |ff| %>
+      <%= labelled_field ff, :enabled, t('views.profile.settings.collective_consumptio'),
+        labelled_radio(ff, :enabled, t('views.profile.settings.disabled'), false) +
+        labelled_radio(ff, :enabled, t('views.profile.settings.activated'), true) %>
+
+      <%= labelled_field ff, :name_abbreviation, t('views.profile.settings.abbreviated_name_of_t'), ff.text_field(:name_abbreviation),
+        {:help => t('views.profile.settings.this_name_will_be_use')} %>
+
+      <% radios = ''; profile.consumers_coop_settings.header_type ||= 'image_+_name' %>
+      <% {'pure_color' => t('views.profile.settings.pure_color_collective'), 'image_+_name' => t('views.profile.settings.image_collective_name'), 'only_image' => t('views.profile.settings.only_the_image')}.each do |key,header_text| %>
+        <% radios = labelled_radio(ff,:header_type, header_text, key) + radios%>
+      <% end %>
+      <%= labelled_field ff, :header, t('views.profile.settings.header_type'), radios %>
+    <% end %>
+
+    <h2><%= t('views.profile.settings.header') %></h2>
+    <%= f.fields_for :consumers_coop_header_image_builder, profile.consumers_coop_header_image do |fi| %>
+      <%= labelled_field fi, :uploaded_data, t('views.profile.settings.header_s_image'), fi.file_field(:uploaded_data, { :size => 10 }),
+        {:help => t('views.profile.settings.image_help')} %>
+    <% end %>
+
+    <%= f.fields_for :consumers_coop_settings, profile.consumers_coop_settings do |ff| %>
+      <div id=consumers-coop-header-bg-color>
+        <% radios = ''; profile.consumers_coop_settings.header_bg_color ||= 'purple' %>
+        <% ['purple', 'yellow', 'beige', 'blue', 'petro', 'green'].each do |color| %>
+          <% radios += ff.radio_button :header_bg_color, color %>
+          <% radios += "<div class='color-choose color-#{color}'></div><br />" %>
+        <% end %>
+        <%= labelled_field ff, :b_color, t('views.profile.settings.header_background_col'), radios %>
+      </div>
+
+      <% profile.consumers_coop_settings.header_fg_color ||= 'black' %>
+      <%= labelled_field ff, :f_color, t('views.profile.settings.text_color'),
+        labelled_radio(ff, :header_fg_color, t('views.profile.settings.white'), 'white') +
+        labelled_radio(ff, :header_fg_color, t('views.profile.settings.black'), 'black') %>
+    <% end %>
+
+    <h2><%= t('views.profile.settings.volunteers') %></h2>
+    <%= f.fields_for :volunteers_settings, profile.volunteers_settings do |ff| %>
+      <%= labelled_field ff, :cycle_volunteers_enabled, t('views.profile.settings.volunteers_enabled'),
+        ff.check_box(:cycle_volunteers_enabled) %>
+    <% end %>
+
+    <%= f.submit t('views.profile.settings.save') %>
+    <%= link_to t('views.profile.settings.cancel'), {:controller => :profile_editor, :profile => profile.identifier} %>
+
+  <% end %>
+</div>
+
+<%= javascript_tag do %>
+  jQuery('input[name="profile_data[consumers_coop_settings][header_type]"]').click(function() {
+    consumers_coop.toggle_header_color_area($(this));
+  });
+  consumers_coop.toggle_header_color_area(jQuery('input[name="profile_data[consumers_coop_settings][header_type]"]:checked').eq(0));
+<% end %>
+

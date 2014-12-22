@@ -1,0 +1,21 @@
+<div id="networks-participation">
+  <h2> <%= t('views.profile_editor.networks_i_participate') %> </h2>
+
+  <% if profile.networks.empty? %>
+    <%= t('views.profile_editor.none') %>
+  <% else %>
+    <% profile.networks.each do |network| %>
+      <%= link_to network.name, network.url, :target => '_blank' %>
+      <%= link_to_function t('views.profile_editor.disassociate'), "networks.participation.disassociate(this, '#{url_for :controller => :networks_plugin_enterprise, :profile => profile.identifier, :action => :disassociate, :id => network.id}', #{t('views.profile_editor.disassociate_confirm').to_json} )", :class => 'action-button' %>
+    <% end %>
+  <% end %>
+
+  <div>
+    <i>
+      <%= t('views.profile_editor.help') % {
+        :search => link_to(t('views.profile_editor.search'), :controller => :networks_plugin_search, :action => :index),
+      } %>
+    </i>
+  </div>
+
+</div>

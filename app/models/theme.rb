@@ -2,38 +2,40 @@ class Theme
 
   class << self
     def system_themes
-      Dir.glob(File.join(system_themes_dir, '*')).map do |path|
-        config_file = File.join(path, 'theme.yml')
-        config = File.exists?(config_file) ? YAML.load_file(config_file) : {}
-        new(File.basename(path), config)
+      Dir.glob(File.join(Rails.root, 'public', self.system_themes_dir, '*')).map do |path|
+        self.new File.basename(path), :base_dir => self.system_themes_dir
       end
     end
 
     def user_themes_dir
-      File.join(RAILS_ROOT, 'public', 'user_themes')
+      @user_themes_dir ||= File.join 'user_themes'
     end
 
     def system_themes_dir
-      File.join(RAILS_ROOT, 'public', 'designs', 'themes')
+      @system_themes_dir ||= File.join 'designs', 'themes'
     end
 
     def create(id, attributes = {})
       if find(id) || system_themes.map(&:id).include?(id)
         raise DuplicatedIdentifier
       end
-      Theme.new(id, attributes).save
+      theme = self.new id, attributes
+      theme.save
+      theme
     end
 
-    def find(the_id)
-      if File.directory?(File.join(user_themes_dir, the_id))
-        Theme.new(the_id)
+    def find id
+      if File.directory? File.join(Rails.root, 'public', self.system_themes_dir, id)
+        self.new id, :base_dir => self.system_themes_dir
+      elsif File.directory? File.join(Rails.root, 'public', self.user_themes_dir, id)
+        self.new id
       else
         nil
       end
     end
 
     def find_by_owner(owner)
-      Dir.glob(File.join(user_themes_dir, '*', 'theme.yml')).select do |desc|
+      Dir.glob(File.join(Rails.root, 'public', self.user_themes_dir, '*', 'theme.yml')).select do |desc|
         config = YAML.load_file(desc)
         (config['owner_type'] == owner.class.base_class.name) && (config['owner_id'] == owner.id)
       end.map do |desc|
@@ -42,9 +44,12 @@ class Theme
     end
 
     def approved_themes(owner)
-      Dir.glob(File.join(system_themes_dir, '*')).map do |item|
+      Dir.glob(File.join(Rails.root, 'public', self.system_themes_dir, '*')).map do |item|
         next unless File.exists? File.join(item, 'theme.yml')
+
+        item = "#{File.dirname item}/#{File.readlink(item).gsub(/\/$/, '')}" while File.symlink? item
         id = File.basename item
+
         config = YAML.load_file File.join(item, 'theme.yml')
 
         approved = config['public']
@@ -58,7 +63,7 @@ class Theme
 
         [id, config] if approved
       end.compact.map do |id, config|
-        new id, config
+        self.new id, config
       end
     end
   end
@@ -67,14 +72,37 @@ class Theme
 
   attr_reader :id
   attr_reader :config
+  attr_reader :base_dir
+  attr_reader :base_path
+  attr_reader :dir
+  attr_reader :path
 
-  def initialize(id, attributes = {})
+  attr_accessor :style
+
+  def initialize id, attributes = {}
     @id = id
+    @base_dir = attributes.delete(:base_dir) || self.class.user_themes_dir
+    @base_path = File.join Rails.root, 'public', base_dir
+    @dir = File.join @base_dir, @id
+    @path = File.join @base_path, @id
+
     load_config
     attributes.each do |k,v|
       self.send("#{k}=", v) if self.respond_to?("#{k}=")
     end
     config['id'] = id
+  end
+
+  def user?
+    self.base_dir == self.class.user_themes_dir
+  end
+
+  def system?
+    self.base_dir == self.class.system_themes_dir
+  end
+
+  def private?
+    self.config['owner_id'].present?
   end
 
   def name
@@ -93,8 +121,42 @@ class Theme
     config['public'] = value
   end
 
+  StylesheetFiles = [
+    'stylesheets/style.scss', 'stylesheets/style.sass',
+    'stylesheets/theme.scss', 'stylesheets/theme.sass',
+    'style.css',
+  ]
+  UserStylesheetFiles = %w[ common help menu article button search blocks forms login-box ]
+
+  def stylesheet_file
+    return @stylesheet_file if @stylesheet_file.present?
+    StylesheetFiles.each do |file|
+      return @stylesheet_file = file if File.file? "#{self.path}/#{file}"
+    end
+    @stylesheet_file
+  end
+
+  def style
+    @style ||= File.read "#{self.path}/#{self.stylesheet_file}"
+  end
+
   def ==(other)
     other.is_a?(self.class) && (other.id == self.id)
+  end
+
+  def private_copy profile
+    return self if self.private?
+
+    copy_id = "#{self.id}-profile-#{profile.id}-copy"
+    copy_theme = self.class.find(copy_id)
+    return copy_theme if copy_theme
+
+    copy_path = "#{self.base_path}/#{copy_id}"
+    if system "rm -fr #{copy_path} && cp -fr #{self.path}/ #{copy_path}"
+      copy_theme = self.class.new copy_id, :owner => profile, :name => _("Customized %{name}") % { :name => self.name }, :base_dir => self.base_dir
+      copy_theme.save
+      copy_theme
+    end
   end
 
   def add_css(filename)
@@ -119,7 +181,7 @@ class Theme
 
   def add_image(filename, data)
     FileUtils.mkdir_p(images_directory)
-    File.open(image_path(filename), 'w') do |f|
+    File.open(image_path(filename), 'wb') do |f|
       f.write(data)
     end
   end
@@ -137,7 +199,7 @@ class Theme
   end
 
   def stylesheets_directory
-    File.join(Theme.user_themes_dir, self.id, 'stylesheets')
+    File.join(self.base_path, self.id, 'stylesheets')
   end
 
   def image_path(filename)
@@ -145,15 +207,18 @@ class Theme
   end
 
   def images_directory
-    File.join(self.class.user_themes_dir, id, 'images')
+    File.join(self.base_path, id, 'images')
   end
 
   def save
-    FileUtils.mkdir_p(self.class.user_themes_dir)
-    FileUtils.mkdir_p(File.join(self.class.user_themes_dir, id))
-    %w[ common help menu article button search blocks forms login-box ].each do |item|
+    FileUtils.mkdir_p File.join(self.base_path, id)
+
+    UserStylesheetFiles.each do |item|
       add_css(item)
-    end
+    end if self.user?
+    File.open("#{self.path}/#{self.stylesheet_file}", "w"){ |f| f << @style } if @style
+    self.sass_update
+
     write_config
     self
   end
@@ -169,20 +234,31 @@ class Theme
     @owner = model
   end
 
+  def owner_type
+    config['owner_type']
+  end
+  def owner_type= owner_type
+    config['owner_type'] = owner_type
+  end
+
   protected
 
   def write_config
-    File.open(File.join(self.class.user_themes_dir, self.id, 'theme.yml'), 'w') do |f|
+    File.open(File.join(self.base_path, self.id, 'theme.yml'), 'w') do |f|
       f.write(config.to_yaml)
     end
   end
 
   def load_config
-    if File.exists?(File.join(self.class.user_themes_dir, self.id, 'theme.yml'))
-      @config = YAML.load_file(File.join(self.class.user_themes_dir, self.id, 'theme.yml'))
-    else
-      @config = {}
-    end
+    file = File.join self.base_path, self.id, 'theme.yml'
+    @config = YAML.load_file file rescue {}
+    @config ||= {}
+  end
+
+  def sass_update
+    return unless defined? Sass
+    Sass::Plugin.add_template_location "#{self.path}/stylesheets", "#{self.path}/stylesheets"
+    Sass::Plugin.update_stylesheets
   end
 
 end

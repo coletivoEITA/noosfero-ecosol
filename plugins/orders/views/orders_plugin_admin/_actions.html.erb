@@ -1,0 +1,28 @@
+<% wireframe_size = true if wireframe_size.nil? %>
+
+<div id="actions-box" class=" <%= "wireframe-size" if wireframe_size %>">
+
+  <div class="labels">
+    <span class="select">
+      <%= t('views.actions.select') %>
+    </span>
+    <span class="with-selection">
+      <%= t('views.actions.with_selection') %>
+    </span>
+  </div>
+
+  <div class="buttons">
+    <div class="select">
+      <%= link_to_function t('views.actions.all'), 'orders.admin.select.all()', class: 'selection-button' %>
+      <%= link_to_function t('views.actions.none'), 'orders.admin.select.none()', class: 'selection-button' %>
+    </div>
+
+    <div class="with-selection">
+      <%= render 'with_selection_actions', orders_method: orders_method %>
+    </div>
+
+    <div class="other">
+    </div>
+  </div>
+
+</div>

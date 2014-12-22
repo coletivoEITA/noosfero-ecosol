@@ -1,0 +1,22 @@
+<div class="box-view with-inner">
+  <div class="box-field select">
+    <% if editable %>
+      <% options = {} %>
+    <% else %>
+      <% options = {disabled: "disabled"} %>
+    <% end %>
+    <%= check_box_tag "product_ids[]", product.id, !item.blank?, options %>
+  </div>
+
+  <div class="box-view-inner">
+    <div class="box-field category" title="<%= product.category_name %>"><%= product.category_name %></div>
+    <div class="box-field supplier" title="<%= product.supplier.abbreviation_or_name %>"><%= link_to_function product.supplier.abbreviation_or_name, "orders_cycle.order.product.supplier.balloon(#{product.id})" %></div>
+    <div class="box-field product" title="<%= product.name %>"><%= link_to_function product.name, "orders_cycle.order.product.balloon(#{product.id})" %></div>
+    <%= price_with_unit_span product.price_as_currency_number, product.unit, product.unit_detail, class: 'box-field' %>
+  </div>
+</div>
+
+<%= javascript_tag do %>
+  orders_cycle.order.product.load(<%= product.id %>, <%= !item.blank? %>);
+<% end %>
+

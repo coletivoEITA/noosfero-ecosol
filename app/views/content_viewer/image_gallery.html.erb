@@ -1,0 +1,20 @@
+<div>
+  <%= @page.body %>
+</div>
+
+<div class="image-gallery">
+  <% if @images.empty? %>
+    <p><em><%= _('This gallery contains no images yet') %></em></p>
+  <% else %>
+    <p><%= button(:slideshow, _('View slideshow'), @page.url.merge(:slideshow => true))%></p>
+  <% end %>
+    <ul>
+      <%= render 'content_viewer/gallery/images' %>
+    </ul>
+  <br style="clear:both" />
+
+  <%= render 'content_viewer/gallery/pagination' %>
+  <% javascript_tag do %>
+    pagination.infiniteScroll(<%= _('loading...').to_json %>);
+  <% end %>
+</div>

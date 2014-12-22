@@ -18,9 +18,7 @@ module SweeperHelper
       expire_timeout_fragment(profile.manage_friends_cache_key(:npage => i.to_s))
     end
 
-    # friends blocks
-    blocks = profile.blocks.select{|b| b.kind_of?(FriendsBlock)}
-    BlockSweeper.expire_blocks(blocks)
+    expire_blocks_cache(profile, [:profile])
   end
 
   def expire_communities(profile)
@@ -32,17 +30,28 @@ module SweeperHelper
 
     # communities block
     blocks = profile.blocks.select{|b| b.kind_of?(CommunitiesBlock)}
-    BlockSweeper.expire_blocks(blocks)
+    expire_profile_blocks(blocks)
   end
 
   def expire_enterprises(profile)
     # enterprises and favorite enterprises blocks
     blocks = profile.blocks.select {|b| [EnterprisesBlock, FavoriteEnterprisesBlock].any?{|klass| b.kind_of?(klass)} }
-    BlockSweeper.expire_blocks(blocks)
+    expire_profile_blocks(blocks)
   end
 
   def expire_profile_index(profile)
     expire_timeout_fragment(profile.relationships_cache_key)
+  end
+
+  def expire_profile_blocks(blocks)
+    blocks.each do |block|
+      return if !block.environment
+      regex = '-[a-z]*$'
+      clean_ck = block.cache_key.gsub(/#{regex}/,'')
+      block.environment.locales.keys.each do |locale|
+        expire_timeout_fragment("#{clean_ck}-#{locale}")
+      end
+    end
   end
 
   def expire_blocks_cache(context, causes)
@@ -58,12 +67,12 @@ module SweeperHelper
     if profile
       profile.blocks.each {|block|
         conditions = block.class.expire_on
-        blocks_to_expire << block unless (conditions[:profile] & causes).empty?
+        blocks_to_expire << block unless (conditions[:profile] & causes).blank?
       }
     end
     environment.blocks.each {|block|
       conditions = block.class.expire_on
-      blocks_to_expire << block unless (conditions[:environment] & causes).empty?
+      blocks_to_expire << block unless (conditions[:environment] & causes).blank?
     }
 
     blocks_to_expire.uniq!

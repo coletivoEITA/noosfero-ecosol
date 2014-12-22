@@ -1,0 +1,22 @@
+<%= javascript_include_tag 'isotope.pkgd.min.js' %>
+<%= javascript_include_tag 'typeahead.bundle.js' %>
+<%= javascript_include_tag 'catalog.js' %>
+
+<%
+# the search is presented outside the catalog page, so redirect back when it is used
+external = true if external.nil?
+%>
+
+<%= javascript_tag do %>
+  catalog.search.external = <%= external.to_json %>
+  catalog.profile = {id: <%= profile.id.to_json %>}
+  catalog.search.autocomplete.url = <%= url_for(controller: :catalog, profile: profile.identifier, action: :search_autocomplete, scope: @scope, base_query: @base_query).to_json %>;
+  catalog.base_url_path = <%= url_for(controller: :catalog, profile: profile.identifier).to_json %> + '?'
+  catalog.search.init();
+  <% if @use_show_more %>
+  catalog.search.pagination.seeMore(<%= _('loading...').to_json %>);
+  <% else %>
+  catalog.search.pagination.infiniteScroll(<%= _('loading...').to_json %>);
+  <% end %>
+  catalog.search.scroll.toRank(<%=params[:rank]%>)
+<% end %>

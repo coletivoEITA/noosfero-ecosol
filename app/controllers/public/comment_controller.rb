@@ -47,7 +47,7 @@ class CommentController < ApplicationController
       return
     end
 
-    if !@comment.valid? || (not pass_without_comment_captcha? and not verify_recaptcha(:model => @comment, :message => _('Please type the words correctly')))
+    if !@comment.valid? || (not pass_without_comment_captcha? and not captcha_verify(:model => @comment, :message => _('Please type the words correctly')))
       respond_to do |format|
         format.js do
           render :json => {
@@ -78,7 +78,7 @@ class CommentController < ApplicationController
     respond_to do |format|
       format.js do
         comment_to_render = @comment.comment_root
-        render :json => { 
+        render :json => {
             :render_target => comment_to_render.anchor,
             :html => render_to_string(:partial => 'comment', :locals => {:comment => comment_to_render, :display_link => true}),
             :msg => _('Comment successfully created.')

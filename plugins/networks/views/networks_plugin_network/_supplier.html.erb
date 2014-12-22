@@ -1,0 +1,14 @@
+<% enterprise = supplier.profile %>
+
+<div id="supplier-<%= supplier.id %>" class="supplier row">
+  <div class="name">
+    <%= link_to enterprise.name, enterprise.url, :target => '_blank' %>
+  </div>
+  <div class="actions">
+    <%= link_to t('views.network.structure.edit'), :controller => :networks_plugin_enterprise, :action => :edit, :id => supplier.id %>
+    |
+    <%= link_to t('views.network.structure.desassociate'), html: {data: {loading: "loading_overlay.show('#supplier-#{supplier.id}')"}},
+      :confirm => t('views.network.structure.confirm_supplier_desassociate') % {:supplier => supplier.name},
+      :url => {:controller => :networks_plugin_enterprise, :action => :destroy, :node_id => @node.id, :id => supplier.id} %>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<ul>
+  <% if !links_submenu.empty? %>
+    <div class="comment-actions">
+      <li class="vcard">
+        <%= popover_menu(_('Contents menu'),'',links_submenu,:class => 'comment-trigger', :url => url) %>
+      </li>
+    </div>
+  <% end %>
+</ul>
+<div class="comments-action-bar">
+  <% unless comment.spam? %>
+    <%= button_to_function_without_text 'reply', _('Reply'),
+      "var f = add_comment_reply_form(this, %s); f.find('comment_title, textarea').val(''); return false" % comment.id,
+      :class => 'comment-footer comment-footer-link comment-footer-hide comment-actions-reply',
+      :id => 'comment-reply-to-' + comment.id.to_s
+    %>
+  <% end %>
+  <% links_action_bar.collect do |link| %>
+    <%= link[:link] %>
+  <% end %>
+</div>

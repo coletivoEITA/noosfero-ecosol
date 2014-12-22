@@ -1,0 +1,28 @@
+<%
+  data = order.delivery_data actor_name
+  other_supplier_methods = actor_name == :supplier && order.open? && order.delivery_methods.size > 1
+%>
+
+<% if data.present? or other_supplier_methods %>
+  <div class="delivery-box order-section">
+
+    <h3><%= t("views.order._delivery.#{actor_name}_heading") %></h3>
+
+    <% data.each do |key, value| %>
+      <div>
+        <strong>
+          <%= label_tag key, t("models.order.delivery_data.#{key}") %>
+        </strong>
+        <%= value %>
+      </div>
+    <% end %>
+
+    <% if other_supplier_methods %>
+      <%= labelled_field nil, 'order[supplier_delivery_id]', t('views.order._delivery.choose_another'),
+        select_tag('order[supplier_delivery_id]', options_for_select(order.delivery_methods.map{ |d| [d.name, d.id] }, order.supplier_delivery_id),
+                   onchange: "orders.order.delivery.select(this, '#{url_for controller: :orders_plugin_order, action: :render_delivery, id: order.id}')"),
+        class: 'subtitle' %>
+    <% end %>
+
+  </div>
+<% end %>

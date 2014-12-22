@@ -29,7 +29,7 @@ class SearchController < PublicController
       @asset = key
       send(key)
       @order << key
-      @names[key] = getterm(description)
+      @names[key] = _(description)
     end
     @asset = nil
 
@@ -61,7 +61,9 @@ class SearchController < PublicController
   end
 
   def articles
-    @scope = @environment.articles.public
+    @scope = @environment.articles.public.includes(
+      :last_changed_by, :parent, :tags, {:profile => [:domains]}
+    )
     full_text_search
   end
 
@@ -75,7 +77,12 @@ class SearchController < PublicController
   end
 
   def products
-    @scope = @environment.products
+    @scope = @environment.products.includes(
+      :product_category, :unit, :region, :image, {inputs: [:product_category]},
+      {product_qualifiers: [:qualifier, :certifier]},
+      {price_details: [:production_cost]},
+      {profile: [:domains]},
+    )
     full_text_search
   end
 
@@ -90,10 +97,14 @@ class SearchController < PublicController
   end
 
   def events
-    year = (params[:year] ? params[:year].to_i : Date.today.year)
-    month = (params[:month] ? params[:month].to_i : Date.today.month)
-    day = (params[:day] ? params[:day].to_i : Date.today.day)
-    @date = build_date(year, month, day)
+    if params[:year].blank? && params[:year].blank? && params[:day].blank?
+      @date = Date.today
+    else
+      year = (params[:year] ? params[:year].to_i : Date.today.year)
+      month = (params[:month] ? params[:month].to_i : Date.today.month)
+      day = (params[:day] ? params[:day].to_i : 1)
+      @date = build_date(year, month, day)
+    end
     date_range = (@date - 1.month).at_beginning_of_month..(@date + 1.month).at_end_of_month
 
     @events = []
@@ -133,13 +144,14 @@ class SearchController < PublicController
     @tag = params[:tag]
     @tag_cache_key = "tag_#{CGI.escape(@tag.to_s)}_env_#{environment.id.to_s}_page_#{params[:npage]}"
     if is_cache_expired?(@tag_cache_key)
-      @searches[@asset] = {:results => environment.articles.find_tagged_with(@tag).paginate(paginate_options)}
+      @searches[@asset] = {:results => environment.articles.tagged_with(@tag).paginate(paginate_options)}
     end
   end
 
   def events_by_day
     @date = build_date(params[:year], params[:month], params[:day])
     @events = environment.events.by_day(@date).paginate(:per_page => per_page, :page => params[:page])
+    @title_use_day = params[:day].blank? ? false : true
     render :partial => 'events/events'
   end
 
@@ -159,7 +171,7 @@ class SearchController < PublicController
     if params[:category_path].blank?
       render_not_found if params[:action] == 'category_index'
     else
-      path = params[:category_path].join('/')
+      path = params[:category_path]
       @category = environment.categories.find_by_path(path)
       if @category.nil?
         render_not_found(path)
@@ -214,6 +226,13 @@ class SearchController < PublicController
 
   def full_text_search
     @searches[@asset] = find_by_contents(@asset, @scope, @query, paginate_options, {:category => @category, :filter => @filter})
+  end
+
+  def find_by_contents asset, scope, query, paginate_options={:page => 1}, options={}
+    # only apply fitlers to empty query, sorting is engine specific
+    scope = scope.send(options[:filter]) if options[:filter] and @empty_query
+
+    super asset, scope, query, paginate_options, options
   end
 
   private

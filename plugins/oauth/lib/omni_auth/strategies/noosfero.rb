@@ -33,7 +33,7 @@ module OmniAuth
       end
 
       def name
-        return options.name unless request.path.starts_with? OauthPlugin::path_prefix
+        return options.name unless request.path.starts_with? ::OauthPlugin::path_prefix
         provider.identifier rescue options.name
       end
 

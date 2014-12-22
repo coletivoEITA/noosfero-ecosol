@@ -1,0 +1,4 @@
+pagination.showMore("<%= escape_javascript render 'catalog/pagination' %>", function () {
+  jQuery('ul#product-list li.product:last-child').after("<%= escape_javascript render('catalog/products', :products => @products) %>");
+  Cart.load_add_buttons();
+});

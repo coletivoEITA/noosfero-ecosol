@@ -1,0 +1,23 @@
+<% if not profile.node? %>
+  <%= render :file => "#{Rails.root}/app/views/blocks/location.html.erb", :locals => {:block => block, :profile => profile} %>
+<% else %>
+
+  <% suppliers = profile.network_suppliers.collect(&:profile).select{ |p| p.lat } %>
+  <% nodes = profile.nodes.select{ |p| p.lat } %>
+
+  <% if profile.lat or suppliers.present? or nodes.present? %>
+    <%= block_title t('networks_plugin.views.blocks.location.title') % {:profile => profile.name} %>
+
+    <% center = if profile.lat then "center=#{profile.lat},#{profile.lng}" else '' end %>
+    <% markers = [profile].map{ |p| "markers=color:red|#{p.lat},#{p.lng}" if p.lat }.join '&' %>
+    <% markers += suppliers.map{ |p| "markers=color:green|#{p.lat},#{p.lng}" }.join '&' %>
+    <% markers += nodes.map{ |p| "markers=color:blue|#{p.lat},#{p.lng}" }.join '&' %>
+
+    <div class='the-localization-map'>
+      <img src="https://maps.google.com/maps/api/staticmap?<%=center%>&size=190x250&maptype=<%=block.map_type%>&<%=markers%>&sensor=false"/>
+    </div>
+  <% else %>
+    <i><%= _('This profile has no geographical position registered.') %></i>
+  <% end %>
+
+<% end %>

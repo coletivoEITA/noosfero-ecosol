@@ -1,0 +1,13 @@
+<h2> <%= t('views.node.create.context') % {:name => @node.name} %> </h2>
+
+<%= form_for @new_node, remote: true, :url => {:action => :associate}, html: {data: {loading: '#networks-node-associate'}} do |f| %>
+  <%= error_messages_for :new_node %>
+
+  <%= hidden_field_tag :id, @node.id %>
+
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.submit t('views.node.create.new_button') %>
+<% end %>
+

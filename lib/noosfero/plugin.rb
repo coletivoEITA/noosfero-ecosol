@@ -1,5 +1,4 @@
 require_dependency 'noosfero'
-include ActionView::Helpers::AssetTagHelper
 
 class Noosfero::Plugin
 
@@ -11,52 +10,47 @@ class Noosfero::Plugin
 
   class << self
 
-    def klass(dir)
-      (dir.to_s.camelize + 'Plugin').constantize # load the plugin
+    def table_name_prefix
+      @table_name_prefix ||= "#{name.to_s.underscore}_"
     end
 
-    def init_system
-      enabled_plugins = Dir.glob(File.join(Rails.root, 'config', 'plugins', '*'))
-      if Rails.env.test? && !enabled_plugins.include?(File.join(Rails.root, 'config', 'plugins', 'foo'))
-        enabled_plugins << File.join(Rails.root, 'plugins', 'foo')
-      end
+    attr_writer :should_load
 
-      enabled_plugins.select do |entry|
-        File.directory?(entry)
-      end.each do |dir|
-        load_plugin_paths dir
-      end.each do |dir|
-        load_plugin dir
-      end
+    # Called for each ActiveRecord class with parents
+    # See http://apidock.com/rails/ActiveRecord/ModelSchema/ClassMethods/full_table_name_prefix
+    def table_name_prefix
+      @table_name_prefix ||= "#{name.to_s.underscore}_"
     end
 
-    def load_plugin_paths dir
-      # add load paths
-      Rails.configuration.controller_paths << File.join(dir, 'controllers')
-      ActiveSupport::Dependencies.load_paths << File.join(dir, 'controllers')
-      controllers_folders = %w[public profile myprofile admin]
-      controllers_folders.each do |folder|
-        Rails.configuration.controller_paths << File.join(dir, 'controllers', folder)
-        ActiveSupport::Dependencies.load_paths << File.join(dir, 'controllers', folder)
-      end
-      [ ActiveSupport::Dependencies.load_paths, $:].each do |path|
-        path << File.join(dir, 'models')
-        path << File.join(dir, 'lib')
+    def should_load
+      @should_load.nil? && true || @boot
+    end
+
+    def initialize!
+      return if !should_load
+
+      enabled_plugins_names = available_plugins.map{ |d| File.basename d }
+      if (deps_unmet = Noosfero::Plugin::DependencyCalc.deps_unmet(*enabled_plugins_names)).present?
+        STDERR.puts "Plugins's dependencies aren't met, please enable the plugins: #{deps_unmet.to_a.join ', '}"
+        exit 1
       end
 
-      # add view path
-      ActionController::Base.view_paths.unshift(File.join(dir, 'views'))
-
-      # load vendor/plugins
-      Dir.glob(File.join(dir, '/vendor/plugins/*')).each do |vendor_plugin|
-        [ ActiveSupport::Dependencies.load_paths, $:].each{ |path| path << "#{vendor_plugin}/lib" }
-      end.each do |vendor_plugin|
-        init = "#{vendor_plugin}/init.rb"
-        require init.gsub(/.rb$/, '') if File.file? init
+      available_plugins.each do |plugin_dir|
+        plugin_name = File.basename(plugin_dir)
+        plugin = load_plugin(plugin_name)
+        load_plugin_extensions(plugin_dir)
+        load_plugin_filters(plugin)
       end
     end
 
-    def load_plugin dir
+    def setup(config)
+      return if !should_load
+      available_plugins.each do |dir|
+        setup_plugin(dir, config)
+      end
+    end
+
+    def setup_plugin(dir, config)
       plugin_name = File.basename(dir)
 
       plugin_dependencies_ok = true
@@ -70,37 +64,103 @@ class Noosfero::Plugin
         end
       end
 
-      # load extensions
+      if plugin_dependencies_ok
+        %w[
+            controllers
+            controllers/public
+            controllers/profile
+            controllers/myprofile
+            controllers/admin
+        ].each do |folder|
+          config.autoload_paths << File.join(dir, folder)
+        end
+        [ config.autoload_paths, $:].each do |path|
+          path << File.join(dir, 'models')
+          path << File.join(dir, 'lib')
+          # load vendor/plugins
+          Dir.glob(File.join(dir, '/vendor/plugins/*')).each do |vendor_plugin|
+            path << "#{vendor_plugin}/lib"
+          end
+        end
+        Dir.glob(File.join(dir, '/vendor/plugins/*')).each do |vendor_plugin|
+          init = "#{vendor_plugin}/init.rb"
+          require init.gsub(/.rb$/, '') if File.file? init
+        end
+
+        # add view path
+        config.paths['app/views'].unshift File.join(dir, 'views')
+      end
+    end
+
+    def load_plugin(plugin_name)
+      (plugin_name.to_s.camelize + 'Plugin').constantize
+    end
+
+    # This is a generic method that initialize any possible filter defined by a
+    # plugin to a specific controller
+    def load_plugin_filters(plugin)
+      plugin_methods = plugin.instance_methods.select {|m| m.to_s.end_with?('_filters')}
+      plugin_methods.each do |plugin_method|
+        controller_class = plugin_method.to_s.gsub('_filters', '').camelize.constantize
+        filters = plugin.new.send(plugin_method)
+        filters = [filters] if !filters.kind_of?(Array)
+
+        filters.each do |plugin_filter|
+          filter_method = (plugin.name.underscore.gsub('/','_') + '_' + plugin_filter[:method_name]).to_sym
+          controller_class.send(plugin_filter[:type], filter_method, (plugin_filter[:options] || {}))
+          controller_class.send(:define_method, filter_method) do
+            instance_eval(&plugin_filter[:block]) if environment.plugin_enabled?(plugin)
+          end
+        end
+      end
+    end
+
+    def load_plugin_extensions(dir)
       Rails.configuration.to_prepare do
         Dir[File.join(dir, 'lib', 'ext', '*.rb')].each {|file| require_dependency file }
       end
+    end
 
-      # load class
-      klass(plugin_name)
+    def available_plugins
+      unless @available_plugins
+        path = File.join(Rails.root, '{baseplugins,config/plugins}', '*')
+        @available_plugins = Dir.glob(path).sort.select{ |i| File.directory?(i) }
+        if Rails.env.test? && !@available_plugins.include?(File.join(Rails.root, 'config', 'plugins', 'foo'))
+          @available_plugins << File.join(Rails.root, 'plugins', 'foo')
+        end
+      end
+      @available_plugins
+    end
+
+    def available_plugin_names
+      available_plugins.map { |f| File.basename(f).camelize }
     end
 
     def all
-      @all ||= []
-    end
-
-    def inherited(subclass)
-      all << subclass.to_s unless all.include?(subclass.to_s)
+      @all ||= available_plugins.map{ |dir| (File.basename(dir) + "_plugin").camelize }
     end
 
     def public_name
       self.name.underscore.gsub('_plugin','')
     end
 
-    def public_path(file = '')
-      compute_public_path((public_name + '/' + file), 'plugins')
+    def public_path file = '', relative=false
+      File.join "#{if relative then '' else  '/' end}plugins", public_name, file
     end
 
     def root_path
-      File.join(RAILS_ROOT, 'plugins', public_name)
+      Rails.root.join('plugins', public_name)
     end
 
     def view_path
       File.join(root_path,'views')
+    end
+
+    def controllers
+      @controllers ||= Dir.glob("#{self.root_path}/controllers/*/*").map do |controller_file|
+        next unless controller_file =~ /_controller.rb$/
+        controller = File.basename(controller_file).gsub(/.rb$/, '').camelize
+      end.compact
     end
 
     # Here the developer should specify the meta-informations that the plugin can
@@ -122,7 +182,7 @@ class Noosfero::Plugin
   end
 
   def expanded_template(file_path, locals = {})
-    views_path = "#{RAILS_ROOT}/plugins/#{self.class.public_name}/views"
+    views_path = Rails.root.join('plugins', "#{self.class.public_name}", 'views')
     ERB.new(File.read("#{views_path}/#{file_path}")).result(binding)
   end
 
@@ -197,9 +257,24 @@ class Noosfero::Plugin
     nil
   end
 
+  # -> Adds new block types in profile
+  # returs = class implements Block
+  def profile_blocks(profile)
+    nil
+  end
+
   # -> Adds plugin-specific content types to CMS
   # returns  = [ContentClass1, ContentClass2, ...]
   def content_types
+    nil
+  end
+
+  # -> Adds tabs to the products
+  # returns   = { :title => title, :id => id, :content => content }
+  #   title   = name that will be displayed.
+  #   id      = div id.
+  #   content = lambda block that creates html code.
+  def product_tabs product
     nil
   end
 
@@ -209,13 +284,31 @@ class Noosfero::Plugin
     nil
   end
 
+  # -> Allows to add content to the beginning of the catalog top bar
+  # returns = lambda block that creates array of html codes
+  def catalog_search_extras_begin
+    nil
+  end
+
+  # -> Allows to add content to the endof the catalog top bar
+  # returns = lambda block that creates array of html codes
+  def catalog_search_extras_end
+    nil
+  end
+
+  # -> Adds content to add to each autocompleted item on search
+  # returns = lambda block that creates html code
+  def catalog_autocomplete_item_extras product
+    nil
+  end
+
   # -> Adds content to profile editor info and settings
   # returns = lambda block that creates html code or raw rhtml/html.erb
   def profile_editor_extras
     nil
   end
 
-  # -> Adds content to calalog list item
+  # -> Adds content to catalog list item
   # returns = lambda block that creates html code
   def catalog_list_item_extras(item)
     nil
@@ -244,6 +337,12 @@ class Noosfero::Plugin
   # -> Adds content to the beginning of the page
   # returns = lambda block that creates html code or raw rhtml/html.erb
   def body_beginning
+    nil
+  end
+
+  # -> Adds content to the ending of the page
+  # returns = lambda block that creates html code or raw rhtml/html.erb
+  def body_ending
     nil
   end
 
@@ -352,14 +451,20 @@ class Noosfero::Plugin
     []
   end
 
-  # -> Adds adicional content to article
+  # -> Adds aditional actions to article
+  # returns = lambda block that creates html code
+  def article_toolbar_actions article
+    nil
+  end
+
+  # -> Adds aditional content to article
   # returns = lambda block that creates html code
   def article_extra_contents(article)
     nil
   end
 
   # -> Adds fields to the signup form
-  # returns = lambda block that creates html code
+  # returns = proc that creates html code
   def signup_extra_contents
     nil
   end
@@ -434,7 +539,7 @@ class Noosfero::Plugin
   end
 
   # -> Adds fields to the login form
-  # returns = lambda block that creates html code
+  # returns = proc that creates html code
   def login_extra_contents
     nil
   end
@@ -474,7 +579,20 @@ class Noosfero::Plugin
   # returns = {:results => [a, b, c, ...], ...}
   # P.S.: The plugin might add other informations on the return hash for its
   # own use in specific views
-  def find_by_contents(asset, scope, query, paginate_options={}, options={})
+  def find_by_contents asset, scope, query, paginate_options={:page => 1}, options={}
+  end
+
+  # -> Auto complete search
+  # returns = {:results => [a, b, c, ...], ...}
+  # P.S.: The plugin might add other informations on the return hash for its
+  # own use in specific views
+  def autocomplete asset, scope, query, paginate_options={:page => 1}, options={:field => 'name'}
+  end
+
+  # -> Specify order options for the search engine
+  # returns = { select_options: [['Name', 'key'], ['Name2', 'key2']] }
+  def search_order asset
+    nil
   end
 
   # -> Adds aditional fields for change_password
@@ -562,10 +680,17 @@ class Noosfero::Plugin
     # returns = string with reason of expiration
     elsif method.to_s =~ /^content_expire_(#{content_actions.join('|')})$/
       nil
+    elsif self.context.respond_to? method, true
+      self.context.send method, *args, &block
     else
       super
     end
   end
+
+  def respond_to_with_context? method, include_private=true
+    respond_to_without_context? method, include_private or self.context.respond_to? method, include_private
+  end
+  alias_method_chain :respond_to?, :context
 
   private
 
@@ -576,3 +701,9 @@ class Noosfero::Plugin
   end
 
 end
+
+require 'noosfero/plugin/hot_spot'
+require 'noosfero/plugin/manager'
+require 'noosfero/plugin/active_record'
+require 'noosfero/plugin/mailer_base'
+require 'noosfero/plugin/settings'

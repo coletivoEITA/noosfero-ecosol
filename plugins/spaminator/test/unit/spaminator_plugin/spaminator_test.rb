@@ -50,6 +50,7 @@ class SpaminatorPlugin::SpaminatorTest < ActiveSupport::TestCase
   end
 
   should 'process only people from the environment and that are not abusers' do
+    Person.delete_all
     p1 = fast_create(Person)
     p2 = fast_create(Person)
     p3 = fast_create(Person, :environment_id => fast_create(Environment))
@@ -121,7 +122,7 @@ class SpaminatorPlugin::SpaminatorTest < ActiveSupport::TestCase
 
   should 'mark person as spammer' do
     person = create_user('spammer').person
-    assert_difference AbuseComplaint.finished, :count, 1 do
+    assert_difference 'AbuseComplaint.finished.count', 1 do
       spaminator.send(:mark_as_spammer, person)
     end
     person.reload
@@ -130,16 +131,18 @@ class SpaminatorPlugin::SpaminatorTest < ActiveSupport::TestCase
 
   should 'send email notification after disabling person' do
     person = create_user('spammer').person
-    assert_difference(ActionMailer::Base.deliveries, :size, 1) do
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       spaminator.send(:disable_person, person)
+      process_delayed_job_queue
     end
   end
 
   should 'not send email notification if person was not disabled' do
     person = create_user('spammer').person
     person.expects(:disable).returns(false)
-    assert_no_difference(ActionMailer::Base.deliveries, :size) do
+    assert_no_difference 'ActionMailer::Base.deliveries.size' do
       spaminator.send(:disable_person, person)
+      process_delayed_job_queue
     end
   end
 

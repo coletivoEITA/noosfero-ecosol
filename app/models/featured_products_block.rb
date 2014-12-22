@@ -1,5 +1,7 @@
 class FeaturedProductsBlock < Block
 
+  attr_accessible :product_ids, :groups_of, :speed, :reflect
+
   settings_items :product_ids, :type => Array, :default => []
   settings_items :groups_of, :type => :integer, :default => 3
   settings_items :speed, :type => :integer, :default => 1000
@@ -28,7 +30,7 @@ class FeaturedProductsBlock < Block
 
   def content(args={})
     block = self
-    lambda do
+    proc do
       render :file => 'blocks/featured_products', :locals => { :block => block }
     end
   end

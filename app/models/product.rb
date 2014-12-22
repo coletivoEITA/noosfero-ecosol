@@ -11,6 +11,9 @@ class Product < ActiveRecord::Base
 
   SEARCH_DISPLAYS = %w[map full]
 
+  attr_accessible :name, :highlighted, :price, :discount, :image_builder, :description, :available, :qualifiers_list,
+    :unit_id, :unit, :enterprise, :profile, :qualifiers, :inputs, :product_category
+
   def self.default_search_display
     'full'
   end
@@ -37,15 +40,19 @@ class Product < ActiveRecord::Base
 
   validates_uniqueness_of :name, :scope => :profile_id, :allow_nil => true, :if => :validate_uniqueness_of_column_name?
 
-  validates_presence_of :product_category_id
+  validates_presence_of :product_category
   validates_associated :product_category
 
   validates_numericality_of :price, :allow_nil => true
   validates_numericality_of :discount, :allow_nil => true
 
-  named_scope :more_recent, :order => "created_at DESC"
+  scope :enabled, :conditions => ['profiles.enabled = ?', true]
+  scope :visible, :conditions => ['profiles.visible = ?', true]
+  scope :public, :conditions => ['profiles.visible = ? AND profiles.public_profile = ?', true, true]
 
-  named_scope :from_category, lambda { |category|
+  scope :more_recent, :order => "created_at DESC"
+
+  scope :from_category, lambda { |category|
     {:joins => :product_category, :conditions => ['categories.path LIKE ?', "%#{category.slug}%"]} if category
   }
 
@@ -66,7 +73,11 @@ class Product < ActiveRecord::Base
   include FloatHelper
 
   include WhiteListFilter
-  filter_iframes :description, :whitelist => lambda { enterprise && enterprise.environment && enterprise.environment.trusted_sites_for_iframe }
+  filter_iframes :description
+
+  def iframe_whitelist
+    enterprise && enterprise.environment && enterprise.environment.trusted_sites_for_iframe
+  end
 
   def name
     self[:name].blank? ? category_name : self[:name]
@@ -85,7 +96,7 @@ class Product < ActiveRecord::Base
   end
 
   def default_image(size='thumb')
-    image ? image.public_filename(size) : '/images/icons-app/product-default-pic-%s.png' % size
+      image ? image.public_filename(size) : '/images/icons-app/product-default-pic-%s.png' % (size || 'big')
   end
 
   acts_as_having_image
@@ -161,13 +172,20 @@ class Product < ActiveRecord::Base
   def qualifiers_list=(qualifiers)
     self.product_qualifiers.destroy_all
     qualifiers.each do |qualifier_id, certifier_id|
-      self.product_qualifiers.create(:qualifier_id => qualifier_id, :certifier_id => certifier_id) if qualifier_id != 'nil'
+      next if qualifier_id == 'nil'
+      product_qualifier = self.product_qualifiers.build
+      product_qualifier.product = self
+      product_qualifier.qualifier_id = qualifier_id
+      product_qualifier.certifier_id = certifier_id
+      product_qualifier.save!
     end
   end
 
   def order_inputs!(order = [])
     order.each_with_index do |input_id, array_index|
-      self.inputs.find(input_id).update_attributes(:position => array_index + 1)
+      input = self.inputs.find(input_id)
+      input.position = array_index + 1
+      input.save!
     end
   end
 
@@ -181,11 +199,11 @@ class Product < ActiveRecord::Base
 
   def inputs_cost
     return 0 if inputs.empty?
-    inputs.relevant_to_price.map(&:cost).inject { |sum,price| sum + price }
+    inputs.relevant_to_price.map(&:cost).inject(0) { |sum,price| sum + price }
   end
 
   def total_production_cost
-    return inputs_cost if price_details.empty?
+    return inputs_cost || 0 if price_details.empty?
     inputs_cost + price_details.map(&:price).inject(0){ |sum,price| sum + price }
   end
 
@@ -212,7 +230,7 @@ class Product < ActiveRecord::Base
     self.enterprise.environment.production_costs + self.enterprise.production_costs
   end
 
-  include ActionController::UrlWriter
+  include Rails.application.routes.url_helpers
   def price_composition_bar_display_url
     url_for({:host => enterprise.default_hostname, :controller => 'manage_products', :action => 'display_price_composition_bar', :profile => enterprise.identifier, :id => self.id }.merge(Noosfero.url_options))
   end
@@ -223,7 +241,7 @@ class Product < ActiveRecord::Base
 
   def percentage_from_solidarity_economy
     se_i = t_i = 0
-    self.inputs(true).each{ |i| t_i += 1; se_i += 1 if i.is_from_solidarity_economy }
+    self.inputs.each{ |i| t_i += 1; se_i += 1 if i.is_from_solidarity_economy }
     t_i = 1 if t_i == 0 # avoid division by 0
     p = case (se_i.to_f/t_i)*100
         when 0 then [0, '']
@@ -235,7 +253,7 @@ class Product < ActiveRecord::Base
         end
   end
 
-  delegate :enabled, :region, :region_id, :environment, :environment_id, :to => :enterprise
+  delegate :enabled, :region, :region_id, :environment, :environment_id, :to => :enterprise, allow_nil: true
 
   protected
 

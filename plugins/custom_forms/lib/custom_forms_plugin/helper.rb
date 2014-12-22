@@ -84,7 +84,14 @@ module CustomFormsPlugin::Helper
 
   def display_text_field(field, answer, form)
     value = answer.present? ? answer.value : field.default_value
-    text_field(form, "#{field.id}", :value => value, :disabled => display_disabled?(field, answer))
+    case field.show_as
+    when 'textarea'
+      text_area form, "#{field.id}", :value => value, :disabled => display_disabled?(field, answer)
+    when 'tinymce'
+      text_area form, "#{field.id}", :value => value, :disabled => display_disabled?(field, answer), :class => 'mceEditor'
+    else # includes 'input'
+      text_field form, "#{field.id}", :value => value, :disabled => display_disabled?(field, answer)
+    end
   end
 
   def default_selected(field, answer)
@@ -92,7 +99,7 @@ module CustomFormsPlugin::Helper
   end
 
   def display_select_field(field, answer, form)
-    case field.select_field_type
+    case field.show_as
     when 'select'
       selected = default_selected(field, answer)
       select_tag form.to_s + "[#{field.id}]", options_for_select([['','']] + field.alternatives.map {|a| [a.label, a.id.to_s]}, selected), :disabled => display_disabled?(field, answer)
@@ -113,11 +120,11 @@ module CustomFormsPlugin::Helper
   end
 
   def radio_button?(field)
-    type_for_options(field.class) == 'select_field' && field.select_field_type == 'radio'
+    type_for_options(field.class) == 'select_field' && field.show_as == 'radio'
   end
 
   def check_box?(field)
-    type_for_options(field.class) == 'select_field' && field.select_field_type == 'check_box'
+    type_for_options(field.class) == 'select_field' && field.show_as == 'check_box'
   end
 
 end

@@ -5,7 +5,7 @@
         @filter == 'more_recent' ? enterprise.send(@filter + '_label') + show_date(enterprise.created_at) : enterprise.send(@filter + '_label') %>
     </div>
     <div class="search-enterprise-item-column-right">
-      <%= link_to_homepage(enterprise.name, enterprise.identifier, :class => "search-result-title") %>
+      <%= link_to_homepage enterprise.name, enterprise, class: "search-result-title" %>
       <div class="search-enterprise-description">
         <% if enterprise.description %>
           <% body_stripped = strip_tags(enterprise.description) %>
@@ -23,6 +23,7 @@
 
       <div class="search-enterprise-categorization">
         <% enterprise.top_level_categorization.each do |parent, children| %>
+          <% next unless parent %>
           <div class="search-enterprise-category-<%=parent.id%> search-enterprise-category">
             <span class="search-enterprise-categorization-parent"><%= parent.name %></span>
             <span class="search-enterprise-categorization-children">

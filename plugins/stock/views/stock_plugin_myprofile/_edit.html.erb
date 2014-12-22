@@ -1,0 +1,16 @@
+<%
+  new = false if new.nil?
+  place = profile.stock_places.build if new
+%>
+
+<div id="place-<%=place.id%>" class="place">
+  <%= form_for place, as: :place,
+    :url => {:controller => :stock_plugin_myprofile, :action => if new then :create else :edit end, :id => place.id} do |f| %>
+    <%#:html => {:onsubmit => 'jQuery(this).ajaxSubmit(); return false;'} do |f| %>
+
+    <%= f.text_field :name, :placeholder => t('models.place.name') %>
+    <%= f.text_field :description, :placeholder => t('models.place.description') %>
+
+    <%= f.submit t('views.myprofile.edit.save'), :class => 'action-button' %>
+  <% end %>
+</div>

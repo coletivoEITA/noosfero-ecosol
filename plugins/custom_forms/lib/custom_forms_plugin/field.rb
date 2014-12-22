@@ -2,6 +2,8 @@ class CustomFormsPlugin::Field < ActiveRecord::Base
   set_table_name :custom_forms_plugin_fields
 
   validates_presence_of :name
+  
+  attr_accessible :name, :form, :mandatory, :type, :position, :default_value, :select_field_type, :alternatives_attributes, :show_as
 
   belongs_to :form, :class_name => 'CustomFormsPlugin::Form'
   has_many :answers, :class_name => 'CustomFormsPlugin::Answer'

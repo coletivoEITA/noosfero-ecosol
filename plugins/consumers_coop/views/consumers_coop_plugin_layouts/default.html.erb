@@ -1,0 +1,7 @@
+<div id="consumers-coop-plugin-header">
+  <%= render :partial => 'consumers_coop_plugin_layouts/header' %>
+
+  <% if profile.has_admin? user  %>
+    <%= render :partial => 'consumers_coop_plugin_layouts/admin_submenu' %>
+  <% end %>
+</div>

@@ -1,0 +1,35 @@
+<div id="networks-admin-index">
+
+  <h1><%= t('views.admin.index.title') %></h1>
+
+  <%= link_to t('views.admin.index.network_template'), environment.network_template.url, :class => 'action-button' %>
+  <%= link_to t('views.admin.index.network_node_template'), environment.network_node_template.url, :class => 'action-button' %>
+
+  <h2><%= t('views.admin.index.new') %></h2>
+  <div>
+    <%= form_for @network, as: :network, :url => {:action => :create} do |f| %>
+      <%= error_messages_for :network %>
+
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+
+      <%= f.submit t('views.admin.index.new_button') %>
+    <% end %>
+  </div>
+
+  <h2><%= t('views.admin.index.registered_networks') %></h2>
+  <% unless @networks.nil? %>
+    <div id="network-list">
+      <% if @networks.empty? %>
+        <%= t('views.admin.index.no_network') %>
+      <% else %>
+        <% @networks.each do |network| %>
+          <div>
+            <%= link_to network.name, network.url %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+</div>

@@ -1,0 +1,8 @@
+<%= render 'load' %>
+<%= javascript_tag do %>
+  fb_app.auth.status = <%= (@auth.status rescue FbAppPlugin::Auth::Status::NotAuthorized).to_json %>
+<% end %>
+
+<div id="fb-app-settings">
+  <%= render 'settings' %>
+</div>

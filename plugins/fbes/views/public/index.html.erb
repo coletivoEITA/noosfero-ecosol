@@ -1,0 +1,10 @@
+<h1>
+  <%= t('fbes_plugin.global_title') %>
+</h1>
+<ul>
+  <% FbesPlugin::Queries::Hash.each do |name, query| %>
+    <li>
+      <a href="http://cirandas.net/plugin/fbes/queries/<%= name %>?format=html"><%= t(name) %></a>
+    </li>
+  <% end %>
+</ul>

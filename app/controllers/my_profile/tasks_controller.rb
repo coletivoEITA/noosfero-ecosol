@@ -4,6 +4,7 @@ class TasksController < MyProfileController
   
   def index
     @filter = params[:filter_type].blank? ? nil : params[:filter_type]
+    @task_types = Task.pending_types_for(profile)
     @tasks = Task.to(profile).without_spam.pending.of(@filter).order_by('created_at', 'asc').paginate(:per_page => Task.per_page, :page => params[:page])
     @failed = params ? params[:failed] : {}
   end
@@ -27,7 +28,7 @@ class TasksController < MyProfileController
             task.send(decision)
           rescue Exception => ex
             message = "#{task.title} (#{task.requestor ? task.requestor.name : task.author_name})"
-            failed[ex.clean_message] ? failed[ex.clean_message] << message : failed[ex.clean_message] = [message]
+            failed[ex.message] ? failed[ex.message] << message : failed[ex.message] = [message]
           end
         end
       end

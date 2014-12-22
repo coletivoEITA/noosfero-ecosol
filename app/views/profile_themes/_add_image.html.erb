@@ -1,0 +1,12 @@
+<div id='image-files-list'>
+  <h2><%= _('Images') %></h2>
+  <ul>
+    <% for image in @theme.image_files %>
+      <li><%= image_tag "/#{@theme.dir}/images/#{image}" %></li>
+    <% end %>
+  </ul>
+  <% button_bar do %>
+    <%= modal_button :add, _('Add image'), :action => 'add_image', :id =>  @theme.id %>
+  <% end %>
+</div>
+

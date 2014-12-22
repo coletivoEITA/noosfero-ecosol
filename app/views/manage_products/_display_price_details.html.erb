@@ -1,0 +1,21 @@
+<div id='display-manage-price-details'></div>
+
+<div id='display-price-details'>
+  <ul class='price-details-list'>
+    <li>
+      <div class='price-detail-name'><%= _('Inputs:') %></div>
+      <div class='price-detail-price inputs-cost'>
+        <span><%= float_to_currency(@product.inputs_cost) %></span>
+      </div>
+    </li>
+      <% @product.price_details.each do |price_detail| %>
+        <li property="essglobal:hasOtherCost" typeof="essglobal:OtherCosts">
+          <div class='price-detail-name'><span property='dcterms:description'><%= price_detail.name %></span>:</div>
+          <div class='price-detail-price'>
+            <span class='price-detail-price-currency' property='gr:hasCurrency' content='<%= environment.currency_iso_unit %>'><%= environment.currency_unit %></span>
+            <span class='price-detail-price-value' property='gr:hasCurrencyValue'><%= float_to_currency(price_detail.price, unit: '') %></span>
+          </div>
+        </li>
+      <% end %>
+  </ul>
+</div>

@@ -1,0 +1,53 @@
+<%= form_tag({controller: :catalog, profile: profile.identifier, action: :index}, onsubmit: 'return catalog.search.submit()', method: 'get', id: 'catalog-search') do %>
+
+  <%= hidden_field_tag :use_show_more, if @use_show_more then '1' else '0' end %>
+  <%= hidden_field_tag :page, @pg_page %>
+  <%= hidden_field_tag :rank, @rank %>
+  <%= hidden_field_tag :base_query, @base_query %>
+  <%= hidden_field_tag :scope, @scope %>
+
+  <div id="catalog-options">
+    <ul>
+
+      <%= plugins_catalog_search_extras_begin %>
+
+      <li class="catalog-filter-categories">
+	      <% if @categories.length > 0 %>
+          <div class="catalog-options-select">
+            <%= select_tag :category, options_for_select([[_('All categories'), '']] + @categories, params[:category]),
+              onkeydown: 'catalog.categories.select()', onchange: 'catalog.categories.select()' %>
+          </div>
+	      <% end %>
+      </li>
+      <li class="catalog-filter-qualifiers">
+	      <% if @qualifiers.length > 0 %>
+          <div class="catalog-options-select">
+            <%= select_tag :qualifier, options_for_select([[_('All qualifiers'), '']] + @qualifiers, params[:qualifier]),
+              onkeydown: 'catalog.qualifiers.select()', onchange: 'catalog.qualifiers.select()' %>
+          </div>
+	      <% end %>
+      </li>
+
+      <li class="catalog-search">
+        <%= text_field_tag :query, params[:query], placeholder: _('type your search...'), id: 'catalog-search-input' %>
+      </li>
+
+      <%= plugins_catalog_search_extras_end %>
+    </ul>
+  </div>
+
+  <div id="catalog-results-tools">
+    <div id="catalog-result-qtty-wrap">
+      <%= @not_searched ?
+        _('<b>Total:</b> %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'}
+        : _('Your search returned %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'}
+      %>
+    </div>
+    <div id="catalog-orderby">
+      <%= _('order by') %>:
+      <%= select_tag :order, options_for_select(@ordering[:select_options], params[:order]),
+        onkeydown: 'catalog.order.select()', onchange: 'catalog.order.select()' %>
+    </div>
+  </div>
+
+<% end %>

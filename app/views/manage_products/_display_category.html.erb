@@ -1,0 +1,14 @@
+<div id='display-product-category'>
+  <p class='hierarchy-category'>
+    <%= hierarchy_category_navigation @product.product_category,
+      :make_links => false,
+      :hide_current_category => @product.name_is_blank?,
+      :remove_last_category => true
+    %>
+     &rarr; <span property="gr:category"><%= @product.product_category.name %></span>
+  </p>
+
+  <%= edit_link( _('Change category'), { :action => 'edit_category', :id => @product.id}, :id => 'link-edit-product-category') %>
+</div>
+
+

@@ -6,32 +6,14 @@ class SearchHelperTest < ActiveSupport::TestCase
 
   should 'display facets menu' do
     expects(:asset_class).with('asset')
-    expects(:render).with(:partial => 'facets_menu')
+    expects(:render).with('facets_menu')
     facets_menu 'asset', nil
   end
 
   should 'display facets_unselect menu' do
     expects(:asset_class).with('asset')
-    expects(:render).with(:partial => 'facets_unselect_menu')
+    expects(:render).with('facets_unselect_menu')
     facets_unselect_menu 'asset'
-  end
-
-  should 'display facets javascript' do
-    expects(:text_field_tag).returns('<text_field_tag_return>')
-    expects(:javascript_tag).with(regexp_matches(/id.*[\'array_item\'].*json_message/m)).returns(
-      '<javascript_tag_return>')
-    stubs(:jquery_token_input_messages_json).returns('json_message')
-    assert_equal '<text_field_tag_return><javascript_tag_return>',
-      facet_javascript('id', '', ['array_item'])
-  end
-
-  should 'display empty array in facets javascript if array is nil' do
-    expects(:text_field_tag).returns('<text_field_tag_return>')
-    expects(:javascript_tag).with(regexp_matches(/id.*\[\].*json_message/m)).returns(
-      '<javascript_tag_return>')
-    stubs(:jquery_token_input_messages_json).returns('json_message')
-    assert_equal '<text_field_tag_return><javascript_tag_return>',
-      facet_javascript('id', '', [])
   end
 
   should 'return html code for facet link' do
@@ -100,7 +82,7 @@ class SearchHelperTest < ActiveSupport::TestCase
     klass = mock
     klass.stubs(:facet_by_id).with(:facet_id).returns('klass_facet_by_id')
     klass.stubs(:facet_label).with('klass_facet_by_id').returns('klass_facet_label')
-    klass.stubs(:facet_result_name).with('klass_facet_by_id', 'facet_value').returns('klass_facet_result_name')
+    klass.stubs(:facet_result_name).with('klass_facet_by_id', [['facet_value', 0]]).returns([['klass_facet_result_name']])
     params = {:facet => {:facet_id => 'facet_value'}}
 
     expects(:content_tag).with(anything, 'klass_facet_label', anything).returns('<content_tag_label>')

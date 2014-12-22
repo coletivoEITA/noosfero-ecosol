@@ -1,0 +1,107 @@
+@import 'base';
+
+.controller-profile_editor a.control-panel-networks-manage-structure {
+  background-image: url("/plugins/networks/images/control-panel/manage-network.png");
+}
+
+.icon-networks-manage-structure {
+  background-image: url("/plugins/networks/images/control-panel/manage-network.png");
+  background-size: 16px 16px;
+}
+
+#networks-admin-index {
+
+  #network-list {
+    margin-bottom: $margin;
+  }
+}
+
+#networks-node-create {
+  height: 20*$height;
+}
+
+#networks-network-structure {
+
+  .listing {
+
+    .header {
+      @extend .container-clean;
+
+      h3, .action-button {
+        margin-top: $half-margin;
+        float: left;
+      }
+      .action-button {
+        margin-left: $half-margin;
+        margin-top: $half-margin - $half-padding;
+      }
+    }
+
+    .row {
+      @extend .container-clean;
+
+      .name {
+        float: left;
+        width: $module08p;
+      }
+      .actions {
+        width: $module04p;
+        float: right;
+      }
+    }
+  }
+}
+
+body.network-node {
+
+  .control-panel-groups {
+    display: none;
+  }
+
+  #network-header {
+
+    .network-tag {
+      float: right;
+    }
+  }
+
+}
+
+.controller-networks_plugin_network {
+
+  #suppliers-page {
+    min-height: 50*$height;
+    min-width: $module09;
+
+    .supplier {
+
+      &#supplier-add {
+        display: block;
+      }
+    }
+  }
+}
+
+#networks-participations {
+
+}
+
+#network-info-actions {
+  a.icon-add {
+    display: inline-block;
+  }
+}
+
+.controller-networks_plugin_enterprise {
+
+  #suppliers-page {
+
+    .supplier {
+
+      .box-edit {
+        display: block;
+      }
+    }
+  }
+}
+

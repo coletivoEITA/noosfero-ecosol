@@ -1,0 +1,28 @@
+<%
+  first = profile.stock_places.blank?
+%>
+
+<div id="stock-manage">
+
+  <div class="subtitle">
+    <%= hideable_help_text t('views.myprofile.index.help') %>
+  </div>
+
+  <div>
+    <% if first %>
+      <h2>
+        <%= t('views.myprofile.index.first_place') %>
+      </h2>
+      <div id="new" class="<%= 'open' if first %>">
+        <%= render 'edit', :new => true %>
+      </div>
+    <% else %>
+      <% profile.stock_places.each do |place| %>
+        <%= render 'edit', :place => place %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%= render 'stock_plugin_products/index', :products => profile.products %>
+
+</div>

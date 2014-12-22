@@ -1,6 +1,6 @@
 # encoding: UTF-8
 # pt-BR translations for Ruby on Rails
-"pt-BR":
+"pt-BR": &pt-BR
   # formatos de data e hora
   date:
     formats:
@@ -155,20 +155,20 @@
         one: '1 minuto'
         other: '%{count} minutos'
       about_x_hours:
-        one: 'aproximadamente 1 hora'
-        other: 'aproximadamente %{count} horas'
+        one: 'aprox. 1 hora'
+        other: 'aprox. %{count} horas'
       x_days:
         one: '1 dia'
         other: '%{count} dias'
       about_x_months:
-        one: 'aproximadamente 1 mês'
-        other: 'aproximadamente %{count} meses'
+        one: 'aprox. 1 mês'
+        other: 'aprox. %{count} meses'
       x_months:
         one: '1 mês'
         other: '%{count} meses'
       about_x_years:
-        one: 'aproximadamente 1 ano'
-        other: 'aproximadamente %{count} anos'
+        one: 'aprox. 1 ano'
+        other: 'aprox. %{count} anos'
       over_x_years:
         one: 'mais de 1 ano'
         other: 'mais de %{count} anos'
@@ -231,3 +231,6 @@
 
       full_messages:
         format: "%{attribute} %{message}"
+
+'pt_BR':
+  <<: *pt-BR

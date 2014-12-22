@@ -1,0 +1,28 @@
+<h1> <%= t('orders_plugin.lib.plugin.panel_button') %> </h1>
+
+<%= button :back, _('Back to control panel'), :controller => 'profile_editor' %>
+
+<div class='ui-tabs'>
+  <ul>
+    <% if @purchases.present? %>
+      <li class='tab'><a href='#purchases'><%= t('orders_plugin.terms.purchase.plural') %></a></li>
+    <% end %>
+    <% if @sales.present? %>
+      <li class='tab'><a href='#sales'><%= t('orders_plugin.terms.sale.plural') %></a></li>
+    <% end %>
+  </ul>
+
+  <% if @purchases.present? %>
+    <div id='purchases'>
+      <%= render 'orders_plugin_admin/purchases', :actors => profile.suppliers.except_self, :orders_context => :profile, :orders => @purchases,
+        :month => @purchases_month, :year => @purchases_year, :wireframe_size => false %>
+    </div>
+  <% end %>
+
+  <% if @sales.present? %>
+    <div id='sales'>
+      <%= render 'orders_plugin_admin/sales', :actors => profile.consumers.except_self, :orders_context => :profile, :orders => @sales,
+        :month => @sales_month, :year => @purchases_year, :wireframe_size => false %>
+    </div>
+  <% end %>
+</div>

@@ -15,8 +15,10 @@ class ArticleTest < ActiveSupport::TestCase
     a = Article.create!(:name => 'black flag review', :profile_id => person.id)
     a.add_category(cat, true)
     a.save!
-    assert_equal Article.type_name, Article.facet_by_id(:solr_plugin_f_type)[:proc].call(a.send(:solr_plugin_f_type))
-    assert_equal Person.type_name, Article.facet_by_id(:solr_plugin_f_profile_type)[:proc].call(a.send(:solr_plugin_f_profile_type))
+    facet = Article.facet_by_id(:solr_plugin_f_type)
+    assert_equal [[a.send(:solr_plugin_f_type), Article.type_name, 1]], facet[:proc].call(facet, [[a.send(:solr_plugin_f_type), 1]])
+    facet = Article.facet_by_id(:solr_plugin_f_profile_type)
+    assert_equal [[a.send(:solr_plugin_f_profile_type), Person.type_name, 1]], facet[:proc].call(facet, [[a.send(:solr_plugin_f_profile_type), 1]])
     assert_equal a.published_at, a.send(:solr_plugin_f_published_at)
     assert_equal ['hardcore'], a.send(:solr_plugin_f_category)
     assert_equal "solr_plugin_category_filter:\"#{cat.id}\"", Article.facet_category_query.call(cat)

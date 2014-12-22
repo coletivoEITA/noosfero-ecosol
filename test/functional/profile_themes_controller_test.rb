@@ -5,6 +5,9 @@ class ProfileThemesController; def rescue_action(e) raise e end; end
 
 class ProfileThemesControllerTest < ActionController::TestCase
 
+  TMP_THEMES_DIR = 'test/tmp/profile_themes_controller'
+  TMP_THEMES_PATH = File.join Rails.root, TMP_THEMES_DIR
+
   def setup
     @controller = ProfileThemesController.new
     @request    = ActionController::TestRequest.new
@@ -22,10 +25,10 @@ class ProfileThemesControllerTest < ActionController::TestCase
   attr_reader :profile, :env
 
   def teardown
-    FileUtils.rm_rf(TMP_THEMES_DIR)
+    FileUtils.rm_rf(TMP_THEMES_PATH)
   end
 
-  TMP_THEMES_DIR = RAILS_ROOT + '/test/tmp/profile_themes_controller'
+  TMP_THEMES_DIR = Rails.root.join("test", "tmp", "profile_themes_controller")
 
   should 'display themes that can be applied' do
     env = Environment.default
@@ -57,7 +60,6 @@ class ProfileThemesControllerTest < ActionController::TestCase
     get :index, :profile => 'testinguser'
 
     assert_tag :attributes => { :class => 'theme-opt list-opt selected' }
-    assert_no_tag :tag => 'a', :attributes => { :href => "/myprofile/testinguser/profile_themes/set/one" }
   end
 
   should 'display list of my themes for edition' do
@@ -116,7 +118,7 @@ class ProfileThemesControllerTest < ActionController::TestCase
 
   should 'create a new theme' do
     post :new, :profile => 'testinguser', :name => 'My theme'
-    
+
     ok('theme should be created') do
       profile.themes.first.id == 'my-theme'
     end
@@ -166,7 +168,7 @@ class ProfileThemesControllerTest < ActionController::TestCase
     theme = Theme.create('mytheme', :owner => profile); theme.update_css('test.css', '/* sample code */')
     get :css_editor, :profile => 'testinguser', :id => 'mytheme', :css => 'test.css'
 
-    assert_tag :tag => 'form', :attributes => { :action => '/myprofile/testinguser/profile_themes/update_css/mytheme' }, :descendant => { :tag => 'textarea', :content => '/* sample code */' }
+    assert_tag :tag => 'form', :attributes => { :action => '/myprofile/testinguser/profile_themes/update_css/mytheme' }, :descendant => { :tag => 'textarea', :content => /\/\* sample code \*\// }
   end
 
   should 'be able to save CSS code' do
@@ -190,14 +192,14 @@ class ProfileThemesControllerTest < ActionController::TestCase
 
     get :edit, :profile => 'testinguser', :id => 'mytheme'
 
-    assert_tag :tag => 'img', :attributes => { :src => '/user_themes/mytheme/images/one.png' }
-    assert_tag :tag => 'img', :attributes => { :src => '/user_themes/mytheme/images/two.png' }
+    assert_tag :tag => 'img', :attributes => { :src => "/#{TMP_THEMES_DIR}/mytheme/images/one.png" }
+    assert_tag :tag => 'img', :attributes => { :src => "/#{TMP_THEMES_DIR}/mytheme/images/two.png" }
   end
 
   should 'display "add image" button' do
     theme = Theme.create('mytheme', :owner => profile)
     get :edit, :profile => 'testinguser', :id => 'mytheme'
-    
+
     assert_tag :tag => 'a', :attributes => { :href => '/myprofile/testinguser/profile_themes/add_image/mytheme' }
   end
 
@@ -216,7 +218,7 @@ class ProfileThemesControllerTest < ActionController::TestCase
     post :add_image, :profile => 'testinguser', :id => 'mytheme', :image => fixture_file_upload('/files/rails.png', 'image/png', :binary)
     assert_redirected_to :action => "edit", :id => 'mytheme'
     assert theme.image_files.include?('rails.png')
-    assert(system('diff', RAILS_ROOT + '/test/fixtures/files/rails.png', TMP_THEMES_DIR + '/mytheme/images/rails.png'), 'should put the correct uploaded file in the right place')
+    assert(system('diff', Rails.root.join('test', 'fixtures', 'files','rails.png').to_s, TMP_THEMES_PATH.join('mytheme/images/rails.png').to_s), 'should put the correct uploaded file in the right place')
   end
 
   should 'link to "test theme"' do
@@ -250,7 +252,7 @@ class ProfileThemesControllerTest < ActionController::TestCase
 
     LayoutTemplate.expects(:all).returns(all)
     get :index, :profile => 'testinguser'
-    assert_same all, assigns(:layout_templates)
+    assert_equal all, assigns(:layout_templates)
   end
 
   should 'display links to set template' do

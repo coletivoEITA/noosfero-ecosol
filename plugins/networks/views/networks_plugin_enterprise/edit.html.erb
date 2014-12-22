@@ -1,0 +1,9 @@
+<h1><%= t('views.enterprise.edit.title') % {:enterprise => @supplier.name} %></h1>
+
+<%= button :back, t('views.node.edit.back'), :controller => :networks_plugin_network, :action => :structure, :node_id => @node.id %>
+
+<div id="suppliers-page" class='networks-plugin'>
+  <div id="supplier-<%=@supplier.id%>" class="supplier value-row" without-hover without-click-edit>
+    <%= render 'suppliers_plugin_myprofile/supplier', :supplier => @supplier %>
+  </div>
+</div>

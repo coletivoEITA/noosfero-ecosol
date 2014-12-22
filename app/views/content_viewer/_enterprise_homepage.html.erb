@@ -1,0 +1,3 @@
+<%= display_profile_info enterprise_homepage.profile if (!enterprise_homepage.profile.enabled) %> 
+<div><%= enterprise_homepage.body %></div>
+<%= render :file => 'catalog/index' if enterprise_homepage.profile.environment.enabled?('products_for_enterprises') %>

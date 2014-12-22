@@ -1,0 +1,69 @@
+@import 'base';
+
+$balloon-border: black;
+$balloon-bg: white;
+$balloon-arrow: 6px;
+
+.balloon {
+  position: absolute;
+  z-index: 999;
+
+  .balloon-inner {
+    background-color: $balloon-bg;
+    border: $border solid $balloon-border;
+
+    .content {
+      overflow: auto;
+      padding: $padding - $border;
+    }
+  }
+
+  &.bellow {
+    
+    .arrow-wrap {
+      .arrow {
+        &.arrow-inner {
+          border-bottom-color: $balloon-bg;
+          top: $border;
+        }
+        &.arrow-border {
+          border-bottom-color: $balloon-border;
+        }
+      }
+    }
+  }
+  &.above {
+
+    .arrow-wrap {
+      .arrow {
+        &.arrow-inner {
+          border-top-color: $balloon-bg;
+          top: -$border;
+        }
+        &.arrow-border {
+          border-top-color: $balloon-border;
+        }
+      }
+    }
+  }
+
+  .arrow-wrap {
+    width: 2*$balloon-arrow;
+    height: 2*$balloon-arrow;
+    position: relative;
+    left: $padding;
+    background: transparent;
+
+    .arrow {
+      position: absolute;
+      height: 0;
+      width: 0;
+      border-style: solid;
+      border-width: $balloon-arrow;
+
+      &.arrow-inner, &.arrow-border {
+        border-color: transparent;
+      }
+    }
+  }
+}

@@ -1,8 +1,57 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
+/*
+* third party libraries
+*= require lodash.compat.min.js
+*= require jquery-2.1.1.min.js
+*= require jquery-migrate-1.2.1.js
+*= require jquery.colorbox-min.js
+*= require jquery.cycle.all.min.js
+*= require jquery-ui-1.10.4/js/jquery-ui-1.10.4.min.js
+*= require jquery.scrollTo.js
+*= require jquery.form.js
+*= require jquery-validation/jquery.validate.js
+*= require jquery.cookie.js
+*= require jquery.ba-bbq.min.js
+*= require typeahead.bundle.js
+*= require jquery.tokeninput.js
+*= require jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
+*= require inputosaurus.js
+*= require reflection.js
+*= require rails.js
+*= require rails-extended.js
+*= require jrails.js
+* noosfero libraries
+*= require_self
+*= require modal.js
+*= require form.js
+* views speficics
+*= require add-and-join.js
+*= require report-abuse.js
+*= require manage-products.js
+*= require autogrow.js
+*= require pagination.js
+*= require loading-overlay.js
+*/
+
+_.templateSettings = {
+  interpolate: /\{\{(.+?)\}\}/g,
+};
+
+// scope for noosfero stuff
+noosfero = {
+};
 
 function noosfero_init() {
   // focus_first_field(); it is moving the page view when de form is down.
+}
+
+var __noosfero_root = null;
+function noosfero_root() {
+  if (__noosfero_root == null) {
+    __noosfero_root = jQuery('meta[property="noosfero:root"]').attr("content") || '';
+  }
+  return __noosfero_root;
 }
 
 /* If applicable, find the first field in which the user can type and move the
@@ -66,17 +115,17 @@ function convToValidEmail( str ) {
 }
 
 function updateUrlField(name_field, id) {
-   url_field = $(id);
-   old_url_value = url_field.value;
-   new_url_value = convToValidIdentifier(name_field.value, "-");
+  name_field = jQuery(name_field)
+  var old_name_value = name_field.get(0).defaultValue
+  var url_field = $(id);
 
-   url_field.value = new_url_value;
+  var old_url_value = url_field.val()
+  var new_url_value = convToValidIdentifier(name_field.val(), "-")
+  url_field.val(new_url_value)
 
-   if (!/^\s*$/.test(old_url_value)
-       && old_url_value != new_url_value
-       ) {
-     warn_value_change(url_field);
-   }
+  if (old_name_value && !/^\s*$/.test(old_url_value) && old_url_value != new_url_value) {
+    warn_value_change(url_field);
+  }
 }
 
 
@@ -101,22 +150,24 @@ jQuery.fn.center = function () {
 }
 
 function show_warning(field, message) {
-   new Effect.Highlight(field, {duration:3});
-   $(message).show();
+  jQuery('#'+field).effect('highlight');
+  jQuery('#'+message).show();
 }
 
 function hide_warning(field) {
-   $(field).hide();
+   jQuery('#'+field).hide();
 }
 
 function enable_button(button) {
-   button.enable();
-   button.removeClassName("disabled");
+  button = jQuery(button)
+  button.prop('disabled', false);
+  button.removeClass("disabled");
 }
 
 function disable_button(button) {
-   button.disable();
-   button.addClassName("disabled");
+  button = jQuery(button)
+  button.prop('disabled', true);
+  button.addClass("disabled");
 }
 
 function toggleDisabled(enable, element) {
@@ -150,24 +201,24 @@ function hideOthersIconSelector(current_div) {
 }
 
 function loading(element_id, message) {
-   jQuery(element_id).addClass('loading');
+   jQuery('#'+element_id).addClass('loading');
    if (message) {
-      jQuery(element_id).html(message);
+      jQuery('#'+element_id).html(message);
    }
 }
 function small_loading(element_id, message) {
-   $(element_id).addClassName('small-loading');
+   $('#'+element_id).addClass('small-loading');
    if (message) {
-      $(element_id).update(message);
+      $('#'+element_id).text(message);
    }
 }
 function loading_done(element_id) {
-   jQuery(element_id).removeClass('loading');
-   jQuery(element_id).removeClass('small-loading');
-   jQuery(element_id).removeClass('small-loading-dark');
+   jQuery('#'+element_id).removeClass('loading');
+   jQuery('#'+element_id).removeClass('small-loading');
+   jQuery('#'+element_id).removeClass('small-loading-dark');
 }
 function open_loading(message) {
-   jQuery('body').prepend("<div id='overlay_loading' class='ui-widget-overlay' style='display: none'/><div id='overlay_loading_modal' style='display: none'><p>"+message+"</p><img src='/images/loading-dark.gif'/></div>");
+   jQuery('body').prepend("<div id='overlay_loading' class='ui-widget-overlay' style='display: none'/><div id='overlay_loading_modal' style='display: none'><p>"+message+"</p><img src='" + noosfero_root() + "/images/loading-dark.gif'/></div>");
    jQuery('#overlay_loading').show();
    jQuery('#overlay_loading_modal').center();
    jQuery('#overlay_loading_modal').fadeIn('slow');
@@ -353,173 +404,35 @@ jQuery(document).ready(function() {
   jQuery('#chat-online-users').live('click', function(e) { e.stopPropagation(); });
 });
 
-function input_javascript_ordering_stuff() {
-   jQuery(function() {
-      jQuery(".input-list").sortable({
-         placeholder: 'ui-state-highlight',
-         axis: 'y',
-         opacity: 0.8,
-         tolerance: 'pointer',
-         forcePlaceholderSize: true,
-         update: function(event, ui) {
-            jQuery.post(jQuery(this).next('.order-inputs').attr('href'), jQuery(this).sortable('serialize'));
-         }
-      });
-      jQuery(".input-list li").disableSelection();
-
-      jQuery(".input-list li").hover(
-         function() {
-            jQuery(this).addClass('editing-input');
-            jQuery(this).css('cursor', 'move');
-         },
-         function() {
-            jQuery(this).removeClass('editing-input');
-            jQuery(this).css('cursor', 'pointer');
-         }
-      );
-
-      jQuery("#display-add-input-button > .hint").show();
-   });
-}
-
-function display_input_stuff() {
-   jQuery(function() {
-      jQuery("#add-input-button").click(function() {
-        jQuery("#display-add-input-button").find('.loading-area').addClass('small-loading');
-         url = jQuery(this).attr('href');
-         jQuery.get(url, function(data){
-            jQuery("#" + "new-product-input").html(data);
-            jQuery("#display-add-input-button").find('.loading-area').removeClass('small-loading');
-            jQuery("#add-input-button").hide();
-         });
-         return false;
-      });
-   });
-}
-
-function add_input_stuff() {
-   jQuery(function() {
-      jQuery(".cancel-add-input").click(function() {
-         jQuery("#new-product-input").html('');
-         jQuery("#add-input-button").show();
-         return false;
-      });
-      jQuery("#input-category-form").submit(function() {
-         id = "product-inputs";
-         jQuery(this).find('.loading-area').addClass('small-loading');
-         jQuery("#input-category-form,#input-category-form *").css('cursor', 'progress');
-         jQuery.post(this.action, jQuery(this).serialize(), function(data) {
-            jQuery("#" + id).html(data);
-         });
-         return false;
-      });
-      jQuery('body').scrollTo('50%', 500);
-   });
-}
-
-function input_javascript_stuff(id) {
-   jQuery(function() {
-      id = 'input-' + id;
-      jQuery("#add-"+ id +"-details,#edit-"+id).click(function() {
-        target = '#' + id + '-form';
-
-        jQuery('#' + id + ' ' + '.input-details').hide();
-        jQuery(target).show();
-
-        // make request only if the form is not loaded yet
-        if (jQuery(target + ' form').length == 0) {
-           small_loading(id);
-           jQuery(target).load(jQuery(this).attr('href'), function() {
-             loading_done(id);
-             jQuery('#' + id + ' .input-informations').removeClass('input-form-closed').addClass('input-form-opened');
-           });
-        }
-        else {
-           jQuery('#' + id + ' .input-informations').removeClass('input-form-closed').addClass('input-form-opened');
-        }
-
-        return false;
-      });
-      jQuery("#remove-" + id).unbind('click').click(function() {
-         if (confirm(jQuery(this).attr('data-confirm'))) {
-            url = jQuery(this).attr('href');
-            small_loading("product-inputs");
-            jQuery.post(url, function(data){
-              jQuery("#" + "product-inputs").html(data);
-              loading_done("product-inputs");
-            });
-         }
-         return false;
-      });
-    });
-}
-
-function edit_input_stuff(id, currency_separator) {
-   id = "input-" + id;
-
-   jQuery(function() {
-      jQuery("#" + "edit-" + id + "-form").ajaxForm({
-         target: "#" + id,
-         beforeSubmit: function(a,f,o) {
-           o.loading = small_loading('edit-' + id + '-form');
-           o.loaded = loading_done(id);
-         }
-      });
-
-      jQuery("#cancel-edit-" + id).click(function() {
-         jQuery("#" + id + ' ' + '.input-details').show();
-         jQuery("#" + id + '-form').hide();
-         jQuery('#' + id + ' .input-informations').removeClass('input-form-opened').addClass('input-form-closed');
-         return false;
-      });
-
-      jQuery(".numbers-only").keypress(function(event) {
-         return numbersonly(event, currency_separator)
-      });
-
-      add_input_unit(id, jQuery("#" + id + " select :selected").val())
-
-      jQuery("#" + id + ' select').change(function() {
-         add_input_unit(id, jQuery("#" + id + " select :selected").val())
-      });
-
-      jQuery("#" + id).enableSelection();
-   });
-}
-
-function add_input_unit(id, selected_unit) {
-   if (selected_unit != '') {
-      jQuery("#" + id + ' .price-by-unit').show();
-      jQuery("#" + id + ' .selected-unit').text(jQuery("#" + id + " select :selected").text());
-   } else {
-      jQuery("#" + id + ' .price-by-unit').hide();
-   }
-}
-
 function loading_for_button(selector) {
   jQuery(selector).append("<div class='small-loading' style='width:16px; height:16px; position:absolute; top:0; right:-20px;'></div>");
   jQuery(selector).css('cursor', 'progress');
 }
 
-function new_qualifier_row(selector, select_qualifiers, delete_button) {
-  index = jQuery(selector + ' tr').size() - 1;
-  jQuery(selector).append("<tr><td>" + select_qualifiers + "</td><td id='certifier-area-" + index + "'><select></select>" + delete_button + "</td></tr>");
-}
+// override this to take action after user_data load
+function customUserDataCallback() {
+};
+
+// override this to take action after user_data load
+function customUserDataCallback() {
+};
 
 // controls the display of the login/logout stuff
 jQuery(function($) {
-  $.ajaxSetup({cache: false});
-  $.getJSON('/account/user_data', function userDataCallBack(data) {
+  $.ajaxSetup({
+    cache: false,
+    headers: {
+      'X-CSRF-Token': $.cookie("_noosfero_.XSRF-TOKEN")
+    }
+  });
+
+  var user_data = noosfero_root() + '/account/user_data';
+  $.getJSON(user_data, function userDataCallBack(data) {
+    noosfero.user_data = data;
+    customUserDataCallback();
     if (data.login) {
-      // logged in
-      loggedInDataCallBack(data);
-      addManageEnterprisesToOldStyleMenu(data);
-      if (data.chat_enabled) {
-        setInterval(function(){ $.getJSON('/account/user_data', chatOnlineUsersDataCallBack)}, 10000);
-      }
-    } else {
-      // not logged in
-      $('#user .not-logged-in, .login-block .not-logged-user').hide().fadeIn();
+      $('head').append('<meta content="authenticity_token" name="csrf-param" />');
+      $('head').append('<meta content="'+$.cookie("_noosfero_.XSRF-TOKEN")+'" name="csrf-token" />');
     }
     if (data.notice) {
       display_notice(data.notice);
@@ -528,71 +441,6 @@ jQuery(function($) {
     $(window).trigger("userDataLoaded", data);
   });
 
-  function loggedInDataCallBack(data) {
-    // logged in
-    $('body').addClass('logged-in');
-    $('#user .logged-in, .login-block .logged-user-info').each(function() {
-      $(this).find('a[href]').each(function() {
-        var new_href = $(this).attr('href').replace('{login}', data.login);
-        if (data.email_domain) {
-          new_href = new_href.replace('{email_domain}', data.email_domain);
-        }
-        $(this).attr('href', new_href);
-      });
-      var html = $(this).html()
-                        .replace(/{login}/g, data.login)
-                        .replace('{avatar}', data.avatar)
-                        .replace('{month}', data.since_month)
-                        .replace('{year}', data.since_year);
-      $(this).html(html).fadeIn();
-      if (data.is_admin) {
-        $('#user .admin-link').show();
-      }
-      if (data.email_domain) {
-        $('#user .webmail-link').show();
-      }
-    });
-  }
-
-  function addManageEnterprisesToOldStyleMenu(data) {
-    if ($('#manage-enterprises-link-template').length > 0) {
-      $.each(data.enterprises, function(index, enterprise) {
-        var item = $('<li>' + $('#manage-enterprises-link-template').html() + '</li>');
-        item.find('a[href]').each(function() {
-          $(this).attr('href', '/myprofile/' + enterprise.identifier);
-        });
-        item.html(item.html().replace('{name}', enterprise.name));
-        item.insertAfter('#manage-enterprises-link-template');
-      });
-    }
-  }
-
-  function chatOnlineUsersDataCallBack(data) {
-    if ($('#chat-online-users').length == 0) {
-      return;
-    }
-    var content = '';
-    $('#chat-online-users .amount_of_friends').html(data['amount_of_friends']);
-    $('#chat-online-users').fadeIn();
-    for (var user in data['friends_list']) {
-      var name = "<span class='friend_name'>%{name}</span>";
-      var avatar = data['friends_list'][user]['avatar'];
-      var jid = data['friends_list'][user]['jid'];
-      var status_name = data['friends_list'][user]['status'] || 'offline';
-      avatar = avatar ? '<img src="' + avatar + '" />' : ''
-        name = name.replace('%{name}',data['friends_list'][user]['name']);
-      open_chat_link = "onclick='open_chat_window(this, \"#" + jid + "\")'";
-      var status_icon = "<div class='chat-online-user-status icon-menu-"+ status_name + "-11'><span>" + status_name + '</span></div>';
-      content += "<li><a href='#' class='chat-online-user' " + open_chat_link + "><div class='chat-online-user-avatar'>" + avatar + '</div>' + name + status_icon + '</a></li>';
-    }
-    content ? $('#chat-online-users-hidden-content ul').html(content) : $('#anyone-online').show();
-    $('#chat-online-users-title').click(function(){
-      if($('#chat-online-users-content').is(':visible'))
-      $('#chat-online-users-content').hide();
-      else
-      $('#chat-online-users-content').show();
-    });
-  }
 });
 
 // controls the display of contact list
@@ -635,9 +483,12 @@ function display_notice(message) {
 }
 
 function open_chat_window(self_link, anchor) {
-   anchor = anchor || '#';
-   var noosfero_chat_window = window.open('/chat' + anchor,'noosfero_chat','width=900,height=500');
-   noosfero_chat_window.focus();
+   if(anchor) {
+      jQuery('#chat').show('fast');
+      jQuery("#chat" ).trigger('opengroup', anchor);
+   } else {
+      jQuery('#chat').toggle('fast');
+   }
    return false;
 }
 
@@ -675,8 +526,6 @@ function hide_and_show(hide_elements, show_elements) {
 
 function limited_text_area(textid, limit) {
   var text = jQuery('#' + textid).val();
-  // FIXME This will be fixed by: http://noosfero.org/Development/ActionItem3136
-  //grow_text_area(textid);
   var textlength = text.length;
   jQuery('#' + textid + '_left span').html(limit - textlength);
   if (textlength > limit) {
@@ -691,14 +540,9 @@ function limited_text_area(textid, limit) {
   }
 }
 
-function grow_text_area(textid) {
-  var height = jQuery('#' + textid).attr('scrollHeight');
-  if (jQuery.browser.webkit) {
-    height -= parseInt(jQuery('#' + textid).css('padding-top')) +
-              parseInt(jQuery('#' + textid).css('padding-bottom'));
-  }
-  jQuery('#' + textid).css('height', height + 'px');
-}
+jQuery(function($) {
+  $('.autogrow').autogrow();
+});
 
 jQuery(function($) {
   $('a').each(function() {
@@ -859,9 +703,9 @@ Array.min = function(array) {
 };
 
 function hideAndGetUrl(link) {
+  link = jQuery(link)
   link.hide();
-  url = jQuery(link).attr('href');
-  jQuery.get(url);
+  jQuery.getScript(link.attr('href'));
 }
 
 jQuery(function($){
@@ -1013,19 +857,6 @@ function altShow(e) {
 // jQuery('image[alt]').live('click', altHide);
 
 
-function facet_options_toggle(id, url) {
-  jQuery('#facet-menu-'+id+' .facet-menu-options').toggle('fast' , function () {
-    more = jQuery('#facet-menu-'+id+' .facet-menu-more-options');
-    console.log(more);
-    if (more.is(':visible') && more.children().length == 0) {
-      more.addClass('small-loading');
-      more.load(url, function () {
-        more.removeClass('small-loading');
-      });
-    }
-  });
-}
-
 if ( !console ) console = {};
 if ( !console.log ) console.log = function(){};
 
@@ -1060,31 +891,6 @@ log.warn = function() {
 log.error = function() {
   window.log.apply(window, jQuery.merge(['error'], arguments));
 }
-
-jQuery(function($) {
-  $('.colorbox').live('click', function() {
-    $.colorbox({
-      href:       $(this).attr('href'),
-      maxWidth:   $(window).width()-50,
-      height:     $(window).height()-50,
-      open:       true,
-      fixed:      true,
-      close:      'Cancel',
-      onComplete: function(bt) {
-        var opt = {}, maxH = $(window).height()-50;
-        if ($('#cboxLoadedContent *:first').height() > maxH) opt.height = maxH;
-        $.colorbox.resize(opt);
-      }
-    });
-    return false;
-  });
-
-  $('.colorbox-close').live('click', function() {
-    $.colorbox.close();
-    return false;
-  });
-
-});
 
 function showHideTermsOfUse() {
   if( jQuery("#article_has_terms_of_use").attr("checked") )
@@ -1126,3 +932,49 @@ function apply_zoom_to_images(zoom_text) {
     });
   });
 }
+
+function notifyMe(title, options) {
+  // This might be useful in the future
+  //
+  // Let's check if the browser supports notifications
+  // if (!("Notification" in window)) {
+  //   alert("This browser does not support desktop notification");
+  // }
+
+  // Let's check if the user is okay to get some notification
+  var notification = null;
+  if (Notification.permission === "granted") {
+    // If it's okay let's create a notification
+    notification = new Notification(title, options);
+  }
+
+  // Otherwise, we need to ask the user for permission
+  // Note, Chrome does not implement the permission static property
+  // So we have to check for NOT 'denied' instead of 'default'
+  else if (Notification.permission !== 'denied') {
+    Notification.requestPermission(function (permission) {
+      // Whatever the user answers, we make sure we store the information
+      if (!('permission' in Notification)) {
+        Notification.permission = permission;
+      }
+
+      // If the user is okay, let's create a notification
+      if (permission === "granted") {
+	notification = new Notification(title, options);
+      }
+    });
+  }
+  return notification;
+  // At last, if the user already denied any notification, and you
+  // want to be respectful there is no need to bother them any more.
+}
+
+function start_fetching(element){
+  jQuery(element).append('<div class="fetching-overlay">Loading...</div>');
+}
+
+function stop_fetching(element){
+  jQuery('.fetching-overlay', element).remove();
+}
+
+window.isHidden = function isHidden() { return (typeof(document.hidden) != 'undefined') ? document.hidden : !document.hasFocus() };

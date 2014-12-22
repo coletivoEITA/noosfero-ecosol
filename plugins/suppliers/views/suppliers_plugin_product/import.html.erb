@@ -1,0 +1,39 @@
+<div id="suppliers-products-import" class="popin">
+
+  <h1>
+    <%= t('views.product.import.action') %>
+  </h1>
+
+  <%= form_tag({:controller => :suppliers_plugin_product, :action => :import}, :onsubmit => 'jQuery(this).ajaxSubmit(); return false') do %>
+
+    <p>
+      <%= t('views.product.import.help') %>
+    </p>
+
+    <table>
+      <thead>
+        <th> <%= t('views.product.import.field_supplier_name') %> </th>
+        <th> <%= t('views.product.import.field_product_name') %> </th>
+        <th> <%= t('views.product.import.field_product_unit') %> </th>
+        <th> <%= t('views.product.import.field_product_price') %> </th>
+      </thead>
+      <tbody>
+        <tr>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      <%= t('views.product.import.unit_help') % {:units => environment.units.map(&:singular).join(' - ')} %>
+    </p>
+
+    <%= file_field_tag 'csv', :accept => 'text/csv' %>
+
+    <%= submit_tag t('views.product.import.send') %>
+
+  <% end %>
+</div>

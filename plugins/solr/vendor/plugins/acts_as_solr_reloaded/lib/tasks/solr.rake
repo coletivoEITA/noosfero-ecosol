@@ -59,7 +59,7 @@ namespace :solr do
   task :start do
     if !solr_downloaded?
       puts "ERROR: Can't find Solr on the source code! Please run 'rake solr:download'."
-      return
+      abort
     end
 
     require File.expand_path(File.dirname(__FILE__) + '/../../config/solr_environment')
@@ -158,7 +158,6 @@ namespace :solr do
 
     logger = ActiveRecord::Base.logger = Logger.new(STDOUT)
     logger.level = ActiveSupport::BufferedLogger::INFO unless debug_output
-    Dir["#{RAILS_ROOT}/app/models/*.rb"].each{ |file| require file }
 
     if start_server
       puts "Starting Solr server..."
@@ -174,6 +173,7 @@ namespace :solr do
     end
 
     models = $solr_indexed_models unless models.count > 0
+    puts "Reindexing #{models.join ', '}..."
     models.each do |model|
       if clear_first
         puts "Clearing index for #{model}..."

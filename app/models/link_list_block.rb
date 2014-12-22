@@ -1,5 +1,7 @@
 class LinkListBlock < Block
 
+  attr_accessible :links
+
   ICONS = [
     ['no-icon', _('(No icon)')],
     ['edit', N_('Edit')],
@@ -54,34 +56,34 @@ class LinkListBlock < Block
   end
 
   def content(args={})
-    block_title(title) +
-    content_tag('ul',
-      links.select{|i| !i[:name].blank? and !i[:address].blank?}.map{|i| content_tag('li', link_html(i))}
-    )
+    block = self
+    list = links.select{ |i| i[:name].present? and i[:address].present? }
+    lambda do |context|
+      render file: 'blocks/link_list_block', locals: {block: block, links: list}
+    end
   end
 
   def link_html(link)
-    klass = 'icon-' + link[:icon] if link[:icon]
-    sanitize_link(
-      link_to(link[:name], expand_address(link[:address]), :target => link[:target], :class => klass, :title => link[:title])
-    )
   end
 
   def expand_address(address)
     add = if owner.respond_to?(:identifier)
       address.gsub('{profile}', owner.identifier)
+    elsif owner.is_a?(Environment) && owner.enabled?('use_portal_community') && owner.portal_community
+      address.gsub('{portal}', owner.portal_community.identifier)
     else
       address
     end
     if add !~ /^[a-z]+:\/\// && add !~ /^\//
-      'http://' + add
+      '//' + add
     else
+      if root = Noosfero.root
+        if !add.starts_with?(root)
+          add = root + add
+        end
+      end
       add
     end
-  end
-
-  def editable?
-    true
   end
 
   def icons_options
@@ -90,10 +92,11 @@ class LinkListBlock < Block
     end
   end
 
+  def sanitize_link html
+    sanitizer = HTML::WhiteListSanitizer.new
+    sanitizer.sanitize html
+  end
+
   private
 
-  def sanitize_link(text)
-    sanitizer = HTML::WhiteListSanitizer.new
-    sanitizer.sanitize(text)
-  end
 end

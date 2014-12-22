@@ -1,0 +1,17 @@
+<%
+  urls = [
+    [t('consumers_coop_plugin.views.layouts._admin_submenu.orders_cycles'), {:controller => :consumers_coop_plugin_cycle, :action => :index, :profile => profile.identifier}, false],
+    [t('consumers_coop_plugin.views.layouts._admin_submenu.products'), {:controller => :consumers_coop_plugin_product, :action => :index, :profile => profile.identifier}, false],
+    [t('consumers_coop_plugin.views.layouts._admin_submenu.suppliers'), {:controller => :consumers_coop_plugin_supplier, :action => :index, :profile => profile.identifier}, false],
+    [t('consumers_coop_plugin.views.layouts._admin_submenu.settings'), {:controller => :consumers_coop_plugin_myprofile, :action => :settings, :profile => profile.identifier}, true],
+  ]
+%>
+
+<div class="admin-submenu">
+  <div class='menu-button-container'>
+    <% urls.each do |name, url, exact| %>
+      <%= link_to name, url, :class => 'menu-button' +
+        ((params[:controller] == url[:controller].to_s and (!exact or params[:action] == url[:action].to_s)) ? ' menu-selected' : '') %>
+    <% end %>
+  </div>
+</div>

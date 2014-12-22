@@ -15,9 +15,9 @@ class ProductCategoriesBlock < Block
 
   def content(args={})
     profile = owner
-    lambda do
+    proc do
       if @categories.nil? or @categories.length == 0
-        categories = ProductCategory.on_level().order(:name)
+        categories = ProductCategory.on_level(nil).order(:name)
         if @categories and @categories.length == 0
           notice = _('There are no sub-categories for %s') % @category.name
         end

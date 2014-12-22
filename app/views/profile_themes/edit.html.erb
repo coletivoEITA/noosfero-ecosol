@@ -1,0 +1,41 @@
+<form>
+  <%# FIXME %>
+  <h1 id='theme-name'>
+    <%= _('Editing theme "%s"') % @theme.name %>
+    <%= button(:eyes, _('Preview this theme'), :action => 'start_test', :id => @theme.id) %>
+    <%= button(:back, _('Back'), :action => 'index') %>
+  </h1>
+</form>
+
+
+<div id='css-files-list'>
+  <h2><%= _('CSS files') %></h2>
+  <ul>
+    <% for css in @css_files %>
+      <li><%= link_to_remote(css, :url => { :action => 'css_editor', :id => @theme.id, :css => css }, :update => { :success => 'css-code' }) %></li>
+    <% end %>
+  </ul>
+  <% button_bar do %>
+    <%= modal_button :add, _('New CSS'), :action => 'add_css', :id => @theme.id %>
+  <% end %>
+</div>
+
+<div id='image-files-list'>
+  <h2><%= _('Images') %></h2>
+  <ul>
+    <% for image in @image_files %>
+      <li><%= image_tag("/user_themes/#{@theme.id}/images/#{image}") %></li>
+    <% end %>
+  </ul>
+  <% button_bar do %>
+    <%= modal_button :add, _('Add image'), :action => 'add_image', :id =>  @theme.id %>
+  <% end %>
+</div>
+
+<div id='css-code'>
+  <center style='padding-top: 5em;'>
+    <em><%= _('Select a CSS file to edit') %></em>
+  </center>
+</div>
+
+<%# javascript_include_tag 'codepress/codepress' %>

@@ -1,4 +1,18 @@
-<% render :layout => 'field', :locals => { :f => f } do %>
+<%= render :layout => 'field', :locals => { :f => f } do %>
+
+  <div class="field-select-type">
+    <%= _('Type:') %>
+
+    <%= f.radio_button(:show_as, 'input') %>
+    <%= f.label(:show_as, _('One-line text'), :value => 'input') %>
+
+    <%= f.radio_button(:show_as, 'textarea') %>
+    <%= f.label(:show_as, _('Multiline text'), :value => 'textarea') %>
+
+    <%= f.radio_button(:show_as, 'tinymce') %>
+    <%= f.label(:show_as, _('HTML'), :value => 'tinymce') %>
+  </div>
+
   <div class="field-text-default">
     <%= f.label(:default_value, _('Default text:')) %>
     <%= f.text_field(:default_value) %>

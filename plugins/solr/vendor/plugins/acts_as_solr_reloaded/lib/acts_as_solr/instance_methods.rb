@@ -15,8 +15,6 @@ module ActsAsSolr #:nodoc:
         solr_add to_solr_doc
         solr_commit if configuration[:auto_commit]
         true
-      else
-        solr_destroy
       end
     end
 

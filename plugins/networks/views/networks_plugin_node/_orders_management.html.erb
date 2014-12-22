@@ -1,0 +1,33 @@
+
+<%= form_tag({controller: :networks_plugin_node, action: :orders_management}, id: @node.id) do %>
+
+  <div>
+    <%= t('views.node._orders_management.forward_explanation') %>
+  </div>
+
+  <% profile.networks_settings.orders_forward ||= 'network' %>
+  <div>
+    <%= radio_button_tag :orders_forward, 'network', profile.networks_settings.orders_forward == 'network' %>
+    <%= label_tag :orders_forward_network, t('views.node._orders_management.network_forward') %>
+  </div>
+  <div>
+    <%= radio_button_tag :orders_forward, 'orders_managers', profile.networks_settings.orders_forward == 'orders_managers' %>
+    <%= label_tag :orders_forward_orders_managers, t('views.node._orders_management.managers_forward') %>
+  </div>
+
+  <div id="orders-managers">
+    <% orders_managers = @node.orders_managers %>
+    <% profile.members.each do |profile| %>
+      <div>
+        <%= check_box_tag "orders_managers[]", profile.id, orders_managers.find{ |p| p == profile }, id: "orders_managers_#{profile.id}" %>
+        <%= label_tag "orders_managers_#{profile.id}", profile.name %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= submit_tag _("Save") %>
+<% end %>
+
+<script type="text/javascript">
+  networks.orders_forward.load();
+</script>

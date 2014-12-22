@@ -22,7 +22,7 @@ C{
 #include <stdlib.h> /* qsort */
 #include <string.h>
 
-#define DEFAULT_LANGUAGE "pt"
+#define DEFAULT_LANGUAGE "en"
 #define SUPPORTED_LANGUAGES ":de:eo:es:fr:hy:it:pt:ru:"
 
 #define vcl_string char

@@ -39,7 +39,7 @@ class ProfileSearchControllerTest < ActionController::TestCase
     get 'index', :profile => person.identifier, :q => 'article'
     assert_includes assigns(:results), article
     assert_not_includes assigns(:results), article2
-	end
+  end
 
   should 'display search results' do
     article1 = fast_create(Article, {:body => '<p>Article to test profile search</p>', :profile_id => person.id}, :search => true)
@@ -84,7 +84,8 @@ class ProfileSearchControllerTest < ActionController::TestCase
     assert_no_tag :tag => 'ul', :attributes => { :id => 'profile-search-results'}, :descendant => { :tag => 'li' }
   end
 
-  should 'not display private articles' do
+
+  should 'not display not published articles' do
     article1 = TextileArticle.create(:name => 'Article 1', :body => 'Article to test profile search', :profile => person, :published => false)
     article2 = TextileArticle.create(:name => 'Article 2', :body => 'Another article to test profile search', :profile => person)
 
@@ -104,4 +105,23 @@ class ProfileSearchControllerTest < ActionController::TestCase
     assert_tag :tag => 'div', :attributes => { :class => 'results-found-message' }, :content => /2 results found/
   end
 
+  should 'search on article name and content' do
+    article1 = TextileArticle.create(:name => 'Article Query', :body => 'Article to test profile search on article name', :profile => person)
+    article2 = TextileArticle.create(:name => 'Article 2', :body => 'Another article to test profile search for query on article content', :profile => person)
+
+    get 'index', :profile => person.identifier, :q => 'query'
+
+    assert_tag :tag => 'div', :attributes => { :class => 'results-found-message' }, :content => /2 results found/
+  end
+
+  should 'display result found equivalent to items listed' do
+    article1 = TextileArticle.create(:name => 'Article 1', :body => 'Article to test profile search results', :profile => person)
+    article2 = TextileArticle.create(:name => 'Article 2', :body => 'Article to test profile search results', :profile => person)
+    article3 = TextileArticle.create(:name => 'Article 3', :body => 'Article to test profile search results', :profile => person)
+
+    get 'index', :profile => person.identifier, :q => 'test'
+
+    assert_tag :tag => 'ul', :attributes => { :class => 'results-list'},
+      :children => { :count => 3, :only => { :tag => "li" } }
+  end
 end

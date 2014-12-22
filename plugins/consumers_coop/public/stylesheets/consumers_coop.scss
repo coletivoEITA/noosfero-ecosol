@@ -1,0 +1,283 @@
+@import 'base';
+
+/* ----- override some noosfero's css  ----- */
+
+body.consumers-coop {
+  line-height: 20px;
+  input {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .popin {
+    padding-bottom: 10px;
+  }
+}
+.consumers-coop .main-block {
+  text-align: left;
+}
+
+/* ----- layout ----- */
+
+/* not working
+.consumers-coop-enabled .profile-image-block,
+.consumers-coop-enabled .profile-info-block {
+  display: none;
+}
+.consumers-coop-enabled.logged-in .login-block {
+  display: none;
+}
+.consumers-coop-enabled.logged-in .profile-image-block,
+.consumers-coop-enabled.logged-in .profile-info-block {
+  display: block;
+}
+.consumers-coop-enabled.logged-in .profile-info-block h2 {
+  display: none;
+}
+*/
+
+.consumers-coop-layout .page-title,
+.consumers-coop-enabled .page-title {
+  display: none !important;
+}
+.consumers-coop-layout .no-boxes h1 {
+  font-variant: normal !important;
+}
+.consumers-coop-layout #profile-header {
+  display: none !important;
+}
+.consumers-coop-layout #content h2 {
+  color: #036475;
+  margin-bottom: 7px;
+  height: 34px;
+}
+.consumers-coop-layout #content h2 a {
+  text-decoration: none;
+}
+.consumers-coop-layout #content h3 {
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+/* ----- control panel ----- */
+
+.controller-profile_editor a.control-panel-consumers-coop {
+  background-image: url(/plugins/consumers_coop/images/consumers-coop.png);
+}
+
+/* ----- header ----- */
+
+#consumers-coop-plugin-header {
+  margin-left: -$wireframe-padding;
+  margin-top: 2*$margin;
+  margin-bottom: $margin;
+  width: $wireframe + 2*$wireframe-padding;
+
+  #menu-title {
+    color: black;
+    text-align: left;
+    margin: 0;
+    padding-top: 55px;
+    font-size: 24px;
+    font-weight: lighter;
+  }
+
+  .menu-header {
+    background-color: #d9d2e4;
+    padding: 8px 0;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .menu-logo {
+    height: 90px;
+    padding-left: $wireframe-padding;
+    text-transform: capitalize;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+  }
+
+  .admin-submenu {
+
+    .menu-button-container {
+      border-top: 2px solid #787969;
+      padding: $half-padding;
+      padding-left: $wireframe-padding + $half-padding;
+
+      .menu-button {
+        padding: $half-padding;
+        text-transform: lowercase;
+      }
+    }
+  }
+
+  .menu-button-container {
+    background: #646158;
+    padding: $padding;
+    padding-left: $wireframe-padding + $half-padding;
+    @extend .container-clean;
+
+    .menu-button {
+      float: left;
+      padding: $padding $half-padding;
+      margin-right: $half-margin;
+      background-color: transparent;
+      color: white;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 5px;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+      -o-border-radius: 5px;
+
+      &.menu-selected {
+        font-weight: bold;
+      }
+      &:hover,
+      &.menu-selected {
+        color: #646158;
+        background-color: white;
+      }
+    }
+  }
+}
+
+/* ----- general ----- */
+
+.consumers-coop .consumers-coop-error-message {
+  color: red;
+}
+.consumers-coop .consumers-coop-product-errors {
+  color: red;
+  background-color: white;
+}
+.consumers-coop .consumers-coop-product-errors > div {
+  border: 1px solid gray;
+  padding-left: 10px;
+}
+.consumers-coop #product-errors, .consumers-coop #supplier-product-errors ul {
+}
+
+/* ----- common ----- */
+
+.consumers-coop {
+  .box-align {
+    margin-left: -$padding;
+  }
+  .alignment {
+    padding-left: $padding;
+  }
+  .alignment2x {
+    padding-left: 2*$padding;
+  }
+  .text-wrap {
+    width: 400px;
+  }
+
+  small {
+    font-size: 10px;
+  }
+}
+
+.consumers-coop .happening {
+  background-color: #ffe546;
+}
+
+.consumers-coop .line-label {
+  margin: 10px 9px 2px;
+  display: inline-block;
+  font-weight: bold;
+}
+
+.consumers-coop .title {
+  font-weight: bold;
+  clear: both;
+  margin-bottom: 8px;
+}
+
+/* ----- cycle date ----- */
+
+.consumers-coop .orders-date td.happening {
+  padding-right: 20px;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+/* ----- suppliers ----- */
+
+// disable find-enterprise for now
+.consumers-coop #supplier-add.supplier {
+
+  #create-dummy {
+    display: block;
+    .box-edit {
+      display: block;
+    }
+  }
+  #find-enterprise {
+    display: none
+  }
+
+}
+
+/* ----- order edit ----- */
+
+/* ----- message ----- */
+
+.consumers-coop-plugin-message input[type=text],
+.consumers-coop-plugin-message textarea {
+  width: 100%;
+}
+
+/* ----- settings ----- */
+
+#consumers-coop-settings {
+
+  form {
+    @import 'field';
+
+    .field {
+      width: 360px;
+      margin-top: 5px;
+    }
+    input[type=text] {
+      width: 100%;
+    }
+
+    div.color-choose {
+      width: 130px;
+      height: 10px;
+      border: 1px solid rgba(255,255,255,0.3);
+      display: inline-block;
+    }
+
+  }
+}
+#consumers-coop-plugin-header .menu-logo {
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+#consumers-coop-settings .color-purple,#consumers-coop-plugin-header .color-purple {
+  background-color: #705496;
+}
+#consumers-coop-settings .color-yellow,#consumers-coop-plugin-header .color-yellow {
+  background-color: #f5b900;
+}
+#consumers-coop-settings .color-beige,#consumers-coop-plugin-header .color-beige {
+  background-color: #c4bf66;
+}
+#consumers-coop-settings .color-blue,#consumers-coop-plugin-header .color-blue {
+  background-color: #0094c9;
+}
+#consumers-coop-settings .color-petro,#consumers-coop-plugin-header .color-petro {
+  background-color: #036475;
+}
+#consumers-coop-settings .color-green,#consumers-coop-plugin-header .color-green {
+  background-color: #4aa133;
+}
+
+#consumers-coop-settings .disabled {
+  background-color: gray;
+}

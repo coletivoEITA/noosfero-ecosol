@@ -1,0 +1,44 @@
+page_tab:
+  use_test_app: false
+timeline:
+  use_test_app: true
+
+test_users:
+  - brauliobo
+  - dtygel
+
+app:
+  id: xxx
+  secret: xxx
+  domain: domainconfigured.net
+
+test_app: 
+  test_id:  xxx
+  test_secret:  xxx
+
+  open_graph:
+    namespace: app_cirandas_test
+    objects:
+      blog_post: cirandas_article
+      community: community
+      enterprise: sse_enterprise
+      forum: discussion
+      friend: friend
+      gallery_image: cirandas_image
+      person: user_in_cirandas
+      product: sse_product
+      uploaded_file: cirandas_document
+    actions:
+      add: add
+      comment: comment
+      create: create
+      favorite: favorite
+      like: like
+      make_friendship:  make_friendship
+      upload: upload
+      update: update
+      start: start
+      announce_creation: announce_creation
+      announce_new: announce_new
+      announce_update: announce_update
+      announce_news: announce_news

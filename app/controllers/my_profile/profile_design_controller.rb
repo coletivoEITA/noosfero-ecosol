@@ -3,20 +3,14 @@ class ProfileDesignController < BoxOrganizerController
   needs_profile
 
   protect 'edit_profile_design', :profile
-  
+
   def available_blocks
     blocks = [ ArticleBlock, TagsBlock, RecentDocumentsBlock, ProfileInfoBlock, LinkListBlock, MyNetworkBlock, FeedReaderBlock, ProfileImageBlock, LocationBlock, SlideshowBlock, ProfileSearchBlock, HighlightsBlock ]
 
     blocks += plugins.dispatch(:extra_blocks)
 
-    # blocks exclusive for organizations
-    if profile.has_members?
-      blocks << MembersBlock
-    end
-
     # blocks exclusive to people
     if profile.person?
-      blocks << FriendsBlock
       blocks << FavoriteEnterprisesBlock
       blocks << CommunitiesBlock
       blocks << EnterprisesBlock
@@ -52,13 +46,9 @@ class ProfileDesignController < BoxOrganizerController
       blocks << RawHTMLBlock
     end
 
-    blocks
-  end
+    blocks += @plugins.dispatch :profile_blocks, profile
 
-  def clone
-    block = Block.find(params[:id])
-    block.duplicate
-    redirect_to :action => 'index'
+    blocks
   end
 
 end

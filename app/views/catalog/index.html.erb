@@ -1,0 +1,22 @@
+<% extra_content = [] %>
+<% extra_content_list = [] %>
+
+<div id="product-catalog">
+  <% if user.present? and (user.is_admin?(profile.environment) or user.is_admin?(profile)) %>
+    <div class="product-catalog-ctrl">
+      <%= button :add, _('Add product or service'), controller: :manage_products, action: :new, profile: profile.identifier %>
+    </div>
+  <% end %>
+
+  <h1><%= _('Products/Services') %></h1>
+
+  <%= content_for :product_page do %>
+    <%= render 'catalog/results' %>
+  <% end %>
+  <%= render 'catalog/search' %>
+  <%= render 'catalog/javascripts', external: false %>
+
+  <%= add_zoom_to_images %>
+
+  <br style="clear:both"/>
+</div>

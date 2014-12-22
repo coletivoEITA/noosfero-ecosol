@@ -1,0 +1,203 @@
+#!/usr/bin/env ruby
+
+require "#{File.dirname(__FILE__)}/lib/fbes_enterprise_call"
+
+TestRecipient = 'braulio@eita.org.br'
+
+User.disable_signup_emails
+User::Mailer.class_eval do 
+  def script_welcome_email user, enterprise, community = nil
+    recipients [user.person.email, "cirandas@fbes.org.br"] if Rails.env.production?
+    recipients [TestRecipient] if Rails.env.development?
+    from "SACC <cirandas@fbes.org.br>"
+    subject "Bem vinda/o ao CIRANDAS"
+    content_type "text/html"      
+    body :name => user.person.name,
+      :enterprise => enterprise,
+      :login => user.login,
+      :email => user.person.email,
+      :password =>  user.password,
+      :change_pass_link =>  "http://cirandas.net/account/forgot_password",
+      :help => {:index => "http://cirandas.net/ajuda", :videos => "http://cirandas.net/ajuda/video-aulas-sobre-cirandas"},
+      :fbes => {:link => "http://www.fbes.org.br", :name => "FBES - Forum Brasileiro de Economia Solidária"},
+      :community => community
+  end
+end
+
+def create_user data
+  name = data[:name]
+  mail = data[:mail]
+  phone = data[:phone]
+  pass = random_password 6
+
+  if mail.blank?    
+    $log.error "#{$log_prefix} Email não pode ser nulo...usuário não foi criado!"    
+    return nil
+  else
+    name = mail.split('@')[0] if name.blank?
+    login = unique_login_from_name name
+  end
+
+  $log.info "#{$log_prefix} Criando usuário: login '%s', senha '%s' e email '%s' ..." % [ login, pass, mail ] 
+
+  user = User.new :login => login, :email => mail,
+    :password => pass, :password_confirmation => pass,
+    :environment => $environment,
+    :terms_accepted => "1", :terms_of_use => $environment.terms_of_use
+  user.person_data = {:name => name, :contact_phone => phone}
+
+  user.signup!
+  $log.info "#{$log_prefix} Registrado!" 
+
+  $log.info "#{$log_prefix} Ativando o usuário..."
+  user.activate
+
+  user
+rescue => e
+  $log.fatal "#{$log_prefix} Não foi possível criar ou ativar o usuário... devido a excessão %s" % [ e.message ]
+  $log.fatal e.backtrace.join "\n"
+
+  nil
+end
+
+def find_or_create_users adm_users
+  adm_users.map do |data|
+
+    if data[:mail].present?
+      $log.info "#{$log_prefix} Verificando se o usuário com e-mail '%s' já existe..." % data[:mail]
+      user = User.find_by_email data[:mail]
+
+      if user.blank?
+        $log.info "#{$log_prefix} não existe!"
+        user = create_user data
+      else
+        $log.info "#{$log_prefix} já existe!"
+      end    
+    end
+
+    data[:record] = user
+  end.compact  
+end
+
+def notify_enterprise_to enterprise, user
+  community_id = enterprise.identifier.sub /^ees-/, ''
+  community = Community[community_id] if community_id.present?
+  if community.present?
+    $log.info "#{$log_prefix} Já existe a comunidade com identificador '%s', por isso foi criado o empreendimento com o identificador '%s'" % [ community.identifier, enterprise.identifier ] 
+  end
+
+  User::Mailer.deliver_script_welcome_email user, enterprise
+rescue => e
+  $log.fatal "#{$log_prefix} Não foi possível enviar o e-mail para '%s'...devido a excessão '%s'" % [ user.person.email, e ] 
+  $log.fatal e.backtrace.join "\n"
+end
+
+def add_admin_users enterprise, users
+  users.each do |user|
+
+    $log.info "#{$log_prefix} Verificando se o usuário '%s' já é um administrador do empreendimento '%s'" % [ user.login, enterprise.name ]   
+
+    if not user.person.is_admin? enterprise
+      $log.info "#{$log_prefix} não é admin!"
+      $log.info "#{$log_prefix} Adicionando usuário '%s' como administrador do empreendimento '%s'..." % [ user.name, enterprise.name ] 
+
+      if enterprise.add_admin user.person
+        notify_enterprise_to enterprise, user
+      else
+        $log.error "#{$log_prefix} não foi possível adicionar o usuário '%s' como administrador do empreendimento..." % user.person.name
+      end    
+    else
+      $log.info "#{$log_prefix} já é admin!"
+    end
+  end
+end
+
+def create_enterprise data
+  name = data[:name]
+  identifier = data[:identifier]
+  city = data[:city]
+  state = data[:state]
+  adm_users = data[:adm_users]
+
+  $log.info "#{$log_prefix} Criando empreendimento '%s'..." % name
+
+  identifier = generate_enterprise_identifier name, identifier, city
+  $log.info "#{$log_prefix} Usando identificador %s" % identifier
+
+  contact_email = nil
+  adm_users.each do |u|
+    break contact_email = u[:mail] if u[:mail].present?
+  end 
+
+  enterprise = Enterprise.new :name => name, :identifier => identifier, :enabled => false,
+    :contact_email => contact_email, :environment => $environment, :referer => 'FBES'
+  enterprise.public_profile = true
+
+  $log.info "#{$log_prefix} Registrando dados geográficos do empreendimento..." 
+  if !state.blank? and !city.blank?
+    enterprise.city_with_region = city.to_s 
+    enterprise.state_with_region = State.find_by_acronym(state).name rescue state
+    $log.info "#{$log_prefix} registrado!"
+  else
+    $log.info "#{$log_prefix} falta dados para cidade!"
+  end
+
+  enterprise.save!
+
+  $log.info "#{$log_prefix} Criando usuários do empreendimento" 
+  users = find_or_create_users adm_users
+
+  $log.info "#{$log_prefix} Adicionando usuários como gestores" 
+  add_admin_users enterprise, users
+
+  $log.info "#{$log_prefix} Ativando empreendimento" 
+  owner = users.first.person rescue nil
+  enterprise.enable owner
+
+  data[:record] = enterprise
+  data[:url] = "#{$environment.top_url}/#{enterprise.identifier}"
+  data[:observations] << "Sem gestores associados!" if users.blank?
+
+  enterprise
+rescue Exception => e
+  $log.fatal "#{$log_prefix} Não foi possível criar o empreendimento devido a excessão '%s'" % e.message 
+  $log.fatal e.backtrace.join "\n"
+
+  data[:url] = "Não foi possível registrar empreendimento"
+  data[:observations] << e.message
+  $enterprises_not_created << data
+
+  nil
+end
+
+def do_import 
+  $log.debug "-"
+
+  $enterprises.each do |data| 
+    #enterprise = find_enterprise e[:name], e[:identifier]
+
+    enterprise = create_enterprise data
+
+    $log.debug "-"
+    puts (if enterprise then "." else "E" end)
+  end
+end
+
+parse_opts
+init_log "fbes-enterprise-call-import.log"
+load_enterprises
+
+$log.debug "#{$log_prefix} Iniciando importação. Esta operação pode demorar algum tempo..."
+do_import
+puts ""
+
+$log.debug "#{$log_prefix} Importação finalizada!"
+
+puts "------------"
+puts "Foram importados %s..." % ($enterprises.count - $enterprises_not_created.count)
+puts "Aconteceram %s erros..." % $enterprises_not_created.count
+
+csv = export_imported
+puts "Verifique o arquivo com resultado da importação em '%s'." % csv
+puts "Verifique o arquivo de log '%s' para detalhes sobre a importação." % $log_name
+
