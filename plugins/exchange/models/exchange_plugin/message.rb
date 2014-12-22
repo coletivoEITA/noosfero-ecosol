@@ -1,9 +1,11 @@
-class ExchangePlugin::Message < Noosfero::Plugin::ActiveRecord
+class ExchangePlugin::Message < ActiveRecord::Base
 
-  belongs_to :proposal, :class_name => "ExchangePlugin::Proposal"
-  belongs_to :sender, :class_name => "Profile"
-  belongs_to :recipient, :class_name => "Profile"
-  belongs_to :person_sender, :class_name => "Person"
+  attr_accessible *self.column_names
+
+  belongs_to :proposal, class_name: "ExchangePlugin::Proposal"
+  belongs_to :sender, class_name: "Profile"
+  belongs_to :recipient, class_name: "Profile"
+  belongs_to :person_sender, class_name: "Person"
 
   validates_presence_of :sender
   validates_presence_of :recipient

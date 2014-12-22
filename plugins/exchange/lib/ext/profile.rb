@@ -2,14 +2,14 @@ require_dependency 'profile'
 
 class Profile
 
-  has_many :profile_exchanges, :foreign_key => :profile_id, :class_name => "ExchangePlugin::ProfileExchange"
-  has_many :exchanges, :through => :profile_exchanges
+  has_many :profile_exchanges, foreign_key: :profile_id, class_name: "ExchangePlugin::ProfileExchange"
+  has_many :exchanges, through: :profile_exchanges
 
   def has_exchanged e
     found = false
     if (e != self)
       self.exchanges.each do |ex|
-        if ex.profiles.first :conditions => {:id => e.id}
+        if ex.profiles.first conditions: {id: e.id}
           found = true
           break
         end
@@ -19,7 +19,7 @@ class Profile
   end
 
   def exchanges_count
-    self.exchanges.count :conditions => {:state => "concluded"}
+    self.exchanges.count conditions: {state: "concluded"}
   end
 
   def exchanged_profile_count

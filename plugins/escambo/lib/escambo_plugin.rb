@@ -26,23 +26,23 @@ class EscamboPlugin < Noosfero::Plugin
   def profile_image_link profile, size=:portrait, tag='li', extra_info = nil
     return unless profile.enterprise?
     lambda do
-      render :file => 'escambo_plugin_shared/profile_image_link', :locals => {:profile => profile, :size => size}
+      render file: 'escambo_plugin_shared/profile_image_link', locals: {profile: profile, size: size}
     end
   end
 
   SearchLimit = 20
   SearchDataLoad = proc do
     solr_options = {}
-    paginate_options ||= {:limit => SearchLimit}
+    paginate_options ||= {limit: SearchLimit}
     @query ||= ''
     @geosearch = true if @active_organization and @active_organization.lat and @active_organization.lng
 
     if @geosearch
-      solr_options.merge! :alternate_query => "{!boost b=recip(geodist(),#{"%e" % (1.to_f/SolrPlugin::SearchHelper::DistBoost)},1,1)}",
-        :latitude => @active_organization.lat, :longitude => @active_organization.lng
+      solr_options.merge! alternate_query: "{!boost b=recip(geodist(),#{"%e" % (1.to_f/SolrPlugin::SearchHelper::DistBoost)},1,1)}",
+        latitude: @active_organization.lat, longitude: @active_organization.lng
     end
     if @active_organization
-      solr_options.merge! :filter_queries => ["!profile_id:#{@active_organization.id}"]
+      solr_options.merge! filter_queries: ["!profile_id:#{@active_organization.id}"]
     end
 
     @interests = SnifferPlugin::Opportunity.find_by_contents(@query, paginate_options, solr_options)[:results].results
@@ -59,30 +59,30 @@ class EscamboPlugin < Noosfero::Plugin
     instance_eval &SearchDataLoad
 
     # overwrite controller action
-    render :action => :index
+    render action: :index
   end
   def search_controller_filters
     [
-      {:type => 'before_filter', :method_name => 'escambo_search_index',
-       :options => {:only => :index}, :block => SearchIndexFilter},
+      {type: 'before_filter', method_name: 'escambo_search_index',
+       options: {only: :index}, block: SearchIndexFilter},
     ]
   end
 
   HomeIndexFilter = proc do
     offset = environment.enterprises.count - SearchLimit
     offset = 0 if offset < 0
-    @enterprises = environment.enterprises.visible.all :offset => rand(offset), :limit => SearchLimit
+    @enterprises = environment.enterprises.visible.all offset: rand(offset), limit: SearchLimit
     @enterprises = @enterprises.sort_by{ rand }
 
     instance_eval &SearchDataLoad
 
     # overwrite controller action
-    render :action => :index
+    render action: :index
   end
   def home_controller_filters
     [
-      {:type => 'before_filter', :method_name => 'escambo_home_index',
-       :options => {:only => :index}, :block => HomeIndexFilter},
+      {type: 'before_filter', method_name: 'escambo_home_index',
+       options: {only: :index}, block: HomeIndexFilter},
     ]
   end
 
@@ -91,32 +91,32 @@ class EscamboPlugin < Noosfero::Plugin
   end
   def profile_editor_controller_filters
     [
-      {:type => 'before_filter', :method_name => 'escambo_profile_editor_index',
-       :options => {:only => :index}, :block => ProfileEditorIndexFilter},
+      {type: 'before_filter', method_name: 'escambo_profile_editor_index',
+       options: {only: :index}, block: ProfileEditorIndexFilter},
     ]
   end
 
   ProfileIndexFilter = proc do
     if profile.enterprise?
-      render :action => 'index'
+      render action: 'index'
     else
-      redirect_to :controller => 'home'
+      redirect_to controller: 'home'
     end
   end
   def profile_controller_filters
     [
-      {:type => 'before_filter', :method_name => 'escambo_profile_index',
-       :options => {:only => :index}, :block => ProfileIndexFilter},
+      {type: 'before_filter', method_name: 'escambo_profile_index',
+       options: {only: :index}, block: ProfileIndexFilter},
     ]
   end
 
   CatalogIndexFilter = proc do
-    redirect_to :controller => :profile, :action => :products
+    redirect_to controller: :profile, action: :products
   end
   def catalog_controller_filters
     [
-      {:type => 'before_filter', :method_name => 'escambo_catalog_index',
-       :options => {:only => :index}, :block => CatalogIndexFilter},
+      {type: 'before_filter', method_name: 'escambo_catalog_index',
+       options: {only: :index}, block: CatalogIndexFilter},
     ]
   end
 
@@ -139,15 +139,15 @@ class EscamboPlugin < Noosfero::Plugin
   end
   def contact_controller_filters
     [
-      {:type => 'before_filter', :method_name => 'escambo_contact',
-       :options => {}, :block => ContactFilter},
+      {type: 'before_filter', method_name: 'escambo_contact',
+       options: {}, block: ContactFilter},
     ]
   end
 
   # Code copied from account_controller. FIXME: make that code reusable
   AccountSignup = proc do
     if @plugins.dispatch(:allow_user_registration).include?(false)
-      redirect_back_or_default(:controller => 'home')
+      redirect_back_or_default(controller: 'home')
       session[:notice] = _("This environment doesn't allow user registration.")
     end
 
@@ -163,7 +163,7 @@ class EscamboPlugin < Noosfero::Plugin
       @person.environment = @user.environment
 
       params[:enterprise_data] ||= {}
-      @enterprise = Enterprise.new params[:enterprise_data].merge(:environment => environment)
+      @enterprise = Enterprise.new params[enterprise_data].merge(environment: environment)
 
       @selected_enterprise = environment.enterprises.find_by_id params[:enterprise_id]
       @enterprises = []
@@ -177,7 +177,7 @@ class EscamboPlugin < Noosfero::Plugin
           @user.person.affiliate(@user.person, [owner_role]) if owner_role
           invitation = Task.find_by_code(@invitation_code)
           if invitation
-            invitation.update_attributes!({:friend => @user.person})
+            invitation.update_attributes!({friend: @user.person})
             invitation.finish
           end
           @person = @user.person
@@ -206,12 +206,12 @@ class EscamboPlugin < Noosfero::Plugin
     end
 
     # overwrite controller action
-    render :action => 'signup' unless @performed_render or @performed_redirect
+    render action: 'signup' unless @performed_render or @performed_redirect
   end
   def account_controller_filters
     [
-      {:type => 'before_filter', :method_name => 'escambo_signup_with_enteprise',
-       :options => {:only => :signup}, :block => AccountSignup},
+      {type: 'before_filter', method_name: 'escambo_signup_with_enteprise',
+       options: {only: :signup}, block: AccountSignup},
     ]
   end
 

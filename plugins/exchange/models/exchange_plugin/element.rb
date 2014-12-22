@@ -1,4 +1,6 @@
-class ExchangePlugin::Element < Noosfero::Plugin::ActiveRecord
+class ExchangePlugin::Element < ActiveRecord::Base
+
+  attr_accessible *self.column_names
 
   belongs_to :proposal, :class_name => "ExchangePlugin::Proposal"
   has_one :exchange, :through => :proposal

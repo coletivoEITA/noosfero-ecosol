@@ -10,10 +10,10 @@
           </div>
 
           <div class="join">
-            <%= link_to _('Sign up'), {:controller => 'account', :action => 'signup'}, :id => 'sign-up' %>
-            <%= thickbox_inline_popup_link _('Login'), login_url, 'inlineLoginBox', :id => 'login' %>
+            <%= link_to _('Sign up'), {controller: 'account', action: 'signup'}, id: 'sign-up' %>
+            <%= modal_inline_link_to _('Login'), login_url, 'inlineLoginBox', id: 'login' %>
 
-            <%# link_to 'Saiba mais', {:controller => :home, :action => :how_it_works}, {:id => 'know-more'} %>
+            <%# link_to 'Saiba mais', {controller: :home, action: :how_it_works}, {id: 'know-more'} %>
           </div>
         </div>
 
@@ -27,7 +27,7 @@
 
   <div>
     <h2> <%= _('Some enterprises') %> </h2>
-    <%= link_to _('See all'), :controller => :search, :action => :enterprises %>
+    <%= link_to _('See all'), controller: :search, action: :enterprises %>
   </div>
 
   <span class="scroll-left"></span>
@@ -48,8 +48,8 @@
 <div id="items-area" class='controller-search'>
   <div>
     <h2> <%= _('Offers, knowledges and interests') %> </h2>
-    <%= link_to _('See all'), :controller => :search %>
+    <%= link_to _('See all'), controller: :search %>
   </div>
-  <%= render :partial => 'search/search_form', :locals => { :hint => _('search for...') } %>
-  <%= render :partial => 'escambo_search/results' %>
+  <%= render partial: 'search/search_form', locals: { hint: _('search for...') } %>
+  <%= render partial: 'escambo_search/results' %>
 </div>
