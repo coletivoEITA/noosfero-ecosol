@@ -8,12 +8,12 @@ class FbesPluginQueriesController < PublicController
 
   FbesPlugin::Queries::Hash.each do |name, query|
     define_method name do
-      page = (params[:page] || 1).to_i
-      per_page = if params[:per_page] == 'all' then nil else (params[:per_page] || 20).to_i end
+      @fbes_plugin_page = (params[:page] || 1).to_i
+      @fbes_plugin_per_page = if params[:per_page] == 'all' then nil else (params[:per_page] || 20).to_i end
       format = params[:format]
       request.format = format.to_sym if format.present?
 
-      query_with_pagination = if not per_page then query else "#{query} offset #{(page-1)*per_page} limit #{per_page}" end
+      query_with_pagination = if not @fbes_plugin_per_page then query else "#{query} offset #{(@fbes_plugin_page-1)*fbes_plugin_per_page} limit #{@fbes_plugin_per_page}" end
       result = ActiveRecord::Base.transaction do
         ActiveRecord::Base.connection.execute query_with_pagination
       end
