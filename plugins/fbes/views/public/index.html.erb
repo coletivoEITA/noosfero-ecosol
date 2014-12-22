@@ -1,6 +1,6 @@
 <h1>Estatísticas de uso do Cirandas</h1>
 <table>
-  <% FbesPlugin::Queries::Hash.each do |name, query| %>
+  <% FbesPlugin::Queries::Hash.sort.each do |name, query| %>
     <tr style="vertical-align:middle">
       <td style="font-size: 22px;">
         <%= link_to(t("fbes_plugin.views.queries.#{name}"), "http://cirandas.net/plugin/fbes/queries/#{name}", {:style => "display: block;padding: 10px 0"}) %>
