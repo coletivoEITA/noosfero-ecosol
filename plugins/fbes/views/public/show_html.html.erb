@@ -1,5 +1,6 @@
 <h1><%= t(params[:action]) %></h1>
-<%= button(:back, 'Voltar à lista de comandos', 'http://cirandas.net/plugin/fbes/queries') %>
+<%= button(:back, 'Voltar à lista de estatísticas', 'http://cirandas.net/plugin/fbes/queries') %>
+<br />
   <table class='table'>
     <tr>
       <% @fbes_plugin_result.first.keys.each do |header| %>
