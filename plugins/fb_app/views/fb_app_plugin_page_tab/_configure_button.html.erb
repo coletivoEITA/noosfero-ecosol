@@ -1,11 +1,11 @@
 <div id="manage-fb-store-ctrl">
-  <%# if logged_in? and (@page_tab.owner_profile and user.is_admin? @page_tab.owner_profile) %>
+  <% if logged_in? and (@page_tab.owner_profile and user.is_admin? @page_tab.owner_profile) %>
     <%= button :edit, t('fb_app_plugin.views.page_tab.edit_catalog'), {controller: :fb_app_plugin_myprofile, profile: @page_tab.owner_profile.identifier},
       target: '_parent' %>
-  <%# elsif user.is_admin? environment or (@data[:page][:admin] rescue false) %>
-    <%# button :edit, t('fb_app_plugin.views.page_tab.edit_catalog'), {controller: :fb_app_plugin_page_tab, action: :admin, signed_request: @signed_requests, page_id: @page_ids},
+  <% elsif user.is_admin? environment or (@data[:page][:admin] rescue false) %>
+    <%= button :edit, t('fb_app_plugin.views.page_tab.edit_catalog'), {controller: :fb_app_plugin_page_tab, action: :admin, signed_request: @signed_requests, page_id: @page_ids},
       onclick: "noosfero.modal.url(this.href); return false;"  %>
-  <%# end %>
+  <% end %>
 </div>
 
 
