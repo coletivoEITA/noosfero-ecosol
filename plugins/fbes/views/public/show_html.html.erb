@@ -24,7 +24,7 @@
                 link_to(value[1], value[1], :target => "_blank")
               when 'mes'
                 Date.parse(value[1]+'-01').strftime("%b/%Y")
-              when 'total_pedidos'
+              when 'total_pedidos', 'valor_total_pedidos'
                 number_to_currency(value[1], {locale: :pt_BR, precision: 2, separator: ',', delimiter: '.'})
               when 'page_id'
                 link_to(value[1], "https://www.facebook.com/pages/_/#{value[1]}?sk=app_231071397085577", :target => "_blank")
