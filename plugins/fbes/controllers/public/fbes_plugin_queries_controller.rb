@@ -4,6 +4,7 @@ class FbesPluginQueriesController < PublicController
 
   before_filter :login_required
   protect 'view_environment_admin_panel', :environment
+  no_design_blocks
 
   FbesPlugin::Queries::Hash.each do |name, query|
     define_method name do
