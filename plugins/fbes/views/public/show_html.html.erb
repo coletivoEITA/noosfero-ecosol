@@ -16,7 +16,7 @@
             <td>
               <%= case value[0]
                 when 'url', 'site'
-                  link_to(value[1], value[1])
+                  link_to(value[1], value[1], :target => "_blank")
                 when 'mes'
                   Date.parse(value[1]+'-01').strftime("%b/%Y")
                 when 'total_pedidos'
