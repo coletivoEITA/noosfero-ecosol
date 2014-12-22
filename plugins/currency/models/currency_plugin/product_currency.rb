@@ -1,16 +1,16 @@
 class CurrencyPlugin::ProductCurrency < Noosfero::Plugin::ActiveRecord
 
   belongs_to :product
-  belongs_to :currency, :class_name => 'CurrencyPlugin::Currency'
+  belongs_to :currency, class_name: 'CurrencyPlugin::Currency'
 
   validates_presence_of :product
   validates_presence_of :currency
-  validates_uniqueness_of :currency_id, :scope => :product_id
+  validates_uniqueness_of :currency_id, scope: :product_id
 
-  named_scope :with_price, :conditions => ['price IS NOT NULL']
-  named_scope :with_discount, :conditions => ['discount IS NOT NULL']
+  scope :with_price, conditions: ['price IS NOT NULL']
+  scope :with_discount, conditions: ['discount IS NOT NULL']
 
-  delegate :name_with_symbol, :to => :currency
+  delegate :name_with_symbol, to: :currency
 
   include FloatHelper
 
@@ -35,7 +35,7 @@ class CurrencyPlugin::ProductCurrency < Noosfero::Plugin::ActiveRecord
   end
 
   def as_json options
-    super options.merge(:methods => :name_with_symbol, :except => [:created_at, :updated_at])
+    super options.merge(methods: :name_with_symbol, except: [:created_at, :updated_at])
   end
 
 end

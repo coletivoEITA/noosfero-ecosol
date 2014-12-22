@@ -12,7 +12,7 @@ end
 
 class Profile
 
-  # cannot use :order because of months/years named_scope
+  # cannot use :order because of months/years scope
   has_many :orders, :class_name => 'OrdersPlugin::Sale', :foreign_key => :profile_id
   has_many :sales, :class_name => 'OrdersPlugin::Sale', :foreign_key => :profile_id
   has_many :purchases, :class_name => 'OrdersPlugin::Purchase', :foreign_key => :consumer_id

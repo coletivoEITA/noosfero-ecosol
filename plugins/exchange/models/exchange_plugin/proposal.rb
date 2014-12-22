@@ -1,25 +1,25 @@
 class ExchangePlugin::Proposal < Noosfero::Plugin::ActiveRecord
 
-  belongs_to :origin, :class_name => "Profile"
-  belongs_to :target, :class_name => "Profile"
+  belongs_to :origin, class_name: "Profile"
+  belongs_to :target, class_name: "Profile"
 
-  belongs_to :exchange, :class_name => "ExchangePlugin::Exchange"
+  belongs_to :exchange, class_name: "ExchangePlugin::Exchange"
 
-  has_many :elements, :class_name => "ExchangePlugin::Element", :dependent => :destroy, :order => "id ASC"
+  has_many :elements, class_name: "ExchangePlugin::Element", dependent: :destroy, order: "id ASC"
 
-  has_many :products, :through => :elements, :source => :object_np, :class_name => 'Product',
-    :conditions => "exchange_plugin_elements.object_type = 'Product'"
-  has_many :knowledges, :through => :elements, :source => :object_np, :class_name => 'CmsLearningPlugin::Learning',
-    :conditions => "exchange_plugin_elements.object_type = 'CmsLearningPlugin::Learning'"
+  has_many :products, through: :elements, source: :object_np, class_name: 'Product',
+    conditions: "exchange_plugin_elements.object_type = 'Product'"
+  has_many :knowledges, through: :elements, source: :object_np, class_name: 'CmsLearningPlugin::Learning',
+    conditions: "exchange_plugin_elements.object_type = 'CmsLearningPlugin::Learning'"
 
-  has_many :messages, :class_name => "ExchangePlugin::Message", :dependent => :destroy, :order => "created_at DESC"
+  has_many :messages, class_name: "ExchangePlugin::Message", dependent: :destroy, order: "created_at DESC"
 
-  validates_inclusion_of :state, :in => ["open", "closed", "accepted"]
+  validates_inclusion_of :state, in: ["open", "closed", "accepted"]
   validates_presence_of :origin, :target, :exchange_id
 
-  named_scope :open, :conditions => {:state => 'open'}
-  named_scope :closed, :conditions => {:state => 'closed'}
-  named_scope :accepted, :conditions => {:state => 'accepted'}
+  scope :open, conditions: {state: 'open'}
+  scope :closed, conditions: {state: 'closed'}
+  scope :accepted, conditions: {state: 'accepted'}
   def open?
     self.state == 'open'
   end
@@ -31,11 +31,11 @@ class ExchangePlugin::Proposal < Noosfero::Plugin::ActiveRecord
   end
 
   def target_elements
-    self.elements.all :conditions => {:profile_id => self.target_id}, :include => :element
+    self.elements.all conditions: {profile_id: self.target_id}, include: :element
   end
 
   def origin_elements
-    self.elements.all :conditions => {:profile_id => self.origin_id}, :include => :element
+    self.elements.all conditions: {profile_id: self.origin_id}, include: :element
   end
 
   def target? profile

@@ -1,25 +1,25 @@
 class CmsLearningPlugin::Learning < Article
 
-  settings_items :summary, :type => :string, :default => ""
-  settings_items :good_practices, :type => :string, :default => ""
+  settings_items :summary, type: :string, default: ""
+  settings_items :good_practices, type: :string, default: ""
 
-  has_many :resources, :foreign_key => 'article_id', :order => 'id asc', :class_name => 'ArticleResource', :dependent => :destroy
-  has_many :resources_product_categories, :foreign_key => 'article_id', :order => 'id asc', :class_name => 'ArticleResource',
-    :conditions => ['article_resources.resource_type = ?', 'ProductCategory']
+  has_many :resources, foreign_key: 'article_id', order: 'id asc', class_name: 'ArticleResource', dependent: :destroy
+  has_many :resources_product_categories, foreign_key: 'article_id', order: 'id asc', class_name: 'ArticleResource',
+    conditions: ['article_resources.resource_type = ?', 'ProductCategory']
 
-  has_many :resources_persons, :foreign_key => 'article_id', :order => 'id asc', :class_name => 'ArticleResource',
-    :conditions => ['article_resources.resource_type = ?', 'Person']
+  has_many :resources_persons, foreign_key: 'article_id', order: 'id asc', class_name: 'ArticleResource',
+    conditions: ['article_resources.resource_type = ?', 'Person']
 
 
-  has_many :product_categories, :through => :resources, :source => :product_category, :foreign_key => 'article_id', :readonly => true,
-    :class_name => 'ProductCategory', :conditions => ['article_resources.resource_type = ?', 'ProductCategory']
+  has_many :product_categories, through: :resources, source: :product_category, foreign_key: 'article_id', readonly: true,
+    class_name: 'ProductCategory', conditions: ['article_resources.resource_type = ?', 'ProductCategory']
 
-  has_many :persons, :through => :resources, :source => :person, :foreign_key => 'article_id', :readonly => true,
-    :class_name => 'Person', :conditions => ['article_resources.resource_type = ?', 'Person']
+  has_many :persons, through: :resources, source: :person, foreign_key: 'article_id', readonly: true,
+    class_name: 'Person', conditions: ['article_resources.resource_type = ?', 'Person']
 
   attr_accessible :name, :body, :summary, :good_practices, :product_category_string_ids, :person_string_ids
 
-  named_scope :by_profile, lambda { |profile| { :conditions => {:profile_id => profile.id} } }
+  scope :by_profile, lambda { |profile| { conditions: {profile_id: profile.id} } }
 
   def self.type_name
     _('Learning')
@@ -43,12 +43,12 @@ class CmsLearningPlugin::Learning < Article
 
   def to_html(options = {})
     lambda do
-      render :file => 'cms/cms_learning_plugin_page'
+      render file: 'cms/cms_learning_plugin_page'
     end
   end
 
   def default_parent
-    profile.articles.find_by_name _('Learnings'), :conditions => {:type => 'Folder'}
+    profile.articles.find_by_name _('Learnings'), conditions: {type: 'Folder'}
   end
 
   def use_media_panel?
@@ -72,7 +72,7 @@ class CmsLearningPlugin::Learning < Article
     r = ProductCategory.find(ids)
     self.resources_product_categories.destroy_all
     @res_product_categories = ids.collect{ |id| r.detect{ |x| x.id == id.to_i } }.map do |pc|
-      ArticleResource.new :resource_id => pc.id, :resource_type => ProductCategory.name
+      ArticleResource.new resource_id: pc.id, resource_type: ProductCategory.name
     end
   end
 
@@ -81,7 +81,7 @@ class CmsLearningPlugin::Learning < Article
     r = Person.find(ids)
     self.resources_persons.destroy_all
     @res_persons = ids.collect{ |id| r.detect{ |x| x.id == id.to_i } }.map do |pc|
-      ArticleResource.new :resource_id => pc.id, :resource_type => Person.name
+      ArticleResource.new resource_id: pc.id, resource_type: Person.name
     end
   end
 

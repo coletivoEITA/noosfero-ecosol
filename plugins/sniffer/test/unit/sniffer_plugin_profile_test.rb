@@ -7,7 +7,7 @@ class SnifferPluginProfileTest < ActiveSupport::TestCase
 
   should 'add find methods for input-products relations' do
     #e = Profile['acougue-comunitario']
-    #pp = Product.named_scope(e.products.collect(&:product_ids))
+    #pp = Product.scope(e.products.collect(&:product_ids))
 
     p = Product.find(33206)
     pu1 = p.products_used

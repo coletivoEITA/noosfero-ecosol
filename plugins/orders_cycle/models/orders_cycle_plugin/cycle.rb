@@ -33,7 +33,7 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
 
   has_many :cycle_orders, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :cycle_id, dependent: :destroy, order: 'id ASC'
 
-  # cannot use :order because of months/years named_scope
+  # cannot use :order because of months/years scope
   has_many :sales, through: :cycle_orders, source: :sale
   has_many :purchases, through: :cycle_orders, source: :purchase
 
