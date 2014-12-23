@@ -1,4 +1,6 @@
-class CurrencyPlugin::Currency < Noosfero::Plugin::ActiveRecord
+class CurrencyPlugin::Currency < ActiveRecord::Base
+
+  attr_accessible *self.column_names
 
   belongs_to :environment
 

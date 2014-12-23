@@ -1,4 +1,6 @@
-class CurrencyPlugin::ProductCurrency < Noosfero::Plugin::ActiveRecord
+class CurrencyPlugin::ProductCurrency < ActiveRecord::Base
+
+  attr_accessible *self.column_names
 
   belongs_to :product
   belongs_to :currency, class_name: 'CurrencyPlugin::Currency'
