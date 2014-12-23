@@ -1,6 +1,6 @@
 <div id='escambo-search-form'>
 
-<% form_tag({ :controller => 'search', :action => @asset ? @asset : 'index', :asset => nil }, :method => 'get') do %>
+<%= form_tag({ :controller => 'search', :action => @asset ? @asset : 'index', :asset => nil }, :method => 'get') do %>
 
   <div class="search-field">
     <%= text_field_tag 'query', @query, :id => 'search-input', :size => 50 %>

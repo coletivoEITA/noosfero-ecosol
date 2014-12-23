@@ -1,4 +1,4 @@
-<% javascript_tag do %>
+<%= javascript_tag do %>
   addScript('/plugins/currency/underscore-min.js', currency.underscore_settings);
   currency.product.load({
     currencies: <%= @product.enterprise.currencies.to_json %>,

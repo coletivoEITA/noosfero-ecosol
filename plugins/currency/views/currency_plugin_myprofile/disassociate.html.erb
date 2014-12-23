@@ -14,7 +14,7 @@
     <%= _("Please give the organization responsibility to other enterprises by finding them below or leave it blank to make this currency orphan.") %>
   </p>
 
-  <% form_tag :action => :disassociate, :id => @currency.id do %>
+  <%= form_tag :action => :disassociate, :id => @currency.id do %>
 
     <%= render :partial => 'enterprise_search' %>
 

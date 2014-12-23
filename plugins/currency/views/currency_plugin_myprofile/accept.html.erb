@@ -13,7 +13,7 @@
     <%= render :partial => 'accept_form' %>
   </div>
 
-  <% javascript_tag do %>
+  <%= javascript_tag do %>
     currency.accept.load('<%= _('search') %>');
   <% end %>
 

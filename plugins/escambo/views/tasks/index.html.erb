@@ -23,7 +23,7 @@
 <% if @tasks.empty? %>
   <em><%= _('No pending tasks for %s') % profile.name %></em>
 <% else %>
-  <% form_tag :action => 'close' do%>
+  <%= form_tag :action => 'close' do%>
     <% button_bar do %>
       <%= submit_button :save, _("Apply!") %>
       <%= button(:edit, _('View processed tasks'), :action => 'processed') %>

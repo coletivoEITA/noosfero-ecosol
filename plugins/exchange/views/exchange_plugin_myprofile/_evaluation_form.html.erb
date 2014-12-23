@@ -1,6 +1,6 @@
 <div id="exchange-evaluation-form">
 
-  <% form_for :evaluation, :url => {:controller => 'exchange_plugin_myprofile', :action => 'evaluate', :exchange_id => @exchange.id, :theother_id => @theother.id } do |f| %>
+  <%= form_for :evaluation, :url => {:controller => 'exchange_plugin_myprofile', :action => 'evaluate', :exchange_id => @exchange.id, :theother_id => @theother.id } do |f| %>
 
     <div class="evaluation-message">
       <%= profile_link_with_image profile, :thumb %>

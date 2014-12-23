@@ -15,7 +15,7 @@
     <input type="text" title="<%= _('look for products...') %>" class="sniffer-search-input"/>
     <div class="sniffer-search-submit"> </div>
 
-    <% javascript_tag do %>
+    <%= javascript_tag do %>
       sniffer.search.load_search_input({
         sourceUrl: '<%= url_for :action => :product_category_search, :escape => false %>',
         addUrl: '<%= url_for :controller => :sniffer_plugin_myprofile, :action => :product_category_add, :id => '_id_', :escape => false %>',

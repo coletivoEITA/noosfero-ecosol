@@ -1,4 +1,4 @@
-<% labelled_form_for :currency, @currency, {:action => (@currency.new_record? ? :create : :edit)} do |f| %>
+<%= labelled_form_for :currency, @currency, {:action => (@currency.new_record? ? :create : :edit)} do |f| %>
   <%= f.text_field :name %>
   <%= f.text_area :description %>
   <%= f.text_field :symbol %>

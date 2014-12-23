@@ -2,26 +2,26 @@
 
   <% if proposal.state == 'open' %>
 
-    <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'close_proposal', :proposal_id => proposal.id} do |f| %>
+    <%= form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'close_proposal', :proposal_id => proposal.id} do |f| %>
       <%= f.submit _('Send this proposal'), :class => "action-button"%>
     <% end %>
 
-    <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'destroy_proposal', :proposal_id => proposal.id} do |f| %>
+    <%= form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'destroy_proposal', :proposal_id => proposal.id} do |f| %>
       <%= f.submit _('Delete this proposal'), :class => "action-button"%>
     <% end %>
   <% else %>
 
-    <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'new_proposal', :exchange_id => @exchange.id, :origin_id => @origin.id, :target_id => @target.id,} do |f| %>
+    <%= form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'new_proposal', :exchange_id => @exchange.id, :origin_id => @origin.id, :target_id => @target.id,} do |f| %>
       <%= f.submit _('Set up a counter-offer'), :class => "action-button"%>
     <% end %>
 
-    <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'destroy', :exchange_id => @exchange.id, :origin_id => @origin.id, :target_id => @target.id,} do |f| %>
+    <%= form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'destroy', :exchange_id => @exchange.id, :origin_id => @origin.id, :target_id => @target.id,} do |f| %>
       <%= f.submit _('Cancel Negociation'), :class => "action-button"%>
     <% end %>
 
     <% if proposal.target == profile %>
 
-      <% form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'accept', :proposal_id => @current_proposal.id } do |f| %>
+      <%= form_for :proposal, :url => {:controller => 'exchange_plugin_myprofile', :action => 'accept', :proposal_id => @current_proposal.id } do |f| %>
         <%= f.submit _('Accept proposal and finish Exchange'), :class => "action-button"%>
       <% end %>
     <% else %>
