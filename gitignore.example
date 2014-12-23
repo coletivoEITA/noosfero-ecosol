@@ -48,6 +48,5 @@ debian/noosfero-apache/
 features/plugins/*
 plugins/solr/config/solr.yml
 /solr
-/Gemfile.lock
 
 plugins/fb_app/config.yml
