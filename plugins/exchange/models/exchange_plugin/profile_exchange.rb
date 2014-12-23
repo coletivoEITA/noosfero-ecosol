@@ -1,6 +1,7 @@
 class ExchangePlugin::ProfileExchange < ActiveRecord::Base
 
   attr_accessible *self.column_names
+  attr_accessible :profile, :exchange
 
   belongs_to :profile
   belongs_to :exchange, class_name: "ExchangePlugin::Exchange"

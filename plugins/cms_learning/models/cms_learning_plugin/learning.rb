@@ -1,5 +1,7 @@
 class CmsLearningPlugin::Learning < Article
 
+  attr_accessible :name, :body, :summary, :good_practices, :product_category_string_ids, :person_string_ids
+
   settings_items :summary, type: :string, default: ""
   settings_items :good_practices, type: :string, default: ""
 
@@ -10,14 +12,11 @@ class CmsLearningPlugin::Learning < Article
   has_many :resources_persons, foreign_key: 'article_id', order: 'id asc', class_name: 'ArticleResource',
     conditions: ['article_resources.resource_type = ?', 'Person']
 
-
   has_many :product_categories, through: :resources, source: :product_category, foreign_key: 'article_id', readonly: true,
     class_name: 'ProductCategory', conditions: ['article_resources.resource_type = ?', 'ProductCategory']
 
   has_many :persons, through: :resources, source: :person, foreign_key: 'article_id', readonly: true,
     class_name: 'Person', conditions: ['article_resources.resource_type = ?', 'Person']
-
-  attr_accessible :name, :body, :summary, :good_practices, :product_category_string_ids, :person_string_ids
 
   scope :by_profile, lambda { |profile| { conditions: {profile_id: profile.id} } }
 

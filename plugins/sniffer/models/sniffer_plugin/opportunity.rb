@@ -1,6 +1,7 @@
 class SnifferPlugin::Opportunity < ActiveRecord::Base
 
   attr_accessible *self.column_names
+  attr_accessible :profile, :opportunity, :product_category
 
   belongs_to :profile
 

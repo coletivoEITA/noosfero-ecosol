@@ -1,6 +1,7 @@
 class CurrencyPlugin::Currency < ActiveRecord::Base
 
   attr_accessible *self.column_names
+  attr_accessible :environment
 
   belongs_to :environment
 

@@ -1,6 +1,7 @@
 class EvaluationPlugin::Evaluation < ActiveRecord::Base
 
   attr_accessible *self.column_names
+  attr_accessible :object, :evaluator, :evaluated
 
   belongs_to :object, polymorphic: true
   belongs_to :evaluator, class_name: "Profile"

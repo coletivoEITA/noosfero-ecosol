@@ -1,6 +1,7 @@
 class ExchangePlugin::Exchange < ActiveRecord::Base
 
   attr_accessible *self.column_names
+  attr_accessible :origin, :target
 
   validates_inclusion_of :state, in: ["proposal", "negociation", "evaluation",
     "concluded",  "cancelled"]

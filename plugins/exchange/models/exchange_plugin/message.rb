@@ -1,6 +1,7 @@
 class ExchangePlugin::Message < ActiveRecord::Base
 
   attr_accessible *self.column_names
+  attr_accessible :proposal, :sender, :recipient, :person_sender
 
   belongs_to :proposal, class_name: "ExchangePlugin::Proposal"
   belongs_to :sender, class_name: "Profile"

@@ -1,6 +1,7 @@
 class CurrencyPlugin::ProductCurrency < ActiveRecord::Base
 
   attr_accessible *self.column_names
+  attr_accessible :product, :currency
 
   belongs_to :product
   belongs_to :currency, class_name: 'CurrencyPlugin::Currency'

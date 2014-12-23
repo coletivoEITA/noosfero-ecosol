@@ -1,6 +1,7 @@
 class ExchangePlugin::Proposal < ActiveRecord::Base
 
   attr_accessible *self.column_names
+  attr_accessible :origin, :target, :exchange
 
   belongs_to :origin, class_name: "Profile"
   belongs_to :target, class_name: "Profile"
