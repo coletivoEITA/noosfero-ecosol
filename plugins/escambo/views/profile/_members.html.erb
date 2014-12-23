@@ -1,6 +1,6 @@
 <% profile.members.each do |member| %>
   <div class="escambo-profile-member">
-    <%= profile_image member, :portrait, :class => 'profile-image' %>
+    <%= profile_image member, :portrait, class: 'profile-image' %>
 
     <div class="right">
       <div class="name">
@@ -8,7 +8,7 @@
       </div>
 
       <% if user != member %>
-        <%= link_to _('Get in contact'), {:controller => :contact, :profile => member.identifier, :action => :new}, :class => 'colorbox action-button' %>
+        <%= link_to _('Get in contact'), {controller: :contact, profile: member.identifier, action: :new}, class: 'modal-toggle action-button' %>
       <% end %>
     </div>
   </div>

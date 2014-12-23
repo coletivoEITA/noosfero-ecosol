@@ -1,7 +1,7 @@
 <div id="currency-wrap" class="currency-disassociate-dialog popin">
 
   <h2> <%= _("Disassociate currency '%{name}'") % {
-    :name => @currency.name_with_symbol,
+    name: @currency.name_with_symbol,
   } %> </h2>
 
   <p>
@@ -14,16 +14,16 @@
     <%= _("Please give the organization responsibility to other enterprises by finding them below or leave it blank to make this currency orphan.") %>
   </p>
 
-  <%= form_tag :action => :disassociate, :id => @currency.id do %>
+  <%= form_tag action: :disassociate, id: @currency.id do %>
 
-    <%= render :partial => 'enterprise_search' %>
+    <%= render partial: 'enterprise_search' %>
 
     <p>
       <%= check_box_tag 'keep_acceptance', '1', true %>
       <%= label_tag 'keep_acceptance', _('Still accept this currency') %>
     </p>
 
-    <%= submit_tag _('Disassociate'), :class => 'currency-action-button' %>
-    <%= colorbox_close_button _('cancel') %>
+    <%= submit_tag _('Disassociate'), class: 'currency-action-button' %>
+    <%= modal_close_button _('cancel') %>
   <% end %>
 </div>

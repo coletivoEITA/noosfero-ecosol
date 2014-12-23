@@ -6,7 +6,7 @@
       <div class="description"><%= profile.description %></div>
 
       <div class="contact-button">
-        <%= link_to _('Contact the enterprise'), {:controller => :contact, :action => :new}, :class => 'colorbox' %>
+        <%= link_to _('Contact the enterprise'), {controller: :contact, action: :new}, class: 'modal-toggle' %>
       </div>
 
       <span class="state">
@@ -44,17 +44,17 @@
     <div class="evaluation">
       <h4><%= _('Evaluations of this enterprise') %></h4>
 
-      <%= render :partial => 'evaluation_plugin_shared/profile_mean' %>
+      <%= render partial: 'evaluation_plugin_shared/profile_mean' %>
     </div>
     <div class="currencies">
       <h4><%= _('Accepted Currencies') %></h4>
 
-      <%= render :partial => 'accepted_currencies' %>
+      <%= render partial: 'accepted_currencies' %>
     </div>
     <div class="members">
       <h4><%= _('Members') %></h4>
 
-      <%= render :partial => 'members' %>
+      <%= render partial: 'members' %>
     </div>
   </div>
 </div>
