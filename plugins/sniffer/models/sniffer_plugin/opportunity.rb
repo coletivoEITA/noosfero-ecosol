@@ -1,7 +1,6 @@
-# strange WORKAROUND
-require_dependency 'noosfero/plugin/active_record' if not ActionController::Base.perform_caching
+class SnifferPlugin::Opportunity < ActiveRecord::Base
 
-class SnifferPlugin::Opportunity < Noosfero::Plugin::ActiveRecord
+  attr_accessible *self.column_names
 
   belongs_to :profile
 

@@ -1,8 +1,10 @@
-class EvaluationPlugin::Evaluation < Noosfero::Plugin::ActiveRecord
+class EvaluationPlugin::Evaluation < ActiveRecord::Base
 
-  belongs_to :object, :polymorphic => true
-  belongs_to :evaluator, :class_name => "Profile"
-  belongs_to :evaluated, :class_name => "Profile"
+  attr_accessible *self.column_names
+
+  belongs_to :object, polymorphic: true
+  belongs_to :evaluator, class_name: "Profile"
+  belongs_to :evaluated, class_name: "Profile"
 
   validates_presence_of :object
   validates_presence_of :evaluator
