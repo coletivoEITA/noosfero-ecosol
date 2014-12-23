@@ -1,3 +1,32 @@
+GIT
+  remote: git://github.com/coletivoEITA/oauth2-provider.git
+  revision: 85f519138bd1f245dfe16122a0a6dfcda5876e3c
+  branch: master
+  specs:
+    songkick-oauth2-provider (0.10.2)
+      activerecord
+      json
+      rack
+
+GIT
+  remote: git://github.com/coletivoEITA/oauth2.git
+  revision: 42451bd6ec4d8dcf813425b0d6771a2e58c1897e
+  branch: 0-5-stable
+  specs:
+    oauth2 (0.5.2)
+      faraday (~> 0.7)
+      multi_json (~> 1.0)
+
+GIT
+  remote: git://github.com/coletivoEITA/omniauth-browserid.git
+  revision: b5b9f367cabf786e63a6bb413e5e5a4b2d661743
+  branch: master
+  specs:
+    omniauth-browserid (0.0.1)
+      faraday
+      multi_json
+      omniauth (~> 1.0)
+
 PATH
   remote: vendor/plugins/eita-jrails
   specs:
@@ -43,6 +72,12 @@ GEM
     assets_live_compile (0.1.1)
       activesupport (~> 3.2, >= 3.1)
       rails (~> 3.2, >= 3.1)
+    atomic (1.1.16)
+    attr_required (1.0.0)
+    axlsx (2.0.1)
+      htmlentities (~> 4.3.1)
+      nokogiri (>= 1.4.1)
+      rubyzip (~> 1.0.0)
     builder (3.0.4)
     capybara (2.1.0)
       mime-types (>= 1.16)
@@ -70,27 +105,44 @@ GEM
       cucumber (>= 1.0.6)
       nokogiri (>= 1.5.0)
     daemons (1.1.9)
+    dalli (2.7.2)
     database_cleaner (1.2.0)
+    debugger-ruby_core_source (1.3.7)
     diff-lcs (1.1.3)
     erubis (2.7.0)
-    eventmachine (1.0.3)
+    eventmachine (1.0.4)
     exception_notification (4.0.1)
       actionmailer (>= 3.0.4)
       activesupport (>= 3.0.4)
     execjs (2.2.2)
+    facebook-signed-request (0.2.7)
+    faraday (0.9.0)
+      multipart-post (>= 1.2, < 3)
     fast_blank (0.0.2)
     fast_gettext (0.6.12)
+    fb_graph (2.7.17)
+      httpclient (>= 2.4)
+      multi_json (>= 1.3)
+      rack-oauth2 (>= 0.14.4)
+      tzinfo
     ffi (1.9.6)
     gctools (0.2.3)
     gettext (2.2.1)
       locale
     gherkin (2.4.21)
       json (>= 1.4.6)
+    hashie (3.3.2)
     hike (1.2.3)
     htmlentities (4.3.2)
-    i18n (0.6.11)
+    httpclient (2.5.3.3)
+    i18n (0.7.0)
     journey (1.0.4)
     json (1.8.1)
+    jsonify (0.3.1)
+      multi_json (~> 1.0)
+    jsonify-rails (0.3.2)
+      actionpack
+      jsonify (< 0.4.0)
     kgio (2.9.2)
     libv8 (3.16.14.7)
     locale (2.0.9)
@@ -104,19 +156,72 @@ GEM
     mocha (1.1.0)
       metaclass (~> 0.0.1)
     multi_json (1.10.1)
+    multipart-post (2.0.0)
     newrelic_rpm (3.9.8.273)
     nokogiri (1.5.11)
-    pg (0.13.2)
+    oauth (0.4.7)
+    omniauth (1.2.2)
+      hashie (>= 1.2, < 4)
+      rack (~> 1.0)
+    omniauth-facebook (1.2.0)
+      omniauth-oauth2 (~> 1.0.0)
+    omniauth-google-oauth2 (0.2.2)
+      omniauth (~> 1.0)
+      omniauth-oauth2
+    omniauth-oauth (1.0.1)
+      oauth
+      omniauth (~> 1.0)
+    omniauth-oauth2 (1.0.0)
+      oauth2 (~> 0.5.0)
+      omniauth (~> 1.0)
+    omniauth-twitter (1.1.0)
+      multi_json (~> 1.3)
+      omniauth-oauth (~> 1.0)
+    peek (0.1.9)
+      atomic (>= 1.0.0)
+      railties (>= 3.0.0)
+    peek-active_resource (1.0.0)
+      activeresource
+      atomic (>= 1.0.0)
+      peek
+    peek-dalli (1.1.2)
+      atomic (>= 1.0.0)
+      dalli
+      peek
+    peek-gc (0.0.2)
+      peek
+    peek-git (1.0.2)
+      peek
+    peek-performance_bar (1.1.6)
+      peek (>= 0.1.0)
+    peek-pg (1.1.0)
+      atomic (>= 1.0.0)
+      peek
+      pg
+    peek-rblineprof (0.1.2)
+      peek
+      rblineprof
+    pg (0.17.1)
     polyglot (0.3.5)
+    posix-spawn (0.3.9)
     premailer (1.8.2)
       css_parser (>= 1.3.5)
       htmlentities (>= 4.0.0)
     premailer-rails (1.8.0)
       actionmailer (>= 3, < 5)
       premailer (~> 1.7, >= 1.7.9)
+    pygments.rb (0.6.0)
+      posix-spawn (~> 0.3.6)
+      yajl-ruby (~> 1.1.0)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
+    rack-oauth2 (1.0.9)
+      activesupport (>= 2.3)
+      attr_required (>= 0.0.5)
+      httpclient (>= 2.4)
+      multi_json (>= 1.3.6)
+      rack (>= 1.1)
     rack-ssl (1.3.4)
       rack
     rack-test (0.6.2)
@@ -140,9 +245,11 @@ GEM
       thor (>= 0.14.6, < 2.0)
     raindrops (0.13.0)
     rake (10.4.2)
+    rblineprof (0.3.6)
+      debugger-ruby_core_source (~> 1.3)
     rdoc (3.12.2)
       json (~> 1.4)
-    redis (3.1.0)
+    redis (3.2.0)
     redis-actionpack (3.2.4)
       actionpack (~> 3.2.0)
       redis-rack (~> 1.4.4)
@@ -179,6 +286,7 @@ GEM
       rspec (~> 2.10.0)
     ruby-feedparser (0.9.3)
       magic
+    rubyzip (1.0.0)
     sass (3.4.9)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -205,7 +313,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.42)
-    uglifier (2.5.3)
+    uglifier (2.6.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     unicode (0.4.4.2)
@@ -219,6 +327,7 @@ GEM
     will-paginate-i18n (0.1.15)
     xpath (2.0.0)
       nokogiri (~> 1.3)
+    yajl-ruby (1.1.0)
 
 PLATFORMS
   ruby
@@ -228,6 +337,7 @@ DEPENDENCIES
   activerecord-jdbcpostgresql-adapter
   acts-as-taggable-on (~> 3.0.2)
   assets_live_compile
+  axlsx (>= 2.0.1)
   capybara (~> 2.1.0)
   coffee-rails
   cucumber (~> 1.0.6)
@@ -236,16 +346,37 @@ DEPENDENCIES
   database_cleaner (~> 1.2.0)
   eita-jrails!
   exception_notification (~> 4.0.1)
+  facebook-signed-request
   fast_blank
   fast_gettext (~> 0.6.8)
+  fb_graph
   gctools
   gettext (~> 2.2.1)
+  jsonify-rails
   locale (~> 2.0.5)
   mocha (~> 1.1.0)
   newrelic_rpm
   nokogiri (~> 1.5.5)
-  pg (~> 0.13.2)
+  oauth
+  oauth2!
+  omniauth
+  omniauth-browserid!
+  omniauth-facebook
+  omniauth-google-oauth2
+  omniauth-oauth
+  omniauth-oauth2
+  omniauth-twitter
+  peek
+  peek-active_resource
+  peek-dalli
+  peek-gc
+  peek-git
+  peek-performance_bar
+  peek-pg
+  peek-rblineprof
+  pg
   premailer-rails
+  pygments.rb
   rack-cache
   rails (~> 3.2.21)
   rails_autolink (~> 1.1.5)
@@ -257,8 +388,10 @@ DEPENDENCIES
   rspec (~> 2.10.0)
   rspec-rails (~> 2.10.1)
   ruby-feedparser (~> 0.7)
+  rubyzip
   sass
   sass-rails
+  songkick-oauth2-provider!
   therubyracer
   thin
   uglifier (>= 1.0.3)

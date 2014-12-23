@@ -5,7 +5,6 @@ vendor/rails
 doc/api
 doc/noosfero/plugins
 tmp
-Gemfile.lock
 config/database.yml
 config/session.secret
 config/noosfero.yml
@@ -49,6 +48,5 @@ debian/noosfero-apache/
 features/plugins/*
 plugins/solr/config/solr.yml
 /solr
-/Gemfile.lock
 
 plugins/fb_app/config.yml
