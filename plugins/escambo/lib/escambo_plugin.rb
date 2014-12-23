@@ -1,3 +1,5 @@
+require_dependency 'solr_plugin/search_helper'
+
 class EscamboPlugin < Noosfero::Plugin
 
   def self.plugin_name
@@ -49,7 +51,7 @@ class EscamboPlugin < Noosfero::Plugin
   SearchDataMix = proc do
   end
   SearchIndexFilter = proc do
-    instance_eval &SearchDataLoad
+    instance_exec &SearchDataLoad
 
     # overwrite controller action
     render action: :index
@@ -67,7 +69,7 @@ class EscamboPlugin < Noosfero::Plugin
     @enterprises = environment.enterprises.visible.all offset: rand(offset), limit: SearchLimit
     @enterprises = @enterprises.sort_by{ rand }
 
-    instance_eval &SearchDataLoad
+    instance_exec &SearchDataLoad
 
     # overwrite controller action
     render action: :index
