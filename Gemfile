@@ -16,7 +16,7 @@ gem 'will-paginate-i18n'
 gem 'utf8-cleaner'
 
 platform :ruby do
-  gem 'pg',                     '~> 0.13.2'
+  gem 'pg'
   gem 'rmagick',                '~> 2.13.1'
   gem 'thin'
 
