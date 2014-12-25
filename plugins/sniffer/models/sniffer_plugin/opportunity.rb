@@ -43,8 +43,8 @@ class SnifferPlugin::Opportunity < ActiveRecord::Base
       super method, *args, &block
     end
   end
-  def respond_to_with_profile? method
-    respond_to_without_profile? method or self.opportunity.class.new.respond_to? method
+  def respond_to_with_profile? method, include_private=false
+    self.respond_to_without_profile? method or (self.opportunity.class.new.respond_to? method, include_private rescue false)
   end
   alias_method_chain :respond_to?, :profile
 

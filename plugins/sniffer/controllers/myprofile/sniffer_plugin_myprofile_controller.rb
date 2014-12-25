@@ -2,16 +2,10 @@ class SnifferPluginMyprofileController < MyProfileController
 
   helper CmsHelper
   helper_method :profile_hash
-  helper_method :load_sniffer_profile, :only => [:edit, :destroy]
 
   def edit
-    if request.post?
-      begin
-        profile.update_attributes params[:sniffer]
-        session[:notice] = _('Consumer interests updated')
-      rescue Exception
-        flash[:error] = _('Could not save consumer interests')
-      end
+    if request.put?
+      profile.update_attributes! params[:sniffer]
     end
   end
 
@@ -20,21 +14,21 @@ class SnifferPluginMyprofileController < MyProfileController
 
   def product_categories
     @query = params[:q].to_s.downcase
-    @categories = environment.categories.all :limit => 10,
-      :conditions => ["type = 'ProductCategory' and LOWER(name) LIKE ?", "%#{@query}%"]
+    @categories = environment.categories.all limit: 10,
+      conditions: ["type = 'ProductCategory' and LOWER(name) LIKE ?", "%#{@query}%"]
 
     respond_to do |format|
-      format.json{ render :json => @categories.map{ |i| {:id => i.id, :name => i.name} } }
+      format.json{ render json: @categories.map{ |i| {id: i.id, name: i.name} } }
     end
   end
 
   def product_category_search
     @term = params[:term].to_s.downcase
-    @categories = environment.categories.all :limit => 10,
-      :conditions => ["type = 'ProductCategory' and LOWER(name) LIKE ?", "%#{@term}%"]
+    @categories = environment.categories.all limit: 10,
+      conditions: ["type = 'ProductCategory' and LOWER(name) LIKE ?", "%#{@term}%"]
 
     respond_to do |format|
-      format.json{ render :json => @categories.map{ |pc| {:value => pc.id, :label => pc.name} } }
+      format.json{ render json: @categories.map{ |pc| {value: pc.id, label: pc.name} } }
     end
   end
 
@@ -62,7 +56,7 @@ class SnifferPluginMyprofileController < MyProfileController
     consumers.each{ |k, v| suppliers[k] ||= [] }
     suppliers.each{ |k, v| consumers[k] ||= [] }
     @profiles = suppliers.merge!(consumers) do |profile, suppliers_products, consumers_products|
-      {:suppliers_products => suppliers_products, :consumers_products => consumers_products}
+      {suppliers_products: suppliers_products, consumers_products: consumers_products}
     end
   end
 
@@ -76,17 +70,14 @@ class SnifferPluginMyprofileController < MyProfileController
     @suppliers_hashes = build_products(suppliers_products).values.first
     @consumers_hashes = build_products(consumers_products).values.first
 
-    render :layout => false
+    render layout: false
   end
 
   def my_map_balloon
-    render :layout => false
+    render layout: false
   end
 
   protected
-
-  def load_sniffer_profile
-  end
 
   def profile_hash profile
     methods = [:id, :name, :lat, :lng, :distance]
@@ -106,15 +97,15 @@ class SnifferPluginMyprofileController < MyProfileController
 
     grab_id = proc{ |field| data.map{|h| h[field].to_i }.uniq }
 
-    profiles = Profile.all :conditions => {:id => grab_id.call('profile_id')}
+    profiles = Profile.all conditions: {id: grab_id.call('profile_id')}
     profiles.each{ |p| @id_profiles[p.id] ||= p }
-    products = Product.all :conditions => {:id => grab_id.call('id')}, :include => [:enterprise, :product_category]
+    products = Product.all conditions: {id: grab_id.call('id')}, include: [:enterprise, :product_category]
     products.each{ |p| @id_products[p.id] ||= p }
-    my_products = Product.all :conditions => {:id => grab_id.call('my_product_id')}, :include => [:enterprise, :product_category]
+    my_products = Product.all conditions: {id: grab_id.call('my_product_id')}, include: [:enterprise, :product_category]
     my_products.each{ |p| @id_my_products[p.id] ||= p }
-    categories = ProductCategory.all :conditions => {:id => grab_id.call('product_category_id')}
+    categories = ProductCategory.all conditions: {id: grab_id.call('product_category_id')}
     categories.each{ |c| @id_categories[c.id] ||= c }
-    knowledges = Article.all :conditions => {:id => grab_id.call('knowledge_id')}
+    knowledges = Article.all conditions: {id: grab_id.call('knowledge_id')}
     knowledges.each{ |k| @id_knowledges[k.id] ||= k}
 
     data.each do |attributes|
@@ -123,10 +114,10 @@ class SnifferPluginMyprofileController < MyProfileController
 
       results[profile] ||= []
       results[profile] << {
-        :profile => profile, :partial => attributes['view'], :product => @id_products[attributes['id'].to_i],
-        :category => @id_categories[attributes['product_category_id'].to_i],
-        :my_product => @id_my_products[attributes['my_product_id'].to_i], :partial => attributes['view'],
-        :knowledge => @id_knowledges[attributes['knowledge_id'].to_i], :partial => attributes['view'],
+        profile: profile, partial: attributes['view'], product: @id_products[attributes['id'].to_i],
+        category: @id_categories[attributes['product_category_id'].to_i],
+        my_product: @id_my_products[attributes['my_product_id'].to_i], partial: attributes['view'],
+        knowledge: @id_knowledges[attributes['knowledge_id'].to_i], partial: attributes['view'],
       }
     end
     results
