@@ -30,6 +30,8 @@ class Profile
   def sniffer_interested_product_category_string_ids= ids
     ids = ids.split ','
     self.sniffer_interested_product_categories = self.environment.product_categories.find ids
+    # WORKAROUND type save
+    self.sniffer_opportunities.where(opportunity_id: ids).each{ |o| o.update_attribute :opportunity_type, 'ProductCategory' }
   end
 
   def sniffer_categories
