@@ -7,7 +7,7 @@ class ExchangePluginMyprofileController < MyProfileController
   helper ExchangePlugin::ExchangeDisplayHelper
 
   def index
-    @profile_exchanges = ExchangePlugin::ProfileExchange.all :conditions => {:profile_id => profile.id}
+    @profile_exchanges = ExchangePlugin::ProfileExchange.all conditions: {profile_id: profile.id}
     @active_exchanges = @profile_exchanges.select{|ex| (ex.exchange.state == "negociation")}
     @inactive_exchanges = @profile_exchanges.select{|ex| ((ex.exchange.state == "concluded") || (ex.exchange.state == "cancelled"))}
   end
@@ -15,12 +15,12 @@ class ExchangePluginMyprofileController < MyProfileController
   def exchange_console
     @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
 
-    @proposals = @exchange.proposals.all(:order => "created_at DESC")
+    @proposals = @exchange.proposals.all(order: "created_at DESC")
     @current_proposal = @proposals.first
 
     @target = @current_proposal.target
     @origin = @current_proposal.origin
-    @theother = @exchange.profiles.first :conditions => ["profile_id <> ?", profile.id]
+    @theother = @exchange.profiles.first conditions: ["profile_id <> ?", profile.id]
 
     @theother_knowledges = CmsLearningPlugin::Learning.all.select{|k| k.profile.id == @theother.id} - @current_proposal.knowledges
     @profile_knowledges = CmsLearningPlugin::Learning.all.select{|k| k.profile.id == @profile.id} - @current_proposal.knowledges
@@ -34,7 +34,7 @@ class ExchangePluginMyprofileController < MyProfileController
 
     @message = ExchangePlugin::Message.new_exchange_message proposal, sender, recipient, user, params[:body]
 
-    ExchangePlugin::Mailer.deliver_new_message_notification @active_organization, recipient, proposal.exchange_id
+    ExchangePlugin::Mailer.new_message_notification(@active_organization, recipient, proposal.exchange_id).deliver
   end
 
   def close_proposal
@@ -46,9 +46,9 @@ class ExchangePluginMyprofileController < MyProfileController
     @proposal.exchange.state = "negociation"
     @proposal.exchange.save!
 
-    ExchangePlugin::Mailer.deliver_new_proposal_notification @proposal.target, @proposal.origin, @proposal.id, @proposal.exchange.id
+    ExchangePlugin::Mailer.new_proposal_notification(@proposal.target, @proposal.origin, @proposal.id, @proposal.exchange.id).deliver
 
-    redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
+    redirect_to action: 'exchange_console', exchange_id: @proposal.exchange_id
   end
 
   def new_proposal
@@ -74,7 +74,7 @@ class ExchangePluginMyprofileController < MyProfileController
       ex_el.save!
     end
 
-    redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
+    redirect_to action: 'exchange_console', exchange_id: @proposal.exchange_id
   end
 
   def destroy_proposal
@@ -82,13 +82,13 @@ class ExchangePluginMyprofileController < MyProfileController
     exchange_id = @proposal.exchange_id
     @proposal.destroy
 
-    redirect_to :action => 'exchange_console', :exchange_id => exchange_id
+    redirect_to action: 'exchange_console', exchange_id: exchange_id
   end
 
   def destroy
     @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
     @exchange.destroy
-    redirect_to :action => 'index'
+    redirect_to action: 'index'
   end
 
   def accept
@@ -98,7 +98,7 @@ class ExchangePluginMyprofileController < MyProfileController
     @proposal.state = "accepted"
     @proposal.save
 
-    redirect_to :action => 'exchange_console', :exchange_id => @proposal.exchange_id
+    redirect_to action: 'exchange_console', exchange_id: @proposal.exchange_id
   end
 
   def evaluate
@@ -119,13 +119,13 @@ class ExchangePluginMyprofileController < MyProfileController
       @exchange.save
     end
 
-    redirect_to :action => 'exchange_console', :exchange_id => @exchange.id
+    redirect_to action: 'exchange_console', exchange_id: @exchange.id
   end
 
   protected
 
   def set_mailer_host
-    ExchangePlugin::Mailer.default_url_options = {:host => request.host_with_port}
+    ExchangePlugin::Mailer.default_url_options = {host: request.host_with_port}
   end
 
 end
