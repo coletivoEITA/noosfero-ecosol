@@ -1,0 +1,38 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'jquery.tokeninput.js' %>
+  <%= stylesheet_link_tag 'token-input' %>
+<% end %>
+
+<%= required_fields_message %>
+
+<%= required f.text_field(:name, size: '64') %>
+
+<%= labelled_form_field(_('Summary:'), text_area(:article, :summary, rows: 3)) %>
+
+<div id="cms-learning-edit-products">
+  <%= label :article, :product_category_string_ids, _('Associate Products'), class: 'formlabel' %>
+  <%= text_field(:article, :product_category_string_ids) %>
+  <% array = @article.product_categories.collect{ |i| {id: i.id, name: i.name} } %>
+  <%= javascript_tag do %>
+    jQuery.TokenList(jQuery("#article_product_category_string_ids"), '<%= url_for(controller: :cms_learning_plugin_myprofile, action: :product_categories) %>',
+    {searchDelay: 150, prePopulate: <%= array.to_json %>, preventDuplicates: true, <%= jquery_token_input_messages_json("") %>});
+  <% end %>
+</div>
+
+<div id="cms-learning-edit-products">
+  <%= label :article, :person_string_ids, _('Associate Persons'), class: 'formlabel' %>
+  <%= text_field(:article, :person_string_ids) %>
+  <% array = @article.persons.collect{ |i| {id: i.id, name: i.name} } %>
+  <%= javascript_tag do %>
+    jQuery.TokenList(jQuery("#article_person_string_ids"), '<%= url_for(controller: :cms_learning_plugin_myprofile, action: :persons) %>',
+    {searchDelay: 150, prePopulate: <%= array.to_json %>, preventDuplicates: true, <%= jquery_token_input_messages_json("") %>});
+  <% end %>
+</div>
+<div style="clear: both"></div>
+
+<%= render file: 'shared/tiny_mce' %>
+<%= render partial: 'shared/lead_and_body', locals: {tiny_mce: true, body_label: _("Learning's detail"), abstract: false} %>
+
+<%= labelled_form_field(_('Good practices:'), text_area(:article, :good_practices, rows: 3)) %>
+
+<div style="clear: both"></div>
