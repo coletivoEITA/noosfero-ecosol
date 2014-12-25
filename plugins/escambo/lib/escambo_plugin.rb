@@ -1,3 +1,4 @@
+require_dependency 'solr_plugin'
 require_dependency 'solr_plugin/search_helper'
 
 class EscamboPlugin < Noosfero::Plugin
