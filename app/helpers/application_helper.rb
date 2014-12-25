@@ -524,9 +524,6 @@ module ApplicationHelper
   end
 
   def profile_cat_icons( profile )
-    # Disabled in escambo
-    return ''
-
     if profile.class == Enterprise
       icons = profile.product_categories.unique_by_level(2).limit(3).map do |c|
         filtered_category = c.filtered_category.blank? ? c.path.split('/').last : c.filtered_category
