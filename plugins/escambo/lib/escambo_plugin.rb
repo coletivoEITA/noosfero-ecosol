@@ -159,7 +159,7 @@ class EscamboPlugin < Noosfero::Plugin
       @person.environment = @user.environment
 
       params[:enterprise_data] ||= {}
-      @enterprise = Enterprise.new params[enterprise_data].merge(environment: environment)
+      @enterprise = Enterprise.new params[:enterprise_data].merge(environment: environment)
 
       @selected_enterprise = environment.enterprises.find_by_id params[:enterprise_id]
       @enterprises = []
