@@ -3,7 +3,7 @@
 <% if elements.present? %>
   <ul class="exchange-elements-list" id="exchange-elements-list-<%=actor%>">
     <% elements.each do |e| %>
-      <%= render :partial => "exchange_plugin_element/view", :locals => {:element => e, :actor => actor} %>
+      <%= render "exchange_plugin_element/view", element: e, actor: actor %>
     <% end %>
   </ul>
 <% else %>

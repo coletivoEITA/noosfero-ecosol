@@ -15,7 +15,7 @@
         </div>
 
         <div class="exchange-message-body">
-          <% form_remote_tag :url => {:action => 'new_message', :proposal_id => proposal.id},
+          <%= form_remote_tag :url => {:action => 'new_message', :proposal_id => proposal.id},
             :before => "formSubmit.disable(this, '#{_ 'Sending'}')", :complete => 'formSubmit.enable()' do %>
             <%= text_area_tag 'body', nil, :rows => 2, :cols => 30, :placeholder => _('Type your message') %>
             <%= submit_tag _('Send message'), :class => 'action-button' %>
