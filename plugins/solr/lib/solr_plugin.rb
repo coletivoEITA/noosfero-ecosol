@@ -1,5 +1,5 @@
 class SolrPlugin < Noosfero::Plugin; end
-require 'solr_plugin/search_helper'
+require_dependency 'solr_plugin/search_helper'
 
 class SolrPlugin
 
@@ -200,6 +200,19 @@ class SolrPlugin
         longitude: person.lng })
     else
       options.merge({boost_functions: ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']})
+    end
+  end
+
+  def filters asset
+    case asset
+    when :products
+      ['solr_plugin_public:true', 'enabled:true']
+    when :catalog
+      []
+    when :events
+      []
+    else
+      ['solr_plugin_public:true']
     end
   end
 

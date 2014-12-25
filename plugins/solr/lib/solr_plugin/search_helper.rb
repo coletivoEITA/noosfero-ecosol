@@ -40,19 +40,6 @@ module SolrPlugin::SearchHelper
     ],
   }
 
-  def filters(asset)
-    case asset
-    when :products
-      ['solr_plugin_public:true', 'enabled:true']
-    when :catalog
-      []
-    when :events
-      []
-    else
-      ['solr_plugin_public:true']
-    end
-  end
-
   def empty_query?(query, category)
     category.nil? && query.blank?
   end
