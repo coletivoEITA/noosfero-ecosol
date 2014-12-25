@@ -6,7 +6,7 @@ class ExchangePlugin::Exchange < ActiveRecord::Base
   validates_inclusion_of :state, in: ["proposal", "negociation", "evaluation",
     "concluded",  "cancelled"]
 
-  has_many :proposals, class_name: "ExchangePlugin::Proposal", dependent: :destroy, order: "id asc"
+  has_many :proposals, class_name: "ExchangePlugin::Proposal", dependent: :destroy
 
   has_many :profile_exchanges, class_name: "ExchangePlugin::ProfileExchange", dependent: :destroy
   has_many :profiles, through: :profile_exchanges

@@ -15,10 +15,10 @@
         </div>
 
         <div class="exchange-message-body">
-          <%= form_remote_tag :url => {:action => 'new_message', :proposal_id => proposal.id},
-            :before => "formSubmit.disable(this, '#{_ 'Sending'}')", :complete => 'formSubmit.enable()' do %>
-            <%= text_area_tag 'body', nil, :rows => 2, :cols => 30, :placeholder => _('Type your message') %>
-            <%= submit_tag _('Send message'), :class => 'action-button' %>
+          <%= form_remote_tag url: {action: 'new_message', proposal_id: proposal.id},
+            before: "formSubmit.disable(this, '#{_ 'Sending'}')", complete: 'formSubmit.enable()' do %>
+            <%= text_area_tag 'body', nil, rows: 2, cols: 30, placeholder: _('Type your message') %>
+            <%= submit_tag _('Send message'), class: 'action-button' %>
           <% end %>
         </div>
 
@@ -29,10 +29,10 @@
       <% proposal.messages.each do |message| %>
 
         <% actor = message.sender.id == profile.id ? 'profile' : 'theother' %>
-        <%= render :partial => "proposal_message", :locals => {
-          :message => message, :actor => actor,
-          :profile => actor == 'profile' ? profile : message.proposal.the_other(profile),
-        } %>
+        <%= render "proposal_message",
+          message: message, actor: actor,
+          profile: actor == 'profile' ? profile : message.proposal.the_other(profile)
+        %>
       <% end %>
     <% else %>
       <%# FIXME %>

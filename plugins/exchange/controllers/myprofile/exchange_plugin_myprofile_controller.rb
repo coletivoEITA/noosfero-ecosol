@@ -7,7 +7,7 @@ class ExchangePluginMyprofileController < MyProfileController
   helper ExchangePlugin::ExchangeDisplayHelper
 
   def index
-    @profile_exchanges = ExchangePlugin::ProfileExchange.all conditions: {profile_id: profile.id}
+    @profile_exchanges = ExchangePlugin::ProfileExchange.where(profile_id: profile.id)
     @active_exchanges = @profile_exchanges.select{|ex| (ex.exchange.state == "negociation")}
     @inactive_exchanges = @profile_exchanges.select{|ex| ((ex.exchange.state == "concluded") || (ex.exchange.state == "cancelled"))}
   end
@@ -15,7 +15,7 @@ class ExchangePluginMyprofileController < MyProfileController
   def exchange_console
     @exchange = ExchangePlugin::Exchange.find params[:exchange_id]
 
-    @proposals = @exchange.proposals.all(order: "created_at DESC")
+    @proposals = @exchange.proposals.order("created_at DESC")
     @current_proposal = @proposals.first
 
     @target = @current_proposal.target
