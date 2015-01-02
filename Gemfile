@@ -24,7 +24,7 @@ platform :ruby do
 
   group :performance do
     gem 'fast_blank'
-    gem 'gctools'
+    gem 'gctools' if RUBY_VERSION >= '2.1.0' and RUBY_VERSION < '2.2.0'
     # DON'T IMPROVE
     #gem 'escape_utils'
   end
@@ -59,6 +59,8 @@ group :production do
   gem 'rack-cache'
 end
 
+# needed as removed from ruby 2.2
+gem 'test-unit'
 group :test do
   gem 'rspec',                  '~> 2.10.0'
   gem 'rspec-rails',            '~> 2.10.1'
