@@ -22,7 +22,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def new
-    if request.xhr?
+    if request.put?
       @cycle = OrdersCyclePlugin::Cycle.find params[:id]
 
       params[:cycle][:status] = 'orders' if @open = params[:open] == '1'
@@ -31,7 +31,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
       if @success
         session[:notice] = t('controllers.myprofile.cycle_controller.cycle_created')
         if params[:sendmail]
-          OrdersCyclePlugin:Mailer.delay(run_at: @cycle.start).open_cycle(
+          OrdersCyclePlugin::Mailer.delay(run_at: @cycle.start).open_cycle(
             @cycle.profile, @cycle ,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message)
         end
       else
@@ -57,7 +57,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
         @success = @cycle.update_attributes params[:cycle]
 
         if params[:sendmail]
-          OrdersCyclePlugin:Mailer.delay(run_at: @cycle.start).open_cycle(@cycle.profile,
+          OrdersCyclePlugin::Mailer.delay(run_at: @cycle.start).open_cycle(@cycle.profile,
             @cycle, t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message)
         end
       end
@@ -102,9 +102,9 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def report_products
-    return super unless params[:id].present?
+    return super if params[:ids].present?
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
-    tmp_dir, report_file = report_products_by_supplier @cycle.products_by_suppliers
+    report_file = report_items_by_supplier @cycle.items_by_suppliers(@cycle.sales.ordered)
 
     send_file report_file, type: 'application/xlsx',
       disposition: 'attachment',
@@ -113,9 +113,9 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def report_orders
-    return super unless params[:id].present?
+    return super if params[:ids].present?
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
-    tmp_dir, report_file = report_orders_by_consumer @cycle.sales.ordered
+    report_file = report_orders_by_consumer @cycle.sales.ordered
 
     send_file report_file, type: 'application/xlsx',
       disposition: 'attachment',

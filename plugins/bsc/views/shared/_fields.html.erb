@@ -3,7 +3,7 @@
 
 <fieldset>
   <legend><%= _('Basic information')%></legend>
-  <%= required f.text_field(:business_name, :onchange => "updateUrlField(this, 'profile_data_identifier')") %>
+  <%= required f.text_field(:business_name, :onchange => "updateUrlField(this, '#profile_data_identifier')") %>
   <%= required f.text_field(:company_name) %>
   <%= required f.text_field(:cnpj) %>
   <!-- This line should be uncommented when bsc is merged with the former plugin -->

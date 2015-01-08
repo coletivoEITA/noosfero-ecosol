@@ -2,6 +2,11 @@
 
 "pt-BR": &pt-BR
 
+  number:
+    currency:
+      format:
+        xlsx_currency: "[$R$-416]* #,##0.00;[RED]-[$R$-416]* #,##0.00"
+
   suppliers_plugin:
     lib:
       plugin:
@@ -387,7 +392,7 @@
         price_un: preço/un
         product_cod: "Cód. produto"
         product_name: "nome do produto"
-        products_report: "products report"
+        products_report: "relatório de produtos"
         projected_stock: "estoque projetado"
         qtt_to_be_parcelled: "qtd a ser encomendada"
         qty_ordered: "qtd pedida"
@@ -403,6 +408,7 @@
         value_parcel: "Valor da encomenda"
         phone: 'Telefone'
         mail: 'Email'
+        alert_formulas: "Atenção! Se você estiver utilizando o Libreoffice (BrOffice), será necessário atualizar as fórmulas desta planilha com o comando CTRL + SHIFT + F9"
     controllers:
       profile:
         consumer: 
@@ -516,6 +522,7 @@
           order_date: "data do pedido"
           total: "total (%{currency})"
           situation: "situação"
+          none_selected: "Nenhum pedido selecionado"
         _edit: 
           add_product: "adicionar produto"
           cancel: Cancelar
@@ -543,7 +550,7 @@
         order_cancellation: 
           dear_name: "Olá %{name},"
           greetings: "Saudações,"
-          your_order_made_on_co: "Seu pedido feito %{terms.profile.at_article.singular} %{name} em %{date} foi cancelado com sucesso."
+          your_order_made_on_co: "Seu pedido feito no coletivo de consumo %{name} em %{date} foi cancelado com sucesso."
         _complete_order: 
           order_no_code: "Código do Pedido: %{code}"
           price: Preço

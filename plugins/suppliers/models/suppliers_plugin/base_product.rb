@@ -21,6 +21,7 @@ class SuppliersPlugin::BaseProduct < Product
   settings_items :margin_percentage, type: Float, default: nil
   settings_items :stored, type: Float, default: nil
   settings_items :quantity, type: Float, default: nil
+  settings_items :unit_detail, type: String, default: nil
 
   DEFAULT_ATTRIBUTES = [
     :name, :description, :price, :unit_id, :product_category_id, :image_id,

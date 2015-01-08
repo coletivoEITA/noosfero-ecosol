@@ -1214,6 +1214,10 @@ msgstr "Nome de exibição"
 msgid "Description"
 msgstr "Descrição"
 
+app/views/manage_products/show.html.erb
+msgid "Offered by"
+msgstr "Produzido ou oferecido por"
+
 #: app/models/organization.rb:107 app/models/create_enterprise.rb:7
 msgid "Contact person"
 msgstr "Pessoa de contato"
@@ -1582,6 +1586,10 @@ msgstr "título"
 msgid "description"
 msgstr "descrição"
 
+#: app/views/catalog/_pagination.html.erb
+msgid "Show more"
+msgstr "Ver mais produtos"
+
 #: app/models/create_community.rb:38 app/helpers/application_helper.rb:1079
 msgid "New community"
 msgstr "Nova comunidade"
@@ -1754,6 +1762,14 @@ msgstr "um integrante"
 #: app/models/profile.rb:872
 msgid "%s members"
 msgstr "%s integrantes"
+
+#: plugins/people_block/lib/members_block.rb
+msgid "members"
+msgstr "integrantes"
+
+#: plugins/people_block/lib/members_block.rb
+msgid "Members"
+msgstr "Integrantes"
 
 #: app/models/profile.rb:942
 msgid "Profile Info and settings"
@@ -4838,6 +4854,11 @@ msgstr "Ir para o conteúdo"
 #: app/views/profile_editor/index.html.erb:48
 msgid "Manage Products/Services"
 msgstr "Gerenciar Produtos/Serviços"
+
+#: app/views/catalog/_product.html.erb
+msgid "By"
+msgstr "Por"
+
 
 #: app/views/catalog/index.html.erb:28
 msgid "Highlighted product"
@@ -8922,6 +8943,10 @@ msgstr "Insumos e matéria-prima"
 #: app/views/manage_products/show.html.erb:36
 msgid "Price composition"
 msgstr "Composição de preço"
+
+#: app/views/manage_products/show.html.erb:58
+msgid "Add product or service"
+msgstr "Adicionar produto ou serviço"
 
 #: app/views/manage_products/show.html.erb:58
 msgid "Remove product or service"
@@ -13496,17 +13521,17 @@ msgstr "Transferência bancária"
 #~ msgid "Events:"
 #~ msgstr "Eventos:"
 
-#~ msgid "Tags:"
-#~ msgstr "Marcadores:"
+msgid "Tags:"
+msgstr "Marcadores:"
 
 #~ msgid "Interests"
 #~ msgstr "Interesses"
 
-#~ msgid "Administrators:"
-#~ msgstr "Administradores:"
+msgid "Administrators:"
+msgstr "Administradores:"
 
-#~ msgid "Personalize invitation mail"
-#~ msgstr "Personalize a mensagem de convite"
+msgid "Personalize invitation mail"
+msgstr "Personalize a mensagem de convite"
 
 #~ msgid "advertise"
 #~ msgstr "propaganda"

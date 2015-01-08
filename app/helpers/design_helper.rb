@@ -3,6 +3,7 @@ module DesignHelper
   extend ActiveSupport::Concern
 
   included do
+    next unless self.is_a? ActionController::Base
     extend ClassMethods
     include InstanceMethods
     before_filter :load_custom_design

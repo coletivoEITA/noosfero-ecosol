@@ -1,6 +1,6 @@
 class SuppliersPlugin::Supplier < ActiveRecord::Base
 
-  attr_accessible :name, :name_abbreviation, :description
+  attr_accessible :profile_id, :profile, :consumer, :consumer_id, :name, :name_abbreviation, :description
 
   belongs_to :profile
   belongs_to :consumer, :class_name => 'Profile'

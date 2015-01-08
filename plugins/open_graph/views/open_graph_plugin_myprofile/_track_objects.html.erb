@@ -1,14 +1,16 @@
 <%
-  association = "open_graph_#{track}_tracks"
-  tracks = profile.send association
+  tracks = profile.send klass.association
 %>
+
 <% objects.each do |object| %>
-  <% track_record = tracks.find{ |t| t.object_type == object } || profile.send(association).build %>
-  <%= f.fields_for association, track_record do |ff| %>
-    <%= ff.hidden_field :id %>
-    <%= ff.hidden_field :tracker_id %>
-    <%= ff.check_box :object_type, {}, object, '' %>
-    <%= ff.label t("open_graph_plugin.lib.track.config.#{track}.objects.#{object}") %>
-  <% end %>
+  <div id="object-<%= object %>" class="tracked-object">
+    <% track_record = tracks.find{ |t| t.object_type == object } || profile.send(klass.association).build %>
+    <%= f.fields_for klass.association, track_record do |ff| %>
+      <%= ff.hidden_field :id %>
+      <%= ff.hidden_field :tracker_id %>
+      <%= ff.check_box :object_type, {onchange: 'open_graph.track.config.toggleParent(this)'}, object, '' %>
+      <%= ff.label t("open_graph_plugin.views.track.config.#{track}.objects.#{object}") %>
+    <% end %>
+  </div>
 <% end %>
 

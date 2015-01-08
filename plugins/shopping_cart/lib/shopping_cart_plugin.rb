@@ -40,7 +40,6 @@ class ShoppingCartPlugin < Noosfero::Plugin
   end
 
   def control_panel_buttons
-    settings = Noosfero::Plugin::Settings.new(context.profile, ShoppingCartPlugin)
     buttons = []
     if context.profile.enterprise?
       buttons << { :title => _('Shopping basket'), :icon => 'shopping-cart-icon', :url => {:controller => 'shopping_cart_plugin_myprofile', :action => 'edit'} }
@@ -51,8 +50,7 @@ class ShoppingCartPlugin < Noosfero::Plugin
 
   def add_to_cart_button item, options = {}
     profile = item.profile
-    settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin)
-    return unless settings.enabled and item.available
+    return unless profile.shopping_cart_enabled and item.available
     lambda do
       extend ShoppingCartPlugin::CartHelper
       add_to_cart_button item, options
@@ -69,8 +67,7 @@ class ShoppingCartPlugin < Noosfero::Plugin
   #end
 
   def catalog_search_extras_begin
-    settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin)
-    return unless settings.enabled
+    return unless profile.shopping_cart_enabled
     lambda do
       extend ShoppingCartPlugin::CartHelper
       content_tag 'li', render('public/cart'), :class => 'catalog-cart'

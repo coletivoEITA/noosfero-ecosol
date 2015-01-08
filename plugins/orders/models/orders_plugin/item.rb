@@ -31,6 +31,7 @@ class OrdersPlugin::Item < ActiveRecord::Base
   belongs_to :purchase, class_name: 'OrdersPlugin::Purchase', foreign_key: :order_id
 
   belongs_to :product
+  has_one :supplier, through: :product
 
   has_one :profile, through: :order
   has_one :consumer, through: :order
@@ -82,18 +83,9 @@ class OrdersPlugin::Item < ActiveRecord::Base
     validates_numericality_of price, allow_nil: true
   end
 
-  def self.products_by_suppliers items
+  def self.items_by_suppliers items
     items.group_by(&:supplier).map do |supplier, items|
-      products = []
-      total_price_consumer_ordered = 0
-
-      items.group_by(&:product).each do |product, items|
-        products << product
-        product.ordered_items = items
-        total_price_consumer_ordered += product.total_price_consumer_ordered items
-      end
-
-      [supplier, products, total_price_consumer_ordered]
+      [supplier, items]
     end
   end
 

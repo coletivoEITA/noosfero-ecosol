@@ -1,5 +1,5 @@
 # add target attribute to links
-class FbAppPlugin::LinkRenderer < WillPaginate::LinkRenderer
+class FbAppPlugin::LinkRenderer < WillPaginate::ActionView::LinkRenderer
 
   def prepare collection, options, template
     super
@@ -7,14 +7,8 @@ class FbAppPlugin::LinkRenderer < WillPaginate::LinkRenderer
 
   protected
 
-  # 2.x version
-  def page_link page, text, attributes = {}
-    @template.link_to text, url_for(page), attributes.merge(:target => '')
-  end
-
-  # 3.x version
-  def link text, target, attributes = {}
-    page_link target, text, attributes
+  def default_url_params
+    {target: ''}
   end
 
 end

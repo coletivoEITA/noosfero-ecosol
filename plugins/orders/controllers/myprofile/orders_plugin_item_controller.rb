@@ -46,10 +46,10 @@ class OrdersPluginItemController < MyProfileController
         @quantity_consumer_ordered = min
         @quantity_consumer_ordered_less_than_minimum = @item.id || true
       end
-    else
-      @item.destroy if @item
+    elsif @item
       @quantity_consumer_ordered = nil
-      render :action => :destroy
+      destroy
+      render action: :destroy
     end
 
     @quantity_consumer_ordered

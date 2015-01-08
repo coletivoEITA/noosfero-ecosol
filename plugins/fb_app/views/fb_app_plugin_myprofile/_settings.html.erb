@@ -1,3 +1,7 @@
+<h1><%= t('fb_app_plugin.lib.plugin.name') %></h1>
+
+<%= button(:back, _('Back to control panel'), :controller => 'profile_editor') %>
+
 <div id="fb-app-connect-status">
   <%= render 'intro' if @auth.not_authorized? %>
   <div id="fb-app-auth">
@@ -5,17 +9,29 @@
   </div>
 </div>
 
-<% if @auth.connected? %>
+<% if @auth.connected? or Rails.env.development? %>
+  <div id="fb-app-catalogs">
+    <%= render 'catalogs' %>
+  </div>
+  
   <div id="fb-app-timeline">
     <h2>
       <%= t('fb_app_plugin.views.myprofile.timeline.heading') %>
     </h2>
-
+    <h3>
+      <%= t('fb_app_plugin.views.myprofile.timeline.explanation_title') %>
+    </h3>
+    <p>
+      <%= t('fb_app_plugin.views.myprofile.timeline.explanation_text') %>
+    </p>
+<% if FbAppPlugin.test_user? user %>
     <div id="track-form">
       <%= render 'track_form' %>
     </div>
   </div>
-  <div id="fb-app-catalog">
-    <%= render 'catalog' %>
-  </div>
 <% end %>
+  
+<% end %>
+
+<div class='clean'></div>
+<%= button(:back, _('Back to control panel'), {:controller => 'profile_editor'}, :class => 'fb-app-final-back-button') %>

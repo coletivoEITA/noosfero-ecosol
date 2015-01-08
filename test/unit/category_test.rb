@@ -379,11 +379,11 @@ class CategoryTest < ActiveSupport::TestCase
   end
 
   should 'display in menu only if have display_menu setted to true' do
-    c   = fast_create(Category, :display_in_menu => true)
-    c1  = fast_create(Category, :display_in_menu => true, :parent_id => c.id)
-    c11 = fast_create(Category, :display_in_menu => true, :parent_id => c1.id)
-    c2  = fast_create(Category, :display_in_menu => true, :parent_id => c.id)
-    c3  = fast_create(Category, :parent_id => c.id)
+    c   = create(Category, :display_in_menu => true)
+    c1  = create(Category, :display_in_menu => true, :parent_id => c.id)
+    c11 = create(Category, :display_in_menu => true, :parent_id => c1.id)
+    c2  = create(Category, :display_in_menu => true, :parent_id => c.id)
+    c3  = create(Category, :parent_id => c.id)
 
     assert_equivalent [c1, c11, c2], c.children_for_menu
   end

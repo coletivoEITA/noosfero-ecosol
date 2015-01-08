@@ -60,6 +60,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   end
 
   # reimplement to don't destroy this, keeping history in cycles
+  # offered products copy attributes
   def dependent?
     false
   end

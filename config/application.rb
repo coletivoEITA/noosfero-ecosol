@@ -10,9 +10,12 @@ ActiveSupport::Deprecation.silenced = true
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
-  Bundler.require(*Rails.groups(:assets => %w(development test)))
+  # Bundler.require(*Rails.groups(:assets => %w(development test)))
   # If you want your assets lazily compiled in production, use this line
-  # Bundler.require(:default, :assets, Rails.env)
+  Bundler.require :default, :assets, Rails.env, :performance
+  if Rails.env.development?
+    Bundler.require :profile
+  end
 end
 
 if defined? NewRelic
@@ -69,6 +72,7 @@ module Noosfero
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    config.i18n.available_locales = Noosfero.available_locales
     config.i18n.default_locale = nil
 
     # Configure the default encoding used in templates for Ruby 1.9.

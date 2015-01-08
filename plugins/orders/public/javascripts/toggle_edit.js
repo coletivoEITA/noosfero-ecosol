@@ -51,11 +51,15 @@ toggle_edit = {
   },
 
   open_anchor: function () {
-    el = jQuery(window.location.hash);
-    toggle_edit.value_row.reload();
-    if (el.hasClass('value-row')) {
-      toggle_edit.setEditing(el);
-      toggle_edit.value_row.toggle_edit();
+    try {
+      el = jQuery(window.location.hash);
+      toggle_edit.value_row.reload();
+      if (el.hasClass('value-row')) {
+        toggle_edit.setEditing(el);
+        toggle_edit.value_row.toggle_edit();
+      }
+    } catch(e) {
+      // catch invalid anchor errors to avoid break in document.ready event chain
     }
   },
 

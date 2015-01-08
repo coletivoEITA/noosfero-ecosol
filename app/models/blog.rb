@@ -87,7 +87,7 @@ class Blog < Folder
   end
 
   def last_posts(limit=3)
-    posts.where("type != 'RssFeed'").order(:updated_at).limit(limit)
+    posts.no_feeds.latest.limit(limit)
   end
 
 end

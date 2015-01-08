@@ -6,6 +6,8 @@ require 'redcloth'
 # application.
 module ApplicationHelper
 
+  include UrlHelper
+
   include PermissionNameHelper
 
   include PaginationHelper
@@ -153,7 +155,9 @@ module ApplicationHelper
   end
 
   def link_to_homepage(text, profile = nil, options = {})
-    p = if profile
+    p = if profile.is_a?(Profile)
+          profile
+        elsif profile.is_a?(String)
           Profile[profile]
         else
           user
@@ -1252,7 +1256,7 @@ module ApplicationHelper
             :profile => profile.identifier }
     url.merge!({:content_type => content.class.name, :content_id => content.id}) if content
     text = content_tag('span', _('Report abuse'))
-    klass = 'report-abuse-action colorbox'
+    klass = 'report-abuse-action modal-toggle'
     already_reported_message = _('You already reported this profile.')
     report_profile_message = _('Report this profile for abusive behaviour')
 
@@ -1278,6 +1282,19 @@ module ApplicationHelper
 
   def cache_timeout(key, timeout, &block)
     cache(key, { :expires_in => timeout }, &block)
+  end
+
+  # Backport from rails 4
+  def cache_if condition, name = {}, options = nil, &block
+    if condition
+      cache name, options, &block
+    else
+      yield
+    end
+    nil
+  end
+  def cache_unless condition, name = {}, options = nil, &block
+    cache_if !condition, name, options, &block
   end
 
   def is_cache_expired?(key)

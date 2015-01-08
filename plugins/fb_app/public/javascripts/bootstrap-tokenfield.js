@@ -268,7 +268,7 @@
           parseInt($tokenLabel.css('margin-right'), 10)
       }
 
-      $tokenLabel.css('max-width', this.maxTokenWidth)
+      //$tokenLabel.css('max-width', this.maxTokenWidth)
       if (this.options.html)
         $tokenLabel.html(attrs.label)
       else

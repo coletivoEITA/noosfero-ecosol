@@ -2,6 +2,11 @@
 
 "en-US": &en-US
 
+  number:
+    currency:
+      format:
+        xlsx_currency: "[$$-409]* #.##0,00;[RED]-[$$-409]* #.##0,00"
+
   suppliers_plugin:
     lib:
       plugin:
@@ -395,6 +400,7 @@
         value_parcel: "value parcel"
         phone: 'Telephone'
         mail: 'Email'
+        alert_formulas: "Atention! If you are using LibreOffice (BrOffice) you will need to update the formulas with the command CTRL + SHIFT + F9"
     controllers:
       profile:
         consumer: 
@@ -509,6 +515,7 @@
           order_date: "orders' date"
           total: "total (%{currency})"
           situation: "situation"
+          none_selected: "Any order selected"
         _edit: 
           add_product: "add product"
           cancel: cancel

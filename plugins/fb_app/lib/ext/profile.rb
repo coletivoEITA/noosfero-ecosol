@@ -2,7 +2,7 @@ require_dependency 'profile'
 
 class Profile
 
-  has_many :fb_app_page_tag_configs, class_name: 'FbAppPlugin::PageTabConfig'
+  has_many :fb_app_page_tabs, class_name: 'FbAppPlugin::PageTab'
 
   def fb_app_auth
     provider = FbAppPlugin.oauth_provider_for self.environment

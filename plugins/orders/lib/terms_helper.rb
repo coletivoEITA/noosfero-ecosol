@@ -107,8 +107,13 @@ module TermsHelper
 
   def translate_with_terms key, options = {}
     translation = translate_without_terms key, options
-    raise "Invalid or empty value for #{key}" if translation.nil? or not translation.is_a? String
-    translation % translated_terms
+    if translation.nil? or not translation.is_a? String
+      # FIXME: don't raise errors unless specified to do so
+      #raise "Invalid or empty value for #{key}"
+      ""
+    else
+      translation % translated_terms
+    end
   end
 
   private

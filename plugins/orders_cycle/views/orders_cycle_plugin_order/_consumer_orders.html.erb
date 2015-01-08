@@ -49,12 +49,17 @@
 
 <div class="clean"></div>
 
-<div id="show-cancelled-orders">
-  <%= link_to_function t('views.order._consumer_orders.show_cancelled_orders'), "orders_cycle.toggleCancelledOrders()" %>
-</div>
-<div id="hide-cancelled-orders">
-  <%= link_to_function t('views.order._consumer_orders.hide_cancelled_orders'), "orders_cycle.toggleCancelledOrders()", style: 'display:none' %>
-</div>
+<% @consumer_orders.each do |order| %>
+  <% if @order != order and order.current_status == 'cancelled' %>
+    <div id="show-cancelled-orders">
+      <%= link_to_function t('views.order._consumer_orders.show_cancelled_orders'), "orders_cycle.toggleCancelledOrders()" %>
+    </div>
+    <div id="hide-cancelled-orders">
+      <%= link_to_function t('views.order._consumer_orders.hide_cancelled_orders'), "orders_cycle.toggleCancelledOrders()", style: 'display:none' %>
+    </div>
+    <% break %>
+  <% end %>
+<% end %>
 
 <% @consumer_orders.each do |order| %>
   <% next if @order == order %>

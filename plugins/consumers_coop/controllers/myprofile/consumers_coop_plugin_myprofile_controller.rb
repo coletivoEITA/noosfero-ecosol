@@ -16,7 +16,8 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
 
   def settings
     if params[:commit]
-      params[:profile_data][:consumers_coop_settings][:enabled] = params[:profile_data][:consumers_coop_settings][:enabled] == 'true' rescue
+      params[:profile_data][:consumers_coop_settings][:enabled] = params[:profile_data][:consumers_coop_settings][:enabled] == 'true' rescue false
+      params[:profile_data][:volunteers_settings][:cycle_volunteers_enabled] = params[:profile_data][:volunteers_settings][:cycle_volunteers_enabled] == '1' rescue false
 
       was_enabled = profile.consumers_coop_settings.enabled
 
@@ -25,12 +26,11 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
 
       if !was_enabled and profile.consumers_coop_settings.enabled
         profile.consumers_coop_enable
-      elsif was_enabled
+      elsif was_enabled and !profile.consumers_coop_settings.enabled
         profile.consumers_coop_disable
       end
 
       session[:notice] = t('controllers.myprofile.distribution_settings')
-      redirect_to profile_url if profile.consumers_coop_settings.enabled?
     end
   end
 

@@ -26,10 +26,11 @@ class ApplicationController < ActionController::Base
   self.controller_path_class = {}
 
   def default_url_options options={}
-    if @domain or (@profile and @profile.default_protocol)
-      protocol = if @profile then @profile.default_protocol else @domain.protocol end
-      options.merge! :protocol => protocol if protocol != 'http'
-    end
+    #if @domain or (@profile and @profile.default_protocol)
+      #protocol = if @profile then @profile.default_protocol else @domain.protocol end
+      #options.merge! :protocol => protocol if protocol != 'http'
+    #end
+    options[:protocol] ||= '//'
 
     # Only use profile's custom domains for the profiles and the account controllers.
     # This avoids redirects and multiple URLs for one specific resource
@@ -43,6 +44,8 @@ class ApplicationController < ActionController::Base
 
     options
   end
+
+  include UrlHelper
 
   def allow_cross_domain_access
     origin = request.headers['Origin']
@@ -156,15 +159,16 @@ class ApplicationController < ActionController::Base
       end
     else
       @environment = @domain.environment
-      @profile = @domain.profile
+      # do this conditionally to allow organizations to show theirs users inside their domains
+      @profile = @domain.profile if params[:profile].blank?
 
-      # this is needed for facebook applications that can only have one domain
+      # do no redirect to as facebook applications that can only have one domain
       return
 
       # Check if the requested profile belongs to another domain
       if @domain.profile and params[:profile].present? and params[:profile] != @domain.profile.identifier
         @profile = @environment.profiles.find_by_identifier params[:profile]
-        render_not_found if @profile.blank?
+        return render_not_found if @profile.blank?
         redirect_to params.merge(:host => @profile.default_hostname, :protocol => @profile.default_protocol)
       end
     end

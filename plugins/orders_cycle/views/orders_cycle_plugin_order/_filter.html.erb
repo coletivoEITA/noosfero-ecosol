@@ -37,7 +37,8 @@
         </div>
       <% end %>
 
-      <%= pagination_links products_for_order, class: 'pagination infinite-scroll' %>
+      <%= pagination_links products_for_order, params: {action: :edit, controller: :orders_cycle_plugin_order, cycle_id: cycle.id, order_id: (order_id)},
+        class: 'pagination infinite-scroll' %>
     </div>
   </div>
 <% end %>

@@ -1,10 +1,11 @@
+
 <% if @products.present? %>
   <%= render 'catalog/form' %>
 
   <div id="catalog-results">
 
     <ul id="product-list">
-      <%= render 'catalog/products', :products => @products %>
+      <%= render 'catalog/products', products: @products %>
     </ul>
 
     <%= render 'catalog/pagination' %>

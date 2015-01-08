@@ -1,8 +1,7 @@
-class SolrPlugin < Noosfero::Plugin; end;
+class SolrPlugin < Noosfero::Plugin; end
+require 'solr_plugin/search_helper'
 
-require_dependency 'solr_plugin/search_helper'
-
-class SolrPlugin < Noosfero::Plugin
+class SolrPlugin
 
   include SolrPlugin::SearchHelper
 
@@ -16,6 +15,10 @@ class SolrPlugin < Noosfero::Plugin
 
   def stylesheet?
     true
+  end
+
+  def js_files
+    ['solr'].map{ |j| "javascripts/#{j}" }
   end
 
   def solr_search? empty_query, klass
@@ -61,8 +64,8 @@ class SolrPlugin < Noosfero::Plugin
     result[:categories] = facets['solr_plugin_f_category_facet'].to_a.map{ |name,count| ["#{name} (#{count})", name] }
     result[:categories].sort!{ |a,b| a[0] <=> b[0] }
     result[:qualifiers] = facets['solr_plugin_f_qualifier_facet'].to_a
-    result[:qualifiers].map!{ |ids, count| [Product.solr_plugin_f_qualifier_proc(ids), count, ids] }
-    result[:qualifiers].map!{ |name, count, id| ["#{name} (#{count})", id] }
+    result[:qualifiers] = Product.solr_plugin_f_qualifier_proc nil, result[:qualifiers]
+    result[:qualifiers].map!{ |id, name, count| ["#{name} (#{count})", id] }
     result[:qualifiers].sort!{ |a,b| a[0] <=> b[0] }
 
     result
@@ -180,6 +183,24 @@ class SolrPlugin < Noosfero::Plugin
     end
 
     filter_queries
+  end
+
+  def products_options person
+    geosearch = person && person.lat && person.lng
+
+    extra_limit = LIST_SEARCH_LIMIT*5
+    sql_options = {limit: LIST_SEARCH_LIMIT, order: 'random()'}
+    options =   {sql_options: sql_options, extra_limit: extra_limit}
+
+    if geosearch
+      options.merge({
+        alternate_query: "{!boost b=recip(geodist(),#{"%e" % (1.to_f/DistBoost)},1,1)}",
+        radius: DistFilt,
+        latitude: person.lat,
+        longitude: person.lng })
+    else
+      options.merge({boost_functions: ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']})
+    end
   end
 
 end

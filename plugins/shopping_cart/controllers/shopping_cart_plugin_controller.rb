@@ -115,7 +115,7 @@ class ShoppingCartPluginController < OrdersPluginController
     if validate_cart_presence
       @cart = cart
       @profile = cart_profile
-      @settings = Noosfero::Plugin::Settings.new(@profile, ShoppingCartPlugin)
+      @settings = cart_profile.shopping_cart_settings
       render :layout => false
     end
   end
@@ -187,10 +187,10 @@ class ShoppingCartPluginController < OrdersPluginController
 
   def update_delivery_option
     profile = cart_profile
-    settings = Noosfero::Plugin::Settings.new(profile, ShoppingCartPlugin)
+    settings = profile.shopping_cart_settings
     delivery_price = settings.delivery_options[params[:delivery_option]]
     delivery = Product.new(:name => params[:delivery_option], :price => delivery_price)
-    delivery.save(false)
+    delivery.save run_callbacks: false, validate: false
     items = self.cart[:items].clone
     items[delivery.id] = 1
     total_price = get_total_on_currency(items, environment)
@@ -326,6 +326,10 @@ class ShoppingCartPluginController < OrdersPluginController
   def cart_profile
     profile_id = if params[:profile_id].present? then params[:profile_id] elsif cart then cart[:profile_id] end
     @cart_profile ||= environment.profiles.find profile_id rescue nil
+  end
+
+  def profile
+    cart_profile
   end
 
   # from OrdersPluginController

@@ -10,6 +10,7 @@ module Noosfero
         end
         super options
       end
+
     end
   end
 end

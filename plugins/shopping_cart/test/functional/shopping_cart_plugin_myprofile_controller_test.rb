@@ -121,6 +121,6 @@ class ShoppingCartPluginMyprofileControllerTest < ActionController::TestCase
 
   def settings
     @profile.reload
-    Noosfero::Plugin::Settings.new(@profile, ShoppingCartPlugin)
+    profile.shopping_cart_settings
   end
 end

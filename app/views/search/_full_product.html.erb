@@ -45,7 +45,7 @@
   </div>
   <div class="search-product-item-second-column">
     <div class="search-product-supplier">
-      <span class="search-field-label"><%= _('Supplier') %>  </span><%= link_to_homepage(product.enterprise.name, product.enterprise.identifier) %>
+      <span class="search-field-label"><%= _('Supplier') %>  </span><%= link_to_homepage product.enterprise.name, product.enterprise %>
     </div>
     <div class="search-product-description">
       <% if product.description %>
@@ -56,13 +56,13 @@
   </div>
   <div class="search-product-item-third-column">
     <div class="search-product-region">
-      <% if product.enterprise.region %>
+      <% if product.region %>
         <span class="search-field-label"><%= _('City') %></span>
-        <%= city_with_state(product.enterprise.region) %>
+        <%= city_with_state product.region %>
       <% end %>
     </div>
     <div class="search-product-qualifiers">
-      <% if product.product_qualifiers.count > 0 %>
+      <% if product.product_qualifiers.size > 0 %>
         <span class="search-field-label"><%= _('Qualifiers') %></span>
         <% product.product_qualifiers.each do |pq| %>
           <% if pq.qualifier %>

@@ -1,16 +1,17 @@
 require_dependency 'profile'
 
-Profile.subclasses.each do |subclass|
+# subclass problem on development and production
+Profile.descendants.each do |subclass|
   subclass.class_eval do
-    attr_accessible :consumers_coop_header_image_builder
     attr_accessible :consumers_coop_settings
+    attr_accessible :consumers_coop_header_image_builder
   end
 end
 
 class Profile
 
-  attr_accessible :consumers_coop_header_image_builder
   attr_accessible :consumers_coop_settings
+  attr_accessible :consumers_coop_header_image_builder
 
   has_many :offered_products, :class_name => 'OrdersCyclePlugin::OfferedProduct', :dependent => :destroy, :order => 'products.name ASC'
 

@@ -1,6 +1,10 @@
 
 orders = {
 
+  locales: {
+    noneSelected: '',
+  },
+
   order: {
 
     reload: function(context, url) {
@@ -102,6 +106,10 @@ orders = {
 
       report: function(url) {
         var ids = this.selection().map(function (i, el) { return jQuery(el).attr('data-id') }).toArray();
+        if (ids.length === 0) {
+          alert(orders.locales.noneSelected)
+          return
+        }
         window.location.href = url + '&' + jQuery.param({ids: ids})
       },
 
@@ -111,7 +119,7 @@ orders = {
   set_orders_container_max_height: function()
   {
     ordersH = jQuery(window).height();
-    ordersH -= 130
+    ordersH -= 190
     ordersH -= jQuery('#cirandas-top-bar').outerHeight()
     ordersH -= jQuery('.order-status-message-title').outerHeight()
     ordersH -= jQuery('#order-column .order-total').last().outerHeight()

@@ -115,17 +115,17 @@ function convToValidEmail( str ) {
 }
 
 function updateUrlField(name_field, id) {
-   url_field = $(id);
-   old_url_value = url_field.value;
-   new_url_value = convToValidIdentifier(name_field.value, "-");
+  name_field = jQuery(name_field)
+  var old_name_value = name_field.get(0).defaultValue
+  var url_field = $(id);
 
-   url_field.value = new_url_value;
+  var old_url_value = url_field.val()
+  var new_url_value = convToValidIdentifier(name_field.val(), "-")
+  url_field.val(new_url_value)
 
-   if (!/^\s*$/.test(old_url_value)
-       && old_url_value != new_url_value
-       ) {
-     warn_value_change(url_field);
-   }
+  if (old_name_value && !/^\s*$/.test(old_url_value) && old_url_value != new_url_value) {
+    warn_value_change(url_field);
+  }
 }
 
 
@@ -431,10 +431,6 @@ jQuery(function($) {
     noosfero.user_data = data;
     customUserDataCallback();
     if (data.login) {
-      // logged in
-      if (data.chat_enabled) {
-        setInterval(function(){ $.getJSON(user_data, chatOnlineUsersDataCallBack)}, 10000);
-      }
       $('head').append('<meta content="authenticity_token" name="csrf-param" />');
       $('head').append('<meta content="'+$.cookie("_noosfero_.XSRF-TOKEN")+'" name="csrf-token" />');
     }
@@ -445,32 +441,6 @@ jQuery(function($) {
     $(window).trigger("userDataLoaded", data);
   });
 
-  function chatOnlineUsersDataCallBack(data) {
-    if ($('#chat-online-users').length == 0) {
-      return;
-    }
-    var content = '';
-    $('#chat-online-users .amount_of_friends').html(data['amount_of_friends']);
-    $('#chat-online-users').fadeIn();
-    for (var user in data['friends_list']) {
-      var name = "<span class='friend_name'>%{name}</span>";
-      var avatar = data['friends_list'][user]['avatar'];
-      var jid = data['friends_list'][user]['jid'];
-      var status_name = data['friends_list'][user]['status'] || 'offline';
-      avatar = avatar ? '<img src="' + avatar + '" />' : ''
-        name = name.replace('%{name}',data['friends_list'][user]['name']);
-      open_chat_link = "onclick='open_chat_window(this, \"#" + jid + "\")'";
-      var status_icon = "<div class='chat-online-user-status icon-menu-"+ status_name + "-11'><span>" + status_name + '</span></div>';
-      content += "<li><a href='#' class='chat-online-user' " + open_chat_link + "><div class='chat-online-user-avatar'>" + avatar + '</div>' + name + status_icon + '</a></li>';
-    }
-    content ? $('#chat-online-users-hidden-content ul').html(content) : $('#anyone-online').show();
-    $('#chat-online-users-title').click(function(){
-      if($('#chat-online-users-content').is(':visible'))
-      $('#chat-online-users-content').hide();
-      else
-      $('#chat-online-users-content').show();
-    });
-  }
 });
 
 // controls the display of contact list
@@ -513,9 +483,12 @@ function display_notice(message) {
 }
 
 function open_chat_window(self_link, anchor) {
-   anchor = anchor || '#';
-   var noosfero_chat_window = window.open(noosfero_root() + '/chat' + anchor,'noosfero_chat','width=900,height=500');
-   noosfero_chat_window.focus();
+   if(anchor) {
+      jQuery('#chat').show('fast');
+      jQuery("#chat" ).trigger('opengroup', anchor);
+   } else {
+      jQuery('#chat').toggle('fast');
+   }
    return false;
 }
 
@@ -730,9 +703,9 @@ Array.min = function(array) {
 };
 
 function hideAndGetUrl(link) {
+  link = jQuery(link)
   link.hide();
-  url = jQuery(link).attr('href');
-  jQuery.get(url);
+  jQuery.getScript(link.attr('href'));
 }
 
 jQuery(function($){
@@ -884,19 +857,6 @@ function altShow(e) {
 // jQuery('image[alt]').live('click', altHide);
 
 
-function facet_options_toggle(id, url) {
-  jQuery('#facet-menu-'+id+' .facet-menu-options').toggle('fast' , function () {
-    more = jQuery('#facet-menu-'+id+' .facet-menu-more-options');
-    console.log(more);
-    if (more.is(':visible') && more.children().length == 0) {
-      more.addClass('small-loading');
-      more.load(url, function () {
-        more.removeClass('small-loading');
-      });
-    }
-  });
-}
-
 if ( !console ) console = {};
 if ( !console.log ) console.log = function(){};
 
@@ -973,3 +933,48 @@ function apply_zoom_to_images(zoom_text) {
   });
 }
 
+function notifyMe(title, options) {
+  // This might be useful in the future
+  //
+  // Let's check if the browser supports notifications
+  // if (!("Notification" in window)) {
+  //   alert("This browser does not support desktop notification");
+  // }
+
+  // Let's check if the user is okay to get some notification
+  var notification = null;
+  if (Notification.permission === "granted") {
+    // If it's okay let's create a notification
+    notification = new Notification(title, options);
+  }
+
+  // Otherwise, we need to ask the user for permission
+  // Note, Chrome does not implement the permission static property
+  // So we have to check for NOT 'denied' instead of 'default'
+  else if (Notification.permission !== 'denied') {
+    Notification.requestPermission(function (permission) {
+      // Whatever the user answers, we make sure we store the information
+      if (!('permission' in Notification)) {
+        Notification.permission = permission;
+      }
+
+      // If the user is okay, let's create a notification
+      if (permission === "granted") {
+	notification = new Notification(title, options);
+      }
+    });
+  }
+  return notification;
+  // At last, if the user already denied any notification, and you
+  // want to be respectful there is no need to bother them any more.
+}
+
+function start_fetching(element){
+  jQuery(element).append('<div class="fetching-overlay">Loading...</div>');
+}
+
+function stop_fetching(element){
+  jQuery('.fetching-overlay', element).remove();
+}
+
+window.isHidden = function isHidden() { return (typeof(document.hidden) != 'undefined') ? document.hidden : !document.hasFocus() };

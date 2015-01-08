@@ -6,6 +6,7 @@
       plugin:
         name: 'OpenGraph'
         description: 'OpenGraph'
+    views:
       track:
         config:
           activity:
@@ -15,12 +16,19 @@
               friendship: 'New friendships'
               gallery_image: 'New images on my albuns'
               uploaded_file: 'Files sent'
+              product: 'Products added or updated'
+              forum: "Forum's topic posted"
+              event: 'Creation of events'
+              enterprise: 'Updates to Social Solidarity Enterprises'
           enterprise:
             label: "News from enterprises from which I'm a member: when a product is modified or registered, when a page is updated, etc"
+            search_placeholder: "type to find enterprises"
           friend:
             label: "Friends"
+            search_placeholder: "type to find friends"
           community:
             label: "Communities"
+            search_placeholder: "type to find communities"
 
 'en_US':
   <<: *en-US

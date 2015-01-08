@@ -1,6 +1,7 @@
 require_dependency 'profile'
 
-Profile.subclasses.each do |subclass|
+# subclass problem on development and production
+Profile.descendants.each do |subclass|
   subclass.class_eval do
     attr_accessible :volunteers_settings
   end

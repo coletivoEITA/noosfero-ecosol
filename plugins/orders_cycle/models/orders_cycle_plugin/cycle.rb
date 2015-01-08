@@ -54,9 +54,9 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   has_many :ordered_suppliers, through: :orders_confirmed, source: :suppliers
   has_many :items, through: :orders_confirmed, source: :products
 
-  has_many :ordered_offered_products, through: :orders_confirmed, source: :offered_products, uniq: true
-  has_many :ordered_distributed_products, through: :orders_confirmed, source: :distributed_products, uniq: true
-  has_many :ordered_supplier_products, through: :orders_confirmed, source: :supplier_products, uniq: true
+  has_many :ordered_offered_products, through: :orders_confirmed, source: :offered_products, uniq: true, include: [:suppliers]
+  has_many :ordered_distributed_products, through: :orders_confirmed, source: :distributed_products, uniq: true, include: [:suppliers]
+  has_many :ordered_supplier_products, through: :orders_confirmed, source: :supplier_products, uniq: true, include: [:suppliers]
 
   has_many :volunteers_periods, class_name: 'VolunteersPlugin::Period', as: :owner
   has_many :volunteers, through: :volunteers_periods, source: :profile
@@ -101,7 +101,8 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   validates_presence_of :profile
   validates_presence_of :name, if: :not_new?
   validates_presence_of :start, if: :not_new?
-  validates_presence_of :delivery_options, unless: :new_or_edition?
+  # FIXME: The user frequenqly forget about this, and this will crash the app in some places, so don't enable this
+  #validates_presence_of :delivery_options, unless: :new_or_edition?
   validates_inclusion_of :status, in: DbStatuses, if: :not_new?
   validates_numericality_of :margin_percentage, allow_nil: true, if: :not_new?
   validate :validate_orders_dates, if: :not_new?
@@ -173,18 +174,13 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   end
 
   def products_for_order
-    self.products.unarchived.with_price.order('name ASC')
+    # FIXME name alias conflict
+    #self.products.unarchived.with_price.order('products.name ASC')
+    self.products.unarchived.with_price
   end
 
-  def products_by_suppliers
-    self.ordered_offered_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
-      total_price_consumer_ordered = 0
-      products.each do |product|
-        total_price_consumer_ordered += product.total_price_consumer_ordered if product.total_price_consumer_ordered
-      end
-
-      [supplier, products, total_price_consumer_ordered]
-    end
+  def items_by_suppliers orders = self.sales.ordered
+    OrdersPlugin::Order.items_by_suppliers orders
   end
 
   def generate_purchases

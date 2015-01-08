@@ -18,20 +18,6 @@ class SearchController < PublicController
 
   no_design_blocks
 
-  def facets_browse
-    @asset = params[:asset_key].to_sym
-    @asset_class = asset_class(@asset)
-
-    @facets_only = true
-    send(@asset)
-    set_facets_variables
-
-    @facet = @asset_class.map_facets_for(environment).find { |facet| facet[:id] == params[:facet_id] }
-    raise 'Facet not found' if @facet.nil?
-
-    render :layout => false
-  end
-
   def index
     @searches = {}
     @order = []
@@ -75,7 +61,9 @@ class SearchController < PublicController
   end
 
   def articles
-    @scope = @environment.articles.public
+    @scope = @environment.articles.public.includes(
+      :last_changed_by, :parent, :tags, {:profile => [:domains]}
+    )
     full_text_search
   end
 
@@ -89,7 +77,12 @@ class SearchController < PublicController
   end
 
   def products
-    @scope = @environment.products
+    @scope = @environment.products.includes(
+      :product_category, :unit, :region, :image, {inputs: [:product_category]},
+      {product_qualifiers: [:qualifier, :certifier]},
+      {price_details: [:production_cost]},
+      {profile: [:domains]},
+    )
     full_text_search
   end
 
@@ -158,6 +151,7 @@ class SearchController < PublicController
   def events_by_day
     @date = build_date(params[:year], params[:month], params[:day])
     @events = environment.events.by_day(@date).paginate(:per_page => per_page, :page => params[:page])
+    @title_use_day = params[:day].blank? ? false : true
     render :partial => 'events/events'
   end
 

@@ -134,8 +134,10 @@ catalog = {
       toRank: function(rank) {
         if (rank >= 0)
           jQuery(function() {
-            // gives a margin for eventual fixed top bars and offset() doesn't consider margin, padding and borders sizes
-            jQuery('html,body').animate({ scrollTop: jQuery('.product[data-rank='+rank+']').offset().top-100 }, this.delay)
+            var product = jQuery('.product[data-rank='+rank+']')
+            if (product.length)
+              // gives a margin for eventual fixed top bars and offset() doesn't consider margin, padding and borders sizes
+              jQuery('html,body').animate({ scrollTop: product.offset().top-100 }, this.delay)
           });
       },
       toTop: function(callback) {
@@ -156,6 +158,12 @@ catalog = {
       load: function (url) {
         var page = /page=([^&$]+)\&?/.exec(url)[1]
         catalog.search.pagination.goTo(page)
+      },
+
+      seeMore: function(text) {
+        pagination.click(function(e, link) {
+          catalog.search.pagination.load(link.href)
+        })
       },
 
       infiniteScroll: function (text) {
@@ -212,7 +220,7 @@ catalog = {
         this.source = new Bloodhound({
           datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
           queryTokenizer: Bloodhound.tokenizers.whitespace,
-          remote: this.url+'?query=%QUERY',
+          remote: this.url+'&query=%QUERY',
         })
         this.source.initialize()
 

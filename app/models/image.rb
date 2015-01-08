@@ -28,4 +28,9 @@ class Image < ActiveRecord::Base
   def current_data
     File.file?(full_filename) ? File.read(full_filename) : nil
   end
+
+  def public_filename *args
+    "http://cirandas.net#{super *args}"
+  end if Rails.env.development?
+
 end

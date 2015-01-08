@@ -6,7 +6,18 @@ class Article
     'og:type' => MetadataPlugin.og_types[:article],
     'og:url' => proc{ |a, c| c.og_url_for a.url },
     'og:title' => proc{ |a, c| a.title },
-    'og:image' => proc{ |a, c| a.body_images_paths },
+    'og:image' => proc do |a, c|
+        result = a.body_images_paths
+
+        if result.empty?
+          result = "#{a.profile.environment.top_url}#{a.profile.image.public_filename}" if a.profile.image
+        end
+
+        if result.empty?
+          result = MetadataPlugin.config[:open_graph][:environment_logo]
+        end
+        result
+      end,
     'og:see_also' => [],
     'og:site_name' => proc{ |a, c| a.profile.name },
     'og:updated_time' => proc{ |a, c| a.updated_at.iso8601 },
@@ -21,5 +32,7 @@ class Article
 		'og:description' => proc{ |a, c| ActionView::Base.full_sanitizer.sanitize a.body },
 		'og:rich_attachment' => "",
   }
+
+
 
 end

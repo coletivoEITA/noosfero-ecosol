@@ -12,12 +12,13 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
 
   before_create :update_user
   before_create :exchange_token
+  after_destroy :destroy_page_tabs
 
   validates_presence_of :provider_user_id
   validates_uniqueness_of :provider_user_id, scope: :profile_id
 
-  def self.parse_signed_request signed_request
-    secret = FbAppPlugin.config['app']['secret'] rescue ''
+  def self.parse_signed_request signed_request, credentials = FbAppPlugin.page_tab_app_credentials
+    secret = credentials[:secret] rescue ''
     request = Facebook::SignedRequest.new signed_request, secret: secret
     request.data
   end
@@ -33,8 +34,8 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
   end
 
   def exchange_token
-    app_id = FbAppPlugin.config['app']['id']
-    app_secret = FbAppPlugin.config['app']['secret']
+    app_id = FbAppPlugin.timeline_app_credentials[:id]
+    app_secret = FbAppPlugin.timeline_app_credentials[:secret]
     fb_auth = FbGraph::Auth.new app_id, app_secret
     fb_auth.exchange_token! self.access_token
     self.expires_in = fb_auth.access_token.expires_in
@@ -56,6 +57,10 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
   end
 
   protected
+
+  def destroy_page_tabs
+    self.profile.fb_app_page_tabs.destroy_all
+  end
 
 end
 

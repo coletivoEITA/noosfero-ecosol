@@ -1,18 +1,18 @@
 <div id="network-join">
   <% if @enterprise.present? %>
-    <%= form_tag params.merge(:enterprise_id => @enterprise), :onsubmit => 'return networks.join.confirm(this)' do %>
+    <%= form_tag params.merge(enterprise_id: @enterprise), onsubmit: 'return networks.join.confirm(this)' do %>
       <%= t('views.network.join.confirm') % {
-        :enterprise => content_tag('strong', @enterprise.short_name),
-        :network => content_tag('strong', profile.short_name),
+        enterprise: content_tag('strong', @enterprise.short_name),
+        network: content_tag('strong', profile.short_name),
       } %>
 
-      <%= submit_tag t('views.network.join.submit_yes'), :class => 'action-button' %>
+      <%= submit_tag t('views.network.join.submit_yes'), class: 'action-button' %>
       <%= link_to_function t('views.network.join.submit_no'), 'noosfero.modal.close()' %>
     <% end %>
   <% else %>
 
     <%= t('views.network.join.choose') % {
-      :network => content_tag('strong', profile.short_name),
+      network: content_tag('strong', profile.short_name),
     } %>
 
     <ul>

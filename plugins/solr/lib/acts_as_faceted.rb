@@ -48,7 +48,7 @@ module ActsAsFaceted
         {:id => id}.merge(facets[id]) if facets[id]
       end
 
-      def map_facets_for(environment)
+      def map_facets_for environment
         facets_order.map do |id|
           facet = facet_by_id(id)
           next if facet[:type_if] and !facet[:type_if].call(self.new)
@@ -63,7 +63,7 @@ module ActsAsFaceted
         end.compact.flatten
       end
 
-      def map_facet_results(facet, facet_params, facets_data, unfiltered_facets_data = {}, options = {})
+      def map_facet_results facet, facet_params, facets_data, unfiltered_facets_data = {}, options = {}
         raise 'Use map_facets_for before this method' if facet[:solr_field].nil?
         facets_data = {} if facets_data.blank? # could be empty array
         solr_facet = to_solr_fields_names[facet[:solr_field]]
@@ -81,7 +81,7 @@ module ActsAsFaceted
           unfiltered_facet_data = (container.nil? or container.empty?) ? [] : container[solr_facet] || []
         end
 
-        if !unfiltered_facets_data.blank? and !facet_params.blank?
+        if unfiltered_facets_data.present? and facet_params.present?
           f = Hash[Array(facet_data)]
           zeros = []
           facet_data = unfiltered_facet_data.map do |id, count|
@@ -99,27 +99,23 @@ module ActsAsFaceted
 
         if facet[:queries]
           result = facet_data.map do |id, count|
-            q = id[id.index(':')+1,id.length]
-            label = facet_result_name(facet, q)
+            q = id[id.index(':')+1, id.length]
+            label = gettext(facet[:queries][q])
             [q, label, count] if count > 0
           end.compact
           result = facet[:queries_order].map{ |id| result.detect{ |rid, label, count| rid == id } }.compact if facet[:queries_order]
         elsif facet[:proc]
           if facet[:label_id]
-            result = facet_data.map do |id, count|
-              name = facet_result_name(facet, id)
-              [id, name, count] if name
-            end.compact
-            # FIXME limit is NOT improving performance in this case :(
+            result = facet_result_proc(facet, facet_data)
             facet_count = result.length
             result = result.first(options[:limit]) if options[:limit]
           else
             facet_data = facet_data.first(options[:limit]) if options[:limit]
-            result = facet_data.map { |id, count| [id, facet_result_name(facet, id), count] }
+            result = facet_result_proc(facet, facet_data)
           end
         else
           facet_data = facet_data.first(options[:limit]) if options[:limit]
-          result = facet_data.map { |id, count| [id, facet_result_name(facet, id), count] }
+          result = facet_data.map{ |id, count| [id, id, count] }
         end
 
         sorted = facet_result_sort(facet, result, options[:sort])
@@ -143,16 +139,20 @@ module ActsAsFaceted
         end
       end
 
+      def facet_result_proc(facet, data)
+        if facet[:multi]
+          facet[:label_id] ||= 0
+          facet[:proc].call(facet, data)
+        else
+          gettext(facet[:proc].call(facet, data))
+        end
+      end
+
       def facet_result_name(facet, data)
         if facet[:queries]
-          gettext(facet[:queries][data])
+          gettext(facet[:queries][q])
         elsif facet[:proc]
-          if facet[:multi]
-            facet[:label_id] ||= 0
-            facet[:proc].call(facet, data)
-          else
-            gettext(facet[:proc].call(data))
-          end
+          facet_result_proc(facet, data).first[1]
         else
           data
         end

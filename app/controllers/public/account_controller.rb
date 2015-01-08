@@ -470,13 +470,13 @@ class AccountController < ApplicationController
       when 'keep_on_same_page'
         redirect_back_or_default(user.admin_url)
       when 'site_homepage'
-        redirect_to :controller => :home
+        redirect_to :controller => :home, _: Time.now.to_i
       when 'user_profile_page'
-        redirect_to user.public_profile_url
+        redirect_to user.public_profile_url.merge(_: Time.now.to_i)
       when 'user_homepage'
-        redirect_to user.url
+        redirect_to user.url.merge(_: Time.now.to_i)
       when 'user_control_panel'
-        redirect_to user.admin_url
+        redirect_to user.admin_url.merge(_: Time.now.to_i)
     else
       redirect_back_or_default(default)
     end

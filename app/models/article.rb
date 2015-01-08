@@ -465,6 +465,8 @@ class Article < ActiveRecord::Base
   scope :images, :conditions => { :is_image => true }
   scope :text_articles, :conditions => [ 'articles.type IN (?)', text_article_types ]
   scope :with_types, lambda { |types| { :conditions => [ 'articles.type IN (?)', types ] } }
+  scope :no_feeds, :conditions => ["type != 'RssFeed'"]
+  scope :latest, :order => "updated_at DESC"
 
   scope :more_popular, :order => 'hits DESC'
   scope :more_comments, :order => "comments_count DESC"

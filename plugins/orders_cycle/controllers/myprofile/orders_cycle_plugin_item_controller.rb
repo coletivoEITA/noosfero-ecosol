@@ -18,7 +18,7 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
     if params[:order_id] == 'new'
       @cycle = @offered_product.cycle
       raise 'Cycle closed for orders' unless @cycle.orders? and not profile.has_admin? user
-      @order = OrdersPlugin::Sale.create! :cycle => @cycle, :consumer => consumer
+      @order = OrdersPlugin::Sale.create! cycle: @cycle, consumer: consumer
     else
       @order = OrdersPlugin::Sale.find params[:order_id]
       @cycle = @order.cycle
@@ -31,12 +31,12 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
     @item.order = @order
     @item.product = @offered_product
     if set_quantity_consumer_ordered(params[:quantity_consumer_ordered] || 1)
-      @item.update_attributes! :quantity_consumer_ordered => @quantity_consumer_ordered
+      @item.update_attributes! quantity_consumer_ordered: @quantity_consumer_ordered
     end
   end
 
   def edit
-    return redirect_to params.merge!(:action => :admin_edit) if @admin_edit
+    return redirect_to params.merge(action: :admin_edit) if @admin_edit
     super
     @offered_product = @item.offered_product
     @cycle = @order.cycle
