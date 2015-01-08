@@ -12,6 +12,7 @@ gem 'rest-client',              '~> 1.6.7'
 gem 'exception_notification',   '~> 4.0.1'
 gem 'gettext',                  '~> 2.2.1', :require => false, :group => :development
 gem 'locale',                   '~> 2.0.5'
+gem 'i18n',                     '~> 0.6.0'
 gem 'will-paginate-i18n'
 gem 'utf8-cleaner'
 
@@ -68,6 +69,14 @@ end
 group :development do
   #gem 'byebug'
 end
+
+Dir.glob('config/plugins/*').each do |plugin_dir|
+  next unless File.directory? plugin_dir
+  puts plugin_dir
+  plugin = File.basename plugin_dir
+  gem plugin, path: plugin_dir
+end
+
 # include gemfiles from enabled plugins
 # plugins in baseplugins/ are not included on purpose. They should not have any
 # dependencies.
