@@ -673,7 +673,7 @@ function original_image_dimensions(src) {
 
 function gravatarCommentFailback(img) {
   var link = img.parentNode;
-  link.href = "http://www.gravatar.com";
+  link.href = "//www.gravatar.com";
   img.src = img.getAttribute("data-gravatar");
 }
 
