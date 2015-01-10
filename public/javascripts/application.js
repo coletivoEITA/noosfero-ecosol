@@ -417,6 +417,24 @@ function customUserDataCallback() {
 function customUserDataCallback() {
 };
 
+function userDataCallback(data) {
+  noosfero.user_data = data;
+  customUserDataCallback();
+  if (data.login) {
+    // logged in
+    if (data.chat_enabled) {
+      setInterval(function(){ $.getJSON(user_data, chatOnlineUsersDataCallBack)}, 10000);
+    }
+  }
+  if (data.notice) {
+    display_notice(data.notice);
+    // clear notice so that it is not display again in the case this function is called again.
+    data.notice = null;
+  }
+  // Bind this event to do more actions with the user data (for example, inside plugins)
+  jQuery(window).trigger("userDataLoaded", data);
+};
+
 // controls the display of the login/logout stuff
 jQuery(function($) {
   $.ajaxSetup({
@@ -427,19 +445,13 @@ jQuery(function($) {
   });
 
   var user_data = noosfero_root() + '/account/user_data';
-  $.getJSON(user_data, function userDataCallBack(data) {
-    noosfero.user_data = data;
-    customUserDataCallback();
-    if (data.login) {
-      $('head').append('<meta content="authenticity_token" name="csrf-param" />');
-      $('head').append('<meta content="'+$.cookie("_noosfero_.XSRF-TOKEN")+'" name="csrf-token" />');
-    }
-    if (data.notice) {
-      display_notice(data.notice);
-    }
-    // Bind this event to do more actions with the user data (for example, inside plugins)
-    $(window).trigger("userDataLoaded", data);
-  });
+  $.getJSON(user_data, userDataCallback)
+  if (user_data.login) {
+    $('head').append('<meta content="authenticity_token" name="csrf-param" />');
+    $('head').append('<meta content="'+$.cookie("_noosfero_.XSRF-TOKEN")+'" name="csrf-token" />');
+  }
+
+  $.ajaxSetup({ cache: false });
 
 });
 
