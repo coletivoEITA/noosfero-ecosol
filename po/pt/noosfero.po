@@ -7107,6 +7107,10 @@ msgstr "Novo evento"
 msgid "Parent folder:"
 msgstr "Pasta superior:"
 
+#: app/views/cms/_general_fields.html.erb:1
+msgid "Publication date:"
+msgstr "Data de publicação:"
+
 #: app/views/cms/_general_fields.html.erb:2
 msgid "License"
 msgstr "Licença"
