@@ -1,7 +1,12 @@
 #!/bin/bash
 
+cd public/designs/themes/cirandas-themes
+git checkout master
+git pull --rebase;
+
 # update colivre themes
-cd public/designs/themes/cirandas-themes/colivre-themes
+cd colivre-themes
+git checkout master
 git pull --rebase;
 
 cd ..
