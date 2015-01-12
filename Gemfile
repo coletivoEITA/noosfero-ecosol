@@ -81,13 +81,6 @@ group :development do
   #gem 'byebug'
 end
 
-Dir.glob('config/plugins/*').each do |plugin_dir|
-  next unless File.directory? plugin_dir
-  puts plugin_dir
-  plugin = File.basename plugin_dir
-  gem plugin, path: plugin_dir
-end
-
 # include gemfiles from enabled plugins
 # plugins in baseplugins/ are not included on purpose. They should not have any
 # dependencies.
