@@ -1,1 +1,0 @@
-../../../public/javascripts/jquery.emoticon.js

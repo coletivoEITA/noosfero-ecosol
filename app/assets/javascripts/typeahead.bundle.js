@@ -1,1 +1,0 @@
-../../../public/javascripts/typeahead.bundle.js

@@ -1,1 +1,0 @@
-../../../public/javascripts/rails-extended.js

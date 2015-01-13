@@ -1,1 +1,0 @@
-../../../public/javascripts/loading-overlay.js

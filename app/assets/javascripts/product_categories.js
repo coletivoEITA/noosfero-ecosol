@@ -1,1 +1,0 @@
-../../../public/javascripts/product_categories.js
