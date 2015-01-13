@@ -1,9 +1,9 @@
 <h3>
   <% if @admin_edit %>
     <%= t('views.order._consumer_orders.orders_from_consumer_') % {consumer: @consumer.name} %>
-  <% elsif @consumer %>
+  <% elsif @consumer and @cycle.orders? %>
     <%= t('views.order._consumer_orders.your_orders_on_this_c') %>
-    <%= link_to t('views.order._consumer_orders.new_order'), {action: :new, cycle_id: @cycle.id} if !@admin_edit and @cycle.orders? and @cycle.profile.members.include? user %>
+    <%= link_to t('views.order._consumer_orders.new_order'), {action: :new, cycle_id: @cycle.id} if user.in? @cycle.profile.members %>
   <% end %>
 </h3>
 
@@ -31,7 +31,10 @@
     } %>
   <% else %>
     <% if @cycle.orders? %>
-      <% if @consumer_orders.count == 0 %>
+      <% if not user.in?(@cycle.profile.members) and @cycle.profile.community? %>
+        <%= t('views.order._consumer_orders.associate_to_order') %>
+        <%= render 'blocks/profile_info_actions/join_leave_community' %>
+      <% elsif @consumer_orders.count == 0 %>
         <% message = t('views.order._consumer_orders.you_haven_t_placed_an') %>
       <% end %>
     <% elsif @cycle.edition? %>

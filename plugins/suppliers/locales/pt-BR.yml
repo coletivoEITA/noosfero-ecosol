@@ -684,6 +684,7 @@
           your_order_was_cancel: "Seu pedido foi cancelado"
           your_order_wasn_t_con: "Seu pedido não foi confirmado e o período de pedidos terminou."
           your_orders_on_this_c: "Seus pedidos neste ciclo"
+          associate_to_order: "Associe-se para realizar pedidos"
         _filter_products: 
           active: Ativo
           all_the_categories: "todas as categorias"
