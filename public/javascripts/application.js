@@ -25,6 +25,7 @@
 *= require_self
 *= require modal.js
 *= require form.js
+*= require timezone.js
 * views speficics
 *= require add-and-join.js
 *= require report-abuse.js
