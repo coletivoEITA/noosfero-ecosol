@@ -6,11 +6,14 @@
 
   <div id="product-catalog" >
     <div id="product-catalog-actions">
-      <% if profile and user.present? and (user.is_admin?(environment) or user.is_admin?(profile)) %>
-        <div class="product-catalog-ctrl">
-          <%= button :add, _('Add product or service'), controller: :manage_products, action: :new, profile: profile.identifier %>
-        </div>
+      <% if @page_tab.config_type == :profile %>
+        <% if profile and user.present? and (user.is_admin?(environment) or user.is_admin?(profile)) %>
+          <div class="product-catalog-ctrl">
+            <%= button :add, _('Add product or service'), controller: :manage_products, action: :new, profile: profile.identifier %>
+          </div>
+        <% end %>
       <% end %>
+
       <%= render 'configure_button' %>
     </div>
 
