@@ -1,1 +1,0 @@
-../../../public/javascripts/memberships_filter.js

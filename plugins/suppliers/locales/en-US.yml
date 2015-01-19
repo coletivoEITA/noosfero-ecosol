@@ -690,6 +690,7 @@
           your_order_was_cancel: "Your order was cancelled."
           your_order_wasn_t_con: "Your order wasn't confirmed and the cycle orders period already ended."
           your_orders_on_this_c: "Your orders on this cycle"
+          associate_to_order: "Associate to make orders"
         _filter_products: 
           active: active
           all_the_categories: "all the categories"

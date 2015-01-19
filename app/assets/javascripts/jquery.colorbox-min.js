@@ -1,1 +1,0 @@
-../../../public/javascripts/jquery.colorbox-min.js

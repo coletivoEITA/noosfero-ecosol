@@ -1,0 +1,15 @@
+<h1>Estatísticas de uso do Cirandas</h1>
+<table>
+  <% FbesPlugin::Queries::Hash.sort.each do |name, query| %>
+    <tr style="vertical-align:middle">
+      <td style="font-size: 22px">
+        <%= link_to(t("fbes_plugin.views.queries.#{name}"), "http://cirandas.net/plugin/fbes/queries/#{name}", {:style => "display: block;padding: 10px 0"}) %>
+      </td>
+      <td style="white-space: nowrap">
+        <%= button_without_text(:eyes, 'Visualizar online', "http://cirandas.net/plugin/fbes/queries/#{name}", option: 'primary') %>
+        &nbsp;
+        <%= button_without_text(:save, 'Exportar dados para planilha', "http://cirandas.net/plugin/fbes/queries/#{name}?per_page=all&format=csv", option: 'primary') %>
+      </td>
+    </tr>
+  <% end %>
+</table>

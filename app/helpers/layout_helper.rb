@@ -70,6 +70,10 @@ module LayoutHelper
     "#{theme_path[1..-1]}/style.css"
   end
 
+  def layout_template
+    if profile then profile.layout_template else environment.layout_template end
+  end
+
   def addthis_javascript
     if NOOSFERO_CONF['addthis_enabled']
       "<script src='//s7.addthis.com/js/300/addthis_widget.js#pubid=#{NOOSFERO_CONF['addthis_pub']}'></script>"
@@ -77,7 +81,7 @@ module LayoutHelper
   end
 
   def meta_description_tag(article=nil)
-    article ? truncate(strip_tags(article.body.to_s), :length => 200) : environment.name
+    article ? CGI.escapeHTML(truncate(strip_tags(article.body.to_s), :length => 200)) : environment.name
   end
 
 end

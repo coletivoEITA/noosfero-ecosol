@@ -59,6 +59,13 @@ Noosfero::Application.routes.draw do
   # search
   match 'search(/:action(/*category_path))', :controller => 'search'
 
+  ######################################################
+  # plugin routes
+  # need to come first as 'plugin' will become the :profile parameter when custom domains are used
+  ######################################################
+  plugins_routes = File.join(File.dirname(__FILE__) + '/../lib/noosfero/plugin/routes.rb')
+  eval(IO.read(plugins_routes), binding, plugins_routes)
+
   # events
   match 'profile(/:profile)/events_by_day', :controller => 'events', :action => 'events_by_day', :profile => /#{Noosfero.identifier_format}/
   match 'profile(/:profile)/events_by_month', :controller => 'events', :action => 'events_by_month', :profile => /#{Noosfero.identifier_format}/
@@ -89,7 +96,8 @@ Noosfero::Application.routes.draw do
   match 'profile(/:profile)/comment/:action/:id', :controller => 'comment', :profile => /#{Noosfero.identifier_format}/
 
   # public profile information
-  match 'profile(/:profile)(/:action(/:id))', :controller => 'profile', :action => 'index', :id => /[^\/]*/, :profile => /#{Noosfero.identifier_format}/, :as => :profile
+  match 'profile/:profile(/:action(/:id))', :controller => 'profile', :action => 'index', :id => /[^\/]*/, :profile => /#{Noosfero.identifier_format}/, :as => :profile
+  match 'profile/(/:action(/:id))', :controller => 'profile', :action => 'index', :id => /[^\/]*/, :profile => /#{Noosfero.identifier_format}/, :as => :profile
 
   # contact
   match 'contact(/:profile)/:action(/:id)', :controller => 'contact', :action => 'index', :id => /.*/, :profile => /#{Noosfero.identifier_format}/
@@ -122,12 +130,6 @@ Noosfero::Application.routes.draw do
   # administrative tasks for a environment
   match 'system', :controller => 'system'
   match 'system/:controller(/:action(/:id))', :controller => Noosfero.pattern_for_controllers_in_directory('system')
-
-  ######################################################
-  # plugin routes
-  ######################################################
-  plugins_routes = File.join(File.dirname(__FILE__) + '/../lib/noosfero/plugin/routes.rb')
-  eval(IO.read(plugins_routes), binding, plugins_routes)
 
   # cache stuff - hack
   match 'public/:action/:id', :controller => 'public'

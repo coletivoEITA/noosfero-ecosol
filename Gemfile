@@ -12,11 +12,12 @@ gem 'rest-client',              '~> 1.6.7'
 gem 'exception_notification',   '~> 4.0.1'
 gem 'gettext',                  '~> 2.2.1', require: false, group: :development
 gem 'locale',                   '~> 2.0.5'
+gem 'i18n',                     '~> 0.6.0'
 gem 'will-paginate-i18n'
 gem 'utf8-cleaner'
 
 platform :ruby do
-  gem 'pg',                     '~> 0.13.2'
+  gem 'pg'
   gem 'rmagick',                '~> 2.13.1'
   gem 'thin'
 
@@ -24,7 +25,7 @@ platform :ruby do
 
   group :performance do
     gem 'fast_blank'
-    gem 'gctools'
+    gem 'gctools' if RUBY_VERSION >= '2.1.0' and RUBY_VERSION < '2.2.0'
     # DON'T IMPROVE
     #gem 'escape_utils'
   end
@@ -59,6 +60,8 @@ group :production do
   gem 'rack-cache'
 end
 
+# needed as removed from ruby 2.2
+gem 'test-unit'
 group :test do
   gem 'rspec',                  '~> 2.10.0'
   gem 'rspec-rails',            '~> 2.10.1'
@@ -77,6 +80,7 @@ end
 group :development do
   #gem 'byebug'
 end
+
 # include gemfiles from enabled plugins
 # plugins in baseplugins/ are not included on purpose. They should not have any
 # dependencies.

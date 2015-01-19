@@ -363,9 +363,12 @@ class OrdersPlugin::Order < ActiveRecord::Base
   end
 
   def send_notifications
+    # shopping_cart has its notifications
     return if source == 'shopping_cart_plugin'
-    # ignore when status are being rewinded
+    # ignore when status is being rewinded
     return if (Statuses.index(self.status) <= Statuses.index(self.status_was) rescue false)
+    # dummy suppliers don't notify
+    return unless self.profile.visible
 
     if self.status == 'ordered' and self.status_was != 'ordered'
       OrdersPlugin::Mailer.order_confirmation(self).deliver

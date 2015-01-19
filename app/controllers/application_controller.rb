@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   before_filter :allow_cross_domain_access
   before_filter :login_required, :if => :private_environment?
   before_filter :verify_members_whitelist, :if => [:private_environment?, :user]
+  around_filter :set_time_zone
 
   def verify_members_whitelist
     render_access_denied unless user.is_admin? || environment.in_whitelist?(user)
@@ -21,6 +22,18 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
+  def set_time_zone
+    old_time_zone = Time.zone
+    Time.zone = browser_timezone if browser_timezone.present?
+    yield
+  ensure
+    Time.zone = old_time_zone
+  end
+
+  def browser_timezone
+    cookies['browser.timezone']
+  end
 
   cattr_accessor :controller_path_class
   self.controller_path_class = {}
@@ -168,7 +181,7 @@ class ApplicationController < ActionController::Base
       # Check if the requested profile belongs to another domain
       if @domain.profile and params[:profile].present? and params[:profile] != @domain.profile.identifier
         @profile = @environment.profiles.find_by_identifier params[:profile]
-        render_not_found if @profile.blank?
+        return render_not_found if @profile.blank?
         redirect_to params.merge(:host => @profile.default_hostname, :protocol => @profile.default_protocol)
       end
     end
