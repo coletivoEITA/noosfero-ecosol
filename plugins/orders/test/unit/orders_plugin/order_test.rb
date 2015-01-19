@@ -1,9 +1,36 @@
-require "#{File.dirname(__FILE__)}/../../test_helper"
+require "test_helper"
 
 class OrdersPlugin::OrderTest < ActiveSupport::TestCase
 
   def setup
     @order = build(OrdersPlugin::Order)
+  end
+
+  should 'report supplier products when distributing aggregate products' do
+    env = Environment.create! name: 'megacoop'
+    supplier = Enterprise.create! identifier: 'supplier', name: 'supplier', environment: env
+    p1 = supplier.products.create! product_category: ProductCategory.create!(name: 'banana', environment: env)
+    p2 = supplier.products.create! product_category: ProductCategory.create!(name: 'aipim', environment: env)
+
+    coop = Community.create! identifier: 'blah', name: 'blah', environment: env
+    coop.suppliers.create! profile: supplier, consumer: coop
+    aggregate_product = SuppliersPlugin::DistributedProduct.new profile: coop
+    aggregate_product.sources_from_products.build quantity: 1, from_product: p1, to_product: aggregate_product
+    aggregate_product.sources_from_products.build quantity: 5, from_product: p2, to_product: aggregate_product
+    aggregate_product.save!
+
+    # hack
+    person = coop
+
+    # this also create offered products
+    cycle = OrdersCyclePlugin::Cycle.create! name: 'blah', profile: coop, start: Time.now, finish: Time.now+1.day, delivery_start: Time.now+2.days, delivery_finish: Time.now+3.days, status: 'orders'
+    sale = cycle.sales.create! profile: person
+    sale.items.create! quantity_consumer_ordered: 3, product: aggregate_product
+
+    r = OrdersPlugin::Order.supplier_products_by_suppliers [sale]
+    quantities = r.first.last.map(&:quantity_ordered).map(&:to_i)
+    pp quantities
+    assert_equal [3*1,3*5], quantities
   end
 
   should 'format code with cycle code' do

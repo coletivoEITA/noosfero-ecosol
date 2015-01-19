@@ -1,0 +1,20 @@
+class OrdersCyclePlugin::Item < OrdersPlugin::Item
+
+  has_one :supplier, through: :product
+
+  belongs_to :offered_product, foreign_key: :product_id, class_name: 'OrdersCyclePlugin::OfferedProduct'
+
+  def cycle
+    self.order.cycle
+  end
+
+  # OVERIDE from OrdersPlugin::Item
+  # FIXME: don't work because of load order
+  #if defined? SuppliersPlugin
+    has_many :from_products, through: :offered_product
+    has_many :to_products, through: :offered_product
+    has_many :sources_supplier_products, through: :offered_product
+    has_many :supplier_products, through: :offered_product
+    has_many :suppliers, through: :offered_product
+  #end
+end

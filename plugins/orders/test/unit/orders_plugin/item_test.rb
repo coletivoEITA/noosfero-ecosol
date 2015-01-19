@@ -9,15 +9,6 @@ class OrdersPlugin::ItemTest < ActiveSupport::TestCase
   end
 
   should 'calculate prices' do
-    @item.product.stubs(:price).returns(3)
-    assert_equal 3.0, @item.price_shipped
-    assert_equal 6.0, @item.price_consumer_ordered
-    assert_equal 9.0, @item.price_accepted
-
-    @item.save!
-    assert_equal 3.0, @item.attributes['price_shipped']
-    assert_equal 6.0, @item.attributes['price_consumer_ordered']
-    assert_equal 9.0, @item.attributes['price_accepted']
   end
 
 end

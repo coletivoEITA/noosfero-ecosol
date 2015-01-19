@@ -266,7 +266,18 @@
           register_new_supplier: "Register %{terms.supplier.new_undefined_article.singular}"
           registry_form: "Registry form"
           save: Save
+        _actions:
+          all: "all"
+          none: "none"
+          select: "select"
+          with_selection: "with selected"
+          activate: "activate"
+          deactivate: "deactivate"
         _supplier: 
+          edit: "Edit"
+          see_page: "See page"
+          see_products: "See products"
+          message: "Message"
           abreviated_name: "Abreviated Name"
           actions: Actions
           among_them: ", among them"
@@ -386,18 +397,18 @@
         product_name: "product name"
         products_report: "products report"
         projected_stock: "projected stock"
-        qtt_to_be_parcelled: "qtt to be parcelled"
+        qtt_to_be_parcelled: "qtt to be using stock"
         qty_ordered: "qty ordered"
         selled_total: "selled total"
         selled_value: "selled value"
         stock_qtt: "stock qtt"
         supplier: "%{terms.supplier.singular.capitalize}"
-        total_parcel_value: "Total parcel value"
+        total_parcel_value: "Total value using stock"
         total_selled_value: "Total selled value"
         total_value: "Total Value"
         un: un.
         value: value
-        value_parcel: "value parcel"
+        value_parcel: "value using stock"
         phone: 'Telephone'
         mail: 'Email'
         alert_formulas: "Atention! If you are using LibreOffice (BrOffice) you will need to update the formulas with the command CTRL + SHIFT + F9"

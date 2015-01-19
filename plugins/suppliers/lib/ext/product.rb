@@ -40,6 +40,11 @@ class Product
     self.from_products.first
   end
 
+  # defined just as *from_products above
+  # may be overiden in different subclasses
+  has_many :sources_supplier_products, foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
+  has_many :supplier_products, through: :sources_from_products, source: :from_product, order: 'id ASC'
+
   has_many :sources_from_2x_products, through: :sources_from_products, source: :sources_from_products
   has_many :sources_to_2x_products, through: :sources_to_product, source: :sources_to_products
   has_many :from_2x_products, through: :sources_from_2x_products, source: :from_product
@@ -65,19 +70,19 @@ class Product
     self.class == SuppliersPlugin::DistributedProduct
   end
 
-  # Redefine these two methods on
-  def sources_supplier_products
-    self.sources_from_products
-  end
-  def supplier_products
-    self.from_products
-  end
-
   def sources_supplier_product
     self.sources_supplier_products.first
   end
   def supplier_product
     self.supplier_products.first
+  end
+
+  def buy_price
+    self.supplier_products.inject(0){ |sum, p| sum += p.price || 0 }
+  end
+  def buy_unit
+    #TODO: handle multiple products
+    unit = (self.supplier_product.unit rescue nil) || self.class.default_unit
   end
 
   def supplier

@@ -37,7 +37,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     else
       @consumer = user
       @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-      @order = OrdersPlugin::Sale.new
+      @order = OrdersCyclePlugin::Sale.new
       @order.profile = profile
       @order.consumer = @consumer
       @order.cycle = @cycle
@@ -80,17 +80,17 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
 
     @consumer = user
     @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-    @order = OrdersPlugin::Sale.create! cycle: @cycle, consumer: @consumer
+    @order = OrdersCyclePlugin::Sale.create! cycle: @cycle, consumer: @consumer
     redirect_to action: :edit, id: @order.id, profile: profile.identifier
   end
 
   def filter
     if id = params[:id]
-      @order = OrdersPlugin::Sale.find id rescue nil
+      @order = OrdersCyclePlugin::Sale.find id rescue nil
       @cycle = @order.cycle
     else
       @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
-      @order = OrdersPlugin::Sale.find params[:order_id] rescue nil
+      @order = OrdersCyclePlugin::Sale.find params[:order_id] rescue nil
     end
     load_products_for_order
 

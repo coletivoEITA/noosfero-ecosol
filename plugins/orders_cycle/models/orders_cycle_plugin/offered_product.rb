@@ -1,7 +1,7 @@
 class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
 
   # FIXME: WORKAROUND for https://github.com/rails/rails/issues/6663
-  # OrdersPlugin::Sale.find(3697).cycle.suppliers returns empty without this
+  # OrdersCyclePlugin::Sale.find(3697).cycle.suppliers returns empty without this
   def self.finder_needs_type_condition?
     false
   end
@@ -16,12 +16,8 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   # for products in cycle, these are the products of the suppliers
   # p in cycle -> p distributed -> p from supplier
   has_many :suppliers, through: :sources_from_2x_products, order: 'id ASC', uniq: true
-  def sources_supplier_products
-    self.sources_from_2x_products
-  end
-  def supplier_products
-    self.from_2x_products
-  end
+  has_many :sources_supplier_products, through: :sources_from_products, source: :sources_from_products
+  has_many :supplier_products, through: :sources_from_2x_products, source: :from_product
 
   instance_exec &OrdersPlugin::Item::DefineTotals
   extend CurrencyHelper::ClassMethods
@@ -48,13 +44,6 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     self.price = self.price_with_margins buy_price
   end
 
-  def buy_price
-    self.supplier_products.inject(0){ |sum, p| sum += p.price || 0 }
-  end
-  def buy_unit
-    #TODO: handle multiple products
-    unit = (self.supplier_product.unit rescue nil) || self.class.default_unit
-  end
   def sell_unit
     self.unit || self.class.default_unit
   end

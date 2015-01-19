@@ -1,8 +1,9 @@
 class OrdersCyclePlugin::Cycle < ActiveRecord::Base
 
-  attr_accessible :profile, :status, :name, :start_date, :start_time,:finish_date,
-    :finish_time, :description, :delivery_start_date, :delivery_start_time,
-    :delivery_finish_date, :delivery_finish_time, :opening_message
+  attr_accessible :profile, :status, :name, :description, :opening_message
+
+  attr_accessible :start, :finish, :delivery_start, :delivery_finish
+  attr_accessible :start_date, :start_time, :finish_date, :finish_time, :delivery_start_date, :delivery_start_time, :delivery_finish_date, :delivery_finish_time,
 
   Statuses = %w[edition orders purchases receipts separation delivery closing]
   DbStatuses = %w[new] + Statuses
@@ -51,8 +52,12 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   has_many :orders_confirmed, through: :cycle_orders, source: :sale, order: 'id ASC',
     conditions: ['orders_plugin_orders.ordered_at IS NOT NULL']
 
+  has_many :items_selled, through: :sales, source: :items
+  has_many :items_purchased, through: :purchases, source: :items
+  # DEPRECATED
+  has_many :items, through: :orders_confirmed
+
   has_many :ordered_suppliers, through: :orders_confirmed, source: :suppliers
-  has_many :items, through: :orders_confirmed, source: :products
 
   has_many :ordered_offered_products, through: :orders_confirmed, source: :offered_products, uniq: true, include: [:suppliers]
   has_many :ordered_distributed_products, through: :orders_confirmed, source: :distributed_products, uniq: true, include: [:suppliers]
@@ -179,8 +184,8 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
     self.products.unarchived.with_price
   end
 
-  def items_by_suppliers orders = self.sales.ordered
-    OrdersPlugin::Order.items_by_suppliers orders
+  def supplier_products_by_suppliers orders = self.sales.ordered
+    OrdersCyclePlugin::Order.supplier_products_by_suppliers orders
   end
 
   def generate_purchases
@@ -190,7 +195,7 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
       next unless supplier_product = product.supplier_product
 
       # can't be created using self.purchases.create!, as if :cycle is set (needed for code numbering), then double CycleOrder will be created
-      purchase = OrdersPlugin::Purchase.create! cycle: self, consumer: self.profile, profile: supplier.profile
+      purchase = OrdersCyclePlugin::Purchase.create! cycle: self, consumer: self.profile, profile: supplier.profile
       products.each do |product|
         purchase.items.create! order: purchase, product: supplier_product,
           quantity_consumer_ordered: product.total_quantity_consumer_ordered, price_consumer_ordered: product.total_price_consumer_ordered

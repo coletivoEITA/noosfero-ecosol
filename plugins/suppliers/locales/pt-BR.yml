@@ -194,7 +194,7 @@
           current_stock: "Estoque atual"
           distribution_state: "Estado da distribuição"
           available: Ativa
-          are_you_sure_you_want: "Tem certeza que deseja remover este produto?"
+          are_you_sure_you_want: "Tem certeza de que deseja remover este produto?"
           remove_product: remover
           cancel: cancelar
           save: salvar mudanças
@@ -274,17 +274,46 @@
           register_new_supplier: "Registrar %{terms.supplier.new_undefined_article.singular}"
           registry_form: "Formulário de registro"
           save: Salvar
+        _actions:
+          all: "todos"
+          none: "nenhum"
+          select: "selecionar"
+          with_selection: "com selecionados"
+          activate: "activar"
+          deactivate: "desativar"
         _supplier: 
+          edit: "Editar"
+          cancel: "Cancelar"
+          see_page: "Ver página"
+          see_products: "Ver produtos"
+          message: "Messagem"
           abreviated_name: "Nome Abreviado"
           actions: Ações
           among_them: ", entre eles"
           any_registered_produc: "nenhum produto registrado"
           by_removing_this_supp: "Ao remover %{terms.supplier.article.singular}, todos os produtos ficarão indisponíveis em futuros ciclos. Por favor, confirme sua opção"
+          indirect: "indireta"
+          direct: "direta"
+          active: "ativa"
+          inactive: "inativa"
           deactivate: "desativar"
           activate: ativar
           edit: editar
-          products_are_active: " produtos estão ativos"
-          products_distributed: " produtos distribuídos %{terms.profile.by_article.singular}"
+          contact_status: "contato <b>%{status}</b>"
+          contact: "contato"
+          qualifiers: qualificadores
+          tags: "Marcadores"
+          minidescription: "Mini descrição"
+          cycles: "Ciclos abertos"
+          register: "Ficha cadastral"
+          geolocalization: "Geolocalização"
+          strategic_info: "Informações Estratégicas"
+          register: "Ficha cadastral"
+          distribution_status: "redistribuição <b>%{status}</b>"
+          management_type: "gerência <b>%{type}</b>"
+          collective: coletivo
+          active_products: "produtos <b>%{count} ativos</b>"
+          situation: "Situação geral"
           products: 
             zero: "nenhum produto"
             one: "1 produto"
@@ -327,7 +356,7 @@
         _select_content: 
           add: Adicionar
           add_new: "adicionar novo"
-          are_you_sure_you_want: "Tem certeza que quer remover este método?"
+          are_you_sure_you_want: "Tem certeza de que quer remover este método?"
           cancel: Cancelar
           choose_a_delivery_met: "Escolha um método de entrega da lista"
           edit_this: Editar
@@ -400,12 +429,12 @@
         selled_value: "Valor vendido"
         stock_qtt: "qtd estoque"
         supplier: "%{terms.supplier.singular.capitalize}"
-        total_parcel_value: "Valor total da encomenda"
+        total_parcel_value: "Valor total usando estoque"
         total_selled_value: "Valor total vendido"
         total_value: "total pago"
         un: un.
         value: Valor
-        value_parcel: "Valor da encomenda"
+        value_parcel: "Valor usando estoque"
         phone: 'Telefone'
         mail: 'Email'
         alert_formulas: "Atenção! Se você estiver utilizando o Libreoffice (BrOffice), será necessário atualizar as fórmulas desta planilha com o comando CTRL + SHIFT + F9"

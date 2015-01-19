@@ -1,8 +1,8 @@
 class OrdersCyclePlugin::CycleOrder < ActiveRecord::Base
 
-  belongs_to :cycle, :class_name => 'OrdersCyclePlugin::Cycle'
-  belongs_to :sale, :class_name => 'OrdersPlugin::Sale', :foreign_key => :sale_id, :dependent => :destroy
-  belongs_to :purchase, :class_name => 'OrdersPlugin::Purchase', :foreign_key => :purchase_id, :dependent => :destroy
+  belongs_to :cycle, class_name: 'OrdersCyclePlugin::Cycle'
+  belongs_to :sale, class_name: 'OrdersCyclePlugin::Sale', foreign_key: :sale_id, dependent: :destroy
+  belongs_to :purchase, class_name: 'OrdersCyclePlugin::Purchase', foreign_key: :purchase_id, dependent: :destroy
 
   validates_presence_of :cycle
   validate :sale_or_purchase

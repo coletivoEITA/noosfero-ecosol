@@ -13,18 +13,18 @@ end
 class Profile
 
   # cannot use :order because of months/years named_scope
-  has_many :orders, :class_name => 'OrdersPlugin::Sale', :foreign_key => :profile_id
-  has_many :sales, :class_name => 'OrdersPlugin::Sale', :foreign_key => :profile_id
-  has_many :purchases, :class_name => 'OrdersPlugin::Purchase', :foreign_key => :consumer_id
+  has_many :orders, class_name: 'OrdersPlugin::Sale', foreign_key: :profile_id
+  has_many :sales, class_name: 'OrdersPlugin::Sale', foreign_key: :profile_id
+  has_many :purchases, class_name: 'OrdersPlugin::Purchase', foreign_key: :consumer_id
 
-  has_many :ordered_items, :through => :orders, :source => :items, :order => 'name ASC'
+  has_many :ordered_items, through: :orders, source: :items, order: 'name ASC'
 
   def self.create_orders_manager_role env_id
     env = Environment.find env_id
-    Role.create! :environment => env,
-      :key => "profile_orders_manager",
-      :name => I18n.t("orders_plugin.lib.ext.profile.orders_manager"),
-      :permissions => [
+    Role.create! environment: env,
+      key: "profile_orders_manager",
+      name: I18n.t("orders_plugin.lib.ext.profile.orders_manager"),
+      permissions: [
         'manage_orders',
       ]
   end

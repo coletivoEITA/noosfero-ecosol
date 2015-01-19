@@ -54,7 +54,7 @@ class OrdersPluginAdminController < MyProfileController
     @scope ||= profile
     @scope = @scope.send @method
     @orders = @scope.where(id: params[:ids])
-    report_file = report_items_by_supplier OrdersPlugin::Order.items_by_suppliers @orders
+    report_file = report_products_by_supplier OrdersPlugin::Order.supplier_products_by_suppliers @orders
 
     send_file report_file, type: 'application/xlsx',
       disposition: 'attachment',

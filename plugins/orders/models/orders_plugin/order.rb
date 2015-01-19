@@ -130,8 +130,50 @@ class OrdersPlugin::Order < ActiveRecord::Base
     scope
   end
 
-  def self.items_by_suppliers orders
-    OrdersPlugin::Item.items_by_suppliers orders.map(&:items).flatten
+  def self.products_of orders
+    # offered products in case of orders inside cycles
+    Product.join(:items).includes(:suppliers).where(orders_plugin_items: {order_id: orders.map(&:id)})
+  end
+
+  # for cycle we have situation like this
+  #         / Items
+  #        /       \ OfferedProduct (column product_id)
+  # Order /         \ SourceProduct from DistributedProduct (quantity=1, always)
+  #                  \ SourceProduct from Product* (quantity be more than 1 if DistributedProduct is an agregate product)
+  # for order outside cycle we have
+  #         / Items
+  #        /       \ SourceProduct from DistributedProduct (quantity=1, always)
+  # Order /         \ SourceProduct from Product* (quantity be more than 1 if DistributedProduct is an agregate product)
+  #
+  # *suppliers usually don't distribute using cycles, so they only have Product
+  #
+  def self.supplier_products_by_suppliers orders
+    products_by_supplier = {}
+    items = OrdersPlugin::Item.where(order_id: orders.map(&:id)).includes({sources_supplier_products: [:supplier, :from_product]})
+    items.each do |item|
+      if item.sources_supplier_products.present?
+        item.sources_supplier_products.each do |source_sp|
+          sp = source_sp.from_product
+          supplier = source_sp.supplier
+
+          # if it's not yet defined, define it and sum the quantity from aggregated product/product * quantity ordered
+          products_by_supplier[supplier] ||= Set.new
+          products_by_supplier[supplier] << sp
+          sp.quantity_ordered ||= 0
+          sp.quantity_ordered += item.quantity_consumer_ordered * source_sp.quantity
+        end
+      else
+        sp = item.product
+        supplier = item.order.profile.self_supplier
+
+        products_by_supplier[supplier] ||= Set.new
+        products_by_supplier[supplier] << sp
+        sp.quantity_ordered ||= 0
+        sp.quantity_ordered += item.quantity_consumer_ordered
+      end
+    end
+
+    products_by_supplier
   end
 
   def orders_name
