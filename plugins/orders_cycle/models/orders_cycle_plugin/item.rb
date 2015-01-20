@@ -9,6 +9,11 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   end
 
   # OVERIDE from OrdersPlugin::Item
+  belongs_to :order, class_name: 'OrdersCyclePlugin::Order', touch: true
+  belongs_to :sale, class_name: 'OrdersCyclePlugin::Sale', foreign_key: :order_id
+  belongs_to :purchase, class_name: 'OrdersCyclePlugin::Purchase', foreign_key: :order_id
+
+  # OVERIDE from OrdersPlugin::Item
   # FIXME: don't work because of load order
   #if defined? SuppliersPlugin
     has_many :from_products, through: :offered_product
