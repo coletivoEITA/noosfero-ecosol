@@ -17,4 +17,14 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
     has_many :supplier_products, through: :offered_product
     has_many :suppliers, through: :offered_product
   #end
+
+  # what items were selled from this item
+  def selled_items
+    self.order.cycle.selled_items.where(profile_id: self.consumer.id, orders_plugin_item: {product_id: self.product_id})
+  end
+  # what items were purchased from this item
+  def purchased_items
+    self.order.cycle.purchases.where(consumer_id: self.profile.id)
+  end
+
 end

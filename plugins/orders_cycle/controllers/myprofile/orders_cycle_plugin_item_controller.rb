@@ -62,6 +62,6 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
   protected
 
   extend ControllerInheritance::ClassMethods
-  hmvc OrdersCyclePlugin
+  hmvc OrdersCyclePlugin, orders_context: OrdersCyclePlugin
 
 end

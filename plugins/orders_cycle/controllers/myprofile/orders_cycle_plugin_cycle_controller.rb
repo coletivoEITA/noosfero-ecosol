@@ -135,7 +135,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   attr_accessor :cycle
 
   extend ControllerInheritance::ClassMethods
-  hmvc OrdersCyclePlugin
+  hmvc OrdersCyclePlugin, orders_context: OrdersCyclePlugin
 
   def search_scope scope
     params[:date] ||= {}

@@ -42,7 +42,7 @@ class OrdersPluginOrderController < ProfileController
   protected
 
   def load_order
-    @order = OrdersPlugin::Sale.find_by_id params[:id]
+    @order = hmvc_orders_context::Sale.find_by_id params[:id]
     render_access_denied if @order.present? and not @order.may_view? user
   end
 
@@ -62,6 +62,6 @@ class OrdersPluginOrderController < ProfileController
   end
 
   extend ControllerInheritance::ClassMethods
-  hmvc OrdersPlugin
+  hmvc OrdersPlugin, orders_context: OrdersPlugin
 
 end

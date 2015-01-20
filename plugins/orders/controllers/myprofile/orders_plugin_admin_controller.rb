@@ -29,7 +29,7 @@ class OrdersPluginAdminController < MyProfileController
 
     @scope ||= profile
     @scope = @scope.send @method
-    @orders = OrdersPlugin::Order.search_scope @scope, params
+    @orders = hmvc_orders_context::Order.search_scope @scope, params
 
     render layout: false
   end
@@ -54,7 +54,7 @@ class OrdersPluginAdminController < MyProfileController
     @scope ||= profile
     @scope = @scope.send @method
     @orders = @scope.where(id: params[:ids])
-    report_file = report_products_by_supplier OrdersPlugin::Order.supplier_products_by_suppliers @orders
+    report_file = report_products_by_supplier hmvc_orders_context::Order.supplier_products_by_suppliers @orders
 
     send_file report_file, type: 'application/xlsx',
       disposition: 'attachment',
@@ -86,6 +86,6 @@ class OrdersPluginAdminController < MyProfileController
   end
 
   extend ControllerInheritance::ClassMethods
-  hmvc OrdersPlugin
+  hmvc OrdersPlugin, orders_context: OrdersPlugin
 
 end
