@@ -26,9 +26,9 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
       raise 'You are not the owner of this order' unless @order.may_edit? @consumer, @admin
     end
 
-    @item = OrdersCyclePlugin::Item.find_by_order_id_and_product_id @order.id, @offered_product.id
+    @item = OrdersCyclePlugin::Item.where(order_id: @order.id, product_id: @offered_product.id).first
     @item ||= OrdersCyclePlugin::Item.new
-    @item.order = @order
+    @item.sale = @order
     @item.product = @offered_product
     if set_quantity_consumer_ordered(params[:quantity_consumer_ordered] || 1)
       @item.update_attributes! quantity_consumer_ordered: @quantity_consumer_ordered
