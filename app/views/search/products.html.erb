@@ -4,7 +4,16 @@
 <%= render :partial => 'results_header' %>
 
 <% if params[:display] != 'map' %>
-  <%= render 'catalog/products', products: @searches[@assets][:results] %>
+  <%= content_for :product_page do %>
+    <%= stylesheet_link_tag 'catalog' %>
+  <% end %>
+  <div id="product-catalog">
+    <div id="catalog-results">
+      <ul id="product-list">
+        <%= render 'catalog/products', products: @searches[@asset][:results] %>
+      </ul>
+    </div>
+  </div>
   <%= pagination_links @searches[@asset][:results] %>
 <% else %>
   <%= display_results(@searches, @asset) %>
