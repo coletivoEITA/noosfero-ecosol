@@ -105,6 +105,14 @@ class Category < ActiveRecord::Base
     self.children.find(:all, :conditions => {:display_in_menu => true}).empty?
   end
 
+  def change_children_choosable
+    if not self.choosable_was and self.choosable
+      self.children.each do |child|
+        child.update_attribute :choosable, true
+      end
+    end
+  end
+
   def with_color
     if display_color.blank?
       parent.nil? ? nil : parent.with_color
