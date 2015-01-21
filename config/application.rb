@@ -94,10 +94,8 @@ module Noosfero
     # Enable the asset pipeline
     config.assets.enabled = true
 
-    # Straight support for assets from a rails 2 pattern
-    # See also config/initializers/assets.rb
-
-    # avoid readd to config.assets.paths
+    # don't let rails prepend app/assets to config.assets.paths
+    # as we are doing it
     config.paths['app/assets'] = ''
 
     config.assets.paths =
