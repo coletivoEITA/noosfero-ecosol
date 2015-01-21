@@ -109,10 +109,9 @@ module SolrPlugin::SearchHelper
 
   def facet_selecteds_html_for environment, klass, params
     def name_with_extra(klass, facet, value)
-      result = klass.facet_result_name(facet, [[value, 0]])
-      return unless result
-      name = result[0][0]
-      name = name[0] + name[1] if name.is_a?(Array)
+      name = klass.facet_result_name(facet, [[value, 0]])
+      return unless name
+      name = name[0] + name[1] if name.is_a? Array
       name
     end
 
@@ -165,7 +164,7 @@ module SolrPlugin::SearchHelper
     else
       # preserve others filters and change this filter
       url = params.merge(facet: params[:facet].merge(
-        id => if facet[:label_id].nil? then value else { facet[label_id] => value } end,
+        id => if facet[:label_id].nil? then value else { facet[:label_id] => value } end,
       ))
     end
 
