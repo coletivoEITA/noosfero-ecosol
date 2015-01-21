@@ -48,6 +48,7 @@ orders_cycle = {
         var product = jQuery('#cycle-product-'+id);
         product.toggleClass('in-order', state);
         product.find('input').get(0).checked = state;
+        toggle_edit.value_row.reload();
         return product;
       },
 

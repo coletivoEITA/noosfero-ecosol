@@ -1,5 +1,5 @@
 <% content_for :order_header do %>
-  <%= render 'orders_cycle_plugin_order/status', :order => @order %>
+  <%= render 'orders_cycle_plugin_order/status', order: @order %>
 
   <% unless @order.open? %>
     <div id="order-status-message" class="order-message status-<%= @order.current_status %>">
@@ -16,20 +16,20 @@
         <div><%= t('views.order._consumer_orders.you_still_can') %></div>
 
         <% if @order.cycle.orders? %>
-          <%= link_to_function t('views.order._consumer_orders.change_order'), "orders.order.reload(this, '#{url_for :action => :reopen, :id => @order.id}')" %>
+          <%= link_to_function t('views.order._consumer_orders.change_order'), "orders.order.reload(this, '#{url_for controller: :orders_cycle_plugin_order, action: :reopen, id: @order.id}')" %>
           <%= t('views.order._consumer_orders.before_the_closing') %>&emsp;
         <% end %>
         <br>
 
         <% unless @order.cancelled? %>
-          <%= link_to_function t('views.order._show.cancel_order'), "orders.order.reload(this, '#{url_for :action => :cancel, :id => @order.id}')" %>
+          <%= link_to_function t('views.order._show.cancel_order'), "orders.order.reload(this, '#{url_for controller: :orders_cycle_plugin_order, action: :cancel, id: @order.id}')" %>
           <br>
         <% end %>
 
-        <%= modal_link_to t('views.order._consumer_orders.send_message_to_the_m'), {:controller => :orders_cycle_plugin_message, :action => :new_to_admins} %>
+        <%= modal_link_to t('views.order._consumer_orders.send_message_to_the_m'), {controller: :orders_cycle_plugin_message, action: :new_to_admins} %>
       </div>
     </div>
   <% end %>
 <% end %>
 
-<%= render 'orders_plugin_order/show', :order => @order, :actor_name => :consumer %>
+<%= render 'orders_plugin_order/show', order: @order, actor_name: :consumer %>
