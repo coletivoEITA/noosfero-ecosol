@@ -111,7 +111,7 @@ module SolrPlugin::SearchHelper
     def name_with_extra(klass, facet, value)
       name = klass.facet_result_name(facet, [[value, 0]])
       return unless name
-      name = name[0] + name[1] if name.is_a? Array
+      name = name[0].to_s + name[1].to_s if name.is_a? Array
       name
     end
 
