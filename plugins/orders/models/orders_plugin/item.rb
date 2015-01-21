@@ -36,8 +36,14 @@ class OrdersPlugin::Item < ActiveRecord::Base
   has_one :profile, through: :order
   has_one :consumer, through: :order
 
-  has_many :from_products, through: :product
-  has_many :to_products, through: :product
+  # FIXME: don't work because of load order
+  #if defined? SuppliersPlugin
+    has_many :from_products, through: :product
+    has_many :to_products, through: :product
+    has_many :sources_supplier_products, through: :product
+    has_many :supplier_products, through: :product
+    has_many :suppliers, through: :product
+  #end
 
   scope :ordered, conditions: ['orders_plugin_orders.status = ?', 'ordered'], joins: [:order]
   scope :for_product, lambda{ |product| {conditions: {product_id: product.id}} }
@@ -81,12 +87,6 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
     validates_numericality_of quantity, allow_nil: true
     validates_numericality_of price, allow_nil: true
-  end
-
-  def self.items_by_suppliers items
-    items.group_by(&:supplier).map do |supplier, items|
-      [supplier, items]
-    end
   end
 
   # Attributes cached from product

@@ -104,7 +104,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   def report_products
     return super if params[:ids].present?
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
-    report_file = report_items_by_supplier @cycle.items_by_suppliers(@cycle.sales.ordered)
+    report_file = report_products_by_supplier @cycle.supplier_products_by_suppliers(@cycle.sales.ordered)
 
     send_file report_file, type: 'application/xlsx',
       disposition: 'attachment',
@@ -135,7 +135,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   attr_accessor :cycle
 
   extend ControllerInheritance::ClassMethods
-  hmvc OrdersCyclePlugin
+  hmvc OrdersCyclePlugin, orders_context: OrdersCyclePlugin
 
   def search_scope scope
     params[:date] ||= {}

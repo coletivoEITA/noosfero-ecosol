@@ -2,17 +2,20 @@ module ControllerInheritance
 
   module ClassMethods
 
-    def hmvc context
-      # FIXME use class_attribute but calculate using all paths
-      cattr_accessor :hmvc_paths
+    def hmvc context, options = {}
       class_attribute :inherit_templates
       class_attribute :hmvc_inheritable
       class_attribute :hmvc_context
+      # FIXME use class_attribute but calculate using all paths
+      cattr_accessor :hmvc_paths
 
       self.inherit_templates = true
       self.hmvc_inheritable = true
       self.hmvc_context = context
       self.hmvc_paths ||= {}
+
+      class_attribute :hmvc_orders_context
+      self.hmvc_orders_context = options[:orders_context] || self.superclass.hmvc_orders_context rescue nil
 
       # initialize other context's controllers paths
       controllers = [self] + context.controllers.map{ |controller| controller.constantize }

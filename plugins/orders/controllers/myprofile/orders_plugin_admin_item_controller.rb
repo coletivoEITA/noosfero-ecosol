@@ -25,6 +25,6 @@ class OrdersPluginAdminItemController < MyProfileController
   end
 
   extend ControllerInheritance::ClassMethods
-  hmvc OrdersPlugin
+  hmvc OrdersPlugin, orders_context: OrdersPlugin
 
 end
