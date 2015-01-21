@@ -9,7 +9,7 @@
         <% end %>
         <div class="box-field product"> <%= t('orders_plugin.views.item._index.product') %> </div>
         <div class="box-field quantity"> <%= t('orders_plugin.views.item._index.quantity') %> </div>
-        <div class="box-field price-total"> <%= t('orders_plugin.views.item._index.price_total') % {:currency => @environment.currency_unit} %> </div>
+        <div class="box-field price-total"> <%= t('orders_plugin.views.item._index.price_total') % {currency: @environment.currency_unit} %> </div>
 
         <% if @admin %>
           <div class="box-field status"> <%= t('orders_plugin.views.item._index.status') %> </div>
@@ -19,7 +19,7 @@
       <div class="table-content">
         <div class="order-items-scroll">
           <% order.items.each do |item| %>
-            <%= render "orders_plugin_item/edit", :order => order, :item => item, :product => item.product, :actor_name => actor_name %>
+            <%= render "orders_cycle_plugin_item/edit", order: order, item: item, product: item.product, actor_name: actor_name %>
           <% end %>
         </div>
       </div>

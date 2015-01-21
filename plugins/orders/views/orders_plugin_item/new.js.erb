@@ -1,7 +1,0 @@
-<% if params[:redirect] == '1' %>
-  window.location = '<%= url_for :controller => :orders_plugin_order, :action => :edit, :id => @order.id %>';
-<% else %>
-  jQuery('#order-<%=@order.id%>').replaceWith("<%= j render('orders_plugin_order/show', :order => @order, :actor_name => @actor_name) %>");
-
-  toggle_edit.value_row.reload();
-<% end %>
