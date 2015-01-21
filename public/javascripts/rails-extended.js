@@ -5,15 +5,16 @@ jQuery(document).delegate('form[data-update]', 'ajax:success', function(event, d
   if (element.length > 0) element.html(data);
 });
 
-jQuery(document).delegate('form[data-loading]', 'ajax:before', function() {
+jQuery(document).delegate('[data-loading]', 'ajax:before', function() {
   if (jQuery(this).data('loading') == true)
     loading_overlay.show(jQuery(this));
   else
     loading_overlay.show(jQuery(this).data('loading'));
 });
-jQuery(document).delegate('form[data-loading]', 'ajax:complete', function() {
+jQuery(document).delegate('[data-loading]', 'ajax:complete', function() {
   if (jQuery(this).data('loading') == true)
     loading_overlay.hide(jQuery(this));
   else
     loading_overlay.hide(jQuery(this).data('loading'));
 });
+
