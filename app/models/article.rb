@@ -773,6 +773,7 @@ class Article < ActiveRecord::Base
   end
 
   def sanitize_html(text)
+    return unless text.is_a? String
     sanitizer = HTML::FullSanitizer.new
     sanitizer.sanitize(text)
   end
