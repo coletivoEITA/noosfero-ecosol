@@ -1,5 +1,3 @@
-require_dependency "#{File.dirname __FILE__}/ext/environment"
-require_dependency "#{File.dirname __FILE__}/ext/user"
 require_dependency "#{File.dirname __FILE__}/ext/songkick/oauth2/model/client"
 
 class OauthPlugin < Noosfero::Plugin
@@ -20,28 +18,28 @@ class OauthPlugin < Noosfero::Plugin
 
   StrategiesDefs = {
     'noosfero' => {
-      :name => 'Noosfero Network',
-      :key_needed => true,
+      name: 'Noosfero Network',
+      key_needed: true,
     },
     'browser_id' => {
-      :identifier => 'browser_id',
-      :name => 'Mozilla Persona',
-      :key_needed => false,
+      identifier: 'browser_id',
+      name: 'Mozilla Persona',
+      key_needed: false,
     },
     'twitter' => {
-      :identifier => 'twitter',
-      :name => 'Twitter',
-      :key_needed => true,
+      identifier: 'twitter',
+      name: 'Twitter',
+      key_needed: true,
     },
     'google_oauth2' => {
-      :identifier => 'google',
-      :name => 'Google',
-      :key_needed => true,
+      identifier: 'google',
+      name: 'Google',
+      key_needed: true,
     },
     'facebook' => {
-      :identifier => 'facebook',
-      :name => 'Facebook',
-      :key_needed => true,
+      identifier: 'facebook',
+      name: 'Facebook',
+      key_needed: true,
     },
   }
 
@@ -103,12 +101,12 @@ unless $oauth_plugin_middlewares_loaded
     end
 
     unless Rails.env.production?
-      provider :developer, :path_prefix => "#{OauthPlugin.path_prefix}/auth", :callback_path => "#{OauthPlugin.path_prefix}/auth/callback/developer"
+      provider :developer, path_prefix: "#{OauthPlugin.path_prefix}/auth", callback_path: "#{OauthPlugin.path_prefix}/auth/callback/developer"
     end
 
     OauthPlugin::StrategiesDefs.each do |name, defs|
-      provider name, :setup => OauthPlugin::SetupProc, :path_prefix => "#{OauthPlugin.path_prefix}/auth",
-        :callback_path => "#{OauthPlugin.path_prefix}/auth/callback/#{defs[:identifier]}"
+      provider name, setup: OauthPlugin::SetupProc, path_prefix: "#{OauthPlugin.path_prefix}/auth",
+        callback_path: "#{OauthPlugin.path_prefix}/auth/callback/#{defs[:identifier]}"
     end
   end
 end
