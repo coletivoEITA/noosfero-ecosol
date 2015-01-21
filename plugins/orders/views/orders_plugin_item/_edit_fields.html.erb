@@ -29,7 +29,7 @@
 
       <% else %>
         <%= link_to t('orders_plugin.views.item._edit.remove_from_order'), {controller: :orders_plugin_item, action: :destroy, id: item.id},
-          remote: true, data: {loading: "#item-#{item.id}", update: "#item-#{item.id}"} if order.may_edit? user, @admin rescue false %>
+          remote: true, data: {loading: "#item-#{item.id}"} if order.may_edit? user, @admin rescue false %>
 
         <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(controller: :orders_plugin_item, action: :edit, id: item.id)}')", class: 'action-button' %>
 

@@ -12,31 +12,7 @@ class OrdersPluginOrderController < ProfileController
   helper OrdersPlugin::TranslationHelper
   helper OrdersPlugin::OrdersDisplayHelper
 
-  def edit
-    status = params[:order][:status]
-    if status == 'ordered'
-      if @order.items.size > 0
-        @order.update_attributes! params[:order]
-        session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
-      else
-        session[:notice] = t('orders_plugin.controllers.profile.consumer.can_not_confirm_your_')
-      end
-    end
-    render 'orders_plugin_order/edit'
-  end
-
   def repeat
-  end
-
-  def reopen
-    @order.update_attributes! status: 'draft'
-    render 'orders_plugin_order/edit'
-  end
-
-  def cancel
-    @order.update_attributes! status: 'cancelled'
-    session[:notice] = t('orders_plugin.controllers.profile.consumer.order_cancelled')
-    render 'orders_plugin_order/edit'
   end
 
   protected

@@ -48,7 +48,19 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
 
   def edit
     return show_more if params[:page].present?
-    return super if request.xhr?
+
+    if request.xhr?
+      status = params[:order][:status]
+      if status == 'ordered'
+        if @order.items.size > 0
+          @order.update_attributes! params[:order]
+          session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
+        else
+          session[:notice] = t('orders_plugin.controllers.profile.consumer.can_not_confirm_your_')
+        end
+      end
+      return
+    end
 
     if cycle_id = params[:cycle_id]
       @cycle = OrdersCyclePlugin::Cycle.find_by_id cycle_id
@@ -83,6 +95,17 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     load_products_for_order
     @product_categories = @cycle.product_categories
     @consumer_orders = @cycle.sales.for_consumer @consumer
+  end
+
+  def reopen
+    @order.update_attributes! status: 'draft'
+    render 'edit'
+  end
+
+  def cancel
+    @order.update_attributes! status: 'cancelled'
+    session[:notice] = t('orders_plugin.controllers.profile.consumer.order_cancelled')
+    render 'edit'
   end
 
   def remove

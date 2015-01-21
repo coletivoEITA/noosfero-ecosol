@@ -502,7 +502,7 @@
       order:
         _show: 
           open: "Open"
-          cancel_order: "cancel order"
+          cancel_order: "Cancel order"
           confirm_order: "Confirm order"
           confirming_this_order: "Confirming this order you are responsible for paying it. Do you want to continue?"
         _delivery: 
