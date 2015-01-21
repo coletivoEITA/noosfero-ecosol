@@ -150,7 +150,7 @@ module ActsAsFaceted
 
       def facet_result_name(facet, data)
         if facet[:queries]
-          gettext(facet[:queries][q])
+          gettext(facet[:queries][facet])
         elsif facet[:proc]
           facet_result_proc(facet, data).first[1]
         else

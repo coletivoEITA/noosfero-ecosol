@@ -109,7 +109,9 @@ module SolrPlugin::SearchHelper
 
   def facet_selecteds_html_for environment, klass, params
     def name_with_extra(klass, facet, value)
-      name = klass.facet_result_name(facet, [[value, 0]])[0][0]
+      result = klass.facet_result_name(facet, [[value, 0]])
+      return unless result
+      name = result[0][0]
       name = name[0] + name[1] if name.is_a?(Array)
       name
     end
@@ -126,12 +128,14 @@ module SolrPlugin::SearchHelper
           facet[:label_id] = label_id
           facet[:label] = label_hash[label_id]
           value.to_a.each do |value|
-            ret << [facet[:label], name_with_extra(klass, facet, value),
+            next unless name = name_with_extra(klass, facet, value)
+            ret << [facet[:label], name,
               params.merge(:facet => params[:facet].merge(id => params[:facet][id].merge(label_id => params[:facet][id][label_id].to_a.reject{ |v| v == value })))]
           end
         end
       else
-        ret << [klass.facet_label(facet), name_with_extra(klass, facet, value),
+        next unless name = name_with_extra(klass, facet, value)
+        ret << [klass.facet_label(facet), name,
           params.merge(:facet => params[:facet].reject{ |k,v| k == id })]
       end
     end
