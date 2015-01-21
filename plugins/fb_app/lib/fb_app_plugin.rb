@@ -34,15 +34,17 @@ class FbAppPlugin < Noosfero::Plugin
       app_secret = self.timeline_app_credentials[:secret].to_s
 
       client = OauthPlugin::Provider.where(environment_id: environment.id, key: app_id).first
-      client ||= OauthPlugin::Provider.new
+      # attributes that may be changed by the user
+      client ||= OauthPlugin::Provider.new strategy: 'facebook', identifier: "facebook",
+        name: 'FB App', site: 'https://facebook.com'
 
+      # attributes that should not change
       client.attributes = {
-        strategy: 'facebook', identifier: "fb_app_plugin_#{app_id}",
-        name: 'FB App', site: 'https://facebook.com',
         key: app_id, secret: app_secret,
-        environment_id: environment.id
+        environment_id: environment.id,
       }
       client.save! if client.changed?
+
       client
     end
   end
