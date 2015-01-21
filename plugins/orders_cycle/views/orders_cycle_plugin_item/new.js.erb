@@ -5,4 +5,6 @@
 
   var item = jQuery('#item-<%=@item.id%>');
   orders.item.edit_quantity(item);
+<% else %>
+  window.location = <%= url_for(controller: :orders_cycle_plugin_order, action: :edit, id: @order.id).to_json %>
 <% end %>

@@ -54,13 +54,28 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       @cycle = OrdersCyclePlugin::Cycle.find_by_id cycle_id
       return render_not_found unless @cycle
       @consumer = user
+
+      # load the first order
+      unless @order
+        @consumer_orders = @cycle.sales.for_consumer @consumer
+        if @consumer_orders.size == 1
+          @order = @consumer_orders.first
+          redirect_to action: :edit, id: @order.id
+        elsif @consumer_orders.size > 1
+          # get the first open
+          @order = @consumer_orders.find{ |o| o.open? }
+          redirect_to action: :edit, id: @order.id if @order
+        end
+      end
     else
       return render_not_found unless @order
+      # an order was loaded on load_order
+
       @cycle = @order.cycle
 
       @consumer = @order.consumer
-      @admin_edit = (user and user != @consumer)
-      return render_access_denied if @admin_edit and not profile.admins.include? @consumer
+      @admin_edit = (user and user.in?(profile.admins) and user != @consumer)
+      return render_access_denied unless @admin_edit or user == @consumer
 
       @consumer_orders = @cycle.sales.for_consumer @consumer
     end
