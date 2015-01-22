@@ -16,7 +16,7 @@ class FbAppPlugin < Noosfero::Plugin
     @test_users ||= self.config[:test_users]
   end
   def self.test_user? user
-    self.user and (self.test_users.blank? or self.test_users.include? user.identifier)
+    user and (self.test_users.blank? or self.test_users.include? user.identifier)
   end
 
   def self.scope user
