@@ -136,6 +136,7 @@ class OpenGraphPlugin::Stories
     start_a_discussion: {
       action: :start,
       object_type: :forum,
+      models: :Article,
       on: :create,
       criteria: proc do |article|
         article.parent.is_a? Forum

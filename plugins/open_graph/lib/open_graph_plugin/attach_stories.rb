@@ -15,7 +15,10 @@ module OpenGraphPlugin::AttachStories
         self.send "after_#{on}", method
         self.send :define_method, method do
           actor = User.current.person rescue nil
-          OpenGraphPlugin::Stories.delay.publish self, on, actor, stories if actor
+          klass = OpenGraphPlugin::Stories
+          klass = klass.delay if FbAppPlugin.test_user? actor
+
+          klass.publish self, on, actor, stories if actor
         end
       end
     end
