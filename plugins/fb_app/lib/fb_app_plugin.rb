@@ -13,12 +13,10 @@ class FbAppPlugin < Noosfero::Plugin
   end
 
   def self.test_users
-    @test_users = self.config[:test_users]
+    @test_users ||= self.config[:test_users]
   end
   def self.test_user? user
-    #dtygel commented that to allow the plugin to be available to everybody.
-    #self.test_users.blank? or self.test_users.include? user.identifier
-    user.identifier
+    self.test_users.blank? or self.test_users.include? user.identifier
   end
 
   def self.scope user
