@@ -15,10 +15,11 @@
   </div>
 
   <div id="fb-app-timeline">
+    <h2>
+      <%= t('fb_app_plugin.views.myprofile.timeline.heading') %>
+    </h2>
+
     <% unless FbAppPlugin.test_user? user %>
-      <h2>
-        <%= t('fb_app_plugin.views.myprofile.timeline.heading') %>
-      </h2>
       <h3>
         <%= t('fb_app_plugin.views.myprofile.timeline.explanation_title') %>
       </h3>

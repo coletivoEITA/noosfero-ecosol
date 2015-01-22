@@ -18,8 +18,7 @@ fb_app = {
 
   timeline: {
     app_id: '',
-    //app_scope: 'publish_actions',
-    app_scope: '',
+    app_scope: 'publish_actions',
 
     loading: function() {
       jQuery('#fb-app-connect-status').empty().addClass('loading').height(150)
