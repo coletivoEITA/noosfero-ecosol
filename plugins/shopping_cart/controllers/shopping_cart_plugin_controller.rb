@@ -311,6 +311,11 @@ class ShoppingCartPluginController < OrdersPluginController
     order.save!
   end
 
+  # must be public
+  def profile
+    cart_profile
+  end
+
   protected
 
   def cart
@@ -326,10 +331,6 @@ class ShoppingCartPluginController < OrdersPluginController
   def cart_profile
     profile_id = if params[:profile_id].present? then params[:profile_id] elsif cart then cart[:profile_id] end
     @cart_profile ||= environment.profiles.find profile_id rescue nil
-  end
-
-  def profile
-    cart_profile
   end
 
   # from OrdersPluginController
