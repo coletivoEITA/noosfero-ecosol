@@ -130,6 +130,7 @@ class OpenGraphPlugin::Stories
     make_friendship_with: {
       action: :make_friendship,
       object_type: :friend,
+      on: :create,
       models: :Friendship,
       publish: proc do |actor, fs, publisher|
         publish fs.person, actions[:make_friendship], objects[:friend], publisher.url_for(fs.friend.url)
