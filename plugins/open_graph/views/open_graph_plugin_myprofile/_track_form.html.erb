@@ -1,5 +1,5 @@
 <%= form_for profile, as: :profile_data, remote: true, url: {action: :track_config},
-  html: {id: 'track-config', data: {update: '#track-form', type: 'html'}} do |f| %>
+  html: {id: 'track-config', data: {loading: '#track-config', update: '#track-form', type: 'html'}} do |f| %>
 
     <% OpenGraphPlugin::TrackConfig::Types.each do |track, klass| %>
       <div class="panel panel-primary">

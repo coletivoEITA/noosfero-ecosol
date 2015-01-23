@@ -13,12 +13,16 @@ open_graph = {
 
       toggle: function(checkbox) {
         var panel = $(checkbox).parents('.panel')
-        var checkboxes = panel.find('.panel-body input[type=checkbox]')
+        var panelBody = panel.find('.panel-body')
+        var checkboxes = panelBody.find('input[type=checkbox]')
+
         checkboxes.prop('checked', checkbox.checked)
+        panelBody.toggle(checkbox.checked)
       },
 
       toggleParent: function(context) {
         var panel = $(context).parents('.panel')
+        var panelBody = panel.find('.panel-body')
         var parentCheckbox = panel.find('.panel-heading input[type=checkbox]')
         var checkboxes = panel.find('.panel-body input[type=checkbox]')
         var profilesInput = panel.find('.panel-body .select-profiles')
@@ -29,12 +33,16 @@ open_graph = {
         var nTotal = checkboxes.length + nProfiles
 
         parentCheckbox.prop('indeterminate', false)
-        if (nChecked === 0)
+        if (nChecked === 0) {
+          panelBody.hide()
           parentCheckbox.prop('checked', false)
-        else if (nChecked >= nTotal)
-          parentCheckbox.prop('checked', true)
-        else
-          parentCheckbox.prop('indeterminate', true)
+        } else {
+          panelBody.show()
+          if (nChecked >= nTotal)
+            parentCheckbox.prop('checked', true)
+          else
+            parentCheckbox.prop('indeterminate', true)
+        }
       },
 
       initAutocomplete: function(track, url, items) {
