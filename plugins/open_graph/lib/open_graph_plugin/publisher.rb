@@ -27,6 +27,7 @@ class OpenGraphPlugin::Publisher
       next unless match_criteria
       match_condition = if defs[:publish_if] then defs[:publish_if].call(object_data) else true end
       next unless match_condition
+      # HANDLE passive stories
       match_track = actor.open_graph_track_configs.where(object_type: defs[:object_type]).count > 0
       next unless match_track
 

@@ -12,16 +12,18 @@ module OpenGraphPlugin::AttachStories
       callbacks.each do |on, stories|
         # subclasses may overide this, but the callback is called only once
         method = "open_graph_after_#{on}"
-        self.send "after_commit", method, on: on
-        # TESTING: crash on errors
-        #self.send "after_#{on}", method
+        if Rails.env.development?
+          # on development, crash on errors
+          self.send "after_#{on}", method
+        else
+          self.send "after_commit", method, on: on
+        end
 
         self.send :define_method, method do
           actor = User.current.person rescue nil
           klass = OpenGraphPlugin::Stories
-          # TESTING: crash on errors
-          #klass = klass.delay unless FbAppPlugin.test_user? actor
-          klass = klass.delay
+          # on development, crash on errors
+          klass = klass.delay unless Rails.env.development?
 
           klass.publish self, on, actor, stories if actor
         end
