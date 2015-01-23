@@ -8,14 +8,8 @@ class Article
     'og:title' => proc{ |a, c| a.title },
     'og:image' => proc do |a, c|
         result = a.body_images_paths
-
-        if result.empty?
-          result = "#{a.profile.environment.top_url}#{a.profile.image.public_filename}" if a.profile.image
-        end
-
-        if result.empty?
-          result = MetadataPlugin.config[:open_graph][:environment_logo]
-        end
+        result = "#{a.profile.environment.top_url}#{a.profile.image.public_filename}" if a.profile.image if result.blank?
+        result = MetadataPlugin.config[:open_graph][:environment_logo] if result.blank?
         result
       end,
     'og:see_also' => [],
