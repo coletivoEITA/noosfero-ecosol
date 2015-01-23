@@ -1,7 +1,7 @@
 <%= form_for profile, as: :profile_data, remote: true, url: {action: :track_config},
   html: {id: 'track-config', data: {update: '#track-form', type: 'html'}} do |f| %>
 
-    <% OpenGraphPlugin::Track::Config.each do |track, klass| %>
+    <% OpenGraphPlugin::TrackConfig::Types.each do |track, klass| %>
       <div class="panel panel-primary">
         <%
           klass = "OpenGraphPlugin::#{klass}".constantize

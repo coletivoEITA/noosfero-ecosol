@@ -3,7 +3,7 @@ require_dependency 'profile'
 # subclass problem on development and production
 Profile.descendants.each do |subclass|
   subclass.class_eval do
-    OpenGraphPlugin::Track::Config.each do |track, klass|
+    OpenGraphPlugin::TrackConfig::Types.each do |track, klass|
       klass = "OpenGraphPlugin::#{klass}".constantize
       attributes = "#{klass.association}_attributes"
       profile_ids = "open_graph_#{track}_profiles_ids"
@@ -16,11 +16,12 @@ end
 
 class Profile
 
-  has_many :open_graph_activities, class_name: 'OpenGraphPlugin::Activity', source: :tracker_id
+  has_many :open_graph_tracks, class_name: 'OpenGraphPlugin::Track', source: :tracker_id, foreign_key: :tracker_id
 
-  has_many :open_graph_tracks, class_name: 'OpenGraphPlugin::Track', source: :tracker_id
+  has_many :open_graph_activities, class_name: 'OpenGraphPlugin::Activity', source: :tracker_id, foreign_key: :tracker_id
 
-  OpenGraphPlugin::Track::Config.each do |track, klass|
+  has_many :open_graph_track_configs, class_name: 'OpenGraphPlugin::TrackConfig', source: :tracker_id, foreign_key: :tracker_id
+  OpenGraphPlugin::TrackConfig::Types.each do |track, klass|
     klass = "OpenGraphPlugin::#{klass}".constantize
     association = klass.association
     attributes = "#{association}_attributes"
@@ -42,7 +43,7 @@ class Profile
 
   end
 
-  define_method "open_graph_reject_empty_object_type" do |attributes|
+  define_method :open_graph_reject_empty_object_type do |attributes|
     exists = attributes[:id].present?
     empty = attributes[:object_type].empty?
     attributes.merge! _destroy: 1 if exists and empty

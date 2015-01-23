@@ -1,4 +1,4 @@
-class OpenGraphPlugin::ActivityTrack < OpenGraphPlugin::Track
+class OpenGraphPlugin::ActivityTrackConfig < OpenGraphPlugin::TrackConfig
 
   # workaround for STI bug
   self.table_name = :open_graph_plugin_tracks
@@ -17,6 +17,8 @@ class OpenGraphPlugin::ActivityTrack < OpenGraphPlugin::Track
   end
 
   validates_inclusion_of :object_type, in: self.objects
+
+  protected
 
 end
 

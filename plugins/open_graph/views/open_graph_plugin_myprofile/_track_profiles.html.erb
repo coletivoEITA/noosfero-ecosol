@@ -1,5 +1,5 @@
 <%
-  association = "open_graph_#{track}_tracks"
+  association = "open_graph_#{track}_track_configs"
   tracks = profile.send association
   profiles = tracks.map &:object_data
   ids = profiles.map(&:id).join(',')

@@ -14,6 +14,11 @@ class OpenGraphPlugin::Publisher
     raise 'abstract method called'
   end
 
+  def url_for url
+    return url if url.is_a? String
+    Noosfero::Application.routes.url_helpers.url_for url.except(:port)
+  end
+
   def publish_stories object_data, on, actor, stories
     stories.each do |story|
       defs = OpenGraphPlugin::Stories::Definitions[story]
@@ -22,12 +27,14 @@ class OpenGraphPlugin::Publisher
       next unless match_criteria
       match_condition = if defs[:publish_if] then defs[:publish_if].call(object_data) else true end
       next unless match_condition
+      match_track = actor.open_graph_track_configs.where(object_type: defs[:object_type]).count > 0
+      next unless match_track
 
       if defs[:publish]
-        defs[:publish].call actor, object_data
+        defs[:publish].call actor, object_data, self
       else
         object_data_url = if defs[:object_data_url] then defs[:object_data_url].call(object_data) else object_data.url end
-        object_data_url = Noosfero::Application.routes.url_helpers.url_for object_data_url.except(:port) unless object_data_url.is_a? String
+        object_data_url = self.url_for object_data_url
 
         if defs[:tracker]
           exclude_actor = actor

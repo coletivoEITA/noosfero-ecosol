@@ -123,7 +123,7 @@ class OpenGraphPlugin::Stories
       object_type: :favorite_enterprise_person,
       on: :create,
       models: :FavoriteEnterprisePerson,
-      publish: proc do |actor, fe|
+      publish: proc do |actor, fe, publisher|
         publish actor, actions[:favorite], objects[:enterprise], fe.enterprise.url
       end
     },
@@ -131,9 +131,9 @@ class OpenGraphPlugin::Stories
       action: :make_friendship,
       object_type: :friend,
       models: :Friendship,
-      publish: proc do |actor, fs|
-        publish fs.person, actions[:make_friendship], objects[:friend], fs.friend.url
-        publish fs.friend, actions[:make_friendship], objects[:friend], fs.person.url
+      publish: proc do |actor, fs, publisher|
+        publish fs.person, actions[:make_friendship], objects[:friend], publisher.url_for(fs.friend.url)
+        publish fs.friend, actions[:make_friendship], objects[:friend], publisher.url_for(fs.person.url)
       end,
     },
     start_a_discussion: {
