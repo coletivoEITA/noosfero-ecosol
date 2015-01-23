@@ -6,7 +6,7 @@ open_graph = {
     config: {
 
       init: function() {
-        jQuery('.panel-body input[type=checkbox]:first').each(function(i, checkbox) {
+        jQuery('#track-form .panel-heading input[type=checkbox]').each(function(i, checkbox) {
           open_graph.track.config.toggleParent(checkbox)
         })
       },
@@ -17,19 +17,41 @@ open_graph = {
         checkboxes.prop('checked', checkbox.checked)
       },
 
-      toggleParent: function(checkbox) {
-        var panel = $(checkbox).parents('.panel')
+      toggleParent: function(context) {
+        var panel = $(context).parents('.panel')
         var parentCheckbox = panel.find('.panel-heading input[type=checkbox]')
-        var nChecked = panel.find('.panel-body input[type=checkbox]:checked').length
-        var nTotal = panel.find('.panel-body input[type=checkbox]').length
+        var checkboxes = panel.find('.panel-body input[type=checkbox]')
+        var profilesInput = panel.find('.panel-body .select-profiles')
+
+        var nObjects = checkboxes.filter(':checked').length
+        var nProfiles = profilesInput.length && profilesInput.val() ? profilesInput.val().split(',').length : 0;
+        var nChecked = nObjects + nProfiles;
+        var nTotal = checkboxes.length + nProfiles
 
         parentCheckbox.prop('indeterminate', false)
-        if (nChecked == nTotal)
-          parentCheckbox.prop('checked', true)
-        else if (nChecked === 0)
+        if (nChecked === 0)
           parentCheckbox.prop('checked', false)
+        else if (nChecked >= nTotal)
+          parentCheckbox.prop('checked', true)
         else
           parentCheckbox.prop('indeterminate', true)
+      },
+
+      initAutocomplete: function(track, url, items) {
+        var selector = '#select-'+track
+        var tokenField = open_graph.autocomplete.init(url, selector, items)
+        open_graph.track.config.toggleParent(tokenField)
+
+        tokenField
+          .on('tokenfield:createdtoken tokenfield:removedtoken', function() {
+            open_graph.track.config.toggleParent(this)
+          }).on('tokenfield:createtoken', function(event) {
+            var existingTokens = $(this).tokenfield('getTokens')
+            $.each(existingTokens, function(index, token) {
+              if (token.value === event.attrs.value)
+                event.preventDefault()
+            })
+          })
       },
 
     },
@@ -74,8 +96,10 @@ open_graph = {
 
       tokenfieldOptions.typeahead = [typeaheadOptions, { displayKey: 'label', source: engine.ttAdapter() }]
 
-      input.tokenfield(tokenfieldOptions)
+      var tokenField = input.tokenfield(tokenfieldOptions)
       input.tokenfield('setTokens', data);
+
+      return tokenField
     },
   },
 }
