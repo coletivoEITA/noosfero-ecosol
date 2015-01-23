@@ -371,8 +371,9 @@ class Article < ActiveRecord::Base
   end
 
   def download? view = nil
+    return false if view
     (self.uploaded_file? and not self.image?) or
-      (self.image? and view.blank?) or
+      self.image? or
       (not self.uploaded_file? and self.mime_type != 'text/html')
   end
 
