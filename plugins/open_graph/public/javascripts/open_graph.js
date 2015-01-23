@@ -24,7 +24,7 @@ open_graph = {
         var profilesInput = panel.find('.panel-body .select-profiles')
 
         var nObjects = checkboxes.filter(':checked').length
-        var nProfiles = profilesInput.length && profilesInput.val() ? profilesInput.val().split(',').length : 0;
+        var nProfiles = profilesInput.length ? profilesInput.tokenfield('getTokens').length : 0;
         var nChecked = nObjects + nProfiles;
         var nTotal = checkboxes.length + nProfiles
 
