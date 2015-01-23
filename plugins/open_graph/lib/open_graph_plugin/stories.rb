@@ -54,13 +54,13 @@ class OpenGraphPlugin::Stories
       end,
     },
     add_a_sse_product: {
-      action: :create,
+      action: :add,
       object_type: :product,
       on: :create,
       models: :Product,
     },
     add_an_image: {
-      action: :create,
+      action: :add,
       object_type: :gallery_image,
       on: :create,
       models: :Image,

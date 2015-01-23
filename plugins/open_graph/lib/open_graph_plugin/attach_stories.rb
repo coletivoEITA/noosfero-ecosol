@@ -12,7 +12,7 @@ module OpenGraphPlugin::AttachStories
       callbacks.each do |on, stories|
         # subclasses may overide this, but the callback is called only once
         method = "open_graph_after_#{on}"
-        self.send "after_#{on}", method
+        self.send "after_commit", method, on: on
         self.send :define_method, method do
           actor = User.current.person rescue nil
           klass = OpenGraphPlugin::Stories
