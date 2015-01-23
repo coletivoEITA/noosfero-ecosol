@@ -26,7 +26,7 @@ class OpenGraphPlugin::Publisher
       if defs[:publish]
         defs[:publish].call actor, object_data
       else
-        object_data_url = object_data.url
+        object_data_url = if defs[:object_data_url] then defs[:object_data_url].call(object_data) else object_data.url end
         object_data_url = Noosfero::Application.routes.url_helpers.url_for object_data_url.except(:port) unless object_data_url.is_a? String
 
         if defs[:tracker]

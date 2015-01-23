@@ -52,6 +52,9 @@ class OpenGraphPlugin::Stories
       publish_if: proc do |uploaded_file|
         uploaded_file.published?
       end,
+      object_data_url: proc do |uploaded_file|
+        uploaded_file.url.merge view: true
+      end
     },
     add_a_sse_product: {
       action: :add,
