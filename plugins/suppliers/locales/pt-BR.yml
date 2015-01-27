@@ -284,6 +284,7 @@
         _supplier: 
           edit: "Editar"
           cancel: "Cancelar"
+          save: Salvar
           see_page: "Ver página"
           see_products: "Ver produtos"
           message: "Messagem"
