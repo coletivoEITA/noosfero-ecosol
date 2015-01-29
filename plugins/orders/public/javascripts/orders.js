@@ -119,10 +119,13 @@ orders = {
   set_orders_container_max_height: function()
   {
     ordersH = jQuery(window).height();
-    ordersH -= 190
+    ordersH -= 150
     ordersH -= jQuery('#cirandas-top-bar').outerHeight()
-    ordersH -= jQuery('.order-status-message-title').outerHeight()
+    ordersH -= jQuery('.order-status-message').outerHeight()
+    ordersH -= jQuery('.order-message-title').outerHeight()
+    ordersH -= jQuery('#order-column .order-items .table-header').last().outerHeight()
     ordersH -= jQuery('#order-column .order-total').last().outerHeight()
+    ordersH -= jQuery('#order-column #actor-data-box').last().outerHeight()
     ordersH -= jQuery('#order-column .delivery-box').outerHeight()
     ordersH -= jQuery('#order-column .order-message-text').outerHeight()
     ordersH -= jQuery('#order-column .order-message-actions').outerHeight()
