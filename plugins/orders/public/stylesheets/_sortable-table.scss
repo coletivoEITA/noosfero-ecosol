@@ -7,6 +7,24 @@ $sortable-table-bg-row: #F3F4EE;
 
 $sortable-table-negative-area: 3*$base;
 
+.actions-circle {
+  margin-right: 0;
+  margin-top: 3px;
+  padding: 0;
+
+  .action-show {
+    background: url("/plugins/suppliers/images/plus.png") no-repeat;
+    width: 16px;
+    height: 16px;
+  }
+
+  .action-hide {
+    display: none; //initial state
+    background: url("/plugins/suppliers/images/minus.png") no-repeat;
+    width: 16px;
+    height: 16px;
+  }
+}
 // stays out of .sortable-table so that it can be overhidden by tables insides sortable-tables
 .box-field {
   float: left;
