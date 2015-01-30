@@ -2,11 +2,33 @@
 suppliers = {
 
   filter: {
+    form: function() {
+      return jQuery('#filter form')
+    },
 
-    submit: function(field) {
-      setTimeout(function () {
-        field.form.onsubmit();
-      }, 300);
+    apply: function() {
+      this.form().submit()
+    },
+
+    pagination: {
+      init: function(text) {
+        pagination.infiniteScroll(text, {load: this.load});
+      },
+
+      load: function (url) {
+        var page = /page=([^&$]+)\&?/.exec(url)[1]
+        var form = suppliers.filter.form().get(0)
+
+        form.elements.page.value = page
+        var url = form.action + '?' + jQuery(form).serialize()
+        form.elements.page.value = ''
+
+        jQuery.get(url, function(data) {
+          jQuery('.table-content').find('.pagination').remove()
+          jQuery('.table-content').append(data)
+          pagination.loading = false
+        })
+      },
     },
   },
 
@@ -81,7 +103,7 @@ suppliers = {
         var selection = jQuery('.our-product #product_ids_:checked').parents('.our-product')
         selection.find('.available input[type=checkbox]').each(function() {
           this.checked = state
-          jQuery(this.form).submit()
+          suppliers.filter.apply()
         });
       },
     },

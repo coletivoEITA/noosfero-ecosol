@@ -216,7 +216,7 @@
           price: Price
           stock: Stock
           unit: Unit
-          showing_pcount_produc: "Showing %{pcount} products of %{allpcount}"
+          showing_pcount_produc: "Total: %{count} products"
           we_don_t_have_product: "We don't have products to show."
         index: 
           active: active

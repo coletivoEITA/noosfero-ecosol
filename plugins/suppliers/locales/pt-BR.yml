@@ -224,7 +224,7 @@
           price: Preço
           stock: Estoque
           unit: Unidade
-          showing_pcount_produc: "Mostrando %{pcount} produtos de %{allpcount}"
+          showing_pcount_produc: "Total: %{count} produtos"
           we_don_t_have_product: "Não temos produtos a mostrar."
         index: 
           active: ativa

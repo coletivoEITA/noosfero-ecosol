@@ -1,0 +1,11 @@
+<% @products.each do |product| %>
+  <div id="our-product-<%=product.id%>" class="our-product value-row" toggle-edit="suppliers.our_product.toggle_edit();">
+    <%= render "suppliers_plugin_product/edit_line", product: product %>
+  </div>
+<% end %>
+
+<%= pagination_links @products %>
+<%= javascript_tag do %>
+  suppliers.filter.pagination.init(<%= _('loading...').to_json %>)
+<% end %>
+
