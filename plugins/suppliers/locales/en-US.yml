@@ -275,8 +275,6 @@
           deactivate: "deactivate"
         _supplier: 
           edit: "Edit"
-          save: Save
-          cancel: "Cancel"
           see_page: "See page"
           see_products: "See products"
           message: "Message"

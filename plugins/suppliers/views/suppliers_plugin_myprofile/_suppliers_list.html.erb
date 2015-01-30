@@ -8,7 +8,7 @@
   <% end %>
 <% else %>
   <% suppliers.each do |supplier| %>
-    <div id="supplier-<%=supplier.id%>" class="entity value-row <%= 'entity-inactive' unless supplier.active %>" without-hover without-click-edit toggle-edit='suppliers.toggle_edit();'>
+    <div id="supplier-<%=supplier.id%>" class="supplier value-row <%= 'supplier-inactive' unless supplier.active %>" without-hover without-click-edit toggle-edit='suppliers.toggle_edit();'>
       <%= render :partial => 'suppliers_plugin_myprofile/supplier', :object => supplier %>
     </div>
   <% end %>
