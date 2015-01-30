@@ -10,19 +10,7 @@ class SuppliersPluginProductController < MyProfileController
   helper SuppliersPlugin::SuppliersDisplayHelper
 
   def index
-    @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id] if params[:supplier_id].present?
-
-    SuppliersPlugin::DistributedProduct.send :with_exclusive_scope do
-      scope = profile.distributed_products.unarchived.joins([:from_products, :suppliers])
-      @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate per_page: 10, page: params[:page], order: 'from_products_products.name ASC'
-      @products_count = SuppliersPlugin::BaseProduct.search_scope(scope, params).count
-    end
-    @product_categories = Product.product_categories_of @products
-    @new_product = SuppliersPlugin::DistributedProduct.new
-    @new_product.profile = profile
-    @new_product.supplier = @supplier
-    @units = Unit.all
-
+    filter
     respond_to do |format|
       format.html
       format.js { render partial: 'suppliers_plugin_product/search' }
@@ -30,19 +18,12 @@ class SuppliersPluginProductController < MyProfileController
   end
 
   def search
-    @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id] if params[:supplier_id].present?
-
-    SuppliersPlugin::DistributedProduct.send :with_exclusive_scope do
-      scope = profile.distributed_products.unarchived.joins([:from_products, :suppliers])
-      @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate per_page: 10, page: params[:page], order: 'from_products_products.name ASC'
-      @products_count = SuppliersPlugin::BaseProduct.search_scope(scope, params).count
+    filter
+    if params[:page].present?
+      render partial: 'suppliers_plugin_product/results'
+    else
+      render partial: 'suppliers_plugin_product/search'
     end
-    @product_categories = Product.product_categories_of @products
-    @new_product = SuppliersPlugin::DistributedProduct.new
-    @new_product.profile = profile
-    @new_product.supplier = @supplier
-    @units = Unit.all
-    render partial: 'suppliers_plugin_product/search'
   end
 
   def edit
@@ -84,6 +65,24 @@ class SuppliersPluginProductController < MyProfileController
   end
 
   protected
+
+  def filter
+    page = params[:page]
+    page = 1 if page.blank?
+
+    @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id] if params[:supplier_id].present?
+
+    SuppliersPlugin::DistributedProduct.send :with_exclusive_scope do
+      scope = profile.distributed_products.unarchived.joins([:from_products, :suppliers])
+      @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate per_page: 20, page: page, order: 'from_products_products.name ASC'
+      @products_count = SuppliersPlugin::BaseProduct.search_scope(scope, params).count
+    end
+    @product_categories = Product.product_categories_of @products
+    @new_product = SuppliersPlugin::DistributedProduct.new
+    @new_product.profile = profile
+    @new_product.supplier = @supplier
+    @units = Unit.all
+  end
 
   extend ControllerInheritance::ClassMethods
   hmvc OrdersPlugin

@@ -1,7 +1,5 @@
-<%= pagination_links @products %>
-
 <div id="result-count" class="">
-  <small><%= t('views.product._search.showing_pcount_produc') % {:pcount => @products.count, :allpcount => @products_count} %></small>
+  <small><%= t('views.product._search.showing_pcount_produc') % {count: @products.count} %></small>
 </div>
 
 <div id="results" class="sortable-table wireframe-size checkable">
@@ -20,13 +18,10 @@
     <% if @products.empty? %>
       <%= t('views.product._search.we_don_t_have_product') %>
     <% else %>
-      <% @products.each do |product| %>
-        <div id="our-product-<%=product.id%>" class="our-product value-row" toggle-edit="suppliers.our_product.toggle_edit();">
-          <%= render "suppliers_plugin_product/edit_line", :product => product %>
-        </div>
-      <% end %>
+      <%= render 'results' %>
     <% end %>
 
     <div class="clean"></div>
   </div>
 </div>
+
