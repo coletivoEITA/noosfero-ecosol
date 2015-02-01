@@ -3,6 +3,7 @@ module OrdersCyclePlugin::OrderBase
 
   extend ActiveSupport::Concern
   included do
+    attr_accessible :cycle
 
     def cycle
       self.cycles.first
