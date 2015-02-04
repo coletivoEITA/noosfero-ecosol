@@ -1,6 +1,6 @@
 class OrdersPlugin::Item < ActiveRecord::Base
 
-  attr_accessible :price, :name, :order, :product
+  attr_accessible :price, :name, :order, :product, :product_id
 
   # flag used by items to compare them with products
   attr_accessor :product_diff
@@ -94,13 +94,20 @@ class OrdersPlugin::Item < ActiveRecord::Base
     self['name'] || (self.product.name rescue nil)
   end
   def price
-    self['price'] || (self.product.price rescue nil)
+    self['price'] || (self.product.price_with_discount || 0 rescue nil)
   end
   def unit
     self.product.unit
   end
   def supplier
     self.product.supplier rescue self.order.profile.self_supplier
+  end
+
+  # fallback to price * quantity
+  def price_consumer_ordered
+    v = self[:price_consumer_ordered]
+    v = self.price * self.quantity_consumer_ordered if (v.blank? or v.zero?) and (self.price.present? and not self.price.zero?)
+    v
   end
 
   def status

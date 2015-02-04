@@ -11302,14 +11302,6 @@ msgstr "Remover opção"
 msgid "ADD NEW OPTION"
 msgstr "ADCIONAR NOVA OPÇÂO"
 
-#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:36
-msgid "Order's minimum price for free delivery:"
-msgstr "Preço mínimo do pedido para entrega grátis:"
-
-#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:37
-msgid "Leave empty to always charge the delivery."
-msgstr "Deixe vazio para sempre cobrar a entrega."
-
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/reports.html.erb:1
 msgid "Purchase Reports"
 msgstr "Relatórios de Compra"
