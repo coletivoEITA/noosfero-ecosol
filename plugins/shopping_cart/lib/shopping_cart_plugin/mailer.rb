@@ -4,14 +4,16 @@ class ShoppingCartPlugin::Mailer < Noosfero::Plugin::MailerBase
 
   helper ShoppingCartPlugin::CartHelper
 
-  def customer_notification(customer, supplier, items, delivery_option)
+  attr_accessor :environment, :profile
+
+  def customer_notification(customer, supplier, items, supplier_delivery)
     domain = supplier.hostname || supplier.environment.default_hostname
     @customer = customer
-    @supplier = supplier
-    @items = items
+    @profile = @supplier = supplier
     @environment = supplier.environment
+    @items = items
     @helper = self
-    @delivery_option = delivery_option
+    @supplier_delivery = supplier_delivery
 
     mail(
       to:           customer[:email],
@@ -22,14 +24,14 @@ class ShoppingCartPlugin::Mailer < Noosfero::Plugin::MailerBase
     )
   end
 
-  def supplier_notification(customer, supplier, items, delivery_option)
+  def supplier_notification(customer, supplier, items, supplier_delivery)
     domain = supplier.environment.default_hostname
     @customer = customer
-    @supplier = supplier
-    @items = items
+    @profile = @supplier = supplier
     @environment = supplier.environment
+    @items = items
     @helper = self
-    @delivery_option = delivery_option
+    @supplier_delivery = supplier_delivery
 
     mail(
       to:    supplier.cart_order_supplier_notification_recipients,

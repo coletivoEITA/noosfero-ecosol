@@ -53,7 +53,7 @@
     </ul>
 
     <p><%=_('Here are the products you bought:')%></p>
-    <%= @helper.items_table(@items, @supplier, @delivery_option, true) %>
+    <%= @helper.items_table(@items, @supplier, @supplier_delivery, true) %>
     <p>
       --<br/>
       <%=_('Thanks for buying with us!')%><br/>
