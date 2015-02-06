@@ -1,0 +1,177 @@
+# translation of noosfero.po to
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"POT-Creation-Date: 2015-02-02 21:44-0300\n"
+"PO-Revision-Date: 2015-02-06 20:09-0300\n"
+"Last-Translator: Daniel Tygel <dtygel@eita.org.br>\n"
+"Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero/"
+"noosfero/pt/>\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.0\n"
+
+#: app/models/uploaded_file.rb:99
+msgid "Uploaded file"
+msgstr "Enviar imagem ou documento"
+
+#: app/models/uploaded_file.rb:103
+msgid "Upload any kind of file you want."
+msgstr "Qualquer arquivo."
+
+#: app/models/folder.rb:28
+msgid "A folder, inside which you can put other articles."
+msgstr "Serve para você organizar seus conteúdos e arquivos."
+
+#: app/models/gallery.rb:12
+msgid "A gallery, inside which you can put images."
+msgstr "Organize suas fotos e imagens!"
+
+#: app/views/manage_products/show.html.erb
+msgid "Offered by"
+msgstr "Produzido ou oferecido por"
+
+#: app/views/catalog/_pagination.html.erb
+msgid "Show more"
+msgstr "Ver mais produtos"
+
+#: app/models/rss_feed.rb:97
+msgid "Provides a news feed of your more recent articles."
+msgstr "Fornece um feed RSS dos seus conteúdos."
+
+#: app/models/raw_html_article.rb:8
+msgid "Raw HTML text article"
+msgstr "Artigo com HTML puro"
+
+#: app/models/raw_html_article.rb:12
+msgid "Allows HTML without filter (only for admins)."
+msgstr "Para administradores - use com cautela!"
+
+#: app/models/text_article.rb:9
+msgid "Article"
+msgstr "Artigo"
+
+#: app/models/tiny_mce_article.rb:8
+msgid "Add a new text article."
+msgstr "Adicione um novo artigo de texto."
+
+#: app/models/textile_article.rb:4
+msgid "Text article for people with visual impairement"
+msgstr "Artigo para pessoas com deficiência visual"
+
+#: app/models/textile_article.rb:8
+msgid "Textile format."
+msgstr "Formato textile."
+
+#: app/models/blog.rb:24
+msgid "A blog, inside which you can put other articles."
+msgstr "Um blog onde você pode postar conteúdos."
+
+#:catalog
+msgid "order by"
+msgstr "ordenar por"
+
+#:catalog
+msgid "Lowest price"
+msgstr "Menor preço"
+
+#:catalog
+msgid "Newest"
+msgstr "Mais recentes"
+
+#:catalog
+msgid "Last updated"
+msgstr "Últimas atualizações"
+
+#: app/helpers/application_helper.rb
+msgid "All people"
+msgstr "Todas e todos"
+
+#: app/helpers/application_helper.rb
+msgid "All contents"
+msgstr "Todos os conteúdos"
+
+#: app/helpers/application_helper.rb
+msgid "All communities"
+msgstr "Todas as comunidades"
+
+#: app/helpers/application_helper.rb:1294
+msgid ""
+"Are you sure that you want to remove the folder \"%s\"? Note that all the "
+"items inside it will also be removed!"
+msgstr ""
+"Tem certeza que quer excluir a pasta \"%s\"? Perceba que todos os itens dentro "
+"dela também serão removidos!"
+
+#: app/helpers/application_helper.rb:1296
+msgid "Are you sure that you want to remove the item \"%s\"?"
+msgstr "Tem certeza que quer excluir o ítem \"%s\"?"
+
+#: app/views/catalog/_product.html.erb
+msgid "By"
+msgstr "Por"
+
+#: /app/views/catalog/_form.html.erb:119
+msgid "All categories"
+msgstr "Todas as categorias"
+
+#: /app/views/catalog/_form.html.erb:119
+msgid "All qualifiers"
+msgstr "Todos os qualificadores"
+
+#: /app/views/catalog/_form.html.erb:119
+msgid "type your search..."
+msgstr "buscar..."
+
+#: app/views/catalog/_results.html.erb:119
+msgid "<b>Total:</b> %{number} products"
+msgstr "<b>Total:</b> %{number} produtos"
+
+#: app/views/catalog/_results.html.erb:119
+msgid "Your search returned %{number} products"
+msgstr "Sua busca resultou em %{number} produtos"
+
+#: app/views/box_organizer/edit.html.erb:22
+msgid "Display to users:"
+msgstr "Mostrar às(aos) usuárias(os):"
+
+#: app/views/box_organizer/_article_block.html.erb:27
+#: app/views/shared/_lead_and_body.html.erb:17
+#: app/views/spam/_suggest_article.html.erb:13
+msgid "Lead"
+msgstr "Prévia (primeiras linhas do artigo)"
+
+#: app/views/events/events.html.erb:1
+msgid "Events at %s"
+msgstr "Eventos em %s"
+
+#: app/views/cms/_general_fields.html.erb:1
+msgid "Publication date:"
+msgstr "Data de publicação:"
+
+#: app/views/profile_editor/_organization.html.erb
+msgid "Internet Address (URL)"
+msgstr "Endereço na internet"
+
+#: app/views/account/index_anonymous.html.erb:10
+msgid "Sign up."
+msgstr "Criar conta."
+
+#: app/views/layouts/_user.html.erb:18
+msgid "Sign up"
+msgstr "Criar conta"
+
+#: app/models/moderate_user_registration.rb:29
+#: app/views/account/login.html.erb:29
+#: app/views/account/login_block.html.erb:23
+msgid "New user"
+msgstr "Criar conta"
+
+#: app/views/manage_products/show.html.erb:58
+msgid "Add product or service"
+msgstr "Adicionar produto ou serviço"
+

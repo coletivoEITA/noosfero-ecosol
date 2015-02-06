@@ -222,11 +222,11 @@ msgstr "{fn} do arquivo enviado é maior que o máximo permitido de %{size}"
 
 #: app/models/uploaded_file.rb:99
 msgid "Uploaded file"
-msgstr "Enviar imagem ou documento"
+msgstr "Arquivo enviado"
 
 #: app/models/uploaded_file.rb:103
 msgid "Upload any kind of file you want."
-msgstr "Qualquer arquivo."
+msgstr "Envie qualquer tipo de arquivo que você queira."
 
 #: app/models/invite_friend.rb:11
 msgid "Friend invitation"
@@ -577,7 +577,7 @@ msgstr "Pasta"
 
 #: app/models/folder.rb:28
 msgid "A folder, inside which you can put other articles."
-msgstr "Serve para você organizar seus conteúdos e arquivos."
+msgstr "Uma pasta, dentro dela você pode colocar outros artigos."
 
 #: app/models/event.rb:9 app/models/event.rb:67
 #: app/models/link_list_block.rb:30
@@ -1176,10 +1176,6 @@ msgstr "Nome de exibição"
 msgid "Description"
 msgstr "Descrição"
 
-#: app/views/manage_products/show.html.erb
-msgid "Offered by"
-msgstr "Produzido ou oferecido por"
-
 #: app/models/organization.rb:107 app/models/create_enterprise.rb:7
 msgid "Contact person"
 msgstr "Pessoa de contato"
@@ -1494,7 +1490,7 @@ msgstr "Este bloco apresenta o conteúdo principal das suas páginas."
 
 #: app/models/gallery.rb:12
 msgid "A gallery, inside which you can put images."
-msgstr "Organize suas fotos e imagens!"
+msgstr "Uma galeria, dentro da qual você pode inserir imagens."
 
 #: app/models/profile_search_block.rb:4
 msgid "Display a form to search the profile"
@@ -1512,12 +1508,7 @@ msgstr "título"
 msgid "description"
 msgstr "descrição"
 
-#: app/views/catalog/_pagination.html.erb
-msgid "Show more"
-msgstr "Ver mais produtos"
-
-#: app/models/create_community.rb:38 app/helpers/application_helper.rb:1079
-#: app/models/create_community.rb:38 app/helpers/application_helper.rb:1081
+#: app/models/create_community.rb:38 app/helpers/application_helper.rb:1083
 msgid "New community"
 msgstr "Nova comunidade"
 
@@ -1745,7 +1736,7 @@ msgstr "Feed RSS"
 
 #: app/models/rss_feed.rb:97
 msgid "Provides a news feed of your more recent articles."
-msgstr "Fornece um feed RSS dos seus conteúdos."
+msgstr "Fornece um feed RSS dos seus artigos mais recentes."
 
 #: app/models/raw_html_article.rb:4
 msgid "HTML"
@@ -1753,11 +1744,11 @@ msgstr "HTML"
 
 #: app/models/raw_html_article.rb:8
 msgid "Raw HTML text article"
-msgstr "Artigo com HTML puro"
+msgstr "Artigo de texto com HTML puro"
 
 #: app/models/raw_html_article.rb:12
 msgid "Allows HTML without filter (only for admins)."
-msgstr "Para administradores - use com cautela!"
+msgstr "Permite HTML sem filtros (somente para administradores)."
 
 #: app/models/product_categories_block.rb:4
 msgid "Product category menu"
@@ -2014,8 +2005,8 @@ msgid ""
 "You need to login to %{system} in order to accept %{requestor} as your "
 "friend."
 msgstr ""
-"Você precisa entrar no %{system} para poder aceitar %{requestor} como "
-"seu(sua) amigo(a)."
+"Você precisa entrar no %{system} para poder aceitar %{requestor} como seu"
+"(sua) amigo(a)."
 
 #: app/models/add_friend.rb:36
 msgid "New friend"
@@ -2192,11 +2183,11 @@ msgstr "Nome da Cidade ou Estado inválidos."
 
 #: app/models/blog.rb:24
 msgid "A blog, inside which you can put other articles."
-msgstr "Um blog onde você pode postar conteúdos."
+msgstr "Um blog, dentro dele você pode colocar outros artigos."
 
 #: app/models/text_article.rb:9
 msgid "Article"
-msgstr "Artigo"
+msgstr "Artigos"
 
 #: app/models/ticket.rb:5
 msgid "Ticket"
@@ -2274,27 +2265,6 @@ msgstr "Tem certeza que quer visitar este web site?"
 #: app/helpers/catalog_helper.rb:18
 msgid "Start"
 msgstr "Início"
-
-#:
-msgid "order by"
-msgstr "ordenar por"
-
-#:
-msgid "Lowest price"
-msgstr "Menor preço"
-
-#:
-msgid "Newest"
-msgstr "Mais recentes"
-
-#:
-msgid "Last updated"
-msgstr "Últimas atualizações"
-
-#:
-msgid "repeat order"
-msgstr "repetir pedido"
-
 
 #: app/helpers/categories_helper.rb:4
 msgid "General Category"
@@ -2501,20 +2471,7 @@ msgstr "Conteúdos"
 msgid "Contents menu"
 msgstr "Menu de conteúdos"
 
-#: app/helpers/application_helper.rb
-msgid "All people"
-msgstr "Todas e todos"
-
-#: app/helpers/application_helper.rb
-msgid "All contents"
-msgstr "Todos os conteúdos"
-
-#: app/helpers/application_helper.rb
-msgid "All communities"
-msgstr "Todas as comunidades"
-
-#: app/helpers/application_helper.rb:1057
-#: app/helpers/application_helper.rb:1059
+#: app/helpers/application_helper.rb:1061
 msgid "people|More recent"
 msgstr "Mais recentes"
 
@@ -2716,12 +2673,12 @@ msgid ""
 "Are you sure that you want to remove the folder \"%s\"? Note that all the "
 "items inside it will also be removed!"
 msgstr ""
-"Tem certeza que quer excluir a pasta \"%s\"? Perceba que todos os itens dentro "
-"dela também serão removidos!"
+"Tem certeza que quer excluir a pasta \"%s\"? Perceba que todos os itens "
+"dentro dela também serão também removidos!"
 
 #: app/helpers/application_helper.rb:1296
 msgid "Are you sure that you want to remove the item \"%s\"?"
-msgstr "Tem certeza que quer excluir o ítem \"%s\"?"
+msgstr "Tem certeza que quer excluir este item?"
 
 #: app/helpers/application_helper.rb:1323
 msgid "Profile organization"
@@ -3645,10 +3602,6 @@ msgstr "Ciência Política"
 msgid "Accounting and Actuarial Science"
 msgstr "Ciências Contábeis e Atuariais"
 
-#: app/models/tiny_mce_article.rb:8
-msgid "Add a new text article."
-msgstr "Adicione um novo artigo de texto."
-
 #: app/helpers/profile_editor_helper.rb:20
 msgid "Morphologic Sciences"
 msgstr "Ciências Morfológicas"
@@ -3824,14 +3777,6 @@ msgstr "Petrologia"
 #: app/helpers/profile_editor_helper.rb:64
 msgid "Production"
 msgstr "Produção"
-
-#: app/models/textile_article.rb:4
-msgid "Text article for people with visual impairement"
-msgstr "Artigo para pessoas com deficiência visual"
-
-#: app/models/textile_article.rb:8
-msgid "Textile format."
-msgstr "Formato textile."
 
 #: app/helpers/profile_editor_helper.rb:65
 msgid "Psychology"
@@ -4418,7 +4363,7 @@ msgstr "\"%s\" foi removido."
 
 #: app/controllers/my_profile/cms_controller.rb:273
 msgid "Select some group to publish your article"
-msgstr "Selecione alguns grupos onde você quer publicar seu artigo"
+msgstr "Selecione os grupos onde você quer publicar seu artigo"
 
 #: app/controllers/my_profile/cms_controller.rb:284
 #: app/controllers/my_profile/cms_controller.rb:301
@@ -4684,7 +4629,7 @@ msgstr "<span class='or'>ou</span> <span class='signup'>%s</span>"
 
 #: app/views/layouts/_user.html.erb:18
 msgid "Sign up"
-msgstr "Criar conta"
+msgstr "Registre-se"
 
 #: app/views/layouts/_user.html.erb:24
 msgid "Press <strong>Enter</strong> to send the search query."
@@ -4737,11 +4682,6 @@ msgstr "Ir para o conteúdo"
 msgid "Manage Products/Services"
 msgstr "Gerenciar Produtos/Serviços"
 
-#: app/views/catalog/_product.html.erb
-msgid "By"
-msgstr "Por"
-
-
 #: app/views/catalog/index.html.erb:28
 msgid "Highlighted product"
 msgstr "Produto destacado"
@@ -4792,27 +4732,6 @@ msgstr "qualificadores"
 #: app/views/catalog/index.html.erb:119
 msgid "product unavailable"
 msgstr "produto indisponível"
-
-#: /app/views/catalog/_form.html.erb:119
-msgid "All categories"
-msgstr "Todas as categorias"
-
-#: /app/views/catalog/_form.html.erb:119
-msgid "All qualifiers"
-msgstr "Todos os qualificadores"
-
-#: /app/views/catalog/_form.html.erb:119
-msgid "type your search..."
-msgstr "buscar..."
-
-#: app/views/catalog/_results.html.erb:119
-msgid "<b>Total:</b> %{number} products"
-msgstr "<b>Total:</b> %{number} produtos"
-
-#: app/views/catalog/_results.html.erb:119
-msgid "Your search returned %{number} products"
-msgstr "Sua busca resultou em %{number} produtos"
-
 
 #: app/views/content_viewer/forum_page.html.erb:11
 #: app/views/content_viewer/blog_page.html.erb:21
@@ -5538,7 +5457,7 @@ msgstr "Mostrar este bloco:"
 
 #: app/views/box_organizer/edit.html.erb:22
 msgid "Display to users:"
-msgstr "Mostrar às(aos) usuárias(os):"
+msgstr "Mostrar aos usuários:"
 
 #: app/views/box_organizer/edit.html.erb:26
 msgid "Show for:"
@@ -5597,7 +5516,7 @@ msgstr "Como mostrar esse conteúdo:"
 #: app/views/shared/_lead_and_body.html.erb:17
 #: app/views/spam/_suggest_article.html.erb:13
 msgid "Lead"
-msgstr "Prévia (primeiras linhas do artigo)"
+msgstr "Prévia"
 
 #: app/views/box_organizer/_article_block.html.erb:27
 #: app/views/cms/_blog.html.erb:66
@@ -5883,10 +5802,6 @@ msgstr "Data de nascimento"
 msgid "Address (street and number)"
 msgstr "Endereço (rua e número)"
 
-#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:15
-msgid "Address completion"
-msgstr "Complemento (p.ex. apto)"
-
 #: app/views/profile_editor/_person_form.html.erb:58
 msgid "Custom formation"
 msgstr "Outra formação"
@@ -5910,7 +5825,8 @@ msgid ""
 "PNG format."
 msgstr ""
 "No cabeçalho, você pode incluir um banner personalizado primeiro adicionando "
-"em \"Gerenciar conteúdo\", e depois referenciando-o aqui."
+"em \"Gerenciar conteúdo\", e depois referenciando-o aqui. Um bom formato é "
+"468 x 60 pixels, formato PNG."
 
 #: app/views/profile_editor/header_footer.html.erb:12
 msgid "On footer, you can include a slogan and your contact information etc."
@@ -6978,8 +6894,8 @@ msgid "Remove member"
 msgstr "Remover membro"
 
 #: app/views/events/events.html.erb:1
-msgid "Events at %s"
-msgstr "Eventos em %s"
+msgid "%s's events"
+msgstr "Eventos de %s"
 
 #: app/views/events/events.html.erb:4
 msgid "Back to %s"
@@ -6993,11 +6909,7 @@ msgstr "Novo evento"
 msgid "Parent folder:"
 msgstr "Pasta superior:"
 
-#: app/views/cms/_general_fields.html.erb:1
-msgid "Publication date:"
-msgstr "Data de publicação:"
-
-#: app/views/cms/_general_fields.html.erb:2
+#: app/views/cms/_general_fields.html.erb:3
 msgid "License"
 msgstr "Licença"
 
@@ -7091,11 +7003,7 @@ msgstr "Apenas artigos filhos do mesmo artigo que o feed"
 msgid "My Blog"
 msgstr "Meu Blog"
 
-#: app/views/profile_editor/_organization.html.erb
-msgid "Internet Address (URL)"
-msgstr "Endereço na internet"
-
-#: app/views/profile_editor/_organization.rhtml:49
+#: app/views/cms/_blog.html.erb:42
 msgid ""
 "You are about to change the address, and this will break external links to "
 "this blog or to posts inside it. Do you really want to change?"
@@ -7840,7 +7748,7 @@ msgstr ""
 
 #: app/views/account/index_anonymous.html.erb:10
 msgid "Sign up."
-msgstr "Criar conta."
+msgstr "Registre-se."
 
 #: app/views/account/index_anonymous.html.erb:11
 msgid ""
@@ -8807,10 +8715,6 @@ msgstr "Insumos e matéria-prima"
 #: app/views/manage_products/show.html.erb:36
 msgid "Price composition"
 msgstr "Composição de preço"
-
-#: app/views/manage_products/show.html.erb:58
-msgid "Add product or service"
-msgstr "Adicionar produto ou serviço"
 
 #: app/views/manage_products/show.html.erb:58
 msgid "Remove product or service"
