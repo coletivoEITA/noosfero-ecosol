@@ -714,9 +714,13 @@ Array.min = function(array) {
 };
 
 function hideAndGetUrl(link) {
+  document.body.style.cursor = 'wait';
   link = jQuery(link)
   link.hide();
-  jQuery.getScript(link.attr('href'));
+  url = link.attr('href');
+  jQuery.getScript(link.attr('href') , function(){
+    document.body.style.cursor = 'default';
+  });
 }
 
 jQuery(function($){

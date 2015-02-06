@@ -5,7 +5,7 @@ class Profile
   # use for internationalizable human type names in search facets
   # reimplement on subclasses
   def self.type_name
-    _('Profile')
+    c_('Profile')
   end
 
   after_save_reindex [:articles], with: :delayed_job
@@ -117,13 +117,13 @@ class Profile
         proc: method(:solr_plugin_f_enabled_proc).to_proc
       },
       solr_plugin_f_region: {
-        label: _('City'), proc: method(:solr_plugin_f_region_proc).to_proc,
+        label: c_('City'), proc: method(:solr_plugin_f_region_proc).to_proc,
       },
       solr_plugin_f_categories: {
         multi: true, proc: method(:solr_plugin_f_categories_proc).to_proc, label: proc { |env| solr_plugin_f_categories_label_proc(env) }, label_abbrev: proc{ |env| solr_plugin_f_categories_label_abbrev_proc(env) },
       },
       solr_plugin_f_profile_type: {
-        label: _('Type'), proc: method(:solr_plugin_f_profile_type_proc).to_proc,
+        label: c_('Type'), proc: method(:solr_plugin_f_profile_type_proc).to_proc,
       },
     }, category_query: proc { |c| "solr_plugin_category_filter:#{c.id}" },
     order: [:solr_plugin_f_region, :solr_plugin_f_categories, :solr_plugin_f_enabled, :solr_plugin_f_profile_type]

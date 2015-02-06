@@ -108,8 +108,8 @@ class Profile < ActiveRecord::Base
     alias_method_chain :count, :distinct
   end
 
-  def members_by_role(role)
-    Person.members_of(self).all(:conditions => ['role_assignments.role_id = ?', role.id])
+  def members_by_role(roles)
+    Person.members_of(self).by_role(roles)
   end
 
   acts_as_having_boxes
@@ -912,6 +912,13 @@ private :generate_url, :url_options
   end
 
   def disable
+    self.visible = false
+    self.save
+  end
+
+  def enable
+    self.visible = true
+    self.save
   end
 
   def control_panel_settings_button

@@ -1,6 +1,6 @@
 class Block < ActiveRecord::Base
 
-  attr_accessible :title, :display, :limit, :box_id, :posts_per_page, :visualization_format, :language, :display_user, :box
+  attr_accessible :title, :display, :limit, :box_id, :posts_per_page, :visualization_format, :language, :display_user, :box, :fixed
 
   # to be able to generate HTML
   include ActionView::Helpers::UrlHelper
@@ -64,7 +64,7 @@ class Block < ActiveRecord::Base
   end
 
   def display_to_user?(user)
-    display_user == 'all' || (user.nil? && display_user == 'not_logged') || (user && display_user == 'logged')
+    display_user == 'all' || (user.nil? && display_user == 'not_logged') || (user && display_user == 'logged') || (user && display_user == 'followers' && user.follows?(owner))
   end
 
   def display_always(context)
@@ -75,7 +75,7 @@ class Block < ActiveRecord::Base
     if context[:article]
       return context[:article] == owner.home_page
     else
-      return context[:request_path] == '/'
+      return home_page_path?(context[:request_path])
     end
   end
 
@@ -83,7 +83,7 @@ class Block < ActiveRecord::Base
     if context[:article]
       return context[:article] != owner.home_page
     else
-      return context[:request_path] != '/' + (owner.kind_of?(Profile) ? owner.identifier : '')
+      return !home_page_path?(context[:request_path])
     end
   end
 
@@ -109,6 +109,9 @@ class Block < ActiveRecord::Base
   #
   # * <tt>'all'</tt>: the block is always displayed
   settings_items :language, :type => :string, :default => 'all'
+
+  # The block can be configured to be fixed. Only can be edited by environment admins
+  settings_items :fixed, :type => :boolean, :default => false
 
   # returns the description of the block, used when the user sees a list of
   # blocks to choose one to include in the design.
@@ -221,6 +224,7 @@ class Block < ActiveRecord::Base
       'all'            => _('All users'),
       'logged'         => _('Logged'),
       'not_logged'     => _('Not logged'),
+      'followers'      => owner.class != Environment && owner.organization? ? _('Members') : _('Friends')
     }
   end
 
@@ -237,6 +241,23 @@ class Block < ActiveRecord::Base
   def copy_from(block)
     self.settings = block.settings
     self.position = block.position
+  end
+
+  private
+
+  def home_page_path
+    home_page_url = Noosfero.root('/')
+
+    if owner.kind_of?(Profile)
+      home_page_url += "profile/" if owner.home_page.nil?
+      home_page_url += owner.identifier
+    end
+
+    return home_page_url
+  end
+
+  def home_page_path? path
+    return path == home_page_path || path == (home_page_path + '/')
   end
 
 end
