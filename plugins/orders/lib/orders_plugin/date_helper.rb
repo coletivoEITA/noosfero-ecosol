@@ -16,24 +16,10 @@ module OrdersPlugin::DateHelper
     labelled_field form, label, label, labelled_period_fields(form, start_field, end_field, options)
   end
 
-  def datetime_period start, finish
-    I18n.t('orders_plugin.lib.date_helper.start_to_finish') % {
-     start: start.to_time.strftime(I18n.t('orders_plugin.lib.date_helper.m_d_y_at_hh_m')),
-     finish: finish.to_time.strftime(I18n.t('orders_plugin.lib.date_helper.m_d_y_at_hh_m')),
-    }
-  end
-
   def datetime_period_with_from start, finish
     I18n.t('orders_plugin.lib.date_helper.from_start_to_finish') % {
-     start: start.to_time.strftime(I18n.t('orders_plugin.lib.date_helper.m_d_y_hh_m')),
-     finish: finish.to_time.strftime(I18n.t('orders_plugin.lib.date_helper.m_d_y_hh_m')),
-    }
-  end
-
-  def date_period start, finish
-    I18n.t('orders_plugin.lib.date_helper.start_finish') % {
-     start: start.to_time.strftime(I18n.t('orders_plugin.lib.date_helper.m_d')),
-     finish: finish.to_time.strftime(I18n.t('orders_plugin.lib.date_helper.m_d')),
+     start: start.strftime(I18n.t('orders_plugin.lib.date_helper.m_d_y_hh_m')),
+     finish: finish.strftime(I18n.t('orders_plugin.lib.date_helper.m_d_y_hh_m')),
     }
   end
 
