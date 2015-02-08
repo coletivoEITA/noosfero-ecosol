@@ -35,11 +35,16 @@ class Noosfero::Plugin
         exit 1
       end
 
-      available_plugins.each do |plugin_dir|
+      klasses = available_plugins.map do |plugin_dir|
         plugin_name = File.basename(plugin_dir)
-        plugin = load_plugin(plugin_name)
-        load_plugin_extensions(plugin_dir)
-        load_plugin_filters(plugin)
+        load_plugin plugin_name
+      end
+      available_plugins.each do |plugin_dir|
+        load_plugin_extensions plugin_dir
+      end
+      # filters must be loaded after all extensions
+      klasses.each do |plugin|
+        load_plugin_filters plugin
       end
     end
 
@@ -99,7 +104,7 @@ class Noosfero::Plugin
     # This is a generic method that initialize any possible filter defined by a
     # plugin to a specific controller
     def load_plugin_filters(plugin)
-      Rails.configuration.to_prepare do
+      ActionDispatch::Reloader.to_prepare do
         filters = plugin.new.send 'application_controller_filters' rescue []
         Noosfero::Plugin.add_controller_filters ApplicationController, plugin, filters
 
@@ -127,7 +132,7 @@ class Noosfero::Plugin
     end
 
     def load_plugin_extensions(dir)
-      Rails.configuration.to_prepare do
+      ActionDispatch::Reloader.to_prepare do
         Dir[File.join(dir, 'lib', 'ext', '*.rb')].each {|file| require_dependency file }
       end
     end
