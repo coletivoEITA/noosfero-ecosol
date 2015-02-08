@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+def run cmd
+  puts cmd
+  system cmd
+end
+
+GLOB_ALL = '**/*.erb'
+GLOB_HTML = '**/*.html.erb'
+GLOB = GLOB_HTML
+
+Dir.glob(GLOB).each do |erb|
+  if File.file? erb
+    run <<-CMD
+      html2haml --erb #{erb} | haml2slim | sed 's/ *\\\\$//g' > $(echo #{erb} | sed 's/erb/slim/') && rm #{erb}
+    CMD
+  elsif File.symlink? erb
+    run <<-CMD
+      mv #{erb} $(echo #{erb} | sed 's/erb/slim/')
+    CMD
+  end
+end
+
