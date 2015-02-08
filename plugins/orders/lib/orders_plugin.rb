@@ -1,6 +1,3 @@
-require_dependency "#{File.dirname __FILE__}/ext/profile"
-# extensions continue in the end
-
 class OrdersPlugin < Noosfero::Plugin
 
   def self.plugin_name
@@ -29,9 +26,6 @@ class OrdersPlugin < Noosfero::Plugin
   end
 
 end
-
-# these need OrdersPlugin class defined
-require "#{File.dirname __FILE__}/ext/product"
 
 # workaround for plugin class scope problem
 require_dependency 'orders_plugin/display_helper'
