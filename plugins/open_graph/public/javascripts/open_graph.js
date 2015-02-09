@@ -11,13 +11,13 @@ open_graph = {
         })
       },
 
-      toggle: function(checkbox) {
-        var panel = $(checkbox).parents('.panel')
+      toggle: function(context) {
+        var panel = $(context).parents('.panel')
         var panelBody = panel.find('.panel-body')
-        var checkboxes = panelBody.find('input[type=checkbox]')
+        var checkboxes = panel.find('input[type=checkbox]')
+        var open = !panelBody.hasClass('in')
 
-        checkboxes.prop('checked', checkbox.checked)
-        panelBody.toggle(checkbox.checked)
+        checkboxes.prop('checked', open)
       },
 
       toggleParent: function(context) {
@@ -34,10 +34,10 @@ open_graph = {
 
         parentCheckbox.prop('indeterminate', false)
         if (nChecked === 0) {
-          panelBody.hide()
+          panelBody.removeClass('in')
           parentCheckbox.prop('checked', false)
         } else {
-          panelBody.show()
+          panelBody.addClass('in')
           if (nChecked >= nTotal)
             parentCheckbox.prop('checked', true)
           else

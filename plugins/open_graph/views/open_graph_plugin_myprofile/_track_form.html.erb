@@ -1,24 +1,30 @@
 <%= form_for profile, as: :profile_data, remote: true, url: {action: :track_config},
   html: {id: 'track-config', data: {loading: '#track-config', update: '#track-form', type: 'html'}} do |f| %>
 
-    <% OpenGraphPlugin::TrackConfig::Types.each do |track, klass| %>
-      <div class="panel panel-primary">
-        <%
-          klass = "OpenGraphPlugin::#{klass}".constantize
-        %>
+  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+    <div class="panel panel-primary">
+      <% OpenGraphPlugin::TrackConfig::Types.each do |track, klass| %>
+        <div class="panel panel-primary">
+          <%
+            klass = "OpenGraphPlugin::#{klass}".constantize
+          %>
 
-        <div class="panel-heading">
-          <%= check_box_tag "config-#{track}", '1', true, onchange: 'open_graph.track.config.toggle(this)' %>
+          <div class="panel-heading">
+            <a href="#track-<%=track%>" data-toggle="collapse" data-parent="#accordion" aria-controls="collapseTwo" onclick='open_graph.track.config.toggle(this)'>
+              <%# check_box_tag "config-#{track}", '1', true, onchange: 'open_graph.track.config.toggle(this)' %>
+              <%= check_box_tag "config-#{track}", '1', true %>
+              <%= t("open_graph_plugin.views.track.config.#{track}.label") %>
+            </a>
+          </div>
 
-          <%= link_to t("open_graph_plugin.views.track.config.#{track}.label"), "#track-#{track}", data: {toggle: 'collapse', parent: '#track-config'} %>
+          <div id="track-<%=track%>" class="panel-body collapse">
+            <%= render "track_#{track}", f: f, track: track, klass: klass %>
+          </div>
+
         </div>
-
-        <div id="group-<%=track%>" class="panel-body collapse-in">
-          <%= render "track_#{track}", f: f, track: track, klass: klass %>
-        </div>
-
-      </div>
-    <% end %>
+      <% end %>
+    </div>
+  </div>
 
   <%= submit_button :save, _('Save') %>
 <% end %>
