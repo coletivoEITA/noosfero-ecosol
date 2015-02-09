@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "POT-Creation-Date: 2015-02-02 21:44-0300\n"
-"PO-Revision-Date: 2015-02-06 19:36-0300\n"
+"PO-Revision-Date: 2015-02-08 18:53-0300\n"
 "Last-Translator: Luciano Prestes Cavalcanti <lucianopcbr@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero/"
 "noosfero/pt/>\n"
@@ -64,6 +64,10 @@ msgstr "Frete grátis"
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:7
 msgid "Delivery"
 msgstr "Entrega"
+
+#: plugins/delivery/views/delivery_plugin/_order_select.html.slim
+msgid "Instructions"
+msgstr "Instruções"
 
 #: plugins/shopping_cart/lib/shopping_cart_plugin/cart_helper.rb:53
 msgid "Item name"
@@ -134,18 +138,15 @@ msgstr "Opção foi atualizada com sucesso."
 msgid "Option wasn't updated successfully."
 msgstr "Opção não foi atualizada com sucesso."
 
-#: plugins/shopping_cart/views/shopping_cart_plugin_profile/buy.html.erb:6
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:35
 #: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:5
 msgid "Name"
 msgstr ""
 
-#: plugins/shopping_cart/views/shopping_cart_plugin_profile/buy.html.erb:10
 #: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:13
-msgid "Delivery Address"
-msgstr "Endereço de Entrega"
+msgid "Delivery or pickup method"
+msgstr "Forma de entrega ou retirada"
 
-#: plugins/shopping_cart/views/shopping_cart_plugin_profile/buy.html.erb:16
 #: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:22
 msgid "Send buy request"
 msgstr "Enviar pedido de compra"
@@ -176,10 +177,9 @@ msgstr "Estado"
 msgid "E-mail"
 msgstr "E-mail"
 
-#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:35
-#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:8
-msgid "Delivery option"
-msgstr "Opção de entrega"
+#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:9
+msgid "Personal identification"
+msgstr "Identificação pessoal"
 
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:35
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:20

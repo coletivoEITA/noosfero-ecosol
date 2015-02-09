@@ -1,6 +1,29 @@
 
 delivery = {
 
+  order: {
+    select: {
+
+      onChange: function(input) {
+        var input = jQuery(input)
+        var type = input.find('option:selected').attr('data-type');
+        var isPickup = type == 'pickup'
+
+        var deliverySelect = input.parents('.order-delivery-select')
+        var instructions = deliverySelect.find('.instructions')
+        var consumerData = deliverySelect.find('.consumer-delivery-data')
+        if (type == 'pickup') {
+          instructions.slideDown('fast')
+          consumerData.slideUp('fast')
+        } else {
+          instructions.slideUp('fast')
+          consumerData.slideDown('fast')
+        }
+      },
+
+    },
+  },
+
   method: {
 
     view: {

@@ -1,10 +1,13 @@
-require 'pp'
+require_dependency 'delivery_plugin/display_helper'
 
 module ShoppingCartPlugin::CartHelper
 
   include ActionView::Helpers::NumberHelper
   include ActionView::Helpers::TagHelper
 
+  include DeliveryPlugin::DisplayHelper
+
+  # oh, we need a payments plugin!
   PaymentMethods = {
     money: proc{ _("Money") },
     check: proc{ s_('shopping_cart|Check') },
@@ -73,17 +76,6 @@ module ShoppingCartPlugin::CartHelper
     options = {:unit => environment.currency_unit, :separator => environment.currency_separator, :delimiter => environment.currency_delimiter, :precision => 2, :format => "%u%n"}
     options.merge! _options
     number_to_currency value, options
-  end
-
-  def supplier_delivery_options selected=nil
-    options = profile.delivery_methods.map do |method|
-      [method.id, method.name, float_to_currency_cart(method.fixed_cost, environment), method == selected]
-    end
-    options << [nil, _('Delivery'), float_to_currency_cart(0, environment), true] if options.empty?
-
-    options.map do |id, name, cost, selected|
-      content_tag :option, "#{name} (#{cost})", value: id, data: {label: name}, selected: if selected then 'selected' else nil end
-    end.join
   end
 
   def options_for_payment

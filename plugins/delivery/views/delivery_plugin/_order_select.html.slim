@@ -1,0 +1,23 @@
+- methods ||= profile.delivery_methods
+
+div.order-delivery-select
+
+  div.supplier_delivery_data
+    = labelled_form_field _('Option'),
+      f.select(:supplier_delivery_id, supplier_delivery_options(methods: methods), {}, 
+        onchange: 'delivery.order.select.onChange(this)', onkeyup: 'delivery.order.select.onChange(this)')
+    div.instructions
+      = labelled_form_field _('Instructions'), tag(:div, class: 'form-control')
+
+  div.consumer-delivery-data
+    = f.fields_for :consumer_delivery_data do |ff|
+      = labelled_form_field _('Address (street and number)'), ff.text_field(:address)
+      = labelled_form_field _('Address completion'), ff.text_field(:address_line2)
+      = labelled_form_field _('Address reference'), ff.text_field(:address_reference)
+      = labelled_form_field _('District'), ff.text_field(:district)
+      = labelled_form_field _('City'), ff.text_field(:city)
+      = labelled_form_field _('State'), ff.text_field(:state)
+      = labelled_form_field _('ZIP code'), ff.text_field(:zip_code)
+
+  = javascript_tag do
+    | delivery.order.select.onChange(jQuery('#order_supplier_delivery_id'))

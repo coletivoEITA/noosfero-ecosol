@@ -112,12 +112,12 @@ class ShoppingCartPluginController < OrdersPluginController
 
   def buy
     @customer = user || Person.new
-    if validate_cart_presence
-      @cart = cart
-      @profile = cart_profile
-      @settings = cart_profile.shopping_cart_settings
-      render :layout => false
-    end
+    return unless validate_cart_presence
+    @cart = cart
+    @profile = cart_profile
+    @order = profile.sales.build consumer: @consumer
+    @settings = cart_profile.shopping_cart_settings
+    render :layout => false
   end
 
   def send_request
@@ -285,29 +285,15 @@ class ShoppingCartPluginController < OrdersPluginController
 
     order = OrdersPlugin::Sale.new
     order.profile = environment.profiles.find(cart[:profile_id])
-    order.supplier_delivery = profile.delivery_methods.find params[:supplier_delivery_id]
+    order.supplier_delivery = profile.delivery_methods.find params[:order][:supplier_delivery_id]
     order.session_id = session_id unless user
     order.consumer = user
     order.source = 'shopping_cart_plugin'
     order.status = 'ordered'
     order.products_list = products_list
-    order.consumer_data = {
-      :name => params[:customer][:name], :email => params[:customer][:email], :contact_phone => params[:customer][:contact_phone],
-    }
-    order.payment_data = {
-      :method => params[:customer][:payment], :change => params[:customer][:change],
-    }
-    order.consumer_delivery_data = {
-      :name => order.supplier_delivery.name,
-      :description => order.supplier_delivery.name,
-      :address_line1 => params[:customer][:address],
-      :address_line2 => params[:customer][:address_line2],
-      :reference => params[:customer][:address_reference],
-      :district => params[:customer][:district],
-      :city => params[:customer][:city],
-      :state => params[:customer][:state],
-      :postal_code => params[:customer][:zip_code],
-    }
+    order.consumer_data = params[:order][:consumer_data]
+    order.payment_data = params[:order][:payment_data]
+    order.consumer_delivery_data = params[:order][:consumer_delivery_data]
     order.save!
   end
 
