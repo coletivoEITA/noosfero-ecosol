@@ -31,8 +31,8 @@ class OpenGraphPlugin::Publisher
       match_track = actor.open_graph_track_configs.where(object_type: defs[:object_type]).count > 0
       next unless match_track
 
-      if defs[:publish]
-        defs[:publish].call actor, object_data, self
+      if publish = defs[:publish]
+        publish.call actor, object_data, self
       else
         object_data_url = if object_data_url = defs[:object_data_url] then object_data_url.call(object_data) else object_data.url end
         object_data_url = self.url_for object_data_url
@@ -42,10 +42,10 @@ class OpenGraphPlugin::Publisher
             exclude_actor = actor
             trackers = OpenGraphPlugin::Track.profile_trackers object_data, exclude_actor
             trackers.each do |tracker|
-              publish on, tracker.tracker, defs, object_data_url
+              self.publish on, tracker.tracker, defs, object_data_url
             end
           else
-            publish on, actor, defs, object_data_url
+            self.publish on, actor, defs, object_data_url
           end
         rescue => e
           Delayed::Worker.logger.debug "can't publish story: #{e.message}"

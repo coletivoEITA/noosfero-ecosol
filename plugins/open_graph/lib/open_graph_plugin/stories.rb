@@ -56,7 +56,7 @@ class OpenGraphPlugin::Stories
       end,
       object_data_url: proc do |uploaded_file|
         uploaded_file.url.merge view: true
-      end
+      end,
     },
     add_an_image: {
       action: :add,
@@ -65,6 +65,9 @@ class OpenGraphPlugin::Stories
       on: :create,
       publish_if: proc do |uploaded_file|
         uploaded_file.image? and uploaded_file.parent.is_a? Gallery
+      end,
+      object_data_url: proc do |uploaded_file|
+        uploaded_file.url.merge view: true
       end,
     },
     add_a_sse_product: {
