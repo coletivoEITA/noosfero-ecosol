@@ -63,6 +63,7 @@ end
 # needed as removed from ruby 2.2
 gem 'test-unit'
 group :test do
+  gem 'test-unit' if RUBY_VERSION >= '2.2.0'
   gem 'rspec',                  '~> 2.10.0'
   gem 'rspec-rails',            '~> 2.10.1'
   gem 'mocha',                  '~> 1.1.0', require: false
