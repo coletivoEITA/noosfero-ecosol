@@ -9,7 +9,7 @@
       <%= ff.hidden_field :id %>
       <%= ff.hidden_field :tracker_id %>
       <%= ff.check_box :object_type, {onchange: 'open_graph.track.config.toggleParent(this)'}, object, '' %>
-      <%= ff.label t("open_graph_plugin.views.track.config.#{track}.objects.#{object}") %>
+      <%= ff.label :object_type, t("open_graph_plugin.views.track.config.#{track}.objects.#{object}") %>
     <% end %>
   </div>
 <% end %>

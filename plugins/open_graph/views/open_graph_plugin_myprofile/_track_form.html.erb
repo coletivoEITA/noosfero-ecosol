@@ -10,9 +10,8 @@
           %>
 
           <div class="panel-heading">
-            <a href="#track-<%=track%>" data-toggle="collapse" data-parent="#accordion" aria-controls="collapseTwo" onclick='open_graph.track.config.toggle(this)'>
-              <%# check_box_tag "config-#{track}", '1', true, onchange: 'open_graph.track.config.toggle(this)' %>
-              <%= check_box_tag "config-#{track}", '1', true %>
+            <a href="#track-<%=track%>" data-toggle="collapse" data-parent="#accordion" aria-controls="collapseTwo" onclick='open_graph.track.config.toggle(this, event)'>
+              <span class='config-check fa'></span>
               <%= t("open_graph_plugin.views.track.config.#{track}.label") %>
             </a>
           </div>

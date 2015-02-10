@@ -6,24 +6,31 @@ open_graph = {
     config: {
 
       init: function() {
-        jQuery('#track-form .panel-heading input[type=checkbox]').each(function(i, checkbox) {
-          open_graph.track.config.toggleParent(checkbox)
+        jQuery('#track-form .panel-heading').each(function(i, context) {
+          open_graph.track.config.toggleParent(context)
         })
       },
 
-      toggle: function(context) {
+      configToggle: function(config, open) {
+        config.toggleClass('fa-toggle-on', open)
+        config.toggleClass('fa-toggle-off', !open)
+      },
+
+      toggle: function(context, event) {
         var panel = $(context).parents('.panel')
         var panelBody = panel.find('.panel-body')
-        var checkboxes = panel.find('input[type=checkbox]')
+        var parentCheckbox = panel.find('.config-check')
+        var checkboxes = panelBody.find('input[type=checkbox]')
         var open = !panelBody.hasClass('in')
 
         checkboxes.prop('checked', open)
+        this.configToggle(parentCheckbox)
       },
 
       toggleParent: function(context) {
         var panel = $(context).parents('.panel')
         var panelBody = panel.find('.panel-body')
-        var parentCheckbox = panel.find('.panel-heading input[type=checkbox]')
+        var parentCheckbox = panel.find('.panel-heading .config-check')
         var checkboxes = panel.find('.panel-body input[type=checkbox]')
         var profilesInput = panel.find('.panel-body .select-profiles')
 
@@ -32,16 +39,12 @@ open_graph = {
         var nChecked = nObjects + nProfiles;
         var nTotal = checkboxes.length + nProfiles
 
-        parentCheckbox.prop('indeterminate', false)
         if (nChecked === 0) {
           panelBody.removeClass('in')
-          parentCheckbox.prop('checked', false)
+          this.configToggle(parentCheckbox, false)
         } else {
           panelBody.addClass('in')
-          if (nChecked >= nTotal)
-            parentCheckbox.prop('checked', true)
-          else
-            parentCheckbox.prop('indeterminate', true)
+          this.configToggle(parentCheckbox, false)
         }
       },
 
