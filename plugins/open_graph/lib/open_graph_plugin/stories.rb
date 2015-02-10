@@ -56,26 +56,26 @@ class OpenGraphPlugin::Stories
         uploaded_file.url.merge view: true
       end
     },
-    add_a_sse_product: {
-      action: :add,
-      object_type: :product,
-      on: :create,
-      models: :Product,
-    },
     add_an_image: {
       action: :add,
       object_type: :gallery_image,
+      models: :UploadedFile,
       on: :create,
-      models: :Image,
-      criteria: proc do |image|
-        image.parent.is_a? Gallery
+      criteria: proc do |uploaded_file|
+        uploaded_file.image? and uploaded_file.parent.is_a? Gallery
       end,
+    },
+    add_a_sse_product: {
+      action: :add,
+      object_type: :product,
+      models: :Product,
+      on: :create,
     },
     comment_a_discussion: {
       action: :comment,
       object_type: :forum,
-      on: :create,
       models: :Comment,
+      on: :create,
       criteria: proc do |comment|
         source, parent = comment.source, comment.source.parent
         source.is_a? Article and parent.is_a? Forum
@@ -87,8 +87,8 @@ class OpenGraphPlugin::Stories
     comment_an_article: {
       action: :comment,
       object_type: :blog_post,
-      on: :create,
       models: :Comment,
+      on: :create,
       criteria: proc do |comment|
         source, parent = comment.source, comment.source.parent
         source.is_a? Article and parent.is_a? Blog
@@ -100,8 +100,8 @@ class OpenGraphPlugin::Stories
     create_an_article: {
       action: :create,
       object_type: :blog_post,
-      on: :create,
       models: :Article,
+      on: :create,
       criteria: proc do |article|
         article.parent.is_a? Blog
       end,
@@ -112,8 +112,8 @@ class OpenGraphPlugin::Stories
     create_an_event: {
       action: :create,
       object_type: :event,
-      on: :create,
       models: :Event,
+      on: :create,
       publish_if: proc do |event|
         event.published?
       end,
@@ -121,8 +121,8 @@ class OpenGraphPlugin::Stories
     favorite_an_sse_enterprise: {
       action: :create,
       object_type: :favorite_enterprise_person,
-      on: :create,
       models: :FavoriteEnterprisePerson,
+      on: :create,
       publish: proc do |actor, fe, publisher|
         publish actor, actions[:favorite], objects[:enterprise], fe.enterprise.url
       end
@@ -130,8 +130,8 @@ class OpenGraphPlugin::Stories
     make_friendship_with: {
       action: :make_friendship,
       object_type: :friend,
-      on: :create,
       models: :Friendship,
+      on: :create,
       publish: proc do |actor, fs, publisher|
         publish fs.person, actions[:make_friendship], objects[:friend], publisher.url_for(fs.friend.url)
         publish fs.friend, actions[:make_friendship], objects[:friend], publisher.url_for(fs.person.url)
@@ -152,36 +152,36 @@ class OpenGraphPlugin::Stories
     update_a_sse_product: {
       action: :update,
       object_type: :product,
-      on: :update,
       models: :Product,
+      on: :update,
     },
     update_a_sse_enterprise: {
       action: :update,
       object_type: :enterprise,
-      on: :update,
       models: :Enterprise,
+      on: :update,
     },
 
     # PASSIVE STORIES
     announce_a_new_sse_product: {
       action: :announce_new,
       object_type: :product,
-      on: :create,
       models: :Product,
+      on: :create,
       tracker: true,
     },
     announce_an_update_of_sse_product: {
       action: :announce_update,
       object_type: :product,
-      on: :update,
       models: :Product,
+      on: :update,
       tracker: true,
     },
     announce_news_from_a_community: {
       action: :announce_update,
       object_type: :product,
-      on: [:create, :update],
       models: [:Article, :Image],
+      on: [:create, :update],
       tracker: true,
       criteria: proc do |article|
         article.profile.community?
