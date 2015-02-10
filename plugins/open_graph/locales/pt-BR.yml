@@ -19,7 +19,7 @@
               product: 'Produtos adicionados ou atualizados'
               forum: 'Novos tópicos de fórum'
               event: 'Novos eventos'
-              enterprise: 'Atualização de empreendimento de Economia Solidária que faço parte'
+              enterprise: 'Atualização de empreendimento de EcoSol que faço parte'
           enterprise:
             label: "Novidades em empreendimentos favoritos"
             search_placeholder: "digite o empreendimento"
