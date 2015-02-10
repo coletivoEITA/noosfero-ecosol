@@ -60,8 +60,6 @@ group :production do
   gem 'rack-cache'
 end
 
-# needed as removed from ruby 2.2
-gem 'test-unit'
 group :test do
   gem 'test-unit' if RUBY_VERSION >= '2.2.0'
   gem 'rspec',                  '~> 2.10.0'
