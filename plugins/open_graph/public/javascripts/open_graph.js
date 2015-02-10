@@ -44,7 +44,7 @@ open_graph = {
           this.configToggle(parentCheckbox, false)
         } else {
           panelBody.addClass('in')
-          this.configToggle(parentCheckbox, false)
+          this.configToggle(parentCheckbox, true)
         }
       },
 
