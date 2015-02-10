@@ -1,6 +1,11 @@
 #track-form a,
 #track-form a:visited {
   color: #fff;
+  display: block;
+  text-decoration: none;
+}
+#track-form a:hover {
+  text-decoration: underline;
 }
 #track-config .panel-heading {
   padding-left: 36px;
