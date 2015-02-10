@@ -20,12 +20,18 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
   end
 
   def publish on, actor, story_defs, object_data_url
+    debug = FbAppPlugin.test_user? actor
+
     auth = actor.fb_app_auth
     return if auth.blank? or auth.expired?
+
+    Delayed::Worker.logger.debug "fb_app: Auth found and valid" if debug
 
     action = self.actions[story_defs[:action]]
     object_type = self.objects[story_defs[:object_type]]
     raise "Invalid action or object. Story: #{story_defs.inspect}; actions: #{self.actions.inspect}; object: #{self.objects.inspect}" if action.blank? or object_type.blank?
+
+    Delayed::Worker.logger.debug "fb_app: action #{action}, object_type #{object_type}" if debug
 
     # always update the object to expire facebook cache
     scrape object_data_url unless on == :create
@@ -34,6 +40,8 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
     activity = OpenGraphPlugin::Activity.where(activity_params).first
     # only scrape recent objects to avoid multiple publications
     return if activity and activity.created_at <= (Time.now + UpdateDelay)
+
+    Delayed::Worker.logger.debug "fb_app: no recent publication found, making new" if debug
 
     namespace = FbAppPlugin.open_graph_config[:namespace]
     params = {object_type => object_data_url}
