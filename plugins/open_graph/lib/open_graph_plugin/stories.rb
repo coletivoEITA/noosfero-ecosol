@@ -50,6 +50,8 @@ class OpenGraphPlugin::Stories
       models: :UploadedFile,
       on: :create,
       publish_if: proc do |uploaded_file|
+        # done in add_an_image
+        return false if uploaded_file.image? and uploaded_file.parent.is_a? Gallery
         uploaded_file.published?
       end,
       object_data_url: proc do |uploaded_file|
@@ -61,7 +63,7 @@ class OpenGraphPlugin::Stories
       object_type: :gallery_image,
       models: :UploadedFile,
       on: :create,
-      criteria: proc do |uploaded_file|
+      publish_if: proc do |uploaded_file|
         uploaded_file.image? and uploaded_file.parent.is_a? Gallery
       end,
     },

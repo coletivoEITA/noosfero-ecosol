@@ -23,9 +23,9 @@ class OpenGraphPlugin::Publisher
     stories.each do |story|
       defs = OpenGraphPlugin::Stories::Definitions[story]
 
-      match_criteria = if defs[:criteria] then defs[:criteria].call(object_data) else true end
+      match_criteria = if criteria = defs[:criteria] then criteria.call(object_data) else true end
       next unless match_criteria
-      match_condition = if defs[:publish_if] then defs[:publish_if].call(object_data) else true end
+      match_condition = if publish_if = defs[:publish_if] then publish_if.call(object_data) else true end
       next unless match_condition
       # HANDLE passive stories
       match_track = actor.open_graph_track_configs.where(object_type: defs[:object_type]).count > 0
@@ -34,17 +34,22 @@ class OpenGraphPlugin::Publisher
       if defs[:publish]
         defs[:publish].call actor, object_data, self
       else
-        object_data_url = if defs[:object_data_url] then defs[:object_data_url].call(object_data) else object_data.url end
+        object_data_url = if object_data_url = defs[:object_data_url] then object_data_url.call(object_data) else object_data.url end
         object_data_url = self.url_for object_data_url
 
-        if defs[:tracker]
-          exclude_actor = actor
-          trackers = OpenGraphPlugin::Track.profile_trackers object_data, exclude_actor
-          trackers.each do |tracker|
-            publish on, tracker.tracker, defs, object_data_url
+        begin
+          if defs[:tracker]
+            exclude_actor = actor
+            trackers = OpenGraphPlugin::Track.profile_trackers object_data, exclude_actor
+            trackers.each do |tracker|
+              publish on, tracker.tracker, defs, object_data_url
+            end
+          else
+            publish on, actor, defs, object_data_url
           end
-        else
-          publish on, actor, defs, object_data_url
+        rescue => e
+          Delayed::Worker.logger.debug "can't publish story: #{e.message}"
+          # continue to other stories
         end
       end
     end

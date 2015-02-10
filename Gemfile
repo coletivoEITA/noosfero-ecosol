@@ -79,6 +79,7 @@ end
 
 group :development do
   #gem 'byebug'
+  #gem 'method_source'
 end
 
 # include gemfiles from enabled plugins
