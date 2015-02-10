@@ -10,25 +10,25 @@
       track:
         config:
           activity:
-            label: 'As minhas atividades: novas fotos em meus albuns, postagens em blogs e outros conteúdos'
+            label: 'Postar minhas atividades do cirandas no meu facebook'
             objects:
-              blog_post: 'Postagens nos blogs'
+              blog_post: 'Postagens em blogs'
               friendship: 'Novas amizades'
               gallery_image: 'Novas imagens nos meus albuns'
-              uploaded_file: 'Arquivos enviados'
+              uploaded_file: 'Novos documentos enviados'
               product: 'Produtos adicionados ou atualizados'
-              forum: 'Tópico de fórum postado'
-              event: 'Criação de eventos'
-              enterprise: 'Alterações em Empreendimentos de Economia Solidária'
+              forum: 'Novos tópicos de fórum'
+              event: 'Novos eventos'
+              enterprise: 'Atualização de empreendimento de Economia Solidária que faço parte'
           enterprise:
-            label: "Novidades dos empreendimentos dos quais sou integrante: quando um produto é alterado ou cadastrado, quando uma página é alterada, etc"
-            search_placeholder: "digite para encontrar empreendimentos"
+            label: "Novidades em empreendimentos favoritos"
+            search_placeholder: "digite o empreendimento"
           friend:
-            label: "Amigos"
-            search_placeholder: "digite para encontrar amigos"
+            label: "Novidades de amigos"
+            search_placeholder: "digite a/o amiga/o"
           community:
-            label: "Comunidades"
-            search_placeholder: "digite para encontrar comunidades"
+            label: "Novidades de minhas comunidades favoritas"
+            search_placeholder: "digite a comunidade"
 
 'pt_BR':
   <<: *pt-BR
