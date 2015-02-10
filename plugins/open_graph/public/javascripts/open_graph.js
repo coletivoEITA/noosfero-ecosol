@@ -24,7 +24,7 @@ open_graph = {
         var open = !panelBody.hasClass('in')
 
         checkboxes.prop('checked', open)
-        this.configToggle(parentCheckbox)
+        this.configToggle(parentCheckbox, open)
       },
 
       toggleParent: function(context) {
