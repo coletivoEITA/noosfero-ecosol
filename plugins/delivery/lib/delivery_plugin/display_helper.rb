@@ -6,11 +6,11 @@ module DeliveryPlugin::DisplayHelper
     methods = options[:methods] || profile.delivery_methods
 
     options = methods.map do |method|
-      cost = if method.fixed_cost.present? then float_to_currency_cart(method.fixed_cost, environment) else nil end
+      cost = if method.fixed_cost.present? and method.fixed_cost > 0 then float_to_currency_cart(method.fixed_cost, environment) else nil end
       text = if cost.present? then "#{method.name} (#{cost})" else method.name end
 
       content_tag :option, text, value: method.id,
-        data: {label: method.name, type: method.delivery_type},
+        data: {label: method.name, type: method.delivery_type, instructions: method.description},
         selected: if method == selected then 'selected' else nil end
     end.join
   end

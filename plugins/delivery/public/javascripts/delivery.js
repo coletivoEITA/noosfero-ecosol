@@ -6,13 +6,18 @@ delivery = {
 
       onChange: function(input) {
         var input = jQuery(input)
-        var type = input.find('option:selected').attr('data-type');
-        var isPickup = type == 'pickup'
-
         var deliverySelect = input.parents('.order-delivery-select')
+
+        var option = input.find('option:selected')
+        var typeData = option.attr('data-type')
+        var isPickup = typeData == 'pickup'
+        var instructionsData = option.attr('data-instructions')
+        var labelData = option.attr('data-label')
+
         var instructions = deliverySelect.find('.instructions')
+        instructions.html(instructionsData)
         var consumerData = deliverySelect.find('.consumer-delivery-data')
-        if (type == 'pickup') {
+        if (isPickup) {
           instructions.slideDown('fast')
           consumerData.slideUp('fast')
         } else {

@@ -7,7 +7,6 @@ div.order-delivery-select
       f.select(:supplier_delivery_id, supplier_delivery_options(methods: methods), {}, 
         onchange: 'delivery.order.select.onChange(this)', onkeyup: 'delivery.order.select.onChange(this)')
     div.instructions
-      = labelled_form_field _('Instructions'), tag(:div, class: 'form-control')
 
   div.consumer-delivery-data
     = f.fields_for :consumer_delivery_data do |ff|
