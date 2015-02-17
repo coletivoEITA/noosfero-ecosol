@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150113184049) do
+ActiveRecord::Schema.define(:version => 20150216213259) do
 
   create_table "abuse_reports", :force => true do |t|
     t.integer  "reporter_id"
@@ -871,7 +871,34 @@ ActiveRecord::Schema.define(:version => 20150113184049) do
 
   add_index "products", ["created_at"], :name => "index_products_on_created_at"
   add_index "products", ["product_category_id"], :name => "index_products_on_product_category_id"
-  add_index "products", ["profile_id"], :name => "index_products_on_enterprise_id"
+  add_index "products", ["profile_id"], :name => "index_products_on_profile_id"
+
+  create_table "profile_activities", :force => true do |t|
+    t.integer  "profile_id"
+    t.integer  "activity_id"
+    t.string   "activity_type"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "profile_activities", ["activity_id", "activity_type"], :name => "index_profile_activities_on_activity_id_and_activity_type"
+  add_index "profile_activities", ["activity_type"], :name => "index_profile_activities_on_activity_type"
+  add_index "profile_activities", ["profile_id"], :name => "index_profile_activities_on_profile_id"
+
+  create_table "profile_suggestions", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "suggestion_id"
+    t.string   "suggestion_type"
+    t.text     "categories"
+    t.boolean  "enabled",         :default => true
+    t.float    "score",           :default => 0.0
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+  end
+
+  add_index "profile_suggestions", ["person_id"], :name => "index_profile_suggestions_on_person_id"
+  add_index "profile_suggestions", ["score"], :name => "index_profile_suggestions_on_score"
+  add_index "profile_suggestions", ["suggestion_id"], :name => "index_profile_suggestions_on_suggestion_id"
 
   create_table "profiles", :force => true do |t|
     t.string   "name"

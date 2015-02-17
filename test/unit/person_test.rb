@@ -1218,7 +1218,7 @@ class PersonTest < ActiveSupport::TestCase
     UserStampSweeper.any_instance.expects(:current_user).returns(person).at_least_once
     article = create(TinyMceArticle, :profile => person, :name => 'An article about free software')
 
-    assert_equivalent [scrap,article.activity], person.activities.map { |a| a.klass.constantize.find(a.id) }
+    assert_equivalent [scrap,article.activity], person.activities.map { |a| a.activity }
   end
 
   should 'not return tracked_actions and scraps from others as activities' do
@@ -1237,7 +1237,7 @@ class PersonTest < ActiveSupport::TestCase
     create(TinyMceArticle, :profile => person, :name => 'An article about free software')
     person_activity = ActionTracker::Record.last
 
-    assert_equivalent [person_scrap,person_activity], person.activities.map { |a| a.klass.constantize.find(a.id) }
+    assert_equivalent [person_scrap,person_activity], person.activities.map { |a| a.activity }
   end
 
   should 'allow plugins to extend person\'s permission access' do
