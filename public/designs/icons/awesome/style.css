@@ -171,7 +171,7 @@
 .fa-envelope-o:before, .icon-menu-mail:before {
   content: ""; }
 
-.fa-heart:before {
+.fa-heart:before, .icon-love:before {
   content: ""; }
 
 .fa-star:before {
