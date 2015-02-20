@@ -56,8 +56,6 @@ class Person < Profile
 
   has_many :scraps_sent, :class_name => 'Scrap', :foreign_key => :sender_id, :dependent => :destroy
 
-  has_and_belongs_to_many :fans, :class_name => 'Enterprise', :join_table => 'favorite_enteprises_people'
-
   has_and_belongs_to_many :acepted_forums, :class_name => 'Forum', :join_table => 'terms_forum_people'
   has_and_belongs_to_many :articles_with_access, :class_name => 'Article', :join_table => 'article_privacy_exceptions'
 

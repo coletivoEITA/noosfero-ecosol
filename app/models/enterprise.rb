@@ -12,8 +12,6 @@ class Enterprise < Organization
 
   N_('Enterprise')
 
-  acts_as_trackable after_add: proc{ |p, t| notify_activity t }
-
   has_many :products, :foreign_key => :profile_id, :dependent => :destroy
   has_many :product_categories, :through => :products
   has_many :inputs, :through => :products
@@ -197,10 +195,6 @@ class Enterprise < Organization
 
   def more_recent_label
     ''
-  end
-
-  def self.notify_activity(tracked_action)
-    Delayed::Job.enqueue NotifyActivityToProfilesJob.new(tracked_action.id)
   end
 
 end
