@@ -1,5 +1,5 @@
 = form_for delivery_method, as: :delivery_method,
-  url: {controller: 'delivery_plugin/admin_method', action: delivery_method.new_record? ? :new : :edit, id: delivery_method.id},
+  url: {controller: delivery_context, action: delivery_method.new_record? ? :new : :edit, id: delivery_method.id},
   html: {onsubmit: 'return delivery.method.save(this)'} do |f|
   = error_messages_for :delivery_method
   = labelled_field f, :delivery_type, t('delivery_plugin.models.method.delivery_type'),

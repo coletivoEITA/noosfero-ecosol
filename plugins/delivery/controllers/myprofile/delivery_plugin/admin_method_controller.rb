@@ -1,8 +1,11 @@
+require_dependency 'delivery_plugin/display_helper'
+
 class DeliveryPlugin::AdminMethodController < MyProfileController
 
   protect 'edit_profile', :profile
 
   helper OrdersPlugin::FieldHelper
+  helper DeliveryPlugin::DisplayHelper
 
   def new
     @delivery_method = profile.delivery_methods.build
@@ -24,5 +27,6 @@ class DeliveryPlugin::AdminMethodController < MyProfileController
     render nothing: true
   end
 
+  protected
 
 end

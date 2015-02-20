@@ -1,4 +1,3 @@
-
 module DeliveryPlugin::DisplayHelper
 
   def supplier_delivery_options options = {}
@@ -13,6 +12,10 @@ module DeliveryPlugin::DisplayHelper
         data: {label: method.name, type: method.delivery_type, instructions: method.description},
         selected: if method == selected then 'selected' else nil end
     end.join
+  end
+
+  def delivery_context
+    @delivery_context || 'delivery_plugin/admin_method'
   end
 
 end

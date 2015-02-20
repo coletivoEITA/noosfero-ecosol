@@ -18,8 +18,9 @@
         instructions_help: "Dê instruções aos(às) consumidores(as) para a entrega. Inclua o endereço e quaisquer recomendações que você achar úteis. Este texto estará disponível na página do pedido e, ao confirmar uma compra, a pessoa receberá uma cópia dela."
     views:
       delivery_option: 
+        select: 
+          add: "Adicionar selecionados"
         _select_content: 
-          add: Adicionar
           add_new: "adicionar novo"
           are_you_sure_you_want: "Tem certeza de que quer remover este método?"
           cancel: Cancelar

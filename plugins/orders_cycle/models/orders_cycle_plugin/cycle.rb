@@ -9,22 +9,22 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   DbStatuses = %w[new] + Statuses
   UserStatuses = Statuses
 
-  StatusActorMap = ActiveSupport::OrderedHash[
-    'edition', :supplier,
-    'orders', :supplier,
-    'purchases', :consumer,
-    'receipts', :consumer,
-    'separation', :supplier,
-    'delivery', :supplier,
-    'closing', :supplier,
-  ]
-  OrderStatusMap = ActiveSupport::OrderedHash[
-    'orders', :ordered,
-    'purchases', :draft,
-    'receipts', :ordered,
-    'separation', :accepted,
-    'delivery', :separated,
-  ]
+  StatusActorMap = {
+    'edition' => :supplier,
+    'orders' => :supplier,
+    'purchases' => :consumer,
+    'receipts' => :consumer,
+    'separation' => :supplier,
+    'delivery' => :supplier,
+    'closing' => :supplier,
+  }
+  OrderStatusMap = {
+    'orders' => :ordered,
+    'purchases' => :draft,
+    'receipts' => :ordered,
+    'separation' => :accepted,
+    'delivery' => :separated,
+  }
 
   belongs_to :profile
 

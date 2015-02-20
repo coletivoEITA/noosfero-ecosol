@@ -18,8 +18,9 @@
         instructions_help: "Give the consumer instructions for the delivery, include the address and any recommendations you find useful. This text will be available on the page of the order, and by confirming the order the person will receive a copy of the order."
     views:
       delivery_option: 
+        select: 
+          add: Add selected
         _select_content: 
-          add: Add
           add_new: "add new"
           are_you_sure_you_want: "Are you sure you want to delete this method?"
           cancel: cancel

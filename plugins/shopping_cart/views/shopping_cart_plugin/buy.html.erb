@@ -11,9 +11,9 @@
       <legend><%=_('Personal identification')%></legend>
 
       <%= f.fields_for :consumer_data, @order.consumer do |ff| %>
-        <%= labelled_form_field('* ' + _("Name"), ff.text_field(:name, class: 'required') ) %>
-        <%= labelled_form_field('* ' +  _("Email"), ff.text_field(:email, class: 'required email') ) %>
-        <%= labelled_form_field('* ' +  _("Contact phone"), ff.text_field(:contact_phone, class: 'required') ) %>
+        <%= labelled_form_field('* ' + _("Name"), ff.text_field(:name, value: (user.name if user), class: 'required') ) %>
+        <%= labelled_form_field('* ' +  _("Email"), ff.text_field(:email, value: (user.email if user), class: 'required email') ) %>
+        <%= labelled_form_field('* ' +  _("Contact phone"), ff.text_field(:contact_phone, value: (user.contact_phone if user), class: 'required') ) %>
       <% end %>
     </fieldset>
 
@@ -21,8 +21,8 @@
       <legend><%=_('Payment')%></legend>
 
       <%= f.fields_for :payment_data do |ff| %>
-        <%= labelled_form_field _('Payment'), select_tag('customer[payment]', options_for_payment) %>
-        <%= labelled_form_field(s_('shopping_cart|Change'), text_field_tag('customer[change]')) %>
+        <%= labelled_form_field _('Payment'), ff.select(:method, options_for_payment) %>
+        <%= labelled_form_field(s_('shopping_cart|Change'), ff.text_field(:change)) %>
       <% end %>
     </fieldset>
 

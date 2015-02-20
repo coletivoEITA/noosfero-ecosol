@@ -29,6 +29,9 @@ delivery = {
     },
   },
 
+  option: {
+  },
+
   method: {
 
     view: {

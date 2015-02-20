@@ -59,7 +59,7 @@ module ShoppingCartPlugin::CartHelper
   end
 
   def build_order items, delivery_method = nil
-    @order = profile.sales.build
+    @order = @profile.sales.build
     items.each do |product_id, quantity|
       @order.items.build product_id: product_id, quantity_consumer_ordered: quantity
     end

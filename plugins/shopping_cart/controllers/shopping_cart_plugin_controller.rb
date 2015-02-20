@@ -121,19 +121,17 @@ class ShoppingCartPluginController < OrdersPluginController
   end
 
   def send_request
-    register_order(params[:customer], self.cart[:items])
+    order = register_order(params[:customer], self.cart[:items])
     begin
-      profile = cart_profile
-      supplier_delivery = profile.delivery_methods.find params[:supplier_delivery_id]
-      ShoppingCartPlugin::Mailer.customer_notification(params[:customer], profile, self.cart[:items], supplier_delivery).deliver
-      ShoppingCartPlugin::Mailer.supplier_notification(params[:customer], profile, self.cart[:items], supplier_delivery).deliver
+      ShoppingCartPlugin::Mailer.customer_notification(order, self.cart[:items]).deliver
+      ShoppingCartPlugin::Mailer.supplier_notification(order, self.cart[:items]).deliver
       self.cart = nil
       render :text => {
         :ok => true,
         :message => _('Your order has been sent successfully! You will receive a confirmation e-mail shortly.'),
         :error => {:code => 0}
       }.to_json
-    rescue ActiveRecord::ActiveRecordError
+    rescue ActiveRecord::ActiveRecordError => exception
       render :text => {
         :ok => false,
         :error => {
@@ -188,7 +186,7 @@ class ShoppingCartPluginController < OrdersPluginController
 
   def update_supplier_delivery
     profile = cart_profile
-    supplier_delivery = profile.delivery_methods.find params[:supplier_delivery_id]
+    supplier_delivery = profile.delivery_methods.find params[:order][:supplier_delivery_id]
     order = build_order self.cart[:items], supplier_delivery
     total_price = order.total_price
     render :text => {
@@ -295,6 +293,8 @@ class ShoppingCartPluginController < OrdersPluginController
     order.payment_data = params[:order][:payment_data]
     order.consumer_delivery_data = params[:order][:consumer_delivery_data]
     order.save!
+
+    order
   end
 
   # must be public

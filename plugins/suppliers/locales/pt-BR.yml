@@ -457,7 +457,8 @@
           district: "Bairro"
           city: "Cidade" 
           state: "Estado"
-          postal_code: "Código postal"
+          postal_code: "CEP"
+          zip_code: "Código postal"
         payment_data:
           method: "Método"
           change: "Troco"

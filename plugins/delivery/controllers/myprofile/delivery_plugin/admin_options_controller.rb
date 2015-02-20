@@ -1,18 +1,16 @@
-class DeliveryPlugin::AdminOptionsController < MyProfileController
+class DeliveryPlugin::AdminOptionsController < DeliveryPlugin::AdminMethodController
 
-  no_design_blocks
-
-  before_filter :load_methods
-  before_filter :load_owner
   protect 'edit_profile', :profile
-
-  helper OrdersPlugin::FieldHelper
+  before_filter :load_context
 
   def select
   end
 
   def new
-    ids = params[:delivery_methods]
+    ids = params[:method_ids]
+    return super unless ids.present?
+
+    load_owner
     dms = profile.delivery_methods.find ids
     (dms - @owner.delivery_methods).each do |dm|
       DeliveryPlugin::Option.create! owner_id: @owner.id, owner_type: @owner.class.name, delivery_method: dm
@@ -26,15 +24,14 @@ class DeliveryPlugin::AdminOptionsController < MyProfileController
 
   protected
 
-  def load_methods
-    @delivery_methods = profile.delivery_methods
-    @delivery_method = profile.delivery_methods.build
-  end
-
   def load_owner
     @owner_id = params[:owner_id]
     @owner_type = params[:owner_type]
     @owner = @owner_type.constantize.find @owner_id
+  end
+
+  def load_context
+    @delivery_context = 'delivery_plugin/admin_options'
   end
 
 end
