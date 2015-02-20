@@ -297,3 +297,7 @@ $fa-font-path: "fonts";
 .icon-menu-ctrl-panel:before {
   @extend .fa-sliders:before;
 }
+
+.icon-love:before {
+  @extend .fa-heart:before;
+}
