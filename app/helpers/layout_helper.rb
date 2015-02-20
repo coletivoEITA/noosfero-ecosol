@@ -54,7 +54,7 @@ module LayoutHelper
     icon_themes = []
     theme_icon_themes = theme_option(:icon_theme) || []
     for icon_theme in theme_icon_themes do
-      theme_path = "/designs/icons/#{icon_theme}/style.css"
+      theme_path = "designs/icons/#{icon_theme}/style.css"
       if File.exists?(Rails.root.join('public', theme_path))
         icon_themes << theme_path
       end

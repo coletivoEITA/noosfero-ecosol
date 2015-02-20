@@ -102,7 +102,7 @@ module Noosfero
       Dir.glob("app/assets/plugins/*/{,stylesheets,javascripts}") +
       Dir.glob("app/assets/{,stylesheets,javascripts}") +
       # no precedence over core
-      Dir.glob("app/assets/designs/{themes,user_themes}/*")
+      Dir.glob("app/assets/designs/{icons,themes,user_themes}/*")
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
