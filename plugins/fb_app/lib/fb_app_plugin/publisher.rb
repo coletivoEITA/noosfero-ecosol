@@ -19,7 +19,7 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
     Net::HTTP.get URI.parse(url)
   end
 
-  def publish on, actor, story_defs, object_data_url
+  def publish actor, story_defs, object_data_url
     debug = FbAppPlugin.test_user? actor
 
     auth = actor.fb_app_auth
@@ -34,7 +34,7 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
     Delayed::Worker.logger.debug "fb_app: action #{action}, object_type #{object_type}" if debug
 
     # always update the object to expire facebook cache
-    scrape object_data_url unless on == :create
+    scrape object_data_url
 
     activity_params = {actor_id: actor.id, action: action, object_type: object_type, object_data_url: object_data_url}
     activity = OpenGraphPlugin::Activity.where(activity_params).first

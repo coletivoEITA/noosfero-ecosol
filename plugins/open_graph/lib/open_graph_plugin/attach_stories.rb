@@ -1,5 +1,6 @@
 require_dependency 'open_graph_plugin/stories'
 
+# DEPRECATED: all hooks are directly attached to ProfileActivity
 module OpenGraphPlugin::AttachStories
 
   module ClassMethods
@@ -20,19 +21,8 @@ module OpenGraphPlugin::AttachStories
           self.send "after_commit", method, on: on
         end
 
-        #puts klass
-        #puts method
-        #puts stories
-
         self.send :define_method, method do
-          actor = User.current.person rescue nil
-          return unless actor
-
-          klass = OpenGraphPlugin::Stories
-          # on development, crash on errors
-          klass = klass.delay unless Rails.env.development?
-
-          klass.publish self, on, actor, stories
+          OpenGraphPlugin::Stories.publish self, stories
         end
       end
     end
