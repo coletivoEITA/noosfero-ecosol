@@ -4,7 +4,7 @@ class Article
 
   Metadata = {
     'og:type' => MetadataPlugin.og_types[:article],
-    'og:url' => proc{ |a, c| c.og_url_for a.url },
+    'og:url' => proc{ |a, c| c.og_url_for a.url.merge(profile: a.profile.identifier) },
     'og:title' => proc{ |a, c| a.title },
     'og:image' => proc do |a, c|
         result = a.body_images_paths

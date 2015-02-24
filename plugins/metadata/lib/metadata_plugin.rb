@@ -38,7 +38,7 @@ class MetadataPlugin < Noosfero::Plugin
         Array(contents).map do |content|
           content = content.call(object, plugin) rescue nil if content.is_a? Proc
           next if content.blank?
-          tag 'meta', property: property, content: content
+          tag 'meta', property: property, content: CGI.escape_html(content)
         end.join
       end.join
     end
