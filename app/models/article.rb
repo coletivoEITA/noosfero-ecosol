@@ -694,6 +694,7 @@ class Article < ActiveRecord::Base
   	c = a.split.join(' ')
   	b = (b == c) ? b : b + " ..."
   	b = automatic_abstract_img + b
+    b.squish
   end
 
   def lead
