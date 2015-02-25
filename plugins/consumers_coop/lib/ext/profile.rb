@@ -1,6 +1,6 @@
 require_dependency 'profile'
 
-# subclass problem on development and production
+# attr_accessible must be defined on subclasses
 Profile.descendants.each do |subclass|
   subclass.class_eval do
     attr_accessible :consumers_coop_settings
@@ -10,19 +10,12 @@ end
 
 class Profile
 
-  attr_accessible :consumers_coop_settings
-  attr_accessible :consumers_coop_header_image_builder
-
   has_many :offered_products, :class_name => 'OrdersCyclePlugin::OfferedProduct', :dependent => :destroy, :order => 'products.name ASC'
 
-  def consumers_coop_settings
-    @consumers_coop_settings ||= Noosfero::Plugin::Settings.new self, ConsumersCoopPlugin
+  def consumers_coop_settings attrs = {}
+    @consumers_coop_settings ||= Noosfero::Plugin::Settings.new self, ConsumersCoopPlugin, attrs
   end
-  def consumers_coop_settings= hash
-    hash.each do |attr, value|
-      self.consumers_coop_settings.send "#{attr}=", value
-    end
-  end
+  alias_method :consumers_coop_settings=, :consumers_coop_settings
 
   # belongs_to only works with real attributes :(
   def consumers_coop_header_image

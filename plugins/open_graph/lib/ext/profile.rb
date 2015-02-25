@@ -1,8 +1,10 @@
 require_dependency 'profile'
 
-# subclass problem on development and production
+# attr_accessible must be defined on subclasses
 Profile.descendants.each do |subclass|
   subclass.class_eval do
+    attr_accessible :open_graph_settings
+
     OpenGraphPlugin::TrackConfig::Types.each do |track, klass|
       klass = "OpenGraphPlugin::#{klass}".constantize
       attributes = "#{klass.association}_attributes"
@@ -16,6 +18,11 @@ end
 
 class Profile
 
+  def open_graph_settings attrs = {}
+    @open_graph_settings ||= OpenGraphPlugin::Settings.new self, attrs
+  end
+  alias_method :open_graph_settings=, :open_graph_settings
+
   has_many :open_graph_tracks, class_name: 'OpenGraphPlugin::Track', source: :tracker_id, foreign_key: :tracker_id
 
   has_many :open_graph_activities, class_name: 'OpenGraphPlugin::Activity', source: :tracker_id, foreign_key: :tracker_id
@@ -24,11 +31,8 @@ class Profile
   OpenGraphPlugin::TrackConfig::Types.each do |track, klass|
     klass = "OpenGraphPlugin::#{klass}".constantize
     association = klass.association
-    attributes = "#{association}_attributes"
     profile_ids = "open_graph_#{track}_profiles_ids"
 
-    attr_accessible attributes
-    attr_accessible profile_ids
     has_many association, class_name: klass.name, foreign_key: :tracker_id
     accepts_nested_attributes_for association, allow_destroy: true, reject_if: :open_graph_reject_empty_object_type
 
