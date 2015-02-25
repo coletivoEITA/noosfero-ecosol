@@ -68,7 +68,7 @@ class Scrap < ActiveRecord::Base
 
   def send_notification
     self.root.update_attribute('updated_at', DateTime.now) unless self.root.nil?
-    Scrap::Notifier.notification(self).deliver if self.send_notification?
+    ScrapNotifier.notification(self).deliver if self.send_notification?
   end
 
 end
