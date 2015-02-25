@@ -267,7 +267,8 @@ class Product < ActiveRecord::Base
   end
 
   def is_trackable?
-    true
+    # shopping_cart create products without profile
+    self.profile.present?
   end
 
   def action_tracker_user
