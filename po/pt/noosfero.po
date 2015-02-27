@@ -658,7 +658,7 @@ msgstr "Queixa de abuso"
 
 #: app/models/abuse_complaint.rb:36
 msgid "%{linked_subject} was reported due to inappropriate behavior."
-msgstr "%{linked_subject} foi denunciado devido a comportamento inadequado."
+msgstr "%{linked_subject} foi denunciado no Cirandas devido a comportamento inadequado."
 
 #: app/models/abuse_complaint.rb:60
 msgid ""
@@ -681,19 +681,11 @@ msgstr ""
 
 #: app/models/abuse_complaint.rb:68
 msgid "%s was reported due to inappropriate behavior."
-msgstr "%s foi denunciado devido a comportamento inadequado."
+msgstr "%s foi denunciado no Cirandas devido a comportamento inadequado."
 
 #: app/models/abuse_complaint.rb:72
-msgid ""
-"The users of %{environment} reported %{reported} due to inappropriate "
-"behavior. A task was created with all the reports including the reasons and "
-"contents reported by these users. Please verify the reports and decide "
-"whether this profile must be disabled or not."
-msgstr ""
-"Os usuarios de %{environment} denunciaram %{reported} devido à comportamento "
-"inadequado. A tarefa foi criada com todos as denúncias, incluindo os motivos "
-"e o conteúdo relatado por esses usuraios. Verifique a denúncia e decida se "
-"este perfil deve ser desativada ou não."
+msgid "The users of %{environment} reported %{reported} due to inappropriate behavior. A task was created with all the reports including the reasons and contents reported by these users. Please verify the reports and decide whether this profile must be disabled or not."
+msgstr "%{reported} foi denunciado(a) no %{environment} devido a comportamento inadequado. A tarefa foi criada com todos as denúncias, incluindo os motivos e o conteúdo relatado por usuários(as). Verifique a denúncia e decida se este perfil deve ser desativado ou não."
 
 #: app/models/image.rb:20
 msgid "{fn} of uploaded file was larger than the maximum size of 5.0 MB"
@@ -12479,11 +12471,8 @@ msgid "%s was reported by an user"
 msgstr "%s foi denunciado por um usuário"
 
 #: app/views/abuse_complaint/_target_notification_message.html.erb
-msgid ""
-"An user reported the %{profile_type} %{reported} with the following reason:"
-msgstr ""
-"Um usuário reportou %{reported} (%{profile_type}) com a seguinte "
-"justificativa:"
+msgid "An user reported the %{profile_type} %{reported} with the following reason:"
+msgstr "Um usuário denunciou %{reported} (%{profile_type}) com a seguinte justificativa:"
 
 #: app/views/abuse_complaint/_target_notification_message.html.erb
 msgid "by %{reporter} at %{date}"
