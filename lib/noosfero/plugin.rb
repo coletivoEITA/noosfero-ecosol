@@ -1,4 +1,5 @@
 require_dependency 'noosfero'
+require 'noosfero/plugin/parent_methods'
 
 class Noosfero::Plugin
 
@@ -10,17 +11,9 @@ class Noosfero::Plugin
 
   class << self
 
-    def table_name_prefix
-      @table_name_prefix ||= "#{name.to_s.underscore}_"
-    end
+    include Noosfero::Plugin::ParentMethods
 
     attr_writer :should_load
-
-    # Called for each ActiveRecord class with parents
-    # See http://apidock.com/rails/ActiveRecord/ModelSchema/ClassMethods/full_table_name_prefix
-    def table_name_prefix
-      @table_name_prefix ||= "#{name.to_s.underscore}_"
-    end
 
     def should_load
       @should_load.nil? && true || @boot
@@ -97,8 +90,14 @@ class Noosfero::Plugin
       end
     end
 
-    def load_plugin(plugin_name)
-      (plugin_name.to_s.camelize + 'Plugin').constantize
+    def load_plugin_identifier identifier
+      klass = identifier.to_s.camelize.constantize
+      klass = klass.const_get :Base if klass.class == Module
+      klass
+    end
+
+    def load_plugin public_name
+      load_plugin_identifier "#{public_name.to_s.camelize}Plugin"
     end
 
     # This is a generic method that initialize any possible filter defined by a
@@ -123,7 +122,7 @@ class Noosfero::Plugin
         filters = [filters]
       end
       filters.each do |plugin_filter|
-        filter_method = (plugin.name.underscore.gsub('/','_') + '_' + plugin_filter[:method_name]).to_sym
+        filter_method = "#{plugin.identifier}_#{plugin_filter[:method_name]}".to_sym
         controller_class.send(plugin_filter[:type], filter_method, (plugin_filter[:options] || {}))
         controller_class.send(:define_method, filter_method) do
           instance_exec(&plugin_filter[:block]) if environment.plugin_enabled?(plugin)
@@ -156,8 +155,12 @@ class Noosfero::Plugin
       @all ||= available_plugins.map{ |dir| (File.basename(dir) + "_plugin").camelize }
     end
 
+    def identifier
+      @identifier ||= (if self.parents.first != Object then self.parents.first else self end).name.underscore
+    end
+
     def public_name
-      self.name.underscore.gsub('_plugin','')
+      @public_name ||= self.identifier.gsub '_plugin', ''
     end
 
     def public_path file = '', relative=false
@@ -182,18 +185,18 @@ class Noosfero::Plugin
     # Here the developer should specify the meta-informations that the plugin can
     # inform.
     def plugin_name
-      self.name.underscore.humanize
+      self.identifier.humanize
     end
     def plugin_description
       _("No description informed.")
     end
 
     def admin_url
-      {:controller => "#{name.underscore}_admin", :action => 'index'}
+      {:controller => "#{self.identifier}_admin", :action => 'index'}
     end
 
     def has_admin_url?
-      File.exists?(File.join(root_path, 'controllers', "#{name.underscore}_admin_controller.rb"))
+      File.exists?(File.join(root_path, 'controllers', "#{self.identifier}_admin_controller.rb"))
     end
   end
 
