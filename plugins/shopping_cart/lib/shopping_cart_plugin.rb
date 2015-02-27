@@ -2,12 +2,26 @@ require_dependency "#{File.dirname __FILE__}/ext/profile"
 
 class ShoppingCartPlugin < Noosfero::Plugin
 
-  def self.plugin_name
+  class << self
+    def plugin_name
     "Shopping Basket"
-  end
+    end
 
-  def self.plugin_description
-    _("A shopping basket feature for enterprises")
+    def plugin_description
+      _("A shopping basket feature for enterprises")
+    end
+
+    def delivery_default_setting
+      false
+    end
+
+    def delivery_price_default_setting
+      0
+    end
+
+    def delivery_options_default_setting
+      {}
+    end
   end
 
   def stylesheet?

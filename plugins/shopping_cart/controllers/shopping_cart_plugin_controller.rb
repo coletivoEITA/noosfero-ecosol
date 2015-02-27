@@ -124,9 +124,8 @@ class ShoppingCartPluginController < OrdersPluginController
     register_order(params[:customer], self.cart[:items])
     begin
       profile = cart_profile
-      supplier_delivery = profile.delivery_methods.find params[:supplier_delivery_id]
-      ShoppingCartPlugin::Mailer.customer_notification(params[:customer], profile, self.cart[:items], supplier_delivery).deliver
-      ShoppingCartPlugin::Mailer.supplier_notification(params[:customer], profile, self.cart[:items], supplier_delivery).deliver
+      ShoppingCartPlugin::Mailer.customer_notification(params[:customer], profile, self.cart[:items], params[:delivery_option]).deliver
+      ShoppingCartPlugin::Mailer.supplier_notification(params[:customer], profile, self.cart[:items], params[:delivery_option]).deliver
       self.cart = nil
       render :text => {
         :ok => true,
@@ -186,21 +185,24 @@ class ShoppingCartPluginController < OrdersPluginController
     end
   end
 
-  def update_supplier_delivery
+  def update_delivery_option
     profile = cart_profile
-    supplier_delivery = profile.delivery_methods.find params[:supplier_delivery_id]
-    order = build_order self.cart[:items], supplier_delivery
-    total_price = order.total_price
+    settings = profile.shopping_cart_settings
+    delivery_price = settings.delivery_options[params[:delivery_option]]
+    delivery = Product.new(:name => params[:delivery_option], :price => delivery_price)
+    delivery.save run_callbacks: false, validate: false
+    items = self.cart[:items].clone
+    items[delivery.id] = 1
+    total_price = get_total_on_currency(items, environment)
+    delivery.destroy
     render :text => {
       :ok => true,
-      :delivery_price => float_to_currency_cart(supplier_delivery.cost(total_price), environment, unit: ''),
-      :total_price => float_to_currency_cart(total_price, environment, unit: ''),
+      :delivery_price => float_to_currency_cart(delivery_price, environment),
+      :total_price => total_price,
       :message => _('Delivery option updated.'),
       :error => {:code => 0}
     }.to_json
   end
-
-  protected
 
   private
 
@@ -285,7 +287,6 @@ class ShoppingCartPluginController < OrdersPluginController
 
     order = OrdersPlugin::Sale.new
     order.profile = environment.profiles.find(cart[:profile_id])
-    order.supplier_delivery = profile.delivery_methods.find params[:supplier_delivery_id]
     order.session_id = session_id unless user
     order.consumer = user
     order.source = 'shopping_cart_plugin'
@@ -298,8 +299,7 @@ class ShoppingCartPluginController < OrdersPluginController
       :method => params[:customer][:payment], :change => params[:customer][:change],
     }
     order.consumer_delivery_data = {
-      :name => order.supplier_delivery.name,
-      :description => order.supplier_delivery.name,
+      :name => params[:customer][:delivery_option],
       :address_line1 => params[:customer][:address],
       :address_line2 => params[:customer][:address_line2],
       :reference => params[:customer][:address_reference],

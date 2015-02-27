@@ -8,20 +8,19 @@ jQuery(document).ready(function(){
   });
 });
 
-jQuery('#supplier_delivery_id').change(function(){
+jQuery('#delivery_option').change(function(){
   jQuery('#cboxLoadingGraphic').show();
-  var me = jQuery(this);
-  var profile = me.attr('data-profile-identifier');
-  var id = me.val();
-  var name = me.find('option:selected').attr('data-label');
+  me = this;
+  profile = jQuery(me).attr('data-profile-identifier');
+  option = jQuery(me).val();
   jQuery.ajax({
-    url: '/plugin/shopping_cart/update_supplier_delivery',
+    url: '/plugin/shopping_cart/update_delivery_option',
     dataType: "json",
-    data: 'supplier_delivery_id='+id,
+    data: 'delivery_option='+option,
     success: function(data, st, ajax) {
       jQuery('#delivery-price').text(data.delivery_price);
       jQuery('.cart-table-total-value').text(data.total_price);
-      jQuery('#delivery-name').text(name);
+      jQuery('#delivery-name').text(option);
       jQuery('#cboxLoadingGraphic').hide();
     },
     error: function(ajax, st, errorThrown) {
