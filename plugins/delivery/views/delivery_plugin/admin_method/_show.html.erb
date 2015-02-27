@@ -1,0 +1,13 @@
+<td class="name" title="<%= method.description %>">
+  <%= method.name %>
+</td>
+
+<td class="actions">
+  <%= button_to_function :edit, t('delivery_plugin.views.delivery_option._select_content.edit_this'),
+    "delivery.method.edit('#{url_for controller: 'delivery_plugin/admin_method', action: :edit, id: method.id}')" %>
+
+  <%= button_to_function :remove, t('delivery_plugin.views.delivery_option._select_content.remove_method'),
+    "delivery.method.destroy(#{method.id}, '#{t('delivery_plugin.views.delivery_option._select_content.are_you_sure_you_want')}',
+      '#{url_for controller: 'delivery_plugin/admin_method', action: :destroy, id: method.id}')" %>
+</td>
+

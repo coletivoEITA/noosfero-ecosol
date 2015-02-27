@@ -5,7 +5,7 @@ class Article
   # use for internationalizable human type names in search facets
   # reimplement on subclasses
   def self.type_name
-    _('Content')
+    c_('Content')
   end
 
   def solr_plugin_comments_updated
@@ -75,12 +75,12 @@ class Article
   end
 
   acts_as_faceted fields: {
-      solr_plugin_f_type: {label: _('Type'), proc: method(:solr_plugin_f_type_proc).to_proc},
+      solr_plugin_f_type: {label: c_('Type'), proc: method(:solr_plugin_f_type_proc).to_proc},
       solr_plugin_f_published_at: {type: :date, label: _('Published date'), queries: {'[* TO NOW-1YEARS/DAY]' => _("Older than one year"),
         '[NOW-1YEARS TO NOW/DAY]' => _("In the last year"), '[NOW-1MONTHS TO NOW/DAY]' => _("In the last month"), '[NOW-7DAYS TO NOW/DAY]' => _("In the last week"), '[NOW-1DAYS TO NOW/DAY]' => _("In the last day")},
         queries_order: ['[NOW-1DAYS TO NOW/DAY]', '[NOW-7DAYS TO NOW/DAY]', '[NOW-1MONTHS TO NOW/DAY]', '[NOW-1YEARS TO NOW/DAY]', '[* TO NOW-1YEARS/DAY]']},
-      :solr_plugin_f_profile_type => {:label => _('Profile'), :proc => method(:solr_plugin_f_profile_type_proc).to_proc},
-      solr_plugin_f_category: {label: _('Categories')},
+      :solr_plugin_f_profile_type => {:label => c_('Profile'), :proc => method(:solr_plugin_f_profile_type_proc).to_proc},
+      solr_plugin_f_category: {label: c_('Categories')},
     }, category_query: proc { |c| "solr_plugin_category_filter:\"#{c.id}\"" },
     order: [:solr_plugin_f_type, :solr_plugin_f_published_at, :solr_plugin_f_profile_type, :solr_plugin_f_category]
 

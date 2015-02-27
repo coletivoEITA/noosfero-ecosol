@@ -133,6 +133,8 @@ module Noosfero
     config.action_dispatch.session = {
       :key    => '_noosfero_session',
     }
+    # from noosfero master, using buggy cookie_store
+    #config.session_store :cookie_store, :key => '_noosfero_session'
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.

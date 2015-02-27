@@ -35,11 +35,16 @@ class Noosfero::Plugin
         exit 1
       end
 
-      available_plugins.each do |plugin_dir|
+      klasses = available_plugins.map do |plugin_dir|
         plugin_name = File.basename(plugin_dir)
-        plugin = load_plugin(plugin_name)
-        load_plugin_extensions(plugin_dir)
-        load_plugin_filters(plugin)
+        load_plugin plugin_name
+      end
+      available_plugins.each do |plugin_dir|
+        load_plugin_extensions plugin_dir
+      end
+      # filters must be loaded after all extensions
+      klasses.each do |plugin|
+        load_plugin_filters plugin
       end
     end
 
@@ -99,24 +104,35 @@ class Noosfero::Plugin
     # This is a generic method that initialize any possible filter defined by a
     # plugin to a specific controller
     def load_plugin_filters(plugin)
-      plugin_methods = plugin.instance_methods.select {|m| m.to_s.end_with?('_filters')}
-      plugin_methods.each do |plugin_method|
-        controller_class = plugin_method.to_s.gsub('_filters', '').camelize.constantize
-        filters = plugin.new.send(plugin_method)
-        filters = [filters] if !filters.kind_of?(Array)
+      ActionDispatch::Reloader.to_prepare do
+        filters = plugin.new.send 'application_controller_filters' rescue []
+        Noosfero::Plugin.add_controller_filters ApplicationController, plugin, filters
 
-        filters.each do |plugin_filter|
-          filter_method = (plugin.name.underscore.gsub('/','_') + '_' + plugin_filter[:method_name]).to_sym
-          controller_class.send(plugin_filter[:type], filter_method, (plugin_filter[:options] || {}))
-          controller_class.send(:define_method, filter_method) do
-            instance_eval(&plugin_filter[:block]) if environment.plugin_enabled?(plugin)
-          end
+        plugin_methods = plugin.instance_methods.select {|m| m.to_s.end_with?('_filters')}
+        plugin_methods.each do |plugin_method|
+          controller_class = plugin_method.to_s.gsub('_filters', '').camelize.constantize
+
+          filters = plugin.new.send(plugin_method)
+          Noosfero::Plugin.add_controller_filters controller_class, plugin, filters
+        end
+      end
+    end
+
+    def add_controller_filters(controller_class, plugin, filters)
+      unless filters.is_a?(Array)
+        filters = [filters]
+      end
+      filters.each do |plugin_filter|
+        filter_method = (plugin.name.underscore.gsub('/','_') + '_' + plugin_filter[:method_name]).to_sym
+        controller_class.send(plugin_filter[:type], filter_method, (plugin_filter[:options] || {}))
+        controller_class.send(:define_method, filter_method) do
+          instance_exec(&plugin_filter[:block]) if environment.plugin_enabled?(plugin)
         end
       end
     end
 
     def load_plugin_extensions(dir)
-      Rails.configuration.to_prepare do
+      ActionDispatch::Reloader.to_prepare do
         Dir[File.join(dir, 'lib', 'ext', '*.rb')].each {|file| require_dependency file }
       end
     end
@@ -463,6 +479,12 @@ class Noosfero::Plugin
     nil
   end
 
+  # -> Adds adicional fields to a view
+  # returns = proc block that creates html code
+  def upload_files_extra_fields(article)
+    nil
+  end
+
   # -> Adds fields to the signup form
   # returns = proc that creates html code
   def signup_extra_contents
@@ -611,6 +633,12 @@ class Noosfero::Plugin
   # returns = a list of hashs as {:name => "string", :label => "string", :object_name => :key, :method => :key}
   def extra_optional_fields
     []
+  end
+
+  # -> Adds css class to <html> tag
+  # returns = ['class1', 'class2']
+  def html_tag_classes
+    nil
   end
 
   # -> Adds additional blocks to profiles and environments.

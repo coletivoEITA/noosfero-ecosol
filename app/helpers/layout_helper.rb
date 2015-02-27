@@ -2,10 +2,29 @@ module LayoutHelper
 
   def body_classes
     # Identify the current controller and action for the CSS:
+    (logged_in? ? " logged-in" : "") +
     " controller-#{controller.controller_name}" +
     " action-#{controller.controller_name}-#{controller.action_name}" +
     " template-#{@layout_template || if profile.blank? then 'default' else profile.layout_template end}" +
     (!profile.nil? && profile.is_on_homepage?(request.path,@page) ? " profile-homepage" : "")
+  end
+
+  def html_tag_classes
+    [
+      body_classes, (
+        profile.blank? ? nil : [
+          'profile-type-is-' + profile.class.name.downcase,
+          'profile-name-is-' + profile.identifier,
+        ]
+      ), 'theme-' + current_theme,
+      @plugins.dispatch(:html_tag_classes).map do |content|
+        if content.respond_to?(:call)
+          instance_exec(&content)
+        else
+          content.html_safe
+        end
+      end
+    ].flatten.compact.join(' ')
   end
 
   def noosfero_javascript

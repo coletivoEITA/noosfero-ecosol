@@ -14,7 +14,7 @@ class MetadataPlugin < Noosfero::Plugin
   end
 
   def self.og_types
-    @og_types ||= self.config[:open_graph][:types]
+    @og_types ||= self.config[:open_graph][:types] rescue {}
   end
 
   def head_ending
@@ -47,7 +47,7 @@ class MetadataPlugin < Noosfero::Plugin
   # context HELPERS
   def og_url_for options
     options.delete :port
-    options[:host] = self.class.config[:open_graph][:domain]
+    options[:host] = self.class.config[:open_graph][:domain] rescue context.send(:environment).default_hostname
     Noosfero::Application.routes.url_helpers.url_for options
   end
 
