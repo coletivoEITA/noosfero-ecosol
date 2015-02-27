@@ -77,6 +77,7 @@ group :cucumber do
 end
 
 group :development do
+  gem 'wirble'
   #gem 'byebug'
   #gem 'method_source'
 end
