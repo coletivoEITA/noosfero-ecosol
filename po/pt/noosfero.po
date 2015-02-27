@@ -1103,12 +1103,8 @@ msgid "Content"
 msgstr "Conteúdo"
 
 #: app/models/article.rb:55
-msgid ""
-"The title (article name) is already being used by another article, please "
-"use another title."
-msgstr ""
-"O título (nome do artigo) já está sendo usado por outro artigo, por favor "
-"escolha outro título."
+msgid "The title (article name) is already being used by another article, please use another title."
+msgstr "O título (nome do artigo) já está sendo usado por outro artigo, por favor escolha outro título."
 
 #: app/models/article.rb:130
 #: plugins/sub_organizations/lib/sub_organizations_plugin/relation.rb:13
@@ -2223,9 +2219,9 @@ msgstr "Não logado"
 msgid "New member"
 msgstr "Novo membro"
 
-#: app/models/add_member.rb:25 app/models/add_member.rb:41
-msgid "%{requestor} wants to be a member of this community."
-msgstr "%{requestor} quer ser um membro desta comunidade."
+#: app/models/add_member.rb:25 app/models/add_member.rb
+msgid "%{requestor} wants to be a member of '%{organization}'."
+msgstr "%{requestor} quer ser integrante de '%{organization}'."
 
 #: app/models/add_member.rb:46
 msgid ""
@@ -2747,8 +2743,13 @@ msgstr "Ir à sua página inicial"
 #: app/views/blocks/profile_image.html.erb:21
 #: app/views/blocks/my_network.html.erb:9
 #: plugins/community_block/views/community_block.html.erb:20
+#: app/views/profile_editor/index.html.erb:6
 msgid "Control panel"
 msgstr "Painel de controle"
+
+#: app/views/profile_editor/index.html.erb:6
+msgid "Personal Control Panel"
+msgstr "Painel de Controle Pessoal"
 
 #: app/helpers/application_helper.rb:1149
 msgid "Configure your personal account and content"
@@ -6239,10 +6240,6 @@ msgstr "Meio dia"
 #: app/views/profile_editor/_person.html.erb:25
 msgid "Daily"
 msgstr "Diariamente"
-
-#: app/views/profile_editor/index.html.erb:6
-msgid "Control Panel"
-msgstr "Painel de Controle"
 
 #: app/views/profile_editor/index.html.erb:17
 #: app/views/maps/edit_location.html.erb:1
@@ -12925,8 +12922,8 @@ msgstr "Transferência bancária"
 #~ msgid "article"
 #~ msgstr "artigo"
 
-#~ msgid "Slug"
-#~ msgstr "Slug"
+msgid "Slug"
+msgstr "Identificador"
 
 #~ msgid "Path"
 #~ msgstr "Path"
@@ -13404,8 +13401,8 @@ msgstr "Transferência bancária"
 msgid "Tags:"
 msgstr "Marcadores:"
 
-#~ msgid "Interests"
-#~ msgstr "Interesses"
+msgid "Interests"
+msgstr "Interesses"
 
 msgid "Administrators:"
 msgstr "Administradores:"
