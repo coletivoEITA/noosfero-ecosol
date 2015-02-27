@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "POT-Creation-Date: 2015-02-02 21:44-0300\n"
-"PO-Revision-Date: 2015-02-06 20:09-0300\n"
+"PO-Revision-Date: 2015-02-27 09:31-0300\n"
 "Last-Translator: Daniel Tygel <dtygel@eita.org.br>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero/"
 "noosfero/pt/>\n"
@@ -174,4 +174,38 @@ msgstr "Criar conta"
 #: app/views/manage_products/show.html.erb:58
 msgid "Add product or service"
 msgstr "Adicionar produto ou serviço"
+
+#: app/models/abuse_complaint.rb:36
+msgid "%{linked_subject} was reported due to inappropriate behavior."
+msgstr "%{linked_subject} foi denunciado no Cirandas devido a comportamento inadequado."
+
+#: app/models/abuse_complaint.rb:68
+msgid "%s was reported due to inappropriate behavior."
+msgstr "%s foi denunciado no Cirandas devido a comportamento inadequado."
+
+#: app/models/abuse_complaint.rb:72
+msgid "The users of %{environment} reported %{reported} due to inappropriate behavior. A task was created with all the reports including the reasons and contents reported by these users. Please verify the reports and decide whether this profile must be disabled or not."
+msgstr "%{reported} foi denunciado(a) no %{environment} devido a comportamento inadequado. A tarefa foi criada com todos as denúncias, incluindo os motivos e o conteúdo relatado por usuários(as). Verifique a denúncia e decida se este perfil deve ser desativado ou não."
+
+#: app/views/abuse_complaint/_target_notification_message.html.erb
+msgid "An user reported the %{profile_type} %{reported} with the following reason:"
+msgstr "Um usuário denunciou %{reported} (%{profile_type}) com a seguinte justificativa:"
+
+#: app/models/add_member.rb:25 app/models/add_member.rb
+msgid "%{requestor} wants to be a member of '%{organization}'."
+msgstr "%{requestor} quer ser integrante de '%{organization}'."
+
+#: app/views/profile_editor/index.html.erb:6
+msgid "Personal Control Panel"
+msgstr "Painel de Controle Pessoal"
+
+#: app/models/article.rb:55
+msgid "The title (article name) is already being used by another article, please use another title."
+msgstr "O título (nome do artigo) já está sendo usado por outro artigo, por favor escolha outro título."
+
+msgid "Slug"
+msgstr "Identificador"
+
+msgid "Interests"
+msgstr "Interesses"
 
