@@ -13404,8 +13404,8 @@ msgstr "Transferência bancária"
 msgid "Tags:"
 msgstr "Marcadores:"
 
-#~ msgid "Interests"
-#~ msgstr "Interesses"
+msgid "Interests"
+msgstr "Interesses"
 
 msgid "Administrators:"
 msgstr "Administradores:"
