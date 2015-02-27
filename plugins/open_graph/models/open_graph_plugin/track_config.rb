@@ -2,10 +2,9 @@ class OpenGraphPlugin::TrackConfig < OpenGraphPlugin::Track
 
   Types = {
     activity: 'ActivityTrackConfig',
-    #enterprise: 'EnterpriseTrackConfig',
+    enterprise: 'EnterpriseTrackConfig',
+    community: 'CommunityTrackConfig',
     #friend: 'FriendTrackConfig',
-    #community: 'CommunityTrackConfig',
   }
-
 
 end

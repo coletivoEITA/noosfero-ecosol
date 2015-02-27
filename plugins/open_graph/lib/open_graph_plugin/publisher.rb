@@ -37,7 +37,7 @@ class OpenGraphPlugin::Publisher
         object_data_url = if object_data_url = defs[:object_data_url] then object_data_url.call(object_data) else object_data.url end
         object_data_url = self.url_for object_data_url
 
-        begin
+        #begin
           if defs[:tracker]
             exclude_actor = actor
             trackers = OpenGraphPlugin::Track.profile_trackers object_data, exclude_actor
@@ -47,10 +47,10 @@ class OpenGraphPlugin::Publisher
           else
             self.publish actor, defs, object_data_url
           end
-        rescue => e
-          Delayed::Worker.logger.debug "can't publish story: #{e.message}"
+        #rescue => e
+          #Delayed::Worker.logger.debug "can't publish story: #{e.message}"
           # continue to other stories
-        end
+        #end
       end
     end
   end

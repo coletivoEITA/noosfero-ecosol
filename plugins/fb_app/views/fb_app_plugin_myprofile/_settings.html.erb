@@ -14,24 +14,26 @@
     <%= render 'catalogs' %>
   </div>
 
-  <div id="fb-app-timeline">
-    <h2>
-      <%= t('fb_app_plugin.views.myprofile.timeline.heading') %>
-    </h2>
+  <% if profile.person? %>
+    <div id="fb-app-timeline">
+      <h2>
+        <%= t('fb_app_plugin.views.myprofile.timeline.heading') %>
+      </h2>
 
-    <% unless FbAppPlugin.test_user? user %>
-      <h3>
-        <%= t('fb_app_plugin.views.myprofile.timeline.explanation_title') %>
-      </h3>
-      <p>
-        <%= t('fb_app_plugin.views.myprofile.timeline.explanation_text') %>
-      </p>
-    <% else %>
-      <div id="track-form">
-        <%= render 'track_form' %>
-      </div>
-    <% end %>
-  </div>
+      <% unless FbAppPlugin.test_user? user %>
+        <h3>
+          <%= t('fb_app_plugin.views.myprofile.timeline.explanation_title') %>
+        </h3>
+        <p>
+          <%= t('fb_app_plugin.views.myprofile.timeline.explanation_text') %>
+        </p>
+      <% else %>
+        <div id="track-form">
+          <%= render 'track_form', context: :fb_app %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 
 <% end %>
 

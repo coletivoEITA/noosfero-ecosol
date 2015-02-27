@@ -14,6 +14,7 @@ open_graph = {
       configToggle: function(config, open) {
         config.toggleClass('fa-toggle-on', open)
         config.toggleClass('fa-toggle-off', !open)
+        config.siblings('input').prop('value', open)
       },
 
       toggle: function(context, event) {

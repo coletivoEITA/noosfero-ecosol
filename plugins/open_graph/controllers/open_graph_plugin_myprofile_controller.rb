@@ -17,7 +17,7 @@ class OpenGraphPluginMyprofileController < MyProfileController
 
   def track_config
     profile.update_attributes! params[:profile_data]
-    render partial: 'track_form'
+    render partial: 'track_form', locals: {context: context}
   end
 
   protected
@@ -27,6 +27,10 @@ class OpenGraphPluginMyprofileController < MyProfileController
     @profiles = scope.limit(10).order('name ASC').
       where(['name ILIKE ? OR name ILIKE ? OR identifier LIKE ?', "#{@query}%", "% #{@query}%", "#{@query}%"])
     render partial: 'profile_search', locals: {profiles: @profiles}
+  end
+
+  def context
+    :open_graph
   end
 
 end

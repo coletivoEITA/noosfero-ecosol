@@ -1,4 +1,6 @@
 require_dependency 'profile'
+# hate to wrte this, but without Noosfero::Plugin::Settings is loaded instead
+require 'open_graph_plugin/settings'
 
 # attr_accessible must be defined on subclasses
 Profile.descendants.each do |subclass|

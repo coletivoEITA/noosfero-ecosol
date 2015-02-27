@@ -54,6 +54,9 @@ class OpenGraphPlugin::Stories
       object_type: :uploaded_file,
       models: :UploadedFile,
       on: :create,
+      criteria: proc do |article|
+        article.is_a? UploadedFile
+      end,
       publish_if: proc do |uploaded_file|
         # done in add_an_image
         next false if uploaded_file.image? and uploaded_file.parent.is_a? Gallery
@@ -69,6 +72,9 @@ class OpenGraphPlugin::Stories
       object_type: :gallery_image,
       models: :UploadedFile,
       on: :create,
+      criteria: proc do |article|
+        article.is_a? UploadedFile
+      end,
       publish_if: proc do |uploaded_file|
         uploaded_file.image? and uploaded_file.parent.is_a? Gallery
       end,
@@ -95,6 +101,9 @@ class OpenGraphPlugin::Stories
       object_type: :event,
       models: :Event,
       on: :create,
+      criteria: proc do |article|
+        article.is_a? Event
+      end,
       publish_if: proc do |event|
         event.published?
       end,
@@ -115,26 +124,19 @@ class OpenGraphPlugin::Stories
 
     add_a_sse_product: {
       action_tracker_verb: :create_product,
-      action: :add,
+      action: :announce_new,
       object_type: :product,
       models: :Product,
       on: :create,
     },
     update_a_sse_product: {
       action_tracker_verb: :update_product,
-      action: :update,
+      action: :announce_update,
       object_type: :product,
       models: :Product,
       on: :update,
     },
 
-    update_a_sse_enterprise: {
-      action_tracker_verb: nil,
-      action: :update,
-      object_type: :enterprise,
-      models: :Enterprise,
-      on: :update,
-    },
     favorite_an_sse_enterprise: {
       action_tracker_verb: nil,
       action: :create,
@@ -146,6 +148,7 @@ class OpenGraphPlugin::Stories
       end
     },
 
+=begin
     comment_a_discussion: {
       action_tracker_verb: nil,
       action: :comment,
@@ -174,6 +177,7 @@ class OpenGraphPlugin::Stories
         comment.source.parent.published?
       end,
     },
+=end
 
     make_friendship_with: {
       action_tracker_verb: :make_friendship,
@@ -188,6 +192,14 @@ class OpenGraphPlugin::Stories
     },
 
     # PASSIVE STORIES
+    announce_news_from_a_sse_enterprise: {
+      action_tracker_verb: :create_article,
+      action: :announce_update,
+      object_type: :enterprise,
+      models: :Article,
+      on: :create,
+      tracker: true,
+    },
     announce_a_new_sse_product: {
       action_tracker_verb: :create_product,
       action: :announce_new,
@@ -208,7 +220,7 @@ class OpenGraphPlugin::Stories
     announce_news_from_a_community: {
       action_tracker_verb: :create_article,
       action: :announce_update,
-      object_type: :product,
+      object_type: :action,
       models: [:Article, :Image],
       on: :create,
       tracker: true,
@@ -223,13 +235,16 @@ class OpenGraphPlugin::Stories
           object.parent.is_a? Gallery
         end
       end,
-    }
+    },
+
   }
 
   TrackerStories = {}; Definitions.each do |story, data|
-    next unless verb = data[:action_tracker_verb]
-    TrackerStories[verb] ||= []
-    TrackerStories[verb] << story
+    Array[data[:action_tracker_verb]].each do |verb|
+      next unless verb
+      TrackerStories[verb] ||= []
+      TrackerStories[verb] << story
+    end
   end
 
   ModelStories = {}; Definitions.each do |story, data|

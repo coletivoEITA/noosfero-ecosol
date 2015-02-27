@@ -21,14 +21,14 @@
               event: 'Novos eventos'
               enterprise: 'Atualização de empreendimento de EcoSol que faço parte'
           enterprise:
-            label: "Novidades em empreendimentos favoritos"
-            search_placeholder: "digite o empreendimento"
+            label: "Novidades em empreendimentos que sou integrante e de meus favoritos"
+            search_placeholder: "busque o empreendimento"
           friend:
             label: "Novidades de amigos"
-            search_placeholder: "digite a/o amiga/o"
+            search_placeholder: "busque a/o amiga/o"
           community:
-            label: "Novidades de minhas comunidades favoritas"
-            search_placeholder: "digite a comunidade"
+            label: "Novidades das seguintes comunidades"
+            search_placeholder: "busque a comunidade"
 
 'pt_BR':
   <<: *pt-BR

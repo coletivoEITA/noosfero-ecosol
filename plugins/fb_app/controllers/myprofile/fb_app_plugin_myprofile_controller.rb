@@ -53,4 +53,8 @@ class FbAppPluginMyprofileController < OpenGraphPluginMyprofileController
     FbAppPlugin::Auth.new profile_id: profile.id, provider_id: @provider.id
   end
 
+  def context
+    :fb_app
+  end
+
 end
