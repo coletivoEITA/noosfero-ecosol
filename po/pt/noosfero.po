@@ -2219,9 +2219,9 @@ msgstr "Não logado"
 msgid "New member"
 msgstr "Novo membro"
 
-#: app/models/add_member.rb:25 app/models/add_member.rb:41
-msgid "%{requestor} wants to be a member of this community."
-msgstr "%{requestor} quer ser um membro desta comunidade."
+#: app/models/add_member.rb:25 app/models/add_member.rb
+msgid "%{requestor} wants to be a member of '%{organization}'."
+msgstr "%{requestor} quer ser integrante de '%{organization}'."
 
 #: app/models/add_member.rb:46
 msgid ""
