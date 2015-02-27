@@ -1103,12 +1103,8 @@ msgid "Content"
 msgstr "Conteúdo"
 
 #: app/models/article.rb:55
-msgid ""
-"The title (article name) is already being used by another article, please "
-"use another title."
-msgstr ""
-"O título (nome do artigo) já está sendo usado por outro artigo, por favor "
-"escolha outro título."
+msgid "The title (article name) is already being used by another article, please use another title."
+msgstr "O título (nome do artigo) já está sendo usado por outro artigo, por favor escolha outro título."
 
 #: app/models/article.rb:130
 #: plugins/sub_organizations/lib/sub_organizations_plugin/relation.rb:13
@@ -12925,8 +12921,8 @@ msgstr "Transferência bancária"
 #~ msgid "article"
 #~ msgstr "artigo"
 
-#~ msgid "Slug"
-#~ msgstr "Slug"
+msgid "Slug"
+msgstr "Identificador"
 
 #~ msgid "Path"
 #~ msgstr "Path"
