@@ -1,4 +1,7 @@
-class OrdersCyclePluginDeliveryOptionController < DeliveryPlugin::AdminOptionsController
+# workaround: necessary to load extensions
+require_dependency 'delivery_plugin'
+
+class OrdersCyclePluginDeliveryOptionController < DeliveryPluginOptionController
 
   no_design_blocks
 

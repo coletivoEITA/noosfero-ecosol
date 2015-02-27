@@ -1,0 +1,29 @@
+<div id="delivery-method-choose">
+  <%= form_for @owner, as: :owner, remote: true, url: {controller: :delivery_plugin_option, action: :new, owner_id: @owner_id, owner_type: @owner_type} do |f| %>
+
+    <%= labelled_field nil, :delivery_methods, t('delivery_plugin.views.delivery_option._select_content.choose_a_delivery_met'),
+      select_tag(:delivery_methods, options_for_select(profile.delivery_methods.collect{ |m| [m.name, m.id] }, profile.delivery_methods.first.id),
+                 include_blank: false, multiple: true) %>
+
+    <div id="delivery-menu">
+      <%= link_to_function t('delivery_plugin.views.delivery_option._select_content.add_new'), "delivery.new_toggle()" %>
+      <%= link_to_function t('delivery_plugin.views.delivery_option._select_content.edit_this'),
+        "var id = jQuery('#delivery-method-choose select').val(); jQuery.get('#{url_for controller: :delivery_plugin_option,
+        action: :method_edit, owner_id: @owner_id, owner_type: @owner_type, id:nil}', { id: id}, function() {}, 'script');" %>
+      <%= link_to_function t('delivery_plugin.views.delivery_option._select_content.remove_method'),
+        "jQuery.post('#{url_for controller: :delivery_plugin_option, action: :method_destroy, owner_id: @owner_id, owner_type: @owner_type}',
+           { id: jQuery('#delivery-method-choose select').val() }, function() {}, 'script');", confirm: t('delivery_plugin.views.delivery_option._select_content.are_you_sure_you_want') %>
+    </div>
+
+    <div class="clean"></div>
+
+   <%= f.submit t('delivery_plugin.views.delivery_option._select_content.add') %>
+   <%= modal_close_link t('delivery_plugin.views.delivery_option._select_content.cancel') %>
+  <% end %>
+</div>
+
+<div id="delivery-method-edit" style="display: none">
+</div>
+<div id="delivery-method-new" style="display: none">
+  <%= render 'method_edit', delivery_method: @delivery_method %>
+</div>
