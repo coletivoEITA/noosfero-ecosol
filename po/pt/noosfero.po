@@ -2743,8 +2743,13 @@ msgstr "Ir à sua página inicial"
 #: app/views/blocks/profile_image.html.erb:21
 #: app/views/blocks/my_network.html.erb:9
 #: plugins/community_block/views/community_block.html.erb:20
+#: app/views/profile_editor/index.html.erb:6
 msgid "Control panel"
 msgstr "Painel de controle"
+
+#: app/views/profile_editor/index.html.erb:6
+msgid "Personal Control Panel"
+msgstr "Painel de Controle Pessoal"
 
 #: app/helpers/application_helper.rb:1149
 msgid "Configure your personal account and content"
@@ -6235,10 +6240,6 @@ msgstr "Meio dia"
 #: app/views/profile_editor/_person.html.erb:25
 msgid "Daily"
 msgstr "Diariamente"
-
-#: app/views/profile_editor/index.html.erb:6
-msgid "Control Panel"
-msgstr "Painel de Controle"
 
 #: app/views/profile_editor/index.html.erb:17
 #: app/views/maps/edit_location.html.erb:1
