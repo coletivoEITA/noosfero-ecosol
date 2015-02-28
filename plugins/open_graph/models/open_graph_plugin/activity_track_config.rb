@@ -3,6 +3,8 @@ class OpenGraphPlugin::ActivityTrackConfig < OpenGraphPlugin::TrackConfig
   # workaround for STI bug
   self.table_name = :open_graph_plugin_tracks
 
+  self.track_name = :activity
+
   def self.objects
     [
       'blog_post',

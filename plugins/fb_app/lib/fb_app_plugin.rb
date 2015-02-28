@@ -1,4 +1,6 @@
-class FbAppPlugin < Noosfero::Plugin
+module FbAppPlugin
+
+  extend Noosfero::Plugin::ParentMethods
 
   def self.plugin_name
     I18n.t 'fb_app_plugin.lib.plugin.name'
@@ -77,39 +79,5 @@ class FbAppPlugin < Noosfero::Plugin
     end
   end
 
-  def stylesheet?
-    true
-  end
-
-  def js_files
-    ['fb_app.js'].map{ |j| "javascripts/#{j}" }
-  end
-
-  def head_ending
-    return unless FbAppPlugin.config.present?
-    lambda do
-      tag 'meta', property: 'fb:app_id', content: FbAppPlugin.config[:app][:id]
-    end
-  end
-
-
-  def control_panel_buttons
-    return unless FbAppPlugin.config.present?
-    { title: self.class.plugin_name, icon: 'fb-app', url: {host: FbAppPlugin.config[:app][:domain], profile: profile.identifier, controller: :fb_app_plugin_myprofile} }
-  end
-
 end
-
-ActiveSupport.on_load :open_graph_plugin do
-  publisher = FbAppPlugin::Publisher.new
-  OpenGraphPlugin::Stories.register_publisher publisher
-  MetadataPlugin::Spec::Controllers[:fb_app_plugin_page_tab] = {
-    variable: :@product,
-  }
-end
-
-# workaround for plugins' scope problem
-require_dependency 'fb_app_plugin/display_helper'
-FbAppPlugin::FbAppDisplayHelper = FbAppPlugin::DisplayHelper
-
 

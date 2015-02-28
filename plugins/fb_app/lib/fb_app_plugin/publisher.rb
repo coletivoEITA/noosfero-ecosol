@@ -52,4 +52,8 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
     activity = OpenGraphPlugin::Activity.create! activity_params
   end
 
+  def context
+    :fb_app
+  end
+
 end

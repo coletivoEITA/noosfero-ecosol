@@ -12,7 +12,7 @@
           <a href="#track-<%=track%>" data-toggle="collapse" data-parent="#accordion" aria-controls="collapseTwo" onclick='open_graph.track.config.toggle(this, event)'>
             <span class='config-check fa'></span>
             <%= f.fields_for "#{context}_settings" do |ff| %>
-              <%= ff.hidden_field "#{track}_track_enabled" %>
+              <%= ff.hidden_field klass.track_enabled_field %>
             <% end %>
             <%= t("open_graph_plugin.views.track.config.#{track}.label") %>
           </a>

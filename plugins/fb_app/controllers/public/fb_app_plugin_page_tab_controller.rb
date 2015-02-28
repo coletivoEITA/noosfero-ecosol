@@ -8,7 +8,7 @@ class FbAppPluginPageTabController < FbAppPluginController
   include CatalogHelper
 
   helper ManageProductsHelper
-  helper FbAppPlugin::FbAppDisplayHelper
+  helper FbAppPlugin::DisplayHelper
 
   def index
     return unless load_page_tabs

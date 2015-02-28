@@ -55,5 +55,9 @@ class OpenGraphPlugin::Publisher
     end
   end
 
+  def context
+    :open_graph
+  end
+
 end
 
