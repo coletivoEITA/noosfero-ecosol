@@ -81,9 +81,11 @@ FastGettext.translation_repositories.each do |domain, repository|
         unless mo_file
           mo_file ||= FastGettext::MoFile.empty
           new_files[dest] = mo_file
+          mo_file.data = file.data
+        else
+          mo_file.data = file.data.merge mo_file.data
         end
 
-        mo_file.data = file.data.merge mo_file.data
       end
     end
 
