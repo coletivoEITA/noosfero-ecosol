@@ -155,49 +155,6 @@ class Noosfero::Plugin
       @all ||= available_plugins.map{ |dir| (File.basename(dir) + "_plugin").camelize }
     end
 
-    def identifier
-      @identifier ||= (if self.parents.first != Object then self.parents.first else self end).name.underscore
-    end
-
-    def public_name
-      @public_name ||= self.identifier.gsub '_plugin', ''
-    end
-
-    def public_path file = '', relative=false
-      File.join "#{if relative then '' else  '/' end}plugins", public_name, file
-    end
-
-    def root_path
-      Rails.root.join('plugins', public_name)
-    end
-
-    def view_path
-      File.join(root_path,'views')
-    end
-
-    def controllers
-      @controllers ||= Dir.glob("#{self.root_path}/controllers/*/*").map do |controller_file|
-        next unless controller_file =~ /_controller.rb$/
-        controller = File.basename(controller_file).gsub(/.rb$/, '').camelize
-      end.compact
-    end
-
-    # Here the developer should specify the meta-informations that the plugin can
-    # inform.
-    def plugin_name
-      self.identifier.humanize
-    end
-    def plugin_description
-      _("No description informed.")
-    end
-
-    def admin_url
-      {:controller => "#{self.identifier}_admin", :action => 'index'}
-    end
-
-    def has_admin_url?
-      File.exists?(File.join(root_path, 'controllers', "#{self.identifier}_admin_controller.rb"))
-    end
   end
 
   def expanded_template(file_path, locals = {})
