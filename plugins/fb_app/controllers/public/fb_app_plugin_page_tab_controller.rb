@@ -91,7 +91,7 @@ class FbAppPluginPageTabController < FbAppPluginController
     @query = params[:query]
     @profiles = scope.limit(10).order('name ASC').
       where(['name ILIKE ? OR name ILIKE ? OR identifier LIKE ?', "#{@query}%", "% #{@query}%", "#{@query}%"])
-    render partial: 'open_graph_plugin_myprofile/profile_search', locals: {profiles: @profiles}
+    render partial: 'open_graph_plugin/myprofile/profile_search', locals: {profiles: @profiles}
   end
 
   # unfortunetely, this needs to be public

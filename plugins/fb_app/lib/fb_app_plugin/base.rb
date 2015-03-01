@@ -30,4 +30,3 @@ ActiveSupport.on_load :open_graph_plugin do
   }
 end
 
-

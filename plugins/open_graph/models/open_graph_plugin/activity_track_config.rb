@@ -5,17 +5,12 @@ class OpenGraphPlugin::ActivityTrackConfig < OpenGraphPlugin::TrackConfig
 
   self.track_name = :activity
 
+  Objects = OpenGraphPlugin::Stories::TrackConfigStories[self.name].map do |story, data|
+    data[:object_type]
+  end.uniq
+
   def self.objects
-    [
-      'blog_post',
-      'friendship',
-      'gallery_image',
-      'uploaded_file',
-      'product',
-      'forum',
-      'event',
-      'enterprise',
-    ]
+    Objects
   end
 
   validates_inclusion_of :object_type, in: self.objects

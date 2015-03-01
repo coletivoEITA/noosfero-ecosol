@@ -1,4 +1,4 @@
-class OpenGraphPluginMyprofileController < MyProfileController
+class OpenGraphPlugin::MyprofileController < MyProfileController
 
   protect 'edit_profile', :profile
 
@@ -16,6 +16,7 @@ class OpenGraphPluginMyprofileController < MyProfileController
   end
 
   def track_config
+    profile.open_graph_context = self.context
     profile.update_attributes! params[:profile_data]
     render partial: 'track_form', locals: {context: context}
   end

@@ -1,4 +1,4 @@
-class FbAppPluginMyprofileController < OpenGraphPluginMyprofileController
+class FbAppPluginMyprofileController < OpenGraphPlugin::MyprofileController
 
   no_design_blocks
 

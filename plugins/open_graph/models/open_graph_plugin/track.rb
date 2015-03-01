@@ -7,11 +7,8 @@ class OpenGraphPlugin::Track < ActiveRecord::Base
   belongs_to :actor, class_name: 'Profile'
   belongs_to :object_data, polymorphic: true
 
-  scope :profile_trackers, lambda { |profile, exclude_actor=nil|
-    scope = where object_data_id: profile.id, object_data_type: profile['type']
-    scope = scope.where ['actor_id <> ?', exclude_actor.id] if exclude_actor
-    scope
-  }
+  validates_presence_of :context
+  before_validation :set_context
 
   def self.objects
     []
@@ -19,6 +16,12 @@ class OpenGraphPlugin::Track < ActiveRecord::Base
 
   def self.association
     @association ||= "open_graph_#{self.name.demodulize.pluralize.underscore}".to_sym
+  end
+
+  protected
+
+  def set_context
+    self.context = self.actor.context rescue self.object_data.context rescue self.tracker.context
   end
 
 end

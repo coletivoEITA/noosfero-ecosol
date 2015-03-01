@@ -22,14 +22,23 @@ class OpenGraphPlugin::Publisher
   def publish_stories object_data, actor, stories
     stories.each do |story|
       defs = OpenGraphPlugin::Stories::Definitions[story]
+      track_configs = Array[defs[:track_config]].compact.map(&:constantize)
+      trackers = []
+
+      unless defs[:tracker]
+        match_track = actor.open_graph_track_configs.where(object_type: defs[:object_type]).count > 0
+        return unless track_configs.map{ |c|  }.any?{ |t| t }
+      else
+        match_track = true
+        exclude_actor = actor
+        trackers = track_configs.map{ |c| c.profile_trackers object_data, exclude_actor }.flatten
+      end
+      next unless match_track
 
       match_criteria = if criteria = defs[:criteria] then criteria.call(object_data) else true end
       next unless match_criteria
       match_condition = if publish_if = defs[:publish_if] then publish_if.call(object_data) else true end
       next unless match_condition
-      # HANDLE passive stories
-      match_track = actor.open_graph_track_configs.where(object_type: defs[:object_type]).count > 0
-      next unless match_track
 
       if publish = defs[:publish]
         publish.call actor, object_data, self
@@ -39,8 +48,6 @@ class OpenGraphPlugin::Publisher
 
         #begin
           if defs[:tracker]
-            exclude_actor = actor
-            trackers = OpenGraphPlugin::Track.profile_trackers object_data, exclude_actor
             trackers.each do |tracker|
               self.publish tracker.tracker, defs, object_data_url
             end

@@ -20,6 +20,8 @@ end
 
 class Profile
 
+  class_attribute :open_graph_context
+
   def open_graph_settings attrs = {}
     @open_graph_settings ||= OpenGraphPlugin::Settings.new self, attrs
   end

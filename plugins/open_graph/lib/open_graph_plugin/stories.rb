@@ -50,6 +50,7 @@ class OpenGraphPlugin::Stories
   Definitions = {
     add_a_document: {
       action_tracker_verb: :create_article,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :add,
       object_type: :uploaded_file,
       models: :UploadedFile,
@@ -68,6 +69,7 @@ class OpenGraphPlugin::Stories
     },
     add_an_image: {
       action_tracker_verb: :create_article,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :add,
       object_type: :gallery_image,
       models: :UploadedFile,
@@ -84,6 +86,7 @@ class OpenGraphPlugin::Stories
     },
     create_an_article: {
       action_tracker_verb: :create_article,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :create,
       object_type: :blog_post,
       models: :Article,
@@ -97,6 +100,7 @@ class OpenGraphPlugin::Stories
     },
     create_an_event: {
       action_tracker_verb: :create_article,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :create,
       object_type: :event,
       models: :Event,
@@ -110,6 +114,7 @@ class OpenGraphPlugin::Stories
     },
     start_a_discussion: {
       action_tracker_verb: :create_article,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :start,
       object_type: :forum,
       models: :Article,
@@ -124,6 +129,7 @@ class OpenGraphPlugin::Stories
 
     add_a_sse_product: {
       action_tracker_verb: :create_product,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :announce_new,
       object_type: :product,
       models: :Product,
@@ -131,6 +137,7 @@ class OpenGraphPlugin::Stories
     },
     update_a_sse_product: {
       action_tracker_verb: :update_product,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :announce_update,
       object_type: :product,
       models: :Product,
@@ -139,6 +146,7 @@ class OpenGraphPlugin::Stories
 
     favorite_an_sse_enterprise: {
       action_tracker_verb: nil,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :create,
       object_type: :favorite_enterprise_person,
       models: :FavoriteEnterprisePerson,
@@ -181,6 +189,7 @@ class OpenGraphPlugin::Stories
 
     make_friendship_with: {
       action_tracker_verb: :make_friendship,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :make_friendship,
       object_type: :friend,
       models: :Friendship,
@@ -194,6 +203,7 @@ class OpenGraphPlugin::Stories
     # PASSIVE STORIES
     announce_news_from_a_sse_enterprise: {
       action_tracker_verb: :create_article,
+      track_config: 'OpenGraphPlugin::EnterpriseTrackConfig',
       action: :announce_update,
       object_type: :enterprise,
       models: :Article,
@@ -202,6 +212,7 @@ class OpenGraphPlugin::Stories
     },
     announce_a_new_sse_product: {
       action_tracker_verb: :create_product,
+      track_config: 'OpenGraphPlugin::EnterpriseTrackConfig',
       action: :announce_new,
       object_type: :product,
       models: :Product,
@@ -210,6 +221,7 @@ class OpenGraphPlugin::Stories
     },
     announce_an_update_of_sse_product: {
       action_tracker_verb: :update_product,
+      track_config: 'OpenGraphPlugin::EnterpriseTrackConfig',
       action: :announce_update,
       object_type: :product,
       models: :Product,
@@ -219,6 +231,7 @@ class OpenGraphPlugin::Stories
 
     announce_news_from_a_community: {
       action_tracker_verb: :create_article,
+      track_config: 'OpenGraphPlugin::CommunityTrackConfig',
       action: :announce_update,
       object_type: :action,
       models: [:Article, :Image],
@@ -244,6 +257,14 @@ class OpenGraphPlugin::Stories
       next unless verb
       TrackerStories[verb] ||= []
       TrackerStories[verb] << story
+    end
+  end
+
+  TrackConfigStories = {}; Definitions.each do |story, data|
+    Array[data[:track_config]].each do |track_config|
+      next unless track_config
+      TrackConfigStories[track_config] ||= []
+      TrackConfigStories[track_config] << [story, data]
     end
   end
 
