@@ -5,7 +5,7 @@ class OpenGraphPlugin::EnterpriseTrackConfig < OpenGraphPlugin::TrackConfig
 
   self.track_name = :enterprise
 
-  def self.trackers object_data, from_actor
+  def self.trackers object_data, from_actor=nil
     case object_data
     when Product
       profile = object_data.profile
@@ -13,8 +13,8 @@ class OpenGraphPlugin::EnterpriseTrackConfig < OpenGraphPlugin::TrackConfig
       profile = object_data
     end
     trackers = profile.members.to_set
-    trackers.concat profile.fans if profile.respond_to? :fans
-    trackers.reject!{ |t| t == from_actor }
+    trackers.merge profile.fans if profile.respond_to? :fans
+    trackers.reject!{ |t| t == from_actor } if from_actor
     trackers
   end
 

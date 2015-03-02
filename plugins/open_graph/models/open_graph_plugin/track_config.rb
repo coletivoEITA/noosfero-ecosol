@@ -24,7 +24,7 @@ class OpenGraphPlugin::TrackConfig < OpenGraphPlugin::Track
   end
 
   # redefine on subclasses
-  def self.trackers object_data, from_actor
+  def self.trackers object_data, from_actor=nil
     return [] unless object_data.is_a? Profile
     self.profile_trackers object_data, from_actor
   end

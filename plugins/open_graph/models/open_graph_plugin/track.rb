@@ -21,7 +21,7 @@ class OpenGraphPlugin::Track < ActiveRecord::Base
   protected
 
   def set_context
-    self.context = self.actor.context rescue self.object_data.context rescue self.tracker.context
+    self.context = OpenGraphPlugin.context
   end
 
 end

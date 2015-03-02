@@ -17,12 +17,37 @@ class MetadataPlugin < Noosfero::Plugin
     @og_types ||= self.config[:open_graph][:types] rescue {}
   end
 
+  CONTROLLERS = {
+    manage_products: {
+      variable: :@product,
+    },
+    content_viewer: {
+      variable: proc do
+        if profile and profile.home_page_id == @page.id
+          @profile
+        elsif @page.respond_to? :encapsulated_file
+          @page.encapsulated_file
+        else
+          @page
+        end
+      end,
+    },
+    # fallback
+    profile: {
+      variable: :@profile,
+    },
+    # last fallback
+    environment: {
+      variable: :@environment,
+    },
+  }
+
   def head_ending
     plugin = self
     lambda do
-      options = MetadataPlugin::Spec::Controllers[controller.controller_path.to_sym]
-      options ||= MetadataPlugin::Spec::Controllers[:profile] if controller.is_a? ProfileController
-      options ||= MetadataPlugin::Spec::Controllers[:environment]
+      options = MetadataPlugin::CONTROLLERS[controller.controller_path.to_sym]
+      options ||= MetadataPlugin::CONTROLLERS[:profile] if controller.is_a? ProfileController
+      options ||= MetadataPlugin::CONTROLLERS[:environment]
       return unless options
 
       return unless object = case variable = options[:variable]

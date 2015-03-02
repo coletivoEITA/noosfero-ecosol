@@ -1,6 +1,7 @@
 class OpenGraphPlugin::MyprofileController < MyProfileController
 
   protect 'edit_profile', :profile
+  before_filter :set_context
 
   def enterprise_search
     scope = environment.enterprises.enabled.public
@@ -16,7 +17,6 @@ class OpenGraphPlugin::MyprofileController < MyProfileController
   end
 
   def track_config
-    profile.open_graph_context = self.context
     profile.update_attributes! params[:profile_data]
     render partial: 'track_form', locals: {context: context}
   end
@@ -32,6 +32,10 @@ class OpenGraphPlugin::MyprofileController < MyProfileController
 
   def context
     :open_graph
+  end
+
+  def set_context
+    OpenGraphPlugin.context = self.context
   end
 
 end
