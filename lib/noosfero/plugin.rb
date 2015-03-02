@@ -701,10 +701,9 @@ class Noosfero::Plugin
     end
   end
 
-  def respond_to_with_context? method, include_private=true
-    respond_to_without_context? method, include_private or self.context.respond_to? method, include_private
+  def respond_to_missing? method, include_private=true
+    self.context.respond_to? method, include_private or super
   end
-  alias_method_chain :respond_to?, :context
 
   private
 
