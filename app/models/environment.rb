@@ -3,13 +3,14 @@
 # domains.
 class Environment < ActiveRecord::Base
 
-  attr_accessible :name, :is_default, :signup_welcome_text_subject, :signup_welcome_text_body, :terms_of_use, :message_for_disabled_enterprise, :news_amount_by_folder, :default_language, :languages, :description, :organization_approval_method, :enabled_plugins, :enabled_features, :redirection_after_login, :redirection_after_signup, :contact_email, :theme, :reports_lower_bound, :noreply_email, :signup_welcome_screen_body, :members_whitelist_enabled, :members_whitelist
+  attr_accessible :name, :is_default, :signup_welcome_text_subject, :signup_welcome_text_body, :terms_of_use, :message_for_disabled_enterprise, :news_amount_by_folder, :default_language, :languages, :description, :organization_approval_method, :enabled_plugins, :enabled_features, :redirection_after_login, :redirection_after_signup, :contact_email, :theme, :reports_lower_bound, :noreply_email, :signup_welcome_screen_body, :members_whitelist_enabled, :members_whitelist, :highlighted_news_amount, :portal_news_amount
 
   has_many :users
 
   self.partial_updates = false
 
   has_many :tasks, :dependent => :destroy, :as => 'target'
+  has_many :search_terms, :as => :context
 
   IDENTIFY_SCRIPTS = /(php[0-9s]?|[sp]htm[l]?|pl|py|cgi|rb)/
 
@@ -87,7 +88,9 @@ class Environment < ActiveRecord::Base
   end
 
   def admins
-    Person.members_of(self).all(:conditions => ['role_assignments.role_id = ?', Environment::Roles.admin(self).id])
+    admin_role = Environment::Roles.admin(self)
+    return [] if admin_role.blank?
+    Person.members_of(self).all(:conditions => ['role_assignments.role_id = ?', admin_role.id])
   end
 
   # returns the available features for a Environment, in the form of a
@@ -157,7 +160,8 @@ class Environment < ActiveRecord::Base
       'site_homepage' => _('Redirects the user to the environment homepage.'),
       'user_profile_page' => _('Redirects the user to his profile page.'),
       'user_homepage' => _('Redirects the user to his homepage.'),
-      'user_control_panel' => _('Redirects the user to his control panel.')
+      'user_control_panel' => _('Redirects the user to his control panel.'),
+      'welcome_page' => _('Redirects the user to the environment welcome page.')
     }
   end
   validates_inclusion_of :redirection_after_signup, :in => Environment.signup_redirection_options.keys, :allow_nil => true
@@ -269,6 +273,8 @@ class Environment < ActiveRecord::Base
   settings_items :description, :type => String, :default => '<div style="text-align: center"><a href="http://noosfero.org/"><img src="/images/noosfero-network.png" alt="Noosfero"/></a></div>'
   settings_items :local_docs, :type => Array, :default => []
   settings_items :news_amount_by_folder, :type => Integer, :default => 4
+  settings_items :highlighted_news_amount, :type => Integer, :default => 2
+  settings_items :portal_news_amount, :type => Integer, :default => 5
   settings_items :help_message_to_add_enterprise, :type => String, :default => ''
   settings_items :tip_message_enterprise_activation_question, :type => String, :default => ''
 
@@ -846,6 +852,10 @@ class Environment < ActiveRecord::Base
 
   def portal_news_cache_key(language='en')
     "home-page-news/#{cache_key}-#{language}"
+  end
+
+  def portal_enabled
+    portal_community && enabled?('use_portal_community')
   end
 
   def notification_emails

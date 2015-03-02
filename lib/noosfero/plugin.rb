@@ -557,13 +557,6 @@ class Noosfero::Plugin
     params
   end
 
-  # -> Finds objects by their contents
-  # returns = {:results => [a, b, c, ...], ...}
-  # P.S.: The plugin might add other informations on the return hash for its
-  # own use in specific views
-  def find_by_contents asset, scope, query, paginate_options={:page => 1}, options={}
-  end
-
   # -> Auto complete search
   # returns = {:results => [a, b, c, ...], ...}
   # P.S.: The plugin might add other informations on the return hash for its
@@ -575,6 +568,27 @@ class Noosfero::Plugin
   # returns = { select_options: [['Name', 'key'], ['Name2', 'key2']] }
   def search_order asset
     nil
+  end
+
+  # -> Finds objects by their contents
+  # returns = {:results => [a, b, c, ...], ...}
+  # P.S.: The plugin might add other informations on the return hash for its
+  # own use in specific views
+  def find_by_contents(asset, scope, query, paginate_options={}, options={})
+    scope = scope.like_search(query, options) unless query.blank?
+    scope = scope.send(options[:filter]) unless options[:filter].blank?
+    {:results => scope.paginate(paginate_options)}
+  end
+
+  # -> Suggests terms based on asset and query
+  # returns = [a, b, c, ...]
+  def find_suggestions(query, context, asset, options={:limit => 5})
+    context.search_terms.
+      where(:asset => asset).
+      where("search_terms.term like ?", "%#{query}%").
+      where('search_terms.score > 0').
+      order('search_terms.score DESC').
+      limit(options[:limit]).map(&:term)
   end
 
   # -> Adds aditional fields for change_password

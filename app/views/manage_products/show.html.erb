@@ -23,7 +23,7 @@ show_supplier = false unless defined? show_supplier
     <%= render :partial => 'manage_products/display_name' %>
   </div>
 
-  <% if show_supplier %>  
+  <% if show_supplier %>
     <div id='product-owner'>
       <%= _('Offered by') %>: <span id='product-owner-name'><%= link_to @product.profile.short_name(nil), @product.profile.url %></span>
     </div>
@@ -67,6 +67,7 @@ show_supplier = false unless defined? show_supplier
           <li class='tab'><a href='#<%=tab[:id]%>'><%= tab[:title] %></a></li>
         <% end %>
       </ul>
+
       <div id='product-description'>
         <%= render :partial => 'manage_products/display_description' %>
       </div>
@@ -85,6 +86,11 @@ show_supplier = false unless defined? show_supplier
       <% plugins_tabs.each do |tab| %>
         <div id='<%=tab[:id]%>'><%= raw tab[:content] %></div>
       <% end %>
+
+      <% plugins_tabs.each do |tab| %>
+        <div id='<%=tab[:id]%>'><%= raw tab[:content] %></div>
+      <% end %>
+
     </div>
   <% end %>
 

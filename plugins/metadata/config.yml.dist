@@ -1,6 +1,12 @@
 open_graph:
+  domain: domainregisteredonfacebook.com
+  environment_logo: 'http://example.com/designs/themes/environmenttheme/images/logo.png'
   types:
     article: article
-    product: product
-    profile: profile
-
+    product: facebook_app:sse_product
+    uploaded_file: facebook_app:document
+    image: facebook_app:picture
+    profile: facebook_app:profile
+    person: facebook_app:user
+    community: facebook_app:community
+    enterprise: facebook_app:sse_initiative

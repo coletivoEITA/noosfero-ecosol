@@ -15,7 +15,7 @@ class ExternalFeed < ActiveRecord::Base
   def add_item(title, link, date, content)
     return if content.blank?
     doc = Nokogiri::HTML.fragment content
-    doc.search('*').each do |p|
+    doc.css('*').each do |p|
       if p.instance_of? Nokogiri::XML::Element
         p.remove_attribute 'style'
         p.remove_attribute 'class'

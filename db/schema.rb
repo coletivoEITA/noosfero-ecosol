@@ -201,36 +201,6 @@ ActiveRecord::Schema.define(:version => 20150216213259) do
 
   add_index "boxes", ["owner_type", "owner_id"], :name => "index_boxes_on_owner_type_and_owner_id"
 
-  create_table "bsc_plugin_contracts", :force => true do |t|
-    t.string   "client_name"
-    t.integer  "client_type"
-    t.integer  "business_type"
-    t.string   "state"
-    t.string   "city"
-    t.integer  "status",              :default => 0
-    t.integer  "number_of_producers", :default => 0
-    t.datetime "supply_start"
-    t.datetime "supply_end"
-    t.text     "annotations"
-    t.integer  "bsc_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "bsc_plugin_contracts_enterprises", :id => false, :force => true do |t|
-    t.integer "contract_id"
-    t.integer "enterprise_id"
-  end
-
-  create_table "bsc_plugin_sales", :force => true do |t|
-    t.integer  "product_id",  :null => false
-    t.integer  "contract_id", :null => false
-    t.integer  "quantity",    :null => false
-    t.decimal  "price"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "categories", :force => true do |t|
     t.string  "name"
     t.string  "slug"
@@ -279,43 +249,6 @@ ActiveRecord::Schema.define(:version => 20150216213259) do
     t.string   "body"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "comment_classification_plugin_comment_label_user", :force => true do |t|
-    t.integer  "profile_id"
-    t.integer  "comment_id"
-    t.integer  "label_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "comment_classification_plugin_comment_status_user", :force => true do |t|
-    t.integer  "profile_id"
-    t.integer  "comment_id"
-    t.integer  "status_id"
-    t.text     "reason"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "comment_classification_plugin_labels", :force => true do |t|
-    t.string   "name"
-    t.string   "color"
-    t.boolean  "enabled",    :default => true
-    t.integer  "owner_id"
-    t.string   "owner_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "comment_classification_plugin_statuses", :force => true do |t|
-    t.string   "name"
-    t.boolean  "enabled",       :default => true
-    t.boolean  "enable_reason", :default => true
-    t.integer  "owner_id"
-    t.string   "owner_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "comments", :force => true do |t|
@@ -941,7 +874,9 @@ ActiveRecord::Schema.define(:version => 20150216213259) do
     t.integer  "activities_count",        :default => 0,     :null => false
     t.string   "personal_website"
     t.string   "jabber_id"
-    t.string   "usp_id"
+    t.integer  "welcome_page_id"
+    t.boolean  "allow_members_to_invite",               :default => true
+    t.boolean  "invite_friends_only",                   :default => false
   end
 
   add_index "profiles", ["activities_count"], :name => "index_profiles_on_activities_count"
@@ -1016,6 +951,31 @@ ActiveRecord::Schema.define(:version => 20150216213259) do
     t.datetime "updated_at"
   end
 
+  create_table "search_term_occurrences", :force => true do |t|
+    t.integer  "search_term_id"
+    t.datetime "created_at"
+    t.integer  "total",          :default => 0
+    t.integer  "indexed",        :default => 0
+  end
+
+  add_index "search_term_occurrences", ["created_at"], :name => "index_search_term_occurrences_on_created_at"
+
+  create_table "search_terms", :force => true do |t|
+    t.string  "term"
+    t.integer "context_id"
+    t.string  "context_type"
+    t.string  "asset",            :default => "all"
+    t.float   "score",            :default => 0.0
+    t.float   "relevance_score",  :default => 0.0
+    t.float   "occurrence_score", :default => 0.0
+  end
+
+  add_index "search_terms", ["asset"], :name => "index_search_terms_on_asset"
+  add_index "search_terms", ["occurrence_score"], :name => "index_search_terms_on_occurrence_score"
+  add_index "search_terms", ["relevance_score"], :name => "index_search_terms_on_relevance_score"
+  add_index "search_terms", ["score"], :name => "index_search_terms_on_score"
+  add_index "search_terms", ["term"], :name => "index_search_terms_on_term"
+
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
@@ -1026,60 +986,11 @@ ActiveRecord::Schema.define(:version => 20150216213259) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
-  create_table "shopping_cart_plugin_purchase_orders", :force => true do |t|
-    t.integer  "customer_id"
-    t.integer  "seller_id"
-    t.text     "data"
-    t.integer  "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "suggestion_connections", :force => true do |t|
+    t.integer "suggestion_id",   :null => false
+    t.integer "connection_id",   :null => false
+    t.string  "connection_type", :null => false
   end
-
-  create_table "sub_organizations_plugin_approve_paternity_relations", :force => true do |t|
-    t.integer "task_id"
-    t.integer "parent_id"
-    t.string  "parent_type"
-    t.integer "child_id"
-    t.string  "child_type"
-  end
-
-  create_table "sub_organizations_plugin_relations", :force => true do |t|
-    t.integer "parent_id"
-    t.string  "parent_type"
-    t.integer "child_id"
-    t.string  "child_type"
-  end
-
-  create_table "suppliers_plugin_source_products", :force => true do |t|
-    t.integer  "from_product_id"
-    t.integer  "to_product_id"
-    t.decimal  "quantity",        :default => 0.0
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "supplier_id"
-  end
-
-  add_index "suppliers_plugin_source_products", ["from_product_id", "to_product_id"], :name => "suppliers_plugin_index_dtBULzU3"
-  add_index "suppliers_plugin_source_products", ["from_product_id"], :name => "index_distribution_plugin_source_products_on_from_product_id"
-  add_index "suppliers_plugin_source_products", ["supplier_id", "from_product_id", "to_product_id"], :name => "suppliers_plugin_index_VBNqyeCP"
-  add_index "suppliers_plugin_source_products", ["supplier_id", "from_product_id"], :name => "suppliers_plugin_index_naHsVLS6cH"
-  add_index "suppliers_plugin_source_products", ["supplier_id"], :name => "suppliers_plugin_index_Lm5QPpV8"
-  add_index "suppliers_plugin_source_products", ["to_product_id"], :name => "index_distribution_plugin_source_products_on_to_product_id"
-
-  create_table "suppliers_plugin_suppliers", :force => true do |t|
-    t.integer  "consumer_id"
-    t.string   "name"
-    t.string   "name_abbreviation"
-    t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "profile_id"
-    t.boolean  "active",            :default => true
-  end
-
-  add_index "suppliers_plugin_suppliers", ["consumer_id"], :name => "index_distribution_plugin_suppliers_on_consumer_id"
-  add_index "suppliers_plugin_suppliers", ["profile_id", "consumer_id"], :name => "index_suppliers_plugin_suppliers_on_profile_id_and_consumer_id"
-  add_index "suppliers_plugin_suppliers", ["profile_id"], :name => "index_suppliers_plugin_suppliers_on_profile_id"
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
@@ -1092,12 +1003,14 @@ ActiveRecord::Schema.define(:version => 20150216213259) do
   end
 
   add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], :name => "taggings_idx", :unique => true
+  add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
   add_index "taggings", ["taggable_id", "taggable_type"], :name => "index_taggings_on_taggable_id_and_taggable_type"
 
   create_table "tags", :force => true do |t|
     t.string  "name"
     t.integer "parent_id"
-    t.boolean "pending",   :default => false
+    t.boolean "pending",        :default => false
+    t.integer "taggings_count", :default => 0
   end
 
   add_index "tags", ["name"], :name => "index_tags_on_name", :unique => true
@@ -1179,32 +1092,6 @@ ActiveRecord::Schema.define(:version => 20150216213259) do
     t.text    "restrictions"
     t.integer "organization_id"
   end
-
-  create_table "volunteers_plugin_assignments", :force => true do |t|
-    t.integer  "profile_id"
-    t.integer  "period_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "volunteers_plugin_assignments", ["period_id"], :name => "index_volunteers_plugin_assignments_on_period_id"
-  add_index "volunteers_plugin_assignments", ["profile_id", "period_id"], :name => "index_volunteers_plugin_assignments_on_profile_id_and_period_id"
-  add_index "volunteers_plugin_assignments", ["profile_id"], :name => "index_volunteers_plugin_assignments_on_profile_id"
-
-  create_table "volunteers_plugin_periods", :force => true do |t|
-    t.integer  "owner_id"
-    t.string   "owner_type"
-    t.text     "name"
-    t.datetime "start"
-    t.datetime "end"
-    t.integer  "minimum_assigments"
-    t.integer  "maximum_assigments"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
-  end
-
-  add_index "volunteers_plugin_periods", ["owner_id", "owner_type"], :name => "index_volunteers_plugin_periods_on_owner_id_and_owner_type"
-  add_index "volunteers_plugin_periods", ["owner_type"], :name => "index_volunteers_plugin_periods_on_owner_type"
 
   create_table "votes", :force => true do |t|
     t.integer  "vote",          :null => false

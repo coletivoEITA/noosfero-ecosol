@@ -319,26 +319,6 @@ class ContentViewerControllerTest < ActionController::TestCase
     assert_tag :content => /list my comment/
   end
 
-  should 'show link to publication on view' do
-    page = profile.articles.create!(:name => 'myarticle', :body => 'the body of the text')
-    login_as(profile.identifier)
-
-    xhr :get, :view_page, :profile => profile.identifier, :page => ['myarticle'], :toolbar => true
-
-    assert_tag :tag => 'a', :attributes => {:href => ('/myprofile/' + profile.identifier + '/cms/publish/' + page.id.to_s)}
-  end
-
-  should 'not show link to publication on view if not on person profile' do
-    prof = Community.create!(:name => 'test comm', :identifier => 'test_comm')
-    page = prof.articles.create!(:name => 'myarticle', :body => 'the body of the text')
-    prof.affiliate(profile, Profile::Roles.all_roles(prof.environment.id))
-    login_as(profile.identifier)
-
-    xhr :get, :view_page, :profile => prof.identifier, :page => ['myarticle'], :toolbar => true
-
-    assert_no_tag :tag => 'a', :attributes => {:href => ('/myprofile/' + prof.identifier + '/cms/publish/' + page.id.to_s)}
-  end
-
   should 'redirect to new article path under an old path' do
     p = create_user('test_user').person
     a = p.articles.create(:name => 'old-name')
@@ -986,6 +966,8 @@ class ContentViewerControllerTest < ActionController::TestCase
   end
 
   should 'display add translation link if article is translatable' do
+    environment.languages = ['en']
+    environment.save
     login_as @profile.identifier
     textile = fast_create(TextileArticle, :profile_id => @profile.id, :path => 'textile', :language => 'en')
     xhr :get, :view_page, :profile => @profile.identifier, :page => textile.path, :toolbar => true
@@ -1429,30 +1411,6 @@ class ContentViewerControllerTest < ActionController::TestCase
       get 'view_page', :profile => profile.identifier, :page => article.path.split('/')
       article.reload
     end
-  end
-
-  should 'add meta tags with article info' do
-    a = TinyMceArticle.create(:name => 'Article to be shared', :body => 'This article should be shared with all social networks', :profile => profile)
-
-    get :view_page, :profile => profile.identifier, :page => [ a.name.to_slug ]
-
-    assert_tag :tag => 'meta', :attributes => { :name => 'twitter:title', :content => /#{a.name} - #{a.profile.name}/ }
-    assert_tag :tag => 'meta', :attributes => { :name => 'twitter:description', :content => a.body }
-    assert_no_tag :tag => 'meta', :attributes => { :name => 'twitter:image' }
-    assert_tag :tag => 'meta', :attributes => { :property => 'og:type', :content => 'article' }
-    assert_tag :tag => 'meta', :attributes => { :property => 'og:url', :content => /\/#{profile.identifier}\/#{a.name.to_slug}/ }
-    assert_tag :tag => 'meta', :attributes => { :property => 'og:title', :content => /#{a.name} - #{a.profile.name}/ }
-    assert_tag :tag => 'meta', :attributes => { :property => 'og:site_name', :content => a.profile.name }
-    assert_tag :tag => 'meta', :attributes => { :property => 'og:description', :content => a.body }
-    assert_no_tag :tag => 'meta', :attributes => { :property => 'og:image' }
-  end
-
-  should 'add meta tags with article images' do
-    a = TinyMceArticle.create(:name => 'Article to be shared with images', :body => 'This article should be shared with all social networks <img src="/images/x.png" />', :profile => profile)
-
-    get :view_page, :profile => profile.identifier, :page => [ a.name.to_slug ]
-    assert_tag :tag => 'meta', :attributes => { :name => 'twitter:image', :content => /\/images\/x.png/ }
-    assert_tag :tag => 'meta', :attributes => { :property => 'og:image', :content => /\/images\/x.png/  }
   end
 
   should 'manage  private article visualization' do

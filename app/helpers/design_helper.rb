@@ -3,10 +3,9 @@ module DesignHelper
   extend ActiveSupport::Concern
 
   included do
-    next unless self.is_a? ActionController::Base
     extend ClassMethods
     include InstanceMethods
-    before_filter :load_custom_design
+    before_filter :load_custom_design if self.respond_to? :before_filter
   end
 
   module ClassMethods
@@ -31,10 +30,6 @@ module DesignHelper
 
   module InstanceMethods
 
-    def custom_design
-      self.class.custom_design
-    end
-
     protected
 
     def uses_design_blocks?
@@ -42,7 +37,12 @@ module DesignHelper
     end
 
     def load_custom_design
+      # see also: LayoutHelper#body_classes
       @layout_template = self.class.custom_design[:layout_template]
+    end
+
+    def custom_design
+      @custom_design || self.class.custom_design
     end
 
   end

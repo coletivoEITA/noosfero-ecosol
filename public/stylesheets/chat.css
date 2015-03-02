@@ -1,33 +1,85 @@
 #chat {
-  width: 350px;
+  width: 0;
   height: 100%;
-  display: none;
   position: fixed;
   right: 0;
   top: 0;
-  z-index: 900;
+  z-index: 10;
   background-color: #FFF;
   box-shadow: -3px 0px 5px #888;
+  transition: width 0.3s ease-in;
+}
+
+#chat.opened {
+  width: 350px;
+  transition: width 0.3s ease-in;
+}
+
+#chat-window {
+  height: 100%;
+  position: relative;
 }
 
 #chat #buddy-list {
   background-color: #f9f9f9;
-  width: 175px;
-  height: 75%;
-  overflow: hidden;
+  top: 0;
+  right: -5px;
+  width: 0;
+  bottom: 100px;
   position: absolute;
-  right: 0;
   border-left: 1px solid #DCE4E7;
   border-bottom: 1px solid #DCE4E7;
+  z-index: 2;
+  transition: width 0.3s ease-in;
 }
+
+#chat.opened #buddy-list {
+  width: 70px;
+  transition: width 0.3s ease-in;
+}
+
+#chat #buddy-list:hover {
+  right: 0;
+  width: 190px;
+  transition: width 0.3s ease-in;
+}
+
 #buddy-list .buddies {
+  position: absolute;
+  bottom: 0;
+  top: 25px;
+  right: 6px;
+  left: 7px;
+  bottom: 7px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: all 0.3s ease-in;
+}
+
+#buddy-list:hover .buddies {
+  top: 57px;
+  left: 15px;
+  right: 0;
+  transition: all 0.3s ease-in;
+}
+
+#buddy-list .buddies ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
-#buddy-list .buddies a:hover, .occupant-list li a:hover {
-  background-color: #EEEEEC;
+#buddy-list .buddies a:hover {
+  background-color: #eeeeec;
 }
+
+.occupant-list li a:hover {
+  background-color: black;
+}
+
+.occupant-list .icon-menu-chat-11 {
+  background-image: none;
+}
+
 #buddy-list .buddies li a, .occupant-list li a {
   background-position: 0% 50%;
   display: block;
@@ -44,8 +96,11 @@
   display: inline-block;
   max-width: 128px;
   overflow: hidden;
-  line-height: 35px;
 }
+.occupant-list li a .name {
+  color: white;
+}
+
 #buddy-list .buddies li a img, .occupant-list li a img, #chat .avatar {
   border-radius: 5px;
   width: 32px;
@@ -53,10 +108,10 @@
   vertical-align: middle;
 }
 #chat #buddy-list .toolbar {
-  border: 0;
   height: 45px;
-  background-color: rgb(39, 39, 39);
-  border-bottom: 1px solid #383838;
+  width: 100%;
+  background-color: #bbbeb7;
+  display: table;
 }
 #buddy-list .toolbar .dialog-error {
   position: absolute;
@@ -73,35 +128,44 @@
   margin: 0 0 5px 0;
 }
 
-
 #buddy-list .body{
-  position: relative;
-  padding: 5px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 20px;
+  padding: 15px;
+  transition: top 0.3s ease-in;
+}
+
+#buddy-list:hover .body{
+  top: 45px;
+  transition: top 0.3s ease-in;
 }
 
 #buddy-list .search{
-  width: 150px;
-  padding: 7px;
-  color: #FFF;
-  background-color: #BABDB6;
+  width: 142px;
+  padding: 0;
+  height: 0;
+  color: #000;
+  background-color: #dee1da;
   border: 0;
-  margin-bottom: 5px;
+  transition: all 0.2s ease-in;
 }
 
-.conversation {
-  background-color: #303030;
-  height: 100%;
-  position: absolute;
-  width: 100%;
-  top: 0;
-  right: 0;
+#buddy-list:hover .search{
+  transition: all 0.3s ease-in 0.3;
+  height: 16px;
+  padding: 9px;
 }
+
 .conversation .input-div {
   position: absolute;
   right: 0;
-  bottom: 0;
-  padding: 0 20px 15px 15px;
-  border-top: 1px solid rgb(65, 65, 65);
+  left: 0;
+  bottom: 33px;
+  height: 80px;
+  padding-left: 7px;
 }
 .msie7 .conversation .input-div {
   padding-left: 5px;
@@ -118,63 +182,85 @@
   left: 20px;
 }
 .conversation textarea {
-  height: 60px;
-  padding-left: 25px;
+  height: 100%;
+  width: 304px;
   overflow: auto;
+  padding-left: 25px;
+  padding-top: 3px;
 }
-.conversation .history {
-  position: absolute;
-  right: 0;
-  top: 40px;
-  bottom: 100px;
+#conversations .history {
   overflow: hidden;
-  width: 100%;
+  position: absolute;
+  right: 66px;
+  left: 0;
+  top: 45px;
+  bottom: 100px;
 }
-.msie7 #chat-window .conversation .history {
-  overflow-x: hidden;
+
+#conversations .history.room {
+  bottom: 132px;
 }
+
 #chat .unread-messages {
-  float: right;
-  margin-right: 12px;
-  padding-left: 19px;
-  background-position: 0;
+  height: 32px;
+  line-height: 32px;
+  width: 32px;
+  background-color: black;
+  border-radius: 5px;
+  color: white;
+  font-size: 22px;
+  text-align: center;
+  vertical-align: middle;
 }
+
 #chat-window .history .message {
   padding: 10px 8px 10px 6px;
   clear: both;
 }
+
+#chat-window .history .message.self .time {
+  color: #888a85;
+}
+
 #chat-window .history .message .time {
   float: right;
-  color: rgb(184, 184, 184);
+  color: white;
   font-style: italic;
   font-size: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid #d3d7cf;
   width: 100%;
   text-align: right;
+  margin-bottom: 5px;
 }
 #chat-window .history .message h5, #chat-window .history .message p {
   margin: 0;
 }
 #chat-window .history .message p {
-  max-width: 100%;
-  overflow: auto;
-  clear: both;
+  margin-left: 40px;
+  word-wrap: break-word;
+}
+
+#chat-window .history .message.self p {
+  margin-left: 1px;
+  margin-right: 40px;
 }
 
 #chat-window .history .message .content {
-  background-color: #257CAD;
-  color: rgb(223, 223, 223);
-  padding: 5px;
+  background-color: #bbbeb7;
+  color: white;;
+  padding: 8px;
   border-radius: 5px;
   display: inline-block;
-  width: 74%;
+  width: 248px;
+  font-size: 15px;
 }
 #chat-window .history .message .content a {
   color: rgb(108, 226, 255);
   text-decoration: none;
 }
 #chat-window .history .message.self .content {
-  background-color: #383838;
+  background-color: #f9f9f9;
+  color: #888a85;
 }
 
 #chat-window .history .message .avatar {
@@ -190,12 +276,18 @@
   text-align: center;
   display: block;
 }
-div.occupants {
-  position: absolute;
-  width: 100%;
-  bottom: 98px;
-  background-color: rgba(0, 0, 0, 0.7);
+
+#chat .user-status a:hover {
+  color: #FFF;
+  background-color: #999;
+  transition: 0.2s;
 }
+
+.conversation div.occupants {
+  bottom: 118px;
+  background-color: #2e3436;
+}
+
 div.occupants ul.occupant-list {
   padding: 0;
   margin: 0;
@@ -205,6 +297,10 @@ div.occupants ul.occupant-list {
   display: none;
   border-top: 1px solid rgb(37, 37, 37);
 }
+div.occupants ul.occupant-list {
+  text-align: left;
+}
+
 div.occupants > a {
   color: rgb(168, 168, 168);
   text-align: center;
@@ -240,6 +336,32 @@ div.occupants > a.up {
 #chat .title-bar a {
   text-decoration: none;
 }
+
+#conversations {
+  height: 100%;
+}
+
+#conversations .conversation {
+  height: 100%;
+  position: relative;
+}
+
+#chat-window #conversations .conversation-header {
+  position: absolute;
+  right: 0;
+  left: 0;
+  background-color: #2e3436;
+  color: white;
+  width: 284px;
+  height: 45px;
+  font-size: 18px;
+  text-align: center;
+}
+
+#user-status .avatar {
+  margin-left: 4px;
+}
+
 .title-bar .title {
   margin: 0;
   font-size: 12px;
@@ -259,10 +381,8 @@ div.occupants > a.up {
   height: 40px;
   background-color: rgb(39, 39, 39);
 }
-.conversation .header .chat-target {
-  padding: 0px 6px 0 6px;
-  display: inline-block;
-  max-width: 70%;
+.conversation-header .chat-target {
+  line-height: 45px;
 }
 .conversation .header .other-name {
  color: rgb(238, 238, 238);
@@ -278,15 +398,19 @@ div.occupants > a.up {
   color: white;
 }
 #chat #chat-window .other-name, #chat #chat-window .history .self-name, #chat #chat-window .history h5, #chat .toolbar #user-status span.other-name {
-  color: #257CAD;
+  color: white;
   overflow: hidden;
-  display: inline-block;
   max-width: 140px;
+  line-height: 33px;
 }
 #chat .toolbar #user-status span, #chat #conversations .header .chat-target span {
   max-width: 140px;
-  color: rgb(238, 238, 238);
+  font-weight: 900;
+  color: white;
   display: inline-block
+}
+#chat .toolbar #user-status span.user-status {
+  max-width: 200px;
 }
 #chat #chat-window .history h5 {
   text-align: center;
@@ -300,43 +424,69 @@ div.occupants > a.up {
 #chat .simplemenu-submenu {
   background: #585858;
   border: 1px solid #6B6B6B;
+  top: 42px;
+  left: auto;
+  right: 0;
 }
-#chat #user-status {
-  padding: 2px 4px;
-  float: left;
+
+#chat .simplemenu-item:hover {
+  background: none;
 }
+
+#buddy-list #user-status {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0;
+  white-space: nowrap; 
+  transition: padding 0.3s ease-in;
+}
+
 #chat .user-status a {
   color: rgb(224, 224, 224);
 }
-#chat .user-status > a {
-  position: relative;
-  left: -15px;
-}
 
 .user-status {
-  vertical-align: bottom;
-  bottom: -5px;
+  vertical-align: middle;
 }
 
 .user-status span {
   position: relative;
 }
 .user-status span, .user-status .ui-icon {
-  top: -3px;
+  margin-left: 10px;
+}
+
+.user-status .simplemenu-trigger {
+  display: block;
+  height: 42px;
+  line-height: 40px;
+  width: 161px;
+  padding-left: 21px;
+  background-position: 5px 11px;
+  margin: 0px;
+}
+
+.user-status .simplemenu-trigger .ui-icon-triangle-1-s {
+  top: 20px;
+  right: 0px;
+}
+
+.user-status .simplemenu-item a {
+  display: block;
+  height: 20px;
+  padding-left: 20px;
+  line-height: 19px;
+  background-position: 2px 1px;
 }
 
 .conversation .author {
-  width: 20%;
+  width: 32px;
   display: inline-block;
   vertical-align: top;
+  float: left;
 }
 .conversation .self .author {
   float: right;
-}
-#openchat .unread-messages {
-  color: red;
-  font-weight: bold;
-  font-size: 14px;
 }
 
 #chat .header {
@@ -348,4 +498,107 @@ div.occupants > a.up {
   font-size: 19px;
   background-image: linear-gradient(to left, #E3E3E3 25%, #BABDB6 100%, #FFFFFF 100%);
   xbackground-color: #BABDB6;
+}
+
+#chat-label {
+  right: 0;
+  width: 0;
+  height: 0;
+  background-color: #888A85;
+  position: fixed;
+  top: 20%;
+  cursor: pointer;
+  text-align: center;
+  z-index: 11;
+  transition: background-color 0.2s linear, right 0.3s ease-in;
+}
+
+#chat-label.opened {
+  width: 20px;
+  height: 90px;
+  right: 350px;
+  background-color: #888A85;
+  border-radius: 10px 0px 0 10px;
+  font-size: 14px;
+  transition: background-color 0.2s linear, right 0.3s ease-in;
+}
+
+#chat-label.opened:hover {
+  background-color: #2E3436;
+  transition: background-color 0.2s linear, right 0.3s ease-in;
+}
+
+#chat-label span {
+  color: white;
+}
+
+#chat-label span.title {
+  font-size: 16px;
+  position: absolute;
+  background-color: #888A85;
+  border-radius: 10px 10px 0 0;
+  transform: rotate(-90deg);
+  top: 35px;
+  right: -34px;
+  width: 80px;
+  padding: 2px 5px;
+  text-shadow: 1px -1px 0 #666;
+  transition: background-color 0.2s linear, right 0.3s ease-in;
+}
+
+#chat-label:hover span.title {
+  background-color: #2E3436;
+  transition: background-color 0.2s linear, right 0.3s ease-in;
+}
+
+#chat-label span.right-arrow {
+  font-size: 18pxpx;
+  line-height: 87px;
+}
+
+#chat-label .title {
+  display: inline;
+}
+
+#chat-label.opened .title {
+  display: none;
+}
+
+#chat-label .right-arrow {
+  display: none;
+}
+
+#chat-label.opened .right-arrow {
+  display: inline;
+}
+
+#chat-label div {
+  width: 64px;
+  height: 64px;
+  display: none;
+}
+
+#chat-label.opened div {
+  display: inline-block;
+}
+
+.conversation .room-action {
+  position: absolute;
+  bottom: 100px;
+  left: 7px;
+  right: 79px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 1;
+  color: white;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.conversation .join {
+ background-color: #4E9A06;
+}
+
+.conversation .leave {
+ background-color: #A40000;
 }

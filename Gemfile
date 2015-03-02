@@ -1,8 +1,8 @@
 source "https://rubygems.org"
-gem 'rails',                    '~> 3.2.19'
+gem 'rails',                    '~> 3.2.21'
 gem 'minitest',                 '~> 3.2.0'
 gem 'fast_gettext',             '~> 0.6.8'
-gem 'acts-as-taggable-on',      '~> 3.0.2'
+gem 'acts-as-taggable-on',      '~> 3.4.2'
 gem 'rails_autolink',           '~> 1.1.5'
 gem 'RedCloth',                 '~> 4.2.9'
 gem 'ruby-feedparser',          '~> 0.7'
@@ -13,14 +13,17 @@ gem 'rest-client',              '~> 1.6.7'
 gem 'exception_notification',   '~> 4.0.1'
 gem 'gettext',                  '~> 2.2.1', require: false, group: :development
 gem 'locale',                   '~> 2.0.5'
+gem 'whenever', :require => false
+gem 'eita-jrails', '>= 0.9.5', :require => 'jrails'
 gem 'i18n',                     '~> 0.6.0'
 gem 'will-paginate-i18n'
 gem 'utf8-cleaner'
+gem 'premailer-rails'
 
 platform :ruby do
   gem 'pg'
   gem 'rmagick',                '~> 2.13.1'
-  gem 'thin'
+  gem 'thin',                   '~> 1.3.1'
 
   gem 'unicode'
 
@@ -41,10 +44,6 @@ platform :jruby do
   gem 'activerecord-jdbcpostgresql-adapter'
   gem 'rmagick4j'
 end
-
-gem 'eita-jrails', path: 'vendor/plugins/eita-jrails'
-
-gem 'premailer-rails'
 
 group :assets do
   gem 'assets_live_compile'
@@ -82,6 +81,9 @@ group :development do
   #gem 'byebug'
   #gem 'method_source'
 end
+
+# Requires custom dependencies
+eval(File.read('config/Gemfile'), binding) rescue nil
 
 # include gemfiles from enabled plugins
 # plugins in baseplugins/ are not included on purpose. They should not have any

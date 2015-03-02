@@ -13,11 +13,12 @@
 *= require jquery-validation/jquery.validate.js
 *= require jquery.cookie.js
 *= require jquery.ba-bbq.min.js
-*= require typeahead.bundle.js
 *= require jquery.tokeninput.js
 *= require jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
 *= require inputosaurus.js
 *= require reflection.js
+*= require select-or-die/_src/selectordie
+*= require typeahead.bundle.js
 *= require rails.js
 *= require rails-extended.js
 *= require jrails.js
@@ -386,8 +387,7 @@ function toggleSubmenu(trigger, title, link_list) {
 }
 
 function toggleMenu(trigger) {
-  hideAllSubmenus();
-  jQuery(trigger).siblings('.simplemenu-submenu').toggle().toggleClass('opened');
+  jQuery(trigger).siblings('.simplemenu-submenu').toggle();
 }
 
 function hideAllSubmenus() {
@@ -423,9 +423,6 @@ function userDataCallback(data) {
   customUserDataCallback();
   if (data.login) {
     // logged in
-    if (data.chat_enabled) {
-      setInterval(function(){ jQuery.getJSON(user_data, chatOnlineUsersDataCallBack)}, 10000);
-    }
     jQuery('head').append('<meta content="authenticity_token" name="csrf-param" />');
     jQuery('head').append('<meta content="'+jQuery.cookie("_noosfero_.XSRF-TOKEN")+'" name="csrf-token" />');
   }
@@ -451,7 +448,6 @@ jQuery(function($) {
   $.getJSON(user_data, userDataCallback)
 
   $.ajaxSetup({ cache: false });
-
 });
 
 // controls the display of contact list
@@ -491,16 +487,6 @@ function display_notice(message) {
    var $noticeBox = jQuery('<div id="notice"></div>').html(message).appendTo('body').fadeTo('fast', 0.8);
    $noticeBox.click(function() { $(this).hide(); });
    setTimeout(function() { $noticeBox.fadeOut('fast'); }, 5000);
-}
-
-function open_chat_window(self_link, anchor) {
-   if(anchor) {
-      jQuery('#chat').show('fast');
-      jQuery("#chat" ).trigger('opengroup', anchor);
-   } else {
-      jQuery('#chat').toggle('fast');
-   }
-   return false;
 }
 
 jQuery(function($) {
@@ -917,12 +903,50 @@ function showHideTermsOfUse() {
   }
 }
 
+jQuery('.profiles-suggestions .explain-suggestion').live('click', function() {
+  var clicked = jQuery(this);
+  clicked.toggleClass('active');
+  clicked.next('.extra_info').toggle();
+  return false;
+});
+
+jQuery('.suggestions-block .block-subtitle').live('click', function() {
+  var clicked = jQuery(this);
+  clicked.next('.profiles-suggestions').toggle();
+  clicked.nextAll('.more-suggestions').toggle();
+  return false;
+});
+
 jQuery(document).ready(function(){
   showHideTermsOfUse();
 
   jQuery("#article_has_terms_of_use").click(function(){
     showHideTermsOfUse();
   });
+
+  // Suggestions on search inputs
+  (function($) {
+    var suggestions_cache = {};
+    $(".search-input-with-suggestions").autocomplete({
+      minLength: 2,
+      select: function(event, ui){
+        $(this).val(ui.item.value);
+        $(this).closest('form').submit();
+      },
+      source: function(request, response) {
+        var term = request.term.toLowerCase();
+        if (term in suggestions_cache) {
+          response(suggestions_cache[term]);
+          return;
+        }
+        request["asset"] = this.element.data("asset");
+        $.getJSON("/search/suggestions", request, function(data, status, xhr) {
+          suggestions_cache[term] = data;
+          response(data);
+        });
+      }
+    });
+  })(jQuery);
 });
 
 function apply_zoom_to_images(zoom_text) {

@@ -27,8 +27,8 @@ class TextArticle < Article
 
   def set_relative_path
     parsed = Nokogiri::HTML.fragment(self.body.to_s)
-    parsed.search('img[@src]').each { |i| change_element_path(i, 'src') }
-    parsed.search('a[@href]').each { |i| change_element_path(i, 'href') }
+    parsed.css('img[src]').each { |i| change_element_path(i, 'src') }
+    parsed.css('a[href]').each { |i| change_element_path(i, 'href') }
     self.body = parsed.to_html
   end
 

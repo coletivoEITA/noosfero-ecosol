@@ -36,13 +36,14 @@ module LayoutHelper
       output += javascript_include_tag *plugins_javascripts
     end
     output += theme_javascript_ng.to_s
+    output += javascript_tag 'render_all_jquery_ui_widgets()'
 
     output += javascript_tag 'render_all_jquery_ui_widgets()'
     output
   end
 
   def noosfero_stylesheets
-    plugins_stylesheets = @plugins.select(&:stylesheet?).map { |plugin| plugin.class.public_path('style.css', true) }
+    plugins_stylesheets = @plugins.select(&:stylesheet?).map { |plugin| plugin.class.public_path('style.css') }
 
     output = ''
     output += stylesheet_link_tag 'application'
@@ -97,10 +98,6 @@ module LayoutHelper
     if NOOSFERO_CONF['addthis_enabled']
       "<script src='//s7.addthis.com/js/300/addthis_widget.js#pubid=#{NOOSFERO_CONF['addthis_pub']}'></script>"
     end
-  end
-
-  def meta_description_tag(article=nil)
-    article ? CGI.escapeHTML(truncate(strip_tags(article.body.to_s), :length => 200)) : environment.name
   end
 
 end
