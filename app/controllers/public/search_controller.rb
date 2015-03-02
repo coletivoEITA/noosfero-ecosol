@@ -63,7 +63,7 @@ class SearchController < PublicController
   def articles
     @scope = @environment.articles.public.includes(
       :last_changed_by, :parent, :tags, {:profile => [:domains]}
-    )
+    ).paginate(paginate_options)
     full_text_search
   end
 
@@ -82,7 +82,7 @@ class SearchController < PublicController
       {product_qualifiers: [:qualifier, :certifier]},
       {price_details: [:production_cost]},
       {profile: [:domains]},
-    )
+    ).paginate(paginate_options)
     full_text_search
   end
 
@@ -246,7 +246,7 @@ class SearchController < PublicController
   def visible_profiles(klass, *extra_relations)
     relations = [:image, :domains, :environment, :preferred_domain]
     relations += extra_relations
-    @environment.send(klass.name.underscore.pluralize).visible.includes(relations)
+    @environment.send(klass.name.underscore.pluralize).visible.includes(relations).paginate(paginate_options)
   end
 
   def per_page
