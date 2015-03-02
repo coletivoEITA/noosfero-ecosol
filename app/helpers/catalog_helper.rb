@@ -17,8 +17,13 @@ module CatalogHelper
                    end
 
     @scope = params[:scope].to_s
-    all_scope = environment.products.enabled.public
-    @ar_scope = if @scope == 'all' then all_scope else profile.products rescue all_scope end
+    if @scope == 'all'
+      @context = environment
+      @ar_scope = environment.products.enabled.public
+    else
+      @context = profile
+      @ar_scope = profile.products
+    end
   end
 
   def catalog_load_index options = {}
@@ -53,9 +58,9 @@ module CatalogHelper
 
     # FIXME the way to call is different on enterprisehomepage (block) and on catalog (controller)
     if self.respond_to? :controller
-      result = controller.send :find_by_contents, :catalog, @ar_scope, @final_query, paginate_options, solr_options
+      result = controller.send :find_by_contents, :catalog, @context, @ar_scope, @final_query, paginate_options, solr_options
     else
-      result = find_by_contents :catalog, @ar_scope, @final_query, paginate_options, solr_options
+      result = find_by_contents :catalog, @context, @ar_scope, @final_query, paginate_options, solr_options
     end
 
     @products = result[:results]
