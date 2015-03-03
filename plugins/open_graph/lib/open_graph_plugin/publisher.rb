@@ -4,6 +4,10 @@ class OpenGraphPlugin::Publisher
   attr_accessor :actions
   attr_accessor :objects
 
+  def self.default
+    @default ||= self.new
+  end
+
   def self.profile_from_object_data object_data
     case object_data
     when Profile

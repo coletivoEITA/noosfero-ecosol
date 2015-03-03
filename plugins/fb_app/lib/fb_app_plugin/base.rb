@@ -23,8 +23,7 @@ class FbAppPlugin::Base < Noosfero::Plugin
 end
 
 ActiveSupport.on_load :open_graph_plugin do
-  publisher = FbAppPlugin::Publisher.new
-  OpenGraphPlugin::Stories.register_publisher publisher
+  OpenGraphPlugin::Stories.register_publisher FbAppPlugin::Publisher.default
   MetadataPlugin::CONTROLLERS[:fb_app_plugin_page_tab] = {
     variable: :@product,
   }
