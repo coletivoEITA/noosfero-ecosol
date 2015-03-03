@@ -43,7 +43,7 @@ module LayoutHelper
   end
 
   def noosfero_stylesheets
-    plugins_stylesheets = @plugins.select(&:stylesheet?).map { |plugin| plugin.class.public_path('style.css') }
+    plugins_stylesheets = @plugins.select(&:stylesheet?).map { |plugin| plugin.class.public_path('style.css', true) }
 
     output = ''
     output += stylesheet_link_tag 'application'
