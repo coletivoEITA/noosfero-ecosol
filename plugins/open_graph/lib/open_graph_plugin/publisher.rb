@@ -37,6 +37,7 @@ class OpenGraphPlugin::Publisher
     print_debug "open_graph: #{story} match publish_if" if debug? actor
 
     actors = self.story_trackers defs, actor, object_data
+    return actors.present?
     print_debug "open_graph: #{story} has enabled trackers" if debug? actor
 
     begin
@@ -71,16 +72,13 @@ class OpenGraphPlugin::Publisher
       trackers.select! do |t|
         track_configs.any?{ |c| c.enabled_for self.context, t }
       end
-
-      return if trackers.empty?
     else #active
       match_track = track_configs.any? do |c|
         c.enabled_for(self.context, actor) and
           actor.send("open_graph_#{c.track_name}_track_configs").where(object_type: story_defs[:object_type]).first
       end
 
-      return unless match_track
-      trackers << actor
+      trackers << actor if match_track
     end
 
     trackers
