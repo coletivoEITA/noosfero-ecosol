@@ -42,7 +42,7 @@ class OpenGraphPlugin::Stories
     return unless actor
 
     self.publishers.each do |publisher|
-      publisher = publisher.delay unless Rails.env.development?
+      publisher = publisher.delay unless Rails.env.development? or Rails.env.test?
       publisher.publish_stories record, actor, stories
     end
   end
@@ -55,15 +55,15 @@ class OpenGraphPlugin::Stories
       object_type: :uploaded_file,
       models: :UploadedFile,
       on: :create,
-      criteria: proc do |article|
+      criteria: proc do |article, actor|
         article.is_a? UploadedFile
       end,
-      publish_if: proc do |uploaded_file|
+      publish_if: proc do |uploaded_file, actor|
         # done in add_an_image
         next false if uploaded_file.image? and uploaded_file.parent.is_a? Gallery
         uploaded_file.published?
       end,
-      object_data_url: proc do |uploaded_file|
+      object_data_url: proc do |uploaded_file, actor|
         uploaded_file.url.merge view: true
       end,
     },
@@ -74,13 +74,13 @@ class OpenGraphPlugin::Stories
       object_type: :gallery_image,
       models: :UploadedFile,
       on: :create,
-      criteria: proc do |article|
+      criteria: proc do |article, actor|
         article.is_a? UploadedFile
       end,
-      publish_if: proc do |uploaded_file|
+      publish_if: proc do |uploaded_file, actor|
         uploaded_file.image? and uploaded_file.parent.is_a? Gallery
       end,
-      object_data_url: proc do |uploaded_file|
+      object_data_url: proc do |uploaded_file, actor|
         uploaded_file.url.merge view: true
       end,
     },
@@ -91,10 +91,10 @@ class OpenGraphPlugin::Stories
       object_type: :blog_post,
       models: :Article,
       on: :create,
-      criteria: proc do |article|
+      criteria: proc do |article, actor|
         article.parent.is_a? Blog
       end,
-      publish_if: proc do |article|
+      publish_if: proc do |article, actor|
         article.published?
       end,
     },
@@ -105,10 +105,10 @@ class OpenGraphPlugin::Stories
       object_type: :event,
       models: :Event,
       on: :create,
-      criteria: proc do |article|
+      criteria: proc do |article, actor|
         article.is_a? Event
       end,
-      publish_if: proc do |event|
+      publish_if: proc do |event, actor|
         event.published?
       end,
     },
@@ -119,10 +119,10 @@ class OpenGraphPlugin::Stories
       object_type: :forum,
       models: :Article,
       on: :create,
-      criteria: proc do |article|
+      criteria: proc do |article, actor|
         article.parent.is_a? Forum
       end,
-      publish_if: proc do |article|
+      publish_if: proc do |article, actor|
         article.published?
       end,
     },
@@ -131,9 +131,12 @@ class OpenGraphPlugin::Stories
       action_tracker_verb: :create_product,
       track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :announce_new,
-      object_type: :product,
       models: :Product,
       on: :create,
+      object_type: :product,
+      publish_if: proc do |product, actor|
+        product.profile.public?
+      end,
     },
     update_a_sse_product: {
       action_tracker_verb: :update_product,
@@ -142,6 +145,9 @@ class OpenGraphPlugin::Stories
       object_type: :product,
       models: :Product,
       on: :update,
+      publish_if: proc do |product, actor|
+        product.profile.public?
+      end,
     },
 
     favorite_an_sse_enterprise: {
@@ -163,11 +169,11 @@ class OpenGraphPlugin::Stories
       object_type: :forum,
       models: :Comment,
       on: :create,
-      criteria: proc do |comment|
+      criteria: proc do |comment, actor|
         source, parent = comment.source, comment.source.parent
         source.is_a? Article and parent.is_a? Forum
       end,
-      publish_if: proc do |comment|
+      publish_if: proc do |comment, actor|
         comment.source.parent.published?
       end,
     },
@@ -177,11 +183,11 @@ class OpenGraphPlugin::Stories
       object_type: :blog_post,
       models: :Comment,
       on: :create,
-      criteria: proc do |comment|
+      criteria: proc do |comment, actor|
         source, parent = comment.source, comment.source.parent
         source.is_a? Article and parent.is_a? Blog
       end,
-      publish_if: proc do |comment|
+      publish_if: proc do |comment, actor|
         comment.source.parent.published?
       end,
     },
@@ -208,7 +214,13 @@ class OpenGraphPlugin::Stories
       object_type: :enterprise,
       models: :Article,
       on: :create,
-      tracker: true,
+      criteria: proc do |article, actor|
+        article.profile.enterprise?
+      end,
+      publish_if: proc do |article, actor|
+        article.published?
+      end,
+      passive: true,
     },
     announce_a_new_sse_product: {
       action_tracker_verb: :create_product,
@@ -217,7 +229,7 @@ class OpenGraphPlugin::Stories
       object_type: :product,
       models: :Product,
       on: :create,
-      tracker: true,
+      passive: true,
     },
     announce_an_update_of_sse_product: {
       action_tracker_verb: :update_product,
@@ -226,7 +238,7 @@ class OpenGraphPlugin::Stories
       object_type: :product,
       models: :Product,
       on: :update,
-      tracker: true,
+      passive: true,
     },
 
     announce_news_from_a_community: {
@@ -234,19 +246,14 @@ class OpenGraphPlugin::Stories
       track_config: 'OpenGraphPlugin::CommunityTrackConfig',
       action: :announce_update,
       object_type: :action,
-      models: [:Article, :Image],
+      models: :Article,
       on: :create,
-      tracker: true,
-      criteria: proc do |article|
+      passive: true,
+      criteria: proc do |article, actor|
         article.profile.community?
       end,
-      publish_if: proc do |object|
-        case object
-        when Article
-          object.published?
-        when Image
-          object.parent.is_a? Gallery
-        end
+      publish_if: proc do |article, actor|
+        article.published?
       end,
     },
 

@@ -11,7 +11,7 @@ module OpenGraphPlugin
   end
 
   def self.context
-    Thread.current[:open_graph_context]
+    Thread.current[:open_graph_context] || :open_graph
   end
   def self.context= value
     Thread.current[:open_graph_context] = value

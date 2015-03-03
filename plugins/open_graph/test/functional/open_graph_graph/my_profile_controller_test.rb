@@ -31,11 +31,9 @@ class OpenGraphPlugin::MyprofileControllerTest < ActionController::TestCase
           tracker_id: @actor.id,
           object_type: 'blog_post',
         },
-
       },
       # ignored
       open_graph_enterprise_profiles_ids: [@enterprise.id],
-      open_graph_community_profiles_ids: [@enterprise.id],
     }
     @actor.reload
 

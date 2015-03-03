@@ -40,8 +40,10 @@ class Profile
 
     define_method "#{profile_ids}=" do |ids|
       self.send(association).destroy_all
-      ids.split(',').each do |id|
-        self.send(association).build type: klass.name, object_data_id: id, object_data_type: 'Profile'
+      ids = ids.split(',')
+      profiles = Profile.where(id: ids)
+      profiles.each do |profile|
+        self.send(association).create! type: klass.name, object_data: profile
       end
       #attrs = ids.split(',').map{ |id| {object_data_id: id, object_data_type: 'Profile'} }
       #self.send "#{attributes}=", attrs

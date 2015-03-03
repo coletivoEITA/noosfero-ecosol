@@ -21,44 +21,58 @@ class OpenGraphPlugin::Publisher
 
   def publish_stories object_data, actor, stories
     stories.each do |story|
-      defs = OpenGraphPlugin::Stories::Definitions[story]
-      track_configs = Array[defs[:track_config]].compact.map(&:constantize)
-      trackers = []
+      self.publish_story object_data, actor, story
+    end
+  end
 
-      unless defs[:tracker]
-        match_track = actor.open_graph_track_configs.where(object_type: defs[:object_type]).count > 0
-        return unless track_configs.map{ |c|  }.any?{ |t| t }
-      else
-        match_track = true
-        exclude_actor = actor
-        trackers = track_configs.map{ |c| c.profile_trackers object_data, exclude_actor }.flatten
+  def publish_story object_data, actor, story
+    defs = OpenGraphPlugin::Stories::Definitions[story]
+    passive = defs[:passive]
+    actors = []
+
+    match_criteria = if criteria = defs[:criteria] then criteria.call(object_data, actor) else true end
+    return unless match_criteria
+    match_condition = if publish_if = defs[:publish_if] then publish_if.call(object_data, actor) else true end
+    return unless match_condition
+
+    track_configs = Array[defs[:track_config]].compact.map(&:constantize)
+    return if track_configs.empty?
+    if passive
+      exclude_actor = actor
+      trackers = []; track_configs.each do |c|
+        trackers.concat c.trackers(object_data, exclude_actor)
+      end.flatten
+
+      trackers.select! do |t|
+        track_configs.any?{ |c| c.enabled_for self.context, t }
       end
-      next unless match_track
 
-      match_criteria = if criteria = defs[:criteria] then criteria.call(object_data) else true end
-      next unless match_criteria
-      match_condition = if publish_if = defs[:publish_if] then publish_if.call(object_data) else true end
-      next unless match_condition
-
-      if publish = defs[:publish]
-        publish.call actor, object_data, self
-      else
-        object_data_url = if object_data_url = defs[:object_data_url] then object_data_url.call(object_data) else object_data.url end
-        object_data_url = self.url_for object_data_url
-
-        #begin
-          if defs[:tracker]
-            trackers.each do |tracker|
-              self.publish tracker.tracker, defs, object_data_url
-            end
-          else
-            self.publish actor, defs, object_data_url
-          end
-        #rescue => e
-          #Delayed::Worker.logger.debug "can't publish story: #{e.message}"
-          # continue to other stories
-        #end
+      return if trackers.empty?
+      actors = trackers
+    else #active
+      match_track = track_configs.any? do |c|
+        c.enabled_for(self.context, actor) and
+          actor.send("open_graph_#{c.track_name}_track_configs").where(object_type: defs[:object_type]).first
       end
+
+      return unless match_track
+      actors << actor
+    end
+
+    if publish = defs[:publish]
+      publish.call actor, object_data, self
+    else
+      object_data_url = if object_data_url = defs[:object_data_url] then object_data_url.call(object_data) else object_data.url end
+      object_data_url = self.url_for object_data_url
+
+      #begin
+      actors.each do |actor|
+        self.publish actor, defs, object_data_url
+      end
+      #rescue => e
+      #Delayed::Worker.logger.debug "can't publish story: #{e.message}"
+      # continue to other stories
+      #end
     end
   end
 
