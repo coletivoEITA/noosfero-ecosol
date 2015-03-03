@@ -6,7 +6,7 @@ class OpenGraphPlugin::ActivityTrackConfig < OpenGraphPlugin::TrackConfig
   self.track_name = :activity
 
   Objects = OpenGraphPlugin::Stories::TrackConfigStories[self.name].map do |story, data|
-    data[:object_type]
+    data[:object_type].to_s
   end.uniq
 
   def self.objects

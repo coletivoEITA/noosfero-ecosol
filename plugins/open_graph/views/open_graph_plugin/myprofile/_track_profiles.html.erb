@@ -1,7 +1,7 @@
 <%
   association = "open_graph_#{track}_track_configs"
   tracks = profile.send association
-  profiles = tracks.map &:object_data
+  profiles = tracks.map(&:object_data).compact
   ids = profiles.map(&:id).join(',')
 %>
 <%= text_field_tag "#{f.object_name}[open_graph_#{track}_profiles_ids]", '', id: "select-#{track}", class: 'select-profiles',

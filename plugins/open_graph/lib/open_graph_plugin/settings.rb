@@ -6,7 +6,7 @@ class OpenGraphPlugin::Settings < Noosfero::Plugin::Settings
 
   OpenGraphPlugin::TrackConfig::Types.each do |track, klass|
     define_method "#{track}_track_enabled=" do |value|
-      self.settings["#{track}_track_enabled"] = ActiveRecord::ConnectionAdapters::Column.value_to_boolean value
+      super ActiveRecord::ConnectionAdapters::Column.value_to_boolean(value)
     end
   end
 
