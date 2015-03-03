@@ -27,8 +27,6 @@ class OpenGraphPlugin::Publisher
 
   def publish_story object_data, actor, story
     defs = OpenGraphPlugin::Stories::Definitions[story]
-    passive = defs[:passive]
-    actors = []
 
     print_debug "open_graph: publish_story #{story}" if debug? actor
     match_criteria = if criteria = defs[:criteria] then criteria.call(object_data, actor) else true end
@@ -38,29 +36,7 @@ class OpenGraphPlugin::Publisher
     return unless match_condition
     print_debug "open_graph: #{story} match publish_if" if debug? actor
 
-    track_configs = Array[defs[:track_config]].compact.map(&:constantize)
-    return if track_configs.empty?
-    if passive
-      exclude_actor = actor
-      trackers = []; track_configs.each do |c|
-        trackers.concat c.trackers(object_data, exclude_actor)
-      end.flatten
-
-      trackers.select! do |t|
-        track_configs.any?{ |c| c.enabled_for self.context, t }
-      end
-
-      return if trackers.empty?
-      actors = trackers
-    else #active
-      match_track = track_configs.any? do |c|
-        c.enabled_for(self.context, actor) and
-          actor.send("open_graph_#{c.track_name}_track_configs").where(object_type: defs[:object_type]).first
-      end
-
-      return unless match_track
-      actors << actor
-    end
+    actors = self.story_trackers defs, actor, object_data
     print_debug "open_graph: #{story} has enabled trackers" if debug? actor
 
     begin
@@ -79,6 +55,39 @@ class OpenGraphPlugin::Publisher
     end
   end
 
+  def story_trackers story_defs, actor, object_data
+    trackers = []
+
+    track_configs = Array[story_defs[:track_config]].compact.map(&:constantize)
+    return if track_configs.empty?
+
+    passive = story_defs[:passive]
+    if passive
+      exclude_actor = actor
+      track_configs.each do |c|
+        trackers.concat c.trackers(object_data, exclude_actor)
+      end.flatten
+
+      trackers.select! do |t|
+        track_configs.any?{ |c| c.enabled_for self.context, t }
+      end
+
+      return if trackers.empty?
+    else #active
+      match_track = track_configs.any? do |c|
+        c.enabled_for(self.context, actor) and
+          actor.send("open_graph_#{c.track_name}_track_configs").where(object_type: story_defs[:object_type]).first
+      end
+
+      return unless match_track
+      trackers << actor
+    end
+
+    trackers
+  end
+
+  protected
+
   def context
     :open_graph
   end
@@ -88,7 +97,7 @@ class OpenGraphPlugin::Publisher
     Delayed::Worker.logger.debug msg
   end
   def debug? actor=nil
-    FbAppPlugin.test_user? actor
+    false
   end
 
 end

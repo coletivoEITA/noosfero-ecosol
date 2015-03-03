@@ -53,5 +53,8 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
   def context
     :fb_app
   end
+  def debug? actor=nil
+    FbAppPlugin.test_user? actor
+  end
 
 end
