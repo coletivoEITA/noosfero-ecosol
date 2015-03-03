@@ -30,10 +30,13 @@ class OpenGraphPlugin::Publisher
     passive = defs[:passive]
     actors = []
 
+    print_debug "open_graph: publish_story #{story}" if debug? actor
     match_criteria = if criteria = defs[:criteria] then criteria.call(object_data, actor) else true end
     return unless match_criteria
+    print_debug "open_graph: #{story} match criteria" if debug? actor
     match_condition = if publish_if = defs[:publish_if] then publish_if.call(object_data, actor) else true end
     return unless match_condition
+    print_debug "open_graph: #{story} match publish_if" if debug? actor
 
     track_configs = Array[defs[:track_config]].compact.map(&:constantize)
     return if track_configs.empty?
@@ -58,26 +61,34 @@ class OpenGraphPlugin::Publisher
       return unless match_track
       actors << actor
     end
+    print_debug "open_graph: #{story} has enabled trackers" if debug? actor
 
-    if publish = defs[:publish]
-      publish.call actor, object_data, self
-    else
-      object_data_url = if object_data_url = defs[:object_data_url] then object_data_url.call(object_data) else object_data.url end
-      object_data_url = self.url_for object_data_url
+    begin
+      if publish = defs[:publish]
+        publish.call actor, object_data, self
+      else
+        object_data_url = if object_data_url = defs[:object_data_url] then object_data_url.call(object_data) else object_data.url end
+        object_data_url = self.url_for object_data_url
 
-      #begin
-      actors.each do |actor|
-        self.publish actor, defs, object_data_url
+        actors.each do |actor|
+          self.publish actor, defs, object_data_url
+        end
       end
-      #rescue => e
-      #Delayed::Worker.logger.debug "can't publish story: #{e.message}"
-      # continue to other stories
-      #end
+    rescue => e
+      print_debug "open_graph: can't publish story: #{e.message}" if debug? actor
     end
   end
 
   def context
     :open_graph
+  end
+
+  def print_debug msg
+    puts msg
+    Delayed::Worker.logger.debug msg
+  end
+  def debug? actor=nil
+    FbAppPlugin.test_user? actor
   end
 
 end

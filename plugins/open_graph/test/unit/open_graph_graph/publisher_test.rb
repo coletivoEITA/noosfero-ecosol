@@ -55,13 +55,6 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
     blog_post = TinyMceArticle.new profile: @community, parent: @community.blog, name: 'blah'
     @publisher.expects(:publish).with(@actor, @stories[:announce_news_from_a_community], @publisher.url_for(blog_post.url))
     blog_post.save!
-
-    @actor.update_attributes!({
-      open_graph_settings: {
-        community_track_enabled: "true",
-      },
-    })
-
   end
 
 end
