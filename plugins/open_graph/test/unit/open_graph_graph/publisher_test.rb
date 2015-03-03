@@ -41,18 +41,26 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
     })
 
     # active
+    User.current = @actor.user
     blog = Blog.create! profile: @actor, name: 'blog'
-    blog_post = TinyMceArticle.new profile: @actor, parent: blog, name: 'blah'
+    blog_post = TinyMceArticle.new profile: @actor, parent: blog, name: 'blah', author: User.current.person
     @publisher.expects(:publish).with(@actor, @stories[:create_an_article], @publisher.url_for(blog_post.url))
+    blog_post.save!
+
+    # active but published as passive
+    User.current = @actor.user
+    blog_post = TinyMceArticle.new profile: @enterprise, parent: @enterprise.blog, name: 'blah', author: User.current.person
+    @publisher.expects(:publish).with(@actor, @stories[:announce_news_from_a_sse_enterprise], @publisher.url_for(blog_post.url))
     blog_post.save!
 
     # passive
     User.current = @other_actor.user
-    blog_post = TinyMceArticle.new profile: @enterprise, parent: @enterprise.blog, name: 'blah'
+    blog_post = TinyMceArticle.new profile: @enterprise, parent: @enterprise.blog, name: 'blah2', author: User.current.person
     @publisher.expects(:publish).with(@actor, @stories[:announce_news_from_a_sse_enterprise], @publisher.url_for(blog_post.url))
     blog_post.save!
 
-    blog_post = TinyMceArticle.new profile: @community, parent: @community.blog, name: 'blah'
+    User.current = @other_actor.user
+    blog_post = TinyMceArticle.new profile: @community, parent: @community.blog, name: 'blah', author: User.current.person
     @publisher.expects(:publish).with(@actor, @stories[:announce_news_from_a_community], @publisher.url_for(blog_post.url))
     blog_post.save!
   end

@@ -32,19 +32,10 @@ class OpenGraphPlugin::TrackConfig < OpenGraphPlugin::Track
     settings.send "#{self.track_name}_track_enabled"
   end
 
-  def self.object_data_to_profile object_data
-    case object_data
-    when Profile
-      profile = object_data
-    else
-      profile = object_data.profile
-    end
-  end
-
   # redefine on subclasses
-  def self.trackers object_data, from_actor=nil
-    profile = self.object_data_to_profile object_data
-    tracks = self.profile_trackers(profile, from_actor).where(type: self)
+  def self.trackers_of_profile profile
+    tracks = self.profile_trackers(profile)
+    tracks = tracks.where type: self
     tracks.map(&:tracker)
   end
 

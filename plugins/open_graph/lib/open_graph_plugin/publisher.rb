@@ -4,6 +4,15 @@ class OpenGraphPlugin::Publisher
   attr_accessor :actions
   attr_accessor :objects
 
+  def self.profile_from_object_data object_data
+    case object_data
+    when Profile
+      profile = object_data
+    else
+      profile = object_data.profile rescue nil
+    end
+  end
+
   def initialize attributes = {}
     attributes.each do |attr, value|
       self.send "#{attr}=", value
@@ -37,7 +46,7 @@ class OpenGraphPlugin::Publisher
     print_debug "open_graph: #{story} match publish_if" if debug? actor
 
     actors = self.story_trackers defs, actor, object_data
-    return actors.present?
+    return if actors.blank?
     print_debug "open_graph: #{story} has enabled trackers" if debug? actor
 
     begin
@@ -62,22 +71,21 @@ class OpenGraphPlugin::Publisher
     track_configs = Array[story_defs[:track_config]].compact.map(&:constantize)
     return if track_configs.empty?
 
+    profile = self.class.profile_from_object_data object_data
     passive = story_defs[:passive]
     if passive
-      exclude_actor = actor
       track_configs.each do |c|
-        trackers.concat c.trackers(object_data, exclude_actor)
+        trackers.concat c.trackers_of_profile(profile)
       end.flatten
 
       trackers.select! do |t|
         track_configs.any?{ |c| c.enabled_for self.context, t }
       end
     else #active
-      match_track = track_configs.any? do |c|
+      match_track = profile.person? and track_configs.any? do |c|
         c.enabled_for(self.context, actor) and
           actor.send("open_graph_#{c.track_name}_track_configs").where(object_type: story_defs[:object_type]).first
       end
-
       trackers << actor if match_track
     end
 
