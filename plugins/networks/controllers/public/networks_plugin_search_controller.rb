@@ -6,7 +6,7 @@ class NetworksPluginSearchController < SearchController
   include NetworksPlugin::TranslationHelper
 
   helper NetworksPlugin::TranslationHelper
-  helper NetworksPlugin::NetworksSearchHelper
+  helper NetworksPlugin::SearchHelper
 
   def index
     redirect_to :controller => :search, :action => :enterprises, :facet => {:solr_plugin_f_profile_type => NetworksPlugin::Network.to_s}

@@ -7,7 +7,7 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
   include OrdersCyclePlugin::TranslationHelper
 
   helper OrdersCyclePlugin::TranslationHelper
-  helper OrdersCyclePlugin::OrdersCycleDisplayHelper
+  helper OrdersCyclePlugin::DisplayHelper
 
   def new
     @offered_product = Product.find params[:offered_product_id]

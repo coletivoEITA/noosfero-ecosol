@@ -9,7 +9,7 @@ class SuppliersPluginMyprofileController < MyProfileController
   before_filter :load_new, :only => [:index, :new]
 
   helper SuppliersPlugin::TranslationHelper
-  helper SuppliersPlugin::SuppliersDisplayHelper
+  helper SuppliersPlugin::DisplayHelper
 
   def index
     @suppliers = search_scope(profile.suppliers.except_self).paginate(:per_page => 30, :page => params[:page])

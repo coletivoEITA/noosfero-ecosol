@@ -10,7 +10,7 @@ class OrdersCyclePluginDeliveryOptionController < DeliveryPluginOptionController
   include OrdersCyclePlugin::TranslationHelper
 
   helper OrdersCyclePlugin::TranslationHelper
-  helper OrdersCyclePlugin::OrdersCycleDisplayHelper
+  helper OrdersCyclePlugin::DisplayHelper
 
   protected
 

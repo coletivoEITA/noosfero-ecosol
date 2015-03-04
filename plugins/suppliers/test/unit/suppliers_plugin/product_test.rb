@@ -1,6 +1,6 @@
-require "#{File.dirname(__FILE__)}/../../test_helper"
+require "test_helper"
 
-class SuppliersPlugin::BaseProductTest < ActiveSupport::TestCase
+class SuppliersPlugin::ProductTest < ActiveSupport::TestCase
 
   def setup
     @product = build(SuppliersPlugin::BaseProduct)

@@ -132,7 +132,6 @@
       product: 
         import_in_progress: "Os produtos estão sendo importados. Aguarde um pouco e recarregue a página para visualizá-los."
     models:
-      base_product:
       distributed_product: 
         greater: " > "
       product: 

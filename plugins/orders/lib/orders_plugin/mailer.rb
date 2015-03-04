@@ -3,7 +3,7 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
   include OrdersPlugin::TranslationHelper
 
   helper ApplicationHelper
-  helper OrdersPlugin::OrdersDisplayHelper
+  helper OrdersPlugin::DisplayHelper
   helper OrdersPlugin::DateHelper
   helper OrdersPlugin::TranslationHelper
 

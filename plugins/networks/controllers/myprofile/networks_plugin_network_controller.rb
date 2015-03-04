@@ -4,7 +4,7 @@ class NetworksPluginNetworkController < MyProfileController
 
   before_filter :load_node, :only => [:structure]
 
-  helper NetworksPlugin::NetworksDisplayHelper
+  helper NetworksPlugin::DisplayHelper
 
   def index
     redirect_to :structure

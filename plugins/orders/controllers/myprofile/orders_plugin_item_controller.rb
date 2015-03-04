@@ -7,7 +7,7 @@ class OrdersPluginItemController < MyProfileController
   #protect 'edit_profile', :profile
   before_filter :set_actor_name
 
-  helper OrdersPlugin::OrdersDisplayHelper
+  helper OrdersPlugin::DisplayHelper
 
   def edit
     @consumer = user

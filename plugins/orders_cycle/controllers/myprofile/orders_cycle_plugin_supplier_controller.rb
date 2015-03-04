@@ -9,7 +9,7 @@ class OrdersCyclePluginSupplierController < SuppliersPluginMyprofileController
   protect 'edit_profile', :profile
 
   helper OrdersCyclePlugin::TranslationHelper
-  helper OrdersCyclePlugin::OrdersCycleDisplayHelper
+  helper OrdersCyclePlugin::DisplayHelper
 
   def margin_change
     super

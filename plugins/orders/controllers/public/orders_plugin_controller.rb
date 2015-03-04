@@ -5,7 +5,7 @@ class OrdersPluginController < PublicController
   no_design_blocks
 
   helper OrdersPlugin::TranslationHelper
-  helper OrdersPlugin::OrdersDisplayHelper
+  helper OrdersPlugin::DisplayHelper
 
   def repeat
   end

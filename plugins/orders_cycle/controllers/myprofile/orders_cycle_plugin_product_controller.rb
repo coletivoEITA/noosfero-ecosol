@@ -7,7 +7,7 @@ class OrdersCyclePluginProductController < SuppliersPluginProductController
   include OrdersCyclePlugin::TranslationHelper
 
   helper OrdersCyclePlugin::TranslationHelper
-  helper OrdersCyclePlugin::OrdersCycleDisplayHelper
+  helper OrdersCyclePlugin::DisplayHelper
 
   def edit
     super

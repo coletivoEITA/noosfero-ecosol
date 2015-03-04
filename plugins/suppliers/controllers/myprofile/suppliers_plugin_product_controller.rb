@@ -7,7 +7,7 @@ class SuppliersPluginProductController < MyProfileController
   protect 'edit_profile', :profile
 
   helper SuppliersPlugin::TranslationHelper
-  helper SuppliersPlugin::SuppliersDisplayHelper
+  helper SuppliersPlugin::DisplayHelper
 
   def index
     filter
