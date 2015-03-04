@@ -64,11 +64,11 @@ class MetadataPlugin < Noosfero::Plugin
 
         tags.each do |key, values|
           key = "#{namespace}#{key}"
-          values = values.call(object, plugin) if values.is_a? Proc
+          values = values.call(object, plugin) if values.is_a? Proc rescue nil
           next if values.blank?
 
           Array(values).each do |value|
-            value = value.call(object, plugin) if value.is_a? Proc
+            value = value.call(object, plugin) if value.is_a? Proc rescue nil
             next if value.blank?
             r << tag(:meta, key_attr => key, value_attr => CGI.escape_html(value.to_s))
           end
