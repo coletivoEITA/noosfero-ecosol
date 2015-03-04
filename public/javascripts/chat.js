@@ -466,6 +466,14 @@ jQuery(function($) {
      },
 
      connect: function() {
+       if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+         Notification.requestPermission(function (permission) {
+           if (!('permission' in Notification)) {
+             Notification.permission = permission;
+           }
+         });
+       }
+
         if (Jabber.connection && Jabber.connection.connected) {
            Jabber.send_availability_status(Jabber.presence_status);
         }
