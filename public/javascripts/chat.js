@@ -746,9 +746,9 @@ jQuery(function($) {
    }
 
    function update_total_unread_messages() {
-      var total_unread = $('#openchat .unread-messages');
+      var total_unread = $('#unread-messages');
       var sum = 0;
-      $('.buddies .unread-messages').each(function() {
+      $('#chat .unread-messages').each(function() {
          sum += Number($(this).text());
       });
       if(sum>0) {
