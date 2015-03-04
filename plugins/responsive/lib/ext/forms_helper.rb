@@ -11,7 +11,7 @@ module FormsHelper
     def labelled_radio_button( human_name, name, value, checked = false, options = {} )
       return super unless theme_responsive?
 
-      options[:id] ||= 'radio-' + next_id_number
+      options[:id] ||= 'radio-' + FormsHelper.next_id_number
       content_tag( 'label', radio_button_tag( name, value, checked, options ) + '  ' +
  human_name, for: options[:id], class: 'radio-inline' )
     end
@@ -20,7 +20,7 @@ module FormsHelper
     def labelled_check_box( human_name, name, value = "1", checked = false, options = {} )
       return super unless theme_responsive?
 
-      options[:id] ||= 'checkbox-' + next_id_number
+      options[:id] ||= 'checkbox-' + FormsHelper.next_id_number
       hidden_field_tag(name, '0') +
         content_tag( 'label', check_box_tag( name, value, checked, options ) + '  ' + human_name, for: options[:id], class: 'checkbox-inline')
     end

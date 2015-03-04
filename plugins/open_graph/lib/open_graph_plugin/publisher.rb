@@ -61,6 +61,7 @@ class OpenGraphPlugin::Publisher
         object_data_url = self.url_for object_data_url
 
         actors.each do |actor|
+          print_debug "open_graph: start publishing" if debug? actor
           self.publish actor, defs, object_data_url
         end
       end
