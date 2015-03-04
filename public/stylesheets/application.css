@@ -3642,12 +3642,10 @@ table.cms-articles .icon:hover {
 
 .controller-cms .with_media_panel {
   float: left;
-  width: 900px;
   transition: 1s 0.5s;
 }
 
 .controller-cms .show-media-panel .with_media_panel {
-  width: 600px;
   transition: 1s;
 }
 
