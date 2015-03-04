@@ -14,6 +14,8 @@
 *= require jquery.cookie.js
 *= require jquery.ba-bbq.min.js
 *= require jquery.tokeninput.js
+*= require jquery.typewatch.js
+*= require jquery.textchange.js
 *= require jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
 *= require inputosaurus.js
 *= require reflection.js
