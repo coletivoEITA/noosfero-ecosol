@@ -55,6 +55,16 @@ class ChatController < PublicController
     end
   end
 
+  def avatars
+    profiles = environment.profiles.where(:identifier => params[:profiles])
+    avatar_map = profiles.inject({}) do |result, profile|
+      result[profile.jid] = profile_icon(profile, :minor)
+      result
+    end
+
+    render_json avatar_map
+  end
+
   def update_presence_status
     if request.xhr?
       current_user.update_attributes({:chat_status_at => DateTime.now}.merge(params[:status] || {}))
@@ -64,7 +74,7 @@ class ChatController < PublicController
 
   def save_message
     if request.post?
-      to = environment.profiles.where(:jid => params[:to]).first
+      to = environment.profiles.where(:identifier => params[:to]).first
       body = params[:body]
 
       begin
