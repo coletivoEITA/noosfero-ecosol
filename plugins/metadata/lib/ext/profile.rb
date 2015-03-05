@@ -3,7 +3,7 @@ require_dependency 'profile'
 class Profile
 
   metadata_spec namespace: :og, tags: {
-    type: MetadataPlugin.og_types[:profile] || :profile,
+    type: proc{ |p, plugin| plugin.context.params[:og_type] || MetadataPlugin.og_types[:profile] || :profile },
     image: proc{ |p, plugin| "#{p.environment.top_url}#{p.image.public_filename}" if p.image },
     title: proc{ |p, plugin| p.nickname || p.name },
     url: proc do |p, plugin|

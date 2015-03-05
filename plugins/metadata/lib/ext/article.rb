@@ -3,7 +3,7 @@ require_dependency 'article'
 class Article
 
   metadata_spec namespace: :og, key_attr: :property, tags: {
-    type: MetadataPlugin.og_types[:article] || :article,
+    type: proc{ |a, plugin| plugin.context.params[:og_type] || MetadataPlugin.og_types[:article] || :article },
     url: proc{ |a, plugin| plugin.og_url_for a.url.merge(profile: a.profile.identifier) },
     title: proc{ |a, plugin| "#{a.title} - #{a.profile.name}" },
     image: proc do |a, plugin|
