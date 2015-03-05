@@ -150,7 +150,7 @@ class OpenGraphPlugin::Stories
       end,
     },
 
-    favorite_an_sse_enterprise: {
+    favorite_an_sse_initiative: {
       action_tracker_verb: nil,
       track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :create,
@@ -207,7 +207,7 @@ class OpenGraphPlugin::Stories
     },
 
     # PASSIVE STORIES
-    announce_news_from_a_sse_enterprise: {
+    announce_news_from_a_sse_initiative: {
       action_tracker_verb: :create_article,
       track_config: 'OpenGraphPlugin::EnterpriseTrackConfig',
       action: :announce_news,
