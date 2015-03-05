@@ -620,7 +620,7 @@ jQuery(function($) {
 
    function open_conversation(jid) {
      var conversation = load_conversation(jid);
-     var jid_id = $(this).attr('id');
+     var jid_id = Jabber.jid_to_id(jid);
 
      $('.conversation').hide();
      conversation.show();
@@ -880,5 +880,11 @@ jQuery(function($) {
     var jid = $(this).data('jid');
     Jabber.leave_room(jid);
   });
+
+  $('.open-conversation').live('click', function(){
+    open_conversation($(this).data('jid'));
+    return false;
+  });
+
 
 });
