@@ -27,9 +27,11 @@ class OpenGraphPlugin::Publisher
     raise 'abstract method called'
   end
 
-  def url_for url
+  def url_for url, extra_params={}
     return url if url.is_a? String
-    Noosfero::Application.routes.url_helpers.url_for url.except(:port)
+    url.delete :port
+    url.merge! extra_params
+    Noosfero::Application.routes.url_helpers.url_for url
   end
 
   def publish_stories object_data, actor, stories
@@ -40,6 +42,7 @@ class OpenGraphPlugin::Publisher
 
   def publish_story object_data, actor, story
     defs = OpenGraphPlugin::Stories::Definitions[story]
+    passive = defs[:passive]
 
     print_debug "open_graph: publish_story #{story}" if debug? actor
     match_criteria = if criteria = defs[:criteria] then criteria.call(object_data, actor) else true end
@@ -58,7 +61,8 @@ class OpenGraphPlugin::Publisher
         publish.call actor, object_data, self
       else
         object_data_url = if object_data_url = defs[:object_data_url] then object_data_url.call(object_data) else object_data.url end
-        object_data_url = self.url_for object_data_url
+        extra_params = if passive then {og_type: "#{MetadataPlugin::og_config[:namespace]}:#{object_data_url}"} else {} end
+        object_data_url = self.url_for object_data_url, extra_params
 
         actors.each do |actor|
           print_debug "open_graph: start publishing" if debug? actor

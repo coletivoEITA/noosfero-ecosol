@@ -12,3 +12,4 @@ class OpenGraphPlugin::Base < Noosfero::Plugin
 end
 
 ActiveSupport.run_load_hooks :open_graph_plugin, OpenGraphPlugin
+
