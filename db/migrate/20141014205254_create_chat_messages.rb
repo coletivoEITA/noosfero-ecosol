@@ -6,8 +6,8 @@ class CreateChatMessages < ActiveRecord::Migration
       t.text   :body
       t.timestamps
     end
-    add_index :chat_messages, :from
-    add_index :chat_messages, :to
+    add_index :chat_messages, :from_id
+    add_index :chat_messages, :to_id
     add_index :chat_messages, :created_at
   end
 
