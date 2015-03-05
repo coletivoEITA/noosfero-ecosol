@@ -61,7 +61,8 @@ class OpenGraphPlugin::Publisher
         publish.call actor, object_data, self
       else
         object_data_url = if object_data_url = defs[:object_data_url] then object_data_url.call(object_data) else object_data.url end
-        extra_params = if passive then {og_type: "#{MetadataPlugin::og_config[:namespace]}:#{object_data_url}"} else {} end
+        object_type = self.objects[defs[:object_type]]
+        extra_params = if passive then {og_type: "#{MetadataPlugin::og_config[:namespace]}:#{object_type}"} else {} end
         object_data_url = self.url_for object_data_url, extra_params
 
         actors.each do |actor|
