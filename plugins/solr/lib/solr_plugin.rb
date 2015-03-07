@@ -1,5 +1,7 @@
 module SolrPlugin
 
+  extend Noosfero::Plugin::ParentMethods
+
   def self.plugin_name
     "Solr"
   end
