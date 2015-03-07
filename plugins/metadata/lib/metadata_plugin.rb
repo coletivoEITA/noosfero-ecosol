@@ -1,6 +1,8 @@
 
 module MetadataPlugin
 
+  extend Noosfero::Plugin::ParentMethods
+
   def self.plugin_name
     _('Export metadata')
   end
