@@ -1,17 +1,18 @@
 <%
-  association = "open_graph_#{track}_track_configs"
-  tracks = profile.send association
-  profiles = tracks.map(&:object_data).compact
-  ids = profiles.map(&:id).join(',')
+  static = klass.static_trackers
+  profiles = klass.profile_track_objects profile
 %>
 <%= text_field_tag "#{f.object_name}[open_graph_#{track}_profiles_ids]", '', id: "select-#{track}", class: 'select-profiles',
-  placeholder: t("open_graph_plugin.views.track.config.#{track}.search_placeholder") %>
+  placeholder: (t("open_graph_plugin.views.track.config.#{track}.search_placeholder") unless static) %>
 
 <%= javascript_tag do %>
   $(document).ready(function () {
-    open_graph.track.config.initAutocomplete(<%=track.to_json%>,
+    var input = open_graph.track.config.initAutocomplete(<%=track.to_json%>,
       <%= url_for(action: "#{track}_search").to_json %>,
       <%= profiles.map{ |p| {value: p.id, label: render('ac_profile', profile: p), } }.to_json %>
     )
+    <% if static %>
+      input.tokenfield('readonly')
+    <% end %>
   })
 <% end %>

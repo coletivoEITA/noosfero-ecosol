@@ -64,6 +64,8 @@ open_graph = {
                 event.preventDefault()
             })
           })
+
+        return tokenField;
       },
 
     },
@@ -109,9 +111,9 @@ open_graph = {
       tokenfieldOptions.typeahead = [typeaheadOptions, { displayKey: 'label', source: engine.ttAdapter() }]
 
       var tokenField = input.tokenfield(tokenfieldOptions)
-      input.tokenfield('setTokens', data);
+      input.tokenfield('setTokens', data)
 
-      return tokenField
+      return input
     },
   },
 }

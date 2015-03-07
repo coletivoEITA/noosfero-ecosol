@@ -85,15 +85,15 @@ class OpenGraphPlugin::Publisher
     passive = story_defs[:passive]
     if passive
       track_configs.each do |c|
-        trackers.concat c.trackers_of_profile(profile)
+        trackers.concat c.trackers_to_profile(profile)
       end.flatten
 
       trackers.select! do |t|
-        track_configs.any?{ |c| c.enabled_for self.context, t }
+        track_configs.any?{ |c| c.enabled? self.context, t }
       end
     else #active
       match_track = profile.person? and track_configs.any? do |c|
-        c.enabled_for(self.context, actor) and
+        c.enabled?(self.context, actor) and
           actor.send("open_graph_#{c.track_name}_track_configs").where(object_type: story_defs[:object_type]).first
       end
       trackers << actor if match_track
