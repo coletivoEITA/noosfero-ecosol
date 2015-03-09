@@ -1,5 +1,6 @@
 require_dependency 'profile'
 
+require_dependency 'community'
 # attr_accessible must be defined on subclasses
 Profile.descendants.each do |subclass|
   subclass.class_eval do
@@ -10,10 +11,12 @@ end
 
 class Profile
 
-  has_many :offered_products, :class_name => 'OrdersCyclePlugin::OfferedProduct', :dependent => :destroy, :order => 'products.name ASC'
+  has_many :offered_products, class_name: 'OrdersCyclePlugin::OfferedProduct', dependent: :destroy, order: 'products.name ASC'
 
   def consumers_coop_settings attrs = {}
     @consumers_coop_settings ||= Noosfero::Plugin::Settings.new self, ConsumersCoopPlugin, attrs
+    attrs.each{ |a, v| @consumers_coop_settings.set_setting a, v }
+    @consumers_coop_settings
   end
   alias_method :consumers_coop_settings=, :consumers_coop_settings
 
@@ -21,7 +24,7 @@ class Profile
   def consumers_coop_header_image
     @consumers_coop_header_image ||= ConsumersCoopPlugin::HeaderImage.find_by_id self.consumers_coop_header_image_id
   end
-  delegate :consumers_coop_header_image_id, :consumers_coop_header_image_id=, :to => :consumers_coop_settings
+  delegate :consumers_coop_header_image_id, :consumers_coop_header_image_id=, to: :consumers_coop_settings
   def consumers_coop_header_image_builder= img
     image = self.consumers_coop_header_image
 
@@ -50,8 +53,8 @@ class Profile
 
     login_block = self.blocks.select{ |b| b.class.name == "LoginBlock" }.first
     if not login_block
-      box = self.boxes.first :conditions => {:position => 2}
-      login_block = LoginBlock.create! :box => box
+      box = self.boxes.first conditions: {position: 2}
+      login_block = LoginBlock.create! box: box
       login_block.move_to_top
     end
 
@@ -73,7 +76,7 @@ class Profile
 
     self.products.own.map do |p|
       next if p.to_products.from_supplier_id(self.id).present?
-      SuppliersPlugin::DistributedProduct.create! :profile => self, :from_products => [p]
+      SuppliersPlugin::DistributedProduct.create! profile: self, from_products: [p]
     end
   end
 

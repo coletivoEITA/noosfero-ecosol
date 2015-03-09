@@ -22,6 +22,8 @@ class Profile
 
   def open_graph_settings attrs = {}
     @open_graph_settings ||= OpenGraphPlugin::Settings.new self, attrs
+    attrs.each{ |a, v| @open_graph_settings.set_setting a, v }
+    @open_graph_settings
   end
   alias_method :open_graph_settings=, :open_graph_settings
 
