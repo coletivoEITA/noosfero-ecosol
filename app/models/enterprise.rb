@@ -29,7 +29,7 @@ class Enterprise < Organization
 
   settings_items :organization_website, :historic_and_current_context, :activities_short_description
 
-  settings_items :products_per_catalog_page, :type => :integer, :default => 6
+  settings_items :products_per_catalog_page, :type => :integer, :default => 18
   alias_method :products_per_catalog_page_before_type_cast, :products_per_catalog_page
   validates_numericality_of :products_per_catalog_page, :allow_nil => true, :greater_than => 0
 
