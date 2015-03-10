@@ -46,6 +46,7 @@ class OpenGraphPlugin::Publisher
   end
 
   def publish_story object_data, actor, story
+    OpenGraphPlugin.context = self.context
     defs = OpenGraphPlugin::Stories::Definitions[story]
     passive = defs[:passive]
 
