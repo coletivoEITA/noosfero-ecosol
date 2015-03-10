@@ -251,7 +251,7 @@ class OpenGraphPlugin::Stories
       action_tracker_verb: :create_article,
       track_config: 'OpenGraphPlugin::CommunityTrackConfig',
       action: :announce_update,
-      object_type: :action,
+      object_type: :community,
       models: :Article,
       on: :create,
       passive: true,
