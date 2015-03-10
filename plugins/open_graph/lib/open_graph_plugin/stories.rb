@@ -237,7 +237,7 @@ class OpenGraphPlugin::Stories
     announce_an_update_of_sse_product: {
       action_tracker_verb: :update_product,
       track_config: 'OpenGraphPlugin::EnterpriseTrackConfig',
-      action: :announce_news,
+      action: :announce_update,
       object_type: :product,
       models: :Product,
       on: :update,
@@ -250,7 +250,7 @@ class OpenGraphPlugin::Stories
     announce_news_from_a_community: {
       action_tracker_verb: :create_article,
       track_config: 'OpenGraphPlugin::CommunityTrackConfig',
-      action: :announce_update,
+      action: :announce_news,
       object_type: :community,
       models: :Article,
       on: :create,
