@@ -23,7 +23,7 @@ class Enterprise < Organization
   has_many :production_costs, :as => :owner
 
   has_many :favorite_enterprise_people
-  has_many :fans, through: :favorite_enterprise_people, source: :person
+  has_many :fans, source: :person, through: :favorite_enterprise_people
 
   N_('Organization website'); N_('Historic and current context'); N_('Activities short description'); N_('City'); N_('State'); N_('Country'); N_('ZIP code')
 

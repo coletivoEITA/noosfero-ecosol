@@ -62,6 +62,12 @@ ActionTrackerConfig.verbs = {
     :description => @reply_scrap_description
   },
 
+  favorite_enterprise: {
+    description: proc do
+      _('favorited enterprise %{title}') % { title: '{{ link_to(truncate(ta.get_enterprise_name),ta.get_enterprise_url) }}' }
+    end,
+  },
+
   create_product: {
     description: proc do
       _('created the product %{title}') % { title: '{{ link_to(truncate(ta.get_name),ta.get_url) }}' }
