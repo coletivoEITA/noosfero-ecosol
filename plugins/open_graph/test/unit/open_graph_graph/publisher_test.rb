@@ -16,7 +16,6 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
     @myenterprise = @actor.environment.enterprises.create! name: 'mycoop', identifier: 'mycoop'
     @myenterprise.add_member @actor
     @enterprise = @actor.environment.enterprises.create! name: 'coop', identifier: 'coop'
-    @enterprise.fans << @actor
 
     @community = @actor.environment.communities.create! name: 'comm', identifier: 'comm', closed: false
 
@@ -43,15 +42,27 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
     # active
     User.current = @actor.user
     blog = Blog.create! profile: @actor, name: 'blog'
-    blog_post = TinyMceArticle.new profile: @actor, parent: blog, name: 'blah', author: User.current.person
-    @publisher.expects(:publish).with(@actor, @stories[:create_an_article], @publisher.url_for(blog_post.url))
+    blog_post = TinyMceArticle.new profile: User.current.person, parent: blog, name: 'blah', author: User.current.person
+    @publisher.expects(:publish).with(User.current.person, @stories[:create_an_article], @publisher.url_for(blog_post.url))
     blog_post.save!
+
+    @actor.update_attributes!({
+      open_graph_activity_track_configs_attributes: {
+        0 => {
+          tracker_id: @actor.id,
+          object_type: 'favorite_enterprise',
+        },
+      }
+    })
+    User.current = @actor.user
+    @publisher.expects(:publish).with(User.current.person, @stories[:favorite_a_sse_initiative], @publisher.url_for(@enterprise.url))
+    @enterprise.fans << User.current.person
 
     # active but published as passive
     User.current = @actor.user
     blog_post = TinyMceArticle.new profile: @enterprise, parent: @enterprise.blog, name: 'blah', author: User.current.person
     story = @stories[:announce_news_from_a_sse_initiative]
-    @publisher.expects(:publish).with(@actor, story, @publisher.passive_url_for(blog_post.url, story))
+    @publisher.expects(:publish).with(User.current.person, story, @publisher.passive_url_for(blog_post.url, story))
     blog_post.save!
 
     # passive

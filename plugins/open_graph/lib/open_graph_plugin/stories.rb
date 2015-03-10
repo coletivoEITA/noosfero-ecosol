@@ -4,35 +4,6 @@ class OpenGraphPlugin::Stories
   class_attribute :publishers
   self.publishers = []
 
-  ValidObjectList = [
-    :blog_post,
-    :enterprise,
-    :friendship,
-    :forum,
-    :gallery_image,
-    :person,
-    :product,
-    :uploaded_file,
-  ]
-  ValidActionList = [
-    :add,
-    :comment,
-    :create,
-    :favorite,
-    :like,
-    :make_friendship,
-    :start,
-    :update,
-    :upload,
-    :announce_creation,
-    :announce_new,
-    :announce_update,
-    :announce_news,
-  ]
-
-  DefaultActions = ValidActionList.inject({}){ |h, a| h[a] = a; h }
-  DefaultObjects = ValidObjectList.inject({}){ |h, o| h[o] = o; h }
-
   def self.register_publisher publisher
     self.publishers << publisher
   end
@@ -150,16 +121,22 @@ class OpenGraphPlugin::Stories
       end,
     },
 
-    favorite_an_sse_initiative: {
-      action_tracker_verb: nil,
+    favorite_a_sse_initiative: {
+      action_tracker_verb: :favorite_enterprise,
       track_config: 'OpenGraphPlugin::ActivityTrackConfig',
-      action: :create,
-      object_type: :favorite_enterprise_person,
+      action: :favorite,
+      object_type: :favorite_enterprise,
       models: :FavoriteEnterprisePerson,
       on: :create,
-      publish: proc do |actor, fe, publisher|
-        publish actor, actions[:favorite], objects[:enterprise], fe.enterprise.url
-      end
+      object_actor: proc do |favorite_enterprise_person|
+        favorite_enterprise_person.person
+      end,
+      object_profile: proc do |favorite_enterprise_person|
+        favorite_enterprise_person.enterprise
+      end,
+      object_data_url: proc do |favorite_enterprise_person, actor|
+        favorite_enterprise_person.enterprise.url
+      end,
     },
 
 =begin
@@ -200,9 +177,9 @@ class OpenGraphPlugin::Stories
       object_type: :friend,
       models: :Friendship,
       on: :create,
-      publish: proc do |actor, fs, publisher|
-        publish fs.person, actions[:make_friendship], objects[:friend], publisher.url_for(fs.friend.url)
-        publish fs.friend, actions[:make_friendship], objects[:friend], publisher.url_for(fs.person.url)
+      publish: proc do |actor, fs|
+        publish fs.person, actions[:make_friendship], objects[:friend], self.url_for(fs.friend.url)
+        publish fs.friend, actions[:make_friendship], objects[:friend], self.url_for(fs.person.url)
       end,
     },
 
@@ -212,6 +189,7 @@ class OpenGraphPlugin::Stories
       track_config: 'OpenGraphPlugin::EnterpriseTrackConfig',
       action: :announce_news,
       object_type: :enterprise,
+      passive: true,
       models: :Article,
       on: :create,
       criteria: proc do |article, actor|
@@ -220,16 +198,15 @@ class OpenGraphPlugin::Stories
       publish_if: proc do |article, actor|
         article.published?
       end,
-      passive: true,
     },
     announce_a_new_sse_product: {
       action_tracker_verb: :create_product,
       track_config: 'OpenGraphPlugin::EnterpriseTrackConfig',
       action: :announce_new,
       object_type: :product,
+      passive: true,
       models: :Product,
       on: :create,
-      passive: true,
       criteria: proc do |product, actor|
         product.profile.enterprise?
       end,
@@ -239,9 +216,9 @@ class OpenGraphPlugin::Stories
       track_config: 'OpenGraphPlugin::EnterpriseTrackConfig',
       action: :announce_update,
       object_type: :product,
+      passive: true,
       models: :Product,
       on: :update,
-      passive: true,
       criteria: proc do |product, actor|
         product.profile.enterprise?
       end,
@@ -252,9 +229,9 @@ class OpenGraphPlugin::Stories
       track_config: 'OpenGraphPlugin::CommunityTrackConfig',
       action: :announce_news,
       object_type: :community,
+      passive: true,
       models: :Article,
       on: :create,
-      passive: true,
       criteria: proc do |article, actor|
         article.profile.community?
       end,
@@ -264,6 +241,15 @@ class OpenGraphPlugin::Stories
     },
 
   }
+
+  ValidObjectList = Definitions.map{ |story, data| data[:object_type] }.uniq
+  ValidActionList = Definitions.map{ |story, data| data[:action] }.uniq
+
+  # TODO make this verification work
+  #raise "Each active story must use a unique object_type for configuration to work" if ValidObjectList.size < Definitions.size
+
+  DefaultActions = ValidActionList.inject({}){ |h, a| h[a] = a; h }
+  DefaultObjects = ValidObjectList.inject({}){ |h, o| h[o] = o; h }
 
   TrackerStories = {}; Definitions.each do |story, data|
     Array[data[:action_tracker_verb]].each do |verb|
