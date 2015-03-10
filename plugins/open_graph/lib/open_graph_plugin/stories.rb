@@ -230,6 +230,9 @@ class OpenGraphPlugin::Stories
       models: :Product,
       on: :create,
       passive: true,
+      criteria: proc do |product, actor|
+        product.profile.enterprise?
+      end,
     },
     announce_an_update_of_sse_product: {
       action_tracker_verb: :update_product,
@@ -239,6 +242,9 @@ class OpenGraphPlugin::Stories
       models: :Product,
       on: :update,
       passive: true,
+      criteria: proc do |product, actor|
+        product.profile.enterprise?
+      end,
     },
 
     announce_news_from_a_community: {

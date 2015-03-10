@@ -34,6 +34,11 @@ class OpenGraphPlugin::Publisher
     Noosfero::Application.routes.url_helpers.url_for url
   end
 
+  def passive_url_for url, story_defs
+    object_type = self.objects[story_defs[:object_type]]
+    url_for url, og_type: "#{MetadataPlugin::og_config[:namespace]}:#{object_type}"
+  end
+
   def publish_stories object_data, actor, stories
     stories.each do |story|
       self.publish_story object_data, actor, story
@@ -61,9 +66,7 @@ class OpenGraphPlugin::Publisher
         publish.call actor, object_data, self
       else
         object_data_url = if object_data_url = defs[:object_data_url] then object_data_url.call(object_data) else object_data.url end
-        object_type = self.objects[defs[:object_type]]
-        extra_params = if passive then {og_type: "#{MetadataPlugin::og_config[:namespace]}:#{object_type}"} else {} end
-        object_data_url = self.url_for object_data_url, extra_params
+        object_data_url = if passive then self.passive_url_for object_data_url, defs else self.url_for object_data_url end
 
         actors.each do |actor|
           print_debug "open_graph: start publishing" if debug? actor
