@@ -34,7 +34,7 @@ class FbAppPluginPageTabController < FbAppPluginController
           render action: 'catalog' unless performed?
         else
           # fake profile for catalog controller
-          @profile = environment.enterprise_template
+          @profile = environment.enterprise_default_template
           @profile.shopping_cart_settings.enabled = true
 
           base_query = @page_tab.value
