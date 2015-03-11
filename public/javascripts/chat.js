@@ -466,6 +466,14 @@ jQuery(function($) {
      },
 
      connect: function() {
+       if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+         Notification.requestPermission(function (permission) {
+           if (!('permission' in Notification)) {
+             Notification.permission = permission;
+           }
+         });
+       }
+
         if (Jabber.connection && Jabber.connection.connected) {
            Jabber.send_availability_status(Jabber.presence_status);
         }
@@ -548,7 +556,7 @@ jQuery(function($) {
 
    function save_message(jid, body) {
       $.post('/chat/save_message', {
-        to: getIdentifier(jid),
+        to: jid,
         body: body
       });
    }
@@ -612,7 +620,7 @@ jQuery(function($) {
 
    function open_conversation(jid) {
      var conversation = load_conversation(jid);
-     var jid_id = $(this).attr('id');
+     var jid_id = Jabber.jid_to_id(jid);
 
      $('.conversation').hide();
      conversation.show();
@@ -746,9 +754,9 @@ jQuery(function($) {
    }
 
    function update_total_unread_messages() {
-      var total_unread = $('#openchat .unread-messages');
+      var total_unread = $('#unread-messages');
       var sum = 0;
-      $('.buddies .unread-messages').each(function() {
+      $('#chat .unread-messages').each(function() {
          sum += Number($(this).text());
       });
       if(sum>0) {
@@ -872,5 +880,11 @@ jQuery(function($) {
     var jid = $(this).data('jid');
     Jabber.leave_room(jid);
   });
+
+  $('.open-conversation').live('click', function(){
+    open_conversation($(this).data('jid'));
+    return false;
+  });
+
 
 });

@@ -32,10 +32,10 @@ when 'virtualhosts'
       puts "  #{server_directive} #{domain.name}"
       server_directive = 'ServerAlias'
     end
+    puts "  Include /etc/noosfero/apache.d/*"
     puts "  Include /etc/noosfero/apache/virtualhost.conf"
     puts "</VirtualHost>"
   end
-  puts "Include /etc/noosfero/apache.d/*"
   puts "# vim: ft=apache"
 else
   puts "usage: %s mongrel|thin|virtualhosts" % $PROGRAM_NAME
