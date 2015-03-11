@@ -28,10 +28,11 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
       open_graph_activity_track_configs_attributes: {
         0 => { tracker_id: @actor.id, object_type: 'blog_post', },
         1 => { tracker_id: @actor.id, object_type: 'gallery_image', },
-        2 => { tracker_id: @actor.id, object_type: 'favorite_enterprise', },
-        3 => { tracker_id: @actor.id, object_type: 'uploaded_file', },
-        4 => { tracker_id: @actor.id, object_type: 'event', },
-        5 => { tracker_id: @actor.id, object_type: 'forum', },
+        2 => { tracker_id: @actor.id, object_type: 'uploaded_file', },
+        3 => { tracker_id: @actor.id, object_type: 'event', },
+        4 => { tracker_id: @actor.id, object_type: 'forum', },
+        5 => { tracker_id: @actor.id, object_type: 'friend', },
+        6 => { tracker_id: @actor.id, object_type: 'favorite_enterprise', },
       },
       open_graph_enterprise_profiles_ids: [@enterprise.id],
       open_graph_community_profiles_ids: [@community.id],
@@ -62,6 +63,11 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
     topic = TinyMceArticle.new profile: User.current.person, parent: forum, name: 'blah2', author: User.current.person
     @publisher.expects(:publish).with(User.current.person, @stories[:start_a_discussion], @publisher.url_for(topic.url.merge og_type: MetadataPlugin.og_types[:forum]))
     topic.save!
+
+    @publisher.expects(:publish).with(User.current.person, @stories[:make_friendship_with], @publisher.url_for(@actor.url))
+    @publisher.expects(:publish).with(User.current.person, @stories[:make_friendship_with], @publisher.url_for(@other_actor.url))
+    @actor.add_friend @other_actor
+    @other_actor.add_friend @actor
 
     @publisher.expects(:publish).with(User.current.person, @stories[:favorite_a_sse_initiative], @publisher.url_for(@enterprise.url))
     @enterprise.fans << User.current.person

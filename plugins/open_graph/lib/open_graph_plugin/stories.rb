@@ -177,15 +177,20 @@ class OpenGraphPlugin::Stories
 =end
 
     make_friendship_with: {
-      action_tracker_verb: :make_friendship,
+      action_tracker_verb: :new_friendship,
       track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :make_friendship,
       object_type: :friend,
       models: :Friendship,
       on: :create,
-      publish: proc do |actor, fs|
-        publish fs.person, actions[:make_friendship], objects[:friend], self.url_for(fs.friend.url)
-        publish fs.friend, actions[:make_friendship], objects[:friend], self.url_for(fs.person.url)
+      object_actor: proc do |friendship|
+        friendship.person
+      end,
+      object_profile: proc do |friendship|
+        friendship.friend
+      end,
+      object_data_url: proc do |friendship, actor|
+        friendship.friend.url
       end,
     },
 
