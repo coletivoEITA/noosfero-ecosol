@@ -803,6 +803,7 @@ class Environment < ActiveRecord::Base
     template = Enterprise.find_by_id settings[:enterprise_template_id]
     template if template && template.is_template?
   end
+  alias_method :enterprise_template, :enterprise_default_template
 
   def enterprise_default_template=(value)
     settings[:enterprise_template_id] = value.kind_of?(Enterprise) ? value.id : value
