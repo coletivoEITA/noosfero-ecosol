@@ -30,6 +30,7 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
         1 => { tracker_id: @actor.id, object_type: 'gallery_image', },
         2 => { tracker_id: @actor.id, object_type: 'favorite_enterprise', },
         3 => { tracker_id: @actor.id, object_type: 'uploaded_file', },
+        4 => { tracker_id: @actor.id, object_type: 'event', },
       },
       open_graph_enterprise_profiles_ids: [@enterprise.id],
       open_graph_community_profiles_ids: [@community.id],
@@ -51,6 +52,10 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
     document = UploadedFile.new uploaded_data: fixture_file_upload('/files/doctest.en.xhtml', 'text/html'), profile: User.current.person
     @publisher.expects(:publish).with(User.current.person, @stories[:add_a_document], @publisher.url_for(document.url.merge view: true))
     document.save!
+
+    event = Event.new name: 'event', profile: User.current.person
+    @publisher.expects(:publish).with(User.current.person, @stories[:create_an_event], @publisher.url_for(event.url))
+    event.save!
 
     @publisher.expects(:publish).with(User.current.person, @stories[:favorite_a_sse_initiative], @publisher.url_for(@enterprise.url))
     @enterprise.fans << User.current.person

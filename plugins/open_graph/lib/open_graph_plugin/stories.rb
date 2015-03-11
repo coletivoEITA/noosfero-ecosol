@@ -19,6 +19,7 @@ class OpenGraphPlugin::Stories
   end
 
   Definitions = {
+    # needed a patch on UploadedFile: def notifiable?; true; end
     add_a_document: {
       action_tracker_verb: :create_article,
       track_config: 'OpenGraphPlugin::ActivityTrackConfig',
