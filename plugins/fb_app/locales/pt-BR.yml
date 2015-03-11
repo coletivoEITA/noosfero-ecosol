@@ -26,7 +26,7 @@
         reconnect: 'Reconectar' 
 
         timeline:
-          heading: 'Postar conteúdo do Cirandas no seu Face...'
+          heading: 'Postar suas ações do Cirandas no facebook'
           add: 'Salvar configuração de postagens na timeline' 
           explanation_title: 'Aguarde!'
           explanation_text: 'Em breve, este aplicativo poderá postar automaticamente no seu face as ações que você fizer no cirandas! Por exemplo: quando você postar novos conteúdos no seu blog, enviar uma imagem, etc.'

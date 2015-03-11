@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 require 'enterprise_registration_controller'
 
 # Re-raise errors caught by the controller.
@@ -53,6 +53,24 @@ class EnterpriseRegistrationControllerTest < ActionController::TestCase
 
     post :index, :create_enterprise => data
     assert_template 'creation'
+  end
+
+  should 'show template welcome page on creation view' do
+    env = Environment.default
+    env.organization_approval_method = :none
+    env.save
+    region = fast_create(Region, {})
+
+    template = Enterprise.create!(:name => 'Enterprise Template', :identifier => 'enterprise-template', :is_template => true)
+    welcome_page = TinyMceArticle.create!(:name => 'Welcome Page', :profile => template, :body => 'This is the welcome page of enterprise template.', :published => true)
+    template.welcome_page = welcome_page
+    template.save!
+
+    data = { :name => 'My new enterprise', :identifier => 'mynew', :region_id => region.id, :template_id => template.id }
+    create_enterprise = CreateEnterprise.new(data)
+
+    post :index, :create_enterprise => data
+    assert_match /#{welcome_page.body}/, @response.body
   end
 
   should 'prompt for selecting validator if approval method is region' do

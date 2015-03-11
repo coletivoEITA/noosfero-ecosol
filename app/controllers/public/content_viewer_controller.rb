@@ -48,7 +48,12 @@ class ContentViewerController < ApplicationController
     #FIXME see a better way to do this. It's not need to pass this variable anymore
     @comment = Comment.new
 
-    process_page_posts(params)
+    begin
+      process_page_posts(params)
+    rescue
+      render_not_found
+      return
+    end
 
     if @page.folder? && @page.gallery?
       @images = get_images(@page, params[:npage], params[:slideshow])

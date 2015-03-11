@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 
 class ActionTrackerNotificationTest < ActiveSupport::TestCase
 
@@ -89,7 +89,7 @@ class ActionTrackerNotificationTest < ActiveSupport::TestCase
   end
 
   should "have comments through article action_tracker" do
-    person = fast_create(Person)
+    person = create_user.person
     article = create(TextileArticle, :profile_id => person.id)
     process_delayed_job_queue
     notification = ActionTrackerNotification.last

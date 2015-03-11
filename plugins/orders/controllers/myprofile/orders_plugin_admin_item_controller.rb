@@ -7,7 +7,7 @@ class OrdersPluginAdminItemController < MyProfileController
   protect 'edit_profile', :profile
   before_filter :set_admin
 
-  helper OrdersPlugin::OrdersDisplayHelper
+  helper OrdersPlugin::DisplayHelper
 
   def edit
     @consumer = user

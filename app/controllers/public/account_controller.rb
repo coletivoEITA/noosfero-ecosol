@@ -82,10 +82,12 @@ class AccountController < ApplicationController
     if @plugins.dispatch(:allow_user_registration).include?(false)
       redirect_back_or_default(:controller => 'home')
       session[:notice] = _("This environment doesn't allow user registration.")
+      return
     end
 
     store_location(request.referer) unless params[:return_to] or session[:return_to]
 
+    # Tranforming to boolean
     @block_bot = !!session[:may_be_a_bot]
     @invitation_code = params[:invitation_code]
     begin
@@ -130,8 +132,8 @@ class AccountController < ApplicationController
             check_join_in_community(@user)
             go_to_signup_initial_page
           else
+            redirect_to :controller => :home, :action => :welcome, :template_id => (@user.person.template && @user.person.template.id)
             session[:notice] = _('Thanks for registering!')
-            @register_pending = true
           end
         end
       end
@@ -477,6 +479,8 @@ class AccountController < ApplicationController
         redirect_to user.url.merge(_: Time.now.to_i)
       when 'user_control_panel'
         redirect_to user.admin_url.merge(_: Time.now.to_i)
+      when 'welcome_page'
+        redirect_to :controller => :home, :action => :welcome, :template_id => (user.template && user.template.id)
     else
       redirect_back_or_default(default)
     end

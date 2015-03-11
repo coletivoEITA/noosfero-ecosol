@@ -1,7 +1,7 @@
 class ChangeDatetimeTimezones < ActiveRecord::Migration
 
-  # set to 1.0.0 migration date
-  FromDate = ENV['CHANGE_TIMEZONE_FROM'] || '2014/11/24 00:00:00'
+  # disabled by default, set to noosfero 1.0.0 migration date to ENABLE (format: 2014/11/24 00:00:00)
+  FromDate = ENV['CHANGE_TIMEZONE_FROM']
 
   def up
     # from local to utc

@@ -1,9 +1,10 @@
-@broken_plugins = %w[
+$broken_plugins = %w[
   anti_spam
   bsc
   comment_classification
   ldap
   solr
+  stoa
 ]
 
 @all_plugins = Dir.glob('plugins/*').map { |f| File.basename(f) } - ['template']
@@ -105,7 +106,7 @@ def run_test(name, files)
   files = Array(files)
   plugin = filename2plugin(files.first)
   if name == :cucumber || name == :selenium
-    run_cucumber task2_profile(name, plugin), files
+    run_cucumber task2profile(name, plugin), files
   else
     run_testrb files
   end
@@ -133,7 +134,11 @@ end
 
 def run_tests(name, plugins, run=:all)
   plugins = Array(plugins)
-  glob =  "plugins/{#{plugins.join(',')}}/test/#{task2folder(name)}/**/*.#{task2ext(name)}"
+  if name == :cucumber || name == :selenium
+    glob =  "plugins/{#{plugins.join(',')}}/#{task2folder(name)}/**/*.#{task2ext(name)}"
+  else
+    glob =  "plugins/{#{plugins.join(',')}}/test/#{task2folder(name)}/**/*.#{task2ext(name)}"
+  end
   files = Dir.glob(glob)
   if files.empty?
     puts "I: no tests to run #{name}"
@@ -204,14 +209,14 @@ namespace :test do
     @all_tasks.each do |taskname|
       desc "Run #{taskname} tests for all plugins"
       task taskname do
-        test_sequence(@all_plugins - @broken_plugins, taskname)
+        test_sequence(@all_plugins - $broken_plugins, taskname)
       end
     end
   end
 
   desc "Run all tests for all plugins"
   task :noosfero_plugins do
-    test_sequence(@all_plugins - @broken_plugins, @all_tasks) do |failed|
+    test_sequence(@all_plugins - $broken_plugins, @all_tasks) do |failed|
       plugins_status_report(failed)
     end
   end
@@ -228,7 +233,7 @@ def plugins_status_report(failed)
   printf ('-' * w) + ' ' + ('-' * 20) + "\n"
 
   @all_plugins.each do |plugin|
-    if @broken_plugins.include?(plugin)
+    if $broken_plugins.include?(plugin)
       status = "SKIP"
     elsif !failed[plugin] || failed[plugin].empty?
       status = "PASS"

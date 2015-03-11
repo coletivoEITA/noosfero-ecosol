@@ -54,6 +54,8 @@ module ApplicationHelper
 
   include PluginsHelper
 
+  include PluginsHelper
+
   def locale
     (@page && !@page.language.blank?) ? @page.language : FastGettext.locale
   end
@@ -873,8 +875,9 @@ module ApplicationHelper
   end
 
   def base_url
-    environment.top_url
+    environment.top_url(request.scheme)
   end
+  alias :top_url :base_url
 
   def helper_for_article(article)
     article_helper = ActionView::Base.new
@@ -904,18 +907,6 @@ module ApplicationHelper
     content_for :feeds do
       tag(:link, :rel => 'alternate', :type => 'application/rss+xml', :title => title, :href => url_for(url))
     end
-  end
-
-  def icon_theme_stylesheet_path
-    icon_themes = []
-    theme_icon_themes = theme_option(:icon_theme) || []
-    for icon_theme in theme_icon_themes do
-      theme_path = "/designs/icons/#{icon_theme}/style.css"
-      if File.exists?(Rails.root.join('public', theme_path[1..-1]))
-        icon_themes << theme_path
-      end
-    end
-    icon_themes
   end
 
   def page_title
@@ -957,9 +948,9 @@ module ApplicationHelper
   # from Article model for an ArticleBlock.
   def reference_to_article(text, article, anchor=nil)
     if article.profile.domains.empty?
-      href = "/#{article.url[:profile]}/"
+      href = "#{Noosfero.root}/#{article.url[:profile]}/"
     else
-      href = "http://#{article.profile.domains.first.name}/"
+      href = "http://#{article.profile.domains.first.name}#{Noosfero.root}/"
     end
     href += article.url[:page].join('/')
     href += '#' + anchor if anchor
@@ -1330,8 +1321,19 @@ module ApplicationHelper
     end
   end
 
-  def remove_content_button(action)
-    @plugins.dispatch("content_remove_#{action.to_s}", @page).include?(true)
+  def content_remove_spread(content)
+    !content.public? || content.folder? || (profile == user && user.communities.blank? && !environment.portal_enabled)
+  end
+
+  def remove_content_button(action, content)
+    method_name = "content_remove_#{action.to_s}"
+    plugin_condition = @plugins.dispatch(method_name, content).include?(true)
+    begin
+      core_condition = self.send(method_name, content)
+    rescue NoMethodError
+      core_condition = false
+    end
+    core_condition || plugin_condition
   end
 
   def template_options(kind, field_name)
@@ -1339,10 +1341,8 @@ module ApplicationHelper
     return '' if templates.count == 0
     return hidden_field_tag("#{field_name}[template_id]", templates.first.id) if templates.count == 1
 
-    counter = 0
     radios = templates.map do |template|
-      counter += 1
-      content_tag('li', labelled_radio_button(link_to(template.name, template.url, :target => '_blank'), "#{field_name}[template_id]", template.id, counter==1))
+      content_tag('li', labelled_radio_button(link_to(template.name, template.url, :target => '_blank'), "#{field_name}[template_id]", template.id, environment.is_default_template?(template)))
     end.join("\n")
 
     content_tag('div', content_tag('label', _('Profile organization'), :for => 'template-options', :class => 'formlabel') +
@@ -1414,7 +1414,7 @@ module ApplicationHelper
     #TODO This way is more efficient but do not support macro inside of
     #     macro. You must parse them from the inside-out in order to enable
     #     that.
-    doc.search('.macro').each do |macro|
+    doc.css('.macro').each do |macro|
       macro_name = macro['data-macro']
       result = @plugins.parse_macro(macro_name, macro, source)
       macro.inner_html = result.kind_of?(Proc) ? self.instance_exec(&result) : result
@@ -1434,6 +1434,43 @@ module ApplicationHelper
 
   def display_article_versions(article, version = nil)
     content_tag('ul', article.versions.map {|v| link_to("r#{v.version}", @page.url.merge(:version => v.version))})
+  end
+
+  def search_input_with_suggestions(name, asset, default, options = {})
+    text_field_tag name, default, options.merge({:class => 'search-input-with-suggestions', 'data-asset' => asset})
+  end
+
+  def profile_suggestion_profile_connections(suggestion)
+    profiles = suggestion.profile_connections.first(4).map do |profile|
+      link_to(profile_image(profile, :icon, :title => profile.name), profile.url, :class => 'profile-suggestion-connection-icon')
+    end
+
+    controller_target = suggestion.suggestion_type == 'Person' ? :friends : :memberships
+    profiles << link_to("<big> +#{suggestion.profile_connections.count - 4}</big>", :controller => controller_target, :action => :connections, :id => suggestion.suggestion_id) if suggestion.profile_connections.count > 4
+
+    if profiles.present?
+      content_tag(:div, profiles.join , :class => 'profile-connections')
+    else
+      ''
+    end
+  end
+
+  def profile_suggestion_tag_connections(suggestion)
+    tags = suggestion.tag_connections.first(4).map do |tag|
+      tag.name + ', '
+    end
+    last_tag = tags.pop
+    tags << last_tag.strip.chop if last_tag.present?
+    title = tags.join
+
+    controller_target = suggestion.suggestion_type == 'Person' ? :friends : :memberships
+    tags << ' ' + link_to('...', {:controller => controller_target, :action => :connections, :id => suggestion.suggestion_id}, :class => 'more-tag-connections', :title => _('See all connections')) if suggestion.tag_connections.count > 4
+
+    if tags.present?
+      content_tag(:div, tags.join, :class => 'tag-connections', :title => title)
+    else
+      ''
+    end
   end
 
   def labelled_colorpicker_field(human_name, object_name, method, options = {})

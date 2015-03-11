@@ -3,10 +3,10 @@ class Category < ActiveRecord::Base
   attr_accessible :name, :parent_id, :display_color, :display_in_menu, :image_builder, :environment, :parent
 
   SEARCHABLE_FIELDS = {
-    :name => 10,
-    :acronym => 5,
-    :abbreviation => 5,
-    :slug => 1,
+    :name => {:label => _('Name'), :weight => 10},
+    :acronym => {:label => _('Acronym'), :weight => 5},
+    :abbreviation => {:label => _('Abbreviation'), :weight => 5},
+    :slug => {:label => _('Slug'), :weight => 1},
   }
 
   validates_exclusion_of :slug, :in => [ 'index' ], :message => N_('{fn} cannot be like that.').fix_i18n
@@ -103,6 +103,14 @@ class Category < ActiveRecord::Base
   def is_leaf_displayable_in_menu?
     return false if self.display_in_menu == false
     self.children.find(:all, :conditions => {:display_in_menu => true}).empty?
+  end
+
+  def change_children_choosable
+    if not self.choosable_was and self.choosable
+      self.children.each do |child|
+        child.update_attribute :choosable, true
+      end
+    end
   end
 
   def with_color

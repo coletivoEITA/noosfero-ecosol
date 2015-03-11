@@ -1,5 +1,5 @@
 # encoding: UTF-8
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 require 'contact_controller'
 
 # Re-raise errors caught by the controller.
@@ -90,11 +90,12 @@ class ContactControllerTest < ActionController::TestCase
     assert_no_tag :tag => 'select', :attributes => {:name => 'state'}
   end
 
-  should 'not allow if not logged' do
+  should 'show name, email and captcha if not logged' do
     logout
     get :new, :profile => profile.identifier
-    assert_response :redirect
-    assert_redirected_to :controller => 'account', :action => 'login'
+    assert_tag :tag => 'input', :attributes => {:name => 'contact[name]'}
+    assert_tag :tag => 'input', :attributes => {:name => 'contact[email]'}
+    assert_tag :attributes => {id: 'dynamic_recaptcha'}
   end
 
   should 'identify sender' do
@@ -122,6 +123,33 @@ class ContactControllerTest < ActionController::TestCase
     post :new, :profile => enterprise.identifier, :contact => {:subject => 'Hi', :message => 'Hi, all'}, :state => '1', :city => '1', :confirm => 'true'
     assert_equal 'Camaçari', assigns(:contact).city
     assert_equal 'Bahia', assigns(:contact).state
+  end
+
+  should 'not show send e-mail page to non members of private community' do
+    community = fast_create(Community, :identifier => 'private-community', :name => 'Private Community', :public_profile => false)
+
+    post :new, :profile => community.identifier
+
+    assert_response :forbidden
+    assert_template :access_denied
+  end
+
+  should 'not show send e-mail page to non members of invisible community' do
+    community = fast_create(Community, :identifier => 'invisible-community', :name => 'Private Community', :visible => false)
+
+    post :new, :profile => community.identifier
+
+    assert_response :forbidden
+    assert_template :access_denied
+  end
+
+  should 'show send e-mail page to members of private community' do
+    community = fast_create(Community, :identifier => 'private-community', :name => 'Private Community', :public_profile => false)
+    community.add_member(@profile)
+
+    post :new, :profile => community.identifier
+
+    assert_response :success
   end
 
 end

@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 
 class EventsControllerTest < ActionController::TestCase
 
@@ -52,6 +52,35 @@ class EventsControllerTest < ActionController::TestCase
     get :events_by_day, :profile => profile.identifier, :year => 2009, :month => 10, :day => 28
 
     assert_tag :tag => 'a', :content => /Joao Birthday/
+  end
+
+  should 'not show events page to non members of private community' do
+    community = fast_create(Community, :identifier => 'private-community', :name => 'Private Community', :public_profile => false)
+
+    post :events, :profile => community.identifier
+
+    assert_response :forbidden
+    assert_template :access_denied
+  end
+
+  should 'not show events page to non members of invisible community' do
+    community = fast_create(Community, :identifier => 'invisible-community', :name => 'Private Community', :visible => false)
+
+    post :events, :profile => community.identifier
+
+    assert_response :forbidden
+    assert_template :access_denied
+  end
+
+  should 'show events page to members of private community' do
+    community = fast_create(Community, :identifier => 'private-community', :name => 'Private Community', :public_profile => false)
+    community.add_member(@profile)
+
+    login_as('testuser')
+
+    post :events, :profile => community.identifier
+
+    assert_response :success
   end
 
 end

@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '..', 'test_helper')
+require_relative "../test_helper"
 
 class ScrapTest < ActiveSupport::TestCase
 
@@ -265,7 +265,7 @@ class ScrapTest < ActiveSupport::TestCase
   should 'the action_tracker_target be the community when the scraps has the community as receiver' do
     scrap = Scrap.new
     assert_equal scrap, scrap.action_tracker_target
-    
+
     community = fast_create(Community)
     scrap.receiver = community
     assert_equal community, scrap.action_tracker_target
@@ -293,6 +293,12 @@ class ScrapTest < ActiveSupport::TestCase
     end
     activity = ActionTracker::Record.last
     assert_equal 'reply_scrap_on_self', activity.verb.to_s
+  end
+
+  should 'create profile activity' do
+    p1, p2 = create_user.person, create_user.person
+    s = create Scrap, :sender => p1, :receiver => p2, :content => "Hello!"
+    assert_equal s, p2.activities.first.activity
   end
 
 end

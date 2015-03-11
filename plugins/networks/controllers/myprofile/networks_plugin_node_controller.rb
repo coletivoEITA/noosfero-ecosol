@@ -4,7 +4,7 @@ class NetworksPluginNodeController < MyProfileController
 
   before_filter :load_node, :only => [:associate]
 
-  helper NetworksPlugin::NetworksDisplayHelper
+  helper NetworksPlugin::DisplayHelper
 
   def associate
     @new_node = NetworksPlugin::Node.new((params[:node] || {}).merge(:environment => environment, :parent => @node))

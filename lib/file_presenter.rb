@@ -74,11 +74,13 @@ class FilePresenter
   #     [super, 'myclass'].flatten
   #   end
   def css_class_list
-    [ @file.css_class_list,
-      'file-' + self.class.to_s.split(/:+/).map(&:underscore)[1..-1].join('-'),
+    list = @file.css_class_list
+    list << 'file-' + self.class.to_s.split(/:+/).map(&:underscore)[1..-1].join('-')
+    list.concat [
       'content-type_' + self.content_type.split('/')[0],
       'content-type_' + self.content_type.gsub(/[^a-z0-9]/i,'-')
-    ].flatten
+    ] if self.content_type.present?
+    list
   end
 
   # Enable file presenter to customize the css classes on view_page.rhtml

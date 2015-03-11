@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 require 'admin_panel_controller'
 
 # Re-raise errors caught by the controller.
@@ -334,10 +334,12 @@ class AdminPanelControllerTest < ActionController::TestCase
   end
 
   should 'save amount of news' do
-    post :set_portal_news_amount, :environment => { :news_amount_by_folder => '3' }
+    post :set_portal_news_amount, :environment => { :news_amount_by_folder => '3', :highlighted_news_amount => '2', :portal_news_amount => '5' }
     assert_redirected_to :action => 'index'
 
     assert_equal 3, Environment.default.news_amount_by_folder
+    assert_equal 2, Environment.default.highlighted_news_amount
+    assert_equal 5, Environment.default.portal_news_amount
   end
 
   should 'display plugins links' do
@@ -378,4 +380,35 @@ class AdminPanelControllerTest < ActionController::TestCase
     assert !Environment.default.signup_welcome_screen_body.blank?
   end
 
+  should 'show list to deactivate organizations' do
+    enabled_community = fast_create(Community, :environment_id => Environment.default, :name=>"enabled community")
+    disabled_community = fast_create(Community, :environment_id => Environment.default, :name=>"disabled community")
+    user = create_user('user')
+
+    disabled_community.disable
+
+    Environment.default.add_admin user.person
+    login_as('user')
+
+    get :manage_organizations_status, :filter=>"enabled"
+    assert_match(/Organization profiles - enabled/, @response.body)
+    assert_match(/enabled community/, @response.body)
+    assert_not_match(/disabled community/, @response.body)
+  end
+
+  should 'show list to activate organizations' do
+    enabled_community = fast_create(Community, :environment_id => Environment.default, :name=>"enabled community")
+    disabled_community = fast_create(Community, :environment_id => Environment.default, :name=>"disabled community")
+    user = create_user('user')
+
+    disabled_community.disable
+
+    Environment.default.add_admin user.person
+    login_as('user')
+
+    get :manage_organizations_status, :filter=>"disabled"
+    assert_match(/Organization profiles - disabled/, @response.body)
+    assert_not_match(/enabled community/, @response.body)
+    assert_match(/disabled community/, @response.body)
+  end
 end

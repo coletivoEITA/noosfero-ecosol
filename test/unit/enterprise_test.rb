@@ -1,5 +1,5 @@
 # encoding: UTF-8
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 
 class EnterpriseTest < ActiveSupport::TestCase
   fixtures :profiles, :environments, :users
@@ -169,7 +169,7 @@ class EnterpriseTest < ActiveSupport::TestCase
 
     e = Environment.default
     e.replace_enterprise_template_when_enable = true
-    e.enterprise_template = template
+    e.enterprise_default_template = template
     e.save!
 
     ent = fast_create(Enterprise, :name => 'test enteprise', :identifier => 'test_ent', :enabled => false)
@@ -192,7 +192,7 @@ class EnterpriseTest < ActiveSupport::TestCase
 
     e = Environment.default
     e.inactive_enterprise_template = inactive_template
-    e.enterprise_template = active_template
+    e.enterprise_default_template = active_template
     e.save!
 
     ent = create(Enterprise, :name => 'test enteprise', :identifier => 'test_ent', :enabled => false)
@@ -475,7 +475,7 @@ class EnterpriseTest < ActiveSupport::TestCase
     person = fast_create(Person)
     enterprise = fast_create(Enterprise)
 
-    UserStampSweeper.any_instance.expects(:current_user).returns(person).at_least_once
+    User.current = person.user
     article = create(TinyMceArticle, :profile => enterprise, :name => 'An article about free software')
 
     assert_equal [article.activity], enterprise.activities.map { |a| a.klass.constantize.find(a.id) }
@@ -486,7 +486,7 @@ class EnterpriseTest < ActiveSupport::TestCase
     enterprise = fast_create(Enterprise)
     enterprise2 = fast_create(Enterprise)
 
-    UserStampSweeper.any_instance.expects(:current_user).returns(person).at_least_once
+    User.current = person.user
     article = create(TinyMceArticle, :profile => enterprise2, :name => 'Another article about free software')
 
     assert_not_includes enterprise.activities.map { |a| a.klass.constantize.find(a.id) }, article.activity

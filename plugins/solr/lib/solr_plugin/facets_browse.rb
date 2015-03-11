@@ -1,10 +1,6 @@
 
 module SolrPlugin::FacetsBrowse
 
-  extend ActiveSupport::Concern
-  included do
-  end
-
   def facets_browse
     @asset = params[:asset_key].to_sym
     @asset_class = asset_class(@asset)
@@ -18,8 +14,6 @@ module SolrPlugin::FacetsBrowse
   end
 
   protected
-
-  include SolrPlugin::SearchHelper
 
 end
 

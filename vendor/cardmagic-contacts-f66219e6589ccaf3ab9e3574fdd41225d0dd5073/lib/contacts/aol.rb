@@ -68,7 +68,7 @@ class Contacts
       end
 
       doc = Nokogiri::HTML.fragment data
-      doc.search('input').each do |input|
+      doc.css('input').each do |input|
         postdata["usrd"] = input["value"] if input["name"] == "usrd"
       end
       # parse data for <input name="usrd" value="2726212" type="hidden"> and add it to the postdata
@@ -119,7 +119,7 @@ class Contacts
 
         # parse data and grab <input name="user" value="8QzMPIAKs2" type="hidden">
         doc = Nokogiri::HTML.fragment data
-        doc.search('input').each do |input|
+        doc.css('input').each do |input|
           postdata["user"] = input["value"] if input["name"] == "user"
         end
 

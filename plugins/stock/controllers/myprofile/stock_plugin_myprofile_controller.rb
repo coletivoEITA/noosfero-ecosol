@@ -6,7 +6,7 @@ class StockPluginMyprofileController < MyProfileController
 
   protect 'edit_profile', :profile
 
-  helper StockPlugin::StockDisplayHelper
+  helper StockPlugin::DisplayHelper
 
   def index
   end

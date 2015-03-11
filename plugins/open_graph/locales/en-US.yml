@@ -21,13 +21,13 @@
               event: 'Creation of events'
               enterprise: 'Updates to Social Solidarity Enterprises'
           enterprise:
-            label: "News from enterprises from which I'm a member: when a product is modified or registered, when a page is updated, etc"
+            label: "News from enterprises that I am a member and my favotites"
             search_placeholder: "type to find enterprises"
           friend:
-            label: "Friends"
+            label: "News from friends"
             search_placeholder: "type to find friends"
           community:
-            label: "Communities"
+            label: "News from selected communities"
             search_placeholder: "type to find communities"
 
 'en_US':

@@ -361,10 +361,6 @@ function Cart(config) {
   }
 
 
-  Cart.load_add_buttons = function() {
-    $('.cart-add-item').button({ icons: { primary: 'ui-icon-cart'} })
-  };
-
   $(window).bind('beforeunload', function(){
     log('Page unload.');
     Cart.unloadingPage = true;

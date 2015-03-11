@@ -1,4 +1,5 @@
-# FIXME remove Base when plugin scope problem is fixed
+# for some unknown reason, if this is named SuppliersPlugin::Product then
+# cycle.products will go to an infinite loop
 class SuppliersPlugin::BaseProduct < Product
 
   attr_accessible :default_margin_percentage, :margin_percentage, :default_stored, :stored, :default_unit, :unit_detail

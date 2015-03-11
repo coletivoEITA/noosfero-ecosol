@@ -6,30 +6,66 @@ open_graph = {
     config: {
 
       init: function() {
-        jQuery('.panel-body input[type=checkbox]:first').each(function(i, checkbox) {
-          open_graph.track.config.toggleParent(checkbox)
+        jQuery('#track-form .panel-heading').each(function(i, context) {
+          open_graph.track.config.toggleParent(context)
         })
       },
 
-      toggle: function(checkbox) {
-        var panel = $(checkbox).parents('.panel')
-        var checkboxes = panel.find('.panel-body input[type=checkbox]')
-        checkboxes.prop('checked', checkbox.checked)
+      configToggle: function(config, open) {
+        config.toggleClass('fa-toggle-on', open)
+        config.toggleClass('fa-toggle-off', !open)
+        config.siblings('input').prop('value', open)
       },
 
-      toggleParent: function(checkbox) {
-        var panel = $(checkbox).parents('.panel')
-        var parentCheckbox = panel.find('.panel-heading input[type=checkbox]')
-        var nChecked = panel.find('.panel-body input[type=checkbox]:checked').length
-        var nTotal = panel.find('.panel-body input[type=checkbox]').length
+      toggle: function(context, event) {
+        var panel = $(context).parents('.panel')
+        var panelBody = panel.find('.panel-body')
+        var parentCheckbox = panel.find('.config-check')
+        var checkboxes = panelBody.find('input[type=checkbox]')
+        var open = !panelBody.hasClass('in')
 
-        parentCheckbox.prop('indeterminate', false)
-        if (nChecked == nTotal)
-          parentCheckbox.prop('checked', true)
-        else if (nChecked === 0)
-          parentCheckbox.prop('checked', false)
-        else
-          parentCheckbox.prop('indeterminate', true)
+        checkboxes.prop('checked', open)
+        this.configToggle(parentCheckbox, open)
+      },
+
+      toggleParent: function(context) {
+        var panel = $(context).parents('.panel')
+        var panelBody = panel.find('.panel-body')
+        var parentCheckbox = panel.find('.panel-heading .config-check')
+        var checkboxes = panel.find('.panel-body input[type=checkbox]')
+        var profilesInput = panel.find('.panel-body .select-profiles')
+
+        var nObjects = checkboxes.filter(':checked').length
+        var nProfiles = profilesInput.length ? profilesInput.tokenfield('getTokens').length : 0;
+        var nChecked = nObjects + nProfiles;
+        var nTotal = checkboxes.length + nProfiles
+
+        if (nChecked === 0) {
+          panelBody.removeClass('in')
+          this.configToggle(parentCheckbox, false)
+        } else {
+          panelBody.addClass('in')
+          this.configToggle(parentCheckbox, true)
+        }
+      },
+
+      initAutocomplete: function(track, url, items) {
+        var selector = '#select-'+track
+        var tokenField = open_graph.autocomplete.init(url, selector, items)
+        open_graph.track.config.toggleParent(tokenField)
+
+        tokenField
+          .on('tokenfield:createdtoken tokenfield:removedtoken', function() {
+            open_graph.track.config.toggleParent(this)
+          }).on('tokenfield:createtoken', function(event) {
+            var existingTokens = $(this).tokenfield('getTokens')
+            $.each(existingTokens, function(index, token) {
+              if (token.value === event.attrs.value)
+                event.preventDefault()
+            })
+          })
+
+        return tokenField;
       },
 
     },
@@ -74,8 +110,10 @@ open_graph = {
 
       tokenfieldOptions.typeahead = [typeaheadOptions, { displayKey: 'label', source: engine.ttAdapter() }]
 
-      input.tokenfield(tokenfieldOptions)
-      input.tokenfield('setTokens', data);
+      var tokenField = input.tokenfield(tokenfieldOptions)
+      input.tokenfield('setTokens', data)
+
+      return input
     },
   },
 }

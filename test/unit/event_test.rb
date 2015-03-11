@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 
 class EventTest < ActiveSupport::TestCase
 
@@ -153,6 +153,14 @@ class EventTest < ActiveSupport::TestCase
 
     assert_tag_in_string e.body, :tag => 'p', :content => 'a paragraph (valid)'
     assert_no_tag_in_string e.body, :tag => 'script'
+  end
+
+  should 'filter HTML in name' do
+    profile = create_user('testuser').person
+    e = create(Event, :profile => profile, :name => '<p>a paragraph (valid)</p><script type="text/javascript">/* this is invalid */</script>"', :link => 'www.colivre.coop.br', :start_date => Date.today)
+
+    assert_tag_in_string e.name, :tag => 'p', :content => 'a paragraph (valid)'
+    assert_no_tag_in_string e.name, :tag => 'script'
   end
 
   should 'nil to link' do
@@ -311,4 +319,30 @@ class EventTest < ActiveSupport::TestCase
   should 'be notifiable' do
     assert Event.new.notifiable?
   end
+
+  should 'not be translatable if there is no language available on environment' do
+    environment = fast_create(Environment)
+    environment.languages = nil
+    profile = fast_create(Person, :environment_id => environment.id)
+ 
+    event = Event.new(:profile => profile)
+
+    assert !event.translatable?
+  end
+
+  should 'be translatable if there is languages on environment' do
+    environment = fast_create(Environment)
+    environment.languages = nil
+    profile = fast_create(Person, :environment_id => environment.id)
+    event = fast_create(Event, :profile_id => profile.id)
+
+    assert !event.translatable?
+ 
+
+    environment.languages = ['en','pt','fr']
+    environment.save
+    event.reload 
+    assert event.translatable?
+  end
+
 end

@@ -3,20 +3,21 @@ class StatisticsBlock < Block
   settings_items :community_counter, :default => false
   settings_items :user_counter, :default => true
   settings_items :enterprise_counter, :default => false
+  settings_items :product_counter, :default => false
   settings_items :category_counter, :default => false
   settings_items :tag_counter, :default => true
   settings_items :comment_counter, :default => true
   settings_items :hit_counter, :default => false
   settings_items :templates_ids_counter, Hash, :default => {}
 
-  attr_accessible :comment_counter, :community_counter, :user_counter, :enterprise_counter, :category_counter, :tag_counter, :hit_counter, :templates_ids_counter
+  attr_accessible :comment_counter, :community_counter, :user_counter, :enterprise_counter, :product_counter, :category_counter, :tag_counter, :hit_counter, :templates_ids_counter
 
   USER_COUNTERS = [:community_counter, :user_counter, :enterprise_counter, :tag_counter, :comment_counter, :hit_counter]
   COMMUNITY_COUNTERS = [:user_counter, :tag_counter, :comment_counter, :hit_counter]
   ENTERPRISE_COUNTERS = [:user_counter, :tag_counter, :comment_counter, :hit_counter]
 
   def self.description
-    _('Statistics')
+    c_('Statistics')
   end
 
   def default_title
@@ -85,7 +86,17 @@ class StatisticsBlock < Block
 
   def enterprises
     if owner.kind_of?(Environment) || owner.kind_of?(Person)
-      owner.enterprises.enabled.visible.count
+      owner.enterprises.visible.enabled.count
+    else
+      0
+    end
+  end
+
+  def products
+    if owner.kind_of?(Environment)
+      owner.products.where("profiles.enabled = true and profiles.visible = true").count
+    elsif owner.kind_of?(Enterprise)
+      owner.products.count
     else
       0
     end

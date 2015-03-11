@@ -3,7 +3,7 @@
   <h1 class="block-title">
     <span class='control-panel-title'><%= h profile.short_name %></span>
     <span class='control-panel-sep'>&#150;</span>
-    <span class='control-panel-subtitle'><%= _('Control Panel') %></span>
+    <span class='control-panel-subtitle'><%= (profile.person?) ? _('Personal Control Panel') : _('Control Panel') %></span>
   </h1>
 
 <%= render :partial => 'pending_tasks' %>
@@ -67,6 +67,8 @@
   <%= control_panel_button(_('Manage my groups'), 'groups', :controller => 'memberships') if profile.person? %>
 
   <%= control_panel_button(_('Manage SPAM'), 'manage-spam', :controller => 'spam', :action => 'index') %>
+
+  <%= control_panel_button(_('Edit welcome page'), 'welcome-page', :action => 'welcome_page') if has_welcome_page %>
 
   <% @plugins.dispatch(:control_panel_buttons).each do |button| %>
     <%= control_panel_button(button[:title], button[:icon], button[:url]) %>

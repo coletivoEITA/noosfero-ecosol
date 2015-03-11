@@ -2,7 +2,8 @@ class CreateOpenGraphPluginTracks < ActiveRecord::Migration
   def up
     create_table :open_graph_plugin_tracks do |t|
       t.string :type
-      t.string :scope
+      t.string :context
+      t.boolean :enabled, default: true
 
       t.integer :tracker_id
 
@@ -15,14 +16,12 @@ class CreateOpenGraphPluginTracks < ActiveRecord::Migration
       t.integer :object_data_id
       t.string :object_data_type
 
-      t.boolean :enabled, default: true
-
       t.timestamps
     end
 
     add_index :open_graph_plugin_tracks, [:type]
-    add_index :open_graph_plugin_tracks, [:scope]
-    add_index :open_graph_plugin_tracks, [:type, :scope]
+    add_index :open_graph_plugin_tracks, [:context]
+    add_index :open_graph_plugin_tracks, [:type, :context]
     add_index :open_graph_plugin_tracks, [:actor_id]
     add_index :open_graph_plugin_tracks, [:action]
     add_index :open_graph_plugin_tracks, [:object_type]

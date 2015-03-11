@@ -1,4 +1,5 @@
 require_dependency 'noosfero'
+require 'noosfero/plugin/parent_methods'
 
 class Noosfero::Plugin
 
@@ -10,17 +11,9 @@ class Noosfero::Plugin
 
   class << self
 
-    def table_name_prefix
-      @table_name_prefix ||= "#{name.to_s.underscore}_"
-    end
+    include Noosfero::Plugin::ParentMethods
 
     attr_writer :should_load
-
-    # Called for each ActiveRecord class with parents
-    # See http://apidock.com/rails/ActiveRecord/ModelSchema/ClassMethods/full_table_name_prefix
-    def table_name_prefix
-      @table_name_prefix ||= "#{name.to_s.underscore}_"
-    end
 
     def should_load
       @should_load.nil? && true || @boot
@@ -35,11 +28,16 @@ class Noosfero::Plugin
         exit 1
       end
 
-      available_plugins.each do |plugin_dir|
+      klasses = available_plugins.map do |plugin_dir|
         plugin_name = File.basename(plugin_dir)
-        plugin = load_plugin(plugin_name)
-        load_plugin_extensions(plugin_dir)
-        load_plugin_filters(plugin)
+        load_plugin plugin_name
+      end
+      available_plugins.each do |plugin_dir|
+        load_plugin_extensions plugin_dir
+      end
+      # filters must be loaded after all extensions
+      klasses.each do |plugin|
+        load_plugin_filters plugin
       end
     end
 
@@ -92,31 +90,48 @@ class Noosfero::Plugin
       end
     end
 
-    def load_plugin(plugin_name)
-      (plugin_name.to_s.camelize + 'Plugin').constantize
+    def load_plugin_identifier identifier
+      klass = identifier.to_s.camelize.constantize
+      klass = klass.const_get :Base if klass.class == Module
+      klass
+    end
+
+    def load_plugin public_name
+      load_plugin_identifier "#{public_name.to_s.camelize}Plugin"
     end
 
     # This is a generic method that initialize any possible filter defined by a
     # plugin to a specific controller
     def load_plugin_filters(plugin)
-      plugin_methods = plugin.instance_methods.select {|m| m.to_s.end_with?('_filters')}
-      plugin_methods.each do |plugin_method|
-        controller_class = plugin_method.to_s.gsub('_filters', '').camelize.constantize
-        filters = plugin.new.send(plugin_method)
-        filters = [filters] if !filters.kind_of?(Array)
+      ActionDispatch::Reloader.to_prepare do
+        filters = plugin.new.send 'application_controller_filters' rescue []
+        Noosfero::Plugin.add_controller_filters ApplicationController, plugin, filters
 
-        filters.each do |plugin_filter|
-          filter_method = (plugin.name.underscore.gsub('/','_') + '_' + plugin_filter[:method_name]).to_sym
-          controller_class.send(plugin_filter[:type], filter_method, (plugin_filter[:options] || {}))
-          controller_class.send(:define_method, filter_method) do
-            instance_eval(&plugin_filter[:block]) if environment.plugin_enabled?(plugin)
-          end
+        plugin_methods = plugin.instance_methods.select {|m| m.to_s.end_with?('_filters')}
+        plugin_methods.each do |plugin_method|
+          controller_class = plugin_method.to_s.gsub('_filters', '').camelize.constantize
+
+          filters = plugin.new.send(plugin_method)
+          Noosfero::Plugin.add_controller_filters controller_class, plugin, filters
+        end
+      end
+    end
+
+    def add_controller_filters(controller_class, plugin, filters)
+      unless filters.is_a?(Array)
+        filters = [filters]
+      end
+      filters.each do |plugin_filter|
+        filter_method = "#{plugin.identifier}_#{plugin_filter[:method_name]}".to_sym
+        controller_class.send(plugin_filter[:type], filter_method, (plugin_filter[:options] || {}))
+        controller_class.send(:define_method, filter_method) do
+          instance_exec(&plugin_filter[:block]) if environment.plugin_enabled?(plugin)
         end
       end
     end
 
     def load_plugin_extensions(dir)
-      Rails.configuration.to_prepare do
+      ActionDispatch::Reloader.to_prepare do
         Dir[File.join(dir, 'lib', 'ext', '*.rb')].each {|file| require_dependency file }
       end
     end
@@ -140,45 +155,6 @@ class Noosfero::Plugin
       @all ||= available_plugins.map{ |dir| (File.basename(dir) + "_plugin").camelize }
     end
 
-    def public_name
-      self.name.underscore.gsub('_plugin','')
-    end
-
-    def public_path file = '', relative=false
-      File.join "#{if relative then '' else  '/' end}plugins", public_name, file
-    end
-
-    def root_path
-      Rails.root.join('plugins', public_name)
-    end
-
-    def view_path
-      File.join(root_path,'views')
-    end
-
-    def controllers
-      @controllers ||= Dir.glob("#{self.root_path}/controllers/*/*").map do |controller_file|
-        next unless controller_file =~ /_controller.rb$/
-        controller = File.basename(controller_file).gsub(/.rb$/, '').camelize
-      end.compact
-    end
-
-    # Here the developer should specify the meta-informations that the plugin can
-    # inform.
-    def plugin_name
-      self.name.underscore.humanize
-    end
-    def plugin_description
-      _("No description informed.")
-    end
-
-    def admin_url
-      {:controller => "#{name.underscore}_admin", :action => 'index'}
-    end
-
-    def has_admin_url?
-      File.exists?(File.join(root_path, 'controllers', "#{name.underscore}_admin_controller.rb"))
-    end
   end
 
   def expanded_template(file_path, locals = {})
@@ -463,6 +439,12 @@ class Noosfero::Plugin
     nil
   end
 
+  # -> Adds adicional fields to a view
+  # returns = proc block that creates html code
+  def upload_files_extra_fields(article)
+    nil
+  end
+
   # -> Adds fields to the signup form
   # returns = proc that creates html code
   def signup_extra_contents
@@ -575,13 +557,6 @@ class Noosfero::Plugin
     params
   end
 
-  # -> Finds objects by their contents
-  # returns = {:results => [a, b, c, ...], ...}
-  # P.S.: The plugin might add other informations on the return hash for its
-  # own use in specific views
-  def find_by_contents asset, scope, query, paginate_options={:page => 1}, options={}
-  end
-
   # -> Auto complete search
   # returns = {:results => [a, b, c, ...], ...}
   # P.S.: The plugin might add other informations on the return hash for its
@@ -593,6 +568,27 @@ class Noosfero::Plugin
   # returns = { select_options: [['Name', 'key'], ['Name2', 'key2']] }
   def search_order asset
     nil
+  end
+
+  # -> Finds objects by their contents
+  # returns = {:results => [a, b, c, ...], ...}
+  # P.S.: The plugin might add other informations on the return hash for its
+  # own use in specific views
+  def find_by_contents(asset, scope, query, paginate_options={}, options={})
+    scope = scope.like_search(query, options) unless query.blank?
+    scope = scope.send(options[:filter]) unless options[:filter].blank?
+    {:results => scope.paginate(paginate_options)}
+  end
+
+  # -> Suggests terms based on asset and query
+  # returns = [a, b, c, ...]
+  def find_suggestions(query, context, asset, options={:limit => 5})
+    context.search_terms.
+      where(:asset => asset).
+      where("search_terms.term like ?", "%#{query}%").
+      where('search_terms.score > 0').
+      order('search_terms.score DESC').
+      limit(options[:limit]).map(&:term)
   end
 
   # -> Adds aditional fields for change_password
@@ -611,6 +607,12 @@ class Noosfero::Plugin
   # returns = a list of hashs as {:name => "string", :label => "string", :object_name => :key, :method => :key}
   def extra_optional_fields
     []
+  end
+
+  # -> Adds css class to <html> tag
+  # returns = ['class1', 'class2']
+  def html_tag_classes
+    nil
   end
 
   # -> Adds additional blocks to profiles and environments.
@@ -699,10 +701,9 @@ class Noosfero::Plugin
     end
   end
 
-  def respond_to_with_context? method, include_private=true
-    respond_to_without_context? method, include_private or self.context.respond_to? method, include_private
+  def respond_to_missing? method, include_private=true
+    self.context.respond_to? method, include_private or super
   end
-  alias_method_chain :respond_to?, :context
 
   private
 

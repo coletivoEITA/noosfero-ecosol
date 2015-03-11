@@ -10,7 +10,7 @@
 <div class="clear"></div>
 
 <style>
-  <% box_decorator.select_blocks(block.blocks, { :article => @page, :request_path => request.path, :locale => locale }).each do |child| %>
+  <% box_decorator.select_blocks(block, block.blocks, { :article => @page, :request_path => request.path, :locale => locale, params: request.params, controller: controller}).each do |child| %>      
     #block-<%=block.id%> #block-<%=child.id%> { width: <%= block.child_width(child.id) %>px; }
   <% end %>
 </style>
@@ -30,7 +30,7 @@
   <div class="container-block-button-bar button-bar">
     <%= link_to_remote '', :url => { :controller => controller.boxes_holder.kind_of?(Environment) ? 'container_block_plugin_admin' : 'container_block_plugin_myprofile', :action => 'saveWidths', :id => block.id }, 
                            :with => "containerChildrenWidth(#{block.id}, #{block.container_box.id})", 
-    :html => {:class => "button icon-save container_block_save", :id => "container_block_save_#{block.id}", :title => _('Save') },
+    :html => {:class => "button icon-save container_block_save", :id => "container_block_save_#{block.id}", :title => c_('Save') },
                            :loading => "open_loading(DEFAULT_LOADING_MESSAGE);",
                            :loaded => "close_loading();",
                            :complete => "display_notice(request.responseText);"%>

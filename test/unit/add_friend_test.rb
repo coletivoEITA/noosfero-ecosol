@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 
 class AddFriendTest < ActiveSupport::TestCase
 
@@ -135,6 +135,13 @@ class AddFriendTest < ActiveSupport::TestCase
 
     email = TaskMailer.target_notification(task, task.target_notification_message).deliver
     assert_match(/#{task.requestor.name} wants to be your friend/, email.subject)
+  end
+
+  should 'disable suggestion if profile requested friendship' do
+    suggestion = ProfileSuggestion.create(:person => person1, :suggestion => person2, :enabled => true)
+
+    task = AddFriend.create(:person => person1, :friend => person2)
+    assert_equal false, ProfileSuggestion.find(suggestion.id).enabled
   end
 
 end
