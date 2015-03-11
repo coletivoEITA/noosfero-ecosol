@@ -31,7 +31,7 @@ class OpenGraphPlugin::Publisher
 
   def passive_url_for url, story_defs
     object_type = self.objects[story_defs[:object_type]]
-    url_for url, og_type: "#{MetadataPlugin::og_config[:namespace]}:#{object_type}"
+    url_for url, og_type: MetadataPlugin.og_types[object_type]
   end
 
   def publish_stories object_data, actor, stories
@@ -46,10 +46,10 @@ class OpenGraphPlugin::Publisher
     passive = defs[:passive]
 
     print_debug "open_graph: publish_story #{story}" if debug? actor
-    match_criteria = if criteria = defs[:criteria] then criteria.call(object_data, actor) else true end
+    match_criteria = if (ret = self.call defs[:criteria], object_data, actor).nil? then true else ret end
     return unless match_criteria
     print_debug "open_graph: #{story} match criteria" if debug? actor
-    match_condition = if publish_if = defs[:publish_if] then publish_if.call(object_data, actor) else true end
+    match_condition = if (ret = self.call defs[:publish_if], object_data, actor).nil? then true else ret end
     return unless match_condition
     print_debug "open_graph: #{story} match publish_if" if debug? actor
 
@@ -61,7 +61,7 @@ class OpenGraphPlugin::Publisher
       if publish = defs[:publish]
         instance_exec actor, object_data, &publish
       else
-        object_data_url = if object_data_url = defs[:object_data_url] then object_data_url.call(object_data, actor) else object_data.url end
+        object_data_url = if (object_data_url = self.call defs[:object_data_url], object_data, actor) then object_data_url else object_data.url end
         object_data_url = if passive then self.passive_url_for object_data_url, defs else self.url_for object_data_url end
 
         actors.each do |actor|
@@ -109,7 +109,7 @@ class OpenGraphPlugin::Publisher
   protected
 
   def call p, *args
-    p and p.call *args
+    p and instance_exec *args, &p
   end
 
   def context

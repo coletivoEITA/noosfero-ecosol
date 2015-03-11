@@ -60,7 +60,7 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
 
     forum = Forum.create! name: 'forum', profile: User.current.person
     topic = TinyMceArticle.new profile: User.current.person, parent: forum, name: 'blah2', author: User.current.person
-    @publisher.expects(:publish).with(User.current.person, @stories[:start_a_discussion], @publisher.url_for(topic.url))
+    @publisher.expects(:publish).with(User.current.person, @stories[:start_a_discussion], @publisher.url_for(topic.url.merge og_type: MetadataPlugin.og_types[:forum]))
     topic.save!
 
     @publisher.expects(:publish).with(User.current.person, @stories[:favorite_a_sse_initiative], @publisher.url_for(@enterprise.url))
