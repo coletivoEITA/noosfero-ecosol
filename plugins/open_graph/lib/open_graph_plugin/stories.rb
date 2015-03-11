@@ -183,6 +183,9 @@ class OpenGraphPlugin::Stories
       object_type: :friend,
       models: :Friendship,
       on: :create,
+      custom_actor: proc do |friendship|
+        friendship.person
+      end,
       object_actor: proc do |friendship|
         friendship.person
       end,

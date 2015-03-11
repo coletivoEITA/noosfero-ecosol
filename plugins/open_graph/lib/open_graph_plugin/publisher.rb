@@ -95,6 +95,8 @@ class OpenGraphPlugin::Publisher
     else #active
       object_actor = self.call(story_defs[:object_actor], object_data) || object_data.profile rescue nil
       return unless object_actor and object_actor.person?
+      custom_actor = self.call(story_defs[:custom_actor], object_data)
+      actor = custom_actor if custom_actor
 
       match_track = track_configs.any? do |c|
         c.enabled?(self.context, actor) and

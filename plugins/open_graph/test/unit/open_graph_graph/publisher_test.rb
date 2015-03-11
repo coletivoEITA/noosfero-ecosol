@@ -37,6 +37,8 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
       open_graph_enterprise_profiles_ids: [@enterprise.id],
       open_graph_community_profiles_ids: [@community.id],
     })
+    @other_actor.update_attributes! open_graph_settings: { activity_track_enabled: "true", },
+      open_graph_activity_track_configs_attributes: { 0 => { tracker_id: @other_actor.id, object_type: 'friend', }, }
 
     # active
     User.current = @actor.user
@@ -64,8 +66,8 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
     @publisher.expects(:publish).with(User.current.person, @stories[:start_a_discussion], @publisher.url_for(topic.url.merge og_type: MetadataPlugin.og_types[:forum]))
     topic.save!
 
-    @publisher.expects(:publish).with(User.current.person, @stories[:make_friendship_with], @publisher.url_for(@actor.url))
-    @publisher.expects(:publish).with(User.current.person, @stories[:make_friendship_with], @publisher.url_for(@other_actor.url))
+    @publisher.expects(:publish).with(@actor, @stories[:make_friendship_with], @publisher.url_for(@other_actor.url))
+    @publisher.expects(:publish).with(@other_actor, @stories[:make_friendship_with], @publisher.url_for(@actor.url))
     @actor.add_friend @other_actor
     @other_actor.add_friend @actor
 
