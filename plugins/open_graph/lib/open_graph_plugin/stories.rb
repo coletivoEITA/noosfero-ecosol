@@ -39,7 +39,9 @@ class OpenGraphPlugin::Stories
       end,
     },
     add_an_image: {
-      action_tracker_verb: :upload_image,
+      # :upload_image verb can't be used as it uses the parent Gallery as target
+      # hooked via open_graph_attach_stories
+      action_tracker_verb: nil,
       track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :add,
       object_type: :gallery_image,

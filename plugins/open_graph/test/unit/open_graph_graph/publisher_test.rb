@@ -42,10 +42,10 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
     @publisher.expects(:publish).with(User.current.person, @stories[:create_an_article], @publisher.url_for(blog_post.url))
     blog_post.save!
 
-    # upload_image verb uses custom_target
-    #gallery = create Gallery, name: 'gallery', profile: User.current.person
-    #image = create UploadedFile, uploaded_data: fixture_file_upload('/files/rails.png', 'image/png'), parent: gallery, profile: User.current.person
-    #@publisher.expects(:publish).with(User.current.person, @stories[:add_an_image], @publisher.url_for(image.url))
+    gallery = Gallery.create! name: 'gallery', profile: User.current.person
+    image = UploadedFile.new uploaded_data: fixture_file_upload('/files/rails.png', 'image/png'), parent: gallery, profile: User.current.person
+    @publisher.expects(:publish).with(User.current.person, @stories[:add_an_image], @publisher.url_for(image.url))
+    image.save!
 
     @publisher.expects(:publish).with(User.current.person, @stories[:favorite_a_sse_initiative], @publisher.url_for(@enterprise.url))
     @enterprise.fans << User.current.person

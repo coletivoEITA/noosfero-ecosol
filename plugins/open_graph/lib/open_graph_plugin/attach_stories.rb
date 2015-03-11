@@ -1,18 +1,29 @@
 require_dependency 'open_graph_plugin/stories'
 
-# DEPRECATED: all hooks are directly attached to ProfileActivity
+# This is used when ActionTracker is not compartible with the way
 module OpenGraphPlugin::AttachStories
 
   module ClassMethods
 
-    def open_graph_attach_stories
-      klass = self.name
-      callbacks = OpenGraphPlugin::Stories::ModelStories[klass.to_sym]
-      return if callbacks.blank?
+    def open_graph_attach_stories options={}
+      if stories = Array[options[:only]]
+        callbacks = {}
+        stories.each do |story|
+          defs = OpenGraphPlugin::Stories::Definitions[story]
+          Array[defs[:on]].each do |on|
+            callbacks[on] ||= []
+            callbacks[on] << story
+          end
+        end
+      else
+        klass = self.name
+        callbacks = OpenGraphPlugin::Stories::ModelStories[klass.to_sym]
+        return if callbacks.blank?
+      end
 
       callbacks.each do |on, stories|
         # subclasses may overide this, but the callback is called only once
-        method = "open_graph_after_#{on}"
+        method = "open_graph_publish_after_#{on}"
 
         if Rails.env.development?
           # on development, crash on errors
@@ -21,7 +32,8 @@ module OpenGraphPlugin::AttachStories
           self.send "after_commit", method, on: on
         end
 
-        self.send :define_method, method do
+        define_method method do
+          raise 'here'
           OpenGraphPlugin::Stories.publish self, stories
         end
       end
