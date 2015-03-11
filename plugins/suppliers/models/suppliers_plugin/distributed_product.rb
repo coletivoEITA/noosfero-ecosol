@@ -1,5 +1,7 @@
 class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
+  attr_accessible :from_products
+
   # overhide original
   scope :available, :conditions => ['products.available = ? AND from_products_products.available = ? AND suppliers_plugin_suppliers.active = ?', true, true, true]
   scope :unavailable, :conditions => ['products.available <> ? OR from_products_products.available <> ? OR suppliers_plugin_suppliers.active <> ?', true, true, true]
