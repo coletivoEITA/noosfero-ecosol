@@ -96,8 +96,8 @@ class OpenGraphPlugin::Stories
       criteria: proc do |article, actor|
         article.parent.is_a? Forum
       end,
-      publish_if: proc do |article, actor|
-        article.published?
+      publish_if: proc do |forum, actor|
+        forum.published?
       end,
     },
 

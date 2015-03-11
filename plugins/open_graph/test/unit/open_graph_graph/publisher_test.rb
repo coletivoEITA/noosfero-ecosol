@@ -31,6 +31,7 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
         2 => { tracker_id: @actor.id, object_type: 'favorite_enterprise', },
         3 => { tracker_id: @actor.id, object_type: 'uploaded_file', },
         4 => { tracker_id: @actor.id, object_type: 'event', },
+        5 => { tracker_id: @actor.id, object_type: 'forum', },
       },
       open_graph_enterprise_profiles_ids: [@enterprise.id],
       open_graph_community_profiles_ids: [@community.id],
@@ -56,6 +57,11 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
     event = Event.new name: 'event', profile: User.current.person
     @publisher.expects(:publish).with(User.current.person, @stories[:create_an_event], @publisher.url_for(event.url))
     event.save!
+
+    forum = Forum.create! name: 'forum', profile: User.current.person
+    topic = TinyMceArticle.new profile: User.current.person, parent: forum, name: 'blah2', author: User.current.person
+    @publisher.expects(:publish).with(User.current.person, @stories[:start_a_discussion], @publisher.url_for(topic.url))
+    topic.save!
 
     @publisher.expects(:publish).with(User.current.person, @stories[:favorite_a_sse_initiative], @publisher.url_for(@enterprise.url))
     @enterprise.fans << User.current.person
