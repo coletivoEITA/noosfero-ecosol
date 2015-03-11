@@ -14,7 +14,8 @@ class Enterprise
 	  locality: proc{ |e, plugin| e.city },
 	  region: proc{ |e, plugin| e.state },
 	  postal_code: proc{ |e, plugin| e.zip_code },
-	  country_name: proc{ |e, plugin| e.country },
+    # required
+    country_name: proc{ |e, plugin| e.country || e.environment.country_name || 'Unknown' },
   }
 
 end

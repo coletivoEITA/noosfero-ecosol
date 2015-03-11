@@ -46,14 +46,12 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
     @publisher.expects(:publish).with(User.current.person, @stories[:create_an_article], @publisher.url_for(blog_post.url))
     blog_post.save!
 
-    @actor.update_attributes!({
-      open_graph_activity_track_configs_attributes: {
-        0 => {
-          tracker_id: @actor.id,
-          object_type: 'favorite_enterprise',
-        },
-      }
-    })
+    @actor.update_attributes! open_graph_activity_track_configs_attributes: {
+      0 => {
+        tracker_id: @actor.id,
+        object_type: 'favorite_enterprise',
+      },
+    }
     User.current = @actor.user
     @publisher.expects(:publish).with(User.current.person, @stories[:favorite_a_sse_initiative], @publisher.url_for(@enterprise.url))
     @enterprise.fans << User.current.person
