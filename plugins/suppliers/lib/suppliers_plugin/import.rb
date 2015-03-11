@@ -1,4 +1,5 @@
 require 'csv'
+require 'charlock_holmes'
 
 class SuppliersPlugin::Import
 
@@ -12,9 +13,10 @@ class SuppliersPlugin::Import
   end
 
   def self.products consumer, csv
-    #i = Iconv.new 'UTF-8//IGNORE', 'UTF-8'
     product_category = consumer.environment.product_categories.find_by_name 'Produtos'
 
+    detection = CharlockHolmes::EncodingDetector.detect(csv)
+    csv = CharlockHolmes::Converter.convert csv, detection[:encoding], 'UTF-8'
     data = {}
     header = []
     rows = []
