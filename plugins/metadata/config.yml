@@ -4,9 +4,12 @@ open_graph:
   namespace: app_cirandas
   types:
     article: article
-    product: app_cirandas:sse_product
+    event: app_cirandas:event
     uploaded_file: app_cirandas:document
     image: app_cirandas:picture
+
+    product: app_cirandas:sse_product
+
     profile: app_cirandas:profile
     person: app_cirandas:user
     community: app_cirandas:community
