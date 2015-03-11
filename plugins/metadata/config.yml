@@ -5,6 +5,7 @@ open_graph:
   types:
     article: article
     event: app_cirandas:event
+    forum: app_cirandas:discussion
     uploaded_file: app_cirandas:document
     image: app_cirandas:picture
 
