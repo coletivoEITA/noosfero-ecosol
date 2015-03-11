@@ -5,7 +5,7 @@ set -e
 . /usr/share/debconf/confmodule
 
 echo "Fetching noosfero domain ..."
-domain=$(noosfero-runner 'e = Environment.default ; d = e.domains.where(:is_default => true).first || e.domains.first; if d.present?; puts d.name; else; puts "localhost"; end' | tail -n+2)
+domain=$(noosfero-runner 'e = Environment.default ; d = e.domains.where(:is_default => true).first || e.domains.first; if d.present?; puts d.name; else; puts "localhost"; end')
 
 ejabberd_config='/etc/ejabberd/ejabberd.cfg'
 if test -f $ejabberd_config; then

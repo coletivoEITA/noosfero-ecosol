@@ -249,6 +249,10 @@ ActiveRecord::Schema.define(:version => 20150122165042) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "chat_messages", ["created_at"], :name => "index_chat_messages_on_created_at"
+  add_index "chat_messages", ["from_id"], :name => "index_chat_messages_on_from"
+  add_index "chat_messages", ["to_id"], :name => "index_chat_messages_on_to"
+
   create_table "comments", :force => true do |t|
     t.string   "title"
     t.text     "body"
