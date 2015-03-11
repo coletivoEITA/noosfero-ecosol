@@ -25,15 +25,11 @@ module OpenGraphPlugin::AttachStories
         # subclasses may overide this, but the callback is called only once
         method = "open_graph_publish_after_#{on}"
 
-        if Rails.env.development?
-          # on development, crash on errors
-          self.send "after_#{on}", method
-        else
-          self.send "after_commit", method, on: on
-        end
+        self.send "after_#{on}", method
+        # buggy with rails 3.2
+        #self.send "after_commit", method, on: on
 
         define_method method do
-          raise 'here'
           OpenGraphPlugin::Stories.publish self, stories
         end
       end

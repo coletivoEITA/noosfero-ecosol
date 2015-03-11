@@ -44,7 +44,7 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
 
     gallery = Gallery.create! name: 'gallery', profile: User.current.person
     image = UploadedFile.new uploaded_data: fixture_file_upload('/files/rails.png', 'image/png'), parent: gallery, profile: User.current.person
-    @publisher.expects(:publish).with(User.current.person, @stories[:add_an_image], @publisher.url_for(image.url))
+    @publisher.expects(:publish).with(User.current.person, @stories[:add_an_image], @publisher.url_for(image.url.merge view: true))
     image.save!
 
     @publisher.expects(:publish).with(User.current.person, @stories[:favorite_a_sse_initiative], @publisher.url_for(@enterprise.url))
