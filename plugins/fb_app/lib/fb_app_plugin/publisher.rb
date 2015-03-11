@@ -56,7 +56,7 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
     :fb_app
   end
   def debug? actor=nil
-    FbAppPlugin.test_user? actor
+    super or FbAppPlugin.test_user? actor
   end
 
 end

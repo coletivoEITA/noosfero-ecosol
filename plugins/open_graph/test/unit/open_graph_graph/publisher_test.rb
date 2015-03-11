@@ -26,14 +26,9 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
         community_track_enabled: "true",
       },
       open_graph_activity_track_configs_attributes: {
-        0 => {
-          tracker_id: @actor.id,
-          object_type: 'blog_post',
-        },
-        1 => {
-          tracker_id: @actor.id,
-          object_type: 'gallery_image',
-        },
+        0 => { tracker_id: @actor.id, object_type: 'blog_post', },
+        1 => { tracker_id: @actor.id, object_type: 'gallery_image', },
+        2 => { tracker_id: @actor.id, object_type: 'favorite_enterprise', },
       },
       open_graph_enterprise_profiles_ids: [@enterprise.id],
       open_graph_community_profiles_ids: [@community.id],
@@ -41,23 +36,23 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
 
     # active
     User.current = @actor.user
+
     blog = Blog.create! profile: @actor, name: 'blog'
     blog_post = TinyMceArticle.new profile: User.current.person, parent: blog, name: 'blah', author: User.current.person
     @publisher.expects(:publish).with(User.current.person, @stories[:create_an_article], @publisher.url_for(blog_post.url))
     blog_post.save!
 
-    @actor.update_attributes! open_graph_activity_track_configs_attributes: {
-      0 => {
-        tracker_id: @actor.id,
-        object_type: 'favorite_enterprise',
-      },
-    }
-    User.current = @actor.user
+    # upload_image verb uses custom_target
+    #gallery = create Gallery, name: 'gallery', profile: User.current.person
+    #image = create UploadedFile, uploaded_data: fixture_file_upload('/files/rails.png', 'image/png'), parent: gallery, profile: User.current.person
+    #@publisher.expects(:publish).with(User.current.person, @stories[:add_an_image], @publisher.url_for(image.url))
+
     @publisher.expects(:publish).with(User.current.person, @stories[:favorite_a_sse_initiative], @publisher.url_for(@enterprise.url))
     @enterprise.fans << User.current.person
 
     # active but published as passive
     User.current = @actor.user
+
     blog_post = TinyMceArticle.new profile: @enterprise, parent: @enterprise.blog, name: 'blah', author: User.current.person
     story = @stories[:announce_news_from_a_sse_initiative]
     @publisher.expects(:publish).with(User.current.person, story, @publisher.passive_url_for(blog_post.url, story))
@@ -65,12 +60,12 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
 
     # passive
     User.current = @other_actor.user
+
     blog_post = TinyMceArticle.new profile: @enterprise, parent: @enterprise.blog, name: 'blah2', author: User.current.person
     story = @stories[:announce_news_from_a_sse_initiative]
     @publisher.expects(:publish).with(@actor, story, @publisher.passive_url_for(blog_post.url, story))
     blog_post.save!
 
-    User.current = @other_actor.user
     blog_post = TinyMceArticle.new profile: @community, parent: @community.blog, name: 'blah', author: User.current.person
     story = @stories[:announce_news_from_a_community]
     @publisher.expects(:publish).with(@actor, story, @publisher.passive_url_for(blog_post.url, story))

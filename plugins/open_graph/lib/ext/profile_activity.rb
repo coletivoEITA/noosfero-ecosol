@@ -5,6 +5,7 @@ class ProfileActivity
   after_create :open_graph_publish
 
   def open_graph_publish
+    # Scrap not yet supported
     if self.activity.is_a? ActionTracker::Record
       verb = self.activity.verb.to_sym
       return unless object = self.activity.target

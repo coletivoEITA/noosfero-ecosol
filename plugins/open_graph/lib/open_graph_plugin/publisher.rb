@@ -121,7 +121,7 @@ class OpenGraphPlugin::Publisher
     Delayed::Worker.logger.debug msg
   end
   def debug? actor=nil
-    false
+    !Rails.env.production?
   end
 
 end

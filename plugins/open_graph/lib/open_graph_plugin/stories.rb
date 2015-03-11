@@ -31,7 +31,7 @@ class OpenGraphPlugin::Stories
       end,
       publish_if: proc do |uploaded_file, actor|
         # done in add_an_image
-        next false if uploaded_file.image? and uploaded_file.parent.is_a? Gallery
+        next false if uploaded_file.image?
         uploaded_file.published?
       end,
       object_data_url: proc do |uploaded_file, actor|
@@ -39,7 +39,7 @@ class OpenGraphPlugin::Stories
       end,
     },
     add_an_image: {
-      action_tracker_verb: :create_article,
+      action_tracker_verb: :upload_image,
       track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :add,
       object_type: :gallery_image,
