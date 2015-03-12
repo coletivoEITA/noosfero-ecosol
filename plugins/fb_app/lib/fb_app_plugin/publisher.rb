@@ -50,11 +50,13 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
     activity = OpenGraphPlugin::Activity.create! activity_params
   end
 
+  protected
+
   def context
     :fb_app
   end
   def debug? actor=nil
-    FbAppPlugin.test_user? actor
+    super or FbAppPlugin.test_user? actor
   end
 
 end

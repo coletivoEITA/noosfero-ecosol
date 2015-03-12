@@ -105,7 +105,8 @@ class Product
   end
 
   def distribute_to_consumer consumer
-    SuppliersPlugin::DistributedProduct.create! profile: consumer, from_products: [self]
+    distributed_product = consumer.distributed_products.where(profile_id: consumer.id, from_products_products: {id: self.id}).first
+    distributed_product ||= SuppliersPlugin::DistributedProduct.create! profile: consumer, from_products: [self]
   end
 
   protected

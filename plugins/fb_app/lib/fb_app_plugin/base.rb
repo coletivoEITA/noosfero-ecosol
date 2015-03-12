@@ -24,8 +24,12 @@ end
 
 ActiveSupport.on_load :open_graph_plugin do
   OpenGraphPlugin::Stories.register_publisher FbAppPlugin::Publisher.default
-  MetadataPlugin::CONTROLLERS[:fb_app_plugin_page_tab] = {
-    variable: :@product,
-  }
+end
+ActiveSupport.on_load :metadata_plugin do
+  MetadataPlugin::Controllers.class_eval do
+    def fb_app_plugin_page_tab
+      :@product
+    end
+  end
 end
 

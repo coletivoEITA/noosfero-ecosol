@@ -8,16 +8,11 @@ class OpenGraphPlugin::Publisher
     @default ||= self.new
   end
 
-  def self.profile_from_object_data object_data
-    case object_data
-    when Profile
-      profile = object_data
-    else
-      profile = object_data.profile rescue nil
-    end
-  end
-
   def initialize attributes = {}
+    # defaults
+    self.actions = OpenGraphPlugin::Stories::DefaultActions
+    self.objects = OpenGraphPlugin::Stories::DefaultObjects
+
     attributes.each do |attr, value|
       self.send "#{attr}=", value
     end
@@ -27,9 +22,16 @@ class OpenGraphPlugin::Publisher
     raise 'abstract method called'
   end
 
-  def url_for url
+  def url_for url, extra_params={}
     return url if url.is_a? String
-    Noosfero::Application.routes.url_helpers.url_for url.except(:port)
+    url.delete :port
+    url.merge! extra_params
+    Noosfero::Application.routes.url_helpers.url_for url
+  end
+
+  def passive_url_for url, story_defs
+    object_type = self.objects[story_defs[:object_type]]
+    url_for url, og_type: MetadataPlugin.og_types[object_type]
   end
 
   def publish_stories object_data, actor, stories
@@ -39,13 +41,15 @@ class OpenGraphPlugin::Publisher
   end
 
   def publish_story object_data, actor, story
+    OpenGraphPlugin.context = self.context
     defs = OpenGraphPlugin::Stories::Definitions[story]
+    passive = defs[:passive]
 
     print_debug "open_graph: publish_story #{story}" if debug? actor
-    match_criteria = if criteria = defs[:criteria] then criteria.call(object_data, actor) else true end
+    match_criteria = if (ret = self.call defs[:criteria], object_data, actor).nil? then true else ret end
     return unless match_criteria
     print_debug "open_graph: #{story} match criteria" if debug? actor
-    match_condition = if publish_if = defs[:publish_if] then publish_if.call(object_data, actor) else true end
+    match_condition = if (ret = self.call defs[:publish_if], object_data, actor).nil? then true else ret end
     return unless match_condition
     print_debug "open_graph: #{story} match publish_if" if debug? actor
 
@@ -55,12 +59,13 @@ class OpenGraphPlugin::Publisher
 
     begin
       if publish = defs[:publish]
-        publish.call actor, object_data, self
+        instance_exec actor, object_data, &publish
       else
-        object_data_url = if object_data_url = defs[:object_data_url] then object_data_url.call(object_data) else object_data.url end
-        object_data_url = self.url_for object_data_url
+        object_data_url = if (object_data_url = self.call defs[:object_data_url], object_data, actor) then object_data_url else object_data.url end
+        object_data_url = if passive then self.passive_url_for object_data_url, defs else self.url_for object_data_url end
 
         actors.each do |actor|
+          print_debug "open_graph: start publishing" if debug? actor
           self.publish actor, defs, object_data_url
         end
       end
@@ -70,24 +75,31 @@ class OpenGraphPlugin::Publisher
   end
 
   def story_trackers story_defs, actor, object_data
+    passive = story_defs[:passive]
     trackers = []
 
     track_configs = Array[story_defs[:track_config]].compact.map(&:constantize)
     return if track_configs.empty?
 
-    profile = self.class.profile_from_object_data object_data
-    passive = story_defs[:passive]
     if passive
+      object_profile = self.call(story_defs[:object_profile], object_data) || object_data.profile rescue nil
+      return unless object_profile
+
       track_configs.each do |c|
-        trackers.concat c.trackers_of_profile(profile)
+        trackers.concat c.trackers_to_profile(object_profile)
       end.flatten
 
       trackers.select! do |t|
-        track_configs.any?{ |c| c.enabled_for self.context, t }
+        track_configs.any?{ |c| c.enabled? self.context, t }
       end
     else #active
-      match_track = profile.person? and track_configs.any? do |c|
-        c.enabled_for(self.context, actor) and
+      object_actor = self.call(story_defs[:object_actor], object_data) || object_data.profile rescue nil
+      return unless object_actor and object_actor.person?
+      custom_actor = self.call(story_defs[:custom_actor], object_data)
+      actor = custom_actor if custom_actor
+
+      match_track = track_configs.any? do |c|
+        c.enabled?(self.context, actor) and
           actor.send("open_graph_#{c.track_name}_track_configs").where(object_type: story_defs[:object_type]).first
       end
       trackers << actor if match_track
@@ -98,6 +110,10 @@ class OpenGraphPlugin::Publisher
 
   protected
 
+  def call p, *args
+    p and instance_exec *args, &p
+  end
+
   def context
     :open_graph
   end
@@ -107,7 +123,7 @@ class OpenGraphPlugin::Publisher
     Delayed::Worker.logger.debug msg
   end
   def debug? actor=nil
-    false
+    !Rails.env.production?
   end
 
 end

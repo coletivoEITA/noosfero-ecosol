@@ -1,7 +1,7 @@
 plugins_root = Rails.env.test? ? 'plugins' : '{baseplugins,config/plugins}'
 prefixes_by_folder = {public: 'plugin',
-                      profile: 'profile/:profile/plugin',
-                      myprofile: 'myprofile/:profile/plugin',
+                      profile: 'profile(/:profile/)plugin',
+                      myprofile: 'myprofile(/:profile/)plugin',
                       admin: 'admin/plugin'}
 
 Dir.glob(Rails.root.join(plugins_root, '*', 'controllers')) do |controllers_dir|
@@ -17,8 +17,8 @@ Dir.glob(Rails.root.join(plugins_root, '*', 'controllers')) do |controllers_dir|
 
   controllers_by_folder.each do |folder, controllers|
     controllers.each do |controller|
-      controller_name = controller.gsub("#{plugin_name}_plugin_",'')
-      if %w[profile myprofile].include?(folder)
+      controller_name = controller.gsub /#{plugin_name}_plugin[_\/]/, ''
+      if %w[profile myprofile].include? folder.to_s
         match "#{prefixes_by_folder[folder]}/#{plugin_name}/#{controller_name}(/:action(/:id))", :controller => controller, :profile => /#{Noosfero.identifier_format}/
       else
         match "#{prefixes_by_folder[folder]}/#{plugin_name}/#{controller_name}(/:action(/:id))", :controller => controller

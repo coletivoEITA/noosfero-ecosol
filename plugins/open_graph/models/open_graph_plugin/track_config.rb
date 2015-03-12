@@ -19,7 +19,12 @@ class OpenGraphPlugin::TrackConfig < OpenGraphPlugin::Track
   class_attribute :static_trackers
   self.static_trackers = false
 
-  scope :profile_trackers, lambda { |profile, exclude_actor=nil|
+  def self.enabled? context, actor
+    settings = actor.send "#{context}_settings"
+    settings.send "#{self.track_name}_track_enabled"
+  end
+
+  scope :tracks_to_profile, lambda { |profile, exclude_actor=nil|
     scope = where object_data_id: profile.id, object_data_type: profile.class.base_class
     scope = scope.where context: OpenGraphPlugin.context
     scope = scope.includes :tracker
@@ -27,16 +32,18 @@ class OpenGraphPlugin::TrackConfig < OpenGraphPlugin::Track
     scope
   }
 
-  def self.enabled_for context, actor
-    settings = actor.send "#{context}_settings"
-    settings.send "#{self.track_name}_track_enabled"
-  end
-
   # redefine on subclasses
-  def self.trackers_of_profile profile
-    tracks = self.profile_trackers(profile)
+  def self.trackers_to_profile profile
+    tracks = self.tracks_to_profile profile
     tracks = tracks.where type: self
     tracks.map(&:tracker)
+  end
+
+  def self.profile_tracks profile
+    profile.send self.association
+  end
+  def self.profile_track_objects profile
+    self.profile_tracks(profile).map(&:object_data).compact
   end
 
 end

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "POT-Creation-Date: 2015-02-02 21:44-0300\n"
-"PO-Revision-Date: 2015-02-27 09:31-0300\n"
+"PO-Revision-Date: 2015-03-09 21:04-0300\n"
 "Last-Translator: Daniel Tygel <dtygel@eita.org.br>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero/"
 "noosfero/pt/>\n"
@@ -208,4 +208,3 @@ msgstr "Identificador"
 
 msgid "Interests"
 msgstr "Interesses"
-

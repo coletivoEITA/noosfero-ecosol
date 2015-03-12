@@ -23,13 +23,13 @@ class Enterprise < Organization
   has_many :production_costs, :as => :owner
 
   has_many :favorite_enterprise_people
-  has_many :fans, through: :favorite_enterprise_people, source: :person
+  has_many :fans, source: :person, through: :favorite_enterprise_people
 
   N_('Organization website'); N_('Historic and current context'); N_('Activities short description'); N_('City'); N_('State'); N_('Country'); N_('ZIP code')
 
   settings_items :organization_website, :historic_and_current_context, :activities_short_description
 
-  settings_items :products_per_catalog_page, :type => :integer, :default => 6
+  settings_items :products_per_catalog_page, :type => :integer, :default => 18
   alias_method :products_per_catalog_page_before_type_cast, :products_per_catalog_page
   validates_numericality_of :products_per_catalog_page, :allow_nil => true, :greater_than => 0
 

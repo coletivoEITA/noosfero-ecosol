@@ -32,7 +32,8 @@ class OpenGraphPlugin::MyprofileControllerTest < ActionController::TestCase
           object_type: 'blog_post',
         },
       },
-      # ignored
+
+      # ignored, enterprise uses static tracking
       open_graph_enterprise_profiles_ids: [@enterprise.id],
     }
     @actor.reload
@@ -45,8 +46,8 @@ class OpenGraphPlugin::MyprofileControllerTest < ActionController::TestCase
     assert_equal 'blog_post', @actor.open_graph_activity_track_configs.first.object_type
     assert_equal @actor.id, @actor.open_graph_activity_track_configs.first.tracker_id
 
-    assert_equal Set[@actor], OpenGraphPlugin::EnterpriseTrackConfig.trackers(@enterprise)
-    assert_equal Set[@actor], OpenGraphPlugin::EnterpriseTrackConfig.trackers(@myenterprise)
+    assert_equal [@actor], OpenGraphPlugin::EnterpriseTrackConfig.trackers_to_profile(@enterprise)
+    assert_equal [@actor], OpenGraphPlugin::EnterpriseTrackConfig.trackers_to_profile(@myenterprise)
 
   end
 
