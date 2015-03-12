@@ -10,6 +10,7 @@
       track:
         config:
           activity:
+            configure: 'Configure'
             label: "My activities: new photos on my albuns, blogs's posts and other contents"
             objects:
               blog_post: "Blogs' posts"
@@ -21,14 +22,15 @@
               event: 'Creation of events'
               enterprise: 'Updates to Social Solidarity Enterprises'
           enterprise:
+            see_all: 'See enterprises'
             label: "News from enterprises that I am a member and my favotites"
             search_placeholder: "type to find enterprises"
-          friend:
-            label: "News from friends"
-            search_placeholder: "type to find friends"
           community:
             label: "News from selected communities"
             search_placeholder: "type to find communities"
+          friend:
+            label: "News from friends"
+            search_placeholder: "type to find friends"
 
 'en_US':
   <<: *en-US

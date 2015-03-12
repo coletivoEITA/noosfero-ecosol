@@ -13,7 +13,7 @@ open_graph = {
         this.view.form = jQuery('#track-form form')
 
         this.view.form.find('.panel-heading').each(function(i, context) {
-          open_graph.track.config.toggleParent(context)
+          open_graph.track.config.headingToggle(context)
         })
 
         setTimeout(this.watchChanges(), 1000)
@@ -27,29 +27,43 @@ open_graph = {
         open_graph.track.config.view.form.submit()
       },
 
-      configToggle: function(config, open) {
-        config.toggleClass('fa-toggle-on', open)
-        config.toggleClass('fa-toggle-off', !open)
-        var input = config.siblings('input')
+      headingToggle: function(context, open) {
+        var panel = $(context).parents('.panel')
+        var parentCheckbox = panel.find('.config-check')
+        var input = panel.find('.track-config-toggle')
+        if (open === undefined)
+          open = input.val() == 'true'
+
+        parentCheckbox.toggleClass('fa-toggle-on', open)
+        parentCheckbox.toggleClass('fa-toggle-off', !open)
         input.prop('value', open)
         input.trigger('change')
+      },
+
+      open: function(context) {
+        var panel = $(context).parents('.panel')
+        var panelBody = panel.find('.panel-body')
+        panelBody.addClass('in').show()
       },
 
       toggle: function(context, event) {
         var panel = $(context).parents('.panel')
         var panelBody = panel.find('.panel-body')
-        var parentCheckbox = panel.find('.config-check')
         var checkboxes = panelBody.find('input[type=checkbox]')
-        var open = !panelBody.hasClass('in')
+        var open = panel.find('.track-config-toggle').val() == 'true'
+        open = !open;
 
         checkboxes.prop('checked', open)
-        this.configToggle(parentCheckbox, open)
+        this.headingToggle(context, open)
+        if (!open)
+          panelBody.hide()
+        return false;
       },
 
+      // DEPRECATED: the panel-body is hidden by default
       toggleParent: function(context) {
         var panel = $(context).parents('.panel')
         var panelBody = panel.find('.panel-body')
-        var parentCheckbox = panel.find('.panel-heading .config-check')
         var checkboxes = panel.find('.panel-body input[type=checkbox]')
         var profilesInput = panel.find('.panel-body .select-profiles')
 
@@ -60,17 +74,24 @@ open_graph = {
 
         if (nChecked === 0) {
           panelBody.removeClass('in')
-          this.configToggle(parentCheckbox, false)
+          this.headingToggle(context, false)
         } else {
           panelBody.addClass('in')
-          this.configToggle(parentCheckbox, true)
+          this.headingToggle(context, true)
         }
+      },
+
+      enterprise: {
+        see_all: function(context) {
+          var panel = $(context).parents('.panel')
+          var panelBody = panel.find('.panel-body')
+          noosfero.modal.html(panelBody.html())
+        },
       },
 
       initAutocomplete: function(track, url, items) {
         var selector = '#select-'+track
         var tokenField = open_graph.autocomplete.init(url, selector, items)
-        open_graph.track.config.toggleParent(tokenField)
 
         tokenField
           .on('tokenfield:createdtoken tokenfield:removedtoken', function() {
