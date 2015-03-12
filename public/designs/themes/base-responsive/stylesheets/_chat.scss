@@ -4,3 +4,12 @@
     font-size: 13px;
   }
 }
+#chat-window {
+  .history {
+    .message {
+      &.self p {
+        margin-right: 0px;
+      }
+    }
+  }
+}
