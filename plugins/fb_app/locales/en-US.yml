@@ -30,6 +30,10 @@
           add: 'Save timeline post settings'
           explanation_title: 'Soon!'
           explanation_text: 'In a short time, your actions in Cirandas will become new posts in your Facebook timeline!'
+          organization_redirect: '%{redirect_link} to post updates %{type}, conect your personal profile of Cirandas to Facebook.'
+          organization_from_enterprise: 'from this enterprise'
+          organization_from_community: 'from this community'
+          redirect_link: 'Click here'
 
         catalogs:
           heading: 'Solidarity Economy Catalog'
