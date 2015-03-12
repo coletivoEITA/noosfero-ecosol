@@ -1912,11 +1912,12 @@ body {
     background-color: #eeeeee;
 }
 
+.no-boxes {
+	margin-bottom: 20px;
+}
 .block, .no-boxes {
     position: relative;
     padding: 8px;
-    margin-bottom: 20px;
-    /* margin: 0px 0px 20px 0px; */
     float: none;
     border-radius: 3px;
     border: 1px solid rgba(0,0,0,0.2);/*#d8d8d8;*/
