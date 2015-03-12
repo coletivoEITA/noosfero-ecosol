@@ -5,16 +5,34 @@ open_graph = {
 
     config: {
 
+      view: {
+        form: null,
+      },
+
       init: function() {
-        jQuery('#track-form .panel-heading').each(function(i, context) {
+        this.view.form = jQuery('#track-form form')
+
+        this.view.form.find('.panel-heading').each(function(i, context) {
           open_graph.track.config.toggleParent(context)
         })
+
+        setTimeout(this.watchChanges(), 1000)
+      },
+
+      watchChanges: function() {
+        this.view.form.find('input').change(this.save)
+      },
+
+      save: function() {
+        open_graph.track.config.view.form.submit()
       },
 
       configToggle: function(config, open) {
         config.toggleClass('fa-toggle-on', open)
         config.toggleClass('fa-toggle-off', !open)
-        config.siblings('input').prop('value', open)
+        var input = config.siblings('input')
+        input.prop('value', open)
+        input.trigger('change')
       },
 
       toggle: function(context, event) {
