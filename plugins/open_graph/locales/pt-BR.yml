@@ -16,10 +16,10 @@
               friendship: 'Quando eu fizer novas amizades'
               gallery_image: 'Quando eu adicionar imagens nos meus albuns'
               uploaded_file: 'Quando eu enviar novos documentos'
-              product: 'Quando eu adicionar ou alterar produtos do meu empreendimento'
               forum: 'Quando eu criar novos tópicos de fórum'
               event: 'Quando eu adicionar eventos'
-              enterprise: 'Quando eu atualizar empreendimento que faça parte'
+              friend: 'Quando eu fizer amizades'
+              favorite_enterprise: 'Quando eu favoritar um empreendimento'
           enterprise:
             label: "Publicar as novidades dos meus empreendimentos favoritos e daqueles que faço parte"
             search_placeholder: "busque o empreendimento"
