@@ -1235,7 +1235,6 @@ hr.pre-posts, hr.sep-posts {
 }
 
 #article.file-generic .download-link {
-  display: block;
   margin-bottom: 10px;
 }
 #article.file-generic .download-link span {

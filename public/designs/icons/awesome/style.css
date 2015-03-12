@@ -240,7 +240,7 @@
 .fa-road:before {
   content: ""; }
 
-.fa-download:before {
+.fa-download:before, .icon-download:before {
   content: ""; }
 
 .fa-arrow-circle-o-down:before {
