@@ -208,3 +208,6 @@ msgstr "Identificador"
 
 msgid "Interests"
 msgstr "Interesses"
+
+msgid "Download"
+msgstr "Baixar"
