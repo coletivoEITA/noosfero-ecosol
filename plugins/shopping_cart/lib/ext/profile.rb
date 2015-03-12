@@ -4,7 +4,7 @@ class Profile
 
   def shopping_cart_settings attrs = {}
     @shopping_cart_settings ||= Noosfero::Plugin::Settings.new self, ShoppingCartPlugin, attrs
-    attrs.each{ |a, v| @shopping_cart_settings.set_setting a, v }
+    attrs.each{ |a, v| @shopping_cart_settings.send "#{a}=", v }
     @shopping_cart_settings
   end
 

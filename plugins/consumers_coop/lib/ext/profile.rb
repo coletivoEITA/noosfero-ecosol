@@ -15,7 +15,7 @@ class Profile
 
   def consumers_coop_settings attrs = {}
     @consumers_coop_settings ||= Noosfero::Plugin::Settings.new self, ConsumersCoopPlugin, attrs
-    attrs.each{ |a, v| @consumers_coop_settings.set_setting a, v }
+    attrs.each{ |a, v| @consumers_coop_settings.send "#{a}=", v }
     @consumers_coop_settings
   end
   alias_method :consumers_coop_settings=, :consumers_coop_settings
