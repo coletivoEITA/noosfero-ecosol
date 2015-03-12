@@ -1,7 +1,4 @@
-/*@import url('bootstrap.css');*/
-
-/* @import url('/assets/plugins/responsive/_bootstrap-core'); */
-
+@import 'stylesheets/chat'
 
 /* ==> button.css <== */
 
@@ -1849,7 +1846,7 @@ img, video, audio {
 }
 .popover-content > a {
   text-align: left !important;
-} 
+}
 .popover-title {
     margin:0px !important;
 }
@@ -1960,8 +1957,8 @@ $padding_value:7px;
   padding-right: 7px;
 }
 
-#content .automatic-abstract-thumb, 
-#content #boxes .container-1 .article-block img.automatic-abstract-thumb, 
+#content .automatic-abstract-thumb,
+#content #boxes .container-1 .article-block img.automatic-abstract-thumb,
 #content #article .article-body img.automatic-abstract-thumb {
   float: left;
   max-width: 100px;
@@ -1980,12 +1977,12 @@ input.ui-autocomplete-input {
 
 /* CMS management */
 .article-controls .btn,
-table.cms-articles a.icon, 
+table.cms-articles a.icon,
 table.cms-articles a.icon-parent-folder,
 .cms-homepage a.icon {
   padding: 0;
 }
-table.cms-articles .article-mime, 
+table.cms-articles .article-mime,
 table.cms-articles .last-update,
 table.cms-articles .article-name {
   font-size: 12px;
@@ -2000,7 +1997,7 @@ table.cms-articles .article-name {
     display: none;
   }
   .article-controls .btn,
-  table.cms-articles a.icon, 
+  table.cms-articles a.icon,
   table.cms-articles a.icon-parent-folder,
   .cms-homepage a.icon {
     padding: 1px 3px;
