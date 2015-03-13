@@ -602,3 +602,26 @@ div.occupants > a.up {
 .conversation .leave {
  background-color: #A40000;
 }
+
+body.chat-opened {
+  margin-right: 355px;
+}
+
+@media (min-width: 768px){
+	body.chat-opened .container{
+		width:750px
+	}
+
+}
+
+@media (min-width: 992px){
+	body.chat-opened .container{
+		width:997px
+	}
+
+}
+
+@media (min-width: 1200px){
+	body.chat-opened .container{
+		width:997px
+	}
