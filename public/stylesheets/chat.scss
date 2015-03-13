@@ -620,8 +620,8 @@ body.chat-opened #wrap-1 {
 body.chat-opened #wrap-1 > #content {
 	background-color: #fff;
 }
-@media (max-width: 367px){
+@media (max-width: 767px){
 	body.chat-opened #wrap-1{
-		display:none;
+		padding-right:0;
 	}
 }
