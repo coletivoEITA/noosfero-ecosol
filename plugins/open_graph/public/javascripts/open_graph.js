@@ -30,10 +30,12 @@ open_graph = {
       headingToggle: function(context, open) {
         var panel = $(context).parents('.panel')
         var parentCheckbox = panel.find('.config-check')
+        var configButton = panel.find('.config-button')
         var input = panel.find('.track-config-toggle')
         if (open === undefined)
           open = input.val() == 'true'
 
+        configButton.toggle(open)
         parentCheckbox.toggleClass('fa-toggle-on', open)
         parentCheckbox.toggleClass('fa-toggle-off', !open)
         input.prop('value', open)
