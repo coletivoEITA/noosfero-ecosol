@@ -24,10 +24,10 @@
   span.config-check.fa-toggle-off {
     color: #99f;
   }
-  .activity-conf {
+  .activity-config, .sse-config, .community-config {
     float:right;
   }
-  .activity-label {
+  .activity-label, .sse-label, .community-label {
     margin-right: 90px;
   }
 }
