@@ -582,6 +582,7 @@ jQuery(function($) {
 
    function toggle_chat_window() {
       if(jQuery('#conversations .conversation').length == 0) jQuery('.buddies a').first().click();
+      jQuery('body').toggleClass('chat-opened');
       jQuery('#chat').toggleClass('opened');
       jQuery('#chat-label').toggleClass('opened');
    }
