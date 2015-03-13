@@ -37,12 +37,13 @@
   width: 70px;
   transition: width 0.3s ease-in;
 }
-
+/*
 #chat #buddy-list:hover {
   right: 0;
   width: 190px;
   transition: width 0.3s ease-in;
 }
+*/
 
 #buddy-list .buddies {
   position: absolute;
@@ -56,12 +57,14 @@
   transition: all 0.3s ease-in;
 }
 
+/*
 #buddy-list:hover .buddies {
   top: 57px;
   left: 15px;
   right: 0;
   transition: all 0.3s ease-in;
 }
+*/
 
 #buddy-list .buddies ul {
   list-style-type: none;
@@ -138,10 +141,12 @@
   transition: top 0.3s ease-in;
 }
 
+/*
 #buddy-list:hover .body{
   top: 45px;
   transition: top 0.3s ease-in;
 }
+*/
 
 #buddy-list .search{
   width: 142px;
@@ -153,11 +158,13 @@
   transition: all 0.2s ease-in;
 }
 
+/*
 #buddy-list:hover .search{
   transition: all 0.3s ease-in 0.3;
   height: 16px;
   padding: 9px;
 }
+*/
 
 .conversation .input-div {
   position: absolute;
