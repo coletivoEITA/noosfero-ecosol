@@ -20,15 +20,9 @@
 
   <div id='chat'>
     <div id='buddy-list'>
-      <div class='toolbar'>
-        <div id='user-status'>
-          <%= user_status_menu('icon-menu-offline', _('Offline')) %>
-        </div>
-        <div class='dialog-error' style='display: none'></div>
-      </div>
+      <div class='dialog-error' style='display: none'></div>
 
       <div class='body'>
-        <%= text_field_tag(:query, '', :placeholder => _('Search...'), :class => 'search') %>
 
         <div class='buddies'>
           <ul class='online'></ul>
@@ -54,6 +48,7 @@
         <div class='input-div'>
             <div class='icon-chat'></div>
             <textarea class='input'></textarea>
+            <%= text_field_tag(:query, '', :placeholder => _('Search...'), :class => 'search') %>
         </div>
       </div>
 

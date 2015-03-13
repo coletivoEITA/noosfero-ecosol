@@ -52,9 +52,7 @@ module ApplicationHelper
 
   include PluginsHelper
 
-  include PluginsHelper
-
-  include PluginsHelper
+  include ChatHelper
 
   def locale
     (@page && !@page.language.blank?) ? @page.language : FastGettext.locale
@@ -1147,6 +1145,7 @@ module ApplicationHelper
     (_("<span class='welcome'>Welcome,</span> %s") % link_to("<i style='background-image:url(#{user.profile_custom_icon(gravatar_default)})'></i><strong>#{user.identifier}</strong>", user.public_profile_url, :id => "homepage-link", :title => _('Go to your homepage'))) +
     render_environment_features(:usermenu) +
     admin_link +
+    chat_user_status_menu('icon-menu-offline', _('Offline')) +
     manage_enterprises +
     manage_communities +
     link_to('<i class="icon-menu-ctrl-panel"></i><strong>' + _('Control panel') + '</strong>', user.admin_url, :class => 'ctrl-panel', :title => _("Configure your personal account and content")) +
