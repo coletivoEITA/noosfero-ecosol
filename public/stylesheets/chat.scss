@@ -612,6 +612,7 @@ div.occupants > a.up {
 
 body.chat-opened {
   margin-right: 355px;
+  transition: width 0.3s ease-in;
 }
 
 @media (min-width: 768px){
