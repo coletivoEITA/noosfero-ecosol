@@ -610,14 +610,12 @@ div.occupants > a.up {
  background-color: #A40000;
 }
 
-body.chat-opened {
-  margin-right: 355px;
-  transition: width 0.3s ease-in;
-}
 body.chat-opened .container{
 	width:100%;
+	padding-right:355px;
+	transition: width 0.3s ease-in;
 }
-@media (max-width: 768px){
+@media (max-width: 367px){
 	body.chat-opened .container{
 		display:none;
 	}
