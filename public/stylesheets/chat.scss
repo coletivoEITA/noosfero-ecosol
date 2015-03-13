@@ -614,6 +614,12 @@ body.chat-opened .container{
 	padding-right:355px;
 	transition: width 0.3s ease-in;
 }
+body.chat-opened #wrap-1 {
+	background-color: transparent;
+}
+body.chat-opened .container > #content {
+	background-color: #fff;
+}
 @media (max-width: 367px){
 	body.chat-opened .container{
 		display:none;
