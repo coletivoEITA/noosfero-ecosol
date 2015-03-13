@@ -609,7 +609,7 @@ div.occupants > a.up {
  background-color: #A40000;
 }
 
-body.chat-opened .container{
+body.chat-opened #wrap-1{
 	width:100%;
 	padding-right:355px;
 	transition: width 0.3s ease-in;
@@ -617,11 +617,11 @@ body.chat-opened .container{
 body.chat-opened #wrap-1 {
 	background-color: transparent !important;
 }
-body.chat-opened .container > #content {
+body.chat-opened #wrap-1 > #content {
 	background-color: #fff;
 }
 @media (max-width: 367px){
-	body.chat-opened .container{
+	body.chat-opened #wrap-1{
 		display:none;
 	}
 }
