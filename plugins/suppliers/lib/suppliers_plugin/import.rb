@@ -13,11 +13,13 @@ class SuppliersPlugin::Import
     rows = []
     [",", ";", "\t"].each do |sep|
       rows = CSV.parse csv, :col_sep => sep
-      header = rows.shift
-      break if header.size == 4
+      header = rows.shift if rows.size > 1 && (rows[0][0].downcase == 'supplier' or rows[0][0].downcase.strip == 'fornecedor')
+      break if rows.first.size == 4
     end
-    raise 'invalid number of columns' unless header.size == 4
+    raise 'invalid number of columns' unless rows.first.size == 4
 
+    puts rows.inspect
+    puts header
     rows.each do |row|
       supplier_name = row[0].to_s.squish
       product_name = row[1].to_s.squish
