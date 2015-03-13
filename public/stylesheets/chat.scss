@@ -615,7 +615,7 @@ body.chat-opened .container{
 	transition: width 0.3s ease-in;
 }
 body.chat-opened #wrap-1 {
-	background-color: transparent;
+	background-color: transparent !important;
 }
 body.chat-opened .container > #content {
 	background-color: #fff;
