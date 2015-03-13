@@ -14,6 +14,11 @@
   width: 350px;
   transition: width 0.3s ease-in;
 }
+@media (max-width: 367px){
+  #chat.opened {
+    width: 300px;
+  }
+}
 
 #chat-window {
   height: 100%;
@@ -527,6 +532,11 @@ div.occupants > a.up {
   border-radius: 10px 0px 0 10px;
   font-size: 14px;
   transition: background-color 0.2s linear, right 0.3s ease-in;
+}
+@media (max-width: 367px){
+  #chat-label.opened {
+    width: 300px;
+  }
 }
 
 #chat-label.opened:hover {
