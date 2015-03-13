@@ -444,7 +444,7 @@ div.occupants > a.up {
   display: table-cell;
   vertical-align: middle;
   padding: 0;
-  white-space: nowrap; 
+  white-space: nowrap;
   transition: padding 0.3s ease-in;
 }
 
@@ -616,19 +616,20 @@ body.chat-opened {
 
 @media (min-width: 768px){
 	body.chat-opened .container{
-		width:750px
+		width:750px;
 	}
 
 }
 
 @media (min-width: 992px){
 	body.chat-opened .container{
-		width:997px
+		width:997px;
 	}
 
 }
 
 @media (min-width: 1200px){
 	body.chat-opened .container{
-		width:997px
+		width:997px;
 	}
+}
