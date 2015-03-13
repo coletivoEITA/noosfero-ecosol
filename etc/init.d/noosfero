@@ -36,7 +36,9 @@ NOOSFERO_USER=noosfero
 [ -r /etc/default/$NAME ] && . /etc/default/$NAME
 
 # Load the VERBOSE setting and other rcS variables
-. /lib/init/vars.sh
+if [ -e /lib/init/vars.sh ]; then
+  . /lib/init/vars.sh
+fi
 
 if [ -z "$NOOSFERO_DIR" ] || [ -z "$NOOSFERO_USER" ]; then
   echo "NOOSFERO_DIR or NOOSFERO_USER not defined, noosfero not being started."
@@ -115,12 +117,15 @@ do_stop() {
 }
 
 do_restart() {
-  do_stop
-  do_start
+  if running; then
+    main_script restart
+  else
+    do_start
+  fi
 }
 
 running(){
-  pgrep -u noosfero -f 'thin server' > /dev/null
+  main_script running
 }
 
 case "$1" in

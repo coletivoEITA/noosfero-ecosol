@@ -5,7 +5,7 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
   before_filter :load_node, :only => [:associate, :destroy]
   before_filter :load_node_and_network, :only => [:new, :add]
 
-  helper NetworksPlugin::NetworksDisplayHelper
+  helper NetworksPlugin::DisplayHelper
 
   def new
     @new_supplier.identifier_from_name = true

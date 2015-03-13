@@ -10,7 +10,7 @@ class OrdersPluginOrderController < ProfileController
   before_filter :set_actor_name
 
   helper OrdersPlugin::TranslationHelper
-  helper OrdersPlugin::OrdersDisplayHelper
+  helper OrdersPlugin::DisplayHelper
 
   def repeat
   end

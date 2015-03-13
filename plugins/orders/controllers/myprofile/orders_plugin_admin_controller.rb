@@ -9,7 +9,7 @@ class OrdersPluginAdminController < MyProfileController
   before_filter :set_admin
 
   helper OrdersPlugin::TranslationHelper
-  helper OrdersPlugin::OrdersDisplayHelper
+  helper OrdersPlugin::DisplayHelper
 
   def index
     @purchases_month = profile.purchases.latest.first.created_at.month rescue Date.today.month

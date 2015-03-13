@@ -12,14 +12,16 @@
       var $presence = '<%= current_user.last_chat_status %>';
     </script>
 
+
+  <div id="chat-label">
+    <span class="right-arrow">&#9654;</span>
+    <span class="title"><%= _('Chat') %></span>
+  </div>
+
   <div id='chat'>
-    <div class='header'>
-      <%= _("Chat %s") % environment.name %>
-    </div>
     <div id='buddy-list'>
       <div class='toolbar'>
         <div id='user-status'>
-          <%= profile_image(user, :portrait, :class => 'avatar') %>
           <%= user_status_menu('icon-menu-offline', _('Offline')) %>
         </div>
         <div class='dialog-error' style='display: none'></div>
@@ -39,37 +41,37 @@
       <div id='conversations'></div>
     </div>
 
-    <div id="chat-templates">
+    <div id="chat-templates" style="display: none;">
 
-      <div class="conversation-template">
-        <div class='conversation' style="display: none;">
-          <div class="header">
-            <span class="chat-target">
-              <img class="avatar">
-              <span class="other-name"></span>
-            </span>
-            <a href="" class="back"><%= _('Back') %></a>
-          </div>
-          <div class='history'></div>
-          <div class='input-div'>
-              <div class='icon-chat'></div>
-              <textarea class='input'></textarea>
-          </div>
+      <div class="conversation">
+        <div class="conversation-header">
+          <span class="chat-target">
+	    <img class="avatar">
+            <span class="other-name"></span>
+          </span>
+        </div>
+        <div class='history'></div>
+        <div class='input-div'>
+            <div class='icon-chat'></div>
+            <textarea class='input'></textarea>
         </div>
       </div>
+
+      <a class='join room-action'><%= _('Join room') %></a>
+      <a class='leave room-action' style="display: none"><%= _('Leave room') %></a>
 
       <div class="buddy-item">
         <li class='%{presence_status}'>
           <a id='%{jid_id}' class='icon-menu-%{presence_status}-11' href='#'>
+            <span class="unread-messages"></span>
             %{avatar}
             <span class="name">%{name}</span>
-            <span class="unread-messages icon-chat"></span>
           </a>
         </li>
       </div>
 
       <div class="occupant-list-template">
-        <div class="occupants">
+        <div class="occupants room-action">
           <a href="#" class="up"><%= _('Online') %>&nbsp;(<span class="occupants-online">0</span>)</a>
           <ul class='occupant-list'></ul>
         </div>
@@ -78,20 +80,20 @@
       <div class="occupant-item">
         <li class='%{presence_status}'>
           <a data-id='%{jid_id}' class='icon-menu-%{presence_status}-11' href='#'>
+            <span class="unread-messages"></span>
             %{avatar}
-            <span class="name">%{name}<span>
+            <span class="name">%{name}</span>
           </a>
         </li>
       </div>
 
       <div class="message">
         <div data-who="%{who}" class="message %{who}">
-          <div class="author">
-            %{avatar}
-            <h5 class="%{who}-name">%{name}</h5>
-          </div>
           <div class="content">
             <span class="time" title="%{time}"></span>
+            <div class="author">
+              %{avatar}
+            </div>
             <p>%{message}</p>
           </div>
         </div>

@@ -4,193 +4,274 @@ class OpenGraphPlugin::Stories
   class_attribute :publishers
   self.publishers = []
 
-  ValidObjectList = [
-    :blog_post,
-    :enterprise,
-    :friendship,
-    :forum,
-    :gallery_image,
-    :person,
-    :product,
-    :uploaded_file,
-  ]
-  ValidActionList = [
-    :add,
-    :comment,
-    :create,
-    :favorite,
-    :like,
-    :make_friendship,
-    :start,
-    :update,
-    :upload,
-    :announce_creation,
-    :announce_new,
-    :announce_update,
-    :announce_news,
-  ]
-
-  DefaultActions = ValidActionList.inject({}){ |h, a| h[a] = a; h }
-  DefaultObjects = ValidObjectList.inject({}){ |h, o| h[o] = o; h }
-
   def self.register_publisher publisher
     self.publishers << publisher
   end
 
-  def self.publish record, on, actor, stories
+  def self.publish record, stories
+    actor = User.current.person rescue nil
+    return unless actor
+
     self.publishers.each do |publisher|
-      publisher.publish_stories record, on, actor, stories
+      publisher = publisher.delay unless Rails.env.development? or Rails.env.test?
+      publisher.publish_stories record, actor, stories
     end
   end
 
   Definitions = {
+    # needed a patch on UploadedFile: def notifiable?; true; end
     add_a_document: {
+      action_tracker_verb: :create_article,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :add,
       object_type: :uploaded_file,
       models: :UploadedFile,
       on: :create,
-      publish_if: proc do |uploaded_file|
+      criteria: proc do |article, actor|
+        article.is_a? UploadedFile
+      end,
+      publish_if: proc do |uploaded_file, actor|
+        # done in add_an_image
+        next false if uploaded_file.image?
         uploaded_file.published?
       end,
-    },
-    add_a_sse_product: {
-      action: :create,
-      object_type: :product,
-      on: :create,
-      models: :Product,
+      object_data_url: proc do |uploaded_file, actor|
+        uploaded_file.url.merge view: true
+      end,
     },
     add_an_image: {
-      action: :create,
+      # :upload_image verb can't be used as it uses the parent Gallery as target
+      # hooked via open_graph_attach_stories
+      action_tracker_verb: nil,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
+      action: :add,
       object_type: :gallery_image,
+      models: :UploadedFile,
       on: :create,
-      models: :Image,
-      criteria: proc do |image|
-        image.parent.is_a? Gallery
+      criteria: proc do |article, actor|
+        article.is_a? UploadedFile
       end,
-    },
-    comment_a_discussion: {
-      action: :comment,
-      object_type: :forum,
-      on: :create,
-      models: :Comment,
-      criteria: proc do |comment|
-        source, parent = comment.source, comment.source.parent
-        source.is_a? Article and parent.is_a? Forum
+      publish_if: proc do |uploaded_file, actor|
+        uploaded_file.image? and uploaded_file.parent.is_a? Gallery
       end,
-      publish_if: proc do |comment|
-        comment.source.parent.published?
-      end,
-    },
-    comment_an_article: {
-      action: :comment,
-      object_type: :blog_post,
-      on: :create,
-      models: :Comment,
-      criteria: proc do |comment|
-        source, parent = comment.source, comment.source.parent
-        source.is_a? Article and parent.is_a? Blog
-      end,
-      publish_if: proc do |comment|
-        comment.source.parent.published?
+      object_data_url: proc do |uploaded_file, actor|
+        uploaded_file.url.merge view: true
       end,
     },
     create_an_article: {
+      action_tracker_verb: :create_article,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :create,
       object_type: :blog_post,
-      on: :create,
       models: :Article,
-      criteria: proc do |article|
+      on: :create,
+      criteria: proc do |article, actor|
         article.parent.is_a? Blog
       end,
-      publish_if: proc do |article|
+      publish_if: proc do |article, actor|
         article.published?
       end,
     },
     create_an_event: {
+      action_tracker_verb: :create_article,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :create,
       object_type: :event,
-      on: :create,
       models: :Event,
-      publish_if: proc do |event|
+      on: :create,
+      criteria: proc do |article, actor|
+        article.is_a? Event
+      end,
+      publish_if: proc do |event, actor|
         event.published?
       end,
     },
-    favorite_an_sse_enterprise: {
-      action: :create,
-      object_type: :favorite_enterprise_person,
-      on: :create,
-      models: :FavoriteEnterprisePerson,
-      publish: proc do |actor, fe|
-        publish actor, actions[:favorite], objects[:enterprise], fe.enterprise.url
-      end
-    },
-    make_friendship_with: {
-      action: :make_friendship,
-      object_type: :friend,
-      models: :Friendship,
-      publish: proc do |actor, fs|
-        publish fs.person, actions[:make_friendship], objects[:friend], fs.friend.url
-        publish fs.friend, actions[:make_friendship], objects[:friend], fs.person.url
-      end,
-    },
     start_a_discussion: {
+      action_tracker_verb: :create_article,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
       action: :start,
       object_type: :forum,
+      models: :Article,
       on: :create,
-      criteria: proc do |article|
+      criteria: proc do |article, actor|
         article.parent.is_a? Forum
       end,
-      publish_if: proc do |article|
+      publish_if: proc do |article, actor|
         article.published?
+      end,
+      object_data_url: proc do |article, actor|
+        article.url.merge og_type: "#{MetadataPlugin::og_types[:forum]}"
+      end,
+    },
+
+    add_a_sse_product: {
+      action_tracker_verb: :create_product,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
+      action: :announce_new,
+      models: :Product,
+      on: :create,
+      object_type: :product,
+      publish_if: proc do |product, actor|
+        product.profile.public?
       end,
     },
     update_a_sse_product: {
-      action: :update,
+      action_tracker_verb: :update_product,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
+      action: :announce_update,
       object_type: :product,
-      on: :update,
       models: :Product,
-    },
-    update_a_sse_enterprise: {
-      action: :update,
-      object_type: :enterprise,
       on: :update,
-      models: :Enterprise,
+      publish_if: proc do |product, actor|
+        product.profile.public?
+      end,
+    },
+
+    favorite_a_sse_initiative: {
+      action_tracker_verb: :favorite_enterprise,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
+      action: :favorite,
+      object_type: :favorite_enterprise,
+      models: :FavoriteEnterprisePerson,
+      on: :create,
+      object_actor: proc do |favorite_enterprise_person|
+        favorite_enterprise_person.person
+      end,
+      object_profile: proc do |favorite_enterprise_person|
+        favorite_enterprise_person.enterprise
+      end,
+      object_data_url: proc do |favorite_enterprise_person, actor|
+        favorite_enterprise_person.enterprise.url
+      end,
+    },
+
+=begin
+    comment_a_discussion: {
+      action_tracker_verb: nil,
+      action: :comment,
+      object_type: :forum,
+      models: :Comment,
+      on: :create,
+      criteria: proc do |comment, actor|
+        source, parent = comment.source, comment.source.parent
+        source.is_a? Article and parent.is_a? Forum
+      end,
+      publish_if: proc do |comment, actor|
+        comment.source.parent.published?
+      end,
+    },
+    comment_an_article: {
+      action_tracker_verb: nil,
+      action: :comment,
+      object_type: :blog_post,
+      models: :Comment,
+      on: :create,
+      criteria: proc do |comment, actor|
+        source, parent = comment.source, comment.source.parent
+        source.is_a? Article and parent.is_a? Blog
+      end,
+      publish_if: proc do |comment, actor|
+        comment.source.parent.published?
+      end,
+    },
+=end
+
+    make_friendship_with: {
+      action_tracker_verb: :make_friendship,
+      track_config: 'OpenGraphPlugin::ActivityTrackConfig',
+      action: :make_friendship,
+      object_type: :friend,
+      models: :Friendship,
+      on: :create,
+      publish: proc do |actor, fs|
+        publish fs.person, actions[:make_friendship], objects[:friend], self.url_for(fs.friend.url)
+        publish fs.friend, actions[:make_friendship], objects[:friend], self.url_for(fs.person.url)
+      end,
     },
 
     # PASSIVE STORIES
+    announce_news_from_a_sse_initiative: {
+      action_tracker_verb: :create_article,
+      track_config: 'OpenGraphPlugin::EnterpriseTrackConfig',
+      action: :announce_news,
+      object_type: :enterprise,
+      passive: true,
+      models: :Article,
+      on: :create,
+      criteria: proc do |article, actor|
+        article.profile.enterprise?
+      end,
+      publish_if: proc do |article, actor|
+        article.published?
+      end,
+    },
     announce_a_new_sse_product: {
+      action_tracker_verb: :create_product,
+      track_config: 'OpenGraphPlugin::EnterpriseTrackConfig',
       action: :announce_new,
       object_type: :product,
-      on: :create,
+      passive: true,
       models: :Product,
-      tracker: true,
+      on: :create,
+      criteria: proc do |product, actor|
+        product.profile.enterprise?
+      end,
     },
     announce_an_update_of_sse_product: {
+      action_tracker_verb: :update_product,
+      track_config: 'OpenGraphPlugin::EnterpriseTrackConfig',
       action: :announce_update,
       object_type: :product,
-      on: :update,
+      passive: true,
       models: :Product,
-      tracker: true,
+      on: :update,
+      criteria: proc do |product, actor|
+        product.profile.enterprise?
+      end,
     },
+
     announce_news_from_a_community: {
-      action: :announce_update,
-      object_type: :product,
-      on: [:create, :update],
-      models: [:Article, :Image],
-      tracker: true,
-      criteria: proc do |article|
+      action_tracker_verb: :create_article,
+      track_config: 'OpenGraphPlugin::CommunityTrackConfig',
+      action: :announce_news,
+      object_type: :community,
+      passive: true,
+      models: :Article,
+      on: :create,
+      criteria: proc do |article, actor|
         article.profile.community?
       end,
-      publish_if: proc do |object|
-        case object
-        when Article
-          object.published?
-        when Image
-          object.parent.is_a? Gallery
-        end
+      publish_if: proc do |article, actor|
+        article.published?
       end,
-    }
+    },
+
   }
+
+  ValidObjectList = Definitions.map{ |story, data| data[:object_type] }.uniq
+  ValidActionList = Definitions.map{ |story, data| data[:action] }.uniq
+
+  # TODO make this verification work
+  #raise "Each active story must use a unique object_type for configuration to work" if ValidObjectList.size < Definitions.size
+
+  DefaultActions = ValidActionList.inject({}){ |h, a| h[a] = a; h }
+  DefaultObjects = ValidObjectList.inject({}){ |h, o| h[o] = o; h }
+
+  TrackerStories = {}; Definitions.each do |story, data|
+    Array[data[:action_tracker_verb]].each do |verb|
+      next unless verb
+      TrackerStories[verb] ||= []
+      TrackerStories[verb] << story
+    end
+  end
+
+  TrackConfigStories = {}; Definitions.each do |story, data|
+    Array[data[:track_config]].each do |track_config|
+      next unless track_config
+      TrackConfigStories[track_config] ||= []
+      TrackConfigStories[track_config] << [story, data]
+    end
+  end
 
   ModelStories = {}; Definitions.each do |story, data|
     Array[data[:models]].each do |model|

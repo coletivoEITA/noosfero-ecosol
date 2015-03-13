@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 require 'profile_editor_controller'
 
 # Re-raise errors caught by the controller.
@@ -500,7 +500,7 @@ class ProfileEditorControllerTest < ActionController::TestCase
     xhr :get, :update_categories, :profile => profile.identifier, :category_id => top.id
     assert_template 'shared/update_categories'
     assert_equal top, assigns(:current_category)
-    assert_equal [c1, c2], assigns(:categories)
+    assert_equivalent [c1, c2], assigns(:categories)
   end
 
   should 'display manage my groups button for person' do
@@ -880,6 +880,63 @@ class ProfileEditorControllerTest < ActionController::TestCase
     end
   end
 
+  should 'have welcome_page only for template' do
+    organization = fast_create(Organization, :is_template => false)
+    @controller.stubs(:profile).returns(organization)
+    assert !@controller.send(:has_welcome_page)
+
+    organization = fast_create(Organization, :is_template => true)
+    @controller.stubs(:profile).returns(organization)
+    assert @controller.send(:has_welcome_page)
+
+    person = fast_create(Person, :is_template => false)
+    @controller.stubs(:profile).returns(person)
+    assert !@controller.send(:has_welcome_page)
+
+    person = fast_create(Person, :is_template => true)
+    @controller.stubs(:profile).returns(person)
+    assert @controller.send(:has_welcome_page)
+  end
+
+  should 'display welcome_page button only if profile has_welcome_page' do
+    @controller.stubs(:has_welcome_page).returns(true)
+    get :index, :profile => fast_create(Profile).identifier
+    assert_tag :tag => 'a', :content => 'Edit welcome page'
+
+    @controller.stubs(:has_welcome_page).returns(false)
+    get :index, :profile => fast_create(Profile).identifier
+    assert_no_tag :tag => 'a', :content => 'Edit welcome page'
+  end
+
+  should 'not be able to access welcome_page if profile does not has_welcome_page' do
+    @controller.stubs(:has_welcome_page).returns(false)
+    get :welcome_page, :profile => fast_create(Profile).identifier
+    assert_response :forbidden
+  end
+
+  should 'create welcome_page with public false by default' do
+    get :welcome_page, :profile => fast_create(Person, :is_template => true).identifier
+    assert !assigns(:welcome_page).published
+  end
+
+  should 'update welcome page and redirect to index' do
+    person_template = create_user('person_template').person
+    person_template.is_template = true
+
+    welcome_page = fast_create(TinyMceArticle, :body => 'Initial welcome page')
+    person_template.welcome_page = welcome_page
+    person_template.save!
+    welcome_page.profile = person_template
+    welcome_page.save!
+    new_content = 'New welcome page'
+
+    post :welcome_page, :profile => person_template.identifier, :welcome_page => {:body => new_content}
+    assert_redirected_to :action => 'index'
+
+    welcome_page.reload
+    assert_equal new_content, welcome_page.body
+  end
+
   should 'display plugins buttons on the control panel' do
 
     class TestControlPanelButtons1 < Noosfero::Plugin
@@ -1094,5 +1151,58 @@ class ProfileEditorControllerTest < ActionController::TestCase
     profile.environment.disable('disable_header_and_footer')
     get :index, :profile => user.identifier
     assert_tag :tag => 'div', :descendant => { :tag => 'a', :content => 'Edit Header and Footer' }
+  end
+
+  should 'deactivate organization profile' do
+    @request.env['HTTP_REFERER'] = 'http://localhost:3000/admin/admin_panel/manage_organizations_status'
+    user = create_user('user').person
+    Environment.default.add_admin user
+    login_as('user')
+
+    community = fast_create(Community)
+    assert_equal true, community.enable
+
+    get :index, :profile => community.identifier
+    get :deactivate_profile, {:profile => community.identifier, :id => community.id}
+    assert_equal @request.session[:notice], "The profile '#{community.name}' was deactivated."
+  end
+
+  should 'activate organization profile' do
+    @request.env['HTTP_REFERER'] = 'http://localhost:3000/admin/admin_panel/manage_organizations_status'
+    user = create_user('user').person
+    Environment.default.add_admin user
+    login_as('user')
+
+    community = fast_create(Community)
+    assert_equal true, community.disable
+
+    get :index, :profile => community.identifier
+    get :activate_profile, {:profile => community.identifier, :id => community.id}
+    assert_equal @request.session[:notice], "The profile '#{community.name}' was activated."
+  end
+
+  should 'not deactivate organization profile if user is not an admin' do
+    @request.env['HTTP_REFERER'] = 'http://localhost:3000/admin/admin_panel/manage_organizations_status'
+    user = create_user('user').person
+    login_as('user')
+
+    community = fast_create(Community)
+    get :index, :profile => community.identifier
+    get :deactivate_profile, {:profile => community.identifier, :id => community.id}
+    assert_not_equal @request.session[:notice], "The profile '#{community.name}' was disabled."
+  end
+
+  should 'destroy organization profile' do
+    @request.env['HTTP_REFERER'] = 'http://localhost:3000/admin/admin_panel/manage_organizations_status'
+    user = create_user('user').person
+    Environment.default.add_admin user
+    login_as('user')
+
+    community = fast_create(Community)
+    assert_equal true, community.enable
+
+    get :index, :profile => community.identifier
+    post :destroy_profile, {:profile => community.identifier, :id => community.id}
+    assert_equal @request.session[:notice], "The profile was deleted."
   end
 end

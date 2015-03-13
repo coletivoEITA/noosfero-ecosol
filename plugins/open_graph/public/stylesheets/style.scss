@@ -1,0 +1,20 @@
+#track-form a,
+#track-form a:visited {
+  color: #fff;
+  display: block;
+  text-decoration: none;
+}
+#track-form a:hover {
+  text-decoration: underline;
+}
+#track-config .panel-heading {
+  padding-left: 36px;
+}
+#track-config span.config-check {
+  font-weight: bold;
+  margin-left: -26px;
+  margin-right: 4px;
+}
+#track-config span.config-check.fa-toggle-off {
+  color: #99f;
+}

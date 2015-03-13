@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 require 'home_controller'
 
 # Re-raise errors caught by the controller.
@@ -130,4 +130,65 @@ class HomeControllerTest < ActionController::TestCase
     assert_no_tag :tag => 'a', :attributes => {:href => '/account/signup'}
   end
 
+  should 'display template welcome page' do
+    template = create_user('template').person
+    template.is_template = true
+    welcome_page = TinyMceArticle.create!(:name => 'Welcome page', :profile => template, :published => true, :body => 'Template welcome page')
+    template.welcome_page = welcome_page
+    template.save!
+    get :welcome, :template_id => template.id
+    assert_match /#{welcome_page.body}/, @response.body
+  end
+
+  should 'not display template welcome page if it is not published' do
+    template = create_user('template').person
+    template.is_template = true
+    welcome_page = TinyMceArticle.create!(:name => 'Welcome page', :profile => template, :published => false, :body => 'Template welcome page')
+    template.welcome_page = welcome_page
+    template.save!
+    get :welcome, :template_id => template.id
+    assert_no_match /#{welcome_page.body}/, @response.body
+  end
+
+  should 'not crash template doess not have a welcome page' do
+    template = create_user('template').person
+    template.is_template = true
+    template.save!
+    assert_nothing_raised do
+      get :welcome, :template_id => template.id
+    end
+  end
+
+  should 'add class to the <html>' do
+    get :index
+
+    # Where am i?
+    assert_select 'html.controller-home.action-home-index'
+    # What is the current layout?
+    assert_select 'html.template-default.theme-noosfero'
+  end
+
+  should 'plugins add class to the <html>' do
+    class Plugin1 < Noosfero::Plugin
+      def html_tag_classes
+        lambda { ['t1', 't2'] }
+      end
+    end
+
+    class Plugin2 < Noosfero::Plugin
+      def html_tag_classes
+        'test'
+      end
+    end
+
+    Noosfero::Plugin.stubs(:all).returns([Plugin1.name, Plugin2.name])
+    Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([Plugin1.new, Plugin2.new])
+
+    get :index
+
+    # Where am i?
+    assert_select 'html.controller-home.action-home-index'
+    # There are plugin classes?
+    assert_select 'html.t1.t2.test'
+  end
 end

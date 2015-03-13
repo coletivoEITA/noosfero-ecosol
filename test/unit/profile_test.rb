@@ -1,5 +1,5 @@
 # encoding: UTF-8
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 
 class ProfileTest < ActiveSupport::TestCase
   fixtures :profiles, :environments, :users, :roles, :domains
@@ -838,6 +838,14 @@ class ProfileTest < ActiveSupport::TestCase
     assert_equal 'environment footer', profile.custom_footer
   end
 
+  should 'sanitize custom header and footer' do
+    p = fast_create(Profile)
+    script_kiddie_code = '<script>alert("look mom, I am a hacker!")</script>'
+    p.update_header_and_footer(script_kiddie_code, script_kiddie_code)
+    assert_no_tag_in_string p.custom_header, tag: 'script'
+    assert_no_tag_in_string p.custom_footer, tag: 'script'
+  end
+
   should 'store theme' do
     p = build(Profile, :theme => 'my-shiny-theme')
     assert_equal 'my-shiny-theme', p.theme
@@ -881,7 +889,7 @@ class ProfileTest < ActiveSupport::TestCase
 
   should 'copy communities from person template' do
     template = create_user('test_template').person
-    Environment.any_instance.stubs(:person_template).returns(template)
+    Environment.any_instance.stubs(:person_default_template).returns(template)
 
     c1 = fast_create(Community)
     c2 = fast_create(Community)
@@ -1340,7 +1348,7 @@ class ProfileTest < ActiveSupport::TestCase
     template = create_user('test_template').person
     template.custom_footer = "footer customized"
     template.custom_header = "header customized"
-    Environment.any_instance.stubs(:person_template).returns(template)
+    Environment.any_instance.stubs(:person_default_template).returns(template)
 
     person = create_user_full('mytestuser').person
     assert_equal "footer customized", person.custom_footer
@@ -1559,8 +1567,6 @@ class ProfileTest < ActiveSupport::TestCase
     profile.address = "<h1><</h2< Malformed >> html >< tag"
     profile.contact_phone = "<h1<< Malformed ><>>> html >< tag"
     profile.description = "<h1<a> Malformed >> html ></a>< tag"
-    profile.custom_header = "<h1<a>><<> Malformed >> html ></a>< tag"
-    profile.custom_footer = "<h1> Malformed <><< html ></a>< tag"
     profile.valid?
 
     assert_no_match /[<>]/, profile.name
@@ -1568,6 +1574,16 @@ class ProfileTest < ActiveSupport::TestCase
     assert_no_match /[<>]/, profile.address
     assert_no_match /[<>]/, profile.contact_phone
     assert_no_match /[<>]/, profile.description
+    assert_no_match /[<>]/, profile.custom_header
+    assert_no_match /[<>]/, profile.custom_footer
+  end
+
+  should 'escape malformed html tags in header and footer' do
+    profile = fast_create(Profile)
+    profile.custom_header = "<h1<a>><<> Malformed >> html ></a>< tag"
+    profile.custom_footer = "<h1> Malformed <><< html ></a>< tag"
+    profile.save
+
     assert_no_match /[<>]/, profile.custom_header
     assert_no_match /[<>]/, profile.custom_footer
   end
@@ -1958,5 +1974,74 @@ class ProfileTest < ActiveSupport::TestCase
     plugins = Noosfero::Plugin::Manager.new(environment, self)
     p = fast_create(Profile)
     assert p.folder_types.include?('ProfileTest::Folder1')
+  end
+
+  should 'not copy rss_feed' do
+    assert !fast_create(Profile).copy_article?(fast_create(RssFeed))
+  end
+
+  should 'not copy template welcome_page' do
+    template = fast_create(Person, :is_template => true)
+    welcome_page = fast_create(TinyMceArticle, :slug => 'welcome-page', :profile_id => template.id)
+    assert !template.copy_article?(welcome_page)
+  end
+
+  should 'return nil on welcome_page_content if template has no welcome page' do
+    template = fast_create(Profile, :is_template => true)
+    assert_nil template.welcome_page_content
+  end
+
+  should 'return nil on welcome_page_content if content is not published' do
+    template = fast_create(Profile, :is_template => true)
+    welcome_page = fast_create(TinyMceArticle, :slug => 'welcome-page', :profile_id => template.id, :body => 'Template welcome page', :published => false)
+    template.welcome_page = welcome_page
+    template.save!
+    assert_nil template.welcome_page_content
+  end
+
+  should 'return template welcome page content on welcome_page_content if content is published' do
+    template = fast_create(Profile, :is_template => true)
+    body = 'Template welcome page'
+    welcome_page = fast_create(TinyMceArticle, :slug => 'welcome-page', :profile_id => template.id, :body => body, :published => true)
+    template.welcome_page = welcome_page
+    template.save!
+    assert_equal body, template.welcome_page_content
+  end
+
+  should 'disable suggestion if profile requested membership' do
+    person = fast_create(Person)
+    community = fast_create(Community)
+    suggestion = ProfileSuggestion.create(:person => person, :suggestion => community, :enabled => true)
+
+    community.add_member person
+    assert_equal false, ProfileSuggestion.find(suggestion.id).enabled
+  end
+
+  should 'enable profile visibility' do
+    profile = fast_create(Profile)
+
+    assert_equal true, profile.disable
+
+    assert_equal true, profile.enable
+    assert_equal true, profile.visible?
+  end
+
+  should 'disable profile visibility' do
+    profile = fast_create(Profile)
+
+    assert_equal true, profile.enable
+
+    assert_equal true, profile.disable
+    assert_equal false, profile.visible?
+  end
+
+  should 'fetch enabled profiles' do
+    p1 = fast_create(Profile, :enabled => true)
+    p2 = fast_create(Profile, :enabled => true)
+    p3 = fast_create(Profile, :enabled => false)
+
+    assert_includes Profile.enabled, p1
+    assert_includes Profile.enabled, p2
+    assert_not_includes Profile.enabled, p3
   end
 end

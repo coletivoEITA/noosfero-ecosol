@@ -1,0 +1,41 @@
+<% header ||='h2' %>
+<<%= header %>><%= _('Step 1 of 2: Select address book') %></<%= header %>>
+
+<%= form_tag do %>
+
+  <%= [
+        radio_button_tag(:import_from, "manual", @import_from == "manual", :onclick => 'hide_invite_friend_login_password()') + content_tag('label', _('Manually (empty field)'), :for => "import_from_manual"),
+        radio_button_tag(:import_from, "gmail", @import_from == "gmail", :onclick => 'show_invite_friend_login_password(this.value)') + content_tag('label', 'Gmail', :for => 'import_from_gmail'),
+        radio_button_tag(:import_from, "yahoo", @import_from == "yahoo", :onclick => 'show_invite_friend_login_password(this.value)') + content_tag('label', 'Yahoo', :for => "import_from_yahoo"),
+        radio_button_tag(:import_from, "hotmail", @import_from == "hotmail", :onclick => 'show_invite_friend_login_password(this.value)') + content_tag('label', 'Hotmail', :for => "import_from_hotmail")
+      ].join("\n<br/>\n") %>
+
+  <script type="text/javascript">
+    function hide_invite_friend_login_password() {
+      jQuery('#invite-friends-login-password').hide();
+    }
+    function show_invite_friend_login_password(option) {
+      if (option == 'hotmail') {
+        jQuery('#hotmail_username_tip').show();
+      } else {
+        jQuery('#hotmail_username_tip').hide();
+      }
+      jQuery('#invite-friends-login-password').show();
+      jQuery('#login').focus();
+    }
+  </script>
+  <div id='invite-friends-login-password' <%= "style='display: none;'" if (@import_from == 'manual') %>>
+    <div id='hotmail_username_tip'>
+      <%= ui_icon('ui-icon-alert') %>
+      <%= _('Please type your username in the format yourname@example.com') %>
+    </div>
+
+    <%= labelled_form_field(_("Username") + ":", text_field_tag(:login, @login)) %>
+    <%= labelled_form_field(_("Password") + ":", password_field_tag(:password)) %>
+  </div>
+
+  <% button_bar do %>
+    <%= submit_button(:forward, _("Next")) %>
+  <% end %>
+  <p><%= _("We won't store your password or contact anyone without your permission.") %></p>
+<% end %>

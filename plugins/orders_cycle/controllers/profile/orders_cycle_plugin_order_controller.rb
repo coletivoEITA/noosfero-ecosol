@@ -1,6 +1,3 @@
-# workaround for plugin class scope problem
-require 'suppliers_plugin/product_helper'
-
 class OrdersCyclePluginOrderController < OrdersPluginOrderController
 
   # FIXME: remove me when styles move from consumers_coop plugin
@@ -10,7 +7,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   no_design_blocks
   before_filter :login_required, except: [:index]
 
-  helper OrdersCyclePlugin::OrdersCycleDisplayHelper
+  helper OrdersCyclePlugin::DisplayHelper
   helper SuppliersPlugin::ProductHelper
   helper OrdersCyclePlugin::TranslationHelper
 

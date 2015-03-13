@@ -6,18 +6,18 @@
     var selector = '#page-tab-<%= page_tab.id || 'new' %> .config-type-profile #page_tab_profile_ids'
 
     fb_app.page_tab.config.profile.onchange($(selector))
-    
+
 
     open_graph.autocomplete.init(
       <%= url_for(controller: :fb_app_plugin_page_tab, action: :enterprise_search).to_json %>,
       selector,
-      <%= [page_tab.profile].compact.map{ |p| {value: p.id, label: render('open_graph_plugin_myprofile/ac_profile', profile: p), } }.to_json %>,
+      <%= [page_tab.profile].compact.map{ |p| {value: p.id, label: render('open_graph_plugin/myprofile/ac_profile', profile: p), } }.to_json %>,
       {tokenfield: {limit: 1}}
     )
 
     <% if page_tab.profile %>
       jQuery(selector+'-tokenfield').hide()
-    <% end %>    
+    <% end %>
     jQuery(selector)
       .on('tokenfield:createdtoken', function (e) {
         jQuery(selector+'-tokenfield').hide();

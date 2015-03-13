@@ -11,7 +11,7 @@
   <%= labelled_text_field(_('to')+' ', :to, @to.strftime("%Y-%m-%d"), :id => 'to', :size => 9) %>
   <span style="white-space:nowrap"><%= labelled_select(_('Status')+' ', :filter_status, :first, :last, @status,  status_collection)%></span>
   &nbsp;
-  <%= submit_button('save',  _('Filter')) %>
+  <%= submit_button('save',  c_('Filter')) %>
 <% end %>
 
 <% tabs = [] %>

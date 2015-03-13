@@ -3,7 +3,7 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
   include ConsumersCoopPlugin::ControllerHelper
   include ConsumersCoopPlugin::TranslationHelper
 
-  helper OrdersCyclePlugin::OrdersCycleDisplayHelper
+  helper OrdersCyclePlugin::DisplayHelper
   helper ConsumersCoopPlugin::TranslationHelper
 
   def index

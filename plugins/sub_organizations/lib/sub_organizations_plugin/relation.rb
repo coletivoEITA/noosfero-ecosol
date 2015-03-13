@@ -1,4 +1,6 @@
 class SubOrganizationsPlugin::Relation < Noosfero::Plugin::ActiveRecord
+  record_timestamps = false
+
   belongs_to :parent, :polymorphic => true
   belongs_to :child, :polymorphic => true
 
@@ -12,12 +14,12 @@ class SubOrganizationsPlugin::Relation < Noosfero::Plugin::ActiveRecord
   attr_accessible :parent, :child
 
   def no_self_reference
-    errors.add(:child, _('self-reference is not allowed.')) if parent == child
+    errors.add(:child, c_('self-reference is not allowed.')) if parent == child
   end
 
   def no_cyclical_reference
     if Organization.children(child).include?(parent)
-      errors.add(:child, _('cyclical reference is not allowed.'))
+      errors.add(:child, c_('cyclical reference is not allowed.'))
     end
   end
 

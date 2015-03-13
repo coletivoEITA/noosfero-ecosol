@@ -3,10 +3,12 @@ class Person < Profile
 
   attr_accessible :organization, :contact_information, :sex, :birth_date, :cell_phone, :comercial_phone, :jabber_id, :personal_website, :nationality, :address_reference, :district, :schooling, :schooling_status, :formation, :custom_formation, :area_of_study, :custom_area_of_study, :professional_activity, :organization_website
 
-  SEARCH_FILTERS += %w[
-    more_popular
-  ]
-    #more_active
+  SEARCH_FILTERS = {
+    :order => %w[more_recent],
+    #:order => %w[more_recent more_popular more_active],
+    :display => %w[compact]
+  }
+
 
   def self.type_name
     _('Person')
@@ -21,10 +23,34 @@ class Person < Profile
     { :select => 'DISTINCT profiles.*', :joins => :role_assignments, :conditions => [conditions] }
   }
 
-  def has_permission_with_plugins?(permission, profile)
-    permissions = [has_permission_without_plugins?(permission, profile)]
+  scope :not_members_of, lambda { |resources|
+    resources = [resources] if !resources.kind_of?(Array)
+    conditions = resources.map {|resource| "role_assignments.resource_type = '#{resource.class.base_class.name}' AND role_assignments.resource_id = #{resource.id || -1}"}.join(' OR ')
+    { :select => 'DISTINCT profiles.*', :conditions => ['"profiles"."id" NOT IN (SELECT DISTINCT profiles.id FROM "profiles" INNER JOIN "role_assignments" ON "role_assignments"."accessor_id" = "profiles"."id" AND "role_assignments"."accessor_type" = (\'Profile\') WHERE "profiles"."type" IN (\'Person\') AND (%s))' % conditions] }
+  }
+
+  scope :by_role, lambda { |roles|
+    roles = [roles] unless roles.kind_of?(Array)
+    { :select => 'DISTINCT profiles.*', :joins => :role_assignments, :conditions => ['role_assignments.role_id IN (?)',
+roles] }
+  }
+
+  scope :not_friends_of, lambda { |resources|
+    resources = Array(resources)
+    { :select => 'DISTINCT profiles.*', :conditions => ['"profiles"."id" NOT IN (SELECT DISTINCT profiles.id FROM "profiles" INNER JOIN "friendships" ON "friendships"."person_id" = "profiles"."id" WHERE "friendships"."friend_id" IN (%s))' % resources.map(&:id)] }
+  }
+
+  def has_permission_with_admin?(permission, resource)
+    return true if resource.blank? || resource.admins.include?(self)
+    return true if resource.kind_of?(Profile) && resource.environment.admins.include?(self)
+    has_permission_without_admin?(permission, resource)
+  end
+  alias_method_chain :has_permission?, :admin
+
+  def has_permission_with_plugins?(permission, resource)
+    permissions = [has_permission_without_plugins?(permission, resource)]
     permissions += plugins.map do |plugin|
-      plugin.has_permission?(self, permission, profile)
+      plugin.has_permission?(self, permission, resource)
     end
     permissions.include?(true)
   end
@@ -39,9 +65,9 @@ class Person < Profile
     ScopeTool.union *scopes
   end
 
-   def memberships_by_role(role)
-     memberships.where('role_assignments.role_id = ?', role.id)
-   end
+  def memberships_by_role(role)
+    memberships.where('role_assignments.role_id = ?', role.id)
+  end
 
   has_many :friendships, :dependent => :destroy
   has_many :friends, :class_name => 'Person', :through => :friendships
@@ -56,8 +82,15 @@ class Person < Profile
 
   has_many :scraps_sent, :class_name => 'Scrap', :foreign_key => :sender_id, :dependent => :destroy
 
+  has_many :favorite_enterprise_people
+  has_many :favorite_enterprises, source: :enterprise, through: :favorite_enterprise_people
+
   has_and_belongs_to_many :acepted_forums, :class_name => 'Forum', :join_table => 'terms_forum_people'
   has_and_belongs_to_many :articles_with_access, :class_name => 'Article', :join_table => 'article_privacy_exceptions'
+
+  has_many :profile_suggestions, :foreign_key => :person_id, :order => 'score DESC', :dependent => :destroy
+  has_many :suggested_people, :through => :profile_suggestions, :source => :suggestion, :conditions => ['profile_suggestions.suggestion_type = ? AND profile_suggestions.enabled = ?', 'Person', true]
+  has_many :suggested_communities, :through => :profile_suggestions, :source => :suggestion, :conditions => ['profile_suggestions.suggestion_type = ? AND profile_suggestions.enabled = ?', 'Community', true]
 
   scope :more_popular, :order => 'friends_count DESC'
 
@@ -73,6 +106,10 @@ class Person < Profile
   end
 
   belongs_to :user, :dependent => :delete
+
+  def can_change_homepage?
+    !environment.enabled?('cant_change_homepage') || is_admin?
+  end
 
   def can_control_scrap?(scrap)
     begin
@@ -108,12 +145,12 @@ class Person < Profile
   end
 
   def add_friend(friend, group = nil)
-   unless self.is_a_friend?(friend)
+    unless self.is_a_friend?(friend)
       friendship = self.friendships.build
       friendship.friend = friend
       friendship.group = group
       friendship.save
-   end
+    end
   end
 
   def already_request_friendship?(person)
@@ -281,8 +318,6 @@ class Person < Profile
     ]
   end
 
-  has_and_belongs_to_many :favorite_enterprises, :class_name => 'Enterprise', :join_table => 'favorite_enteprises_people'
-
   def email_domain
     user && user.email_domain || environment.default_hostname(true)
   end
@@ -301,7 +336,7 @@ class Person < Profile
   end
 
   def default_template
-    environment.person_template
+    environment.person_default_template
   end
 
   def apply_type_specific_template(template)
@@ -461,8 +496,8 @@ class Person < Profile
     user.save!
   end
 
-  def activities
-    Scrap.find_by_sql("SELECT id, updated_at, '#{Scrap.to_s}' AS klass FROM #{Scrap.table_name} WHERE scraps.receiver_id = #{self.id} AND scraps.scrap_id IS NULL UNION SELECT id, updated_at, '#{ActionTracker::Record.to_s}' AS klass FROM #{ActionTracker::Record.table_name} WHERE action_tracker.user_id = #{self.id} and action_tracker.verb != 'leave_scrap_to_self' and action_tracker.verb != 'add_member_in_community' and action_tracker.verb != 'reply_scrap_on_self' ORDER BY updated_at DESC")
+  def exclude_verbs_on_activities
+    %w[leave_scrap_to_self add_member_in_community reply_scrap_on_self]
   end
 
   # by default, all fields are private
@@ -486,6 +521,15 @@ class Person < Profile
 
   after_update do |person|
     person.notifier.reschedule_next_notification_mail
+  end
+
+  def remove_suggestion(profile)
+    suggestion = profile_suggestions.find_by_suggestion_id profile.id
+    suggestion.disable if suggestion
+  end
+
+  def allow_invitation_from?(person)
+    person.has_permission?(:manage_friends, self)
   end
 
   protected

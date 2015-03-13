@@ -14,7 +14,8 @@ class GoogleAnalyticsPlugin < Noosfero::Plugin
   end
 
   def profile_id
-    context.profile && context.profile.google_analytics_profile_id
+    profile = context.send(:profile)
+    profile && profile.google_analytics_profile_id
   end
 
   def head_ending

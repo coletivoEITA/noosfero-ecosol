@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 
 class MacroTest < ActiveSupport::TestCase
 
@@ -15,7 +15,7 @@ class MacroTest < ActiveSupport::TestCase
 
   def setup
     @macro = Plugin1::Macro.new
-    @macro_element = Nokogiri::HTML.fragment(MACRO).search('.macro').first
+    @macro_element = Nokogiri::HTML.fragment(MACRO).css('.macro').first
   end
 
   attr_reader :macro, :macro_element

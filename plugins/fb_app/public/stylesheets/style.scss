@@ -4,7 +4,7 @@ body.controller-fb_app_plugin_page_tab {
 
   /* Catalog Tab in Facebook */
   background: #fff;
-  
+
   #top-bar, #theme-footer, #product-category, #product-page .button-bar {
     display: none;
   }
@@ -28,18 +28,18 @@ body.controller-fb_app_plugin_page_tab {
     margin: 0;
   }
   #page-tab-subtitle {
-    margin-bottom: 15px; 
-    background-color: rgb(241, 255, 107); 
+    margin-bottom: 15px;
+    background-color: rgb(241, 255, 107);
     border: 1px solid #ccc;
     border-top: none;
-    border-radius: 0px 0px 6px 6px; 
-    font-style: italic; 
+    border-radius: 0px 0px 6px 6px;
+    font-style: italic;
     padding: 10px 10px 0px;
   }
   #page-tab-subtitle p {
     margin-bottom: 10px;
   }
-  #product-owner { 
+  #product-owner {
     display:block;
     font-size: 120%;
     font-weight: bold;
@@ -62,9 +62,9 @@ body.controller-fb_app_plugin_page_tab {
     border: none;
   }
   #page-tab-footer {
-    font-size: 11px; 
-    border-top: 3px solid rgb(241, 255, 107); 
-    margin-top: 70px; 
+    font-size: 11px;
+    border-top: 3px solid rgb(241, 255, 107);
+    margin-top: 70px;
     padding-top: 5px;
   }
   #page-tab-footer1 {
@@ -72,7 +72,7 @@ body.controller-fb_app_plugin_page_tab {
     background-size: 50px;
     padding-left: 50px;
   }
-  
+
   /* End of Catalog Tab in Facebook */
 
   #profile-title,
@@ -203,15 +203,6 @@ body.controller-fb_app_plugin_myprofile {
   height: auto !important;
 }
 
-/* Control panel - timeline settings */
-/* We will temporarily disable these settings: */
-#fb-app-timeline #track-form {
-  display: none;
-}
-#fb-app-timeline #track-form a, #fb-app-timeline #track-form a:visited {
-  color: #fff;
-}
-
 @media (min-width: 768px) {
   #noosfero-identity {
     float: left;
@@ -231,6 +222,7 @@ body.controller-fb_app_plugin_myprofile {
   }
   #fb-app-settings {
     overflow: hidden;
+    padding-bottom: 400px;
   }
   #fb-app-catalogs {
     margin-right: $marginp;

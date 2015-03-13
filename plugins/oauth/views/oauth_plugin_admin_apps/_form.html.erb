@@ -1,8 +1,8 @@
 <% app_id = "app-#{app.id || 'new'}" %>
 
-<%= form_for :app,
-  :url => {:controller => :oauth_plugin_admin_apps, :action => (if app.new_record? then :new else :edit end), :id => app.id},
-  :html => {:multipart => true, :onsubmit => "return oauth.form.submit(this, '##{app_id}')"} do |f| %>
+<%= form_for app, as: :app,
+  url: {controller: :oauth_plugin_admin_apps, action: (if app.new_record? then :new else :edit end), id: app.id},
+  html: {multipart: true, onsubmit: "return oauth.form.submit(this, '##{app_id}')"} do |f| %>
 
   <%= error_messages_for :app %>
 
@@ -21,8 +21,8 @@
       <%= f.fields_for :image_builder, app.image do |fi| %>
         <td> <%= fi.label :uploaded_data, _('Icon') %> </td>
         <td>
-          <%= image_tag app.image_public_filename, :title => app.name, :class => 'oauth-login-icon' if app.image_public_filename %>
-          <%= fi.file_field :uploaded_data, :size => 10 %>
+          <%= image_tag app.image_public_filename, title: app.name, class: 'oauth-login-icon' if app.image_public_filename %>
+          <%= fi.file_field :uploaded_data, size: 10 %>
         </td>
       <% end %>
     </tr>
@@ -35,12 +35,12 @@
     <% unless app.new_record? %>
       <tr>
         <td><%= f.label :client_id %></td>
-        <td><%= f.text_field :client_id, :readonly => true %></td>
+        <td><%= f.text_field :client_id, readonly: true %></td>
       </tr>
 
       <tr>
         <td><%= f.label :client_secret %></td>
-        <td><%= f.text_field :client_secret, :readonly => true %></td>
+        <td><%= f.text_field :client_secret, readonly: true %></td>
       </tr>
     <% end %>
   </table>
@@ -48,8 +48,9 @@
   <%= f.submit _('Save') %>
   <% unless app.new_record? %>
     <%= link_to_remote _('Remove'),
-      :url => {:controller => :oauth_plugin_admin_apps, :action => :destroy, :id => app.id},
-      :loading => "loading_overlay.show('##{app_id}')" %>
+      url: {controller: :oauth_plugin_admin_apps, action: :destroy, id: app.id},
+      loading: "loading_overlay.show('##{app_id}')",
+      confirm: t('oauth_plugin.views.admin_apps.removal_confirmation') %>
   <% end %>
 <% end %>
 

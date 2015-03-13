@@ -292,6 +292,10 @@ module ManageProductsHelper
     production_cost = args[:production_cost_value] || product.formatted_value(:total_production_cost)
     product_price = args[:product_price] || product.formatted_value(:price)
 
-    _("%{currency} %{production_cost} of %{currency} %{product_price}") % {:currency => currency, :production_cost => content_tag('span', production_cost, :class => 'production_cost'), :product_price => content_tag('span', product_price, :class => 'product_price')}
+    if product_price.nil?
+      "%{currency} 0,00" % {currency: currency}
+    else
+      _("%{currency} %{production_cost} of %{currency} %{product_price}") % {:currency => currency, :production_cost => content_tag('span', production_cost, :class => 'production_cost'), :product_price => content_tag('span', product_price, :class => 'product_price')}
+    end
   end
 end

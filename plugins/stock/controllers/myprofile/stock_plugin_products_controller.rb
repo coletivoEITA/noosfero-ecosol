@@ -6,7 +6,7 @@ class StockPluginProductsController < MyProfileController
 
   protect 'manage_products', :profile
 
-  helper StockPlugin::StockDisplayHelper
+  helper StockPlugin::DisplayHelper
 
   def update
     @product = profile.products.find params[:id]

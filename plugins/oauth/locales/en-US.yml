@@ -1,0 +1,15 @@
+
+"en-US": &en-US
+
+  oauth_plugin:
+    views:
+      admin_providers:
+        removal_confirmation: 'Please confirm the removal of the OAuth provider'
+      admin_apps:
+        removal_confirmation: 'Please confirm the removal of the application'
+
+'en_US':
+  <<: *en-US
+'en':
+  <<: *en-US
+

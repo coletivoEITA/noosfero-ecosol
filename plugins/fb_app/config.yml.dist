@@ -12,24 +12,22 @@ app:
   secret: xxx
   domain: domainconfigured.net
 
-test_app: 
-  test_id:  xxx
-  test_secret:  xxx
-
   open_graph:
-    namespace: app_cirandas_test
+    namespace: app_cirandas
     objects:
-      blog_post: cirandas_article
+      blog_post: article
       community: community
-      enterprise: sse_enterprise
+      enterprise: sse_initiative
+      favorite_enterprise: sse_initiative
       forum: discussion
+      event: event
       friend: friend
-      gallery_image: cirandas_image
+      gallery_image: picture
       person: user_in_cirandas
       product: sse_product
-      uploaded_file: cirandas_document
+      uploaded_file: document
     actions:
-      add: add
+      add: add 
       comment: comment
       create: create
       favorite: favorite
@@ -42,3 +40,8 @@ test_app:
       announce_new: announce_new
       announce_update: announce_update
       announce_news: announce_news
+
+test_app: 
+  test_id:  xxx
+  test_secret:  xxx
+

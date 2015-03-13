@@ -1,7 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 
 class ArticleBlockTest < ActiveSupport::TestCase
-
   include ApplicationHelper
 
   should 'describe itself' do

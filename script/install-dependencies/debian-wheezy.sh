@@ -1,8 +1,11 @@
-sources_entry='deb http://download.noosfero.org/debian/wheezy ./'
+binary_packages='deb http://download.noosfero.org/debian/wheezy-1.1 ./'
 
-if ! grep -q "$sources_entry" /etc/apt/sources.list.d/noosfero.list; then
+source_packages=$(echo "$binary_packages" | sed -e 's/^deb/deb-src/')
+
+if ! grep -q "$binary_packages" /etc/apt/sources.list.d/noosfero.list; then
   sudo tee /etc/apt/sources.list.d/noosfero.list <<EOF
-$sources_entry
+$binary_packages
+$source_packages
 EOF
 
   sudo apt-key add - <<EOF
@@ -63,7 +66,7 @@ run sudo apt-get -qy dist-upgrade
 run sudo apt-get -y install dctrl-tools
 
 # needed to run noosfero
-packages=$(grep-dctrl -n -s Build-Depends,Depends,Recommends -S -X noosfero debian/control | sed -e 's/([^)]*)//g; s/,\s*/\n/g' | grep -v 'memcached\|debconf\|dbconfig-common\|misc:Depends\|adduser\|mail-transport-agent')
+packages=$(grep-dctrl -n -s Build-Depends,Depends,Recommends -S -X noosfero debian/control | sed -e '/^\s*#/d; s/([^)]*)//g; s/,\s*/\n/g' | grep -v 'memcached\|debconf\|dbconfig-common\|misc:Depends\|adduser\|mail-transport-agent')
 run sudo apt-get -y install $packages
 sudo apt-get -y install iceweasel || sudo apt-get -y install firefox
 

@@ -19,6 +19,10 @@ class User < ActiveRecord::Base
     Thread.current[:current_user] = user
   end
 
+  SEARCHABLE_FIELDS = {
+    :email => {:label => _('Email'), :weight => 5},
+  }
+
   def self.[](login)
     self.find_by_login(login)
   end
@@ -106,7 +110,7 @@ class User < ActiveRecord::Base
   validates_length_of       :email,    :within => 3..100, :if => (lambda {|user| !user.email.blank?})
   validates_uniqueness_of   :login, :email, :case_sensitive => false, :scope => :environment_id
   before_save :encrypt_password
-  before_save :normalize_email
+  before_save :normalize_email, if: proc{ |u| u.email.present? }
   validates_format_of :email, :with => Noosfero::Constants::EMAIL_FORMAT, :if => (lambda {|user| !user.email.blank?})
 
   validates_inclusion_of :terms_accepted, :in => [ '1' ], :if => lambda { |u| ! u.terms_of_use.blank? }, :message => N_('{fn} must be checked in order to signup.').fix_i18n
@@ -375,6 +379,6 @@ class User < ActiveRecord::Base
 
     def delay_activation_check
       return if person.is_template?
-      Delayed::Job.enqueue(UserActivationJob.new(self.id), {:priority => 0, :run_at => 72.hours.from_now})
+      Delayed::Job.enqueue(UserActivationJob.new(self.id), {:priority => 0, :run_at => (NOOSFERO_CONF['hours_until_user_activation_check'] || 72).hours.from_now})
     end
 end

@@ -78,6 +78,12 @@ class ActiveSupport::TestCase
 
   end
 
+  setup :global_setup
+
+  def global_setup
+    User.current = nil
+  end
+
   alias :ok :assert_block
 
   def assert_equivalent(enum1, enum2)
@@ -142,9 +148,33 @@ class ActiveSupport::TestCase
   end
 
   # For models that render views (blocks, articles, ...)
-  def render(*args)
-    view_paths = @explicit_view_paths || ActionController::Base.view_paths
-    ActionView::Base.new(view_paths, {}).render(*args)
+  def self.action_view
+    @action_view ||= begin
+      view_paths = ActionController::Base.view_paths
+      action_view = ActionView::Base.new view_paths, {}
+      # for using Noosfero helpers inside render calls
+      action_view.extend ApplicationHelper
+      action_view
+    end
+  end
+
+  def render *args
+    self.class.action_view.render(*args)
+  end
+
+  def url_for args = {}
+    args
+  end
+
+  # url_for inside views (partials)
+  # from http://stackoverflow.com/a/13704257/670229
+  ActionView::TestCase::TestController.instance_eval do
+    helper Noosfero::Application.routes.url_helpers
+  end
+  ActionView::TestCase::TestController.class_eval do
+    def _routes
+      Noosfero::Application.routes
+    end
   end
 
   private
@@ -225,10 +255,6 @@ module NoosferoTestHelper
   end
 
   def will_paginate(arg1, arg2)
-  end
-
-  def url_for(args = {})
-    args
   end
 
   def javascript_tag(any)

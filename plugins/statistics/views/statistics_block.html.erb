@@ -9,6 +9,9 @@
     <% if block.is_visible?('enterprise_counter') && !block.environment.enabled?('disable_asset_enterprises') %>
       <li class="enterprises"><span class="amount"><%= block.enterprises %> </span><span class="label"><%= _('enterprises')%></span></li>
     <% end %>
+    <% if block.is_visible?('product_counter') && block.environment.enabled?('products_for_enterprises') %>
+      <li class="products"><span class="amount"><%= block.products%> </span><span class="label"><%= _('products')%></span></li>
+    <% end %>
     <% if block.is_visible?('community_counter') %>
       <li class="communities"><span class="amount"><%= block.communities%> </span><span class="label"><%= _('communities')%></span></li>
     <% end %>
@@ -16,10 +19,10 @@
       <li class="categories"><span class="amount"><%= block.categories%> </span><span class="label"><%= _('categories')%></span></li>
     <% end %>
     <% if block.is_visible?('tag_counter') %>
-      <li class="tags"><span class="amount"><%= block.tags%> </span><span class="label"><%= _('tags')%></span></li>
+      <li class="tags"><span class="amount"><%= block.tags%> </span><span class="label"><%= c_('tags')%></span></li>
     <% end %>
     <% if block.is_visible?('comment_counter') %>
-      <li class="comments"><span class="amount"><%= block.comments%> </span><span class="label"><%= _('comments')%></span></li>
+      <li class="comments"><span class="amount"><%= block.comments%> </span><span class="label"><%= c_('comments')%></span></li>
     <% end %>
     <% if block.is_visible?('hit_counter') %>
       <li class="hits"><span class="amount"><%= block.hits%> </span><span class="label"><%= _('hits')%></span></li>

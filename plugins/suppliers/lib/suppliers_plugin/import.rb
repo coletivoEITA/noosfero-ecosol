@@ -3,19 +3,10 @@ require 'charlock_holmes'
 
 class SuppliersPlugin::Import
 
-  def self.to_utf8 string
-    if string.encoding == Encoding::ASCII_8BIT
-      string.force_encoding 'utf-8'
-    else
-      string.encode!('utf-8')
-    end
-    string
-  end
-
   def self.products consumer, csv
     product_category = consumer.environment.product_categories.find_by_name 'Produtos'
 
-    detection = CharlockHolmes::EncodingDetector.detect(csv)
+    detection = CharlockHolmes::EncodingDetector.detect csv
     csv = CharlockHolmes::Converter.convert csv, detection[:encoding], 'UTF-8'
     data = {}
     header = []
@@ -30,10 +21,10 @@ class SuppliersPlugin::Import
     puts rows.inspect
     puts header
     rows.each do |row|
-      supplier_name = to_utf8 row[0].to_s.squish
-      product_name = to_utf8 row[1].to_s.squish
-      product_unit = to_utf8 row[2].to_s.squish
-      product_price = to_utf8 row[3].to_s.squish
+      supplier_name = row[0].to_s.squish
+      product_name = row[1].to_s.squish
+      product_unit = row[2].to_s.squish
+      product_price = row[3].to_s.squish
 
       product_unit = consumer.environment.units.find_by_singular product_unit
 
@@ -49,6 +40,8 @@ class SuppliersPlugin::Import
         product = supplier.profile.products.find_by_name attributes[:name].gsub('"', '&quot;')
         product ||= supplier.profile.products.build attributes
         product.update_attributes! attributes
+        # this is necessary on update
+        product.distribute_to_consumer consumer
       end
     end
   end
