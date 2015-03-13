@@ -15,7 +15,7 @@
   transition: width 0.3s ease-in;
 }
 @media (max-width: 367px){
-  #chat.opened {
+  body.responsive #chat.opened {
     width: 300px;
   }
 }
@@ -534,7 +534,7 @@ div.occupants > a.up {
   transition: background-color 0.2s linear, right 0.3s ease-in;
 }
 @media (max-width: 367px){
-  #chat-label.opened {
+  body.responsive #chat-label.opened {
     right: 300px;
   }
 }
@@ -619,19 +619,19 @@ div.occupants > a.up {
  background-color: #A40000;
 }
 
-body.chat-opened #wrap-1{
+body.responsive.chat-opened #wrap-1 {
 	width:100%;
 	padding-right:355px;
 	transition: width 0.3s ease-in;
 }
-body.chat-opened #wrap-1 {
+body.responsive.chat-opened #wrap-1 {
 	background-color: transparent !important;
 }
-body.chat-opened #wrap-1 > #content {
+body.responsive.chat-opened #wrap-1 > #content {
 	background-color: #fff;
 }
 @media (max-width: 767px){
-	body.chat-opened #wrap-1{
+	body.responsive.chat-opened #wrap-1{
 		padding-right:0;
 	}
 }
