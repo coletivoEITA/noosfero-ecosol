@@ -14,6 +14,11 @@
   width: 350px;
   transition: width 0.3s ease-in;
 }
+@media (max-width: 367px){
+  #chat.opened {
+    width: 300px;
+  }
+}
 
 #chat-window {
   height: 100%;
@@ -106,7 +111,7 @@
 
 #buddy-list .buddies li a img, .occupant-list li a img, #chat .avatar {
   border-radius: 5px;
-  width: 28px;
+  width: 24px;
   max-height: 25px;
   vertical-align: middle;
 }
@@ -258,7 +263,7 @@
   padding: 8px;
   border-radius: 5px;
   display: inline-block;
-  width: 248px;
+  width: 100%;
   font-size: 15px;
 }
 #chat-window .history .message .content a {
@@ -362,7 +367,8 @@ div.occupants > a.up {
   width: 100%;
   height: 32px;
   font-size: 16px;
-  text-align: center;
+  text-align: left;
+  padding-left: 15px;
   z-index: 20;
 }
 
@@ -527,6 +533,11 @@ div.occupants > a.up {
   font-size: 14px;
   transition: background-color 0.2s linear, right 0.3s ease-in;
 }
+@media (max-width: 367px){
+  #chat-label.opened {
+    right: 300px;
+  }
+}
 
 #chat-label.opened:hover {
   background-color: #2E3436;
@@ -608,13 +619,19 @@ div.occupants > a.up {
  background-color: #A40000;
 }
 
-body.chat-opened .container{
+body.chat-opened #wrap-1{
 	width:100%;
 	padding-right:355px;
 	transition: width 0.3s ease-in;
 }
-@media (max-width: 367px){
-	body.chat-opened .container{
-		display:none;
+body.chat-opened #wrap-1 {
+	background-color: transparent !important;
+}
+body.chat-opened #wrap-1 > #content {
+	background-color: #fff;
+}
+@media (max-width: 767px){
+	body.chat-opened #wrap-1{
+		padding-right:0;
 	}
 }
