@@ -1,9 +1,9 @@
 #chat {
   width: 0;
-  height: 100%;
   position: fixed;
   right: 0;
-  top: 0;
+  top: 100px;
+  bottom: 0;
   z-index: 10;
   background-color: #FFF;
   box-shadow: -3px 0px 5px #888;
@@ -106,8 +106,8 @@
 
 #buddy-list .buddies li a img, .occupant-list li a img, #chat .avatar {
   border-radius: 5px;
-  width: 32px;
-  max-height: 35px;
+  width: 28px;
+  max-height: 25px;
   vertical-align: middle;
 }
 #chat #buddy-list .toolbar {
@@ -359,10 +359,11 @@ div.occupants > a.up {
   left: 0;
   background-color: #2e3436;
   color: white;
-  width: 284px;
-  height: 45px;
-  font-size: 18px;
+  width: 100%;
+  height: 32px;
+  font-size: 16px;
   text-align: center;
+  z-index: 20;
 }
 
 #user-status .avatar {
@@ -388,9 +389,6 @@ div.occupants > a.up {
   height: 40px;
   background-color: rgb(39, 39, 39);
 }
-.conversation-header .chat-target {
-  line-height: 45px;
-}
 .conversation .header .other-name {
  color: rgb(238, 238, 238);
 }
@@ -408,7 +406,7 @@ div.occupants > a.up {
   color: white;
   overflow: hidden;
   max-width: 140px;
-  line-height: 33px;
+  line-height: 28px;
 }
 #chat .toolbar #user-status span, #chat #conversations .header .chat-target span {
   max-width: 140px;
@@ -513,7 +511,7 @@ div.occupants > a.up {
   height: 0;
   background-color: #888A85;
   position: fixed;
-  top: 20%;
+  top: 150px;
   cursor: pointer;
   text-align: center;
   z-index: 11;
