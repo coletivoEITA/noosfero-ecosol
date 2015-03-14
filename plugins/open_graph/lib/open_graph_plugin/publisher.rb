@@ -22,16 +22,18 @@ class OpenGraphPlugin::Publisher
     raise 'abstract method called'
   end
 
-  def url_for url, extra_params={}
-    return url if url.is_a? String
-    url.delete :port
+  include MetadataPlugin::UrlHelper
+
+  def url_for object, custom_url=nil, extra_params={}
+    return custom_url if custom_url.is_a? String
+    url = custom_url || if object.is_a? Profile then og_profile_url(object) else object.url end
     url.merge! extra_params
-    Noosfero::Application.routes.url_helpers.url_for url
+    self.og_url_for url
   end
 
-  def passive_url_for url, story_defs
+  def passive_url_for object, url, story_defs
     object_type = self.objects[story_defs[:object_type]]
-    url_for url, og_type: MetadataPlugin.og_types[object_type]
+    self.url_for object, url, og_type: MetadataPlugin.og_types[object_type]
   end
 
   def publish_stories object_data, actor, stories
@@ -61,8 +63,8 @@ class OpenGraphPlugin::Publisher
       if publish = defs[:publish]
         instance_exec actor, object_data, &publish
       else
-        object_data_url = if (object_data_url = self.call defs[:object_data_url], object_data, actor) then object_data_url else object_data.url end
-        object_data_url = if passive then self.passive_url_for object_data_url, defs else self.url_for object_data_url end
+        custom_object_data_url = self.call defs[:object_data_url], object_data, actor
+        object_data_url = if passive then self.passive_url_for object_data, custom_object_data_url, defs else self.url_for object_data, custom_object_data_url end
 
         actors.each do |actor|
           print_debug "open_graph: start publishing" if debug? actor

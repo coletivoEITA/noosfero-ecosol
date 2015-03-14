@@ -45,33 +45,33 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
 
     blog = Blog.create! profile: @actor, name: 'blog'
     blog_post = TinyMceArticle.new profile: User.current.person, parent: blog, name: 'blah', author: User.current.person
-    @publisher.expects(:publish).with(User.current.person, @stories[:create_an_article], @publisher.url_for(blog_post.url))
+    @publisher.expects(:publish).with(User.current.person, @stories[:create_an_article], @publisher.url_for(blog_post))
     blog_post.save!
 
     gallery = Gallery.create! name: 'gallery', profile: User.current.person
     image = UploadedFile.new uploaded_data: fixture_file_upload('/files/rails.png', 'image/png'), parent: gallery, profile: User.current.person
-    @publisher.expects(:publish).with(User.current.person, @stories[:add_an_image], @publisher.url_for(image.url.merge view: true))
+    @publisher.expects(:publish).with(User.current.person, @stories[:add_an_image], @publisher.url_for(image, image.url.merge(view: true)))
     image.save!
 
     document = UploadedFile.new uploaded_data: fixture_file_upload('/files/doctest.en.xhtml', 'text/html'), profile: User.current.person
-    @publisher.expects(:publish).with(User.current.person, @stories[:add_a_document], @publisher.url_for(document.url.merge view: true))
+    @publisher.expects(:publish).with(User.current.person, @stories[:add_a_document], @publisher.url_for(document, document.url.merge(view: true)))
     document.save!
 
     event = Event.new name: 'event', profile: User.current.person
-    @publisher.expects(:publish).with(User.current.person, @stories[:create_an_event], @publisher.url_for(event.url))
+    @publisher.expects(:publish).with(User.current.person, @stories[:create_an_event], @publisher.url_for(event))
     event.save!
 
     forum = Forum.create! name: 'forum', profile: User.current.person
     topic = TinyMceArticle.new profile: User.current.person, parent: forum, name: 'blah2', author: User.current.person
-    @publisher.expects(:publish).with(User.current.person, @stories[:start_a_discussion], @publisher.url_for(topic.url.merge og_type: MetadataPlugin.og_types[:forum]))
+    @publisher.expects(:publish).with(User.current.person, @stories[:start_a_discussion], @publisher.url_for(topic, topic.url.merge(og_type: MetadataPlugin.og_types[:forum])))
     topic.save!
 
-    @publisher.expects(:publish).with(@actor, @stories[:make_friendship_with], @publisher.url_for(@other_actor.url))
-    @publisher.expects(:publish).with(@other_actor, @stories[:make_friendship_with], @publisher.url_for(@actor.url))
+    @publisher.expects(:publish).with(@actor, @stories[:make_friendship_with], @publisher.url_for(@other_actor))
+    @publisher.expects(:publish).with(@other_actor, @stories[:make_friendship_with], @publisher.url_for(@actor))
     @actor.add_friend @other_actor
     @other_actor.add_friend @actor
 
-    @publisher.expects(:publish).with(User.current.person, @stories[:favorite_a_sse_initiative], @publisher.url_for(@enterprise.url))
+    @publisher.expects(:publish).with(User.current.person, @stories[:favorite_a_sse_initiative], @publisher.url_for(@enterprise))
     @enterprise.fans << User.current.person
 
     # active but published as passive
@@ -79,7 +79,7 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
 
     blog_post = TinyMceArticle.new profile: @enterprise, parent: @enterprise.blog, name: 'blah', author: User.current.person
     story = @stories[:announce_news_from_a_sse_initiative]
-    @publisher.expects(:publish).with(User.current.person, story, @publisher.passive_url_for(blog_post.url, story))
+    @publisher.expects(:publish).with(User.current.person, story, @publisher.passive_url_for(blog_post, blog_post.url, story))
     blog_post.save!
 
     # passive
@@ -87,12 +87,12 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
 
     blog_post = TinyMceArticle.new profile: @enterprise, parent: @enterprise.blog, name: 'blah2', author: User.current.person
     story = @stories[:announce_news_from_a_sse_initiative]
-    @publisher.expects(:publish).with(@actor, story, @publisher.passive_url_for(blog_post.url, story))
+    @publisher.expects(:publish).with(@actor, story, @publisher.passive_url_for(blog_post, blog_post.url, story))
     blog_post.save!
 
     blog_post = TinyMceArticle.new profile: @community, parent: @community.blog, name: 'blah', author: User.current.person
     story = @stories[:announce_news_from_a_community]
-    @publisher.expects(:publish).with(@actor, story, @publisher.passive_url_for(blog_post.url, story))
+    @publisher.expects(:publish).with(@actor, story, @publisher.passive_url_for(blog_post, blog_post.url, story))
     blog_post.save!
   end
 

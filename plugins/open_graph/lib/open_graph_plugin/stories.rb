@@ -144,7 +144,7 @@ class OpenGraphPlugin::Stories
         favorite_enterprise_person.enterprise
       end,
       object_data_url: proc do |favorite_enterprise_person, actor|
-        favorite_enterprise_person.enterprise.url
+        self.og_profile_url favorite_enterprise_person.enterprise
       end,
     },
 
@@ -196,7 +196,7 @@ class OpenGraphPlugin::Stories
         friendship.friend
       end,
       object_data_url: proc do |friendship, actor|
-        friendship.friend.url
+        self.og_profile_url friendship.friend
       end,
     },
 
