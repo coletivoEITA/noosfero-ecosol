@@ -52,7 +52,7 @@ class OpenGraphPlugin::Publisher
   end
 
   def register_publish attributes
-    OpenGraphPlugin::Activity.create! activity_params
+    OpenGraphPlugin::Activity.create! attributes
   end
 
   def publish_story object_data, actor, story
