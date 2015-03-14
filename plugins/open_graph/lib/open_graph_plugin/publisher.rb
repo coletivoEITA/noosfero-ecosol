@@ -26,6 +26,7 @@ class OpenGraphPlugin::Publisher
 
   def url_for object, custom_url=nil, extra_params={}
     return custom_url if custom_url.is_a? String
+    # profile identifier must be present for a object that belongs to profile
     url = custom_url || if object.is_a? Profile or object.respond_to? :profile then og_profile_url(object) else object.url end
     url.merge! extra_params
     self.og_url_for url
