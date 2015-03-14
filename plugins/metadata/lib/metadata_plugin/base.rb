@@ -57,20 +57,7 @@ class MetadataPlugin::Base < Noosfero::Plugin
     end
   end
 
-  # context HELPERS
-  def og_url_for options
-    options.delete :port
-    options[:host] = self.class.config[:open_graph][:domain] rescue context.send(:environment).default_hostname
-    Noosfero::Application.routes.url_helpers.url_for options
-  end
-
-  def og_profile_url profile
-    # open_graph client don't like redirects, give the exact url
-    url = if p.home_page_id.present? then p.url else {controller: :profile, profile: p.url} end
-    # force profile identifier for custom domains and fixed host. see og_url_for
-    url = url.merge! profile: p.identifier
-    self.og_url_for url
-  end
+  include MetadataPlugin::UrlHelper
 
   def helpers
     self.context.class.helpers

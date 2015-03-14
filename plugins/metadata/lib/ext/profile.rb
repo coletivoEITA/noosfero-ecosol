@@ -6,7 +6,7 @@ class Profile
     type: proc{ |p, plugin| plugin.context.params[:og_type] || MetadataPlugin.og_types[:profile] || :profile },
     image: proc{ |p, plugin| "#{p.environment.top_url}#{p.image.public_filename}" if p.image },
     title: proc{ |p, plugin| p.nickname || p.name },
-    url: proc{ |p, plugin| plugin.og_profile_url p },
+    url: proc{ |p, plugin| plugin.og_url_for plugin.og_profile_url(p) },
     description: proc{ |p, plugin| p.description },
 	  updated_time: proc{ |p, plugin| p.updated_at.iso8601 },
     'locale:locale' => proc{ |p, plugin| p.environment.default_language },
