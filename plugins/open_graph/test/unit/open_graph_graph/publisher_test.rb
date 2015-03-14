@@ -79,7 +79,7 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
 
     blog_post = TinyMceArticle.new profile: @enterprise, parent: @enterprise.blog, name: 'blah', author: User.current.person
     story = @stories[:announce_news_from_a_sse_initiative]
-    @publisher.expects(:publish).with(User.current.person, story, @publisher.passive_url_for(blog_post, blog_post.url, story))
+    @publisher.expects(:publish).with(User.current.person, story, @publisher.passive_url_for(blog_post, nil, story))
     blog_post.save!
 
     # passive
@@ -87,12 +87,12 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
 
     blog_post = TinyMceArticle.new profile: @enterprise, parent: @enterprise.blog, name: 'blah2', author: User.current.person
     story = @stories[:announce_news_from_a_sse_initiative]
-    @publisher.expects(:publish).with(@actor, story, @publisher.passive_url_for(blog_post, blog_post.url, story))
+    @publisher.expects(:publish).with(@actor, story, @publisher.passive_url_for(blog_post, nil, story))
     blog_post.save!
 
     blog_post = TinyMceArticle.new profile: @community, parent: @community.blog, name: 'blah', author: User.current.person
     story = @stories[:announce_news_from_a_community]
-    @publisher.expects(:publish).with(@actor, story, @publisher.passive_url_for(blog_post, blog_post.url, story))
+    @publisher.expects(:publish).with(@actor, story, @publisher.passive_url_for(blog_post, nil, story))
     blog_post.save!
   end
 

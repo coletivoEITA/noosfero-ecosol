@@ -31,9 +31,9 @@ class OpenGraphPlugin::Publisher
     self.og_url_for url
   end
 
-  def passive_url_for object, url, story_defs
-    object_type = self.objects[story_defs[:object_type]]
-    self.url_for object, url, og_type: MetadataPlugin.og_types[object_type]
+  def passive_url_for object, custom_url, story_defs
+    object_type = story_defs[:object_type]
+    self.url_for object, custom_url, og_type: MetadataPlugin.og_types[object_type]
   end
 
   def publish_stories object_data, actor, stories
