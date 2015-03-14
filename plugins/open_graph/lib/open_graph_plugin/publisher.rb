@@ -27,14 +27,15 @@ class OpenGraphPlugin::Publisher
   def url_for object, custom_url=nil, extra_params={}
     return custom_url if custom_url.is_a? String
     # profile identifier must be present for a object that belongs to profile
-    url = custom_url || if object.is_a? Profile or object.respond_to? :profile then og_profile_url(object) else object.url end
+    url = custom_url || if object.is_a? Profile then og_profile_url(object) else object.url end
     url.merge! extra_params
     self.og_url_for url
   end
 
-  def passive_url_for object, custom_url, story_defs
+  def passive_url_for object, custom_url, story_defs, extra_params={}
     object_type = story_defs[:object_type]
-    self.url_for object, custom_url, og_type: MetadataPlugin.og_types[object_type]
+    extra_params.merge! og_type: MetadataPlugin.og_types[object_type]
+    self.url_for object, custom_url, extra_params
   end
 
   def publish_stories object_data, actor, stories
@@ -77,8 +78,12 @@ class OpenGraphPlugin::Publisher
       if publish = defs[:publish]
         instance_exec actor, object_data, &publish
       else
+        # force profile identifier for custom domains and fixed host. see og_url_for
+        object_profile = self.call(story_defs[:object_profile], object_data) || object_data.profile rescue nil
+        extra_params = if object_profile then {profile: object_profile.identifier} else {} end
+
         custom_object_data_url = self.call defs[:object_data_url], object_data, actor
-        object_data_url = if passive then self.passive_url_for object_data, custom_object_data_url, defs else self.url_for object_data, custom_object_data_url end
+        object_data_url = if passive then self.passive_url_for object_data, custom_object_data_url, defs, extra_params else self.url_for object_data, custom_object_data_url, extra_params end
 
         actors.each do |actor|
           print_debug "open_graph: start publishing" if debug? actor
