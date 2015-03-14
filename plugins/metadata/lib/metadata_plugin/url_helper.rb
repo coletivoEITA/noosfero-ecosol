@@ -16,7 +16,7 @@ module MetadataPlugin::UrlHelper
       # force profile identifier for custom domains and fixed host. see og_url_for
       profile.url.merge profile: profile.identifier
     else
-      {controller: :profile, profile: profile.url}
+      {controller: :profile, profile: profile.identifier}
     end
   end
 
