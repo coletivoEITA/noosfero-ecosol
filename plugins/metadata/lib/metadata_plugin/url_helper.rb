@@ -10,7 +10,8 @@ module MetadataPlugin::UrlHelper
     Noosfero::Application.routes.url_helpers.url_for options
   end
 
-  def og_profile_url profile
+  def og_profile_url object
+    profile = if object.is_a? Profile then object else object.profile end
     # open_graph client don't like redirects, give the exact url
     if profile.home_page_id.present?
       # force profile identifier for custom domains and fixed host. see og_url_for
