@@ -54,7 +54,9 @@ class SolrPlugin::Base < Noosfero::Plugin
   	solr_options = build_solr_options asset, klass, scope, category
     solr_options.merge! products_options(user) if empty_query and klass == Product
     unless solr_search? empty_query, klass
-      return (if options[:filter] then {results: scope.send(options[:filter]).paginate(paginate_options)} else nil end)
+      scope = scope.send options[:filter] if options[:filter]
+      scope = scope.paginate paginate_options
+      return {results: scope}
     end
     solr_options.merge! options.except(:category, :filter)
 
