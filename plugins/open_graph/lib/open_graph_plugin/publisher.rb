@@ -42,6 +42,19 @@ class OpenGraphPlugin::Publisher
     end
   end
 
+  def recent_publish? actor, object_type, object_data_url
+    activity_params = {actor_id: actor.id, object_type: object_type, object_data_url: object_data_url}
+    activity = OpenGraphPlugin::Activity.where(activity_params).first
+    # only scrape recent objects to avoid multiple publications
+    return true if activity and activity.created_at <= (Time.now + UpdateDelay)
+    print_debug "fb_app: no recent publication found, making new" if debug? actor
+    false
+  end
+
+  def register_publish attributes
+    OpenGraphPlugin::Activity.create! activity_params
+  end
+
   def publish_story object_data, actor, story
     OpenGraphPlugin.context = self.context
     defs = OpenGraphPlugin::Stories::Definitions[story]

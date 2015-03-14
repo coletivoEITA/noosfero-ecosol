@@ -1,6 +1,6 @@
 class OpenGraphPlugin::Track < ActiveRecord::Base
 
-  attr_accessible :type, :scope, :tracker_id, :tracker, :actor_id, :action,
+  attr_accessible :type, :context, :tracker_id, :tracker, :actor_id, :action,
     :object_type, :object_data, :object_data_id, :object_data_type, :object_data_url
 
   belongs_to :tracker, class_name: 'Profile'
