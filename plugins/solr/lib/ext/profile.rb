@@ -137,6 +137,8 @@ class Profile
       # filtered fields
       {solr_plugin_public: :boolean}, {environment_id: :integer},
       {solr_plugin_category_filter: :integer},
+      # scopes
+      {no_templates: :boolean},
       # ordered/query-boosted fields
       {solr_plugin_name_sortable: :string}, {user_id: :integer},
       :enabled, :active, :validated, :public_profile, :visible, :is_template,
@@ -151,5 +153,9 @@ class Profile
 
   handle_asynchronously :solr_save
   handle_asynchronously :solr_destroy
+
+  def no_templates
+    !self.is_template
+  end
 
 end
