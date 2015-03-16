@@ -29,7 +29,7 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
 
     # always update the object to expire facebook cache
     scrape object_data_url
-    return unless self.recent_publish? actor, object_type, object_data_url
+    return if story_defs[:on] == :update and self.recent_publish? actor, object_type, object_data_url
     print_debug "fb_app: no recent publication found, making new" if debug? actor
 
     namespace = FbAppPlugin.open_graph_config[:namespace]
