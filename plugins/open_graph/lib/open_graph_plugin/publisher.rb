@@ -24,19 +24,6 @@ class OpenGraphPlugin::Publisher
 
   include MetadataPlugin::UrlHelper
 
-  def url_for object, custom_url=nil, extra_params={}
-    return custom_url if custom_url.is_a? String
-    url = custom_url || object.url
-    url.merge! extra_params
-    self.og_url_for url
-  end
-
-  def passive_url_for object, custom_url, story_defs, extra_params={}
-    object_type = story_defs[:object_type]
-    extra_params.merge! og_type: MetadataPlugin.og_types[object_type]
-    self.url_for object, custom_url, extra_params
-  end
-
   def publish_stories object_data, actor, stories
     stories.each do |story|
       self.publish_story object_data, actor, story
@@ -52,10 +39,6 @@ class OpenGraphPlugin::Publisher
     activity_params = {actor_id: actor.id, object_type: object_type, object_data_url: object_data_url}
     activity = OpenGraphPlugin::Activity.where(activity_params).first
     activity.present? and activity.created_at <= self.update_delay.from_now
-  end
-
-  def register_publish attributes
-    OpenGraphPlugin::Activity.create! attributes
   end
 
   def publish_story object_data, actor, story
@@ -131,6 +114,23 @@ class OpenGraphPlugin::Publisher
   end
 
   protected
+
+  def register_publish attributes
+    OpenGraphPlugin::Activity.create! attributes
+  end
+
+  def url_for object, custom_url=nil, extra_params={}
+    return custom_url if custom_url.is_a? String
+    url = custom_url || object.url
+    url.merge! extra_params
+    self.og_url_for url
+  end
+
+  def passive_url_for object, custom_url, story_defs, extra_params={}
+    object_type = story_defs[:object_type]
+    extra_params.merge! og_type: MetadataPlugin.og_types[object_type]
+    self.url_for object, custom_url, extra_params
+  end
 
   def call p, *args
     p and instance_exec *args, &p

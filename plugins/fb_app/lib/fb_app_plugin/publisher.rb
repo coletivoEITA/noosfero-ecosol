@@ -11,12 +11,6 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
     self.objects = Objects
   end
 
-  def scrape object_data_url
-    params = {id: object_data_url, scrape: true, method: 'post'}
-    url = "http://graph.facebook.com?#{params.to_query}"
-    Net::HTTP.get URI.parse(url)
-  end
-
   def publish actor, story_defs, object_data_url
     action = self.actions[story_defs[:action]]
     object_type = self.objects[story_defs[:object_type]]
@@ -28,7 +22,7 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
     print_debug "fb_app: Auth found and valid" if debug? actor
 
     # always update the object to expire facebook cache
-    scrape object_data_url
+    FbAppPlugin::Activity.scrape object_data_url
     return if story_defs[:on] == :update and self.recent_publish? actor, object_type, object_data_url
     print_debug "fb_app: no recent publication found, making new" if debug? actor
 
@@ -45,6 +39,10 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
   end
 
   protected
+
+  def register_publish attributes
+    FbAppPlugin::Activity.create! attributes
+  end
 
   def context
     :fb_app

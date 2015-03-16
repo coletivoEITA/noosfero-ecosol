@@ -30,6 +30,7 @@ open_graph = {
       headingToggle: function(context, open) {
         var panel = $(context).parents('.panel')
         var panelHeading = panel.find('.panel-heading')
+        var panelBody = panel.find('.panel-body')
         var parentCheckbox = panel.find('.config-check')
         var configButton = panel.find('.config-button')
         var input = panel.find('.track-config-toggle')
@@ -38,6 +39,8 @@ open_graph = {
         // on user enable (open is not undefined), open if open-on-enable
         else if (panelHeading.hasClass('open-on-enable'))
           this.open(context)
+        if (!open)
+          panelBody.collapse('hide')
 
         configButton.toggle(open)
         parentCheckbox.toggleClass('fa-toggle-on', open)
@@ -54,15 +57,12 @@ open_graph = {
 
       toggle: function(context, event) {
         var panel = $(context).parents('.panel')
-        var panelBody = panel.find('.panel-body')
         var checkboxes = panelBody.find('input[type=checkbox]')
         var open = panel.find('.track-config-toggle').val() == 'true'
         open = !open;
 
         checkboxes.prop('checked', open)
         this.headingToggle(context, open)
-        if (!open)
-          panelBody.collapse('hide')
         return false;
       },
 
@@ -79,10 +79,8 @@ open_graph = {
         var nTotal = checkboxes.length + nProfiles
 
         if (nChecked === 0) {
-          panelBody.removeClass('in')
           this.headingToggle(context, false)
         } else {
-          panelBody.addClass('in')
           this.headingToggle(context, true)
         }
       },
