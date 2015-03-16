@@ -425,14 +425,15 @@ jQuery(function($) {
         var name = Strophe.getResourceFromJid(message.from);
         // is a message from the room itself
         if (! name) {
-           Jabber.show_notice(Jabber.jid_to_id(message.from), message.body);
+          // FIXME Ignoring message from room for now.
+          // Jabber.show_notice(Jabber.jid_to_id(message.from), message.body);
         }
         // is a message from another user, not mine
         else if ($own_name != name) {
            var jid = Jabber.rooms[Jabber.jid_to_id(message.from)][name];
            Jabber.show_message(message.from, name, escape_html(message.body), name, Strophe.getNodeFromJid(jid));
+           notifyMessage(message);
         }
-	notifyMessage(message);
         return true;
      },
 
