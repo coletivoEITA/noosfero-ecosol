@@ -4,6 +4,7 @@ open_graph = {
   track: {
 
     config: {
+      reload: false,
 
       view: {
         form: null,
@@ -12,15 +13,24 @@ open_graph = {
       init: function() {
         this.view.form = jQuery('#track-form form')
 
-        this.view.form.find('.panel-heading').each(function(i, context) {
-          open_graph.track.config.headingToggle(context)
-        })
+        if (!this.reload) {
+          this.view.form.find('.panel-heading').each(function(i, context) {
+            open_graph.track.config.headingToggle(context)
+          })
+        }
 
-        setTimeout(this.watchChanges(), 1000)
+        this.watchChanges()
       },
 
       watchChanges: function() {
-        this.view.form.find('input').change(this.save)
+        $(window.document).ready(function () {
+          open_graph.track.config.view.form.find('input').change(open_graph.track.config.save)
+        })
+      },
+
+      submit: function(form) {
+        form = $(form)
+        form.ajaxSubmit()
       },
 
       save: function() {
@@ -57,16 +67,23 @@ open_graph = {
 
       toggle: function(context, event) {
         var panel = $(context).parents('.panel')
+        var panelBody = panel.find('.panel-body')
         var checkboxes = panelBody.find('input[type=checkbox]')
         var open = panel.find('.track-config-toggle').val() == 'true'
         open = !open;
 
         checkboxes.prop('checked', open)
+
         this.headingToggle(context, open)
         return false;
       },
 
-      // DEPRECATED: the panel-body is hidden by default
+      toggleObjectType: function(checkbox) {
+        checkbox = $(checkbox)
+        this.toggleParent(checkbox)
+        checkbox.siblings("input[name*='[_destroy]']").val(!checkbox.is(':checked'))
+      },
+
       toggleParent: function(context) {
         var panel = $(context).parents('.panel')
         var panelBody = panel.find('.panel-body')
@@ -94,6 +111,9 @@ open_graph = {
       },
 
       initAutocomplete: function(track, url, items) {
+        if (!this.reload)
+          return
+
         var selector = '#select-'+track
         var tokenField = open_graph.autocomplete.init(url, selector, items)
 

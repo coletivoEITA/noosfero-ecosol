@@ -16,6 +16,8 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
     @myenterprise = @actor.environment.enterprises.create! name: 'mycoop', identifier: 'mycoop'
     @myenterprise.add_member @actor
     @enterprise = @actor.environment.enterprises.create! name: 'coop', identifier: 'coop'
+    # the original domain from open_graph should be used
+    @enterprise.domains.create! name: 'example.com'
 
     @community = @actor.environment.communities.create! name: 'comm', identifier: 'comm', closed: false
 
@@ -68,8 +70,7 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
 
     @publisher.expects(:publish).with(@actor, @stories[:make_friendship_with], @publisher.send(:url_for, @other_actor))
     @publisher.expects(:publish).with(@other_actor, @stories[:make_friendship_with], @publisher.send(:url_for, @actor))
-    @actor.add_friend @other_actor
-    @other_actor.add_friend @actor
+    AddFriend.create!(person: @actor, friend: @other_actor).finish
 
     @publisher.expects(:publish).with(User.current.person, @stories[:favorite_a_sse_initiative], @publisher.send(:url_for, @enterprise))
     @enterprise.fans << User.current.person
@@ -79,7 +80,7 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
 
     blog_post = TinyMceArticle.new profile: @enterprise, parent: @enterprise.blog, name: 'blah', author: User.current.person
     story = @stories[:announce_news_from_a_sse_initiative]
-    @publisher.expects(:publish).with(User.current.person, story, @publisher.passive_send(:url_for, blog_post, nil, story))
+    @publisher.expects(:publish).with(User.current.person, story, @publisher.send(:passive_url_for, blog_post, nil, story))
     blog_post.save!
 
     # passive
@@ -87,12 +88,12 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
 
     blog_post = TinyMceArticle.new profile: @enterprise, parent: @enterprise.blog, name: 'blah2', author: User.current.person
     story = @stories[:announce_news_from_a_sse_initiative]
-    @publisher.expects(:publish).with(@actor, story, @publisher.passive_send(:url_for, blog_post, nil, story))
+    @publisher.expects(:publish).with(@actor, story, @publisher.send(:passive_url_for, blog_post, nil, story))
     blog_post.save!
 
     blog_post = TinyMceArticle.new profile: @community, parent: @community.blog, name: 'blah', author: User.current.person
     story = @stories[:announce_news_from_a_community]
-    @publisher.expects(:publish).with(@actor, story, @publisher.passive_send(:url_for, blog_post, nil, story))
+    @publisher.expects(:publish).with(@actor, story, @publisher.send(:passive_url_for, blog_post, nil, story))
     blog_post.save!
   end
 
