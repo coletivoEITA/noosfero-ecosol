@@ -38,6 +38,7 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
 
     me = FbGraph::User.me auth.access_token
     me.og_action! "#{namespace}:#{action}", params
+    print_debug "fb_app: published with success" if debug? actor
 
     register_publish context: self.context, actor_id: actor.id, action: action, object_type: object_type, object_data_url: object_data_url
   end

@@ -52,7 +52,7 @@ class OpenGraphPlugin::Publisher
     activity = OpenGraphPlugin::Activity.where(activity_params).first
     # only scrape recent objects to avoid multiple publications
     return true if activity and activity.created_at <= (Time.now + self.update_delay)
-    print_debug "fb_app: no recent publication found, making new" if debug? actor
+    print_debug "open_graph: no recent publication found, making new" if debug? actor
     false
   end
 
