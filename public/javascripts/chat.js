@@ -633,16 +633,16 @@ jQuery(function($) {
                Jabber.jids[jid_id] = {jid: jid, name: name, type: 'groupchat'};
                var conversation = create_conversation_tab(name, jid_id);
                Jabber.enter_room(jid);
-               recent_messages(jid);
+               recent_messages(jid, 0, true);
                return conversation;
             }
          }
          else {
-            log('opening chat with ' + jid);
-	    Jabber.jids[jid_id] = {jid: jid, name: name, type: 'friendchat'};
-            var conversation = create_conversation_tab(name, jid_id);
-            recent_messages(jid);
-	    return conversation;
+           log('opening chat with ' + jid);
+           Jabber.jids[jid_id] = {jid: jid, name: name, type: 'friendchat'};
+           var conversation = create_conversation_tab(name, jid_id);
+           recent_messages(jid, 0, true);
+           return conversation;
          }
       }
    }
@@ -710,7 +710,7 @@ jQuery(function($) {
      }
    }
 
-   function recent_messages(jid, offset) {
+   function recent_messages(jid, offset, clear_unread) {
      if (Jabber.no_more_messages[jid]) return;
 
      if(!offset) offset = 0;
@@ -732,6 +732,11 @@ jQuery(function($) {
        });
        stop_fetching('.history');
        ensure_scroll(jid, offset);
+
+       if(clear_unread){
+         var jid_id = Jabber.jid_to_id(jid);
+         count_unread_messages(jid_id, true)
+       }
      });
    }
 
