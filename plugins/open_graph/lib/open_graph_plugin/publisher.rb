@@ -47,13 +47,11 @@ class OpenGraphPlugin::Publisher
     1.day
   end
 
+  # only publish recent objects to avoid multiple publications
   def recent_publish? actor, object_type, object_data_url
     activity_params = {actor_id: actor.id, object_type: object_type, object_data_url: object_data_url}
     activity = OpenGraphPlugin::Activity.where(activity_params).first
-    # only scrape recent objects to avoid multiple publications
-    return true if activity and activity.created_at <= (Time.now + self.update_delay)
-    print_debug "open_graph: no recent publication found, making new" if debug? actor
-    false
+    activity.present? and activity.created_at <= self.update_delay.from_now
   end
 
   def register_publish attributes
