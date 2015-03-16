@@ -26,8 +26,7 @@ class OpenGraphPlugin::Publisher
 
   def url_for object, custom_url=nil, extra_params={}
     return custom_url if custom_url.is_a? String
-    # profile identifier must be present for a object that belongs to profile
-    url = custom_url || if object.is_a? Profile then og_profile_url(object) else object.url end
+    url = custom_url || object.url
     url.merge! extra_params
     self.og_url_for url
   end
@@ -44,11 +43,15 @@ class OpenGraphPlugin::Publisher
     end
   end
 
+  def update_delay
+    1.day
+  end
+
   def recent_publish? actor, object_type, object_data_url
     activity_params = {actor_id: actor.id, object_type: object_type, object_data_url: object_data_url}
     activity = OpenGraphPlugin::Activity.where(activity_params).first
     # only scrape recent objects to avoid multiple publications
-    return true if activity and activity.created_at <= (Time.now + UpdateDelay)
+    return true if activity and activity.created_at <= (Time.now + self.update_delay)
     print_debug "fb_app: no recent publication found, making new" if debug? actor
     false
   end

@@ -5,8 +5,6 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
   Actions = FbAppPlugin.open_graph_config[:actions]
   Objects = FbAppPlugin.open_graph_config[:objects]
 
-  UpdateDelay = 1.day
-
   def initialize attributes = {}
     super
     self.actions = Actions
