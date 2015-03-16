@@ -25,6 +25,7 @@ jQuery(function($) {
      muc_supported: false,
      presence_status: '',
      conversation_prefix: 'conversation-',
+     notification_sound: new Audio('/sounds/receive.wav'),
      jids: {},
      rooms: {},
      no_more_messages: {},
@@ -858,7 +859,7 @@ jQuery(function($) {
        $(notifyMe(name, options)).on('click', function(){
          open_conversation(jid);
        });
-       $.sound.play('/sounds/receive.wav');
+       Jabber.notification_sound.play();
      }
    }
 
