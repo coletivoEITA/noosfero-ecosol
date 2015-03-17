@@ -12,6 +12,7 @@ Rails.configuration.to_prepare do
     has_many :profile_activities, foreign_key: :activity_id, conditions: {profile_activities: {activity_type: 'ActionTracker::Record'}}, dependent: :destroy
 
     after_create :create_activity
+    after_update :update_activity
 
     after_destroy do |record|
       if record.created_at >= ActionTracker::Record::RECENT_DELAY.days.ago
@@ -28,6 +29,9 @@ Rails.configuration.to_prepare do
       target = if self.target.is_a? Profile then self.target else self.target.profile rescue self.user end
       return if self.verb.in? target.exclude_verbs_on_activities
       ProfileActivity.create! profile: target, activity: self
+    end
+    def update_activity
+      ProfileActivity.update_activity self
     end
 
   end
