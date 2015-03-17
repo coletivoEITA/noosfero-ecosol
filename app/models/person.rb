@@ -154,7 +154,7 @@ roles] }
   end
 
   def already_request_friendship?(person)
-    person.tasks.find_by_requestor_id(self.id, :conditions => { :type => 'AddFriend' })
+    person.tasks.where(requestor_id: self.id, type: 'AddFriend', status: Task::Status::ACTIVE).first
   end
 
   def remove_friend(friend)
