@@ -13,6 +13,7 @@ class OpenGraphPlugin::ActivityTrackConfig < OpenGraphPlugin::TrackConfig
     Objects
   end
 
+  validates_uniqueness_of :object_type, scope: [:tracker_id]
   validates_inclusion_of :object_type, in: self.objects
 
   protected

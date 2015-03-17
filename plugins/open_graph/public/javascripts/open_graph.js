@@ -4,39 +4,32 @@ open_graph = {
   track: {
 
     config: {
-      reload: false,
 
       view: {
         form: null,
       },
 
-      init: function() {
-        this.view.form = jQuery('#track-form form')
-
-        if (!this.reload) {
-          this.view.form.find('.panel-heading').each(function(i, context) {
-            open_graph.track.config.headingToggle(context)
-          })
-        }
-
-        this.watchChanges()
-      },
-
-      watchChanges: function() {
-        $(window.document).ready(function () {
-          open_graph.track.config.view.form.find('input').change(open_graph.track.config.save)
+      init: function(reload) {
+        this.view.form = $('#track-form form')
+        this.view.form.find('.panel-heading').each(function(i, context) {
+          open_graph.track.config.headingToggle(context)
         })
       },
 
-      submit: function(form) {
-        form = $(form)
-        form.ajaxSubmit()
+      submit: function() {
+        loading_overlay.show($('#track-config'))
+        open_graph.track.config.view.form.ajaxSubmit({
+          success: function(data) {
+            data = $(data)
+            // needs update to get ids from accepts_nested_attributes_for
+            $('#track-activity').html(data.find('#track-activity').html())
+            loading_overlay.hide($('#track-config'))
+          },
+        })
+        return false;
       },
 
-      save: function() {
-        open_graph.track.config.view.form.submit()
-      },
-
+      // trigged on init state and on subcheckboxes change
       headingToggle: function(context, open) {
         var panel = $(context).parents('.panel')
         var panelHeading = panel.find('.panel-heading')
@@ -44,28 +37,28 @@ open_graph = {
         var parentCheckbox = panel.find('.config-check')
         var configButton = panel.find('.config-button')
         var input = panel.find('.track-config-toggle')
+        var openWas = input.val() == 'true'
         if (open === undefined)
-          open = input.val() == 'true'
-        // on user enable (open is not undefined), open if open-on-enable
-        else if (panelHeading.hasClass('open-on-enable'))
-          this.open(context)
-        if (!open)
-          panelBody.collapse('hide')
+          open = input.val() == 'true' && this.numberChecked(context) > 0
+        // open is defined, that is an user action
+        else {
+          if (open) {
+            if (panelHeading.hasClass('open-on-enable'))
+              panelBody.collapse('show')
+          } else
+            panelBody.collapse('hide')
+        }
 
         configButton.toggle(open)
         parentCheckbox.toggleClass('fa-toggle-on', open)
         parentCheckbox.toggleClass('fa-toggle-off', !open)
         input.prop('value', open)
-        input.trigger('change')
+        if (openWas != open)
+          open_graph.track.config.submit()
       },
 
-      open: function(context) {
-        var panel = $(context).parents('.panel')
-        var panelBody = panel.find('.panel-body')
-        panelBody.collapse('show')
-      },
-
-      toggle: function(context, event) {
+      // the event of change
+      toggleEvent: function(context, event) {
         var panel = $(context).parents('.panel')
         var panelBody = panel.find('.panel-body')
         var checkboxes = panelBody.find('input[type=checkbox]')
@@ -78,13 +71,22 @@ open_graph = {
         return false;
       },
 
-      toggleObjectType: function(checkbox) {
-        checkbox = $(checkbox)
-        this.toggleParent(checkbox)
-        checkbox.siblings("input[name*='[_destroy]']").val(!checkbox.is(':checked'))
+      open: function(context) {
+        var panel = $(context).parents('.panel')
+        var panelBody = panel.find('.panel-body')
+        panelBody.collapse('show')
       },
 
-      toggleParent: function(context) {
+      toggleObjectType: function(checkbox) {
+        checkbox = $(checkbox)
+
+        this.headingToggle(checkbox)
+
+        checkbox.siblings("input[name*='[_destroy]']").val(!checkbox.is(':checked'))
+        open_graph.track.config.submit()
+      },
+
+      numberChecked: function(context) {
         var panel = $(context).parents('.panel')
         var panelBody = panel.find('.panel-body')
         var checkboxes = panel.find('.panel-body input[type=checkbox]')
@@ -95,11 +97,7 @@ open_graph = {
         var nChecked = nObjects + nProfiles;
         var nTotal = checkboxes.length + nProfiles
 
-        if (nChecked === 0) {
-          this.headingToggle(context, false)
-        } else {
-          this.headingToggle(context, true)
-        }
+        return nChecked
       },
 
       enterprise: {
@@ -111,15 +109,16 @@ open_graph = {
       },
 
       initAutocomplete: function(track, url, items) {
-        if (!this.reload)
-          return
-
         var selector = '#select-'+track
+        var input = $(selector)
         var tokenField = open_graph.autocomplete.init(url, selector, items)
 
+        input.change(open_graph.track.config.submit)
         tokenField
           .on('tokenfield:createdtoken tokenfield:removedtoken', function() {
-            open_graph.track.config.toggleParent(this)
+            open_graph.track.config.headingToggle(this)
+          }).on('tokenfield:createtoken tokenfield:removetoken', function(event) {
+            input.val()
           }).on('tokenfield:createtoken', function(event) {
             var existingTokens = $(this).tokenfield('getTokens')
             $.each(existingTokens, function(index, token) {
@@ -157,15 +156,15 @@ open_graph = {
 
     init: function(url, selector, data, options) {
       options = options || {}
-      var bloodhoundOptions = jQuery.extend({}, this.bloodhoundOptions, options.bloodhound || {});
-      var typeaheadOptions = jQuery.extend({}, this.typeaheadOptions, options.typeahead || {});
-      var tokenfieldOptions = jQuery.extend({}, this.tokenfieldOptions, options.tokenfield || {});
+      var bloodhoundOptions = $.extend({}, this.bloodhoundOptions, options.bloodhound || {});
+      var typeaheadOptions = $.extend({}, this.typeaheadOptions, options.typeahead || {});
+      var tokenfieldOptions = $.extend({}, this.tokenfieldOptions, options.tokenfield || {});
 
       var input = $(selector)
       bloodhoundOptions.remote = {
         url: url,
         replace: function(url, uriEncodedQuery) {
-          return jQuery.param.querystring(url, {query:uriEncodedQuery});
+          return $.param.querystring(url, {query:uriEncodedQuery});
         },
       }
       var engine = new Bloodhound(bloodhoundOptions)

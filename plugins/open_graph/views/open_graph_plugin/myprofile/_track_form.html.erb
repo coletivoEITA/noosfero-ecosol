@@ -6,7 +6,7 @@
 <% end %>
 
 <%= form_for profile, as: :profile_data, remote: true, url: {action: :track_config},
-  html: {id: 'track-config', data: {loading: '#track-config'}, onsubmit: 'return open_graph.track.config.submit(this)'} do |f| %>
+  html: {id: 'track-config', onsubmit: 'return open_graph.track.config.submit()'} do |f| %>
 
   <div class="panel-group" role="tablist" aria-multiselectable="true">
     <% OpenGraphPlugin::TrackConfig::Types.each do |track, klass| %>
