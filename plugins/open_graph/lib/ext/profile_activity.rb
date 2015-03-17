@@ -2,7 +2,8 @@ require_dependency 'profile_activity'
 
 class ProfileActivity
 
-  after_create :open_graph_publish
+  # update happens with grouped ActionTracker
+  after_save :open_graph_publish
 
   def open_graph_publish
     # Scrap not yet supported

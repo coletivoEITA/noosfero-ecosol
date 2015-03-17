@@ -69,8 +69,11 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
     @publisher.expects(:publish).with(User.current.person, @stories[:start_a_discussion], @publisher.send(:url_for, topic, topic.url.merge(og_type: MetadataPlugin.og_types[:forum])))
     topic.save!
 
-    @publisher.expects(:publish).with(@actor, @stories[:make_friendship_with], @publisher.send(:url_for, @other_actor))
-    @publisher.expects(:publish).with(@other_actor, @stories[:make_friendship_with], @publisher.send(:url_for, @actor))
+    @publisher.expects(:publish).with(@actor, @stories[:make_friendship_with], @publisher.send(:url_for, @other_actor)).twice
+    @publisher.expects(:publish).with(@other_actor, @stories[:make_friendship_with], @publisher.send(:url_for, @actor)).twice
+    AddFriend.create!(person: @actor, friend: @other_actor).finish
+    Friendship.remove_friendship @actor, @other_actor
+    # friend verb is groupable
     AddFriend.create!(person: @actor, friend: @other_actor).finish
 
     @publisher.expects(:publish).with(User.current.person, @stories[:favorite_a_sse_initiative], @publisher.send(:url_for, @enterprise))
