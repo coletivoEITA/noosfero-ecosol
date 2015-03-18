@@ -1001,10 +1001,12 @@ function notifyMe(title, options) {
 
       // If the user is okay, let's create a notification
       if (permission === "granted") {
-	notification = new Notification(title, options);
+        notification = new Notification(title, options);
       }
     });
   }
+
+  notification.onshow = function() { setTimeout(notification.close, 5000) };
   return notification;
   // At last, if the user already denied any notification, and you
   // want to be respectful there is no need to bother them any more.

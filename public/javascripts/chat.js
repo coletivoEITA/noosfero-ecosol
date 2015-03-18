@@ -25,9 +25,11 @@ jQuery(function($) {
      muc_supported: false,
      presence_status: '',
      conversation_prefix: 'conversation-',
+     notification_sound: new Audio('/sounds/receive.wav'),
      jids: {},
      rooms: {},
      no_more_messages: {},
+     avatars: {},
 
      template: function(selector) {
        return $('#chat #chat-templates '+selector).clone().html();
@@ -45,6 +47,9 @@ jQuery(function($) {
      },
      type_of: function(jid_id) {
         return Jabber.jids[jid_id].type;
+     },
+     presence_of: function(jid_id) {
+        return Jabber.jids[jid_id].presence;
      },
      unread_messages_of: function(jid_id, value) {
         Jabber.jids[jid_id].unread_messages = (value == undefined ? Jabber.jids[jid_id].unread_messages : value);
@@ -254,34 +259,55 @@ jQuery(function($) {
      },
 
      on_roster: function (iq) {
-        log('receiving roster');
-        $(iq).find('item').each(function () {
-           var jid = $(this).attr('jid');
-           var name = $(this).attr('name') || jid;
-           var jid_id = Jabber.jid_to_id(jid);
-           Jabber.insert_or_update_contact(jid, name);
-        });
-        //TODO Add groups through roster too...
-        $.ajax({
-          url: '/chat/roster_groups',
-          dataType: 'json',
-          success: function(data){
-            data.each(function(room){
-              var jid_id = Jabber.jid_to_id(room.jid);
-              Jabber.jids[jid_id] = {jid: room.jid, name: room.name, type: 'groupchat'};
-              //FIXME This must check on session if the user is inside the room...
-              Jabber.insert_or_update_group(room.jid, 'offline');
-            });
-          },
-          error: function(data, textStatus, jqXHR){
-            console.log(data);
-          },
-        });
-        sort_conversations();
-        // set up presence handler and send initial presence
-        Jabber.connection.addHandler(Jabber.on_presence, null, "presence");
-        Jabber.send_availability_status(Jabber.presence_status);
-        load_defaults();
+       log('receiving roster');
+       var profiles = [];
+       var contacts_to_insert = {};
+       var groups_to_insert = [];
+
+       $(iq).find('item').each(function () {
+          var jid = $(this).attr('jid');
+          profiles.push(getIdentifier(jid));
+          var name = $(this).attr('name') || jid;
+          var jid_id = Jabber.jid_to_id(jid);
+          contacts_to_insert[jid] = name;
+       });
+
+       //TODO Add groups through roster too...
+       $.ajax({
+         url: '/chat/roster_groups',
+         dataType: 'json',
+         success: function(data){
+           $(data).each(function(index, room){
+             profiles.push(getIdentifier(room.jid));
+             var jid_id = Jabber.jid_to_id(room.jid);
+             Jabber.jids[jid_id] = {jid: room.jid, name: room.name, type: 'groupchat'};
+             //FIXME This must check on session if the user is inside the room...
+             groups_to_insert.push(room.jid);
+           });
+         },
+         error: function(data, textStatus, jqXHR){
+           console.log(data);
+         },
+       });
+
+       $.getJSON('/chat/avatars', {profiles: profiles}, function(data) {
+         for(identifier in data)
+           Jabber.avatars[identifier] = data[identifier];
+
+         // Insert contacts
+         for(contact_jid in contacts_to_insert)
+           Jabber.insert_or_update_contact(contact_jid, contacts_to_insert[contact_jid]);
+
+         // Insert groups
+         for (var i = 0; i < groups_to_insert.length; i++)
+           Jabber.insert_or_update_group(groups_to_insert[i], 'offline');
+
+         sort_conversations();
+         // set up presence handler and send initial presence
+         Jabber.connection.addHandler(Jabber.on_presence, null, "presence");
+         Jabber.send_availability_status(Jabber.presence_status);
+         load_defaults();
+       });
      },
 
      // NOTE: cause Noosfero store's rosters in database based on friendship relation between people
@@ -368,7 +394,10 @@ jQuery(function($) {
               log('receiving contact presence from ' + presence.from + ' as ' + presence.show);
               var jid = Strophe.getBareJidFromJid(presence.from);
               if (jid != Jabber.connection.jid) {
-                 var name = Jabber.name_of(Jabber.jid_to_id(jid));
+                 var jid_id = Jabber.jid_to_id(jid);
+                 var name = Jabber.name_of(jid_id);
+                 if(presence.show == 'chat')
+                   Jabber.remove_notice(jid_id);
                  Jabber.insert_or_update_contact(jid, name, presence.show);
                  Jabber.update_chat_title();
               }
@@ -403,24 +432,19 @@ jQuery(function($) {
         var name = Strophe.getResourceFromJid(message.from);
         // is a message from the room itself
         if (! name) {
-           Jabber.show_notice(Jabber.jid_to_id(message.from), message.body);
+          // FIXME Ignoring message from room for now.
+          // Jabber.show_notice(Jabber.jid_to_id(message.from), message.body);
         }
         // is a message from another user, not mine
         else if ($own_name != name) {
            var jid = Jabber.rooms[Jabber.jid_to_id(message.from)][name];
            Jabber.show_message(message.from, name, escape_html(message.body), name, Strophe.getNodeFromJid(jid));
+           notifyMessage(message);
         }
-	notifyMessage(message);
         return true;
      },
 
      on_message_error: function (message) {
-        message = Jabber.parse(message)
-        var jid = Strophe.getBareJidFromJid(message.from);
-        log('Receiving error message from ' + jid);
-        var body = Jabber.template('.error-message').replace('%{text}', message.error);
-        Jabber.show_message(jid, Jabber.name_of(Jabber.jid_to_id(jid)), body, 'other', Strophe.getNodeFromJid(jid));
-        return true;
      },
 
      on_muc_support: function(iq) {
@@ -466,6 +490,14 @@ jQuery(function($) {
      },
 
      connect: function() {
+       if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+         Notification.requestPermission(function (permission) {
+           if (!('permission' in Notification)) {
+             Notification.permission = permission;
+           }
+         });
+       }
+
         if (Jabber.connection && Jabber.connection.connected) {
            Jabber.send_availability_status(Jabber.presence_status);
         }
@@ -492,13 +524,18 @@ jQuery(function($) {
      },
 
      deliver_message: function(jid, body) {
-        var type = Jabber.type_of(Jabber.jid_to_id(jid));
+        var jid_id = Jabber.jid_to_id(jid);
+        var type = Jabber.type_of(jid_id);
+        var presence = Jabber.presence_of(jid_id);
         var message = $msg({to: jid, from: Jabber.connection.jid, "type": type})
             .c('body').t(body).up()
             .c('active', {xmlns: Strophe.NS.CHAT_STATES});
         Jabber.connection.send(message);
         Jabber.show_message(jid, $own_name, escape_html(body), 'self', Strophe.getNodeFromJid(Jabber.connection.jid));
+        save_message(jid, body);
         move_conversation_to_the_top(jid);
+        if (presence == 'offline')
+          Jabber.show_notice(jid_id, $user_unavailable_error);
      },
 
      is_a_room: function(jid_id) {
@@ -507,12 +544,19 @@ jQuery(function($) {
 
      show_notice: function(jid_id, msg) {
         var tab_id = '#' + Jabber.conversation_prefix + jid_id;
+        var history = $(tab_id).find('.history');
         var notice = $(tab_id).find('.history .notice');
         if (notice.length > 0)
           notice.html(msg)
         else
           $(tab_id).find('.history').append("<span class='notice'>" + msg + "</span>");
-     }
+        history.scrollTo({top:'100%', left:'0%'});
+     },
+
+     remove_notice: function(jid_id) {
+       var tab_id = '#' + Jabber.conversation_prefix + jid_id;
+       var notice = $(tab_id).find('.history .notice').remove();
+     },
    };
 
    $('#chat-connect').live('click', function() {
@@ -538,8 +582,7 @@ jQuery(function($) {
      if (e.keyCode == 13) {
         var jid = $(this).attr('data-to');
         var body = $(this).val();
-        body = body.stripScripts();
-        save_message(jid, body);
+        body = $('<div>'+ body +'</div>').find('script,noscript,style').remove().end().html();
         Jabber.deliver_message(jid, body);
         $(this).val('');
         return false;
@@ -547,10 +590,17 @@ jQuery(function($) {
    });
 
    function save_message(jid, body) {
-      $.post('/chat/save_message', {
-        to: getIdentifier(jid),
-        body: body
-      });
+     $.post('/chat/save_message', {
+       to: getIdentifier(jid),
+       body: body
+     }, function(data){
+       if(data.status > 0){
+         console.log(data.message);
+         if(data.backtrace) console.log(data.backtrace);
+       }
+     }).fail(function(){
+       console.log('500 - Internal server error.')
+     });
    }
 
    // open new conversation or change to already opened tab
@@ -566,6 +616,7 @@ jQuery(function($) {
         recent_messages(Jabber.jid_of(jid_id));
       conversation.find('.conversation .input-div textarea.input').focus();
       $.post('/chat/tab', {tab_id: jid_id});
+      return false;
    });
 
    // put name into text area when click in one occupant
@@ -574,6 +625,7 @@ jQuery(function($) {
       var name = Jabber.name_of(jid_id);
       var val = $('.conversation textarea:visible').val();
       $('.conversation textarea:visible').focus().val(val + name + ', ');
+      return false;
    });
 
    $('#chat .conversation .history').live('click', function() {
@@ -597,23 +649,23 @@ jQuery(function($) {
                Jabber.jids[jid_id] = {jid: jid, name: name, type: 'groupchat'};
                var conversation = create_conversation_tab(name, jid_id);
                Jabber.enter_room(jid);
-               recent_messages(jid);
+               recent_messages(jid, 0, true);
                return conversation;
             }
          }
          else {
-            log('opening chat with ' + jid);
-	    Jabber.jids[jid_id] = {jid: jid, name: name, type: 'friendchat'};
-            var conversation = create_conversation_tab(name, jid_id);
-            recent_messages(jid);
-	    return conversation;
+           log('opening chat with ' + jid);
+           Jabber.jids[jid_id] = {jid: jid, name: name, type: 'friendchat'};
+           var conversation = create_conversation_tab(name, jid_id);
+           recent_messages(jid, 0, true);
+           return conversation;
          }
       }
    }
 
    function open_conversation(jid) {
      var conversation = load_conversation(jid);
-     var jid_id = $(this).attr('id');
+     var jid_id = Jabber.jid_to_id(jid);
 
      $('.conversation').hide();
      conversation.show();
@@ -674,7 +726,7 @@ jQuery(function($) {
      }
    }
 
-   function recent_messages(jid, offset) {
+   function recent_messages(jid, offset, clear_unread) {
      if (Jabber.no_more_messages[jid]) return;
 
      if(!offset) offset = 0;
@@ -696,6 +748,11 @@ jQuery(function($) {
        });
        stop_fetching('.history');
        ensure_scroll(jid, offset);
+
+       if(clear_unread){
+         var jid_id = Jabber.jid_to_id(jid);
+         count_unread_messages(jid_id, true);
+       }
      });
    }
 
@@ -718,7 +775,7 @@ jQuery(function($) {
    function load_defaults() {
      $.getJSON('/chat/my_session', {}, function(data) {
        $.each(data.rooms, function(i, room_jid) {
-         $('#chat').trigger('opengroup', room_jid);
+         load_conversation(room_jid);
        })
 
        $('#'+data.tab_id).click();
@@ -747,9 +804,9 @@ jQuery(function($) {
    }
 
    function update_total_unread_messages() {
-      var total_unread = $('#openchat .unread-messages');
+      var total_unread = $('#unread-messages');
       var sum = 0;
-      $('.buddies .unread-messages').each(function() {
+      $('#chat .unread-messages').each(function() {
          sum += Number($(this).text());
       });
       if(sum>0) {
@@ -788,7 +845,12 @@ jQuery(function($) {
    }
 
    function getAvatar(identifier) {
-     return '<img class="avatar" src="/chat/avatar/' + identifier + '">';
+     if(Jabber.avatars[identifier])
+       var src = Jabber.avatars[identifier];
+     else
+       var src = "/chat/avatar/"+identifier;
+
+     return '<img class="avatar" src="' + src + '">';
    }
 
    function disconnect() {
@@ -812,16 +874,18 @@ jQuery(function($) {
        $(notifyMe(name, options)).on('click', function(){
          open_conversation(jid);
        });
-       $.sound.play('/sounds/receive.wav');
+       Jabber.notification_sound.play();
      }
    }
 
    $('.title-bar a').click(function() {
      $(this).parents('.status-group').find('.buddies').toggle('fast');
+     return false;
    });
    $('#chat').on('click', '.occupants a', function() {
      $(this).siblings('.occupant-list').toggle('fast');
      $(this).toggleClass('up');
+     return false;
    });
 
    //restore connection if user was connected
@@ -857,6 +921,7 @@ jQuery(function($) {
 
   $('#chat .buddies a').live('click', function(){
     $('#chat .search').val('').change();
+     return false;
   });
 
   $('#chat-label').click(function(){
@@ -872,6 +937,11 @@ jQuery(function($) {
   $('.room-action.leave').live('click', function(){
     var jid = $(this).data('jid');
     Jabber.leave_room(jid);
+    return false;
   });
 
+  $('.open-conversation').live('click', function(){
+    open_conversation($(this).data('jid'));
+    return false;
+  });
 });
