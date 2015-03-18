@@ -48,6 +48,9 @@ jQuery(function($) {
      type_of: function(jid_id) {
         return Jabber.jids[jid_id].type;
      },
+     presence_of: function(jid_id) {
+        return Jabber.jids[jid_id].presence;
+     },
      unread_messages_of: function(jid_id, value) {
         Jabber.jids[jid_id].unread_messages = (value == undefined ? Jabber.jids[jid_id].unread_messages : value);
         return Jabber.jids[jid_id].unread_messages;
@@ -391,7 +394,10 @@ jQuery(function($) {
               log('receiving contact presence from ' + presence.from + ' as ' + presence.show);
               var jid = Strophe.getBareJidFromJid(presence.from);
               if (jid != Jabber.connection.jid) {
-                 var name = Jabber.name_of(Jabber.jid_to_id(jid));
+                 var jid_id = Jabber.jid_to_id(jid);
+                 var name = Jabber.name_of(jid_id);
+                 if(presence.show == 'chat')
+                   Jabber.remove_notice(jid_id);
                  Jabber.insert_or_update_contact(jid, name, presence.show);
                  Jabber.update_chat_title();
               }
@@ -439,12 +445,6 @@ jQuery(function($) {
      },
 
      on_message_error: function (message) {
-        message = Jabber.parse(message)
-        var jid = Strophe.getBareJidFromJid(message.from);
-        log('Receiving error message from ' + jid);
-        var body = Jabber.template('.error-message').replace('%{text}', message.error);
-        Jabber.show_message(jid, Jabber.name_of(Jabber.jid_to_id(jid)), body, 'other', Strophe.getNodeFromJid(jid));
-        return true;
      },
 
      on_muc_support: function(iq) {
@@ -524,7 +524,9 @@ jQuery(function($) {
      },
 
      deliver_message: function(jid, body) {
-        var type = Jabber.type_of(Jabber.jid_to_id(jid));
+        var jid_id = Jabber.jid_to_id(jid);
+        var type = Jabber.type_of(jid_id);
+        var presence = Jabber.presence_of(jid_id);
         var message = $msg({to: jid, from: Jabber.connection.jid, "type": type})
             .c('body').t(body).up()
             .c('active', {xmlns: Strophe.NS.CHAT_STATES});
@@ -532,6 +534,8 @@ jQuery(function($) {
         Jabber.show_message(jid, $own_name, escape_html(body), 'self', Strophe.getNodeFromJid(Jabber.connection.jid));
         save_message(jid, body);
         move_conversation_to_the_top(jid);
+        if (presence == 'offline')
+          Jabber.show_notice(jid_id, $user_unavailable_error);
      },
 
      is_a_room: function(jid_id) {
@@ -540,12 +544,19 @@ jQuery(function($) {
 
      show_notice: function(jid_id, msg) {
         var tab_id = '#' + Jabber.conversation_prefix + jid_id;
+        var history = $(tab_id).find('.history');
         var notice = $(tab_id).find('.history .notice');
         if (notice.length > 0)
           notice.html(msg)
         else
           $(tab_id).find('.history').append("<span class='notice'>" + msg + "</span>");
-     }
+        history.scrollTo({top:'100%', left:'0%'});
+     },
+
+     remove_notice: function(jid_id) {
+       var tab_id = '#' + Jabber.conversation_prefix + jid_id;
+       var notice = $(tab_id).find('.history .notice').remove();
+     },
    };
 
    $('#chat-connect').live('click', function() {
@@ -579,17 +590,18 @@ jQuery(function($) {
    });
 
    function save_message(jid, body) {
-      $.post('/chat/save_message', {
-        to: getIdentifier(jid),
-        body: body
-   }, function(data){
-     if(data.status > 0){
-       console.log(data.message);
-       if(data.backtrace) console.log(data.backtrace);
-     }
-   }).fail(function(){
-     console.log('500 - Internal server error.')
-   });
+     $.post('/chat/save_message', {
+       to: getIdentifier(jid),
+       body: body
+     }, function(data){
+       if(data.status > 0){
+         console.log(data.message);
+         if(data.backtrace) console.log(data.backtrace);
+       }
+     }).fail(function(){
+       console.log('500 - Internal server error.')
+     });
+   }
 
    // open new conversation or change to already opened tab
    $('#buddy-list .buddies li a').live('click', function() {
@@ -604,6 +616,7 @@ jQuery(function($) {
         recent_messages(Jabber.jid_of(jid_id));
       conversation.find('.conversation .input-div textarea.input').focus();
       $.post('/chat/tab', {tab_id: jid_id});
+      return false;
    });
 
    // put name into text area when click in one occupant
@@ -612,6 +625,7 @@ jQuery(function($) {
       var name = Jabber.name_of(jid_id);
       var val = $('.conversation textarea:visible').val();
       $('.conversation textarea:visible').focus().val(val + name + ', ');
+      return false;
    });
 
    $('#chat .conversation .history').live('click', function() {
@@ -736,7 +750,7 @@ jQuery(function($) {
 
        if(clear_unread){
          var jid_id = Jabber.jid_to_id(jid);
-         count_unread_messages(jid_id, true)
+         count_unread_messages(jid_id, true);
        }
      });
    }
@@ -831,9 +845,9 @@ jQuery(function($) {
 
    function getAvatar(identifier) {
      if(Jabber.avatars[identifier])
-       var src = Jabber.avatars[identifier]
+       var src = Jabber.avatars[identifier];
      else
-       var src = "/chat/avatar/"+identifier
+       var src = "/chat/avatar/"+identifier;
 
      return '<img class="avatar" src="' + src + '">';
    }
@@ -865,10 +879,12 @@ jQuery(function($) {
 
    $('.title-bar a').click(function() {
      $(this).parents('.status-group').find('.buddies').toggle('fast');
+     return false;
    });
    $('#chat').on('click', '.occupants a', function() {
      $(this).siblings('.occupant-list').toggle('fast');
      $(this).toggleClass('up');
+     return false;
    });
 
    //restore connection if user was connected
@@ -904,6 +920,7 @@ jQuery(function($) {
 
   $('#chat .buddies a').live('click', function(){
     $('#chat .search').val('').change();
+     return false;
   });
 
   $('#chat-label').click(function(){
@@ -919,12 +936,11 @@ jQuery(function($) {
   $('.room-action.leave').live('click', function(){
     var jid = $(this).data('jid');
     Jabber.leave_room(jid);
+    return false;
   });
 
   $('.open-conversation').live('click', function(){
     open_conversation($(this).data('jid'));
     return false;
   });
-
-
 });
