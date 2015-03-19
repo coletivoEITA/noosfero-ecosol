@@ -58,7 +58,7 @@ class ChatController < PublicController
   def avatars
     profiles = environment.profiles.where(:identifier => params[:profiles])
     avatar_map = profiles.inject({}) do |result, profile|
-      result[profile.jid] = profile_icon(profile, :minor)
+      result[profile.identifier] = profile_icon(profile, :minor)
       result
     end
 
