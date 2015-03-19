@@ -22,7 +22,7 @@ class Profile
 
   def open_graph_settings attrs = {}
     @open_graph_settings ||= OpenGraphPlugin::Settings.new self, attrs
-    attrs.each{ |a, v| @open_graph_settings.set_setting a, v }
+    attrs.each{ |a, v| @open_graph_settings.send "#{a}=", v }
     @open_graph_settings
   end
   alias_method :open_graph_settings=, :open_graph_settings
@@ -41,14 +41,10 @@ class Profile
     accepts_nested_attributes_for association, allow_destroy: true, reject_if: :open_graph_reject_empty_object_type
 
     define_method "#{profile_ids}=" do |ids|
-      self.send(association).destroy_all
-      ids = ids.split(',')
-      profiles = Profile.where(id: ids)
-      profiles.each do |profile|
-        self.send(association).create! type: klass.name, object_data: profile
-      end
-      #attrs = ids.split(',').map{ |id| {object_data_id: id, object_data_type: 'Profile'} }
-      #self.send "#{attributes}=", attrs
+      cids = self.send(association).order('created_at ASC').map(&:id)
+      nids = ids.split(',').map(&:to_i)
+      Profile.where(id: nids-cids).each{ |profile| self.send(association).create! type: klass.name, object_data: profile }
+      self.send(association).each{ |c| c.destroy unless c.object_data_id.in? nids }
     end
 
   end

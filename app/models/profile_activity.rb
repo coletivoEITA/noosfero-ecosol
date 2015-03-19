@@ -14,6 +14,13 @@ class ProfileActivity < ActiveRecord::Base
 
   before_validation :copy_timestamps
 
+  def self.update_activity activity
+    profile_activity = ProfileActivity.where(activity_id: activity.id, activity_type: activity.class.base_class.name).first
+    profile_activity.send :copy_timestamps
+    profile_activity.save!
+    profile_activity
+  end
+
   protected
 
   def copy_timestamps

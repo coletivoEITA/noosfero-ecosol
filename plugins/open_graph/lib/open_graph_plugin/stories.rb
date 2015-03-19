@@ -104,6 +104,8 @@ class OpenGraphPlugin::Stories
       end,
     },
 
+    # these a published as passive to give focus to the enterprise
+=begin
     add_a_sse_product: {
       action_tracker_verb: :create_product,
       track_config: 'OpenGraphPlugin::ActivityTrackConfig',
@@ -126,6 +128,7 @@ class OpenGraphPlugin::Stories
         product.profile.public?
       end,
     },
+=end
 
     favorite_a_sse_initiative: {
       action_tracker_verb: :favorite_enterprise,
@@ -141,7 +144,7 @@ class OpenGraphPlugin::Stories
         favorite_enterprise_person.enterprise
       end,
       object_data_url: proc do |favorite_enterprise_person, actor|
-        favorite_enterprise_person.enterprise.url
+        self.og_profile_url favorite_enterprise_person.enterprise
       end,
     },
 
@@ -193,7 +196,7 @@ class OpenGraphPlugin::Stories
         friendship.friend
       end,
       object_data_url: proc do |friendship, actor|
-        friendship.friend.url
+        self.og_profile_url friendship.friend
       end,
     },
 

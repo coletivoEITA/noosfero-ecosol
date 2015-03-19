@@ -3,7 +3,7 @@ class CatalogController < PublicController
   needs_profile
   use_custom_design boxes_limit: 2
 
-  before_filter :check_enterprise_and_environment
+  #before_filter :check_enterprise_and_environment
 
   def index
     catalog_load_index

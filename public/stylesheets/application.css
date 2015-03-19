@@ -4012,10 +4012,6 @@ div#article-parent {
 div#article-parent a.button{
   margin: 0;
 }
-.article-body-uploaded-file {
-  text-align: center;
-}
-
 /* ==> public/stylesheets/controller_events.css <== */
 #agenda {
   position: relative;

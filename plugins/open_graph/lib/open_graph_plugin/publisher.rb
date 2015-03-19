@@ -22,22 +22,21 @@ class OpenGraphPlugin::Publisher
     raise 'abstract method called'
   end
 
-  def url_for url, extra_params={}
-    return url if url.is_a? String
-    url.delete :port
-    url.merge! extra_params
-    Noosfero::Application.routes.url_helpers.url_for url
-  end
-
-  def passive_url_for url, story_defs
-    object_type = self.objects[story_defs[:object_type]]
-    url_for url, og_type: MetadataPlugin.og_types[object_type]
-  end
-
   def publish_stories object_data, actor, stories
     stories.each do |story|
       self.publish_story object_data, actor, story
     end
+  end
+
+  def update_delay
+    1.day
+  end
+
+  # only publish recent objects to avoid multiple publications
+  def recent_publish? actor, object_type, object_data_url
+    activity_params = {actor_id: actor.id, object_type: object_type, object_data_url: object_data_url}
+    activity = OpenGraphPlugin::Activity.where(activity_params).first
+    activity.present? and activity.created_at <= self.update_delay.from_now
   end
 
   def publish_story object_data, actor, story
@@ -61,8 +60,12 @@ class OpenGraphPlugin::Publisher
       if publish = defs[:publish]
         instance_exec actor, object_data, &publish
       else
-        object_data_url = if (object_data_url = self.call defs[:object_data_url], object_data, actor) then object_data_url else object_data.url end
-        object_data_url = if passive then self.passive_url_for object_data_url, defs else self.url_for object_data_url end
+        # force profile identifier for custom domains and fixed host. see og_url_for
+        object_profile = self.call(story_defs[:object_profile], object_data) || object_data.profile rescue nil
+        extra_params = if object_profile then {profile: object_profile.identifier} else {} end
+
+        custom_object_data_url = self.call defs[:object_data_url], object_data, actor
+        object_data_url = if passive then self.passive_url_for object_data, custom_object_data_url, defs, extra_params else self.url_for object_data, custom_object_data_url, extra_params end
 
         actors.each do |actor|
           print_debug "open_graph: start publishing" if debug? actor
@@ -109,6 +112,28 @@ class OpenGraphPlugin::Publisher
   end
 
   protected
+
+  include MetadataPlugin::UrlHelper
+
+  def register_publish attributes
+    OpenGraphPlugin::Activity.create! attributes
+  end
+
+  # Call don't ask: move to a og_url method inside object
+  def url_for object, custom_url=nil, extra_params={}
+    return custom_url if custom_url.is_a? String
+    url = custom_url || if object.is_a? Profile then og_profile_url object else object.url end
+    # for profile when custom domain is used
+    url.merge! profile: object.profile.identifier if object.respond_to? :profile
+    url.merge! extra_params
+    self.og_url_for url
+  end
+
+  def passive_url_for object, custom_url, story_defs, extra_params={}
+    object_type = story_defs[:object_type]
+    extra_params.merge! og_type: MetadataPlugin.og_types[object_type]
+    self.url_for object, custom_url, extra_params
+  end
 
   def call p, *args
     p and instance_exec *args, &p

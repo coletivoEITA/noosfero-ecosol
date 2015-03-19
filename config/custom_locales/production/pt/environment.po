@@ -208,3 +208,9 @@ msgstr "Identificador"
 
 msgid "Interests"
 msgstr "Interesses"
+
+msgid "Download"
+msgstr "Baixar"
+
+msgid "products"
+msgstr "produtos"

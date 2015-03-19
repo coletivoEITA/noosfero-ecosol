@@ -16,6 +16,7 @@ class Scrap < ActiveRecord::Base
   has_many :profile_activities, foreign_key: :activity_id, conditions: {profile_activities: {activity_type: 'Scrap'}}, dependent: :destroy
 
   after_create :create_activity
+  after_update :update_activity
 
   scope :all_scraps, lambda {|profile| {:conditions => ["receiver_id = ? OR sender_id = ?", profile, profile], :limit => 30}}
 
@@ -64,6 +65,10 @@ class Scrap < ActiveRecord::Base
     # do not scrap replies (when scrap_id is not nil)
     return if self.scrap_id.present?
     ProfileActivity.create! profile_id: self.receiver_id, activity: self
+  end
+
+  def update_activity
+    ProfileActivity.update_activity self
   end
 
   def send_notification

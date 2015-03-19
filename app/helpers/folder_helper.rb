@@ -1,8 +1,5 @@
-require 'short_filename'
-
 module FolderHelper
 
-  include ShortFilename
   include ArticleHelper
 
   def list_contents(configure={})
@@ -10,8 +7,8 @@ module FolderHelper
     configure[:list_type] ||= :folder
     if !configure[:contents].blank?
       configure[:contents] = configure[:contents].paginate(
-        :order => "updated_at DESC",
-        :per_page => 10,
+        :order => "name ASC",
+        :per_page => 30,
         :page => params[:npage]
       )
 
@@ -32,18 +29,18 @@ module FolderHelper
     content = FilePresenter.for configure[:content]
     content_link = if content.image?
          link_to('&nbsp;' * (level * 4) +
-           image_tag(icon_for_article(content)) + short_filename(content.name),
+           image_tag(icon_for_article(content)) + content.name,
            content.url.merge(:view => true)
          )
        else
          link_to('&nbsp;' * (level * 4) +
-           short_filename(content.name),
+           content.name,
            content.url.merge(:view => true), :class => icon_for_article(content)
          )
        end
     result = content_tag(
       'tr',
-      content_tag('td', content_link ) +
+      content_tag('td', content_link, class: 'title' ) +
       content_tag('td', show_date(content.updated_at), :class => 'last-update'),
       :class => "#{list_type}-item"
     )

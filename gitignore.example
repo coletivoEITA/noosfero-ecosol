@@ -40,6 +40,7 @@ tags
 pkg
 *~
 *.swp
+*.swo
 debian/*.log
 debian/*.substvars
 debian/*.debhelper

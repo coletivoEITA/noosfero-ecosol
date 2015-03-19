@@ -198,6 +198,7 @@ fb_app = {
     receive: function(response) {
       fb_app.fb.authResponse = response
       fb_app.auth.save(response)
+      jQuery('html,body').animate({ scrollTop: jQuery('#fb-app-settings').offset().top-100 }, 400)
     },
 
     transformParams: function(response) {

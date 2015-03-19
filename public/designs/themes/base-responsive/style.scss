@@ -1112,8 +1112,7 @@ hr.pre-posts, hr.sep-posts {
 }
 
 #article.file-generic .download-link {
-  display: block;
-  margin-bottom: 10px;
+  margin: 20px 0;
 }
 #article.file-generic .download-link span {
   font-size: 150%;
@@ -1910,11 +1909,12 @@ body {
     background-color: #eeeeee;
 }
 
+.no-boxes {
+	margin-bottom: 20px;
+}
 .block, .no-boxes {
     position: relative;
-    padding: 10px;
-    margin-bottom: 20px;
-    /* margin: 0px 0px 20px 0px; */
+    padding: 8px;
     float: none;
     border-radius: 3px;
     border: 1px solid rgba(0,0,0,0.2);/*#d8d8d8;*/
@@ -2014,3 +2014,7 @@ table.cms-articles .article-name {
 
 /*PROVISORY!*/
 #product-owner { display:none; }
+
+.required-field {
+  color: #E75252;
+}
