@@ -7,7 +7,7 @@
       var $own_name = '<%= user.name %>';
       var $muc_domain = '<%= "conference.#{environment.default_hostname}" %>';
       var $bosh_service = '//<%= environment.default_hostname %>/http-bind';
-      var $user_unavailable_error = '<%= _("The user is not online now. He/She\'ll receive these messages as soon as he/she gets online.") %>';
+      var $user_unavailable_error = '<%= _("The user is not online now. He/She will receive these messages as soon as he/she gets online.") %>';
       var $update_presence_status_every = <%= User.expires_chat_status_every.minutes %>;
       var $presence = '<%= current_user.last_chat_status %>';
     </script>
