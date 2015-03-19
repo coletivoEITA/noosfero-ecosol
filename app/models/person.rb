@@ -438,6 +438,7 @@ roles] }
   end
 
   def follows?(profile)
+    return false if profile.nil?
     profile.followed_by?(self)
   end
 
