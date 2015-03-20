@@ -654,7 +654,7 @@ jQuery(function($) {
          }
          else {
            log('opening chat with ' + jid);
-           Jabber.jids[jid_id] = {jid: jid, name: name, type: 'friendchat'};
+           Jabber.jids[jid_id] = {jid: jid, name: name, type: 'chat'};
            var conversation = create_conversation_tab(name, jid_id);
            recent_messages(jid, 0, true);
            return conversation;
