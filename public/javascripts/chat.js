@@ -405,7 +405,6 @@ jQuery(function($) {
             // why server sends presence from myself to me?
             log('ignoring presence from myself');
             if(presence.show=='offline') {
-              console.log(Jabber.presence_status);
               Jabber.send_availability_status(Jabber.presence_status);
             }
           }
@@ -605,17 +604,8 @@ jQuery(function($) {
 
   // open new conversation or change to already opened tab
   $('#buddy-list .buddies li a').live('click', function() {
-    var jid_id = $(this).attr('id');
-    var name = Jabber.name_of(jid_id);
-    var conversation = create_conversation_tab(name, jid_id);
-
-    $('.conversation').hide();
-    conversation.show();
-    count_unread_messages(jid_id, true);
-    if(conversation.find('.chat-offset-container-0').length == 0)
-      recent_messages(Jabber.jid_of(jid_id));
-    conversation.find('.conversation .input-div textarea.input').focus();
-    $.post('/chat/tab', {tab_id: jid_id});
+    var jid = Jabber.jid_of($(this).attr('id'));
+    open_conversation(jid);
     return false;
   });
 
@@ -762,8 +752,8 @@ jQuery(function($) {
 
   function sort_conversations() {
     $.getJSON('/chat/recent_conversations', {}, function(data) {
-      $.each(data['order'], function(i, identifier) {
-        move_conversation_to_the_top(identifier+'-'+data['domain']);
+      $.each(data, function(i, jid) {
+        move_conversation_to_the_top(jid);
       })
     })
   }
@@ -866,7 +856,6 @@ jQuery(function($) {
     var avatar = "/chat/avatar/"+identifier
     if(!$('#chat').hasClass('opened') || window.isHidden()) {
       var options = {body: message.body, icon: avatar, tag: jid_id};
-      console.log('Notify '+name);
       $(notifyMe(name, options)).on('click', function(){
         open_conversation(jid);
       });
