@@ -668,9 +668,6 @@ jQuery(function($) {
 
     $('.conversation').hide();
     conversation.show();
-    count_unread_messages(jid_id, true);
-    if(conversation.find('.chat-offset-container-0').length == 0)
-      recent_messages(Jabber.jid_of(jid_id));
     conversation.find('.input').focus();
     $('#chat').addClass('opened');
     $('#chat-label').addClass('opened');
