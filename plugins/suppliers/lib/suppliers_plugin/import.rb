@@ -11,10 +11,16 @@ class SuppliersPlugin::Import
     data = {}
     header = []
     rows = []
+    quote_chars = %w[" | ~ ^ & *]
     [",", ";", "\t"].each do |sep|
-      rows = CSV.parse csv, :col_sep => sep
-      header = rows.shift if rows.size > 1 && (rows[0][0].downcase == 'supplier' or rows[0][0].downcase.strip == 'fornecedor')
-      break if rows.first.size == 4
+      begin
+        rows = CSV.parse csv, quote_char: quote_chars.shift, col_sep: sep
+        header = rows.shift if rows.size > 1 && (rows[0][0].downcase == 'supplier' or rows[0][0].downcase.strip == 'fornecedor')
+      rescue
+        if quote_chars.empty? then raise else retry end
+      ensure
+        break if rows.first.size == 4
+      end
     end
     raise 'invalid number of columns' unless rows.first.size == 4
 
