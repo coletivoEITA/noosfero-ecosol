@@ -28,7 +28,7 @@
             search_placeholder: "type to find enterprises"
             favorites_how_to:
               title: "How to add favorite Solidarity Economy initiatives"
-              body: "To add favorite Solidarity Economy initiatives, you should visit its page  in Cirandas and click on button %{favorite-button} which is located below its logo, normally on the left side."
+              body: "To add favorite Solidarity Economy initiatives, you should visit its page  in Cirandas and click on button %{favorite_button} which is located below its logo, normally on the left side."
           community:
             label: "News from selected communities"
             search_placeholder: "type to find communities"
