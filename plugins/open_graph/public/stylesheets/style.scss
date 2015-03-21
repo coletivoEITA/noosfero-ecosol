@@ -50,7 +50,16 @@
 }
 
 // shown inside a popin
-// FIXME: scope
-#enterprises-memberships, #favorite-memberships {
+.open-graph-enterprises-modal {
   overflow: hidden;
+  
+  h1 {
+    font-size: 22px;
+  }
+  #open-graph-favorite-enterprises-how-to {
+    clear:both;
+  }
+  p {
+    text-align:justify;
+  }
 }
