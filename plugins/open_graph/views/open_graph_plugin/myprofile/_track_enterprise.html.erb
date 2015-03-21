@@ -8,28 +8,36 @@
 
 <div id="track-<%=track%>" class="panel-body collapse" style="display: none">
   <% if user.enterprises.present? %>
-    <div id="enterprises-memberships">
-      <strong>
+    <div id="enterprises-memberships" class="open-graph-enterprises-modal">
+      <h1>
         <%= t('open_graph_plugin.views.track.config.enterprise.memberships') %>
-      </strong>
-      <% user.enterprises.public.enabled.each do |enterprise| %>
-        <%= profile_image_link enterprise %>
-      <% end %>
+      </h1>
+      <div class="open-graph-enterprises-list">
+        <% user.enterprises.public.enabled.each do |enterprise| %>
+          <%= profile_image_link enterprise %>
+        <% end %>
+      </div>
     </div>
   <% end %>
 
-  <div id="favorite-enterprises">
-    <strong>
+  <div id="favorite-enterprises" class="open-graph-enterprises-modal">
+    <h1>
       <%= t('open_graph_plugin.views.track.config.enterprise.favorites') %>
-    </strong>
-
+    </h1>
     <% if user.favorite_enterprises.present? %>
-      <% user.favorite_enterprises.public.enabled.each do |enterprise| %>
-        <%= profile_image_link enterprise %>
-      <% end %>
-    <% else %>
-      <%= t('open_graph_plugin.views.track.config.enterprise.favorites_how_to') %>
-    <% end %>
+      <div class="open-graph-enterprises-list">
+        <% user.favorite_enterprises.public.enabled.each do |enterprise| %>
+          <%= profile_image_link enterprise %>
+        <% end %>
+      </div>
+      <div id='open-graph-favorite-enterprises-how-to'>
+        <h1>
+          <%= t('open_graph_plugin.views.track.config.enterprise.favorites_how_to.title') %>
+        </h1>
+        <p>
+          <%= t('open_graph_plugin.views.track.config.enterprise.favorites_how_to.body') % button(:love, _('Add as favorite'), '#', :title => _('Add enterprise as favorite'), :option => 'success') %>
+        </p>
+      </div>
   </div>
 </div>
 
