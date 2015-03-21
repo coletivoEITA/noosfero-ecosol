@@ -23,10 +23,12 @@
           enterprise:
             memberships: "Enterprises that I'm a member of"
             favorites: "My favorite enterprises" 
-            favotites_how_to: "How to add enterprises"
             see_all: 'See enterprises'
             label: "News from enterprises that I am a member and my favotites"
             search_placeholder: "type to find enterprises"
+            favorites_how_to:
+              title: "How to add favorite Solidarity Economy initiatives"
+              body: "To add favorite Solidarity Economy initiatives, you should visit its page  in Cirandas and click on button {#favorite-button} which is located below its logo, normally on the left side."
           community:
             label: "News from selected communities"
             search_placeholder: "type to find communities"
