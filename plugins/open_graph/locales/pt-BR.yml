@@ -23,10 +23,12 @@
           enterprise:
             memberships: "Empreendimentos dos quais faço parte"
             favorites: "Meus empreendimentos favoritos" 
-            favorites_how_to: "Como adicionar empreendimentos favoritos"
             see_all: 'Ver empreendimentos'
             label: "Publicar as novidades dos meus empreendimentos favoritos e daqueles que faço parte"
             search_placeholder: "busque o empreendimento"
+            favorites_how_to:
+              title: "Como adicionar empreendimentos favoritos"
+              body: "Para adicionar empreendimentos favoritos, basta você visitar a página do empreendimento desejado e clicar no botão {favorite-button} que fica abaixo da logo do empreendimento, geralmente à esquerda."
           community:
             label: "Publicar novidades das seguintes comunidades"
             search_placeholder: "escolha a comunidade"
