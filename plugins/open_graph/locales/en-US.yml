@@ -24,7 +24,7 @@
             memberships: "Enterprises that I'm a member of"
             favorites: "My favorite enterprises" 
             see_all: 'See enterprises'
-            label: "News from enterprises that I am a member and my favotites"
+            label: "News from enterprises that I am a member and my favorites"
             search_placeholder: "type to find enterprises"
             favorites_how_to:
               title: "How to add favorite Solidarity Economy initiatives"
