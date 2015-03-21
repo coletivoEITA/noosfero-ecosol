@@ -39,7 +39,7 @@ open_graph = {
         var input = panel.find('.track-config-toggle')
         var openWas = input.val() == 'true'
         if (open === undefined)
-          open = input.val() == 'true' && this.numberChecked(context) > 0
+          open = input.val() == 'true' && (panelHeading.hasClass('enable-on-empty') || this.numberChecked(context) > 0)
         // open is defined, that is an user action
         else {
           if (open) {

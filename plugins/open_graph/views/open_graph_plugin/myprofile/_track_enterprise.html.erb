@@ -1,4 +1,4 @@
-<div class="panel-heading">
+<div class="panel-heading enable-on-empty">
   <%= button_to_function 'menu-ctrl-panel', t('open_graph_plugin.views.track.config.enterprise.see_all'), 'open_graph.track.config.enterprise.see_all(this)',
     class: 'sse-config config-button', option: 'success', size: 'xs' %>
   <a href="#" onclick='return open_graph.track.config.toggleEvent(this, event)' style='sse-label'>
@@ -7,7 +7,29 @@
 </div>
 
 <div id="track-<%=track%>" class="panel-body collapse" style="display: none">
-  <%= render 'track_objects', f: f, track: track, objects: klass.objects, klass: klass, context: context %>
-  <%= render 'track_profiles', f: f, track: track, context: context, klass: klass %>
+  <% if user.enterprises.present? %>
+    <div id="enterprises-memberships">
+      <strong>
+        <%= t('open_graph_plugin.views.track.config.enterprise.memberships') %>
+      </strong>
+      <% user.enterprises.public.enabled.each do |enterprise| %>
+        <%= profile_image_link enterprise %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div id="favorite-enterprises">
+    <strong>
+      <%= t('open_graph_plugin.views.track.config.enterprise.favorites') %>
+    </strong>
+
+    <% if user.favorite_enterprises.present? %>
+      <% user.favorite_enterprises.public.enabled.each do |enterprise| %>
+        <%= profile_image_link enterprise %>
+      <% end %>
+    <% else %>
+      <%= t('open_graph_plugin.views.track.config.enterprise.favorites_how_to') %>
+    <% end %>
+  </div>
 </div>
 

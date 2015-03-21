@@ -14,7 +14,7 @@ class OpenGraphPlugin::EnterpriseTrackConfig < OpenGraphPlugin::TrackConfig
   end
 
   def self.profile_track_objects profile
-    (profile.enterprises.public + profile.favorite_enterprises).uniq
+    (profile.enterprises.public.enabled + profile.favorite_enterprises.public.enabled).uniq
   end
 
 end

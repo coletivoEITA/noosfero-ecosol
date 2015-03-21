@@ -48,3 +48,9 @@
     }
   }
 }
+
+// shown inside a popin
+// FIXME: scope
+#enterprises-memberships, #favorite-memberships {
+  overflow: hidden;
+}

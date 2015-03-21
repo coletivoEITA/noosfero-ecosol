@@ -6,7 +6,8 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
     @actor = create_user.person
     User.current = @actor.user
     @stories = OpenGraphPlugin::Stories::Definitions
-    @publisher = OpenGraphPlugin::Stories.publishers.first
+    @publisher = OpenGraphPlugin::Publisher.new
+    OpenGraphPlugin::Stories.stubs(:publishers).returns([@publisher])
     @publisher.stubs(:context).returns(:open_graph)
     @publisher.stubs(:og_domain).returns('noosfero.net')
   end
@@ -37,8 +38,8 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
         5 => { tracker_id: @actor.id, object_type: 'friend', },
         6 => { tracker_id: @actor.id, object_type: 'favorite_enterprise', },
       },
-      open_graph_enterprise_profiles_ids: [@enterprise.id],
-      open_graph_community_profiles_ids: [@community.id],
+      open_graph_enterprise_profiles_ids: "#{@enterprise.id}",
+      open_graph_community_profiles_ids: "#{@community.id}",
     })
     @other_actor.update_attributes! open_graph_settings: { activity_track_enabled: "true", },
       open_graph_activity_track_configs_attributes: { 0 => { tracker_id: @other_actor.id, object_type: 'friend', }, }

@@ -14,14 +14,16 @@
             label: "My activities: new photos on my albuns, blogs's posts and other contents"
             objects:
               blog_post: "Blogs' posts"
-              friendship: 'New friendships'
+              event: 'Creation of events'
+              favorite_enterprise: 'Quando eu favoritar um empreendimento'
+              forum: "Forum's topic posted"
+              friend: 'New friendships'
               gallery_image: 'New images on my albuns'
               uploaded_file: 'Files sent'
-              product: 'Products added or updated'
-              forum: "Forum's topic posted"
-              event: 'Creation of events'
-              enterprise: 'Updates to Social Solidarity Enterprises'
           enterprise:
+            memberships: "Enterprises that I'm a member of"
+            favorites: "My favorite enterprises" 
+            favotites_how_to: "How to add enterprises"
             see_all: 'See enterprises'
             label: "News from enterprises that I am a member and my favotites"
             search_placeholder: "type to find enterprises"

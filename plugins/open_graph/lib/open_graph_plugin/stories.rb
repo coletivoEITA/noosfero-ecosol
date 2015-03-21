@@ -269,7 +269,7 @@ class OpenGraphPlugin::Stories
   DefaultObjects = ValidObjectList.inject({}){ |h, o| h[o] = o; h }
 
   TrackerStories = {}; Definitions.each do |story, data|
-    Array[data[:action_tracker_verb]].each do |verb|
+    Array(data[:action_tracker_verb]).each do |verb|
       next unless verb
       TrackerStories[verb] ||= []
       TrackerStories[verb] << story
@@ -277,7 +277,7 @@ class OpenGraphPlugin::Stories
   end
 
   TrackConfigStories = {}; Definitions.each do |story, data|
-    Array[data[:track_config]].each do |track_config|
+    Array(data[:track_config]).each do |track_config|
       next unless track_config
       TrackConfigStories[track_config] ||= []
       TrackConfigStories[track_config] << [story, data]
@@ -285,7 +285,7 @@ class OpenGraphPlugin::Stories
   end
 
   ModelStories = {}; Definitions.each do |story, data|
-    Array[data[:models]].each do |model|
+    Array(data[:models]).each do |model|
       ModelStories[model] ||= {}
       Array(data[:on]).each do |on|
         ModelStories[model][on] ||= []
