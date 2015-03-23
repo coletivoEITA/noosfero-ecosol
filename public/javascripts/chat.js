@@ -26,6 +26,7 @@ jQuery(function($) {
     presence_status: '',
     conversation_prefix: 'conversation-',
     notification_sound: new Audio('/sounds/receive.wav'),
+    window_visibility: null,
     jids: {},
     rooms: {},
     no_more_messages: {},
@@ -854,7 +855,7 @@ jQuery(function($) {
     var name = Jabber.name_of(jid_id);
     var identifier = Strophe.getNodeFromJid(jid);
     var avatar = "/chat/avatar/"+identifier
-    if(!$('#chat').hasClass('opened') || window.isHidden()) {
+    if(!$('#chat').hasClass('opened') || window.isHidden() || !Jabber.window_visibility) {
       var options = {body: message.body, icon: avatar, tag: jid_id};
       $(notifyMe(name, options)).on('click', function(){
         open_conversation(jid);
@@ -929,4 +930,7 @@ jQuery(function($) {
     open_conversation($(this).data('jid'));
     return false;
   });
+
+  window.onfocus = function() {Jabber.window_visibility = true};
+  window.onblur = function() {Jabber.window_visibility = false};
 });
