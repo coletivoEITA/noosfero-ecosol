@@ -149,7 +149,8 @@ module ActsAsSolr #:nodoc:
     end
 
     def solr_type_condition(options = {})
-      classes = [self] + (self.subclasses || []) + (options[:models] || [])
+      descendants = if self.respond_to? :descendants then self.descendants else self.subclasses end
+      classes = [self] + (descendants || []) + (options[:models] || [])
       classes.map do |klass|
         next if klass.name.empty?
         "#{solr_configuration[:type_field]}:\"#{klass.name}\""
