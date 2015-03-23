@@ -147,7 +147,7 @@ namespace :solr do
     require File.expand_path("#{File.dirname(__FILE__)}/../../config/solr_environment")
 
     delayed_job  = env_to_bool('DELAYED_JOB', false)
-    optimize     = env_to_bool('OPTIMIZE', !delayed_job)
+    optimize     = env_to_bool('OPTIMIZE', false)
     start_server = env_to_bool('START_SERVER', false)
     offset       = ENV['OFFSET'].to_i.nonzero? || 0
     clear_first  = env_to_bool('CLEAR', offset == 0)
