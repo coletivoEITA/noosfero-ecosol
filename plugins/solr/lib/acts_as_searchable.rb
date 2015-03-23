@@ -52,6 +52,8 @@ module ActsAsSearchable
         results = []
         facets = all_facets = {}
 
+        options[:query_fields] = options.delete :fields if options[:fields].present?
+
         solr_result = find_by_solr(query, options)
         if all_facets_enabled
           options[:facets][:browse] = nil
