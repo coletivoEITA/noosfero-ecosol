@@ -284,6 +284,25 @@ jQuery(function($) {
             Jabber.jids[jid_id] = {jid: room.jid, name: room.name, type: 'groupchat'};
             //FIXME This must check on session if the user is inside the room...
             groups_to_insert.push(room.jid);
+
+          });
+          $.getJSON('/chat/avatars', {profiles: profiles}, function(data) {
+            for(identifier in data)
+              Jabber.avatars[identifier] = data[identifier];
+
+            // Insert contacts
+            for(contact_jid in contacts_to_insert)
+              Jabber.insert_or_update_contact(contact_jid, contacts_to_insert[contact_jid]);
+
+            // Insert groups
+            for (var i = 0; i < groups_to_insert.length; i++)
+            Jabber.insert_or_update_group(groups_to_insert[i], 'offline');
+
+            sort_conversations();
+            // set up presence handler and send initial presence
+            Jabber.connection.addHandler(Jabber.on_presence, null, "presence");
+            Jabber.send_availability_status(Jabber.presence_status);
+            load_defaults();
           });
         },
         error: function(data, textStatus, jqXHR){
@@ -291,24 +310,6 @@ jQuery(function($) {
         },
       });
 
-      $.getJSON('/chat/avatars', {profiles: profiles}, function(data) {
-        for(identifier in data)
-          Jabber.avatars[identifier] = data[identifier];
-
-        // Insert contacts
-        for(contact_jid in contacts_to_insert)
-          Jabber.insert_or_update_contact(contact_jid, contacts_to_insert[contact_jid]);
-
-        // Insert groups
-        for (var i = 0; i < groups_to_insert.length; i++)
-        Jabber.insert_or_update_group(groups_to_insert[i], 'offline');
-
-        sort_conversations();
-        // set up presence handler and send initial presence
-        Jabber.connection.addHandler(Jabber.on_presence, null, "presence");
-        Jabber.send_availability_status(Jabber.presence_status);
-        load_defaults();
-      });
     },
 
     // NOTE: cause Noosfero store's rosters in database based on friendship relation between people
