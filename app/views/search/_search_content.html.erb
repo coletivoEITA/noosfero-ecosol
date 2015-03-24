@@ -1,6 +1,14 @@
 <div id='search-content'>
-<%= display_results(@searches, @asset) %>
-<% if params[:display] != 'map' %>
-  <%= pagination_links @searches[@asset][:results] %>
-<% end %>
+  <%= plugins_search_pre_contents %>
+
+  <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
+    <% if @asset == :product %>
+      <%= render '_search_products_content' %>
+    <% else %>
+      <%= display_results(@searches, @asset) %>
+      <% if params[:display] != 'map' %>
+        <%= pagination_links @searches[@asset][:results] %>
+      <% end %>
+    <% end %>
+  </div>
 </div>

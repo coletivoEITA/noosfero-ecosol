@@ -1,0 +1,17 @@
+<% if params[:display] != 'map' %>
+  <%= content_for :product_page do %>
+    <%= stylesheet_link_tag 'catalog' %>
+    <%= javascript_include_tag 'catalog' %>
+  <% end %>
+  <div id="product-catalog">
+    <div id="catalog-results">
+      <ul id="product-list">
+        <%= render 'catalog/products', products: @searches[@asset][:results] %>
+      </ul>
+    </div>
+  </div>
+  <%= pagination_links @searches[@asset][:results] %>
+<% else %>
+  <%= display_results @searches, @asset %>
+<% end %>
+

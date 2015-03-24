@@ -1,7 +1,0 @@
-<%= render 'search_form', hint: c_("Type words about the %s you're looking for") % @asset.to_s.singularize %>
-<%= render 'results_header' %>
-
-<%= display_results(@searches, @asset) %>
-<% if params[:display] != 'map' %>
-  <%= pagination_links @searches[@asset][:results] %>
-<% end %>

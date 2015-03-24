@@ -6,13 +6,13 @@ class SearchHelperTest < ActiveSupport::TestCase
 
   should 'display facets menu' do
     expects(:asset_class).with('asset')
-    expects(:render).with('facets_menu')
+    expects(:render).with('solr_plugin/search/facets_menu')
     facets_menu 'asset', nil
   end
 
   should 'display facets_unselect menu' do
     expects(:asset_class).with('asset')
-    expects(:render).with('facets_unselect_menu')
+    expects(:render).with('solr_plugin/search/facets_unselect_menu')
     facets_unselect_menu 'asset'
   end
 

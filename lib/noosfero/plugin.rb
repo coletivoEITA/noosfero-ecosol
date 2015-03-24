@@ -570,6 +570,12 @@ class Noosfero::Plugin
     nil
   end
 
+  # -> Add column before search results
+  # returns = lambda block that creates html code
+  def search_pre_contents
+    nil
+  end
+
   # -> Finds objects by their contents
   # returns = {:results => [a, b, c, ...], ...}
   # P.S.: The plugin might add other informations on the return hash for its
