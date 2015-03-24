@@ -1117,6 +1117,7 @@ function notifyMe(title, options) {
   }
 
   setTimeout(function() {notification.close()}, 5000);
+  notification.onclick = function(){ window.focus()};
 
   return notification;
   // At last, if the user already denied any notification, and you
