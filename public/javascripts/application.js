@@ -1007,7 +1007,13 @@ function notifyMe(title, options) {
   }
 
   setTimeout(function() {notification.close()}, 5000);
-  notification.onclick = function(){ window.focus()};
+  notification.onclick = function(){
+    notification.close();
+    // Chromium tweak
+    window.open().close();
+    window.focus();
+    this.cancel();
+  };
 
   return notification;
   // At last, if the user already denied any notification, and you
