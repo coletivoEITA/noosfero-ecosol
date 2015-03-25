@@ -50,12 +50,6 @@ module ApplicationHelper
 
   include CaptchaHelper
 
-  include PluginsHelper
-
-  include PluginsHelper
-
-  include PluginsHelper
-
   def locale
     (@page && !@page.language.blank?) ? @page.language : FastGettext.locale
   end
