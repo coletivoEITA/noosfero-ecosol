@@ -66,7 +66,8 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
   def schedule_exchange_token
     self.exchange_token
   end
-  handle_asynchronously :schedule_exchange_token, run_at: proc{ 30.minutes.from_now }
+  # FIXME: commented as not working
+  #handle_asynchronously :schedule_exchange_token, run_at: proc{ 30.minutes.from_now }
 
 end
 
