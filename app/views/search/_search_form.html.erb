@@ -12,7 +12,7 @@
       <div class="input-group">
         <%= search_input_with_suggestions('query', @asset, @query, {:id => 'search-input', :size => 50, :placeholder => hint}) %>
         <span class="input-group-btn">
-          <%= submit_button(:search, _('Search')) %>
+          <%= submit_button :search, _('Search'), size: 'default' %>
         </span>
       </div>
     </div>

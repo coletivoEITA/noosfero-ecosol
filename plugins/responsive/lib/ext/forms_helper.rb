@@ -30,9 +30,9 @@ module FormsHelper
 
       bt_cancel = html_options[:cancel] ? button(:cancel, _('Cancel'), html_options[:cancel]) : ''
 
-      button_size = html_options[:btn_size] || 'xs'
+      button_size = html_options[:size] || 'xs'
       size_class = button_size == 'default' ? '' : 'btn-'+button_size
-      html_options.delete(:btn_size) if html_options[:btn_size]
+      html_options.delete :size if html_options[:size]
 
       html_options[:class] = [html_options[:class], 'submit'].compact.join(' ')
 
