@@ -87,7 +87,7 @@ module SolrPlugin::SearchHelper
       enterprises: _("%s enterprises found"),
       communities: _("%s communities found"),
     }
-    content_tag('span', labels[asset] % total_found,
+    content_tag('span', labels[asset] % number_to_human(total_found),
       class: "total-pages-found") if labels[asset]
   end
 
