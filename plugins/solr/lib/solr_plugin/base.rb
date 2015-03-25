@@ -53,11 +53,7 @@ class SolrPlugin::Base < Noosfero::Plugin
 
   	solr_options = build_solr_options asset, klass, scope, category
     solr_options.merge! products_options(user) if empty_query and klass == Product
-    unless solr_search? empty_query, klass
-      scope = scope.send options[:filter] if options[:filter]
-      scope = scope.paginate paginate_options
-      return {results: scope}
-    end
+    scope = scope.send options[:filter] if options[:filter]
     solr_options.merge! options.except(:category, :filter)
 
     scope.find_by_contents query, paginate_options, solr_options
@@ -194,10 +190,6 @@ class SolrPlugin::Base < Noosfero::Plugin
     else
       options.merge({boost_functions: ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']})
     end
-  end
-
-  def solr_search? empty_query, klass
-    not empty_query or klass == Product
   end
 
 end
