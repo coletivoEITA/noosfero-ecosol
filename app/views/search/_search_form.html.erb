@@ -8,12 +8,14 @@
       <%= filters(@asset) %>
     </div>
 
-    <div class="search-field">
-      <span class="formfield">
+    <div class="search-field form-group">
+      <div class="input-group">
         <%= search_input_with_suggestions('query', @asset, @query, {:id => 'search-input', :size => 50, :placeholder => hint}) %>
-      </span>
+      </div>
 
-      <%= submit_button(:search, _('Search')) %>
+      <span class="input-group-btn">
+        <%= submit_button(:search, _('Search')) %>
+      </span>
     </div>
 
     <%= render :partial => 'search_form_extra_fields' %>
