@@ -81,8 +81,9 @@ class OpenGraphPlugin::Publisher
     passive = story_defs[:passive]
     trackers = []
 
-    track_configs = Array[story_defs[:track_config]].compact.map(&:constantize)
+    track_configs = Array(story_defs[:track_config]).compact.map(&:constantize)
     return if track_configs.empty?
+    print_debug "open_graph: using configs: #{track_configs.map(&:name).inspect}" if debug? actor
 
     if passive
       object_profile = self.call(story_defs[:object_profile], object_data) || object_data.profile rescue nil

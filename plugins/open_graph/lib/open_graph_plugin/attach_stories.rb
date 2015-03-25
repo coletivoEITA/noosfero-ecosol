@@ -6,11 +6,11 @@ module OpenGraphPlugin::AttachStories
   module ClassMethods
 
     def open_graph_attach_stories options={}
-      if stories = Array[options[:only]]
+      if stories = Array(options[:only])
         callbacks = {}
         stories.each do |story|
           defs = OpenGraphPlugin::Stories::Definitions[story]
-          Array[defs[:on]].each do |on|
+          Array(defs[:on]).each do |on|
             callbacks[on] ||= []
             callbacks[on] << story
           end

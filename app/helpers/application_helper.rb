@@ -50,8 +50,6 @@ module ApplicationHelper
 
   include CaptchaHelper
 
-  include PluginsHelper
-
   include ChatHelper
 
   def locale
@@ -604,7 +602,7 @@ module ApplicationHelper
     link_to(
       content_tag( 'span', profile_image( profile, size ), :class => 'profile-image' ) +
       content_tag( 'span', h(name), :class => ( profile.class == Person ? 'fn' : 'org' ) ) +
-      extra_info + profile_sex_icon( profile ) + profile_cat_icons( profile ),
+      extra_info + profile_sex_icon( profile ),# + profile_cat_icons( profile ),
       profile.url,
       :class => 'profile_link url',
       :help => _('Click on this icon to go to the <b>%s</b>\'s home page') % profile.name,

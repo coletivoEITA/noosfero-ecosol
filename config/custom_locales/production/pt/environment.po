@@ -214,3 +214,22 @@ msgstr "Baixar"
 
 msgid "products"
 msgstr "produtos"
+
+# provisory while these string don't enter core:
+msgid "Searches"
+msgstr "Buscas"
+
+msgid "Type words about %s you're looking for"
+msgstr "Escreva palavras sobre %s que você está buscando"
+
+msgid "the enterprise"
+msgstr "o empreendimento solidário"
+
+msgid "the person"
+msgstr "a pessoa"
+
+msgid "the community"
+msgstr "a comunidade"
+
+msgid "the product"
+msgstr "o produto ou serviço"

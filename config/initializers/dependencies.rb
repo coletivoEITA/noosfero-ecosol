@@ -1,3 +1,5 @@
+require 'pp'
+
 # locally-developed modules
 require 'acts_as_filesystem'
 require 'acts_as_having_settings'

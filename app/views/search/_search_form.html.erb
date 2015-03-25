@@ -3,16 +3,18 @@
   <%= form_tag( { :controller => 'search', :action => @asset ? @asset : 'index', :asset => nil, :category_path => ( @category ? @category.path : nil ) },
                  :method => 'get', :class => 'search_form' ) do %>
     <div id='search-header'>
+      <h1><%= _('Searches') %></h1>
       <%= assets_menu(@asset) %>
       <%= filters(@asset) %>
     </div>
 
-    <div class="search-field">
-      <span class="formfield">
+    <div id='search-box' class="search-field form-group">
+      <div class="formfield input-group">
         <%= search_input_with_suggestions('query', @asset, @query, {:id => 'search-input', :size => 50, :placeholder => hint}) %>
-      </span>
-
-      <%= submit_button(:search, _('Search')) %>
+        <span class="input-group-btn">
+          <%= submit_button :search, _('Search'), size: 'default' %>
+        </span>
+      </div>
     </div>
 
     <%= render :partial => 'search_form_extra_fields' %>

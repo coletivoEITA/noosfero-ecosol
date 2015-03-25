@@ -981,6 +981,14 @@ div#notice {
   text-decoration: underline;
 }
 
+ul#assets-menu {
+  width: auto;
+}
+.controller-search .search-field .formfield {
+    width: auto;
+    display: table;
+}
+
 /* ==> article.css <== */
 
 hr.pre-posts, hr.sep-posts {
@@ -1884,6 +1892,10 @@ img, video, audio {
 
 .modal-content > .login-box {
     padding: 3px 20px 8px 20px;
+}
+
+#noosferoModalContent{
+    padding: 15px;
 }
 
 @media screen and (max-width: 359px) {

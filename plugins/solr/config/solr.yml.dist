@@ -5,6 +5,8 @@
 
 # No change is needed to support multitenancy. Only one solr environment will be used.
 # Just remember to use 'rake multitenancy:reindex' for reindexation.
+#
+# Put this on Rails.root/config/solr.yml
 
 production:
   url: http://127.0.0.1:8983/solr

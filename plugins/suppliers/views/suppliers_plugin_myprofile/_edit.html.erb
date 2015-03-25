@@ -38,7 +38,7 @@
 
         <%= labelled_field f, :name, t('views.supplier._edit.name'), f.text_field(:name) %>
         <%= labelled_field f, :name_abbreviation, t('views.supplier._edit.abbreviated_name'), f.text_field(:name_abbreviation) %>
-        <%= labelled_field f, :description, t('views.supplier._edit.description'), f.text_area(:description) %>
+        <%= labelled_field f, :description, t('views.supplier._edit.description'), f.text_area(:description, maxlength: '550') %>
 
       </div>
       <div class="estrategic-info full-data">

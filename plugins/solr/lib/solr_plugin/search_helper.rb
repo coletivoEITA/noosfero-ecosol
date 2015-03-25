@@ -40,7 +40,7 @@ module SolrPlugin::SearchHelper
     ],
   }
 
-  def filters(asset)
+  def solr_filters_queries asset
     case asset
     when :products
       ['solr_plugin_public:true', 'enabled:true']
@@ -99,12 +99,12 @@ module SolrPlugin::SearchHelper
   def facets_menu asset
     @asset_class = asset_class asset
     load_facets
-    render 'facets_menu'
+    render 'solr_plugin/search/facets_menu'
   end
 
   def facets_unselect_menu(asset)
-    @asset_class = asset_class(asset)
-    render 'facets_unselect_menu'
+    @asset_class = asset_class asset
+    render 'solr_plugin/search/facets_unselect_menu'
   end
 
   def facet_selecteds_html_for environment, klass, params
@@ -164,7 +164,7 @@ module SolrPlugin::SearchHelper
     else
       # preserve others filters and change this filter
       url = params.merge(facet: params[:facet].merge(
-        id => if facet[:label_id].nil? then value else { facet[:label_id] => value } end,
+        id => if facet[:label_id].nil? then value else { facet[:label_id] => [value] } end,
       ))
     end
 

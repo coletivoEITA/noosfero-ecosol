@@ -48,3 +48,19 @@
     }
   }
 }
+
+// shown inside a popin
+.open-graph-enterprises-modal {
+  overflow: hidden;
+  
+  h1 {
+    font-size: 22px;
+  }
+  #open-graph-favorite-enterprises-how-to {
+    clear:both;
+    padding-top: 1px;
+  }
+  p {
+    text-align:justify;
+  }
+}
