@@ -82,7 +82,27 @@ class SolrPlugin::Base < Noosfero::Plugin
     result
   end
 
+  def search_order asset
+    case asset
+    when :catalog
+      {
+        :select_options => CatalogSortOptions.map do |key, options|
+          option = options[:option]
+          [_(option[0]), option[1]]
+        end,
+      }
+    end
+  end
+
+  def search_pre_contents
+    lambda do
+      render 'solr_plugin/search/search_pre_contents'
+    end
+  end
+
   protected
+
+  include SolrPlugin::SearchHelper
 
   def build_solr_options asset, klass, scope, category, options = {}
     solr_options = {}
@@ -94,7 +114,7 @@ class SolrPlugin::Base < Noosfero::Plugin
     end
 
     solr_options[:filter_queries] ||= []
-    solr_options[:filter_queries] += filters(asset)
+    solr_options[:filter_queries] += solr_filters_queries asset
     solr_options[:filter_queries] << "environment_id:#{environment.id}"
     solr_options[:filter_queries] << klass.facet_category_query.call(category) if category
     solr_options[:filter_queries] += scopes_to_solr_options scope, klass, options
@@ -176,24 +196,8 @@ class SolrPlugin::Base < Noosfero::Plugin
     end
   end
 
-  protected
-
-  include SolrPlugin::SearchHelper
-
   def solr_search? empty_query, klass
     not empty_query or klass == Product
-  end
-
-  def search_order asset
-    case asset
-    when :catalog
-      {
-        :select_options => CatalogSortOptions.map do |key, options|
-          option = options[:option]
-          [_(option[0]), option[1]]
-        end,
-      }
-    end
   end
 
 end
