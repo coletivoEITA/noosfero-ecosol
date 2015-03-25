@@ -991,6 +991,19 @@ ul#assets-menu {
     width: auto;
     display: table;
 }
+@media (max-width: 767px) {
+  ul#assets-menu {
+    display: none;
+  }
+  #search-filters {
+    margin-top: -40px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  #search-filters {
+    margin-top: -80px;
+  }
+}
 
 /* ==> article.css <== */
 
