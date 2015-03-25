@@ -9,7 +9,7 @@
     </div>
 
     <div id='search-box' class="search-field form-group">
-      <div class="input-group">
+      <div class="formfield input-group">
         <%= search_input_with_suggestions('query', @asset, @query, {:id => 'search-input', :size => 50, :placeholder => hint}) %>
         <span class="input-group-btn">
           <%= submit_button :search, _('Search'), size: 'default' %>
