@@ -164,7 +164,7 @@ module SolrPlugin::SearchHelper
     else
       # preserve others filters and change this filter
       url = params.merge(facet: params[:facet].merge(
-        id => if facet[:label_id].nil? then value else { facet[:label_id] => value } end,
+        id => if facet[:label_id].nil? then value else { facet[:label_id] => [value] } end,
       ))
     end
 
