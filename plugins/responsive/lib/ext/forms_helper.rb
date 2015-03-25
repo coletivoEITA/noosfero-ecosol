@@ -55,6 +55,7 @@ module FormsHelper
   end
 
   protected
+
 end
 
 module ApplicationHelper

@@ -247,10 +247,10 @@ module ApplicationHelper
       admin_link_str = admin_link
       output += admin_link_str.present? ? '<li>' + admin_link_str + '</li>' : ''
 
-      output += chat_user_status_menu('icon-menu-offline', _('Offline'))
-
       #control_panel link
       output += '<li>' + link_to('<i class="icon-menu-ctrl-panel"></i><strong>' + _('Control panel') + '</strong>', user.admin_url, class: 'ctrl-panel', title: _("Configure your personal account and content")) + '</li>'
+
+      output += chat_user_status_menu('icon-menu-offline', _('Offline'))
 
       #manage_enterprises
       manage_enterprises_str = manage_enterprises
