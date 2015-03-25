@@ -866,6 +866,7 @@ ul#assets-menu li.selected a {
 
 #search-filters {
   float: right;
+  margin-bottom: 10px;
 }
 
 #search-filters .sod_select {
