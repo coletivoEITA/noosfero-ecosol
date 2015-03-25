@@ -80,8 +80,8 @@ module SolrPlugin::SearchHelper
 
   def label_total_found(asset, total_found)
     labels = {
-      products: _("%s products offers found"),
-      articles: _("%s articles found"),
+      products: _("%s products and/or services found"),
+      articles: _("%s contents found"),
       events: _("%s events found"),
       people: _("%s people found"),
       enterprises: _("%s enterprises found"),
