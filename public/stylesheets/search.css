@@ -891,6 +891,9 @@ ul#assets-menu li.selected a {
 #search-filters .sod_select .sod_list .selected {
   color: #555753;
 }
+#search-box {
+  clear: both;
+}
 
 /******** tagged-items list ***************************/
 
