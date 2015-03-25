@@ -874,6 +874,7 @@ ul#assets-menu li.selected a {
   border-width: 2px;
   border-color: #888A85;
   color: #888A85;
+  z-index: 100;
 }
 
 #search-filters .sod_select:hover,
