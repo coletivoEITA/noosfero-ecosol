@@ -1,6 +1,9 @@
 
 module SolrPlugin::FacetsBrowse
 
+  # for load_facets
+  include SolrPlugin::SearchHelper
+
   def facets_browse
     @asset = params[:asset_key].to_sym
     @asset_class = asset_class(@asset)
