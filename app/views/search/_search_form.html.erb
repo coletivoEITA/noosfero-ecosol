@@ -8,7 +8,7 @@
       <%= filters(@asset) %>
     </div>
 
-    <div class="search-field form-group">
+    <div id='search-box' class="search-field form-group">
       <div class="input-group">
         <%= search_input_with_suggestions('query', @asset, @query, {:id => 'search-input', :size => 50, :placeholder => hint}) %>
         <span class="input-group-btn">
