@@ -170,9 +170,9 @@ module ActsAsFaceted
           next unless facets[id.to_sym]
           if value.kind_of?(Hash)
             value.map do |label_id, value|
-              value.to_a.each do |value|
+              #value.to_a.each do |value|
                 browses << id.to_s + ':' + (facets[id.to_sym][:queries] ? value : '"'+value.to_s+'"')
-              end
+              #end
             end
           else
             browses << id.to_s + ':' + (facets[id.to_sym][:queries] ? value : '"'+value.to_s+'"')
