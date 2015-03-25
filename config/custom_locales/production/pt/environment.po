@@ -214,3 +214,8 @@ msgstr "Baixar"
 
 msgid "products"
 msgstr "produtos"
+
+# provisory while these string don't enter core:
+
+msgid "Searches"
+msgstr "Buscas"
