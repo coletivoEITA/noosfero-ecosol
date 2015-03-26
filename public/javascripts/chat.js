@@ -25,6 +25,7 @@ jQuery(function($) {
     muc_supported: false,
     presence_status: '',
     conversation_prefix: 'conversation-',
+    conversations_order: null,
     notification_sound: new Audio('/sounds/receive.wav'),
     window_visibility: null,
     jids: {},
@@ -67,8 +68,10 @@ jQuery(function($) {
       .replace('%{name}', name);
 
       $(item).parent().remove();
-      if(presence != 'offline' || !remove_on_offline)
+      if(presence != 'offline' || !remove_on_offline){
         $(list).append(html);
+        sort_conversations();
+      }
       Jabber.jids[jid_id] = {jid: jid, name: name, type: type, presence: presence};
     },
     insert_or_update_group: function (jid, presence) {
@@ -303,7 +306,11 @@ jQuery(function($) {
             for (var i = 0; i < groups_to_insert.length; i++)
             Jabber.insert_or_update_group(groups_to_insert[i], 'offline');
 
-            sort_conversations();
+            $.getJSON('/chat/recent_conversations', {}, function(data) {
+              Jabber.conversations_order = data;
+              sort_conversations();
+            });
+
             // set up presence handler and send initial presence
             Jabber.connection.addHandler(Jabber.on_presence, null, "presence");
             Jabber.send_availability_status(Jabber.presence_status);
@@ -428,6 +435,7 @@ jQuery(function($) {
       var name = Jabber.name_of(jid_id);
       create_conversation_tab(name, jid_id);
       Jabber.show_message(jid, name, escape_html(message.body), 'other', Strophe.getNodeFromJid(jid));
+      renew_conversation_order(jid);
       notifyMessage(message);
       return true;
     },
@@ -445,6 +453,7 @@ jQuery(function($) {
       else if ($own_name != name) {
         var jid = Jabber.rooms[Jabber.jid_to_id(message.from)][name];
         Jabber.show_message(message.from, name, escape_html(message.body), name, Strophe.getNodeFromJid(jid));
+        renew_conversation_order(jid);
         notifyMessage(message);
       }
       return true;
@@ -539,6 +548,7 @@ jQuery(function($) {
       Jabber.connection.send(message);
       Jabber.show_message(jid, $own_name, escape_html(body), 'self', Strophe.getNodeFromJid(Jabber.connection.jid));
       save_message(jid, body);
+      renew_conversation_order(jid);
       move_conversation_to_the_top(jid);
       if (presence == 'offline')
         Jabber.show_notice(jid_id, $user_unavailable_error);
@@ -764,12 +774,25 @@ jQuery(function($) {
     ul.prepend(li);
   }
 
+  function renew_conversation_order(jid){
+    var i = Jabber.conversations_order.indexOf(jid);
+    // Remove element from the list
+    if(i >= 0) {
+      var elem = Jabber.conversations_order[i];
+      var a = Jabber.conversations_order.slice(0,i);
+      var b = Jabber.conversations_order.slice(i+1, Jabber.conversations_order.length);
+      Jabber.conversations_order = a.concat(b);
+    } else
+      var elem = jid;
+
+    Jabber.conversations_order = Jabber.conversations_order.concat(elem);
+  }
+
   function sort_conversations() {
-    $.getJSON('/chat/recent_conversations', {}, function(data) {
-      $.each(data, function(i, jid) {
-        move_conversation_to_the_top(jid);
-      })
-    })
+    if(Jabber.conversations_order){
+      for (var i = 0; i < Jabber.conversations_order.length; i++)
+        move_conversation_to_the_top(Jabber.conversations_order[i]);
+    }
   }
 
   function load_defaults() {
