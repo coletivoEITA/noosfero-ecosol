@@ -89,7 +89,7 @@ module SolrPlugin::SearchHelper
 
   def label_total_found asset, total_found
     content_tag('span', _(TotalFound[asset]) % number_to_human(total_found),
-      class: "total-pages-found") if labels[asset]
+      class: "total-pages-found") if TotalFound[asset]
   end
 
   def load_facets
