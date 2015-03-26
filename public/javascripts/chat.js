@@ -674,6 +674,7 @@ jQuery(function($) {
     conversation.find('.input').focus();
     $('#chat').addClass('opened');
     $('#chat-label').addClass('opened');
+    $('body').addClass('chat-opened');
     $.post('/chat/tab', {tab_id: jid_id});
   }
 
