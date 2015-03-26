@@ -171,7 +171,7 @@ module SolrPlugin::SearchHelper
 
     content_tag 'div', link_to(link_label, url, class: 'facet-result-link-label') +
         content_tag('span', (has_extra ? label[1] : ''), class: 'facet-result-extra-label') +
-        (count > 0 ? content_tag('span', " (#{count})", class: 'facet-result-count') : ''),
+        (count > 0 ? content_tag('span', " (#{number_to_human(count)})", class: 'facet-result-count') : ''),
       class: 'facet-menu-item' + (selected ? ' facet-result-link-selected' : '')
   end
 
