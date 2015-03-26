@@ -41,7 +41,7 @@ class Profile
     accepts_nested_attributes_for association, allow_destroy: true, reject_if: :open_graph_reject_empty_object_type
 
     define_method "#{profile_ids}=" do |ids|
-      cids = self.send(association).order('created_at ASC').map(&:id)
+      cids = self.send(association).order('created_at ASC').map(&:object_data_id)
       nids = ids.split(',').map(&:to_i)
       Profile.where(id: nids-cids).each{ |profile| self.send(association).create! type: klass.name, object_data: profile }
       self.send(association).each{ |c| c.destroy unless c.object_data_id.in? nids }
