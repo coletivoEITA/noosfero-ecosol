@@ -40,6 +40,15 @@ module SolrPlugin::SearchHelper
     ],
   }
 
+  TotalFound = {
+    products: N_("%s products and/or services found"),
+    articles: N_("%s contents found"),
+    events: N_("%s events found"),
+    people: N_("%s people found"),
+    enterprises: N_("%s enterprises found"),
+    communities: N_("%s communities found"),
+  }
+
   def solr_filters_queries asset
     case asset
     when :products
@@ -78,16 +87,8 @@ module SolrPlugin::SearchHelper
     )
  end
 
-  def label_total_found(asset, total_found)
-    labels = {
-      products: _("%s products and/or services found"),
-      articles: _("%s contents found"),
-      events: _("%s events found"),
-      people: _("%s people found"),
-      enterprises: _("%s enterprises found"),
-      communities: _("%s communities found"),
-    }
-    content_tag('span', labels[asset] % number_to_human(total_found),
+  def label_total_found asset, total_found
+    content_tag('span', _(TotalFound[asset]) % number_to_human(total_found),
       class: "total-pages-found") if labels[asset]
   end
 
