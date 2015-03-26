@@ -12,6 +12,7 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
 
   before_create :update_user
   before_create :exchange_token
+  after_create :schedule_exchange_token
   after_destroy :destroy_page_tabs
 
   validates_presence_of :provider_user_id
@@ -61,6 +62,14 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
   def destroy_page_tabs
     self.profile.fb_app_page_tabs.destroy_all
   end
+
+  def schedule_exchange_token
+    self.exchange_token
+    self.save!
+    # repeat this again
+    self.schedule_exchange_token
+  end
+  handle_asynchronously :schedule_exchange_token, run_at: proc{ 1.month.from_now }
 
 end
 
