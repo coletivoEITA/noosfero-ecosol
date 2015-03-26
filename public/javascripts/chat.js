@@ -181,6 +181,11 @@ jQuery(function($) {
       $('#buddy-list #user-status img.avatar').replaceWith(getMyAvatar());
       $.get('/chat/update_presence_status', { status: {chat_status: presence, last_chat_status: presence} });
     },
+    change_status: function(status_element, callback) {
+      $('#chat-connect, #chat-disconnect, #chat-busy').removeClass('active')
+      status_element.addClass('active')
+      callback()
+    },
 
     send_availability_status: function(presence) {
       log('send availability status ' + presence);
@@ -558,20 +563,25 @@ jQuery(function($) {
       var tab_id = '#' + Jabber.conversation_prefix + jid_id;
       var notice = $(tab_id).find('.history .notice').remove();
     },
+
   };
 
   $('#chat-connect').live('click', function() {
-    Jabber.presence_status = 'chat';
-    Jabber.connect();
+    Jabber.change_status($(this), function () {
+      Jabber.presence_status = 'chat'
+      Jabber.connect()
+    })
   });
-
   $('#chat-disconnect').click(function() {
-    disconnect();
+    Jabber.change_status($(this), function () {
+      disconnect()
+    })
   });
-
   $('#chat-busy').click(function() {
-    Jabber.presence_status = 'dnd';
-    Jabber.connect();
+    Jabber.change_status($(this), function () {
+      Jabber.presence_status = 'dnd'
+      Jabber.connect()
+    })
   });
 
   $('#chat-retry').live('click', function() {
