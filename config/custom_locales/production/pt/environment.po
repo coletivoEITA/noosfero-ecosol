@@ -234,6 +234,9 @@ msgstr "a comunidade"
 msgid "the product"
 msgstr "o produto ou serviço"
 
+msgid "the article"
+msgstr "o conteúdo"
+
 msgid "Show filters"
 msgstr "Mostrar filtros"
 
@@ -242,3 +245,6 @@ msgstr "Os campos %{highlighted} são obrigatórios."
 
 msgid "highlighted"
 msgstr "realçados"
+
+msgid "Applied filters"
+msgstr "Filtros aplicados"
