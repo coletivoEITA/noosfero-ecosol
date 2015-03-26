@@ -236,3 +236,9 @@ msgstr "o produto ou serviço"
 
 msgid "Show filters"
 msgstr "Mostrar filtros"
+
+msgid "The %{highlighted} fields are mandatory."
+msgstr "Os campos %{highlighted} são obrigatórios."
+
+msgid "highlighted"
+msgstr "realçados"
