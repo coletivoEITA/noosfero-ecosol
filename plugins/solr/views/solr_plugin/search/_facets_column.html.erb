@@ -8,20 +8,24 @@
   <%= stylesheet_link_tag "plugins/responsive/jquery.mmenu.all.css" %>
 <% end %>
 
-<div class="hidden-sm hidden-xs col-lg-3 col-md-4">
-  <%= facets %>
-</div>
-
-<div id='solr-left-menu'>
-  <%= facets %>
-</div>
-
+<% unless request.xhr? %>
+  <div id='solr-left-menu'>
+    <%= facets %>
+  </div>
+<% end %>
 <%= javascript_tag do %>
-  jQuery(document).ready(function() {
-    jQuery('#solr-left-menu').mmenu({
-      classes: 'mm-white',
-      dragOpen: { open: true },
-    });
+  $(document).ready(function() {
+    if ($('#solr-left-menu.mm-menu').lengh > 0)
+      $('#solr-left-menu.mm-menu').html(<%= facets.to_json %>)
+    else
+      $('#solr-left-menu').mmenu({
+        classes: 'mm-white',
+        dragOpen: { open: true },
+      });
   })
 <% end %>
 
+<!-- ending: organized as column with the rest of #search-column -->
+<div class="hidden-sm hidden-xs col-lg-3 col-md-4">
+  <%= facets %>
+</div>
