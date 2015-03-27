@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0-690-gcb6e853\n"
 "POT-Creation-Date: 2015-03-05 12:09-0300\n"
-"PO-Revision-Date: 2015-01-30 00:18-0000\n"
+"PO-Revision-Date: 2015-03-27 15:47-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -25,7 +25,6 @@ msgid "Show the profile events or all environment events."
 msgstr "Mostrar todos os eventos."
 
 #: plugins/event/lib/event_plugin/event_block.rb:65
-#, fuzzy
 msgid "One month ago"
 msgid_plural "%d months ago"
 msgstr[0] "Iniciou a um mês atrás."
@@ -48,7 +47,6 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: plugins/event/lib/event_plugin/event_block.rb:73
-#, fuzzy
 msgid "One month left to start"
 msgid_plural "%d months left to start"
 msgstr[0] "Um mês para iniciar"
@@ -97,7 +95,6 @@ msgid "Limit of days to display"
 msgstr "Limite de dias de distância para mostrar eventos"
 
 #: plugins/event/views/profile_design/event_plugin/_event_block.html.erb:24
-#, fuzzy
 msgid "Only show events in this interval of days."
 msgstr "Mostar somente eventos que acontecem dentro do limite de dias"
 
