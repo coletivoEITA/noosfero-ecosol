@@ -38,48 +38,31 @@ module ActsAsSearchable
         (Noosfero::MultiTenancy.on? and ActiveRecord::Base.postgresql?) ? ActiveRecord::Base.connection.schema_search_path : ''
       end
 
-      def find_by_contents(query, pg_options = {}, options = {}, db_options = {})
+      def find_by_contents query, pg_options = {}, options = {}, db_options = {}
         pg_options[:page] ||= 1
         pg_options[:per_page] ||= 20
         options[:page] = pg_options[:page].to_i
         options[:per_page] = pg_options[:per_page].to_i
+        options[:per_page] = options.delete :extra_limit if options[:extra_limit]
         options[:scores] ||= true
         options[:filter_queries] ||= []
         options[:filter_queries] << "schema_name:\"#{schema_name}\"" unless schema_name.blank?
-        all_facets_enabled = options.delete(:all_facets)
-        options[:per_page] = options.delete(:extra_limit) if options[:extra_limit]
+        options[:query_fields] = options.delete :fields if options[:fields].present?
+        options[:sql_options] = db_options
         options[:facets] ||= {}
+        all_facets_enabled = options.delete :all_facets
         results = []
         facets = all_facets = {}
 
-        options[:query_fields] = options.delete :fields if options[:fields].present?
-
-        solr_result = find_by_solr(query, options)
+        solr_result = find_by_solr query, options
         if all_facets_enabled
           options[:facets][:browse] = nil
           all_facets = find_by_solr(query, options.merge(per_page: 0, results_format: :none)).facets
         end
 
-        if !solr_result.nil?
-          facets = options.include?(:facets) ? solr_result.facets : []
-
-          if db_options.empty?
-            results = solr_result
-          else
-            ids = solr_result.results.map{ |r| r[:id].to_i }
-            if ids.empty?
-              ids << -1
-            end
-
-            if db_options[:conditions]
-              db_options[:conditions] = sanitize_sql_for_conditions(db_options[:conditions]) + " and #{table_name}.id in (#{ids.join(', ')})"
-            else
-              db_options[:conditions] = "#{table_name}.id in (#{ids.join(', ')})"
-            end
-
-            results = find(:all, db_options)
-          end
-        end
+        facets = solr_result.facets if options.include? :facets and solr_result.present?
+        # solr_results has pagination options
+        results = solr_result
 
         {results: results, facets: facets, all_facets: all_facets}
       end

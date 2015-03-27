@@ -47,14 +47,14 @@ class SolrPlugin::Base < Noosfero::Plugin
     return catalog_find_by_contents asset, scope, query, paginate_options, options if asset == :catalog
 
   	# General queries:
-  	category = options[:category]
+    category = options.delete :category
   	empty_query = empty_query? query, category
   	klass = asset_class asset
+    scope = scope.send options.delete :filter if options[:filter]
 
   	solr_options = build_solr_options asset, klass, scope, category
     solr_options.merge! products_options(user) if empty_query and klass == Product
-    scope = scope.send options[:filter] if options[:filter]
-    solr_options.merge! options.except(:category, :filter)
+    solr_options.merge! options
 
     scope.find_by_contents query, paginate_options, solr_options
   end
