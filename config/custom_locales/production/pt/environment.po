@@ -252,3 +252,8 @@ msgstr "Filtros aplicados"
 msgid "Basket is empty"
 msgstr "Cesto vazio"
 
+msgid "See more options"
+msgstr "Ver mais opções"
+
+msgid "See less options"
+msgstr "Ver menos opções"
