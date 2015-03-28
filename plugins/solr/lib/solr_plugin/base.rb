@@ -55,7 +55,7 @@ class SolrPlugin::Base < Noosfero::Plugin
     if klass == Product
       solr_options.merge! products_options user, filter
     else
-      scope = scope.send :filter if filter.present?
+      scope = scope.send filter if filter.present?
     end
     solr_options.merge! options
 
