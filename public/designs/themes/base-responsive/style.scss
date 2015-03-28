@@ -906,25 +906,24 @@ div#notice {
 .msie .search-results-box {
   width: 48%;
 }
-
 #content .no-boxes h1 {
   font-variant: small-caps;
   color: #555753;
   text-align: left;
   border-bottom: 2px solid #2e3436; /*8C0*/
 }
-
 .query {
   display: none;
 }
-
 .controller-search #content .search_form h3 {
   display: none;
 }
-
 .controller-search #content .search_form h4 {
   background: #DDD;
   color: #777;
+}
+.search-hint {
+  padding: 0;
 }
 .controller-search .search-options {
   border: 1px solid #777;
@@ -934,7 +933,6 @@ div#notice {
 .controller-search .search-options ul li {
   position: relative;
 }
-
 .controller-search .search-within select {
   display: block;
   margin-bottom: 5px;
