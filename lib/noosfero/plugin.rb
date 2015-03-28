@@ -575,6 +575,12 @@ class Noosfero::Plugin
   def search_pre_contents
     nil
   end
+  
+  # -> Add content after search results
+  # returns = lambda block that creates html code
+  def search_post_contents
+    nil
+  end
 
   # -> Finds objects by their contents
   # returns = {:results => [a, b, c, ...], ...}
