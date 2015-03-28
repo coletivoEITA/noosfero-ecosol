@@ -949,17 +949,11 @@ div#notice {
   position: relative;
   top: 5px;
 }
-
-/*.controller-search a {
-  color: #555753;
-}*/
-
 #search-results h3 {
   color: #555753; /*6A0*/
   font-variant: small-caps;
   margin: 0px;
 }
-
 .search-results-innerbox {
   border: 1px solid #CCC;
   border-top: 2px solid #2e3436;
@@ -1566,11 +1560,14 @@ div.tooltip-inner {
 .search-results-type-article ul {
   overflow: hidden;
 }
+.controller-search #search-results {
+  margin: 0;
+}
 .controller-search #search-column-left {
   overflow: hidden;
 }
 .controller-search #content .search-results-type-article li {
-  padding: 10px;
+  padding: 0 10px 10px 10px;
 }
 .search-product-item-first-column,
 .search-content-first-column {
@@ -1587,8 +1584,9 @@ div.tooltip-inner {
   margin: 0;
 }
 .search-product-item .search-result-title {
-  font-size: 15px;
+  font-size: 24px;
   display: block;
+  color: #333;
 }
 @media (max-width: 767px) {
   .search-no-image {
@@ -1624,7 +1622,7 @@ div.tooltip-inner {
   }
   .controller-search #content .search-results-type-product li {
     font-size: 13px;
-    padding: 10px;
+    padding: 0 10px 10px 10px;
   }
   .search-content-first-column [class*='icon-'] {
     font-size: 64px;
