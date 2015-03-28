@@ -37,5 +37,11 @@ module PluginsHelper
       instance_exec(&content)
     end.join
   end
+  
+  def plugins_search_post_contents
+    @plugins.dispatch(:search_post_contents).map do |content|
+      instance_exec(&content)
+    end.join
+  end
 
 end

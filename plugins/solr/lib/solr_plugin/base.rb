@@ -95,6 +95,12 @@ class SolrPlugin::Base < Noosfero::Plugin
       render 'solr_plugin/search/search_pre_contents'
     end
   end
+  
+  def search_post_contents
+    lambda do
+      render 'solr_plugin/search/search_post_contents'
+    end
+  end
 
   protected
 

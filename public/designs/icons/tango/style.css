@@ -26,6 +26,7 @@
 .icon-add       { background-image: url(Tango/16x16/actions/add.png) }
 .icon-remove    { background-image: url(Tango/16x16/actions/gtk-remove.png) }
 .icon-more      { background-image: url(Tango/16x16/actions/add.png) }
+.icon-less      { background-image: url(Tango/16x16/actions/remove.png) }
 .icon-up        { background-image: url(Tango/16x16/actions/go-up.png) }
 .icon-down      { background-image: url(Tango/16x16/actions/go-down.png) }
 .icon-download  { background-image: url(Tango/16x16/actions/bottom.png) }

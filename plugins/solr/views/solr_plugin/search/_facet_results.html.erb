@@ -20,9 +20,15 @@
 
       <% if facet_count > less_options_limit %>
         <br />
-        <%= link_to_function c_("Options"),
-          "solr.facets.more(this, '#{url_for(params.merge(action: 'facets_browse', facet_id: facet[:id], asset_key: @asset, escape: false))}');",
-          class: "facet-options-toggle" %>
+        <% if (!@all_facets) %>
+          <% btn_icon = "more" %>
+          <% btn_label = "See more options" %>
+        <% else %>
+          <% btn_icon = "less" %>
+          <% btn_label = "See less options" %>
+        <% end %>
+        <%= button_to_function btn_icon, _(btn_label),
+          "solr.facets.more(this, '#{url_for(params.merge(action: 'facets_browse', facet_id: facet[:id], asset_key: @asset, escape: false))}');" %>
         <br />
       <% end %>
 
