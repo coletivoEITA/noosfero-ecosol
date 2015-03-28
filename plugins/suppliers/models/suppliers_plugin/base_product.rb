@@ -111,11 +111,15 @@ class SuppliersPlugin::BaseProduct < Product
 
   # just in case the from_products is nil
   def product_category_with_default
-    product_category_without_default || self.class.default_product_category(self.environment)
+    self.product_category_without_default or self.class.default_product_category(self.environment)
+  end
+  def product_category_id_with_default
+    self.product_category_id_without_default or self.product_category_with_default.id
   end
   alias_method_chain :product_category, :default
+  alias_method_chain :product_category_id, :default
   def unit_with_default
-    unit_without_default || self.class.default_unit
+    self.unit_without_default or self.class.default_unit
   end
   alias_method_chain :unit, :default
 
