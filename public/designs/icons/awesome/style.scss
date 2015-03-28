@@ -22,6 +22,10 @@ $fa-font-path: "fonts";
   @extend .fa-plus:before;
 }
 
+.icon-less:before {
+  @extend .fa-minus:before;
+}
+
 .icon-menu-search:before,
 .icon-search:before {
   @extend .fa-search:before;
