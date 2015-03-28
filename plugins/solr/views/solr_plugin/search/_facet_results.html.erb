@@ -21,10 +21,10 @@
       <% if facet_count > less_options_limit %>
         <br />
         <% if (@all_facets) %>
-          <% btn_icon = "icon-more" %>
+          <% btn_icon = "more" %>
           <% btn_label = "See more options" %>
         <% else %>
-          <% btn_icon = "icon-less" %>
+          <% btn_icon = "less" %>
           <% btn_label = "See less options" %>
         <% end %>
         <%= button_to_function btn_icon, _(btn_label),
