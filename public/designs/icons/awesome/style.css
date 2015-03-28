@@ -489,7 +489,7 @@
 .icon-new:before {
   content: ""; }
 
-.fa-minus:before {
+.fa-minus:before, .icon-less:before {
   content: ""; }
 
 .fa-asterisk:before {
