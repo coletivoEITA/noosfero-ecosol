@@ -7,6 +7,7 @@ module SolrPlugin::FacetsBrowse
   def facets_browse
     @asset = params[:asset_key].to_sym
     @asset_class = asset_class(@asset)
+    @all_facets_enabled = true
 
     @facets_only = true
     send @asset
