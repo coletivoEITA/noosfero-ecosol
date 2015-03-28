@@ -48,12 +48,15 @@ class SolrPlugin::Base < Noosfero::Plugin
 
   	# General queries:
     category = options.delete :category
-  	empty_query = empty_query? query, category
+    filter = options.delete :filter
   	klass = asset_class asset
-    scope = scope.send options.delete :filter if options[:filter]
 
   	solr_options = build_solr_options asset, klass, scope, category
-    solr_options.merge! products_options(user) if empty_query and klass == Product
+    if klass == Product
+      solr_options.merge! products_options user, filter
+    else
+      scope = scope.send :filter if filter.present?
+    end
     solr_options.merge! options
 
     scope.find_by_contents query, paginate_options, solr_options
@@ -95,7 +98,7 @@ class SolrPlugin::Base < Noosfero::Plugin
       render 'solr_plugin/search/search_pre_contents'
     end
   end
-  
+
   def search_post_contents
     lambda do
       render 'solr_plugin/search/search_post_contents'
@@ -180,16 +183,15 @@ class SolrPlugin::Base < Noosfero::Plugin
     filter_queries
   end
 
-  def products_options person
-    geosearch = person and person.lat and person.lng
+  def products_options person, filter = nil
+    solr_options = {}
+    geosearch = filter == 'closest'
 
     if geosearch
-      options.merge({
-        alternate_query: "{!boost b=recip(geodist(),#{"%e" % (1.to_f/DistBoost)},1,1)}",
-        latitude: person.lat,
-        longitude: person.lng })
+      solr_options.merge! alternate_query: "{!boost b=recip(geodist(),#{"%e" % (1.to_f/DistBoost)},1,1)}",
+        latitude: person.lat, longitude: person.lng
     else
-      options.merge({boost_functions: ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']})
+      solr_options.merge! boost_functions: ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']
     end
   end
 
