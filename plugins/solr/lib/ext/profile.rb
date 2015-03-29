@@ -124,7 +124,8 @@ class Profile
         multi: true, proc: method(:solr_plugin_f_categories_proc).to_proc, label: proc { |env| solr_plugin_f_categories_label_proc(env) }, label_abbrev: proc{ |env| solr_plugin_f_categories_label_abbrev_proc(env) },
       },
       #solr_plugin_f_profile_type: {
-      #  label: c_('Type'), proc: method(:solr_plugin_f_profile_type_proc).to_proc,
+      #  label: c_('Type'), type_if: proc{ |klass| klass.kind_of? Enterprise },
+      #  proc: method(:solr_plugin_f_profile_type_proc).to_proc,
       #},
     }, category_query: proc { |c| "solr_plugin_category_filter:#{c.id}" },
     order: [:solr_plugin_f_region, :solr_plugin_f_categories, :solr_plugin_f_enabled, :solr_plugin_f_profile_type]
