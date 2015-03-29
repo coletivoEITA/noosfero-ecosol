@@ -17,8 +17,8 @@
                 :parent_id, profile, default_folder, {}, {},
                 "type='Folder' or type='Gallery'"
           ) %>
+          <%= button(:newfolder, _('New folder'), '#', :id => 'new-folder-button') %>
         </div>
-        <%= button(:newfolder, _('New folder'), '#', :id => 'new-folder-button') %>
         <p><%= file_field_tag('file', :multiple => true) %></p>
       <% end %>
     </div>
