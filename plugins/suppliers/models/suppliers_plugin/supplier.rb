@@ -33,7 +33,7 @@ class SuppliersPlugin::Supplier < ActiveRecord::Base
 
   attr_accessor :dont_destroy_dummy, :identifier_from_name
 
-  before_validation :set_identifier, if: :dummy?, on: :create
+  before_validation :fill_identifier, if: :dummy?
   before_destroy :destroy_consumer_products
 
   def self.new_dummy attributes
@@ -106,6 +106,11 @@ class SuppliersPlugin::Supplier < ActiveRecord::Base
     else
       self.profile.identifier = Digest::MD5.hexdigest rand.to_s
     end
+  end
+
+  def fill_identifier
+    return if self.profile.identifier.present?
+    set_identifier
   end
 
   def add_admins
