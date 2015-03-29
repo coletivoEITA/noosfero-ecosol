@@ -113,11 +113,12 @@ class Profile
 
   acts_as_faceted fields: {
       solr_plugin_f_enabled: {
-        label: _('Situation'), type_if: proc { |klass| klass.kind_of?(Enterprise) },
+        label: _('Situation'), type_if: proc{ |klass| klass.kind_of? Enterprise },
         proc: method(:solr_plugin_f_enabled_proc).to_proc
       },
       solr_plugin_f_region: {
-        label: c_('City'), proc: method(:solr_plugin_f_region_proc).to_proc,
+        label: c_('City'), type_if: proc{ |klass| not klass.kind_of? Community },
+        proc: method(:solr_plugin_f_region_proc).to_proc,
       },
       solr_plugin_f_categories: {
         multi: true, proc: method(:solr_plugin_f_categories_proc).to_proc, label: proc { |env| solr_plugin_f_categories_label_proc(env) }, label_abbrev: proc{ |env| solr_plugin_f_categories_label_abbrev_proc(env) },
