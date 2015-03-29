@@ -1,5 +1,5 @@
 <div id="facets-menu">
-  <% @asset_class.map_facets_for(environment).each do |facet| %>
+  <% @asset_class.map_facets_for(self).each do |facet| %>
     <%= render 'solr_plugin/search/facet_results', facet: facet %>
   <% end %>
 </div>

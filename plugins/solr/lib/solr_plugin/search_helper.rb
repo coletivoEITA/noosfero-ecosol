@@ -49,6 +49,13 @@ module SolrPlugin::SearchHelper
     communities: N_("%s communities found"),
   }
 
+  def empty_search?
+    @query.blank? and params[:facet].blank? and @category.blank?
+  end
+  def empty_query?(query, category)
+    category.nil? && query.blank?
+  end
+
   def solr_filters_queries asset
     case asset
     when :products
@@ -60,10 +67,6 @@ module SolrPlugin::SearchHelper
     else
       ['solr_plugin_public:true']
     end
-  end
-
-  def empty_query?(query, category)
-    category.nil? && query.blank?
   end
 
   def asset_class(asset)

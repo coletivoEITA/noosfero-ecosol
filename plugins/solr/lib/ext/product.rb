@@ -86,7 +86,7 @@ class Product
   end
 
   acts_as_faceted fields: {
-      solr_plugin_f_category: {label: _('Related products')},
+      solr_plugin_f_category: {label: _('Related products'), context_criteria: proc{ !empty_search? } },
       solr_plugin_f_region: {label: c_('City'), proc: method(:solr_plugin_f_region_proc).to_proc},
       solr_plugin_f_qualifier: {label: c_('Qualifiers'), proc: method(:solr_plugin_f_qualifier_proc).to_proc},
     }, category_query: proc { |c| "solr_plugin_category_filter:#{c.id}" },
