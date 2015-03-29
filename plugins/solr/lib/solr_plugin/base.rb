@@ -188,7 +188,7 @@ class SolrPlugin::Base < Noosfero::Plugin
     geosearch = filter == 'closest'
 
     if geosearch
-      solr_options.merge! alternate_query: "{!boost b=recip(geodist(),#{"%e" % (1.to_f/DistBoost)},1,1)}",
+      solr_options.merge! sort: "geodist() asc",
         latitude: person.lat, longitude: person.lng
     else
       solr_options.merge! boost_functions: ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']
