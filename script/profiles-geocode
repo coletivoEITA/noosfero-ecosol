@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+require_relative '../config/environment'
+
+Geocoder.configure timeout: 30
+
+Profile.where(lat: nil, lng: nil).find_each do |profile|
+  next if profile.city.blank? or profile.state.blank?
+
+  address = profile.address || ''
+  country = if profile.country.present? then profile.country else profile.environment.country_name end
+
+  address.gsub! 'BAIRRO:', ''
+  address.gsub! 'CEP:', ''
+  address.squish!
+  address += ", #{profile.city}" if profile.city.present?
+  address += ", #{profile.state}" if profile.state.present?
+  address += ", #{country}" if country.present?
+  
+  pp profile
+  puts address
+  profile.lat, profile.lng = Geocoder.coordinates address
+  puts profile.lat, profile.lng
+
+  profile.save!
+end
