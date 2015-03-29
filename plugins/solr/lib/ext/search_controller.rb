@@ -3,7 +3,7 @@ require_dependency 'solr_plugin/facets_browse'
 require_dependency 'solr_plugin/search_helper'
 
 SearchController.helper SolrPlugin::SearchHelper
-SearchController.include SolrPlugin::FacetsBrowse
+SearchController.send :include, SolrPlugin::FacetsBrowse
 
 SearchController.class_eval do
   before_filter :solr_enterprise, only: [:enterprises]
