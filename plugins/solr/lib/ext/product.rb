@@ -85,6 +85,10 @@ class Product
     (price.nil? or price.zero?) ? nil : price
   end
 
+  def solr_plugin_unarchived
+    !self.archived
+  end
+
   acts_as_faceted fields: {
       solr_plugin_f_category: {label: _('Related products'), context_criteria: proc{ !empty_search? } },
       solr_plugin_f_region: {label: c_('City'), proc: method(:solr_plugin_f_region_proc).to_proc},
@@ -113,7 +117,8 @@ class Product
       {solr_plugin_public: :boolean},
       {environment_id: :integer}, {profile_id: :integer},
       {enabled: :boolean}, {solr_plugin_category_filter: :integer},
-      {available: :boolean}, {highlighted: :boolean},
+      {available: :boolean}, {archived: :boolean}, {highlighted: :boolean},
+      {solr_plugin_unarchived: :boolean},
       # fields for autocompletion
       {solr_plugin_ac_name: :ngram_text},
       {solr_plugin_ac_category: :ngram_text},
