@@ -53,6 +53,7 @@ module SolrPlugin
         def map_facets_for context
           facets_order.map do |id|
             facet = facet_by_id id
+            next unless facet
             next if criteria = facet[:context_criteria] and !context.instance_exec(&criteria)
             next if type_if = facet[:type_if] and !type_if.call(self.new)
 
