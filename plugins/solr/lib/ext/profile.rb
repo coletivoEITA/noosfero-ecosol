@@ -79,8 +79,8 @@ class Profile
 
   def self.solr_plugin_f_enabled_proc facet, id_count_arr
     id_count_arr.map do |enabled, count|
-      text = enabled == "true" ? true : false
-      text = enabled ? s_('facets|Enabled') : s_('facets|Not enabled')
+      enabled = enabled == "true" ? true : false
+      text = if enabled then s_('facets|Enabled') else s_('facets|Not enabled') end
       [enabled, text, count]
     end
   end
