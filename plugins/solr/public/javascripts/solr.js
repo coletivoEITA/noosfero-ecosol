@@ -9,7 +9,7 @@ solr = {
 
       if (menu.hasClass('less') && wrap.find('.facet-menu.more').length == 0) {
         $.get(url, function(data) {
-          wrap.append(data)
+          wrap.append($(data).find('.facet-menu'))
           wrap.find('.facet-menu.less').hide()
         })
       } else {
