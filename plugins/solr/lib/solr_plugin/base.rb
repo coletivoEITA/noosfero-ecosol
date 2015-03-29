@@ -70,14 +70,14 @@ class SolrPlugin::Base < Noosfero::Plugin
     when :catalog
       klass = Product
       solr_options[:query_fields] = %w[solr_plugin_ac_name^100 solr_plugin_ac_category^1000]
-      solr_options[:highlight] = {:fields => 'name'}
+      solr_options[:highlight] = {fields: 'name'}
       solr_options[:filter_queries] = scopes_to_solr_options scope, klass, options
     when :products
       solr_options.merge! products_options(user)
     end
     solr_options[:default_field] = 'ngramText'
 
-    result = {:results => scope.find_by_solr(query, solr_options).results}
+    result = {results: scope.find_by_solr(query, solr_options).results}
     result
   end
 
@@ -85,7 +85,7 @@ class SolrPlugin::Base < Noosfero::Plugin
     case asset
     when :catalog
       {
-        :select_options => CatalogSortOptions.map do |key, options|
+        select_options: CatalogSortOptions.map do |key, options|
           option = options[:option]
           [_(option[0]), option[1]]
         end,

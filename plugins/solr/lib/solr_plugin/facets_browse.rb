@@ -13,7 +13,7 @@ module SolrPlugin::FacetsBrowse
     send @asset
     load_facets
 
-    @facet = @asset_class.map_facets_for(environment).find { |facet| facet[:id] == params[:facet_id] }
+    @facet = @asset_class.map_facets_for(self).find{ |facet| facet[:id] == params[:facet_id] }
     raise 'Facet not found' if @facet.nil?
     render 'solr_plugin/search/facets_browse'
   end

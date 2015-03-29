@@ -57,7 +57,7 @@ module SolrPlugin
             next if type_if = facet[:type_if] and !type_if.call(self.new)
 
             if facet[:multi]
-              facet[:label].call(context.environment).map do |label_id, label|
+              facet[:label].call(context.send(:environment)).map do |label_id, label|
                 facet.merge({id: facet[:id].to_s+'_'+label_id.to_s, solr_field: facet[:id], label_id: label_id, label: label})
               end
             else
