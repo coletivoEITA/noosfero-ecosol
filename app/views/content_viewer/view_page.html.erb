@@ -72,6 +72,21 @@
 
 <% if @page.accept_comments? || @comments_count > 0 %>
   <div class="comments" id="comments_list">
+    <!-- Testing Disqus in Cirandas -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'cirandas';
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    <!-- End of Disqus: below starts normal noosfero commenting -->
+
     <h3 <%= 'class="no-comments-yet"' if @comments_count == 0 %>>
       <%= display_number_of_comments(@comments_count) %>
     </h3>
