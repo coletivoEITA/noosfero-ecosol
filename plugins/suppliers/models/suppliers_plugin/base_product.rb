@@ -76,6 +76,10 @@ class SuppliersPlugin::BaseProduct < Product
     scope
   end
 
+  def self.archive_orphans
+    # TODO
+  end
+
   # replace available? to use the replaced default_item method
   def available?
     self.available
@@ -87,7 +91,10 @@ class SuppliersPlugin::BaseProduct < Product
   alias_method_chain :available, :supplier
 
   def dependent?
-    self.from_products.length == 1
+    self.from_products.length >= 1
+  end
+  def orphan?
+    !self.dependent?
   end
 
   def minimum_selleable
