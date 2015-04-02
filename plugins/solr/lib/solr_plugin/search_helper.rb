@@ -6,38 +6,44 @@ module SolrPlugin::SearchHelper
   DistFilt = 200
   DistBoost = 50
 
-  CatalogSortOptions = {
-    relevance: {option: ['Relevance', ''], solr: '', empty_solr: 'solr_plugin_available_sortable desc, solr_plugin_highlighted_sortable desc, solr_plugin_name_sortable asc'},
-    name: {option: ['Name', 'name'], solr: 'solr_plugin_available_sortable desc, solr_plugin_name_sortable asc'},
-    price: {option: ['Lowest price', 'price'], solr: 'solr_plugin_available_sortable desc, solr_plugin_price_sortable asc'},
-    newest: {option: ['Newest', 'newest'], solr: 'solr_plugin_available_sortable desc, created_at desc'},
-    updated: {option: ['Last updated', 'updated'], solr: 'solr_plugin_available_sortable desc, updated_at desc'},
-  }
-
   SortOptions = {
-    products: ActiveSupport::OrderedHash[ :none, {label: _('Relevance')},
-      :more_recent, {label: c_('More recent'), solr_opts: {sort: 'updated_at desc, score desc'}},
-      :name, {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
-      :closest, {label: _('Closest to me'), if: proc{ logged_in? && (profile=current_user.person).lat && profile.lng },
+    catalog: {
+      relevance: {option: ['Relevance', ''], solr_opts: {}, empty_sort: 'solr_plugin_available_sortable desc, solr_plugin_highlighted_sortable desc, solr_plugin_name_sortable asc'},
+      name: {option: ['Name', 'name'], solr_opts: {sort: 'solr_plugin_available_sortable desc, solr_plugin_name_sortable asc'}},
+      price: {option: ['Lowest price', 'price'], solr_opts: {sort: 'solr_plugin_available_sortable desc, solr_plugin_price_sortable asc'}},
+      newest: {option: ['Newest', 'newest'], solr_opts: {sort: 'solr_plugin_available_sortable desc, created_at desc'}},
+      updated: {option: ['Last updated', 'updated'], solr_opts: {sort: 'solr_plugin_available_sortable desc, updated_at desc'}},
+    },
+    products: {
+      none: {label: _('Relevance')},
+      more_recent: {label: c_('More recent'), solr_opts: {sort: 'updated_at desc, score desc'}},
+      #more_recent: {label: c_('More recent'), solr_opts: {boost_functions: ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']}},
+      name: {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
+      closest: {label: _('Closest to me'), if: proc{ logged_in? && (profile=current_user.person).lat && profile.lng },
         solr_opts: {sort: "geodist() asc",
           latitude: proc{ current_user.person.lat }, longitude: proc{ current_user.person.lng }}},
-    ],
-    events: ActiveSupport::OrderedHash[ :none, {label: _('Relevance')},
-      :name, {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
-    ],
-    articles: ActiveSupport::OrderedHash[ :none, {label: _('Relevance')},
-      :name, {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
-      :more_recent, {label: c_('More recent'), solr_opts: {sort: 'updated_at desc, score desc'}},
-    ],
-    enterprises: ActiveSupport::OrderedHash[ :none, {label: _('Relevance')},
-      :name, {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
-    ],
-    people: ActiveSupport::OrderedHash[ :none, {label: _('Relevance')},
-      :name, {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
-    ],
-    communities: ActiveSupport::OrderedHash[ :none, {label: _('Relevance')},
-      :name, {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
-    ],
+    },
+    events: {
+      none: {label: _('Relevance')},
+      name: {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
+    },
+    articles: {
+      none: {label: _('Relevance')},
+      name: {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
+      more_recent: {label: c_('More recent'), solr_opts: {sort: 'updated_at desc, score desc'}},
+    },
+    enterprises: {
+      none: {label: _('Relevance')},
+      name: {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
+    },
+    people: {
+      none: {label: _('Relevance')},
+      name: {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
+    },
+    communities: {
+      none: {label: _('Relevance')},
+      name: {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
+    },
   }
 
   TotalFound = {
