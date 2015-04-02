@@ -1,6 +1,6 @@
 module PluginsHelper
 
-  # see also Noosfero::Plugin::HotSpot::Dispatchers
+  include Noosfero::Plugin::HotSpot
 
   def plugins_product_tabs
     @plugins.dispatch(:product_tabs, @product).map do |tab|
