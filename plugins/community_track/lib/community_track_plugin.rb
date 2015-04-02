@@ -25,7 +25,7 @@ class CommunityTrackPlugin < Noosfero::Plugin
     end
   end
 
-  def self.extra_blocks
+  def extra_blocks
     { CommunityTrackPlugin::TrackListBlock => {:position => 1}, CommunityTrackPlugin::TrackCardListBlock => {} }
   end
 

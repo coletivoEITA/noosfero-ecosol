@@ -8,7 +8,7 @@ class PeopleBlockPlugin < Noosfero::Plugin
     _("A plugin that adds a people block")
   end
 
-  def self.extra_blocks
+  def extra_blocks
     {
       PeopleBlock => {:type => Environment},
       MembersBlock => {:type => Community},

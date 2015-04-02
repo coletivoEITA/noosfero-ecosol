@@ -1,5 +1,7 @@
 module PluginsHelper
 
+  # see also Noosfero::Plugin::HotSpot::Dispatchers
+
   def plugins_product_tabs
     @plugins.dispatch(:product_tabs, @product).map do |tab|
       {:title => tab[:title], :id => tab[:id], :content => instance_exec(&tab[:content])}
@@ -45,3 +47,4 @@ module PluginsHelper
   end
 
 end
+

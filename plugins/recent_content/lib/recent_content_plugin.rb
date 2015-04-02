@@ -10,7 +10,7 @@ class RecentContentPlugin < Noosfero::Plugin
     _("A plugin that adds a block where you can display the content of any of your blogs.")
   end
 
-  def self.extra_blocks
+  def extra_blocks
     {
       RecentContentBlock => {:position => ['1','2','3'] }
     }

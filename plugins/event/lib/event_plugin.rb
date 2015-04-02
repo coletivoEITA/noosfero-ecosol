@@ -8,7 +8,7 @@ class EventPlugin < Noosfero::Plugin
     _("Include a new block to show the environment's or profiles' events information")
   end
 
-  def self.extra_blocks
+  def extra_blocks
     { EventPlugin::EventBlock => { :type => [Community, Person, Enterprise, Environment] } }
   end
 

@@ -1,5 +1,7 @@
 class Noosfero::Plugin::Manager
 
+  include Noosfero::Plugin::HotSpot::Dispatchers
+
   attr_reader :environment
   attr_reader :context
 
@@ -75,23 +77,24 @@ class Noosfero::Plugin::Manager
     inject(data){ |data, plugin| data = plugin.send(property, data) }
   end
 
-  def parse_macro(macro_name, macro, source = nil)
-    macro_instance = enabled_macros[macro_name] || default_macro
-    macro_instance.convert(macro, source)
-  end
-
   def enabled_plugins
     @enabled_plugins ||= (Noosfero::Plugin.all & environment.enabled_plugins).map do |plugin|
       Noosfero::Plugin.load_plugin_identifier(plugin).new context
     end
   end
+  alias_method :plugins, :enabled_plugins
 
   def default_macro
     @default_macro ||= Noosfero::Plugin::Macro.new(context)
   end
 
+  def parse_macro(macro_name, macro, source = nil)
+    macro_instance = enabled_macros[macro_name] || default_macro
+    macro_instance.convert(macro, source)
+  end
+
   def enabled_macros
-    @enabled_macros ||= dispatch(:macros).inject({}) do |memo, macro|
+    @enabled_macros ||= plugins_macros.inject({}) do |memo, macro|
       memo.merge!(macro.identifier => macro.new(context))
     end
   end

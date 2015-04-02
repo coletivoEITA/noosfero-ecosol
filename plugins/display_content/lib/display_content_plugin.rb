@@ -10,7 +10,7 @@ class DisplayContentPlugin < Noosfero::Plugin
     _("A plugin that adds a block where you could choose any of your content and display it.")
   end
 
-  def self.extra_blocks
+  def extra_blocks
     {
       DisplayContentBlock => {}
     }
