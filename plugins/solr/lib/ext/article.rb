@@ -106,7 +106,9 @@ class Article
     boost: proc { |a| 10 if a.profile && a.profile.enabled },
     if: proc{ |a| ! ['RssFeed'].include?(a.class.name) }
 
-  handle_asynchronously :solr_save
-  handle_asynchronously :solr_destroy
+  # we don't need this with NRT from solr 5
+  #handle_asynchronously :solr_save
+  # solr_destroy don't work with delayed_job, as AR won't be found
+  #handle_asynchronously :solr_destroy
 
 end
