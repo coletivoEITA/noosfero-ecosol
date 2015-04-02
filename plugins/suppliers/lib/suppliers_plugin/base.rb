@@ -37,3 +37,5 @@ class SuppliersPlugin::Base < Noosfero::Plugin
 
 end
 
+# make Product#decendants work to make it searchable
+require 'suppliers_plugin/distributed_product'

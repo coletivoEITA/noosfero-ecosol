@@ -11,3 +11,4 @@ module SuppliersPlugin
   end
 
 end
+
