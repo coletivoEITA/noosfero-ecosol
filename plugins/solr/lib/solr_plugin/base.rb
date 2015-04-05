@@ -55,6 +55,10 @@ class SolrPlugin::Base < Noosfero::Plugin
     solr_options.merge! options
 
     scope.find_by_contents query, paginate_options, solr_options
+  rescue Exception => e
+     ExceptionNotifier.notify_exception e,
+       env: context.request.env, data: {message: "Solr search failed"}
+     super
   end
 
   def autocomplete asset, scope, query, paginate_options={}, options={}
