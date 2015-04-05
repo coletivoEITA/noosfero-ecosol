@@ -43,7 +43,7 @@ class Noosfero::Plugin::Manager
     # check if defined to avoid crash, as there is hotspots using method_missing
     return unless plugin.respond_to? event
     method = plugin.method event
-    method.call *args if method.owner != Noosfero::Plugin
+    method.call *args if method.owner != Noosfero::Plugin::HotSpot::Definitions
   end
 
   def dispatch_first(event, *args)
