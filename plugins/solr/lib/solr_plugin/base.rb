@@ -21,7 +21,7 @@ class SolrPlugin::Base < Noosfero::Plugin
     order = params[:order]
     order = if order.blank? then :relevance else order.to_sym end
     if sort = SortOptions[:catalog][order] rescue nil
-      solr_options[:sort] = if query.blank? and sort[:empty_sort] then sort[:empty_sort] else sort[:solr_opts][:sort] end
+      solr_options.merge! (if query.blank? and sort[:empty_solr_opts] then sort[:empty_solr_opts] else sort[:solr_opts] end)
     end
     result = scope.find_by_contents query, paginate_options, solr_options
 
