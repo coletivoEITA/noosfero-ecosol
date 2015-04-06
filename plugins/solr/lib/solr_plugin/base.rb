@@ -47,7 +47,7 @@ class SolrPlugin::Base < Noosfero::Plugin
     return catalog_find_by_contents asset, scope, query, paginate_options, options if asset == :catalog
 
     category = options.delete :category
-    filter = options.delete :filter
+    filter = options.delete(:filter).to_sym
   	klass = asset_class asset
 
   	solr_options = build_solr_options asset, klass, scope, category
@@ -182,7 +182,7 @@ class SolrPlugin::Base < Noosfero::Plugin
 
   def sort_options asset, klass, filter
     options = SolrPlugin::SearchHelper::SortOptions[asset]
-    options[:solr_opts][:filter] rescue {}
+    options[filter][:solr_opts] rescue {}
   end
 
 end
