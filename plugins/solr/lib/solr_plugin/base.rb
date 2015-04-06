@@ -56,6 +56,8 @@ class SolrPlugin::Base < Noosfero::Plugin
 
     scope.find_by_contents query, paginate_options, solr_options
   rescue Exception => e
+    # solr seaches depends on a constant translation of named scopes SQL's into solr filtered fields
+    # so while we can't keep up it core changes, report the error and use default like search
     if Rails.env.production?
       ExceptionNotifier.notify_exception e,
         env: context.request.env, data: {message: "Solr search failed"}
