@@ -30,7 +30,7 @@
 
     <li class="product-link"><%= link_to_product_from_catalog product, url_options: catalog_params %></li>
 
-    <% if @scope == 'all' %>
+    <% if @show_supplier %>
       <li class="product-supplier">
         <span><%= _('Offered by') %>:</span> <%= link_to product.profile.short_name, product.profile.url %>
       </li>

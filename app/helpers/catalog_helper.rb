@@ -24,6 +24,7 @@ module CatalogHelper
       @context = profile
       @ar_scope = profile.products.unarchived
     end
+    @show_supplier = @scope == 'all'
   end
 
   def catalog_load_index options = {}
