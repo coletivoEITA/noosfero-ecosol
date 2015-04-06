@@ -1,8 +1,9 @@
 <div id='search-content'>
   <%= plugins_search_pre_contents %>
 
-  <% if @asset == :product %>
-    <%= render '_search_products_content' %>
+  <% if @asset == :products %>
+    <% @show_supplier = true %>
+    <%= render 'search_products_content' %>
   <% else %>
     <%= display_results(@searches, @asset) %>
     <% if params[:display] != 'map' %>
