@@ -17,8 +17,9 @@ module SolrPlugin::SearchHelper
     },
     products: {
       none: {label: _('Relevance')},
-      more_recent: {label: c_('More recent'), solr_opts: {sort: 'updated_at desc, score desc'}},
-      #more_recent: {label: c_('More recent'), solr_opts: {boost_functions: ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']}},
+      # FIXME: retuns no results
+      #more_recent: {label: c_('More recent'), solr_opts: {sort: 'updated_at desc, score desc'}},
+      more_recent: {label: c_('More recent'), solr_opts: {boost_functions: ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']}},
       name: {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
       closest: {label: _('Closest to me'), if: proc{ logged_in? && (profile=current_user.person).lat && profile.lng },
         solr_opts: {sort: "geodist() asc",
