@@ -77,7 +77,7 @@ class SearchController < PublicController
   end
 
   def products
-    @scope = @environment.products.public.includes(
+    @scope = @environment.products.enabled.public.includes(
       :product_category, :unit, :region, :image, {inputs: [:product_category]},
       {product_qualifiers: [:qualifier, :certifier]},
       {price_details: [:production_cost]},
