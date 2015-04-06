@@ -76,8 +76,23 @@ class SuppliersPlugin::BaseProduct < Product
     scope
   end
 
+  def self.orphans_ids
+    # FIXME: need references from rails4 to do it without raw query
+    result = self.connection.execute <<-SQL
+SELECT products.id FROM products
+LEFT OUTER JOIN suppliers_plugin_source_products ON suppliers_plugin_source_products.to_product_id = products.id
+LEFT OUTER JOIN products from_products_products ON from_products_products.id = suppliers_plugin_source_products.from_product_id
+WHERE products.type IN (#{(self.descendants << self).map{ |d| "'#{d}'" }.join(',')})
+GROUP BY products.id HAVING count(from_products_products.id) = 0;
+SQL
+    result.values
+  end
+
   def self.archive_orphans
-    # TODO
+    # need full save to trigger search index
+    self.where(id: self.orphans_ids).find_each batch_size: 50 do |product|
+      product.update_attribute :archived, true
+    end
   end
 
   # replace available? to use the replaced default_item method
