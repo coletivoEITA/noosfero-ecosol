@@ -47,7 +47,7 @@ class SolrPlugin::Base < Noosfero::Plugin
     return catalog_find_by_contents asset, scope, query, paginate_options, options if asset == :catalog
 
     category = options.delete :category
-    filter = options.delete(:filter).to_sym
+    filter = options.delete(:filter).to_s.to_sym
   	klass = asset_class asset
 
   	solr_options = build_solr_options asset, klass, scope, category
