@@ -61,7 +61,7 @@ module OrdersPlugin::Report
           stock_value = 0
           unit = product.unit.singular rescue ''
           total_price_formula = "=F#{pl}*I#{pl}"
-          total_price_value = product.quantity_ordered * product.price
+          total_price_value = product.quantity_ordered * product.price rescue 0
 
           #FIXME: correct this calc for stock
           selled_sum += total_price_value
