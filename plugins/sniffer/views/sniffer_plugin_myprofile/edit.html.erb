@@ -1,0 +1,20 @@
+<h1> <%= _('Buyer interests') %> </h1>
+
+<%= form_for(@sniffer_profile, :url => {:action => 'edit'}, :method => 'post') do |f| %>
+
+  <div id='sniffer-plugin-product-select'>
+    <div><%= _('Products and services of interest. Type some characters and choose your interests from our list.') %></div>
+
+    <% current_categories = @sniffer_profile.product_categories.collect{ |i| {:id => i.id, :name => i.name} } %>
+
+    <%= token_input_field_tag('sniffer_plugin_profile[product_category_string_ids]', 'sniffer_product_category_string_ids', { :action => 'product_categories' }, {search_delay: 150, pre_populate: current_categories, prevent_duplicates: true, hint_text: _('Type in an keyword') }) %>
+
+  </div>
+
+  <% button_bar do %>
+    <%= submit_button(:save, _('Save')) %>
+    <%= button :back, _('Back to control panel'), :controller => 'profile_editor' %>
+    <!--<%= button :back, _('Back to Interests'), :controller => 'profile', :action => 'interests' %>-->
+  <% end %>
+<% end %>
+
