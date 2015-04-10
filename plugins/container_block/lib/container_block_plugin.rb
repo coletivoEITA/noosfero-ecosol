@@ -8,7 +8,7 @@ class ContainerBlockPlugin < Noosfero::Plugin
     _("A plugin that add a container block.")
   end
 
-  def self.extra_blocks
+  def extra_blocks
     { ContainerBlockPlugin::ContainerBlock => {} }
   end
 

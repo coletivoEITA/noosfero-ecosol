@@ -61,7 +61,6 @@ class Product
   scope :from_supplier_id, lambda { |supplier_id| { conditions: ['suppliers_plugin_suppliers.id = ?', supplier_id] } }
 
   after_create :distribute_to_consumers
-  after_destroy :destroy_dependent
 
   def own?
     self.class == Product
@@ -109,6 +108,21 @@ class Product
     distributed_product ||= SuppliersPlugin::DistributedProduct.create! profile: consumer, from_products: [self]
   end
 
+  def destroy_dependent
+    self.to_products.each do |to_product|
+      to_product.destroy if to_product.dependent?
+    end
+  end
+
+  # before_destroy and after_destroy don't work,
+  # see http://stackoverflow.com/questions/14175330/associations-not-loaded-in-before-destroy-callback
+  def destroy
+    self.class.transaction do
+      self.destroy_dependent
+      super
+    end
+  end
+
   protected
 
   def distribute_to_consumers
@@ -119,13 +133,5 @@ class Product
       self.distribute_to_consumer consumer.profile
     end
   end
-
-  # to_products doesn't work when triggered from supplier.destroy. delay workaround that
-  def destroy_dependent
-    self.to_products.each do |to_product|
-      to_product.destroy if to_product.dependent?
-    end
-  end
-  handle_asynchronously :destroy_dependent
 
 end

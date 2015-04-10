@@ -18,17 +18,9 @@
     </div>
 
   </div>
-
-  <div>
-    <div class="col-lg-8 col-md-8 col-sm-6 text-left">
-      <h2><%# display_filter @asset, params[:display] if @empty_query %></h2>
-    </div>
-    <div class="col-lg-4 col-md-4 col-sm-6">
-      <%# display_selector @asset, params[:display] %>
-      <%# filters @asset if @empty_query %>
-    </div>
-  </div>
 </div>
 
-<%= render 'solr_plugin/search/facets_column' %>
+<div class="row">
+  <%= render 'solr_plugin/search/facets_column' %>
+  <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
 

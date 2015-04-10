@@ -886,6 +886,7 @@
       layout_helper: 
         start: Início
         orders: Pedidos
+        products: Produtos
         administration: Administração
         volunteering: Voluntariado
     terms: 

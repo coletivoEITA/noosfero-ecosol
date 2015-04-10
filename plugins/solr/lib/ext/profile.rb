@@ -79,8 +79,8 @@ class Profile
 
   def self.solr_plugin_f_enabled_proc facet, id_count_arr
     id_count_arr.map do |enabled, count|
-      text = enabled == "true" ? true : false
-      text = enabled ? s_('facets|Enabled') : s_('facets|Not enabled')
+      enabled = enabled == "true" ? true : false
+      text = if enabled then s_('facets|Enabled') else s_('facets|Not enabled') end
       [enabled, text, count]
     end
   end
@@ -113,28 +113,32 @@ class Profile
 
   acts_as_faceted fields: {
       solr_plugin_f_enabled: {
-        label: _('Situation'), type_if: proc { |klass| klass.kind_of?(Enterprise) },
+        label: _('Situation'), type_if: proc{ |klass| klass.kind_of? Enterprise },
         proc: method(:solr_plugin_f_enabled_proc).to_proc
       },
       solr_plugin_f_region: {
-        label: c_('City'), proc: method(:solr_plugin_f_region_proc).to_proc,
+        label: c_('City'), type_if: proc{ |klass| not klass.kind_of? Community },
+        proc: method(:solr_plugin_f_region_proc).to_proc,
       },
       solr_plugin_f_categories: {
         multi: true, proc: method(:solr_plugin_f_categories_proc).to_proc, label: proc { |env| solr_plugin_f_categories_label_proc(env) }, label_abbrev: proc{ |env| solr_plugin_f_categories_label_abbrev_proc(env) },
       },
-      solr_plugin_f_profile_type: {
-        label: c_('Type'), proc: method(:solr_plugin_f_profile_type_proc).to_proc,
-      },
+      #solr_plugin_f_profile_type: {
+      #  label: c_('Type'), type_if: proc{ |klass| klass.kind_of? Enterprise },
+      #  proc: method(:solr_plugin_f_profile_type_proc).to_proc,
+      #},
     }, category_query: proc { |c| "solr_plugin_category_filter:#{c.id}" },
     order: [:solr_plugin_f_region, :solr_plugin_f_categories, :solr_plugin_f_enabled, :solr_plugin_f_profile_type]
 
   acts_as_searchable fields: facets_fields_for_solr + [:solr_plugin_extra_data_for_index,
       # searched fields
       {name: {type: :text, boost: 2.0}},
-      {identifier: :text}, {nickname: :text},
+      {identifier: :text}, {nickname: :text}, {contact_email: :text},
       # filtered fields
       {solr_plugin_public: :boolean}, {environment_id: :integer},
       {solr_plugin_category_filter: :integer},
+      # scopes
+      {no_templates: :boolean},
       # ordered/query-boosted fields
       {solr_plugin_name_sortable: :string}, {user_id: :integer},
       :enabled, :active, :validated, :public_profile, :visible, :is_template,
@@ -147,7 +151,13 @@ class Profile
     ], facets: facets_option_for_solr,
     boost: proc{ |p| 10 if p.enabled }
 
-  handle_asynchronously :solr_save
-  handle_asynchronously :solr_destroy
+  # we don't need this with NRT from solr 5
+  #handle_asynchronously :solr_save
+  # solr_destroy don't work with delayed_job, as AR won't be found
+  #handle_asynchronously :solr_destroy
+
+  def no_templates
+    !self.is_template
+  end
 
 end

@@ -14,7 +14,7 @@ class Box < ActiveRecord::Base
   end
 
   def acceptable_blocks
-    blocks_classes = if central? then Box.acceptable_center_blocks + plugins.dispatch(:extra_blocks, :type => owner.class, :position => 1) else Box.acceptable_side_blocks + plugins.dispatch(:extra_blocks, :type => owner.class, :position => [2, 3]) end
+    blocks_classes = if central? then Box.acceptable_center_blocks + plugins_extra_blocks(:type => owner.class, :position => 1) else Box.acceptable_side_blocks + plugins_extra_blocks(:type => owner.class, :position => [2, 3]) end
     to_css_selector blocks_classes
   end
 

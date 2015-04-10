@@ -6,6 +6,7 @@ class MacrosHelperTest < ActionView::TestCase
   include ActionView::Helpers::FormOptionsHelper
   include ActionView::Helpers::FormTagHelper
   include ActionView::Helpers::TagHelper
+  include Noosfero::Plugin::HotSpot
 
   CONFIG = {
     :params => [

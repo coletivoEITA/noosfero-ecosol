@@ -863,6 +863,7 @@
       layout_helper: 
         orders: Orders
         start: Start
+        products: Products
         administration: Administration
         volunteering: Volunteering
     terms:

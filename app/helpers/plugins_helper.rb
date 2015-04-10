@@ -1,5 +1,7 @@
 module PluginsHelper
 
+  include Noosfero::Plugin::HotSpot
+
   def plugins_product_tabs
     @plugins.dispatch(:product_tabs, @product).map do |tab|
       {:title => tab[:title], :id => tab[:id], :content => instance_exec(&tab[:content])}
@@ -37,5 +39,12 @@ module PluginsHelper
       instance_exec(&content)
     end.join
   end
+  
+  def plugins_search_post_contents
+    @plugins.dispatch(:search_post_contents).map do |content|
+      instance_exec(&content)
+    end.join
+  end
 
 end
+

@@ -178,6 +178,15 @@ class PluginManagerTest < ActiveSupport::TestCase
     assert_equal Plugin2, manager.fetch_first_plugin(:random_event)
   end
 
+  should 'return nil if missing method is called' do
+    class Plugin1 < Noosfero::Plugin
+    end
+    Noosfero::Plugin.stubs(:all).returns(['PluginManagerTest::Plugin1'])
+    environment.enable_plugin(Plugin1)
+
+    assert_equal nil, @manager.result_for(Plugin1.new, :content_remove_new)
+  end
+
   should 'parse macro' do
     class Plugin1 < Noosfero::Plugin
       def macros
@@ -289,6 +298,46 @@ class PluginManagerTest < ActiveSupport::TestCase
     environment.enable_plugin(Plugin2)
 
     assert_equal [7,9], manager.filter(:invalid_numbers, [1,2,3,4,5,6,7,8,9,10])
+  end
+
+  should 'only call default if value is blank' do
+    class Plugin1 < Noosfero::Plugin
+      def find_by_contents asset, scope, query, paginate_options={}, options={}
+        {results: [1,2,3]}
+      end
+    end
+    Noosfero::Plugin.stubs(:all).returns(['PluginManagerTest::Plugin1'])
+    environment.enable_plugin(Plugin1)
+
+    Noosfero::Plugin.any_instance.expects(:find_by_contents).never
+    @manager.dispatch_first :find_by_contents, :products, environment.products, 'product'
+  end
+
+  should 'not event if it is not defined by plugin' do
+    class Noosfero::Plugin
+      def never_call
+        nil
+      end
+    end
+    class Plugin1 < Noosfero::Plugin
+      def never_call
+        'defined'
+      end
+    end
+    class Plugin2 < Noosfero::Plugin
+    end
+    Noosfero::Plugin.stubs(:all).returns(['PluginManagerTest::Plugin1', 'PluginManagerTest::Plugin2'])
+    environment.enable_plugin(Plugin1)
+    environment.enable_plugin(Plugin2)
+    plugin1 = @manager.enabled_plugins.detect{ |p| p.is_a? Plugin1 }
+    plugin2 = @manager.enabled_plugins.detect{ |p| p.is_a? Plugin2 }
+
+    assert_equal Plugin1, Plugin1.new.method(:never_call).owner
+    assert_equal Noosfero::Plugin, Plugin2.new.method(:never_call).owner
+    # expects never can't be used as it defines the method
+    @manager.expects(:result_for).with(plugin1, :never_call).returns(Plugin1.new.never_call)
+    @manager.expects(:result_for).with(plugin2, :never_call).returns(nil)
+    @manager.dispatch :never_call
   end
 
 end

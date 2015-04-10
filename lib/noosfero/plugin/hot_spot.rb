@@ -1,3 +1,5 @@
+require_relative 'hot_spot/dispatchers'
+
 # This module must be included by classes that contain Noosfero plugin
 # hotspots.
 #
@@ -14,5 +16,7 @@ module Noosfero::Plugin::HotSpot
   def plugins
     @plugins ||= Noosfero::Plugin::Manager.new(environment, self)
   end
+
+  include Noosfero::Plugin::HotSpot::Dispatchers
 
 end

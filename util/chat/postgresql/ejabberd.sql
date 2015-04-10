@@ -75,11 +75,21 @@ CREATE TABLE spool (
 
 CREATE INDEX i_despool ON spool USING btree (username);
 
-
+CREATE VIEW vcard AS
+	SELECT
+	  a.identifier AS username,
+	  E'BEGIN:VCARD\nVERSION:2.1\nFN:' || a.name || E'\nADR;WORK:;;' || 'image_uploads/' || regexp_replace(lpad(b.parent_id::text,((div(length(b.parent_id::text),4)+1)*4)::int,'0'), '(.{4})', E'\1/') || '/' || b.filename || E';;;\nEND:VCARD' AS vcard
+	FROM
+		public.profiles a
+		JOIN public.images b ON (a.image_id=b.parent_id AND thumbnail='thumb')
+	WHERE
+		a.type = 'Person';
+/*
 CREATE TABLE vcard (
     username text PRIMARY KEY,
     vcard text NOT NULL
 );
+*/
 
 CREATE TABLE vcard_search (
     username text NOT NULL,

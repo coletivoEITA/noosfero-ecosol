@@ -177,7 +177,7 @@ class EnvironmentDesignControllerTest < ActionController::TestCase
     class CustomBlock1 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def self.extra_blocks
+      def extra_blocks
         {
           CustomBlock1 => {:type => Environment},
         }
@@ -195,7 +195,7 @@ class EnvironmentDesignControllerTest < ActionController::TestCase
     class CustomBlock4 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def self.extra_blocks
+      def extra_blocks
         {
           CustomBlock1 => {:type => Environment},
           CustomBlock2 => {:type => Enterprise},
@@ -224,7 +224,7 @@ class EnvironmentDesignControllerTest < ActionController::TestCase
     class CustomBlock9 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def self.extra_blocks
+      def extra_blocks
         {
           CustomBlock1 => {:type => Environment, :position => [1]},
           CustomBlock2 => {:type => Environment, :position => 1},
@@ -267,7 +267,7 @@ class EnvironmentDesignControllerTest < ActionController::TestCase
     class CustomBlock9 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def self.extra_blocks
+      def extra_blocks
         {
           CustomBlock1 => {:type => Environment, :position => [1]},
           CustomBlock2 => {:type => Environment, :position => 1},
@@ -309,7 +309,7 @@ class EnvironmentDesignControllerTest < ActionController::TestCase
     class CustomBlock8 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def self.extra_blocks
+      def extra_blocks
         {
           CustomBlock1 => {:type => Person, :position => 1},
           CustomBlock2 => {:type => Community, :position => 1},

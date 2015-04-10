@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0-690-gcb6e853\n"
 "POT-Creation-Date: 2015-03-05 12:10-0300\n"
-"PO-Revision-Date: 2015-02-23 11:36+0200\n"
+"PO-Revision-Date: 2015-03-25 20:52-0300\n"
 "Last-Translator: Michal Čihař <michal@cihar.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero"
 "/plugin-solr/pt/>\n"
@@ -99,12 +99,12 @@ msgid "Sort results by "
 msgstr "Ordenar resultados por "
 
 #: plugins/solr/lib/solr_plugin/search_helper.rb:135
-msgid "%s products offers found"
-msgstr "%s ofertas de produtos encontrados"
+msgid "%s products and/or services found"
+msgstr "%s produtos e/ou serviços encontrados"
 
 #: plugins/solr/lib/solr_plugin/search_helper.rb:136
-msgid "%s articles found"
-msgstr "%s artigos encontrados"
+msgid "%s contents found"
+msgstr "%s conteúdos encontrados"
 
 #: plugins/solr/lib/solr_plugin/search_helper.rb:137
 msgid "%s events found"

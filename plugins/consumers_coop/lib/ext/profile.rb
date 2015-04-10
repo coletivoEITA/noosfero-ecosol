@@ -11,8 +11,6 @@ end
 
 class Profile
 
-  has_many :offered_products, class_name: 'OrdersCyclePlugin::OfferedProduct', dependent: :destroy, order: 'products.name ASC'
-
   def consumers_coop_settings attrs = {}
     @consumers_coop_settings ||= Noosfero::Plugin::Settings.new self, ConsumersCoopPlugin, attrs
     attrs.each{ |a, v| @consumers_coop_settings.send "#{a}=", v }

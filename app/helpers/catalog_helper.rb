@@ -19,11 +19,12 @@ module CatalogHelper
     @scope = params[:scope].to_s
     if @scope == 'all'
       @context = environment
-      @ar_scope = environment.products.enabled.public
+      @ar_scope = environment.products.enabled.public.unarchived
     else
       @context = profile
-      @ar_scope = profile.products
+      @ar_scope = profile.products.unarchived
     end
+    @show_supplier = @scope == 'all'
   end
 
   def catalog_load_index options = {}

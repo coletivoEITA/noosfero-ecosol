@@ -903,25 +903,24 @@ div#notice {
 .msie .search-results-box {
   width: 48%;
 }
-
 #content .no-boxes h1 {
   font-variant: small-caps;
   color: #555753;
   text-align: left;
   border-bottom: 2px solid #2e3436; /*8C0*/
 }
-
 .query {
   display: none;
 }
-
 .controller-search #content .search_form h3 {
   display: none;
 }
-
 .controller-search #content .search_form h4 {
   background: #DDD;
   color: #777;
+}
+.search-hint {
+  padding: 0;
 }
 .controller-search .search-options {
   border: 1px solid #777;
@@ -931,7 +930,6 @@ div#notice {
 .controller-search .search-options ul li {
   position: relative;
 }
-
 .controller-search .search-within select {
   display: block;
   margin-bottom: 5px;
@@ -946,17 +944,11 @@ div#notice {
   position: relative;
   top: 5px;
 }
-
-/*.controller-search a {
-  color: #555753;
-}*/
-
 #search-results h3 {
   color: #555753; /*6A0*/
   font-variant: small-caps;
   margin: 0px;
 }
-
 .search-results-innerbox {
   border: 1px solid #CCC;
   border-top: 2px solid #2e3436;
@@ -987,6 +979,28 @@ ul#assets-menu {
 .controller-search .search-field .formfield {
     width: auto;
     display: table;
+}
+@media (max-width: 500px) {
+  ul#assets-menu {
+    display: none;
+  }
+  #search-filters {
+    margin-top: 0;
+    float: none;
+  }
+}
+@media (min-width: 501px) and (max-width: 767px) {
+  ul#assets-menu {
+    display: none;
+  }
+  #search-filters {
+    margin-top: -40px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  #search-filters {
+    margin-top: -80px;
+  }
 }
 
 /* ==> article.css <== */
@@ -1541,11 +1555,14 @@ div.tooltip-inner {
 .search-results-type-article ul {
   overflow: hidden;
 }
+.controller-search #search-results {
+  margin: 0;
+}
 .controller-search #search-column-left {
   overflow: hidden;
 }
 .controller-search #content .search-results-type-article li {
-  padding: 10px;
+  padding: 0 10px 10px 10px;
 }
 .search-product-item-first-column,
 .search-content-first-column {
@@ -1562,8 +1579,9 @@ div.tooltip-inner {
   margin: 0;
 }
 .search-product-item .search-result-title {
-  font-size: 15px;
+  font-size: 24px;
   display: block;
+  color: #333;
 }
 @media (max-width: 767px) {
   .search-no-image {
@@ -1599,7 +1617,7 @@ div.tooltip-inner {
   }
   .controller-search #content .search-results-type-product li {
     font-size: 13px;
-    padding: 10px;
+    padding: 0 10px 10px 10px;
   }
   .search-content-first-column [class*='icon-'] {
     font-size: 64px;
@@ -1988,6 +2006,10 @@ input.ui-autocomplete-input {
 }
 
 /* CMS management */
+#new-folder-button {
+  margin: -10px 0 15px 0;
+}
+
 .article-controls .btn,
 table.cms-articles a.icon,
 table.cms-articles a.icon-parent-folder,
@@ -2029,4 +2051,5 @@ table.cms-articles .article-name {
 
 .required-field {
   color: #E75252;
+  font-weight: bold;
 }

@@ -79,7 +79,7 @@ class Article
       solr_plugin_f_published_at: {type: :date, label: _('Published date'), queries: {'[* TO NOW-1YEARS/DAY]' => _("Older than one year"),
         '[NOW-1YEARS TO NOW/DAY]' => _("In the last year"), '[NOW-1MONTHS TO NOW/DAY]' => _("In the last month"), '[NOW-7DAYS TO NOW/DAY]' => _("In the last week"), '[NOW-1DAYS TO NOW/DAY]' => _("In the last day")},
         queries_order: ['[NOW-1DAYS TO NOW/DAY]', '[NOW-7DAYS TO NOW/DAY]', '[NOW-1MONTHS TO NOW/DAY]', '[NOW-1YEARS TO NOW/DAY]', '[* TO NOW-1YEARS/DAY]']},
-      :solr_plugin_f_profile_type => {:label => c_('Profile'), :proc => method(:solr_plugin_f_profile_type_proc).to_proc},
+      solr_plugin_f_profile_type: {label: c_('Profile'), proc: method(:solr_plugin_f_profile_type_proc).to_proc},
       solr_plugin_f_category: {label: c_('Categories')},
     }, category_query: proc { |c| "solr_plugin_category_filter:\"#{c.id}\"" },
     order: [:solr_plugin_f_type, :solr_plugin_f_published_at, :solr_plugin_f_profile_type, :solr_plugin_f_category]
@@ -95,7 +95,7 @@ class Article
       {profile_id: :integer}, :language,
       {solr_plugin_category_filter: :integer},
       # ordered/query-boosted fields
-      {:lat => :float}, {:lng => :float},
+      {lat: :float}, {lng: :float},
       {solr_plugin_name_sortable: :string}, :last_changed_by_id, :published_at, :is_image,
       :updated_at, :created_at,
     ], include: [
@@ -104,9 +104,11 @@ class Article
       {categories: {fields: [:name, :path, :slug, :lat, :lng, :acronym, :abbreviation]}},
     ], facets: facets_option_for_solr,
     boost: proc { |a| 10 if a.profile && a.profile.enabled },
-    if: proc{ |a| ! ['RssFeed'].include?(a.class.name) }
+    if: proc{ |a| not a.class.name.in? ['RssFeed'] }
 
-  handle_asynchronously :solr_save
-  handle_asynchronously :solr_destroy
+  # we don't need this with NRT from solr 5
+  #handle_asynchronously :solr_save
+  # solr_destroy don't work with delayed_job, as AR won't be found
+  #handle_asynchronously :solr_destroy
 
 end

@@ -1,5 +1,5 @@
 <h2><%= _('Moderation options') %></h2>
-<% if profile.community? %>
+<% unless profile.closed? %>
   <div style='margin-bottom: 1em'>
     <h4><%= _('Invitation moderation:')%></h4>
   </div>

@@ -1,11 +1,13 @@
 module MacrosHelper
 
+  include PluginsHelper
+
   def macros_in_menu
-    @plugins.dispatch(:macros).reject{ |macro| macro.configuration[:icon_path] }
+    plugins_macros.reject{ |macro| macro.configuration[:icon_path] }
   end
 
   def macros_with_buttons
-    @plugins.dispatch(:macros).reject{ |macro| !macro.configuration[:icon_path] }
+    plugins_macros.reject{ |macro| !macro.configuration[:icon_path] }
   end
 
   def macro_title(macro)
@@ -37,7 +39,7 @@ module MacrosHelper
 
   def include_macro_js_files
     plugins_javascripts = []
-    @plugins.dispatch(:macros).map do |macro|
+    plugins_macros.map do |macro|
       if macro.configuration[:js_files]
         [macro.configuration[:js_files]].flatten.map { |js| plugins_javascripts << macro.plugin.public_path(js) }
       end
@@ -49,7 +51,7 @@ module MacrosHelper
 
   def macro_css_files
     plugins_css = []
-    @plugins.dispatch(:macros).map do |macro|
+    plugins_macros.map do |macro|
       if macro.configuration[:css_files]
         [macro.configuration[:css_files]].flatten.map { |css| plugins_css << macro.plugin.public_path(css) }
       end

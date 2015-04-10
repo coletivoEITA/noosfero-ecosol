@@ -1,8 +1,6 @@
 <li id="<%= comment.anchor %>" class="article-comment">
   <div class="article-comment-inner">
-
   <div class="comment-content comment-logged-<%= comment.author ? 'in' : 'out' %> <%= 'comment-from-owner' if ( comment.author && (profile == comment.author) ) %>">
-
   <% if comment.author %>
     <%= link_to image_tag(profile_icon(comment.author, :minor)) +
                 content_tag('span', comment.author_name, :class => 'comment-info'),

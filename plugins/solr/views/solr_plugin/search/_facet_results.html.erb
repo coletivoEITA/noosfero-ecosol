@@ -1,33 +1,39 @@
 <%
   less_options_limit = 8 if less_options_limit.nil?
+  if @all_facets_enabled
+    btn_icon = "less"
+    btn_label = "See less options"
+  else
+    btn_icon = "more"
+    btn_label = "See more options"
+  end
+  results = @asset_class.map_facet_results facet, params[:facet], @facets, @all_facets, limit: less_options_limit
+  facet_count = results.total_entries
 %>
 
-<div id="facet-menu-<%= facet[:id].to_s %>" class="facet-menu">
-  <%
-    results = @asset_class.map_facet_results facet, params[:facet], @facets, @all_facets, limit: less_options_limit
-    facet_count = results.total_entries
-  %>
-
-  <div class="facet-menu-label">
-    <%= @asset_class.facet_label facet %>
-  </div>
-
-  <% if facet_count > 0 %>
-    <div class="facet-menu-options">
-      <% results.each do |id, label, count| %>
-        <%= facet_link_html facet, params.merge(action: @asset), id, label, count %><br />
-      <% end %>
-
-      <% if facet_count > less_options_limit %>
-        <br />
-        <%= link_to_function c_("Options"),
-          "solr.facets.more(this, '#{url_for(params.merge(action: 'facets_browse', facet_id: facet[:id], asset_key: @asset, escape: false))}');",
-          class: "facet-options-toggle" %>
-        <br />
-      <% end %>
-
+<div class="facet-menu-wrap">
+  <div id="facet-menu-<%= facet[:id].to_s %>" class="facet-menu <%= if @all_facets_enabled then 'more' else 'less' end %>">
+    <div class="facet-menu-label">
+      <%= @asset_class.facet_label facet %>
     </div>
-  <% else %>
-    <span class="facet-any-result-found"><%= _("No filter available") %></span>
-  <% end %>
+
+    <% if facet_count > 0 %>
+      <div class="facet-menu-options">
+        <% results.each do |id, label, count| %>
+          <%= facet_link_html facet, params.merge(action: @asset), id, label, count %><br />
+        <% end %>
+
+        <% if facet_count > less_options_limit %>
+          <br />
+          <%= button_to_function btn_icon, _(btn_label),
+            "solr.facets.more_or_less(this, '#{url_for(params.merge(action: 'facets_browse', facet_id: facet[:id], asset_key: @asset, escape: false))}')",
+            data: {'all-facets' => !!@all_facets_enabled} %>
+          <br />
+        <% end %>
+
+      </div>
+    <% else %>
+      <span class="facet-any-result-found"><%= _("No filter available") %></span>
+    <% end %>
+  </div>
 </div>

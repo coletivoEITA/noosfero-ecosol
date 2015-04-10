@@ -2,6 +2,8 @@ require_dependency 'product'
 
 class Product
 
+  SEARCH_FILTERS[:order] << 'closest'
+
   after_save_reindex [:enterprise], with: :delayed_job
 
   # overwrite on subclasses
@@ -83,8 +85,12 @@ class Product
     (price.nil? or price.zero?) ? nil : price
   end
 
+  def solr_plugin_unarchived
+    !self.archived
+  end
+
   acts_as_faceted fields: {
-      solr_plugin_f_category: {label: _('Related products')},
+      solr_plugin_f_category: {label: _('Related products'), context_criteria: proc{ !empty_search? } },
       solr_plugin_f_region: {label: c_('City'), proc: method(:solr_plugin_f_region_proc).to_proc},
       solr_plugin_f_qualifier: {label: c_('Qualifiers'), proc: method(:solr_plugin_f_qualifier_proc).to_proc},
     }, category_query: proc { |c| "solr_plugin_category_filter:#{c.id}" },
@@ -111,7 +117,8 @@ class Product
       {solr_plugin_public: :boolean},
       {environment_id: :integer}, {profile_id: :integer},
       {enabled: :boolean}, {solr_plugin_category_filter: :integer},
-      {available: :boolean}, {highlighted: :boolean},
+      {available: :boolean}, {archived: :boolean}, {highlighted: :boolean},
+      {solr_plugin_unarchived: :boolean},
       # fields for autocompletion
       {solr_plugin_ac_name: :ngram_text},
       {solr_plugin_ac_category: :ngram_text},
@@ -130,7 +137,9 @@ class Product
     boost: proc{ |p| p.solr_plugin_boost },
     if: proc{ |p| p.solr_index? }
 
-  handle_asynchronously :solr_save
-  handle_asynchronously :solr_destroy
+  # we don't need this with NRT from solr 5
+  #handle_asynchronously :solr_save
+  # solr_destroy don't work with delayed_job, as AR won't be found
+  #handle_asynchronously :solr_destroy
 
 end

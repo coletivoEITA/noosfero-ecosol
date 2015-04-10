@@ -20,8 +20,8 @@ class SolrPlugin::Base < Noosfero::Plugin
 
     order = params[:order]
     order = if order.blank? then :relevance else order.to_sym end
-    if sort = CatalogSortOptions[order] rescue nil
-      solr_options[:sort] = if query.blank? and sort[:empty_solr] then sort[:empty_solr] else sort[:solr] end
+    if sort = SortOptions[:catalog][order] rescue nil
+      solr_options.merge! (if query.blank? and sort[:empty_solr_opts] then sort[:empty_solr_opts] else sort[:solr_opts] end)
     end
     result = scope.find_by_contents query, paginate_options, solr_options
 
@@ -46,17 +46,25 @@ class SolrPlugin::Base < Noosfero::Plugin
   	# The query in the catalog top bar is too specific and therefore must be treated differently
     return catalog_find_by_contents asset, scope, query, paginate_options, options if asset == :catalog
 
-  	# General queries:
-  	category = options[:category]
-  	empty_query = empty_query? query, category
+    category = options.delete :category
+    filter = options.delete(:filter).to_s.to_sym
   	klass = asset_class asset
 
   	solr_options = build_solr_options asset, klass, scope, category
-    solr_options.merge! products_options(user) if empty_query and klass == Product
-    scope = scope.send options[:filter] if options[:filter]
-    solr_options.merge! options.except(:category, :filter)
+    solr_options.merge! sort_options asset, klass, filter
+    solr_options.merge! options
 
     scope.find_by_contents query, paginate_options, solr_options
+  rescue Exception => e
+    # solr seaches depends on a constant translation of named scopes SQL's into solr filtered fields
+    # so while we can't keep up it core changes, report the error and use default like search
+    if Rails.env.production?
+      ExceptionNotifier.notify_exception e,
+        env: context.request.env, data: {message: "Solr search failed"}
+      super
+    else
+      raise
+    end
   end
 
   def autocomplete asset, scope, query, paginate_options={}, options={}
@@ -67,14 +75,12 @@ class SolrPlugin::Base < Noosfero::Plugin
     when :catalog
       klass = Product
       solr_options[:query_fields] = %w[solr_plugin_ac_name^100 solr_plugin_ac_category^1000]
-      solr_options[:highlight] = {:fields => 'name'}
+      solr_options[:highlight] = {fields: 'name'}
       solr_options[:filter_queries] = scopes_to_solr_options scope, klass, options
-    when :products
-      solr_options.merge! products_options(user)
     end
     solr_options[:default_field] = 'ngramText'
 
-    result = {:results => scope.find_by_solr(query, solr_options).results}
+    result = {results: scope.find_by_solr(query, solr_options).results}
     result
   end
 
@@ -82,7 +88,7 @@ class SolrPlugin::Base < Noosfero::Plugin
     case asset
     when :catalog
       {
-        :select_options => CatalogSortOptions.map do |key, options|
+        select_options: SortOptions[:catalog].map do |key, options|
           option = options[:option]
           [_(option[0]), option[1]]
         end,
@@ -93,6 +99,12 @@ class SolrPlugin::Base < Noosfero::Plugin
   def search_pre_contents
     lambda do
       render 'solr_plugin/search/search_pre_contents'
+    end
+  end
+
+  def search_post_contents
+    lambda do
+      render 'solr_plugin/search/search_post_contents'
     end
   end
 
@@ -145,7 +157,7 @@ class SolrPlugin::Base < Noosfero::Plugin
     end
 
     scopes_applied.each do |name|
-      next if name.to_s == options[:filter].to_s
+      #next if name.to_s == options[:filter].to_s
 
       has_value = name === Hash
       if has_value
@@ -164,7 +176,7 @@ class SolrPlugin::Base < Noosfero::Plugin
           filter_queries << klass.send("solr_filter_#{name}", *args)
         end
       else
-        #raise "Undeclared solr field for scope #{name}" if related_field.nil?
+        raise "Undeclared solr field for scope #{name}" if related_field.nil?
         if related_field
           filter_queries << "#{related_field}:true"
         end
@@ -174,22 +186,9 @@ class SolrPlugin::Base < Noosfero::Plugin
     filter_queries
   end
 
-  def products_options person
-    geosearch = person && person.lat && person.lng
-
-    extra_limit = LIST_SEARCH_LIMIT*5
-    sql_options = {limit: LIST_SEARCH_LIMIT, order: 'random()'}
-    options =   {sql_options: sql_options, extra_limit: extra_limit}
-
-    if geosearch
-      options.merge({
-        alternate_query: "{!boost b=recip(geodist(),#{"%e" % (1.to_f/DistBoost)},1,1)}",
-        radius: DistFilt,
-        latitude: person.lat,
-        longitude: person.lng })
-    else
-      options.merge({boost_functions: ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']})
-    end
+  def sort_options asset, klass, filter
+    options = SolrPlugin::SearchHelper::SortOptions[asset]
+    options[filter][:solr_opts] rescue {}
   end
 
 end

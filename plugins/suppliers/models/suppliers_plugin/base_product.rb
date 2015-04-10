@@ -76,6 +76,25 @@ class SuppliersPlugin::BaseProduct < Product
     scope
   end
 
+  def self.orphans_ids
+    # FIXME: need references from rails4 to do it without raw query
+    result = self.connection.execute <<-SQL
+SELECT products.id FROM products
+LEFT OUTER JOIN suppliers_plugin_source_products ON suppliers_plugin_source_products.to_product_id = products.id
+LEFT OUTER JOIN products from_products_products ON from_products_products.id = suppliers_plugin_source_products.from_product_id
+WHERE products.type IN (#{(self.descendants << self).map{ |d| "'#{d}'" }.join(',')})
+GROUP BY products.id HAVING count(from_products_products.id) = 0;
+SQL
+    result.values
+  end
+
+  def self.archive_orphans
+    # need full save to trigger search index
+    self.where(id: self.orphans_ids).find_each batch_size: 50 do |product|
+      product.update_attribute :archived, true
+    end
+  end
+
   # replace available? to use the replaced default_item method
   def available?
     self.available
@@ -87,7 +106,10 @@ class SuppliersPlugin::BaseProduct < Product
   alias_method_chain :available, :supplier
 
   def dependent?
-    self.from_products.length == 1
+    self.from_products.length >= 1
+  end
+  def orphan?
+    !self.dependent?
   end
 
   def minimum_selleable
@@ -111,11 +133,15 @@ class SuppliersPlugin::BaseProduct < Product
 
   # just in case the from_products is nil
   def product_category_with_default
-    product_category_without_default || self.class.default_product_category(self.environment)
+    self.product_category_without_default or self.class.default_product_category(self.environment)
+  end
+  def product_category_id_with_default
+    self.product_category_id_without_default or self.product_category_with_default.id
   end
   alias_method_chain :product_category, :default
+  alias_method_chain :product_category_id, :default
   def unit_with_default
-    unit_without_default || self.class.default_unit
+    self.unit_without_default or self.class.default_unit
   end
   alias_method_chain :unit, :default
 

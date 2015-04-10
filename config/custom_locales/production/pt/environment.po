@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "POT-Creation-Date: 2015-02-02 21:44-0300\n"
-"PO-Revision-Date: 2015-03-09 21:04-0300\n"
+"PO-Revision-Date: 2015-03-26 20:47-0300\n"
 "Last-Translator: Daniel Tygel <dtygel@eita.org.br>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero/"
 "noosfero/pt/>\n"
@@ -233,3 +233,27 @@ msgstr "a comunidade"
 
 msgid "the product"
 msgstr "o produto ou serviço"
+
+msgid "the article"
+msgstr "o conteúdo"
+
+msgid "Show filters"
+msgstr "Mostrar filtros"
+
+msgid "The %{highlighted} fields are mandatory."
+msgstr "Os campos %{highlighted} são obrigatórios."
+
+msgid "highlighted"
+msgstr "realçados"
+
+msgid "Applied filters"
+msgstr "Filtros aplicados"
+
+msgid "Basket is empty"
+msgstr "Cesto vazio"
+
+msgid "See more options"
+msgstr "Ver mais opções"
+
+msgid "See less options"
+msgstr "Ver menos opções"

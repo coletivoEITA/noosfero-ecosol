@@ -4,7 +4,10 @@
     $.ajax({
       url: this.href,
       beforeSend: function(){$('#search-content').addClass('fetching')},
-      complete: function() {$('#search-content').removeClass('fetching')},
+      complete: function() {
+        $('#search-content').removeClass('fetching')
+        jQuery('html,body').animate({ scrollTop: jQuery("#search-content").offset().top }, 400)
+      },
       dataType: 'script'
     })
     return false;

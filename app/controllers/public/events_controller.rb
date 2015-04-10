@@ -7,8 +7,8 @@ class EventsController < PublicController
     @events = []
     begin
       @date = build_date params[:year], params[:month], params[:day]
-    rescue
-      render_not_found
+    rescue ArgumentError # invalid date
+      return render_not_found
     end
 
     if !params[:year] && !params[:month] && !params[:day]
