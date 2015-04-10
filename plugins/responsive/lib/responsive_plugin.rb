@@ -13,7 +13,17 @@ class ResponsivePlugin < Noosfero::Plugin
   end
 
   def js_files
-    %w[bootstrap.js responsive-noosfero.js].map{ |j| "javascripts/#{j}" }
+    %w[bootstrap responsive-noosfero].map{ |j| "javascripts/#{j}" }
+  end
+
+  def head_ending
+    '<meta name="viewport" content="width=device-width, initial-scale=1">'
+  end
+
+  def body_ending
+    lambda do
+      render 'layouts/modal'
+    end
   end
 
 end
