@@ -13,22 +13,22 @@ end
 custom_locale_dir = Rails.root.join('config', 'custom_locales', Rails.env)
 repos = []
 if File.exists?(custom_locale_dir)
-  repos << FastGettext::TranslationRepository.build('environment', :type => 'po', :path => custom_locale_dir)
+  repos << FastGettext::TranslationRepository.build('environment', type: 'po', path: custom_locale_dir, report_warning: false)
 end
 
-Dir.glob('{baseplugins,config/plugins}/*/locale') do |plugin_locale_dir|
+Dir.glob('{baseplugins,config/plugins}/*/po') do |plugin_locale_dir|
   plugin = File.basename(File.dirname(plugin_locale_dir))
-  repos << FastGettext::TranslationRepository.build(plugin, :type => 'mo', :path => plugin_locale_dir)
+  repos << FastGettext::TranslationRepository.build(plugin, type: 'po', path: plugin_locale_dir, report_warning: false)
 end
 
 # translations in place?
-locale_dir = Rails.root.join('locale')
+locale_dir = Rails.root.join 'po'
 if File.exists?(locale_dir)
-  repos << FastGettext::TranslationRepository.build('noosfero', :type => 'mo', :path => locale_dir)
-  repos << FastGettext::TranslationRepository.build('iso_3166', :type => 'mo', :path => locale_dir)
+  repos << FastGettext::TranslationRepository.build('noosfero', type: 'po', path: locale_dir, report_warning: false)
+  repos << FastGettext::TranslationRepository.build('iso_3166', type: 'po', path: locale_dir, report_warning: false)
 end
 
-FastGettext.add_text_domain 'noosfero', :type => :chain, :chain => repos
+FastGettext.add_text_domain 'noosfero', type: :chain, chain: repos
 FastGettext.default_text_domain = 'noosfero'
 
 # Adds custom locales for specific domains; Domains are identified by the
@@ -39,7 +39,8 @@ hosted_environments += Domain.all.map { |domain| domain.name[/(.*?)\./,1] } if D
 hosted_environments.uniq.each do |env|
   custom_locale_dir = Rails.root.join('config', 'custom_locales', env)
   if File.exists?(custom_locale_dir)
-    FastGettext.add_text_domain(env, :type => :chain, :chain => [FastGettext::TranslationRepository.build('environment', :type => 'po', :path => custom_locale_dir)] + repos)
+    FastGettext.add_text_domain env, type: :chain,
+      chain: [FastGettext::TranslationRepository.build('environment', type: 'po', path: custom_locale_dir, report_warning: false)] + repos
   end
 end
 
