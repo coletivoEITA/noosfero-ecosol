@@ -32,7 +32,7 @@ module DisplayHelper
   end
 
   def product_path(product, options={})
-    if product.enterprise.enabled? then product.enterprise.public_profile_url.merge(options).merge(controller: :manage_products, action: :show, :id => product) else product.enterprise.url end
+    product.profile.public_profile_url.merge(options).merge(controller: :manage_products, action: :show, :id => product)
   end
 
   def link_to_tag(tag, html_options = {})
