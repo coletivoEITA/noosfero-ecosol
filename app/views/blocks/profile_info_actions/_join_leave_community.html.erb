@@ -1,6 +1,6 @@
 <div class='join-leave-button'>
-  <% if not profile.already_request_membership? user %>
-    <% if logged_in? and user.in? profile.members %>
+  <% if logged_in? and not profile.already_request_membership? user %>
+    <% if user.in? profile.members %>
       <%= button(:delete, content_tag('span', _('Leave community')), profile.leave_url,
         class: 'leave-community',
         title: _("Leave community"),
