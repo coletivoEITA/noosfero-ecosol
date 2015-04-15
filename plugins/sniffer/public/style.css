@@ -39,6 +39,7 @@
   padding-left: 10%;
   padding-top: 12px;
   text-shadow: 0 2px white, 2px 0 white, 0 -2px white, -2px 0 white;
+  background-color: transparent;
   float: left;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -364,6 +365,9 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
   font-size: 110%;
   padding-bottom: 5px;
   color: #956841;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 #sniffer-search-wrap .infoBox .sniffer-balloon .enterprise-categories a {
   color: #956841;
@@ -384,6 +388,8 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
 #sniffer-search-wrap .infoBox .offers-or-needs .products {
   padding: 2px 5px;
   color: #253409;
+  max-height: 100px;
+  overflow: auto;
 }
 
 #sniffer-search-wrap .infoBox .offers-or-needs .products.empty {
