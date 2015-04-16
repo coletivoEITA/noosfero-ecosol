@@ -1,5 +1,5 @@
 name: "Noosfero Responsive"
-layout: "application-ng"
+layout: "application-responsive"
 jquery_theme: "smoothness"
 responsive: true
 icon_theme: [awesome, pidgin]
