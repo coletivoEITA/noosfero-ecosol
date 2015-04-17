@@ -1,7 +1,8 @@
 class CatalogController < PublicController
 
   needs_profile
-  use_custom_design boxes_limit: 2
+  # don't work with topleft
+  #use_custom_design boxes_limit: 2
 
   #before_filter :check_enterprise_and_environment
 
