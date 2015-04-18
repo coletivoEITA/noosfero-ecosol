@@ -1,2 +1,2 @@
-jQuery('#search-content').replaceWith(<%= render("search_content").to_json %>);
+jQuery('#search-content').replaceWith('<%= escape_javascript(render "search_content") %>');
 

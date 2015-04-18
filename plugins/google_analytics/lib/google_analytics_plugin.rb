@@ -14,18 +14,20 @@ class GoogleAnalyticsPlugin < Noosfero::Plugin
   end
 
   def profile_id
-    profile = context.send(:profile)
-    profile && profile.google_analytics_profile_id
+    context.profile && context.profile.google_analytics_profile_id
   end
 
   def head_ending
-    return if profile_id.blank?
-    expanded_template('tracking-code.html.erb',{:profile_id => profile_id})
+    unless profile_id.blank?
+      expanded_template('tracking-code.html.erb',{:profile_id => profile_id})
+    end
   end
 
   def profile_editor_extras
-    return if profile_id.blank?
-    expanded_template('profile-editor-extras.html.erb',{:profile_id => profile_id})
+    analytics_id = profile_id
+    lambda {
+      render :file => 'profile-editor-extras', :locals => { :profile_id => analytics_id }
+    }
   end
 
 end

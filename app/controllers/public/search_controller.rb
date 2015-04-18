@@ -62,7 +62,7 @@ class SearchController < PublicController
 
   def articles
     @scope = @environment.articles.public.includes(
-      :last_changed_by, :parent, :tags, {:profile => [:domains]}
+      :last_changed_by, :parent, :tags, {profile: [:domains]}
     )
     full_text_search
   end
