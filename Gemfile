@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 gem 'rails',                    '~> 3.2.21'
 gem 'minitest',                 '~> 3.2.0'
-gem 'fast_gettext',             '~> 0.6.8'
+gem 'fast_gettext'
 gem 'acts-as-taggable-on',      '~> 3.4.2'
 gem 'rails_autolink',           '~> 1.1.5'
 gem 'RedCloth',                 '~> 4.2.9'
