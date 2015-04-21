@@ -4,6 +4,7 @@ class SearchController < PublicController
   include SearchHelper
   include ActionView::Helpers::NumberHelper
 
+  before_filter :redirect_to_environment_domain
   before_filter :redirect_asset_param, :except => [:assets, :suggestions]
   before_filter :load_category, :except => :suggestions
   before_filter :load_search_assets, :except => :suggestions
@@ -161,6 +162,11 @@ class SearchController < PublicController
 
   #######################################################
   protected
+
+  def redirect_to_environment_domain
+    return unless Rails.env.production?
+    redirect_to params.merge host: environment.default_hostname if request.host != environment.default_hostname
+  end
 
   def load_query
     @asset = (params[:asset] || params[:action]).to_sym
