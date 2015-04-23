@@ -6,7 +6,7 @@ class CmsController < MyProfileController
 
   def search_tags
     arg = params[:term].downcase
-    result = ActsAsTaggableOn::Tag.find(:all, :conditions => ['LOWER(name) LIKE ?', "%#{arg}%"])
+    result = ActsAsTaggableOn::Tag.where('LOWER(name) LIKE ?', "%#{arg}%").limit(10)
     render :text => prepare_to_token_input_by_label(result).to_json, :content_type => 'application/json'
   end
 
@@ -220,7 +220,7 @@ class CmsController < MyProfileController
       if @errors.any?
         render :action => 'upload_files', :parent_id => @parent_id
       else
-        session[:notice] = _('File(s) successfully uploaded') 
+        session[:notice] = _('File(s) successfully uploaded')
         if @back_to
           redirect_to @back_to
         elsif @parent
