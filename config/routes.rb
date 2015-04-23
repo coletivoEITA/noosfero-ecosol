@@ -79,8 +79,8 @@ Noosfero::Application.routes.draw do
   match 'catalog(/:profile)', :controller => :catalog, :action => :index, :profile => /#{Noosfero.identifier_format}/, :as => :catalog
 
   # invite
-  match 'profile(/:profile/)invite/friends', :controller => 'invite', :action => 'invite_friends', :profile => /#{Noosfero.identifier_format}/
-  match 'profile(/:profile/)invite/:action', :controller => 'invite', :profile => /#{Noosfero.identifier_format}/
+  match 'profile(/:profile)/invite/friends', :controller => 'invite', :action => 'invite_friends', :profile => /#{Noosfero.identifier_format}/
+  match 'profile(/:profile)/invite/:action', :controller => 'invite', :profile => /#{Noosfero.identifier_format}/
 
   # feeds per tag
   match 'profile(/:profile)/tags/:id/feed', :controller => 'profile', :action =>'tag_feed', :id => /.+/, :profile => /#{Noosfero.identifier_format}/, :as => :tag_feed
