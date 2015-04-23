@@ -153,7 +153,7 @@ class Organization < Profile
 
   def short_name chars = 40
     s = self.display_name
-    s = super(chars) if s.empty?
+    s = super(chars) if s.blank?
     s
   end
 
