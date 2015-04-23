@@ -6,7 +6,7 @@ module UrlHelper
   def url_for options = {}
     return super unless options.is_a? Hash
     # for action mailer
-    return super unless self.respond_to? :params and self.class.respond_to? :controller_path
+    return super unless respond_to? :params and respond_to? :controller_path
 
     options[:protocol] ||= '//'
 
@@ -16,7 +16,7 @@ module UrlHelper
     host = options[:host]
     profile = options[:profile]
     if host.blank? or host == environment.default_hostname
-      controller = options[:controller] || self.class.controller_path
+      controller = (options[:controller] || self.controller_path).to_s
       controller = UrlHelper.controller_path_class[controller_path] ||= "#{controller_path}_controller".camelize.constantize rescue nil
       profile_needed = controller.profile_needed rescue false
       if profile_needed and profile.blank? and params[:profile].present?
