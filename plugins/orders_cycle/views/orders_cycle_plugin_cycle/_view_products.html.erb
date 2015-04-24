@@ -5,7 +5,6 @@
 
   <%= render partial: "orders_cycle_plugin_shared/filter", locals: {type: :order, cycle: cycle, order: order} %>
 
-  <%= javascript_include_tag '/plugins/suppliers/javascripts/balloon.js' %>
   <div id="search-results">
     <%= render partial: "orders_cycle_plugin_order/filter", locals: {
       cycle: cycle, order: order,

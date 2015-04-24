@@ -1,10 +1,9 @@
 <div id="product-ballon" class="balloon-content orders-cycle">
   <div class="left-column">
-    <%= image_tag @product.default_image('portrait'), :class => 'product-pic' %>
+    <%= image_tag @product.default_image(:thumb), class: 'product-pic' %>
   </div>
 
   <div class="right-column">
-    <strong><%= @product.name %></strong>
     <div><%= @product.description %></div>
   </div>
 </div>
