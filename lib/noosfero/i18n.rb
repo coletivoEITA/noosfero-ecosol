@@ -13,19 +13,19 @@ end
 custom_locale_dir = Rails.root.join('config', 'custom_locales', Rails.env)
 repos = []
 if File.exists?(custom_locale_dir)
-  repos << FastGettext::TranslationRepository.build('environment', type: 'po', path: custom_locale_dir, report_warning: false)
+  repos << FastGettext::TranslationRepository.build('environment', type: 'po', path: custom_locale_dir, report_warning: false, ignore_fuzzy: true)
 end
 
 Dir.glob('{baseplugins,config/plugins}/*/po') do |plugin_locale_dir|
   plugin = File.basename(File.dirname(plugin_locale_dir))
-  repos << FastGettext::TranslationRepository.build(plugin, type: 'po', path: plugin_locale_dir, report_warning: false)
+  repos << FastGettext::TranslationRepository.build(plugin, type: 'po', path: plugin_locale_dir, report_warning: false, ignore_fuzzy: true)
 end
 
 # translations in place?
 locale_dir = Rails.root.join 'po'
 if File.exists?(locale_dir)
-  repos << FastGettext::TranslationRepository.build('noosfero', type: 'po', path: locale_dir, report_warning: false)
-  repos << FastGettext::TranslationRepository.build('iso_3166', type: 'po', path: locale_dir, report_warning: false)
+  repos << FastGettext::TranslationRepository.build('noosfero', type: 'po', path: locale_dir, report_warning: false, ignore_fuzzy: true)
+  repos << FastGettext::TranslationRepository.build('iso_3166', type: 'po', path: locale_dir, report_warning: false, ignore_fuzzy: true)
 end
 
 FastGettext.add_text_domain 'noosfero', type: :chain, chain: repos
@@ -40,7 +40,7 @@ hosted_environments.uniq.each do |env|
   custom_locale_dir = Rails.root.join('config', 'custom_locales', env)
   if File.exists?(custom_locale_dir)
     FastGettext.add_text_domain env, type: :chain,
-      chain: [FastGettext::TranslationRepository.build('environment', type: 'po', path: custom_locale_dir, report_warning: false)] + repos
+      chain: [FastGettext::TranslationRepository.build('environment', type: 'po', path: custom_locale_dir, report_warning: false, ignore_fuzzy: true)] + repos
   end
 end
 
