@@ -129,6 +129,7 @@ orders = {
     ordersH -= jQuery('#order-column .delivery-box').outerHeight()
     ordersH -= jQuery('#order-column .order-message-text').outerHeight()
     ordersH -= jQuery('#order-column .order-message-actions').outerHeight()
+    ordersH -= jQuery('#order-column .actions').outerHeight()
     jQuery('.order-items-container .order-items-scroll').css('max-height', ordersH);
   }
 
