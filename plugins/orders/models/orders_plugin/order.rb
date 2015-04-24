@@ -105,12 +105,10 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   extend SerializedSyncedData::ClassMethods
   sync_serialized_field :profile do |profile|
-    {name: profile.name, email: profile.contact_email}
+    {name: profile.name, email: profile.contact_email} if profile
   end
   sync_serialized_field :consumer do |consumer|
-    if consumer.blank? then {} else
-      {name: consumer.name, email: consumer.contact_email, contact_phone: consumer.contact_phone}
-    end
+    {name: consumer.name, email: consumer.contact_email, contact_phone: consumer.contact_phone} if consumer
   end
   sync_serialized_field :supplier_delivery
   sync_serialized_field :consumer_delivery

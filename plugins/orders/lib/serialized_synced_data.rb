@@ -32,7 +32,7 @@ module SerializedSyncedData
       # return data from foreign registry if any data was synced yet
       define_method "#{field_data}_with_sync" do
         current_data = self.send "#{field_data}_without_sync"
-        if current_data.present? then current_data else self.send("#{field}_synced_data") end
+        if current_data.present? then current_data else self.send "#{field}_synced_data" end
       end
       alias_method_chain field_data, :sync
 
