@@ -8,14 +8,14 @@ class DeliveryPluginOptionController < MyProfileController
   helper SuppliersPlugin::JavascriptHelper
 
   def select
-    render :layout => false
+    render layout: false
   end
 
   def new
     ids = params[:delivery_methods]
     dms = profile.delivery_methods.find ids
     (dms - @owner.delivery_methods).each do |dm|
-      DeliveryPlugin::Option.create! :owner_id => @owner.id, :owner_type => @owner.class.name, :delivery_method => dm
+      DeliveryPlugin::Option.create! owner_id: @owner.id, owner_type: @owner.class.name, delivery_method: dm
     end
   end
 
@@ -25,15 +25,15 @@ class DeliveryPluginOptionController < MyProfileController
   end
 
   def method_new
-    DeliveryPlugin::Method.create! params[:delivery_method].merge(:profile => profile, :delivery_type => 'pickup')
+    DeliveryPlugin::Method.create! params[delivery_method].merge(profile: profile, delivery_type: 'pickup')
     # reset form for a new method
     @delivery_method = DeliveryPlugin::Method.new
   end
 
   def method_edit
-    @delivery_method = profile.delivery_methods.find_by_id params[:id]
+    @delivery_method = profile.delivery_methods.find params[:id]
     if request.put?
-      @delivery_method.update_attributes! params[:delivery_method].merge(:profile => profile, :delivery_type => 'pickup')
+      @delivery_method.update_attributes! params[delivery_method].merge(profile: profile, delivery_type: 'pickup')
       # reset form for a new method
       @delivery_method = DeliveryPlugin::Method.new
     end
