@@ -143,7 +143,7 @@ class SolrPlugin::Base < Noosfero::Plugin
   def scopes_to_solr_options scope, klass = nil, options = {}
     filter_queries = []
     klass ||= scope.base_class
-    solr_fields = klass.configuration[:solr_fields].keys
+    solr_fields = klass.configuration[:solr_fields].keys rescue []
     scopes_applied = scope.scopes_applied.dup rescue [] #rescue association and class direct filtering
 
     scope.scope_attributes.each do |attr, value|
