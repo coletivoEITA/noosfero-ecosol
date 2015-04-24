@@ -2,17 +2,28 @@ class ArticleVersion < ActiveRecord::Base
 end
 
 class MigrateLanguages < ActiveRecord::Migration
-  Models = [Article, ArticleVersion]
+  MAP = {
+    'en' => 'en_US',
+    'pt' => 'pt_BR',
+    'fr' => 'fr_FR',
+    'hy' => 'hy_AM',
+    'de' => 'de_DE',
+    'ru' => 'ru_RU',
+    'es' => 'es_ES',
+    'it' => 'it_IT',
+  }
+  MODELS = [Article, ArticleVersion]
   def up
-    Models.each do |model|
-      model.where(language: 'en').update_all language: 'en_US'
-      model.where(language: 'pt').update_all language: 'pt_BR'
-      model.where(language: 'es').update_all language: 'es_ES'
-      model.where(language: 'fr').update_all language: 'fr_FR'
-      model.where(language: 'hy').update_all language: 'hy_AM'
-      model.where(language: 'de').update_all language: 'de_DE'
-      model.where(language: 'ru').update_all language: 'ru_RU'
-      model.where(language: 'it').update_all language: 'it_IT'
+    MODELS.each do |model|
+      MAP.each do |from, to|
+        model.where(language: from).update_all language: to
+      end
+    end
+    # language is serialized on block
+    Block.find_each batch_size: 50 do |block|
+      new_language = MAP[block.language]
+      next if new_language.blank?
+      block.update_attribute :language, new_language
     end
   end
 

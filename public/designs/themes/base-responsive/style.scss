@@ -1,4 +1,5 @@
 @import 'stylesheets/chat';
+// bootstrap not included here, see noosfero-responsive
 
 /* ==> button.css <== */
 
@@ -2053,3 +2054,67 @@ table.cms-articles .article-name {
   color: #E75252;
   font-weight: bold;
 }
+
+@media screen and (min-width: 768px) {
+  .block, .no-boxes {
+    border: none !important;
+  }
+
+  #wrap-1 {
+    background-color: white !important;
+    box-shadow: 0 0 10px black;
+    -ms-box-shadow: 0 0 10px black;
+    -moz-box-shadow: 0 0 10px black;
+    -webkit-box-shadow: 0 0 10px black;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .block, .no-boxes {
+    box-shadow: 0 0 10px black;
+    -ms-box-shadow: 0 0 10px black;
+    -moz-box-shadow: 0 0 10px black;
+    -webkit-box-shadow: 0 0 10px black;
+  }
+}
+
+#theme-footer #language-chooser {
+  text-align: left;
+}
+
+/* armengue */
+/* didn't find why .no-boxes has bigger width than its parent */
+.no-boxes {
+  width: 96%;
+}
+
+@media screen and (min-width:1200px) {
+  #top-bar a.icon-help {
+    font-size: 0;
+  }
+
+  #top-bar a.icon-help:before {
+    font-size:15px;
+  }
+}
+
+/* Default color for buttons */
+a.btn, .block a.btn, a.btn:visited, .block a.btn:visited, a.btn:hover, .block a.btn:hover {
+  color: #fff;
+}
+
+/* Adjustments for no-boxes */
+#content .no-boxes {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.modal {
+  background-color: rgba(0,0,0,0.5);
+}
+
+/* Products */
+#product-list .expand-box > span {
+  font-size: 0.6em;
+}
+

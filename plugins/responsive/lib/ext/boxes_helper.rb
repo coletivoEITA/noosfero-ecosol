@@ -34,14 +34,15 @@ module BoxesHelper
       end
     end
 
-    def display_boxes(holder, main_content)
+    def display_boxes holder, main_content
       return super unless theme_responsive?
 
-      boxes = holder.boxes.with_position.order('boxes.position ASC').first(holder.boxes_limit)
+      boxes = holder.boxes.with_position.order('boxes.position ASC').first(boxes_limit(holder))
 
       template = profile.nil? ? environment.layout_template : profile.layout_template
       template = 'default' if template.blank?
 
+      return main_content unless boxes.present?
       render partial: "templates/boxes_#{template}", locals: {boxes: boxes, main_content: main_content}, use_cache: use_cache?
     end
   end

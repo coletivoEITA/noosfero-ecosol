@@ -102,9 +102,8 @@ class FbAppPluginPageTabController < FbAppPluginController
 
   protected
 
-  def default_url_options options={}
-    options[:profile] = @profile.identifier if @profile
-    super
+  def default_url_options
+    {profile: @profile.identifier} if @profile
   end
 
   def load_page_tabs
