@@ -647,12 +647,13 @@ div#notice {
 .tag_cloud {
   text-align: center;
 }
-
 .tag_cloud a {
   text-decoration: none;
   white-space: nowrap;
 }
-
+#content .tags-block .tag_cloud a {
+  white-space: initial;
+}
 .tag_cloud a small {
   opacity: 0.5;
   filter:alpha(opacity=50);
