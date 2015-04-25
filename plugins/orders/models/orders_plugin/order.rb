@@ -93,6 +93,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   }
 
   validates_presence_of :profile
+  # consumer is optional, as orders can be made by unlogged users
   validates_inclusion_of :status, in: DbStatuses
 
   before_validation :check_status
@@ -105,7 +106,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   extend SerializedSyncedData::ClassMethods
   sync_serialized_field :profile do |profile|
-    {name: profile.name, email: profile.contact_email} if profile
+    {name: profile.name, email: profile.contact_email, contact_phone: profile.contact_phone} if profile
   end
   sync_serialized_field :consumer do |consumer|
     {name: consumer.name, email: consumer.contact_email, contact_phone: consumer.contact_phone} if consumer
@@ -251,7 +252,8 @@ class OrdersPlugin::Order < ActiveRecord::Base
     self.status = new_status if new_status
   end
   def step! actor_name
-    self.save! if self.step actor_name
+    # don't crash on errors as some suppliers may have been deleted and this order may not be valid anymore
+    self.save if self.step actor_name
   end
 
   def situation
