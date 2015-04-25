@@ -66,6 +66,32 @@ orders = {
       }
     },
 
+    admin_add: {
+      search_url: null,
+      add_url: null,
+      source: null,
+
+      load: function (id) {
+        var self = this
+        var input = $('#order-row-'+id+' .order-product-add .add-input')
+        this.source = new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          remote: this.search_url+'&query=%QUERY',
+        })
+        this.source.initialize()
+
+        input.typeahead({
+          minLength: 2, highlight: true,
+        }, {
+          displayKey: 'label',
+          source: this.source.ttAdapter(),
+        }).on('typeahead:selected', function(e, item) {
+          $.post(self.add_url, {product_id: item.value})
+        })
+      },
+    },
+
     admin_remove: function(context, url) {
       var container = jQuery(context).parents('.order-items-container');
       var item = jQuery(context).parents('.item');
