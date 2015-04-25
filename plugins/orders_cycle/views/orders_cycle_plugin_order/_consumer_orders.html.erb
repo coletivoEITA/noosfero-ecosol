@@ -37,9 +37,9 @@
       <% elsif @consumer_orders.count == 0 %>
         <% message = t('views.order._consumer_orders.you_haven_t_placed_an') %>
       <% end %>
-    <% elsif @cycle.edition? %>
+    <% elsif @cycle.edition? or @cycle.before_orders? %>
       <% message = t('views.order._consumer_orders.this_cycle_is_not_ope') %>
-    <% else %>
+    <% elsif @cycle.after_orders? %>
       <% message = t('views.order._consumer_orders.this_cycle_is_already') %>
     <% end %>
   <% end %>

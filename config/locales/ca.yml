@@ -822,7 +822,7 @@ ca:
           send_message_to_the_m: "Enviar mensagem para gestores"
           sign_up: registre-se
           this_cycle_is_already: "Este ciclo já foi fechado."
-          this_cycle_is_not_ope: "Este ciclo não está aberto."
+          this_cycle_is_not_ope: "Este ciclo ainda não foi aberto."
           to_place_an_order_you: "Para fazer um pedido você precisa estar logado e registrado %{terms.profile.at_article.singular}. Por favor faça %{login} ou %{signup}."
           you_haven_t_placed_an: "Você ainda não fez pedidos neste ciclo."
           you_still_can: "Você ainda pode:"
