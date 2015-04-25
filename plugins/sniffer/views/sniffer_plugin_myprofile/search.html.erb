@@ -24,6 +24,13 @@
   </div>
 </div>
 
+<%= content_tag 'script', '', :src => "http://maps.googleapis.com/maps/api/js?sensor=false", :type => 'text/javascript' %>
+<%= javascript_include_tag 'google_maps' %>
+<%= content_tag 'script', '', :src => "/plugins/sniffer/javascripts/infobox.js", :type => 'text/javascript' %>
+<%= content_tag 'script', '', :src => "/plugins/sniffer/javascripts/custom_marker.js", :type => 'text/javascript' %>
+<%= javascript_include_tag "/plugins/sniffer/javascripts/underscore-min.js" %>
+<%= javascript_include_tag "/plugins/sniffer/javascripts/sniffer.js" %>
+
 <script id="marker-template" type="text/html">
   <div class="marker-wrap">
     <img src="<@= icon @>" alt="<@= title @>"/>
@@ -31,42 +38,19 @@
 </script>
 
 <script type='text/javascript'>
-  function loadScript(url, callback) {
-    var script = document.createElement('script');
-    if (callback) {
-      // FF fires onload and IE fires onreadystatechange
-      script.onload = callback;
-      script.onreadystatechange = callback;
-    }
-    script.type = 'text/javascript';
-    script.src = url;
-    document.body.appendChild(script);
-  };
-
-  function mapApiReady() {
-    loadScript('/plugins/sniffer/javascripts/infobox.js');
-    loadScript('/plugins/sniffer/javascripts/custom_marker.js', loadSnifferMap);
-  };
-
   var currentProfile = <%= profile_hash(profile).to_json %>;
-
-  function loadSnifferMap() {
-    sniffer.search.map.load({
-      "zoom": <%= GoogleMaps.initial_zoom.to_json %>,
-      "balloonUrl": <%= url_for(:controller => :sniffer_plugin_myprofile, :action => :map_balloon, :id => "_id_", :escape => false).to_json %>,
-      "myBalloonUrl": <%= url_for(:controller => :sniffer_plugin_myprofile, :action => :my_map_balloon, :escape => false).to_json %>,
-      "profiles": <%=
-        @profiles_data.map do |id, profile_data|
-          data = profile_hash(profile_data[:profile])
-          data[:consumersProducts] = profile_data[:consumers_products]
-          data[:suppliersProducts] = profile_data[:suppliers_products]
-          data[:icon] = profile_data[:profile][:icon]
-          data
-        end.to_json
-      %>
-    });
-  };
+  sniffer.search.map.load({
+    "zoom": <%= GoogleMaps.initial_zoom.to_json %>,
+    "balloonUrl": <%= url_for(:controller => :sniffer_plugin_myprofile, :action => :map_balloon, :id => "_id_", :escape => false).to_json %>,
+    "myBalloonUrl": <%= url_for(:controller => :sniffer_plugin_myprofile, :action => :my_map_balloon, :escape => false).to_json %>,
+    "profiles": <%=
+      @profiles_data.map do |id, profile_data|
+        data = profile_hash(profile_data[:profile])
+        data[:consumersProducts] = profile_data[:consumers_products]
+        data[:suppliersProducts] = profile_data[:suppliers_products]
+        data[:icon] = profile_data[:profile][:icon]
+        data
+      end.to_json
+    %>
+  });
 </script>
-
-<%= javascript_include_tag "//maps.googleapis.com/maps/api/js?sensor=false&callback=mapApiReady" %>
-<%= javascript_include_tag 'google_maps' %>
