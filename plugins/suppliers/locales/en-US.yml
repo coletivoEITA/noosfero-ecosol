@@ -682,6 +682,7 @@
           sign_up: "sign up"
           this_cycle_is_already: "This cycle is already closed."
           this_cycle_is_not_ope: "This cycle is not open yet."
+          the_time_for_orders_is: "The orders' period for this cycle is from %{start} to %{finish}"
           to_place_an_order_you: "To place an order you need to be logged in and registered %{terms.profile.at_article.singular}. Please %{login} or %{signup}."
           you_haven_t_placed_an: "You haven't placed any order on this cycle yet."
           you_still_can: "You still can:"
