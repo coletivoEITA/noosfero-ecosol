@@ -28,9 +28,9 @@
             {controller: :orders_plugin_message, action: :new_to_supplier, order_id: order.id}, class: 'action-button' %>
         <% end %>
 
-        <% if order.next_status actor_name %>
-          <%= f.hidden_field :status, value: order.next_status(actor_name) %>
-          <%= f.submit t("models.order.statuses_verbs.#{order.next_status actor_name}") %>&emsp;
+        <% if next_status = order.next_status(actor_name) %>
+          <%= f.hidden_field :status, value: next_status %>
+          <%= f.submit t("models.order.statuses_verbs.#{next_status}") %>&emsp;
         <% end %>
       <% elsif order.open? %>
         <div>

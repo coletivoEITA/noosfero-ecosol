@@ -66,6 +66,14 @@ orders = {
       }
     },
 
+    admin_remove: function(context, url) {
+      var container = jQuery(context).parents('.order-items-container');
+      var item = jQuery(context).parents('.item');
+      var quantity = item.find('.quantity input');
+      quantity.val('0')
+      this.submit(context, url)
+    },
+
     submit: function(context, url) {
       var container = jQuery(context).parents('.order-items-container');
       var item = jQuery(context).parents('.item');

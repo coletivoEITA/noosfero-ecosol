@@ -11,22 +11,22 @@
 <% else %>
 
   <% content_for :order_header do %>
-    <%= render 'orders_plugin_admin/header', :order => order, :other_actor_name => other_actor_name %>
+    <%= render 'orders_plugin_admin/header', order: order, other_actor_name: other_actor_name %>
   <% end %>
 
   <% content_for :order_footer do %>
-    <% if actor_name == :supplier and order.open? %>
+    <% if other_actor_name == :consumer and order.open? %>
 
       <div>
-        <%= check_box_tag 'warn_consumer', 1, false, :onchange => "jQuery(this).parent().next().toggle(this.checked); jQuery(this).siblings('.subtitle').toggle(this.checked);" %>
-        <%= label_tag 'warn_consumer', t('orders_plugin.views.admin._edit.warn_member_of_the_ch'), :class => 'line-label' %>
+        <%= check_box_tag 'warn_consumer', 1, false, onchange: "jQuery(this).parent().next().toggle(this.checked); jQuery(this).siblings('.subtitle').toggle(this.checked);" %>
+        <%= label_tag 'warn_consumer', t('orders_plugin.views.admin._edit.warn_member_of_the_ch'), class: 'line-label' %>
         <div class="clean"></div>
         <div class="subtitle"><%= t('orders_plugin.views.admin._edit.the_collective_member') %></div>
       </div>
 
       <div>
-        <%= check_box_tag 'include_message', 1, false, :onchange => "jQuery(this).parent().find('textarea').toggle(this.checked)" %>
-        <%= label_tag 'include_message', t('orders_plugin.views.admin._edit.include_message'), :class => 'line-label' %>
+        <%= check_box_tag 'include_message', 1, false, onchange: "jQuery(this).parent().find('textarea').toggle(this.checked)" %>
+        <%= label_tag 'include_message', t('orders_plugin.views.admin._edit.include_message'), class: 'line-label' %>
         <div class="clean"></div>
         <div><%= text_area_tag 'message' %></div>
       </div>
@@ -38,7 +38,7 @@
     <% end %>
   <% end %>
 
-  <%= render 'orders_plugin_order/show', :order => order, :actor_name => actor_name %>
+  <%= render 'orders_plugin_order/show', order: order, actor_name: actor_name %>
 
 <% end %>
 
