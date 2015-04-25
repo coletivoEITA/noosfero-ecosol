@@ -9,26 +9,6 @@ class OrdersCyclePluginMessageController < OrdersPluginMessageController
   helper OrdersCyclePlugin::TranslationHelper
   helper OrdersPlugin::FieldHelper
 
-  def new_to_supplier
-    @supplier = SuppliersPlugin::Supplier.find params[:supplier_id]
-    if params[:commit]
-      OrdersCyclePlugin::Mailer.message_to_supplier(profile, @supplier, params[:email][:subject], params[:email][:message]).deliver
-      page_reload
-    else
-      render :layout => false
-    end
-  end
-
-  def new_to_admins
-    @member = user
-    if params[:commit]
-      OrdersCyclePlugin::Mailer.message_to_admins(profile, @member, params[:email][:subject], params[:email][:message]).deliver
-      page_reload
-    else
-      render :layout => false
-    end
-  end
-
   protected
 
 end

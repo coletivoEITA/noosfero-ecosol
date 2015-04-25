@@ -8,30 +8,6 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
   attr_accessor :environment
   attr_accessor :profile
 
-  def message_to_supplier profile, supplier, subject, message
-    self.environment = profile.environment
-    @profile = profile
-    @supplier = supplier
-    @message = message
-
-    mail from: environment.noreply_email,
-      to: profile_recipients(@supplier),
-      reply_to: profile_recipients(@profile),
-      subject: t('lib.mailer.profile_subject') % {profile: profile.name, subject: subject}
-  end
-
-  def message_to_admins profile, member, subject, message
-    self.environment = profile.environment
-    @profile = profile
-    @member = member
-    @message = message
-
-    mail from: environment.noreply_email,
-      to: profile_recipients(@profile),
-      reply_to: profile_recipients(@member),
-      subject: t('lib.mailer.profile_subject') % {profile: profile.name, subject: subject}
-  end
-
   def open_cycle profile, cycle, subject, message
     self.environment = profile.environment
     @profile = profile

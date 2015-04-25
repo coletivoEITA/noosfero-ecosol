@@ -498,6 +498,28 @@
           quantity: "qty"
           price_total: "value (%{currency})"
           status: "status"
+
+      message: 
+        _fields: 
+          message: Message
+          subject: Subject
+        new_to_admins: 
+          cancel: cancel
+          message_to_managers_o: "Message to managers of \"%{profile}\""
+          send: Send
+        new_to_consumer: 
+          cancel: cancel
+          message_to_member_con: "Message to consumer \"%{consumer}\""
+          send: Send
+        new_to_consumer_for_order: 
+          cancel: cancel
+          include_reference_to_: "Include reference to the order made"
+          message_to_member_con: "Message to consumer \"%{consumer}\""
+          send: Send
+        new_to_supplier: 
+          cancel: cancel
+          message_to_supplier_s: "Message to supplier \"%{supplier}\""
+          send: Send
       order:
         _show: 
           open: "Open"
@@ -643,27 +665,6 @@
           hello_member_of_name: "Hello consumer of %{name},"
           the_administrator_let: "The administrator let a message about this cycle"
           the_cycle_description: "The cycle description is.."
-      message: 
-        _fields: 
-          message: Message
-          subject: Subject
-        new_to_admins: 
-          cancel: cancel
-          message_to_managers_o: "Message to managers of \"%{profile}\""
-          send: Send
-        new_to_consumer: 
-          cancel: cancel
-          message_to_member_con: "Message to consumer \"%{consumer}\""
-          send: Send
-        new_to_consumer_for_order: 
-          cancel: cancel
-          include_reference_to_: "Include reference to the order made"
-          message_to_member_con: "Message to consumer \"%{consumer}\""
-          send: Send
-        new_to_supplier: 
-          cancel: cancel
-          message_to_supplier_s: "Message %{terms.supplier.to_article.singular} \"%{supplier}\""
-          send: Send
       profile: 
       order: 
         _consumer_orders: 

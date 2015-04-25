@@ -524,6 +524,29 @@
           quantity: "qtd"
           price_total: "valor (%{currency})"
           status: "etapa"
+
+      message:
+        _fields: 
+          message: Mensagem
+          subject: Assunto
+        new_to_admins: 
+          cancel: Cancelar
+          message_to_managers_o: "Mensagem para o(a) consumidor(a) \"%{profile}\""
+          send: Enviar
+        new_to_consumer: 
+          cancel: Cancelar
+          message_to_member_con: "Mensagem para o(a) consumidor(a) \"%{consumer}\""
+          send: Enviar
+        new_to_consumer_for_order: 
+          cancel: Cancelar
+          include_reference_to_: "Inclua uma referência ao pedido feito"
+          message_to_member_con: "Mensagem para o(a) consumidor(a) \"%{consumer}\""
+          send: Enviar
+        new_to_supplier: 
+          cancel: Cancelar
+          message_to_supplier_s: "Mensagem para o(a) fornecedor(a) \"%{supplier}\""
+          send: Enviar
+
       order:
         _show:
           open: "Abrir"
@@ -667,27 +690,6 @@
           hello_member_of_name: "Olá membros da comunidade %{name}!"
           the_administrator_let: "A/O administrador(a) deixou uma mensagem sobre este ciclo"
           the_cycle_description: "A descrição do ciclo é.."
-      message: 
-        _fields: 
-          message: Mensagem
-          subject: Assunto
-        new_to_admins: 
-          cancel: Cancelar
-          message_to_managers_o: "Mensagem para o(a) consumidor(a) \"%{profile}\""
-          send: Enviar
-        new_to_consumer: 
-          cancel: Cancelar
-          message_to_member_con: "Mensagem para o(a) consumidor(a) \"%{consumer}\""
-          send: Enviar
-        new_to_consumer_for_order: 
-          cancel: Cancelar
-          include_reference_to_: "Inclua uma referência ao pedido feito"
-          message_to_member_con: "Mensagem para o(a) consumidor(a) \"%{consumer}\""
-          send: Enviar
-        new_to_supplier: 
-          cancel: Cancelar
-          message_to_supplier_s: "Mensagem %{terms.supplier.to_article.singular} \"%{supplier}\""
-          send: Enviar
       order: 
         _consumer_orders: 
           caution: "<strong>Cuidado</strong>, voce está editando os pedidos de \"%{consumer}\". É preferível fazer pequenas edições pela administração do ciclo. Desta forma, a pessoa será propriamente avisada das mudanças. Nós recomendamos que esta página seja usada somente se você está fazendo o pedido para outra pessoa."
