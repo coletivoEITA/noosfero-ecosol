@@ -1,6 +1,6 @@
 <%
   data = order.delivery_data actor_name
-  other_supplier_methods = actor_name == :supplier && order.open? && order.delivery_methods.size > 1
+  other_supplier_methods = actor_name == :supplier && order.open? && order.delivery_methods.size > 0
 %>
 
 <% if data.present? or other_supplier_methods %>
@@ -17,7 +17,7 @@
       </div>
     <% end %>
 
-    <% if other_supplier_methods %>
+    <% if other_supplier_methods and order.delivery_methods.size > 1 %>
       <%= labelled_field nil, 'order[supplier_delivery_id]', t('views.order._delivery.choose_another'),
         select_tag('order[supplier_delivery_id]', options_for_select(order.delivery_methods.map{ |d| [d.name, d.id] }, order.supplier_delivery_id),
                    onchange: "orders.order.delivery.select(this, '#{url_for controller: :orders_plugin_order, action: :render_delivery, id: order.id}')"),
