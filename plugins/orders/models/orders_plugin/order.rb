@@ -241,10 +241,12 @@ class OrdersPlugin::Order < ActiveRecord::Base
   end
 
   def next_status actor_name
+    # allow supplier to confirm and receive orders if admin is true
+    actor_statuses = if actor_name == :supplier then Statuses else StatusesByActor[actor_name] end
     # if no status was found go to the first (-1 to 0)
     current_index = Statuses.index(self.status) || -1
     next_status = Statuses[current_index + 1]
-    next_status if StatusesByActor[actor_name].index next_status rescue false
+    next_status if actor_statuses.index next_status rescue false
   end
 
   def step actor_name
