@@ -19,13 +19,11 @@ class SuppliersPlugin::Import
       rescue
         if quote_chars.empty? then raise else retry end
       ensure
-        break if rows.first.size == 4
+        break if rows.first.size == 4 or (rows.first.size == 5 and rows.first[4].blank?)
       end
     end
-    raise 'invalid number of columns' unless rows.first.size == 4
+    raise 'invalid number of columns' unless rows.first.size == 4 or (rows.first.size == 5 and rows.first[4].blank?)
 
-    puts rows.inspect
-    puts header
     rows.each do |row|
       supplier_name = row[0].to_s.squish
       product_name = row[1].to_s.squish.gsub('"', '&quot;')
