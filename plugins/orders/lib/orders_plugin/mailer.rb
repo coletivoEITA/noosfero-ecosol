@@ -90,7 +90,7 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
   def profile_recipients profile
     if profile.person?
       profile.contact_email
-    elsif profile.contact_email
+    elsif profile.contact_email.present?
       profile.contact_email
     else
       profile.admins.map{ |p| p.contact_email }

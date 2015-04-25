@@ -588,6 +588,25 @@
           the_collective_member: "O(a) consumidor(a) %{terms.profile.from_article.singular} receberá um email que discrimina todas as mudanças feitas em seu pedido."
           warn_member_of_the_ch: "Avise o(a) consumidor(a) das mudanças em seu pedido"
       mailer:
+        message_to_admins: 
+          a_service_of_s: "Um serviço de %{environment}."
+          hello_managers_of_nam: "Olá gestoras/es de %{name}!"
+          the_member_member_sen: "O membro %{member} mandou uma mensagem para você"
+        message_to_consumer: 
+          a_service_of_s: "Um serviço de %{environment}."
+          hello_name: "Olá %{name}!,"
+          the_collective_profile_s: "O(a) %{profile} mandou uma mensagem para você"
+        message_to_consumer_for_order: 
+          a_service_of_s: "Um serviço de %{environment}."
+          hello_name: "Olá %{name}!,"
+          order: Pedido
+          quantity_unit_of_prod: "%{quantity} %{unit} do %{product}"
+          the_collective_profile_s: "O(a) %{profile} mandou uma mensagem para voce relacionado a seu %{order}"
+          the_products_in_the_o: "Os produtos no pedido"
+        message_to_supplier: 
+          a_service_of_s: "Um serviço de %{environment}."
+          hello_administrators_: "Olá administradores de %{name}!"
+          the_collective_profile_s: "O(a) %{profile} mandou uma mensagem para você"
         order_confirmation: 
           attention_to_the_foll: "Atenção às instruções de entrega a seguir:"
           dear_name: "Olá %{name},"
@@ -666,25 +685,6 @@
         cycles: 
           all_cycles: "todos ciclos"
       mailer: 
-        message_to_admins: 
-          a_service_of_s: "Um serviço de %{environment}."
-          hello_managers_of_nam: "Olá gestoras/es de %{name}!"
-          the_member_member_sen: "O membro %{member} mandou uma mensagem para você"
-        message_to_consumer: 
-          a_service_of_s: "Um serviço de %{environment}."
-          hello_name: "Olá %{name}!,"
-          the_collective_profile_s: "%{terms.profile.article.singular.capitalize} %{profile} mandou uma mensagem para você"
-        message_to_consumer_for_order: 
-          a_service_of_s: "Um serviço de %{environment}."
-          hello_name: "Olá %{name}!,"
-          order: Pedido
-          quantity_unit_of_prod: "%{quantity} %{unit} do %{product}"
-          the_collective_profile_s: "%{terms.profile.article.singular.capitalize} %{profile} mandou uma mensagem para voce relacionado a seu %{order}"
-          the_products_in_the_o: "Os produtos no pedido"
-        message_to_supplier: 
-          a_service_of_s: "Um serviço de %{environment}."
-          hello_administrators_: "Olá administradores de %{name}!"
-          the_collective_profile_s: "%{terms.profile.article.singular.capitalize} %{profile} mandou uma mensagem para você"
         open_cycle: 
           a_new_cycle_is_open_c: "Um novo ciclo de pedidos está aberto chamado "
           hello_member_of_name: "Olá membros da comunidade %{name}!"
