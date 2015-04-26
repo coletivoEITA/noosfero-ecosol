@@ -1,8 +1,8 @@
 <div id="" class="popin consumers-coop-plugin-message">
-  <h1><%= t('views.message.new_to_supplier.message_to_supplier_s') % {:supplier => @supplier.name} %></h1>
+  <h1><%= t('views.message.new_to_supplier.message_to_supplier_s') % {supplier: @supplier.name} %></h1>
 
   <%= form_tag params, remote: true do %>
-    <%= render :partial => 'fields' %>
+    <%= render partial: 'fields' %>
 
      <%= submit_tag t('views.message.new_to_supplier.send') %>
      <%= modal_close_link t('views.message.new_to_supplier.cancel') %>

@@ -1,7 +1,7 @@
 <% other_actor_name = if actor_name == :supplier then :consumer else :supplier end %>
 <% edit = true if edit.nil? %>
 
-<div id="order-row-<%=order.id%>" data-id="<%=order.id%>" class="order value-row <%=order.status%>" onclick="orders.admin.load_edit(this, '<%= url_for :action => :edit, :id => order.id, :actor_name => actor_name %>')" toggle-edit="orders.admin.toggle_edit();">
+<div id="order-row-<%=order.id%>" data-id="<%=order.id%>" class="order value-row <%=order.status%>" onclick="orders.admin.load_edit(this, '<%= url_for action: :edit, id: order.id, actor_name: actor_name %>')" toggle-edit="orders.admin.toggle_edit();">
   <div class="box-view with-inner">
     <div class="box-field select" toggle-ignore><%= check_box_tag "order_ids[]", order.id %></div>
 
@@ -14,14 +14,14 @@
       <span class='box-field situation'><%= order_situation order %></span>
     </div>
 
-    <%= edit_arrow "#order-row-#{order.id}", true, :class => 'actions' %>
+    <%= edit_arrow "#order-row-#{order.id}", true, class: 'actions' %>
 
     <div class="clean"></div>
   </div>
 
   <div class="box-edit <%= 'loading' if not edit %>">
     <% if edit %>
-      <%= render 'orders_plugin_admin/edit', :order => order, :actor_name => actor_name, :other_actor_name => other_actor_name %>
+      <%= render 'orders_plugin_admin/edit', order: order, actor_name: actor_name, other_actor_name: other_actor_name %>
     <% end %>
   </div>
 

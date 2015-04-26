@@ -23,15 +23,13 @@
 
     <% if (order.may_edit? user, @admin rescue false) %>
       <% if @admin %>
-        <%# FIXME: add remove button that do not destroy, but put zero %>
-
-        <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(controller: :orders_plugin_admin_item, action: :edit, id: item.id, actor_name: actor_name)}')", class: 'action-button' %>
+        <%= link_to_function t('views.item._edit.remove_from_order'), "orders.item.admin_remove(this, '#{url_for(controller: :orders_plugin_admin_item, action: :edit, id: item.id, actor_name: actor_name)}')", class: 'action-button' %>
+        <%= link_to_function t('views.item._edit.submit'), "orders.item.submit(this, '#{url_for(controller: :orders_plugin_admin_item, action: :edit, id: item.id, actor_name: actor_name)}')", class: 'action-button' %>
 
       <% else %>
-        <%= link_to t('orders_plugin.views.item._edit.remove_from_order'), {controller: :orders_plugin_item, action: :destroy, id: item.id},
-          remote: true, data: {loading: "#item-#{item.id}"} if order.may_edit? user, @admin rescue false %>
-
-        <%= link_to_function t('orders_plugin.views.item._edit.submit'), "orders.item.submit(this, '#{url_for(controller: :orders_plugin_item, action: :edit, id: item.id)}')", class: 'action-button' %>
+        <%= link_to t('views.item._edit.remove_from_order'), {controller: :orders_plugin_item, action: :destroy, id: item.id},
+          remote: true, data: {loading: "#item-#{item.id}"} %>
+        <%= link_to_function t('views.item._edit.submit'), "orders.item.submit(this, '#{url_for(controller: :orders_plugin_item, action: :edit, id: item.id)}')", class: 'action-button' %>
 
       <% end %>
 

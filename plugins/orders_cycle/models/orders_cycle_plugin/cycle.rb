@@ -169,6 +169,14 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   def new_or_edition?
     self.status == 'new' or self.status == 'edition'
   end
+  def after_orders?
+    now = DateTime.now
+    status == 'orders' && self.finish < now
+  end
+  def before_orders?
+    now = DateTime.now
+    status == 'orders' && self.start >= now
+  end
   def orders?
     now = DateTime.now
     status == 'orders' && ( (self.start <= now && self.finish.nil?) || (self.start <= now && self.finish >= now) )

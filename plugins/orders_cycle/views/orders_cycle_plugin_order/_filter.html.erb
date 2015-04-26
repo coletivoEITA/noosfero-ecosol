@@ -44,13 +44,14 @@
 <% end %>
 
 <%= javascript_tag do %>
-  orders_cycle.order.product.include_message = '<%= include_message %>';
-  orders_cycle.order.product.order_id = <%= order_id.to_json %>;
-  orders_cycle.order.product.redirect_after_include = '<%= order.nil? ? 1 : '' %>';
-  orders_cycle.order.product.add_url = '<%= url_for controller: :orders_cycle_plugin_item, action: :new %>';
-  orders_cycle.order.product.remove_url = '<%= url_for controller: :orders_cycle_plugin_product, action: :remove_from_order %>';
-  orders_cycle.order.product.balloon_url = '<%= url_for controller: :orders_cycle_plugin_order, action: :product_balloon %>';
-  orders_cycle.order.product.supplier.balloon_url = '<%= url_for controller: :orders_cycle_plugin_order, action: :supplier_balloon %>';
-  pagination.infiniteScroll(<%= _('loading...').to_json %>, {load: orders_cycle.order.product.showMore});
+  orders_cycle.order.load()
+  orders_cycle.order.product.include_message = '<%= include_message %>'
+  orders_cycle.order.product.order_id = <%= order_id.to_json %>
+  orders_cycle.order.product.redirect_after_include = '<%= order.nil? ? 1 : '' %>'
+  orders_cycle.order.product.add_url = '<%= url_for controller: :orders_cycle_plugin_item, action: :new %>'
+  orders_cycle.order.product.remove_url = '<%= url_for controller: :orders_cycle_plugin_product, action: :remove_from_order %>'
+  orders_cycle.order.product.balloon_url = '<%= url_for controller: :orders_cycle_plugin_order, action: :product_balloon %>'
+  orders_cycle.order.product.supplier.balloon_url = '<%= url_for controller: :orders_cycle_plugin_order, action: :supplier_balloon %>'
+  pagination.infiniteScroll(<%= _('loading...').to_json %>, {load: orders_cycle.order.product.showMore})
 <% end %>
 

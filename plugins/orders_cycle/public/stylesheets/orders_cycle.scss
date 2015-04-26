@@ -2,7 +2,6 @@
 @import 'orders-variables';
 
 @import 'sortable-table';
-@import 'balloon';
 @import 'calendrial';
 
 .balloon-content.orders-cycle {
@@ -97,18 +96,21 @@
         padding-left: $sortable-table-negative-area;
       }
 
+
+      .table-content {
+        //override .product-pic from application.css
+        .product-pic {
+          max-width: 70px;
+          max-height: 70px;
+        }
+      }
+
       .box-field {
         &, * {
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
         }
-        //override .product-pic from application.css
-        .product-pic {
-          width: auto;
-          height: auto;
-        }
-
         &.category {
           width: $module02 - 3*$base;
         }
@@ -171,14 +173,6 @@
     .consumer-order {
       margin-bottom: 10px;
       width: $order-items-width;
-
-      &.sticky {
-        position: fixed;
-        top: 0;
-        margin: 0;
-        margin-top: 40px; //top bar margin, move style to theme
-        z-index: 3;
-      }
 
       &.unactive {
         .order-message-title {

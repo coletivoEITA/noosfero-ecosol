@@ -39,7 +39,9 @@
       <% end %>
     <% elsif @cycle.edition? %>
       <% message = t('views.order._consumer_orders.this_cycle_is_not_ope') %>
-    <% else %>
+    <% elsif @cycle.before_orders? %>
+      <% message = t 'views.order._consumer_orders.the_time_for_orders_is', start: l(@cycle.start, format: :short), finish: l(@cycle.finish, format: :short) %>
+    <% elsif @cycle.after_orders? %>
       <% message = t('views.order._consumer_orders.this_cycle_is_already') %>
     <% end %>
   <% end %>

@@ -66,6 +66,14 @@ orders = {
       }
     },
 
+    admin_remove: function(context, url) {
+      var container = jQuery(context).parents('.order-items-container');
+      var item = jQuery(context).parents('.item');
+      var quantity = item.find('.quantity input');
+      quantity.val('0')
+      this.submit(context, url)
+    },
+
     submit: function(context, url) {
       var container = jQuery(context).parents('.order-items-container');
       var item = jQuery(context).parents('.item');
@@ -119,7 +127,7 @@ orders = {
   set_orders_container_max_height: function()
   {
     ordersH = jQuery(window).height();
-    ordersH -= 150
+    ordersH -= 100
     ordersH -= jQuery('#cirandas-top-bar').outerHeight()
     ordersH -= jQuery('.order-status-message').outerHeight()
     ordersH -= jQuery('.order-message-title').outerHeight()
@@ -129,6 +137,7 @@ orders = {
     ordersH -= jQuery('#order-column .delivery-box').outerHeight()
     ordersH -= jQuery('#order-column .order-message-text').outerHeight()
     ordersH -= jQuery('#order-column .order-message-actions').outerHeight()
+    ordersH -= jQuery('#order-column .actions').outerHeight()
     jQuery('.order-items-container .order-items-scroll').css('max-height', ordersH);
   }
 

@@ -19,6 +19,7 @@ orders_cycle = {
           else
             setTimeout(orders_cycle.cycle.products.load, 5*1000);
         });
+
       },
     },
   },
@@ -35,6 +36,12 @@ orders_cycle = {
   /* ----- order ----- */
 
   order: {
+
+    load: function() {
+      $('html').click(function(e) {
+        $('.popover').remove()
+      })
+    },
 
     product: {
       include_message: '',
@@ -113,17 +120,21 @@ orders_cycle = {
         balloon_url: '',
 
         balloon: function (id) {
-          var product = jQuery('#cycle-product-'+id);
-          var target = product.find('.supplier');
-          var supplier_id = product.attr('supplier-id');
-          balloon.showFromGet(target, this.balloon_url+'/'+supplier_id, {position: 'above'});
+          var product = jQuery('#cycle-product-'+id)
+          var target = product.find('.supplier')
+          var supplier_id = product.attr('supplier-id')
+          $.get(this.balloon_url+'/'+supplier_id, function(data) {
+            target.popover({html: true, content: data}).popover('show')
+          })
         },
       },
 
       balloon: function (id) {
         var product = jQuery('#cycle-product-'+id);
         var target = product.find('.product');
-        balloon.showFromGet(target, this.balloon_url+'/'+id, {position: 'above'});
+        $.get(this.balloon_url+'/'+id, function(data) {
+          target.popover({html: true, content: data}).popover('show')
+        })
       },
     },
   },

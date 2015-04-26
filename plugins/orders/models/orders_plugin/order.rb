@@ -93,6 +93,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   }
 
   validates_presence_of :profile
+  # consumer is optional, as orders can be made by unlogged users
   validates_inclusion_of :status, in: DbStatuses
 
   before_validation :check_status
@@ -105,12 +106,10 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   extend SerializedSyncedData::ClassMethods
   sync_serialized_field :profile do |profile|
-    {name: profile.name, email: profile.contact_email}
+    {name: profile.name, email: profile.contact_email, contact_phone: profile.contact_phone} if profile
   end
   sync_serialized_field :consumer do |consumer|
-    if consumer.blank? then {} else
-      {name: consumer.name, email: consumer.contact_email, contact_phone: consumer.contact_phone}
-    end
+    {name: consumer.name, email: consumer.contact_email, contact_phone: consumer.contact_phone} if consumer
   end
   sync_serialized_field :supplier_delivery
   sync_serialized_field :consumer_delivery
@@ -242,10 +241,12 @@ class OrdersPlugin::Order < ActiveRecord::Base
   end
 
   def next_status actor_name
+    # allow supplier to confirm and receive orders if admin is true
+    actor_statuses = if actor_name == :supplier then Statuses else StatusesByActor[actor_name] end
     # if no status was found go to the first (-1 to 0)
     current_index = Statuses.index(self.status) || -1
     next_status = Statuses[current_index + 1]
-    next_status if StatusesByActor[actor_name].index next_status rescue false
+    next_status if actor_statuses.index next_status rescue false
   end
 
   def step actor_name
@@ -253,7 +254,8 @@ class OrdersPlugin::Order < ActiveRecord::Base
     self.status = new_status if new_status
   end
   def step! actor_name
-    self.save! if self.step actor_name
+    # don't crash on errors as some suppliers may have been deleted and this order may not be valid anymore
+    self.save if self.step actor_name
   end
 
   def situation

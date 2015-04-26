@@ -1,6 +1,6 @@
 <% if !request.put? %>
-  jQuery('#delivery-method-edit').html("<%= escape_javascript(render partial: 'method_edit', locals: {delivery_method: @delivery_method}) %>");
+  jQuery('#delivery-method-edit').html('<%=j render 'method_edit', delivery_method: @delivery_method %>');
   delivery.view_toggle();
 <% else %>
-  jQuery('#select-content').html("<%= escape_javascript(render partial: 'select_content') %>");
+  jQuery('#select-content').html('<%=j render 'select_content' %>');
 <% end %>

@@ -5,10 +5,10 @@
   </head>
   <body>
     <p>
-      <%= t('views.mailer.message_to_admins.hello_managers_of_nam') % {:name => @profile.name} %>
+      <%= t('views.mailer.message_to_admins.hello_managers_of_nam') % {name: @profile.name} %>
     </p>
 
-    <p><%= t('views.mailer.message_to_admins.the_member_member_sen') % {:member => @member.name} %></p>
+    <p><%= t('views.mailer.message_to_admins.the_member_member_sen') % {member: @member.name} %></p>
     <p><i><%= @message %></i></p>
 
     <p>
