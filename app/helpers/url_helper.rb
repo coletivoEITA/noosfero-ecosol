@@ -33,7 +33,8 @@ module UrlHelper
   # :profile in _path_segments would always add it
   def url_options
     @_url_options_without_profile ||= begin
-      opts = super
+      # fix rails exception
+      opts = super rescue {}
       # FIXME: rails4 changes this to _recall
       opts[:_path_segments].delete :profile if opts[:_path_segments]
       opts
