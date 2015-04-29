@@ -3,8 +3,11 @@ class EnterpriseRegistrationController < ApplicationController
 
   before_filter :login_required
 
+  # CIRANDAS specific: only allow admins to access this
+  protect 'edit_environment_features', :environment
+
   # Just go to the first step.
-  # 
+  #
   # FIXME: shouldn't this action present some sort of welcome message and point
   # to the first step explicitly?
   def index
@@ -40,7 +43,7 @@ class EnterpriseRegistrationController < ApplicationController
 
   protected
 
-  # Fill in the form and select your Region. 
+  # Fill in the form and select your Region.
   #
   # Posts back.
   def basic_information
