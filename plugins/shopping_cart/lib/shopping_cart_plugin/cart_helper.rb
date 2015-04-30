@@ -1,3 +1,5 @@
+require 'pp'
+
 module ShoppingCartPlugin::CartHelper
 
   include ActionView::Helpers::NumberHelper
@@ -53,57 +55,18 @@ module ShoppingCartPlugin::CartHelper
     float_to_currency_cart(get_total(items), environment)
   end
 
-  def items_table(items, profile, delivery_option = nil, by_mail = false)
-    environment = profile.environment
-    settings = profile.shopping_cart_settings
-    items = items.to_a
-
-    quantity_opts = { :class => 'cart-table-quantity' }
-    quantity_opts.merge!({:align => 'center'}) if by_mail
-    price_opts = {:class => 'cart-table-price'}
-    price_opts.merge!({:align => 'right'}) if by_mail
-    items.sort! {|a, b| Product.find(a.first).name <=> Product.find(b.first).name}
-
-    if settings.delivery
-      if settings.free_delivery_price && get_total(items) >= settings.free_delivery_price
-        delivery = Product.new(:name => _('Free delivery'), :price => 0)
-      else
-        delivery = Product.new(:name => delivery_option || _('Delivery'), :price => settings.delivery_options[delivery_option])
-      end
-      delivery.save(:validate => false)
-      items << [delivery.id, '']
+  def build_order items, delivery_method = nil
+    @order = profile.sales.build
+    items.each do |product_id, quantity|
+      @order.items.build product_id: product_id, quantity_consumer_ordered: quantity
     end
+    @order.supplier_delivery = delivery_method
+    @order
+  end
 
-    table = '<table id="cart-items-table" cellpadding="2" cellspacing="0"
-    border="'+(by_mail ? '1' : '0')+'"
-    style="'+(by_mail ? 'border-collapse:collapse' : '')+'">' +
-    content_tag('tr',
-      content_tag('th', _('Item name')) +
-      content_tag('th', by_mail ? '&nbsp;#&nbsp;' : '#') +
-      content_tag('th', _('Price') + " (#{environment.currency_unit})")
-    ) +
-    items.map do |id, quantity|
-      product = Product.find(id)
-      name_opts = {}
-      is_delivery = quantity.kind_of?(String)
-      if is_delivery
-        price_opts.merge!({:id => 'delivery-price'})
-        name_opts.merge!({:id => 'delivery-name'})
-      end
-      content_tag('tr',
-        content_tag('td', product.name, name_opts) +
-        content_tag('td', quantity, quantity_opts ) +
-        content_tag('td', get_price(product, environment, quantity, :unit => ''), price_opts)
-      )
-    end.join("\n")
-
-    total = get_total_on_currency(items, environment)
-    delivery.destroy if settings.delivery
-
-    table +
-    content_tag('th', _('Total:'), :colspan => 2, :class => 'cart-table-total-label') +
-    content_tag('th', total, :class => 'cart-table-total-value') +
-    '</table>'
+  def items_table(items, profile, delivery_method = nil, by_mail = false)
+    # partial key needed in mailer context
+    render partial: 'shopping_cart_plugin/items', locals: {order: build_order(items, delivery_method), by_mail: by_mail}
   end
 
   def float_to_currency_cart value, environment, _options = {}
@@ -112,12 +75,15 @@ module ShoppingCartPlugin::CartHelper
     number_to_currency value, options
   end
 
-  def select_delivery_options(options, environment)
-    result = options.map do |option, price|
-      ["#{option} (#{float_to_currency_cart(price, environment)})", option]
+  def supplier_delivery_options selected=nil
+    options = profile.delivery_methods.map do |method|
+      [method.id, method.name, float_to_currency_cart(method.fixed_cost, environment), method == selected]
     end
-    result << ["#{_('Delivery')} (#{float_to_currency_cart(0, environment)})", 'delivery'] if result.empty?
-    result
+    options << [nil, _('Delivery'), float_to_currency_cart(0, environment), true] if options.empty?
+
+    options.map do |id, name, cost, selected|
+      content_tag :option, "#{name} (#{cost})", value: id, data: {label: name}, selected: if selected then 'selected' else nil end
+    end.join
   end
 
   def options_for_payment

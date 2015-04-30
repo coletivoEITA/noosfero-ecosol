@@ -51,7 +51,7 @@
     </ul>
 
     <p><%=_('And here are the items bought by this customer:')%></p>
-    <%= @helper.items_table(@items, @supplier, @delivery_option, true) %>
+    <%= @helper.items_table(@items, @supplier, @supplier_delivery, true) %>
     <p>
       --<br/>
       <%=_('If there are any problems with this email contact the admin of %s.') % @environment.name %>

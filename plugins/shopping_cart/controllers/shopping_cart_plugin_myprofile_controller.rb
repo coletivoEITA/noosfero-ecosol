@@ -52,18 +52,7 @@ class ShoppingCartPluginMyprofileController < MyProfileController
     return if settings.blank?
     settings[:enabled] = settings[:enabled] == '1'
     settings[:delivery] = settings[:delivery] == '1'
-    settings[:free_delivery_price] = settings[:free_delivery_price].blank? ? nil : settings[:free_delivery_price].to_d
-    settings[:delivery_options] = treat_delivery_options(settings[:delivery_options])
     settings
   end
 
-  def treat_delivery_options(params)
-    result = {}
-    params[:options].size.times do |counter|
-      if params[:options][counter].present? && params[:prices][counter].present?
-        result[params[:options][counter]] = params[:prices][counter]
-      end
-    end
-    result
-  end
 end
