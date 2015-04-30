@@ -1,0 +1,45 @@
+"en-US": &en-US
+
+  delivery_plugin:
+    lib:
+      plugin:
+        name: "Delivery"
+        description: "Management of delivery's methods and options"
+    models:
+      method:
+        pickup: 'Pickup'
+        deliver: 'Deliver'
+        delivery_type: 'Type'
+        name: Name
+        fixed_cost: Fixed cost
+        free_over_price: Order's minimum price for free delivery
+        free_over_price_help: Leave empty to always charge the delivery
+        instructions: Instructions
+        instructions_help: "Give the consumer instructions for the delivery, include the address and any recommendations you find useful. This text will be available on the page of the order, and by confirming the order the person will receive a copy of the order."
+    views:
+      delivery_option: 
+        _select_content: 
+          add: Add
+          add_new: "add new"
+          are_you_sure_you_want: "Are you sure you want to delete this method?"
+          cancel: cancel
+          choose_a_delivery_met: "Choose a delivery method from the list"
+          edit_this: "edit this"
+          remove_method: "remove method"
+        _show: 
+          x: X
+        select: 
+          add_a_delivery_method: "Add a delivery method to the Orders' Cycle"
+      method:
+        index:
+          new: "New delivery method"
+        edit: 
+          add: Add
+          back: back
+          save: Save
+
+'en_US':
+  <<: *en-US
+'en':
+  <<: *en-US
+

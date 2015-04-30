@@ -1,6 +1,0 @@
-<% if !request.put? %>
-  jQuery('#delivery-method-edit').html('<%=j render 'method_edit', delivery_method: @delivery_method %>');
-  delivery.view_toggle();
-<% else %>
-  jQuery('#select-content').html('<%=j render 'select_content' %>');
-<% end %>

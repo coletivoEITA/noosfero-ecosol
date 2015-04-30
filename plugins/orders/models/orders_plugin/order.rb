@@ -307,7 +307,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   instance_exec &OrdersPlugin::Item::DefineTotals
 
   # total_price considering last state
-  def total_price actor_name, admin = false
+  def total_price actor_name = :consumer, admin = false
     if not self.pre_order? and admin and status = self.next_status(actor_name)
       self.fill_items_data self.status, status
     else
@@ -321,6 +321,13 @@ class OrdersPlugin::Order < ActiveRecord::Base
     items.collect(&price).inject(0){ |sum, p| sum + p.to_f }
   end
   has_currency :total_price
+
+  def total actor_name = :consumer, admin = false
+    t = self.total_price actor_name, admin
+    t += self.supplier_delivery.cost t if self.supplier_delivery.present?
+    t
+  end
+  has_currency :total
 
   def fill_items_data from_status, to_status, save = false
     return if (Statuses.index(to_status) <= Statuses.index(from_status) rescue true)

@@ -338,33 +338,6 @@
           no_consumers: "Este perfil não é um fornecedor da rede."
           save: "Salvar"
 
-  delivery_plugin:
-    lib:
-      plugin:
-        name: "Entrega"
-        description: "Gestão de métodos e opções de entrega"
-    views:
-      delivery_option: 
-        _method_edit: 
-          add: Adicionar
-          cancel: Cancelar
-          instructions: Instruções
-          instructions_help: "Dê instruções aos(às) consumidores(as) para a entrega. Inclua o endereço e quaisquer recomendações que você achar úteis. Este texto estará disponível na página do pedido e, ao confirmar uma compra, a pessoa receberá uma cópia dela."
-          name: Nome
-          save: Salvar
-        _select_content: 
-          add: Adicionar
-          add_new: "adicionar novo"
-          are_you_sure_you_want: "Tem certeza de que quer remover este método?"
-          cancel: Cancelar
-          choose_a_delivery_met: "Escolha um método de entrega da lista"
-          edit_this: Editar
-          remove_method: "Remover método"
-        _show: 
-          x: X
-        select: 
-          add_a_delivery_method: "Adicionar um método de entrega ao ciclo de pedidos"
-
   orders_plugin:
     terms:
       <<: *suppliers_terms

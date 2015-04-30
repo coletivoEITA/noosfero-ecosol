@@ -1,6 +1,7 @@
 <div id="cycle-delivery-option-<%=option.id%>" class="cycle-delivery-option">
   <span><%= option.delivery_method.name %></span>
   <%= link_to_remote t('delivery_plugin.views.delivery_option._show.x'),
-    { url: {controller: :delivery_plugin_option, action: :destroy, id: option.id, owner_id: owner.id, owner_type: owner.class.name} },
+    { url: {controller: 'delivery_plugin/option', action: :destroy, id: option.id, owner_id: owner.id, owner_type: owner.class.name} },
     class: 'cycle-delete-delivery-option' %>
 </div>
+

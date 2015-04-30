@@ -1,0 +1,45 @@
+"pt-BR": &pt-BR
+
+  delivery_plugin:
+    lib:
+      plugin:
+        name: "Entrega"
+        description: "Gestão de métodos e opções de entrega"
+    models:
+      method:
+        pickup: 'Retirada'
+        deliver: 'Entrega'
+        delivery_type: 'Tipo'
+        name: Nome
+        fixed_cost: Custo fixo
+        free_over_price: "Preço mínimo do pedido para entrega grátis"
+        free_over_price_help: "Deixe vazio para sempre cobrar a entrega."
+        instructions: Instruções
+        instructions_help: "Dê instruções aos(às) consumidores(as) para a entrega. Inclua o endereço e quaisquer recomendações que você achar úteis. Este texto estará disponível na página do pedido e, ao confirmar uma compra, a pessoa receberá uma cópia dela."
+    views:
+      delivery_option: 
+        _select_content: 
+          add: Adicionar
+          add_new: "adicionar novo"
+          are_you_sure_you_want: "Tem certeza de que quer remover este método?"
+          cancel: Cancelar
+          choose_a_delivery_met: "Escolha um método de entrega da lista"
+          edit_this: Editar
+          remove_method: "Remover método"
+        _show: 
+          x: X
+        select: 
+          add_a_delivery_method: "Adicionar um método de entrega ao ciclo de pedidos"
+      method:
+        index:
+          new: "Novo método de entrega"
+        edit: 
+          add: Adicionar
+          back: voltar
+          save: Salvar
+
+'pt_BR':
+  <<: *pt-BR
+'pt':
+  <<: *pt-BR
+

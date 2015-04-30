@@ -313,33 +313,6 @@
           no_consumers: "This profile isn't a suppliers of the network."
           save: "Save"
 
-  delivery_plugin:
-    lib:
-      plugin:
-        name: "Delivery"
-        description: "Management of delivery's methods and options"
-    views:
-      delivery_option: 
-        _method_edit: 
-          add: Add
-          cancel: cancel
-          instructions: Instructions
-          instructions_help: "Give the consumer instructions for the delivery, include the address and any recommendations you find useful. This text will be available on the page of the order, and by confirming the order the person will receive a copy of the order."
-          name: Name
-          save: Save
-        _select_content: 
-          add: Add
-          add_new: "add new"
-          are_you_sure_you_want: "Are you sure you want to delete this method?"
-          cancel: cancel
-          choose_a_delivery_met: "Choose a delivery method from the list"
-          edit_this: "edit this"
-          remove_method: "remove method"
-        _show: 
-          x: X
-        select: 
-          add_a_delivery_method: "Add a delivery method to the Orders' Cycle"
-
   orders_plugin:
     terms:
       <<: *suppliers_terms
