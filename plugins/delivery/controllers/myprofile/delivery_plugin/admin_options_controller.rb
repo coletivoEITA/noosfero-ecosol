@@ -7,13 +7,14 @@ class DeliveryPlugin::AdminOptionsController < MyProfileController
   protect 'edit_profile', :profile
 
   helper OrdersPlugin::FieldHelper
+  helper DeliveryPlugin::DisplayHelper
 
   def select
+
   end
 
   def new
-    ids = params[:delivery_methods]
-    dms = profile.delivery_methods.find ids
+    dms = profile.delivery_methods.find Array(params[:method_id])
     (dms - @owner.delivery_methods).each do |dm|
       DeliveryPlugin::Option.create! owner_id: @owner.id, owner_type: @owner.class.name, delivery_method: dm
     end
@@ -28,7 +29,6 @@ class DeliveryPlugin::AdminOptionsController < MyProfileController
 
   def load_methods
     @delivery_methods = profile.delivery_methods
-    @delivery_method = profile.delivery_methods.build
   end
 
   def load_owner

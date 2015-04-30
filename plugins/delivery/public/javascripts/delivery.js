@@ -64,4 +64,11 @@ delivery = {
 
   },
 
+  option: {
+
+    add: function(newUrl) {
+      $.getScript(newUrl)
+    },
+  },
+
 };

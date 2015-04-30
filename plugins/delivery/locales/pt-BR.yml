@@ -19,7 +19,7 @@
     views:
       delivery_option: 
         _select_content: 
-          add: Adicionar
+          add: Adicionar opção
           add_new: "adicionar novo"
           are_you_sure_you_want: "Tem certeza de que quer remover este método?"
           cancel: Cancelar

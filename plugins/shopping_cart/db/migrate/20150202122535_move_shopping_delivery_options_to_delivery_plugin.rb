@@ -1,15 +1,16 @@
 class MoveShoppingDeliveryOptionsToDeliveryPlugin < ActiveRecord::Migration
   def up
     Enterprise.find_each batch_size: 20 do |enterprise|
-      next if enterprise.shopping_cart_settings.delivery_options.empty?
+      settings = enterprise.shopping_cart_settings
+      next if settings.delivery_options.blank?
 
-      free_over_price = enterprise.shopping_cart_settings.free_delivery_price
-      enterprise.shopping_cart_settings.delivery_options.each do |name, price|
+      free_over_price = settings.free_delivery_price
+      settings.delivery_options.each do |name, price|
         enterprise.delivery_methods.create! name: name, fixed_cost: price.to_f, delivery_type: 'pickup', free_over_price: free_over_price
       end
 
-      enterprise.shopping_cart_settings.free_delivery_price = nil
-      enterprise.shopping_cart_settings.delivery_options = nil
+      settings.free_delivery_price = nil
+      settings.delivery_options = nil
       enterprise.save!
     end
   end
