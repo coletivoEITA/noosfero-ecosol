@@ -160,9 +160,6 @@
     }
 
     .order-items-scroll {
-      overflow-y: auto;
-      padding-right: $intercolumn;
-      box-sizing: content-box;
     }
 
     .order-header {
@@ -193,6 +190,13 @@
 
 .consumer-order {
   @import 'field';
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.consumer-order.scroll {
+  padding-right: $intercolumn/2;
+  box-sizing: content-box;
 }
 
 .orders-price-with-unit {
