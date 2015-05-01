@@ -66,6 +66,32 @@ orders = {
       }
     },
 
+    admin_add: {
+      search_url: null,
+      add_url: null,
+      source: null,
+
+      load: function (id) {
+        var self = this
+        var input = $('#order-row-'+id+' .order-product-add .add-input')
+        this.source = new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          remote: this.search_url+'&query=%QUERY',
+        })
+        this.source.initialize()
+
+        input.typeahead({
+          minLength: 2, highlight: true,
+        }, {
+          displayKey: 'label',
+          source: this.source.ttAdapter(),
+        }).on('typeahead:selected', function(e, item) {
+          $.post(self.add_url, {product_id: item.value})
+        })
+      },
+    },
+
     admin_remove: function(context, url) {
       var container = jQuery(context).parents('.order-items-container');
       var item = jQuery(context).parents('.item');
@@ -127,18 +153,18 @@ orders = {
   set_orders_container_max_height: function()
   {
     ordersH = jQuery(window).height();
-    ordersH -= 100
     ordersH -= jQuery('#cirandas-top-bar').outerHeight()
-    ordersH -= jQuery('.order-status-message').outerHeight()
-    ordersH -= jQuery('.order-message-title').outerHeight()
-    ordersH -= jQuery('#order-column .order-items .table-header').last().outerHeight()
-    ordersH -= jQuery('#order-column .order-total').last().outerHeight()
-    ordersH -= jQuery('#order-column #actor-data-box').last().outerHeight()
-    ordersH -= jQuery('#order-column .delivery-box').outerHeight()
-    ordersH -= jQuery('#order-column .order-message-text').outerHeight()
-    ordersH -= jQuery('#order-column .order-message-actions').outerHeight()
-    ordersH -= jQuery('#order-column .actions').outerHeight()
-    jQuery('.order-items-container .order-items-scroll').css('max-height', ordersH);
+    //ordersH -= jQuery('.order-status-message').outerHeight()
+    //ordersH -= jQuery('.order-message-title').outerHeight()
+    //ordersH -= jQuery('#order-column .order-items .table-header').last().outerHeight()
+    //ordersH -= jQuery('#order-column .order-total').last().outerHeight()
+    //ordersH -= jQuery('#order-column #actor-data-box').last().outerHeight()
+    //ordersH -= jQuery('#order-column .delivery-box').outerHeight()
+    //ordersH -= jQuery('#order-column .order-message-text').outerHeight()
+    //ordersH -= jQuery('#order-column .order-message-actions').outerHeight()
+    //ordersH -= jQuery('#order-column .actions').outerHeight()
+    jQuery('.consumer-order').css('max-height', ordersH);
+    jQuery('.consumer-order').addClass('scroll');
   }
 
 };
