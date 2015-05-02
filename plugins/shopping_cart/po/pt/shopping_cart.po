@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0-690-gcb6e853\n"
 "POT-Creation-Date: 2015-03-05 12:09-0300\n"
-"PO-Revision-Date: 2015-03-09 20:59-0300\n"
+"PO-Revision-Date: 2015-04-30 20:34-0300\n"
 "Last-Translator: Michal Čihař <michal@cihar.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero"
 "/plugin-shopping-cart/pt/>\n"
@@ -376,3 +376,8 @@ msgstr "Complemento (p.ex. apto)"
 #:
 msgid "repeat order"
 msgstr "repetir pedido"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb
+msgid "haven't finished yet: back to shopping"
+msgstr "ainda não concluí: voltar às compras"
+

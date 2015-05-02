@@ -116,7 +116,6 @@ class ShoppingCartPluginController < OrdersPluginController
       @cart = cart
       @profile = cart_profile
       @settings = cart_profile.shopping_cart_settings
-      render :layout => false
     end
   end
 
@@ -200,9 +199,12 @@ class ShoppingCartPluginController < OrdersPluginController
     }.to_json
   end
 
-  protected
+  # must be public
+  def profile
+    cart_profile
+  end
 
-  private
+  protected
 
   def validate_same_profile(product)
     if self.cart && self.cart[:profile_id] && product.profile_id != self.cart[:profile_id]
@@ -310,13 +312,6 @@ class ShoppingCartPluginController < OrdersPluginController
     }
     order.save!
   end
-
-  # must be public
-  def profile
-    cart_profile
-  end
-
-  protected
 
   def cart
     @cart ||=
