@@ -203,10 +203,6 @@ input.button.with-text.icon-cart,
   text-transform: none;
 }
 
-#cart-form-main {
-  border: 2px solid #FFF;
-}
-
 #cart-request-form fieldset {
   clear: left;
   color: #999;

@@ -1,13 +1,21 @@
 @import 'base';
 
-#delivery-method-edit {
+#delivery-method-edition {
   @import 'field';
+  @extend .container-clean;
+}
+#delivery-method-list {
 }
 
 #delivery-add {
   // to resize popin
   overflow: hidden;
+}
 
+.delivery-method {
+  .select {
+    width: 20px;
+  }
 }
 
 #delivery-method-choose {
@@ -18,25 +26,7 @@
   }
 }
 
-.delivery-method-as-option {
-}
-
 .cycle-delete-delivery-option {
   font-weight: bold;
-}
-
-#delivery-option-new-method {
-  background-color: #E5E0EC;
-  display: none;
-}
-.new-delivery-method {
-
-  label {
-    width: 100px;
-    text-align: right;
-  }
-  input {
-    text-align: left;
-  }
 }
 

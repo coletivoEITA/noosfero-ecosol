@@ -1,8 +1,9 @@
 = form_for delivery_method, as: :delivery_method,
-  url: request.GET.merge(controller: 'delivery_plugin/admin_method', action: if delivery_method.new_record? then :new else :edit end, id: delivery_method.id), html: {onsubmit: 'return delivery.method.save(this)'} do |f|
+  url: request.GET.merge(controller: delivery_context, action: delivery_method.new_record? ? :new : :edit, id: delivery_method.id),
+  html: {onsubmit: 'return delivery.method.save(this)'} do |f|
 
   = error_messages_for :delivery_method
-  
+
   = labelled_field f, :delivery_type, t('delivery_plugin.models.method.delivery_type'),
     f.select(:delivery_type, DeliveryPlugin::Method::Types.map{ |t| [t("delivery_plugin.models.method.#{t}"), t] },
     onchange: 'delivery.method.changeType(this)', onkeyup: 'this.onchange()')
@@ -16,3 +17,4 @@
   div
     = submit_button :save, if delivery_method.new_record? then t('delivery_plugin.views.method.edit.add') else t('delivery_plugin.views.method.edit.save') end
     = link_to_function t('delivery_plugin.views.method.edit.back'), "delivery.method.view.toggle()"
+

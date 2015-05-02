@@ -431,6 +431,7 @@
           city: "City" 
           state: "State"
           postal_code: "Postal code"
+          zip_code: "ZIP code"
         payment_data:
           method: "Method"
           change: "Change"

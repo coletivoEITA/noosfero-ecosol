@@ -18,6 +18,8 @@
         instructions_help: "Give the consumer instructions for the delivery, include the address and any recommendations you find useful. This text will be available on the page of the order, and by confirming the order the person will receive a copy of the order."
     views:
       delivery_option: 
+        select: 
+          add: Add selected
         _select_content: 
           add: Add option
           add_new: "add new"
