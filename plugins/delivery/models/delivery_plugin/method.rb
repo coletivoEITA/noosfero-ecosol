@@ -36,6 +36,7 @@ class DeliveryPlugin::Method < ActiveRecord::Base
     if self.has_cost?(order_price) then self.fixed_cost.to_f else 0 end
   end
   has_currency :fixed_cost
+  has_currency :free_over_price
   has_currency :cost
 
   protected

@@ -5,6 +5,7 @@ class DeliveryPlugin::AdminOptionsController < DeliveryPlugin::AdminMethodContro
 
   protect 'edit_profile', :profile
   before_filter :load_context
+  before_filter :load_owner
 
   def select
 
@@ -12,7 +13,6 @@ class DeliveryPlugin::AdminOptionsController < DeliveryPlugin::AdminMethodContro
 
   def new
     dms = profile.delivery_methods.find Array(params[:method_id])
-    load_owner
     (dms - @owner.delivery_methods).each do |dm|
       DeliveryPlugin::Option.create! owner_id: @owner.id, owner_type: @owner.class.name, delivery_method: dm
     end

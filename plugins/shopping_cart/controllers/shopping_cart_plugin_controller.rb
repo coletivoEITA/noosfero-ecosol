@@ -112,7 +112,7 @@ class ShoppingCartPluginController < OrdersPluginController
 
   def buy
     @customer = user || Person.new
-    return unless validate_cart_presence
+    return redirect_to request.referer || environment.top_url if self.cart.nil?
     @cart = cart
     @profile = cart_profile
     @order = profile.sales.build consumer: @consumer
