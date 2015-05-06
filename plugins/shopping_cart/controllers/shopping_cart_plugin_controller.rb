@@ -111,6 +111,7 @@ class ShoppingCartPluginController < OrdersPluginController
   end
 
   def buy
+    @no_design_blocks = true
     @customer = user || Person.new
     return redirect_to request.referer || environment.top_url if self.cart.nil?
     @cart = cart

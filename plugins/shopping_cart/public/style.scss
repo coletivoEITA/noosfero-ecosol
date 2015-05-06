@@ -180,14 +180,12 @@ input.button.with-text.icon-cart,
 }
 
 #cart-request-box {
-  width: 690px;
   overflow: hidden;
 }
 #cart-request-box a {
   font-size: smaller;
 }
 #cart-request-form {
-  width: 274px;
   float: left;
 }
 #cart-request-box .cart-box-close {
@@ -198,7 +196,7 @@ input.button.with-text.icon-cart,
   height: 16px;
   background-repeat: no-repeat;
 }
-#cart-request-box .cart-popin-close {
+#cart-request-box .cart-go-back {
   float: right;
   text-transform: none;
 }
@@ -212,7 +210,6 @@ input.button.with-text.icon-cart,
 
 #cart-request-form input,
 #cart-request-form select {
-  width: 250px;
 }
 
 #cart-form-actions {
@@ -226,8 +223,6 @@ input.button.with-text.icon-cart,
 }
 
 #cart-items-table {
-  margin-left: 285px;
-  width: auto;
 }
 
 .cart-table-quantity {
