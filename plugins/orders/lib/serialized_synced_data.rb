@@ -1,6 +1,7 @@
 module SerializedSyncedData
 
   def self.prepare_data _hash
+    return {} unless _hash
     hash = {}; _hash.each do |key, value|
       next if value.blank?
       hash[key.to_sym] = value

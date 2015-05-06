@@ -442,6 +442,7 @@
     views:
       filter:
         <<: *suppliers_plugin_filter
+        delivery: 'Delivery or pickup'
       actions: 
         <<: *suppliers_plugin_actions
 

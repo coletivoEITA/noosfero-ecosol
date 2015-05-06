@@ -123,7 +123,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def filter
-    @cycle = profile.orders_cycles.find params[:context_id]
+    @cycle = profile.orders_cycles.find params[:owner_id]
     @scope = @cycle
 
     params[:code].gsub!(/^#{@cycle.code}\./, '') if params[:code].present?

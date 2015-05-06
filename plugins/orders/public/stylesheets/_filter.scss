@@ -60,7 +60,7 @@ $filter-bg: #BCDC91;
         float: left;
         clear: none; //overhide field partial
         padding: $padding;
-        padding-right: $padding - $border; 
+        padding-right: $padding - $border;
         border-right: $border solid $filter-border-color;
 
         &:first-child {
@@ -76,6 +76,10 @@ $filter-bg: #BCDC91;
         }
         select, input {
           width: $module02;
+
+        }
+        &.year select, &.month select {
+          width: $module01;
         }
         .name input {
           width: $module04;

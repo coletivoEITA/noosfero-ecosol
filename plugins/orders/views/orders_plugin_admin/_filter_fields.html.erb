@@ -15,14 +15,22 @@
 </div>
 
 <div class="field <%= actor_name %>">
-  <label><%= t("terms.#{actor_name}.singular", :transformation => :capitalize) %></label>
+  <label><%= t("terms.#{actor_name}.singular", transformation: :capitalize) %></label>
   <div>
     <%= select_tag "#{actor_name}_id",
       options_for_select([[t('views.filter.all'), ""]] + actors.map{ |a| [a.name, a.id] }, params["#{actor_name}_id"]) %>
   </div>
 </div>
 
-<% if orders_context == :profile %>
+<div class="field delivery">
+  <label><%= t('views.filter.delivery') %></label>
+  <div>
+    <%= select_tag :delivery_method_id,
+      options_for_select([[t('views.filter.all'), ""]] + orders_owner.delivery_methods.map{ |dm| [dm.name, dm.id] }, params[:delivery_method_id]) %>
+  </div>
+</div>
+
+<% if not orders_owner.is_a? OrdersCyclePlugin::Cycle %>
   <div class="field month">
     <label><%= t('views.filter.month') %></label>
     <div>

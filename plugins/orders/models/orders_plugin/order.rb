@@ -126,6 +126,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
     scope = scope.with_code params[:code] if params[:code].present?
     scope = scope.by_month params[:date][:month] if params[:date][:month].present? rescue nil
     scope = scope.by_year params[:date][:year] if params[:date][:year].present? rescue nil
+    scope = scope.where supplier_delivery_id: params[:delivery_method_id] if params[:delivery_method_id].present? rescue nil
     scope
   end
 
@@ -394,7 +395,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
     # ignore when status is being rewinded
     return if (Statuses.index(self.status) <= Statuses.index(self.status_was) rescue false)
     # dummy suppliers don't notify
-    return unless self.profile.visible
+    return unless self.profile and self.profile.visible
 
     if self.status == 'ordered' and self.status_was != 'ordered'
       OrdersPlugin::Mailer.order_confirmation(self).deliver
