@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0-690-gcb6e853\n"
 "POT-Creation-Date: 2015-03-05 12:09-0300\n"
-"PO-Revision-Date: 2015-05-02 10:10-0300\n"
+"PO-Revision-Date: 2015-05-07 09:41-0300\n"
 "Last-Translator: Michal Čihař <michal@cihar.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero"
 "/plugin-shopping-cart/pt/>\n"
@@ -64,6 +64,10 @@ msgstr "Frete grátis"
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:7
 msgid "Delivery"
 msgstr "Entrega"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:7
+msgid "Delivery or pickup"
+msgstr "Forma de entrega ou retirada"
 
 #: plugins/delivery/views/delivery_plugin/_order_select.html.slim
 msgid "Instructions"

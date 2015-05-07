@@ -23,18 +23,18 @@
         _select_content: 
           add: Add option
           add_new: "add new"
-          are_you_sure_you_want: "Are you sure you want to delete this method?"
+          are_you_sure_you_want: "Are you sure you want to remove?"
           cancel: cancel
           choose_a_delivery_met: "Choose a delivery method from the list"
-          edit_this: "edit this"
-          remove_method: "remove method"
+          edit_this: "Edit"
+          remove_method: "Remover"
         _show: 
           x: X
         select: 
           add_a_delivery_method: "Add a delivery method to the Orders' Cycle"
       method:
         index:
-          new: "New delivery method"
+          new: "New delivery or pickup"
         edit: 
           add: Add
           back: back
