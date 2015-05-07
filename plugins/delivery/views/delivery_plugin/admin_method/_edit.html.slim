@@ -6,6 +6,7 @@
 
   = labelled_field f, :delivery_type, t('delivery_plugin.models.method.delivery_type'),
     f.select(:delivery_type, DeliveryPlugin::Method::Types.map{ |t| [t("delivery_plugin.models.method.#{t}"), t] },
+    help: t('delivery_plugin.models.method.delivery_type_help'),
     onchange: 'delivery.method.changeType(this)', onkeyup: 'this.onchange()')
   = labelled_field f, :name, t('delivery_plugin.models.method.name'), f.text_field(:name)
   = labelled_field f, :description, t('delivery_plugin.models.method.instructions'),
