@@ -62,7 +62,7 @@ class SnifferPluginMyprofileController < MyProfileController
   end
 
   def search
-    self.class.no_design_blocks
+    @no_design_blocks = true
 
     @suppliers_products = @sniffer_profile.suppliers_products
     @consumers_products = @sniffer_profile.consumers_products

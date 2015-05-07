@@ -73,6 +73,7 @@ body.action-sniffer_plugin_myprofile-search #content .row {
 }
 body.action-sniffer_plugin_myprofile-search #theme-footer,
 body.action-sniffer_plugin_myprofile-search #profile-header,
+body.action-sniffer_plugin_myprofile-search #profile-theme-header,
 body.action-sniffer_plugin_myprofile-search #profile-title,
 body.action-sniffer_plugin_myprofile-search #profile-footer {
   display: none;
@@ -420,5 +421,5 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
 /* Interest interface */
 #sniffer-plugin-product-select {
   width:428px;
-  margin-left:24px;
+  margin-bottom:30px;
 }
