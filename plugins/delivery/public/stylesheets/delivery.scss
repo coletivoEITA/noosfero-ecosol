@@ -1,5 +1,32 @@
 @import 'base';
 
-#delivery-method-edit {
+#delivery-method-edition {
   @import 'field';
+  @extend .container-clean;
 }
+#delivery-method-list {
+}
+
+#delivery-add {
+  // to resize popin
+  overflow: hidden;
+}
+
+.delivery-method {
+  .select {
+    width: 20px;
+  }
+}
+
+#delivery-method-choose {
+  height: 235px;
+
+  #delivery-menu a {
+    text-transform: capitalize;
+  }
+}
+
+.cycle-delete-delivery-option {
+  font-weight: bold;
+}
+

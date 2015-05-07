@@ -620,60 +620,6 @@
   top: 80%;
 }
 
-#consumers-coop-plugin-add-delivery {
-
-  select {
-    height: 130px;
-    padding: 0;
-    width: 280px;
-  }
-
-  .field {
-    float: left;
-
-    #delivery-menu {
-      float: left;
-      line-height: 20px;
-      margin-left: 10px;
-      margin-top: 26px;
-
-      a {
-        display: block;
-      }
-    }
-  }
-}
-
-#delivery-method-choose {
-  height: 235px;
-
-  #delivery-menu a {
-    text-transform: capitalize;
-  }
-}
-
-.delivery-method-as-option {
-}
-
-.cycle-delete-delivery-option {
-  font-weight: bold;
-}
-
-#delivery-option-new-method {
-  background-color: #E5E0EC;
-  display: none;
-}
-.new-delivery-method {
-
-  label {
-    width: 100px;
-    text-align: right;
-  }
-  input {
-    text-align: left;
-  }
-}
-
 #cycle-orders {
   margin-top: $margin;
 

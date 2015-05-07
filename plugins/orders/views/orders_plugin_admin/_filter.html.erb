@@ -9,13 +9,13 @@
 
   <%= form_tag({controller: :orders_plugin_admin, action: :filter}, id: 'filter-form', remote: true, data: {loading: '#filter'}) do %>
 
-    <%= hidden_field_tag 'actor_name', actor_name %>
-    <%= hidden_field_tag 'orders_method', orders_method %>
-    <%= hidden_field_tag 'orders_context', orders_context %>
-    <%= hidden_field_tag 'context_id', context_id %>
+    <%= hidden_field_tag :actor_name, actor_name %>
+    <%= hidden_field_tag :orders_method, orders_method %>
+    <%= hidden_field_tag :orders_owner, orders_owner.id %>
+    <%= hidden_field_tag :owner_id, owner_id %>
 
     <div class="fields filter-box">
-      <%= render 'orders_plugin_admin/filter_fields', actor_name: other_actor_name, actors: actors, orders_context: orders_context, year: year, month: month %>
+      <%= render 'orders_plugin_admin/filter_fields', actor_name: other_actor_name, actors: actors, orders_owner: orders_owner, year: year, month: month %>
     </div>
 
     <div class="submit">

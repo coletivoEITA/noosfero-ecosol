@@ -19,6 +19,7 @@ gem 'i18n',                     '~> 0.6.0'
 gem 'will-paginate-i18n'
 gem 'utf8-cleaner'
 gem 'premailer-rails'
+gem 'slim'
 
 platform :ruby do
   gem 'pg'

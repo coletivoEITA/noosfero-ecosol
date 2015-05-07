@@ -7,6 +7,7 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
 
   after_save :cycle_change_purchases, if: :cycle
   before_destroy :cycle_remove_purchases_items, if: :cycle
+  before_validation :fill_default_supplier_delivery
 
   scope :for_cycle, lambda{ |cycle| {conditions: ['orders_cycle_plugin_cycles.id = ?', cycle.id], joins: [:cycles]} }
 
@@ -30,7 +31,11 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
     super || (self.cycle.delivery_methods.first rescue nil)
   end
   def supplier_delivery_id
-    self['supplier_delivery_id'] || (self.cycle.delivery_methods.first.id rescue nil)
+    self[:supplier_delivery_id] || (self.supplier_delivery.id rescue nil)
+  end
+
+  def fill_default_supplier_delivery
+    self[:supplier_delivery_id] ||= self.supplier_delivery.id if self.supplier_delivery
   end
 
   protected

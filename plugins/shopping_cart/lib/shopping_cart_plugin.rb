@@ -1,25 +1,11 @@
 class ShoppingCartPlugin < Noosfero::Plugin
 
-  class << self
-    def plugin_name
+  def self.plugin_name
     "Shopping Basket"
-    end
+  end
 
-    def plugin_description
-      _("A shopping basket feature for enterprises")
-    end
-
-    def delivery_default_setting
-      false
-    end
-
-    def delivery_price_default_setting
-      0
-    end
-
-    def delivery_options_default_setting
-      {}
-    end
+  def self.plugin_description
+    _("A shopping basket feature for enterprises")
   end
 
   def stylesheet?

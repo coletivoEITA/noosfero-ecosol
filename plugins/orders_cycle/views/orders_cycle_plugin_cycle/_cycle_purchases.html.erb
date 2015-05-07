@@ -1,3 +1,3 @@
-<%= render 'orders_plugin_admin/purchases', actors: @cycle.suppliers, orders_context: :cycle, context_id: @cycle.id,
+<%= render 'orders_plugin_admin/purchases', actors: @cycle.suppliers, orders_owner: @cycle, owner_id: @cycle.id,
   orders: @cycle.purchases.paginate(per_page: 30, page: params[:page]) %>
 

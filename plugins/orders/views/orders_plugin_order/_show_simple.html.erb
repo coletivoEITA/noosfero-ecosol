@@ -6,9 +6,6 @@ other_actor_name = if actor_name == :supplier then :consumer else :supplier end
   <% @simple = true %>
   <div class="order-data">
     <%= render "orders_plugin_item/index", order: order, actor_name: actor_name %>
-    <%= render 'orders_plugin_order/delivery', order: order,
-      actor_name: :consumer %>
-    <%= render 'orders_plugin_order/delivery', order: order,
-      actor_name: :supplier %>
+    <%= render 'orders_plugin_order/delivery', order: order, actor_name: actor_name, edition: false %>
   </div>
 </div>

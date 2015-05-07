@@ -1,3 +1,6 @@
+shopping_cart = {
+}
+
 function Cart(config) {
   var $ = jQuery;
   config.minimized = Cart.minimized;

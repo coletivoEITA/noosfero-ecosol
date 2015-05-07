@@ -3,7 +3,7 @@
 
   <%= form_tag(:action => 'save', :id => @block.id) do %>
 
-    <%= labelled_form_field(_('Custom title for this block: '), text_field(:block, :title, :maxlength => 20)) %>
+    <%= labelled_form_field(_('Custom title for this block: '), text_field(:block, :title, :maxlength => 25)) %>
 
     <% if environment.admins.include?(user) %>
       <div class="fixed_block">

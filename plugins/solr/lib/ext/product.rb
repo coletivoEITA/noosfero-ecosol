@@ -66,7 +66,8 @@ class Product
   end
 
   def solr_plugin_public
-    self.public?
+    # environment.products only consider enterprises
+    self.public? and self.profile.enterprise?
   end
 
   def solr_plugin_available_sortable

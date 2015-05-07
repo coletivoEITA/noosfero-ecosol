@@ -48,7 +48,7 @@ debian/files
 debian/noosfero/
 debian/noosfero-apache/
 features/plugins/*
-plugins/solr/config/solr.yml
+config/solr.yml
 /solr
 
 plugins/fb_app/config.yml

@@ -139,13 +139,6 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     filter
   end
 
-  def render_delivery
-    @order = profile.sales.find params[:id]
-    @order.attributes = params[:order]
-    @order.sync_supplier_delivery_data
-    render partial: 'orders_plugin_order/delivery', locals: {order: @order, actor_name: :supplier}
-  end
-
   def supplier_balloon
     @supplier = SuppliersPlugin::Supplier.find params[:id]
     render layout: false

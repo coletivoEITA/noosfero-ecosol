@@ -29,7 +29,6 @@ class OrdersPlugin::OrderTest < ActiveSupport::TestCase
 
     r = OrdersPlugin::Order.supplier_products_by_suppliers [sale]
     quantities = r.first.last.map(&:quantity_ordered).map(&:to_i)
-    pp quantities
     assert_equal [3*1,3*5], quantities
   end
 

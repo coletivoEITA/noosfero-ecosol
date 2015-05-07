@@ -51,6 +51,7 @@ class ShoppingCartPluginMyprofileControllerTest < ActionController::TestCase
     assert settings.delivery_price == price.to_s
   end
 
+  # FIXME
   should 'be able to choose delivery_options' do
     delivery_options = {:options => ['car', 'bike'], :prices => ['20', '5']}
     post :edit, :profile => profile.identifier, :settings => {:delivery_options => delivery_options}
