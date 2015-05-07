@@ -47,6 +47,16 @@ module FormsHelper
       bt_submit + bt_cancel
     end
 
+    %w[select select_tag text_field_tag password_field_tag].each do |method|
+      define_method method do |*args, &block|
+        #return super(*args, &block) unless theme_responsive?
+
+        options = args.extract_options!
+        options[:class] = "#{options[:class]} form-control"
+        super(*(args << options), &block)
+      end
+    end
+
   end
 
   include ResponsiveChecks
