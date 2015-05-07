@@ -23,18 +23,18 @@
         _select_content: 
           add: Adicionar opção
           add_new: "adicionar novo"
-          are_you_sure_you_want: "Tem certeza de que quer remover este método?"
+          are_you_sure_you_want: "Tem certeza de que quer remover?"
           cancel: Cancelar
           choose_a_delivery_met: "Escolha um método de entrega da lista"
           edit_this: Editar
-          remove_method: "Remover método"
+          remove_method: "Remover"
         _show: 
           x: X
         select: 
           add_a_delivery_method: "Adicionar um método de entrega ao ciclo de pedidos"
       method:
         index:
-          new: "Novo método de entrega"
+          new: "Nova forma de entrega ou retirada"
         edit: 
           add: Adicionar
           back: voltar
