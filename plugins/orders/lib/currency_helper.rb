@@ -5,10 +5,17 @@ module CurrencyHelper
   def self.parse_localized_number number
     return 0 if number.blank?
     number = number.to_s
-    number.gsub(I18n.t("number.currency.format.unit"), '')
-      .gsub(I18n.t("number.currency.format.delimiter"), '')
-      .gsub(I18n.t("number.currency.format.separator"), '.')
-      .to_f
+    number.gsub! I18n.t("number.currency.format.unit"), ''
+    begin
+      # try simple conversation, in case it is a non localized number
+      # this is the case of <input type=number />
+      number = Float number
+    rescue
+      number.gsub! I18n.t("number.currency.format.delimiter"), ''
+      number.gsub! I18n.t("number.currency.format.separator"), '.'
+      number = number.to_f
+    end
+    number
   end
 
   def self.parse_currency currency
