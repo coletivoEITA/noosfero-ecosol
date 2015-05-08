@@ -56,6 +56,12 @@ module FormsHelper
         super(*(args << options), &block)
       end
     end
+    %w[select_month select_year].each do |method|
+      define_method method do |date, options={}, html_options={}|
+        html_options[:class] = "#{html_options[:class]} form-control"
+        super date, options, html_options
+      end
+    end
 
   end
 
