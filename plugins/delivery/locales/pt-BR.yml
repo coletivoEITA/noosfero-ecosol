@@ -10,13 +10,13 @@
         pickup: 'Retirada'
         deliver: 'Entrega'
         delivery_type: "Tipo"
-        delivery_type_help: "Retirada: os produtos serão entregues no núcleo de consumo.<br>Entrega: os produtos serão entregues no endereço solicitado pelo(a) consumidor(a)."
+        delivery_type_help: "Retirada: os produtos serão buscados pela(o) consumidor(a), por exemplo, no empreendimento, numa feira ou num Núcleo de Consumo.<br>Entrega: os produtos serão entregues no endereço solicitado pelo(a) consumidor(a)."
         name: Nome
-        name_help: Escreva o nome do Núcleo de Consumo ou do local de entrega
-        fixed_cost: Custo fixo
-        free_over_price: "Preço mínimo do pedido para entrega grátis"
+        name_help: "Para opção Retirada: escreva o nome do local onde os produtos deverão ser retirados pela(o) consumidor(a), por exemplo o nome do Núcleo de Consumo, da feira ou do próprio empreendimento.<br>Para a opção Entrega: escreva o nome do local (por exemplo: a cidade ou região) ou a forma de entrega (por exemplo: Correios, transportadora)"
+        fixed_cost: Custo
+        free_over_price: "Preço mínimo do pedido para Entrega Grátis"
         instructions: Descrição
-        instructions_help: "Escreva o endereço e outras informações importantes sobre o local deste Núcleo de Consumo.<br>Este texto estará disponível no \"Finalizar pedido\" e, e ao confirmar a compra, o consumidor(a) recebe uma cópia."
+        instructions_help: "Escreva informações importantes sobre esta opção de Retirada ou Entrega.<br>Por exemplo, o endereço completo do Núcleo de Consumo, a abrangência da região de entrega.<br> Este texto estará disponível no \"Finalizar pedido\" e, ao confirmar a compra, a(o) consumidor(a) receberá um email com o pedido realizado e as informações deste campo."
     views:
       delivery_option: 
         select: 
