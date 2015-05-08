@@ -6,18 +6,18 @@
 
 <%= form_for :settings, url: {action: 'edit'}, html: {method: 'post'} do |f| %>
 
-  <%= labelled_form_field(_('Enable shopping basket'), f.check_box(:enabled)) %>
-  <%= labelled_form_field(_('Enable delivery fields on orders'), f.check_box(:delivery)) %>
+  <%= labelled_form_field _('Enable shopping basket'), f.check_box(:enabled) %>
+
+  <fieldset id='delivery_settings' style="display: <%= display_delivery_settings %>">
+    <label><%=_('Deliveries or pickups')%></label>
+    <%= render 'delivery_plugin/admin_method/index' %>
+  </fieldset>
 
   <div>
     <%= submit_button(:save, _('Save')) %>
     <%= button :back, _('Back to control panel'), controller: 'profile_editor' %>
   </div>
-<% end%>
 
-<fieldset id='delivery_settings' style="display: <%= display_delivery_settings %>"><legend><%=_('Delivery or pickup')%></legend>
-  <%= render 'delivery_plugin/admin_method/index' %>
-</fieldset>
-
+<% end %>
 
 <%= javascript_include_tag '../plugins/shopping_cart/edit' %>

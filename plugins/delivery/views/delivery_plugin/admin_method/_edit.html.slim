@@ -8,7 +8,8 @@
     f.select(:delivery_type, DeliveryPlugin::Method::Types.map{ |t| [t("delivery_plugin.models.method.#{t}"), t] },
       onchange: 'delivery.method.changeType(this)', onkeyup: 'this.onchange()'),
     help: t('delivery_plugin.models.method.delivery_type_help')
-  = labelled_field f, :name, t('delivery_plugin.models.method.name'), f.text_field(:name)
+  = labelled_field f, :name, t('delivery_plugin.models.method.name'), f.text_field(:name),
+    help: t('delivery_plugin.models.method.name_help')
   = labelled_field f, :description, t('delivery_plugin.models.method.instructions'),
     f.text_area(:description, rows: 5), help: t('delivery_plugin.models.method.instructions_help')
   = labelled_field f, :fixed_cost, t('delivery_plugin.models.method.fixed_cost'),

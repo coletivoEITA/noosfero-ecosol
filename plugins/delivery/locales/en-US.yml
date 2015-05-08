@@ -12,6 +12,7 @@
         delivery_type: 'Type'
         delivery_type_help: 'Pickup: the products will be delivered in the consumption place.<br>Delivery: the products will be delivered in the address asked by the consumer.'
         name: Name
+        name_help: Write the name of the Consumption Place or the 
         fixed_cost: Fixed cost
         free_over_price: Order's minimum price for free delivery
         free_over_price_help: Leave empty to always charge the delivery
