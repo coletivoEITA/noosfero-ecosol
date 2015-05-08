@@ -9,13 +9,14 @@
       method:
         pickup: 'Retirada'
         deliver: 'Entrega'
-        delivery_type: 'Tipo'
+        delivery_type: "Tipo"
+        delivery_type_help: "Retirada: os produtos serão entregues no núcleo de consumo.<br>Entrega: os produtos serão entregues no endereço solicitado pelo(a) consumidor(a)."
         name: Nome
         fixed_cost: Custo fixo
         free_over_price: "Preço mínimo do pedido para entrega grátis"
         free_over_price_help: "Deixe vazio para sempre cobrar a entrega."
-        instructions: Instruções
-        instructions_help: "Dê instruções aos(às) consumidores(as) para a entrega. Inclua o endereço e quaisquer recomendações que você achar úteis. Este texto estará disponível na página do pedido e, ao confirmar uma compra, a pessoa receberá uma cópia dela."
+        instructions: Descrição
+        instructions_help: "Escreva o endereço e outras informações importantes sobre o local deste núcleo de consumo.<br>Este texto estará disponível no \"Finalizar pedido\" e, e ao confirmar a compra, o consumidor(a) recebe uma cópia."
     views:
       delivery_option: 
         select: 

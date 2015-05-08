@@ -6,12 +6,15 @@
 
   = labelled_field f, :delivery_type, t('delivery_plugin.models.method.delivery_type'),
     f.select(:delivery_type, DeliveryPlugin::Method::Types.map{ |t| [t("delivery_plugin.models.method.#{t}"), t] },
-    onchange: 'delivery.method.changeType(this)', onkeyup: 'this.onchange()')
+      onchange: 'delivery.method.changeType(this)', onkeyup: 'this.onchange()'),
+    help: t('delivery_plugin.models.method.delivery_type_help')
   = labelled_field f, :name, t('delivery_plugin.models.method.name'), f.text_field(:name)
   = labelled_field f, :description, t('delivery_plugin.models.method.instructions'),
     f.text_area(:description, rows: 5), help: t('delivery_plugin.models.method.instructions_help')
-  = labelled_field f, :fixed_cost, t('delivery_plugin.models.method.fixed_cost'), f.text_field(:fixed_cost, value: delivery_method.fixed_cost_as_currency_number)
-  = labelled_field f, :free_over_price, t('delivery_plugin.models.method.free_over_price'), f.text_field(:free_over_price, value: delivery_method.free_over_price_as_currency_number),
+  = labelled_field f, :fixed_cost, t('delivery_plugin.models.method.fixed_cost'),
+    f.text_field(:fixed_cost, type: :number, step: 1, value: number_with_precision(delivery_method.fixed_cost, precision: 2, locale: :en))
+  = labelled_field f, :free_over_price, t('delivery_plugin.models.method.free_over_price'),
+    f.text_field(:free_over_price, type: :number, step: 1, value: number_with_precision(delivery_method.free_over_price, precision: 2, locale: :en)),
     help: t('delivery_plugin.models.method.free_over_price_help')
 
   div
