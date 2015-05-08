@@ -67,8 +67,8 @@
         this:
           singular: "esta organização"
       consumer: 
-        singular: "consumidor"
-        plural: "consumidores"
+        singular: "consumidor(a)"
+        plural: "consumidores(as)"
         to_article:
           singular: "ao(à) consumidor(a)"
           plural: "aos(às) consumidores(as)"
@@ -138,7 +138,7 @@
         unit: unidade
         units: unidades
       profile: 
-        consumer: Consumidor
+        consumer: Consumidor(a)
     views:
       filter: &suppliers_plugin_filter
         filter: Filtro
@@ -149,11 +149,11 @@
         month: "Mês"
         year: "Ano"
       actions: &suppliers_plugin_actions
-        all: "todos"
-        none: "nenhum"
-        select: "selecionar"
+        all: "Todos"
+        none: "Nenhum"
+        select: "Selecionar"
         with_selection: "com selecionados"
-        with_filter: "com a busca"
+        with_filter: "com a busca:"
         activate: "ativar"
         deactivate: "desativar"
 
@@ -384,7 +384,7 @@
       report: 
         closed_orders: "Pedidos fechados"
         created: criado
-        member_name: "Nome do Membro"
+        member_name: "Nome do(a) consumidor(a)"
         order_code: "Código do Pedido"
         min_stock: "estoque mín."
         mm_dd_yy_hh_mm_am_pm: "DD/MM/YY"
@@ -539,8 +539,9 @@
           supplier_heading: "Dados %{terms.supplier.from_article.singular}"
       admin:
         reports:
-          products_spreadsheet: "Planilha de produtos"
-          orders_spreadsheet: "Planilha de pedidos"
+          generate: "Gerar planilhas"
+          products_spreadsheet: "Produtos"
+          orders_spreadsheet: "Pedidos"
         index: 
           no_orders_to_show: "Nenhum pedido para visualizar."
           code: "código"

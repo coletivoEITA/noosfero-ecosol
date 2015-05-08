@@ -7,14 +7,6 @@ module ShoppingCartPlugin::CartHelper
 
   include DeliveryPlugin::DisplayHelper
 
-  # oh, we need a payments plugin!
-  PaymentMethods = {
-    money: proc{ _("Money") },
-    check: proc{ s_('shopping_cart|Check') },
-    credit_card: proc{ _('Credit card') },
-    bank_transfer: proc{ _('Bank transfer') },
-  }
-
   def add_to_cart_button item, options = {}
   	label = if options[:with_text].nil? or options[:with_text] then _('Add to basket') else '' end
   	button_to_function 'cart', label, "Cart.addItem(#{item.id}, this)", class: 'cart-add-item', type: 'primary'
@@ -79,7 +71,7 @@ module ShoppingCartPlugin::CartHelper
   end
 
   def options_for_payment
-    options_for_select PaymentMethods.map{ |key, text| [text.call, key] }
+    options_for_select OrdersPlugin::Order::PaymentMethods.map{ |key, text| [text.call, key] }
   end
 
 end

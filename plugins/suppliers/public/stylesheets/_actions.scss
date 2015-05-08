@@ -12,24 +12,14 @@ $actions-bg: #D7FFB9;
   }
 
   .labels, .buttons {
-    @extend .container-clean;
   }
 
   .labels {
     font-weight: bold;
-  }
 
-  .select {
-    float: left;
-    width: $module03;
-  }
-  .with-selection {
-    float: left;
-    width: $module06;
-  }
-  .other {
-    float: right;
-    width: $module03;
+    .select {
+      height: $height;
+    }
   }
 }
 

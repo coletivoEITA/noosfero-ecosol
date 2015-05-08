@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0-690-gcb6e853\n"
 "POT-Creation-Date: 2015-03-05 12:09-0300\n"
-"PO-Revision-Date: 2015-05-08 11:16-0300\n"
+"PO-Revision-Date: 2015-05-08 16:48-0300\n"
 "Last-Translator: Michal Čihař <michal@cihar.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero"
 "/plugin-shopping-cart/pt/>\n"
@@ -68,6 +68,10 @@ msgstr "Entrega"
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:7
 msgid "Delivery or pickup"
 msgstr "Forma de entrega ou retirada"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:7
+msgid "Deliveries or pickups"
+msgstr "Formas de entrega ou retirada"
 
 #: plugins/delivery/views/delivery_plugin/_order_select.html.slim
 msgid "Instructions"
@@ -346,6 +350,14 @@ msgstr "Dinheiro"
 #: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:9
 msgid "shopping_cart|Check"
 msgstr "Cheque"
+
+#: plugins/shopping_cart/lib/shopping_cart/cart_helper.rb
+msgid "Credit card"
+msgstr "Cartão de crédito"
+
+#: plugins/shopping_cart/lib/shopping_cart/cart_helper.rb
+msgid "Bank transfer"
+msgstr "Transferência bancária"
 
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:47
 msgid "Here are the products you bought:"

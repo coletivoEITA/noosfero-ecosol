@@ -117,6 +117,7 @@ class ShoppingCartPluginController < OrdersPluginController
     @cart = cart
     @profile = cart_profile
     @order = profile.sales.build consumer: @consumer
+    @order.supplier_delivery_id = session[:cart][:last_delivery_option_id] rescue nil
     @settings = cart_profile.shopping_cart_settings
   end
 
@@ -128,6 +129,8 @@ class ShoppingCartPluginController < OrdersPluginController
       session[:notice] = _('Your order has been sent successfully! You will receive a confirmation e-mail shortly.')
       @success = true
       @profile = cart_profile
+      session[:cart] ||= {}
+      session[:cart][:last_delivery_option_id] = order.supplier_delivery_id
       self.cart = nil
     rescue ActiveRecord::ActiveRecordError => exception
       @success = false

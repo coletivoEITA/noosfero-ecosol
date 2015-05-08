@@ -141,9 +141,9 @@
         month: "Month"
         year: "Year"
       actions: &suppliers_plugin_actions
-        all: "all"
-        none: "none"
-        select: "select"
+        all: "All"
+        none: "None"
+        select: "Select"
         with_selection: "with selected"
         with_filter: "with search"
         activate: "activate"
@@ -512,8 +512,9 @@
           supplier_heading: "Data %{terms.supplier.from_article.singular}"
       admin:
         reports:
-          products_spreadsheet: "Products' spreadsheet"
-          orders_spreadsheet: "Orders' spreadsheet"
+          generate_spreadsheets: "Generate spreadsheets"
+          products_spreadsheet: "Products"
+          orders_spreadsheet: "Orders"
         index: 
           no_orders_to_show: "No orders to show."
           code: "code"
