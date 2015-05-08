@@ -125,20 +125,13 @@ class ShoppingCartPluginController < OrdersPluginController
     begin
       ShoppingCartPlugin::Mailer.customer_notification(order, self.cart[:items]).deliver
       ShoppingCartPlugin::Mailer.supplier_notification(order, self.cart[:items]).deliver
+      session[:notice] = _('Your order has been sent successfully! You will receive a confirmation e-mail shortly.')
+      @success = true
+      @profile = cart_profile
       self.cart = nil
-      render :text => {
-        :ok => true,
-        :message => _('Your order has been sent successfully! You will receive a confirmation e-mail shortly.'),
-        :error => {:code => 0}
-      }.to_json
     rescue ActiveRecord::ActiveRecordError => exception
-      render :text => {
-        :ok => false,
-        :error => {
-          :code => 6,
-          :message => exception.message
-        }
-      }.to_json
+      @success = false
+      @error = exception.message
     end
   end
 

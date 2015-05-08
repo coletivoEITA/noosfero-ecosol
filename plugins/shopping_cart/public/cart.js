@@ -345,21 +345,8 @@ function Cart(config) {
       type: 'POST',
       url: '/plugin/shopping_cart/send_request',
       data: params,
-      dataType: 'json',
-      success: function(data, status, ajax){
-        if ( !data.ok ) display_notice(data.error.message);
-        else {
-          me.clean();
-          display_notice(data.message);
-        }
-      },
+      dataType: 'script',
       cache: false,
-      error: function(ajax, status, errorThrown) {
-        log.error('Send request - HTTP '+status, errorThrown);
-      },
-      complete: function() {
-        noosfero.modal.close();
-      }
     });
   }
 
