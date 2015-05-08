@@ -18,10 +18,8 @@ delivery = {
         instructions.html(instructionsData)
         var consumerData = deliverySelect.find('.consumer-delivery-data')
         if (isPickup) {
-          instructions.slideDown('fast')
           consumerData.slideUp('fast')
         } else {
-          instructions.slideUp('fast')
           consumerData.slideDown('fast')
         }
       },
