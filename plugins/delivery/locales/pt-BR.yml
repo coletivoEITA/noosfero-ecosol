@@ -15,7 +15,6 @@
         name_help: Escreva o nome do Núcleo de Consumo ou do local de entrega
         fixed_cost: Custo fixo
         free_over_price: "Preço mínimo do pedido para entrega grátis"
-        free_over_price_help: "Deixe vazio para sempre cobrar a entrega."
         instructions: Descrição
         instructions_help: "Escreva o endereço e outras informações importantes sobre o local deste Núcleo de Consumo.<br>Este texto estará disponível no \"Finalizar pedido\" e, e ao confirmar a compra, o consumidor(a) recebe uma cópia."
     views:

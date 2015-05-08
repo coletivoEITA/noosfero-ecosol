@@ -2,6 +2,10 @@
 
 #delivery-method-edition {
   @extend .container-clean;
+
+  .field-help {
+    font-size: 10px;
+  }
 }
 #delivery-method-list {
 }
@@ -15,6 +19,7 @@
   .select {
     width: 20px;
   }
+
 }
 
 #delivery-method-choose {
