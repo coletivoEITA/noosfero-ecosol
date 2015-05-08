@@ -7,6 +7,14 @@ class OrdersPlugin::Order < ActiveRecord::Base
     StatusText[status] = "orders_plugin.models.order.statuses.#{status}"
   end
 
+  # oh, we need a payments plugin!
+  PaymentMethods = {
+    money: proc{ _("Money") },
+    check: proc{ s_('shopping_cart|Check') },
+    credit_card: proc{ _('Credit card') },
+    bank_transfer: proc{ _('Bank transfer') },
+  }
+
   # remember to translate on changes
   ActorData = [
     :name, :email, :contact_phone,
