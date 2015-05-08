@@ -12,6 +12,10 @@
       <span class="icon"></span>
       <span class="text"><%= _('Consumers') %></span>
     </span>
+    <span class="both">
+      <span class="icon"></span>
+      <span class="text"><%= _('Both') %></span>
+    </span>
   </div>
 
   <div class="sniffer-search-field">
@@ -36,12 +40,12 @@
           <td class="select">
             <input type="checkbox" name="<@= category.id @>" checked onclick='sniffer.search.category.toggleFilter(this);'/>
           </td>
-          <td class="name">
+          <td class="name <@= category.interest_type @>">
             <@= category.name @>
           </td>
         </tr>
       </script>
-      <%= javascript_tag "sniffer.search.category.append(#{@categories.to_json :only => [:id, :name]});" %>
+      <%= javascript_tag "sniffer.search.category.append(#{@categories.to_json});" %>
     </div>
 
     <label class="search-distance"><%=_('Maximum distance:')%>

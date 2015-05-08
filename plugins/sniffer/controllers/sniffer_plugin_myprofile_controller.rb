@@ -1,7 +1,7 @@
 class SnifferPluginMyprofileController < MyProfileController
-  
+
   include SnifferPlugin::Helper
-  
+
   before_filter :fetch_sniffer_profile, :only => [:edit, :search]
 
   helper CmsHelper
@@ -72,7 +72,16 @@ class SnifferPluginMyprofileController < MyProfileController
 
     @suppliers_categories = @suppliers_products.collect(&:product_category)
     @consumers_categories = @consumers_products.collect(&:product_category)
-    @categories = (@suppliers_categories + @consumers_categories).sort_by(&:name).uniq
+
+    @categories = (@suppliers_categories + @consumers_categories).sort_by(&:name).uniq.map do |category|
+      c = {id: category.id, name: category.name}
+      if @suppliers_categories.include?(category) && @consumers_categories.include?(category)
+        c[:interest_type] = :both
+      else
+        @suppliers_categories.include?(category) ? c[:interest_type] = :supplier : c[:interest_type] = :consumer
+      end
+      c
+    end
 
     suppliers = @suppliers_products.group_by{ |p| p['profile_id'].to_i }
     consumers = @consumers_products.group_by{ |p| p['profile_id'].to_i }

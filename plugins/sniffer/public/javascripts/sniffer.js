@@ -14,8 +14,11 @@ sniffer = {
             return false;
         },
         select: function (event, ui) {
-          category = {id: ui.item.value, name: ui.item.label};
-          sniffer.search.category.append([category]);
+          category = {id: ui.item.value, name: ui.item.label, interest_type: 'supplier'};
+          if (sniffer.search.category.exists(category.id))
+            sniffer.search.category.updateInterestType(category.id);
+          else
+            sniffer.search.category.append([category]);
           // Add new map marks:
           jQuery.ajax(options.addUrl.replace('_id_', category.id), {
             dataType: 'json',
@@ -124,7 +127,16 @@ sniffer = {
 
       exists: function (id) {
         var find = jQuery('#categories-table input[name='+id+']');
-        find.length > 0;
+        return find.length > 0;
+      },
+
+      updateInterestType: function (id) {
+        var row = jQuery('#categories-table input[name='+id+']');
+        row = row.closest('tr').find('.consumer')
+        if (row.length > 0) {
+          row[0].classList.remove('consumer');
+          row[0].classList.add('both');
+        }
       },
 
       template: function (categories) {
