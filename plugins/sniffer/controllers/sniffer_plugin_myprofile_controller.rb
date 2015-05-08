@@ -35,25 +35,25 @@ class SnifferPluginMyprofileController < MyProfileController
   end
 
   def product_category_add
-    @product_category = environment.categories.find params[:id]
+    product_category = environment.categories.find params[:id]
     response = { :productCategory => {
-        :id   => @product_category.id,
-        :name => @product_category.name,
-        :fullName => @product_category.full_name(' &rarr; '),
+        :id   => product_category.id,
+        :name => product_category.name,
+        :fullName => product_category.full_name(' &rarr; '),
         :url  => url_for(Noosfero.url_options.merge({
           :controller => 'search',
           :action => 'category_index',
-          :category_path => @product_category.path.split('/'),
-          :host => @product_category.environment.default_hostname
+          :category_path => product_category.path.split('/'),
+          :host => product_category.environment.default_hostname
         }))
       }
     }
-    response[:enterprises] = @product_category.sniffer_plugin_enterprises.map do |enterprise|
+    response[:enterprises] = product_category.sniffer_plugin_enterprises.map do |enterprise|
       profile_data = profile_hash(enterprise)
       profile_data[:balloonUrl] = url_for :controller => :sniffer_plugin_myprofile, :action => :map_balloon, :id => enterprise[:id], :escape => false
       profile_data[:sniffer_plugin_distance] = distance_between_profiles(@profile, enterprise)
       profile_data[:suppliersProducts] = suppliers_products_hash(
-        enterprise.products.sniffer_plugin_products_from_category(@product_category)
+        enterprise.products.sniffer_plugin_products_from_category(product_category)
       )
       profile_data[:consumersProducts] = []
       profile_data
@@ -64,27 +64,26 @@ class SnifferPluginMyprofileController < MyProfileController
   def search
     @no_design_blocks = true
 
-    @suppliers_products = @sniffer_profile.suppliers_products
-    @consumers_products = @sniffer_profile.consumers_products
-    @no_results = @suppliers_products.count == 0 and @consumers_products.count == 0
+    suppliers_products = @sniffer_profile.suppliers_products
+    consumers_products = @sniffer_profile.consumers_products
 
-    profiles_of_interest = fetch_profiles(@suppliers_products + @consumers_products)
+    profiles_of_interest = fetch_profiles(suppliers_products + consumers_products)
 
-    @suppliers_categories = @suppliers_products.collect(&:product_category)
-    @consumers_categories = @consumers_products.collect(&:product_category)
+    suppliers_categories = suppliers_products.collect(&:product_category)
+    consumers_categories = consumers_products.collect(&:product_category)
 
-    @categories = (@suppliers_categories + @consumers_categories).sort_by(&:name).uniq.map do |category|
+    @categories = (suppliers_categories + consumers_categories).sort_by(&:name).uniq.map do |category|
       c = {id: category.id, name: category.name}
-      if @suppliers_categories.include?(category) && @consumers_categories.include?(category)
+      if suppliers_categories.include?(category) && consumers_categories.include?(category)
         c[:interest_type] = :both
       else
-        @suppliers_categories.include?(category) ? c[:interest_type] = :supplier : c[:interest_type] = :consumer
+        suppliers_categories.include?(category) ? c[:interest_type] = :supplier : c[:interest_type] = :consumer
       end
       c
     end
 
-    suppliers = @suppliers_products.group_by{ |p| p['profile_id'].to_i }
-    consumers = @consumers_products.group_by{ |p| p['profile_id'].to_i }
+    suppliers = suppliers_products.group_by{ |p| p['profile_id'].to_i }
+    consumers = consumers_products.group_by{ |p| p['profile_id'].to_i }
 
     @profiles_data = {}
     suppliers.each do |id, products|
