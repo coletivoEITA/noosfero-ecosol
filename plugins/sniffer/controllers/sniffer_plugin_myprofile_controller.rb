@@ -82,8 +82,8 @@ class SnifferPluginMyprofileController < MyProfileController
       c
     end
 
-    suppliers = suppliers_products.group_by{ |p| p['profile_id'].to_i }
-    consumers = consumers_products.group_by{ |p| p['profile_id'].to_i }
+    suppliers = suppliers_products.group_by{ |p| target_profile_id(p) }
+    consumers = consumers_products.group_by{ |p| target_profile_id(p) }
 
     @profiles_data = {}
     suppliers.each do |id, products|
@@ -134,7 +134,7 @@ class SnifferPluginMyprofileController < MyProfileController
   end
 
   def suppliers_products_hash(products)
-    visible_attributes = [:id, :profile_id, :product_category_id, :view, :knowledge_id]
+    visible_attributes = [:id, :profile_id, :product_category_id, :view, :knowledge_id, :supplier_profile_id]
     products.map do |product|
       suppliers_hash = {}
       visible_attributes.each{ |a| suppliers_hash[a] = product[a] }
@@ -143,7 +143,7 @@ class SnifferPluginMyprofileController < MyProfileController
   end
 
   def consumers_products_hash(products)
-    visible_attributes = [:id, :profile_id, :product_category_id, :view, :my_product_id, :knowledge_id]
+    visible_attributes = [:id, :profile_id, :product_category_id, :view, :knowledge_id, :consumer_profile_id]
     products.map do |product|
       consumers_hash = {}
       visible_attributes.each{ |a| consumers_hash[a] = product[a] }
@@ -152,7 +152,7 @@ class SnifferPluginMyprofileController < MyProfileController
   end
 
   def fetch_profiles(products)
-    profiles = Profile.all :conditions => {:id => products.map { |p| p['profile_id'] }}
+    profiles = Profile.all :conditions => {:id => products.map { |p| target_profile_id(p) }}
     profiles_hash = {}
     profiles.each do |p|
       p[:sniffer_plugin_distance] = distance_between_profiles(@profile, p)
@@ -162,7 +162,7 @@ class SnifferPluginMyprofileController < MyProfileController
   end
 
   def build_products(data)
-    id_products, id_my_products, id_knowledges = {}, {}, {}
+    id_products, id_knowledges = {}, {}
 
     results = {}
     return results if data.blank?
@@ -173,23 +173,26 @@ class SnifferPluginMyprofileController < MyProfileController
 
     products = Product.all :conditions => {:id => grab_id.call('id')}, :include => [:enterprise, :product_category]
     products.each{ |p| id_products[p.id] ||= p }
-    my_products = Product.all :conditions => {:id => grab_id.call('my_product_id')}, :include => [:enterprise, :product_category]
-    my_products.each{ |p| id_my_products[p.id] ||= p }
     knowledges = Article.all :conditions => {:id => grab_id.call('knowledge_id')}
     knowledges.each{ |k| id_knowledges[k.id] ||= k}
 
     data.each do |attributes|
-      profile = id_profiles[attributes['profile_id'].to_i]
+      profile = id_profiles[target_profile_id(attributes)]
 
       results[profile.id] ||= []
       results[profile.id] << {
         :partial => attributes['view'],
         :product => id_products[attributes['id'].to_i],
-        :my_product => id_my_products[attributes['my_product_id'].to_i],
         :knowledge => id_knowledges[attributes['knowledge_id'].to_i]
       }
     end
     results
+  end
+
+  def target_profile_id(product)
+    p = product.is_a?(Hash) ? product : product.attributes
+    p.delete_if { |key, value| value.blank? }
+    (p['consumer_profile_id'] || p['supplier_profile_id'] || p['profile_id']).to_i
   end
 
 end

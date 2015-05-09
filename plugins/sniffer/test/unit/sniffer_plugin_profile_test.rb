@@ -29,6 +29,7 @@ class SnifferPluginProfileTest < ActiveSupport::TestCase
     # Enterprises:
     e1 = fast_create(Enterprise, :identifier => 'ent1' )
     e2 = fast_create(Enterprise, :identifier => 'ent2' )
+    e3 = fast_create(Enterprise, :identifier => 'ent3' )
     # Categories:
     c1 = fast_create(ProductCategory, :name => 'Category 1')
     c2 = fast_create(ProductCategory, :name => 'Category 2')
@@ -41,6 +42,13 @@ class SnifferPluginProfileTest < ActiveSupport::TestCase
     p3 = fast_create(Product, :product_category_id => c3.id, :profile_id => e2.id )
     p3.inputs.build.product_category = c1 # p3 uses p1 as input on its production
     p3.save!
+    # Products (for enterprise 3):
+    p4 = fast_create(Product, :product_category_id => c3.id, :profile_id => e3.id )
+    p5 = fast_create(Product, :product_category_id => c3.id, :profile_id => e3.id )
+    p4.inputs.build.product_category = c1 # p4 uses p1 as input on its production
+    p5.inputs.build.product_category = c1 # as does p5
+    p4.save!
+    p5.save!
 
     # get the extended sniffer profile for the enterprise:
     e1_sniffer = SnifferPlugin::Profile.find_or_create e1
@@ -50,11 +58,18 @@ class SnifferPluginProfileTest < ActiveSupport::TestCase
     e2_sniffer.enabled = true
     e2_sniffer.save!
 
-    # TODO: Review consumers_products. e1 is cazy supling p3 from c2. But works for mapping.
-    assert_equal [p2.id, p3.id],
-      e1_sniffer.consumers_products.sort{|a,b| a.id<=>b.id}.map(&:id)
+    assert_equal [p1.id, p1.id, p2.id],
+      e1_sniffer.consumers_products.sort_by(&:id).map(&:id)
+
+    # since they have interest in the same product, e2 and e3 position
+    # may vary here, but the last enterprise should be e2
+    assert_equivalent [e2.id, e3.id],
+      e1_sniffer.consumers_products.sort_by(&:id).map{|p| p[:consumer_profile_id].to_i}.first(2)
+    assert_equal e2.id,
+      e1_sniffer.consumers_products.sort_by(&:id).map{|p| p[:consumer_profile_id].to_i}.last
+
     assert_equal [p1.id, p2.id],
-      e2_sniffer.suppliers_products.sort{|a,b| a.id<=>b.id}.map(&:id)
+      e2_sniffer.suppliers_products.sort_by(&:id).map(&:id)
     assert_equal [], e2_sniffer.consumers_products
   end
 end

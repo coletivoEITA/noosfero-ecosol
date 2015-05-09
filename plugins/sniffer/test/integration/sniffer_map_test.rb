@@ -2,7 +2,7 @@ require "#{File.dirname(__FILE__)}/../../../../test/test_helper"
 
 class SnifferMapTest < ActionController::IntegrationTest
 
-  fixtures :users, :profiles  
+  fixtures :users, :profiles
 
   def url_plugin_myprofile(profile, action, opt={})
     url_for({ :controller => 'sniffer_plugin_myprofile',
@@ -30,14 +30,15 @@ class SnifferMapTest < ActionController::IntegrationTest
     # Build relationship between products, by defining production inputs:
     #  ent1   ent2   ent3   ent4
     # ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
-    #   p1◄━┭──p3  ╭─►p5     p7
-    #       │┏━━━━━┵──────╮
+    #   p1◄━┭──p3  ╭─►p5  ┌─►p7
+    #       │┏━━━━━┷━━━━━━┥
     #       ╰╂─────╮      │
     #   p2━━━┛ p4  ╰──p6  ╰─►p8
     #
     @p[1].inputs.build.product_category = @p[3].product_category
     @p[1].inputs.build.product_category = @p[6].product_category
     @p[5].inputs.build.product_category = @p[2].product_category
+    @p[7].inputs.build.product_category = @p[2].product_category
     @p[8].inputs.build.product_category = @p[2].product_category
     @p.each {|product| product.save! if product }
 
@@ -46,7 +47,6 @@ class SnifferMapTest < ActionController::IntegrationTest
   end
 
   should 'localize suppliers and consumers on page load' do
-    #get '/myprofile/ent1/plugin/sniffer/search'
     get url_plugin_myprofile(@e[1], :search)
     js_e = []
 
@@ -71,23 +71,22 @@ class SnifferMapTest < ActionController::IntegrationTest
     # Related Enterprise 3
     assert_equal 1, js_e[3][:supply].length
     assert_equal 1, js_e[3][:consum].length
-    assert_equal @p[5].id, js_e[3][:consum][0]['id']
+    assert_equal @p[2].id, js_e[3][:consum][0]['id']
     assert_equal @p[6].id, js_e[3][:supply][0]['id']
 
     # Related Enterprise 4
     assert_equal 0, js_e[4][:supply].length
     assert_equal 1, js_e[4][:consum].length
-    assert_equal @p[8].id, js_e[4][:consum][0]['id']
+    assert_equal @p[2].id, js_e[4][:consum][0]['id']
   end
-  
+
   should 'create balloon on map for a supplier' do
     post url_plugin_myprofile(@e[1], :map_balloon, :id => @e[2].id),
     {"suppliersProducts" => {
       0=>{
-      "my_product_id" => @p[1].id,
       "product_category_id" => @c[1].id,
       "id" => @p[3].id,
-      "view" => 'supplier_product',
+      "view" => 'product',
       "profile_id" => @e[2].id
       }},
      "consumersProducts" => [],
@@ -99,16 +98,15 @@ class SnifferMapTest < ActionController::IntegrationTest
     assert_select '.consumer-products', nil, 'consumer-products must to exist'
     assert_select '.consumer-products *', 0, 'consumer-products must to be empty for @c1 on @e2'
   end
-  
+
   should 'create balloon on map for a consumer' do
     post url_plugin_myprofile(@e[1], :map_balloon, :id => @e[4].id),
     {"suppliersProducts" => [],
      "consumersProducts" => {
       0=>{
-      "my_product_id" => @p[2].id,
       "product_category_id" => @c[2].id,
-      "id" => @p[8].id,
-      "view" => 'consumer_product',
+      "id" => @p[2].id,
+      "view" => 'product',
       "profile_id" => @e[4].id
       }},
      "id" => @e[4].id
@@ -124,18 +122,16 @@ class SnifferMapTest < ActionController::IntegrationTest
     post url_plugin_myprofile(@e[1], :map_balloon, :id => @e[3].id),
     {"suppliersProducts" => {
       0=>{
-      "my_product_id" => @p[1].id,
       "product_category_id" => @c[1].id,
       "id" => @p[6].id,
-      "view" => 'supplier_product',
+      "view" => 'product',
       "profile_id" => @e[3].id
       }},
      "consumersProducts" => {
       0=>{
-      "my_product_id" => @p[2].id,
       "product_category_id" => @c[2].id,
-      "id" => @p[5].id,
-      "view" => 'consumer_product',
+      "id" => @p[2].id,
+      "view" => 'product',
       "profile_id" => @e[3].id
       }},
      "id" => @e[3].id
