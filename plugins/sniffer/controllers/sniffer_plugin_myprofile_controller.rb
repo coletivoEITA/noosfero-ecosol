@@ -37,18 +37,10 @@ class SnifferPluginMyprofileController < MyProfileController
   def product_category_add
     product_category = environment.categories.find params[:id]
     response = { :productCategory => {
-        :id   => product_category.id,
-        :name => product_category.name,
-        :fullName => product_category.full_name(' &rarr; '),
-        :url  => url_for(Noosfero.url_options.merge({
-          :controller => 'search',
-          :action => 'category_index',
-          :category_path => product_category.path.split('/'),
-          :host => product_category.environment.default_hostname
-        }))
+        :id   => product_category.id
       }
     }
-    response[:enterprises] = product_category.sniffer_plugin_enterprises.map do |enterprise|
+    response[:enterprises] = product_category.sniffer_plugin_enterprises.enabled.visible.map do |enterprise|
       profile_data = profile_hash(enterprise)
       profile_data[:balloonUrl] = url_for :controller => :sniffer_plugin_myprofile, :action => :map_balloon, :id => enterprise[:id], :escape => false
       profile_data[:sniffer_plugin_distance] = distance_between_profiles(@profile, enterprise)

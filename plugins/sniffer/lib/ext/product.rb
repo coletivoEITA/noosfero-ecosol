@@ -167,7 +167,7 @@ class Product
   scope :sniffer_plugin_products_from_category, lambda { |product_category|
     {
       :conditions => { :product_category_id => product_category.id },
-      :select => "*, products.profile_id, 'product' as view"
+      :select => "*, 'product' as view"
     }
   }
 
