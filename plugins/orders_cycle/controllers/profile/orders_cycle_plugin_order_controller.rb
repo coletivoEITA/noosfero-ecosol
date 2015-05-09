@@ -157,7 +157,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate page: page, per_page: per_page
   end
 
-  extend ControllerInheritance::ClassMethods
+  extend HMVC::ClassMethods
   hmvc OrdersCyclePlugin, orders_context: OrdersCyclePlugin
 
 end

@@ -2,28 +2,38 @@
 <div id="actions-box" class="wireframe-size">
 
   <div class="labels">
-    <span class="select">
-      <%= t('views.actions.select') %>
+    <span class="select col-lg-4 col-md-4 col-sm-4">
     </span>
-    <span class="with-selection">
+
+    <span class="with-selection col-lg-4 col-md-4 col-sm-4">
       <%= t('views.actions.with_selection') %>
     </span>
+
+    <div class="clean"> </div>
   </div>
 
   <div class="buttons">
-    <div class="select">
-      <%= link_to_function t('views.actions.all'), 'suppliers.our_product.select.all()', :class => 'selection-button' %>
-      <%= link_to_function t('views.actions.none'), 'suppliers.our_product.select.none()', :class => 'selection-button' %>
+    <div class="select btn-group col-lg-4 col-md-4 col-sm-4">
+      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <%= t('views.actions.select') %> <span class="caret"></span>
+      </button>
+
+      <ul class="dropdown-menu" role="menu">
+        <li> <%= link_to_function t('views.actions.all'), 'suppliers.our_product.select.all()' %> </li>
+        <li> <%= link_to_function t('views.actions.none'), 'suppliers.our_product.select.none()' %> </li>
+      </ul>
     </div>
 
-    <div class="with-selection">
-      <%= link_to_function t('views.actions.activate'), 'suppliers.our_product.select.activate(true)', :class => 'action-button' %>
-      <%= link_to_function t('views.actions.deactivate'), 'suppliers.our_product.select.activate(false)', :class => 'action-button' %>
+    <div class="with-selection col-lg-4 col-md-4 col-sm-4">
+      <%= link_to_function t('views.actions.activate'), 'suppliers.our_product.select.activate(true)', class: 'btn btn-default btn-xs' %>
+      <%= link_to_function t('views.actions.deactivate'), 'suppliers.our_product.select.activate(false)', class: 'btn btn-default btn-xs' %>
     </div>
 
-    <div class="other">
-      <%= link_to t('views.product.import.action'), {:controller => :suppliers_plugin_product, :action => :import}, :class => 'action-button modal-toggle' %>
+    <div class="other col-lg-4 col-md-4 col-sm-4">
+      <%= modal_link_to t('views.product.import.action'), {controller: :suppliers_plugin_product, action: :import}, class: 'btn btn-default btn-xs' %>
     </div>
+
+    <div class="clean"> </div>
   </div>
 
 </div>

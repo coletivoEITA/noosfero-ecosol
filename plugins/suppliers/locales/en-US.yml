@@ -144,7 +144,7 @@
         all: "All"
         none: "None"
         select: "Select"
-        with_selection: "with selected"
+        with_selection: "with itens selected"
         with_filter: "with search"
         activate: "activate"
         deactivate: "deactivate"

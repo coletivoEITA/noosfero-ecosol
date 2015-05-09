@@ -14,7 +14,7 @@ class NetworksPluginSearchController < SearchController
 
   protected
 
-  extend ControllerInheritance::ClassMethods
+  extend HMVC::ClassMethods
   hmvc NetworksPlugin
 
 end

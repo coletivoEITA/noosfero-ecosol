@@ -84,7 +84,7 @@ class SuppliersPluginProductController < MyProfileController
     @units = Unit.all
   end
 
-  extend ControllerInheritance::ClassMethods
+  extend HMVC::ClassMethods
   hmvc OrdersPlugin
 
 end

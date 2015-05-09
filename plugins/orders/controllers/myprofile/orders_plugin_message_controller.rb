@@ -50,7 +50,7 @@ class OrdersPluginMessageController < MyProfileController
     end
   end
 
-  extend ControllerInheritance::ClassMethods
+  extend HMVC::ClassMethods
   hmvc OrdersPlugin, orders_context: OrdersPlugin
 
 end

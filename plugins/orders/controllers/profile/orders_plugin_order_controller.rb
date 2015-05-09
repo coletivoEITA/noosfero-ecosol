@@ -37,7 +37,7 @@ class OrdersPluginOrderController < ProfileController
     @actor_name = :consumer
   end
 
-  extend ControllerInheritance::ClassMethods
+  extend HMVC::ClassMethods
   hmvc OrdersPlugin, orders_context: OrdersPlugin
 
 end
