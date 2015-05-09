@@ -85,7 +85,7 @@ class OrdersPluginAdminController < MyProfileController
     @admin = true
   end
 
-  extend ControllerInheritance::ClassMethods
+  extend HMVC::ClassMethods
   hmvc OrdersPlugin, orders_context: OrdersPlugin
 
 end

@@ -7,7 +7,7 @@ class ConsumersCoopPluginCycleController < OrdersCyclePluginCycleController
 
   protected
 
-  extend ControllerInheritance::ClassMethods
+  extend HMVC::ClassMethods
   hmvc ConsumersCoopPlugin
 
 end

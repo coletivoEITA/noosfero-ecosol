@@ -18,7 +18,7 @@ class OrdersCyclePluginSupplierController < SuppliersPluginMyprofileController
 
   protected
 
-  extend ControllerInheritance::ClassMethods
+  extend HMVC::ClassMethods
   hmvc OrdersCyclePlugin, orders_context: OrdersCyclePlugin
 
 end

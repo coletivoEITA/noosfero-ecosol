@@ -66,7 +66,7 @@ class NetworksPluginEnterpriseController < SuppliersPluginMyprofileController
     @network = @node.network || @node
   end
 
-  extend ControllerInheritance::ClassMethods
+  extend HMVC::ClassMethods
   hmvc NetworksPlugin
 
 end
