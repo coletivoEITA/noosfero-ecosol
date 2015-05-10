@@ -2,7 +2,7 @@ sniffer = {
 
   search: {
 
-    filters: { __categoryIds: [], distance: 0, circle: undefined },
+    filters: { __categoryIds: [], distance: 0, circle: undefined, homePosition: undefined },
 
     loadSearchInput: function (options) {
       var input = jQuery(".sniffer-search-input");
@@ -43,13 +43,22 @@ sniffer = {
     },
 
     filter: function () {
+      // Creates a new boundary based on home position
+      var bounds = new google.maps.LatLngBounds(sniffer.search.filters.homePosition);
       jQuery.each(sniffer.search.map.markerList, function(index, marker) {
         var visible = (
            !sniffer.search.filters.distance ||
             sniffer.search.filters.distance >= marker.profile.sniffer_plugin_distance
           ) && sniffer.search.category.matchFilters(marker);
         marker.setVisible(visible);
+        // If marker is visible, expands boundary to fit new marker
+        if (visible) {
+          bounds.extend(marker.getPosition());
+        }
       });
+      // Center map to new boundaries
+      mapBounds = bounds;
+      mapCenter();
     },
 
     showFilters: function () {
@@ -320,6 +329,8 @@ sniffer = {
         myProfile.balloonUrl = options.myBalloonUrl;
         myProfile.icon = sniffer.search.map.homeIcon;
         var marker = sniffer.search.map.marker.add(myProfile, false);
+
+        sniffer.search.filters.homePosition = marker.getPosition();
 
         _.each(options.profiles, function (profile) {
           var sp = profile.suppliersProducts;
