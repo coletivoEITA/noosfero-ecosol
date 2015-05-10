@@ -9,7 +9,7 @@
   <div id='sniffer-plugin-product-select'>
     <% current_categories = @sniffer_profile.product_categories.collect{ |i| {:id => i.id, :name => i.name} } %>
 
-    <%= token_input_field_tag('sniffer_plugin_profile[product_category_string_ids]', 'sniffer_product_category_string_ids', { :action => 'product_categories' }, {search_delay: 150, pre_populate: current_categories, prevent_duplicates: true, hint_text: _('Type in a keyword') }) %>
+    <%= token_input_field_tag('sniffer_plugin_profile[product_category_string_ids]', 'sniffer_product_category_string_ids', { :action => 'product_category_search' }, {search_delay: 150, pre_populate: current_categories, prevent_duplicates: true, hint_text: _('Type in a keyword') }) %>
 
   </div>
 

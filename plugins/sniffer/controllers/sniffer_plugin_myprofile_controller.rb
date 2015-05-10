@@ -20,18 +20,14 @@ class SnifferPluginMyprofileController < MyProfileController
     end
   end
 
-  def product_categories
-    scope = ProductCategory.by_environment(environment)
-    @categories = find_by_contents(:product_categories, @profile, scope, params[:q], {:per_page => 10, :page => 1})[:results]
-
-    render :json => @categories.map{ |i| {:id => i.id, :name => i.name} }
-  end
-
   def product_category_search
-    scope = ProductCategory.by_environment(environment)
-    @categories = find_by_contents(:product_categories, @profile, scope, params[:term], {:per_page => 10, :page => 1})[:results]
+    query = params[:q] || params[:term]
 
-    render :json => @categories.map{ |pc| {:value => pc.id, :label => pc.name} }
+    scope = ProductCategory.by_environment(environment)
+    @categories = find_by_contents(:product_categories, @profile, scope, query, {:per_page => 10, :page => 1})[:results]
+
+    autocomplete = params.has_key?(:term)
+    render :json => @categories.map { |i| autocomplete ? {:value => i.id, :label => i.name} : {:id => i.id, :name => i.name} }
   end
 
   def product_category_add
