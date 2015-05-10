@@ -156,20 +156,21 @@ orders = {
 
   daterangepicker: {
 
-    init: function(rangeSelector, startDateSelector, endDateSelector, _options) {
+    init: function(rangeSelector, _options) {
       var options = $.extend({}, orders.daterangepicker.defaultOptions, _options);
-      startDateSelector = $(startDateSelector)
-      endDateSelector = $(endDateSelector)
+      var rangeField = $(rangeSelector)
+      var startField = rangeField.siblings('input[data-field=start]')
+      var endField = rangeField.siblings('input[data-field=end]')
 
-      var startDate = moment(startDateSelector.val(), moment.ISO_8601).format(options.format)
-      var endDate = moment(endDateSelector.val(), moment.ISO_8601).format(options.format)
+      var startDate = moment(startField.val(), moment.ISO_8601).format(options.format)
+      var endDate = moment(endField.val(), moment.ISO_8601).format(options.format)
       var rangeValue = startDate+options.separator+endDate
-      $(rangeSelector).val(rangeValue)
+      rangeField.val(rangeValue)
 
-      $(rangeSelector).daterangepicker(options)
+      rangeField.daterangepicker(options)
       .on('apply.daterangepicker', function(ev, picker) {
-        startDateSelector.val(picker.startDate.toDate().toISOString())
-        endDateSelector.val(picker.endDate.toDate().toISOString())
+        startField.val(picker.startDate.toDate().toISOString())
+        endField.val(picker.endDate.toDate().toISOString())
       });
     },
   },

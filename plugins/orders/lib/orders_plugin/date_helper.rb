@@ -6,15 +6,15 @@ module OrdersPlugin::DateHelper
 
   def date_range_field form, start_field, end_field, options = {}
     range_field = form.object.date_range_attr_for start_field, end_field
-    range_id, start_id, end_id = SecureRandom.hex, SecureRandom.hex, SecureRandom.hex
+    range_id = SecureRandom.hex
 
     start_time = form.object.send(start_field) || Time.now
     end_time = form.object.send(end_field) || Time.now+1.week
 
-    form.hidden_field(start_field, id: start_id, value: start_time.iso8601) +
-    form.hidden_field(end_field, id: end_id, value: end_time.iso8601) +
-    form.text_field(range_field, class: 'daterange', id: range_id) +
-    javascript_tag("orders.daterangepicker.init('##{range_id}', '##{start_id}', '##{end_id}', #{options.to_json})")
+    form.hidden_field(start_field, value: start_time.iso8601, 'data-field' => 'start') +
+    form.hidden_field(end_field, value: end_time.iso8601, 'data-field' => 'end') +
+    form.text_field(range_field, class: 'daterangepicker-field', id: range_id) +
+    javascript_tag("orders.daterangepicker.init('##{range_id}', #{options.to_json})")
   end
 
   def datetime_range_field form, start_field, end_field, options = {}
