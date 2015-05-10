@@ -152,8 +152,28 @@ orders = {
     ordersH -= jQuery('#order-column .order-message-actions').outerHeight()
     ordersH -= jQuery('#order-column .actions').outerHeight()
     jQuery('.order-items-container .order-items-scroll').css('max-height', ordersH);
-  }
+  },
 
+  daterangepicker: {
+
+    init: function(rangeSelector, _options) {
+      var options = $.extend({}, orders.daterangepicker.defaultOptions, _options);
+      var rangeField = $(rangeSelector)
+      var startField = rangeField.siblings('input[data-field=start]')
+      var endField = rangeField.siblings('input[data-field=end]')
+
+      var startDate = moment(startField.val(), moment.ISO_8601).format(options.format)
+      var endDate = moment(endField.val(), moment.ISO_8601).format(options.format)
+      var rangeValue = startDate+options.separator+endDate
+      rangeField.val(rangeValue)
+
+      rangeField.daterangepicker(options)
+      .on('apply.daterangepicker', function(ev, picker) {
+        startField.val(picker.startDate.toDate().toISOString())
+        endField.val(picker.endDate.toDate().toISOString())
+      });
+    },
+  },
 };
 
 jQuery(document).ready(orders.set_orders_container_max_height);

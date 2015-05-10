@@ -1,11 +1,7 @@
 class VolunteersPlugin::Period < ActiveRecord::Base
 
-  extend SplitDatetime::SplitMethods
-  split_datetime :start
-  split_datetime :end
-
   attr_accessible :name
-  attr_accessible :start_date, :start_time, :end_date, :end_time
+  attr_accessible :start, :end
   attr_accessible :owner_type
   attr_accessible :minimum_assigments
   attr_accessible :maximum_assigments
@@ -16,6 +12,13 @@ class VolunteersPlugin::Period < ActiveRecord::Base
 
   validates_presence_of :owner
   validates_presence_of :name
-  validates_presence_of :start_date, :start_time, :end_date, :end_time
+  validates_presence_of :start, :end
+
+  extend OrdersPlugin::DateRangeAttr::ClassMethods
+  date_range_attr :start, :end
+
+  extend SplitDatetime::SplitMethods
+  split_datetime :start
+  split_datetime :end
 
 end

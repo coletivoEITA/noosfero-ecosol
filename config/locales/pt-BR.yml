@@ -61,6 +61,7 @@
   time:
     formats:
       default: "%A, %d de %B de %Y, %H:%M h"
+      momentjs_LLLL: "%A, %d de %B de %Y às %H:%M"
       short: "%d/%m, %H:%M h"
       long: "%A, %d de %B de %Y, %H:%M h"
     am: ''
