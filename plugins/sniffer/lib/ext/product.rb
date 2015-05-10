@@ -21,6 +21,7 @@ class Product
       INNER JOIN profiles ON ( profiles.id = products_2.profile_id )",
     :conditions => "products.profile_id = #{enterprise.id}
       AND profiles.public_profile = true AND profiles.visible = true
+      AND profiles.enabled = true
       AND profiles.id <> #{enterprise.id}"
     }
   }
@@ -44,6 +45,7 @@ class Product
       INNER JOIN profiles ON ( profiles.id = products.profile_id )",
     :conditions => "products_2.profile_id = #{enterprise.id}
       AND profiles.public_profile = true AND profiles.visible = true
+      AND profiles.enabled = true
       AND profiles.id <> #{enterprise.id}"
     }
   }
@@ -66,6 +68,7 @@ class Product
       INNER JOIN profiles ON ( products.profile_id = profiles.id )",
     :conditions => "sniffer.enabled = true AND sniffer.profile_id = #{profile.id} AND products.profile_id <> #{profile.id}
       AND profiles.public_profile = true AND profiles.visible = true
+      AND profiles.enabled = true
       AND profiles.id <> #{profile.id}"
     }
   }
@@ -89,6 +92,7 @@ class Product
       INNER JOIN profiles ON ( sniffer.profile_id = profiles.id )",
     :conditions => "products.profile_id = #{profile.id}
       AND profiles.public_profile = true AND profiles.visible = true
+      AND profiles.enabled = true
       AND profiles.id <> #{profile.id}"
     }
   }
@@ -140,6 +144,7 @@ class Product
     :conditions => "articles.profile_id = #{profile.id}
                   AND profiles.public_profile = true
                   AND profiles.visible = true
+                  AND profiles.enabled = true
                   AND profiles.id <> #{profile.id}"
     }
   }
@@ -159,6 +164,7 @@ class Product
     :conditions => "articles.profile_id <> #{profile.id}
                   AND profiles.public_profile = true
                   AND profiles.visible = true
+                  AND profiles.enabled = true
                   AND sniffer.profile_id = #{profile.id}"
     }
   }

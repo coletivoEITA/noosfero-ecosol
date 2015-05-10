@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../../../test/test_helper'
 
 class SnifferPluginProfileTest < ActiveSupport::TestCase
 
-  should 'register interest on a product cattegory for a profile' do
+  should 'register interest on a product category for a profile' do
     # crate an entreprise
     coop = fast_create(Enterprise,
       :identifier => 'coop', :name => 'A Cooperative', :lat => 0, :lng => 0
@@ -72,4 +72,35 @@ class SnifferPluginProfileTest < ActiveSupport::TestCase
       e2_sniffer.suppliers_products.sort_by(&:id).map(&:id)
     assert_equal [], e2_sniffer.consumers_products
   end
+
+  should 'not search for suppliers and consumers on disabled enterprises' do
+    # Enterprises:
+    e1 = fast_create(Enterprise, :identifier => 'ent1' )
+    e2 = fast_create(Enterprise, :identifier => 'ent2' )
+    # Categories:
+    c1 = fast_create(ProductCategory, :name => 'Category 1')
+    c2 = fast_create(ProductCategory, :name => 'Category 2')
+    # Products (for enterprise 1):
+    p1 = fast_create(Product, :product_category_id => c1.id, :profile_id => e1.id )
+
+    # Products (for enterprise 2):
+    p2 = fast_create(Product, :product_category_id => c2.id, :profile_id => e2.id )
+    p2.inputs.build.product_category = c1
+    p2.save!
+
+    # get the extended sniffer profile for the enterprise:
+    e1_sniffer = SnifferPlugin::Profile.find_or_create e1
+    e2_sniffer = SnifferPlugin::Profile.find_or_create e2
+    # register e2 interest for 'Category 1' used by p1
+    e2_sniffer.product_category_string_ids = "#{c1.id}"
+    e2_sniffer.enabled = true
+    e2_sniffer.save!
+
+    # should not find anything for disabled enterprise
+    e1.enabled = false
+    e1.save!
+    assert_equal [], e2_sniffer.consumers_products
+    assert_equal [], e2_sniffer.suppliers_products
+  end
+
 end
