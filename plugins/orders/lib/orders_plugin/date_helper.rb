@@ -4,16 +4,25 @@ module OrdersPlugin::DateHelper
 
   include OrdersPlugin::FieldHelper
 
-  def labelled_period_fields form, start_field, end_field, options = {}
-    form.text_field("#{start_field}_date", class: 'date-select') +
-    form.text_field("#{start_field}_time", class: 'time-select') +
-    content_tag('span', '&nbsp' + I18n.t('orders_plugin.lib.date_helper.to') + '&nbsp', class: "date-to") +
-    form.text_field("#{end_field}_date", class: 'date-select') +
-    form.text_field("#{end_field}_time", class: 'time-select')
+  def date_range_field form, start_field, end_field, options = {}
+    range_field = form.object.date_range_attr_for start_field, end_field
+    range_id, start_id, end_id = SecureRandom.hex, SecureRandom.hex, SecureRandom.hex
+
+    start_time = form.object.send(start_field) || Time.now
+    end_time = form.object.send(end_field) || Time.now+1.week
+
+    form.hidden_field(start_field, id: start_id, value: start_time.iso8601) +
+    form.hidden_field(end_field, id: end_id, value: end_time.iso8601) +
+    form.text_field(range_field, class: 'daterange', id: range_id) +
+    javascript_tag("orders.daterangepicker.init('##{range_id}', '##{start_id}', '##{end_id}', #{options.to_json})")
   end
 
-  def labelled_period_field form, start_field, end_field, label, options = {}
-    labelled_field form, label, label, labelled_period_fields(form, start_field, end_field, options)
+  def datetime_range_field form, start_field, end_field, options = {}
+    date_range_field form, start_field, end_field, timePicker: true, timePickerIncrement: 15, timePicker12Hour: false
+  end
+
+  def labelled_datetime_range_field form, start_field, end_field, label, options = {}
+    labelled_field form, label, label, datetime_range_field(form, start_field, end_field, options)
   end
 
   def datetime_period_with_from start, finish

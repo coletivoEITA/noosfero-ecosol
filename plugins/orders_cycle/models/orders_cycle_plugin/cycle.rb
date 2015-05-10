@@ -70,9 +70,6 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
 
   scope :has_volunteers_periods, -> {uniq.joins [:volunteers_periods]}
 
-  extend CodeNumbering::ClassMethods
-  code_numbering :code, scope: Proc.new { self.profile.orders_cycles }
-
   # status scopes
   scope :defuncts, conditions: ["status = 'new' AND created_at < ?", 2.days.ago]
   scope :not_new, conditions: ["status <> 'new'"]
@@ -117,6 +114,13 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   before_validation :check_status
   before_save :add_products_on_edition_state
   after_create :delay_purge_profile_defuncts
+
+  extend CodeNumbering::ClassMethods
+  code_numbering :code, scope: Proc.new { self.profile.orders_cycles }
+
+  extend OrdersPlugin::DateRangeAttr::ClassMethods
+  date_range_attr :start, :finish
+  date_range_attr :delivery_start, :delivery_finish
 
   extend SplitDatetime::SplitMethods
   split_datetime :start

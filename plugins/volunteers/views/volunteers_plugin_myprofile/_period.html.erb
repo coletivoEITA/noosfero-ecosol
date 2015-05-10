@@ -6,7 +6,7 @@
 <div class="field">
   <%= f.text_field :name, placeholder: t('volunteers_plugin.attributes.period.name') %>
   <div class=body>
-    <%= labelled_period_fields f, :start, :end %>
+    <%= datetime_range_field f, :start, :end %>
     <div class=clear></div>
 
     <%# f.label :minimum_assigments, t(here+'minimum') %>
