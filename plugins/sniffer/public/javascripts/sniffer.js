@@ -2,7 +2,7 @@ sniffer = {
 
   search: {
 
-    filters: { __categoryIds: [], distance: 0 },
+    filters: { __categoryIds: [], distance: 0, circle: undefined },
 
     loadSearchInput: function (options) {
       var input = jQuery(".sniffer-search-input");
@@ -75,6 +75,7 @@ sniffer = {
     maxDistance: function (distance) {
       distance = parseInt(distance);
       sniffer.search.filters.distance = distance > 0 ? distance : undefined;
+      sniffer.search.filters.circle.setRadius(distance * 1000);
       sniffer.search.filter();
     },
 
@@ -223,6 +224,18 @@ sniffer = {
 
           if (filtered) {
             sniffer.search.map.markerList.push(marker);
+          }
+
+          // Add circle overlay and bind to marker
+          if (profile.id == currentProfile.id){
+            sniffer.search.filters['circle'] = new google.maps.Circle({
+              map: map,
+              radius: sniffer.search.filters.distance * 1000, // in meters
+              fillColor: '#e50000',
+              strokeColor: '#5c0000',
+              strokeWeight: 1
+            });
+            sniffer.search.filters.circle.bindTo('center', marker, 'position');
           }
 
           return marker;
