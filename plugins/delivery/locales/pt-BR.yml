@@ -12,7 +12,7 @@
         delivery_type: "Tipo"
         delivery_type_help: "Retirada: os produtos serão buscados pela(o) consumidor(a), por exemplo, no empreendimento, numa feira ou num Núcleo de Consumo.<br>Entrega: os produtos serão entregues no endereço solicitado pelo(a) consumidor(a)."
         name: Nome
-        name_help: "Para opção Retirada: escreva o nome do local onde os produtos deverão ser retirados pela(o) consumidor(a), por exemplo o nome do Núcleo de Consumo, da feira ou do próprio empreendimento.<br>Para a opção Entrega: escreva o nome do local (por exemplo: a cidade ou região) ou a forma de entrega (por exemplo: Correios, transportadora)"
+        name_help: "Para opção Retirada: escreva o nome do local onde os produtos deverão ser retirados pela(o) consumidor(a), por exemplo o nome do Núcleo de Consumo, da feira ou do próprio empreendimento.<br>Para a opção Entrega: escreva o nome do local, (uma cidade ou região) ou a forma de entrega (Correios, transportadora)"
         fixed_cost: Custo
         free_over_price: "Preço mínimo do pedido para Entrega Grátis"
         instructions: Descrição
