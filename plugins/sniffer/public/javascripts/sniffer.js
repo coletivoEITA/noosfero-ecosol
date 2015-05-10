@@ -248,6 +248,11 @@ sniffer = {
         },
 
         fill: function (marker) {
+          // close all opened markers before opening a new one
+          jQuery.each(sniffer.search.map.markerList, function(index, marker) {
+            if (!(typeof marker.infoBox === 'undefined'))
+              marker.infoBox.close();
+          });
           var balloonJQ = jQuery(
             '<div class="sniffer-balloon-wrap">'+
             '<div class="sniffer-balloon loading"></div>'+
