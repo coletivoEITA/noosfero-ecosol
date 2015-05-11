@@ -1,23 +1,17 @@
-<%
-  display_delivery_settings = @settings.delivery ? 'auto' : 'none'
-%>
-
 <h1> <%= _('Basket options') %> </h1>
 
-<%= form_for :settings, url: {action: 'edit'}, html: {method: 'post'} do |f| %>
-
-  <%= labelled_form_field _('Enable shopping basket'), f.check_box(:enabled) %>
-
-  <fieldset id='delivery_settings' style="display: <%= display_delivery_settings %>">
-    <label><%=_('Deliveries or pickups')%></label>
-    <%= render 'delivery_plugin/admin_method/index' %>
-  </fieldset>
+<%= form_for :settings, url: {action: 'edit'}, html: {onsubmit: '$(this).ajaxSubmit()'} do |f| %>
 
   <div>
-    <%= submit_button(:save, _('Save')) %>
-    <%= button :back, _('Back to control panel'), controller: 'profile_editor' %>
+    <%= f.check_box :enabled, onchange: 'this.form.onsubmit()' %>
+    <%= f.label :enabled, _('Enable shopping basket')  %>
   </div>
 
 <% end %>
+
+<fieldset id='delivery-settings'>
+  <label><%=_('Deliveries or pickups')%></label>
+  <%= render 'delivery_plugin/admin_method/index' %>
+</fieldset>
 
 <%= javascript_include_tag '../plugins/shopping_cart/edit' %>

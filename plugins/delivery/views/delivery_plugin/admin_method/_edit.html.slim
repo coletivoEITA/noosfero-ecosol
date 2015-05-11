@@ -14,10 +14,10 @@
     f.text_area(:description, rows: 5), help: t('delivery_plugin.models.method.instructions_help')
 
   = labelled_field f, :fixed_cost, t('delivery_plugin.models.method.fixed_cost'),
-    f.text_field(:fixed_cost, type: :number, step: '0.01', value: number_with_precision(delivery_method.fixed_cost, precision: 2, locale: :en)),
+    input_group_addon(environment.currency_unit){ f.text_field :fixed_cost, type: :number, step: '0.01', value: number_with_precision(delivery_method.fixed_cost, precision: 2, locale: :en)},
     help: t('delivery_plugin.models.method.fixed_cost_help')
   = labelled_field f, :free_over_price, t('delivery_plugin.models.method.free_over_price'),
-    f.text_field(:free_over_price, type: :number, step: '0.01', value: number_with_precision(delivery_method.free_over_price, precision: 2, locale: :en)),
+    input_group_addon(environment.currency_unit){ f.text_field :free_over_price, type: :number, step: '0.01', value: number_with_precision(delivery_method.free_over_price, precision: 2, locale: :en)},
     help: t('delivery_plugin.models.method.free_over_price_help')
 
   div
