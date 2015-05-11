@@ -2,6 +2,7 @@ require_dependency 'forms_helper'
 require_relative 'application_helper'
 
 module FormsHelper
+
   extend ActiveSupport::Concern
   protected
 
@@ -70,7 +71,6 @@ module FormsHelper
     include ResponsiveMethods
   end
 
-  protected
 end
 
 module ApplicationHelper
