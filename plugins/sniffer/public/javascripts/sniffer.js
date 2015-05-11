@@ -2,7 +2,7 @@ sniffer = {
 
   search: {
 
-    filters: { __categoryIds: [], distance: 0 },
+    filters: { __categoryIds: [], distance: 0, circle: undefined, homePosition: undefined },
 
     loadSearchInput: function (options) {
       var input = jQuery(".sniffer-search-input");
@@ -14,8 +14,11 @@ sniffer = {
             return false;
         },
         select: function (event, ui) {
-          category = {id: ui.item.value, name: ui.item.label};
-          sniffer.search.category.append([category]);
+          category = {id: ui.item.value, name: ui.item.label, interest_type: 'supplier'};
+          if (sniffer.search.category.exists(category.id))
+            sniffer.search.category.updateInterestType(category.id);
+          else
+            sniffer.search.category.append([category]);
           // Add new map marks:
           jQuery.ajax(options.addUrl.replace('_id_', category.id), {
             dataType: 'json',
@@ -40,13 +43,22 @@ sniffer = {
     },
 
     filter: function () {
+      // Creates a new boundary based on home position
+      var bounds = new google.maps.LatLngBounds(sniffer.search.filters.homePosition);
       jQuery.each(sniffer.search.map.markerList, function(index, marker) {
         var visible = (
            !sniffer.search.filters.distance ||
             sniffer.search.filters.distance >= marker.profile.sniffer_plugin_distance
           ) && sniffer.search.category.matchFilters(marker);
         marker.setVisible(visible);
+        // If marker is visible, expands boundary to fit new marker
+        if (visible) {
+          bounds.extend(marker.getPosition());
+        }
       });
+      // Center map to new boundaries
+      mapBounds = bounds;
+      mapCenter();
     },
 
     showFilters: function () {
@@ -72,6 +84,7 @@ sniffer = {
     maxDistance: function (distance) {
       distance = parseInt(distance);
       sniffer.search.filters.distance = distance > 0 ? distance : undefined;
+      sniffer.search.filters.circle.setRadius(distance * 1000);
       sniffer.search.filter();
     },
 
@@ -124,7 +137,16 @@ sniffer = {
 
       exists: function (id) {
         var find = jQuery('#categories-table input[name='+id+']');
-        find.length > 0;
+        return find.length > 0;
+      },
+
+      updateInterestType: function (id) {
+        var row = jQuery('#categories-table input[name='+id+']');
+        row = row.closest('tr').find('.consumer')
+        if (row.length > 0) {
+          row[0].classList.remove('consumer');
+          row[0].classList.add('both');
+        }
       },
 
       template: function (categories) {
@@ -213,6 +235,18 @@ sniffer = {
             sniffer.search.map.markerList.push(marker);
           }
 
+          // Add circle overlay and bind to marker
+          if (profile.id == currentProfile.id){
+            sniffer.search.filters['circle'] = new google.maps.Circle({
+              map: map,
+              radius: sniffer.search.filters.distance * 1000, // in meters
+              fillColor: '#e50000',
+              strokeColor: '#5c0000',
+              strokeWeight: 1
+            });
+            sniffer.search.filters.circle.bindTo('center', marker, 'position');
+          }
+
           return marker;
         },
 
@@ -236,6 +270,11 @@ sniffer = {
         },
 
         fill: function (marker) {
+          // close all opened markers before opening a new one
+          jQuery.each(sniffer.search.map.markerList, function(index, marker) {
+            if (!(typeof marker.infoBox === 'undefined'))
+              marker.infoBox.close();
+          });
           var balloonJQ = jQuery(
             '<div class="sniffer-balloon-wrap">'+
             '<div class="sniffer-balloon loading"></div>'+
@@ -290,6 +329,8 @@ sniffer = {
         myProfile.balloonUrl = options.myBalloonUrl;
         myProfile.icon = sniffer.search.map.homeIcon;
         var marker = sniffer.search.map.marker.add(myProfile, false);
+
+        sniffer.search.filters.homePosition = marker.getPosition();
 
         _.each(options.profiles, function (profile) {
           var sp = profile.suppliersProducts;

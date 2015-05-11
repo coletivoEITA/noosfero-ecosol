@@ -73,6 +73,7 @@ body.action-sniffer_plugin_myprofile-search #content .row {
 }
 body.action-sniffer_plugin_myprofile-search #theme-footer,
 body.action-sniffer_plugin_myprofile-search #profile-header,
+body.action-sniffer_plugin_myprofile-search #profile-theme-header,
 body.action-sniffer_plugin_myprofile-search #profile-title,
 body.action-sniffer_plugin_myprofile-search #profile-footer {
   display: none;
@@ -142,17 +143,20 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
   margin-right: 5%;
 }
 
+#sniffer-search-wrap #sniffer-product-search .legend .both,
 #sniffer-search-wrap #sniffer-product-search .legend .suppliers,
 #sniffer-search-wrap #sniffer-product-search .legend .consumers {
   display: inline-block;
   margin-bottom: 6px;
 }
 
+#sniffer-search-wrap #sniffer-product-search .legend .both span,
 #sniffer-search-wrap #sniffer-product-search .legend .suppliers span,
 #sniffer-search-wrap #sniffer-product-search .legend .consumers span {
   float: left;
 }
 
+#sniffer-search-wrap #sniffer-product-search .legend .both .icon,
 #sniffer-search-wrap #sniffer-product-search .legend .suppliers .icon,
 #sniffer-search-wrap #sniffer-product-search .legend .consumers .icon {
   width: 12px;
@@ -161,7 +165,8 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
   margin-right: 6px;
 }
 
-#sniffer-search-wrap #sniffer-product-search .legend .suppliers {
+#sniffer-search-wrap #sniffer-product-search .legend .suppliers,
+#sniffer-search-wrap #sniffer-product-search .legend .consumers {
   margin-right: 24px;
 }
 
@@ -171,6 +176,10 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
 
 #sniffer-search-wrap #sniffer-product-search .legend .consumers .icon {
   background: #BCD1A9;
+}
+
+#sniffer-search-wrap #sniffer-product-search .legend .both .icon {
+  background: #DDACCC;
 }
 
 #sniffer-search-wrap #sniffer-product-search .search-field {
@@ -199,7 +208,7 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
   border-style: none solid solid none;
   padding: 5px 11px;
   height: 24px;
-  background: #EBF49D;
+  background: #EFF6AF;
 }
 
 /* round border for categories table */
@@ -228,6 +237,18 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
 
 #sniffer-search-wrap #sniffer-product-search #categories-table td.name {
   background: #F0F7CE;
+}
+
+#sniffer-search-wrap #sniffer-product-search #categories-table td.name.supplier {
+  background: #B4BDDA;
+}
+
+#sniffer-search-wrap #sniffer-product-search #categories-table td.name.consumer {
+  background: #BCD1A9;
+}
+
+#sniffer-search-wrap #sniffer-product-search #categories-table td.name.both {
+  background: #DDACCC;
 }
 
 
@@ -420,5 +441,5 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
 /* Interest interface */
 #sniffer-plugin-product-select {
   width:428px;
-  margin-left:24px;
+  margin-bottom:30px;
 }
