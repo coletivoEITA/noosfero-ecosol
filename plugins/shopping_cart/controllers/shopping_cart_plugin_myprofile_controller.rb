@@ -4,16 +4,14 @@ class ShoppingCartPluginMyprofileController < MyProfileController
 
   def edit
     params[:settings] = treat_cart_options(params[:settings])
-
     @settings = profile.shopping_cart_settings params[:settings] || {}
-    if request.post?
-      begin
-        @settings.save!
-        session[:notice] = _('Option updated successfully.')
-      rescue Exception => exception
-        session[:notice] = _('Option wasn\'t updated successfully.')
+    respond_to do |format|
+      format.js do
+        if request.post?
+          @success = @settings.save!
+        end
       end
-      redirect_to :action => 'edit'
+      format.html
     end
   end
 
@@ -22,7 +20,6 @@ class ShoppingCartPluginMyprofileController < MyProfileController
   def treat_cart_options(settings)
     return if settings.blank?
     settings[:enabled] = settings[:enabled] == '1'
-    settings[:delivery] = settings[:delivery] == '1'
     settings
   end
 
