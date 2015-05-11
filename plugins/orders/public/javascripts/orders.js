@@ -159,8 +159,9 @@ orders = {
     init: function(rangeSelector, _options) {
       var options = $.extend({}, orders.daterangepicker.defaultOptions, _options);
       var rangeField = $(rangeSelector)
-      var startField = rangeField.siblings('input[data-field=start]')
-      var endField = rangeField.siblings('input[data-field=end]')
+      var container = rangeField.parents('.daterangepicker-field-container')
+      var startField = container.find('input[data-field=start]')
+      var endField = container.find('input[data-field=end]')
 
       var startDate = moment(startField.val(), moment.ISO_8601).format(options.format)
       var endDate = moment(endField.val(), moment.ISO_8601).format(options.format)
