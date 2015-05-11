@@ -169,7 +169,8 @@ orders = {
       rangeField.val(rangeValue)
 
       rangeField.daterangepicker(options)
-      .on('apply.daterangepicker', function(ev, picker) {
+      .on('apply.daterangepicker change', function(ev, picker) {
+        picker = rangeField.data('daterangepicker')
         startField.val(picker.startDate.toDate().toISOString())
         endField.val(picker.endDate.toDate().toISOString())
       });
