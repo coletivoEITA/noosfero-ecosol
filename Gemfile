@@ -48,7 +48,6 @@ end
 
 group :assets do
   gem 'assets_live_compile'
-  gem 'therubyracer', platforms: :ruby
   gem 'uglifier', '>= 1.0.3'
   gem 'coffee-rails'
   gem 'sass'
