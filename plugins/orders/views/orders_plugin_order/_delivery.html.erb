@@ -2,7 +2,7 @@
   data = order.delivery_data actor_name
   other_supplier_methods = actor_name == :supplier && order.open? && order.delivery_methods.size > 0
   edition = order.may_edit?(user, @admin) && other_supplier_methods if edition.nil?
-  data_present = (data = order.delivery_data).present?
+  data_present = (data = order.delivery_data(actor_name)).present?
 %>
 
 <% if edition or data_present %>

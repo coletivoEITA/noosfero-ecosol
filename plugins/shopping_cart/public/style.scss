@@ -27,6 +27,11 @@ input.button.with-text.icon-cart,
 .product-item .cart-add-item {
   top: 0px;
 }
+
+
+.action-shopping_cart_plugin-buy .cart {
+  display: none !important;
+}
 .cart {
   display: none;
   position: fixed;
@@ -204,7 +209,6 @@ input.button.with-text.icon-cart,
 #cart-request-form fieldset {
   clear: left;
   color: #999;
-  border: 1px solid #BBB;
   margin-top: 5px;
 }
 

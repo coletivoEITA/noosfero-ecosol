@@ -1,7 +1,7 @@
 <div id='cart-request-box' class="row">
   <h1>
     <%= _('Shopping checkout') %>
-    <%= button :back, _("haven't finished yet: back to shopping"), {controller: :catalog, profile: profile.identifier}, class: 'cart-go-back' %>
+    <%= button :back, _("haven't finished yet: back to shopping"), 'javascript:history.back()', class: 'cart-go-back' %>
   </h1>
 
   <%= form_for :order, url: {action: :send_request},
@@ -19,7 +19,7 @@
     </fieldset>
 
     <fieldset>
-      <legend><%=_('Payment')%></legend>
+      <legend><%=_("Payment's method")%></legend>
 
       <%= f.fields_for :payment_data do |ff| %>
         <%= labelled_form_field _('Payment'), ff.select(:method, options_for_payment) %>
@@ -27,7 +27,7 @@
       <% end %>
     </fieldset>
 
-    <% if @settings.delivery and profile.delivery_methods.size > 0 %>
+    <% if profile.delivery_methods.size > 0 %>
       <fieldset>
         <legend><%=_('Delivery or pickup method')%></legend>
         <%= render 'delivery_plugin/order_select', f: f %>
@@ -39,8 +39,11 @@
     </div>
   <% end %>
 
-  <% supplier_delivery = profile.delivery_methods.first if @settings.delivery %>
-  <%= items_table @cart[:items], @profile, supplier_delivery %>
+  <fieldset class="col-lg-6 col-md-6 col-sm-6">
+    <legend><%=s_('Your Order')%></legend>
+    <% supplier_delivery = @order.supplier_delivery || profile.delivery_methods.first %>
+    <%= items_table @cart[:items], @profile, supplier_delivery %>
+  </fieldset>
 
 </div>
 

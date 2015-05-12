@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0-690-gcb6e853\n"
 "POT-Creation-Date: 2015-03-05 12:09-0300\n"
-"PO-Revision-Date: 2015-05-08 16:48-0300\n"
+"PO-Revision-Date: 2015-05-12 10:18-0300\n"
 "Last-Translator: Michal Čihař <michal@cihar.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero"
 "/plugin-shopping-cart/pt/>\n"
@@ -67,11 +67,11 @@ msgstr "Entrega"
 
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:7
 msgid "Delivery or pickup"
-msgstr "Forma de entrega ou retirada"
+msgstr "Forma de retirada ou entrega"
 
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:7
 msgid "Deliveries or pickups"
-msgstr "Formas de entrega ou retirada"
+msgstr "Formas de retirada ou entrega"
 
 #: plugins/delivery/views/delivery_plugin/_order_select.html.slim
 msgid "Instructions"
@@ -200,12 +200,20 @@ msgstr "Identificação pessoal"
 msgid "Payment"
 msgstr "Pagamento"
 
+#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:9
+msgid "Payment's method"
+msgstr "Forma de pagamento"
+
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_orders_list.html.erb:35
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:22
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:20
 #: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:10
 msgid "shopping_cart|Change"
-msgstr "Troco"
+msgstr "Troco para"
+
+#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:10
+msgid "Your Order"
+msgstr "Seu Pedido"
 
 #: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/_products_list.html.erb:7
 msgid "Quantity"
@@ -315,24 +323,24 @@ msgid "Hi %s!"
 msgstr "Olá %s!"
 
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:10
-msgid "This is a notification e-mail about your buy request on %s."
-msgstr "Esse é um email de notificação sobre o seu pedido de compra em %s."
+msgid "This is a notification e-mail about your buy request on the enterprise %s."
+msgstr "Esse é um email de notificação sobre o seu pedido de compra no empreendimento %s."
 
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:11
 msgid ""
-"The supplier already received your buy request and may contact you for "
+"The enterprise already received your buy request and will contact you for "
 "confirmation."
 msgstr ""
-"O fornecedor já recebeu o seu pedido de compra e deve te contactar para "
+"O empreendimento já recebeu o seu pedido de compra e entrará em contato para "
 "confirmação."
 
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:12
-msgid "If you have any doubts, contact us at: %s"
-msgstr "Se você tem alguma dúvida, nos contacte em: %s"
+msgid "If you have any doubts about your order, write to us at: %s."
+msgstr "Se você tem alguma dúvida sobre o seu pedido, nos escreva: %s."
 
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:13
-msgid "Please check if your information below is correct:"
-msgstr "Por favor cheque se suas informações abaixo estão corretas:"
+msgid "Review below the informations of your order:"
+msgstr "Abaixo, revise as informações do seu pedido:"
 
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:19
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:17
