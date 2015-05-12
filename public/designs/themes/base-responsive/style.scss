@@ -1979,10 +1979,6 @@ $padding_value:7px;
   padding-top: 21px;
 }
 
-.navbar {
-  margin-bottom: 0px;
-}
-
 .nav > li > a {
   padding-left: 7px;
   padding-right: 7px;
@@ -2053,29 +2049,6 @@ table.cms-articles .article-name {
 .required-field {
   color: #E75252;
   font-weight: bold;
-}
-
-@media screen and (min-width: 768px) {
-  .block, .no-boxes {
-    border: none !important;
-  }
-
-  #wrap-1 {
-    background-color: white !important;
-    box-shadow: 0 0 10px black;
-    -ms-box-shadow: 0 0 10px black;
-    -moz-box-shadow: 0 0 10px black;
-    -webkit-box-shadow: 0 0 10px black;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .block, .no-boxes {
-    box-shadow: 0 0 10px black;
-    -ms-box-shadow: 0 0 10px black;
-    -moz-box-shadow: 0 0 10px black;
-    -webkit-box-shadow: 0 0 10px black;
-  }
 }
 
 #theme-footer #language-chooser {
