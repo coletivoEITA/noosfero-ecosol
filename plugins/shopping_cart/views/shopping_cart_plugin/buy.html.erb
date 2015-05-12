@@ -40,7 +40,7 @@
       <%= items_table @cart[:items], @profile, supplier_delivery %>
     </fieldset>
 
-    <div id="cart-form-actions">
+    <div id="cart-form-actions" class="row">
       <%= submit_button(:send, _('Send buy request')) %>
     </div>
   <% end %>
