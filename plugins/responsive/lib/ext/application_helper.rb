@@ -1,4 +1,5 @@
 require_dependency 'application_helper'
+require_relative 'input_helper'
 
 module ApplicationHelper
 
