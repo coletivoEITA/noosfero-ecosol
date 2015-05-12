@@ -16,7 +16,7 @@
         fixed_cost: Custo
         free_over_price: "Preço mínimo do pedido para Entrega Grátis"
         instructions: Descrição
-        instructions_help: "Escreva informações importantes sobre esta opção de Retirada ou Entrega.<br>Por exemplo, o endereço completo do Núcleo de Consumo, a abrangência da região de entrega.<br> Este texto estará disponível no \"Finalizar pedido\" e, ao confirmar a compra, a(o) consumidor(a) receberá um email com o pedido realizado e as informações deste campo."
+        instructions_help: "Escreva informações importantes sobre esta opção de Retirada ou Entrega.<br>Por exemplo, o endereço completo do Núcleo de Consumo, a abrangência da região de entrega.<br> Este texto estará disponível no \"Finalizar pedido\" e, ao confirmar a compra, o(a) consumidor(a) receberá um email com o pedido realizado e as informações deste campo."
     views:
       delivery_option: 
         select: 

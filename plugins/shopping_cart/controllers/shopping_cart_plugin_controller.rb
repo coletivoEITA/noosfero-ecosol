@@ -117,7 +117,7 @@ class ShoppingCartPluginController < OrdersPluginController
     @cart = cart
     @profile = cart_profile
     @order = profile.sales.build consumer: @consumer
-    @order.supplier_delivery_id = session[:cart][:last_delivery_option_id] rescue nil
+    @order.supplier_delivery = profile.delivery_methods.find session[:cart][:last_delivery_option_id] rescue nil
     @settings = cart_profile.shopping_cart_settings
   end
 
@@ -181,17 +181,17 @@ class ShoppingCartPluginController < OrdersPluginController
   end
 
   def update_supplier_delivery
-    profile = cart_profile
-    supplier_delivery = profile.delivery_methods.find params[:order][:supplier_delivery_id]
+    @profile = cart_profile
+    supplier_delivery = @profile.delivery_methods.find params[:order][:supplier_delivery_id]
     order = build_order self.cart[:items], supplier_delivery
     total_price = order.total_price
-    render :text => {
-      :ok => true,
-      :delivery_price => float_to_currency_cart(supplier_delivery.cost(total_price), environment, unit: ''),
-      :total_price => float_to_currency_cart(total_price, environment, unit: ''),
-      :message => _('Delivery option updated.'),
-      :error => {:code => 0}
-    }.to_json
+    render json: {
+      ok: true,
+      delivery_price: float_to_currency_cart(supplier_delivery.cost(total_price), environment, unit: ''),
+      total_price: float_to_currency_cart(total_price, environment, unit: ''),
+      message: _('Delivery option updated.'),
+      error: {code: 0}
+    }
   end
 
   # must be public
