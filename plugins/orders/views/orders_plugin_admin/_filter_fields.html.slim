@@ -1,3 +1,5 @@
+div= render 'orders_plugin/shared/daterangepicker/init'
+
 .field.state
   label= t('views.filter.status')
   div
@@ -21,14 +23,11 @@ div class=("field #{actor_name}")
       options_for_select([[t('views.filter.all'), ""]] + orders_owner.delivery_methods.map{ |dm| [dm.name, dm.id] }, params[:delivery_method_id])
 
 - if not orders_owner.is_a? OrdersCyclePlugin::Cycle
-  - month ||= params[:date][:month] || Date.today rescue nil
-  - year ||= params[:date][:year] || Date.today rescue nil
+  - start_time ||= params[:start_time] || Date.today.to_time rescue nil
+  - end_time ||= params[:end_time] || Date.today.to_time+1.week rescue nil
 
-  .field.month
-    label= t('views.filter.month')
-    div
-      = select_month month
-  .field.year
-    label= t('views.filter.year')
-    div
-      = select_year year
+  .field.period
+    label= t('views.filter.period')
+    div= render 'orders_plugin/shared/daterangepicker/field_tag', options: {format: 'lll'},
+      start_field: :start_time, end_field: :end_time, start_time: start_time, end_time: end_time
+

@@ -78,8 +78,15 @@ $filter-bg: #BCDC91;
           width: $module02;
 
         }
-        &.year select, &.month select {
-          width: $module01;
+
+        &.period {
+          > label {
+            float: none;
+          }
+
+          .daterangepicker-field-container {
+            width: $module03;
+          }
         }
         .name input {
           width: $module04;

@@ -146,8 +146,7 @@
         status: "Situação"
         code: "Código"
         all: "Todos"
-        month: "Mês"
-        year: "Ano"
+        period: "Período"
       actions: &suppliers_plugin_actions
         all: "Todos"
         none: "Nenhum"

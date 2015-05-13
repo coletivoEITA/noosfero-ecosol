@@ -138,8 +138,7 @@
         status: "Status"
         code: "Code"
         all: "All"
-        month: "Month"
-        year: "Year"
+        period: "Period"
       actions: &suppliers_plugin_actions
         all: "All"
         none: "None"
