@@ -28,6 +28,6 @@ div class=("field #{actor_name}")
 
   .field.period
     label= t('views.filter.period')
-    div= render 'orders_plugin/shared/daterangepicker/field_tag', options: {format: 'lll'},
+    div= render 'orders_plugin/shared/daterangepicker/field_tag', options: {format: 'l'},
       start_field: :start_time, end_field: :end_time, start_time: start_time, end_time: end_time
 
