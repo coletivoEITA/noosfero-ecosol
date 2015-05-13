@@ -31,7 +31,7 @@ h3= t('views.cycle._edit_fields.general_settings')
     .mail-message
       = f.label :sendmail, t('views.cycle._edit_fields.opening_message')
       div= t('views.cycle._edit_fields.this_message_will_be_')
-      = f.text_area(:opening_message)
+      = f.text_area(:opening_message, onkeyup: 'orders_cycle.cycle.edit.openingMessage.onKeyup(this)')
     = javascript_tag do
       | jQuery('#cycle-new-mail-send').on('click', orders_cycle.cycle_mail_message_toggle)
   - submit_text = if @cycle.new? then t('views.cycle._edit_fields.create_new_cycle') else t('views.cycle._edit_fields.save') end
@@ -48,6 +48,4 @@ h3= t('views.cycle._edit_fields.general_settings')
     |&nbsp;
     = link_to t('views.cycle._edit_fields.remove'), {action: :destroy, id: @cycle.id}, confirm: t('views.cycle._edit_fields.confirm_remove')
 
-javascript:
-  orders_cycle.cycle.edit();
 

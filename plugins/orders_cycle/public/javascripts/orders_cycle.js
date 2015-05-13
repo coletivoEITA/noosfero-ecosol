@@ -3,7 +3,15 @@ orders_cycle = {
 
   cycle: {
 
-    edit: function () {
+    edit: {
+      openingMessage: {
+        onKeyup: function(textArea) {
+          textArea = $(textArea)
+          var checked = textArea.val() ? true : false;
+          var checkBox = textArea.parents('#cycle-new-mail').find('input[type=checkbox]')
+          checkBox.prop('checked', checked)
+        },
+      },
     },
 
     products: {
