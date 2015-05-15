@@ -1925,14 +1925,6 @@ img, video, audio {
     }
 }
 
-/* dtygel: This breaks things, so I'll comment out
-@media screen and (min-width: 768px ) {
-  .box-container-1, .box-container-2, .box-container-3 {
-    padding-right: 0px;
-  }
-}
-*/
-
 .container > #content {
     margin-right: 0px;
 }
@@ -1941,9 +1933,6 @@ body {
     background-color: #eeeeee;
 }
 
-.no-boxes {
-	margin-bottom: 20px;
-}
 .block, .no-boxes {
     position: relative;
     padding: 8px;
@@ -1951,6 +1940,7 @@ body {
     border-radius: 3px;
     border: 1px solid rgba(0,0,0,0.2);/*#d8d8d8;*/
     background-color: white;
+    margin-bottom: 20px;
 }
 
 /*
@@ -1978,10 +1968,6 @@ $padding_value:7px;
 
 #content-inner {
   padding-top: 21px;
-}
-
-.navbar {
-  margin-bottom: 0px;
 }
 
 .nav > li > a {
@@ -2054,29 +2040,6 @@ table.cms-articles .article-name {
 .required-field {
   color: #E75252;
   font-weight: bold;
-}
-
-@media screen and (min-width: 768px) {
-  .block, .no-boxes {
-    border: none !important;
-  }
-
-  #wrap-1 {
-    background-color: white !important;
-    box-shadow: 0 0 10px black;
-    -ms-box-shadow: 0 0 10px black;
-    -moz-box-shadow: 0 0 10px black;
-    -webkit-box-shadow: 0 0 10px black;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .block, .no-boxes {
-    box-shadow: 0 0 10px black;
-    -ms-box-shadow: 0 0 10px black;
-    -moz-box-shadow: 0 0 10px black;
-    -webkit-box-shadow: 0 0 10px black;
-  }
 }
 
 #theme-footer #language-chooser {

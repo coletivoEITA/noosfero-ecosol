@@ -146,8 +146,7 @@
         status: "Situação"
         code: "Código"
         all: "Todos"
-        month: "Mês"
-        year: "Ano"
+        period: "Período"
       actions: &suppliers_plugin_actions
         all: "Todos"
         none: "Nenhum"
@@ -384,11 +383,14 @@
       report: 
         closed_orders: "Pedidos fechados"
         created: criado
+        modified: modificado
+        payment_method: forma de pagamento
+        delivery_option: forma de entrega ou retirada
+
         member_name: "Nome do(a) consumidor(a)"
         order_code: "Código do Pedido"
         min_stock: "estoque mín."
         mm_dd_yy_hh_mm_am_pm: "DD/MM/YY"
-        modified: modificado
         parcelled_total: "Total parcelado"
         price_un: preço/un
         product_cod: "Cód. produto"

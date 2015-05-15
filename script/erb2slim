@@ -11,8 +11,13 @@ def convert erb
   CMD
 end
 
-if File.file? erb = ARGV[0] 
-  convert erb
+erb = ARGV[0]
+if erb and not erb.empty?
+  if File.file? erb
+    convert erb
+  else
+    STDERR.puts 'file not found'
+  end
 else
   GLOB_ALL = '**/*.erb'
   GLOB_HTML = '**/*.html.erb'

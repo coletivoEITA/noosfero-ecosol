@@ -86,18 +86,21 @@ class OrdersPlugin::Order < ActiveRecord::Base
   scope :months, select: 'DISTINCT(EXTRACT(months FROM orders_plugin_orders.created_at)) as month', order: 'month DESC'
   scope :years, select: 'DISTINCT(EXTRACT(YEAR FROM orders_plugin_orders.created_at)) as year', order: 'year DESC'
 
-  scope :by_month, lambda { |month| {
-    conditions: [ 'EXTRACT(month FROM orders_plugin_orders.created_at) <= :month AND EXTRACT(month FROM orders_plugin_orders.created_at) >= :month', { month: month } ]}
+  scope :by_month, lambda { |month|
+    where 'EXTRACT(month FROM orders_plugin_orders.created_at) <= :month AND EXTRACT(month FROM orders_plugin_orders.created_at) >= :month',{ month: month }
   }
-  scope :by_year, lambda { |year| {
-    conditions: [ 'EXTRACT(year FROM orders_plugin_orders.created_at) <= :year AND EXTRACT(year FROM orders_plugin_orders.created_at) >= :year', { year: year } ]}
+  scope :by_year, lambda { |year|
+    where 'EXTRACT(year FROM orders_plugin_orders.created_at) <= :year AND EXTRACT(year FROM orders_plugin_orders.created_at) >= :year', { year: year }
+  }
+  scope :by_range, lambda { |start_time, end_time|
+    where 'orders_plugin_orders.created_at >= :start AND orders_plugin_orders.created_at <= :end', { start: start_time, end: end_time }
   }
 
   scope :with_status, lambda { |status|
-    {conditions: {status: status}}
+    where status: status
   }
   scope :with_code, lambda { |code|
-    {conditions: {code: code}}
+    where code: code
   }
 
   validates_presence_of :profile
@@ -132,9 +135,8 @@ class OrdersPlugin::Order < ActiveRecord::Base
     scope = scope.for_consumer_id params[:consumer_id] if params[:consumer_id].present?
     scope = scope.for_profile_id params[:supplier_id] if params[:supplier_id].present?
     scope = scope.with_code params[:code] if params[:code].present?
-    scope = scope.by_month params[:date][:month] if params[:date][:month].present? rescue nil
-    scope = scope.by_year params[:date][:year] if params[:date][:year].present? rescue nil
-    scope = scope.where supplier_delivery_id: params[:delivery_method_id] if params[:delivery_method_id].present? rescue nil
+    scope = scope.by_range params[:start_time], params[:end_time] if params[:start_time].present?
+    scope = scope.where supplier_delivery_id: params[:delivery_method_id] if params[:delivery_method_id].present?
     scope
   end
 

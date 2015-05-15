@@ -138,8 +138,7 @@
         status: "Status"
         code: "Code"
         all: "All"
-        month: "Month"
-        year: "Year"
+        period: "Period"
       actions: &suppliers_plugin_actions
         all: "All"
         none: "None"
@@ -358,10 +357,13 @@
       report: 
         closed_orders: "Closed Orders"
         created: created
+        modified: modified
+        payment_method: payment method
+        delivery_option: delivery or pickup option
+
         member_name: "Consumer name"
         min_stock: "min. stock"
         mm_dd_yy_hh_mm_am_pm: "MM/DD/YY HH:MM AM/PM"
-        modified: modified
         order_code: "Order code"
         parcelled_total: "Parcelled total"
         price_un: price/un.

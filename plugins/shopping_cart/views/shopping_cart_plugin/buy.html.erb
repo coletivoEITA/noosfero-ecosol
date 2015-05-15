@@ -34,17 +34,16 @@
       </fieldset>
     <% end %>
 
-    <div id="cart-form-actions">
+    <fieldset class="col-lg-6 col-md-6 col-sm-6">
+      <legend><%=s_('Your Order')%></legend>
+      <% supplier_delivery = @order.supplier_delivery || profile.delivery_methods.first %>
+      <%= items_table @cart[:items], @profile, supplier_delivery %>
+    </fieldset>
+
+    <div id="cart-form-actions" class="row">
       <%= submit_button(:send, _('Send buy request')) %>
     </div>
   <% end %>
-
-  <fieldset class="col-lg-6 col-md-6 col-sm-6">
-    <legend><%=s_('Your Order')%></legend>
-    <% supplier_delivery = @order.supplier_delivery || profile.delivery_methods.first %>
-    <%= items_table @cart[:items], @profile, supplier_delivery %>
-  </fieldset>
-
 </div>
 
 <%= javascript_include_tag '../plugins/shopping_cart/buy' %>
