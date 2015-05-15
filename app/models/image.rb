@@ -33,4 +33,12 @@ class Image < ActiveRecord::Base
     "http://cirandas.net#{super *args}"
   end if Rails.env.development?
 
+  protected
+
+  def sanitize_filename filename
+    # let accents and other utf8
+    # overwrite vendor/plugins/attachment_fu/lib/technoweenie/attachment_fu.rb
+    filename
+  end
+
 end
