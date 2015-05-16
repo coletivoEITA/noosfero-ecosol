@@ -1,12 +1,9 @@
-require_dependency 'qualifier'
+require_dependency 'user'
 
-class Qualifier
-
-  after_save_reindex [:products], with: :delayed_job
+class User
 
   acts_as_searchable fields: SEARCHABLE_FIELDS.map{ |field, options|
     {field => {boost: options[:weight]}}
   }
 
 end
-

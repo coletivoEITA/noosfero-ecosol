@@ -1,12 +1,9 @@
-require_dependency 'qualifier'
+require_dependency 'license'
 
-class Qualifier
-
-  after_save_reindex [:products], with: :delayed_job
+class License
 
   acts_as_searchable fields: SEARCHABLE_FIELDS.map{ |field, options|
     {field => {boost: options[:weight]}}
   }
 
 end
-
