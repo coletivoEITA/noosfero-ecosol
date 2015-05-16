@@ -40,13 +40,14 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
 
   has_many :cycle_products, foreign_key: :cycle_id, class_name: 'OrdersCyclePlugin::CycleProduct', dependent: :destroy
   has_many :products, through: :cycle_products, order: 'products.name ASC',
-    include: [{from_products: [:from_products, {sources_from_products: [{supplier: [{profile: [:domains]}]}]}]}, {profile: [:domains]}]
+    include: [ :from_2x_products, :from_products, {profile: :domains}, ]
 
   has_many :consumers, through: :sales, source: :consumer, order: 'name ASC'
   has_many :suppliers, through: :products, order: 'suppliers_plugin_suppliers.name ASC', uniq: true
   has_many :orders_suppliers, through: :sales, source: :profile, order: 'name ASC'
 
   has_many :from_products, through: :products, order: 'name ASC', uniq: true
+  has_many :supplier_products, through: :products, order: 'name ASC', uniq: true
   has_many :product_categories, through: :products, order: 'name ASC', uniq: true
 
   has_many :orders_confirmed, through: :cycle_orders, source: :sale, order: 'id ASC',

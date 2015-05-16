@@ -4,6 +4,9 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
 
   belongs_to :offered_product, foreign_key: :product_id, class_name: 'OrdersCyclePlugin::OfferedProduct'
 
+  # see also: repeat_product
+  attr_accessor :repeat_cycle
+
   def cycle
     self.order.cycle
   end
@@ -14,7 +17,7 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   belongs_to :purchase, class_name: 'OrdersCyclePlugin::Purchase', foreign_key: :order_id
 
   # OVERIDE from OrdersPlugin::Item
-  # FIXME: don't work because of load order
+  # FIXME: if don't work because of load order
   #if defined? SuppliersPlugin
     has_many :from_products, through: :offered_product
     has_many :to_products, through: :offered_product
@@ -30,6 +33,13 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   # what items were purchased from this item
   def purchased_items
     self.order.cycle.purchases.where(consumer_id: self.profile.id)
+  end
+
+  # overhide
+  def repeat_product
+    distributed_product = self.from_product
+    return unless self.repeat_cycle
+    self.repeat_cycle.products.where(from_products_products: {id: distributed_product.id}).first
   end
 
 end

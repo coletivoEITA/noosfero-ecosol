@@ -8,6 +8,8 @@ class OrdersPluginController < PublicController
   helper OrdersPlugin::DisplayHelper
 
   def repeat
+    @orders = previous_orders.last(5).reverse
+    @orders.each{ |o| o.enable_product_diff }
   end
 
   def clear_orders_session

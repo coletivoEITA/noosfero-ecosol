@@ -679,6 +679,7 @@
           edit_your_orders: "Edite seus pedidos"
           login: login
           new_order: "Novo pedido"
+          repeat_order: "Repetir pedido"
           orders_from_another_m: "Orders from another member"
           orders_from_consumer_: "Pedidos de \"%{consumer}\" neste ciclo"
           send_message_to_the_m: "Enviar mensagem para gestores"

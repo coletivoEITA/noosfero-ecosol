@@ -1,6 +1,8 @@
 class OrdersPlugin::Item < ActiveRecord::Base
 
-  attr_accessible :price, :name, :order, :product, :product_id
+  attr_accessible :order, :sale, :purchase,
+    :product, :product_id,
+    :price, :name
 
   # flag used by items to compare them with products
   attr_accessor :product_diff
@@ -44,13 +46,19 @@ class OrdersPlugin::Item < ActiveRecord::Base
     has_many :supplier_products, through: :product
     has_many :suppliers, through: :product
   #end
+  def from_product
+    self.from_products.first
+  end
+  def supplier_product
+    self.supplier_products.first
+  end
 
   scope :ordered, conditions: ['orders_plugin_orders.status = ?', 'ordered'], joins: [:order]
   scope :for_product, lambda{ |product| {conditions: {product_id: product.id}} }
 
   default_scope include: [:product]
 
-  validates_presence_of :order
+  validate :has_order
   validates_presence_of :product
 
   before_save :save_calculated_prices
@@ -114,6 +122,12 @@ class OrdersPlugin::Item < ActiveRecord::Base
     self.order.status
   end
 
+  # product used for comparizon when repeating an order
+  # overide on subclasses
+  def repeat_product
+    self.product
+  end
+
   StatusDataMap.each do |status, data|
     quantity = "quantity_#{data}".to_sym
     price = "price_#{data}".to_sym
@@ -135,12 +149,15 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
     new_price = nil
     # compare with product
-    if self.product_diff and self.product
-      if self.price != self.product.price
-        new_price = self.product.price
-        data[:new_price] = self.product.price_as_currency_number
+    if self.product_diff
+      if self.repeat_product and self.repeat_product.available
+        if self.price != self.repeat_product.price
+          new_price = self.repeat_product.price
+          data[:new_price] = self.repeat_product.price_as_currency_number
+        end
+      else
+        data[:flags][:unavailable] = true
       end
-      data[:flags][:unavailable] = true if not self.product.available
     end
 
     # Fetch data
@@ -224,6 +241,9 @@ class OrdersPlugin::Item < ActiveRecord::Base
     end
   end
 
+  def has_order
+    self.order or self.sale or self.purchase
+  end
 
   def sync_fields
     self.name = self.product.name

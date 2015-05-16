@@ -655,6 +655,7 @@
           edit_your_orders: "Edit your orders"
           login: login
           new_order: "New order"
+          repeat_order: "Repetir order"
           orders_from_another_m: "Orders from another consumer"
           orders_from_consumer_: "Orders from \"%{consumer}\" on this cycle"
           send_message_to_the_m: "send message to the managers"

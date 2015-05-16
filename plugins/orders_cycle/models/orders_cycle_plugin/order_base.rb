@@ -12,6 +12,8 @@ module OrdersCyclePlugin::OrderBase
       self.cycles = [cycle]
     end
 
+    has_many :items, class_name: 'OrdersCyclePlugin::Item', foreign_key: :order_id, dependent: :destroy, order: 'name ASC'
+
     has_many :offered_products, through: :items, source: :offered_product, uniq: true
     has_many :distributed_products, through: :offered_products, source: :from_products, uniq: true
     has_many :supplier_products, through: :distributed_products, source: :from_products, uniq: true
@@ -31,6 +33,10 @@ module OrdersCyclePlugin::OrderBase
 
     def delivery_methods
       self.cycle.delivery_methods
+    end
+
+    def repeat_cycle= cycle
+      self.items.each{ |i| i.repeat_cycle = cycle }
     end
 
     protected
