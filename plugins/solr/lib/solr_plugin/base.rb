@@ -125,8 +125,7 @@ class SolrPlugin::Base < Noosfero::Plugin
     end
 
     solr_options[:filter_queries] ||= []
-    solr_options[:filter_queries] += solr_filters_queries asset
-    solr_options[:filter_queries] << "environment_id:#{environment.id}"
+    solr_options[:filter_queries] += solr_filters_queries asset, environment
     solr_options[:filter_queries] << klass.facet_category_query.call(category) if category
     solr_options[:filter_queries] += scopes_to_solr_options scope, klass, options
 

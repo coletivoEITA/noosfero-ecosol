@@ -1,6 +1,6 @@
 module ChatHelper
 
-  def user_status_menu(icon_class, status)
+  def chat_user_status_menu icon_class, status
     links = [
       ['icon-menu-online', _('Online'), 'chat-connect'],
       ['icon-menu-busy', _('Busy'), 'chat-busy'],

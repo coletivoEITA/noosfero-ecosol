@@ -67,14 +67,14 @@ module SolrPlugin::SearchHelper
     category.nil? && query.blank?
   end
 
-  def solr_filters_queries asset
+  def solr_filters_queries asset, environment
     case asset
     when :products
       ['solr_plugin_public:true', 'enabled:true']
-    when :catalog
+    when :catalog, :events, :categories, :product_categories
       []
-    when :events
-      []
+    when :profiles, :people, :organizations, :communities, :enterprises
+      ['solr_plugin_public:true', 'environment_id:%s' % environment.id]
     else
       ['solr_plugin_public:true']
     end

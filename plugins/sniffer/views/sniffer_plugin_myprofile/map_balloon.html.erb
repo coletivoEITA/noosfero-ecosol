@@ -1,0 +1,41 @@
+<div class="sniffer-balloon">
+
+  <div class="balloon-header">
+    <%= render :partial => 'balloon_header', :locals => {:profile => @profile_of_interest} %>
+  </div>
+
+  <div class="balloon-offers">
+    <% unless @empty %>
+      <div class="offers-or-needs<%= ' has-both' if @has_both %>">
+        <div class="suppliers-products products<%= ' empty' if @suppliers_hashes.blank? %>">
+          <% unless @suppliers_hashes.blank? %>
+            <strong><%= _('Can supply') %></strong>
+            <div>
+              <% @suppliers_hashes.each do |h| %>
+                <div><%= render :partial => "item_#{h[:partial]}", :locals => {:hash => h} %></div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="consumer-products products<%= ' empty' if @consumers_hashes.blank? %>">
+          <% unless @consumers_hashes.blank? %>
+            <strong><%= _('May consum') %></strong>
+            <div>
+              <% @consumers_hashes.each do |h| %>
+                <div><%= render :partial => "item_#{h[:partial]}", :locals => {:hash => h} %></div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="balloon-footer">
+    <% @plugins.dispatch(:sniffer_plugin_balloon_footer).each do |lambda| %>
+      <%= instance_eval &lambda %>
+    <% end %>
+
+    <%= link_to_function _('Close'), '', :class => "sniffer-balloon-close" %>
+  </div>
+</div>

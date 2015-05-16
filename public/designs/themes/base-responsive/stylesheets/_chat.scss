@@ -1,0 +1,15 @@
+
+#buddy-list {
+  .search.form-control {
+    font-size: 13px;
+  }
+}
+#chat-window {
+  .history {
+    .message {
+      &.self p {
+        margin-right: 0px;
+      }
+    }
+  }
+}

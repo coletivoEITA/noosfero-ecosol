@@ -7,28 +7,22 @@
       var $own_name = '<%= user.name %>';
       var $muc_domain = '<%= "conference.#{environment.default_hostname}" %>';
       var $bosh_service = '//<%= environment.default_hostname %>/http-bind';
-      var $user_unavailable_error = '<%= _("<strong>ooops!</strong> The message could not be sent because the user is not online") %>';
+      var $user_unavailable_error = '<%= _("The user is not online now. He/She will receive these messages as soon as he/she gets online.") %>';
       var $update_presence_status_every = <%= User.expires_chat_status_every.minutes %>;
       var $presence = '<%= current_user.last_chat_status %>';
     </script>
 
-
   <div id="chat-label">
+    <span id="unread-messages"></span>
     <span class="right-arrow">&#9654;</span>
     <span class="title"><%= _('Chat') %></span>
   </div>
 
   <div id='chat'>
     <div id='buddy-list'>
-      <div class='toolbar'>
-        <div id='user-status'>
-          <%= user_status_menu('icon-menu-offline', _('Offline')) %>
-        </div>
-        <div class='dialog-error' style='display: none'></div>
-      </div>
+      <div class='dialog-error' style='display: none'></div>
 
       <div class='body'>
-        <%= text_field_tag(:query, '', :placeholder => _('Search...'), :class => 'search') %>
 
         <div class='buddies'>
           <ul class='online'></ul>
@@ -54,6 +48,7 @@
         <div class='input-div'>
             <div class='icon-chat'></div>
             <textarea class='input'></textarea>
+            <%= text_field_tag(:query, '', :placeholder => _('Search...'), :class => 'search') %>
         </div>
       </div>
 
@@ -64,8 +59,9 @@
         <li class='%{presence_status}'>
           <a id='%{jid_id}' class='icon-menu-%{presence_status}-11' href='#'>
             <span class="unread-messages"></span>
-            %{avatar}
-            <span class="name">%{name}</span>
+            <span class="avatar-wrap" title="%{name}" data-toggle="tooltip" data-placement="left">
+              %{avatar}
+            </span>
           </a>
         </li>
       </div>
@@ -98,10 +94,5 @@
           </div>
         </div>
       </div>
-
-      <div class="error-message">
-        <span class='error'>%{text}</span>
-      </div>
-
     </div>
   </div>
