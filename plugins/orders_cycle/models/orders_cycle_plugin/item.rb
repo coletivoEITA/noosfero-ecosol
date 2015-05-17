@@ -38,7 +38,7 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   # overhide
   def repeat_product
     distributed_product = self.from_product
-    return unless self.repeat_cycle
+    return unless self.repeat_cycle and distributed_product
     self.repeat_cycle.products.where(from_products_products: {id: distributed_product.id}).first
   end
 
