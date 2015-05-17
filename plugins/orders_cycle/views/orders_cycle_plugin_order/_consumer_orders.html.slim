@@ -1,11 +1,18 @@
+= content_for :head do
+  / while we are not responsive
+  = stylesheet_link_tag '/assets/designs/icons/awesome/scss/font-awesome.css'
+
 h3
   - if @admin_edit
     = t('views.order._consumer_orders.orders_from_consumer_') % {consumer: @consumer.name}
   - elsif @consumer and @cycle.orders?
     = t('views.order._consumer_orders.your_orders_on_this_c')
   - if user.in? @cycle.profile.members
-    = link_to t('views.order._consumer_orders.new_order'), {action: :new, cycle_id: @cycle.id}
-    = link_to t('views.order._consumer_orders.repeat_order'), {action: :repeat, cycle_id: @cycle.id}, class: 'modal-toggle'
+    = link_to t('views.order._consumer_orders.new_order'), {action: :new, cycle_id: @cycle.id},
+      class: 'btn btn-default btn-danger fa fa-plus'
+    - if not @admin_edit and @cycle.consumer_previous_orders(user).present?
+      = link_to t('views.order._consumer_orders.repeat_order'), {action: :repeat, cycle_id: @cycle.id},
+        class: 'modal-toggle btn btn-default btn-danger fa fa-repeat'
 
 - if @order and @order.consumer != user and @admin_edit
   #order-admin-warning.order-message
@@ -25,17 +32,17 @@ h3
       signup: link_to(t('views.order._consumer_orders.sign_up'), controller: 'account', action: 'signup')
   - else
     - if @cycle.orders?
-      - if not user.in?(@cycle.profile.members) and @cycle.profile.community?
-        = t('views.order._consumer_orders.associate_to_order')
+      - if not user.in? @cycle.profile.members and @cycle.profile.community?
+        = t'views.order._consumer_orders.associate_to_order'
         = render 'blocks/profile_info_actions/join_leave_community'
       - elsif @consumer_orders.count == 0
-        - message = t('views.order._consumer_orders.you_haven_t_placed_an')
+        - message = t'views.order._consumer_orders.you_haven_t_placed_an'
     - elsif @cycle.edition?
-      - message = t('views.order._consumer_orders.this_cycle_is_not_ope')
+      - message = t'views.order._consumer_orders.this_cycle_is_not_ope'
     - elsif @cycle.before_orders?
-      - message = t 'views.order._consumer_orders.the_time_for_orders_is', start: l(@cycle.start, format: :short), finish: l(@cycle.finish, format: :short)
+      - message = t'views.order._consumer_orders.the_time_for_orders_is', start: l(@cycle.start, format: :short), finish: l(@cycle.finish, format: :short)
     - elsif @cycle.after_orders?
-      - message = t('views.order._consumer_orders.this_cycle_is_already')
+      - message = t'views.order._consumer_orders.this_cycle_is_already'
   - if message
     #order-place-new
       = message

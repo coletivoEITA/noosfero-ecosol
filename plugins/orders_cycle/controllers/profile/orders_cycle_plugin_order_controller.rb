@@ -57,8 +57,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       @repeat_order.save!
       redirect_to params.merge(action: :edit, id: @repeat_order.id)
     else
-      @orders = profile.orders_cycles_sales.where(consumer_id: @consumer.id).
-        where('orders_cycle_plugin_cycle_orders.cycle_id <> ?', @cycle.id).last(5).reverse
+      @orders = @cycle.consumer_previous_orders(@consumer).last(5).reverse
       @orders.each{ |o| o.enable_product_diff }
       @orders.each{ |o| o.repeat_cycle = @cycle }
       render template: 'orders_plugin/repeat'

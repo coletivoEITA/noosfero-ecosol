@@ -191,6 +191,11 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
     status == 'delivery' && ( (self.delivery_start <= now && self.delivery_finish.nil?) || (self.delivery_start <= now && self.delivery_finish >= now) )
   end
 
+  def consumer_previous_orders consumer
+    self.profile.orders_cycles_sales.where(consumer_id: consumer.id).
+      where('orders_cycle_plugin_cycle_orders.cycle_id <> ?', self.id)
+  end
+
   def products_for_order
     # FIXME name alias conflict
     #self.products.unarchived.with_price.order('products.name ASC')
