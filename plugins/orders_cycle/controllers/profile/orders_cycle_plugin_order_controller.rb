@@ -81,7 +81,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     end
 
     if cycle_id = params[:cycle_id]
-      @cycle = profile.orders_cycles.find_by_id cycle_id
+      @cycle = profile.orders_cycles.where(id: cycle_id).first
       return render_not_found unless @cycle
       @consumer = user
 
