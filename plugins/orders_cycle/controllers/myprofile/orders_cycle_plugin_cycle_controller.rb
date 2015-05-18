@@ -10,7 +10,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   before_filter :set_admin
 
   helper OrdersCyclePlugin::TranslationHelper
-  helper OrdersCyclePlugin::CycleHelper
+  helper OrdersCyclePlugin::DisplayHelper
 
   def index
     @closed_cycles = search_scope(profile.orders_cycles.closing).all
