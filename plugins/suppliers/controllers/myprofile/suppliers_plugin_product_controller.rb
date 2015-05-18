@@ -33,9 +33,12 @@ class SuppliersPluginProductController < MyProfileController
 
   def import
     if params[:csv].present?
+      if params[:remove_all_suppliers] == 'true'
+        profile.suppliers.except_self.find_each(batch_size: 20){ |s| s.delay.destroy }
+      end
       SuppliersPlugin::Import.delay.products profile, params[:csv].read
 
-      @notice = t('controllers.product.import_in_progress')
+      @notice = t'controllers.product.import_in_progress'
       respond_to{ |format| format.js{ render layout: false } }
     else
       respond_to{ |format| format.html{ render layout: false } }

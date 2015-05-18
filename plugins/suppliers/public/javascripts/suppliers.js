@@ -106,6 +106,14 @@ suppliers = {
           suppliers.filter.apply()
         });
       },
+
+    },
+
+    import: {
+      confirmRemoveAll: function(checkbox, text) {
+        if (checkbox.checked && !confirm(text))
+          checkbox.checked = false
+      },
     },
   },
 

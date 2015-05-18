@@ -176,11 +176,13 @@
       product:
         import:
           action: "Importar planilha"
-          help: "Formate sua planilha para que tenha exatamente os campos abaixo. Depois, salve-a escolhendo o tipo de arquivo CSV (extensão .csv)."
+          help: "Formate sua planilha para que tenha exatamente os campos abaixo. Depois, salve-a escolhendo o tipo de arquivo CSV (extensão .csv).<br><b>Produtos com nomes iguais tem seus dados (preço/unidade) atualizados.</b>"
           field_supplier_name: "Nome do fornecedor"
           field_product_name: "Nome do produto"
           field_product_unit: "Unidade"
           field_product_price: "Preço por unidade"
+          remove_all: 'Remover todos os atuais fornecedores cadastrados e todos os seus produtos (começar uma nova lista de produtos).'
+          confirm_remove_all: "ATENÇÃO! Essa opção removerá todos os fornecedores cadastrados e todos os seus produtos!"
           unit_help: "Use como <b>unidade</b> uma entre (coloque o nome igual): %{units}" 
           send: "Enviar" 
         _edit: 
