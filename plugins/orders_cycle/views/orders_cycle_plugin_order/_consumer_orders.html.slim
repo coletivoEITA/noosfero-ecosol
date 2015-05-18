@@ -7,12 +7,12 @@ h3
     = t('views.order._consumer_orders.orders_from_consumer_') % {consumer: @consumer.name}
   - elsif @consumer and @cycle.orders?
     = t('views.order._consumer_orders.your_orders_on_this_c')
-  - if user.in? @cycle.profile.members
-    = link_to t('views.order._consumer_orders.new_order'), {action: :new, cycle_id: @cycle.id},
-      class: 'btn btn-default btn-danger fa fa-plus'
-    - if not @admin_edit and @cycle.consumer_previous_orders(user).present?
-      = link_to t('views.order._consumer_orders.repeat_order'), {action: :repeat, cycle_id: @cycle.id},
-        class: 'modal-toggle btn btn-default btn-danger fa fa-repeat'
+    - if user.in? @cycle.profile.members
+      = link_to t('views.order._consumer_orders.new_order'), {action: :new, cycle_id: @cycle.id},
+        class: 'btn btn-default btn-danger fa fa-plus'
+      - if not @admin_edit and @cycle.consumer_previous_orders(user).present?
+        = link_to t('views.order._consumer_orders.repeat_order'), {action: :repeat, cycle_id: @cycle.id},
+          class: 'modal-toggle btn btn-default btn-danger fa fa-repeat'
 
 - if @order and @order.consumer != user and @admin_edit
   #order-admin-warning.order-message
