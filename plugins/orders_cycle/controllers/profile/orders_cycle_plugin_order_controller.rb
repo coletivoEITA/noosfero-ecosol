@@ -67,7 +67,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   def edit
     return show_more if params[:page].present?
 
-    if request.xhr?
+    if request.xhr? and params[:order].present?
       status = params[:order][:status]
       if status == 'ordered'
         if @order.items.size > 0

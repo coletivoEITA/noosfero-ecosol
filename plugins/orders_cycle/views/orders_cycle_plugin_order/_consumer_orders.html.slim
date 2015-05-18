@@ -20,9 +20,9 @@ h3
       = t'views.order._consumer_orders.caution', consumer: @consumer.name
     .order-message-actions
       = link_to t('views.order._consumer_orders.edit_your_orders'), {action: :edit, cycle_id: @cycle.id}
-      |&emsp
+      |&emsp;
       = link_to t('views.order._consumer_orders.administration_of_thi'), {controller: :orders_cycle_plugin_cycle, action: :edit, id: @cycle.id}
-      |&emsp
+      |&emsp;
   #order-place-new.admin
     = link_to t('views.order._consumer_orders.new_order'), {action: :admin_new, consumer_id: @order.consumer.id, cycle_id: @cycle.id} if @cycle.orders?
 - else
