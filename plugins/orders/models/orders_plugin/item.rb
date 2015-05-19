@@ -99,23 +99,16 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
   # Attributes cached from product
   def name
-    self['name'] || (self.product.name rescue nil)
+    self[:name] || (self.product.name rescue nil)
   end
   def price
-    self['price'] || (self.product.price_with_discount || 0 rescue nil)
+    self[:price] || (self.product.price_with_discount || 0 rescue nil)
   end
   def unit
     self.product.unit
   end
   def supplier
     self.product.supplier rescue self.order.profile.self_supplier
-  end
-
-  # fallback to price * quantity
-  def price_consumer_ordered
-    v = self[:price_consumer_ordered]
-    v = self.price * self.quantity_consumer_ordered if (v.blank? or v.zero?) and (self.price.present? and not self.price.zero?)
-    v
   end
 
   def status
@@ -128,12 +121,41 @@ class OrdersPlugin::Item < ActiveRecord::Base
     self.product
   end
 
+  def next_status_quantity_field actor_name
+    status = self.order.next_status(actor_name) || 'ordered'
+    "quantity_#{StatusDataMap[status]}"
+  end
+  def next_status_quantity actor_name
+    self.send self.next_status_quantity_field(actor_name)
+  end
+  def next_status_quantity_set actor_name, value
+    self.send "#{self.next_status_quantity_field actor_name}=", value
+  end
+
+  def status_quantity_field
+    @status_quantity_field ||= begin
+      status = self.order.status || 'ordered'
+      "quantity_#{StatusDataMap[status]}"
+    end
+  end
+  def status_quantity
+    self.send self.status_quantity_field
+  end
+  def status_quantity= value
+    self.send "#{self.status_quantity_field}=", value
+  end
+
   StatusDataMap.each do |status, data|
     quantity = "quantity_#{data}".to_sym
     price = "price_#{data}".to_sym
 
-    define_method "calculated_#{price}" do |items=[]|
-      self.price * self.send(quantity) rescue nil
+    define_method "calculated_#{price}" do
+      p = self[price] || self.price
+      p * self.send(quantity) rescue nil
+    end
+
+    define_method price do
+      self[price] || self.send("calculated_#{price}")
     end
   end
 
@@ -161,7 +183,7 @@ class OrdersPlugin::Item < ActiveRecord::Base
     end
 
     # Fetch data
-    statuses.each_with_index do |status, i|
+    statuses.each.with_index do |status, i|
       data_field = StatusDataMap[status]
       access = StatusAccessMap[status]
 
@@ -206,21 +228,19 @@ class OrdersPlugin::Item < ActiveRecord::Base
           status_data[:flags][:not_modified] = true
         end
       end
-
     end
 
     # reverse_each is necessary to set overwritten with intermediate not_modified
     statuses_data.reverse_each.with_index do |(status, status_data), i|
       prev_status_data = statuses_data[statuses[-i-1]]
-      if prev_status_data
-        if prev_status_data[:flags][:filled] and (status_data[:quantity] != prev_status_data[:quantity] or status_data[:not_modified])
-          status_data[:flags][:overwritten] = true
-        end
+      if status_data[:not_modified] or
+          (prev_status_data and prev_status_data[:flags][:filled] and status_data[:quantity] != prev_status_data[:quantity])
+        status_data[:flags][:overwritten] = true
       end
     end
 
     # Set access
-    statuses_data.each_with_index do |(status, status_data), i|
+    statuses_data.each.with_index do |(status, status_data), i|
       status_data[:flags][:editable] = true if status_data[:access] == actor_name and (status_data[:flags][:admin] or self.order.open?)
     end
 

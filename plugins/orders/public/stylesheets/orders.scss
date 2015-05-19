@@ -170,6 +170,13 @@
       border-bottom: $border solid black;
       text-transform: uppercase;
     }
+
+    .order-product-add {
+      .add-input {
+        // fix for typeahead's background-color: transparent
+        width: $order-items-admin-width - 2*$border;
+      }
+    }
   }
 
   .order-section {

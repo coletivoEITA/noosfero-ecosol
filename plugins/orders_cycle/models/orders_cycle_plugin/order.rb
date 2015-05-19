@@ -1,5 +1,6 @@
 class OrdersCyclePlugin::Order < OrdersPlugin::Order
 
-  # see OrderBase
+  # nothing here, see OrderBase
+  include OrdersCyclePlugin::OrderBase
 
 end

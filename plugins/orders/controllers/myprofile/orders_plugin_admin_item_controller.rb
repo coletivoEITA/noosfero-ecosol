@@ -18,6 +18,30 @@ class OrdersPluginAdminItemController < MyProfileController
     @item.update_attributes! params[:item]
   end
 
+  def add_search
+    @order = hmvc_orders_context::Order.find params[:order_id]
+    @query = params[:query].to_s
+    @scope = @order.available_products.includes(:suppliers).limit(10)
+    # FIXME: do not work cycles
+    #@products = autocomplete(:catalog, @scope, @query, {per_page: 10, page: 1}, {})[:results]
+    @products = @scope.where('name ILIKE ? OR name ILIKE ?', "#{@query}%", "% #{@query}%")
+
+    render json: @products.map{ |p|
+      {value: p.id, label: "#{p.name} (#{p.supplier.name})"}
+    }
+  end
+
+  def add
+    @actor_name = params[:actor_name].to_sym
+    @order = hmvc_orders_context::Order.find params[:order_id]
+    @product = @order.available_products.find params[:product_id]
+
+    @item = hmvc_orders_context::Item.where(order_id: @order.id, product_id: @product.id).first
+    @item ||= hmvc_orders_context::Item.new order: @order, product: @product
+    @item.next_status_quantity_set @actor_name, (@item.next_status_quantity(@actor_name) || @item.status_quantity || 0) + 1
+    @item.save!
+  end
+
   protected
 
   def set_admin
