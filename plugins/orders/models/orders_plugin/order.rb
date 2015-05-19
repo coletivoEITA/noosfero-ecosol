@@ -45,6 +45,8 @@ class OrdersPlugin::Order < ActiveRecord::Base
   attr_accessible :status, :consumer, :profile, :supplier_delivery_id, :consumer_delivery_id
 
   belongs_to :profile
+  # may be override by subclasses
+  belongs_to :supplier, foreign_key: :profile_id, class_name: 'Profile'
   belongs_to :consumer, class_name: 'Profile'
 
   belongs_to :session, primary_key: :session_id, foreign_key: :session_id, class_name: 'ActiveRecord::SessionStore::Session'
@@ -192,6 +194,11 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   def delivery_methods
     self.profile.delivery_methods
+  end
+
+  # override on subclasses
+  def available_products
+    self.profile.products
   end
 
   def actor_data actor_name

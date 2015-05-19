@@ -1,9 +1,8 @@
 class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
 
-  has_many :cycle_orders, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id, dependent: :destroy
-  has_many :cycles, through: :cycle_orders, source: :cycle
-
   include OrdersCyclePlugin::OrderBase
+
+  has_many :cycles, through: :cycle_sales, source: :cycle
 
   after_save :cycle_change_purchases, if: :cycle
   before_destroy :cycle_remove_purchases_items, if: :cycle

@@ -8,18 +8,18 @@ orders = {
   order: {
 
     reload: function(context, url) {
-      var order = jQuery(context).parents('.order-view')
+      var order = $(context).parents('.order-view')
 
       loading_overlay.show(order)
-      jQuery.getScript(url, function () {
+      $.getScript(url, function () {
         loading_overlay.hide(order)
       })
     },
 
     submit: function(form) {
-      var order = jQuery(form).parents('.order-view')
+      var order = $(form).parents('.order-view')
 
-      jQuery(form).ajaxSubmit({dataType: 'script',
+      $(form).ajaxSubmit({dataType: 'script',
         beforeSubmit: function(){ loading_overlay.show(order) },
         success: function(){ loading_overlay.hide(order) },
       })
@@ -35,7 +35,7 @@ orders = {
     },
 
     edit_quantity: function (item) {
-      item = jQuery(item);
+      item = $(item);
       toggle_edit.edit(item);
 
       var quantity = item.find('.quantity input');
@@ -45,7 +45,7 @@ orders = {
     // keydown prevents form submit, keyup don't
     quantity_keydown: function(context, event) {
       if (event.keyCode == 13) {
-        var item = jQuery(context).parents('.item');
+        var item = $(context).parents('.item');
         item.find('.more .action-button').get(0).onclick();
 
         event.preventDefault();
@@ -74,28 +74,30 @@ orders = {
           displayKey: 'label',
           source: this.source.ttAdapter(),
         }).on('typeahead:selected', function(e, item) {
-          $.post(self.add_url, {product_id: item.value})
+          input.val('')
+          $.post(self.add_url, {product_id: item.value}, function(data) {
+          })
         })
       },
     },
 
     admin_remove: function(context, url) {
-      var container = jQuery(context).parents('.order-items-container');
-      var item = jQuery(context).parents('.item');
+      var container = $(context).parents('.order-items-container');
+      var item = $(context).parents('.item');
       var quantity = item.find('.quantity input');
       quantity.val('0')
       this.submit(context, url)
     },
 
     submit: function(context, url) {
-      var container = jQuery(context).parents('.order-items-container');
-      var item = jQuery(context).parents('.item');
+      var container = $(context).parents('.order-items-container');
+      var item = $(context).parents('.item');
       var quantity = item.find('.quantity input');
       var data = {}
       data[quantity[0].name] = quantity.val()
 
       loading_overlay.show(container);
-      jQuery.post(url, data, function(){}, 'script');
+      $.post(url, data, function(){}, 'script');
     },
   },
 
@@ -106,32 +108,32 @@ orders = {
     },
 
     load_edit: function(order, url) {
-      var edit = jQuery(order).find('.box-edit')
+      var edit = $(order).find('.box-edit')
       edit.load(url, function() {
         edit.removeClass('loading')
       });
-      jQuery(order).attr('onclick', '')
+      $(order).attr('onclick', '')
     },
 
     select: {
       all: function() {
-        jQuery('.order #order_ids_').attr('checked', true)
+        $('.order #order_ids_').attr('checked', true)
       },
       none: function() {
-        jQuery('.order #order_ids_').attr('checked', false)
+        $('.order #order_ids_').attr('checked', false)
       },
 
       selection: function() {
-        return jQuery('.order #order_ids_:checked').parents('.order')
+        return $('.order #order_ids_:checked').parents('.order')
       },
 
       report: function(url) {
-        var ids = this.selection().map(function (i, el) { return jQuery(el).attr('data-id') }).toArray();
+        var ids = this.selection().map(function (i, el) { return $(el).attr('data-id') }).toArray();
         if (ids.length === 0) {
           alert(orders.locales.noneSelected)
           return
         }
-        window.location.href = url + '&' + jQuery.param({ids: ids})
+        window.location.href = url + '&' + $.param({ids: ids})
       },
 
     },
@@ -139,19 +141,19 @@ orders = {
 
   set_orders_container_max_height: function()
   {
-    ordersH = jQuery(window).height();
+    ordersH = $(window).height();
     ordersH -= 100
-    ordersH -= jQuery('#cirandas-top-bar').outerHeight()
-    ordersH -= jQuery('.order-status-message').outerHeight()
-    ordersH -= jQuery('.order-message-title').outerHeight()
-    ordersH -= jQuery('#order-column .order-items .table-header').last().outerHeight()
-    ordersH -= jQuery('#order-column .order-total').last().outerHeight()
-    ordersH -= jQuery('#order-column #actor-data-box').last().outerHeight()
-    ordersH -= jQuery('#order-column .delivery-box').outerHeight()
-    ordersH -= jQuery('#order-column .order-message-text').outerHeight()
-    ordersH -= jQuery('#order-column .order-message-actions').outerHeight()
-    ordersH -= jQuery('#order-column .actions').outerHeight()
-    jQuery('.order-items-container .order-items-scroll').css('max-height', ordersH);
+    ordersH -= $('#cirandas-top-bar').outerHeight()
+    ordersH -= $('.order-status-message').outerHeight()
+    ordersH -= $('.order-message-title').outerHeight()
+    ordersH -= $('#order-column .order-items .table-header').last().outerHeight()
+    ordersH -= $('#order-column .order-total').last().outerHeight()
+    ordersH -= $('#order-column #actor-data-box').last().outerHeight()
+    ordersH -= $('#order-column .delivery-box').outerHeight()
+    ordersH -= $('#order-column .order-message-text').outerHeight()
+    ordersH -= $('#order-column .order-message-actions').outerHeight()
+    ordersH -= $('#order-column .actions').outerHeight()
+    $('.order-items-container .order-items-scroll').css('max-height', ordersH);
   },
 
   daterangepicker: {
@@ -178,6 +180,6 @@ orders = {
   },
 };
 
-jQuery(document).ready(orders.set_orders_container_max_height);
-jQuery(window).resize(orders.set_orders_container_max_height);
+$(document).ready(orders.set_orders_container_max_height);
+$(window).resize(orders.set_orders_container_max_height);
 

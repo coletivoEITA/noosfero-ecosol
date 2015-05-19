@@ -469,6 +469,11 @@
           remove_from_order: "remove from order"
           submit: 'OK'
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
+
+        _add: 
+          label: 'Add product'
+          placeholder: "Type to find and add products"
+
         _index: 
           header: "Purchase %{profile.code} - %{profile} / Sale - %{consumer}"
           empty_order: "Empty order"

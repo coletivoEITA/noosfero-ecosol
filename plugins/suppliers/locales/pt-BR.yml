@@ -495,6 +495,11 @@
           remove_from_order: "Remover do pedido"
           submit: 'OK'
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
+
+        _add: 
+          label: 'Adiciona produto'
+          placeholder: "Digite para encontrar e adicionar produtos"
+
         _index: 
           header: "Compra %{profile_code} - %{profile} / Venda %{consumer}"
           empty_order: "Pedido vazio"

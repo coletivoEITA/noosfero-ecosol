@@ -13,6 +13,7 @@
     jQuery(document).ready(function() {
       jQuery('.consumer-order.edit').stickyPanel({
         topPadding: jQuery('#cirandas-top-bar').outerHeight(),
+        onReAttached: orders.set_orders_container_max_height
       })
     });
   <% end %>

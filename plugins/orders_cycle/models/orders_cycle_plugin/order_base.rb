@@ -5,6 +5,11 @@ module OrdersCyclePlugin::OrderBase
   included do
     attr_accessible :cycle
 
+    has_many :cycle_sales, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id, dependent: :destroy
+    has_many :cycle_purchases, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :purchase_id, dependent: :destroy
+    def cycles
+      self.cycle_sales.includes(:cycle).map(&:cycle) + self.cycle_purchases.includes(:cycle).map(&:cycle)
+    end
     def cycle
       self.cycles.first
     end
@@ -37,6 +42,10 @@ module OrdersCyclePlugin::OrderBase
 
     def repeat_cycle= cycle
       self.items.each{ |i| i.repeat_cycle = cycle }
+    end
+
+    def available_products
+      self.cycle.products
     end
 
     protected
