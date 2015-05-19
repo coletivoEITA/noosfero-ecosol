@@ -2,8 +2,6 @@ module OrdersCyclePlugin::CycleHelper
 
   protected
 
-  include OrdersCyclePlugin::DisplayHelper
-
   def timeline_class cycle, status, selected
     klass = ""
     if cycle.status == status
