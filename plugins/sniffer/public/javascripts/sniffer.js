@@ -84,8 +84,16 @@ sniffer = {
     maxDistance: function (distance) {
       distance = parseInt(distance);
       sniffer.search.filters.distance = distance > 0 ? distance : undefined;
-      sniffer.search.filters.circle.setRadius(distance * 1000);
       sniffer.search.filter();
+      sniffer.search.setCircleRadius(distance);
+    },
+
+    setCircleRadius: function (distance) {
+      if (distance > 0) {
+          sniffer.search.filters.circle.setRadius(distance * 1000);
+          mapBounds = sniffer.search.filters.circle.getBounds();
+          mapCenter();
+      }
     },
 
     profile: {
