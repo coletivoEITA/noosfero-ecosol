@@ -5,7 +5,12 @@
 
     <div id="map-overlay-wrap">
       <div id="map-overlay">
-        <h1> <%= _('Opportunities Sniffer') %> </h1>
+        <div id="sniffer-title">
+          <h1> <%= _('Opportunities Sniffer') %> </h1>
+          <h5 class='sniffer-subtitle'>
+            <%= _('Up to %s km from you. %s result(s) found.') % ['<span id="sniffer-title-distance">0</span>', '<span id="sniffer-title-results">0</span>'] %>
+          </h5>
+        </div>
 
         <%= render :partial => 'product_search_box' %>
       </div>

@@ -34,8 +34,7 @@
   max-width: initial;
 }
 
-#sniffer-search-wrap #map-overlay h1 {
-  border-bottom: 0px;
+#sniffer-search-wrap #map-overlay #sniffer-title {
   padding-left: 10%;
   padding-top: 12px;
   text-shadow: 0 2px white, 2px 0 white, 0 -2px white, -2px 0 white;
@@ -45,6 +44,14 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+#sniffer-search-wrap #map-overlay #sniffer-title h1 {
+  border-bottom: 0px;
+}
+
+#sniffer-search-wrap #map-overlay #sniffer-title .sniffer-subtitle {
+  display: none;
 }
 
 /* application.css overwrites */

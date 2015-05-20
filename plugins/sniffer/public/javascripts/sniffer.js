@@ -49,6 +49,7 @@ sniffer = {
     filter: function () {
       // Creates a new boundary based on home position
       var bounds = new google.maps.LatLngBounds(sniffer.search.filters.homePosition);
+      var visibleCount = 0;
       jQuery.each(sniffer.search.map.markerList, function(index, marker) {
         var visible = (
            !sniffer.search.filters.distance ||
@@ -58,11 +59,13 @@ sniffer = {
         // If marker is visible, expands boundary to fit new marker
         if (visible) {
           bounds.extend(marker.getPosition());
+          visibleCount++;
         }
       });
       // Center map to new boundaries
       mapBounds = bounds;
       mapCenter();
+      return visibleCount;
     },
 
     showFilters: function (event) {
@@ -93,8 +96,9 @@ sniffer = {
     maxDistance: function (distance) {
       distance = parseInt(distance);
       sniffer.search.filters.distance = distance > 0 ? distance : undefined;
-      sniffer.search.filter();
+      var visibleMarkersCount = sniffer.search.filter();
       sniffer.search.setCircleRadius(distance);
+      sniffer.search.setSubtitle(distance, visibleMarkersCount);
     },
 
     setCircleRadius: function (distance) {
@@ -103,6 +107,16 @@ sniffer = {
           mapBounds = sniffer.search.filters.circle.getBounds();
           mapCenter();
       }
+    },
+
+    setSubtitle: function (distance, count) {
+      if (distance > 0) {
+        jQuery('#sniffer-title .sniffer-subtitle').show();
+        jQuery('#sniffer-title-distance').html(distance);
+        jQuery('#sniffer-title-results').html(count);
+      } else {
+        jQuery('#sniffer-title .sniffer-subtitle').hide();
+      };
     },
 
     profile: {
