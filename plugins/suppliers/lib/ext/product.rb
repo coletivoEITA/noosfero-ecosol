@@ -41,7 +41,7 @@ class Product
   end
 
   # defined just as *from_products above
-  # may be overiden in different subclasses
+  # may be overriden in different subclasses
   has_many :sources_supplier_products, foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
   has_many :supplier_products, through: :sources_from_products, source: :from_product, order: 'id ASC'
 

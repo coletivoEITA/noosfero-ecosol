@@ -92,7 +92,7 @@ class ShoppingCartPluginController < OrdersPluginController
     }.to_json
   end
 
-  # overide from OrdersPluginController
+  # override from OrdersPluginController
   def repeat
     unless params[:id].present?
       @orders = previous_orders.last(5).reverse

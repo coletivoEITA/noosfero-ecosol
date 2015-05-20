@@ -22,7 +22,7 @@ module OpenGraphPlugin::AttachStories
       end
 
       callbacks.each do |on, stories|
-        # subclasses may overide this, but the callback is called only once
+        # subclasses may override this, but the callback is called only once
         method = "open_graph_publish_after_#{on}"
 
         self.send "after_#{on}", method

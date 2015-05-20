@@ -11,12 +11,12 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
     self.order.cycle
   end
 
-  # OVERIDE from OrdersPlugin::Item
+  # OVERRIDE from OrdersPlugin::Item
   belongs_to :order, class_name: 'OrdersCyclePlugin::Order', touch: true
   belongs_to :sale, class_name: 'OrdersCyclePlugin::Sale', foreign_key: :order_id
   belongs_to :purchase, class_name: 'OrdersCyclePlugin::Purchase', foreign_key: :order_id
 
-  # OVERIDE from OrdersPlugin::Item
+  # OVERRIDE from OrdersPlugin::Item
   # FIXME: if don't work because of load order
   #if defined? SuppliersPlugin
     has_many :from_products, through: :offered_product
@@ -35,7 +35,7 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
     self.order.cycle.purchases.where(consumer_id: self.profile.id)
   end
 
-  # overhide
+  # override
   def repeat_product
     distributed_product = self.from_product
     return unless self.repeat_cycle and distributed_product

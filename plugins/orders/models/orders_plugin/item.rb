@@ -116,7 +116,7 @@ class OrdersPlugin::Item < ActiveRecord::Base
   end
 
   # product used for comparizon when repeating an order
-  # overide on subclasses
+  # override on subclasses
   def repeat_product
     self.product
   end
