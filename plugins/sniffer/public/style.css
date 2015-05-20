@@ -28,6 +28,7 @@
 #sniffer-search-wrap #map-wrap #map {
   height: 500px;
   width: 100%;
+  background: url('/images/loading.gif') no-repeat center 50% transparent;
 }
 
 #sniffer-search-wrap #map-wrap #map img {
