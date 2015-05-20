@@ -37,6 +37,10 @@ sniffer = {
             }
           });
           input.val('');
+          if (jQuery('#sniffer-product-search .hidden-pane').length > 0) {
+            sniffer.search.showFilters();
+            searchBoxTimeout = setTimeout(function(){ sniffer.search.hideFilters(); }, 1000);
+          };
           return false;
         },
       });
@@ -61,11 +65,16 @@ sniffer = {
       mapCenter();
     },
 
-    showFilters: function () {
-      jQuery('#sniffer-product-search .focus-pane').show();
+    showFilters: function (event) {
+      if (event) {
+        clearTimeout(searchBoxTimeout);
+      };
+      jQuery('#sniffer-product-search .focus-pane')[0].classList.remove('hidden-pane');
+      jQuery('#sniffer-product-search .legend')[0].classList.remove('hidden-pane');
     },
-    hideFilters: function () {
-      jQuery('#sniffer-product-search .focus-pane').hide();
+    hideFilters: function (event) {
+      jQuery('#sniffer-product-search .focus-pane')[0].classList.add('hidden-pane');
+      jQuery('#sniffer-product-search .legend')[0].classList.add('hidden-pane');
     },
 
     updateDistField: function (input) {
@@ -370,3 +379,4 @@ String.prototype.format = function(obj) {
   return this.replace(/%\{([^}]+)\}/g,function(_,k){ return obj[k] });
 };
 
+var searchBoxTimeout;

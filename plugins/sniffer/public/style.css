@@ -131,6 +131,9 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
 #sniffer-search-wrap #sniffer-product-search .legend {
   float: right;
   padding-left: 6px;
+  max-height: 100px;
+  overflow: hidden;
+  transition: all 1s ease 0s;
 }
 
 #sniffer-search-wrap #sniffer-product-search {
@@ -187,7 +190,16 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
 }
 
 #sniffer-search-wrap #sniffer-product-search .focus-pane {
-  display: none;
+  opacity: 1;
+  max-height: 800px;
+  transition: all 1s ease 0s;
+}
+
+#sniffer-search-wrap #sniffer-product-search .hidden-pane {
+  transition-delay: 1s;
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
 }
 
 #sniffer-search-wrap #sniffer-product-search #categories-table-wrap {
