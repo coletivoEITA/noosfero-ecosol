@@ -2,5 +2,6 @@
   h1= t('delivery_plugin.views.delivery_option.select.add_a_delivery_method')
 
   - request.GET[:selected_ids] = @owner.delivery_methods.map(&:id).map(&:to_s)
+  - request.GET[:select_ids] = 'true'
   = render 'delivery_plugin/admin_method/index'
-  
+
