@@ -59,7 +59,7 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
         purchase ||= OrdersCyclePlugin::Purchase.create! cycle: self.cycle, consumer: self.profile, profile: supplier
 
         purchased_item = purchase.items.for_product(supplier_product).first
-        purchased_item ||= purchase.items.build order: purchase, product: supplier_product
+        purchased_item ||= purchase.items.build purchase: purchase, product: supplier_product
         purchased_item.quantity_consumer_ordered ||= 0
         purchased_item.quantity_consumer_ordered += item.quantity_consumer_ordered
         purchased_item.price_consumer_ordered ||= 0
