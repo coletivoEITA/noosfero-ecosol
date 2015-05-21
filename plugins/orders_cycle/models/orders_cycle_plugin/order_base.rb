@@ -7,6 +7,7 @@ module OrdersCyclePlugin::OrderBase
 
     has_many :cycle_sales, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id, dependent: :destroy
     has_many :cycle_purchases, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :purchase_id, dependent: :destroy
+    # cycles is defined with has_many on subclasses
     def cycles
       self.cycle_sales.includes(:cycle).map(&:cycle) + self.cycle_purchases.includes(:cycle).map(&:cycle)
     end
@@ -16,6 +17,11 @@ module OrdersCyclePlugin::OrderBase
     def cycle= cycle
       self.cycles = [cycle]
     end
+
+    scope :for_cycle, -> (cycle) {
+      where('orders_cycle_plugin_cycles.id = ?', cycle.id).
+      joins(:cycles)
+    }
 
     has_many :items, class_name: 'OrdersCyclePlugin::Item', foreign_key: :order_id, dependent: :destroy, order: 'name ASC'
 

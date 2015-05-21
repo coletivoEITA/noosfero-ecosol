@@ -4,11 +4,9 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
 
   has_many :cycles, through: :cycle_sales, source: :cycle
 
-  after_save :cycle_change_purchases, if: :cycle
-  before_destroy :cycle_remove_purchases_items, if: :cycle
+  after_save :change_purchases, if: :cycle
+  before_destroy :remove_purchases_items, if: :cycle
   before_validation :fill_default_supplier_delivery
-
-  scope :for_cycle, lambda{ |cycle| {conditions: ['orders_cycle_plugin_cycles.id = ?', cycle.id], joins: [:cycles]} }
 
   def current_status
     return 'forgotten' if self.forgotten?
@@ -37,19 +35,16 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
     self[:supplier_delivery_id] ||= self.supplier_delivery.id if self.supplier_delivery
   end
 
-  protected
-
-  # See also: OrdersCyclePlugin::Cycle#generate_purchases
-  def cycle_change_purchases
+  def change_purchases
     return unless self.status_was.present?
     if self.ordered_at_was.nil? and self.ordered_at.present?
-      self.cycle_add_purchases_items
+      self.add_purchases_items
     elsif self.ordered_at_was.present? and self.ordered_at.nil?
-      self.cycle_remove_purchases_items
+      self.remove_purchases_items
     end
   end
 
-  def cycle_add_purchases_items
+  def add_purchases_items
     ActiveRecord::Base.transaction do
       self.items.each do |item|
         next unless supplier_product = item.product.supplier_product
@@ -69,7 +64,7 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
     end
   end
 
-  def cycle_remove_purchases_items
+  def remove_purchases_items
     ActiveRecord::Base.transaction do
       self.items.each do |item|
         next unless supplier_product = item.product.supplier_product
@@ -86,7 +81,7 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
     end
   end
 
-  handle_asynchronously :cycle_add_purchases_items
-  handle_asynchronously :cycle_remove_purchases_items
+  handle_asynchronously :add_purchases_items
+  handle_asynchronously :remove_purchases_items
 
 end

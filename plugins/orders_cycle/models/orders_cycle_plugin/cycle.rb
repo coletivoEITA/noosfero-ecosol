@@ -213,18 +213,16 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   def generate_purchases
     return self.purchases if self.purchases.present?
 
-    self.ordered_offered_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
-      next unless supplier_product = product.supplier_product
-
-      # can't be created using self.purchases.create!, as if :cycle is set (needed for code numbering), then double CycleOrder will be created
-      purchase = OrdersCyclePlugin::Purchase.create! cycle: self, consumer: self.profile, profile: supplier.profile
-      products.each do |product|
-        purchase.items.create! order: purchase, product: supplier_product,
-          quantity_consumer_ordered: product.total_quantity_consumer_ordered, price_consumer_ordered: product.total_price_consumer_ordered
-      end
+    self.sales.ordered.each do |sale|
+      sale.add_purchases_items_without_delay
     end
 
     self.purchases true
+  end
+
+  def regenerate_purchases
+    self.purchases.destroy_all
+    self.generate_purchases
   end
 
   def add_distributed_products
