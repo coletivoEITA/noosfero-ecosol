@@ -150,8 +150,7 @@ class OrdersPlugin::Item < ActiveRecord::Base
     price = "price_#{data}".to_sym
 
     define_method "calculated_#{price}" do
-      p = self[price] || self.price
-      p * self.send(quantity) rescue nil
+      self.price * self.send(quantity) rescue nil
     end
 
     define_method price do
