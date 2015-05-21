@@ -21,11 +21,11 @@ module ShoppingCartPlugin::CartHelper
   end
 
   def repeat_checkout_order_button order
-    button_to_function 'check', t('views.public.repeat.checkout'), 'cart.repeatCheckout(event, this)', 'data-order-id' => order.id, :class => 'repeat-checkout-order'
+    button_to_function :check, t('views.public.repeat.checkout'), 'cart.repeatCheckout(event, this)', 'data-order-id' => order.id, class: 'repeat-checkout-order'
   end
 
   def repeat_choose_order_button order
-    button_to_function 'edit', t('views.public.repeat.choose'), 'cart.repeatChoose(event, this)', 'data-order-id' => order.id, :class => 'repeat-choose-order'
+    button_to_function :edit, t('views.public.repeat.choose'), 'cart.repeatChoose(event, this)', 'data-order-id' => order.id, class: 'repeat-choose-order'
   end
 
   def sell_price(product)

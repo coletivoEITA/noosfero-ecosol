@@ -92,6 +92,7 @@ class ShoppingCartPluginController < OrdersPluginController
     }.to_json
   end
 
+  # override from OrdersPluginController
   def repeat
     unless params[:id].present?
       @orders = previous_orders.last(5).reverse
@@ -100,8 +101,8 @@ class ShoppingCartPluginController < OrdersPluginController
       @order = cart_profile.orders.find params[:id]
       self.cart = { profile_id: cart_profile.id, items: {} }
       @order.items.each do |item|
-        next unless item.product.available
-        self.cart[:items][item.product_id] = item.quantity_consumer_ordered.to_i
+        next unless item.repeat_product and item.repeat_product.available
+        self.cart[:items][item.repeat_product.id] = item.quantity_consumer_ordered.to_i
       end
 
       render json: {

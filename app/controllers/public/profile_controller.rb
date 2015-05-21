@@ -65,9 +65,9 @@ class ProfileController < PublicController
   end
 
   def members
-    if is_cache_expired?(profile.members_cache_key(params))
+    #if is_cache_expired?(profile.members_cache_key(params))
       @members = profile.members_by_name.includes(relations_to_include).paginate(:per_page => members_per_page, :page => params[:npage], :total_entries => profile.members.count)
-    end
+    #end
   end
 
   def fans

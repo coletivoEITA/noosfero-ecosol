@@ -149,20 +149,15 @@
     padding: 0;
 
     > h3 {
-      padding: 0 8px;
+      margin-bottom: 2*$margin;
     }
     > h3 a {
-      text-transform: lowercase;
+      text-transform: none;
       float: right;
-      color: #000000;
-      border: 2px solid #000000;
-      margin-bottom: 10px;
-      margin-right: -7px;
-      padding: 5px;
-      border-radius: 3px;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      background-color: #FFE546;
+      margin-left: $half-margin;
+      &:before {
+        padding-right: $half-padding;
+      }
     }
 
     .consumer-order,

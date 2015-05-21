@@ -7,9 +7,8 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   no_design_blocks
   before_filter :login_required, except: [:index]
 
-  helper OrdersCyclePlugin::DisplayHelper
-  helper SuppliersPlugin::ProductHelper
   helper OrdersCyclePlugin::TranslationHelper
+  helper OrdersCyclePlugin::DisplayHelper
 
   def index
     @current_year = DateTime.now.year.to_s
@@ -33,7 +32,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       render_access_denied
     else
       @consumer = user
-      @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
+      @cycle = profile.orders_cycles.find params[:cycle_id]
       @order = OrdersCyclePlugin::Sale.new
       @order.profile = profile
       @order.consumer = @consumer
@@ -43,10 +42,32 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     end
   end
 
+  def repeat
+    @consumer = user
+    @order = profile.orders_cycles_sales.where(id: params[:order_id], consumer_id: @consumer.id).first
+    @cycle = profile.orders_cycles.find params[:cycle_id]
+    if @order
+      @order.repeat_cycle = @cycle
+      @repeat_order = OrdersCyclePlugin::Sale.new profile: profile, consumer: @consumer, cycle: @cycle
+      @order.items.each do |item|
+        next unless item.repeat_product and item.repeat_product.available
+        @repeat_order.items.build sale: @repeat_order, product: item.repeat_product, quantity_consumer_ordered: item.quantity_consumer_ordered
+      end
+      @repeat_order.supplier_delivery = @order.supplier_delivery
+      @repeat_order.save!
+      redirect_to params.merge(action: :edit, id: @repeat_order.id)
+    else
+      @orders = @cycle.consumer_previous_orders(@consumer).last(5).reverse
+      @orders.each{ |o| o.enable_product_diff }
+      @orders.each{ |o| o.repeat_cycle = @cycle }
+      render template: 'orders_plugin/repeat'
+    end
+  end
+
   def edit
     return show_more if params[:page].present?
 
-    if request.xhr?
+    if request.xhr? and params[:order].present?
       status = params[:order][:status]
       if status == 'ordered'
         if @order.items.size > 0
@@ -60,7 +81,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     end
 
     if cycle_id = params[:cycle_id]
-      @cycle = OrdersCyclePlugin::Cycle.find_by_id cycle_id
+      @cycle = profile.orders_cycles.where(id: cycle_id).first
       return render_not_found unless @cycle
       @consumer = user
 
@@ -114,7 +135,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     return redirect_to action: :index unless profile.has_admin? user
 
     @consumer = user
-    @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
+    @cycle = profile.orders_cycles.find params[:cycle_id]
     @order = OrdersCyclePlugin::Sale.create! cycle: @cycle, consumer: @consumer
     redirect_to action: :edit, id: @order.id, profile: profile.identifier
   end
@@ -124,7 +145,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       @order = OrdersCyclePlugin::Sale.find id rescue nil
       @cycle = @order.cycle
     else
-      @cycle = OrdersCyclePlugin::Cycle.find params[:cycle_id]
+      @cycle = profile.orders_cycles.find params[:cycle_id]
       @order = OrdersCyclePlugin::Sale.find params[:order_id] rescue nil
     end
     load_products_for_order

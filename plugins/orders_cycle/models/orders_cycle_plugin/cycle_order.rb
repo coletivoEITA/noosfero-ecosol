@@ -10,7 +10,7 @@ class OrdersCyclePlugin::CycleOrder < ActiveRecord::Base
   protected
 
   def sale_or_purchase
-    errors.add :base, "Specify a sale of purchase" unless self.sale or self.purchase
+    errors.add :base, "Specify a sale of purchase" unless self.sale_id or self.purchase_id
   end
 
 end

@@ -1,3 +1,7 @@
+<% if @admin %>
+  <%= render 'orders_plugin_admin_item/add', order: order, actor_name: actor_name %>
+<% end %>
+
 <div class="order-items-container <%= "empty" if order.items.size == 0 %> <%= "admin" if @admin %> <%= 'self-supplier' if order.self_supplier? %>">
 
   <% if order.items.size > 0 %>
@@ -5,14 +9,14 @@
 
       <div class="table-header">
         <% unless order.self_supplier? %>
-          <div class="box-field supplier"> <%= t('orders_plugin.views.item._index.supplier') %> </div>
+          <div class="box-field supplier"> <%= t('views.item._index.supplier') %> </div>
         <% end %>
-        <div class="box-field product"> <%= t('orders_plugin.views.item._index.product') %> </div>
-        <div class="box-field quantity"> <%= t('orders_plugin.views.item._index.quantity') %> </div>
-        <div class="box-field price-total"> <%= t('orders_plugin.views.item._index.price_total') % {currency: @environment.currency_unit} %> </div>
+        <div class="box-field product"> <%= t('views.item._index.product') %> </div>
+        <div class="box-field quantity"> <%= t('views.item._index.quantity') %> </div>
+        <div class="box-field price-total"> <%= t('views.item._index.price_total') % {currency: @environment.currency_unit} %> </div>
 
         <% if @admin %>
-          <div class="box-field status"> <%= t('orders_plugin.views.item._index.status') %> </div>
+          <div class="box-field status"> <%= t('views.item._index.status') %> </div>
         <% end %>
       </div>
 
@@ -27,11 +31,11 @@
     </div>
 
     <div class="order-total">
-      <div class="title"><%= t('orders_plugin.views.consumer._total.total') %></div>
+      <div class="title"><%= t('views.consumer._total.total') %></div>
       <div class="value"><%= price_span order.total_price_as_currency_number actor_name %></div>
     </div>
   <% else %>
-    <%= t('orders_plugin.views.item._index.empty_order') %>
+    <%= t('views.item._index.empty_order') %>
   <% end %>
 
 </div>

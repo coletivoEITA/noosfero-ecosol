@@ -5,12 +5,25 @@ module OrdersCyclePlugin::OrderBase
   included do
     attr_accessible :cycle
 
+    has_many :cycle_sales, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id, dependent: :destroy
+    has_many :cycle_purchases, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :purchase_id, dependent: :destroy
+    # cycles is defined with has_many on subclasses
+    def cycles
+      self.cycle_sales.includes(:cycle).map(&:cycle) + self.cycle_purchases.includes(:cycle).map(&:cycle)
+    end
     def cycle
       self.cycles.first
     end
     def cycle= cycle
       self.cycles = [cycle]
     end
+
+    scope :for_cycle, -> (cycle) {
+      where('orders_cycle_plugin_cycles.id = ?', cycle.id).
+      joins(:cycles)
+    }
+
+    has_many :items, class_name: 'OrdersCyclePlugin::Item', foreign_key: :order_id, dependent: :destroy, order: 'name ASC'
 
     has_many :offered_products, through: :items, source: :offered_product, uniq: true
     has_many :distributed_products, through: :offered_products, source: :from_products, uniq: true
@@ -31,6 +44,14 @@ module OrdersCyclePlugin::OrderBase
 
     def delivery_methods
       self.cycle.delivery_methods
+    end
+
+    def repeat_cycle= cycle
+      self.items.each{ |i| i.repeat_cycle = cycle }
+    end
+
+    def available_products
+      self.cycle.products
     end
 
     protected

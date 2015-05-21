@@ -40,13 +40,14 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
 
   has_many :cycle_products, foreign_key: :cycle_id, class_name: 'OrdersCyclePlugin::CycleProduct', dependent: :destroy
   has_many :products, through: :cycle_products, order: 'products.name ASC',
-    include: [{from_products: [:from_products, {sources_from_products: [{supplier: [{profile: [:domains]}]}]}]}, {profile: [:domains]}]
+    include: [ :from_2x_products, :from_products, {profile: :domains}, ]
 
   has_many :consumers, through: :sales, source: :consumer, order: 'name ASC'
   has_many :suppliers, through: :products, order: 'suppliers_plugin_suppliers.name ASC', uniq: true
   has_many :orders_suppliers, through: :sales, source: :profile, order: 'name ASC'
 
   has_many :from_products, through: :products, order: 'name ASC', uniq: true
+  has_many :supplier_products, through: :products, order: 'name ASC', uniq: true
   has_many :product_categories, through: :products, order: 'name ASC', uniq: true
 
   has_many :orders_confirmed, through: :cycle_orders, source: :sale, order: 'id ASC',
@@ -190,6 +191,15 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
     status == 'delivery' && ( (self.delivery_start <= now && self.delivery_finish.nil?) || (self.delivery_start <= now && self.delivery_finish >= now) )
   end
 
+  def may_order? consumer
+    self.orders? and consumer.present? and consumer.in? profile.members
+  end
+
+  def consumer_previous_orders consumer
+    self.profile.orders_cycles_sales.where(consumer_id: consumer.id).
+      where('orders_cycle_plugin_cycle_orders.cycle_id <> ?', self.id)
+  end
+
   def products_for_order
     # FIXME name alias conflict
     #self.products.unarchived.with_price.order('products.name ASC')
@@ -203,18 +213,16 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   def generate_purchases
     return self.purchases if self.purchases.present?
 
-    self.ordered_offered_products.unarchived.group_by{ |p| p.supplier }.map do |supplier, products|
-      next unless supplier_product = product.supplier_product
-
-      # can't be created using self.purchases.create!, as if :cycle is set (needed for code numbering), then double CycleOrder will be created
-      purchase = OrdersCyclePlugin::Purchase.create! cycle: self, consumer: self.profile, profile: supplier.profile
-      products.each do |product|
-        purchase.items.create! order: purchase, product: supplier_product,
-          quantity_consumer_ordered: product.total_quantity_consumer_ordered, price_consumer_ordered: product.total_price_consumer_ordered
-      end
+    self.sales.ordered.each do |sale|
+      sale.add_purchases_items_without_delay
     end
 
     self.purchases true
+  end
+
+  def regenerate_purchases
+    self.purchases.destroy_all
+    self.generate_purchases
   end
 
   def add_distributed_products
@@ -224,10 +232,6 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
         OrdersCyclePlugin::OfferedProduct.create_from_distributed self, product
       end
     end
-  end
-
-  def can_order? user
-    profile.members.include? user
   end
 
   def add_products_job

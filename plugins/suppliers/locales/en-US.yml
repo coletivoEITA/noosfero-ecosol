@@ -168,11 +168,13 @@
       product:
         import:
           action: "Import spreadsheet"
-          help: "Format you spreadsheet to have exactly the fields bellow. Then, save it choosing the CSV file type (.csv extension)."
+          help: "Format you spreadsheet to have exactly the fields bellow. Then, save it choosing the CSV file type (.csv extension).<br><b>Products with equal names have their data (price/unit) updated.</b>"
           field_supplier_name: "Supplier's name"
           field_product_name: "Product's name"
           field_product_unit: "Unit"
           field_product_price: "Price per unit"
+          remove_all: 'Also remove all registered suppliers and their products (start a new list of products).'
+          confirm_remove_all: "CAUTION! This option will remove all registered suppliers and their products!"
           unit_help: "Use as <b>unit</b> one of the following (put the name equal): %{units}" 
           send: "Send" 
         _edit: 
@@ -467,6 +469,11 @@
           remove_from_order: "remove from order"
           submit: 'OK'
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
+
+        _add: 
+          label: 'Add product'
+          placeholder: "Type to find and add products"
+
         _index: 
           header: "Purchase %{profile.code} - %{profile} / Sale - %{consumer}"
           empty_order: "Empty order"
@@ -655,6 +662,7 @@
           edit_your_orders: "Edit your orders"
           login: login
           new_order: "New order"
+          repeat_order: "Repetir order"
           orders_from_another_m: "Orders from another consumer"
           orders_from_consumer_: "Orders from \"%{consumer}\" on this cycle"
           send_message_to_the_m: "send message to the managers"

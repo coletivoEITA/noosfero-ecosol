@@ -1,3 +1,6 @@
+# FIXME: module not being loaded
+require 'solr_plugin'
+
 class SolrPlugin::Base < Noosfero::Plugin
 
   def stylesheet?

@@ -7,6 +7,9 @@ class Profile
   has_many :orders_cycles_without_order, class_name: 'OrdersCyclePlugin::Cycle',
     conditions: ["orders_cycle_plugin_cycles.status <> 'new'"]
 
+  has_many :orders_cycles_sales, through: :orders_cycles, source: :sales
+  has_many :orders_cycles_purchases, through: :orders_cycles, source: :purchases
+
   has_many :offered_products, class_name: 'OrdersCyclePlugin::OfferedProduct', order: 'products.name ASC'
 
   def orders_cycles_closed_date_range
