@@ -73,7 +73,7 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
     ActiveRecord::Base.transaction do
       self.items.each do |item|
         next unless supplier_product = item.product.supplier_product
-        next unless purchase = supplier_product.purchases.for_cycle(self.cycle).first
+        next unless purchase = supplier_product.orders_cycles_purchases.for_cycle(self.cycle).first
 
         purchased_item = purchase.items.for_product(supplier_product).first
         purchased_item.quantity_consumer_ordered -= item.quantity_consumer_ordered
