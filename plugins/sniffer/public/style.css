@@ -28,14 +28,14 @@
 #sniffer-search-wrap #map-wrap #map {
   height: 500px;
   width: 100%;
+  background: url('/images/loading.gif') no-repeat center 50% transparent;
 }
 
 #sniffer-search-wrap #map-wrap #map img {
   max-width: initial;
 }
 
-#sniffer-search-wrap #map-overlay h1 {
-  border-bottom: 0px;
+#sniffer-search-wrap #map-overlay #sniffer-title {
   padding-left: 10%;
   padding-top: 12px;
   text-shadow: 0 2px white, 2px 0 white, 0 -2px white, -2px 0 white;
@@ -45,6 +45,14 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+#sniffer-search-wrap #map-overlay #sniffer-title h1 {
+  border-bottom: 0px;
+}
+
+#sniffer-search-wrap #map-overlay #sniffer-title .sniffer-subtitle {
+  display: none;
 }
 
 /* application.css overwrites */
@@ -131,6 +139,9 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
 #sniffer-search-wrap #sniffer-product-search .legend {
   float: right;
   padding-left: 6px;
+  max-height: 100px;
+  overflow: hidden;
+  transition: all 1s ease 0s;
 }
 
 #sniffer-search-wrap #sniffer-product-search {
@@ -141,6 +152,10 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
   min-width: 120px;
   margin-top: 12px;
   margin-right: 5%;
+}
+
+#sniffer-search-wrap #sniffer-product-search .legend .count {
+  margin-left: 2px;
 }
 
 #sniffer-search-wrap #sniffer-product-search .legend .both,
@@ -187,7 +202,16 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
 }
 
 #sniffer-search-wrap #sniffer-product-search .focus-pane {
-  display: none;
+  opacity: 1;
+  max-height: 800px;
+  transition: all 1s ease 0s;
+}
+
+#sniffer-search-wrap #sniffer-product-search .hidden-pane {
+  transition-delay: 1s;
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
 }
 
 #sniffer-search-wrap #sniffer-product-search #categories-table-wrap {

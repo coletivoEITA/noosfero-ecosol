@@ -1,20 +1,23 @@
 <%= javascript_include_tag "/plugins/sniffer/javascripts/underscore-min.js" %>
 <%= javascript_include_tag "/plugins/sniffer/javascripts/sniffer.js" %>
 
-<div id="sniffer-product-search" class="sniffer-search-box" onmouseover="sniffer.search.showFilters();"
-     onmouseout="sniffer.search.hideFilters();">
-  <div class="legend">
+<div id="sniffer-product-search" class="sniffer-search-box" onmouseover="sniffer.search.showFilters(event);"
+     onmouseout="sniffer.search.hideFilters(event);">
+  <div class="legend hidden-pane">
     <span class="suppliers">
       <span class="icon"></span>
       <span class="text"><%= _('Suppliers') %></span>
+      <span class="count"></span>
     </span>
     <span class="consumers">
       <span class="icon"></span>
       <span class="text"><%= _('Consumers') %></span>
+      <span class="count"></span>
     </span>
     <span class="both">
       <span class="icon"></span>
       <span class="text"><%= _('Both') %></span>
+      <span class="count"></span>
     </span>
   </div>
 
@@ -30,7 +33,7 @@
   </div>
 
 
-  <div class="focus-pane">
+  <div class="focus-pane hidden-pane">
     <div id="categories-table-wrap">
       <table id="categories-table">
       </table>
