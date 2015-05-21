@@ -37,6 +37,10 @@ sniffer = {
             }
           });
           input.val('');
+          if (jQuery('#sniffer-product-search .hidden-pane').length > 0) {
+            sniffer.search.showFilters();
+            searchBoxTimeout = setTimeout(function(){ sniffer.search.hideFilters(); }, 1000);
+          };
           return false;
         },
       });
@@ -45,6 +49,7 @@ sniffer = {
     filter: function () {
       // Creates a new boundary based on home position
       var bounds = new google.maps.LatLngBounds(sniffer.search.filters.homePosition);
+      var visibleCount = 0;
       jQuery.each(sniffer.search.map.markerList, function(index, marker) {
         var visible = (
            !sniffer.search.filters.distance ||
@@ -54,18 +59,24 @@ sniffer = {
         // If marker is visible, expands boundary to fit new marker
         if (visible) {
           bounds.extend(marker.getPosition());
+          visibleCount++;
         }
       });
-      // Center map to new boundaries
+      // Set bounds to fit all markers
       mapBounds = bounds;
-      mapCenter();
+      return visibleCount;
     },
 
-    showFilters: function () {
-      jQuery('#sniffer-product-search .focus-pane').show();
+    showFilters: function (event) {
+      if (event) {
+        clearTimeout(searchBoxTimeout);
+      };
+      jQuery('#sniffer-product-search .focus-pane')[0].classList.remove('hidden-pane');
+      jQuery('#sniffer-product-search .legend')[0].classList.remove('hidden-pane');
     },
-    hideFilters: function () {
-      jQuery('#sniffer-product-search .focus-pane').hide();
+    hideFilters: function (event) {
+      jQuery('#sniffer-product-search .focus-pane')[0].classList.add('hidden-pane');
+      jQuery('#sniffer-product-search .legend')[0].classList.add('hidden-pane');
     },
 
     updateDistField: function (input) {
@@ -84,8 +95,29 @@ sniffer = {
     maxDistance: function (distance) {
       distance = parseInt(distance);
       sniffer.search.filters.distance = distance > 0 ? distance : undefined;
-      sniffer.search.filters.circle.setRadius(distance * 1000);
-      sniffer.search.filter();
+      var visibleMarkersCount = sniffer.search.filter();
+      sniffer.search.setCircleRadius(distance);
+      sniffer.search.setSubtitle(distance, visibleMarkersCount);
+    },
+
+    setCircleRadius: function (distance) {
+      if (distance > 0) {
+        sniffer.search.filters.circle.setRadius(distance * 1000);
+        mapBounds = sniffer.search.filters.circle.getBounds();
+      } else {
+        sniffer.search.filters.circle.setRadius(0);
+      };
+      mapCenter();
+    },
+
+    setSubtitle: function (distance, count) {
+      if (distance > 0) {
+        jQuery('#sniffer-title .sniffer-subtitle').show();
+        jQuery('#sniffer-title-distance').html(distance);
+        jQuery('#sniffer-title-results').html(count);
+      } else {
+        jQuery('#sniffer-title .sniffer-subtitle').hide();
+      };
     },
 
     profile: {
@@ -135,6 +167,18 @@ sniffer = {
         sniffer.search.filter();
       },
 
+      updateCount: function () {
+        _.each(['consumers','suppliers','both'], function(item) {
+          // We search for entries of type item (singular) in the category
+          // table.
+          var count = jQuery('#categories-table .'+item.replace(/s$/,'')).length;
+          if (count > 0)
+            jQuery('#sniffer-product-search .legend .'+item+' .count')[0].innerHTML = '('+count+')';
+          else
+            jQuery('#sniffer-product-search .legend .'+item+' .count')[0].innerHTML = '';
+        });
+      },
+
       exists: function (id) {
         var find = jQuery('#categories-table input[name='+id+']');
         return find.length > 0;
@@ -147,6 +191,7 @@ sniffer = {
           row[0].classList.remove('consumer');
           row[0].classList.add('both');
         }
+        sniffer.search.category.updateCount();
       },
 
       template: function (categories) {
@@ -160,6 +205,7 @@ sniffer = {
         var target = jQuery('#categories-table');
         var template = sniffer.search.category.template(categories);
         target.append(template);
+        sniffer.search.category.updateCount();
       },
 
     },
@@ -362,3 +408,4 @@ String.prototype.format = function(obj) {
   return this.replace(/%\{([^}]+)\}/g,function(_,k){ return obj[k] });
 };
 
+var searchBoxTimeout;
