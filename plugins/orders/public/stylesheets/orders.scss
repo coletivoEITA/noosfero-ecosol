@@ -136,8 +136,12 @@
     }
   }
 
+  &.admin .actions {
+    padding: 0px;
+  }
   .actions {
     margin-top: $margin;
+    padding: 8px;
     @extend .container-clean;
 
     a {
