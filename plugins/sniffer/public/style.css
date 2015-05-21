@@ -154,6 +154,10 @@ body.action-sniffer_plugin_myprofile-search #profile-footer {
   margin-right: 5%;
 }
 
+#sniffer-search-wrap #sniffer-product-search .legend .count {
+  margin-left: 2px;
+}
+
 #sniffer-search-wrap #sniffer-product-search .legend .both,
 #sniffer-search-wrap #sniffer-product-search .legend .suppliers,
 #sniffer-search-wrap #sniffer-product-search .legend .consumers {

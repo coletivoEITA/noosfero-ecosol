@@ -167,6 +167,18 @@ sniffer = {
         sniffer.search.filter();
       },
 
+      updateCount: function () {
+        _.each(['consumers','suppliers','both'], function(item) {
+          // We search for entries of type item (singular) in the category
+          // table.
+          var count = jQuery('#categories-table .'+item.replace(/s$/,'')).length;
+          if (count > 0)
+            jQuery('#sniffer-product-search .legend .'+item+' .count')[0].innerHTML = '('+count+')';
+          else
+            jQuery('#sniffer-product-search .legend .'+item+' .count')[0].innerHTML = '';
+        });
+      },
+
       exists: function (id) {
         var find = jQuery('#categories-table input[name='+id+']');
         return find.length > 0;
@@ -179,6 +191,7 @@ sniffer = {
           row[0].classList.remove('consumer');
           row[0].classList.add('both');
         }
+        sniffer.search.category.updateCount();
       },
 
       template: function (categories) {
@@ -192,6 +205,7 @@ sniffer = {
         var target = jQuery('#categories-table');
         var template = sniffer.search.category.template(categories);
         target.append(template);
+        sniffer.search.category.updateCount();
       },
 
     },
