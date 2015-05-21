@@ -4,7 +4,7 @@
   - if draft_order
     - order_id = draft_order.id
     - include_message = t'orders_cycle_plugin.views.product._order_edit.opening_order_code_fo', code: draft_order.code
-  - elsif cycle.may_order?
+  - elsif cycle.may_order? user
     - order_id = 'new'
     - include_message = t'orders_cycle_plugin.views.product._order_edit.opening_new_order_for'
 - else
