@@ -36,8 +36,8 @@ class EnterpriseRegistrationController < ApplicationController
 
     # default to basic_information
     the_action ||= :basic_information
-
-    send(the_action)
+    # fallback if false is returned
+    the_action = :basic_information if not self.send the_action
     render :action => the_action
   end
 
@@ -64,7 +64,7 @@ class EnterpriseRegistrationController < ApplicationController
   # confirmation message saying to the user that the enterprise register
   # request was done.
   def confirmation
-    @create_enterprise.save!
+    @create_enterprise.save
   end
 
   # Records the enterprise and presents a confirmation message
