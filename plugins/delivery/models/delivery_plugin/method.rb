@@ -4,6 +4,11 @@ class DeliveryPlugin::Method < ActiveRecord::Base
 
   Types = ['pickup', 'deliver']
 
+  # see also: Profile::LOCATION_FIELDS
+  AddressFields = %w[
+    address address_line2 address_reference district city state country_name zip_code
+  ].map(&:to_sym)
+
   attr_accessible :profile, :delivery_type, :name, :description,
     :fixed_cost, :free_over_price
 

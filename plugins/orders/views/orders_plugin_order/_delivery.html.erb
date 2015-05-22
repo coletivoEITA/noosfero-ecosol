@@ -10,7 +10,7 @@
     <h3><%= _('Delivery or pickup method') %></h3>
 
     <% if edition %>
-      <%= render 'delivery_plugin/order_select', f: f, methods: order.delivery_methods, edition: edition %>
+      <%= render 'delivery_plugin/order_select', f: f, order: order, methods: order.delivery_methods, edition: edition %>
     <% elsif data_present %>
       <% data.each do |key, value| %>
         <div>

@@ -117,7 +117,7 @@ class ShoppingCartPluginController < OrdersPluginController
     return redirect_to request.referer || environment.top_url if self.cart.nil?
     @cart = cart
     @profile = cart_profile
-    @order = profile.sales.build consumer: @consumer
+    @order = profile.sales.build consumer: user
     @order.supplier_delivery = profile.delivery_methods.find session[:cart][:last_delivery_option_id] rescue nil
     @settings = cart_profile.shopping_cart_settings
   end

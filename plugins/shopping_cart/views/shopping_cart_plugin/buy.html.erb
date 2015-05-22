@@ -30,7 +30,7 @@
       <% if profile.delivery_methods.size > 0 %>
         <fieldset>
           <legend><%=_('Delivery or pickup method')%></legend>
-          <%= render 'delivery_plugin/order_select', f: f %>
+          <%= render 'delivery_plugin/order_select', f: f, order: @order %>
         </fieldset>
       <% end %>
     </div>

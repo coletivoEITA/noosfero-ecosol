@@ -125,7 +125,14 @@ class OrdersPlugin::Order < ActiveRecord::Base
     {name: consumer.name, email: consumer.contact_email, contact_phone: consumer.contact_phone} if consumer
   end
   sync_serialized_field :supplier_delivery
-  sync_serialized_field :consumer_delivery
+  sync_serialized_field :consumer_delivery do |consumer_delivery_data|
+    if self.consumer
+      h = {}; Profile::LOCATION_FIELDS.each do |field|
+        h[field.to_sym] = self.consumer.send(field)
+      end
+      h
+    end
+  end
   serialize :payment_data, Hash
 
   # Aliases needed for terms use
@@ -188,10 +195,12 @@ class OrdersPlugin::Order < ActiveRecord::Base
     products_by_supplier
   end
 
+  # define on subclasses
   def orders_name
     raise 'undefined'
   end
 
+  # override on subclasses
   def delivery_methods
     self.profile.delivery_methods
   end

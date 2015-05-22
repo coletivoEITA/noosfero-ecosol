@@ -11,7 +11,7 @@ module SerializedSyncedData
 
   module ClassMethods
 
-    def sync_serialized_field field
+    def sync_serialized_field field, &block
       cattr_accessor :serialized_synced_fields
       self.serialized_synced_fields ||= []
       self.serialized_synced_fields << field
@@ -54,7 +54,7 @@ module SerializedSyncedData
       define_method "#{field}_synced_data" do
         source = self.send field
         if block_given?
-          data = SerializedSyncedData.prepare_data yield(source)
+          data = SerializedSyncedData.prepare_data instance_exec(source, &block)
         elsif source.is_a? ActiveRecord::Base
           data = SerializedSyncedData.prepare_data source.attributes
         elsif source.is_a? Array
