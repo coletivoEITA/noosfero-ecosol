@@ -101,16 +101,16 @@ class Enterprise < Organization
   end
 
   def enable(owner = nil)
-    if owner.nil?
-      self.visible = true
-      return self.save
-    end
-
-    return if enabled
+    return if self.enabled
     # must be set first for the following to work
     self.enabled = true
+
     self.affiliate owner, Profile::Roles.all_roles(self.environment.id) if owner
-    self.apply_template template if self.environment.replace_enterprise_template_when_enable
+    if self.environment.replace_enterprise_template_when_enable
+      self.articles.destroy_all
+      self.apply_template template
+      self.home_page = self.articles(true).where(type: 'EnterpriseHomepage').first
+    end
     self.activation_task.update_attribute :status, Task::Status::FINISHED rescue nil
     self.save(:validate => false)
   end
