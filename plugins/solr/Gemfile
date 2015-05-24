@@ -2,6 +2,6 @@
 if path = ENV['ACTS_AS_SOLR_PATH']
   gem 'acts_as_solr_reloaded', path: path
 else
-  gem 'acts_as_solr_reloaded', github: 'coletivoEITA/acts_as_solr_reloaded', ref: 'b13b11d'
+  gem 'acts_as_solr_reloaded', github: 'coletivoEITA/acts_as_solr_reloaded', ref: '10219f4'
 end
 

@@ -50,9 +50,10 @@ class ContentViewerController < ApplicationController
 
     begin
       process_page_posts(params)
-    rescue
-      render_not_found
-      return
+    # FIXME: be more specific (pagination, etc)
+    #rescue
+      #render_not_found
+      #return
     end
 
     if @page.folder? && @page.gallery?
