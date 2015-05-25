@@ -62,13 +62,12 @@
   &.with-unit {
     @extend .container-clean;
 
-    input {
+    .input-group {
       float: left;
       width: $module02 - 2*$intercolumn;
-    }
-    .field-unit {
-      float: left;
-      width: $intercolumn;
+      &, input, select {
+        width: 100%;
+      }
     }
   }
 }
