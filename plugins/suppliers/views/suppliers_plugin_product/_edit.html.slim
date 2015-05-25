@@ -10,9 +10,10 @@
         .block.margin-price
           .field
             = f.label :margin_percentage, t('views.product._edit.margin_price')
-          div data-default-toggle=""
-            = f.check_box :default_margin_percentage
-            = f.label :default_margin_percentage, t('views.product._edit.default_margin')
+          div.checkbox data-default-toggle=""
+            label name='default_margin_percentage'
+              = f.check_box :default_margin_percentage
+              = t'views.product._edit.default_margin'
           div data-non-defaults=""
             span.field-secondary.with-unit
               = input_group_addon('%'){ f.text_field :margin_percentage, class: 'product-margin-percentage', value: product.margin_percentage_localized, onkeyup: 'suppliers.our_product.pmsync(this, true);' }
@@ -25,9 +26,10 @@
         .block.stock
           .field
             = f.label :stock, t('views.product._edit.stock')
-          div data-default-toggle=""
-            = f.check_box :default_stored
-            = f.label :default_stored, t('views.product._edit.default_stock')
+          div.checkbox data-default-toggle=""
+            label name='default_stored'
+              = f.check_box :default_stored
+              = t'views.product._edit.default_stock'
           div data-non-defaults=""
             span.field-secondary
               = f.label :stored, t('views.product._edit.current_stock'), class: 'field-bellow'
@@ -36,17 +38,19 @@
         .block.available
           .field
             = f.label :available, t('views.product._edit.distribution_state')
-          div
-            = f.check_box :available
-            = f.label :available, t('views.product._edit.available')
+          div.checkbox
+            label name='available'
+              = f.check_box :available
+              = t'views.product._edit.available'
 
       .row.second
         .block.unit
           .field
             = f.label :unit_id, t('views.product._edit.selling_unit')
-          div data-default-toggle=""
-            = f.check_box :default_unit
-            = f.label :default_unit, t('views.product._edit.same_from_purchase')
+          div.checkbox data-default-toggle=""
+            label name='default_unit'
+              = f.check_box :default_unit
+              = t'views.product._edit.same_from_purchase'
           div data-non-defaults=""
             span.field-secondary
               = f.label :unit_id, t('views.product._edit.unit'), class: 'field-bellow'
