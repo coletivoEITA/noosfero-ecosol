@@ -74,6 +74,7 @@ class OpenGraphPlugin::Publisher
       end
     rescue => e
       print_debug "open_graph: can't publish story: #{e.message}" if debug? actor
+      raise
     end
   end
 
