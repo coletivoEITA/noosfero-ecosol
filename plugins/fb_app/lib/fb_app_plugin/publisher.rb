@@ -1,5 +1,9 @@
 require 'net/http'
 
+# Publishing example on console
+#   pub=FbAppPlugin::Publisher.default; u=Profile['brauliobo']; a=Article.find 307591
+#   pub.publish_story a, u, :announce_news_from_a_sse_initiative
+#
 class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
 
   Actions = FbAppPlugin.open_graph_config[:actions]
