@@ -24,7 +24,11 @@ class OpenGraphPlugin::Publisher
 
   def publish_stories object_data, actor, stories
     stories.each do |story|
-      self.publish_story object_data, actor, story
+      begin
+        self.publish_story object_data, actor, story
+      rescue => e
+        ExceptionNotifier.notify_exception e
+      end
     end
   end
 
