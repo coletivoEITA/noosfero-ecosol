@@ -169,7 +169,7 @@ module OrdersPlugin::Report
         sum = 0
         order.items.each do |item|
 
-          formula_value = item.price * item.quantity_consumer_ordered rescue 0
+          formula_value = item.price * item.status_quantity rescue 0
           formula_value_s = CurrencyHelper.localized_number(formula_value)
           unit = item.product.unit.singular rescue ''
 
@@ -182,12 +182,12 @@ module OrdersPlugin::Report
           supplier_name = item.suppliers.first.abbreviation_or_name rescue item.order.profile.name
 
           sheet.add_row [id, supplier_name,
-                         item.name, item.quantity_consumer_ordered,
+                         item.name, item.status_quantity,
                          unit, item.product.price,
                          "=F#{sbe}*D#{sbe}"],
           style: [default,default,default,default,default,currency,currency],
           formula_values: [nil,nil,nil,nil,nil,nil,formula_value_s]
-          selled_sum += item.quantity_consumer_ordered * item.price rescue 0
+          selled_sum += item.status_quantity * item.price rescue 0
 
           sbe += 1
           sum += formula_value
