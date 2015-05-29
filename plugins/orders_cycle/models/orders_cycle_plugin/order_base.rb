@@ -9,6 +9,8 @@ module OrdersCyclePlugin::OrderBase
     def all_cycles
       self.cycle_sales.includes(:cycle).map(&:cycle) + self.cycle_purchases.includes(:cycle).map(&:cycle)
     end
+
+    attr_accessible :cycle
     def cycle
       self.cycles.first
     end
