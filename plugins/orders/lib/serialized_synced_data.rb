@@ -12,9 +12,10 @@ module SerializedSyncedData
   module ClassMethods
 
     def sync_serialized_field field, &block
-      cattr_accessor :serialized_synced_fields
+      class_attribute :serialized_synced_fields unless self.respond_to? :serialized_synced_fields
       self.serialized_synced_fields ||= []
       self.serialized_synced_fields << field
+
       field_data = "#{field}_data".to_sym
       field_data_without_sync = "#{field_data}_without_sync"
 
