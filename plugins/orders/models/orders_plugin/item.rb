@@ -138,11 +138,25 @@ class OrdersPlugin::Item < ActiveRecord::Base
       "quantity_#{StatusDataMap[status]}"
     end
   end
+  def status_price_field
+    @status_price_field ||= begin
+      status = self.order.status || 'ordered'
+      "price_#{StatusDataMap[status]}"
+    end
+  end
+
   def status_quantity
     self.send self.status_quantity_field
   end
   def status_quantity= value
     self.send "#{self.status_quantity_field}=", value
+  end
+
+  def status_price
+    self.send self.status_price_field
+  end
+  def status_price= value
+    self.send "#{self.status_price_field}=", value
   end
 
   StatusDataMap.each do |status, data|

@@ -32,7 +32,7 @@ h3
       signup: link_to(t('views.order._consumer_orders.sign_up'), controller: 'account', action: 'signup')
   - else
     - if @cycle.orders?
-      - if not @consumer.in? @cycle.profile.members and @cycle.profile.community?
+      - if not @admin and not @consumer.in? @cycle.profile.members and @cycle.profile.community?
         = t'views.order._consumer_orders.associate_to_order'
         = render 'blocks/profile_info_actions/join_leave_community'
       - elsif @consumer_orders.count == 0
