@@ -1,0 +1,9 @@
+- style = if profile.consumers_coop_header_image and profile.consumers_coop_settings.header_type != 'pure_color' then "style=\"background-image: url('" + profile.consumers_coop_header_image.public_filename + "');\" " else "" end
+- color = profile.consumers_coop_settings.header_bg_color ? "color-"+profile.consumers_coop_settings.header_bg_color.to_s : " "
+
+div class=("menu-logo #{color + '" ' + style}")
+  - fg_color = if profile.consumers_coop_settings.header_fg_color.nil? then "" else "color: #{profile.consumers_coop_settings.header_fg_color}" end
+  #menu-title style=fg_color = profile.name unless profile.consumers_coop_settings.header_type == 'only_image'
+
+.menu-button-container
+  = display_header_buttons
