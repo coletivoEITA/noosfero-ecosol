@@ -1,8 +1,8 @@
 module CodeNumbering
   module ClassMethods
     def code_numbering field, options = {}
-      cattr_accessor :code_numbering_field
-      cattr_accessor :code_numbering_options
+      class_attribute :code_numbering_field
+      class_attribute :code_numbering_options
 
       self.code_numbering_field = field
       self.code_numbering_options = options
