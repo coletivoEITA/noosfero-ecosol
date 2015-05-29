@@ -37,7 +37,7 @@ module OrdersCyclePlugin::OrderBase
     def code
       I18n.t('orders_cycle_plugin.lib.ext.orders_plugin.order.cyclecode_ordercode') % {
         cyclecode: self.cycle.code, ordercode: self['code']
-      }
+      } if self.cycle
     end
 
     def delivery_methods
