@@ -143,7 +143,8 @@ class OrdersPlugin::Item < ActiveRecord::Base
   def status_price_field
     @status_price_field ||= begin
       status = self.order.status || 'ordered'
-      "price_#{StatusDataMap[status]}"
+      status = StatusDataMap[status] || 'consumer_ordered'
+      "price_#{status}"
     end
   end
 
