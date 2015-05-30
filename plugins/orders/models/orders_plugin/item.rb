@@ -123,7 +123,8 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
   def next_status_quantity_field actor_name
     status = self.order.next_status(actor_name) || 'ordered'
-    "quantity_#{StatusDataMap[status]}"
+    status = StatusDataMap[status] || 'consumer_ordered'
+    "quantity_#{status}"
   end
   def next_status_quantity actor_name
     self.send self.next_status_quantity_field(actor_name)
@@ -135,7 +136,8 @@ class OrdersPlugin::Item < ActiveRecord::Base
   def status_quantity_field
     @status_quantity_field ||= begin
       status = self.order.status || 'ordered'
-      "quantity_#{StatusDataMap[status]}"
+      status = StatusDataMap[status] || 'consumer_ordered'
+      "quantity_#{status}"
     end
   end
   def status_price_field
