@@ -42,7 +42,7 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   has_many :products, through: :cycle_products, order: 'products.name ASC',
     include: [ :from_2x_products, :from_products, {profile: :domains}, ]
 
-  has_many :consumers, through: :sales, source: :consumer, order: 'name ASC'
+  has_many :consumers, through: :sales, source: :consumer, order: 'name ASC', uniq: true
   has_many :suppliers, through: :products, order: 'suppliers_plugin_suppliers.name ASC', uniq: true
   has_many :orders_suppliers, through: :sales, source: :profile, order: 'name ASC'
 
