@@ -9,6 +9,7 @@ rvm:
 before_install:
 # dependencies
   - gem update --system 1.4.1
+  - sudo apt-get update
   - sudo apt-get -y install po4a iso-codes tango-icon-theme openjdk-6-jre curl wget
   - sudo apt-get -y install libmagickwand-dev libpq-dev libreadline-dev libsqlite3-dev libxslt1-dev
 # postgres setup
@@ -24,7 +25,7 @@ before_script:
   #- bundle exec script/noosfero-plugins enableall
   #- bundle exec rake db:migrate --trace
 
-env: 
+env:
   - TASK=test:units
   - TASK=test:functionals
   - TASK=test:integration
