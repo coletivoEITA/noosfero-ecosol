@@ -256,7 +256,9 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
     # Set access
     statuses_data.each.with_index do |(status, status_data), i|
-      status_data[:flags][:editable] = true if status_data[:access] == actor_name and (status_data[:flags][:admin] or self.order.open?)
+      status_data[:flags][:editable] = StatusAccessMap[status] == actor_name
+      # code to only allow last status
+      #status_data[:flags][:editable] = true if status_data[:access] == actor_name and (status_data[:flags][:admin] or self.order.open?)
     end
 
     data
