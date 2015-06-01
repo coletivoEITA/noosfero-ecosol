@@ -13,6 +13,22 @@
         name: "Fornecedores"
         description: "Registro de fornecedores e produtos distribuídos"
         distribution_tab: "Distribuição"
+      import:
+        keys:
+          # ordered by most specific
+          product_url: 'url.+produto'
+          supplier_url: 'url.+(fornecedor|produtor)'
+          supplier_price: 'pre[[:alpha:]]o.+(fornecedor|produtor)'
+          supplier_name: '(fornecedor|produtor)'
+          product_name: 'produto'
+          qualifiers: 'qualificador'
+          product_category: 'categoria'
+          price: 'pre[[:alpha:]]o'
+          unit: 'unidade'
+          composition: 'composi[[:alpha:]]{2,2}o'
+          external_id: 'external'
+          stock: 'estoque'
+
     terms: &suppliers_terms
       profile: &suppliers_term_profile
         singular: "organização"
@@ -878,6 +894,7 @@
         products: Produtos
         administration: Administração
         volunteering: Voluntariado
+
     terms:
       <<: *suppliers_terms
       profile: &consumers_coop_term_profile

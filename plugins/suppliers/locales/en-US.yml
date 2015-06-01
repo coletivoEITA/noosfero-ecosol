@@ -13,6 +13,22 @@
         name: "Suppliers"
         description: "Suppliers and its distributed products registry"
         distribution_tab: "Distribuição"
+      import:
+        keys:
+          # ordered by most specific
+          product_url: 'product.+url'
+          supplier_url: '(supplier|producer).+url'
+          supplier_price: '(supplier|producer).+price'
+          supplier: '(supplier|producer)'
+          product: 'product'
+          qualifiers: 'qualifier'
+          product_category: 'category'
+          price: 'price'
+          unit: 'unit'
+          composition: 'composition'
+          external_id: 'external'
+          stock: 'stock'
+
     terms: &suppliers_terms
       profile: &suppliers_term_profile
         singular: "organization"
