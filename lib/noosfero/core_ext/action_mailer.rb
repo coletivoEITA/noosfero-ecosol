@@ -7,6 +7,7 @@ module Noosfero
         return super unless options.is_a? Hash
         if (environment rescue nil)
           options[:host] ||= environment.default_hostname
+          options[:protocol] ||= environment.default_protocol
         end
         super options
       end
