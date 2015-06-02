@@ -29,6 +29,9 @@ class Product
   attr_accessible :external_id
   settings_items :external_id, type: String, default: nil
 
+  # should be on core, used by SuppliersPlugin::Import
+  attr_accessible :price_details
+
 end
 
 class Product

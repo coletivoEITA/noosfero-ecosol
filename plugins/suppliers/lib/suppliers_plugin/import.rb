@@ -73,9 +73,14 @@ class SuppliersPlugin::Import
       # FIXME
       attrs.delete :stock
 
-      if composition = attrs[:composition]
+      if composition = attrs.delete(:composition)
         composition = JSON.parse composition rescue nil
-        attrs[:composition] = composition
+        distributed[:price_details] = composition.map do |name, price|
+          production_cost = consumer.environment.production_costs.where(name: name).first
+          production_cost ||= consumer.production_costs.where(name: name).first
+          production_cost ||= consumer.production_costs.create! name: name, owner: profile
+          PriceDetail.new production_cost: production_cost, price: price
+        end
       end
 
       # treat URLs
@@ -101,7 +106,7 @@ class SuppliersPlugin::Import
 
     data.each do |supplier, products|
       if supplier.is_a? Profile
-        supplier = consumer.add_supplier supplier
+        supplier = consumer.add_supplier supplier, distribute_products_on_create: false
       else
         supplier_name = supplier
         supplier = consumer.suppliers.where(name: supplier_name).first
@@ -110,7 +115,6 @@ class SuppliersPlugin::Import
 
       products.each do |attrs|
         distributed_attrs = attrs.delete :distributed
-        composition = attrs.delete :composition
 
         product = attrs.delete :record
         product ||= supplier.profile.products.where(name: attrs[:name]).first
@@ -123,16 +127,6 @@ class SuppliersPlugin::Import
         end
 
         distributed_product = product.distribute_to_consumer consumer, distributed_attrs
-        profile = distributed_product.profile
-        if composition
-          distributed_product.price_details.destroy_all
-          composition.each do |name, price|
-            production_cost = profile.environment.production_costs.where(name: name).first
-            production_cost ||= profile.production_costs.where(name: name).first
-            production_cost ||= profile.production_costs.create! name: name, owner: profile
-            distributed_product.price_details.create! production_cost: production_cost, price: price
-          end
-        end
       end
     end
   end

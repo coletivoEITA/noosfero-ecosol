@@ -3,7 +3,7 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
   attr_accessible :from_products
 
   # missed from lib/ext/product.rb because of STI
-  attr_accessible :external_id
+  attr_accessible :external_id, :price_details
 
   # overhide original
   scope :available, conditions: ['products.available = ? AND from_products_products.available = ? AND suppliers_plugin_suppliers.active = ?', true, true, true]

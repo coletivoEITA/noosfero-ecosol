@@ -53,9 +53,9 @@ class Profile
     consumer.destroy if supplier
   end
 
-  def add_supplier supplier_profile
+  def add_supplier supplier_profile, attrs={}
     supplier = self.suppliers.where(profile_id: supplier_profile.id).first
-    supplier ||= self.suppliers.create! profile: supplier_profile, consumer: self
+    supplier ||= self.suppliers.create! attrs.merge(profile: supplier_profile, consumer: self)
   end
   def remove_supplier supplier_profile
     supplier_profile.remove_consumer self
