@@ -102,8 +102,6 @@ class SuppliersPlugin::Import
       data[supplier] ||= []
       data[supplier] << attrs
     end
-    pp data.keys
-    raise 'here'
 
     data.each do |supplier, products|
       if supplier.is_a? Profile
