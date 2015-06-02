@@ -77,7 +77,7 @@ class SolrPlugin::Base < Noosfero::Plugin
     case asset
     when :catalog
       klass = Product
-      solr_options[:query_fields] = %w[solr_plugin_ac_name^100 solr_plugin_ac_category^1000]
+      solr_options[:query_fields] = %w[solr_plugin_ac_name^100 solr_plugin_ac_category^90 solr_plugin_ac_supplier^80]
       solr_options[:highlight] = {fields: 'name'}
       solr_options[:filter_queries] = scopes_to_solr_options scope, klass, options
     end
