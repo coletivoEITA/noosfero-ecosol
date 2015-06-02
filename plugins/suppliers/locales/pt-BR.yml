@@ -16,8 +16,8 @@
       import:
         keys:
           # ordered by most specific
-          product_url: 'url.+produto'
           supplier_url: 'url.+(fornecedor|produtor)'
+          product_url: 'url.+produto'
           supplier_price: 'pre[[:alpha:]]o.+(fornecedor|produtor)'
           supplier_name: '(fornecedor|produtor)'
           product_name: 'produto'
