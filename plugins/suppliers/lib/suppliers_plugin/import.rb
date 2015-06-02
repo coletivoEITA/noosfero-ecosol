@@ -60,12 +60,12 @@ class SuppliersPlugin::Import
 
       attrs[:name] = attrs.delete :product_name
       if product_category = attrs[:product_category]
-        attrs[:product_category] = ProductCategory.find_by_solr(product_category).first
+        attrs[:product_category] = ProductCategory.find_by_solr(product_category, query_fields: ['name']).first
       end
       attrs[:product_category] ||= default_product_category
       if qualifiers = attrs[:qualifiers]
          qualifiers = JSON.parse qualifiers
-         qualifiers.map!{ |q| Qualifier.find_by_solr(q).first }.compact!
+         qualifiers.map!{ |q| Qualifier.find_by_solr(q, query_fields: ['name']).first }.compact!
          attrs[:qualifiers] = qualifiers
       end
       attrs[:unit] = consumer.environment.units.where(singular: attrs[:unit]).first || SuppliersPlugin::BaseProduct.default_unit
