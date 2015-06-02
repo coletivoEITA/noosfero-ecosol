@@ -8,7 +8,6 @@ class SuppliersPlugin::Import
     columns = []
     header.each do |name|
       c = nil; keys.each do |key, regex|
-        print regex
         if /#{regex}/i =~ name
           c = key
           break
@@ -103,6 +102,8 @@ class SuppliersPlugin::Import
       data[supplier] ||= []
       data[supplier] << attrs
     end
+    pp data.keys
+    raise 'here'
 
     data.each do |supplier, products|
       if supplier.is_a? Profile
@@ -123,6 +124,8 @@ class SuppliersPlugin::Import
         if product.persisted? and supplier.dummy?
           product.update_attributes! attrs
         elsif product.new_record?
+          # create products as not available
+          attrs[:available] = false if not supplier.dummy?
           product.update_attributes! attrs
         end
 
