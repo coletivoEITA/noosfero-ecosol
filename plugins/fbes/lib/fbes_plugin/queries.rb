@@ -11,7 +11,7 @@ class FbesPlugin::Queries
     orders_by_month: <<EOQ,
 select to_char(created_at,'YYYY-MM') mes, count(*), count(*) OVER() AS full_count
   from orders_plugin_orders
-  where orders_plugin_orders.ordered_at IS NOT NULL AND
+  where orders_plugin_orders.ordered_at IS NOT NULL
   group by mes
   order by mes desc
 EOQ
