@@ -24,6 +24,7 @@ module DefaultItem
           instance_eval &delegate_to
         end
       end
+      alias_method "original_#{field}", "delegated_#{field}"
 
       define_method default_trigger_attr do
         return if options[:if]
@@ -39,12 +40,12 @@ module DefaultItem
           self.send condition
         else
           default = self.send self.send(default_trigger_attr)
-          # check if `default` is nil, can't use || as false is also covered
+          # check if `default` is still nil, can't use || as false is also covered
           default = options[:default] if default.nil?
           default
         end
 
-        own = self.send "#{field}_without_default"
+        own = self.send "own_#{field}"
         if apply_default or own.blank?
           self.send "delegated_#{field}"
         else
@@ -52,19 +53,14 @@ module DefaultItem
         end
       end
       define_method "#{field}_with_default=" do |*args|
-        if method = self.send(default_trigger_attr)
-          self.send "#{method}=", false
-        end
-        self.send "#{field}_without_default=", *args
+        # the setter automatically disable the default flag
+        self.send "#{self.send default_trigger_attr}=", false rescue nil
+        self.send "own_#{field}=", *args
       end
       alias_method_chain field, :default
       alias_method_chain "#{field}=", :default
-
-      # aliases for better names
-      alias_method "original_#{field}", "delegated_#{field}"
       alias_method "own_#{field}", "#{field}_without_default"
-      alias_method "own_#{field}=", "#{field}="
-
+      alias_method "own_#{field}=", "#{field}_without_default="
 
       include DefaultItem::InstanceMethods
     end
