@@ -64,9 +64,9 @@ class SuppliersPlugin::Import
       end
       attrs[:product_category] ||= default_product_category
       if qualifiers = attrs[:qualifiers]
-         qualifiers = JSON.parse qualifiers
-         qualifiers.map!{ |q| Qualifier.find_by_solr(q, query_fields: ['name']).first }.compact!
-         attrs[:qualifiers] = qualifiers
+        qualifiers = JSON.parse qualifiers
+        qualifiers.map!{ |q| Qualifier.find_by_solr(q, query_fields: ['name']).first }.compact!
+        attrs[:qualifiers] = qualifiers
       end
       attrs[:unit] = consumer.environment.units.where(singular: attrs[:unit]).first || SuppliersPlugin::BaseProduct.default_unit
       # FIXME

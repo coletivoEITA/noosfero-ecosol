@@ -7,7 +7,7 @@ module ActsAsHavingSettings
 
         prefix = options[:prefix] || 'default'
 
-        settings_items "#{prefix}_#{field}", :default => options[:default], :type => options[:type]
+        settings_items "#{prefix}_#{field}", default: options[:default], type: options[:type]
         default_item field, options
 
         include ActsAsHavingSettings::DefaultItem::InstanceMethods

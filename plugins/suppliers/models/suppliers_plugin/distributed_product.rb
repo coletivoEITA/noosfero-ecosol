@@ -19,11 +19,26 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
   validates_presence_of :supplier
 
-  def price
-    supplier_price = self.supplier_product.price if self.supplier_product
-    return self.price_with_default if supplier_price.blank?
+  # TODO: maybe move to lib/ext/product
+  def supplier_price
+    self.supplier_product.price if self.supplier_product
+  end
 
-    self.price_with_margins supplier_price
+  # Automatic set/get price chaging/applying margins
+  # FIXME: this won't work if we have other params, like fixed margin, delivery cost, etc
+  def price
+    base_price = self.supplier_price
+    return super if base_price.blank?
+
+    self.price_with_margins base_price
+  end
+  def price= value
+    return super if value.blank?
+    base_price = self.supplier_price
+    return super if base_price.blank?
+
+    self.margin_percentage = 100 * (value - base_price) / base_price
+    super
   end
 
   protected
