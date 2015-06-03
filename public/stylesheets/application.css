@@ -2934,7 +2934,7 @@ div#activation_enterprise label, div#activation_enterprise input, div#activation
   display: block;
   text-align: left;
   line-height: 20px;
-  margin: 0px;
+  margin: 0px -15px;
   padding: 0px;
   list-style: none;
 }
