@@ -4,8 +4,6 @@ module DefaultItem
 
     def default_item field, options = {}
 
-      default_trigger_attr = "#{field}_default_trigger_attr"
-
       # Rails doesn't define getters for attributes
       define_method field do
         self[field]
@@ -25,12 +23,6 @@ module DefaultItem
         end
       end
 
-      define_method default_trigger_attr do
-        return if options[:if]
-        prefix = options[:prefix] || 'default'
-        "#{prefix}_#{field}"
-      end
-
       define_method "#{field}_with_default" do
         apply_default = case condition = options[:if]
         when Proc
@@ -38,27 +30,21 @@ module DefaultItem
         when Symbol
           self.send condition
         else
-          default = self.send self.send(default_trigger_attr)
-          # check if `default` is nil, can't use || as false is also covered
-          default = options[:default] if default.nil?
-          default
+          prefix = options[:prefix] || 'default'
+          default_field = self.send "#{prefix}_#{field}"
+          # check if default_field is nil, can't use || as false will be covered
+          default_field = options[:default] if default_field.nil?
+          default_field
         end
 
-        own = self.send "#{field}_without_default"
+        own = if self.class.column_names.include?(field) then self[field] else self.send "own_#{field}" end
         if apply_default or own.blank?
           self.send "delegated_#{field}"
         else
           own
         end
       end
-      define_method "#{field}_with_default=" do |*args|
-        if method = self.send(default_trigger_attr)
-          self.send "#{method}=", false
-        end
-        self.send "#{field}_without_default=", *args
-      end
       alias_method_chain field, :default
-      alias_method_chain "#{field}=", :default
 
       # aliases for better names
       alias_method "original_#{field}", "delegated_#{field}"
