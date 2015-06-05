@@ -45,7 +45,9 @@ module DefaultItem
           default
         end
 
-        own = self.send "own_#{field}"
+        # we prefer value from dabatase here, and the getter may give a default value
+        # e.g. Product#name default to Product#product_category.name
+        own = if field.in? self.class.column_names then self[field] else self.send "own_#{field}" end
         if apply_default or own.blank?
           self.send "delegated_#{field}"
         else
