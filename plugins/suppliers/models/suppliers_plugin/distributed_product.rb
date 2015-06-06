@@ -34,6 +34,7 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
   end
   def price= value
     return super if value.blank?
+    value = value.to_f
     base_price = self.supplier_price
     return super if base_price.blank?
 

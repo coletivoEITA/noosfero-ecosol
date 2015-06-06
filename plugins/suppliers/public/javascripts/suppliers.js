@@ -127,7 +127,7 @@ suppliers = {
       var value = base_price + (margin / 100) * base_price;
       if (isNaN(value))
         value = unlocalize_currency(base_price_input.val());
-      jQuery(price_input).val(localize_currency(value));
+      jQuery(price_input).val(value);
     },
   },
 
@@ -139,7 +139,7 @@ suppliers = {
       var margin = unlocalize_currency(jQuery(margin_input).val());
 
       var value = ((price - base_price) / base_price ) * 100;
-      value = !isFinite(value) ? '' : localize_currency(value);
+      value = !isFinite(value) ? 0.0 : value;
       jQuery(margin_input).val(value);
     },
   },
