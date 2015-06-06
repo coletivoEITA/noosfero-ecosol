@@ -27,6 +27,10 @@
           <%= modal_link_to t('orders_plugin.views.admin._edit.message_to_actor') % {actor: t("terms.#{other_actor_name}.singular")},
             {controller: :orders_plugin_message, action: :new_to_supplier, order_id: order.id}, class: 'action-button' %>
         <% end %>
+        &emsp;
+        <% if order.status == 'accepted' %>
+          <%= link_to_function t('views.order._show.cancel_order'), "orders.order.reload(this, '#{url_for controller: :orders_plugin_order, action: :cancel, id: @order.id}')" %>
+        <% end %>
 
         <% if next_status = order.next_status(actor_name) %>
           <%= f.hidden_field :status, value: next_status %>
