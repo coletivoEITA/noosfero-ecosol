@@ -4,7 +4,7 @@
     <span class="value"><%= CurrencyHelper.localized_number status_data[:quantity] %></span>
 
     <% if not @simple and status_data[:flags][:editable] %>
-      <%= number_field_tag "item[quantity_#{status_data[:field]}]", status_data[:quantity], onkeydown: 'orders.item.quantity_keydown(this, event)' %>
+      <%= number_field_tag "item[quantity_#{status_data[:field]}]", status_data[:quantity], step: 'any', onkeydown: 'orders.item.quantity_keydown(this, event)' %>
     <% end %>
 
     <span class="unit"><%= item.product.unit.singular rescue '' %></span>

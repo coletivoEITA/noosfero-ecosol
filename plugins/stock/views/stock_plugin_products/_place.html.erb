@@ -8,7 +8,7 @@
   <%= form_for allocation, as: :allocation, url: {controller: :stock_plugin_products, action: :update, id: product.id},
     html: {onsubmit: 'return stock.product.allocation.submit(this)'} do |f| %>
     <%= f.hidden_field :place_id %>
-    <%= f.number_field :quantity, placeholder: t('views.products._place.none'), class: 'highlight-on-focus',
+    <%= f.number_field :quantity, step: 'any', placeholder: t('views.products._place.none'), class: 'highlight-on-focus',
       onchange: 'this.form.onsubmit()' %>
   <% end %>
 </div>
