@@ -4,8 +4,6 @@ module DefaultItem
 
     def default_item field, options = {}
 
-      default_trigger_attr = "#{field}_default_trigger_attr"
-
       # Rails doesn't define getters for attributes
       define_method field do
         self[field]
@@ -26,20 +24,16 @@ module DefaultItem
       end
       alias_method "original_#{field}", "delegated_#{field}"
 
-      define_method default_trigger_attr do
-        return if options[:if]
-        prefix = options[:prefix] || 'default'
-        "#{prefix}_#{field}"
-      end
+      prefix = options[:prefix] || 'default'
+      default_field = options[:default_field] || "#{prefix}_#{field}" unless options[:if]
 
       define_method "#{field}_with_default" do
         apply_default = case condition = options[:if]
-        when Proc
-          instance_eval &condition
-        when Symbol
-          self.send condition
+        when Proc then instance_exec &condition
+        when Symbol then self.send condition
         else
-          default = self.send self.send(default_trigger_attr)
+          default = self.send default_field if default_field
+          # skip default_if because of infinite loop
           # check if `default` is still nil, can't use || as false is also covered
           default = options[:default] if default.nil?
           default
@@ -55,8 +49,17 @@ module DefaultItem
         end
       end
       define_method "#{field}_with_default=" do |*args|
-        # the setter automatically disable the default flag
-        self.send "#{self.send default_trigger_attr}=", false rescue nil
+        if default_field
+          # apply default_if in case of a special condition where default is automatically applied
+          default = case default_if = options[:default_if]
+          when Proc then instance_exec &default_if
+          when Symbol then self.send default_if
+          # otherwise, the setter automatically disable the default flag
+          else false
+          end
+          self.send "#{default_field}=", default rescue nil
+        end
+
         self.send "own_#{field}=", *args
       end
       alias_method_chain field, :default

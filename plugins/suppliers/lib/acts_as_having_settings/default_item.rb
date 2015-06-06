@@ -6,8 +6,10 @@ module ActsAsHavingSettings
         extend ::DefaultItem::ClassMethods
 
         prefix = options[:prefix] || 'default'
+        default_field = "#{prefix}_#{field}"
+        options[:default_field] = default_field
 
-        settings_items "#{prefix}_#{field}", default: options[:default], type: options[:type]
+        settings_items default_field, default: options[:default], type: options[:type]
         default_item field, options
 
         include ActsAsHavingSettings::DefaultItem::InstanceMethods
