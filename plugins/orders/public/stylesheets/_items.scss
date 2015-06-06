@@ -211,16 +211,16 @@
 
               &.editable {
                 .quantity {
+                  text-overflow: initial;
+                  overflow: initial;
+                  white-space: initial;
+
                   .value {
                     display: none;
                   }
                 }
               }
               .quantity {
-                text-overflow: initial;
-                overflow: initial;
-                white-space: initial;
-
                 .unit {
                   display: initial;
                 }

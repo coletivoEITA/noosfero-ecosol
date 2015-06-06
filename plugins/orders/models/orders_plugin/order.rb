@@ -57,6 +57,9 @@ class OrdersPlugin::Order < ActiveRecord::Base
   belongs_to :supplier_delivery, class_name: 'DeliveryPlugin::Method'
   belongs_to :consumer_delivery, class_name: 'DeliveryPlugin::Method'
 
+  scope :alphabetical, -> { joins(:consumer).order 'profiles.name ASC' }
+  scope :latest, -> { order 'created_at ASC' }
+
   scope :of_session, -> session_id { where session_id: session_id }
   scope :of_user, -> session_id, consumer_id=nil do
     orders = OrdersPlugin::Order.arel_table
