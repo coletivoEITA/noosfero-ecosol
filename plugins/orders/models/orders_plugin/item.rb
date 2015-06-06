@@ -208,7 +208,8 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
       quantity = self.send "quantity_#{data_field}"
       if quantity.present?
-        status_data[:quantity] = self.send "quantity_#{data_field}_localized"
+        # quantity is used on <input type=number> so it should not be localized
+        status_data[:quantity] = self.send "quantity_#{data_field}"
         status_data[:price] = self.send "price_#{data_field}_as_currency_number"
         status_data[:new_price] = quantity * new_price if new_price
         status_data[:flags][:filled] = true
