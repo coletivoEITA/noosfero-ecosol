@@ -10,7 +10,7 @@
 .more
   .actions
     / actionmailer doesn't have an user, check it
-    - if user and order.may_edit? user, @admin
+    - if respond_to? :user and order.may_edit? user, @admin
       - if @admin
         = link_to_function t('views.item._edit.remove_from_order'), "orders.item.admin_remove(this, '#{url_for(controller: :orders_plugin_admin_item, action: :edit, id: item.id, actor_name: actor_name)}')", class: 'action-button'
         = link_to_function t('views.item._edit.submit'), "orders.item.submit(this, '#{url_for(controller: :orders_plugin_admin_item, action: :edit, id: item.id, actor_name: actor_name)}')", class: 'submit action-button'
