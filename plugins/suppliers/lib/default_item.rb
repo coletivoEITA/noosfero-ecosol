@@ -42,8 +42,8 @@ module DefaultItem
         # we prefer value from dabatase here, and the getter may give a default value
         # e.g. Product#name default to Product#product_category.name
         own = if field.to_s.in? self.class.column_names then self[field] else self.send "own_#{field}" end
-        # blank? also covers false, use nil?
-        if apply_default or own.nil?
+        # blank? also covers false, use nil? and empty?
+        if apply_default or own.nil? or (own.respond_to? :empty? and own.empty?)
           self.send "delegated_#{field}"
         else
           own
