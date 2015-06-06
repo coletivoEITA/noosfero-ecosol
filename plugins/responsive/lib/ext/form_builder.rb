@@ -1,7 +1,7 @@
 
 class ResponsiveFormBuilder < ActionView::Helpers::FormBuilder
 
-  %w[file_field text_field text_area number_field password_field submit button].each do |method|
+  %w[file_field text_field text_area number_field password_field].each do |method|
     define_method method do |*args, &block|
       options = args.extract_options!
       if options['class']
