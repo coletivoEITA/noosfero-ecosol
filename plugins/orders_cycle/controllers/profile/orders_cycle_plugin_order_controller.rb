@@ -162,11 +162,9 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
 
   def supplier_balloon
     @supplier = SuppliersPlugin::Supplier.find params[:id]
-    render layout: false
   end
   def product_balloon
     @product = OrdersCyclePlugin::OfferedProduct.find params[:id]
-    render layout: false
   end
 
   protected

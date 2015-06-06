@@ -125,7 +125,11 @@ orders_cycle = {
           var target = product.find('.supplier')
           var supplier_id = product.attr('supplier-id')
           $.get(this.balloon_url+'/'+supplier_id, function(data) {
-            target.popover({html: true, content: data}).popover('show')
+            var html = $(data)
+            var title = orders_cycle.order.product.balloon_title(html)
+            // use container to avoid conflict with row click
+            var options = {html: true, content: html, container: 'body', title: title}
+            target.popover(options).popover('show')
           })
         },
       },
@@ -134,11 +138,22 @@ orders_cycle = {
         var product = $('#cycle-product-'+id);
         var target = product.find('.product');
         $.get(this.balloon_url+'/'+id, function(data) {
-          target.popover({html: true, content: data}).popover('show')
+          var html = $(data)
+          var title = orders_cycle.order.product.balloon_title(html)
+          // use container to avoid conflict with row click
+          var options = {html: true, content: html, container: 'body', title: title}
+          target.popover(options).popover('show')
         })
       },
-    },
-  },
+
+      balloon_title: function(content) {
+        var titleElement = $(content).find('.popover-title')
+        var title = titleElement.html()
+        titleElement.hide()
+        return title
+      },
+    }, // product
+  }, // order
 
   /* ----- cycle editions ----- */
 
