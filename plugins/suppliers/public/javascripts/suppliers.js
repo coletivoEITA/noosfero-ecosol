@@ -103,7 +103,7 @@ suppliers = {
         var selection = jQuery('.our-product #product_ids_:checked').parents('.our-product')
         selection.find('.available input[type=checkbox]').each(function() {
           this.checked = state
-          suppliers.filter.apply()
+          $(this.form).submit()
         });
       },
 
