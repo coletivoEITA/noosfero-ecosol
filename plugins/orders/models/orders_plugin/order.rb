@@ -318,7 +318,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   # cache is done independent of user as model cache is per request
   def may_edit? user, admin_action = false
-    @may_edit ||= (admin_action and self.profile.admins.include?(user)) or (self.open? and self.consumer == user and self.profile.members.include? user)
+    @may_edit ||= (admin_action and user.in? self.profile.admins) or (self.open? and self.consumer == user and user.in? self.profile.members) rescue false
   end
 
   def verify_actor? profile, actor_name

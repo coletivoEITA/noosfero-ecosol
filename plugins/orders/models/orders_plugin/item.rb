@@ -107,8 +107,18 @@ class OrdersPlugin::Item < ActiveRecord::Base
   def unit
     self.product.unit
   end
+  def unit_name
+    self.unit.singular if self.unit
+  end
   def supplier
     self.product.supplier rescue self.order.profile.self_supplier
+  end
+  def supplier_name
+    if self.product.supplier
+      self.product.supplier.abbreviation_or_name
+    else
+      self.order.profile.short_name
+    end
   end
 
   def status
@@ -209,7 +219,8 @@ class OrdersPlugin::Item < ActiveRecord::Base
       quantity = self.send "quantity_#{data_field}"
       if quantity.present?
         # quantity is used on <input type=number> so it should not be localized
-        status_data[:quantity] = self.send "quantity_#{data_field}"
+        status_data[:quantity] = quantity
+        status_data[:flags][:removed] = true if status_data[:quantity].zero?
         status_data[:price] = self.send "price_#{data_field}_as_currency_number"
         status_data[:new_price] = quantity * new_price if new_price
         status_data[:flags][:filled] = true
@@ -255,7 +266,7 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
     # Set access
     statuses_data.each.with_index do |(status, status_data), i|
-      status_data[:flags][:editable] = StatusAccessMap[status] == actor_name
+      status_data[:flags][:editable] = true if StatusAccessMap[status] == actor_name
       # code to only allow last status
       #status_data[:flags][:editable] = true if status_data[:access] == actor_name and (status_data[:flags][:admin] or self.order.open?)
     end

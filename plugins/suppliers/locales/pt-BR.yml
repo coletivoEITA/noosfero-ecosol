@@ -509,6 +509,7 @@
       item:
         _edit:
           remove_from_order: "Remover do pedido"
+          removed: 'removido'
           submit: 'OK'
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
 
