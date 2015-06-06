@@ -8,8 +8,9 @@ div class="quantity-price-row #{status} #{status_data[:flags].keys.join ' '}"
         = quantity_localized
     - if not @simple and status_data[:flags][:editable]
       = number_field_tag "item[quantity_#{status_data[:field]}]", status_data[:quantity], step: 'any', onkeydown: 'orders.item.quantity_keydown(this, event)'
-    |&nbsp;
-    span.unit= item.unit_name unless status_data[:flags][:removed]
+    - unless status_data[:flags][:removed]
+      |&nbsp;
+      span.unit= item.unit_name
 
   .box-field.price-total
     span class="#{'outdated' if status_data[:new_price]}" = status_data[:price]
