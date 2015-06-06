@@ -3283,7 +3283,7 @@ body.template-2leftbars #product-info .field-name, body.template-2leftbars #prod
   float: left;
   border: 1px solid #AAA;
 }
-.product-pic {
+#display-product-image .product-pic {
   width: 450px;
 }
 body.template-default #product-image, body.template-2leftbars #product-image {
