@@ -58,7 +58,8 @@ class OrdersPlugin::Order < ActiveRecord::Base
   belongs_to :consumer_delivery, class_name: 'DeliveryPlugin::Method'
 
   scope :alphabetical, -> { joins(:consumer).order 'profiles.name ASC' }
-  scope :latest, -> { order 'created_at ASC' }
+  scope :latest, -> { order 'code ASC' }
+  scope :default_order, -> { order 'code DESC' }
 
   scope :of_session, -> session_id { where session_id: session_id }
   scope :of_user, -> session_id, consumer_id=nil do
@@ -149,6 +150,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
     scope = scope.with_code params[:code] if params[:code].present?
     scope = scope.by_range params[:start_time], params[:end_time] if params[:start_time].present?
     scope = scope.where supplier_delivery_id: params[:delivery_method_id] if params[:delivery_method_id].present?
+    scope = scope.default_order
     scope
   end
 

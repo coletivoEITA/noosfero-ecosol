@@ -29,9 +29,12 @@ class OrdersPluginAdminController < MyProfileController
 
     @scope ||= profile
     @scope = @scope.send @method
-    @orders = hmvc_orders_context::Order.search_scope @scope, params
+    @orders = hmvc_orders_context::Order.search_scope(@scope, params).paginate(per_page: 30, page: params[:page])
 
-    render layout: false
+    respond_to do |format|
+      format.html{ render partial: 'orders_plugin_admin/results', locals: { orders: @orders, actor_name: @actor_name} }
+      format.js{ render template: 'orders_plugin_admin/filter' }
+    end
   end
 
   def edit
