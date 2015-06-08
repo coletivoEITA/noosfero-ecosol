@@ -4,6 +4,9 @@ class OrdersPluginMessageController < MyProfileController
 
   #protect 'edit_profile', :profile
 
+  include OrdersPlugin::TranslationHelper
+
+  helper OrdersPlugin::TranslationHelper
   helper OrdersPlugin::FieldHelper
 
   def new_to_admins
@@ -44,7 +47,7 @@ class OrdersPluginMessageController < MyProfileController
   protected
 
   def page_reload
-    session[:notice] = t('orders_cycle_plugin.controllers.myprofile.message_controller.message_sent')
+    session[:notice] = t'orders_cycle_plugin.controllers.myprofile.message_controller.message_sent'
     respond_to do |format|
       format.js { render partial: 'orders_plugin_shared/pagereload' }
     end
