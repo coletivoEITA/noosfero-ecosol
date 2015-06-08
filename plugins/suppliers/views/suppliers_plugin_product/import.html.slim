@@ -17,7 +17,7 @@
           td
     p= t'views.product.import.unit_help', units: environment.units.map(&:singular).join(' - ')
 
-    div.checkbox
+    .checkbox
       label name='remove_all_suppliers'
         = check_box_tag :remove_all_suppliers, 'true', false, onchange: "suppliers.our_product.import.confirmRemoveAll(this, '#{j t'views.product.import.confirm_remove_all'}')"
         = t('views.product.import.remove_all')

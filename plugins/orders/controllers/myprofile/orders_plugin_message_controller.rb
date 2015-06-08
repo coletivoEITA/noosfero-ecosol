@@ -14,8 +14,6 @@ class OrdersPluginMessageController < MyProfileController
     if params[:commit]
       OrdersPlugin::Mailer.message_to_admins(profile, @member, params[:email][:subject], params[:email][:message]).deliver
       page_reload
-    else
-      render layout: false
     end
   end
 
@@ -23,24 +21,18 @@ class OrdersPluginMessageController < MyProfileController
     @order = profile.purchases.find params[:order_id]
     @supplier = @order.profile
     if params[:commit]
-      OrdersPlugin::Mailer.message_to_supplier(profile, @supplier, params[:email][:subject], params[:email][:message]).deliver
+      options = {order: @order, include_order: params[:include_order]}
+      OrdersPlugin::Mailer.message_to_supplier(profile, @supplier, params[:email][:subject], params[:email][:message], options).deliver
       page_reload
-    else
-      render layout: false
     end
   end
 
-  def new_to_consumer_for_order
+  def new_to_consumer
     @order = profile.sales.find params[:order_id]
     if params[:commit]
-      if params[:include_order]
-        OrdersPlugin::Mailer.message_to_consumer_for_order(profile, @order, params[:email][:subject], params[:email][:message]).deliver
-      else
-        OrdersPlugin::Mailer.message_to_consumer(profile, @consumer, params[:email][:subject], params[:email][:message]).deliver
-      end
+      options = {order: @order, include_order: params[:include_order]}
+      OrdersPlugin::Mailer.message_to_consumer(profile, @order.consumer, params[:email][:subject], params[:email][:message], options).deliver
       page_reload
-    else
-      render layout: false
     end
   end
 

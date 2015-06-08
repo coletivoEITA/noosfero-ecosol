@@ -10,40 +10,25 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
   attr_accessor :environment
   attr_accessor :profile
 
-  def message_to_consumer_for_order profile, order, subject, message = nil
-    self.environment = profile.environment
-    @profile = profile
-    @order = order
-    @consumer = order.consumer
-    @message = message
-
-    mail from: environment.noreply_email,
-      to: profile_recipients(order.consumer),
-      reply_to: profile_recipients(profile),
-      subject: t('lib.mailer.profile_subject') % {profile: profile.name, subject: subject}
-  end
-
-  def message_to_consumer profile, consumer, subject, message
-    self.environment = profile.environment
-    @profile = profile
+  def message_to_consumer profile, consumer, subject, message = nil, options = {}
     @consumer = consumer
-    @message = message
-    @environment = profile.environment
-
-    mail from: environment.noreply_email,
-      to: profile_recipients(consumer),
-      reply_to: profile_recipients(profile),
-      subject: t('lib.mailer.profile_subject') % {profile: name, subject: subject}
+    message_to_actor profile, consumer, subject, message, options
   end
 
-  def message_to_supplier profile, supplier, subject, message
+  def message_to_supplier profile, supplier, subject, message = nil, options = {}
+    @supplier = supplier
+    message_to_actor profile, supplier, subject, message, options
+  end
+
+  def message_to_actor profile, actor, subject, message = nil, options = {}
     self.environment = profile.environment
     @profile = profile
-    @supplier = supplier
     @message = message
+    @order = options[:order]
+    @include_order = options[:include_order] == '1'
 
     mail from: environment.noreply_email,
-      to: profile_recipients(@supplier),
+      to: profile_recipients(actor),
       reply_to: profile_recipients(@profile),
       subject: t('lib.mailer.profile_subject') % {profile: profile.name, subject: subject}
   end
