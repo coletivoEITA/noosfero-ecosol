@@ -39,7 +39,7 @@ class SuppliersPlugin::BaseProduct < Product
   settings_default_item :unit, type: :boolean, default: true, delegate_to: :supplier_product
   settings_default_item :available, type: :boolean, default: false, delegate_to: :supplier_product
   settings_default_item :margin_percentage, type: :boolean, default: true, delegate_to: :profile,
-    default_if: proc{ self.margin_percentage and (self.margin_percentage.zero? or self.price == self.supplier_product.price) }
+    default_if: proc{ self.margin_percentage.present? and (self.margin_percentage.zero? or self.price == self.supplier_product.price) }
 
   default_item :price, if: proc{ self.default_margin_percentage and self.margin_percentage.present? },
     delegate_to: proc{ self.supplier_product.price_with_discount if self.supplier_product }
