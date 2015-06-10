@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
 
   def set_time_zone
     old_time_zone = Time.zone
-    Time.zone = begin browser_timezone rescue ArgumentError old_time_zone end if browser_timezone.present?
+    begin; Time.zone = browser_timezone; rescue ArgumentError; end
     yield
   ensure
     Time.zone = old_time_zone
