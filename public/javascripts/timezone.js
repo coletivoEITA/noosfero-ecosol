@@ -1,14 +1,15 @@
-//= require jstz
+//= require moment
 //= require_self
 
 noosfero.timezone = {
 
   setCookie: function() {
-    jQuery.cookie("browser.timezone", jstz.determine().name(), { expires: 30, path: '/' })
+    var offset = moment.parseZone(Date.now()).utcOffset()/60
+    $.cookie("browser.tzoffset", offset, { expires: 30, path: '/' })
   },
 
 }
 
-jQuery(document).ready(function() {
+$(document).ready(function() {
   noosfero.timezone.setCookie()
 })

@@ -24,15 +24,12 @@ class ApplicationController < ActionController::Base
   protected
 
   def set_time_zone
-    old_time_zone = Time.zone
-    begin; Time.zone = browser_timezone; rescue ArgumentError; end
+    return yield unless (utc_offset = cookies['browser.tzoffset']).present?
+    utc_offset = utc_offset.to_i
+    gmt_offset = if utc_offset == 0 then nil elsif utc_offset > 0 then -utc_offset else "+#{-utc_offset}" end
+    Time.use_zone("Etc/GMT#{gmt_offset}"){ yield }
+  rescue ArgumentError
     yield
-  ensure
-    Time.zone = old_time_zone
-  end
-
-  def browser_timezone
-    cookies['browser.timezone']
   end
 
   def allow_cross_domain_access
