@@ -104,6 +104,7 @@ class ShoppingCartPluginController < OrdersPluginController
         next unless item.repeat_product and item.repeat_product.available
         self.cart[:items][item.repeat_product.id] = item.quantity_consumer_ordered.to_i
       end
+      self.cart[:repeat_order_id] = @order.id
 
       render json: {
         products: products,
@@ -115,11 +116,16 @@ class ShoppingCartPluginController < OrdersPluginController
     @no_design_blocks = true
     @customer = user || Person.new
     return redirect_to request.referer || environment.top_url if self.cart.nil?
+    @settings = cart_profile.shopping_cart_settings
     @cart = cart
     @profile = cart_profile
     @order = profile.sales.build consumer: user
+
     @order.supplier_delivery = profile.delivery_methods.find session[:cart][:last_delivery_option_id] rescue nil
-    @settings = cart_profile.shopping_cart_settings
+    if repeat_order_id = self.cart[:repeat_order_id]
+      repeat_order = cart_profile.orders.where(id: repeat_order_id).first
+      @order.consumer_delivery_data = repeat_order.consumer_delivery_data if repeat_order
+    end
   end
 
   def send_request

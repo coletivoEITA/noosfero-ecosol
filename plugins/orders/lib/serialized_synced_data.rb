@@ -17,7 +17,7 @@ module SerializedSyncedData
       self.serialized_synced_fields << field
 
       field_data = "#{field}_data".to_sym
-      field_data_without_sync = "#{field_data}_without_sync"
+      field_data_without_sync = "#{field_data}_without_sync".to_sym
 
       serialize field_data
       before_save "fill_#{field_data}"
@@ -28,10 +28,10 @@ module SerializedSyncedData
           self[field_data] || {}
         end
       else
-        define_method "#{field_data}_with_default" do
-          self.send("#{field_data}_without_default") || {}
+        define_method "#{field_data}_with_sync_default" do
+          self.send("#{field_data}_without_sync_default") || {}
         end
-        alias_method_chain field_data, :default
+        alias_method_chain field_data, :sync_default
       end
       if not self.method_defined? "#{field_data}=" and field_data.to_s.in? self.column_names
         define_method "#{field_data}=" do |value|

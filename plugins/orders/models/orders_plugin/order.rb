@@ -407,8 +407,6 @@ class OrdersPlugin::Order < ActiveRecord::Base
     self.status = 'ordered' if self.status == 'confirmed'
 
     self.fill_items_data self.status_was, self.status, true
-    # something may have changed
-    self.sync_serialized_data if self.status_changed?
 
     if self.status_on? 'ordered'
       Statuses.each do |status|
