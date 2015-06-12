@@ -210,19 +210,18 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
     OrdersCyclePlugin::Order.supplier_products_by_suppliers orders
   end
 
-  def generate_purchases
+  def generate_purchases sales = self.sales.ordered
     return self.purchases if self.purchases.present?
 
-    self.sales.ordered.each do |sale|
+    sales.each do |sale|
       sale.add_purchases_items_without_delay
     end
 
     self.purchases true
   end
-
-  def regenerate_purchases
+  def regenerate_purchases sales = self.sales.ordered
     self.purchases.destroy_all
-    self.generate_purchases
+    self.generate_purchases sales
   end
 
   def add_distributed_products

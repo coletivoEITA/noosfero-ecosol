@@ -180,20 +180,20 @@ class OrdersPlugin::Order < ActiveRecord::Base
           sp = source_sp.from_product
           supplier = source_sp.supplier
 
-          # if it's not yet defined, define it and sum the quantity from aggregated product/product * quantity ordered
           products_by_supplier[supplier] ||= Set.new
           products_by_supplier[supplier] << sp
           sp.quantity_ordered ||= 0
-          sp.quantity_ordered += item.quantity_consumer_ordered * source_sp.quantity
+          sp.quantity_ordered += item.status_quantity * source_sp.quantity
         end
       else
+        # the case where cycles and offered products are not involved, so item is linked directly to a Product
         sp = item.product
         supplier = item.order.profile.self_supplier
 
         products_by_supplier[supplier] ||= Set.new
         products_by_supplier[supplier] << sp
         sp.quantity_ordered ||= 0
-        sp.quantity_ordered += item.quantity_consumer_ordered
+        sp.quantity_ordered += item.status_quantity
       end
     end
 
