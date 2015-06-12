@@ -9,10 +9,11 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   # oh, we need a payments plugin!
   PaymentMethods = {
-    money: proc{ _("Money") },
-    check: proc{ s_('shopping_cart|Check') },
-    credit_card: proc{ _('Credit card') },
-    bank_transfer: proc{ _('Bank transfer') },
+    money: proc{ _'Money' },
+    check: proc{ _'shopping_cart|Check' },
+    credit_card: proc{ _'Credit card' },
+    bank_transfer: proc{ _'Bank transfer' },
+    boleto: proc{ _'Boleto' },
   }
 
   # remember to translate on changes
@@ -42,7 +43,8 @@ class OrdersPlugin::Order < ActiveRecord::Base
   self.table_name = :orders_plugin_orders
   self.abstract_class = true
 
-  attr_accessible :status, :consumer, :profile, :supplier_delivery_id, :consumer_delivery_id
+  attr_accessible :status, :consumer, :profile,
+    :supplier_delivery_id, :consumer_delivery_id, :supplier_delivery_data, :consumer_delivery_data
 
   belongs_to :profile
   # may be override by subclasses
