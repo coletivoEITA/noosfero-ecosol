@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0-690-gcb6e853\n"
 "POT-Creation-Date: 2015-03-05 12:10-0300\n"
-"PO-Revision-Date: 2015-03-25 20:52-0300\n"
+"PO-Revision-Date: 2015-06-13 09:54-0300\n"
 "Last-Translator: Michal Čihař <michal@cihar.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero"
 "/plugin-solr/pt/>\n"
@@ -80,6 +80,10 @@ msgstr "Não habilitado"
 #: plugins/solr/lib/solr_plugin/search_helper.rb:32
 msgid "Relevance"
 msgstr "Relevância"
+
+#: plugins/solr/lib/ext/product.rb
+msgid "Closest"
+msgstr "Mais próximos"
 
 #: plugins/solr/lib/solr_plugin/search_helper.rb:14
 #: plugins/solr/lib/solr_plugin/search_helper.rb:20

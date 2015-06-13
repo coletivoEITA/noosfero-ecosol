@@ -2,6 +2,7 @@ require_dependency 'product'
 
 class Product
 
+  SEARCH_FILTERS[:order].unshift 'relevance'
   SEARCH_FILTERS[:order] << 'closest'
 
   after_save_reindex [:enterprise], with: :delayed_job

@@ -190,7 +190,7 @@ class SolrPlugin::Base < Noosfero::Plugin
 
   def sort_options asset, klass, filter
     options = SolrPlugin::SearchHelper::SortOptions[asset]
-    options[filter][:solr_opts] rescue {}
+    options[filter][:solr_opts] || {} rescue {}
   end
 
 end
