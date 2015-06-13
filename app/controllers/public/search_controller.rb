@@ -219,7 +219,9 @@ class SearchController < PublicController
   def load_order
     @order = 'more_recent'
     if AVAILABLE_SEARCHES.keys.include?(@asset.to_sym)
-      available_orders = asset_class(@asset)::SEARCH_FILTERS[:order]
+      klass = asset_class @asset
+      available_orders = klass::SEARCH_FILTERS[:order]
+      @order = available_orders.first
       @order = params[:order] if available_orders.include?(params[:order])
     end
   end
