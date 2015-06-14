@@ -61,6 +61,8 @@ group :production do
 end
 
 group :test do
+  gem 'spring'
+  gem 'spring-commands-testunit'
   gem 'test-unit' if RUBY_VERSION >= '2.2.0'
   gem 'rspec',                  '~> 2.10.0'
   gem 'rspec-rails',            '~> 2.10.1'
