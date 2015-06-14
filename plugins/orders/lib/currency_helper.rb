@@ -41,6 +41,9 @@ module CurrencyHelper
   module ClassMethods
 
     def has_number_with_locale attr
+      # rake db:migrate run?
+      return unless self.table_exists?
+
       # Rails doesn't define getters and setters for attributes
       define_method attr do
         self[attr]

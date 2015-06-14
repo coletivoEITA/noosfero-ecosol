@@ -3,6 +3,8 @@ module DefaultItem
   module ClassMethods
 
     def default_item field, options = {}
+      # rake db:migrate run?
+      return unless self.table_exists?
 
       # Rails doesn't define getters for attributes
       define_method field do
