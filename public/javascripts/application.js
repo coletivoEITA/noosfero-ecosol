@@ -20,7 +20,6 @@
 *= require inputosaurus.js
 *= require reflection.js
 *= require select-or-die/_src/selectordie
-*= require typeahead.bundle.js
 *= require rails.js
 *= require rails-extended.js
 *= require jrails.js
