@@ -21,13 +21,14 @@ class OrdersPluginAdminItemController < MyProfileController
   def add_search
     @order = hmvc_orders_context::Order.find params[:order_id]
     @query = params[:query].to_s
-    @scope = @order.available_products.includes(:suppliers).limit(10)
+    @scope = @order.available_products.limit(10)
+    @scope = @scope.includes :suppliers if defined? SuppliersPlugin
     # FIXME: do not work cycles
     #@products = autocomplete(:catalog, @scope, @query, {per_page: 10, page: 1}, {})[:results]
     @products = @scope.where('name ILIKE ? OR name ILIKE ?', "#{@query}%", "% #{@query}%")
 
     render json: @products.map{ |p|
-      {value: p.id, label: "#{p.name} (#{p.supplier.name})"}
+      {value: p.id, label: "#{p.name} (#{if p.respond_to? :supplier then p.supplier.name else p.profile.short_name end})"}
     }
   end
 
