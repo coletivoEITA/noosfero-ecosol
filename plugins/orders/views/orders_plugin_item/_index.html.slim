@@ -15,7 +15,7 @@ div class="order-items-container #{"empty" if order.items.size == 0} #{"admin" i
       .table-content
         .order-items-scroll
           - order.items.each do |item|
-            = render "orders_cycle_plugin_item/edit", order: order, item: item, product: item.product, actor_name: actor_name
+            = render "orders_plugin_item/edit", order: order, item: item, product: item.product, actor_name: actor_name
     .order-total
       .title= t'views.consumer._total.total'
       .value= price_span order.total_price_as_currency_number actor_name

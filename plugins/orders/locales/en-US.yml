@@ -5,9 +5,14 @@
       supplier:
         singular: "supplier"
         plural: "suppliers"
+        from_article:
+          singular: "from supplier"
       consumer:
         singular: "consumer"
         plural: "consumers"
+        from_article:
+          singular: "from consumer"
+          plural: "from consumers"
       purchase:
         singular: "Purchase"
         plural: "Purchases"

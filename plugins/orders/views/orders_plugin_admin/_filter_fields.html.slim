@@ -21,7 +21,7 @@ div class="field #{actor_name}"
   div= select_tag :delivery_method_id,
     options_for_select([[t('views.filter.all'), ""]] + orders_owner.delivery_methods.map{ |dm| [dm.name, dm.id] }, params[:delivery_method_id])
 
-- if not orders_owner.is_a? OrdersCyclePlugin::Cycle
+- if defined? OrdersCyclePlugin and not orders_owner.is_a? OrdersCyclePlugin::Cycle
   - start_time ||= params[:start_time] || Date.today.to_time rescue nil
   - end_time ||= params[:end_time] || Date.today.to_time+1.week rescue nil
 
