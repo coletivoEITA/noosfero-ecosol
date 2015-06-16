@@ -2,7 +2,7 @@
 class OpenGraphPlugin::Base < Noosfero::Plugin
 
   def js_files
-    ['open_graph.js'].map{ |j| "javascripts/#{j}" }
+    [].map{ |j| "javascripts/#{j}" }
   end
 
   def stylesheet?

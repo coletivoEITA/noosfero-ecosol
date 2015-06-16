@@ -1,5 +1,3 @@
-$(document).ready(function(){
-
 open_graph = {
 
   track: {
@@ -181,4 +179,3 @@ open_graph = {
   },
 }
 
-});
