@@ -20,7 +20,14 @@
 
   <div id='chat'>
     <div id='buddy-list'>
-      <div class='dialog-error' style='display: none'></div>
+      <div class='toolbar'>
+        <% unless (theme_responsive? rescue false) %>
+          <div id='user-status'>
+            <%= user_status_menu('icon-menu-offline', _('Offline')) %>
+          </div>
+        <% end %>
+        <div class='dialog-error' style='display: none'></div>
+      </div>
 
       <div class='body'>
 
