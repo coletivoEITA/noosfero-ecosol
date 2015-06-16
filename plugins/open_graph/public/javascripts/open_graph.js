@@ -1,3 +1,4 @@
+$(document).ready(function(){
 
 open_graph = {
 
@@ -180,3 +181,4 @@ open_graph = {
   },
 }
 
+});
