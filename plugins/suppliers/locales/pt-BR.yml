@@ -512,7 +512,7 @@
           description: Descrição
           general_settings: "Configurações gerais"
           name: Nome
-          notify_members_of_ope: "Avisar os(as) consumidoros(es) da abertura de pedidos"
+          notify_members_of_ope: "Avisar os(as) consumidores(as) da abertura de pedidos"
           opening_message: "Mensagem de abertura"
           orders_interval: "Intervalo dos Pedidos"
           save: Salvar
