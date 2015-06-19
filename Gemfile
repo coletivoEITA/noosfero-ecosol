@@ -51,7 +51,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'coffee-rails'
   gem 'sass'
-  gem 'sass-rails'
+  gem 'sass-rails', '~> 3.2.0'
 end
 
 group :production do
