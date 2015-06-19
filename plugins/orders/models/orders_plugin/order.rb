@@ -116,6 +116,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   validates_inclusion_of :status, in: DbStatuses
 
   before_validation :check_status
+  before_validation :change_status
   after_save :send_notifications
 
   extend CodeNumbering::ClassMethods
@@ -358,6 +359,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   # total_price considering last state
   def total_price actor_name = :consumer, admin = false
+    # for admins, we want the next_status while we concluded the finish status change
     if not self.pre_order? and admin and status = self.next_status(actor_name)
       self.fill_items_data self.status, status
     else
@@ -380,6 +382,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   has_currency :total
 
   def fill_items_data from_status, to_status, save = false
+    # check for status advance
     return if (Statuses.index(to_status) <= Statuses.index(from_status) rescue true)
 
     from_data = StatusDataMap[from_status]
@@ -405,15 +408,20 @@ class OrdersPlugin::Order < ActiveRecord::Base
     self.status ||= 'draft'
     # backwards compatibility
     self.status = 'ordered' if self.status == 'confirmed'
+  end
+
+  def change_status
+    return if self.status_was == self.status
 
     self.fill_items_data self.status_was, self.status, true
 
+    # fill dates on status advance
     if self.status_on? 'ordered'
       Statuses.each do |status|
         self.send "#{self.status}_at=", Time.now if self.status_was != status and self.status == status
       end
     else
-      # for draft, planned, forgotten, cancelled, etc
+      # status rewind for draft, planned, forgotten, cancelled, etc
       Statuses.each do |status|
         self.send "#{status}_at=", nil
       end
