@@ -9,7 +9,7 @@ module SolrPlugin::SearchHelper
   SortOptions = {
     catalog: {
       relevance: {option: ['Relevance', ''], solr_opts: {},
-                  empty_solr_opts: {sort: 'solr_plugin_available_sortable desc, solr_plugin_highlighted_sortable desc, solr_plugin_name_sortable asc'}},
+                  empty_solr_opts: {sort: 'solr_plugin_available_sortable desc, solr_plugin_highlighted_sortable desc, score desc'}},
       name: {option: ['Name', 'name'], solr_opts: {sort: 'solr_plugin_available_sortable desc, solr_plugin_name_sortable asc'}},
       price: {option: ['Lowest price', 'price'], solr_opts: {sort: 'solr_plugin_available_sortable desc, solr_plugin_price_sortable asc'}},
       newest: {option: ['Newest', 'newest'], solr_opts: {sort: 'solr_plugin_available_sortable desc, created_at desc'}},
