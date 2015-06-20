@@ -30,9 +30,8 @@ module DefaultDelegate
       define_method own_field do
         # we prefer the value from dabatase here, and the getter may give a default value
         # e.g. Product#name defaults to Product#product_category.name
-        if field.to_s.in? self.class.column_names then self[field] else self.send "own_#{field}" end
+        if field.to_s.in? self.class.column_names then self[field] else self.send field end
       end
-      alias_method own_field, field
       alias_method "#{own_field}=", "#{field}="
 
       delegated_field = "delegated_#{field}".freeze
