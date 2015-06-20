@@ -29,27 +29,28 @@ class SuppliersPlugin::BaseProduct < Product
     :margin_percentage, :stored, :minimum_selleable, :unit_detail
   ]
 
-  extend ActsAsHavingSettings::DefaultItem::ClassMethods
-  settings_default_item :name, type: :boolean, default: true, delegate_to: :supplier_product
-  settings_default_item :product_category, type: :boolean, default: true, delegate_to: :supplier_product
-  settings_default_item :qualifiers, type: :boolean, default: true, delegate_to: :supplier_product
-  settings_default_item :product_qualifiers, type: :boolean, default: true, delegate_to: :supplier_product
-  settings_default_item :image, type: :boolean, default: true, delegate_to: :supplier_product, prefix: '_default'
-  settings_default_item :description, type: :boolean, default: true, delegate_to: :supplier_product
-  settings_default_item :unit, type: :boolean, default: true, delegate_to: :supplier_product
-  settings_default_item :available, type: :boolean, default: false, delegate_to: :supplier_product
-  settings_default_item :margin_percentage, type: :boolean, default: true, delegate_to: :profile,
-    default_if: proc{ self.margin_percentage.present? and (self.margin_percentage.zero? or self.price == self.supplier_product.price) }
+  extend DefaultDelegate::ClassMethods
+  default_delegate_setting :name, to: :supplier_product
+  default_delegate_setting :product_category, to: :supplier_product
+  default_delegate_setting :qualifiers, to: :supplier_product
+  default_delegate_setting :image, to: :supplier_product, prefix: :_default
+  default_delegate_setting :description, to: :supplier_product
+  default_delegate_setting :unit, to: :supplier_product
+  default_delegate_setting :available,  to: :supplier_product
+  default_delegate_setting :margin_percentage, to: :profile,
+    default_if: -> { self.own_margin_percentage.blank? or self.own_margin_percentage.zero? or self.own_price == self.supplier_product.price }
 
-  default_item :price, if: proc{ self.default_margin_percentage and self.margin_percentage.present? },
-    delegate_to: proc{ self.supplier_product.price_with_discount if self.supplier_product }
-  default_item :unit_detail, if: :default_unit, delegate_to: :supplier_product
-  settings_default_item :stored, type: :boolean, default: true, delegate_to: :supplier_product
-  settings_default_item :minimum_selleable, type: :boolean, default: true, delegate_to: :supplier_product
+  default_delegate :price, default_field: :default_margin_percentage,
+    to: -> { self.supplier_product.price_with_discount if self.supplier_product }
+  default_delegate :unit_detail, default_field: :default_unit, to: :supplier_product
+  default_delegate_setting :stored, to: :supplier_product,
+    default_if: -> { self.own_stored.blank? or self.own_stored.zero? }
+  default_delegate_setting :minimum_selleable, to: :supplier_product
 
-  default_item :product_category_id, if: :default_product_category, delegate_to: :supplier_product
-  default_item :image_id, if: :_default_image, delegate_to: :supplier_product
-  default_item :unit_id, if: :default_unit, delegate_to: :supplier_product
+  default_delegate :product_qualifiers, default_field: :default_qualifiers, to: :supplier_product
+  default_delegate :product_category_id, default_field: :default_product_category, to: :supplier_product
+  default_delegate :image_id, default_field: :_default_image, to: :supplier_product
+  default_delegate :unit_id, default_field: :default_unit, to: :supplier_product
 
   extend CurrencyHelper::ClassMethods
   has_currency :own_price
@@ -99,7 +100,15 @@ SQL
     end
   end
 
-  # replace available? to use the replaced default_item method
+  def buy_price
+    self.supplier_products.inject(0){ |sum, p| sum += p.price || 0 }
+  end
+  def buy_unit
+    #TODO: handle multiple products
+    (self.supplier_product.unit rescue nil) || self.class.default_unit
+  end
+
+  # replace available? to use the replaced default_delegate method
   def available?
     self.available
   end

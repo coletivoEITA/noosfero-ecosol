@@ -47,12 +47,14 @@ suppliers = {
   our_product: {
 
     toggle_edit: function () {
-      toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing());
+      toggle_edit.editing().find('.box-edit').toggle(toggle_edit.isEditing())
     },
 
     default_change: function (event) {
-      block = $(this).parents('.block');
-      block.find('div[data-non-defaults]').toggle(!this.checked);
+      var block = $(this).parents('.block')
+      var nonDefaults = block.find('div[data-non-defaults]')
+      nonDefaults.toggle(!this.checked)
+      nonDefaults.find('input,select,textarea').prop('disabled', this.checked)
     },
 
     load: function(id) {
@@ -60,15 +62,15 @@ suppliers = {
     },
 
     pmsync: function (context, to_price) {
-      var p = $(context).parents('.our-product');
-      var margin_input = p.find('.product-margin-percentage');
-      var price_input = p.find('.product-price');
-      var buy_price_input = p.find('.product-base-price');
+      var p = $(context).parents('.our-product')
+      var margin_input = p.find('.product-margin-percentage')
+      var price_input = p.find('.product-price')
+      var buy_price_input = p.find('.product-base-price')
 
       if (to_price)
-        suppliers.price.calculate(price_input, margin_input, buy_price_input);
+        suppliers.price.calculate(price_input, margin_input, buy_price_input)
       else
-        suppliers.margin.calculate(margin_input, price_input, buy_price_input);
+        suppliers.margin.calculate(margin_input, price_input, buy_price_input)
     },
 
     select: {

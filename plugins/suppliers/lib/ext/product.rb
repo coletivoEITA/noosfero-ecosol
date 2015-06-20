@@ -76,18 +76,12 @@ class Product
   end
 
   def sources_supplier_product
+    self.supplier_products.load_target unless self.supplier_products.loaded?
     self.sources_supplier_products.first
   end
   def supplier_product
+    self.supplier_products.load_target unless self.supplier_products.loaded?
     self.supplier_products.first
-  end
-
-  def buy_price
-    self.supplier_products.inject(0){ |sum, p| sum += p.price || 0 }
-  end
-  def buy_unit
-    #TODO: handle multiple products
-    unit = (self.supplier_product.unit rescue nil) || self.class.default_unit
   end
 
   def supplier

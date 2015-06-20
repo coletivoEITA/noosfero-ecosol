@@ -33,7 +33,7 @@
           div data-non-defaults=""
             span.field-secondary
               = f.label :stored, t('views.product._edit.current_stock'), class: 'field-bellow'
-              = f.text_field :stored
+              = f.number_field :stored, step: 'any'
 
         .block.available
           .field
