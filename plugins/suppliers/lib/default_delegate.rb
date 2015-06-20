@@ -26,11 +26,13 @@ module DefaultDelegate
         self[field] = value
       end if field.to_s.in? self.column_names and not self.method_defined? "#{field}="
 
+      original_field_method = "original_own_#{field}"
+      alias_method original_field_method, field
       own_field = "own_#{field}".freeze
       define_method own_field do
         # we prefer the value from dabatase here, and the getter may give a default value
         # e.g. Product#name defaults to Product#product_category.name
-        if field.to_s.in? self.class.column_names then self[field] else self.send field end
+        if field.to_s.in? self.class.column_names then self[field] else self.send original_field_method end
       end
       alias_method "#{own_field}=", "#{field}="
 
