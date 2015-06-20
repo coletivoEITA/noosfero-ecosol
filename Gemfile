@@ -80,8 +80,9 @@ end
 
 group :development do
   gem 'wirble'
-  #gem 'byebug'
-  #gem 'method_source'
+  gem 'byebug'
+  gem 'html2haml'
+  gem 'haml2slim'
 end
 
 # Requires custom dependencies
