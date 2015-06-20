@@ -90,8 +90,12 @@ function updatePriceCompositionBar(form) {
     url : bar_url,
     success : function(data) {
       jQuery("#price-composition-bar").html(data);
-      jQuery('form #product_price').val(currencyToFloat(jQuery('#progressbar-text .product_price').html(), currency_format.separator, currency_format.delimiter));
-      jQuery('form #product_inputs_cost').val(currencyToFloat(jQuery('#display-product-price-details .inputs-cost span').html(), currency_format.separator, currency_format.delimiter, currency_format.unit));
+      var price = jQuery('#progressbar-text .product_price')
+      var input_cost = jQuery('#display-product-price-details .inputs-cost span')
+      if (price.length)
+        jQuery('form #product_price').val(currencyToFloat(price.html(), currency_format.separator, currency_format.delimiter));
+      if (input_cost.length)
+        jQuery('form #product_inputs_cost').val(currencyToFloat(input_cost.html(), currency_format.separator, currency_format.delimiter, currency_format.unit));
       calculateValuesForBar();
     },
   });

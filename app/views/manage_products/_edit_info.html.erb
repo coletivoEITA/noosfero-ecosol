@@ -2,11 +2,10 @@
   <%= render_dialog_error_messages 'product' %>
 <% end %>
 
-<%= remote_form_for(@product,
-                   :loading => "small_loading('product-info-form')",
-                   :update => 'product-info',
-                   :url => {:controller => 'manage_products', :action => 'edit', :id => @product, :field => 'info'},
-                   :html => {:id => 'product-info-form', :method => 'post', :class => 'form-horizontal'}) do |f| %>
+<%= form_for @product, as: :product, remote: true,
+  loading: "small_loading('product-info-form')",
+  url: {controller: 'manage_products', action: 'edit', id: @product, field: 'info'},
+  html: {id: 'product-info-form', method: 'post', class: 'form-horizontal', data: {type: 'html', update: '#product-info'}} do |f| %>
 
     <div class="form-group">
       <%= f.label :price, _('Price (%s)') % environment.currency_unit, :class => 'control-label col-lg-3 col-md-3 col-sm-4' %>
@@ -82,3 +81,7 @@
 </div>
 
 <%= render :partial => 'shared/numbers_only_javascript' %>
+
+<%= javascript_tag do %>
+  currency_format = { separator : '<%= environment.currency_separator %>', delimiter : '<%= environment.currency_delimiter %>', unit : '<%= environment.currency_unit %>' };
+<% end %>
