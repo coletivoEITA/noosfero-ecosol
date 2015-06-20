@@ -26,7 +26,7 @@ module DefaultDelegate
         self[field] = value
       end if field.to_s.in? self.column_names and not self.method_defined? "#{field}="
 
-      original_field_method = "original_own_#{field}"
+      original_field_method = "original_own_#{field}".freeze
       alias_method original_field_method, field
       own_field = "own_#{field}".freeze
       define_method own_field do
