@@ -90,7 +90,12 @@ module DefaultDelegate
       end
 
       define_method "#{field}_with_default" do
-        if self.send default_field then self.send delegated_field else self.send own_field end
+        if self.send default_field
+          # delegated_field may return nil, so use own instead
+          # this is the case with some associations (e.g. Product#product_qualifiers)
+          self.send(delegated_field) || self.send(own_field)
+        else self.send(own_field)
+        end
       end
       define_method "#{field}_with_default=" do |*args|
         own = self.send "#{own_field}=", *args
