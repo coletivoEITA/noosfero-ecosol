@@ -137,7 +137,7 @@ SQL
 
     price = if margin_percentage
       base_price ||= self.price_with_default || 0
-      base_price + (margin_percentage.to_f / 100) * base_price
+      base_price.to_f + (margin_percentage.to_f / 100) * base_price.to_f
     else
       self.price_with_default
     end
