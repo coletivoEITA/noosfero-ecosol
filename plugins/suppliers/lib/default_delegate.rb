@@ -93,6 +93,8 @@ module DefaultDelegate
         if self.send default_setting
           # delegated_field may return nil, so use own instead
           # this is the case with some associations (e.g. Product#product_qualifiers)
+          # FIXME: this shouldn't be necessary, it seems to happens only in certain cases
+          # (product creation, product global search, etc)
           self.send(delegated_field) || self.send(own_field)
         else self.send(own_field)
         end
