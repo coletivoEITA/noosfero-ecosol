@@ -135,7 +135,7 @@ SQL
     margin_percentage = margin_source.margin_percentage
     margin_percentage ||= self.profile.margin_percentage if self.profile
 
-    base_price ||= self.price_with_default || 0
+    base_price ||= 0
     price = if margin_percentage and not base_price.zero?
       base_price.to_f + (margin_percentage.to_f / 100) * base_price.to_f
     else
