@@ -16,7 +16,7 @@
       <a href="cart:clean" onclick="cart.clean(); return false" class="cart-clean"><%=_('Clean basket')%></a>
       <ul class="cart-items">
       </ul>
-      <%= button 'cart',  _('Shopping checkout'), "/plugin/shopping_cart/buy", :class => 'cart-buy modal-toggle' %>
+      <%= button 'cart',  _('Shopping checkout'), "/plugin/shopping_cart/buy", class: 'cart-buy' %>
       <div class="cart-total"><%=_('Total:')%> <b></b></div>
     </div>
       <a href="#" onclick="cart.toggle(); return false" class="cart-toggle">
