@@ -1,7 +1,8 @@
 module EventsHelper
 
-  def list_events(date, events, title_use_day=nil)
-    title = _('Events for %s') % show_date_month(date,false,true,title_use_day)
+  include DatesHelper
+  def list_events(date, events)
+    title = _('Events for %s') % show_date_month(date)
     content_tag('h2', title) +
     content_tag('div',
       (events.any? ?

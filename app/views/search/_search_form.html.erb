@@ -6,6 +6,11 @@
       <h1><%= _('Searches') %></h1>
       <%= assets_menu(@asset) %>
       <%= filters(@asset) %>
+      <div class="clear"></div>
+    </div>
+
+    <div id='search-subheader'>
+      <%= assets_submenu(@asset) %>
     </div>
 
     <div id='search-box' class="search-field form-group">

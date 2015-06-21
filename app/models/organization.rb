@@ -30,6 +30,8 @@ class Organization < Profile
 
   has_many :mailings, :class_name => 'OrganizationMailing', :foreign_key => :source_id, :as => 'source'
 
+  has_many :custom_roles, :class_name => 'Role', :foreign_key => :profile_id
+
   scope :more_popular, :order => 'members_count DESC'
 
   validate :presence_of_required_fieds, :unless => :is_template
@@ -193,4 +195,9 @@ class Organization < Profile
   def allow_invitation_from?(person)
     (followed_by?(person) && self.allow_members_to_invite) || person.has_permission?('invite-members', self)
   end
+
+  def is_admin?(user)
+    self.admins.where(:id => user.id).exists?
+  end
+
 end

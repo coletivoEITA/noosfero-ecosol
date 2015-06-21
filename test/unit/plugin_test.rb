@@ -582,4 +582,11 @@ class PluginTest < ActiveSupport::TestCase
     assert_equivalent [st4.term, st2.term], limited_suggestions
   end
 
+  should 'article_extra_toolbar_buttons return an empty array by default' do
+    class Plugin1 < Noosfero::Plugin
+    end
+    p = Plugin1.new
+    assert_equal [], p.article_extra_toolbar_buttons(nil)
+  end
+
 end

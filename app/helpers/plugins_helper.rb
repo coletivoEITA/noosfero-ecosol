@@ -8,10 +8,6 @@ module PluginsHelper
     end
   end
 
-  def plugins_article_toolbar_actions
-    @plugins.dispatch(:article_toolbar_actions, @page).collect { |content| instance_exec(&content) }.join ""
-  end
-
   def plugins_catalog_search_extras_begin
     @plugins.dispatch(:catalog_search_extras_begin).map do |content|
       instance_exec(&content)
@@ -39,11 +35,18 @@ module PluginsHelper
       instance_exec(&content)
     end.join
   end
-  
+
   def plugins_search_post_contents
     @plugins.dispatch(:search_post_contents).map do |content|
       instance_exec(&content)
     end.join
+  end
+
+  def plugins_toolbar_actions_for_article(article)
+    toolbar_actions = Array.wrap(@plugins.dispatch(:article_extra_toolbar_buttons, article))
+    toolbar_actions.each do |action|
+      [:title, :url, :icon].each { |param| raise "No #{param} was passed as parameter for #{action}" unless action.has_key?(param) }
+    end
   end
 
 end

@@ -10,6 +10,7 @@ class SearchController < PublicController
   before_filter :load_search_assets, :except => :suggestions
   before_filter :load_query, :except => :suggestions
   before_filter :load_order, :except => :suggestions
+  before_filter :load_templates, :except => :suggestions
 
   # Backwards compatibility with old URLs
   def redirect_asset_param
@@ -152,7 +153,6 @@ class SearchController < PublicController
   def events_by_day
     @date = build_date(params[:year], params[:month], params[:day])
     @events = environment.events.by_day(@date).paginate(:per_page => per_page, :page => params[:page])
-    @title_use_day = params[:day].blank? ? false : true
     render :partial => 'events/events'
   end
 
@@ -226,6 +226,11 @@ class SearchController < PublicController
     end
   end
 
+  def load_templates
+    @templates = {}
+    @templates[@asset] = environment.send(@asset.to_s).templates if [:people, :enterprises, :communities].include?(@asset)
+  end
+
   def limit
     if map_search?(@searches)
       MAP_SEARCH_LIMIT
@@ -246,7 +251,7 @@ class SearchController < PublicController
   end
 
   def full_text_search
-    @searches[@asset] = find_by_contents(@asset, environment, @scope, @query, paginate_options, {:category => @category, :filter => @order})
+    @searches[@asset] = find_by_contents(@asset, environment, @scope, @query, paginate_options, {:category => @category, :filter => @order, :template_id => params[:template_id]})
   end
 
   private

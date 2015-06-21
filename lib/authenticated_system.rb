@@ -77,7 +77,11 @@ module AuthenticatedSystem
       if logged_in? && authorized?
         true
       else
-        access_denied
+        if params[:require_login_popup]
+          render :json => { :require_login_popup => true }
+        else
+          access_denied
+        end
       end
     end
 

@@ -453,6 +453,24 @@ class ProfileTest < ActiveSupport::TestCase
     assert_not_includes result, p2
   end
 
+  should 'be able to find the public profiles but not secret ones' do
+    p1 = create(Profile, :public_profile => true)
+    p2 = create(Profile, :public_profile => true, :secret => true)
+
+    result = Profile.public
+    assert_includes result, p1
+    assert_not_includes result, p2
+  end
+
+  should 'be able to find visible profiles but not secret ones' do
+    p1 = create(Profile, :visible => true)
+    p2 = create(Profile, :visible => true, :secret => true)
+
+    result = Profile.visible
+    assert_includes result, p1
+    assert_not_includes result, p2
+  end
+
   should 'have public content by default' do
     assert_equal true, Profile.new.public_content
   end
@@ -881,6 +899,8 @@ class ProfileTest < ActiveSupport::TestCase
 
   should 'copy set of articles from a template' do
     template = create_user('test_template').person
+    template.is_template = true
+    template.save
     template.articles.destroy_all
     a1 = fast_create(Article, :profile_id => template.id, :name => 'some xyz article')
     a2 = fast_create(Article, :profile_id => template.id, :name => 'some child article', :parent_id => a1.id)
@@ -914,6 +934,8 @@ class ProfileTest < ActiveSupport::TestCase
 
   should 'copy homepage from template' do
     template = create_user('test_template').person
+    template.is_template = true
+    template.save
     template.articles.destroy_all
     a1 = fast_create(Article, :profile_id => template.id, :name => 'some xyz article')
     template.home_page = a1
@@ -929,6 +951,8 @@ class ProfileTest < ActiveSupport::TestCase
 
   should 'not advertise the articles copied from templates' do
     template = create_user('test_template').person
+    template.is_template = true
+    template.save
     template.articles.destroy_all
     a = fast_create(Article, :profile_id => template.id, :name => 'some xyz article')
 
@@ -942,7 +966,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy set of boxes from profile template' do
-    template = fast_create(Profile)
+    template = fast_create(Profile, :is_template => true)
     template.boxes.destroy_all
     template.boxes << Box.new
     template.boxes[0].blocks << Block.new
@@ -957,7 +981,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy layout template when applying template' do
-    template = fast_create(Profile)
+    template = fast_create(Profile, :is_template => true)
     template.layout_template = 'leftbar'
     template.save!
 
@@ -969,7 +993,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy blocks when applying template' do
-    template = fast_create(Profile)
+    template = fast_create(Profile, :is_template => true)
     template.boxes.destroy_all
     template.boxes << Box.new
     template.boxes[0].blocks << Block.new
@@ -984,7 +1008,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy articles when applying template' do
-    template = fast_create(Profile)
+    template = fast_create(Profile, :is_template => true)
     template.articles.create(:name => 'template article')
     template.save!
 
@@ -996,7 +1020,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'rename existing articles when applying template' do
-    template = fast_create(Profile)
+    template = fast_create(Profile, :is_template => true)
     template.boxes.destroy_all
     template.boxes << Box.new
     template.boxes[0].blocks << Block.new
@@ -1013,7 +1037,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy header when applying template' do
-    template = fast_create(Profile)
+    template = fast_create(Profile, :is_template => true)
     template[:custom_header] = '{name}'
     template.save!
 
@@ -1027,7 +1051,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy footer when applying template' do
-    template = create(Profile, :address => 'Template address', :custom_footer => '{address}')
+    template = create(Profile, :address => 'Template address', :custom_footer => '{address}', :is_template => true)
 
     p = create(Profile, :address => 'Profile address')
     p.apply_template(template)
@@ -1038,7 +1062,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'ignore failing validation when applying template' do
-    template = create(Profile, :layout_template => 'leftbar', :custom_footer => 'my custom footer', :custom_header => 'my custom header')
+    template = create(Profile, :layout_template => 'leftbar', :custom_footer => 'my custom footer', :custom_header => 'my custom header', :is_template => true)
 
     p = create(Profile)
     def p.validate
@@ -1054,7 +1078,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy homepage when applying template' do
-    template = fast_create(Profile)
+    template = fast_create(Profile, :is_template => true)
     a1 = fast_create(Article, :profile_id => template.id, :name => 'some xyz article')
     template.home_page = a1
     template.save!
@@ -1094,6 +1118,23 @@ class ProfileTest < ActiveSupport::TestCase
     p.copy_blocks_from(template)
 
     assert_equal 'default title', p.boxes[0].blocks.first[:title]
+  end
+
+  should 'have blocks observer on template when applying template with mirror' do
+    template = fast_create(Profile)
+    template.boxes.destroy_all
+    template.boxes << Box.new
+    b = Block.new(:title => 'default title', :mirror => true)
+    template.boxes[0].blocks << b
+
+    p = create(Profile)
+    assert !b[:title].blank?
+
+    p.copy_blocks_from(template)
+
+    assert_equal 'default title', p.boxes[0].blocks.first[:title]
+    assert_equal p.boxes[0].blocks.first, template.boxes[0].blocks.first.observers.first
+
   end
 
   TMP_THEMES_DIR = Rails.root.join('test', 'tmp', 'profile_themes')
@@ -1141,7 +1182,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy public/private setting from template' do
-    template = fast_create(Profile, :public_profile => false)
+    template = fast_create(Profile, :public_profile => false, :is_template => true)
     p = fast_create(Profile)
     p.apply_template(template)
     assert_equal false, p.public_profile
@@ -1402,6 +1443,71 @@ class ProfileTest < ActiveSupport::TestCase
     assert_not_includes environment.profiles.templates, profile
   end
 
+  should 'return an specific template when specified' do
+    environment = Environment.default
+    t1 = fast_create(Profile, :is_template => true)
+    t2 = fast_create(Profile, :is_template => true)
+    profile = fast_create(Profile)
+
+    assert_equal [t1], environment.profiles.templates(t1)
+    assert_equal [t2], environment.profiles.templates(t2)
+  end
+
+  should 'not return a template when and invalid template is specified' do
+    environment = Environment.default
+    t1 = fast_create(Profile, :is_template => true)
+    t2 = fast_create(Profile, :is_template => true)
+    t3 = fast_create(Profile)
+
+    assert_equal [], environment.profiles.templates(t3)
+  end
+
+  should 'return profiles of specified template passing object' do
+    environment = Environment.default
+    t1 = fast_create(Profile, :is_template => true)
+    t2 = fast_create(Profile, :is_template => true)
+    p1 = fast_create(Profile, :template_id => t1.id)
+    p2 = fast_create(Profile, :template_id => t2.id)
+    p3 = fast_create(Profile, :template_id => t1.id)
+
+    assert_equivalent [p1,p3], environment.profiles.with_templates(t1)
+  end
+
+  should 'return profiles of specified template passing id' do
+    environment = Environment.default
+    t1 = fast_create(Profile, :is_template => true)
+    t2 = fast_create(Profile, :is_template => true)
+    p1 = fast_create(Profile, :template_id => t1.id)
+    p2 = fast_create(Profile, :template_id => t2.id)
+    p3 = fast_create(Profile, :template_id => t1.id)
+
+    assert_equivalent [p1,p3], environment.profiles.with_templates(t1.id)
+  end
+
+  should 'return profiles of a list of specified templates' do
+    environment = Environment.default
+    t1 = fast_create(Profile, :is_template => true)
+    t2 = fast_create(Profile, :is_template => true)
+    t3 = fast_create(Profile, :is_template => true)
+    p1 = fast_create(Profile, :template_id => t1.id)
+    p2 = fast_create(Profile, :template_id => t2.id)
+    p3 = fast_create(Profile, :template_id => t3.id)
+
+    assert_equivalent [p1,p2], environment.profiles.with_templates([t1,t2])
+  end
+
+  should 'return all profiles without any template if nil is passed as parameter' do
+    environment = Environment.default
+    Profile.delete_all
+    t1 = fast_create(Profile, :is_template => true)
+    t2 = fast_create(Profile, :is_template => true)
+    p1 = fast_create(Profile, :template_id => t1.id)
+    p2 = fast_create(Profile, :template_id => t2.id)
+    p3 = fast_create(Profile)
+
+    assert_equivalent [t1,t2,p3], environment.profiles.with_templates(nil)
+  end
+
   should 'return a list of profiles that are not templates' do
     environment = Environment.default
     p1 = fast_create(Profile, :is_template => false)
@@ -1542,6 +1648,16 @@ class ProfileTest < ActiveSupport::TestCase
     p = create_user('identifier-test').person
     p = fast_create(Profile, :identifier => 'identifier-test')
     assert_equal false, Profile.is_available?('identifier-test', Environment.default)
+  end
+
+  should 'not be available if identifier match with custom exclusion pattern' do
+    NOOSFERO_CONF.stubs(:[]).with('exclude_profile_identifier_pattern').returns('identifier.*')
+    assert_equal false, Profile.is_available?('identifier-test', Environment.default)
+  end
+
+  should 'be available if identifier do not match with custom exclusion pattern' do
+    NOOSFERO_CONF.stubs(:[]).with('exclude_profile_identifier_pattern').returns('identifier.*')
+    assert_equal false, Profile.is_available?('test-identifier', Environment.default)
   end
 
   should 'not have long descriptions' do
@@ -2025,6 +2141,16 @@ class ProfileTest < ActiveSupport::TestCase
 
     community.add_member person
     assert_equal false, ProfileSuggestion.find(suggestion.id).enabled
+  end
+
+  should 'destroy related suggestion if profile is destroyed' do
+    person = fast_create(Person)
+    suggested_person = fast_create(Person)
+    suggestion = ProfileSuggestion.create(:person => person, :suggestion => suggested_person, :enabled => true)
+
+    assert_difference 'ProfileSuggestion.find_all_by_suggestion_id(suggested_person.id).count', -1 do
+      suggested_person.destroy
+    end
   end
 
   should 'enable profile visibility' do

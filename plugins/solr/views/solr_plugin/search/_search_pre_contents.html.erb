@@ -1,15 +1,6 @@
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 text-left form-control-static">
 
-    <div class="search-results-header-information">
-      <% if @searches[@asset][:results].total_entries > 0 %>
-        <%= label_total_found @asset, @searches[@asset][:results].total_entries %>
-        <% if params[:display] != 'map' %>
-          <span class="current-page"><%= _("Showing page %s of %s") % [@searches[@asset][:results].current_page, @searches[@asset][:results].total_pages] %></span>
-        <% end %>
-      <% end %>
-    </div>
-
     <%= facets_unselect_menu @asset %>
     <div class="row hidden-md hidden-lg">
       <div class="col-lg-12 col-md-12 col-sm-12">

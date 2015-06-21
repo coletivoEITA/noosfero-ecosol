@@ -7,22 +7,22 @@
   <div class="balloon-offers">
     <% unless @empty %>
       <div class="offers-or-needs<%= ' has-both' if @has_both %>">
-        <div class="suppliers-products products<%= ' empty' if @suppliers_hashes.blank? %>">
-          <% unless @suppliers_hashes.blank? %>
+        <div class="suppliers-products products<%= ' empty' if @suppliers.blank? %>">
+          <% unless @suppliers.blank? %>
             <strong><%= _('Can supply') %></strong>
             <div>
-              <% @suppliers_hashes.each do |h| %>
-                <div><%= render :partial => "item_#{h[:partial]}", :locals => {:hash => h} %></div>
+              <% @suppliers.each do |supplier| %>
+                <div><%= render :partial => "item_#{supplier[:partial]}", :locals => {:item => supplier} %></div>
               <% end %>
             </div>
           <% end %>
         </div>
-        <div class="consumer-products products<%= ' empty' if @consumers_hashes.blank? %>">
-          <% unless @consumers_hashes.blank? %>
+        <div class="consumer-products products<%= ' empty' if @consumers.blank? %>">
+          <% unless @consumers.blank? %>
             <strong><%= _('May consum') %></strong>
             <div>
-              <% @consumers_hashes.each do |h| %>
-                <div><%= render :partial => "item_#{h[:partial]}", :locals => {:hash => h} %></div>
+              <% @consumers.each do |consumer| %>
+                <div><%= render :partial => "item_#{consumer[:partial]}", :locals => {:item => consumer} %></div>
               <% end %>
             </div>
           <% end %>

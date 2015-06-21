@@ -63,10 +63,10 @@ end
 group :test do
   gem 'spring'
   gem 'spring-commands-testunit'
+  gem 'rspec',                  '~> 2.14.0'
+  gem 'rspec-rails',            '~> 2.14.1'
+  gem 'mocha',                  '~> 1.1.0', :require => false
   gem 'test-unit' if RUBY_VERSION >= '2.2.0'
-  gem 'rspec',                  '~> 2.10.0'
-  gem 'rspec-rails',            '~> 2.10.1'
-  gem 'mocha',                  '~> 1.1.0', require: false
 end
 
 group :cucumber do
