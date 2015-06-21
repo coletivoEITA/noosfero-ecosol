@@ -13,21 +13,37 @@
         name: "Suppliers"
         description: "Suppliers and its distributed products registry"
         distribution_tab: "Distribuição"
+      import:
+        keys:
+          # ordered by most specific
+          supplier_url: '(supplier|producer).+url'
+          product_url: 'product.+url'
+          supplier_price: '(supplier|producer).+price'
+          supplier: '(supplier|producer)'
+          product: 'product'
+          qualifiers: 'qualifier'
+          product_category: 'category'
+          price: 'price'
+          unit: 'unit'
+          composition: 'composition'
+          external_id: 'external'
+          stock: 'stock'
+
     terms: &suppliers_terms
       profile: &suppliers_term_profile
         singular: "organization"
         plural: "organizations"
-        it: 
+        it:
           singular: "it"
           plural: "them"
-        article: 
+        article:
           singular: "the organization"
           plural: "the organizations"
         undefined_article:
           singular: "a organization"
-        by_article: 
+        by_article:
           singular: "by the organization"
-        tO_it: 
+        tO_it:
           singular: "to it"
           plural: "to them"
         to_article:
@@ -39,7 +55,7 @@
           singular: "from an organization"
         from_article:
           singular: "from the organization"
-        from_which_article: 
+        from_which_article:
           singular: "from which the organização"
         of:
           singular: "of organization"
@@ -55,61 +71,61 @@
           singular: "this organization"
         with_which:
           singular: "with which the organization"
-      consumer: 
+      consumer:
         singular: "consumer"
         plural: "consumers"
         to_article:
           singular: "to the consumer"
           plural: "to the consumers"
-        from_article: 
+        from_article:
           singular: "from consumer"
           plural: "from consumers"
       supplier:
         singular: "supplier"
         plural: "suppliers"
         one: "one"
-        it: 
+        it:
           singular: "it"
           plural: "them"
-        article: 
+        article:
           singular: "the supplier"
           plural: "the suppliers"
         undefined_article:
           singular: "a supplier"
-        by_article: 
+        by_article:
           singular: "by the supplier"
         new_undefined_article:
           singular: "a new supplier"
-        to: 
+        to:
           singular: "to a supplier"
           plural: "to suppliers"
-        tO_it: 
+        tO_it:
           singular: "to it"
           plural: "to them"
         to_article:
           singular: "to the supplier"
           plural: "to the suppliers"
-        none: 
+        none:
           singular: "any supplier"
         this:
           singular: "this supplier"
-        from: 
+        from:
           singular: "from supplier"
-        from_article: 
+        from_article:
           singular: "from the supplier"
-        from_which_article: 
+        from_which_article:
           singular: "from which the supplier"
-        of: 
+        of:
           singular: "of supplier"
           plural: "of suppliers"
-        of_article: 
+        of_article:
           singular: "of the supplier"
           plural: "of the suppliers"
-        of_this: 
+        of_this:
           singular: "of this supplier"
-        of_another: 
+        of_another:
           singular: "of another supplier"
-        your: 
+        your:
           singular: "your supplier"
           plural: "your suppliers"
         on_your:
@@ -118,35 +134,24 @@
           singular: "on your organization"
         on_undefined_article:
           singular: "on an organization"
-    controllers: 
-      myprofile: 
+    controllers:
+      myprofile:
         supplier_created: "%{terms.supplier.singular.capitalize} created"
-      product: 
+      product:
         import_in_progress: "The products are being imported. Wait a while and reload the page to view them."
     models:
-      distributed_product: 
+      distributed_product:
         greater: " > "
-      product: 
+      product:
         unit: unit
         units: units
-      profile: 
+      profile:
         consumer: Consumer
     views:
-      filter: &suppliers_plugin_filter
+      filter:
         filter: Filter
         filter_it: Filter
-        status: "Status"
-        code: "Code"
-        all: "All"
-        period: "Period"
-      actions: &suppliers_plugin_actions
-        all: "All"
-        none: "None"
-        select: "Select"
-        with_selection: "with itens selected"
-        with_filter: "with search"
-        activate: "activate"
-        deactivate: "deactivate"
+      actions:
 
       control_panel:
         suppliers: "Manage suppliers"
@@ -175,9 +180,9 @@
           field_product_price: "Price per unit"
           remove_all: 'Also remove all registered suppliers and their products (start a new list of products).'
           confirm_remove_all: "CAUTION! This option will remove all registered suppliers and their products!"
-          unit_help: "Use as <b>unit</b> one of the following (put the name equal): %{units}" 
-          send: "Send" 
-        _edit: 
+          unit_help: "Use as <b>unit</b> one of the following (put the name equal): %{units}"
+          send: "Send"
+        _edit:
           distribution_setts: "Product's distribution settings"
           margin_price: "Margin / price"
           default_margin: "Use default"
@@ -196,18 +201,18 @@
           same_from_purchase: "Same from purchase"
           unit: "Unit"
           unit_detail: "Unit detail"
-        _edit_line: 
+        _edit_line:
           active: Active
           inactive: Inactive
-        _form_errors: 
+        _form_errors:
           errors_found: "Errors found:"
-        _price_details: 
+        _price_details:
           commercialization_act: "Commercialization active"
           minimum_order: "Minimum order"
           price: Price
           unit: Unit
           unit_specification: "Unit specification"
-        _search: 
+        _search:
           status: Status
           supplier: "%{terms.supplier.singular.capitalize}"
           category: Category
@@ -218,7 +223,7 @@
           unit: Unit
           showing_pcount_produc: "Total: %{count} products"
           we_don_t_have_product: "We don't have products to show."
-        index: 
+        index:
           active: active
           add_product: "Add product"
           all_the_categories: "all the categories"
@@ -241,7 +246,7 @@
           whose_qty_available_i: "whose qty. available is"
           category: "Category"
           with_the_qualifiers: "with the qualifiers"
-      supplier: 
+      supplier:
         _new:
           title: "Add %{terms.supplier.singular} to %{profile}"
           intro_help: "Begin to type the name %{terms.supplier.from_article.singular} that you wnat to add. We'll look if %{terms.supplier.article.singular} already exists at %{environment}. In case it doesn't exists, you'll be able to createa type of enterprise that will be visible ONLY %{terms.profile.on_your.singular}, and not at the %{environment}. If %{terms.supplier.this.singular} really wants to join the %{environment}, then it should send a message to %{contact_email} making the order."
@@ -251,7 +256,7 @@
           add: "Add"
           suggest_creation: "If you don't find %{terms.supplier.article.singular} you can create %{terms.supplier.new_undefined_article.singular} that will be managed %{terms.profile.by_article.singular}. But please find carefully to avoid duplicates!"
           create_dummy: "Create %{terms.supplier.singular}"
-        _edit: 
+        _edit:
           registry_help: "The registry %{terms.supplier.from_article.singular} will be managed by the %{terms.profile.by_article.singular} itself and will be private %{terms.profile.to_it.singular}."
           abbreviated_name: "Abbreviated name"
           add_supplier_managed_: "Add %{terms.supplier.singular} managed %{terms.profile.by_article.singular}"
@@ -273,7 +278,7 @@
           with_selection: "with selected"
           activate: "activate"
           deactivate: "deactivate"
-        _supplier: 
+        _supplier:
           edit: "Edit"
           see_page: "See page"
           see_products: "See products"
@@ -288,7 +293,7 @@
           edit: edit
           products_are_active: " produtos estão ativos"
           products_distributed: " distributed products %{terms.profile.by_article.singular}"
-          products: 
+          products:
             zero: "no products"
             one: "1 product"
             other: "%{count} products"
@@ -298,10 +303,10 @@
           supplier_profile_product: " registered products"
           supplier_with_registr: "%{terms.supplier.singular.capitalize} with registry managed by the %{terms.profile.by_article.singular}"
           this_supplier_has: "This %{terms.supplier.singular} has"
-        _suppliers_list: 
+        _suppliers_list:
           this_search_didn_t_re: "This search didn't return %{terms.supplier.plural}."
           any_registered: "%{terms.supplier.none.singular.capitalize} registered."
-        index: 
+        index:
           add_supplier: "Add %{terms.supplier.singular}"
           filter: Filter
           filter_it: Filter
@@ -314,285 +319,8 @@
           no_consumers: "This profile isn't a suppliers of the network."
           save: "Save"
 
-  orders_plugin:
+  orders_cycle_plugin:
     terms:
-      <<: *suppliers_terms
-      purchase:
-        singular: "Purchase"
-        plural: "Purchases"
-      sale:
-        singular: "Sale"
-        plural: "Sales"
-    lib:
-      plugin:
-        name: "Orders"
-        description: "Orders' management"
-        panel_button: "Purchases and Sales"
-        person_panel_button: "Purchases made"
-
-      ext:
-        profile:
-          orders_manager: "Orders' Manager"
-      mailer:
-        order_was_confirmed: "[%{name}] Your order was confirmmed"
-        order_was_cancelled: "[%{name}] Your order was cancelled"
-      date_helper:
-        a: "%A"
-        b_d_at_hh_m: "%B %d, at %Hh%M"
-        b_d_from_time_start_t: "%{default_format}, from %{time_start} to %{time_finish}"
-        from_start_to_finish: "from %{start} to %{finish}"
-        hh_m: "%Hh%M"
-        m_d: "%m/%d"
-        m_d_hh: "%-m/%-d %Hh"
-        m_d_hh_m: "%m/%d %Hh%M"
-        m_d_y_at_hh_m: "%m/%d/%Y at %Hh%M"
-        m_d_y_hh_m: "%m/%d/%Y %Hh%M"
-        m_y_hh_m: "%m/%Y - %Hh%M"
-        start_day_from_start_: "%{start_day}, from %{start_time} to %{finish_time}"
-        start_day_start_datet: "%{start_day}, %{start_datetime} - %{finish_day}, %{finish_datetime}"
-        start_finish: "%{start} - %{finish}"
-        start_to_finish: "%{start} to %{finish}"
-        to: to
-      price_helper: 
-        /: /
-        price_unit: "%{price}%{unit}"
-      report: 
-        closed_orders: "Closed Orders"
-        created: created
-        modified: modified
-        payment_method: payment method
-        delivery_option: delivery or pickup option
-
-        member_name: "Consumer name"
-        min_stock: "min. stock"
-        mm_dd_yy_hh_mm_am_pm: "MM/DD/YY HH:MM AM/PM"
-        order_code: "Order code"
-        parcelled_total: "Parcelled total"
-        price_un: price/un.
-        product_cod: "product cod."
-        product_name: "product name"
-        products_report: "products report"
-        projected_stock: "projected stock"
-        qtt_to_be_parcelled: "qtt to be using stock"
-        qty_ordered: "qty ordered"
-        selled_total: "selled total"
-        selled_value: "selled value"
-        stock_qtt: "stock qtt"
-        supplier: "%{terms.supplier.singular.capitalize}"
-        total_parcel_value: "Total value using stock"
-        total_selled_value: "Total selled value"
-        total_value: "Total Value"
-        un: un.
-        value: value
-        value_parcel: "value using stock"
-        phone: 'Telephone'
-        mail: 'Email'
-        alert_formulas: "Atention! If you are using LibreOffice (BrOffice) you will need to update the formulas with the command CTRL + SHIFT + F9"
-    controllers:
-      profile:
-        consumer: 
-          can_not_confirm_your_: "Can not confirm. Your order is empty"
-          login_first: "Login first"
-          order_cancelled: "Order cancelled"
-          order_confirmed: "Order confirmed"
-          order_removed: "Order removed"
-          please_login_first: "Please login first"
-          you_are_not_the_owner: "You are not the owner of this order"
-      myprofile:
-        admin:
-          orders_report: "Orders' Report - %{date} - %{profile_identifier} - %{name}.xlsx"
-          products_report: "Products' Report - %{date} - %{profile_identifier} - %{name}.xlsx"
-    models:
-      order: 
-        statuses:
-          open: "Open"
-          forgotten: "Not confirmed"
-          planned: "Planned"
-          cancelled: "Cancelled"
-          confirmed: "Confirmed"
-          ordered: "Ordered"
-          accepted: "Accepted"
-          separated: "Separated"
-          delivered: "Delivered"
-          received: "Received"
-        statuses_verbs:
-          ordered: "Confirm"
-          accepted: "Accept"
-          separated: "Separate"
-          delivered: "Deliver"
-          received: "Receive"
-        actor_data:
-          name: "Name"
-          email: "Email"
-          contact_phone: "Phone"
-        delivery_data:
-          name: "Name"
-          description: "Description"
-          address_line1: "Address"
-          address_line2: "Address completion"
-          reference: "Reference"
-          district: "District"
-          city: "City" 
-          state: "State"
-          postal_code: "Postal code"
-          zip_code: "ZIP code"
-        payment_data:
-          method: "Method"
-          change: "Change"
-    helpers:
-      help:
-        hide: "hide help"
-        show: "show help"
-    views:
-      filter:
-        <<: *suppliers_plugin_filter
-        delivery: 'Delivery or pickup'
-      actions: 
-        <<: *suppliers_plugin_actions
-
-      public:
-        repeat: 
-          heading: "Repetir pedido anterior"
-          help: "Choose which of the previous orders you wish to make. Observe the details if there are products missing or with updated values."
-          date: "Date"
-          ordered_itens: "Ordered items"
-          checkout: "checkout"
-          choose: "choose and edit"
-          clear_orders_session: "clear orders' history from this computer"
-
-      consumer:
-        _total: 
-          total: Total
-
-      item: 
-        _edit: 
-          remove_from_order: "remove from order"
-          submit: 'OK'
-          this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
-
-        _add: 
-          label: 'Add product'
-          placeholder: "Type to find and add products"
-
-        _index: 
-          header: "Purchase %{profile.code} - %{profile} / Sale - %{consumer}"
-          empty_order: "Empty order"
-          supplier: "%{terms.supplier.singular}"
-          product: "product"
-          quantity: "qty"
-          price_total: "value (%{currency})"
-          status: "status"
-
-      message: 
-        _fields: 
-          message: Message
-          subject: Subject
-        new_to_admins: 
-          cancel: cancel
-          message_to_managers_o: "Message to managers of \"%{profile}\""
-          send: Send
-        new_to_consumer: 
-          cancel: cancel
-          message_to_member_con: "Message to consumer \"%{consumer}\""
-          send: Send
-        new_to_consumer_for_order: 
-          cancel: cancel
-          include_reference_to_: "Include reference to the order made"
-          message_to_member_con: "Message to consumer \"%{consumer}\""
-          send: Send
-        new_to_supplier: 
-          cancel: cancel
-          message_to_supplier_s: "Message to supplier \"%{supplier}\""
-          send: Send
-      order:
-        _show: 
-          open: "Open"
-          cancel_order: "Cancel order"
-          confirm_order: "Confirm order"
-          confirming_this_order: "Confirming this order you are responsible for paying it. Do you want to continue?"
-        _delivery: 
-          consumer_heading: "Receipt Method"
-          supplier_heading: "Delivery Method"
-          choose_another: "Choose another:"
-        _payment:
-          heading: "Payment method"
-        _actor_data: 
-          consumer_heading: "Data %{terms.consumer.from_article.singular}"
-          supplier_heading: "Data %{terms.supplier.from_article.singular}"
-      admin:
-        reports:
-          generate_spreadsheets: "Generate spreadsheets"
-          products_spreadsheet: "Products"
-          orders_spreadsheet: "Orders"
-        index: 
-          no_orders_to_show: "No orders to show."
-          code: "code"
-          consumer: "consumer"
-          last_update: "last update"
-          order_date: "orders' date"
-          total: "total (%{currency})"
-          situation: "situation"
-          none_selected: "Any order selected"
-        _edit: 
-          add_product: "add product"
-          cancel: cancel
-          edit_on_the_order_pag: "edit on the order page"
-          empty_order: "Empty order"
-          include_message: "Include message"
-          message_to_actor: "message to the %{actor}"
-          remove_order: "remove order"
-          save: Save
-          see_delivery: "see delivery"
-          see_redistribution: "see redistribution"
-          the_collective_member: "The consumer %{terms.profile.from_article.singular} will receive an email that discriminates all changes made in his/her order"
-          warn_member_of_the_ch: "Warn consumer of the changes in his/her order"
-
-      mailer:
-        message_to_admins: 
-          a_service_of_s: "A service of %{environment}."
-          hello_managers_of_nam: "Hello managers of %{name},"
-          the_member_member_sen: "The consumer %{member} sent a messsage to you"
-        message_to_consumer: 
-          a_service_of_s: "A service of %{environment}."
-          hello_name: "Hello %{name},"
-          the_collective_profile_s: "%{profile} sent a messsage to you"
-        message_to_consumer_for_order: 
-          a_service_of_s: "A service of %{environment}."
-          hello_name: "Hello %{name}!"
-          order: order
-          quantity_unit_of_prod: "%{quantity} %{unit} of %{product}"
-          the_collective_profile_s: "%{profile} sent a messsage to you regarding your %{order}"
-          the_products_in_the_o: "The products in the order"
-        message_to_supplier: 
-          a_service_of_s: "A service of %{environment}."
-          hello_administrators_: "Hello administrators of %{name},"
-          the_collective_profile_s: "%{profile} sent a messsage to you"
-        order_confirmation: 
-          attention_to_the_foll: "Attention to the following delivery instructions:"
-          dear_name: "Dear %{name},"
-          greetings: Greetings
-          order_code_of_profile: "Order %{code} of %{name}"
-          order_data_confirmed: "Order data confirmed:"
-          the_delivery_period_w: "The delivery period will occur %{date}."
-          your_order_can_be_che: "Your order can be checked or changed in the following link:"
-          your_order_made_on_co: "Your order made %{terms.profile.at_article.singular} %{name} in %{date} is confirmed."
-        order_cancellation: 
-          dear_name: "Dear %{name},"
-          greetings: Greetings
-          your_order_made_on_co: "Your order made %{terms.profile.at_article.singular} %{name} in %{date} was successfully cancelled."
-        _complete_order: 
-          order_no_code: "Order Nº: %{code}"
-          price: Price
-          price_un: Price/un
-          price_unit: "%{price}/%{unit}"
-          products_list: "Products list"
-          qtt: QTT.
-          quantity_unit: "%{quantity} %{unit}"
-          supplier_product: "%{terms.supplier.singular.capitalize}/Product"
-          total: "TOTAL:"
-
-  orders_cycle_plugin: 
-    terms: 
       <<: *suppliers_terms
     lib:
       plugin:
@@ -602,27 +330,27 @@
         orders_plugin:
           order:
             cyclecode_ordercode: "%{cyclecode}.%{ordercode}"
-      mailer: 
+      mailer:
         profile_subject: "[%{profile}] %{subject}"
         order_was_changed: "[%{profile}] Your order was modificado"
-      order_block: 
+      order_block:
         distribution_orders_c: "Distribution orders' cycles for consumers"
         offer_cycles_for_you_: "Offer cycles for you consumers to make orders"
         orders_cycles: "Orders' cycles"
-    controllers: 
-      myprofile: 
-        message_controller: 
+    controllers:
+      myprofile:
+        message_controller:
           message_sent: "Message sent"
-        product_controller: 
+        product_controller:
           product_removed_from_: "Product removed from cycle"
           product_removed_succe: "Product removed successfully"
           the_product_was_not_r: "The product was not removed"
-        cycle_controller: 
+        cycle_controller:
           cycle_created: "Cycle created"
           cycle_n_n: "Cycle n.%{n}"
           new_open_cycle: "New open cycle: "
-    models: 
-      cycle: 
+    models:
+      cycle:
         code_name: "%{code}. %{name}"
         delivery_period_befor: "Delivery' period before orders' period"
         invalid_delivery_peri: "Invalid delivery' period"
@@ -635,24 +363,24 @@
           separation: Separation
           delivery: Delivery
           closing: Closing
-    views: 
-      gadgets: 
-        _cycle: 
+    views:
+      gadgets:
+        _cycle:
           happening: Happening
           orders_open_b_cycle: "Orders open: <b>%{cycle}</b>"
           place_an_order: "place an order"
           see_orders_cycle: "see orders' cycle"
-        cycles: 
+        cycles:
           all_cycles: "all cycles"
-      mailer: 
-        open_cycle: 
+      mailer:
+        open_cycle:
           a_new_cycle_is_open_c: "A new cycle is open called "
           hello_member_of_name: "Hello consumer of %{name},"
           the_administrator_let: "The administrator let a message about this cycle"
           the_cycle_description: "The cycle description is.."
-      profile: 
-      order: 
-        _consumer_orders: 
+      profile:
+      order:
+        _consumer_orders:
           caution: "<strong>Caution</strong>, you are editing the orders of \"%{consumer}\". It is preferable to make small editions through the cycle's administration, this way the person will be properly warned of the updates. We recommend using this page only if you're doing the order for another person."
           show_cancelled_orders: "show cancelled orders"
           hide_cancelled_orders: "hide cancelled orders"
@@ -678,7 +406,7 @@
           your_order_wasn_t_con: "Your order wasn't confirmed and the cycle orders period already ended."
           your_orders_on_this_c: "Your orders on this cycle"
           associate_to_order: "Associate to make orders"
-        _filter_products: 
+        _filter_products:
           active: active
           all_the_categories: "all the categories"
           all_the_suppliers: "all %{terms.supplier.article.plural}"
@@ -691,18 +419,18 @@
           product_name: "Product Name"
           supplier: "%{terms.supplier.singular.capitalize}"
           whose_qty_available_i: "whose qty. available is"
-        _status: 
+        _status:
           code_status_message: "%{code} %{status_message}"
           open_it: "open it"
-        index: 
+        index:
           code: "%{code}."
           orders_cycles: "Orders' cycles"
           place_an_order: "Place an order"
           place_another_order: "Place another order"
           there_s_no_open_sessi: "There's no open cycle"
           your_orders: "Your orders:"
-      product: 
-        _order_edit: 
+      product:
+        _order_edit:
           add: Add
           cancel: cancel
           change: Change
@@ -716,14 +444,14 @@
           price_percent_price_w: "%{price} + %{percent}% = %{price_with_margin}"
           price_s_descriptive: "price's descriptive"
           product_image: "Product Image"
-        _order_search: 
+        _order_search:
           order_qty: "Order qty"
           category: Category
           producer: Producer
           price: Price
           product: Product
           this_search_hasn_t_re: "This search hasn't returned any product"
-        _cycle_edit: 
+        _cycle_edit:
           all_ordered_products: "All ordered products from this product will also be removed; you should first warn consumers that ordered this products"
           buy_price: "Buy price"
           buy_unit: "Buy unit"
@@ -738,8 +466,8 @@
           save: Save
           sell_price: "Sell price"
           sell_unit: "Sell unit"
-      cycle: 
-        _brief: 
+      cycle:
+        _brief:
           confirmed_orders:
             zero: "(no confirmed orders)"
             one: "(1 confirmed order)"
@@ -747,9 +475,9 @@
           code: "%{code}."
           delivery: Delivery
           orders: Orders
-        _closed: 
+        _closed:
           cycle_already_finishe: "Cycle already finished"
-        _edit_fields: 
+        _edit_fields:
           add_method: "Add method"
           available_delivery_me: "Available delivery methods"
           cancel_changes: "cancel changes"
@@ -767,18 +495,18 @@
           save_and_open_orders: Save and open orders
           create_and_open_orders: Create and open orders
           this_message_will_be_: "This message will be sent by mail for the consumers %{terms.profile.from_article.singular} "
-        _edit_popin: 
+        _edit_popin:
           close: Close
           cycle_editing: "Cycle editing"
           cycle_saved: "Cycle saved."
-        _edition: 
+        _edition:
           info: 'The edition time is gone and the cycle is already public. Actually, the cycle is in a supply call period.<br/><br/> It is still possible to edit some Cycle parameters through this page, however, beware of the risk. Some operations have different implications depending on the fase you are. When needed, you will be notified by a notification window of the consequences of the changes made.'
           add_product: "Add product"
           it_was_automatically_: "It was automatically created from the active products. See the list below and check for needed changes."
           the_following_list_of: "The following list of products are available in this cycle."
           the_products: "The products"
         _products_loading: "The products are being loaded into the cycle."
-        _orders: 
+        _orders:
           header_help: "In this phase the orders %{terms.consumer.from_article.plural} are received, and it is possible supervise them if by chance there is some more severe error."
           the_orders_period_is_: "The orders period is still on, take care to edit the orders already open, it may confuse the users"
           already_closed: "The orders period was already closed, It's not possible to edit the originals orders. In the redistribution phase it is possible to edit the order, before the delivery it also possible to edit this order."
@@ -790,16 +518,16 @@
           header_help: "In this phase each order é separated acording to the availability of the products purchased that arrived."
         _delivery:
           header_help: "In this phase are registered the deliveries %{terms.consumer.to_article.plural}. This is the moment to register the changes in relation to what was separated."
-        _product_lines: 
+        _product_lines:
           category: Category
           price: Price
           product: Product
           qty_avail: "Qty. avail."
           showing_pcount_produc: "Showing %{pcount} products of %{allpcount}"
           supplier: "%{terms.supplier.singular.capitalize}"
-        _results: 
+        _results:
           no_cycles_to_show: "No cycles to show"
-        _timeline: 
+        _timeline:
           are_you_sure_you_want_to_reopen: "Are you sure you want to reopen the orders cycle?"
           are_you_sure_you_want_to_close: "Are you sure you want to close the orders cycle?"
           call: Call
@@ -807,23 +535,23 @@
           close_status: "Close %{status}"
           finish_cycle_editing: "Open orders for cycle"
           reopen_orders_period: "Reopen orders period"
-        _title: 
+        _title:
           new_cycle: "New cycle"
           order_cycle: "Order Cycle: "
-        _view_dates: 
+        _view_dates:
           delivery: "Delivery: "
           happening: Happening
           orders: "Orders: "
-        _view_header: 
+        _view_header:
           ? ", "
           : ", "
           all_orders_cycles: "all orders cycles"
           orders_cycle_cycle: "Orders' cycle: %{cycle}"
           other_open_cycles_lis: "Other open cycles: %{list}. See also %{all}"
           see_also_all: "See also %{all}"
-        _view_products: 
+        _view_products:
           the_products: "The products"
-        add_products: 
+        add_products:
           add_all_missing_produ: "add all missing products %{terms.profile.to_article.singular}"
           add_product_to_cycle_: "Add product to cycle's products"
           cancel: cancel
@@ -833,7 +561,7 @@
           send: Send
           type_in_a_name: "Type in a name"
           you_already_have_all_: "You already have all your distributed products added"
-        index: 
+        index:
           and_are_from_the_mont: "and are from the month of"
           closed_cycles: "Closed Cycles"
           filter: Filter
@@ -843,12 +571,12 @@
           orders_cycles: "Orders' Cycles"
           show_cycles_from_year: "Show cycles from year"
 
-  consumers_coop_plugin: 
+  consumers_coop_plugin:
     lib:
       plugin:
         name: "Consumers' Coop"
         description: "Make an organization a consumers cooperative"
-      layout_helper: 
+      layout_helper:
         orders: Orders
         start: Start
         products: Products
@@ -859,17 +587,17 @@
       profile: &consumers_coop_term_profile
         singular: "consumers' coop"
         plural: "consumers' coop"
-        it: 
+        it:
           singular: "it"
           plural: "them"
-        article: 
+        article:
           singular: "the consumers' coop"
           plural: "the consumers' coops"
         undefined_article:
           singular: "a consumers' coop"
-        by_article: 
+        by_article:
           singular: "by the consumers' coop"
-        tO_it: 
+        tO_it:
           singular: "to it"
           plural: "to them"
         to_article:
@@ -880,7 +608,7 @@
           singular: "from a consumers' coop"
         from_article:
           singular: "from the consumers' coop"
-        from_which_article: 
+        from_which_article:
           singular: "from which the consumers' coop"
         of:
           singular: "of consumers' coop"
@@ -902,22 +630,20 @@
       myprofile:
         distribution_settings: "Distribution settings saved."
     models:
-      header_image: 
+      header_image:
         fn_of_uploaded_file_w: "%{fn} of uploaded file was larger than the maximum size of 2.0 MB"
     views:
-      layouts: 
-        _admin_submenu: 
+      layouts:
+        _admin_submenu:
           members: Consumers
           orders_cycles: "Orders' Cycles"
           products: Products
           suppliers: "%{terms.supplier.plural.capitalize}"
           settings: "Settings"
-        _header: 
-          collective_consumptio: "Network of Consumers' Coop"
       profile:
-        index: 
+        index:
           dashboard: Dashboard
-        settings: 
+        settings:
           abbreviated_name_of_t: "Abbreviated name of the %{terms.profile.singular}"
           activated: Activated
           black: black
@@ -950,17 +676,17 @@
       profile: &networks_term_profile
         singular: "network"
         plural: "networks"
-        it: 
+        it:
           singular: "it"
           plural: "them"
-        article: 
+        article:
           singular: "the network"
           plural: "the networks"
         undefined_article:
           singular: "a network"
-        by_article: 
+        by_article:
           singular: "by the network"
-        tO_it: 
+        tO_it:
           singular: "to it"
           plural: "to them"
         to_article:
@@ -971,7 +697,7 @@
           singular: "from a network"
         from_article:
           singular: "from the network"
-        from_which_article: 
+        from_which_article:
           singular: "from which the rede"
         of:
           singular: "of the network"
@@ -989,51 +715,51 @@
           singular: "on your network"
         with_which:
           singular: "with which the network"
-      supplier: 
+      supplier:
         singular: "enterprise"
         plural: "enterprises"
         one: "one"
-        it: 
+        it:
           singular: "it"
           plural: "them"
-        article: 
+        article:
           singular: "the enterprise"
           plural: "the enterprises"
         undefined_article:
           singular: "a enterprise"
-        by_article: 
+        by_article:
           singular: "by the enterprise"
         new_undefined_article:
           singular: "a new enterprise"
-        to: 
+        to:
           singular: "to a enterprise"
           plural: "to enterprises"
-        tO_it: 
+        tO_it:
           singular: "to it"
           plural: "to them"
         to_article:
           singular: "to the enterprise"
           plural: "to the enterprises"
-        your: 
+        your:
           singular: "your enterprise"
           plural: "your enterprises"
-        from: 
+        from:
           singular: "from enterprise"
-        from_article: 
+        from_article:
           singular: "from the enterprise"
-        from_which_article: 
+        from_which_article:
           singular: "from which the enterprise"
-        of: 
+        of:
           singular: "of enterprise"
           plural: "of enterprises"
-        of_article: 
+        of_article:
           singular: "of the enterprise"
           plural: "of the enterprises"
-        of_this: 
+        of_this:
           singular: "of this enterprise"
-        of_another: 
+        of_another:
           singular: "of another enterprise"
-        none: 
+        none:
           singular: "any enterprise"
         this:
           singular: "this enterprise"
@@ -1125,7 +851,7 @@
         description: "Manage stocks of products"
         control_panel:
           manage: "Manage Stock"
-        manage_products: 
+        manage_products:
           stock_tab: "Stock"
     models:
       place:

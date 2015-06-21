@@ -6,9 +6,9 @@
   .box-view-inner
     .box-field.category title="#{product.category_name}"
       = product.category_name
-    .box-field.supplier title="#{product.supplier.abbreviation_or_name}"
+    .box-field.supplier
       = link_to_function product.supplier.abbreviation_or_name, "orders_cycle.order.product.supplier.balloon(#{product.id})"
-    .box-field.product title="#{product.name}"
+    .box-field.product
       = link_to_function product.name, "orders_cycle.order.product.balloon(#{product.id})"
     = price_with_unit_span product.price_as_currency_number, product.unit, product.unit_detail, class: 'box-field'
 

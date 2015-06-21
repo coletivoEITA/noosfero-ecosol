@@ -4,6 +4,11 @@ class DeliveryPlugin::Method < ActiveRecord::Base
 
   Types = ['pickup', 'deliver']
 
+  # see also: Profile::LOCATION_FIELDS
+  AddressFields = %w[
+    address address_line2 address_reference district city state country_name zip_code
+  ].map(&:to_sym)
+
   attr_accessible :profile, :delivery_type, :name, :description,
     :fixed_cost, :free_over_price
 
@@ -26,7 +31,11 @@ class DeliveryPlugin::Method < ActiveRecord::Base
   end
 
   def has_cost? order_price=nil
-    self.fixed_cost.present? and (order_price.present? or self.free_over_price.blank? or self.free_over_price < order_price)
+    if order_price.present? and order_price.nonzero? and self.free_over_price.present? and self.free_over_price.nonzero?
+      order_price <= self.free_over_price
+    else
+      self.fixed_cost.present? and self.fixed_cost.nonzero?
+    end
   end
   def free? order_price=nil
     !self.has_cost?

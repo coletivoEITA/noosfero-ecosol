@@ -223,6 +223,20 @@ class CmsControllerTest < ActionController::TestCase
     assert_equal profile, a.last_changed_by
   end
 
+  should 'be able to set label to article image' do
+    login_as(profile.identifier)
+    post :new, :type => TextileArticle.name, :profile => profile.identifier,
+         :article => {
+           :name => 'adding-image-label',
+           :image_builder => {
+             :uploaded_data => fixture_file_upload('/files/tux.png', 'image/png'),
+             :label => 'test-label'
+           }
+         }
+     a = Article.last
+     assert_equal a.image.label, 'test-label'
+  end
+
   should 'edit by using the correct template to display the editor depending on the mime-type' do
     a = profile.articles.build(:name => 'test document')
     a.save!
@@ -316,6 +330,20 @@ class CmsControllerTest < ActionController::TestCase
     assert_difference 'UploadedFile.count' do
       post :new, :type => UploadedFile.name, :profile => profile.identifier, :article => { :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')}
     end
+  end
+
+  should 'be able to edit an image label' do
+    image = fast_create(Image, :content_type => 'image/png', :filename => 'event-image.png', :label => 'test_label', :size => 1014)
+    article = fast_create(Article, :profile_id => profile.id, :name => 'test_label_article', :body => 'test_content')
+    article.image = image
+    article.save
+    assert_not_nil article
+    assert_not_nil article.image
+    assert_equal 'test_label', article.image.label
+
+    post :edit, :profile => profile.identifier, :id => article.id, :article => {:image_builder => { :label => 'test_label_modified'}}
+    article.reload
+    assert_equal 'test_label_modified', article.image.label
   end
 
    should 'be able to upload more than one file at once' do
@@ -1407,20 +1435,55 @@ class CmsControllerTest < ActionController::TestCase
     assert_template 'suggest_an_article'
   end
 
+  should 'display name and email when a not logged in user suggest an article' do
+    logout
+    get :suggest_an_article, :profile => profile.identifier, :back_to => 'action_view'
+
+    assert_select '#task_name'
+    assert_select '#task_email'
+  end
+
+  should 'do not display name and email when a logged in user suggest an article' do
+    get :suggest_an_article, :profile => profile.identifier, :back_to => 'action_view'
+
+    assert_select '#task_name', 0
+    assert_select '#task_email', 0
+  end
+
+  should 'display captcha when suggest an article for not logged in users' do
+    logout
+    get :suggest_an_article, :profile => profile.identifier, :back_to => 'action_view'
+
+    assert_select '#dynamic_recaptcha'
+  end
+
+  should 'not display captcha when suggest an article for logged in users' do
+    get :suggest_an_article, :profile => profile.identifier, :back_to => 'action_view'
+
+    assert_select '#dynamic_recaptcha', 0
+  end
+
   should 'render TinyMce Editor on suggestion of article' do
     logout
     get :suggest_an_article, :profile => profile.identifier
 
-    assert_tag :tag => 'textarea', :attributes => { :name => /article_abstract/, :class => 'mceEditor' }
-    assert_tag :tag => 'textarea', :attributes => { :name => /article_body/, :class => 'mceEditor' }
+    assert_tag :tag => 'textarea', :attributes => { :name => /task\[article\]\[abstract\]/, :class => 'mceEditor' }
+    assert_tag :tag => 'textarea', :attributes => { :name => /task\[article\]\[body\]/, :class => 'mceEditor' }
   end
 
   should 'create a task suggest task to a profile' do
     c = Community.create!(:name => 'test comm', :identifier => 'test_comm', :moderated_articles => true)
 
     assert_difference 'SuggestArticle.count' do
-      post :suggest_an_article, :profile => c.identifier, :back_to => 'action_view', :task => {:article_name => 'some name', :article_body => 'some body', :email => 'some@localhost.com', :name => 'some name'}
+      post :suggest_an_article, :profile => c.identifier, :back_to => 'action_view', :task => {:article => {:name => 'some name', :body => 'some body'}, :email => 'some@localhost.com', :name => 'some name'}
     end
+  end
+
+  should 'create suggest task with logged in user as the article author' do
+    c = Community.create!(:name => 'test comm', :identifier => 'test_comm', :moderated_articles => true)
+
+    post :suggest_an_article, :profile => c.identifier, :back_to => 'action_view', :task => {:article => {:name => 'some name', :body => 'some body'}}
+    assert_equal profile, SuggestArticle.last.requestor
   end
 
   should 'suggest an article from a profile' do
@@ -1774,6 +1837,14 @@ class CmsControllerTest < ActionController::TestCase
     get :edit, :profile => profile.identifier, :id => article.id, :version => 1
     assert_equal 'second version', Article.find(article.id).name
     assert_equal 'first version', assigns(:article).name
+  end
+
+  should 'clone article with its content' do
+    article = profile.articles.create(:name => 'first version')
+
+    get :new, :profile => profile.identifier, :id => article.id, :clone => true, :type => 'TinyMceArticle'
+
+    assert_match article.name, @response.body
   end
 
   should 'save article with content from older version' do

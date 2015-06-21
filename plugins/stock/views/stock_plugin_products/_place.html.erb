@@ -1,14 +1,14 @@
 <%
-  allocation ||= products.allocations.build :place => place
+  allocation ||= products.allocations.build place: place
 %>
 
 <div id="product-place-<%= place.id %>" class="product-place">
   <%= place.name + ':' %>
 
-  <%= form_for allocation, as: :allocation, :url => {:controller => :stock_plugin_products, :action => :update, :id => product.id},
-    :html => {:onsubmit => 'return stock.product.allocation.submit(this)'} do |f| %>
+  <%= form_for allocation, as: :allocation, url: {controller: :stock_plugin_products, action: :update, id: product.id},
+    html: {onsubmit: 'return stock.product.allocation.submit(this)'} do |f| %>
     <%= f.hidden_field :place_id %>
-    <%= f.text_field :quantity, :value => allocation.quantity_localized, :placeholder => t('views.products._place.none'), :class => 'highlight-on-focus',
-      :onchange => 'this.form.onsubmit()' %>
+    <%= f.number_field :quantity, step: 'any', placeholder: t('views.products._place.none'), class: 'highlight-on-focus',
+      onchange: 'this.form.onsubmit()' %>
   <% end %>
 </div>

@@ -29,23 +29,28 @@ class SuppliersPlugin::BaseProduct < Product
     :margin_percentage, :stored, :minimum_selleable, :unit_detail
   ]
 
-  extend ActsAsHavingSettings::DefaultItem::ClassMethods
-  settings_default_item :name, type: :boolean, default: true, delegate_to: :supplier_product
-  settings_default_item :product_category, type: :boolean, default: true, delegate_to: :supplier_product
-  settings_default_item :image, type: :boolean, default: true, delegate_to: :supplier_product, prefix: '_default'
-  settings_default_item :description, type: :boolean, default: true, delegate_to: :supplier_product
-  settings_default_item :unit, type: :boolean, default: true, delegate_to: :supplier_product
-  settings_default_item :available, type: :boolean, default: false, delegate_to: :supplier_product
-  settings_default_item :margin_percentage, type: :boolean, default: true, delegate_to: :profile
+  extend DefaultDelegate::ClassMethods
+  default_delegate_setting :name, to: :supplier_product
+  default_delegate_setting :product_category, to: :supplier_product
+  default_delegate_setting :qualifiers, to: :supplier_product
+  default_delegate_setting :image, to: :supplier_product, prefix: :_default
+  default_delegate_setting :description, to: :supplier_product
+  default_delegate_setting :unit, to: :supplier_product
+  default_delegate_setting :available,  to: :supplier_product
+  default_delegate_setting :margin_percentage, to: :profile,
+    default_if: -> { self.own_margin_percentage.blank? or self.own_margin_percentage.zero? or self.own_price == self.supplier_product.price }
 
-  default_item :price, if: :default_margin_percentage, delegate_to: proc{ self.supplier_product.price_with_discount if self.supplier_product }
-  default_item :unit_detail, if: :default_unit, delegate_to: :supplier_product
-  settings_default_item :stored, type: :boolean, default: true, delegate_to: :supplier_product
-  settings_default_item :minimum_selleable, type: :boolean, default: true, delegate_to: :supplier_product
+  default_delegate :price, default_field: :default_margin_percentage,
+    to: -> { self.supplier_product.price_with_discount if self.supplier_product }
+  default_delegate :unit_detail, default_field: :default_unit, to: :supplier_product
+  default_delegate_setting :stored, to: :supplier_product,
+    default_if: -> { self.own_stored.blank? or self.own_stored.zero? }
+  default_delegate_setting :minimum_selleable, to: :supplier_product
 
-  default_item :product_category_id, if: :default_product_category, delegate_to: :supplier_product
-  default_item :image_id, if: :_default_image, delegate_to: :supplier_product
-  default_item :unit_id, if: :default_unit, delegate_to: :supplier_product
+  default_delegate :product_qualifiers, default_field: :default_qualifiers, to: :supplier_product
+  default_delegate :product_category_id, default_field: :default_product_category, to: :supplier_product
+  default_delegate :image_id, default_field: :_default_image, to: :supplier_product
+  default_delegate :unit_id, default_field: :default_unit, to: :supplier_product
 
   extend CurrencyHelper::ClassMethods
   has_currency :own_price
@@ -95,13 +100,22 @@ SQL
     end
   end
 
-  # replace available? to use the replaced default_item method
+  def buy_price
+    self.supplier_products.inject(0){ |sum, p| sum += p.price || 0 }
+  end
+  def buy_unit
+    #TODO: handle multiple products
+    (self.supplier_product.unit rescue nil) || self.class.default_unit
+  end
+
+  # replace available? to use the replaced default_delegate method
   def available?
     self.available
   end
 
   def available_with_supplier
-    self.available_without_supplier and self.supplier_product and self.supplier_product.available and self.supplier.active rescue false
+    return self.available_without_supplier unless self.supplier_product
+    self.available_without_supplier and self.supplier_product.available and self.supplier.active rescue false
   end
   alias_method_chain :available, :supplier
 
@@ -113,22 +127,22 @@ SQL
   end
 
   def minimum_selleable
-    self['minimum_selleable'] || 0.1
+    self[:minimum_selleable] || 0.1
   end
 
   def price_with_margins base_price = nil, margin_source = nil
-    price = 0 unless price
-    base_price ||= price
     margin_source ||= self
-    ret = base_price
+    margin_percentage = margin_source.margin_percentage
+    margin_percentage ||= self.profile.margin_percentage if self.profile
 
-    if margin_source.margin_percentage
-      ret += (margin_source.margin_percentage.to_f / 100) * ret
-    elsif self.profile and self.profile.margin_percentage
-      ret += (self.profile.margin_percentage.to_f / 100) * ret
+    price = if margin_percentage
+      base_price ||= self.price_with_default || 0
+      base_price + (margin_percentage.to_f / 100) * base_price
+    else
+      self.price_with_default
     end
 
-    ret
+    price
   end
 
   # just in case the from_products is nil

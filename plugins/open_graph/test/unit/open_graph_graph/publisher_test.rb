@@ -91,9 +91,15 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
     # passive
     User.current = @other_actor.user
 
+    # fan
     blog_post = TinyMceArticle.new profile: @enterprise, parent: @enterprise.blog, name: 'blah2', author: User.current.person
     story = @stories[:announce_news_from_a_sse_initiative]
     @publisher.expects(:publish).with(@actor, story, 'http://noosfero.net/coop/blog/blah2?og_type=app_cirandas%3Asse_initiative')
+    blog_post.save!
+    # member
+    blog_post = TinyMceArticle.new profile: @myenterprise, parent: @myenterprise.blog, name: 'blah2', author: User.current.person
+    story = @stories[:announce_news_from_a_sse_initiative]
+    @publisher.expects(:publish).with(@actor, story, 'http://noosfero.net/mycoop/blog/blah2?og_type=app_cirandas%3Asse_initiative')
     blog_post.save!
 
     blog_post = TinyMceArticle.new profile: @community, parent: @community.blog, name: 'blah', author: User.current.person

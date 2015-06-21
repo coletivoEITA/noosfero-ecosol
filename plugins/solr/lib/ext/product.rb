@@ -2,6 +2,7 @@ require_dependency 'product'
 
 class Product
 
+  SEARCH_FILTERS[:order].unshift 'relevance'
   SEARCH_FILTERS[:order] << 'closest'
 
   after_save_reindex [:enterprise], with: :delayed_job
@@ -23,6 +24,15 @@ class Product
 
   alias_method :solr_plugin_ac_name, :name
   alias_method :solr_plugin_ac_category, :category_name
+
+  def solr_plugin_supplier
+    values = [self.profile.name, self.profile.short_name]
+    values.concat [self.supplier.name, self.supplier.name_abbreviation] if defined? SuppliersPlugin
+    values
+  end
+  def solr_plugin_ac_supplier
+    self.solr_plugin_supplier
+  end
 
   def solr_plugin_f_category
     self.product_category.name
@@ -113,6 +123,7 @@ class Product
   acts_as_searchable fields: facets_fields_for_solr + [
       # searched fields
       {name: {type: :text, boost: 2.0}},
+      {solr_plugin_supplier: {type: :text}},
       {description: :text}, {category_full_name: :text},
       # filtered fields
       {solr_plugin_public: :boolean},
@@ -123,6 +134,7 @@ class Product
       # fields for autocompletion
       {solr_plugin_ac_name: :ngram_text},
       {solr_plugin_ac_category: :ngram_text},
+      {solr_plugin_ac_supplier: {type: :ngram_text}},
       # ordered/query-boosted fields
       {solr_plugin_available_sortable: :string}, {solr_plugin_highlighted_sortable: :string},
       {solr_plugin_price_sortable: :decimal}, {solr_plugin_name_sortable: :string},

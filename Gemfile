@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-gem 'rails',                    '~> 3.2.21'
+gem 'rails',                    '~> 3.2.22'
 gem 'minitest',                 '~> 3.2.0'
 gem 'fast_gettext'
 gem 'acts-as-taggable-on',      '~> 3.4.2'
@@ -51,7 +51,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'coffee-rails'
   gem 'sass'
-  gem 'sass-rails'
+  gem 'sass-rails', '~> 3.2.0'
 end
 
 group :production do
@@ -61,10 +61,12 @@ group :production do
 end
 
 group :test do
+  gem 'spring'
+  gem 'spring-commands-testunit'
+  gem 'rspec',                  '~> 2.14.0'
+  gem 'rspec-rails',            '~> 2.14.1'
+  gem 'mocha',                  '~> 1.1.0', :require => false
   gem 'test-unit' if RUBY_VERSION >= '2.2.0'
-  gem 'rspec',                  '~> 2.10.0'
-  gem 'rspec-rails',            '~> 2.10.1'
-  gem 'mocha',                  '~> 1.1.0', require: false
 end
 
 group :cucumber do
@@ -78,8 +80,9 @@ end
 
 group :development do
   gem 'wirble'
-  #gem 'byebug'
-  #gem 'method_source'
+  gem 'byebug'
+  gem 'html2haml'
+  gem 'haml2slim'
 end
 
 # Requires custom dependencies

@@ -216,6 +216,9 @@ class OpenGraphPlugin::Stories
         article.published?
       end,
     },
+    # this does not work with the current interface as the product
+    # is created empty and then have a lot of updates
+=begin
     announce_a_new_sse_product: {
       action_tracker_verb: :create_product,
       track_config: 'OpenGraphPlugin::EnterpriseTrackConfig',
@@ -228,6 +231,7 @@ class OpenGraphPlugin::Stories
         product.profile.enterprise?
       end,
     },
+=end
     announce_an_update_of_sse_product: {
       action_tracker_verb: :update_product,
       track_config: 'OpenGraphPlugin::EnterpriseTrackConfig',
@@ -237,7 +241,8 @@ class OpenGraphPlugin::Stories
       models: :Product,
       on: :update,
       criteria: proc do |product, actor|
-        product.profile.enterprise?
+        # only post from enterprises and products with images
+        product.profile.enterprise? and product.image.present?
       end,
     },
 

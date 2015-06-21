@@ -14,8 +14,8 @@ class PiwikPlugin < Noosfero::Plugin
   end
 
   def body_ending
-    domain = context.environment.piwik_domain
-    site_id = context.environment.piwik_site_id
+    domain = environment.piwik_domain
+    site_id = environment.piwik_site_id
     unless domain.blank? || site_id.blank?
       expanded_template('tracking-code.rhtml',{:domain => domain, :site_id => site_id})
     end

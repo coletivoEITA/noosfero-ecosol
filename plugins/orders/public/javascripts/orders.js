@@ -46,7 +46,7 @@ orders = {
     quantity_keydown: function(context, event) {
       if (event.keyCode == 13) {
         var item = $(context).parents('.item');
-        item.find('.more .action-button').get(0).onclick();
+        item.find('.more .submit').get(0).onclick();
 
         event.preventDefault();
         return false;

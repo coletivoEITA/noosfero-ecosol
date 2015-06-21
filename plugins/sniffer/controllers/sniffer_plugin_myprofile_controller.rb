@@ -1,11 +1,10 @@
 class SnifferPluginMyprofileController < MyProfileController
 
-  include SnifferPlugin::Helper
-
   before_filter :fetch_sniffer_profile, :only => [:edit, :search]
 
+  include SnifferPlugin::Helper
+  helper SnifferPlugin::Helper
   helper CmsHelper
-  helper_method :profile_hash
 
   def edit
     if request.post?
@@ -37,10 +36,10 @@ class SnifferPluginMyprofileController < MyProfileController
       }
     }
     response[:enterprises] = product_category.sniffer_plugin_enterprises.enabled.visible.map do |enterprise|
-      profile_data = profile_hash(enterprise)
+      profile_data = filter_visible_attr_profile(enterprise)
       profile_data[:balloonUrl] = url_for :controller => :sniffer_plugin_myprofile, :action => :map_balloon, :id => enterprise[:id], :escape => false
       profile_data[:sniffer_plugin_distance] = distance_between_profiles(@profile, enterprise)
-      profile_data[:suppliersProducts] = suppliers_products_hash(
+      profile_data[:suppliersProducts] = filter_visible_attr_suppliers_products(
         enterprise.products.sniffer_plugin_products_from_category(product_category)
       )
       profile_data[:consumersProducts] = []
@@ -60,15 +59,7 @@ class SnifferPluginMyprofileController < MyProfileController
     suppliers_categories = suppliers_products.collect(&:product_category)
     consumers_categories = consumers_products.collect(&:product_category)
 
-    @categories = (suppliers_categories + consumers_categories).sort_by(&:name).uniq.map do |category|
-      c = {id: category.id, name: category.name}
-      if suppliers_categories.include?(category) && consumers_categories.include?(category)
-        c[:interest_type] = :both
-      else
-        suppliers_categories.include?(category) ? c[:interest_type] = :supplier : c[:interest_type] = :consumer
-      end
-      c
-    end
+    @categories = categories_with_interest_type(suppliers_categories, consumers_categories)
 
     suppliers = suppliers_products.group_by{ |p| target_profile_id(p) }
     consumers = consumers_products.group_by{ |p| target_profile_id(p) }
@@ -77,14 +68,14 @@ class SnifferPluginMyprofileController < MyProfileController
     suppliers.each do |id, products|
       @profiles_data[id] = {
         :profile => profiles_of_interest[id],
-        :suppliers_products => suppliers_products_hash(products),
+        :suppliers_products => products,
         :consumers_products => []
       }
     end
     consumers.each do |id, products|
       @profiles_data[id] ||= { :profile => profiles_of_interest[id] }
       @profiles_data[id][:suppliers_products] ||= []
-      @profiles_data[id][:consumers_products] = consumers_products_hash(products)
+      @profiles_data[id][:consumers_products] = products
     end
   end
 
@@ -97,8 +88,8 @@ class SnifferPluginMyprofileController < MyProfileController
     @empty = suppliers_products.empty? && consumers_products.empty?
     @has_both = !suppliers_products.blank? && !consumers_products.blank?
 
-    @suppliers_hashes = build_products(suppliers_products).values.first
-    @consumers_hashes = build_products(consumers_products).values.first
+    @suppliers = build_products(suppliers_products).values.first
+    @consumers = build_products(consumers_products).values.first
 
     render :layout => false
   end
@@ -114,39 +105,14 @@ class SnifferPluginMyprofileController < MyProfileController
     @sniffer_profile = SnifferPlugin::Profile.find_or_create profile
   end
 
-  def profile_hash(profile)
-    profile_hash = {}
-    visible_attributes = [:id, :name, :lat, :lng, :sniffer_plugin_distance]
-    visible_attributes.each{ |a| profile_hash[a] = profile[a] || 0 }
-    profile_hash
-  end
-
-  def suppliers_products_hash(products)
-    visible_attributes = [:id, :profile_id, :product_category_id, :view, :knowledge_id, :supplier_profile_id]
-    products.map do |product|
-      suppliers_hash = {}
-      visible_attributes.each{ |a| suppliers_hash[a] = product[a] }
-      suppliers_hash
-    end
-  end
-
-  def consumers_products_hash(products)
-    visible_attributes = [:id, :profile_id, :product_category_id, :view, :knowledge_id, :consumer_profile_id]
-    products.map do |product|
-      consumers_hash = {}
-      visible_attributes.each{ |a| consumers_hash[a] = product[a] }
-      consumers_hash
-    end
-  end
-
   def fetch_profiles(products)
     profiles = Profile.all :conditions => {:id => products.map { |p| target_profile_id(p) }}
-    profiles_hash = {}
+    profiles_by_id = {}
     profiles.each do |p|
       p[:sniffer_plugin_distance] = distance_between_profiles(@profile, p)
-      profiles_hash[p.id] ||= p
+      profiles_by_id[p.id] ||= p
     end
-    profiles_hash
+    profiles_by_id
   end
 
   def build_products(data)
@@ -181,6 +147,18 @@ class SnifferPluginMyprofileController < MyProfileController
     p = product.is_a?(Hash) ? product : product.attributes
     p.delete_if { |key, value| value.blank? }
     (p['consumer_profile_id'] || p['supplier_profile_id'] || p['profile_id']).to_i
+  end
+
+  def categories_with_interest_type(suppliers_categories, consumers_categories)
+    (suppliers_categories + consumers_categories).sort_by(&:name).uniq.map do |category|
+      c = {id: category.id, name: category.name}
+      if suppliers_categories.include?(category) && consumers_categories.include?(category)
+        c[:interest_type] = :both
+      else
+        suppliers_categories.include?(category) ? c[:interest_type] = :supplier : c[:interest_type] = :consumer
+      end
+      c
+    end
   end
 
 end

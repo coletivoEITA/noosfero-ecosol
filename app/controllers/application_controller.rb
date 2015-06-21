@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   before_filter :allow_cross_domain_access
   before_filter :login_required, :if => :private_environment?
   before_filter :verify_members_whitelist, :if => [:private_environment?, :user]
+  before_filter :redirect_to_current_user
   around_filter :set_time_zone
 
   def verify_members_whitelist
@@ -24,15 +25,12 @@ class ApplicationController < ActionController::Base
   protected
 
   def set_time_zone
-    old_time_zone = Time.zone
-    Time.zone = begin browser_timezone rescue ArgumentError old_time_zone end if browser_timezone.present?
+    return yield unless (utc_offset = cookies['browser.tzoffset']).present?
+    utc_offset = utc_offset.to_i
+    gmt_offset = if utc_offset == 0 then nil elsif utc_offset > 0 then -utc_offset else "+#{-utc_offset}" end
+    Time.use_zone("Etc/GMT#{gmt_offset}"){ yield }
+  rescue ArgumentError
     yield
-  ensure
-    Time.zone = old_time_zone
-  end
-
-  def browser_timezone
-    cookies['browser.timezone']
   end
 
   def allow_cross_domain_access
@@ -216,6 +214,7 @@ class ApplicationController < ActionController::Base
   end
 
   def find_by_contents(asset, context, scope, query, paginate_options={:page => 1}, options={})
+    scope = scope.with_templates(options[:template_id]) unless options[:template_id].blank?
     search = plugins.dispatch_first(:find_by_contents, asset, scope, query, paginate_options, options)
     register_search_term(query, scope.count, search[:results].count, context, asset)
     search
@@ -228,4 +227,15 @@ class ApplicationController < ActionController::Base
   def private_environment?
     @environment.enabled?(:restrict_to_members)
   end
+
+  def redirect_to_current_user
+    if params[:profile] == '~'
+      if logged_in?
+        redirect_to params.merge(:profile => user.identifier)
+      else
+        render_not_found
+      end
+    end
+  end
+
 end

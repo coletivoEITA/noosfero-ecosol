@@ -42,7 +42,8 @@ class Profile
 
     define_method "#{profile_ids}=" do |ids|
       cids = self.send(association).order('created_at ASC').map(&:object_data_id)
-      nids = ids.split(',').map(&:to_i)
+      nids = if ids.is_a? Array then ids else ids.split ',' end
+      nids = nids.map(&:to_i)
       Profile.where(id: nids-cids).each{ |profile| self.send(association).create! type: klass.name, object_data: profile }
       self.send(association).each{ |c| c.destroy unless c.object_data_id.in? nids }
     end

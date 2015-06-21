@@ -3,14 +3,14 @@ module OrdersCyclePlugin::OrderBase
 
   extend ActiveSupport::Concern
   included do
-    attr_accessible :cycle
 
     has_many :cycle_sales, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id, dependent: :destroy
     has_many :cycle_purchases, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :purchase_id, dependent: :destroy
-    # cycles is defined with has_many on subclasses
-    def cycles
+    def all_cycles
       self.cycle_sales.includes(:cycle).map(&:cycle) + self.cycle_purchases.includes(:cycle).map(&:cycle)
     end
+
+    attr_accessible :cycle
     def cycle
       self.cycles.first
     end

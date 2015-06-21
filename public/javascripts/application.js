@@ -2,11 +2,11 @@
 // This file is automatically included by javascript_include_tag :defaults
 /*
 * third party libraries
-*= require lodash.compat.min.js
+*= require lodash.js
 *= require jquery-2.1.1.min.js
 *= require jquery-migrate-1.2.1.js
-*= require jquery.colorbox-min.js
 *= require jquery.cycle.all.min.js
+*= require jquery.colorbox-min.js
 *= require jquery-ui-1.10.4/js/jquery-ui-1.10.4.min.js
 *= require jquery.scrollTo.js
 *= require jquery.form.js
@@ -14,13 +14,10 @@
 *= require jquery.cookie.js
 *= require jquery.ba-bbq.min.js
 *= require jquery.tokeninput.js
-*= require jquery.typewatch.js
-*= require jquery.textchange.js
+* select-or-die/_src/selectordie
 *= require jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
 *= require inputosaurus.js
 *= require reflection.js
-*= require select-or-die/_src/selectordie
-*= require typeahead.bundle.js
 *= require rails.js
 *= require rails-extended.js
 *= require jrails.js
@@ -36,6 +33,7 @@
 *= require autogrow.js
 *= require pagination.js
 *= require loading-overlay.js
+*= require require_login.js
 */
 
 _.templateSettings = {
@@ -703,10 +701,9 @@ Array.min = function(array) {
 
 function hideAndGetUrl(link) {
   document.body.style.cursor = 'wait';
-  link = jQuery(link)
-  link.hide();
-  url = link.attr('href');
-  jQuery.getScript(link.attr('href') , function(){
+  jQuery(link).hide();
+  url = jQuery(link).attr('href');
+  jQuery.get(url, function( data ) {
     document.body.style.cursor = 'default';
   });
 }
@@ -1036,3 +1033,37 @@ function add_new_file_fields() {
 }
 
 window.isHidden = function isHidden() { return (typeof(document.hidden) != 'undefined') ? document.hidden : !document.hasFocus() };
+
+function $_GET(id){
+    var a = new RegExp(id+"=([^&#=]*)");
+    var result_of_search = a.exec(window.location.search)
+    if(result_of_search != null){
+      return decodeURIComponent(result_of_search[1]);
+    }
+}
+
+var fullwidth=false;
+function toggle_fullwidth(itemId){
+  if(fullwidth){
+    jQuery(itemId).removeClass("fullwidth");
+    jQuery("#fullscreen-btn").show()
+    jQuery("#exit-fullscreen-btn").hide()
+    fullwidth = false;
+  }
+  else{
+    jQuery(itemId).addClass("fullwidth");
+    jQuery("#exit-fullscreen-btn").show()
+    jQuery("#fullscreen-btn").hide()
+    fullwidth = true;
+  }
+  jQuery(window).trigger("toggleFullwidth", fullwidth);
+}
+
+function fullscreenPageLoad(itemId){
+  jQuery(document).ready(function(){
+
+    if ($_GET('fullscreen') == 1){
+      toggle_fullwidth(itemId);
+    }
+  });
+}

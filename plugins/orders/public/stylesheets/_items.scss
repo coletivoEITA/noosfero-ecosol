@@ -58,7 +58,7 @@
         border-right: none;
       }
 
-      &.supplier, &.product, .unit {
+      &.supplier, &.product {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
@@ -150,11 +150,17 @@
             }
 
             &.editable {
-              .value {
-                display: initial;
+              .quantity {
+                .value {
+                  display: initial;
+                }
               }
             }
             .quantity {
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+
               input {
                 display: none;
               }
@@ -204,11 +210,20 @@
               }
 
               &.editable {
-                .value {
-                  display: none;
+                .quantity {
+                  text-overflow: initial;
+                  overflow: initial;
+                  white-space: initial;
+
+                  .value {
+                    display: none;
+                  }
                 }
               }
               .quantity {
+                .unit {
+                  display: initial;
+                }
                 input {
                   display: initial;
                 }

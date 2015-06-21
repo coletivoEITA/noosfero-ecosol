@@ -107,8 +107,18 @@ class OrdersPlugin::Item < ActiveRecord::Base
   def unit
     self.product.unit
   end
+  def unit_name
+    self.unit.singular if self.unit
+  end
   def supplier
     self.product.supplier rescue self.order.profile.self_supplier
+  end
+  def supplier_name
+    if self.product.supplier
+      self.product.supplier.abbreviation_or_name
+    else
+      self.order.profile.short_name
+    end
   end
 
   def status
@@ -122,8 +132,8 @@ class OrdersPlugin::Item < ActiveRecord::Base
   end
 
   def next_status_quantity_field actor_name
-    status = self.order.next_status(actor_name) || 'ordered'
-    "quantity_#{StatusDataMap[status]}"
+    status = StatusDataMap[self.order.next_status actor_name] || 'consumer_ordered'
+    "quantity_#{status}"
   end
   def next_status_quantity actor_name
     self.send self.next_status_quantity_field(actor_name)
@@ -134,15 +144,29 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
   def status_quantity_field
     @status_quantity_field ||= begin
-      status = self.order.status || 'ordered'
-      "quantity_#{StatusDataMap[status]}"
+      status = StatusDataMap[self.order.status] || 'consumer_ordered'
+      "quantity_#{status}"
     end
   end
+  def status_price_field
+    @status_price_field ||= begin
+      status = StatusDataMap[self.order.status] || 'consumer_ordered'
+      "price_#{status}"
+    end
+  end
+
   def status_quantity
     self.send self.status_quantity_field
   end
   def status_quantity= value
     self.send "#{self.status_quantity_field}=", value
+  end
+
+  def status_price
+    self.send self.status_price_field
+  end
+  def status_price= value
+    self.send "#{self.status_price_field}=", value
   end
 
   StatusDataMap.each do |status, data|
@@ -194,7 +218,9 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
       quantity = self.send "quantity_#{data_field}"
       if quantity.present?
-        status_data[:quantity] = self.send "quantity_#{data_field}_localized"
+        # quantity is used on <input type=number> so it should not be localized
+        status_data[:quantity] = quantity
+        status_data[:flags][:removed] = true if status_data[:quantity].zero?
         status_data[:price] = self.send "price_#{data_field}_as_currency_number"
         status_data[:new_price] = quantity * new_price if new_price
         status_data[:flags][:filled] = true
@@ -240,7 +266,9 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
     # Set access
     statuses_data.each.with_index do |(status, status_data), i|
-      status_data[:flags][:editable] = true if status_data[:access] == actor_name and (status_data[:flags][:admin] or self.order.open?)
+      status_data[:flags][:editable] = true if StatusAccessMap[status] == actor_name
+      # code to only allow last status
+      #status_data[:flags][:editable] = true if status_data[:access] == actor_name and (status_data[:flags][:admin] or self.order.open?)
     end
 
     data

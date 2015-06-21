@@ -11,6 +11,7 @@ class ContentViewerController < ApplicationController
     path = get_path(params[:page], params[:format])
 
     @version = params[:version].to_i
+    @npage = params[:npage] || '1'
 
     if path.blank?
       @page = profile.home_page
@@ -50,9 +51,10 @@ class ContentViewerController < ApplicationController
 
     begin
       process_page_posts(params)
-    rescue
-      render_not_found
-      return
+    # FIXME: be more specific (pagination, etc)
+    #rescue
+      #render_not_found
+      #return
     end
 
     if @page.folder? && @page.gallery?
@@ -126,21 +128,23 @@ class ContentViewerController < ApplicationController
   helper_method :pass_without_comment_captcha?
 
   def allow_access_to_page(path)
-    allowed = true
     if @page.nil? # page not found, give error
       render_not_found(path)
-      allowed = false
-    elsif !@page.display_to?(user)
-      if !profile.public?
+      return false
+    end
+
+    unless @page.display_to?(user)
+      if !profile.visible? || profile.secret? || (user && user.follows?(profile)) || user.blank?
+        render_access_denied
+      else #!profile.public?
         private_profile_partial_parameters
         render :template => 'profile/_private_profile', :status => 403, :formats => [:html]
-        allowed = false
-      else #if !profile.visible?
-        render_access_denied
-        allowed = false
       end
+
+      return false
     end
-    allowed
+
+    return true
   end
 
   def user_is_a_bot?

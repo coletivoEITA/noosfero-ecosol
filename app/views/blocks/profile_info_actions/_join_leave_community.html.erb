@@ -1,4 +1,4 @@
-<div class='join-leave-button'>
+<div class='join-leave-button require-login-popup'>
   <% if logged_in? and not profile.already_request_membership? user %>
     <% if user.in? profile.members %>
       <%= button(:delete, content_tag('span', _('Leave community')), profile.leave_url,
@@ -10,7 +10,7 @@
         title: _("Join community"),
         style: 'position: relative; display: none;') %>
     <% else %>
-      <%= button :add, _('Join'), profile.join_not_logged_url, title: _('Join this community'), class: 'join-community' %>
+      <%= button :add, _('Join this community'), profile.join_not_logged_url, title: _('Join this community'), class: 'join-community' %>
     <% end %>
   <% end %>
 </div>

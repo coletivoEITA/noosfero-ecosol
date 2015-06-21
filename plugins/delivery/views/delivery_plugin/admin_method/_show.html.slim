@@ -1,7 +1,7 @@
 td.name title="#{method.description}"
   = method.name
 td.actions
-  - if request.GET[:select_ids].present? and not method.id.to_s.in? request.GET[:selected_ids]
+  - if request.GET[:select_ids].present? and not method.id.to_s.in? Array(request.GET[:selected_ids])
     = button_to_function :add, t('delivery_plugin.views.delivery_option._select_content.add'),
       "delivery.option.add('#{url_for request.GET.merge(controller: 'delivery_plugin/admin_options', action: :new, method_id: method.id)}')"
 

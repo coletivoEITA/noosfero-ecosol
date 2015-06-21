@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "POT-Creation-Date: 2015-02-02 21:44-0300\n"
-"PO-Revision-Date: 2015-04-14 09:46-0300\n"
+"PO-Revision-Date: 2015-06-07 09:11-0300\n"
 "Last-Translator: Daniel Tygel <dtygel@eita.org.br>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero/"
 "noosfero/pt/>\n"
@@ -260,4 +260,10 @@ msgstr "Ver menos opções"
 
 msgid "Please confirm to leave the community '%{name}'"
 msgstr "Por favor confirme para sair da comunidade '%{name}'"
+
+msgid "Presentation and enterprise's catalog"
+msgstr "Apresentação e vitrine do empreendimento"
+
+msgid "loading..."
+msgstr "carregando..."
 

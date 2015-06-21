@@ -25,7 +25,6 @@ public/designs/themes/*
 public/designs/icons/default
 
 public/assets
-
 .sass-cache
 public/javascripts/cache*
 public/stylesheets/cache*

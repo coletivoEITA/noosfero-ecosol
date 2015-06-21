@@ -8,7 +8,7 @@ class Noosfero::Plugin
   module ParentMethods
 
     def identifier
-      @identifier ||= (if self.parents.first != Object then self.parents.first else self end).name.underscore
+      @identifier ||= (if self.parents.first.instance_of? Module then self.parents.first else self end).name.underscore
     end
 
     def public_name

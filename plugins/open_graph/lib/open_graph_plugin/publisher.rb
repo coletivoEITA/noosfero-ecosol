@@ -24,7 +24,11 @@ class OpenGraphPlugin::Publisher
 
   def publish_stories object_data, actor, stories
     stories.each do |story|
-      self.publish_story object_data, actor, story
+      begin
+        self.publish_story object_data, actor, story
+      rescue => e
+        ExceptionNotifier.notify_exception e
+      end
     end
   end
 
@@ -56,24 +60,30 @@ class OpenGraphPlugin::Publisher
     return if actors.blank?
     print_debug "open_graph: #{story} has enabled trackers" if debug? actor
 
-    begin
-      if publish = defs[:publish]
+    if publish = defs[:publish]
+      begin
         instance_exec actor, object_data, &publish
-      else
-        # force profile identifier for custom domains and fixed host. see og_url_for
-        object_profile = self.call(story_defs[:object_profile], object_data) || object_data.profile rescue nil
-        extra_params = if object_profile then {profile: object_profile.identifier} else {} end
+      rescue => e
+        print_debug "open_graph: can't publish story: #{e.message}" if debug? actor
+        ExceptionNotifier.notify_exception e
+      end
+    else
+      # force profile identifier for custom domains and fixed host. see og_url_for
+      object_profile = self.call(story_defs[:object_profile], object_data) || object_data.profile rescue nil
+      extra_params = if object_profile then {profile: object_profile.identifier} else {} end
 
-        custom_object_data_url = self.call defs[:object_data_url], object_data, actor
-        object_data_url = if passive then self.passive_url_for object_data, custom_object_data_url, defs, extra_params else self.url_for object_data, custom_object_data_url, extra_params end
+      custom_object_data_url = self.call defs[:object_data_url], object_data, actor
+      object_data_url = if passive then self.passive_url_for object_data, custom_object_data_url, defs, extra_params else self.url_for object_data, custom_object_data_url, extra_params end
 
-        actors.each do |actor|
-          print_debug "open_graph: start publishing" if debug? actor
+      actors.each do |actor|
+        print_debug "open_graph: start publishing" if debug? actor
+        begin
           self.publish actor, defs, object_data_url
+        rescue => e
+          print_debug "open_graph: can't publish story: #{e.message}" if debug? actor
+          ExceptionNotifier.notify_exception e
         end
       end
-    rescue => e
-      print_debug "open_graph: can't publish story: #{e.message}" if debug? actor
     end
   end
 

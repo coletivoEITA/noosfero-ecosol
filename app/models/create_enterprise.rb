@@ -16,7 +16,7 @@ class CreateEnterprise < Task
     settings_items field.to_sym
   end
 
-  # checks for virtual attributes 
+  # checks for virtual attributes
   validates_presence_of :name, :identifier
 
   #checks if the validation method is region to validates
@@ -127,7 +127,7 @@ class CreateEnterprise < Task
     finish
   end
 
-  # tells if this request was appoved 
+  # tells if this request was appoved
   def approved?
     self.status == Task::Status::FINISHED
   end
@@ -141,7 +141,6 @@ class CreateEnterprise < Task
     end
 
     enterprise.environment = environment
-
     enterprise.user = self.requestor.user
 
     enterprise.save!

@@ -24,7 +24,7 @@ class EnterpriseRegistrationController < ApplicationController
     the_action =
       if request.post?
         if @create_enterprise.valid_before_selecting_target?
-          if @create_enterprise.valid? && @validation == :none
+          if @create_enterprise.valid? || @validation == :none
             :creation
           elsif @create_enterprise.valid? || @validation == :admin
             :confirmation
@@ -36,8 +36,8 @@ class EnterpriseRegistrationController < ApplicationController
 
     # default to basic_information
     the_action ||= :basic_information
-
-    send(the_action)
+    # fallback if false is returned
+    the_action = :basic_information if not self.send the_action
     render :action => the_action
   end
 
@@ -64,14 +64,16 @@ class EnterpriseRegistrationController < ApplicationController
   # confirmation message saying to the user that the enterprise register
   # request was done.
   def confirmation
-    @create_enterprise.save!
+    @create_enterprise.save
   end
 
   # Records the enterprise and presents a confirmation message
   # saying to the user that the enterprise was created.
   def creation
-    @create_enterprise.perform
-    @enterprise = @create_enterprise.target.profiles.find_by_identifier(@create_enterprise.identifier)
+    if @create_enterprise.save
+      @create_enterprise.perform
+      @enterprise = @create_enterprise.target.profiles.find_by_identifier(@create_enterprise.identifier)
+    end
   end
 
 end

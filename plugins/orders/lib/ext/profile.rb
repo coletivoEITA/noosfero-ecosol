@@ -26,10 +26,14 @@ class Profile
   has_many :purchases_profiles, through: :sales, source: :profile
 
   def sales_all_consumers
-    (self.suppliers.except_self.order('name ASC') + self.sales_consumers.order('name ASC')).uniq
+    consumers = self.sales_consumers.order 'name ASC'
+    consumers.concat self.suppliers.except_self.order('name ASC') if self.respond_to? :suppliers
+    consumers.uniq
   end
   def purchases_all_consumers
-    (self.consumers.except_self.order('name ASC') + self.purchases_consumers.order('name ASC')).uniq
+    consumers = self.purchases_consumers.order 'name ASC'
+    consumers.concat self.consumers.except_self.order('name ASC') if self.respond_to? :consumers
+    consumers.uniq
   end
 
   def self.create_orders_manager_role env_id

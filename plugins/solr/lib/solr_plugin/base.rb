@@ -56,6 +56,8 @@ class SolrPlugin::Base < Noosfero::Plugin
   	solr_options = build_solr_options asset, klass, scope, category
     solr_options.merge! sort_options asset, klass, filter
     solr_options.merge! options
+    # We don't yet use the option to filter by template
+    solr_options.delete :template_id
 
     scope.find_by_contents query, paginate_options, solr_options
   rescue Exception => e
@@ -77,7 +79,7 @@ class SolrPlugin::Base < Noosfero::Plugin
     case asset
     when :catalog
       klass = Product
-      solr_options[:query_fields] = %w[solr_plugin_ac_name^100 solr_plugin_ac_category^1000]
+      solr_options[:query_fields] = %w[solr_plugin_ac_name^100 solr_plugin_ac_category^90 solr_plugin_ac_supplier^80]
       solr_options[:highlight] = {fields: 'name'}
       solr_options[:filter_queries] = scopes_to_solr_options scope, klass, options
     end
@@ -190,7 +192,7 @@ class SolrPlugin::Base < Noosfero::Plugin
 
   def sort_options asset, klass, filter
     options = SolrPlugin::SearchHelper::SortOptions[asset]
-    options[filter][:solr_opts] rescue {}
+    options[filter][:solr_opts] || {} rescue {}
   end
 
 end

@@ -16,7 +16,7 @@ if erb and not erb.empty?
   if File.file? erb
     convert erb
   else
-    STDERR.puts 'file not found'
+    STDERR.puts "file '#{erb}' not found"
   end
 else
   GLOB_ALL = '**/*.erb'

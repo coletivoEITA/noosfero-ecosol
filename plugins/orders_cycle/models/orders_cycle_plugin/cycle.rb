@@ -19,11 +19,15 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
     'closing' => :supplier,
   }
   OrderStatusMap = {
+    # sales
     'orders' => :ordered,
+    # purchases
     'purchases' => :draft,
     'receipts' => :ordered,
+    # sales
     'separation' => :accepted,
     'delivery' => :separated,
+    'closing' => :delivered,
   }
 
   belongs_to :profile
@@ -42,7 +46,7 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   has_many :products, through: :cycle_products, order: 'products.name ASC',
     include: [ :from_2x_products, :from_products, {profile: :domains}, ]
 
-  has_many :consumers, through: :sales, source: :consumer, order: 'name ASC'
+  has_many :consumers, through: :sales, source: :consumer, order: 'name ASC', uniq: true
   has_many :suppliers, through: :products, order: 'suppliers_plugin_suppliers.name ASC', uniq: true
   has_many :orders_suppliers, through: :sales, source: :profile, order: 'name ASC'
 
@@ -112,7 +116,7 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   validate :validate_delivery_dates, if: :not_new?
 
   before_validation :step_new
-  before_validation :check_status
+  before_validation :update_orders_status
   before_save :add_products_on_edition_state
   after_create :delay_purge_profile_defuncts
 
@@ -210,19 +214,18 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
     OrdersCyclePlugin::Order.supplier_products_by_suppliers orders
   end
 
-  def generate_purchases
+  def generate_purchases sales = self.sales.ordered
     return self.purchases if self.purchases.present?
 
-    self.sales.ordered.each do |sale|
+    sales.each do |sale|
       sale.add_purchases_items_without_delay
     end
 
     self.purchases true
   end
-
-  def regenerate_purchases
+  def regenerate_purchases sales = self.sales.ordered
     self.purchases.destroy_all
-    self.generate_purchases
+    self.generate_purchases sales
   end
 
   def add_distributed_products
@@ -251,17 +254,24 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
     self.step if self.new?
   end
 
-  def check_status
-    # done at #step_new
-    return if self.new?
-
+  def update_orders_status
     # step orders to next_status on status change
-    return if self.status_was.blank?
-    return unless order_status = OrderStatusMap[self.status_was]
+    return if self.new? or self.status_was == self.status
+    return unless order_status_was = OrderStatusMap[self.status_was]
+    new_order_status = OrderStatusMap[self.status]
+
     actor_name = StatusActorMap[self.status_was]
     orders_method = if actor_name == :supplier then :sales else :purchases end
-    orders = self.send(orders_method).where(status: order_status.to_s)
-    orders.each{ |order| order.step! actor_name }
+    # we can't rewind purchases status because the suppliers already got notified by the confirmed parcels
+    return if orders_method == :purchases and self.status_was == 'receipts' and self.status == 'purchases'
+    # don't rewind consumers' confirmed orders
+    return if orders_method == :sales and self.status_was == 'orders' and self.status == 'edition'
+
+    # get only the orders in the same cycle status
+    orders = self.send(orders_method).where(status: order_status_was.to_s)
+    orders.each do |order|
+      order.update_attribute :status, new_order_status
+    end
   end
 
   def validate_orders_dates

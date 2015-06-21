@@ -56,9 +56,9 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
         purchased_item = purchase.items.for_product(supplier_product).first
         purchased_item ||= purchase.items.build purchase: purchase, product: supplier_product
         purchased_item.quantity_consumer_ordered ||= 0
-        purchased_item.quantity_consumer_ordered += item.quantity_consumer_ordered
+        purchased_item.quantity_consumer_ordered += item.status_quantity
         purchased_item.price_consumer_ordered ||= 0
-        purchased_item.price_consumer_ordered += item.quantity_consumer_ordered * supplier_product.price
+        purchased_item.price_consumer_ordered += item.status_quantity * supplier_product.price
         purchased_item.save run_callbacks: false # dont touch which cause an infinite loop
       end
     end
@@ -71,8 +71,8 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
         next unless purchase = supplier_product.orders_cycles_purchases.for_cycle(self.cycle).first
 
         purchased_item = purchase.items.for_product(supplier_product).first
-        purchased_item.quantity_consumer_ordered -= item.quantity_consumer_ordered
-        purchased_item.price_consumer_ordered -= item.quantity_consumer_ordered * supplier_product.price
+        purchased_item.quantity_consumer_ordered -= item.status_quantity
+        purchased_item.price_consumer_ordered -= item.status_quantity * supplier_product.price
         purchased_item.save!
 
         purchased_item.destroy if purchased_item.quantity_consumer_ordered.zero?

@@ -1,7 +1,10 @@
 <%= content_for :head do %>
-  <%= stylesheet_link_tag '/plugins/fb_app/stylesheets/bootstrap-tokenfield.css' %>
-  <%= stylesheet_link_tag '/plugins/fb_app/stylesheets/tokenfield-typeahead.css' %>
-  <%= javascript_include_tag '/plugins/fb_app/javascripts/bootstrap-tokenfield.js' %>
+  <%= javascript_include_tag 'typeahead.bundle.js' %>
+  <%= stylesheet_link_tag 'typeahead' %>
+  <%= stylesheet_link_tag 'plugins/fb_app/stylesheets/bootstrap-tokenfield.css' %>
+  <%= stylesheet_link_tag 'plugins/fb_app/stylesheets/tokenfield-typeahead.css' %>
+  <%= javascript_include_tag 'plugins/fb_app/javascripts/bootstrap-tokenfield.js' %>
+  <%= javascript_include_tag 'plugins/open_graph/javascripts/open_graph.js' %>
 <% end %>
 
 <%

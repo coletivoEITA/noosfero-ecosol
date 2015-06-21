@@ -29,7 +29,7 @@ module LayoutHelper
   end
 
   def noosfero_javascript
-    plugins_javascripts = @plugins.map { |plugin| [plugin.js_files].flatten.map { |js| plugin.class.public_path(js, true) } }.flatten
+    plugins_javascripts = @plugins.flat_map{ |plugin| Array.wrap(plugin.js_files).map{ |js| plugin.class.public_path(js, true) } }
 
     output = ''
     output += render 'layouts/javascript'
@@ -39,23 +39,33 @@ module LayoutHelper
     output += theme_javascript_ng.to_s
     output += javascript_tag 'render_all_jquery_ui_widgets()'
 
-    output += javascript_tag 'render_all_jquery_ui_widgets()'
+    output += template_javascript_ng.to_s
+
     output
   end
 
   def noosfero_stylesheets
-    plugins_stylesheets = @plugins.select(&:stylesheet?).map { |plugin| plugin.class.public_path('style.css', true) }
+    plugins_stylesheets = @plugins.select(&:stylesheet?).map { |plugin|
+      plugin.class.public_path('style.css', true)
+    }
+    global_css_pub = "/designs/themes/#{environment.theme}/global.css"
+    global_css_at_fs = Rails.root.join 'public' + global_css_pub
 
-    output = ''
-    output += stylesheet_link_tag 'application'
-    output += stylesheet_link_tag template_stylesheet_path
-    output += stylesheet_link_tag *icon_theme_stylesheet_path
-    output += stylesheet_link_tag jquery_ui_theme_stylesheet_path
+    output = []
+    output << stylesheet_link_tag('application')
+    output << stylesheet_link_tag(template_stylesheet_path)
+    output << stylesheet_link_tag(*icon_theme_stylesheet_path)
+    output << stylesheet_link_tag(jquery_ui_theme_stylesheet_path)
     unless plugins_stylesheets.empty?
-      output += stylesheet_link_tag *plugins_stylesheets
+      # FIXME: caching does not work with asset pipeline
+      #cacheid = "cache/plugins-#{Digest::MD5.hexdigest plugins_stylesheets.to_s}"
+      output << stylesheet_link_tag(*plugins_stylesheets)
     end
-    output += stylesheet_link_tag theme_stylesheet_path
-    output
+    if File.exists? global_css_at_fs
+      output << stylesheet_link_tag(global_css_pub)
+    end
+    output << stylesheet_link_tag(theme_stylesheet_path)
+    output.join "\n"
   end
 
   def noosfero_layout_features
@@ -63,11 +73,7 @@ module LayoutHelper
   end
 
   def template_stylesheet_path
-    if profile.nil?
-      "/designs/templates/#{environment.layout_template}/stylesheets/style.css"
-    else
-      "/designs/templates/#{profile.layout_template}/stylesheets/style.css"
-    end
+    File.join template_path, "/stylesheets/style.css"
   end
 
 

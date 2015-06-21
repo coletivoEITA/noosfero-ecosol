@@ -46,10 +46,16 @@ function unlocalize_currency(value, from) {
   if (!from)
     from = locale;
   var lvalue = value.toString();
+  var number;
+  // check if it already a float
+  if (!isNaN(number = parseFloat(lvalue)))
+    return number;
+
   var to = code_locale;
   lvalue = lvalue.replace(locale_data[from].currency.delimiter, locale_data[to].currency.delimiter);
   lvalue = lvalue.replace(locale_data[from].currency.separator, locale_data[to].currency.separator);
-  return parseFloat(lvalue);
+  number = parseFloat(lvalue);
+  return number;
 }
 
 }

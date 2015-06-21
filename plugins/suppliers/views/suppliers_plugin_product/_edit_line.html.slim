@@ -1,0 +1,17 @@
+.box-view.with-inner
+  .box-field.select toggle-ignore="" = check_box_tag "product_ids[]", product.id
+
+  .box-view-inner
+    .box-field.status= t"views.product._edit_line.#{if product.available then :active else :inactive end}"
+    .box-field.category= product.category_name
+    .box-field.supplier= product.supplier.abbreviation_or_name
+    .box-field.product.box-edit-link= product.name
+    .box-field.margin= "#{product.margin_percentage_localized}%"
+    .box-field.price= price_span(product.price_as_currency_number || '-')
+    .box-field.stock= product.stored_localized || '∞'
+    .box-field.unit= product.unit.name
+
+  = edit_arrow "#our-product-#{product.id}", false
+  .clean
+
+= render 'suppliers_plugin_product/edit', product: product

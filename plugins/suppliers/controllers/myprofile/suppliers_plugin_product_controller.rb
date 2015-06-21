@@ -12,8 +12,8 @@ class SuppliersPluginProductController < MyProfileController
   def index
     filter
     respond_to do |format|
-      format.html
-      format.js { render partial: 'suppliers_plugin_product/search' }
+      format.html{ render template: 'suppliers_plugin_product/index' }
+      format.js{ render partial: 'suppliers_plugin_product/search' }
     end
   end
 
@@ -27,7 +27,7 @@ class SuppliersPluginProductController < MyProfileController
   end
 
   def edit
-    @product = SuppliersPlugin::DistributedProduct.find params[:id]
+    @product = profile.distributed_products.find params[:id]
     @product.update_attributes params["product_#{@product.id}"]
   end
 

@@ -1,6 +1,6 @@
 <%= error_messages_for :product %> <br/>
 
-<%= form_for :product, :html => {:multipart => true }, :url => {:action => mode} do |f| %>
+<%= form_for :product, as: :product, :html => {:multipart => true }, :url => {:action => mode} do |f| %>
   <%= required_fields_message %>
 
   <%= display_form_field( _('Name:'), f.text_field(:name) ) %>
@@ -15,3 +15,4 @@
     <%= submit_button('save', (mode == 'new' ? _('Create product') : _('Save changes')), :cancel => {:action => 'index'} ) %>
   <% end %>
 <% end %>
+

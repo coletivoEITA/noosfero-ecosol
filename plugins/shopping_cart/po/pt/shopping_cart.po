@@ -11,12 +11,12 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0-690-gcb6e853\n"
-"POT-Creation-Date: 2015-03-05 12:09-0300\n"
-"PO-Revision-Date: 2015-05-12 10:18-0300\n"
+"Project-Id-Version: 1.1-166-gaf47713\n"
+"POT-Creation-Date: 2015-06-01 17:26-0300\n"
+"PO-Revision-Date: 2015-06-20 20:13-0300\n"
 "Last-Translator: Michal Čihař <michal@cihar.com>\n"
-"Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero"
-"/plugin-shopping-cart/pt/>\n"
+"Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero/"
+"plugin-shopping-cart/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -346,26 +346,6 @@ msgstr "Abaixo, revise as informações do seu pedido:"
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:17
 msgid "Phone number"
 msgstr "Telefone"
-
-#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:20
-#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:18
-#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:9
-msgid "Money"
-msgstr "Dinheiro"
-
-#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:20
-#: plugins/shopping_cart/views/shopping_cart_plugin/mailer/supplier_notification.html.erb:18
-#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:9
-msgid "shopping_cart|Check"
-msgstr "Cheque"
-
-#: plugins/shopping_cart/lib/shopping_cart/cart_helper.rb
-msgid "Credit card"
-msgstr "Cartão de crédito"
-
-#: plugins/shopping_cart/lib/shopping_cart/cart_helper.rb
-msgid "Bank transfer"
-msgstr "Transferência bancária"
 
 #: plugins/shopping_cart/views/shopping_cart_plugin/mailer/customer_notification.html.erb:47
 msgid "Here are the products you bought:"

@@ -8,7 +8,7 @@
     </div>
 
     <%= labelled_field f, :margin_percentage, t('views.myprofile.margin_change.new_margin'),
-      f.text_field(:margin_percentage, value: profile.margin_percentage_localized) + ' ' + t('views.myprofile.margin_change.%') %>
+      f.number_field(:margin_percentage, step: 'any') + ' ' + t('views.myprofile.margin_change.%') %>
 
     <div>
       <%= check_box_tag :apply_to_all, 1, false, style: 'float: left'  %>

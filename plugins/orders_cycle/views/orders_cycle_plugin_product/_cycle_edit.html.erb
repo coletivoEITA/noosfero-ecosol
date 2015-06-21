@@ -12,23 +12,23 @@
   <%= form_for p, as: :product, remote: true, url: {controller: :orders_cycle_plugin_product, action: :cycle_edit, id: p.id } do |f| %>
 
     <div class="cycle-product-line">
-      <%= labelled_field f, :price, t('views.product._cycle_edit.sell_price'), f.text_field(:price, value: p.price_as_currency_number, onkeyup: 'orders_cycle.offered_product.pmsync(this, false);') %>
-      <%= labelled_field f, :margin_percentage, t('views.product._cycle_edit.margin'), f.text_field(:margin_percentage, value: p.margin_percentage_localized, onkeyup: "orders_cycle.offered_product.pmsync(this, true);") %>
-      <%# labelled_field f, :quantity, t('views.product._cycle_edit.qty_offered'), f.text_field(:quantity, value: p.quantity_localized) %>
+      <%= labelled_field f, :price, t('views.product._cycle_edit.sell_price'), f.number_field(:price, step: 'any', onkeyup: 'orders_cycle.offered_product.pmsync(this, false)', oninput: 'this.onkeyup()') %>
+      <%= labelled_field f, :margin_percentage, t('views.product._cycle_edit.margin'), f.number_field(:margin_percentage, step: 'any', onkeyup: "orders_cycle.offered_product.pmsync(this, true);", oninput: 'this.onkeyup()') %>
+      <%# labelled_field f, :quantity, t('views.product._cycle_edit.qty_offered'), f.number_field(:quantity) %>
 
       <div class="clean"></div>
     </div>
 
     <div class="cycle-product-line">
-      <%= labelled_field f, :original_price, t('views.product._cycle_edit.default_sell_price'), f.text_field(:original_price, value: p.original_price_as_currency_number, disabled: '') %>
-      <%= labelled_field f, :original_margin, t('views.product._cycle_edit.default_margin'), f.text_field(:original_margin_percentage, value: p.original_margin_percentage_localized, disabled: '') %>
-      <%# labelled_field f, :original_stored, t('views.product._cycle_edit.qty_in_stock'), f.text_field(:original_stored, value: p.original_stored_localized, disabled: '') %>
+      <%= labelled_field f, :original_price, t('views.product._cycle_edit.default_sell_price'), f.number_field(:original_price, step: 'any', disabled: '') %>
+      <%= labelled_field f, :original_margin, t('views.product._cycle_edit.default_margin'), f.number_field(:original_margin_percentage, step: 'any', disabled: '') %>
+      <%# labelled_field f, :original_stored, t('views.product._cycle_edit.qty_in_stock'), f.number_field(:original_stored, step: 'any', disabled: '') %>
 
       <div class="clean"></div>
     </div>
 
     <div class="cycle-product-line">
-      <%= labelled_field f, :buy_price, t('views.product._cycle_edit.buy_price'), f.text_field(:buy_price, value: p.buy_price_as_currency_number, disabled: '') %>
+      <%= labelled_field f, :buy_price, t('views.product._cycle_edit.buy_price'), f.number_field(:buy_price, step: 'any', disabled: '') %>
       <%= labelled_field f, :buy_unit, t('views.product._cycle_edit.buy_unit'), text_field_tag(:buy_unit, p.buy_unit.singular, disabled: '') %>
       <%= labelled_field f, :sell_unit, t('views.product._cycle_edit.sell_unit'), text_field_tag(:sell_unit, p.sell_unit.singular, disabled: '') %>
 

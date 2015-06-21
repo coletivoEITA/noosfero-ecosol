@@ -35,10 +35,26 @@
       width: $module10 + $intercolumn;
       float: left;
       @extend .container-clean;
-      @import 'field';
 
       .field-secondary {
         float: left;
+        display: block;
+
+        &, input, select {
+          width: $module02 - $intercolumn;
+        }
+
+        &.with-unit {
+          @extend .container-clean;
+
+          .input-group {
+            float: left;
+            width: $module02 - 2*$intercolumn;
+            &, input, select {
+              width: 100%;
+            }
+          }
+        }
       }
 
       .internal-table {

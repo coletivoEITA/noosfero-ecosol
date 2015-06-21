@@ -31,7 +31,7 @@ class SuppliersPlugin::Supplier < ActiveRecord::Base
   after_create :save_profile, if: :dummy?
   after_create :distribute_products_to_consumer
 
-  attr_accessor :dont_destroy_dummy, :identifier_from_name
+  attr_accessor :distribute_products_on_create, :dont_destroy_dummy, :identifier_from_name
 
   before_validation :fill_identifier, if: :dummy?
   before_destroy :destroy_consumer_products
@@ -123,7 +123,8 @@ class SuppliersPlugin::Supplier < ActiveRecord::Base
   end
 
   def distribute_products_to_consumer
-    return if self.self? or self.consumer.person?
+    self.distribute_products_on_create = true if self.distribute_products_on_create.nil?
+    return if self.self? or self.consumer.person? or not self.distribute_products_on_create
 
     already_supplied = self.consumer.distributed_products.unarchived.from_supplier_id(self.id).all
 

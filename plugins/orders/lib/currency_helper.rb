@@ -23,7 +23,9 @@ module CurrencyHelper
   end
 
   def self.localized_number number
-    number_with_delimiter number.to_f
+    # the maximum precision is 2, and we don't use number_with_precision
+    # as we don't wan't a fixed precision (e.g. 1.00 is just 1.0)
+    number_with_delimiter number.to_f.round 2
   end
 
   def self.number_as_currency_number number
@@ -39,6 +41,9 @@ module CurrencyHelper
   module ClassMethods
 
     def has_number_with_locale attr
+      # rake db:migrate run?
+      return unless self.table_exists?
+
       # Rails doesn't define getters and setters for attributes
       define_method attr do
         self[attr]

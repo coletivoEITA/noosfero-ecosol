@@ -9,7 +9,7 @@ h3
     = t('views.order._consumer_orders.your_orders_on_this_c')
     - if @consumer.in? @cycle.profile.members
       = link_to t('views.order._consumer_orders.new_order'), {action: :new, cycle_id: @cycle.id},
-        class: 'btn btn-default btn-danger fa fa-plus'
+        class: 'btn btn-default btn-danger fa fa-plus', onclick: "$(this).attr('disabled', '')"
       - if not @admin_edit and @cycle.consumer_previous_orders(@consumer).present?
         = link_to t('views.order._consumer_orders.repeat_order'), {action: :repeat, cycle_id: @cycle.id},
           class: 'modal-toggle btn btn-default btn-danger fa fa-repeat'
@@ -32,7 +32,7 @@ h3
       signup: link_to(t('views.order._consumer_orders.sign_up'), controller: 'account', action: 'signup')
   - else
     - if @cycle.orders?
-      - if not @consumer.in? @cycle.profile.members and @cycle.profile.community?
+      - if not @admin and not @consumer.in? @cycle.profile.members and @cycle.profile.community?
         = t'views.order._consumer_orders.associate_to_order'
         = render 'blocks/profile_info_actions/join_leave_community'
       - elsif @consumer_orders.count == 0

@@ -44,23 +44,21 @@ class Profile
   end
   alias_method_chain :suppliers, :self_supplier
 
-  def add_consumer consumer
-    return if self.consumers.of_consumer consumer
-
-    supplier = self.suppliers.create! profile: self, consumer: consumer
+  def add_consumer consumer_profile
+    consumer = self.consumers.where(consumer_id: consumer_profile.id).first
+    consumer ||= self.consumers.create! profile: self, consumer: consumer_profile
   end
-  def remove_consumer consumer
-    supplier = self.consumers.of_consumer(consumer).first
-
-    supplier.destroy if supplier
-    supplier
+  def remove_consumer consumer_profile
+    consumer = self.consumers.of_consumer(consumer_profile).first
+    consumer.destroy if supplier
   end
 
-  def add_supplier supplier
-    supplier.add_consumer self
+  def add_supplier supplier_profile, attrs={}
+    supplier = self.suppliers.where(profile_id: supplier_profile.id).first
+    supplier ||= self.suppliers.create! attrs.merge(profile: supplier_profile, consumer: self)
   end
-  def remove_supplier supplier
-    supplier.remove_consumer self
+  def remove_supplier supplier_profile
+    supplier_profile.remove_consumer self
   end
 
   def not_distributed_products supplier

@@ -9,10 +9,11 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   # oh, we need a payments plugin!
   PaymentMethods = {
-    money: proc{ _("Money") },
-    check: proc{ s_('shopping_cart|Check') },
-    credit_card: proc{ _('Credit card') },
-    bank_transfer: proc{ _('Bank transfer') },
+    money: proc{ _'Money' },
+    check: proc{ _'shopping_cart|Check' },
+    credit_card: proc{ _'Credit card' },
+    bank_transfer: proc{ _'Bank transfer' },
+    boleto: proc{ _'Boleto' },
   }
 
   # remember to translate on changes
@@ -42,7 +43,8 @@ class OrdersPlugin::Order < ActiveRecord::Base
   self.table_name = :orders_plugin_orders
   self.abstract_class = true
 
-  attr_accessible :status, :consumer, :profile, :supplier_delivery_id, :consumer_delivery_id
+  attr_accessible :status, :consumer, :profile,
+    :supplier_delivery_id, :consumer_delivery_id, :supplier_delivery_data, :consumer_delivery_data
 
   belongs_to :profile
   # may be override by subclasses
@@ -56,6 +58,10 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   belongs_to :supplier_delivery, class_name: 'DeliveryPlugin::Method'
   belongs_to :consumer_delivery, class_name: 'DeliveryPlugin::Method'
+
+  scope :alphabetical, -> { joins(:consumer).order 'profiles.name ASC' }
+  scope :latest, -> { order 'code ASC' }
+  scope :default_order, -> { order 'code DESC' }
 
   scope :of_session, -> session_id { where session_id: session_id }
   scope :of_user, -> session_id, consumer_id=nil do
@@ -110,6 +116,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   validates_inclusion_of :status, in: DbStatuses
 
   before_validation :check_status
+  before_validation :change_status
   after_save :send_notifications
 
   extend CodeNumbering::ClassMethods
@@ -125,7 +132,14 @@ class OrdersPlugin::Order < ActiveRecord::Base
     {name: consumer.name, email: consumer.contact_email, contact_phone: consumer.contact_phone} if consumer
   end
   sync_serialized_field :supplier_delivery
-  sync_serialized_field :consumer_delivery
+  sync_serialized_field :consumer_delivery do |consumer_delivery_data|
+    if self.consumer
+      h = {}; Profile::LOCATION_FIELDS.each do |field|
+        h[field.to_sym] = self.consumer.send(field)
+      end
+      h
+    end
+  end
   serialize :payment_data, Hash
 
   # Aliases needed for terms use
@@ -139,6 +153,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
     scope = scope.with_code params[:code] if params[:code].present?
     scope = scope.by_range params[:start_time], params[:end_time] if params[:start_time].present?
     scope = scope.where supplier_delivery_id: params[:delivery_method_id] if params[:delivery_method_id].present?
+    scope = scope.default_order
     scope
   end
 
@@ -168,30 +183,32 @@ class OrdersPlugin::Order < ActiveRecord::Base
           sp = source_sp.from_product
           supplier = source_sp.supplier
 
-          # if it's not yet defined, define it and sum the quantity from aggregated product/product * quantity ordered
           products_by_supplier[supplier] ||= Set.new
           products_by_supplier[supplier] << sp
           sp.quantity_ordered ||= 0
-          sp.quantity_ordered += item.quantity_consumer_ordered * source_sp.quantity
+          sp.quantity_ordered += item.status_quantity * source_sp.quantity
         end
       else
+        # the case where cycles and offered products are not involved, so item is linked directly to a Product
         sp = item.product
         supplier = item.order.profile.self_supplier
 
         products_by_supplier[supplier] ||= Set.new
         products_by_supplier[supplier] << sp
         sp.quantity_ordered ||= 0
-        sp.quantity_ordered += item.quantity_consumer_ordered
+        sp.quantity_ordered += item.status_quantity
       end
     end
 
     products_by_supplier
   end
 
+  # define on subclasses
   def orders_name
     raise 'undefined'
   end
 
+  # override on subclasses
   def delivery_methods
     self.profile.delivery_methods
   end
@@ -309,7 +326,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   # cache is done independent of user as model cache is per request
   def may_edit? user, admin_action = false
-    @may_edit ||= (admin_action and self.profile.admins.include?(user)) or (self.open? and self.consumer == user and self.profile.members.include? user)
+    @may_edit ||= (admin_action and user.in? self.profile.admins) or (self.open? and self.consumer == user and user.in? self.profile.members) rescue false
   end
 
   def verify_actor? profile, actor_name
@@ -342,6 +359,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   # total_price considering last state
   def total_price actor_name = :consumer, admin = false
+    # for admins, we want the next_status while we concluded the finish status change
     if not self.pre_order? and admin and status = self.next_status(actor_name)
       self.fill_items_data self.status, status
     else
@@ -364,6 +382,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   has_currency :total
 
   def fill_items_data from_status, to_status, save = false
+    # check for status advance
     return if (Statuses.index(to_status) <= Statuses.index(from_status) rescue true)
 
     from_data = StatusDataMap[from_status]
@@ -389,17 +408,20 @@ class OrdersPlugin::Order < ActiveRecord::Base
     self.status ||= 'draft'
     # backwards compatibility
     self.status = 'ordered' if self.status == 'confirmed'
+  end
+
+  def change_status
+    return if self.status_was == self.status
 
     self.fill_items_data self.status_was, self.status, true
-    # something may have changed
-    self.sync_serialized_data if self.status_changed?
 
+    # fill dates on status advance
     if self.status_on? 'ordered'
       Statuses.each do |status|
         self.send "#{self.status}_at=", Time.now if self.status_was != status and self.status == status
       end
     else
-      # for draft, planned, forgotten, cancelled, etc
+      # status rewind for draft, planned, forgotten, cancelled, etc
       Statuses.each do |status|
         self.send "#{status}_at=", nil
       end
@@ -411,8 +433,6 @@ class OrdersPlugin::Order < ActiveRecord::Base
     return if source == 'shopping_cart_plugin'
     # ignore when status is being rewinded
     return if (Statuses.index(self.status) <= Statuses.index(self.status_was) rescue false)
-    # dummy suppliers don't notify
-    return unless self.profile and self.profile.visible
 
     if self.status == 'ordered' and self.status_was != 'ordered'
       OrdersPlugin::Mailer.order_confirmation(self).deliver

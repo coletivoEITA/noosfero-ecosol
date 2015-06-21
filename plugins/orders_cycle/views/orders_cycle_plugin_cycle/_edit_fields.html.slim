@@ -36,7 +36,7 @@ h3= t('views.cycle._edit_fields.general_settings')
       | jQuery('#cycle-new-mail-send').on('click', orders_cycle.cycle_mail_message_toggle)
   - submit_text = if @cycle.new? then t('views.cycle._edit_fields.create_new_cycle') else t('views.cycle._edit_fields.save') end
   = f.submit submit_text
-  - unless @cycle.passed_by? 'orders'
+  - unless @cycle.passed_by? 'edition'
     |&nbsp;
     = hidden_field_tag 'open', nil
     - text = t("views.cycle._edit_fields.#{if @cycle.new? then 'create' else 'save' end}_and_open_orders")

@@ -52,27 +52,6 @@
   }
 }
 
-.field-secondary {
-  display: block;
-
-  &, input, select {
-    width: $module02 - $intercolumn;
-  }
-
-  &.with-unit {
-    @extend .container-clean;
-
-    input {
-      float: left;
-      width: $module02 - 2*$intercolumn;
-    }
-    .field-unit {
-      float: left;
-      width: $intercolumn;
-    }
-  }
-}
-
 form {
   margin: 0; /* come on browsers!? */
 }
@@ -84,15 +63,6 @@ label {
     margin-bottom: $half-padding;
     font-size: 10px;
   }
-}
-
-select,
-input[type=text], input[type=password],
-textarea {
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
 }
 
 select,

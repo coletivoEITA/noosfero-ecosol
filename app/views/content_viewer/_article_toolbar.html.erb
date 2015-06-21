@@ -1,6 +1,7 @@
 <div<%= user && " class='logged-in'" %>>
   <div id="article-actions">
 
+    <%= fullscreen_buttons('#article') %>
 
     <% if @page.allow_edit?(user) && !remove_content_button(:edit, @page) %>
       <% content = content_tag('span', label_for_edit_article(@page)) %>
@@ -29,6 +30,10 @@
       <% end %>
 
       <%= modal_button(:new, label_for_new_article(@page), profile.admin_url.merge(:controller => 'cms', :action => 'new', :parent_id => (@page.folder? ? @page : (@page.parent.nil? ? nil : @page.parent)))) unless remove_content_button(:new, @page) %>
+
+      <% content = content_tag('span', label_for_clone_article(@page)) %>
+      <% url = profile.admin_url.merge({ :controller => 'cms', :action => 'new', :id => @page.id, :clone => true, :type => @page.class }) %>
+      <%= expirable_button @page, :clone, content, url %>
     <% end %>
 
     <% if @page.accept_uploads? && @page.allow_create?(user) %>
@@ -46,7 +51,9 @@
       <%= button(:clock, _('All versions'), {:controller => 'content_viewer', :profile => profile.identifier, :action => 'article_versions'}, :id => 'article-versions-link') %>
     <% end %>
 
-    <%= plugins_article_toolbar_actions %>
+    <% plugins_toolbar_actions_for_article(@page).each do |plugin_button| %>
+      <%= button plugin_button[:icon], plugin_button[:title], plugin_button[:url], plugin_button[:html_options] %>
+    <% end %>
 
     <%= report_abuse(profile, :link, @page) %>
 
@@ -57,7 +64,7 @@
     <% end %>
     <%= button_without_text('feed', _('RSS feed'), @page.feed.url, :class => 'blog-feed-link') if @page.has_posts? && @page.feed %>
     <%= @plugins.dispatch(:article_header_extra_contents, @page).collect { |content| instance_exec(&content) }.join("") %>
-    <%= article_title(@page, :no_link => true) %>
+    <%= render :partial => 'article_title', :locals => {:no_link => true} %>
     <%= article_translations(@page) %>
   </div>
 </div>

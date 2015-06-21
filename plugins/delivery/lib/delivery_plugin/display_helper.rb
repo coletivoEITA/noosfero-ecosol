@@ -1,5 +1,9 @@
 module DeliveryPlugin::DisplayHelper
 
+  def input_group_addon unit
+    yield
+  end unless defined? ResponsivePlugin
+
   def supplier_delivery_options options = {}
     selected = options[:selected]
     methods = options[:methods] || profile.delivery_methods

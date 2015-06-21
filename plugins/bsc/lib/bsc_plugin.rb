@@ -43,7 +43,7 @@ class BscPlugin < Noosfero::Plugin
   end
 
   def profile_controller_filters
-    if profile 
+    if profile
       special_enterprise = profile.enterprise? && !profile.validated && profile.bsc
       is_member_of_any_bsc = is_member_of_any_bsc?(context.user)
       block = lambda {
@@ -72,7 +72,7 @@ class BscPlugin < Noosfero::Plugin
 
   def profile_editor_controller_filters
     if context.user
-      is_not_admin = !context.environment.admins.include?(context.user)
+      is_not_admin = !environment.admins.include?(context.user)
       [{  :type => 'before_filter',
           :method_name => 'bsc_destroy_access',
           :options => {:only => :destroy_profile},
@@ -124,7 +124,7 @@ class BscPlugin < Noosfero::Plugin
   end
 
   def profile
-    context.environment.profiles.find_by_identifier(context.params[:profile])
+    environment.profiles.find_by_identifier(context.params[:profile])
   end
 
 end

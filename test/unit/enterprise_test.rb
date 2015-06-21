@@ -188,7 +188,7 @@ class EnterpriseTest < ActiveSupport::TestCase
     inactive_template.save!
 
     active_template = create(Enterprise, :name => 'enteprise template', :identifier => 'enterprise_template')
-    assert_equal 3, active_template.boxes.size
+    assert_equal 4, active_template.boxes.size
 
     e = Environment.default
     e.inactive_enterprise_template = inactive_template
@@ -400,7 +400,7 @@ class EnterpriseTest < ActiveSupport::TestCase
     e.save!
 
     ent = create(Enterprise, :name => 'test enteprise', :identifier => 'test_ent')
-    assert_equal 3, ent.boxes.size
+    assert_equal 4, ent.boxes.size
   end
 
   should 'collect the highlighted products with image' do
@@ -497,6 +497,31 @@ class EnterpriseTest < ActiveSupport::TestCase
     enterprise = build(Enterprise, :identifier => 'testprofile', :environment_id => create_environment('mycolivre.net').id)
 
     assert_equal({:profile => enterprise.identifier, :controller => 'catalog'}, enterprise.catalog_url)
+  end
+
+  should 'check if a community admin user is really a community admin' do
+    c = fast_create(Enterprise, :name => 'my test profile', :identifier => 'mytestprofile')
+    admin = create_user('adminuser').person
+    c.add_admin(admin)
+   
+    assert c.is_admin?(admin)
+  end
+
+  should 'a member user not be a community admin' do
+    c = fast_create(Enterprise, :name => 'my test profile', :identifier => 'mytestprofile')
+    admin = create_user('adminuser').person
+    c.add_admin(admin)
+
+    member = create_user('memberuser').person
+    c.add_member(member)
+    assert !c.is_admin?(member)
+  end
+
+  should 'a moderator user not be a community admin' do
+    c = fast_create(Enterprise, :name => 'my test profile', :identifier => 'mytestprofile')
+    moderator = create_user('moderatoruser').person
+    c.add_moderator(moderator)
+    assert !c.is_admin?(moderator)
   end
 
 

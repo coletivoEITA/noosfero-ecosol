@@ -270,10 +270,6 @@ module NoosferoTestHelper
     arg
   end
 
-  def show_date(date)
-    date.to_s
-  end
-
   def strip_tags(html)
     html.gsub(/<[^>]+>/, '')
   end

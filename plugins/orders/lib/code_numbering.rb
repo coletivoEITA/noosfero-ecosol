@@ -1,8 +1,8 @@
 module CodeNumbering
   module ClassMethods
     def code_numbering field, options = {}
-      cattr_accessor :code_numbering_field
-      cattr_accessor :code_numbering_options
+      class_attribute :code_numbering_field
+      class_attribute :code_numbering_options
 
       self.code_numbering_field = field
       self.code_numbering_options = options
@@ -14,24 +14,44 @@ module CodeNumbering
   end
 
   module InstanceMethods
+
     def code
       self.attributes[self.code_numbering_field.to_s]
     end
 
-    def create_code_numbering
+    def code_scope
       scope = self.code_numbering_options[:scope]
-
-      max = code_numbering_options[:start] || 0
-      max = case scope
-            when Symbol
-              self.send(scope).maximum self.code_numbering_field
-            when Proc
-              instance_exec(&scope).maximum self.code_numbering_field
-            end || 0 rescue nil if scope
-      max ||= self.class.maximum self.code_numbering_field
-
-      self.send "#{code_numbering_field}=", max+1
+      case scope
+      when Symbol
+        self.send scope
+      when Proc
+        instance_exec &scope
+      else
+        self.class
+      end
     end
+
+    def code_maximum
+      self.code_scope.maximum(self.code_numbering_field) || 0
+    end
+
+    def create_code_numbering
+      max = self.code_numbering_options[:start].to_i - 1 if self.code_numbering_options[:start]
+      max = self.code_maximum
+      self.send "#{self.code_numbering_field}=", max+1
+    end
+
+    def reset_scope_code_numbering
+      max = self.code_numbering_options[:start].to_i - 1 if self.code_numbering_options[:start]
+      max ||= 1
+
+      self.code_scope.order(:created_at).each do |record|
+        record.update_column self.code_numbering_field, max
+        max += 1
+      end
+      self.reload
+    end
+
   end
 end
 
