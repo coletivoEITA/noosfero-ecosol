@@ -31,6 +31,11 @@ platform :ruby do
   group :performance do
     gem 'fast_blank'
     gem 'gctools' if RUBY_VERSION >= '2.1.0' and RUBY_VERSION < '2.2.0'
+
+    gem 'stackprof'
+    gem 'flamegraph'
+    gem 'rack-mini-profiler'
+
     # DON'T IMPROVE
     #gem 'escape_utils'
   end
