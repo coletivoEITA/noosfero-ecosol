@@ -389,4 +389,7 @@ msgstr "repetir pedido"
 msgid "haven't finished yet: back to shopping"
 msgstr "ainda não concluí: voltar às compras"
 
+#: plugins/shopping_cart/views/shopping_cart_plugin/_items.html.erb
+msgid "Qtty"
+msgstr "Qtde"
 
