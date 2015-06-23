@@ -4,7 +4,7 @@
 
   <tr>
     <th class='cart-table-item' <%= "align='center'" if by_mail %>>
-      <%= _('Item name') %>
+      <%= _('Item') %>
     </th>
     <th class='cart-table-quantity' <%= "align='center'" if by_mail %>>
       <%= if by_mail then '&nbsp;'+_('Qtty')+'&nbsp;' else _('Qtty') end %>
@@ -35,7 +35,7 @@
     </tr>
   <% end %>
 
-  <tr>
+  <tr class='delivery-costs'>
     <td colspan=3 id='delivery-name'>
       <%= order.supplier_delivery.name if order.supplier_delivery %>
     </td>
