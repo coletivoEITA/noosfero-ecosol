@@ -78,8 +78,8 @@ msgid "Instructions"
 msgstr "Instruções"
 
 #: plugins/shopping_cart/lib/shopping_cart_plugin/cart_helper.rb:53
-msgid "Item name"
-msgstr "Nome do item"
+msgid "Item"
+msgstr "Item"
 
 #: plugins/shopping_cart/lib/shopping_cart_plugin/cart_helper.rb:76
 #: plugins/shopping_cart/views/cart.html.erb:7
