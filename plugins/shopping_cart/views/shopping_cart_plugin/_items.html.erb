@@ -17,7 +17,7 @@
     </th>
   </tr>
 
-  <% order.items.order('name ASC').each do |item| %>
+  <% order.items.each do |item| %>
     <tr>
       <td class='cart-table-item' <%= "align='left'" if by_mail %>>
         <%= item.name %>
