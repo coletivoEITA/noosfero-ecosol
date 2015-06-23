@@ -7,22 +7,28 @@
       <%= _('Item name') %>
     </th>
     <th>
-      <%= if by_mail then '&nbsp;#&nbsp;' else '#' end %>
+      <%= if by_mail then '&nbsp;'+_('Qtty')+'&nbsp;' else _('Qtty') end %>
     </th>
     <th>
-      <%= _('Price') + " (#{@environment.currency_unit})" %>
+      <%= _('Unit price') + " (#{@environment.currency_unit})" %>
+    </th>
+    <th>
+      <%= _('Total') + " (#{@environment.currency_unit})" %>
     </th>
   </tr>
 
   <% order.items.each do |item| %>
     <tr>
-      <td>
+      <td class='cart-table-item'>
         <%= item.name %>
       </td>
-      <td class='cart-table-quantity' align="<%= 'center' if by_mail %>">
-        <%= item.quantity_consumer_ordered %>
+      <td class='cart-table-quantity'>
+        <%= "%03d" % item.quantity_consumer_ordered %>
       </td>
-      <td class='cart-table-price' align="<%= 'right' if by_mail %>">
+      <td class='cart-table-price'>
+        <%= get_price item.product, @environment, 1, unit: '' %>
+      </td>
+      <td class='cart-table-price'>
         <%= get_price item.product, @environment, item.quantity_consumer_ordered, unit: '' %>
       </td>
 
