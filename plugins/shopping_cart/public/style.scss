@@ -187,11 +187,6 @@ input.button.with-text.icon-cart,
 #cart-request-box {
   overflow: hidden;
 }
-#cart-request-box a {
-  font-size: 12px;
-}
-#cart-request-form {
-}
 #cart-request-box .cart-box-close {
   position: absolute;
   right: 10px;
@@ -204,8 +199,11 @@ input.button.with-text.icon-cart,
   float: right;
   text-transform: none;
   font-variant: normal;
+  margin: -10px 0 10px 0;
 }
-
+#cart-request-form {
+  clear: both;
+}
 #cart-request-form fieldset {
   clear: left;
   color: #999;
