@@ -231,18 +231,16 @@ input.button.with-text.icon-cart,
 
 th.cart-table-item,
 th.cart-table-quantity,
-th.cart-table-price {
+th.cart-table-price,
+td.cart-table-quantity {
   text-align: center;
 }
 td.cart-table-item {
   text-align: left;
 }
-td.cart-table-quantity {
-  text-align: center;
-}
 td.cart-table-price,
-td.cart-table-total-label,
-td.cart-table-total-value {
+th.cart-table-total-label,
+th.cart-table-total-value {
   text-align: right;
 }
 label.error {
