@@ -201,7 +201,9 @@ input.button.with-text.icon-cart,
   font-variant: normal;
   margin: -10px 0 10px 0;
 }
-
+#cart-request-form {
+  clear: both;
+}
 #cart-request-form fieldset {
   clear: left;
   color: #999;
