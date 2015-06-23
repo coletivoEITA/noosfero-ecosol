@@ -19,7 +19,7 @@
 
   <% order.items.order('name ASC').each do |item| %>
     <tr>
-      <td class='cart-table-item' <%= "align='center'" if by_mail %>>
+      <td class='cart-table-item' <%= "align='left'" if by_mail %>>
         <%= item.name %>
       </td>
       <td class='cart-table-quantity' <%= "align='center'" if by_mail %>>
