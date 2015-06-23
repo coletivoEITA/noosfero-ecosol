@@ -28,7 +28,6 @@ input.button.with-text.icon-cart,
   top: 0px;
 }
 
-
 .action-shopping_cart_plugin-buy .cart {
   display: none !important;
 }
@@ -235,6 +234,10 @@ td.cart-table-price,
 th.cart-table-total-label,
 th.cart-table-total-value {
   text-align: right;
+}
+tr.delivery-costs {
+  background-color: rgb(252, 243, 173);
+  font-style: italic;
 }
 label.error {
   float: none;
