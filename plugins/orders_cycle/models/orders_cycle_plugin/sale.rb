@@ -6,7 +6,6 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
 
   after_save :change_purchases, if: :cycle
   before_destroy :remove_purchases_items, if: :cycle
-  before_validation :fill_default_supplier_delivery
 
   def current_status
     return 'forgotten' if self.forgotten?
@@ -26,13 +25,6 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
 
   def supplier_delivery
     super || (self.cycle.delivery_methods.first rescue nil)
-  end
-  def supplier_delivery_id
-    self[:supplier_delivery_id] || (self.supplier_delivery.id rescue nil)
-  end
-
-  def fill_default_supplier_delivery
-    self[:supplier_delivery_id] ||= self.supplier_delivery.id if self.supplier_delivery
   end
 
   def change_purchases
