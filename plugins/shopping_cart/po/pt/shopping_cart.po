@@ -393,3 +393,6 @@ msgstr "ainda não concluí: voltar às compras"
 msgid "Qtty"
 msgstr "Qtde"
 
+#: plugins/shopping_cart/views/shopping_cart_plugin/_items.html.erb
+msgid "Unit price"
+msgstr "Preço unitário"
