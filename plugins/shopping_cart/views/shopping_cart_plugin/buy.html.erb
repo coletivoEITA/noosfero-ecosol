@@ -1,8 +1,6 @@
 <div id='cart-request-box' class="row">
-  <h1>
-    <%= _('Shopping checkout') %>
-    <%= button :back, _("haven't finished yet: back to shopping"), 'javascript:history.back()', class: 'cart-go-back' %>
-  </h1>
+  <h1><%= _('Shopping checkout') %></h1>
+  <%= button :back, _("haven't finished yet: back to shopping"), 'javascript:history.back()', class: 'cart-go-back' %>
 
   <%= form_for :order, url: {action: :send_request},
     html: {onsubmit: "return Cart.send_request(this)", id: 'cart-request-form'} do |f| %>
