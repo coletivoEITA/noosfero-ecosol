@@ -14,8 +14,11 @@
         name: Name
         name_help: Write the name of the Consumption Place or the
 
-        fixed_cost: Fixed cost
-        free_over_price: Order's minimum price for free delivery
+        costs_legend: Delivery's costs
+        fixed_cost: Fixed cost of delivery
+        free_over_price: Order's minimum value for free delivery
+
+        distribution_legend: Distribution's costs
         distribution_margin_percentage: Distribution's margin
         distribution_margin_fixed: Distribution's margin (fixed)
 

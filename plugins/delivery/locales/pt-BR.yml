@@ -14,8 +14,10 @@
         name: Nome
         name_help: "Para opção Retirada: escreva o nome do local onde os produtos deverão ser retirados pela(o) consumidor(a), por exemplo o nome do Núcleo de Consumo, da feira ou do próprio empreendimento.<br>Para a opção Entrega: escreva o nome do local, (uma cidade ou região) ou a forma de entrega (Correios, transportadora)"
 
-        fixed_cost: Custo
-        free_over_price: "Preço mínimo do pedido para Entrega Grátis"
+        costs_legend: Custos de entrega
+        fixed_cost: Custo de entrega
+        free_over_price: "Valor mínimo do pedido para Entrega Grátis"
+        distribution_legend: Custos de distribuição
         distribution_margin_percentage: Margem de distribuição
         distribution_margin_fixed: Margem de distribuição (valor fixo)
 
