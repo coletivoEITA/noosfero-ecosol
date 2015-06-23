@@ -3,16 +3,16 @@
   style="<%= 'border-collapse: collapse' if by_mail %>">
 
   <tr>
-    <th>
+    <th class='cart-table-item' <%= "align='center'" if by_mail %>>
       <%= _('Item name') %>
     </th>
-    <th>
+    <th class='cart-table-quantity' <%= "align='center'" if by_mail %>>
       <%= if by_mail then '&nbsp;'+_('Qtty')+'&nbsp;' else _('Qtty') end %>
     </th>
-    <th>
+    <th class='cart-table-price' <%= "align='center'" if by_mail %>>
       <%= _('Unit price') + " (#{@environment.currency_unit})" %>
     </th>
-    <th>
+    <th class='cart-table-price' <%= "align='center'" if by_mail %>>
       <%= _('Total') + " (#{@environment.currency_unit})" %>
     </th>
   </tr>
@@ -25,10 +25,10 @@
       <td class='cart-table-quantity' <%= "align='center'" if by_mail %>>
         <%= "%03d" % item.quantity_consumer_ordered %>
       </td>
-      <td class='cart-table-price' <%= "align='center'" if by_mail %>>
+      <td class='cart-table-price' <%= "align='right'" if by_mail %>>
         <%= get_price item.product, @environment, 1, unit: '' %>
       </td>
-      <td class='cart-table-price' <%= "align='center'" if by_mail %>>
+      <td class='cart-table-price' <%= "align='right'" if by_mail %>>
         <%= get_price item.product, @environment, item.quantity_consumer_ordered, unit: '' %>
       </td>
 
