@@ -42,6 +42,7 @@
     </div>
 
     <div id="cart-form-actions" class="row">
+      <%= button :back, _("haven't finished yet: back to shopping"), 'javascript:history.back()', class: 'cart-go-back' %>
       <%= submit_button(:send, _('Send buy request')) %>
     </div>
   <% end %>
