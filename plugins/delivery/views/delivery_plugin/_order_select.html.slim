@@ -7,8 +7,7 @@ div.order-delivery-select
   div.supplier-delivery-data
     = labelled_form_field _('Option'),
       f.select(:supplier_delivery_id, supplier_delivery_options(methods: methods), {}, disabled: readonly,
-        onchange: 'delivery.order.select.onChange(this)', onkeyup: 'delivery.order.select.onChange(this)')
-    p.instructions
+        onchange: 'delivery.order.select.onChange(this)', onkeyup: 'delivery.order.select.onChange(this)') + content_tag('div', '', class: 'help-block instructions')
 
   div.consumer-delivery-data
     = f.fields_for :consumer_delivery_data, order.consumer_delivery_data do |ff|

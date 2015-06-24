@@ -1018,10 +1018,6 @@ div#notice {
   border-bottom: 2px solid #2e3436; /*8C0*/
 }
 
-.query {
-  display: none;
-}
-
 .controller-search #content .search_form h3 {
   display: none;
 }
@@ -2613,10 +2609,6 @@ div#notice {
   color: #555753;
   text-align: left;
   border-bottom: 2px solid #2e3436; /*8C0*/
-}
-
-.query {
-  display: none;
 }
 
 .controller-search #content .search_form h3 {

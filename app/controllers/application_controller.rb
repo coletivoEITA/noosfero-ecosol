@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   before_filter :login_required, :if => :private_environment?
   before_filter :verify_members_whitelist, :if => [:private_environment?, :user]
   before_filter :redirect_to_current_user
+  before_filter :authorize_profiler
   around_filter :set_time_zone
 
   def verify_members_whitelist
@@ -193,6 +194,10 @@ class ApplicationController < ActionController::Base
         render_not_found(path)
       end
     end
+  end
+
+  def authorize_profiler
+    Rack::MiniProfiler.authorize_request if user and user.is_admin?
   end
 
   include SearchTermHelper

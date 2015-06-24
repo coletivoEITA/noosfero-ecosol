@@ -78,8 +78,8 @@ msgid "Instructions"
 msgstr "Instruções"
 
 #: plugins/shopping_cart/lib/shopping_cart_plugin/cart_helper.rb:53
-msgid "Item name"
-msgstr "Nome do item"
+msgid "Item"
+msgstr "Item"
 
 #: plugins/shopping_cart/lib/shopping_cart_plugin/cart_helper.rb:76
 #: plugins/shopping_cart/views/cart.html.erb:7
@@ -389,4 +389,10 @@ msgstr "repetir pedido"
 msgid "haven't finished yet: back to shopping"
 msgstr "ainda não concluí: voltar às compras"
 
+#: plugins/shopping_cart/views/shopping_cart_plugin/_items.html.erb
+msgid "Qtty"
+msgstr "Qtde"
 
+#: plugins/shopping_cart/views/shopping_cart_plugin/_items.html.erb
+msgid "Unit price"
+msgstr "Preço unitário"

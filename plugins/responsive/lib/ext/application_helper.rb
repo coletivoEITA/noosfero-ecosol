@@ -15,9 +15,8 @@ module ApplicationHelper
       option = html_options.delete(:option) || 'default'
       size = html_options.delete(:size) || 'xs'
       the_class = "with-text btn btn-#{size} btn-#{option} icon-#{type}"
-      if html_options.has_key?(:class)
-        the_class << ' ' << html_options[:class]
-      end
+      the_class << ' ' << html_options[:class] if html_options.has_key?(:class)
+
       #button_without_text type, label, url, html_options.merge(:class => the_class)
       the_title = html_options[:title] || label
       if html_options[:disabled]

@@ -28,7 +28,6 @@ input.button.with-text.icon-cart,
   top: 0px;
 }
 
-
 .action-shopping_cart_plugin-buy .cart {
   display: none !important;
 }
@@ -158,7 +157,7 @@ input.button.with-text.icon-cart,
   text-align: center;
   padding: 0px;
   font-family: monospace;
-  width: 2em;
+  width: 3em;
 }
 #cart1:hover input, #cart1 input:focus {
   border: 1px solid #CCC;
@@ -187,11 +186,6 @@ input.button.with-text.icon-cart,
 #cart-request-box {
   overflow: hidden;
 }
-#cart-request-box a {
-  font-size: smaller;
-}
-#cart-request-form {
-}
 #cart-request-box .cart-box-close {
   position: absolute;
   right: 10px;
@@ -204,12 +198,10 @@ input.button.with-text.icon-cart,
   float: right;
   text-transform: none;
   font-variant: normal;
+  margin: -10px 0 10px 0;
 }
-
-#cart-request-form fieldset {
-  clear: left;
-  color: #999;
-  margin-top: 5px;
+#cart-request-form {
+  clear: both;
 }
 
 #cart-request-form input,
@@ -229,14 +221,23 @@ input.button.with-text.icon-cart,
 #cart-items-table {
 }
 
-.cart-table-quantity {
+th.cart-table-item,
+th.cart-table-quantity,
+th.cart-table-price,
+td.cart-table-quantity {
   text-align: center;
 }
-
-.cart-table-price,
-.cart-table-total-label,
-.cart-table-total-value {
+td.cart-table-item {
+  text-align: left;
+}
+td.cart-table-price,
+th.cart-table-total-label,
+th.cart-table-total-value {
   text-align: right;
+}
+tr.delivery-costs {
+  background-color: rgb(252, 243, 173);
+  font-style: italic;
 }
 label.error {
   float: none;

@@ -36,21 +36,21 @@ class SuppliersPlugin::BaseProduct < Product
   default_delegate_setting :image, to: :supplier_product, prefix: :_default
   default_delegate_setting :description, to: :supplier_product
   default_delegate_setting :unit, to: :supplier_product
-  default_delegate_setting :available,  to: :supplier_product
+  default_delegate_setting :available, to: :supplier_product
   default_delegate_setting :margin_percentage, to: :profile,
     default_if: -> { self.own_margin_percentage.blank? or self.own_margin_percentage.zero? or self.own_price == self.supplier_product.price }
 
-  default_delegate :price, default_field: :default_margin_percentage,
+  default_delegate :price, default_setting: :default_margin_percentage,
     to: -> { self.supplier_product.price_with_discount if self.supplier_product }
-  default_delegate :unit_detail, default_field: :default_unit, to: :supplier_product
+  default_delegate :unit_detail, default_setting: :default_unit, to: :supplier_product
   default_delegate_setting :stored, to: :supplier_product,
     default_if: -> { self.own_stored.blank? or self.own_stored.zero? }
   default_delegate_setting :minimum_selleable, to: :supplier_product
 
-  default_delegate :product_qualifiers, default_field: :default_qualifiers, to: :supplier_product
-  default_delegate :product_category_id, default_field: :default_product_category, to: :supplier_product
-  default_delegate :image_id, default_field: :_default_image, to: :supplier_product
-  default_delegate :unit_id, default_field: :default_unit, to: :supplier_product
+  default_delegate :product_qualifiers, default_setting: :default_qualifiers, to: :supplier_product
+  default_delegate :product_category_id, default_setting: :default_product_category, to: :supplier_product
+  default_delegate :image_id, default_setting: :_default_image, to: :supplier_product
+  default_delegate :unit_id, default_setting: :default_unit, to: :supplier_product
 
   extend CurrencyHelper::ClassMethods
   has_currency :own_price
@@ -135,9 +135,9 @@ SQL
     margin_percentage = margin_source.margin_percentage
     margin_percentage ||= self.profile.margin_percentage if self.profile
 
-    price = if margin_percentage
-      base_price ||= self.price_with_default || 0
-      base_price + (margin_percentage.to_f / 100) * base_price
+    base_price ||= 0
+    price = if margin_percentage and not base_price.zero?
+      base_price.to_f + (margin_percentage.to_f / 100) * base_price.to_f
     else
       self.price_with_default
     end

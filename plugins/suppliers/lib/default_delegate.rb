@@ -6,10 +6,10 @@ module DefaultDelegate
       extend ActsAsHavingSettings::ClassMethods
 
       prefix = options[:prefix] || :default
-      default_field = "#{prefix}_#{field}"
-      settings_items default_field, default: options[:default], type: :boolean
+      default_setting = "#{prefix}_#{field}"
+      settings_items default_setting, default: options[:default], type: :boolean
 
-      options[:default_field] = default_field
+      options[:default_setting] = default_setting
       default_delegate field, options
     end
 
@@ -70,33 +70,40 @@ module DefaultDelegate
         end
       end
 
-      default_field = options[:default_field] || "#{options[:prefix] || :default}_#{field}"
-      # as a field may use other field's default_field, check for definition
-      default_field_with_presence = "#{default_field}_with_presence".freeze
-      unless self.method_defined? default_field_with_presence
-        define_method default_field_with_presence do
-          original_setting = self.send "#{default_field}_without_presence"
+      default_setting = options[:default_setting] || "#{options[:prefix] || :default}_#{field}"
+      # as a field may use other field's default_setting, check for definition
+      default_setting_with_presence = "#{default_setting}_with_presence".freeze
+      unless self.method_defined? default_setting_with_presence
+        define_method default_setting_with_presence do
+          original_setting = self.send "#{default_setting}_without_presence"
           # if the setting is false, see if it should be true; if it is true, respect it.
           original_setting = self.send own_field_is_default unless original_setting
           original_setting
         end
-        define_method "#{default_field_with_presence}=" do |value|
+        define_method "#{default_setting_with_presence}=" do |value|
           # this ensures that latter the getter won't
           self.send "#{own_field}=", nil if value
-          self.send "#{default_field}_without_presence=", value
+          self.send "#{default_setting}_without_presence=", value
         end
-        alias_method_chain default_field, :presence
-        alias_method_chain "#{default_field}=", :presence
+        alias_method_chain default_setting, :presence
+        alias_method_chain "#{default_setting}=", :presence
       end
 
       define_method "#{field}_with_default" do
-        if self.send default_field then self.send delegated_field else self.send own_field end
+        if self.send default_setting
+          # delegated_field may return nil, so use own instead
+          # this is the case with some associations (e.g. Product#product_qualifiers)
+          # FIXME: this shouldn't be necessary, it seems to happens only in certain cases
+          # (product creation, product global search, etc)
+          self.send(delegated_field) || self.send(own_field)
+        else self.send(own_field)
+        end
       end
       define_method "#{field}_with_default=" do |*args|
         own = self.send "#{own_field}=", *args
         # break/set the default setting automatically, used for interfaces
         # that don't have the default setting (e.g. manage_products)
-        self.send "#{default_field}=", self.send(own_field_is_default)
+        self.send "#{default_setting}=", self.send(own_field_is_default)
         own
       end
       alias_method_chain field, :default
