@@ -30,8 +30,8 @@ class Image < ActiveRecord::Base
   end
 
   def public_filename *args
-    "http://#{NOOSFERO_CONF[:images_domain]}#{super *args}"
-  end if NOOSFERO_CONF[:images_domain]
+    "http://#{NOOSFERO_CONF['images_domain']}#{super *args}"
+  end if NOOSFERO_CONF['images_domain']
 
   protected
 
