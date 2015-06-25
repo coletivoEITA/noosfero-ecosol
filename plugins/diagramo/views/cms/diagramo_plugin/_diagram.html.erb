@@ -1,0 +1,6 @@
+<%= required_fields_message %>
+
+<div>
+  <%= required labelled_form_field(_('Title'), text_field(:article, 'name', size: '64', maxlength: 150)) %>
+  <%= labelled_form_field(_('Description:'), text_area(:article, :body, rows: 3, cols: 64)) %>
+</div>
