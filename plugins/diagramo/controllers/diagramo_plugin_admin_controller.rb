@@ -1,0 +1,1 @@
+admin/diagramo_plugin_admin_controller.rb
