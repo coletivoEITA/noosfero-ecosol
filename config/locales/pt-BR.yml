@@ -1,6 +1,7 @@
 # encoding: UTF-8
 # pt-BR translations for Ruby on Rails
-"pt-BR": &pt-BR
+
+pt-BR: &pt-BR
   # formatos de data e hora
   date:
     formats:
@@ -233,5 +234,5 @@
       full_messages:
         format: "%{attribute} %{message}"
 
-'pt_BR':
+pt:
   <<: *pt-BR
