@@ -95,6 +95,10 @@ class User < ActiveRecord::Base
   has_one :person, :dependent => :destroy
   belongs_to :environment
 
+  has_many :sessions, dependent: :destroy
+  # holds the current session, see lib/authenticated_system.rb
+  attr_accessor :session
+
   attr_protected :activated_at
 
   # Virtual attribute for the unencrypted password

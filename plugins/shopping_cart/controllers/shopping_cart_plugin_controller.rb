@@ -191,6 +191,7 @@ class ShoppingCartPluginController < OrdersPluginController
     @profile = cart_profile
     supplier_delivery = @profile.delivery_methods.find params[:order][:supplier_delivery_id]
     order = build_order self.cart[:items], supplier_delivery
+    order.supplier_delivery = supplier_delivery
     total_price = order.total_price
     render json: {
       ok: true,

@@ -130,11 +130,7 @@ module Noosfero
     # Make sure the secret is at least 30 characters and all random,
     # no regular words or you'll be exposed to dictionary attacks.
     config.secret_token = noosfero_session_secret
-    config.action_dispatch.session = {
-      :key    => '_noosfero_session',
-    }
-    # from noosfero master, using buggy cookie_store
-    #config.session_store :cookie_store, :key => '_noosfero_session'
+    config.session_store :active_record_store, key: '_noosfero_session'
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
