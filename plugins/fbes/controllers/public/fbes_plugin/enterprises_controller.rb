@@ -1,6 +1,4 @@
-require 'fastercsv'
-
-class FbesPluginEnterprisesController < PublicController
+class FbesPlugin::EnterprisesController < PublicController
 
   def search
     if id_sies = params[:id_sies]
@@ -20,7 +18,7 @@ class FbesPluginEnterprisesController < PublicController
 
     respond_to do |format|
       format.csv do
-        csv = FasterCSV.generate do |csv|
+        csv = CSV.generate do |csv|
           @enterprises.map do |enterprise|
             csv << [
               enterprise.name, url_for(enterprise.url),
@@ -29,7 +27,7 @@ class FbesPluginEnterprisesController < PublicController
             ]
           end
         end
-        render :text => csv
+        render text: csv
       end
     end
   end
