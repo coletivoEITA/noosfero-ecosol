@@ -4,7 +4,7 @@ class FbesPlugin::ResponsaController < PublicController
       @enterprises = environment.enterprises.enabled
 
       @page = (params[:page] || 1).to_i
-      @per_page = if params[:per_page] == 'all' then 100 else (params[:per_page] || 20).to_i end
+      @per_page = if params[:per_page] == 'all' then 999999 else (params[:per_page] || 20).to_i end
       @enterprises = @enterprises.paginate page: @page, per_page: @per_page
 
       @json = @enterprises.map do |e|
