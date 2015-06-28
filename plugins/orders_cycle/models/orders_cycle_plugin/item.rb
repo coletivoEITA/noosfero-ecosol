@@ -12,9 +12,9 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   end
 
   # OVERRIDE from OrdersPlugin::Item
-  belongs_to :order, class_name: 'OrdersCyclePlugin::Order', foreign_key: :order_id, touch: true
-  belongs_to :sale, class_name: 'OrdersCyclePlugin::Sale', foreign_key: :order_id, touch: true
-  belongs_to :purchase, class_name: 'OrdersCyclePlugin::Purchase', foreign_key: :order_id, touch: true
+  belongs_to :order, class_name: '::OrdersCyclePlugin::Order', foreign_key: :order_id, touch: true
+  belongs_to :sale, class_name: '::OrdersCyclePlugin::Sale', foreign_key: :order_id, touch: true
+  belongs_to :purchase, class_name: '::OrdersCyclePlugin::Purchase', foreign_key: :order_id, touch: true
 
   # OVERRIDE from OrdersPlugin::Item
   # FIXME: if don't work because of load order
