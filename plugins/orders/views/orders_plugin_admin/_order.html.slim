@@ -7,7 +7,7 @@ div class="order value-row #{order.status}" data-id=order.id id="order-row-#{ord
     .box-field.select toggle-ignore="" = check_box_tag "order_ids[]", order.id
     .box-view-inner
       span.box-field.code= order.code
-      span.box-field.actor-name= order.send("# other_actor_name _data")[:name]
+      span.box-field.actor-name= order.send("#{other_actor_name}_data")[:name]
       span.box-field.order-date= datetime_full order.created_at
       span.box-field.last-update= datetime_full order.updated_at
       span.box-field.total= order.total_price_as_currency_number actor_name

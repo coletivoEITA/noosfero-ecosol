@@ -411,6 +411,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
     self.fill_items self.status_was, self.status, true
     self.items.update_all status: self.status
+    self.building_next_status = false
 
     # fill dates on status advance
     if self.status_on? 'ordered'

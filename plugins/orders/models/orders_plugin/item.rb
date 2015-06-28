@@ -69,6 +69,7 @@ class OrdersPlugin::Item < ActiveRecord::Base
   validates_presence_of :product
   validates_inclusion_of :status, in: DbStatuses
 
+  before_validation :set_defaults
   before_save :save_calculated_prices
   before_save :step_status
   before_create :sync_fields
@@ -282,8 +283,11 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
     # Set access
     statuses_data.each.with_index do |(status, status_data), i|
-      status_data[:flags][:editable] = true if StatusAccessMap[status] == actor_name
-      # code to only allow last status
+      #consumer_may_edit = actor_name == :consumer and status == 'ordered' and self.order.open?
+      if StatusAccessMap[status] == actor_name
+        status_data[:flags][:editable] = true
+      end
+      # only allow last status
       #status_data[:flags][:editable] = true if status_data[:access] == actor_name and (status_data[:flags][:admin] or self.order.open?)
     end
 
@@ -310,6 +314,10 @@ class OrdersPlugin::Item < ActiveRecord::Base
       price = "price_#{data}".to_sym
       self.send "#{price}=", self.send("calculated_#{price}")
     end
+  end
+
+  def set_defaults
+    self.status ||= Statuses.first
   end
 
   def step_status

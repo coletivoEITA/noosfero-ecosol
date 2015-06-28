@@ -94,9 +94,9 @@ SQL
   end
 
   def self.archive_orphans
-    # need full save to trigger search index
     self.where(id: self.orphans_ids).find_each batch_size: 50 do |product|
-      product.update_attribute :archived, true
+      # need full save to trigger search index
+      product.update_attributes archived: true
     end
   end
 

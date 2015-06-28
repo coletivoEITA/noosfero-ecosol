@@ -261,16 +261,16 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
     new_order_status = OrderStatusMap[self.status]
 
     actor_name = StatusActorMap[self.status_was]
-    orders_method = if actor_name == :supplier then :sales else :purchases end
-    # we can't rewind purchases status because the suppliers already got notified by the confirmed parcels
+    orders_method = if actor_name == :consumer then :sales else :purchases end
+
+    # Don't rewind confirmed sales/purchases
     return if orders_method == :purchases and self.status_was == 'receipts' and self.status == 'purchases'
-    # don't rewind consumers' confirmed orders
     return if orders_method == :sales and self.status_was == 'orders' and self.status == 'edition'
 
     # get only the orders in the same cycle status
     orders = self.send(orders_method).where(status: order_status_was.to_s)
     orders.each do |order|
-      order.update_attribute :status, new_order_status
+      order.update_attributes status: new_order_status
     end
   end
 
