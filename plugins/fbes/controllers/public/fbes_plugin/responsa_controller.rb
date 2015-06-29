@@ -11,7 +11,7 @@ class FbesPlugin::ResponsaController < PublicController
         {
           local_id: e.id,
           url: url_for(e.url),
-          title: e.short_name,
+          title: e.short_name(null),
           description: e.description,
           lat: e.lat,
           lng: e.lng,
