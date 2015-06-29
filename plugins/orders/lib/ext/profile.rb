@@ -22,6 +22,12 @@ end
 
 class Profile
 
+  # FIXME move to core
+  def has_admin? person
+    return unless person
+    person.has_permission? 'edit_profile', self
+  end
+
   def sales_all_consumers
     consumers = self.sales_consumers.order 'name ASC'
     consumers.concat self.suppliers.except_self.order('name ASC') if self.respond_to? :suppliers
