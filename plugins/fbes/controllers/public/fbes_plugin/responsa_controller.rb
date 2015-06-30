@@ -28,7 +28,7 @@ class FbesPlugin::ResponsaController < PublicController
         created_at: e.created_at,
         updated_at: e.updated_at,
         avatar: if e.image then "#{environment.top_url}#{e.image.public_filename}" else nil end,
-      }
+      }.compact
     end
 
     render json: Oj.dump(@json, mode: :compat)
