@@ -20,7 +20,7 @@ class FbesPlugin::ResponsaController < PublicController
         url: url_for(r.url),
         title: r.short_name(nil),
         description: r.description,
-        lat: e.lat,
+        lat: r.lat,
         lng: r.lng,
         address: [r.address, r.address_line2, r.district, r.zip_code].select{ |f| f.present? }.join(', '),
         city: r.city,
@@ -29,7 +29,7 @@ class FbesPlugin::ResponsaController < PublicController
         created_at: r.created_at,
         updated_at: r.updated_at,
         avatar: if r.image then "#{environment.top_url}#{r.image.public_filename}" else nil end,
-      }.compact
+      }.tap{ |h| h.delete_if{ |k, v| k.nil? } }
     end
 
     render json: Oj.dump(@json, mode: :compat)
