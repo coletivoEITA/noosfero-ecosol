@@ -13,21 +13,22 @@ class FbesPlugin::ResponsaController < PublicController
 
     @results = @enterprises + @consumers_coops
 
-    @json = @results.map do |e|
+    @json = @results.map do |r|
+      r.description ||= if r.is_a? Enterprise then 'Empreendimento de Economia Solidária' else 'Grupo de Consumo Responsável' end
       {
-        local_id: e.id,
-        url: url_for(e.url),
-        title: e.short_name(nil),
-        description: e.description,
+        local_id: r.id,
+        url: url_for(r.url),
+        title: r.short_name(nil),
+        description: r.description,
         lat: e.lat,
-        lng: e.lng,
-        address: [e.address, e.address_line2, e.district, e.zip_code].select{ |f| f.present? }.join(', '),
-        city: e.city,
-        state: e.state,
+        lng: r.lng,
+        address: [r.address, r.address_line2, r.district, r.zip_code].select{ |f| f.present? }.join(', '),
+        city: r.city,
+        state: r.state,
         country: 'BR',
-        created_at: e.created_at,
-        updated_at: e.updated_at,
-        avatar: if e.image then "#{environment.top_url}#{e.image.public_filename}" else nil end,
+        created_at: r.created_at,
+        updated_at: r.updated_at,
+        avatar: if r.image then "#{environment.top_url}#{r.image.public_filename}" else nil end,
       }.compact
     end
 
