@@ -20,7 +20,7 @@ class FbesPlugin::ResponsaController < PublicController
         url: url_for(r.url),
         title: r.short_name(nil),
         description: r.description,
-        lat: e.lat,
+        lat: r.lat,
         lng: r.lng,
         address: [r.address, r.address_line2, r.district, r.zip_code].select{ |f| f.present? }.join(', '),
         city: r.city,
