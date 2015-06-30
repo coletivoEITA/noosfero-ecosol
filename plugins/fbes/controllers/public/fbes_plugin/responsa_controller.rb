@@ -6,9 +6,11 @@ class FbesPlugin::ResponsaController < PublicController
 
     @enterprises = environment.enterprises.enabled.joins(:products, :articles).
       where('profiles.updated_at > ? OR products.updated_at > ? OR articles.updated_at > ?', @last_updated_on, @last_updated_on, @last_updated_on).
+      where('lat IS NOT NULL AND lng IS NOT NULL').
       uniq.group('profiles.id')
     @consumers_coops = environment.communities.joins(:orders).
       where('orders_plugin_orders.updated_at > ?', @last_updated_on).
+      where('lat IS NOT NULL AND lng IS NOT NULL').
       uniq.group('profiles.id')
 
     @results = @enterprises + @consumers_coops
