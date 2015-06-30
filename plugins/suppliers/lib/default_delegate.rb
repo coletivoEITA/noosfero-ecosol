@@ -53,7 +53,8 @@ module DefaultDelegate
         own = self.send own_field
         # blank? also covers false, use nil? and empty? instead
         # having the same value as the delegated is also considered blank
-        (own.nil? or (own.respond_to? :empty? and own.empty?)) or own == self.send(delegated_field)
+        (own.nil? or (own.respond_to? :empty? and own.empty?)) or
+          ((delegated = self.send delegated_field) and own == delegated)
       end
       own_field_present = "own_#{field}_present?".freeze
       define_method own_field_present do

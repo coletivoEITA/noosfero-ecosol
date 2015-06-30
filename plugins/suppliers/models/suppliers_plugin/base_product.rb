@@ -38,7 +38,7 @@ class SuppliersPlugin::BaseProduct < Product
   default_delegate_setting :unit, to: :supplier_product
   default_delegate_setting :available, to: :supplier_product
   default_delegate_setting :margin_percentage, to: :profile,
-    default_if: -> { self.own_margin_percentage.blank? or self.own_margin_percentage.zero? or self.own_price == self.supplier_product.price }
+    default_if: -> { self.own_margin_percentage.blank? or self.own_margin_percentage.zero? }
 
   default_delegate :price, default_setting: :default_margin_percentage,
     to: -> { self.supplier_product.price_with_discount if self.supplier_product }
