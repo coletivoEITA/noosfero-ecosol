@@ -2,9 +2,10 @@ class FbesPlugin::ResponsaController < PublicController
 
   def initiatives
     @last_updated_on = params[:last_updated_on] || 24
-    @last_updated_on = @last_updated_on.months.ago
+    @last_updated_on = @last_updated_on.to_i.months.ago
 
-    @enterprises = environment.enterprises.enabled.joins(:products, :articles).
+    @enterprises = environment.enterprises.enabled.
+      joins(:articles).joins('left join products on products.profile_id = profiles.id').
       where('profiles.updated_at > ? OR products.updated_at > ? OR articles.updated_at > ?', @last_updated_on, @last_updated_on, @last_updated_on).
       where('lat IS NOT NULL AND lng IS NOT NULL').
       uniq.group('profiles.id')
