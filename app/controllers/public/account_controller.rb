@@ -93,6 +93,7 @@ class AccountController < ApplicationController
     @invitation_code = params[:invitation_code]
     begin
       @user = User.new(params[:user])
+      @user.session = session
       @user.terms_of_use = environment.terms_of_use
       @user.environment = environment
       @terms_of_use = environment.terms_of_use
