@@ -93,6 +93,7 @@ class AccountController < ApplicationController
     @invitation_code = params[:invitation_code]
     begin
       @user = User.new(params[:user])
+      @user.session = session
       @user.terms_of_use = environment.terms_of_use
       @user.environment = environment
       @terms_of_use = environment.terms_of_use
@@ -448,7 +449,7 @@ class AccountController < ApplicationController
   end
 
   def go_to_signup_initial_page
-    check_redirection_options(user, user.environment.redirection_after_signup, user.url)
+    check_redirection_options user, user.environment.redirection_after_signup, user.url, signup: true
   end
 
   def redirect_if_logged_in
@@ -468,8 +469,11 @@ class AccountController < ApplicationController
 
   protected
 
-  def check_redirection_options(user, condition, default)
-    case condition
+  def check_redirection_options user, condition, default, options={}
+    if options[:signup] and target = session.delete(:after_signup_redirect_to)
+      redirect_to target
+    else
+      case condition
       when 'keep_on_same_page'
         redirect_back_or_default(user.admin_url)
       when 'site_homepage'
@@ -482,8 +486,11 @@ class AccountController < ApplicationController
         redirect_to user.admin_url.merge(_: Time.now.to_i)
       when 'welcome_page'
         redirect_to :controller => :home, :action => :welcome, :template_id => (user.template && user.template.id)
-    else
-      redirect_back_or_default(default)
+      when 'custom_url'
+        if (url = user.custom_url_redirection).present? then redirect_to url else redirect_back_or_default default end
+      else
+        redirect_back_or_default(default)
+      end
     end
   end
 
