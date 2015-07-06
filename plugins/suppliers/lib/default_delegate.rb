@@ -52,9 +52,7 @@ module DefaultDelegate
       define_method own_field_blank do
         own = self.send own_field
         # blank? also covers false, use nil? and empty? instead
-        # having the same value as the delegated is also considered blank
-        (own.nil? or (own.respond_to? :empty? and own.empty?)) or
-          ((delegated = self.send delegated_field) and own == delegated)
+        own.nil? or (own.respond_to? :empty? and own.empty?)
       end
       own_field_present = "own_#{field}_present?".freeze
       define_method own_field_present do
@@ -66,6 +64,8 @@ module DefaultDelegate
         default = self.send own_field_blank
         default ||= case default_if
         when Proc then instance_exec &default_if
+        when :equal?
+          self.send(own_field).equal? self.send(delegated_field)
         when Symbol then self.send default_if
         else false
         end
@@ -82,7 +82,7 @@ module DefaultDelegate
           original_setting
         end
         define_method "#{default_setting_with_presence}=" do |value|
-          # this ensures that latter the getter won't
+          # this ensures latter the getter won't get a different
           self.send "#{own_field}=", nil if value
           self.send "#{default_setting}_without_presence=", value
         end

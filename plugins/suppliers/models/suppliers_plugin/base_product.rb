@@ -36,11 +36,10 @@ class SuppliersPlugin::BaseProduct < Product
   default_delegate_setting :image, to: :supplier_product, prefix: :_default
   default_delegate_setting :description, to: :supplier_product
   default_delegate_setting :unit, to: :supplier_product
-  default_delegate_setting :available, to: :supplier_product
-  default_delegate_setting :margin_percentage, to: :profile,
+  default_delegate_setting :margin_percentage, to: :profile, default_if: :equal?,
     default_if: -> { self.own_margin_percentage.blank? or self.own_margin_percentage.zero? }
 
-  default_delegate :price, default_setting: :default_margin_percentage,
+  default_delegate :price, default_setting: :default_margin_percentage, default_if: :equal?,
     to: -> { self.supplier_product.price_with_discount if self.supplier_product }
   default_delegate :unit_detail, default_setting: :default_unit, to: :supplier_product
   default_delegate_setting :stored, to: :supplier_product,
@@ -108,11 +107,9 @@ SQL
     (self.supplier_product.unit rescue nil) || self.class.default_unit
   end
 
-  # replace available? to use the replaced default_delegate method
-  def available?
-    self.available
+  def available
+    self[:available]
   end
-
   def available_with_supplier
     return self.available_without_supplier unless self.supplier_product
     self.available_without_supplier and self.supplier_product.available and self.supplier.active rescue false
