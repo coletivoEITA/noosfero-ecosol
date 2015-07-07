@@ -1,8 +1,5 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-# Re-raise errors caught by the controller.
-class CmsController; def rescue_action(e) raise e end; end
-
 class CmsControllerTest < ActionController::TestCase
 
   def setup

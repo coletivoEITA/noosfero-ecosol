@@ -1,9 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require File.dirname(__FILE__) + '/../../controllers/myprofile/community_track_plugin_myprofile_controller'
 
-# Re-raise errors caught by the controller.
-class CommunityTrackPluginMyprofileController; def rescue_action(e) raise e end; end
-
 class CommunityTrackPluginMyprofileControllerTest < ActionController::TestCase
 
   def setup
