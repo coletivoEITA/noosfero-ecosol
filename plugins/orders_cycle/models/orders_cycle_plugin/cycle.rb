@@ -9,25 +9,25 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   DbStatuses = %w[new] + Statuses
   UserStatuses = Statuses
 
-  StatusActorMap = {
-    'edition' => :supplier,
-    'orders' => :supplier,
-    'purchases' => :consumer,
-    'receipts' => :consumer,
-    'separation' => :supplier,
-    'delivery' => :supplier,
-    'closing' => :supplier,
-  }
-  OrderStatusMap = {
-    # sales
+  # which status the sales are on each cycle status
+  SaleStatusMap = {
+    'edition' => nil,
     'orders' => :ordered,
-    # purchases
-    'purchases' => :draft,
-    'receipts' => :ordered,
-    # sales
+    'purchases' => :accepted,
+    'receipts' => :accepted,
     'separation' => :accepted,
     'delivery' => :separated,
     'closing' => :delivered,
+  }
+  # which status the purchases are on each cycle status
+  PurchaseStatusMap = {
+    'edition' => nil,
+    'orders' => nil,
+    'purchases' => :draft,
+    'receipts' => :ordered,
+    'separation' => :received,
+    'delivery' => :received,
+    'closing' => :received,
   }
 
   belongs_to :profile
@@ -76,6 +76,13 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   scope :has_volunteers_periods, -> {uniq.joins [:volunteers_periods]}
 
   # status scopes
+  scope :on_edition, -> { where status: 'edition' }
+  scope :on_orders, -> { where status: 'orders' }
+  scope :on_purchases, -> { where status: 'purchases' }
+  scope :on_separation, -> { where status: 'separation' }
+  scope :on_delivery, -> { where status: 'delivery' }
+  scope :on_closing, -> { where status: 'closing' }
+
   scope :defuncts, conditions: ["status = 'new' AND created_at < ?", 2.days.ago]
   scope :not_new, conditions: ["status <> 'new'"]
   scope :on_orders, lambda {
@@ -256,21 +263,26 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
 
   def update_orders_status
     # step orders to next_status on status change
-    return if self.new? or self.status_was == self.status
-    return unless order_status_was = OrderStatusMap[self.status_was]
-    new_order_status = OrderStatusMap[self.status]
+    return if self.new? or self.status_was == "new" or self.status_was == self.status
 
-    actor_name = StatusActorMap[self.status_was]
-    orders_method = if actor_name == :consumer then :sales else :purchases end
+    # Don't rewind confirmed sales
+    unless self.status_was == 'orders' and self.status == 'edition'
+      sale_status_was = SaleStatusMap[self.status_was]
+      new_sale_status = SaleStatusMap[self.status]
+      sales = self.sales.where(status: sale_status_was.to_s)
+      sales.each do |sale|
+        sale.update_attributes status: new_sale_status.to_s
+      end
+    end
 
-    # Don't rewind confirmed sales/purchases
-    return if orders_method == :purchases and self.status_was == 'receipts' and self.status == 'purchases'
-    return if orders_method == :sales and self.status_was == 'orders' and self.status == 'edition'
-
-    # get only the orders in the same cycle status
-    orders = self.send(orders_method).where(status: order_status_was.to_s)
-    orders.each do |order|
-      order.update_attributes status: new_order_status
+    # Don't rewind confirmed purchases
+    unless self.status_was == 'receipts' and self.status == 'purchases'
+      purchase_status_was = PurchaseStatusMap[self.status_was]
+      new_purchase_status = PurchaseStatusMap[self.status]
+      purchases = self.purchases.where(status: purchase_status_was.to_s)
+      purchases.each do |purchase|
+        purchase.update_attributes status: new_purchase_status.to_s
+      end
     end
   end
 
