@@ -1,9 +1,7 @@
 require_dependency 'application_helper'
-require_relative 'input_helper'
 
 module ApplicationHelper
 
-  extend ActiveSupport::Concern
   protected
 
   module ResponsiveMethods
@@ -378,9 +376,7 @@ module ApplicationHelper
   end
 
   include ResponsiveChecks
-  included do
-    include ResponsiveMethods
-  end
+  prepend ResponsiveMethods
 
   # TODO: apply theme_responsive? condition
   class NoosferoFormBuilder

@@ -1,6 +1,7 @@
+require_dependency 'application_helper'
+
 module InputHelper
 
-  extend ActiveSupport::Concern
   protected
 
   def input_group_addon addon, options = {}, &block
