@@ -61,7 +61,7 @@ class Organization < Profile
   end
 
   def find_pending_validation(code)
-    validations.pending.find(:first, :conditions => {:code => code})
+    validations.pending.where(code: code).first
   end
 
   def processed_validations
@@ -69,7 +69,7 @@ class Organization < Profile
   end
 
   def find_processed_validation(code)
-    validations.finished.find(:first, :conditions => {:code => code})
+    validations.finished.where(code: code).first
   end
 
   def is_validation_entity?
@@ -118,7 +118,7 @@ class Organization < Profile
 
   settings_items :zip_code, :city, :state, :country
 
-  validates_format_of :foundation_year, :with => Noosfero::Constants::INTEGER_FORMAT
+  validates_numericality_of :foundation_year, only_integer: true, allow_nil: true
   validates_format_of :contact_email, :with => Noosfero::Constants::EMAIL_FORMAT, :if => (lambda { |org| !org.contact_email.blank? })
   validates_as_cnpj :cnpj
 
@@ -168,7 +168,7 @@ class Organization < Profile
   end
 
   def already_request_membership?(person)
-    self.tasks.pending.find_by_requestor_id(person.id, :conditions => { :type => 'AddMember' })
+    self.tasks.pending.where(type: 'AddMember', requestor_id: person.id).first
   end
 
   def jid(options = {})

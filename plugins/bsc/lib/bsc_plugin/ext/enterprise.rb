@@ -8,6 +8,7 @@ class Enterprise
   FIELDS << 'enabled'
   FIELDS << 'validated'
 
-  scope :validated, :conditions => {:validated => true}
-  scope :not_validated, :conditions => {:validated => false}
+  scope :validated, -> { where validated: true }
+  scope :not_validated, -> { where validated: false }
+
 end

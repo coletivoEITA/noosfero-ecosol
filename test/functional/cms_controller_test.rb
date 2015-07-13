@@ -1,9 +1,6 @@
 require_relative "../test_helper"
 require 'cms_controller'
 
-# Re-raise errors caught by the controller.
-class CmsController; def rescue_action(e) raise e end; end
-
 class CmsControllerTest < ActionController::TestCase
 
   include NoosferoTestHelper
@@ -540,18 +537,18 @@ class CmsControllerTest < ActionController::TestCase
   end
 
   should 'filter html with white_list from tiny mce article abstract' do
-    post :new, :type => 'TinyMceArticle', :profile => profile.identifier, :article => { :name => 'article', :abstract => "<script>alert('test')</script> article", :body => 'the text of the article ...' }
-    assert_equal " article", assigns(:article).abstract
+    post :new, :type => 'TinyMceArticle', :profile => profile.identifier, :article => { :name => 'article', :abstract => "<script>alert('text')</script> article", :body => 'the text of the article ...' }
+    assert_equal "alert('text') article", assigns(:article).abstract
   end
 
   should 'filter html with white_list from tiny mce article body' do
     post :new, :type => 'TinyMceArticle', :profile => profile.identifier, :article => { :name => 'article', :abstract => 'abstract', :body => "the <script>alert('text')</script> of article ..." }
-    assert_equal "the  of article ...", assigns(:article).body
+    assert_equal "the alert('text') of article ...", assigns(:article).body
   end
 
   should 'not filter html tags permitted from tiny mce article body' do
     post :new, :type => 'TinyMceArticle', :profile => profile.identifier, :article => { :name => 'article', :abstract => 'abstract', :body => "<b>the</b> <script>alert('text')</script> <strong>of</strong> article ..." }
-    assert_equal "<b>the</b>  <strong>of</strong> article ...", assigns(:article).body
+    assert_equal "<b>the</b> alert('text') <strong>of</strong> article ...", assigns(:article).body
   end
 
   should 'sanitize tags' do
@@ -1237,7 +1234,7 @@ class CmsControllerTest < ActionController::TestCase
 
     get :new, :profile => c.identifier
     assert_response :forbidden
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
   end
 
   should 'allow user with permission create an article in community' do
@@ -1259,7 +1256,7 @@ class CmsControllerTest < ActionController::TestCase
 
     get :edit, :profile => c.identifier, :id => a.id
     assert_response :forbidden
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
   end
 
   should 'not allow user edit article if he is owner but has no publish permission' do
@@ -1270,7 +1267,7 @@ class CmsControllerTest < ActionController::TestCase
 
     get :edit, :profile => c.identifier, :id => a.id
     assert_response :forbidden
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
   end
 
   should 'allow user edit article if he is owner and has publish permission' do
@@ -1782,7 +1779,7 @@ class CmsControllerTest < ActionController::TestCase
 
     get :upload_files, :profile => c.identifier, :parent_id => a.id
     assert_response :forbidden
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
   end
 
   should 'filter profile folders to select' do
@@ -1891,8 +1888,8 @@ class CmsControllerTest < ActionController::TestCase
   end
 
   should 'return tags found' do
-    tag = mock; tag.stubs(:name).returns('linux')
-    ActsAsTaggableOn::Tag.stubs(:find).returns([tag])
+    a = profile.articles.create(:name => 'blablabla')
+    a.tags.create! name: 'linux'
     get :search_tags, :profile => profile.identifier, :term => 'linux'
     assert_equal '[{"label":"linux","value":"linux"}]', @response.body
   end

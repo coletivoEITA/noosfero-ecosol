@@ -897,7 +897,7 @@ class ArticleTest < ActiveSupport::TestCase
 
   should 'sanitize tags after save article' do
     article = fast_create(Article, :slug => 'article-with-tags', :profile_id => profile.id)
-    tag = build(ActsAsTaggableOn::Tag, :name => "TV Web w<script type='javascript'></script>")
+    tag = build(Tag, name: "TV Web w<script type='javascript'></script>")
     assert_match /[<>]/, tag.name
     article.tag_list.add(tag.name)
     article.save!
@@ -906,7 +906,7 @@ class ArticleTest < ActiveSupport::TestCase
 
   should 'strip HTML from tag names after save article' do
     article = fast_create(Article, :slug => 'article-with-tags', :profile_id => profile.id)
-    tag = build(ActsAsTaggableOn::Tag, :name => "TV Web w<script type=...")
+    tag = build(Tag, name: "TV Web w<script type=...")
     assert_match /</, tag.name
     article.tag_list.add(tag.name)
     article.save!
@@ -946,7 +946,7 @@ class ArticleTest < ActiveSupport::TestCase
     article.name = "<h1 Malformed >> html >< tag"
     article.valid?
 
-    assert_no_match /[<>]/, article.name
+    assert_equal '<h1>&gt; html &gt;</h1>', article.name
   end
 
   should 'return truncated title in short_title' do
@@ -1652,7 +1652,7 @@ class ArticleTest < ActiveSupport::TestCase
     art4 = create(Article, :name => 'article 4', :profile_id => fast_create(Person, :visible => false).id)
     art5 = create(Article, :name => 'article 5', :profile_id => fast_create(Person, :public_profile => false).id)
 
-    articles = Article.public
+    articles = Article.is_public
     assert_includes articles, art1
     assert_not_includes articles, art2
     assert_not_includes articles, art3
@@ -1740,6 +1740,7 @@ class ArticleTest < ActiveSupport::TestCase
 
   should 'store first image in tracked action' do
     a = create TinyMceArticle, :name => 'Tracked Article', :body => '<p>Foo<img src="foo.png" />Bar</p>', :profile_id => profile.id
+    assert_equal 'foo.png', a.first_image
     assert_equal 'foo.png', ActionTracker::Record.last.get_first_image
   end
 

@@ -1006,9 +1006,9 @@ class PersonTest < ActiveSupport::TestCase
     p = create_user('test_user').person
     c = fast_create(Community, :name => "Foo")
     c.add_member(p)
-    assert_equal ["Foo"], ActionTracker::Record.last(:conditions => {:verb => 'join_community'}).get_resource_name
+    assert_equal ["Foo"], ActionTracker::Record.where(verb: 'join_community').last.get_resource_name
     c.reload.add_moderator(p.reload)
-    assert_equal ["Foo"], ActionTracker::Record.last(:conditions => {:verb => 'join_community'}).get_resource_name
+    assert_equal ["Foo"], ActionTracker::Record.where(verb: 'join_community').last.get_resource_name
   end
 
   should 'the tracker target be Community when a person joins a community' do
@@ -1016,7 +1016,7 @@ class PersonTest < ActiveSupport::TestCase
     p = create_user('test_user').person
     c = fast_create(Community, :name => "Foo")
     c.add_member(p)
-    assert_kind_of Community, ActionTracker::Record.last(:conditions => {:verb => 'join_community'}).target
+    assert_kind_of Community, ActionTracker::Record.where(verb: 'join_community').last.target
   end
 
   should 'the community be notified specifically when a person joins a community' do
@@ -1024,7 +1024,7 @@ class PersonTest < ActiveSupport::TestCase
     p = create_user('test_user').person
     c = fast_create(Community, :name => "Foo")
     c.add_member(p)
-    assert_not_nil ActionTracker::Record.last(:conditions => {:verb => 'add_member_in_community'})
+    assert_not_nil ActionTracker::Record.where(verb: 'add_member_in_community').last
   end
 
   should 'the community specific notification created when a member joins community could not be propagated to members' do
@@ -1346,14 +1346,12 @@ class PersonTest < ActiveSupport::TestCase
 
     abusers = Person.abusers
 
-    assert_equal ActiveRecord::Relation, abusers.class
     assert_includes abusers, abuser1
     assert_includes abusers, abuser2
     assert_not_includes abusers, person
 
     non_abusers = Person.non_abusers
 
-    assert_equal ActiveRecord::Relation, non_abusers.class
     assert_not_includes non_abusers, abuser1
     assert_not_includes non_abusers, abuser2
     assert_includes non_abusers, person

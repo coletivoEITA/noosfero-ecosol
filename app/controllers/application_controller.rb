@@ -84,7 +84,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   def set_locale
     FastGettext.available_locales = environment.available_locales
-    FastGettext.default_locale = environment.default_locale
+    FastGettext.default_locale = environment.default_locale || 'en'
     FastGettext.locale = (params[:lang] || session[:lang] || environment.default_locale || request.env['HTTP_ACCEPT_LANGUAGE'] || 'en')
     I18n.locale = FastGettext.locale.to_s.gsub '_', '-'
     I18n.default_locale = FastGettext.default_locale.to_s.gsub '_', '-'
@@ -160,7 +160,7 @@ class ApplicationController < ActionController::Base
       if @domain.profile and params[:profile].present? and params[:profile] != @domain.profile.identifier
         @profile = @environment.profiles.find_by_identifier params[:profile]
         return render_not_found if @profile.blank?
-        redirect_to params.merge(:host => @profile.default_hostname, :protocol => @profile.default_protocol)
+        redirect_to url_for(params.merge host: @profile.default_hostname, protocol: @profile.default_protocol)
       end
     end
   end
@@ -175,7 +175,7 @@ class ApplicationController < ActionController::Base
   def render_not_found(path = nil)
     @no_design_blocks = true
     @path ||= request.path
-    render :template => 'shared/not_found.html.erb', :status => 404, :layout => get_layout
+    render template: 'shared/not_found', status: 404, layout: get_layout
   end
   alias :render_404 :render_not_found
 
@@ -183,7 +183,7 @@ class ApplicationController < ActionController::Base
     @no_design_blocks = true
     @message = message
     @title = title
-    render :template => 'shared/access_denied.html.erb', :status => 403
+    render template: 'shared/access_denied', status: 403
   end
 
   def load_category
@@ -236,7 +236,7 @@ class ApplicationController < ActionController::Base
   def redirect_to_current_user
     if params[:profile] == '~'
       if logged_in?
-        redirect_to params.merge(:profile => user.identifier)
+        redirect_to url_for(params.merge profile: user.identifier)
       else
         render_not_found
       end

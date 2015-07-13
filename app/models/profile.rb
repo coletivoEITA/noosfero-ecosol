@@ -50,7 +50,7 @@ class Profile < ActiveRecord::Base
       all_roles(env_id).select{ |r| r.key.match(/^profile_/) unless r.key.blank? || !r.profile_id.nil?}
     end
     def self.all_roles(env_id)
-      Role.all :conditions => { :environment_id => env_id }
+      Role.where(environment_id: env_id)
     end
     def self.method_missing(m, *args, &block)
       role = find_role(m, args[0])
@@ -87,20 +87,28 @@ class Profile < ActiveRecord::Base
 
   include Noosfero::Plugin::HotSpot
 
-  scope :memberships_of, lambda { |person| { :select => 'DISTINCT profiles.*', :joins => :role_assignments, :conditions => ['role_assignments.accessor_type = ? AND role_assignments.accessor_id = ?', person.class.base_class.name, person.id ] } }
+  scope :memberships_of, -> (person) {
+    select('DISTINCT profiles.*').
+    joins(:role_assignments).
+    where('role_assignments.accessor_type = ? AND role_assignments.accessor_id = ?', person.class.base_class.name, person.id)
+  }
   #FIXME: these will work only if the subclass is already loaded
-  scope :enterprises, lambda { {:conditions => (Enterprise.send(:subclasses).map(&:name) << 'Enterprise').map { |klass| "profiles.type = '#{klass}'"}.join(" OR ")} }
-  scope :communities, lambda { {:conditions => (Community.send(:subclasses).map(&:name) << 'Community').map { |klass| "profiles.type = '#{klass}'"}.join(" OR ")} }
-  scope :templates, lambda { |template_id = nil|
-    conditions = {:conditions => {:is_template => true}}
-    conditions[:conditions].merge!({:id => template_id}) unless template_id.nil?
-    conditions
+  scope :enterprises, -> {
+    where((Enterprise.send(:subclasses).map(&:name) << 'Enterprise').map { |klass| "profiles.type = '#{klass}'"}.join(" OR "))
+  }
+  scope :communities, -> {
+    where((Community.send(:subclasses).map(&:name) << 'Community').map { |klass| "profiles.type = '#{klass}'"}.join(" OR "))
+  }
+  scope :templates, -> (template_id = nil) {
+    s = where is_template: true
+    s = s.where id: template_id if template_id
+    s
   }
 
-  scope :with_templates, lambda { |templates|
-    {:conditions => {:template_id => templates}}
+  scope :with_templates, -> (templates) {
+    where template_id: templates
   }
-  scope :no_templates, {:conditions => {:is_template => false}}
+  scope :no_templates, -> { where is_template: false }
 
   def members
     scopes = plugins.dispatch_scopes(:organization_members, self)
@@ -133,11 +141,12 @@ class Profile < ActiveRecord::Base
     Profile.column_names.map{|n| [Profile.table_name, n].join('.')}.join(',')
   end
 
-  scope :public, :conditions => { :visible => true, :public_profile => true }
-  scope :visible, :conditions => { :visible => true }
-  scope :invisible, :conditions => ['profiles.visible <> ?', true]
-  scope :enabled, :conditions => { :enabled => true }
-  scope :disabled, :conditions => ['profiles.enabled <> ?', true]
+  scope :visible, -> { where visible: true, secret: false }
+  scope :invisible, -> { where 'profiles.visible <> ?', true }
+  scope :is_public, -> { where visible: true, public_profile: true, secret: false }
+
+  scope :enabled, -> { where enabled: true }
+  scope :disabled, -> { where 'profiles.enabled <> ?', true }
 
   # Subclasses must override this method
   scope :more_popular
@@ -186,7 +195,7 @@ class Profile < ActiveRecord::Base
   validates_length_of :description, :maximum => 550, :allow_nil => true
 
   # Valid identifiers must match this format.
-  IDENTIFIER_FORMAT = /^#{Noosfero.identifier_format}$/
+  IDENTIFIER_FORMAT = /\A#{Noosfero.identifier_format}\Z/
 
   # These names cannot be used as identifiers for Profiles
   RESERVED_IDENTIFIERS = %w[
@@ -240,8 +249,8 @@ class Profile < ActiveRecord::Base
     end
   end
 
-  has_many :profile_categorizations, :conditions => [ 'categories_profiles.virtual = ?', false ]
-  has_many :categories, :through => :profile_categorizations, :conditions => ['categories.visible_for_profiles = ?', true]
+  has_many :profile_categorizations, -> { where 'categories_profiles.virtual = ?', false }
+  has_many :categories, -> { where 'categories.visible_for_profiles = ?', true }, through: :profile_categorizations
 
   has_many :profile_categorizations_including_virtual, :class_name => 'ProfileCategorization'
   has_many :categories_including_virtual, :through => :profile_categorizations_including_virtual, :source => :category
@@ -467,14 +476,13 @@ class Profile < ActiveRecord::Base
     self.articles.recent(limit, options, pagination)
   end
 
-  def last_articles(limit = 10, options = {})
-    options = { :limit => limit,
-                :conditions => ["advertise = ? AND published = ? AND
-                                 ((articles.type != ? and articles.type != ? and articles.type != ?) OR
-                                 articles.type is NULL)",
-                                 true, true, 'UploadedFile', 'RssFeed', 'Blog'],
-                :order => 'articles.published_at desc, articles.id desc' }.merge(options)
-    self.articles.find(:all, options)
+  def last_articles limit = 10
+    self.articles.limit(limit).where(
+      "advertise = ? AND published = ? AND
+      ((articles.type != ? and articles.type != ? and articles.type != ?) OR
+      articles.type is NULL)",
+      true, true, 'UploadedFile', 'RssFeed', 'Blog'
+    ).order('articles.published_at desc, articles.id desc')
   end
 
   class << self

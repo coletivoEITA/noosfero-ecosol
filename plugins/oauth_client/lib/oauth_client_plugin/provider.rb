@@ -1,4 +1,4 @@
-class OauthClientPlugin::Provider < Noosfero::Plugin::ActiveRecord
+class OauthClientPlugin::Provider < ActiveRecord::Base
 
   belongs_to :environment
 
@@ -13,7 +13,7 @@ class OauthClientPlugin::Provider < Noosfero::Plugin::ActiveRecord
 
   attr_accessible :name, :environment, :strategy, :client_id, :client_secret, :enabled, :client_options, :image_builder
 
-  scope :enabled, :conditions => {:enabled => true}
+  scope :enabled, -> { where enabled: true }
 
   acts_as_having_image
 

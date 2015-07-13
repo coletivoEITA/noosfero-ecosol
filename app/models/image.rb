@@ -1,5 +1,7 @@
 class Image < ActiveRecord::Base
 
+  attr_accessible :uploaded_data, :label
+
   def self.max_size
     Image.attachment_options[:max_size]
   end
@@ -15,15 +17,14 @@ class Image < ActiveRecord::Base
                                   :portrait => '64x64',
                                   :minor    => '50x50>',
                                   :icon     => '20x20!' },
-                 :max_size => 10.megabytes # remember to update validate message below
+                 :max_size => 10.megabytes, # remember to update validate message below
+                 processor: 'Rmagick'
 
   validates_attachment :size => N_("{fn} of uploaded file was larger than the maximum size of 10.0 MB").fix_i18n
 
   delay_attachment_fu_thumbnails
 
   postgresql_attachment_fu
-
-  attr_accessible :uploaded_data, :label
 
   def current_data
     File.file?(full_filename) ? File.read(full_filename) : nil

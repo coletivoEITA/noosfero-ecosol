@@ -1,8 +1,5 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
-require File.dirname(__FILE__) + '/../../controllers/bsc_plugin_admin_controller'
-
-# Re-raise errors caught by the controller.
-class BscPluginAdminController; def rescue_action(e) raise e end; end
+require 'test_helper'
+require_relative '../../controllers/bsc_plugin_admin_controller'
 
 class BscPluginAdminControllerTest < ActionController::TestCase
 

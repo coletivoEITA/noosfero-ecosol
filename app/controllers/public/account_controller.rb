@@ -115,9 +115,9 @@ class AccountController < ApplicationController
           @user.signup!
           owner_role = Role.find_by_name('owner')
           @user.person.affiliate(@user.person, [owner_role]) if owner_role
-          invitation = Task.find_by_code(@invitation_code)
+          invitation = Task.from_code(@invitation_code).first
           if invitation
-            invitation.update_attributes!({:friend => @user.person})
+            invitation.update_attributes! friend: @user.person
             invitation.finish
           end
 
@@ -208,7 +208,7 @@ class AccountController < ApplicationController
   #
   # Posts back.
   def new_password
-    @change_password = ChangePassword.find_by_code(params[:code])
+    @change_password = ChangePassword.from_code(params[:code]).first
 
     unless @change_password
       render :action => 'invalid_change_password_code', :status => 403
@@ -416,7 +416,7 @@ class AccountController < ApplicationController
   end
 
   def load_enterprise_activation
-    @enterprise_activation ||= EnterpriseActivation.find_by_code(params[:enterprise_code])
+    @enterprise_activation ||= EnterpriseActivation.from_code(params[:enterprise_code]).first
   end
 
   def load_enterprise

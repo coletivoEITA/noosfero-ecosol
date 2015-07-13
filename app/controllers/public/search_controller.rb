@@ -63,14 +63,14 @@ class SearchController < PublicController
   end
 
   def articles
-    @scope = @environment.articles.public.includes(
+    @scope = @environment.articles.is_public.includes(
       :last_changed_by, :parent, :tags, {profile: [:domains]}
     )
     full_text_search
   end
 
   def contents
-    redirect_to params.merge(:action => :articles)
+    redirect_to url_for(params.merge action: :articles)
   end
 
   def people
@@ -132,7 +132,7 @@ class SearchController < PublicController
   # keep old URLs workings
   def assets
     params[:action] = params[:asset].is_a?(Array) ? :index : params.delete(:asset)
-    redirect_to params
+    redirect_to url_for(params)
   end
 
   def tags
