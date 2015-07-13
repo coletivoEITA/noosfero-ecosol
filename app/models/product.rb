@@ -50,11 +50,11 @@ class Product < ActiveRecord::Base
   validates_numericality_of :price, :allow_nil => true
   validates_numericality_of :discount, :allow_nil => true
 
-  scope :enabled, :conditions => ['profiles.enabled = ?', true]
-  scope :visible, :conditions => ['profiles.visible = ?', true]
-  scope :public, :conditions => ['profiles.visible = ? AND profiles.public_profile = ?', true, true]
+  scope :enabled, -> { where 'profiles.enabled = ?', true }
+  scope :visible, -> { where 'profiles.visible = ?', true }
+  scope :is_public, -> { where 'profiles.visible = ? AND profiles.public_profile = ?', true, true }
 
-  scope :more_recent, :order => "created_at DESC"
+  scope :more_recent, -> { order "created_at DESC" }
 
   scope :from_category, -> (category) {
     joins(:product_category).where('categories.path LIKE ?', "%#{category.slug}%") if category
