@@ -33,8 +33,10 @@ platform :ruby do
   gem 'unicode'
 
   group :performance do
-    gem 'oj'
-    gem 'oj_mimic_json'
+    # FIXME: stack level too deep
+    #gem 'oj'
+    #gem 'oj_mimic_json'
+    
     gem 'fast_blank'
     gem 'gctools' if RUBY_VERSION >= '2.1.0' and RUBY_VERSION < '2.2.0'
     # DON'T IMPROVE
