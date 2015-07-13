@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require File.dirname(__FILE__) + '/../../controllers/myprofile/community_track_plugin_myprofile_controller'
+require_relative '../test_helper'
+require_relative '../../controllers/myprofile/community_track_plugin_myprofile_controller'
 
 class CommunityTrackPluginMyprofileControllerTest < ActionController::TestCase
 
