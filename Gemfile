@@ -3,11 +3,9 @@ gem 'rails',                    '~> 4.2.3'
 gem 'fast_gettext',             '~> 0.6.8'
 gem 'acts-as-taggable-on',      '~> 3.4.2'
 gem 'rails_autolink',           '~> 1.1.5'
-gem 'rmagick',                  '~> 2.13.1'
 gem 'RedCloth',                 '~> 4.2.9'
 gem 'ruby-feedparser',          '~> 0.7'
 gem 'daemons',                  '~> 1.1.5'
-gem 'thin',                     '~> 1.3.1'
 gem 'nokogiri',                 '~> 1.6.0'
 gem 'will_paginate'
 gem 'pothoven-attachment_fu'
@@ -82,7 +80,7 @@ gem 'activerecord-deprecated_finders', require: 'active_record/deprecated_finder
 
 group :production do
   gem 'newrelic_rpm'
-  #gem 'redis-rails'
+  gem 'redis-rails'
   gem 'rack-cache'
 end
 
@@ -92,7 +90,6 @@ group :test do
   gem 'rspec',                  '~> 2.14.0'
   gem 'rspec-rails',            '~> 2.14.1'
   gem 'mocha',                  '~> 1.1.0', :require => false
-  gem 'spring'
   gem 'test-unit' if RUBY_VERSION >= '2.2.0'
   gem 'minitest'
   gem 'minitest-reporters'
