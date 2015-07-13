@@ -8,8 +8,6 @@ module UrlHelper
     # for action mailer
     return super unless respond_to? :params and respond_to? :controller_path
 
-    options[:protocol] ||= '//'
-
     # Keep profile parameter when not using a custom domain:
     # this is necessary as :profile parameter is optional in config/routes.rb
     # Delete it if using a custom domain
@@ -39,6 +37,10 @@ module UrlHelper
       opts[:_path_segments].delete :profile if opts[:_path_segments]
       opts
     end
+  end
+
+  def default_url_options
+    {protocol: '//'}
   end
 
 end

@@ -1,0 +1,23 @@
+
+<%= form_for environment, as: :environment, url: {controller: :diagramo_plugin_admin, action: :index} do |f| %>
+  <%= f.fields_for :diagramo_settings, environment.diagramo_settings do |ff| %>
+
+    <%= ff.label :url, 'Endereço do diagramo' %>
+    <%= ff.text_field :url %>
+
+    <h2><%= 'Usuário administrador' %></h2>
+    <%= ff.label :admin_email, 'Email' %>
+    <%= ff.text_field :admin_email %>
+    <%= ff.label :admin_password, 'Senha' %>
+    <%= ff.text_field :admin_password %>
+
+  <% end %>
+
+  <div>
+    <% button_bar do %>
+      <%= submit_button('save', _('Save changes')) %>
+      <%= button :back, _('Back to plugins administration panel'), controller: 'plugins' %>
+    <% end %>
+  </div>
+
+<% end %>

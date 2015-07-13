@@ -191,7 +191,8 @@ class ShoppingCartPluginController < OrdersPluginController
     @profile = cart_profile
     supplier_delivery = @profile.delivery_methods.find params[:order][:supplier_delivery_id]
     order = build_order self.cart[:items], supplier_delivery
-    total_price = order.total_price
+    order.supplier_delivery = supplier_delivery
+    total_price = order.total
     render json: {
       ok: true,
       delivery_price: float_to_currency_cart(supplier_delivery.cost(total_price), environment, unit: ''),

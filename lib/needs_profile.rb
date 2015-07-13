@@ -23,7 +23,11 @@ module NeedsProfile
   protected
 
   def load_profile
-    @profile ||= environment.profiles.find_by_identifier(params[:profile])
+    if params[:profile]
+      params[:profile].downcase!
+      @profile ||= environment.profiles.where(identifier: params[:profile]).first
+    end
+
     if @profile
       # this is needed for facebook applications that can only have one domain
       return

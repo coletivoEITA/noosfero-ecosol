@@ -51,7 +51,7 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
         purchased_item.quantity_consumer_ordered += item.status_quantity
         purchased_item.price_consumer_ordered ||= 0
         purchased_item.price_consumer_ordered += item.status_quantity * supplier_product.price
-        purchased_item.save run_callbacks: false # dont touch which cause an infinite loop
+        purchased_item.save!
       end
     end
   end

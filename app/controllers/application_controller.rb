@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   before_filter :login_required, :if => :private_environment?
   before_filter :verify_members_whitelist, :if => [:private_environment?, :user]
   before_filter :redirect_to_current_user
-  before_filter :authorize_profiler
+  before_filter :authorize_profiler if defined? Rack::MiniProfiler
   around_filter :set_time_zone
 
   def verify_members_whitelist
@@ -86,8 +86,8 @@ class ApplicationController < ActionController::Base
     FastGettext.available_locales = environment.available_locales
     FastGettext.default_locale = environment.default_locale
     FastGettext.locale = (params[:lang] || session[:lang] || environment.default_locale || request.env['HTTP_ACCEPT_LANGUAGE'] || 'en')
-    I18n.locale = FastGettext.locale
-    I18n.default_locale = FastGettext.default_locale
+    I18n.locale = FastGettext.locale.to_s.gsub '_', '-'
+    I18n.default_locale = FastGettext.default_locale.to_s.gsub '_', '-'
     if params[:lang]
       session[:lang] = params[:lang]
     end

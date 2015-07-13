@@ -1,11 +1,9 @@
 class OrdersPlugin::Order < ActiveRecord::Base
 
-  Statuses = %w[ordered accepted separated delivered received]
-  DbStatuses = %w[draft planned cancelled] + Statuses
-  UserStatuses = %w[open forgotten planned cancelled] + Statuses
-  StatusText = {}; UserStatuses.map do |status|
-    StatusText[status] = "orders_plugin.models.order.statuses.#{status}"
-  end
+  Statuses = ::OrdersPlugin::Item::Statuses
+  DbStatuses = ::OrdersPlugin::Item::DbStatuses
+  UserStatuses = ::OrdersPlugin::Item::UserStatuses
+  StatusText = ::OrdersPlugin::Item::StatusText
 
   # oh, we need a payments plugin!
   PaymentMethods = {
@@ -31,8 +29,8 @@ class OrdersPlugin::Order < ActiveRecord::Base
   ]
 
   # copy, for easiness. can't be declared to here to avoid cyclic reference
-  StatusDataMap = OrdersPlugin::Item::StatusDataMap
-  StatusAccessMap = OrdersPlugin::Item::StatusAccessMap
+  StatusDataMap = ::OrdersPlugin::Item::StatusDataMap
+  StatusAccessMap = ::OrdersPlugin::Item::StatusAccessMap
 
   StatusesByActor = {
     consumer: StatusAccessMap.map{ |s, a| s if a == :consumer }.compact,
@@ -360,14 +358,12 @@ class OrdersPlugin::Order < ActiveRecord::Base
   # total_price considering last state
   def total_price actor_name = :consumer, admin = false
     # for admins, we want the next_status while we concluded the finish status change
-    if not self.pre_order? and admin and status = self.next_status(actor_name)
-      self.fill_items_data self.status, status
+    if admin
+      price = :status_price
     else
-      status = self.status
+      data = StatusDataMap[self.status] || StatusDataMap[Statuses.first]
+      price = "price_#{data}".to_sym
     end
-
-    data = StatusDataMap[status] || StatusDataMap[Statuses.first]
-    price = "price_#{data}".to_sym
 
     items ||= (self.ordered_items rescue nil) || self.items
     items.collect(&price).inject(0){ |sum, p| sum + p.to_f }
@@ -381,7 +377,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   end
   has_currency :total
 
-  def fill_items_data from_status, to_status, save = false
+  def fill_items from_status, to_status, save = false
     # check for status advance
     return if (Statuses.index(to_status) <= Statuses.index(from_status) rescue true)
 
@@ -413,7 +409,9 @@ class OrdersPlugin::Order < ActiveRecord::Base
   def change_status
     return if self.status_was == self.status
 
-    self.fill_items_data self.status_was, self.status, true
+    self.fill_items self.status_was, self.status, true
+    self.items.update_all status: self.status
+    self.building_next_status = false
 
     # fill dates on status advance
     if self.status_on? 'ordered'

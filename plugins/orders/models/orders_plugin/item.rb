@@ -7,6 +7,13 @@ class OrdersPlugin::Item < ActiveRecord::Base
   # flag used by items to compare them with products
   attr_accessor :product_diff
 
+  Statuses = %w[ordered accepted separated delivered received]
+  DbStatuses = %w[draft planned cancelled] + Statuses
+  UserStatuses = %w[open forgotten planned cancelled] + Statuses
+  StatusText = {}; UserStatuses.map do |status|
+    StatusText[status] = "orders_plugin.models.order.statuses.#{status}"
+  end
+
   # should be Order, but can't reference it here so it would create a cyclic reference
   StatusAccessMap = {
     'ordered' => :consumer,
@@ -28,9 +35,9 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
   serialize :data
 
-  belongs_to :order, class_name: 'OrdersPlugin::Order', foreign_key: :order_id, touch: true
-  belongs_to :sale, class_name: 'OrdersPlugin::Sale', foreign_key: :order_id, touch: true
-  belongs_to :purchase, class_name: 'OrdersPlugin::Purchase', foreign_key: :order_id, touch: true
+  belongs_to :order, class_name: '::OrdersPlugin::Order', foreign_key: :order_id, touch: true
+  belongs_to :sale, class_name: '::OrdersPlugin::Sale', foreign_key: :order_id, touch: true
+  belongs_to :purchase, class_name: '::OrdersPlugin::Purchase', foreign_key: :order_id, touch: true
 
   belongs_to :product
   has_one :supplier, through: :product
@@ -60,8 +67,11 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
   validate :has_order
   validates_presence_of :product
+  validates_inclusion_of :status, in: DbStatuses
 
+  before_validation :set_defaults
   before_save :save_calculated_prices
+  before_save :step_status
   before_create :sync_fields
 
   # utility for other classes
@@ -121,8 +131,15 @@ class OrdersPlugin::Item < ActiveRecord::Base
     end
   end
 
-  def status
-    self.order.status
+  def calculated_status
+    status = self.order.status
+    index = Statuses.index status
+    next_status = Statuses[index+1] if index
+    next_quantity = "quantity_#{StatusDataMap[next_status]}" if next_status
+    if next_status and self.send next_quantity then next_status else status end
+  end
+  def on_next_status?
+    self.order.status != self.calculated_status
   end
 
   # product used for comparizon when repeating an order
@@ -144,13 +161,13 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
   def status_quantity_field
     @status_quantity_field ||= begin
-      status = StatusDataMap[self.order.status] || 'consumer_ordered'
+      status = StatusDataMap[self.status] || 'consumer_ordered'
       "quantity_#{status}"
     end
   end
   def status_price_field
     @status_price_field ||= begin
-      status = StatusDataMap[self.order.status] || 'consumer_ordered'
+      status = StatusDataMap[self.status] || 'consumer_ordered'
       "price_#{status}"
     end
   end
@@ -184,10 +201,10 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
   def quantity_price_data actor_name
     data = {flags: {}}
-    statuses = OrdersPlugin::Order::Statuses
+    statuses = ::OrdersPlugin::Order::Statuses
     statuses_data = data[:statuses] = {}
 
-    current = statuses.index(self.order.status) || 0
+    current = statuses.index(self.status) || 0
     next_status = self.order.next_status actor_name
     next_index = statuses.index(next_status) || current + 1
     goto_next = actor_name == StatusAccessMap[next_status]
@@ -266,8 +283,11 @@ class OrdersPlugin::Item < ActiveRecord::Base
 
     # Set access
     statuses_data.each.with_index do |(status, status_data), i|
-      status_data[:flags][:editable] = true if StatusAccessMap[status] == actor_name
-      # code to only allow last status
+      #consumer_may_edit = actor_name == :consumer and status == 'ordered' and self.order.open?
+      if StatusAccessMap[status] == actor_name
+        status_data[:flags][:editable] = true
+      end
+      # only allow last status
       #status_data[:flags][:editable] = true if status_data[:access] == actor_name and (status_data[:flags][:admin] or self.order.open?)
     end
 
@@ -279,6 +299,14 @@ class OrdersPlugin::Item < ActiveRecord::Base
     self.save_calculated_prices
   end
 
+  # used by db/migrate/20150627232432_add_status_to_orders_plugin_item.rb
+  def fill_status
+    status = self.calculated_status
+    return if self.status == status
+    self.update_column :status, status
+    self.order.update_column :building_next_status, true if self.order.status != status and not self.order.building_next_status
+  end
+
   protected
 
   def save_calculated_prices
@@ -286,6 +314,17 @@ class OrdersPlugin::Item < ActiveRecord::Base
       price = "price_#{data}".to_sym
       self.send "#{price}=", self.send("calculated_#{price}")
     end
+  end
+
+  def set_defaults
+    self.status ||= Statuses.first
+  end
+
+  def step_status
+    status = self.calculated_status
+    return if self.status == status
+    self.status = status
+    self.order.update_column :building_next_status, true if self.order.status != status and not self.order.building_next_status
   end
 
   def has_order

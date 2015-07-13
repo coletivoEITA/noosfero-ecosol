@@ -1,6 +1,5 @@
 source "https://rubygems.org"
 gem 'rails',                    '~> 3.2.22'
-gem 'minitest',                 '~> 3.2.0'
 gem 'fast_gettext'
 gem 'acts-as-taggable-on',      '~> 3.4.2'
 gem 'rails_autolink',           '~> 1.1.5'
@@ -29,13 +28,10 @@ platform :ruby do
   gem 'unicode'
 
   group :performance do
+    gem 'oj'
+    gem 'oj_mimic_json'
     gem 'fast_blank'
     gem 'gctools' if RUBY_VERSION >= '2.1.0' and RUBY_VERSION < '2.2.0'
-
-    gem 'stackprof'
-    gem 'flamegraph'
-    gem 'rack-mini-profiler'
-
     # DON'T IMPROVE
     #gem 'escape_utils'
   end
@@ -49,6 +45,12 @@ end
 platform :jruby do
   gem 'activerecord-jdbcpostgresql-adapter'
   gem 'rmagick4j'
+end
+
+group :performance do
+  gem 'stackprof', platform: :mri
+  gem 'flamegraph', platform: :mri
+  gem 'rack-mini-profiler'
 end
 
 group :assets do
@@ -72,6 +74,8 @@ group :test do
   gem 'rspec-rails',            '~> 2.14.1'
   gem 'mocha',                  '~> 1.1.0', :require => false
   gem 'test-unit' if RUBY_VERSION >= '2.2.0'
+  gem 'minitest',                 '~> 3.2.0'
+  gem 'minitest-reporters'
 end
 
 group :cucumber do
@@ -85,9 +89,9 @@ end
 
 group :development do
   gem 'wirble'
-  gem 'byebug'
-  gem 'html2haml'
-  gem 'haml2slim'
+  gem 'byebug', platform: :mri
+  gem 'html2haml', require: false
+  gem 'haml2slim', require: false
 end
 
 # Requires custom dependencies
