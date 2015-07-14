@@ -7,20 +7,20 @@ class Product
   has_currency :price
   has_currency :discount
 
-  scope :available, conditions: {available: true}
-  scope :unavailable, conditions: ['products.available <> true']
-  scope :archived, conditions: {archived: true}
-  scope :unarchived, conditions: ['products.archived <> true']
+  scope :available, -> { where available: true }
+  scope :unavailable, -> { where 'products.available <> true' }
+  scope :archived, -> { where archived: true }
+  scope :unarchived, -> { where 'products.archived <> true' }
 
-  scope :with_available, lambda { |available| where available: available }
-  scope :with_price, conditions: 'products.price > 0'
-  scope :with_product_category_id, lambda { |id| { conditions: {product_category_id: id} } }
+  scope :with_available, -> (available) { where available: available }
+  scope :with_price, -> { where 'products.price > 0' }
+  scope :with_product_category_id, -> (id) { where product_category_id: id }
 
   # FIXME: transliterate input and name column
-  scope :name_like, lambda { |name| { conditions: ["LOWER(products.name) LIKE ?", "%#{name}%"] } }
+  scope :name_like, -> (name) { where "LOWER(products.name) LIKE ?", "%#{name}%" }
 
-  scope :by_profile, lambda { |profile| { conditions: {profile_id: profile.id} } }
-  scope :by_profile_id, lambda { |profile_id| { conditions: {profile_id: profile_id} } }
+  scope :by_profile, -> (profile) { where profile_id: profile.id }
+  scope :by_profile_id, -> (profile_id) { where profile_id: profile_id }
 
   def self.product_categories_of products
     ProductCategory.find products.collect(&:product_category_id).compact.select{ |id| not id.zero? }
@@ -40,8 +40,8 @@ class Product
 
   has_many :sources_from_products, foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct', dependent: :destroy
   has_many :sources_to_products, foreign_key: :from_product_id, class_name: 'SuppliersPlugin::SourceProduct', dependent: :destroy
-  has_many :to_products, through: :sources_to_products, order: 'id ASC'
-  has_many :from_products, through: :sources_from_products, order: 'id ASC'
+  has_many :to_products, -> { order 'id ASC' }, through: :sources_to_products
+  has_many :from_products, -> { order 'id ASC' }, through: :sources_from_products
   def from_product
     self.from_products.first
   end
@@ -49,22 +49,22 @@ class Product
   # defined just as *from_products above
   # may be overriden in different subclasses
   has_many :sources_supplier_products, foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
-  has_many :supplier_products, through: :sources_from_products, source: :from_product, order: 'id ASC'
+  has_many :supplier_products, -> { order 'id ASC' }, through: :sources_from_products, source: :from_product
 
   has_many :sources_from_2x_products, through: :sources_from_products, source: :sources_from_products
   has_many :sources_to_2x_products, through: :sources_to_product, source: :sources_to_products
   has_many :from_2x_products, through: :sources_from_2x_products, source: :from_product
   has_many :to_2x_products, through: :sources_to_2x_products, source: :to_product
 
-  has_many :suppliers, through: :sources_from_products, uniq: true, order: 'id ASC'
-  has_many :consumers, through: :to_products, source: :profile, uniq: true, order: 'id ASC'
+  has_many :suppliers, -> { uniq.order 'id ASC' }, through: :sources_from_products
+  has_many :consumers, -> { uniq.order 'id ASC' }, through: :to_products, source: :profile
 
   # prefer distributed_products has_many to use DistributedProduct scopes and eager loading
-  scope :distributed, conditions: ["products.type = 'SuppliersPlugin::DistributedProduct'"]
-  scope :own, conditions: ["products.type = 'Product'"]
+  scope :distributed, -> { where "products.type = 'SuppliersPlugin::DistributedProduct'" }
+  scope :own, -> { where "products.type = 'Product'" }
 
-  scope :from_supplier, lambda { |supplier| { conditions: ['suppliers_plugin_suppliers.id = ?', supplier.id] } }
-  scope :from_supplier_id, lambda { |supplier_id| { conditions: ['suppliers_plugin_suppliers.id = ?', supplier_id] } }
+  scope :from_supplier, -> (supplier) { where 'suppliers_plugin_suppliers.id = ?', supplier.id }
+  scope :from_supplier_id, -> (supplier_id) { where 'suppliers_plugin_suppliers.id = ?', supplier_id }
 
   after_create :distribute_to_consumers
 

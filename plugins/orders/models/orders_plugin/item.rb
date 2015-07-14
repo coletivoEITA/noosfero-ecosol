@@ -60,8 +60,8 @@ class OrdersPlugin::Item < ActiveRecord::Base
     self.supplier_products.first
   end
 
-  scope :ordered, conditions: ['orders_plugin_orders.status = ?', 'ordered'], joins: [:order]
-  scope :for_product, lambda{ |product| {conditions: {product_id: product.id}} }
+  scope :ordered, -> { joins(:order).where 'orders_plugin_orders.status = ?', 'ordered' }
+  scope :for_product, -> (product) { where product_id: product.id }
 
   default_scope include: [:product]
 

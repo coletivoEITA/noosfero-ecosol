@@ -51,15 +51,15 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   belongs_to :session, primary_key: :session_id, foreign_key: :session_id, class_name: 'ActiveRecord::SessionStore::Session'
 
-  has_many :items, class_name: 'OrdersPlugin::Item', foreign_key: :order_id, dependent: :destroy, order: 'name ASC'
+  has_many :items, -> { order 'name ASC' }, class_name: 'OrdersPlugin::Item', foreign_key: :order_id, dependent: :destroy
   has_many :products, through: :items
 
   belongs_to :supplier_delivery, class_name: 'DeliveryPlugin::Method'
   belongs_to :consumer_delivery, class_name: 'DeliveryPlugin::Method'
 
-  scope :alphabetical, -> { joins(:consumer).order 'profiles.name ASC' }
-  scope :latest, -> { order 'code ASC' }
-  scope :default_order, -> { order 'code DESC' }
+  scope :alphabetical, -> { joins(:consumer).reorder 'profiles.name ASC' }
+  scope :latest, -> { reorder 'code ASC' }
+  scope :default_order, -> { reorder 'code DESC' }
 
   scope :of_session, -> session_id { where session_id: session_id }
   scope :of_user, -> session_id, consumer_id=nil do
@@ -71,43 +71,39 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   scope :latest, order: 'created_at DESC'
 
-  scope :draft,     conditions: {status: 'draft'}
-  scope :planned,   conditions: {status: 'planned'}
-  scope :cancelled, conditions: {status: 'cancelled'}
-  scope :not_cancelled, conditions: ["status <> 'cancelled'"]
-  scope :ordered,   conditions: ['ordered_at IS NOT NULL']
-  scope :confirmed, conditions: ['ordered_at IS NOT NULL']
-  scope :accepted,  conditions: ['accepted_at IS NOT NULL']
-  scope :separated, conditions: ['separated_at IS NOT NULL']
-  scope :delivered, conditions: ['delivered_at IS NOT NULL']
-  scope :received,  conditions: ['received_at IS NOT NULL']
+  scope :draft,     -> { where status: 'draft' }
+  scope :planned,   -> { where status: 'planned' }
+  scope :cancelled, -> { where status: 'cancelled' }
+  scope :not_cancelled, -> { where "status <> 'cancelled'" }
+  scope :ordered,   -> { where 'ordered_at IS NOT NULL' }
+  scope :confirmed, -> { where 'ordered_at IS NOT NULL' }
+  scope :accepted,  -> { where 'accepted_at IS NOT NULL' }
+  scope :separated, -> { where 'separated_at IS NOT NULL' }
+  scope :delivered, -> { where 'delivered_at IS NOT NULL' }
+  scope :received,  -> { where 'received_at IS NOT NULL' }
 
-  scope :for_profile, lambda{ |profile| {conditions: {profile_id: profile.id}} }
-  scope :for_profile_id, lambda{ |profile_id| {conditions: {profile_id: profile_id}} }
-  scope :for_supplier, lambda{ |profile| {conditions: {profile_id: profile.id}} }
-  scope :for_supplier_id, lambda{ |profile_id| {conditions: {profile_id: profile_id}} }
-  scope :for_consumer, lambda{ |consumer| {conditions: {consumer_id: (consumer.id rescue nil)}} }
-  scope :for_consumer_id, lambda{ |consumer_id| {conditions: {consumer_id: consumer_id}} }
+  scope :for_profile, -> (profile) { where profile_id: profile.id }
+  scope :for_profile_id, -> (profile_id) { where profile_id: profile_id }
+  scope :for_supplier, -> (profile) { where profile_id: profile.id }
+  scope :for_supplier_id, -> (profile_id) { where profile_id: profile_id }
+  scope :for_consumer, -> (consumer) { where consumer_id: (consumer.id rescue nil) }
+  scope :for_consumer_id, -> (consumer_id) { where consumer_id: consumer_id }
 
-  scope :months, select: 'DISTINCT(EXTRACT(months FROM orders_plugin_orders.created_at)) as month', order: 'month DESC'
-  scope :years, select: 'DISTINCT(EXTRACT(YEAR FROM orders_plugin_orders.created_at)) as year', order: 'year DESC'
+  scope :months, -> { select('DISTINCT(EXTRACT(months FROM orders_plugin_orders.created_at)) as month').order('month DESC') }
+  scope :years, -> { select('DISTINCT(EXTRACT(YEAR FROM orders_plugin_orders.created_at)) as year').order('year DESC') }
 
-  scope :by_month, lambda { |month|
-    where 'EXTRACT(month FROM orders_plugin_orders.created_at) <= :month AND EXTRACT(month FROM orders_plugin_orders.created_at) >= :month',{ month: month }
+  scope :by_month, -> (month) {
+    where 'EXTRACT(month FROM orders_plugin_orders.created_at) <= :month AND EXTRACT(month FROM orders_plugin_orders.created_at) >= :month', month: month
   }
-  scope :by_year, lambda { |year|
-    where 'EXTRACT(year FROM orders_plugin_orders.created_at) <= :year AND EXTRACT(year FROM orders_plugin_orders.created_at) >= :year', { year: year }
+  scope :by_year, -> (year) {
+    where 'EXTRACT(year FROM orders_plugin_orders.created_at) <= :year AND EXTRACT(year FROM orders_plugin_orders.created_at) >= :year', year: year
   }
-  scope :by_range, lambda { |start_time, end_time|
-    where 'orders_plugin_orders.created_at >= :start AND orders_plugin_orders.created_at <= :end', { start: start_time, end: end_time }
+  scope :by_range, -> (start_time, end_time) {
+    where 'orders_plugin_orders.created_at >= :start AND orders_plugin_orders.created_at <= :end', start: start_time, end: end_time
   }
 
-  scope :with_status, lambda { |status|
-    where status: status
-  }
-  scope :with_code, lambda { |code|
-    where code: code
-  }
+  scope :with_status, -> (status) { where status: status }
+  scope :with_code, -> (code) { where code: code }
 
   validates_presence_of :profile
   # consumer is optional, as orders can be made by unlogged users
@@ -118,7 +114,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   after_save :send_notifications
 
   extend CodeNumbering::ClassMethods
-  code_numbering :code, scope: proc{ self.profile.orders }
+  code_numbering :code, scope: -> { self.profile.orders }
 
   serialize :data
 

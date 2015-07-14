@@ -2,10 +2,16 @@ require_dependency 'enterprise'
 
 class Enterprise
 
-  has_many :network_node_child_relations, :foreign_key => :child_id, :class_name => 'SubOrganizationsPlugin::Relation', :dependent => :destroy, :include => [:parent],
-    :conditions => ["parent_type = 'NetworksPlugin::Node' OR parent_type = 'NetworksPlugin::Network'"]
-  has_many :network_node_parent_relations, :foreign_key => :parent_id, :class_name => 'SubOrganizationsPlugin::Relation', :include => [:child],
-    :conditions => ["child_type = 'NetworksPlugin::Node' OR child_type = 'NetworksPlugin::Network'"]
+  has_many :network_node_child_relations, -> {
+    includes(:parent).
+    where("parent_type = 'NetworksPlugin::Node' OR parent_type = 'NetworksPlugin::Network'")
+  }, foreign_key: :child_id, class_name: 'SubOrganizationsPlugin::Relation', dependent: :destroy
+
+  has_many :network_node_parent_relations, -> {
+    includes(:child).
+    where("child_type = 'NetworksPlugin::Node' OR child_type = 'NetworksPlugin::Network'")
+  }, foreign_key: :parent_id, class_name: 'SubOrganizationsPlugin::Relation'
+
   def network_node_child_relation
     self.network_node_child_relations.first
   end

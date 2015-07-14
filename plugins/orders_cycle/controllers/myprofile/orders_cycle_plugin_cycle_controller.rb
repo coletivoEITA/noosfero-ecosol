@@ -38,7 +38,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
         render action: :edit
       end
     else
-      count = OrdersCyclePlugin::Cycle.count conditions: {profile_id: profile}
+      count = OrdersCyclePlugin::Cycle.where(profile_id: profile).count
       @cycle = OrdersCyclePlugin::Cycle.create! profile: profile, status: 'new',
         name: t('controllers.myprofile.cycle_controller.cycle_n_n') % {n: count+1}
     end

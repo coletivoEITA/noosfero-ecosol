@@ -51,7 +51,7 @@ class Profile
 
     login_block = self.blocks.select{ |b| b.class.name == "LoginBlock" }.first
     if not login_block
-      box = self.boxes.first conditions: {position: 2}
+      box = self.boxes.where(position: 2).first
       login_block = LoginBlock.create! box: box
       login_block.move_to_top
     end

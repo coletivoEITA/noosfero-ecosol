@@ -1,19 +1,26 @@
 require_dependency 'profile'
+require_dependency 'community'
 
-# FIXME: The lines bellow should be on the core
+([Profile] + Profile.descendants).each do |subclass|
+subclass.class_eval do
+
+  # FIXME: should be on the core
+  has_many :products, foreign_key: :profile_id
+
+end
+end
+
+# FIXME: should be on the core
 class Profile
-
-  has_many :products
-
   def create_product?
     true
   end
-
 end
 
-class Profile
+([Profile] + Profile.descendants).each do |subclass|
+subclass.class_eval do
 
-  has_many :distributed_products, class_name: 'SuppliersPlugin::DistributedProduct'
+  has_many :distributed_products, class_name: 'SuppliersPlugin::DistributedProduct', foreign_key: :profile_id
 
   has_many :from_products, through: :products
   has_many :to_products, through: :products
@@ -22,6 +29,11 @@ class Profile
     include: [{profile: [:domains], consumer: [:domains]}], order: 'name ASC'
   has_many :consumers, class_name: 'SuppliersPlugin::Consumer', foreign_key: :profile_id, dependent: :destroy,
     include: [{profile: [:domains], consumer: [:domains]}], order: 'name ASC'
+
+end
+end
+
+class Profile
 
   def supplier_settings
     @supplier_settings ||= Noosfero::Plugin::Settings.new self, SuppliersPlugin

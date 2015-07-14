@@ -7,7 +7,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   end
 
   has_many :cycle_products, foreign_key: :product_id, class_name: 'OrdersCyclePlugin::CycleProduct'
-  has_many :cycles, through: :cycle_products, order: 'name ASC'
+  has_many :cycles, -> { order 'name ASC' }, through: :cycle_products
   def cycle
     self.cycles.first
   end
@@ -15,7 +15,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   # OVERRIDE suppliers/lib/ext/product.rb
   # for products in cycle, these are the products of the suppliers
   # p in cycle -> p distributed -> p from supplier
-  has_many :suppliers, through: :sources_from_2x_products, order: 'id ASC', uniq: true
+  has_many :suppliers, -> { distinct.order 'id ASC' }, through: :sources_from_2x_products
   has_many :sources_supplier_products, through: :sources_from_products, source: :sources_from_products
   has_many :supplier_products, through: :sources_from_2x_products, source: :from_product
 

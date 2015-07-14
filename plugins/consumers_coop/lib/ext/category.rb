@@ -2,8 +2,6 @@ require_dependency 'category'
 
 class Category
 
-  scope :name_like, lambda { |name|
-    { :conditions => ['LOWER(name) LIKE ?', "%#{name}%"] }
-  }
+  scope :name_like, -> (name) { where 'name ILIKE ?', "%#{name}%" }
 
 end

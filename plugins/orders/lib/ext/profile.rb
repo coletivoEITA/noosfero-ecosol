@@ -9,7 +9,7 @@ subclass.class_eval do
   has_many :sales, class_name: 'OrdersPlugin::Sale', foreign_key: :profile_id
   has_many :purchases, class_name: 'OrdersPlugin::Purchase', foreign_key: :consumer_id
 
-  has_many :ordered_items, through: :orders, source: :items, order: 'name ASC'
+  has_many :ordered_items, -> { order 'name ASC' }, through: :orders, source: :items
 
   has_many :sales_consumers, through: :sales, source: :consumer
   has_many :purchases_consumers, through: :sales, source: :consumer
