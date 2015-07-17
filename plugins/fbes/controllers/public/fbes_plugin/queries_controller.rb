@@ -11,7 +11,8 @@ class FbesPlugin::QueriesController < PublicController
       format = params[:format]
       request.format = format.to_sym if format.present?
 
-      query_with_pagination = if not @per_page then query else "#{query} offset #{(@age-1)*@er_page} limit #{@er_page}" end
+      query_with_pagination = if not @per_page then query else "#{query} offset #{(@page-1)*@per_page} limit #{@per_page}" end
+      @fbes_plugin_result_pages = (@fbes_plugin_per_page) ? (@fbes_plugin_result_full_count.to_f / @fbes_plugin_per_page.to_f).ceil : 1
       result = ActiveRecord::Base.transaction do
         ActiveRecord::Base.connection.execute query_with_pagination
       end
