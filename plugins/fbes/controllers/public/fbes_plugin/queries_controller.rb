@@ -44,4 +44,9 @@ class FbesPlugin::QueriesController < PublicController
     send_data csv, type: 'text/csv; charset=utf-8; header=present', disposition: "attachment; filename=#{params[:action]}.csv"
   end
 
+  def default_url_options
+    # avoid rails' use_relative_controller!
+    {use_route: '/'}
+  end
+
 end
