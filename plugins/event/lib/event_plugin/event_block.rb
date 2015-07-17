@@ -81,4 +81,8 @@ class EventPlugin::EventBlock < Block
     content_tag(:span, date.year.to_s, :class => 'year')
   end
 
+  def cache_key language='en', user=nil
+    "#{super}-#{self.events_source.events.published.order('updated_at DESC').first.updated_at}"
+  end
+
 end
