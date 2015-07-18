@@ -82,7 +82,8 @@ class EventPlugin::EventBlock < Block
   end
 
   def cache_key language='en', user=nil
-    "#{super}-#{self.events_source.events.published.order('updated_at DESC').first.updated_at}"
+    last_event = self.events_source.events.published.order('updated_at DESC').first
+    "#{super}-#{last_event.updated_at if last_event}"
   end
 
 end
