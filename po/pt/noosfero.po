@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0-690-gcb6e853\n"
 "POT-Creation-Date: 2015-03-05 12:10-0300\n"
-"PO-Revision-Date: 2015-03-29 01:47+0200\n"
+"PO-Revision-Date: 2015-07-18 20:38-0300\n"
 "Last-Translator: daniel <dtygel@eita.org.br>\n"
 "Language-Team: Portuguese "
 "<https://hosted.weblate.org/projects/noosfero/noosfero/pt/>\n"
@@ -8095,6 +8095,10 @@ msgstr "Continuar"
 #: app/views/account/_login_form.html.erb:15
 msgid "Log in"
 msgstr "Entrar"
+
+#: app/views/account/login.html.erb:19
+msgid "Keep me logged in"
+msgstr "Mantenha-me logado"
 
 #: app/views/account/login.html.erb:33
 #: app/views/account/login_block.html.erb:31
