@@ -130,8 +130,13 @@ jQuery('.text-editor-sidebar .header .icon-vertical-toggle').click(function(){
   jQuery('#content').toggleClass('show-media-panel');
   return false;
 });
+// Cirandas specific: show panel by default
+jQuery(document).ready(function(){
+  jQuery('#content').toggleClass('show-media-panel');
+})
 
 jQuery('#new-folder-button').click(function(){
   jQuery('#new-folder-dialog').dialog({modal: true});
   return false;
 });
+
