@@ -371,8 +371,7 @@ class CmsController < MyProfileController
   end
 
   def search_article_privacy_exceptions
-    arg = params[:q].downcase
-    result = profile.members.find(:all, :conditions => ['LOWER(name) LIKE ?', "%#{arg}%"])
+    result = profile.members.where('name ILIKE ? OR identifier ILIKE ?', "%#{params[:q]}%", "%#{params[:q]}%").limit(10)
     render :text => prepare_to_token_input(result).to_json
   end
 
