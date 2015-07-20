@@ -1,6 +1,6 @@
 class OrdersPlugin::Order < ActiveRecord::Base
 
-  # if abstract_class true will trigger https://github.com/rails/rails/issues/20871
+  # if abstract_class is true then it will trigger https://github.com/rails/rails/issues/20871
   #self.abstract_class = true
 
   Statuses = ::OrdersPlugin::Item::Statuses

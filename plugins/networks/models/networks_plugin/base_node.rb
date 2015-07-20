@@ -3,7 +3,8 @@ class NetworksPlugin::BaseNode < Enterprise
   has_many :nodes, -> { where profiles: {visible: true} },
     through: :network_node_parent_relations, source: :child_np, class_name: 'NetworksPlugin::Node'
 
-  self.abstract_class = true
+  # if abstract_class is true then it will trigger https://github.com/rails/rails/issues/20871
+  #self.abstract_class = true
 
   delegate :parent, to: :network_node_child_relation, allow_nil: true
   def parent= node

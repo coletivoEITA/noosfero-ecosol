@@ -16,7 +16,8 @@ class SuppliersPlugin::BaseProduct < Product
     }
   ]
 
-  self.abstract_class = true
+  # if abstract_class is true then it will trigger https://github.com/rails/rails/issues/20871
+  #self.abstract_class = true
 
   settings_items :minimum_selleable, type: Float, default: nil
   settings_items :margin_percentage, type: Float, default: nil
