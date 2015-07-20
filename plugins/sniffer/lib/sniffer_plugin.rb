@@ -15,7 +15,10 @@ class SnifferPlugin < Noosfero::Plugin
   def control_panel_buttons
     buttons = []
     # Disable it on CIRANAS while it is not useful
-    #buttons.push( { :title => _("Consumer Interests"), :icon => 'consumer-interests', :url => {:controller => 'sniffer_plugin_myprofile', :action => 'edit'} } )
+    if profile.enterprise?
+      buttons.push( { :title => _("Consumer Interests"), :icon => 'consumer-interests', :url => {:controller => 'sniffer_plugin_myprofile', :action => 'edit'} } )
+    end
+
     buttons.push( { :title => _("Opportunities Sniffer"), :icon => 'sniff-opportunities', :url => {:controller => 'sniffer_plugin_myprofile', :action => 'search'}, :html_options => { data: {'skip-pjax' => true} } } ) if context.profile.enterprise?
     buttons
   end
