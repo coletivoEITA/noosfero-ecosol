@@ -43,26 +43,30 @@ module FormsHelper
       bt_submit + bt_cancel
     end
 
-    %w[select select_tag text_field_tag number_field_tag password_field_tag].each do |method|
-      define_method method do |*args, &block|
+    def responsive_add_field_class! options
+      if options['class']
+        options['class'] = "#{options['class']} form-control"
+      else
+        options[:class] = "#{options[:class]} form-control"
+      end
+    end
+
+    %w[
+      select_tag
+      text_field_tag text_area_tag
+      number_field_tag password_field_tag url_field_tag email_field_tag
+      month_field_tag date_field_tag
+    ].each do |method|
+      define_method method do |name, value=nil, options={}, &block|
         #return super(*args, &block) unless theme_responsive?
 
-        options = args.extract_options!
-        if options['class']
-          options['class'] = "#{options['class']} form-control"
-        else
-          options[:class] = "#{options[:class]} form-control"
-        end
-        super(*(args << options), &block)
+        responsive_add_field_class! options
+        super name, value, options, &block
       end
     end
     %w[select_month select_year].each do |method|
       define_method method do |date, options={}, html_options={}|
-        if html_options['class']
-          html_options['class'] = "#{html_options['class']} form-control"
-        else
-          html_options[:class] = "#{html_options[:class]} form-control"
-        end
+        responsive_add_field_class! html_options
         super date, options, html_options
       end
     end
