@@ -15,18 +15,18 @@ def load_sheet file_path
   rows.shift
   rows.each do |row|
     enterprises << {
-      :data => {
-        :id_sies => row[0].to_i,
-        :foundation_year => row[3].to_s,
-        :state => row[5].to_s,
-        :city => row[6].to_s,
-        :zip_code => row[4].to_s.normalize_zipcode,
-        :contact_email => row[9],
-        :contact_person => row[11]
+      data: {
+        id_sies: row[0].to_i,
+        foundation_year: row[3].to_s,
+        state: row[5].to_s,
+        city: row[6].to_s,
+        zip_code: row[4].to_s.normalize_zipcode,
+        contact_email: row[9].to_s,
+        contact_person: row[11].to_s,
       },
-      :name => row[1].to_s.normalize_name,
-      :nickname => row[2].to_s,
-      :address => extract_row_address(row),
+      name: row[1].to_s.normalize_name,
+      nickname: row[2].to_s,
+      address: extract_row_address(row),
     }
   end
 
@@ -99,7 +99,7 @@ def export_imported enterprises
       enterprise = data[:record]
       next unless enterprise
 
-      activation_task = enterprise.tasks.where(:type => 'EnterpriseActivation').first
+      activation_task = enterprise.tasks.where(type: 'EnterpriseActivation').first
       url = "#{$environment.top_url}/#{enterprise.identifier}"
 
       contact_phone = ([enterprise.data[:contact_phone]] + (enterprise.data[:private] || {}).values).join ', '
