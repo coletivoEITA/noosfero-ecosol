@@ -3149,8 +3149,8 @@ msgstr "Pour tous les membres de la communauté"
 msgid "For all your friends"
 msgstr "Pour tous vos amis"
 
-#: app/helpers/article_helper.rb:128
-msgid "Fill in the search field to add the exception users to see this content"
+#: app/helpers/article_helper.rb:118
+msgid "Fill in the search field to add the exception members to see this content"
 msgstr ""
 "Remplissez le champ de recherche pour ajouter les utilisateurs d'exception "
 "pour voir ce contenu"

@@ -3191,8 +3191,8 @@ msgstr "Community-Vorlage anlegen"
 msgid "For all your friends"
 msgstr "Freunde einladen"
 
-#: app/helpers/article_helper.rb:128
-msgid "Fill in the search field to add the exception users to see this content"
+#: app/helpers/article_helper.rb:118
+msgid "Fill in the search field to add the exception members to see this content"
 msgstr ""
 "Benutzen Sie dieses Suchfeld um ausgenommene Nutzer hinzuzufügen, die diesen "
 "Inhalt sehen dürfen"

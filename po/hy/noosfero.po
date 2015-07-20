@@ -3330,8 +3330,8 @@ msgstr "Ստեղծել նոր համայնք"
 msgid "For all your friends"
 msgstr "ընկերներ"
 
-#: app/helpers/article_helper.rb:128
-msgid "Fill in the search field to add the exception users to see this content"
+#: app/helpers/article_helper.rb:118
+msgid "Fill in the search field to add the exception members to see this content"
 msgstr ""
 
 #: app/helpers/article_helper.rb:137 app/views/features/index.html.erb:48

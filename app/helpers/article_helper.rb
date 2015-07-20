@@ -125,7 +125,7 @@ module ArticleHelper
         'div',
         content_tag(
           'label',
-          _('Fill in the search field to add the exception users to see this content'),
+          _('Fill in the search field to add the exception members to see this content'),
           :id => "text-input-search-exception-users"
         ) +
         token_input_field_tag(

@@ -653,8 +653,7 @@ div#notice {
   border-radius-topright: 0px;
   border-radius-bottomright: 0px;
   background-color: #cecece;
-  max-width: 175px;
-  width: 200px;
+  width: 100%;
   border-right: 2px solid #555753;
 }
 
@@ -2299,15 +2298,6 @@ div#notice {
   background-position: 5px 50%;
 }
 
-#content .link-list-block li a.link-this-page {
-  border-radius-topright: 0px;
-  border-radius-bottomright: 0px;
-  background-color: #cecece;
-  max-width: 175px;
-  width: 200px;
-  border-right: 2px solid #555753;
-}
-
 #content .box-1 .link-list-block li a.link-this-page {
   width: auto;
   border: none;
@@ -3410,7 +3400,7 @@ div.with_media_panel .formfield input[type="checkbox"] {
 }
 
 .controller-profile_editor .control-panel a {
-    width: 140px;
+  width: 175px;
 }
 
 

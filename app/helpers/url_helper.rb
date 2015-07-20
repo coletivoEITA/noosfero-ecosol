@@ -1,5 +1,6 @@
 module UrlHelper
 
+  # FIXME move to a monkey patch in all controllers' init
   mattr_accessor :controller_path_class
   self.controller_path_class = {}
 
@@ -9,15 +10,16 @@ module UrlHelper
     return super unless respond_to? :params and respond_to? :controller_path
 
     # Keep profile parameter when not using a custom domain:
-    # this is necessary as :profile parameter is optional in config/routes.rb
-    # Delete it if using a custom domain
+    # this is necessary as :profile parameter is optional in config/routes.rb;
+    # delete it if using a custom domain
+    # This overides the default Rails' behaviour that always recall
+    # the request params (see #url_options below)
     host = options[:host]
-    profile = options[:profile]
     if host.blank? or host == environment.default_hostname
-      controller = (options[:controller] || self.controller_path).to_s
-      controller = UrlHelper.controller_path_class[controller_path] ||= "#{controller_path}_controller".camelize.constantize rescue nil
-      profile_needed = controller.profile_needed rescue false
-      if profile_needed and profile.blank? and params[:profile].present?
+      controller_path = (options[:controller] || self.controller_path).to_s
+      controller = UrlHelper.controller_path_class[controller_path] ||= "#{controller_path}_controller".camelize.constantize
+      profile_needed = controller.profile_needed if controller.respond_to? :profile_needed, true
+      if profile_needed and options[:profile].blank? and params[:profile].present?
         options[:profile] = params[:profile]
       end
     else

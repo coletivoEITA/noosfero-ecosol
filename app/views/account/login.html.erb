@@ -13,6 +13,13 @@
 
      <%= f.password_field :password %>
 
+     <div class='checkbox'>
+       <label>
+         <%= check_box_tag :remember_me, '1', true %>
+         <%= _'Keep me logged in' %>
+       </label>
+     </div>
+
      <%= @plugins.dispatch(:login_extra_contents).collect { |content| instance_exec(&content) }.join("") %>
 
      <% button_bar do %>

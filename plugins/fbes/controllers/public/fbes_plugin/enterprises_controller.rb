@@ -32,4 +32,11 @@ class FbesPlugin::EnterprisesController < PublicController
     end
   end
 
+  protected
+
+  def default_url_options
+    # avoid rails' use_relative_controller!
+    {use_route: '/'}
+  end
+
 end

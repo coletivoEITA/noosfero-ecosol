@@ -1,3 +1,6 @@
+# FIXME without this the User#save crashes
+require 'noosfero/multi_tenancy'
+
 module SolrPlugin
 
   module ActsAsSearchable
