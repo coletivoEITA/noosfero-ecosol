@@ -1,5 +1,8 @@
 class OrdersPlugin::Order < ActiveRecord::Base
 
+  # if abstract_class true will trigger https://github.com/rails/rails/issues/20871
+  #self.abstract_class = true
+
   Statuses = ::OrdersPlugin::Item::Statuses
   DbStatuses = ::OrdersPlugin::Item::DbStatuses
   UserStatuses = ::OrdersPlugin::Item::UserStatuses
@@ -36,10 +39,6 @@ class OrdersPlugin::Order < ActiveRecord::Base
     consumer: StatusAccessMap.map{ |s, a| s if a == :consumer }.compact,
     supplier: StatusAccessMap.map{ |s, a| s if a == :supplier }.compact,
   }
-
-  # workaround for STI
-  self.table_name = :orders_plugin_orders
-  self.abstract_class = true
 
   attr_accessible :status, :consumer, :profile,
     :supplier_delivery_id, :consumer_delivery_id, :supplier_delivery_data, :consumer_delivery_data
