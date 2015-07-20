@@ -44,18 +44,18 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   has_many :purchases, through: :cycle_orders, source: :purchase
 
   has_many :cycle_products, foreign_key: :cycle_id, class_name: 'OrdersCyclePlugin::CycleProduct', dependent: :destroy
-  has_many :products, -> { order('products.name ASC').includes :from_2x_products, :from_products, {profile: :domains} },
+  has_many :products, -> { includes :from_2x_products, :from_products, {profile: :domains} },
     through: :cycle_products
 
-  has_many :consumers, -> { distinct.order 'name ASC' }, through: :sales, source: :consumer
-  has_many :suppliers, -> { distinct.order 'suppliers_plugin_suppliers.name ASC' }, through: :products
-  has_many :orders_suppliers, -> { order 'name ASC' }, through: :sales, source: :profile
+  has_many :consumers, -> { distinct.reorder 'name ASC' }, through: :sales, source: :consumer
+  has_many :suppliers, -> { distinct.reorder 'suppliers_plugin_suppliers.name ASC' }, through: :products
+  has_many :orders_suppliers, -> { reorder 'name ASC' }, through: :sales, source: :profile
 
-  has_many :from_products, -> { distinct.order 'name ASC' }, through: :products
-  has_many :supplier_products, -> { distinct.order 'name ASC' }, through: :products
-  has_many :product_categories, -> { distinct.order 'name ASC' }, through: :products
+  has_many :from_products, -> { distinct.reorder 'name ASC' }, through: :products
+  has_many :supplier_products, -> { distinct.reorder 'name ASC' }, through: :products
+  has_many :product_categories, -> { distinct.reorder 'name ASC' }, through: :products
 
-  has_many :orders_confirmed, -> { order('id ASC').where 'orders_plugin_orders.ordered_at IS NOT NULL' },
+  has_many :orders_confirmed, -> { reorder('id ASC').where 'orders_plugin_orders.ordered_at IS NOT NULL' },
     through: :cycle_orders, source: :sale
 
   has_many :items_selled, through: :sales, source: :items
@@ -209,9 +209,7 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   end
 
   def products_for_order
-    # FIXME name alias conflict
-    #self.products.unarchived.with_price.order('products.name ASC')
-    self.products.unarchived.with_price
+    self.products.unarchived.alphabetically.with_price
   end
 
   def supplier_products_by_suppliers orders = self.sales.ordered

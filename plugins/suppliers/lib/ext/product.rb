@@ -7,6 +7,8 @@ class Product
   has_currency :price
   has_currency :discount
 
+  scope :alphabetically, -> { order 'products.name ASC' }
+
   scope :available, -> { where available: true }
   scope :unavailable, -> { where 'products.available <> true' }
   scope :archived, -> { where archived: true }

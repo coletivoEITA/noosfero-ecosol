@@ -38,7 +38,7 @@ class OrdersPlugin::OrderTest < ActiveSupport::TestCase
   end
 
   should 'use as draft default status' do
-    @order = create(OrdersPlugin::Order, :status => nil)
+    @order = create(OrdersPlugin::Order, status: nil)
     assert_equal 'draft', @order.status
   end
 
@@ -100,7 +100,7 @@ class OrdersPlugin::OrderTest < ActiveSupport::TestCase
     @order.supplier_delivery = nil
     assert_nil @order.supplier_delivery
 
-    default = @order.cycle.delivery_methods.create! :profile => @order.profile, :name => 'method', :delivery_type => 'deliver'
+    default = @order.cycle.delivery_methods.create! profile: @order.profile, name: 'method', delivery_type: 'deliver'
     assert_equal default, @order.supplier_delivery
     assert_equal default.id, @order.supplier_delivery_id
   end
@@ -111,9 +111,9 @@ class OrdersPlugin::OrderTest < ActiveSupport::TestCase
 
   should 'give total price and quantity asked' do
     @order.cycle.profile.save!
-    product = create(SuppliersPlugin::DistributedProduct, :price => 2.0, :profile => @order.cycle.profile, :supplier => @order.cycle.profile.self_supplier)
+    product = create(SuppliersPlugin::DistributedProduct, price: 2.0, profile: @order.cycle.profile, supplier: @order.cycle.profile.self_supplier)
     @order.save!
-    @order.item.create! :product => @order.cycle.products.first, :quantity_consumer_ordered => 2.0
+    @order.item.create! product: @order.cycle.products.first, quantity_consumer_ordered: 2.0
     assert_equal 2.0, @order.total_quantity_consumer_ordered
     assert_equal 4.0, @order.total_price_consumer_ordered
   end

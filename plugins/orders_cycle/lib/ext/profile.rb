@@ -16,7 +16,7 @@ subclass.class_eval do
   has_many :orders_cycles_sales, through: :orders_cycles, source: :sales
   has_many :orders_cycles_purchases, through: :orders_cycles, source: :purchases
 
-  has_many :offered_products, -> { order 'products.name ASC' }, class_name: 'OrdersCyclePlugin::OfferedProduct'
+  has_many :offered_products, -> { reorder 'products.name ASC' }, class_name: 'OrdersCyclePlugin::OfferedProduct'
 
 end
 end
