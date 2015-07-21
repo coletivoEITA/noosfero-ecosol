@@ -1,4 +1,4 @@
-class OauthPlugin::Provider < Noosfero::Plugin::ActiveRecord
+class OauthPlugin::Provider < ActiveRecord::Base
 
   attr_accessible :strategy, :identifier, :name, :site, :key, :secret, :environment_id
 

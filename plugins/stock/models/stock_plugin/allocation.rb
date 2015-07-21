@@ -1,4 +1,4 @@
-class StockPlugin::Allocation < Noosfero::Plugin::ActiveRecord
+class StockPlugin::Allocation < ActiveRecord::Base
 
   belongs_to :place, :class_name => 'StockPlugin::Place'
   belongs_to :product
