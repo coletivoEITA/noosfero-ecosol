@@ -1,6 +1,6 @@
 <% button_bar do %>
   <%= button :back, _('Back'), :controller => 'profile_editor' %>
-  <%= button :add, _('Add members'), :action => 'add_members' if profile.enterprise? %>
+  <%= button :add, _('Add members'), :action => 'add_members' %>
   <% if profile.community? and user.has_permission?(:invite_members, profile) %>
     <%= button :person, _('Invite people to join'), :controller => 'invite', :action => 'invite_friends' %>
   <% end %>
