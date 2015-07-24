@@ -5,6 +5,7 @@ class ScrapTest < ActiveSupport::TestCase
   def setup
     Person.delete_all
     Scrap.delete_all
+    ActionTracker::Record.destroy_all
   end
 
   should "have the content" do
