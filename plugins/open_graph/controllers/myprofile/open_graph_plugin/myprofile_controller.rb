@@ -4,11 +4,11 @@ class OpenGraphPlugin::MyprofileController < MyProfileController
   before_filter :set_context
 
   def enterprise_search
-    scope = environment.enterprises.enabled.public
+    scope = environment.enterprises.enabled.is_public
     profile_search scope
   end
   def community_search
-    scope = environment.communities.public
+    scope = environment.communities.is_public
     profile_search scope
   end
   def friend_search
