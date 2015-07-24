@@ -23,6 +23,8 @@ gem 'utf8-cleaner'
 gem 'premailer-rails'
 gem 'slim'
 
+gem 'message_bus'
+
 platform :ruby do
   gem 'pg',                       '~> 0.18.1'
   gem 'rmagick',                '~> 2.13.1'
@@ -39,6 +41,9 @@ platform :ruby do
     gem 'gctools' if RUBY_VERSION >= '2.1.0' and RUBY_VERSION < '2.2.0'
     # DON'T IMPROVE
     #gem 'escape_utils'
+    
+    #gem 'rack-cache'
+    #gem 'redis-rack-cache'
   end
 
   group :production do
@@ -55,7 +60,7 @@ end
 group :performance do
   gem 'stackprof', platform: :mri
   gem 'flamegraph', platform: :mri
-  gem 'rack-mini-profiler'
+  #gem 'rack-mini-profiler'
 end
 
 group :assets do

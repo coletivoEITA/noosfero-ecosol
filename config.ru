@@ -9,4 +9,13 @@ if RUBY_ENGINE == 'ruby' and RUBY_VERSION >= '2.1.0' and RUBY_VERSION < '2.2.0'
   end
 end
 
+begin
+  require 'rack/cache'
+  require 'redis-rack-cache'
+  use Rack::Cache,
+    metastore: 'redis://localhost:6379/0/metastore',
+    entitystore: "redis://#{Rails.root}/tmp/rack.cache"
+rescue LoadError
+end
+
 run Noosfero::Application

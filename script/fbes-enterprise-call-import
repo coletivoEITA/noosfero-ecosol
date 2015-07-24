@@ -12,15 +12,15 @@ User::Mailer.class_eval do
     from "SACC <cirandas@fbes.org.br>"
     subject "Bem vinda/o ao CIRANDAS"
     content_type "text/html"      
-    body :name => user.person.name,
-      :enterprise => enterprise,
-      :login => user.login,
-      :email => user.person.email,
-      :password =>  user.password,
-      :change_pass_link =>  "http://cirandas.net/account/forgot_password",
-      :help => {:index => "http://cirandas.net/ajuda", :videos => "http://cirandas.net/ajuda/video-aulas-sobre-cirandas"},
-      :fbes => {:link => "http://www.fbes.org.br", :name => "FBES - Forum Brasileiro de Economia Solidária"},
-      :community => community
+    body name: user.person.name,
+      enterprise: enterprise,
+      login: user.login,
+      email: user.person.email,
+      password:  user.password,
+      change_pass_link:  "http://cirandas.net/account/forgot_password",
+      help: {index: "http://cirandas.net/ajuda", videos: "http://cirandas.net/ajuda/video-aulas-sobre-cirandas"},
+      fbes: {link: "http://www.fbes.org.br", name: "FBES - Forum Brasileiro de Economia Solidária"},
+      community: community
   end
 end
 
@@ -40,11 +40,11 @@ def create_user data
 
   $log.info "#{$log_prefix} Criando usuário: login '%s', senha '%s' e email '%s' ..." % [ login, pass, mail ] 
 
-  user = User.new :login => login, :email => mail,
-    :password => pass, :password_confirmation => pass,
-    :environment => $environment,
-    :terms_accepted => "1", :terms_of_use => $environment.terms_of_use
-  user.person_data = {:name => name, :contact_phone => phone}
+  user = User.new login: login, email: mail,
+    password: pass, password_confirmation: pass,
+    environment: $environment,
+    terms_accepted: "1", terms_of_use: $environment.terms_of_use
+  user.person_data = {name: name, contact_phone: phone}
 
   user.signup!
   $log.info "#{$log_prefix} Registrado!" 
@@ -129,8 +129,8 @@ def create_enterprise data
     break contact_email = u[:mail] if u[:mail].present?
   end 
 
-  enterprise = Enterprise.new :name => name, :identifier => identifier, :enabled => false,
-    :contact_email => contact_email, :environment => $environment, :referer => 'FBES'
+  enterprise = Enterprise.new name: name, identifier: identifier, enabled: false,
+    contact_email: contact_email, environment: $environment, referer: 'FBES'
   enterprise.public_profile = true
 
   $log.info "#{$log_prefix} Registrando dados geográficos do empreendimento..." 
