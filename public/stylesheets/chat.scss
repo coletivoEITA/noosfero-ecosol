@@ -42,13 +42,32 @@
   width: 70px;
   transition: width 0.3s ease-in;
 }
-/*
-#chat #buddy-list:hover {
-  right: 0;
-  width: 190px;
-  transition: width 0.3s ease-in;
+
+#chat {
+  #buddy-list.expand {
+    right: 0;
+    width: 190px;
+    transition: width 0.3s ease-in;
+
+    .buddies {
+      top: 57px;
+      left: 15px;
+      right: 0;
+      transition: all 0.3s ease-in;
+    }
+
+    .body {
+      top: 45px;
+      transition: top 0.3s ease-in;
+    }
+
+    .search {
+      transition: all 0.3s ease-in 0.3;
+      height: 16px;
+      padding: 9px;
+    }
+  }
 }
-*/
 
 #buddy-list .buddies {
   position: absolute;
@@ -61,15 +80,6 @@
   white-space: nowrap;
   transition: all 0.3s ease-in;
 }
-
-/*
-#buddy-list:hover .buddies {
-  top: 57px;
-  left: 15px;
-  right: 0;
-  transition: all 0.3s ease-in;
-}
-*/
 
 #buddy-list .buddies ul {
   list-style-type: none;
@@ -146,14 +156,7 @@
   transition: top 0.3s ease-in;
 }
 
-/*
-#buddy-list:hover .body{
-  top: 45px;
-  transition: top 0.3s ease-in;
-}
-*/
-
-#buddy-list .search{
+#buddy-list .search {
   width: 142px;
   padding: 0;
   height: 0;
@@ -162,14 +165,6 @@
   border: 0;
   transition: all 0.2s ease-in;
 }
-
-/*
-#buddy-list:hover .search{
-  transition: all 0.3s ease-in 0.3;
-  height: 16px;
-  padding: 9px;
-}
-*/
 
 .conversation .input-div {
   position: absolute;
@@ -195,7 +190,8 @@
 }
 .conversation textarea {
   height: 100%;
-  width: 98%;
+  width: 91%;
+  resize: none;
   overflow: auto;
   padding-left: 25px;
   padding-top: 3px;
