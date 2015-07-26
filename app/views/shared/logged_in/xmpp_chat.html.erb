@@ -20,10 +20,6 @@
 
   <div id='chat'>
     <div id='buddy-list'>
-      <div class='toolbar'>
-        <div class='dialog-error' style='display: none'></div>
-      </div>
-
       <div class='body'>
         <%= text_field_tag(:query, '', :placeholder => _('Search...'), :class => 'search') %>
 
@@ -69,6 +65,7 @@
             <span class="avatar-wrap" title="%{name}" data-toggle="tooltip" data-placement="left">
               %{avatar}
             </span>
+            <span class="name">%{name}</span>
           </a>
         </li>
       </div>

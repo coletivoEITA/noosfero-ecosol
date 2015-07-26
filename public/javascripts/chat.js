@@ -62,13 +62,13 @@ jQuery(function($) {
       var jid_id = Jabber.jid_to_id(jid);
       var identifier = Strophe.getNodeFromJid(jid);
       var html = template
-      .replace('%{jid_id}', jid_id)
+      .replace(/%{jid_id}/g, jid_id)
       .replace(/%{presence_status}/g, presence)
-      .replace('%{avatar}', getAvatar(identifier))
-      .replace('%{name}', name);
+      .replace(/%{avatar}/g, getAvatar(identifier))
+      .replace(/%{name}/g, name);
 
       $(item).parent().remove();
-      if(presence != 'offline' || !remove_on_offline){
+      if(presence != 'offline' || !remove_on_offline) {
         $(list).append(html);
         sort_conversations();
       }
@@ -176,12 +176,12 @@ jQuery(function($) {
 
     show_status: function(presence) {
       log('changing my status to ' + presence);
-      $('#buddy-list .user-status .simplemenu-trigger')
+      $('.user-status .simplemenu-trigger')
       .removeClass('icon-menu-chat')
       .removeClass('icon-menu-offline')
       .removeClass('icon-menu-dnd')
       .addClass('icon-menu-' + (presence || 'offline'));
-      $('#buddy-list #user-status img.avatar').replaceWith(getMyAvatar());
+      $('#user-status img.avatar').replaceWith(getMyAvatar());
       $.get('/chat/update_presence_status', { status: {chat_status: presence, last_chat_status: presence} });
     },
     change_status: function(status_element, callback) {
@@ -582,12 +582,12 @@ jQuery(function($) {
       Jabber.connect()
     })
   });
-  $('#chat-disconnect').click(function() {
+  $('#chat-disconnect').live('click', function() {
     Jabber.change_status($(this), function () {
       disconnect()
     })
   });
-  $('#chat-busy').click(function() {
+  $('#chat-busy').live('click', function() {
     Jabber.change_status($(this), function () {
       Jabber.presence_status = 'dnd'
       Jabber.connect()
@@ -939,6 +939,10 @@ jQuery(function($) {
   }).keyup( function () {
     // fire the above change event after every letter
     $(this).change();
+  }).focus( function () {
+    $('#buddy-list').addClass('expand')
+  }).blur( function () {
+    $('#buddy-list').removeClass('expand')
   });
 
   $('#chat .buddies a').live('click', function(){

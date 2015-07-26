@@ -44,27 +44,39 @@
 }
 
 #chat {
-  #buddy-list.expand {
-    right: 0;
-    width: 190px;
-    transition: width 0.3s ease-in;
+  #buddy-list {
+
+    &.expand {
+      right: 0;
+      width: 190px;
+      transition: width 0.3s ease-in;
+
+      .buddies {
+        top: 57px;
+        left: 15px;
+        right: 0;
+        transition: all 0.3s ease-in;
+
+        .name {
+          display: inline;
+        }
+      }
+
+      .body {
+        transition: top 0.3s ease-in;
+      }
+
+      .search {
+        transition: all 0.3s ease-in 0.3;
+        height: 16px;
+        padding: 9px;
+      }
+    }
 
     .buddies {
-      top: 57px;
-      left: 15px;
-      right: 0;
-      transition: all 0.3s ease-in;
-    }
-
-    .body {
-      top: 45px;
-      transition: top 0.3s ease-in;
-    }
-
-    .search {
-      transition: all 0.3s ease-in 0.3;
-      height: 16px;
-      padding: 9px;
+      .name {
+        display: none;
+      }
     }
   }
 }
@@ -72,7 +84,7 @@
 #buddy-list .buddies {
   position: absolute;
   bottom: 0;
-  top: 25px;
+  top: 36px;
   right: 6px;
   left: 7px;
   bottom: 7px;
@@ -157,11 +169,15 @@
 }
 
 #buddy-list .search {
+  position: absolute;
+  top: 19px;
+  right: 6px;
+  left: 7px;
   width: 142px;
   padding: 0;
-  height: 0;
-  color: #000;
-  background-color: #dee1da;
+  height: auto;
+  color: black;
+  background-color: transparent;
   border: 0;
   transition: all 0.2s ease-in;
 }
@@ -190,10 +206,10 @@
 }
 .conversation textarea {
   height: 100%;
-  width: 91%;
+  width: 100%;
   resize: none;
   overflow: auto;
-  padding-left: 25px;
+  padding-left: 32px;
   padding-top: 3px;
 }
 #conversations .history {
@@ -298,12 +314,6 @@
   color: gray;
   text-align: center;
   display: block;
-}
-
-#chat .user-status a:hover {
-  color: #FFF;
-  background-color: #999;
-  transition: 0.2s;
 }
 
 .conversation div.occupants {
@@ -446,9 +456,7 @@ div.occupants > a.up {
 #chat .simplemenu-submenu {
   background: #585858;
   border: 1px solid #6B6B6B;
-  top: 42px;
-  left: auto;
-  right: 0;
+  top: -127px;
 }
 
 #chat .simplemenu-item:hover {
@@ -462,6 +470,20 @@ div.occupants > a.up {
   white-space: nowrap;
   transition: padding 0.3s ease-in;
 }
+#user-status {
+  padding: 2px 5px;
+  width: 16px;
+  height: 0px;
+}
+.user-status {
+  position: relative;
+}
+.user-status .ui-icon {
+  position: absolute;
+  right: -14px;
+  margin: 2px 0;
+  top: 0;
+}
 
 #chat .user-status a {
   color: rgb(224, 224, 224);
@@ -469,6 +491,11 @@ div.occupants > a.up {
 
 .user-status {
   vertical-align: middle;
+}
+.user-status .simplemenu-item a {
+  display: block;
+  height: 16px;
+  padding-left: 18px;
 }
 
 .user-status span {
@@ -479,11 +506,9 @@ div.occupants > a.up {
 }
 
 .user-status .simplemenu-trigger {
-  display: block;
-  height: 42px;
-  line-height: 40px;
-  width: 161px;
-  padding-left: 21px;
+  display: inline-block;
+  height: 27px;
+  width: 22px;
   background-position: 5px 11px;
   margin: 0px;
 }
@@ -646,3 +671,115 @@ body.responsive.chat-opened #wrap-1 > #content {
 		padding-right:0;
 	}
 }
+
+/* friends online {{{ */
+
+#chat-online-users {
+  position: fixed;
+  right: 0px;
+  bottom: 0px;
+  margin: 0px 20px;
+  background-color: white;
+  border: 1px solid #333;
+  border-top: none;
+  width: 200px;
+  overflow: hidden;
+  z-index: 9999;
+}
+#chat-online-users .header {
+  font-size: 12px;
+  color: black;
+  background-color: #eee;
+  border-top: 1px solid #333;
+  padding: 3px;
+  text-decoration: none;
+}
+#chat-online-users .header i {
+  display: block;
+  height: 16px;
+  width: 16px;
+  margin-right: 5px;
+  float: left;
+}
+#chat-online-users-content {
+  bottom: 24px;
+  right: 0px;
+  width: 200px;
+  border-top: 1px solid #333;
+}
+#chat-online-users .menu-submenu-content h4 ul {
+  border-top: 1px solid #333;
+  background-color: #efefef;
+  margin: 0px;
+}
+#chat-online-users-content li {
+  list-style: none;
+}
+#chat-online-users-title:hover, #chat-online-users-title:visited {
+  color: #000;
+}
+.webkit #chat-online-users-title, .opera #chat-online-users-title {
+  text-decoration: none;
+}
+.chat-online-user {
+  font-size: 12px;
+  color: #000;
+  margin: 0px;
+  padding: 10px;
+  display: block;
+  text-decoration: none;
+  white-space: nowrap;
+  position: relative;
+}
+.chat-online-user .friend_name {
+  line-height: 20px;
+  vertical-align: super;
+  margin-left: 5px;
+}
+.chat-online-user:visited, .chat-online-user:active {
+  color: #000;
+}
+.chat-online-user:hover {
+  background-color: #efefef;
+}
+#chat-online-users ul {
+  padding: 0;
+  margin: 0;
+}
+.chat-online-user-avatar {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url('/images/icons-app/person-icon.png');
+  position: relative;
+}
+.msie .chat-online-user-avatar {
+  display: inline;
+}
+#chat-online-users-hidden-content {
+  max-height: 200px;
+  overflow: auto;
+  overflow-x: hidden;
+  border-top: 5px solid;
+}
+.chat-online-user-status {
+  position: absolute;
+  font-size: 9px;
+  font-weight: bold;
+  display: block;
+  height: 11px;
+  width: 11px;
+  top: 15px;
+  right: 10px;
+}
+.chat-online-user-status span {
+  display: none;
+}
+#anyone-online {
+  display: block;
+  text-align: center;
+  padding: 5px 0;
+  font-style: italic;
+  color: #444;
+}
+/* friends online }}} */
