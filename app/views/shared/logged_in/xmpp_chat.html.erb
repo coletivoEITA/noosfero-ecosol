@@ -20,16 +20,8 @@
 
   <div id='chat'>
     <div id='buddy-list'>
-      <div class='toolbar'>
-        <% unless (theme_responsive? rescue false) %>
-          <div id='user-status'>
-            <%= chat_user_status_menu('icon-menu-offline', _('Offline')) %>
-          </div>
-        <% end %>
-        <div class='dialog-error' style='display: none'></div>
-      </div>
-
       <div class='body'>
+        <%= text_field_tag(:query, '', :placeholder => _('Search...'), :class => 'search') %>
 
         <div class='buddies'>
           <ul class='online'></ul>
@@ -53,9 +45,11 @@
         </div>
         <div class='history'></div>
         <div class='input-div'>
-            <div class='icon-chat'></div>
-            <textarea class='input'></textarea>
-            <%= text_field_tag(:query, '', :placeholder => _('Search...'), :class => 'search') %>
+          <div class='icon-chat'></div>
+          <div id='user-status'>
+            <%= chat_user_status_menu 'icon-menu-offline', _('Offline') %>
+          </div>
+          <textarea class='input'></textarea>
         </div>
       </div>
 
@@ -69,6 +63,7 @@
             <span class="avatar-wrap" title="%{name}" data-toggle="tooltip" data-placement="left">
               %{avatar}
             </span>
+            <span class="name">%{name}</span>
           </a>
         </li>
       </div>
