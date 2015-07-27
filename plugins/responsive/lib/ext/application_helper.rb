@@ -250,7 +250,7 @@ module ApplicationHelper
       #control_panel link
       output += '<li>' + link_to('<i class="icon-menu-ctrl-panel"></i><strong>' + _('Control panel') + '</strong>', user.admin_url, class: 'ctrl-panel', title: _("Configure your personal account and content")) + '</li>'
 
-      output += chat_user_status_menu('icon-menu-offline', _('Offline'))
+      output += responsive_chat_user_status_menu('icon-menu-offline', _('Offline'))
 
       #manage_enterprises
       manage_enterprises_str = manage_enterprises

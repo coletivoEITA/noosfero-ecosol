@@ -8,7 +8,7 @@ module ChatHelper
 
   module ResponsiveMethods
 
-    def chat_user_status_menu icon_class, status
+    def responsive_chat_user_status_menu icon_class, status
       return super unless theme_responsive?
 
       links = [
