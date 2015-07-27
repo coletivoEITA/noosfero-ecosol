@@ -46,11 +46,9 @@
         <div class='history'></div>
         <div class='input-div'>
           <div class='icon-chat'></div>
-          <% unless (theme_responsive? rescue false) %>
-            <div id='user-status'>
-              <%= chat_user_status_menu 'icon-menu-offline', _('Offline') %>
-            </div>
-          <% end %>
+          <div id='user-status'>
+            <%= chat_user_status_menu 'icon-menu-offline', _('Offline') %>
+          </div>
           <textarea class='input'></textarea>
         </div>
       </div>
