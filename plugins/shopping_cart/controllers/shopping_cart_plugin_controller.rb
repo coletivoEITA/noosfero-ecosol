@@ -119,7 +119,8 @@ class ShoppingCartPluginController < OrdersPluginController
     @settings = cart_profile.shopping_cart_settings
     @cart = cart
     @profile = cart_profile
-    @order = profile.sales.build consumer: user
+    supplier_delivery = profile.delivery_methods.first
+    @order = build_order self.cart[:items], supplier_delivery
 
     @order.supplier_delivery = profile.delivery_methods.find session[:cart][:last_delivery_option_id] rescue nil
     if repeat_order_id = self.cart[:repeat_order_id]
