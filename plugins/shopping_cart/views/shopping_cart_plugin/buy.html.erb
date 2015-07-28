@@ -12,7 +12,7 @@
         <%= items_table @cart[:items], @profile, supplier_delivery %>
       </fieldset>
     </div>
-    
+
     <div class="col-lg-6 col-md-6 col-sm-6 col-lg-pull-6 col-md-pull-6 col-sm-pull-6">
       <fieldset>
         <legend><%=_('Personal identification')%></legend>
@@ -36,6 +36,7 @@
       <% if profile.delivery_methods.size > 0 %>
         <fieldset>
           <legend><%=_('Delivery or pickup method')%></legend>
+
           <%= render 'delivery_plugin/order_select', f: f, order: @order %>
         </fieldset>
       <% end %>
