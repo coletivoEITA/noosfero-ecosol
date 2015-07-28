@@ -12,19 +12,19 @@ div.order-delivery-select
   div.consumer-delivery-data
     = f.fields_for :consumer_delivery_data, order.consumer_delivery_data do |ff|
       = labelled_form_field _('Address (street and number)'),
-        ff.text_field(:address, value: order.consumer_delivery_data[:address], readonly: readonly)
+        ff.text_field(:address, value: consumer_delivery_field_value(order, :address), readonly: readonly)
       = labelled_form_field _('Address completion'),
-        ff.text_field(:address_line2, value: order.consumer_delivery_data[:address_line2], readonly: readonly)
+        ff.text_field(:address_line2, value: consumer_delivery_field_value(order, :address_line2), readonly: readonly)
       = labelled_form_field _('Address reference'),
-        ff.text_field(:address_reference, value: order.consumer_delivery_data[:address_reference], readonly: readonly)
+        ff.text_field(:address_reference, value: consumer_delivery_field_value(order, :address_reference), readonly: readonly)
       = labelled_form_field _('District'),
-        ff.text_field(:district, value: order.consumer_delivery_data[:district], readonly: readonly)
+        ff.text_field(:district, value: consumer_delivery_field_value(order, :district), readonly: readonly)
       = labelled_form_field _('City'),
-        ff.text_field(:city, value: order.consumer_delivery_data[:city], readonly: readonly)
+        ff.text_field(:city, value: consumer_delivery_field_value(order, :city), readonly: readonly)
       = labelled_form_field _('State'),
-        ff.text_field(:state, value: order.consumer_delivery_data[:state], readonly: readonly)
+        ff.text_field(:state, value: consumer_delivery_field_value(order, :state), readonly: readonly)
       = labelled_form_field _('ZIP code'),
-        ff.text_field(:zip_code, value: order.consumer_delivery_data[:zip_code], readonly: readonly)
+        ff.text_field(:zip_code, value: consumer_delivery_field_value(order, :zip_code), readonly: readonly)
 
   javascript:
     delivery.order.select.onChange($('#order_supplier_delivery_id'))
