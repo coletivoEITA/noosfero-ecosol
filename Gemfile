@@ -13,7 +13,7 @@ gem 'exception_notification',   '~> 4.0.1'
 gem 'gettext',                  '~> 2.2.1', :require => false
 gem 'locale',                   '~> 2.0.5'
 gem 'whenever', :require => false
-gem 'eita-jrails', '>= 0.9.5', :require => 'jrails'
+gem 'eita-jrails', '~> 0.9.5', :require => 'jrails'
 gem 'i18n',                     '~> 0.6.0'
 gem 'will-paginate-i18n'
 gem 'utf8-cleaner'
@@ -84,6 +84,7 @@ group :test do
 end
 
 group :cucumber do
+  gem 'launchy'
   gem 'cucumber-rails',         '~> 1.0.6', require: false
   gem 'capybara',               '~> 2.1.0'
   gem 'cucumber',               '~> 1.0.6'
