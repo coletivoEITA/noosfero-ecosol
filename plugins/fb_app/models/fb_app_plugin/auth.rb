@@ -37,10 +37,17 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
   def exchange_token
     app_id = FbAppPlugin.timeline_app_credentials[:id]
     app_secret = FbAppPlugin.timeline_app_credentials[:secret]
-    fb_auth = FbGraph::Auth.new app_id, app_secret
-    fb_auth.exchange_token! self.access_token
-    self.expires_in = fb_auth.access_token.expires_in
-    self.access_token = fb_auth.access_token.access_token
+    fb_auth = FbGraph2::Auth.new app_id, app_secret
+    fb_auth.fb_exchange_token = self.access_token
+
+    access_token = fb_auth.access_token!
+    self.access_token = access_token.access_token
+    self.expires_in = access_token.expires_in
+  end
+
+  def exchange_token!
+    self.exchange_token
+    self.save!
   end
 
   def signed_request_data
@@ -49,7 +56,7 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
 
   def fetch_user
     @user ||= begin
-      user = FbGraph::User.me self.access_token
+      user = FbGraph2::User.me self.access_token
       self.user = user.fetch
     end
   end
@@ -64,12 +71,8 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
   end
 
   def schedule_exchange_token
-    self.exchange_token
-    self.save!
-    # repeat this again
-    self.schedule_exchange_token
+    self.delay(run_at: self.expires_at - 2.weeks).exchange_token!
   end
-  handle_asynchronously :schedule_exchange_token, run_at: proc{ 1.month.from_now }
 
 end
 

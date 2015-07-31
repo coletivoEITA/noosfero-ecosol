@@ -35,7 +35,7 @@ class FbAppPlugin::Publisher < OpenGraphPlugin::Publisher
     params['fb:explicitly_shared'] = 'true' unless story_defs[:tracker]
     print_debug "fb_app: publishing with params #{params.inspect}" if debug? actor
 
-    me = FbGraph::User.me auth.access_token
+    me = FbGraph2::User.me auth.access_token
     me.og_action! "#{namespace}:#{action}", params
     print_debug "fb_app: published with success" if debug? actor
 
