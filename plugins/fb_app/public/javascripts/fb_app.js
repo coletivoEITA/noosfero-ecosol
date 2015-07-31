@@ -17,7 +17,7 @@ fb_app = {
   },
 
   timeline: {
-    app_id: '',
+    appId: '',
     app_scope: 'publish_actions',
 
     loading: function() {
@@ -27,7 +27,6 @@ fb_app = {
     connect: function() {
       this.loading();
       fb_app.fb.scope = this.app_scope
-      //fb_app.fb.init(this.app_id, 'fb_app.fb.connect()')
       fb_app.fb.connect(function (response) {
         fb_app.auth.receive(response)
       });
@@ -59,8 +58,8 @@ fb_app = {
   },
 
   page_tab: {
-    app_id: '',
-    next_url: '',
+    appId: '',
+    nextUrl: '',
 
     init: function() {
       FB.Canvas.scrollTo(0,140);
@@ -109,7 +108,7 @@ fb_app = {
       close: function(pageId) {
         noosfero.modal.close()
         jQuery('#content').html('').addClass('loading')
-        fb_app.fb.redirect_to_tab(pageId, fb_app.page_tab.app_id)
+        fb_app.fb.redirect_to_tab(pageId, fb_app.page_tab.appId)
       },
 
       validate: function(form) {
@@ -139,8 +138,8 @@ fb_app = {
         // this checks if the user is using FB as a page and offer a switch
         FB.login(function(response) {
           if (response.status != 'connected') return
-          var next_url = fb_app.page_tab.next_url + '?' + form.serialize()
-          window.location.href = fb_app.fb.add_tab_url(fb_app.page_tab.app_id, next_url)
+          var nextUrl = fb_app.page_tab.nextUrl + '?' + form.serialize()
+          window.location.href = fb_app.fb.add_tab_url(fb_app.page_tab.appId, nextUrl)
         })
         return false
       },
@@ -227,38 +226,51 @@ fb_app = {
   },
 
 
+  // interface to facebook's SDK
   fb: {
-    id: '',
+    appId: '',
     scope: '',
+    inited: false,
+    initCode: null,
 
-    init: function(app_id, asyncInit) {
+    prepareAsyncInit: function(appId, asyncInitCode) {
+      this.id = appId
+      this.initCode = asyncInitCode
 
       window.fbAsyncInit = function() {
         FB.init({
-          appId: app_id,
-          status: true,
+          appId: appId,
           cookie: true,
-          xfbml: true
+          xfbml: true,
+          status: true,
         })
 
+        // automatic iframe's resize
+        // FIXME: move to page tab embed code
         fb_app.fb.size_change()
         jQuery(document).on('DOMNodeInserted', fb_app.fb.size_change)
 
-        if (asyncInit)
-          jQuery.globalEval(asyncInit)
+        if (asyncInitCode)
+          jQuery.globalEval(asyncInitCode)
+
+        fb_app.fb.inited = true
       }
+    },
+
+    init: function() {
+      // the SDK is loaded on views/fb_app_plugin/_load.html.slim and then call window.fbAsyncInit
     },
 
     size_change: function() {
       FB.Canvas.setSize({height: jQuery('body').height()+100})
     },
 
-    redirect_to_tab: function(pageId, app_id) {
-      window.location.href = 'https://facebook.com/' + pageId + '?sk=app_' + app_id
+    redirect_to_tab: function(pageId, appId) {
+      window.location.href = 'https://facebook.com/' + pageId + '?sk=app_' + appId
     },
 
-    add_tab_url: function (app_id, next_url) {
-      return 'https://www.facebook.com/dialog/pagetab?' + jQuery.param({app_id: app_id, next: next_url})
+    add_tab_url: function (appId, nextUrl) {
+      return 'https://www.facebook.com/dialog/pagetab?' + jQuery.param({app_id: appId, next: nextUrl})
     },
 
     connect: function(callback) {
