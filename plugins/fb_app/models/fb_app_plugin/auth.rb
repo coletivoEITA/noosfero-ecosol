@@ -43,6 +43,8 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
     access_token = fb_auth.access_token!
     self.access_token = access_token.access_token
     self.expires_in = access_token.expires_in
+    # refresh user and its stored access token
+    self.fetch_user
   end
 
   def exchange_token!
@@ -55,10 +57,8 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
   end
 
   def fetch_user
-    @user ||= begin
-      user = FbGraph2::User.me self.access_token
-      self.user = user.fetch
-    end
+    user = FbGraph2::User.me self.access_token
+    self.user = user.fetch
   end
   def update_user
     self.user = self.fetch_user

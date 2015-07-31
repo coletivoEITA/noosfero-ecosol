@@ -16,7 +16,6 @@ class FbAppPluginMyprofileController < OpenGraphPlugin::MyprofileController
   def show_login
     @status = params[:auth].delete :status
     @logged_auth = FbAppPlugin::Auth.new params[:auth]
-
     @logged_auth.fetch_user
     if @auth.connected?
       render partial: 'identity', locals: {auth: @logged_auth}
