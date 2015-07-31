@@ -40,7 +40,7 @@
   </div>
 <% end %>
 
-<% if NOOSFERO_CONF['addthis_enabled'] %>
+<% if NOOSFERO_CONF['addthis_enabled'] and @page.public? %>
   <%= render :partial => 'addthis' %>
 <% end %>
 
