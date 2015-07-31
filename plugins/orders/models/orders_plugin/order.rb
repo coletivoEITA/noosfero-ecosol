@@ -49,7 +49,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   belongs_to :supplier, foreign_key: :profile_id, class_name: 'Profile'
   belongs_to :consumer, class_name: 'Profile'
 
-  belongs_to :session, primary_key: :session_id, foreign_key: :session_id, class_name: 'ActiveRecord::SessionStore::Session'
+  belongs_to :session, primary_key: :session_id, foreign_key: :session_id, class_name: 'Session'
 
   has_many :items, class_name: 'OrdersPlugin::Item', foreign_key: :order_id, dependent: :destroy, order: 'name ASC'
   has_many :products, through: :items
