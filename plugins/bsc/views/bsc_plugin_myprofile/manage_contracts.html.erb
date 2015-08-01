@@ -32,7 +32,7 @@
             </td>
             <td class="links">
               <%= link_to(c_('Edit'), :action => 'edit_contract', :contract_id => contract.id)%>
-              <%= link_to(c_('Remove'), {:action => 'destroy_contract', :contract_id => contract.id}, :confirm => _('Are you sure?'))%>
+              <%= link_to c_('Remove'), {action: 'destroy_contract', contract_id: contract.id}, data: {confirm: _('Are you sure?')} %>
             </td>
           </tr>
         <% end %>
