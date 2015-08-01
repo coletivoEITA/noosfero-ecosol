@@ -8,7 +8,7 @@ gem 'ruby-feedparser',          '~> 0.7'
 gem 'daemons',                  '~> 1.1.5'
 gem 'nokogiri',                 '~> 1.6.0'
 gem 'will_paginate'
-gem 'pothoven-attachment_fu'
+gem 'pothoven-attachment_fu',   '~> 3.2.16'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'rake', :require => false
@@ -106,8 +106,7 @@ group :cucumber do
   gem 'cucumber',               '~> 1.3.20'
   gem 'cucumber-rails',         '~> 1.4.2', :require => false
   gem 'database_cleaner',       '~> 1.2.0'
-  # FIXME: conflicts with axlsx version 2, that requires rubyzip 1.0.0 and selenium-webdriver requires rubyzip 1.1.6
-  #gem 'selenium-webdriver',     '~> 2.39.0'
+  gem 'selenium-webdriver'
 end
 
 group :development do
