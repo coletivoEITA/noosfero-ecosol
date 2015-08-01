@@ -70,8 +70,13 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
     self.profile.fb_app_page_tabs.destroy_all
   end
 
+  def exchange_token_and_reschedule!
+    self.exchange_token!
+    self.schedule_exchange_token
+  end
+
   def schedule_exchange_token
-    self.delay(run_at: self.expires_at - 2.weeks).exchange_token!
+    self.delay(run_at: self.expires_at - 2.weeks).exchange_token_and_reschedule!
   end
 
 end
