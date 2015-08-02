@@ -92,9 +92,8 @@ module Noosfero
     config.sass.cache = true
     config.sass.line_comments = false
 
-    config.action_dispatch.session = {
-      :key    => '_noosfero_session',
-    }
+    config.action_dispatch.session = {key: '_noosfero_session'}
+    config.session_store :active_record_store, key: '_noosfero_session'
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
