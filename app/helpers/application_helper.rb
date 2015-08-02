@@ -920,7 +920,9 @@ module ApplicationHelper
     article_helper = View.new
     article_helper.controller = controller
     article_helper.extend Rails.application.routes.url_helpers
-    article_helper.extend ApplicationHelper
+    article_helper.extend UrlHelper
+    # FIXME: this causes everything to be considered a forum
+    #article_helper.extend ApplicationHelper
     article_helper.extend ArticleHelper
     begin
       class_name = article.class.name + 'Helper'

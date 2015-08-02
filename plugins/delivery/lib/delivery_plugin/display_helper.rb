@@ -18,6 +18,15 @@ module DeliveryPlugin::DisplayHelper
     end.join
   end
 
+  def consumer_delivery_field_value order, field
+    # BLACK OR WHITE: do not mix existing delivery data with user's location
+    if order.consumer_delivery_data.present?
+      order.consumer_delivery_data[field]
+    elsif user
+      user.send field
+    end
+  end
+
   def delivery_context
     @delivery_context || 'delivery_plugin/admin_method'
   end

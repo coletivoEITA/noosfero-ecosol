@@ -1,4 +1,7 @@
 class ProfileMembersController < MyProfileController
+
+  no_design_blocks
+
   protect 'manage_memberships', :profile
 
   def index

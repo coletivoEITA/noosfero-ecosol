@@ -4873,14 +4873,6 @@ h1#agenda-title {
   width: 30%;
   text-align: center;
 }
-.controller-profile_members .members-buttons-cell {
-  width: 60px;
-}
-.controller-profile_members .msie .members-buttons-cell a {
-  position: relative;
-  display: block;
-  float: left;
-}
 
 .actions .members-buttons-cell {
   width : 100px
@@ -5554,18 +5546,6 @@ h1#agenda-title {
   padding-left: 0px;
   margin: 0px;
 }
-#user-status {
-  padding: 2px 5px;
-}
-.user-status {
-  position: relative;
-}
-.user-status .ui-icon {
-  position: absolute;
-  right: -14px;
-  margin: 2px 0;
-  top: 0;
-}
 .simplemenu-item {
   list-style: none;
   height: 16px;
@@ -5601,14 +5581,6 @@ h1#agenda-title {
   text-decoration: none;
   height: 20px;
   position: relative;
-}
-.user-status .simplemenu-trigger {
-  padding: 1px 7px 1px 18px;
-}
-.user-status .simplemenu-item a {
-  display: block;
-  height: 16px;
-  padding-left: 18px;
 }
 
 #profile-activity ul, #profile-network ul, #profile-wall ul {
@@ -6124,118 +6096,6 @@ li.profile-activity-item.upload_image .activity-gallery-images-count-1 img {
   position: static;
   display: inline;
 }
-
-/* friends online {{{ */
-
-#chat-online-users {
-  position: fixed;
-  right: 0px;
-  bottom: 0px;
-  margin: 0px 20px;
-  background-color: white;
-  border: 1px solid #333;
-  border-top: none;
-  width: 200px;
-  overflow: hidden;
-  z-index: 9999;
-}
-#chat-online-users .header {
-  font-size: 12px;
-  color: black;
-  background-color: #eee;
-  border-top: 1px solid #333;
-  padding: 3px;
-  text-decoration: none;
-}
-#chat-online-users .header i {
-  display: block;
-  height: 16px;
-  width: 16px;
-  margin-right: 5px;
-  float: left;
-}
-#chat-online-users-content {
-  bottom: 24px;
-  right: 0px;
-  width: 200px;
-  border-top: 1px solid #333;
-}
-#chat-online-users .menu-submenu-content h4 ul {
-  border-top: 1px solid #333;
-  background-color: #efefef;
-  margin: 0px;
-}
-#chat-online-users-content li {
-  list-style: none;
-}
-#chat-online-users-title:hover, #chat-online-users-title:visited {
-  color: #000;
-}
-.webkit #chat-online-users-title, .opera #chat-online-users-title {
-  text-decoration: none;
-}
-.chat-online-user {
-  font-size: 12px;
-  color: #000;
-  margin: 0px;
-  padding: 10px;
-  display: block;
-  text-decoration: none;
-  white-space: nowrap;
-  position: relative;
-}
-.chat-online-user .friend_name {
-  line-height: 20px;
-  vertical-align: super;
-  margin-left: 5px;
-}
-.chat-online-user:visited, .chat-online-user:active {
-  color: #000;
-}
-.chat-online-user:hover {
-  background-color: #efefef;
-}
-#chat-online-users ul {
-  padding: 0;
-  margin: 0;
-}
-.chat-online-user-avatar {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background: url('/images/icons-app/person-icon.png');
-  position: relative;
-}
-.msie .chat-online-user-avatar {
-  display: inline;
-}
-#chat-online-users-hidden-content {
-  max-height: 200px;
-  overflow: auto;
-  overflow-x: hidden;
-  border-top: 5px solid;
-}
-.chat-online-user-status {
-  position: absolute;
-  font-size: 9px;
-  font-weight: bold;
-  display: block;
-  height: 11px;
-  width: 11px;
-  top: 15px;
-  right: 10px;
-}
-.chat-online-user-status span {
-  display: none;
-}
-#anyone-online {
-  display: block;
-  text-align: center;
-  padding: 5px 0;
-  font-style: italic;
-  color: #444;
-}
-/* friends online }}} */
 
 #profile-wall .profile-wall-description .icon-reply {
   visibility: hidden;
