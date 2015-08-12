@@ -13,8 +13,8 @@ class Article
     title: proc{ |a, plugin| "#{a.title} - #{a.profile.name}" },
     image: proc do |a, plugin|
       img = a.body_images_paths
-      img = "#{a.profile.environment.top_url}#{a.profile.image.public_filename}" if a.profile.image if img.blank?
-      img ||= MetadataPlugin.config[:open_graph][:environment_logo] rescue nil if img.blank?
+      img = "#{a.profile.environment.top_url}#{a.profile.image.public_filename}".html_safe if a.profile.image if img.blank?
+      img ||= MetadataPlugin.config[:open_graph][:environment_logo].html_safe rescue nil if img.blank?
       img
     end,
     see_also: [],
