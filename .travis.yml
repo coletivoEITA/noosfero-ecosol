@@ -1,6 +1,8 @@
+# only test on specific branches
 branches:
   except:
     - master
+    - next
 
 language: ruby
 rvm:
