@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150603182105) do
+ActiveRecord::Schema.define(:version => 20150712130827) do
 
   create_table "abuse_reports", :force => true do |t|
     t.integer  "reporter_id"
@@ -521,17 +521,6 @@ ActiveRecord::Schema.define(:version => 20150603182105) do
   add_index "favorite_enterprise_people", ["person_id", "enterprise_id"], :name => "index_favorite_enterprise_people_on_person_id_and_enterprise_id"
   add_index "favorite_enterprise_people", ["person_id"], :name => "index_favorite_enterprise_people_on_person_id"
 
-  create_table "fb_app_plugin_page_tab_configs", :force => true do |t|
-    t.string   "page_id"
-    t.text     "config",     :default => "--- {}\n\n"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "profile_id"
-  end
-
-  add_index "fb_app_plugin_page_tab_configs", ["page_id"], :name => "index_fb_app_ecosol_store_plugin_page_configs_on_page_id"
-  add_index "fb_app_plugin_page_tab_configs", ["profile_id"], :name => "index_fb_app_plugin_page_tab_configs_on_profile_id"
-
   create_table "friendships", :force => true do |t|
     t.integer  "person_id"
     t.integer  "friend_id"
@@ -913,6 +902,18 @@ ActiveRecord::Schema.define(:version => 20150603182105) do
   add_index "profile_activities", ["activity_type"], :name => "index_profile_activities_on_activity_type"
   add_index "profile_activities", ["profile_id"], :name => "index_profile_activities_on_profile_id"
 
+  create_table "profile_activities", :force => true do |t|
+    t.integer  "profile_id"
+    t.integer  "activity_id"
+    t.string   "activity_type"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "profile_activities", ["activity_id", "activity_type"], :name => "index_profile_activities_on_activity_id_and_activity_type"
+  add_index "profile_activities", ["activity_type"], :name => "index_profile_activities_on_activity_type"
+  add_index "profile_activities", ["profile_id"], :name => "index_profile_activities_on_profile_id"
+
   create_table "profile_suggestions", :force => true do |t|
     t.integer  "person_id"
     t.integer  "suggestion_id"
@@ -983,9 +984,8 @@ ActiveRecord::Schema.define(:version => 20150603182105) do
   add_index "profiles", ["identifier"], :name => "index_profiles_on_identifier"
   add_index "profiles", ["members_count"], :name => "index_profiles_on_members_count"
   add_index "profiles", ["region_id"], :name => "index_profiles_on_region_id"
-  add_index "profiles", ["type"], :name => "index_profiles_on_type"
-  add_index "profiles", ["validated"], :name => "index_profiles_on_validated"
-  add_index "profiles", ["visible"], :name => "index_profiles_on_visible"
+  add_index "profiles", ["user_id", "type"], :name => "index_profiles_on_user_id_and_type"
+  add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"
 
   create_table "qualifier_certifiers", :force => true do |t|
     t.integer "qualifier_id"
@@ -1078,10 +1078,12 @@ ActiveRecord::Schema.define(:version => 20150603182105) do
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+  add_index "sessions", ["user_id"], :name => "index_sessions_on_user_id"
 
   create_table "shopping_cart_plugin_purchase_orders", :force => true do |t|
     t.integer  "customer_id"

@@ -2069,9 +2069,6 @@ a.button.disabled, input.disabled {
 .new_link_row li {
   margin-left: 7px;
 }
-#content .link-list-block {
-  padding: 10px 0px 10px 10px;
-}
 .link-list-block ul {
   padding: 0px;
   margin: 0px;
@@ -4087,9 +4084,6 @@ div#article-parent {
   margin: 15px 0 0;
   text-align: right;
   font-style: italic;
-}
-div#article-parent a.button{
-  margin: 0;
 }
 /* ==> public/stylesheets/controller_events.css <== */
 #agenda {

@@ -760,7 +760,7 @@ private :generate_url, :url_options
   def short_name(chars = 40)
     if self[:nickname].blank?
       if chars
-        truncate self.name, :length => chars, :omission => '...'
+        truncate self.name, length: chars, omission: '...'
       else
         self.name
       end

@@ -1,8 +1,10 @@
+// bootstrap customizations, bootstrap
+// see also plugins/responsive/public/bootstrap/all.scss
+@import 'bootstrap/variables';
+@import 'bootstrap-core';
 
-// load bootstrap, you can customize its variables by creating your own all.css
-@import url(/plugins/responsive/bootstrap/all.css);
+// say to base-responsive that we already took care of boostrap
+$bootstrap-loaded: true;
 
-@import url(/designs/themes/base-responsive/style.css);
-
-/* all styles inherited from base */
+@import '../base-responsive/style';
 

@@ -28,6 +28,7 @@ module AuthenticatedSystem
         user = User.where(id: id).first if id
         user.session = session if user
         User.current = user
+        user
       end
     end
 

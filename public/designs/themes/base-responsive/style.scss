@@ -1,5 +1,14 @@
 @import 'stylesheets/chat';
-// bootstrap not included here, see noosfero-responsive
+
+$bootstrap-loaded: false !default;
+@if not $bootstrap-loaded {
+  @import url(/assets/plugins/responsive/bootstrap/all.css);
+  $bootstrap-loaded: true;
+}
+
+// Parts
+// TODO: move more code from here to parts
+@import 'stylesheets/profile_title';
 
 /* ==> button.css <== */
 
