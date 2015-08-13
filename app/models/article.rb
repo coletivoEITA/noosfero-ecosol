@@ -496,11 +496,11 @@ class Article < ActiveRecord::Base
     return [] if user.nil? || (profile && !profile.public? && !user.follows?(profile))
     where(
       [
-       "published = ? OR last_changed_by_id = ? OR profile_id = ? OR ? 
-        OR  (show_to_followers = ? AND ?)", true, user.id, user.id, 
+       "published = ? OR last_changed_by_id = ? OR profile_id = ? OR ?
+        OR  (show_to_followers = ? AND ?)", true, user.id, user.id,
         profile.nil? ?  false : user.has_permission?(:view_private_content, profile),
         true, user.follows?(profile)
-      ] 
+      ]
     )
   }
 
@@ -746,9 +746,10 @@ class Article < ActiveRecord::Base
   end
 
   def body_images_paths
-    require 'uri'
     Nokogiri::HTML.fragment(self.body.to_s).css('img[src]').collect do |i|
-      (self.profile && self.profile.environment) ? URI.join(self.profile.environment.top_url, URI.escape(i['src'])).to_s : i['src']
+      src = i['src']
+      src = URI.escape src if self.new_record? # xss_terminate runs on save
+      (self.profile && self.profile.environment) ? URI.join(self.profile.environment.top_url, src).to_s : src
     end
   end
 

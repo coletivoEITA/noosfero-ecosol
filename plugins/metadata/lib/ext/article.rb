@@ -31,7 +31,7 @@ class Article
     card: 'summary',
     description: proc do |a, plugin|
       description = a.body.to_s || a.environment.name
-      CGI.escapeHTML(plugin.helpers.truncate(plugin.helpers.strip_tags(description), length: 200))
+      plugin.helpers.truncate plugin.helpers.strip_tags(description), length: 200
     end,
     title: proc{ |a, plugin| "#{a.title} - #{a.profile.name}" },
     image: proc{ |a, plugin| a.body_images_paths.map! &:html_safe },

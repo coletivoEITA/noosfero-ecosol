@@ -49,9 +49,9 @@ class MetadataPlugin::Base < Noosfero::Plugin
 
           Array(values).each do |value|
             value = value.call(object, plugin) if value.is_a? Proc rescue nil
-            value = h value unless value.html_safe?
             next if value.blank?
-            r << tag(:meta, key_attr => key, value_attr => value.to_s)
+            value = h value unless value.html_safe?
+            r << tag(:meta, {key_attr => key, value_attr => value.to_s}, false, false)
           end
         end
       end
