@@ -15,6 +15,7 @@ class FbAppPlugin::Auth < OauthClientPlugin::Auth
   before_create :exchange_token
   after_create :schedule_exchange_token
   after_destroy :destroy_page_tabs
+  before_validation :set_enabled
 
   validates_presence_of :provider_user_id
   validates_uniqueness_of :provider_user_id, scope: :profile_id
@@ -78,6 +79,10 @@ class FbAppPlugin::Auth < OauthClientPlugin::Auth
 
   def schedule_exchange_token
     self.delay(run_at: self.expires_at - 2.weeks).exchange_token_and_reschedule!
+  end
+
+  def set_enabled
+    self.enabled = self.not_expired?
   end
 
 end

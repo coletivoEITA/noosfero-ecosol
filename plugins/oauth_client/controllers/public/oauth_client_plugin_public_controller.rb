@@ -22,12 +22,10 @@ class OauthClientPluginPublicController < PublicController
 
   def login(user)
     provider = OauthClientPlugin::Provider.find(session[:provider_id])
-    user_provider = user.oauth_user_providers.find_by_provider_id(provider.id)
-    unless user_provider
-      user_provider = user.oauth_user_providers.create(:user => user, :provider => provider, :enabled => true)
-    end
-    if user_provider.enabled? && provider.enabled?
-      session[:user] = user.id
+    auth = user.oauth_auths.where(provider_id: provider.id).first
+    auth ||= user.oauth_auths.create! user: user, provider: provider, enabled: true
+    if auth.enabled? && provider.enabled?
+      self.current_user = user
     else
       session[:notice] = _("Can't login with #{provider.name}")
     end
