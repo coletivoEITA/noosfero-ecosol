@@ -49,7 +49,7 @@ class FbAppPluginMyprofileController < OpenGraphPlugin::MyprofileController
   end
 
   def new_auth
-    FbAppPlugin::Auth.new profile_id: profile.id, provider_id: @provider.id
+    FbAppPlugin::Auth.new profile: profile, provider: @provider
   end
 
   def context
