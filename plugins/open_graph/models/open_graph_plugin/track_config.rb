@@ -20,7 +20,7 @@ class OpenGraphPlugin::TrackConfig < OpenGraphPlugin::Track
   self.static_trackers = false
 
   def self.enabled? context, actor
-    settings = actor.send "#{self.context}_settings"
+    settings = actor.send "#{context}_settings"
     settings.send "#{self.track_name}_track_enabled"
   end
 
