@@ -8,6 +8,7 @@ class FbAppPlugin::Auth < OauthClientPlugin::Auth
 
   settings_items :signed_request
   settings_items :fb_user
+
   attr_accessible :provider_user_id, :signed_request
 
   before_create :update_user
