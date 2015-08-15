@@ -1,3 +1,7 @@
+branches:
+  except:
+    - master
+
 notifications:
   email:
     - braulio@eita.org.br

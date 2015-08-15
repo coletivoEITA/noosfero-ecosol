@@ -21,6 +21,10 @@ module FbAppPlugin
     user and (self.test_users.blank? or self.test_users.include? user.identifier)
   end
 
+  def self.debug? actor=nil
+    self.test_user? actor
+  end
+
   def self.scope user
     if self.test_user? user then 'publish_actions' else '' end
   end
