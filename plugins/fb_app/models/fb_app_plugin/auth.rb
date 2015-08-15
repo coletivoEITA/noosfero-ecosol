@@ -16,7 +16,7 @@ class FbAppPlugin::Auth < OauthClientPlugin::Auth
   after_destroy :destroy_page_tabs
 
   validates_presence_of :provider_user_id
-  validates_uniqueness_of :provider_user_id, scope: :user_id
+  validates_uniqueness_of :provider_user_id, scope: :profile_id
 
   def self.parse_signed_request signed_request, credentials = FbAppPlugin.page_tab_app_credentials
     secret = credentials[:secret] rescue ''
@@ -67,7 +67,7 @@ class FbAppPlugin::Auth < OauthClientPlugin::Auth
   protected
 
   def destroy_page_tabs
-    self.user.fb_app_page_tabs.destroy_all
+    self.profile.fb_app_page_tabs.destroy_all
   end
 
   def exchange_token_and_reschedule!
