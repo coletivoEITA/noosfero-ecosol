@@ -1,4 +1,4 @@
-class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
+class FbAppPlugin::Auth < OauthClientPlugin::Auth
 
   module Status
     Connected = 'connected'
@@ -7,7 +7,7 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
   end
 
   settings_items :signed_request
-  settings_items :user
+  settings_items :fb_user
   attr_accessible :provider_user_id, :signed_request
 
   before_create :update_user
@@ -16,7 +16,7 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
   after_destroy :destroy_page_tabs
 
   validates_presence_of :provider_user_id
-  validates_uniqueness_of :provider_user_id, scope: :profile_id
+  validates_uniqueness_of :provider_user_id, scope: :user_id
 
   def self.parse_signed_request signed_request, credentials = FbAppPlugin.page_tab_app_credentials
     secret = credentials[:secret] rescue ''
@@ -57,17 +57,17 @@ class FbAppPlugin::Auth < OauthPlugin::ProviderAuth
   end
 
   def fetch_user
-    user = FbGraph2::User.me self.access_token
-    self.user = user.fetch
+    fb_user = FbGraph2::User.me self.access_token
+    self.fb_user = fb_user.fetch
   end
   def update_user
-    self.user = self.fetch_user
+    self.fb_user = self.fetch_user
   end
 
   protected
 
   def destroy_page_tabs
-    self.profile.fb_app_page_tabs.destroy_all
+    self.user.fb_app_page_tabs.destroy_all
   end
 
   def exchange_token_and_reschedule!
