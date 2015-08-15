@@ -1,8 +1,0 @@
-<% environment.oauth_apps.each do |app| %>
-  <% next if app.new_record? %>
-
-  <div id="app-<%=app.id%>">
-    <%= render 'oauth_plugin_admin_apps/form', :app => app %>
-  </div>
-<% end %>
-
