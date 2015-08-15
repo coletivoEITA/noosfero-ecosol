@@ -22,7 +22,7 @@ class OpenGraphPlugin::Activity < OpenGraphPlugin::Track
   end
 
   def defs
-    @defs ||= Defs[self.story]
+    @defs ||= Defs[self.story.to_sym]
   end
   def object_profile
     @object_profile ||= self.call(self.defs[:object_profile], self.object_data) || self.object_data.profile rescue nil
