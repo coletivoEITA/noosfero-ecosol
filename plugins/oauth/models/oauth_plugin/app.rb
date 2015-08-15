@@ -1,2 +1,0 @@
-OauthPlugin::App = OauthPlugin::Client
-

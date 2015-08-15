@@ -1,6 +1,0 @@
-<% if @app %>
-  jQuery('#app-new').html("<%= escape_javascript render('form', :app => @app) %>")
-<% else %>
-  jQuery('#applications').html("<%= escape_javascript render('index') %>")
-<% end %>
-
