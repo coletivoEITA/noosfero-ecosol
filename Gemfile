@@ -19,6 +19,8 @@ gem 'will-paginate-i18n'
 gem 'utf8-cleaner'
 gem 'premailer-rails'
 gem 'slim'
+gem 'delayed_job'
+gem 'delayed_job_active_record'
 
 gem 'message_bus'
 
