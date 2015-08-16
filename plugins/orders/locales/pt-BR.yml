@@ -1,4 +1,9 @@
-"pt-BR": &pt-BR
+pt-BR: &pt-BR
+
+  number:
+    currency:
+      format:
+        xlsx_currency: "[$R$-416]* #,##0.00;[RED]-[$R$-416]* #,##0.00"
 
   orders_plugin:
     terms:
@@ -299,8 +304,8 @@
           supplier_product: "%{terms.supplier.singular.capitalize}/Produto"
           total: "TOTAL:"
 
-'pt_BR':
+pt_BR:
   <<: *pt-BR
-'pt':
+pt:
   <<: *pt-BR
 

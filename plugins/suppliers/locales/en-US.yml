@@ -1,11 +1,6 @@
 #TODO: remove refences split into different plugins
 
-"en-US": &en-US
-
-  number:
-    currency:
-      format:
-        xlsx_currency: "[$$-409]* #.##0,00;[RED]-[$$-409]* #.##0,00"
+en-US: &en-US
 
   suppliers_plugin:
     lib:
@@ -877,8 +872,8 @@
         _place:
           none: "none"
 
-'en_US':
+en_US:
   <<: *en-US
-'en':
+en:
   <<: *en-US
 
