@@ -35,3 +35,6 @@ div class="order-view #{"editable" if order.may_edit? user, @admin rescue false}
 
           = link_to_function t('views.order._show.cancel_order'), "orders.order.reload(this, '#{url_for controller: :orders_plugin_order, action: :cancel, id: @order.id}')"
 
+javascript:
+  orders.setOrderMaxHeight()
+

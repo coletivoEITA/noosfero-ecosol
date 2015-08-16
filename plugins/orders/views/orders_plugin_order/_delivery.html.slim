@@ -1,0 +1,11 @@
+/ this view combines supplier and delivery data.
+/ the data is already the user filled delivery data
+- data = order.delivery_data :consumer
+
+- if order.supplier_delivery.present? and data.present?
+  .delivery-box.order-section
+    h3= _'Delivery or pickup method'
+
+    - edition = order.may_edit?(user, @admin) && order.delivery_methods.size > 0 if edition.nil?
+    = render 'delivery_plugin/order_select', f: f, order: order, methods: order.delivery_methods, edition: edition
+

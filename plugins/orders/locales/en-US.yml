@@ -1,4 +1,9 @@
-"en-US": &en-US
+en-US: &en-US
+
+  number:
+    currency:
+      format:
+        xlsx_currency: "[$$-409]* #.##0,00;[RED]-[$$-409]* #.##0,00"
 
   orders_plugin:
     terms:
@@ -299,8 +304,8 @@
           supplier_product: "%{terms.supplier.singular.capitalize}/Product"
           total: "TOTAL:"
 
-'en_US':
+en_US:
   <<: *en-US
-'en':
+en:
   <<: *en-US
 
