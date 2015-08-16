@@ -21,6 +21,10 @@ module FbAppPlugin
     user and (self.test_users.blank? or self.test_users.include? user.identifier)
   end
 
+  def self.debug? actor=nil
+    self.test_user? actor
+  end
+
   def self.scope user
     if self.test_user? user then 'publish_actions' else '' end
   end
@@ -33,14 +37,14 @@ module FbAppPlugin
       app_id = self.timeline_app_credentials[:id].to_s
       app_secret = self.timeline_app_credentials[:secret].to_s
 
-      client = OauthPlugin::Provider.where(environment_id: environment.id, key: app_id).first
+      client = environment.oauth_providers.where(client_id: app_id).first
       # attributes that may be changed by the user
-      client ||= OauthPlugin::Provider.new strategy: 'facebook', identifier: "facebook",
+      client ||= OauthClientPlugin::Provider.new strategy: 'facebook',
         name: 'FB App', site: 'https://facebook.com'
 
       # attributes that should not change
       client.attributes = {
-        key: app_id, secret: app_secret,
+        client_id: app_id, client_secret: app_secret,
         environment_id: environment.id,
       }
       client.save! if client.changed?

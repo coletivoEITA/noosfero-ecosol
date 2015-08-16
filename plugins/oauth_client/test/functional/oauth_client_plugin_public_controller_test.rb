@@ -1,4 +1,4 @@
-require_relative '../test_helper'
+require 'test_helper'
 
 class OauthClientPluginPublicControllerTest < ActionController::TestCase
 
@@ -48,7 +48,7 @@ class OauthClientPluginPublicControllerTest < ActionController::TestCase
     auth.info.stubs(:email).returns(user.email)
     auth.info.stubs(:name).returns(user.name)
     session[:provider_id] = provider.id
-    user.oauth_user_providers.create(:user => user, :provider => provider, :enabled => false)
+    user.oauth_auths.create(:user => user, :provider => provider, :enabled => false)
 
     get :callback
     assert_redirected_to :controller => :account, :action => :login
@@ -72,7 +72,7 @@ class OauthClientPluginPublicControllerTest < ActionController::TestCase
     session[:provider_id] = provider.id
 
     get :callback
-    assert_no_difference 'user.oauth_user_providers.count' do
+    assert_no_difference 'user.oauth_auths.count' do
       3.times { get :callback }
     end
   end

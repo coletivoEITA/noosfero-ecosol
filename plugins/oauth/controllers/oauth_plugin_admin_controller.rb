@@ -1,1 +1,0 @@
-admin/oauth_plugin_admin_controller.rb

@@ -22,7 +22,7 @@ class Profile
 
   def fb_app_auth
     provider = FbAppPlugin.oauth_provider_for self.environment
-    self.oauth_provider_auths.where(provider_id: provider.id).first
+    self.oauth_auths.where(provider_id: provider.id).first
   end
 
 end

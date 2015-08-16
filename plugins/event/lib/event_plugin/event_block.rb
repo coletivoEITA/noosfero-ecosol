@@ -30,7 +30,7 @@ class EventPlugin::EventBlock < Block
     events = user.nil? ? events.is_public : events.display_filter(user,nil)
 
     if future_only
-      events = events.where('start_date >= ? OR (end_date IS NOT NULL AND end_date <= ?)', Date.today, Date.today)
+      events = events.where('start_date >= ? AND (end_date IS NULL OR end_date <= ?)', Date.today, Date.today)
     end
 
     if date_distance_limit > 0

@@ -1,8 +1,0 @@
-<% environment.oauth_providers.each do |provider| %>
-  <% next if provider.new_record? %>
-
-  <div id="provider-<%=provider.id%>">
-    <%= render 'oauth_plugin_admin_providers/form', :provider => provider %>
-  </div>
-<% end %>
-
