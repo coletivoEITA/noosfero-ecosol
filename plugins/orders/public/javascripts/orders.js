@@ -142,9 +142,8 @@ orders = {
   setOrderMaxHeight: function()
   {
     ordersH = $(window).height();
-    ordersH -= 30
     ordersH -= $('#cirandas-top-bar').outerHeight()
-    ordersH -= $('#order-column .actions').outerHeight()
+    ordersH -= $('.order-view form > .actions').outerHeight(true)
     $('.order-view .order-data').css('max-height', ordersH);
   },
 
