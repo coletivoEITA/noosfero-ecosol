@@ -1,6 +1,6 @@
 - actor_name ||= :consumer
 - other_actor_name = if actor_name == :supplier then :consumer else :supplier end
-- @simple = true
+- @view = true
 
 .order-view id="order-#{order.id}"
   = form_for order, as: :order, url: '', html: {onsubmit: 'return false'} do |f|
