@@ -1,6 +1,6 @@
 h2
   = t'fb_app_plugin.views.myprofile.catalogs.heading'
-  = render 'catalogs_header' rescue nil
+  = render 'catalogs_help' rescue nil
 
 - profile.fb_app_page_tabs.each do |page_tab|
   = render 'fb_app_plugin_page_tab/config', page_tab: page_tab
