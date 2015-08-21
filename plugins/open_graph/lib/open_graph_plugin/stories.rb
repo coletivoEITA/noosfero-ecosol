@@ -99,9 +99,6 @@ class OpenGraphPlugin::Stories
       publish_if: proc do |article, actor|
         article.published?
       end,
-      object_data_url: proc do |article, actor|
-        article.url.merge og_type: "#{MetadataPlugin::og_types[:forum]}"
-      end,
     },
 
     # these a published as passive to give focus to the enterprise

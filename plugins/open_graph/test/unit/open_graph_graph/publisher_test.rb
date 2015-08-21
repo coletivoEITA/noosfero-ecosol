@@ -92,13 +92,13 @@ class OpenGraphPlugin::PublisherTest < ActiveSupport::TestCase
 
     # fan
     blog_post = TinyMceArticle.create! profile: @enterprise, parent: @enterprise.blog, name: 'blah2', author: user
-    assert_last_activity user, :announce_news_from_a_sse_initiative, 'http://noosfero.net/coop/blog/blah2?og_type=app_cirandas%3Asse_initiative'
+    assert_last_activity user, :announce_news_from_a_sse_initiative, 'http://noosfero.net/coop/blog/blah2'
     # member
     blog_post = TinyMceArticle.create! profile: @myenterprise, parent: @myenterprise.blog, name: 'blah2', author: user
-    assert_last_activity user, :announce_news_from_a_sse_initiative, 'http://noosfero.net/mycoop/blog/blah2?og_type=app_cirandas%3Asse_initiative'
+    assert_last_activity user, :announce_news_from_a_sse_initiative, 'http://noosfero.net/mycoop/blog/blah2'
 
     blog_post = TinyMceArticle.create! profile: @community, parent: @community.blog, name: 'blah', author: user
-    assert_last_activity user, :announce_news_from_a_community, 'http://noosfero.net/comm/blog/blah?og_type=app_cirandas%3Acommunity'
+    assert_last_activity user, :announce_news_from_a_community, 'http://noosfero.net/comm/blog/blah'
   end
 
   protected

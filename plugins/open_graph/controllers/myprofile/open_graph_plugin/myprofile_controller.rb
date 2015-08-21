@@ -38,5 +38,10 @@ class OpenGraphPlugin::MyprofileController < MyProfileController
     OpenGraphPlugin.context = self.context
   end
 
+  def default_url_options
+    # avoid rails' use_relative_controller!
+    {use_route: '/'}
+  end
+
 end
 
