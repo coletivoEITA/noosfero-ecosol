@@ -27,10 +27,10 @@ class EventPlugin::EventBlock < Block
 
   def events(user = nil)
     events = events_source.events
-    events = events.published.order('start_date')
+    events = events.published.order('start_date ASC')
 
     if future_only
-      events = events.where('start_date >= ? AND (end_date IS NULL OR end_date <= ?)', Date.today, Date.today)
+      events = events.where('start_date >= ?', Date.today)
     end
 
     if date_distance_limit > 0
