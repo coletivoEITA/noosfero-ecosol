@@ -88,6 +88,12 @@ module Noosfero
           nil
         end
 
+        # -> Adds content to products' header
+        # returns = lambda block that creates html code
+        def product_header_extras product
+          nil
+        end
+
         # -> Adds content to products info
         # returns = lambda block that creates html code
         def product_info_extras(product)
