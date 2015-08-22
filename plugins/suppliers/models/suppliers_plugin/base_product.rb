@@ -163,6 +163,10 @@ SQL
     self.update_attributes! archived: false
   end
 
+  # TODO show human names of the changed attributes (e.g. Name, Image)
+  def diff_from_product product = self.from_product
+  end
+
   protected
 
   def validate_uniqueness_of_column_name?

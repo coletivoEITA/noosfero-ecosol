@@ -7,7 +7,7 @@
 
   <div class="subtitle supplier-add-link" toggle-ignore><%= link_to_function t('views.supplier.index.add_supplier'), onclick: 'suppliers.add_link();' %></div>
 
-  <%= render 'suppliers_plugin_shared/filter', type: :supplier %>
+  <%= render 'suppliers_plugin/shared/filter', type: :supplier %>
 
   <div class="supplier-listing">
     <div id="supplier-add" class="supplier value-row" toggle-edit='suppliers.toggle_edit();' >

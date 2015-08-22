@@ -20,9 +20,15 @@ class SuppliersPlugin::Base < Noosfero::Plugin
     {
       title: I18n.t('suppliers_plugin.lib.plugin.distribution_tab'), id: 'product-distribution',
       content: lambda do
-        render 'suppliers_plugin_manage_products/distribution_tab', product: product
+        render 'suppliers_plugin/manage_products/distribution_tab', product: product
       end
     }
+  end
+
+  def product_header_extras product
+    lambda do
+      render 'suppliers_plugin/manage_products/header', product: product
+    end
   end
 
   def control_panel_buttons
