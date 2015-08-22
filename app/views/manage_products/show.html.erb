@@ -15,10 +15,6 @@ show_supplier = false unless defined? show_supplier
   "
   typeof="essglobal:ProductOrService">
 
-  <div id="product-header">
-    <%= plugins_product_header_extras @product %>
-  </div>
-
   <div id="product-category">
     <%= render :partial => 'manage_products/display_category' %>
   </div>
@@ -45,7 +41,8 @@ show_supplier = false unless defined? show_supplier
       <%= render :partial => 'manage_products/display_info' %>
     </div>
     <div id='product-extra-content'>
-      <% @plugins.dispatch(:product_info_extras, @product).map{ |content| instance_exec(&content) }.join %>
+      <% extra_content = @plugins.dispatch(:product_info_extras, @product).collect { |content| instance_exec(&content) } %>
+      <%= extra_content.join("\n") %>
     </div>
   </div>
 
