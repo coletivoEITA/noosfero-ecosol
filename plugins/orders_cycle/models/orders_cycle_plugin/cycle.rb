@@ -239,9 +239,13 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
     return if self.products.count > 0
     ActiveRecord::Base.transaction do
       self.profile.distributed_products.unarchived.available.find_each(batch_size: 20) do |product|
-        OrdersCyclePlugin::OfferedProduct.create_from_distributed self, product
+        self.add_distributed_product product
       end
     end
+  end
+
+  def add_distributed_product product
+    OrdersCyclePlugin::OfferedProduct.create_from_distributed self, product
   end
 
   def add_products_job
