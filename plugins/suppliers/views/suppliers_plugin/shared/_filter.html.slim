@@ -6,7 +6,7 @@
       - if type == :supplier
         = render partial: 'suppliers_plugin_myprofile/filter_fields'
       - elsif type == :product
-        = render partial: 'suppliers_plugin_product/filter_fields'
+        = render 'suppliers_plugin/product/filter_fields'
     .submit
       = submit_tag t('views.filter.filter_it'), class: 'filter-submit'
 

@@ -1,0 +1,96 @@
+en-US: &en-US
+
+  networks_plugin:
+    lib:
+      plugin:
+        name: Networks
+        description: "Create and manage networks."
+
+    models:
+      network:
+        settings_button: "Network's informations and settings"
+      associate_enterprise:
+        title: "Association request %{terms.supplier.from.singular}"
+        information: "%{requestor} said it is part of the network %{linked_subject}."
+        task_notification_message: "%{enterprise} said it is part of the network %{network}."
+        task_cancelled_message: "%{network} didn't accept the association request of the %{terms.supplier.of_article.singular} %{enterprise}."
+        task_finished_message: "%{network} confirmed the association %{terms.supplier.of_article.singular} %{enterprise}!"
+
+    controllers:
+      node:
+        edit: "Node settings saved"
+
+    views:
+      control_panel:
+        structure: "Manage network's structure"
+      profile_editor:
+        help: "If %{terms.supplier.your.singular} participate %{terms.profile.of_another.singular}, %{search}, access %{terms.profile.article.singular}, and ask to join by clicking the button 'We are part %{terms.profile.of_this.singular}"
+        search: "procure a rede"
+        networks_i_participate: "%{terms.profile.plural.capitalize} I participate"
+        none: "None"
+        disassociate: "Disassociate"
+        disassociate_confirm: "By disassociating %{terms.supplier.your.singular} %{terms.profile.from_article.singular}, your distributed products %{terms.profile.to_it.singular} will be deleted and you won't distributed more products %{terms.profile.to_it.singular}. Please confirm your choice."
+      blocks:
+        profile_info_actions:
+          button: "We are part %{terms.profile.of_this.singular}"
+        location:
+          title: "Map of Enterprises from %{profile}"
+      admin:
+        index:
+          title: "Manage networks"
+          network_template: "Edit Networks' template"
+          network_node_template: "Edit Nodes' template"
+          new: "Create network"
+          new_button: "Criar"
+          registered_networks: "Registered networks"
+          no_network: "Any registered network."
+      supplier:
+        _supplier:
+          by_removing_this_supp: "By removing %{terms.supplier.article.singular} all its products won't be available. Please confirm you choice"
+      network:
+        join:
+          request_sent: "%{terms.profile.article.singular.capitalize} will receive a message to approve your association request."
+          confirm: "%{terms.supplier.article.singular.capitalize} %{enterprise} is part %{terms.profile.of_article.singular} %{network}?"
+          yes: "Yes"
+          no: "No"
+          choose: "Which %{terms.supplier.of_article.plural} bellow are parte of %{terms.profile.of_article.singular} %{network}?"
+        structure:
+          pathway: "You're at: "
+          none: "None"
+          title: "Network's structure"
+          structure: "Structure"
+          add_enterprise_to_network: "Add %{terms.supplier.singular} %{terms.profile.to_article.singular}"
+          add_enterprise_to_node: "Add %{terms.supplier.singular} to this node"
+          add_node: "Create node"
+          edit_node_template: "Edit nodes' visual theme"
+          confirm_node_remove: "By removing this node, %{terms.supplier.article.plural} and nodes associated to it will be associated to the node '%{parent}'. Please confirm the removal of the node '%{node}'."
+          confirm_supplier_desassociate: "Plese confirm that you want to desassociate %{terms.supplier.article.singular} '%{supplier}'."
+          edit: "Edit"
+          config: "Setup"
+          remove: "Remove"
+          desassociate: "Desassociate"
+          nodes: "Nodes"
+          enterprises: "%{terms.supplier.plural.capitalize}"
+      node:
+        create:
+          new_button: "Create"
+          context: "Create new node inside '%{name}'"
+        edit:
+          title: "Settings of the node %{node}"
+          back: "Back to network's structure"
+          node_info: "Node's informations"
+          presentation_text: "Presentation's text:"
+          orders_management: "Orders' management"
+        _orders_management:
+          forward_explanation: "When an order is confirmed through the shopping basket, an email with the order's details and the instructions of how to proceed is sent to the final user (buyer), to the administrators %{terms.supplier.from_article.plural} and to the administrators %{terms.profile.from_article.singular}. You can assign representatives of this node so that they can receive the orders of your products in place of %{terms.profile.from_article.singular}."
+          network_forward: "send the orders %{terms.profile.to_article.singular}"
+          managers_forward: "send the orders to the representatives:"
+      enterprise:
+        edit:
+          title: "Settings of the enterprise %{enterprise}"
+
+en_US:
+  <<: *en-US
+en:
+  <<: *en-US
+

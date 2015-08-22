@@ -31,6 +31,10 @@ class Profile
     !self.visible
   end
 
+  def orgs_consumers
+    @orgs_consumers ||= self.consumers.except_people.except_self
+  end
+
   def self_supplier
     @self_supplier ||= if new_record?
       self.suppliers_without_self_supplier.build profile: self

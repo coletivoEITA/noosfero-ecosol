@@ -1,0 +1,61 @@
+pt-BR: &pt-BR
+
+  consumers_coop_plugin:
+    lib:
+      plugin:
+        name: "Coletivo de consumo"
+        description: "Torne uma organização em uma coletivo de consumo"
+      layout_helper:
+        start: Início
+        orders: Pedidos
+        products: Produtos
+        administration: Administração
+        volunteering: Voluntariado
+
+    controllers:
+      myprofile:
+        distribution_settings: "Configurações salvas"
+
+    models:
+      header_image:
+        fn_of_uploaded_file_w: "%{fn} do arquivo enviado é maior que o máximo permitido de 2.0 MB"
+
+    views:
+      layouts:
+        _admin_submenu:
+          members: Integrantes
+          orders_cycles: "Ciclo de pedidos"
+          products: Produtos
+          suppliers: "%{terms.supplier.plural.capitalize}"
+          settings: "Configuração"
+      profile:
+        index:
+          dashboard: Painel
+        settings:
+          abbreviated_name_of_t: "Nome abreviado do coletivo"
+          activated: Ativado
+          black: preto
+          cancel: Cancelar
+          collective_consumptio: "Modo %{terms.profile.singular}"
+          disabled: Desabilitado
+          general: "Geral"
+          header: "Cabeçalho"
+          volunteers: "Voluntários"
+          volunteers_enabled: "Gerir turnos de voluntários em ciclo de pedidos"
+          header_background_col: "Cor de fundo de cabeçalho"
+          header_s_image: "Imagem do cabeçalho"
+          header_type: "Tipo de cabeçalho"
+          image_collective_name: "Imagem + nome %{terms.profile.from_article.singular}"
+          only_the_image: "Apenas a imagem"
+          image_help: "Esta imagem será usada no cabeçalho da página %{terms.profile.from_article.singular}, deve ter 1040x90px, se não tiver, ela será automaticamente cortada para este tamanho."
+          pure_color_collective: "Cor pura + nome %{terms.profile.from_article.singular}"
+          save: Salvar
+          text_color: "Cor do texto"
+          this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso %{terms.profile.from_article.singular}. Como %{terms.profile.article.singular} é comumente chamado pelas pessoas?"
+          white: branco
+
+pt_BR:
+  <<: *pt-BR
+pt:
+  <<: *pt-BR
+

@@ -12,23 +12,38 @@ class SuppliersPlugin::Base < Noosfero::Plugin
     ['locale', 'toggle_edit', 'sortable-table', 'suppliers'].map{ |j| "javascripts/#{j}" }
   end
 
-  def product_tabs product
-    user = context.send :user
-    profile = context.profile
-    return unless user and user.has_permission? 'manage_products', profile
-    return if profile.consumers.except_self.blank?
-    {
-      title: I18n.t('suppliers_plugin.lib.plugin.distribution_tab'), id: 'product-distribution',
+  ProductTabs = {
+    distribution: {
+      id: 'product-distribution',
+      title: I18n.t('suppliers_plugin.lib.plugin.distribution_tab'),
       content: lambda do
-        render 'suppliers_plugin/manage_products/distribution_tab', product: product
+        render 'suppliers_plugin/manage_products/distribution_tab'
       end
-    }
-  end
+    },
+    compare: {
+      id: 'product-compare-origin',
+      title: I18n.t('suppliers_plugin.lib.plugin.compare_tab'),
+      content: lambda do
+        render 'suppliers_plugin/manage_products/compare_tab'
+      end
+    },
+    basket: {
+      id: 'product-basket',
+      title: I18n.t('suppliers_plugin.lib.plugin.basket_tab'),
+      content: lambda do
+        render 'suppliers_plugin/manage_products/basket_tab'
+      end
+    },
+  }
 
-  def product_header_extras product
-    lambda do
-      render 'suppliers_plugin/manage_products/header', product: product
-    end
+  def product_tabs product
+    allowed_user = context.instance_variable_get :@allowed_user
+
+    tabs = ProductTabs.dup
+    tabs.delete :distribution unless allowed_user and product.profile.orgs_consumers.present?
+    tabs.delete :compare unless allowed_user and product.from_products.present?
+    tabs.delete :basket unless allowed_user or product.from_products.size > 1
+    tabs.values
   end
 
   def control_panel_buttons
@@ -39,7 +54,7 @@ class SuppliersPlugin::Base < Noosfero::Plugin
     return unless profile.enterprise?
     [
       {title: I18n.t('suppliers_plugin.views.control_panel.suppliers'), icon: 'suppliers-manage-suppliers', url: {controller: :suppliers_plugin_myprofile, action: :index}},
-      {title: I18n.t('suppliers_plugin.views.control_panel.products'), icon: 'suppliers-manage-suppliers', url: {controller: :suppliers_plugin_product, action: :index}},
+      {title: I18n.t('suppliers_plugin.views.control_panel.products'), icon: 'suppliers-manage-suppliers', url: {controller: 'suppliers_plugin/product', action: :index}},
     ]
   end
 

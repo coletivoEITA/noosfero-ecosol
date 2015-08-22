@@ -1,4 +1,4 @@
-class SuppliersPluginProductController < MyProfileController
+class SuppliersPlugin::ProductController < MyProfileController
 
   include SuppliersPlugin::TranslationHelper
 
@@ -12,17 +12,17 @@ class SuppliersPluginProductController < MyProfileController
   def index
     filter
     respond_to do |format|
-      format.html{ render template: 'suppliers_plugin_product/index' }
-      format.js{ render partial: 'suppliers_plugin_product/search' }
+      format.html{ render template: 'suppliers_plugin/product/index' }
+      format.js{ render partial: 'suppliers_plugin/product/search' }
     end
   end
 
   def search
     filter
     if params[:page].present?
-      render partial: 'suppliers_plugin_product/results'
+      render partial: 'suppliers_plugin/product/results'
     else
-      render partial: 'suppliers_plugin_product/search'
+      render partial: 'suppliers_plugin/product/search'
     end
   end
 
@@ -88,6 +88,11 @@ class SuppliersPluginProductController < MyProfileController
   end
 
   extend HMVC::ClassMethods
-  hmvc OrdersPlugin
+  hmvc SuppliersPlugin
+
+  def default_url_options
+    # avoid rails' use_relative_controller!
+    {use_route: '/'}
+  end
 
 end
