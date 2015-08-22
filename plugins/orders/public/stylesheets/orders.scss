@@ -220,7 +220,10 @@
   padding-bottom: 200px;
 }
 
-.action-orders_cycle_plugin_order-edit .purechat {
-  left: 40px;
-  right: none;
+.controller-orders_cycle_plugin_order,
+.controller-consumers_coop_plugin_order {
+  .purechat {
+    left: 40px;
+    right: none;
+  }
 }

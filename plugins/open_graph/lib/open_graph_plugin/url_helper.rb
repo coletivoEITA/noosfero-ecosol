@@ -16,7 +16,8 @@ module OpenGraphPlugin::UrlHelper
 
   def passive_url_for object, custom_url, story_defs, extra_params={}
     object_type = story_defs[:object_type]
-    extra_params.merge! og_type: MetadataPlugin.og_types[object_type]
+    og_type = MetadataPlugin.og_types[object_type]
+    extra_params.merge! og_type: og_type if og_type.present?
     self.url_for object, custom_url, extra_params
   end
 
