@@ -8,6 +8,7 @@ class OrdersPluginOrderController < ProfileController
   before_filter :load_order, except: [:new]
   before_filter :check_access, only: [:confirm, :remove, :cancel]
   before_filter :set_actor_name
+  before_filter :disable_purechat
 
   helper OrdersPlugin::TranslationHelper
   helper OrdersPlugin::DisplayHelper
@@ -39,5 +40,9 @@ class OrdersPluginOrderController < ProfileController
 
   extend HMVC::ClassMethods
   hmvc OrdersPlugin, orders_context: OrdersPlugin
+
+  def disable_purechat
+    @disable_purechat = true
+  end
 
 end
