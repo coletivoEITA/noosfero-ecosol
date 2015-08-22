@@ -6,13 +6,13 @@ class SuppliersPluginMyprofileController < MyProfileController
 
   protect 'edit_profile', :profile
 
-  before_filter :load_new, :only => [:index, :new]
+  before_filter :load_new, only: [:index, :new]
 
   helper SuppliersPlugin::TranslationHelper
   helper SuppliersPlugin::DisplayHelper
 
   def index
-    @suppliers = search_scope(profile.suppliers.except_self).paginate(:per_page => 30, :page => params[:page])
+    @suppliers = search_scope(profile.suppliers.except_self).paginate(per_page: 30, page: params[:page])
     @is_search = params[:name] or params[:active]
 
     if request.xhr?
@@ -28,7 +28,7 @@ class SuppliersPluginMyprofileController < MyProfileController
 
   def add
     @enterprise = environment.enterprises.find params[:id]
-    @new_supplier = profile.suppliers.create! :profile => @enterprise
+    @new_supplier = profile.suppliers.create! profile: @enterprise
   end
 
   def edit
@@ -42,7 +42,7 @@ class SuppliersPluginMyprofileController < MyProfileController
       profile.save
       profile.supplier_products_default_margins if params[:apply_to_all]
 
-      render :partial => 'suppliers_plugin_shared/pagereload'
+      render partial: 'suppliers_plugin/shared/pagereload'
     end
   end
 
@@ -58,15 +58,15 @@ class SuppliersPluginMyprofileController < MyProfileController
 
   def search
     @query = params[:query].downcase
-    @enterprises = environment.enterprises.enabled.public.all :limit => 12, :order => 'name ASC',
-      :conditions => ['LOWER(name) LIKE ? OR LOWER(name) LIKE ? OR identifier LIKE ?', "#{@query}%", "% #{@query}%", "#{@query}%"]
+    @enterprises = environment.enterprises.enabled.public.all limit: 12, order: 'name ASC',
+      conditions: ['LOWER(name) LIKE ? OR LOWER(name) LIKE ? OR identifier LIKE ?', "#{@query}%", "% #{@query}%", "#{@query}%"]
     @enterprises -= profile.suppliers.collect(&:profile)
   end
 
   protected
 
   def load_new
-    @new_supplier = SuppliersPlugin::Supplier.new_dummy :consumer => profile
+    @new_supplier = SuppliersPlugin::Supplier.new_dummy consumer: profile
     @new_profile = @new_supplier.profile
   end
 

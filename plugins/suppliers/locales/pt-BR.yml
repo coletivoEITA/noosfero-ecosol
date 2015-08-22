@@ -156,9 +156,20 @@ pt-BR: &pt-BR
         filter_it: Filtrar
       actions:
 
+      manage_products:
+        header:
+          more_than_one: 'Este produto agrega mais de um produto como sua origem, veja-os na aba Agregados.'
+          one: 'Este produto tem um produto de origem.'
+          see: 'Ver o produto de origem'
+        distribution_tab:
+          title: "Esse produto é distribuído para os seguintes consumidores(as):"
+          no_consumers: "Este perfil não é um fornecedor da rede."
+          save: "Salvar"
+
       control_panel:
         suppliers: "Gerenciar fornecedores"
         products: "Gerenciar produtos distribuídos"
+
       myprofile:
         margin_change:
           ? "%"
@@ -333,11 +344,6 @@ pt-BR: &pt-BR
           name: Nome
           suppliers: "%{terms.supplier.plural.capitalize}"
           this_is_the_list_of_s: "Esta é a lista de %{terms.supplier.plural} associados %{terms.profile.to_article.singular}. É possível associar %{terms.supplier.to.plural} existentes ou registrar %{terms.supplier.one}."
-      manage_products:
-        distribution_tab:
-          title: "Esse produto é distribuído para os seguintes consumidores(as):"
-          no_consumers: "Este perfil não é um fornecedor da rede."
-          save: "Salvar"
 
 
   orders_cycle_plugin:

@@ -148,6 +148,16 @@ en-US: &en-US
         filter_it: Filter
       actions:
 
+      manage_products:
+        header:
+          more_than_one: 'This product aggregates more than one product as its origin, see them on Aggregate tab.'
+          one: 'This product has a product of origin.'
+          see: 'See the product of origin'
+        distribution_tab:
+          title: "This product is distributed for the following consumers:"
+          no_consumers: "This profile isn't a suppliers of the network."
+          save: "Save"
+
       control_panel:
         suppliers: "Manage suppliers"
         products: "Manage distributed products"
@@ -308,11 +318,6 @@ en-US: &en-US
           name: Name
           suppliers: "%{terms.supplier.plural.capitalize}"
           this_is_the_list_of_s: "This is the list of %{terms.supplier.plural} associated %{terms.profile.to_article.singular}. It is possible to associate with existent %{terms.supplier.plural} or register %{terms.supplier.one}."
-      manage_products:
-        distribution_tab:
-          title: "This product is distributed for the following consumers:"
-          no_consumers: "This profile isn't a suppliers of the network."
-          save: "Save"
 
   orders_cycle_plugin:
     terms:
