@@ -1,6 +1,6 @@
 .box-edit
   = form_for product, as: "product_#{product.id}", remote: true, html: {data: {loading: true}},
-    url: {controller: :suppliers_plugin_product, action: :edit, id: product ? product.id : nil} do |f|
+    url: {controller: 'suppliers_plugin/product', action: :edit, id: product ? product.id : nil} do |f|
     .internal-table
       .title
         = t'views.product._edit.distribution_setts'
@@ -63,7 +63,7 @@
       = f.submit t('views.product._edit.save'), class: 'save action-button'
       = link_to_function t('views.product._edit.cancel'), '', class: 'action-button cancel', 'toggle-edit' => ''
       = link_to_remote t('views.product._edit.remove_product'), remote: true, confirm: t('views.product._edit.are_you_sure_you_want'),
-        url: {controller: :suppliers_plugin_product, action: 'destroy', id: product.id }, class: 'action-button remove',
+        url: {controller: 'suppliers_plugin/product', action: 'destroy', id: product.id }, class: 'action-button remove',
         html: {data: {loading: "#our-product-#{product.id}"}}
 
   .links

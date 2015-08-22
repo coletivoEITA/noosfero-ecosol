@@ -24,32 +24,38 @@ class SuppliersPlugin::BaseProduct < Product
   settings_items :quantity, type: Float, default: nil
   settings_items :unit_detail, type: String, default: nil
 
-  DEFAULT_ATTRIBUTES = [
+  CORE_DEFAULT_ATTRIBUTES = [
     :name, :description, :price, :unit_id, :product_category_id, :image_id,
-    :margin_percentage, :stored, :minimum_selleable, :unit_detail
+  ]
+  DEFAULT_ATTRIBUTES = CORE_DEFAULT_ATTRIBUTES + [
+    :margin_percentage, :stored, :minimum_selleable, :unit_detail,
   ]
 
   extend DefaultDelegate::ClassMethods
   default_delegate_setting :name, to: :supplier_product
-  default_delegate_setting :product_category, to: :supplier_product
-  default_delegate_setting :qualifiers, to: :supplier_product
-  default_delegate_setting :image, to: :supplier_product, prefix: :_default
   default_delegate_setting :description, to: :supplier_product
+
+  default_delegate_setting :qualifiers, to: :supplier_product
+  default_delegate :product_qualifiers, default_setting: :default_qualifiers, to: :supplier_product
+
+  default_delegate_setting :product_category, to: :supplier_product
+  default_delegate :product_category_id, default_setting: :default_product_category, to: :supplier_product
+
+  default_delegate_setting :image, to: :supplier_product, prefix: :_default
+  default_delegate :image_id, default_setting: :_default_image, to: :supplier_product
+
   default_delegate_setting :unit, to: :supplier_product
+  default_delegate :unit_id, default_setting: :default_unit, to: :supplier_product
+
   default_delegate_setting :margin_percentage, to: :profile,
     default_if: -> { self.own_margin_percentage.blank? or self.own_margin_percentage.zero? }
-
   default_delegate :price, default_setting: :default_margin_percentage, default_if: :equal?,
     to: -> { self.supplier_product.price_with_discount if self.supplier_product }
+
   default_delegate :unit_detail, default_setting: :default_unit, to: :supplier_product
   default_delegate_setting :stored, to: :supplier_product,
     default_if: -> { self.own_stored.blank? or self.own_stored.zero? }
   default_delegate_setting :minimum_selleable, to: :supplier_product
-
-  default_delegate :product_qualifiers, default_setting: :default_qualifiers, to: :supplier_product
-  default_delegate :product_category_id, default_setting: :default_product_category, to: :supplier_product
-  default_delegate :image_id, default_setting: :_default_image, to: :supplier_product
-  default_delegate :unit_id, default_setting: :default_unit, to: :supplier_product
 
   extend CurrencyHelper::ClassMethods
   has_currency :own_price
@@ -163,8 +169,13 @@ SQL
     self.update_attributes! archived: false
   end
 
-  # TODO show human names of the changed attributes (e.g. Name, Image)
-  def diff_from_product product = self.from_product
+  def diff from = self.from_product
+    return @changed_attrs if @changed_attrs
+    @changed_attrs = []
+    CORE_DEFAULT_ATTRIBUTES.each do |attr|
+      @changed_attrs << attr if self[attr].present? and self[attr] != from[attr]
+    end
+    @changed_attrs
   end
 
   protected

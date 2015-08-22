@@ -1,9 +1,0 @@
-- if product.from_products.size > 1
-  = t'suppliers_plugin.views.manage_products.header.more_than_one' if defined? AggregateProductPlugin
-- elsif product.from_products.size == 1
-  = t'suppliers_plugin.views.manage_products.header.one'
-  |&emsp;
-  = button nil, t('suppliers_plugin.views.manage_products.header.see'),
-    {controller: :manage_products, profile: product.from_product.profile.identifier, action: :show, id: product.from_product.id},
-    target: '_blank'
-

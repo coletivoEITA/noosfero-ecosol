@@ -1,0 +1,42 @@
+
+en-US: &en-US
+
+  stock_plugin:
+    lib:
+      plugin:
+        name: "Products' Stock"
+        description: "Manage stocks of products"
+        control_panel:
+          manage: "Manage Stock"
+        manage_products:
+          stock_tab: "Stock"
+
+    models:
+      place:
+        name: "Place's name"
+        description: "Description"
+      associate_enterprise:
+        title: "Association %{terms.supplier.of.singular} %{terms.profile.singular.capitalize}"
+        task_finished_message: "%{enterprise} accepted your request to associate it with %{network}."
+        task_cancelled_message: "%{enterprise} rejected your request to associate it with %{network}."
+        task_notification_message: "%{enterprise} wants to associate with %{network}."
+    views:
+      myprofile:
+        index:
+          help: "Here you can put your products on the places you have. The stock is automatically connected to the payment of the orders."
+          first_place: "Create your first place for stock"
+        edit:
+          save: "Save"
+      products:
+        any: "Any product registered, %{manage_products}."
+        click_to_manage_products: "click to manage products"
+        product: "Product"
+        allocations: "Places and quantities"
+        _place:
+          none: "none"
+
+en_US:
+  <<: *en-US
+en:
+  <<: *en-US
+
