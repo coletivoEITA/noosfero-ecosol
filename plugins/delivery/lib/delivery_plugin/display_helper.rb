@@ -14,7 +14,7 @@ module DeliveryPlugin::DisplayHelper
 
       content_tag :option, text, value: method.id,
         data: {label: method.name, type: method.delivery_type, instructions: method.description.to_s},
-        selected: if method == selected then 'selected' else nil end
+        selected: if method.id == selected then 'selected' else nil end
     end.join
   end
 
