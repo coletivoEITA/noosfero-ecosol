@@ -190,6 +190,7 @@ en-US: &en-US
         index:
           redistribution_situation: "Product distribution"
           name: "Name"
+
       product:
         import:
           action: "Import spreadsheet"
@@ -243,9 +244,13 @@ en-US: &en-US
           unit: Unit
           showing_pcount_produc: "Total: %{count} products"
           we_don_t_have_product: "We don't have products to show."
+        add:
+          title: "Create product"
+          own_product: "Create own product"
+          or_from_a_supplier: 'or from a managed supplier:'
         index:
           active: active
-          add_product: "Add product"
+          add_product: "Create product"
           all_the_categories: "all the categories"
           all_the_suppliers: "all %{terms.supplier.article.plural}"
           situation: "distribution situation"
@@ -318,6 +323,7 @@ en-US: &en-US
             one: "1 product"
             other: "%{count} products"
           manage_products: "manage products"
+          add_product: "add product"
           registered_supplier_i: "Registered %{terms.supplier.singular} in the network"
           disassociate: "disassociate %{terms.profile.from_article.singular}"
           supplier_profile_product: " registered products"
