@@ -83,7 +83,6 @@ class SuppliersPlugin::ProductController < MyProfileController
     @scope = SuppliersPlugin::BaseProduct.search_scope @scope, params
     @products_count = @scope.count
     @scope = @scope.order('from_products_products.name ASC')
-    puts @scope.to_sql
     @products = @scope.paginate per_page: 20, page: page
 
     @product_categories = Product.product_categories_of @products
