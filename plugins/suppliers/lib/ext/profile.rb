@@ -13,6 +13,7 @@ end
 
 class Profile
 
+  # use profile.products.supplied to include own products
   has_many :distributed_products, class_name: 'SuppliersPlugin::DistributedProduct'
 
   has_many :from_products, through: :products
