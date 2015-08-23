@@ -125,6 +125,15 @@ class Product
     end
   end
 
+  def diff from = self.from_product
+    return @changed_attrs if @changed_attrs
+    @changed_attrs = []
+    SuppliersPlugin::BaseProduct::CORE_DEFAULT_ATTRIBUTES.each do |attr|
+      @changed_attrs << attr if self[attr].present? and self[attr] != from[attr]
+    end
+    @changed_attrs
+  end
+
   protected
 
   def distribute_to_consumers

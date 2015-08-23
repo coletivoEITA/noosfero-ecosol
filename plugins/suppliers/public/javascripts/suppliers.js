@@ -116,6 +116,7 @@ suppliers = {
 
     reload: function (data) {
       $('#product-basket').html(data)
+      $('#basket-add').focus()
     },
 
     load: function () {

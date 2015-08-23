@@ -38,8 +38,9 @@ class SuppliersPlugin::Base < Noosfero::Plugin
 
     tabs = ProductTabs.dup
     tabs.delete :distribution unless allowed_user and product.profile.orgs_consumers.present?
-    tabs.delete :compare unless allowed_user and product.from_products.present?
-    tabs.delete :basket unless product.profile == profile and (allowed_user or product.from_products.size > 1)
+    tabs.delete :compare unless allowed_user and product.from_products.size == 1
+    # for now, only support basket as a product of the profile
+    tabs.delete :basket unless product.own? and (allowed_user or product.from_products.size > 1)
     tabs.each{ |t, op| op[:title] = I18n.t "suppliers_plugin.lib.plugin.#{t}_tab" }
     tabs.values
   end
