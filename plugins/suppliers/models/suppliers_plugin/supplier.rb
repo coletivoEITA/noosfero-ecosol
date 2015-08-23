@@ -12,7 +12,10 @@ class SuppliersPlugin::Supplier < ActiveRecord::Base
   validates_presence_of :consumer
   validates_uniqueness_of :consumer_id, scope: :profile_id, if: :profile_id
 
+  scope :alphabetical, -> { order 'name ASC' }
+
   scope :active, conditions: {active: true}
+  scope :dummy, -> { joins(:profile).where profiles: {visible: false} }
 
   scope :of_profile, lambda { |p| { conditions: {profile_id: p.id} } }
   scope :of_profile_id, lambda { |id| { conditions: {profile_id: id} } }

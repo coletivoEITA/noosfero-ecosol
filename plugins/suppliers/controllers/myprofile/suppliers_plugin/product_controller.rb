@@ -26,6 +26,10 @@ class SuppliersPlugin::ProductController < MyProfileController
     end
   end
 
+  def add
+
+  end
+
   def edit
     @product = profile.distributed_products.find params[:id]
     @product.update_attributes params["product_#{@product.id}"]

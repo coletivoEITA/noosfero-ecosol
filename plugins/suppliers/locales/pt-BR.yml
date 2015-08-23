@@ -199,6 +199,7 @@ pt-BR: &pt-BR
         index:
           redistribution_situation: "Distribuição dos produtos"
           name: "Nome"
+
       product:
         import:
           action: "Importar planilha"
@@ -252,9 +253,13 @@ pt-BR: &pt-BR
           unit: Unidade
           showing_pcount_produc: "Total: %{count} produtos"
           we_don_t_have_product: "Não temos produtos a mostrar."
+        add:
+          title: "Criar produto"
+          own_product: "Criar produto próprio"
+          or_from_a_supplier: 'ou de um fornecedor gerido pelo coletivo:'
         index:
           active: ativa
-          add_product: "Adicionar produto"
+          add_product: "Criar produto"
           all_the_categories: "todas as categorias"
           all_the_suppliers: "todos %{terms.supplier.article.plural}"
           situation: "Situação de distribuição"
@@ -346,6 +351,7 @@ pt-BR: &pt-BR
             one: "1 produto"
             other: "%{count} produtos"
           manage_products: "gerenciar produtos"
+          add_product: "adicionar produto"
           registered_supplier_i: "%{terms.supplier.singular.capitalize} registrado na rede"
           disassociate: "disassociar"
           supplier_profile_product: "produtos registrados"
