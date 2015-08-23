@@ -19,7 +19,13 @@ h3= t('views.cycle._edit_fields.general_settings')
       div
         #cycle-delivery-options.subtitle
           = render 'delivery_plugin/admin_options/index', owner: @cycle
-        = modal_link_to t('views.cycle._edit_fields.add_method'), { controller: :orders_cycle_plugin_delivery_option, action: :select, owner_id: @cycle.id, owner_type: @cycle.class.name }, class: 'cycle-add-delivery-option subtitle'
+        = modal_link_to t('views.cycle._edit_fields.add_method'),
+          {controller: :orders_cycle_plugin_delivery_option, action: :select, owner_id: @cycle.id, owner_type: @cycle.class.name},
+          class: 'subtitle'
+        |&nbsp;
+        = link_to_function t('views.cycle._edit_fields.add_all_methods'),
+          "$.getScript('#{url_for controller: :orders_cycle_plugin_delivery_option, action: :select_all, owner_id: @cycle.id, owner_type: @cycle.class.name}')",
+          class: 'subtitle'
       .clean
 
   - if profile.volunteers_settings.cycle_volunteers_enabled
@@ -32,8 +38,9 @@ h3= t('views.cycle._edit_fields.general_settings')
       = f.label :sendmail, t('views.cycle._edit_fields.opening_message')
       div= t('views.cycle._edit_fields.this_message_will_be_')
       = f.text_area(:opening_message, onkeyup: 'orders_cycle.cycle.edit.openingMessage.onKeyup(this)')
-    = javascript_tag do
-      | jQuery('#cycle-new-mail-send').on('click', orders_cycle.cycle_mail_message_toggle)
+    javascript:
+      $('#cycle-new-mail-send').on('click', orders_cycle.cycle_mail_message_toggle)
+
   - submit_text = if @cycle.new? then t('views.cycle._edit_fields.create_new_cycle') else t('views.cycle._edit_fields.save') end
   = f.submit submit_text
   - unless @cycle.passed_by? 'edition'

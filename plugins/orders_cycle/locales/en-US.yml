@@ -159,6 +159,7 @@ en-US: &en-US
           cycle_already_finishe: "Cycle already finished"
         _edit_fields:
           add_method: "Add method"
+          add_all_methods: "(add all)"
           available_delivery_me: "Available delivery methods"
           cancel_changes: "cancel changes"
           remove: "remove"

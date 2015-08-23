@@ -157,6 +157,7 @@ pt-BR: &pt-BR
           cycle_already_finishe: "Ciclo já fechado"
         _edit_fields:
           add_method: "Adicionar método"
+          add_all_methods: "(adicionar todos)"
           available_delivery_me: "Métodos de entrega disponíveis"
           cancel_changes: "cancelar alterações"
           remove: "remover"
