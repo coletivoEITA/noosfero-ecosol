@@ -169,15 +169,6 @@ SQL
     self.update_attributes! archived: false
   end
 
-  def diff from = self.from_product
-    return @changed_attrs if @changed_attrs
-    @changed_attrs = []
-    CORE_DEFAULT_ATTRIBUTES.each do |attr|
-      @changed_attrs << attr if self[attr].present? and self[attr] != from[attr]
-    end
-    @changed_attrs
-  end
-
   protected
 
   def validate_uniqueness_of_column_name?
