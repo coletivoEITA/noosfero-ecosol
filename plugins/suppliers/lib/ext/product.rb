@@ -63,9 +63,12 @@ class Product
   scope :distributed, -> { where type: 'SuppliersPlugin::DistributedProduct'}
   scope :own, -> { where type: nil }
   scope :supplied, -> {
-    where(type: [nil, 'SuppliersPlugin::DistributedProduct'])
-    # FIXME: duplicated products are being show
-    #group('products.id')
+    where(type: [nil, 'SuppliersPlugin::DistributedProduct']).
+    # this allow duplicates and sorting on the fields
+    group('products.id')
+  }
+  scope :supplied_for_count, -> {
+    where(type: [nil, 'SuppliersPlugin::DistributedProduct']).uniq
   }
 
   scope :from_supplier, lambda { |supplier| { conditions: ['suppliers_plugin_suppliers.id = ?', supplier.id] } }
