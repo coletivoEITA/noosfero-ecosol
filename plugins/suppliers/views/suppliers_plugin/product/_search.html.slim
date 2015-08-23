@@ -1,5 +1,5 @@
 #result-count
-  small= t'views.product._search.showing_pcount_produc', count: @products.count
+  small= t'views.product._search.showing_pcount_produc', count: @products_count
 
 #results.sortable-table.wireframe-size.checkable
   .table-header style="#{"display: none" if @products.empty?}"
@@ -9,8 +9,10 @@
     .box-field.product= t'views.product._search.product'
     .box-field.margin= t'views.product._search.margin'
     .box-field.price= t'views.product._search.price'
-    .box-field.stock= t'views.product._search.stock'
+    - if defined? StockPlugin
+      .box-field.stock= t'views.product._search.stock'
     .box-field.unit= t'views.product._search.unit'
+
   .table-content
     - if @products.empty?
       = t'views.product._search.we_don_t_have_product'

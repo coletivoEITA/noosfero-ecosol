@@ -31,7 +31,7 @@ class SuppliersPlugin::ProductController < MyProfileController
   end
 
   def edit
-    @product = profile.distributed_products.find params[:id]
+    @product = profile.products.supplied.find params[:id]
     @product.update_attributes params["product_#{@product.id}"]
   end
 
@@ -77,13 +77,15 @@ class SuppliersPlugin::ProductController < MyProfileController
     page = params[:page]
     page = 1 if page.blank?
 
-    @supplier = SuppliersPlugin::Supplier.find_by_id params[:supplier_id] if params[:supplier_id].present?
+    @supplier = SuppliersPlugin::Supplier.where(id: params[:supplier_id]).first if params[:supplier_id].present?
 
-    SuppliersPlugin::DistributedProduct.send :with_exclusive_scope do
-      scope = profile.distributed_products.unarchived.joins([:from_products, :suppliers])
-      @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate per_page: 20, page: page, order: 'from_products_products.name ASC'
-      @products_count = SuppliersPlugin::BaseProduct.search_scope(scope, params).count
-    end
+    @scope = profile.products.supplied.unarchived.joins :from_products, :suppliers
+    @scope = SuppliersPlugin::BaseProduct.search_scope @scope, params
+    @products_count = @scope.count
+    @scope = @scope.order('from_products_products.name ASC')
+    puts @scope.to_sql
+    @products = @scope.paginate per_page: 20, page: page
+
     @product_categories = Product.product_categories_of @products
     @new_product = SuppliersPlugin::DistributedProduct.new
     @new_product.profile = profile

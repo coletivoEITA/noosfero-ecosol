@@ -60,8 +60,13 @@ class Product
   has_many :consumers, through: :to_products, source: :profile, uniq: true, order: 'id ASC'
 
   # prefer distributed_products has_many to use DistributedProduct scopes and eager loading
-  scope :distributed, conditions: ["products.type = 'SuppliersPlugin::DistributedProduct'"]
-  scope :own, conditions: ["products.type = 'Product'"]
+  scope :distributed, -> { where type: 'SuppliersPlugin::DistributedProduct'}
+  scope :own, -> { where type: nil }
+  scope :supplied, -> {
+    where(type: [nil, 'SuppliersPlugin::DistributedProduct'])
+    # FIXME: duplicated products are being show
+    #group('products.id')
+  }
 
   scope :from_supplier, lambda { |supplier| { conditions: ['suppliers_plugin_suppliers.id = ?', supplier.id] } }
   scope :from_supplier_id, lambda { |supplier_id| { conditions: ['suppliers_plugin_suppliers.id = ?', supplier_id] } }
