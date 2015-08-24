@@ -15,8 +15,6 @@ class Input < ActiveRecord::Base
 
   scope :relevant_to_price, :conditions => { :relevant_to_price => true }
 
-  include FloatHelper
-
   def name
     product_category.name
   end
