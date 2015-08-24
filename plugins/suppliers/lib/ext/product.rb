@@ -82,6 +82,9 @@ class Product
   def distributed?
     self.class == SuppliersPlugin::DistributedProduct
   end
+  def supplied?
+    self.own? or self.distributed?
+  end
 
   def sources_supplier_product
     self.supplier_products.load_target unless self.supplier_products.loaded?
@@ -152,5 +155,10 @@ class Product
       self.distribute_to_consumer consumer.profile
     end
   end
+
+  def solr_supplied
+    self.supplied?
+  end
+  self.solr_extra_fields << :solr_supplied
 
 end

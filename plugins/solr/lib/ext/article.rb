@@ -8,7 +8,7 @@ class Article
     c_('Content')
   end
 
-  def solr_plugin_comments_updated
+  def solr_comments_updated
     solr_save
   end
 
@@ -28,19 +28,19 @@ class Article
 
   protected
 
-  def self.solr_plugin_f_type_proc(facet, id_count_arr)
+  def self.solr_f_type_proc(facet, id_count_arr)
     id_count_arr.map do |type, count|
       [type, type.constantize.type_name, count]
     end
   end
 
-  def self.solr_plugin_f_profile_type_proc facet, id_count_arr
+  def self.solr_f_profile_type_proc facet, id_count_arr
     id_count_arr.map do |type, count|
       [type, type.constantize.type_name, count]
     end
   end
 
-  def solr_plugin_f_type
+  def solr_f_type
     #join common types
     case self.class.name
     when 'TinyMceArticle', 'TextileArticle'
@@ -50,61 +50,62 @@ class Article
     end
   end
 
-  def solr_plugin_f_profile_type
+  def solr_f_profile_type
     self.profile.class.name
   end
 
-  def solr_plugin_f_published_at
+  def solr_f_published_at
     self.published_at
   end
 
-  def solr_plugin_f_category
+  def solr_f_category
     self.categories.collect(&:name)
   end
 
-  def solr_plugin_public
+  def solr_public
     self.public?
   end
 
-  def solr_plugin_category_filter
+  def solr_category_filter
     categories_including_virtual_ids
   end
 
-  def solr_plugin_name_sortable
+  def solr_name_sortable
     name
   end
 
   acts_as_faceted fields: {
-      solr_plugin_f_type: {label: c_('Type'), proc: method(:solr_plugin_f_type_proc).to_proc},
-      solr_plugin_f_published_at: {type: :date, label: _('Published date'), queries: {'[* TO NOW-1YEARS/DAY]' => _("Older than one year"),
+      solr_f_type: {label: c_('Type'), proc: method(:solr_f_type_proc).to_proc},
+      solr_f_published_at: {type: :date, label: _('Published date'), queries: {'[* TO NOW-1YEARS/DAY]' => _("Older than one year"),
         '[NOW-1YEARS TO NOW/DAY]' => _("In the last year"), '[NOW-1MONTHS TO NOW/DAY]' => _("In the last month"), '[NOW-7DAYS TO NOW/DAY]' => _("In the last week"), '[NOW-1DAYS TO NOW/DAY]' => _("In the last day")},
         queries_order: ['[NOW-1DAYS TO NOW/DAY]', '[NOW-7DAYS TO NOW/DAY]', '[NOW-1MONTHS TO NOW/DAY]', '[NOW-1YEARS TO NOW/DAY]', '[* TO NOW-1YEARS/DAY]']},
-      solr_plugin_f_profile_type: {label: c_('Profile'), proc: method(:solr_plugin_f_profile_type_proc).to_proc},
-      solr_plugin_f_category: {label: c_('Categories')},
-    }, category_query: proc { |c| "solr_plugin_category_filter:\"#{c.id}\"" },
-    order: [:solr_plugin_f_type, :solr_plugin_f_published_at, :solr_plugin_f_profile_type, :solr_plugin_f_category]
+      solr_f_profile_type: {label: c_('Profile'), proc: method(:solr_f_profile_type_proc).to_proc},
+      solr_f_category: {label: c_('Categories')},
+    }, category_query: -> (c) { "solr_category_filter:\"#{c.id}\"" },
+    order: [:solr_f_type, :solr_f_published_at, :solr_f_profile_type, :solr_f_category]
 
-  acts_as_searchable fields: facets_fields_for_solr + [
+  acts_as_searchable fields: [
       # searched fields
       {name: {type: :text, boost: 2.0}},
       {slug: :text}, {body: :text},
       {abstract: :text}, {filename: :text},
       # filtered fields
-      {solr_plugin_public: :boolean}, {published: :boolean},
+      {solr_public: :boolean}, {published: :boolean},
       {environment_id: :integer},
       {profile_id: :integer}, :language,
-      {solr_plugin_category_filter: :integer},
+      {solr_category_filter: :integer},
       # ordered/query-boosted fields
       {lat: :float}, {lng: :float},
-      {solr_plugin_name_sortable: :string}, :last_changed_by_id, :published_at, :is_image,
+      {solr_name_sortable: :string}, :last_changed_by_id, :published_at, :is_image,
       :updated_at, :created_at,
-    ], include: [
+    ],
+    include: [
       {profile: {fields: [:name, :identifier, :address, :nickname, :region_id, :lat, :lng]}},
       {comments: {fields: [:title, :body, :author_name, :author_email]}},
       {categories: {fields: [:name, :path, :slug, :lat, :lng, :acronym, :abbreviation]}},
-    ], facets: facets_option_for_solr,
-    boost: proc { |a| 10 if a.profile && a.profile.enabled },
-    if: proc{ |a| not a.class.name.in? ['RssFeed'] }
+    ], facets: self.solr_facets_options,
+    boost: -> (a) { 10 if a.profile && a.profile.enabled },
+    if: -> (a) { not a.class.name.in? ['RssFeed'] }
 
   # we don't need this with NRT from solr 5
   #handle_asynchronously :solr_save

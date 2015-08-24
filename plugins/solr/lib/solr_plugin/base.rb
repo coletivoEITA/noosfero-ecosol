@@ -16,8 +16,8 @@ class SolrPlugin::Base < Noosfero::Plugin
 
   	# Search for products -> considers the query and the filters:
     params[:facet] = {}
-    params[:facet][:solr_plugin_f_category] = params[:category] if params[:category].present?
-    params[:facet][:solr_plugin_f_qualifier] = params[:qualifier] if params[:qualifier].present?
+    params[:facet][:solr_f_category] = params[:category] if params[:category].present?
+    params[:facet][:solr_f_qualifier] = params[:qualifier] if params[:qualifier].present?
     solr_options = build_solr_options asset, klass, scope, nil
     solr_options[:all_facets] = false
 
@@ -35,10 +35,10 @@ class SolrPlugin::Base < Noosfero::Plugin
     result_facets = scope.find_by_contents query, paginate_options, solr_options
     facets = result_facets[:facets]['facet_fields'] || {}
 
-    result[:categories] = facets['solr_plugin_f_category_facet'].to_a.map{ |name,count| ["#{name} (#{count})", name] }
+    result[:categories] = facets['solr_f_category_facet'].to_a.map{ |name,count| ["#{name} (#{count})", name] }
     result[:categories].sort!{ |a,b| a[0] <=> b[0] }
-    result[:qualifiers] = facets['solr_plugin_f_qualifier_facet'].to_a
-    result[:qualifiers] = Product.solr_plugin_f_qualifier_proc nil, result[:qualifiers]
+    result[:qualifiers] = facets['solr_f_qualifier_facet'].to_a
+    result[:qualifiers] = Product.solr_f_qualifier_proc nil, result[:qualifiers]
     result[:qualifiers].map!{ |id, name, count| ["#{name} (#{count})", id] }
     result[:qualifiers].sort!{ |a,b| a[0] <=> b[0] }
 
@@ -77,7 +77,7 @@ class SolrPlugin::Base < Noosfero::Plugin
     case asset
     when :catalog
       klass = Product
-      solr_options[:query_fields] = %w[solr_plugin_ac_name^100 solr_plugin_ac_category^90 solr_plugin_ac_supplier^80]
+      solr_options[:query_fields] = %w[solr_ac_name^100 solr_ac_category^90 solr_ac_supplier^80]
       solr_options[:highlight] = {fields: 'name'}
       solr_options[:filter_queries] = scopes_to_solr_options scope, klass, options
     end
@@ -119,14 +119,14 @@ class SolrPlugin::Base < Noosfero::Plugin
     solr_options = {}
 
     selected_facets = if options[:ignore_filters] then {} else params[:facet] end
-    if klass.respond_to? :facets
-      solr_options.merge! klass.facets_find_options selected_facets
+    if klass.respond_to? :solr_facets
+      solr_options.merge! klass.solr_facets_find_options selected_facets
       solr_options[:all_facets] = true
     end
 
     solr_options[:filter_queries] ||= []
     solr_options[:filter_queries] += solr_filters_queries asset, environment
-    solr_options[:filter_queries] << klass.facet_category_query.call(category) if category
+    solr_options[:filter_queries] << klass.solr_facet_category_query.call(category) if category
     solr_options[:filter_queries] += scopes_to_solr_options scope, klass, options
 
     solr_options[:boost_functions] ||= []
@@ -169,7 +169,7 @@ class SolrPlugin::Base < Noosfero::Plugin
 
       related_field = nil
       related_field = name if solr_fields.include? name
-      related_field = "solr_plugin_#{name}" if solr_fields.include? :"solr_plugin_#{name}"
+      related_field = "solr_#{name}" if solr_fields.include? :"solr_#{name}"
 
       if has_value
         if related_field
@@ -178,7 +178,7 @@ class SolrPlugin::Base < Noosfero::Plugin
           filter_queries << klass.send("solr_filter_#{name}", *args)
         end
       else
-        raise "Undeclared solr field for scope #{name}" if related_field.nil?
+        raise "Undeclared solr field for scope '#{name}'" if related_field.nil?
         if related_field
           filter_queries << "#{related_field}:true"
         end

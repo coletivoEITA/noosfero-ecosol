@@ -14,11 +14,11 @@ class TestModel < ActiveRecord::Base
       [type, h[type], count]
     end
   end
-  acts_as_faceted :fields => {
-      :f_type => {:label => 'Type', :proc => method(:f_type_proc).to_proc},
-      :f_published_at => {:type => :date, :label => 'Published date', :queries =>
+  acts_as_faceted fields: {
+      f_type: {label: 'Type', proc: method(:f_type_proc).to_proc},
+      f_published_at: {type: :date, label: 'Published date', queries:
         {'[* TO NOW-1YEARS/DAY]' => "Older than one year", '[NOW-1YEARS TO NOW/DAY]' => "Last year"}},
-    }, :order => [:f_type, :f_published_at]
+    }, order: [:f_type, :f_published_at]
 end
 
 class ActsAsFacetedTest < ActiveSupport::TestCase
@@ -47,18 +47,18 @@ class ActsAsFacetedTest < ActiveSupport::TestCase
   end
 
   should 'convert facets to solr field names' do
-    solr_names = TestModel.solr_fields_names
+    solr_names = TestModel.facets_solr_fields_names
     assert solr_names.include?("f_type_facet")
     assert solr_names.include?("f_published_at_d")
 
-    solr_names = TestModel.to_solr_fields_names
+    solr_names = TestModel.to_solr_facets_fields_names
 
     assert_equal solr_names[:f_type], 'f_type_facet'
     assert_equal solr_names[:f_published_at], 'f_published_at_d'
   end
 
   should 'return facets containers' do
-    containers = TestModel.facets_results_containers
+    containers = TestModel.solr_facets_results_containers
 
     assert_equal containers.count, 3
     assert_equal containers[:fields], 'facet_fields'
@@ -67,12 +67,12 @@ class ActsAsFacetedTest < ActiveSupport::TestCase
   end
 
   should 'show facets option for solr' do
-    assert TestModel.facets_option_for_solr.include?(:f_type)
-    assert !TestModel.facets_option_for_solr.include?(:f_published_at)
+    assert TestModel.solr_facets_options.include?(:f_type)
+    assert !TestModel.solr_facets_options.include?(:f_published_at)
   end
 
   should 'show facets fields for solr' do
-    TestModel.facets_fields_for_solr.each do |facet|
+    TestModel.solr_facets_fields.each do |facet|
       assert_equal facet[:f_type], :facet if facet[:f_type]
       assert_equal facet[:f_published_at], :date if facet[:f_published_at]
     end
@@ -125,20 +125,20 @@ class ActsAsFacetedTest < ActiveSupport::TestCase
   end
 
   should 'show correct ordering' do
-    assert_equal TestModel.facets_order, [:f_type, :f_published_at]
+    assert_equal TestModel.solr_facets_order, [:f_type, :f_published_at]
   end
 
   should 'return facet options hash in acts_as_solr format' do
-    options = TestModel.facets_find_options()[:facets]
+    options = TestModel.solr_facets_find_options()[:facets]
     assert_equal [:f_type], options[:fields]
     assert_equivalent ["f_published_at:[NOW-1YEARS TO NOW/DAY]", "f_published_at:[* TO NOW-1YEARS/DAY]"], options[:query]
   end
 
   should 'return browse options hash in acts_as_solr format' do
-    options = TestModel.facets_find_options()[:facets]
+    options = TestModel.solr_facets_find_options()[:facets]
     assert_equal options[:browse], []
 
-    options = TestModel.facets_find_options({'f_published_at' => '[* TO NOW-1YEARS/DAY]'})[:facets]
+    options = TestModel.solr_facets_find_options({'f_published_at' => '[* TO NOW-1YEARS/DAY]'})[:facets]
     assert_equal options[:browse], ['f_published_at:[* TO NOW-1YEARS/DAY]']
   end
 
