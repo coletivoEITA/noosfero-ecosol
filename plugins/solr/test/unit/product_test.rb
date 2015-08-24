@@ -26,16 +26,16 @@ class ProductTest < ActiveSupport::TestCase
     p = Product.create!(:name => 'black flag', :profile_id => ent.id, :product_category_id => cat.id)
     pq = p.product_qualifiers.create!(:qualifier => fast_create(Qualifier, :name => 'qualifier'),
                                       :certifier => fast_create(Certifier, :name => 'certifier'))
-    assert_equal 'Related products', Product.facet_by_id(:solr_plugin_f_category)[:label]
+    assert_equal 'Related products', Product.facet_by_id(:solr_f_category)[:label]
 
-    facet = Product.facet_by_id(:solr_plugin_f_region)
-    assert_equal [[p.region.id.to_s, 'Tabajara, XZ', 1]], facet[:proc].call(facet, [[p.send(:solr_plugin_f_region), 1]])
-    facet = Product.facet_by_id(:solr_plugin_f_qualifier)
+    facet = Product.facet_by_id(:solr_f_region)
+    assert_equal [[p.region.id.to_s, 'Tabajara, XZ', 1]], facet[:proc].call(facet, [[p.send(:solr_f_region), 1]])
+    facet = Product.facet_by_id(:solr_f_qualifier)
     assert_equal [["#{pq.qualifier.id} #{pq.certifier.id}", ["qualifier", " cert. certifier"], 1]],
-                 facet[:proc].call(facet, [[p.send(:solr_plugin_f_qualifier).last, 1]])
+                 facet[:proc].call(facet, [[p.send(:solr_f_qualifier).last, 1]])
 
-    assert_equal 'hardcore', p.send(:solr_plugin_f_category)
-    assert_equal "solr_plugin_category_filter:#{cat.id}", Product.facet_category_query.call(cat)
+    assert_equal 'hardcore', p.send(:solr_f_category)
+    assert_equal "solr_category_filter:#{cat.id}", Product.solr_facet_category_query.call(cat)
   end
 
   should 'act as searchable' do
@@ -57,8 +57,8 @@ class ProductTest < ActiveSupport::TestCase
     assert_includes Product.find_by_contents('mosquitos')[:results].docs, p
     assert_includes Product.find_by_contents('homemade')[:results].docs, p
     # filters
-    assert_includes Product.find_by_contents('bananas', {}, { :filter_queries => ["solr_plugin_public:true"]})[:results].docs, p
-    assert_not_includes Product.find_by_contents('bananas', {}, { :filter_queries => ["solr_plugin_public:false"]})[:results].docs, p
+    assert_includes Product.find_by_contents('bananas', {}, { :filter_queries => ["solr_public:true"]})[:results].docs, p
+    assert_not_includes Product.find_by_contents('bananas', {}, { :filter_queries => ["solr_public:false"]})[:results].docs, p
     assert_includes Product.find_by_contents('bananas', {}, { :filter_queries => ["environment_id:\"#{Environment.default.id}\""]})[:results].docs, p
     # includes
     assert_includes Product.find_by_contents("homemade")[:results].docs, p

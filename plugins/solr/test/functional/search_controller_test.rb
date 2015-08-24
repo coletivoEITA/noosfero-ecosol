@@ -52,10 +52,10 @@ class SearchControllerTest < ActionController::TestCase
 
     get 'articles', :query => 'article found'
 		assert !assigns(:searches)[:articles][:facets].blank?
-		assert assigns(:searches)[:articles][:facets]['facet_fields']['solr_plugin_f_type_facet'][0][0] == 'Article'
-		assert assigns(:searches)[:articles][:facets]['facet_fields']['solr_plugin_f_profile_type_facet'][0][0] == 'Person'
-		assert assigns(:searches)[:articles][:facets]['facet_fields']['solr_plugin_f_category_facet'][0][0] == 'cat1'
-		assert assigns(:searches)[:articles][:facets]['facet_fields']['solr_plugin_f_category_facet'][1][0] == 'cat2'
+		assert assigns(:searches)[:articles][:facets]['facet_fields']['solr_f_type_facet'][0][0] == 'Article'
+		assert assigns(:searches)[:articles][:facets]['facet_fields']['solr_f_profile_type_facet'][0][0] == 'Person'
+		assert assigns(:searches)[:articles][:facets]['facet_fields']['solr_f_category_facet'][0][0] == 'cat1'
+		assert assigns(:searches)[:articles][:facets]['facet_fields']['solr_f_category_facet'][1][0] == 'cat2'
   end
 
   should 'get facets with people search results' do
@@ -70,9 +70,9 @@ class SearchControllerTest < ActionController::TestCase
     get 'people', :query => 'Hildebrando'
 
     assert !assigns(:searches)[:people][:facets].blank?
-    assert assigns(:searches)[:people][:facets]['facet_fields']['solr_plugin_f_region_facet'][0][0] == city.id.to_s
+    assert assigns(:searches)[:people][:facets]['facet_fields']['solr_f_region_facet'][0][0] == city.id.to_s
 
-    categories_facet = assigns(:searches)[:people][:facets]['facet_fields']['solr_plugin_f_categories_facet']
+    categories_facet = assigns(:searches)[:people][:facets]['facet_fields']['solr_f_categories_facet']
     assert_equal 2, categories_facet.count
     assert_equivalent [cat1.id.to_s, cat2.id.to_s], [categories_facet[0][0], categories_facet[1][0]]
   end
@@ -90,10 +90,10 @@ class SearchControllerTest < ActionController::TestCase
 
     get 'products', :query => 'Sound'
 		assert !assigns(:searches)[:products][:facets].blank?
-		assert assigns(:searches)[:products][:facets]['facet_fields']['solr_plugin_f_category_facet'][0][0] == @product_category.name
-		assert assigns(:searches)[:products][:facets]['facet_fields']['solr_plugin_f_region_facet'][0][0] == city.id.to_s
-		assert assigns(:searches)[:products][:facets]['facet_fields']['solr_plugin_f_qualifier_facet'][0][0] == "#{qualifier1.id} "
-		assert assigns(:searches)[:products][:facets]['facet_fields']['solr_plugin_f_qualifier_facet'][1][0] == "#{qualifier2.id} "
+		assert assigns(:searches)[:products][:facets]['facet_fields']['solr_f_category_facet'][0][0] == @product_category.name
+		assert assigns(:searches)[:products][:facets]['facet_fields']['solr_f_region_facet'][0][0] == city.id.to_s
+		assert assigns(:searches)[:products][:facets]['facet_fields']['solr_f_qualifier_facet'][0][0] == "#{qualifier1.id} "
+		assert assigns(:searches)[:products][:facets]['facet_fields']['solr_f_qualifier_facet'][1][0] == "#{qualifier2.id} "
   end
 
   # 'assets' menu outside any category
@@ -197,20 +197,20 @@ class SearchControllerTest < ActionController::TestCase
 
 	should 'browse facets when query is not empty' do
 		get :articles, :query => 'something'
-		get :facets_browse, :asset_key => 'articles', :facet_id => 'solr_plugin_f_type'
-		assert_equal assigns(:facet)[:id], 'solr_plugin_f_type'
+		get :facets_browse, :asset_key => 'articles', :facet_id => 'solr_f_type'
+		assert_equal assigns(:facet)[:id], 'solr_f_type'
 		get :products, :query => 'something'
-		get :facets_browse, :asset_key => 'products', :facet_id => 'solr_plugin_f_category'
-		assert_equal assigns(:facet)[:id], 'solr_plugin_f_category'
+		get :facets_browse, :asset_key => 'products', :facet_id => 'solr_f_category'
+		assert_equal assigns(:facet)[:id], 'solr_f_category'
 		get :people, :query => 'something'
-		get :facets_browse, :asset_key => 'people', :facet_id => 'solr_plugin_f_region'
-		assert_equal assigns(:facet)[:id], 'solr_plugin_f_region'
+		get :facets_browse, :asset_key => 'people', :facet_id => 'solr_f_region'
+		assert_equal assigns(:facet)[:id], 'solr_f_region'
 	end
 
 	should 'raise exception when facet is invalid' do
 		get :articles, :query => 'something'
 		assert_raise RuntimeError do
-			get :facets_browse, :asset_key => 'articles', :facet_id => 'solr_plugin_fwhatever'
+			get :facets_browse, :asset_key => 'articles', :facet_id => 'solr_fwhatever'
 		end
 	end
 

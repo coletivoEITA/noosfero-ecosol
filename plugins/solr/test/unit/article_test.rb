@@ -15,13 +15,13 @@ class ArticleTest < ActiveSupport::TestCase
     a = Article.create!(:name => 'black flag review', :profile_id => person.id)
     a.add_category(cat, true)
     a.save!
-    facet = Article.facet_by_id(:solr_plugin_f_type)
-    assert_equal [[a.send(:solr_plugin_f_type), Article.type_name, 1]], facet[:proc].call(facet, [[a.send(:solr_plugin_f_type), 1]])
-    facet = Article.facet_by_id(:solr_plugin_f_profile_type)
-    assert_equal [[a.send(:solr_plugin_f_profile_type), Person.type_name, 1]], facet[:proc].call(facet, [[a.send(:solr_plugin_f_profile_type), 1]])
-    assert_equal a.published_at, a.send(:solr_plugin_f_published_at)
-    assert_equal ['hardcore'], a.send(:solr_plugin_f_category)
-    assert_equal "solr_plugin_category_filter:\"#{cat.id}\"", Article.facet_category_query.call(cat)
+    facet = Article.facet_by_id(:solr_f_type)
+    assert_equal [[a.send(:solr_f_type), Article.type_name, 1]], facet[:proc].call(facet, [[a.send(:solr_f_type), 1]])
+    facet = Article.facet_by_id(:solr_f_profile_type)
+    assert_equal [[a.send(:solr_f_profile_type), Person.type_name, 1]], facet[:proc].call(facet, [[a.send(:solr_f_profile_type), 1]])
+    assert_equal a.published_at, a.send(:solr_f_published_at)
+    assert_equal ['hardcore'], a.send(:solr_f_category)
+    assert_equal "solr_category_filter:\"#{cat.id}\"", Article.solr_facet_category_query.call(cat)
   end
 
   should 'act as searchable' do
@@ -43,8 +43,8 @@ class ArticleTest < ActiveSupport::TestCase
     assert_includes Article.find_by_contents('beer')[:results].docs, a
     assert_includes Article.find_by_contents('not_a_virus.exe')[:results].docs, a
     # filters
-    assert_includes Article.find_by_contents('bananas', {}, {:filter_queries => ["solr_plugin_public:true"]})[:results].docs, a
-    assert_not_includes Article.find_by_contents('bananas', {}, {:filter_queries => ["solr_plugin_public:false"]})[:results].docs, a
+    assert_includes Article.find_by_contents('bananas', {}, {:filter_queries => ["solr_public:true"]})[:results].docs, a
+    assert_not_includes Article.find_by_contents('bananas', {}, {:filter_queries => ["solr_public:false"]})[:results].docs, a
     assert_includes Article.find_by_contents('bananas', {}, {:filter_queries => ["environment_id:\"#{Environment.default.id}\""]})[:results].docs, a
     assert_includes Article.find_by_contents('bananas', {}, {:filter_queries => ["profile_id:\"#{person.id}\""]})[:results].docs, a
     # includes

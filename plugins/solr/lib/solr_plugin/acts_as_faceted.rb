@@ -16,42 +16,42 @@ module SolrPlugin
       #  f_category: {label: c_('Categories')}},
       #  order: [:f_type, :f_published_at, :f_profile_type, :f_category]
       #
-      #acts_as_searchable additional_fields: [ {name: {type: :string, as: :name_sort, boost: 5.0}} ] + facets_fields_for_solr,
+      #acts_as_searchable additional_fields: [ {name: {type: :string, as: :name_sort, boost: 5.0}} ],
       #  exclude_fields: [:setting],
       #  include: [:profile],
-      #  facets: facets_option_for_solr,
+      #  facets: solr_facets_options,
       #  if: proc{|a| ! ['RssFeed'].include?(a.class.name)}
       def acts_as_faceted options
         extend ClassMethods
         extend ActsAsSolr::CommonMethods
 
-        cattr_accessor :facets
-        cattr_accessor :facets_order
-        cattr_accessor :to_solr_fields_names
-        cattr_accessor :facets_results_containers
-        cattr_accessor :solr_fields_names
-        cattr_accessor :facets_option_for_solr
-        cattr_accessor :facets_fields_for_solr
-        cattr_accessor :facet_category_query
+        cattr_accessor :solr_facets
+        cattr_accessor :solr_facets_order
+        cattr_accessor :solr_facets_results_containers
+        cattr_accessor :solr_facets_fields
+        cattr_accessor :solr_facets_fields_names
+        cattr_accessor :solr_facets_options
+        cattr_accessor :solr_facet_category_query
+        cattr_accessor :to_solr_facets_fields_names
 
-        self.facets = options[:fields]
-        self.facets_order = options[:order] || self.facets.keys
-        self.facets_results_containers = {fields: 'facet_fields', queries: 'facet_queries', ranges: 'facet_ranges'}
-        self.facets_option_for_solr = Hash[facets.select{ |id,data| ! data.has_key?(:queries) }].keys
-        self.facets_fields_for_solr = facets.map{ |id,data| {id => data[:type] || :facet} }
-        self.solr_fields_names = facets.map{ |id,data| id.to_s + '_' + get_solr_field_type(data[:type] || :facet) }
-        self.facet_category_query = options[:category_query]
+        self.solr_facets = options[:fields]
+        self.solr_facets_order = options[:order] || self.solr_facets.keys
+        self.solr_facets_results_containers = {fields: 'facet_fields', queries: 'facet_queries', ranges: 'facet_ranges'}
+        self.solr_facets_options = Hash[self.solr_facets.select{ |id,data| ! data.has_key?(:queries) }].keys
+        self.solr_facets_fields = self.solr_facets.map{ |id,data| {id => data[:type] || :facet} }
+        self.solr_facets_fields_names = self.solr_facets.map{ |id,data| id.to_s + '_' + get_solr_field_type(data[:type] || :facet) }
+        self.solr_facet_category_query = options[:category_query]
 
         # A hash to retrieve the field key for the solr facet string returned
         # field_name: "field_name_facet"
-        self.to_solr_fields_names = Hash[facets.keys.zip(solr_fields_names)]
+        self.to_solr_facets_fields_names = Hash[self.solr_facets.keys.zip(solr_facets_fields_names)]
 
         def facet_by_id(id)
-          {id: id}.merge(facets[id]) if facets[id]
+          {id: id}.merge(self.solr_facets[id]) if self.solr_facets[id]
         end
 
         def map_facets_for context
-          facets_order.map do |id|
+          self.solr_facets_order.map do |id|
             facet = facet_by_id id
             next unless facet
             next if criteria = facet[:context_criteria] and !context.instance_exec(&criteria)
@@ -70,18 +70,18 @@ module SolrPlugin
         def map_facet_results facet, facet_params, facets_data, unfiltered_facets_data = {}, options = {}
           raise 'Use map_facets_for before this method' if facet[:solr_field].nil?
           facets_data = {} if facets_data.blank? # could be empty array
-          solr_facet = to_solr_fields_names[facet[:solr_field]]
+          solr_facet = to_solr_facets_fields_names[facet[:solr_field]]
           unfiltered_facets_data ||= {}
 
           if facet[:queries]
-            container = facets_data[facets_results_containers[:queries]]
+            container = facets_data[self.solr_facets_results_containers[:queries]]
             facet_data = (container.nil? or container.empty?) ? [] : container.select{ |k,v| k.starts_with? solr_facet }
-            container = unfiltered_facets_data[facets_results_containers[:queries]]
+            container = unfiltered_facets_data[self.solr_facets_results_containers[:queries]]
             unfiltered_facet_data = (container.nil? or container.empty?) ? [] : container.select{ |k,v| k.starts_with? solr_facet }
           else
-            container = facets_data[facets_results_containers[:fields]]
+            container = facets_data[self.solr_facets_results_containers[:fields]]
             facet_data = (container.nil? or container.empty?) ? [] : container[solr_facet] || []
-            container = unfiltered_facets_data[facets_results_containers[:fields]]
+            container = unfiltered_facets_data[self.solr_facets_results_containers[:fields]]
             unfiltered_facet_data = (container.nil? or container.empty?) ? [] : container[solr_facet] || []
           end
 
@@ -167,27 +167,29 @@ module SolrPlugin
           _(facet[:label])
         end
 
-        def facets_find_options(facets_selected = {}, options = {})
+        def solr_facets_find_options facets_selected = {}, options = {}
           browses = []
           facets_selected ||= {}
           facets_selected.map do |id, value|
-            next unless facets[id.to_sym]
+            next unless self.solr_facets[id.to_sym]
             if value.kind_of?(Hash)
               value.map do |label_id, value|
                 value.to_a.each do |value|
-                  browses << id.to_s + ':' + (facets[id.to_sym][:queries] ? value : '"'+value.to_s+'"')
+                  browses << id.to_s + ':' + (self.solr_facets[id.to_sym][:queries] ? value : '"'+value.to_s+'"')
                 end
               end
             else
-              browses << id.to_s + ':' + (facets[id.to_sym][:queries] ? value : '"'+value.to_s+'"')
+              browses << id.to_s + ':' + (self.solr_facets[id.to_sym][:queries] ? value : '"'+value.to_s+'"')
             end
           end.flatten
 
-          {facets: {zeros: false, sort: :count,
-                       fields: facets_option_for_solr,
-                       browse: browses,
-                       query: facets.map { |f, options| options[:queries].keys.map { |q| f.to_s + ':' + q } if options[:queries] }.compact.flatten,
-          }
+          {
+            facets: {
+              zeros: false, sort: :count,
+              fields: solr_facets_options,
+              browse: browses,
+              query: self.solr_facets.map { |f, options| options[:queries].keys.map { |q| f.to_s + ':' + q } if options[:queries] }.compact.flatten,
+            }
           }
         end
       end

@@ -8,19 +8,23 @@ module SolrPlugin
     module ClassMethods
       ACTS_AS_SEARCHABLE_ENABLED = true unless defined? ACTS_AS_SEARCHABLE_ENABLED
 
-      def acts_as_searchable(options = {})
+      def acts_as_searchable options = {}
         return if !ACTS_AS_SEARCHABLE_ENABLED
 
         if options[:fields]
           options[:fields] << {schema_name: :string}
+          fields = options[:fields]
         else
           options[:additional_fields] ||= []
           options[:additional_fields] << {schema_name: :string}
+          fields = options[:additional_fields]
         end
+        fields.concat self.solr_facets_fields if self.respond_to? :solr_facets_fields
+        fields.concat self.solr_extra_fields
 
         acts_as_solr options
         extend FindByContents
-        send :include, InstanceMethods
+        include InstanceMethods
       end
 
       module InstanceMethods
@@ -81,4 +85,6 @@ module SolrPlugin
   end
 
   ActiveRecord::Base.send :extend, ActsAsSearchable::ClassMethods
+  ActiveRecord::Base.class_attribute :solr_extra_fields
+  ActiveRecord::Base.solr_extra_fields = []
 end

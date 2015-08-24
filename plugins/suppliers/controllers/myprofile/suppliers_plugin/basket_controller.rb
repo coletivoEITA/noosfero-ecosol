@@ -11,12 +11,13 @@ class SuppliersPlugin::BasketController < MyProfileController
   helper SuppliersPlugin::DisplayHelper
 
   def search
-    @product = profile.products.find params[:id]
+    @product = profile.products.supplied.find params[:id]
     @query = params[:query].to_s
-    @scope = profile.distributed_products.limit(10)
+    @scope = profile.products.supplied.limit(10)
     @scope = @scope.where('id NOT IN (?)', @product.id)
-    #@products = autocomplete(:catalog, @scope, @query, {per_page: 10, page: 1}, {})[:results]
-    @products = @scope.where('name ILIKE ? OR name ILIKE ?', "#{@query}%", "% #{@query}%")
+    # not a good option as need to search on from_products to, solr is a perfect match
+    #@products = @scope.where('name ILIKE ? OR name ILIKE ?', "#{@query}%", "% #{@query}%")
+    @products = autocomplete(:catalog, @scope, @query, {per_page: 10, page: 1}, {})[:results]
 
     render json: @products.map{ |p|
       {value: p.id, label: "#{p.name} (#{if p.respond_to? :supplier then p.supplier.name else p.profile.short_name end})"}
@@ -24,8 +25,8 @@ class SuppliersPlugin::BasketController < MyProfileController
   end
 
   def add
-    @product = profile.products.find params[:id]
-    @aggregate = profile.distributed_products.find params[:aggregate_id]
+    @product = profile.products.supplied.find params[:id]
+    @aggregate = profile.products.supplied.find params[:aggregate_id]
 
     @sp = @product.sources_from_products.where(from_product_id: @aggregate.id).first
     if @sp
@@ -38,8 +39,8 @@ class SuppliersPlugin::BasketController < MyProfileController
   end
 
   def remove
-    @product = profile.products.find params[:id]
-    @aggregate = profile.distributed_products.find params[:aggregate_id]
+    @product = profile.products.supplied.find params[:id]
+    @aggregate = profile.products.supplied.find params[:aggregate_id]
     @sp = @product.sources_from_products.where(from_product_id: @aggregate.id).first
     @sp.destroy
 

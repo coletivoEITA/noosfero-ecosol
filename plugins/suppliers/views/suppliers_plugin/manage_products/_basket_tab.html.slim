@@ -1,4 +1,4 @@
-- if @product.from_products.size == 1
+- if @product.from_products.size <= 1
   = t'suppliers_plugin.views.manage_products.basket_tab.make_a_basket'
   = render 'suppliers_plugin/manage_products/basket_add'
 - else

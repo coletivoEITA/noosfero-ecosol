@@ -36,8 +36,8 @@ Feature: search enterprises
     When I go to the search enterprises page
     And I fill in "search-input" with "Artesanato"
     And I press "Search"
-    Then I should see "Pres. Prudente" within "#facet-menu-solr_plugin_f_region"
-    And I should see ", SP" within "#facet-menu-solr_plugin_f_region"
+    Then I should see "Pres. Prudente" within "#facet-menu-solr_f_region"
+    And I should see ", SP" within "#facet-menu-solr_f_region"
     And I should see "City" within ".facet-menu-label"
     And I should see "Pres. Prudente, SP" within ".facet-menu-item"
 

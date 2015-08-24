@@ -12,7 +12,7 @@ class CommentTest < ActiveSupport::TestCase
     owner = create_user('testuser').person
     article = owner.articles.create!(:name => 'test', :body => '...')
 
-    article.expects(:solr_plugin_comments_updated)
+    article.expects(:solr_comments_updated)
 
     c1 = article.comments.new(:title => "A comment", :body => '...', :author => owner)
     c1.stubs(:article).returns(article)
@@ -25,7 +25,7 @@ class CommentTest < ActiveSupport::TestCase
     c1 = article.comments.create!(:title => "A comment", :body => '...', :author => owner)
 
     c1.stubs(:article).returns(article)
-    article.expects(:solr_plugin_comments_updated)
+    article.expects(:solr_comments_updated)
     c1.destroy
   end
 end
