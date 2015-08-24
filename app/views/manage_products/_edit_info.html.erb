@@ -10,14 +10,14 @@
     <div class="form-group">
       <%= f.label :price, _('Price (%s)') % environment.currency_unit, :class => 'control-label col-lg-3 col-md-3 col-sm-4' %>
       <div class="col-lg-9 col-md-9 col-sm-8">
-        <%= f.text_field(:price, :value => @product.formatted_value(:price), :class => 'numbers-only form-control') %>
+        <%= f.number_field(:price, step: 'any', class: 'form-control') %>
       </div>
     </div>
 
     <div class="form-group">
       <%= f.label :discount, _('Discount (%s)') % environment.currency_unit, :class => 'control-label col-lg-3 col-md-3 col-sm-4' %>
       <div class="col-lg-9 col-md-9 col-sm-8">
-        <%= f.text_field(:discount, :value => @product.formatted_value(:discount), :class => 'numbers-only form-control', :title => _('If your product is on sale, fill this field with the discount value')) %>
+        <%= f.number_field(:discount, step: 'any', class: 'form-control', title: _('If your product is on sale, fill this field with the discount value')) %>
       </div>
     </div>
 
@@ -79,8 +79,6 @@
 <div id="new-qualifier-remove" style="display: none">
   <%= remove_qualifier_button %>
 </div>
-
-<%= render :partial => 'shared/numbers_only_javascript' %>
 
 <%= javascript_tag do %>
   currency_format = { separator : '<%= environment.currency_separator %>', delimiter : '<%= environment.currency_delimiter %>', unit : '<%= environment.currency_unit %>' };
