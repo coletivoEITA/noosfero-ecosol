@@ -1,7 +1,7 @@
 require_dependency 'product'
 # FIXME: this is necessary as the load order cannot be
 # changed so that solr plugin is loaded after all others
-require_relative '../../../suppliers/lib/ext/product' if defined? SuppliersPlugin
+#require_relative '../../../suppliers/lib/ext/product' if defined? SuppliersPlugin
 
 class Product
 
