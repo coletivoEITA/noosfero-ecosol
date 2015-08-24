@@ -1,5 +1,7 @@
 require_dependency 'certifier'
 
+ActiveSupport.run_load_hooks :solr_certifier
+
 class Certifier
 
   after_save_reindex [:products], with: :delayed_job
