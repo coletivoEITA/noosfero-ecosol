@@ -17,15 +17,6 @@ class PriceDetail < ActiveRecord::Base
     self[:price] || 0
   end
 
-  include FloatHelper
-  def price=(value)
-    if value.is_a?(String)
-      super(decimal_to_float(value))
-    else
-      super(value)
-    end
-  end
-
   def formatted_value(value)
     ("%.2f" % self[value]).to_s.gsub('.', product.enterprise.environment.currency_separator) if self[value]
   end

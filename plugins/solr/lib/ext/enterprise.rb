@@ -1,5 +1,7 @@
 require_dependency 'enterprise'
-require_dependency "#{File.dirname(__FILE__)}/profile"
+require_dependency "#{File.dirname __FILE__}/profile"
+
+ActiveSupport.run_load_hooks :solr_enterprise
 
 class Enterprise
 

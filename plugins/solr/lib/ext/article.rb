@@ -1,5 +1,7 @@
 require_dependency 'article'
 
+ActiveSupport.run_load_hooks :solr_article
+
 class Article
 
   # use for internationalizable human type names in search facets

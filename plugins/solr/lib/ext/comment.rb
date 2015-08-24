@@ -1,5 +1,7 @@
 require_dependency 'comment'
 
+ActiveSupport.run_load_hooks :solr_comment
+
 class Comment
 
   after_save :solr_notify_article

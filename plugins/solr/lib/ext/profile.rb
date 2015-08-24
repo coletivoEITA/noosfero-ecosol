@@ -1,5 +1,7 @@
 require_dependency 'profile'
 
+ActiveSupport.run_load_hooks :solr_profile
+
 class Profile
 
   # use for internationalizable human type names in search facets

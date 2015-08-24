@@ -17,22 +17,6 @@ class Input < ActiveRecord::Base
 
   include FloatHelper
 
-  def price_per_unit=(value)
-    if value.is_a?(String)
-      super(decimal_to_float(value))
-    else
-      super(value)
-    end
-  end
-
-  def amount_used=(value)
-    if value.is_a?(String)
-      super(decimal_to_float(value))
-    else
-      super(value)
-    end
-  end
-
   def name
     product_category.name
   end
