@@ -1,5 +1,7 @@
 class SuppliersPlugin::Supplier < ActiveRecord::Base
 
+  attr_accessor :distribute_products_on_create, :dont_destroy_dummy, :identifier_from_name
+
   attr_accessible :profile_id, :profile, :consumer, :consumer_id, :name, :name_abbreviation, :description
 
   belongs_to :profile
@@ -33,9 +35,6 @@ class SuppliersPlugin::Supplier < ActiveRecord::Base
   after_create :add_admins, if: :dummy?
   after_create :save_profile, if: :dummy?
   after_create :distribute_products_to_consumer
-
-  attr_accessor :distribute_products_on_create, :dont_destroy_dummy, :identifier_from_name
-
   before_validation :fill_identifier, if: :dummy?
   before_destroy :destroy_consumer_products
 

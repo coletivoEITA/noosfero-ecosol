@@ -107,12 +107,9 @@ SQL
     (self.supplier_product.unit rescue nil) || self.class.default_unit
   end
 
-  def available
-    self[:available]
-  end
-  def available_with_supplier
-    return self.available_without_supplier unless self.supplier_product
-    self.available_without_supplier and self.supplier_product.available and self.supplier.active rescue false
+  def chained_available
+    return self.available unless self.supplier_product
+    self.available and self.supplier_product.available and self.supplier.active rescue false
   end
 
   def dependent?
