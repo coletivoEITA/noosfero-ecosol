@@ -7,7 +7,7 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
   # overhide original
   scope :available, -> {
-    where 'products.available = ? suppliers_plugin_suppliers.active = ?', true, true
+    where 'products.available = ? AND suppliers_plugin_suppliers.active = ?', true, true
   }
   scope :unavailable, -> {
     where 'products.available <> ? OR suppliers_plugin_suppliers.active <> ?', true, true
