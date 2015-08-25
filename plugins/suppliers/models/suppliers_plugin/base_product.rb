@@ -107,10 +107,19 @@ SQL
     (self.supplier_product.unit rescue nil) || self.class.default_unit
   end
 
-  def chained_available
-    return self.available unless self.supplier_product
-    self.available and self.supplier_product.available and self.supplier.active rescue false
+  def available
+    self[:available]
   end
+
+  def available_with_supplier
+    return self.available_without_supplier unless self.supplier
+    self.available_without_supplier and self.supplier.active rescue false
+  end
+  def chained_available
+    return self.available_without_supplier unless self.supplier_product
+    self.available_without_supplier and self.supplier_product.available and self.supplier.active rescue false
+  end
+  alias_method_chain :available, :supplier
 
   def dependent?
     self.from_products.length >= 1
