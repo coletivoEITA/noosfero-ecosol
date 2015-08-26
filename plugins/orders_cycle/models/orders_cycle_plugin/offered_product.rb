@@ -23,6 +23,9 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   extend CurrencyHelper::ClassMethods
   has_currency :buy_price
 
+  # test this before use!
+  #validates_presence_of :cycle
+
   def self.create_from_distributed cycle, product
     op = self.new
     product.attributes.except('id').each{ |a,v| op.send "#{a}=", v }
@@ -30,7 +33,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     op.type = self.name
     op.freeze_default_attributes product
     op.from_products << product
-    cycle.products << op
+    cycle.products << op if cycle
     op
   end
 

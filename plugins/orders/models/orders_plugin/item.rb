@@ -114,6 +114,9 @@ class OrdersPlugin::Item < ActiveRecord::Base
   def price
     self[:price] || (self.product.price_with_discount || 0 rescue nil)
   end
+  def price_without_margins
+    self.product.price_without_margins rescue self.price
+  end
   def unit
     self.product.unit
   end

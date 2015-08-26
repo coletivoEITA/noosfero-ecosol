@@ -82,6 +82,7 @@ en-US: &en-US
         supplier: "%{terms.supplier.singular.capitalize}"
         total_parcel_value: "Total value using stock"
         total_selled_value: "Total selled value"
+        total_price_without_margin: "Total price without margin"
         total_value: "Total Value"
         un: un.
         value: value

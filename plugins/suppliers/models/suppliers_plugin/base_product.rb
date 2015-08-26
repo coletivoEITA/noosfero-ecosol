@@ -147,6 +147,10 @@ SQL
     price
   end
 
+  def price_without_margins
+    self[:price] / (1 + self.margin_percentage/100)
+  end
+
   # just in case the from_products is nil
   def product_category_with_default
     self.product_category_without_default or self.class.default_product_category(self.environment)
