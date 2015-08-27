@@ -3,6 +3,7 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
   include OrdersCyclePlugin::OrderBase
 
   has_many :cycles, through: :cycle_sales, source: :cycle
+  has_one  :cycle,  through: :cycle_sale,  source: :cycle
 
   after_save :change_purchases, if: :cycle
   before_destroy :remove_purchases_items, if: :cycle

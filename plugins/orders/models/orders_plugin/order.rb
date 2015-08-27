@@ -174,7 +174,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   #
   def self.supplier_products_by_suppliers orders
     products_by_supplier = {}
-    items = OrdersPlugin::Item.where(order_id: orders.map(&:id)).includes({sources_supplier_products: [:supplier, :from_product]})
+    items = self.parent::Item.where(order_id: orders.map(&:id)).includes(sources_supplier_products: [:supplier, :from_product])
     items.each do |item|
       if item.sources_supplier_products.present?
         item.sources_supplier_products.each do |source_sp|
