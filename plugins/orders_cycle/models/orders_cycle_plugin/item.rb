@@ -16,15 +16,17 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   belongs_to :sale, class_name: '::OrdersCyclePlugin::Sale', foreign_key: :order_id, touch: true
   belongs_to :purchase, class_name: '::OrdersCyclePlugin::Purchase', foreign_key: :order_id, touch: true
 
-  # OVERRIDE from OrdersPlugin::Item
-  # FIXME: if don't work because of load order
-  #if defined? SuppliersPlugin
-    has_many :from_products, through: :offered_product
-    has_many :to_products, through: :offered_product
-    has_many :sources_supplier_products, through: :offered_product
-    has_many :supplier_products, through: :offered_product
-    has_many :suppliers, through: :offered_product
-  #end
+  # OVERRIDE OrdersPlugin::Item
+  has_many :from_products, through: :offered_product
+  has_one :from_product, through: :offered_product
+  has_many :to_products, through: :offered_product
+  has_one :to_product, through: :offered_product
+  has_many :sources_supplier_products, through: :offered_product
+  has_one :sources_supplier_product, through: :offered_product
+  has_many :supplier_products, through: :offered_product
+  has_one :supplier_product, through: :offered_product
+  has_many :suppliers, through: :offered_product
+  has_one :supplier, through: :offered_product
 
   # what items were selled from this item
   def selled_items

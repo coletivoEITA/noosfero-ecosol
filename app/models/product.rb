@@ -244,7 +244,7 @@ class Product < ActiveRecord::Base
   protected
 
   def validate_uniqueness_of_column_name?
-    true
+    false
   end
 
   def is_trackable?

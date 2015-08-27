@@ -23,7 +23,6 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
   validates_presence_of :supplier
 
-  # TODO: maybe move to lib/ext/product
   def supplier_price
     self.supplier_product.price if self.supplier_product
   end
